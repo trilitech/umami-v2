@@ -1,22 +1,25 @@
-import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+// @ts-ignore
+// import crypto from "crypto-browserify";
+// window.Buffer = Buffer;
+import { restoreAccount } from "./utils/restoreAccounts";
+
+const seedPhrase =
+  "glory city income swallow act garment novel fringe bread chaos club dolphin when live penalty mirror donate razor dad eyebrow powder trumpet bunker wine";
+
+const restore = async () => {
+  console.log(await restoreAccount(seedPhrase));
+};
 
 function ImportSeed() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>hello</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <p>Enter seed phrase</p>
+      <textarea />
+      <br />
+      <button onClick={(_) => restore()} title="Restore accounts">
+        "Restore accounts"
+      </button>
     </div>
   );
 }
