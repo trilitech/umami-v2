@@ -6,7 +6,9 @@ import reportWebVitals from "./reportWebVitals";
 import { router } from "./Router";
 import { RouterProvider } from "react-router-dom";
 
+import { Provider } from "react-redux";
 import { ChakraProvider } from "@chakra-ui/react";
+import { store } from "./utils/store/store";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -15,7 +17,9 @@ root.render(
     {/* <App /> */}
 
     <ChakraProvider>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ChakraProvider>
   </React.StrictMode>
 );
