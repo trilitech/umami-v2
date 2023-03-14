@@ -1,11 +1,30 @@
-import { configureStore } from "@reduxjs/toolkit";
-// ...
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistReducer } from "redux-persist";
+import storage from "./storage";
 import accountsSlice from "./accountsSlice";
 
+// See this answer for configuration of redux toolkit with redux-persist
+// https://stackoverflow.com/a/63818121/6797267
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const reducers = combineReducers({
+  accounts: accountsSlice.reducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
 export const store = configureStore({
-  reducer: {
-    accounts: accountsSlice.reducer,
-  },
+  reducer: persistedReducer,
+
+  // Needed to remove warning
+  // https://stackoverflow.com/a/71955602/6797267
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
