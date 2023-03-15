@@ -38,7 +38,7 @@ jobs:
 
   deploy_github_pages:
     needs: build_app
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
