@@ -1,10 +1,10 @@
-import { Operation } from "@taquito/taquito";
-import axios from "axios";
+import { Operation, TezosToolkit } from "@taquito/taquito";
 
-export const addressExists = (pkh: string, network = "mainnet") => {
-  // TODO replace this method of checking
-  const url = `https://${network}.umamiwallet.com/accounts/${pkh}/exists`;
-  return axios.get(url);
+export const addressExists = async (pkh: string, network = "mainnet") => {
+  const Tezos = new TezosToolkit("https://ghostnet.ecadinfra.com");
+  // Temp solution not to have to set up proxy
+  const balance = await Tezos.tz.getBalance(pkh);
+  return !balance.isZero();
 };
 
 export const getOperations = (): Promise<Operation[]> => {
