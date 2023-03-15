@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { router } from "./Router";
-import { RouterProvider } from "react-router-dom";
+import Router from "./Router";
 
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { Provider } from "react-redux";
@@ -21,7 +20,7 @@ root.render(
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistStore(store)}>
-          <RouterProvider router={router} />
+          <Router />
         </PersistGate>
       </Provider>
     </ChakraProvider>
