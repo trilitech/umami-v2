@@ -3,7 +3,7 @@ import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
 import { Account } from "../types/Account";
-import { addressExists } from "./tezos";
+import { addressExists, getFingerPrint } from "./tezos";
 
 let getDerivationPath = (index: number) => `m/44'/1729'/${index}'/0'`;
 
@@ -23,7 +23,12 @@ export const restoreAccount = async (
   const pk = await signer.publicKey();
   const sk = await signer.secretKey();
 
-  const result: Account = { pk, sk, pkh };
+  const result: Account = {
+    pk,
+    sk,
+    pkh,
+    seedFingerPrint: await getFingerPrint(seedPhrase),
+  };
   return result;
 };
 
