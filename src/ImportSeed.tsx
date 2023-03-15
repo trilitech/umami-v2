@@ -1,4 +1,4 @@
-import { restoreAccount } from "./utils/restoreAccounts";
+import { restoreAccounts } from "./utils/restoreAccounts";
 
 import { useForm } from "react-hook-form";
 import makiLogo from "./assets/maki-default.png";
@@ -17,13 +17,19 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import accountsSlice from "./utils/store/accountsSlice";
+import { useAppDispatch } from "./utils/store/hooks";
 
 type FormValues = {
   seedPhrase: string;
 };
+
+const accountsActions = accountsSlice.actions;
+
 function ImportSeed() {
   const toast = useToast();
   const [isLoading, setIsloading] = useState(false); // TODO replace this with react query
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -35,8 +41,9 @@ function ImportSeed() {
   const onSubmit = async (data: FormValues) => {
     setIsloading(true);
     try {
-      const account = await restoreAccount(data.seedPhrase);
-      toast({ title: "Accounts restored!", description: account.pkh });
+      const accounts = await restoreAccounts(data.seedPhrase);
+      dispatch(accountsActions.add(accounts));
+      toast({ title: "Accounts restored!" });
     } catch (error) {
       toast({
         title: "Failed to restore accounts!",
@@ -62,6 +69,7 @@ function ImportSeed() {
             <FormLabel>Seed phrase</FormLabel>
             <Textarea
               {...register("seedPhrase", {
+                required: true,
                 pattern: {
                   value: /^(((\w+ ){23}|(\w+ ){11})(\w+)| )$/, // 12 or 24 words. No trailing space.
                   message: "Must be a 24 or 12 word seed phrase",
@@ -82,7 +90,7 @@ function ImportSeed() {
           <Button
             isLoading={isLoading}
             type="submit"
-            colorScheme="orange"
+            colorScheme="gray"
             isDisabled={!isValid || isLoading}
             title="Restore accounts"
           >
