@@ -5,20 +5,20 @@ import reportWebVitals from "./reportWebVitals";
 import { router } from "./Router";
 import { RouterProvider } from "react-router-dom";
 
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { Provider } from "react-redux";
-import { ChakraProvider } from "@chakra-ui/react";
-import { store } from "./utils/store/store";
-import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import theme from "./style/theme";
+import { store } from "./utils/store/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    {/* <App /> */}
-
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistStore(store)}>
           <RouterProvider router={router} />
