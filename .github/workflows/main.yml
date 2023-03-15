@@ -1,0 +1,66 @@
+name: Build and Deploy
+
+on: push
+
+jobs:
+  build_app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Node 18
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
+      - name: Prepare
+        run: yarn
+
+      # - name: Prettier
+      #   run: yarn actions:prettier
+
+      - name: Build
+        run: yarn build
+
+      - name: Upload
+        uses: actions/upload-artifact@v1
+        with:
+          name: app_dist
+          path: dist
+
+  deploy_github_pages:
+    needs: build_app
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Node 18
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
+      - name: Prepare
+        run: yarn
+
+      - name: Deploy Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
