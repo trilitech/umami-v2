@@ -1,7 +1,6 @@
 import { restoreAccounts } from "./utils/restoreAccounts";
 
 import { useForm } from "react-hook-form";
-import makiLogo from "./assets/maki-default.png";
 
 import {
   Button,
@@ -11,15 +10,15 @@ import {
   FormHelperText,
   FormLabel,
   Heading,
-  Image,
   Textarea,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { MakiLogo } from "./components/MakiLogo";
+import { seedPhrase } from "./mocks/seedPhrase";
 import accountsSlice from "./utils/store/accountsSlice";
 import { useAppDispatch } from "./utils/store/hooks";
-import { seedPhrase } from "./mocks/seedPhrase";
 
 type FormValues = {
   seedPhrase: string;
@@ -58,13 +57,7 @@ function ImportSeed() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Center>
         <VStack width={300}>
-          <Image
-            boxSize="100px"
-            objectFit="cover"
-            src={makiLogo}
-            alt="Maki logo"
-          />
-
+          <MakiLogo />
           <Heading>Restore Accounts</Heading>
           <FormControl isInvalid={!!errors.seedPhrase}>
             <FormLabel>Seed phrase</FormLabel>
