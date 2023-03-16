@@ -1,5 +1,5 @@
 import React from "react";
-import { AccountTile } from "../../components/AccountTile";
+import AccountTile from "../../components/AccountTile";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { formatPkh } from "../../utils/tezos";

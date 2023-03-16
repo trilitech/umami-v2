@@ -1,13 +1,23 @@
-// 1. import `extendTheme` function
 import { extendTheme } from "@chakra-ui/react";
+import colors from "./colors";
 
-// 2. Add your color mode config
 const config = {
   initialColorMode: "dark",
   useSystemColorMode: false,
 };
 
-// 3. extend the theme
-const theme = extendTheme({ config });
-
+const theme = extendTheme({
+  config,
+  colors: {
+    umami: colors,
+  },
+  styles: {
+    global: {
+      body: {
+        bg: "umami.black",
+        color: "umami.white",
+      },
+    },
+  },
+});
 export default theme;

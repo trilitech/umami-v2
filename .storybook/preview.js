@@ -1,3 +1,4 @@
+import { UmamiTheme } from "../src/providers/UmamiTheme";
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -6,4 +7,11 @@ export const parameters = {
       date: /Date$/,
     },
   },
-}
+};
+export const decorators = [
+  (Story) => (
+    <UmamiTheme>
+      <Story />
+    </UmamiTheme>
+  ),
+];
