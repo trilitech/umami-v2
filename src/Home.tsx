@@ -1,4 +1,6 @@
-import { Button, Grid, GridItem } from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { MakiLogo } from "./components/MakiLogo";
+import NetworkSelector from "./components/NetworkSelector";
 
 import accountsSlice from "./utils/store/accountsSlice";
 import { useAppDispatch } from "./utils/store/hooks";
@@ -20,7 +22,12 @@ export default function Home() {
       templateColumns="repeat(12, 1fr)"
       gap={4}
     >
-      <GridItem rowSpan={12} colSpan={2} bg="#363636" />
+      <GridItem rowSpan={12} colSpan={2} bg="#363636">
+        <Flex justifyContent="space-between" alignItems="center" padding={4}>
+          <MakiLogo size={50} />
+          <NetworkSelector />
+        </Flex>
+      </GridItem>
       <GridItem rowSpan={2} colSpan={10} bg="#363636">
         <Button color="white" onClick={logout}>
           "logout"
