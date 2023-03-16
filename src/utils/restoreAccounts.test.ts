@@ -1,3 +1,4 @@
+import { seedPhrase } from "../mocks/seedPhrase";
 import { restoreAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
 
@@ -13,9 +14,6 @@ beforeEach(() => {
 
 describe("restoreAccounts", () => {
   it("should restore exising accounts", async () => {
-    const seedPhrase =
-      "glory city income swallow act garment novel fringe bread chaos club dolphin when live penalty mirror donate razor dad eyebrow powder trumpet bunker wine";
-
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
@@ -45,9 +43,6 @@ describe("restoreAccounts", () => {
   });
 
   it("should restore first account if none exists", async () => {
-    const seedPhrase =
-      "glory city income swallow act garment novel fringe bread chaos club dolphin when live penalty mirror donate razor dad eyebrow powder trumpet bunker wine";
-
     addressExistsMock.mockResolvedValueOnce(false);
     const result = await restoreAccounts(seedPhrase);
     const expected = [
