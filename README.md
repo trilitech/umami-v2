@@ -47,6 +47,10 @@ Runs the electron app in the development mode.
 
 Build electron app for desired platform.
 
+### `npm run storybook`
+
+Start storybook (duh).
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
