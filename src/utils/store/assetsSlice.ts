@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { Operation } from "../../types/Operation";
 import { Token } from "../../types/Token";
+import accountsSlice from "./accountsSlice";
 
 type balance = {
   tez: BigNumber | null;
@@ -35,8 +36,17 @@ const initialState: State = {
 const assetsSlice = createSlice({
   name: "assets",
   initialState,
+  // Reset assets state if accounts are reset
+  extraReducers: (builder) =>
+    builder.addCase(accountsSlice.actions.reset, () => initialState),
   reducers: {
     reset: () => initialState,
+    updateNetwork: (
+      _,
+      { payload }: { type: string; payload: TezosNetwork }
+    ) => {
+      return { ...initialState, network: payload };
+    },
     updateOperations: (
       state,
       { payload }: { type: string; payload: OperationsPayload[] }

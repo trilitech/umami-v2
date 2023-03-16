@@ -2,9 +2,11 @@ import assetsSlice from "./store/assetsSlice";
 import { store } from "./store/store";
 
 import BigNumber from "bignumber.js";
+import { TezosNetwork } from "@airgap/tezos";
+import accountsSlice from "./store/accountsSlice";
 
 const {
-  actions: { reset, updateAssets: update },
+  actions: { reset, updateAssets: update, updateNetwork },
 } = assetsSlice;
 
 afterEach(() => {
@@ -124,6 +126,78 @@ describe("Assets reducer", () => {
         },
       },
 
+      operations: {},
+      network: "mainnet",
+    });
+  });
+
+  test("updating network resets operations and balances", () => {
+    store.dispatch(
+      update([
+        { pkh: "bar", tez: new BigNumber(44) },
+        { pkh: "baz", tez: new BigNumber(55) },
+      ])
+    );
+
+    store.dispatch(
+      update([
+        {
+          pkh: "foo",
+          tokens: [{}, {}] as any,
+        },
+      ])
+    );
+
+    expect(store.getState().assets).toEqual({
+      balances: {
+        bar: { tez: BigNumber("44"), tokens: [] },
+        baz: { tez: BigNumber("55"), tokens: [] },
+        foo: { tez: null, tokens: [{}, {}] },
+      },
+      network: "mainnet",
+      operations: {},
+    });
+
+    store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
+
+    expect(store.getState().assets).toEqual({
+      balances: {},
+      operations: {},
+      network: "ghostnet",
+    });
+  });
+
+  test("reseting accounts resets assetsState", () => {
+    store.dispatch(
+      update([
+        { pkh: "bar", tez: new BigNumber(44) },
+        { pkh: "baz", tez: new BigNumber(55) },
+      ])
+    );
+
+    store.dispatch(
+      update([
+        {
+          pkh: "foo",
+          tokens: [{}, {}] as any,
+        },
+      ])
+    );
+
+    expect(store.getState().assets).toEqual({
+      balances: {
+        bar: { tez: BigNumber("44"), tokens: [] },
+        baz: { tez: BigNumber("55"), tokens: [] },
+        foo: { tez: null, tokens: [{}, {}] },
+      },
+      network: "mainnet",
+      operations: {},
+    });
+
+    store.dispatch(accountsSlice.actions.reset());
+
+    expect(store.getState().assets).toEqual({
+      balances: {},
       operations: {},
       network: "mainnet",
     });
