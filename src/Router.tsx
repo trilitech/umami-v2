@@ -1,6 +1,8 @@
+import React from "react";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import Home from "./Home";
 import ImportSeed from "./ImportSeed";
+import { useAssetsPolling } from "./utils/useAssetsPolling";
 import { useAppSelector } from "./utils/store/hooks";
 
 // Hash router is required for electron prod build:
@@ -28,11 +30,21 @@ const loggedOutRouter = createHashRouter([
   },
 ]);
 
+const MemoizedRouter = React.memo(() => {
+  return <RouterProvider router={loggedInRouter} />;
+});
+
+const LoggedInRouterWithPolling = () => {
+  // This does rerenders
+  useAssetsPolling();
+  return <MemoizedRouter />;
+};
+
 const Router = () => {
   const isLoggedIn = useAppSelector((s) => s.accounts).items.length !== 0;
 
   return isLoggedIn ? (
-    <RouterProvider router={loggedInRouter} />
+    <LoggedInRouterWithPolling />
   ) : (
     <RouterProvider router={loggedOutRouter} />
   );

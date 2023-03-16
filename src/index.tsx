@@ -11,6 +11,10 @@ import { PersistGate } from "redux-persist/integration/react";
 import theme from "./style/theme";
 import { store } from "./utils/store/store";
 
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -20,7 +24,9 @@ root.render(
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistStore(store)}>
-          <Router />
+          <QueryClientProvider client={queryClient}>
+            <Router />
+          </QueryClientProvider>
         </PersistGate>
       </Provider>
     </ChakraProvider>

@@ -1,7 +1,6 @@
-export type Operation = {
-  from: string;
-  to: string;
-  amount: string;
-  date: string;
-  block: number;
-};
+import { IAirGapTransaction } from "@airgap/coinlib-core/interfaces/IAirGapTransaction";
+
+export type Operation = Omit<
+  IAirGapTransaction,
+  "protocolIdentifier" | "network"
+>[];

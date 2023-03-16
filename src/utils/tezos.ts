@@ -1,14 +1,56 @@
-import { Operation, TezosToolkit } from "@taquito/taquito";
+import { TezosIndexerClient, TezosNetwork } from "@airgap/tezos";
+import { TezosToolkit } from "@taquito/taquito";
+import axios from "axios";
+import { Operation } from "../types/Operation";
 
-export const addressExists = async (pkh: string, network = "mainnet") => {
-  const Tezos = new TezosToolkit("https://ghostnet.ecadinfra.com");
-  // Temp solution not to have to set up proxy
+let nodeUrls = {
+  [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
+  [TezosNetwork.MAINNET]: `https://mainnet.api.tez.ie`,
+};
+
+let tzktUrls = {
+  [TezosNetwork.GHOSTNET]: `https://api.ghostnet.tzkt.io`,
+  [TezosNetwork.MAINNET]: `https://api.mainnet.tzkt.io`,
+};
+
+export const addressExists = async (
+  pkh: string,
+  network = TezosNetwork.MAINNET
+) => {
+  // Temporary solution to check address existence
+  const Tezos = new TezosToolkit(nodeUrls[network]);
   const balance = await Tezos.tz.getBalance(pkh);
   return !balance.isZero();
 };
 
-export const getOperations = (): Promise<Operation[]> => {
-  return Promise.resolve([]);
+export const getBalance = async (
+  pkh: string,
+  network = TezosNetwork.MAINNET
+) => {
+  const Tezos = new TezosToolkit(nodeUrls[network]);
+  return Tezos.tz.getBalance(pkh);
+};
+
+const indexerClients = {
+  [TezosNetwork.GHOSTNET]: new TezosIndexerClient(
+    tzktUrls[TezosNetwork.GHOSTNET]
+  ),
+  [TezosNetwork.MAINNET]: new TezosIndexerClient(
+    tzktUrls[TezosNetwork.MAINNET]
+  ),
+};
+
+export const getOperations = (
+  pkh: string,
+  network = TezosNetwork.MAINNET
+): Promise<Operation> => {
+  return indexerClients[network].getTransactions(pkh);
+};
+
+export const getTokens = (pkh: string, network: TezosNetwork) => {
+  return axios
+    .get(`${tzktUrls[network]}/v1/tokens/balances/?account=${pkh}`)
+    .then((res) => res.data);
 };
 
 // Temporary solution for generating fingerprint for seedphrase
@@ -22,3 +64,7 @@ export async function getFingerPrint(seedPhrase: string) {
     .join("");
   return hashHex;
 }
+
+export const formatPkh = (pkh: string) => {
+  return `${pkh.slice(0, 5)}...${pkh.slice(-5, pkh.length)}`;
+};
