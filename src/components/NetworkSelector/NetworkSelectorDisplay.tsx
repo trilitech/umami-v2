@@ -15,6 +15,9 @@ export const NetworkSelectorDisplay: React.FC<{
         placeholder="Choose network"
         value={value}
         onChange={(e) => {
+          if (e.target.value === "") {
+            return;
+          }
           onChange(e.target.value as TezosNetwork);
         }}
       >
