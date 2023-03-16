@@ -15,7 +15,7 @@ export const OperationsList = () => {
       {last.map((t) => {
         return (
           <OperationTile
-            key={t.hash}
+            key={(t.hash || "") + t.from[0]}
             from={formatPkh(t.from[0])}
             to={formatPkh(t.to[0])}
             amount={t.amount}
