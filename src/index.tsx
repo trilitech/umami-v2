@@ -4,11 +4,9 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Router from "./Router";
 
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import theme from "./style/theme";
 import { store } from "./utils/store/store";
 
 import { QueryClient, QueryClientProvider } from "react-query";
