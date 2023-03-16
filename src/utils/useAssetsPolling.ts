@@ -42,14 +42,13 @@ export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
   const accounts = useAppSelector((s) => s.accounts.items);
   const network = useAppSelector((s) => s.assets.network);
+  const pkhs = accounts.map((a) => a.pkh);
 
   const tezQuery = useQuery("tezBalance", {
     queryFn: async () => {
       try {
         const balances = await Promise.all(
-          accounts
-            .map((a) => a.pkh)
-            .map((pkh) => getBalancePayload(pkh, network))
+          pkhs.map((pkh) => getBalancePayload(pkh, network))
         );
 
         dispatch(assetsActions.updateAssets(balances));
@@ -65,9 +64,7 @@ export const useAssetsPolling = () => {
     queryFn: async () => {
       try {
         const tokens = await Promise.all(
-          accounts
-            .map((a) => a.pkh)
-            .map((pkh) => getTokensPayload(pkh, network))
+          pkhs.map((pkh) => getTokensPayload(pkh, network))
         );
 
         dispatch(assetsActions.updateAssets(tokens));
@@ -83,9 +80,7 @@ export const useAssetsPolling = () => {
     queryFn: async () => {
       try {
         const operations = await Promise.all(
-          accounts
-            .map((a) => a.pkh)
-            .map((pkh) => getOperationsPayload(pkh, network))
+          pkhs.map((pkh) => getOperationsPayload(pkh, network))
         );
 
         dispatch(assetsActions.updateOperations(operations));
