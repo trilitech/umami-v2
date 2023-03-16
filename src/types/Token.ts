@@ -7,8 +7,8 @@ export type Token = {
   token: {
     contract: { address: string };
     id: number;
-    metadata: {
-      displayUri: string;
+    metadata?: {
+      displayUri?: string;
     };
   };
 };

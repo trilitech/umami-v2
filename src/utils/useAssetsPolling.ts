@@ -1,4 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
+import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import assetsSlice, {
   OperationsPayload,
@@ -41,16 +42,13 @@ export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
   const accounts = useAppSelector((s) => s.accounts.items);
   const network = useAppSelector((s) => s.assets.network);
+  const pkhs = accounts.map((a) => a.pkh);
 
-  // // TODO cancel queries when network changes
-
-  useQuery("tezBalance", {
+  const tezQuery = useQuery("tezBalance", {
     queryFn: async () => {
       try {
         const balances = await Promise.all(
-          accounts
-            .map((a) => a.pkh)
-            .map((pkh) => getBalancePayload(pkh, network))
+          pkhs.map((pkh) => getBalancePayload(pkh, network))
         );
 
         dispatch(assetsActions.updateAssets(balances));
@@ -62,13 +60,11 @@ export const useAssetsPolling = () => {
     refetchInterval: REFRESH_RATE,
   });
 
-  useQuery("tokenBalance", {
+  const tokenQuery = useQuery("tokenBalance", {
     queryFn: async () => {
       try {
         const tokens = await Promise.all(
-          accounts
-            .map((a) => a.pkh)
-            .map((pkh) => getTokensPayload(pkh, network))
+          pkhs.map((pkh) => getTokensPayload(pkh, network))
         );
 
         dispatch(assetsActions.updateAssets(tokens));
@@ -80,13 +76,11 @@ export const useAssetsPolling = () => {
     refetchInterval: REFRESH_RATE,
   });
 
-  useQuery("operations", {
+  const operationsQuery = useQuery("operations", {
     queryFn: async () => {
       try {
         const operations = await Promise.all(
-          accounts
-            .map((a) => a.pkh)
-            .map((pkh) => getOperationsPayload(pkh, network))
+          pkhs.map((pkh) => getOperationsPayload(pkh, network))
         );
 
         dispatch(assetsActions.updateOperations(operations));
@@ -97,4 +91,15 @@ export const useAssetsPolling = () => {
 
     refetchInterval: REFRESH_RATE,
   });
+
+  const tezQueryRef = useRef(tezQuery);
+  const tokenQueryRef = useRef(tokenQuery);
+  const operationsQueryRef = useRef(operationsQuery);
+
+  // Refetch when network changes
+  useEffect(() => {
+    tezQueryRef.current.refetch();
+    tokenQueryRef.current.refetch();
+    operationsQueryRef.current.refetch();
+  }, [network]);
 };
