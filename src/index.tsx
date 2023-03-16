@@ -12,6 +12,7 @@ import theme from "./style/theme";
 import { store } from "./utils/store/store";
 
 import { QueryClient, QueryClientProvider } from "react-query";
+import { UmamiTheme } from "./providers/UmamiTheme";
 
 const queryClient = new QueryClient();
 
@@ -20,8 +21,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <UmamiTheme>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistStore(store)}>
           <QueryClientProvider client={queryClient}>
@@ -29,7 +29,7 @@ root.render(
           </QueryClientProvider>
         </PersistGate>
       </Provider>
-    </ChakraProvider>
+    </UmamiTheme>
   </React.StrictMode>
 );
 
