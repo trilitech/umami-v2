@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import accountsSlice from "./utils/store/accountsSlice";
 import { useAppDispatch } from "./utils/store/hooks";
+import { seedPhrase } from "./mocks/seedPhrase";
 
 type FormValues = {
   seedPhrase: string;
@@ -31,12 +32,12 @@ function ImportSeed() {
   const [isLoading, setIsloading] = useState(false); // TODO replace this with react query
   const dispatch = useAppDispatch();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<FormValues>({ mode: "onBlur" });
+  const { register, handleSubmit, formState, setValue, trigger } =
+    useForm<FormValues>({
+      mode: "onBlur",
+    });
 
+  const { errors, isValid } = formState;
   // Would have called this handleSubmit but its already taken
   const onSubmit = async (data: FormValues) => {
     setIsloading(true);
@@ -68,6 +69,7 @@ function ImportSeed() {
           <FormControl isInvalid={!!errors.seedPhrase}>
             <FormLabel>Seed phrase</FormLabel>
             <Textarea
+              disabled={isLoading}
               {...register("seedPhrase", {
                 required: true,
                 pattern: {
@@ -95,6 +97,18 @@ function ImportSeed() {
             title="Restore accounts"
           >
             Restore accounts
+          </Button>
+
+          <Button
+            onClick={(_) => {
+              setValue("seedPhrase", seedPhrase);
+              trigger();
+            }}
+            colorScheme="gray"
+            isDisabled={isLoading}
+            title="Restore accounts"
+          >
+            Enter test seed phrase
           </Button>
         </VStack>
       </Center>
