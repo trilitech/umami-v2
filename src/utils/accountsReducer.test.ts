@@ -21,7 +21,11 @@ afterEach(() => {
 
 describe("Accounts reducer", () => {
   test("store should initialize with empty state", () => {
-    expect(store.getState().accounts).toEqual({ items: [], selected: null });
+    expect(store.getState().accounts).toEqual({
+      items: [],
+      selected: null,
+      secureStorage: {},
+    });
   });
 
   test("should handle adding accounts and arrays of accounts", () => {
@@ -29,12 +33,14 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1)],
       selected: null,
+      secureStorage: {},
     });
 
     store.dispatch(add([mockAccount(2), mockAccount(3)]));
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
+      secureStorage: {},
     });
   });
 
@@ -45,6 +51,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
+      secureStorage: {},
     });
   });
 
@@ -55,6 +62,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: mockAccount(2).pkh,
+      secureStorage: {},
     });
   });
 
@@ -65,6 +73,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
+      secureStorage: {},
     });
   });
 });

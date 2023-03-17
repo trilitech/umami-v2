@@ -1,14 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Account } from "../../types/Account";
+import { UmamiEncrypted } from "../../types/UmamiEncrypted";
 
 type State = {
   items: Account[];
   selected: null | string;
+  secureStorage: Record<string, UmamiEncrypted>;
 };
 
 const initialState: State = {
   items: [],
   selected: null,
+  secureStorage: {},
+};
+
+export type SecretPayload = {
+  hash: string;
+  secret: UmamiEncrypted;
 };
 
 const accountsSlice = createSlice({
@@ -16,14 +24,17 @@ const accountsSlice = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
+    addSecret: (
+      state,
+      { payload }: { type: string; payload: SecretPayload }
+    ) => {
+      const { hash, secret } = payload;
+      state.secureStorage[hash] = secret;
+    },
     add: (
       state,
       { payload }: { type: string; payload: Account | Account[] }
     ) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
       const accounts = Array.isArray(payload) ? payload : [payload];
 
       const newAccounts = accounts.reduce(addAccount, state.items);
