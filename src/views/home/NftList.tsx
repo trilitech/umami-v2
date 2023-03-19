@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../utils/store/hooks";
 
-import { Grid, GridItem, Image, SimpleGrid } from "@chakra-ui/react";
+import { GridItem, Image, SimpleGrid } from "@chakra-ui/react";
 export const NftList = () => {
   const tokens = useAppSelector((s) => s.assets.balances);
 

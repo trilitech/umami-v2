@@ -1,12 +1,12 @@
+import { DragHandleIcon } from "@chakra-ui/icons";
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { format } from "@taquito/utils";
 import BigNumber from "bignumber.js";
-import { DragHandleIcon, InfoIcon } from "@chakra-ui/icons";
 import React from "react";
-import { MakiLogo } from "./MakiLogo";
-import NetworkSelector from "./NetworkSelector";
 import colors from "../style/colors";
 import { useAppSelector } from "../utils/store/hooks";
-import { format } from "@taquito/utils";
+import { MakiLogo } from "./MakiLogo";
+import NetworkSelector from "./NetworkSelector";
 
 const MenuItem: React.FC<{ label: string }> = (props) => {
   return (
