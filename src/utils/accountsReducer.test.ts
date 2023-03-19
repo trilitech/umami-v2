@@ -25,7 +25,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [],
       selected: null,
-      secureStorage: {},
+      seedPhrases: {},
     });
   });
 
@@ -34,14 +34,14 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1)],
       selected: null,
-      secureStorage: {},
+      seedPhrases: {},
     });
 
     store.dispatch(add([mockAccount(2), mockAccount(3)]));
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
-      secureStorage: {},
+      seedPhrases: {},
     });
   });
 
@@ -52,7 +52,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
-      secureStorage: {},
+      seedPhrases: {},
     });
   });
 
@@ -63,7 +63,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: mockAccount(2).pkh,
-      secureStorage: {},
+      seedPhrases: {},
     });
   });
 
@@ -74,7 +74,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
-      secureStorage: {},
+      seedPhrases: {},
     });
   });
 });

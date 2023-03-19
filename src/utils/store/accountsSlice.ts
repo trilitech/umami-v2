@@ -5,13 +5,13 @@ import { UmamiEncrypted } from "../../types/UmamiEncrypted";
 type State = {
   items: Account[];
   selected: null | string;
-  secureStorage: Record<string, UmamiEncrypted>;
+  seedPhrases: Record<string, UmamiEncrypted>;
 };
 
 const initialState: State = {
   items: [],
   selected: null,
-  secureStorage: {},
+  seedPhrases: {},
 };
 
 export type SecretPayload = {
@@ -29,7 +29,7 @@ const accountsSlice = createSlice({
       { payload }: { type: string; payload: SecretPayload }
     ) => {
       const { hash, secret } = payload;
-      state.secureStorage[hash] = secret;
+      state.seedPhrases[hash] = secret;
     },
     add: (
       state,
