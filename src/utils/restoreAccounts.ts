@@ -2,8 +2,8 @@ import { InMemorySigner } from "@taquito/signer";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
-import { Account } from "../types/Account";
-import { addressExists, getFingerPrint } from "./tezos";
+import { UnencryptedAccount } from "../types/Account";
+import { addressExists } from "./tezos";
 
 let getDerivationPath = (index: number) => `m/44'/1729'/${index}'/0'`;
 
@@ -23,20 +23,19 @@ export const restoreAccount = async (
   const pk = await signer.publicKey();
   const sk = await signer.secretKey();
 
-  const result: Account = {
+  const result: UnencryptedAccount = {
     pk,
     sk,
     pkh,
-    seedFingerPrint: await getFingerPrint(seedPhrase),
   };
   return result;
 };
 
 export const restoreAccounts = async (
   seedPhrase: string,
-  result: Account[] = [],
+  result: UnencryptedAccount[] = [],
   derivationPathIndex = 0
-): Promise<Account[]> => {
+): Promise<UnencryptedAccount[]> => {
   const account = await restoreAccount(seedPhrase, derivationPathIndex);
 
   if (await addressExists(account.pkh)) {

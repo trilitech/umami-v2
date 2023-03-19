@@ -1,4 +1,5 @@
 import { Account } from "../types/Account";
+import { UmamiEncrypted } from "../types/UmamiEncrypted";
 import accountsSlice from "./store/accountsSlice";
 
 import { store } from "./store/store";
@@ -11,7 +12,7 @@ const mockAccount = (index: number): Account => {
     label: `account ${index}`,
     pkh: `mockPkh ${index}`,
     pk: `mockPk ${index}`,
-    sk: `mockSk ${index}`,
+    esk: {} as UmamiEncrypted,
   };
 };
 

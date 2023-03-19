@@ -21,6 +21,7 @@ import { restoreAccounts } from "./utils/restoreAccounts";
 import { useAppDispatch } from "./utils/store/hooks";
 import { getFingerPrint } from "./utils/tezos";
 import { makeSaltedSecret } from "./utils/aes";
+import { Account } from "./types/Account";
 
 type FormValues = {
   seedPhrase: string;
@@ -101,14 +102,26 @@ let useRestore = () => {
   const dispatch = useAppDispatch();
   return async (seedPhrase: string, password: string) => {
     const accounts = await restoreAccounts(seedPhrase);
+
+    const seedFingerPrint = await getFingerPrint(seedPhrase);
+    const protectedAccounts = await Promise.all(
+      accounts.map(async ({ pk, pkh, sk }) => {
+        return {
+          pk,
+          pkh,
+          seedFingerPrint,
+          esk: await makeSaltedSecret(sk, password),
+        } as Account;
+      })
+    );
     // TODO handle account sks
     dispatch(
       accountsActions.addSecret({
-        hash: await getFingerPrint(seedPhrase),
+        hash: seedFingerPrint,
         secret: await makeSaltedSecret(seedPhrase, password),
       })
     );
-    dispatch(accountsActions.add(accounts));
+    dispatch(accountsActions.add(protectedAccounts));
   };
 };
 
