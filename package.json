@@ -8,6 +8,7 @@
   "main": "./public/electron.js",
   "dependencies": {
     "@airgap/tezos": "^0.13.11",
+    "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
