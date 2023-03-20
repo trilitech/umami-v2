@@ -18,7 +18,7 @@ async function encryptMessage(key: CryptoKey, message: string) {
   return { iv, data };
 }
 
-export const derivableKeyFromPassword = async (password: string) => {
+const derivableKeyFromPassword = async (password: string) => {
   const buffer = Buffer.alloc(32, password);
   return window.crypto.subtle.importKey("raw", buffer, "PBKDF2", false, [
     "deriveBits",
@@ -26,7 +26,7 @@ export const derivableKeyFromPassword = async (password: string) => {
   ]);
 };
 
-export const deriveKeyWithSalt = (salt: any, key: CryptoKey) =>
+const deriveKeyWithSalt = (salt: any, key: CryptoKey) =>
   crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
@@ -40,9 +40,9 @@ export const deriveKeyWithSalt = (salt: any, key: CryptoKey) =>
     ["encrypt", "decrypt"]
   );
 
-export const makeSalt = () => crypto.getRandomValues(new Uint8Array(32));
+const makeSalt = () => crypto.getRandomValues(new Uint8Array(32));
 
-export const makeSaltedSecret = async (data: string, password: string) => {
+export const encrypt = async (data: string, password: string) => {
   const key = await derivableKeyFromPassword(password);
   const salt = makeSalt();
   const derivedKey = await deriveKeyWithSalt(salt, key);
@@ -57,10 +57,7 @@ export const makeSaltedSecret = async (data: string, password: string) => {
   return secret;
 };
 
-export const descryptSaltedSecret = async (
-  secret: UmamiEncrypted,
-  password: string
-) => {
+export const decrypt = async (secret: UmamiEncrypted, password: string) => {
   const { iv, data, salt } = secret;
   const key = await derivableKeyFromPassword(password);
   const derivedKey = await deriveKeyWithSalt(hex2Bytes(salt), key);

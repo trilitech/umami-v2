@@ -20,7 +20,7 @@ import accountsSlice from "./utils/store/accountsSlice";
 import { restoreAccounts } from "./utils/restoreAccounts";
 import { useAppDispatch } from "./utils/store/hooks";
 import { getFingerPrint } from "./utils/tezos";
-import { makeSaltedSecret } from "./utils/aes";
+import { encrypt } from "./utils/aes";
 import { Account } from "./types/Account";
 
 type FormValues = {
@@ -110,7 +110,7 @@ let useRestore = () => {
           pk,
           pkh,
           seedFingerPrint,
-          esk: await makeSaltedSecret(sk, password),
+          esk: await encrypt(sk, password),
         } as Account;
       })
     );
@@ -118,7 +118,7 @@ let useRestore = () => {
     dispatch(
       accountsActions.addSecret({
         hash: seedFingerPrint,
-        secret: await makeSaltedSecret(seedPhrase, password),
+        secret: await encrypt(seedPhrase, password),
       })
     );
     dispatch(accountsActions.add(protectedAccounts));
