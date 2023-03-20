@@ -67,4 +67,21 @@ describe("Accounts reducer", () => {
       selected: null,
     });
   });
+
+  test("should allow settings selected account to null", () => {
+    store.dispatch(add([mockAccount(1), mockAccount(2), mockAccount(3)]));
+    store.dispatch(setSelected(mockAccount(2).pkh));
+
+    expect(store.getState().accounts).toEqual({
+      items: [mockAccount(1), mockAccount(2), mockAccount(3)],
+      selected: mockAccount(2).pkh,
+    });
+
+    store.dispatch(setSelected(null));
+
+    expect(store.getState().accounts).toEqual({
+      items: [mockAccount(1), mockAccount(2), mockAccount(3)],
+      selected: null,
+    });
+  });
 });
