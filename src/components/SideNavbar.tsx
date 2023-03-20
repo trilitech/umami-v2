@@ -1,14 +1,24 @@
-import { DragHandleIcon } from "@chakra-ui/icons";
-import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Icon, Text } from "@chakra-ui/react";
 import { format } from "@taquito/utils";
 import BigNumber from "bignumber.js";
 import React from "react";
+import { IconType } from "react-icons/lib";
+import {
+  MdCalendarViewMonth,
+  MdHistory,
+  MdMoney,
+  MdOutlineContacts,
+  MdOutlineDiamond,
+  MdOutlineSettings,
+  MdSupport,
+  MdViewCompact,
+} from "react-icons/md";
 import colors from "../style/colors";
 import { useAppSelector } from "../utils/store/hooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
 
-const MenuItem: React.FC<{ label: string }> = (props) => {
+const MenuItem: React.FC<{ label: string; icon: IconType }> = (props) => {
   return (
     <Flex
       _hover={{
@@ -23,7 +33,7 @@ const MenuItem: React.FC<{ label: string }> = (props) => {
       border={40}
       cursor="pointer"
     >
-      <DragHandleIcon mr={4} />
+      <Icon w={6} h={6} ml={2} mr={4} as={props.icon} />
       <Text fontSize="md">{props.label}</Text>
     </Flex>
   );
@@ -32,11 +42,11 @@ const MenuItem: React.FC<{ label: string }> = (props) => {
 const TopIems = () => {
   return (
     <Box>
-      <MenuItem label="Overview" />
-      <MenuItem label="NFTs" />
-      <MenuItem label="Operations" />
-      <MenuItem label="Tokens" />
-      <MenuItem label="Batch" />
+      <MenuItem label="Overview" icon={MdViewCompact} />
+      <MenuItem label="NFTs" icon={MdOutlineDiamond} />
+      <MenuItem label="Operations" icon={MdHistory} />
+      <MenuItem label="Tokens" icon={MdMoney} />
+      <MenuItem label="Batch" icon={MdCalendarViewMonth} />
     </Box>
   );
 };
@@ -45,9 +55,9 @@ const BottomIems = () => {
   return (
     <Box>
       <Divider />
-      <MenuItem label="Address Book" />
-      <MenuItem label="Settings" />
-      <MenuItem label="Help" />
+      <MenuItem label="Address Book" icon={MdOutlineContacts} />
+      <MenuItem label="Settings" icon={MdOutlineSettings} />
+      <MenuItem label="Help" icon={MdSupport} />
     </Box>
   );
 };
