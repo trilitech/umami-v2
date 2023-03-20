@@ -1,47 +1,38 @@
-import { Button, Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import SideNavbar from "./components/SideNavbar";
+import { TopBar } from "./components/TopBar";
 
-import accountsSlice from "./utils/store/accountsSlice";
-import { useAppDispatch } from "./utils/store/hooks";
-import { AccountsList } from "./views/home/AccountsList";
+import AccountListWithDrawer from "./views/home/AccountsList";
 
 import { NftList } from "./views/home/NftList";
 import { OperationsList } from "./views/home/OperationsList";
-const accountActions = accountsSlice.actions;
 
 export default function Home() {
-  const dispatch = useAppDispatch();
-  const logout = () => {
-    dispatch(accountActions.reset());
-  };
   return (
     <Grid
+      templateAreas={`
+                  "nav header header"
+                  "nav main rightTop"
+                  "nav main rightBottom"
+                  `}
+      gridTemplateRows={"0fr 1fr 1fr"}
+      gridTemplateColumns={"0fr 1fr 1fr"}
       h="100vh"
-      templateRows="repeat(12, 1fr)"
-      templateColumns="repeat(12, 1fr)"
-      gap={4}
+      gap="1"
     >
-      <GridItem rowSpan={12} colSpan={2} bg="umami.gray.900">
+      <GridItem area={"nav"}>
         <SideNavbar />
       </GridItem>
-      <GridItem rowSpan={2} colSpan={10} bg="umami.gray.900">
-        <Button color="white" onClick={logout}>
-          "logout"
-        </Button>
+      <GridItem area={"header"}>
+        <TopBar title="Overview" />
       </GridItem>
-      <GridItem rowSpan={10} colSpan={5}>
-        <AccountsList />
+      <GridItem p={2} area={"main"}>
+        <AccountListWithDrawer />
       </GridItem>
-      <GridItem rowSpan={5} colSpan={5} bg="umami.gray.900">
+      <GridItem p={2} area={"rightTop"}>
         <OperationsList />
       </GridItem>
-      <GridItem
-        rowSpan={5}
-        p={4}
-        colSpan={5}
-        bg="umami.gray.900"
-        overflow="scroll"
-      >
+      <GridItem p={2} area={"rightBottom"} overflow={"scroll"}>
         <NftList />
       </GridItem>
     </Grid>

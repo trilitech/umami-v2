@@ -17,6 +17,7 @@ import colors from "../style/colors";
 import { useAppSelector } from "../utils/store/hooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
+import { TezRecapDisplay } from "./TezRecapDisplay";
 
 const MenuItem: React.FC<{ label: string; icon: IconType }> = (props) => {
   return (
@@ -81,21 +82,29 @@ const useTotalBalance = () => {
 const TotalBalance = () => {
   const totalMutez = useTotalBalance();
 
-  const totalTez = totalMutez && format("mutez", "tz", totalMutez);
+  const tezBalance =
+    totalMutez && (format("mutez", "tz", totalMutez) as BigNumber).toNumber();
+
   return (
     <Box mt={4} mb={12} height={"80px"}>
       <Text>Balance</Text>
-      {totalTez && <Text fontSize={"lg"}>{`${totalTez.toString()} ꜩ`}</Text>}
-      <Text fontSize={"sm"} color="umami.gray.400">
-        $3.00
-      </Text>
+      {tezBalance && (
+        <TezRecapDisplay tezBalance={tezBalance} dollarBalance={3} />
+      )}
     </Box>
   );
 };
 
 export const SideNavbar = () => {
   return (
-    <Flex flexDirection={"column"} height={"100%"} pl={4} pr={4}>
+    <Flex
+      flexDirection={"column"}
+      height={"100%"}
+      pl={4}
+      pr={4}
+      bg="umami.gray.900"
+      w={"240px"}
+    >
       <Box>
         <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
           <MakiLogo size={50} />

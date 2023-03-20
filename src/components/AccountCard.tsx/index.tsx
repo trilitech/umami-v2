@@ -1,13 +1,10 @@
-import React from "react";
-import BigNumber from "bignumber.js";
 import { formatPkh } from "../../utils/format";
 import {
   useAccountBalance,
   useSelectedAccount,
-  useSelectedAccountBalance,
 } from "../../utils/hooks/accountHooks";
-import { AccountCardDisplay } from "./AccountCardDisplay";
 import { mutezToTez } from "../../utils/store/impureFormat";
+import { AccountCardDisplay } from "./AccountCardDisplay";
 
 export const AccountCard = () => {
   const account = useSelectedAccount();
