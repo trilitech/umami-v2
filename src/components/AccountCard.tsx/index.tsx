@@ -1,6 +1,6 @@
 import { formatPkh } from "../../utils/format";
 import {
-  useAccountBalance,
+  useGetAccountBalance,
   useSelectedAccount,
 } from "../../utils/hooks/accountHooks";
 import { mutezToTez } from "../../utils/store/impureFormat";
@@ -8,7 +8,7 @@ import { AccountCardDisplay } from "./AccountCardDisplay";
 
 export const AccountCard = () => {
   const account = useSelectedAccount();
-  const accountBalance = useAccountBalance();
+  const accountBalance = useGetAccountBalance();
 
   if (!account) {
     return null;

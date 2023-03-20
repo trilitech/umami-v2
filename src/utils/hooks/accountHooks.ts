@@ -8,7 +8,7 @@ export const useSelectedAccount = () => {
   return pkh === null ? null : accounts.find((a) => a.pkh === pkh);
 };
 
-export const useAccountBalance = () => {
+export const useGetAccountBalance = () => {
   const balances = useAppSelector((s) => s.assets.balances);
 
   return (pkh: string) => {
@@ -18,7 +18,7 @@ export const useAccountBalance = () => {
 
 export const useSelectedAccountBalance = () => {
   const account = useSelectedAccount();
-  const accountBalance = useAccountBalance();
+  const accountBalance = useGetAccountBalance();
 
   return account && accountBalance(account.pkh);
 };
