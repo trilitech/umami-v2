@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../utils/store/hooks";
 
-import { GridItem, Image, SimpleGrid } from "@chakra-ui/react";
+import { AspectRatio, GridItem, Image, SimpleGrid } from "@chakra-ui/react";
 export const NftList = () => {
   const tokens = useAppSelector((s) => s.assets.balances);
 
@@ -15,15 +15,9 @@ export const NftList = () => {
         );
 
         return (
-          <GridItem key={t.id} rowSpan={1} colSpan={1} bg="#363636">
-            <Image
-              key={url}
-              objectFit="cover"
-              width="100%"
-              height={40}
-              src={url}
-            />
-          </GridItem>
+          <AspectRatio width={"100%"} ratio={4 / 4}>
+            <Image key={t.id} width="100%" height={40} src={url} />
+          </AspectRatio>
         );
       })}
     </SimpleGrid>
