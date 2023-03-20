@@ -1,13 +1,9 @@
 import { buf2hex, hex2Bytes } from "@taquito/utils";
 import { UmamiEncrypted } from "../types/UmamiEncrypted";
 
-export function getMessageEncoding(message: string) {
+async function encryptMessage(key: CryptoKey, message: string) {
   let enc = new TextEncoder();
-  return enc.encode(message);
-}
-
-export async function encryptMessage(key: CryptoKey, message: string) {
-  let encoded = getMessageEncoding(message);
+  let encoded = enc.encode(message);
   // The iv must never be reused with a given key.
   const iv = window.crypto.getRandomValues(new Uint8Array(12));
   const data = await window.crypto.subtle.encrypt(
@@ -22,61 +18,12 @@ export async function encryptMessage(key: CryptoKey, message: string) {
   return { iv, data };
 }
 
-export async function decryptMessage(
-  key: CryptoKey,
-  iv: Uint8Array,
-  ciphertext: ArrayBuffer
-) {
-  let decrypted = await window.crypto.subtle.decrypt(
-    {
-      name: "AES-GCM",
-      iv: iv,
-    },
-    key,
-    ciphertext
-  );
-
-  let dec = new TextDecoder();
-  return dec.decode(decrypted);
-}
-
-export const keyFromPassword = async (password: string) => {
-  const buffer = Buffer.alloc(32, password);
-  return window.crypto.subtle.importKey("raw", buffer, "AES-GCM", true, [
-    "encrypt",
-    "decrypt",
-  ]);
-};
-
 export const derivableKeyFromPassword = async (password: string) => {
   const buffer = Buffer.alloc(32, password);
   return window.crypto.subtle.importKey("raw", buffer, "PBKDF2", false, [
     "deriveBits",
     "deriveKey",
   ]);
-};
-
-export const encryptWithPassword = async (
-  password: string,
-  message: string
-) => {
-  const key = await keyFromPassword(password);
-
-  const encryptedMessage = await encryptMessage(key, message);
-  return encryptedMessage;
-};
-
-export const decryptWithPassword = async (
-  password: string,
-  encryptedMessage: {
-    iv: Uint8Array;
-    data: ArrayBuffer;
-  }
-) => {
-  const key = await keyFromPassword(password);
-  const { iv, data } = encryptedMessage;
-  const decryptedMessage = await decryptMessage(key, iv, data);
-  return decryptedMessage;
 };
 
 export const deriveKeyWithSalt = (salt: any, key: CryptoKey) =>

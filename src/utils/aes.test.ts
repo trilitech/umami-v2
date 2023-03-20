@@ -1,10 +1,5 @@
 import { TextDecoder, TextEncoder } from "util";
-import {
-  decryptWithPassword,
-  descryptSaltedSecret,
-  encryptWithPassword,
-  makeSaltedSecret,
-} from "./aes";
+import { descryptSaltedSecret, makeSaltedSecret } from "./aes";
 
 import { umamiBackup } from "../mocks/umamiV1BackupFile";
 
@@ -22,19 +17,6 @@ afterAll(() => {
 });
 
 describe("AES", () => {
-  test("aes with password", async () => {
-    const message = "my super seed phrase";
-    const password = "foobar";
-
-    const encryptedMessage = await encryptWithPassword(password, message);
-    const decryptedMessage = await decryptWithPassword(
-      password,
-      encryptedMessage
-    );
-
-    expect(decryptedMessage).toEqual(message);
-  });
-
   test("Umami v1 format can be restored", async () => {
     const secret = umamiBackup.recoveryPhrases[0];
     const result = await descryptSaltedSecret(secret, "password");
