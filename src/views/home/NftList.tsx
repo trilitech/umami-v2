@@ -1,18 +1,13 @@
 import { useAppSelector } from "../../utils/store/hooks";
 
-import { Grid, GridItem, Image } from "@chakra-ui/react";
+import { GridItem, Image, SimpleGrid } from "@chakra-ui/react";
 export const NftList = () => {
   const tokens = useAppSelector((s) => s.assets.balances);
 
   const tokensList = Object.values(tokens).flatMap((b) => b.tokens);
 
   return (
-    <Grid
-      h="800px"
-      templateRows="repeat(12, 1fr)"
-      templateColumns="repeat(6, 1fr)"
-      gap={4}
-    >
+    <SimpleGrid columns={4} spacing={4}>
       {tokensList.map((t, i) => {
         const url = t.token?.metadata?.displayUri?.replace(
           "ipfs://",
@@ -21,19 +16,16 @@ export const NftList = () => {
 
         return (
           <GridItem key={t.id} rowSpan={1} colSpan={1} bg="#363636">
-            <Image key={url} boxSize="100px" objectFit="cover" src={url} />
+            <Image
+              key={url}
+              objectFit="cover"
+              width="100%"
+              height={40}
+              src={url}
+            />
           </GridItem>
         );
-
-        //   <AccountTile
-        //     selected={a.pkh === selected}
-        //     onClick={(_) => dispatch(setSelected(a.pkh))}
-        //     key={a.pkh}
-        //     address={a.pkh}
-        //     label="bar"
-        //     balance={balance}
-        //   />
       })}
-    </Grid>
+    </SimpleGrid>
   );
 };

@@ -19,7 +19,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
   label,
 }) => (
   <Flex
-    m={2}
+    mb={4}
     p={4}
     bg="umami.gray.900"
     h={90}

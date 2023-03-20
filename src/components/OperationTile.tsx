@@ -10,10 +10,10 @@ export const OperationTile: React.FC<{
   return (
     <Flex
       m={2}
-      bg="#363636"
+      bg="umami.gray.900"
       h={16}
       borderRadius={4}
-      border={`1px solid "#B5B5B5"}`}
+      // border={`1px solid "#B5B5B5"}`}
       onClick={onClick}
       cursor="pointer"
     >
