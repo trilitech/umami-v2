@@ -14,6 +14,7 @@ import {
   MdViewCompact,
 } from "react-icons/md";
 import colors from "../style/colors";
+import { useTotalBalance } from "../utils/hooks/accountHooks";
 import { useAppSelector } from "../utils/store/hooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
@@ -61,22 +62,6 @@ const BottomIems = () => {
       <MenuItem label="Help" icon={MdSupport} />
     </Box>
   );
-};
-
-const useTotalBalance = () => {
-  const balances = useAppSelector((s) => s.assets.balances);
-
-  const totalTez = Object.values(balances)
-    .map((b) => b.tez)
-    .reduce((acc, curr) => {
-      if (acc === null) {
-        return curr;
-      } else {
-        return curr === null ? acc : BigNumber.sum(curr);
-      }
-    }, null);
-
-  return totalTez;
 };
 
 const TotalBalance = () => {
