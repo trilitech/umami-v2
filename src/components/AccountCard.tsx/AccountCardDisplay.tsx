@@ -51,10 +51,10 @@ export const AccountCardDisplay: React.FC<Props> = ({
   return (
     <Flex direction="column" alignItems={"center"}>
       <Identicon address={pkh} />
-      <Heading mt={4} fontSize={"lg"}>
+      <Heading mt={4} mb={2} fontSize={"lg"}>
         {label}
       </Heading>
-      <Flex mb={4}>
+      <Flex mb={4} alignItems="center">
         <Text color={"umami.gray.400"}>{formatPkh(pkh)}</Text>
         <Icon
           cursor="pointer"

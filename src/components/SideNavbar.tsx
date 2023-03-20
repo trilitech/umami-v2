@@ -15,7 +15,6 @@ import {
 } from "react-icons/md";
 import colors from "../style/colors";
 import { useTotalBalance } from "../utils/hooks/accountHooks";
-import { useAppSelector } from "../utils/store/hooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
