@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import React from "react";
 import colors from "../../style/colors";
+import { formatPkh } from "../../utils/format";
 import { Identicon } from "../Identicon";
 
 export type Props = {
@@ -36,9 +37,11 @@ export const AccountTileDisplay: React.FC<Props> = ({
     <Flex flex={1} justifyContent="space-between">
       <Box m={4}>
         <Text>{label}</Text>
-        <Text fontSize={14} color="umami.gray.400">
-          {address}
-        </Text>
+        <Flex alignItems={"center"}>
+          <Text fontSize={14} color="umami.gray.400">
+            {formatPkh(address)}
+          </Text>
+        </Flex>
       </Box>
       <Text mb={4} alignSelf={"flex-end"} fontSize={14} fontWeight={800}>
         {balance}

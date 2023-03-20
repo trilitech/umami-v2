@@ -29,8 +29,11 @@ const accountsSlice = createSlice({
       const newAccounts = accounts.reduce(addAccount, state.items);
       state.items = newAccounts;
     },
-    setSelected: (state, { payload }: { type: string; payload: string }) => {
-      if (state.items.some((a) => a.pkh === payload)) {
+    setSelected: (
+      state,
+      { payload }: { type: string; payload: string | null }
+    ) => {
+      if (state.items.some((a) => a.pkh === payload || payload === null)) {
         state.selected = payload;
       }
     },

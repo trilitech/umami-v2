@@ -6,7 +6,7 @@ import { Operation } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
 
-type balance = {
+export type balance = {
   tez: BigNumber | null;
   tokens: Token[];
 };

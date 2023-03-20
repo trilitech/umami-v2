@@ -2,7 +2,7 @@ import { useAppSelector } from "../../utils/store/hooks";
 
 import { Box } from "@chakra-ui/react";
 import { OperationTile } from "../../components/OperationTile";
-import { formatPkh } from "../../utils/tezos";
+import { formatPkh } from "../../utils/format";
 
 export const OperationsList = () => {
   const operations = useAppSelector((s) => s.assets.operations);
