@@ -73,7 +73,7 @@ const TotalBalance = () => {
 
   const totalTez = totalMutez && format("mutez", "tz", totalMutez);
   return (
-    <Box mt={4} mb={12}>
+    <Box mt={4} mb={12} height={"80px"}>
       <Text>Balance</Text>
       {totalTez && <Text fontSize={"lg"}>{`${totalTez.toString()} ꜩ`}</Text>}
       <Text fontSize={"sm"} color="umami.gray.400">
