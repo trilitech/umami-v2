@@ -9,7 +9,7 @@ export const OperationTile: React.FC<{
 }> = ({ from, to, amount, onClick = () => {} }) => {
   return (
     <Flex
-      m={2}
+      mb={4}
       bg="umami.gray.900"
       h={16}
       borderRadius={4}
