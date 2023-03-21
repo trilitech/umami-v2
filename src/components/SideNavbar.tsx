@@ -13,15 +13,21 @@ import {
   MdSupport,
   MdViewCompact,
 } from "react-icons/md";
+import { useNavigate } from "react-router";
 import colors from "../style/colors";
 import { useTotalBalance } from "../utils/hooks/accountHooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
 
-const MenuItem: React.FC<{ label: string; icon: IconType }> = (props) => {
+const MenuItem: React.FC<{
+  label: string;
+  icon: IconType;
+  onClick?: any;
+}> = (props) => {
   return (
     <Flex
+      onClick={props.onClick}
       _hover={{
         background: colors.gray[800],
       }}
@@ -41,10 +47,20 @@ const MenuItem: React.FC<{ label: string; icon: IconType }> = (props) => {
 };
 
 const TopIems = () => {
+  const navigate = useNavigate();
   return (
     <Box>
-      <MenuItem label="Overview" icon={MdViewCompact} />
-      <MenuItem label="NFTs" icon={MdOutlineDiamond} />
+      <MenuItem
+        onClick={() => navigate("/home")}
+        label="Overview"
+        icon={MdViewCompact}
+      />
+      <MenuItem
+        label="NFTs"
+        onClick={() => navigate("/nfts")}
+        icon={MdOutlineDiamond}
+      />
+
       <MenuItem label="Operations" icon={MdHistory} />
       <MenuItem label="Tokens" icon={MdMoney} />
       <MenuItem label="Batch" icon={MdCalendarViewMonth} />
@@ -53,11 +69,16 @@ const TopIems = () => {
 };
 
 const BottomIems = () => {
+  const navigate = useNavigate();
   return (
     <Box>
       <Divider />
-      <MenuItem label="Address Book" icon={MdOutlineContacts} />
-      <MenuItem label="Settings" icon={MdOutlineSettings} />
+      <MenuItem label="Adress Book" icon={MdOutlineContacts} />
+      <MenuItem
+        onClick={() => navigate("/settings")}
+        label="Settings"
+        icon={MdOutlineSettings}
+      />
       <MenuItem label="Help" icon={MdSupport} />
     </Box>
   );
@@ -83,7 +104,6 @@ export const SideNavbar = () => {
   return (
     <Flex
       flexDirection={"column"}
-      height={"100%"}
       pl={4}
       pr={4}
       bg="umami.gray.900"
