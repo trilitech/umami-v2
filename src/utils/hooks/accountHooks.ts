@@ -1,5 +1,6 @@
+import accountsSlice from "../store/accountsSlice";
 import { balance } from "../store/assetsSlice";
-import { useAppSelector } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { getTotalBalance } from "./accountUtils";
 
 export const useSelectedAccount = () => {
@@ -28,4 +29,12 @@ export const useTotalBalance = () => {
   const balances = useAppSelector((s) => s.assets.balances);
 
   return getTotalBalance(balances);
+};
+
+export const useReset = () => {
+  const dispatch = useAppDispatch();
+
+  return () => {
+    dispatch(accountsSlice.actions.reset());
+  };
 };
