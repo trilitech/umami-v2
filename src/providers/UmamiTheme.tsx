@@ -1,6 +1,4 @@
-import { ColorModeScript } from "@chakra-ui/color-mode";
-import { ChakraProvider } from "@chakra-ui/provider";
-import React from "react";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "../style/theme";
 
 export const UmamiTheme = (props: any) => {

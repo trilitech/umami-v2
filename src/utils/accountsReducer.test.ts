@@ -1,4 +1,5 @@
 import { Account } from "../types/Account";
+import { UmamiEncrypted } from "../types/UmamiEncrypted";
 import accountsSlice from "./store/accountsSlice";
 
 import { store } from "./store/store";
@@ -11,7 +12,7 @@ const mockAccount = (index: number): Account => {
     label: `account ${index}`,
     pkh: `mockPkh ${index}`,
     pk: `mockPk ${index}`,
-    sk: `mockSk ${index}`,
+    esk: {} as UmamiEncrypted,
   };
 };
 
@@ -21,7 +22,11 @@ afterEach(() => {
 
 describe("Accounts reducer", () => {
   test("store should initialize with empty state", () => {
-    expect(store.getState().accounts).toEqual({ items: [], selected: null });
+    expect(store.getState().accounts).toEqual({
+      items: [],
+      selected: null,
+      seedPhrases: {},
+    });
   });
 
   test("should handle adding accounts and arrays of accounts", () => {
@@ -29,12 +34,14 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1)],
       selected: null,
+      seedPhrases: {},
     });
 
     store.dispatch(add([mockAccount(2), mockAccount(3)]));
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
+      seedPhrases: {},
     });
   });
 
@@ -45,6 +52,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
+      seedPhrases: {},
     });
   });
 
@@ -55,6 +63,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: mockAccount(2).pkh,
+      seedPhrases: {},
     });
   });
 
@@ -65,6 +74,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
+      seedPhrases: {},
     });
   });
 

@@ -1,7 +1,18 @@
-export type Account = {
+import { UmamiEncrypted } from "./UmamiEncrypted";
+
+type Base = {
+  pkh: string;
+  pk: string;
+};
+
+export type UnencryptedAccount = Base & {
+  sk: string;
+};
+
+export type Account = Base & {
   seedFingerPrint?: string;
   label?: string;
   pkh: string;
   pk: string;
-  sk: string;
+  esk: UmamiEncrypted;
 };
