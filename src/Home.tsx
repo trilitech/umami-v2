@@ -1,5 +1,4 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import SideNavbar from "./components/SideNavbar";
 import { TopBar } from "./components/TopBar";
 
 import AccountListWithDrawer from "./views/home/AccountsList";
@@ -10,19 +9,15 @@ import { OperationsList } from "./views/home/OperationsList";
 export default function Home() {
   return (
     <Grid
+      height={"100%"}
       templateAreas={`
-                  "nav header header"
-                  "nav main rightTop"
-                  "nav main rightBottom"
+                  "header header"
+                  "main rightTop"
+                  "main rightBottom"
                   `}
       gridTemplateRows={"0fr 1fr 1fr"}
-      gridTemplateColumns={"0fr 1fr 1fr"}
-      h="100vh"
-      gap="1"
+      gridTemplateColumns={"1fr 1fr"}
     >
-      <GridItem area={"nav"}>
-        <SideNavbar />
-      </GridItem>
       <GridItem area={"header"}>
         <TopBar title="Overview" />
       </GridItem>
@@ -32,7 +27,7 @@ export default function Home() {
       <GridItem p={2} area={"rightTop"}>
         <OperationsList />
       </GridItem>
-      <GridItem p={2} area={"rightBottom"} overflow={"scroll"}>
+      <GridItem p={2} area={"rightBottom"} overflow="scroll">
         <NftList />
       </GridItem>
     </Grid>

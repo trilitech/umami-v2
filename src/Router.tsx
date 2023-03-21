@@ -2,8 +2,11 @@ import React from "react";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import Home from "./Home";
 import ImportSeed from "./ImportSeed";
-import { useAssetsPolling } from "./utils/useAssetsPolling";
 import { useAppSelector } from "./utils/store/hooks";
+import { useAssetsPolling } from "./utils/useAssetsPolling";
+import { withSideMenu } from "./views/withSideMenu";
+import NFTsView from "./views/nfts/NftsView";
+import SettingsView from "./views/settings/SettingsView";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -11,11 +14,22 @@ import { useAppSelector } from "./utils/store/hooks";
 const loggedInRouter = createHashRouter([
   {
     path: "/home",
-    element: <Home />,
+    element: withSideMenu(<Home />),
   },
+
+  {
+    path: "/nfts",
+    element: withSideMenu(<NFTsView />),
+  },
+
+  {
+    path: "/settings",
+    element: withSideMenu(<SettingsView />),
+  },
+
   {
     path: "/",
-    element: <Home />,
+    element: withSideMenu(<Home />),
   },
 ]);
 
