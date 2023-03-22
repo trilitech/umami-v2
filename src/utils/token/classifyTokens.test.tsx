@@ -1,5 +1,6 @@
 import { fa1Token, fa2Token, nft, response } from "../../mocks/tzktResponse";
-import { NFT, classifyToken } from "./classify/classifyToken";
+import { Asset, NFT } from "../../types/Asset";
+import { classifyToken } from "./classify/classifyToken";
 
 describe("ClassifyToken", () => {
   test("case fa1.2 valid", () => {
@@ -59,7 +60,7 @@ describe("ClassifyToken", () => {
   test("valid tzkt response is parsed correctly", () => {
     const result = response.map(classifyToken);
 
-    const expected = [
+    const expected: Asset[] = [
       { balance: "443870", contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe" },
       {
         balance: "409412200",
