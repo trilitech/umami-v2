@@ -1,7 +1,9 @@
 import { TezosIndexerClient, TezosNetwork } from "@airgap/tezos";
 import { TezosToolkit } from "@taquito/taquito";
-import axios from "axios";
 import { Operation } from "../types/Operation";
+
+import * as tzktApi from "@tzkt/sdk-api";
+import { Token } from "../types/Token";
 
 let nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
@@ -47,11 +49,15 @@ export const getOperations = (
   return indexerClients[network].getTransactions(pkh);
 };
 
-export const getTokens = (pkh: string, network: TezosNetwork) => {
-  return axios
-    .get(`${tzktUrls[network]}/v1/tokens/balances/?account=${pkh}`)
-    .then((res) => res.data);
-};
+export const getTokens = (pkh: string, network: TezosNetwork) =>
+  tzktApi.tokensGetTokenBalances(
+    {
+      account: { eq: pkh },
+    },
+    {
+      baseUrl: tzktUrls[network],
+    }
+  ) as Promise<Token[]>;
 
 // Temporary solution for generating fingerprint for seedphrase
 // https://remarkablemark.medium.com/how-to-generate-a-sha-256-hash-with-javascript-d3b2696382fd
