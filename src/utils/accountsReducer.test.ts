@@ -85,6 +85,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: mockAccount(2).pkh,
+      seedPhrases: {},
     });
 
     store.dispatch(setSelected(null));
@@ -92,6 +93,7 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
+      seedPhrases: {},
     });
   });
 });
