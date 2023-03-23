@@ -3,9 +3,9 @@ import SideNavbar from "../components/SideNavbar";
 
 export const withSideMenu = (body: React.ReactElement) => {
   return (
-    <Flex>
+    <Flex height={"100vh"}>
       <SideNavbar />
-      <Box flex={1} height="100vh" pl={4} pr={4}>
+      <Box flex={1} pl={4} pr={4} height="100%">
         {body}
       </Box>
     </Flex>
