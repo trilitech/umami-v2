@@ -9,7 +9,8 @@ import { BsArrowDownLeft, BsArrowUpRight } from "react-icons/bs";
 import colors from "../style/colors";
 import { formatPkh } from "../utils/format";
 
-import Moment from "moment";
+import { formatRelative } from "date-fns";
+
 const lightColor = "umami.gray.200";
 const darkColor = "umami.gray.500";
 
@@ -37,8 +38,10 @@ export const OperationTile: React.FC<{
   const to = formatPkh(operation.to[0]);
   const success = status === AirGapTransactionStatus.APPLIED;
 
-  const relativeTime = timestamp && Moment.unix(timestamp).fromNow();
+  const now = new Date();
 
+  const relativeTime =
+    timestamp && formatRelative(new Date(timestamp * 1000), now);
   return (
     <Flex
       h={16}
