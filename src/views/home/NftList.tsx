@@ -21,7 +21,7 @@ export const NftList = () => {
       flexDirection="column"
       bg="umami.gray.900"
       borderRadius={4}
-      // color scheme not workkig even when put int 50-900 range
+      // color scheme not working even when put in 50-900 range
       // TODO Fix
       // https://chakra-ui.com/docs/components/tabs
     >
