@@ -33,6 +33,7 @@
     "framer-motion": "^10.2.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.5",
@@ -54,7 +55,7 @@
     "zod": "^3.21.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-scripts test --verbose",
     "eject": "react-scripts eject",
@@ -100,6 +101,11 @@
     "@storybook/preset-create-react-app": "^4.1.2",
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
+    "@types/assert": "^1.5.6",
+    "@types/prop-types": "^15.7.5",
+    "@types/testing-library__jest-dom": "^5.14.5",
+    "@types/testing-library__user-event": "^4.2.0",
+    "@types/wait-on": "^5.3.1",
     "assert": "^2.0.0",
     "babel-plugin-named-exports-order": "^0.0.2",
     "concurrently": "^7.6.0",
