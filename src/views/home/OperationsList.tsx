@@ -2,7 +2,6 @@ import { useAppSelector } from "../../utils/store/hooks";
 
 import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { OperationTile } from "../../components/OperationTile";
-import { formatPkh } from "../../utils/format";
 
 export const OperationsList = () => {
   const operations = useAppSelector((s) => s.assets.operations);
@@ -11,7 +10,7 @@ export const OperationsList = () => {
   const last = operationEls.slice(0, 20);
 
   const operations2 = last.map((op) => {
-    return <OperationTile operation={op} />;
+    return <OperationTile key={op.hash + op.from[0]} operation={op} />;
   });
 
   return (

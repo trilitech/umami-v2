@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { TopBar } from "./components/TopBar";
 
 import AccountListWithDrawer from "./views/home/AccountsList";
