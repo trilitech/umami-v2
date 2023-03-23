@@ -1,15 +1,12 @@
-import { useAppSelector } from "../../utils/store/hooks";
-
 import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { OperationTile } from "../../components/OperationTile";
+import { useAllOperations } from "../../utils/hooks/assetsHooks";
 
 export const OperationsList = () => {
-  const operations = useAppSelector((s) => s.assets.operations);
+  const operations = useAllOperations();
+  const operationList = Object.values(operations).flatMap((b) => b);
 
-  const operationEls = Object.values(operations).flatMap((b) => b);
-  const last = operationEls.slice(0, 20);
-
-  const operations2 = last.map((op) => {
+  const operationEls = operationList.slice(0, 20).map((op) => {
     return <OperationTile key={op.hash + op.from[0]} operation={op} />;
   });
 
@@ -33,7 +30,7 @@ export const OperationsList = () => {
       </TabList>
 
       <Box minHeight={"10px"} overflow={"scroll"}>
-        {operations2}
+        {operationEls}
       </Box>
     </Tabs>
   );
