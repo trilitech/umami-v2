@@ -21,13 +21,13 @@ export default function Home() {
       <GridItem area={"header"}>
         <TopBar title="Overview" />
       </GridItem>
-      <GridItem p={2} area={"main"}>
+      <GridItem area={"main"} mr={2} mt={4}>
         <AccountListWithDrawer />
       </GridItem>
-      <GridItem p={2} area={"rightTop"}>
+      <GridItem area={"rightTop"} ml={2} mt={4}>
         <OperationsList />
       </GridItem>
-      <GridItem p={2} area={"rightBottom"} overflow="scroll">
+      <GridItem area={"rightBottom"} overflow="scroll" mt={4} ml={2}>
         <NftList />
       </GridItem>
     </Grid>

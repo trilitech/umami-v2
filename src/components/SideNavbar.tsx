@@ -104,13 +104,13 @@ export const SideNavbar = () => {
   return (
     <Flex
       flexDirection={"column"}
-      pl={4}
-      pr={4}
       bg="umami.gray.900"
       w={"240px"}
+      pl={4}
+      pr={4}
     >
       <Box>
-        <Flex justifyContent="space-between" alignItems="center" mt={4} mb={4}>
+        <Flex height={24} justifyContent="space-between" alignItems="center">
           <MakiLogo size={50} />
           <NetworkSelector />
         </Flex>

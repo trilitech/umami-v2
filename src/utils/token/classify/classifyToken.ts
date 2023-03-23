@@ -96,7 +96,7 @@ const makeFa2 = (json: Token): FA2Token | null => {
   );
 };
 
-const makeNft = (json: Token): NFT | null => {
+export const makeNft = (json: Token): NFT | null => {
   const required = getNFTRequired(json);
 
   if (!required) {

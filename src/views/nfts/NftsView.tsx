@@ -1,26 +1,37 @@
-import { Grid, GridItem } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/react";
+import React from "react";
+import { AiOutlineUnorderedList } from "react-icons/ai";
+import { BsArrowDownUp } from "react-icons/bs";
+import { TbFilter } from "react-icons/tb";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
+import { useAllNfts } from "../../utils/hooks/assetsHooks";
+import NFTGallery from "./NFTGallery";
 
-export default function NFTsView() {
+export const FilterController: React.FC = () => {
   return (
-    // TODO refactor
-    // Sorry we have to repeat all this boiler plate grid setup code.
-
-    <Grid
-      h="100%"
-      templateAreas={`
-                  "header header"
-                  "main main"
-                  "main main"
-                  `}
-      gridTemplateRows={"0fr 1fr 1fr"}
-      gridTemplateColumns={"1fr 1fr"}
-      gap="1"
-    >
-      <GridItem area={"header"}>
-        <TopBar title="NFTs" />
-      </GridItem>
-      <GridItem area={"main"}></GridItem>
-    </Grid>
+    <Flex alignItems={"center"} mb={4} mt={4}>
+      <IconAndTextBtn icon={TbFilter} label="Filter" flex={1} />
+      <IconAndTextBtn icon={BsArrowDownUp} label="Sort by Newest" mr={4} />
+      <IconAndTextBtn icon={AiOutlineUnorderedList} label="List View" />
+    </Flex>
   );
-}
+};
+
+const NFTsViewBase = () => {
+  const nfts = useAllNfts();
+  const allNfts = Object.values(nfts).flat();
+
+  return (
+    <Flex direction="column" height={"100%"}>
+      <TopBar title="NFTs" />
+      <FilterController />
+      <Box overflow={"scroll"}>
+        <NFTGallery nfts={allNfts} />
+      </Box>
+    </Flex>
+  );
+};
+
+// eslint-disable-next-line import/no-anonymous-default-export
+export default NFTsViewBase;

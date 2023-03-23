@@ -7,10 +7,10 @@ import {
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
-  Text,
 } from "@chakra-ui/react";
 import { BsArrowBarRight, BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import AccountCard from "../../components/AccountCard.tsx";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch } from "../../utils/store/hooks";
 
@@ -46,16 +46,7 @@ const TopButons: React.FC<{
           as={BsArrowRight}
         />
       </Box>
-      <Flex
-        alignItems={"center"}
-        onClick={(_) => {
-          onClose();
-        }}
-        cursor="pointer"
-      >
-        <Text fontSize={"sm"}>Close</Text>
-        <Icon w={6} h={6} ml={2} mr={4} as={BsArrowBarRight} />
-      </Flex>
+      <IconAndTextBtn onClick={onClose} label="Close" icon={BsArrowBarRight} />
     </Flex>
   );
 };
