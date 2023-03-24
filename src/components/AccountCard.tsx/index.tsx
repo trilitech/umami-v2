@@ -20,7 +20,7 @@ export const AccountCard = () => {
   return (
     <AccountCardDisplay
       pkh={formatPkh(account.pkh)}
-      label="My super account"
+      label={account.label || ""}
       tezBalance={tez && mutezToTez(tez)}
       dollarBalance={4}
     />
