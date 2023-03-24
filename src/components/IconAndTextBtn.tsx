@@ -11,7 +11,7 @@ export const IconAndTextBtn: React.FC<
 > = ({ icon, onClick = () => {}, label, ...rest }) => {
   return (
     <Flex
-      color="umami.gray.400"
+      color="text.dark"
       alignItems={"center"}
       onClick={onClick}
       cursor="pointer"

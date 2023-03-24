@@ -11,7 +11,7 @@ const { setSelected } = accountsSlice.actions;
 const Header = () => {
   return (
     <Flex justifyContent={"space-between"} mt={4} mb={4}>
-      <Heading fontSize={"x-large"}>Accounts</Heading>
+      <Heading size={"lg"}>Accounts</Heading>
       <IconAndTextBtn label="Add/Create" icon={BsWindowPlus} />
     </Flex>
   );

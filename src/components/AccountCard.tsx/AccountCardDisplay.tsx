@@ -32,7 +32,7 @@ const RoundButton: React.FC<{
         icon={icon}
         mb={2}
       />
-      <Text fontSize={"sm"}>{label}</Text>
+      <Text size={"sm"}>{label}</Text>
     </Box>
   );
 };
@@ -51,11 +51,13 @@ export const AccountCardDisplay: React.FC<Props> = ({
   return (
     <Flex direction="column" alignItems={"center"}>
       <Identicon address={pkh} />
-      <Heading mt={4} mb={2} fontSize={"lg"}>
+      <Heading mt={4} mb={2} size={"md"}>
         {label}
       </Heading>
       <Flex mb={4} alignItems="center">
-        <Text color={"umami.gray.400"}>{formatPkh(pkh)}</Text>
+        <Text size="sm" color={"text.dark"}>
+          {formatPkh(pkh)}
+        </Text>
         <Icon
           cursor="pointer"
           onClick={(_) => onCopyAddress(pkh)}

@@ -41,7 +41,7 @@ const MenuItem: React.FC<{
       cursor="pointer"
     >
       <Icon w={6} h={6} ml={2} mr={4} as={props.icon} />
-      <Text fontSize="md">{props.label}</Text>
+      <Text size="sm">{props.label}</Text>
     </Flex>
   );
 };
@@ -92,7 +92,7 @@ const TotalBalance = () => {
 
   return (
     <Box mt={4} mb={12} height={"80px"}>
-      <Text>Balance</Text>
+      <Text size="sm">Balance</Text>
       {tezBalance && (
         <TezRecapDisplay tezBalance={tezBalance} dollarBalance={3} />
       )}

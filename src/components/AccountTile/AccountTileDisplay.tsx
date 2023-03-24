@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import React from "react";
 import colors from "../../style/colors";
 import { formatPkh } from "../../utils/format";
@@ -36,16 +36,16 @@ export const AccountTileDisplay: React.FC<Props> = ({
     <Identicon address={address} />
     <Flex flex={1} justifyContent="space-between">
       <Box m={4}>
-        <Text>{label}</Text>
+        <Heading size={"md"}>{label}</Heading>
         <Flex alignItems={"center"}>
-          <Text fontSize={14} color="umami.gray.400">
+          <Text size={"sm"} color="text.dark">
             {formatPkh(address)}
           </Text>
         </Flex>
       </Box>
-      <Text mb={4} alignSelf={"flex-end"} fontSize={14} fontWeight={800}>
+      <Heading mb={4} alignSelf={"flex-end"} size={"lg"}>
         {balance}
-      </Text>
+      </Heading>
     </Flex>
   </Flex>
 );
