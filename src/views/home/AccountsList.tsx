@@ -37,7 +37,7 @@ const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
               dispatch(setSelected(a.pkh));
             }}
             key={a.pkh}
-            address={formatPkh(a.pkh)}
+            address={a.pkh}
             label="bar"
             balance={balance}
           />
