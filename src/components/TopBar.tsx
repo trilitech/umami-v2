@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Flex, Heading } from "@chakra-ui/react";
 import React from "react";
+import SendButton from "../views/home/SendButton";
 
 export const TopBar: React.FC<{ title: string }> = ({ title }) => {
   return (
@@ -8,9 +9,7 @@ export const TopBar: React.FC<{ title: string }> = ({ title }) => {
         <Heading>{title}</Heading>
         <Box>
           <Button variant={"outline"}>Buy Tez</Button>
-          <Button ml={4} bg="umami.blue">
-            Send
-          </Button>
+          <SendButton />
         </Box>
       </Flex>
       <Divider />

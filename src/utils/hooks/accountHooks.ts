@@ -3,6 +3,10 @@ import { balance } from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { getTotalBalance } from "./accountUtils";
 
+export const useAccounts = () => {
+  return useAppSelector((s) => s.accounts.items);
+};
+
 export const useSelectedAccount = () => {
   const pkh = useAppSelector((s) => s.accounts.selected);
   const accounts = useAppSelector((s) => s.accounts.items);
