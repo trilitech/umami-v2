@@ -1,9 +1,13 @@
 import { TezosIndexerClient, TezosNetwork } from "@airgap/tezos";
-import { TezosToolkit } from "@taquito/taquito";
+import { Signer, TezosToolkit } from "@taquito/taquito";
 import { Operation } from "../types/Operation";
 
 import * as tzktApi from "@tzkt/sdk-api";
 import { Token } from "../types/Token";
+import { DummySigner } from "./dummySigner";
+import { InMemorySigner } from "@taquito/signer";
+import { UmamiEncrypted } from "../types/UmamiEncrypted";
+import { decrypt } from "./aes";
 
 let nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
@@ -70,3 +74,37 @@ export async function getFingerPrint(seedPhrase: string) {
     .join("");
   return hashHex;
 }
+
+export const estimate = async (
+  network = TezosNetwork.MAINNET,
+  senderPkh: string,
+  senderPk: string,
+  recipient: string,
+  amount: number
+) => {
+  const Tezos = new TezosToolkit(nodeUrls[network]);
+  Tezos.setProvider({
+    signer: new DummySigner(senderPk, senderPkh) as any as Signer,
+  });
+
+  return Tezos.estimate.transfer({
+    to: recipient,
+    amount: amount,
+  });
+};
+
+export const transfer = async (
+  network = TezosNetwork.MAINNET,
+  senderEsk: UmamiEncrypted,
+  recipient: string,
+  amount: number,
+  password: string
+) => {
+  const Tezos = new TezosToolkit(nodeUrls[network]);
+  const sk = await decrypt(senderEsk, password);
+  Tezos.setProvider({
+    signer: new InMemorySigner(sk),
+  });
+
+  return Tezos.contract.transfer({ to: recipient, amount });
+};
