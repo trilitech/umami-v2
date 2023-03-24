@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 
 export const TezRecapDisplay: React.FC<{
   tezBalance: number;
@@ -8,8 +8,8 @@ export const TezRecapDisplay: React.FC<{
 }> = (props) => {
   return (
     <Box textAlign={props.center ? "center" : "initial"}>
-      <Text fontSize={"lg"}>{`${props.tezBalance} ꜩ`}</Text>
-      <Text fontSize={"sm"} color="umami.gray.400">
+      <Heading size={"md"}>{`${props.tezBalance} ꜩ`}</Heading>
+      <Text size={"sm"} color="text.dark">
         ${props.dollarBalance}
       </Text>
     </Box>

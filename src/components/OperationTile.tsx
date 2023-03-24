@@ -2,7 +2,7 @@ import {
   AirGapTransactionStatus,
   IAirGapTransaction,
 } from "@airgap/coinlib-core/interfaces/IAirGapTransaction";
-import { Box, Flex, Icon, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsArrowDownLeft, BsArrowUpRight } from "react-icons/bs";
@@ -11,20 +11,17 @@ import { formatPkh } from "../utils/format";
 
 import { formatRelative } from "date-fns";
 
-const lightColor = "umami.gray.200";
 const darkColor = "umami.gray.500";
 
-const renderFromTo = (from: string, to: string) => {
+const renderFromTo = (address: string, isInbound: boolean) => {
   return (
     <Flex>
-      <Text color={darkColor} mr={2}>
-        Sent to:{" "}
-      </Text>
-      <Text color={lightColor}>{to}</Text>
-      <Text color={darkColor} mr={2} ml={2}>
-        From:{" "}
-      </Text>
-      <Text color={lightColor}>{from}</Text>
+      <Heading color={"text.dark"} size="sm" mr={2}>
+        {`${isInbound ? "From:" : "Sent to:"} `}
+      </Heading>
+      <Heading color={"text.dark"} size="sm">
+        {address}
+      </Heading>
     </Flex>
   );
 };
@@ -54,20 +51,22 @@ export const OperationTile: React.FC<{
       <Icon
         alignSelf={"flex-start"}
         color={darkColor}
-        mt={3} // hacky
-        mr={2}
+        mt={4}
+        mr={4}
         w={4}
         h={4}
-        as={isInbound ? BsArrowDownLeft : BsArrowUpRight}
+        as={isInbound ? BsArrowUpRight : BsArrowDownLeft}
       />
 
       <Box flex={1}>
         <Flex justifyContent={"space-between"}>
-          <Text fontWeight={600}>{amount}</Text>
-          <Text color={darkColor}>{relativeTime}</Text>
+          <Heading size="sm">{amount}</Heading>
+          <Text size="sm" color="text.dark">
+            {relativeTime}
+          </Text>
         </Flex>
         <Flex justifyContent={"space-between"}>
-          {renderFromTo(from, to)}
+          {renderFromTo(isInbound ? from : to, isInbound)}
           {success && (
             //TODO handle pending and failed
             <Icon
