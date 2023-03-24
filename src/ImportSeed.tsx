@@ -16,12 +16,11 @@ import {
 import { useState } from "react";
 import { MakiLogo } from "./components/MakiLogo";
 import { seedPhrase } from "./mocks/seedPhrase";
+import { encrypt } from "./utils/aes";
+import { restoreEncryptedAccounts } from "./utils/restoreAccounts";
 import accountsSlice from "./utils/store/accountsSlice";
-import { restoreAccounts } from "./utils/restoreAccounts";
 import { useAppDispatch } from "./utils/store/hooks";
 import { getFingerPrint } from "./utils/tezos";
-import { encrypt } from "./utils/aes";
-import { Account } from "./types/Account";
 
 type FormValues = {
   seedPhrase: string;
@@ -101,27 +100,15 @@ const MIN_LENGTH = 4;
 let useRestore = () => {
   const dispatch = useAppDispatch();
   return async (seedPhrase: string, password: string) => {
-    const accounts = await restoreAccounts(seedPhrase);
-
     const seedFingerPrint = await getFingerPrint(seedPhrase);
-    const protectedAccounts = await Promise.all(
-      accounts.map(async ({ pk, pkh, sk }) => {
-        return {
-          pk,
-          pkh,
-          seedFingerPrint,
-          esk: await encrypt(sk, password),
-        } as Account;
-      })
-    );
-    // TODO handle account sks
+    const accounts = await restoreEncryptedAccounts(seedPhrase, password);
     dispatch(
       accountsActions.addSecret({
         hash: seedFingerPrint,
         secret: await encrypt(seedPhrase, password),
       })
     );
-    dispatch(accountsActions.add(protectedAccounts));
+    dispatch(accountsActions.add(accounts));
   };
 };
 

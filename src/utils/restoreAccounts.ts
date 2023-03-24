@@ -2,8 +2,9 @@ import { InMemorySigner } from "@taquito/signer";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
-import { UnencryptedAccount } from "../types/Account";
-import { addressExists } from "./tezos";
+import { Account, UnencryptedAccount } from "../types/Account";
+import { encrypt } from "./aes";
+import { addressExists, getFingerPrint } from "./tezos";
 
 let getDerivationPath = (index: number) => `m/44'/1729'/${index}'/0'`;
 
@@ -47,4 +48,24 @@ export const restoreAccounts = async (
   } else {
     return result.length === 0 ? [account] : result;
   }
+};
+
+export const restoreEncryptedAccounts = async (
+  seedPhrase: string,
+  password: string
+) => {
+  const accounts = await restoreAccounts(seedPhrase);
+  const seedFingerPrint = await getFingerPrint(seedPhrase);
+
+  return Promise.all(
+    accounts.map(async ({ pk, pkh, sk }, i) => {
+      return {
+        pk,
+        pkh,
+        seedFingerPrint,
+        esk: await encrypt(sk, password),
+        label: `Account ${i}`,
+      } as Account;
+    })
+  );
 };
