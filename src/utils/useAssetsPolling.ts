@@ -122,10 +122,24 @@ export const useAssetsPolling = () => {
     refetchInterval: REFRESH_RATE,
   });
 
+  const conversionrateQuery = useQuery("conversionRate", {
+    queryFn: async () => {
+      try {
+        //TODO: fetch USD/XTZ price.
+
+        dispatch(assetsActions.updateConversionRate({ rate: 10 }));
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    refetchInterval: REFRESH_RATE,
+  });
+
   const tezQueryRef = useRef(tezQuery);
   const tokenQueryRef = useRef(tokenQuery);
   const tezTransfersQueryRef = useRef(tezTransfersQuery);
   const tokensTransfersQueryRef = useRef(tokensTransfersQuery);
+  const conversionrateQueryRef = useRef(conversionrateQuery);
 
   // Refetch when network changes
   useEffect(() => {
@@ -133,5 +147,6 @@ export const useAssetsPolling = () => {
     tokenQueryRef.current.refetch();
     tezTransfersQueryRef.current.refetch();
     tokensTransfersQueryRef.current.refetch();
+    conversionrateQueryRef.current.refetch();
   }, [network]);
 };

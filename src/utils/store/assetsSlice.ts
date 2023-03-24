@@ -19,6 +19,7 @@ type State = {
     tez: Record<string, TezTransfer[]>;
     tokens: Record<string, TokenTransfer[]>;
   };
+  conversionRate: number | null; // XTZ/USD conversion rate
 };
 
 export type TezBalancePayload = { pkh: string; tez: BigNumber };
@@ -31,6 +32,7 @@ export type TokenTransfersPayload = {
   pkh: string;
   operations: TokenTransfer[];
 };
+export type ConversionRatePayload = { rate: number };
 
 const initialBalance: balance = {
   tez: null,
@@ -41,6 +43,7 @@ const initialState: State = {
   network: TezosNetwork.MAINNET,
   balances: {},
   operations: { tez: {}, tokens: {} },
+  conversionRate: null,
 };
 
 const assetsSlice = createSlice({
@@ -106,6 +109,12 @@ const assetsSlice = createSlice({
       });
 
       state.balances = newBalances;
+    },
+    updateConversionRate: (
+      state,
+      { payload }: { type: string; payload: ConversionRatePayload }
+    ) => {
+      state.conversionRate = 10;
     },
   },
 });

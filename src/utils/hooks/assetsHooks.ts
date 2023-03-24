@@ -40,3 +40,5 @@ export const useAllOperationDisplays = () => {
 
   return result;
 };
+export const useConversionRate = () =>
+  useAppSelector((s) => s.assets.conversionRate);
