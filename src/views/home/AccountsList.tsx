@@ -37,7 +37,7 @@ const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
             }}
             key={a.pkh}
             address={a.pkh}
-            label="bar"
+            label={a.label || ""}
             balance={balance}
           />
         );

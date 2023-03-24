@@ -1,20 +1,8 @@
-import { TextDecoder, TextEncoder } from "util";
 import { decrypt, encrypt } from "./aes";
 
 import { umamiBackup } from "../mocks/umamiV1BackupFile";
 
-beforeAll(() => {
-  const crypto = require("crypto");
-  window.TextEncoder = TextEncoder;
-  (window as any).TextDecoder = TextDecoder;
-  window.crypto = crypto.webcrypto;
-});
-
-afterAll(() => {
-  delete (window as any)["crypto"];
-  delete (window as any)["TextEncoder"];
-  delete (window as any)["TextDecoder"];
-});
+// This is an integration test since aes call crypto.getRandomValues which is impure
 
 describe("AES", () => {
   test("Umami v1 format can be restored", async () => {
