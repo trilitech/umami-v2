@@ -2,7 +2,6 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import { formatPkh } from "../../utils/format";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import AccountDisplayDrawer from "./AccountDisplayDrawer";
