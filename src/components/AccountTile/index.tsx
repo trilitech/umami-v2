@@ -8,7 +8,7 @@ const AccountTile: React.FC<
     balance: BigNumber | null;
   }
 > = ({ address, onClick, balance, selected = false, label }) => {
-  const prettyBalance = balance && `${format("mutez", "tz", balance)} tez`;
+  const prettyBalance = balance && `${format("mutez", "tz", balance)} ꜩ`;
   return (
     <AccountTileDisplay
       selected={selected}
