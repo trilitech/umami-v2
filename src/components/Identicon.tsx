@@ -1,11 +1,14 @@
-import { Box } from "@chakra-ui/react";
+import { Box, ChakraProps } from "@chakra-ui/react";
 import React from "react";
 
 // No type definitions available.
 // Lookup API here: https://github.com/tuhnik/react-identicons
 const ReactIdenticons = require("react-identicons").default;
 
-export const Identicon: React.FC<{ address: string }> = ({ address }) => {
+export const Identicon: React.FC<{ address: string } & ChakraProps> = ({
+  address,
+  ...props
+}) => {
   return (
     <Box
       sx={{
@@ -13,6 +16,7 @@ export const Identicon: React.FC<{ address: string }> = ({ address }) => {
           borderRadius: "4px",
         },
       }}
+      {...props}
     >
       <ReactIdenticons
         style={{
