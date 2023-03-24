@@ -1,4 +1,4 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { TopBar } from "./components/TopBar";
 
 import AccountListWithDrawer from "./views/home/AccountsList";
@@ -8,28 +8,21 @@ import { OperationsList } from "./views/home/OperationsList";
 
 export default function Home() {
   return (
-    <Grid
-      height={"100%"}
-      templateAreas={`
-                  "header header"
-                  "main rightTop"
-                  "main rightBottom"
-                  `}
-      gridTemplateRows={"0fr 1fr 1fr"}
-      gridTemplateColumns={"1fr 1fr"}
-    >
-      <GridItem area={"header"}>
-        <TopBar title="Overview" />
-      </GridItem>
-      <GridItem area={"main"} mr={2} mt={4}>
-        <AccountListWithDrawer />
-      </GridItem>
-      <GridItem area={"rightTop"} ml={2} mt={4}>
-        <OperationsList />
-      </GridItem>
-      <GridItem area={"rightBottom"} overflow="scroll" mt={4} ml={2}>
-        <NftList />
-      </GridItem>
-    </Grid>
+    <Flex direction="column" height={"100%"}>
+      <TopBar title="Overview" />
+      <Flex flex={1} minHeight={1}>
+        <Box flex={1} mr={2}>
+          <AccountListWithDrawer />
+        </Box>
+        <Flex direction="column" flex={1} minHeight={1} ml={2}>
+          <Box flex={1} overflow={"scroll"} mb={2} borderRadius={4}>
+            <OperationsList />
+          </Box>
+          <Box flex={1} overflow={"scroll"} mb={2} borderRadius={4}>
+            <NftList />
+          </Box>
+        </Flex>
+      </Flex>
+    </Flex>
   );
 }
