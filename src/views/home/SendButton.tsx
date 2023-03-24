@@ -1,5 +1,5 @@
 import { Button, Modal, useDisclosure } from "@chakra-ui/react";
-import { SendForm } from "../../components/sendForm/SendForm";
+import SendForm from "../../components/sendForm";
 
 const SendButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
