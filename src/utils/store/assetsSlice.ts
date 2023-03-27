@@ -61,10 +61,10 @@ const assetsSlice = createSlice({
       state,
       { payload }: { type: string; payload: TezTransfersPayload[] }
     ) => {
-      const tezOperationsPayloard = payload;
+      const tezOperationsPayload = payload;
       const newTezTransfers = { ...state.operations.tez };
 
-      tezOperationsPayloard.forEach((op) => {
+      tezOperationsPayload.forEach((op) => {
         const { pkh, operations } = op;
         newTezTransfers[pkh] = operations;
       });
@@ -75,10 +75,10 @@ const assetsSlice = createSlice({
       state,
       { payload }: { type: string; payload: TokenTransfersPayload[] }
     ) => {
-      const tezOperationsPayloard = payload;
+      const tezOperationsPayload = payload;
       const newTezTransfers = { ...state.operations.tokens };
 
-      tezOperationsPayloard.forEach((op) => {
+      tezOperationsPayload.forEach((op) => {
         const { pkh, operations } = op;
         newTezTransfers[pkh] = operations;
       });
