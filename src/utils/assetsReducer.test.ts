@@ -27,6 +27,7 @@ describe("Assets reducer", () => {
       balances: {},
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -42,6 +43,7 @@ describe("Assets reducer", () => {
       },
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
 
     store.dispatch(
@@ -68,6 +70,7 @@ describe("Assets reducer", () => {
       },
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -102,6 +105,7 @@ describe("Assets reducer", () => {
 
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -136,6 +140,7 @@ describe("Assets reducer", () => {
 
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -164,6 +169,7 @@ describe("Assets reducer", () => {
       },
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
+      conversionRate: null,
     });
 
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
@@ -172,6 +178,7 @@ describe("Assets reducer", () => {
       balances: {},
       operations: { tez: {}, tokens: {} },
       network: "ghostnet",
+      conversionRate: null,
     });
   });
 
@@ -200,6 +207,7 @@ describe("Assets reducer", () => {
       },
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
+      conversionRate: null,
     });
 
     store.dispatch(accountsSlice.actions.reset());
@@ -208,6 +216,7 @@ describe("Assets reducer", () => {
       balances: {},
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
