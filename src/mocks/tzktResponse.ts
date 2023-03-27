@@ -1,3 +1,5 @@
+import { TokenTransfer } from "@tzkt/sdk-api";
+import { TezTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
 
 export const fa1Token: Token = {
@@ -747,3 +749,435 @@ export const response: Token[] =
       lastTime: "2023-02-17T10:31:25Z",
     },
   ];
+
+export const getTransacionsResult: TezTransfer[] = [
+  {
+    type: "transaction",
+    id: 109810172297216,
+    level: 2214204,
+    timestamp: "2023-03-27T10:36:40Z",
+    block: "BKyZ7dksWdf6sFcnWnwvS5FgQ8JgEMFxg3SsL1bWR3FBz5mSAX3",
+    hash: "oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ",
+    counter: 10304021,
+    sender: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    gasLimit: 1101,
+    gasUsed: 1001,
+    storageLimit: 0,
+    storageUsed: 0,
+    bakerFee: 403,
+    storageFee: 0,
+    allocationFee: 0,
+    target: {
+      address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+    },
+    amount: 6410000,
+    status: "applied",
+    hasInternals: false,
+  },
+  {
+    type: "transaction",
+    id: 109783351820288,
+    level: 2213611,
+    timestamp: "2023-03-27T08:47:30Z",
+    block: "BM4xPHaLWYYw2KLwQrpUYjMYf1eN1mqfjtCEYUCgFpuyAd6u5cH",
+    hash: "ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM",
+    counter: 134162,
+    sender: {
+      address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+    },
+    gasLimit: 1101,
+    gasUsed: 1001,
+    storageLimit: 0,
+    storageUsed: 0,
+    bakerFee: 402,
+    storageFee: 0,
+    allocationFee: 0,
+    target: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    amount: 2400000,
+    status: "applied",
+    hasInternals: false,
+  },
+  {
+    type: "transaction",
+    id: 109510819577856,
+    level: 2207631,
+    timestamp: "2023-03-26T14:34:47Z",
+    block: "BKiv7G5finLJJLkP3T97vPnk95ZVrLLFURVzTeM6RqoSMKFq9N8",
+    hash: "op9pGAxiJtPcv37KRnLWhYBDx2RRhTiBeTZNsKQAQ1Pxn8AsbUC",
+    counter: 10304020,
+    sender: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    gasLimit: 3656,
+    gasUsed: 3556,
+    storageLimit: 67,
+    storageUsed: 67,
+    bakerFee: 771,
+    storageFee: 16750,
+    allocationFee: 0,
+    target: {
+      address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+    },
+    targetCodeHash: 1095391981,
+    amount: 0,
+    parameter: {
+      entrypoint: "transfer",
+      value: [
+        {
+          txs: [
+            {
+              to_: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+              amount: "1",
+              token_id: "6",
+            },
+          ],
+          from_: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        },
+      ],
+    },
+    status: "applied",
+    hasInternals: false,
+    tokenTransfersCount: 1,
+  },
+];
+
+export const getTokenTransactionsResult: TokenTransfer[] = [
+  {
+    id: 109855847219201,
+    level: 2215201,
+    timestamp: "2023-03-27T13:30:37Z",
+    token: {
+      id: 10897625972737,
+      contract: {
+        address: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+      },
+      tokenId: "0",
+      standard: "fa1.2",
+      totalSupply: "13000000",
+    },
+    from: {
+      address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+    },
+    to: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    amount: "27400",
+    transactionId: 109855847219200,
+  },
+  {
+    id: 109855493849090,
+    level: 2215193,
+    timestamp: "2023-03-27T13:29:22Z",
+    token: {
+      id: 10898231001089,
+      contract: {
+        address: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+      },
+      tokenId: "1",
+      standard: "fa2",
+      totalSupply: "13000000000",
+      metadata: {
+        name: "Klondike3",
+        symbol: "KL3",
+        decimals: "5",
+      },
+    },
+    from: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    to: {
+      address: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+    },
+    amount: "451000",
+    transactionId: 109855493849088,
+  },
+  {
+    id: 109855131041793,
+    level: 2215185,
+    timestamp: "2023-03-27T13:27:13Z",
+    token: {
+      id: 10898231001089,
+      contract: {
+        address: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+      },
+      tokenId: "1",
+      standard: "fa2",
+      totalSupply: "13000000000",
+      metadata: {
+        name: "Klondike3",
+        symbol: "KL3",
+        decimals: "5",
+      },
+    },
+    from: {
+      address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+    },
+    to: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    amount: "716850",
+    transactionId: 109855131041792,
+  },
+  {
+    id: 109854457856001,
+    level: 2215172,
+    timestamp: "2023-03-27T13:24:48Z",
+    token: {
+      id: 10899580518401,
+      contract: {
+        address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+      },
+      tokenId: "6",
+      standard: "fa2",
+      totalSupply: "1",
+      metadata: {
+        name: "Tezzardz #24",
+        rights: "© 2021 George Goodwin. All rights reserved.",
+        symbol: "FKR",
+        formats: [
+          {
+            uri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
+            mimeType: "image/png",
+          },
+        ],
+        creators: ["George Goodwin (@omgidrawedit)"],
+        decimals: "0",
+        royalties: {
+          shares: {
+            tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
+          },
+          decimals: "2",
+        },
+        attributes: [
+          {
+            name: "Background",
+            value: "Pink",
+          },
+          {
+            name: "Skin",
+            value: "White",
+          },
+          {
+            name: "Skin Pattern",
+            value: "Bolt",
+          },
+          {
+            name: "Clothing",
+            value: "Rainbow Onesie",
+          },
+          {
+            name: "Headwear",
+            value: "Backwards Cap",
+          },
+          {
+            name: "Bling Level",
+            value: "$$$",
+          },
+          {
+            name: "Face",
+            value: "Bent Tongue Feisty",
+          },
+        ],
+        displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+        artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
+        description:
+          "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
+        thumbnailUri:
+          "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
+      },
+    },
+    from: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    to: {
+      address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+    },
+    amount: "1",
+    transactionId: 109854457856000,
+  },
+  {
+    id: 109817445220353,
+    level: 2214369,
+    timestamp: "2023-03-27T11:06:40Z",
+    token: {
+      id: 10899580518401,
+      contract: {
+        address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+      },
+      tokenId: "6",
+      standard: "fa2",
+      totalSupply: "1",
+      metadata: {
+        name: "Tezzardz #24",
+        rights: "© 2021 George Goodwin. All rights reserved.",
+        symbol: "FKR",
+        formats: [
+          {
+            uri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
+            mimeType: "image/png",
+          },
+        ],
+        creators: ["George Goodwin (@omgidrawedit)"],
+        decimals: "0",
+        royalties: {
+          shares: {
+            tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
+          },
+          decimals: "2",
+        },
+        attributes: [
+          {
+            name: "Background",
+            value: "Pink",
+          },
+          {
+            name: "Skin",
+            value: "White",
+          },
+          {
+            name: "Skin Pattern",
+            value: "Bolt",
+          },
+          {
+            name: "Clothing",
+            value: "Rainbow Onesie",
+          },
+          {
+            name: "Headwear",
+            value: "Backwards Cap",
+          },
+          {
+            name: "Bling Level",
+            value: "$$$",
+          },
+          {
+            name: "Face",
+            value: "Bent Tongue Feisty",
+          },
+        ],
+        displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+        artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
+        description:
+          "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
+        thumbnailUri:
+          "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
+      },
+    },
+    from: {
+      address: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S",
+    },
+    to: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    amount: "1",
+    transactionId: 109817445220352,
+  },
+  {
+    id: 109511935262721,
+    level: 2207656,
+    timestamp: "2023-03-26T14:38:48Z",
+    token: {
+      id: 10898194300929,
+      contract: {
+        address: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+      },
+      tokenId: "0",
+      standard: "fa2",
+      totalSupply: "13000000000",
+      metadata: {
+        name: "Klondike2",
+        symbol: "KL2",
+        decimals: "5",
+      },
+    },
+    from: {
+      address: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+    },
+    to: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    amount: "210000",
+    transactionId: 109511935262720,
+  },
+  {
+    id: 109510819577858,
+    level: 2207631,
+    timestamp: "2023-03-26T14:34:47Z",
+    token: {
+      id: 10899580518401,
+      contract: {
+        address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+      },
+      tokenId: "6",
+      standard: "fa2",
+      totalSupply: "1",
+      metadata: {
+        name: "Tezzardz #24",
+        rights: "© 2021 George Goodwin. All rights reserved.",
+        symbol: "FKR",
+        formats: [
+          {
+            uri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
+            mimeType: "image/png",
+          },
+        ],
+        creators: ["George Goodwin (@omgidrawedit)"],
+        decimals: "0",
+        royalties: {
+          shares: {
+            tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
+          },
+          decimals: "2",
+        },
+        attributes: [
+          {
+            name: "Background",
+            value: "Pink",
+          },
+          {
+            name: "Skin",
+            value: "White",
+          },
+          {
+            name: "Skin Pattern",
+            value: "Bolt",
+          },
+          {
+            name: "Clothing",
+            value: "Rainbow Onesie",
+          },
+          {
+            name: "Headwear",
+            value: "Backwards Cap",
+          },
+          {
+            name: "Bling Level",
+            value: "$$$",
+          },
+          {
+            name: "Face",
+            value: "Bent Tongue Feisty",
+          },
+        ],
+        displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+        artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
+        description:
+          "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
+        thumbnailUri:
+          "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
+      },
+    },
+    from: {
+      address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+    },
+    to: {
+      address: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+    },
+    amount: "1",
+    transactionId: 109510819577856,
+  },
+];

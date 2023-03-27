@@ -4,9 +4,17 @@ import { store } from "./store/store";
 import BigNumber from "bignumber.js";
 import { TezosNetwork } from "@airgap/tezos";
 import accountsSlice from "./store/accountsSlice";
+import { mockTezTransaction, mockTokenTransaction } from "../mocks/factories";
+import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 
 const {
-  actions: { reset, updateAssets: update, updateNetwork },
+  actions: {
+    reset,
+    updateAssets: update,
+    updateNetwork,
+    updateTezOperations,
+    updateTokenOperations,
+  },
 } = assetsSlice;
 
 afterEach(() => {
@@ -17,7 +25,7 @@ describe("Assets reducer", () => {
   test("store should initialize with empty state", () => {
     expect(store.getState().assets).toEqual({
       balances: {},
-      operations: {},
+      operations: { tez: {}, tokens: {} },
       network: "mainnet",
     });
   });
@@ -32,7 +40,7 @@ describe("Assets reducer", () => {
           tokens: [],
         },
       },
-      operations: {},
+      operations: { tez: {}, tokens: {} },
       network: "mainnet",
     });
 
@@ -58,7 +66,7 @@ describe("Assets reducer", () => {
           tokens: [],
         },
       },
-      operations: {},
+      operations: { tez: {}, tokens: {} },
       network: "mainnet",
     });
   });
@@ -92,7 +100,7 @@ describe("Assets reducer", () => {
         },
       },
 
-      operations: {},
+      operations: { tez: {}, tokens: {} },
       network: "mainnet",
     });
   });
@@ -126,7 +134,7 @@ describe("Assets reducer", () => {
         },
       },
 
-      operations: {},
+      operations: { tez: {}, tokens: {} },
       network: "mainnet",
     });
   });
@@ -155,14 +163,14 @@ describe("Assets reducer", () => {
         foo: { tez: null, tokens: [{}, {}] },
       },
       network: "mainnet",
-      operations: {},
+      operations: { tez: {}, tokens: {} },
     });
 
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
 
     expect(store.getState().assets).toEqual({
       balances: {},
-      operations: {},
+      operations: { tez: {}, tokens: {} },
       network: "ghostnet",
     });
   });
@@ -191,15 +199,116 @@ describe("Assets reducer", () => {
         foo: { tez: null, tokens: [{}, {}] },
       },
       network: "mainnet",
-      operations: {},
+      operations: { tez: {}, tokens: {} },
     });
 
     store.dispatch(accountsSlice.actions.reset());
 
     expect(store.getState().assets).toEqual({
       balances: {},
-      operations: {},
+      operations: { tez: {}, tokens: {} },
       network: "mainnet",
+    });
+  });
+
+  test("tez transfers are upserted", () => {
+    store.dispatch(
+      updateTezOperations([
+        {
+          pkh: "foo",
+          operations: [mockTezTransaction(1), mockTezTransaction(2)],
+        },
+        { pkh: "bar", operations: [mockTezTransaction(3)] },
+      ])
+    );
+
+    expect(store.getState().assets).toEqual({
+      balances: {},
+      network: "mainnet",
+      operations: {
+        tez: {
+          foo: [mockTezTransaction(1), mockTezTransaction(2)],
+          bar: [mockTezTransaction(3)],
+        },
+        tokens: {},
+      },
+    });
+
+    store.dispatch(
+      updateTezOperations([
+        {
+          pkh: "foo",
+          operations: [mockTezTransaction(4)],
+        },
+        {
+          pkh: "baz",
+          operations: [mockTezTransaction(5)],
+        },
+      ])
+    );
+
+    expect(store.getState().assets).toEqual({
+      balances: {},
+      network: "mainnet",
+      operations: {
+        tez: {
+          foo: [mockTezTransaction(4)],
+          bar: [mockTezTransaction(3)],
+          baz: [mockTezTransaction(5)],
+        },
+        tokens: {},
+      },
+    });
+    store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
+  });
+
+  test("token transfers are upserted", () => {
+    store.dispatch(
+      updateTokenOperations([
+        {
+          pkh: "foo",
+          operations: [mockTokenTransaction(1), mockTokenTransaction(2)],
+        },
+        { pkh: "bar", operations: [mockTokenTransaction(3)] },
+      ])
+    );
+
+    expect(store.getState().assets).toEqual({
+      balances: {},
+      network: "mainnet",
+      operations: {
+        tokens: {
+          foo: [mockTokenTransaction(1), mockTokenTransaction(2)],
+          bar: [mockTokenTransaction(3)],
+        },
+        tez: {},
+      },
+    });
+
+    store.dispatch(
+      updateTokenOperations([
+        {
+          pkh: "foo",
+          operations: [mockTokenTransaction(4)],
+        },
+        {
+          pkh: "baz",
+          operations: [mockTokenTransaction(5)],
+        },
+      ])
+    );
+
+    expect(store.getState().assets).toEqual({
+      balances: {},
+      network: "mainnet",
+      operations: {
+        tokens: {
+          foo: [mockTokenTransaction(4)],
+          bar: [mockTokenTransaction(3)],
+          baz: [mockTokenTransaction(5)],
+        },
+        tez: {},
+      },
     });
   });
 });

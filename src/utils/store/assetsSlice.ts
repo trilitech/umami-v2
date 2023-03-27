@@ -2,7 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
 
 import BigNumber from "bignumber.js";
-import { Operation } from "../../types/Operation";
+import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
 
@@ -15,12 +15,22 @@ export type balance = {
 type State = {
   network: TezosNetwork;
   balances: Record<string, balance>;
-  operations: Record<string, Operation>;
+  operations: {
+    tez: Record<string, TezTransfer[]>;
+    tokens: Record<string, TokenTransfer[]>;
+  };
 };
 
 export type TezBalancePayload = { pkh: string; tez: BigNumber };
 export type TokenBalancePayload = { pkh: string; tokens: Token[] };
-export type OperationsPayload = { pkh: string; operations: Operation };
+export type TezTransfersPayload = {
+  pkh: string;
+  operations: TezTransfer[];
+};
+export type TokenTransfersPayload = {
+  pkh: string;
+  operations: TokenTransfer[];
+};
 
 const initialBalance: balance = {
   tez: null,
@@ -30,7 +40,7 @@ const initialBalance: balance = {
 const initialState: State = {
   network: TezosNetwork.MAINNET,
   balances: {},
-  operations: {},
+  operations: { tez: {}, tokens: {} },
 };
 
 const assetsSlice = createSlice({
@@ -47,18 +57,33 @@ const assetsSlice = createSlice({
     ) => {
       return { ...initialState, network: payload };
     },
-    updateOperations: (
+    updateTezOperations: (
       state,
-      { payload }: { type: string; payload: OperationsPayload[] }
+      { payload }: { type: string; payload: TezTransfersPayload[] }
     ) => {
-      const operationsPayloads = payload;
-      const newOperations = { ...state.operations };
+      const tezOperationsPayload = payload;
+      const newTezTransfers = { ...state.operations.tez };
 
-      operationsPayloads.forEach(({ pkh, operations }) => {
-        newOperations[pkh] = operations;
+      tezOperationsPayload.forEach((op) => {
+        const { pkh, operations } = op;
+        newTezTransfers[pkh] = operations;
+      });
+      state.operations.tez = newTezTransfers;
+    },
+    // TODO refactor duplication
+    updateTokenOperations: (
+      state,
+      { payload }: { type: string; payload: TokenTransfersPayload[] }
+    ) => {
+      const tezOperationsPayload = payload;
+      const newTezTransfers = { ...state.operations.tokens };
+
+      tezOperationsPayload.forEach((op) => {
+        const { pkh, operations } = op;
+        newTezTransfers[pkh] = operations;
       });
 
-      state.operations = newOperations;
+      state.operations.tokens = newTezTransfers;
     },
     updateAssets: (
       state,

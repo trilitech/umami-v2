@@ -1,6 +1,6 @@
 import * as tzktApi from "@tzkt/sdk-api";
 
-type TokenMetadata = {
+export type TokenMetadata = {
   name?: string;
   symbol?: string;
   decimals?: string;

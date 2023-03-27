@@ -3,9 +3,11 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
+import MockDate from "mockdate";
 
 import { TextDecoder, TextEncoder } from "util";
 
+MockDate.set("2023-03-27T14:15:09.760Z");
 // Setup web crypto environment
 beforeAll(() => {
   const crypto = require("crypto");

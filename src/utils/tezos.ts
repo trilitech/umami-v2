@@ -1,6 +1,6 @@
 import { TezosIndexerClient, TezosNetwork } from "@airgap/tezos";
 import { Signer, TezosToolkit } from "@taquito/taquito";
-import { Operation } from "../types/Operation";
+import { Operation, TezTransfer, TokenTransfer } from "../types/Operation";
 
 import * as tzktApi from "@tzkt/sdk-api";
 import { Token } from "../types/Token";
@@ -107,4 +107,36 @@ export const transfer = async (
   });
 
   return Tezos.contract.transfer({ to: recipient, amount });
+};
+
+export const getTezTransfers = (
+  address: string,
+  network = TezosNetwork.MAINNET
+): Promise<TezTransfer[]> => {
+  return tzktApi.operationsGetTransactions(
+    {
+      anyof: { fields: ["sender", "target"], eq: address },
+      sort: { desc: "level" },
+      limit: 10,
+    },
+    {
+      baseUrl: tzktUrls[network],
+    }
+  );
+};
+
+export const getTokenTransfers = (
+  address: string,
+  network = TezosNetwork.MAINNET
+): Promise<TokenTransfer[]> => {
+  return tzktApi.tokensGetTokenTransfers(
+    {
+      anyof: { fields: ["from", "to"], eq: address },
+      sort: { desc: "level" },
+      limit: 10,
+    },
+    {
+      baseUrl: tzktUrls[network],
+    }
+  );
 };

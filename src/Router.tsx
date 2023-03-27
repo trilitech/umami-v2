@@ -7,6 +7,7 @@ import { useAssetsPolling } from "./utils/useAssetsPolling";
 import { withSideMenu } from "./views/withSideMenu";
 import NFTsView from "./views/nfts/NftsView";
 import SettingsView from "./views/settings/SettingsView";
+import OperationsView from "./views/operations/OperationsView";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -26,7 +27,10 @@ const loggedInRouter = createHashRouter([
     path: "/settings",
     element: withSideMenu(<SettingsView />),
   },
-
+  {
+    path: "/operations",
+    element: withSideMenu(<OperationsView />),
+  },
   {
     path: "/",
     element: withSideMenu(<Home />),
