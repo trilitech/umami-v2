@@ -1,15 +1,20 @@
 import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { OperationTile } from "../../components/OperationTile";
-import { useAllOperations } from "../../utils/hooks/assetsHooks";
+import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
+import {
+  getKey,
+  sortOperationsDisplaysBytDate,
+} from "../operations/operationsUtils";
 
 export const OperationsList = () => {
-  const operations = useAllOperations();
-  const operationList = Object.values(operations).flatMap((b) => b);
+  const operations = useAllOperationDisplays();
+  const operationList = sortOperationsDisplaysBytDate(
+    Object.values(operations).flat()
+  );
 
   const operationEls = operationList.slice(0, 20).map((op) => {
-    return <OperationTile key={op.hash + op.from[0]} operation={op} />;
+    return <OperationTile key={getKey(op)} operation={op} />;
   });
-
   return (
     <Tabs
       height={"100%"}

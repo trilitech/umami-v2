@@ -1,7 +1,4 @@
-import {
-  AirGapTransactionStatus,
-  IAirGapTransaction,
-} from "@airgap/coinlib-core/interfaces/IAirGapTransaction";
+import { AirGapTransactionStatus } from "@airgap/coinlib-core/interfaces/IAirGapTransaction";
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
@@ -9,7 +6,8 @@ import { BsArrowDownLeft, BsArrowUpRight } from "react-icons/bs";
 import colors from "../style/colors";
 import { formatPkh } from "../utils/format";
 
-import { formatRelative } from "date-fns";
+import { OperationDisplay } from "../types/Operation";
+import { getIsInbound } from "../views/operations/operationsUtils";
 
 const darkColor = "umami.gray.500";
 
@@ -27,18 +25,16 @@ const renderFromTo = (address: string, isInbound: boolean) => {
 };
 
 export const OperationTile: React.FC<{
-  operation: Omit<IAirGapTransaction, "network" | "protocolIdentifier">;
+  operation: OperationDisplay;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }> = ({ operation, onClick = () => {} }) => {
-  const { amount, isInbound, status, timestamp } = operation;
-  const from = formatPkh(operation.from[0]);
-  const to = formatPkh(operation.to[0]);
+  const { amount, status, prettyTimestamp } = operation;
+  const from = formatPkh(operation.sender);
+  const to = formatPkh(operation.recipient);
   const success = status === AirGapTransactionStatus.APPLIED;
+  // TODO refactor this
+  const isInbound = getIsInbound(amount.prettyDisplay);
 
-  const now = new Date();
-
-  const relativeTime =
-    timestamp && formatRelative(new Date(timestamp * 1000), now);
   return (
     <Flex
       h={16}
@@ -60,9 +56,9 @@ export const OperationTile: React.FC<{
 
       <Box flex={1}>
         <Flex justifyContent={"space-between"}>
-          <Heading size="sm">{amount}</Heading>
+          <Heading size="sm">{amount.prettyDisplay}</Heading>
           <Text size="sm" color="text.dark">
-            {relativeTime}
+            {prettyTimestamp}
           </Text>
         </Flex>
         <Flex justifyContent={"space-between"}>

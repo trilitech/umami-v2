@@ -22,7 +22,11 @@ import { TopBar } from "../../components/TopBar";
 import { OperationDisplay } from "../../types/Operation";
 import { formatPkh } from "../../utils/format";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
-import { getIsInbound, sortOperationsDisplaysBytDate } from "./operationsUtils";
+import {
+  getIsInbound,
+  getKey,
+  sortOperationsDisplaysBytDate,
+} from "./operationsUtils";
 
 export const FilterController: React.FC = () => {
   return (
@@ -70,10 +74,7 @@ export const OperationsDataTable: React.FC<{
                 key={
                   // TODO: find a better way to pick a unique ID per operation.
                   // Dupes appear when doing transfers within accounts on the same wallet...
-                  op.amount.prettyDisplay +
-                  op.sender +
-                  op.recipient +
-                  op.timestamp
+                  getKey(op)
                 }
               >
                 <Td>{op.type}</Td>

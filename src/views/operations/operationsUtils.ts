@@ -35,6 +35,10 @@ const getSign = (address: string, sender: string, recipient: string) => {
   return null;
 };
 
+export const getKey = (op: OperationDisplay) => {
+  return op.amount.prettyDisplay + op.sender + op.recipient + op.timestamp;
+};
+
 export const getTezOperationDisplay = (
   transfer: TezTransfer,
   forAddress: string,
