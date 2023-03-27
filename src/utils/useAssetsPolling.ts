@@ -2,12 +2,18 @@ import { TezosNetwork } from "@airgap/tezos";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import assetsSlice, {
-  OperationsPayload,
   TezBalancePayload,
+  TezTransfersPayload,
   TokenBalancePayload,
+  TokenTransfersPayload,
 } from "./store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { getBalance, getOperations, getTokens } from "./tezos";
+import {
+  getBalance,
+  getTezTransfers,
+  getTokens,
+  getTokenTransfers,
+} from "./tezos";
 
 // TODO: refactor with less repetitions
 const getBalancePayload = async (
@@ -26,11 +32,18 @@ const getTokensPayload = async (
   return { pkh, tokens };
 };
 
-const getOperationsPayload = async (
+const getTezTransfersPayload = async (
   pkh: string,
   network: TezosNetwork
-): Promise<OperationsPayload> => {
-  const operations = await getOperations(pkh, network);
+): Promise<TezTransfersPayload> => {
+  const operations = await getTezTransfers(pkh, network);
+  return { pkh, operations };
+};
+const getTokensTransfersPayload = async (
+  pkh: string,
+  network: TezosNetwork
+): Promise<TokenTransfersPayload> => {
+  const operations = await getTokenTransfers(pkh, network);
   return { pkh, operations };
 };
 
@@ -76,14 +89,31 @@ export const useAssetsPolling = () => {
     refetchInterval: REFRESH_RATE,
   });
 
-  const operationsQuery = useQuery("operations", {
+  const tezTransfersQuery = useQuery("tezTransfers", {
     queryFn: async () => {
       try {
         const operations = await Promise.all(
-          pkhs.map((pkh) => getOperationsPayload(pkh, network))
+          pkhs.map((pkh) => getTezTransfersPayload(pkh, network))
         );
 
-        dispatch(assetsActions.updateOperations(operations));
+        dispatch(assetsActions.updateTezOperations(operations));
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    refetchInterval: REFRESH_RATE,
+  });
+
+  // TODO refactor there is some duplication piling up
+  const tokensTransfersQuery = useQuery("tokensTransfers", {
+    queryFn: async () => {
+      try {
+        const operations = await Promise.all(
+          pkhs.map((pkh) => getTokensTransfersPayload(pkh, network))
+        );
+
+        dispatch(assetsActions.updateTokenOperations(operations));
       } catch (error) {
         console.error(error);
       }
@@ -94,12 +124,14 @@ export const useAssetsPolling = () => {
 
   const tezQueryRef = useRef(tezQuery);
   const tokenQueryRef = useRef(tokenQuery);
-  const operationsQueryRef = useRef(operationsQuery);
+  const tezTransfersQueryRef = useRef(tezTransfersQuery);
+  const tokensTransfersQueryRef = useRef(tokensTransfersQuery);
 
   // Refetch when network changes
   useEffect(() => {
     tezQueryRef.current.refetch();
     tokenQueryRef.current.refetch();
-    operationsQueryRef.current.refetch();
+    tezTransfersQueryRef.current.refetch();
+    tokensTransfersQueryRef.current.refetch();
   }, [network]);
 };
