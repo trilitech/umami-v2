@@ -48,6 +48,7 @@ const MenuItem: React.FC<{
 
 const TopIems = () => {
   const navigate = useNavigate();
+  // TODO use <Link /> element instead of hook
   return (
     <Box>
       <MenuItem
@@ -61,7 +62,11 @@ const TopIems = () => {
         icon={MdOutlineDiamond}
       />
 
-      <MenuItem label="Operations" icon={MdHistory} />
+      <MenuItem
+        label="Operations"
+        onClick={() => navigate("/operations")}
+        icon={MdHistory}
+      />
       <MenuItem label="Tokens" icon={MdMoney} />
       <MenuItem label="Batch" icon={MdCalendarViewMonth} />
     </Box>
