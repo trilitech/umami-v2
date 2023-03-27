@@ -1,7 +1,7 @@
 import { Box, Divider, Flex, Icon, Text } from "@chakra-ui/react";
 import { format } from "@taquito/utils";
 import BigNumber from "bignumber.js";
-import _ from "lodash";
+import { round } from "lodash";
 import React from "react";
 import { IconType } from "react-icons/lib";
 import {
@@ -16,9 +16,8 @@ import {
 } from "react-icons/md";
 import { useNavigate } from "react-router";
 import colors from "../style/colors";
-import { nullableMul } from "../utils/helpers";
 import { useTotalBalance } from "../utils/hooks/accountHooks";
-import { useConversionRate } from "../utils/hooks/assetsHooks";
+import { useTezToDollar } from "../utils/hooks/assetsHooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
@@ -94,19 +93,24 @@ const BottomIems = () => {
 
 const TotalBalance = () => {
   const totalMutez = useTotalBalance();
-
+  const tezToDollar = useTezToDollar();
   const tezBalance =
     totalMutez && (format("mutez", "tz", totalMutez) as BigNumber).toNumber();
-  const rate = useConversionRate();
-  const dollarBalance = nullableMul(tezBalance, rate);
+
+  const dollarBalance =
+    tezBalance !== null && tezToDollar !== null && tezToDollar(tezBalance);
 
   return (
     <Box mt={4} mb={12} height={"80px"}>
       <Text size="sm">Balance</Text>
-      {tezBalance && (
+      {tezBalance !== null && (
         <TezRecapDisplay
           tezBalance={tezBalance}
-          dollarBalance={dollarBalance && _.round(dollarBalance, 2)}
+          dollarBalance={
+            dollarBalance || dollarBalance === 0
+              ? round(dollarBalance, 2)
+              : null
+          }
         />
       )}
     </Box>

@@ -42,3 +42,11 @@ export const useAllOperationDisplays = () => {
 };
 export const useConversionRate = () =>
   useAppSelector((s) => s.assets.conversionRate);
+
+export const useTezToDollar = () => {
+  const rate = useConversionRate();
+  if (rate === null) {
+    return null;
+  }
+  return (tezosBalance: number) => tezosBalance * rate;
+};
