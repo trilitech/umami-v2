@@ -15,7 +15,9 @@ import {
 } from "react-icons/md";
 import { useNavigate } from "react-router";
 import colors from "../style/colors";
+import { roundTo } from "../utils/helpers";
 import { useTotalBalance } from "../utils/hooks/accountHooks";
+import { useConversionRate } from "../utils/hooks/assetsHooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
@@ -94,12 +96,17 @@ const TotalBalance = () => {
 
   const tezBalance =
     totalMutez && (format("mutez", "tz", totalMutez) as BigNumber).toNumber();
+  const rate = useConversionRate();
+  const dollarBalance = rate && tezBalance && rate * tezBalance;
 
   return (
     <Box mt={4} mb={12} height={"80px"}>
       <Text size="sm">Balance</Text>
       {tezBalance && (
-        <TezRecapDisplay tezBalance={tezBalance} dollarBalance={3} />
+        <TezRecapDisplay
+          tezBalance={tezBalance}
+          dollarBalance={dollarBalance && roundTo(dollarBalance, 2)}
+        />
       )}
     </Box>
   );

@@ -115,7 +115,7 @@ const assetsSlice = createSlice({
       state,
       { payload: { rate } }: { type: string; payload: ConversionRatePayload }
     ) => {
-      state.conversionRate = rate && roundTo(rate, 2);
+      state.conversionRate = rate;
     },
   },
 });
