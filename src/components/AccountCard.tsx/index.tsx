@@ -1,5 +1,6 @@
+import _ from "lodash";
 import { formatPkh } from "../../utils/format";
-import { roundTo } from "../../utils/helpers";
+import { nullableMul } from "../../utils/helpers";
 import {
   useGetAccountBalance,
   useSelectedAccount,
@@ -19,14 +20,13 @@ export const AccountCard = () => {
 
   const balance = accountBalance(account.pkh);
   const tezBalance = (balance?.tez && mutezToTez(balance.tez)) || null;
-  const dollarBalance = rate && tezBalance && rate * tezBalance;
-
+  const dollarBalance = nullableMul(tezBalance, rate);
   return (
     <AccountCardDisplay
       pkh={formatPkh(account.pkh)}
       label={account.label || ""}
       tezBalance={tezBalance}
-      dollarBalance={dollarBalance && roundTo(dollarBalance, 2)}
+      dollarBalance={dollarBalance && _.round(dollarBalance, 2)}
     />
   );
 };

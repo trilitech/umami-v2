@@ -1,6 +1,7 @@
 import { Box, Divider, Flex, Icon, Text } from "@chakra-ui/react";
 import { format } from "@taquito/utils";
 import BigNumber from "bignumber.js";
+import _ from "lodash";
 import React from "react";
 import { IconType } from "react-icons/lib";
 import {
@@ -15,7 +16,7 @@ import {
 } from "react-icons/md";
 import { useNavigate } from "react-router";
 import colors from "../style/colors";
-import { roundTo } from "../utils/helpers";
+import { nullableMul } from "../utils/helpers";
 import { useTotalBalance } from "../utils/hooks/accountHooks";
 import { useConversionRate } from "../utils/hooks/assetsHooks";
 import { MakiLogo } from "./MakiLogo";
@@ -97,7 +98,7 @@ const TotalBalance = () => {
   const tezBalance =
     totalMutez && (format("mutez", "tz", totalMutez) as BigNumber).toNumber();
   const rate = useConversionRate();
-  const dollarBalance = rate && tezBalance && rate * tezBalance;
+  const dollarBalance = nullableMul(tezBalance, rate);
 
   return (
     <Box mt={4} mb={12} height={"80px"}>
@@ -105,7 +106,7 @@ const TotalBalance = () => {
       {tezBalance && (
         <TezRecapDisplay
           tezBalance={tezBalance}
-          dollarBalance={dollarBalance && roundTo(dollarBalance, 2)}
+          dollarBalance={dollarBalance && _.round(dollarBalance, 2)}
         />
       )}
     </Box>
