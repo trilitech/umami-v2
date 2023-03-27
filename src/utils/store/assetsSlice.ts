@@ -4,7 +4,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
-import { roundTo } from "../helpers";
 import accountsSlice from "./accountsSlice";
 
 export type balance = {
