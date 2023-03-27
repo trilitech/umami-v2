@@ -11,8 +11,9 @@ import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
   getBalance,
   getTezTransfers,
-  getTokens,
   getTokenTransfers,
+  getTezosPriceInUSD,
+  getTokens,
 } from "./tezos";
 
 // TODO: refactor with less repetitions
@@ -50,6 +51,7 @@ const getTokensTransfersPayload = async (
 const assetsActions = assetsSlice.actions;
 
 const REFRESH_RATE = 10000;
+const CONVERSION_RATE_REFRESH_RATE = 300000;
 
 export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
@@ -125,14 +127,13 @@ export const useAssetsPolling = () => {
   const conversionrateQuery = useQuery("conversionRate", {
     queryFn: async () => {
       try {
-        //TODO: fetch USD/XTZ price.
-
-        dispatch(assetsActions.updateConversionRate({ rate: 10 }));
+        const rate = await getTezosPriceInUSD();
+        dispatch(assetsActions.updateConversionRate({ rate }));
       } catch (error) {
         console.error(error);
       }
     },
-    refetchInterval: REFRESH_RATE,
+    refetchInterval: CONVERSION_RATE_REFRESH_RATE,
   });
 
   const tezQueryRef = useRef(tezQuery);

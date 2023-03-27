@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
+import { roundTo } from "../helpers";
 import accountsSlice from "./accountsSlice";
 
 export type balance = {
@@ -32,7 +33,7 @@ export type TokenTransfersPayload = {
   pkh: string;
   operations: TokenTransfer[];
 };
-export type ConversionRatePayload = { rate: number };
+export type ConversionRatePayload = { rate: State["conversionRate"] };
 
 const initialBalance: balance = {
   tez: null,
@@ -112,9 +113,9 @@ const assetsSlice = createSlice({
     },
     updateConversionRate: (
       state,
-      { payload }: { type: string; payload: ConversionRatePayload }
+      { payload: { rate } }: { type: string; payload: ConversionRatePayload }
     ) => {
-      state.conversionRate = 10;
+      state.conversionRate = rate && roundTo(rate, 2);
     },
   },
 });

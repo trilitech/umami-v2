@@ -8,6 +8,7 @@ import { DummySigner } from "./dummySigner";
 import { InMemorySigner } from "@taquito/signer";
 import { UmamiEncrypted } from "../types/UmamiEncrypted";
 import { decrypt } from "./aes";
+import axios from "axios";
 
 let nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
@@ -18,6 +19,8 @@ let tzktUrls = {
   [TezosNetwork.GHOSTNET]: `https://api.ghostnet.tzkt.io`,
   [TezosNetwork.MAINNET]: `https://api.mainnet.tzkt.io`,
 };
+
+const coincapUrl = "https://api.coincap.io/v2/assets";
 
 export const addressExists = async (
   pkh: string,
@@ -139,4 +142,24 @@ export const getTokenTransfers = (
       baseUrl: tzktUrls[network],
     }
   );
+};
+// Fetch the tezos price in usd from the CoinCap API.
+// The CoinCap API documentation: https://docs.coincap.io
+export const getTezosPriceInUSD = async (): Promise<number | null> => {
+  type coinCapResponseType = {
+    data: {
+      priceUsd?: number;
+    };
+  };
+
+  const {
+    data: {
+      data: { priceUsd },
+    },
+  } = await axios<coinCapResponseType>({
+    method: "get",
+    url: `${coincapUrl}/tezos`,
+  });
+
+  return priceUsd ?? null;
 };
