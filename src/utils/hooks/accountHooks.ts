@@ -29,7 +29,7 @@ export const useSelectedAccountBalance = () => {
   return account && accountBalance(account.pkh);
 };
 
-export const useTotalBalance = () => {
+export const useTotalTezBalance = () => {
   const balances = useAppSelector((s) => s.assets.balances);
 
   return getTotalBalance(balances);

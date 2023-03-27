@@ -5,7 +5,6 @@ import BigNumber from "bignumber.js";
 import { TezosNetwork } from "@airgap/tezos";
 import accountsSlice from "./store/accountsSlice";
 import { mockTezTransaction, mockTokenTransaction } from "../mocks/factories";
-import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 
 const {
   actions: {
