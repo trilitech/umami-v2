@@ -1,6 +1,4 @@
 import { Box, Divider, Flex, Icon, Text } from "@chakra-ui/react";
-import { format } from "@taquito/utils";
-import BigNumber from "bignumber.js";
 import React from "react";
 import { IconType } from "react-icons/lib";
 import {
@@ -15,7 +13,7 @@ import {
 } from "react-icons/md";
 import { useNavigate } from "react-router";
 import colors from "../style/colors";
-import { useTotalBalance } from "../utils/hooks/accountHooks";
+import { useTotalBalance } from "../utils/hooks/assetsHooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
@@ -90,16 +88,19 @@ const BottomIems = () => {
 };
 
 const TotalBalance = () => {
-  const totalMutez = useTotalBalance();
-
-  const tezBalance =
-    totalMutez && (format("mutez", "tz", totalMutez) as BigNumber).toNumber();
+  const balance = useTotalBalance();
+  if (!balance) {
+    return null;
+  }
 
   return (
     <Box mt={4} mb={12} height={"80px"}>
       <Text size="sm">Balance</Text>
-      {tezBalance && (
-        <TezRecapDisplay tezBalance={tezBalance} dollarBalance={3} />
+      {balance.tezBalance !== null && (
+        <TezRecapDisplay
+          tezBalance={balance.tezBalance}
+          dollarBalance={balance.dollarBalance}
+        />
       )}
     </Box>
   );

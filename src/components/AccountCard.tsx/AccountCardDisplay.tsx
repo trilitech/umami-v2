@@ -68,7 +68,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
           as={MdCopyAll}
         />
       </Flex>
-      {tezBalance && dollarBalance && (
+      {tezBalance !== null && (
         <TezRecapDisplay
           center
           tezBalance={tezBalance}

@@ -11,8 +11,9 @@ import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
   getBalance,
   getTezTransfers,
-  getTokens,
   getTokenTransfers,
+  getTezosPriceInUSD,
+  getTokens,
 } from "./tezos";
 
 // TODO: refactor with less repetitions
@@ -50,6 +51,7 @@ const getTokensTransfersPayload = async (
 const assetsActions = assetsSlice.actions;
 
 const REFRESH_RATE = 10000;
+const CONVERSION_RATE_REFRESH_RATE = 300000;
 
 export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
@@ -122,10 +124,23 @@ export const useAssetsPolling = () => {
     refetchInterval: REFRESH_RATE,
   });
 
+  const conversionrateQuery = useQuery("conversionRate", {
+    queryFn: async () => {
+      try {
+        const rate = await getTezosPriceInUSD();
+        dispatch(assetsActions.updateConversionRate({ rate }));
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    refetchInterval: CONVERSION_RATE_REFRESH_RATE,
+  });
+
   const tezQueryRef = useRef(tezQuery);
   const tokenQueryRef = useRef(tokenQuery);
   const tezTransfersQueryRef = useRef(tezTransfersQuery);
   const tokensTransfersQueryRef = useRef(tokensTransfersQuery);
+  const conversionrateQueryRef = useRef(conversionrateQuery);
 
   // Refetch when network changes
   useEffect(() => {
@@ -133,5 +148,6 @@ export const useAssetsPolling = () => {
     tokenQueryRef.current.refetch();
     tezTransfersQueryRef.current.refetch();
     tokensTransfersQueryRef.current.refetch();
+    conversionrateQueryRef.current.refetch();
   }, [network]);
 };

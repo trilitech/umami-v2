@@ -5,7 +5,6 @@ import BigNumber from "bignumber.js";
 import { TezosNetwork } from "@airgap/tezos";
 import accountsSlice from "./store/accountsSlice";
 import { mockTezTransaction, mockTokenTransaction } from "../mocks/factories";
-import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 
 const {
   actions: {
@@ -27,6 +26,7 @@ describe("Assets reducer", () => {
       balances: {},
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -42,6 +42,7 @@ describe("Assets reducer", () => {
       },
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
 
     store.dispatch(
@@ -68,6 +69,7 @@ describe("Assets reducer", () => {
       },
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -102,6 +104,7 @@ describe("Assets reducer", () => {
 
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -136,6 +139,7 @@ describe("Assets reducer", () => {
 
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -164,6 +168,7 @@ describe("Assets reducer", () => {
       },
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
+      conversionRate: null,
     });
 
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
@@ -172,6 +177,7 @@ describe("Assets reducer", () => {
       balances: {},
       operations: { tez: {}, tokens: {} },
       network: "ghostnet",
+      conversionRate: null,
     });
   });
 
@@ -200,6 +206,7 @@ describe("Assets reducer", () => {
       },
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
+      conversionRate: null,
     });
 
     store.dispatch(accountsSlice.actions.reset());
@@ -208,6 +215,7 @@ describe("Assets reducer", () => {
       balances: {},
       operations: { tez: {}, tokens: {} },
       network: "mainnet",
+      conversionRate: null,
     });
   });
 
@@ -223,6 +231,7 @@ describe("Assets reducer", () => {
     );
 
     expect(store.getState().assets).toEqual({
+      conversionRate: null,
       balances: {},
       network: "mainnet",
       operations: {
@@ -248,6 +257,7 @@ describe("Assets reducer", () => {
     );
 
     expect(store.getState().assets).toEqual({
+      conversionRate: null,
       balances: {},
       network: "mainnet",
       operations: {
@@ -274,6 +284,7 @@ describe("Assets reducer", () => {
     );
 
     expect(store.getState().assets).toEqual({
+      conversionRate: null,
       balances: {},
       network: "mainnet",
       operations: {
@@ -299,6 +310,7 @@ describe("Assets reducer", () => {
     );
 
     expect(store.getState().assets).toEqual({
+      conversionRate: null,
       balances: {},
       network: "mainnet",
       operations: {

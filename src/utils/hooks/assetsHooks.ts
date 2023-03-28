@@ -4,6 +4,9 @@ import { filterNulls, objectMap } from "../helpers";
 import { useAppSelector } from "../store/hooks";
 import { makeNft } from "../token/classify/classifyToken";
 import { useAccounts } from "./accountHooks";
+import { round } from "lodash";
+import { useGetAccountBalance, useTotalTezBalance } from "./accountHooks";
+import { mutezToTez } from "../store/impureFormat";
 
 export const useSelectedNetwork = () => {
   return useAppSelector((s) => s.assets.network);
@@ -39,4 +42,53 @@ export const useAllOperationDisplays = () => {
   });
 
   return result;
+};
+export const useConversionRate = () =>
+  useAppSelector((s) => s.assets.conversionRate);
+
+const useTezToDollar = () => {
+  const rate = useConversionRate();
+  if (rate === null) {
+    return null;
+  }
+  return (tezosBalance: number) => round(tezosBalance * rate, 2);
+};
+
+export const useGetDollarBalance = () => {
+  const tezToDollar = useTezToDollar();
+
+  const getAccountBalance = useGetAccountBalance();
+
+  return (pkh: string) => {
+    const mutezBalance = getAccountBalance(pkh)?.tez;
+
+    if (mutezBalance == null || tezToDollar === null) {
+      return null;
+    }
+
+    const tezBalance = mutezToTez(mutezBalance);
+    return tezToDollar(tezBalance);
+  };
+};
+
+// Returns the total balance in both tez and dollar
+export const useTotalBalance = () => {
+  const tezToDollar = useTezToDollar();
+
+  const totalMutez = useTotalTezBalance();
+  const tezBalance = totalMutez && mutezToTez(totalMutez);
+
+  if (tezBalance === null) {
+    return null;
+  }
+
+  const dollarBalance =
+    tezToDollar !== null && tezBalance !== null
+      ? tezToDollar(tezBalance)
+      : null;
+
+  return {
+    tezBalance,
+    dollarBalance,
+  };
 };
