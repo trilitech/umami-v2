@@ -20,6 +20,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
   label,
 }) => (
   <Flex
+    data-testid="account-tile"
     mb={4}
     p={4}
     bg="umami.gray.900"
@@ -35,7 +36,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
   >
     <Identicon address={address} />
     <Flex flex={1} justifyContent="space-between">
-      <Box m={4}>
+      <Box m={4} data-testid="account-identifiers">
         <Heading size={"md"}>{label}</Heading>
         <Flex alignItems={"center"}>
           <Text size={"sm"} color="text.dark">

@@ -17,7 +17,7 @@ const Header = () => {
   );
 };
 
-const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
+export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
   const { items: accounts, selected } = useAppSelector((s) => s.accounts);
   const dispatch = useAppDispatch();
 
