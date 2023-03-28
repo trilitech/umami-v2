@@ -1,4 +1,3 @@
-import { formatPkh } from "../../utils/format";
 import {
   useGetAccountBalance,
   useSelectedAccount,
@@ -22,10 +21,13 @@ export const AccountCard = () => {
 
   return (
     <AccountCardDisplay
-      pkh={formatPkh(account.pkh)}
+      pkh={account.pkh}
       label={account.label || ""}
       tezBalance={tez && mutezToTez(tez)}
       dollarBalance={dollarBalance}
+      onCopyAddress={(pkh: string) => {
+        navigator.clipboard.writeText(pkh);
+      }}
     />
   );
 };

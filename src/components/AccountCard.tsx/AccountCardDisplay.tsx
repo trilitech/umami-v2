@@ -7,13 +7,14 @@ import { VscWand } from "react-icons/vsc";
 import { formatPkh } from "../../utils/format";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
+import colors from "../../style/colors";
 
 type Props = {
   onSend?: () => void;
   onReceive?: () => void;
   onBuyTez?: () => void;
   onDelegate?: () => void;
-  onCopyAddress?: () => void;
+  onCopyAddress?: (pkh: string) => void;
   label: string;
   pkh: string;
   tezBalance: number | null;
@@ -66,6 +67,10 @@ export const AccountCardDisplay: React.FC<Props> = ({
           ml={2}
           mr={4}
           as={MdCopyAll}
+          color={colors.gray[600]}
+          _hover={{
+            color: colors.gray[300],
+          }}
         />
       </Flex>
       {tezBalance !== null && (
