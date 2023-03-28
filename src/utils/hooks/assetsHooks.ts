@@ -1,20 +1,20 @@
+import { round } from "lodash";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { filterNulls, objectMap } from "../helpers";
 import { useAppSelector } from "../store/hooks";
+import { mutezToTez } from "../store/impureFormat";
 import { makeNft } from "../token/classify/classifyToken";
 import { useAccounts } from "./accountHooks";
-import { round } from "lodash";
-import { useGetAccountBalance, useTotalTezBalance } from "./accountHooks";
-import { mutezToTez } from "../store/impureFormat";
+import { getTotalBalance } from "./accountUtils";
 
 export const useSelectedNetwork = () => {
   return useAppSelector((s) => s.assets.network);
 };
 
 export const useAllNfts = () => {
-  const balances = useAppSelector((s) => s.assets.balances);
-  return objectMap(balances, (b) => filterNulls(b.tokens.map(makeNft)));
+  const allTokens = useAppSelector((s) => s.assets.balances.tokens);
+  return objectMap(allTokens, (tokens) => filterNulls(tokens.map(makeNft)));
 };
 
 export const useAllOperations = () =>
@@ -43,6 +43,7 @@ export const useAllOperationDisplays = () => {
 
   return result;
 };
+
 export const useConversionRate = () =>
   useAppSelector((s) => s.assets.conversionRate);
 
@@ -60,7 +61,7 @@ export const useGetDollarBalance = () => {
   const getAccountBalance = useGetAccountBalance();
 
   return (pkh: string) => {
-    const mutezBalance = getAccountBalance(pkh)?.tez;
+    const mutezBalance = getAccountBalance(pkh);
 
     if (mutezBalance == null || tezToDollar === null) {
       return null;
@@ -91,4 +92,19 @@ export const useTotalBalance = () => {
     tezBalance,
     dollarBalance,
   };
+};
+
+export const useGetAccountBalance = () => {
+  const balances = useAppSelector((s) => s.assets.balances.tez);
+
+  const balancesMap = new Map(Object.entries(balances));
+  return (pkh: string) => {
+    return balancesMap.get(pkh);
+  };
+};
+
+export const useTotalTezBalance = () => {
+  const balances = useAppSelector((s) => s.assets.balances.tez);
+
+  return getTotalBalance(balances);
 };

@@ -10,9 +10,9 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 export const NftList = () => {
-  const tokens = useAppSelector((s) => s.assets.balances);
+  const tokens = useAppSelector((s) => s.assets.balances.tokens);
 
-  const tokensList = Object.values(tokens).flatMap((b) => b.tokens);
+  const tokensList = Object.values(tokens).flat();
 
   return (
     <Tabs

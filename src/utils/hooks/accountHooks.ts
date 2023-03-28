@@ -1,7 +1,6 @@
 import accountsSlice from "../store/accountsSlice";
-import { balance } from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { getTotalBalance } from "./accountUtils";
+import { useGetAccountBalance } from "./assetsHooks";
 
 export const useAccounts = () => {
   return useAppSelector((s) => s.accounts.items);
@@ -14,25 +13,11 @@ export const useSelectedAccount = () => {
   return pkh === null ? null : accounts.find((a) => a.pkh === pkh);
 };
 
-export const useGetAccountBalance = () => {
-  const balances = useAppSelector((s) => s.assets.balances);
-
-  return (pkh: string) => {
-    return balances[pkh] as balance | undefined; // TODO fix this unsafeness
-  };
-};
-
 export const useSelectedAccountBalance = () => {
   const account = useSelectedAccount();
   const accountBalance = useGetAccountBalance();
 
   return account && accountBalance(account.pkh);
-};
-
-export const useTotalTezBalance = () => {
-  const balances = useAppSelector((s) => s.assets.balances);
-
-  return getTotalBalance(balances);
 };
 
 export const useReset = () => {
