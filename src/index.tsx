@@ -4,13 +4,13 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Router from "./Router";
 
-import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { store } from "./utils/store/store";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UmamiTheme } from "./providers/UmamiTheme";
+import { ReduxStore } from "./providers/ReduxStore";
 
 const queryClient = new QueryClient();
 
@@ -20,13 +20,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <UmamiTheme>
-      <Provider store={store}>
+      <ReduxStore>
         <PersistGate loading={null} persistor={persistStore(store)}>
           <QueryClientProvider client={queryClient}>
             <Router />
           </QueryClientProvider>
         </PersistGate>
-      </Provider>
+      </ReduxStore>
     </UmamiTheme>
   </React.StrictMode>
 );
