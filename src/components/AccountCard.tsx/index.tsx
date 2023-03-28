@@ -25,9 +25,6 @@ export const AccountCard = () => {
       label={account.label || ""}
       tezBalance={tez && mutezToTez(tez)}
       dollarBalance={dollarBalance}
-      onCopyAddress={(pkh: string) => {
-        navigator.clipboard.writeText(pkh);
-      }}
     />
   );
 };
