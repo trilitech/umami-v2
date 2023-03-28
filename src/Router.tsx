@@ -39,6 +39,7 @@ const loggedInRouter = createHashRouter([
     path: "/operations",
     element: withSideMenu(<OperationsView />),
   },
+
   {
     path: "/delegations",
     element: withSideMenu(<DelegationsView />),
