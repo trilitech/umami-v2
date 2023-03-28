@@ -8,6 +8,11 @@ import MockDate from "mockdate";
 import { TextDecoder, TextEncoder } from "util";
 
 MockDate.set("2023-03-27T14:15:09.760Z");
+
+jest.mock("react-identicons", () => {
+  return { default: (props: any) => props.children };
+});
+
 // Setup web crypto environment
 beforeAll(() => {
   const crypto = require("crypto");
