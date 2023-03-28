@@ -1,8 +1,12 @@
-import { Flex, FlexProps, Icon, Text } from "@chakra-ui/react";
+import { Flex, FlexProps, Icon, Text, useToast } from "@chakra-ui/react";
 import React from "react";
+import { BsCheckCircle } from "react-icons/bs";
 import { MdCopyAll } from "react-icons/md";
+import { RxCross1 } from "react-icons/rx";
 import colors from "../style/colors";
 import { formatPkh } from "../utils/format";
+
+const TOAST_ID = "TOAST_ID";
 
 export const CopyableAddress: React.FC<
   {
@@ -10,8 +14,24 @@ export const CopyableAddress: React.FC<
     copyable: boolean;
   } & FlexProps
 > = ({ pkh, copyable, ...rest }) => {
-  const copyToClipboard = (val: string) => {
-    navigator.clipboard.writeText(val);
+  const toast = useToast();
+  const onClickCopyIcon = async () => {
+    // Copy the address to clipboard.
+    await navigator.clipboard.writeText(pkh);
+    // Prevent duplicate toasts.
+    if (toast.isActive(TOAST_ID)) {
+      return;
+    }
+    toast({
+      id: TOAST_ID,
+      render: () => (
+        <ToastBody
+          onClose={() => {
+            toast.close(TOAST_ID);
+          }}
+        />
+      ),
+    });
   };
 
   return (
@@ -22,7 +42,7 @@ export const CopyableAddress: React.FC<
       {copyable && (
         <Icon
           cursor="pointer"
-          onClick={(_) => copyToClipboard(pkh)}
+          onClick={() => onClickCopyIcon()}
           color={colors.gray[600]}
           _hover={{
             color: colors.gray[300],
@@ -34,6 +54,35 @@ export const CopyableAddress: React.FC<
           as={MdCopyAll}
         />
       )}
+    </Flex>
+  );
+};
+
+const ToastBody: React.FC<{
+  onClose: () => void;
+}> = ({ onClose }) => {
+  return (
+    <Flex
+      p={2}
+      borderRadius="4px"
+      backgroundColor="white"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Flex alignItems="center">
+        <Icon color={colors.green} as={BsCheckCircle} m={1} />
+        <Text color="black">Address copied to clipboard</Text>
+      </Flex>
+
+      <Icon
+        color="black"
+        as={RxCross1}
+        cursor="pointer"
+        _hover={{
+          color: colors.gray[600],
+        }}
+        onClick={onClose}
+      />
     </Flex>
   );
 };
