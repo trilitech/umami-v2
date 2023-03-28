@@ -71,6 +71,7 @@ export const SendFormDisplay: React.FC<{
           <FormControl mb={2}>
             <FormLabel>Amount</FormLabel>
             <Input
+              step={"any"}
               type={"number"}
               //   type="password"
               {...register("amount", {
