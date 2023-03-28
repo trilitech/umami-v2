@@ -46,7 +46,7 @@ export const useAllOperationDisplays = () => {
 export const useConversionRate = () =>
   useAppSelector((s) => s.assets.conversionRate);
 
-export const useTezToDollar = () => {
+const useTezToDollar = () => {
   const rate = useConversionRate();
   if (rate === null) {
     return null;
@@ -62,11 +62,7 @@ export const useGetDollarBalance = () => {
   return (pkh: string) => {
     const mutezBalance = getAccountBalance(pkh)?.tez;
 
-    if (
-      mutezBalance === null ||
-      mutezBalance === undefined ||
-      tezToDollar === null
-    ) {
+    if (mutezBalance == null || tezToDollar === null) {
       return null;
     }
 
@@ -86,10 +82,10 @@ export const useTotalBalance = () => {
     return null;
   }
 
-  let dollarBalance = null;
-  if (tezToDollar !== null && tezBalance !== null) {
-    dollarBalance = tezToDollar(tezBalance);
-  }
+  const dollarBalance =
+    tezToDollar !== null && tezBalance !== null
+      ? tezToDollar(tezBalance)
+      : null;
 
   return {
     tezBalance,
