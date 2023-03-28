@@ -12,7 +12,5 @@ export type UnencryptedAccount = Base & {
 export type Account = Base & {
   seedFingerPrint?: string;
   label?: string;
-  pkh: string;
-  pk: string;
   esk: UmamiEncrypted;
 };
