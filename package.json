@@ -59,6 +59,7 @@
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "TZ='CET' && react-scripts test --verbose",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
