@@ -91,22 +91,19 @@ const assetsSlice = createSlice({
       }: { type: string; payload: TezBalancePayload[] | TokenBalancePayload[] }
     ) => {
       const tezBalancePayloads = payload;
-      const newBalances = { ...state.balances };
 
       tezBalancePayloads.forEach((payload) => {
         if ("tez" in payload) {
           const existing = state.balances.tez;
-          state.balances.tez = { ...existing, [payload.pkh]: payload.tez };
+          const newTezBalances = { ...existing, [payload.pkh]: payload.tez };
+          state.balances.tez = newTezBalances;
           return;
         }
-        const existing = state.balances.tokens;
-        state.balances.tokens = {
-          ...existing,
-          [payload.pkh]: payload.tokens,
-        };
-      });
 
-      state.balances = newBalances;
+        const existing = state.balances.tokens;
+        const newTokens = { ...existing, [payload.pkh]: payload.tokens };
+        state.balances.tokens = newTokens;
+      });
     },
     updateConversionRate: (
       state,
