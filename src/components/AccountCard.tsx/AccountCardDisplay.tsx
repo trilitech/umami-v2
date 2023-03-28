@@ -7,13 +7,14 @@ import { VscWand } from "react-icons/vsc";
 import { formatPkh } from "../../utils/format";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
+import colors from "../../style/colors";
 
 type Props = {
   onSend?: () => void;
   onReceive?: () => void;
   onBuyTez?: () => void;
   onDelegate?: () => void;
-  onCopyAddress?: () => void;
+  onCopyAddress?: (pkh: string) => void;
   label: string;
   pkh: string;
   tezBalance: number | null;
@@ -61,6 +62,10 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <Icon
           cursor="pointer"
           onClick={(_) => onCopyAddress(pkh)}
+          color={colors.gray[600]}
+          _hover={{
+            color: colors.gray[300],
+          }}
           w={4}
           h={4}
           ml={2}
