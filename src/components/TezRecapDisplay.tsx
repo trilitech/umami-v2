@@ -11,7 +11,7 @@ export const TezRecapDisplay: React.FC<{
       <Heading size={"md"}>{`${props.tezBalance} ꜩ`}</Heading>
       {props.dollarBalance !== null && (
         <Text size={"sm"} color="umami.gray.400">
-          ${props.dollarBalance}
+          ${props.dollarBalance.toFixed(2)}
         </Text>
       )}
     </Box>
