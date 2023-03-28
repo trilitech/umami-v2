@@ -21,13 +21,13 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
   const { items: accounts, selected } = useAppSelector((s) => s.accounts);
   const dispatch = useAppDispatch();
 
-  const balances = useAppSelector((s) => s.assets.balances);
+  const balances = useAppSelector((s) => s.assets.balances.tez);
 
   return (
     <Box>
       <Header />
       {accounts.map((a) => {
-        const balance = balances[a.pkh]?.tez;
+        const balance = balances[a.pkh];
         return (
           <AccountTile
             selected={a.pkh === selected}

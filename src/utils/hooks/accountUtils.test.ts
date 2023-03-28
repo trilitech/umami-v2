@@ -4,18 +4,9 @@ import { getTotalBalance } from "./accountUtils";
 describe("getTotalBalance", () => {
   test("getTotalBalance returns the right value", () => {
     const result = getTotalBalance({
-      foo: {
-        tez: new BigNumber(40),
-        tokens: [],
-      },
-      bar: {
-        tez: null,
-        tokens: [],
-      },
-      baz: {
-        tez: new BigNumber(60),
-        tokens: [],
-      },
+      foo: new BigNumber(40),
+      bar: null,
+      baz: new BigNumber(60),
     });
 
     expect(result).toEqual(new BigNumber(100));
@@ -25,14 +16,8 @@ describe("getTotalBalance", () => {
     expect(getTotalBalance({})).toEqual(null);
     expect(
       getTotalBalance({
-        foo: {
-          tokens: [],
-          tez: null,
-        },
-        bar: {
-          tokens: [],
-          tez: null,
-        },
+        foo: null,
+        bar: null,
       })
     ).toEqual(null);
   });

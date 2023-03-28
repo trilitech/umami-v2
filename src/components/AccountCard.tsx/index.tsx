@@ -17,7 +17,7 @@ export const AccountCard = () => {
   }
 
   const balance = accountBalance(account.pkh);
-  const tez = balance ? balance.tez : null;
+  const tez = balance || null;
   const dollarBalance = getDollarBalance(account.pkh);
 
   return (

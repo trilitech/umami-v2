@@ -6,15 +6,13 @@ import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
 
-export type balance = {
-  tez: BigNumber | null;
-  tokens: Token[];
-};
-
 // Use Record and not Map because Redux state has to be serializable
 type State = {
   network: TezosNetwork;
-  balances: Record<string, balance>;
+  balances: {
+    tez: Record<string, BigNumber | null>;
+    tokens: Record<string, Token[]>;
+  };
   operations: {
     tez: Record<string, TezTransfer[]>;
     tokens: Record<string, TokenTransfer[]>;
@@ -34,14 +32,12 @@ export type TokenTransfersPayload = {
 };
 export type ConversionRatePayload = { rate: State["conversionRate"] };
 
-const initialBalance: balance = {
-  tez: null,
-  tokens: [],
-};
-
 const initialState: State = {
   network: TezosNetwork.MAINNET,
-  balances: {},
+  balances: {
+    tez: {},
+    tokens: {},
+  },
   operations: { tez: {}, tokens: {} },
   conversionRate: null,
 };
@@ -98,14 +94,16 @@ const assetsSlice = createSlice({
       const newBalances = { ...state.balances };
 
       tezBalancePayloads.forEach((payload) => {
-        const pkh = payload.pkh;
-        const existing = newBalances[pkh] || initialBalance;
-
         if ("tez" in payload) {
-          newBalances[pkh] = { ...existing, tez: payload.tez };
-        } else {
-          newBalances[pkh] = { ...existing, tokens: payload.tokens };
+          const existing = state.balances.tez;
+          state.balances.tez = { ...existing, [payload.pkh]: payload.tez };
+          return;
         }
+        const existing = state.balances.tokens;
+        state.balances.tokens = {
+          ...existing,
+          [payload.pkh]: payload.tokens,
+        };
       });
 
       state.balances = newBalances;

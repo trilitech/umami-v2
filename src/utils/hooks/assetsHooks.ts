@@ -2,7 +2,6 @@ import { round } from "lodash";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { filterNulls, objectMap } from "../helpers";
-import { balance } from "../store/assetsSlice";
 import { useAppSelector } from "../store/hooks";
 import { mutezToTez } from "../store/impureFormat";
 import { makeNft } from "../token/classify/classifyToken";
@@ -14,8 +13,8 @@ export const useSelectedNetwork = () => {
 };
 
 export const useAllNfts = () => {
-  const balances = useAppSelector((s) => s.assets.balances);
-  return objectMap(balances, (b) => filterNulls(b.tokens.map(makeNft)));
+  const allTokens = useAppSelector((s) => s.assets.balances.tokens);
+  return objectMap(allTokens, (tokens) => filterNulls(tokens.map(makeNft)));
 };
 
 export const useAllOperations = () =>
@@ -62,7 +61,7 @@ export const useGetDollarBalance = () => {
   const getAccountBalance = useGetAccountBalance();
 
   return (pkh: string) => {
-    const mutezBalance = getAccountBalance(pkh)?.tez;
+    const mutezBalance = getAccountBalance(pkh);
 
     if (mutezBalance == null || tezToDollar === null) {
       return null;
@@ -96,15 +95,16 @@ export const useTotalBalance = () => {
 };
 
 export const useGetAccountBalance = () => {
-  const balances = useAppSelector((s) => s.assets.balances);
+  const balances = useAppSelector((s) => s.assets.balances.tez);
 
+  const balancesMap = new Map(Object.entries(balances));
   return (pkh: string) => {
-    return balances[pkh] as balance | undefined; // TODO fix this unsafeness
+    return balancesMap.get(pkh);
   };
 };
 
 export const useTotalTezBalance = () => {
-  const balances = useAppSelector((s) => s.assets.balances);
+  const balances = useAppSelector((s) => s.assets.balances.tez);
 
   return getTotalBalance(balances);
 };
