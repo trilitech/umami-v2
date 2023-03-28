@@ -1,19 +1,21 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
+import { useAccounts } from "./hooks/accountHooks";
+import { useSelectedNetwork } from "./hooks/assetsHooks";
 import assetsSlice, {
   TezBalancePayload,
   TezTransfersPayload,
   TokenBalancePayload,
   TokenTransfersPayload,
 } from "./store/assetsSlice";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { useAppDispatch } from "./store/hooks";
 import {
   getBalance,
-  getTezTransfers,
-  getTokenTransfers,
   getTezosPriceInUSD,
+  getTezTransfers,
   getTokens,
+  getTokenTransfers,
 } from "./tezos";
 
 // TODO: refactor with less repetitions
@@ -55,8 +57,8 @@ const CONVERSION_RATE_REFRESH_RATE = 300000;
 
 export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
-  const accounts = useAppSelector((s) => s.accounts.items);
-  const network = useAppSelector((s) => s.assets.network);
+  const accounts = useAccounts();
+  const network = useSelectedNetwork();
   const pkhs = accounts.map((a) => a.pkh);
 
   const tezQuery = useQuery("tezBalance", {

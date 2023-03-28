@@ -1,11 +1,11 @@
 import { TezosNetwork } from "@airgap/tezos";
-import React from "react";
+import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import assetsSlice from "../../utils/store/assetsSlice";
-import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
+import { useAppDispatch } from "../../utils/store/hooks";
 import { NetworkSelectorDisplay } from "./NetworkSelectorDisplay";
 
 export const NetworkSelector = () => {
-  const network = useAppSelector((s) => s.assets.network);
+  const network = useSelectedNetwork();
   const dispatch = useAppDispatch();
 
   const changeNetwork = (network: TezosNetwork) => {

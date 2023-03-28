@@ -2,12 +2,12 @@ import React from "react";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import Home from "./Home";
 import ImportSeed from "./ImportSeed";
-import { useAppSelector } from "./utils/store/hooks";
+import { useAccounts } from "./utils/hooks/accountHooks";
 import { useAssetsPolling } from "./utils/useAssetsPolling";
-import { withSideMenu } from "./views/withSideMenu";
 import NFTsView from "./views/nfts/NftsView";
-import SettingsView from "./views/settings/SettingsView";
 import OperationsView from "./views/operations/OperationsView";
+import SettingsView from "./views/settings/SettingsView";
+import { withSideMenu } from "./views/withSideMenu";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -59,7 +59,7 @@ const LoggedInRouterWithPolling = () => {
 };
 
 const Router = () => {
-  const isLoggedIn = useAppSelector((s) => s.accounts).items.length !== 0;
+  const isLoggedIn = useAccounts().length !== 0;
 
   return isLoggedIn ? (
     <LoggedInRouterWithPolling />
