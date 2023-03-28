@@ -16,7 +16,7 @@ export const CopyableAddress: React.FC<
 
   return (
     <Flex alignItems="center" {...rest}>
-      <Text size="sm" color={"text.dark"}>
+      <Text size="sm" color={colors.gray[400]}>
         {formatPkh(pkh)}
       </Text>
       {copyable && (
