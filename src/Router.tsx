@@ -8,6 +8,7 @@ import NFTsView from "./views/nfts/NftsView";
 import OperationsView from "./views/operations/OperationsView";
 import SettingsView from "./views/settings/SettingsView";
 import { withSideMenu } from "./views/withSideMenu";
+import HelpView from "./views/help/HelpView";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -27,10 +28,17 @@ const loggedInRouter = createHashRouter([
     path: "/settings",
     element: withSideMenu(<SettingsView />),
   },
+
+  {
+    path: "/help",
+    element: withSideMenu(<HelpView />),
+  },
+
   {
     path: "/operations",
     element: withSideMenu(<OperationsView />),
   },
+
   {
     path: "/",
     element: withSideMenu(<Home />),

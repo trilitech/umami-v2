@@ -82,7 +82,11 @@ const BottomIems = () => {
         label="Settings"
         icon={MdOutlineSettings}
       />
-      <MenuItem label="Help" icon={MdSupport} />
+      <MenuItem
+        onClick={() => navigate("/help")}
+        label="Help"
+        icon={MdSupport}
+      />
     </Box>
   );
 };
