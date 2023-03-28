@@ -1,12 +1,13 @@
+import { round } from "lodash";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { filterNulls, objectMap } from "../helpers";
+import { balance } from "../store/assetsSlice";
 import { useAppSelector } from "../store/hooks";
+import { mutezToTez } from "../store/impureFormat";
 import { makeNft } from "../token/classify/classifyToken";
 import { useAccounts } from "./accountHooks";
-import { round } from "lodash";
-import { useGetAccountBalance, useTotalTezBalance } from "./accountHooks";
-import { mutezToTez } from "../store/impureFormat";
+import { getTotalBalance } from "./accountUtils";
 
 export const useSelectedNetwork = () => {
   return useAppSelector((s) => s.assets.network);
@@ -43,6 +44,7 @@ export const useAllOperationDisplays = () => {
 
   return result;
 };
+
 export const useConversionRate = () =>
   useAppSelector((s) => s.assets.conversionRate);
 
@@ -91,4 +93,18 @@ export const useTotalBalance = () => {
     tezBalance,
     dollarBalance,
   };
+};
+
+export const useGetAccountBalance = () => {
+  const balances = useAppSelector((s) => s.assets.balances);
+
+  return (pkh: string) => {
+    return balances[pkh] as balance | undefined; // TODO fix this unsafeness
+  };
+};
+
+export const useTotalTezBalance = () => {
+  const balances = useAppSelector((s) => s.assets.balances);
+
+  return getTotalBalance(balances);
 };
