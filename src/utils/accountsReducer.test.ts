@@ -1,20 +1,10 @@
-import { Account } from "../types/Account";
-import { UmamiEncrypted } from "../types/UmamiEncrypted";
+import { mockAccount } from "../mocks/factories";
 import accountsSlice from "./store/accountsSlice";
 
 import { store } from "./store/store";
 const {
   actions: { add, reset, setSelected },
 } = accountsSlice;
-
-const mockAccount = (index: number): Account => {
-  return {
-    label: `account ${index}`,
-    pkh: `mockPkh ${index}`,
-    pk: `mockPk ${index}`,
-    esk: {} as UmamiEncrypted,
-  };
-};
 
 afterEach(() => {
   store.dispatch(reset());
