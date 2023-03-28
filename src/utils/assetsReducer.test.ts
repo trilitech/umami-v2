@@ -231,6 +231,7 @@ describe("Assets reducer", () => {
     );
 
     expect(store.getState().assets).toEqual({
+      conversionRate: null,
       balances: {},
       network: "mainnet",
       operations: {
@@ -256,6 +257,7 @@ describe("Assets reducer", () => {
     );
 
     expect(store.getState().assets).toEqual({
+      conversionRate: null,
       balances: {},
       network: "mainnet",
       operations: {
@@ -282,6 +284,7 @@ describe("Assets reducer", () => {
     );
 
     expect(store.getState().assets).toEqual({
+      conversionRate: null,
       balances: {},
       network: "mainnet",
       operations: {
@@ -307,6 +310,7 @@ describe("Assets reducer", () => {
     );
 
     expect(store.getState().assets).toEqual({
+      conversionRate: null,
       balances: {},
       network: "mainnet",
       operations: {
