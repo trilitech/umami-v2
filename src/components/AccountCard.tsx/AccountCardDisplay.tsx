@@ -1,19 +1,18 @@
-import { Box, Flex, Heading, Icon, IconButton, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import React from "react";
-import { MdArrowOutward, MdCopyAll, MdSouthWest } from "react-icons/md";
+import { MdArrowOutward, MdSouthWest } from "react-icons/md";
 
 import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
-import { formatPkh } from "../../utils/format";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
+import { CopyableAddress } from "../CopyableAddress";
 
 type Props = {
   onSend?: () => void;
   onReceive?: () => void;
   onBuyTez?: () => void;
   onDelegate?: () => void;
-  onCopyAddress?: () => void;
   label: string;
   pkh: string;
   tezBalance: number | null;
@@ -43,7 +42,6 @@ export const AccountCardDisplay: React.FC<Props> = ({
   onReceive = () => {},
   onBuyTez = () => {},
   onDelegate = () => {},
-  onCopyAddress = (pkh: string) => {},
   label,
   tezBalance,
   dollarBalance,
@@ -54,20 +52,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
       <Heading mt={4} mb={2} size={"md"}>
         {label}
       </Heading>
-      <Flex mb={4} alignItems="center">
-        <Text size="sm" color={"text.dark"}>
-          {formatPkh(pkh)}
-        </Text>
-        <Icon
-          cursor="pointer"
-          onClick={(_) => onCopyAddress(pkh)}
-          w={4}
-          h={4}
-          ml={2}
-          mr={4}
-          as={MdCopyAll}
-        />
-      </Flex>
+      <CopyableAddress pkh={pkh} mb={4} />
       {tezBalance !== null && (
         <TezRecapDisplay
           center

@@ -4,22 +4,20 @@ import React from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsArrowDownLeft, BsArrowUpRight } from "react-icons/bs";
 import colors from "../style/colors";
-import { formatPkh } from "../utils/format";
 
 import { OperationDisplay } from "../types/Operation";
 import { getIsInbound } from "../views/operations/operationsUtils";
+import { CopyableAddress } from "./CopyableAddress";
 
 const darkColor = "umami.gray.500";
 
 const renderFromTo = (address: string, isInbound: boolean) => {
   return (
-    <Flex>
+    <Flex alignItems="center">
       <Heading color={"text.dark"} size="sm" mr={2}>
         {`${isInbound ? "From:" : "Sent to:"} `}
       </Heading>
-      <Heading color={"text.dark"} size="sm">
-        {address}
-      </Heading>
+      <CopyableAddress pkh={address} />
     </Flex>
   );
 };
@@ -28,9 +26,7 @@ export const OperationTile: React.FC<{
   operation: OperationDisplay;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }> = ({ operation, onClick = () => {} }) => {
-  const { amount, status, prettyTimestamp } = operation;
-  const from = formatPkh(operation.sender);
-  const to = formatPkh(operation.recipient);
+  const { amount, status, prettyTimestamp, sender, recipient } = operation;
   const success = status === AirGapTransactionStatus.APPLIED;
   // TODO refactor this
   const isInbound = getIsInbound(amount.prettyDisplay);
@@ -62,7 +58,7 @@ export const OperationTile: React.FC<{
           </Text>
         </Flex>
         <Flex justifyContent={"space-between"}>
-          {renderFromTo(isInbound ? from : to, isInbound)}
+          {renderFromTo(isInbound ? sender : recipient, isInbound)}
           {success && (
             //TODO handle pending and failed
             <Icon
