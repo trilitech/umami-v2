@@ -10,15 +10,15 @@ import {
 import React from "react";
 import { NFT } from "../../types/Asset";
 
-const NFTCard: React.FC<{ nft: NFT }> = ({ nft }) => {
-  const url = nft.metadata.displayUri.replace(
-    "ipfs://",
-    "https://ipfs.io/ipfs/"
-  );
+const NFTCard: React.FC<{ nft: NFT; onClick: () => void }> = ({
+  nft,
+  onClick,
+}) => {
+  const url = nft.metadata.displayUri;
   const name = nft.metadata.name;
 
   return (
-    <Card cursor={"pointer"}>
+    <Card cursor={"pointer"} data-testid="nft-card" onClick={onClick}>
       <CardBody bg="umami.gray.900" borderRadius={4}>
         <AspectRatio width={"100%"} ratio={4 / 4}>
           <Image width="100%" src={url} />
@@ -35,11 +35,20 @@ const NFTCard: React.FC<{ nft: NFT }> = ({ nft }) => {
   );
 };
 
-export const NFTGallery: React.FC<{ nfts: NFT[] }> = ({ nfts }) => {
+export const NFTGallery: React.FC<{
+  nfts: NFT[];
+  onSelect: (nft: NFT) => void;
+}> = ({ nfts, onSelect }) => {
   return (
     <SimpleGrid columns={4} spacing={4} overflow="scroll">
       {nfts.map((nft, i) => {
-        return <NFTCard key={i + nft.contract} nft={nft} />;
+        return (
+          <NFTCard
+            onClick={() => onSelect(nft)}
+            key={i + nft.contract}
+            nft={nft}
+          />
+        );
       })}
     </SimpleGrid>
   );

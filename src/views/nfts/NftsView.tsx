@@ -1,11 +1,25 @@
-import { Box, Flex } from "@chakra-ui/react";
-import React from "react";
+import {
+  AspectRatio,
+  Box,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerOverlay,
+  Flex,
+  Heading,
+  Image,
+  useDisclosure,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
 import { TbFilter } from "react-icons/tb";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
+import { NFT } from "../../types/Asset";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
+import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTGallery from "./NFTGallery";
 
 export const FilterController: React.FC = () => {
@@ -18,17 +32,53 @@ export const FilterController: React.FC = () => {
   );
 };
 
+const NFTDrawerCard = ({ nft }: { nft: NFT }) => (
+  <Box>
+    <AspectRatio width={"100%"} ratio={4 / 4}>
+      <Image width="100%" src={nft.metadata.displayUri} />
+    </AspectRatio>
+    <Heading mt={4} size="lg">
+      {nft.metadata.name}
+    </Heading>
+
+    <Button mt={4} bg="umami.blue" onClick={(_) => {}}>
+      Send
+    </Button>
+  </Box>
+);
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
   const allNfts = Object.values(nfts).flat();
+  const [selectedNft, setSelectedNft] = useState<NFT>();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <Flex direction="column" height={"100%"}>
       <TopBar title="NFTs" />
       <FilterController />
       <Box overflow={"scroll"}>
-        <NFTGallery nfts={allNfts} />
+        <NFTGallery
+          onSelect={(nft) => {
+            onOpen();
+            setSelectedNft(nft);
+          }}
+          nfts={allNfts}
+        />
       </Box>
+
+      <Drawer placement="right" onClose={onClose} size="md" isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent bg="umami.gray.900">
+          <DrawerBody>
+            <DrawerTopButtons
+              onPrevious={() => {}}
+              onNext={() => {}}
+              onClose={onClose}
+            />
+            {selectedNft && <NFTDrawerCard nft={selectedNft} />}
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Flex>
   );
 };
