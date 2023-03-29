@@ -90,7 +90,7 @@ export const SendFormDisplay: React.FC<{
 
           {!!nft ? <SendNFTDisplay nft={nft} /> : null}
 
-          <FormControl mb={2}>
+          <FormControl mb={2} mt={2}>
             <FormLabel>Amount</FormLabel>
             <Input
               step={isNFT ? 1 : "any"}
