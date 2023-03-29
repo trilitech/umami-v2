@@ -1,5 +1,3 @@
-import { useAppSelector } from "../../utils/store/hooks";
-
 import {
   AspectRatio,
   Box,
@@ -9,11 +7,11 @@ import {
   TabList,
   Tabs,
 } from "@chakra-ui/react";
-import { getIPFSurl } from "../../utils/token/nftUtils";
+import { useAllNfts } from "../../utils/hooks/assetsHooks";
 export const NftList = () => {
-  const tokens = useAppSelector((s) => s.assets.balances.tokens);
+  const nfts = useAllNfts();
 
-  const tokensList = Object.values(tokens).flat();
+  const allOwnedNfts = Object.values(nfts).flat();
 
   return (
     <Tabs
@@ -31,13 +29,10 @@ export const NftList = () => {
       </TabList>
       <Box overflow={"scroll"} p={4}>
         <SimpleGrid columns={4} spacing={4}>
-          {tokensList.map((t, i) => {
-            const displayUri = t.token?.metadata?.displayUri;
-
-            const url = displayUri && getIPFSurl(displayUri);
+          {allOwnedNfts.map((nft, i) => {
             return (
-              <AspectRatio key={t.id} width={"100%"} ratio={4 / 4}>
-                <Image width="100%" height={40} src={url} />
+              <AspectRatio key={nft.contract + i} width={"100%"} ratio={4 / 4}>
+                <Image width="100%" height={40} src={nft.metadata.displayUri} />
               </AspectRatio>
             );
           })}
