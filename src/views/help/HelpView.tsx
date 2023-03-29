@@ -12,7 +12,7 @@ import { FiExternalLink } from "react-icons/fi";
 import React from "react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import { CopyableText } from "../../components/CopyableAddress";
+import CopyableText from "../../components/CopyableText";
 
 export default function HelpView() {
   return (
