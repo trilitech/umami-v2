@@ -34,6 +34,7 @@ export const AccountSelector: React.FC<{
   return (
     <Menu>
       <MenuButton
+        data-testid="account-selector"
         onChange={(a) => {
           console.log(a.target);
         }}

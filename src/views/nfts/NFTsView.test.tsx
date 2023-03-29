@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { mockNFTToken, mockPkh } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import assetsSlice from "../../utils/store/assetsSlice";

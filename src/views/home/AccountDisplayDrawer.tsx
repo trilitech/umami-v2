@@ -9,6 +9,7 @@ import AccountCard from "../../components/AccountCard.tsx";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { DrawerTopButtons } from "./DrawerTopButtons";
+import { useSendFormModal } from "./useSendFormModal";
 
 const AccountDisplayDrawer: React.FC<{
   initiator: (onOpen: () => void) => React.ReactElement;
@@ -16,6 +17,7 @@ const AccountDisplayDrawer: React.FC<{
   const dispatch = useAppDispatch();
 
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
+
   const handleClose = () => {
     dispatch(accountsSlice.actions.setSelected(null));
     closeDrawer();

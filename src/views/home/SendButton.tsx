@@ -1,8 +1,8 @@
-import { Button, Modal, useDisclosure } from "@chakra-ui/react";
-import SendForm from "../../components/sendForm";
+import { Button } from "@chakra-ui/react";
+import { useSendFormModal } from "./useSendFormModal";
 
 const SendButton = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { modalElement, onOpen } = useSendFormModal();
 
   return (
     <>
@@ -10,9 +10,7 @@ const SendButton = () => {
         Send
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <SendForm />
-      </Modal>
+      {modalElement}
     </>
   );
 };
