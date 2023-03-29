@@ -1,7 +1,8 @@
 import { Account } from "../types/Account";
+import { NFT } from "../types/Asset";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
-import { UmamiEncrypted } from "../types/UmamiEncrypted";
 import { Token } from "../types/Token";
+import { UmamiEncrypted } from "../types/UmamiEncrypted";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -34,6 +35,9 @@ export const mockAccount = (index: number): Account => {
   };
 };
 
+const mockContract = (index: number) =>
+  `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`;
+
 export const mockNFTToken = (
   index: number,
   pkh: string,
@@ -47,7 +51,7 @@ export const mockNFTToken = (
     token: {
       id: 10899466223617,
       contract: {
-        address: `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`,
+        address: mockContract(index),
       },
       tokenId: "3",
       standard: "fa2",
@@ -69,4 +73,20 @@ export const mockNFTToken = (
     },
     balance: String(balance),
   } as Token;
+};
+
+export const mockNFT = (index: number, balance = "1"): NFT => {
+  return {
+    owner: mockPkh(index),
+    balance,
+    contract: mockContract(index),
+    metadata: {
+      displayUri:
+        "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" +
+        index,
+      name: "Tezzardz #" + index,
+      symbol: "FKR" + index,
+    },
+    tokenId: "mockId" + index,
+  };
 };

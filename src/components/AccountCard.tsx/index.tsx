@@ -12,7 +12,7 @@ export const AccountCard = () => {
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
 
-  const { modalElement, onOpen } = useSendFormModal(account?.pkh);
+  const { modalElement, onOpen } = useSendFormModal({ sender: account?.pkh });
 
   if (!account) {
     return null;
