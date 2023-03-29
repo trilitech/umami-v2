@@ -6,7 +6,7 @@ import { getIPFSurl } from "../nftUtils";
 /**
  * Runtime validations with zod
  */
-const contract = z.object({ address: z.string() });
+const address = z.object({ address: z.string() });
 const balance = z.string();
 const tokenId = z.string();
 
@@ -15,7 +15,7 @@ const getFA1Required = (input: Token) => {
     balance,
     token: z.object({
       standard: z.string().regex(/fa1\.2/i),
-      contract,
+      contract: address,
     }),
   });
 
@@ -32,8 +32,8 @@ const getFA2TokenRequired = (input: Token) => {
     balance,
     token: z.object({
       standard: z.string().regex(/fa2/i),
-      contract,
       tokenId,
+      contract: address,
     }),
   });
 
@@ -52,10 +52,11 @@ const getFA2TokenRequired = (input: Token) => {
 const getNFTRequired = (input: Token) => {
   const NFT = z.object({
     balance,
+    account: address,
     token: z.object({
       standard: z.string().regex(/fa2/i),
-      contract,
       tokenId,
+      contract: address,
       metadata: z.object({
         displayUri: z.string(),
       }),
@@ -70,6 +71,7 @@ const getNFTRequired = (input: Token) => {
       balance: result.balance,
       tokenId: result.token.tokenId,
       displayUri: result.token.metadata.displayUri,
+      owner: result.account.address,
     };
   } catch (error) {
     return null;

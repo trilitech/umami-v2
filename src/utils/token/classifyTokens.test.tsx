@@ -36,15 +36,16 @@ describe("ClassifyToken", () => {
   test("case valid nft", () => {
     const result = classifyToken(nft);
     const expected: NFT = {
+      owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       balance: "0",
       contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-      tokenId: "3",
       metadata: {
         displayUri:
           "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
         name: "Tezzardz #10",
         symbol: "FKR",
       },
+      tokenId: "3",
     };
     expect(result).toEqual(expected);
   });
@@ -84,6 +85,7 @@ describe("ClassifyToken", () => {
           name: "Tezzardz #10",
           symbol: "FKR",
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "3",
       },
       {
@@ -95,6 +97,7 @@ describe("ClassifyToken", () => {
           name: "Tezzardz #12",
           symbol: "FKR",
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "4",
       },
       {
@@ -106,6 +109,7 @@ describe("ClassifyToken", () => {
           name: "Tezzardz #20",
           symbol: "FKR",
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "5",
       },
       {
@@ -117,6 +121,7 @@ describe("ClassifyToken", () => {
           name: "Tezzardz #24",
           symbol: "FKR",
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "6",
       },
       {
@@ -128,6 +133,7 @@ describe("ClassifyToken", () => {
           name: "Tezzardz #28",
           symbol: "FKR",
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "8",
       },
       {
@@ -139,6 +145,7 @@ describe("ClassifyToken", () => {
           name: "Ronald Reagan (L)",
           symbol: "POTUS40-L",
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "47",
       },
       {
@@ -150,6 +157,7 @@ describe("ClassifyToken", () => {
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "2",
       },
       {
@@ -161,6 +169,7 @@ describe("ClassifyToken", () => {
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "2",
       },
       {
@@ -172,6 +181,7 @@ describe("ClassifyToken", () => {
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "4",
       },
       {
@@ -183,6 +193,7 @@ describe("ClassifyToken", () => {
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "2",
       },
       {
@@ -194,10 +205,10 @@ describe("ClassifyToken", () => {
           name: "Paris Tezos Meetup Access Token",
           symbol: undefined,
         },
+        owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "2",
       },
     ];
-
     expect(result.some((el) => el === null)).toEqual(false);
     expect(result).toEqual(expected);
   });
