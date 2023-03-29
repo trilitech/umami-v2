@@ -2,7 +2,6 @@ import {
   AspectRatio,
   Box,
   Flex,
-  Icon,
   Image,
   Table,
   TableContainer,
@@ -16,9 +15,9 @@ import {
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
 import { TbFilter } from "react-icons/tb";
-import { TfiNewWindow } from "react-icons/tfi";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
+import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
 import { formatPkh } from "../../utils/format";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
@@ -103,9 +102,9 @@ export const OperationsDataTable: React.FC<{
                 <Td>
                   <Flex alignItems={"center"} justifyContent={"space-between"}>
                     <Text>{op.prettyTimestamp}</Text>
-                    <a href={op.tzktUrl} target="_blank" rel="noreferrer">
-                      <Icon ml={2} w={4} h={4} as={TfiNewWindow} />
-                    </a>
+                    {op.tzktUrl && (
+                      <TzktLink url={op.tzktUrl} ml={2} w={4} h={4} />
+                    )}
                   </Flex>
                 </Td>
               </Tr>
