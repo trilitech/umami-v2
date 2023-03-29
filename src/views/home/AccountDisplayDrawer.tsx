@@ -9,7 +9,6 @@ import AccountCard from "../../components/AccountCard.tsx";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { DrawerTopButtons } from "./DrawerTopButtons";
-import { useSendFormModal } from "./useSendFormModal";
 
 const AccountDisplayDrawer: React.FC<{
   initiator: (onOpen: () => void) => React.ReactElement;
