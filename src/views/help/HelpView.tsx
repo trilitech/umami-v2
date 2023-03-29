@@ -31,7 +31,7 @@ export default function HelpView() {
       <GridItem area={"header"}>
         <TopBar title="Help" />
       </GridItem>
-      <GridItem area={"main"}>
+      <GridItem area={"main"} mt={1}>
         <HelpCard title="Learn More">
           <HelpLinkRow
             about="Browse Articles"
@@ -117,13 +117,13 @@ const HelpCard: React.FC<{ title: string; children: React.ReactNode }> = ({
   children,
 }) => {
   return (
-    <Box marginY={5}>
+    <Box marginY={2}>
       <Flex>
         <Box w="550px">
           <Heading size="lg">{title}</Heading>
           <Card
-            p={1}
-            marginY={5}
+            paddingX={1}
+            marginY={2}
             bgColor={colors.gray[900]}
             borderRadius="lg"
             justifyContent="center"
