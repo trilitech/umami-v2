@@ -9,10 +9,10 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { FiExternalLink } from "react-icons/fi";
-import { MdLink } from "react-icons/md";
 import React from "react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
+import { CopyableText } from "../../components/CopyableAddress";
 
 export default function HelpView() {
   return (
@@ -50,11 +50,10 @@ export default function HelpView() {
           <Box>
             <Flex justifyContent="space-between" alignItems="center">
               <Heading size="sm">Contact our Support Team</Heading>
-              <Icon
-                cursor="pointer"
-                onClick={(_) => {}}
-                color={colors.gray[400]}
-                as={FiExternalLink}
+              <CopyableText
+                displayText="umami-support@trili.tech"
+                copyValue="umami-support@trili.tech"
+                toastMessage="Email address copied to clipboard"
               />
             </Flex>
 
@@ -98,10 +97,10 @@ const HelpLinkRow: React.FC<{
         )}
         <Icon
           cursor="pointer"
-          color={colors.gray[300]}
+          color={colors.gray[600]}
           as={FiExternalLink}
           _hover={{
-            color: colors.gray[600],
+            color: colors.gray[300],
           }}
           onClick={() => {
             window.open(link, "_blank");
