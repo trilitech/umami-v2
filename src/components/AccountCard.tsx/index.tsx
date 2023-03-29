@@ -4,12 +4,15 @@ import {
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
 import { mutezToTez } from "../../utils/store/impureFormat";
+import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { AccountCardDisplay } from "./AccountCardDisplay";
 
 export const AccountCard = () => {
   const account = useSelectedAccount();
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
+
+  const { modalElement, onOpen } = useSendFormModal(account?.pkh);
 
   if (!account) {
     return null;
@@ -20,12 +23,16 @@ export const AccountCard = () => {
   const dollarBalance = getDollarBalance(account.pkh);
 
   return (
-    <AccountCardDisplay
-      pkh={account.pkh}
-      label={account.label || ""}
-      tezBalance={tez && mutezToTez(tez)}
-      dollarBalance={dollarBalance}
-    />
+    <>
+      <AccountCardDisplay
+        onSend={() => onOpen()}
+        pkh={account.pkh}
+        label={account.label || ""}
+        tezBalance={tez && mutezToTez(tez)}
+        dollarBalance={dollarBalance}
+      />
+      {modalElement}
+    </>
   );
 };
 

@@ -22,10 +22,12 @@ type Props = {
 const RoundButton: React.FC<{
   label: string;
   icon: any;
-}> = ({ icon, label }) => {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}> = ({ icon, label, onClick = (_) => {} }) => {
   return (
     <Box textAlign="center" ml={4} mr={4}>
       <IconButton
+        onClick={onClick}
         borderRadius={"50%"}
         aria-label="Search database"
         icon={icon}
@@ -61,7 +63,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
         />
       )}
       <Flex mt={6}>
-        <RoundButton label="Send" icon={<MdArrowOutward />} />
+        <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
         <RoundButton label="Receive" icon={<MdSouthWest />} />
         <RoundButton label="Buy tez" icon={<FiPlus />} />
         <RoundButton label="Delegate" icon={<VscWand />} />

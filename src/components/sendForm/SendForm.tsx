@@ -15,7 +15,7 @@ const getKeys = (pkh: string, accounts: Account[]) => {
   return account && { esk: account.esk, pk: account.pk };
 };
 
-export const SendForm = () => {
+export const SendForm = ({ sender }: { sender?: string }) => {
   const accounts = useAccounts();
   const network = useSelectedNetwork();
   const toast = useToast();
@@ -68,6 +68,7 @@ export const SendForm = () => {
     <RecapDisplay onSucces={setHash} recap={{ ...estimation, network }} />
   ) : (
     <SendFormDisplay
+      sender={sender}
       isLoading={isLoading}
       accounts={accounts}
       onSubmit={simulate}

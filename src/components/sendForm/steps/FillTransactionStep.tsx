@@ -26,9 +26,11 @@ export const SendFormDisplay: React.FC<{
   accounts: Account[];
   onSubmit: (v: TezTransfer) => void;
   isLoading?: boolean;
-}> = ({ accounts, onSubmit, isLoading }) => {
+  sender?: string;
+}> = ({ accounts, onSubmit, isLoading, sender }) => {
   const { formState, control, register, handleSubmit } = useForm<TezTransfer>({
     mode: "onBlur",
+    defaultValues: { sender },
   });
   const { isValid } = formState;
   return (

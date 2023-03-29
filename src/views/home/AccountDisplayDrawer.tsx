@@ -16,6 +16,7 @@ const AccountDisplayDrawer: React.FC<{
   const dispatch = useAppDispatch();
 
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
+
   const handleClose = () => {
     dispatch(accountsSlice.actions.setSelected(null));
     closeDrawer();
