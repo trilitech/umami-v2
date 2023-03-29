@@ -11,9 +11,9 @@ const TOAST_ID = "TOAST_ID";
 export const CopyableAddress: React.FC<
   {
     pkh: string;
-    copyable: boolean;
+    copyable?: boolean;
   } & FlexProps
-> = ({ pkh, copyable, ...rest }) => {
+> = ({ pkh, copyable = true, ...rest }) => {
   const toast = useToast();
   const onClickCopyIcon = async () => {
     // Copy the address to clipboard.

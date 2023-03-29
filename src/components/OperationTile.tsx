@@ -17,7 +17,7 @@ const renderFromTo = (address: string, isInbound: boolean) => {
       <Heading color={"text.dark"} size="sm" mr={2}>
         {`${isInbound ? "From:" : "Sent to:"} `}
       </Heading>
-      <CopyableAddress pkh={address} copyable={true} />
+      <CopyableAddress pkh={address} />
     </Flex>
   );
 };

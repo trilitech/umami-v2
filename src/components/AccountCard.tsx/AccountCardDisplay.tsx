@@ -52,7 +52,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
       <Heading mt={4} mb={2} size={"md"}>
         {label}
       </Heading>
-      <CopyableAddress pkh={pkh} copyable={true} mb={4} />
+      <CopyableAddress pkh={pkh} mb={4} />
       {tezBalance !== null && (
         <TezRecapDisplay
           center
