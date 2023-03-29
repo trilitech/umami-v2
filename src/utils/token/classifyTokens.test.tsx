@@ -22,7 +22,7 @@ describe("ClassifyToken", () => {
     expect(result).toEqual({
       balance: "409412200",
       contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
-      id: 10898231001089,
+      tokenId: "1",
       metadata: { decimals: "5", name: "Klondike3", symbol: "KL3" },
     });
   });
@@ -38,7 +38,7 @@ describe("ClassifyToken", () => {
     const expected: NFT = {
       balance: "0",
       contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-      id: 10899466223617,
+      tokenId: "3",
       metadata: {
         displayUri:
           "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
@@ -66,135 +66,135 @@ describe("ClassifyToken", () => {
       {
         balance: "409412200",
         contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
-        id: 10898231001089,
         metadata: { decimals: "5", name: "Klondike3", symbol: "KL3" },
+        tokenId: "1",
       },
       {
         balance: "409412200",
         contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
-        id: 10898231001089,
         metadata: { decimals: "5", name: "Klondike3", symbol: "KL3" },
+        tokenId: "1",
       },
       {
         balance: "0",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        id: 10899466223617,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
           name: "Tezzardz #10",
           symbol: "FKR",
         },
+        tokenId: "3",
       },
       {
         balance: "0",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        id: 10899502923777,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/zdj7WaSoswEYY5hcis4i4ZLDXpsusu8FaJNf4LfYXDoviiRem",
           name: "Tezzardz #12",
           symbol: "FKR",
         },
+        tokenId: "4",
       },
       {
         balance: "0",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        id: 10899539623937,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/zdj7WVwx4CX5fK5sHmXhjTm5wG9nCrzSBy83CGNXJ78fAJmba",
           name: "Tezzardz #20",
           symbol: "FKR",
         },
+        tokenId: "5",
       },
       {
         balance: "1",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        id: 10899580518401,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
           name: "Tezzardz #24",
           symbol: "FKR",
         },
+        tokenId: "6",
       },
       {
         balance: "0",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        id: 10899657064449,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/zdj7Wc5siFbHn8EMrfGYiJrfe5fjqGrbJSvgjfr4oR4Rf9juV",
           name: "Tezzardz #28",
           symbol: "FKR",
         },
+        tokenId: "8",
       },
       {
         balance: "1",
         contract: "KT1P16Zn5i578uZhThHpcPtAhVuq7ZVsdnRn",
-        id: 67550012506113,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/QmYd7UqZiHtpR3Qc7XnC7NWUt1qxCN9aiwEf9aGF9iybBB/display/5040.png",
           name: "Ronald Reagan (L)",
           symbol: "POTUS40-L",
         },
+        tokenId: "47",
       },
       {
         balance: "1",
         contract: "KT1RifpSrfjPnKJFp89igVUccvpnWtsre2wD",
-        id: 82690241986561,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
+        tokenId: "2",
       },
       {
         balance: "1",
         contract: "KT1K1LMeToxBX4tPPAZKMR8hCQgw3hpLaoti",
-        id: 82687681363969,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/QmReoHBVcKAaHFi5n2ADiAJfaNiFhqxfJsRWGYe8ocozpT/image.png",
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
+        tokenId: "2",
       },
       {
         balance: "1",
         contract: "KT1K1LMeToxBX4tPPAZKMR8hCQgw3hpLaoti",
-        id: 82700684754945,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
+        tokenId: "4",
       },
       {
         balance: "1",
         contract: "KT18f225bFCeTt1AHLT5n7gTf3a8wv7iyEYC",
-        id: 82704303390721,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
+        tokenId: "2",
       },
       {
         balance: "1",
         contract: "KT1QhxBa4fep4vgyiB4MtjjqMdo21QHj2haG",
-        id: 99966347378689,
         metadata: {
           displayUri:
             "https://ipfs.io/ipfs/bafybeicet3ixylrqrn3mrxlbqiusznrsubr5qxyu7y3d64ewyvwohwa25a/image.png",
           name: "Paris Tezos Meetup Access Token",
           symbol: undefined,
         },
+        tokenId: "2",
       },
     ];
 

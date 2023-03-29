@@ -8,7 +8,7 @@ import { getIPFSurl } from "../nftUtils";
  */
 const contract = z.object({ address: z.string() });
 const balance = z.string();
-const id = z.number();
+const tokenId = z.string();
 
 const getFA1Required = (input: Token) => {
   const FA1 = z.object({
@@ -33,7 +33,7 @@ const getFA2TokenRequired = (input: Token) => {
     token: z.object({
       standard: z.string().regex(/fa2/i),
       contract,
-      id,
+      tokenId,
     }),
   });
 
@@ -42,7 +42,7 @@ const getFA2TokenRequired = (input: Token) => {
     return {
       contract: result.token.contract.address,
       balance: result.balance,
-      id: result.token.id,
+      tokenId: result.token.tokenId,
     };
   } catch (error) {
     return null;
@@ -55,7 +55,7 @@ const getNFTRequired = (input: Token) => {
     token: z.object({
       standard: z.string().regex(/fa2/i),
       contract,
-      id,
+      tokenId,
       metadata: z.object({
         displayUri: z.string(),
       }),
@@ -68,7 +68,7 @@ const getNFTRequired = (input: Token) => {
     return {
       contract: result.token.contract.address,
       balance: result.balance,
-      id: result.token.id,
+      tokenId: result.token.tokenId,
       displayUri: result.token.metadata.displayUri,
     };
   } catch (error) {

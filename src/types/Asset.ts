@@ -16,7 +16,10 @@ type NFTMetadata = {
 };
 
 export type FA12Token = TokenBase;
-export type FA2Token = TokenBase & { id: number; metadata: FA2TokenMetadata };
-export type NFT = TokenBase & { id: number; metadata: NFTMetadata };
+export type FA2Token = TokenBase & {
+  tokenId: string;
+  metadata: FA2TokenMetadata;
+};
+export type NFT = TokenBase & { tokenId: string; metadata: NFTMetadata };
 
 export type Asset = FA12Token | FA2Token | NFT;
