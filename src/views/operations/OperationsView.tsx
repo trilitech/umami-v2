@@ -17,10 +17,10 @@ import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
 import { TbFilter } from "react-icons/tb";
 import { TfiNewWindow } from "react-icons/tfi";
-import { CopyableAddress } from "../../components/CopyableAddress";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { OperationDisplay } from "../../types/Operation";
+import { formatPkh } from "../../utils/format";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import {
   getIsInbound,
@@ -97,12 +97,8 @@ export const OperationsDataTable: React.FC<{
                   </Flex>
                 </Td>
                 <Td>{op.fee}</Td>
-                <Td>
-                  <CopyableAddress pkh={op.sender} copyable={false} />
-                </Td>
-                <Td>
-                  <CopyableAddress pkh={op.recipient} copyable={false} />
-                </Td>
+                <Td>{formatPkh(op.sender)}</Td>
+                <Td>{formatPkh(op.recipient)}</Td>
                 <Td>{"ok"}</Td>
                 <Td>
                   <Flex alignItems={"center"} justifyContent={"space-between"}>
