@@ -1,14 +1,14 @@
-import { TezosIndexerClient, TezosNetwork } from "@airgap/tezos";
+import { TezosNetwork } from "@airgap/tezos";
 import { Signer, TezosToolkit } from "@taquito/taquito";
-import { Operation, TezTransfer, TokenTransfer } from "../types/Operation";
+import { TezTransfer, TokenTransfer } from "../types/Operation";
 
-import * as tzktApi from "@tzkt/sdk-api";
-import { Token } from "../types/Token";
-import { DummySigner } from "./dummySigner";
 import { InMemorySigner } from "@taquito/signer";
+import * as tzktApi from "@tzkt/sdk-api";
+import axios from "axios";
+import { Token } from "../types/Token";
 import { UmamiEncrypted } from "../types/UmamiEncrypted";
 import { decrypt } from "./aes";
-import axios from "axios";
+import { DummySigner } from "./dummySigner";
 
 let nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
@@ -32,28 +32,25 @@ export const addressExists = async (
   return !balance.isZero();
 };
 
-export const getBalance = async (
-  pkh: string,
-  network = TezosNetwork.MAINNET
+const makeToolkitWithSigner = async (
+  esk: UmamiEncrypted,
+  password: string,
+  network: TezosNetwork
 ) => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
+  const sk = await decrypt(esk, password);
+  Tezos.setProvider({
+    signer: new InMemorySigner(sk),
+  });
+  return Tezos;
+};
+
+/**
+ * Fetch balances
+ */
+export const getBalance = async (pkh: string, network: TezosNetwork) => {
+  const Tezos = new TezosToolkit(nodeUrls[network]);
   return Tezos.tz.getBalance(pkh);
-};
-
-const indexerClients = {
-  [TezosNetwork.GHOSTNET]: new TezosIndexerClient(
-    tzktUrls[TezosNetwork.GHOSTNET]
-  ),
-  [TezosNetwork.MAINNET]: new TezosIndexerClient(
-    tzktUrls[TezosNetwork.MAINNET]
-  ),
-};
-
-export const getOperations = (
-  pkh: string,
-  network = TezosNetwork.MAINNET
-): Promise<Operation> => {
-  return indexerClients[network].getTransactions(pkh);
 };
 
 export const getTokens = (pkh: string, network: TezosNetwork) =>
@@ -78,12 +75,47 @@ export async function getFingerPrint(seedPhrase: string) {
   return hashHex;
 }
 
-export const estimate = async (
-  network = TezosNetwork.MAINNET,
+type FA2TokenTransferParams = {
+  sender: string;
+  recipient: string;
+  contract: string;
+  tokenId: string;
+  amount: number;
+};
+
+/**
+ *  Contract factory
+ */
+const makeContract = async (
+  { sender, recipient, tokenId, amount, contract }: FA2TokenTransferParams,
+  toolkit: TezosToolkit
+) => {
+  const michelson = [
+    {
+      from_: sender,
+      txs: [
+        {
+          to_: recipient,
+          token_id: tokenId,
+          amount: amount,
+        },
+      ],
+    },
+  ];
+
+  const contractInstance = await toolkit.contract.at(contract);
+  return contractInstance.methods.transfer(michelson);
+};
+
+/**
+ * Estimation methods
+ */
+export const estimateTezTransfer = async (
   senderPkh: string,
-  senderPk: string,
   recipient: string,
-  amount: number
+  amount: number,
+  senderPk: string,
+  network: TezosNetwork
 ) => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
@@ -96,22 +128,49 @@ export const estimate = async (
   });
 };
 
-export const transfer = async (
-  network = TezosNetwork.MAINNET,
-  senderEsk: UmamiEncrypted,
-  recipient: string,
-  amount: number,
-  password: string
+export const estimateFA2transfer = async (
+  params: FA2TokenTransferParams,
+  senderPk: string,
+  network: TezosNetwork
 ) => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
-  const sk = await decrypt(senderEsk, password);
   Tezos.setProvider({
-    signer: new InMemorySigner(sk),
+    signer: new DummySigner(senderPk, params.sender) as any as Signer,
   });
 
+  const contractInstance = await makeContract(params, Tezos);
+  return Tezos.estimate.transfer(contractInstance.toTransferParams());
+};
+
+/**
+ * Transfer execution methods
+ */
+export const transferFA2Token = async (
+  network: TezosNetwork,
+  params: FA2TokenTransferParams,
+  esk: UmamiEncrypted,
+  password: string
+) => {
+  const Tezos = await makeToolkitWithSigner(esk, password, network);
+
+  const contractInstance = await makeContract(params, Tezos);
+  return contractInstance.send();
+};
+
+export const transferTez = async (
+  recipient: string,
+  amount: number,
+  senderEsk: UmamiEncrypted,
+  password: string,
+  network: TezosNetwork
+) => {
+  const Tezos = await makeToolkitWithSigner(senderEsk, password, network);
   return Tezos.contract.transfer({ to: recipient, amount });
 };
 
+/**
+ *  Fetch tez and token transfers
+ */
 export const getTezTransfers = (
   address: string,
   network = TezosNetwork.MAINNET
@@ -143,6 +202,7 @@ export const getTokenTransfers = (
     }
   );
 };
+
 // Fetch the tezos price in usd from the CoinCap API.
 // The CoinCap API documentation: https://docs.coincap.io
 export const getTezosPriceInUSD = async (): Promise<number | null> => {
