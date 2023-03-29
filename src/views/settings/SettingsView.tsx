@@ -16,6 +16,7 @@ export default function SettingsView() {
       gridTemplateRows={"0fr 1fr 1fr"}
       gridTemplateColumns={"1fr 1fr"}
       gap="1"
+      ml={5}
     >
       <GridItem area={"header"}>
         <TopBar title="Settings" />

@@ -1,7 +1,16 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/layout";
-import { Box, Card, CardBody, Heading, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  CardBody,
+  Text,
+  Divider,
+  Heading,
+  Icon,
+} from "@chakra-ui/react";
 import { FiExternalLink } from "react-icons/fi";
 import { MdLink } from "react-icons/md";
+import React from "react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 
@@ -17,104 +26,115 @@ export default function HelpView() {
       gridTemplateRows={"0fr 1fr 1fr"}
       gridTemplateColumns={"1fr 1fr"}
       gap="1"
+      ml={5}
     >
       <GridItem area={"header"}>
         <TopBar title="Help" />
       </GridItem>
       <GridItem area={"main"}>
-        <Box marginY={5}>
-          <Flex>
-            <Box w="550px">
-              <Heading size="lg">Learn More</Heading>
-              <Card
-                h="66px"
-                p={5}
-                marginY={5}
-                bgColor={colors.gray[900]}
-                borderRadius="8px"
-                justifyContent="center"
-                border="1px solid"
-                borderColor={colors.gray[700]}
-              >
-                <CardBody>
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Heading size="sm">Browse Articles</Heading>
+        <HelpCard title="Learn More">
+          <HelpLinkRow
+            about="Browse Articles"
+            link="https://medium.com/umamiwallet"
+          />
+        </HelpCard>
 
-                    <Icon
-                      cursor="pointer"
-                      onClick={(_) => {}}
-                      color={colors.gray[400]}
-                      as={FiExternalLink}
-                    />
-                  </Flex>
-                </CardBody>
-              </Card>
+        <HelpCard title="Questions?">
+          <HelpLinkRow
+            about="Browse FAQs"
+            link="https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
+          />
+        </HelpCard>
+
+        <HelpCard title="Need Help?">
+          <Box>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Heading size="sm">Contact our Support Team</Heading>
+              <Icon
+                cursor="pointer"
+                onClick={(_) => {}}
+                color={colors.gray[400]}
+                as={FiExternalLink}
+              />
+            </Flex>
+
+            <Box marginY={4}>
+              <Divider orientation="horizontal" size="lg" />
             </Box>
-          </Flex>
-        </Box>
 
-        <Box marginY={5}>
-          <Flex>
-            <Box w="550px">
-              <Heading size="lg">Questions?</Heading>
-              <Card
-                h="66px"
-                p={5}
-                marginY={5}
-                bgColor={colors.gray[900]}
-                borderRadius="8px"
-                justifyContent="center"
-                border="1px solid"
-                borderColor={colors.gray[700]}
-              >
-                <CardBody>
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Heading size="sm">Browse FAQs</Heading>
+            <HelpLinkRow
+              about="Get in touch with the Community"
+              link="https://join.slack.com/share/enQtNTAyODI3OTQ1NTU3MC02MGQxODkzMzA5NmUyYWE3YzMxM2ZlYjIyMGI2OGQ0OGZkODA1MzU3ZDViZTBjMDAyNWIwNDBlNjBhMjFkOWU1"
+              linkDescription="Slack #Umami"
+            />
+          </Box>
+        </HelpCard>
 
-                    <Icon
-                      cursor="pointer"
-                      onClick={(_) => {}}
-                      color={colors.gray[400]}
-                      as={FiExternalLink}
-                    />
-                  </Flex>
-                </CardBody>
-              </Card>
-            </Box>
-          </Flex>
-        </Box>
-
-        <Box marginY={5}>
-          <Flex>
-            <Box w="550px">
-              <Heading size="lg">Terms of Use</Heading>
-              <Card
-                h="66px"
-                p={5}
-                marginY={5}
-                bgColor={colors.gray[900]}
-                borderRadius="lg"
-                justifyContent="center"
-                border="1px solid"
-                borderColor={colors.gray[700]}
-              >
-                <CardBody>
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Heading size="sm">Read Terms of Service</Heading>
-
-                    <Icon
-                      cursor="pointer"
-                      onClick={(_) => {}}
-                      color={colors.gray[400]}
-                      as={FiExternalLink}
-                    />
-                  </Flex>
-                </CardBody>
-              </Card>
-            </Box>
-          </Flex>
-        </Box>
+        <HelpCard title="Terms of Use">
+          <HelpLinkRow
+            about="Read Terms of Service"
+            link="https://umamiwallet.com/tos.html"
+          />
+        </HelpCard>
       </GridItem>
     </Grid>
   );
 }
+
+const HelpLinkRow: React.FC<{
+  about: string;
+  link: string;
+  linkDescription?: string;
+}> = ({ about, link, linkDescription }) => {
+  return (
+    <Flex justifyContent="space-between" alignItems="center">
+      <Heading size="sm">{about}</Heading>
+
+      <Flex alignItems="center">
+        {linkDescription && (
+          <Text size="sm" color={colors.gray[300]}>
+            {linkDescription}
+          </Text>
+        )}
+        <Icon
+          cursor="pointer"
+          color={colors.gray[300]}
+          as={FiExternalLink}
+          _hover={{
+            color: colors.gray[600],
+          }}
+          onClick={() => {
+            window.open(link, "_blank");
+          }}
+          ml={2}
+        />
+      </Flex>
+    </Flex>
+  );
+};
+
+const HelpCard: React.FC<{ title: string; children: React.ReactNode }> = ({
+  title,
+  children,
+}) => {
+  return (
+    <Box marginY={5}>
+      <Flex>
+        <Box w="550px">
+          <Heading size="lg">{title}</Heading>
+          <Card
+            p={1}
+            marginY={5}
+            bgColor={colors.gray[900]}
+            borderRadius="lg"
+            justifyContent="center"
+            border="1px solid"
+            borderColor={colors.gray[700]}
+          >
+            <CardBody>{children}</CardBody>
+          </Card>
+        </Box>
+      </Flex>
+    </Box>
+  );
+};
