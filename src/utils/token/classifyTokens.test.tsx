@@ -40,7 +40,8 @@ describe("ClassifyToken", () => {
       contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
       id: 10899466223617,
       metadata: {
-        displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
+        displayUri:
+          "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
         name: "Tezzardz #10",
         symbol: "FKR",
       },
@@ -80,7 +81,7 @@ describe("ClassifyToken", () => {
         id: 10899466223617,
         metadata: {
           displayUri:
-            "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
+            "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
           name: "Tezzardz #10",
           symbol: "FKR",
         },
@@ -91,7 +92,7 @@ describe("ClassifyToken", () => {
         id: 10899502923777,
         metadata: {
           displayUri:
-            "ipfs://zdj7WaSoswEYY5hcis4i4ZLDXpsusu8FaJNf4LfYXDoviiRem",
+            "https://ipfs.io/ipfs/zdj7WaSoswEYY5hcis4i4ZLDXpsusu8FaJNf4LfYXDoviiRem",
           name: "Tezzardz #12",
           symbol: "FKR",
         },
@@ -102,7 +103,7 @@ describe("ClassifyToken", () => {
         id: 10899539623937,
         metadata: {
           displayUri:
-            "ipfs://zdj7WVwx4CX5fK5sHmXhjTm5wG9nCrzSBy83CGNXJ78fAJmba",
+            "https://ipfs.io/ipfs/zdj7WVwx4CX5fK5sHmXhjTm5wG9nCrzSBy83CGNXJ78fAJmba",
           name: "Tezzardz #20",
           symbol: "FKR",
         },
@@ -113,7 +114,7 @@ describe("ClassifyToken", () => {
         id: 10899580518401,
         metadata: {
           displayUri:
-            "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+            "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
           name: "Tezzardz #24",
           symbol: "FKR",
         },
@@ -124,7 +125,7 @@ describe("ClassifyToken", () => {
         id: 10899657064449,
         metadata: {
           displayUri:
-            "ipfs://zdj7Wc5siFbHn8EMrfGYiJrfe5fjqGrbJSvgjfr4oR4Rf9juV",
+            "https://ipfs.io/ipfs/zdj7Wc5siFbHn8EMrfGYiJrfe5fjqGrbJSvgjfr4oR4Rf9juV",
           name: "Tezzardz #28",
           symbol: "FKR",
         },
@@ -135,7 +136,7 @@ describe("ClassifyToken", () => {
         id: 67550012506113,
         metadata: {
           displayUri:
-            "ipfs://QmYd7UqZiHtpR3Qc7XnC7NWUt1qxCN9aiwEf9aGF9iybBB/display/5040.png",
+            "https://ipfs.io/ipfs/QmYd7UqZiHtpR3Qc7XnC7NWUt1qxCN9aiwEf9aGF9iybBB/display/5040.png",
           name: "Ronald Reagan (L)",
           symbol: "POTUS40-L",
         },
@@ -146,7 +147,7 @@ describe("ClassifyToken", () => {
         id: 82690241986561,
         metadata: {
           displayUri:
-            "ipfs://QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
+            "https://ipfs.io/ipfs/QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
@@ -157,7 +158,7 @@ describe("ClassifyToken", () => {
         id: 82687681363969,
         metadata: {
           displayUri:
-            "ipfs://QmReoHBVcKAaHFi5n2ADiAJfaNiFhqxfJsRWGYe8ocozpT/image.png",
+            "https://ipfs.io/ipfs/QmReoHBVcKAaHFi5n2ADiAJfaNiFhqxfJsRWGYe8ocozpT/image.png",
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
@@ -168,7 +169,7 @@ describe("ClassifyToken", () => {
         id: 82700684754945,
         metadata: {
           displayUri:
-            "ipfs://QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
+            "https://ipfs.io/ipfs/QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
@@ -179,7 +180,7 @@ describe("ClassifyToken", () => {
         id: 82704303390721,
         metadata: {
           displayUri:
-            "ipfs://QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
+            "https://ipfs.io/ipfs/QmXfLqzV28TfSpps1UFZo94NMsyYdnrxDNffdQsYPMr53t/image.png",
           name: "Tezos Meet & Greet Access Token",
           symbol: undefined,
         },
@@ -190,7 +191,7 @@ describe("ClassifyToken", () => {
         id: 99966347378689,
         metadata: {
           displayUri:
-            "ipfs://bafybeicet3ixylrqrn3mrxlbqiusznrsubr5qxyu7y3d64ewyvwohwa25a/image.png",
+            "https://ipfs.io/ipfs/bafybeicet3ixylrqrn3mrxlbqiusznrsubr5qxyu7y3d64ewyvwohwa25a/image.png",
           name: "Paris Tezos Meetup Access Token",
           symbol: undefined,
         },

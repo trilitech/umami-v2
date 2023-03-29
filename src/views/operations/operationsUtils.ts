@@ -8,6 +8,7 @@ import {
 } from "../../types/Operation";
 import { filterNulls } from "../../utils/helpers";
 import { prettyTezAmount } from "../../utils/store/impureFormat";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 // We use the defaults of FA1.2 tokens
 const DEFAULT_SYMBOL = "KLD";
@@ -128,8 +129,7 @@ export const getTokenOperationDisplay = (
       type: "transaction",
       amount: {
         prettyDisplay: sign + prettyAmount,
-        url:
-          displayUri && displayUri.replace("ipfs://", "https://ipfs.io/ipfs/"),
+        url: displayUri && getIPFSurl(displayUri),
       },
       prettyTimestamp,
       timestamp: required.timestamp,
