@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { Asset, FA12Token, FA2Token, NFT } from "../../../types/Asset";
 import { Token } from "../../../types/Token";
+import { getIPFSurl } from "../nftUtils";
 
 /**
  * Runtime validations with zod
@@ -109,7 +110,7 @@ export const makeNft = (json: Token): NFT | null => {
   return {
     ...rest,
     metadata: {
-      displayUri,
+      displayUri: getIPFSurl(displayUri),
       name: metadata?.name,
       symbol: metadata?.symbol,
     },
