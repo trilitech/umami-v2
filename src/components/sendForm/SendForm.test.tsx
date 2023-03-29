@@ -1,4 +1,4 @@
-import { Modal, ModalHeader } from "@chakra-ui/react";
+import { Modal } from "@chakra-ui/react";
 import { render, screen } from "@testing-library/react";
 import { mockAccount } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";

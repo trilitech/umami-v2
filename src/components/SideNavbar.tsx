@@ -89,14 +89,11 @@ const BottomIems = () => {
 
 const TotalBalance = () => {
   const balance = useTotalBalance();
-  if (!balance) {
-    return null;
-  }
 
   return (
     <Box mt={4} mb={12} height={"80px"}>
       <Text size="sm">Balance</Text>
-      {balance.tezBalance !== null && (
+      {balance !== null && (
         <TezRecapDisplay
           tezBalance={balance.tezBalance}
           dollarBalance={balance.dollarBalance}
