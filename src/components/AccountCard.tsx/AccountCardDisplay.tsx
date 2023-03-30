@@ -6,7 +6,7 @@ import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
-import { CopyableAddress } from "../CopyableAddress";
+import { CopyableAddress } from "../CopyableText";
 
 type Props = {
   onSend?: () => void;

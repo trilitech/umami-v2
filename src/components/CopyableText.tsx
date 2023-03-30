@@ -14,18 +14,38 @@ export const CopyableAddress: React.FC<
     copyable?: boolean;
   } & FlexProps
 > = ({ pkh, copyable = true, ...rest }) => {
+  return (
+    <CopyableText
+      displayText={formatPkh(pkh)}
+      copyValue={copyable ? pkh : undefined}
+      toastMessage="Address copied to clipboard"
+    />
+  );
+};
+
+const CopyableText: React.FC<
+  {
+    displayText: string;
+    copyValue?: string;
+    toastMessage?: string;
+  } & FlexProps
+> = ({ displayText, copyValue, toastMessage, ...rest }) => {
   const toast = useToast();
   const onClickCopyIcon = async () => {
-    // Copy the address to clipboard.
-    await navigator.clipboard.writeText(pkh);
+    if (!copyValue) {
+      return;
+    }
+    // Copy the value to clipboard.
+    await navigator.clipboard.writeText(copyValue);
     // Prevent duplicate toasts.
-    if (toast.isActive(TOAST_ID)) {
+    if (!toastMessage || toast.isActive(TOAST_ID)) {
       return;
     }
     toast({
       id: TOAST_ID,
       render: () => (
         <ToastBody
+          message={toastMessage}
           onClose={() => {
             toast.close(TOAST_ID);
           }}
@@ -37,9 +57,9 @@ export const CopyableAddress: React.FC<
   return (
     <Flex alignItems="center" {...rest}>
       <Text size="sm" color={colors.gray[400]}>
-        {formatPkh(pkh)}
+        {displayText}
       </Text>
-      {copyable && (
+      {copyValue && (
         <Icon
           cursor="pointer"
           onClick={() => onClickCopyIcon()}
@@ -50,7 +70,6 @@ export const CopyableAddress: React.FC<
           w={4}
           h={4}
           ml={2}
-          mr={4}
           as={MdCopyAll}
         />
       )}
@@ -59,8 +78,9 @@ export const CopyableAddress: React.FC<
 };
 
 const ToastBody: React.FC<{
+  message: string;
   onClose: () => void;
-}> = ({ onClose }) => {
+}> = ({ message, onClose }) => {
   return (
     <Flex
       p={2}
@@ -71,7 +91,7 @@ const ToastBody: React.FC<{
     >
       <Flex alignItems="center">
         <Icon color={colors.green} as={BsCheckCircle} m={1} />
-        <Text color="black">Address copied to clipboard</Text>
+        <Text color="black">{message}</Text>
       </Flex>
 
       <Icon
@@ -86,3 +106,5 @@ const ToastBody: React.FC<{
     </Flex>
   );
 };
+
+export default CopyableText;

@@ -7,7 +7,7 @@ import colors from "../style/colors";
 
 import { OperationDisplay } from "../types/Operation";
 import { getIsInbound } from "../views/operations/operationsUtils";
-import { CopyableAddress } from "./CopyableAddress";
+import { CopyableAddress } from "./CopyableText";
 
 const darkColor = "umami.gray.500";
 
