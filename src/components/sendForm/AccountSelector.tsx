@@ -14,26 +14,40 @@ import { Account } from "../../types/Account";
 import { formatPkh } from "../../utils/format";
 import { Identicon } from "../Identicon";
 
+export const AccountRecapTile = ({
+  pkh,
+  label,
+}: {
+  pkh: string;
+  label?: string;
+}) => {
+  return (
+    <Flex>
+      <Identicon address={pkh} mr={4} />
+      <Box>
+        <Text>{label}</Text>
+        <Text color="umami.gray.600">{formatPkh(pkh)}</Text>
+      </Box>
+    </Flex>
+  );
+};
+
 const renderAccount = (account: Account) => (
-  <Flex>
-    <Identicon address={account.pkh} mr={4} />
-    <Box>
-      <Text>{account.label}</Text>
-      <Text color="umami.gray.600">{formatPkh(account.pkh)}</Text>
-    </Box>
-  </Flex>
+  <AccountRecapTile pkh={account.pkh} label={account.label} />
 );
 
 export const AccountSelector: React.FC<{
   accounts: Account[];
   onSelect: (a: Account) => void;
   selected?: string;
-}> = ({ accounts, onSelect = () => {}, selected }) => {
+  isDisabled?: boolean;
+}> = ({ accounts, onSelect = () => {}, selected, isDisabled }) => {
   const selectedAccount = accounts.find((a) => a.pkh === selected);
 
   return (
     <Menu>
       <MenuButton
+        isDisabled={isDisabled}
         data-testid="account-selector"
         onChange={(a) => {
           console.log(a.target);

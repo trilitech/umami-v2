@@ -14,24 +14,40 @@ import {
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Account } from "../../../types/Account";
+import { NFT } from "../../../types/Asset";
 import { AccountSelector } from "../AccountSelector";
+import { SendNFTDisplay } from "./SendNFTDisplay";
 
-export type TezTransfer = {
+export type TransferFormValuesBase = {
   sender: string;
   recipient: string;
   amount: number;
 };
 
+export type FA2TokenTransferFormValues = {
+  recipient: string;
+  amount: number;
+  token: NFT; // Handle non NFT tokens later
+};
+
 export const SendFormDisplay: React.FC<{
   accounts: Account[];
-  onSubmit: (v: TezTransfer) => void;
+  onSubmit: (v: TransferFormValuesBase) => void;
   isLoading?: boolean;
   sender?: string;
-}> = ({ accounts, onSubmit, isLoading, sender }) => {
-  const { formState, control, register, handleSubmit } = useForm<TezTransfer>({
-    mode: "onBlur",
-    defaultValues: { sender },
-  });
+  nft?: NFT;
+}> = ({ accounts, onSubmit, isLoading, sender, nft }) => {
+  const mandatoryNftSender = nft?.owner;
+  const isNFT = !!nft;
+
+  const { formState, control, register, handleSubmit } =
+    useForm<TransferFormValuesBase>({
+      mode: "onBlur",
+      defaultValues: {
+        sender: mandatoryNftSender || sender,
+        amount: isNFT ? 1 : undefined,
+      },
+    });
   const { isValid } = formState;
   return (
     <ModalContent bg="umami.gray.900">
@@ -48,6 +64,7 @@ export const SendFormDisplay: React.FC<{
               name="sender"
               render={({ field: { onChange, onBlur, value, ref } }) => (
                 <AccountSelector
+                  isDisabled={isNFT}
                   selected={value}
                   onSelect={(a) => {
                     onChange(a.pkh);
@@ -70,12 +87,14 @@ export const SendFormDisplay: React.FC<{
               placeholder="Enter recipient address..."
             />
           </FormControl>
-          <FormControl mb={2}>
+
+          {!!nft ? <SendNFTDisplay nft={nft} /> : null}
+
+          <FormControl mb={2} mt={2}>
             <FormLabel>Amount</FormLabel>
             <Input
-              step={"any"}
+              step={isNFT ? 1 : "any"}
               type={"number"}
-              //   type="password"
               {...register("amount", {
                 required: true,
               })}

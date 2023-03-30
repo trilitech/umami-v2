@@ -20,6 +20,7 @@ import { TopBar } from "../../components/TopBar";
 import { NFT } from "../../types/Asset";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
+import { useSendFormModal } from "../home/useSendFormModal";
 import NFTGallery from "./NFTGallery";
 
 export const FilterController: React.FC = () => {
@@ -32,23 +33,35 @@ export const FilterController: React.FC = () => {
   );
 };
 
-const NFTDrawerCard = ({ nft }: { nft: NFT }) => (
-  <Box>
-    <AspectRatio width={"100%"} ratio={4 / 4}>
-      <Image width="100%" src={nft.metadata.displayUri} />
-    </AspectRatio>
-    <Heading mt={4} size="lg">
-      {nft.metadata.name}
-    </Heading>
+const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
+  const { modalElement, onOpen } = useSendFormModal({ nft });
+  return (
+    <Box>
+      <AspectRatio width={"100%"} ratio={4 / 4}>
+        <Image width="100%" src={nft.metadata.displayUri} />
+      </AspectRatio>
+      <Heading mt={4} size="lg">
+        {nft.metadata.name}
+      </Heading>
 
-    <Button mt={4} bg="umami.blue" onClick={(_) => {}}>
-      Send
-    </Button>
-  </Box>
-);
+      <Button
+        mt={4}
+        bg="umami.blue"
+        onClick={(_) => {
+          onOpen();
+        }}
+      >
+        Send
+      </Button>
+      {modalElement}
+    </Box>
+  );
+};
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
-  const allNfts = Object.values(nfts).flat();
+
+  const allOwnedNfts = Object.values(nfts).flat();
+
   const [selectedNft, setSelectedNft] = useState<NFT>();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -62,7 +75,7 @@ const NFTsViewBase = () => {
             onOpen();
             setSelectedNft(nft);
           }}
-          nfts={allNfts}
+          nfts={allOwnedNfts}
         />
       </Box>
 

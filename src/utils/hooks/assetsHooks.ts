@@ -14,7 +14,10 @@ export const useSelectedNetwork = () => {
 
 export const useAllNfts = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
-  return objectMap(allTokens, (tokens) => filterNulls(tokens.map(makeNft)));
+
+  return objectMap(allTokens, (tokens) =>
+    filterNulls(tokens.map(makeNft)).filter((t) => t.balance !== "0")
+  );
 };
 
 export const useAllOperations = () =>
