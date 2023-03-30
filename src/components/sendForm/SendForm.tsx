@@ -22,12 +22,11 @@ export const SendForm = ({ sender }: { sender?: string }) => {
 
   let [isLoading, setIsLoading] = useState(false);
 
-  const [estimation, setEstimation] =
-    useState<{
-      transfer: TezTransfer;
-      estimate: Estimate;
-      esk: UmamiEncrypted;
-    }>();
+  const [estimation, setEstimation] = useState<{
+    transfer: TezTransfer;
+    estimate: Estimate;
+    esk: UmamiEncrypted;
+  }>();
 
   const [hash, setHash] = useState<string>();
 
