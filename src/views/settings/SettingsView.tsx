@@ -1,3 +1,4 @@
+import { TezosNetwork } from "@airgap/tezos";
 import { Button } from "@chakra-ui/button";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import {
@@ -10,12 +11,23 @@ import {
   Text,
   Switch,
 } from "@chakra-ui/react";
+import { AiOutlineRight } from "react-icons/ai";
+import { NetworkSelectorDisplay } from "../../components/NetworkSelector/NetworkSelectorDisplay";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { useReset } from "../../utils/hooks/accountHooks";
+import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import assetsSlice from "../../utils/store/assetsSlice";
+import { useAppDispatch } from "../../utils/store/hooks";
 
 export default function SettingsView() {
   const reset = useReset();
+  const network = useSelectedNetwork();
+  const dispatch = useAppDispatch();
+
+  const changeNetwork = (network: TezosNetwork) => {
+    dispatch(assetsSlice.actions.updateNetwork(network));
+  };
   return (
     <Grid
       h="100%"
@@ -43,10 +55,15 @@ export default function SettingsView() {
             </Flex>
           </SettingsCard>
           <SettingsCard about="Network">
-            <></>
+            <Box m={0}>
+              <NetworkSelectorDisplay
+                value={network}
+                onChange={changeNetwork}
+              />
+            </Box>
           </SettingsCard>
           <SettingsCard about="ErrorLogs">
-            <></>
+            <Icon as={AiOutlineRight} />
           </SettingsCard>
         </SettingsSection>
       </GridItem>
@@ -68,7 +85,7 @@ const SettingsCard: React.FC<{
       border="1px solid"
       borderColor={colors.gray[700]}
     >
-      <CardBody>
+      <CardBody alignContent="center">
         <Flex justifyContent="space-between" alignItems="center">
           <Heading size="sm">{about}</Heading>
           {children}
