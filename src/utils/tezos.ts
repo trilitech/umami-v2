@@ -4,7 +4,9 @@ import { TezTransfer, TokenTransfer } from "../types/Operation";
 
 import { InMemorySigner } from "@taquito/signer";
 import * as tzktApi from "@tzkt/sdk-api";
+import { DelegationOperation } from "@tzkt/sdk-api";
 import axios from "axios";
+import { Baker } from "../types/Baker";
 import { Token } from "../types/Token";
 import { UmamiEncrypted } from "../types/UmamiEncrypted";
 import { decrypt } from "./aes";
@@ -142,14 +144,43 @@ export const estimateFA2transfer = async (
   return Tezos.estimate.transfer(contractInstance.toTransferParams());
 };
 
+export const estimateDelegation = async (
+  senderPkh: string,
+  bakerPkh: string | undefined,
+  senderPk: string,
+  network: TezosNetwork
+) => {
+  const Tezos = new TezosToolkit(nodeUrls[network]);
+  Tezos.setProvider({
+    signer: new DummySigner(senderPk, senderPkh) as any as Signer,
+  });
+
+  return Tezos.estimate.setDelegate({ source: senderPkh, delegate: bakerPkh });
+};
+
+export const delegate = async (
+  senderPkh: string,
+  bakerPkh: string | undefined,
+  senderEsk: UmamiEncrypted,
+  password: string,
+  network: TezosNetwork
+) => {
+  const Tezos = await makeToolkitWithSigner(senderEsk, password, network);
+
+  return Tezos.contract.setDelegate({
+    source: senderPkh,
+    delegate: bakerPkh,
+  });
+};
+
 /**
  * Transfer execution methods
  */
 export const transferFA2Token = async (
-  network: TezosNetwork,
   params: FA2TokenTransferParams,
   esk: UmamiEncrypted,
-  password: string
+  password: string,
+  network: TezosNetwork
 ) => {
   const Tezos = await makeToolkitWithSigner(esk, password, network);
 
@@ -203,6 +234,24 @@ export const getTokenTransfers = (
   );
 };
 
+export const getLastDelegation = async (
+  address: string,
+  network = TezosNetwork.MAINNET
+) => {
+  return tzktApi
+    .operationsGetDelegations(
+      {
+        sender: { eq: address },
+        sort: { desc: "level" },
+        limit: 1,
+      },
+      {
+        baseUrl: tzktUrls[network],
+      }
+    )
+    .then((d) => d[0]) as Promise<DelegationOperation | undefined>;
+};
+
 // Fetch the tezos price in usd from the CoinCap API.
 // The CoinCap API documentation: https://docs.coincap.io
 export const getTezosPriceInUSD = async (): Promise<number | null> => {
@@ -222,4 +271,10 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
   });
 
   return priceUsd ?? null;
+};
+
+export const getBakers = () => {
+  return axios
+    .get("https://api.baking-bad.org/v2/bakers")
+    .then((d) => d.data) as Promise<Baker[]>;
 };
