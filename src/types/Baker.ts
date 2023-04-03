@@ -1,0 +1,21 @@
+export type Baker = {
+  address: string;
+  name: string;
+  logo: string;
+  balance: number;
+  stakingBalance: number;
+  stakingCapacity: number;
+  maxStakingBalance: number;
+  freeSpace: number;
+  fee: number;
+  minDelegation: number;
+  payoutDelay: number;
+  payoutPeriod: number;
+  openForDelegation: true;
+  estimatedRoi: number;
+  serviceType: string;
+  serviceHealth: string;
+  payoutTiming: string;
+  payoutAccuracy: string;
+  insuranceCoverage: number;
+};
