@@ -1,7 +1,9 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
+import { DelegationOperation } from "@tzkt/sdk-api";
 
 import BigNumber from "bignumber.js";
+import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
@@ -17,6 +19,8 @@ type State = {
     tez: Record<string, TezTransfer[]>;
     tokens: Record<string, TokenTransfer[]>;
   };
+  delegations: Record<string, DelegationOperation>;
+  bakers: Baker[];
   conversionRate: number | null; // XTZ/USD conversion rate
 };
 
@@ -30,6 +34,12 @@ export type TokenTransfersPayload = {
   pkh: string;
   operations: TokenTransfer[];
 };
+
+export type DelegationPayload = {
+  pkh: string;
+  delegation: DelegationOperation;
+};
+
 export type ConversionRatePayload = { rate: State["conversionRate"] };
 
 const initialState: State = {
@@ -39,6 +49,8 @@ const initialState: State = {
     tokens: {},
   },
   operations: { tez: {}, tokens: {} },
+  delegations: {},
+  bakers: [],
   conversionRate: null,
 };
 
@@ -104,6 +116,20 @@ const assetsSlice = createSlice({
         const newTokens = { ...existing, [payload.pkh]: payload.tokens };
         state.balances.tokens = newTokens;
       });
+    },
+    updateDelegations: (
+      state,
+      { payload }: { type: string; payload: DelegationPayload[] }
+    ) => {
+      payload.forEach((p) => {
+        state.delegations[p.pkh] = p.delegation;
+      });
+    },
+    updateBakers: (state, { payload }: { type: string; payload: Baker[] }) => {
+      const sortedBakers = [...payload].sort((a, b) =>
+        a.name > b.name ? 1 : -1
+      );
+      state.bakers = sortedBakers;
     },
     updateConversionRate: (
       state,
