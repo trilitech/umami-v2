@@ -1,69 +1,108 @@
+import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { Estimate } from "@taquito/taquito";
-import React, { useState } from "react";
-import {
-  TransferFormValuesBase,
-  SendFormDisplay,
-} from "./steps/FillTransactionStep";
-import { Account } from "../../types/Account";
+import { useState } from "react";
 import { UmamiEncrypted } from "../../types/UmamiEncrypted";
 import { useAccounts } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import { estimateTezTransfer, estimateFA2transfer } from "../../utils/tezos";
+import {
+  estimateDelegation,
+  estimateFA2transfer,
+  estimateTezTransfer,
+} from "../../utils/tezos";
+import { FillStep } from "./steps/FillStep";
+import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
-import { RecapDisplay } from "./steps/RecapStep";
-import { NFT } from "../../types/Asset";
+import { SendFormMode, TransactionValues } from "./types";
 
-const getKeys = (pkh: string, accounts: Account[]) => {
-  const account = accounts.find((a) => a.pkh === pkh);
-  return account && { esk: account.esk, pk: account.pk };
+const makeSimulation = (
+  t: TransactionValues,
+  pk: string,
+  network: TezosNetwork
+) => {
+  if (t.type === "delegation") {
+    return estimateDelegation(t.values.sender, t.values.recipient, pk, network);
+  }
+
+  if (t.type === "nft") {
+    const nft = t.data;
+
+    return estimateFA2transfer(
+      {
+        amount: t.values.amount,
+        sender: nft.owner,
+        recipient: t.values.recipient,
+        contract: nft.contract,
+        tokenId: nft.tokenId,
+      },
+      pk,
+      network
+    );
+  }
+
+  if (t.type === "tez") {
+    return estimateTezTransfer(
+      t.values.sender,
+      t.values.recipient,
+      t.values.amount,
+      pk,
+      network
+    );
+  }
+
+  return Promise.reject(`Unrecognized type!`);
 };
 
-export const SendForm = ({ sender, nft }: { sender?: string; nft?: NFT }) => {
+export const useGetPkAndEsk = () => {
   const accounts = useAccounts();
+
+  return (pkh: string) => {
+    const account = accounts.find((a) => a.pkh === pkh);
+    if (!account) {
+      throw new Error("No account found");
+    }
+    return { esk: account.esk, pk: account.pk };
+  };
+};
+
+export const SendForm = ({
+  sender,
+  recipient,
+  mode = { type: "tez" },
+}: {
+  sender?: string;
+  recipient?: string;
+  mode?: SendFormMode;
+}) => {
   const network = useSelectedNetwork();
   const toast = useToast();
+  const getPkAndEsk = useGetPkAndEsk();
 
   let [isLoading, setIsLoading] = useState(false);
 
-  const [estimation, setEstimation] =
-    useState<{
-      transfer: TransferFormValuesBase;
-      nft?: NFT;
-      estimate: Estimate;
-      esk: UmamiEncrypted;
-    }>();
+  const [transferValues, setTransferValues] = useState<{
+    transaction: TransactionValues;
+    estimate: Estimate;
+    esk: UmamiEncrypted;
+  }>();
 
   const [hash, setHash] = useState<string>();
 
-  const simulate = async (v: TransferFormValuesBase, nft?: NFT) => {
+  const simulate = async (transaction: TransactionValues) => {
     setIsLoading(true);
-    const keys = getKeys(v.sender, accounts);
-    if (!keys) {
-      return;
-    }
-    const { pk, esk } = keys;
-
     try {
-      const estimation = await (nft
-        ? estimateFA2transfer(
-            {
-              amount: v.amount,
-              sender: nft.owner,
-              recipient: v.recipient,
-              contract: nft.contract,
-              tokenId: nft.tokenId,
-            },
-            pk,
-            network
-          )
-        : estimateTezTransfer(v.sender, v.recipient, v.amount, pk, network));
+      const sender = transaction.values.sender;
 
-      setEstimation({
-        transfer: v,
-        estimate: estimation,
+      const { pk, esk } = getPkAndEsk(sender);
+
+      // pk needed for simulation
+      const estimate = await makeSimulation(transaction, pk, network);
+
+      // esk needed for real transfer
+      setTransferValues({
+        transaction,
+        estimate,
         esk,
-        nft,
       });
     } catch (error: any) {
       toast({ title: "Invalid transaction", description: error.message });
@@ -76,17 +115,23 @@ export const SendForm = ({ sender, nft }: { sender?: string; nft?: NFT }) => {
     return <SuccessStep hash={hash} network={network} />;
   }
 
-  return estimation ? (
-    <RecapDisplay onSucces={setHash} recap={{ ...estimation, network }} />
-  ) : (
-    <SendFormDisplay
-      nft={nft}
+  if (transferValues) {
+    return (
+      <RecapDisplay
+        onSucces={setHash}
+        network={network}
+        recap={transferValues}
+      />
+    );
+  }
+
+  return (
+    <FillStep
+      recipient={recipient}
+      assetType={mode}
       sender={sender}
       isLoading={isLoading}
-      accounts={accounts}
-      onSubmit={(values) => {
-        simulate(values, nft);
-      }}
+      onSubmit={simulate}
     />
   );
 };

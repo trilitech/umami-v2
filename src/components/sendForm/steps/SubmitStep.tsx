@@ -20,28 +20,97 @@ import { Estimate } from "@taquito/taquito";
 import { isValid } from "date-fns";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { NFT } from "../../../types/Asset";
 import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
 import {
   mutezToTezNumber,
   prettyTezAmount,
 } from "../../../utils/store/impureFormat";
-import { transferFA2Token, transferTez } from "../../../utils/tezos";
-import { AccountRecapTile } from "../AccountSelector";
-import { TransferFormValuesBase } from "./FillTransactionStep";
-import { SendNFTDisplay } from "./SendNFTDisplay";
+import { delegate, transferFA2Token, transferTez } from "../../../utils/tezos";
+import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
+import { useRenderAccountSmallTile } from "../../AccountSelector/AccountSmallTile";
+import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
+import { TransactionValues } from "../types";
+
+const makeTransfer = (
+  t: TransactionValues,
+  esk: UmamiEncrypted,
+  password: string,
+  network: TezosNetwork
+) => {
+  if (t.type === "delegation") {
+    return delegate(
+      t.values.sender,
+      t.values.recipient,
+      esk,
+      password,
+      network
+    );
+  }
+
+  if (t.type === "tez") {
+    return transferTez(
+      t.values.recipient,
+      t.values.amount,
+      esk,
+      password,
+      network
+    );
+  }
+
+  if (t.type === "nft") {
+    const nft = t.data;
+    return transferFA2Token(
+      {
+        amount: t.values.amount,
+        contract: nft.contract,
+        recipient: t.values.recipient,
+        sender: nft.owner,
+        tokenId: nft.tokenId,
+      },
+      esk,
+      password,
+      network
+    );
+  }
+
+  return Promise.reject(`Unrecognized type!`);
+};
+
+const renderSubTotal = (t: TransactionValues) => {
+  return t.type === "tez" ? (
+    <Flex
+      aria-label="sub-total"
+      alignItems={"center"}
+      justifyContent="space-between"
+      mb={2}
+    >
+      <Heading size="sm" color="text.dark">
+        Subtotal
+      </Heading>
+      <Text size="sm">{prettyTezAmount(t.values.amount, true)}</Text>
+    </Flex>
+  ) : null;
+};
 
 export const RecapDisplay: React.FC<{
+  network: TezosNetwork;
   recap: {
-    network: TezosNetwork;
-    transfer: TransferFormValuesBase;
+    transaction: TransactionValues;
     estimate: Estimate;
     esk: UmamiEncrypted;
-    nft?: NFT;
   };
   onSucces: (hash: string) => void;
-}> = ({ recap: { estimate, transfer, esk, network, nft }, onSucces }) => {
-  const isNft = !!nft;
+}> = ({
+  recap: { estimate, transaction: transfer, esk },
+  network,
+  onSucces,
+}) => {
+  const isTez = transfer.type === "tez";
+  const isDelegation = transfer.type === "delegation";
+  const nft = transfer.type === "nft" ? transfer.data : undefined;
+  const renderAccountTile = useRenderAccountSmallTile();
+  const renderBakerTile = useRenderBakerSmallTile();
+
   const { register, handleSubmit } = useForm<{ password: string }>();
   const toast = useToast();
   let [isLoading, setIsLoading] = useState(false);
@@ -49,26 +118,8 @@ export const RecapDisplay: React.FC<{
   const onSubmit = async ({ password }: { password: string }) => {
     setIsLoading(true);
     try {
-      const result = await (nft
-        ? transferFA2Token(
-            network,
-            {
-              amount: transfer.amount,
-              contract: nft.contract,
-              recipient: transfer.recipient,
-              sender: nft.owner,
-              tokenId: nft.tokenId,
-            },
-            esk,
-            password
-          )
-        : transferTez(
-            transfer.recipient,
-            transfer.amount,
-            esk,
-            password,
-            network
-          ));
+      const result = await makeTransfer(transfer, esk, password, network);
+
       onSucces(result.hash);
       toast({ title: "Success", description: result.hash });
     } catch (error: any) {
@@ -76,8 +127,9 @@ export const RecapDisplay: React.FC<{
     }
     setIsLoading(false);
   };
+
   const feeInTez = Number(mutezToTezNumber(estimate.suggestedFeeMutez));
-  const total = isNft ? feeInTez : feeInTez + Number(transfer.amount);
+  const total = isTez ? feeInTez + Number(transfer.values.amount) : feeInTez;
 
   return (
     <ModalContent bg="umami.gray.900">
@@ -91,32 +143,24 @@ export const RecapDisplay: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              <AccountRecapTile pkh={transfer.sender} />
+              {renderAccountTile(transfer.values.sender)}
             </Flex>
-            <Flex mb={4}>
-              <Heading size="md" width={20}>
-                To:
-              </Heading>
-              <AccountRecapTile pkh={transfer.recipient} />
-            </Flex>
-            {isNft ? (
-              <Box mb={4}>
-                <SendNFTDisplay nft={nft} />
-              </Box>
-            ) : (
-              <Flex
-                aria-label="sub-total"
-                alignItems={"center"}
-                justifyContent="space-between"
-                mb={2}
-              >
-                <Heading size="sm" color="text.dark">
-                  Subtotal
+            {transfer.values.recipient && (
+              <Flex mb={4}>
+                <Heading size="md" width={20}>
+                  To:
                 </Heading>
-                <Text size="sm">{prettyTezAmount(transfer.amount, true)}</Text>
+                {isDelegation
+                  ? renderBakerTile(transfer.values.recipient)
+                  : renderAccountTile(transfer.values.recipient)}
               </Flex>
             )}
-
+            {!!nft && (
+              <Box mb={4}>
+                <SendNFTRecapTile nft={nft} />
+              </Box>
+            )}
+            {renderSubTotal(transfer)}
             <Flex
               aria-label="fee"
               alignItems={"center"}

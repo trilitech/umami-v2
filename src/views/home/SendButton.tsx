@@ -6,7 +6,7 @@ const SendButton = () => {
 
   return (
     <>
-      <Button ml={4} bg="umami.blue" onClick={onOpen}>
+      <Button ml={4} bg="umami.blue" onClick={() => onOpen()}>
         Send
       </Button>
 
