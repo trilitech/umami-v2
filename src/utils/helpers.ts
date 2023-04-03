@@ -1,5 +1,5 @@
-export function filterNulls<T>(arr: Array<T | null>): T[] {
-  return arr.filter((v) => v !== null) as T[];
+export function filterNulls<T>(arr: Array<T | null | undefined>): T[] {
+  return arr.filter((v) => v != null) as T[];
 }
 
 export function objectMap<T, R>(obj: Record<string, T>, fn: (v: T) => R) {
