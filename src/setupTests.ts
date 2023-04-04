@@ -4,6 +4,7 @@
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
 import MockDate from "mockdate";
+import { webcrypto } from "crypto";
 
 import { TextDecoder, TextEncoder } from "util";
 
@@ -15,10 +16,9 @@ jest.mock("react-identicons", () => {
 
 // Setup web crypto environment
 beforeAll(() => {
-  const crypto = require("crypto");
   window.TextEncoder = TextEncoder;
   (window as any).TextDecoder = TextDecoder;
-  window.crypto = crypto.webcrypto;
+  (window as any).crypto = webcrypto;
 });
 
 // If you wanted to restore the mutations done above

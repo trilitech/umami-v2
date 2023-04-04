@@ -6,7 +6,7 @@ import { Account, UnencryptedAccount } from "../types/Account";
 import { encrypt } from "./aes";
 import { addressExists, getFingerPrint } from "./tezos";
 
-let getDerivationPath = (index: number) => `m/44'/1729'/${index}'/0'`;
+const getDerivationPath = (index: number) => `m/44'/1729'/${index}'/0'`;
 
 export const restoreAccount = async (
   seedPhrase: string,

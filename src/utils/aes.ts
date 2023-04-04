@@ -2,8 +2,8 @@ import { buf2hex, hex2Bytes } from "@taquito/utils";
 import { UmamiEncrypted } from "../types/UmamiEncrypted";
 
 async function encryptMessage(key: CryptoKey, message: string) {
-  let enc = new TextEncoder();
-  let encoded = enc.encode(message);
+  const enc = new TextEncoder();
+  const encoded = enc.encode(message);
   // The iv must never be reused with a given key.
   const iv = window.crypto.getRandomValues(new Uint8Array(12));
   const data = await window.crypto.subtle.encrypt(

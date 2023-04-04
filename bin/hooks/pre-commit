@@ -2,5 +2,6 @@
 set -ex
 
 npm run format
+npm run lint
 npm run typecheck
 CI=true npm run test

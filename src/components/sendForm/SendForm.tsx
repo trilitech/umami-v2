@@ -78,7 +78,7 @@ export const SendForm = ({
   const toast = useToast();
   const getPkAndEsk = useGetPkAndEsk();
 
-  let [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [transferValues, setTransferValues] = useState<{
     transaction: TransactionValues;

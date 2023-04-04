@@ -12,12 +12,12 @@ import { UmamiEncrypted } from "../types/UmamiEncrypted";
 import { decrypt } from "./aes";
 import { DummySigner } from "./dummySigner";
 
-let nodeUrls = {
+const nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
   [TezosNetwork.MAINNET]: `https://mainnet.api.tez.ie`,
 };
 
-let tzktUrls = {
+const tzktUrls = {
   [TezosNetwork.GHOSTNET]: `https://api.ghostnet.tzkt.io`,
   [TezosNetwork.MAINNET]: `https://api.mainnet.tzkt.io`,
 };
