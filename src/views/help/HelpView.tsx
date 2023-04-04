@@ -15,6 +15,9 @@ import colors from "../../style/colors";
 import CopyableText from "../../components/CopyableText";
 
 export default function HelpView() {
+  const jumpToLink = (link: string) => {
+    window.open(link, "_blank");
+  };
   return (
     <Grid
       h="100%"
@@ -31,17 +34,37 @@ export default function HelpView() {
         <TopBar title="Help" />
       </GridItem>
       <GridItem area={"main"} mt={1}>
-        <HelpCard title="Learn More">
+        <HelpCard
+          title="Learn More"
+          pointsOnHover
+          onClick={() => {
+            jumpToLink("https://medium.com/umamiwallet");
+          }}
+        >
           <HelpLinkRow
             about="Browse Articles"
-            link="https://medium.com/umamiwallet"
+            onClickIcon={() => {
+              jumpToLink("https://medium.com/umamiwallet");
+            }}
           />
         </HelpCard>
 
-        <HelpCard title="Questions?">
+        <HelpCard
+          title="Questions?"
+          pointsOnHover
+          onClick={() => {
+            jumpToLink(
+              "https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
+            );
+          }}
+        >
           <HelpLinkRow
             about="Browse FAQs"
-            link="https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
+            onClickIcon={() => {
+              jumpToLink(
+                "https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
+              );
+            }}
           />
         </HelpCard>
 
@@ -62,16 +85,28 @@ export default function HelpView() {
 
             <HelpLinkRow
               about="Get in touch with the Community"
-              link="https://join.slack.com/share/enQtNTAyODI3OTQ1NTU3MC02MGQxODkzMzA5NmUyYWE3YzMxM2ZlYjIyMGI2OGQ0OGZkODA1MzU3ZDViZTBjMDAyNWIwNDBlNjBhMjFkOWU1"
+              onClickIcon={() => {
+                jumpToLink(
+                  "https://join.slack.com/share/enQtNTAyODI3OTQ1NTU3MC02MGQxODkzMzA5NmUyYWE3YzMxM2ZlYjIyMGI2OGQ0OGZkODA1MzU3ZDViZTBjMDAyNWIwNDBlNjBhMjFkOWU1"
+                );
+              }}
               linkDescription="Slack #Umami"
             />
           </Box>
         </HelpCard>
 
-        <HelpCard title="Terms of Use">
+        <HelpCard
+          title="Terms of Use"
+          pointsOnHover
+          onClick={() => {
+            jumpToLink("https://umamiwallet.com/tos.html");
+          }}
+        >
           <HelpLinkRow
             about="Read Terms of Service"
-            link="https://umamiwallet.com/tos.html"
+            onClickIcon={() => {
+              jumpToLink("https://umamiwallet.com/tos.html");
+            }}
           />
         </HelpCard>
       </GridItem>
@@ -81,16 +116,24 @@ export default function HelpView() {
 
 const HelpLinkRow: React.FC<{
   about: string;
-  link: string;
+  onClickIcon: () => void;
   linkDescription?: string;
-}> = ({ about, link, linkDescription }) => {
+}> = ({ about, onClickIcon, linkDescription }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <Heading size="sm">{about}</Heading>
 
       <Flex alignItems="center">
         {linkDescription && (
-          <Text size="sm" color={colors.gray[300]}>
+          <Text
+            size="sm"
+            color={colors.gray[400]}
+            _hover={{
+              color: colors.gray[100],
+              cursor: "pointer",
+            }}
+            onClick={onClickIcon}
+          >
             {linkDescription}
           </Text>
         )}
@@ -101,9 +144,7 @@ const HelpLinkRow: React.FC<{
           _hover={{
             color: colors.gray[300],
           }}
-          onClick={() => {
-            window.open(link, "_blank");
-          }}
+          onClick={onClickIcon}
           ml={2}
         />
       </Flex>
@@ -111,10 +152,12 @@ const HelpLinkRow: React.FC<{
   );
 };
 
-const HelpCard: React.FC<{ title: string; children: React.ReactNode }> = ({
-  title,
-  children,
-}) => {
+const HelpCard: React.FC<{
+  title: string;
+  pointsOnHover?: boolean;
+  onClick?: () => void;
+  children: React.ReactNode;
+}> = ({ title, pointsOnHover = false, onClick, children }) => {
   return (
     <Box marginY={2}>
       <Flex>
@@ -128,6 +171,11 @@ const HelpCard: React.FC<{ title: string; children: React.ReactNode }> = ({
             justifyContent="center"
             border="1px solid"
             borderColor={colors.gray[700]}
+            cursor={pointsOnHover ? "pointer" : undefined}
+            _hover={{
+              borderColor: pointsOnHover ? colors.gray[600] : colors.gray[700],
+            }}
+            onClick={onClick}
           >
             <CardBody>{children}</CardBody>
           </Card>
