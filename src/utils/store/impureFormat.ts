@@ -7,5 +7,7 @@ export const mutezToTez = (m: BigNumber) =>
 export const mutezToTezNumber = (m: number) =>
   (format("mutez", "tz", m) as BigNumber).toNumber();
 
-export const prettyTezAmount = (a: number, isTez: boolean = false) =>
-  `${String(isTez ? a : format("mutez", "tz", a))} ꜩ`;
+export const prettyTezAmount = (
+  a: number | BigNumber,
+  isTez: boolean = false
+) => `${String(isTez ? a : format("mutez", "tz", a))} ꜩ`;

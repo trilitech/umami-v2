@@ -28,8 +28,10 @@ describe("Assets reducer", () => {
         tokens: {},
       },
       operations: { tez: {}, tokens: {} },
+      delegations: {},
       network: "mainnet",
       conversionRate: null,
+      bakers: [],
     });
   });
 
@@ -44,8 +46,10 @@ describe("Assets reducer", () => {
         tokens: {},
       },
       operations: { tez: {}, tokens: {} },
+      delegations: {},
       network: "mainnet",
       conversionRate: null,
+      bakers: [],
     });
 
     store.dispatch(
@@ -65,8 +69,10 @@ describe("Assets reducer", () => {
         tokens: {},
       },
       operations: { tez: {}, tokens: {} },
+      delegations: {},
       network: "mainnet",
       conversionRate: null,
+      bakers: [],
     });
   });
 
@@ -93,6 +99,8 @@ describe("Assets reducer", () => {
         tokens: {},
       },
       conversionRate: null,
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
     });
@@ -121,6 +129,8 @@ describe("Assets reducer", () => {
         tokens: { baz: [{}, {}] },
       },
       conversionRate: null,
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
     });
@@ -149,6 +159,8 @@ describe("Assets reducer", () => {
         tokens: { foo: [{}, {}] },
       },
       conversionRate: null,
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
     });
@@ -158,6 +170,8 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       balances: { tez: {}, tokens: {} },
       operations: { tez: {}, tokens: {} },
+      delegations: {},
+      bakers: [],
       network: "ghostnet",
       conversionRate: null,
     });
@@ -186,6 +200,8 @@ describe("Assets reducer", () => {
         tokens: { foo: [{}, {}] },
       },
       conversionRate: null,
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
     });
@@ -195,6 +211,8 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       balances: { tez: {}, tokens: {} },
       operations: { tez: {}, tokens: {} },
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       conversionRate: null,
     });
@@ -217,6 +235,8 @@ describe("Assets reducer", () => {
         tez: {},
         tokens: {},
       },
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       operations: {
         tez: {
@@ -246,6 +266,8 @@ describe("Assets reducer", () => {
         tez: {},
         tokens: {},
       },
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       operations: {
         tez: {
@@ -276,6 +298,8 @@ describe("Assets reducer", () => {
         tez: {},
         tokens: {},
       },
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       operations: {
         tokens: {
@@ -305,6 +329,8 @@ describe("Assets reducer", () => {
         tez: {},
         tokens: {},
       },
+      delegations: {},
+      bakers: [],
       network: "mainnet",
       operations: {
         tokens: {

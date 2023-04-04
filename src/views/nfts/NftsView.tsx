@@ -34,7 +34,7 @@ export const FilterController: React.FC = () => {
 };
 
 const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
-  const { modalElement, onOpen } = useSendFormModal({ nft });
+  const { modalElement, onOpen } = useSendFormModal();
   return (
     <Box>
       <AspectRatio width={"100%"} ratio={4 / 4}>
@@ -48,7 +48,12 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
         mt={4}
         bg="umami.blue"
         onClick={(_) => {
-          onOpen();
+          onOpen({
+            mode: {
+              type: "nft",
+              data: nft,
+            },
+          });
         }}
       >
         Send

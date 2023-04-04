@@ -8,11 +8,9 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { store } from "./utils/store/store";
 
-import { QueryClient, QueryClientProvider } from "react-query";
-import { UmamiTheme } from "./providers/UmamiTheme";
+import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
-
-const queryClient = new QueryClient();
+import { UmamiTheme } from "./providers/UmamiTheme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -22,9 +20,9 @@ root.render(
     <UmamiTheme>
       <ReduxStore>
         <PersistGate loading={null} persistor={persistStore(store)}>
-          <QueryClientProvider client={queryClient}>
+          <ReactQueryProvider>
             <Router />
-          </QueryClientProvider>
+          </ReactQueryProvider>
         </PersistGate>
       </ReduxStore>
     </UmamiTheme>

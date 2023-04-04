@@ -1,5 +1,7 @@
+import { DelegationOperation } from "@tzkt/sdk-api";
 import { Account } from "../types/Account";
 import { NFT } from "../types/Asset";
+import { Baker } from "../types/Baker";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
 import { UmamiEncrypted } from "../types/UmamiEncrypted";
@@ -9,6 +11,39 @@ export const mockTezTransaction = (id: number) => {
     sender: { address: `mockSender${id}` },
     target: { address: `mockTarget${id}` },
   } as TezTransfer;
+};
+
+export const mockDelegation = (
+  id: number,
+  initalAmount: number,
+  delegateAddress: string,
+  delegateAlias: string,
+  date = new Date()
+) => {
+  return {
+    type: "delegation",
+    id: id,
+    level: 3278793,
+    timestamp: date.toISOString(),
+    block: "BMGrLsKz89GdctsFamoGErgKfBjt2P9aoroCQFmzqbDBbwwfKQZ",
+    hash: "oo6eXUdtvpRsFDsNR9YE7zngbeCU89FsZfxQHNzMmiaNJHniF67",
+    counter: 13186782,
+    sender: { address: mockPkh(id) },
+    gasLimit: 1100,
+    gasUsed: 1000,
+    storageLimit: 0,
+    bakerFee: 396,
+    amount: initalAmount,
+    prevDelegate: {
+      alias: "Pool of Stake",
+      address: "tz1gjwq9ybKEmqQrTmzCoVB3HESYV1Ekc5up",
+    },
+    newDelegate: {
+      alias: delegateAlias,
+      address: delegateAddress,
+    },
+    status: "applied",
+  } as DelegationOperation;
 };
 
 export const mockTokenTransaction = (id: number) => {
@@ -31,7 +66,11 @@ export const mockAccount = (index: number): Account => {
     label: mockAccountLabel(index),
     pkh: mockPkh(index),
     pk: mockPk(index),
-    esk: {} as UmamiEncrypted,
+    esk: {
+      data: `mockData${index}`,
+      iv: `mockIv${index}`,
+      salt: `mockSalt${index}`,
+    } as UmamiEncrypted,
   };
 };
 
@@ -90,3 +129,10 @@ export const mockNFT = (index: number, balance = "1"): NFT => {
     tokenId: "mockId" + index,
   };
 };
+
+export const mockBaker = (index: number) =>
+  ({
+    name: `label${index}`,
+    logo: `label${index}`,
+    address: mockPkh(index),
+  } as Baker);

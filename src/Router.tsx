@@ -9,6 +9,7 @@ import OperationsView from "./views/operations/OperationsView";
 import SettingsView from "./views/settings/SettingsView";
 import { withSideMenu } from "./views/withSideMenu";
 import HelpView from "./views/help/HelpView";
+import DelegationsView from "./views/delegations/DelegationsView";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -37,6 +38,10 @@ const loggedInRouter = createHashRouter([
   {
     path: "/operations",
     element: withSideMenu(<OperationsView />),
+  },
+  {
+    path: "/delegations",
+    element: withSideMenu(<DelegationsView />),
   },
 
   {

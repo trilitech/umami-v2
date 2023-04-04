@@ -102,7 +102,8 @@ export const useGetAccountBalance = () => {
 
   const balancesMap = new Map(Object.entries(balances));
   return (pkh: string) => {
-    return balancesMap.get(pkh);
+    const val = balancesMap.get(pkh);
+    return val === undefined ? null : val;
   };
 };
 
@@ -110,4 +111,14 @@ export const useTotalTezBalance = () => {
   const balances = useAppSelector((s) => s.assets.balances.tez);
 
   return getTotalBalance(balances);
+};
+
+export const useAllDelegations = () => {
+  const allDelegations = useAppSelector((s) => s.assets.delegations);
+
+  // const result = objectMap(activeDelegations, (d) => {
+  //   return { sender: d.sender?.address } as Delegation;
+  // });
+
+  return allDelegations;
 };

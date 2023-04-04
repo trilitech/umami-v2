@@ -12,7 +12,7 @@ export const AccountCard = () => {
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
 
-  const { modalElement, onOpen } = useSendFormModal({ sender: account?.pkh });
+  const { modalElement, onOpen } = useSendFormModal();
 
   if (!account) {
     return null;
@@ -25,7 +25,12 @@ export const AccountCard = () => {
   return (
     <>
       <AccountCardDisplay
-        onSend={() => onOpen()}
+        onSend={() =>
+          onOpen({
+            mode: { type: "tez" },
+            sender: account?.pkh,
+          })
+        }
         pkh={account.pkh}
         label={account.label || ""}
         tezBalance={tez && mutezToTez(tez)}

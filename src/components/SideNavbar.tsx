@@ -11,6 +11,7 @@ import {
   MdSupport,
   MdViewCompact,
 } from "react-icons/md";
+import { RxCube } from "react-icons/rx";
 import { useNavigate } from "react-router";
 import colors from "../style/colors";
 import { useTotalBalance } from "../utils/hooks/assetsHooks";
@@ -59,11 +60,15 @@ const TopIems = () => {
         onClick={() => navigate("/nfts")}
         icon={MdOutlineDiamond}
       />
-
       <MenuItem
         label="Operations"
         onClick={() => navigate("/operations")}
         icon={MdHistory}
+      />
+      <MenuItem
+        label="Delegations"
+        onClick={() => navigate("/delegations")}
+        icon={RxCube}
       />
       <MenuItem label="Tokens" icon={MdMoney} />
       <MenuItem label="Batch" icon={MdCalendarViewMonth} />

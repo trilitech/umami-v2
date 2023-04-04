@@ -1,9 +1,11 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
+import { filterNulls } from "./helpers";
 import { useAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import assetsSlice, {
+  DelegationPayload,
   TezBalancePayload,
   TezTransfersPayload,
   TokenBalancePayload,
@@ -12,6 +14,7 @@ import assetsSlice, {
 import { useAppDispatch } from "./store/hooks";
 import {
   getBalance,
+  getLastDelegation,
   getTezosPriceInUSD,
   getTezTransfers,
   getTokens,
@@ -50,6 +53,14 @@ const getTokensTransfersPayload = async (
   return { pkh, operations };
 };
 
+const getDelegationsPayload = async (
+  pkh: string,
+  network: TezosNetwork
+): Promise<DelegationPayload | undefined> => {
+  const delegation = await getLastDelegation(pkh, network);
+  return delegation && { pkh, delegation };
+};
+
 const assetsActions = assetsSlice.actions;
 
 const REFRESH_RATE = 10000;
@@ -63,15 +74,11 @@ export const useAssetsPolling = () => {
 
   const tezQuery = useQuery("tezBalance", {
     queryFn: async () => {
-      try {
-        const balances = await Promise.all(
-          pkhs.map((pkh) => getBalancePayload(pkh, network))
-        );
+      const balances = await Promise.all(
+        pkhs.map((pkh) => getBalancePayload(pkh, network))
+      );
 
-        dispatch(assetsActions.updateAssets(balances));
-      } catch (error) {
-        console.error(error);
-      }
+      dispatch(assetsActions.updateAssets(balances));
     },
 
     refetchInterval: REFRESH_RATE,
@@ -79,15 +86,11 @@ export const useAssetsPolling = () => {
 
   const tokenQuery = useQuery("tokenBalance", {
     queryFn: async () => {
-      try {
-        const tokens = await Promise.all(
-          pkhs.map((pkh) => getTokensPayload(pkh, network))
-        );
+      const tokens = await Promise.all(
+        pkhs.map((pkh) => getTokensPayload(pkh, network))
+      );
 
-        dispatch(assetsActions.updateAssets(tokens));
-      } catch (error) {
-        console.error(error);
-      }
+      dispatch(assetsActions.updateAssets(tokens));
     },
 
     refetchInterval: REFRESH_RATE,
@@ -95,15 +98,11 @@ export const useAssetsPolling = () => {
 
   const tezTransfersQuery = useQuery("tezTransfers", {
     queryFn: async () => {
-      try {
-        const operations = await Promise.all(
-          pkhs.map((pkh) => getTezTransfersPayload(pkh, network))
-        );
+      const operations = await Promise.all(
+        pkhs.map((pkh) => getTezTransfersPayload(pkh, network))
+      );
 
-        dispatch(assetsActions.updateTezOperations(operations));
-      } catch (error) {
-        console.error(error);
-      }
+      dispatch(assetsActions.updateTezOperations(operations));
     },
 
     refetchInterval: REFRESH_RATE,
@@ -112,15 +111,23 @@ export const useAssetsPolling = () => {
   // TODO refactor there is some duplication piling up
   const tokensTransfersQuery = useQuery("tokensTransfers", {
     queryFn: async () => {
-      try {
-        const operations = await Promise.all(
-          pkhs.map((pkh) => getTokensTransfersPayload(pkh, network))
-        );
+      const operations = await Promise.all(
+        pkhs.map((pkh) => getTokensTransfersPayload(pkh, network))
+      );
 
-        dispatch(assetsActions.updateTokenOperations(operations));
-      } catch (error) {
-        console.error(error);
-      }
+      dispatch(assetsActions.updateTokenOperations(operations));
+    },
+
+    refetchInterval: REFRESH_RATE,
+  });
+
+  const delegationsQuery = useQuery("delegations", {
+    queryFn: async () => {
+      const delegations = await Promise.all(
+        pkhs.map((pkh) => getDelegationsPayload(pkh, network))
+      ).then(filterNulls);
+
+      dispatch(assetsActions.updateDelegations(delegations));
     },
 
     refetchInterval: REFRESH_RATE,
@@ -128,12 +135,8 @@ export const useAssetsPolling = () => {
 
   const conversionrateQuery = useQuery("conversionRate", {
     queryFn: async () => {
-      try {
-        const rate = await getTezosPriceInUSD();
-        dispatch(assetsActions.updateConversionRate({ rate }));
-      } catch (error) {
-        console.error(error);
-      }
+      const rate = await getTezosPriceInUSD();
+      dispatch(assetsActions.updateConversionRate({ rate }));
     },
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
   });
@@ -143,6 +146,7 @@ export const useAssetsPolling = () => {
   const tezTransfersQueryRef = useRef(tezTransfersQuery);
   const tokensTransfersQueryRef = useRef(tokensTransfersQuery);
   const conversionrateQueryRef = useRef(conversionrateQuery);
+  const delegationsQueryRef = useRef(delegationsQuery);
 
   // Refetch when network changes
   useEffect(() => {
@@ -151,5 +155,6 @@ export const useAssetsPolling = () => {
     tezTransfersQueryRef.current.refetch();
     tokensTransfersQueryRef.current.refetch();
     conversionrateQueryRef.current.refetch();
+    delegationsQueryRef.current.refetch();
   }, [network]);
 };
