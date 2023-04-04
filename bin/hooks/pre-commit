@@ -1,3 +1,6 @@
 #!/bin/sh
-set -x
-npm run format && npm run typecheck && npm run test:ci
+set -ex
+
+npm run format
+npm run typecheck
+CI=true npm run test
