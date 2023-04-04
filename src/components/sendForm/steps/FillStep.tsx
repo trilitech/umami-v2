@@ -169,7 +169,7 @@ export const SendTezOrNFTForm = ({
             />
           </FormControl>
 
-          {!!nft ? <SendNFTRecapTile nft={nft} /> : null}
+          {nft ? <SendNFTRecapTile nft={nft} /> : null}
 
           <FormControl mb={2} mt={2}>
             <FormLabel>Amount</FormLabel>

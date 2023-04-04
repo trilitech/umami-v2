@@ -58,8 +58,9 @@
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "TZ='CET' && react-scripts test --verbose",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "test": "TZ=CET react-scripts test --verbose",
+    "typecheck": "tsc",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|md)\"",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
@@ -68,22 +69,6 @@
     "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
     "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
   },
   "browserslist": {
     "production": [

@@ -60,7 +60,7 @@ export const EnterSeed: React.FC<{ onSubmit: (s: string) => void }> = ({
               })}
               placeholder="Enter your seed phrase..."
             />
-            {!!errors.seedPhrase ? (
+            {errors.seedPhrase ? (
               <FormErrorMessage>
                 {errors.seedPhrase?.message as string}
               </FormErrorMessage>
@@ -97,7 +97,7 @@ export const EnterSeed: React.FC<{ onSubmit: (s: string) => void }> = ({
 
 const MIN_LENGTH = 4;
 
-let useRestore = () => {
+const useRestore = () => {
   const dispatch = useAppDispatch();
   return async (seedPhrase: string, password: string) => {
     const seedFingerPrint = await getFingerPrint(seedPhrase);
@@ -184,7 +184,7 @@ export const ConfirmPassword: React.FC<{
               })}
               placeholder="Confirm your new password..."
             />
-            {!!errors.confirm ? (
+            {errors.confirm ? (
               <FormErrorMessage>
                 {errors.confirm?.message as string}
               </FormErrorMessage>

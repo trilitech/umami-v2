@@ -56,7 +56,7 @@ export const ConnectedAccountSelector: React.FC<{
   selected?: string;
   isDisabled?: boolean;
 }> = ({ onSelect = () => {}, selected, isDisabled }) => {
-  let accounts = useAccounts();
+  const accounts = useAccounts();
   const selectedAccount = accounts.find((a) => a.pkh === selected);
 
   return (

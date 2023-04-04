@@ -113,7 +113,7 @@ export const RecapDisplay: React.FC<{
 
   const { register, handleSubmit } = useForm<{ password: string }>();
   const toast = useToast();
-  let [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async ({ password }: { password: string }) => {
     setIsLoading(true);

@@ -20,8 +20,6 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import {
-  delegate,
-  estimateDelegation,
   estimateFA2transfer,
   estimateTezTransfer,
   transferFA2Token,
@@ -39,8 +37,6 @@ const estimateTezTransferMock = estimateTezTransfer as jest.Mock;
 const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
 const transferTezMock = transferTez as jest.Mock;
 const transferFA2TokenMock = transferFA2Token as jest.Mock;
-const delegateMock = delegate as jest.Mock;
-const estimateDelegationMock = estimateDelegation as jest.Mock;
 
 const fixture = (sender?: string, assetType?: SendFormMode) => (
   <ReactQueryProvider>

@@ -77,11 +77,7 @@ export const mockAccount = (index: number): Account => {
 const mockContract = (index: number) =>
   `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`;
 
-export const mockNFTToken = (
-  index: number,
-  pkh: string,
-  balance: number = 1
-) => {
+export const mockNFTToken = (index: number, pkh: string, balance = 1) => {
   return {
     id: index,
     account: {
