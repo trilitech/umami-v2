@@ -23,10 +23,10 @@ _Put an `x` in the boxes that apply_
 
 Add the screenshots of how the app used to look like and how it looks now
 
-| Before  | Now |
-| --- | --- |
-| Image1  | Image2  |
-| Image3  | Image4  |
+| Before | Now    |
+| ------ | ------ |
+| Image1 | Image2 |
+| Image3 | Image4 |
 
 ## Checklist
 

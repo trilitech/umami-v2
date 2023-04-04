@@ -4,11 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Initial setup
 
-Just run
-
-```sh
-./bin/setup
-```
+Just run `./bin/setup`. It'll create a git pre-push hook with all the necessary checks
 
 ## Available Scripts
 
