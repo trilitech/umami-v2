@@ -5,33 +5,42 @@ on: push
 jobs:
   build_app:
     runs-on: ubuntu-latest
+    env:
+      # this one is for yarn 1.x. It saves its cache in .cache/yarn/v6
+      # whilst yarn 2+ would use .cache/yarn
+      # They must be aligned so that cache can be used by
+      # the setup-node action and our own version of yarn (3.x)
+      YARN_CACHE_FOLDER: /home/runner/.cache/yarn
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Cache node modules
-        uses: actions/cache@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Node 18
-        uses: actions/setup-node@v1
-        with:
-          node-version: 18.x
+          node-version: 18
+          cache: "yarn"
 
-      - name: Prepare
-        run: yarn
+      - name: Setup yarn 3.x
+        run: |
+          corepack enable
+          corepack prepare yarn@stable --activate
+          yarn --version
 
-      # - name: Prettier
-      #   run: yarn actions:prettier
+      - name: Install packages
+        env:
+          YARN_CACHE_FOLDER: /home/runner/.cache/yarn/v6
+        run: yarn install --immutable
+
+      - name: Check format
+        run: npm run format:ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Typecheck code
+        run: npm run typecheck
+
+      - name: Run tests
+        run: CI=true npm run test
 
       - name: Build
         run: yarn build
-
-      # - name: Upload
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: app_dist
-      #     path: build
