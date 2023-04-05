@@ -47,7 +47,7 @@ export default function SettingsView() {
       </GridItem>
       <GridItem area={"main"}>
         <SettingsSection title="General">
-          <SettingsCard about="Theme">
+          <SettingsCard about="Theme" onClick={() => {}}>
             <Flex alignItems="center" justifyContent="space-between">
               <Text size="sm">Light</Text>
               <Switch marginX={3} isChecked isDisabled />
@@ -62,8 +62,14 @@ export default function SettingsView() {
               />
             </Box>
           </SettingsCard>
-          <SettingsCard about="ErrorLogs">
-            <Icon as={AiOutlineRight} />
+          <SettingsCard about="ErrorLogs" onClick={() => {}}>
+            <Icon
+              as={AiOutlineRight}
+              color={colors.gray[600]}
+              _hover={{
+                color: colors.gray[300],
+              }}
+            />
           </SettingsCard>
         </SettingsSection>
       </GridItem>
@@ -73,8 +79,9 @@ export default function SettingsView() {
 
 const SettingsCard: React.FC<{
   about: string;
+  onClick?: () => void;
   children: React.ReactNode;
-}> = ({ about, children }) => {
+}> = ({ about, onClick, children }) => {
   return (
     <Card
       paddingX={1}
@@ -84,27 +91,36 @@ const SettingsCard: React.FC<{
       justifyContent="center"
       border="1px solid"
       borderColor={colors.gray[700]}
+      cursor={onClick ? "pointer" : undefined}
+      _hover={{
+        borderColor: onClick ? colors.gray[600] : colors.gray[700],
+      }}
+      h="66px"
     >
-      <CardBody alignContent="center">
-        <Flex justifyContent="space-between" alignItems="center">
-          <Heading size="sm">{about}</Heading>
-          {children}
+      <CardBody alignContent="center" overflow={"hidden"} onClick={onClick}>
+        <Flex alignItems="center" h="100%">
+          <Flex justifyContent="space-between" alignItems="center" w="100%">
+            <Heading size="sm">{about}</Heading>
+            {children}
+          </Flex>
         </Flex>
       </CardBody>
     </Card>
   );
 };
 
-const SettingsSection: React.FC<{ title: string; children: React.ReactNode }> =
-  ({ title, children }) => {
-    return (
-      <Box marginY={2}>
-        <Flex>
-          <Box w="550px">
-            <Heading size="lg">{title}</Heading>
-            {children}
-          </Box>
-        </Flex>
-      </Box>
-    );
-  };
+const SettingsSection: React.FC<{
+  title: string;
+  children: React.ReactNode;
+}> = ({ title, children }) => {
+  return (
+    <Box marginY={2}>
+      <Flex>
+        <Box w="550px">
+          <Heading size="lg">{title}</Heading>
+          {children}
+        </Box>
+      </Flex>
+    </Box>
+  );
+};
