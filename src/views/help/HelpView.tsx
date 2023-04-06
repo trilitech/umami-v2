@@ -29,7 +29,6 @@ export default function HelpView() {
       <GridItem area={"main"} mt={1}>
         <HelpCard
           title="Learn More"
-          pointsOnHover
           onClick={() => {
             jumpToLink("https://medium.com/umamiwallet");
           }}
@@ -44,7 +43,6 @@ export default function HelpView() {
 
         <HelpCard
           title="Questions?"
-          pointsOnHover
           onClick={() => {
             jumpToLink(
               "https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
@@ -90,7 +88,6 @@ export default function HelpView() {
 
         <HelpCard
           title="Terms of Use"
-          pointsOnHover
           onClick={() => {
             jumpToLink("https://umamiwallet.com/tos.html");
           }}
@@ -147,10 +144,9 @@ const HelpLinkRow: React.FC<{
 
 const HelpCard: React.FC<{
   title: string;
-  pointsOnHover?: boolean;
   onClick?: () => void;
   children: React.ReactNode;
-}> = ({ title, pointsOnHover = false, onClick, children }) => {
+}> = ({ title, onClick, children }) => {
   return (
     <Box marginY={2}>
       <Flex>
