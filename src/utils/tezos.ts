@@ -1,11 +1,12 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { Signer, TezosToolkit } from "@taquito/taquito";
+import { OpKind, ParamsWithKind, Signer, TezosToolkit } from "@taquito/taquito";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 
 import { InMemorySigner } from "@taquito/signer";
 import * as tzktApi from "@tzkt/sdk-api";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import axios from "axios";
+import { TransactionValues } from "../components/sendForm/types";
 import { Baker } from "../types/Baker";
 import { Token } from "../types/Token";
 import { UmamiEncrypted } from "../types/UmamiEncrypted";
@@ -43,6 +44,18 @@ const makeToolkitWithSigner = async (
   const sk = await decrypt(esk, password);
   Tezos.setProvider({
     signer: new InMemorySigner(sk),
+  });
+  return Tezos;
+};
+
+export const makeToolkitWithDummySigner = (
+  pk: string,
+  pkh: string,
+  network: TezosNetwork
+) => {
+  const Tezos = new TezosToolkit(nodeUrls[network]);
+  Tezos.setProvider({
+    signer: new DummySigner(pk, pkh) as any,
   });
   return Tezos;
 };
@@ -119,11 +132,7 @@ export const estimateTezTransfer = async (
   senderPk: string,
   network: TezosNetwork
 ) => {
-  const Tezos = new TezosToolkit(nodeUrls[network]);
-  Tezos.setProvider({
-    signer: new DummySigner(senderPk, senderPkh) as any as Signer,
-  });
-
+  const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
   return Tezos.estimate.transfer({
     to: recipient,
     amount: amount,
@@ -135,12 +144,10 @@ export const estimateFA2transfer = async (
   senderPk: string,
   network: TezosNetwork
 ) => {
-  const Tezos = new TezosToolkit(nodeUrls[network]);
-  Tezos.setProvider({
-    signer: new DummySigner(senderPk, params.sender) as any as Signer,
-  });
+  const Tezos = makeToolkitWithDummySigner(senderPk, params.sender, network);
 
   const contractInstance = await makeContract(params, Tezos);
+
   return Tezos.estimate.transfer(contractInstance.toTransferParams());
 };
 
@@ -156,6 +163,19 @@ export const estimateDelegation = async (
   });
 
   return Tezos.estimate.setDelegate({ source: senderPkh, delegate: bakerPkh });
+};
+
+export const estimateBatch = async (
+  transactions: TransactionValues[],
+  pkh: string,
+  pk: string,
+  network: TezosNetwork
+) => {
+  const batch = await transactionValuesToBatchParams(transactions, pk, network);
+
+  const Tezos = await makeToolkitWithDummySigner(pk, pkh, network);
+
+  return Tezos.estimate.batch(batch);
 };
 
 export const delegate = async (
@@ -277,4 +297,61 @@ export const getBakers = () => {
   return axios
     .get("https://api.baking-bad.org/v2/bakers")
     .then((d) => d.data) as Promise<Baker[]>;
+};
+
+export const transactionValuesToBatchParams = async (
+  transactions: TransactionValues[],
+  pk: string,
+  network: TezosNetwork
+): Promise<ParamsWithKind[]> => {
+  const result: ParamsWithKind[] = [];
+
+  for (const transaction of transactions) {
+    const type = transaction.type;
+    switch (type) {
+      case "tez":
+        result.push({
+          kind: OpKind.TRANSACTION,
+          to: transaction.values.recipient,
+          amount: transaction.values.amount,
+        });
+        break;
+      case "delegation":
+        result.push({
+          kind: OpKind.DELEGATION,
+          source: transaction.values.sender,
+          delegate: transaction.values.recipient,
+        });
+        break;
+      case "nft":
+        {
+          const Tezos = makeToolkitWithDummySigner(
+            pk,
+            transaction.values.sender,
+            network
+          );
+          const contract = await makeContract(
+            {
+              sender: transaction.values.sender,
+              amount: transaction.values.amount,
+              contract: transaction.data.contract,
+              recipient: transaction.values.recipient,
+              tokenId: transaction.data.tokenId,
+            },
+            Tezos
+          );
+          result.push({
+            kind: OpKind.TRANSACTION,
+            ...contract.toTransferParams(),
+          });
+        }
+        break;
+      default: {
+        const exhaustiveCheck: never = type;
+        throw new Error(exhaustiveCheck);
+      }
+    }
+  }
+
+  return result;
 };
