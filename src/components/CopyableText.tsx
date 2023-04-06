@@ -11,14 +11,16 @@ const TOAST_ID = "TOAST_ID";
 export const CopyableAddress: React.FC<
   {
     pkh: string;
+    formatAddress?: boolean;
     copyable?: boolean;
   } & FlexProps
-> = ({ pkh, copyable = true, ...rest }) => {
+> = ({ pkh, formatAddress = true, copyable = true, ...rest }) => {
   return (
     <CopyableText
-      displayText={formatPkh(pkh)}
+      displayText={formatAddress ? formatPkh(pkh) : pkh}
       copyValue={copyable ? pkh : undefined}
       toastMessage="Address copied to clipboard"
+      {...rest}
     />
   );
 };
