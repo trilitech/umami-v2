@@ -3,6 +3,7 @@ import { persistReducer } from "redux-persist";
 import storage from "./storage";
 import accountsSlice from "./accountsSlice";
 import assetsSlice from "./assetsSlice";
+import contactsSlice from "./contactsSlice";
 
 // See this answer for configuration of redux toolkit with redux-persist
 // https://stackoverflow.com/a/63818121/6797267
@@ -14,6 +15,7 @@ const persistConfig = {
 const reducers = combineReducers({
   accounts: accountsSlice.reducer,
   assets: assetsSlice.reducer,
+  contacts: contactsSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

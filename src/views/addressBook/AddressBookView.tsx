@@ -5,6 +5,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import AddressBookTable from "./ContactTable";
+import { contacts } from "../../mocks/contacts";
 
 const FilterController: React.FC = () => {
   return (
@@ -20,24 +21,6 @@ const FilterController: React.FC = () => {
   );
 };
 
-const fixture = [
-  {
-    name: "Lewis Hatfull",
-    pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-  },
-  {
-    name: "Lev Kowalski",
-    pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-  },
-  {
-    name: "Abhishek Jain",
-    pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-  },
-  {
-    name: "Fabrice Trutmann",
-    pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-  },
-];
 export default function AddressBookView() {
   return (
     <Flex direction="column" height={"100%"}>
@@ -46,7 +29,7 @@ export default function AddressBookView() {
       <FilterController />
 
       <Box overflow="scroll" pb={4}>
-        <AddressBookTable contacts={fixture} />
+        <AddressBookTable contacts={Object.values(contacts)} />
       </Box>
     </Flex>
   );
