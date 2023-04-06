@@ -307,43 +307,49 @@ export const transactionValuesToBatchParams = async (
   const result: ParamsWithKind[] = [];
 
   for (const transaction of transactions) {
-    if (transaction.type === "tez") {
-      result.push({
-        kind: OpKind.TRANSACTION,
-        to: transaction.values.recipient,
-        amount: transaction.values.amount,
-      });
-      continue;
-    }
-    if (transaction.type === "delegation") {
-      result.push({
-        kind: OpKind.DELEGATION,
-        source: transaction.values.sender,
-        delegate: transaction.values.recipient,
-      });
-      continue;
-    }
-
-    if (transaction.type === "nft") {
-      const Tezos = makeToolkitWithDummySigner(
-        pk,
-        transaction.values.sender,
-        network
-      );
-      const contract = await makeContract(
-        {
-          sender: transaction.values.sender,
+    const type = transaction.type;
+    switch (type) {
+      case "tez":
+        result.push({
+          kind: OpKind.TRANSACTION,
+          to: transaction.values.recipient,
           amount: transaction.values.amount,
-          contract: transaction.data.contract,
-          recipient: transaction.values.recipient,
-          tokenId: transaction.data.tokenId,
-        },
-        Tezos
-      );
-      result.push({
-        kind: OpKind.TRANSACTION,
-        ...contract.toTransferParams(),
-      });
+        });
+        break;
+      case "delegation":
+        result.push({
+          kind: OpKind.DELEGATION,
+          source: transaction.values.sender,
+          delegate: transaction.values.recipient,
+        });
+        break;
+      case "nft":
+        {
+          const Tezos = makeToolkitWithDummySigner(
+            pk,
+            transaction.values.sender,
+            network
+          );
+          const contract = await makeContract(
+            {
+              sender: transaction.values.sender,
+              amount: transaction.values.amount,
+              contract: transaction.data.contract,
+              recipient: transaction.values.recipient,
+              tokenId: transaction.data.tokenId,
+            },
+            Tezos
+          );
+          result.push({
+            kind: OpKind.TRANSACTION,
+            ...contract.toTransferParams(),
+          });
+        }
+        break;
+      default: {
+        const exhaustiveCheck: never = type;
+        throw new Error(exhaustiveCheck);
+      }
     }
   }
 
