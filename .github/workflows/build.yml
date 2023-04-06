@@ -4,7 +4,10 @@ on: push
 
 jobs:
   build_app:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     env:
       # this one is for yarn 1.x. It saves its cache in .cache/yarn/v6
       # whilst yarn 2+ would use .cache/yarn
@@ -44,3 +47,10 @@ jobs:
 
       - name: Build
         run: yarn build
+
+      # - name: Upload
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: app_dist
+      #     path: build
+      #     if-no-files-found: error
