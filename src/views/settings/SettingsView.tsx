@@ -1,21 +1,11 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import { Box, Flex, Heading, Text, Switch } from "@chakra-ui/react";
-import { NetworkSelectorDisplay } from "../../components/NetworkSelector/NetworkSelectorDisplay";
-import { SettingsCard } from "../../components/SettingsCard";
+import { SettingsCard } from "../../components/ClickableCard";
+import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
-import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import assetsSlice from "../../utils/store/assetsSlice";
-import { useAppDispatch } from "../../utils/store/hooks";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 
 export default function SettingsView() {
-  const network = useSelectedNetwork();
-  const dispatch = useAppDispatch();
-
-  const changeNetwork = (network: TezosNetwork) => {
-    dispatch(assetsSlice.actions.updateNetwork(network));
-  };
   return (
     <Grid
       h="100%"
@@ -33,19 +23,16 @@ export default function SettingsView() {
       </GridItem>
       <GridItem area={"main"}>
         <SettingsSection title="General">
-          <SettingsCard about="Theme">
+          <SettingsCard left="Theme">
             <Flex alignItems="center" justifyContent="space-between">
               <Text size="sm">Light</Text>
-              <Switch marginX={3} isChecked />
+              <Switch marginX={3} isChecked isDisabled />
               <Heading size="sm">Dark</Heading>
             </Flex>
           </SettingsCard>
-          <SettingsCard about="Network">
+          <SettingsCard left="Network">
             <Box>
-              <NetworkSelectorDisplay
-                value={network}
-                onChange={changeNetwork}
-              />
+              <NetworkSelector />
             </Box>
           </SettingsCard>
           <ErrorLogsDrawerCard />

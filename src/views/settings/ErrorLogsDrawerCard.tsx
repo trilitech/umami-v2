@@ -13,7 +13,7 @@ import {
 import { AiOutlineExclamationCircle, AiOutlineRight } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import { MdCopyAll } from "react-icons/md";
-import { SettingsCard } from "../../components/SettingsCard";
+import { SettingsCard } from "../../components/ClickableCard";
 import { mockErrorLogs } from "../../mocks/errorLogs";
 import colors from "../../style/colors";
 import { ErrorLog } from "../../types/ErrorLog";
@@ -27,7 +27,7 @@ const ErrorLogsDrawerCard = () => {
   };
 
   return (
-    <SettingsCard about="ErrorLogs" onClick={onOpen}>
+    <SettingsCard left="ErrorLogs" onClick={onOpen}>
       <Icon
         as={AiOutlineRight}
         color={colors.gray[600]}
@@ -73,8 +73,8 @@ const ErrorLogsDrawerBody = () => {
           <Icon as={BsTrash} />
         </Flex>
       </Flex>
-      {mockErrorLogs.map((log) => (
-        <ErrorLogRow errorLog={log} />
+      {mockErrorLogs.map((log, i) => (
+        <ErrorLogRow errorLog={log} key={i} />
       ))}
     </Flex>
   );
