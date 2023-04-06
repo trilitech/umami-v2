@@ -1,32 +1,10 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Icon,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Portal,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tooltip,
-  Tr,
-} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { TbFilter } from "react-icons/tb";
 import { RiContactsLine } from "react-icons/ri";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import { Contact } from "../../types/AddressBook";
-import { CopyableAddress } from "../../components/CopyableText";
-import { MdArrowOutward } from "react-icons/md";
-import { BsThreeDots } from "react-icons/bs";
+import AddressBookTable from "./ContactTable";
 
 const FilterController: React.FC = () => {
   return (
@@ -42,68 +20,6 @@ const FilterController: React.FC = () => {
   );
 };
 
-const AddressBookTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
-  return (
-    <TableContainer overflowX="unset" overflowY="unset">
-      <Table>
-        <Thead
-          position="sticky"
-          top={0}
-          zIndex="docked"
-          bg="umami.gray.900"
-          borderRadius={4}
-        >
-          <Tr>
-            <Th>Name:</Th>
-            <Th>Address:</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {contacts.map((contact) => {
-            return (
-              <Tr key={contact.pkh}>
-                <Td>{contact.name}</Td>
-                <Td>
-                  <Flex alignItems="center" justifyContent="space-between">
-                    <Flex alignItems="center">
-                      <CopyableAddress
-                        pkh={contact.pkh}
-                        formatAddress={false}
-                        mr={5}
-                      />
-                      <IconAndTextBtn icon={MdArrowOutward} label="Send" />
-                    </Flex>
-
-                    <Popover>
-                      <PopoverTrigger>
-                        <Button variant="unstyled">
-                          <Icon
-                            as={BsThreeDots}
-                            color={colors.gray[600]}
-                            _hover={{
-                              color: colors.gray[300],
-                            }}
-                          />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent w="100px" bg={colors.gray[700]}>
-                        <PopoverBody w="100px">
-                          <Box>Rename</Box>
-                          <Divider />
-                          <Box>Remove</Box>
-                        </PopoverBody>
-                      </PopoverContent>
-                    </Popover>
-                  </Flex>
-                </Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-    </TableContainer>
-  );
-};
 const fixture = [
   {
     name: "Lewis Hatfull",
