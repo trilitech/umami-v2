@@ -140,7 +140,7 @@ describe("Tezos utils", () => {
             {
               type: "tez",
               values: {
-                amount: 0.00001,
+                amount: 0.0000001,
                 sender: pkh1,
                 recipient: pkh2,
               },
