@@ -58,8 +58,8 @@
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "TZ=CET react-scripts test --verbose",
-    "test:tezos:integration": "TZ=CET react-scripts test --watchPathIgnorePatterns=[]",
+    "test": "cross-env TZ=CET react-scripts test --verbose",
+    "test:tezos:integration": "cross-env TZ=CET react-scripts test --watchPathIgnorePatterns=[]",
     "typecheck": "tsc",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|md)\"",
