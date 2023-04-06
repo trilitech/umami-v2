@@ -10,6 +10,7 @@ import SettingsView from "./views/settings/SettingsView";
 import { withSideMenu } from "./views/withSideMenu";
 import HelpView from "./views/help/HelpView";
 import DelegationsView from "./views/delegations/DelegationsView";
+import AddressBookView from "./views/addressBook/AddressBookView";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -26,16 +27,6 @@ const loggedInRouter = createHashRouter([
   },
 
   {
-    path: "/settings",
-    element: withSideMenu(<SettingsView />),
-  },
-
-  {
-    path: "/help",
-    element: withSideMenu(<HelpView />),
-  },
-
-  {
     path: "/operations",
     element: withSideMenu(<OperationsView />),
   },
@@ -43,6 +34,21 @@ const loggedInRouter = createHashRouter([
   {
     path: "/delegations",
     element: withSideMenu(<DelegationsView />),
+  },
+
+  {
+    path: "/address-book",
+    element: withSideMenu(<AddressBookView />),
+  },
+
+  {
+    path: "/settings",
+    element: withSideMenu(<SettingsView />),
+  },
+
+  {
+    path: "/help",
+    element: withSideMenu(<HelpView />),
   },
 
   {
