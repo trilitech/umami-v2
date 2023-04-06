@@ -68,9 +68,9 @@
     "storybook": "start-storybook -p 6006 -s public",
     "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
     "build-storybook": "build-storybook -s public",
-    "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
-    "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
-    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
+    "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js",
+    "electron:package:win": "electron-builder -w -c.extraMetadata.main=build/electron.js",
+    "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
   "browserslist": {
     "production": [

@@ -7,6 +7,13 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
+        include:
+          - os: windows-latest
+            electron_cmd: win
+          - os: ubuntu-latest
+            electron_cmd: linux
+          - os: macos-latest
+            electron_cmd: mac
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -71,7 +78,10 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           name: app_dist_${{ matrix.electron_cmd }}
-          path: dist/*.(exe|dmg|deb)
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.deb
           if-no-files-found: error
 
       # this is needed to ensure that actions/setup-node will pick up yarn cache
