@@ -166,36 +166,31 @@ describe("Tezos utils", () => {
       });
 
       test("Batch estimation fails with insuficient funds", async () => {
-        let errorMessage;
-        try {
-          await estimateBatch(
-            [
-              {
-                type: "tez",
-                values: {
-                  amount: 9999999,
-                  sender: pkh1,
-                  recipient: pkh2,
-                },
+        const estimation = estimateBatch(
+          [
+            {
+              type: "tez",
+              values: {
+                amount: 9999999,
+                sender: pkh1,
+                recipient: pkh2,
               },
-              {
-                type: "delegation",
+            },
+            {
+              type: "delegation",
 
-                values: {
-                  sender: pkh1,
-                  recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
-                },
+              values: {
+                sender: pkh1,
+                recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
               },
-            ],
-            pkh1,
-            pk1,
-            TezosNetwork.MAINNET
-          );
-        } catch (error: any) {
-          errorMessage = error.message;
-        }
+            },
+          ],
+          pkh1,
+          pk1,
+          TezosNetwork.MAINNET
+        );
 
-        expect(/tez.subtraction_underflow/i.test(errorMessage)).toEqual(true);
+        await expect(estimation).rejects.toThrow(/tez.subtraction_underflow/i);
       });
     });
   });
