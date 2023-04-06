@@ -7,6 +7,7 @@ const ClickableCard: React.FC<{
   h?: LayoutProps["h"];
   children: React.ReactNode;
 }> = ({ onClick, h, children }) => {
+  //TODO: Remove hooks for hover. CSS _hover doesn't work.
   const [mouseHover, setMouseHover] = useState(false);
   return (
     <Card
