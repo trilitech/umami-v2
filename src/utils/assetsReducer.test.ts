@@ -1,10 +1,24 @@
 import assetsSlice from "./store/assetsSlice";
 import { store } from "./store/store";
 
-import BigNumber from "bignumber.js";
 import { TezosNetwork } from "@airgap/tezos";
+import { waitFor } from "@testing-library/react";
+import BigNumber from "bignumber.js";
+import {
+  mockDelegationTransfer,
+  mockNftTransfer,
+  mockPk,
+  mockPkh,
+  mockTezTransaction,
+  mockTezTransfer,
+  mockTokenTransaction,
+} from "../mocks/factories";
 import accountsSlice from "./store/accountsSlice";
-import { mockTezTransaction, mockTokenTransaction } from "../mocks/factories";
+import { estimateAndUpdateBatch } from "./store/thunks/estimateAndupdateBatch";
+import { estimateBatch } from "./tezos";
+jest.mock("./tezos");
+
+const estimateBatchMock = estimateBatch as jest.Mock;
 
 const {
   actions: {
@@ -13,6 +27,7 @@ const {
     updateNetwork,
     updateTezOperations,
     updateTokenOperations,
+    clearBatch,
   },
 } = assetsSlice;
 
@@ -32,6 +47,7 @@ describe("Assets reducer", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
+      batches: {},
     });
   });
 
@@ -50,6 +66,7 @@ describe("Assets reducer", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
+      batches: {},
     });
 
     store.dispatch(
@@ -73,6 +90,7 @@ describe("Assets reducer", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
+      batches: {},
     });
   });
 
@@ -103,6 +121,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
+      batches: {},
     });
   });
 
@@ -133,6 +152,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
+      batches: {},
     });
   });
 
@@ -163,6 +183,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
+      batches: {},
     });
 
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
@@ -174,6 +195,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "ghostnet",
       conversionRate: null,
+      batches: {},
     });
   });
 
@@ -204,6 +226,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
+      batches: {},
     });
 
     store.dispatch(accountsSlice.actions.reset());
@@ -215,6 +238,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "mainnet",
       conversionRate: null,
+      batches: {},
     });
   });
 
@@ -238,6 +262,7 @@ describe("Assets reducer", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
+      batches: {},
       operations: {
         tez: {
           foo: [mockTezTransaction(1), mockTezTransaction(2)],
@@ -269,6 +294,7 @@ describe("Assets reducer", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
+      batches: {},
       operations: {
         tez: {
           foo: [mockTezTransaction(4)],
@@ -301,6 +327,7 @@ describe("Assets reducer", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
+      batches: {},
       operations: {
         tokens: {
           foo: [mockTokenTransaction(1), mockTokenTransaction(2)],
@@ -340,6 +367,170 @@ describe("Assets reducer", () => {
         },
         tez: {},
       },
+      batches: {},
+    });
+  });
+
+  describe("Batch", () => {
+    test("Adding transactions to batch starts an estimation and updates the given account's batch with the result", async () => {
+      const mockEstimations = [
+        { suggestedFeeMutez: 323 },
+        { suggestedFeeMutez: 423 },
+        { suggestedFeeMutez: 523 },
+      ];
+
+      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
+
+      const transfers = [
+        mockTezTransfer(1),
+        mockDelegationTransfer(1),
+        mockNftTransfer(1),
+      ];
+      const action = estimateAndUpdateBatch(
+        mockPkh(1),
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
+
+      store.dispatch(action);
+      expect(estimateBatchMock).toHaveBeenCalledWith(
+        transfers,
+        mockPkh(1),
+        mockPk(1),
+        TezosNetwork.MAINNET
+      );
+      expect(store.getState().assets.batches[mockPkh(1)].isSimulating).toEqual(
+        true
+      );
+      await waitFor(() => {
+        expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+          isSimulating: false,
+          items: [
+            {
+              fee: mockEstimations[0].suggestedFeeMutez,
+              transaction: transfers[0],
+            },
+            {
+              fee: mockEstimations[1].suggestedFeeMutez,
+              transaction: transfers[1],
+            },
+            {
+              fee: mockEstimations[2].suggestedFeeMutez,
+              transaction: transfers[2],
+            },
+          ],
+        });
+      });
+    });
+
+    test("Batches can be cleared for a given account", async () => {
+      const mockEstimations = [{ suggestedFeeMutez: 323 }];
+
+      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
+
+      const transfers = [mockTezTransfer(1)];
+      const action = estimateAndUpdateBatch(
+        mockPkh(1),
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
+
+      store.dispatch(action);
+      await waitFor(() => {
+        expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+          isSimulating: false,
+          items: [
+            {
+              fee: mockEstimations[0].suggestedFeeMutez,
+              transaction: transfers[0],
+            },
+          ],
+        });
+      });
+
+      store.dispatch(clearBatch({ pkh: mockPkh(1) }));
+
+      expect(store.getState().assets.batches[mockPkh(1)]).toEqual(undefined);
+    });
+
+    test("Adding transactions to a batch that dont't pass estimation throws an error and doesn't update the given account's batch", async () => {
+      const estimationError = new Error("estimation error");
+      estimateBatchMock.mockRejectedValueOnce(estimationError);
+
+      const transfers = [
+        mockTezTransfer(1),
+        mockDelegationTransfer(1),
+        mockNftTransfer(1),
+      ];
+      const action = estimateAndUpdateBatch(
+        mockPkh(1),
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
+
+      const dispatchResult = store.dispatch(action);
+      expect(store.getState().assets.batches[mockPkh(1)].isSimulating).toEqual(
+        true
+      );
+      await expect(dispatchResult).rejects.toThrow(estimationError.message);
+      expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+        isSimulating: false,
+        items: [],
+      });
+    });
+
+    test("Running a concurrent estimation for a given account is not possible", async () => {
+      const mockEstimations = [
+        { suggestedFeeMutez: 323 },
+        { suggestedFeeMutez: 423 },
+        { suggestedFeeMutez: 523 },
+      ];
+
+      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
+      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
+
+      const transfers = [
+        mockTezTransfer(1),
+        mockDelegationTransfer(1),
+        mockNftTransfer(1),
+      ];
+
+      const action = estimateAndUpdateBatch(
+        mockPkh(1),
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
+
+      store.dispatch(action);
+      const concurrentDispatch = store.dispatch(action);
+
+      await expect(concurrentDispatch).rejects.toThrow(
+        `Simulation already ongoing for ${mockPkh(1)}`
+      );
+
+      await waitFor(() => {
+        expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+          isSimulating: false,
+          items: [
+            {
+              fee: mockEstimations[0].suggestedFeeMutez,
+              transaction: transfers[0],
+            },
+            {
+              fee: mockEstimations[1].suggestedFeeMutez,
+              transaction: transfers[1],
+            },
+            {
+              fee: mockEstimations[2].suggestedFeeMutez,
+              transaction: transfers[2],
+            },
+          ],
+        });
+      });
     });
   });
 });

@@ -3,12 +3,23 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 
 import BigNumber from "bignumber.js";
+import { TransactionValues } from "../../components/sendForm/types";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
 
-// Use Record and not Map because Redux state has to be serializable
+export type BatchItem = { transaction: TransactionValues; fee: number };
+type Batch = {
+  isSimulating: boolean;
+  items: Array<BatchItem>;
+};
+
+const emptyBatch: Batch = {
+  isSimulating: false,
+  items: [],
+};
+
 type State = {
   network: TezosNetwork;
   balances: {
@@ -22,6 +33,7 @@ type State = {
   delegations: Record<string, DelegationOperation>;
   bakers: Baker[];
   conversionRate: number | null; // XTZ/USD conversion rate
+  batches: Record<string, Batch>; // XTZ/USD conversion rate
 };
 
 export type TezBalancePayload = { pkh: string; tez: BigNumber };
@@ -42,6 +54,11 @@ export type DelegationPayload = {
 
 export type ConversionRatePayload = { rate: State["conversionRate"] };
 
+export type BatchPayload = {
+  pkh: string;
+  items: Array<BatchItem>;
+};
+
 const initialState: State = {
   network: TezosNetwork.MAINNET,
   balances: {
@@ -52,6 +69,7 @@ const initialState: State = {
   delegations: {},
   bakers: [],
   conversionRate: null,
+  batches: {},
 };
 
 const assetsSlice = createSlice({
@@ -136,6 +154,46 @@ const assetsSlice = createSlice({
       { payload: { rate } }: { type: string; payload: ConversionRatePayload }
     ) => {
       state.conversionRate = rate;
+    },
+    // Don't use this action directly. Use thunk simulateAndUpdateBatch
+    updateBatch: (
+      state,
+      {
+        payload: { pkh, items: transfers },
+      }: { type: string; payload: BatchPayload }
+    ) => {
+      const existing = state.batches[pkh] || emptyBatch;
+      const newBatch: Batch = {
+        ...existing,
+        items: [...existing.items, ...transfers],
+      };
+      state.batches[pkh] = newBatch;
+    },
+    batchSimulationStart: (
+      state,
+      { payload: { pkh } }: { type: string; payload: { pkh: string } }
+    ) => {
+      const existing = state.batches[pkh] || emptyBatch;
+
+      if (existing) {
+        state.batches[pkh] = { ...existing, isSimulating: true };
+      }
+    },
+    batchSimulationEnd: (
+      state,
+      { payload: { pkh } }: { type: string; payload: { pkh: string } }
+    ) => {
+      const existing = state.batches[pkh];
+
+      if (existing) {
+        state.batches[pkh] = { ...existing, isSimulating: false };
+      }
+    },
+    clearBatch: (
+      state,
+      { payload: { pkh } }: { type: string; payload: { pkh: string } }
+    ) => {
+      delete state.batches[pkh];
     },
   },
 });
