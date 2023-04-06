@@ -2,7 +2,7 @@
   "name": "umami-ui",
   "version": "0.1.0",
   "private": true,
-  "author": "Trilitech",
+  "author": "Trilitech <umami-admin@trili.tech>",
   "description": "Tezos Wallet",
   "homepage": "./",
   "main": "./public/electron.js",
