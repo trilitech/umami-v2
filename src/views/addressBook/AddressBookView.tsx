@@ -1,7 +1,14 @@
 import {
   Box,
+  Button,
+  Divider,
   Flex,
   Icon,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
   Table,
   TableContainer,
   Tbody,
@@ -39,10 +46,6 @@ const AddressBookTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
   return (
     <TableContainer overflowX="unset" overflowY="unset">
       <Table>
-        {
-          // Finally a way to have a sticky Header
-          // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
-        }
         <Thead
           position="sticky"
           top={0}
@@ -70,15 +73,27 @@ const AddressBookTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                       />
                       <IconAndTextBtn icon={MdArrowOutward} label="Send" />
                     </Flex>
-                    <Tooltip hasArrow label="Search places" bg="red.600">
-                      <Icon
-                        as={BsThreeDots}
-                        color={colors.gray[600]}
-                        _hover={{
-                          color: colors.gray[300],
-                        }}
-                      />
-                    </Tooltip>
+
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button variant="unstyled">
+                          <Icon
+                            as={BsThreeDots}
+                            color={colors.gray[600]}
+                            _hover={{
+                              color: colors.gray[300],
+                            }}
+                          />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent w="100px" bg={colors.gray[700]}>
+                        <PopoverBody w="100px">
+                          <Box>Rename</Box>
+                          <Divider />
+                          <Box>Remove</Box>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
                   </Flex>
                 </Td>
               </Tr>
