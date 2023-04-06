@@ -14,7 +14,9 @@ import { AiOutlineExclamationCircle, AiOutlineRight } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import { MdCopyAll } from "react-icons/md";
 import { SettingsCard } from "../../components/SettingsCard";
+import { mockErrorLogs } from "../../mocks/errorLogs";
 import colors from "../../style/colors";
+import { ErrorLog } from "../../types/ErrorLog";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 
 const ErrorLogsDrawerCard = () => {
@@ -52,19 +54,6 @@ const ErrorLogsDrawerCard = () => {
   );
 };
 
-const fixture = [
-  { message: "Error 404 - Not Found", timestamp: "Mon 27 Mar 2023 13:27:01" },
-  {
-    message: "(temporary)proto.015-PtLimaPt.tez.subtraction_underflow",
-    timestamp: "Mon 27 Mar 2023 13:27:01",
-  },
-  {
-    message: "Expected field 'hash'	in array at index 0",
-    timestamp: "Mon 27 Mar 2023 13:27:01",
-  },
-  { message: "Account is empty", timestamp: "Mon 27 Mar 2023 13:27:01" },
-];
-
 const ErrorLogsDrawerBody = () => {
   return (
     <Flex direction="column" height={"100%"}>
@@ -84,17 +73,16 @@ const ErrorLogsDrawerBody = () => {
           <Icon as={BsTrash} />
         </Flex>
       </Flex>
-      {fixture.map((log) => (
-        <ErrorLogRow message={log.message} timestamp={log.timestamp} />
+      {mockErrorLogs.map((log) => (
+        <ErrorLogRow errorLog={log} />
       ))}
     </Flex>
   );
 };
 
 const ErrorLogRow: React.FC<{
-  message: string;
-  timestamp: string;
-}> = ({ message, timestamp }) => {
+  errorLog: ErrorLog;
+}> = ({ errorLog }) => {
   return (
     <>
       <Divider marginY={1} />
@@ -103,10 +91,10 @@ const ErrorLogRow: React.FC<{
           <Icon as={AiOutlineExclamationCircle} mr={2} mt="1px" />
           <Flex direction="column">
             <Heading size="sm" wordBreak="break-all">
-              {message}
+              {errorLog.message}
             </Heading>
             <Text color={colors.gray[600]} size="sm">
-              {timestamp}
+              {errorLog.timestamp}
             </Text>
           </Flex>
         </Flex>
