@@ -1,10 +1,11 @@
-import { Button } from "@chakra-ui/button";
 import { Grid, GridItem } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Text, Switch } from "@chakra-ui/react";
+import { SettingsCard } from "../../components/ClickableCard";
+import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
-import { useReset } from "../../utils/hooks/accountHooks";
+import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 
 export default function SettingsView() {
-  const reset = useReset();
   return (
     <Grid
       h="100%"
@@ -19,9 +20,40 @@ export default function SettingsView() {
     >
       <GridItem area={"header"}>
         <TopBar title="Settings" />
-        <Button onClick={reset}>logout</Button>
       </GridItem>
-      <GridItem area={"main"}></GridItem>
+      <GridItem area={"main"}>
+        <SettingsSection title="General">
+          <SettingsCard left="Theme">
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text size="sm">Light</Text>
+              <Switch marginX={3} isChecked isDisabled />
+              <Heading size="sm">Dark</Heading>
+            </Flex>
+          </SettingsCard>
+          <SettingsCard left="Network">
+            <Box>
+              <NetworkSelector />
+            </Box>
+          </SettingsCard>
+          <ErrorLogsDrawerCard />
+        </SettingsSection>
+      </GridItem>
     </Grid>
   );
 }
+
+const SettingsSection: React.FC<{
+  title: string;
+  children: React.ReactNode;
+}> = ({ title, children }) => {
+  return (
+    <Box marginY={2}>
+      <Flex>
+        <Box w="550px">
+          <Heading size="lg">{title}</Heading>
+          {children}
+        </Box>
+      </Flex>
+    </Box>
+  );
+};

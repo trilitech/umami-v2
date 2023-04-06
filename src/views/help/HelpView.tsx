@@ -1,18 +1,11 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/layout";
-import {
-  Box,
-  Card,
-  CardBody,
-  Text,
-  Divider,
-  Heading,
-  Icon,
-} from "@chakra-ui/react";
+import { Box, Text, Divider, Heading, Icon } from "@chakra-ui/react";
 import { FiExternalLink } from "react-icons/fi";
 import React from "react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import CopyableText from "../../components/CopyableText";
+import ClickableCard from "../../components/ClickableCard";
 
 export default function HelpView() {
   const jumpToLink = (link: string) => {
@@ -163,22 +156,7 @@ const HelpCard: React.FC<{
       <Flex>
         <Box w="550px">
           <Heading size="lg">{title}</Heading>
-          <Card
-            paddingX={1}
-            marginY={2}
-            bgColor={colors.gray[900]}
-            borderRadius="lg"
-            justifyContent="center"
-            border="1px solid"
-            borderColor={colors.gray[700]}
-            cursor={pointsOnHover ? "pointer" : undefined}
-            _hover={{
-              borderColor: pointsOnHover ? colors.gray[600] : colors.gray[700],
-            }}
-            onClick={onClick}
-          >
-            <CardBody>{children}</CardBody>
-          </Card>
+          <ClickableCard onClick={onClick}>{children}</ClickableCard>
         </Box>
       </Flex>
     </Box>
