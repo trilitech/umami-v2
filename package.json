@@ -58,7 +58,7 @@
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "cross-env TZ=CET react-scripts test --verbose",
+    "test": "cross-env TZ=CET react-scripts test --verbose --testPathIgnorePatterns='src/integration/*'",
     "test:tezos:integration": "cross-env TZ=CET react-scripts test --watchPathIgnorePatterns=[]",
     "typecheck": "tsc",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
