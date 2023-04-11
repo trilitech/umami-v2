@@ -401,7 +401,7 @@ describe("Assets reducer", () => {
         mockPk(1),
         TezosNetwork.MAINNET
       );
-      expect(store.getState().assets.batches[mockPkh(1)].isSimulating).toEqual(
+      expect(store.getState().assets.batches[mockPkh(1)]?.isSimulating).toEqual(
         true
       );
       await waitFor(() => {
@@ -473,7 +473,7 @@ describe("Assets reducer", () => {
       );
 
       const dispatchResult = store.dispatch(action);
-      expect(store.getState().assets.batches[mockPkh(1)].isSimulating).toEqual(
+      expect(store.getState().assets.batches[mockPkh(1)]?.isSimulating).toEqual(
         true
       );
       await expect(dispatchResult).rejects.toThrow(estimationError.message);

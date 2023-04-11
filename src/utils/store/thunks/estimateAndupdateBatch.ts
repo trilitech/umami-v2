@@ -1,7 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { TransactionValues } from "../../../components/sendForm/types";
-import { recordToMap, zip } from "../../helpers";
+import { zip } from "../../helpers";
 import { estimateBatch } from "../../tezos";
 import assetsSlice, { BatchItem } from "../assetsSlice";
 import { RootState } from "../store";
@@ -20,9 +20,7 @@ export const estimateAndUpdateBatch = (
   return async (dispatch, getState) => {
     const batches = getState().assets.batches;
 
-    // Is there a util that does this?
-    const batch = recordToMap(batches).get(pkh);
-    if (batch?.isSimulating) {
+    if (batches[pkh]?.isSimulating) {
       throw new Error(`Simulation already ongoing for ${pkh}`);
     }
 
