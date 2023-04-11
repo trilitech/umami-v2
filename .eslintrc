@@ -1,6 +1,9 @@
 {
   "root": true,
-  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "parser": "@typescript-eslint/parser"
+  },
   "plugins": ["@typescript-eslint"],
   "extends": [
     "react-app",
@@ -13,7 +16,8 @@
     "@typescript-eslint/no-empty-function": [
       "error",
       { "allow": ["arrowFunctions"] }
-    ]
+    ],
+    "@typescript-eslint/switch-exhaustiveness-check": "error"
   },
   "overrides": [
     {
