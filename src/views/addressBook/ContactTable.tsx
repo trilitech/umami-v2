@@ -96,9 +96,11 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                   <Flex alignItems="center" justifyContent="space-between">
                     <Flex alignItems="center">
                       <CopyableAddress
+                        width="330px"
+                        mr={4}
+                        justifyContent="space-between"
                         pkh={contact.pkh}
                         formatAddress={false}
-                        mr={5}
                       />
                       <IconAndTextBtn icon={MdArrowOutward} label="Send" />
                     </Flex>
