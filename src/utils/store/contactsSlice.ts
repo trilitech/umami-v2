@@ -23,24 +23,24 @@ const contactsSlice = createSlice({
       state.contacts[payload["pkh"]] = payload;
     },
     edit: (
-      state,
-      { payload }: { payload: { oldAddress: Address; newContact: Contact } }
+      { contacts },
+      { payload }: { payload: { addressToEdit: Address; newContact: Contact } }
     ) => {
-      const { oldAddress, newContact } = payload;
+      const { addressToEdit, newContact } = payload;
       const { name: newName, pkh: newAddress } = newContact;
-      if (!state.contacts[oldAddress]) {
+      if (!contacts[addressToEdit]) {
         return;
       }
       if (
-        !state.contacts[oldAddress].name ||
-        state.contacts[newAddress] ||
-        (newName === state.contacts[oldAddress].name &&
-          newAddress === oldAddress)
+        !contacts[addressToEdit].name ||
+        contacts[newAddress] ||
+        (newName === contacts[addressToEdit].name &&
+          newAddress === addressToEdit)
       ) {
         return;
       }
-      delete state.contacts[oldAddress];
-      state.contacts[newAddress] = newContact;
+      delete contacts[addressToEdit];
+      contacts[newAddress] = newContact;
     },
     remove: (state, { payload }: { payload: Address }) => {
       delete state.contacts[payload];

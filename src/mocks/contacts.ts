@@ -18,4 +18,5 @@ export const contacts = () => {
   contacts[contact1["pkh"]] = contact1;
   contacts[contact2["pkh"]] = contact2;
   contacts[contact3["pkh"]] = contact3;
+  return contacts;
 };

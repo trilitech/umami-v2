@@ -4,7 +4,7 @@ import { RiContactsLine } from "react-icons/ri";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import AddressBookTable from "./ContactTable";
+import ContactTable from "./ContactTable";
 import { contacts } from "../../mocks/contacts";
 
 const FilterController: React.FC = () => {
@@ -29,7 +29,8 @@ export default function AddressBookView() {
       <FilterController />
 
       <Box overflow="scroll" pb={4}>
-        <AddressBookTable contacts={Object.values(contacts)} />
+        {/* TODO: Use contacts data from redux */}
+        <ContactTable contacts={Object.values(contacts())} />
       </Box>
     </Flex>
   );

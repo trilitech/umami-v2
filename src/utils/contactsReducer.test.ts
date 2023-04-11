@@ -33,7 +33,7 @@ describe("Contacts reducer", () => {
     });
   });
 
-  test("should not add same addresses", () => {
+  test("should not add the same address", () => {
     store.dispatch(add(contact1));
     store.dispatch(add(contact1));
     expect(Object.keys(store.getState().contacts.contacts).length).toEqual(1);
@@ -51,7 +51,9 @@ describe("Contacts reducer", () => {
 
   test("should edit addresses", () => {
     store.dispatch(add(contact1));
-    store.dispatch(edit({ oldAddress: contact1["pkh"], newContact: contact2 }));
+    store.dispatch(
+      edit({ addressToEdit: contact1["pkh"], newContact: contact2 })
+    );
     expect(Object.values(store.getState().contacts.contacts).length).toEqual(1);
     expect(store.getState().contacts).toEqual({
       contacts: {
@@ -66,7 +68,9 @@ describe("Contacts reducer", () => {
   test("should not edit non existent address", () => {
     store.dispatch(add(contact1));
     store.dispatch(add(contact2));
-    store.dispatch(edit({ oldAddress: contact3["pkh"], newContact: contact3 }));
+    store.dispatch(
+      edit({ addressToEdit: contact3["pkh"], newContact: contact3 })
+    );
     expect(Object.values(store.getState().contacts.contacts).length).toEqual(2);
     expect(store.getState().contacts).toEqual({
       contacts: {
@@ -86,7 +90,9 @@ describe("Contacts reducer", () => {
   test("should not edit to an address that already exists", () => {
     store.dispatch(add(contact1));
     store.dispatch(add(contact2));
-    store.dispatch(edit({ oldAddress: contact1["pkh"], newContact: contact2 }));
+    store.dispatch(
+      edit({ addressToEdit: contact1["pkh"], newContact: contact2 })
+    );
     expect(store.getState().contacts).toEqual({
       contacts: {
         tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3: {
