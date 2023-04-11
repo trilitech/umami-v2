@@ -24,7 +24,7 @@ import { MdArrowOutward } from "react-icons/md";
 import { BsThreeDots, BsTrash } from "react-icons/bs";
 import { BiPencil } from "react-icons/bi";
 
-const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
+const PopoverThreeDots: React.FC = () => {
   return (
     <Popover>
       <PopoverTrigger>
@@ -104,7 +104,7 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                       />
                       <IconAndTextBtn icon={MdArrowOutward} label="Send" />
                     </Flex>
-                    <PopoverThreeDots contact={contact} />
+                    <PopoverThreeDots />
                   </Flex>
                 </Td>
               </Tr>
