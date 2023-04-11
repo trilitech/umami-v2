@@ -28,6 +28,7 @@ const {
     updateTezOperations,
     updateTokenOperations,
     clearBatch,
+    updateBatch,
   },
 } = assetsSlice;
 
@@ -520,6 +521,64 @@ describe("Assets reducer", () => {
               fee: mockEstimations[0].suggestedFeeMutez,
               transaction: transfers[0],
             },
+            {
+              fee: mockEstimations[1].suggestedFeeMutez,
+              transaction: transfers[1],
+            },
+            {
+              fee: mockEstimations[2].suggestedFeeMutez,
+              transaction: transfers[2],
+            },
+          ],
+        });
+      });
+    });
+
+    test("Batch can't be cleared for a given account if simulation is ongoing for a given account", async () => {
+      const mockEstimations = [
+        { suggestedFeeMutez: 323 },
+        { suggestedFeeMutez: 423 },
+        { suggestedFeeMutez: 523 },
+      ];
+
+      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
+      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
+
+      store.dispatch(
+        updateBatch({
+          pkh: mockPkh(1),
+          items: [{ fee: 3, transaction: mockTezTransfer(3) }],
+        })
+      );
+      const transfers = [
+        mockTezTransfer(1),
+        mockDelegationTransfer(1),
+        mockNftTransfer(1),
+      ];
+
+      const action = estimateAndUpdateBatch(
+        mockPkh(1),
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
+
+      store.dispatch(action);
+      store.dispatch(clearBatch({ pkh: mockPkh(1) }));
+
+      await waitFor(() => {
+        expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+          isSimulating: false,
+          items: [
+            {
+              fee: 3,
+              transaction: mockTezTransfer(3),
+            },
+            {
+              fee: mockEstimations[0].suggestedFeeMutez,
+              transaction: transfers[0],
+            },
+
             {
               fee: mockEstimations[1].suggestedFeeMutez,
               transaction: transfers[1],

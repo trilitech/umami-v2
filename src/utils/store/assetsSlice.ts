@@ -3,10 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 
 import BigNumber from "bignumber.js";
+import { object } from "prop-types";
 import { TransactionValues } from "../../components/sendForm/types";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
+import { recordToMap } from "../helpers";
 import accountsSlice from "./accountsSlice";
 
 export type BatchItem = { transaction: TransactionValues; fee: number };
@@ -193,6 +195,11 @@ const assetsSlice = createSlice({
       state,
       { payload: { pkh } }: { type: string; payload: { pkh: string } }
     ) => {
+      const batch = recordToMap(state.batches).get(pkh);
+      if (batch?.isSimulating) {
+        return;
+      }
+
       delete state.batches[pkh];
     },
   },
