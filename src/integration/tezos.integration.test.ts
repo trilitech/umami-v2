@@ -90,7 +90,7 @@ describe("Tezos utils", () => {
     });
 
     describe("Estimations", () => {
-      test("FA2 estimation returns the right value", async () => {
+      test("FA2 estimation returns the right value on ghostnet", async () => {
         const result = await estimateFA2transfer(
           {
             amount: 1,
@@ -142,7 +142,15 @@ describe("Tezos utils", () => {
             {
               type: "tez",
               values: {
-                amount: 0.0000001,
+                amount: 0.0001,
+                sender: pkh1,
+                recipient: pkh2,
+              },
+            },
+            {
+              type: "tez",
+              values: {
+                amount: 0.0002,
                 sender: pkh1,
                 recipient: pkh2,
               },
@@ -153,9 +161,10 @@ describe("Tezos utils", () => {
           TezosNetwork.MAINNET
         );
 
-        expect(mainnetResult).toHaveLength(1);
+        expect(mainnetResult).toHaveLength(2);
 
         expect(mainnetResult[0]).toHaveProperty("suggestedFeeMutez");
+        expect(mainnetResult[1]).toHaveProperty("suggestedFeeMutez");
       });
 
       test("Batch estimation works with batches containing delegations on mainnet", async () => {
@@ -180,7 +189,7 @@ describe("Tezos utils", () => {
         expect(mainnetResult[0]).toHaveProperty("suggestedFeeMutez");
       });
 
-      test("Batch estimation fails with insuficient funds", async () => {
+      test("Batch estimation fails with insuficient funds on mainnet", async () => {
         const estimation = estimateBatch(
           [
             {
