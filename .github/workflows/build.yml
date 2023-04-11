@@ -4,34 +4,86 @@ on: push
 
 jobs:
   build_app:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        include:
+          - os: windows-latest
+            electron_cmd: win
+          - os: ubuntu-latest
+            electron_cmd: linux
+          - os: macos-latest
+            electron_cmd: mac
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Cache node modules
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Node 18
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 18.x
+          cache: "yarn"
 
-      - name: Prepare
-        run: yarn
+      - name: Register yarn 1.x cache folder
+        id: yarn-cache-folder
+        shell: bash
+        run: |
+          echo "path=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
-      # - name: Prettier
-      #   run: yarn actions:prettier
+      - name: Setup yarn 3.x
+        run: |
+          corepack enable
+          corepack prepare yarn@stable --activate
+          yarn --version
+
+      - name: Install packages
+        env:
+          YARN_CACHE_FOLDER: ${{ steps.yarn-cache-folder.outputs.path }}
+        run: yarn install --immutable
+
+      - name: Check format
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run format:ci
+
+      - name: Run linter
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run lint
+
+      - name: Typecheck code
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run typecheck
+
+      - name: Run tests
+        env:
+          CI: true
+        run: npm run test
 
       - name: Build
         run: yarn build
 
-      # - name: Upload
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: app_dist
-      #     path: build
+      - name: Deploy Github Pages
+        if: matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+
+      - name: Package the electron app
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.ref == 'refs/heads/main'
+        run: yarn electron:package:${{ matrix.electron_cmd }}
+
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: app_dist_${{ matrix.electron_cmd }}
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.deb
+          if-no-files-found: error
+
+      # this is needed to ensure that actions/setup-node will pick up yarn cache
+      - name: Remove yarn 3.5
+        run: corepack disable

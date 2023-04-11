@@ -2,7 +2,7 @@
   "name": "umami-ui",
   "version": "0.1.0",
   "private": true,
-  "author": "Trilitech",
+  "author": "Trilitech <umami-admin@trili.tech>",
   "description": "Tezos Wallet",
   "homepage": "./",
   "main": "./public/electron.js",
@@ -58,18 +58,19 @@
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "cross-env TZ=CET react-scripts test --verbose --testPathIgnorePatterns='src/integration/*'",
+    "test": "cross-env TZ=CET react-scripts test --coverage --verbose --testPathIgnorePatterns='src/integration/*'",
     "test:tezos:integration": "cross-env TZ=CET react-scripts test --watchPathIgnorePatterns=[]",
     "typecheck": "tsc",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
-    "format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|md)\"",
+    "format": "prettier --write .",
+    "format:ci": "prettier --check .",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
     "build-storybook": "build-storybook -s public",
-    "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
-    "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
-    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
+    "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js -c.mac.identity=null",
+    "electron:package:win": "electron-builder -w -c.extraMetadata.main=build/electron.js",
+    "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
   "browserslist": {
     "production": [
@@ -117,6 +118,17 @@
     },
     "watchPathIgnorePatterns": [
       "src/integration"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 45,
+        "functions": 40,
+        "lines": 50,
+        "statements": 50
+      }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}"
     ]
   },
   "build": {

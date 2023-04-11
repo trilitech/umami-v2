@@ -55,7 +55,7 @@ Runs the electron app in the development mode.
 
 ### `npm run electron:package:(mac|win|linux)`
 
-Build electron app for desired platform.
+Build electron app for desired platform (don't forget to run `yarn build` before running this one)
 
 ### `npm run storybook`
 
