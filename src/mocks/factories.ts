@@ -1,4 +1,5 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
+import { TransactionValues } from "../components/sendForm/types";
 import { Account } from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
@@ -132,3 +133,36 @@ export const mockBaker = (index: number) =>
     logo: `label${index}`,
     address: mockPkh(index),
   } as Baker);
+
+export const mockTezTransfer = (index: number): TransactionValues => {
+  return {
+    type: "tez",
+    values: {
+      amount: index,
+      sender: mockPkh(index),
+      recipient: mockPkh(index + 1),
+    },
+  };
+};
+
+export const mockNftTransfer = (index: number): TransactionValues => {
+  return {
+    type: "nft",
+    data: {} as NFT,
+    values: {
+      amount: index,
+      sender: mockPkh(index),
+      recipient: mockPkh(index + 1),
+    },
+  };
+};
+
+export const mockDelegationTransfer = (index: number): TransactionValues => {
+  return {
+    type: "delegation",
+    values: {
+      sender: mockPkh(index),
+      recipient: mockPkh(index + 1),
+    },
+  };
+};
