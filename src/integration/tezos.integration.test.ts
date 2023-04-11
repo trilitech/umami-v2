@@ -106,7 +106,7 @@ describe("Tezos utils", () => {
         expect(result).toHaveProperty("suggestedFeeMutez");
       });
 
-      test("Batch estimation works with batches containg tez, FA2 tokens and delegations on mainnet and ghostnet", async () => {
+      test("Batch estimation works with batches containg tez and FA2 tokens on ghostnet", async () => {
         const ghostnetResult = await estimateBatch(
           [
             {
@@ -134,7 +134,9 @@ describe("Tezos utils", () => {
 
         expect(ghostnetResult[0]).toHaveProperty("suggestedFeeMutez");
         expect(ghostnetResult[1]).toHaveProperty("suggestedFeeMutez");
+      });
 
+      test("Batch estimation works with batches containg tez on mainnet", async () => {
         const mainnetResult = await estimateBatch(
           [
             {
@@ -145,6 +147,20 @@ describe("Tezos utils", () => {
                 recipient: pkh2,
               },
             },
+          ],
+          pkh1,
+          pk1,
+          TezosNetwork.MAINNET
+        );
+
+        expect(mainnetResult).toHaveLength(1);
+
+        expect(mainnetResult[0]).toHaveProperty("suggestedFeeMutez");
+      });
+
+      test("Batch estimation works with batches containing delegations on mainnet", async () => {
+        const mainnetResult = await estimateBatch(
+          [
             {
               type: "delegation",
 
@@ -159,10 +175,9 @@ describe("Tezos utils", () => {
           TezosNetwork.MAINNET
         );
 
-        expect(mainnetResult).toHaveLength(2);
+        expect(mainnetResult).toHaveLength(1);
 
         expect(mainnetResult[0]).toHaveProperty("suggestedFeeMutez");
-        expect(mainnetResult[1]).toHaveProperty("suggestedFeeMutez");
       });
 
       test("Batch estimation fails with insuficient funds", async () => {
