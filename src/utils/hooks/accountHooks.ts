@@ -27,3 +27,14 @@ export const useReset = () => {
     dispatch(accountsSlice.actions.reset());
   };
 };
+
+export const useGetOwnedAccount = () => {
+  const accounts = useAccounts();
+  return (pkh: string) => {
+    const account = accounts.find((a) => a.pkh === pkh);
+    if (!account) {
+      throw new Error(`You do not ownn account:${pkh}`);
+    }
+    return account;
+  };
+};

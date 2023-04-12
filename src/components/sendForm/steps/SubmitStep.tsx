@@ -21,8 +21,9 @@ import { isValid } from "date-fns";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GoogleAuth } from "../../../GoogleAuth";
-import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
+import { AccountType } from "../../../types/Account";
 import { decrypt } from "../../../utils/aes";
+import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import {
   mutezToTezNumber,
   prettyTezAmount,
@@ -61,7 +62,8 @@ const makeTransfer = (
     );
   }
 
-  return Promise.reject(`Unrecognized type!`);
+  const error: never = t;
+  throw new Error(error);
 };
 
 const renderSubTotal = (t: TransactionValues) => {
@@ -85,27 +87,29 @@ export const RecapDisplay: React.FC<{
   recap: {
     transaction: TransactionValues;
     estimate: Estimate;
-    esk: UmamiEncrypted | undefined;
   };
   onSucces: (hash: string) => void;
-}> = ({
-  recap: { estimate, transaction: transfer, esk },
-  network,
-  onSucces,
-}) => {
+}> = ({ recap: { estimate, transaction: transfer }, network, onSucces }) => {
   const isTez = transfer.type === "tez";
   const isDelegation = transfer.type === "delegation";
   const nft = transfer.type === "nft" ? transfer.data : undefined;
   const renderAccountTile = useRenderAccountSmallTile();
   const renderBakerTile = useRenderBakerSmallTile();
+  const getAccount = useGetOwnedAccount();
 
   const { register, handleSubmit } = useForm<{ password: string }>();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  const isGoogleSSO = !esk;
+  const signerAccount = getAccount(transfer.values.sender);
+
+  const isGoogleSSO = signerAccount.type === AccountType.SOCIAL;
 
   const onSubmitGoogleSSO = async (sk: string) => {
+    if (signerAccount.type === AccountType.MNEMONIC) {
+      throw new Error(`Wrong signing method called`);
+    }
+
     setIsLoading(true);
     try {
       const result = await makeTransfer(transfer, sk, network);
@@ -118,14 +122,15 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
+  // TODO remove duplication
   const onSubmitNominal = async ({ password }: { password: string }) => {
-    if (!esk) {
-      throw new Error("esk required");
+    if (signerAccount.type === AccountType.SOCIAL) {
+      throw new Error(`Wrong signing method called`);
     }
 
     setIsLoading(true);
     try {
-      const sk = await decrypt(esk, password);
+      const sk = await decrypt(signerAccount.esk, password);
       const result = await makeTransfer(transfer, sk, network);
 
       onSucces(result.hash);
