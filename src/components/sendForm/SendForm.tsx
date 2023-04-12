@@ -2,6 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { Estimate } from "@taquito/taquito";
 import { useState } from "react";
+import { AccountType } from "../../types/Account";
 import { UmamiEncrypted } from "../../types/UmamiEncrypted";
 import { useAccounts } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
@@ -61,7 +62,12 @@ export const useGetPkAndEsk = () => {
     if (!account) {
       throw new Error("No account found");
     }
-    return { esk: account.esk, pk: account.pk };
+
+    if (account.type === AccountType.MNEMONIC) {
+      return { esk: account.esk, pk: account.pk };
+    } else {
+      return { esk: undefined, pk: account.pk };
+    }
   };
 };
 
@@ -83,7 +89,7 @@ export const SendForm = ({
   const [transferValues, setTransferValues] = useState<{
     transaction: TransactionValues;
     estimate: Estimate;
-    esk: UmamiEncrypted;
+    esk: UmamiEncrypted | undefined;
   }>();
 
   const [hash, setHash] = useState<string>();
@@ -99,6 +105,8 @@ export const SendForm = ({
       const estimate = await makeSimulation(transaction, pk, network);
 
       // esk needed for real transfer
+      // If esk is undefined we are using SSO. Hacky.
+      // TOOD implement better solution
       setTransferValues({
         transaction,
         estimate,

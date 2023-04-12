@@ -15,6 +15,8 @@ import {
 } from "../../mocks/factories";
 import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
 import { ReduxStore } from "../../providers/ReduxStore";
+import { decrypt } from "../../utils/aes";
+// import { decrypt } from "../../utils/aes";
 import { formatPkh } from "../../utils/format";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
@@ -32,11 +34,13 @@ const { add } = accountsSlice.actions;
 
 jest.mock("../../utils/tezos");
 jest.mock("react-router-dom");
+jest.mock("../../utils/aes");
 
 const estimateTezTransferMock = estimateTezTransfer as jest.Mock;
 const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
 const transferTezMock = transferTez as jest.Mock;
 const transferFA2TokenMock = transferFA2Token as jest.Mock;
+const decryptMock = decrypt as jest.Mock;
 
 const fixture = (sender?: string, assetType?: SendFormMode) => (
   <ReactQueryProvider>
@@ -48,6 +52,11 @@ const fixture = (sender?: string, assetType?: SendFormMode) => (
   </ReactQueryProvider>
 );
 
+const MOCK_SK = "mockSk";
+
+beforeEach(() => {
+  decryptMock.mockResolvedValue(MOCK_SK);
+});
 beforeAll(() => {
   store.dispatch(add([mockAccount(1), mockAccount(2), mockAccount(3)]));
 });
@@ -134,8 +143,7 @@ describe("<SendForm />", () => {
       expect(transferTezMock).toHaveBeenCalledWith(
         mockPkh(7),
         "23",
-        { data: "mockData1", iv: "mockIv1", salt: "mockSalt1" },
-        "mockPass",
+        MOCK_SK,
         "mainnet"
       );
     });
@@ -221,8 +229,7 @@ describe("<SendForm />", () => {
           sender: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x1",
           tokenId: "mockId1",
         },
-        { data: "mockData1", iv: "mockIv1", salt: "mockSalt1" },
-        "mockPass",
+        MOCK_SK,
         "mainnet"
       );
     });

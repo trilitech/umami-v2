@@ -21,6 +21,7 @@ import { isValid } from "date-fns";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
+import { decrypt } from "../../../utils/aes";
 import {
   mutezToTezNumber,
   prettyTezAmount,
@@ -33,28 +34,15 @@ import { TransactionValues } from "../types";
 
 const makeTransfer = (
   t: TransactionValues,
-  esk: UmamiEncrypted,
-  password: string,
+  sk: string,
   network: TezosNetwork
 ) => {
   if (t.type === "delegation") {
-    return delegate(
-      t.values.sender,
-      t.values.recipient,
-      esk,
-      password,
-      network
-    );
+    return delegate(t.values.sender, t.values.recipient, sk, network);
   }
 
   if (t.type === "tez") {
-    return transferTez(
-      t.values.recipient,
-      t.values.amount,
-      esk,
-      password,
-      network
-    );
+    return transferTez(t.values.recipient, t.values.amount, sk, network);
   }
 
   if (t.type === "nft") {
@@ -67,8 +55,7 @@ const makeTransfer = (
         sender: nft.owner,
         tokenId: nft.tokenId,
       },
-      esk,
-      password,
+      sk,
       network
     );
   }
@@ -97,7 +84,7 @@ export const RecapDisplay: React.FC<{
   recap: {
     transaction: TransactionValues;
     estimate: Estimate;
-    esk: UmamiEncrypted;
+    esk: UmamiEncrypted | undefined;
   };
   onSucces: (hash: string) => void;
 }> = ({
@@ -116,9 +103,16 @@ export const RecapDisplay: React.FC<{
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async ({ password }: { password: string }) => {
+    if (!esk) {
+      // It"s SSO if esk is undefined.
+      // TODO Handle SSO scenario
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const result = await makeTransfer(transfer, esk, password, network);
+      const sk = await decrypt(esk, password);
+      const result = await makeTransfer(transfer, sk, network);
 
       onSucces(result.hash);
       toast({ title: "Success", description: result.hash });
