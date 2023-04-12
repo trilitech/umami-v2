@@ -1,4 +1,4 @@
-import { Contact } from "../types/AddressBook";
+import { Contact } from "../types/Contact";
 
 export const contact1 = {
   name: "Lewis Hatfull",

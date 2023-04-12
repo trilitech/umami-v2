@@ -1,26 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Contact } from "../../types/AddressBook";
+import { Contact } from "../../types/Contact";
 
-type State = {
-  contacts: Record<Address, Contact>;
-};
+type State = Record<string, Contact>;
 
-type Address = Contact["pkh"];
-
-const initialState: State = {
-  contacts: {},
-};
+const initialState: State = {};
 
 const contactsSlice = createSlice({
   name: "contacts",
   initialState,
   reducers: {
     reset: () => initialState,
-    upsert: ({ contacts }, { payload }: { payload: Contact }) => {
-      contacts[payload.pkh] = payload;
+    upsert: (state, { payload }: { payload: Contact }) => {
+      state[payload.pkh] = payload;
     },
-    remove: (state, { payload }: { payload: Address }) => {
-      delete state.contacts[payload];
+    remove: (state, { payload }: { payload: string }) => {
+      delete state[payload];
     },
   },
 });

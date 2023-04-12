@@ -1,5 +1,5 @@
 import { useAppSelector } from "../store/hooks";
-export const useContacts = () => useAppSelector((s) => s.contacts.contacts);
+export const useContacts = () => useAppSelector((s) => s.contacts);
 
 export const useAllSortedContacts = () => {
   const contacts = useContacts();

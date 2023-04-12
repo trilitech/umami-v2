@@ -10,25 +10,21 @@ afterEach(() => {
 
 describe("Contacts reducer", () => {
   test("store should initialize with empty state", () => {
-    expect(store.getState().contacts).toEqual({
-      contacts: {},
-    });
+    expect(store.getState().contacts).toEqual({});
   });
 
   test("should add new contacts", () => {
     store.dispatch(upsert(contact1));
     store.dispatch(upsert(contact2));
     expect(store.getState().contacts).toEqual({
-      contacts: {
-        tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS: {
-          name: "Lewis Hatfull",
-          pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        },
+      tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS: {
+        name: "Lewis Hatfull",
+        pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+      },
 
-        tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3: {
-          name: "Lev Kowalski",
-          pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-        },
+      tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3: {
+        name: "Lev Kowalski",
+        pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       },
     });
   });
@@ -36,29 +32,25 @@ describe("Contacts reducer", () => {
   test("should not add the same address", () => {
     store.dispatch(upsert(contact1));
     store.dispatch(upsert(contact1));
-    expect(Object.keys(store.getState().contacts.contacts).length).toEqual(1);
+    expect(Object.keys(store.getState().contacts).length).toEqual(1);
   });
 
   test("should delete addresses", () => {
     store.dispatch(upsert(contact1));
     store.dispatch(remove(contact1.pkh));
-    expect(store.getState().contacts).toEqual({
-      contacts: {},
-    });
+    expect(store.getState().contacts).toEqual({});
 
-    expect(Object.values(store.getState().contacts.contacts).length).toEqual(0);
+    expect(Object.values(store.getState().contacts).length).toEqual(0);
   });
 
   test("should edit the name of the contact", () => {
     store.dispatch(upsert(contact1));
     store.dispatch(upsert({ name: contact2["name"], pkh: contact1["pkh"] }));
-    expect(Object.values(store.getState().contacts.contacts).length).toEqual(1);
+    expect(Object.values(store.getState().contacts).length).toEqual(1);
     expect(store.getState().contacts).toEqual({
-      contacts: {
-        tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS: {
-          name: "Lev Kowalski",
-          pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        },
+      tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS: {
+        name: "Lev Kowalski",
+        pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       },
     });
   });

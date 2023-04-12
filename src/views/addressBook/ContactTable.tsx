@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import colors from "../../style/colors";
-import { Contact } from "../../types/AddressBook";
+import { Contact } from "../../types/Contact";
 import { CopyableAddress } from "../../components/CopyableText";
 import { MdArrowOutward } from "react-icons/md";
 import { BsThreeDots, BsTrash } from "react-icons/bs";
