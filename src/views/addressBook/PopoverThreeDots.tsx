@@ -1,14 +1,12 @@
 import {
   Button,
   Divider,
-  Flex,
   Icon,
   Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
   useDisclosure,
-  Text,
 } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import { Contact } from "../../types/Contact";
@@ -20,8 +18,7 @@ import {
   DeleteContactModal,
 } from "../../components/ContactModal";
 import { BsThreeDots, BsTrash } from "react-icons/bs";
-import { IconType } from "react-icons";
-import { FC } from "react";
+import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 
 const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
   const {
@@ -58,13 +55,13 @@ const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
         <PopoverContent w="100px" bg={colors.gray[900]}>
           <PopoverBody borderRadius="lg">
             <TextAndIconBtn
-              title="Rename"
+              text="Rename"
               icon={BiPencil}
               onClick={onOpenEdit}
             />
             <Divider marginY={1} />
             <TextAndIconBtn
-              title="Remove"
+              text="Remove"
               icon={BsTrash}
               onClick={onOpenDelete}
             />
@@ -86,29 +83,6 @@ const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
         onClose={onCloseDelete}
       />
     </>
-  );
-};
-
-const TextAndIconBtn: FC<{
-  title: string;
-  icon: IconType;
-  onClick: () => void;
-}> = ({ title, icon, onClick }) => {
-  return (
-    <Flex
-      alignItems="center"
-      color={colors.gray[600]}
-      _hover={{
-        color: colors.gray[300],
-      }}
-      cursor="pointer"
-      onClick={onClick}
-    >
-      <Text size="sm" mr={3}>
-        {title}
-      </Text>
-      <Icon as={icon} />
-    </Flex>
   );
 };
 
