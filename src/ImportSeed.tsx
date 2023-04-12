@@ -15,7 +15,9 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { MakiLogo } from "./components/MakiLogo";
+import GoogleAuth from "./GoogleAuth";
 import { seedPhrase } from "./mocks/seedPhrase";
+import { SocialAccount } from "./types/Account";
 import { encrypt } from "./utils/aes";
 import { restoreEncryptedAccounts } from "./utils/restoreAccounts";
 import accountsSlice from "./utils/store/accountsSlice";
@@ -109,6 +111,13 @@ const useRestore = () => {
       })
     );
     dispatch(accountsActions.add(accounts));
+  };
+};
+
+const useRestoreSocialAccount = () => {
+  const dispatch = useAppDispatch();
+  return async (account: SocialAccount) => {
+    dispatch(accountsActions.add([account]));
   };
 };
 
@@ -217,11 +226,15 @@ export const ConfirmPassword: React.FC<{
 
 function ImportSeed() {
   const [seed, setSeed] = useState<string>();
+  const restore = useRestoreSocialAccount();
 
   return seed ? (
     <ConfirmPassword seedPhrase={seed} onCancel={(_) => setSeed(undefined)} />
   ) : (
-    <EnterSeed onSubmit={(s) => setSeed(s)} />
+    <VStack>
+      <EnterSeed onSubmit={(s) => setSeed(s)} />
+      <GoogleAuth onReceiveAccount={(account) => restore(account)} />
+    </VStack>
   );
 }
 

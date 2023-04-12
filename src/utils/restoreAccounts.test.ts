@@ -1,7 +1,7 @@
 import { seedPhrase } from "../mocks/seedPhrase";
 import { restoreAccounts, restoreEncryptedAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
-import { Account } from "../types/Account";
+import { Account, AccountType } from "../types/Account";
 
 // Have to use a mutation on a let variable because of jest beforeAll from setupTests.ts
 let realGetRandomvalues: any;
@@ -76,6 +76,7 @@ describe("restoreEncryptedAccounts", () => {
     const result = await restoreEncryptedAccounts(seedPhrase, "password");
     const expected: Account[] = [
       {
+        type: AccountType.MNEMONIC,
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
         pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         seedFingerPrint: "mockFingerPrint",
@@ -87,6 +88,7 @@ describe("restoreEncryptedAccounts", () => {
         label: "Account 0",
       },
       {
+        type: AccountType.MNEMONIC,
         pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
         pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
         seedFingerPrint: "mockFingerPrint",
@@ -98,6 +100,7 @@ describe("restoreEncryptedAccounts", () => {
         label: "Account 1",
       },
       {
+        type: AccountType.MNEMONIC,
         pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
         pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         seedFingerPrint: "mockFingerPrint",

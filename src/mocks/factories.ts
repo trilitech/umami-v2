@@ -1,6 +1,6 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
+import { Account, AccountType } from "../types/Account";
 import { TransactionValues } from "../components/sendForm/types";
-import { Account } from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
@@ -64,6 +64,7 @@ export const mockPk = (index: number) =>
 
 export const mockAccount = (index: number): Account => {
   return {
+    type: AccountType.MNEMONIC,
     label: mockAccountLabel(index),
     pkh: mockPkh(index),
     pk: mockPk(index),
