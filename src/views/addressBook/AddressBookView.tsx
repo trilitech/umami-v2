@@ -6,7 +6,7 @@ import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import ContactTable from "./ContactTable";
 import { Contact } from "../../types/AddressBook";
-import ContactModal from "../../components/ContactModal";
+import { UpsertContactModal } from "../../components/ContactModal";
 import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
 import { contactsActions } from "../../utils/store/contactsSlice";
 import { useAppDispatch } from "../../utils/store/hooks";
@@ -14,8 +14,8 @@ import { useAppDispatch } from "../../utils/store/hooks";
 const FilterController: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
-  const onAddContact = (contact: Contact) => {
-    dispatch(contactsActions.upsert(contact));
+  const onAddContact = (newContact: Contact) => {
+    dispatch(contactsActions.upsert(newContact));
     onClose();
   };
 
@@ -34,7 +34,7 @@ const FilterController: React.FC = () => {
         onClick={onOpen}
       />
 
-      <ContactModal
+      <UpsertContactModal
         title="Add Contact"
         buttonText="Add to Contact"
         isOpen={isOpen}

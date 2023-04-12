@@ -6,7 +6,7 @@ export const useAllSortedContacts = () => {
   return Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name));
 };
 
-export const useAddressInContacts = () => {
+export const useContactAlreadyExists = () => {
   const contacts = useContacts();
   return (pkh: string) => pkh in contacts;
 };
