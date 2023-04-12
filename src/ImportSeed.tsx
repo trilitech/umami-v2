@@ -13,16 +13,17 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
+import { InMemorySigner } from "@taquito/signer";
 import { useState } from "react";
 import { MakiLogo } from "./components/MakiLogo";
-import GoogleAuth from "./GoogleAuth";
 import { seedPhrase } from "./mocks/seedPhrase";
-import { SocialAccount } from "./types/Account";
+import { AccountType, SocialAccount } from "./types/Account";
 import { encrypt } from "./utils/aes";
 import { restoreEncryptedAccounts } from "./utils/restoreAccounts";
 import accountsSlice from "./utils/store/accountsSlice";
 import { useAppDispatch } from "./utils/store/hooks";
 import { getFingerPrint } from "./utils/tezos";
+import { GoogleAuth } from "./GoogleAuth";
 
 type FormValues = {
   seedPhrase: string;
@@ -111,13 +112,6 @@ const useRestore = () => {
       })
     );
     dispatch(accountsActions.add(accounts));
-  };
-};
-
-const useRestoreSocialAccount = () => {
-  const dispatch = useAppDispatch();
-  return async (account: SocialAccount) => {
-    dispatch(accountsActions.add([account]));
   };
 };
 
@@ -224,16 +218,33 @@ export const ConfirmPassword: React.FC<{
   );
 };
 
+const AddGoogleAccount = () => {
+  const dispatch = useAppDispatch();
+  const handleSk = async (sk: string) => {
+    const signer = new InMemorySigner(sk);
+    const account: SocialAccount = {
+      type: AccountType.SOCIAL,
+      pk: await signer.publicKey(),
+      pkh: await signer.publicKeyHash(),
+      idp: "google",
+      label: "Google Account",
+    };
+
+    dispatch(accountsActions.add([account]));
+  };
+
+  return <GoogleAuth onReceiveSk={handleSk} />;
+};
+
 function ImportSeed() {
   const [seed, setSeed] = useState<string>();
-  const restore = useRestoreSocialAccount();
 
   return seed ? (
     <ConfirmPassword seedPhrase={seed} onCancel={(_) => setSeed(undefined)} />
   ) : (
     <VStack>
       <EnterSeed onSubmit={(s) => setSeed(s)} />
-      <GoogleAuth onReceiveAccount={(account) => restore(account)} />
+      <AddGoogleAccount />
     </VStack>
   );
 }

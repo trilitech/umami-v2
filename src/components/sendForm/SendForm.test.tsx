@@ -7,6 +7,7 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
+
 import {
   mockAccount,
   mockBaker,
@@ -15,6 +16,7 @@ import {
 } from "../../mocks/factories";
 import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
 import { ReduxStore } from "../../providers/ReduxStore";
+import { AccountType } from "../../types/Account";
 import { decrypt } from "../../utils/aes";
 // import { decrypt } from "../../utils/aes";
 import { formatPkh } from "../../utils/format";
@@ -32,6 +34,10 @@ import { SendFormMode } from "./types";
 
 const { add } = accountsSlice.actions;
 
+jest.mock("../../GoogleAuth", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  GoogleAuth: require("../../mocks/GoogleAuthMock").GoogleAuthMock,
+}));
 jest.mock("../../utils/tezos");
 jest.mock("react-router-dom");
 jest.mock("../../utils/aes");
@@ -58,7 +64,14 @@ beforeEach(() => {
   decryptMock.mockResolvedValue(MOCK_SK);
 });
 beforeAll(() => {
-  store.dispatch(add([mockAccount(1), mockAccount(2), mockAccount(3)]));
+  store.dispatch(
+    add([
+      mockAccount(1),
+      mockAccount(2),
+      mockAccount(3),
+      mockAccount(4, AccountType.SOCIAL),
+    ])
+  );
 });
 
 describe("<SendForm />", () => {
@@ -256,11 +269,72 @@ describe("<SendForm />", () => {
     // So it's impossible to do a fill use case.
     // TODO investigate this
 
-    // test.only("User can simulate and execute delegations to bakers", async () => {
+    // test("User can simulate and execute delegations to bakers", async () => {
     //   render(fixture(undefined, { type: "delegation" }));
     //   const senderInput = screen.getByText(/select an account/i);
     //   fireEvent.click(senderInput);
     //   // userEvent.selectOptions(senderInput, mockAccount(1).pkh);
     // });
+  });
+  describe("case send tez with Google account", () => {
+    const fillForm = async () => {
+      render(fixture(mockAccount(4, AccountType.SOCIAL).pkh));
+
+      const amountInput = screen.getByLabelText(/amount/i);
+      fireEvent.change(amountInput, { target: { value: "23" } });
+
+      const recipientInput = screen.getByLabelText(/to/i);
+      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+
+      const submitBtn = screen.getByText(/preview/i);
+
+      await waitFor(() => {
+        expect(submitBtn).toBeEnabled();
+      });
+
+      estimateTezTransferMock.mockResolvedValueOnce({
+        suggestedFeeMutez: 12345,
+      });
+
+      fireEvent.click(submitBtn);
+
+      await waitFor(() => {
+        const subTotal = screen.getByLabelText(/^sub-total$/i);
+        expect(subTotal).toHaveTextContent(/23 ꜩ/i);
+
+        const fee = screen.getByLabelText(/^fee$/i);
+        expect(fee).toHaveTextContent(/0.012345 ꜩ/i);
+
+        const total = screen.getByLabelText(/^total$/i);
+        expect(total).toHaveTextContent(/23.012345 ꜩ/i);
+      });
+    };
+    test("It doesn't display password in SubmitStep", async () => {
+      await fillForm();
+      expect(
+        screen.getByRole("button", { name: /submit transaction/i })
+      ).toBeTruthy();
+      expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
+    });
+
+    test("Clicking on submit transaction signs with google private key and shows operation submitted message", async () => {
+      await fillForm();
+
+      const googleSSOBtn = screen.getByText(/submit transaction/i);
+
+      transferTezMock.mockResolvedValueOnce({
+        hash: "foo",
+      });
+
+      fireEvent.click(googleSSOBtn);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+          "href",
+          "https://mainnet.tzkt.io/foo"
+        );
+      });
+    });
   });
 });

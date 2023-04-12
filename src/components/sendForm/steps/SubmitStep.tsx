@@ -20,6 +20,7 @@ import { Estimate } from "@taquito/taquito";
 import { isValid } from "date-fns";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { GoogleAuth } from "../../../GoogleAuth";
 import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
 import { decrypt } from "../../../utils/aes";
 import {
@@ -102,11 +103,24 @@ export const RecapDisplay: React.FC<{
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = async ({ password }: { password: string }) => {
+  const isGoogleSSO = !esk;
+
+  const onSubmitGoogleSSO = async (sk: string) => {
+    setIsLoading(true);
+    try {
+      const result = await makeTransfer(transfer, sk, network);
+
+      onSucces(result.hash);
+      toast({ title: "Success", description: result.hash });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message });
+    }
+    setIsLoading(false);
+  };
+
+  const onSubmitNominal = async ({ password }: { password: string }) => {
     if (!esk) {
-      // It"s SSO if esk is undefined.
-      // TODO Handle SSO scenario
-      return;
+      throw new Error("esk required");
     }
 
     setIsLoading(true);
@@ -127,7 +141,7 @@ export const RecapDisplay: React.FC<{
 
   return (
     <ModalContent bg="umami.gray.900">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmitNominal)}>
         <ModalCloseButton />
         <ModalHeader textAlign={"center"}>Recap</ModalHeader>
         <Text textAlign={"center"}>Transaction details</Text>
@@ -179,28 +193,40 @@ export const RecapDisplay: React.FC<{
             </Heading>
             <Text size="sm">{prettyTezAmount(total, true)}</Text>
           </Flex>
-          <FormControl isInvalid={false} mt={4}>
-            <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              {...register("password", {
-                required: true,
-                minLength: 4,
-              })}
-              placeholder="Enter password..."
+          {isGoogleSSO ? (
+            <GoogleAuth
+              isLoading={isLoading}
+              bg="umami.blue"
+              width={"100%"}
+              buttonText="Submit Transaction"
+              onReceiveSk={onSubmitGoogleSSO}
             />
-          </FormControl>
+          ) : (
+            <FormControl isInvalid={false} mt={4}>
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                {...register("password", {
+                  required: true,
+                  minLength: 4,
+                })}
+                placeholder="Enter password..."
+              />
+            </FormControl>
+          )}
         </ModalBody>
         <ModalFooter>
-          <Button
-            bg="umami.blue"
-            width={"100%"}
-            isLoading={isLoading}
-            type="submit"
-            isDisabled={!isValid || isLoading}
-          >
-            Submit Transaction
-          </Button>
+          {isGoogleSSO ? null : (
+            <Button
+              bg="umami.blue"
+              width={"100%"}
+              isLoading={isLoading}
+              type="submit"
+              isDisabled={!isValid || isLoading}
+            >
+              Submit Transaction
+            </Button>
+          )}
         </ModalFooter>
       </form>
     </ModalContent>

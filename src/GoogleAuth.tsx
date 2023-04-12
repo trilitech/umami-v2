@@ -1,11 +1,10 @@
-import { Button } from "@chakra-ui/react";
+import { TezosNetwork } from "@airgap/tezos";
+import { Button, useToast } from "@chakra-ui/react";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
-import { InMemorySigner } from "@taquito/signer";
 import CustomAuth from "@toruslabs/customauth";
-import { useSelectedNetwork } from "./utils/hooks/assetsHooks";
 import { TORUS_NETWORK_TYPE } from "@toruslabs/fetch-node-details";
-import { AccountType, SocialAccount } from "./types/Account";
 import { useEffect, useState } from "react";
+import { useSelectedNetwork } from "./utils/hooks/assetsHooks";
 
 export const parseParams = (url: string) => {
   const correctUrl = url.replace("umami://auth/", "");
@@ -39,20 +38,39 @@ export const parseParams = (url: string) => {
   return result;
 };
 
-export const GoogleAuth: React.FC<{
+export type GoogleAuthProps = {
   buttonText?: string;
-  onReceiveSk?: (sk: string) => void;
-  onReceiveAccount?: (account: SocialAccount) => void;
+  onReceiveSk: (sk: string) => void;
   width?: string;
   bg?: string;
-}> = ({
-  buttonText = "Connect with Google",
-  onReceiveSk = (_) => {},
-  onReceiveAccount = (_) => {},
+  isLoading?: boolean;
+};
+
+export const DEFAULT_BTN_TEXT = "Connect with Google";
+
+const toTorusNetwork = (n: TezosNetwork): TORUS_NETWORK_TYPE => {
+  if (n === TezosNetwork.MAINNET) {
+    return "mainnet";
+  }
+
+  // Testnet not working
+  if (n === TezosNetwork.GHOSTNET) {
+    return "testnet";
+  }
+
+  const error: never = n;
+  throw new Error(error);
+};
+
+export const GoogleAuth: React.FC<GoogleAuthProps> = ({
+  buttonText = DEFAULT_BTN_TEXT,
+  onReceiveSk,
   width,
   bg,
+  isLoading = false,
 }) => {
-  const [isLoading, setIsloading] = useState(false);
+  const [SSOisLoading, SetSSOIsLoading] = useState(false);
+  const toast = useToast();
   useEffect(() => {
     const internalWindows = window as any;
     if (internalWindows && internalWindows.electronAPI) {
@@ -62,24 +80,25 @@ export const GoogleAuth: React.FC<{
       });
     }
   });
-  const network = useSelectedNetwork() as TORUS_NETWORK_TYPE;
+  const umamiNetwork = useSelectedNetwork();
   const torus = new CustomAuth({
     baseUrl: "https://umamiwallet.com/auth/",
     redirectPathName: "redirect.html",
     redirectToOpener: true,
     uxMode: "popup",
-    network,
+    network: toTorusNetwork(umamiNetwork),
   });
 
   const authenticate = async () => {
-    setIsloading(true);
+    SetSSOIsLoading(true);
     const tmp = {
       prompt: "consent",
       display: "popup",
     };
     await torus.init({ skipSw: true });
-    torus
-      .triggerAggregateLogin({
+
+    try {
+      const result = await torus.triggerAggregateLogin({
         verifierIdentifier: "tezos-google",
         aggregateVerifierType: "single_id_verifier",
         subVerifierDetailsArray: [
@@ -91,29 +110,24 @@ export const GoogleAuth: React.FC<{
             jwtParams: tmp,
           },
         ],
-      })
-      .then(async (res) => {
-        const sk = b58cencode(res.privateKey, prefix[Prefix.SPSK]);
-        const signer = new InMemorySigner(sk);
-        onReceiveSk(sk);
-        onReceiveAccount({
-          type: AccountType.SOCIAL,
-          pk: await signer.publicKey(),
-          pkh: await signer.publicKeyHash(),
-        } as SocialAccount);
-        setIsloading(false);
-      })
-      .catch((error) => {
-        console.error("Error", error);
-        setIsloading(false);
       });
+
+      const sk = b58cencode(result.privateKey, prefix[Prefix.SPSK]);
+      onReceiveSk(sk);
+    } catch (error: any) {
+      toast({ title: "Torus SSO failed", description: error.message });
+    }
+    SetSSOIsLoading(false);
   };
 
   return (
-    <Button isLoading={isLoading} onClick={authenticate} width={width} bg={bg}>
+    <Button
+      isLoading={isLoading || SSOisLoading}
+      onClick={authenticate}
+      width={width}
+      bg={bg}
+    >
       {buttonText}
     </Button>
   );
 };
-
-export default GoogleAuth;
