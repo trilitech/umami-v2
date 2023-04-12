@@ -13,14 +13,17 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
+import { InMemorySigner } from "@taquito/signer";
 import { useState } from "react";
 import { MakiLogo } from "./components/MakiLogo";
 import { seedPhrase } from "./mocks/seedPhrase";
+import { AccountType, SocialAccount } from "./types/Account";
 import { encrypt } from "./utils/aes";
 import { restoreEncryptedAccounts } from "./utils/restoreAccounts";
 import accountsSlice from "./utils/store/accountsSlice";
 import { useAppDispatch } from "./utils/store/hooks";
 import { getFingerPrint } from "./utils/tezos";
+import { GoogleAuth } from "./GoogleAuth";
 
 type FormValues = {
   seedPhrase: string;
@@ -215,13 +218,34 @@ export const ConfirmPassword: React.FC<{
   );
 };
 
+const AddGoogleAccount = () => {
+  const dispatch = useAppDispatch();
+  const handleSk = async (sk: string) => {
+    const signer = new InMemorySigner(sk);
+    const account: SocialAccount = {
+      type: AccountType.SOCIAL,
+      pk: await signer.publicKey(),
+      pkh: await signer.publicKeyHash(),
+      idp: "google",
+      label: "Google Account",
+    };
+
+    dispatch(accountsActions.add([account]));
+  };
+
+  return <GoogleAuth onReceiveSk={handleSk} />;
+};
+
 function ImportSeed() {
   const [seed, setSeed] = useState<string>();
 
   return seed ? (
     <ConfirmPassword seedPhrase={seed} onCancel={(_) => setSeed(undefined)} />
   ) : (
-    <EnterSeed onSubmit={(s) => setSeed(s)} />
+    <VStack>
+      <EnterSeed onSubmit={(s) => setSeed(s)} />
+      <AddGoogleAccount />
+    </VStack>
   );
 }
 

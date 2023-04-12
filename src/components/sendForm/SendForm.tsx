@@ -2,8 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { Estimate } from "@taquito/taquito";
 import { useState } from "react";
-import { UmamiEncrypted } from "../../types/UmamiEncrypted";
-import { useAccounts } from "../../utils/hooks/accountHooks";
+import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import {
   estimateDelegation,
@@ -53,16 +52,9 @@ const makeSimulation = (
   return Promise.reject(`Unrecognized type!`);
 };
 
-export const useGetPkAndEsk = () => {
-  const accounts = useAccounts();
-
-  return (pkh: string) => {
-    const account = accounts.find((a) => a.pkh === pkh);
-    if (!account) {
-      throw new Error("No account found");
-    }
-    return { esk: account.esk, pk: account.pk };
-  };
+export const useGetPk = () => {
+  const getAccount = useGetOwnedAccount();
+  return (pkh: string) => getAccount(pkh).pk;
 };
 
 export const SendForm = ({
@@ -76,14 +68,13 @@ export const SendForm = ({
 }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
-  const getPkAndEsk = useGetPkAndEsk();
+  const getPk = useGetPk();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [transferValues, setTransferValues] = useState<{
     transaction: TransactionValues;
     estimate: Estimate;
-    esk: UmamiEncrypted;
   }>();
 
   const [hash, setHash] = useState<string>();
@@ -93,16 +84,14 @@ export const SendForm = ({
     try {
       const sender = transaction.values.sender;
 
-      const { pk, esk } = getPkAndEsk(sender);
+      const pk = getPk(sender);
 
       // pk needed for simulation
       const estimate = await makeSimulation(transaction, pk, network);
 
-      // esk needed for real transfer
       setTransferValues({
         transaction,
         estimate,
-        esk,
       });
     } catch (error: any) {
       toast({ title: "Invalid transaction", description: error.message });

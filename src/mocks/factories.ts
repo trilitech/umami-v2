@@ -1,6 +1,6 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
+import { Account, AccountType } from "../types/Account";
 import { TransactionValues } from "../components/sendForm/types";
-import { Account } from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
@@ -62,17 +62,36 @@ export const mockAccountLabel = (index: number) => `account ${index}`;
 export const mockPk = (index: number) =>
   `edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H${index}`;
 
-export const mockAccount = (index: number): Account => {
-  return {
-    label: mockAccountLabel(index),
-    pkh: mockPkh(index),
-    pk: mockPk(index),
-    esk: {
-      data: `mockData${index}`,
-      iv: `mockIv${index}`,
-      salt: `mockSalt${index}`,
-    } as UmamiEncrypted,
-  };
+export const mockAccount = (
+  index: number,
+  type = AccountType.MNEMONIC
+): Account => {
+  if (type === AccountType.MNEMONIC) {
+    return {
+      type,
+      label: mockAccountLabel(index),
+      pkh: mockPkh(index),
+      pk: mockPk(index),
+      esk: {
+        data: `mockData${index}`,
+        iv: `mockIv${index}`,
+        salt: `mockSalt${index}`,
+      } as UmamiEncrypted,
+    };
+  }
+
+  if (type === AccountType.SOCIAL) {
+    return {
+      type: AccountType.SOCIAL,
+      label: "google " + mockAccountLabel(index),
+      pkh: mockPkh(index),
+      pk: mockPk(index),
+      idp: "google",
+    };
+  }
+
+  const error: never = type;
+  throw new Error(error);
 };
 
 const mockContract = (index: number) =>

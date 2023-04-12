@@ -9,8 +9,6 @@ import axios from "axios";
 import { TransactionValues } from "../components/sendForm/types";
 import { Baker } from "../types/Baker";
 import { Token } from "../types/Token";
-import { UmamiEncrypted } from "../types/UmamiEncrypted";
-import { decrypt } from "./aes";
 import { DummySigner } from "./dummySigner";
 
 const nodeUrls = {
@@ -35,13 +33,8 @@ export const addressExists = async (
   return !balance.isZero();
 };
 
-const makeToolkitWithSigner = async (
-  esk: UmamiEncrypted,
-  password: string,
-  network: TezosNetwork
-) => {
+const makeToolkitWithSigner = async (sk: string, network: TezosNetwork) => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
-  const sk = await decrypt(esk, password);
   Tezos.setProvider({
     signer: new InMemorySigner(sk),
   });
@@ -181,12 +174,10 @@ export const estimateBatch = async (
 export const delegate = async (
   senderPkh: string,
   bakerPkh: string | undefined,
-  senderEsk: UmamiEncrypted,
-  password: string,
+  sk: string,
   network: TezosNetwork
 ) => {
-  const Tezos = await makeToolkitWithSigner(senderEsk, password, network);
-
+  const Tezos = await makeToolkitWithSigner(sk, network);
   return Tezos.contract.setDelegate({
     source: senderPkh,
     delegate: bakerPkh,
@@ -198,12 +189,10 @@ export const delegate = async (
  */
 export const transferFA2Token = async (
   params: FA2TokenTransferParams,
-  esk: UmamiEncrypted,
-  password: string,
+  sk: string,
   network: TezosNetwork
 ) => {
-  const Tezos = await makeToolkitWithSigner(esk, password, network);
-
+  const Tezos = await makeToolkitWithSigner(sk, network);
   const contractInstance = await makeContract(params, Tezos);
   return contractInstance.send();
 };
@@ -211,11 +200,10 @@ export const transferFA2Token = async (
 export const transferTez = async (
   recipient: string,
   amount: number,
-  senderEsk: UmamiEncrypted,
-  password: string,
+  sk: string,
   network: TezosNetwork
 ) => {
-  const Tezos = await makeToolkitWithSigner(senderEsk, password, network);
+  const Tezos = await makeToolkitWithSigner(sk, network);
   return Tezos.contract.transfer({ to: recipient, amount });
 };
 

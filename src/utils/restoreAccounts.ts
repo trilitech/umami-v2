@@ -2,7 +2,7 @@ import { InMemorySigner } from "@taquito/signer";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
-import { Account, UnencryptedAccount } from "../types/Account";
+import { Account, AccountType, UnencryptedAccount } from "../types/Account";
 import { encrypt } from "./aes";
 import { addressExists, getFingerPrint } from "./tezos";
 
@@ -65,6 +65,7 @@ export const restoreEncryptedAccounts = async (
         seedFingerPrint,
         esk: await encrypt(sk, password),
         label: `Account ${i}`,
+        type: AccountType.MNEMONIC,
       } as Account;
     })
   );

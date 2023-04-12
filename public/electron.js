@@ -1,16 +1,36 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const url = require("url");
 
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWindow;
+let deeplinkURL;
+
+// Assure single instance
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+  return;
+}
+
+// Temporary fix broken high-dpi scale factor on Windows (125% scaling)
+// info: https://github.com/electron/electron/issues/9691
+if (process.platform === "win32") {
+  app.commandLine.appendSwitch("high-dpi-support", "true");
+  app.commandLine.appendSwitch("force-device-scale-factor", "1");
+}
+
 // Create the native browser window.
 function createWindow() {
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    // Set the path of an additional "preload" script that can be used to
-    // communicate between node-land and browser-land.
+  mainWindow = new BrowserWindow({
+    width: 1440,
+    height: 1024,
+    show: false,
+    icon: path.join(__dirname, "icon.ico"),
     webPreferences: {
+      // Set the path of an additional "preload" script that can be used to
+      // communicate between node-land and browser-land.
       preload: path.join(__dirname, "preload.js"),
     },
   });
@@ -27,34 +47,91 @@ function createWindow() {
     : "http://localhost:3000";
   mainWindow.loadURL(appURL);
 
-  // Automatically open Chrome's DevTools in development mode.
-  if (!app.isPackaged) {
-    mainWindow.webContents.openDevTools();
-  }
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
+
+    if (deeplinkURL) {
+      mainWindow.webContents.send("deeplinkURL", deeplinkURL);
+      deeplinkURL = null;
+    } else if (process.platform === "win32" || process.platform === "linux") {
+      // Protocol handler for windows & linux
+      const argv = process.argv;
+      const index = argv.findIndex((arg) => arg.startsWith("umami://"));
+      if (index !== -1) {
+        mainWindow.webContents.send("deeplinkURL", argv[index]);
+      }
+    }
+  });
+
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    if (details.frameName === "_blank") {
+      require("electron").shell.openExternal(details.url);
+      return { action: "deny" };
+    } else {
+      return { action: "allow" };
+    }
+  });
+
+  // Emitted when the window is closed.
+  mainWindow.on("closed", () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null;
+  });
 }
 
-// Setup a local proxy to adjust the paths of requested files when loading
-// them from the local production bundle (e.g.: local fonts, etc...).
-function setupLocalFilesNormalizerProxy() {
-  protocol.registerHttpProtocol(
-    "file",
-    (request, callback) => {
-      const url = request.url.substr(8);
-      callback({ path: path.normalize(`${__dirname}/${url}`) });
-    },
-    (error) => {
-      if (error) console.error("Failed to register protocol");
-    }
-  );
+app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
+
+if (!app.isDefaultProtocolClient("umami")) {
+  // Define custom protocol handler. Deep linking works on packaged versions of the application!
+  app.setAsDefaultProtocolClient("umami");
 }
+
+// Quit when all windows are closed.
+app.on("window-all-closed", () => {
+  // On macOS it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
+
+app.on("second-instance", (event, argv, cwd) => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+    mainWindow.focus();
+    // Protocol handler for win32
+    // argv: An array of the second instance’s (command line / deep linked) arguments
+    if (process.platform === "win32" || process.platform === "linux") {
+      // Protocol handler for windows & linux
+      const index = argv.findIndex((arg) => arg.startsWith("umami://"));
+      if (index !== -1) {
+        mainWindow.webContents.send("deeplinkURL", argv[index]);
+      }
+    }
+  } else {
+    createWindow();
+  }
+});
+
+app.on("open-url", (event, url) => {
+  console.log("open-url", url);
+  if (mainWindow) {
+    mainWindow.webContents.send("deeplinkURL", url);
+  } else {
+    deeplinkURL = url;
+    createWindow();
+  }
+});
 
 // This method will be called when Electron has finished its initialization and
 // is ready to create the browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
-  setupLocalFilesNormalizerProxy();
-
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -63,29 +140,3 @@ app.whenReady().then(() => {
     }
   });
 });
-
-// Quit when all windows are closed, except on macOS.
-// There, it's common for applications and their menu bar to stay active until
-// the user quits  explicitly with Cmd + Q.
-app.on("window-all-closed", function () {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
-
-// If your app has no need to navigate or only needs to navigate to known pages,
-// it is a good idea to limit navigation outright to that known scope,
-// disallowing any other kinds of navigation.
-const allowedNavigationDestinations = "https://my-electron-app.com";
-app.on("web-contents-created", (event, contents) => {
-  contents.on("will-navigate", (event, navigationUrl) => {
-    const parsedUrl = new URL(navigationUrl);
-
-    if (!allowedNavigationDestinations.includes(parsedUrl.origin)) {
-      event.preventDefault();
-    }
-  });
-});
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
