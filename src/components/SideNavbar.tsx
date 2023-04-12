@@ -81,7 +81,11 @@ const BottomIems = () => {
   return (
     <Box>
       <Divider />
-      <MenuItem label="Adress Book" icon={MdOutlineContacts} />
+      <MenuItem
+        onClick={() => navigate("/address-book")}
+        label="Address Book"
+        icon={MdOutlineContacts}
+      />
       <MenuItem
         onClick={() => navigate("/settings")}
         label="Settings"
