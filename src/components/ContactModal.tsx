@@ -18,7 +18,7 @@ import {
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
-import { Contact } from "../types/AddressBook";
+import { Contact } from "../types/Contact";
 import { useContactAlreadyExists } from "../utils/hooks/contactsHooks";
 import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
@@ -39,6 +39,8 @@ export const UpsertContactModal: FC<{
   onSubmitContact,
   onClose,
 }) => {
+  // TODO: Add error message.
+  // Asana link: https://app.asana.com/0/1204165186238194/1204389173554443/f
   const { handleSubmit, formState, register, reset, getValues } =
     useForm<Contact>({
       mode: "onBlur",
@@ -54,6 +56,7 @@ export const UpsertContactModal: FC<{
   const contactAlreadyExists = useContactAlreadyExists();
   const validateAddress = (pkh: string) => {
     // TODO: Use taquito to validate the address.
+    // Asana Link: https://app.asana.com/0/1204165186238194/1204389173554443/f
     const validAddress = pkh.length === 36;
     if (contactToEdit) {
       return validAddress && getValues("name") !== contactToEdit.name;

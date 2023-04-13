@@ -5,7 +5,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import ContactTable from "./ContactTable";
-import { Contact } from "../../types/AddressBook";
+import { Contact } from "../../types/Contact";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
 import { contactsActions } from "../../utils/store/contactsSlice";
