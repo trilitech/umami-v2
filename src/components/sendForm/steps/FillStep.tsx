@@ -14,6 +14,7 @@ import {
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NFT } from "../../../types/Asset";
+import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
@@ -108,32 +109,46 @@ export const SendTezOrNFTForm = ({
   nft,
   sender,
   onSubmit,
+  onSubmitBatch,
   isLoading,
 }: {
   onSubmit: (v: { sender: string; recipient: string; amount: number }) => void;
+  onSubmitBatch: (v: {
+    sender: string;
+    recipient: string;
+    amount: number;
+  }) => void;
   sender?: string;
   nft?: NFT;
   isLoading?: boolean;
 }) => {
   const mandatoryNftSender = nft?.owner;
   const isNFT = !!nft;
+  const getBatchIsSimulating = useBatchIsSimulating();
 
-  const { formState, control, register, handleSubmit } = useForm<{
-    sender: string;
-    recipient: string;
-    amount: number;
-  }>({
-    mode: "onBlur",
-    defaultValues: {
-      sender: mandatoryNftSender || sender,
-      amount: isNFT ? 1 : undefined,
-    },
-  });
+  const { formState, control, register, handleSubmit, getValues, watch } =
+    useForm<{
+      sender: string;
+      recipient: string;
+      amount: number;
+    }>({
+      mode: "onBlur",
+      defaultValues: {
+        sender: mandatoryNftSender || sender,
+        amount: isNFT ? 1 : undefined,
+      },
+    });
   const { isValid } = formState;
+
+  const senderFormValue = getValues().sender;
+  const batchIsSimulating =
+    senderFormValue !== "" && getBatchIsSimulating(senderFormValue);
+
+  const simulating = isLoading || batchIsSimulating;
 
   return (
     <ModalContent bg="umami.gray.900">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <ModalCloseButton />
         <ModalHeader textAlign={"center"}>Send</ModalHeader>
         <Text textAlign={"center"}>Send one or insert into batch.</Text>
@@ -146,7 +161,7 @@ export const SendTezOrNFTForm = ({
               name="sender"
               render={({ field: { onChange, onBlur, value, ref } }) => (
                 <ConnectedAccountSelector
-                  isDisabled={isNFT}
+                  isDisabled={isNFT || simulating}
                   selected={value}
                   onSelect={(a) => {
                     onChange(a.pkh);
@@ -158,6 +173,7 @@ export const SendTezOrNFTForm = ({
           <FormControl mb={2}>
             <FormLabel>To</FormLabel>
             <Input
+              isDisabled={simulating}
               type="text"
               {...register("recipient", {
                 required: true,
@@ -174,10 +190,12 @@ export const SendTezOrNFTForm = ({
           <FormControl mb={2} mt={2}>
             <FormLabel>Amount</FormLabel>
             <Input
+              isDisabled={simulating}
               step={isNFT ? 1 : "any"}
               type={"number"}
               {...register("amount", {
                 required: true,
+                valueAsNumber: true,
               })}
               placeholder="Enter amount..."
             />
@@ -186,16 +204,25 @@ export const SendTezOrNFTForm = ({
         <ModalFooter>
           <Box width={"100%"}>
             <Button
+              onClick={handleSubmit(onSubmit)}
               width={"100%"}
               isLoading={isLoading}
               type="submit"
-              isDisabled={!isValid || isLoading}
+              isDisabled={!isValid || simulating}
               variant="ghost"
               mb={2}
             >
               Preview
             </Button>
-            <Button isDisabled={true} width={"100%"}>
+            <Button
+              onClick={handleSubmit(onSubmitBatch)}
+              width={"100%"}
+              isLoading={batchIsSimulating}
+              type="submit"
+              isDisabled={!isValid || simulating}
+              variant="ghost"
+              mb={2}
+            >
               Insert Into Batch
             </Button>
           </Box>
@@ -207,11 +234,12 @@ export const SendTezOrNFTForm = ({
 
 export const FillStep: React.FC<{
   onSubmit: (v: TransactionValues) => void;
+  onSubmitBatch: (v: TransactionValues) => void;
   isLoading: boolean;
   sender?: string;
   recipient?: string;
   assetType: SendFormMode;
-}> = ({ onSubmit, isLoading, sender, recipient, assetType }) => {
+}> = ({ onSubmit, isLoading, sender, recipient, assetType, onSubmitBatch }) => {
   if (assetType.type === "delegation") {
     return (
       <DelegateForm
@@ -237,6 +265,16 @@ export const FillStep: React.FC<{
       <SendTezOrNFTForm
         sender={sender}
         isLoading={isLoading}
+        onSubmitBatch={(v) => {
+          onSubmitBatch({
+            type: "tez",
+            values: {
+              amount: v.amount,
+              sender: v.sender,
+              recipient: v.recipient,
+            },
+          });
+        }}
         onSubmit={(v) => {
           onSubmit({
             type: "tez",
@@ -256,6 +294,17 @@ export const FillStep: React.FC<{
       <SendTezOrNFTForm
         sender={sender}
         isLoading={isLoading}
+        onSubmitBatch={(v) => {
+          onSubmitBatch({
+            type: "nft",
+            data: assetType.data,
+            values: {
+              amount: v.amount,
+              sender: v.sender,
+              recipient: v.recipient,
+            },
+          });
+        }}
         onSubmit={(v) => {
           onSubmit({
             type: "nft",
