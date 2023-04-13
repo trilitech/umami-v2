@@ -1,4 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
+import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import {
   Box,
   Button,
@@ -67,19 +68,7 @@ const makeTransfer = (
 };
 
 const renderSubTotal = (t: TransactionValues) => {
-  return t.type === "tez" ? (
-    <Flex
-      aria-label="sub-total"
-      alignItems={"center"}
-      justifyContent="space-between"
-      mb={2}
-    >
-      <Heading size="sm" color="text.dark">
-        Subtotal
-      </Heading>
-      <Text size="sm">{prettyTezAmount(t.values.amount, true)}</Text>
-    </Flex>
-  ) : null;
+  return t.type === "tez" ? <Subtotal tez={t.values.amount} /> : null;
 };
 
 export const RecapDisplay: React.FC<{
@@ -174,30 +163,10 @@ export const RecapDisplay: React.FC<{
               </Box>
             )}
             {renderSubTotal(transfer)}
-            <Flex
-              aria-label="fee"
-              alignItems={"center"}
-              justifyContent="space-between"
-            >
-              <Heading size="sm" color="text.dark">
-                Fee
-              </Heading>
-              <Text size="sm">
-                {prettyTezAmount(estimate.suggestedFeeMutez)}
-              </Text>
-            </Flex>
+            <Fee mutez={estimate.suggestedFeeMutez} />
           </Box>
           <Divider mb={2} mt={2} />
-          <Flex
-            aria-label="total"
-            alignItems={"center"}
-            justifyContent="space-between"
-          >
-            <Heading size="sm" color="text.dark">
-              Total
-            </Heading>
-            <Text size="sm">{prettyTezAmount(total, true)}</Text>
-          </Flex>
+          <Total tez={total} />
           {isGoogleSSO ? (
             <GoogleAuth
               isLoading={isLoading}
