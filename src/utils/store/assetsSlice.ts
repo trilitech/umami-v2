@@ -10,7 +10,7 @@ import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
 
 export type BatchItem = { transaction: TransactionValues; fee: number };
-type Batch = {
+export type Batch = {
   isSimulating: boolean;
   items: Array<BatchItem>;
 };
@@ -33,7 +33,7 @@ type State = {
   delegations: Record<string, DelegationOperation>;
   bakers: Baker[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: Record<string, Batch>; // XTZ/USD conversion rate
+  batches: Record<string, Batch | undefined>;
 };
 
 export type TezBalancePayload = { pkh: string; tez: BigNumber };

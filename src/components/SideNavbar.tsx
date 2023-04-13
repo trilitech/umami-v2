@@ -12,7 +12,7 @@ import {
   MdViewCompact,
 } from "react-icons/md";
 import { RxCube } from "react-icons/rx";
-import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import colors from "../style/colors";
 import { useTotalBalance } from "../utils/hooks/assetsHooks";
 import { MakiLogo } from "./MakiLogo";
@@ -22,80 +22,55 @@ import { TezRecapDisplay } from "./TezRecapDisplay";
 const MenuItem: React.FC<{
   label: string;
   icon: IconType;
-  onClick?: any;
+  to: string;
 }> = (props) => {
   return (
-    <Flex
-      onClick={props.onClick}
-      _hover={{
-        background: colors.gray[800],
-      }}
-      pb={2}
-      pt={2}
-      mb={2}
-      mt={2}
-      justifyContent="flex-start"
-      alignItems={"center"}
-      border={40}
-      cursor="pointer"
-    >
-      <Icon w={6} h={6} ml={2} mr={4} as={props.icon} />
-      <Text size="sm">{props.label}</Text>
-    </Flex>
+    <Link to={props.to}>
+      <Flex
+        _hover={{
+          background: colors.gray[800],
+        }}
+        pb={2}
+        pt={2}
+        mb={2}
+        mt={2}
+        justifyContent="flex-start"
+        alignItems={"center"}
+        border={40}
+        cursor="pointer"
+      >
+        <Icon w={6} h={6} ml={2} mr={4} as={props.icon} />
+        <Text size="sm">{props.label}</Text>
+      </Flex>
+    </Link>
   );
 };
 
 const TopIems = () => {
-  const navigate = useNavigate();
-  // TODO use <Link /> element instead of hook
   return (
     <Box>
-      <MenuItem
-        onClick={() => navigate("/home")}
-        label="Overview"
-        icon={MdViewCompact}
-      />
-      <MenuItem
-        label="NFTs"
-        onClick={() => navigate("/nfts")}
-        icon={MdOutlineDiamond}
-      />
-      <MenuItem
-        label="Operations"
-        onClick={() => navigate("/operations")}
-        icon={MdHistory}
-      />
-      <MenuItem
-        label="Delegations"
-        onClick={() => navigate("/delegations")}
-        icon={RxCube}
-      />
-      <MenuItem label="Tokens" icon={MdMoney} />
-      <MenuItem label="Batch" icon={MdCalendarViewMonth} />
+      <MenuItem to={"/home"} label="Overview" icon={MdViewCompact} />
+      <MenuItem label="NFTs" to={"/nfts"} icon={MdOutlineDiamond} />
+      <MenuItem label="Operations" to={"/operations"} icon={MdHistory} />
+      <MenuItem label="Delegations" to={"/delegations"} icon={RxCube} />
+      <MenuItem label="Tokens" to={"/home"} icon={MdMoney} />
+      <MenuItem label="Batch" to={"/batch"} icon={MdCalendarViewMonth} />
     </Box>
   );
 };
 
 const BottomIems = () => {
-  const navigate = useNavigate();
   return (
     <Box>
       <Divider />
       <MenuItem
-        onClick={() => navigate("/address-book")}
-        label="Address Book"
+        label="Adress Book"
+        to={"/address-book"}
         icon={MdOutlineContacts}
       />
-      <MenuItem
-        onClick={() => navigate("/settings")}
-        label="Settings"
-        icon={MdOutlineSettings}
-      />
-      <MenuItem
-        onClick={() => navigate("/help")}
-        label="Help"
-        icon={MdSupport}
-      />
+
+      <MenuItem label="Settings" to={"/settings"} icon={MdOutlineSettings} />
+      <MenuItem label="Help" to={"/help"} icon={MdSupport} />
     </Box>
   );
 };
@@ -144,3 +119,5 @@ export const SideNavbar = () => {
 };
 
 export default SideNavbar;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
