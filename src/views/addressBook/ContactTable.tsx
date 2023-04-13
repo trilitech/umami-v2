@@ -33,12 +33,13 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
         <Tbody>
           {contacts.map((contact) => {
             return (
-              <Tr key={contact.pkh}>
-                <Td>{contact.name}</Td>
+              <Tr key={contact.pkh} data-testid="contact-row">
+                <Td data-testid="contact-row-name">{contact.name}</Td>
                 <Td>
                   <Flex alignItems="center" justifyContent="space-between">
                     <Flex alignItems="center">
                       <CopyableAddress
+                        data-testid="contact-row-pkh"
                         width="330px"
                         mr={4}
                         justifyContent="space-between"
