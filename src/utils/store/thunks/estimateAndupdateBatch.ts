@@ -18,6 +18,10 @@ export const estimateAndUpdateBatch = (
   network: TezosNetwork
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async (dispatch, getState) => {
+    if (transactions.length === 0) {
+      throw new Error("Can't add empty list of transactions to batch!");
+    }
+
     const batches = getState().assets.batches;
 
     if (batches[pkh]?.isSimulating) {
