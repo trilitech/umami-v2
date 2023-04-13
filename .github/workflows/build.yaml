@@ -1,4 +1,4 @@
-name: Test
+name: Build packages
 
 on:
   push:
@@ -13,10 +13,13 @@ jobs:
         include:
           - os: windows-latest
             electron_cmd: win
+            package_glob: dist/*.exe
           - os: ubuntu-latest
             electron_cmd: linux
+            package_glob: dist/*.AppImage
           - os: macos-latest
             electron_cmd: mac
+            package_glob: dist/*.dmg
     runs-on: ${{ matrix.os }}
     env:
       NODE_OPTIONS: "--max_old_space_size=4096"
@@ -64,10 +67,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app_dist_${{ matrix.electron_cmd }}
-          path: |
-            dist/*.exe
-            dist/*.dmg
-            dist/*.deb
+          path: ${{ matrix.package_glob }}
           if-no-files-found: error
 
       # this is needed to ensure that actions/setup-node will pick up yarn cache
