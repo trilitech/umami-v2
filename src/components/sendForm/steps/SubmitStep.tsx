@@ -1,5 +1,4 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import {
   Box,
   Button,
@@ -25,14 +24,12 @@ import { GoogleAuth } from "../../../GoogleAuth";
 import { AccountType } from "../../../types/Account";
 import { decrypt } from "../../../utils/aes";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
-import {
-  mutezToTezNumber,
-  prettyTezAmount,
-} from "../../../utils/store/impureFormat";
+import { mutezToTezNumber } from "../../../utils/store/impureFormat";
 import { delegate, transferFA2Token, transferTez } from "../../../utils/tezos";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { useRenderAccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
+import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { TransactionValues } from "../types";
 
 const makeTransfer = (

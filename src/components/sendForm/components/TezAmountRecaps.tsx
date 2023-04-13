@@ -1,5 +1,4 @@
-import { Heading, Flex, Text, FlexProps, flexbox } from "@chakra-ui/react";
-import React from "react";
+import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 import { prettyTezAmount } from "../../../utils/store/impureFormat";
 
 type Props = { tez: number } & FlexProps;

@@ -126,18 +126,17 @@ export const SendTezOrNFTForm = ({
   const isNFT = !!nft;
   const getBatchIsSimulating = useBatchIsSimulating();
 
-  const { formState, control, register, handleSubmit, getValues, watch } =
-    useForm<{
-      sender: string;
-      recipient: string;
-      amount: number;
-    }>({
-      mode: "onBlur",
-      defaultValues: {
-        sender: mandatoryNftSender || sender,
-        amount: isNFT ? 1 : undefined,
-      },
-    });
+  const { formState, control, register, handleSubmit, getValues } = useForm<{
+    sender: string;
+    recipient: string;
+    amount: number;
+  }>({
+    mode: "onBlur",
+    defaultValues: {
+      sender: mandatoryNftSender || sender,
+      amount: isNFT ? 1 : undefined,
+    },
+  });
   const { isValid } = formState;
 
   const senderFormValue = getValues().sender;
