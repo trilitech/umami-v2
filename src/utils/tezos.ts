@@ -10,7 +10,6 @@ import { TransactionValues } from "../components/sendForm/types";
 import { Baker } from "../types/Baker";
 import { Token } from "../types/Token";
 import { DummySigner } from "./dummySigner";
-import { ValidationResult } from "@taquito/utils";
 
 const nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
@@ -343,17 +342,4 @@ export const transactionValuesToBatchParams = async (
   }
 
   return result;
-};
-
-export const invalidAddressToString = (res: ValidationResult) => {
-  switch (res) {
-    case ValidationResult.INVALID_CHECKSUM:
-      return "Invalid address";
-    case ValidationResult.INVALID_LENGTH:
-      return "Invalid address length";
-    case ValidationResult.NO_PREFIX_MATCHED:
-      return "Invalid address prefix";
-    default:
-      return "";
-  }
 };

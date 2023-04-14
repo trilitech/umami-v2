@@ -25,7 +25,6 @@ import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
 import { CopyableAddress } from "./CopyableText";
 import { validateAddress, ValidationResult } from "@taquito/utils";
-import { invalidAddressToString } from "../utils/tezos";
 
 export const UpsertContactModal: FC<{
   title: string;
@@ -59,10 +58,10 @@ export const UpsertContactModal: FC<{
   };
 
   const contactAlreadyExists = useContactAlreadyExists();
-  const validate = (pkh: string) => {
+  const validatePkh = (pkh: string) => {
     const validationResult = validateAddress(pkh);
     if (validationResult !== ValidationResult.VALID) {
-      return invalidAddressToString(validationResult);
+      return "Invalid address";
     }
     if (contactToEdit) {
       return getValues("name") !== contactToEdit.name;
@@ -94,7 +93,7 @@ export const UpsertContactModal: FC<{
                 type="text"
                 {...register("pkh", {
                   required: true,
-                  validate,
+                  validate: validatePkh,
                 })}
                 value={contactToEdit?.pkh}
                 variant={contactToEdit ? "filled" : undefined}
