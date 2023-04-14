@@ -166,8 +166,8 @@ describe("<SendForm />", () => {
               type: "tez",
               values: {
                 amount: 23,
-                recipient: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x7",
-                sender: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x1",
+                recipient: mockPkh(7),
+                sender: mockPkh(1),
               },
             },
           },
@@ -195,8 +195,8 @@ describe("<SendForm />", () => {
               type: "tez",
               values: {
                 amount: 23,
-                recipient: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x7",
-                sender: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x1",
+                recipient: mockPkh(7),
+                sender: mockPkh(1),
               },
             },
           },
@@ -206,8 +206,8 @@ describe("<SendForm />", () => {
               type: "tez",
               values: {
                 amount: 23,
-                recipient: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x7",
-                sender: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x1",
+                recipient: mockPkh(7),
+                sender: mockPkh(1),
               },
             },
           },

@@ -63,6 +63,8 @@ const validMockPkhs = [
   "tz1PB7jN9GnNppn8hEbrherUAt4n3bv3wgNn",
   "tz1cuj9Cgi19KMRi83UuypS89kXM435qdhmy",
   "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
+  "tz1cX93Q3KsiTADpCC4f12TBvAmS5tw7CW19",
+  "tz1NEKxGEHsFufk87CVZcrqWu8o22qh46GK6",
 ];
 
 export const mockPkh = (index: number) => {
