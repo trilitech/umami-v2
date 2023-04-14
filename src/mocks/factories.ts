@@ -66,7 +66,7 @@ const validMockPkhs = [
 ];
 
 export const mockPkh = (index: number) => {
-  if (index > 7) {
+  if (index >= validMockPkhs.length) {
     throw Error("index out of bound");
   }
   return validMockPkhs[index];
