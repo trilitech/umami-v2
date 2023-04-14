@@ -1,4 +1,4 @@
-import { Flex, Box, Text } from "@chakra-ui/react";
+import { Flex, Box, Text, FlexProps } from "@chakra-ui/react";
 import { formatPkh } from "../../utils/format";
 import { useAccounts } from "../../utils/hooks/accountHooks";
 import { Identicon } from "../Identicon";
@@ -6,12 +6,13 @@ import { Identicon } from "../Identicon";
 export const AccountSmallTile = ({
   pkh,
   label,
+  ...flexProps
 }: {
   pkh: string;
   label?: string;
-}) => {
+} & FlexProps) => {
   return (
-    <Flex>
+    <Flex {...flexProps}>
       <Identicon address={pkh} mr={4} />
       <Box>
         <Text>{label}</Text>

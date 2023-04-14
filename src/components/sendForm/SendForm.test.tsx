@@ -19,6 +19,7 @@ import { ReduxStore } from "../../providers/ReduxStore";
 import { AccountType } from "../../types/Account";
 import { decrypt } from "../../utils/aes";
 // import { decrypt } from "../../utils/aes";
+import { UmamiTheme } from "../../providers/UmamiTheme";
 import { formatPkh } from "../../utils/format";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
@@ -26,6 +27,7 @@ import { store } from "../../utils/store/store";
 import {
   estimateFA2transfer,
   estimateTezTransfer,
+  estimateBatch,
   transferFA2Token,
   transferTez,
 } from "../../utils/tezos";
@@ -47,14 +49,17 @@ const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
 const transferTezMock = transferTez as jest.Mock;
 const transferFA2TokenMock = transferFA2Token as jest.Mock;
 const decryptMock = decrypt as jest.Mock;
+const estimateBatchMock = estimateBatch as jest.Mock;
 
 const fixture = (sender?: string, assetType?: SendFormMode) => (
   <ReactQueryProvider>
-    <ReduxStore>
-      <Modal isOpen={true} onClose={() => {}}>
-        <SendForm sender={sender} mode={assetType} />
-      </Modal>
-    </ReduxStore>
+    <UmamiTheme>
+      <ReduxStore>
+        <Modal isOpen={true} onClose={() => {}}>
+          <SendForm sender={sender} mode={assetType} />
+        </Modal>
+      </ReduxStore>
+    </UmamiTheme>
   </ReactQueryProvider>
 );
 
@@ -90,18 +95,21 @@ describe("<SendForm />", () => {
       );
     });
 
-    const fillFormAndSimulate = async () => {
+    const fillForm = async () => {
       render(fixture(mockAccount(1).pkh));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
         formatPkh(mockAccount(1).pkh)
       );
 
       const amountInput = screen.getByLabelText(/amount/i);
-      fireEvent.change(amountInput, { target: { value: "23" } });
+      fireEvent.change(amountInput, { target: { value: 23 } });
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+    };
 
+    const fillFormAndSimulate = async () => {
+      await fillForm();
       const submitBtn = screen.getByText(/preview/i);
 
       await waitFor(() => {
@@ -125,6 +133,87 @@ describe("<SendForm />", () => {
         expect(total).toHaveTextContent(/23.012345 ꜩ/i);
       });
     };
+
+    it("should allow to add transaction to batch", async () => {
+      await fillForm();
+
+      estimateBatchMock.mockImplementationOnce(async (transactions: any[]) => {
+        return transactions.map((_) => ({ suggestedFeeMutez: 33 }));
+      });
+      const addToBatchBtn = screen.getByRole("button", {
+        name: /insert into batch/i,
+      });
+
+      await waitFor(() => {
+        expect(addToBatchBtn).toBeEnabled();
+      });
+
+      fireEvent.click(addToBatchBtn);
+      await waitFor(() => {
+        expect(addToBatchBtn).toBeDisabled();
+      });
+      await waitFor(() => {
+        expect(screen.getByText(/added to batch/i)).toBeTruthy();
+      });
+
+      const batch = store.getState().assets.batches[mockAccount(1).pkh];
+      expect(batch).toEqual({
+        isSimulating: false,
+        items: [
+          {
+            fee: 33,
+            transaction: {
+              type: "tez",
+              values: {
+                amount: 23,
+                recipient: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x7",
+                sender: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x1",
+              },
+            },
+          },
+        ],
+      });
+
+      estimateBatchMock.mockImplementationOnce(async (transactions: any[]) => {
+        return transactions.map((_) => ({ suggestedFeeMutez: 33 }));
+      });
+      fireEvent.click(addToBatchBtn);
+      await waitFor(() => {
+        expect(addToBatchBtn).toBeDisabled();
+      });
+      await waitFor(() => {
+        expect(screen.getAllByText(/added to batch/i)).toBeTruthy();
+      });
+
+      const batch2 = store.getState().assets.batches[mockAccount(1).pkh];
+      expect(batch2).toEqual({
+        isSimulating: false,
+        items: [
+          {
+            fee: 33,
+            transaction: {
+              type: "tez",
+              values: {
+                amount: 23,
+                recipient: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x7",
+                sender: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x1",
+              },
+            },
+          },
+          {
+            fee: 33,
+            transaction: {
+              type: "tez",
+              values: {
+                amount: 23,
+                recipient: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x7",
+                sender: "tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x1",
+              },
+            },
+          },
+        ],
+      });
+    });
 
     test("should display simulation result: subtotal, fee and total", async () => {
       await fillFormAndSimulate();
@@ -155,7 +244,7 @@ describe("<SendForm />", () => {
       });
       expect(transferTezMock).toHaveBeenCalledWith(
         mockPkh(7),
-        "23",
+        23,
         MOCK_SK,
         "mainnet"
       );
@@ -281,7 +370,7 @@ describe("<SendForm />", () => {
       render(fixture(mockAccount(4, AccountType.SOCIAL).pkh));
 
       const amountInput = screen.getByLabelText(/amount/i);
-      fireEvent.change(amountInput, { target: { value: "23" } });
+      fireEvent.change(amountInput, { target: { value: 23 } });
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });

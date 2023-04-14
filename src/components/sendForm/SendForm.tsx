@@ -4,6 +4,8 @@ import { Estimate } from "@taquito/taquito";
 import { useState } from "react";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useAppDispatch } from "../../utils/store/hooks";
+import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import {
   estimateDelegation,
   estimateFA2transfer,
@@ -69,6 +71,7 @@ export const SendForm = ({
   const network = useSelectedNetwork();
   const toast = useToast();
   const getPk = useGetPk();
+  const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -100,6 +103,22 @@ export const SendForm = ({
     setIsLoading(false);
   };
 
+  const addToBatch = async (transaction: TransactionValues) => {
+    const sender = transaction.values.sender;
+
+    const pk = getPk(sender);
+
+    try {
+      await dispatch(
+        estimateAndUpdateBatch(sender, pk, [transaction], network)
+      );
+
+      toast({ title: "Transaction added to batch!" });
+    } catch (error: any) {
+      toast({ title: "Invalid transaction", description: error.message });
+    }
+  };
+
   if (hash) {
     return <SuccessStep hash={hash} network={network} />;
   }
@@ -121,6 +140,9 @@ export const SendForm = ({
       sender={sender}
       isLoading={isLoading}
       onSubmit={simulate}
+      onSubmitBatch={(transaction) => {
+        addToBatch(transaction);
+      }}
     />
   );
 };

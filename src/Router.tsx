@@ -11,6 +11,7 @@ import { withSideMenu } from "./views/withSideMenu";
 import HelpView from "./views/help/HelpView";
 import DelegationsView from "./views/delegations/DelegationsView";
 import AddressBookView from "./views/addressBook/AddressBookView";
+import BatchView from "./views/batch/BatchView";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -51,6 +52,10 @@ const loggedInRouter = createHashRouter([
     element: withSideMenu(<HelpView />),
   },
 
+  {
+    path: "/batch",
+    element: withSideMenu(<BatchView />),
+  },
   {
     path: "/",
     element: withSideMenu(<Home />),

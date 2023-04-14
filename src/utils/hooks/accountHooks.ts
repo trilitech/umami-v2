@@ -6,6 +6,11 @@ export const useAccounts = () => {
   return useAppSelector((s) => s.accounts.items);
 };
 
+export const useGetAccount = () => {
+  const accounts = useAccounts();
+  return (pkh: string) => accounts.find((a) => a.pkh === pkh);
+};
+
 export const useSelectedAccount = () => {
   const pkh = useAppSelector((s) => s.accounts.selected);
   const accounts = useAppSelector((s) => s.accounts.items);

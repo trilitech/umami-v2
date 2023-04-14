@@ -16,6 +16,7 @@ import {
 import accountsSlice from "./store/accountsSlice";
 import { estimateAndUpdateBatch } from "./store/thunks/estimateAndupdateBatch";
 import { estimateBatch } from "./tezos";
+import { TransactionValues } from "../components/sendForm/types";
 jest.mock("./tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -532,6 +533,31 @@ describe("Assets reducer", () => {
           ],
         });
       });
+    });
+
+    test("You can't add an empty list of transactions to a batch", async () => {
+      const mockEstimations = [
+        { suggestedFeeMutez: 323 },
+        { suggestedFeeMutez: 423 },
+        { suggestedFeeMutez: 523 },
+      ];
+
+      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
+
+      const transfers: TransactionValues[] = [];
+
+      const action = estimateAndUpdateBatch(
+        mockPkh(1),
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
+
+      const dispatch = store.dispatch(action);
+
+      await expect(dispatch).rejects.toThrow(
+        `Can't add empty list of transactions to batch`
+      );
     });
 
     test("Batch can't be cleared for a given account if simulation is ongoing for a given account", async () => {
