@@ -1,6 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
-import { Estimate } from "@taquito/taquito";
 import { useState } from "react";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
@@ -15,7 +14,7 @@ import { getTotalFee } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
-import { SendFormMode, TransactionValues } from "./types";
+import { EstimatedTransaction, SendFormMode, TransactionValues } from "./types";
 
 const makeSimulation = (
   t: TransactionValues,
@@ -61,11 +60,6 @@ export const useGetPk = () => {
   return (pkh: string) => getAccount(pkh).pk;
 };
 
-export type MyEstimate = {
-  transaction: TransactionValues | TransactionValues[];
-  estimate: Estimate;
-};
-
 export const SendForm = ({
   sender,
   recipient,
@@ -82,19 +76,17 @@ export const SendForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const initalValues: MyEstimate | undefined =
+  const initalValues: EstimatedTransaction | undefined =
     mode.type === "batch"
       ? {
           transaction: mode.data.batch.items.map((b) => b.transaction),
-          estimate: {
-            suggestedFeeMutez: getTotalFee(mode.data.batch.items),
-          } as Estimate,
+          fee: getTotalFee(mode.data.batch.items),
         }
       : undefined;
 
-  const [transferValues, setTransferValues] = useState<MyEstimate | undefined>(
-    initalValues
-  );
+  const [transferValues, setTransferValues] = useState<
+    EstimatedTransaction | undefined
+  >(initalValues);
 
   const [hash, setHash] = useState<string>();
 
@@ -110,7 +102,7 @@ export const SendForm = ({
 
       setTransferValues({
         transaction,
-        estimate,
+        fee: estimate.suggestedFeeMutez,
       });
     } catch (error: any) {
       toast({ title: "Invalid transaction", description: error.message });

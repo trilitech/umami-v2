@@ -43,3 +43,8 @@ export type TransactionValues =
         recipient?: string;
       };
     });
+
+export type EstimatedTransaction = {
+  transaction: TransactionValues | TransactionValues[];
+  fee: number;
+};

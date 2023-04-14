@@ -37,12 +37,11 @@ import { useRenderAccountSmallTile } from "../../AccountSelector/AccountSmallTil
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import {
   Fee,
-  TransactionsAmount,
   Subtotal,
   Total,
+  TransactionsAmount,
 } from "../components/TezAmountRecaps";
-import { MyEstimate } from "../SendForm";
-import { TransactionValues } from "../types";
+import { EstimatedTransaction, TransactionValues } from "../types";
 
 const makeTransfer = (
   t: TransactionValues | TransactionValues[],
@@ -137,9 +136,9 @@ const getSubTotal = (t: TransactionValues[] | TransactionValues): number => {
 
 export const RecapDisplay: React.FC<{
   network: TezosNetwork;
-  recap: MyEstimate;
+  recap: EstimatedTransaction;
   onSucces: (hash: string) => void;
-}> = ({ recap: { estimate, transaction: transfer }, network, onSucces }) => {
+}> = ({ recap: { fee, transaction: transfer }, network, onSucces }) => {
   const renderAccountTile = useRenderAccountSmallTile();
   const getAccount = useGetOwnedAccount();
 
@@ -200,7 +199,7 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
-  const feeInTez = Number(mutezToTezNumber(estimate.suggestedFeeMutez));
+  const feeInTez = Number(mutezToTezNumber(fee));
   const total = feeInTez + getSubTotal(transfer);
 
   return (
@@ -222,7 +221,7 @@ export const RecapDisplay: React.FC<{
             ) : (
               <NonBatchRecap transfer={transfer} />
             )}
-            <Fee mutez={estimate.suggestedFeeMutez} />
+            <Fee mutez={fee} />
           </Box>
           <Divider mb={2} mt={2} />
           <Total tez={total} />
