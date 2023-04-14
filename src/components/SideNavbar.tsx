@@ -49,7 +49,7 @@ const MenuItem: React.FC<{
 const TopIems = () => {
   return (
     <Box>
-      <MenuItem to={"/home"} label="Overview" icon={MdViewCompact} />
+      <MenuItem label="Overview" to={"/home"} icon={MdViewCompact} />
       <MenuItem label="NFTs" to={"/nfts"} icon={MdOutlineDiamond} />
       <MenuItem label="Operations" to={"/operations"} icon={MdHistory} />
       <MenuItem label="Delegations" to={"/delegations"} icon={RxCube} />
@@ -119,5 +119,3 @@ export const SideNavbar = () => {
 };
 
 export default SideNavbar;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-expressions
