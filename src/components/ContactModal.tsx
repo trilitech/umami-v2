@@ -14,6 +14,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Heading,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -23,6 +24,7 @@ import { useContactAlreadyExists } from "../utils/hooks/contactsHooks";
 import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
 import { CopyableAddress } from "./CopyableText";
+import { validateAddress, ValidationResult } from "@taquito/utils";
 
 export const UpsertContactModal: FC<{
   title: string;
@@ -39,29 +41,32 @@ export const UpsertContactModal: FC<{
   onSubmitContact,
   onClose,
 }) => {
-  // TODO: Add error message.
-  // Asana link: https://app.asana.com/0/1204165186238194/1204389173554443/f
-  const { handleSubmit, formState, register, reset, getValues } =
-    useForm<Contact>({
-      mode: "onBlur",
-      defaultValues: contactToEdit,
-    });
+  const {
+    handleSubmit,
+    formState: { isValid, errors },
+    register,
+    reset,
+    getValues,
+  } = useForm<Contact>({
+    mode: "onBlur",
+    defaultValues: contactToEdit,
+  });
 
   const onSubmit = (contact: Contact) => {
     onSubmitContact(contact);
     reset();
   };
 
-  const { isValid } = formState;
   const contactAlreadyExists = useContactAlreadyExists();
-  const validateAddress = (pkh: string) => {
-    // TODO: Use taquito to validate the address.
-    // Asana Link: https://app.asana.com/0/1204165186238194/1204389173554443/f
-    const validAddress = pkh.length === 36;
-    if (contactToEdit) {
-      return validAddress && getValues("name") !== contactToEdit.name;
+  const validatePkh = (pkh: string) => {
+    const validationResult = validateAddress(pkh);
+    if (validationResult !== ValidationResult.VALID) {
+      return "Invalid address";
     }
-    return validAddress && !contactAlreadyExists(pkh);
+    if (contactToEdit) {
+      return getValues("name") !== contactToEdit.name;
+    }
+    return !contactAlreadyExists(pkh) || "Address already exists";
   };
 
   return (
@@ -82,19 +87,22 @@ export const UpsertContactModal: FC<{
                 placeholder="Enter contact’s name"
               />
             </FormControl>
-            <FormControl marginY={5}>
+            <FormControl marginY={5} isInvalid={!!errors.pkh}>
               <FormLabel>Address</FormLabel>
               <Input
                 type="text"
                 {...register("pkh", {
                   required: true,
-                  validate: validateAddress,
+                  validate: validatePkh,
                 })}
                 value={contactToEdit?.pkh}
                 variant={contactToEdit ? "filled" : undefined}
                 disabled={!!contactToEdit}
                 placeholder="Enter contact’s tz address"
               />
+              {errors.pkh && (
+                <FormErrorMessage>{errors.pkh.message}</FormErrorMessage>
+              )}
             </FormControl>
           </ModalBody>
 

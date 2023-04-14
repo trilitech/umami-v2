@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   ModalBody,
@@ -11,6 +12,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { validateAddress, ValidationResult } from "@taquito/utils";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NFT } from "../../../types/Asset";
@@ -126,7 +128,13 @@ export const SendTezOrNFTForm = ({
   const isNFT = !!nft;
   const getBatchIsSimulating = useBatchIsSimulating();
 
-  const { formState, control, register, handleSubmit, getValues } = useForm<{
+  const {
+    formState: { isValid, errors },
+    control,
+    register,
+    getValues,
+    handleSubmit,
+  } = useForm<{
     sender: string;
     recipient: string;
     amount: number;
@@ -137,7 +145,6 @@ export const SendTezOrNFTForm = ({
       amount: isNFT ? 1 : undefined,
     },
   });
-  const { isValid } = formState;
 
   const senderFormValue = getValues().sender;
   const batchIsSimulating =
@@ -169,19 +176,22 @@ export const SendTezOrNFTForm = ({
               )}
             />
           </FormControl>
-          <FormControl mb={2}>
+          <FormControl mb={2} isInvalid={!!errors.recipient}>
             <FormLabel>To</FormLabel>
             <Input
               isDisabled={simulating}
               type="text"
               {...register("recipient", {
                 required: true,
-                validate: (val) => {
-                  return val.length === 36;
-                },
+                validate: (val) =>
+                  validateAddress(val) === ValidationResult.VALID ||
+                  "Invalid address",
               })}
               placeholder="Enter recipient address..."
             />
+            {errors.recipient && (
+              <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
+            )}
           </FormControl>
 
           {nft ? <SendNFTRecapTile nft={nft} /> : null}

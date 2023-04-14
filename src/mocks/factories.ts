@@ -54,8 +54,25 @@ export const mockTokenTransaction = (id: number) => {
   } as TokenTransfer;
 };
 
-export const mockPkh = (index: number) =>
-  `tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x${index}`;
+const validMockPkhs = [
+  "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
+  "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+  "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+  "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+  "tz1i9imTXjMAW5HP5g3wq55Pcr43tDz8c3VZ",
+  "tz1PB7jN9GnNppn8hEbrherUAt4n3bv3wgNn",
+  "tz1cuj9Cgi19KMRi83UuypS89kXM435qdhmy",
+  "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
+  "tz1cX93Q3KsiTADpCC4f12TBvAmS5tw7CW19",
+  "tz1NEKxGEHsFufk87CVZcrqWu8o22qh46GK6",
+];
+
+export const mockPkh = (index: number) => {
+  if (index >= validMockPkhs.length) {
+    throw Error("index out of bound");
+  }
+  return validMockPkhs[index];
+};
 
 export const mockAccountLabel = (index: number) => `account ${index}`;
 
