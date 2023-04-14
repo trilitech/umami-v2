@@ -70,15 +70,7 @@ export const mockPkh = (index: number) => {
     throw Error("index out of bound");
   }
   return validMockPkhs[index];
-  // return `tz1h3rQ8wBxFd8L9B3d7Jhaawu6Z568XU3x${index}`;
 };
-
-// export const mockPkh = (index: number) => {
-//   if (index > 7) {
-//     throw Error("Out of bound");
-//   }
-//   return validMockPkhs[index];
-// };
 
 export const mockAccountLabel = (index: number) => `account ${index}`;
 
