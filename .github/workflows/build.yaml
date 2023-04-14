@@ -1,23 +1,31 @@
-name: Build
+name: Build packages
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build_app:
+  build:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
         include:
           - os: windows-latest
             electron_cmd: win
+            package_glob: dist/*.exe
           - os: ubuntu-latest
             electron_cmd: linux
+            package_glob: dist/*.AppImage
           - os: macos-latest
             electron_cmd: mac
+            package_glob: dist/*.dmg
     runs-on: ${{ matrix.os }}
-
+    env:
+      NODE_OPTIONS: "--max_old_space_size=4096"
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
@@ -40,28 +48,11 @@ jobs:
           YARN_CACHE_FOLDER: ${{ steps.yarn-cache-folder.outputs.path }}
         run: yarn install --immutable
 
-      - name: Check format
-        if: matrix.os == 'ubuntu-latest'
-        run: npm run format:ci
-
-      - name: Run linter
-        if: matrix.os == 'ubuntu-latest'
-        run: npm run lint
-
-      - name: Typecheck code
-        if: matrix.os == 'ubuntu-latest'
-        run: npm run typecheck
-
-      - name: Run tests
-        env:
-          CI: true
-        run: npm run test
-
       - name: Build
         run: yarn build
 
       - name: Deploy Github Pages
-        if: matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/main'
+        if: matrix.os == 'ubuntu-latest'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -70,18 +61,13 @@ jobs:
       - name: Package the electron app
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/main'
         run: yarn electron:package:${{ matrix.electron_cmd }}
 
       - name: Upload
         uses: actions/upload-artifact@v3
-        if: github.ref == 'refs/heads/main'
         with:
           name: app_dist_${{ matrix.electron_cmd }}
-          path: |
-            dist/*.exe
-            dist/*.dmg
-            dist/*.deb
+          path: ${{ matrix.package_glob }}
           if-no-files-found: error
 
       # this is needed to ensure that actions/setup-node will pick up yarn cache

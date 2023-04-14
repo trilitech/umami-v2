@@ -19,6 +19,6 @@ const contactsSlice = createSlice({
   },
 });
 
-export const ContactsActions = contactsSlice.actions;
+export const contactsActions = contactsSlice.actions;
 
 export default contactsSlice;

@@ -1,8 +1,8 @@
 import { contact1, contact2 } from "../mocks/contacts";
-import { ContactsActions } from "./store/contactsSlice";
+import { contactsActions } from "./store/contactsSlice";
 
 import { store } from "./store/store";
-const { upsert, reset, remove } = ContactsActions;
+const { upsert, reset, remove } = contactsActions;
 
 afterEach(() => {
   store.dispatch(reset());
