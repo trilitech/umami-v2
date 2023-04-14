@@ -17,14 +17,14 @@ describe("Contacts reducer", () => {
     store.dispatch(upsert(contact1));
     store.dispatch(upsert(contact2));
     expect(store.getState().contacts).toEqual({
-      tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS: {
-        name: "Lewis Hatfull",
-        pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+      [contact1["pkh"]]: {
+        name: contact1["name"],
+        pkh: contact1["pkh"],
       },
 
-      tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3: {
-        name: "Lev Kowalski",
-        pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+      [contact2["pkh"]]: {
+        name: contact2["name"],
+        pkh: contact2["pkh"],
       },
     });
   });
@@ -48,9 +48,9 @@ describe("Contacts reducer", () => {
     store.dispatch(upsert({ name: contact2["name"], pkh: contact1["pkh"] }));
     expect(Object.values(store.getState().contacts).length).toEqual(1);
     expect(store.getState().contacts).toEqual({
-      tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS: {
-        name: "Lev Kowalski",
-        pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+      [contact1["pkh"]]: {
+        name: contact2["name"],
+        pkh: contact1["pkh"],
       },
     });
   });
