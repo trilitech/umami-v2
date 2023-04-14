@@ -16,7 +16,6 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Estimate } from "@taquito/taquito";
 import { isValid } from "date-fns";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -24,19 +23,40 @@ import { GoogleAuth } from "../../../GoogleAuth";
 import { AccountType } from "../../../types/Account";
 import { decrypt } from "../../../utils/aes";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
+import { useClearBatch } from "../../../utils/hooks/assetsHooks";
 import { mutezToTezNumber } from "../../../utils/store/impureFormat";
-import { delegate, transferFA2Token, transferTez } from "../../../utils/tezos";
+import {
+  delegate,
+  submitBatch,
+  transferFA2Token,
+  transferTez,
+} from "../../../utils/tezos";
+import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { useRenderAccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
-import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
+import {
+  Fee,
+  TransactionsAmount,
+  Subtotal,
+  Total,
+} from "../components/TezAmountRecaps";
+import { MyEstimate } from "../SendForm";
 import { TransactionValues } from "../types";
 
 const makeTransfer = (
-  t: TransactionValues,
+  t: TransactionValues | TransactionValues[],
   sk: string,
   network: TezosNetwork
 ) => {
+  if (Array.isArray(t)) {
+    return submitBatch(t, sk, network).then((res) => {
+      return {
+        hash: res.opHash,
+      };
+    });
+  }
+
   if (t.type === "delegation") {
     return delegate(t.values.sender, t.values.recipient, sk, network);
   }
@@ -64,30 +84,74 @@ const makeTransfer = (
   throw new Error(error);
 };
 
-const renderSubTotal = (t: TransactionValues) => {
-  return t.type === "tez" ? <Subtotal tez={t.values.amount} /> : null;
+const NonBatchRecap = ({ transfer }: { transfer: TransactionValues }) => {
+  const isDelegation = transfer.type === "delegation";
+  const nft = transfer.type === "nft" ? transfer.data : undefined;
+
+  const renderAccountTile = useRenderAccountSmallTile();
+  const renderBakerTile = useRenderBakerSmallTile();
+  return (
+    <>
+      {transfer.values.recipient && (
+        <Flex mb={4}>
+          <Heading size="md" width={20}>
+            To:
+          </Heading>
+          {isDelegation
+            ? renderBakerTile(transfer.values.recipient)
+            : renderAccountTile(transfer.values.recipient)}
+        </Flex>
+      )}
+      {!!nft && (
+        <Box mb={4}>
+          <SendNFTRecapTile nft={nft} />
+        </Box>
+      )}
+      {transfer.type === "tez" ? (
+        <Subtotal tez={transfer.values.amount} />
+      ) : null}
+    </>
+  );
+};
+
+const BatchRecap = ({ transfer }: { transfer: TransactionValues[] }) => {
+  return (
+    <>
+      <TransactionsAmount amount={transfer.length} />
+      <Subtotal tez={getBatchSubtotal(transfer)} />
+    </>
+  );
+};
+
+const getSubTotal = (t: TransactionValues[] | TransactionValues): number => {
+  if (Array.isArray(t)) {
+    return getBatchSubtotal(t);
+  }
+
+  if (t.type === "tez") {
+    return t.values.amount;
+  }
+
+  return 0;
 };
 
 export const RecapDisplay: React.FC<{
   network: TezosNetwork;
-  recap: {
-    transaction: TransactionValues;
-    estimate: Estimate;
-  };
+  recap: MyEstimate;
   onSucces: (hash: string) => void;
 }> = ({ recap: { estimate, transaction: transfer }, network, onSucces }) => {
-  const isTez = transfer.type === "tez";
-  const isDelegation = transfer.type === "delegation";
-  const nft = transfer.type === "nft" ? transfer.data : undefined;
   const renderAccountTile = useRenderAccountSmallTile();
-  const renderBakerTile = useRenderBakerSmallTile();
   const getAccount = useGetOwnedAccount();
 
   const { register, handleSubmit } = useForm<{ password: string }>();
+
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const clearBatch = useClearBatch();
 
-  const signerAccount = getAccount(transfer.values.sender);
+  const signerAccount = getAccount(
+    (Array.isArray(transfer) ? transfer[0] : transfer).values.sender
+  );
 
   const isGoogleSSO = signerAccount.type === AccountType.SOCIAL;
 
@@ -99,6 +163,10 @@ export const RecapDisplay: React.FC<{
     setIsLoading(true);
     try {
       const result = await makeTransfer(transfer, sk, network);
+
+      if (Array.isArray(transfer)) {
+        clearBatch(signerAccount.pkh);
+      }
 
       onSucces(result.hash);
       toast({ title: "Success", description: result.hash });
@@ -117,7 +185,12 @@ export const RecapDisplay: React.FC<{
     setIsLoading(true);
     try {
       const sk = await decrypt(signerAccount.esk, password);
+
       const result = await makeTransfer(transfer, sk, network);
+
+      if (Array.isArray(transfer)) {
+        clearBatch(signerAccount.pkh);
+      }
 
       onSucces(result.hash);
       toast({ title: "Success", description: result.hash });
@@ -128,10 +201,10 @@ export const RecapDisplay: React.FC<{
   };
 
   const feeInTez = Number(mutezToTezNumber(estimate.suggestedFeeMutez));
-  const total = isTez ? feeInTez + Number(transfer.values.amount) : feeInTez;
+  const total = feeInTez + getSubTotal(transfer);
 
   return (
-    <ModalContent bg="umami.gray.900">
+    <ModalContent bg="umami.gray.900" data-testid="bar">
       <form onSubmit={handleSubmit(onSubmitNominal)}>
         <ModalCloseButton />
         <ModalHeader textAlign={"center"}>Recap</ModalHeader>
@@ -142,24 +215,13 @@ export const RecapDisplay: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              {renderAccountTile(transfer.values.sender)}
+              {renderAccountTile(signerAccount.pkh)}
             </Flex>
-            {transfer.values.recipient && (
-              <Flex mb={4}>
-                <Heading size="md" width={20}>
-                  To:
-                </Heading>
-                {isDelegation
-                  ? renderBakerTile(transfer.values.recipient)
-                  : renderAccountTile(transfer.values.recipient)}
-              </Flex>
+            {Array.isArray(transfer) ? (
+              <BatchRecap transfer={transfer} />
+            ) : (
+              <NonBatchRecap transfer={transfer} />
             )}
-            {!!nft && (
-              <Box mb={4}>
-                <SendNFTRecapTile nft={nft} />
-              </Box>
-            )}
-            {renderSubTotal(transfer)}
             <Fee mutez={estimate.suggestedFeeMutez} />
           </Box>
           <Divider mb={2} mt={2} />

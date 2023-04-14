@@ -19,6 +19,7 @@ import { TopBar } from "../../components/TopBar";
 import { useGetAccount } from "../../utils/hooks/accountHooks";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
+import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
 
 export const FilterController: React.FC<{ batchPending: number }> = (props) => {
@@ -70,6 +71,8 @@ const BatchView = () => {
   const dispatch = useAppDispatch();
   const getAccount = useGetAccount();
 
+  const { onOpen: openSendForm, modalElement: sendFormModalEl } =
+    useSendFormModal();
   const { onOpen, element, onClose } = useConfirmation();
 
   const batchEls = Object.entries(batches).map(([pkh, batch]) => {
@@ -82,6 +85,9 @@ const BatchView = () => {
 
     return account && batch && batch.items.length > 0 ? (
       <BatchDisplay
+        onSend={() =>
+          openSendForm({ mode: { type: "batch", data: { batch } } })
+        }
         onDelete={() => onOpen(onConfirm)}
         key={batch.items[0].transaction.values.sender}
         account={account}
@@ -101,6 +107,7 @@ const BatchView = () => {
           batchEls
         )}
       </Box>
+      {sendFormModalEl}
       {element}
     </Flex>
   );

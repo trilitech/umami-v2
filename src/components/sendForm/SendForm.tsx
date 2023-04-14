@@ -11,6 +11,7 @@ import {
   estimateFA2transfer,
   estimateTezTransfer,
 } from "../../utils/tezos";
+import { getTotalFee } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
@@ -51,12 +52,18 @@ const makeSimulation = (
     );
   }
 
-  return Promise.reject(`Unrecognized type!`);
+  const foo: never = t;
+  throw new Error(foo);
 };
 
 export const useGetPk = () => {
   const getAccount = useGetOwnedAccount();
   return (pkh: string) => getAccount(pkh).pk;
+};
+
+export type MyEstimate = {
+  transaction: TransactionValues | TransactionValues[];
+  estimate: Estimate;
 };
 
 export const SendForm = ({
@@ -75,10 +82,19 @@ export const SendForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [transferValues, setTransferValues] = useState<{
-    transaction: TransactionValues;
-    estimate: Estimate;
-  }>();
+  const initalValues: MyEstimate | undefined =
+    mode.type === "batch"
+      ? {
+          transaction: mode.data.batch.items.map((b) => b.transaction),
+          estimate: {
+            suggestedFeeMutez: getTotalFee(mode.data.batch.items),
+          } as Estimate,
+        }
+      : undefined;
+
+  const [transferValues, setTransferValues] = useState<MyEstimate | undefined>(
+    initalValues
+  );
 
   const [hash, setHash] = useState<string>();
 

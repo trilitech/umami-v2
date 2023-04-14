@@ -31,6 +31,7 @@ import {
   mutezToTezNumber,
   prettyTezAmount,
 } from "../../utils/store/impureFormat";
+import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (t: TransactionValues) => {
   if (t.type === "delegation") {
@@ -55,20 +56,17 @@ const renderAmount = (t: TransactionValues) => {
 const RightPanel = ({
   batch,
   onDelete,
+  onSend,
 }: {
   batch: Batch;
   onDelete: () => void;
+  onSend: () => void;
 }) => {
-  const fee = batch.items.reduce((acc, curr) => {
-    return acc + curr.fee;
-  }, 0);
-  const subTotal = batch.items.reduce((acc, curr) => {
-    if (curr.transaction.type === "tez") {
-      return acc + curr.transaction.values.amount;
-    } else {
-      return acc;
-    }
-  }, 0);
+  const fee = getTotalFee(batch.items);
+
+  const subTotal = getBatchSubtotal(
+    batch.items.map((item) => item.transaction)
+  );
 
   const total = subTotal + mutezToTezNumber(fee);
   return (
@@ -83,6 +81,7 @@ const RightPanel = ({
 
         <Flex justifyContent={"space-between"}>
           <Button
+            onClick={onSend}
             isDisabled={batch.isSimulating}
             flex={1}
             bg="umami.blue"
@@ -107,7 +106,8 @@ export const BatchDisplay: React.FC<{
   account: Account;
   batch: Batch;
   onDelete: () => void;
-}> = ({ account, batch, onDelete }) => {
+  onSend: () => void;
+}> = ({ account, batch, onDelete, onSend }) => {
   const items = batch.items;
   return (
     <Flex data-testid="batch-table" mb={4}>
@@ -159,7 +159,7 @@ export const BatchDisplay: React.FC<{
           </Table>
         </TableContainer>
       </Box>
-      <RightPanel onDelete={onDelete} batch={batch} />
+      <RightPanel onDelete={onDelete} onSend={onSend} batch={batch} />
     </Flex>
   );
 };

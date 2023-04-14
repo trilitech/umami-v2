@@ -3,6 +3,25 @@ import { prettyTezAmount } from "../../../utils/store/impureFormat";
 
 type Props = { tez: number } & FlexProps;
 
+export const TransactionsAmount = ({
+  amount,
+  ...flexProps
+}: { amount: number } & FlexProps) => {
+  return (
+    <Flex
+      aria-label="transactions-amount"
+      alignItems={"center"}
+      justifyContent="space-between"
+      {...flexProps}
+    >
+      <Heading size="sm" color="text.dark">
+        Transactions
+      </Heading>
+      <Text size="sm">{amount}</Text>
+    </Flex>
+  );
+};
+
 export const Subtotal = ({ tez, ...flexProps }: Props) => {
   return (
     <Flex
