@@ -1,3 +1,4 @@
+import { TezosNetwork } from "@airgap/tezos";
 import {
   fireEvent,
   render,
@@ -9,14 +10,22 @@ import { mockAccount, mockPkh } from "../../mocks/factories";
 import { closeModal, fillAccountSelector } from "../../mocks/helpers";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { UmamiTheme } from "../../providers/UmamiTheme";
+import { decrypt } from "../../utils/aes";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
-import { estimateBatch } from "../../utils/tezos";
+import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
+import { estimateBatch, submitBatch } from "../../utils/tezos";
 import BatchView from "./BatchView";
 
+// TODO refactor mocks
+jest.mock("../../utils/aes");
+jest.mock("react-router-dom");
 jest.mock("../../utils/tezos");
+
 const estimateBatchMock = estimateBatch as jest.Mock;
+const submitBatchMock = submitBatch as jest.Mock;
+const decryptMock = decrypt as jest.Mock;
 
 const fixture = () => (
   <ReduxStore>
@@ -32,105 +41,274 @@ beforeAll(() => {
   );
 });
 
-beforeEach(() => {
-  estimateBatchMock.mockImplementation(async (transactions: any[]) => {
-    return transactions.map((_) => ({ suggestedFeeMutez: 10 }));
-  });
-});
-
 afterAll(() => {
   // Cleanup
   // Isn't there a way to reset redux root store to zero? Apparently not.
   store.dispatch(accountsSlice.actions.reset());
+});
+
+// Why doesn't this work in beforeAll??
+beforeEach(() => {
+  estimateBatchMock.mockImplementation(async (transactions: any[]) => {
+    return transactions.map((_) => ({ suggestedFeeMutez: 10 }));
+  });
+
+  decryptMock.mockResolvedValue("mockSk");
+  submitBatchMock.mockResolvedValue({ opHash: "foo" });
+});
+
+// We do a lot of modifications in assets store and we don't want them to leak between tests
+afterEach(() => {
   store.dispatch(assetsSlice.actions.reset());
 });
 
+const addToBatchViaUI = async (
+  amount: number,
+  senderLabel: string,
+  recipientPkh: string
+) => {
+  const amountInput = screen.getByLabelText(/amount/i);
+  fireEvent.change(amountInput, { target: { value: Number(amount) } });
+  const recipientInput = screen.getByLabelText(/^to$/i);
+  fireEvent.change(recipientInput, { target: { value: recipientPkh } });
+
+  fillAccountSelector(senderLabel);
+
+  const addToBatchButton = screen.getByRole("button", {
+    name: /insert into batch/i,
+  });
+
+  await waitFor(() => {
+    expect(addToBatchButton).toBeEnabled();
+  });
+
+  fireEvent.click(addToBatchButton);
+
+  await waitFor(() => {
+    expect(addToBatchButton).toBeDisabled();
+  });
+
+  await waitFor(() => {
+    expect(addToBatchButton).toBeEnabled();
+  });
+};
+
+// Can't run in beforeEach because it requires a render
+// Also if you were to do it by different means, it slows down the whole test suite by 20s
+const addItemsToBatchViaUI = async () => {
+  const sendButton = screen.getByText(/send/i);
+  fireEvent.click(sendButton);
+
+  await addToBatchViaUI(33, mockAccount(1).label || "", mockPkh(9));
+  await addToBatchViaUI(55, mockAccount(1).label || "", mockPkh(4));
+  await addToBatchViaUI(9, mockAccount(1).label || "", mockPkh(2));
+
+  await addToBatchViaUI(3, mockAccount(2).label || "", mockPkh(2));
+  await addToBatchViaUI(22, mockAccount(2).label || "", mockPkh(4));
+  await addToBatchViaUI(52, mockAccount(2).label || "", mockPkh(4));
+  closeModal();
+};
+
+// Can run in beforeEach
+const addItemsToBatchViaStore = async () => {
+  await store.dispatch(
+    estimateAndUpdateBatch(
+      mockAccount(1).pkh,
+      mockAccount(1).pk,
+      [
+        {
+          type: "tez",
+          values: {
+            sender: mockAccount(1).pkh,
+            recipient: mockPkh(1),
+            amount: 1,
+          },
+        },
+        {
+          type: "tez",
+          values: {
+            sender: mockAccount(1).pkh,
+            recipient: mockPkh(2),
+            amount: 2,
+          },
+        },
+        {
+          type: "tez",
+          values: {
+            sender: mockAccount(1).pkh,
+            recipient: mockPkh(3),
+            amount: 3,
+          },
+        },
+      ],
+
+      TezosNetwork.MAINNET
+    )
+  );
+
+  await store.dispatch(
+    estimateAndUpdateBatch(
+      mockAccount(2).pkh,
+      mockAccount(2).pk,
+      [
+        {
+          type: "tez",
+          values: {
+            sender: mockAccount(2).pkh,
+            recipient: mockPkh(9),
+            amount: 4,
+          },
+        },
+        {
+          type: "tez",
+          values: {
+            sender: mockAccount(2).pkh,
+            recipient: mockPkh(4),
+            amount: 5,
+          },
+        },
+        {
+          type: "tez",
+          values: {
+            sender: mockAccount(2).pkh,
+            recipient: mockPkh(5),
+            amount: 6,
+          },
+        },
+      ],
+
+      TezosNetwork.MAINNET
+    )
+  );
+};
+
 describe("<BatchView />", () => {
-  it("should display a message if no batches are present", () => {
-    render(fixture());
+  describe("Given no batch has beed added", () => {
+    it("a message 'no batches are present' is displayed", () => {
+      render(fixture());
 
-    expect(screen.getByText(/0 pending/i)).toBeInTheDocument();
-    expect(screen.getByText(/your batch is empty/i)).toBeInTheDocument();
+      expect(screen.getByText(/0 pending/i)).toBeInTheDocument();
+      expect(screen.getByText(/your batch is empty/i)).toBeInTheDocument();
+    });
+
+    test("user can add transactions to batches and it displays batches of all accounts by default", async () => {
+      render(fixture());
+      await addItemsToBatchViaUI();
+
+      expect(
+        screen.queryByText(/your batch is empty/i)
+      ).not.toBeInTheDocument();
+      expect(screen.getAllByTestId(/batch-table/i)).toHaveLength(2);
+    });
   });
 
-  const addToBatch = async (
-    amount: number,
-    senderLabel: string,
-    recipientPkh: string
-  ) => {
-    const amountInput = screen.getByLabelText(/amount/i);
-    fireEvent.change(amountInput, { target: { value: Number(amount) } });
-    const recipientInput = screen.getByLabelText(/^to$/i);
-    fireEvent.change(recipientInput, { target: { value: recipientPkh } });
-
-    fillAccountSelector(senderLabel);
-
-    const addToBatchButton = screen.getByRole("button", {
-      name: /insert into batch/i,
+  describe("Given batches have been added", () => {
+    beforeEach(async () => {
+      // This is fast and can run before each test
+      await addItemsToBatchViaStore();
     });
 
-    await waitFor(() => {
-      expect(addToBatchButton).toBeEnabled();
+    it("should display fee total and subtotal for a given batch", async () => {
+      render(fixture());
+      const firstBatch = screen.getAllByTestId(/batch-table/i)[0];
+      const { getByLabelText } = within(firstBatch);
+      const subTotal = getByLabelText(/^sub-total$/i);
+      expect(subTotal).toHaveTextContent(/6 ꜩ/i);
+      const fee = getByLabelText(/^fee$/i);
+      expect(fee).toHaveTextContent(/0.00003 ꜩ/i);
+      const total = getByLabelText(/^total$/i);
+      expect(total).toHaveTextContent(/6.00003 ꜩ/i);
     });
 
-    fireEvent.click(addToBatchButton);
-
-    await waitFor(() => {
-      expect(addToBatchButton).toBeDisabled();
+    test("a batch can be deleted by clicking the delete button and confirming", () => {
+      render(fixture());
+      const firstBatch = screen.getAllByTestId(/batch-table/i)[0];
+      const { getByLabelText } = within(firstBatch);
+      const deleteBtn = getByLabelText(/Delete Batch/i);
+      fireEvent.click(deleteBtn);
+      expect(screen.getByText(/Are you sure/i)).toBeTruthy();
+      const confirmBtn = screen.getByRole("button", { name: /confirm/i });
+      fireEvent.click(confirmBtn);
+      expect(screen.getAllByTestId(/batch-table/i)).toHaveLength(1);
     });
 
-    await waitFor(() => {
-      expect(addToBatchButton).toBeEnabled();
+    const clickSubmitOnFirstBatch = () => {
+      const batchTable = screen.getAllByTestId(/batch-table/i)[0];
+
+      const { getByRole } = within(batchTable);
+      const submitBatchBtn = getByRole("button", { name: /submit batch/i });
+
+      fireEvent.click(submitBatchBtn);
+    };
+
+    test("clicking submit batch button displays 'recap and submit' form", () => {
+      render(fixture());
+      clickSubmitOnFirstBatch();
+      const modal = screen.getByRole("dialog");
+      const { getByText, getByLabelText } = within(modal);
+      expect(getByText(/transaction details/i)).toBeInTheDocument();
+
+      const txsAmount = getByLabelText(/^transactions-amount$/i);
+      expect(txsAmount).toHaveTextContent("3");
+      const fee = getByLabelText(/^fee$/i);
+      expect(fee).toHaveTextContent("0.00003 ꜩ");
+      const subTotal = getByLabelText(/^sub-total$/i);
+      expect(subTotal).toHaveTextContent("6 ꜩ");
+      const total = getByLabelText(/^total$/i);
+      expect(total).toHaveTextContent("6.00003 ꜩ");
     });
-  };
 
-  const addItemsToBatch = async () => {
-    const sendButton = screen.getByText(/send/i);
-    fireEvent.click(sendButton);
+    test("submiting a batch executes the batch of transactions and empties it after successfull submition", async () => {
+      render(fixture());
+      clickSubmitOnFirstBatch();
 
-    await addToBatch(33, mockAccount(1).label || "", mockPkh(9));
-    await addToBatch(55, mockAccount(1).label || "", mockPkh(4));
-    await addToBatch(9, mockAccount(1).label || "", mockPkh(2));
+      const passwordInput = screen.getByLabelText(/password/i);
+      fireEvent.change(passwordInput, { target: { value: "mockPass" } });
 
-    await addToBatch(3, mockAccount(2).label || "", mockPkh(2));
-    await addToBatch(22, mockAccount(2).label || "", mockPkh(4));
-    closeModal();
-  };
+      const submit = screen.getByRole("button", {
+        name: /submit transaction/i,
+      });
 
-  it("should diplay batches of all accounts by default", async () => {
-    render(fixture());
-    await addItemsToBatch();
-    expect(screen.queryByText(/your batch is empty/i)).not.toBeInTheDocument();
-    expect(screen.getAllByTestId(/batch-table/i)).toHaveLength(2);
-  });
+      fireEvent.click(submit);
 
-  it("should display fee total and subtotal for a given batch", async () => {
-    render(fixture());
-    const firstBatch = screen.getAllByTestId(/batch-table/i)[0];
-    const { getByLabelText } = within(firstBatch);
-
-    const subTotal = getByLabelText(/^sub-total$/i);
-    expect(subTotal).toHaveTextContent(/97 ꜩ/i);
-
-    const fee = getByLabelText(/^fee$/i);
-    expect(fee).toHaveTextContent(/0.00003 ꜩ/i);
-
-    const total = getByLabelText(/^total$/i);
-    expect(total).toHaveTextContent(/97.00003 ꜩ/i);
-  });
-
-  test("batch can be deleted by clicking the delete button and confirming", () => {
-    render(fixture());
-    const firstBatch = screen.getAllByTestId(/batch-table/i)[0];
-    const { getByLabelText } = within(firstBatch);
-
-    const deleteBtn = getByLabelText(/Delete Batch/i);
-    fireEvent.click(deleteBtn);
-    expect(screen.getByText(/Are you sure/i)).toBeTruthy();
-
-    const confirmBtn = screen.getByRole("button", { name: /confirm/i });
-    fireEvent.click(confirmBtn);
-
-    expect(screen.getAllByTestId(/batch-table/i)).toHaveLength(1);
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+          "href",
+          "https://mainnet.tzkt.io/foo"
+        );
+      });
+      expect(submitBatch).toHaveBeenCalledWith(
+        [
+          {
+            type: "tez",
+            values: {
+              amount: 1,
+              recipient: mockPkh(1),
+              sender: mockPkh(1),
+            },
+          },
+          {
+            type: "tez",
+            values: {
+              amount: 2,
+              recipient: mockPkh(2),
+              sender: mockPkh(1),
+            },
+          },
+          {
+            type: "tez",
+            values: {
+              amount: 3,
+              recipient: mockPkh(3),
+              sender: mockPkh(1),
+            },
+          },
+        ],
+        "mockSk",
+        "mainnet"
+      );
+    });
   });
 });

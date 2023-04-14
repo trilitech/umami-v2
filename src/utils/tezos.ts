@@ -1,5 +1,11 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { OpKind, ParamsWithKind, Signer, TezosToolkit } from "@taquito/taquito";
+import {
+  OpKind,
+  ParamsWithKind,
+  Signer,
+  TezosToolkit,
+  WalletParamsWithKind,
+} from "@taquito/taquito";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 
 import { InMemorySigner } from "@taquito/signer";
@@ -187,6 +193,7 @@ export const delegate = async (
 /**
  * Transfer execution methods
  */
+
 export const transferFA2Token = async (
   params: FA2TokenTransferParams,
   sk: string,
@@ -205,6 +212,16 @@ export const transferTez = async (
 ) => {
   const Tezos = await makeToolkitWithSigner(sk, network);
   return Tezos.contract.transfer({ to: recipient, amount });
+};
+
+export const submitBatch = async (
+  transactions: TransactionValues[],
+  sk: string,
+  network: TezosNetwork
+) => {
+  const Tezos = await makeToolkitWithSigner(sk, network);
+  const params = await transactionValuesToWalletParams(transactions, Tezos);
+  return Tezos.wallet.batch(params).send();
 };
 
 /**
@@ -287,12 +304,15 @@ export const getBakers = () => {
     .then((d) => d.data) as Promise<Baker[]>;
 };
 
-export const transactionValuesToBatchParams = async (
+// Why are params slightly different for estimation and execution??
+// WalletParamsWithKind !== ParamsWithKind
+// It makes us make two different transformations that are almost identical.
+// TODO refactor
+export const transactionValuesToWalletParams = async (
   transactions: TransactionValues[],
-  pk: string,
-  network: TezosNetwork
-): Promise<ParamsWithKind[]> => {
-  const result: ParamsWithKind[] = [];
+  signer: TezosToolkit
+): Promise<WalletParamsWithKind[]> => {
+  const result: WalletParamsWithKind[] = [];
 
   for (const transaction of transactions) {
     const type = transaction.type;
@@ -307,17 +327,12 @@ export const transactionValuesToBatchParams = async (
       case "delegation":
         result.push({
           kind: OpKind.DELEGATION,
-          source: transaction.values.sender,
           delegate: transaction.values.recipient,
         });
         break;
       case "nft":
         {
-          const Tezos = makeToolkitWithDummySigner(
-            pk,
-            transaction.values.sender,
-            network
-          );
+          const Tezos = signer;
           const contract = await makeContract(
             {
               sender: transaction.values.sender,
@@ -342,4 +357,67 @@ export const transactionValuesToBatchParams = async (
   }
 
   return result;
+};
+
+export const transactionValuesToParams = async (
+  transactions: TransactionValues[],
+  signer: TezosToolkit
+): Promise<ParamsWithKind[]> => {
+  const result: ParamsWithKind[] = [];
+
+  for (const transaction of transactions) {
+    const type = transaction.type;
+    switch (type) {
+      case "tez":
+        result.push({
+          kind: OpKind.TRANSACTION,
+          to: transaction.values.recipient,
+          amount: transaction.values.amount,
+        });
+        break;
+      case "delegation":
+        result.push({
+          kind: OpKind.DELEGATION,
+          source: transaction.values.sender,
+          delegate: transaction.values.recipient,
+        });
+        break;
+      case "nft":
+        {
+          const Tezos = signer;
+          const contract = await makeContract(
+            {
+              sender: transaction.values.sender,
+              amount: transaction.values.amount,
+              contract: transaction.data.contract,
+              recipient: transaction.values.recipient,
+              tokenId: transaction.data.tokenId,
+            },
+            Tezos
+          );
+          result.push({
+            kind: OpKind.TRANSACTION,
+            ...contract.toTransferParams(),
+          });
+        }
+        break;
+      default: {
+        const exhaustiveCheck: never = type;
+        throw new Error(exhaustiveCheck);
+      }
+    }
+  }
+
+  return result;
+};
+
+export const transactionValuesToBatchParams = async (
+  transactions: TransactionValues[],
+  pk: string,
+  network: TezosNetwork
+): Promise<ParamsWithKind[]> => {
+  const first = transactions[0];
+  const Tezos = makeToolkitWithDummySigner(pk, first.values.sender, network);
+
+  return transactionValuesToParams(transactions, Tezos);
 };

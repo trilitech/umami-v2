@@ -1,4 +1,5 @@
 import { NFT } from "../../types/Asset";
+import { Batch } from "../../utils/store/assetsSlice";
 
 type TezMode = { type: "tez" };
 type NFTMode = {
@@ -13,7 +14,13 @@ type DelegationMode = {
   };
 };
 
-export type SendFormMode = TezMode | NFTMode | DelegationMode;
+type BatchMode = {
+  type: "batch";
+  data: {
+    batch: Batch;
+  };
+};
+export type SendFormMode = TezMode | NFTMode | DelegationMode | BatchMode;
 
 export type TransactionValues =
   | (TezMode & {
@@ -36,3 +43,8 @@ export type TransactionValues =
         recipient?: string;
       };
     });
+
+export type EstimatedTransaction = {
+  transaction: TransactionValues | TransactionValues[];
+  fee: number;
+};
