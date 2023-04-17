@@ -53,24 +53,23 @@ const AccountGroup: React.FC<{
 };
 
 const groupByKind = (accounts: Account[]) => {
-  const result: Record<string, Account[] | undefined> = {};
+  return accounts.reduce((group: Record<string, Account[] | undefined>, a) => {
+    const getLabel = (a: Account) => {
+      if (a.type === AccountType.MNEMONIC) {
+        return `seedphrase ${a.seedFingerPrint.slice(0, 5)}`;
+      }
+      if (a.type === AccountType.SOCIAL) {
+        return "social";
+      }
 
-  accounts.forEach((a) => {
-    if (a.type === AccountType.MNEMONIC) {
-      const seedLabel = `seedphrase ${a.seedFingerPrint.slice(0, 5)}`;
-      const existing = result[seedLabel];
-      const newVals = existing ? [...existing, a] : [a];
-      result[seedLabel] = newVals;
-    } else if (a.type === AccountType.SOCIAL) {
-      const existing = result["social"];
-      const newVals = existing ? [...existing, a] : [a];
-      result["social"] = newVals;
-    } else {
       const error: never = a;
       throw new Error(error);
-    }
-  });
-  return result;
+    };
+
+    const label = getLabel(a);
+    group[label] = [...(group[label] || []), a];
+    return group;
+  }, {});
 };
 
 export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
