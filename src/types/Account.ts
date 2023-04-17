@@ -1,6 +1,7 @@
 import { UmamiEncrypted } from "./UmamiEncrypted";
 
 export enum AccountType {
+  LEDGER = "ledger",
   SOCIAL = "social",
   MNEMONIC = "mnemonic",
 }
@@ -12,6 +13,11 @@ type Base = {
 
 export type UnencryptedAccount = Base & {
   sk: string;
+};
+
+export type LedgerAccount = Base & {
+  label?: string;
+  type: AccountType.LEDGER;
 };
 
 export type SocialAccount = Base & {
@@ -28,4 +34,4 @@ export type MnemonicAccount = Base & {
 };
 
 // Account in store can only be Mnemonic or Social
-export type Account = MnemonicAccount | SocialAccount;
+export type Account = MnemonicAccount | SocialAccount | LedgerAccount;

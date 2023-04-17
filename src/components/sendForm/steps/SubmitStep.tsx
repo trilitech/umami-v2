@@ -153,6 +153,8 @@ export const RecapDisplay: React.FC<{
   );
 
   const isGoogleSSO = signerAccount.type === AccountType.SOCIAL;
+  const isLedger = signerAccount.type === AccountType.LEDGER;
+  const isMnemonic = signerAccount.type === AccountType.MNEMONIC;
 
   const onSubmitGoogleSSO = async (sk: string) => {
     if (signerAccount.type === AccountType.MNEMONIC) {
@@ -175,28 +177,35 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
-  // TODO remove duplication
-  const onSubmitNominal = async ({ password }: { password: string }) => {
-    if (signerAccount.type === AccountType.SOCIAL) {
-      throw new Error(`Wrong signing method called`);
-    }
-
+  const executeTransfer = async (sk: string) => {
     setIsLoading(true);
     try {
-      const sk = await decrypt(signerAccount.esk, password);
-
       const result = await makeTransfer(transfer, sk, network);
-
       if (Array.isArray(transfer)) {
         clearBatch(signerAccount.pkh);
       }
-
       onSucces(result.hash);
       toast({ title: "Success", description: result.hash });
     } catch (error: any) {
       toast({ title: "Error", description: error.message });
     }
     setIsLoading(false);
+  }
+
+  const onSubmitNominal = async ({ password }: { password?: string }) => {
+    if (signerAccount.type === AccountType.SOCIAL) {
+      throw new Error(`Wrong signing method called`);
+    }
+    if (password) {
+      if (signerAccount.type !== AccountType.MNEMONIC) {
+        throw new Error(`Wrong signing method called`);
+      }
+      const sk = await decrypt(signerAccount.esk, password);
+      executeTransfer(sk)
+    } else {
+      toast({ title: "Request sent to Ledger", description: "Open the Tezos app on your Ledger and accept to sign the request" });
+      executeTransfer("")
+    }
   };
 
   const feeInTez = Number(mutezToTezNumber(fee));
@@ -225,15 +234,7 @@ export const RecapDisplay: React.FC<{
           </Box>
           <Divider mb={2} mt={2} />
           <Total tez={total} />
-          {isGoogleSSO ? (
-            <GoogleAuth
-              isLoading={isLoading}
-              bg="umami.blue"
-              width={"100%"}
-              buttonText="Submit Transaction"
-              onReceiveSk={onSubmitGoogleSSO}
-            />
-          ) : (
+          {isMnemonic ?? (
             <FormControl isInvalid={false} mt={4}>
               <FormLabel>Password</FormLabel>
               <Input
@@ -248,7 +249,15 @@ export const RecapDisplay: React.FC<{
           )}
         </ModalBody>
         <ModalFooter>
-          {isGoogleSSO ? null : (
+          {isGoogleSSO ? (
+            <GoogleAuth
+              isLoading={isLoading}
+              bg="umami.blue"
+              width={"100%"}
+              buttonText="Sign with Google"
+              onReceiveSk={onSubmitGoogleSSO}
+            />
+          ) : (
             <Button
               bg="umami.blue"
               width={"100%"}
@@ -256,7 +265,11 @@ export const RecapDisplay: React.FC<{
               type="submit"
               isDisabled={!isValid || isLoading}
             >
-              Submit Transaction
+              {isLedger ? (
+                <>Sign with Ledger</>
+              ) : (
+                <>Submit Transaction</>
+              )}
             </Button>
           )}
         </ModalFooter>

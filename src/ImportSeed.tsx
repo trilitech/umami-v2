@@ -17,13 +17,14 @@ import { InMemorySigner } from "@taquito/signer";
 import { useState } from "react";
 import { MakiLogo } from "./components/MakiLogo";
 import { seedPhrase } from "./mocks/seedPhrase";
-import { AccountType, SocialAccount } from "./types/Account";
+import { AccountType, LedgerAccount, SocialAccount } from "./types/Account";
 import { encrypt } from "./utils/aes";
 import { restoreEncryptedAccounts } from "./utils/restoreAccounts";
 import accountsSlice from "./utils/store/accountsSlice";
 import { useAppDispatch } from "./utils/store/hooks";
 import { getFingerPrint } from "./utils/tezos";
 import { GoogleAuth } from "./GoogleAuth";
+import { LedgerAuth } from "./LedgerAuth";
 
 type FormValues = {
   seedPhrase: string;
@@ -218,6 +219,23 @@ export const ConfirmPassword: React.FC<{
   );
 };
 
+const AddLedgerAccount = () => {
+  const dispatch = useAppDispatch();
+  const handlePk = async (pk: string, pkh: string) => {
+    const account: LedgerAccount = {
+      type: AccountType.LEDGER,
+      pk: pk,
+      pkh: pkh,
+      label: "Ledger"
+    };
+
+    dispatch(accountsActions.add([account]));
+  };
+
+  return <LedgerAuth onReceivePk={handlePk} />;
+};
+
+
 const AddGoogleAccount = () => {
   const dispatch = useAppDispatch();
   const handleSk = async (sk: string) => {
@@ -245,6 +263,7 @@ function ImportSeed() {
     <VStack>
       <EnterSeed onSubmit={(s) => setSeed(s)} />
       <AddGoogleAccount />
+      <AddLedgerAccount />
     </VStack>
   );
 }

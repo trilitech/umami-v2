@@ -1,5 +1,7 @@
+// const { TransportWebHID } = require("@ledgerhq/hw-transport-webhid")
+
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 
@@ -13,6 +15,8 @@ if (!app.requestSingleInstanceLock()) {
   app.quit();
   return;
 }
+
+app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
 
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
@@ -32,6 +36,13 @@ function createWindow() {
       // Set the path of an additional "preload" script that can be used to
       // communicate between node-land and browser-land.
       preload: path.join(__dirname, "preload.js"),
+      experimentalFeatures: true,
+
+      // When false, it will disable the same-origin policy (usually using
+      // testing websites by people), and set allowRunningInsecureContent to
+      // true if this options has not been set by user.
+      webSecurity: false,
+      allowRunningInsecureContent: false
     },
   });
 
@@ -40,12 +51,36 @@ function createWindow() {
   // In development, set it to localhost to allow live/hot-reloading.
   const appURL = app.isPackaged
     ? url.format({
-        pathname: path.join(__dirname, "index.html"),
-        protocol: "file:",
-        slashes: true,
-      })
+      pathname: path.join(__dirname, "index.html"),
+      protocol: "file:",
+      slashes: true,
+    })
     : "http://localhost:3000";
   mainWindow.loadURL(appURL);
+
+  // mainWindow.webContents.session.on('select-usb-device', (event, details, callback) => {
+  //   console.log('select-usb-device FIRED WITH 1', details);
+  //   if (details.deviceList.length > 0) {
+  //     callback(details.deviceList[0].deviceId);
+  //   }
+  // })
+
+  // mainWindow.webContents.on('select-usb-device', (event, details, callback) => {
+  //   console.log('select-usb-device FIRED WITH 2', details);
+  //   if (details.deviceList.length > 0) {
+  //     callback(details.deviceList[0].deviceId);
+  //   }
+  // })
+
+  // mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
+  //   console.log('select-bluetooth-device FIRED WITH', deviceList);
+  //   let result = deviceList[0];
+  //   if (!result) {
+  //     callback('');
+  //   } else {
+  //     callback(result.deviceId);
+  //   }
+  // });
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
@@ -82,6 +117,7 @@ function createWindow() {
 }
 
 app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
+app.commandLine.appendSwitch('enable-experimental-web-platform-features', true);
 
 if (!app.isDefaultProtocolClient("umami")) {
   // Define custom protocol handler. Deep linking works on packaged versions of the application!
@@ -131,6 +167,28 @@ app.on("open-url", (event, url) => {
 // is ready to create the browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+  ipcMain.handle('sign-ledger', async () => {
+    console.log('on sign-ledger')
+    // Close existing connections to be able to reinitiate
+    const devices = await TransportWebHID.list()
+    for (let i = 0; i < devices.length; i++) {
+      devices[i].close()
+    }
+
+    TransportWebHID.create()
+      .then(async (transport) => {
+        alert('success')
+        const ledgerSigner = new LedgerSigner(
+          transport,
+          HDPathTemplate(1), // TODO pull correct derivation path (equivalent to "44'/1729'/1'/0'")
+          true,
+          DerivationType.ED25519 // TODO pull correct type
+        );
+        await transport.close()
+      }).catch(reason => alert(JSON.stringify(reason)))
+  })
+
   createWindow();
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
