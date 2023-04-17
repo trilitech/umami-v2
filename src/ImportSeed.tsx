@@ -16,14 +16,12 @@ import {
 import { InMemorySigner } from "@taquito/signer";
 import { useState } from "react";
 import { MakiLogo } from "./components/MakiLogo";
+import { GoogleAuth } from "./GoogleAuth";
 import { seedPhrase } from "./mocks/seedPhrase";
 import { AccountType, SocialAccount } from "./types/Account";
-import { encrypt } from "./utils/aes";
-import { restoreEncryptedAccounts } from "./utils/restoreAccounts";
 import accountsSlice from "./utils/store/accountsSlice";
 import { useAppDispatch } from "./utils/store/hooks";
-import { getFingerPrint } from "./utils/tezos";
-import { GoogleAuth } from "./GoogleAuth";
+import { restoreAccountsFromSecret } from "./utils/store/thunks/restoreAccountsFromSecret";
 
 type FormValues = {
   seedPhrase: string;
@@ -102,17 +100,9 @@ const MIN_LENGTH = 4;
 
 const useRestore = () => {
   const dispatch = useAppDispatch();
-  return async (seedPhrase: string, password: string) => {
-    const seedFingerPrint = await getFingerPrint(seedPhrase);
-    const accounts = await restoreEncryptedAccounts(seedPhrase, password);
-    dispatch(
-      accountsActions.addSecret({
-        hash: seedFingerPrint,
-        secret: await encrypt(seedPhrase, password),
-      })
-    );
-    dispatch(accountsActions.add(accounts));
-  };
+
+  return (seedPhrase: string, password: string) =>
+    dispatch(restoreAccountsFromSecret(seedPhrase, password));
 };
 
 export const ConfirmPassword: React.FC<{
