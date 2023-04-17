@@ -2,19 +2,75 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { Account, AccountType } from "../../types/Account";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import AccountDisplayDrawer from "./AccountDisplayDrawer";
+import { useCreateOrImportSecret } from "./createOrImportSecret/useCreateSecretModal";
+import BigNumber from "bignumber.js";
 
 const { setSelected } = accountsSlice.actions;
 
 const Header = () => {
+  const { onOpen, modalElement } = useCreateOrImportSecret();
   return (
     <Flex justifyContent={"space-between"} mt={4} mb={4}>
       <Heading size={"lg"}>Accounts</Heading>
-      <IconAndTextBtn label="Add/Create" icon={BsWindowPlus} />
+      <IconAndTextBtn onClick={onOpen} label="Add/Create" icon={BsWindowPlus} />
+      {modalElement}
     </Flex>
   );
+};
+
+const AccountGroup: React.FC<{
+  accounts: Account[];
+  groupLabel: string;
+  balances: Record<string, BigNumber | null>;
+  onSelect: (pkh: string) => void;
+  selected: string | null;
+}> = ({ groupLabel, accounts, balances, onSelect, selected }) => {
+  return (
+    <Box data-testid={`account-group-${groupLabel}`}>
+      <Heading size="md">{groupLabel}</Heading>
+
+      {accounts.map((a) => {
+        const balance = balances[a.pkh];
+        return (
+          <AccountTile
+            selected={a.pkh === selected}
+            onClick={(_) => {
+              onSelect(a.pkh);
+            }}
+            key={a.pkh}
+            address={a.pkh}
+            label={a.label || ""}
+            balance={balance}
+          />
+        );
+      })}
+    </Box>
+  );
+};
+
+const groupByKind = (accounts: Account[]) => {
+  const result: Record<string, Account[] | undefined> = {};
+
+  accounts.forEach((a) => {
+    if (a.type === AccountType.MNEMONIC) {
+      const seedLabel = `seedphrase ${a.seedFingerPrint.slice(0, 5)}`;
+      const existing = result[seedLabel];
+      const newVals = existing ? [...existing, a] : [a];
+      result[seedLabel] = newVals;
+    } else if (a.type === AccountType.SOCIAL) {
+      const existing = result["social"];
+      const newVals = existing ? [...existing, a] : [a];
+      result["social"] = newVals;
+    } else {
+      const error: never = a;
+      throw new Error(error);
+    }
+  });
+  return result;
 };
 
 export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
@@ -23,24 +79,24 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
 
   const balances = useAppSelector((s) => s.assets.balances.tez);
 
+  const accountsByKind = groupByKind(accounts);
   return (
     <Box>
       <Header />
-      {accounts.map((a) => {
-        const balance = balances[a.pkh];
-        return (
-          <AccountTile
-            selected={a.pkh === selected}
-            onClick={(_) => {
+      {Object.entries(accountsByKind).map(([label, accountsByType]) => {
+        return accountsByType ? (
+          <AccountGroup
+            key={label}
+            selected={selected}
+            accounts={accountsByType}
+            balances={balances}
+            groupLabel={label}
+            onSelect={(pkh: string) => {
               props.onOpen();
-              dispatch(setSelected(a.pkh));
+              dispatch(setSelected(pkh));
             }}
-            key={a.pkh}
-            address={a.pkh}
-            label={a.label || ""}
-            balance={balance}
           />
-        );
+        ) : null;
       })}
     </Box>
   );
