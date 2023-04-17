@@ -88,7 +88,7 @@ const restore = async () => {
       idp: "google",
       pkh: mockPkh(7),
       pk: mockPk(7),
-      label: "my google account 1",
+      label: "my google account 2",
     })
   );
 };
