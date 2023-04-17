@@ -1,12 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { TopBar } from "./components/TopBar";
+import { TopBar } from "../../components/TopBar";
 
-import AccountListWithDrawer from "./views/home/AccountsList";
+import AccountListWithDrawer from "./AccountsList";
 
-import { NftList } from "./views/home/NftList";
-import { OperationsList } from "./views/home/OperationsList";
+import { NftList } from "./NftList";
+import { OperationsList } from "./OperationsList";
 
-export default function Home() {
+export default function HomeView() {
   return (
     <Flex direction="column" height={"100%"}>
       <TopBar title="Overview" />

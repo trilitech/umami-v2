@@ -1,6 +1,6 @@
 import React from "react";
 import { createHashRouter, RouterProvider } from "react-router-dom";
-import Home from "./Home";
+import HomeView from "./views/home/HomeView";
 import ImportSeed from "./ImportSeed";
 import { useAccounts } from "./utils/hooks/accountHooks";
 import { useAssetsPolling } from "./utils/useAssetsPolling";
@@ -19,7 +19,7 @@ import BatchView from "./views/batch/BatchView";
 const loggedInRouter = createHashRouter([
   {
     path: "/home",
-    element: withSideMenu(<Home />),
+    element: withSideMenu(<HomeView />),
   },
 
   {
@@ -58,7 +58,7 @@ const loggedInRouter = createHashRouter([
   },
   {
     path: "/",
-    element: withSideMenu(<Home />),
+    element: withSideMenu(<HomeView />),
   },
 ]);
 
