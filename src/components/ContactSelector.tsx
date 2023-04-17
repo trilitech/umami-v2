@@ -8,7 +8,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import React, { FC } from "react";
+import { FC } from "react";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
 import { useAllSortedContacts } from "../utils/hooks/contactsHooks";
@@ -16,7 +16,12 @@ import { CopyableAddress } from "./CopyableText";
 
 const ContactSmallTile: FC<{ contact: Contact }> = ({ contact }) => {
   return (
-    <Flex alignItems="center" justifyContent="space-between" w="100%">
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      w="100%"
+      data-testid="contact-small-tile"
+    >
       <Heading size="sm" mr={5}>
         {contact.name}
       </Heading>
@@ -41,6 +46,7 @@ const ContactSelector: FC<{
         as={Button}
         rightIcon={<ChevronDownIcon />}
         h="48px"
+        data-testid="contact-selector"
       >
         {selectedContact ? (
           <ContactSmallTile contact={selectedContact} />
