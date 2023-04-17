@@ -19,6 +19,7 @@ import { NFT } from "../../../types/Asset";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
+import ContactSelector from "../../ContactSelector";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { SendFormMode, TransactionValues } from "../types";
 
@@ -113,6 +114,7 @@ export const SendTezOrNFTForm = ({
   onSubmit,
   onSubmitBatch,
   isLoading,
+  recipient,
 }: {
   onSubmit: (v: { sender: string; recipient: string; amount: number }) => void;
   onSubmitBatch: (v: {
@@ -123,9 +125,11 @@ export const SendTezOrNFTForm = ({
   sender?: string;
   nft?: NFT;
   isLoading?: boolean;
+  recipient?: string;
 }) => {
   const mandatoryNftSender = nft?.owner;
   const isNFT = !!nft;
+  const showContact = !!recipient;
   const getBatchIsSimulating = useBatchIsSimulating();
 
   const {
@@ -143,6 +147,7 @@ export const SendTezOrNFTForm = ({
     defaultValues: {
       sender: mandatoryNftSender || sender,
       amount: isNFT ? 1 : undefined,
+      recipient,
     },
   });
 
@@ -178,17 +183,34 @@ export const SendTezOrNFTForm = ({
           </FormControl>
           <FormControl mb={2} isInvalid={!!errors.recipient}>
             <FormLabel>To</FormLabel>
-            <Input
-              isDisabled={simulating}
-              type="text"
-              {...register("recipient", {
-                required: true,
-                validate: (val) =>
-                  validateAddress(val) === ValidationResult.VALID ||
-                  "Invalid address",
-              })}
-              placeholder="Enter recipient address..."
-            />
+            {showContact ? (
+              <Controller
+                rules={{ required: true }}
+                control={control as any}
+                name="recipient"
+                render={({ field: { onChange, value } }) => (
+                  <ContactSelector
+                    isDisabled={simulating}
+                    selected={value}
+                    onSelect={(c) => {
+                      onChange(c.pkh);
+                    }}
+                  />
+                )}
+              />
+            ) : (
+              <Input
+                isDisabled={simulating}
+                type="text"
+                {...register("recipient", {
+                  required: true,
+                  validate: (val) =>
+                    validateAddress(val) === ValidationResult.VALID ||
+                    "Invalid address",
+                })}
+                placeholder="Enter recipient address..."
+              />
+            )}
             {errors.recipient && (
               <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
             )}
@@ -274,6 +296,7 @@ export const FillStep: React.FC<{
       <SendTezOrNFTForm
         sender={sender}
         isLoading={isLoading}
+        recipient={recipient}
         onSubmitBatch={(v) => {
           onSubmitBatch({
             type: "tez",
@@ -303,6 +326,7 @@ export const FillStep: React.FC<{
       <SendTezOrNFTForm
         sender={sender}
         isLoading={isLoading}
+        recipient={recipient}
         onSubmitBatch={(v) => {
           onSubmitBatch({
             type: "nft",
