@@ -12,15 +12,19 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { FC } from "react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
+import { MdPersonAddAlt } from "react-icons/md";
 import { TbFilter } from "react-icons/tb";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
-import { formatPkh } from "../../utils/format";
+import { truncate, formatPkh } from "../../utils/format";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
+import { useGetNameFromAddress } from "../../utils/hooks/contactsHooks";
 import {
   getIsInbound,
   getKey,
@@ -37,11 +41,33 @@ export const FilterController: React.FC = () => {
   );
 };
 
+const AddressTile: FC<{
+  pkh: string;
+  getNameFromAddress: (pkh: string) => string | null;
+}> = ({ pkh, getNameFromAddress }) => {
+  const name = getNameFromAddress(pkh);
+
+  return (
+    <>
+      {name ? (
+        <Text size="sm">{truncate(name, 10)}</Text>
+      ) : (
+        <TextAndIconBtn
+          text={formatPkh(pkh)}
+          icon={MdPersonAddAlt}
+          onClick={() => {}}
+        />
+      )}
+    </>
+  );
+};
+
 export const OperationsDataTable: React.FC<{
   operations: OperationDisplay[];
 }> = ({ operations }) => {
   const operationList = Object.values(operations).flat();
   const sorted = sortOperationsDisplaysBytDate(operationList);
+  const getNameFromAddress = useGetNameFromAddress();
   return (
     <TableContainer overflowX="unset" overflowY="unset">
       <Table>
@@ -96,8 +122,18 @@ export const OperationsDataTable: React.FC<{
                   </Flex>
                 </Td>
                 <Td>{op.fee}</Td>
-                <Td>{formatPkh(op.sender)}</Td>
-                <Td>{formatPkh(op.recipient)}</Td>
+                <Td>
+                  <AddressTile
+                    pkh={op.sender}
+                    getNameFromAddress={getNameFromAddress}
+                  />
+                </Td>
+                <Td>
+                  <AddressTile
+                    pkh={op.recipient}
+                    getNameFromAddress={getNameFromAddress}
+                  />
+                </Td>
                 <Td>{"ok"}</Td>
                 <Td>
                   <Flex alignItems={"center"} justifyContent={"space-between"}>
