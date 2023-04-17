@@ -51,9 +51,8 @@ export const UpsertContactModal: FC<{
     mode: "onBlur",
     defaultValues: contactToEdit,
   });
-
-  const onSubmit = (contact: Contact) => {
-    onSubmitContact(contact);
+  const onSubmit = ({ name, pkh }: Contact) => {
+    onSubmitContact({ name: name.trim(), pkh });
     reset();
   };
 
