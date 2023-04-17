@@ -16,9 +16,9 @@ import { TransactionValues } from "../components/sendForm/types";
 import { Baker } from "../types/Baker";
 import { Token } from "../types/Token";
 import { DummySigner } from "./dummySigner";
-import { LedgerSigner, DerivationType, HDPathTemplate, LedgerTransport } from '@taquito/ledger-signer';
+import { LedgerSigner, HDPathTemplate } from '@taquito/ledger-signer';
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
-import { useToast } from "@chakra-ui/react";
+import { SignerConfig, SignerType } from "../types/SignerConfig";
 
 const nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
@@ -42,34 +42,28 @@ export const addressExists = async (
   return !balance.isZero();
 };
 
-const makeToolkitWithSigner = async (sk: string, network: TezosNetwork) => {
-  const Tezos = new TezosToolkit(nodeUrls[network]);
-  Tezos.setProvider({
-    signer: new InMemorySigner(sk),
-  });
-  return Tezos;
-};
-
-const makeToolkitWithLedgerSigner = async (network: TezosNetwork) => {
-  const Tezos = new TezosToolkit(nodeUrls[network]);
-
-  // Close existing connections to be able to reinitiate
-  const devices = await TransportWebHID.list()
-  for (let i = 0; i < devices.length; i++) {
-    devices[i].close()
+const makeToolkitWithSigner = async (config: SignerConfig) => {
+  const Tezos = new TezosToolkit(nodeUrls[config.network]);
+  if (config.type === SignerType.SK) {
+    Tezos.setProvider({
+      signer: new InMemorySigner(config.sk),
+    });
+  } else {
+    // Close existing connections to be able to reinitiate
+    const devices = await TransportWebHID.list()
+    for (let i = 0; i < devices.length; i++) {
+      devices[i].close()
+    }
+    const transport = await TransportWebHID.create()
+    Tezos.setProvider({
+      signer: new LedgerSigner(
+        transport,
+        HDPathTemplate(config.account),
+        false, // PK Verification not needed
+        config.derivationType
+      )
+    })
   }
-
-  const transport = await TransportWebHID.create()
-  const derivationPath = HDPathTemplate(1) // TODO pull correct derivation path (equivalent to "44'/1729'/1'/0'")
-  const derivationType = DerivationType.ED25519 // TODO pull correct type)
-  Tezos.setProvider({
-    signer: new LedgerSigner(
-      transport,
-      derivationPath,
-      true,
-      derivationType
-    )
-  })
   return Tezos;
 };
 
@@ -206,10 +200,9 @@ export const estimateBatch = async (
 export const delegate = async (
   senderPkh: string,
   bakerPkh: string | undefined,
-  sk: string,
-  network: TezosNetwork
+  config: SignerConfig
 ) => {
-  const Tezos = await makeToolkitWithSigner(sk, network);
+  const Tezos = await makeToolkitWithSigner(config);
   return Tezos.contract.setDelegate({
     source: senderPkh,
     delegate: bakerPkh,
@@ -222,10 +215,9 @@ export const delegate = async (
 
 export const transferFA2Token = async (
   params: FA2TokenTransferParams,
-  sk: string,
-  network: TezosNetwork
+  config: SignerConfig
 ) => {
-  const Tezos = await makeToolkitWithSigner(sk, network);
+  const Tezos = await makeToolkitWithSigner(config);
   const contractInstance = await makeContract(params, Tezos);
   return contractInstance.send();
 };
@@ -233,19 +225,17 @@ export const transferFA2Token = async (
 export const transferTez = async (
   recipient: string,
   amount: number,
-  sk: string,
-  network: TezosNetwork
+  config: SignerConfig
 ) => {
-  const Tezos = await makeToolkitWithLedgerSigner(network);
+  const Tezos = await makeToolkitWithSigner(config);
   return Tezos.contract.transfer({ to: recipient, amount });
 };
 
 export const submitBatch = async (
   transactions: TransactionValues[],
-  sk: string,
-  network: TezosNetwork
+  config: SignerConfig
 ) => {
-  const Tezos = await makeToolkitWithSigner(sk, network);
+  const Tezos = await makeToolkitWithSigner(config);
   const params = await transactionValuesToWalletParams(transactions, Tezos);
   return Tezos.wallet.batch(params).send();
 };

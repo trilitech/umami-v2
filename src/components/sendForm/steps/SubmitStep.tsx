@@ -42,14 +42,14 @@ import {
   TransactionsAmount,
 } from "../components/TezAmountRecaps";
 import { EstimatedTransaction, TransactionValues } from "../types";
+import { SignerConfig, SkSignerConfig, LedgerSignerConfig } from "../../../types/SignerConfig";
 
 const makeTransfer = (
   t: TransactionValues | TransactionValues[],
-  sk: string,
-  network: TezosNetwork
+  config: SignerConfig
 ) => {
   if (Array.isArray(t)) {
-    return submitBatch(t, sk, network).then((res) => {
+    return submitBatch(t, config).then((res) => {
       return {
         hash: res.opHash,
       };
@@ -57,11 +57,11 @@ const makeTransfer = (
   }
 
   if (t.type === "delegation") {
-    return delegate(t.values.sender, t.values.recipient, sk, network);
+    return delegate(t.values.sender, t.values.recipient, config);
   }
 
   if (t.type === "tez") {
-    return transferTez(t.values.recipient, t.values.amount, sk, network);
+    return transferTez(t.values.recipient, t.values.amount, config);
   }
 
   if (t.type === "nft") {
@@ -74,8 +74,7 @@ const makeTransfer = (
         sender: nft.owner,
         tokenId: nft.tokenId,
       },
-      sk,
-      network
+      config
     );
   }
 
@@ -157,13 +156,13 @@ export const RecapDisplay: React.FC<{
   const isMnemonic = signerAccount.type === AccountType.MNEMONIC;
 
   const onSubmitGoogleSSO = async (sk: string) => {
-    if (signerAccount.type === AccountType.MNEMONIC) {
+    if (signerAccount.type !== AccountType.SOCIAL) {
       throw new Error(`Wrong signing method called`);
     }
 
     setIsLoading(true);
     try {
-      const result = await makeTransfer(transfer, sk, network);
+      const result = await makeTransfer(transfer, { sk, network } as SkSignerConfig);
 
       if (Array.isArray(transfer)) {
         clearBatch(signerAccount.pkh);
@@ -177,10 +176,10 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
-  const executeTransfer = async (sk: string) => {
+  const executeTransfer = async (config: SignerConfig) => {
     setIsLoading(true);
     try {
-      const result = await makeTransfer(transfer, sk, network);
+      const result = await makeTransfer(transfer, config);
       if (Array.isArray(transfer)) {
         clearBatch(signerAccount.pkh);
       }
@@ -196,15 +195,21 @@ export const RecapDisplay: React.FC<{
     if (signerAccount.type === AccountType.SOCIAL) {
       throw new Error(`Wrong signing method called`);
     }
-    if (password) {
+    if (password && isMnemonic) {
       if (signerAccount.type !== AccountType.MNEMONIC) {
         throw new Error(`Wrong signing method called`);
       }
-      const sk = await decrypt(signerAccount.esk, password);
-      executeTransfer(sk)
-    } else {
+      try {
+        const sk = await decrypt(signerAccount.esk, password);
+        executeTransfer({ sk, network } as SkSignerConfig)
+      } catch (_) {
+        toast({ title: "Wrong password", status: 'error' });
+      }
+    } else if (isLedger) {
       toast({ title: "Request sent to Ledger", description: "Open the Tezos app on your Ledger and accept to sign the request" });
-      executeTransfer("")
+      executeTransfer({ network } as LedgerSignerConfig)
+    } else {
+      throw new Error(`Unknown signing method`);
     }
   };
 
@@ -234,7 +239,7 @@ export const RecapDisplay: React.FC<{
           </Box>
           <Divider mb={2} mt={2} />
           <Total tez={total} />
-          {isMnemonic ?? (
+          {isMnemonic ? (
             <FormControl isInvalid={false} mt={4}>
               <FormLabel>Password</FormLabel>
               <Input
@@ -246,7 +251,7 @@ export const RecapDisplay: React.FC<{
                 placeholder="Enter password..."
               />
             </FormControl>
-          )}
+          ) : null}
         </ModalBody>
         <ModalFooter>
           {isGoogleSSO ? (
