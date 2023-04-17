@@ -16,7 +16,7 @@ import {
   Heading,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
@@ -67,6 +67,10 @@ export const UpsertContactModal: FC<{
     }
     return !contactAlreadyExists(pkh) || "Address already exists";
   };
+
+  useEffect(() => {
+    reset(contactToEdit);
+  }, [reset, contactToEdit]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
