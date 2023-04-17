@@ -1,6 +1,4 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { TransactionValues } from "../../../components/sendForm/types";
 import { encrypt } from "../../aes";
 import { restoreEncryptedAccounts } from "../../restoreAccounts";
 import { getFingerPrint } from "../../tezos";
