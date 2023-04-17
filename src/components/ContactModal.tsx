@@ -76,15 +76,19 @@ export const UpsertContactModal: FC<{
           <ModalHeader textAlign={"center"}>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl marginY={5}>
+            <FormControl marginY={5} isInvalid={!!errors.name}>
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
                 {...register("name", {
                   required: true,
+                  maxLength: 20,
                 })}
                 placeholder="Enter contact’s name"
               />
+              {errors.name && (
+                <FormErrorMessage>Name too long </FormErrorMessage>
+              )}
             </FormControl>
             <FormControl marginY={5} isInvalid={!!errors.pkh}>
               <FormLabel>Address</FormLabel>

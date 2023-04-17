@@ -17,7 +17,9 @@ import { CopyableAddress } from "./CopyableText";
 const ContactSmallTile: FC<{ contact: Contact }> = ({ contact }) => {
   return (
     <Flex alignItems="center" justifyContent="space-between" w="100%">
-      <Heading size="sm">{contact.name}</Heading>
+      <Heading size="sm" mr={5}>
+        {contact.name}
+      </Heading>
       <CopyableAddress pkh={contact.pkh} copyable={false} />
     </Flex>
   );

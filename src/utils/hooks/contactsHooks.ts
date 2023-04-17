@@ -11,7 +11,7 @@ export const useContactAlreadyExists = () => {
   return (pkh: string) => pkh in contacts;
 };
 
-export const useGetNameFromAddress = () => {
+export const useGetNameFromAddress = (): ((pkh: string) => string | null) => {
   const contacts = useContacts();
-  return (pkh: string) => contacts[pkh]?.name || null;
+  return (pkh: string) => contacts[pkh]?.name;
 };
