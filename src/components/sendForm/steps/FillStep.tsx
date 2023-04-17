@@ -56,7 +56,7 @@ export const DelegateForm = ({
             <FormLabel>From</FormLabel>
             <Controller
               rules={{ required: true }}
-              control={control as any}
+              control={control}
               name="sender"
               render={({ field: { onChange, onBlur, value, ref } }) => (
                 <ConnectedAccountSelector
@@ -75,7 +75,7 @@ export const DelegateForm = ({
               <FormLabel>Baker</FormLabel>
               <Controller
                 rules={{ required: true }}
-                control={control as any}
+                control={control}
                 name="baker"
                 render={({ field: { onChange, onBlur, value, ref } }) => (
                   <BakerSelector
@@ -168,7 +168,7 @@ export const SendTezOrNFTForm = ({
             <FormLabel>From</FormLabel>
             <Controller
               rules={{ required: true }}
-              control={control as any}
+              control={control}
               name="sender"
               render={({ field: { onChange, onBlur, value, ref } }) => (
                 <ConnectedAccountSelector
@@ -186,7 +186,7 @@ export const SendTezOrNFTForm = ({
             {showContact ? (
               <Controller
                 rules={{ required: true }}
-                control={control as any}
+                control={control}
                 name="recipient"
                 render={({ field: { onChange, value } }) => (
                   <ContactSelector
