@@ -23,7 +23,7 @@ export type SocialAccount = Base & {
 export type MnemonicAccount = Base & {
   label?: string;
   type: AccountType.MNEMONIC;
-  seedFingerPrint?: string;
+  seedFingerPrint: string;
   esk: UmamiEncrypted;
 };
 
