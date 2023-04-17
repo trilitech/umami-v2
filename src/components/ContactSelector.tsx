@@ -1,10 +1,29 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import React from "react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
+import React, { FC } from "react";
+import colors from "../style/colors";
 import { Contact } from "../types/Contact";
 import { useAllSortedContacts } from "../utils/hooks/contactsHooks";
+import { CopyableAddress } from "./CopyableText";
 
-const ContactSelector: React.FC<{
+const ContactSmallTile: FC<{ contact: Contact }> = ({ contact }) => {
+  return (
+    <Flex alignItems="center" justifyContent="space-between" w="100%">
+      <Heading size="sm">{contact.name}</Heading>
+      <CopyableAddress pkh={contact.pkh} copyable={false} />
+    </Flex>
+  );
+};
+
+const ContactSelector: FC<{
   onSelect: (a: Contact) => void;
   selected?: string;
   isDisabled?: boolean;
@@ -16,27 +35,32 @@ const ContactSelector: React.FC<{
     <Menu>
       <MenuButton
         isDisabled={isDisabled}
-        data-testid="account-selector"
         w={"100%"}
-        textAlign="left"
         as={Button}
         rightIcon={<ChevronDownIcon />}
-        h={16}
+        h="48px"
       >
-        {selectedContact ? <>{selectedContact.name}</> : "Select an account"}
+        {selectedContact ? (
+          <ContactSmallTile contact={selectedContact} />
+        ) : (
+          "Select a contact"
+        )}
       </MenuButton>
-      <MenuList bg={"umami.gray.900"}>
+      <MenuList w="100%" bg={"umami.gray.900"} overflow="scroll" h="110px">
         {contacts.map((contact) => (
           <MenuItem
+            w="100%"
             value={contact.pkh}
             aria-label={contact.name}
             onClick={() => {
               onSelect(contact);
             }}
             key={contact.pkh}
-            bg={"umami.gray.900"}
+            // TODO implement hover color
+            // https://app.asana.com/0/1204165186238194/1204412123679802/f
+            bg={colors.gray[900]}
           >
-            <>{contact.name}</>
+            <ContactSmallTile contact={contact} />
           </MenuItem>
         ))}
       </MenuList>

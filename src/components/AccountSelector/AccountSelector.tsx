@@ -42,6 +42,7 @@ export const ConnectedAccountSelector: React.FC<{
             minH="48px"
             w="100%"
             // TODO implement hover color that disapeared
+            // https://app.asana.com/0/1204165186238194/1204412123679802/f
             bg={"umami.gray.900"}
           >
             {renderAccount(account)}

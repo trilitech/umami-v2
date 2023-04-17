@@ -43,7 +43,7 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                       <Flex alignItems="center">
                         <CopyableAddress
                           data-testid="contact-row-pkh"
-                          width="330px"
+                          width="345px"
                           mr={4}
                           justifyContent="space-between"
                           pkh={contact.pkh}
