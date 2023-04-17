@@ -3,19 +3,7 @@ import { restoreAccounts, restoreEncryptedAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
 import { Account, AccountType } from "../types/Account";
 
-// Have to use a mutation on a let variable because of jest beforeAll from setupTests.ts
-let realGetRandomvalues: any;
-
-beforeAll(() => {
-  realGetRandomvalues = window.crypto.getRandomValues;
-  // mock impure getRandomeValues
-  window.crypto.getRandomValues = (i) => i;
-});
-
-afterAll(() => {
-  window.crypto.getRandomValues = realGetRandomvalues;
-});
-
+import "../mocks/mockGetRandomValues";
 jest.mock("./tezos");
 
 const addressExistsMock = addressExists as jest.Mock;
