@@ -89,6 +89,7 @@ export const mockAccount = (
       label: mockAccountLabel(index),
       pkh: mockPkh(index),
       pk: mockPk(index),
+      seedFingerPrint: "mockPrint",
       esk: {
         data: `mockData${index}`,
         iv: `mockIv${index}`,
