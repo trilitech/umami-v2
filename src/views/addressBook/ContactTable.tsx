@@ -14,6 +14,7 @@ import { CopyableAddress } from "../../components/CopyableText";
 import { MdArrowOutward } from "react-icons/md";
 import PopoverThreeDots from "./PopoverThreeDots";
 import { useSendFormModal } from "../../views/home/useSendFormModal";
+import { formatName } from "../../utils/format";
 
 const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
   const { modalElement, onOpen } = useSendFormModal();
@@ -37,7 +38,9 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
             {contacts.map((contact) => {
               return (
                 <Tr key={contact.pkh} data-testid="contact-row">
-                  <Td data-testid="contact-row-name">{contact.name}</Td>
+                  <Td data-testid="contact-row-name">
+                    {formatName(contact.name, 60)}
+                  </Td>
                   <Td>
                     <Flex alignItems="center" justifyContent="space-between">
                       <Flex alignItems="center">

@@ -11,6 +11,7 @@ import {
 import { FC } from "react";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
+import { formatName } from "../utils/format";
 import { useAllSortedContacts } from "../utils/hooks/contactsHooks";
 import { CopyableAddress } from "./CopyableText";
 
@@ -23,7 +24,7 @@ const ContactSmallTile: FC<{ contact: Contact }> = ({ contact }) => {
       data-testid="contact-small-tile"
     >
       <Heading size="sm" mr={5}>
-        {contact.name}
+        {formatName(contact.name, 20)}
       </Heading>
       <CopyableAddress pkh={contact.pkh} copyable={false} />
     </Flex>
