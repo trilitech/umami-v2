@@ -10,3 +10,8 @@ export const useContactAlreadyExists = () => {
   const contacts = useContacts();
   return (pkh: string) => pkh in contacts;
 };
+
+export const useGetNameFromAddress = (): ((pkh: string) => string | null) => {
+  const contacts = useContacts();
+  return (pkh: string) => contacts[pkh]?.name;
+};
