@@ -17,7 +17,7 @@ const EnterPassword = ({
   onSubmit: (s: string) => void;
   isLoading: boolean;
 }) => {
-  const { register, handleSubmit } = useForm<{
+  const { register, handleSubmit, formState } = useForm<{
     password: string;
   }>({
     mode: "onBlur",
@@ -32,7 +32,7 @@ const EnterPassword = ({
       <Center>
         <VStack width={300}>
           <Heading>Enter Password to continue</Heading>
-          <FormControl isInvalid={false}>
+          <FormControl isInvalid={!isValid && formState.isDirty}>
             <FormLabel>Password</FormLabel>
             <Input
               isDisabled={isLoading}

@@ -32,7 +32,7 @@ const AccountNameForm = ({
       <Center>
         <VStack width={300}>
           <Heading>Enter account name</Heading>
-          <FormControl isInvalid={!isValid}>
+          <FormControl isInvalid={!isValid && formState.isDirty}>
             <FormLabel>name</FormLabel>
             <Input
               // isDisabled={isLoading}

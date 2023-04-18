@@ -25,7 +25,7 @@ export const EnterAndComfirmPassword: React.FC<{
   const { register, handleSubmit, formState, watch } =
     useForm<ConfirmPasswordFormValues>();
 
-  const { errors, isValid } = formState;
+  const { errors, isValid, isDirty } = formState;
 
   const onSubmit = async (data: ConfirmPasswordFormValues) => {
     onSubmitPassword(data.confirm);
@@ -36,11 +36,11 @@ export const EnterAndComfirmPassword: React.FC<{
       <Center>
         <VStack width={300}>
           <Heading>Enter and confirm Password</Heading>
-          <FormControl isInvalid={!isValid}>
+          <FormControl isInvalid={!isValid && isDirty}>
             <FormLabel>Password</FormLabel>
             <Input
               isDisabled={isLoading}
-              type="text"
+              type="password"
               {...register("password", {
                 required: true,
               })}
@@ -48,7 +48,7 @@ export const EnterAndComfirmPassword: React.FC<{
             />
           </FormControl>
 
-          <FormControl isInvalid={!!errors.confirm}>
+          <FormControl isInvalid={!!errors.confirm && isDirty}>
             <FormLabel>Confirm password</FormLabel>
             <Input
               isDisabled={isLoading}
