@@ -11,21 +11,14 @@ import {
 import colors from "../../style/colors";
 import { Contact } from "../../types/Contact";
 import { BiPencil } from "react-icons/bi";
-import { useAppDispatch } from "../../utils/store/hooks";
-import { contactsActions } from "../../utils/store/contactsSlice";
-import {
-  UpsertContactModal,
-  DeleteContactModal,
-} from "../../components/ContactModal";
+import { DeleteContactModal } from "../../components/ContactModal";
 import { BsThreeDots, BsTrash } from "react-icons/bs";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
+import { useUpsertContactModal } from "../home/useUpsertContactModal";
 
-const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
-  const {
-    isOpen: isOepnEdit,
-    onOpen: onOpenEdit,
-    onClose: onCloseEdit,
-  } = useDisclosure();
+const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
+  const { modalElement: editModal, onOpen: onOpenEdit } =
+    useUpsertContactModal();
 
   const {
     isOpen: isOpenDelete,
@@ -33,11 +26,6 @@ const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
     onClose: onCloseDelete,
   } = useDisclosure();
 
-  const dispatch = useAppDispatch();
-  const onEditContact = (updatedContact: Contact) => {
-    dispatch(contactsActions.upsert(updatedContact));
-    onCloseEdit();
-  };
   return (
     <>
       <Popover>
@@ -57,7 +45,14 @@ const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
             <TextAndIconBtn
               text="Rename"
               icon={BiPencil}
-              onClick={onOpenEdit}
+              onClick={() =>
+                onOpenEdit({
+                  title: "Edit contact",
+                  buttonText: "Update",
+                  isEdit: true,
+                  contactToDisplay: contact,
+                })
+              }
             />
             <Divider marginY={1} />
             <TextAndIconBtn
@@ -69,14 +64,7 @@ const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
         </PopoverContent>
       </Popover>
 
-      <UpsertContactModal
-        title="Edit Contact"
-        buttonText="Update"
-        isOpen={isOepnEdit}
-        contactToEdit={contact}
-        onSubmitContact={onEditContact}
-        onClose={onCloseEdit}
-      />
+      {editModal}
       <DeleteContactModal
         isOpen={isOpenDelete}
         contact={contact}
@@ -86,4 +74,4 @@ const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
   );
 };
 
-export default PopoverThreeDots;
+export default ContactMenu;

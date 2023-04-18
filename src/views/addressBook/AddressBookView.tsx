@@ -1,23 +1,15 @@
-import { Box, Flex, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { TbFilter } from "react-icons/tb";
 import { RiContactsLine } from "react-icons/ri";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import ContactTable from "./ContactTable";
-import { Contact } from "../../types/Contact";
-import { UpsertContactModal } from "../../components/ContactModal";
 import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
-import { contactsActions } from "../../utils/store/contactsSlice";
-import { useAppDispatch } from "../../utils/store/hooks";
+import { useUpsertContactModal } from "../home/useUpsertContactModal";
 
 const FilterController: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const dispatch = useAppDispatch();
-  const onAddContact = (newContact: Contact) => {
-    dispatch(contactsActions.upsert(newContact));
-    onClose();
-  };
+  const { modalElement, onOpen } = useUpsertContactModal();
 
   return (
     <Flex alignItems={"center"} justifyContent="space-between" mb={4} mt={4}>
@@ -31,16 +23,10 @@ const FilterController: React.FC = () => {
         _hover={{
           color: colors.greenL,
         }}
-        onClick={onOpen}
+        onClick={() => onOpen()}
       />
 
-      <UpsertContactModal
-        title="Add Contact"
-        buttonText="Add to Contact"
-        isOpen={isOpen}
-        onSubmitContact={onAddContact}
-        onClose={onClose}
-      />
+      {modalElement}
     </Flex>
   );
 };

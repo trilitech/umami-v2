@@ -30,14 +30,16 @@ export const UpsertContactModal: FC<{
   title: string;
   buttonText: string;
   isOpen: boolean;
-  contactToEdit?: Contact; // For updating an existing contact
+  isEdit?: boolean;
+  contact?: Contact; // For updating an existing contact
   onSubmitContact: (contact: Contact) => void;
   onClose: () => void;
 }> = ({
   title,
   buttonText,
-  contactToEdit,
+  contact,
   isOpen,
+  isEdit = false,
   onSubmitContact,
   onClose,
 }) => {
@@ -49,7 +51,7 @@ export const UpsertContactModal: FC<{
     getValues,
   } = useForm<Contact>({
     mode: "onBlur",
-    defaultValues: contactToEdit,
+    defaultValues: contact,
   });
   const onSubmit = ({ name, pkh }: Contact) => {
     onSubmitContact({ name: name.trim(), pkh });
@@ -62,15 +64,16 @@ export const UpsertContactModal: FC<{
     if (validationResult !== ValidationResult.VALID) {
       return "Invalid address";
     }
-    if (contactToEdit) {
-      return getValues("name") !== contactToEdit.name;
+    if (isEdit && contact) {
+      return getValues("name") !== contact.name;
     }
     return !contactAlreadyExists(pkh) || "Address already exists";
   };
 
   useEffect(() => {
-    reset(contactToEdit);
-  }, [reset, contactToEdit]);
+    reset(contact);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reset, contact?.name]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -98,9 +101,9 @@ export const UpsertContactModal: FC<{
                   required: true,
                   validate: validatePkh,
                 })}
-                value={contactToEdit?.pkh}
-                variant={contactToEdit ? "filled" : undefined}
-                disabled={!!contactToEdit}
+                value={contact?.pkh}
+                variant={contact ? "filled" : undefined}
+                disabled={isEdit}
                 placeholder="Enter contact’s tz address"
               />
               {errors.pkh && (

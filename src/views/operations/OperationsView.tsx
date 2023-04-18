@@ -19,8 +19,9 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
-import { formatPkh } from "../../utils/format";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
+import { useGetNameFromAddress } from "../../utils/hooks/contactsHooks";
+import ContactTile from "./ContactTile";
 import {
   getIsInbound,
   getKey,
@@ -42,6 +43,7 @@ export const OperationsDataTable: React.FC<{
 }> = ({ operations }) => {
   const operationList = Object.values(operations).flat();
   const sorted = sortOperationsDisplaysBytDate(operationList);
+  const getNameFromAddress = useGetNameFromAddress();
   return (
     <TableContainer overflowX="unset" overflowY="unset">
       <Table>
@@ -96,8 +98,18 @@ export const OperationsDataTable: React.FC<{
                   </Flex>
                 </Td>
                 <Td>{op.fee}</Td>
-                <Td>{formatPkh(op.sender)}</Td>
-                <Td>{formatPkh(op.recipient)}</Td>
+                <Td>
+                  <ContactTile
+                    pkh={op.sender}
+                    getNameFromAddress={getNameFromAddress}
+                  />
+                </Td>
+                <Td>
+                  <ContactTile
+                    pkh={op.recipient}
+                    getNameFromAddress={getNameFromAddress}
+                  />
+                </Td>
                 <Td>{"ok"}</Td>
                 <Td>
                   <Flex alignItems={"center"} justifyContent={"space-between"}>
