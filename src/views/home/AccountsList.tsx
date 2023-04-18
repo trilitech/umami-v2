@@ -56,7 +56,7 @@ const groupByKind = (accounts: Account[]) => {
   return accounts.reduce((group: Record<string, Account[] | undefined>, a) => {
     const getLabel = (a: Account) => {
       if (a.type === AccountType.MNEMONIC) {
-        return `seedphrase ${a.seedFingerPrint.slice(0, 5)}`;
+        return `seedphrase ${a.seedFingerPrint}`;
       }
       if (a.type === AccountType.SOCIAL) {
         return "social";
