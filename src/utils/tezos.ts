@@ -85,7 +85,8 @@ export async function getFingerPrint(seedPhrase: string) {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray
     .map((bytes) => bytes.toString(16).padStart(2, "0"))
-    .join("");
+    .join("")
+    .slice(0, 8);
   return hashHex;
 }
 
