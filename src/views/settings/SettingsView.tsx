@@ -1,11 +1,13 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
-import { Box, Flex, Heading, Text, Switch } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Switch, Button } from "@chakra-ui/react";
 import { SettingsCard } from "../../components/ClickableCard";
 import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
+import { useReset } from "../../utils/hooks/accountHooks";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 
 export default function SettingsView() {
+  const reset = useReset();
   return (
     <Grid
       h="100%"
@@ -36,6 +38,7 @@ export default function SettingsView() {
             </Box>
           </SettingsCard>
           <ErrorLogsDrawerCard />
+          <Button onClick={reset}>{"Erase secrets"}</Button>
         </SettingsSection>
       </GridItem>
     </Grid>
