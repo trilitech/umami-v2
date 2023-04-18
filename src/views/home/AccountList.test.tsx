@@ -18,6 +18,11 @@ jest.mock("../../utils/tezos");
 const getFingerPrintMock = getFingerPrint as jest.Mock;
 const addressExistsMock = addressExists as jest.Mock;
 
+const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
+const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
+const MOCK_FINGETPRINT1 = "mockFin1";
+const MOCK_FINGETPRINT2 = "mockFin2";
+
 afterEach(() => store.dispatch(reset()));
 
 describe("<AccountList />", () => {
@@ -49,26 +54,36 @@ describe("<AccountList />", () => {
     render(<HomeView />);
     expect(screen.getAllByTestId("account-tile")).toHaveLength(5);
     expect(screen.getAllByTestId(/account-group/)).toHaveLength(3);
+
     const socialAccounts = screen.getByTestId("account-group-social");
     expect(within(socialAccounts).getAllByTestId("account-tile")).toHaveLength(
       2
     );
+    expect(socialAccounts).toHaveTextContent("social");
+    expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
+    expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
+
     const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/)[0];
     const seedPhrase2 = screen.getAllByTestId(/account-group-seedphrase/)[1];
-
     expect(within(seedPhrase1).getAllByTestId("account-tile")).toHaveLength(2);
+    expect(seedPhrase1).toHaveTextContent(`seedphrase ${MOCK_FINGETPRINT1}`);
+    expect(seedPhrase1).toHaveTextContent("Account 0");
+    expect(seedPhrase1).toHaveTextContent("Account 1");
+
     expect(within(seedPhrase2).getAllByTestId("account-tile")).toHaveLength(1);
+    expect(seedPhrase2).toHaveTextContent(`seedphrase ${MOCK_FINGETPRINT2}`);
+    expect(seedPhrase2).toHaveTextContent("Account 0");
   });
 });
 
 const restore = async () => {
-  getFingerPrintMock.mockResolvedValue("mock1");
+  getFingerPrintMock.mockResolvedValue(MOCK_FINGETPRINT1);
   addressExistsMock.mockResolvedValueOnce(true);
   addressExistsMock.mockResolvedValueOnce(true);
   addressExistsMock.mockResolvedValueOnce(false);
   await store.dispatch(restoreAccountsFromSecret("seed1", "mock"));
 
-  getFingerPrintMock.mockResolvedValue("mock2");
+  getFingerPrintMock.mockResolvedValue(MOCK_FINGETPRINT2);
   addressExistsMock.mockResolvedValueOnce(false);
   await store.dispatch(restoreAccountsFromSecret("seed2", "mock"));
 
@@ -78,7 +93,7 @@ const restore = async () => {
       idp: "google",
       pkh: mockPkh(6),
       pk: mockPk(6),
-      label: "my google account 1",
+      label: GOOGLE_ACCOUNT_LABEL1,
     })
   );
 
@@ -88,7 +103,7 @@ const restore = async () => {
       idp: "google",
       pkh: mockPkh(7),
       pk: mockPk(7),
-      label: "my google account 2",
+      label: GOOGLE_ACCOUNT_LABEL2,
     })
   );
 };
