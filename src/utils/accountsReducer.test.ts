@@ -35,9 +35,14 @@ describe("Accounts reducer", () => {
     });
   });
 
-  test("adding account should ignore duplicates", () => {
+  test("adding account should throw and exception if it is a pkh duplicate and not modify state", () => {
     store.dispatch(add([mockAccount(1), mockAccount(2), mockAccount(3)]));
-    store.dispatch(add(mockAccount(2)));
+
+    expect(() => store.dispatch(add(mockAccount(2)))).toThrowError(
+      `Can't add account ${
+        mockAccount(2).pkh
+      } in store since it already exists.`
+    );
 
     expect(store.getState().accounts).toEqual({
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
