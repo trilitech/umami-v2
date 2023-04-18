@@ -207,7 +207,7 @@ export const RecapDisplay: React.FC<{
       }
     } else if (isLedger) {
       toast({ title: "Request sent to Ledger", description: "Open the Tezos app on your Ledger and accept to sign the request" });
-      executeTransfer({ network } as LedgerSignerConfig)
+      executeTransfer({ network, account: 1 } as LedgerSignerConfig)
     } else {
       throw new Error(`Unknown signing method`);
     }

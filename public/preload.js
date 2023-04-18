@@ -11,5 +11,4 @@ process.once("loaded", () => {
 
 contextBridge.exposeInMainWorld("electronAPI", {
   onDeeplink: (callback) => ipcRenderer.on("deeplinkURL", callback),
-  signLedger: () => ipcRenderer.invoke('sign-ledger')
 });

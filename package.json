@@ -13,7 +13,6 @@
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@ledgerhq/hw-transport-web-ble": "^6.27.13",
     "@ledgerhq/hw-transport-webhid": "^6.27.13",
     "@reduxjs/toolkit": "^1.9.3",
     "@taquito/ledger-signer": "^16.1.1",

@@ -1,7 +1,6 @@
 import { Button, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
-// import BluetoothTransport from "@ledgerhq/hw-transport-web-ble";
 import { LedgerSigner, DerivationType, HDPathTemplate } from '@taquito/ledger-signer';
 
 export type LedgerAuthProps = {
@@ -25,37 +24,32 @@ export const LedgerAuth: React.FC<LedgerAuthProps> = ({
   const toast = useToast();
 
   const getPubicKeyHash = async () => {
-    // const internalWindows = window as any;
-    // console.log('getPubicKeyHash', internalWindows, internalWindows.electronAPI, internalWindows.electronAPI.signLedger)
-    // internalWindows.electronAPI.signLedger()
-    // alert(`Is supported ${await TransportWebHID.isSupported()}`)
-
     SetIsConnecting(true)
-    TransportWebHID.create()
-      .then(async (transport) => {
-        const ledgerSigner = new LedgerSigner(
-          transport,
-          HDPathTemplate(1), // TODO pull correct derivation path (equivalent to "44'/1729'/1'/0'")
-          true, // PK Verification needed
-          DerivationType.ED25519 // TODO pull correct type
-        );
-        try{
-          const pk = await ledgerSigner.publicKey()
-          const pkh = await ledgerSigner.publicKeyHash()
-          toast({ title: "Request sent to Ledger", description: "Open the Tezos app on your Ledger and accept the request" });
-          onReceivePk(pk, pkh)
-        }finally{
-          await transport.close()
-        }
-      })
-      // TODO in case of cancle, the transport can't currently be closed
-      .catch(reason => {
-        if(reason.name === 'PublicKeyRetrievalError'){
-          toast({ title: "Request cancelled", description: "Please unlock your Ledger and open the Tezos app" });
-        }else{
-          toast({ title: "Request cancelled", description: reason.name });
-        }
-      })
+    TransportWebHID.create().then(async (transport) => {
+      const ledgerSigner = new LedgerSigner(
+        transport,
+        HDPathTemplate(1), // TODO pull correct derivation path (equivalent to "44'/1729'/1'/0'")
+        true, // PK Verification needed
+        DerivationType.ED25519 // TODO pull correct type
+      );
+      try {
+        const pk = await ledgerSigner.publicKey()
+        const pkh = await ledgerSigner.publicKeyHash()
+        toast({ title: "Request sent to Ledger", description: "Open the Tezos app on your Ledger and accept the request" });
+        onReceivePk(pk, pkh)
+      } catch (e) {
+        toast({ title: "Request sent to Ledger", description: "Open the Tezos app on your Ledger and accept the request" });
+
+      } finally {
+        await transport.close()
+      }
+    }).catch(reason => {
+      if (reason.name === 'PublicKeyRetrievalError') {
+        toast({ title: "Request cancelled", description: "Please unlock your Ledger and open the Tezos app" });
+      } else {
+        toast({ title: "Request cancelled", description: reason.name });
+      }
+    })
       .finally(() => SetIsConnecting(false))
   }
 
