@@ -52,7 +52,8 @@ export const restoreAccounts = async (
 
 export const restoreEncryptedAccounts = async (
   seedPhrase: string,
-  password: string
+  password: string,
+  label = "Account"
 ) => {
   const accounts = await restoreAccounts(seedPhrase);
   const seedFingerPrint = await getFingerPrint(seedPhrase);
@@ -64,7 +65,7 @@ export const restoreEncryptedAccounts = async (
         pkh,
         seedFingerPrint,
         esk: await encrypt(sk, password),
-        label: `Account ${i}`,
+        label: `${label || ""}${accounts.length > 1 ? " " + i : ""}`,
         type: AccountType.MNEMONIC,
       } as Account;
     })

@@ -56,7 +56,7 @@ describe("restoreAccounts", () => {
 });
 
 describe("restoreEncryptedAccounts", () => {
-  it("should restore exising accounts with label and esk", async () => {
+  it("should restore exising accounts with a default label and esk", async () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
@@ -101,5 +101,39 @@ describe("restoreEncryptedAccounts", () => {
       },
     ];
     expect(result).toEqual(expected);
+  });
+
+  it("should restore exising accounts with a provided label", async () => {
+    const CUSTOM_LABEL = "myLabel";
+    addressExistsMock.mockResolvedValueOnce(false);
+    const result = await restoreEncryptedAccounts(
+      seedPhrase,
+      "password",
+      CUSTOM_LABEL
+    );
+    const expected: Account[] = [
+      expect.objectContaining({
+        label: CUSTOM_LABEL,
+      }),
+    ];
+    expect(result).toEqual(expected);
+
+    addressExistsMock.mockResolvedValueOnce(true);
+    addressExistsMock.mockResolvedValueOnce(true);
+    addressExistsMock.mockResolvedValueOnce(false);
+    const result2 = await restoreEncryptedAccounts(
+      seedPhrase,
+      "password",
+      CUSTOM_LABEL
+    );
+    const expected2: Account[] = [
+      expect.objectContaining({
+        label: `${CUSTOM_LABEL} 0`,
+      }),
+      expect.objectContaining({
+        label: `${CUSTOM_LABEL} 1`,
+      }),
+    ];
+    expect(result2).toEqual(expected2);
   });
 });
