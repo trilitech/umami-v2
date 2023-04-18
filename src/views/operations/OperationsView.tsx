@@ -11,20 +11,25 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FC } from "react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
 import { MdPersonAddAlt } from "react-icons/md";
 import { TbFilter } from "react-icons/tb";
+import { useDispatch } from "react-redux";
+import { UpsertContactModal } from "../../components/ContactModal";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
+import { Contact } from "../../types/Contact";
 import { OperationDisplay } from "../../types/Operation";
 import { truncate, formatPkh } from "../../utils/format";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import { useGetNameFromAddress } from "../../utils/hooks/contactsHooks";
+import { contactsActions } from "../../utils/store/contactsSlice";
 import {
   getIsInbound,
   getKey,
@@ -46,6 +51,12 @@ const AddressTile: FC<{
   getNameFromAddress: (pkh: string) => string | null;
 }> = ({ pkh, getNameFromAddress }) => {
   const name = getNameFromAddress(pkh);
+  const { onOpen, isOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch();
+  const onAddContact = (newContact: Contact) => {
+    dispatch(contactsActions.upsert(newContact));
+    onClose();
+  };
 
   return (
     <>
@@ -55,9 +66,21 @@ const AddressTile: FC<{
         <TextAndIconBtn
           text={formatPkh(pkh)}
           icon={MdPersonAddAlt}
-          onClick={() => {}}
+          onClick={() => {
+            onOpen();
+          }}
         />
       )}
+
+      <UpsertContactModal
+        title="Add Contact"
+        buttonText="Add to Contact"
+        isOpen={isOpen}
+        isEdit={true}
+        contact={{ name: "", pkh }}
+        onSubmitContact={onAddContact}
+        onClose={onClose}
+      />
     </>
   );
 };

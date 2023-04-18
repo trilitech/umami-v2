@@ -73,7 +73,8 @@ const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
         title="Edit Contact"
         buttonText="Update"
         isOpen={isOepnEdit}
-        contactToEdit={contact}
+        contact={contact}
+        isEdit={true}
         onSubmitContact={onEditContact}
         onClose={onCloseEdit}
       />

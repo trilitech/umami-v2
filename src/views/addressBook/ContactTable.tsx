@@ -38,8 +38,8 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
             {contacts.map((contact) => {
               return (
                 <Tr key={contact.pkh} data-testid="contact-row">
-                  <Td data-testid="contact-row-name">
-                    {truncate(contact.name, 60)}
+                  <Td data-testid="contact-row-name" w="40%">
+                    {truncate(contact.name, 55)}
                   </Td>
                   <Td>
                     <Flex alignItems="center" justifyContent="space-between">
