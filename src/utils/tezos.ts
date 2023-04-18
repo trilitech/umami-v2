@@ -16,6 +16,7 @@ import { TransactionValues } from "../components/sendForm/types";
 import { Baker } from "../types/Baker";
 import { Token } from "../types/Token";
 import { DummySigner } from "./dummySigner";
+import { blocksGetCount } from "@tzkt/sdk-api";
 
 const nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
@@ -297,6 +298,14 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
   });
 
   return priceUsd ?? null;
+};
+
+export const getLatestBlockNumber = async (
+  network = TezosNetwork.MAINNET
+): Promise<number> => {
+  return await blocksGetCount({
+    baseUrl: tzktUrls[network],
+  });
 };
 
 export const getBakers = () => {
