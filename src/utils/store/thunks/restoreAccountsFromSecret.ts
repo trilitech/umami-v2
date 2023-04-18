@@ -9,11 +9,16 @@ const { addSecret, add } = accountsSlice.actions;
 
 export const restoreAccountsFromSecret = (
   seedPhrase: string,
-  password: string
+  password: string,
+  label?: string
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async (dispatch) => {
     const seedFingerPrint = await getFingerPrint(seedPhrase);
-    const accounts = await restoreEncryptedAccounts(seedPhrase, password);
+    const accounts = await restoreEncryptedAccounts(
+      seedPhrase,
+      password,
+      label
+    );
     dispatch(
       addSecret({
         hash: seedFingerPrint,
