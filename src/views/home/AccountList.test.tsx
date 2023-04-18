@@ -72,7 +72,7 @@ describe("<AccountList />", () => {
 
     expect(within(seedPhrase2).getAllByTestId("account-tile")).toHaveLength(1);
     expect(seedPhrase2).toHaveTextContent(`seedphrase ${MOCK_FINGETPRINT2}`);
-    expect(seedPhrase2).toHaveTextContent("Account 0");
+    expect(seedPhrase2).toHaveTextContent("Account");
   });
 });
 

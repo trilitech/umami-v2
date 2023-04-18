@@ -6,13 +6,13 @@ import { Account, AccountType } from "../../types/Account";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import AccountDisplayDrawer from "./AccountDisplayDrawer";
-import { useCreateOrImportSecret } from "./createOrImportSecret/useCreateSecretModal";
+import { useCreateOrImportSecretModal } from "../../components/CreateOrImportSecret/useCreateOrImportSecretModal";
 import BigNumber from "bignumber.js";
 
 const { setSelected } = accountsSlice.actions;
 
 const Header = () => {
-  const { onOpen, modalElement } = useCreateOrImportSecret();
+  const { onOpen, modalElement } = useCreateOrImportSecretModal();
   return (
     <Flex justifyContent={"space-between"} mt={4} mb={4}>
       <Heading size={"lg"}>Accounts</Heading>
