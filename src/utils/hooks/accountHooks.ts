@@ -1,5 +1,7 @@
+import { decrypt } from "../aes";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { restoreAccountsFromSecret } from "../store/thunks/restoreAccountsFromSecret";
 import { useGetAccountBalance } from "./assetsHooks";
 
 export const useAccounts = () => {
@@ -41,5 +43,30 @@ export const useGetOwnedAccount = () => {
       throw new Error(`You do not ownn account:${pkh}`);
     }
     return account;
+  };
+};
+
+export const useRestore = () => {
+  const dispatch = useAppDispatch();
+
+  return (seedPhrase: string, password: string, label?: string) =>
+    dispatch(restoreAccountsFromSecret(seedPhrase, password, label));
+};
+
+/**
+ * returns null if no password has been set
+ */
+export const useCheckPasswordValidity = () => {
+  const seedPhrases = useAppSelector((s) => s.accounts.seedPhrases);
+
+  const existingSeedPhrase = Object.values(seedPhrases)[0];
+  if (!existingSeedPhrase) {
+    return null;
+  }
+
+  return async (password: string) => {
+    const existingSeedPhrase = Object.values(seedPhrases)[0];
+
+    await decrypt(existingSeedPhrase, password);
   };
 };
