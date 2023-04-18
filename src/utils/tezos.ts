@@ -422,3 +422,8 @@ export const transactionValuesToBatchParams = async (
 
   return transactionValuesToParams(transactions, Tezos);
 };
+
+export const getPkAndPkhFromSk = async (sk: string) => {
+  const signer = new InMemorySigner(sk);
+  return { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
+};
