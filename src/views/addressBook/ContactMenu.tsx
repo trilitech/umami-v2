@@ -16,7 +16,7 @@ import { BsThreeDots, BsTrash } from "react-icons/bs";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { useUpsertContactModal } from "../home/useUpsertContactModal";
 
-const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
+const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
   const { modalElement: editModal, onOpen: onOpenEdit } =
     useUpsertContactModal();
 
@@ -74,4 +74,4 @@ const PopoverThreeDots: React.FC<{ contact: Contact }> = ({ contact }) => {
   );
 };
 
-export default PopoverThreeDots;
+export default ContactMenu;

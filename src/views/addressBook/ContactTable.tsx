@@ -12,7 +12,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { Contact } from "../../types/Contact";
 import { CopyableAddress } from "../../components/CopyableText";
 import { MdArrowOutward } from "react-icons/md";
-import PopoverThreeDots from "./PopoverThreeDots";
+import ContactMenu from "./ContactMenu";
 import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { truncate } from "../../utils/format";
 
@@ -63,7 +63,7 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                           }
                         />
                       </Flex>
-                      <PopoverThreeDots contact={contact} />
+                      <ContactMenu contact={contact} />
                     </Flex>
                   </Td>
                 </Tr>

@@ -12,20 +12,16 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { FC } from "react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
-import { MdPersonAddAlt } from "react-icons/md";
 import { TbFilter } from "react-icons/tb";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
-import { truncate, formatPkh } from "../../utils/format";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import { useGetNameFromAddress } from "../../utils/hooks/contactsHooks";
-import { useUpsertContactModal } from "../home/useUpsertContactModal";
+import ContactTile from "./ContactTile";
 import {
   getIsInbound,
   getKey,
@@ -39,32 +35,6 @@ export const FilterController: React.FC = () => {
       <IconAndTextBtn icon={BsArrowDownUp} label="Sort by Newest" mr={4} />
       <IconAndTextBtn icon={AiOutlineUnorderedList} label="List View" />
     </Flex>
-  );
-};
-
-const AddressTile: FC<{
-  pkh: string;
-  getNameFromAddress: (pkh: string) => string | null;
-}> = ({ pkh, getNameFromAddress }) => {
-  const name = getNameFromAddress(pkh);
-  const { modalElement, onOpen } = useUpsertContactModal();
-
-  return (
-    <>
-      {name ? (
-        <Text size="sm">{truncate(name, 10)}</Text>
-      ) : (
-        <TextAndIconBtn
-          text={formatPkh(pkh)}
-          icon={MdPersonAddAlt}
-          onClick={() => {
-            onOpen({ contactToDisplay: { name: "", pkh }, isEdit: true });
-          }}
-        />
-      )}
-
-      {modalElement}
-    </>
   );
 };
 
@@ -129,13 +99,13 @@ export const OperationsDataTable: React.FC<{
                 </Td>
                 <Td>{op.fee}</Td>
                 <Td>
-                  <AddressTile
+                  <ContactTile
                     pkh={op.sender}
                     getNameFromAddress={getNameFromAddress}
                   />
                 </Td>
                 <Td>
-                  <AddressTile
+                  <ContactTile
                     pkh={op.recipient}
                     getNameFromAddress={getNameFromAddress}
                   />
