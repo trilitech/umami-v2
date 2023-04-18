@@ -11,10 +11,12 @@ import assetsSlice, {
   TokenBalancePayload,
   TokenTransfersPayload,
 } from "./store/assetsSlice";
+import { blockActions } from "./store/blockSlice";
 import { useAppDispatch } from "./store/hooks";
 import {
   getBalance,
   getLastDelegation,
+  getLatestBlockNumber,
   getTezosPriceInUSD,
   getTezTransfers,
   getTokens,
@@ -64,6 +66,7 @@ const getDelegationsPayload = async (
 const assetsActions = assetsSlice.actions;
 
 const REFRESH_RATE = 10000;
+const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
 
 export const useAssetsPolling = () => {
@@ -141,12 +144,21 @@ export const useAssetsPolling = () => {
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
   });
 
+  const blockNumberQuery = useQuery("blockNumber", {
+    queryFn: async () => {
+      const number = await getLatestBlockNumber(network);
+      dispatch(blockActions.updateNumber(number));
+    },
+    refetchInterval: BLOCK_TIME,
+  });
+
   const tezQueryRef = useRef(tezQuery);
   const tokenQueryRef = useRef(tokenQuery);
   const tezTransfersQueryRef = useRef(tezTransfersQuery);
   const tokensTransfersQueryRef = useRef(tokensTransfersQuery);
   const conversionrateQueryRef = useRef(conversionrateQuery);
   const delegationsQueryRef = useRef(delegationsQuery);
+  const blockNumberQueryRef = useRef(blockNumberQuery);
 
   // Refetch when network changes
   useEffect(() => {
@@ -156,5 +168,6 @@ export const useAssetsPolling = () => {
     tokensTransfersQueryRef.current.refetch();
     conversionrateQueryRef.current.refetch();
     delegationsQueryRef.current.refetch();
+    blockNumberQueryRef.current.refetch();
   }, [network]);
 };
