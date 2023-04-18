@@ -37,6 +37,14 @@ const accountsSlice = createSlice({
     ) => {
       const accounts = Array.isArray(payload) ? payload : [payload];
 
+      accounts.forEach((a) => {
+        if (state.items.some((existing) => existing.pkh === a.pkh)) {
+          throw new Error(
+            `Can't add account ${a.pkh} in store since it already exists.`
+          );
+        }
+      });
+
       const newAccounts = accounts.reduce(addAccount, state.items);
       state.items = newAccounts;
     },
