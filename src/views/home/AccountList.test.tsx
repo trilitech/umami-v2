@@ -9,14 +9,11 @@ import { mockPk } from "../../mocks/factories";
 import "../../mocks/mockGetRandomValues";
 import { render, screen, within } from "../../mocks/testUtils";
 import { AccountType } from "../../types/Account";
-import { restoreAccountsFromSecret } from "../../utils/store/thunks/restoreAccountsFromSecret";
-import { addressExists, getFingerPrint } from "../../utils/tezos";
 import HomeView from "./HomeView";
 
 const { add, reset } = accountsSlice.actions;
+
 jest.mock("../../utils/tezos");
-const getFingerPrintMock = getFingerPrint as jest.Mock;
-const addressExistsMock = addressExists as jest.Mock;
 
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
@@ -77,15 +74,13 @@ describe("<AccountList />", () => {
 });
 
 const restore = async () => {
-  getFingerPrintMock.mockResolvedValue(MOCK_FINGETPRINT1);
-  addressExistsMock.mockResolvedValueOnce(true);
-  addressExistsMock.mockResolvedValueOnce(true);
-  addressExistsMock.mockResolvedValueOnce(false);
-  await store.dispatch(restoreAccountsFromSecret("seed1", "mock"));
-
-  getFingerPrintMock.mockResolvedValue(MOCK_FINGETPRINT2);
-  addressExistsMock.mockResolvedValueOnce(false);
-  await store.dispatch(restoreAccountsFromSecret("seed2", "mock"));
+  store.dispatch(
+    add([
+      mockAccount(0, undefined, MOCK_FINGETPRINT1),
+      mockAccount(1, undefined, MOCK_FINGETPRINT1),
+    ])
+  );
+  store.dispatch(add([mockAccount(3, undefined, MOCK_FINGETPRINT2)]));
 
   store.dispatch(
     add({

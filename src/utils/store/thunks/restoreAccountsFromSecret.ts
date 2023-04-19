@@ -1,6 +1,6 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { encrypt } from "../../aes";
-import { restoreEncryptedAccounts } from "../../restoreAccounts";
+import { restoreMnemonicAccounts } from "../../restoreAccounts";
 import { getFingerPrint } from "../../tezos";
 import accountsSlice from "../accountsSlice";
 import { RootState } from "../store";
@@ -14,11 +14,7 @@ export const restoreAccountsFromSecret = (
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async (dispatch) => {
     const seedFingerPrint = await getFingerPrint(seedPhrase);
-    const accounts = await restoreEncryptedAccounts(
-      seedPhrase,
-      password,
-      label
-    );
+    const accounts = await restoreMnemonicAccounts(seedPhrase, label);
     dispatch(
       addSecret({
         hash: seedFingerPrint,

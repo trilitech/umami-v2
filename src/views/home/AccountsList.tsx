@@ -62,6 +62,9 @@ const groupByKind = (accounts: Account[]) => {
         return "social";
       }
 
+      if (a.type === AccountType.Ledger) {
+        return "ledger";
+      }
       const error: never = a;
       throw new Error(error);
     };

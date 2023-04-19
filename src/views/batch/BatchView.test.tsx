@@ -10,7 +10,7 @@ import { mockAccount, mockPkh } from "../../mocks/factories";
 import { closeModal, fillAccountSelector } from "../../mocks/helpers";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { UmamiTheme } from "../../providers/UmamiTheme";
-import { decrypt } from "../../utils/aes";
+import { useGetSk } from "../../utils/hooks/accountUtils";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
@@ -19,13 +19,13 @@ import { estimateBatch, submitBatch } from "../../utils/tezos";
 import BatchView from "./BatchView";
 
 // TODO refactor mocks
-jest.mock("../../utils/aes");
 jest.mock("react-router-dom");
 jest.mock("../../utils/tezos");
+jest.mock("../../utils/hooks/accountUtils");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
 const submitBatchMock = submitBatch as jest.Mock;
-const decryptMock = decrypt as jest.Mock;
+const useGetSkMock = useGetSk as jest.Mock;
 
 const fixture = () => (
   <ReduxStore>
@@ -53,7 +53,8 @@ beforeEach(() => {
     return transactions.map((_) => ({ suggestedFeeMutez: 10 }));
   });
 
-  decryptMock.mockResolvedValue("mockSk");
+  useGetSkMock.mockReturnValue(() => "mockSk");
+  // decryptMock.mockResolvedValue("mockSk");
   submitBatchMock.mockResolvedValue({ opHash: "foo" });
 });
 
