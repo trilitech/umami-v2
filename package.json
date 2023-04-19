@@ -119,7 +119,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "axios": "axios/dist/node/axios.cjs"
+      "axios": "axios/dist/node/axios.cjs",
+      "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing"
     },
     "watchPathIgnorePatterns": [
       "src/integration"

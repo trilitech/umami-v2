@@ -38,6 +38,7 @@ function createWindow() {
   });
 
   // Select first ledger device in list as electron is missing the chrome picker
+  // https://www.electronjs.org/docs/latest/tutorial/devices#webhid-api
   mainWindow.webContents.session.on('select-hid-device', (event, details, callback) => {
     event.preventDefault()
     if (details.deviceList && details.deviceList.length > 0) {
@@ -46,6 +47,7 @@ function createWindow() {
   })
 
   // Auto grant permission if served in electron container as electron is missing the chrome dialog
+  // https://www.electronjs.org/docs/latest/api/session#sessetpermissioncheckhandlerhandler
   mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
     if (permission === 'hid' && details.securityOrigin === 'file:///') {
       return true
@@ -53,6 +55,7 @@ function createWindow() {
   })
 
   // Auto grant device permission if served in electron container as electron is missing the chrome dialog
+  // https://www.electronjs.org/docs/latest/api/session#sessetdevicepermissionhandlerhandler
   mainWindow.webContents.session.setDevicePermissionHandler((details) => {
     if (details.deviceType === 'hid' && details.origin === 'file://') {
       return true
