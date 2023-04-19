@@ -22,6 +22,7 @@ const emptyBatch: Batch = {
 
 type State = {
   network: TezosNetwork;
+  blockLevel: number | null;
   balances: {
     tez: Record<string, BigNumber | null>;
     tokens: Record<string, Token[]>;
@@ -61,6 +62,7 @@ export type BatchPayload = {
 
 const initialState: State = {
   network: TezosNetwork.MAINNET,
+  blockLevel: null,
   balances: {
     tez: {},
     tokens: {},
@@ -85,6 +87,9 @@ const assetsSlice = createSlice({
       { payload }: { type: string; payload: TezosNetwork }
     ) => {
       return { ...initialState, network: payload };
+    },
+    updateBlockLevel: (state, { payload }: { payload: number }) => {
+      state.blockLevel = payload;
     },
     updateTezOperations: (
       state,

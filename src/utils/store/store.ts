@@ -4,7 +4,6 @@ import storage from "./storage";
 import accountsSlice from "./accountsSlice";
 import assetsSlice from "./assetsSlice";
 import contactsSlice from "./contactsSlice";
-import blockSlice from "./blockSlice";
 
 // See this answer for configuration of redux toolkit with redux-persist
 // https://stackoverflow.com/a/63818121/6797267
@@ -17,7 +16,6 @@ const reducers = combineReducers({
   accounts: accountsSlice.reducer,
   assets: assetsSlice.reducer,
   contacts: contactsSlice.reducer,
-  block: blockSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

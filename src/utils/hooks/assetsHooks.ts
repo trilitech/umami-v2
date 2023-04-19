@@ -13,6 +13,8 @@ export const useSelectedNetwork = () => {
   return useAppSelector((s) => s.assets.network);
 };
 
+export const useBlockLevel = () => useAppSelector((s) => s.assets.blockLevel);
+
 export const useAllNfts = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 

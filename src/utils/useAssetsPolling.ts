@@ -11,12 +11,11 @@ import assetsSlice, {
   TokenBalancePayload,
   TokenTransfersPayload,
 } from "./store/assetsSlice";
-import { blockActions } from "./store/blockSlice";
 import { useAppDispatch } from "./store/hooks";
 import {
   getBalance,
   getLastDelegation,
-  getLatestBlockNumber,
+  getLatestBlockLevel,
   getTezosPriceInUSD,
   getTezTransfers,
   getTokens,
@@ -146,8 +145,8 @@ export const useAssetsPolling = () => {
 
   const blockNumberQuery = useQuery("blockNumber", {
     queryFn: async () => {
-      const number = await getLatestBlockNumber(network);
-      dispatch(blockActions.updateNumber(number));
+      const number = await getLatestBlockLevel(network);
+      dispatch(assetsActions.updateBlockLevel(number));
     },
     refetchInterval: BLOCK_TIME,
   });
