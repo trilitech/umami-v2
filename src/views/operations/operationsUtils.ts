@@ -79,6 +79,7 @@ export const getTezOperationDisplay = (
           ? prettyTezAmount(transfer.bakerFee)
           : undefined,
       status: "confirmed",
+      level: transfer.level,
     };
     return result;
   } catch (error) {
@@ -136,6 +137,7 @@ export const getTokenOperationDisplay = (
       recipient: required.to.address,
       sender: required.from.address,
       tzktUrl: level != null ? getLevelUrl(level, network) : undefined,
+      level,
     };
     return result;
   } catch (error) {
