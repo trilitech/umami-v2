@@ -40,6 +40,7 @@
     "match-sorter": "^6.3.1",
     "mockdate": "^3.0.5",
     "react": "^18.2.0",
+    "react-app-rewire-aliases": "^0.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.5",
     "react-icons": "^4.8.0",
@@ -62,13 +63,12 @@
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "cross-env TZ=CET react-scripts test --coverage --verbose --testPathIgnorePatterns='src/integration/*'",
-    "test:tezos:integration": "cross-env TZ=CET react-scripts test --watchPathIgnorePatterns=[]",
+    "test": "cross-env TZ=CET react-app-rewired test --coverage --verbose --testPathIgnorePatterns='src/integration/*'",
+    "test:tezos:integration": "cross-env TZ=CET react-app-rewired test --watchPathIgnorePatterns=[]",
     "typecheck": "tsc",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write .",
     "format:ci": "prettier --check .",
-    "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
     "build-storybook": "build-storybook -s public",
@@ -184,5 +184,6 @@
         "umami"
       ]
     }
-  }
+  },
+  "packageManager": "yarn@3.5.0"
 }
