@@ -6,9 +6,13 @@ export const useAllSortedContacts = () => {
   return Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name));
 };
 
-export const useContactAlreadyExists = () => {
+export const useContactExists = () => {
   const contacts = useContacts();
-  return (pkh: string) => pkh in contacts;
+  return {
+    addressExistsInContacts: (pkh: string) => pkh in contacts,
+    nameExistsInContacts: (name: string) =>
+      Object.values(contacts).find((c) => c.name === name) !== undefined,
+  };
 };
 
 export const useGetNameFromAddress = (): ((pkh: string) => string | null) => {
