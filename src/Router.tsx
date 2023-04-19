@@ -12,6 +12,7 @@ import HelpView from "./views/help/HelpView";
 import DelegationsView from "./views/delegations/DelegationsView";
 import AddressBookView from "./views/addressBook/AddressBookView";
 import BatchView from "./views/batch/BatchView";
+import { useBeaconInit } from "./utils/beacon/beacon";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -74,7 +75,13 @@ const loggedOutRouter = createHashRouter([
 ]);
 
 const MemoizedRouter = React.memo(() => {
-  return <RouterProvider router={loggedInRouter} />;
+  const beaconNotificationModal = useBeaconInit();
+  return (
+    <>
+      <RouterProvider router={loggedInRouter} />
+      {beaconNotificationModal}
+    </>
+  );
 });
 
 const LoggedInRouterWithPolling = () => {
