@@ -426,8 +426,15 @@ export const transactionValuesToBatchParams = async (
   pk: string,
   network: TezosNetwork
 ): Promise<ParamsWithKind[]> => {
-  const first = transactions[0];
-  const Tezos = makeToolkitWithDummySigner(pk, first.values.sender, network);
+  if (!transactions.length) {
+    return [];
+  }
+
+  const Tezos = makeToolkitWithDummySigner(
+    pk,
+    transactions[0].values.sender,
+    network
+  );
 
   return transactionValuesToParams(transactions, Tezos);
 };
