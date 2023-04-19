@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Contact } from "../../types/Contact";
+import { nameExistsInContacts } from "../hooks/contactsUtils";
 
 type State = Record<string, Contact>;
 
@@ -11,8 +12,7 @@ const contactsSlice = createSlice({
   reducers: {
     reset: () => initialState,
     upsert: (state, { payload }: { payload: Contact }) => {
-      const contacts: Contact[] = Object.values(state);
-      if (contacts.find((c) => c.name === payload.name)) {
+      if (nameExistsInContacts(state, payload.name)) {
         return;
       }
       state[payload.pkh] = payload;
