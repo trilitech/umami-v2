@@ -48,9 +48,7 @@ export const EnterSeed: React.FC<{ onSubmit: (s: string) => void }> = ({
               placeholder="Enter your seed phrase..."
             />
             {errors.seedPhrase ? (
-              <FormErrorMessage>
-                {errors.seedPhrase?.message as string}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.seedPhrase.message}</FormErrorMessage>
             ) : (
               <FormHelperText>
                 Enter your seed phrase to restore accounts

@@ -65,9 +65,7 @@ export const EnterAndComfirmPassword: React.FC<{
               placeholder="Confirm your new password..."
             />
             {errors.confirm ? (
-              <FormErrorMessage>
-                {errors.confirm?.message as string}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>
             ) : (
               <FormHelperText>
                 Enter and confirm your new master password
