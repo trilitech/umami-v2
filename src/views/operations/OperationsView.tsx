@@ -14,12 +14,17 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
+import { MdOutlinePending } from "react-icons/md";
+import { RxCheckCircled } from "react-icons/rx";
 import { TbFilter } from "react-icons/tb";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
-import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
+import {
+  useAllOperationDisplays,
+  useIsBlockFinalised,
+} from "../../utils/hooks/assetsHooks";
 import { useGetNameFromAddress } from "../../utils/hooks/contactsHooks";
 import ContactTile from "./ContactTile";
 import {
@@ -44,6 +49,7 @@ export const OperationsDataTable: React.FC<{
   const operationList = Object.values(operations).flat();
   const sorted = sortOperationsDisplaysBytDate(operationList);
   const getNameFromAddress = useGetNameFromAddress();
+  const isBlockFinalised = useIsBlockFinalised();
   return (
     <TableContainer overflowX="unset" overflowY="unset">
       <Table>
@@ -110,7 +116,16 @@ export const OperationsDataTable: React.FC<{
                     getNameFromAddress={getNameFromAddress}
                   />
                 </Td>
-                <Td>{"ok"}</Td>
+                <Td>
+                  {isBlockFinalised(op.level) ? (
+                    <IconAndTextBtn icon={RxCheckCircled} label="Confirmed" />
+                  ) : (
+                    <IconAndTextBtn
+                      icon={MdOutlinePending}
+                      label="Pending..."
+                    />
+                  )}
+                </Td>
                 <Td>
                   <Flex alignItems={"center"} justifyContent={"space-between"}>
                     <Text>{op.prettyTimestamp}</Text>

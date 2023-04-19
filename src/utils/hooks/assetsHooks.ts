@@ -15,6 +15,14 @@ export const useSelectedNetwork = () => {
 
 export const useBlockLevel = () => useAppSelector((s) => s.assets.blockLevel);
 
+// Tenderbake guarantees block finality after 2 confirmations
+export const useIsBlockFinalised = () => {
+  const currentLevel = useBlockLevel();
+
+  return (level: number) =>
+    currentLevel !== null ? currentLevel - level >= 2 : null;
+};
+
 export const useAllNfts = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 

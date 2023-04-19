@@ -430,10 +430,6 @@ describe("getOperationsDisplays", () => {
       getTokenTransactionsResult,
       forAddress
     );
-    console.log(
-      result.map((r) => r.level),
-      "HEREEEE"
-    );
 
     const expected: OperationDisplay[] = [
       {

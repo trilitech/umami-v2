@@ -52,6 +52,7 @@ export const getTezOperationDisplay = (
     timestamp: z.string(),
     amount: z.number(),
     hash: z.string(),
+    level: z.number(),
   });
 
   try {
@@ -79,7 +80,7 @@ export const getTezOperationDisplay = (
           ? prettyTezAmount(transfer.bakerFee)
           : undefined,
       status: "confirmed",
-      level: transfer.level,
+      level: required.level,
     };
     return result;
   } catch (error) {
@@ -97,6 +98,7 @@ export const getTokenOperationDisplay = (
     to: z.object({ address: z.string() }),
     timestamp: z.string(),
     amount: z.string(),
+    level: z.number(),
   });
 
   try {
@@ -113,7 +115,7 @@ export const getTokenOperationDisplay = (
 
     const symbol = (metadata && metadata.symbol) || DEFAULT_SYMBOL;
 
-    const level = transfer.level;
+    const level = required.level;
     const decimalsStr = metadata?.decimals;
     const amount = Number(required.amount);
     const decimals =
@@ -136,7 +138,7 @@ export const getTokenOperationDisplay = (
       timestamp: required.timestamp,
       recipient: required.to.address,
       sender: required.from.address,
-      tzktUrl: level != null ? getLevelUrl(level, network) : undefined,
+      tzktUrl: getLevelUrl(level, network),
       level,
     };
     return result;
