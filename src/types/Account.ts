@@ -1,8 +1,9 @@
-import { UmamiEncrypted } from "./UmamiEncrypted";
+import { Curves } from "@taquito/signer";
 
 export enum AccountType {
   SOCIAL = "social",
   MNEMONIC = "mnemonic",
+  Ledger = "ledger",
 }
 
 type Base = {
@@ -22,10 +23,17 @@ export type SocialAccount = Base & {
 
 export type MnemonicAccount = Base & {
   label?: string;
+  curve: "ed25519";
+  derivationPath: string;
   type: AccountType.MNEMONIC;
   seedFingerPrint: string;
-  esk: UmamiEncrypted;
 };
 
-// Account in store can only be Mnemonic or Social
-export type Account = MnemonicAccount | SocialAccount;
+export type LedgerAccount = Base & {
+  label?: string;
+  curve: Curves;
+  derivationPath: string;
+  type: AccountType.Ledger;
+};
+
+export type Account = MnemonicAccount | SocialAccount | LedgerAccount;
