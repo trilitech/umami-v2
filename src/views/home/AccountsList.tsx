@@ -55,18 +55,18 @@ const AccountGroup: React.FC<{
 const groupByKind = (accounts: Account[]) => {
   return accounts.reduce((group: Record<string, Account[] | undefined>, a) => {
     const getLabel = (a: Account) => {
-      if (a.type === AccountType.MNEMONIC) {
-        return `seedphrase ${a.seedFingerPrint}`;
+      switch (a.type) {
+        case AccountType.MNEMONIC:
+          return `seedphrase ${a.seedFingerPrint}`;
+        case AccountType.SOCIAL:
+          return "social";
+        case AccountType.Ledger:
+          return "ledger";
+        default: {
+          const error: never = a;
+          throw new Error(error);
+        }
       }
-      if (a.type === AccountType.SOCIAL) {
-        return "social";
-      }
-
-      if (a.type === AccountType.Ledger) {
-        return "ledger";
-      }
-      const error: never = a;
-      throw new Error(error);
     };
 
     const label = getLabel(a);
