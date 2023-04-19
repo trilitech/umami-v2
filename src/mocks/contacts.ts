@@ -1,16 +1,17 @@
 import { Contact } from "../types/Contact";
+import { mockPkh } from "./factories";
 
 export const contact1 = {
   name: "Lewis Hatfull",
-  pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+  pkh: mockPkh(0),
 };
 export const contact2 = {
   name: "Lev Kowalski",
-  pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+  pkh: mockPkh(1),
 };
 export const contact3 = {
   name: "Abhishek Jain",
-  pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+  pkh: mockPkh(2),
 };
 
 export const contacts = () => {

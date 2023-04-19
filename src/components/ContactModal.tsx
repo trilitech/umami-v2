@@ -20,7 +20,7 @@ import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
-import { useContactAlreadyExists } from "../utils/hooks/contactsHooks";
+import { useContactExists } from "../utils/hooks/contactsHooks";
 import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
 import { CopyableAddress } from "./CopyableText";
@@ -58,7 +58,7 @@ export const UpsertContactModal: FC<{
     reset();
   };
 
-  const contactAlreadyExists = useContactAlreadyExists();
+  const { nameExistsInContacts, addressExistsInContacts } = useContactExists();
   const validatePkh = (pkh: string) => {
     const validationResult = validateAddress(pkh);
     if (validationResult !== ValidationResult.VALID) {
@@ -67,7 +67,7 @@ export const UpsertContactModal: FC<{
     if (isEdit && contact) {
       return getValues("name") !== contact.name;
     }
-    return !contactAlreadyExists(pkh) || "Address already exists";
+    return !addressExistsInContacts(pkh) || "Address already registered";
   };
 
   useEffect(() => {
@@ -83,15 +83,21 @@ export const UpsertContactModal: FC<{
           <ModalHeader textAlign={"center"}>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl marginY={5}>
+            <FormControl marginY={5} isInvalid={!!errors.name}>
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
                 {...register("name", {
                   required: true,
+                  validate: (name: string) =>
+                    !nameExistsInContacts(name.trim()) ||
+                    "Name already registered",
                 })}
                 placeholder="Enter contact’s name"
               />
+              {errors.name && (
+                <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+              )}
             </FormControl>
             <FormControl marginY={5} isInvalid={!!errors.pkh}>
               <FormLabel>Address</FormLabel>
