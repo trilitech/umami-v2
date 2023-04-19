@@ -54,7 +54,6 @@ beforeEach(() => {
   });
 
   useGetSkMock.mockReturnValue(() => "mockSk");
-  // decryptMock.mockResolvedValue("mockSk");
   submitBatchMock.mockResolvedValue({ opHash: "foo" });
 });
 
