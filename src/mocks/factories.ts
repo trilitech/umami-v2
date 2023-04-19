@@ -1,11 +1,11 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { Account, AccountType } from "../types/Account";
 import { TransactionValues } from "../components/sendForm/types";
+import { Account, AccountType } from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
-import { UmamiEncrypted } from "../types/UmamiEncrypted";
+import { getDerivationPath } from "../utils/restoreAccounts";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -74,27 +74,25 @@ export const mockPkh = (index: number) => {
   return validMockPkhs[index];
 };
 
-export const mockAccountLabel = (index: number) => `account ${index}`;
+export const mockAccountLabel = (index: number) => `Account ${index}`;
 
 export const mockPk = (index: number) =>
   `edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H${index}`;
 
 export const mockAccount = (
   index: number,
-  type = AccountType.MNEMONIC
+  type = AccountType.MNEMONIC,
+  fingerPrint = "mockPrint"
 ): Account => {
   if (type === AccountType.MNEMONIC) {
     return {
+      curve: "ed25519",
+      derivationPath: getDerivationPath(0),
       type,
       label: mockAccountLabel(index),
       pkh: mockPkh(index),
       pk: mockPk(index),
-      seedFingerPrint: "mockPrint",
-      esk: {
-        data: `mockData${index}`,
-        iv: `mockIv${index}`,
-        salt: `mockSalt${index}`,
-      } as UmamiEncrypted,
+      seedFingerPrint: `${fingerPrint}`,
     };
   }
 
@@ -105,6 +103,17 @@ export const mockAccount = (
       pkh: mockPkh(index),
       pk: mockPk(index),
       idp: "google",
+    };
+  }
+
+  if (type === AccountType.Ledger) {
+    return {
+      curve: "ed25519",
+      derivationPath: getDerivationPath(0),
+      type,
+      label: mockAccountLabel(index) + " ledger",
+      pkh: mockPkh(index),
+      pk: mockPk(index),
     };
   }
 

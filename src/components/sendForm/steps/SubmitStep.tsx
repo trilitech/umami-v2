@@ -21,8 +21,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GoogleAuth } from "../../../GoogleAuth";
 import { AccountType } from "../../../types/Account";
-import { decrypt } from "../../../utils/aes";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
+import { useGetSk } from "../../../utils/hooks/accountUtils";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
 import { mutezToTezNumber } from "../../../utils/store/impureFormat";
 import {
@@ -142,6 +142,7 @@ export const RecapDisplay: React.FC<{
   const renderAccountTile = useRenderAccountSmallTile();
   const getAccount = useGetOwnedAccount();
 
+  const getSk = useGetSk();
   const { register, handleSubmit } = useForm<{ password: string }>();
 
   const toast = useToast();
@@ -177,13 +178,16 @@ export const RecapDisplay: React.FC<{
 
   // TODO remove duplication
   const onSubmitNominal = async ({ password }: { password: string }) => {
-    if (signerAccount.type === AccountType.SOCIAL) {
+    if (
+      signerAccount.type === AccountType.SOCIAL ||
+      signerAccount.type === AccountType.Ledger
+    ) {
       throw new Error(`Wrong signing method called`);
     }
 
     setIsLoading(true);
     try {
-      const sk = await decrypt(signerAccount.esk, password);
+      const sk = await getSk(signerAccount, password);
 
       const result = await makeTransfer(transfer, sk, network);
 

@@ -17,24 +17,23 @@ import {
 import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { AccountType } from "../../types/Account";
-import { decrypt } from "../../utils/aes";
-// import { decrypt } from "../../utils/aes";
 import { UmamiTheme } from "../../providers/UmamiTheme";
 import { formatPkh } from "../../utils/format";
+import { useGetSk } from "../../utils/hooks/accountUtils";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import {
+  estimateBatch,
   estimateFA2transfer,
   estimateTezTransfer,
-  estimateBatch,
   transferFA2Token,
   transferTez,
 } from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 
-const { add } = accountsSlice.actions;
+const { add, addSecret } = accountsSlice.actions;
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -42,14 +41,14 @@ jest.mock("../../GoogleAuth", () => ({
 }));
 jest.mock("../../utils/tezos");
 jest.mock("react-router-dom");
-jest.mock("../../utils/aes");
+jest.mock("../../utils/hooks/accountUtils");
 
 const estimateTezTransferMock = estimateTezTransfer as jest.Mock;
 const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
 const transferTezMock = transferTez as jest.Mock;
 const transferFA2TokenMock = transferFA2Token as jest.Mock;
-const decryptMock = decrypt as jest.Mock;
 const estimateBatchMock = estimateBatch as jest.Mock;
+const useGetSkMock = useGetSk as jest.Mock;
 
 const fixture = (sender?: string, assetType?: SendFormMode) => (
   <ReactQueryProvider>
@@ -66,9 +65,10 @@ const fixture = (sender?: string, assetType?: SendFormMode) => (
 const MOCK_SK = "mockSk";
 
 beforeEach(() => {
-  decryptMock.mockResolvedValue(MOCK_SK);
+  useGetSkMock.mockReturnValue(() => MOCK_SK);
 });
 beforeAll(() => {
+  store.dispatch(addSecret({ hash: "mockPrint", secret: {} as any }));
   store.dispatch(
     add([
       mockAccount(1),

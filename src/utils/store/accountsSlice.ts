@@ -5,7 +5,7 @@ import { UmamiEncrypted } from "../../types/UmamiEncrypted";
 type State = {
   items: Account[];
   selected: null | string;
-  seedPhrases: Record<string, UmamiEncrypted>;
+  seedPhrases: Record<string, UmamiEncrypted | undefined>;
 };
 
 const initialState: State = {
