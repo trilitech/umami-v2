@@ -104,6 +104,15 @@ export const mockAccount = (
       pk: mockPk(index),
       idp: "google",
     };
+  } else if (type === AccountType.LEDGER) {
+    return {
+      curve: "ed25519",
+      derivationPath: getDerivationPath(index),
+      type: AccountType.LEDGER,
+      label: "ledger " + mockAccountLabel(index),
+      pkh: mockPkh(index),
+      pk: mockPk(index),
+    };
   }
 
   if (type === AccountType.LEDGER) {

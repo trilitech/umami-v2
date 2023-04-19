@@ -15,8 +15,9 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
-import { estimateBatch, submitBatch } from "../../utils/tezos";
 import BatchView from "./BatchView";
+import { submitBatch } from "../../utils/tezos/operations";
+import { estimateBatch } from "../../utils/tezos/estimate";
 
 // TODO refactor mocks
 jest.mock("react-router-dom");

@@ -1,7 +1,7 @@
 import { GoogleAuth } from "../../../GoogleAuth";
 import { getPkAndPkhFromSk } from "../../../utils/tezos/helpers";
 
-const AddGoogleAccountBtn = ({
+const AddLedgerAccountBtn = ({
   onSubmit,
 }: {
   onSubmit: (pk: string, pkh: string) => void;
@@ -17,4 +17,4 @@ const AddGoogleAccountBtn = ({
   );
 };
 
-export default AddGoogleAccountBtn;
+export default AddLedgerAccountBtn;

@@ -15,8 +15,8 @@ import {
 } from "../mocks/factories";
 import accountsSlice from "./store/accountsSlice";
 import { estimateAndUpdateBatch } from "./store/thunks/estimateAndupdateBatch";
-import { estimateBatch } from "./tezos";
 import { TransactionValues } from "../components/sendForm/types";
+import { estimateBatch } from "./tezos/estimate";
 jest.mock("./tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;

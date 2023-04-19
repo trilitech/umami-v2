@@ -1,12 +1,8 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { tezzard } from "../mocks/nfts";
 import { publicKeys1, publicKeys2 } from "../mocks/publicKeys";
-
-import {
-  estimateBatch,
-  estimateFA2transfer,
-  transactionValuesToBatchParams,
-} from "../utils/tezos";
+import { transactionValuesToBatchParams } from "../utils/tezos/params";
+import { estimateBatch, estimateFA2transfer } from "../utils/tezos/estimate";
 
 const pk1 = publicKeys1.pk;
 const pkh1 = publicKeys1.pkh;

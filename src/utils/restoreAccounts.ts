@@ -4,7 +4,7 @@ import {
   MnemonicAccount,
   UnencryptedAccount,
 } from "../types/Account";
-import { addressExists, getFingerPrint } from "./tezos";
+import { addressExists, getFingerPrint } from "./tezos/helpers";
 
 export const getDerivationPath = (index: number) => `m/44'/1729'/${index}'/0'`;
 

@@ -13,7 +13,9 @@
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@ledgerhq/hw-transport-webhid": "^6.27.13",
     "@reduxjs/toolkit": "^1.9.3",
+    "@taquito/ledger-signer": "^16.1.2",
     "@taquito/signer": "^15.1.0",
     "@taquito/taquito": "^15.1.0",
     "@taquito/utils": "^15.1.0",
@@ -36,9 +38,9 @@
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "mockdate": "^3.0.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.43.5",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-hook-form": "^7.43.9",
     "react-icons": "^4.8.0",
     "react-identicons": "^1.2.5",
     "react-native-safe-area-context": "3.3.2",
@@ -102,7 +104,7 @@
     "babel-plugin-named-exports-order": "^0.0.2",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
-    "electron": "^23.2.0",
+    "electron": "^24.1.2",
     "electron-builder": "^23.6.0",
     "electronmon": "^2.0.2",
     "eslint": "^8.38.0",
@@ -117,7 +119,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "axios": "axios/dist/node/axios.cjs"
+      "axios": "axios/dist/node/axios.cjs",
+      "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing"
     },
     "watchPathIgnorePatterns": [
       "src/integration"
@@ -181,5 +184,6 @@
         "umami"
       ]
     }
-  }
+  },
+  "packageManager": "yarn@3.5.0"
 }

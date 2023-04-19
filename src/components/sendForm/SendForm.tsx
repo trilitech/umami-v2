@@ -5,16 +5,12 @@ import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
-import {
-  estimateDelegation,
-  estimateFA2transfer,
-  estimateTezTransfer,
-} from "../../utils/tezos";
 import { getTotalFee } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedTransaction, SendFormMode, TransactionValues } from "./types";
+import { estimateDelegation, estimateFA2transfer, estimateTezTransfer } from "../../utils/tezos/estimate";
 
 const makeSimulation = (
   t: TransactionValues,

@@ -2,9 +2,9 @@ import { TezosNetwork } from "@airgap/tezos";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { TransactionValues } from "../../../components/sendForm/types";
 import { zip } from "../../helpers";
-import { estimateBatch } from "../../tezos";
 import assetsSlice, { BatchItem } from "../assetsSlice";
 import { RootState } from "../store";
+import { estimateBatch } from "../../tezos/estimate";
 
 const {
   updateBatch: addToBatch,

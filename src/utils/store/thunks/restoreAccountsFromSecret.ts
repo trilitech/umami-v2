@@ -1,9 +1,9 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { encrypt } from "../../aes";
 import { restoreMnemonicAccounts } from "../../restoreAccounts";
-import { getFingerPrint } from "../../tezos";
 import accountsSlice from "../accountsSlice";
 import { RootState } from "../store";
+import { getFingerPrint } from "../../tezos/helpers";
 
 const { addSecret, add } = accountsSlice.actions;
 

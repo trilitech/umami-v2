@@ -5,9 +5,9 @@ import {
   restoreAccounts,
   restoreMnemonicAccounts,
 } from "./restoreAccounts";
-import { addressExists, getFingerPrint } from "./tezos";
 
 import "../mocks/mockGetRandomValues";
+import { addressExists, getFingerPrint } from "./tezos/helpers";
 jest.mock("./tezos");
 
 const addressExistsMock = addressExists as jest.Mock;

@@ -27,11 +27,11 @@ import {
 import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { prettyTezAmount } from "../../utils/store/impureFormat";
-import { getBakers } from "../../utils/tezos";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { useRenderBakerSmallTile } from "./BakerSmallTile";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
+import { getBakers } from "../../utils/tezos/fetch";
 
 const DelegationsTable = ({
   delegations,

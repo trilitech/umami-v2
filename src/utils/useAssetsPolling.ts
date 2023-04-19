@@ -12,15 +12,7 @@ import assetsSlice, {
   TokenTransfersPayload,
 } from "./store/assetsSlice";
 import { useAppDispatch } from "./store/hooks";
-import {
-  getBalance,
-  getLastDelegation,
-  getLatestBlockLevel,
-  getTezosPriceInUSD,
-  getTezTransfers,
-  getTokens,
-  getTokenTransfers,
-} from "./tezos";
+import { getBalance, getLastDelegation, getLatestBlockLevel, getTezTransfers, getTezosPriceInUSD, getTokenTransfers, getTokens } from "./tezos/fetch";
 
 // TODO: refactor with less repetitions
 const getBalancePayload = async (

@@ -5,8 +5,8 @@ import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 import { AccountType } from "../../types/Account";
 import { generate24WordMnemonic } from "../../utils/mnemonic";
 import { store } from "../../utils/store/store";
-import { addressExists, getFingerPrint } from "../../utils/tezos";
 import CreateOrImportSecret from "./CreateOrImportSecret";
+import { addressExists, getFingerPrint } from "../../utils/tezos/helpers";
 
 jest.mock("../../utils/tezos");
 jest.mock("../../utils/mnemonic");

@@ -1,5 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { InMemorySigner } from "@taquito/signer";
+import { Curves, InMemorySigner } from "@taquito/signer";
 import {
   ContractMethod,
   ContractProvider,
@@ -8,6 +8,9 @@ import {
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
 import { FA2TokenTransferParams } from "./types";
+import { SignerConfig, SignerType } from "../../types/SignerConfig";
+import TransportWebHID from "@ledgerhq/hw-transport-webhid";
+import { LedgerSigner, DerivationType } from "@taquito/ledger-signer";
 
 export const addressExists = async (
   pkh: string,
@@ -32,14 +35,45 @@ export const getFingerPrint = async (seedPhrase: string): Promise<string> => {
   return hashHex;
 };
 
-export const makeToolkitWithSigner = async (
-  sk: string,
-  network: TezosNetwork
-): Promise<TezosToolkit> => {
-  const Tezos = new TezosToolkit(nodeUrls[network]);
-  Tezos.setProvider({
-    signer: new InMemorySigner(sk),
-  });
+export const curvesToDerivationPath = (c: Curves): DerivationType => {
+  switch (c) {
+    case "ed25519":
+      return DerivationType.ED25519;
+    case "secp256k1":
+      return DerivationType.SECP256K1;
+    case "p256":
+      return DerivationType.P256;
+    case "bip25519":
+      throw new Error("bip25519 is not supported in Tezos");
+    default: {
+      const error: never = c;
+      throw new Error(error);
+    }
+  }
+};
+
+export const makeToolkitWithSigner = async (config: SignerConfig) => {
+  const Tezos = new TezosToolkit(nodeUrls[config.network]);
+  if (config.type === SignerType.SK) {
+    Tezos.setProvider({
+      signer: new InMemorySigner(config.sk),
+    });
+  } else {
+    // Close existing connections to be able to reinitiate
+    const devices = await TransportWebHID.list();
+    for (let i = 0; i < devices.length; i++) {
+      devices[i].close();
+    }
+    const transport = await TransportWebHID.create();
+    Tezos.setProvider({
+      signer: new LedgerSigner(
+        transport,
+        config.derivationPath,
+        false, // PK Verification not needed
+        curvesToDerivationPath(config.derivationType)
+      ),
+    });
+  }
   return Tezos;
 };
 

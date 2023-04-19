@@ -23,15 +23,10 @@ import { useGetSk } from "../../utils/hooks/accountUtils";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
-import {
-  estimateBatch,
-  estimateFA2transfer,
-  estimateTezTransfer,
-  transferFA2Token,
-  transferTez,
-} from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
+import { estimateBatch, estimateFA2transfer, estimateTezTransfer } from "../../utils/tezos/estimate";
+import { transferFA2Token, transferTez } from "../../utils/tezos/operations";
 
 const { add, addSecret } = accountsSlice.actions;
 

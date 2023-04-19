@@ -10,10 +10,12 @@ import React, { useState } from "react";
 import AddGoogleAccountBtn from "./social/AddGoogleAccountBtn";
 import EnterSeedAndSave from "./seedphrase/EnterOrGenerateSeed";
 import CreateSocialAccount from "./social/CreateSocialAccount";
+import EnterLedgerConfig from "./ledger/EnterLedgerConfig";
 
 type Step =
   | { type: "enterExistingSeedphrase" }
   | { type: "generateNewSeedphrase" }
+  | { type: "enterLedgerConfig" }
   | { type: "importSocial"; pk: string; pkh: string };
 
 const CreateOrImportSecret: React.FC<{ onClose: () => void }> = ({
@@ -51,7 +53,10 @@ const CreateOrImportSecret: React.FC<{ onClose: () => void }> = ({
             <Button w="100%" isDisabled={true}>
               Import backup file
             </Button>
-            <Button w="100%" isDisabled={true}>
+            <Button
+              w="100%"
+              onClick={(_) => setStep({ type: "enterLedgerConfig" })}
+            >
               Connect ledger
             </Button>
           </VStack>
@@ -75,6 +80,9 @@ const CreateOrImportSecret: React.FC<{ onClose: () => void }> = ({
   }
   if (step.type === "enterExistingSeedphrase") {
     return <EnterSeedAndSave onClose={onClose} />;
+  }
+  if (step.type === "enterLedgerConfig") {
+    return <EnterLedgerConfig onClose={onClose} />;
   }
 
   const error: never = step;
