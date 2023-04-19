@@ -106,7 +106,7 @@ export const mockAccount = (
     };
   }
 
-  if (type === AccountType.Ledger) {
+  if (type === AccountType.LEDGER) {
     return {
       curve: "ed25519",
       derivationPath: getDerivationPath(0),
