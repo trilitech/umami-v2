@@ -3,7 +3,7 @@ import { Curves } from "@taquito/signer";
 export enum AccountType {
   SOCIAL = "social",
   MNEMONIC = "mnemonic",
-  Ledger = "ledger",
+  LEDGER = "ledger",
 }
 
 type Base = {
@@ -33,7 +33,7 @@ export type LedgerAccount = Base & {
   label?: string;
   curve: Curves;
   derivationPath: string;
-  type: AccountType.Ledger;
+  type: AccountType.LEDGER;
 };
 
 export type Account = MnemonicAccount | SocialAccount | LedgerAccount;

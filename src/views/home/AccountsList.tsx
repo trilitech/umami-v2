@@ -60,7 +60,7 @@ const groupByKind = (accounts: Account[]) => {
           return `seedphrase ${a.seedFingerPrint}`;
         case AccountType.SOCIAL:
           return "social";
-        case AccountType.Ledger:
+        case AccountType.LEDGER:
           return "ledger";
         default: {
           const error: never = a;

@@ -180,7 +180,7 @@ export const RecapDisplay: React.FC<{
   const onSubmitNominal = async ({ password }: { password: string }) => {
     if (
       signerAccount.type === AccountType.SOCIAL ||
-      signerAccount.type === AccountType.Ledger
+      signerAccount.type === AccountType.LEDGER
     ) {
       throw new Error(`Wrong signing method called`);
     }
