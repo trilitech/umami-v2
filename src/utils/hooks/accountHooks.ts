@@ -65,8 +65,6 @@ export const useCheckPasswordValidity = () => {
   }
 
   return async (password: string) => {
-    const existingSeedPhrase = Object.values(seedPhrases)[0];
-
     await decrypt(existingSeedPhrase, password);
   };
 };
