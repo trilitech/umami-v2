@@ -22,7 +22,7 @@ const ReceiveModal: FC<{
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent bg={colors.gray[900]}>
+      <ModalContent bg={colors.gray[900]} p={3}>
         <ModalHeader textAlign={"center"}>Receive</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -39,6 +39,7 @@ const ReceiveModal: FC<{
               <QRCode
                 value={pkh}
                 size={400}
+                logoPadding={7}
                 qrStyle="dots"
                 fgColor={colors.orange}
                 bgColor={colors.gray[900]}
