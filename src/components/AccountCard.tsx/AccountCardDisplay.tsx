@@ -64,7 +64,11 @@ export const AccountCardDisplay: React.FC<Props> = ({
       )}
       <Flex mt={6}>
         <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
-        <RoundButton label="Receive" icon={<MdSouthWest />} />
+        <RoundButton
+          label="Receive"
+          icon={<MdSouthWest />}
+          onClick={onReceive}
+        />
         <RoundButton label="Buy tez" icon={<FiPlus />} />
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
