@@ -307,8 +307,7 @@ describe("<BatchView />", () => {
             },
           },
         ],
-        "mockSk",
-        "mainnet"
+        { network: "mainnet", sk: "mockSk" }
       );
     });
   });

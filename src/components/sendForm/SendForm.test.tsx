@@ -237,12 +237,10 @@ describe("<SendForm />", () => {
           "https://mainnet.tzkt.io/foo"
         );
       });
-      expect(transferTezMock).toHaveBeenCalledWith(
-        mockPkh(7),
-        23,
-        MOCK_SK,
-        "mainnet"
-      );
+      expect(transferTezMock).toHaveBeenCalledWith(mockPkh(7), 23, {
+        network: "mainnet",
+        sk: MOCK_SK,
+      });
     });
   });
 
@@ -326,8 +324,10 @@ describe("<SendForm />", () => {
           sender: mockPkh(1),
           tokenId: "mockId1",
         },
-        MOCK_SK,
-        "mainnet"
+        {
+          network: "mainnet",
+          sk: MOCK_SK,
+        }
       );
     });
   });
