@@ -1,4 +1,4 @@
-import { WalletClient } from "@airgap/beacon-sdk";
+import { WalletClient } from "@airgap/beacon-wallet";
 import { Modal, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 
