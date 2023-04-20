@@ -21,6 +21,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GoogleAuth } from "../../../GoogleAuth";
 import { AccountType, LedgerAccount } from "../../../types/Account";
+import {
+  LedgerSignerConfig,
+  SignerConfig,
+  SignerType,
+  SkSignerConfig,
+} from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useGetSk } from "../../../utils/hooks/accountUtils";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
@@ -36,12 +42,6 @@ import {
   TransactionsAmount,
 } from "../components/TezAmountRecaps";
 import { EstimatedTransaction, TransactionValues } from "../types";
-import {
-  LedgerSignerConfig,
-  SignerConfig,
-  SignerType,
-  SkSignerConfig,
-} from "../../../types/SignerConfig";
 import { delegate, submitBatch, transferFA2Token, transferTez } from "../../../utils/tezos/operations";
 
 const makeTransfer = (
