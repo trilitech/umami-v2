@@ -5,6 +5,7 @@ import {
 } from "../../utils/hooks/assetsHooks";
 import { mutezToTez } from "../../utils/store/impureFormat";
 import { useSendFormModal } from "../../views/home/useSendFormModal";
+import { useReceiveModal } from "../ReceiveModal";
 import { AccountCardDisplay } from "./AccountCardDisplay";
 
 export const AccountCard = () => {
@@ -12,7 +13,9 @@ export const AccountCard = () => {
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
 
-  const { modalElement, onOpen } = useSendFormModal();
+  const { onOpen: onOpenSend, modalElement: sendModal } = useSendFormModal();
+  const { onOpen: onOpenReceive, modalElement: receiveModal } =
+    useReceiveModal();
 
   if (!account) {
     return null;
@@ -26,7 +29,7 @@ export const AccountCard = () => {
     <>
       <AccountCardDisplay
         onSend={() =>
-          onOpen({
+          onOpenSend({
             mode: { type: "tez" },
             sender: account?.pkh,
           })
@@ -35,8 +38,12 @@ export const AccountCard = () => {
         label={account.label || ""}
         tezBalance={tez && mutezToTez(tez)}
         dollarBalance={dollarBalance}
+        onReceive={() => {
+          onOpenReceive({ pkh: account.pkh });
+        }}
       />
-      {modalElement}
+      {sendModal}
+      {receiveModal}
     </>
   );
 };

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import React from "react";
 import { MdArrowOutward, MdSouthWest } from "react-icons/md";
 
@@ -14,7 +7,6 @@ import { VscWand } from "react-icons/vsc";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { CopyableAddress } from "../CopyableText";
-import ReceiveModal from "../ReceiveModal";
 
 type Props = {
   onSend?: () => void;
@@ -56,7 +48,6 @@ export const AccountCardDisplay: React.FC<Props> = ({
   tezBalance,
   dollarBalance,
 }) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <Flex direction="column" alignItems={"center"}>
       <Identicon address={pkh} />
@@ -73,11 +64,14 @@ export const AccountCardDisplay: React.FC<Props> = ({
       )}
       <Flex mt={6}>
         <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
-        <RoundButton label="Receive" icon={<MdSouthWest />} onClick={onOpen} />
+        <RoundButton
+          label="Receive"
+          icon={<MdSouthWest />}
+          onClick={onReceive}
+        />
         <RoundButton label="Buy tez" icon={<FiPlus />} />
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
-      <ReceiveModal pkh={pkh} onClose={onClose} isOpen={isOpen} />
     </Flex>
   );
 };

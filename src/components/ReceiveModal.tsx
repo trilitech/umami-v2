@@ -9,11 +9,37 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import colors from "../style/colors";
 import { CopyableAddress } from "./CopyableText";
 import { QRCode } from "react-qrcode-logo";
+
+type Options = {
+  pkh: string;
+};
+
+export const useReceiveModal = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const optionsRef = useRef<Options>();
+  const options = optionsRef.current;
+
+  return {
+    modalElement: (
+      <>
+        {options?.pkh && (
+          <ReceiveModal pkh={options?.pkh} isOpen={isOpen} onClose={onClose} />
+        )}
+      </>
+    ),
+    onOpen: (options: Options) => {
+      optionsRef.current = options;
+      onOpen();
+    },
+  };
+};
+
 const ReceiveModal: FC<{
   pkh: string;
   isOpen: boolean;
