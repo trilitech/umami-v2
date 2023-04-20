@@ -48,6 +48,7 @@ describe("getTezOperationsDisplay", () => {
       type: "transaction",
       tzktUrl:
         "https://mainnet.tzkt.io/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM",
+      level: 2213611,
     };
     expect(result).toEqual(expected);
   });
@@ -92,6 +93,7 @@ describe("getTezOperationsDisplay", () => {
       type: "transaction",
       tzktUrl:
         "https://mainnet.tzkt.io/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ",
+      level: 2214204,
     };
 
     expect(result).toEqual(expected);
@@ -191,6 +193,7 @@ describe("getTezOperationsDisplay", () => {
       recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       sender: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S",
       timestamp: "2023-03-27T11:06:40Z",
+      level: 2214369,
     };
 
     expect(result).toEqual(expected);
@@ -288,6 +291,7 @@ describe("getTezOperationsDisplay", () => {
       recipient: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       timestamp: "2023-03-27T13:24:48Z",
+      level: 2215172,
     };
 
     const result = getTokenOperationDisplay(outgoingNft, forAddress);
@@ -332,6 +336,7 @@ describe("getTezOperationsDisplay", () => {
       recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       timestamp: "2023-03-27T13:27:13Z",
+      level: 2215185,
     };
     expect(result).toEqual(expected);
   });
@@ -374,6 +379,7 @@ describe("getTezOperationsDisplay", () => {
       recipient: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
       sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       timestamp: "2023-03-27T13:29:22Z",
+      level: 2215193,
     };
     expect(result).toEqual(expected);
   });
@@ -411,6 +417,7 @@ describe("getTezOperationsDisplay", () => {
       recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       timestamp: "2023-03-27T13:30:37Z",
+      level: 2215201,
     };
     expect(result).toEqual(expected);
   });
@@ -433,6 +440,7 @@ describe("getOperationsDisplays", () => {
         timestamp: "2023-03-27T13:30:37Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/2215201/operations",
+        level: 2215201,
       },
       {
         amount: { prettyDisplay: "-4.51 KL3", url: undefined },
@@ -442,6 +450,7 @@ describe("getOperationsDisplays", () => {
         timestamp: "2023-03-27T13:29:22Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/2215193/operations",
+        level: 2215193,
       },
       {
         amount: { prettyDisplay: "+7.1685 KL3", url: undefined },
@@ -451,6 +460,7 @@ describe("getOperationsDisplays", () => {
         timestamp: "2023-03-27T13:27:13Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/2215185/operations",
+        level: 2215185,
       },
       {
         amount: {
@@ -463,6 +473,7 @@ describe("getOperationsDisplays", () => {
         timestamp: "2023-03-27T13:24:48Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/2215172/operations",
+        level: 2215172,
       },
       {
         amount: {
@@ -475,6 +486,7 @@ describe("getOperationsDisplays", () => {
         timestamp: "2023-03-27T11:06:40Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/2214369/operations",
+        level: 2214369,
       },
       {
         amount: { prettyDisplay: "-6.41 ꜩ" },
@@ -487,6 +499,7 @@ describe("getOperationsDisplays", () => {
         type: "transaction",
         tzktUrl:
           "https://mainnet.tzkt.io/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ",
+        level: 2214204,
       },
       {
         amount: { prettyDisplay: "+2.4 ꜩ" },
@@ -499,6 +512,7 @@ describe("getOperationsDisplays", () => {
         type: "transaction",
         tzktUrl:
           "https://mainnet.tzkt.io/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM",
+        level: 2213611,
       },
       {
         amount: { prettyDisplay: "+2.1 KL2", url: undefined },
@@ -508,6 +522,7 @@ describe("getOperationsDisplays", () => {
         timestamp: "2023-03-26T14:38:48Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/2207656/operations",
+        level: 2207656,
       },
       {
         amount: { prettyDisplay: "-0 ꜩ" },
@@ -520,6 +535,7 @@ describe("getOperationsDisplays", () => {
         type: "transaction",
         tzktUrl:
           "https://mainnet.tzkt.io/op9pGAxiJtPcv37KRnLWhYBDx2RRhTiBeTZNsKQAQ1Pxn8AsbUC",
+        level: 2207631,
       },
       {
         amount: {
@@ -532,6 +548,7 @@ describe("getOperationsDisplays", () => {
         timestamp: "2023-03-26T14:34:47Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/2207631/operations",
+        level: 2207631,
       },
     ];
     expect(result).toEqual(expected);

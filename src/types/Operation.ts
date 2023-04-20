@@ -32,4 +32,5 @@ export type OperationDisplay = {
   prettyTimestamp: string;
   timestamp: string;
   tzktUrl?: string;
+  level: number;
 };

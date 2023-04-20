@@ -300,7 +300,7 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
   return priceUsd ?? null;
 };
 
-export const getLatestBlockNumber = async (
+export const getLatestBlockLevel = async (
   network = TezosNetwork.MAINNET
 ): Promise<number> => {
   return await blocksGetCount({

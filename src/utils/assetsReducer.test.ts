@@ -50,6 +50,7 @@ describe("Assets reducer", () => {
       conversionRate: null,
       bakers: [],
       batches: {},
+      blockLevel: null,
     });
   });
 
@@ -69,6 +70,7 @@ describe("Assets reducer", () => {
       conversionRate: null,
       bakers: [],
       batches: {},
+      blockLevel: null,
     });
 
     store.dispatch(
@@ -93,6 +95,7 @@ describe("Assets reducer", () => {
       conversionRate: null,
       bakers: [],
       batches: {},
+      blockLevel: null,
     });
   });
 
@@ -124,6 +127,7 @@ describe("Assets reducer", () => {
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
       batches: {},
+      blockLevel: null,
     });
   });
 
@@ -155,6 +159,7 @@ describe("Assets reducer", () => {
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
       batches: {},
+      blockLevel: null,
     });
   });
 
@@ -186,6 +191,7 @@ describe("Assets reducer", () => {
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
       batches: {},
+      blockLevel: null,
     });
 
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
@@ -198,6 +204,7 @@ describe("Assets reducer", () => {
       network: "ghostnet",
       conversionRate: null,
       batches: {},
+      blockLevel: null,
     });
   });
 
@@ -229,6 +236,7 @@ describe("Assets reducer", () => {
       network: "mainnet",
       operations: { tez: {}, tokens: {} },
       batches: {},
+      blockLevel: null,
     });
 
     store.dispatch(accountsSlice.actions.reset());
@@ -241,6 +249,7 @@ describe("Assets reducer", () => {
       network: "mainnet",
       conversionRate: null,
       batches: {},
+      blockLevel: null,
     });
   });
 
@@ -272,6 +281,7 @@ describe("Assets reducer", () => {
         },
         tokens: {},
       },
+      blockLevel: null,
     });
 
     store.dispatch(
@@ -305,6 +315,7 @@ describe("Assets reducer", () => {
         },
         tokens: {},
       },
+      blockLevel: null,
     });
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
   });
@@ -337,6 +348,7 @@ describe("Assets reducer", () => {
         },
         tez: {},
       },
+      blockLevel: null,
     });
 
     store.dispatch(
@@ -370,6 +382,7 @@ describe("Assets reducer", () => {
         tez: {},
       },
       batches: {},
+      blockLevel: null,
     });
   });
 
