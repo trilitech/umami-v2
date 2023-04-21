@@ -2,13 +2,16 @@ import { TezosNetwork } from "@airgap/tezos";
 import {
   blocksGetCount,
   DelegationOperation,
+  operationsGetDelegations,
+  operationsGetTransactions,
   Token,
+  tokensGetTokenTransfers,
   TokenTransfer,
 } from "@tzkt/sdk-api";
 import axios from "axios";
 import { bakersUrl, coincapUrl, nodeUrls, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
-import * as tzktApi from "@tzkt/sdk-api";
+import { tokensGetTokenBalances } from "@tzkt/sdk-api";
 import { TezosToolkit } from "@taquito/taquito";
 import { Baker } from "../../types/Baker";
 import { TezTransfer } from "../../types/Operation";
@@ -22,7 +25,7 @@ export const getTokens = async (
   pkh: string,
   network: TezosNetwork
 ): Promise<Token[]> =>
-  tzktApi.tokensGetTokenBalances(
+  tokensGetTokenBalances(
     {
       account: { eq: pkh },
     },
@@ -35,7 +38,7 @@ export const getTezTransfers = (
   address: string,
   network = TezosNetwork.MAINNET
 ): Promise<TezTransfer[]> => {
-  return tzktApi.operationsGetTransactions(
+  return operationsGetTransactions(
     {
       anyof: { fields: ["sender", "target"], eq: address },
       sort: { desc: "level" },
@@ -51,7 +54,7 @@ export const getTokenTransfers = (
   address: string,
   network = TezosNetwork.MAINNET
 ): Promise<TokenTransfer[]> => {
-  return tzktApi.tokensGetTokenTransfers(
+  return tokensGetTokenTransfers(
     {
       anyof: { fields: ["from", "to"], eq: address },
       sort: { desc: "level" },
@@ -67,18 +70,16 @@ export const getLastDelegation = async (
   address: string,
   network = TezosNetwork.MAINNET
 ): Promise<DelegationOperation | undefined> => {
-  return tzktApi
-    .operationsGetDelegations(
-      {
-        sender: { eq: address },
-        sort: { desc: "level" },
-        limit: 1,
-      },
-      {
-        baseUrl: tzktUrls[network],
-      }
-    )
-    .then((d) => d[0]);
+  return operationsGetDelegations(
+    {
+      sender: { eq: address },
+      sort: { desc: "level" },
+      limit: 1,
+    },
+    {
+      baseUrl: tzktUrls[network],
+    }
+  ).then((d) => d[0]);
 };
 
 // Fetch the tezos price in usd from the CoinCap API.
