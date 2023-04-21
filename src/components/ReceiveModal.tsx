@@ -69,7 +69,7 @@ const ReceiveModal: FC<{
                 qrStyle="dots"
                 fgColor={colors.orange}
                 bgColor={colors.gray[900]}
-                logoImage={process.env.PUBLIC_URL + "icon.png"}
+                logoImage="icon.png"
               />
             </Box>
           </Flex>
