@@ -14,6 +14,7 @@ _Put an `x` in the boxes that apply_
 
 - [ ] Bugfix
 - [ ] New feature
+- [ ] Refactor
 - [ ] Breaking change
 - [ ] Documentation Update
 
