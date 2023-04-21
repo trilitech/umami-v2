@@ -6,7 +6,7 @@ import {
   TokenTransfer,
 } from "@tzkt/sdk-api";
 import axios from "axios";
-import { coincapUrl, nodeUrls, tzktUrls } from "./consts";
+import { bakersUrl, coincapUrl, nodeUrls, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
 import * as tzktApi from "@tzkt/sdk-api";
 import { TezosToolkit } from "@taquito/taquito";
@@ -18,7 +18,10 @@ export const getBalance = async (pkh: string, network: TezosNetwork) => {
   return Tezos.tz.getBalance(pkh);
 };
 
-export const getTokens = (pkh: string, network: TezosNetwork) =>
+export const getTokens = async (
+  pkh: string,
+  network: TezosNetwork
+): Promise<Token[]> =>
   tzktApi.tokensGetTokenBalances(
     {
       account: { eq: pkh },
@@ -26,7 +29,7 @@ export const getTokens = (pkh: string, network: TezosNetwork) =>
     {
       baseUrl: tzktUrls[network],
     }
-  ) as Promise<Token[]>;
+  );
 
 export const getTezTransfers = (
   address: string,
@@ -63,7 +66,7 @@ export const getTokenTransfers = (
 export const getLastDelegation = async (
   address: string,
   network = TezosNetwork.MAINNET
-) => {
+): Promise<DelegationOperation | undefined> => {
   return tzktApi
     .operationsGetDelegations(
       {
@@ -75,7 +78,7 @@ export const getLastDelegation = async (
         baseUrl: tzktUrls[network],
       }
     )
-    .then((d) => d[0]) as Promise<DelegationOperation | undefined>;
+    .then((d) => d[0]);
 };
 
 // Fetch the tezos price in usd from the CoinCap API.
@@ -85,10 +88,7 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
     data: {
       data: { priceUsd },
     },
-  } = await axios<coinCapResponseType>({
-    method: "get",
-    url: `${coincapUrl}/tezos`,
-  });
+  } = await axios.get<coinCapResponseType>(`${coincapUrl}/tezos`);
 
   return priceUsd ?? null;
 };
@@ -101,8 +101,6 @@ export const getLatestBlockLevel = async (
   });
 };
 
-export const getBakers = () => {
-  return axios
-    .get("https://api.baking-bad.org/v2/bakers")
-    .then((d) => d.data) as Promise<Baker[]>;
+export const getBakers = async (): Promise<Baker[]> => {
+  return axios.get<Baker[]>(bakersUrl).then((d) => d.data);
 };

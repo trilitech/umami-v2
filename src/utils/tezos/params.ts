@@ -53,10 +53,6 @@ export const transactionValuesToWalletParams = async (
           });
         }
         break;
-      default: {
-        const exhaustiveCheck: never = type;
-        throw new Error(exhaustiveCheck);
-      }
     }
   }
 
@@ -105,10 +101,6 @@ export const transactionValuesToParams = async (
           });
         }
         break;
-      default: {
-        const exhaustiveCheck: never = type;
-        throw new Error(exhaustiveCheck);
-      }
     }
   }
 

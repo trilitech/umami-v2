@@ -1,6 +1,10 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { InMemorySigner } from "@taquito/signer";
-import { TezosToolkit } from "@taquito/taquito";
+import {
+  ContractMethod,
+  ContractProvider,
+  TezosToolkit,
+} from "@taquito/taquito";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
 import { FA2TokenTransferParams } from "./types";
@@ -8,7 +12,7 @@ import { FA2TokenTransferParams } from "./types";
 export const addressExists = async (
   pkh: string,
   network = TezosNetwork.MAINNET
-) => {
+): Promise<boolean> => {
   // Temporary solution to check address existence
   const Tezos = new TezosToolkit(nodeUrls[network]);
   const balance = await Tezos.tz.getBalance(pkh);
@@ -17,7 +21,7 @@ export const addressExists = async (
 
 // Temporary solution for generating fingerprint for seedphrase
 // https://remarkablemark.medium.com/how-to-generate-a-sha-256-hash-with-javascript-d3b2696382fd
-export const getFingerPrint = async (seedPhrase: string) => {
+export const getFingerPrint = async (seedPhrase: string): Promise<string> => {
   const utf8 = new TextEncoder().encode(seedPhrase);
   const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -31,7 +35,7 @@ export const getFingerPrint = async (seedPhrase: string) => {
 export const makeToolkitWithSigner = async (
   sk: string,
   network: TezosNetwork
-) => {
+): Promise<TezosToolkit> => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
     signer: new InMemorySigner(sk),
@@ -43,7 +47,7 @@ export const makeToolkitWithDummySigner = (
   pk: string,
   pkh: string,
   network: TezosNetwork
-) => {
+): TezosToolkit => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
     signer: new DummySigner(pk, pkh) as any,
@@ -51,7 +55,12 @@ export const makeToolkitWithDummySigner = (
   return Tezos;
 };
 
-export const getPkAndPkhFromSk = async (sk: string) => {
+export const getPkAndPkhFromSk = async (
+  sk: string
+): Promise<{
+  pk: string;
+  pkh: string;
+}> => {
   const signer = new InMemorySigner(sk);
   return { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 };
@@ -62,7 +71,7 @@ export const getPkAndPkhFromSk = async (sk: string) => {
 export const makeContract = async (
   { sender, recipient, tokenId, amount, contract }: FA2TokenTransferParams,
   toolkit: TezosToolkit
-) => {
+): Promise<ContractMethod<ContractProvider>> => {
   const michelson = [
     {
       from_: sender,

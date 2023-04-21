@@ -10,3 +10,5 @@ export const tzktUrls = {
 };
 
 export const coincapUrl = "https://api.coincap.io/v2/assets";
+
+export const bakersUrl = "https://api.baking-bad.org/v2/bakers";

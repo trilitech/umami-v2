@@ -1,5 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { Signer, TezosToolkit } from "@taquito/taquito";
+import { Estimate, Signer, TezosToolkit } from "@taquito/taquito";
 import { TransactionValues } from "../../components/sendForm/types";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
@@ -13,7 +13,7 @@ export const estimateTezTransfer = async (
   amount: number,
   senderPk: string,
   network: TezosNetwork
-) => {
+): Promise<Estimate> => {
   const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
   return Tezos.estimate.transfer({
     to: recipient,
@@ -25,7 +25,7 @@ export const estimateFA2transfer = async (
   params: FA2TokenTransferParams,
   senderPk: string,
   network: TezosNetwork
-) => {
+): Promise<Estimate> => {
   const Tezos = makeToolkitWithDummySigner(senderPk, params.sender, network);
 
   const contractInstance = await makeContract(params, Tezos);
@@ -38,7 +38,7 @@ export const estimateDelegation = async (
   bakerPkh: string | undefined,
   senderPk: string,
   network: TezosNetwork
-) => {
+): Promise<Estimate> => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
     signer: new DummySigner(senderPk, senderPkh) as any as Signer,
@@ -52,10 +52,10 @@ export const estimateBatch = async (
   pkh: string,
   pk: string,
   network: TezosNetwork
-) => {
+): Promise<Estimate[]> => {
   const batch = await transactionValuesToBatchParams(transactions, pk, network);
 
-  const Tezos = await makeToolkitWithDummySigner(pk, pkh, network);
+  const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
 
   return Tezos.estimate.batch(batch);
 };
