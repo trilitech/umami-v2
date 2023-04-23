@@ -181,5 +181,9 @@
         "umami"
       ]
     }
+  },
+  "packageManager": "yarn@3.5.0",
+  "resolutions": {
+    "nwsapi": "2.2.2"
   }
 }
