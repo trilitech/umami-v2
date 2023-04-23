@@ -19,7 +19,7 @@ import { NFT } from "../../../types/Asset";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
-import ContactSelector from "../../ContactSelector";
+import { RecipentAutoComplete } from "../../RecipientAutoComplete/RecipientAutoComplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { SendFormMode, TransactionValues } from "../types";
 
@@ -129,7 +129,6 @@ export const SendTezOrNFTForm = ({
 }) => {
   const mandatoryNftSender = nft?.owner;
   const isNFT = !!nft;
-  const showContact = !!recipient;
   const getBatchIsSimulating = useBatchIsSimulating();
 
   const {
@@ -183,34 +182,24 @@ export const SendTezOrNFTForm = ({
           </FormControl>
           <FormControl mb={2} isInvalid={!!errors.recipient}>
             <FormLabel>To</FormLabel>
-            {showContact ? (
-              <Controller
-                rules={{ required: true }}
-                control={control}
-                name="recipient"
-                render={({ field: { onChange, value } }) => (
-                  <ContactSelector
-                    isDisabled={simulating}
-                    selected={value}
-                    onSelect={(c) => {
-                      onChange(c.pkh);
-                    }}
-                  />
-                )}
-              />
-            ) : (
-              <Input
-                isDisabled={simulating}
-                type="text"
-                {...register("recipient", {
-                  required: true,
-                  validate: (val) =>
-                    validateAddress(val) === ValidationResult.VALID ||
-                    "Invalid address",
-                })}
-                placeholder="Enter recipient address..."
-              />
-            )}
+            <Controller
+              rules={{
+                required: true,
+                validate: (val) =>
+                  validateAddress(val) === ValidationResult.VALID ||
+                  "Invalid address",
+              }}
+              control={control}
+              name="recipient"
+              render={({ field: { onChange, value } }) => (
+                <RecipentAutoComplete
+                  initialPkhValue={recipient}
+                  onValidPkh={(pkh) => {
+                    onChange(pkh === null ? "" : pkh);
+                  }}
+                />
+              )}
+            />
             {errors.recipient && (
               <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
             )}

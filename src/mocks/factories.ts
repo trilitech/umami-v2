@@ -3,6 +3,7 @@ import { TransactionValues } from "../components/sendForm/types";
 import { Account, AccountType } from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
+import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
 import { getDerivationPath } from "../utils/restoreAccounts";
@@ -279,5 +280,12 @@ export const mockDelegationTransfer = (index: number): TransactionValues => {
       sender: mockPkh(index),
       recipient: mockPkh(index + 1),
     },
+  };
+};
+
+export const mockContact = (index: number): Contact => {
+  return {
+    name: `Contact ${index}`,
+    pkh: mockPkh(index),
   };
 };
