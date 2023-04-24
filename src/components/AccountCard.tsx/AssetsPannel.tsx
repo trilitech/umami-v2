@@ -1,4 +1,11 @@
-import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
+import {
+  Box,
+  ListItem,
+  Tab,
+  TabList,
+  Tabs,
+  UnorderedList,
+} from "@chakra-ui/react";
 import React from "react";
 import { FA12Token, FA2Token } from "../../types/Asset";
 
@@ -25,7 +32,11 @@ export const AssetsPannel: React.FC<{
       </TabList>
 
       <Box minHeight={"10px"} overflow={"scroll"}>
-        hello
+        <UnorderedList>
+          {tokens.map((t) => {
+            return <ListItem>Lorem ipsum dolor sit amet</ListItem>;
+          })}
+        </UnorderedList>
       </Box>
     </Tabs>
   );

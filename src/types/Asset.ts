@@ -40,4 +40,11 @@ export const keepFA2s = (assets: Asset[]) => {
   return assets.filter((a) => a.type === "fa2") as FA2Token[]; // This sucks
 };
 
+export const getTokenName = (t: FA2Token | FA12Token) => {
+  return t.type === "fa1.2" ? "FA1" : t.metadata.name;
+};
+export const getTokenSymbol = (t: FA2Token | FA12Token) => {
+  return t.type === "fa1.2" ? "KLD" : t.metadata.symbol;
+};
+
 export type Asset = FA12Token | FA2Token | NFT;
