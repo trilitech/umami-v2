@@ -1,8 +1,8 @@
 import { useSelectedAccount } from "../../utils/hooks/accountHooks";
 import {
   useGetAccountAllTokens,
-  useGetAccountAssets,
   useGetAccountBalance,
+  useGetAccountNFTs,
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
 import { mutezToTez } from "../../utils/store/impureFormat";
@@ -16,7 +16,7 @@ export const AccountCard = () => {
   const getDollarBalance = useGetDollarBalance();
 
   const getTokens = useGetAccountAllTokens();
-  const getAssets = useGetAccountAssets();
+  const getNFTs = useGetAccountNFTs();
   const { onOpen: onOpenSend, modalElement: sendModal } = useSendFormModal();
   const { onOpen: onOpenReceive, modalElement: receiveModal } =
     useReceiveModal();
@@ -30,6 +30,7 @@ export const AccountCard = () => {
   const dollarBalance = getDollarBalance(account.pkh);
 
   const tokens = getTokens(account.pkh);
+  const nfts = getNFTs(account.pkh);
   return (
     <>
       <AccountCardDisplay
@@ -47,6 +48,7 @@ export const AccountCard = () => {
           onOpenReceive({ pkh: account.pkh });
         }}
         tokens={tokens}
+        nfts={nfts}
       />
       {sendModal}
       {receiveModal}

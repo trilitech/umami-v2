@@ -1,18 +1,21 @@
 import {
   Box,
-  ListItem,
   Tab,
   TabList,
+  TabPanel,
+  TabPanels,
   Tabs,
   UnorderedList,
 } from "@chakra-ui/react";
 import React from "react";
-import { FA12Token, FA2Token } from "../../../types/Asset";
+import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
+import { NFTsGrid } from "./NFTsGrid";
 import TokenTile from "./TokenTile";
 
 export const AssetsPannel: React.FC<{
   tokens: Array<FA12Token | FA2Token>;
-}> = ({ tokens }) => {
+  nfts: Array<NFT>;
+}> = ({ tokens, nfts }) => {
   return (
     <Tabs
       height={"100%"}
@@ -31,14 +34,21 @@ export const AssetsPannel: React.FC<{
         <Tab>Operations</Tab>
         <Tab>Delegations</Tab>
       </TabList>
+      <TabPanels>
+        <TabPanel data-testid="account-card-tokens-tab">
+          <Box minHeight={"10px"} overflow={"scroll"} mt={4}>
+            <UnorderedList>
+              {tokens.map((t, i) => {
+                return <TokenTile key={i} token={t} />;
+              })}
+            </UnorderedList>
+          </Box>
+        </TabPanel>
 
-      <Box minHeight={"10px"} overflow={"scroll"} mt={4}>
-        <UnorderedList>
-          {tokens.map((t) => {
-            return <TokenTile token={t} />;
-          })}
-        </UnorderedList>
-      </Box>
+        <TabPanel data-testid="account-card-nfts-tab">
+          <NFTsGrid nfts={nfts} columns={3} spacing={5} />
+        </TabPanel>
+      </TabPanels>
     </Tabs>
   );
 };
