@@ -1,5 +1,6 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import React from "react";
+import { MdGeneratingTokens } from "react-icons/md";
 import {
   FA12Token,
   FA2Token,
@@ -12,7 +13,20 @@ const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
   const name = getTokenName(token);
   const symbol = getTokenSymbol(token);
   const prettyAmount = getTokenPrettyAmmount(token);
-  return <Box>{prettyAmount}</Box>;
+  return (
+    <Flex justifyContent={"space-around"}>
+      <Flex flex={1}>
+        <Icon h={8} w={8} as={MdGeneratingTokens} />
+        <Box ml={4}>
+          <Heading size={"md"}>{symbol}</Heading>
+          <Text color={"text.dark"} size={"sm"}>
+            {name}
+          </Text>
+        </Box>
+      </Flex>
+      <Heading size={"lg"}>{prettyAmount}</Heading>
+    </Flex>
+  );
 };
 
 export default TokenTile;
