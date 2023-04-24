@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen, within } from "../../mocks/testUtils";
 import { RecipientAutoCompleteDisplay } from "./RecipientAutoComplete";
 
 const spy = jest.fn();
+
 const setup = (initialPkhValue?: string) => {
   render(
     <RecipientAutoCompleteDisplay
@@ -78,7 +79,7 @@ describe("<RecipientAutoComplete />", () => {
     ).toBeInTheDocument();
   });
 
-  test("choosing a suggestions fires the pkh and inputs the contact name", () => {
+  test("choosing a suggestions fires the pkh, inputs the contact name and closes suggestions", () => {
     setup();
     const input = screen.getByLabelText("recipient");
 
@@ -96,19 +97,44 @@ describe("<RecipientAutoComplete />", () => {
 
     fireEvent.click(sug);
     expect(input).toHaveProperty("value", mockContact(1).name);
+
+    const suggestions = within(suggestionContainer).queryAllByRole("listitem");
+    expect(suggestions).toHaveLength(0);
     expect(spy).toHaveBeenCalledWith(mockContact(1).pkh);
   });
 
-  it("should display initialPkhValue and it's contact if any", async () => {
-    setup(mockContact(1).pkh);
+  it("should display initialPkhValue's contact if any, and not display any suggestions", async () => {
+    const initialPkhValue = mockContact(0).pkh;
 
+    render(
+      <RecipientAutoCompleteDisplay
+        contacts={[
+          {
+            name: "foo",
+            pkh: mockContact(0).pkh,
+          },
+          {
+            name: "foo1",
+            pkh: mockContact(1).pkh,
+          },
+          {
+            name: "foo2",
+            pkh: mockContact(1).pkh,
+          },
+        ]}
+        onValidPkh={spy}
+        initialPkhValue={initialPkhValue}
+      />
+    );
+
+    const suggestionContainer = screen.getByRole("list");
+    const suggestions = within(suggestionContainer).queryAllByRole("listitem");
+    expect(suggestions).toHaveLength(0);
     const input = screen.getByLabelText("recipient");
-    expect(input).toHaveProperty("value", mockContact(1).name);
-
-    setup(mockPkh(5));
+    expect(input).toHaveProperty("value", "foo");
   });
 
-  it("should display initialPkhValue", async () => {
+  it("should display initialPkhValue if there is no existing contact", async () => {
     setup(mockPkh(5));
 
     const input = screen.getByLabelText("recipient");
