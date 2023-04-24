@@ -63,6 +63,16 @@ export const useGetAccountFA1Tokens = () => {
     return keepFA1s(getAssets(pkh));
   };
 };
+
+export const useGetAccountAllTokens = () => {
+  const getFA1 = useGetAccountFA1Tokens();
+  const getFA2 = useGetAccountFA2Tokens();
+
+  return (pkh: string) => {
+    return [...getFA1(pkh), ...getFA2(pkh)];
+  };
+};
+
 export const useGetAccountNFTs = () => {
   const getAssets = useGetAccountAssets();
 
