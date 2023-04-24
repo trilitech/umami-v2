@@ -35,9 +35,11 @@ export const RecipientAutoCompleteDisplay: React.FC<
     : "";
 
   const [value, setValue] = useState(initialValue);
+  const [hideSuggestions, setHideSuggestions] = useState(Boolean(initialValue));
 
   const handleChange = (v: string) => {
     setValue(v);
+    setHideSuggestions(false);
 
     const contactPkh = contacts.find((c) => c.name === v)?.pkh;
 
@@ -55,7 +57,7 @@ export const RecipientAutoCompleteDisplay: React.FC<
     onValidPkh(null);
   };
 
-  const allSuggestions = getSuggestions(value, contacts);
+  const allSuggestions = hideSuggestions ? [] : getSuggestions(value, contacts);
 
   const renderSuggestions = (suggestions: string[]) => {
     return (
@@ -66,7 +68,13 @@ export const RecipientAutoCompleteDisplay: React.FC<
         zIndex={2}
       >
         {suggestions.map((s) => (
-          <ListItem key={s} onClick={(_) => handleChange(s)}>
+          <ListItem
+            key={s}
+            onClick={(_) => {
+              handleChange(s);
+              setHideSuggestions(true);
+            }}
+          >
             {s}
           </ListItem>
         ))}
