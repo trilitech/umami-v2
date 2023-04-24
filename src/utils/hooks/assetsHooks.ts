@@ -1,11 +1,12 @@
 import { round } from "lodash";
+import { keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { filterNulls, objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { mutezToTez } from "../store/impureFormat";
-import { makeNft } from "../token/classify/classifyToken";
+import { classifyToken, makeNft } from "../token/classify/classifyToken";
 import { useAccounts } from "./accountHooks";
 import { getTotalBalance } from "./accountUtils";
 
@@ -29,6 +30,55 @@ export const useAllNfts = () => {
   return objectMap(allTokens, (tokens) =>
     filterNulls(tokens.map(makeNft)).filter((t) => t.balance !== "0")
   );
+};
+
+export const useAccountAssets = () => {
+  const allTokens = useAppSelector((s) => s.assets.balances.tokens);
+
+  return objectMap(allTokens, (tokens) =>
+    filterNulls(tokens.map(makeNft)).filter((t) => t.balance !== "0")
+  );
+};
+
+export const useGetAccountAssets = () => {
+  const allTokens = useAppSelector((s) => s.assets.balances.tokens);
+
+  return (pkh: string) => {
+    return filterNulls(allTokens[pkh].map(classifyToken));
+  };
+};
+
+export const useGetAccountFA2Tokens = () => {
+  const getAssets = useGetAccountAssets();
+
+  return (pkh: string) => {
+    return keepFA2s(getAssets(pkh));
+  };
+};
+
+export const useGetAccountFA1Tokens = () => {
+  const getAssets = useGetAccountAssets();
+
+  return (pkh: string) => {
+    return keepFA1s(getAssets(pkh));
+  };
+};
+
+export const useGetAccountAllTokens = () => {
+  const getFA1 = useGetAccountFA1Tokens();
+  const getFA2 = useGetAccountFA2Tokens();
+
+  return (pkh: string) => {
+    return [...getFA1(pkh), ...getFA2(pkh)];
+  };
+};
+
+export const useGetAccountNFTs = () => {
+  const getAssets = useGetAccountAssets();
+
+  return (pkh: string) => {
+    return keepNFTs(getAssets(pkh));
+  };
 };
 
 export const useAllOperations = () =>
