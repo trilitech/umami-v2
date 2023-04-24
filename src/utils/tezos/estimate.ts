@@ -41,7 +41,7 @@ export const estimateDelegation = async (
 ): Promise<Estimate> => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
-    signer: new DummySigner(senderPk, senderPkh) as any as Signer,
+    signer: new DummySigner(senderPk, senderPkh),
   });
 
   return Tezos.estimate.setDelegate({ source: senderPkh, delegate: bakerPkh });

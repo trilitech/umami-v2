@@ -50,7 +50,7 @@ export const makeToolkitWithDummySigner = (
 ): TezosToolkit => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
-    signer: new DummySigner(pk, pkh) as any,
+    signer: new DummySigner(pk, pkh),
   });
   return Tezos;
 };
