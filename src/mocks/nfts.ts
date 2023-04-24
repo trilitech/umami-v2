@@ -1,4 +1,6 @@
-export const tezzard = {
+import { NFT } from "../types/Asset";
+
+export const tezzard: NFT = {
   contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
   balance: "1",
   tokenId: "6",
@@ -9,4 +11,5 @@ export const tezzard = {
     name: "Tezzardz #24",
     symbol: "FKR",
   },
+  type: "nft",
 };

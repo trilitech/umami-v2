@@ -227,6 +227,7 @@ export const mockFA1Token = (
 
 export const mockNFT = (index: number, balance = "1"): NFT => {
   return {
+    type: "nft",
     owner: mockPkh(index),
     balance,
     contract: mockContract(index),
