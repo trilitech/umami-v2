@@ -52,7 +52,7 @@ describe("<AccountCard />", () => {
     expect(screen.getByText("33200 ꜩ")).toBeInTheDocument();
   });
 
-  it.only("should display assets tabs with tokens by default", () => {
+  it("should display assets tabs with tokens by default", () => {
     render(<AccountCard />);
   });
 });
