@@ -124,18 +124,22 @@ export const mockAccount = (
 const mockContract = (index: number) =>
   `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`;
 
-export const mockNFTToken = (index: number, pkh: string, balance = 1) => {
+export const mockNFTToken = (
+  index: number,
+  pkh: string,
+  balance = 1
+): Token => {
   return {
     id: index,
     account: {
       address: pkh,
     },
     token: {
-      id: 10899466223617,
+      id: index,
       contract: {
         address: mockContract(index),
       },
-      tokenId: "3",
+      tokenId: String(index),
       standard: "fa2",
       totalSupply: "1",
       metadata: {
@@ -154,7 +158,71 @@ export const mockNFTToken = (index: number, pkh: string, balance = 1) => {
       },
     },
     balance: String(balance),
-  } as Token;
+  };
+};
+
+export const mockFA2Token = (
+  index: number,
+  pkh: string,
+  balance = 1,
+  decimals = 4,
+  symbol = "KL2",
+  name = "Klondike2"
+): Token => {
+  return {
+    id: 10898270846977,
+    account: {
+      address: pkh,
+    },
+    token: {
+      id: 10898194300929,
+      contract: {
+        address: mockContract(index),
+      },
+      tokenId: String(index),
+      standard: "fa2",
+      totalSupply: "13000000000",
+      metadata: {
+        name,
+        symbol,
+        decimals: String(decimals),
+      },
+    },
+    balance: String(balance),
+    transfersCount: 27,
+    firstLevel: 288245,
+    firstTime: "2022-03-24T15:36:50Z",
+    lastLevel: 2247548,
+    lastTime: "2023-03-31T11:19:01Z",
+  };
+};
+
+export const mockFA1Token = (
+  index: number,
+  pkh: string,
+  balance = 1
+): Token => {
+  return {
+    id: 10897662672897,
+    account: {
+      address: pkh,
+    },
+    token: {
+      id: 10897625972737,
+      contract: {
+        address: mockContract(index),
+      },
+      tokenId: "0",
+      standard: "fa1.2",
+      totalSupply: "13000000",
+    },
+    balance: String(balance),
+    transfersCount: 28,
+    firstLevel: 288229,
+    firstTime: "2022-03-24T15:32:10Z",
+    lastLevel: 2215201,
+    lastTime: "2023-03-27T13:30:37Z",
+  };
 };
 
 export const mockNFT = (index: number, balance = "1"): NFT => {
