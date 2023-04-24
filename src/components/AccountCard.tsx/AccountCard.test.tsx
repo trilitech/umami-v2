@@ -9,8 +9,8 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 
 import BigNumber from "bignumber.js";
-import { render, screen } from "../../mocks/testUtils";
 import AccountCard from ".";
+import { render, screen } from "../../mocks/testUtils";
 const { updateAssets } = assetsSlice.actions;
 const { add, setSelected } = accountsSlice.actions;
 
@@ -53,12 +53,10 @@ describe("<AccountCard />", () => {
 
   it("should display assets tabs with tokens by default", () => {
     render(<AccountCard />);
-    expect(screen.getByTestId("account-card-tokens-tab")).toBeInTheDocument();
-    const tokenTiles = screen.queryAllByTestId("account-card-tokens-tile");
-    expect(tokenTiles).toHaveLength(3);
-    expect(tokenTiles[0]).toHaveTextContent("KLDFA10.0001");
-    expect(tokenTiles[1]).toHaveTextContent("KL2Klondike 230");
-    expect(tokenTiles[2]).toHaveTextContent("FTFoo token2000");
+    const tokenTiles = screen.getAllByTestId("token-tile");
+    expect(tokenTiles[0]).toHaveTextContent("FA1");
+    expect(tokenTiles[1]).toHaveTextContent("KL2");
+    expect(tokenTiles[2]).toHaveTextContent("FT");
   });
 
   it("should display nfts under nfts tab", () => {

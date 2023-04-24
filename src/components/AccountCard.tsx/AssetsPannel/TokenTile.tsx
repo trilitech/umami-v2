@@ -14,11 +14,7 @@ const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
   const symbol = getTokenSymbol(token);
   const prettyAmount = getTokenPrettyAmmount(token, { showSymbol: false });
   return (
-    <Flex
-      justifyContent={"space-around"}
-      mb={2}
-      data-testid="account-card-tokens-tile"
-    >
+    <Flex justifyContent={"space-around"} mb={2} data-testid="token-tile">
       <Flex flex={1}>
         <Icon h={8} w={8} as={MdGeneratingTokens} />
         <Box ml={4}>

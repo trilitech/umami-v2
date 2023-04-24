@@ -38,8 +38,8 @@ export const AssetsPannel: React.FC<{
         <TabPanel data-testid="account-card-tokens-tab">
           <Box minHeight={"10px"} overflow={"scroll"} mt={4}>
             <UnorderedList>
-              {tokens.map((t, i) => {
-                return <TokenTile key={i} token={t} />;
+              {tokens.map((t) => {
+                return <TokenTile token={t} key={t.contract + t.balance} />;
               })}
             </UnorderedList>
           </Box>

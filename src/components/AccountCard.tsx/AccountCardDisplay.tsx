@@ -4,10 +4,10 @@ import { MdArrowOutward, MdSouthWest } from "react-icons/md";
 
 import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
+import { FA12Token, FA2Token, NFT } from "../../types/Asset";
+import { CopyableAddress } from "../CopyableText";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
-import { CopyableAddress } from "../CopyableText";
-import { FA12Token, FA2Token, NFT } from "../../types/Asset";
 import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
 
 type Props = {
