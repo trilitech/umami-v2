@@ -7,7 +7,7 @@ import { VscWand } from "react-icons/vsc";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { CopyableAddress } from "../CopyableText";
-import { Asset } from "../../types/Asset";
+import { Asset, FA12Token, FA2Token } from "../../types/Asset";
 import { AssetsPannel } from "./AssetsPannel";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
   pkh: string;
   tezBalance: number | null;
   dollarBalance: number | null;
-  assets: Asset[];
+  tokens: Array<FA12Token | FA2Token>;
 };
 
 const RoundButton: React.FC<{
@@ -50,7 +50,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
   label,
   tezBalance,
   dollarBalance,
-  assets,
+  tokens,
 }) => {
   return (
     <Flex direction="column" alignItems={"center"}>
@@ -76,7 +76,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <RoundButton label="Buy tez" icon={<FiPlus />} />
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
-      <AssetsPannel assets={assets} />
+      <AssetsPannel tokens={tokens} />
     </Flex>
   );
 };
