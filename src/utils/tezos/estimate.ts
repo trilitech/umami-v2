@@ -1,5 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { Estimate, Signer, TezosToolkit } from "@taquito/taquito";
+import { Estimate, TezosToolkit } from "@taquito/taquito";
 import { TransactionValues } from "../../components/sendForm/types";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
@@ -41,7 +41,7 @@ export const estimateDelegation = async (
 ): Promise<Estimate> => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
-    signer: new DummySigner(senderPk, senderPkh) as any as Signer,
+    signer: new DummySigner(senderPk, senderPkh),
   });
 
   return Tezos.estimate.setDelegate({ source: senderPkh, delegate: bakerPkh });
