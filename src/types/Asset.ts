@@ -41,10 +41,12 @@ export const keepFA2s = (assets: Asset[]) => {
 };
 
 export const getTokenName = (t: FA2Token | FA12Token) => {
-  return t.type === "fa1.2" ? "FA1" : t.metadata.name;
+  return t.type === "fa1.2" ? "FA1" : t.metadata.name || "Unknown Token)";
 };
 export const getTokenSymbol = (t: FA2Token | FA12Token) => {
-  return t.type === "fa1.2" ? "KLD" : t.metadata.symbol;
+  return t.type === "fa1.2"
+    ? "KLD"
+    : t.metadata.symbol || "Unknown Token Symbol";
 };
 
 export type Asset = FA12Token | FA2Token | NFT;
