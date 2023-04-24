@@ -29,4 +29,15 @@ export type NFT = TokenBase & {
   owner: string;
 };
 
+export const keepNFTSz = (assets: Asset[]) => {
+  return assets.filter((a) => a.type === "nft") as NFT[]; // This sucks
+};
+export const keepFA1s = (assets: Asset[]) => {
+  return assets.filter((a) => a.type === "fa1.2") as FA12Token[]; // This sucks
+};
+
+export const keepFA2s = (assets: Asset[]) => {
+  return assets.filter((a) => a.type === "fa2") as FA2Token[]; // This sucks
+};
+
 export type Asset = FA12Token | FA2Token | NFT;
