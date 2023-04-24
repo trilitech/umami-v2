@@ -1,8 +1,11 @@
-import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Box, Tab, TabList, Tabs, UnorderedList } from "@chakra-ui/react";
 import React from "react";
-import { Asset } from "../../types/Asset";
+import { FA12Token, FA2Token } from "../../../types/Asset";
+import TokenTile from "./TokenTile";
 
-export const AssetsPannel: React.FC<{ assets: Asset[] }> = ({ assets }) => {
+export const AssetsPannel: React.FC<{
+  tokens: Array<FA12Token | FA2Token>;
+}> = ({ tokens }) => {
   return (
     <Tabs
       height={"100%"}
@@ -22,8 +25,12 @@ export const AssetsPannel: React.FC<{ assets: Asset[] }> = ({ assets }) => {
         <Tab>Delegations</Tab>
       </TabList>
 
-      <Box minHeight={"10px"} overflow={"scroll"}>
-        hello
+      <Box minHeight={"10px"} overflow={"scroll"} mt={4}>
+        <UnorderedList>
+          {tokens.map((t) => {
+            return <TokenTile token={t} key={t.contract + t.balance} />;
+          })}
+        </UnorderedList>
       </Box>
     </Tabs>
   );
