@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FA12Token, FA2Token } from "../../../types/Asset";
+import TokenTile from "./TokenTile";
 
 export const AssetsPannel: React.FC<{
   tokens: Array<FA12Token | FA2Token>;
@@ -34,7 +35,7 @@ export const AssetsPannel: React.FC<{
       <Box minHeight={"10px"} overflow={"scroll"}>
         <UnorderedList>
           {tokens.map((t) => {
-            return <ListItem>Lorem ipsum dolor sit amet</ListItem>;
+            return <TokenTile token={t} />;
           })}
         </UnorderedList>
       </Box>

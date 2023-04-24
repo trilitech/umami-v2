@@ -58,4 +58,10 @@ export const getTokenDecimal = (t: FA2Token | FA12Token) => {
     : 4;
 };
 
+export const getTokenPrettyAmmount = (t: FA2Token | FA12Token) => {
+  const symbol = getTokenSymbol(t);
+  const amount = Number(t.balance);
+  const decimals = getTokenDecimal(t);
+  return `${amount / decimals} ${symbol}`;
+};
 export type Asset = FA12Token | FA2Token | NFT;
