@@ -1,12 +1,5 @@
-import {
-  AspectRatio,
-  Box,
-  Image,
-  SimpleGrid,
-  Tab,
-  TabList,
-  Tabs,
-} from "@chakra-ui/react";
+import { Tab, TabList, Tabs } from "@chakra-ui/react";
+import { NFTsGrid } from "../../components/AccountCard.tsx/AssetsPannel/NFTsGrid";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 export const NftList = () => {
   const nfts = useAllNfts();
@@ -27,17 +20,7 @@ export const NftList = () => {
       <TabList>
         <Tab>All NFTs</Tab>
       </TabList>
-      <Box overflow={"scroll"} p={4}>
-        <SimpleGrid columns={4} spacing={4}>
-          {allOwnedNfts.map((nft, i) => {
-            return (
-              <AspectRatio key={nft.contract + i} width={"100%"} ratio={4 / 4}>
-                <Image width="100%" height={40} src={nft.metadata.displayUri} />
-              </AspectRatio>
-            );
-          })}
-        </SimpleGrid>
-      </Box>
+      <NFTsGrid nfts={allOwnedNfts} columns={4} spacing={4} />
     </Tabs>
   );
 };
