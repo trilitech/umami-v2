@@ -1,4 +1,5 @@
 import { round } from "lodash";
+import { keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { filterNulls, objectMap } from "../helpers";
@@ -44,6 +45,29 @@ export const useGetAccountAssets = () => {
 
   return (pkh: string) => {
     return filterNulls(allTokens[pkh].map(classifyToken));
+  };
+};
+
+export const useGetAccountFA2Tokens = () => {
+  const getAssets = useGetAccountAssets();
+
+  return (pkh: string) => {
+    return keepFA2s(getAssets(pkh));
+  };
+};
+
+export const useGetAccountFA1Tokens = () => {
+  const getAssets = useGetAccountAssets();
+
+  return (pkh: string) => {
+    return keepFA1s(getAssets(pkh));
+  };
+};
+export const useGetAccountNFTs = () => {
+  const getAssets = useGetAccountAssets();
+
+  return (pkh: string) => {
+    return keepNFTs(getAssets(pkh));
   };
 };
 
