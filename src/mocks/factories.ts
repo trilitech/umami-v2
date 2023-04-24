@@ -165,7 +165,7 @@ export const mockFA2Token = (
   index: number,
   pkh: string,
   balance = 1,
-  decimals = "4",
+  decimals = 4,
   symbol = "KL2",
   name = "Klondike2"
 ): Token => {

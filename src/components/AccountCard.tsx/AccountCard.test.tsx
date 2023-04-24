@@ -29,8 +29,8 @@ beforeAll(() => {
       {
         pkh: mockAccount(0).pkh,
         tokens: [
-          mockFA2Token(0, pkh),
-          mockFA2Token(1, pkh),
+          mockFA2Token(0, pkh, 30000, 3, "KL2", "Klondike 2"),
+          mockFA2Token(1, pkh, 200000, 2, "FT", "Foo token"),
           mockFA1Token(0, pkh),
           mockNFTToken(0, pkh),
         ],
@@ -52,5 +52,7 @@ describe("<AccountCard />", () => {
     expect(screen.getByText("33200 ꜩ")).toBeInTheDocument();
   });
 
-  it("should display assets tabs with tokens by default", () => {});
+  it.only("should display assets tabs with tokens by default", () => {
+    render(<AccountCard />);
+  });
 });

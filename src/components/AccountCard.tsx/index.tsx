@@ -1,5 +1,6 @@
 import { useSelectedAccount } from "../../utils/hooks/accountHooks";
 import {
+  useGetAccountAssets,
   useGetAccountBalance,
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
@@ -13,6 +14,7 @@ export const AccountCard = () => {
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
 
+  const getAssets = useGetAccountAssets();
   const { onOpen: onOpenSend, modalElement: sendModal } = useSendFormModal();
   const { onOpen: onOpenReceive, modalElement: receiveModal } =
     useReceiveModal();
@@ -25,6 +27,7 @@ export const AccountCard = () => {
   const tez = balance || null;
   const dollarBalance = getDollarBalance(account.pkh);
 
+  const assets = getAssets(account.pkh);
   return (
     <>
       <AccountCardDisplay
@@ -41,6 +44,7 @@ export const AccountCard = () => {
         onReceive={() => {
           onOpenReceive({ pkh: account.pkh });
         }}
+        assets={assets}
       />
       {sendModal}
       {receiveModal}

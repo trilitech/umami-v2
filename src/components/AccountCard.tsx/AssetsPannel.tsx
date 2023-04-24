@@ -2,7 +2,8 @@ import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
 import React from "react";
 import { Asset } from "../../types/Asset";
 
-const AssetsPannel: React.FC<{ assets: Asset[] }> = () => {
+export const AssetsPannel: React.FC<{ assets: Asset[] }> = ({ assets }) => {
+  console.log(assets);
   return (
     <Tabs
       height={"100%"}
