@@ -43,6 +43,7 @@ export const keepFA2s = (assets: Asset[]) => {
 export const getTokenName = (t: FA2Token | FA12Token) => {
   return t.type === "fa1.2" ? "FA1" : t.metadata.name || "Unknown Token)";
 };
+
 export const getTokenSymbol = (t: FA2Token | FA12Token) => {
   return t.type === "fa1.2"
     ? "KLD"
