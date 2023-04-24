@@ -46,16 +46,16 @@ export const getTokenName = (t: FA2Token | FA12Token) => {
 
 export const getTokenSymbol = (t: FA2Token | FA12Token) => {
   return t.type === "fa1.2"
-    ? "KLD"
+    ? DEFAULT_SYMBOL
     : t.metadata.symbol || "Unknown Token Symbol";
 };
 
 export const getTokenDecimal = (t: FA2Token | FA12Token) => {
   return t.type === "fa1.2"
-    ? 4
+    ? DEFAULT_TOKEN_DECIMALS
     : t.metadata.decimals !== undefined
     ? Number(t.metadata.decimals)
-    : 4;
+    : DEFAULT_TOKEN_DECIMALS;
 };
 
 export const getTokenPrettyAmmount = (
@@ -69,3 +69,7 @@ export const getTokenPrettyAmmount = (
   return `${amount / Math.pow(10, decimals)}${trailingSymbol}`;
 };
 export type Asset = FA12Token | FA2Token | NFT;
+
+// We use the defaults of FA1.2 tokens
+export const DEFAULT_SYMBOL = "KLD";
+export const DEFAULT_TOKEN_DECIMALS = 4;
