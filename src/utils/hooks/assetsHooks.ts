@@ -5,7 +5,7 @@ import { filterNulls, objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { mutezToTez } from "../store/impureFormat";
-import { makeNft } from "../token/classify/classifyToken";
+import { classifyToken, makeNft } from "../token/classify/classifyToken";
 import { useAccounts } from "./accountHooks";
 import { getTotalBalance } from "./accountUtils";
 
@@ -29,6 +29,22 @@ export const useAllNfts = () => {
   return objectMap(allTokens, (tokens) =>
     filterNulls(tokens.map(makeNft)).filter((t) => t.balance !== "0")
   );
+};
+
+export const useAccountAssets = () => {
+  const allTokens = useAppSelector((s) => s.assets.balances.tokens);
+
+  return objectMap(allTokens, (tokens) =>
+    filterNulls(tokens.map(makeNft)).filter((t) => t.balance !== "0")
+  );
+};
+
+export const useGetAccountAssets = () => {
+  const allTokens = useAppSelector((s) => s.assets.balances.tokens);
+
+  return (pkh: string) => {
+    return filterNulls(allTokens[pkh].map(classifyToken));
+  };
 };
 
 export const useAllOperations = () =>
