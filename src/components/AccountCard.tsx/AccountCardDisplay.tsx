@@ -4,9 +4,11 @@ import { MdArrowOutward, MdSouthWest } from "react-icons/md";
 
 import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
+import { FA12Token, FA2Token } from "../../types/Asset";
+import { CopyableAddress } from "../CopyableText";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
-import { CopyableAddress } from "../CopyableText";
+import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
 
 type Props = {
   onSend?: () => void;
@@ -17,6 +19,7 @@ type Props = {
   pkh: string;
   tezBalance: number | null;
   dollarBalance: number | null;
+  tokens: Array<FA12Token | FA2Token>;
 };
 
 const RoundButton: React.FC<{
@@ -47,6 +50,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
   label,
   tezBalance,
   dollarBalance,
+  tokens,
 }) => {
   return (
     <Flex direction="column" alignItems={"center"}>
@@ -72,6 +76,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <RoundButton label="Buy tez" icon={<FiPlus />} />
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
+      <AssetsPannel tokens={tokens} />
     </Flex>
   );
 };
