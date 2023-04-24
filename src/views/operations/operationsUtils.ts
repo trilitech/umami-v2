@@ -1,6 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { formatRelative } from "date-fns";
 import { z } from "zod";
+import { DEFAULT_SYMBOL, formatTokenAmount } from "../../types/Asset";
 import {
   OperationDisplay,
   TezTransfer,
@@ -9,10 +10,6 @@ import {
 import { filterNulls } from "../../utils/helpers";
 import { prettyTezAmount } from "../../utils/store/impureFormat";
 import { getIPFSurl } from "../../utils/token/nftUtils";
-
-// We use the defaults of FA1.2 tokens
-const DEFAULT_SYMBOL = "KLD";
-const DEFAULT_TOKEN_DECIMALS = 4;
 
 export const getHashUrl = (hash: string, network: TezosNetwork) => {
   return `https://${network}.tzkt.io/${hash}`;
@@ -116,12 +113,9 @@ export const getTokenOperationDisplay = (
     const symbol = (metadata && metadata.symbol) || DEFAULT_SYMBOL;
 
     const level = required.level;
-    const decimalsStr = metadata?.decimals;
-    const amount = Number(required.amount);
-    const decimals =
-      decimalsStr == null ? DEFAULT_TOKEN_DECIMALS : Number(decimalsStr);
 
-    const prettyAmount = `${amount / Math.pow(10, decimals)} ${symbol}`;
+    const amount = formatTokenAmount(required.amount, metadata?.decimals);
+    const prettyAmount = `${amount} ${symbol}`;
 
     const prettyTimestamp = formatRelative(
       new Date(required.timestamp),
