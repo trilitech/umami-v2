@@ -50,4 +50,12 @@ export const getTokenSymbol = (t: FA2Token | FA12Token) => {
     : t.metadata.symbol || "Unknown Token Symbol";
 };
 
+export const getTokenDecimal = (t: FA2Token | FA12Token) => {
+  return t.type === "fa1.2"
+    ? 4
+    : t.metadata.decimals !== undefined
+    ? Number(t.metadata.decimals)
+    : 4;
+};
+
 export type Asset = FA12Token | FA2Token | NFT;

@@ -7,7 +7,7 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import React from "react";
-import { FA12Token, FA2Token } from "../../types/Asset";
+import { FA12Token, FA2Token } from "../../../types/Asset";
 
 export const AssetsPannel: React.FC<{
   tokens: Array<FA12Token | FA2Token>;

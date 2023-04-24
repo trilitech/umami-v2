@@ -8,7 +8,7 @@ import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { CopyableAddress } from "../CopyableText";
 import { Asset, FA12Token, FA2Token } from "../../types/Asset";
-import { AssetsPannel } from "./AssetsPannel";
+import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
 
 type Props = {
   onSend?: () => void;
