@@ -32,7 +32,7 @@ export const AssetsPannel: React.FC<{
         <Tab>Delegations</Tab>
       </TabList>
 
-      <Box minHeight={"10px"} overflow={"scroll"}>
+      <Box minHeight={"10px"} overflow={"scroll"} mt={4}>
         <UnorderedList>
           {tokens.map((t) => {
             return <TokenTile token={t} />;
