@@ -1,5 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { Estimate, Signer, TezosToolkit } from "@taquito/taquito";
+import { Estimate, TezosToolkit } from "@taquito/taquito";
 import { TransactionValues } from "../../components/sendForm/types";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
