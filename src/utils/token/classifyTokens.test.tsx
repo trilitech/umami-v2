@@ -8,6 +8,7 @@ describe("ClassifyToken", () => {
     const expected = {
       balance: "443870",
       contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+      type: "fa1.2",
     };
     expect(result).toEqual(expected);
   });
@@ -24,6 +25,7 @@ describe("ClassifyToken", () => {
       contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
       tokenId: "1",
       metadata: { decimals: "5", name: "Klondike3", symbol: "KL3" },
+      type: "fa2",
     });
   });
 
@@ -46,6 +48,7 @@ describe("ClassifyToken", () => {
         symbol: "FKR",
       },
       tokenId: "3",
+      type: "nft",
     };
     expect(result).toEqual(expected);
   });
@@ -63,18 +66,24 @@ describe("ClassifyToken", () => {
     const result = response.map(classifyToken);
 
     const expected: Asset[] = [
-      { balance: "443870", contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe" },
       {
-        balance: "409412200",
-        contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
-        metadata: { decimals: "5", name: "Klondike3", symbol: "KL3" },
-        tokenId: "1",
+        balance: "443870",
+        contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+        type: "fa1.2",
       },
       {
         balance: "409412200",
         contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
         metadata: { decimals: "5", name: "Klondike3", symbol: "KL3" },
         tokenId: "1",
+        type: "fa2",
+      },
+      {
+        balance: "409412200",
+        contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+        metadata: { decimals: "5", name: "Klondike3", symbol: "KL3" },
+        tokenId: "1",
+        type: "fa2",
       },
       {
         balance: "0",
@@ -87,6 +96,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "3",
+        type: "nft",
       },
       {
         balance: "0",
@@ -99,6 +109,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "4",
+        type: "nft",
       },
       {
         balance: "0",
@@ -111,6 +122,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "5",
+        type: "nft",
       },
       {
         balance: "1",
@@ -123,6 +135,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "6",
+        type: "nft",
       },
       {
         balance: "0",
@@ -135,7 +148,9 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "8",
+        type: "nft",
       },
+
       {
         balance: "1",
         contract: "KT1P16Zn5i578uZhThHpcPtAhVuq7ZVsdnRn",
@@ -147,6 +162,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "47",
+        type: "nft",
       },
       {
         balance: "1",
@@ -159,6 +175,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "2",
+        type: "nft",
       },
       {
         balance: "1",
@@ -171,6 +188,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "2",
+        type: "nft",
       },
       {
         balance: "1",
@@ -183,6 +201,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "4",
+        type: "nft",
       },
       {
         balance: "1",
@@ -195,6 +214,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "2",
+        type: "nft",
       },
       {
         balance: "1",
@@ -207,6 +227,7 @@ describe("ClassifyToken", () => {
         },
         owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         tokenId: "2",
+        type: "nft",
       },
     ];
     expect(result.some((el) => el === null)).toEqual(false);

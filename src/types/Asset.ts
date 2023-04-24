@@ -15,12 +15,15 @@ type NFTMetadata = {
   displayUri: string;
 };
 
-export type FA12Token = TokenBase;
+export type FA12Token = { type: "fa1.2" } & TokenBase;
+
 export type FA2Token = TokenBase & {
+  type: "fa2";
   tokenId: string;
   metadata: FA2TokenMetadata;
 };
 export type NFT = TokenBase & {
+  type: "nft";
   tokenId: string;
   metadata: NFTMetadata;
   owner: string;
