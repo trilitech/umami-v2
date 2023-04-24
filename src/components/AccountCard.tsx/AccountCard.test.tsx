@@ -17,8 +17,8 @@ const { add, setSelected } = accountsSlice.actions;
 const tezBalance = new BigNumber(33200000000);
 
 const account = mockAccount(0);
-
 const pkh = account.pkh;
+const mockNft = mockNFTToken(0, pkh);
 beforeAll(() => {
   store.dispatch(add([account]));
   store.dispatch(setSelected(pkh));
@@ -31,7 +31,7 @@ beforeAll(() => {
           mockFA2Token(0, pkh, 30000, 3, "KL2", "Klondike 2"),
           mockFA2Token(1, pkh, 200000, 2, "FT", "Foo token"),
           mockFA1Token(0, pkh),
-          mockNFTToken(0, pkh),
+          mockNft,
         ],
       },
     ])
@@ -58,5 +58,16 @@ describe("<AccountCard />", () => {
     expect(tokenTiles[0]).toHaveTextContent("FA1");
     expect(tokenTiles[1]).toHaveTextContent("KL2");
     expect(tokenTiles[2]).toHaveTextContent("FT");
+    expect(screen.getByTestId("account-card-tokens-tab")).toBeInTheDocument();
+  });
+
+  it("should display nfts under nfts tab", () => {
+    render(<AccountCard />);
+    expect(screen.getByTestId("account-card-nfts-tab")).toBeInTheDocument();
+    screen.getByTestId("account-card-nfts-tab").click();
+    expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
+    expect(
+      screen.getByText(mockNft.token?.metadata?.name as string)
+    ).toBeInTheDocument();
   });
 });
