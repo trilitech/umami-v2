@@ -82,7 +82,10 @@ const getNFTRequired = (input: Token) => {
  *  Build our token representations with runtime validation for mandatory fields
  *  These factory functions return null if runtime validatin doesn't pass
  */
-const makeFa1 = (json: Token): FA12Token | null => getFA1Required(json);
+const makeFa1 = (json: Token): FA12Token | null => {
+  const data = getFA1Required(json);
+  return data && { ...data, type: "fa1.2" };
+};
 
 const makeFa2 = (json: Token): FA2Token | null => {
   const required = getFA2TokenRequired(json);
@@ -95,6 +98,7 @@ const makeFa2 = (json: Token): FA2Token | null => {
         name: metadata?.name,
         symbol: metadata?.symbol,
       },
+      type: "fa2",
     }
   );
 };
@@ -116,6 +120,7 @@ export const makeNft = (json: Token): NFT | null => {
       name: metadata?.name,
       symbol: metadata?.symbol,
     },
+    type: "nft",
   };
 };
 

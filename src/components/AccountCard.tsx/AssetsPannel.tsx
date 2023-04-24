@@ -3,7 +3,6 @@ import React from "react";
 import { Asset } from "../../types/Asset";
 
 export const AssetsPannel: React.FC<{ assets: Asset[] }> = ({ assets }) => {
-  console.log(assets);
   return (
     <Tabs
       height={"100%"}
