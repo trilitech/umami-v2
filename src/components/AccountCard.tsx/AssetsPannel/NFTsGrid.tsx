@@ -10,10 +10,9 @@ import { FC } from "react";
 import { NFT } from "../../../types/Asset";
 import { truncate } from "../../../utils/format";
 
-export const NFTsGrid: FC<{ nfts: NFT[] } & SimpleGridProps> = ({
-  nfts,
-  ...rest
-}) => {
+export const NFTsGrid: FC<
+  { nfts: NFT[]; showName?: boolean } & SimpleGridProps
+> = ({ nfts, showName, ...rest }) => {
   return (
     <Box overflow={"scroll"} p={2}>
       <SimpleGrid {...rest}>
@@ -23,7 +22,7 @@ export const NFTsGrid: FC<{ nfts: NFT[] } & SimpleGridProps> = ({
               <AspectRatio key={nft.contract + i} width={"100%"} ratio={1}>
                 <Image width="100%" height={40} src={nft.metadata.displayUri} />
               </AspectRatio>
-              {nft.metadata.name && (
+              {showName && nft.metadata.name && (
                 <Heading size="sm" mt={3}>
                   {truncate(nft.metadata.name, 12)}
                 </Heading>
