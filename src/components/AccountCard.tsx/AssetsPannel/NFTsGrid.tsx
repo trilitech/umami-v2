@@ -19,7 +19,7 @@ export const NFTsGrid: FC<{ nfts: NFT[] } & SimpleGridProps> = ({
       <SimpleGrid {...rest}>
         {nfts.map((nft, i) => {
           return (
-            <Box key={i}>
+            <Box key={`${nft.contract}${i}`}>
               <AspectRatio key={nft.contract + i} width={"100%"} ratio={1}>
                 <Image width="100%" height={40} src={nft.metadata.displayUri} />
               </AspectRatio>
