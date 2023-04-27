@@ -20,7 +20,7 @@ import { isValid } from "date-fns";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GoogleAuth } from "../../../GoogleAuth";
-import { AccountType, LedgerAccount } from "../../../types/Account";
+import { AccountType } from "../../../types/Account";
 import {
   LedgerSignerConfig,
   SignerConfig,
@@ -159,10 +159,12 @@ export const RecapDisplay: React.FC<{
   const onSubmitGoogleSSO = async (sk: string) => {
     setIsLoading(true);
     try {
-      const result = await makeTransfer(transfer, {
+      const config: SkSignerConfig = {
         sk,
         network,
-      } as SkSignerConfig);
+        type: SignerType.SK
+      }
+      const result = await makeTransfer(transfer, config);
 
       if (Array.isArray(transfer)) {
         clearBatch(signerAccount.pkh);
@@ -187,10 +189,12 @@ export const RecapDisplay: React.FC<{
       try {
         setIsLoading(true);
         const sk = await getSk(signerAccount, password);
-        const result = await makeTransfer(transfer, {
+        const config: SkSignerConfig = {
           sk,
           network,
-        } as SkSignerConfig);
+          type: SignerType.SK
+        }
+        const result = await makeTransfer(transfer, config);
         if (Array.isArray(transfer)) {
           clearBatch(signerAccount.pkh);
         }
@@ -206,7 +210,13 @@ export const RecapDisplay: React.FC<{
   };
 
   const onSubmitLedger = async () => {
-    const ledgerAccount = signerAccount as LedgerAccount;
+    if (
+      signerAccount.type === AccountType.MNEMONIC ||
+      signerAccount.type === AccountType.SOCIAL
+    ) {
+      throw new Error("Wrong account type");
+    }
+
     setIsLoading(true);
     try {
       toast({
@@ -216,8 +226,8 @@ export const RecapDisplay: React.FC<{
       });
       const config: LedgerSignerConfig = {
         network,
-        derivationPath: ledgerAccount.derivationPath,
-        derivationType: ledgerAccount.curve,
+        derivationPath: signerAccount.derivationPath,
+        derivationType: signerAccount.curve,
         type: SignerType.LEDGER,
       };
 
@@ -226,7 +236,6 @@ export const RecapDisplay: React.FC<{
       if (Array.isArray(transfer)) {
         clearBatch(signerAccount.pkh);
       }
-      // onSucces(result.hash);
       toast({ title: "Success", description: result.hash });
     } catch (error: any) {
       toast({ title: "Error", description: error.message });

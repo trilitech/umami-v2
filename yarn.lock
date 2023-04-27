@@ -20639,7 +20639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:latest":
+"react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -21022,7 +21022,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:latest":
+"react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -24046,9 +24046,9 @@ __metadata:
     os-browserify: ^0.3.0
     prettier: ^2.8.7
     prop-types: ^15.8.1
-    react: latest
+    react: ^18.2.0
     react-app-rewired: ^2.2.1
-    react-dom: latest
+    react-dom: ^18.2.0
     react-hook-form: ^7.43.9
     react-icons: ^4.8.0
     react-identicons: ^1.2.5

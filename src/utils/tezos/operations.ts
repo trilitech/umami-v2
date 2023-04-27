@@ -1,6 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
-import { DelegateOperation, TransactionOperation } from "@taquito/taquito";
-import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { TransactionValues } from "../../components/sendForm/types";
 import { makeContract, makeToolkitWithSigner } from "./helpers";
 import { transactionValuesToWalletParams } from "./params";

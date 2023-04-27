@@ -6,13 +6,14 @@ import {
 } from "../types/Account";
 import { addressExists, getFingerPrint } from "./tezos/helpers";
 
-export const getDerivationPath = (index: number) => `m/44'/1729'/${index}'/0'`;
+export const getFullDerivationPath = (index: number) => `m/44'/1729'/${index}'/0'`;
+export const getRelativeDerivationPath = (index: number) => `44'/1729'/${index}'/0'`;
 
 export const restoreAccount = async (
   seedPhrase: string,
   derivationPathIndex = 0
 ) => {
-  const derivationPath = getDerivationPath(derivationPathIndex);
+  const derivationPath = getFullDerivationPath(derivationPathIndex);
 
   const signer = await InMemorySigner.fromMnemonic({
     mnemonic: seedPhrase,
@@ -79,7 +80,7 @@ export const restoreMnemonicAccounts = async (
     accounts.map(async ({ pk, pkh, sk }, i) => {
       return {
         curve: "ed25519",
-        derivationPath: getDerivationPath(i),
+        derivationPath: getFullDerivationPath(i),
         pk,
         pkh,
         seedFingerPrint,

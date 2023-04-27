@@ -58,7 +58,7 @@ export const makeToolkitWithSigner = async (config: SignerConfig) => {
     Tezos.setProvider({
       signer: new InMemorySigner(config.sk),
     });
-  } else {
+  } else if (config.type === SignerType.LEDGER) {
     // Close existing connections to be able to reinitiate
     const devices = await TransportWebHID.list();
     for (let i = 0; i < devices.length; i++) {
@@ -73,6 +73,9 @@ export const makeToolkitWithSigner = async (config: SignerConfig) => {
         curvesToDerivationPath(config.derivationType)
       ),
     });
+  } else {
+    const foo: never = config;
+    throw new Error(foo);
   }
   return Tezos;
 };

@@ -13,20 +13,18 @@ import { useState } from "react";
 import { useAppDispatch } from "../../../utils/store/hooks";
 import { LedgerAccount, AccountType } from "../../../types/Account";
 import accountsSlice from "../../../utils/store/accountsSlice";
-import {
-  HDPathTemplate,
-  LedgerSigner,
-} from "@taquito/ledger-signer";
+import { LedgerSigner } from "@taquito/ledger-signer";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { useForm } from "react-hook-form";
 import { Curves } from "@taquito/signer";
 import { curvesToDerivationPath } from "../../../utils/tezos/helpers";
+import { getRelativeDerivationPath } from "../../../utils/restoreAccounts";
 
 const accountsActions = accountsSlice.actions;
 
 const EnterLedgerConfig = ({ onClose }: { onClose: () => void }) => {
   const [isLoading, setIsloading] = useState(false);
-  const [derivationPath, setDerivationPath] = useState(HDPathTemplate(0));
+  const [derivationPath, setDerivationPath] = useState(getRelativeDerivationPath(0));
   const [derivationType, setDerivationType] = useState<Curves>("ed25519");
   const toast = useToast();
   const dispatch = useAppDispatch();
@@ -103,8 +101,8 @@ const EnterLedgerConfig = ({ onClose }: { onClose: () => void }) => {
                   onChange={(e) => setDerivationPath(e.target.value)}
                 >
                   {new Array(5).fill("", 0, 5).map((p, i) => (
-                    <option value={HDPathTemplate(i)}>
-                      {HDPathTemplate(i)}
+                    <option value={getRelativeDerivationPath(i)}>
+                      {getRelativeDerivationPath(i)}
                     </option>
                   ))}
                 </Select>
