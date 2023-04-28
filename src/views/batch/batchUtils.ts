@@ -1,4 +1,4 @@
-import { TransactionValues } from "../../components/sendForm/types";
+import { OperationValue } from "../../components/sendForm/types";
 import { BatchItem } from "../../utils/store/assetsSlice";
 
 export const getTotalFee = (items: BatchItem[]) => {
@@ -9,12 +9,13 @@ export const getTotalFee = (items: BatchItem[]) => {
   return fee;
 };
 
-export const getBatchSubtotal = (txs: TransactionValues[]) => {
-  const subTotal = txs.reduce((acc, curr) => {
-    if (curr.type === "tez") {
-      return acc + curr.values.amount;
-    } else {
-      return acc;
+export const getBatchSubtotal = (ops: OperationValue[]) => {
+  const subTotal = ops.reduce((acc, curr) => {
+    switch (curr.type) {
+      case "tez":
+        return acc + curr.value.amount;
+      default:
+        return acc;
     }
   }, 0);
   return subTotal;

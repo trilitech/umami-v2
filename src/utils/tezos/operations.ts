@@ -1,9 +1,9 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { DelegateOperation, TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { TransactionValues } from "../../components/sendForm/types";
+import { OperationValue } from "../../components/sendForm/types";
 import { makeFA2TransferMethod, makeToolkitWithSigner } from "./helpers";
-import { transactionValuesToWalletParams } from "./params";
+import { operationValuesToWalletParams } from "./params";
 import { FA2TokenTransferParams } from "./types";
 
 export const delegate = async (
@@ -40,11 +40,11 @@ export const transferTez = async (
 };
 
 export const submitBatch = async (
-  transactions: TransactionValues[],
+  operation: OperationValue[],
   sk: string,
   network: TezosNetwork
 ): Promise<BatchWalletOperation> => {
   const Tezos = await makeToolkitWithSigner(sk, network);
-  const params = await transactionValuesToWalletParams(transactions, Tezos);
+  const params = await operationValuesToWalletParams(operation, Tezos);
   return Tezos.wallet.batch(params).send();
 };

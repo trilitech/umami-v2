@@ -1,6 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { TransactionValues } from "../../../components/sendForm/types";
+import { OperationValue } from "../../../components/sendForm/types";
 import { zip } from "../../helpers";
 import { estimateBatch } from "../../tezos";
 import assetsSlice, { BatchItem } from "../assetsSlice";
@@ -14,12 +14,12 @@ const {
 export const estimateAndUpdateBatch = (
   pkh: string,
   pk: string,
-  transactions: TransactionValues[],
+  operations: OperationValue[],
   network: TezosNetwork
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async (dispatch, getState) => {
-    if (transactions.length === 0) {
-      throw new Error("Can't add empty list of transactions to batch!");
+    if (operations.length === 0) {
+      throw new Error("Can't add empty list of operations to batch!");
     }
 
     const batches = getState().assets.batches;
@@ -30,15 +30,13 @@ export const estimateAndUpdateBatch = (
 
     dispatch(batchSimulationStart({ pkh }));
     try {
-      const estimations = await estimateBatch(transactions, pkh, pk, network);
-      const items: BatchItem[] = zip(transactions, estimations).map(
-        ([t, e]) => {
-          return {
-            fee: e.suggestedFeeMutez,
-            transaction: t,
-          };
-        }
-      );
+      const estimations = await estimateBatch(operations, pkh, pk, network);
+      const items: BatchItem[] = zip(operations, estimations).map(([o, e]) => {
+        return {
+          fee: e.suggestedFeeMutez,
+          operation: o,
+        };
+      });
       dispatch(addToBatch({ pkh, items }));
     } catch (error) {
       dispatch(batchSimulationEnd({ pkh }));

@@ -162,9 +162,9 @@ describe("<SendForm />", () => {
         items: [
           {
             fee: 33,
-            transaction: {
+            operation: {
               type: "tez",
-              values: {
+              value: {
                 amount: 23,
                 recipient: mockPkh(7),
                 sender: mockPkh(1),
@@ -191,9 +191,9 @@ describe("<SendForm />", () => {
         items: [
           {
             fee: 33,
-            transaction: {
+            operation: {
               type: "tez",
-              values: {
+              value: {
                 amount: 23,
                 recipient: mockPkh(7),
                 sender: mockPkh(1),
@@ -202,9 +202,9 @@ describe("<SendForm />", () => {
           },
           {
             fee: 33,
-            transaction: {
+            operation: {
               type: "tez",
-              values: {
+              value: {
                 amount: 23,
                 recipient: mockPkh(7),
                 sender: mockPkh(1),

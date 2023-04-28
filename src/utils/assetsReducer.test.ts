@@ -16,7 +16,7 @@ import {
 import accountsSlice from "./store/accountsSlice";
 import { estimateAndUpdateBatch } from "./store/thunks/estimateAndupdateBatch";
 import { estimateBatch } from "./tezos";
-import { TransactionValues } from "../components/sendForm/types";
+import { OperationValue } from "../components/sendForm/types";
 jest.mock("./tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -387,7 +387,7 @@ describe("Assets reducer", () => {
   });
 
   describe("Batch", () => {
-    test("Adding transactions to batch starts an estimation and updates the given account's batch with the result", async () => {
+    test("Adding operations to batch starts an estimation and updates the given account's batch with the result", async () => {
       const mockEstimations = [
         { suggestedFeeMutez: 323 },
         { suggestedFeeMutez: 423 },
@@ -424,15 +424,15 @@ describe("Assets reducer", () => {
           items: [
             {
               fee: mockEstimations[0].suggestedFeeMutez,
-              transaction: transfers[0],
+              operation: transfers[0],
             },
             {
               fee: mockEstimations[1].suggestedFeeMutez,
-              transaction: transfers[1],
+              operation: transfers[1],
             },
             {
               fee: mockEstimations[2].suggestedFeeMutez,
-              transaction: transfers[2],
+              operation: transfers[2],
             },
           ],
         });
@@ -459,7 +459,7 @@ describe("Assets reducer", () => {
           items: [
             {
               fee: mockEstimations[0].suggestedFeeMutez,
-              transaction: transfers[0],
+              operation: transfers[0],
             },
           ],
         });
@@ -470,7 +470,7 @@ describe("Assets reducer", () => {
       expect(store.getState().assets.batches[mockPkh(1)]).toEqual(undefined);
     });
 
-    test("Adding transactions to a batch that dont't pass estimation throws an error and doesn't update the given account's batch", async () => {
+    test("Adding operations to a batch that dont't pass estimation throws an error and doesn't update the given account's batch", async () => {
       const estimationError = new Error("estimation error");
       estimateBatchMock.mockRejectedValueOnce(estimationError);
 
@@ -533,22 +533,22 @@ describe("Assets reducer", () => {
           items: [
             {
               fee: mockEstimations[0].suggestedFeeMutez,
-              transaction: transfers[0],
+              operation: transfers[0],
             },
             {
               fee: mockEstimations[1].suggestedFeeMutez,
-              transaction: transfers[1],
+              operation: transfers[1],
             },
             {
               fee: mockEstimations[2].suggestedFeeMutez,
-              transaction: transfers[2],
+              operation: transfers[2],
             },
           ],
         });
       });
     });
 
-    test("You can't add an empty list of transactions to a batch", async () => {
+    test("You can't add an empty list of operations to a batch", async () => {
       const mockEstimations = [
         { suggestedFeeMutez: 323 },
         { suggestedFeeMutez: 423 },
@@ -557,19 +557,19 @@ describe("Assets reducer", () => {
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
-      const transfers: TransactionValues[] = [];
+      const operations: OperationValue[] = [];
 
       const action = estimateAndUpdateBatch(
         mockPkh(1),
         mockPk(1),
-        transfers,
+        operations,
         TezosNetwork.MAINNET
       );
 
       const dispatch = store.dispatch(action);
 
       await expect(dispatch).rejects.toThrow(
-        `Can't add empty list of transactions to batch`
+        `Can't add empty list of operations to batch`
       );
     });
 
@@ -586,7 +586,7 @@ describe("Assets reducer", () => {
       store.dispatch(
         updateBatch({
           pkh: mockPkh(1),
-          items: [{ fee: 3, transaction: mockTezTransfer(3) }],
+          items: [{ fee: 3, operation: mockTezTransfer(3) }],
         })
       );
       const transfers = [
@@ -611,20 +611,20 @@ describe("Assets reducer", () => {
           items: [
             {
               fee: 3,
-              transaction: mockTezTransfer(3),
+              operation: mockTezTransfer(3),
             },
             {
               fee: mockEstimations[0].suggestedFeeMutez,
-              transaction: transfers[0],
+              operation: transfers[0],
             },
 
             {
               fee: mockEstimations[1].suggestedFeeMutez,
-              transaction: transfers[1],
+              operation: transfers[1],
             },
             {
               fee: mockEstimations[2].suggestedFeeMutez,
-              transaction: transfers[2],
+              operation: transfers[2],
             },
           ],
         });
