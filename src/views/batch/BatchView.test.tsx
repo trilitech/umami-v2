@@ -17,6 +17,7 @@ import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { estimateBatch, submitBatch } from "../../utils/tezos";
 import BatchView from "./BatchView";
+import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 
 // TODO refactor mocks
 jest.mock("react-router-dom");
@@ -279,6 +280,11 @@ describe("<BatchView />", () => {
           "https://mainnet.tzkt.io/foo"
         );
       });
+      const config: SkSignerConfig = {
+        type: SignerType.SK,
+        network: TezosNetwork.MAINNET,
+        sk: "mockSk",
+      }
       expect(submitBatch).toHaveBeenCalledWith(
         [
           {
@@ -306,8 +312,7 @@ describe("<BatchView />", () => {
             },
           },
         ],
-        "mockSk",
-        "mainnet"
+        config
       );
     });
   });

@@ -6,7 +6,7 @@ import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
-import { getDerivationPath } from "../utils/restoreAccounts";
+import { getFullDerivationPath } from "../utils/restoreAccounts";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -88,7 +88,7 @@ export const mockAccount = (
   if (type === AccountType.MNEMONIC) {
     return {
       curve: "ed25519",
-      derivationPath: getDerivationPath(0),
+      derivationPath: getFullDerivationPath(0),
       type,
       label: mockAccountLabel(index),
       pkh: mockPkh(index),
@@ -110,7 +110,7 @@ export const mockAccount = (
   if (type === AccountType.LEDGER) {
     return {
       curve: "ed25519",
-      derivationPath: getDerivationPath(0),
+      derivationPath: getFullDerivationPath(0),
       type,
       label: mockAccountLabel(index) + " ledger",
       pkh: mockPkh(index),
