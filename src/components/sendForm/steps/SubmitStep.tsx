@@ -44,18 +44,28 @@ import {
 import { EstimatedOperation, OperationValue } from "../types";
 
 const makeTransfer = (
+<<<<<<< HEAD
   operation: OperationValue | OperationValue[],
   sk: string,
   network: TezosNetwork
 ) => {
   if (Array.isArray(operation)) {
     return submitBatch(operation, sk, network).then((res) => {
+=======
+  o: OperationValue | OperationValue[],
+  sk: string,
+  network: TezosNetwork
+) => {
+  if (Array.isArray(o)) {
+    return submitBatch(o, sk, network).then((res) => {
+>>>>>>> 1a646b4 (Use switchc case)
       return {
         hash: res.opHash,
       };
     });
   }
 
+<<<<<<< HEAD
   switch (operation.type) {
     case "delegation":
       return delegate(
@@ -78,6 +88,20 @@ const makeTransfer = (
           amount: operation.value.amount,
           contract: nft.contract,
           recipient: operation.value.recipient,
+=======
+  switch (o.type) {
+    case "delegation":
+      return delegate(o.value.sender, o.value.recipient, sk, network);
+    case "tez":
+      return transferTez(o.value.recipient, o.value.amount, sk, network);
+    case "nft": {
+      const nft = o.data;
+      return transferFA2Token(
+        {
+          amount: o.value.amount,
+          contract: nft.contract,
+          recipient: o.value.recipient,
+>>>>>>> 1a646b4 (Use switchc case)
           sender: nft.owner,
           tokenId: nft.tokenId,
         },
