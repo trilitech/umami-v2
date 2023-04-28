@@ -6,6 +6,8 @@ export type FA2TokenTransferParams = {
   amount: number;
 };
 
+export type FA12TokenTransferParams = Omit<FA2TokenTransferParams, "tokenId">;
+
 export type coinCapResponseType = {
   data: {
     priceUsd?: number;

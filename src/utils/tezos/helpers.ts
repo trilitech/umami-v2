@@ -7,7 +7,7 @@ import {
 } from "@taquito/taquito";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
-import { FA2TokenTransferParams } from "./types";
+import { FA12TokenTransferParams, FA2TokenTransferParams } from "./types";
 
 export const addressExists = async (
   pkh: string,
@@ -65,9 +65,6 @@ export const getPkAndPkhFromSk = async (
   return { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 };
 
-/**
- *  Contract factory
- */
 export const makeFA2TransferMethod = async (
   { sender, recipient, tokenId, amount, contract }: FA2TokenTransferParams,
   toolkit: TezosToolkit
@@ -87,4 +84,12 @@ export const makeFA2TransferMethod = async (
 
   const contractInstance = await toolkit.contract.at(contract);
   return contractInstance.methods.transfer(michelson);
+};
+
+export const makeFA12TransferMethod = async (
+  { sender, recipient, amount, contract }: FA12TokenTransferParams,
+  toolkit: TezosToolkit
+): Promise<ContractMethod<ContractProvider>> => {
+  const contractInstance = await toolkit.contract.at(contract);
+  return contractInstance.methods.transfer(sender, recipient, amount);
 };
