@@ -14,11 +14,9 @@ import { FA12TokenTransferParams, FA2TokenTransferParams } from "./types";
 export const delegate = async (
   senderPkh: string,
   bakerPkh: string | undefined,
-  sk: string,
-  network: TezosNetwork
+  config: SignerConfig
 ): Promise<DelegateOperation> => {
-  const c: SignerConfig = { sk, type: SignerType.SK, network };
-  const Tezos = await makeToolkitWithSigner(c);
+  const Tezos = await makeToolkitWithSigner(config);
   return Tezos.contract.setDelegate({
     source: senderPkh,
     delegate: bakerPkh,
@@ -27,11 +25,9 @@ export const delegate = async (
 
 export const transferFA2Token = async (
   params: FA2TokenTransferParams,
-  sk: string,
-  network: TezosNetwork
+  config: SignerConfig
 ): Promise<TransactionOperation> => {
-  const c: SignerConfig = { sk, type: SignerType.SK, network };
-  const Tezos = await makeToolkitWithSigner(c);
+  const Tezos = await makeToolkitWithSigner(config);
   const transferMethod = await makeFA2TransferMethod(params, Tezos);
   return transferMethod.send();
 };
@@ -50,21 +46,17 @@ export const transferFA12Token = async (
 export const transferTez = async (
   recipient: string,
   amount: number,
-  sk: string,
-  network: TezosNetwork
+  config: SignerConfig
 ): Promise<TransactionOperation> => {
-  const c: SignerConfig = { sk, type: SignerType.SK, network };
-  const Tezos = await makeToolkitWithSigner(c);
+  const Tezos = await makeToolkitWithSigner(config);
   return Tezos.contract.transfer({ to: recipient, amount });
 };
 
 export const submitBatch = async (
   operation: OperationValue[],
-  sk: string,
-  network: TezosNetwork
-): Promise<BatchWalletOperation> => {
-  const c: SignerConfig = { sk, type: SignerType.SK, network };
-  const Tezos = await makeToolkitWithSigner(c);
+  config: SignerConfig
+  ): Promise<BatchWalletOperation> => {
+  const Tezos = await makeToolkitWithSigner(config);
   const params = await operationValuesToWalletParams(operation, Tezos);
   return Tezos.wallet.batch(params).send();
 };

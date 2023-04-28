@@ -13,7 +13,9 @@
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@ledgerhq/hw-transport-webhid": "^6.27.13",
     "@reduxjs/toolkit": "^1.9.3",
+    "@taquito/ledger-signer": "^16.1.2",
     "@taquito/signer": "^15.1.0",
     "@taquito/taquito": "^15.1.0",
     "@taquito/utils": "^15.1.0",
@@ -117,7 +119,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "axios": "axios/dist/node/axios.cjs"
+      "axios": "axios/dist/node/axios.cjs",
+      "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing"
     },
     "watchPathIgnorePatterns": [
       "src/integration"

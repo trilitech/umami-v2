@@ -32,6 +32,8 @@ import {
 } from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
+import { TezosNetwork } from "@airgap/tezos";
+import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 
 const { add, addSecret } = accountsSlice.actions;
 
@@ -54,7 +56,7 @@ const fixture = (sender?: string, assetType?: SendFormMode) => (
   <ReactQueryProvider>
     <UmamiTheme>
       <ReduxStore>
-        <Modal isOpen={true} onClose={() => {}}>
+        <Modal isOpen={true} onClose={() => { }}>
           <SendForm sender={sender} mode={assetType} />
         </Modal>
       </ReduxStore>
@@ -242,11 +244,15 @@ describe("<SendForm />", () => {
           "https://mainnet.tzkt.io/foo"
         );
       });
+      const config: SkSignerConfig = {
+        type: SignerType.SK,
+        network: TezosNetwork.MAINNET,
+        sk: MOCK_SK,
+      }
       expect(transferTezMock).toHaveBeenCalledWith(
         mockPkh(7),
         23,
-        MOCK_SK,
-        "mainnet"
+        config
       );
     });
   });
@@ -322,7 +328,11 @@ describe("<SendForm />", () => {
           "https://mainnet.tzkt.io/mockHash"
         );
       });
-
+      const config: SkSignerConfig = {
+        type: SignerType.SK,
+        network: TezosNetwork.MAINNET,
+        sk: MOCK_SK,
+      }
       expect(transferFA2TokenMock).toHaveBeenCalledWith(
         {
           amount: 1,
@@ -331,8 +341,7 @@ describe("<SendForm />", () => {
           sender: mockPkh(1),
           tokenId: "mockId1",
         },
-        MOCK_SK,
-        "mainnet"
+        config
       );
     });
   });
@@ -401,7 +410,7 @@ describe("<SendForm />", () => {
     test("It doesn't display password in SubmitStep", async () => {
       await fillForm();
       expect(
-        screen.getByRole("button", { name: /submit transaction/i })
+        screen.getByRole("button", { name: /sign with google/i })
       ).toBeTruthy();
       expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
     });
@@ -409,7 +418,7 @@ describe("<SendForm />", () => {
     test("Clicking on submit transaction signs with google private key and shows operation submitted message", async () => {
       await fillForm();
 
-      const googleSSOBtn = screen.getByText(/submit transaction/i);
+      const googleSSOBtn = screen.getByText(/sign with google/i);
 
       transferTezMock.mockResolvedValueOnce({
         hash: "foo",
