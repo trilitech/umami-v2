@@ -41,49 +41,54 @@ import {
   Total,
   TransactionsAmount,
 } from "../components/TezAmountRecaps";
-import { EstimatedTransaction, TransactionValues } from "../types";
+import { EstimatedOperation, OperationValue } from "../types";
 
 const makeTransfer = (
-  t: TransactionValues | TransactionValues[],
+  operation: OperationValue | OperationValue[],
   sk: string,
   network: TezosNetwork
 ) => {
-  if (Array.isArray(t)) {
-    return submitBatch(t, sk, network).then((res) => {
+  if (Array.isArray(operation)) {
+    return submitBatch(operation, sk, network).then((res) => {
       return {
         hash: res.opHash,
       };
     });
   }
 
-  if (t.type === "delegation") {
-    return delegate(t.values.sender, t.values.recipient, sk, network);
+  switch (operation.type) {
+    case "delegation":
+      return delegate(
+        operation.value.sender,
+        operation.value.recipient,
+        sk,
+        network
+      );
+    case "tez":
+      return transferTez(
+        operation.value.recipient,
+        operation.value.amount,
+        sk,
+        network
+      );
+    case "nft": {
+      const nft = operation.data;
+      return transferFA2Token(
+        {
+          amount: operation.value.amount,
+          contract: nft.contract,
+          recipient: operation.value.recipient,
+          sender: nft.owner,
+          tokenId: nft.tokenId,
+        },
+        sk,
+        network
+      );
+    }
   }
-
-  if (t.type === "tez") {
-    return transferTez(t.values.recipient, t.values.amount, sk, network);
-  }
-
-  if (t.type === "nft") {
-    const nft = t.data;
-    return transferFA2Token(
-      {
-        amount: t.values.amount,
-        contract: nft.contract,
-        recipient: t.values.recipient,
-        sender: nft.owner,
-        tokenId: nft.tokenId,
-      },
-      sk,
-      network
-    );
-  }
-
-  const error: never = t;
-  throw new Error(error);
 };
 
-const NonBatchRecap = ({ transfer }: { transfer: TransactionValues }) => {
+const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   const isDelegation = transfer.type === "delegation";
   const nft = transfer.type === "nft" ? transfer.data : undefined;
 
@@ -91,14 +96,14 @@ const NonBatchRecap = ({ transfer }: { transfer: TransactionValues }) => {
   const renderBakerTile = useRenderBakerSmallTile();
   return (
     <>
-      {transfer.values.recipient && (
+      {transfer.value.recipient && (
         <Flex mb={4}>
           <Heading size="md" width={20}>
             To:
           </Heading>
           {isDelegation
-            ? renderBakerTile(transfer.values.recipient)
-            : renderAccountTile(transfer.values.recipient)}
+            ? renderBakerTile(transfer.value.recipient)
+            : renderAccountTile(transfer.value.recipient)}
         </Flex>
       )}
       {!!nft && (
@@ -107,13 +112,13 @@ const NonBatchRecap = ({ transfer }: { transfer: TransactionValues }) => {
         </Box>
       )}
       {transfer.type === "tez" ? (
-        <Subtotal tez={transfer.values.amount} />
+        <Subtotal tez={transfer.value.amount} />
       ) : null}
     </>
   );
 };
 
-const BatchRecap = ({ transfer }: { transfer: TransactionValues[] }) => {
+const BatchRecap = ({ transfer }: { transfer: OperationValue[] }) => {
   return (
     <>
       <TransactionsAmount amount={transfer.length} />
@@ -122,13 +127,13 @@ const BatchRecap = ({ transfer }: { transfer: TransactionValues[] }) => {
   );
 };
 
-const getSubTotal = (t: TransactionValues[] | TransactionValues): number => {
+const getSubTotal = (t: OperationValue[] | OperationValue): number => {
   if (Array.isArray(t)) {
     return getBatchSubtotal(t);
   }
 
   if (t.type === "tez") {
-    return t.values.amount;
+    return t.value.amount;
   }
 
   return 0;
@@ -136,9 +141,9 @@ const getSubTotal = (t: TransactionValues[] | TransactionValues): number => {
 
 export const RecapDisplay: React.FC<{
   network: TezosNetwork;
-  recap: EstimatedTransaction;
+  recap: EstimatedOperation;
   onSucces: (hash: string) => void;
-}> = ({ recap: { fee, transaction: transfer }, network, onSucces }) => {
+}> = ({ recap: { fee, operation: transfer }, network, onSucces }) => {
   const renderAccountTile = useRenderAccountSmallTile();
   const getAccount = useGetOwnedAccount();
 
@@ -150,7 +155,7 @@ export const RecapDisplay: React.FC<{
   const clearBatch = useClearBatch();
 
   const signerAccount = getAccount(
-    (Array.isArray(transfer) ? transfer[0] : transfer).values.sender
+    (Array.isArray(transfer) ? transfer[0] : transfer).value.sender
   );
 
   const isGoogleSSO = signerAccount.type === AccountType.SOCIAL;

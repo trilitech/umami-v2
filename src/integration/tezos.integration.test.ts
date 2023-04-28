@@ -5,7 +5,7 @@ import { publicKeys1, publicKeys2 } from "../mocks/publicKeys";
 import {
   estimateBatch,
   estimateFA2transfer,
-  transactionValuesToBatchParams,
+  operationValuesToBatchParams,
 } from "../utils/tezos";
 
 const pk1 = publicKeys1.pk;
@@ -15,11 +15,11 @@ const pkh2 = publicKeys2.pkh;
 describe("Tezos utils", () => {
   describe("Batch", () => {
     test("batchParams are generated correctly for tez, FA2 contracts and delegations", async () => {
-      const result = await transactionValuesToBatchParams(
+      const result = await operationValuesToBatchParams(
         [
           {
             type: "tez",
-            values: {
+            value: {
               amount: 3,
               sender: pkh1,
               recipient: pkh2,
@@ -27,7 +27,7 @@ describe("Tezos utils", () => {
           },
           {
             type: "delegation",
-            values: {
+            value: {
               sender: pkh1,
               recipient: pkh2,
             },
@@ -35,7 +35,7 @@ describe("Tezos utils", () => {
           {
             type: "nft",
             data: tezzard,
-            values: {
+            value: {
               sender: pkh1,
               recipient: pkh2,
               amount: 1,
@@ -111,7 +111,7 @@ describe("Tezos utils", () => {
           [
             {
               type: "tez",
-              values: {
+              value: {
                 amount: 1,
                 sender: pkh1,
                 recipient: pkh2,
@@ -120,7 +120,7 @@ describe("Tezos utils", () => {
             {
               type: "nft",
               data: tezzard,
-              values: {
+              value: {
                 sender: pkh1,
                 recipient: pkh2,
                 amount: 1,
@@ -141,7 +141,7 @@ describe("Tezos utils", () => {
           [
             {
               type: "tez",
-              values: {
+              value: {
                 amount: 0.0001,
                 sender: pkh1,
                 recipient: pkh2,
@@ -149,7 +149,7 @@ describe("Tezos utils", () => {
             },
             {
               type: "tez",
-              values: {
+              value: {
                 amount: 0.0002,
                 sender: pkh1,
                 recipient: pkh2,
@@ -173,7 +173,7 @@ describe("Tezos utils", () => {
             {
               type: "delegation",
 
-              values: {
+              value: {
                 sender: pkh1,
                 recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
               },
@@ -194,7 +194,7 @@ describe("Tezos utils", () => {
           [
             {
               type: "tez",
-              values: {
+              value: {
                 amount: 9999999,
                 sender: pkh1,
                 recipient: pkh2,
@@ -203,7 +203,7 @@ describe("Tezos utils", () => {
             {
               type: "delegation",
 
-              values: {
+              value: {
                 sender: pkh1,
                 recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
               },

@@ -22,29 +22,29 @@ type BatchMode = {
 };
 export type SendFormMode = TezMode | NFTMode | DelegationMode | BatchMode;
 
-export type TransactionValues =
+export type OperationValue =
   | (TezMode & {
-      values: {
+      value: {
         amount: number;
         sender: string;
         recipient: string;
       };
     })
   | (NFTMode & {
-      values: {
+      value: {
         amount: number;
         sender: string;
         recipient: string;
       };
     })
   | (DelegationMode & {
-      values: {
+      value: {
         sender: string;
         recipient?: string;
       };
     });
 
-export type EstimatedTransaction = {
-  transaction: TransactionValues | TransactionValues[];
+export type EstimatedOperation = {
+  operation: OperationValue | OperationValue[];
   fee: number;
 };

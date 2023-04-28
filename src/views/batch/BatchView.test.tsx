@@ -118,7 +118,7 @@ const addItemsToBatchViaStore = async () => {
       [
         {
           type: "tez",
-          values: {
+          value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(1),
             amount: 1,
@@ -126,7 +126,7 @@ const addItemsToBatchViaStore = async () => {
         },
         {
           type: "tez",
-          values: {
+          value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(2),
             amount: 2,
@@ -134,7 +134,7 @@ const addItemsToBatchViaStore = async () => {
         },
         {
           type: "tez",
-          values: {
+          value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(3),
             amount: 3,
@@ -153,7 +153,7 @@ const addItemsToBatchViaStore = async () => {
       [
         {
           type: "tez",
-          values: {
+          value: {
             sender: mockAccount(2).pkh,
             recipient: mockPkh(9),
             amount: 4,
@@ -161,7 +161,7 @@ const addItemsToBatchViaStore = async () => {
         },
         {
           type: "tez",
-          values: {
+          value: {
             sender: mockAccount(2).pkh,
             recipient: mockPkh(4),
             amount: 5,
@@ -169,7 +169,7 @@ const addItemsToBatchViaStore = async () => {
         },
         {
           type: "tez",
-          values: {
+          value: {
             sender: mockAccount(2).pkh,
             recipient: mockPkh(5),
             amount: 6,
@@ -283,7 +283,7 @@ describe("<BatchView />", () => {
         [
           {
             type: "tez",
-            values: {
+            value: {
               amount: 1,
               recipient: mockPkh(1),
               sender: mockPkh(1),
@@ -291,7 +291,7 @@ describe("<BatchView />", () => {
           },
           {
             type: "tez",
-            values: {
+            value: {
               amount: 2,
               recipient: mockPkh(2),
               sender: mockPkh(1),
@@ -299,7 +299,7 @@ describe("<BatchView />", () => {
           },
           {
             type: "tez",
-            values: {
+            value: {
               amount: 3,
               recipient: mockPkh(3),
               sender: mockPkh(1),

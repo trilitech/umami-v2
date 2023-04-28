@@ -1,5 +1,5 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { TransactionValues } from "../components/sendForm/types";
+import { OperationValue } from "../components/sendForm/types";
 import { Account, AccountType } from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
@@ -250,10 +250,10 @@ export const mockBaker = (index: number) =>
     address: mockPkh(index),
   } as Baker);
 
-export const mockTezTransfer = (index: number): TransactionValues => {
+export const mockTezTransfer = (index: number): OperationValue => {
   return {
     type: "tez",
-    values: {
+    value: {
       amount: index,
       sender: mockPkh(index),
       recipient: mockPkh(index + 1),
@@ -261,11 +261,11 @@ export const mockTezTransfer = (index: number): TransactionValues => {
   };
 };
 
-export const mockNftTransfer = (index: number): TransactionValues => {
+export const mockNftTransfer = (index: number): OperationValue => {
   return {
     type: "nft",
     data: {} as NFT,
-    values: {
+    value: {
       amount: index,
       sender: mockPkh(index),
       recipient: mockPkh(index + 1),
@@ -273,10 +273,10 @@ export const mockNftTransfer = (index: number): TransactionValues => {
   };
 };
 
-export const mockDelegationTransfer = (index: number): TransactionValues => {
+export const mockDelegationTransfer = (index: number): OperationValue => {
   return {
     type: "delegation",
-    values: {
+    value: {
       sender: mockPkh(index),
       recipient: mockPkh(index + 1),
     },

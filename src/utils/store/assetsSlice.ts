@@ -3,13 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 
 import BigNumber from "bignumber.js";
-import { TransactionValues } from "../../components/sendForm/types";
+import { OperationValue } from "../../components/sendForm/types";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
 
-export type BatchItem = { transaction: TransactionValues; fee: number };
+export type BatchItem = { operation: OperationValue; fee: number };
 export type Batch = {
   isSimulating: boolean;
   items: Array<BatchItem>;

@@ -14,45 +14,46 @@ import { getTotalFee } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
-import { EstimatedTransaction, SendFormMode, TransactionValues } from "./types";
+import { EstimatedOperation, SendFormMode, OperationValue } from "./types";
 
 const makeSimulation = (
-  t: TransactionValues,
+  operation: OperationValue,
   pk: string,
   network: TezosNetwork
 ) => {
-  if (t.type === "delegation") {
-    return estimateDelegation(t.values.sender, t.values.recipient, pk, network);
+  switch (operation.type) {
+    case "delegation":
+      return estimateDelegation(
+        operation.value.sender,
+        operation.value.recipient,
+        pk,
+        network
+      );
+    case "nft": {
+      const nft = operation.data;
+
+      return estimateFA2transfer(
+        {
+          amount: operation.value.amount,
+          sender: nft.owner,
+          recipient: operation.value.recipient,
+          contract: nft.contract,
+          tokenId: nft.tokenId,
+        },
+        pk,
+        network
+      );
+    }
+
+    case "tez":
+      return estimateTezTransfer(
+        operation.value.sender,
+        operation.value.recipient,
+        operation.value.amount,
+        pk,
+        network
+      );
   }
-
-  if (t.type === "nft") {
-    const nft = t.data;
-
-    return estimateFA2transfer(
-      {
-        amount: t.values.amount,
-        sender: nft.owner,
-        recipient: t.values.recipient,
-        contract: nft.contract,
-        tokenId: nft.tokenId,
-      },
-      pk,
-      network
-    );
-  }
-
-  if (t.type === "tez") {
-    return estimateTezTransfer(
-      t.values.sender,
-      t.values.recipient,
-      t.values.amount,
-      pk,
-      network
-    );
-  }
-
-  const foo: never = t;
-  throw new Error(foo);
 };
 
 export const useGetPk = () => {
@@ -76,32 +77,32 @@ export const SendForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const initalValues: EstimatedTransaction | undefined =
+  const initalValues: EstimatedOperation | undefined =
     mode.type === "batch"
       ? {
-          transaction: mode.data.batch.items.map((b) => b.transaction),
+          operation: mode.data.batch.items.map((b) => b.operation),
           fee: getTotalFee(mode.data.batch.items),
         }
       : undefined;
 
   const [transferValues, setTransferValues] = useState<
-    EstimatedTransaction | undefined
+    EstimatedOperation | undefined
   >(initalValues);
 
   const [hash, setHash] = useState<string>();
 
-  const simulate = async (transaction: TransactionValues) => {
+  const simulate = async (operation: OperationValue) => {
     setIsLoading(true);
     try {
-      const sender = transaction.values.sender;
+      const sender = operation.value.sender;
 
       const pk = getPk(sender);
 
       // pk needed for simulation
-      const estimate = await makeSimulation(transaction, pk, network);
+      const estimate = await makeSimulation(operation, pk, network);
 
       setTransferValues({
-        transaction,
+        operation,
         fee: estimate.suggestedFeeMutez,
       });
     } catch (error: any) {
@@ -111,15 +112,13 @@ export const SendForm = ({
     setIsLoading(false);
   };
 
-  const addToBatch = async (transaction: TransactionValues) => {
-    const sender = transaction.values.sender;
+  const addToBatch = async (operation: OperationValue) => {
+    const sender = operation.value.sender;
 
     const pk = getPk(sender);
 
     try {
-      await dispatch(
-        estimateAndUpdateBatch(sender, pk, [transaction], network)
-      );
+      await dispatch(estimateAndUpdateBatch(sender, pk, [operation], network));
 
       toast({ title: "Transaction added to batch!" });
     } catch (error: any) {
@@ -144,7 +143,7 @@ export const SendForm = ({
   return (
     <FillStep
       recipient={recipient}
-      assetType={mode}
+      mode={mode}
       sender={sender}
       isLoading={isLoading}
       onSubmit={simulate}

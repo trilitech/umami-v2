@@ -21,7 +21,7 @@ import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import { RecipentAutoComplete } from "../../RecipientAutoComplete/RecipientAutoComplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
-import { SendFormMode, TransactionValues } from "../types";
+import { SendFormMode, OperationValue } from "../types";
 
 export const DelegateForm = ({
   onSubmit,
@@ -253,94 +253,94 @@ export const SendTezOrNFTForm = ({
 };
 
 export const FillStep: React.FC<{
-  onSubmit: (v: TransactionValues) => void;
-  onSubmitBatch: (v: TransactionValues) => void;
+  onSubmit: (v: OperationValue) => void;
+  onSubmitBatch: (v: OperationValue) => void;
   isLoading: boolean;
   sender?: string;
   recipient?: string;
-  assetType: SendFormMode;
-}> = ({ onSubmit, isLoading, sender, recipient, assetType, onSubmitBatch }) => {
-  if (assetType.type === "delegation") {
-    return (
-      <DelegateForm
-        sender={sender}
-        recipient={recipient}
-        undelegate={assetType.data?.undelegate}
-        isLoading={isLoading}
-        onSubmit={(v) => {
-          onSubmit({
-            type: "delegation",
-            values: {
-              sender: v.sender,
-              recipient: v.baker,
-            },
-          });
-        }}
-      />
-    );
-  }
+  mode: SendFormMode;
+}> = ({ onSubmit, isLoading, sender, recipient, mode, onSubmitBatch }) => {
+  switch (mode.type) {
+    case "delegation":
+      return (
+        <DelegateForm
+          sender={sender}
+          recipient={recipient}
+          undelegate={mode.data?.undelegate}
+          isLoading={isLoading}
+          onSubmit={(v) => {
+            onSubmit({
+              type: "delegation",
+              value: {
+                sender: v.sender,
+                recipient: v.baker,
+              },
+            });
+          }}
+        />
+      );
+    case "tez":
+      return (
+        <SendTezOrNFTForm
+          sender={sender}
+          isLoading={isLoading}
+          recipient={recipient}
+          onSubmitBatch={(v) => {
+            onSubmitBatch({
+              type: "tez",
+              value: {
+                amount: v.amount,
+                sender: v.sender,
+                recipient: v.recipient,
+              },
+            });
+          }}
+          onSubmit={(v) => {
+            onSubmit({
+              type: "tez",
+              value: {
+                amount: v.amount,
+                sender: v.sender,
+                recipient: v.recipient,
+              },
+            });
+          }}
+        />
+      );
 
-  if (assetType.type === "tez") {
-    return (
-      <SendTezOrNFTForm
-        sender={sender}
-        isLoading={isLoading}
-        recipient={recipient}
-        onSubmitBatch={(v) => {
-          onSubmitBatch({
-            type: "tez",
-            values: {
-              amount: v.amount,
-              sender: v.sender,
-              recipient: v.recipient,
-            },
-          });
-        }}
-        onSubmit={(v) => {
-          onSubmit({
-            type: "tez",
-            values: {
-              amount: v.amount,
-              sender: v.sender,
-              recipient: v.recipient,
-            },
-          });
-        }}
-      />
-    );
-  }
+    case "nft":
+      return (
+        <SendTezOrNFTForm
+          sender={sender}
+          isLoading={isLoading}
+          recipient={recipient}
+          onSubmitBatch={(v) => {
+            onSubmitBatch({
+              type: "nft",
+              data: mode.data,
+              value: {
+                amount: v.amount,
+                sender: v.sender,
+                recipient: v.recipient,
+              },
+            });
+          }}
+          onSubmit={(v) => {
+            onSubmit({
+              type: "nft",
+              data: mode.data,
+              value: {
+                amount: v.amount,
+                sender: v.sender,
+                recipient: v.recipient,
+              },
+            });
+          }}
+          nft={mode.data}
+        />
+      );
 
-  if (assetType.type === "nft") {
-    return (
-      <SendTezOrNFTForm
-        sender={sender}
-        isLoading={isLoading}
-        recipient={recipient}
-        onSubmitBatch={(v) => {
-          onSubmitBatch({
-            type: "nft",
-            data: assetType.data,
-            values: {
-              amount: v.amount,
-              sender: v.sender,
-              recipient: v.recipient,
-            },
-          });
-        }}
-        onSubmit={(v) => {
-          onSubmit({
-            type: "nft",
-            data: assetType.data,
-            values: {
-              amount: v.amount,
-              sender: v.sender,
-              recipient: v.recipient,
-            },
-          });
-        }}
-        nft={assetType.data}
-      />
-    );
+    default:
+      return null;
   }
-  return null;
 };

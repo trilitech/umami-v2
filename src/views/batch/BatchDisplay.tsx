@@ -23,7 +23,7 @@ import {
   Subtotal,
   Total,
 } from "../../components/sendForm/components/TezAmountRecaps";
-import { TransactionValues } from "../../components/sendForm/types";
+import { OperationValue } from "../../components/sendForm/types";
 import { Account } from "../../types/Account";
 import { formatPkh } from "../../utils/format";
 import { Batch } from "../../utils/store/assetsSlice";
@@ -33,23 +33,21 @@ import {
 } from "../../utils/store/impureFormat";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
-const renderAmount = (t: TransactionValues) => {
-  if (t.type === "delegation") {
-    return "";
-  }
-
-  if (t.type === "nft") {
-    return (
-      <Flex>
-        <Text>{t.values.amount}</Text>
-        <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
-          <Image src={t.data.metadata.displayUri} />
-        </AspectRatio>
-      </Flex>
-    );
-  }
-  if (t.type === "tez") {
-    return prettyTezAmount(t.values.amount, true);
+const renderAmount = (operation: OperationValue) => {
+  switch (operation.type) {
+    case "nft":
+      return (
+        <Flex>
+          <Text>{operation.value.amount}</Text>
+          <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
+            <Image src={operation.data.metadata.displayUri} />
+          </AspectRatio>
+        </Flex>
+      );
+    case "tez":
+      return prettyTezAmount(operation.value.amount, true);
+    case "delegation":
+      return "";
   }
 };
 
@@ -64,9 +62,7 @@ const RightPanel = ({
 }) => {
   const fee = getTotalFee(batch.items);
 
-  const subTotal = getBatchSubtotal(
-    batch.items.map((item) => item.transaction)
-  );
+  const subTotal = getBatchSubtotal(batch.items.map((item) => item.operation));
 
   const total = subTotal + mutezToTezNumber(fee);
   return (
@@ -143,13 +139,13 @@ export const BatchDisplay: React.FC<{
                 return (
                   <Tr
                     // TODO add getKey method
-                    key={b.transaction.values.sender + b.transaction.type + i}
+                    key={b.operation.value.sender + b.operation.type + i}
                   >
-                    <Td>{b.transaction.type}</Td>
-                    <Td>{renderAmount(b.transaction)}</Td>
+                    <Td>{b.operation.type}</Td>
+                    <Td>{renderAmount(b.operation)}</Td>
                     <Td>
-                      {b.transaction.values.recipient &&
-                        formatPkh(b.transaction.values.recipient)}
+                      {b.operation.value.recipient &&
+                        formatPkh(b.operation.value.recipient)}
                     </Td>
                     <Td>{prettyTezAmount(b.fee)}</Td>
                   </Tr>

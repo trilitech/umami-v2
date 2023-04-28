@@ -89,7 +89,7 @@ const BatchView = () => {
           openSendForm({ mode: { type: "batch", data: { batch } } })
         }
         onDelete={() => onOpen(onConfirm)}
-        key={batch.items[0].transaction.values.sender}
+        key={batch.items[0].operation.value.sender}
         account={account}
         batch={batch}
       />
