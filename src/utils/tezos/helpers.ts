@@ -68,7 +68,7 @@ export const getPkAndPkhFromSk = async (
 /**
  *  Contract factory
  */
-export const makeContract = async (
+export const makeFA2TransferMethod = async (
   { sender, recipient, tokenId, amount, contract }: FA2TokenTransferParams,
   toolkit: TezosToolkit
 ): Promise<ContractMethod<ContractProvider>> => {

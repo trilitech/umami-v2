@@ -3,7 +3,7 @@ import { Estimate, TezosToolkit } from "@taquito/taquito";
 import { TransactionValues } from "../../components/sendForm/types";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
-import { makeContract, makeToolkitWithDummySigner } from "./helpers";
+import { makeFA2TransferMethod, makeToolkitWithDummySigner } from "./helpers";
 import { transactionValuesToBatchParams } from "./params";
 import { FA2TokenTransferParams } from "./types";
 
@@ -28,9 +28,9 @@ export const estimateFA2transfer = async (
 ): Promise<Estimate> => {
   const Tezos = makeToolkitWithDummySigner(senderPk, params.sender, network);
 
-  const contractInstance = await makeContract(params, Tezos);
+  const transferMethod = await makeFA2TransferMethod(params, Tezos);
 
-  return Tezos.estimate.transfer(contractInstance.toTransferParams());
+  return Tezos.estimate.transfer(transferMethod.toTransferParams());
 };
 
 export const estimateDelegation = async (
