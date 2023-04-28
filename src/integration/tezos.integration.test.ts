@@ -1,9 +1,11 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { tezzard } from "../mocks/nfts";
+import { ghostFA12 } from "../mocks/fa12";
 import { publicKeys1, publicKeys2 } from "../mocks/publicKeys";
 
 import {
   estimateBatch,
+  estimateFA12transfer,
   estimateFA2transfer,
   operationValuesToBatchParams,
 } from "../utils/tezos";
@@ -100,6 +102,21 @@ describe("Tezos utils", () => {
             tokenId: tezzard.tokenId,
           },
           pk1,
+          TezosNetwork.GHOSTNET
+        );
+
+        expect(result).toHaveProperty("suggestedFeeMutez");
+      });
+
+      test("FA12 estimation returns the right value on ghostnet", async () => {
+        const result = await estimateFA12transfer(
+          {
+            amount: 1,
+            contract: ghostFA12.contract,
+            recipient: pkh2,
+            sender: ghostFA12.owner,
+          },
+          "TEST_PK",
           TezosNetwork.GHOSTNET
         );
 
