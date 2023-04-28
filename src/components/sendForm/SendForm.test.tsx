@@ -253,7 +253,7 @@ describe("<SendForm />", () => {
 
   describe("case send NFT", () => {
     const fillFormAndSimulate = async () => {
-      render(fixture(undefined, { type: "nft", data: mockNFT(1) }));
+      render(fixture(undefined, { type: "token", data: mockNFT(1) }));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
         formatPkh(mockAccount(1).pkh)
       );
@@ -289,7 +289,7 @@ describe("<SendForm />", () => {
     };
 
     test("sender button is disabled and prefilled with NFT owner", () => {
-      render(fixture(undefined, { type: "nft", data: mockNFT(1) }));
+      render(fixture(undefined, { type: "token", data: mockNFT(1) }));
 
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
         formatPkh(mockNFT(1).owner)

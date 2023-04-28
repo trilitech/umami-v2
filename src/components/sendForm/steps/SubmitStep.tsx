@@ -71,15 +71,18 @@ const makeTransfer = (
         sk,
         network
       );
-    case "nft": {
-      const nft = operation.data;
+    case "token": {
+      const token = operation.data;
+      if (token.type !== "nft") {
+        throw new Error("Should be nft");
+      }
       return transferFA2Token(
         {
           amount: operation.value.amount,
-          contract: nft.contract,
+          contract: token.contract,
           recipient: operation.value.recipient,
-          sender: nft.owner,
-          tokenId: nft.tokenId,
+          sender: token.owner,
+          tokenId: token.tokenId,
         },
         sk,
         network
@@ -90,10 +93,11 @@ const makeTransfer = (
 
 const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   const isDelegation = transfer.type === "delegation";
-  const nft = transfer.type === "nft" ? transfer.data : undefined;
+  const token = transfer.type === "token" ? transfer.data : undefined;
 
   const renderAccountTile = useRenderAccountSmallTile();
   const renderBakerTile = useRenderBakerSmallTile();
+
   return (
     <>
       {transfer.value.recipient && (
@@ -106,9 +110,9 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
             : renderAccountTile(transfer.value.recipient)}
         </Flex>
       )}
-      {!!nft && (
+      {!!token && token.type === "nft" && (
         <Box mb={4}>
-          <SendNFTRecapTile nft={nft} />
+          <SendNFTRecapTile nft={token} />
         </Box>
       )}
       {transfer.type === "tez" ? (

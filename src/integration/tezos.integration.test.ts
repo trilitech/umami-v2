@@ -35,7 +35,7 @@ describe("Tezos utils", () => {
             },
           },
           {
-            type: "nft",
+            type: "token",
             data: tezzard,
             value: {
               sender: pkh1,
@@ -135,7 +135,7 @@ describe("Tezos utils", () => {
               },
             },
             {
-              type: "nft",
+              type: "token",
               data: tezzard,
               value: {
                 sender: pkh1,

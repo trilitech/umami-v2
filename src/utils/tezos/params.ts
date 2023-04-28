@@ -38,8 +38,11 @@ export const operationValuesToParams = async (
           delegate: operation.value.recipient,
         });
         break;
-      case "nft":
+      case "token":
         {
+          if (operation.data.type !== "nft") {
+            throw new Error("Should be nft");
+          }
           const Tezos = signer;
           const transferMethod = await makeFA2TransferMethod(
             {
