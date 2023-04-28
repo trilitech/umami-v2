@@ -308,7 +308,10 @@ export const FillStep: React.FC<{
         />
       );
 
-    case "nft":
+    case "token": {
+      if (mode.data.type !== "nft") {
+        throw new Error("Should be nft");
+      }
       return (
         <SendTezOrNFTForm
           sender={sender}
@@ -316,7 +319,7 @@ export const FillStep: React.FC<{
           recipient={recipient}
           onSubmitBatch={(v) => {
             onSubmitBatch({
-              type: "nft",
+              type: "token",
               data: mode.data,
               value: {
                 amount: v.amount,
@@ -327,7 +330,7 @@ export const FillStep: React.FC<{
           }}
           onSubmit={(v) => {
             onSubmit({
-              type: "nft",
+              type: "token",
               data: mode.data,
               value: {
                 amount: v.amount,
@@ -339,6 +342,7 @@ export const FillStep: React.FC<{
           nft={mode.data}
         />
       );
+    }
 
     default:
       return null;

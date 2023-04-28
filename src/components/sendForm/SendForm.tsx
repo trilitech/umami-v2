@@ -29,7 +29,10 @@ const makeSimulation = (
         pk,
         network
       );
-    case "nft": {
+    case "token": {
+      if (operation.data.type !== "nft") {
+        throw new Error("Should be nft");
+      }
       const nft = operation.data;
 
       return estimateFA2transfer(

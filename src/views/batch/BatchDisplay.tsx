@@ -35,7 +35,10 @@ import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
-    case "nft":
+    case "token": {
+      if (operation.data.type !== "nft") {
+        throw new Error("Should be nft");
+      }
       return (
         <Flex>
           <Text>{operation.value.amount}</Text>
@@ -44,6 +47,7 @@ const renderAmount = (operation: OperationValue) => {
           </AspectRatio>
         </Flex>
       );
+    }
     case "tez":
       return prettyTezAmount(operation.value.amount, true);
     case "delegation":

@@ -263,7 +263,7 @@ export const mockTezTransfer = (index: number): OperationValue => {
 
 export const mockNftTransfer = (index: number): OperationValue => {
   return {
-    type: "nft",
+    type: "token",
     data: {} as NFT,
     value: {
       amount: index,

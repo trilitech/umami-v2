@@ -50,7 +50,7 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
         onClick={(_) => {
           onOpen({
             mode: {
-              type: "nft",
+              type: "token",
               data: nft,
             },
           });

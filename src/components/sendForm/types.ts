@@ -1,10 +1,11 @@
-import { NFT } from "../../types/Asset";
+import { Asset } from "../../types/Asset";
 import { Batch } from "../../utils/store/assetsSlice";
 
 type TezMode = { type: "tez" };
-type NFTMode = {
-  type: "nft";
-  data: NFT;
+
+type TokenMode = {
+  type: "token";
+  data: Asset;
 };
 
 type DelegationMode = {
@@ -20,7 +21,7 @@ type BatchMode = {
     batch: Batch;
   };
 };
-export type SendFormMode = TezMode | NFTMode | DelegationMode | BatchMode;
+export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
 export type OperationValue =
   | (TezMode & {
@@ -30,7 +31,7 @@ export type OperationValue =
         recipient: string;
       };
     })
-  | (NFTMode & {
+  | (TokenMode & {
       value: {
         amount: number;
         sender: string;
