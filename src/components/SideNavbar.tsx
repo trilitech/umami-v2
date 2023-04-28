@@ -64,7 +64,7 @@ const BottomIems = () => {
     <Box>
       <Divider />
       <MenuItem
-        label="Adress Book"
+        label="Address Book"
         to={"/address-book"}
         icon={MdOutlineContacts}
       />
