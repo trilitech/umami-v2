@@ -5,6 +5,7 @@ import {
   ContractProvider,
   TezosToolkit,
 } from "@taquito/taquito";
+import { SignerConfig, SignerType } from "../../types/SignerConfig";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
 import { FA12TokenTransferParams, FA2TokenTransferParams } from "./types";
@@ -33,9 +34,16 @@ export const getFingerPrint = async (seedPhrase: string): Promise<string> => {
 };
 
 export const makeToolkitWithSigner = async (
-  sk: string,
-  network: TezosNetwork
+  c: SignerConfig
 ): Promise<TezosToolkit> => {
+  const { network, type } = c;
+
+  if (type === SignerType.LEDGER) {
+    throw new Error("no support");
+  }
+
+  const { sk } = c;
+
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
     signer: new InMemorySigner(sk),
