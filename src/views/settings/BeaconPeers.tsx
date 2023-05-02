@@ -1,5 +1,5 @@
 import { Heading } from "@chakra-ui/react";
-import { usePeers } from "../../Beacon";
+import { usePeers } from "../../utils/beacon/Beacon";
 
 // Displays the list of beacon peers
 const BeaconPeers = () => {

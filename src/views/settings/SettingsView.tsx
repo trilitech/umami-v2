@@ -1,6 +1,6 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
 import { Box, Flex, Heading, Text, Switch, Button } from "@chakra-ui/react";
-import { addPeer } from "../../Beacon";
+import { addPeer } from "../../utils/beacon/Beacon";
 import { SettingsCard } from "../../components/ClickableCard";
 import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
