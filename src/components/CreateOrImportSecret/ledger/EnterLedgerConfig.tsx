@@ -67,6 +67,9 @@ const EnterLedgerConfig = ({ onClose }: { onClose: () => void }) => {
           });
           handlePk(pk, pkh);
           setIsloading(false);
+        } catch (error: any) {
+          // How do we type error?
+          toast({ title: "Error", description: error.message });
         } finally {
           await transport.close();
         }
