@@ -1,4 +1,6 @@
 import {
+  BeaconErrorType,
+  BeaconMessage,
   BeaconMessageType,
   BeaconRequestOutputMessage,
   BeaconResponseInputMessage,
@@ -87,34 +89,29 @@ const handleSignPayloadRequest = async (message: SignPayloadRequestOutput) => {
   walletClient.respond(response);
 };
 
-// walletClient.init().then(() => {
-//   console.log("init");
-//   walletClient
-//     .connect(async (message) => {
-//       console.log("message", message);
-//       // eslint-disable-next-line no-debugger
-//       debugger;
-//       if (message.type === BeaconMessageType.PermissionRequest) {
-//         handlePermissionRequest(message);
-//       } else if (message.type === BeaconMessageType.OperationRequest) {
-//         handleOperationRequest(message);
-//       } else if (message.type === BeaconMessageType.SignPayloadRequest) {
-//         handleSignPayloadRequest(message);
-//       } else {
-//         console.error("Message Type Not Supported");
-//         console.error("Received: ", message);
+const handleBeaconMessage = (message: BeaconRequestOutputMessage) => {
+  console.log("message", message);
+  // eslint-disable-next-line no-debugger
+  debugger;
+  if (message.type === BeaconMessageType.PermissionRequest) {
+    handlePermissionRequest(message);
+  } else if (message.type === BeaconMessageType.OperationRequest) {
+    handleOperationRequest(message);
+  } else if (message.type === BeaconMessageType.SignPayloadRequest) {
+    handleSignPayloadRequest(message);
+  } else {
+    console.error("Message Type Not Supported");
+    console.error("Received: ", message);
 
-//         const response: BeaconResponseInputMessage = {
-//           type: BeaconMessageType.Error,
-//           id: message.id,
-//           errorType: BeaconErrorType.ABORTED_ERROR,
-//         };
+    const response: BeaconResponseInputMessage = {
+      type: BeaconMessageType.Error,
+      id: message.id,
+      errorType: BeaconErrorType.ABORTED_ERROR,
+    };
 
-//         walletClient.respond(response);
-//       }
-//     })
-//     .catch((error) => console.error("connect error", error));
-// });
+    walletClient.respond(response);
+  }
+};
 
 export const addPeer = (payload: string) => {
   const serializer = new Serializer();
