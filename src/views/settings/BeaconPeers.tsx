@@ -1,3 +1,4 @@
+import { PeerInfo } from "@airgap/beacon-wallet";
 import { Heading } from "@chakra-ui/react";
 import { usePeers } from "../../utils/beacon/Beacon";
 
@@ -15,12 +16,13 @@ const BeaconPeers = () => {
   // "beaconPeers is stale" and it will refresh
 
   const peers = data || [];
+  console.log(peers);
   return (
     <>
       <Heading>Peers</Heading>
       <div>
-        {peers.map((p) => {
-          return <Heading>{p.name}</Heading>;
+        {peers.map((p: PeerInfo) => {
+          return <Heading key={p.name}>{p.name}</Heading>;
         })}
       </div>
     </>

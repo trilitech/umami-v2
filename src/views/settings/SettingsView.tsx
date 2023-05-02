@@ -44,7 +44,6 @@ export default function SettingsView() {
               <Button
                 onClick={async () => {
                   navigator.clipboard.readText().then((text) => {
-                    console.log(text);
                     addPeer(text);
                   });
                 }}

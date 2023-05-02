@@ -38,19 +38,26 @@ export const refreshPeers = () => {
 };
 
 export const usePeers = () => {
-  const queryRef = useRef(useQuery("beaconPeers", walletClient.getPeers));
+  const query = useQuery("beaconPeers", async () => {
+    const result = await walletClient.getPeers();
+    console.log(result);
+    return result;
+  });
+
+  const refetch = useRef(query.refetch);
 
   useEffect(() => {
-    emitter.addListener(REFRESH_PEERS_MESSAGE, queryRef.current.refetch);
+    emitter.addListener(REFRESH_PEERS_MESSAGE, (m) => {
+      refetch.current();
+    });
   }, []);
 
-  return queryRef.current;
+  return query;
 };
 
 const handlePermissionRequest = async (message: PermissionRequestOutput) => {
   // TODO: Show a UI to the user where he can confirm sharing an account with the DApp
   // eslint-disable-next-line no-debugger
-  debugger;
   const publicKey = "edpk...";
 
   const response: BeaconResponseInputMessage = {
@@ -91,29 +98,29 @@ const handleSignPayloadRequest = async (message: SignPayloadRequestOutput) => {
   walletClient.respond(response);
 };
 
-const handleBeaconMessage = (message: BeaconRequestOutputMessage) => {
-  console.log("message", message);
-  // eslint-disable-next-line no-debugger
-  debugger;
-  if (message.type === BeaconMessageType.PermissionRequest) {
-    handlePermissionRequest(message);
-  } else if (message.type === BeaconMessageType.OperationRequest) {
-    handleOperationRequest(message);
-  } else if (message.type === BeaconMessageType.SignPayloadRequest) {
-    handleSignPayloadRequest(message);
-  } else {
-    console.error("Message Type Not Supported");
-    console.error("Received: ", message);
+// const handleBeaconMessage = (message: BeaconRequestOutputMessage) => {
+//   console.log("message", message);
+//   // eslint-disable-next-line no-debugger
+//   debugger;
+//   if (message.type === BeaconMessageType.PermissionRequest) {
+//     handlePermissionRequest(message);
+//   } else if (message.type === BeaconMessageType.OperationRequest) {
+//     handleOperationRequest(message);
+//   } else if (message.type === BeaconMessageType.SignPayloadRequest) {
+//     handleSignPayloadRequest(message);
+//   } else {
+//     console.error("Message Type Not Supported");
+//     console.error("Received: ", message);
 
-    const response: BeaconResponseInputMessage = {
-      type: BeaconMessageType.Error,
-      id: message.id,
-      errorType: BeaconErrorType.ABORTED_ERROR,
-    };
+//     const response: BeaconResponseInputMessage = {
+//       type: BeaconMessageType.Error,
+//       id: message.id,
+//       errorType: BeaconErrorType.ABORTED_ERROR,
+//     };
 
-    walletClient.respond(response);
-  }
-};
+//     walletClient.respond(response);
+//   }
+// };
 
 export const addPeer = (payload: string) => {
   const serializer = new Serializer();
@@ -121,7 +128,7 @@ export const addPeer = (payload: string) => {
     .deserialize(payload)
     .then((peer) => {
       console.log("Adding peer", peer);
-      walletClient.addPeer(peer as PeerInfo).then(() => {});
+      walletClient.addPeer(peer as PeerInfo).then(refreshPeers);
     })
     .catch((e) => {
       console.error("not a valid sync code: ", payload);
@@ -146,15 +153,16 @@ export const resetPeers = () => {
   });
 };
 
-const renderBeaconNotification = (m: BeaconRequestOutputMessage) => {
+const renderBeaconNotification = (message: BeaconRequestOutputMessage) => {
   // Given a beacon message display the correct window:
   // -Permission request
   // -Transfer request
   // Those are the only 2 that are implemented in V1 mobile. Probably others are required.
 
-  switch (m.type) {
-    case BeaconMessageType.PermissionRequest:
-      return <PermissionRequestDisplay />;
+  switch (message.type) {
+    case BeaconMessageType.PermissionRequest: {
+      return <PermissionRequestDisplay request={message} />;
+    }
 
     default:
       return "unsupported";
@@ -168,7 +176,6 @@ export const useBeaconModalNotification = () => {
   return {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
-        {"hello"}
         {beaconMessage.current &&
           renderBeaconNotification(beaconMessage.current)}
       </Modal>
@@ -179,7 +186,6 @@ export const useBeaconModalNotification = () => {
       connectionContext: ConnectionContext
     ) => {
       beaconMessage.current = message;
-      // eslint-disable-next-line no-debugger
       onOpen();
     },
   };
@@ -187,7 +193,6 @@ export const useBeaconModalNotification = () => {
 
 export const useBeaconInit = () => {
   const { modalElement: beaconModal, onOpen } = useBeaconModalNotification();
-  console.log("render");
 
   // Ref is needed because otherwise onOpen needs to be added in useEffect dependencies
   // and that might trigger the effect again if onOpen reference isn't stable
