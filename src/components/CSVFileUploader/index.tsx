@@ -1,4 +1,4 @@
-import { Input } from "@chakra-ui/react";
+import { Input, useToast } from "@chakra-ui/react";
 import Papa from "papaparse";
 import { useRef } from "react";
 import { HiOutlineDocumentDownload } from "react-icons/hi";
@@ -6,6 +6,7 @@ import { IconAndTextBtn } from "../IconAndTextBtn";
 import { parseCSVRow } from "./utils";
 
 const CSVFileUploader = () => {
+  const toast = useToast();
   const fileInput = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -24,8 +25,16 @@ const CSVFileUploader = () => {
           throw new Error("Error parsing csv file.");
         }
 
-        const parsed = res.data.map(parseCSVRow);
-        console.log(parsed);
+        const parsed = res.data.map((row, i) => {
+          try {
+            return parseCSVRow(row);
+          } catch (error: any) {
+            toast({
+              title: "error",
+              description: `Error at row ${i}: ${error?.message}`,
+            });
+          }
+        });
       },
     });
   };

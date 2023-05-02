@@ -11,15 +11,13 @@ export const parseCSVRow = (row: string[]): CSVParsedRow => {
 
   const [recipient, amountString, contract, tokenIdString] = filteredRow;
 
+  if (validateAddress(recipient) !== ValidationResult.VALID) {
+    throw new Error("invalid csv value: recipient");
+  }
+
   const amount = parseNonNegativeFloat(amountString);
-  if (
-    validateAddress(recipient) !== ValidationResult.VALID ||
-    isNaN(amount) ||
-    amount === 0
-  ) {
-    console.log(validateAddress(recipient));
-    console.log(recipient);
-    throw new Error("invalid csv value: recipient or amount");
+  if (isNaN(amount) || amount === 0) {
+    throw new Error("invalid csv value: amount");
   }
 
   let res: CSVParsedRow = {
