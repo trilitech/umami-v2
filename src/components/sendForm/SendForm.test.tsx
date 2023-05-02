@@ -12,11 +12,12 @@ import {
   mockAccount,
   mockBaker,
   mockNFT,
+  mockPk,
   mockPkh,
 } from "../../mocks/factories";
 import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { AccountType } from "../../types/Account";
+import { AccountType, LedgerAccount } from "../../types/Account";
 import { UmamiTheme } from "../../providers/UmamiTheme";
 import { formatPkh } from "../../utils/format";
 import { useGetSk } from "../../utils/hooks/accountUtils";
@@ -34,6 +35,7 @@ import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 import { TezosNetwork } from "@airgap/tezos";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
+import { getRelativeDerivationPath } from "../../utils/restoreAccounts";
 
 const { add, addSecret } = accountsSlice.actions;
 
@@ -56,7 +58,7 @@ const fixture = (sender?: string, assetType?: SendFormMode) => (
   <ReactQueryProvider>
     <UmamiTheme>
       <ReduxStore>
-        <Modal isOpen={true} onClose={() => { }}>
+        <Modal isOpen={true} onClose={() => {}}>
           <SendForm sender={sender} mode={assetType} />
         </Modal>
       </ReduxStore>
@@ -248,12 +250,8 @@ describe("<SendForm />", () => {
         type: SignerType.SK,
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
-      }
-      expect(transferTezMock).toHaveBeenCalledWith(
-        mockPkh(7),
-        23,
-        config
-      );
+      };
+      expect(transferTezMock).toHaveBeenCalledWith(mockPkh(7), 23, config);
     });
   });
 
@@ -332,7 +330,7 @@ describe("<SendForm />", () => {
         type: SignerType.SK,
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
-      }
+      };
       expect(transferFA2TokenMock).toHaveBeenCalledWith(
         {
           amount: 1,
@@ -435,4 +433,76 @@ describe("<SendForm />", () => {
       });
     });
   });
+
+  // describe("case send tez with Ledger account", () => {
+  //   const fillForm = async () => {
+  //     const account: LedgerAccount = {
+  //       type: AccountType.LEDGER,
+  //       derivationPath: getRelativeDerivationPath(0),
+  //       curve: "ed25519",
+  //       label: "1 ledger",
+  //       pkh: "tz1W2hEsS1mj7dHPZ6267eeM4HDWJoG3s13n",
+  //       pk: "edpku9bRbm5pCeRSuoCXNG4tuL1b5ZpGUdV5od5ZyQDLJJM57tshVz",
+  //     };
+  //     console.log();
+  //     // render(fixture(account.pkh));
+  //     render(fixture(mockAccount(4, AccountType.LEDGER).pkh));
+
+  //     const amountInput = screen.getByLabelText(/amount/i);
+  //     fireEvent.change(amountInput, { target: { value: 23 } });
+
+  //     const recipientInput = screen.getByLabelText(/to/i);
+  //     fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+
+  //     const submitBtn = screen.getByText(/preview/i);
+
+  //     await waitFor(() => {
+  //       expect(submitBtn).toBeEnabled();
+  //     });
+
+  //     estimateTezTransferMock.mockResolvedValueOnce({
+  //       suggestedFeeMutez: 12345,
+  //     });
+
+  //     fireEvent.click(submitBtn);
+
+  //     await waitFor(() => {
+  //       const subTotal = screen.getByLabelText(/^sub-total$/i);
+  //       expect(subTotal).toHaveTextContent(/23 ꜩ/i);
+
+  //       const fee = screen.getByLabelText(/^fee$/i);
+  //       expect(fee).toHaveTextContent(/0.012345 ꜩ/i);
+
+  //       const total = screen.getByLabelText(/^total$/i);
+  //       expect(total).toHaveTextContent(/23.012345 ꜩ/i);
+  //     });
+  //   };
+  //   test.only("It doesn't display password in SubmitStep", async () => {
+  //     await fillForm();
+  //     expect(
+  //       screen.getByRole("button", { name: /sign with ledger/i })
+  //     ).toBeTruthy();
+  //     expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
+  //   });
+
+  //   test("Clicking on submit transaction signs with ledger and shows operation submitted message", async () => {
+  //     await fillForm();
+
+  //     const ledgerBtn = screen.getByText(/sign with ledger/i);
+
+  //     transferTezMock.mockResolvedValueOnce({
+  //       hash: "foo",
+  //     });
+
+  //     fireEvent.click(ledgerBtn);
+
+  //     await waitFor(() => {
+  //       expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+  //       expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+  //         "href",
+  //         "https://mainnet.tzkt.io/foo"
+  //       );
+  //     });
+  //   });
+  // });
 });

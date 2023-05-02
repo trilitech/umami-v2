@@ -284,7 +284,7 @@ describe("<BatchView />", () => {
         type: SignerType.SK,
         network: TezosNetwork.MAINNET,
         sk: "mockSk",
-      }
+      };
       expect(submitBatch).toHaveBeenCalledWith(
         [
           {

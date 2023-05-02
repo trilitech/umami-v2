@@ -1,12 +1,21 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { OperationValue } from "../components/sendForm/types";
-import { Account, AccountType } from "../types/Account";
+import {
+  Account,
+  AccountType,
+  LedgerAccount,
+  MnemonicAccount,
+  SocialAccount,
+} from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
-import { getFullDerivationPath } from "../utils/restoreAccounts";
+import {
+  getFullDerivationPath,
+  getRelativeDerivationPath,
+} from "../utils/restoreAccounts";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -66,6 +75,7 @@ const validMockPkhs = [
   "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
   "tz1cX93Q3KsiTADpCC4f12TBvAmS5tw7CW19",
   "tz1NEKxGEHsFufk87CVZcrqWu8o22qh46GK6",
+  "tz1W2hEsS1mj7dHPZ6267eeM4HDWJoG3s13n",
 ];
 
 export const mockPkh = (index: number) => {
@@ -86,7 +96,7 @@ export const mockAccount = (
   fingerPrint = "mockPrint"
 ): Account => {
   if (type === AccountType.MNEMONIC) {
-    return {
+    const account: MnemonicAccount = {
       curve: "ed25519",
       derivationPath: getFullDerivationPath(0),
       type,
@@ -95,27 +105,30 @@ export const mockAccount = (
       pk: mockPk(index),
       seedFingerPrint: `${fingerPrint}`,
     };
+    return account;
   }
 
   if (type === AccountType.SOCIAL) {
-    return {
+    const account: SocialAccount = {
       type: AccountType.SOCIAL,
       label: "google " + mockAccountLabel(index),
       pkh: mockPkh(index),
       pk: mockPk(index),
       idp: "google",
     };
+    return account;
   }
 
   if (type === AccountType.LEDGER) {
-    return {
-      curve: "ed25519",
-      derivationPath: getFullDerivationPath(0),
+    const account: LedgerAccount = {
       type,
+      derivationPath: getFullDerivationPath(0),
+      curve: "ed25519",
       label: mockAccountLabel(index) + " ledger",
       pkh: mockPkh(index),
       pk: mockPk(index),
     };
+    return account;
   }
 
   const error: never = type;
