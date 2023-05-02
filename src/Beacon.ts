@@ -1,10 +1,13 @@
 import {
   BeaconErrorType,
   BeaconMessageType,
+  BeaconResponseInputMessage,
   OperationRequestOutput,
+  OperationResponseInput,
   PermissionRequestOutput,
   Serializer,
   SignPayloadRequestOutput,
+  SignPayloadResponseInput,
   WalletClient,
 } from "@airgap/beacon-wallet";
 
@@ -18,7 +21,7 @@ const handlePermissionRequest = async (message: PermissionRequestOutput) => {
   // TODO: Show a UI to the user where he can confirm sharing an account with the DApp
   const publicKey = "edpk...";
 
-  const response = {
+  const response: BeaconResponseInputMessage = {
     type: BeaconMessageType.PermissionResponse,
     network: message.network, // Use the same network that the user requested
     scopes: message.scopes,
@@ -27,14 +30,33 @@ const handlePermissionRequest = async (message: PermissionRequestOutput) => {
   };
 
   // Send response back to DApp
-  walletClient.respond(response as any);
+  walletClient.respond(response);
 };
 
 const handleOperationRequest = async (message: OperationRequestOutput) => {
   // TODO: Show operation details in UI, allow user to approve / reject
+  // TODO: Sign message.operationDetails
+
+  const response: OperationResponseInput = {
+    type: BeaconMessageType.OperationResponse,
+    id: message.id,
+    transactionHash: "", // TODO: TX Hash
+  };
+
+  walletClient.respond(response);
 };
 const handleSignPayloadRequest = async (message: SignPayloadRequestOutput) => {
   // TODO: Show operation details in UI, allow user to approve / reject
+  // TODO: Sign message.payload
+
+  const response: SignPayloadResponseInput = {
+    type: BeaconMessageType.SignPayloadResponse,
+    id: message.id,
+    signingType: message.signingType,
+    signature: "", // TODO: Signature
+  };
+
+  walletClient.respond(response);
 };
 
 walletClient.init().then(() => {
@@ -52,12 +74,13 @@ walletClient.init().then(() => {
         console.error("Message Type Not Supported");
         console.error("Received: ", message);
 
-        const response = {
+        const response: BeaconResponseInputMessage = {
           type: BeaconMessageType.Error,
           id: message.id,
           errorType: BeaconErrorType.ABORTED_ERROR,
         };
-        walletClient.respond(response as any);
+
+        walletClient.respond(response);
       }
     })
     .catch((error) => console.error("connect error", error));
