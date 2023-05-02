@@ -8,6 +8,7 @@ import {
   OperationRequestOutput,
   OperationResponseInput,
   PeerInfo,
+  PermissionRequest,
   PermissionRequestOutput,
   Serializer,
   SignPayloadRequestOutput,
@@ -18,6 +19,7 @@ import { Modal, useDisclosure } from "@chakra-ui/react";
 import EventEmitter from "events";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
+import PermissionRequestDisplay from "./PermissionRequestDisplay";
 // import { useEffect, useRef } from "react";
 // import { useQuery } from "react-query";
 // import { EventEmitter } from "stream";
@@ -152,13 +154,11 @@ const renderBeaconNotification = (m: BeaconRequestOutputMessage) => {
 
   switch (m.type) {
     case BeaconMessageType.PermissionRequest:
-      return "bar";
-      return null;
+      return <PermissionRequestDisplay />;
 
     default:
       return "unsupported";
   }
-  return null;
 };
 
 export const useBeaconModalNotification = () => {
@@ -180,9 +180,7 @@ export const useBeaconModalNotification = () => {
     ) => {
       beaconMessage.current = message;
       // eslint-disable-next-line no-debugger
-      debugger;
       onOpen();
-      beaconMessage.current = null;
     },
   };
 };
