@@ -1,6 +1,4 @@
 import {
-  BeaconErrorType,
-  BeaconMessage,
   BeaconMessageType,
   BeaconRequestOutputMessage,
   BeaconResponseInputMessage,
@@ -8,7 +6,6 @@ import {
   OperationRequestOutput,
   OperationResponseInput,
   PeerInfo,
-  PermissionRequest,
   PermissionRequestOutput,
   Serializer,
   SignPayloadRequestOutput,
