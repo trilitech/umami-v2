@@ -1,8 +1,9 @@
-import React from "react";
-import { useQuery } from "react-query";
+import { Heading } from "@chakra-ui/react";
+// import { usePeers } from "../../Beacon";
 
 // Displays the list of beacon peers
 const BeaconPeers = () => {
+  // const { data, error } = usePeers();
   // const peersQuery = useQuery("beaconPeers", beaconClient.getPeers);
   // Gives a handle to
   // peersQuery.loading
@@ -13,7 +14,17 @@ const BeaconPeers = () => {
   // I think there is an API with react query that allows you to say:
   // "beaconPeers is stale" and it will refresh
 
-  return <div>BeaconClients</div>;
+  // const peers = data || [];
+  return (
+    <>
+      <Heading>Peers</Heading>
+      {/* <div>
+        {peers.map((p) => {
+          return <Heading>{p.name}</Heading>;
+        })}
+      </div> */}
+    </>
+  );
 };
 
 export default BeaconPeers;

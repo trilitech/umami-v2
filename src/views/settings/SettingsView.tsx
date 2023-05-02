@@ -5,6 +5,7 @@ import { SettingsCard } from "../../components/ClickableCard";
 import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
 import { useReset } from "../../utils/hooks/accountHooks";
+import BeaconPeers from "./BeaconPeers";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 
 export default function SettingsView() {
@@ -52,6 +53,7 @@ export default function SettingsView() {
               </Button>
             </Box>
           </SettingsCard>
+          <BeaconPeers />
           <ErrorLogsDrawerCard />
           <Button onClick={reset}>{"Erase secrets"}</Button>
         </SettingsSection>

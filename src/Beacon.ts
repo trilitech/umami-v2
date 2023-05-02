@@ -11,12 +11,35 @@ import {
   SignPayloadResponseInput,
   WalletClient,
 } from "@airgap/beacon-wallet";
+import EventEmitter from "events";
+import { useEffect, useRef } from "react";
+import { useQuery } from "react-query";
+// import { useEffect, useRef } from "react";
+// import { useQuery } from "react-query";
+// import { EventEmitter } from "stream";
 
 export const walletClient = new WalletClient({
   name: "Umami",
   iconUrl: "",
   appUrl: "https://umamiwallet.com/",
 });
+
+const emitter = new EventEmitter();
+const REFRESH_PEERS_MESSAGE = "refreshPeers";
+
+export const refreshPeers = () => {
+  emitter.emit(REFRESH_PEERS_MESSAGE);
+};
+
+export const usePeers = () => {
+  const queryRef = useRef(useQuery("beaconPeers", walletClient.getPeers));
+
+  useEffect(() => {
+    emitter.addListener(REFRESH_PEERS_MESSAGE, queryRef.current.refetch);
+  }, []);
+
+  return queryRef.current;
+};
 
 const handlePermissionRequest = async (message: PermissionRequestOutput) => {
   // TODO: Show a UI to the user where he can confirm sharing an account with the DApp
