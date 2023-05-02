@@ -37,6 +37,19 @@ export default function SettingsView() {
               <NetworkSelector />
             </Box>
           </SettingsCard>
+          <SettingsCard left="Paste Beacon Pairing Code">
+            <Box>
+              <Button
+                onClick={async () => {
+                  navigator.clipboard.readText().then((text) => {
+                    console.log(text);
+                  });
+                }}
+              >
+                Paste
+              </Button>
+            </Box>
+          </SettingsCard>
           <ErrorLogsDrawerCard />
           <Button onClick={reset}>{"Erase secrets"}</Button>
         </SettingsSection>
