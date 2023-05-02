@@ -20,6 +20,8 @@ export const walletClient = new WalletClient({
 
 const handlePermissionRequest = async (message: PermissionRequestOutput) => {
   // TODO: Show a UI to the user where he can confirm sharing an account with the DApp
+  // eslint-disable-next-line no-debugger
+  debugger;
   const publicKey = "edpk...";
 
   const response: BeaconResponseInputMessage = {
