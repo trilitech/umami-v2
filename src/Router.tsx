@@ -75,6 +75,7 @@ const loggedOutRouter = createHashRouter([
 ]);
 
 const MemoizedRouter = React.memo(() => {
+  console.log("mount");
   const beaconNotificationModal = useBeaconInit();
   return (
     <>

@@ -16,17 +16,18 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <UmamiTheme>
-      <ReduxStore>
-        <PersistGate loading={null} persistor={persistStore(store)}>
-          <ReactQueryProvider>
-            <Router />
-          </ReactQueryProvider>
-        </PersistGate>
-      </ReduxStore>
-    </UmamiTheme>
-  </React.StrictMode>
+  // Strict mode makes useEffect run twice!
+  // <React.StrictMode>
+  <UmamiTheme>
+    <ReduxStore>
+      <PersistGate loading={null} persistor={persistStore(store)}>
+        <ReactQueryProvider>
+          <Router />
+        </ReactQueryProvider>
+      </PersistGate>
+    </ReduxStore>
+  </UmamiTheme>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

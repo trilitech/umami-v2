@@ -181,21 +181,22 @@ export const useBeaconModalNotification = () => {
 
 export const useBeaconInit = () => {
   const { modalElement: beaconModal, onOpen } = useBeaconModalNotification();
+  console.log("render");
 
   // Ref is needed because otherwise onOpen needs to be added in useEffect dependencies
   // and that might trigger the effect again if onOpen reference isn't stable
   const handleBeaconMessage = useRef(onOpen);
 
   useEffect(() => {
-    console.log("init");
+    console.log("beacon init");
     // This code runs once, even if the hosting component rerenders
     // because the dependency array is empty
-    walletClient
-      .init()
-      .then(() => {
-        walletClient.connect(handleBeaconMessage.current);
-      })
-      .catch(console.error);
+    // walletClient
+    //   .init()
+    //   .then(() => {
+    //     walletClient.connect(handleBeaconMessage.current);
+    //   })
+    //   .catch(console.error);
   }, []);
 
   return beaconModal;
