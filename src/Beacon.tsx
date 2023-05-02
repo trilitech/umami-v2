@@ -188,15 +188,15 @@ export const useBeaconInit = () => {
   const handleBeaconMessage = useRef(onOpen);
 
   useEffect(() => {
-    console.log("beacon init");
     // This code runs once, even if the hosting component rerenders
     // because the dependency array is empty
-    // walletClient
-    //   .init()
-    //   .then(() => {
-    //     walletClient.connect(handleBeaconMessage.current);
-    //   })
-    //   .catch(console.error);
+    walletClient
+      .init()
+      .then(() => {
+        console.log("Beacon client initialized successfully");
+        walletClient.connect(handleBeaconMessage.current);
+      })
+      .catch(console.error);
   }, []);
 
   return beaconModal;
