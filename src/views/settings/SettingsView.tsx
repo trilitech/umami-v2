@@ -1,5 +1,6 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
 import { Box, Flex, Heading, Text, Switch, Button } from "@chakra-ui/react";
+import { addPeer } from "../../Beacon";
 import { SettingsCard } from "../../components/ClickableCard";
 import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
@@ -43,6 +44,7 @@ export default function SettingsView() {
                 onClick={async () => {
                   navigator.clipboard.readText().then((text) => {
                     console.log(text);
+                    addPeer(text);
                   });
                 }}
               >
