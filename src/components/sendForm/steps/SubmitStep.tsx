@@ -178,8 +178,8 @@ export const RecapDisplay: React.FC<{
       const config: SkSignerConfig = {
         sk,
         network,
-        type: SignerType.SK
-      }
+        type: SignerType.SK,
+      };
       const result = await makeTransfer(transfer, config);
 
       if (Array.isArray(transfer)) {
@@ -209,8 +209,8 @@ export const RecapDisplay: React.FC<{
         const config: SkSignerConfig = {
           sk,
           network,
-          type: SignerType.SK
-        }
+          type: SignerType.SK,
+        };
         const result = await makeTransfer(transfer, config);
         if (Array.isArray(transfer)) {
           clearBatch(signerAccount.pkh);

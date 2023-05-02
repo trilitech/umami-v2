@@ -52,7 +52,7 @@ export const transferTez = async (
 export const submitBatch = async (
   operation: OperationValue[],
   config: SignerConfig
-  ): Promise<BatchWalletOperation> => {
+): Promise<BatchWalletOperation> => {
   const Tezos = await makeToolkitWithSigner(config);
   const params = await operationValuesToWalletParams(operation, Tezos);
   return Tezos.wallet.batch(params).send();
