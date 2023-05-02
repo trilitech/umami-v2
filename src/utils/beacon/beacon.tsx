@@ -1,4 +1,8 @@
-import { WalletClient } from "@airgap/beacon-wallet";
+import {
+  BeaconRequestOutputMessage,
+  ConnectionContext,
+  WalletClient,
+} from "@airgap/beacon-wallet";
 import { Modal, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 
@@ -6,7 +10,7 @@ export const client = new WalletClient({ name: "My Wallet" });
 
 type BeaconNotificationMessage = any; // PermissionRequest, TranferRequest, DelegationRequest etc...
 
-const renderBeaconNotification = (n: BeaconNotificationMessage) => {
+const renderBeaconNotification = (m: BeaconRequestOutputMessage) => {
   // Given a beacon message display the correct window:
   // -Permission request
   // -Transfer request
@@ -27,8 +31,11 @@ export const useBeaconModalNotification = () => {
       </Modal>
     ),
 
-    onOpen: (beaconMessage: BeaconNotificationMessage) => {
-      beaconMessage.current = beaconMessage;
+    onOpen: (
+      message: BeaconRequestOutputMessage,
+      connectionContext: ConnectionContext
+    ) => {
+      beaconMessage.current = message;
       onOpen();
       beaconMessage.current = null;
     },
