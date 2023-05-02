@@ -144,12 +144,20 @@ export const resetPeers = () => {
   });
 };
 
-const renderBeaconNotification = (m: any) => {
+const renderBeaconNotification = (m: BeaconRequestOutputMessage) => {
   // Given a beacon message display the correct window:
   // -Permission request
   // -Transfer request
   // Those are the only 2 that are implemented in V1 mobile. Probably others are required.
 
+  switch (m.type) {
+    case BeaconMessageType.PermissionRequest:
+      return "bar";
+      return null;
+
+    default:
+      return "unsupported";
+  }
   return null;
 };
 
@@ -160,6 +168,7 @@ export const useBeaconModalNotification = () => {
   return {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
+        {"hello"}
         {beaconMessage.current &&
           renderBeaconNotification(beaconMessage.current)}
       </Modal>
