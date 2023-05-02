@@ -21,7 +21,6 @@ const BeaconPeers = () => {
   // "beaconPeers is stale" and it will refresh
 
   const peers = data || [];
-  console.log(peers);
   return (
     <>
       <Heading>Peers</Heading>
