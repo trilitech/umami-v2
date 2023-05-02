@@ -170,6 +170,8 @@ export const useBeaconModalNotification = () => {
       connectionContext: ConnectionContext
     ) => {
       beaconMessage.current = message;
+      // eslint-disable-next-line no-debugger
+      debugger;
       onOpen();
       beaconMessage.current = null;
     },
