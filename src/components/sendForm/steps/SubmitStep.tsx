@@ -202,28 +202,24 @@ export const RecapDisplay: React.FC<{
     ) {
       throw new Error(`Wrong signing method called`);
     }
-    if (password && isMnemonic) {
-      try {
-        setIsLoading(true);
-        const sk = await getSk(signerAccount, password);
-        const config: SkSignerConfig = {
-          sk,
-          network,
-          type: SignerType.SK,
-        };
-        const result = await makeTransfer(transfer, config);
-        if (Array.isArray(transfer)) {
-          clearBatch(signerAccount.pkh);
-        }
-        onSucces(result.hash);
-        toast({ title: "Success", description: result.hash });
-      } catch (error: any) {
-        toast({ title: "Error", description: error.message });
+    try {
+      setIsLoading(true);
+      const sk = await getSk(signerAccount, password);
+      const config: SkSignerConfig = {
+        sk,
+        network,
+        type: SignerType.SK,
+      };
+      const result = await makeTransfer(transfer, config);
+      if (Array.isArray(transfer)) {
+        clearBatch(signerAccount.pkh);
       }
-      setIsLoading(false);
-    } else {
-      throw new Error(`Unknown signing method`);
+      onSucces(result.hash);
+      toast({ title: "Success", description: result.hash });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message });
     }
+    setIsLoading(false);
   };
 
   const onSubmitLedger = async () => {
