@@ -32,8 +32,7 @@ const BeaconPeers = () => {
               <Heading>{p.name}</Heading>
               <Button
                 onClick={() => {
-                  // How can I remove only one Peer
-                  walletClient.removeAllPeers().then(refreshPeers);
+                  walletClient.removePeer(p as any).then(refreshPeers);
                 }}
               >
                 remove Peer
