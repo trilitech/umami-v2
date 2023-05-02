@@ -4,6 +4,7 @@ import {
   BeaconResponseInputMessage,
   OperationRequestOutput,
   OperationResponseInput,
+  PeerInfo,
   PermissionRequestOutput,
   Serializer,
   SignPayloadRequestOutput,
@@ -92,9 +93,7 @@ export const addPeer = (payload: string) => {
     .deserialize(payload)
     .then((peer) => {
       console.log("Adding peer", peer);
-      walletClient.addPeer(peer as any).then(() => {
-        console.log("Peer added");
-      });
+      walletClient.addPeer(peer as PeerInfo).then(() => {});
     })
     .catch((e) => {
       console.error("not a valid sync code: ", payload);
