@@ -1,7 +1,8 @@
 import {
-  BeaconErrorType,
   BeaconMessageType,
+  BeaconRequestOutputMessage,
   BeaconResponseInputMessage,
+  ConnectionContext,
   OperationRequestOutput,
   OperationResponseInput,
   PeerInfo,
@@ -11,6 +12,7 @@ import {
   SignPayloadResponseInput,
   WalletClient,
 } from "@airgap/beacon-wallet";
+import { Modal, useDisclosure } from "@chakra-ui/react";
 import EventEmitter from "events";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
@@ -85,34 +87,34 @@ const handleSignPayloadRequest = async (message: SignPayloadRequestOutput) => {
   walletClient.respond(response);
 };
 
-walletClient.init().then(() => {
-  console.log("init");
-  walletClient
-    .connect(async (message) => {
-      console.log("message", message);
-      // eslint-disable-next-line no-debugger
-      debugger;
-      if (message.type === BeaconMessageType.PermissionRequest) {
-        handlePermissionRequest(message);
-      } else if (message.type === BeaconMessageType.OperationRequest) {
-        handleOperationRequest(message);
-      } else if (message.type === BeaconMessageType.SignPayloadRequest) {
-        handleSignPayloadRequest(message);
-      } else {
-        console.error("Message Type Not Supported");
-        console.error("Received: ", message);
+// walletClient.init().then(() => {
+//   console.log("init");
+//   walletClient
+//     .connect(async (message) => {
+//       console.log("message", message);
+//       // eslint-disable-next-line no-debugger
+//       debugger;
+//       if (message.type === BeaconMessageType.PermissionRequest) {
+//         handlePermissionRequest(message);
+//       } else if (message.type === BeaconMessageType.OperationRequest) {
+//         handleOperationRequest(message);
+//       } else if (message.type === BeaconMessageType.SignPayloadRequest) {
+//         handleSignPayloadRequest(message);
+//       } else {
+//         console.error("Message Type Not Supported");
+//         console.error("Received: ", message);
 
-        const response: BeaconResponseInputMessage = {
-          type: BeaconMessageType.Error,
-          id: message.id,
-          errorType: BeaconErrorType.ABORTED_ERROR,
-        };
+//         const response: BeaconResponseInputMessage = {
+//           type: BeaconMessageType.Error,
+//           id: message.id,
+//           errorType: BeaconErrorType.ABORTED_ERROR,
+//         };
 
-        walletClient.respond(response);
-      }
-    })
-    .catch((error) => console.error("connect error", error));
-});
+//         walletClient.respond(response);
+//       }
+//     })
+//     .catch((error) => console.error("connect error", error));
+// });
 
 export const addPeer = (payload: string) => {
   const serializer = new Serializer();
@@ -143,4 +145,62 @@ export const resetPeers = () => {
       console.log("no peers to be removed");
     }
   });
+};
+
+const renderBeaconNotification = (m: any) => {
+  // Given a beacon message display the correct window:
+  // -Permission request
+  // -Transfer request
+  // Those are the only 2 that are implemented in V1 mobile. Probably others are required.
+
+  return null;
+};
+
+export const useBeaconModalNotification = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const beaconMessage = useRef<any>();
+
+  return {
+    modalElement: (
+      <Modal isOpen={isOpen} onClose={onClose}>
+        {beaconMessage.current &&
+          renderBeaconNotification(beaconMessage.current)}
+      </Modal>
+    ),
+
+    onOpen: (
+      message: BeaconRequestOutputMessage,
+      connectionContext: ConnectionContext
+    ) => {
+      beaconMessage.current = message;
+      onOpen();
+      beaconMessage.current = null;
+    },
+  };
+};
+
+export const useBeaconInit = () => {
+  const { modalElement: beaconModal, onOpen } = useBeaconModalNotification();
+
+  // Ref is needed because otherwise onOpen needs to be added in useEffect dependencies
+  // and that might trigger the effect again if onOpen reference isn't stable
+  const handleBeaconMessage = useRef(onOpen);
+
+  useEffect(() => {
+    console.log("init");
+    // This code runs once, even if the hosting component rerenders
+    // because the dependency array is empty
+    walletClient
+      .init()
+      .then(() => {
+        walletClient.connect(handleBeaconMessage.current);
+      })
+      .catch(console.error);
+  }, []);
+
+  return beaconModal;
+};
+
+export const useBeaconCleanup = () => {
+  // Disconnect everything when user logs out
 };
