@@ -9,3 +9,11 @@ export function objectMap<T, R>(obj: Record<string, T>, fn: (v: T) => R) {
 export function zip<A, B>(a: A[], b: B[]) {
   return a.map((k, i) => [k, b[i]] as [A, B]);
 }
+
+export function parseNonNegativeFloat(num: string): number {
+  const val = parseFloat(num);
+  if (val < 0) {
+    return NaN;
+  }
+  return val;
+}
