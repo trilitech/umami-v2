@@ -12,10 +12,7 @@ import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
-import {
-  getFullDerivationPath,
-  getRelativeDerivationPath,
-} from "../utils/restoreAccounts";
+import { getFullDerivationPath } from "../utils/restoreAccounts";
 
 export const mockTezTransaction = (id: number) => {
   return {
