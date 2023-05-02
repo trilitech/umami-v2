@@ -163,7 +163,7 @@ const renderBeaconNotification = (m: BeaconRequestOutputMessage) => {
 
 export const useBeaconModalNotification = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const beaconMessage = useRef<any>();
+  const beaconMessage = useRef<BeaconRequestOutputMessage>();
 
   return {
     modalElement: (
