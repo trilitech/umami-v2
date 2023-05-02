@@ -49,47 +49,42 @@ const EnterLedgerConfig = ({ onClose }: { onClose: () => void }) => {
 
   const onSubmit = async () => {
     setIsloading(true);
-    TransportWebHID.create()
-      .then(async (transport) => {
-        const ledgerSigner = new LedgerSigner(
-          transport,
-          derivationPath,
-          true,
-          curvesToDerivationPath(derivationType)
-        );
-        try {
-          const pk = await ledgerSigner.publicKey();
-          const pkh = await ledgerSigner.publicKeyHash();
-          toast({
-            title: "Request sent to Ledger",
-            description:
-              "Open the Tezos app on your Ledger and accept the request",
-          });
-          handlePk(pk, pkh);
-          setIsloading(false);
-        } catch (error: any) {
-          // How do we type error?
-          toast({ title: "Error", description: error.message });
-        } finally {
-          await transport.close();
-        }
-      })
-      .catch((reason: any) => {
-        if (reason.name === "PublicKeyRetrievalError") {
-          toast({
-            title: "Request rejected",
-            description: "Please unlock your Ledger and open the Tezos app",
-          });
-        } else if (reason.name === "InvalidStateError") {
-          toast({
-            title: "Request pending",
-            description: "Check your ledger...",
-          });
-        } else {
-          toast({ title: "Request cancelled", description: reason.name });
-        }
-        setIsloading(false);
+
+    try {
+      const transport = await TransportWebHID.create();
+      const ledgerSigner = new LedgerSigner(
+        transport,
+        derivationPath,
+        true,
+        curvesToDerivationPath(derivationType)
+      );
+      const pk = await ledgerSigner.publicKey();
+      const pkh = await ledgerSigner.publicKeyHash();
+      toast({
+        title: "Request sent to Ledger",
+        description: "Open the Tezos app on your Ledger and accept the request",
       });
+      handlePk(pk, pkh);
+      await transport.close();
+    } catch (error: any) {
+      if (error.name === "PublicKeyRetrievalError") {
+        toast({
+          title: "Request rejected",
+          description: "Please unlock your Ledger and open the Tezos app",
+        });
+      } else if (error.name === "InvalidStateError") {
+        toast({
+          title: "Request pending",
+          description: "Check your ledger...",
+        });
+      } else if (error.name !== undefined) {
+        toast({ title: "Request cancelled", description: error.name });
+      } else {
+        toast({ title: "Ledger Error", description: error.message });
+      }
+    }
+
+    setIsloading(false);
   };
 
   return (
