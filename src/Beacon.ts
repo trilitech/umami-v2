@@ -90,6 +90,8 @@ walletClient.init().then(() => {
   walletClient
     .connect(async (message) => {
       console.log("message", message);
+      // eslint-disable-next-line no-debugger
+      debugger;
       if (message.type === BeaconMessageType.PermissionRequest) {
         handlePermissionRequest(message);
       } else if (message.type === BeaconMessageType.OperationRequest) {
