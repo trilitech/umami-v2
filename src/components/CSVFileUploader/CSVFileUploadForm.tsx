@@ -30,6 +30,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const { isValid } = formState;
 
   // TODO: is it possible to use the csv file with react-hook-form?
+  // https://app.asana.com/0/0/1204523779791382/f
   const [csv, setCSV] = useState<CSVRow[] | null>(null);
   const csvRef = useRef<HTMLInputElement>(null);
 
@@ -79,6 +80,10 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
     }
 
     const assetLookup = getAssetsLookup(sender);
+
+    // TODO: Add fa1.2 support for batch.
+    // https://app.asana.com/0/1204165186238194/1204523779791384/f
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const operationValues = csv.map((csvRow) =>
       csvRowToOperationValue(sender, csvRow, assetLookup)
     );

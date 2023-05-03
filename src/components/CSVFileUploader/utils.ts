@@ -55,7 +55,6 @@ export const csvRowToOperationValue = (
     amount: csvRow.amount,
     recipient: csvRow.recipient,
   };
-  console.log(contractToAsset, "HERE");
   switch (csvRow.type) {
     case "tez":
       return {
