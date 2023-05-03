@@ -34,7 +34,7 @@ const tezosNetworkToBeaconNetwork = (n: TezosNetwork) => {
   throw new Error(foo);
 };
 
-const PermissionRequest: React.FC<{
+const PermissionRequestPannel: React.FC<{
   request: PermissionRequestOutput;
   onSubmit: () => void;
 }> = ({ request, onSubmit }) => {
@@ -99,4 +99,4 @@ const PermissionRequest: React.FC<{
   );
 };
 
-export default PermissionRequest;
+export default PermissionRequestPannel;

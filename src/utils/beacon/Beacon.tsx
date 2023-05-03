@@ -16,7 +16,7 @@ import { Modal, useDisclosure } from "@chakra-ui/react";
 import EventEmitter from "events";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
-import PermissionRequestDisplay from "./PermissionRequestDisplay";
+import PermissionRequestDisplay from "./PermissionRequestPannel";
 // import { useEffect, useRef } from "react";
 // import { useQuery } from "react-query";
 // import { EventEmitter } from "stream";
