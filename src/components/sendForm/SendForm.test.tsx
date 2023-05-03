@@ -8,16 +8,18 @@ import {
   within,
 } from "@testing-library/react";
 
+import { TezosNetwork } from "@airgap/tezos";
 import {
   mockAccount,
   mockBaker,
   mockNFT,
   mockPkh,
 } from "../../mocks/factories";
+import { dispatchMockAccounts, resetAccounts } from "../../mocks/helpers";
 import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { AccountType } from "../../types/Account";
 import { UmamiTheme } from "../../providers/UmamiTheme";
+import { AccountType } from "../../types/Account";
 import { formatPkh } from "../../utils/format";
 import { useGetSk } from "../../utils/hooks/accountUtils";
 import accountsSlice from "../../utils/store/accountsSlice";
@@ -32,10 +34,9 @@ import {
 } from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
-import { TezosNetwork } from "@airgap/tezos";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 
-const { add, addSecret } = accountsSlice.actions;
+const { addSecret } = accountsSlice.actions;
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -71,15 +72,17 @@ beforeEach(() => {
 });
 beforeAll(() => {
   store.dispatch(addSecret({ hash: "mockPrint", secret: {} as any }));
-  store.dispatch(
-    add([
-      mockAccount(1),
-      mockAccount(2),
-      mockAccount(3),
-      mockAccount(4, AccountType.SOCIAL),
-      mockAccount(5, AccountType.LEDGER),
-    ])
-  );
+  dispatchMockAccounts([
+    mockAccount(1),
+    mockAccount(2),
+    mockAccount(3),
+    mockAccount(4, AccountType.SOCIAL),
+    mockAccount(5, AccountType.LEDGER),
+  ]);
+});
+
+afterAll(() => {
+  resetAccounts();
 });
 
 describe("<SendForm />", () => {
