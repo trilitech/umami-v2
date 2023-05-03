@@ -11,6 +11,7 @@ import React from "react";
 
 const SignPayloadRequestPannel: React.FC<{
   request: SignPayloadRequestOutput;
+  onSubmit: () => void;
 }> = ({ request }) => {
   console.log(request);
   return (

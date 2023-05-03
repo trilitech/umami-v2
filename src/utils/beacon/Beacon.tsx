@@ -16,7 +16,9 @@ import { Modal, useDisclosure } from "@chakra-ui/react";
 import EventEmitter from "events";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
+import PermissionRequestPannel from "./PermissionRequestPannel";
 import PermissionRequestDisplay from "./PermissionRequestPannel";
+import SignPayloadRequestPannel from "./SignPayloadRequestPannel";
 // import { useEffect, useRef } from "react";
 // import { useQuery } from "react-query";
 // import { EventEmitter } from "stream";
@@ -162,6 +164,9 @@ const renderBeaconNotification = (
   switch (message.type) {
     case BeaconMessageType.PermissionRequest: {
       return <PermissionRequestDisplay request={message} onSubmit={onClose} />;
+    }
+    case BeaconMessageType.SignPayloadRequest: {
+      return <SignPayloadRequestPannel request={message} onSubmit={onClose} />;
     }
 
     default:
