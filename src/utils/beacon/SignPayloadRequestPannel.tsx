@@ -8,12 +8,20 @@ import {
   ModalHeader,
 } from "@chakra-ui/react";
 import React from "react";
+import { useGetAccount } from "../hooks/accountHooks";
 
 const SignPayloadRequestPannel: React.FC<{
   request: SignPayloadRequestOutput;
   onSubmit: () => void;
 }> = ({ request }) => {
   console.log(request);
+
+  const getAccount = useGetAccount();
+  const signerAccount = getAccount(request.sourceAddress);
+
+  if (!signerAccount) {
+    return <div>"unknown account"</div>;
+  }
 
   return (
     <ModalContent>

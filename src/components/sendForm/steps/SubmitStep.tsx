@@ -35,7 +35,7 @@ import {
   Total,
   TransactionsAmount,
 } from "../components/TezAmountRecaps";
-import { EstimatedOperation, OperationValue } from "../types";
+import { EstimatedOperation, OperationValue, SignablePayload } from "../types";
 
 const makeTransfer = (
   operation: OperationValue | OperationValue[],
