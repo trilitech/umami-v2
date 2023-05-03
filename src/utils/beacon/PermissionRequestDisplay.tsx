@@ -15,6 +15,7 @@ import {
   AspectRatio,
   Image,
   Button,
+  Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { ConnectedAccountSelector } from "../../components/AccountSelector/AccountSelector";
@@ -35,7 +36,8 @@ const tezosNetworkToBeaconNetwork = (n: TezosNetwork) => {
 
 const PermissionRequest: React.FC<{
   request: PermissionRequestOutput;
-}> = ({ request }) => {
+  onSubmit: () => void;
+}> = ({ request, onSubmit }) => {
   const [account, setAccount] = useState<Account>();
   const network = useSelectedNetwork();
   // const response: BeaconResponseInputMessage = {
@@ -49,9 +51,9 @@ const PermissionRequest: React.FC<{
   // // Send response back to DApp
   // walletClient.respond(response);
 
-  const grant = () => {
+  const grant = async () => {
     if (!account) {
-      throw new Error("foo");
+      throw new Error("No account selected");
     }
 
     const response: BeaconResponseInputMessage = {
@@ -62,7 +64,8 @@ const PermissionRequest: React.FC<{
       publicKey: account.pk,
     };
 
-    walletClient.respond(response);
+    await walletClient.respond(response);
+    onSubmit();
   };
 
   return (
@@ -82,6 +85,9 @@ const PermissionRequest: React.FC<{
         <AspectRatio width={"100%"} ratio={1}>
           <Image width="100%" height={40} src={request.appMetadata.icon} />
         </AspectRatio>
+        <Text>{request.network.type}</Text>
+        <Text>{request.senderId}</Text>
+        <Text>{JSON.stringify(request.scopes)}</Text>
       </ModalBody>
 
       <ModalFooter>

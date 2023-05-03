@@ -150,7 +150,10 @@ export const resetPeers = () => {
   });
 };
 
-const renderBeaconNotification = (message: BeaconRequestOutputMessage) => {
+const renderBeaconNotification = (
+  message: BeaconRequestOutputMessage,
+  onClose: () => void
+) => {
   // Given a beacon message display the correct window:
   // -Permission request
   // -Transfer request
@@ -158,7 +161,7 @@ const renderBeaconNotification = (message: BeaconRequestOutputMessage) => {
 
   switch (message.type) {
     case BeaconMessageType.PermissionRequest: {
-      return <PermissionRequestDisplay request={message} />;
+      return <PermissionRequestDisplay request={message} onSubmit={onClose} />;
     }
 
     default:
@@ -174,7 +177,7 @@ export const useBeaconModalNotification = () => {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
         {beaconMessage.current &&
-          renderBeaconNotification(beaconMessage.current)}
+          renderBeaconNotification(beaconMessage.current, onClose)}
       </Modal>
     ),
 
