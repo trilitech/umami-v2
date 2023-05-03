@@ -54,6 +54,7 @@ export const curvesToDerivationPath = (c: Curves): DerivationType => {
 
 export const makeToolkitWithSigner = async (config: SignerConfig) => {
   const Tezos = new TezosToolkit(nodeUrls[config.network]);
+
   if (config.type === SignerType.SK) {
     Tezos.setProvider({
       signer: new InMemorySigner(config.sk),
