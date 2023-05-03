@@ -14,6 +14,7 @@ const SignPayloadRequestPannel: React.FC<{
   onSubmit: () => void;
 }> = ({ request }) => {
   console.log(request);
+
   return (
     <ModalContent>
       <ModalHeader>
