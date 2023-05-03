@@ -7,17 +7,21 @@ import {
   within,
 } from "@testing-library/react";
 import { mockAccount, mockPkh } from "../../mocks/factories";
-import { closeModal, fillAccountSelector } from "../../mocks/helpers";
+import {
+  closeModal,
+  dispatchMockAccounts,
+  fillAccountSelector,
+  resetAccounts,
+} from "../../mocks/helpers";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { UmamiTheme } from "../../providers/UmamiTheme";
+import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { useGetSk } from "../../utils/hooks/accountUtils";
-import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { estimateBatch, submitBatch } from "../../utils/tezos";
 import BatchView from "./BatchView";
-import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 
 // TODO refactor mocks
 jest.mock("react-router-dom");
@@ -37,15 +41,11 @@ const fixture = () => (
 );
 
 beforeAll(() => {
-  store.dispatch(
-    accountsSlice.actions.add([mockAccount(1), mockAccount(2), mockAccount(3)])
-  );
+  dispatchMockAccounts([mockAccount(1), mockAccount(2), mockAccount(3)]);
 });
 
 afterAll(() => {
-  // Cleanup
-  // Isn't there a way to reset redux root store to zero? Apparently not.
-  store.dispatch(accountsSlice.actions.reset());
+  resetAccounts();
 });
 
 // Why doesn't this work in beforeAll??
