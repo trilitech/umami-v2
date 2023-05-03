@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import HomeView from "./views/home/HomeView";
 import ImportSeed from "./ImportSeed";
@@ -12,6 +12,7 @@ import HelpView from "./views/help/HelpView";
 import DelegationsView from "./views/delegations/DelegationsView";
 import AddressBookView from "./views/addressBook/AddressBookView";
 import BatchView from "./views/batch/BatchView";
+import { resetBeacon, useBeaconInit } from "./utils/beacon/beacon";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -74,7 +75,13 @@ const loggedOutRouter = createHashRouter([
 ]);
 
 const MemoizedRouter = React.memo(() => {
-  return <RouterProvider router={loggedInRouter} />;
+  const beaconNotificationModal = useBeaconInit();
+  return (
+    <>
+      <RouterProvider router={loggedInRouter} />
+      {beaconNotificationModal}
+    </>
+  );
 });
 
 const LoggedInRouterWithPolling = () => {
@@ -83,14 +90,28 @@ const LoggedInRouterWithPolling = () => {
   return <MemoizedRouter />;
 };
 
+// Need this ignore BS because useEffect runs twice in development:
+// https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
+const LoggedOutRouter = () => {
+  const ignore = useRef(false);
+  useEffect(() => {
+    if (!ignore.current) {
+      resetBeacon().then((_) => {
+        ignore.current = false;
+      });
+    }
+    return () => {
+      ignore.current = true;
+    };
+  }, []);
+
+  return <RouterProvider router={loggedOutRouter} />;
+};
+
 const Router = () => {
   const isLoggedIn = useAccounts().length !== 0;
 
-  return isLoggedIn ? (
-    <LoggedInRouterWithPolling />
-  ) : (
-    <RouterProvider router={loggedOutRouter} />
-  );
+  return isLoggedIn ? <LoggedInRouterWithPolling /> : <LoggedOutRouter />;
 };
 
 export default Router;
