@@ -1,5 +1,5 @@
 import { round } from "lodash";
-import { keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
+import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { filterNulls, objectMap } from "../helpers";
@@ -46,6 +46,17 @@ export const useGetAccountAssets = () => {
   return (pkh: string) => {
     return filterNulls(allTokens[pkh].map(classifyToken));
   };
+};
+
+// returns a mapping from contract address to asset owned by 'pkh'
+export const useGetAccountAssetsLookup = () => {
+  const getAccountAssets = useGetAccountAssets();
+
+  return (pkh: string): Record<string, Asset> =>
+    getAccountAssets(pkh).reduce((acc: Record<string, Asset>, cur) => {
+      acc[cur.contract] = cur;
+      return acc;
+    }, {});
 };
 
 export const useGetAccountFA2Tokens = () => {

@@ -10,15 +10,17 @@ import {
   ModalHeader,
   useToast,
 } from "@chakra-ui/react";
-import Papa from "papaparse";
+import Papa, { ParseResult } from "papaparse";
 import { FC, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useGetAccountAssetsLookup } from "../../utils/hooks/assetsHooks";
 import { ConnectedAccountSelector } from "../AccountSelector/AccountSelector";
-import { CSVParsedRow } from "./types";
-import { parseCSVRow } from "./utils";
+import { CSVRow } from "./types";
+import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 
 const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const toast = useToast();
+  const getAssetsLookup = useGetAccountAssetsLookup();
 
   const { control, handleSubmit, formState } = useForm<{
     sender: string;
@@ -28,8 +30,35 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const { isValid } = formState;
 
   // TODO: is it possible to use the csv file with react-hook-form?
-  const [csv, setCsv] = useState<CSVParsedRow[] | null>(null);
+  const [csv, setCSV] = useState<CSVRow[] | null>(null);
   const csvRef = useRef<HTMLInputElement>(null);
+
+  const onFileUpload = async (rows: ParseResult<string[]>) => {
+    if (rows.errors.length > 0) {
+      throw new Error("Error loading csv file.");
+    }
+
+    // Iterate through the csv
+    const csv: CSVRow[] = [];
+    rows.data.forEach((row, i) => {
+      try {
+        csv.push(parseToCSVRow(row));
+      } catch (error: any) {
+        toast({
+          title: "error",
+          description: `Error at row ${i}: ${error?.message}`,
+        });
+
+        // Reset file input.
+        if (csvRef.current) {
+          csvRef.current.value = "";
+        }
+      }
+    });
+
+    const isValidCSV = csv.length === rows.data.length;
+    setCSV(isValidCSV ? csv : null);
+  };
 
   const handleCSVFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileUploaded = event.target.files?.item(0);
@@ -40,40 +69,20 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
     Papa.parse<string[]>(fileUploaded, {
       delimiter: ",",
       skipEmptyLines: true,
-      complete: (rows) => {
-        if (rows.errors.length > 0) {
-          throw new Error("Error parsing csv file.");
-        }
-
-        const csv: CSVParsedRow[] = [];
-        rows.data.forEach((row, i) => {
-          try {
-            csv.push(parseCSVRow(row));
-          } catch (error: any) {
-            toast({
-              title: "error",
-              description: `Error at row ${i}: ${error?.message}`,
-            });
-
-            // Reset file input.
-            if (csvRef.current) {
-              csvRef.current.value = "";
-            }
-          }
-        });
-
-        const isValidCSV = csv.length === rows.data.length;
-        setCsv(isValidCSV ? csv : null);
-      },
+      complete: onFileUpload,
     });
   };
 
-  const onSubmit = ({ sender }: { sender: string }) => {
+  const onSubmit = async ({ sender }: { sender: string }) => {
     if (!csv) {
       return;
     }
 
-    console.log(sender, csv);
+    const assetLookup = getAssetsLookup(sender);
+    const operationValues = csv.map((csvRow) =>
+      csvRowToOperationValue(sender, csvRow, assetLookup)
+    );
+
     onClose();
   };
 
