@@ -1,13 +1,9 @@
 import { TezosNetwork } from "@airgap/tezos";
 import {
   Box,
-  Button,
   Divider,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
-  Input,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -16,13 +12,10 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { isValid } from "date-fns";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { GoogleAuth } from "../../../GoogleAuth";
 import { AccountType } from "../../../types/Account";
+import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
-import { useGetSk } from "../../../utils/hooks/accountUtils";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
 import { mutezToTezNumber } from "../../../utils/store/impureFormat";
 import {
@@ -35,6 +28,7 @@ import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { useRenderAccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
+import SignButton from "../components/SignButton";
 import {
   Fee,
   Subtotal,
@@ -42,12 +36,6 @@ import {
   TransactionsAmount,
 } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
-import {
-  LedgerSignerConfig,
-  SignerConfig,
-  SignerType,
-  SkSignerConfig,
-} from "../../../types/SignerConfig";
 
 const makeTransfer = (
   operation: OperationValue | OperationValue[],
@@ -153,9 +141,6 @@ export const RecapDisplay: React.FC<{
   const renderAccountTile = useRenderAccountSmallTile();
   const getAccount = useGetOwnedAccount();
 
-  const getSk = useGetSk();
-  const { register, handleSubmit } = useForm<{ password: string }>();
-
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const clearBatch = useClearBatch();
@@ -164,88 +149,18 @@ export const RecapDisplay: React.FC<{
     (Array.isArray(transfer) ? transfer[0] : transfer).value.sender
   );
 
-  const isGoogleSSO = signerAccount.type === AccountType.SOCIAL;
-  const isLedger = signerAccount.type === AccountType.LEDGER;
-  const isMnemonic = signerAccount.type === AccountType.MNEMONIC;
-
-  const onSubmitGoogleSSO = async (sk: string) => {
-    if (signerAccount.type === AccountType.MNEMONIC) {
-      throw new Error(`Wrong signing method called`);
-    }
-
+  const handleConfigSubmit = async (config: SignerConfig) => {
     setIsLoading(true);
-    try {
-      const config: SkSignerConfig = {
-        sk,
-        network,
-        type: SignerType.SK,
-      };
-      const result = await makeTransfer(transfer, config);
-
-      if (Array.isArray(transfer)) {
-        clearBatch(signerAccount.pkh);
-      }
-
-      onSucces(result.hash);
-      toast({ title: "Success", description: result.hash });
-    } catch (error: any) {
-      toast({ title: "Error", description: error.message });
-    }
-    setIsLoading(false);
-  };
-
-  // TODO remove duplication
-  const onSubmitNominal = async ({ password }: { password: string }) => {
-    if (
-      signerAccount.type === AccountType.SOCIAL ||
-      signerAccount.type === AccountType.LEDGER
-    ) {
-      throw new Error(`Wrong signing method called`);
-    }
-    try {
-      setIsLoading(true);
-      const sk = await getSk(signerAccount, password);
-      const config: SkSignerConfig = {
-        sk,
-        network,
-        type: SignerType.SK,
-      };
-      const result = await makeTransfer(transfer, config);
-      if (Array.isArray(transfer)) {
-        clearBatch(signerAccount.pkh);
-      }
-      onSucces(result.hash);
-      toast({ title: "Success", description: result.hash });
-    } catch (error: any) {
-      toast({ title: "Error", description: error.message });
-    }
-    setIsLoading(false);
-  };
-
-  const onSubmitLedger = async () => {
-    if (
-      signerAccount.type === AccountType.MNEMONIC ||
-      signerAccount.type === AccountType.SOCIAL
-    ) {
-      throw new Error("Wrong account type");
-    }
-
-    setIsLoading(true);
-    try {
+    if (signerAccount.type === AccountType.LEDGER) {
       toast({
         title: "Request sent to Ledger",
         description:
           "Open the Tezos app on your Ledger and accept to sign the request",
       });
-      const config: LedgerSignerConfig = {
-        network,
-        derivationPath: signerAccount.derivationPath,
-        derivationType: signerAccount.curve,
-        type: SignerType.LEDGER,
-      };
+    }
 
+    try {
       const result = await makeTransfer(transfer, config);
-
       if (Array.isArray(transfer)) {
         clearBatch(signerAccount.pkh);
       }
@@ -254,6 +169,7 @@ export const RecapDisplay: React.FC<{
     } catch (error: any) {
       toast({ title: "Error", description: error.message });
     }
+
     setIsLoading(false);
   };
 
@@ -262,9 +178,7 @@ export const RecapDisplay: React.FC<{
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
-      <form
-        onSubmit={handleSubmit(isLedger ? onSubmitLedger : onSubmitNominal)}
-      >
+      <form>
         <ModalCloseButton />
         <ModalHeader textAlign={"center"}>Recap</ModalHeader>
         <Text textAlign={"center"}>Transaction details</Text>
@@ -285,41 +199,14 @@ export const RecapDisplay: React.FC<{
           </Box>
           <Divider mb={2} mt={2} />
           <Total tez={total} />
-
-          {isMnemonic ? (
-            <FormControl isInvalid={false} mt={4}>
-              <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                {...register("password", {
-                  required: true,
-                  minLength: 4,
-                })}
-                placeholder="Enter password..."
-              />
-            </FormControl>
-          ) : null}
         </ModalBody>
         <ModalFooter>
-          {isGoogleSSO ? (
-            <GoogleAuth
-              isLoading={isLoading}
-              bg="umami.blue"
-              width={"100%"}
-              buttonText="Sign with Google"
-              onReceiveSk={onSubmitGoogleSSO}
-            />
-          ) : (
-            <Button
-              bg="umami.blue"
-              width={"100%"}
-              isLoading={isLoading}
-              type="submit"
-              isDisabled={!isValid || isLoading}
-            >
-              {isLedger ? <>Sign with Ledger</> : <>Submit Transaction</>}
-            </Button>
-          )}
+          <SignButton
+            isLoading={isLoading}
+            network={network}
+            onSubmit={handleConfigSubmit}
+            signerAccount={signerAccount}
+          />
         </ModalFooter>
       </form>
     </ModalContent>
