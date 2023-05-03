@@ -270,6 +270,9 @@ describe("<BatchView />", () => {
         name: /submit transaction/i,
       });
 
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
       fireEvent.click(submit);
 
       await waitFor(() => {
