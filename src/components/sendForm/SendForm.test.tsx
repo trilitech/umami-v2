@@ -236,9 +236,11 @@ describe("<SendForm />", () => {
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
       });
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
 
       fireEvent.click(submit);
-
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
@@ -317,6 +319,9 @@ describe("<SendForm />", () => {
         name: /submit transaction/i,
       });
 
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
       fireEvent.click(submit);
 
       await waitFor(() => {
