@@ -9,6 +9,8 @@ import {
   ModalFooter,
   ModalHeader,
   useToast,
+  Text,
+  Flex,
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
 import { FC, useRef, useState } from "react";
@@ -34,7 +36,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const [csv, setCSV] = useState<CSVRow[] | null>(null);
   const csvRef = useRef<HTMLInputElement>(null);
 
-  const onFileUpload = async (rows: ParseResult<string[]>) => {
+  const onCSVFileUploadComplete = async (rows: ParseResult<string[]>) => {
     if (rows.errors.length > 0) {
       throw new Error("Error loading csv file.");
     }
@@ -70,7 +72,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
     Papa.parse<string[]>(fileUploaded, {
       delimiter: ",",
       skipEmptyLines: true,
-      complete: onFileUpload,
+      complete: onCSVFileUploadComplete,
     });
   };
 
@@ -94,9 +96,12 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ModalCloseButton />
-      <ModalHeader textAlign={"center"}>CSV File</ModalHeader>
+      <ModalHeader textAlign={"center"}>Load CSV file</ModalHeader>
+      <Text textAlign="center">
+        Select an account and then upload the CSSV file.
+      </Text>
       <ModalBody>
-        <FormControl marginY={3}>
+        <FormControl paddingY={5}>
           <FormLabel>From</FormLabel>
           <Controller
             rules={{ required: true }}
@@ -113,15 +118,18 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
           />
         </FormControl>
 
-        <FormLabel>CSV</FormLabel>
-        <Input
-          marginY={3}
-          ref={csvRef}
-          accept=".csv"
-          type="file"
-          onChange={handleCSVFileUpload}
-          variant="unstyled"
-        />
+        <FormLabel pt={5}>Select CSV</FormLabel>
+        <Flex>
+          <Input
+            p={2}
+            mb={5}
+            ref={csvRef}
+            accept=".csv"
+            type="file"
+            onChange={handleCSVFileUpload}
+            variant="unstyled"
+          />
+        </Flex>
       </ModalBody>
 
       <ModalFooter>
@@ -130,10 +138,9 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
             isDisabled={!(isValid && !!csv)}
             width={"100%"}
             type="submit"
-            variant="ghost"
             mb={2}
           >
-            Load
+            Upload
           </Button>
         </Box>
       </ModalFooter>

@@ -1,7 +1,7 @@
-type CSVType = "fa1.2" | "fa2" | "tez";
+type CSVRowType = "fa1.2" | "fa2" | "tez";
 
 interface CSVRowBase {
-  type: CSVType;
+  type: CSVRowType;
   recipient: string;
   amount: number;
 }

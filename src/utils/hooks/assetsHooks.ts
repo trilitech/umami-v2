@@ -48,8 +48,9 @@ export const useGetAccountAssets = () => {
   };
 };
 
-// returns a mapping from contract address to asset owned by 'pkh'
-export const useGetAccountAssetsLookup = () => {
+export const useGetAccountAssetsLookup = (): ((
+  pkh: string
+) => Record<string, Asset>) => {
   const getAccountAssets = useGetAccountAssets();
 
   return (pkh: string): Record<string, Asset> =>
