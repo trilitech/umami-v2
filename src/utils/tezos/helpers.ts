@@ -52,12 +52,9 @@ export const curvesToDerivationPath = (c: Curves): DerivationType => {
   }
 };
 
-export const makeToolkitWithSigner = async (config: SignerConfig) => {
-  const Tezos = new TezosToolkit(nodeUrls[config.network]);
+export const makeSigner = async (config: SignerConfig) => {
   if (config.type === SignerType.SK) {
-    Tezos.setProvider({
-      signer: new InMemorySigner(config.sk),
-    });
+    return new InMemorySigner(config.sk);
   } else if (config.type === SignerType.LEDGER) {
     // Close existing connections to be able to reinitiate
     const devices = await TransportWebHID.list();
@@ -65,18 +62,26 @@ export const makeToolkitWithSigner = async (config: SignerConfig) => {
       devices[i].close();
     }
     const transport = await TransportWebHID.create();
-    Tezos.setProvider({
-      signer: new LedgerSigner(
-        transport,
-        config.derivationPath,
-        false, // PK Verification not needed
-        curvesToDerivationPath(config.derivationType)
-      ),
-    });
+    const signer = new LedgerSigner(
+      transport,
+      config.derivationPath,
+      false, // PK Verification not needed
+      curvesToDerivationPath(config.derivationType)
+    );
+    return signer;
   } else {
-    const foo: never = config;
-    throw new Error(foo);
+    const error: never = config;
+    throw new Error(error);
   }
+};
+
+export const makeToolkitWithSigner = async (config: SignerConfig) => {
+  const Tezos = new TezosToolkit(nodeUrls[config.network]);
+  const signer = await makeSigner(config);
+
+  Tezos.setProvider({
+    signer,
+  });
   return Tezos;
 };
 
