@@ -1,9 +1,11 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
 import { Box, Flex, Heading, Text, Switch, Button } from "@chakra-ui/react";
+import { addPeer } from "../../utils/beacon/beacon";
 import { SettingsCard } from "../../components/ClickableCard";
 import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
 import { useReset } from "../../utils/hooks/accountHooks";
+import BeaconPeers from "../../utils/beacon/BeaconPeers";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 
 export default function SettingsView() {
@@ -37,6 +39,20 @@ export default function SettingsView() {
               <NetworkSelector />
             </Box>
           </SettingsCard>
+          <SettingsCard left="Paste Beacon Pairing Code">
+            <Box>
+              <Button
+                onClick={async () => {
+                  navigator.clipboard.readText().then((text) => {
+                    addPeer(text);
+                  });
+                }}
+              >
+                Paste
+              </Button>
+            </Box>
+          </SettingsCard>
+          <BeaconPeers />
           <ErrorLogsDrawerCard />
           <Button onClick={reset}>{"Erase secrets"}</Button>
         </SettingsSection>
