@@ -113,19 +113,30 @@ export const useBeaconModalNotification = () => {
   };
 };
 
+// Need this ignore BS because useEffect runs twice in development:
+// https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
 export const useBeaconInit = () => {
   const { modalElement: beaconModal, onOpen } = useBeaconModalNotification();
-
+  const ignore = useRef(false);
   const handleBeaconMessage = useRef(onOpen);
 
   useEffect(() => {
-    walletClient
-      .init()
-      .then(() => {
-        console.log("Beacon client initialized successfully");
-        walletClient.connect(handleBeaconMessage.current);
-      })
-      .catch(console.error);
+    if (!ignore.current) {
+      walletClient
+        .init()
+        .then(() => {
+          console.log("Beacon client initialized successfully");
+          walletClient.connect(handleBeaconMessage.current);
+        })
+        .catch(console.error)
+        .finally(() => {
+          ignore.current = false;
+        });
+    }
+
+    return () => {
+      ignore.current = true;
+    };
   }, []);
 
   return beaconModal;
