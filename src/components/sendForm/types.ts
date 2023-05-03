@@ -49,3 +49,5 @@ export type EstimatedOperation = {
   operation: OperationValue | OperationValue[];
   fee: number;
 };
+
+export type SignablePayload = string;
