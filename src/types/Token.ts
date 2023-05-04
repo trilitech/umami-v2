@@ -37,7 +37,7 @@ export type TokenMetadata = {
   }>;
 };
 
-type tokenInfo = Omit<tzktApi.TokenInfo, "metadata"> & {
+export type tokenInfo = Omit<tzktApi.TokenInfo, "metadata"> & {
   metadata?: TokenMetadata;
 };
 
