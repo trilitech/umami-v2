@@ -1,8 +1,8 @@
 import {
   mockAccount,
   mockFA1Token,
-  mockFA2Token,
   mockNFTToken,
+  mockPkh,
 } from "../../mocks/factories";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
@@ -10,7 +10,9 @@ import { store } from "../../utils/store/store";
 
 import BigNumber from "bignumber.js";
 import AccountCard from ".";
-import { render, screen } from "../../mocks/testUtils";
+import { hedgeHoge, tzBtsc } from "../../mocks/fa12";
+import { uUSD } from "../../mocks/fa2";
+import { render, screen, within } from "../../mocks/testUtils";
 const { updateAssets } = assetsSlice.actions;
 const { add, setSelected } = accountsSlice.actions;
 
@@ -28,9 +30,10 @@ beforeAll(() => {
       {
         pkh: mockAccount(0).pkh,
         tokens: [
-          mockFA2Token(0, pkh, 30000, 3, "KL2", "Klondike 2"),
-          mockFA2Token(1, pkh, 200000, 2, "FT", "Foo token"),
-          mockFA1Token(0, pkh),
+          hedgeHoge,
+          tzBtsc,
+          uUSD,
+          mockFA1Token(1, mockPkh(1), 123),
           mockNft,
         ],
       },
@@ -53,12 +56,41 @@ describe("<AccountCard />", () => {
 
   it("should display assets tabs with tokens by default", () => {
     render(<AccountCard />);
-
-    const tokenTiles = screen.getAllByTestId("token-tile");
-    expect(tokenTiles[0]).toHaveTextContent("FA1");
-    expect(tokenTiles[1]).toHaveTextContent("KL2");
-    expect(tokenTiles[2]).toHaveTextContent("FT");
     expect(screen.getByTestId("account-card-tokens-tab")).toBeInTheDocument();
+  });
+
+  test("tokens tab should display token infos correctly", () => {
+    render(<AccountCard />);
+    const tokenTiles = screen.getAllByTestId("token-tile");
+    expect(tokenTiles).toHaveLength(4);
+
+    {
+      const { getByTestId } = within(tokenTiles[0]);
+      expect(getByTestId("token-name")).toHaveTextContent("Hedgehoge");
+      expect(getByTestId("token-balance")).toHaveTextContent("10000");
+      expect(getByTestId("token-symbol")).toHaveTextContent("HEH");
+    }
+
+    {
+      const { getByTestId } = within(tokenTiles[1]);
+      expect(getByTestId("token-name")).toHaveTextContent("tzBTC");
+      expect(getByTestId("token-balance")).toHaveTextContent("0.00002205");
+      expect(getByTestId("token-symbol")).toHaveTextContent("tzBTC");
+    }
+
+    {
+      const { getByTestId } = within(tokenTiles[2]);
+      expect(getByTestId("token-name")).toHaveTextContent("FA1.2 token");
+      expect(getByTestId("token-balance")).toHaveTextContent("0.0123");
+      expect(getByTestId("token-symbol")).toHaveTextContent("KLD");
+    }
+
+    {
+      const { getByTestId } = within(tokenTiles[3]);
+      expect(getByTestId("token-name")).toHaveTextContent("youves uUSD");
+      expect(getByTestId("token-balance")).toHaveTextContent("0.01921875");
+      expect(getByTestId("token-symbol")).toHaveTextContent("uUSD");
+    }
   });
 
   it("should display nfts under nfts tab", () => {
