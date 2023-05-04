@@ -16,7 +16,7 @@ import {
 } from "../../mocks/factories";
 import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { AccountType, LedgerAccount } from "../../types/Account";
+import { AccountType } from "../../types/Account";
 import { UmamiTheme } from "../../providers/UmamiTheme";
 import { formatPkh } from "../../utils/format";
 import { useGetSk } from "../../utils/hooks/accountUtils";
@@ -34,7 +34,6 @@ import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 import { TezosNetwork } from "@airgap/tezos";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
-import { getRelativeDerivationPath } from "../../utils/restoreAccounts";
 
 const { add, addSecret } = accountsSlice.actions;
 

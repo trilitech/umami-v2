@@ -132,7 +132,7 @@ export const mockAccount = (
   throw new Error(error);
 };
 
-const mockContract = (index: number) =>
+export const mockContract = (index: number) =>
   `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`;
 
 export const mockNFTToken = (

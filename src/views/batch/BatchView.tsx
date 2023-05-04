@@ -12,8 +12,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
-import { HiOutlineDocumentDownload } from "react-icons/hi";
 import { TfiNewWindow } from "react-icons/tfi";
+import CSVFileUploader from "../../components/CSVFileUploader";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { useGetAccount } from "../../utils/hooks/accountHooks";
@@ -28,7 +28,7 @@ export const FilterController: React.FC<{ batchPending: number }> = (props) => {
       <Heading size="sm" color="umami.green" flex={1}>
         {props.batchPending} Pending
       </Heading>
-      <IconAndTextBtn icon={HiOutlineDocumentDownload} label="Load CSV file" />
+      <CSVFileUploader />
       <IconAndTextBtn ml={4} icon={TfiNewWindow} label="See file specs" />
     </Flex>
   );

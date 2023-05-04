@@ -1,5 +1,4 @@
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
-import React from "react";
 import { MdGeneratingTokens } from "react-icons/md";
 import {
   FA12Token,
