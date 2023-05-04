@@ -8,7 +8,7 @@ import {
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
-import { FA12TokenTransferParams, FA2TokenTransferParams } from "./types";
+import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 
@@ -108,7 +108,7 @@ export const getPkAndPkhFromSk = async (
 };
 
 export const makeFA2TransferMethod = async (
-  { sender, recipient, tokenId, amount, contract }: FA2TokenTransferParams,
+  { sender, recipient, tokenId, amount, contract }: FA2TransferMethodArgs,
   toolkit: TezosToolkit
 ): Promise<ContractMethod<ContractProvider>> => {
   const michelson = [
@@ -129,7 +129,7 @@ export const makeFA2TransferMethod = async (
 };
 
 export const makeFA12TransferMethod = async (
-  { sender, recipient, amount, contract }: FA12TokenTransferParams,
+  { sender, recipient, amount, contract }: FA12TransferMethodArgs,
   toolkit: TezosToolkit
 ): Promise<ContractMethod<ContractProvider>> => {
   const contractInstance = await toolkit.contract.at(contract);

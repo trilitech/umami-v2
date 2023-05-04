@@ -10,7 +10,7 @@ import {
   makeToolkitWithDummySigner,
 } from "./helpers";
 import { operationValuesToBatchParams } from "./params";
-import { FA12TokenTransferParams, FA2TokenTransferParams } from "./types";
+import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
 
 export const estimateTezTransfer = async (
   senderPkh: string,
@@ -27,7 +27,7 @@ export const estimateTezTransfer = async (
 };
 
 export const estimateFA2transfer = async (
-  params: FA2TokenTransferParams,
+  params: FA2TransferMethodArgs,
   senderPk: string,
   network: TezosNetwork
 ): Promise<Estimate> => {
@@ -39,7 +39,7 @@ export const estimateFA2transfer = async (
 };
 
 export const estimateFA12transfer = async (
-  params: FA12TokenTransferParams,
+  params: FA12TransferMethodArgs,
   senderPk: string,
   network: TezosNetwork
 ): Promise<Estimate> => {

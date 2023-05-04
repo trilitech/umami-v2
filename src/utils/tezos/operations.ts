@@ -8,7 +8,7 @@ import {
 } from "./helpers";
 import { SignerConfig } from "../../types/SignerConfig";
 import { operationValuesToWalletParams } from "./params";
-import { FA12TokenTransferParams, FA2TokenTransferParams } from "./types";
+import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
 
 export const delegate = async (
   senderPkh: string,
@@ -23,7 +23,7 @@ export const delegate = async (
 };
 
 export const transferFA2Token = async (
-  params: FA2TokenTransferParams,
+  params: FA2TransferMethodArgs,
   config: SignerConfig
 ): Promise<TransactionOperation> => {
   const Tezos = await makeToolkitWithSigner(config);
@@ -32,7 +32,7 @@ export const transferFA2Token = async (
 };
 
 export const transferFA12Token = async (
-  params: FA12TokenTransferParams,
+  params: FA12TransferMethodArgs,
   config: SignerConfig
 ): Promise<TransactionOperation> => {
   const Tezos = await makeToolkitWithSigner(config);
