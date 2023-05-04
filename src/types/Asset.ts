@@ -7,6 +7,7 @@ type TokenMetadata = {
   name?: string;
   symbol?: string;
   decimals?: string;
+  iconUrl?: string;
 };
 
 type NFTMetadata = {
@@ -44,11 +45,37 @@ export const keepFA2s = (assets: Asset[]) => {
 };
 
 export const getTokenName = (t: FA2Token | FA12Token) => {
-  return t.type === "fa1.2" ? "FA1.2 token" : t.metadata.name || "FA2 token";
+  if (t.metadata?.name) {
+    return t.metadata?.name;
+  }
+
+  if (t.type === "fa1.2") {
+    return DEFAULT_FA1_NAME;
+  }
+
+  if (t.type === "fa2") {
+    return DEFAULT_FA2_NAME;
+  }
+
+  const error: never = t;
+  throw error;
 };
 
 export const getTokenSymbol = (t: FA2Token | FA12Token) => {
-  return t.type === "fa1.2" ? DEFAULT_SYMBOL : t.metadata.symbol || "FA2";
+  if (t.metadata?.symbol) {
+    return t.metadata.symbol;
+  }
+
+  if (t.type === "fa1.2") {
+    return DEFAULT_FA1_SYMBOL;
+  }
+
+  if (t.type === "fa2") {
+    return DEFAULT_FA2_SYMBOL;
+  }
+
+  const error: never = t;
+  throw error;
 };
 
 export const formatTokenAmount = (
@@ -64,7 +91,7 @@ export const getTokenPrettyAmmount = (
 ) => {
   const symbol = getTokenSymbol(t);
   const amount = t.balance;
-  const decimals = t.type === "fa2" ? t.metadata.decimals : undefined;
+  const decimals = t.metadata?.decimals;
   const trailingSymbol = options?.showSymbol ? ` ${symbol}` : "";
   const result = formatTokenAmount(amount, decimals);
 
@@ -72,6 +99,9 @@ export const getTokenPrettyAmmount = (
 };
 export type Asset = FA12Token | FA2Token | NFT;
 
-// We use the defaults of FA1.2 tokens as in V1
-export const DEFAULT_SYMBOL = "KLD";
+// We use the defaults for FA1.2 tokens as in V1
+export const DEFAULT_FA1_NAME = "FA1.2 token";
+export const DEFAULT_FA2_NAME = "FA2 token";
+export const DEFAULT_FA1_SYMBOL = "KLD";
+export const DEFAULT_FA2_SYMBOL = "FA2";
 export const DEFAULT_TOKEN_DECIMALS = "4";

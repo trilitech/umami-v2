@@ -1,5 +1,7 @@
+import { hedgeHoge, tzBtsc } from "../../mocks/fa12";
+import { uUSD } from "../../mocks/fa2";
 import { fa1Token, fa2Token, nft, response } from "../../mocks/tzktResponse";
-import { Asset, NFT } from "../../types/Asset";
+import { Asset, FA12Token, FA2Token, NFT } from "../../types/Asset";
 import { classifyToken } from "./classify/classifyToken";
 
 describe("ClassifyToken", () => {
@@ -60,6 +62,60 @@ describe("ClassifyToken", () => {
     });
 
     expect(result).toEqual(null);
+  });
+
+  test("case fa1 token with name symbol and decimals (tzBTC)", () => {
+    const result = classifyToken(tzBtsc);
+
+    const expected: FA12Token = {
+      balance: "2205",
+      contract: "KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn",
+      metadata: {
+        decimals: "8",
+        name: "tzBTC",
+        symbol: "tzBTC",
+      },
+      type: "fa1.2",
+    };
+    expect(result).toEqual(expected);
+  });
+
+  test("case fa1 token with name symbol decimals and icon (hedgeHoge)", () => {
+    const result = classifyToken(hedgeHoge);
+
+    const expected: FA12Token = {
+      balance: "10000000000",
+      contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
+      metadata: {
+        decimals: "6",
+        iconUrl:
+          "https://ipfs.io/ipfs/QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
+        name: "Hedgehoge",
+        symbol: "HEH",
+      },
+      type: "fa1.2",
+    };
+
+    expect(result).toEqual(expected);
+  });
+
+  test("case fa2 token with thumbnailUri (uUSD)", () => {
+    const result = classifyToken(uUSD);
+    const expected: FA2Token = {
+      balance: "19218750000",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      metadata: {
+        decimals: "12",
+        iconUrl:
+          "https://ipfs.io/ipfs/QmbvhanNCxydZEbGu1RdqkG3LcpNGv7XYsCHgzWBXnmxRd",
+        name: "youves uUSD",
+        symbol: "uUSD",
+      },
+      tokenId: "0",
+      type: "fa2",
+    };
+
+    expect(result).toEqual(expected);
   });
 
   test("valid tzkt response is parsed correctly", () => {

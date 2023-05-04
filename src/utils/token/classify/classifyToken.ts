@@ -95,7 +95,21 @@ const getNFTRequired = (input: Token) => {
  */
 const makeFa1 = (json: Token): FA12Token | null => {
   const data = getFA1Required(json);
-  return data && { ...data, type: "fa1.2" };
+
+  const metadata = json.token?.metadata;
+
+  return (
+    data && {
+      ...data,
+      type: "fa1.2",
+      metadata: metadata && {
+        iconUrl: metadata.icon && getIPFSurl(metadata.icon),
+        decimals: metadata.decimals,
+        symbol: metadata.symbol,
+        name: metadata.name,
+      },
+    }
+  );
 };
 
 const makeFa2 = (json: Token): FA2Token | null => {
@@ -105,6 +119,7 @@ const makeFa2 = (json: Token): FA2Token | null => {
     required && {
       ...required,
       metadata: {
+        iconUrl: metadata?.thumbnailUri && getIPFSurl(metadata.thumbnailUri),
         decimals: metadata?.decimals,
         name: metadata?.name,
         symbol: metadata?.symbol,
