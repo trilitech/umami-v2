@@ -1,5 +1,5 @@
-import { hedgeHoge, tzBtsc } from "../../mocks/fa12";
-import { uUSD } from "../../mocks/fa2";
+import { tzBtsc, hedgeHoge } from "../../mocks/fa12Tokens";
+import { uUSD } from "../../mocks/fa2Tokens";
 import { fa1Token, fa2Token, nft, response } from "../../mocks/tzktResponse";
 import { Asset, FA12Token, FA2Token, NFT } from "../../types/Asset";
 import { classifyToken } from "./classify/classifyToken";

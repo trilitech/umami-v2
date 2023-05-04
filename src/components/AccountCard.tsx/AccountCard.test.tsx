@@ -10,9 +10,9 @@ import { store } from "../../utils/store/store";
 
 import BigNumber from "bignumber.js";
 import AccountCard from ".";
-import { hedgeHoge, tzBtsc } from "../../mocks/fa12";
-import { uUSD } from "../../mocks/fa2";
+import { uUSD } from "../../mocks/fa2Tokens";
 import { render, screen, within } from "../../mocks/testUtils";
+import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
 const { updateAssets } = assetsSlice.actions;
 const { add, setSelected } = accountsSlice.actions;
 
