@@ -10,72 +10,83 @@ const address = z.object({ address: z.string() });
 const balance = z.string();
 const tokenId = z.string();
 
+const fa1Token = z.object({
+  standard: z.string().regex(/fa1\.2/i),
+  contract: address,
+});
+
+const fa2Token = z.object({
+  standard: z.string().regex(/fa2/i),
+  tokenId,
+  contract: address,
+});
+
+const nftToken = z.object({
+  standard: z.string().regex(/fa2/i),
+  tokenId,
+  contract: address,
+  metadata: z.object({
+    displayUri: z.string(),
+  }),
+});
+
 const getFA1Required = (input: Token) => {
   const FA1 = z.object({
     balance,
-    token: z.object({
-      standard: z.string().regex(/fa1\.2/i),
-      contract: address,
-    }),
+    token: fa1Token,
   });
 
-  try {
-    const result = FA1.parse(input);
-    return { contract: result.token.contract.address, balance: result.balance };
-  } catch (error) {
+  const result = FA1.safeParse(input);
+
+  if (!result.success) {
     return null;
   }
+
+  const { data } = result;
+  return { contract: data.token.contract.address, balance: data.balance };
 };
 
 const getFA2TokenRequired = (input: Token) => {
-  const FA1 = z.object({
+  const FA2 = z.object({
     balance,
-    token: z.object({
-      standard: z.string().regex(/fa2/i),
-      tokenId,
-      contract: address,
-    }),
+    token: fa2Token,
   });
 
-  try {
-    const result = FA1.parse(input);
-    return {
-      contract: result.token.contract.address,
-      balance: result.balance,
-      tokenId: result.token.tokenId,
-    };
-  } catch (error) {
+  const result = FA2.safeParse(input);
+
+  if (!result.success) {
     return null;
   }
+
+  const { data } = result;
+  return {
+    contract: data.token.contract.address,
+    balance: data.balance,
+    tokenId: data.token.tokenId,
+  };
 };
 
 const getNFTRequired = (input: Token) => {
   const NFT = z.object({
     balance,
     account: address,
-    token: z.object({
-      standard: z.string().regex(/fa2/i),
-      tokenId,
-      contract: address,
-      metadata: z.object({
-        displayUri: z.string(),
-      }),
-    }),
+    token: nftToken,
   });
 
-  try {
-    const result = NFT.parse(input);
-
-    return {
-      contract: result.token.contract.address,
-      balance: result.balance,
-      tokenId: result.token.tokenId,
-      displayUri: result.token.metadata.displayUri,
-      owner: result.account.address,
-    };
-  } catch (error) {
+  const result = NFT.safeParse(input);
+  if (!result.success) {
     return null;
   }
+
+  const { data } = result;
+
+  return {
+    contract: data.token.contract.address,
+    balance: data.balance,
+    tokenId: data.token.tokenId,
+    displayUri: data.token.metadata.displayUri,
+    owner: data.account.address,
+  };
 };
 
 /**
