@@ -1,15 +1,26 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { formatRelative } from "date-fns";
 import { z } from "zod";
-import { DEFAULT_SYMBOL, formatTokenAmount } from "../../types/Asset";
+import { getTokenPrettyAmmount } from "../../types/Asset";
 import {
   OperationDisplay,
   TezTransfer,
   TokenTransfer,
 } from "../../types/Operation";
+import { Token } from "../../types/Token";
 import { filterNulls } from "../../utils/helpers";
 import { prettyTezAmount } from "../../utils/store/impureFormat";
+import { classifyToken } from "../../utils/token/classify/classifyToken";
 import { getIPFSurl } from "../../utils/token/nftUtils";
+
+export const classifyTokenTransfer = (transfer: TokenTransfer) => {
+  const token: Token = {
+    balance: transfer.amount,
+    token: transfer.token === null ? undefined : transfer.token, // XD
+  };
+
+  return classifyToken(token);
+};
 
 export const getHashUrl = (hash: string, network: TezosNetwork) => {
   return `https://${network}.tzkt.io/${hash}`;
@@ -90,7 +101,8 @@ export const getTokenOperationDisplay = (
   forAddress: string,
   network = TezosNetwork.MAINNET
 ) => {
-  const TezTransaction = z.object({
+  // "from" field is missing sometimes
+  const TokenTransaction = z.object({
     from: z.object({ address: z.string() }),
     to: z.object({ address: z.string() }),
     timestamp: z.string(),
@@ -98,49 +110,49 @@ export const getTokenOperationDisplay = (
     level: z.number(),
   });
 
-  try {
-    const required = TezTransaction.parse(transfer);
-    const metadata = transfer.token?.metadata;
+  const asset = classifyTokenTransfer(transfer);
 
-    const sign = getSign(
-      forAddress,
-      required.from.address,
-      required.to.address
-    );
+  const transferRequired = TokenTransaction.safeParse(transfer);
 
-    const displayUri = metadata && metadata.displayUri;
-
-    const symbol = (metadata && metadata.symbol) || DEFAULT_SYMBOL;
-
-    const level = required.level;
-
-    const amount = formatTokenAmount(required.amount, metadata?.decimals);
-    const prettyAmount = `${amount} ${symbol}`;
-
-    const prettyTimestamp = formatRelative(
-      new Date(required.timestamp),
-      new Date()
-    );
-
-    const result: OperationDisplay = {
-      type: "transaction",
-      amount: {
-        prettyDisplay: sign + prettyAmount,
-        url: displayUri && getIPFSurl(displayUri),
-      },
-      prettyTimestamp,
-      timestamp: required.timestamp,
-      recipient: required.to.address,
-      sender: required.from.address,
-      tzktUrl: getLevelUrl(level, network),
-      level,
-    };
-    return result;
-  } catch (error) {
-    // Sometimes "from" field is missing and this throws.
-    // Is this a bug from tzkt ?
+  if (!asset || !transferRequired.success) {
     return null;
   }
+
+  const required = transferRequired.data;
+  const metadata = transfer.token?.metadata;
+
+  const sign = getSign(forAddress, required.from.address, required.to.address);
+
+  const displayUri = metadata && metadata.displayUri;
+
+  const level = required.level;
+
+  const prettyTimestamp = formatRelative(
+    new Date(required.timestamp),
+    new Date()
+  );
+
+  let prettyAmount: string;
+  if (asset.type === "nft") {
+    prettyAmount = asset.balance;
+  } else {
+    prettyAmount = getTokenPrettyAmmount(asset, { showSymbol: true });
+  }
+
+  const result: OperationDisplay = {
+    type: "transaction",
+    amount: {
+      prettyDisplay: sign + prettyAmount,
+      url: displayUri && getIPFSurl(displayUri),
+    },
+    prettyTimestamp,
+    timestamp: required.timestamp,
+    recipient: required.to.address,
+    sender: required.from.address,
+    tzktUrl: getLevelUrl(level, network),
+    level,
+  };
+  return result;
 };
 
 export const sortOperationsDisplaysBytDate = (ops: OperationDisplay[]) => {
