@@ -8,6 +8,7 @@ export type TokenMetadata = {
   artifactUri?: string;
   displayUri?: string;
   thumbnailUri?: string;
+  icon?: string;
   externalUri?: string;
   isBooleanAmount?: boolean;
   shouldPreferSymbol?: boolean;
