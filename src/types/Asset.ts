@@ -3,7 +3,7 @@ type TokenBase = {
   balance: string;
 };
 
-type FA2TokenMetadata = {
+type TokenMetadata = {
   name?: string;
   symbol?: string;
   decimals?: string;
@@ -15,12 +15,15 @@ type NFTMetadata = {
   displayUri: string;
 };
 
-export type FA12Token = { type: "fa1.2" } & TokenBase;
+export type FA12Token = {
+  type: "fa1.2";
+  metadata?: TokenMetadata;
+} & TokenBase;
 
 export type FA2Token = TokenBase & {
   type: "fa2";
   tokenId: string;
-  metadata: FA2TokenMetadata;
+  metadata: TokenMetadata;
 };
 export type NFT = TokenBase & {
   type: "nft";
@@ -64,10 +67,11 @@ export const getTokenPrettyAmmount = (
   const decimals = t.type === "fa2" ? t.metadata.decimals : undefined;
   const trailingSymbol = options?.showSymbol ? ` ${symbol}` : "";
   const result = formatTokenAmount(amount, decimals);
+
   return `${result}${trailingSymbol}`;
 };
 export type Asset = FA12Token | FA2Token | NFT;
 
-// We use the defaults of FA1.2 tokens
+// We use the defaults of FA1.2 tokens as in V1
 export const DEFAULT_SYMBOL = "KLD";
 export const DEFAULT_TOKEN_DECIMALS = "4";
