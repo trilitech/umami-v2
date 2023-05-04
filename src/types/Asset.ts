@@ -102,6 +102,6 @@ export type Asset = FA12Token | FA2Token | NFT;
 // We use the defaults for FA1.2 tokens as in V1
 export const DEFAULT_FA1_NAME = "FA1.2 token";
 export const DEFAULT_FA2_NAME = "FA2 token";
-export const DEFAULT_FA1_SYMBOL = "KLD";
+export const DEFAULT_FA1_SYMBOL = "FA1.2";
 export const DEFAULT_FA2_SYMBOL = "FA2";
 export const DEFAULT_TOKEN_DECIMALS = "4";
