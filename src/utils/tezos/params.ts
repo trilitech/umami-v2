@@ -3,10 +3,15 @@ import {
   OpKind,
   ParamsWithKind,
   TezosToolkit,
+  TransferParams,
   WalletParamsWithKind,
 } from "@taquito/taquito";
 import { OperationValue } from "../../components/sendForm/types";
-import { makeFA2TransferMethod, makeToolkitWithDummySigner } from "./helpers";
+import {
+  makeFA12TransferMethod,
+  makeFA2TransferMethod,
+  makeToolkitWithDummySigner,
+} from "./helpers";
 
 export const operationValuesToWalletParams = async (
   operations: OperationValue[],
@@ -40,23 +45,14 @@ export const operationValuesToParams = async (
         break;
       case "token":
         {
-          if (operation.data.type !== "nft") {
-            throw new Error("Should be nft");
-          }
-          const Tezos = signer;
-          const transferMethod = await makeFA2TransferMethod(
-            {
-              sender: operation.value.sender,
-              amount: operation.value.amount,
-              contract: operation.data.contract,
-              recipient: operation.value.recipient,
-              tokenId: operation.data.tokenId,
-            },
-            Tezos
+          const transferParams = await makeTokenTransferParams(
+            operation,
+            signer
           );
+
           result.push({
             kind: OpKind.TRANSACTION,
-            ...transferMethod.toTransferParams(),
+            ...transferParams,
           });
         }
         break;
@@ -64,6 +60,27 @@ export const operationValuesToParams = async (
   }
 
   return result;
+};
+
+const makeTokenTransferParams = async (
+  operation: OperationValue,
+  signer: TezosToolkit
+): Promise<TransferParams> => {
+  if (operation.type !== "token") {
+    throw new Error("Incorrect type");
+  }
+  const { type: tokenType, contract } = operation.data;
+  const args = { ...operation.value, contract };
+
+  const transferMethod =
+    tokenType === "fa1.2"
+      ? makeFA12TransferMethod(args, signer)
+      : makeFA2TransferMethod(
+          { ...args, tokenId: operation.data.tokenId },
+          signer
+        );
+
+  return (await transferMethod).toTransferParams();
 };
 
 export const operationValuesToBatchParams = async (
