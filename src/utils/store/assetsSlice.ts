@@ -79,6 +79,12 @@ const assetsSlice = createSlice({
   initialState,
   // Reset assets state if accounts are reset
   extraReducers: (builder) =>
+    // This throw error: TS2589: Type instantiation is excessively deep and possibly infinite.
+    // Because of use of Taquito TransferParams["parameter"] in OperationValue that is too complex
+    // What can this be fixed?
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     builder.addCase(accountsSlice.actions.reset, () => initialState),
   reducers: {
     reset: () => initialState,
