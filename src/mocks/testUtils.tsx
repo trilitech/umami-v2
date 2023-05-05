@@ -1,15 +1,18 @@
 import { render } from "@testing-library/react";
+import { HashRouter, Router } from "react-router-dom";
 import { ReactQueryProvider } from "../providers/ReactQueryProvider";
 import { ReduxStore } from "../providers/ReduxStore";
 import { UmamiTheme } from "../providers/UmamiTheme";
 
 const AllTheProviders = (props: any) => {
   return (
-    <ReactQueryProvider>
-      <UmamiTheme>
-        <ReduxStore>{props.children}</ReduxStore>
-      </UmamiTheme>
-    </ReactQueryProvider>
+    <HashRouter>
+      <ReactQueryProvider>
+        <UmamiTheme>
+          <ReduxStore>{props.children}</ReduxStore>
+        </UmamiTheme>
+      </ReactQueryProvider>
+    </HashRouter>
   );
 };
 
