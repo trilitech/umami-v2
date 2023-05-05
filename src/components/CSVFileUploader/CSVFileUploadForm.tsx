@@ -16,6 +16,7 @@ import Papa, { ParseResult } from "papaparse";
 import { FC, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
+  useBatchIsSimulating,
   useGetAccountAssetsLookup,
   useSelectedNetwork,
 } from "../../utils/hooks/assetsHooks";
@@ -32,8 +33,9 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const getPk = useGetPk();
   const getAssetsLookup = useGetAccountAssetsLookup();
   const dispatch = useAppDispatch();
+  const isSimulating = useBatchIsSimulating();
 
-  const { control, handleSubmit, formState } = useForm<{
+  const { control, handleSubmit, formState, getValues } = useForm<{
     sender: string;
   }>({
     mode: "onBlur",
@@ -163,6 +165,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
         <Box width={"100%"}>
           <Button
             isDisabled={!(isValid && !!csv)}
+            isLoading={isSimulating(getValues("sender"))}
             width={"100%"}
             type="submit"
             mb={2}
