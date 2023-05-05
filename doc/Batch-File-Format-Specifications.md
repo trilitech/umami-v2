@@ -84,6 +84,6 @@ If any line does not match a transaction specification, the line, the transactio
 
 <br />
 
-Need further assistance? [Ask for help.](https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/FAQ/Ask-for-help)
+Need further assistance? [Ask for help in Slack #Umami](https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg)
 
 <br>

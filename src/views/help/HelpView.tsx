@@ -78,7 +78,7 @@ export default function HelpView() {
               about="Get in touch with the Community"
               onClickIcon={() => {
                 jumpToLink(
-                  "https://join.slack.com/share/enQtNTAyODI3OTQ1NTU3MC02MGQxODkzMzA5NmUyYWE3YzMxM2ZlYjIyMGI2OGQ0OGZkODA1MzU3ZDViZTBjMDAyNWIwNDBlNjBhMjFkOWU1"
+                  "https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg"
                 );
               }}
               linkDescription="Slack #Umami"
