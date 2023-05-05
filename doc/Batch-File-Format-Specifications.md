@@ -8,15 +8,13 @@
 tz1Z3JYEXYs88wAdaB6WW8H9tSRVxwuzEQz2,1.23456
 tz1cbGwhSRwNt9XVdSnrqb4kzRyRJNAJrQni,1000,KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton,2
 tz1cbGwhSRwNt9XVdSnrqb4kzRyRJNAJrQni,2000,KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton
-KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton,test,(Pair 2 3),0
 ```
 
 > Commentary:
 >
 > 1. a simple tez transaction, destined for the address in the first field, in the amount of the second field
-> 2. a simple token transaction, defined by the contract in the third field and the tokenid of the fourth field
-> 3. a simple token transaction with the default tokenid of 0, or ignored in the case of a single-asset contract
-> 4. a contract call on the entrypoint `test` with the Michelson payload `(Pair 2 3)`, and 2 tez transfered
+> 2. a simple fa2 token transaction, defined by the contract in the third field and the tokenid of the fourth field
+> 3. a simple fa1.2 token transaction, defined by the contract in the third field
 
 ## Abstract
 
@@ -44,15 +42,12 @@ All transactions described by a CSV line in the file compose the batch.
 
 ```
 file = transaction *(CRLF transaction) [CRLF]
-transaction = teztx | tokentx | contractcall
+transaction = teztx | tokentx
 teztx = destination COMMA amount CRLF
 tokentx = destination COMMA amount COMMA tokenaddr *(COMMA tokenid)
-contractcall = destination COMMA entrypoint COMMA michelson *(COMMA amount)
 destination = tz[123][A-Za-z0-9]+{33} | KT1[A-Za-z0-9]+{33}
 amount = [0-9]+(.[0-9]*)
 tokenaddr = KT1[A-Za-z0-9]+{33}
-michelson = Michelson syntax
-entrypoint = [A-Za-z0-9]+
 tokenid = [0-9]+
 COMMA = %x2C
 ```
@@ -77,16 +72,7 @@ As per the [specification](#Formal Specification)'s `tokentx` definition, a toke
 1. a tz(1|2|3) or KT1 address as the intended destination;
 1. the amount of token to send;
 1. the address to the contract that manages the token; and
-1. (optional) the token_id of the token within the contract
-
-#### Contract call
-
-As per the [specification](#Formal Specification)'s `contractcall` definition, a token transaction requires:
-
-1. a KT1 address as the intended contract;
-2. the entrypoint on the contract;
-3. the Michelson payload for the given entrypoint;
-4. (optional) the tez amount to send
+1. the token_id of the token within the contract (not required for fa1.2 token)
 
 ## Exception Handling
 
