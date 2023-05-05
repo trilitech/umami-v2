@@ -15,7 +15,11 @@ import {
   mockNFT,
   mockPkh,
 } from "../../mocks/factories";
-import { dispatchMockAccounts, resetAccounts } from "../../mocks/helpers";
+import {
+  dispatchMockAccounts,
+  fillPassword,
+  resetAccounts,
+} from "../../mocks/helpers";
 import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { UmamiTheme } from "../../providers/UmamiTheme";
@@ -232,8 +236,7 @@ describe("<SendForm />", () => {
         hash: "foo",
       });
 
-      const passwordInput = screen.getByLabelText(/password/i);
-      fireEvent.change(passwordInput, { target: { value: "mockPass" } });
+      fillPassword("mockPass");
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -255,7 +258,12 @@ describe("<SendForm />", () => {
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
       };
-      expect(transferTezMock).toHaveBeenCalledWith(mockPkh(7), 23, config);
+      expect(transferTezMock).toHaveBeenCalledWith(
+        mockPkh(7),
+        23,
+        config,
+        undefined
+      );
     });
   });
 
@@ -313,8 +321,7 @@ describe("<SendForm />", () => {
     test("it should transfer NFT and display recap with tzktLink", async () => {
       await fillFormAndSimulate();
 
-      const passwordInput = screen.getByLabelText(/password/i);
-      fireEvent.change(passwordInput, { target: { value: "mockPass" } });
+      fillPassword("mockPass");
       transferFA2TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
 
       const submit = screen.getByRole("button", {

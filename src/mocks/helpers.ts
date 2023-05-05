@@ -11,6 +11,11 @@ export const fillAccountSelector = (accountLabel: string) => {
   fireEvent.click(item);
 };
 
+export const fillPassword = (value: string) => {
+  const passwordInput = screen.getByLabelText(/password/i);
+  fireEvent.change(passwordInput, { target: { value } });
+};
+
 export const closeModal = () => {
   const closeModalButton = screen.getByLabelText("Close");
   fireEvent.click(closeModalButton);
