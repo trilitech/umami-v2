@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import {
+  createHashRouter,
+  RouterProvider,
+  HashRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 import HomeView from "./views/home/HomeView";
 import ImportSeed from "./ImportSeed";
 import { useAccounts } from "./utils/hooks/accountHooks";
@@ -17,52 +23,6 @@ import { resetBeacon, useBeaconInit } from "./utils/beacon/beacon";
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
 
-const loggedInRouter = createHashRouter([
-  {
-    path: "/home",
-    element: withSideMenu(<HomeView />),
-  },
-
-  {
-    path: "/nfts",
-    element: withSideMenu(<NFTsView />),
-  },
-
-  {
-    path: "/operations",
-    element: withSideMenu(<OperationsView />),
-  },
-
-  {
-    path: "/delegations",
-    element: withSideMenu(<DelegationsView />),
-  },
-
-  {
-    path: "/address-book",
-    element: withSideMenu(<AddressBookView />),
-  },
-
-  {
-    path: "/settings",
-    element: withSideMenu(<SettingsView />),
-  },
-
-  {
-    path: "/help",
-    element: withSideMenu(<HelpView />),
-  },
-
-  {
-    path: "/batch",
-    element: withSideMenu(<BatchView />),
-  },
-  {
-    path: "/",
-    element: withSideMenu(<HomeView />),
-  },
-]);
-
 const loggedOutRouter = createHashRouter([
   {
     path: "/importSeed",
@@ -77,10 +37,26 @@ const loggedOutRouter = createHashRouter([
 const MemoizedRouter = React.memo(() => {
   const beaconNotificationModal = useBeaconInit();
   return (
-    <>
-      <RouterProvider router={loggedInRouter} />
+    <HashRouter>
+      <Routes>
+        <Route path="/home" element={withSideMenu(<HomeView />)} />
+        <Route path="/nfts" element={withSideMenu(<NFTsView />)} />
+        <Route path="/operations" element={withSideMenu(<OperationsView />)} />
+        <Route
+          path="/delegations"
+          element={withSideMenu(<DelegationsView />)}
+        />
+        <Route
+          path="/address-book"
+          element={withSideMenu(<AddressBookView />)}
+        />
+        <Route path="/settings" element={withSideMenu(<SettingsView />)} />
+        <Route path="/help" element={withSideMenu(<HelpView />)} />
+        <Route path="/batch" element={withSideMenu(<BatchView />)} />
+        <Route path="/" element={withSideMenu(<HomeView />)} />
+      </Routes>
       {beaconNotificationModal}
-    </>
+    </HashRouter>
   );
 });
 
