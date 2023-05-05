@@ -1,6 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { tezzard } from "../mocks/nfts";
-import { ghostFA12 } from "../mocks/fa12";
+import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
+import { ghostFA12WithOwner } from "../mocks/tokens";
 import { publicKeys1, publicKeys2 } from "../mocks/publicKeys";
 
 import {
@@ -16,7 +16,7 @@ const pkh2 = publicKeys2.pkh;
 
 describe("Tezos utils", () => {
   describe("Batch", () => {
-    test("batchParams are generated correctly for tez, FA2 contracts and delegations", async () => {
+    test("batchParams are generated correctly for tez, FA1.2, FA2 contracts and delegations", async () => {
       const result = await operationValuesToBatchParams(
         [
           {
@@ -36,11 +36,29 @@ describe("Tezos utils", () => {
           },
           {
             type: "token",
-            data: tezzard,
+            data: ghostTezzard,
             value: {
               sender: pkh1,
               recipient: pkh2,
               amount: 1,
+            },
+          },
+          {
+            type: "token",
+            data: ghostFA12,
+            value: {
+              sender: pkh1,
+              recipient: pkh2,
+              amount: 1,
+            },
+          },
+          {
+            type: "token",
+            data: ghostFA2,
+            value: {
+              sender: pkh1,
+              recipient: pkh2,
+              amount: 2,
             },
           },
         ],
@@ -88,6 +106,69 @@ describe("Tezos utils", () => {
           storageLimit: undefined,
           to: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
         },
+        {
+          amount: 0,
+          fee: undefined,
+          gasLimit: undefined,
+          kind: "transaction",
+          mutez: false,
+          parameter: {
+            entrypoint: "transfer",
+            value: {
+              args: [
+                {
+                  string: pkh1,
+                },
+                {
+                  args: [
+                    {
+                      string: pkh2,
+                    },
+                    {
+                      int: "1",
+                    },
+                  ],
+                  prim: "Pair",
+                },
+              ],
+              prim: "Pair",
+            },
+          },
+          source: undefined,
+          storageLimit: undefined,
+          to: ghostFA12.contract,
+        },
+
+        {
+          amount: 0,
+          fee: undefined,
+          gasLimit: undefined,
+          kind: "transaction",
+          mutez: false,
+          parameter: {
+            entrypoint: "transfer",
+            value: [
+              {
+                args: [
+                  { string: pkh1 },
+                  [
+                    {
+                      args: [
+                        { string: pkh2 },
+                        { args: [{ int: "1" }, { int: "2" }], prim: "Pair" },
+                      ],
+                      prim: "Pair",
+                    },
+                  ],
+                ],
+                prim: "Pair",
+              },
+            ],
+          },
+          source: undefined,
+          storageLimit: undefined,
+          to: ghostFA2.contract,
+        },
       ]);
     });
 
@@ -96,10 +177,10 @@ describe("Tezos utils", () => {
         const result = await estimateFA2transfer(
           {
             amount: 1,
-            contract: tezzard.contract,
+            contract: ghostTezzard.contract,
             recipient: pkh2,
             sender: pkh1,
-            tokenId: tezzard.tokenId,
+            tokenId: ghostTezzard.tokenId,
           },
           pk1,
           TezosNetwork.GHOSTNET
@@ -112,9 +193,9 @@ describe("Tezos utils", () => {
         const result = await estimateFA12transfer(
           {
             amount: 1,
-            contract: ghostFA12.contract,
+            contract: ghostFA12WithOwner.contract,
             recipient: pkh2,
-            sender: ghostFA12.owner,
+            sender: ghostFA12WithOwner.owner,
           },
           "TEST_PK",
           TezosNetwork.GHOSTNET
@@ -123,7 +204,7 @@ describe("Tezos utils", () => {
         expect(result).toHaveProperty("suggestedFeeMutez");
       });
 
-      test("Batch estimation works with batches containg tez and FA2 tokens on ghostnet", async () => {
+      test("Batch estimation works with batches containg tez, FA1.2 and FA2 tokens on ghostnet", async () => {
         const ghostnetResult = await estimateBatch(
           [
             {
@@ -136,7 +217,25 @@ describe("Tezos utils", () => {
             },
             {
               type: "token",
-              data: tezzard,
+              data: ghostTezzard,
+              value: {
+                sender: pkh1,
+                recipient: pkh2,
+                amount: 1,
+              },
+            },
+            {
+              type: "token",
+              data: ghostFA12,
+              value: {
+                sender: pkh1,
+                recipient: pkh2,
+                amount: 1,
+              },
+            },
+            {
+              type: "token",
+              data: ghostFA2,
               value: {
                 sender: pkh1,
                 recipient: pkh2,
@@ -149,8 +248,9 @@ describe("Tezos utils", () => {
           TezosNetwork.GHOSTNET
         );
 
-        expect(ghostnetResult[0]).toHaveProperty("suggestedFeeMutez");
-        expect(ghostnetResult[1]).toHaveProperty("suggestedFeeMutez");
+        for (let i = 0; i < ghostnetResult.length; i += 1) {
+          expect(ghostnetResult[i]).toHaveProperty("suggestedFeeMutez");
+        }
       });
 
       test("Batch estimation works with batches containg tez on mainnet", async () => {

@@ -1,4 +1,4 @@
-export type FA2TokenTransferParams = {
+export type FA2TransferMethodArgs = {
   sender: string;
   recipient: string;
   contract: string;
@@ -6,7 +6,7 @@ export type FA2TokenTransferParams = {
   amount: number;
 };
 
-export type FA12TokenTransferParams = Omit<FA2TokenTransferParams, "tokenId">;
+export type FA12TransferMethodArgs = Omit<FA2TransferMethodArgs, "tokenId">;
 
 export type coinCapResponseType = {
   data: {

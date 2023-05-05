@@ -98,7 +98,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
       <ModalCloseButton />
       <ModalHeader textAlign={"center"}>Load CSV file</ModalHeader>
       <Text textAlign="center">
-        Select an account and then upload the CSSV file.
+        Select an account and then upload the CSV file.
       </Text>
       <ModalBody>
         <FormControl paddingY={5}>
