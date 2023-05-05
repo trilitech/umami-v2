@@ -162,8 +162,6 @@ export const RecapDisplay: React.FC<{
 
     try {
       const result = await makeTransfer(transfer, config);
-      // eslint-disable-next-line no-debugger
-      debugger;
       if (Array.isArray(transfer)) {
         clearBatch(signerAccount.pkh);
       }
