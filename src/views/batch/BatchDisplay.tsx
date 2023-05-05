@@ -36,15 +36,14 @@ import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
     case "token": {
-      if (operation.data.type !== "nft") {
-        throw new Error("Should be nft");
-      }
       return (
         <Flex>
           <Text>{operation.value.amount}</Text>
-          <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
-            <Image src={operation.data.metadata.displayUri} />
-          </AspectRatio>
+          {operation.data.type === "nft" && (
+            <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
+              <Image src={operation.data.metadata.displayUri} />
+            </AspectRatio>
+          )}
         </Flex>
       );
     }

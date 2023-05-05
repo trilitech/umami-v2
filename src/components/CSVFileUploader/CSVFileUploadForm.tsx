@@ -15,14 +15,23 @@ import {
 import Papa, { ParseResult } from "papaparse";
 import { FC, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useGetAccountAssetsLookup } from "../../utils/hooks/assetsHooks";
+import {
+  useGetAccountAssetsLookup,
+  useSelectedNetwork,
+} from "../../utils/hooks/assetsHooks";
+import { useAppDispatch } from "../../utils/store/hooks";
+import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { ConnectedAccountSelector } from "../AccountSelector/AccountSelector";
+import { useGetPk } from "../sendForm/SendForm";
 import { CSVRow } from "./types";
 import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 
 const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
+  const network = useSelectedNetwork();
   const toast = useToast();
+  const getPk = useGetPk();
   const getAssetsLookup = useGetAccountAssetsLookup();
+  const dispatch = useAppDispatch();
 
   const { control, handleSubmit, formState } = useForm<{
     sender: string;
@@ -36,6 +45,13 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const [csv, setCSV] = useState<CSVRow[] | null>(null);
   const csvRef = useRef<HTMLInputElement>(null);
 
+  const resetFile = () => {
+    // Reset file input.
+    if (csvRef.current) {
+      csvRef.current.value = "";
+    }
+  };
+
   const onCSVFileUploadComplete = async (rows: ParseResult<string[]>) => {
     if (rows.errors.length > 0) {
       throw new Error("Error loading csv file.");
@@ -47,15 +63,11 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
       try {
         csv.push(parseToCSVRow(row));
       } catch (error: any) {
+        resetFile();
         toast({
           title: "error",
           description: `Error at row ${i}: ${error?.message}`,
         });
-
-        // Reset file input.
-        if (csvRef.current) {
-          csvRef.current.value = "";
-        }
       }
     });
 
@@ -70,7 +82,6 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
     }
 
     Papa.parse<string[]>(fileUploaded, {
-      delimiter: ",",
       skipEmptyLines: true,
       complete: onCSVFileUploadComplete,
     });
@@ -81,16 +92,22 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
       return;
     }
 
-    const assetLookup = getAssetsLookup(sender);
+    try {
+      const assetLookup = getAssetsLookup(sender);
+      const operationValues = csv.map((csvRow) =>
+        csvRowToOperationValue(sender, csvRow, assetLookup)
+      );
 
-    // TODO: Add fa1.2 support for batch.
-    // https://app.asana.com/0/1204165186238194/1204523779791384/f
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const operationValues = csv.map((csvRow) =>
-      csvRowToOperationValue(sender, csvRow, assetLookup)
-    );
+      await dispatch(
+        estimateAndUpdateBatch(sender, getPk(sender), operationValues, network)
+      );
 
-    onClose();
+      toast({ title: "CSV added to batch!" });
+      onClose();
+    } catch (error: any) {
+      resetFile();
+      toast({ title: "Invalid transaction", description: error.message });
+    }
   };
 
   return (
@@ -126,7 +143,17 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
             ref={csvRef}
             accept=".csv"
             type="file"
-            onChange={handleCSVFileUpload}
+            onChange={(e) => {
+              try {
+                handleCSVFileUpload(e);
+              } catch (error: any) {
+                resetFile();
+                toast({
+                  title: "Error loading csv file",
+                  description: error.message,
+                });
+              }
+            }}
             variant="unstyled"
           />
         </Flex>
