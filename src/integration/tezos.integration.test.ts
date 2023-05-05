@@ -1,7 +1,12 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
-import { ghostFA12WithOwner } from "../mocks/tokens";
+import { OperationValue } from "../components/sendForm/types";
 import { publicKeys1, publicKeys2 } from "../mocks/publicKeys";
+import {
+  ghostFA12,
+  ghostFA12WithOwner,
+  ghostFA2,
+  ghostTezzard,
+} from "../mocks/tokens";
 
 import {
   estimateBatch,
@@ -9,8 +14,6 @@ import {
   estimateFA2transfer,
   operationValuesToBatchParams,
 } from "../utils/tezos";
-import { OperationValue } from "../components/sendForm/types";
-import { objectOperationRequest } from "../mocks/beacon";
 
 const pk1 = publicKeys1.pk;
 const pkh1 = publicKeys1.pkh;
@@ -19,66 +22,68 @@ const pkh2 = publicKeys2.pkh;
 describe("Tezos utils", () => {
   describe("Batch", () => {
     test("batchParams are generated correctly for tez, tez with params, FA1.2, FA2 contracts and delegations", async () => {
-      const result = await operationValuesToBatchParams(
-        [
-          {
-            type: "tez",
-            value: {
-              amount: 3,
-              sender: pkh1,
-              recipient: pkh2,
-            },
+      const input: OperationValue[] = [
+        {
+          type: "tez",
+          value: {
+            amount: 3,
+            sender: pkh1,
+            recipient: pkh2,
           },
-          {
-            type: "tez",
-            value: {
-              amount: 2,
-              sender: pkh1,
-              recipient: pkh2,
-              parameter: {
-                entrypoint: "fulfill_ask",
-                value: {
-                  prim: "Pair",
-                  args: [{ int: "1232832" }, { prim: "None" }],
-                },
+        },
+        {
+          type: "tez",
+          value: {
+            amount: 2,
+            sender: pkh1,
+            recipient: pkh2,
+            parameter: {
+              entrypoint: "fulfill_ask",
+              value: {
+                prim: "Pair",
+                args: [{ int: "1232832" }, { prim: "None" }],
               },
             },
           },
-          {
-            type: "delegation",
-            value: {
-              sender: pkh1,
-              recipient: pkh2,
-            },
+        },
+        {
+          type: "delegation",
+          value: {
+            sender: pkh1,
+            recipient: pkh2,
           },
-          {
-            type: "token",
-            data: ghostTezzard,
-            value: {
-              sender: pkh1,
-              recipient: pkh2,
-              amount: 1,
-            },
+        },
+        {
+          type: "token",
+          data: ghostTezzard,
+          value: {
+            sender: pkh1,
+            recipient: pkh2,
+            amount: 1,
           },
-          {
-            type: "token",
-            data: ghostFA12,
-            value: {
-              sender: pkh1,
-              recipient: pkh2,
-              amount: 1,
-            },
+        },
+        {
+          type: "token",
+          data: ghostFA12,
+          value: {
+            sender: pkh1,
+            recipient: pkh2,
+            amount: 1,
           },
-          {
-            type: "token",
-            data: ghostFA2,
-            value: {
-              sender: pkh1,
-              recipient: pkh2,
-              amount: 2,
-            },
+        },
+        {
+          type: "token",
+          data: ghostFA2,
+          value: {
+            sender: pkh1,
+            recipient: pkh2,
+            amount: 2,
           },
-        ],
+        },
+      ];
+
+      const result = await operationValuesToBatchParams(
+        input,
         pk1,
         TezosNetwork.GHOSTNET
       );
@@ -370,10 +375,10 @@ describe("Tezos utils", () => {
       const result = await estimateFA2transfer(
         {
           amount: 1,
-          contract: tezzard.contract,
+          contract: ghostTezzard.contract,
           recipient: pkh2,
           sender: pkh1,
-          tokenId: tezzard.tokenId,
+          tokenId: ghostTezzard.tokenId,
         },
         pk1,
         TezosNetwork.GHOSTNET
