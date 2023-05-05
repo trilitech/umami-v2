@@ -1,3 +1,4 @@
+import { TransferParams } from "@taquito/taquito";
 import { Asset } from "../../types/Asset";
 import { Batch } from "../../utils/store/assetsSlice";
 
@@ -29,6 +30,7 @@ export type OperationValue =
         amount: number;
         sender: string;
         recipient: string;
+        parameter?: TransferParams["parameter"];
       };
     })
   | (TokenMode & {

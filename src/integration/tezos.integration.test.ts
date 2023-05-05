@@ -9,6 +9,8 @@ import {
   estimateFA2transfer,
   operationValuesToBatchParams,
 } from "../utils/tezos";
+import { OperationValue } from "../components/sendForm/types";
+import { objectOperationRequest } from "../mocks/beacon";
 
 const pk1 = publicKeys1.pk;
 const pkh1 = publicKeys1.pkh;
@@ -16,7 +18,7 @@ const pkh2 = publicKeys2.pkh;
 
 describe("Tezos utils", () => {
   describe("Batch", () => {
-    test("batchParams are generated correctly for tez, FA1.2, FA2 contracts and delegations", async () => {
+    test("batchParams are generated correctly for tez, tez with params, FA1.2, FA2 contracts and delegations", async () => {
       const result = await operationValuesToBatchParams(
         [
           {
@@ -25,6 +27,21 @@ describe("Tezos utils", () => {
               amount: 3,
               sender: pkh1,
               recipient: pkh2,
+            },
+          },
+          {
+            type: "tez",
+            value: {
+              amount: 2,
+              sender: pkh1,
+              recipient: pkh2,
+              parameter: {
+                entrypoint: "fulfill_ask",
+                value: {
+                  prim: "Pair",
+                  args: [{ int: "1232832" }, { prim: "None" }],
+                },
+              },
             },
           },
           {
@@ -70,6 +87,18 @@ describe("Tezos utils", () => {
           amount: 3,
           kind: "transaction",
           to: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+        },
+        {
+          amount: 2,
+          kind: "transaction",
+          to: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+          parameter: {
+            entrypoint: "fulfill_ask",
+            value: {
+              prim: "Pair",
+              args: [{ int: "1232832" }, { prim: "None" }],
+            },
+          },
         },
         {
           delegate: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
@@ -333,6 +362,24 @@ describe("Tezos utils", () => {
 
         await expect(estimation).rejects.toThrow(/tez.subtraction_underflow/i);
       });
+    });
+  });
+
+  describe("Single transfers", () => {
+    test("FA2 estimation returns the right value on ghostnet", async () => {
+      const result = await estimateFA2transfer(
+        {
+          amount: 1,
+          contract: tezzard.contract,
+          recipient: pkh2,
+          sender: pkh1,
+          tokenId: tezzard.tokenId,
+        },
+        pk1,
+        TezosNetwork.GHOSTNET
+      );
+
+      expect(result).toHaveProperty("suggestedFeeMutez");
     });
   });
 });

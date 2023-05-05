@@ -1,4 +1,8 @@
-import { DelegateOperation, TransactionOperation } from "@taquito/taquito";
+import {
+  DelegateOperation,
+  TransactionOperation,
+  TransferParams,
+} from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { OperationValue } from "../../components/sendForm/types";
 import {
@@ -43,10 +47,11 @@ export const transferFA12Token = async (
 export const transferTez = async (
   recipient: string,
   amount: number,
-  config: SignerConfig
+  config: SignerConfig,
+  parameter?: TransferParams["parameter"]
 ): Promise<TransactionOperation> => {
   const Tezos = await makeToolkitWithSigner(config);
-  return Tezos.contract.transfer({ to: recipient, amount });
+  return Tezos.contract.transfer({ to: recipient, amount, parameter });
 };
 
 export const submitBatch = async (
