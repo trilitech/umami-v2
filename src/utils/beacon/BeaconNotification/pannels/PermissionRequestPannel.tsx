@@ -15,9 +15,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { ConnectedAccountSelector } from "../../../components/AccountSelector/AccountSelector";
-import { Account } from "../../../types/Account";
-import { walletClient } from "../beacon";
+import { ConnectedAccountSelector } from "../../../../components/AccountSelector/AccountSelector";
+import { Account } from "../../../../types/Account";
+import { walletClient } from "../../beacon";
 
 const PermissionRequestPannel: React.FC<{
   request: PermissionRequestOutput;

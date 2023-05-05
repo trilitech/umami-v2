@@ -1,6 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { TransferParams } from "@taquito/taquito";
+import { useEffect, useRef, useState } from "react";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
@@ -54,7 +55,8 @@ const makeSimulation = (
         operation.value.recipient,
         operation.value.amount,
         pk,
-        network
+        network,
+        operation.value.parameter
       );
   }
 };
@@ -67,11 +69,19 @@ export const useGetPk = () => {
 export const SendForm = ({
   sender,
   recipient,
+  parameter,
+  amount,
   mode = { type: "tez" },
+  disabled = false,
+  onSuccess = () => {},
 }: {
   sender?: string;
   recipient?: string;
+  amount?: number;
+  parameter?: TransferParams["parameter"];
+  onSuccess?: (hash: string) => void;
   mode?: SendFormMode;
+  disabled?: boolean;
 }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
@@ -93,6 +103,14 @@ export const SendForm = ({
   >(initalValues);
 
   const [hash, setHash] = useState<string>();
+
+  const onSuccessRef = useRef(onSuccess);
+
+  useEffect(() => {
+    if (hash !== undefined) {
+      onSuccessRef.current(hash);
+    }
+  }, [hash]);
 
   const simulate = async (operation: OperationValue) => {
     setIsLoading(true);
@@ -145,9 +163,12 @@ export const SendForm = ({
 
   return (
     <FillStep
+      disabled={disabled}
       recipient={recipient}
       mode={mode}
       sender={sender}
+      amount={amount}
+      parameter={parameter}
       isLoading={isLoading}
       onSubmit={simulate}
       onSubmitBatch={(transaction) => {

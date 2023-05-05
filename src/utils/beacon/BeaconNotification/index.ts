@@ -1,1 +1,1 @@
-export * from "./BeaconNotification";
+export * from "./BeaconRequestNotification";

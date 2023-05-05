@@ -12,13 +12,13 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import SignButton from "../../../components/sendForm/components/SignButton";
-import { AccountType } from "../../../types/Account";
-import { SignerConfig } from "../../../types/SignerConfig";
-import { useGetAccount } from "../../hooks/accountHooks";
-import { useSelectedNetwork } from "../../hooks/assetsHooks";
-import { makeSigner } from "../../tezos";
-import { walletClient } from "../beacon";
+import SignButton from "../../../../components/sendForm/components/SignButton";
+import { AccountType } from "../../../../types/Account";
+import { SignerConfig } from "../../../../types/SignerConfig";
+import { useGetAccount } from "../../../hooks/accountHooks";
+import { useSelectedNetwork } from "../../../hooks/assetsHooks";
+import { makeSigner } from "../../../tezos";
+import { walletClient } from "../../beacon";
 
 const SignPayloadRequestPannel: React.FC<{
   request: SignPayloadRequestOutput;
