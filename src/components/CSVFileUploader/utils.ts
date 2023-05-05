@@ -63,12 +63,11 @@ export const csvRowToOperationValue = (
       };
     case "fa1.2": {
       const asset = contractToAsset[csvRow.contract];
-      if (
-        !asset ||
-        asset.type !== "fa1.2" ||
-        csvRow.contract !== asset.contract
-      ) {
-        throw new Error("Error converting from csv to operation value");
+      if (!asset) {
+        throw new Error(`Token ${csvRow.contract} not owned by the sender`);
+      }
+      if (asset.type !== "fa1.2" || csvRow.contract !== asset.contract) {
+        throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
       }
       return {
         type: "token",
@@ -82,12 +81,12 @@ export const csvRowToOperationValue = (
     }
     case "fa2": {
       const asset = contractToAsset[csvRow.contract];
-      if (
-        !asset ||
-        asset.type === "fa1.2" ||
-        csvRow.contract !== asset.contract
-      ) {
-        throw new Error("Error converting from csv to operation value");
+      if (!asset) {
+        throw new Error(`Token ${csvRow.contract} not owned by the sender`);
+      }
+
+      if (asset.type === "fa1.2" || csvRow.contract !== asset.contract) {
+        throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
       }
 
       const baseData = {

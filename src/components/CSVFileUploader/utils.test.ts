@@ -175,6 +175,6 @@ describe("csv utils", () => {
     } as CSVRow;
     expect(() =>
       csvRowToOperationValue(mockPkh(0), mockCSVFA2TransferRow, {})
-    ).toThrowError("Error converting from csv to operation value");
+    ).toThrowError(`Token ${ghostTezzard.contract} not owned by the sender`);
   });
 });
