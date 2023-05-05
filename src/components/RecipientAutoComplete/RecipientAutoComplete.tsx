@@ -7,6 +7,7 @@ import { useAppSelector } from "../../utils/store/hooks";
 type BaseProps = {
   onValidPkh: (v: string | null) => void;
   initialPkhValue?: string;
+  isDisabled?: boolean;
 };
 
 const getSuggestions = (inputValue: string, contacts: Contact[]): string[] => {
@@ -29,7 +30,7 @@ const getSuggestions = (inputValue: string, contacts: Contact[]): string[] => {
 
 export const RecipientAutoCompleteDisplay: React.FC<
   BaseProps & { contacts: Contact[] }
-> = ({ contacts, onValidPkh, initialPkhValue }) => {
+> = ({ contacts, onValidPkh, initialPkhValue, isDisabled }) => {
   const initialValue = initialPkhValue
     ? contacts.find((e) => e.pkh === initialPkhValue)?.name || initialPkhValue
     : "";
@@ -85,6 +86,7 @@ export const RecipientAutoCompleteDisplay: React.FC<
   return (
     <Box>
       <Input
+        isDisabled={isDisabled}
         aria-label="recipient"
         value={value}
         onChange={(e) => handleChange(e.target.value)}
@@ -100,6 +102,7 @@ export const RecipentAutoComplete: React.FC<BaseProps> = (props) => {
   const contacts = Object.values(useAppSelector((s) => s.contacts));
   return (
     <RecipientAutoCompleteDisplay
+      isDisabled={Boolean(props.isDisabled)}
       initialPkhValue={props.initialPkhValue}
       onValidPkh={props.onValidPkh}
       contacts={contacts}

@@ -11,7 +11,9 @@ import {
   ModalFooter,
   ModalHeader,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
+import { TransferParams } from "@taquito/taquito";
 import { validateAddress, ValidationResult } from "@taquito/utils";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -115,6 +117,9 @@ export const SendTezOrNFTForm = ({
   onSubmitBatch,
   isLoading,
   recipient,
+  parameter,
+  amount,
+  disabled,
 }: {
   onSubmit: (v: { sender: string; recipient: string; amount: number }) => void;
   onSubmitBatch: (v: {
@@ -126,6 +131,9 @@ export const SendTezOrNFTForm = ({
   nft?: NFT;
   isLoading?: boolean;
   recipient?: string;
+  disabled?: boolean;
+  amount?: number;
+  parameter?: TransferParams["parameter"];
 }) => {
   const mandatoryNftSender = nft?.owner;
   const isNFT = !!nft;
@@ -145,7 +153,7 @@ export const SendTezOrNFTForm = ({
     mode: "onBlur",
     defaultValues: {
       sender: mandatoryNftSender || sender,
-      amount: isNFT ? 1 : undefined,
+      amount: isNFT ? 1 : amount,
       recipient,
     },
   });
@@ -171,7 +179,7 @@ export const SendTezOrNFTForm = ({
               name="sender"
               render={({ field: { onChange, onBlur, value, ref } }) => (
                 <ConnectedAccountSelector
-                  isDisabled={isNFT || simulating}
+                  isDisabled={isNFT || simulating || disabled}
                   selected={value}
                   onSelect={(a) => {
                     onChange(a.pkh);
@@ -193,6 +201,7 @@ export const SendTezOrNFTForm = ({
               name="recipient"
               render={({ field: { onChange, value } }) => (
                 <RecipentAutoComplete
+                  isDisabled={disabled}
                   initialPkhValue={recipient}
                   onValidPkh={(pkh) => {
                     onChange(pkh === null ? "" : pkh);
@@ -210,7 +219,7 @@ export const SendTezOrNFTForm = ({
           <FormControl mb={2} mt={2}>
             <FormLabel>Amount</FormLabel>
             <Input
-              isDisabled={simulating}
+              isDisabled={simulating || disabled}
               step={isNFT ? 1 : "any"}
               type={"number"}
               {...register("amount", {
@@ -220,6 +229,16 @@ export const SendTezOrNFTForm = ({
               placeholder="Enter amount..."
             />
           </FormControl>
+
+          {parameter && (
+            <FormControl mb={2} mt={2}>
+              <FormLabel>Parameter</FormLabel>
+              <Textarea
+                isDisabled={true}
+                value={JSON.stringify(parameter, null, 4)}
+              ></Textarea>
+            </FormControl>
+          )}
         </ModalBody>
         <ModalFooter>
           <Box width={"100%"}>
@@ -258,8 +277,21 @@ export const FillStep: React.FC<{
   isLoading: boolean;
   sender?: string;
   recipient?: string;
+  amount?: number;
+  disabled?: boolean;
+  parameter?: TransferParams["parameter"];
   mode: SendFormMode;
-}> = ({ onSubmit, isLoading, sender, recipient, mode, onSubmitBatch }) => {
+}> = ({
+  onSubmit,
+  isLoading,
+  sender,
+  recipient,
+  amount,
+  parameter,
+  mode,
+  onSubmitBatch,
+  disabled,
+}) => {
   switch (mode.type) {
     case "delegation":
       return (
@@ -285,6 +317,9 @@ export const FillStep: React.FC<{
           sender={sender}
           isLoading={isLoading}
           recipient={recipient}
+          amount={amount}
+          parameter={parameter}
+          disabled={disabled}
           onSubmitBatch={(v) => {
             onSubmitBatch({
               type: "tez",
@@ -292,6 +327,7 @@ export const FillStep: React.FC<{
                 amount: v.amount,
                 sender: v.sender,
                 recipient: v.recipient,
+                parameter,
               },
             });
           }}
@@ -302,6 +338,7 @@ export const FillStep: React.FC<{
                 amount: v.amount,
                 sender: v.sender,
                 recipient: v.recipient,
+                parameter,
               },
             });
           }}
@@ -317,6 +354,7 @@ export const FillStep: React.FC<{
           sender={sender}
           isLoading={isLoading}
           recipient={recipient}
+          parameter={parameter}
           onSubmitBatch={(v) => {
             onSubmitBatch({
               type: "token",

@@ -60,7 +60,8 @@ const makeTransfer = (
       return transferTez(
         operation.value.recipient,
         operation.value.amount,
-        config
+        config,
+        operation.value.parameter
       );
     case "token": {
       const token = operation.data;
@@ -161,6 +162,8 @@ export const RecapDisplay: React.FC<{
 
     try {
       const result = await makeTransfer(transfer, config);
+      // eslint-disable-next-line no-debugger
+      debugger;
       if (Array.isArray(transfer)) {
         clearBatch(signerAccount.pkh);
       }
@@ -200,7 +203,7 @@ export const RecapDisplay: React.FC<{
           <Divider mb={2} mt={2} />
           <Total tez={total} />
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter justifyContent={"center"}>
           <SignButton
             isLoading={isLoading}
             network={network}
