@@ -34,6 +34,7 @@ export const operationValuesToParams = async (
           kind: OpKind.TRANSACTION,
           to: operation.value.recipient,
           amount: operation.value.amount,
+          parameter: operation.value.parameter,
         });
         break;
       case "delegation":

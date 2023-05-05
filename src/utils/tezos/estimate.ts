@@ -1,5 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { Estimate, TezosToolkit } from "@taquito/taquito";
+import { Estimate, TezosToolkit, TransferParams } from "@taquito/taquito";
 import { OperationValue } from "../../components/sendForm/types";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
@@ -17,12 +17,14 @@ export const estimateTezTransfer = async (
   recipient: string,
   amount: number,
   senderPk: string,
-  network: TezosNetwork
+  network: TezosNetwork,
+  parameter?: TransferParams["parameter"]
 ): Promise<Estimate> => {
   const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
   return Tezos.estimate.transfer({
     to: recipient,
     amount: amount,
+    parameter,
   });
 };
 
