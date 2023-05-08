@@ -372,9 +372,6 @@ export const FillStep: React.FC<{
       );
 
     case "token": {
-      // if (mode.data.type !== "nft") {
-      //   throw new Error("Should be nft");
-      // }
       return (
         <SendTezOrNFTForm
           sender={sender}
@@ -408,7 +405,13 @@ export const FillStep: React.FC<{
       );
     }
 
-    default:
-      return null;
+    case "batch": {
+      throw new Error("Batches are not editable");
+    }
+
+    default: {
+      const error: never = mode;
+      throw error;
+    }
   }
 };
