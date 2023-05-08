@@ -70,7 +70,7 @@ const makeTransfer = (
       if (token.type === "fa1.2") {
         return transferFA12Token(
           {
-            amount: operation.value.amount,
+            amount: getRealAmount(operation.value.amount, token),
             contract: token.contract,
             recipient: operation.value.recipient,
             sender: operation.value.sender,

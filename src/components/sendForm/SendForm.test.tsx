@@ -19,7 +19,7 @@ import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { UmamiTheme } from "../../providers/UmamiTheme";
 import { AccountType } from "../../types/Account";
-import { FA2Token } from "../../types/Asset";
+import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { formatPkh } from "../../utils/format";
 import { useGetSk } from "../../utils/hooks/accountUtils";
@@ -28,8 +28,10 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import {
   estimateBatch,
+  estimateFA12transfer,
   estimateFA2transfer,
   estimateTezTransfer,
+  transferFA12Token,
   transferFA2Token,
   transferTez,
 } from "../../utils/tezos";
@@ -54,8 +56,10 @@ jest.mock("../../utils/hooks/accountUtils");
 
 const estimateTezTransferMock = estimateTezTransfer as jest.Mock;
 const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
+const estimateFA12transferMock = estimateFA12transfer as jest.Mock;
 const transferTezMock = transferTez as jest.Mock;
 const transferFA2TokenMock = transferFA2Token as jest.Mock;
+const transferFA12TokenMock = transferFA12Token as jest.Mock;
 const estimateBatchMock = estimateBatch as jest.Mock;
 const useGetSkMock = useGetSk as jest.Mock;
 
@@ -267,7 +271,7 @@ describe("<SendForm />", () => {
     });
   });
 
-  describe("case FA2 tokens", () => {
+  describe("case send FA2 tokens", () => {
     const MOCK_TOKEN_SYMBOL = "FOO";
     const MOCK_TOKEN_ID = "7";
     const MOCK_FEE = 3122;
@@ -356,23 +360,89 @@ describe("<SendForm />", () => {
     });
   });
 
-  describe("case FA1 tokens", () => {
+  describe("case send FA1 tokens", () => {
     const MOCK_TOKEN_SYMBOL = "FA1FOO";
+    const MOCK_FEE = 4122;
+
+    const mockFa1: FA12Token = {
+      type: "fa1.2",
+      balance: "3",
+      contract: mockContract(2),
+      metadata: { symbol: MOCK_TOKEN_SYMBOL, decimals: "8" },
+    };
     it("should display token name in amount input", () => {
       render(
         fixture(undefined, {
           type: "token",
-          data: {
-            type: "fa1.2",
-            balance: "3",
-            contract: mockContract(2),
-            metadata: { symbol: MOCK_TOKEN_SYMBOL },
-          },
+          data: mockFa1,
         })
       );
 
       expect(screen.getByTestId(/currency/)).toHaveTextContent(
         MOCK_TOKEN_SYMBOL
+      );
+    });
+
+    test("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
+      render(
+        fixture(undefined, {
+          type: "token",
+          data: mockFa1,
+        })
+      );
+      fillAccountSelector(mockAccount(2).label || "");
+
+      const estimateButton = screen.getByText(/preview/i);
+      expect(estimateButton).toBeDisabled();
+      const recipientInput = screen.getByLabelText(/to/i);
+      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+
+      const amountInput = screen.getByLabelText(/amount/i);
+      fireEvent.change(amountInput, { target: { value: 10 } });
+      await waitFor(() => {
+        expect(estimateButton).toBeEnabled();
+      });
+
+      estimateFA12transferMock.mockResolvedValueOnce({
+        suggestedFeeMutez: MOCK_FEE,
+      });
+
+      fireEvent.click(estimateButton);
+
+      await waitFor(() => {
+        const fee = screen.getByLabelText(/^fee$/i);
+        expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
+      });
+
+      fillPassword("mockPass");
+      transferFA12TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
+
+      const submit = screen.getByRole("button", {
+        name: /submit transaction/i,
+      });
+
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
+
+      submit.click();
+
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+          "href",
+          "https://mainnet.tzkt.io/mockHash"
+        );
+      });
+
+      expect(transferFA12TokenMock).toHaveBeenCalledWith(
+        {
+          amount: 1000000000,
+          contract: mockFa1.contract,
+          recipient: mockPkh(7),
+          sender: mockPkh(2),
+        },
+        { network: "mainnet", sk: "mockSk", type: "sk" }
       );
     });
   });
