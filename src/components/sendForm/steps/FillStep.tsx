@@ -5,6 +5,8 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightAddon,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -17,13 +19,19 @@ import { TransferParams } from "@taquito/taquito";
 import { validateAddress, ValidationResult } from "@taquito/utils";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { NFT } from "../../../types/Asset";
+import {
+  Asset,
+  FA12Token,
+  FA2Token,
+  getTokenSymbol,
+  NFT,
+} from "../../../types/Asset";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import { RecipentAutoComplete } from "../../RecipientAutoComplete/RecipientAutoComplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
-import { SendFormMode, OperationValue } from "../types";
+import { OperationValue, SendFormMode } from "../types";
 
 export const DelegateForm = ({
   onSubmit,
@@ -110,8 +118,19 @@ export const DelegateForm = ({
   );
 };
 
+const getAmountSymbol = (t?: Asset) => {
+  if (!t) {
+    return "tez";
+  }
+  if (t.type === "nft") {
+    return "editions";
+  }
+
+  return getTokenSymbol(t);
+};
+
 export const SendTezOrNFTForm = ({
-  nft,
+  token,
   sender,
   onSubmit,
   onSubmitBatch,
@@ -128,15 +147,15 @@ export const SendTezOrNFTForm = ({
     amount: number;
   }) => void;
   sender?: string;
-  nft?: NFT;
+  token?: NFT | FA12Token | FA2Token;
   isLoading?: boolean;
   recipient?: string;
   disabled?: boolean;
   amount?: number;
   parameter?: TransferParams["parameter"];
 }) => {
-  const mandatoryNftSender = nft?.owner;
-  const isNFT = !!nft;
+  const mandatoryNftSender = token?.type === "nft" ? token.owner : undefined;
+  const isNFT = token?.type === "nft";
   const getBatchIsSimulating = useBatchIsSimulating();
 
   const {
@@ -214,20 +233,27 @@ export const SendTezOrNFTForm = ({
             )}
           </FormControl>
 
-          {nft ? <SendNFTRecapTile nft={nft} /> : null}
+          {token?.type === "nft" ? <SendNFTRecapTile nft={token} /> : null}
 
           <FormControl mb={2} mt={2}>
             <FormLabel>Amount</FormLabel>
-            <Input
-              isDisabled={simulating || disabled}
-              step={isNFT ? 1 : "any"}
-              type={"number"}
-              {...register("amount", {
-                required: true,
-                valueAsNumber: true,
-              })}
-              placeholder="Enter amount..."
-            />
+            <InputGroup>
+              <Input
+                isDisabled={simulating || disabled}
+                step={isNFT ? 1 : "any"}
+                type={"number"}
+                {...register("amount", {
+                  required: true,
+                  valueAsNumber: true,
+                })}
+                placeholder="Enter amount..."
+              />
+              <InputRightAddon
+                data-testid="currency"
+                children={getAmountSymbol(token)}
+              />
+            </InputGroup>
+            {/* <InputRightElement children={<CheckIcon color="green.500" />} /> */}
           </FormControl>
 
           {parameter && (
@@ -346,9 +372,9 @@ export const FillStep: React.FC<{
       );
 
     case "token": {
-      if (mode.data.type !== "nft") {
-        throw new Error("Should be nft");
-      }
+      // if (mode.data.type !== "nft") {
+      //   throw new Error("Should be nft");
+      // }
       return (
         <SendTezOrNFTForm
           sender={sender}
@@ -377,7 +403,7 @@ export const FillStep: React.FC<{
               },
             });
           }}
-          nft={mode.data}
+          token={mode.data}
         />
       );
     }
