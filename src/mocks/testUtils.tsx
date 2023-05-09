@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { HashRouter, Router } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { ReactQueryProvider } from "../providers/ReactQueryProvider";
 import { ReduxStore } from "../providers/ReduxStore";
 import { UmamiTheme } from "../providers/UmamiTheme";
