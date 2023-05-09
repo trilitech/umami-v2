@@ -6,20 +6,30 @@ import {
   TezosToolkit,
 } from "@taquito/taquito";
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
-import { nodeUrls } from "./consts";
+import { nodeUrls, tzktUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
-import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
+import {
+  FA12TransferMethodArgs,
+  FA2TransferMethodArgs,
+  tzktGetAddressResponseType,
+} from "./types";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
+import axios from "axios";
 
 export const addressExists = async (
   pkh: string,
   network = TezosNetwork.MAINNET
 ): Promise<boolean> => {
-  // Temporary solution to check address existence
-  const Tezos = new TezosToolkit(nodeUrls[network]);
-  const balance = await Tezos.tz.getBalance(pkh);
-  return !balance.isZero();
+  try {
+    const url = `${tzktUrls[network]}/v1/accounts/${pkh}`;
+    const {
+      data: { type },
+    } = await axios.get<tzktGetAddressResponseType>(url);
+    return type !== "empty";
+  } catch (e) {
+    return false;
+  }
 };
 
 // Temporary solution for generating fingerprint for seedphrase
