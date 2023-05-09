@@ -41,6 +41,7 @@ function createWindow() {
       sandbox: true,
       webSecurity: true,
       experimentalFeatures: false,
+      devTools: process.env.ENABLE_DEV_TOOLS === "true",
     },
   });
 
