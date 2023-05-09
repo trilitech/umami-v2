@@ -8,14 +8,11 @@ import {
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
 import { nodeUrls, tzktUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
-import {
-  FA12TransferMethodArgs,
-  FA2TransferMethodArgs,
-  tzktGetAddressResponseType,
-} from "./types";
+import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import axios from "axios";
+import { tzktGetAddressResponseType } from "../tzkt/types";
 
 export const addressExists = async (
   pkh: string,
@@ -27,8 +24,8 @@ export const addressExists = async (
       data: { type },
     } = await axios.get<tzktGetAddressResponseType>(url);
     return type !== "empty";
-  } catch (e) {
-    return false;
+  } catch (error: any) {
+    throw new Error(`Error fetching account from tzkt ${error.message}`);
   }
 };
 
