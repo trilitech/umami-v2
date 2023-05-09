@@ -9,10 +9,10 @@ export type tzktGetAddressResponseType = {
     | "empty";
 };
 
-export type tzktGetSameContractResponseType = {
+export type tzktGetSameMultisigsResponseType = {
   balance: number;
   address: string;
   storage: {
-    signers: [string];
+    signers: string[];
   };
-};
+}[];
