@@ -74,15 +74,26 @@ export default function HelpView() {
               <Divider orientation="horizontal" size="lg" />
             </Box>
 
-            <HelpLinkRow
-              about="Get in touch with the Community"
-              onClickIcon={() => {
-                jumpToLink(
-                  "https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg"
-                );
-              }}
-              linkDescription="Slack #Umami"
-            />
+            <Flex justifyContent="space-between" alignItems="center">
+              <Heading size="sm">{"Get in touch with the Community"}</Heading>
+
+              <Flex
+                alignItems="center"
+                color={colors.gray[600]}
+                _hover={{
+                  color: colors.gray[300],
+                }}
+                cursor="pointer"
+                onClick={() =>
+                  jumpToLink(
+                    "https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg"
+                  )
+                }
+              >
+                <Text size="sm">Slack #Umami</Text>
+                <Icon as={FiExternalLink} ml={2} />
+              </Flex>
+            </Flex>
           </Box>
         </HelpCard>
 
