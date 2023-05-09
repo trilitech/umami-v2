@@ -29,7 +29,7 @@ Run the tests including Tezos integration tests.
 The Tezos integration tests use real accounts on Ghotnet and Mainnet.
 Therefore these may fail if an account has insufficient balances, a node is down, etc...
 
-### `yarn run build`
+### `yarn build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -39,7 +39,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn run eject`
+### `yarn eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -49,15 +49,15 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-### `yarn run electron start`
+### `yarn electron start`
 
 Runs the electron app in the development mode.
 
-### `yarn run electron:package:(mac|win|linux)`
+### `yarn electron:package:(mac|win|linux)`
 
 Build electron app for desired platform (don't forget to run `yarn build` before running this one)
 
-### `yarn run storybook`
+### `yarn storybook`
 
 Start storybook (duh).
 

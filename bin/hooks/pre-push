@@ -2,6 +2,6 @@
 set -ex
 
 yarn format:ci
-yarn lint
+yarn lint:ci
 yarn typecheck
 CI=true yarn test
