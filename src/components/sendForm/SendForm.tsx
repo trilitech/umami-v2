@@ -2,6 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
+import { getRealAmount } from "../../types/Asset";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
@@ -35,7 +36,7 @@ const makeSimulation = (
       if (operation.data.type === "fa1.2") {
         return estimateFA12transfer(
           {
-            amount: operation.value.amount,
+            amount: getRealAmount(operation.value.amount, operation.data),
             sender: operation.value.sender,
             recipient: operation.value.recipient,
             contract: operation.data.contract,
@@ -48,7 +49,7 @@ const makeSimulation = (
 
       return estimateFA2transfer(
         {
-          amount: operation.value.amount,
+          amount: getRealAmount(operation.value.amount, operation.data),
           sender: operation.value.sender,
           recipient: operation.value.recipient,
           contract: fat2Token.contract,

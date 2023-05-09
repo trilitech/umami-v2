@@ -325,6 +325,18 @@ describe("<SendForm />", () => {
         const fee = screen.getByLabelText(/^fee$/i);
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
+      expect(estimateFA2transferMock).toHaveBeenCalledWith(
+        {
+          amount: 1000000,
+          contract: mockFA2.contract,
+          recipient: mockAccount(7).pkh,
+          sender: mockAccount(2).pkh,
+          tokenId: "7",
+        },
+
+        mockAccount(2).pk,
+        "mainnet"
+      );
 
       fillPassword("mockPass");
       transferFA2TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
@@ -413,6 +425,18 @@ describe("<SendForm />", () => {
         const fee = screen.getByLabelText(/^fee$/i);
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
+
+      expect(estimateFA12transferMock).toHaveBeenCalledWith(
+        {
+          amount: 1000000000,
+          contract: mockFa1.contract,
+          recipient: mockAccount(7).pkh,
+          sender: mockAccount(2).pkh,
+        },
+
+        mockAccount(2).pk,
+        "mainnet"
+      );
 
       fillPassword("mockPass");
       transferFA12TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
