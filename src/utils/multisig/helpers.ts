@@ -1,10 +1,5 @@
 import { tzktGetSameMultisigsResponseType } from "../tzkt/types";
-import { AccountToMultisigs, MultisigToSigners, WalletUserPkh } from "./types";
-
-type MultisigLookups = {
-  multiSigToSigners: MultisigToSigners;
-  accountToMultisigs: AccountToMultisigs;
-};
+import { MultisigLookups, WalletUserPkh } from "./types";
 
 export const makeMultisigLookups = (
   accountPkhs: Set<WalletUserPkh>,

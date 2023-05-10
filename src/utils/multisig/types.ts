@@ -8,3 +8,8 @@ export type AccountToMultisigs = Record<WalletUserPkh, MultisigAddress[]>;
 // Mapping from a multisig address to its signers.
 // The multisig should have at least one of the accounts as the signer.
 export type MultisigToSigners = Record<MultisigAddress, WalletUserPkh[]>;
+
+export type MultisigLookups = {
+  accountToMultisigs: AccountToMultisigs;
+  multiSigToSigners: MultisigToSigners;
+};
