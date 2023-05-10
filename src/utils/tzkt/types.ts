@@ -8,3 +8,11 @@ export type tzktGetAddressResponseType = {
     | "smart_rollup"
     | "empty";
 };
+
+export type tzktGetSameMultisigsResponseType = {
+  balance: number;
+  address: string;
+  storage: {
+    signers: string[];
+  };
+}[];

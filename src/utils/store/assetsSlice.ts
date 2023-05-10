@@ -213,4 +213,6 @@ const assetsSlice = createSlice({
   },
 });
 
+export const assetsActions = assetsSlice.actions;
+
 export default assetsSlice;
