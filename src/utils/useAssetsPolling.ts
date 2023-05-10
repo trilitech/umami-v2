@@ -4,7 +4,10 @@ import { useQuery } from "react-query";
 import { filterNulls } from "./helpers";
 import { useAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
-import assetsSlice, {
+import { getAllMultiSigContracts } from "./multisig/fetch";
+import { makeMultisigLookups } from "./multisig/helpers";
+import {
+  assetsActions,
   DelegationPayload,
   TezBalancePayload,
   TezTransfersPayload,
@@ -12,6 +15,7 @@ import assetsSlice, {
   TokenTransfersPayload,
 } from "./store/assetsSlice";
 import { useAppDispatch } from "./store/hooks";
+import { multisigActions } from "./store/multisigsSlice";
 import {
   getBalance,
   getLastDelegation,
@@ -61,8 +65,6 @@ const getDelegationsPayload = async (
   const delegation = await getLastDelegation(pkh, network);
   return delegation && { pkh, delegation };
 };
-
-const assetsActions = assetsSlice.actions;
 
 const REFRESH_RATE = 10000;
 const BLOCK_TIME = 15000; // Block time is
@@ -140,6 +142,7 @@ export const useAssetsPolling = () => {
       const rate = await getTezosPriceInUSD();
       dispatch(assetsActions.updateConversionRate({ rate }));
     },
+
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
   });
 
@@ -148,7 +151,19 @@ export const useAssetsPolling = () => {
       const number = await getLatestBlockLevel(network);
       dispatch(assetsActions.updateBlockLevel(number));
     },
+
     refetchInterval: BLOCK_TIME,
+  });
+
+  const multisigsQuery = useQuery("multisigs", {
+    queryFn: async () => {
+      const multisigs = await getAllMultiSigContracts(network);
+      dispatch(
+        multisigActions.set(makeMultisigLookups(new Set(pkhs), multisigs))
+      );
+    },
+
+    refetchInterval: REFRESH_RATE,
   });
 
   const tezQueryRef = useRef(tezQuery);
@@ -158,6 +173,7 @@ export const useAssetsPolling = () => {
   const conversionrateQueryRef = useRef(conversionrateQuery);
   const delegationsQueryRef = useRef(delegationsQuery);
   const blockNumberQueryRef = useRef(blockNumberQuery);
+  const multisigsQueryRef = useRef(multisigsQuery);
 
   // Refetch when network changes
   useEffect(() => {
@@ -168,5 +184,6 @@ export const useAssetsPolling = () => {
     conversionrateQueryRef.current.refetch();
     delegationsQueryRef.current.refetch();
     blockNumberQueryRef.current.refetch();
+    multisigsQueryRef.current.refetch();
   }, [network]);
 };
