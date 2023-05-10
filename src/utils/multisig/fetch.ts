@@ -4,12 +4,14 @@ import { tzktUrls } from "../tezos/consts";
 import { tzktGetSameMultisigsResponseType } from "../tzkt/types";
 import { multisigAddress } from "./consts";
 
+const MULTISIG_FETCH_LIMIT = 10000;
+
 export const getAllMultiSigContracts = async (
   network: TezosNetwork
 ): Promise<tzktGetSameMultisigsResponseType> => {
   try {
     const contractAddress = multisigAddress[network];
-    const url = `${tzktUrls[network]}/v1/contracts/${contractAddress}/same?includeStorage=true&limit=1000`;
+    const url = `${tzktUrls[network]}/v1/contracts/${contractAddress}/same?includeStorage=true&limit=${MULTISIG_FETCH_LIMIT}`;
     const { data } = await axios.get<tzktGetSameMultisigsResponseType>(url);
 
     return data.map(({ address, balance, storage: { signers } }) => ({

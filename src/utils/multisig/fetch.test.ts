@@ -17,7 +17,7 @@ describe("multisi fetch", () => {
     expect(mockedAxios.get).toBeCalledWith(
       `${tzktUrls[TezosNetwork.GHOSTNET]}/v1/contracts/${
         multisigAddress[TezosNetwork.GHOSTNET]
-      }/same?includeStorage=true&limit=1000`
+      }/same?includeStorage=true&limit=10000`
     );
     expect(result).toEqual([
       {

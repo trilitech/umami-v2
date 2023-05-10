@@ -12,8 +12,6 @@ export const makeMultisigLookups = (
         storage: { signers },
       } = cur;
 
-      const { multiSigToSigners, accountToMultisigs } = acc;
-
       const intersection = signers.filter((s) => accountPkhs.has(s));
 
       // Ignore multisigs the user aaccounts are not the signer of
@@ -22,14 +20,15 @@ export const makeMultisigLookups = (
       }
 
       intersection.forEach((pkh) => {
-        const existing = accountToMultisigs[pkh] ?? [];
-        accountToMultisigs[pkh] = [...existing, multisigAddress];
+        if (!(pkh in acc.accountToMultisigs)) {
+          acc.accountToMultisigs[pkh] = [];
+        }
+        acc.accountToMultisigs[pkh].push(multisigAddress);
       });
 
-      return {
-        multiSigToSigners: { ...multiSigToSigners, [multisigAddress]: signers },
-        accountToMultisigs,
-      };
+      acc.multiSigToSigners[multisigAddress] = signers;
+
+      return acc;
     },
     {
       multiSigToSigners: {},
