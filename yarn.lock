@@ -7374,10 +7374,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.0.10 || ^16.0.0, @types/node@npm:^14.14.20 || ^16.0.0, @types/node@npm:^16.11.26, @types/node@npm:^16.18.14":
+"@types/node@npm:^14.0.10 || ^16.0.0, @types/node@npm:^14.14.20 || ^16.0.0, @types/node@npm:^16.18.14":
   version: 16.18.25
   resolution: "@types/node@npm:16.18.25"
   checksum: 181760ad6b54fcc498dfeb249e98bbf0be51d7c35e92e760e1a82004fa42b86e8c33a8f8dd7743b5ef872bda0753d9e6a5b8e3f0aed63e9eb79b4e65760c1fbe
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.11.26":
+  version: 16.18.31
+  resolution: "@types/node@npm:16.18.31"
+  checksum: 1e0bbbdcfdb80ebb9c5544a58b9692964dca08175a9d2f787a1ed8c75c253d106d56cf7d94c5ba0b44e1627000d093d599f995aeb657f5edbf577e66565b017a
   languageName: node
   linkType: hard
 
@@ -12240,15 +12247,15 @@ __metadata:
   linkType: hard
 
 "electron@npm:^23.2.0":
-  version: 23.3.0
-  resolution: "electron@npm:23.3.0"
+  version: 23.3.2
+  resolution: "electron@npm:23.3.2"
   dependencies:
     "@electron/get": ^2.0.0
     "@types/node": ^16.11.26
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: 3d2959d736f3d448f768d12d5d225b9569837695aa07706a6d5b8d6705f5fabaa643ed4b3319a35cec00234bdf7a15a86cabbe04439baff8c9ad7b9e2425c45d
+  checksum: faa21d0d151dcb33360ef1475fb94f65544d4cbdc8f5a53db2ba0d5919de1300a06feeffaa297caa738ef9a6bcb8181a6978972a2748a4bdd425b49c87c432f5
   languageName: node
   linkType: hard
 

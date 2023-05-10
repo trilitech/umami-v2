@@ -1,24 +1,30 @@
 name: Build packages
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - enable-snapcraft-publishing
 
 jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        # os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         include:
-          - os: windows-latest
-            electron_cmd: win
-            package_glob: dist/*.exe
+          # - os: windows-latest
+          #   electron_cmd: win
+          #   package_glob: dist/*.exe
           - os: ubuntu-latest
             electron_cmd: linux
-            package_glob: dist/*.AppImage
-          - os: macos-latest
-            electron_cmd: mac
-            package_glob: dist/*.dmg
+            # TODO: define all packages
+            package_glob: |
+              dist/*.deb
+              dist/*.snap
+              dist/*.rpm
+          # - os: macos-latest
+          #   electron_cmd: mac
+          #   package_glob: dist/*.dmg
     runs-on: ${{ matrix.os }}
     env:
       NODE_OPTIONS: "--max_old_space_size=4096"
@@ -51,12 +57,13 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Deploy Github Pages
-        if: matrix.os == 'ubuntu-latest'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+      # TODO: uncomment
+      # - name: Deploy Github Pages
+      #   if: matrix.os == 'ubuntu-latest'
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./build
 
       - name: Package the electron app MacOS
         if: matrix.os == 'macos-latest'
@@ -71,7 +78,11 @@ jobs:
 
       - name: Package the electron app Linux
         if: matrix.os == 'ubuntu-latest'
-        run: yarn electron:package:linux
+        env:
+          SNAPCRAFT_BUILD_ENVIRONMENT: host
+        run: |
+          sudo snap install snapcraft --classic
+          yarn electron:package:linux
 
       - name: Package the electron app Windows
         if: matrix.os == 'windows-latest'
