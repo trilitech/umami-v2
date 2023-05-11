@@ -40,6 +40,7 @@ export default function SettingsView() {
       <GridItem area={"main"}>
         <Button onClick={reset}>{"Erase secrets"}</Button>
         <GeneralSection />
+        <BackupSection />
       </GridItem>
     </Grid>
   );
@@ -77,6 +78,58 @@ const GeneralSection = () => {
       <BeaconPeers />
       <ErrorLogsDrawerCard />
     </SectionContainer>
+  );
+};
+
+const BackupSection = () => {
+  return (
+    <SectionContainer title="Backup">
+      <CardWithDivier
+        upperChild={
+          <Flex alignItems="center">
+            <Flex justifyContent="space-between" alignItems="center" w="100%">
+              <Heading size="sm">Auto Backup</Heading>
+              <Switch marginX={3} />
+            </Flex>
+          </Flex>
+        }
+        lowerChild={
+          <>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Flex alignItems="center">
+                <Heading size="sm">Backup Location</Heading>
+              </Flex>
+              <IconAndTextBtn
+                label="Browse Folder"
+                icon={BsFolder2Open}
+                iconHeight={4}
+                iconWidth={4}
+              />
+            </Flex>
+            <Box mt={3}>
+              <Input placeholder="Select the location or enter path" />
+            </Box>
+          </>
+        }
+      />
+    </SectionContainer>
+  );
+};
+
+const CardWithDivier: React.FC<{
+  upperChild: React.ReactNode;
+  lowerChild: React.ReactNode;
+}> = ({ upperChild, lowerChild }) => {
+  return (
+    <ClickableCard>
+      {upperChild}
+
+      <Box marginY={4}>
+        <Divider orientation="horizontal" size="lg" />
+      </Box>
+
+      {lowerChild}
+    </ClickableCard>
   );
 };
 
