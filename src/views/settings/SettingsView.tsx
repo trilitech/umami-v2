@@ -10,7 +10,10 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { addPeer } from "../../utils/beacon/beacon";
-import ClickableCard, { SettingsCard } from "../../components/ClickableCard";
+import ClickableCard, {
+  SettingsCard,
+  SettingsCardWithDrawerIcon,
+} from "../../components/ClickableCard";
 import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
 import { useReset } from "../../utils/hooks/accountHooks";
@@ -42,6 +45,7 @@ export default function SettingsView() {
         <GeneralSection />
         <AppUpdatesSection />
         <BackupSection />
+        <AdvancedSection />
       </GridItem>
     </Grid>
   );
@@ -62,6 +66,7 @@ const GeneralSection = () => {
           <NetworkSelector />
         </Box>
       </SettingsCard>
+      <ErrorLogsDrawerCard />
 
       <SettingsCard left="Paste Beacon Pairing Code">
         <Box>
@@ -77,7 +82,6 @@ const GeneralSection = () => {
         </Box>
       </SettingsCard>
       <BeaconPeers />
-      <ErrorLogsDrawerCard />
     </SectionContainer>
   );
 };
@@ -130,7 +134,7 @@ const BackupSection = () => {
         lowerChild={
           <>
             <Flex justifyContent="space-between" alignItems="center">
-              <Flex alignItems="center">
+              <Flex alignItems="center" p={1}>
                 <Heading size="sm">Backup Location</Heading>
               </Flex>
               <IconAndTextBtn
@@ -146,6 +150,35 @@ const BackupSection = () => {
           </>
         }
       />
+    </SectionContainer>
+  );
+};
+
+const AdvancedSection = () => {
+  return (
+    <SectionContainer title="Advanced Settings">
+      <ClickableCard>
+        <Box>
+          <Flex
+            mb={3}
+            justifyContent="space-between"
+            alignItems="center"
+            w="100%"
+            p={1}
+          >
+            <Heading size="sm">Number of Confirmation Block</Heading>
+          </Flex>
+          <Flex alignItems="center" w="100%">
+            <Input mr={3} />
+            <Button>Save</Button>
+          </Flex>
+        </Box>
+      </ClickableCard>
+
+      <SettingsCardWithDrawerIcon left="dApps" onClick={() => {}} />
+      <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
+      <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={() => {}} />
+      <SettingsCardWithDrawerIcon left="Change Password" onClick={() => {}} />
     </SectionContainer>
   );
 };
@@ -175,7 +208,9 @@ const SectionContainer: React.FC<{
     <Box marginY={2}>
       <Flex>
         <Box w="550px">
-          <Heading size="lg">{title}</Heading>
+          <Heading size="lg" marginY={3}>
+            {title}
+          </Heading>
           {children}
         </Box>
       </Flex>

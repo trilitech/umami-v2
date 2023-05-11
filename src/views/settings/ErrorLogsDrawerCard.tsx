@@ -10,10 +10,10 @@ import {
   useDisclosure,
   Text,
 } from "@chakra-ui/react";
-import { AiOutlineExclamationCircle, AiOutlineRight } from "react-icons/ai";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import { MdCopyAll } from "react-icons/md";
-import { SettingsCard } from "../../components/ClickableCard";
+import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { mockErrorLogs } from "../../mocks/errorLogs";
 import colors from "../../style/colors";
@@ -28,16 +28,7 @@ const ErrorLogsDrawerCard = () => {
   };
 
   return (
-    <SettingsCard left="ErrorLogs" onClick={onOpen}>
-      <Icon
-        as={AiOutlineRight}
-        color={colors.gray[600]}
-        _hover={{
-          color: colors.gray[300],
-        }}
-        onClick={onOpen}
-      />
-
+    <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen}>
       <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
         <DrawerOverlay />
         <DrawerContent bg="umami.gray.900">
@@ -51,7 +42,7 @@ const ErrorLogsDrawerCard = () => {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </SettingsCard>
+    </SettingsCardWithDrawerIcon>
   );
 };
 
