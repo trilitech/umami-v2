@@ -40,6 +40,7 @@ export default function SettingsView() {
       <GridItem area={"main"}>
         <Button onClick={reset}>{"Erase secrets"}</Button>
         <GeneralSection />
+        <AppUpdatesSection />
         <BackupSection />
       </GridItem>
     </Grid>
@@ -77,6 +78,39 @@ const GeneralSection = () => {
       </SettingsCard>
       <BeaconPeers />
       <ErrorLogsDrawerCard />
+    </SectionContainer>
+  );
+};
+
+const AppUpdatesSection = () => {
+  return (
+    <SectionContainer title="App Updates">
+      <CardWithDivier
+        upperChild={
+          <Flex alignItems="center" h="100%">
+            <Flex justifyContent="space-between" alignItems="center" w="100%">
+              <Heading size="sm">Auto Update</Heading>
+              <Switch marginX={3} />
+            </Flex>
+          </Flex>
+        }
+        lowerChild={
+          <Flex alignItems="center" h="100%">
+            <Flex justifyContent="space-between" alignItems="center" w="100%">
+              <Flex alignItems="center">
+                <Heading size="sm">Version</Heading>
+                <Text>: v0.8.7</Text>
+              </Flex>
+              <IconAndTextBtn
+                label="Check for updates"
+                icon={TfiReload}
+                iconHeight={4}
+                iconWidth={4}
+              />
+            </Flex>
+          </Flex>
+        }
+      />
     </SectionContainer>
   );
 };
