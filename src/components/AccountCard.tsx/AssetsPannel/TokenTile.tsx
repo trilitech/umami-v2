@@ -3,13 +3,13 @@ import { MdGeneratingTokens } from "react-icons/md";
 import {
   FA12Token,
   FA2Token,
-  getTokenName,
+  getAssetName,
   getTokenPrettyAmmount,
   getTokenSymbol,
 } from "../../../types/Asset";
 
 const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
-  const name = getTokenName(token);
+  const name = getAssetName(token);
   const symbol = getTokenSymbol(token);
   const prettyAmount = getTokenPrettyAmmount(token, { showSymbol: false });
   return (
