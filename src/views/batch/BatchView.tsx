@@ -16,6 +16,7 @@ import { TfiNewWindow } from "react-icons/tfi";
 import CSVFileUploader from "../../components/CSVFileUploader";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
+import colors from "../../style/colors";
 import { useGetAccount } from "../../utils/hooks/accountHooks";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
@@ -29,7 +30,21 @@ export const FilterController: React.FC<{ batchPending: number }> = (props) => {
         {props.batchPending} Pending
       </Heading>
       <CSVFileUploader />
-      <IconAndTextBtn ml={4} icon={TfiNewWindow} label="See file specs" />
+      <IconAndTextBtn
+        ml={4}
+        icon={TfiNewWindow}
+        label="See file specs"
+        color={colors.gray[600]}
+        _hover={{
+          color: colors.gray[300],
+        }}
+        onClick={() => {
+          window.open(
+            "https://github.com/trilitech/umami-v2/blob/main/doc/Batch-File-Format-Specifications.md",
+            "_blank"
+          );
+        }}
+      />
     </Flex>
   );
 };

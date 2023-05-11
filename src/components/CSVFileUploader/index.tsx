@@ -1,4 +1,5 @@
 import { HiOutlineDocumentDownload } from "react-icons/hi";
+import colors from "../../style/colors";
 import { IconAndTextBtn } from "../IconAndTextBtn";
 import useFileUploadModal from "./useCSVFileUploadModal";
 
@@ -10,6 +11,10 @@ const CSVFileUploader = () => {
       <IconAndTextBtn
         icon={HiOutlineDocumentDownload}
         label="Load CSV file"
+        color={colors.gray[600]}
+        _hover={{
+          color: colors.gray[300],
+        }}
         onClick={onOpen}
       />
       {modalElement}
