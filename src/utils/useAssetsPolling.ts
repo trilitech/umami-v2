@@ -93,7 +93,6 @@ export const useAssetsPolling = () => {
       const tokens = await Promise.all(
         pkhs.map((pkh) => getTokensPayload(pkh, network))
       );
-
       dispatch(assetsActions.updateAssets(tokens));
     },
 

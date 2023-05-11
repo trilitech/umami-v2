@@ -31,7 +31,7 @@ import {
   mutezToTezNumber,
   prettyTezAmount,
 } from "../../utils/store/impureFormat";
-import { getBatchSubtotal, getTotalFee } from "./batchUtils";
+import { getBatchSubtotal, getTotalFee, getType } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
@@ -144,7 +144,7 @@ export const BatchDisplay: React.FC<{
                     // TODO add getKey method
                     key={b.operation.value.sender + b.operation.type + i}
                   >
-                    <Td>{b.operation.type}</Td>
+                    <Td>{getType(b.operation)}</Td>
                     <Td>{renderAmount(b.operation)}</Td>
                     <Td>
                       {b.operation.value.recipient &&

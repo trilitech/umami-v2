@@ -1,4 +1,6 @@
 import { OperationValue } from "../../components/sendForm/types";
+import { getAssetName } from "../../types/Asset";
+import { formatPkh } from "../../utils/format";
 import { BatchItem } from "../../utils/store/assetsSlice";
 
 export const getTotalFee = (items: BatchItem[]) => {
@@ -19,4 +21,16 @@ export const getBatchSubtotal = (ops: OperationValue[]) => {
     }
   }, 0);
   return subTotal;
+};
+
+export const getType = (operation: OperationValue) => {
+  switch (operation.type) {
+    case "token": {
+      return `${getAssetName(operation.data)} (${formatPkh(
+        operation.data.contract
+      )})`;
+    }
+    default:
+      return operation.type;
+  }
 };
