@@ -118,15 +118,15 @@ export const DelegateForm = ({
   );
 };
 
-const getAmountSymbol = (t?: Asset) => {
-  if (!t) {
+const getAmountSymbol = (asset?: Asset) => {
+  if (!asset) {
     return "tez";
   }
-  if (t.type === "nft") {
+  if (asset.type === "nft") {
     return "editions";
   }
 
-  return getTokenSymbol(t);
+  return getTokenSymbol(asset);
 };
 
 export const SendTezOrNFTForm = ({
@@ -253,7 +253,6 @@ export const SendTezOrNFTForm = ({
                 children={getAmountSymbol(token)}
               />
             </InputGroup>
-            {/* <InputRightElement children={<CheckIcon color="green.500" />} /> */}
           </FormControl>
 
           {parameter && (
@@ -407,11 +406,6 @@ export const FillStep: React.FC<{
 
     case "batch": {
       throw new Error("Batches are not editable");
-    }
-
-    default: {
-      const error: never = mode;
-      throw error;
     }
   }
 };

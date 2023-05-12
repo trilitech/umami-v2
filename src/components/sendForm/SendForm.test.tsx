@@ -15,9 +15,6 @@ import {
   fillPassword,
   resetAccounts,
 } from "../../mocks/helpers";
-import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
-import { ReduxStore } from "../../providers/ReduxStore";
-import { UmamiTheme } from "../../providers/UmamiTheme";
 import { AccountType } from "../../types/Account";
 import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
