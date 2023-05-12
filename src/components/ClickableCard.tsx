@@ -1,5 +1,13 @@
-import { Card, CardBody, Flex, Heading, LayoutProps } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  Flex,
+  Heading,
+  Icon,
+  LayoutProps,
+} from "@chakra-ui/react";
 import { useState } from "react";
+import { AiOutlineRight } from "react-icons/ai";
 import colors from "../style/colors";
 
 const ClickableCard: React.FC<{
@@ -46,6 +54,25 @@ export const SettingsCard: React.FC<{
         </Flex>
       </Flex>
     </ClickableCard>
+  );
+};
+
+export const SettingsCardWithDrawerIcon: React.FC<{
+  left: string;
+  onClick?: () => void;
+  children?: React.ReactNode;
+}> = ({ left, onClick, children }) => {
+  return (
+    <SettingsCard left={left} onClick={onClick}>
+      <Icon
+        as={AiOutlineRight}
+        color={colors.gray[600]}
+        _hover={{
+          color: colors.gray[300],
+        }}
+      />
+      {children}
+    </SettingsCard>
   );
 };
 

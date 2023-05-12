@@ -7,8 +7,17 @@ export const IconAndTextBtn: React.FC<
     icon: IconType;
     onClick?: () => void;
     label: string;
+    iconWidth?: number;
+    iconHeight?: number;
   } & FlexProps
-> = ({ icon, onClick = () => {}, label, ...rest }) => {
+> = ({
+  icon,
+  onClick = () => {},
+  label,
+  iconWidth = 6,
+  iconHeight = 6,
+  ...rest
+}) => {
   return (
     <Flex
       color="text.dark"
@@ -17,7 +26,7 @@ export const IconAndTextBtn: React.FC<
       cursor="pointer"
       {...rest}
     >
-      <Icon w={6} h={6} as={icon} />
+      <Icon w={iconWidth} h={iconHeight} as={icon} />
       <Text ml={2} fontSize={"sm"}>
         {label}
       </Text>
