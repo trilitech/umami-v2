@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { AccountType } from "../../../types/Account";
+import { getRealAmount } from "../../../types/Asset";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
@@ -21,6 +22,7 @@ import { mutezToTezNumber } from "../../../utils/store/impureFormat";
 import {
   delegate,
   submitBatch,
+  transferFA12Token,
   transferFA2Token,
   transferTez,
 } from "../../../utils/tezos";
@@ -65,19 +67,31 @@ const makeTransfer = (
       );
     case "token": {
       const token = operation.data;
-      if (token.type !== "nft") {
-        throw new Error("Should be nft");
+      if (token.type === "fa1.2") {
+        return transferFA12Token(
+          {
+            amount: getRealAmount(operation.value.amount, token),
+            contract: token.contract,
+            recipient: operation.value.recipient,
+            sender: operation.value.sender,
+          },
+          config
+        );
       }
       return transferFA2Token(
         {
-          amount: operation.value.amount,
+          amount: getRealAmount(operation.value.amount, token),
           contract: token.contract,
           recipient: operation.value.recipient,
-          sender: token.owner,
+          sender: operation.value.sender,
           tokenId: token.tokenId,
         },
         config
       );
+    }
+    default: {
+      const error: never = operation;
+      throw error;
     }
   }
 };

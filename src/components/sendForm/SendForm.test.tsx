@@ -1,29 +1,23 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import { Modal } from "@chakra-ui/react";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
 
 import { TezosNetwork } from "@airgap/tezos";
 import {
   mockAccount,
   mockBaker,
+  mockContract,
   mockNFT,
   mockPkh,
 } from "../../mocks/factories";
 import {
   dispatchMockAccounts,
+  fillAccountSelector,
   fillPassword,
   resetAccounts,
 } from "../../mocks/helpers";
-import { ReactQueryProvider } from "../../providers/ReactQueryProvider";
-import { ReduxStore } from "../../providers/ReduxStore";
-import { UmamiTheme } from "../../providers/UmamiTheme";
 import { AccountType } from "../../types/Account";
+import { FA12Token, FA2Token } from "../../types/Asset";
+import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { formatPkh } from "../../utils/format";
 import { useGetSk } from "../../utils/hooks/accountUtils";
 import accountsSlice from "../../utils/store/accountsSlice";
@@ -31,14 +25,22 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import {
   estimateBatch,
+  estimateFA12transfer,
   estimateFA2transfer,
   estimateTezTransfer,
+  transferFA12Token,
   transferFA2Token,
   transferTez,
 } from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
-import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from "../../mocks/testUtils";
 
 const { addSecret } = accountsSlice.actions;
 
@@ -47,26 +49,21 @@ jest.mock("../../GoogleAuth", () => ({
   GoogleAuth: require("../../mocks/GoogleAuthMock").GoogleAuthMock,
 }));
 jest.mock("../../utils/tezos");
-jest.mock("react-router-dom");
 jest.mock("../../utils/hooks/accountUtils");
 
 const estimateTezTransferMock = estimateTezTransfer as jest.Mock;
 const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
+const estimateFA12transferMock = estimateFA12transfer as jest.Mock;
 const transferTezMock = transferTez as jest.Mock;
 const transferFA2TokenMock = transferFA2Token as jest.Mock;
+const transferFA12TokenMock = transferFA12Token as jest.Mock;
 const estimateBatchMock = estimateBatch as jest.Mock;
 const useGetSkMock = useGetSk as jest.Mock;
 
 const fixture = (sender?: string, assetType?: SendFormMode) => (
-  <ReactQueryProvider>
-    <UmamiTheme>
-      <ReduxStore>
-        <Modal isOpen={true} onClose={() => {}}>
-          <SendForm sender={sender} mode={assetType} />
-        </Modal>
-      </ReduxStore>
-    </UmamiTheme>
-  </ReactQueryProvider>
+  <Modal isOpen={true} onClose={() => {}}>
+    <SendForm sender={sender} mode={assetType} />
+  </Modal>
 );
 
 const MOCK_SK = "mockSk";
@@ -96,6 +93,10 @@ describe("<SendForm />", () => {
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
         /select an account/i
       );
+    });
+    test("should display tez currency name", () => {
+      render(fixture());
+      expect(screen.getByTestId(/currency/)).toHaveTextContent(/tez/i);
     });
 
     test("should render first step with sender prefiled if provided", () => {
@@ -267,6 +268,206 @@ describe("<SendForm />", () => {
     });
   });
 
+  describe("case send FA2 tokens", () => {
+    const MOCK_TOKEN_SYMBOL = "FOO";
+    const MOCK_TOKEN_ID = "7";
+    const MOCK_FEE = 3122;
+    const mockFA2: FA2Token = {
+      type: "fa2",
+      balance: "14760000",
+      contract: mockContract(2),
+      metadata: { symbol: MOCK_TOKEN_SYMBOL, decimals: "5" },
+      tokenId: MOCK_TOKEN_ID,
+    };
+    it("should display token name in amount input", () => {
+      render(
+        fixture(undefined, {
+          type: "token",
+          data: mockFA2,
+        })
+      );
+
+      expect(screen.getByTestId(/currency/)).toHaveTextContent(
+        MOCK_TOKEN_SYMBOL
+      );
+    });
+
+    test("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
+      render(
+        fixture(undefined, {
+          type: "token",
+          data: mockFA2,
+        })
+      );
+      fillAccountSelector(mockAccount(2).label || "");
+
+      const estimateButton = screen.getByText(/preview/i);
+      expect(estimateButton).toBeDisabled();
+      const recipientInput = screen.getByLabelText(/to/i);
+      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+
+      const amountInput = screen.getByLabelText(/amount/i);
+      fireEvent.change(amountInput, { target: { value: 10 } });
+      await waitFor(() => {
+        expect(estimateButton).toBeEnabled();
+      });
+
+      estimateFA2transferMock.mockResolvedValueOnce({
+        suggestedFeeMutez: MOCK_FEE,
+      });
+
+      fireEvent.click(estimateButton);
+
+      await waitFor(() => {
+        const fee = screen.getByLabelText(/^fee$/i);
+        expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
+      });
+      expect(estimateFA2transferMock).toHaveBeenCalledWith(
+        {
+          amount: 1000000,
+          contract: mockFA2.contract,
+          recipient: mockAccount(7).pkh,
+          sender: mockAccount(2).pkh,
+          tokenId: "7",
+        },
+
+        mockAccount(2).pk,
+        "mainnet"
+      );
+
+      fillPassword("mockPass");
+      transferFA2TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
+
+      const submit = screen.getByRole("button", {
+        name: /submit transaction/i,
+      });
+
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
+
+      submit.click();
+
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+          "href",
+          "https://mainnet.tzkt.io/mockHash"
+        );
+      });
+
+      expect(transferFA2TokenMock).toHaveBeenCalledWith(
+        {
+          amount: 1000000,
+          contract: mockFA2.contract,
+          recipient: mockPkh(7),
+          sender: mockPkh(2),
+          tokenId: mockFA2.tokenId,
+        },
+        { network: "mainnet", sk: "mockSk", type: "sk" }
+      );
+    });
+  });
+
+  describe("case send FA1 tokens", () => {
+    const MOCK_TOKEN_SYMBOL = "FA1FOO";
+    const MOCK_FEE = 4122;
+
+    const mockFa1: FA12Token = {
+      type: "fa1.2",
+      balance: "3",
+      contract: mockContract(2),
+      metadata: { symbol: MOCK_TOKEN_SYMBOL, decimals: "8" },
+    };
+    it("should display token name in amount input", () => {
+      render(
+        fixture(undefined, {
+          type: "token",
+          data: mockFa1,
+        })
+      );
+
+      expect(screen.getByTestId(/currency/)).toHaveTextContent(
+        MOCK_TOKEN_SYMBOL
+      );
+    });
+
+    test("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
+      render(
+        fixture(undefined, {
+          type: "token",
+          data: mockFa1,
+        })
+      );
+      fillAccountSelector(mockAccount(2).label || "");
+
+      const estimateButton = screen.getByText(/preview/i);
+      expect(estimateButton).toBeDisabled();
+      const recipientInput = screen.getByLabelText(/to/i);
+      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+
+      const amountInput = screen.getByLabelText(/amount/i);
+      fireEvent.change(amountInput, { target: { value: 10 } });
+      await waitFor(() => {
+        expect(estimateButton).toBeEnabled();
+      });
+
+      estimateFA12transferMock.mockResolvedValueOnce({
+        suggestedFeeMutez: MOCK_FEE,
+      });
+
+      fireEvent.click(estimateButton);
+
+      await waitFor(() => {
+        const fee = screen.getByLabelText(/^fee$/i);
+        expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
+      });
+
+      expect(estimateFA12transferMock).toHaveBeenCalledWith(
+        {
+          amount: 1000000000,
+          contract: mockFa1.contract,
+          recipient: mockAccount(7).pkh,
+          sender: mockAccount(2).pkh,
+        },
+
+        mockAccount(2).pk,
+        "mainnet"
+      );
+
+      fillPassword("mockPass");
+      transferFA12TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
+
+      const submit = screen.getByRole("button", {
+        name: /submit transaction/i,
+      });
+
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
+
+      submit.click();
+
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+          "href",
+          "https://mainnet.tzkt.io/mockHash"
+        );
+      });
+
+      expect(transferFA12TokenMock).toHaveBeenCalledWith(
+        {
+          amount: 1000000000,
+          contract: mockFa1.contract,
+          recipient: mockPkh(7),
+          sender: mockPkh(2),
+        },
+        { network: "mainnet", sk: "mockSk", type: "sk" }
+      );
+    });
+  });
+
   describe("case send NFT", () => {
     const fillFormAndSimulate = async () => {
       render(fixture(undefined, { type: "token", data: mockNFT(1) }));
@@ -303,6 +504,11 @@ describe("<SendForm />", () => {
         );
       });
     };
+    it("should display editions in amount input", () => {
+      render(fixture(undefined, { type: "token", data: mockNFT(1) }));
+
+      expect(screen.getByTestId(/currency/)).toHaveTextContent("editions");
+    });
 
     test("sender button is disabled and prefilled with NFT owner", () => {
       render(fixture(undefined, { type: "token", data: mockNFT(1) }));

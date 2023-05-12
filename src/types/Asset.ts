@@ -97,6 +97,20 @@ export const getTokenPrettyAmmount = (
 
   return `${result}${trailingSymbol}`;
 };
+
+export const getRealAmount = (prettyAmount: number, t: Asset) => {
+  if (t.type === "nft") {
+    return prettyAmount;
+  }
+
+  const decimals =
+    t.metadata?.decimals === undefined
+      ? DEFAULT_TOKEN_DECIMALS
+      : t.metadata.decimals;
+
+  return prettyAmount * Math.pow(10, Number(decimals));
+};
+
 export type Asset = FA12Token | FA2Token | NFT;
 
 // We use the defaults for FA1.2 tokens as in V1

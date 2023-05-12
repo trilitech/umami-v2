@@ -2,12 +2,14 @@ import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
+import { getRealAmount } from "../../types/Asset";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import {
   estimateDelegation,
+  estimateFA12transfer,
   estimateFA2transfer,
   estimateTezTransfer,
 } from "../../utils/tezos";
@@ -31,18 +33,27 @@ const makeSimulation = (
         network
       );
     case "token": {
-      if (operation.data.type !== "nft") {
-        throw new Error("Should be nft");
+      if (operation.data.type === "fa1.2") {
+        return estimateFA12transfer(
+          {
+            amount: getRealAmount(operation.value.amount, operation.data),
+            sender: operation.value.sender,
+            recipient: operation.value.recipient,
+            contract: operation.data.contract,
+          },
+          pk,
+          network
+        );
       }
-      const nft = operation.data;
+      const fat2Token = operation.data;
 
       return estimateFA2transfer(
         {
-          amount: operation.value.amount,
-          sender: nft.owner,
+          amount: getRealAmount(operation.value.amount, operation.data),
+          sender: operation.value.sender,
           recipient: operation.value.recipient,
-          contract: nft.contract,
-          tokenId: nft.tokenId,
+          contract: fat2Token.contract,
+          tokenId: fat2Token.tokenId,
         },
         pk,
         network
