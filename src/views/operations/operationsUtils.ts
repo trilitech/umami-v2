@@ -1,7 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { formatRelative } from "date-fns";
 import { z } from "zod";
-import { getTokenPrettyAmmount } from "../../types/Asset";
+import { getTokenPrettyBalance } from "../../types/Asset";
 import {
   OperationDisplay,
   TezTransfer,
@@ -136,7 +136,7 @@ export const getTokenOperationDisplay = (
   if (asset.type === "nft") {
     prettyAmount = asset.balance;
   } else {
-    prettyAmount = getTokenPrettyAmmount(asset, { showSymbol: true });
+    prettyAmount = getTokenPrettyBalance(asset, { showSymbol: true });
   }
 
   const result: OperationDisplay = {

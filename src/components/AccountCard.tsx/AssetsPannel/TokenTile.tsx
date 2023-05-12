@@ -4,14 +4,14 @@ import {
   FA12Token,
   FA2Token,
   getTokenName,
-  getTokenPrettyAmmount,
+  getTokenPrettyBalance,
   getTokenSymbol,
 } from "../../../types/Asset";
 
 const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
   const name = getTokenName(token);
   const symbol = getTokenSymbol(token);
-  const prettyAmount = getTokenPrettyAmmount(token, { showSymbol: false });
+  const prettyAmount = getTokenPrettyBalance(token, { showSymbol: false });
   return (
     <Flex justifyContent={"space-around"} mb={2} data-testid="token-tile">
       <Flex flex={1}>

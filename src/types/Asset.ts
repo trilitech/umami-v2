@@ -85,7 +85,7 @@ export const formatTokenAmount = (
   return Number(amountStr) / Math.pow(10, Number(decimals));
 };
 
-export const getTokenPrettyAmmount = (
+export const getTokenPrettyBalance = (
   t: FA2Token | FA12Token,
   options?: { showSymbol?: boolean }
 ) => {
