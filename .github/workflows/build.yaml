@@ -1,9 +1,8 @@
 name: Build packages
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -23,6 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       NODE_OPTIONS: "--max_old_space_size=4096"
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v3
 
@@ -58,10 +58,24 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
 
-      - name: Package the electron app
+      - name: Package the electron app MacOS
+        if: matrix.os == 'macos-latest'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: yarn electron:package:${{ matrix.electron_cmd }}
+          CSC_KEY_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          CSC_LINK: certificate.p12
+          APPLEID: ${{ secrets.APPLE_NOTARIZE_APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLE_NOTARIZE_PASSWORD }}
+        run: |
+          echo "${{ secrets.APPLE_CERTIFICATE_P12 }}" | base64 -d -o certificate.p12
+          yarn electron:package:mac
+
+      - name: Package the electron app Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: yarn electron:package:linux
+
+      - name: Package the electron app Windows
+        if: matrix.os == 'windows-latest'
+        run: yarn electron:package:win
 
       - name: Upload
         uses: actions/upload-artifact@v3

@@ -75,7 +75,7 @@
     "storybook": "start-storybook -p 6006 -s public",
     "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
     "build-storybook": "build-storybook -s public",
-    "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js -c.mac.identity=null",
+    "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "electron-builder -w -c.extraMetadata.main=build/electron.js",
     "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
@@ -110,6 +110,7 @@
     "cross-env": "^7.0.3",
     "electron": "^23.2.0",
     "electron-builder": "^23.6.0",
+    "electron-notarize": "^1.2.2",
     "electronmon": "^2.0.2",
     "eslint": "^8.38.0",
     "https-browserify": "^1.0.0",
@@ -142,7 +143,7 @@
     ]
   },
   "build": {
-    "appId": "com.electron.myapp",
+    "appId": "com.trilitech.umami",
     "productName": "Umami",
     "files": [
       "build/**/*",
@@ -187,7 +188,8 @@
       "schemes": [
         "umami"
       ]
-    }
+    },
+    "afterSign": "scripts/notarize.js"
   },
   "packageManager": "yarn@3.5.0",
   "resolutions": {
