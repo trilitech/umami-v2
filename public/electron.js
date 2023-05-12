@@ -35,6 +35,13 @@ function createWindow() {
       // Set the path of an additional "preload" script that can be used to
       // communicate between node-land and browser-land.
       preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false,
+      nodeIntegrationInWorker: false,
+      sandbox: true,
+      webSecurity: true,
+      experimentalFeatures: false,
+      devTools: process.env.ENABLE_DEV_TOOLS === "true",
     },
   });
 

@@ -52,6 +52,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ### `yarn electron start`
 
 Runs the electron app in the development mode.
+In order to get the dev tools work please make sure to set the `ENABLE_DEV_TOOLS` env variable to `true`
 
 ### `yarn electron:package:(mac|win|linux)`
 
