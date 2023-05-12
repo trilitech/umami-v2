@@ -25,6 +25,7 @@ import {
 } from "../../components/sendForm/components/TezAmountRecaps";
 import { OperationValue } from "../../components/sendForm/types";
 import { Account } from "../../types/Account";
+import { formatTokenAmount } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
 import { Batch } from "../../utils/store/assetsSlice";
 import {
@@ -36,9 +37,16 @@ import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
     case "token": {
+      const amount =
+        operation.data.type === "nft"
+          ? operation.data.balance
+          : formatTokenAmount(
+              `${operation.value.amount}`,
+              operation.data.metadata?.decimals
+            );
       return (
         <Flex>
-          <Text>{operation.value.amount}</Text>
+          <Text>{amount}</Text>
           {operation.data.type === "nft" && (
             <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
               <Image src={operation.data.metadata.displayUri} />

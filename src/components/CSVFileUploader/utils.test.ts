@@ -87,7 +87,7 @@ describe("csv utils", () => {
     const mockCSVFA12TransferRow = {
       type: "fa1.2",
       recipient: mockPkh(1),
-      amount: 1,
+      amount: 10000,
       contract: ghostFA12.contract,
     } as CSVRow;
     const res = csvRowToOperationValue(mockPkh(0), mockCSVFA12TransferRow, {
@@ -101,7 +101,7 @@ describe("csv utils", () => {
         type: "fa1.2",
       },
       value: {
-        amount: 1,
+        amount: 100000000,
         recipient: mockPkh(1),
         sender: mockPkh(0),
       },
@@ -129,7 +129,7 @@ describe("csv utils", () => {
         type: "fa2",
       },
       value: {
-        amount: 1,
+        amount: 100000,
         recipient: mockPkh(1),
         sender: mockPkh(0),
       },
@@ -169,7 +169,7 @@ describe("csv utils", () => {
     const mockCSVFA2TransferRow = {
       type: "fa2",
       recipient: mockPkh(1),
-      amount: 1,
+      amount: 100,
       contract: ghostTezzard.contract,
       tokenId: parseInt(ghostTezzard.tokenId),
     } as CSVRow;
