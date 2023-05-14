@@ -6,8 +6,8 @@ import { Account, AccountType } from "../../types/Account";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import AccountDisplayDrawer from "./AccountDisplayDrawer";
-import { useCreateOrImportSecretModal } from "../../components/CreateOrImportSecret/useCreateOrImportSecretModal";
 import BigNumber from "bignumber.js";
+import { useCreateOrImportSecretModal } from "../../components/Onboarding/useOnboardingModal";
 
 const { setSelected } = accountsSlice.actions;
 

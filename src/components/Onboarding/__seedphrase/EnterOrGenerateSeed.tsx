@@ -8,6 +8,8 @@ import { EnterAndComfirmPassword } from "./password/EnterAndConfirmPassword";
 import EnterPassword from "./password/EnterPassword";
 import { EnterSeed } from "./EnterSeed";
 import { GenerateSeedAndNameAccount } from "./GenerateSeed";
+import ModalContentWrapper from "../ModalContentWrapper";
+import { SupportedIcons } from "../../CircleIcon";
 
 const EnterSeedAndSave = ({
   onClose,
@@ -67,17 +69,18 @@ const EnterSeedAndSave = ({
 
   if (generateSeed) {
     return (
-      <div>
-        <ModalHeader textAlign={"center"}>New seedphrase</ModalHeader>
-        <ModalBody>
-          <GenerateSeedAndNameAccount
-            onClickNext={(s, label) => {
-              labelRef.current = label;
-              setSeedPhrase(s);
-            }}
-          />
-        </ModalBody>
-      </div>
+      <ModalContentWrapper
+        icon={SupportedIcons.diamont}
+        title="Record Seed Phrase"
+        subtitle="Please record the following 24 words in sequence in order to restore it in the future."
+      >
+        <GenerateSeedAndNameAccount
+          onClickNext={(s, label) => {
+            labelRef.current = label;
+            setSeedPhrase(s);
+          }}
+        />
+      </ModalContentWrapper>
     );
   }
 
