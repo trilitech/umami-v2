@@ -1,4 +1,4 @@
-import { Button, Text, VStack } from "@chakra-ui/react";
+import { Button, Grid, GridItem, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import AccountNameForm from "../accountName/AccountNameForm";
@@ -10,11 +10,28 @@ const GenerateSeed = ({
 }) => {
   // seedPhrase value will be stable across rerenders
   const [seedPhrase] = useState(generate24WordMnemonic());
-
   return (
-    <VStack>
-      <Text size={"lg"}>{seedPhrase}</Text>
-      <Button onClick={(_) => onClickNext(seedPhrase)}>Next</Button>
+    <VStack overflow='scroll'>
+      <Grid templateColumns='repeat(3, 1fr)' gap={3} pb='20px'>
+        {seedPhrase.split(' ').map((item, index) => {
+          return (
+            <GridItem
+              fontSize='sm'
+              border='1px dashed #D6D6D6;'
+              borderRadius='4px'
+              p='6px'>{index}. {item}</GridItem>
+          )
+        })}
+      </Grid>
+      <Button
+        bg='umami.blue'
+        w='100%'
+        size='lg'
+        minH='48px'
+        onClick={(_) => onClickNext(seedPhrase)}
+      >
+        OK, I’ve recorded it
+      </Button>
     </VStack>
   );
 };
