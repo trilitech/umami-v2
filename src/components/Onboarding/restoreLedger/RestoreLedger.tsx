@@ -1,67 +1,58 @@
 import {
   Button,
-  Center,
-  FormControl,
-  FormLabel,
-  ModalBody,
-  ModalHeader,
-  Select,
   VStack,
   useToast,
+  ListItem,
+  OrderedList,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useAppDispatch } from "../../../utils/store/hooks";
-import { LedgerAccount, AccountType } from "../../../types/Account";
-import accountsSlice from "../../../utils/store/accountsSlice";
 import { LedgerSigner } from "@taquito/ledger-signer";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
-import { useForm } from "react-hook-form";
-import { Curves } from "@taquito/signer";
-import { curvesToDerivationPath } from "../../../utils/tezos/helpers";
-import { getLedgerDerivationPath } from "../../../utils/account/derivationPathUtils";
-import { Step } from "../useOnboardingModal";
+import {
+  Step,
+  StepType,
+  TemporaryLedgerAccountConfig,
+} from "../useOnboardingModal";
+import { SupportedIcons } from "../../CircleIcon";
+import ModalContentWrapper from "../ModalContentWrapper";
 
-const accountsActions = accountsSlice.actions;
-
-const RestoreLedger = ({ 
+const RestoreLedger = ({
   setStep,
- } : { 
+  config,
+}: {
   setStep: (step: Step) => void;
+  config: TemporaryLedgerAccountConfig;
 }) => {
   const [isLoading, setIsloading] = useState(false);
-  const [derivationPath, setDerivationPath] = useState(
-    getLedgerDerivationPath(0)
-  );
-  const [derivationType, setDerivationType] = useState<Curves>("ed25519");
   const toast = useToast();
-  const dispatch = useAppDispatch();
-  const { handleSubmit } = useForm({
-    mode: "onBlur",
-  });
 
-  const handlePk = async (pk: string, pkh: string) => {
-    const account: LedgerAccount = {
-      derivationPath,
-      curve: "ed25519",
-      type: AccountType.LEDGER,
-      pk: pk,
-      pkh: pkh,
-      label: "Ledger",
-    };
-    dispatch(accountsActions.add([account]));
-    // onClose();
-  };
+  const noticeItems = [
+    {
+      content: "Plug your Ledger into your computer using a USB cable.",
+    },
+    {
+      content: "Unlock your Ledger.",
+    },
+    {
+      content: "Make sure your Ledger has the latest firmware version.",
+    },
+    {
+      content: "Install and open the Tezos Wallet app on your Ledger.",
+    },
+    {
+      content: "Click the button below and confirm the action on your Ledger.",
+    },
+  ];
 
-  const onSubmit = async () => {
+  const connectLedger = async () => {
     setIsloading(true);
 
     try {
       const transport = await TransportWebHID.create();
       const ledgerSigner = new LedgerSigner(
         transport,
-        derivationPath,
-        true,
-        curvesToDerivationPath(derivationType)
+        config.derivationPath,
+        true
       );
       const pk = await ledgerSigner.publicKey();
       const pkh = await ledgerSigner.publicKeyHash();
@@ -69,7 +60,10 @@ const RestoreLedger = ({
         title: "Request sent to Ledger",
         description: "Open the Tezos app on your Ledger and accept the request",
       });
-      handlePk(pk, pkh);
+      config.pk = pk;
+      config.pkh = pkh;
+
+      setStep({ type: StepType.nameAccount, config });
       await transport.close();
     } catch (error: any) {
       if (error.name === "PublicKeyRetrievalError") {
@@ -88,51 +82,33 @@ const RestoreLedger = ({
         toast({ title: "Ledger Error", description: error.message });
       }
     }
-
     setIsloading(false);
   };
 
   return (
-    <div>
-      <ModalHeader textAlign={"center"}>Enter Ledger Config</ModalHeader>
-      <ModalBody>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Center>
-            <VStack width={300}>
-              <FormControl>
-                <FormLabel>Ledger configuration</FormLabel>
-                <Select
-                  id="derivationPath"
-                  onChange={(e) => setDerivationPath(e.target.value)}
-                >
-                  {new Array(5).fill("", 0, 5).map((p, i) => (
-                    <option value={getLedgerDerivationPath(i)}>
-                      {getLedgerDerivationPath(i)}
-                    </option>
-                  ))}
-                </Select>
-                <Select
-                  id="derivationType"
-                  onChange={(e) => setDerivationType(e.target.value as Curves)}
-                >
-                  <option value={"ed25519"}>tz1 - ED25519</option>
-                  <option value={"secp256k1"}>tz2 - secp256k1</option>
-                  <option value={"p256"}>tz3 - P256</option>
-                </Select>
-              </FormControl>
-              <Button
-                type="submit"
-                colorScheme="gray"
-                title="Restore accounts"
-                isLoading={isLoading}
-              >
-                Restore Ledger
-              </Button>
-            </VStack>
-          </Center>
-        </form>
-      </ModalBody>
-    </div>
+    <ModalContentWrapper
+      icon={SupportedIcons.document}
+      title="Connect Ledger"
+      subtitle="Complete the steps to connect."
+    >
+      <VStack spacing={"24px"} overflow={"scroll"}>
+        <OrderedList spacing={4}>
+          {noticeItems.map((item, index) => {
+            return <ListItem key={index}>{item.content}</ListItem>;
+          })}
+        </OrderedList>
+        <Button
+          bg="umami.blue"
+          w="100%"
+          minH="48px"
+          size="lg"
+          isLoading={isLoading}
+          onClick={connectLedger}
+        >
+          Export Public Key
+        </Button>
+      </VStack>
+    </ModalContentWrapper>
   );
 };
 

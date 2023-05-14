@@ -2,6 +2,7 @@ import { decrypt } from "../aes";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
+import { restoreAccountsFromLdger } from "../store/thunks/restoreAccountsFromLedger";
 import { useGetAccountBalance } from "./assetsHooks";
 
 export const useAccounts = () => {
@@ -46,12 +47,19 @@ export const useGetOwnedAccount = () => {
   };
 };
 
-export const useRestore = () => {
+export const useRestoreSecret = () => {
   const dispatch = useAppDispatch();
 
   return (seedPhrase: string, password: string, label?: string) => {
     return dispatch(restoreFromMnemonic({ seedPhrase, password, label }));
   };
+};
+
+export const useRestoreLedger = () => {
+  const dispatch = useAppDispatch();
+
+  return (derivationPath: string, pk: string, pkh: string, label?: string) =>
+    dispatch(restoreAccountsFromLdger(derivationPath, pk, pkh, label));
 };
 
 /**
