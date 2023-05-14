@@ -2,7 +2,8 @@ import { decrypt } from "../aes";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
-import { restoreAccountsFromLdger } from "../store/thunks/restoreAccountsFromLedger";
+import { restoreAccountsFromLedger } from "../store/thunks/restoreAccountsFromLedger";
+import { restoreAccountsFromSocial } from "../store/thunks/restoreAccountsFromSocial";
 import { useGetAccountBalance } from "./assetsHooks";
 
 export const useAccounts = () => {
@@ -59,7 +60,14 @@ export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
 
   return (derivationPath: string, pk: string, pkh: string, label?: string) =>
-    dispatch(restoreAccountsFromLdger(derivationPath, pk, pkh, label));
+    dispatch(restoreAccountsFromLedger(derivationPath, pk, pkh, label));
+};
+
+export const useRestoreSocial = () => {
+  const dispatch = useAppDispatch();
+
+  return (pk: string, pkh: string, label?: string) =>
+    dispatch(restoreAccountsFromSocial(pk, pkh, label));
 };
 
 /**

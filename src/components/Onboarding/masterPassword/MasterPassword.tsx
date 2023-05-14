@@ -4,27 +4,28 @@ import {
   useCheckPasswordValidity,
   useRestoreSecret,
   useRestoreLedger,
+  useRestoreSocial,
 } from "../../../utils/hooks/accountHooks";
 import {
   Step,
   TemporaryAccountConfig,
   TemporaryLedgerAccountConfig,
   TemporaryMnemonicAccountConfig,
+  TemporarySocialAccountConfig,
 } from "../useOnboardingModal";
 import { EnterAndComfirmPassword } from "./password/EnterAndConfirmPassword";
 import EnterPassword from "./password/EnterPassword";
 
 export const MasterPassword = ({
-  setStep,
   config,
   onClose,
 }: {
-  setStep: (step: Step) => void;
   config: TemporaryAccountConfig;
   onClose: () => void;
 }) => {
   const restoreSecret = useRestoreSecret();
   const restoreLedger = useRestoreLedger();
+  const restoreSocial = useRestoreSocial();
   const checkPassword = useCheckPasswordValidity();
   const passwordHasBeenSet = checkPassword !== null;
 
@@ -40,9 +41,7 @@ export const MasterPassword = ({
       if (config instanceof TemporaryMnemonicAccountConfig) {
         if (!config.seedphrase) throw new Error("Seedphrase not set");
         await restoreSecret(config.seedphrase, password, config.label);
-      }
-
-      if (config instanceof TemporaryLedgerAccountConfig) {
+      } else if (config instanceof TemporaryLedgerAccountConfig) {
         if (!config.derivationPath) throw new Error("DerivationPath not set");
         if (!config.pk) throw new Error("Pk not set");
         if (!config.pkh) throw new Error("Pkh not set");
@@ -52,6 +51,13 @@ export const MasterPassword = ({
           config.pkh,
           config.label
         );
+      } else if (config instanceof TemporarySocialAccountConfig) {
+        if (!config.pk) throw new Error("Pk not set");
+        if (!config.pkh) throw new Error("Pkh not set");
+        await restoreSocial(config.pk, config.pkh, config.label);
+      } else {
+        const error: never = config;
+        throw new Error(error);
       }
 
       toast({ title: "success" });

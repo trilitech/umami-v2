@@ -35,7 +35,10 @@ export class TemporaryLedgerAccountConfig extends Base {
   pkh?: string;
 }
 
-export class TemporarySocialAccountConfig extends Base {}
+export class TemporarySocialAccountConfig extends Base {
+  pk?: string;
+  pkh?: string;
+}
 
 export type TemporaryAccountConfig =
   | TemporaryMnemonicAccountConfig
@@ -131,13 +134,7 @@ export const useCreateOrImportSecretModal = () => {
       case "derivationPath":
         return <DerivationPath setStep={setStep} config={step.config} />;
       case "masterPassword":
-        return (
-          <MasterPassword
-            setStep={setStep}
-            config={step.config}
-            onClose={onClose}
-          />
-        );
+        return <MasterPassword config={step.config} onClose={onClose} />;
       default:
         throw new Error("Unmatched case");
     }
