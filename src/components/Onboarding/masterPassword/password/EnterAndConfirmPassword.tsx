@@ -3,9 +3,7 @@ import {
   Center,
   FormControl,
   FormErrorMessage,
-  FormHelperText,
   FormLabel,
-  Heading,
   Input,
   VStack,
 } from "@chakra-ui/react";
@@ -79,10 +77,10 @@ export const EnterAndComfirmPassword: React.FC<{
               isLoading={isLoading}
               type="submit"
               title="Submit"
-              w='100%'
-              size='lg'
-              h='48px'
-              bg='umami.blue'
+              w="100%"
+              size="lg"
+              h="48px"
+              bg="umami.blue"
             >
               Submit
             </Button>

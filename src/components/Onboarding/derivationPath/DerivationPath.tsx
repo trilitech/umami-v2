@@ -11,9 +11,17 @@ import {
 import { useForm } from "react-hook-form";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { SupportedIcons } from "../../CircleIcon";
-import { Step, TemporaryAccountConfig } from "../useOnboardingModal";
+import {
+  Step,
+  StepType,
+  TemporaryLedgerAccountConfig,
+  TemporaryMnemonicAccountConfig,
+} from "../useOnboardingModal";
 import { useState } from "react";
-import { getRelativeDerivationPath } from "../../../utils/restoreAccounts";
+import {
+  getFullDerivationPath,
+  getRelativeDerivationPath,
+} from "../../../utils/restoreAccounts";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
@@ -22,22 +30,36 @@ type ConfirmDerivationPathFormValues = {
 
 export const DerivationPath = ({
   setStep,
-  config
+  config,
 }: {
   setStep: (step: Step) => void;
-  config: TemporaryAccountConfig
+  config: TemporaryMnemonicAccountConfig | TemporaryLedgerAccountConfig;
 }) => {
   const { register, handleSubmit } = useForm<ConfirmDerivationPathFormValues>();
   const [isDefault, setIsDefault] = useState(false);
+  const getDefaultDerivationPath = () => {
+    if (config instanceof TemporaryLedgerAccountConfig) {
+      return getRelativeDerivationPath(0);
+    } else {
+      return getFullDerivationPath(0);
+    }
+  };
 
   const onSubmit = async (data: ConfirmDerivationPathFormValues) => {
     if (data.customPath) {
-      config.derivationPath = data.derivationPath
+      config.derivationPath = data.derivationPath;
     } else {
-      config.derivationPath = getRelativeDerivationPath(0)
+      config.derivationPath = getDefaultDerivationPath();
     }
-    config.derivationType = "ed25519"
-    setStep({ type: 'masterPassword', config })
+    if (config instanceof TemporaryMnemonicAccountConfig) {
+      setStep({ type: StepType.masterPassword, config });
+      return;
+    } else if (config instanceof TemporaryLedgerAccountConfig) {
+      setStep({ type: StepType.restoreLedger, config });
+      return;
+    }
+    const error: never = config;
+    throw new Error(error);
   };
 
   return (
@@ -50,36 +72,38 @@ export const DerivationPath = ({
         <Center>
           <VStack spacing={5}>
             <FormControl>
-              <HStack spacing='10px'>
-                <Text fontWeight={'bold'}>Default Path</Text>
-                <Switch {...register("customPath")} onChange={() => setIsDefault(!isDefault)} />
+              <HStack spacing="10px">
+                <Text fontWeight={"bold"}>Default Path</Text>
+                <Switch
+                  {...register("customPath")}
+                  onChange={() => setIsDefault(!isDefault)}
+                />
                 <Text>Custom Path</Text>
               </HStack>
             </FormControl>
             <FormControl>
               <Input
-                defaultValue={getRelativeDerivationPath(0)}
+                defaultValue={getDefaultDerivationPath()}
                 isDisabled={!isDefault}
                 {...register("derivationPath", {
-                  required: true,
+                  required: false,
                 })}
               />
             </FormControl>
             <Button
-              w='100%'
-              size='lg'
+              w="100%"
+              size="lg"
               type="submit"
               title="Restore accounts"
-              bg='umami.blue'
+              bg="umami.blue"
             >
               Continue
             </Button>
           </VStack>
         </Center>
       </form>
-    </ModalContentWrapper >
+    </ModalContentWrapper>
   );
 };
 
 export default DerivationPath;
-

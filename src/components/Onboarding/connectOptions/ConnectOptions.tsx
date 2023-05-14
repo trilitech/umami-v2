@@ -1,34 +1,28 @@
-import {
-  Button,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, VStack } from "@chakra-ui/react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import { Step } from "../useOnboardingModal";
+import {
+  Step,
+  StepType,
+  TemporaryLedgerAccountConfig,
+} from "../useOnboardingModal";
 
-const ConnectOptions = ({
-  setStep,
-}: {
-  setStep: (step: Step) => void;
-}) => {
+const ConnectOptions = ({ setStep }: { setStep: (step: Step) => void }) => {
   return (
-    <ModalContentWrapper
-      icon={SupportedIcons.wallet}
-      title="Connect Options"
-    >
-      <VStack w='100%' spacing={4}>
+    <ModalContentWrapper icon={SupportedIcons.wallet} title="Connect Options">
+      <VStack w="100%" spacing={4}>
         <Button
           bg="umami.blue"
           w="100%"
-          size='lg'
-          onClick={(_) => setStep({ type: "restoreSeedphrase" })}
+          size="lg"
+          onClick={(_) => setStep({ type: StepType.restoreSeedphrase })}
         >
           Import with Seed Phrase
         </Button>
         <Button
-          variant='outline'
+          variant="outline"
           w="100%"
-          size='lg'
+          size="lg"
           disabled={true}
           // onClick={(_) => setStep({ type: "restoreBackup" })}
         >
@@ -36,8 +30,13 @@ const ConnectOptions = ({
         </Button>
         <Button
           w="100%"
-          variant='ghost'
-          onClick={(_) => setStep({ type: "restoreLedger" })}
+          variant="ghost"
+          onClick={(_) => {
+            setStep({
+              type: StepType.derivationPath,
+              config: new TemporaryLedgerAccountConfig(),
+            });
+          }}
         >
           Connect ledger
         </Button>
