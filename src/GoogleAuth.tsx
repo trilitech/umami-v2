@@ -1,9 +1,10 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { Button, useToast } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import CustomAuth from "@toruslabs/customauth";
 import { TORUS_NETWORK_TYPE } from "@toruslabs/fetch-node-details";
 import { useEffect, useState } from "react";
+import { CircleIcon, SupportedIcons } from "./components/CircleIcon";
 import { useSelectedNetwork } from "./utils/hooks/assetsHooks";
 
 export const parseParams = (url: string) => {
@@ -121,13 +122,9 @@ export const GoogleAuth: React.FC<GoogleAuthProps> = ({
   };
 
   return (
-    <Button
-      isLoading={isLoading || SSOisLoading}
-      onClick={authenticate}
-      width={width}
-      bg={bg}
-    >
-      {buttonText}
-    </Button>
+    <CircleIcon
+      onClick={isLoading || SSOisLoading ? undefined : authenticate}
+      icon={SupportedIcons.google}
+    />
   );
 };

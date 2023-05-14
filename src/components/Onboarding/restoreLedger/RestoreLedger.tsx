@@ -19,10 +19,15 @@ import { useForm } from "react-hook-form";
 import { Curves } from "@taquito/signer";
 import { curvesToDerivationPath } from "../../../utils/tezos/helpers";
 import { getLedgerDerivationPath } from "../../../utils/account/derivationPathUtils";
+import { Step } from "../useOnboardingModal";
 
 const accountsActions = accountsSlice.actions;
 
-const EnterLedgerConfig = ({ onClose }: { onClose: () => void }) => {
+const RestoreLedger = ({ 
+  setStep,
+ } : { 
+  setStep: (step: Step) => void;
+}) => {
   const [isLoading, setIsloading] = useState(false);
   const [derivationPath, setDerivationPath] = useState(
     getLedgerDerivationPath(0)
@@ -44,7 +49,7 @@ const EnterLedgerConfig = ({ onClose }: { onClose: () => void }) => {
       label: "Ledger",
     };
     dispatch(accountsActions.add([account]));
-    onClose();
+    // onClose();
   };
 
   const onSubmit = async () => {
@@ -131,4 +136,4 @@ const EnterLedgerConfig = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default EnterLedgerConfig;
+export default RestoreLedger;
