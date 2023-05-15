@@ -19,13 +19,7 @@ const ConnectOptions = ({ setStep }: { setStep: (step: Step) => void }) => {
         >
           Import with Seed Phrase
         </Button>
-        <Button
-          variant="outline"
-          w="100%"
-          size="lg"
-          disabled={true}
-          // onClick={(_) => setStep({ type: "restoreBackup" })}
-        >
+        <Button variant="outline" w="100%" size="lg" disabled={true}>
           Restore from Backup
         </Button>
         <Button

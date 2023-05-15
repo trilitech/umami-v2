@@ -3,7 +3,11 @@ import { useState } from "react";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
+import {
+  Step,
+  StepType,
+  TemporaryMnemonicAccountConfig,
+} from "../useOnboardingModal";
 
 export const GenerateSeedphrase = ({
   setStep,
@@ -18,8 +22,7 @@ export const GenerateSeedphrase = ({
       title="Record Seed Phrase"
       subtitle="Please record the following 24 words in sequence in order to restore it in the future."
     >
-      <VStack overflow="scroll">
-        {/* <Grid templateColumns='repeat(3, 1fr)' gap={3} pb='20px' w='100%'> */}
+      <VStack overflowX={"hidden"}>
         <SimpleGrid columns={3} spacing={2}>
           {seedphrase.split(" ").map((item, index) => {
             return (
@@ -52,9 +55,11 @@ export const GenerateSeedphrase = ({
           w="100%"
           size="lg"
           minH="48px"
-          onClick={(_) =>
-            setStep({ type: StepType.verifySeedphrase, config: { seedphrase } })
-          }
+          onClick={(_) => {
+            const config = new TemporaryMnemonicAccountConfig();
+            config.seedphrase = seedphrase;
+            setStep({ type: StepType.verifySeedphrase, config });
+          }}
         >
           OK, I’ve recorded it
         </Button>

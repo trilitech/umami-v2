@@ -53,8 +53,9 @@ const Eula: React.FC<{
         spacing={"10px"}
         w="100%"
         h="100%"
-        overflowX={"scroll"}
-        __css={{ "-webkit-appearance": "scrollbartrack-vertical" }}
+        overflowX={"hidden"}
+        overflowY={"scroll"}
+        p="4px"
       >
         {eulaItems.map((item, index) => {
           return (

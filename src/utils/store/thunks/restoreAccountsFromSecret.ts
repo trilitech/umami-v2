@@ -10,11 +10,16 @@ const { addSecret, add } = accountsSlice.actions;
 export const restoreAccountsFromSecret = (
   seedPhrase: string,
   password: string,
-  label?: string
+  label?: string,
+  derivationPath?: string
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async (dispatch) => {
     const seedFingerPrint = await getFingerPrint(seedPhrase);
-    const accounts = await restoreMnemonicAccounts(seedPhrase, label);
+    const accounts = await restoreMnemonicAccounts(
+      seedPhrase,
+      label,
+      derivationPath
+    );
     dispatch(
       addSecret({
         hash: seedFingerPrint,

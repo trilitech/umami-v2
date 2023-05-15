@@ -18,10 +18,8 @@ import {
   TemporaryMnemonicAccountConfig,
 } from "../useOnboardingModal";
 import { useState } from "react";
-import {
-  getFullDerivationPath,
-  getRelativeDerivationPath,
-} from "../../../utils/restoreAccounts";
+import { getDefaultMnemonicDerivationPath, getLedgerDerivationPath } from "../../../utils/account/derivationPathUtils";
+
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
@@ -39,9 +37,9 @@ export const DerivationPath = ({
   const [isDefault, setIsDefault] = useState(false);
   const getDefaultDerivationPath = () => {
     if (config instanceof TemporaryLedgerAccountConfig) {
-      return getRelativeDerivationPath(0);
+      return getLedgerDerivationPath(0);
     } else {
-      return getFullDerivationPath(0);
+      return getDefaultMnemonicDerivationPath(0);
     }
   };
 

@@ -7,7 +7,6 @@ import {
   useRestoreSocial,
 } from "../../../utils/hooks/accountHooks";
 import {
-  Step,
   TemporaryAccountConfig,
   TemporaryLedgerAccountConfig,
   TemporaryMnemonicAccountConfig,
@@ -40,7 +39,12 @@ export const MasterPassword = ({
 
       if (config instanceof TemporaryMnemonicAccountConfig) {
         if (!config.seedphrase) throw new Error("Seedphrase not set");
-        await restoreSecret(config.seedphrase, password, config.label);
+        await restoreSecret(
+          config.seedphrase,
+          password,
+          config.derivationPath,
+          config.label
+        );
       } else if (config instanceof TemporaryLedgerAccountConfig) {
         if (!config.derivationPath) throw new Error("DerivationPath not set");
         if (!config.pk) throw new Error("Pk not set");
@@ -63,6 +67,7 @@ export const MasterPassword = ({
       toast({ title: "success" });
       onClose();
     } catch (error: any) {
+      console.log("config", config);
       toast({ title: "error", description: error.message });
     }
     setIsloading(false);

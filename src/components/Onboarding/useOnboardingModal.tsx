@@ -85,7 +85,9 @@ export const useCreateOrImportSecretModal = () => {
   const [modalSize, setModalSize] = useState<ModalSize>(ModalSize.md);
   const [step, setStep] = useState<Step | null>(null);
   const hasAccounts = useAccounts().length !== 0;
-  const [history, setHistory] = useState<Step[]>([]); // Setting default value
+  const [history, setHistory] = useState<Step[]>([
+    { type: StepType.connectOrCreate },
+  ]); // Setting default value
 
   useEffect(() => {
     if (step && history.map((s) => s.type).indexOf(step.type) === -1) {
@@ -102,7 +104,6 @@ export const useCreateOrImportSecretModal = () => {
     } else {
       setModalSize(ModalSize.md);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, step?.type]);
 
