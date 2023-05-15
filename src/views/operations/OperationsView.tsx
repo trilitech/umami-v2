@@ -21,11 +21,12 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
+import { useGetAccount } from "../../utils/hooks/accountHooks";
 import {
   useAllOperationDisplays,
   useIsBlockFinalised,
 } from "../../utils/hooks/assetsHooks";
-import { useGetNameFromAddress } from "../../utils/hooks/contactsHooks";
+import { useGetContractName } from "../../utils/hooks/contactsHooks";
 import ContactTile from "./ContactTile";
 import {
   getIsInbound,
@@ -48,7 +49,7 @@ export const OperationsDataTable: React.FC<{
 }> = ({ operations }) => {
   const operationList = Object.values(operations).flat();
   const sorted = sortOperationsDisplaysBytDate(operationList);
-  const getNameFromAddress = useGetNameFromAddress();
+
   const isBlockFinalised = useIsBlockFinalised();
   return (
     <TableContainer overflowX="unset" overflowY="unset">
@@ -105,16 +106,10 @@ export const OperationsDataTable: React.FC<{
                 </Td>
                 <Td>{op.fee}</Td>
                 <Td>
-                  <ContactTile
-                    pkh={op.sender}
-                    getNameFromAddress={getNameFromAddress}
-                  />
+                  <AccountOrContactTile pkh={op.sender} />
                 </Td>
                 <Td>
-                  <ContactTile
-                    pkh={op.recipient}
-                    getNameFromAddress={getNameFromAddress}
-                  />
+                  <AccountOrContactTile pkh={op.recipient} />
                 </Td>
                 <Td>
                   {isBlockFinalised(op.level) ? (
@@ -141,6 +136,19 @@ export const OperationsDataTable: React.FC<{
       </Table>
     </TableContainer>
   );
+};
+
+const AccountOrContactTile: React.FC<{ pkh: string }> = ({ pkh }) => {
+  const getContactName = useGetContractName();
+  const getAccount = useGetAccount();
+
+  const account = getAccount(pkh);
+
+  if (account) {
+    return <Text>{account.label}</Text>;
+  }
+
+  return <ContactTile pkh={pkh} getNameFromAddress={getContactName} />;
 };
 
 const OperationsView = () => {
