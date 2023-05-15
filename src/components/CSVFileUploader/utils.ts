@@ -1,5 +1,5 @@
 import { validateAddress, ValidationResult } from "@taquito/utils";
-import { Asset } from "../../types/Asset";
+import { Asset, getRealAmount } from "../../types/Asset";
 import { parseNonNegativeFloat } from "../../utils/helpers";
 import { OperationValue } from "../sendForm/types";
 import { CSVRow } from "./types";
@@ -68,6 +68,7 @@ export const csvRowToOperationValue = (
           `Token "${csvRow.contract}" is not owned by the sender`
         );
       }
+      value.amount = getRealAmount(value.amount, asset);
       if (asset.type !== "fa1.2" || csvRow.contract !== asset.contract) {
         throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
       }
@@ -88,6 +89,7 @@ export const csvRowToOperationValue = (
           `Token "${csvRow.contract}" is not owned by the sender`
         );
       }
+      value.amount = getRealAmount(value.amount, asset);
 
       if (asset.type === "fa1.2" || csvRow.contract !== asset.contract) {
         throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
