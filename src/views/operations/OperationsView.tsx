@@ -21,13 +21,11 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
-import { useGetAccount } from "../../utils/hooks/accountHooks";
 import {
   useAllOperationDisplays,
   useIsBlockFinalised,
 } from "../../utils/hooks/assetsHooks";
-import { useGetContractName } from "../../utils/hooks/contactsHooks";
-import ContactTile from "./ContactTile";
+import AccountOrContactTile from "./AccountOrContactTile";
 import {
   getIsInbound,
   getKey,
@@ -136,19 +134,6 @@ export const OperationsDataTable: React.FC<{
       </Table>
     </TableContainer>
   );
-};
-
-const AccountOrContactTile: React.FC<{ pkh: string }> = ({ pkh }) => {
-  const getContactName = useGetContractName();
-  const getAccount = useGetAccount();
-
-  const account = getAccount(pkh);
-
-  if (account) {
-    return <Text>{account.label}</Text>;
-  }
-
-  return <ContactTile pkh={pkh} getNameFromAddress={getContactName} />;
 };
 
 const OperationsView = () => {
