@@ -46,7 +46,7 @@ const VerifySeedphrase = ({
     handleSubmit,
     formState: { errors, isValid, isDirty },
   } = useForm();
-  const [randomElements] = useState(selectRandomElements(seedphraseArray, 5));
+  const [randomElements] = useState(selectRandomElements(seedphraseArray, 0));
   const onSubmit = () => {
     setStep({ type: StepType.nameAccount, config });
   };

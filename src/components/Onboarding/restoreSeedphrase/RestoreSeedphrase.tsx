@@ -25,15 +25,16 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [value, setValue] = useState("24");
+  const [value, setValue] = useState("12");
   const onSubmit = (data: FieldValues) => {
     let seedphrase = "";
     for (const key in data) {
       seedphrase += data[key] + " ";
     }
     // TODO validate seedphrase
-    const config: TemporaryMnemonicAccountConfig = { seedphrase };
-    setStep({ type: StepType.verifySeedphrase, config });
+    const config = new TemporaryMnemonicAccountConfig();
+    config.seedphrase = seedphrase;
+    setStep({ type: StepType.derivationPath, config });
   };
   return (
     <ModalContentWrapper
@@ -41,14 +42,14 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
       title="Import Seed Phrase"
       subtitle="Please fill in the Seed Phrase in sequence."
     >
-      <Box overflow="scroll" w="100%">
+      <Box overflowX={"hidden"} p="4px" w="100%">
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <VStack w="100%" spacing={4}>
             <Select
               onChange={(event) => setValue(event.target.value)}
               value={value}
             >
-              {[12, 15, 18, 24].map((value) => {
+              {[12, 15, 18, 24].reverse().map((value) => {
                 return (
                   <option key={value} value={value}>
                     {value} Words
@@ -68,8 +69,11 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
                     p="6px"
                     display="flex"
                   >
-                    <Text p="8px">{index + 1}</Text>
+                    <Text pl="8px" pr="8px">
+                      {index + 1}
+                    </Text>
                     <Input
+                      size={"xsmall"}
                       border="none"
                       placeholder="Type here"
                       {...register(`${index}`, {

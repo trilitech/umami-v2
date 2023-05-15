@@ -51,8 +51,8 @@ export const useGetOwnedAccount = () => {
 export const useRestoreSecret = () => {
   const dispatch = useAppDispatch();
 
-  return (seedPhrase: string, password: string, label?: string) => {
-    return dispatch(restoreFromMnemonic({ seedPhrase, password, label }));
+  return (seedPhrase: string, password: string, label?: string, derivationPathPattern?: string) => {
+    return dispatch(restoreFromMnemonic({ seedPhrase, password, label, derivationPathPattern }));
   };
 };
 

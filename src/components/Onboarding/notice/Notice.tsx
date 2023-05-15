@@ -29,7 +29,12 @@ const Notice: React.FC<{
       title="Important Notice"
       subtitle="Please read the following before you continue to see your secret Seed Phrase."
     >
-      <VStack spacing={"24px"} overflow={"scroll"}>
+      <VStack
+        spacing={"24px"}
+        overflowX={"hidden"}
+        overflowY={"scroll"}
+        p="4px"
+      >
         <OrderedList spacing={4}>
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;
@@ -40,9 +45,7 @@ const Notice: React.FC<{
           w="100%"
           minH="48px"
           size="lg"
-          onClick={() => {
-            setStep({ type: StepType.generateSeedphrase });
-          }}
+          onClick={() => setStep({ type: StepType.generateSeedphrase })}
         >
           I understand
         </Button>
@@ -50,10 +53,8 @@ const Notice: React.FC<{
           w="100%"
           minH="48px"
           size="lg"
-          variant={"ghost"}
-          onClick={() => {
-            setStep({ type: StepType.restoreSeedphrase });
-          }}
+          variant={"outline"}
+          onClick={() => setStep({ type: StepType.restoreSeedphrase })}
         >
           I already have a Seed Phrase
         </Button>
