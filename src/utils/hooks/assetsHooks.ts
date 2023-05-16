@@ -1,4 +1,3 @@
-import { round } from "lodash";
 import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
@@ -9,6 +8,7 @@ import { mutezToTez } from "../store/impureFormat";
 import { classifyToken, makeNft } from "../token/classify/classifyToken";
 import { useAccounts } from "./accountHooks";
 import { getTotalBalance } from "./accountUtils";
+import { BigNumber } from "bignumber.js";
 
 export const useSelectedNetwork = () => {
   return useAppSelector((s) => s.assets.network);
@@ -128,7 +128,7 @@ const useTezToDollar = () => {
   if (rate === null) {
     return null;
   }
-  return (tezosBalance: number) => round(tezosBalance * rate, 2);
+  return (tezosBalance: BigNumber) => tezosBalance.multipliedBy(rate);
 };
 
 export const useGetDollarBalance = () => {

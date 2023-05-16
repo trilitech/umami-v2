@@ -389,9 +389,9 @@ describe("Assets reducer", () => {
   describe("Batch", () => {
     test("Adding operations to batch starts an estimation and updates the given account's batch with the result", async () => {
       const mockEstimations = [
-        { suggestedFeeMutez: 323 },
-        { suggestedFeeMutez: 423 },
-        { suggestedFeeMutez: 523 },
+        { suggestedFeeMutez: new BigNumber(323) },
+        { suggestedFeeMutez: new BigNumber(423) },
+        { suggestedFeeMutez: new BigNumber(523) },
       ];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -440,7 +440,7 @@ describe("Assets reducer", () => {
     });
 
     test("Batches can be cleared for a given account", async () => {
-      const mockEstimations = [{ suggestedFeeMutez: 323 }];
+      const mockEstimations = [{ suggestedFeeMutez: new BigNumber(323) }];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
@@ -499,9 +499,9 @@ describe("Assets reducer", () => {
 
     test("Running a concurrent estimation for a given account is not possible", async () => {
       const mockEstimations = [
-        { suggestedFeeMutez: 323 },
-        { suggestedFeeMutez: 423 },
-        { suggestedFeeMutez: 523 },
+        { suggestedFeeMutez: new BigNumber(323) },
+        { suggestedFeeMutez: new BigNumber(423) },
+        { suggestedFeeMutez: new BigNumber(523) },
       ];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -550,9 +550,9 @@ describe("Assets reducer", () => {
 
     test("You can't add an empty list of operations to a batch", async () => {
       const mockEstimations = [
-        { suggestedFeeMutez: 323 },
-        { suggestedFeeMutez: 423 },
-        { suggestedFeeMutez: 523 },
+        { suggestedFeeMutez: new BigNumber(323) },
+        { suggestedFeeMutez: new BigNumber(423) },
+        { suggestedFeeMutez: new BigNumber(523) },
       ];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -575,9 +575,9 @@ describe("Assets reducer", () => {
 
     test("Batch can't be cleared for a given account if simulation is ongoing for a given account", async () => {
       const mockEstimations = [
-        { suggestedFeeMutez: 323 },
-        { suggestedFeeMutez: 423 },
-        { suggestedFeeMutez: 523 },
+        { suggestedFeeMutez: new BigNumber(323) },
+        { suggestedFeeMutez: new BigNumber(423) },
+        { suggestedFeeMutez: new BigNumber(523) },
       ];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -586,7 +586,7 @@ describe("Assets reducer", () => {
       store.dispatch(
         updateBatch({
           pkh: mockPkh(1),
-          items: [{ fee: 3, operation: mockTezTransfer(3) }],
+          items: [{ fee: new BigNumber(3), operation: mockTezTransfer(3) }],
         })
       );
       const transfers = [
@@ -610,7 +610,7 @@ describe("Assets reducer", () => {
           isSimulating: false,
           items: [
             {
-              fee: 3,
+              fee: new BigNumber(3),
               operation: mockTezTransfer(3),
             },
             {

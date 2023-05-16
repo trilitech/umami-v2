@@ -18,7 +18,7 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
     throw new Error("Invalid csv value: recipient");
   }
 
-  if (isNaN(amount) || amount === 0) {
+  if (amount.isNaN() || amount.isEqualTo(0)) {
     throw new Error("Invalid csv value: amount");
   }
 
@@ -35,10 +35,10 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
     res = { ...res, type: "fa1.2", contract };
     if (tokenIdString !== undefined) {
       const tokenId = parseNonNegativeFloat(tokenIdString);
-      if (isNaN(tokenId)) {
+      if (tokenId.isNaN()) {
         throw new Error("Invalid csv value: tokenId");
       }
-      res = { ...res, type: "fa2", tokenId };
+      res = { ...res, type: "fa2", tokenId: tokenId.toNumber() };
     }
   }
 

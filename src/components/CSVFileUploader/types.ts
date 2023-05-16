@@ -1,9 +1,11 @@
+import type { BigNumber } from "bignumber.js";
+
 type CSVRowType = "fa1.2" | "fa2" | "tez";
 
 interface CSVRowBase {
   type: CSVRowType;
   recipient: string;
-  amount: number;
+  amount: BigNumber;
 }
 
 interface CSVTezTransferRow extends CSVRowBase {

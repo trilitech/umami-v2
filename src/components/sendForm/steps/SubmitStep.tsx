@@ -18,7 +18,7 @@ import { getRealAmount } from "../../../types/Asset";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
-import { mutezToTezNumber } from "../../../utils/store/impureFormat";
+import { mutezToTez } from "../../../utils/store/impureFormat";
 import {
   delegate,
   submitBatch,
@@ -38,6 +38,7 @@ import {
   TransactionsAmount,
 } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
+import { BigNumber } from "bignumber.js";
 
 const makeTransfer = (
   operation: OperationValue | OperationValue[],
@@ -136,7 +137,7 @@ const BatchRecap = ({ transfer }: { transfer: OperationValue[] }) => {
   );
 };
 
-const getSubTotal = (t: OperationValue[] | OperationValue): number => {
+const getSubTotal = (t: OperationValue[] | OperationValue): BigNumber => {
   if (Array.isArray(t)) {
     return getBatchSubtotal(t);
   }
@@ -145,7 +146,7 @@ const getSubTotal = (t: OperationValue[] | OperationValue): number => {
     return t.value.amount;
   }
 
-  return 0;
+  return new BigNumber(0);
 };
 
 export const RecapDisplay: React.FC<{
@@ -188,8 +189,8 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
-  const feeInTez = Number(mutezToTezNumber(fee));
-  const total = feeInTez + getSubTotal(transfer);
+  const feeInTez = mutezToTez(fee);
+  const total = feeInTez.plus(getSubTotal(transfer));
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">

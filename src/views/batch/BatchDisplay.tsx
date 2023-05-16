@@ -28,10 +28,7 @@ import { Account } from "../../types/Account";
 import { formatTokenAmount } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
 import { Batch } from "../../utils/store/assetsSlice";
-import {
-  mutezToTezNumber,
-  prettyTezAmount,
-} from "../../utils/store/impureFormat";
+import { mutezToTez, prettyTezAmount } from "../../utils/store/impureFormat";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
@@ -75,7 +72,7 @@ const RightPanel = ({
 
   const subTotal = getBatchSubtotal(batch.items.map((item) => item.operation));
 
-  const total = subTotal + mutezToTezNumber(fee);
+  const total = subTotal.plus(mutezToTez(fee));
   return (
     <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
       <Box flex={1}>

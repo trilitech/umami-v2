@@ -18,6 +18,7 @@ import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, SendFormMode, OperationValue } from "./types";
+import { BigNumber } from "bignumber.js";
 
 const makeSimulation = (
   operation: OperationValue,
@@ -88,7 +89,7 @@ export const SendForm = ({
 }: {
   sender?: string;
   recipient?: string;
-  amount?: number;
+  amount?: string;
   parameter?: TransferParams["parameter"];
   onSuccess?: (hash: string) => void;
   mode?: SendFormMode;
@@ -135,7 +136,7 @@ export const SendForm = ({
 
       setTransferValues({
         operation,
-        fee: estimate.suggestedFeeMutez,
+        fee: new BigNumber(estimate.suggestedFeeMutez),
       });
     } catch (error: any) {
       toast({ title: "Invalid transaction", description: error.message });

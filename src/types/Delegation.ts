@@ -1,10 +1,11 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
+import { BigNumber } from "bignumber.js";
 
 export type Delegation = {
   sender: string;
   timestamp: string;
   id: number;
-  amount: number;
+  amount: BigNumber;
   delegate: {
     address: string;
     alias?: string;
@@ -31,7 +32,7 @@ export const makeDelegation = (op: DelegationOperation): Delegation | null => {
     sender: senderAddress,
     timestamp: timestamp,
     id,
-    amount,
+    amount: new BigNumber(amount),
     delegate: {
       address: delegateAddress,
       alias: op.newDelegate?.alias || undefined,

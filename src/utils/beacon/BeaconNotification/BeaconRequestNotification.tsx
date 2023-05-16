@@ -10,11 +10,12 @@ import React from "react";
 import SendForm from "../../../components/sendForm";
 import { OperationValue } from "../../../components/sendForm/types";
 import { useGetAccount } from "../../hooks/accountHooks";
-import { mutezToTezNumber } from "../../store/impureFormat";
+import { mutezToTez } from "../../store/impureFormat";
 import { walletClient } from "../beacon";
 import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
 import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
 import SignPayloadRequestPannel from "./pannels/SignPayloadRequestPannel";
+import { BigNumber } from "bignumber.js";
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;
@@ -70,7 +71,7 @@ export const BeaconNotification: React.FC<{
             mode={{ type: transfer.type }}
             recipient={transfer.value.recipient}
             sender={transfer.value.sender}
-            amount={transfer.value.amount}
+            amount={transfer.value.amount.toString()}
             parameter={transfer.value.parameter}
           />
         );
@@ -107,7 +108,7 @@ const buildTransfer = (o: OperationRequestOutput) => {
     const result: OperationValue = {
       type: "tez",
       value: {
-        amount: mutezToTezNumber(Number(operation.amount)),
+        amount: mutezToTez(new BigNumber(operation.amount)),
         sender: o.sourceAddress,
         recipient: operation.destination,
         parameter: operation.parameters,

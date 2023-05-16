@@ -1,9 +1,10 @@
 import React from "react";
 import { Box, Heading, Text } from "@chakra-ui/react";
+import type { BigNumber } from "bignumber.js";
 
 export const TezRecapDisplay: React.FC<{
-  tezBalance: number;
-  dollarBalance: number | null;
+  tezBalance: BigNumber;
+  dollarBalance: BigNumber | null;
   center?: boolean;
 }> = (props) => {
   return (

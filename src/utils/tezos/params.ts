@@ -33,7 +33,7 @@ export const operationValuesToParams = async (
         result.push({
           kind: OpKind.TRANSACTION,
           to: operation.value.recipient,
-          amount: operation.value.amount,
+          amount: operation.value.amount.toNumber(),
           parameter: operation.value.parameter,
         });
         break;

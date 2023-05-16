@@ -3,7 +3,7 @@ import { Estimate, TezosToolkit, TransferParams } from "@taquito/taquito";
 import { OperationValue } from "../../components/sendForm/types";
 import { nodeUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
-
+import { BigNumber } from "bignumber.js";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
@@ -15,7 +15,7 @@ import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
 export const estimateTezTransfer = async (
   senderPkh: string,
   recipient: string,
-  amount: number,
+  amount: BigNumber,
   senderPk: string,
   network: TezosNetwork,
   parameter?: TransferParams["parameter"]
@@ -23,7 +23,7 @@ export const estimateTezTransfer = async (
   const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
   return Tezos.estimate.transfer({
     to: recipient,
-    amount: amount,
+    amount: amount.toNumber(),
     parameter,
   });
 };

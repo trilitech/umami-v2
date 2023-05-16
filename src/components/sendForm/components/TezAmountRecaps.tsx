@@ -1,7 +1,8 @@
 import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 import { prettyTezAmount } from "../../../utils/store/impureFormat";
+import { BigNumber } from "bignumber.js";
 
-type Props = { tez: number } & FlexProps;
+type Props = { tez: BigNumber } & FlexProps;
 
 export const TransactionsAmount = ({
   amount,
@@ -56,7 +57,10 @@ export const Total = ({ tez, ...flexProps }: Props) => {
   );
 };
 
-export const Fee = ({ mutez, ...flexProps }: { mutez: number } & FlexProps) => {
+export const Fee = ({
+  mutez,
+  ...flexProps
+}: { mutez: BigNumber } & FlexProps) => {
   return (
     <Flex
       aria-label="fee"

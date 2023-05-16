@@ -9,7 +9,7 @@ import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
 
-export type BatchItem = { operation: OperationValue; fee: number };
+export type BatchItem = { operation: OperationValue; fee: BigNumber };
 export type Batch = {
   isSimulating: boolean;
   items: Array<BatchItem>;
@@ -173,7 +173,7 @@ const assetsSlice = createSlice({
         payload: { pkh, items: transfers },
       }: { type: string; payload: BatchPayload }
     ) => {
-      const existing = state.batches[pkh] || emptyBatch;
+      const existing = (state.batches[pkh] || emptyBatch) as Batch;
       const newBatch: Batch = {
         ...existing,
         items: [...existing.items, ...transfers],
