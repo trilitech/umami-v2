@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Account } from "../../types/Account";
+import { Account, AccountType } from "../../types/Account";
 import { UmamiEncrypted } from "../../types/UmamiEncrypted";
 
 type State = {
@@ -30,6 +30,20 @@ const accountsSlice = createSlice({
     ) => {
       const { hash, secret } = payload;
       state.seedPhrases[hash] = secret;
+    },
+    removeSecret: (
+      state,
+      { payload }: { type: string; payload: { fingerPrint: string } }
+    ) => {
+      const { fingerPrint } = payload;
+      const newAccounts = state.items.filter(
+        (a) =>
+          !(
+            a.type === AccountType.MNEMONIC && a.seedFingerPrint === fingerPrint
+          )
+      );
+      state.items = newAccounts;
+      delete state.seedPhrases[fingerPrint];
     },
     add: (
       state,

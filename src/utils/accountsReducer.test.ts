@@ -1,13 +1,34 @@
 import { mockAccount } from "../mocks/factories";
+import { publicKeys1 } from "../mocks/publicKeys";
+import { AccountType } from "../types/Account";
+import { UmamiEncrypted } from "../types/UmamiEncrypted";
+import { decrypt } from "./aes";
+import { restoreAccount } from "./restoreAccounts";
 import accountsSlice from "./store/accountsSlice";
 
 import { store } from "./store/store";
+import { deriveAccount } from "./store/thunks/restoreMnemonicAccounts";
+
 const {
-  actions: { add, reset, setSelected },
+  actions: { add, reset, setSelected, addSecret, removeSecret },
 } = accountsSlice;
+
+jest.mock("./aes");
+jest.mock("./restoreAccounts");
+
+export const decryptMock = decrypt as jest.Mock;
+export const restoreAccountMock = restoreAccount as jest.Mock;
 
 afterEach(() => {
   store.dispatch(reset());
+});
+
+beforeEach(() => {
+  decryptMock.mockResolvedValue("unencryptedFingerprint");
+  restoreAccountMock.mockResolvedValue({
+    pk: publicKeys1.pk,
+    pkh: publicKeys1.pkh,
+  });
 });
 
 describe("Accounts reducer", () => {
@@ -89,6 +110,114 @@ describe("Accounts reducer", () => {
       items: [mockAccount(1), mockAccount(2), mockAccount(3)],
       selected: null,
       seedPhrases: {},
+    });
+  });
+
+  it("should handle deleting seedphrases and all derived accounts", () => {
+    store.dispatch(
+      addSecret({ hash: "mockPrint1", secret: {} as UmamiEncrypted })
+    );
+    store.dispatch(
+      addSecret({ hash: "mockPrint2", secret: {} as UmamiEncrypted })
+    );
+    store.dispatch(
+      add([
+        mockAccount(1, undefined, "mockPrint1"),
+        mockAccount(2, undefined, "mockPrint2"),
+        mockAccount(3, undefined, "mockPrint1"),
+      ])
+    );
+    expect(store.getState().accounts).toEqual({
+      items: [
+        mockAccount(1, undefined, "mockPrint1"),
+        mockAccount(2, undefined, "mockPrint2"),
+        mockAccount(3, undefined, "mockPrint1"),
+      ],
+      seedPhrases: { mockPrint1: {}, mockPrint2: {} },
+      selected: null,
+    });
+
+    store.dispatch(removeSecret({ fingerPrint: "mockPrint1" }));
+
+    expect(store.getState().accounts).toEqual({
+      items: [mockAccount(2, undefined, "mockPrint2")],
+      seedPhrases: { mockPrint2: {} },
+      selected: null,
+    });
+  });
+
+  describe("deriveAccount thunk", () => {
+    it("should throw if we try to derive from an unknown seedphrase", async () => {
+      store.dispatch(
+        addSecret({ hash: "mockPrint1", secret: {} as UmamiEncrypted })
+      );
+
+      let message = "";
+      try {
+        await store
+          .dispatch(
+            deriveAccount({
+              fingerPrint: "unknown fingerprint",
+              password: "bar",
+              label: "cool",
+            })
+          )
+          .unwrap();
+      } catch (error: any) {
+        message = error.message;
+      }
+
+      expect(message).toEqual(
+        "No seedphrase found with fingerprint:unknown fingerprint"
+      );
+    });
+
+    it("should derive and add an account after the last index", async () => {
+      store.dispatch(
+        addSecret({ hash: "mockPrint1", secret: {} as UmamiEncrypted })
+      );
+
+      store.dispatch(add(mockAccount(0, AccountType.MNEMONIC, "mockPrint1")));
+      store.dispatch(add(mockAccount(1, AccountType.MNEMONIC, "mockPrint1")));
+
+      await store.dispatch(
+        deriveAccount({
+          fingerPrint: "mockPrint1",
+          password: "bar",
+          label: "my new account",
+        })
+      );
+
+      const expected = [
+        {
+          curve: "ed25519",
+          derivationPath: "m/44'/1729'/0'/0'",
+          label: "Account 0",
+          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H0",
+          pkh: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
+          seedFingerPrint: "mockPrint1",
+          type: "mnemonic",
+        },
+        {
+          curve: "ed25519",
+          derivationPath: "m/44'/1729'/1'/0'",
+          label: "Account 1",
+          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H1",
+          pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+          seedFingerPrint: "mockPrint1",
+          type: "mnemonic",
+        },
+        {
+          curve: "ed25519",
+          derivationPath: "m/44'/1729'/2'/0'",
+          label: "my new account",
+          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
+          pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+          seedFingerPrint: "mockPrint1",
+          type: "mnemonic",
+        },
+      ];
+      expect(store.getState().accounts.items).toEqual(expected);
     });
   });
 });
