@@ -91,13 +91,13 @@ describe("Tezos utils", () => {
       );
       expect(result).toEqual([
         {
-          amount: new BigNumber(3),
+          amount: 3,
           kind: "transaction",
           mutez: true,
           to: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
         },
         {
-          amount: new BigNumber(2),
+          amount: 2,
           kind: "transaction",
           to: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
           mutez: true,
@@ -115,7 +115,7 @@ describe("Tezos utils", () => {
           source: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         },
         {
-          amount: new BigNumber(0),
+          amount: 0,
           fee: undefined,
           gasLimit: undefined,
           kind: "transaction",
@@ -145,7 +145,7 @@ describe("Tezos utils", () => {
           to: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
         },
         {
-          amount: new BigNumber(0),
+          amount: 0,
           fee: undefined,
           gasLimit: undefined,
           kind: "transaction",
@@ -178,7 +178,7 @@ describe("Tezos utils", () => {
         },
 
         {
-          amount: new BigNumber(0),
+          amount: 0,
           fee: undefined,
           gasLimit: undefined,
           kind: "transaction",
