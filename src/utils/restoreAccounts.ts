@@ -1,15 +1,8 @@
 import { Curves, InMemorySigner } from "@taquito/signer";
-import {
-  AccountType,
-  MnemonicAccount,
-  UnencryptedAccount,
-} from "../types/Account";
+import { MnemonicAccount, UnencryptedAccount } from "../types/Account";
+import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
+import { getFullDerivationPath } from "./account/derivationPathUtils";
 import { addressExists, getFingerPrint } from "./tezos";
-
-export const getFullDerivationPath = (index: number) =>
-  `m/44'/1729'/${index}'/0'`;
-export const getRelativeDerivationPath = (index: number) =>
-  `44'/1729'/${index}'/0'`;
 
 export const restoreAccount = async (
   seedPhrase: string,
@@ -24,11 +17,9 @@ export const restoreAccount = async (
   });
   const pkh = await signer.publicKeyHash();
   const pk = await signer.publicKey();
-  const sk = await signer.secretKey();
 
   const result: UnencryptedAccount = {
     pk,
-    sk,
     pkh,
   };
   return result;
@@ -79,16 +70,14 @@ export const restoreMnemonicAccounts = async (
   const seedFingerPrint = await getFingerPrint(seedPhrase);
 
   return Promise.all(
-    accounts.map(async ({ pk, pkh, sk }, i) => {
-      return {
-        curve: "ed25519",
-        derivationPath: getFullDerivationPath(i),
+    accounts.map(async ({ pk, pkh }, i) => {
+      return makeMnemonicAccount(
         pk,
         pkh,
+        i,
         seedFingerPrint,
-        label: `${label || ""}${accounts.length > 1 ? " " + i : ""}`,
-        type: AccountType.MNEMONIC,
-      };
+        `${label || ""}${accounts.length > 1 ? " " + i : ""}`
+      );
     })
   );
 };

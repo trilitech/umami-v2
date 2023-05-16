@@ -18,7 +18,7 @@ import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { useForm } from "react-hook-form";
 import { Curves } from "@taquito/signer";
 import { curvesToDerivationPath } from "../../../utils/tezos/helpers";
-import { getRelativeDerivationPath } from "../../../utils/restoreAccounts";
+import { getRelativeDerivationPath } from "../../../utils/account/derivationPathUtils";
 
 const accountsActions = accountsSlice.actions;
 
