@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Account, AccountType } from "../../types/Account";
 import { UmamiEncrypted } from "../../types/UmamiEncrypted";
+import {
+  deriveAccount,
+  restoreAccountsFromSecret,
+} from "./thunks/restoreMnemonicAccounts";
 
 type State = {
   items: Account[];
@@ -22,6 +26,17 @@ export type SecretPayload = {
 const accountsSlice = createSlice({
   name: "accounts",
   initialState,
+  extraReducers: (builder) => {
+    builder.addCase(deriveAccount.fulfilled, (state, action) => {
+      state.items.push(action.payload);
+    });
+
+    builder.addCase(restoreAccountsFromSecret.fulfilled, (state, action) => {
+      const { accounts, encryptedMnemonic, seedFingerprint } = action.payload;
+      state.seedPhrases[seedFingerprint] = encryptedMnemonic;
+      state.items = state.items.concat(accounts);
+    });
+  },
   reducers: {
     reset: () => initialState,
     addSecret: (

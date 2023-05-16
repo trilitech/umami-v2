@@ -31,7 +31,9 @@ const EnterSeedAndSave = ({
       if (passwordHasBeenSet) {
         await checkPassword(password);
       }
-      await restore(seedPhrase, password, labelRef.current);
+
+      await restore(seedPhrase, password, labelRef.current).unwrap();
+
       toast({ title: "success" });
       onClose();
     } catch (error: any) {

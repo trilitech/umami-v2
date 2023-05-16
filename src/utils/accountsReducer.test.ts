@@ -10,7 +10,7 @@ import { store } from "./store/store";
 import { deriveAccount } from "./store/thunks/restoreMnemonicAccounts";
 
 const {
-  actions: { add, reset, setSelected, addSecret, removeSecret },
+  actions: { add, reset, setSelected, removeSecret, addSecret },
 } = accountsSlice;
 
 jest.mock("./aes");
