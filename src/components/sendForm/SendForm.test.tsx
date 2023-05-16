@@ -11,11 +11,12 @@ import {
 } from "../../mocks/factories";
 import {
   dispatchMockAccounts,
+  fakeRestoreFromMnemonic,
   fillAccountSelector,
   fillPassword,
   resetAccounts,
 } from "../../mocks/helpers";
-import { AccountType } from "../../types/Account";
+import { AccountType, MnemonicAccount } from "../../types/Account";
 import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { formatPkh } from "../../utils/format";
@@ -41,8 +42,6 @@ import {
   waitFor,
   within,
 } from "../../mocks/testUtils";
-
-const { addSecret } = accountsSlice.actions;
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -71,12 +70,19 @@ const MOCK_SK = "mockSk";
 beforeEach(() => {
   useGetSkMock.mockReturnValue(() => MOCK_SK);
 });
-beforeAll(() => {
-  store.dispatch(addSecret({ hash: "mockPrint", secret: {} as any }));
+beforeAll(async () => {
+  await store.dispatch(
+    fakeRestoreFromMnemonic({
+      seedFingerprint: "mockPrint",
+      accounts: [
+        mockAccount(1),
+        mockAccount(2),
+        mockAccount(3),
+      ] as MnemonicAccount[],
+    })
+  );
+
   dispatchMockAccounts([
-    mockAccount(1),
-    mockAccount(2),
-    mockAccount(3),
     mockAccount(4, AccountType.SOCIAL),
     mockAccount(5, AccountType.LEDGER),
   ]);

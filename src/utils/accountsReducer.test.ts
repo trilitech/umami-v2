@@ -1,7 +1,8 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { mockAccount } from "../mocks/factories";
+import { fakeRestoreFromMnemonic } from "../mocks/helpers";
 import { publicKeys1 } from "../mocks/publicKeys";
-import { AccountType } from "../types/Account";
-import { UmamiEncrypted } from "../types/UmamiEncrypted";
+import { AccountType, MnemonicAccount } from "../types/Account";
 import { decrypt } from "./aes";
 import { restoreAccount } from "./restoreAccounts";
 import accountsSlice from "./store/accountsSlice";
@@ -10,7 +11,7 @@ import { store } from "./store/store";
 import { deriveAccount } from "./store/thunks/restoreMnemonicAccounts";
 
 const {
-  actions: { add, reset, setSelected, removeSecret, addSecret },
+  actions: { add, reset, setSelected, removeSecret },
 } = accountsSlice;
 
 jest.mock("./aes");
@@ -113,25 +114,43 @@ describe("Accounts reducer", () => {
     });
   });
 
-  it("should handle deleting seedphrases and all derived accounts", () => {
-    store.dispatch(
-      addSecret({ hash: "mockPrint1", secret: {} as UmamiEncrypted })
+  const fakeRestoreFromMnemonics = (
+    seedFingerprint: string,
+    accounts: MnemonicAccount[]
+  ) =>
+    createAsyncThunk("accounts/restoreFromMnemonic", async () => {
+      return {
+        seedFingerprint,
+        accounts,
+        encryptedMnemonic: {} as any,
+      };
+    });
+
+  it("should handle deleting seedphrases and all derived accounts", async () => {
+    await store.dispatch(
+      fakeRestoreFromMnemonic({
+        seedFingerprint: "mockPrint1",
+        accounts: [
+          mockAccount(1, undefined, "mockPrint1"),
+          mockAccount(3, undefined, "mockPrint1"),
+        ] as MnemonicAccount[],
+      })
     );
-    store.dispatch(
-      addSecret({ hash: "mockPrint2", secret: {} as UmamiEncrypted })
+
+    await store.dispatch(
+      fakeRestoreFromMnemonic({
+        seedFingerprint: "mockPrint2",
+        accounts: [
+          mockAccount(2, undefined, "mockPrint2"),
+        ] as MnemonicAccount[],
+      })
     );
-    store.dispatch(
-      add([
-        mockAccount(1, undefined, "mockPrint1"),
-        mockAccount(2, undefined, "mockPrint2"),
-        mockAccount(3, undefined, "mockPrint1"),
-      ])
-    );
+
     expect(store.getState().accounts).toEqual({
       items: [
         mockAccount(1, undefined, "mockPrint1"),
-        mockAccount(2, undefined, "mockPrint2"),
         mockAccount(3, undefined, "mockPrint1"),
+        mockAccount(2, undefined, "mockPrint2"),
       ],
       seedPhrases: { mockPrint1: {}, mockPrint2: {} },
       selected: null,
@@ -148,8 +167,13 @@ describe("Accounts reducer", () => {
 
   describe("deriveAccount thunk", () => {
     it("should throw if we try to derive from an unknown seedphrase", async () => {
-      store.dispatch(
-        addSecret({ hash: "mockPrint1", secret: {} as UmamiEncrypted })
+      await store.dispatch(
+        fakeRestoreFromMnemonic({
+          seedFingerprint: "mockPrint1",
+          accounts: [
+            mockAccount(1, undefined, "mockPrint1"),
+          ] as MnemonicAccount[],
+        })
       );
 
       let message = "";
@@ -173,12 +197,15 @@ describe("Accounts reducer", () => {
     });
 
     it("should derive and add an account after the last index", async () => {
-      store.dispatch(
-        addSecret({ hash: "mockPrint1", secret: {} as UmamiEncrypted })
+      await store.dispatch(
+        fakeRestoreFromMnemonic({
+          seedFingerprint: "mockPrint1",
+          accounts: [
+            mockAccount(0, AccountType.MNEMONIC, "mockPrint1"),
+            mockAccount(1, AccountType.MNEMONIC, "mockPrint1"),
+          ] as MnemonicAccount[],
+        })
       );
-
-      store.dispatch(add(mockAccount(0, AccountType.MNEMONIC, "mockPrint1")));
-      store.dispatch(add(mockAccount(1, AccountType.MNEMONIC, "mockPrint1")));
 
       await store.dispatch(
         deriveAccount({

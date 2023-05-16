@@ -1,5 +1,6 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fireEvent, screen } from "@testing-library/react";
-import { Account } from "../types/Account";
+import { Account, MnemonicAccount } from "../types/Account";
 import accountsSlice from "../utils/store/accountsSlice";
 import { store } from "../utils/store/store";
 
@@ -28,3 +29,20 @@ export const dispatchMockAccounts = (accounts: Account[]) => {
 export const resetAccounts = () => {
   store.dispatch(accountsSlice.actions.reset());
 };
+
+export const fakeRestoreFromMnemonic = createAsyncThunk(
+  "accounts/restoreFromMnemonic",
+  async ({
+    seedFingerprint,
+    accounts,
+  }: {
+    seedFingerprint: string;
+    accounts: MnemonicAccount[];
+  }) => {
+    return {
+      seedFingerprint,
+      accounts,
+      encryptedMnemonic: {} as any,
+    };
+  }
+);
