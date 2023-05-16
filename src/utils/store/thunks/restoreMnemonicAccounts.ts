@@ -7,7 +7,7 @@ import { restoreAccount, restoreMnemonicAccounts } from "../../restoreAccounts";
 import { getFingerPrint } from "../../tezos";
 import { AppDispatch, RootState } from "../store";
 
-export const restoreAccountsFromSecret = createAsyncThunk<
+export const restoreFromMnemonic = createAsyncThunk<
   {
     seedFingerprint: string;
     encryptedMnemonic: UmamiEncrypted;
