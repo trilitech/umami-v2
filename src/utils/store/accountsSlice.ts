@@ -3,7 +3,7 @@ import { Account, AccountType } from "../../types/Account";
 import { UmamiEncrypted } from "../../types/UmamiEncrypted";
 import {
   deriveAccount,
-  restoreAccountsFromSecret,
+  restoreFromMnemonic,
 } from "./thunks/restoreMnemonicAccounts";
 
 type State = {
@@ -31,8 +31,9 @@ const accountsSlice = createSlice({
       state.items.push(action.payload);
     });
 
-    builder.addCase(restoreAccountsFromSecret.fulfilled, (state, action) => {
+    builder.addCase(restoreFromMnemonic.fulfilled, (state, action) => {
       const { accounts, encryptedMnemonic, seedFingerprint } = action.payload;
+      // updated seedphrase after a successfull restoration.
       state.seedPhrases[seedFingerprint] = encryptedMnemonic;
       state.items = state.items.concat(accounts);
     });

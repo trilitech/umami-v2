@@ -1,7 +1,7 @@
 import { decrypt } from "../aes";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { restoreAccountsFromSecret } from "../store/thunks/restoreMnemonicAccounts";
+import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 
 export const useAccounts = () => {
@@ -50,7 +50,7 @@ export const useRestore = () => {
   const dispatch = useAppDispatch();
 
   return (seedPhrase: string, password: string, label?: string) => {
-    return dispatch(restoreAccountsFromSecret({ seedPhrase, password, label }));
+    return dispatch(restoreFromMnemonic({ seedPhrase, password, label }));
   };
 };
 
