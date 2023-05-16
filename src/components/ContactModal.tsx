@@ -79,7 +79,6 @@ export const UpsertContactModal: FC<{
     }
 
     if (getAccount(pkh)) {
-      console.log("HEYYYY");
       return "Account address cannot be used";
     }
 
