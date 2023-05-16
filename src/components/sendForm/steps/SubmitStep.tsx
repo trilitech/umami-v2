@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { AccountType } from "../../../types/Account";
-import { getRealAmount } from "../../../types/Asset";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
@@ -40,7 +39,7 @@ import {
 import { EstimatedOperation, OperationValue } from "../types";
 import { BigNumber } from "bignumber.js";
 
-const makeTransfer = (
+const makeTransfer = async (
   operation: OperationValue | OperationValue[],
   config: SignerConfig
 ) => {
@@ -54,13 +53,13 @@ const makeTransfer = (
 
   switch (operation.type) {
     case "delegation":
-      return delegate(
+      return await delegate(
         operation.value.sender,
         operation.value.recipient,
         config
       );
     case "tez":
-      return transferTez(
+      return await transferTez(
         operation.value.recipient,
         operation.value.amount,
         config,
@@ -69,9 +68,9 @@ const makeTransfer = (
     case "token": {
       const token = operation.data;
       if (token.type === "fa1.2") {
-        return transferFA12Token(
+        return await transferFA12Token(
           {
-            amount: getRealAmount(operation.value.amount, token),
+            amount: operation.value.amount,
             contract: token.contract,
             recipient: operation.value.recipient,
             sender: operation.value.sender,
@@ -79,9 +78,9 @@ const makeTransfer = (
           config
         );
       }
-      return transferFA2Token(
+      return await transferFA2Token(
         {
-          amount: getRealAmount(operation.value.amount, token),
+          amount: operation.value.amount,
           contract: token.contract,
           recipient: operation.value.recipient,
           sender: operation.value.sender,
@@ -89,10 +88,6 @@ const makeTransfer = (
         },
         config
       );
-    }
-    default: {
-      const error: never = operation;
-      throw error;
     }
   }
 };

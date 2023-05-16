@@ -23,6 +23,7 @@ import {
   Asset,
   FA12Token,
   FA2Token,
+  getRealAmount,
   getTokenSymbol,
   NFT,
 } from "../../../types/Asset";
@@ -383,7 +384,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: new BigNumber(v.amount),
+                amount: getRealAmount(new BigNumber(v.amount), mode.data),
                 sender: v.sender,
                 recipient: v.recipient,
               },
@@ -394,7 +395,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: new BigNumber(v.amount),
+                amount: getRealAmount(new BigNumber(v.amount), mode.data),
                 sender: v.sender,
                 recipient: v.recipient,
               },

@@ -110,9 +110,7 @@ export const getRealAmount = (prettyAmount: BigNumber, t: Asset): BigNumber => {
       ? DEFAULT_TOKEN_DECIMALS
       : t.metadata.decimals;
 
-  return prettyAmount.multipliedBy(
-    new BigNumber(10).exponentiatedBy(new BigNumber(decimals))
-  );
+  return prettyAmount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };
 
 export type Asset = FA12Token | FA2Token | NFT;
