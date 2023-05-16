@@ -62,7 +62,7 @@ export const UpsertContactModal: FC<{
   const accounts = useAccounts();
   const validateName = (name: string) => {
     if (accounts.map((account) => account.label).includes(name)) {
-      return "Account name cannot be used";
+      return "Name already used in accounts";
     }
     return !nameExistsInContacts(name.trim()) || "Name already registered";
   };
@@ -79,7 +79,7 @@ export const UpsertContactModal: FC<{
     }
 
     if (getAccount(pkh)) {
-      return "Account address cannot be used";
+      return "Address already used in accounts";
     }
 
     return !addressExistsInContacts(pkh) || "Address already registered";

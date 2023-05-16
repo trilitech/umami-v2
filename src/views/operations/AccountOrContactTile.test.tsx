@@ -47,7 +47,7 @@ describe("AccountOrContactTile", () => {
     store.dispatch(add(account));
     render(AccountOrContactTileFixture(pkh));
     expect(screen.queryByTestId("account-or-contact-tile")).toHaveTextContent(
-      account.label || ""
+      account.label
     );
   });
 
