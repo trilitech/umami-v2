@@ -9,7 +9,7 @@ describe("csv utils", () => {
     const res = [
       [mockPkh(0), "1.23456", "", ""],
       [mockPkh(0), "1000", mockContract(0), "2"],
-      [mockPkh(0), "2000", mockContract(0)],
+      [mockPkh(0), "123456789123456789", mockContract(0)],
     ].map(parseToCSVRow);
 
     expect(res).toEqual([
@@ -28,7 +28,7 @@ describe("csv utils", () => {
       {
         type: "fa1.2",
         recipient: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
-        amount: new BigNumber(2000),
+        amount: new BigNumber("123456789123456789"),
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0",
       },
     ]);
