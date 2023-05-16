@@ -39,13 +39,6 @@ const accountsSlice = createSlice({
   },
   reducers: {
     reset: () => initialState,
-    addSecret: (
-      state,
-      { payload }: { type: string; payload: SecretPayload }
-    ) => {
-      const { hash, secret } = payload;
-      state.seedPhrases[hash] = secret;
-    },
     removeSecret: (
       state,
       { payload }: { type: string; payload: { fingerPrint: string } }
