@@ -4,18 +4,19 @@ import { formatPkh, truncate } from "../../utils/format";
 import { useUpsertContactModal } from "../home/useUpsertContactModal";
 import { Box, Text } from "@chakra-ui/react";
 import { FC } from "react";
+import { useGetContractName } from "../../utils/hooks/contactsHooks";
+import { useGetAccount } from "../../utils/hooks/accountHooks";
 
-const ContactTile: FC<{
+export const ContactTile: FC<{
   pkh: string;
-  getNameFromAddress: (pkh: string) => string | null;
-}> = ({ pkh, getNameFromAddress }) => {
-  const name = getNameFromAddress(pkh);
+  contactName: string | null;
+}> = ({ pkh, contactName }) => {
   const { modalElement, onOpen } = useUpsertContactModal();
 
   return (
     <Box data-testid="contact-tile">
-      {name ? (
-        <Text size="sm">{truncate(name, 20)}</Text>
+      {contactName ? (
+        <Text size="sm">{truncate(contactName, 20)}</Text>
       ) : (
         <TextAndIconBtn
           text={formatPkh(pkh)}
@@ -31,4 +32,17 @@ const ContactTile: FC<{
   );
 };
 
-export default ContactTile;
+const AccountOrContactTile: React.FC<{ pkh: string }> = ({ pkh }) => {
+  const getContactName = useGetContractName();
+  const getAccount = useGetAccount();
+
+  const account = getAccount(pkh);
+
+  if (account) {
+    return <Text data-testid="account-or-contact-tile">{account.label}</Text>;
+  }
+
+  return <ContactTile pkh={pkh} contactName={getContactName(pkh)} />;
+};
+
+export default AccountOrContactTile;

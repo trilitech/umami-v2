@@ -25,6 +25,7 @@ import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
 import { CopyableAddress } from "./CopyableText";
 import { validateAddress, ValidationResult } from "@taquito/utils";
+import { useAccounts, useGetAccount } from "../utils/hooks/accountHooks";
 
 export const UpsertContactModal: FC<{
   title: string;
@@ -58,7 +59,16 @@ export const UpsertContactModal: FC<{
     reset();
   };
 
+  const accounts = useAccounts();
+  const validateName = (name: string) => {
+    if (accounts.map((account) => account.label).includes(name)) {
+      return "Name already used in accounts";
+    }
+    return !nameExistsInContacts(name.trim()) || "Name already registered";
+  };
+
   const { nameExistsInContacts, addressExistsInContacts } = useContactExists();
+  const getAccount = useGetAccount();
   const validatePkh = (pkh: string) => {
     const validationResult = validateAddress(pkh);
     if (validationResult !== ValidationResult.VALID) {
@@ -67,6 +77,11 @@ export const UpsertContactModal: FC<{
     if (isEdit && contact) {
       return getValues("name") !== contact.name;
     }
+
+    if (getAccount(pkh)) {
+      return "Address already used in accounts";
+    }
+
     return !addressExistsInContacts(pkh) || "Address already registered";
   };
 
@@ -89,9 +104,7 @@ export const UpsertContactModal: FC<{
                 type="text"
                 {...register("name", {
                   required: true,
-                  validate: (name: string) =>
-                    !nameExistsInContacts(name.trim()) ||
-                    "Name already registered",
+                  validate: validateName,
                 })}
                 placeholder="Enter contact’s name"
               />

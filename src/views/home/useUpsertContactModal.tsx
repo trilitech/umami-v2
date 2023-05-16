@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { Contact } from "../../types/Contact";
+import { useGetAccount } from "../../utils/hooks/accountHooks";
 import { contactsActions } from "../../utils/store/contactsSlice";
 
 type Options = {
@@ -20,7 +21,11 @@ const defaultOptions = {
 export const useUpsertContactModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
+  const getAccount = useGetAccount();
   const onSubmitContact = (newContact: Contact) => {
+    if (getAccount(newContact.pkh)) {
+      return;
+    }
     dispatch(contactsActions.upsert(newContact));
     onClose();
   };
