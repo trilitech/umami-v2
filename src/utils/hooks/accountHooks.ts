@@ -49,8 +49,9 @@ export const useGetOwnedAccount = () => {
 export const useRestore = () => {
   const dispatch = useAppDispatch();
 
-  return (seedPhrase: string, password: string, label?: string) =>
-    dispatch(restoreAccountsFromSecret(seedPhrase, password, label));
+  return (seedPhrase: string, password: string, label?: string) => {
+    return dispatch(restoreAccountsFromSecret({ seedPhrase, password, label }));
+  };
 };
 
 /**

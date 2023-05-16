@@ -1,34 +1,34 @@
-import { AnyAction, createAsyncThunk, ThunkAction } from "@reduxjs/toolkit";
-import { AccountType } from "../../../types/Account";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { AccountType, MnemonicAccount } from "../../../types/Account";
+import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
 import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
 import { decrypt, encrypt } from "../../aes";
 import { restoreAccount, restoreMnemonicAccounts } from "../../restoreAccounts";
 import { getFingerPrint } from "../../tezos";
-import accountsSlice from "../accountsSlice";
 import { AppDispatch, RootState } from "../store";
 
-const { addSecret, add } = accountsSlice.actions;
-
-export const restoreAccountsFromSecret = (
-  seedPhrase: string,
-  password: string,
-  label?: string
-): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
-  return async (dispatch) => {
-    const seedFingerPrint = await getFingerPrint(seedPhrase);
-    const accounts = await restoreMnemonicAccounts(seedPhrase, label);
-    dispatch(
-      addSecret({
-        hash: seedFingerPrint,
-        secret: await encrypt(seedPhrase, password),
-      })
-    );
-    dispatch(add(accounts));
+export const restoreAccountsFromSecret = createAsyncThunk<
+  {
+    seedFingerprint: string;
+    encryptedMnemonic: UmamiEncrypted;
+    accounts: MnemonicAccount[];
+  },
+  {
+    seedPhrase: string;
+    password: string;
+    label?: string;
+  },
+  { dispatch: AppDispatch; state: RootState }
+>("accounts/restoreFromMnemonic", async ({ seedPhrase, password, label }) => {
+  return {
+    seedFingerprint: await getFingerPrint(seedPhrase),
+    accounts: await restoreMnemonicAccounts(seedPhrase, label),
+    encryptedMnemonic: await encrypt(seedPhrase, password),
   };
-};
+});
 
 export const deriveAccount = createAsyncThunk<
-  void,
+  MnemonicAccount,
   { fingerPrint: string; password: string; label: string },
   { dispatch: AppDispatch; state: RootState }
 >(
@@ -53,6 +53,6 @@ export const deriveAccount = createAsyncThunk<
     const { pk, pkh } = await restoreAccount(seedphrase, nextIndex);
     const account = makeMnemonicAccount(pk, pkh, nextIndex, fingerPrint, label);
 
-    thunkAPI.dispatch(add(account));
+    return account;
   }
 );
