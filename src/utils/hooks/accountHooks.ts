@@ -1,7 +1,7 @@
 import { decrypt } from "../aes";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { restoreAccountsFromSecret } from "../store/thunks/restoreAccountsFromSecret";
+import { restoreAccountsFromSecret } from "../store/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 
 export const useAccounts = () => {

@@ -11,9 +11,7 @@ type Base = {
   pk: string;
 };
 
-export type UnencryptedAccount = Base & {
-  sk: string;
-};
+export type UnencryptedAccount = Base;
 
 export type SocialAccount = Base & {
   label: string;
