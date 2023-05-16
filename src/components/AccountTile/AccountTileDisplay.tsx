@@ -8,7 +8,7 @@ export type Props = {
   label: string;
   address: string;
   balance: string | null;
-  onClick: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   selected?: boolean;
 };
 
@@ -30,7 +30,9 @@ export const AccountTileDisplay: React.FC<Props> = ({
     onClick={onClick}
     cursor="pointer"
     _hover={{
-      border: `1px solid ${selected ? colors.orange : colors.gray[700]}`,
+      border: onClick
+        ? `1px solid ${selected ? colors.orange : colors.gray[700]}`
+        : undefined,
     }}
     alignItems="center"
   >
@@ -44,9 +46,11 @@ export const AccountTileDisplay: React.FC<Props> = ({
           </Text>
         </Flex>
       </Box>
-      <Heading mb={4} alignSelf={"flex-end"} size={"lg"}>
-        {balance}
-      </Heading>
+      {balance && (
+        <Heading mb={4} alignSelf={"flex-end"} size={"lg"}>
+          {balance}
+        </Heading>
+      )}
     </Flex>
   </Flex>
 );

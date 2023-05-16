@@ -19,6 +19,7 @@ import DelegationsView from "./views/delegations/DelegationsView";
 import AddressBookView from "./views/addressBook/AddressBookView";
 import BatchView from "./views/batch/BatchView";
 import { resetBeacon, useBeaconInit } from "./utils/beacon/beacon";
+import TokensView from "./views/tokens/TokensView";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -46,6 +47,7 @@ const MemoizedRouter = React.memo(() => {
           path="/delegations"
           element={withSideMenu(<DelegationsView />)}
         />
+        <Route path="/tokens" element={withSideMenu(<TokensView />)} />
         <Route
           path="/address-book"
           element={withSideMenu(<AddressBookView />)}
