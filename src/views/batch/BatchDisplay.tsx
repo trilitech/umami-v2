@@ -26,9 +26,15 @@ import {
 import { OperationValue } from "../../components/sendForm/types";
 import { Account } from "../../types/Account";
 import { formatTokenAmount } from "../../types/Asset";
+<<<<<<< HEAD
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { Batch } from "../../utils/store/assetsSlice";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
+=======
+import { formatPkh, mutezToTez, prettyTezAmount } from "../../utils/format";
+import { Batch } from "../../utils/store/assetsSlice";
+import { getBatchSubtotalInTez, getTotalFeeInTez } from "./batchUtils";
+>>>>>>> 0a93ac9 (Use mutez instead of tez)
 
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
@@ -67,16 +73,27 @@ const RightPanel = ({
   onDelete: () => void;
   onSend: () => void;
 }) => {
-  const fee = getTotalFee(batch.items);
+  const feeInMutez = getTotalFeeInTez(batch.items);
 
-  const subTotal = getBatchSubtotal(batch.items.map((item) => item.operation));
+  const subTotal = getBatchSubtotalInTez(
+    batch.items.map((item) => item.operation)
+  );
 
+<<<<<<< HEAD
   const total = subTotal.plus(fee);
   return (
     <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
       <Box flex={1}>
         <Fee mutez={fee} />
         <Subtotal mutez={subTotal} />
+=======
+  const total = subTotal.plus(mutezToTez(feeInMutez));
+  return (
+    <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
+      <Box flex={1}>
+        <Fee mutez={feeInMutez} />
+        <Subtotal tez={subTotal} />
+>>>>>>> 0a93ac9 (Use mutez instead of tez)
       </Box>
       <Box>
         <Divider />

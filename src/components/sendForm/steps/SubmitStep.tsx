@@ -24,7 +24,7 @@ import {
   transferFA2Token,
   transferMutez,
 } from "../../../utils/tezos";
-import { getBatchSubtotal } from "../../../views/batch/batchUtils";
+import { getBatchSubtotalInTez } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { useRenderAccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
@@ -37,6 +37,7 @@ import {
 } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
 import { BigNumber } from "bignumber.js";
+import { mutezToTez } from "../../../utils/format";
 
 const makeTransfer = async (
   operation: OperationValue | OperationValue[],
@@ -116,7 +117,11 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
         </Box>
       )}
       {transfer.type === "tez" ? (
+<<<<<<< HEAD
         <Subtotal mutez={transfer.value.amount} />
+=======
+        <Subtotal tez={mutezToTez(transfer.value.amount)} />
+>>>>>>> 0a93ac9 (Use mutez instead of tez)
       ) : null}
     </>
   );
@@ -126,18 +131,22 @@ const BatchRecap = ({ transfer }: { transfer: OperationValue[] }) => {
   return (
     <>
       <TransactionsAmount amount={transfer.length} />
+<<<<<<< HEAD
       <Subtotal mutez={getBatchSubtotal(transfer)} />
+=======
+      <Subtotal tez={getBatchSubtotalInTez(transfer)} />
+>>>>>>> 0a93ac9 (Use mutez instead of tez)
     </>
   );
 };
 
 const getSubTotal = (t: OperationValue[] | OperationValue): BigNumber => {
   if (Array.isArray(t)) {
-    return getBatchSubtotal(t);
+    return getBatchSubtotalInTez(t);
   }
 
   if (t.type === "tez") {
-    return t.value.amount;
+    return mutezToTez(t.value.amount);
   }
 
   return new BigNumber(0);
