@@ -15,7 +15,6 @@ import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
 import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
 import SignPayloadRequestPannel from "./pannels/SignPayloadRequestPannel";
 import { BigNumber } from "bignumber.js";
-import { mutezToTez } from "../../format";
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;

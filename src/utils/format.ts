@@ -12,12 +12,7 @@ export const truncate = (name: string, len: number) => {
 export const tezToMutez = (tez: string): BigNumber =>
   format("tz", "mutez", tez) as BigNumber;
 
-<<<<<<< HEAD
 export const mutezToTez = (m: BigNumber) => format("mutez", "tz", m) as string;
-=======
-export const mutezToTez = (m: BigNumber) =>
-  format("mutez", "tz", m) as BigNumber;
->>>>>>> 0a93ac9 (Use mutez instead of tez)
 
 export const prettyTezAmount = (a: BigNumber, isTez = false) =>
   `${String(isTez ? a : format("mutez", "tz", a))} ꜩ`;
