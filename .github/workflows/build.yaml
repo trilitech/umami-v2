@@ -32,6 +32,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: glibc experiments
+        run: |
+          ldd --version
+          sudo apt-get update
+          sudo apt-get upgrade -y libc6 glibc-source
+          ldd --version
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
