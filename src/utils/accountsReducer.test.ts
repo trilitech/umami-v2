@@ -1,4 +1,3 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { mockAccount } from "../mocks/factories";
 import { fakeRestoreFromMnemonic } from "../mocks/helpers";
 import { publicKeys1 } from "../mocks/publicKeys";
@@ -113,18 +112,6 @@ describe("Accounts reducer", () => {
       seedPhrases: {},
     });
   });
-
-  const fakeRestoreFromMnemonics = (
-    seedFingerprint: string,
-    accounts: MnemonicAccount[]
-  ) =>
-    createAsyncThunk("accounts/restoreFromMnemonic", async () => {
-      return {
-        seedFingerprint,
-        accounts,
-        encryptedMnemonic: {} as any,
-      };
-    });
 
   it("should handle deleting seedphrases and all derived accounts", async () => {
     await store.dispatch(
