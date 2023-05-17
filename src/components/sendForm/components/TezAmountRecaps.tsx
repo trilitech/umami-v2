@@ -2,7 +2,7 @@ import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../../utils/format";
 
-type Props = { tez: BigNumber } & FlexProps;
+type Props = { mutez: BigNumber } & FlexProps;
 
 export const TransactionsAmount = ({
   amount,
@@ -23,7 +23,7 @@ export const TransactionsAmount = ({
   );
 };
 
-export const Subtotal = ({ tez, ...flexProps }: Props) => {
+export const Subtotal = ({ mutez, ...flexProps }: Props) => {
   return (
     <Flex
       aria-label="sub-total"
@@ -34,12 +34,12 @@ export const Subtotal = ({ tez, ...flexProps }: Props) => {
       <Heading size="sm" color="text.dark">
         Subtotal
       </Heading>
-      <Text size="sm">{prettyTezAmount(tez, true)}</Text>
+      <Text size="sm">{prettyTezAmount(mutez)}</Text>
     </Flex>
   );
 };
 
-export const Total = ({ tez, ...flexProps }: Props) => {
+export const Total = ({ mutez, ...flexProps }: Props) => {
   return (
     <Flex
       aria-label="total"
@@ -52,7 +52,7 @@ export const Total = ({ tez, ...flexProps }: Props) => {
       <Heading size="sm" color="text.dark">
         Total
       </Heading>
-      <Text size="sm">{prettyTezAmount(tez, true)}</Text>
+      <Text size="sm">{prettyTezAmount(mutez)}</Text>
     </Flex>
   );
 };

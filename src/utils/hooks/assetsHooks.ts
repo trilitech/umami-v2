@@ -128,7 +128,8 @@ const useTezToDollar = () => {
   if (rate === null) {
     return null;
   }
-  return (tezosBalance: BigNumber) => tezosBalance.multipliedBy(rate);
+  return (tezosBalance: string) =>
+    new BigNumber(tezosBalance).multipliedBy(rate);
 };
 
 export const useGetDollarBalance = () => {

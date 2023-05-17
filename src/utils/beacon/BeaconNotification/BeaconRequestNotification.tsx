@@ -15,7 +15,6 @@ import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
 import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
 import SignPayloadRequestPannel from "./pannels/SignPayloadRequestPannel";
 import { BigNumber } from "bignumber.js";
-import { mutezToTez } from "../../format";
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;
@@ -108,7 +107,7 @@ const buildTransfer = (o: OperationRequestOutput) => {
     const result: OperationValue = {
       type: "tez",
       value: {
-        amount: mutezToTez(new BigNumber(operation.amount)),
+        amount: new BigNumber(operation.amount),
         sender: o.sourceAddress,
         recipient: operation.destination,
         parameter: operation.parameters,

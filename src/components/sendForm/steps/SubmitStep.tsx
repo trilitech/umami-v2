@@ -24,7 +24,7 @@ import {
   transferFA2Token,
   transferMutez,
 } from "../../../utils/tezos";
-import { getBatchSubtotalInTez } from "../../../views/batch/batchUtils";
+import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { useRenderAccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
@@ -37,7 +37,6 @@ import {
 } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
 import { BigNumber } from "bignumber.js";
-import { mutezToTez } from "../../../utils/format";
 
 const makeTransfer = async (
   operation: OperationValue | OperationValue[],
@@ -117,7 +116,7 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
         </Box>
       )}
       {transfer.type === "tez" ? (
-        <Subtotal tez={mutezToTez(transfer.value.amount)} />
+        <Subtotal mutez={transfer.value.amount} />
       ) : null}
     </>
   );
@@ -127,18 +126,18 @@ const BatchRecap = ({ transfer }: { transfer: OperationValue[] }) => {
   return (
     <>
       <TransactionsAmount amount={transfer.length} />
-      <Subtotal tez={getBatchSubtotalInTez(transfer)} />
+      <Subtotal mutez={getBatchSubtotal(transfer)} />
     </>
   );
 };
 
 const getSubTotal = (t: OperationValue[] | OperationValue): BigNumber => {
   if (Array.isArray(t)) {
-    return getBatchSubtotalInTez(t);
+    return getBatchSubtotal(t);
   }
 
   if (t.type === "tez") {
-    return mutezToTez(t.value.amount);
+    return t.value.amount;
   }
 
   return new BigNumber(0);
@@ -184,8 +183,7 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
-  const feeInTez = mutezToTez(fee);
-  const total = feeInTez.plus(getSubTotal(transfer));
+  const total = fee.plus(getSubTotal(transfer));
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
@@ -209,7 +207,7 @@ export const RecapDisplay: React.FC<{
             <Fee mutez={fee} />
           </Box>
           <Divider mb={2} mt={2} />
-          <Total tez={total} />
+          <Total mutez={total} />
         </ModalBody>
         <ModalFooter justifyContent={"center"}>
           <SignButton

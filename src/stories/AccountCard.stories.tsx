@@ -19,6 +19,6 @@ export const Nominal = Template.bind({});
 Nominal.args = {
   label: "My super account",
   pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-  tezBalance: new BigNumber(120.234),
+  tezBalance: "120.234",
   dollarBalance: new BigNumber(13000),
 };

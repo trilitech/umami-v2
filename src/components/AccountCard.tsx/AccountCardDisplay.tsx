@@ -18,7 +18,7 @@ type Props = {
   onDelegate?: () => void;
   label: string;
   pkh: string;
-  tezBalance: BigNumber | null;
+  tezBalance: string | null;
   dollarBalance: BigNumber | null;
   tokens: Array<FA12Token | FA2Token>;
   nfts: Array<NFT>;
