@@ -5,7 +5,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-// import ModalBackground from "../../assets/onboarding/modal_background.png";
+import ModalBackground from "../../assets/onboarding/background_image.svg";
 import { ArrowBackIcon, CloseIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { useAccounts } from "../../utils/hooks/accountHooks";
@@ -145,7 +145,8 @@ export const useCreateOrImportSecretModal = () => {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay
-          // bgImage={ModalBackground}
+          bgImage={hasAccounts ? undefined : ModalBackground}
+          bgColor={hasAccounts ? undefined : "#0A0A0A"}
           backdropFilter="blur(5px)"
           bgPosition="center"
           bgSize="cover"
@@ -160,9 +161,12 @@ export const useCreateOrImportSecretModal = () => {
           {history.length > 1 ? (
             <IconButton
               size="lg"
+              top={"4px"}
+              left={"4px"}
               position="absolute"
               variant="ghost"
               aria-label="Back"
+              color={"umami.gray.450"}
               icon={<ArrowBackIcon />}
               onClick={() => {
                 history.pop();
@@ -173,11 +177,13 @@ export const useCreateOrImportSecretModal = () => {
             />
           ) : (
             <IconButton
-              size="lg"
-              right={0}
+              size="sm"
+              top={"8px"}
+              right={"8px"}
               position="absolute"
               variant="ghost"
               aria-label="Close"
+              color={"umami.gray.450"}
               icon={<CloseIcon />}
               onClick={onClose}
             />
