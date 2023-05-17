@@ -7,6 +7,7 @@ import {
   GridItem,
   Grid,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { SupportedIcons } from "../../CircleIcon";
@@ -18,23 +19,36 @@ import {
   StepType,
   TemporaryMnemonicAccountConfig,
 } from "../useOnboardingModal";
+import { InMemorySigner } from "@taquito/signer";
 
 const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onBlur",
+  });
+  const toast = useToast();
   const [value, setValue] = useState("12");
-  const onSubmit = (data: FieldValues) => {
+  const onSubmit = async (data: FieldValues) => {
     let seedphrase = "";
     for (const key in data) {
       seedphrase += data[key] + " ";
     }
-    // TODO validate seedphrase
     const config = new TemporaryMnemonicAccountConfig();
-    config.seedphrase = seedphrase;
-    setStep({ type: StepType.derivationPath, config });
+    config.seedphrase = seedphrase.trim();
+
+    try {
+      InMemorySigner.fromMnemonic({
+        mnemonic: config.seedphrase,
+        derivationPath: "44'/1729'/0'/0'",
+        curve: "ed25519",
+      });
+      setStep({ type: StepType.derivationPath, config });
+    } catch (error: any) {
+      toast({ title: "Invalid Mnemonic", description: error.message });
+    }
   };
   return (
     <ModalContentWrapper
@@ -46,6 +60,7 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <VStack w="100%" spacing={4}>
             <Select
+              data-testid="select"
               onChange={(event) => setValue(event.target.value)}
               value={value}
             >
@@ -93,6 +108,7 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
               w="100%"
               size="lg"
               minH="48px"
+              isDisabled={!isValid}
             >
               Continue
             </Button>

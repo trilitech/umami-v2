@@ -11,7 +11,7 @@ const generate24WordMnemonicMock = generate24WordMnemonic as jest.Mock;
 const setStepMock = jest.fn((step: Step) => {});
 
 const fixture = (setStep: (step: Step) => void) => (
-    <GenerateSeedphrase setStep={setStep} />
+  <GenerateSeedphrase setStep={setStep} />
 );
 
 describe("<GenerateSeedphrase />", () => {
