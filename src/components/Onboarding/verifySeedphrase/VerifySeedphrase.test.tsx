@@ -6,7 +6,7 @@ import { selectRandomElements } from "../../../utils/tezos/helpers";
 
 const config = new TemporaryMnemonicAccountConfig();
 config.seedphrase = seedPhrase;
-const setStepMock = jest.fn((step: Step) => { });
+const setStepMock = jest.fn((step: Step) => {});
 const selectRandomElementsMock = selectRandomElements as jest.Mock;
 
 // TODO refactor mocks
@@ -22,15 +22,12 @@ beforeEach(() => {
 const fixture = (
   setStep: (step: Step) => void,
   config: TemporaryMnemonicAccountConfig
-) => (
-  <VerifySeedphrase setStep={setStep} config={config} />
-);
+) => <VerifySeedphrase setStep={setStep} config={config} />;
 
 describe("<VerifySeedphrase />", () => {
   describe("Given no mnemonic has been entered", () => {
     test("button is disabled", async () => {
       render(fixture(setStepMock, config));
-      console.log(selectRandomElements(seedPhrase.split(" "), 5));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       await waitFor(() => {
         expect(confirmBtn).toBeDisabled();

@@ -2,7 +2,7 @@ import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
 import ConnectOptions from "./ConnectOptions";
 
-const setStepMock = jest.fn((step: Step) => { });
+const setStepMock = jest.fn((step: Step) => {});
 
 const fixture = (setStep: (step: Step) => void) => (
   <ConnectOptions setStep={setStep} />
