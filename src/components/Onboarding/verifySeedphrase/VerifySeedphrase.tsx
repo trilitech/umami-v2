@@ -17,20 +17,7 @@ import {
   StepType,
   TemporaryMnemonicAccountConfig,
 } from "../useOnboardingModal";
-
-function selectRandomElements(
-  arr: any[],
-  n: number
-): {
-  index: number;
-  value: any;
-}[] {
-  const shuffled = arr
-    .map((value, index) => ({ value, index }))
-    .sort(() => Math.random() - 0.5);
-  const selected = shuffled.slice(0, n).sort((a, b) => a.index - b.index);
-  return selected.map(({ index, value }) => ({ index, value }));
-}
+import { selectRandomElements } from "../../../utils/tezos/helpers";
 
 const VerifySeedphrase = ({
   setStep,
@@ -45,8 +32,10 @@ const VerifySeedphrase = ({
     register,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm();
-  const [randomElements] = useState(selectRandomElements(seedphraseArray, 0));
+  } = useForm({
+    mode: "onBlur",
+  });
+  const [randomElements] = useState(selectRandomElements(seedphraseArray, 5));
   const onSubmit = () => {
     setStep({ type: StepType.nameAccount, config });
   };
@@ -83,11 +72,11 @@ const VerifySeedphrase = ({
             })}
             <Button
               type="submit"
-              bg="umami.blue"
+              // bg="umami.blue"
               w="100%"
               size="lg"
               minH="48px"
-              disabled={!isValid}
+              isDisabled={!isValid}
             >
               Continue
             </Button>

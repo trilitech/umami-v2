@@ -142,3 +142,17 @@ export const makeFA12TransferMethod = async (
   const contractInstance = await toolkit.contract.at(contract);
   return contractInstance.methods.transfer(sender, recipient, amount);
 };
+
+export const selectRandomElements = (
+  arr: any[],
+  n: number
+): {
+  index: number;
+  value: any;
+}[] => {
+  const shuffled = arr
+    .map((value, index) => ({ value, index }))
+    .sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, n).sort((a, b) => a.index - b.index);
+  return selected.map(({ index, value }) => ({ index, value }));
+};

@@ -7,6 +7,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { useAccounts } from "../../../utils/hooks/accountHooks";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import {
@@ -26,8 +27,13 @@ export const NameAccount = ({
   const { register, handleSubmit, formState } = useForm<{
     accountName: string;
   }>();
+  const accounts = useAccounts();
   const onSubmit = (p: { accountName: string }) => {
-    config.label = p.accountName;
+    if (p.accountName.trim().length > 0) {
+      config.label = p.accountName.trim();
+    } else {
+      config.label = `Account ${accounts.length + 1}`;
+    }
     if (config instanceof TemporaryLedgerAccountConfig) {
       setStep({ type: StepType.masterPassword, config: config });
     } else {
@@ -48,6 +54,7 @@ export const NameAccount = ({
             <FormControl isInvalid={!isValid && formState.isDirty}>
               <FormLabel>Account name</FormLabel>
               <Input
+                data-testid="name"
                 type="text"
                 {...register("accountName", {
                   required: false,
