@@ -26,10 +26,9 @@ import {
 import { OperationValue } from "../../components/sendForm/types";
 import { Account } from "../../types/Account";
 import { formatTokenAmount } from "../../types/Asset";
-import { formatPkh } from "../../utils/format";
+import { formatPkh, mutezToTez, prettyTezAmount } from "../../utils/format";
 import { Batch } from "../../utils/store/assetsSlice";
-import { mutezToTez, prettyTezAmount } from "../../utils/store/impureFormat";
-import { getBatchSubtotal, getTotalFee } from "./batchUtils";
+import { getBatchSubtotalInTez, getTotalFeeInTez } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
@@ -53,7 +52,7 @@ const renderAmount = (operation: OperationValue) => {
       );
     }
     case "tez":
-      return prettyTezAmount(operation.value.amount, true);
+      return prettyTezAmount(operation.value.amount);
     case "delegation":
       return "";
   }
@@ -68,15 +67,17 @@ const RightPanel = ({
   onDelete: () => void;
   onSend: () => void;
 }) => {
-  const fee = getTotalFee(batch.items);
+  const feeInMutez = getTotalFeeInTez(batch.items);
 
-  const subTotal = getBatchSubtotal(batch.items.map((item) => item.operation));
+  const subTotal = getBatchSubtotalInTez(
+    batch.items.map((item) => item.operation)
+  );
 
-  const total = subTotal.plus(mutezToTez(fee));
+  const total = subTotal.plus(mutezToTez(feeInMutez));
   return (
     <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
       <Box flex={1}>
-        <Fee mutez={fee} />
+        <Fee mutez={feeInMutez} />
         <Subtotal tez={subTotal} />
       </Box>
       <Box>

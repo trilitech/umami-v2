@@ -34,6 +34,7 @@ describe("Tezos utils", () => {
         },
         {
           type: "tez",
+
           value: {
             amount: new BigNumber(2),
             sender: pkh1,
@@ -92,12 +93,14 @@ describe("Tezos utils", () => {
         {
           amount: 3,
           kind: "transaction",
+          mutez: true,
           to: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
         },
         {
           amount: 2,
           kind: "transaction",
           to: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+          mutez: true,
           parameter: {
             entrypoint: "fulfill_ask",
             value: {
@@ -294,7 +297,7 @@ describe("Tezos utils", () => {
             {
               type: "tez",
               value: {
-                amount: new BigNumber(0.0001),
+                amount: new BigNumber(100),
                 sender: pkh1,
                 recipient: pkh2,
               },
@@ -302,7 +305,7 @@ describe("Tezos utils", () => {
             {
               type: "tez",
               value: {
-                amount: new BigNumber(0.0002),
+                amount: new BigNumber(200),
                 sender: pkh1,
                 recipient: pkh2,
               },

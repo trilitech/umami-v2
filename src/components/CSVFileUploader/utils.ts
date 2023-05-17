@@ -1,6 +1,7 @@
 import { validateAddress, ValidationResult } from "@taquito/utils";
 import { Asset, getRealAmount } from "../../types/Asset";
-import { parseNonNegativeFloat } from "../../utils/helpers";
+import { tezToMutez } from "../../utils/format";
+import { validateNonNegativeNumber } from "../../utils/helpers";
 import { OperationValue } from "../sendForm/types";
 import { CSVRow } from "./types";
 
@@ -11,21 +12,21 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
     throw new Error("Invalid csv format");
   }
 
-  const [recipient, amountString, contract, tokenIdString] = filteredRow;
-  const amount = parseNonNegativeFloat(amountString);
+  const [recipient, prettyAmount, contract, tokenId] = filteredRow;
+  const checkedPrettyAmount = validateNonNegativeNumber(prettyAmount);
 
   if (validateAddress(recipient) !== ValidationResult.VALID) {
     throw new Error("Invalid csv value: recipient");
   }
 
-  if (amount.isNaN() || amount.isEqualTo(0)) {
+  if (checkedPrettyAmount === null || checkedPrettyAmount === "0") {
     throw new Error("Invalid csv value: amount");
   }
 
   let res: CSVRow = {
     type: "tez",
     recipient,
-    amount,
+    prettyAmount,
   };
 
   if (contract !== undefined) {
@@ -33,12 +34,12 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
       throw new Error("Invalid csv value: contract address");
     }
     res = { ...res, type: "fa1.2", contract };
-    if (tokenIdString !== undefined) {
-      const tokenId = parseNonNegativeFloat(tokenIdString);
-      if (tokenId.isNaN()) {
+    if (tokenId !== undefined) {
+      const checkedTokenId = validateNonNegativeNumber(tokenId);
+      if (checkedTokenId === null) {
         throw new Error("Invalid csv value: tokenId");
       }
-      res = { ...res, type: "fa2", tokenId: tokenId.toNumber() };
+      res = { ...res, type: "fa2", tokenId: Number(checkedTokenId) };
     }
   }
 
@@ -50,16 +51,18 @@ export const csvRowToOperationValue = (
   csvRow: CSVRow,
   contractToAsset: Record<string, Asset>
 ): OperationValue => {
-  const value = {
+  const baseValue = {
     sender,
-    amount: csvRow.amount,
     recipient: csvRow.recipient,
   };
   switch (csvRow.type) {
     case "tez":
       return {
         type: "tez",
-        value,
+        value: {
+          ...baseValue,
+          amount: tezToMutez(csvRow.prettyAmount),
+        },
       };
     case "fa1.2": {
       const asset = contractToAsset[csvRow.contract];
@@ -68,7 +71,6 @@ export const csvRowToOperationValue = (
           `Token "${csvRow.contract}" is not owned by the sender`
         );
       }
-      value.amount = getRealAmount(value.amount, asset);
       if (asset.type !== "fa1.2" || csvRow.contract !== asset.contract) {
         throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
       }
@@ -79,7 +81,10 @@ export const csvRowToOperationValue = (
           contract: asset.contract,
           balance: asset.balance,
         },
-        value,
+        value: {
+          ...baseValue,
+          amount: getRealAmount(csvRow.prettyAmount, asset),
+        },
       };
     }
     case "fa2": {
@@ -89,7 +94,11 @@ export const csvRowToOperationValue = (
           `Token "${csvRow.contract}" is not owned by the sender`
         );
       }
-      value.amount = getRealAmount(value.amount, asset);
+
+      const value = {
+        ...baseValue,
+        amount: getRealAmount(csvRow.prettyAmount, asset),
+      };
 
       if (asset.type === "fa1.2" || csvRow.contract !== asset.contract) {
         throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);

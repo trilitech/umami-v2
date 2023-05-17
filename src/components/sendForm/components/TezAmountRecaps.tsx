@@ -1,6 +1,6 @@
 import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
-import { prettyTezAmount } from "../../../utils/store/impureFormat";
 import { BigNumber } from "bignumber.js";
+import { prettyTezAmount } from "../../../utils/format";
 
 type Props = { tez: BigNumber } & FlexProps;
 

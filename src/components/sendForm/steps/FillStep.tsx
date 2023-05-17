@@ -27,13 +27,13 @@ import {
   getTokenSymbol,
   NFT,
 } from "../../../types/Asset";
+import { tezToMutez } from "../../../utils/format";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import { RecipentAutoComplete } from "../../RecipientAutoComplete/RecipientAutoComplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { OperationValue, SendFormMode } from "../types";
-import { BigNumber } from "bignumber.js";
 
 export const DelegateForm = ({
   onSubmit,
@@ -246,7 +246,6 @@ export const SendTezOrNFTForm = ({
                 type={"number"}
                 {...register("amount", {
                   required: true,
-                  valueAsNumber: true,
                 })}
                 placeholder="Enter amount..."
               />
@@ -351,7 +350,7 @@ export const FillStep: React.FC<{
             onSubmitBatch({
               type: "tez",
               value: {
-                amount: new BigNumber(v.amount),
+                amount: tezToMutez(v.amount),
                 sender: v.sender,
                 recipient: v.recipient,
                 parameter,
@@ -362,7 +361,7 @@ export const FillStep: React.FC<{
             onSubmit({
               type: "tez",
               value: {
-                amount: new BigNumber(v.amount),
+                amount: tezToMutez(v.amount),
                 sender: v.sender,
                 recipient: v.recipient,
                 parameter,
@@ -384,7 +383,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: getRealAmount(new BigNumber(v.amount), mode.data),
+                amount: getRealAmount(v.amount, mode.data),
                 sender: v.sender,
                 recipient: v.recipient,
               },
@@ -395,7 +394,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: getRealAmount(new BigNumber(v.amount), mode.data),
+                amount: getRealAmount(v.amount, mode.data),
                 sender: v.sender,
                 recipient: v.recipient,
               },

@@ -35,6 +35,7 @@ export const operationValuesToParams = async (
           to: operation.value.recipient,
           amount: operation.value.amount.toNumber(),
           parameter: operation.value.parameter,
+          mutez: true,
         });
         break;
       case "delegation":

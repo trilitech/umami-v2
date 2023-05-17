@@ -16,19 +16,19 @@ describe("csv utils", () => {
       {
         type: "tez",
         recipient: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
-        amount: new BigNumber(1.23456),
+        prettyAmount: "1.23456",
       },
       {
         type: "fa2",
         recipient: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
-        amount: new BigNumber(1000),
+        prettyAmount: "1000",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0",
         tokenId: 2,
       },
       {
         type: "fa1.2",
         recipient: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
-        amount: new BigNumber("123456789123456789"),
+        prettyAmount: "123456789123456789",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0",
       },
     ]);
@@ -72,13 +72,13 @@ describe("csv utils", () => {
     const mockCSVTezTransferRow = {
       type: "tez",
       recipient: mockPkh(1),
-      amount: new BigNumber(1),
+      prettyAmount: "1",
     } as CSVRow;
     const res = csvRowToOperationValue(mockPkh(0), mockCSVTezTransferRow, {});
     expect(res).toEqual({
       type: "tez",
       value: {
-        amount: new BigNumber(1),
+        amount: new BigNumber(1000000),
         recipient: mockPkh(1),
         sender: mockPkh(0),
       },
@@ -89,7 +89,7 @@ describe("csv utils", () => {
     const mockCSVFA12TransferRow = {
       type: "fa1.2",
       recipient: mockPkh(1),
-      amount: new BigNumber(10000),
+      prettyAmount: "10000",
       contract: ghostFA12.contract,
     } as CSVRow;
     const res = csvRowToOperationValue(mockPkh(0), mockCSVFA12TransferRow, {
@@ -114,7 +114,7 @@ describe("csv utils", () => {
     const mockCSVFA2TransferRow = {
       type: "fa2",
       recipient: mockPkh(1),
-      amount: new BigNumber(1),
+      prettyAmount: "1",
       contract: ghostFA2.contract,
       tokenId: parseInt(ghostFA2.tokenId),
     } as CSVRow;
@@ -142,7 +142,7 @@ describe("csv utils", () => {
     const mockCSVFA2TransferRow = {
       type: "fa2",
       recipient: mockPkh(1),
-      amount: new BigNumber(1),
+      prettyAmount: "1",
       contract: ghostTezzard.contract,
       tokenId: parseInt(ghostTezzard.tokenId),
     } as CSVRow;
@@ -171,7 +171,7 @@ describe("csv utils", () => {
     const mockCSVFA2TransferRow = {
       type: "fa2",
       recipient: mockPkh(1),
-      amount: new BigNumber(100),
+      prettyAmount: "100",
       contract: ghostTezzard.contract,
       tokenId: parseInt(ghostTezzard.tokenId),
     } as CSVRow;

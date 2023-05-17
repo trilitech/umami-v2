@@ -123,7 +123,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(1),
-            amount: new BigNumber(1),
+            amount: new BigNumber(1000000),
           },
         },
         {
@@ -131,7 +131,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(2),
-            amount: new BigNumber(2),
+            amount: new BigNumber(2000000),
           },
         },
         {
@@ -139,7 +139,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(3),
-            amount: new BigNumber(3),
+            amount: new BigNumber(3000000),
           },
         },
       ],
@@ -294,7 +294,7 @@ describe("<BatchView />", () => {
           {
             type: "tez",
             value: {
-              amount: new BigNumber(1),
+              amount: new BigNumber(1000000),
               recipient: mockPkh(1),
               sender: mockPkh(1),
             },
@@ -302,7 +302,7 @@ describe("<BatchView />", () => {
           {
             type: "tez",
             value: {
-              amount: new BigNumber(2),
+              amount: new BigNumber(2000000),
               recipient: mockPkh(2),
               sender: mockPkh(1),
             },
@@ -310,7 +310,7 @@ describe("<BatchView />", () => {
           {
             type: "tez",
             value: {
-              amount: new BigNumber(3),
+              amount: new BigNumber(3000000),
               recipient: mockPkh(3),
               sender: mockPkh(1),
             },

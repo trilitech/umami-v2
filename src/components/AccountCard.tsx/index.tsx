@@ -1,3 +1,4 @@
+import { mutezToTez } from "../../utils/format";
 import { useSelectedAccount } from "../../utils/hooks/accountHooks";
 import {
   useGetAccountAllTokens,
@@ -5,7 +6,6 @@ import {
   useGetAccountNFTs,
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
-import { mutezToTez } from "../../utils/store/impureFormat";
 import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { useReceiveModal } from "../ReceiveModal";
 import { AccountCardDisplay } from "./AccountCardDisplay";

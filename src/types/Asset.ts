@@ -100,9 +100,10 @@ export const getTokenPrettyBalance = (
   return `${result}${trailingSymbol}`;
 };
 
-export const getRealAmount = (prettyAmount: BigNumber, t: Asset): BigNumber => {
+export const getRealAmount = (prettyAmount: string, t: Asset): BigNumber => {
+  const amount = new BigNumber(prettyAmount);
   if (t.type === "nft") {
-    return prettyAmount;
+    return amount;
   }
 
   const decimals =
@@ -110,7 +111,7 @@ export const getRealAmount = (prettyAmount: BigNumber, t: Asset): BigNumber => {
       ? DEFAULT_TOKEN_DECIMALS
       : t.metadata.decimals;
 
-  return prettyAmount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
+  return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };
 
 export type Asset = FA12Token | FA2Token | NFT;

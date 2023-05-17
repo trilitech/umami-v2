@@ -10,12 +10,12 @@ import React from "react";
 import SendForm from "../../../components/sendForm";
 import { OperationValue } from "../../../components/sendForm/types";
 import { useGetAccount } from "../../hooks/accountHooks";
-import { mutezToTez } from "../../store/impureFormat";
 import { walletClient } from "../beacon";
 import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
 import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
 import SignPayloadRequestPannel from "./pannels/SignPayloadRequestPannel";
 import { BigNumber } from "bignumber.js";
+import { mutezToTez } from "../../format";
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;

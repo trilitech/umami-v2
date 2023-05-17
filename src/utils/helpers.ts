@@ -12,10 +12,10 @@ export function zip<A, B>(a: A[], b: B[]) {
   return a.map((k, i) => [k, b[i]] as [A, B]);
 }
 
-export function parseNonNegativeFloat(num: string): BigNumber {
+export function validateNonNegativeNumber(num: string): string | null {
   const val = new BigNumber(num);
   if (val.isLessThan(0)) {
-    return new BigNumber(NaN);
+    return null;
   }
-  return val;
+  return val.toString();
 }

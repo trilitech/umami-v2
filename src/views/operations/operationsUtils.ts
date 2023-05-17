@@ -9,10 +9,10 @@ import {
 } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import { filterNulls } from "../../utils/helpers";
-import { prettyTezAmount } from "../../utils/store/impureFormat";
 import { classifyToken } from "../../utils/token/classify/classifyToken";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";
+import { prettyTezAmount } from "../../utils/format";
 
 export const classifyTokenTransfer = (transfer: TokenTransfer) => {
   const token: Token = {
