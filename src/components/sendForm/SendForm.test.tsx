@@ -16,12 +16,18 @@ import {
   fillPassword,
   resetAccounts,
 } from "../../mocks/helpers";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { formatPkh } from "../../utils/format";
 import { useGetSk } from "../../utils/hooks/accountUtils";
-import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import {
@@ -35,13 +41,6 @@ import {
 } from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  within,
-} from "../../mocks/testUtils";
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
