@@ -23,7 +23,6 @@ import { getDefaultMnemonicDerivationPath, getLedgerDerivationPath } from "../..
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
-  customPath: boolean;
 };
 
 export const DerivationPath = ({
@@ -34,7 +33,7 @@ export const DerivationPath = ({
   config: TemporaryMnemonicAccountConfig | TemporaryLedgerAccountConfig;
 }) => {
   const { register, handleSubmit } = useForm<ConfirmDerivationPathFormValues>();
-  const [isDefault, setIsDefault] = useState(false);
+  const [isDefault, setIsDefault] = useState(true);
   const getDefaultDerivationPath = () => {
     if (config instanceof TemporaryLedgerAccountConfig) {
       return getLedgerDerivationPath(0);
@@ -44,7 +43,7 @@ export const DerivationPath = ({
   };
 
   const onSubmit = async (data: ConfirmDerivationPathFormValues) => {
-    if (data.customPath) {
+    if (!isDefault) {
       config.derivationPath = data.derivationPath;
     } else {
       config.derivationPath = getDefaultDerivationPath();
@@ -73,7 +72,7 @@ export const DerivationPath = ({
               <HStack spacing="10px">
                 <Text fontWeight={"bold"}>Default Path</Text>
                 <Switch
-                  {...register("customPath")}
+                  data-testid="switch"
                   onChange={() => setIsDefault(!isDefault)}
                 />
                 <Text>Custom Path</Text>
@@ -81,8 +80,9 @@ export const DerivationPath = ({
             </FormControl>
             <FormControl>
               <Input
+                data-testid="custom-path"
                 defaultValue={getDefaultDerivationPath()}
-                isDisabled={!isDefault}
+                isDisabled={isDefault}
                 {...register("derivationPath", {
                   required: false,
                 })}

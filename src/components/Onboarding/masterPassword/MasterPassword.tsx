@@ -42,8 +42,8 @@ export const MasterPassword = ({
         await restoreSecret(
           config.seedphrase,
           password,
-          config.derivationPath,
-          config.label
+          config.label,
+          config.derivationPath
         );
       } else if (config instanceof TemporaryLedgerAccountConfig) {
         if (!config.derivationPath) throw new Error("DerivationPath not set");
