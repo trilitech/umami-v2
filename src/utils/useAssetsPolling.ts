@@ -1,7 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
-import { filterNulls } from "./helpers";
+import { compact } from "lodash";
 import { useAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import { getAllMultiSigContracts } from "./multisig/fetch";
@@ -129,7 +129,7 @@ export const useAssetsPolling = () => {
     queryFn: async () => {
       const delegations = await Promise.all(
         pkhs.map((pkh) => getDelegationsPayload(pkh, network))
-      ).then(filterNulls);
+      ).then(compact);
 
       dispatch(assetsActions.updateDelegations(delegations));
     },

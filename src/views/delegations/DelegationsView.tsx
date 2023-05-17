@@ -19,7 +19,7 @@ import { useRenderAccountSmallTile } from "../../components/AccountSelector/Acco
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
-import { filterNulls } from "../../utils/helpers";
+import { compact } from "lodash";
 import {
   useAllDelegations,
   useGetAccountBalance,
@@ -158,7 +158,7 @@ const DelegationsView = () => {
     dispatch(updateBakers(bakers));
   });
   const allDelegations = Object.values(delegations).flat();
-  const formatedDelegations = filterNulls(allDelegations.map(makeDelegation));
+  const formatedDelegations = compact(allDelegations.map(makeDelegation));
   const { modalElement, onOpen } = useSendFormModal();
 
   const handleRemoveDelegate = (pkh: string) => {

@@ -8,7 +8,7 @@ import {
   TokenTransfer,
 } from "../../types/Operation";
 import { Token } from "../../types/Token";
-import { filterNulls } from "../../utils/helpers";
+import { compact } from "lodash";
 import { classifyToken } from "../../utils/token/classify/classifyToken";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";
@@ -171,7 +171,7 @@ export const getOperationDisplays = (
   network: TezosNetwork = TezosNetwork.MAINNET
 ) => {
   return sortOperationsDisplaysBytDate(
-    filterNulls([
+    compact([
       ...tezTransfers.map((t) => getTezOperationDisplay(t, forAdress, network)),
       ...tokenTransfers.map((t) =>
         getTokenOperationDisplay(t, forAdress, network)
