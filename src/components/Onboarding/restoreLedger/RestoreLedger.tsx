@@ -6,8 +6,6 @@ import {
   OrderedList,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { LedgerSigner } from "@taquito/ledger-signer";
-import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import {
   Step,
   StepType,
@@ -15,6 +13,7 @@ import {
 } from "../useOnboardingModal";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
+import { getPk } from "../../../utils/ledger/pk";
 
 const RestoreLedger = ({
   setStep,
@@ -46,25 +45,15 @@ const RestoreLedger = ({
 
   const connectLedger = async () => {
     setIsloading(true);
-
     try {
-      const transport = await TransportWebHID.create();
-      const ledgerSigner = new LedgerSigner(
-        transport,
-        config.derivationPath,
-        true
-      );
-      const pk = await ledgerSigner.publicKey();
-      const pkh = await ledgerSigner.publicKeyHash();
       toast({
         title: "Request sent to Ledger",
         description: "Open the Tezos app on your Ledger and accept the request",
       });
-      config.pk = pk;
-      config.pkh = pkh;
-
+      const result = await getPk(config.derivationPath);
+      config.pk = result.pk;
+      config.pkh = result.pkh;
       setStep({ type: StepType.nameAccount, config });
-      await transport.close();
     } catch (error: any) {
       if (error.name === "PublicKeyRetrievalError") {
         toast({
@@ -104,6 +93,7 @@ const RestoreLedger = ({
           size="lg"
           isLoading={isLoading}
           onClick={connectLedger}
+          overflowX="unset"
         >
           Export Public Key
         </Button>
