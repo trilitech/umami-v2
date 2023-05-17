@@ -7,14 +7,12 @@ import {
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import DerivationPath from "./DerivationPath";
 
-const setStepMock = jest.fn((step: Step) => { });
+const setStepMock = jest.fn((step: Step) => {});
 
 const fixture = (
   setStep: (step: Step) => void,
   config: TemporaryMnemonicAccountConfig | TemporaryLedgerAccountConfig
-) => (
-  <DerivationPath setStep={setStep} config={config} />
-);
+) => <DerivationPath setStep={setStep} config={config} />;
 
 describe("<DerivationPath />", () => {
   describe("When default path is selected", () => {

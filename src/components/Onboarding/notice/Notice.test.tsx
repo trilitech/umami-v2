@@ -9,11 +9,9 @@ import Notice from "./Notice";
 
 const config = new TemporaryMnemonicAccountConfig();
 config.seedphrase = seedPhrase;
-const setStepMock = jest.fn((step: Step) => { });
+const setStepMock = jest.fn((step: Step) => {});
 
-const fixture = (setStep: (step: Step) => void) => (
-  <Notice setStep={setStep} />
-);
+const fixture = (setStep: (step: Step) => void) => <Notice setStep={setStep} />;
 
 describe("<Eula />", () => {
   describe("When shown", () => {
