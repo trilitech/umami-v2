@@ -24,6 +24,7 @@ import { Account } from "../../types/Account";
 import { getTokenPrettyBalance } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
 import { useGetAccountAllTokens } from "../../utils/hooks/assetsHooks";
+import { Options } from "../home/useSendFormModal";
 
 const AccountTokensTileHeader: React.FC<{
   pkh: string;
@@ -46,9 +47,10 @@ const AccountTokensTileHeader: React.FC<{
   </Flex>
 );
 
-const AccountTokensTile: React.FC<{ account: Account }> = ({
-  account: { pkh, label },
-}) => {
+const AccountTokensTile: React.FC<{
+  account: Account;
+  onOpenSendModal: (options?: Options | undefined) => void;
+}> = ({ account: { pkh, label }, onOpenSendModal }) => {
   const getTokens = useGetAccountAllTokens();
   const tokens = getTokens(pkh);
   return (
@@ -76,9 +78,9 @@ const AccountTokensTile: React.FC<{ account: Account }> = ({
             </Tr>
           </Thead>
           <Tbody>
-            {tokens.map((token, i) => {
+            {tokens.map((token) => {
               return (
-                <Tr>
+                <Tr key={token.contract}>
                   <Td w="20%">
                     <Flex alignItems="cnenter">
                       {token.metadata?.iconUrl ? (
@@ -109,10 +111,10 @@ const AccountTokensTile: React.FC<{ account: Account }> = ({
                         icon={MdArrowOutward}
                         label="Send"
                         onClick={() => {
-                          //   onOpen({
-                          //     recipient: contact.pkh,
-                          //     mode: { type: "tez" },
-                          //   });
+                          onOpenSendModal({
+                            sender: pkh,
+                            mode: { type: "token", data: token },
+                          });
                         }}
                       />
                     </Flex>

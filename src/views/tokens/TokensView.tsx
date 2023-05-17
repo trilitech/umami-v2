@@ -4,6 +4,7 @@ import { AiOutlineArrowDown } from "react-icons/ai";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { TopBar } from "../../components/TopBar";
 import { useAccounts } from "../../utils/hooks/accountHooks";
+import { useSendFormModal } from "../home/useSendFormModal";
 import AccountTokensTile from "./AccountTokensTile";
 
 export const FilterController: React.FC = () => {
@@ -20,15 +21,18 @@ export const FilterController: React.FC = () => {
 
 const TokensView = () => {
   const accounts = useAccounts();
+  const { modalElement, onOpen } = useSendFormModal();
   return (
     <Flex direction="column" height={"100%"}>
       <TopBar title="Tokens" />
       <FilterController />
       <Box overflow={"scroll"}>
         {accounts.map((account) => (
-          <AccountTokensTile account={account} />
+          <AccountTokensTile account={account} onOpenSendModal={onOpen} />
         ))}
       </Box>
+
+      {modalElement}
     </Flex>
   );
 };
