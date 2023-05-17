@@ -45,7 +45,7 @@ export const transferFA12Token = async (
   return transferMethod.send();
 };
 
-export const transferTez = async (
+export const transferMutez = async (
   recipient: string,
   amount: BigNumber,
   config: SignerConfig,
@@ -56,6 +56,7 @@ export const transferTez = async (
     to: recipient,
     amount: amount.toNumber(),
     parameter,
+    mutez: true,
   });
 };
 

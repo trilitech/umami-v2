@@ -27,10 +27,10 @@ import {
   estimateBatch,
   estimateFA12transfer,
   estimateFA2transfer,
-  estimateTezTransfer,
+  estimateMutezTransfer,
   transferFA12Token,
   transferFA2Token,
-  transferTez,
+  transferMutez,
 } from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
@@ -50,10 +50,10 @@ jest.mock("../../GoogleAuth", () => ({
 jest.mock("../../utils/tezos");
 jest.mock("../../utils/hooks/accountUtils");
 
-const estimateTezTransferMock = estimateTezTransfer as jest.Mock;
+const estimateTezTransferMock = estimateMutezTransfer as jest.Mock;
 const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
 const estimateFA12transferMock = estimateFA12transfer as jest.Mock;
-const transferTezMock = transferTez as jest.Mock;
+const transferTezMock = transferMutez as jest.Mock;
 const transferFA2TokenMock = transferFA2Token as jest.Mock;
 const transferFA12TokenMock = transferFA12Token as jest.Mock;
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -182,7 +182,7 @@ describe("<SendForm />", () => {
             operation: {
               type: "tez",
               value: {
-                amount: new BigNumber(23),
+                amount: new BigNumber(23000000),
                 recipient: mockPkh(7),
                 sender: mockPkh(1),
               },
@@ -211,7 +211,7 @@ describe("<SendForm />", () => {
             operation: {
               type: "tez",
               value: {
-                amount: new BigNumber(23),
+                amount: new BigNumber(23000000),
                 recipient: mockPkh(7),
                 sender: mockPkh(1),
               },
@@ -222,7 +222,7 @@ describe("<SendForm />", () => {
             operation: {
               type: "tez",
               value: {
-                amount: new BigNumber(23),
+                amount: new BigNumber(23000000),
                 recipient: mockPkh(7),
                 sender: mockPkh(1),
               },
@@ -267,7 +267,7 @@ describe("<SendForm />", () => {
       };
       expect(transferTezMock).toHaveBeenCalledWith(
         mockPkh(7),
-        new BigNumber(23),
+        new BigNumber(23000000),
         config,
         undefined
       );

@@ -12,7 +12,7 @@ import {
 import { operationValuesToBatchParams } from "./params";
 import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
 
-export const estimateTezTransfer = async (
+export const estimateMutezTransfer = async (
   senderPkh: string,
   recipient: string,
   amount: BigNumber,
@@ -25,6 +25,7 @@ export const estimateTezTransfer = async (
     to: recipient,
     amount: amount.toNumber(),
     parameter,
+    mutez: true,
   });
 };
 

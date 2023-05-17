@@ -10,9 +10,9 @@ import {
   estimateDelegation,
   estimateFA12transfer,
   estimateFA2transfer,
-  estimateTezTransfer,
+  estimateMutezTransfer,
 } from "../../utils/tezos";
-import { getTotalFee } from "../../views/batch/batchUtils";
+import { getTotalFeeInTez } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
@@ -55,7 +55,7 @@ const makeSimulation = (
     }
 
     case "tez":
-      return estimateTezTransfer(
+      return estimateMutezTransfer(
         operation.value.sender,
         operation.value.recipient,
         operation.value.amount,
@@ -99,7 +99,7 @@ export const SendForm = ({
     mode.type === "batch"
       ? {
           operation: mode.data.batch.items.map((b) => b.operation),
-          fee: getTotalFee(mode.data.batch.items),
+          fee: getTotalFeeInTez(mode.data.batch.items),
         }
       : undefined;
 
