@@ -123,7 +123,7 @@ export const mockAccount = (
   if (type === AccountType.LEDGER) {
     const account: LedgerAccount = {
       type,
-      derivationPath: getLedgerDerivationPath(0),
+      derivationPath: getLedgerDerivationPath(index),
       curve: "ed25519",
       label: mockAccountLabel(index) + " ledger",
       pkh: mockPkh(index),
