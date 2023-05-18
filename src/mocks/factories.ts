@@ -1,4 +1,5 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
+import { BigNumber } from "bignumber.js";
 import { OperationValue } from "../components/sendForm/types";
 import {
   Account,
@@ -12,8 +13,7 @@ import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
-import { getFullDerivationPath } from "../utils/account/derivationPathUtils";
-import { BigNumber } from "bignumber.js";
+import { getDefaultMnemonicDerivationPath } from "../utils/account/derivationPathUtils";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -96,7 +96,7 @@ export const mockAccount = (
   if (type === AccountType.MNEMONIC) {
     const account: MnemonicAccount = {
       curve: "ed25519",
-      derivationPath: getFullDerivationPath(index),
+      derivationPath: getDefaultMnemonicDerivationPath(index),
       type,
       label: mockAccountLabel(index),
       pkh: mockPkh(index),
@@ -120,7 +120,7 @@ export const mockAccount = (
   if (type === AccountType.LEDGER) {
     const account: LedgerAccount = {
       type,
-      derivationPath: getFullDerivationPath(0),
+      derivationPath: getDefaultMnemonicDerivationPath(0),
       curve: "ed25519",
       label: mockAccountLabel(index) + " ledger",
       pkh: mockPkh(index),
