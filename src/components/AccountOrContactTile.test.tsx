@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { contact1 } from "../../mocks/contacts";
-import { mockAccount } from "../../mocks/factories";
-import { ReduxStore } from "../../providers/ReduxStore";
-import { formatPkh, truncate } from "../../utils/format";
-import accountsSlice from "../../utils/store/accountsSlice";
-import { store } from "../../utils/store/store";
-import checkAccountsAndUpsertContact from "../../utils/store/thunks/checkAccountsAndUpsertContact";
+import { contact1 } from "../mocks/contacts";
+import { mockAccount } from "../mocks/factories";
+import { ReduxStore } from "../providers/ReduxStore";
+import { formatPkh, truncate } from "../utils/format";
+import accountsSlice from "../utils/store/accountsSlice";
+import { store } from "../utils/store/store";
+import checkAccountsAndUpsertContact from "../utils/store/thunks/checkAccountsAndUpsertContact";
 import AccountOrContactTile, { ContactTile } from "./AccountOrContactTile";
 const { add, reset } = accountsSlice.actions;
 

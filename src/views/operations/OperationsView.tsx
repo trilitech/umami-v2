@@ -17,6 +17,7 @@ import { BsArrowDownUp } from "react-icons/bs";
 import { MdOutlinePending } from "react-icons/md";
 import { RxCheckCircled } from "react-icons/rx";
 import { TbFilter } from "react-icons/tb";
+import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
@@ -25,7 +26,7 @@ import {
   useAllOperationDisplays,
   useIsBlockFinalised,
 } from "../../utils/hooks/assetsHooks";
-import AccountOrContactTile from "./AccountOrContactTile";
+
 import {
   getIsInbound,
   getKey,

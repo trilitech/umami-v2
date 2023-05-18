@@ -1,11 +1,11 @@
 import { MdPersonAddAlt } from "react-icons/md";
-import { TextAndIconBtn } from "../../components/TextAndIconBtn";
-import { formatPkh, truncate } from "../../utils/format";
-import { useUpsertContactModal } from "../home/useUpsertContactModal";
-import { Box, Text } from "@chakra-ui/react";
 import { FC } from "react";
-import { useGetContractName } from "../../utils/hooks/contactsHooks";
-import { useGetAccount } from "../../utils/hooks/accountHooks";
+import { useUpsertContactModal } from "../views/home/useUpsertContactModal";
+import { formatPkh, truncate } from "../utils/format";
+import { TextAndIconBtn } from "./TextAndIconBtn";
+import { useGetContractName } from "../utils/hooks/contactsHooks";
+import { useGetAccount } from "../utils/hooks/accountHooks";
+import { Box, Text } from "@chakra-ui/react";
 
 export const ContactTile: FC<{
   pkh: string;
