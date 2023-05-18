@@ -44,7 +44,7 @@ export const useGetAccountAssets = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
   return (pkh: string) => {
-    return filterNulls(allTokens[pkh].map(classifyToken));
+    return filterNulls((allTokens[pkh] ?? []).map(classifyToken));
   };
 };
 
