@@ -119,4 +119,27 @@ describe("restoreEncryptedAccounts", () => {
     ];
     expect(result2).toEqual(expected2);
   });
+
+  it("should restore existing accounts with a custom derivation path", async () => {
+    addressExistsMock.mockResolvedValueOnce(true);
+    addressExistsMock.mockResolvedValueOnce(true);
+    addressExistsMock.mockResolvedValueOnce(false);
+    const result = await restoreMnemonicAccounts(
+      seedPhrase,
+      undefined,
+      "m/44'/1729'/?'/8'"
+    );
+
+    const expected: Account[] = [
+      expect.objectContaining({
+        label: `Account 0`,
+        derivationPath: "m/44'/1729'/0'/8'",
+      }),
+      expect.objectContaining({
+        label: `Account 1`,
+        derivationPath: "m/44'/1729'/1'/8'",
+      }),
+    ];
+    expect(result).toEqual(expected);
+  });
 });
