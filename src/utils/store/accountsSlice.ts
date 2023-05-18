@@ -18,11 +18,6 @@ const initialState: State = {
   seedPhrases: {},
 };
 
-export type SecretPayload = {
-  hash: string;
-  secret: UmamiEncrypted;
-};
-
 const accountsSlice = createSlice({
   name: "accounts",
   initialState,
