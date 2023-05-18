@@ -16,15 +16,20 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { MdArrowOutward, MdGeneratingTokens } from "react-icons/md";
-import { CopyableAddress } from "../../components/CopyableText";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { Identicon } from "../../components/Identicon";
+import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { getTokenPrettyBalance } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
-import { useGetAccountAllTokens } from "../../utils/hooks/assetsHooks";
+import {
+  useGetAccountAllTokens,
+  useSelectedNetwork,
+} from "../../utils/hooks/assetsHooks";
 import { Options } from "../home/useSendFormModal";
+import { FiExternalLink } from "react-icons/fi";
+import { tzktExplorer } from "../../utils/tezos/consts";
 
 const AccountTokensTileHeader: React.FC<{
   pkh: string;
@@ -53,23 +58,24 @@ const AccountTokensTile: React.FC<{
 }> = ({ account: { pkh, label }, onOpenSendModal }) => {
   const getTokens = useGetAccountAllTokens();
   const tokens = getTokens(pkh);
+  const network = useSelectedNetwork();
+
   return (
-    <Card m={4} p={2} bgColor={colors.gray[900]}>
+    <Card m={4} p={5} bgColor={colors.gray[900]} borderRadius="10px">
       <AccountTokensTileHeader pkh={pkh} label={label} />
 
-      <TableContainer overflowX="unset" overflowY="unset">
+      <TableContainer
+        overflowX="unset"
+        overflowY="unset"
+        bgColor={colors.gray[900]}
+        borderRadius="10px"
+      >
         <Table>
           {
             // Finally a way to have a sticky Header
             // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
           }
-          <Thead
-            position="sticky"
-            top={0}
-            zIndex="docked"
-            bg="umami.gray.900"
-            borderRadius={4}
-          >
+          <Thead position="sticky" top={0} zIndex="docked" borderRadius={4}>
             <Tr>
               <Th>Token</Th>
               <Th>Contract:</Th>
@@ -78,9 +84,9 @@ const AccountTokensTile: React.FC<{
             </Tr>
           </Thead>
           <Tbody>
-            {tokens.map((token) => {
+            {tokens.map((token, i) => {
               return (
-                <Tr key={token.contract}>
+                <Tr key={`${token.contract}${i}`}>
                   <Td w="15%">
                     <Flex alignItems="cnenter">
                       {token.metadata?.iconUrl ? (
@@ -95,7 +101,16 @@ const AccountTokensTile: React.FC<{
                     </Flex>
                   </Td>
                   <Td w="15%">
-                    <CopyableAddress pkh={token.contract} />
+                    <TextAndIconBtn
+                      text={formatPkh(token.contract)}
+                      icon={FiExternalLink}
+                      onClick={() => {
+                        window.open(
+                          `${tzktExplorer[network]}/${token.contract}`,
+                          "_blank"
+                        );
+                      }}
+                    />
                   </Td>
                   <Td w="15%">
                     {getTokenPrettyBalance(token, { showSymbol: false })}
