@@ -1,16 +1,15 @@
 import { AccountType, MnemonicAccount } from "../../types/Account";
-import { getFullDerivationPath } from "./derivationPathUtils";
 
 export const makeMnemonicAccount = (
   pk: string,
   pkh: string,
-  derivationIndex: number,
+  derivationPath: string,
   seedFingerPrint: string,
   label: string
 ): MnemonicAccount => {
   return {
     curve: "ed25519",
-    derivationPath: getFullDerivationPath(derivationIndex),
+    derivationPath,
     pk,
     pkh,
     seedFingerPrint,

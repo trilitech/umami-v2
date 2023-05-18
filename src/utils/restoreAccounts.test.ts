@@ -4,7 +4,10 @@ import { restoreAccounts, restoreMnemonicAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
 
 import "../mocks/mockGetRandomValues";
-import { getFullDerivationPath } from "./account/derivationPathUtils";
+import {
+  defaultV1Pattern,
+  getDefaultMnemonicDerivationPath,
+} from "./account/derivationPathUtils";
 jest.mock("./tezos");
 
 const addressExistsMock = addressExists as jest.Mock;
@@ -20,7 +23,7 @@ describe("restoreAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreAccounts(seedPhrase);
+    const result = await restoreAccounts(seedPhrase, defaultV1Pattern);
     const expected = [
       {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
@@ -40,7 +43,7 @@ describe("restoreAccounts", () => {
 
   it("should restore first account if none exists", async () => {
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreAccounts(seedPhrase);
+    const result = await restoreAccounts(seedPhrase, defaultV1Pattern);
     const expected = [
       {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
@@ -62,7 +65,7 @@ describe("restoreEncryptedAccounts", () => {
     const expected: Account[] = [
       {
         curve: "ed25519",
-        derivationPath: getFullDerivationPath(0),
+        derivationPath: getDefaultMnemonicDerivationPath(0),
         type: AccountType.MNEMONIC,
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
         pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -71,7 +74,7 @@ describe("restoreEncryptedAccounts", () => {
       },
       {
         curve: "ed25519",
-        derivationPath: getFullDerivationPath(1),
+        derivationPath: getDefaultMnemonicDerivationPath(1),
         type: AccountType.MNEMONIC,
         pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
         pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
@@ -80,7 +83,7 @@ describe("restoreEncryptedAccounts", () => {
       },
       {
         curve: "ed25519",
-        derivationPath: getFullDerivationPath(2),
+        derivationPath: getDefaultMnemonicDerivationPath(2),
         type: AccountType.MNEMONIC,
         pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
         pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
