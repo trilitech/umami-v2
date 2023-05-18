@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { AccountCardDisplay } from "../components/AccountCard.tsx/AccountCardDisplay";
+import { BigNumber } from "bignumber.js";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -18,6 +19,6 @@ export const Nominal = Template.bind({});
 Nominal.args = {
   label: "My super account",
   pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-  tezBalance: 120.234,
-  dollarBalance: 13000,
+  tezBalance: "120.234",
+  dollarBalance: new BigNumber(13000),
 };

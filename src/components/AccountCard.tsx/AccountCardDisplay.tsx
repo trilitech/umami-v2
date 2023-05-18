@@ -9,6 +9,7 @@ import { CopyableAddress } from "../CopyableText";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
+import type { BigNumber } from "bignumber.js";
 
 type Props = {
   onSend?: () => void;
@@ -17,8 +18,8 @@ type Props = {
   onDelegate?: () => void;
   label: string;
   pkh: string;
-  tezBalance: number | null;
-  dollarBalance: number | null;
+  tezBalance: string | null;
+  dollarBalance: BigNumber | null;
   tokens: Array<FA12Token | FA2Token>;
   nfts: Array<NFT>;
 };

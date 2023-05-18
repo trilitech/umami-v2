@@ -14,17 +14,15 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { AccountType } from "../../../types/Account";
-import { getRealAmount } from "../../../types/Asset";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
-import { mutezToTezNumber } from "../../../utils/store/impureFormat";
 import {
   delegate,
   submitBatch,
   transferFA12Token,
   transferFA2Token,
-  transferTez,
+  transferMutez,
 } from "../../../utils/tezos";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
@@ -38,8 +36,9 @@ import {
   TransactionsAmount,
 } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
+import { BigNumber } from "bignumber.js";
 
-const makeTransfer = (
+const makeTransfer = async (
   operation: OperationValue | OperationValue[],
   config: SignerConfig
 ) => {
@@ -53,13 +52,13 @@ const makeTransfer = (
 
   switch (operation.type) {
     case "delegation":
-      return delegate(
+      return await delegate(
         operation.value.sender,
         operation.value.recipient,
         config
       );
     case "tez":
-      return transferTez(
+      return await transferMutez(
         operation.value.recipient,
         operation.value.amount,
         config,
@@ -68,9 +67,9 @@ const makeTransfer = (
     case "token": {
       const token = operation.data;
       if (token.type === "fa1.2") {
-        return transferFA12Token(
+        return await transferFA12Token(
           {
-            amount: getRealAmount(operation.value.amount, token),
+            amount: operation.value.amount,
             contract: token.contract,
             recipient: operation.value.recipient,
             sender: operation.value.sender,
@@ -78,9 +77,9 @@ const makeTransfer = (
           config
         );
       }
-      return transferFA2Token(
+      return await transferFA2Token(
         {
-          amount: getRealAmount(operation.value.amount, token),
+          amount: operation.value.amount,
           contract: token.contract,
           recipient: operation.value.recipient,
           sender: operation.value.sender,
@@ -88,10 +87,6 @@ const makeTransfer = (
         },
         config
       );
-    }
-    default: {
-      const error: never = operation;
-      throw error;
     }
   }
 };
@@ -121,7 +116,7 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
         </Box>
       )}
       {transfer.type === "tez" ? (
-        <Subtotal tez={transfer.value.amount} />
+        <Subtotal mutez={transfer.value.amount} />
       ) : null}
     </>
   );
@@ -131,12 +126,12 @@ const BatchRecap = ({ transfer }: { transfer: OperationValue[] }) => {
   return (
     <>
       <TransactionsAmount amount={transfer.length} />
-      <Subtotal tez={getBatchSubtotal(transfer)} />
+      <Subtotal mutez={getBatchSubtotal(transfer)} />
     </>
   );
 };
 
-const getSubTotal = (t: OperationValue[] | OperationValue): number => {
+const getSubTotal = (t: OperationValue[] | OperationValue): BigNumber => {
   if (Array.isArray(t)) {
     return getBatchSubtotal(t);
   }
@@ -145,7 +140,7 @@ const getSubTotal = (t: OperationValue[] | OperationValue): number => {
     return t.value.amount;
   }
 
-  return 0;
+  return new BigNumber(0);
 };
 
 export const RecapDisplay: React.FC<{
@@ -188,8 +183,7 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
-  const feeInTez = Number(mutezToTezNumber(fee));
-  const total = feeInTez + getSubTotal(transfer);
+  const total = fee.plus(getSubTotal(transfer));
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
@@ -213,7 +207,7 @@ export const RecapDisplay: React.FC<{
             <Fee mutez={fee} />
           </Box>
           <Divider mb={2} mt={2} />
-          <Total tez={total} />
+          <Total mutez={total} />
         </ModalBody>
         <ModalFooter justifyContent={"center"}>
           <SignButton

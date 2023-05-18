@@ -23,9 +23,11 @@ import {
   Asset,
   FA12Token,
   FA2Token,
+  getRealAmount,
   getTokenSymbol,
   NFT,
 } from "../../../types/Asset";
+import { tezToMutez } from "../../../utils/format";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
@@ -140,18 +142,18 @@ export const SendTezOrNFTForm = ({
   amount,
   disabled,
 }: {
-  onSubmit: (v: { sender: string; recipient: string; amount: number }) => void;
+  onSubmit: (v: { sender: string; recipient: string; amount: string }) => void;
   onSubmitBatch: (v: {
     sender: string;
     recipient: string;
-    amount: number;
+    amount: string;
   }) => void;
   sender?: string;
   token?: NFT | FA12Token | FA2Token;
   isLoading?: boolean;
   recipient?: string;
   disabled?: boolean;
-  amount?: number;
+  amount?: string;
   parameter?: TransferParams["parameter"];
 }) => {
   const mandatoryNftSender = token?.type === "nft" ? token.owner : undefined;
@@ -167,12 +169,12 @@ export const SendTezOrNFTForm = ({
   } = useForm<{
     sender: string;
     recipient: string;
-    amount: number;
+    amount: string;
   }>({
     mode: "onBlur",
     defaultValues: {
       sender: mandatoryNftSender || sender,
-      amount: isNFT ? 1 : amount,
+      amount: isNFT ? "1" : amount,
       recipient,
     },
   });
@@ -244,7 +246,6 @@ export const SendTezOrNFTForm = ({
                 type={"number"}
                 {...register("amount", {
                   required: true,
-                  valueAsNumber: true,
                 })}
                 placeholder="Enter amount..."
               />
@@ -302,7 +303,7 @@ export const FillStep: React.FC<{
   isLoading: boolean;
   sender?: string;
   recipient?: string;
-  amount?: number;
+  amount?: string;
   disabled?: boolean;
   parameter?: TransferParams["parameter"];
   mode: SendFormMode;
@@ -349,7 +350,7 @@ export const FillStep: React.FC<{
             onSubmitBatch({
               type: "tez",
               value: {
-                amount: v.amount,
+                amount: tezToMutez(v.amount),
                 sender: v.sender,
                 recipient: v.recipient,
                 parameter,
@@ -360,7 +361,7 @@ export const FillStep: React.FC<{
             onSubmit({
               type: "tez",
               value: {
-                amount: v.amount,
+                amount: tezToMutez(v.amount),
                 sender: v.sender,
                 recipient: v.recipient,
                 parameter,
@@ -382,7 +383,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: v.amount,
+                amount: getRealAmount(v.amount, mode.data),
                 sender: v.sender,
                 recipient: v.recipient,
               },
@@ -393,7 +394,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: v.amount,
+                amount: getRealAmount(v.amount, mode.data),
                 sender: v.sender,
                 recipient: v.recipient,
               },

@@ -1,6 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 export const nodeUrls = {
-  [TezosNetwork.GHOSTNET]: `https://ghostnet.ecadinfra.com`,
+  [TezosNetwork.GHOSTNET]: `https://tezos-ghostnet-node.prod.gke.papers.tech`,
   [TezosNetwork.MAINNET]: `https://mainnet.api.tez.ie`,
 };
 

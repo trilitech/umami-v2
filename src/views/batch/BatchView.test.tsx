@@ -22,6 +22,7 @@ import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { estimateBatch, submitBatch } from "../../utils/tezos";
 import BatchView from "./BatchView";
+import { BigNumber } from "bignumber.js";
 
 // TODO refactor mocks
 jest.mock("react-router-dom");
@@ -122,7 +123,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(1),
-            amount: 1,
+            amount: new BigNumber(1000000),
           },
         },
         {
@@ -130,7 +131,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(2),
-            amount: 2,
+            amount: new BigNumber(2000000),
           },
         },
         {
@@ -138,7 +139,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(1).pkh,
             recipient: mockPkh(3),
-            amount: 3,
+            amount: new BigNumber(3000000),
           },
         },
       ],
@@ -157,7 +158,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(2).pkh,
             recipient: mockPkh(9),
-            amount: 4,
+            amount: new BigNumber(4),
           },
         },
         {
@@ -165,7 +166,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(2).pkh,
             recipient: mockPkh(4),
-            amount: 5,
+            amount: new BigNumber(5),
           },
         },
         {
@@ -173,7 +174,7 @@ const addItemsToBatchViaStore = async () => {
           value: {
             sender: mockAccount(2).pkh,
             recipient: mockPkh(5),
-            amount: 6,
+            amount: new BigNumber(6),
           },
         },
       ],
@@ -293,7 +294,7 @@ describe("<BatchView />", () => {
           {
             type: "tez",
             value: {
-              amount: 1,
+              amount: new BigNumber(1000000),
               recipient: mockPkh(1),
               sender: mockPkh(1),
             },
@@ -301,7 +302,7 @@ describe("<BatchView />", () => {
           {
             type: "tez",
             value: {
-              amount: 2,
+              amount: new BigNumber(2000000),
               recipient: mockPkh(2),
               sender: mockPkh(1),
             },
@@ -309,7 +310,7 @@ describe("<BatchView />", () => {
           {
             type: "tez",
             value: {
-              amount: 3,
+              amount: new BigNumber(3000000),
               recipient: mockPkh(3),
               sender: mockPkh(1),
             },

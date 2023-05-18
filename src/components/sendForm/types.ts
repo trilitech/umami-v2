@@ -1,6 +1,7 @@
 import { TransferParams } from "@taquito/taquito";
 import { Asset } from "../../types/Asset";
 import { Batch } from "../../utils/store/assetsSlice";
+import type { BigNumber } from "bignumber.js";
 
 type TezMode = { type: "tez" };
 
@@ -27,7 +28,7 @@ export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 export type OperationValue =
   | (TezMode & {
       value: {
-        amount: number;
+        amount: BigNumber;
         sender: string;
         recipient: string;
         parameter?: TransferParams["parameter"];
@@ -35,7 +36,7 @@ export type OperationValue =
     })
   | (TokenMode & {
       value: {
-        amount: number;
+        amount: BigNumber;
         sender: string;
         recipient: string;
       };
@@ -49,5 +50,5 @@ export type OperationValue =
 
 export type EstimatedOperation = {
   operation: OperationValue | OperationValue[];
-  fee: number;
+  fee: BigNumber;
 };

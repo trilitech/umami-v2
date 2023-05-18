@@ -13,6 +13,7 @@ import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
 import { getFullDerivationPath } from "../utils/account/derivationPathUtils";
+import { BigNumber } from "bignumber.js";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -264,7 +265,7 @@ export const mockTezTransfer = (index: number): OperationValue => {
   return {
     type: "tez",
     value: {
-      amount: index,
+      amount: new BigNumber(index),
       sender: mockPkh(index),
       recipient: mockPkh(index + 1),
     },
@@ -276,7 +277,7 @@ export const mockNftTransfer = (index: number): OperationValue => {
     type: "token",
     data: {} as NFT,
     value: {
-      amount: index,
+      amount: new BigNumber(index),
       sender: mockPkh(index),
       recipient: mockPkh(index + 1),
     },

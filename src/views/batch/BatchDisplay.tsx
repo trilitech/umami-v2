@@ -26,12 +26,8 @@ import {
 import { OperationValue } from "../../components/sendForm/types";
 import { Account } from "../../types/Account";
 import { formatTokenAmount } from "../../types/Asset";
-import { formatPkh } from "../../utils/format";
+import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { Batch } from "../../utils/store/assetsSlice";
-import {
-  mutezToTezNumber,
-  prettyTezAmount,
-} from "../../utils/store/impureFormat";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
@@ -56,7 +52,7 @@ const renderAmount = (operation: OperationValue) => {
       );
     }
     case "tez":
-      return prettyTezAmount(operation.value.amount, true);
+      return prettyTezAmount(operation.value.amount);
     case "delegation":
       return "";
   }
@@ -75,16 +71,16 @@ const RightPanel = ({
 
   const subTotal = getBatchSubtotal(batch.items.map((item) => item.operation));
 
-  const total = subTotal + mutezToTezNumber(fee);
+  const total = subTotal.plus(fee);
   return (
     <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
       <Box flex={1}>
         <Fee mutez={fee} />
-        <Subtotal tez={subTotal} />
+        <Subtotal mutez={subTotal} />
       </Box>
       <Box>
         <Divider />
-        <Total tez={total} />
+        <Total mutez={total} />
 
         <Flex justifyContent={"space-between"}>
           <Button

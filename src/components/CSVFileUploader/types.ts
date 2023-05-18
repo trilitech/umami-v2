@@ -3,7 +3,7 @@ type CSVRowType = "fa1.2" | "fa2" | "tez";
 interface CSVRowBase {
   type: CSVRowType;
   recipient: string;
-  amount: number;
+  prettyAmount: string; // the format of "prettyAmount" is "tez" for tez transfer.
 }
 
 interface CSVTezTransferRow extends CSVRowBase {

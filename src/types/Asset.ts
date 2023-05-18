@@ -1,3 +1,5 @@
+import { BigNumber } from "bignumber.js";
+
 type TokenBase = {
   contract: string;
   balance: string;
@@ -98,9 +100,10 @@ export const getTokenPrettyBalance = (
   return `${result}${trailingSymbol}`;
 };
 
-export const getRealAmount = (prettyAmount: number, t: Asset) => {
+export const getRealAmount = (prettyAmount: string, t: Asset): BigNumber => {
+  const amount = new BigNumber(prettyAmount);
   if (t.type === "nft") {
-    return prettyAmount;
+    return amount;
   }
 
   const decimals =
@@ -108,7 +111,7 @@ export const getRealAmount = (prettyAmount: number, t: Asset) => {
       ? DEFAULT_TOKEN_DECIMALS
       : t.metadata.decimals;
 
-  return prettyAmount * Math.pow(10, Number(decimals));
+  return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };
 
 export type Asset = FA12Token | FA2Token | NFT;

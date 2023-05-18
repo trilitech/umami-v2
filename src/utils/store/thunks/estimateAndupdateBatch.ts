@@ -5,6 +5,7 @@ import { zip } from "../../helpers";
 import { estimateBatch } from "../../tezos";
 import assetsSlice, { BatchItem } from "../assetsSlice";
 import { RootState } from "../store";
+import { BigNumber } from "bignumber.js";
 
 const {
   updateBatch: addToBatch,
@@ -33,7 +34,7 @@ export const estimateAndUpdateBatch = (
       const estimations = await estimateBatch(operations, pkh, pk, network);
       const items: BatchItem[] = zip(operations, estimations).map(([o, e]) => {
         return {
-          fee: e.suggestedFeeMutez,
+          fee: new BigNumber(e.suggestedFeeMutez),
           operation: o,
         };
       });

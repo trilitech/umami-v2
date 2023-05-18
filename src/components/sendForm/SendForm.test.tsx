@@ -16,13 +16,6 @@ import {
   fillPassword,
   resetAccounts,
 } from "../../mocks/helpers";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
@@ -34,13 +27,21 @@ import {
   estimateBatch,
   estimateFA12transfer,
   estimateFA2transfer,
-  estimateTezTransfer,
+  estimateMutezTransfer,
   transferFA12Token,
   transferFA2Token,
-  transferTez,
+  transferMutez,
 } from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from "../../mocks/testUtils";
+import BigNumber from "bignumber.js";
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -49,10 +50,10 @@ jest.mock("../../GoogleAuth", () => ({
 jest.mock("../../utils/tezos");
 jest.mock("../../utils/hooks/accountUtils");
 
-const estimateTezTransferMock = estimateTezTransfer as jest.Mock;
+const estimateTezTransferMock = estimateMutezTransfer as jest.Mock;
 const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
 const estimateFA12transferMock = estimateFA12transfer as jest.Mock;
-const transferTezMock = transferTez as jest.Mock;
+const transferTezMock = transferMutez as jest.Mock;
 const transferFA2TokenMock = transferFA2Token as jest.Mock;
 const transferFA12TokenMock = transferFA12Token as jest.Mock;
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -177,11 +178,11 @@ describe("<SendForm />", () => {
         isSimulating: false,
         items: [
           {
-            fee: 33,
+            fee: new BigNumber(33),
             operation: {
               type: "tez",
               value: {
-                amount: 23,
+                amount: new BigNumber(23000000),
                 recipient: mockPkh(7),
                 sender: mockPkh(1),
               },
@@ -206,22 +207,22 @@ describe("<SendForm />", () => {
         isSimulating: false,
         items: [
           {
-            fee: 33,
+            fee: new BigNumber(33),
             operation: {
               type: "tez",
               value: {
-                amount: 23,
+                amount: new BigNumber(23000000),
                 recipient: mockPkh(7),
                 sender: mockPkh(1),
               },
             },
           },
           {
-            fee: 33,
+            fee: new BigNumber(33),
             operation: {
               type: "tez",
               value: {
-                amount: 23,
+                amount: new BigNumber(23000000),
                 recipient: mockPkh(7),
                 sender: mockPkh(1),
               },
@@ -266,7 +267,7 @@ describe("<SendForm />", () => {
       };
       expect(transferTezMock).toHaveBeenCalledWith(
         mockPkh(7),
-        23,
+        new BigNumber(23000000),
         config,
         undefined
       );
@@ -329,7 +330,7 @@ describe("<SendForm />", () => {
       });
       expect(estimateFA2transferMock).toHaveBeenCalledWith(
         {
-          amount: 1000000,
+          amount: new BigNumber(1000000),
           contract: mockFA2.contract,
           recipient: mockAccount(7).pkh,
           sender: mockAccount(2).pkh,
@@ -363,7 +364,7 @@ describe("<SendForm />", () => {
 
       expect(transferFA2TokenMock).toHaveBeenCalledWith(
         {
-          amount: 1000000,
+          amount: new BigNumber(1000000),
           contract: mockFA2.contract,
           recipient: mockPkh(7),
           sender: mockPkh(2),
@@ -430,7 +431,7 @@ describe("<SendForm />", () => {
 
       expect(estimateFA12transferMock).toHaveBeenCalledWith(
         {
-          amount: 1000000000,
+          amount: new BigNumber(1000000000),
           contract: mockFa1.contract,
           recipient: mockAccount(7).pkh,
           sender: mockAccount(2).pkh,
@@ -463,7 +464,7 @@ describe("<SendForm />", () => {
 
       expect(transferFA12TokenMock).toHaveBeenCalledWith(
         {
-          amount: 1000000000,
+          amount: new BigNumber(1000000000),
           contract: mockFa1.contract,
           recipient: mockPkh(7),
           sender: mockPkh(2),
@@ -558,7 +559,7 @@ describe("<SendForm />", () => {
       };
       expect(transferFA2TokenMock).toHaveBeenCalledWith(
         {
-          amount: 1,
+          amount: new BigNumber(1),
           contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob1",
           recipient: mockPkh(7),
           sender: mockPkh(1),

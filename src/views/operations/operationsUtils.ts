@@ -9,9 +9,10 @@ import {
 } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import { filterNulls } from "../../utils/helpers";
-import { prettyTezAmount } from "../../utils/store/impureFormat";
 import { classifyToken } from "../../utils/token/classify/classifyToken";
 import { getIPFSurl } from "../../utils/token/nftUtils";
+import { BigNumber } from "bignumber.js";
+import { prettyTezAmount } from "../../utils/format";
 
 export const classifyTokenTransfer = (transfer: TokenTransfer) => {
   const token: Token = {
@@ -76,7 +77,9 @@ export const getTezOperationDisplay = (
     );
 
     const result: OperationDisplay = {
-      amount: { prettyDisplay: sign + prettyTezAmount(required.amount) },
+      amount: {
+        prettyDisplay: sign + prettyTezAmount(new BigNumber(required.amount)),
+      },
       prettyTimestamp,
       timestamp: required.timestamp,
       recipient: required.target.address,
@@ -85,7 +88,7 @@ export const getTezOperationDisplay = (
       tzktUrl: getHashUrl(required.hash, network),
       fee:
         transfer.bakerFee !== undefined
-          ? prettyTezAmount(transfer.bakerFee)
+          ? prettyTezAmount(new BigNumber(transfer.bakerFee))
           : undefined,
       status: "confirmed",
       level: required.level,

@@ -2,7 +2,6 @@ import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
-import { getRealAmount } from "../../types/Asset";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
@@ -11,13 +10,14 @@ import {
   estimateDelegation,
   estimateFA12transfer,
   estimateFA2transfer,
-  estimateTezTransfer,
+  estimateMutezTransfer,
 } from "../../utils/tezos";
 import { getTotalFee } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, SendFormMode, OperationValue } from "./types";
+import { BigNumber } from "bignumber.js";
 
 const makeSimulation = (
   operation: OperationValue,
@@ -33,27 +33,21 @@ const makeSimulation = (
         network
       );
     case "token": {
+      const base = {
+        amount: operation.value.amount,
+        sender: operation.value.sender,
+        recipient: operation.value.recipient,
+        contract: operation.data.contract,
+      };
+
       if (operation.data.type === "fa1.2") {
-        return estimateFA12transfer(
-          {
-            amount: getRealAmount(operation.value.amount, operation.data),
-            sender: operation.value.sender,
-            recipient: operation.value.recipient,
-            contract: operation.data.contract,
-          },
-          pk,
-          network
-        );
+        return estimateFA12transfer(base, pk, network);
       }
-      const fat2Token = operation.data;
 
       return estimateFA2transfer(
         {
-          amount: getRealAmount(operation.value.amount, operation.data),
-          sender: operation.value.sender,
-          recipient: operation.value.recipient,
-          contract: fat2Token.contract,
-          tokenId: fat2Token.tokenId,
+          ...base,
+          tokenId: operation.data.tokenId,
         },
         pk,
         network
@@ -61,7 +55,7 @@ const makeSimulation = (
     }
 
     case "tez":
-      return estimateTezTransfer(
+      return estimateMutezTransfer(
         operation.value.sender,
         operation.value.recipient,
         operation.value.amount,
@@ -88,7 +82,7 @@ export const SendForm = ({
 }: {
   sender?: string;
   recipient?: string;
-  amount?: number;
+  amount?: string;
   parameter?: TransferParams["parameter"];
   onSuccess?: (hash: string) => void;
   mode?: SendFormMode;
@@ -135,7 +129,7 @@ export const SendForm = ({
 
       setTransferValues({
         operation,
-        fee: estimate.suggestedFeeMutez,
+        fee: new BigNumber(estimate.suggestedFeeMutez),
       });
     } catch (error: any) {
       toast({ title: "Invalid transaction", description: error.message });

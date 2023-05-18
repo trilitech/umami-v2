@@ -17,7 +17,7 @@ import {
   resetAccounts,
 } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
-import { estimateTezTransfer, transferTez } from "../../tezos";
+import { estimateMutezTransfer, transferMutez } from "../../tezos";
 import { walletClient } from "../beacon";
 
 jest.mock("../../tezos");
@@ -44,8 +44,8 @@ const fixture = (
   </Modal>
 );
 
-const estimateTezTransferMock = estimateTezTransfer as jest.Mock;
-const transferTezMock = transferTez as jest.Mock;
+const estimateTezTransferMock = estimateMutezTransfer as jest.Mock;
+const transferTezMock = transferMutez as jest.Mock;
 
 beforeEach(() => {
   estimateTezTransferMock.mockResolvedValue(FEE);
