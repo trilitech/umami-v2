@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { BsTrash } from "react-icons/bs";
+import { FiExternalLink } from "react-icons/fi";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import {
   Fee,
@@ -24,10 +25,13 @@ import {
   Total,
 } from "../../components/sendForm/components/TezAmountRecaps";
 import { OperationValue } from "../../components/sendForm/types";
+import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { Account } from "../../types/Account";
 import { formatTokenAmount, NFT } from "../../types/Asset";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
+import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { Batch } from "../../utils/store/assetsSlice";
+import { tzktExplorer } from "../../utils/tezos/consts";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
@@ -42,11 +46,14 @@ const renderAmount = (operation: OperationValue) => {
             );
       return (
         <Flex>
-          <Text>{amount}</Text>
-          {operation.data instanceof NFT && (
+          <Text mr={1}>{amount} </Text>
+
+          {operation.data.type instanceof NFT ? (
             <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
-              <Image src={operation.data.metadata.displayUri} />
+              <Image src={(operation.data as NFT).metadata.displayUri} />
             </AspectRatio>
+          ) : (
+            operation.data.symbol()
           )}
         </Flex>
       );
@@ -112,6 +119,8 @@ export const BatchDisplay: React.FC<{
   onSend: () => void;
 }> = ({ account, batch, onDelete, onSend }) => {
   const items = batch.items;
+  const network = useSelectedNetwork();
+
   return (
     <Flex data-testid="batch-table" mb={4}>
       <Box flex={1} bg="umami.gray.900" p={4}>
@@ -123,10 +132,6 @@ export const BatchDisplay: React.FC<{
         </Flex>
         <TableContainer overflowX="unset" overflowY="unset">
           <Table>
-            {
-              // Finally a way to have a sticky Header
-              // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
-            }
             <Thead
               position="sticky"
               top={0}
@@ -137,27 +142,44 @@ export const BatchDisplay: React.FC<{
               <Tr>
                 <Th>Type:</Th>
                 <Th>Subject:</Th>
+                <Th>Contract:</Th>
                 <Th>Recipient:</Th>
                 <Th>Fee:</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {items.map((b, i) => {
-                return (
-                  <Tr
-                    // TODO add getKey method
-                    key={b.operation.value.sender + b.operation.type + i}
-                  >
-                    <Td>{b.operation.type}</Td>
-                    <Td>{renderAmount(b.operation)}</Td>
-                    <Td>
-                      {b.operation.value.recipient &&
-                        formatPkh(b.operation.value.recipient)}
-                    </Td>
-                    <Td>{prettyTezAmount(b.fee)}</Td>
-                  </Tr>
-                );
-              })}
+              {items.map(({ operation, fee }, i) => (
+                <Tr
+                  // TODO add getKey method
+                  key={operation.value.sender + operation.type + i}
+                >
+                  <Td>
+                    {operation.type !== "delegation"
+                      ? "Transaction"
+                      : operation.type}
+                  </Td>
+                  <Td>{renderAmount(operation)}</Td>
+                  <Td>
+                    {operation.type === "token" && (
+                      <TextAndIconBtn
+                        text={formatPkh(operation.data.contract)}
+                        icon={FiExternalLink}
+                        onClick={() => {
+                          window.open(
+                            `${tzktExplorer[network]}/${operation.data.contract}`,
+                            "_blank"
+                          );
+                        }}
+                      />
+                    )}
+                  </Td>
+                  <Td>
+                    {operation.value.recipient &&
+                      formatPkh(operation.value.recipient)}
+                  </Td>
+                  <Td>{prettyTezAmount(fee)}</Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </TableContainer>
