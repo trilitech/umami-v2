@@ -13,7 +13,10 @@ import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
-import { getDefaultMnemonicDerivationPath } from "../utils/account/derivationPathUtils";
+import {
+  getDefaultMnemonicDerivationPath,
+  getLedgerDerivationPath,
+} from "../utils/account/derivationPathUtils";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -120,7 +123,7 @@ export const mockAccount = (
   if (type === AccountType.LEDGER) {
     const account: LedgerAccount = {
       type,
-      derivationPath: getDefaultMnemonicDerivationPath(0),
+      derivationPath: getLedgerDerivationPath(0),
       curve: "ed25519",
       label: mockAccountLabel(index) + " ledger",
       pkh: mockPkh(index),
