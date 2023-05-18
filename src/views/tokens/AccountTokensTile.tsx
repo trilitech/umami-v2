@@ -81,7 +81,7 @@ const AccountTokensTile: React.FC<{
             {tokens.map((token) => {
               return (
                 <Tr key={token.contract}>
-                  <Td w="20%">
+                  <Td w="15%">
                     <Flex alignItems="cnenter">
                       {token.metadata?.iconUrl ? (
                         <Image src={token.metadata.iconUrl} w={8} h={8} />
@@ -90,14 +90,14 @@ const AccountTokensTile: React.FC<{
                       )}
 
                       <Heading size="sm" p={2} marginX={2}>
-                        {token.metadata?.name}
+                        {token.metadata?.name || token.type.toUpperCase()}
                       </Heading>
                     </Flex>
                   </Td>
-                  <Td w="20%">
+                  <Td w="15%">
                     <CopyableAddress pkh={token.contract} />
                   </Td>
-                  <Td w="20%">
+                  <Td w="15%">
                     {getTokenPrettyBalance(token, { showSymbol: false })}
                   </Td>
                   <Td>
@@ -106,6 +106,8 @@ const AccountTokensTile: React.FC<{
                       justifyContent="space-between"
                       paddingX={3}
                     >
+                      {/* TODO: fetch token values  */}
+                      {/* https://app.asana.com/0/1204165186238194/1204627608626297/f */}
                       <Text>≈ 1.0 ꜩ</Text>
                       <IconAndTextBtn
                         icon={MdArrowOutward}
