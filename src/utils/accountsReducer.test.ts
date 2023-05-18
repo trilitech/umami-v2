@@ -194,13 +194,15 @@ describe("Accounts reducer", () => {
         })
       );
 
-      await store.dispatch(
-        deriveAccount({
-          fingerPrint: "mockPrint1",
-          password: "bar",
-          label: "my new account",
-        })
-      );
+      await store
+        .dispatch(
+          deriveAccount({
+            fingerPrint: "mockPrint1",
+            password: "bar",
+            label: "my new account",
+          })
+        )
+        .unwrap();
 
       const expected = [
         {
