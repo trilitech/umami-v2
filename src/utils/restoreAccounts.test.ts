@@ -142,4 +142,19 @@ describe("restoreEncryptedAccounts", () => {
     ];
     expect(result).toEqual(expected);
   });
+
+  it("should throw if provided with an invalid derivation pattern", async () => {
+    addressExistsMock.mockResolvedValueOnce(true);
+    addressExistsMock.mockResolvedValueOnce(true);
+    addressExistsMock.mockResolvedValueOnce(false);
+    const result = restoreMnemonicAccounts(
+      seedPhrase,
+      undefined,
+      "m/44'/foo'/?'/8'"
+    );
+
+    await expect(result).rejects.toThrowError(
+      "Invalid derivation pattern: m/44'/foo'/?'/8'"
+    );
+  });
 });
