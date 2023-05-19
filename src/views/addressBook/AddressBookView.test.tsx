@@ -1,11 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { contact1, contact2, contact3, contacts } from "../../mocks/contacts";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { contactsActions } from "../../utils/store/contactsSlice";
 import { store } from "../../utils/store/store";
+import checkAccountsAndUpsertContact from "../../utils/store/thunks/checkAccountsAndUpsertContact";
 import AddressBookViewBase from "./AddressBookView";
-
-const { upsert } = contactsActions;
 
 const fixture = () => (
   <ReduxStore>
@@ -21,7 +19,7 @@ describe("AddressBookView", () => {
 
   it("displays sorted contacts", () => {
     Object.values(contacts()).forEach((contact) => {
-      store.dispatch(upsert(contact));
+      store.dispatch(checkAccountsAndUpsertContact(contact));
     });
 
     render(fixture());
