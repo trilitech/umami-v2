@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import ModalBackground from "../../assets/onboarding/background_image.svg";
 import { ArrowBackIcon, CloseIcon } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAccounts } from "../../utils/hooks/accountHooks";
 import ConnectOptions from "./connectOptions/ConnectOptions";
 import ConnectOrCreate from "./connectOrCreate/ConnectOrCreate";
@@ -87,11 +87,15 @@ export const useCreateOrImportSecretModal = () => {
   const hasAccounts = useAccounts().length !== 0;
   const [history, setHistory] = useState<Step[]>([
     { type: StepType.connectOrCreate },
-  ]); // Setting default value
+  ]);
+  const historyRef = useRef(history);
 
   useEffect(() => {
-    if (step && history.map((s) => s.type).indexOf(step.type) === -1) {
-      setHistory([...history, step]);
+    if (
+      step &&
+      historyRef.current.map((s) => s.type).indexOf(step.type) === -1
+    ) {
+      setHistory([...historyRef.current, step]);
     }
     if (
       !step ||
@@ -104,7 +108,6 @@ export const useCreateOrImportSecretModal = () => {
     } else {
       setModalSize(ModalSize.md);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, step?.type]);
 
   const logic = () => {
@@ -116,28 +119,32 @@ export const useCreateOrImportSecretModal = () => {
       }
     }
     switch (step.type) {
-      case "connectOrCreate":
+      case StepType.connectOrCreate:
         return <ConnectOrCreate setStep={setStep} />;
-      case "connectOptions":
+      case StepType.connectOptions:
         return <ConnectOptions setStep={setStep} />;
-      case "notice":
+      case StepType.eula:
+        return <Eula setStep={setStep} />;
+      case StepType.notice:
         return <Notice setStep={setStep} />;
-      case "restoreSeedphrase":
+      case StepType.restoreSeedphrase:
         return <RestoreSeedphrase setStep={setStep} />;
-      case "generateSeedphrase":
+      case StepType.generateSeedphrase:
         return <GenerateSeedphrase setStep={setStep} />;
-      case "verifySeedphrase":
+      case StepType.verifySeedphrase:
         return <VerifySeedphrase setStep={setStep} config={step.config} />;
-      case "restoreLedger":
+      case StepType.restoreLedger:
         return <RestoreLedger setStep={setStep} config={step.config} />;
-      case "nameAccount":
+      case StepType.nameAccount:
         return <NameAccount setStep={setStep} config={step.config} />;
-      case "derivationPath":
+      case StepType.derivationPath:
         return <DerivationPath setStep={setStep} config={step.config} />;
-      case "masterPassword":
+      case StepType.masterPassword:
         return <MasterPassword config={step.config} onClose={onClose} />;
-      default:
-        throw new Error("Unmatched case");
+      default: {
+        const error: never = step;
+        throw new Error(error);
+      }
     }
   };
 
