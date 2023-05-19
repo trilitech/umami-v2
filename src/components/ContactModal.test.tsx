@@ -2,12 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { ReduxStore } from "../providers/ReduxStore";
 import ContactSelector from "./ContactSelector";
 
-import { contactsActions } from "../utils/store/contactsSlice";
 import { contact1 } from "../mocks/contacts";
 import { formatPkh } from "../utils/format";
 import { store } from "../utils/store/store";
+import checkAccountsAndUpsertContact from "../utils/store/thunks/checkAccountsAndUpsertContact";
 
-const { upsert } = contactsActions;
 const fixture = (selected?: string) => (
   <ReduxStore>
     <ContactSelector onSelect={() => {}} selected={selected} />
@@ -22,7 +21,7 @@ describe("ContactSelector", () => {
     );
   });
   it("displays contacts", () => {
-    store.dispatch(upsert(contact1));
+    store.dispatch(checkAccountsAndUpsertContact(contact1));
     render(fixture(contact1["pkh"]));
     const contacts = screen.queryAllByTestId("contact-small-tile");
 
