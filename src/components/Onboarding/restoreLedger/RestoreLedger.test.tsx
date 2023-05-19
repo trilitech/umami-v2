@@ -34,7 +34,7 @@ describe("<RestoreSeedphrase />", () => {
         name: /export public key/i,
       });
       // await waitFor(() => {
-        confirmBtn.click();
+      confirmBtn.click();
       // });
       await waitFor(() => {
         expect(confirmBtn).toBeDisabled();
