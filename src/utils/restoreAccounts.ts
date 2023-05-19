@@ -7,7 +7,6 @@ import {
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { addressExists, getFingerPrint } from "./tezos";
 
-
 export const restoreAccount = async (
   seedPhrase: string,
   derivationPath: string

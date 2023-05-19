@@ -53,12 +53,12 @@ export const MasterPassword = ({
           config.derivationPath,
           config.pk,
           config.pkh,
-          config.label ?? 'Unknown'
+          config.label ?? "Unknown"
         );
       } else if (config instanceof TemporarySocialAccountConfig) {
         if (!config.pk) throw new Error("Pk not set");
         if (!config.pkh) throw new Error("Pkh not set");
-        await restoreSocial(config.pk, config.pkh, config.label ?? 'TODO');
+        await restoreSocial(config.pk, config.pkh, config.label ?? "TODO");
       } else {
         const error: never = config;
         throw new Error(error);
