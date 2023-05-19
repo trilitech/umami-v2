@@ -2,7 +2,12 @@ import { Button, Flex, VStack, Text, Divider } from "@chakra-ui/react";
 import { GoogleAuth } from "../../../GoogleAuth";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
+import {
+  Step,
+  StepType,
+  TemporarySocialAccountConfig,
+} from "../useOnboardingModal";
+import { getPkAndPkhFromSk } from "../../../utils/tezos";
 
 const ConnectOrCreate = ({ setStep }: { setStep: (step: Step) => void }) => {
   return (
@@ -37,12 +42,11 @@ const ConnectOrCreate = ({ setStep }: { setStep: (step: Step) => void }) => {
         <GoogleAuth
           width="100%"
           onReceiveSk={async (sk) => {
-            // const { pk, pkh } = await getPkAndPkhFromSk(sk);
-            //   setStep({
-            //     type: "importSocial",
-            //     pk,
-            //     pkh,
-            //   })
+            const { pk, pkh } = await getPkAndPkhFromSk(sk);
+            const config = new TemporarySocialAccountConfig();
+            config.pk = pk;
+            config.pkh = pkh;
+            setStep({ type: StepType.nameAccount, config });
           }}
         />
       </VStack>

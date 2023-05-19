@@ -60,7 +60,6 @@ describe("<DerivationPath />", () => {
       const customPath = screen.getByTestId("custom-path");
       expect(customPath).toBeDisabled();
       const switchBtn = screen.getByTestId("switch");
-      // const switchBtn = screen.getByRole('switch');
       fireEvent.click(switchBtn);
       expect(customPath).toBeEnabled();
       fireEvent.change(customPath, { target: { value: "test" } });
