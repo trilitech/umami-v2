@@ -4,11 +4,10 @@ import { mockAccount } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { formatPkh, truncate } from "../../utils/format";
 import accountsSlice from "../../utils/store/accountsSlice";
-import contactsSlice from "../../utils/store/contactsSlice";
 import { store } from "../../utils/store/store";
+import checkAccountsAndUpsertContact from "../../utils/store/thunks/checkAccountsAndUpsertContact";
 import AccountOrContactTile, { ContactTile } from "./AccountOrContactTile";
 const { add, reset } = accountsSlice.actions;
-const { upsert } = contactsSlice.actions;
 
 const contactTileFixture = (pkh: string, contactName: string | null) => {
   return (
@@ -53,7 +52,7 @@ describe("AccountOrContactTile", () => {
 
   it("displays Contact tile if in contact", () => {
     store.dispatch(reset());
-    store.dispatch(upsert(contact1));
+    store.dispatch(checkAccountsAndUpsertContact(contact1));
     render(AccountOrContactTileFixture(contact1.pkh));
     expect(screen.queryByTestId("contact-tile")).toHaveTextContent(
       truncate(contact1["name"], 20)
