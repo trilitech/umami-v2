@@ -8,7 +8,7 @@ const { add } = accountsSlice.actions;
 export const restoreAccountsFromSocial = (
   pk: string,
   pkh: string,
-  label?: string
+  label: string
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async (dispatch) => {
     const account: SocialAccount = {

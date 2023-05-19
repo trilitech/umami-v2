@@ -9,7 +9,7 @@ export const restoreAccountsFromLedger = (
   derivationPath: string,
   pk: string,
   pkh: string,
-  label?: string
+  label: string
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async (dispatch) => {
     const account: LedgerAccount = {

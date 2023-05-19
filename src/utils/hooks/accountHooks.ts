@@ -59,14 +59,14 @@ export const useRestoreSecret = () => {
 export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
 
-  return (derivationPath: string, pk: string, pkh: string, label?: string) =>
+  return (derivationPath: string, pk: string, pkh: string, label: string) =>
     dispatch(restoreAccountsFromLedger(derivationPath, pk, pkh, label));
 };
 
 export const useRestoreSocial = () => {
   const dispatch = useAppDispatch();
 
-  return (pk: string, pkh: string, label?: string) =>
+  return (pk: string, pkh: string, label: string) =>
     dispatch(restoreAccountsFromSocial(pk, pkh, label));
 };
 
