@@ -36,7 +36,7 @@ export const MasterPassword = ({
       if (passwordHasBeenSet) {
         await checkPassword(password);
       }
-
+      if (!config.label) throw new Error("Label not set");
       if (config instanceof TemporaryMnemonicAccountConfig) {
         if (!config.seedphrase) throw new Error("Seedphrase not set");
         await restoreSecret(
@@ -53,12 +53,12 @@ export const MasterPassword = ({
           config.derivationPath,
           config.pk,
           config.pkh,
-          config.label ?? "Unknown"
+          config.label
         );
       } else if (config instanceof TemporarySocialAccountConfig) {
         if (!config.pk) throw new Error("Pk not set");
         if (!config.pkh) throw new Error("Pkh not set");
-        await restoreSocial(config.pk, config.pkh, config.label ?? "TODO");
+        await restoreSocial(config.pk, config.pkh, config.label);
       } else {
         const error: never = config;
         throw new Error(error);
@@ -67,7 +67,6 @@ export const MasterPassword = ({
       toast({ title: "success" });
       onClose();
     } catch (error: any) {
-      console.log("config", config);
       toast({ title: "error", description: error.message });
     }
     setIsloading(false);
