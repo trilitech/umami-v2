@@ -178,9 +178,29 @@
       ]
     },
     "linux": {
-      "target": "AppImage",
+      "icon": "build/logo512.png",
+      "target": [
+        "deb",
+        "rpm"
+      ],
+      "category": "Finance",
       "mimeTypes": [
         "x-scheme-handler/umami"
+      ]
+    },
+    "snap": {
+      "plugs": [
+        "default",
+        "raw-usb",
+        "hidraw"
+      ],
+      "buildPackages": [
+        "libusb-1.0-0-dev",
+        "libudev-dev"
+      ],
+      "stagePackages": [
+        "libusb-1.0-0",
+        "libnss3"
       ]
     },
     "protocols": {
