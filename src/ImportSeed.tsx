@@ -62,6 +62,7 @@ function ImportSeed() {
           borderBottomRightRadius={"30px"}
           height="100%"
           overflow="hidden"
+          bg="black"
           display={["none", "none", "initial"]}
         >
           <Slider>

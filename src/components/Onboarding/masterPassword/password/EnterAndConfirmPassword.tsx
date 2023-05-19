@@ -45,6 +45,7 @@ export const EnterAndComfirmPassword: React.FC<{
               <Input
                 isDisabled={isLoading}
                 type="password"
+                data-testid="password"
                 {...register("password", {
                   required: true,
                 })}
@@ -57,6 +58,7 @@ export const EnterAndComfirmPassword: React.FC<{
               <Input
                 isDisabled={isLoading}
                 type="password"
+                data-testid="confirmation"
                 {...register("confirm", {
                   required: true,
                   minLength: MIN_LENGTH,
