@@ -1,7 +1,4 @@
-import {
-  Step,
-  TemporaryLedgerAccountConfig,
-} from "../useOnboardingModal";
+import { Step, TemporaryLedgerAccountConfig } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import RestoreLedger from "./RestoreLedger";
 import { getPk } from "../../../utils/ledger/pk";
