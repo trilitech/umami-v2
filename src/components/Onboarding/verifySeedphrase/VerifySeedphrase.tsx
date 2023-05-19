@@ -35,7 +35,11 @@ const VerifySeedphrase = ({
   } = useForm({
     mode: "onBlur",
   });
-  const [randomElements] = useState(selectRandomElements(seedphraseArray, 5));
+  const [randomElements] = useState(
+    process.env.NODE_ENV === "development"
+      ? [{ index: 0, value: seedphraseArray[0] }]
+      : selectRandomElements(seedphraseArray, 5)
+  );
   const onSubmit = () => {
     setStep({ type: StepType.nameAccount, config });
   };
