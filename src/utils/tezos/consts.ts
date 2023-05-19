@@ -11,7 +11,7 @@ export const tzktUrls = {
 
 export const tzktExplorer = {
   [TezosNetwork.GHOSTNET]: `https://ghostnet.tzkt.io`,
-  [TezosNetwork.MAINNET]: `https://mainnet.tzkt.io`,
+  [TezosNetwork.MAINNET]: `https://tzkt.io`,
 };
 
 export const coincapUrl = "https://api.coincap.io/v2/assets";

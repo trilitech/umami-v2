@@ -54,7 +54,7 @@ const AccountTokensTileHeader: React.FC<{
 
 const AccountTokensTile: React.FC<{
   account: Account;
-  onOpenSendModal: (options?: Options | undefined) => void;
+  onOpenSendModal: (options?: Options) => void;
 }> = ({ account: { pkh, label }, onOpenSendModal }) => {
   const getTokens = useGetAccountAllTokens();
   const tokens = getTokens(pkh);
@@ -71,10 +71,6 @@ const AccountTokensTile: React.FC<{
         borderRadius="10px"
       >
         <Table>
-          {
-            // Finally a way to have a sticky Header
-            // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
-          }
           <Thead position="sticky" top={0} zIndex="docked" borderRadius={4}>
             <Tr>
               <Th>Token</Th>
