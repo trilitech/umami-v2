@@ -1,10 +1,10 @@
+import { compact } from "lodash";
 import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
-import { filterNulls, objectMap } from "../helpers";
+import { objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { classifyToken, makeNft } from "../token/classify/classifyToken";
 import { useAccounts } from "./accountHooks";
 import { getTotalBalance } from "./accountUtils";
 import { BigNumber } from "bignumber.js";
@@ -28,7 +28,7 @@ export const useAllNfts = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
   return objectMap(allTokens, (tokens) =>
-    filterNulls(tokens.map(makeNft)).filter((t) => t.balance !== "0")
+    keepNFTs(compact(tokens.map(Asset.from)).filter((t) => t.balance !== "0"))
   );
 };
 
@@ -36,7 +36,7 @@ export const useAccountAssets = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
   return objectMap(allTokens, (tokens) =>
-    filterNulls(tokens.map(makeNft)).filter((t) => t.balance !== "0")
+    compact(tokens.map(Asset.from)).filter((t) => t.balance !== "0")
   );
 };
 
@@ -44,7 +44,7 @@ export const useGetAccountAssets = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
   return (pkh: string) => {
-    return filterNulls((allTokens[pkh] ?? []).map(classifyToken));
+    return compact((allTokens[pkh] ?? []).map(Asset.from));
   };
 };
 

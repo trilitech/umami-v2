@@ -21,7 +21,6 @@ import { Identicon } from "../../components/Identicon";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import { getTokenPrettyBalance } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
 import {
   useGetAccountAllTokens,
@@ -85,14 +84,14 @@ const AccountTokensTile: React.FC<{
                 <Tr key={`${token.contract}${i}`}>
                   <Td w="15%">
                     <Flex alignItems="cnenter">
-                      {token.metadata?.iconUrl ? (
-                        <Image src={token.metadata.iconUrl} w={8} h={8} />
+                      {token.iconUri() ? (
+                        <Image src={token.iconUri()} w={8} h={8} />
                       ) : (
                         <Icon h={8} w={8} as={MdGeneratingTokens} />
                       )}
 
                       <Heading size="sm" p={2} marginX={2}>
-                        {token.metadata?.name || token.type.toUpperCase()}
+                        {token.name()}
                       </Heading>
                     </Flex>
                   </Td>
@@ -108,9 +107,7 @@ const AccountTokensTile: React.FC<{
                       }}
                     />
                   </Td>
-                  <Td w="15%">
-                    {getTokenPrettyBalance(token, { showSymbol: false })}
-                  </Td>
+                  <Td w="15%">{token.prettyBalance({ showSymbol: false })}</Td>
                   <Td>
                     <Flex
                       alignItems="center"

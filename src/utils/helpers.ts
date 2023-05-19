@@ -1,9 +1,5 @@
 import { BigNumber } from "bignumber.js";
 
-export function filterNulls<T>(arr: Array<T | null | undefined>): T[] {
-  return arr.filter((v) => v != null) as T[];
-}
-
 export function objectMap<T, R>(obj: Record<string, T>, fn: (v: T) => R) {
   return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, fn(v)]));
 }

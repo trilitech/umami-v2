@@ -18,6 +18,7 @@ import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, SendFormMode, OperationValue } from "./types";
 import { BigNumber } from "bignumber.js";
+import { FA12Token, FA2Token } from "../../types/Asset";
 
 const makeSimulation = (
   operation: OperationValue,
@@ -40,14 +41,14 @@ const makeSimulation = (
         contract: operation.data.contract,
       };
 
-      if (operation.data.type === "fa1.2") {
+      if (operation.data instanceof FA12Token) {
         return estimateFA12transfer(base, pk, network);
       }
 
       return estimateFA2transfer(
         {
           ...base,
-          tokenId: operation.data.tokenId,
+          tokenId: (operation.data as FA2Token).tokenId,
         },
         pk,
         network
