@@ -26,7 +26,7 @@ describe("<DerivationPath />", () => {
       expect(setStepMock).toBeCalledWith({
         type: StepType.masterPassword,
         config: {
-          derivationPath: "m/44'/1729'/0'/0'",
+          derivationPath: "m/44'/1729'/?'/0'",
           label: undefined,
           seedphrase: undefined,
         },
@@ -45,7 +45,7 @@ describe("<DerivationPath />", () => {
       expect(setStepMock).toBeCalledWith({
         type: StepType.masterPassword,
         config: {
-          derivationPath: "m/44'/1729'/0'/0'",
+          derivationPath: "m/44'/1729'/?'/0'",
           label: undefined,
           seedphrase: undefined,
         },
@@ -91,7 +91,7 @@ describe("<DerivationPath />", () => {
       expect(setStepMock).toBeCalledWith({
         type: StepType.masterPassword,
         config: {
-          derivationPath: "m/44'/1729'/0'/0'",
+          derivationPath: "m/44'/1729'/?'/0'",
           label: undefined,
           seedphrase: undefined,
         },
