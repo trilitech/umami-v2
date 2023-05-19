@@ -18,8 +18,10 @@ import {
   TemporaryMnemonicAccountConfig,
 } from "../useOnboardingModal";
 import { useState } from "react";
-import { getDefaultMnemonicDerivationPath, getLedgerDerivationPath } from "../../../utils/account/derivationPathUtils";
-
+import {
+  getDefaultMnemonicDerivationPath,
+  getLedgerDerivationPath,
+} from "../../../utils/account/derivationPathUtils";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
