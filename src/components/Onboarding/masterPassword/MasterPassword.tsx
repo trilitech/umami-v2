@@ -2,8 +2,8 @@ import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import {
   useCheckPasswordValidity,
-  useRestoreSecret,
   useRestoreLedger,
+  useRestoreSecret,
   useRestoreSocial,
 } from "../../../utils/hooks/accountHooks";
 import {
