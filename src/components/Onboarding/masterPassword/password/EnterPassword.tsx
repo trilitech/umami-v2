@@ -12,6 +12,8 @@ import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
 
+const MIN_LENGTH = 4;
+
 const EnterPassword = ({
   onSubmit: onSubmitPassword,
   isLoading,
@@ -42,10 +44,12 @@ const EnterPassword = ({
             <FormControl isInvalid={!isValid && formState.isDirty}>
               <FormLabel>Password</FormLabel>
               <Input
+                data-testid="password"
                 isDisabled={isLoading}
                 type="password"
                 {...register("password", {
                   required: true,
+                  minLength: MIN_LENGTH,
                 })}
                 placeholder="Enter your new password..."
               />

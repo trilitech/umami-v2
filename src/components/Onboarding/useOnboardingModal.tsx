@@ -143,7 +143,7 @@ export const useCreateOrImportSecretModal = () => {
 
   return {
     modalElement: (
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
         <ModalOverlay
           bgImage={hasAccounts ? undefined : ModalBackground}
           bgColor={hasAccounts ? undefined : "#0A0A0A"}
