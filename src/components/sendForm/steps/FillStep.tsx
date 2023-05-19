@@ -19,14 +19,7 @@ import { TransferParams } from "@taquito/taquito";
 import { validateAddress, ValidationResult } from "@taquito/utils";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  Asset,
-  FA12Token,
-  FA2Token,
-  getRealAmount,
-  getTokenSymbol,
-  NFT,
-} from "../../../types/Asset";
+import { Asset, NFT } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
@@ -124,11 +117,11 @@ const getAmountSymbol = (asset?: Asset) => {
   if (!asset) {
     return "tez";
   }
-  if (asset.type === "nft") {
+  if (asset instanceof NFT) {
     return "editions";
   }
 
-  return getTokenSymbol(asset);
+  return asset.symbol();
 };
 
 export const SendTezOrNFTForm = ({
@@ -149,15 +142,15 @@ export const SendTezOrNFTForm = ({
     amount: string;
   }) => void;
   sender?: string;
-  token?: NFT | FA12Token | FA2Token;
+  token?: Asset;
   isLoading?: boolean;
   recipient?: string;
   disabled?: boolean;
   amount?: string;
   parameter?: TransferParams["parameter"];
 }) => {
-  const mandatoryNftSender = token?.type === "nft" ? token.owner : undefined;
-  const isNFT = token?.type === "nft";
+  const isNFT = token instanceof NFT;
+  const mandatoryNftSender = isNFT ? token?.owner : undefined;
   const getBatchIsSimulating = useBatchIsSimulating();
 
   const {
@@ -235,7 +228,7 @@ export const SendTezOrNFTForm = ({
             )}
           </FormControl>
 
-          {token?.type === "nft" ? <SendNFTRecapTile nft={token} /> : null}
+          {token instanceof NFT ? <SendNFTRecapTile nft={token} /> : null}
 
           <FormControl mb={2} mt={2}>
             <FormLabel>Amount</FormLabel>
@@ -383,7 +376,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: getRealAmount(v.amount, mode.data),
+                amount: mode.data.getRealAmount(v.amount),
                 sender: v.sender,
                 recipient: v.recipient,
               },
@@ -394,7 +387,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: getRealAmount(v.amount, mode.data),
+                amount: mode.data.getRealAmount(v.amount),
                 sender: v.sender,
                 recipient: v.recipient,
               },

@@ -3,6 +3,7 @@ import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 import { CSVRow } from "./types";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../../mocks/tokens";
 import { BigNumber } from "bignumber.js";
+import { FA12Token, FA2Token, NFT } from "../../types/Asset";
 
 describe("csv utils", () => {
   test("parse valid csv rows", async () => {
@@ -97,11 +98,7 @@ describe("csv utils", () => {
     });
     expect(res).toEqual({
       type: "token",
-      data: {
-        balance: ghostFA12.balance,
-        contract: ghostFA12.contract,
-        type: "fa1.2",
-      },
+      data: new FA12Token(ghostFA12.contract, ghostFA12.balance),
       value: {
         amount: new BigNumber(100000000),
         recipient: mockPkh(1),
@@ -123,13 +120,12 @@ describe("csv utils", () => {
     });
     expect(res).toEqual({
       type: "token",
-      data: {
-        balance: ghostFA2.balance,
-        contract: ghostFA2.contract,
-        metadata: ghostFA2.metadata,
-        tokenId: ghostFA2.tokenId,
-        type: "fa2",
-      },
+      data: new FA2Token(
+        ghostFA2.contract,
+        ghostFA2.balance,
+        ghostFA2.tokenId,
+        ghostFA2.metadata
+      ),
       value: {
         amount: new BigNumber(100000),
         recipient: mockPkh(1),
@@ -151,14 +147,13 @@ describe("csv utils", () => {
     });
     expect(res).toEqual({
       type: "token",
-      data: {
-        balance: ghostTezzard.balance,
-        contract: ghostTezzard.contract,
-        metadata: ghostTezzard.metadata,
-        tokenId: ghostTezzard.tokenId,
-        owner: ghostTezzard.owner,
-        type: "nft",
-      },
+      data: new NFT(
+        ghostTezzard.contract,
+        ghostTezzard.balance,
+        ghostTezzard.tokenId,
+        ghostTezzard.owner,
+        ghostTezzard.metadata
+      ),
       value: {
         amount: new BigNumber(1),
         recipient: mockPkh(1),

@@ -240,21 +240,20 @@ export const mockFA1Token = (
   };
 };
 
-export const mockNFT = (index: number, balance = "1"): NFT => {
-  return {
-    type: "nft",
-    owner: mockPkh(index),
+export const mockNFT = (index: number, balance = "1") => {
+  return new NFT(
+    mockContract(index),
     balance,
-    contract: mockContract(index),
-    metadata: {
+    "mockId" + index,
+    mockPkh(index),
+    {
       displayUri:
         "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" +
         index,
       name: "Tezzardz #" + index,
       symbol: "FKR" + index,
-    },
-    tokenId: "mockId" + index,
-  };
+    }
+  );
 };
 
 export const mockBaker = (index: number) =>

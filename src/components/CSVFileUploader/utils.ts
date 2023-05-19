@@ -1,5 +1,5 @@
 import { validateAddress, ValidationResult } from "@taquito/utils";
-import { Asset, getRealAmount } from "../../types/Asset";
+import { Asset, FA12Token } from "../../types/Asset";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { OperationValue } from "../sendForm/types";
@@ -51,84 +51,37 @@ export const csvRowToOperationValue = (
   csvRow: CSVRow,
   contractToAsset: Record<string, Asset>
 ): OperationValue => {
-  const baseValue = {
-    sender,
-    recipient: csvRow.recipient,
-  };
-  switch (csvRow.type) {
-    case "tez":
-      return {
-        type: "tez",
-        value: {
-          ...baseValue,
-          amount: tezToMutez(csvRow.prettyAmount),
-        },
-      };
-    case "fa1.2": {
-      const asset = contractToAsset[csvRow.contract];
-      if (!asset) {
-        throw new Error(
-          `Token "${csvRow.contract}" is not owned by the sender`
-        );
-      }
-      if (asset.type !== "fa1.2" || csvRow.contract !== asset.contract) {
-        throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
-      }
-      return {
-        type: "token",
-        data: {
-          type: "fa1.2",
-          contract: asset.contract,
-          balance: asset.balance,
-        },
-        value: {
-          ...baseValue,
-          amount: getRealAmount(csvRow.prettyAmount, asset),
-        },
-      };
-    }
-    case "fa2": {
-      const asset = contractToAsset[csvRow.contract];
-      if (!asset) {
-        throw new Error(
-          `Token "${csvRow.contract}" is not owned by the sender`
-        );
-      }
+  const recipient = csvRow.recipient;
 
-      const value = {
-        ...baseValue,
-        amount: getRealAmount(csvRow.prettyAmount, asset),
-      };
-
-      if (asset.type === "fa1.2" || csvRow.contract !== asset.contract) {
-        throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
-      }
-
-      const baseData = {
-        contract: asset.contract,
-        balance: asset.balance,
-        tokenId: `${csvRow.tokenId}`,
-      };
-
-      switch (asset.type) {
-        case "fa2":
-          return {
-            type: "token",
-            data: { ...baseData, type: "fa2", metadata: asset.metadata },
-            value,
-          };
-        case "nft":
-          return {
-            type: "token",
-            data: {
-              ...baseData,
-              type: "nft",
-              owner: asset.owner,
-              metadata: asset.metadata,
-            },
-            value,
-          };
-      }
-    }
+  if (csvRow.type === "tez") {
+    return {
+      type: "tez",
+      value: {
+        sender,
+        recipient,
+        amount: tezToMutez(csvRow.prettyAmount),
+      },
+    };
   }
+
+  const asset = contractToAsset[csvRow.contract];
+  if (!asset) {
+    throw new Error(`Token "${csvRow.contract}" is not owned by the sender`);
+  }
+
+  if (
+    csvRow.contract !== asset.contract ||
+    (asset instanceof FA12Token && csvRow.type !== "fa1.2")
+  ) {
+    throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
+  }
+  return {
+    type: "token",
+    data: asset,
+    value: {
+      sender,
+      recipient,
+      amount: asset.getRealAmount(csvRow.prettyAmount),
+    },
+  };
 };

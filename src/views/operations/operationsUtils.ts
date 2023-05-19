@@ -1,15 +1,15 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { formatRelative } from "date-fns";
 import { z } from "zod";
-import { getTokenPrettyBalance } from "../../types/Asset";
+import { NFT } from "../../types/Asset";
 import {
   OperationDisplay,
   TezTransfer,
   TokenTransfer,
 } from "../../types/Operation";
 import { Token } from "../../types/Token";
+import { Asset } from "../../types/Asset";
 import { compact } from "lodash";
-import { classifyToken } from "../../utils/token/classify/classifyToken";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
@@ -20,7 +20,7 @@ export const classifyTokenTransfer = (transfer: TokenTransfer) => {
     token: transfer.token === null ? undefined : transfer.token, // XD
   };
 
-  return classifyToken(token);
+  return Asset.from(token);
 };
 
 export const getHashUrl = (hash: string, network: TezosNetwork) => {
@@ -136,10 +136,10 @@ export const getTokenOperationDisplay = (
   );
 
   let prettyAmount: string;
-  if (asset.type === "nft") {
+  if (asset instanceof NFT) {
     prettyAmount = asset.balance;
   } else {
-    prettyAmount = getTokenPrettyBalance(asset, { showSymbol: true });
+    prettyAmount = asset.prettyBalance({ showSymbol: true });
   }
 
   const result: OperationDisplay = {

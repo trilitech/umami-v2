@@ -278,13 +278,10 @@ describe("<SendForm />", () => {
     const MOCK_TOKEN_SYMBOL = "FOO";
     const MOCK_TOKEN_ID = "7";
     const MOCK_FEE = 3122;
-    const mockFA2: FA2Token = {
-      type: "fa2",
-      balance: "14760000",
-      contract: mockContract(2),
-      metadata: { symbol: MOCK_TOKEN_SYMBOL, decimals: "5" },
-      tokenId: MOCK_TOKEN_ID,
-    };
+    const mockFA2 = new FA2Token(mockContract(2), "14760000", MOCK_TOKEN_ID, {
+      symbol: MOCK_TOKEN_SYMBOL,
+      decimals: "5",
+    });
     it("should display token name in amount input", () => {
       render(
         fixture(undefined, {
@@ -379,12 +376,10 @@ describe("<SendForm />", () => {
     const MOCK_TOKEN_SYMBOL = "FA1FOO";
     const MOCK_FEE = 4122;
 
-    const mockFa1: FA12Token = {
-      type: "fa1.2",
-      balance: "3",
-      contract: mockContract(2),
-      metadata: { symbol: MOCK_TOKEN_SYMBOL, decimals: "8" },
-    };
+    const mockFa1 = new FA12Token(mockContract(2), "3", {
+      symbol: MOCK_TOKEN_SYMBOL,
+      decimals: "8",
+    });
     it("should display token name in amount input", () => {
       render(
         fixture(undefined, {
