@@ -5,6 +5,8 @@ import { getIPFSurl } from "../utils/token/nftUtils";
 
 const addressParser = z.object({ address: z.string() });
 
+type AssetType = "fa1.2" | "fa2" | "nft";
+
 const fa1TokenParser = z.object({
   standard: z.string().regex(/fa1\.2/i),
   contract: addressParser,
@@ -47,6 +49,8 @@ export abstract class Asset {
     public balance: string,
     public metadata?: TokenMetadata
   ) {}
+
+  abstract type(): AssetType;
 
   static from(raw: Token): Asset | null {
     const metadata = raw.token?.metadata;
@@ -125,6 +129,10 @@ export abstract class Asset {
 }
 
 export class FA12Token extends Asset {
+  type(): AssetType {
+    return "fa1.2";
+  }
+
   defaultTokenName(): string {
     return DEFAULT_FA1_NAME;
   }
@@ -146,6 +154,10 @@ export class FA2Token extends Asset {
     public metadata: TokenMetadata
   ) {
     super(contract, balance, metadata);
+  }
+
+  type(): AssetType {
+    return "fa2";
   }
 
   defaultTokenName(): string {
@@ -172,6 +184,10 @@ export class NFT extends Asset {
     public metadata: TokenMetadata
   ) {
     super(contract, balance, metadata);
+  }
+
+  type(): AssetType {
+    return "nft";
   }
 
   defaultTokenName(): string {
