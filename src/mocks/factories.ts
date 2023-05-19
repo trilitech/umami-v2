@@ -243,8 +243,8 @@ export const mockFA1Token = (
 export const mockNFT = (index: number, balance = "1") => {
   return new NFT(
     mockContract(index),
-    balance,
     "mockId" + index,
+    balance,
     mockPkh(index),
     {
       displayUri:

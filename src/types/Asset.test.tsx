@@ -22,7 +22,7 @@ describe("Asset.from", () => {
   test("case valid fa2 token", () => {
     const result = Asset.from(fa2Token);
     expect(result).toEqual(
-      new FA2Token("KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ", "409412200", "1", {
+      new FA2Token("KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ", "1", "409412200", {
         decimals: "5",
         name: "Klondike3",
         symbol: "KL3",
@@ -40,8 +40,8 @@ describe("Asset.from", () => {
     const result = Asset.from(nft);
     const expected = new NFT(
       "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-      "0",
       "3",
+      "0",
       "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       nft.token?.metadata as TokenMetadata
     );
@@ -93,8 +93,8 @@ describe("Asset.from", () => {
     const result = Asset.from(uUSD);
     const expected = new FA2Token(
       "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      "19218750000",
       "0",
+      "19218750000",
       {
         decimals: "12",
         name: "youves uUSD",

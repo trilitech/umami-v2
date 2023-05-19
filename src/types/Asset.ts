@@ -73,8 +73,8 @@ export abstract class Asset {
     if (nftResult.success) {
       return new NFT(
         nftResult.data.token.contract.address,
-        nftResult.data.balance,
         nftResult.data.token.tokenId,
+        nftResult.data.balance,
         nftResult.data.account.address,
         metadata
       );
@@ -84,8 +84,8 @@ export abstract class Asset {
     if (fa2result.success) {
       return new FA2Token(
         fa2result.data.token.contract.address,
-        fa2result.data.balance,
         fa2result.data.token.tokenId,
+        fa2result.data.balance,
         metadata
       );
     }
@@ -149,8 +149,8 @@ export class FA12Token extends Asset {
 export class FA2Token extends Asset {
   constructor(
     public contract: string,
-    public balance: string,
     public tokenId: string,
+    public balance: string,
     public metadata: TokenMetadata
   ) {
     super(contract, balance, metadata);
@@ -178,8 +178,8 @@ export class FA2Token extends Asset {
 export class NFT extends Asset {
   constructor(
     public contract: string,
-    public balance: string,
     public tokenId: string,
+    public balance: string,
     public owner: string,
     public metadata: TokenMetadata
   ) {

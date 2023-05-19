@@ -122,8 +122,8 @@ describe("csv utils", () => {
       type: "token",
       data: new FA2Token(
         ghostFA2.contract,
-        ghostFA2.balance,
         ghostFA2.tokenId,
+        ghostFA2.balance,
         ghostFA2.metadata
       ),
       value: {
@@ -149,8 +149,8 @@ describe("csv utils", () => {
       type: "token",
       data: new NFT(
         ghostTezzard.contract,
-        ghostTezzard.balance,
         ghostTezzard.tokenId,
+        ghostTezzard.balance,
         ghostTezzard.owner,
         ghostTezzard.metadata
       ),

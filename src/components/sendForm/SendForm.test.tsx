@@ -278,7 +278,7 @@ describe("<SendForm />", () => {
     const MOCK_TOKEN_SYMBOL = "FOO";
     const MOCK_TOKEN_ID = "7";
     const MOCK_FEE = 3122;
-    const mockFA2 = new FA2Token(mockContract(2), "14760000", MOCK_TOKEN_ID, {
+    const mockFA2 = new FA2Token(mockContract(2), MOCK_TOKEN_ID, "14760000", {
       symbol: MOCK_TOKEN_SYMBOL,
       decimals: "5",
     });
