@@ -17,7 +17,6 @@ import { useCreateOrImportSecretModal } from "./components/Onboarding/useOnboard
 
 function ImportSeed() {
   const { onOpen, modalElement } = useCreateOrImportSecretModal();
-  // const { onOpen: onOpenEula, modalElement: eulaModalElement } = useEulaModal({onContinue: onOpenSecret});
   // TODO: Fill with proper content
   const sliderItems = [
     {

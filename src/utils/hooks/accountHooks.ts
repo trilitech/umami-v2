@@ -2,9 +2,10 @@ import { decrypt } from "../aes";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
-import { restoreAccountsFromLedger } from "../store/thunks/restoreAccountsFromLedger";
-import { restoreAccountsFromSocial } from "../store/thunks/restoreAccountsFromSocial";
 import { useGetAccountBalance } from "./assetsHooks";
+import { SocialAccount, AccountType, LedgerAccount } from "../../types/Account";
+
+const { add } = accountsSlice.actions;
 
 export const useAccounts = () => {
   return useAppSelector((s) => s.accounts.items);
@@ -70,16 +71,31 @@ export const useRestoreSecret = () => {
 
 export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
-
-  return (derivationPath: string, pk: string, pkh: string, label: string) =>
-    dispatch(restoreAccountsFromLedger(derivationPath, pk, pkh, label));
+  return (derivationPath: string, pk: string, pkh: string, label: string) => {
+    const account: LedgerAccount = {
+      derivationPath,
+      curve: "ed25519",
+      type: AccountType.LEDGER,
+      pk: pk,
+      pkh: pkh,
+      label,
+    };
+    dispatch(add([account]));
+  };
 };
 
 export const useRestoreSocial = () => {
   const dispatch = useAppDispatch();
-
-  return (pk: string, pkh: string, label: string) =>
-    dispatch(restoreAccountsFromSocial(pk, pkh, label));
+  return (pk: string, pkh: string, label: string) => {
+    const account: SocialAccount = {
+      type: AccountType.SOCIAL,
+      pk: pk,
+      pkh: pkh,
+      idp: "google",
+      label,
+    };
+    dispatch(add([account]));
+  };
 };
 
 /**
