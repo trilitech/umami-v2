@@ -1,6 +1,5 @@
 import {
   Step,
-  StepType,
   TemporaryLedgerAccountConfig,
 } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
