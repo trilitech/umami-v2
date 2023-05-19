@@ -19,7 +19,7 @@ import {
 } from "../useOnboardingModal";
 import { useState } from "react";
 import {
-  getDefaultMnemonicDerivationPath,
+  defaultV1Pattern,
   getLedgerDerivationPath,
 } from "../../../utils/account/derivationPathUtils";
 
@@ -40,7 +40,7 @@ export const DerivationPath = ({
     if (config instanceof TemporaryLedgerAccountConfig) {
       return getLedgerDerivationPath(0);
     } else {
-      return getDefaultMnemonicDerivationPath(0);
+      return defaultV1Pattern;
     }
   };
 
