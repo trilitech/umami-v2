@@ -3,7 +3,7 @@ import { useRef } from "react";
 import SendForm from "../../components/sendForm";
 import { SendFormMode } from "../../components/sendForm/types";
 
-type Options = {
+export type Options = {
   sender?: string;
   recipient?: string;
   mode: SendFormMode;

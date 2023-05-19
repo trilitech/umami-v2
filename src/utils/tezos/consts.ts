@@ -9,6 +9,11 @@ export const tzktUrls = {
   [TezosNetwork.MAINNET]: `https://api.mainnet.tzkt.io`,
 };
 
+export const tzktExplorer = {
+  [TezosNetwork.GHOSTNET]: `https://ghostnet.tzkt.io`,
+  [TezosNetwork.MAINNET]: `https://tzkt.io`,
+};
+
 export const coincapUrl = "https://api.coincap.io/v2/assets";
 
 export const bakersUrl = "https://api.baking-bad.org/v2/bakers";
