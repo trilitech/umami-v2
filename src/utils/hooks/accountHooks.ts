@@ -64,7 +64,7 @@ export const useRestoreSecret = () => {
         label,
         derivationPathPattern,
       })
-    );
+    ).unwrap();
   };
 };
 
