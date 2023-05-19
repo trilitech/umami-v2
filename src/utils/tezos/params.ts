@@ -72,14 +72,14 @@ const makeTokenTransferParams = async (
   if (operation.type !== "token") {
     throw new Error("Incorrect type");
   }
-  const { contract } = operation.data;
+  const asset = operation.data;
+  const { contract } = asset;
   const args = { ...operation.value, contract };
-
   const transferMethod =
-    operation instanceof FA12Token
+    asset instanceof FA12Token
       ? makeFA12TransferMethod(args, signer)
       : makeFA2TransferMethod(
-          { ...args, tokenId: (operation.data as FA2Token).tokenId },
+          { ...args, tokenId: (asset as FA2Token).tokenId },
           signer
         );
 

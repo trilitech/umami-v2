@@ -3,8 +3,8 @@ import { publicKeys1 } from "./publicKeys";
 
 export const ghostTezzard = new NFT(
   "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-  "1",
   "6",
+  "1",
   publicKeys1.pkh,
   {
     displayUri:
