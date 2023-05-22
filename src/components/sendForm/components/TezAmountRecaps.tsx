@@ -65,7 +65,9 @@ export const Total = ({ mutez, ...flexProps }: Props) => {
             <Heading size="sm" color={colors.gray[400]}>
               USD:
             </Heading>
-            <Text size="sm">${totalUsdPrice.toString()}</Text>
+            <Text size="sm" color={colors.gray[400]}>
+              ${totalUsdPrice}
+            </Text>
           </Flex>
         )}
       </Flex>

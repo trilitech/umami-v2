@@ -39,7 +39,6 @@ import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
     case "token": {
-      console.log(operation, "HERE");
       const amount =
         operation.data instanceof NFT
           ? operation.data.balance
