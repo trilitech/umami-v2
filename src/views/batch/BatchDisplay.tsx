@@ -76,12 +76,12 @@ const RightPanel = ({
   return (
     <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
       <Box flex={1}>
+        <Subtotal mutez={subTotal} marginY={4} />
         <Fee mutez={fee} />
-        <Subtotal mutez={subTotal} />
       </Box>
       <Box>
         <Divider />
-        <Total mutez={total} />
+        <Total mutez={total} paddingY={3} />
 
         <Flex justifyContent={"space-between"}>
           <Button

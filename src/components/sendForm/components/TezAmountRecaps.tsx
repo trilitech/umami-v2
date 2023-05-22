@@ -1,6 +1,8 @@
 import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 import { BigNumber } from "bignumber.js";
-import { prettyTezAmount } from "../../../utils/format";
+import colors from "../../../style/colors";
+import { mutezToTez, prettyTezAmount } from "../../../utils/format";
+import { useTezToDollar } from "../../../utils/hooks/assetsHooks";
 
 type Props = { mutez: BigNumber } & FlexProps;
 
@@ -40,19 +42,33 @@ export const Subtotal = ({ mutez, ...flexProps }: Props) => {
 };
 
 export const Total = ({ mutez, ...flexProps }: Props) => {
+  const tezToDollar = useTezToDollar();
+  const totalUsdPrice =
+    tezToDollar && tezToDollar(mutezToTez(mutez)).toFixed(2);
   return (
     <Flex
       aria-label="total"
-      alignItems={"center"}
+      alignItems={"start"}
       justifyContent="space-between"
       {...flexProps}
       mt={2}
       mb={2}
     >
-      <Heading size="sm" color="text.dark">
+      <Heading size="md" color={colors.gray[400]}>
         Total
       </Heading>
-      <Text size="sm">{prettyTezAmount(mutez)}</Text>
+      <Flex flexDirection="column">
+        <Heading size="md">{prettyTezAmount(mutez)}</Heading>
+
+        {totalUsdPrice && (
+          <Flex alignItems="center" justifyContent="end">
+            <Heading size="sm" color={colors.gray[400]}>
+              USD:
+            </Heading>
+            <Text size="sm">${totalUsdPrice.toString()}</Text>
+          </Flex>
+        )}
+      </Flex>
     </Flex>
   );
 };
