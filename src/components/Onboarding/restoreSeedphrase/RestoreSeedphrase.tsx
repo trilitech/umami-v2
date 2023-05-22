@@ -20,23 +20,35 @@ import {
   TemporaryMnemonicAccountConfig,
 } from "../useOnboardingModal";
 import { InMemorySigner } from "@taquito/signer";
+import { seedPhrase } from "../../../mocks/seedPhrase";
 
 const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
   const {
     register,
     handleSubmit,
+    setValue: setFormValue,
+    trigger,
     formState: { errors, isValid },
   } = useForm({
     mode: "onBlur",
   });
   const toast = useToast();
-  const [value, setValue] = useState("12");
+  const [mnemonicSize, setMnemonicSize] = useState("12");
+
+  const pasteMnemonic = (mnemonic: string) => {
+    mnemonic.split(" ").forEach((word, i) => {
+      setFormValue(`word${i}`, word);
+    });
+    trigger();
+  };
+
   const onSubmit = async (data: FieldValues) => {
     let seedphrase = "";
     for (const key in data) {
       seedphrase += data[key] + " ";
     }
     const config = new TemporaryMnemonicAccountConfig();
+    config.label = "Restored account";
     config.seedphrase = seedphrase.trim();
 
     try {
@@ -61,8 +73,8 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
           <VStack w="100%" spacing={4}>
             <Select
               data-testid="select"
-              onChange={(event) => setValue(event.target.value)}
-              value={value}
+              onChange={(event) => setMnemonicSize(event.target.value)}
+              value={mnemonicSize}
             >
               {[12, 15, 18, 24].reverse().map((value) => {
                 return (
@@ -74,33 +86,45 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
             </Select>
 
             <Grid templateColumns="repeat(3, 1fr)" gap={3} pb="20px">
-              {Array.from({ length: parseInt(value) }).map((item, index) => {
-                return (
-                  <GridItem
-                    key={index}
-                    fontSize="sm"
-                    border="1px dashed #D6D6D6;"
-                    borderRadius="4px"
-                    p="6px"
-                    display="flex"
-                  >
-                    <Text pl="8px" pr="8px">
-                      {index + 1}
-                    </Text>
-                    <Input
-                      size={"xsmall"}
-                      border="none"
-                      placeholder="Type here"
-                      {...register(`${index}`, {
-                        required: true,
-                      })}
-                    />
-                    {errors[`${index}`] && (
-                      <WarningIcon p="8px" w={"40px"} h={"40px"} color="red" />
-                    )}
-                  </GridItem>
-                );
-              })}
+              {Array.from({ length: parseInt(mnemonicSize) }).map(
+                (item, index) => {
+                  return (
+                    <GridItem
+                      key={index}
+                      fontSize="sm"
+                      border="1px dashed #D6D6D6;"
+                      borderRadius="4px"
+                      p="6px"
+                      display="flex"
+                    >
+                      <Text pl="8px" pr="8px">
+                        {index + 1}
+                      </Text>
+                      <Input
+                        onPaste={async (e) => {
+                          e.preventDefault();
+                          const mnemonic = await navigator.clipboard.readText();
+                          pasteMnemonic(mnemonic);
+                        }}
+                        size={"xsmall"}
+                        border="none"
+                        placeholder="Type here"
+                        {...register(`word${index}`, {
+                          required: true,
+                        })}
+                      />
+                      {errors[`${index}`] && (
+                        <WarningIcon
+                          p="8px"
+                          w={"40px"}
+                          h={"40px"}
+                          color="red"
+                        />
+                      )}
+                    </GridItem>
+                  );
+                }
+              )}
             </Grid>
             <Button
               type="submit"
@@ -111,6 +135,19 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
               isDisabled={!isValid}
             >
               Continue
+            </Button>
+
+            <Button
+              onClick={() => {
+                setMnemonicSize("24");
+                pasteMnemonic(seedPhrase);
+              }}
+              bg="umami.blue"
+              w="100%"
+              size="lg"
+              minH="48px"
+            >
+              Enter test seedphrase (Dev only)
             </Button>
           </VStack>
         </form>
