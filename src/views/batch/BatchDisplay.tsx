@@ -58,7 +58,7 @@ const renderAmount = (operation: OperationValue) => {
               <Image src={getIPFSurl(operation.data.metadata.displayUri)} />
             </AspectRatio>
           ) : (
-            operation.data.symbol()
+            <Text>{operation.data.symbol()}</Text>
           )}
         </Flex>
       );
