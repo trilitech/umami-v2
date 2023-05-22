@@ -76,7 +76,7 @@ describe("<RestoreSeedphrase />", () => {
         type: StepType.derivationPath,
         config: {
           derivationPath: undefined,
-          label: undefined,
+          label: "Restored account",
           seedphrase: seedPhrase,
         },
       });
