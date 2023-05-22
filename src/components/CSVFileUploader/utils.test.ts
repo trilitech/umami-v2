@@ -100,7 +100,7 @@ describe("csv utils", () => {
       type: "token",
       data: new FA12Token(ghostFA12.contract, ghostFA12.balance),
       value: {
-        amount: new BigNumber(100000000),
+        amount: new BigNumber(10000),
         recipient: mockPkh(1),
         sender: mockPkh(0),
       },

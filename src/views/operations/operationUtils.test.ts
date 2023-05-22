@@ -412,7 +412,7 @@ describe("getTezOperationsDisplay", () => {
     const expected = {
       type: "transaction",
       tzktUrl: "https://mainnet.tzkt.io/2215201/operations",
-      amount: { prettyDisplay: "+2.74 FA1.2", url: undefined },
+      amount: { prettyDisplay: "+27400 FA1.2", url: undefined },
       prettyTimestamp: "today at 3:30 PM",
       recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -433,7 +433,7 @@ describe("getOperationsDisplays", () => {
 
     const expected: OperationDisplay[] = [
       {
-        amount: { prettyDisplay: "+2.74 FA1.2", url: undefined },
+        amount: { prettyDisplay: "+27400 FA1.2", url: undefined },
         prettyTimestamp: "today at 3:30 PM",
         recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
