@@ -501,7 +501,7 @@ describe("<SendForm />", () => {
         const nft = screen.getByLabelText(/^nft$/i);
         expect(within(nft).getByRole("img")).toHaveProperty(
           "src",
-          mockNFT(1).metadata.displayUri
+          "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG1"
         );
       });
     };

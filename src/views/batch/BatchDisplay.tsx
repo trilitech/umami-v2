@@ -29,6 +29,7 @@ import { formatTokenAmount, NFT } from "../../types/Asset";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { Batch } from "../../utils/store/assetsSlice";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
@@ -45,7 +46,7 @@ const renderAmount = (operation: OperationValue) => {
           <Text>{amount}</Text>
           {operation.data instanceof NFT && (
             <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
-              <Image src={operation.data.metadata.displayUri} />
+              <Image src={getIPFSurl(operation.data.metadata.displayUri)} />
             </AspectRatio>
           )}
         </Flex>

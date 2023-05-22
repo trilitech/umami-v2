@@ -7,6 +7,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { NFT } from "../../../types/Asset";
+import { getIPFSurl } from "../../../utils/token/nftUtils";
 
 export const SendNFTRecapTile = ({ nft }: { nft: NFT }) => {
   return (
@@ -14,7 +15,7 @@ export const SendNFTRecapTile = ({ nft }: { nft: NFT }) => {
       <FormLabel>NFT</FormLabel>
       <Flex alignItems={"center"}>
         <AspectRatio height={14} width={14} ratio={4 / 4}>
-          <Image src={nft.metadata.displayUri} />
+          <Image src={getIPFSurl(nft.metadata.displayUri)} />
         </AspectRatio>
         <Heading ml={4} size={"sm"}>
           {nft.metadata.name}
