@@ -50,12 +50,15 @@ export const useGetAccountAssets = () => {
 
 export const useGetAccountAssetsLookup = (): ((
   pkh: string
-) => Record<string, Asset>) => {
+) => Record<string, Asset[]>) => {
   const getAccountAssets = useGetAccountAssets();
 
-  return (pkh: string): Record<string, Asset> =>
-    getAccountAssets(pkh).reduce((acc: Record<string, Asset>, cur) => {
-      acc[cur.contract] = cur;
+  return (pkh: string): Record<string, Asset[]> =>
+    getAccountAssets(pkh).reduce((acc: Record<string, Asset[]>, cur) => {
+      if (!acc[cur.contract]) {
+        acc[cur.contract] = [];
+      }
+      acc[cur.contract].push(cur);
       return acc;
     }, {});
 };

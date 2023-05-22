@@ -94,7 +94,7 @@ describe("csv utils", () => {
       contract: ghostFA12.contract,
     } as CSVRow;
     const res = csvRowToOperationValue(mockPkh(0), mockCSVFA12TransferRow, {
-      [ghostFA12.contract]: ghostFA12,
+      [ghostFA12.contract]: [ghostFA12],
     });
     expect(res).toEqual({
       type: "token",
@@ -116,7 +116,7 @@ describe("csv utils", () => {
       tokenId: parseInt(ghostFA2.tokenId),
     } as CSVRow;
     const res = csvRowToOperationValue(mockPkh(0), mockCSVFA2TransferRow, {
-      [ghostFA2.contract]: ghostFA2,
+      [ghostFA2.contract]: [ghostFA2],
     });
     expect(res).toEqual({
       type: "token",
@@ -135,6 +135,9 @@ describe("csv utils", () => {
   });
 
   test("converts NFT CSVFA2TransferRow to OperationValue", () => {
+    const ghostTezzard1 = ghostTezzard;
+    const ghostTezzard2 = ghostTezzard;
+    ghostTezzard2.tokenId = "8";
     const mockCSVFA2TransferRow = {
       type: "fa2",
       recipient: mockPkh(1),
@@ -143,16 +146,16 @@ describe("csv utils", () => {
       tokenId: parseInt(ghostTezzard.tokenId),
     } as CSVRow;
     const res = csvRowToOperationValue(mockPkh(0), mockCSVFA2TransferRow, {
-      [ghostTezzard.contract]: ghostTezzard,
+      [ghostTezzard.contract]: [ghostTezzard1, ghostTezzard2],
     });
     expect(res).toEqual({
       type: "token",
       data: new NFT(
-        ghostTezzard.contract,
-        ghostTezzard.tokenId,
-        ghostTezzard.balance,
-        ghostTezzard.owner,
-        ghostTezzard.metadata
+        ghostTezzard1.contract,
+        ghostTezzard1.tokenId,
+        ghostTezzard1.balance,
+        ghostTezzard1.owner,
+        ghostTezzard1.metadata
       ),
       value: {
         amount: new BigNumber(1),

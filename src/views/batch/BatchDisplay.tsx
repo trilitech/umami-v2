@@ -18,10 +18,7 @@ import {
 import React from "react";
 import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
-<<<<<<< HEAD
 import AccountOrContactTile from "../../components/AccountOrContactTile";
-=======
->>>>>>> 5c21a56 (populate tables)
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import {
   Fee,
@@ -154,14 +151,7 @@ export const BatchDisplay: React.FC<{
             </Thead>
             <Tbody>
               {items.map(({ operation, fee }, i) => (
-<<<<<<< HEAD
                 <Tr key={operation.value.sender + operation.type + i}>
-=======
-                <Tr
-                  // TODO add getKey method
-                  key={operation.value.sender + operation.type + i}
-                >
->>>>>>> 5c21a56 (populate tables)
                   <Td>
                     {operation.type !== "delegation"
                       ? "Transaction"
@@ -183,14 +173,9 @@ export const BatchDisplay: React.FC<{
                     )}
                   </Td>
                   <Td>
-<<<<<<< HEAD
                     {operation.value.recipient && (
                       <AccountOrContactTile pkh={operation.value.recipient} />
                     )}
-=======
-                    {operation.value.recipient &&
-                      formatPkh(operation.value.recipient)}
->>>>>>> 5c21a56 (populate tables)
                   </Td>
                   <Td>{prettyTezAmount(fee)}</Td>
                 </Tr>

@@ -1,5 +1,5 @@
 import { validateAddress, ValidationResult } from "@taquito/utils";
-import { Asset, FA12Token } from "../../types/Asset";
+import { Asset, FA12Token, FA2Token } from "../../types/Asset";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { OperationValue } from "../sendForm/types";
@@ -43,13 +43,15 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
     }
   }
 
+  console.log(res, "CSV");
+
   return res;
 };
 
 export const csvRowToOperationValue = (
   sender: string,
   csvRow: CSVRow,
-  contractToAsset: Record<string, Asset>
+  contractToAssets: Record<string, Asset[]>
 ): OperationValue => {
   const recipient = csvRow.recipient;
 
@@ -64,7 +66,17 @@ export const csvRowToOperationValue = (
     };
   }
 
-  const asset = contractToAsset[csvRow.contract];
+  const assets = contractToAssets[csvRow.contract] ?? [];
+
+  const asset =
+    csvRow.type === "fa1.2"
+      ? assets[0]
+      : assets.find(
+          (asset) =>
+            !(asset instanceof FA12Token) &&
+            (asset as FA2Token).tokenId === `${csvRow.tokenId}`
+        );
+
   if (!asset) {
     throw new Error(`Token "${csvRow.contract}" is not owned by the sender`);
   }
