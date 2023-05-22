@@ -1,0 +1,24 @@
+query allArticles {
+  allArticles {
+    id
+    title
+    content {
+      value
+    }
+    image {
+      id
+      responsiveImage {
+        alt
+        base64
+        bgColor
+        title
+      }
+    }
+    _status
+    _firstPublishedAt
+  }
+
+  _allArticlesMeta {
+    count
+  }
+}

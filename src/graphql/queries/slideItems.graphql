@@ -1,0 +1,22 @@
+query allSlideItems {
+  allSlideitems {
+    id
+    title
+    text
+    image {
+      id
+      responsiveImage {
+        alt
+        base64
+        bgColor
+        title
+      }
+    }
+    _status
+    _firstPublishedAt
+  }
+
+  _allSlideitemsMeta {
+    count
+  }
+}
