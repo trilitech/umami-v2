@@ -133,7 +133,7 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
 
   const accountsByKind = groupByKind(accounts);
 
-  const { onOpen, element } = useConfirmation();
+  const { onOpen, element, onClose } = useConfirmation();
   const removeMnemonic = useRemoveMnemonic();
 
   return (
@@ -155,6 +155,7 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
           onOpen({
             onConfirm: () => {
               removeMnemonic(first.seedFingerPrint);
+              onClose();
             },
             body: `Are you sure you want to delete all accounts derived from ${label}?`,
           });

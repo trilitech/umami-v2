@@ -107,6 +107,13 @@ describe("<AccountList />", () => {
     });
 
     expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(1);
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          `Are you sure you want to delete all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+        )
+      ).not.toBeInTheDocument();
+    });
   });
 });
 
