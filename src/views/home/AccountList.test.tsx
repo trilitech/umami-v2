@@ -7,9 +7,8 @@ import { AccountsList } from "./AccountsList";
 
 import { mockPk } from "../../mocks/factories";
 import "../../mocks/mockGetRandomValues";
-import { render, screen, within } from "../../mocks/testUtils";
+import { act, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType } from "../../types/Account";
-import HomeView from "./HomeView";
 
 const { add, reset } = accountsSlice.actions;
 
@@ -46,30 +45,68 @@ describe("<AccountList />", () => {
     });
   });
 
-  it("Accounts that are restored by user are displayed by group(case mnemonic and social)", async () => {
+  it("Accounts that are restored by user are displayed by group (case mnemonic and social)", async () => {
     await restore();
-    render(<HomeView />);
+    render(<AccountsList onOpen={() => {}} />);
     expect(screen.getAllByTestId("account-tile")).toHaveLength(5);
     expect(screen.getAllByTestId(/account-group/)).toHaveLength(3);
 
-    const socialAccounts = screen.getByTestId("account-group-social");
+    const socialAccounts = screen.getByTestId(/account-group-social/i);
     expect(within(socialAccounts).getAllByTestId("account-tile")).toHaveLength(
       2
     );
-    expect(socialAccounts).toHaveTextContent("social");
+    expect(socialAccounts).toHaveTextContent("Social Accounts");
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
 
-    const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/)[0];
-    const seedPhrase2 = screen.getAllByTestId(/account-group-seedphrase/)[1];
+    const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
+    const seedPhrase2 = screen.getAllByTestId(/account-group-seedphrase/i)[1];
     expect(within(seedPhrase1).getAllByTestId("account-tile")).toHaveLength(2);
-    expect(seedPhrase1).toHaveTextContent(`seedphrase ${MOCK_FINGETPRINT1}`);
+    expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
     expect(seedPhrase1).toHaveTextContent("Account 0");
     expect(seedPhrase1).toHaveTextContent("Account 1");
 
     expect(within(seedPhrase2).getAllByTestId("account-tile")).toHaveLength(1);
-    expect(seedPhrase2).toHaveTextContent(`seedphrase ${MOCK_FINGETPRINT2}`);
+    expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(seedPhrase2).toHaveTextContent("Account");
+  });
+
+  test("All accounts linked to a given mnemonic can be deleted by a CTA action and confirmation modal", async () => {
+    await restore();
+    render(<AccountsList onOpen={() => {}} />);
+
+    expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
+    const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
+
+    const { getByTestId, getByRole } = within(seedPhrase1);
+    const cta = getByTestId(/^popover-cta$/i);
+    // act needed because we get a false warning
+    // this fix allthough applied doesn't work
+    // https://github.com/chakra-ui/chakra-ui/issues/2684
+    act(() => {
+      cta.click();
+    });
+    await waitFor(() => {
+      expect(getByRole("dialog")).toHaveTextContent("Remove");
+    });
+
+    act(() => {
+      getByRole("button", { name: /^remove$/i }).click();
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          `Are you sure you want to delete all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+        )
+      ).toBeInTheDocument();
+    });
+
+    act(() => {
+      screen.getByRole("button", { name: /^confirm$/i }).click();
+    });
+
+    expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(1);
   });
 });
 
