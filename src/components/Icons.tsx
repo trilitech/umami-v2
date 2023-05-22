@@ -1,6 +1,6 @@
 import { createIcon } from "@chakra-ui/icons";
 
-export const DiamontIcon = createIcon({
+export const diamontIcon = createIcon({
   displayName: "DiamontIcon",
   viewBox: "0 0 26 26",
   path: (
@@ -14,19 +14,19 @@ export const DiamontIcon = createIcon({
   ),
 });
 
-export const DocumentIcon = createIcon({
+export const documentIcon = createIcon({
   displayName: "DocumentIcon",
   viewBox: "0 0 24 24",
   d: "M9 17h4m-4-4h4M9 9h1m7 9v3m0-6h.01M13 3H8.2c-1.12 0-1.68 0-2.108.218a2 2 0 00-.874.874C5 4.52 5 5.08 5 6.2v11.6c0 1.12 0 1.68.218 2.108a2 2 0 00.874.874C6.52 21 7.08 21 8.2 21H13m0-18l6 6m-6-6v4.4c0 .56 0 .84.109 1.054a1 1 0 00.437.437C13.76 9 14.04 9 14.6 9H19m0 0v2.5",
 });
 
-export const WalletIcon = createIcon({
+export const walletIcon = createIcon({
   displayName: "WalletIcon",
   viewBox: "0 0 32 32",
   d: "M13.333 21.334v-2.666m0 0V16m0 2.667H16m-2.667 0h-2.666M28 16v-1.067c0-1.493 0-2.24-.29-2.81a2.667 2.667 0 00-1.166-1.166c-.57-.29-1.317-.29-2.81-.29H4M28 16v5.333m0-5.333h-2.667a2.667 2.667 0 000 5.333H28m0 0v1.067c0 1.493 0 2.24-.29 2.81-.256.502-.664.91-1.166 1.166-.57.29-1.317.29-2.81.29H8.266c-1.494 0-2.24 0-2.811-.29a2.667 2.667 0 01-1.165-1.166C4 24.641 4 23.894 4 22.401V10.667m20 0V9.601c0-1.494 0-2.24-.29-2.811a2.667 2.667 0 00-1.166-1.165c-.57-.291-1.317-.291-2.81-.291H8.266c-1.494 0-2.24 0-2.811.29-.502.256-.91.664-1.165 1.166C4 7.36 4 8.107 4 9.6v1.067",
 });
 
-export const GoogleIcon = createIcon({
+export const googleIcon = createIcon({
   displayName: "GoogleIcon",
   viewBox: "0 0 24 25",
   path: (
@@ -51,7 +51,7 @@ export const GoogleIcon = createIcon({
   ),
 });
 
-export const UsbIcon = createIcon({
+export const usbIcon = createIcon({
   displayName: "Usb",
   viewBox: "0 0 22 22",
   d: "M14.667 9.167h.917v1.834h-3.667V5.5h1.833L11 1.834 8.25 5.501h1.834v7.333H6.417v-2.087a1.826 1.826 0 00.38-2.876 1.833 1.833 0 00-3.13 1.296c0 .677.37 1.262.917 1.58v2.087c0 1.011.822 1.833 1.833 1.833h3.667v2.088a1.824 1.824 0 00-.38 2.875 1.833 1.833 0 003.13-1.296c0-.677-.37-1.261-.917-1.58v-3.92h3.667a1.835 1.835 0 001.833-1.833V9.167h.917V5.501h-3.667v3.666z",
