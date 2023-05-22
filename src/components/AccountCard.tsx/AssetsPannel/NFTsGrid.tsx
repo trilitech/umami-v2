@@ -9,6 +9,7 @@ import {
 import { FC } from "react";
 import { NFT } from "../../../types/Asset";
 import { truncate } from "../../../utils/format";
+import { getIPFSurl } from "../../../utils/token/nftUtils";
 
 export const NFTsGrid: FC<
   { nfts: NFT[]; showName?: boolean } & SimpleGridProps
@@ -20,7 +21,11 @@ export const NFTsGrid: FC<
           return (
             <Box key={`${nft.contract}${i}`}>
               <AspectRatio key={nft.contract + i} width={"100%"} ratio={1}>
-                <Image width="100%" height={40} src={nft.metadata.displayUri} />
+                <Image
+                  width="100%"
+                  height={40}
+                  src={getIPFSurl(nft.metadata.displayUri)}
+                />
               </AspectRatio>
               {showName && nft.metadata.name && (
                 <Heading size="sm" mt={3}>

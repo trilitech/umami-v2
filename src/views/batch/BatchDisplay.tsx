@@ -34,6 +34,7 @@ import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { Batch } from "../../utils/store/assetsSlice";
 import { tzktExplorer } from "../../utils/tezos/consts";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
@@ -49,9 +50,9 @@ const renderAmount = (operation: OperationValue) => {
         <Flex>
           <Text mr={1}>{amount} </Text>
 
-          {operation.data.type instanceof NFT ? (
+          {operation.data instanceof NFT ? (
             <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
-              <Image src={(operation.data as NFT).metadata.displayUri} />
+              <Image src={getIPFSurl(operation.data.metadata.displayUri)} />
             </AspectRatio>
           ) : (
             operation.data.symbol()

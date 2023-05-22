@@ -248,8 +248,7 @@ export const mockNFT = (index: number, balance = "1") => {
     mockPkh(index),
     {
       displayUri:
-        "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" +
-        index,
+        "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" + index,
       name: "Tezzardz #" + index,
       symbol: "FKR" + index,
     }
