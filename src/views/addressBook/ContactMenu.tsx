@@ -1,19 +1,10 @@
-import {
-  Button,
-  Divider,
-  Icon,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  useDisclosure,
-} from "@chakra-ui/react";
-import colors from "../../style/colors";
-import { Contact } from "../../types/Contact";
+import { Divider, useDisclosure } from "@chakra-ui/react";
 import { BiPencil } from "react-icons/bi";
+import { BsTrash } from "react-icons/bs";
 import { DeleteContactModal } from "../../components/ContactModal";
-import { BsThreeDots, BsTrash } from "react-icons/bs";
+import PopoverMenu from "../../components/PopoverMenu";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
+import { Contact } from "../../types/Contact";
 import { useUpsertContactModal } from "../home/useUpsertContactModal";
 
 const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
@@ -28,42 +19,22 @@ const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
 
   return (
     <>
-      <Popover>
-        <PopoverTrigger>
-          <Button variant="unstyled">
-            <Icon
-              as={BsThreeDots}
-              color={colors.gray[600]}
-              _hover={{
-                color: colors.gray[300],
-              }}
-            />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent w="100px" bg={colors.gray[900]}>
-          <PopoverBody borderRadius="lg">
-            <TextAndIconBtn
-              text="Rename"
-              icon={BiPencil}
-              onClick={() =>
-                onOpenEdit({
-                  title: "Edit contact",
-                  buttonText: "Update",
-                  isEdit: true,
-                  contactToDisplay: contact,
-                })
-              }
-            />
-            <Divider marginY={1} />
-            <TextAndIconBtn
-              text="Remove"
-              icon={BsTrash}
-              onClick={onOpenDelete}
-            />
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-
+      <PopoverMenu>
+        <TextAndIconBtn
+          text="Rename"
+          icon={BiPencil}
+          onClick={() =>
+            onOpenEdit({
+              title: "Edit contact",
+              buttonText: "Update",
+              isEdit: true,
+              contactToDisplay: contact,
+            })
+          }
+        />
+        <Divider marginY={1} />
+        <TextAndIconBtn text="Remove" icon={BsTrash} onClick={onOpenDelete} />
+      </PopoverMenu>
       {editModal}
       <DeleteContactModal
         isOpen={isOpenDelete}
