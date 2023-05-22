@@ -22,6 +22,7 @@ import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import { useSendFormModal } from "../home/useSendFormModal";
 import NFTGallery from "./NFTGallery";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 export const FilterController: React.FC = () => {
   return (
@@ -38,7 +39,7 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
   return (
     <Box>
       <AspectRatio width={"100%"} ratio={4 / 4}>
-        <Image width="100%" src={nft.metadata.displayUri} />
+        <Image width="100%" src={getIPFSurl(nft.metadata.displayUri)} />
       </AspectRatio>
       <Heading mt={4} size="lg">
         {nft.metadata.name}
