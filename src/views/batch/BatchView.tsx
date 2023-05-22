@@ -1,23 +1,12 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@chakra-ui/react";
-import React, { useRef } from "react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import React from "react";
 import { TfiNewWindow } from "react-icons/tfi";
 import CSVFileUploader from "../../components/CSVFileUploader";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { useGetAccount } from "../../utils/hooks/accountHooks";
+import { useConfirmation } from "../../utils/hooks/confirmModal";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
@@ -49,37 +38,6 @@ export const FilterController: React.FC<{ batchPending: number }> = (props) => {
   );
 };
 
-const useConfirmation = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const onConfirmRef = useRef(() => {});
-
-  return {
-    element: (
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalContent bg="umami.gray.900">
-          <ModalCloseButton />
-          <ModalHeader textAlign={"center"}>Confirmation</ModalHeader>
-          <ModalBody>Are you sure you want to delete the batch?</ModalBody>
-          <ModalFooter>
-            <Button onClick={() => onConfirmRef.current()} bg="umami.blue">
-              Confirm
-            </Button>
-            <Button onClick={onClose} ml={2}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    ),
-    onClose,
-    onOpen: (onConfirm: () => void) => {
-      onConfirmRef.current = onConfirm;
-      onOpen();
-    },
-  };
-};
-
 const BatchView = () => {
   const batches = useAppSelector((s) => s.assets.batches);
 
@@ -103,7 +61,12 @@ const BatchView = () => {
         onSend={() =>
           openSendForm({ mode: { type: "batch", data: { batch } } })
         }
-        onDelete={() => onOpen(onConfirm)}
+        onDelete={() =>
+          onOpen({
+            onConfirm,
+            body: "Are you sure you want to delete the batch?",
+          })
+        }
         key={batch.items[0].operation.value.sender}
         account={account}
         batch={batch}
