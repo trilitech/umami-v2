@@ -5,6 +5,7 @@ import {
   HashRouter,
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
 import HomeView from "./views/home/HomeView";
 import ImportSeed from "./ImportSeed";
@@ -26,12 +27,12 @@ import TokensView from "./views/tokens/TokensView";
 
 const loggedOutRouter = createHashRouter([
   {
-    path: "/importSeed",
+    path: "/welcome",
     element: <ImportSeed />,
   },
   {
-    path: "/",
-    element: <ImportSeed />,
+    path: "/*",
+    element: <Navigate to="/welcome" />,
   },
 ]);
 
@@ -55,7 +56,7 @@ const MemoizedRouter = React.memo(() => {
         <Route path="/settings" element={withSideMenu(<SettingsView />)} />
         <Route path="/help" element={withSideMenu(<HelpView />)} />
         <Route path="/batch" element={withSideMenu(<BatchView />)} />
-        <Route path="/" element={withSideMenu(<HomeView />)} />
+        <Route path="/*" element={<Navigate to="/home" />} />
       </Routes>
       {beaconNotificationModal}
     </HashRouter>
