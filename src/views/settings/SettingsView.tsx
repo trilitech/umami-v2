@@ -155,6 +155,7 @@ const BackupSection = () => {
 };
 
 const AdvancedSection = () => {
+  const reset = useReset();
   return (
     <SectionContainer title="Advanced Settings">
       <ClickableCard>
@@ -177,7 +178,7 @@ const AdvancedSection = () => {
 
       <SettingsCardWithDrawerIcon left="dApps" onClick={() => {}} />
       <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
-      <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={() => {}} />
+      <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={reset} />
       <SettingsCardWithDrawerIcon left="Change Password" onClick={() => {}} />
     </SectionContainer>
   );

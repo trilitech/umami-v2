@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 import { SocialAccount, AccountType, LedgerAccount } from "../../types/Account";
+import { useNavigate } from "react-router-dom";
 
 const { add, removeSecret } = accountsSlice.actions;
 
@@ -33,8 +34,20 @@ export const useSelectedAccountBalance = () => {
 export const useReset = () => {
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
   return () => {
     dispatch(accountsSlice.actions.reset());
+
+    // When accounts are empty
+    // route SHOULD reinitialize automatically to /welcome (see Router.tsx line 93)
+    //
+    // But sometimes it keeps the old route:
+    // displays welcome screen with /#/settings in url (which should be impossible...)
+    //
+    // Is it a bug related to hashrouter?
+    // In the meantime we just redirect
+
+    navigate("/welcome");
   };
 };
 
