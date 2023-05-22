@@ -1,0 +1,49 @@
+name: Deploy to Github Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: "--max_old_space_size=4096"
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: "yarn"
+
+      - name: Register yarn 1.x cache folder
+        id: yarn-cache-folder
+        shell: bash
+        run: |
+          echo "path=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Setup yarn 3.x
+        run: |
+          corepack enable
+          corepack prepare yarn@stable --activate
+          yarn --version
+
+      - name: Install packages
+        env:
+          YARN_CACHE_FOLDER: ${{ steps.yarn-cache-folder.outputs.path }}
+        run: yarn install --immutable
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+
+      # this is needed to ensure that actions/setup-node will pick up yarn cache
+      - name: Remove yarn 3.5
+        run: corepack disable

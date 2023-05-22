@@ -53,13 +53,6 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Deploy Github Pages
-        if: matrix.os == 'ubuntu-latest'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-
       - name: Package the electron app MacOS
         if: matrix.os == 'macos-latest'
         env:
