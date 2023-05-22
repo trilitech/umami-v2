@@ -119,10 +119,11 @@ export abstract class Asset {
   getRealAmount(prettyAmount: string): BigNumber {
     const amount = new BigNumber(prettyAmount);
 
-    const decimals =
-      this.metadata?.decimals === undefined
-        ? DEFAULT_TOKEN_DECIMALS
-        : this.metadata.decimals;
+    const decimals = this.metadata?.decimals;
+
+    if (!decimals) {
+      return amount;
+    }
 
     return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
   }
@@ -218,11 +219,12 @@ export const keepFA2s = (assets: Asset[]) => {
   return assets.filter((a) => a instanceof FA2Token) as FA2Token[];
 };
 
-export const formatTokenAmount = (
-  amountStr: string,
-  decimals = DEFAULT_TOKEN_DECIMALS
-) => {
-  return Number(amountStr) / Math.pow(10, Number(decimals));
+export const formatTokenAmount = (amountStr: string, decimals?: string) => {
+  const amount = Number(amountStr);
+  if (!decimals) {
+    return amount;
+  }
+  return amount / Math.pow(10, Number(decimals));
 };
 
 // We use the defaults for FA1.2 tokens as in V1
@@ -230,4 +232,3 @@ export const DEFAULT_FA1_NAME = "FA1.2 token";
 export const DEFAULT_FA2_NAME = "FA2 token";
 export const DEFAULT_FA1_SYMBOL = "FA1.2";
 export const DEFAULT_FA2_SYMBOL = "FA2";
-export const DEFAULT_TOKEN_DECIMALS = "0";
