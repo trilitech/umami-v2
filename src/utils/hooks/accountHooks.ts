@@ -5,7 +5,7 @@ import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 import { SocialAccount, AccountType, LedgerAccount } from "../../types/Account";
 
-const { add } = accountsSlice.actions;
+const { add, removeSecret } = accountsSlice.actions;
 
 export const useAccounts = () => {
   return useAppSelector((s) => s.accounts.items);
@@ -111,5 +111,16 @@ export const useCheckPasswordValidity = () => {
 
   return async (password: string) => {
     await decrypt(existingSeedPhrase, password);
+  };
+};
+
+export const useRemoveMnemonic = () => {
+  const dispatch = useAppDispatch();
+  return (fingerPrint: string) => {
+    dispatch(
+      removeSecret({
+        fingerPrint,
+      })
+    );
   };
 };
