@@ -10,6 +10,20 @@ import { TextDecoder, TextEncoder } from "util";
 
 MockDate.set("2023-03-27T14:15:09.760Z");
 
+// https://github.com/chakra-ui/chakra-ui/issues/2684
+jest.mock("@popperjs/core", () => {
+  return {
+    createPopper: () => {
+      return {
+        state: null,
+        forceUpdate: () => {},
+        destroy: () => {},
+        setOptions: () => {},
+      };
+    },
+  };
+});
+
 jest.mock("react-identicons", () => {
   return { default: (props: any) => props.children };
 });
