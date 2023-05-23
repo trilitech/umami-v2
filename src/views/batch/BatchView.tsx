@@ -5,6 +5,7 @@ import CSVFileUploader from "../../components/CSVFileUploader";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
+import { navigateToExternalLink } from "../../utils/helpers";
 import { useGetAccount } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import assetsSlice from "../../utils/store/assetsSlice";
@@ -28,9 +29,8 @@ export const FilterController: React.FC<{ batchPending: number }> = (props) => {
           color: colors.gray[300],
         }}
         onClick={() => {
-          window.open(
-            "https://github.com/trilitech/umami-v2/blob/main/doc/Batch-File-Format-Specifications.md",
-            "_blank"
+          navigateToExternalLink(
+            "https://github.com/trilitech/umami-v2/blob/main/doc/Batch-File-Format-Specifications.md"
           );
         }}
       />

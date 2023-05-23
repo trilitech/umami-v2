@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
 import colors from "../style/colors";
+import { navigateToExternalLink } from "../utils/helpers";
 import { useSelectedNetwork } from "../utils/hooks/assetsHooks";
 import { wertUrls } from "../utils/tezos/consts";
 import { ConnectedAccountSelector } from "./AccountSelector/AccountSelector";
@@ -32,7 +33,7 @@ const useBuyTezModal = () => {
     if (isMainnet) {
       url += `/default/widget/?commodity=XTZ%3ATezos&address=${recipient}`;
     }
-    window.open(url, "_blank");
+    navigateToExternalLink(url);
   };
 
   const { control, handleSubmit, formState } = useForm<{
