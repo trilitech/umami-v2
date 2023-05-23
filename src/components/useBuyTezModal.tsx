@@ -1,3 +1,4 @@
+import { TezosNetwork } from "@airgap/tezos";
 import {
   FormControl,
   FormLabel,
@@ -15,16 +16,31 @@ import {
 } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
 import colors from "../style/colors";
+import { useSelectedNetwork } from "../utils/hooks/assetsHooks";
+import { wertUrls } from "../utils/tezos/consts";
 import { ConnectedAccountSelector } from "./AccountSelector/AccountSelector";
 
 const useBuyTezModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const network = useSelectedNetwork();
+  const isMainnet = network === TezosNetwork.MAINNET;
+
+  const title = isMainnet ? "Buy Tez" : "Request Tez from faucet";
+
+  const onSubmit = async ({ recipient }: { recipient: string }) => {
+    let url = wertUrls[network];
+    if (isMainnet) {
+      url += `/default/widget/?commodity=XTZ%3ATezos&address=${recipient}`;
+    }
+    window.open(url, "_blank");
+  };
 
   const { control, handleSubmit, formState } = useForm<{
     recipient: string;
   }>({
     mode: "onBlur",
   });
+
   const { isValid } = formState;
 
   return {
@@ -32,28 +48,34 @@ const useBuyTezModal = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg={colors.gray[900]}>
-          <form onSubmit={handleSubmit(() => {})}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <ModalCloseButton />
             <ModalHeader textAlign={"center"}>Buy Tez</ModalHeader>
-            <Text textAlign="center">Please select the recipient account.</Text>
-            <ModalBody>
-              <FormControl paddingY={5}>
-                <FormLabel>Recipient Account</FormLabel>
-                <Controller
-                  rules={{ required: true }}
-                  control={control}
-                  name="recipient"
-                  render={({ field: { onChange, value } }) => (
-                    <ConnectedAccountSelector
-                      selected={value}
-                      onSelect={(account) => {
-                        onChange(account.pkh);
-                      }}
+            {isMainnet && (
+              <>
+                <Text textAlign="center">
+                  Please select the recipient account.
+                </Text>
+                <ModalBody>
+                  <FormControl paddingY={5}>
+                    <FormLabel>Recipient Account</FormLabel>
+                    <Controller
+                      rules={{ required: isMainnet }}
+                      control={control}
+                      name="recipient"
+                      render={({ field: { onChange, value } }) => (
+                        <ConnectedAccountSelector
+                          selected={value}
+                          onSelect={(account) => {
+                            onChange(account.pkh);
+                          }}
+                        />
+                      )}
                     />
-                  )}
-                />
-              </FormControl>
-            </ModalBody>
+                  </FormControl>
+                </ModalBody>
+              </>
+            )}
 
             <ModalFooter>
               <Box width={"100%"}>
@@ -64,7 +86,7 @@ const useBuyTezModal = () => {
                   variant="ghost"
                   mb={2}
                 >
-                  Buy tez
+                  {title}
                 </Button>
               </Box>
             </ModalFooter>

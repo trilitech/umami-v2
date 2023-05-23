@@ -14,6 +14,11 @@ export const tzktExplorer = {
   [TezosNetwork.MAINNET]: `https://tzkt.io`,
 };
 
+export const wertUrls = {
+  [TezosNetwork.GHOSTNET]: `https://faucet.ghostnet.teztnets.xyz/`,
+  [TezosNetwork.MAINNET]: `https://widget.wert.io`,
+};
+
 export const coincapUrl = "https://api.coincap.io/v2/assets";
 
 export const bakersUrl = "https://api.baking-bad.org/v2/bakers";
