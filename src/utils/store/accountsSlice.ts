@@ -23,14 +23,14 @@ const accountsSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(deriveAccount.fulfilled, (state, action) => {
-      state.items.push(action.payload);
+      state.items = concatUnique(state.items, [action.payload]);
     });
 
     builder.addCase(restoreFromMnemonic.fulfilled, (state, action) => {
       const { accounts, encryptedMnemonic, seedFingerprint } = action.payload;
+      state.items = concatUnique(state.items, accounts);
       // updated seedphrase after a successfull restoration.
       state.seedPhrases[seedFingerprint] = encryptedMnemonic;
-      state.items = state.items.concat(accounts);
     });
   },
   reducers: {
@@ -55,16 +55,7 @@ const accountsSlice = createSlice({
     ) => {
       const accounts = Array.isArray(payload) ? payload : [payload];
 
-      accounts.forEach((a) => {
-        if (state.items.some((existing) => existing.pkh === a.pkh)) {
-          throw new Error(
-            `Can't add account ${a.pkh} in store since it already exists.`
-          );
-        }
-      });
-
-      const newAccounts = accounts.reduce(addAccount, state.items);
-      state.items = newAccounts;
+      state.items = concatUnique(state.items, accounts);
     },
     setSelected: (
       state,
@@ -77,9 +68,20 @@ const accountsSlice = createSlice({
   },
 });
 
-const addAccount = (accounts: Account[], account: Account) =>
-  accounts.some((a) => a.pkh === account.pkh)
-    ? accounts
-    : [...accounts, account];
+const concatUnique = (existingAccounts: Account[], newAccounts: Account[]) => {
+  newAccounts.forEach((newAccount) => {
+    if (
+      existingAccounts.some(
+        (existingAccount) => existingAccount.pkh === newAccount.pkh
+      )
+    ) {
+      throw new Error(
+        `Can't add account ${newAccount.pkh} in store since it already exists.`
+      );
+    }
+  });
+
+  return [...existingAccounts, ...newAccounts];
+};
 
 export default accountsSlice;
