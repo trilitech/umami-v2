@@ -39,7 +39,7 @@ export const useReset = () => {
     dispatch(accountsSlice.actions.reset());
 
     // When accounts are empty
-    // route SHOULD reinitialize automatically to /welcome: 
+    // route SHOULD reinitialize automatically to /welcome:
     // https://github.com/trilitech/umami-v2/blob/0d36240e245d81cc1eed89037e005d6ca3542e51/src/Router.tsx#L92
     //
     // But sometimes it keeps the old route:
