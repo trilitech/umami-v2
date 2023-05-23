@@ -16,6 +16,7 @@ import {
   TemporaryAccountConfig,
   TemporaryLedgerAccountConfig,
 } from "../useOnboardingModal";
+import NameAccountDisplay from "./NameAccountDisplay";
 
 export const NameAccount = ({
   setStep,
@@ -24,9 +25,6 @@ export const NameAccount = ({
   setStep: (step: Step) => void;
   config: TemporaryAccountConfig;
 }) => {
-  const { register, handleSubmit, formState } = useForm<{
-    accountName: string;
-  }>();
   const accounts = useAccounts();
   const onSubmit = (p: { accountName: string }) => {
     if (p.accountName.trim().length > 0) {
@@ -40,43 +38,12 @@ export const NameAccount = ({
       setStep({ type: StepType.derivationPath, config: config });
     }
   };
-  const isValid = formState.isValid;
 
   return (
-    <ModalContentWrapper
-      icon={SupportedIcons.diamont}
-      title="Name Your Account"
+    <NameAccountDisplay
       subtitle="Please choose a name for your first account. You can edit your account name later."
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Center>
-          <VStack width={300}>
-            <FormControl isInvalid={!isValid && formState.isDirty}>
-              <FormLabel>Account name</FormLabel>
-              <Input
-                data-testid="name"
-                type="text"
-                {...register("accountName", {
-                  required: false,
-                })}
-                placeholder="Optional"
-              />
-            </FormControl>
-
-            <Button
-              w="100%"
-              size="lg"
-              h="48px"
-              type="submit"
-              title="Submit"
-              bg="umami.blue"
-            >
-              Continue
-            </Button>
-          </VStack>
-        </Center>
-      </form>
-    </ModalContentWrapper>
+      onSubmit={onSubmit}
+    />
   );
 };
 
