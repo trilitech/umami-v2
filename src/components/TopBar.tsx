@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Flex, Heading } from "@chakra-ui/react";
 import React from "react";
 import SendButton from "../views/home/SendButton";
-import useBuyTezModal from "./useBuyTezModal";
+import useBuyTezModal from "./BuyTez/useBuyTezModal";
 
 export const TopBar: React.FC<{ title: string }> = ({ title }) => {
   const { modalElement, onOpen } = useBuyTezModal();
