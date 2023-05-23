@@ -6,9 +6,8 @@ import {
   WalletClient,
 } from "@airgap/beacon-wallet";
 import { Modal, useDisclosure } from "@chakra-ui/react";
-import EventEmitter from "events";
 import { useEffect, useRef } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { BeaconNotification } from "./BeaconNotification";
 
 const makeClient = () =>
@@ -20,26 +19,30 @@ const makeClient = () =>
 
 export let walletClient = makeClient();
 
-const emitter = new EventEmitter();
-const REFRESH_PEERS_EVENT = "refreshPeers";
+const PEERS_QUERY_KEY = "beaconPeers";
 
-export const refreshPeers = () => emitter.emit(REFRESH_PEERS_EVENT);
-
-export const usePeers = () => {
-  const query = useQuery("beaconPeers", () => walletClient.getPeers());
-
-  const refetchRef = useRef(query.refetch);
-
-  useEffect(() => {
-    emitter.addListener(REFRESH_PEERS_EVENT, refetchRef.current);
-    return () => {
-      emitter.removeAllListeners();
-    };
-  }, []);
-
-  return query;
+export const useRefreshPeers = () => {
+  const client = useQueryClient();
+  return () => client.refetchQueries(PEERS_QUERY_KEY);
 };
 
+export const usePeers = () =>
+  useQuery(PEERS_QUERY_KEY, () => walletClient.getPeers());
+
+export const useAddPeer = () => {
+  const refreshPeers = useRefreshPeers();
+  return (payload: string) => {
+    const serializer = new Serializer();
+    serializer
+      .deserialize(payload)
+      .then((peer) => {
+        walletClient.addPeer(peer as PeerInfo).then(refreshPeers);
+      })
+      .catch((e) => {
+        console.error("not a valid sync code: ", payload);
+      });
+  };
+};
 // Examples created by Andy for the following usecases
 
 // const handleOperationRequest = async (message: OperationRequestOutput) => {
@@ -77,18 +80,6 @@ export const usePeers = () => {
 //     walletClient.respond(response);
 //   }
 // };
-
-export const addPeer = (payload: string) => {
-  const serializer = new Serializer();
-  serializer
-    .deserialize(payload)
-    .then((peer) => {
-      walletClient.addPeer(peer as PeerInfo).then(refreshPeers);
-    })
-    .catch((e) => {
-      console.error("not a valid sync code: ", payload);
-    });
-};
 
 export const useBeaconModalNotification = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

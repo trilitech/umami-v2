@@ -9,7 +9,7 @@ import {
   Divider,
   Input,
 } from "@chakra-ui/react";
-import { addPeer } from "../../utils/beacon/beacon";
+import { useAddPeer } from "../../utils/beacon/beacon";
 import ClickableCard, {
   SettingsCard,
   SettingsCardWithDrawerIcon,
@@ -52,6 +52,7 @@ export default function SettingsView() {
 }
 
 const GeneralSection = () => {
+  const addPeer = useAddPeer();
   return (
     <SectionContainer title="General">
       <SettingsCard left="Theme">
