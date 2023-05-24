@@ -7,7 +7,6 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import { isValid } from "date-fns";
 import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
@@ -31,6 +30,11 @@ const EnterPassword = ({
     onSubmitPassword(p.password);
   };
 
+  const { isDirty, isValid } = formState;
+
+  const isInvalid = isDirty && !isValid;
+  const isDisabled = !isDirty || isInvalid;
+
   return (
     <ModalContentWrapper
       icon={SupportedIcons.diamont}
@@ -41,7 +45,7 @@ const EnterPassword = ({
         <Center>
           <VStack width={300}>
             <Heading>Enter Password to continue</Heading>
-            <FormControl isInvalid={!isValid && formState.isDirty}>
+            <FormControl isInvalid={isInvalid}>
               <FormLabel>Password</FormLabel>
               <Input
                 data-testid="password"
@@ -56,7 +60,7 @@ const EnterPassword = ({
             </FormControl>
 
             <Button
-              isDisabled={!isValid || isLoading}
+              isDisabled={isDisabled || isLoading}
               isLoading={isLoading}
               type="submit"
               colorScheme="gray"
