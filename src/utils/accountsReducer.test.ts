@@ -153,7 +153,7 @@ describe("Accounts reducer", () => {
   });
 
   describe("restoreFromMnemonic thunk", () => {
-    it.only("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
+    it("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
       const fingerPrint = await getFingerPrint(seedPhrase);
       const mockEntrypted = { mock: "encrypted" };
       const mockLabel = "myLabel";

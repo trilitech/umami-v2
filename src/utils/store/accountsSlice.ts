@@ -29,7 +29,6 @@ const accountsSlice = createSlice({
     builder.addCase(restoreFromMnemonic.fulfilled, (state, action) => {
       const { accounts, encryptedMnemonic, seedFingerprint } = action.payload;
       // updated seedphrase after a successfull restoration.
-      console.log("cool22");
       state.seedPhrases[seedFingerprint] = encryptedMnemonic;
       state.items = state.items.concat(accounts);
     });
