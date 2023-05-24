@@ -13,7 +13,7 @@ export function request<TDocument = any>(
     document,
     variables,
     {
-      Authorization: "66f8fd58737009e8f77cb7a31688ab",
+      Authorization: "19ab95a257833429647fc25765a06a",
     }
   );
 }

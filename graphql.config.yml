@@ -1,7 +1,7 @@
 schema:
   - https://graphql.datocms.com:
       headers:
-        Authorization: "66f8fd58737009e8f77cb7a31688ab"
+        Authorization: "19ab95a257833429647fc25765a06a"
 documents: "./src/graphql/queries/**/*.graphql"
 generates:
   src/graphql/generated.ts:
@@ -17,7 +17,7 @@ generates:
             FloatType: number
             IntType: number
             ItemId: string
-            JsonField: unknown
+            JsonField: unkown
             MetaTagAttributes: Record<string, string>
             UploadId: string
       - typed-document-node

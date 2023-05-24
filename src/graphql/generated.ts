@@ -63,6 +63,34 @@ export type ColorField = {
   red: Scalars["IntType"];
 };
 
+/** Record of type Configuration (configuration) */
+export type ConfigurationRecord = RecordInterface & {
+  __typename?: "ConfigurationRecord";
+  _createdAt: Scalars["DateTime"];
+  _firstPublishedAt?: Maybe<Scalars["DateTime"]>;
+  _isValid: Scalars["BooleanType"];
+  _modelApiKey: Scalars["String"];
+  _publicationScheduledAt?: Maybe<Scalars["DateTime"]>;
+  _publishedAt?: Maybe<Scalars["DateTime"]>;
+  /** SEO meta tags */
+  _seoMetaTags: Array<Tag>;
+  _status: ItemStatus;
+  _unpublishingScheduledAt?: Maybe<Scalars["DateTime"]>;
+  _updatedAt: Scalars["DateTime"];
+  id: Scalars["ItemId"];
+  maintenanceMessage?: Maybe<Scalars["String"]>;
+};
+
+/** Record of type Configuration (configuration) */
+export type ConfigurationRecord_SeoMetaTagsArgs = {
+  locale?: InputMaybe<SiteLocale>;
+};
+
+/** Record of type Configuration (configuration) */
+export type ConfigurationRecordMaintenanceMessageArgs = {
+  markdown?: InputMaybe<Scalars["Boolean"]>;
+};
+
 /** Specifies how to filter by creation datetime */
 export type CreatedAtFilter = {
   /** Filter records with a value that's within the specified minute range. Seconds and milliseconds are truncated from the argument. */
@@ -1723,24 +1751,26 @@ export type PublishedAtFilter = {
 export type Query = {
   __typename?: "Query";
   /** Returns meta information regarding a record collection */
-  _allSlideitemsMeta: CollectionMetadata;
+  _allSlideritemsMeta: CollectionMetadata;
   /** Returns meta information regarding an assets collection */
   _allUploadsMeta: CollectionMetadata;
   /** Returns the single instance record */
   _site: Site;
   /** Returns a collection of records */
-  allSlideitems: Array<SlideitemRecord>;
+  allSlideritems: Array<SlideritemRecord>;
   /** Returns a collection of assets */
   allUploads: Array<FileField>;
+  /** Returns the single instance record */
+  configuration?: Maybe<ConfigurationRecord>;
   /** Returns a specific record */
-  slideitem?: Maybe<SlideitemRecord>;
+  slideritem?: Maybe<SlideritemRecord>;
   /** Returns a specific asset */
   upload?: Maybe<FileField>;
 };
 
 /** The query root for this schema */
-export type Query_AllSlideitemsMetaArgs = {
-  filter?: InputMaybe<SlideitemModelFilter>;
+export type Query_AllSlideritemsMetaArgs = {
+  filter?: InputMaybe<SlideritemModelFilter>;
   locale?: InputMaybe<SiteLocale>;
 };
 
@@ -1757,12 +1787,12 @@ export type Query_SiteArgs = {
 };
 
 /** The query root for this schema */
-export type QueryAllSlideitemsArgs = {
+export type QueryAllSlideritemsArgs = {
   fallbackLocales?: InputMaybe<Array<SiteLocale>>;
-  filter?: InputMaybe<SlideitemModelFilter>;
+  filter?: InputMaybe<SlideritemModelFilter>;
   first?: InputMaybe<Scalars["IntType"]>;
   locale?: InputMaybe<SiteLocale>;
-  orderBy?: InputMaybe<Array<InputMaybe<SlideitemModelOrderBy>>>;
+  orderBy?: InputMaybe<Array<InputMaybe<SlideritemModelOrderBy>>>;
   skip?: InputMaybe<Scalars["IntType"]>;
 };
 
@@ -1777,11 +1807,17 @@ export type QueryAllUploadsArgs = {
 };
 
 /** The query root for this schema */
-export type QuerySlideitemArgs = {
+export type QueryConfigurationArgs = {
   fallbackLocales?: InputMaybe<Array<SiteLocale>>;
-  filter?: InputMaybe<SlideitemModelFilter>;
   locale?: InputMaybe<SiteLocale>;
-  orderBy?: InputMaybe<Array<InputMaybe<SlideitemModelOrderBy>>>;
+};
+
+/** The query root for this schema */
+export type QuerySlideritemArgs = {
+  fallbackLocales?: InputMaybe<Array<SiteLocale>>;
+  filter?: InputMaybe<SlideritemModelFilter>;
+  locale?: InputMaybe<SiteLocale>;
+  orderBy?: InputMaybe<Array<InputMaybe<SlideritemModelOrderBy>>>;
 };
 
 /** The query root for this schema */
@@ -1874,9 +1910,9 @@ export enum SiteLocale {
   En = "en",
 }
 
-export type SlideitemModelFilter = {
-  AND?: InputMaybe<Array<InputMaybe<SlideitemModelFilter>>>;
-  OR?: InputMaybe<Array<InputMaybe<SlideitemModelFilter>>>;
+export type SlideritemModelFilter = {
+  AND?: InputMaybe<Array<InputMaybe<SlideritemModelFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<SlideritemModelFilter>>>;
   _createdAt?: InputMaybe<CreatedAtFilter>;
   _firstPublishedAt?: InputMaybe<PublishedAtFilter>;
   _isValid?: InputMaybe<BooleanFilter>;
@@ -1885,13 +1921,14 @@ export type SlideitemModelFilter = {
   _status?: InputMaybe<StatusFilter>;
   _unpublishingScheduledAt?: InputMaybe<PublishedAtFilter>;
   _updatedAt?: InputMaybe<UpdatedAtFilter>;
+  icon?: InputMaybe<StringFilter>;
   id?: InputMaybe<ItemIdFilter>;
   image?: InputMaybe<FileFilter>;
-  text?: InputMaybe<TextFilter>;
+  text?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
 };
 
-export enum SlideitemModelOrderBy {
+export enum SlideritemModelOrderBy {
   CreatedAtAsc = "_createdAt_ASC",
   CreatedAtDesc = "_createdAt_DESC",
   FirstPublishedAtAsc = "_firstPublishedAt_ASC",
@@ -1908,15 +1945,19 @@ export enum SlideitemModelOrderBy {
   UnpublishingScheduledAtDesc = "_unpublishingScheduledAt_DESC",
   UpdatedAtAsc = "_updatedAt_ASC",
   UpdatedAtDesc = "_updatedAt_DESC",
+  IconAsc = "icon_ASC",
+  IconDesc = "icon_DESC",
   IdAsc = "id_ASC",
   IdDesc = "id_DESC",
+  TextAsc = "text_ASC",
+  TextDesc = "text_DESC",
   TitleAsc = "title_ASC",
   TitleDesc = "title_DESC",
 }
 
-/** Record of type SlideItem (slideitem) */
-export type SlideitemRecord = RecordInterface & {
-  __typename?: "SlideitemRecord";
+/** Record of type SliderItem (slideritem) */
+export type SlideritemRecord = RecordInterface & {
+  __typename?: "SlideritemRecord";
   _createdAt: Scalars["DateTime"];
   _firstPublishedAt?: Maybe<Scalars["DateTime"]>;
   _isValid: Scalars["BooleanType"];
@@ -1928,20 +1969,16 @@ export type SlideitemRecord = RecordInterface & {
   _status: ItemStatus;
   _unpublishingScheduledAt?: Maybe<Scalars["DateTime"]>;
   _updatedAt: Scalars["DateTime"];
+  icon?: Maybe<Scalars["String"]>;
   id: Scalars["ItemId"];
   image?: Maybe<FileField>;
   text?: Maybe<Scalars["String"]>;
   title?: Maybe<Scalars["String"]>;
 };
 
-/** Record of type SlideItem (slideitem) */
-export type SlideitemRecord_SeoMetaTagsArgs = {
+/** Record of type SliderItem (slideritem) */
+export type SlideritemRecord_SeoMetaTagsArgs = {
   locale?: InputMaybe<SiteLocale>;
-};
-
-/** Record of type SlideItem (slideitem) */
-export type SlideitemRecordTextArgs = {
-  markdown?: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** Specifies how to filter by status */
@@ -1989,20 +2026,6 @@ export type Tag = {
   attributes?: Maybe<Scalars["MetaTagAttributes"]>;
   content?: Maybe<Scalars["String"]>;
   tag: Scalars["String"];
-};
-
-/** Specifies how to filter text fields */
-export type TextFilter = {
-  /** Filter records with the specified field defined (i.e. with any value) or not [DEPRECATED] */
-  exists?: InputMaybe<Scalars["BooleanType"]>;
-  /** Filter records with the specified field set as blank (null or empty string) */
-  isBlank?: InputMaybe<Scalars["BooleanType"]>;
-  /** Filter records with the specified field present (neither null, nor empty string) */
-  isPresent?: InputMaybe<Scalars["BooleanType"]>;
-  /** Filter records based on a regular expression */
-  matches?: InputMaybe<StringMatchesFilter>;
-  /** Exclude records based on a regular expression */
-  notMatches?: InputMaybe<StringMatchesFilter>;
 };
 
 /** Specifies how to filter by upload type */
@@ -2375,50 +2398,80 @@ export type FocalPoint = {
   y: Scalars["FloatType"];
 };
 
-export type AllSlideItemsQueryVariables = Exact<{ [key: string]: never }>;
+export type ConfigurationQueryVariables = Exact<{ [key: string]: never }>;
 
-export type AllSlideItemsQuery = {
+export type ConfigurationQuery = {
   __typename?: "Query";
-  allSlideitems: Array<{
-    __typename?: "SlideitemRecord";
+  configuration?: {
+    __typename?: "ConfigurationRecord";
+    maintenanceMessage?: string | null;
+  } | null;
+};
+
+export type AllSlideritemsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AllSlideritemsQuery = {
+  __typename?: "Query";
+  allSlideritems: Array<{
+    __typename?: "SlideritemRecord";
     id: string;
     title?: string | null;
+    icon?: string | null;
     text?: string | null;
     _status: ItemStatus;
     _firstPublishedAt?: string | null;
-    image?: {
-      __typename?: "FileField";
-      id: string;
-      responsiveImage?: {
-        __typename?: "ResponsiveImage";
-        alt?: string | null;
-        base64?: string | null;
-        bgColor?: string | null;
-        title?: string | null;
-      } | null;
-    } | null;
+    image?: { __typename?: "FileField"; url: string } | null;
   }>;
-  _allSlideitemsMeta: { __typename?: "CollectionMetadata"; count: number };
+  _allSlideritemsMeta: { __typename?: "CollectionMetadata"; count: number };
 };
 
-export const AllSlideItemsDocument = {
+export const ConfigurationDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "allSlideItems" },
+      name: { kind: "Name", value: "configuration" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "allSlideitems" },
+            name: { kind: "Name", value: "configuration" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "maintenanceMessage" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ConfigurationQuery, ConfigurationQueryVariables>;
+export const AllSlideritemsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "allSlideritems" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "allSlideritems" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "icon" } },
                 { kind: "Field", name: { kind: "Name", value: "text" } },
                 {
                   kind: "Field",
@@ -2426,32 +2479,7 @@ export const AllSlideItemsDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "responsiveImage" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "alt" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "base64" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "bgColor" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "title" },
-                            },
-                          ],
-                        },
-                      },
+                      { kind: "Field", name: { kind: "Name", value: "url" } },
                     ],
                   },
                 },
@@ -2465,7 +2493,7 @@ export const AllSlideItemsDocument = {
           },
           {
             kind: "Field",
-            name: { kind: "Name", value: "_allSlideitemsMeta" },
+            name: { kind: "Name", value: "_allSlideritemsMeta" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -2477,4 +2505,4 @@ export const AllSlideItemsDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<AllSlideItemsQuery, AllSlideItemsQueryVariables>;
+} as unknown as DocumentNode<AllSlideritemsQuery, AllSlideritemsQueryVariables>;

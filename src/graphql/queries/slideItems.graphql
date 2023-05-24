@@ -1,22 +1,16 @@
-query allSlideItems {
-  allSlideitems {
+query allSlideritems {
+  allSlideritems {
     id
     title
+    icon
     text
     image {
-      id
-      responsiveImage {
-        alt
-        base64
-        bgColor
-        title
-      }
+      url
     }
     _status
     _firstPublishedAt
   }
-
-  _allSlideitemsMeta {
+  _allSlideritemsMeta {
     count
   }
 }
