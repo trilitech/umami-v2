@@ -6,11 +6,9 @@ import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import CopyableText from "../../components/CopyableText";
 import ClickableCard from "../../components/ClickableCard";
+import { navigateToExternalLink } from "../../utils/helpers";
 
 export default function HelpView() {
-  const jumpToLink = (link: string) => {
-    window.open(link, "_blank");
-  };
   return (
     <Grid
       h="100%"
@@ -30,13 +28,13 @@ export default function HelpView() {
         <HelpCard
           title="Learn More"
           onClick={() => {
-            jumpToLink("https://medium.com/umamiwallet");
+            navigateToExternalLink("https://medium.com/umamiwallet");
           }}
         >
           <HelpLinkRow
             about="Browse Articles"
             onClickIcon={() => {
-              jumpToLink("https://medium.com/umamiwallet");
+              navigateToExternalLink("https://medium.com/umamiwallet");
             }}
           />
         </HelpCard>
@@ -44,7 +42,7 @@ export default function HelpView() {
         <HelpCard
           title="Questions?"
           onClick={() => {
-            jumpToLink(
+            navigateToExternalLink(
               "https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
             );
           }}
@@ -52,7 +50,7 @@ export default function HelpView() {
           <HelpLinkRow
             about="Browse FAQs"
             onClickIcon={() => {
-              jumpToLink(
+              navigateToExternalLink(
                 "https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
               );
             }}
@@ -85,7 +83,7 @@ export default function HelpView() {
                 }}
                 cursor="pointer"
                 onClick={() =>
-                  jumpToLink(
+                  navigateToExternalLink(
                     "https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg"
                   )
                 }
@@ -100,13 +98,13 @@ export default function HelpView() {
         <HelpCard
           title="Terms of Use"
           onClick={() => {
-            jumpToLink("https://umamiwallet.com/tos.html");
+            navigateToExternalLink("https://umamiwallet.com/tos.html");
           }}
         >
           <HelpLinkRow
             about="Read Terms of Service"
             onClickIcon={() => {
-              jumpToLink("https://umamiwallet.com/tos.html");
+              navigateToExternalLink("https://umamiwallet.com/tos.html");
             }}
           />
         </HelpCard>
@@ -159,7 +157,7 @@ const HelpCard: React.FC<{
   children: React.ReactNode;
 }> = ({ title, onClick, children }) => {
   return (
-    <Box marginY={2}>
+    <Box marginY={2} data-testid="help-card">
       <Flex>
         <Box w="550px">
           <Heading size="lg">{title}</Heading>

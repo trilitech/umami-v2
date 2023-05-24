@@ -15,3 +15,7 @@ export function validateNonNegativeNumber(num: string): string | null {
   }
   return val.toString();
 }
+
+export const navigateToExternalLink = (link: string) => {
+  window.open(link, "_blank");
+};

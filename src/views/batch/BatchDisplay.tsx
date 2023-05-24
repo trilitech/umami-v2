@@ -30,6 +30,7 @@ import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { Account } from "../../types/Account";
 import { formatTokenAmount, NFT } from "../../types/Asset";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
+import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { Batch } from "../../utils/store/assetsSlice";
 import { tzktExplorer } from "../../utils/tezos/consts";
@@ -164,9 +165,8 @@ export const BatchDisplay: React.FC<{
                         text={formatPkh(operation.data.contract)}
                         icon={FiExternalLink}
                         onClick={() => {
-                          window.open(
-                            `${tzktExplorer[network]}/${operation.data.contract}`,
-                            "_blank"
+                          navigateToExternalLink(
+                            `${tzktExplorer[network]}/${operation.data.contract}`
                           );
                         }}
                       />

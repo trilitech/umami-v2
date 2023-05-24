@@ -29,6 +29,7 @@ import {
 import { Options } from "../home/useSendFormModal";
 import { FiExternalLink } from "react-icons/fi";
 import { tzktExplorer } from "../../utils/tezos/consts";
+import { navigateToExternalLink } from "../../utils/helpers";
 
 const AccountTokensTileHeader: React.FC<{
   pkh: string;
@@ -100,9 +101,8 @@ const AccountTokensTile: React.FC<{
                       text={formatPkh(token.contract)}
                       icon={FiExternalLink}
                       onClick={() => {
-                        window.open(
-                          `${tzktExplorer[network]}/${token.contract}`,
-                          "_blank"
+                        navigateToExternalLink(
+                          `${tzktExplorer[network]}/${token.contract}`
                         );
                       }}
                     />
