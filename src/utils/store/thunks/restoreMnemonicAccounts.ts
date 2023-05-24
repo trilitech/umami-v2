@@ -6,10 +6,8 @@ import {
   makeDerivationPath,
 } from "../../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
-import { decrypt, encrypt } from "../../aes";
-import { restoreAccount, restoreMnemonicAccounts } from "../../restoreAccounts";
 import { getFingerPrint } from "../../tezos";
-import { AppDispatch, RootState } from "../store";
+import { AppDispatch, ExtraArgument, RootState } from "../store";
 
 export const restoreFromMnemonic = createAsyncThunk<
   {
@@ -23,18 +21,18 @@ export const restoreFromMnemonic = createAsyncThunk<
     label?: string;
     derivationPathPattern?: string;
   },
-  { dispatch: AppDispatch; state: RootState }
+  { dispatch: AppDispatch; state: RootState; extra: ExtraArgument }
 >(
   "accounts/restoreFromMnemonic",
-  async ({ seedPhrase, password, label, derivationPathPattern }) => {
+  async ({ seedPhrase, password, label, derivationPathPattern }, thunkAPI) => {
     return {
       seedFingerprint: await getFingerPrint(seedPhrase),
-      accounts: await restoreMnemonicAccounts(
+      accounts: await thunkAPI.extra.restoreMnemonicAccounts(
         seedPhrase,
         label,
         derivationPathPattern
       ),
-      encryptedMnemonic: await encrypt(seedPhrase, password),
+      encryptedMnemonic: await thunkAPI.extra.encrypt(seedPhrase, password),
     };
   }
 );
@@ -42,7 +40,7 @@ export const restoreFromMnemonic = createAsyncThunk<
 export const deriveAccount = createAsyncThunk<
   MnemonicAccount,
   { fingerPrint: string; password: string; label: string },
-  { dispatch: AppDispatch; state: RootState }
+  { dispatch: AppDispatch; state: RootState; extra: ExtraArgument }
 >(
   "accounts/deriveAccount",
   async ({ fingerPrint, password, label }, thunkAPI) => {
@@ -52,7 +50,10 @@ export const deriveAccount = createAsyncThunk<
       throw new Error(`No seedphrase found with fingerprint:${fingerPrint}`);
     }
 
-    const seedphrase = await decrypt(encryptedSeedphrase, password);
+    const seedphrase = await thunkAPI.extra.decrypt(
+      encryptedSeedphrase,
+      password
+    );
 
     const accounts = thunkAPI
       .getState()
@@ -66,7 +67,11 @@ export const deriveAccount = createAsyncThunk<
     // Newly derived accounts use a derivation path in the same pattern as the first account
     const pattern = deductDerivationPattern(accounts[0].derivationPath);
     const nextDerivationPath = makeDerivationPath(pattern, nextIndex);
-    const { pk, pkh } = await restoreAccount(seedphrase, nextDerivationPath);
+
+    const { pk, pkh } = await thunkAPI.extra.restoreAccount(
+      seedphrase,
+      nextDerivationPath
+    );
 
     const account = makeMnemonicAccount(
       pk,
