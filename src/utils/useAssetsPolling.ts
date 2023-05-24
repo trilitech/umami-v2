@@ -47,15 +47,15 @@ const getTezTransfersPayload = async (
   pkh: string,
   network: TezosNetwork
 ): Promise<TezTransfersPayload> => {
-  const operations = await getTezTransfers(pkh, network);
-  return { pkh, operations };
+  const transfers = await getTezTransfers(pkh, network);
+  return { pkh, transfers };
 };
 const getTokensTransfersPayload = async (
   pkh: string,
   network: TezosNetwork
 ): Promise<TokenTransfersPayload> => {
-  const operations = await getTokenTransfers(pkh, network);
-  return { pkh, operations };
+  const transfers = await getTokenTransfers(pkh, network);
+  return { pkh, transfers };
 };
 
 const getDelegationsPayload = async (
@@ -102,11 +102,11 @@ export const useAssetsPolling = () => {
 
   const tezTransfersQuery = useQuery("tezTransfers", {
     queryFn: async () => {
-      const operations = await Promise.all(
+      const transfers = await Promise.all(
         pkhs.map((pkh) => getTezTransfersPayload(pkh, network))
       );
 
-      dispatch(assetsActions.updateTezOperations(operations));
+      dispatch(assetsActions.updateTezTransfers(transfers));
     },
 
     refetchInterval: REFRESH_RATE,
@@ -115,11 +115,11 @@ export const useAssetsPolling = () => {
   // TODO refactor there is some duplication piling up
   const tokensTransfersQuery = useQuery("tokensTransfers", {
     queryFn: async () => {
-      const operations = await Promise.all(
+      const transfers = await Promise.all(
         pkhs.map((pkh) => getTokensTransfersPayload(pkh, network))
       );
 
-      dispatch(assetsActions.updateTokenOperations(operations));
+      dispatch(assetsActions.updateTokenTransfers(transfers));
     },
 
     refetchInterval: REFRESH_RATE,

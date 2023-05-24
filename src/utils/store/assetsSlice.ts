@@ -26,7 +26,7 @@ type State = {
     tez: Record<string, string | undefined>;
     tokens: Record<string, Token[] | undefined>;
   };
-  operations: {
+  transfers: {
     tez: Record<string, TezTransfer[] | undefined>;
     tokens: Record<string, TokenTransfer[] | undefined>;
   };
@@ -40,11 +40,11 @@ export type TezBalancePayload = { pkh: string; tez: string };
 export type TokenBalancePayload = { pkh: string; tokens: Token[] };
 export type TezTransfersPayload = {
   pkh: string;
-  operations: TezTransfer[];
+  transfers: TezTransfer[];
 };
 export type TokenTransfersPayload = {
   pkh: string;
-  operations: TokenTransfer[];
+  transfers: TokenTransfer[];
 };
 
 export type DelegationPayload = {
@@ -66,7 +66,7 @@ const initialState: State = {
     tez: {},
     tokens: {},
   },
-  operations: { tez: {}, tokens: {} },
+  transfers: { tez: {}, tokens: {} },
   delegations: {},
   bakers: [],
   conversionRate: null,
@@ -96,33 +96,33 @@ const assetsSlice = createSlice({
     updateBlockLevel: (state, { payload }: { payload: number }) => {
       state.blockLevel = payload;
     },
-    updateTezOperations: (
+    updateTezTransfers: (
       state,
       { payload }: { type: string; payload: TezTransfersPayload[] }
     ) => {
       const tezOperationsPayload = payload;
-      const newTezTransfers = { ...state.operations.tez };
+      const newTezTransfers = { ...state.transfers.tez };
 
       tezOperationsPayload.forEach((op) => {
-        const { pkh, operations } = op;
-        newTezTransfers[pkh] = operations;
+        const { pkh, transfers } = op;
+        newTezTransfers[pkh] = transfers;
       });
-      state.operations.tez = newTezTransfers;
+      state.transfers.tez = newTezTransfers;
     },
     // TODO refactor duplication
-    updateTokenOperations: (
+    updateTokenTransfers: (
       state,
       { payload }: { type: string; payload: TokenTransfersPayload[] }
     ) => {
       const tezOperationsPayload = payload;
-      const newTezTransfers = { ...state.operations.tokens };
+      const newTezTransfers = { ...state.transfers.tokens };
 
       tezOperationsPayload.forEach((op) => {
-        const { pkh, operations } = op;
-        newTezTransfers[pkh] = operations;
+        const { pkh, transfers } = op;
+        newTezTransfers[pkh] = transfers;
       });
 
-      state.operations.tokens = newTezTransfers;
+      state.transfers.tokens = newTezTransfers;
     },
     updateAssets: (
       state,

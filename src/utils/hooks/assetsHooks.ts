@@ -108,11 +108,12 @@ export const useGetAccountNFTs = () => {
   };
 };
 
-export const useAllOperations = () =>
-  useAppSelector((s) => s.assets.operations);
+export const useAllTransfers = () => useAppSelector((s) => s.assets.transfers);
 
+//TODO: include delegation here
 export const useAllOperationDisplays = () => {
-  const { tez, tokens } = useAppSelector((s) => s.assets.operations);
+  const a = useAllTransfers();
+  const { tez, tokens } = a;
   // Use maps because gettings values from objects is unsafe
   // TODO implement maps upstream for reading data elsewhere
 
