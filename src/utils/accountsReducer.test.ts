@@ -1,34 +1,34 @@
+import { extraArgumentFake } from "../mocks/extraArgumentsFakes";
 import { mockAccount } from "../mocks/factories";
 import { fakeRestoreFromMnemonic } from "../mocks/helpers";
 import { publicKeys1 } from "../mocks/publicKeys";
-import { AccountType, MnemonicAccount } from "../types/Account";
-import { decrypt } from "./aes";
-import { restoreAccount } from "./restoreAccounts";
+import { seedPhrase } from "../mocks/seedPhrase";
+import { Account, AccountType, MnemonicAccount } from "../types/Account";
 import accountsSlice from "./store/accountsSlice";
 
 import { store } from "./store/store";
-import { deriveAccount } from "./store/thunks/restoreMnemonicAccounts";
+import {
+  deriveAccount,
+  restoreFromMnemonic,
+} from "./store/thunks/restoreMnemonicAccounts";
+import { getFingerPrint } from "./tezos";
 
 const {
   actions: { add, reset, setSelected, removeSecret },
 } = accountsSlice;
 
 jest.mock("./aes");
-jest.mock("./restoreAccounts");
-
-export const decryptMock = decrypt as jest.Mock;
-export const restoreAccountMock = restoreAccount as jest.Mock;
 
 afterEach(() => {
   store.dispatch(reset());
 });
 
 beforeEach(() => {
-  decryptMock.mockResolvedValue("unencryptedFingerprint");
-  restoreAccountMock.mockResolvedValue({
+  extraArgumentFake.restoreAccount.mockResolvedValue({
     pk: publicKeys1.pk,
     pkh: publicKeys1.pkh,
   });
+  extraArgumentFake.decrypt.mockResolvedValue("unencryptedFingerprint");
 });
 
 describe("Accounts reducer", () => {
@@ -149,6 +149,47 @@ describe("Accounts reducer", () => {
       items: [mockAccount(2, undefined, "mockPrint2")],
       seedPhrases: { mockPrint2: {} },
       selected: null,
+    });
+  });
+
+  describe("restoreFromMnemonic thunk", () => {
+    it.only("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
+      const fingerPrint = await getFingerPrint(seedPhrase);
+      const mockEntrypted = { mock: "encrypted" };
+      const mockLabel = "myLabel";
+      const restoredAccounts: Account[] = [
+        {
+          ...mockAccount(0),
+        },
+        {
+          ...mockAccount(1),
+        },
+      ];
+
+      extraArgumentFake.restoreMnemonicAccounts.mockResolvedValueOnce(
+        restoredAccounts
+      );
+      extraArgumentFake.encryptMock.mockResolvedValueOnce(mockEntrypted);
+
+      await store
+        .dispatch(
+          restoreFromMnemonic({
+            seedPhrase: seedPhrase,
+            password: "cool",
+            label: mockLabel,
+          })
+        )
+        .unwrap();
+
+      expect(extraArgumentFake.restoreMnemonicAccounts).toHaveBeenCalledWith(
+        seedPhrase,
+        mockLabel,
+        undefined
+      );
+      expect(store.getState().accounts.items).toEqual(restoredAccounts);
+      expect(store.getState().accounts.seedPhrases).toEqual({
+        [fingerPrint]: mockEntrypted,
+      });
     });
   });
 
