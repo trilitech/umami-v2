@@ -33,7 +33,7 @@ describe("<AccountList />", () => {
 
     render(<AccountsList onOpen={() => {}} />);
 
-    const results = screen.getAllByTestId("account-tile");
+    const results = screen.getAllByTestId(/account-tile/);
     expect(results).toHaveLength(3);
 
     results.forEach((result, i) => {
@@ -48,11 +48,11 @@ describe("<AccountList />", () => {
   it("Accounts that are restored by user are displayed by group (case mnemonic and social)", async () => {
     await restore();
     render(<AccountsList onOpen={() => {}} />);
-    expect(screen.getAllByTestId("account-tile")).toHaveLength(5);
+    expect(screen.getAllByTestId(/account-tile/)).toHaveLength(5);
     expect(screen.getAllByTestId(/account-group/)).toHaveLength(3);
 
     const socialAccounts = screen.getByTestId(/account-group-social/i);
-    expect(within(socialAccounts).getAllByTestId("account-tile")).toHaveLength(
+    expect(within(socialAccounts).getAllByTestId(/account-tile/)).toHaveLength(
       2
     );
     expect(socialAccounts).toHaveTextContent("Social Accounts");
@@ -61,12 +61,12 @@ describe("<AccountList />", () => {
 
     const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
     const seedPhrase2 = screen.getAllByTestId(/account-group-seedphrase/i)[1];
-    expect(within(seedPhrase1).getAllByTestId("account-tile")).toHaveLength(2);
+    expect(within(seedPhrase1).getAllByTestId(/account-tile/)).toHaveLength(2);
     expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
     expect(seedPhrase1).toHaveTextContent("Account 0");
     expect(seedPhrase1).toHaveTextContent("Account 1");
 
-    expect(within(seedPhrase2).getAllByTestId("account-tile")).toHaveLength(1);
+    expect(within(seedPhrase2).getAllByTestId(/account-tile/)).toHaveLength(1);
     expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(seedPhrase2).toHaveTextContent("Account");
   });
