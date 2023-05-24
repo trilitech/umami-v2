@@ -5,10 +5,18 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import { store } from "../../utils/store/store";
 import { AccountsList } from "./AccountsList";
 
+import { extraArgumentFake } from "../../mocks/extraArgumentsFakes";
 import { mockPk } from "../../mocks/factories";
+import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
 import "../../mocks/mockGetRandomValues";
-import { act, render, screen, waitFor, within } from "../../mocks/testUtils";
-import { AccountType } from "../../types/Account";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "../../mocks/testUtils";
+import { AccountType, MnemonicAccount } from "../../types/Account";
 
 const { add, reset } = accountsSlice.actions;
 
@@ -59,8 +67,12 @@ describe("<AccountList />", () => {
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
 
-    const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
-    const seedPhrase2 = screen.getAllByTestId(/account-group-seedphrase/i)[1];
+    const seedPhrase1 = screen.getByTestId(
+      `account-group-Seedphrase ${MOCK_FINGETPRINT1}`
+    );
+    const seedPhrase2 = screen.getByTestId(
+      `account-group-Seedphrase ${MOCK_FINGETPRINT2}`
+    );
     expect(within(seedPhrase1).getAllByTestId(/account-tile/)).toHaveLength(2);
     expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
     expect(seedPhrase1).toHaveTextContent("Account 0");
@@ -80,19 +92,15 @@ describe("<AccountList />", () => {
 
     const { getByTestId, getByRole } = within(seedPhrase1);
     const cta = getByTestId(/^popover-cta$/i);
-    // act needed because we get a false warning
-    // this fix allthough applied doesn't work
-    // https://github.com/chakra-ui/chakra-ui/issues/2684
-    act(() => {
-      cta.click();
-    });
+    fireEvent.click(cta);
+
     await waitFor(() => {
       expect(getByRole("dialog")).toHaveTextContent("Remove");
     });
 
-    act(() => {
-      getByRole("button", { name: /^remove$/i }).click();
-    });
+    const removeBtn = getByRole("button", { name: /^remove$/i });
+
+    fireEvent.click(removeBtn);
 
     await waitFor(() => {
       expect(
@@ -102,9 +110,9 @@ describe("<AccountList />", () => {
       ).toBeInTheDocument();
     });
 
-    act(() => {
-      screen.getByRole("button", { name: /^confirm$/i }).click();
-    });
+    const confirmBtn = screen.getByRole("button", { name: /^confirm$/i });
+
+    fireEvent.click(confirmBtn);
 
     expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(1);
     await waitFor(() => {
@@ -115,16 +123,88 @@ describe("<AccountList />", () => {
       ).not.toBeInTheDocument();
     });
   });
+
+  test("User can derive a new account for a mnemonic with a CTA action, by providing a label and password", async () => {
+    const LABEL = "my label";
+    await restore();
+    render(<AccountsList onOpen={() => {}} />);
+
+    expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
+    const seedPhrase1 = screen.getByTestId(
+      `account-group-Seedphrase ${MOCK_FINGETPRINT1}`
+    );
+
+    const { getByTestId, getByRole } = within(seedPhrase1);
+    const cta = getByTestId(/^popover-cta$/i);
+    fireEvent.click(cta);
+
+    expect(await screen.findByRole("dialog")).toHaveTextContent("Create");
+
+    const createBtn = getByRole("button", { name: /^create$/i });
+
+    fireEvent.click(createBtn);
+    screen.getByText(/name your account/i);
+
+    const nameInput = screen.getByLabelText(/account name/i);
+
+    fireEvent.change(nameInput, { target: { value: LABEL } });
+    fireEvent.click(screen.getByRole("button", { name: /continue/i }));
+
+    await screen.findByText(/Enter Password to continue/i);
+
+    const passwordInput = screen.getByLabelText(/password/i);
+
+    fireEvent.change(passwordInput, { target: { value: "myPass" } });
+
+    await waitFor(() => {
+      const submitBtn = screen.getByRole("button", { name: /submit/i });
+      expect(submitBtn).toBeEnabled();
+    });
+
+    extraArgumentFake.restoreAccount.mockResolvedValue(
+      mockAccount(2, undefined, MOCK_FINGETPRINT1)
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(/Enter Password to continue/i)
+      ).not.toBeInTheDocument();
+    });
+
+    {
+      const seedPhrase1 = screen.getByTestId(
+        `account-group-Seedphrase ${MOCK_FINGETPRINT1}`
+      );
+
+      const tiles = within(seedPhrase1).getAllByTestId(/account-tile/);
+      expect(tiles).toHaveLength(3);
+
+      expect(tiles[2]).toHaveTextContent(LABEL);
+    }
+  });
 });
 
 const restore = async () => {
-  store.dispatch(
-    add([
-      mockAccount(0, undefined, MOCK_FINGETPRINT1),
-      mockAccount(1, undefined, MOCK_FINGETPRINT1),
-    ])
+  await store.dispatch(
+    fakeRestoreFromMnemonic({
+      seedFingerprint: MOCK_FINGETPRINT1,
+      accounts: [
+        mockAccount(0, undefined, MOCK_FINGETPRINT1),
+        mockAccount(1, undefined, MOCK_FINGETPRINT1),
+      ] as MnemonicAccount[],
+    })
   );
-  store.dispatch(add([mockAccount(3, undefined, MOCK_FINGETPRINT2)]));
+
+  await store.dispatch(
+    fakeRestoreFromMnemonic({
+      seedFingerprint: MOCK_FINGETPRINT2,
+      accounts: [
+        mockAccount(4, undefined, MOCK_FINGETPRINT2),
+      ] as MnemonicAccount[],
+    })
+  );
 
   store.dispatch(
     add({

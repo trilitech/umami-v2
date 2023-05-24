@@ -1,5 +1,14 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Modal,
+  ModalContent,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
+import { useRef, useState } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
@@ -15,8 +24,10 @@ import { useRemoveMnemonic } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
+import { deriveAccount } from "../../utils/store/thunks/restoreMnemonicAccounts";
 import AccountDisplayDrawer from "./AccountDisplayDrawer";
 import AccountPopover from "./AccountPopover";
+import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 
 const { setSelected } = accountsSlice.actions;
 
@@ -41,7 +52,8 @@ const AccountGroup: React.FC<{
   balances: Record<string, BigNumber | null>;
   onSelect: (pkh: string) => void;
   selected: string | null;
-  onDelete?: (groupLabel: string) => void;
+  onDelete?: () => void;
+  onDerive: () => void;
   showCTA: boolean;
 }> = ({
   groupLabel,
@@ -50,6 +62,7 @@ const AccountGroup: React.FC<{
   onSelect,
   selected,
   onDelete = () => {},
+  onDerive,
   showCTA = false,
 }) => {
   return (
@@ -59,12 +72,7 @@ const AccountGroup: React.FC<{
           {groupLabel}
         </Heading>
 
-        {showCTA && (
-          <AccountPopover
-            onCreate={() => {}}
-            onDelete={() => onDelete(groupLabel)}
-          />
-        )}
+        {showCTA && <AccountPopover onCreate={onDerive} onDelete={onDelete} />}
       </Flex>
 
       {accounts.map((a) => {
@@ -136,6 +144,9 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
   const { onOpen, element, onClose } = useConfirmation();
   const removeMnemonic = useRemoveMnemonic();
 
+  const { element: deriveElement, onOpen: openDeriveAccount } =
+    useDeriveAccountModal();
+
   return (
     <Box>
       <Header />
@@ -149,7 +160,7 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
 
         const handleDelete = () => {
           if (!isMnemonicGroup) {
-            return;
+            throw new Error(`Can't delete a non mnemonic account group! `);
           }
 
           onOpen({
@@ -161,6 +172,13 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
           });
         };
 
+        const handleDerive = () => {
+          if (!isMnemonicGroup) {
+            throw new Error(`Can't derive a non mnemonic account!`);
+          }
+          openDeriveAccount({ fingerprint: first.seedFingerPrint });
+        };
+
         return accountsByType ? (
           <AccountGroup
             showCTA={isMnemonicGroup}
@@ -170,6 +188,7 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
             balances={balances}
             groupLabel={label}
             onDelete={handleDelete}
+            onDerive={handleDerive}
             onSelect={(pkh: string) => {
               props.onOpen();
               dispatch(setSelected(pkh));
@@ -178,6 +197,7 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
         ) : null;
       })}
       {element}
+      {deriveElement}
     </Box>
   );
 };
@@ -187,5 +207,77 @@ const AccountListWithDrawer = () => (
     initiator={(onOpen) => <AccountsList onOpen={onOpen} />}
   />
 );
+
+const DeriveAcount = (props: { onDone: () => void; fingerprint: string }) => {
+  const dispatch = useAppDispatch();
+
+  const [isLoading, setIsloading] = useState(false);
+  const toast = useToast();
+
+  const handleSubmit = async ({
+    name,
+    password,
+  }: {
+    name: string;
+    password: string;
+  }) => {
+    setIsloading(true);
+    try {
+      await dispatch(
+        deriveAccount({
+          fingerPrint: props.fingerprint,
+          password,
+          label: name,
+        })
+      ).unwrap();
+      props.onDone();
+
+      toast({
+        title: "New account created!",
+        description: `Successfully derived account from ${props.fingerprint}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to derive new account",
+        description: (error as Error).message,
+      });
+    }
+
+    setIsloading(false);
+  };
+
+  return (
+    <DeriveAccountDisplay
+      subtitle={`Name the new account dervied from seedphrase ${props.fingerprint}`}
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+    />
+  );
+};
+
+export const useDeriveAccountModal = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const paramsRef = useRef<{ fingerprint: string }>();
+
+  return {
+    element: (
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalContent bg="umami.gray.900">
+          {paramsRef.current?.fingerprint && (
+            <DeriveAcount
+              onDone={onClose}
+              fingerprint={paramsRef.current.fingerprint}
+            />
+          )}
+        </ModalContent>
+      </Modal>
+    ),
+    onOpen: (params: { fingerprint: string }) => {
+      paramsRef.current = params;
+      onOpen();
+    },
+  };
+};
 
 export default AccountListWithDrawer;
