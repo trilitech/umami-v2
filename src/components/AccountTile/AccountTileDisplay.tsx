@@ -24,7 +24,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
     : undefined;
   return (
     <Flex
-      data-testid="account-tile"
+      data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
       mb={4}
       p={4}
       bg="umami.gray.900"

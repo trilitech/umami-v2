@@ -56,7 +56,11 @@ export const AccountCardDisplay: React.FC<Props> = ({
   nfts,
 }) => {
   return (
-    <Flex direction="column" alignItems={"center"}>
+    <Flex
+      direction="column"
+      alignItems={"center"}
+      data-testid={`account-card-${pkh}`}
+    >
       <Identicon address={pkh} />
       <Heading mt={4} mb={2} size={"md"}>
         {label}

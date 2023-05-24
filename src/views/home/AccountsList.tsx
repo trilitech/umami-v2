@@ -1,7 +1,9 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import BigNumber from "bignumber.js";
 import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { useCreateOrImportSecretModal } from "../../components/Onboarding/useOnboardingModal";
 import {
   Account,
   AccountType,
@@ -9,14 +11,12 @@ import {
   MnemonicAccount,
   SocialAccount,
 } from "../../types/Account";
+import { useRemoveMnemonic } from "../../utils/hooks/accountHooks";
+import { useConfirmation } from "../../utils/hooks/confirmModal";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import AccountDisplayDrawer from "./AccountDisplayDrawer";
-import BigNumber from "bignumber.js";
-import { useCreateOrImportSecretModal } from "../../components/Onboarding/useOnboardingModal";
 import AccountPopover from "./AccountPopover";
-import { useConfirmation } from "../../utils/hooks/confirmModal";
-import { useRemoveMnemonic } from "../../utils/hooks/accountHooks";
 
 const { setSelected } = accountsSlice.actions;
 
