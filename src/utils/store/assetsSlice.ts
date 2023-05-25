@@ -149,6 +149,7 @@ const assetsSlice = createSlice({
       state,
       { payload }: { type: string; payload: DelegationPayload[] }
     ) => {
+      //TODO: store a list of delegations for the operation views
       payload.forEach((p) => {
         state.delegations[p.pkh] = p.delegation;
       });
