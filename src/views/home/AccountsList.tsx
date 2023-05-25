@@ -85,7 +85,7 @@ const AccountGroup: React.FC<{
             key={a.pkh}
             address={a.pkh}
             label={a.label || ""}
-            balance={balance}
+            balance={balance ?? null}
           />
         );
       })}
