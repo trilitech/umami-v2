@@ -27,17 +27,23 @@ export const useIsBlockFinalised = () => {
 export const useAllNfts = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
-  return objectMap(allTokens, (tokens) =>
-    keepNFTs(compact(tokens.map(Asset.from)).filter((t) => t.balance !== "0"))
-  );
+  return objectMap(allTokens, (tokens) => {
+    const compactedTokens = compact(tokens);
+    return keepNFTs(
+      compact(compactedTokens.map(Asset.from)).filter((t) => t.balance !== "0")
+    );
+  });
 };
 
 export const useAccountAssets = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
-  return objectMap(allTokens, (tokens) =>
-    compact(tokens.map(Asset.from)).filter((t) => t.balance !== "0")
-  );
+  return objectMap(allTokens, (tokens) => {
+    const compactedTokens = compact(tokens);
+    return compact(compactedTokens.map(Asset.from)).filter(
+      (t) => t.balance !== "0"
+    );
+  });
 };
 
 export const useGetAccountAssets = () => {
@@ -159,7 +165,7 @@ export const useTotalBalance = () => {
   const totalMutez = useTotalMutezBalance();
   const tezBalance = totalMutez && mutezToTez(totalMutez);
 
-  if (tezBalance === null) {
+  if (tezBalance == null) {
     return null;
   }
 

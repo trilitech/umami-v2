@@ -23,14 +23,14 @@ type State = {
   network: TezosNetwork;
   blockLevel: number | null;
   balances: {
-    tez: Record<string, string | null>;
-    tokens: Record<string, Token[]>;
+    tez: Record<string, string | null | undefined>;
+    tokens: Record<string, Token[] | undefined>;
   };
   operations: {
     tez: Record<string, TezTransfer[] | undefined>;
-    tokens: Record<string, TokenTransfer[]>;
+    tokens: Record<string, TokenTransfer[] | undefined>;
   };
-  delegations: Record<string, DelegationOperation>;
+  delegations: Record<string, DelegationOperation | undefined>;
   bakers: Baker[];
   conversionRate: number | null; // XTZ/USD conversion rate
   batches: Record<string, Batch | undefined>;

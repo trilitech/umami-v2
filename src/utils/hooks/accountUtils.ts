@@ -4,14 +4,16 @@ import { decrypt } from "../aes";
 import { deriveSkFromMnemonic } from "../restoreAccounts";
 import { useAppSelector } from "../store/hooks";
 
-export const getTotalBalance = (balances: Record<string, string | null>) => {
+export const getTotalBalance = (
+  balances: Record<string, string | null | undefined>
+) => {
   const totalMutez = Object.values(balances)
     .map((b) => b && new BigNumber(b))
     .reduce((acc, curr) => {
-      if (acc === null) {
+      if (acc == null) {
         return curr;
       } else {
-        return curr === null ? acc : BigNumber.sum(curr, acc);
+        return curr == null ? acc : BigNumber.sum(curr, acc);
       }
     }, null);
 

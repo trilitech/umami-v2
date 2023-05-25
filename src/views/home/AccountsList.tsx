@@ -48,7 +48,7 @@ const Header = () => {
 const AccountGroup: React.FC<{
   accounts: AccountsOfSameType;
   groupLabel: string;
-  balances: Record<string, string | null>;
+  balances: Record<string, string | null | undefined>;
   onSelect: (pkh: string) => void;
   selected: string | null;
   onDelete?: () => void;
@@ -85,7 +85,7 @@ const AccountGroup: React.FC<{
             key={a.pkh}
             address={a.pkh}
             label={a.label || ""}
-            balance={balance}
+            balance={balance ?? null}
           />
         );
       })}

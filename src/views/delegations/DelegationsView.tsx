@@ -157,7 +157,7 @@ const DelegationsView = () => {
     const bakers = await getBakers();
     dispatch(updateBakers(bakers));
   });
-  const allDelegations = Object.values(delegations).flat();
+  const allDelegations = compact(Object.values(delegations).flat());
   const formatedDelegations = compact(allDelegations.map(makeDelegation));
   const { modalElement, onOpen } = useSendFormModal();
 
