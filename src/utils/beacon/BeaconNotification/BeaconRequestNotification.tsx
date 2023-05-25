@@ -3,6 +3,7 @@ import {
   BeaconRequestOutputMessage,
   OperationRequestOutput,
   OperationResponseInput,
+  PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
@@ -44,7 +45,7 @@ export const BeaconNotification: React.FC<{
       }
 
       try {
-        const transfer = buildTransfer(message);
+        const transfer: OperationValue = buildTransfer(message);
 
         const handleSuccess = async (hash: string) => {
           const response: OperationResponseInput = {
@@ -62,6 +63,12 @@ export const BeaconNotification: React.FC<{
             });
           }
         };
+
+        const amount =
+          transfer.type === "tez" ? transfer.value.amount : undefined;
+        const parameter =
+          transfer.type === "tez" ? transfer.value.parameter : undefined;
+
         return (
           <SendForm
             disabled
@@ -69,8 +76,8 @@ export const BeaconNotification: React.FC<{
             mode={{ type: transfer.type }}
             recipient={transfer.value.recipient}
             sender={transfer.value.sender}
-            amount={transfer.value.amount}
-            parameter={transfer.value.parameter}
+            amount={amount}
+            parameter={parameter}
           />
         );
       } catch (error: any) {
@@ -89,6 +96,39 @@ export const BeaconNotification: React.FC<{
   }
 };
 
+const beaconToUmamiOperation = (
+  operation: PartialTezosOperation,
+  sender: string
+) => {
+  if (operation.kind === TezosOperationType.TRANSACTION) {
+    const result: OperationValue = {
+      type: "tez",
+      value: {
+        sender,
+        amount: operation.amount,
+        recipient: operation.destination,
+        parameter: operation.parameters,
+      },
+    };
+
+    return result;
+  }
+
+  if (operation.kind === TezosOperationType.DELEGATION) {
+    const result: OperationValue = {
+      type: "delegation",
+      value: {
+        sender,
+        recipient: operation.delegate,
+      },
+    };
+
+    return result;
+  }
+
+  throw new Error(`Unsupported operation: ${operation.kind}`);
+};
+
 const buildTransfer = (o: OperationRequestOutput) => {
   const { operationDetails } = o;
 
@@ -98,21 +138,7 @@ const buildTransfer = (o: OperationRequestOutput) => {
 
   if (operationDetails.length === 1) {
     const operation = operationDetails[0];
-
-    if (operation.kind !== TezosOperationType.TRANSACTION) {
-      throw new Error(`Unsupported operation: ${operation.kind}`);
-    }
-
-    const result: OperationValue = {
-      type: "tez",
-      value: {
-        amount: operation.amount,
-        sender: o.sourceAddress,
-        recipient: operation.destination,
-        parameter: operation.parameters,
-      },
-    };
-    return result;
+    return beaconToUmamiOperation(operation, o.sourceAddress);
   }
 
   throw new Error("Batch not supported");

@@ -24,28 +24,34 @@ type BatchMode = {
 };
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
+type TezOperation = TezMode & {
+  value: {
+    amount: string;
+    sender: string;
+    recipient: string;
+    parameter?: TransferParams["parameter"];
+  };
+};
+
+type TokenOperation = TokenMode & {
+  value: {
+    amount: string;
+    sender: string;
+    recipient: string;
+  };
+};
+
+type DelegationOperation = DelegationMode & {
+  value: {
+    sender: string;
+    recipient?: string;
+  };
+};
+
 export type OperationValue =
-  | (TezMode & {
-      value: {
-        amount: string;
-        sender: string;
-        recipient: string;
-        parameter?: TransferParams["parameter"];
-      };
-    })
-  | (TokenMode & {
-      value: {
-        amount: string;
-        sender: string;
-        recipient: string;
-      };
-    })
-  | (DelegationMode & {
-      value: {
-        sender: string;
-        recipient?: string;
-      };
-    });
+  | TezOperation
+  | TokenOperation
+  | DelegationOperation;
 
 export type EstimatedOperation = {
   operation: OperationValue | OperationValue[];

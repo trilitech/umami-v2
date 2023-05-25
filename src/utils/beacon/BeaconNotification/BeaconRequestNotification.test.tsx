@@ -8,7 +8,11 @@ import {
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 import { BeaconNotification } from ".";
-import { objectOperationRequest } from "../../../mocks/beacon";
+import {
+  mockBeaconDelegate,
+  objectOperationDelegationRequest,
+  objectOperationRequest,
+} from "../../../mocks/beacon";
 import { mockAccount } from "../../../mocks/factories";
 import {
   dispatchMockAccounts,
@@ -17,7 +21,13 @@ import {
   resetAccounts,
 } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
-import { estimateMutezTransfer, transferMutez } from "../../tezos";
+import { formatPkh } from "../../format";
+import {
+  delegate,
+  estimateDelegation,
+  estimateMutezTransfer,
+  transferMutez,
+} from "../../tezos";
 import { walletClient } from "../beacon";
 
 jest.mock("../../tezos");
@@ -46,10 +56,14 @@ const fixture = (
 
 const estimateTezTransferMock = estimateMutezTransfer as jest.Mock;
 const transferTezMock = transferMutez as jest.Mock;
+const estimateDelegationMock = estimateDelegation as jest.Mock;
+const delegateMock = delegate as jest.Mock;
 
 beforeEach(() => {
   estimateTezTransferMock.mockResolvedValue(FEE);
+  estimateDelegationMock.mockResolvedValue(FEE);
   transferTezMock.mockResolvedValue(OP_HASH);
+  delegateMock.mockResolvedValue(OP_HASH);
 });
 
 beforeAll(() => {
@@ -96,7 +110,7 @@ describe("<BeaconRequestNotification />", () => {
     });
   });
 
-  describe("Operation request", () => {
+  describe("Operation request (case simple tez transaction)", () => {
     const message: OperationRequestOutput = {
       ...objectOperationRequest,
       sourceAddress: mockAccount(2).pkh,
@@ -144,6 +158,61 @@ describe("<BeaconRequestNotification />", () => {
       expect(walletClient.respond).toHaveBeenCalledWith({
         id: objectOperationRequest.id,
         transactionHash: "foo",
+        type: "operation_response",
+      });
+    });
+  });
+
+  describe("Operation request (case delegation)", () => {
+    const message: OperationRequestOutput = {
+      ...objectOperationDelegationRequest,
+      sourceAddress: mockAccount(2).pkh,
+    };
+    it("should display delegation request with controls disabled", async () => {
+      render(fixture(message, () => {}));
+      expect(
+        screen.getByRole("dialog", { name: /delegation/i })
+      ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
+      });
+      expect(screen.getByTestId("account-selector")).toBeDisabled();
+      expect(screen.getByTestId("baker-selector")).toBeDisabled();
+      expect(screen.getByTestId("baker-selector")).toHaveTextContent(
+        formatPkh(mockBeaconDelegate)
+      );
+    });
+
+    test("User previews then submits Delegation, and operation hash is sent via Beacon", async () => {
+      render(fixture(message, () => {}));
+      expect(
+        screen.getByRole("dialog", { name: /delegation/i })
+      ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
+      });
+      screen.getByRole("button", { name: /preview/i }).click();
+      await waitFor(() => {
+        expect(
+          screen.getByRole("dialog", { name: "Recap" })
+        ).toBeInTheDocument();
+      });
+
+      fillPassword("mockPass");
+      await waitFor(() => {
+        expect(
+          screen.getByRole("button", { name: /submit transaction/i })
+        ).toBeEnabled();
+      });
+      screen.getByRole("button", { name: /submit transaction/i }).click();
+
+      await waitFor(() => {
+        expect(screen.getByText(/operation submitted/i)).toBeInTheDocument();
+      });
+
+      expect(walletClient.respond).toHaveBeenCalledWith({
+        id: objectOperationDelegationRequest.id,
+        transactionHash: OP_HASH.hash,
         type: "operation_response",
       });
     });

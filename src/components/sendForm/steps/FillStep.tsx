@@ -34,12 +34,14 @@ export const DelegateForm = ({
   undelegate = false,
   sender,
   recipient,
+  disabled = false,
 }: {
   isLoading: boolean;
   onSubmit: (a: { sender: string; baker?: string }) => void;
   undelegate?: boolean;
   sender?: string;
   recipient?: string;
+  disabled?: boolean;
 }) => {
   const { formState, control, handleSubmit } = useForm<{
     sender: string;
@@ -65,7 +67,7 @@ export const DelegateForm = ({
               name="sender"
               render={({ field: { onChange, onBlur, value, ref } }) => (
                 <ConnectedAccountSelector
-                  isDisabled={undelegate}
+                  isDisabled={undelegate || disabled}
                   selected={value}
                   onSelect={(a) => {
                     onChange(a.pkh);
@@ -82,12 +84,11 @@ export const DelegateForm = ({
                 rules={{ required: true }}
                 control={control}
                 name="baker"
-                render={({ field: { onChange, onBlur, value, ref } }) => (
+                render={({ field: { onChange, value } }) => (
                   <BakerSelector
+                    disabled={disabled}
                     selected={value}
-                    onSelect={(bakerAddress) => {
-                      onChange(bakerAddress);
-                    }}
+                    onSelect={onChange}
                   />
                 )}
               />
@@ -315,6 +316,7 @@ export const FillStep: React.FC<{
     case "delegation":
       return (
         <DelegateForm
+          disabled={disabled}
           sender={sender}
           recipient={recipient}
           undelegate={mode.data?.undelegate}
