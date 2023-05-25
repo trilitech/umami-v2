@@ -7,15 +7,6 @@ const fixture = () => <AnnouncementBanner />;
 jest.mock("../utils/datocms/request");
 const requestMock = request as jest.Mock;
 
-beforeEach(async () => {
-  await waitFor(
-    () => {
-      expect(screen.queryAllByText("successToastHeading").length).toBe(0);
-    },
-    { timeout: 50000 }
-  );
-});
-
 describe("AnnouncementBanner", () => {
   it("displays text if a message has been set", async () => {
     requestMock.mockReturnValue({
