@@ -1,5 +1,6 @@
 import { TokenTransfer } from "@tzkt/sdk-api";
 import {
+  getLatestDelegationResult,
   getTokenTransactionsResult,
   getTransacionsResult,
 } from "../../mocks/tzktResponse";
@@ -428,10 +429,23 @@ describe("getOperationsDisplays", () => {
     const result = getOperationDisplays(
       getTransacionsResult,
       getTokenTransactionsResult,
+      getLatestDelegationResult,
       forAddress
     );
 
     const expected: OperationDisplay[] = [
+      {
+        amount: { prettyDisplay: "0.467532 ꜩ" },
+        fee: "0.000396 ꜩ",
+        level: 3414723,
+        prettyTimestamp: "04/24/2023",
+        recipient: "tz1fHn9ZSqMwp1WNwdCLqnh52yPgzQ4QydTm",
+        sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        timestamp: "2023-04-24T09:48:17Z",
+        type: "delegation",
+        tzktUrl:
+          "https://mainnet.tzkt.io/onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva",
+      },
       {
         amount: { prettyDisplay: "+2.74 FA1.2", url: undefined },
         prettyTimestamp: "today at 3:30 PM",
