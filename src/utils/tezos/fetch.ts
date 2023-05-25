@@ -74,7 +74,7 @@ export const getLastDelegation = async (
     {
       sender: { eq: address },
       sort: { desc: "level" },
-      limit: 1,
+      limit: 10,
     },
     {
       baseUrl: tzktUrls[network],
