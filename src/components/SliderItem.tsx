@@ -5,7 +5,7 @@ import { SlideritemRecord } from "../graphql/generated";
 
 export default function SlideItem({ item }: { item: SlideritemRecord }) {
   return (
-    <Box bg="black" paddingBottom={"35px"}>
+    <Box data-testid={`slide-${item.id}`} bg="black" paddingBottom={"35px"}>
       <Box
         paddingLeft={"50px"}
         paddingRight={"50px"}

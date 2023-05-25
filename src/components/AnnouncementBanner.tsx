@@ -6,27 +6,27 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { ConfigurationDocument } from "./graphql/generated";
-import { request } from "./utils/datocms/request";
-import { maintanceIcon } from "./components/Icons";
+import { ConfigurationDocument } from "../graphql/generated";
+import { request } from "../utils/datocms/request";
+import { maintanceIcon } from "./Icons";
 
 export const AnnouncementBanner: React.FC = () => {
   const { isOpen: isVisible, onClose } = useDisclosure({ defaultIsOpen: true });
 
-  const [message, setMessage] = useState<string | null | undefined>(null);
+  const [message, setMessage] = useState<string | null | undefined>();
 
-  const requestConfiguraiton = async () => {
+  const requestConfiguration = async () => {
     const result = await request(ConfigurationDocument);
     setMessage(result.configuration?.maintenanceMessage);
   };
 
   useEffect(() => {
-    requestConfiguraiton();
+    requestConfiguration();
   });
 
   const MaintanceIcon = maintanceIcon;
   return isVisible && message ? (
-    <Alert color="black" bg="#FC7884">
+    <Alert data-testid="announcement" color="black" bg="#FC7884">
       <MaintanceIcon />
       <Box w="100%" pl="8px">
         <AlertDescription>{message}</AlertDescription>

@@ -21,11 +21,8 @@ import AddressBookView from "./views/addressBook/AddressBookView";
 import BatchView from "./views/batch/BatchView";
 import { resetBeacon, useBeaconInit } from "./utils/beacon/beacon";
 import TokensView from "./views/tokens/TokensView";
-<<<<<<< HEAD
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
-=======
-import { AnnouncementBanner } from "./AnnouncementBanner";
->>>>>>> ce93849 (feat(dato): adjust schema)
+import { AnnouncementBanner } from "./components/AnnouncementBanner";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
