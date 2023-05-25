@@ -30,3 +30,27 @@ export const objectOperationRequest: OperationRequestOutput = {
   ],
   sourceAddress: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
 };
+
+export const mockBeaconDelegate = "KT1WvzYHCNBvDSdwafTHv7nJ1dWmZ8GCYuuC";
+export const objectOperationDelegationRequest: OperationRequestOutput = {
+  appMetadata: {
+    senderId: "id1",
+    name: "some baker",
+    icon: "http://mock",
+  },
+  id: "id2",
+  version: "2",
+  senderId: "id3",
+  type: BeaconMessageType.OperationRequest,
+  network: { type: NetworkType.MAINNET },
+  operationDetails: [
+    {
+      kind: TezosOperationType.DELEGATION,
+      storage_limit: "350",
+      delegate: mockBeaconDelegate,
+      fee: "3",
+      gas_limit: "33",
+    },
+  ],
+  sourceAddress: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+};

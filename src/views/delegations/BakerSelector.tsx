@@ -5,7 +5,7 @@ import { Baker } from "../../types/Baker";
 import { useAppSelector } from "../../utils/store/hooks";
 import { BakerSmallTile } from "./BakerSmallTile";
 
-const renderBaker = (baker: Baker) => (
+const renderBakerTile = (baker: Baker) => (
   <BakerSmallTile
     pkh={baker.address}
     label={baker.name}
@@ -13,19 +13,27 @@ const renderBaker = (baker: Baker) => (
   />
 );
 
+const renderBaker = (bakers: Baker[], selected: string) => {
+  const referencedBaker = bakers.find((b) => b.address === selected);
+
+  if (!referencedBaker) {
+    return <BakerSmallTile pkh={selected} />;
+  }
+
+  return renderBakerTile(referencedBaker);
+};
+
 export const BakerSelector: React.FC<{
   onSelect: (a: string) => void;
   selected?: string;
-  isDisabled?: boolean;
-}> = ({ onSelect = () => {}, selected, isDisabled }) => {
+  disabled?: boolean;
+}> = ({ onSelect = () => {}, selected, disabled }) => {
   const bakers = useAppSelector((s) => s.assets.bakers);
-
-  const selectedBaker = bakers.find((b) => b.address === selected);
 
   return (
     <Menu>
       <MenuButton
-        isDisabled={isDisabled}
+        isDisabled={disabled}
         data-testid="baker-selector"
         w={"100%"}
         textAlign="left"
@@ -33,7 +41,9 @@ export const BakerSelector: React.FC<{
         rightIcon={<ChevronDownIcon />}
         h={16}
       >
-        {selectedBaker ? renderBaker(selectedBaker) : "Select a baker"}
+        {selected === undefined
+          ? "Select a Baker"
+          : renderBaker(bakers, selected)}
       </MenuButton>
       <MenuList bg={"umami.gray.900"} maxH={40} overflow={"scroll"}>
         {bakers.map((baker) => (
@@ -48,7 +58,7 @@ export const BakerSelector: React.FC<{
             // TODO implement hover color that disapeared
             bg={"umami.gray.900"}
           >
-            {renderBaker(baker)}
+            {renderBakerTile(baker)}
           </MenuItem>
         ))}
       </MenuList>
