@@ -44,7 +44,7 @@ const renderAmount = (operation: OperationValue) => {
         operation.data instanceof NFT
           ? operation.data.balance
           : formatTokenAmount(
-              `${operation.value.amount}`,
+              operation.value.amount,
               operation.data.metadata?.decimals
             );
       return (
@@ -85,12 +85,12 @@ const RightPanel = ({
   return (
     <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
       <Box flex={1}>
-        <Subtotal mutez={subTotal} marginY={4} />
-        <Fee mutez={fee} />
+        <Subtotal mutez={subTotal.toString()} marginY={4} />
+        <Fee mutez={fee.toString()} />
       </Box>
       <Box>
         <Divider />
-        <Total mutez={total} paddingY={3} />
+        <Total mutez={total.toString()} paddingY={3} />
 
         <Flex justifyContent={"space-between"}>
           <Button

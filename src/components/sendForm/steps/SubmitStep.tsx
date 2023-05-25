@@ -61,7 +61,7 @@ const makeTransfer = async (
     case "tez":
       return await transferMutez(
         operation.value.recipient,
-        operation.value.amount,
+        parseInt(operation.value.amount),
         config,
         operation.value.parameter
       );
@@ -127,7 +127,7 @@ const BatchRecap = ({ transfer }: { transfer: OperationValue[] }) => {
   return (
     <>
       <TransactionsAmount amount={transfer.length} />
-      <Subtotal mutez={getBatchSubtotal(transfer)} />
+      <Subtotal mutez={getBatchSubtotal(transfer).toString()} />
     </>
   );
 };
@@ -138,7 +138,7 @@ const getSubTotal = (t: OperationValue[] | OperationValue): BigNumber => {
   }
 
   if (t.type === "tez") {
-    return t.value.amount;
+    return new BigNumber(t.value.amount);
   }
 
   return new BigNumber(0);
@@ -149,6 +149,7 @@ export const RecapDisplay: React.FC<{
   recap: EstimatedOperation;
   onSucces: (hash: string) => void;
 }> = ({ recap: { fee, operation: transfer }, network, onSucces }) => {
+  const feeNum = new BigNumber(fee);
   const renderAccountTile = useRenderAccountSmallTile();
   const getAccount = useGetOwnedAccount();
 
@@ -184,7 +185,7 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
-  const total = fee.plus(getSubTotal(transfer));
+  const total = feeNum.plus(getSubTotal(transfer));
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
@@ -208,7 +209,7 @@ export const RecapDisplay: React.FC<{
             <Fee mutez={fee} />
           </Box>
           <Divider mb={2} mt={2} />
-          <Total mutez={total} />
+          <Total mutez={total.toString()} />
         </ModalBody>
         <ModalFooter justifyContent={"center"}>
           <SignButton

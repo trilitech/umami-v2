@@ -14,7 +14,6 @@ import { walletClient } from "../beacon";
 import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
 import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
 import SignPayloadRequestPannel from "./pannels/SignPayloadRequestPannel";
-import { BigNumber } from "bignumber.js";
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;
@@ -70,7 +69,7 @@ export const BeaconNotification: React.FC<{
             mode={{ type: transfer.type }}
             recipient={transfer.value.recipient}
             sender={transfer.value.sender}
-            amount={transfer.value.amount.toString()}
+            amount={transfer.value.amount}
             parameter={transfer.value.parameter}
           />
         );
@@ -107,7 +106,7 @@ const buildTransfer = (o: OperationRequestOutput) => {
     const result: OperationValue = {
       type: "tez",
       value: {
-        amount: new BigNumber(operation.amount),
+        amount: operation.amount,
         sender: o.sourceAddress,
         recipient: operation.destination,
         parameter: operation.parameters,

@@ -1,11 +1,10 @@
 import { format } from "@taquito/utils";
-import BigNumber from "bignumber.js";
 import React from "react";
 import { AccountTileDisplay, Props } from "./AccountTileDisplay";
 
 const AccountTile: React.FC<
   Omit<Props, "balance"> & {
-    balance: BigNumber | null;
+    balance: string | null;
   }
 > = ({ address, onClick, balance, selected = false, label }) => {
   const prettyBalance = balance && `${format("mutez", "tz", balance)} ꜩ`;

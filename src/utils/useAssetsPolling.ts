@@ -32,7 +32,7 @@ const getBalancePayload = async (
   network: TezosNetwork
 ): Promise<TezBalancePayload> => {
   const tez = await getBalance(pkh, network);
-  return { pkh, tez };
+  return { pkh, tez: tez.toString() };
 };
 
 const getTokensPayload = async (

@@ -7,7 +7,6 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 import { useRef, useState } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
@@ -49,7 +48,7 @@ const Header = () => {
 const AccountGroup: React.FC<{
   accounts: AccountsOfSameType;
   groupLabel: string;
-  balances: Record<string, BigNumber | null>;
+  balances: Record<string, string | null>;
   onSelect: (pkh: string) => void;
   selected: string | null;
   onDelete?: () => void;

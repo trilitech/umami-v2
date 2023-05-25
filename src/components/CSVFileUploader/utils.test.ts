@@ -2,7 +2,6 @@ import { mockContract, mockPkh } from "../../mocks/factories";
 import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 import { CSVRow } from "./types";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../../mocks/tokens";
-import { BigNumber } from "bignumber.js";
 import { FA12Token, FA2Token, NFT } from "../../types/Asset";
 
 describe("csv utils", () => {
@@ -79,7 +78,7 @@ describe("csv utils", () => {
     expect(res).toEqual({
       type: "tez",
       value: {
-        amount: new BigNumber(1000000),
+        amount: "1000000",
         recipient: mockPkh(1),
         sender: mockPkh(0),
       },
@@ -100,7 +99,7 @@ describe("csv utils", () => {
       type: "token",
       data: new FA12Token(ghostFA12.contract, ghostFA12.balance),
       value: {
-        amount: new BigNumber(100000000),
+        amount: "100000000",
         recipient: mockPkh(1),
         sender: mockPkh(0),
       },
@@ -127,7 +126,7 @@ describe("csv utils", () => {
         ghostFA2.metadata
       ),
       value: {
-        amount: new BigNumber(100000),
+        amount: "100000",
         recipient: mockPkh(1),
         sender: mockPkh(0),
       },
@@ -157,7 +156,7 @@ describe("csv utils", () => {
         ghostTezzard1.metadata
       ),
       value: {
-        amount: new BigNumber(1),
+        amount: "1",
         recipient: mockPkh(1),
         sender: mockPkh(0),
       },

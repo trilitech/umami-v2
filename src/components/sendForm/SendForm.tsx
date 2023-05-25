@@ -59,7 +59,7 @@ const makeSimulation = (
       return estimateMutezTransfer(
         operation.value.sender,
         operation.value.recipient,
-        operation.value.amount,
+        new BigNumber(operation.value.amount),
         pk,
         network,
         operation.value.parameter
@@ -100,7 +100,7 @@ export const SendForm = ({
     mode.type === "batch"
       ? {
           operation: mode.data.batch.items.map((b) => b.operation),
-          fee: getTotalFee(mode.data.batch.items),
+          fee: getTotalFee(mode.data.batch.items).toString(),
         }
       : undefined;
 
@@ -130,7 +130,7 @@ export const SendForm = ({
 
       setTransferValues({
         operation,
-        fee: new BigNumber(estimate.suggestedFeeMutez),
+        fee: String(estimate.suggestedFeeMutez),
       });
     } catch (error: any) {
       toast({ title: "Invalid transaction", description: error.message });
