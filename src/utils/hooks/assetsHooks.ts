@@ -114,9 +114,6 @@ export const useAllOperationDisplays = () => {
   const { tez, tokens } = useAllTransfers();
   const delegations = useAllDelegations();
 
-  //TODO: Refacotr
-  const tezMap = new Map(Object.entries(tez));
-  const tokensMap = new Map(Object.entries(tokens));
   const accounts = useAccounts();
   const network = useSelectedNetwork();
 
@@ -124,8 +121,8 @@ export const useAllOperationDisplays = () => {
 
   accounts.forEach(({ pkh }) => {
     result[pkh] = getOperationDisplays(
-      tezMap.get(pkh),
-      tokensMap.get(pkh),
+      tez[pkh],
+      tokens[pkh],
       delegations[pkh],
       pkh,
       network
