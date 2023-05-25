@@ -10,19 +10,31 @@ import { ConfigurationDocument } from "../graphql/generated";
 import { request } from "../utils/datocms/request";
 import { maintanceIcon } from "./Icons";
 
+const ANNOUNCEMENT_REFRESH_INTERVAL = 60 * 60 * 1000; // once an hour
+
 export const AnnouncementBanner: React.FC = () => {
-  const { isOpen: isVisible, onClose } = useDisclosure({ defaultIsOpen: true });
+  const {
+    isOpen: isVisible,
+    onOpen,
+    onClose,
+  } = useDisclosure({ defaultIsOpen: true });
 
   const [message, setMessage] = useState<string | null | undefined>();
 
-  const requestConfiguration = async () => {
-    const result = await request(ConfigurationDocument);
-    setMessage(result.configuration?.maintenanceMessage);
-  };
-
   useEffect(() => {
+    const requestConfiguration = async () => {
+      const result = await request(ConfigurationDocument);
+      if (message !== result.configuration?.maintenanceMessage) {
+        setMessage(result.configuration?.maintenanceMessage);
+        onOpen();
+      }
+    };
     requestConfiguration();
-  });
+    const intervalId = setInterval(() => {
+      requestConfiguration();
+    }, ANNOUNCEMENT_REFRESH_INTERVAL);
+    return () => clearInterval(intervalId);
+  }, [message, onOpen]);
 
   const MaintanceIcon = maintanceIcon;
   return isVisible && message ? (
