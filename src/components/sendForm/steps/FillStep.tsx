@@ -343,7 +343,7 @@ export const FillStep: React.FC<{
             onSubmitBatch({
               type: "tez",
               value: {
-                amount: tezToMutez(v.amount),
+                amount: tezToMutez(v.amount).toString(),
                 sender: v.sender,
                 recipient: v.recipient,
                 parameter,
@@ -354,7 +354,7 @@ export const FillStep: React.FC<{
             onSubmit({
               type: "tez",
               value: {
-                amount: tezToMutez(v.amount),
+                amount: tezToMutez(v.amount).toString(),
                 sender: v.sender,
                 recipient: v.recipient,
                 parameter,
@@ -376,7 +376,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: mode.data.getRealAmount(v.amount),
+                amount: mode.data.getRealAmount(v.amount).toString(),
                 sender: v.sender,
                 recipient: v.recipient,
               },
@@ -387,7 +387,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: mode.data.getRealAmount(v.amount),
+                amount: mode.data.getRealAmount(v.amount).toString(),
                 sender: v.sender,
                 recipient: v.recipient,
               },

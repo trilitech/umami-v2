@@ -8,7 +8,6 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 
-import BigNumber from "bignumber.js";
 import AccountCard from ".";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { render, screen, within } from "../../mocks/testUtils";
@@ -16,7 +15,7 @@ import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
 const { updateAssets } = assetsSlice.actions;
 const { add, setSelected } = accountsSlice.actions;
 
-const tezBalance = new BigNumber(33200000000);
+const tezBalance = "33200000000";
 
 const account = mockAccount(0);
 const pkh = account.pkh;

@@ -14,7 +14,6 @@ import {
   estimateFA2transfer,
   operationValuesToBatchParams,
 } from "../utils/tezos";
-import { BigNumber } from "bignumber.js";
 
 const pk1 = publicKeys1.pk;
 const pkh1 = publicKeys1.pkh;
@@ -27,7 +26,7 @@ describe("Tezos utils", () => {
         {
           type: "tez",
           value: {
-            amount: new BigNumber(3),
+            amount: "3",
             sender: pkh1,
             recipient: pkh2,
           },
@@ -36,7 +35,7 @@ describe("Tezos utils", () => {
           type: "tez",
 
           value: {
-            amount: new BigNumber(2),
+            amount: "2",
             sender: pkh1,
             recipient: pkh2,
             parameter: {
@@ -61,7 +60,7 @@ describe("Tezos utils", () => {
           value: {
             sender: pkh1,
             recipient: pkh2,
-            amount: new BigNumber(1),
+            amount: "1",
           },
         },
         {
@@ -70,7 +69,7 @@ describe("Tezos utils", () => {
           value: {
             sender: pkh1,
             recipient: pkh2,
-            amount: new BigNumber(1),
+            amount: "1",
           },
         },
         {
@@ -79,7 +78,7 @@ describe("Tezos utils", () => {
           value: {
             sender: pkh1,
             recipient: pkh2,
-            amount: new BigNumber(2),
+            amount: "2",
           },
         },
       ];
@@ -214,7 +213,7 @@ describe("Tezos utils", () => {
       test("FA2 estimation returns the right value on ghostnet", async () => {
         const result = await estimateFA2transfer(
           {
-            amount: new BigNumber(1),
+            amount: "1",
             contract: ghostTezzard.contract,
             recipient: pkh2,
             sender: pkh1,
@@ -230,7 +229,7 @@ describe("Tezos utils", () => {
       test("FA12 estimation returns the right value on ghostnet", async () => {
         const result = await estimateFA12transfer(
           {
-            amount: new BigNumber(1),
+            amount: "1",
             contract: ghostFA12WithOwner.contract,
             recipient: pkh2,
             sender: ghostFA12WithOwner.owner,
@@ -248,7 +247,7 @@ describe("Tezos utils", () => {
             {
               type: "tez",
               value: {
-                amount: new BigNumber(1),
+                amount: "1",
                 sender: pkh1,
                 recipient: pkh2,
               },
@@ -259,7 +258,7 @@ describe("Tezos utils", () => {
               value: {
                 sender: pkh1,
                 recipient: pkh2,
-                amount: new BigNumber(1),
+                amount: "1",
               },
             },
             {
@@ -268,7 +267,7 @@ describe("Tezos utils", () => {
               value: {
                 sender: pkh1,
                 recipient: pkh2,
-                amount: new BigNumber(1),
+                amount: "1",
               },
             },
             {
@@ -277,7 +276,7 @@ describe("Tezos utils", () => {
               value: {
                 sender: pkh1,
                 recipient: pkh2,
-                amount: new BigNumber(1),
+                amount: "1",
               },
             },
           ],
@@ -297,7 +296,7 @@ describe("Tezos utils", () => {
             {
               type: "tez",
               value: {
-                amount: new BigNumber(100),
+                amount: "100",
                 sender: pkh1,
                 recipient: pkh2,
               },
@@ -305,7 +304,7 @@ describe("Tezos utils", () => {
             {
               type: "tez",
               value: {
-                amount: new BigNumber(200),
+                amount: "200",
                 sender: pkh1,
                 recipient: pkh2,
               },
@@ -350,7 +349,7 @@ describe("Tezos utils", () => {
             {
               type: "tez",
               value: {
-                amount: new BigNumber(9999999),
+                amount: "9999999",
                 sender: pkh1,
                 recipient: pkh2,
               },
@@ -378,7 +377,7 @@ describe("Tezos utils", () => {
     test("FA2 estimation returns the right value on ghostnet", async () => {
       const result = await estimateFA2transfer(
         {
-          amount: new BigNumber(1),
+          amount: "1",
           contract: ghostTezzard.contract,
           recipient: pkh2,
           sender: pkh1,

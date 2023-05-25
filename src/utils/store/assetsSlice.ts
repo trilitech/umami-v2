@@ -2,14 +2,13 @@ import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 
-import BigNumber from "bignumber.js";
 import { OperationValue } from "../../components/sendForm/types";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import accountsSlice from "./accountsSlice";
 
-export type BatchItem = { operation: OperationValue; fee: BigNumber };
+export type BatchItem = { operation: OperationValue; fee: string };
 export type Batch = {
   isSimulating: boolean;
   items: Array<BatchItem>;
@@ -24,7 +23,7 @@ type State = {
   network: TezosNetwork;
   blockLevel: number | null;
   balances: {
-    tez: Record<string, BigNumber | null>;
+    tez: Record<string, string | null>;
     tokens: Record<string, Token[]>;
   };
   operations: {
@@ -37,7 +36,7 @@ type State = {
   batches: Record<string, Batch | undefined>;
 };
 
-export type TezBalancePayload = { pkh: string; tez: BigNumber };
+export type TezBalancePayload = { pkh: string; tez: string };
 export type TokenBalancePayload = { pkh: string; tokens: Token[] };
 export type TezTransfersPayload = {
   pkh: string;

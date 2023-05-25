@@ -13,7 +13,6 @@ import {
 import { SignerConfig } from "../../types/SignerConfig";
 import { operationValuesToWalletParams } from "./params";
 import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
-import { BigNumber } from "bignumber.js";
 
 export const delegate = async (
   senderPkh: string,
@@ -47,14 +46,14 @@ export const transferFA12Token = async (
 
 export const transferMutez = async (
   recipient: string,
-  amount: BigNumber,
+  amount: number,
   config: SignerConfig,
   parameter?: TransferParams["parameter"]
 ): Promise<TransactionOperation> => {
   const Tezos = await makeToolkitWithSigner(config);
   return Tezos.contract.transfer({
     to: recipient,
-    amount: amount.toNumber(),
+    amount: amount,
     parameter,
     mutez: true,
   });

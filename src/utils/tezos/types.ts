@@ -1,11 +1,9 @@
-import type { BigNumber } from "bignumber.js";
-
 export type FA2TransferMethodArgs = {
   sender: string;
   recipient: string;
   contract: string;
   tokenId: string;
-  amount: BigNumber;
+  amount: string;
 };
 
 export type FA12TransferMethodArgs = Omit<FA2TransferMethodArgs, "tokenId">;

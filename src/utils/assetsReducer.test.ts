@@ -3,7 +3,6 @@ import { store } from "./store/store";
 
 import { TezosNetwork } from "@airgap/tezos";
 import { waitFor } from "@testing-library/react";
-import BigNumber from "bignumber.js";
 import {
   mockDelegationTransfer,
   mockNftTransfer,
@@ -55,12 +54,12 @@ describe("Assets reducer", () => {
   });
 
   test("tez balances are added", () => {
-    store.dispatch(update([{ pkh: "foo", tez: new BigNumber(43) }]));
+    store.dispatch(update([{ pkh: "foo", tez: "43" }]));
 
     expect(store.getState().assets).toEqual({
       balances: {
         tez: {
-          foo: new BigNumber(43),
+          foo: "43",
         },
         tokens: {},
       },
@@ -75,17 +74,17 @@ describe("Assets reducer", () => {
 
     store.dispatch(
       update([
-        { pkh: "bar", tez: new BigNumber(44) },
-        { pkh: "baz", tez: new BigNumber(55) },
+        { pkh: "bar", tez: "44" },
+        { pkh: "baz", tez: "55" },
       ])
     );
 
     expect(store.getState().assets).toEqual({
       balances: {
         tez: {
-          foo: new BigNumber(43),
-          bar: new BigNumber(44),
-          baz: new BigNumber(55),
+          foo: "43",
+          bar: "44",
+          baz: "55",
         },
         tokens: {},
       },
@@ -102,8 +101,8 @@ describe("Assets reducer", () => {
   test("tez balances are updated", () => {
     store.dispatch(
       update([
-        { pkh: "bar", tez: new BigNumber(44) },
-        { pkh: "baz", tez: new BigNumber(55) },
+        { pkh: "bar", tez: "44" },
+        { pkh: "baz", tez: "55" },
       ])
     );
 
@@ -111,14 +110,14 @@ describe("Assets reducer", () => {
       update([
         {
           pkh: "baz",
-          tez: new BigNumber(66),
+          tez: "66",
         },
       ])
     );
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: new BigNumber(44), baz: new BigNumber(66) },
+        tez: { bar: "44", baz: "66" },
         tokens: {},
       },
       conversionRate: null,
@@ -134,8 +133,8 @@ describe("Assets reducer", () => {
   test("token balances are updated", () => {
     store.dispatch(
       update([
-        { pkh: "bar", tez: new BigNumber(44) },
-        { pkh: "baz", tez: new BigNumber(55) },
+        { pkh: "bar", tez: "44" },
+        { pkh: "baz", tez: "55" },
       ])
     );
 
@@ -150,7 +149,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: new BigNumber("44"), baz: new BigNumber("55") },
+        tez: { bar: "44", baz: "55" },
         tokens: { baz: [{}, {}] },
       },
       conversionRate: null,
@@ -166,8 +165,8 @@ describe("Assets reducer", () => {
   test("updating network resets operations and balances", () => {
     store.dispatch(
       update([
-        { pkh: "bar", tez: new BigNumber(44) },
-        { pkh: "baz", tez: new BigNumber(55) },
+        { pkh: "bar", tez: "44" },
+        { pkh: "baz", tez: "55" },
       ])
     );
 
@@ -182,7 +181,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: new BigNumber("44"), baz: new BigNumber("55") },
+        tez: { bar: "44", baz: "55" },
         tokens: { foo: [{}, {}] },
       },
       conversionRate: null,
@@ -211,8 +210,8 @@ describe("Assets reducer", () => {
   test("reseting accounts resets assetsState", () => {
     store.dispatch(
       update([
-        { pkh: "bar", tez: new BigNumber(44) },
-        { pkh: "baz", tez: new BigNumber(55) },
+        { pkh: "bar", tez: "44" },
+        { pkh: "baz", tez: "55" },
       ])
     );
 
@@ -227,7 +226,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: new BigNumber("44"), baz: new BigNumber("55") },
+        tez: { bar: "44", baz: "55" },
         tokens: { foo: [{}, {}] },
       },
       conversionRate: null,
@@ -389,9 +388,9 @@ describe("Assets reducer", () => {
   describe("Batch", () => {
     test("Adding operations to batch starts an estimation and updates the given account's batch with the result", async () => {
       const mockEstimations = [
-        { suggestedFeeMutez: new BigNumber(323) },
-        { suggestedFeeMutez: new BigNumber(423) },
-        { suggestedFeeMutez: new BigNumber(523) },
+        { suggestedFeeMutez: "323" },
+        { suggestedFeeMutez: "423" },
+        { suggestedFeeMutez: "523" },
       ];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -440,7 +439,7 @@ describe("Assets reducer", () => {
     });
 
     test("Batches can be cleared for a given account", async () => {
-      const mockEstimations = [{ suggestedFeeMutez: new BigNumber(323) }];
+      const mockEstimations = [{ suggestedFeeMutez: "323" }];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
@@ -499,9 +498,9 @@ describe("Assets reducer", () => {
 
     test("Running a concurrent estimation for a given account is not possible", async () => {
       const mockEstimations = [
-        { suggestedFeeMutez: new BigNumber(323) },
-        { suggestedFeeMutez: new BigNumber(423) },
-        { suggestedFeeMutez: new BigNumber(523) },
+        { suggestedFeeMutez: "323" },
+        { suggestedFeeMutez: "423" },
+        { suggestedFeeMutez: "523" },
       ];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -550,9 +549,9 @@ describe("Assets reducer", () => {
 
     test("You can't add an empty list of operations to a batch", async () => {
       const mockEstimations = [
-        { suggestedFeeMutez: new BigNumber(323) },
-        { suggestedFeeMutez: new BigNumber(423) },
-        { suggestedFeeMutez: new BigNumber(523) },
+        { suggestedFeeMutez: "323" },
+        { suggestedFeeMutez: "423" },
+        { suggestedFeeMutez: "523" },
       ];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -575,9 +574,9 @@ describe("Assets reducer", () => {
 
     test("Batch can't be cleared for a given account if simulation is ongoing for a given account", async () => {
       const mockEstimations = [
-        { suggestedFeeMutez: new BigNumber(323) },
-        { suggestedFeeMutez: new BigNumber(423) },
-        { suggestedFeeMutez: new BigNumber(523) },
+        { suggestedFeeMutez: "323" },
+        { suggestedFeeMutez: "423" },
+        { suggestedFeeMutez: "523" },
       ];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -586,7 +585,7 @@ describe("Assets reducer", () => {
       store.dispatch(
         updateBatch({
           pkh: mockPkh(1),
-          items: [{ fee: new BigNumber(3), operation: mockTezTransfer(3) }],
+          items: [{ fee: "3", operation: mockTezTransfer(3) }],
         })
       );
       const transfers = [
@@ -610,7 +609,7 @@ describe("Assets reducer", () => {
           isSimulating: false,
           items: [
             {
-              fee: new BigNumber(3),
+              fee: "3",
               operation: mockTezTransfer(3),
             },
             {

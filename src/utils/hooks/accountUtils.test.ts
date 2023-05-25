@@ -4,9 +4,9 @@ import { getTotalBalance } from "./accountUtils";
 describe("getTotalBalance", () => {
   test("getTotalBalance returns the right value", () => {
     const result = getTotalBalance({
-      foo: new BigNumber(40),
+      foo: "40",
       bar: null,
-      baz: new BigNumber(60),
+      baz: "60",
     });
 
     expect(result).toEqual(new BigNumber(100));

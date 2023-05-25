@@ -1,5 +1,4 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { BigNumber } from "bignumber.js";
 import { OperationValue } from "../components/sendForm/types";
 import {
   Account,
@@ -266,7 +265,7 @@ export const mockTezTransfer = (index: number): OperationValue => {
   return {
     type: "tez",
     value: {
-      amount: new BigNumber(index),
+      amount: String(index),
       sender: mockPkh(index),
       recipient: mockPkh(index + 1),
     },
@@ -278,7 +277,7 @@ export const mockNftTransfer = (index: number): OperationValue => {
     type: "token",
     data: {} as NFT,
     value: {
-      amount: new BigNumber(index),
+      amount: String(index),
       sender: mockPkh(index),
       recipient: mockPkh(index + 1),
     },

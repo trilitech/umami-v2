@@ -59,7 +59,7 @@ export const csvRowToOperationValue = (
       value: {
         sender,
         recipient,
-        amount: tezToMutez(csvRow.prettyAmount),
+        amount: tezToMutez(csvRow.prettyAmount).toString(),
       },
     };
   }
@@ -91,7 +91,7 @@ export const csvRowToOperationValue = (
     value: {
       sender,
       recipient,
-      amount: asset.getRealAmount(csvRow.prettyAmount),
+      amount: asset.getRealAmount(csvRow.prettyAmount).toString(),
     },
   };
 };

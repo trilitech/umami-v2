@@ -30,7 +30,6 @@ export const store = configureStore({
   // https://stackoverflow.com/a/71955602/6797267
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
       thunk: {
         extraArgument,
       },

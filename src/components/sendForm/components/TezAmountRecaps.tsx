@@ -1,10 +1,9 @@
 import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
-import { BigNumber } from "bignumber.js";
 import colors from "../../../style/colors";
 import { mutezToTez, prettyTezAmount } from "../../../utils/format";
 import { useTezToDollar } from "../../../utils/hooks/assetsHooks";
 
-type Props = { mutez: BigNumber } & FlexProps;
+type Props = { mutez: string } & FlexProps;
 
 export const TransactionsAmount = ({
   amount,
@@ -75,10 +74,7 @@ export const Total = ({ mutez, ...flexProps }: Props) => {
   );
 };
 
-export const Fee = ({
-  mutez,
-  ...flexProps
-}: { mutez: BigNumber } & FlexProps) => {
+export const Fee = ({ mutez, ...flexProps }: { mutez: string } & FlexProps) => {
   return (
     <Flex
       aria-label="fee"
