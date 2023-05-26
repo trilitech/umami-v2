@@ -7,7 +7,6 @@ export const useDeeplinkHandler = () => {
   const toast = useToast();
   const addPeer = useAddPeer();
   useEffect(() => {
-    console.log("deeplink useeffect");
     const internalWindows = window as any;
     if (internalWindows && internalWindows.electronAPI) {
       internalWindows.electronAPI.onDeeplink((_: any, url: string) => {
