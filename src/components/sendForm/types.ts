@@ -1,6 +1,5 @@
 import { TransferParams } from "@taquito/taquito";
 import { Asset } from "../../types/Asset";
-import { Batch } from "../../utils/store/assetsSlice";
 
 type TezMode = { type: "tez" };
 
@@ -19,7 +18,7 @@ type DelegationMode = {
 type BatchMode = {
   type: "batch";
   data: {
-    batch: Batch;
+    batch: OperationValue[];
   };
 };
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;

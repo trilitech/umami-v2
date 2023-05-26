@@ -12,6 +12,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import BigNumber from "bignumber.js";
 import { useState } from "react";
 import { AccountType } from "../../../types/Account";
 import { SignerConfig } from "../../../types/SignerConfig";
@@ -26,17 +27,12 @@ import {
 } from "../../../utils/tezos";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
-import { useRenderAccountSmallTile } from "../../AccountSelector/AccountSmallTile";
+import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import SignButton from "../components/SignButton";
-import {
-  Fee,
-  Subtotal,
-  Total,
-  TransactionsAmount,
-} from "../components/TezAmountRecaps";
+import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
-import BigNumber from "bignumber.js";
+import { BatchRecap } from "./BatchRecap";
 
 const makeTransfer = async (
   operation: OperationValue | OperationValue[],
@@ -95,7 +91,6 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   const isDelegation = transfer.type === "delegation";
   const token = transfer.type === "token" ? transfer.data : undefined;
 
-  const renderAccountTile = useRenderAccountSmallTile();
   const renderBakerTile = useRenderBakerSmallTile();
 
   return (
@@ -105,9 +100,11 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
           <Heading size="md" width={20}>
             To:
           </Heading>
-          {isDelegation
-            ? renderBakerTile(transfer.value.recipient)
-            : renderAccountTile(transfer.value.recipient)}
+          {isDelegation ? (
+            renderBakerTile(transfer.value.recipient)
+          ) : (
+            <AccountSmallTile pkh={transfer.value.recipient} />
+          )}
         </Flex>
       )}
       {token?.type === "nft" && (
@@ -118,15 +115,6 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
       {transfer.type === "tez" ? (
         <Subtotal mutez={transfer.value.amount} />
       ) : null}
-    </>
-  );
-};
-
-const BatchRecap = ({ transfer }: { transfer: OperationValue[] }) => {
-  return (
-    <>
-      <TransactionsAmount amount={transfer.length} />
-      <Subtotal mutez={getBatchSubtotal(transfer).toString()} />
     </>
   );
 };
@@ -149,7 +137,6 @@ export const RecapDisplay: React.FC<{
   onSucces: (hash: string) => void;
 }> = ({ recap: { fee, operation: transfer }, network, onSucces }) => {
   const feeNum = new BigNumber(fee);
-  const renderAccountTile = useRenderAccountSmallTile();
   const getAccount = useGetOwnedAccount();
 
   const toast = useToast();
@@ -198,7 +185,7 @@ export const RecapDisplay: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              {renderAccountTile(signerAccount.pkh)}
+              <AccountSmallTile pkh={signerAccount.pkh} />
             </Flex>
             {Array.isArray(transfer) ? (
               <BatchRecap transfer={transfer} />

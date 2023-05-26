@@ -1,29 +1,35 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
+import { BigNumber } from "bignumber.js";
 import { useEffect, useRef, useState } from "react";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import {
+  estimateBatch,
   estimateDelegation,
   estimateFA12transfer,
   estimateFA2transfer,
   estimateMutezTransfer,
 } from "../../utils/tezos";
-import { getTotalFee } from "../../views/batch/batchUtils";
+import { sumEstimations } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
-import { EstimatedOperation, SendFormMode, OperationValue } from "./types";
-import { BigNumber } from "bignumber.js";
+import { EstimatedOperation, OperationValue, SendFormMode } from "./types";
 
 const makeSimulation = (
-  operation: OperationValue,
+  operation: OperationValue | OperationValue[],
   pk: string,
+  pkh: string,
   network: TezosNetwork
 ) => {
+  if (Array.isArray(operation)) {
+    return estimateBatch(operation, pkh, pk, network);
+  }
+
   switch (operation.type) {
     case "delegation":
       return estimateDelegation(
@@ -95,17 +101,9 @@ export const SendForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const initalValues: EstimatedOperation | undefined =
-    mode.type === "batch"
-      ? {
-          operation: mode.data.batch.items.map((b) => b.operation),
-          fee: getTotalFee(mode.data.batch.items).toString(),
-        }
-      : undefined;
-
   const [transferValues, setTransferValues] = useState<
     EstimatedOperation | undefined
-  >(initalValues);
+  >(undefined);
 
   const [hash, setHash] = useState<string>();
 
@@ -117,19 +115,23 @@ export const SendForm = ({
     }
   }, [hash]);
 
-  const simulate = async (operation: OperationValue) => {
+  const simulate = async (operation: OperationValue | OperationValue[]) => {
     setIsLoading(true);
     try {
-      const sender = operation.value.sender;
+      const sender = Array.isArray(operation)
+        ? operation[0].value.sender
+        : operation.value.sender;
 
       const pk = getPk(sender);
 
-      // pk needed for simulation
-      const estimate = await makeSimulation(operation, pk, network);
+      const estimate = await makeSimulation(operation, pk, sender, network);
+      const fee = Array.isArray(estimate)
+        ? sumEstimations(estimate)
+        : estimate.suggestedFeeMutez;
 
       setTransferValues({
         operation,
-        fee: String(estimate.suggestedFeeMutez),
+        fee: String(fee),
       });
     } catch (error: any) {
       toast({ title: "Invalid transaction", description: error.message });

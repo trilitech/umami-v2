@@ -1,6 +1,7 @@
 import { OperationValue } from "../../components/sendForm/types";
 import { BatchItem } from "../../utils/store/assetsSlice";
 import { BigNumber } from "bignumber.js";
+import { Estimate } from "@taquito/taquito";
 
 export const getTotalFee = (items: BatchItem[]): BigNumber => {
   const fee = items.reduce((acc, curr) => {
@@ -20,4 +21,12 @@ export const getBatchSubtotal = (ops: OperationValue[]) => {
     }
   }, new BigNumber(0));
   return subTotal;
+};
+
+export const sumEstimations = (es: Estimate[]) => {
+  return es
+    .reduce((acc, curr) => {
+      return acc.plus(curr.suggestedFeeMutez);
+    }, new BigNumber(0))
+    .toNumber();
 };

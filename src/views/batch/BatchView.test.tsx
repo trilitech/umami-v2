@@ -242,28 +242,31 @@ describe("<BatchView />", () => {
       fireEvent.click(submitBatchBtn);
     };
 
-    test("clicking submit batch button displays 'recap and submit' form", () => {
+    test("clicking submit batch button displays 'preview' form", () => {
       render(fixture());
       clickSubmitOnFirstBatch();
       const modal = screen.getByRole("dialog");
       const { getByText, getByLabelText } = within(modal);
       expect(getByText(/transaction details/i)).toBeInTheDocument();
 
-      const txsAmount = getByLabelText(/^transactions-amount$/i);
+      const txsAmount = getByLabelText(/transactions-amount/i);
       expect(txsAmount).toHaveTextContent("3");
-      const fee = getByLabelText(/^fee$/i);
-      expect(fee).toHaveTextContent("0.00003 ꜩ");
-      const subTotal = getByLabelText(/^sub-total$/i);
+
+      const subTotal = getByLabelText(/sub-total/i);
       expect(subTotal).toHaveTextContent("6 ꜩ");
-      const total = getByLabelText(/^total$/i);
-      expect(total).toHaveTextContent("6.00003 ꜩ");
+      expect(
+        screen.getByRole("button", { name: /preview/i })
+      ).toBeInTheDocument();
     });
 
-    test("submiting a batch executes the batch of transactions and empties it after successfull submition", async () => {
+    test("estimating and submiting a batch executes the batch of transactions and empties it after successfull submition", async () => {
       render(fixture());
       clickSubmitOnFirstBatch();
 
-      const passwordInput = screen.getByLabelText(/password/i);
+      const previewBtn = screen.getByRole("button", { name: /preview/i });
+      fireEvent.click(previewBtn);
+
+      const passwordInput = await screen.findByLabelText(/password/i);
       fireEvent.change(passwordInput, { target: { value: "mockPass" } });
 
       const submit = screen.getByRole("button", {

@@ -59,7 +59,12 @@ const BatchView = () => {
     return account && batch && batch.items.length > 0 ? (
       <BatchDisplay
         onSend={() =>
-          openSendForm({ mode: { type: "batch", data: { batch } } })
+          openSendForm({
+            mode: {
+              type: "batch",
+              data: { batch: batch.items.map((i) => i.operation) },
+            },
+          })
         }
         onDelete={() =>
           onOpen({
