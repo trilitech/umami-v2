@@ -41,7 +41,7 @@ function createWindow() {
       sandbox: true,
       webSecurity: true,
       experimentalFeatures: false,
-      devTools: process.env.ENABLE_DEV_TOOLS === "true",
+      devTools: process.env.NODE_ENV !== "production",
     },
   });
 
@@ -86,7 +86,6 @@ function createWindow() {
       })
     : "http://localhost:3000";
   mainWindow.loadURL(appURL);
-
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
 
@@ -100,6 +99,11 @@ function createWindow() {
       if (index !== -1) {
         mainWindow.webContents.send("deeplinkURL", argv[index]);
       }
+    }
+
+    // Open dev tools for dev builds
+    if (process.env.NODE_ENV !== "production") {
+      mainWindow.webContents.openDevTools();
     }
   });
 
