@@ -3,7 +3,7 @@ import { formatPkh } from "../../utils/format";
 import { useAccounts } from "../../utils/hooks/accountHooks";
 import { Identicon } from "../Identicon";
 
-export const AccountSmallTile = ({
+export const AccountSmallTileDisplay = ({
   pkh,
   label,
   ...flexProps
@@ -22,13 +22,10 @@ export const AccountSmallTile = ({
   );
 };
 
-export const useRenderAccountSmallTile = () => {
+export const AccountSmallTile = ({ pkh }: { pkh: string }) => {
   const accounts = useAccounts();
-
-  return (pkh: string) => {
-    const account = accounts.find((a) => a.pkh === pkh);
-    return account ? (
-      <AccountSmallTile pkh={account.pkh} label={account.label} />
-    ) : null;
-  };
+  const account = accounts.find((a) => a.pkh === pkh);
+  return account ? (
+    <AccountSmallTileDisplay pkh={account.pkh} label={account.label} />
+  ) : null;
 };

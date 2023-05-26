@@ -1,9 +1,12 @@
 import {
   Box,
   Button,
+  Divider,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Heading,
   Input,
   InputGroup,
   InputRightAddon,
@@ -24,9 +27,11 @@ import { tezToMutez } from "../../../utils/format";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
+import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { RecipentAutoComplete } from "../../RecipientAutoComplete/RecipientAutoComplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { OperationValue, SendFormMode } from "../types";
+import { BatchRecap } from "./BatchRecap";
 
 export const DelegateForm = ({
   onSubmit,
@@ -123,6 +128,50 @@ const getAmountSymbol = (asset?: Asset) => {
   }
 
   return tokenSymbol(asset);
+};
+
+export const FillBatchForm: React.FC<{
+  transfer: OperationValue[];
+  onSubmit: () => void;
+  isLoading?: boolean;
+}> = ({ transfer, onSubmit, isLoading = false }) => {
+  return (
+    <ModalContent bg="umami.gray.900" data-testid="bar">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+      >
+        <ModalCloseButton />
+        <ModalHeader textAlign={"center"}>Recap</ModalHeader>
+        <Text textAlign={"center"}>Transaction details</Text>
+        <ModalBody mt={4}>
+          <Box>
+            <Flex mb={4}>
+              <Heading size="md" width={20}>
+                From:
+              </Heading>
+              <AccountSmallTile pkh={transfer[0].value.sender} />
+            </Flex>
+            <BatchRecap transfer={transfer} />
+          </Box>
+          <Divider mb={2} mt={2} />
+        </ModalBody>
+        <ModalFooter justifyContent={"center"}>
+          <Button
+            type="submit"
+            width={"100%"}
+            isLoading={isLoading}
+            variant="ghost"
+            mb={2}
+          >
+            Preview
+          </Button>
+        </ModalFooter>
+      </form>
+    </ModalContent>
+  );
 };
 
 export const SendTezOrNFTForm = ({
@@ -292,7 +341,7 @@ export const SendTezOrNFTForm = ({
 };
 
 export const FillStep: React.FC<{
-  onSubmit: (v: OperationValue) => void;
+  onSubmit: (v: OperationValue | OperationValue[]) => void;
   onSubmitBatch: (v: OperationValue) => void;
   isLoading: boolean;
   sender?: string;
@@ -401,7 +450,15 @@ export const FillStep: React.FC<{
     }
 
     case "batch": {
-      throw new Error("Batches are not editable");
+      return (
+        <FillBatchForm
+          isLoading={isLoading}
+          transfer={mode.data.batch}
+          onSubmit={() => {
+            onSubmit(mode.data.batch);
+          }}
+        />
+      );
     }
   }
 };

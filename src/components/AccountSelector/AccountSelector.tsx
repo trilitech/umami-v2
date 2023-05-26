@@ -3,10 +3,10 @@ import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import React from "react";
 import { Account } from "../../types/Account";
 import { useAccounts } from "../../utils/hooks/accountHooks";
-import { AccountSmallTile } from "./AccountSmallTile";
+import { AccountSmallTileDisplay } from "./AccountSmallTile";
 
 const renderAccount = (account: Account) => (
-  <AccountSmallTile pkh={account.pkh} label={account.label} />
+  <AccountSmallTileDisplay pkh={account.pkh} label={account.label} />
 );
 
 export const ConnectedAccountSelector: React.FC<{

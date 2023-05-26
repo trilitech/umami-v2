@@ -11,15 +11,18 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { formatRelative } from "date-fns";
+import { compact } from "lodash";
 import React from "react";
+import { CiCircleRemove } from "react-icons/ci";
+import { MdOutlineModeEdit } from "react-icons/md";
 import { TbFilter } from "react-icons/tb";
 import { VscWand } from "react-icons/vsc";
 import { useQuery } from "react-query";
-import { useRenderAccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
+import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
-import { compact } from "lodash";
+import { prettyTezAmount } from "../../utils/format";
 import {
   useAllDelegations,
   useGetAccountBalance,
@@ -29,9 +32,6 @@ import { useAppDispatch } from "../../utils/store/hooks";
 import { getBakers } from "../../utils/tezos";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { useRenderBakerSmallTile } from "./BakerSmallTile";
-import { CiCircleRemove } from "react-icons/ci";
-import { MdOutlineModeEdit } from "react-icons/md";
-import { prettyTezAmount } from "../../utils/format";
 
 const DelegationsTable = ({
   delegations,
@@ -43,7 +43,6 @@ const DelegationsTable = ({
   onChangeDelegate: (pkh: string, baker: string) => void;
 }) => {
   const now = new Date();
-  const renderAccountTile = useRenderAccountSmallTile();
   const renderBakerTile = useRenderBakerSmallTile();
 
   const getAccountBalance = useGetAccountBalance();
@@ -75,7 +74,9 @@ const DelegationsTable = ({
             const balance = getAccountBalance(d.sender);
             return (
               <Tr key={d.id} data-testid={`delegation-row`}>
-                <Td>{renderAccountTile(d.sender)}</Td>
+                <Td>
+                  <AccountSmallTile pkh={d.sender} />
+                </Td>
                 <Td>{d.amount && prettyTezAmount(d.amount)}</Td>
                 <Td>{balance && prettyTezAmount(balance)}</Td>
                 <Td>

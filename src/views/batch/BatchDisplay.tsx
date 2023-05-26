@@ -19,7 +19,7 @@ import React from "react";
 import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
-import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
+import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTile";
 import {
   Fee,
   Subtotal,
@@ -128,7 +128,11 @@ export const BatchDisplay: React.FC<{
     <Flex data-testid="batch-table" mb={4}>
       <Box flex={1} bg="umami.gray.900" p={4}>
         <Flex justifyContent="space-between" ml={2} mr={2} mb={4}>
-          <AccountSmallTile ml={2} pkh={account.pkh} label={account.label} />
+          <AccountSmallTileDisplay
+            ml={2}
+            pkh={account.pkh}
+            label={account.label}
+          />
           <Text color={"umami.gray.400"}>
             {`${items.length} transaction${items.length > 1 ? "s" : ""}`}
           </Text>
