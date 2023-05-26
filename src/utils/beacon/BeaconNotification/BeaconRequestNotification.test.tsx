@@ -10,6 +10,7 @@ import { Modal } from "@chakra-ui/react";
 import { BeaconNotification } from ".";
 import {
   mockBeaconDelegate,
+  objectOperationBatchRequest,
   objectOperationDelegationRequest,
   objectOperationRequest,
 } from "../../../mocks/beacon";
@@ -20,12 +21,20 @@ import {
   fillPassword,
   resetAccounts,
 } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "../../../mocks/testUtils";
 import { formatPkh } from "../../format";
 import {
   delegate,
+  estimateBatch,
   estimateDelegation,
   estimateMutezTransfer,
+  submitBatch,
   transferMutez,
 } from "../../tezos";
 import { walletClient } from "../beacon";
@@ -44,6 +53,7 @@ const FEE = {
   suggestedFeeMutez: 12345,
 };
 const OP_HASH = { hash: "foo" };
+const BATCH_OP_HASH = { opHash: "bar" };
 
 const fixture = (
   message: BeaconRequestOutputMessage,
@@ -58,12 +68,18 @@ const estimateTezTransferMock = estimateMutezTransfer as jest.Mock;
 const transferTezMock = transferMutez as jest.Mock;
 const estimateDelegationMock = estimateDelegation as jest.Mock;
 const delegateMock = delegate as jest.Mock;
+const estimateBatchMock = estimateBatch as jest.Mock;
+const submitBatchMock = submitBatch as jest.Mock;
 
 beforeEach(() => {
+  estimateBatchMock.mockImplementation(async (transactions: any[]) => {
+    return transactions.map((_) => ({ suggestedFeeMutez: 10 }));
+  });
   estimateTezTransferMock.mockResolvedValue(FEE);
   estimateDelegationMock.mockResolvedValue(FEE);
   transferTezMock.mockResolvedValue(OP_HASH);
   delegateMock.mockResolvedValue(OP_HASH);
+  submitBatchMock.mockResolvedValue(BATCH_OP_HASH);
 });
 
 beforeAll(() => {
@@ -215,6 +231,61 @@ describe("<BeaconRequestNotification />", () => {
         transactionHash: OP_HASH.hash,
         type: "operation_response",
       });
+    });
+  });
+
+  test("User previews then submits Batches, and operation hash is sent via Beacon", async () => {
+    const message: OperationRequestOutput = {
+      ...objectOperationBatchRequest,
+      sourceAddress: mockAccount(2).pkh,
+    };
+    render(fixture(message, () => {}));
+    const modal = screen.getByRole("dialog", { name: /recap/i });
+    const { getByRole, getByLabelText } = within(modal);
+    await waitFor(() => {
+      expect(getByRole("button", { name: /preview/i })).toBeEnabled();
+    });
+
+    expect(screen.getByText(/transaction details/i)).toBeInTheDocument();
+
+    const txsAmount = getByLabelText(/transactions-amount/i);
+    expect(txsAmount).toHaveTextContent("3");
+
+    const subTotal = getByLabelText(/sub-total/i);
+    expect(subTotal).toHaveTextContent("16 ꜩ");
+    expect(
+      screen.getByRole("button", { name: /preview/i })
+    ).toBeInTheDocument();
+
+    const previewBtn = screen.getByRole("button", { name: /preview/i });
+    fireEvent.click(previewBtn);
+
+    const passwordInput = await screen.findByLabelText(/password/i);
+    fireEvent.change(passwordInput, { target: { value: "mockPass" } });
+
+    const submit = screen.getByRole("button", {
+      name: /submit transaction/i,
+    });
+
+    await waitFor(() => {
+      expect(submit).toBeEnabled();
+    });
+
+    fireEvent.click(submit);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+        "href",
+        "https://mainnet.tzkt.io/bar"
+      );
+    });
+
+    expect(walletClient.respond).toHaveBeenCalledWith({
+      id: objectOperationBatchRequest.id,
+      transactionHash: BATCH_OP_HASH.opHash,
+      type: "operation_response",
     });
   });
 

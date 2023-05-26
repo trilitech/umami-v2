@@ -116,7 +116,6 @@ export const useBeaconInit = () => {
       walletClient
         .init()
         .then(() => {
-          console.log("Beacon client initialized successfully");
           walletClient.connect(handleBeaconMessage.current);
         })
         .catch(console.error)

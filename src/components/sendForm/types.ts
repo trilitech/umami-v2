@@ -23,7 +23,7 @@ type BatchMode = {
 };
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
-type TezOperation = TezMode & {
+export type TezOperation = TezMode & {
   value: {
     amount: string;
     sender: string;
@@ -40,7 +40,7 @@ type TokenOperation = TokenMode & {
   };
 };
 
-type DelegationOperation = DelegationMode & {
+export type DelegationOperation = DelegationMode & {
   value: {
     sender: string;
     recipient?: string;
