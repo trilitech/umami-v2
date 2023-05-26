@@ -1,9 +1,8 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { OperationValue } from "../../../components/sendForm/types";
-import { zip } from "../../helpers";
-import { estimateBatch } from "../../tezos";
-import assetsSlice, { BatchItem } from "../assetsSlice";
+import { operationValuesToBatchItems } from "../../../views/batch/batchUtils";
+import assetsSlice from "../assetsSlice";
 import { RootState } from "../store";
 
 const {
@@ -30,13 +29,12 @@ export const estimateAndUpdateBatch = (
 
     dispatch(batchSimulationStart({ pkh }));
     try {
-      const estimations = await estimateBatch(operations, pkh, pk, network);
-      const items: BatchItem[] = zip(operations, estimations).map(([o, e]) => {
-        return {
-          fee: String(e.suggestedFeeMutez),
-          operation: o,
-        };
-      });
+      const items = await operationValuesToBatchItems(
+        operations,
+        pkh,
+        pk,
+        network
+      );
       dispatch(addToBatch({ pkh, items }));
     } catch (error) {
       dispatch(batchSimulationEnd({ pkh }));

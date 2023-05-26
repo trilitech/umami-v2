@@ -9,12 +9,66 @@ import {
 import { useToast } from "@chakra-ui/react";
 import React from "react";
 import SendForm from "../../../components/sendForm";
-import { OperationValue } from "../../../components/sendForm/types";
+import {
+  OperationValue,
+  SendFormMode,
+} from "../../../components/sendForm/types";
 import { useGetAccount } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
 import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
 import SignPayloadRequestPannel from "./pannels/SignPayloadRequestPannel";
+
+const SingleTransaction = ({
+  transfer,
+  onSuccess,
+}: {
+  transfer: OperationValue;
+  onSuccess: (hash: string) => any;
+}) => {
+  const amount = transfer.type === "tez" ? transfer.value.amount : undefined;
+  const parameter =
+    transfer.type === "tez" ? transfer.value.parameter : undefined;
+
+  const mode: SendFormMode =
+    transfer.type === "tez" ? { type: "tez" } : { type: "delegation" };
+
+  return (
+    <SendForm
+      disabled
+      onSuccess={onSuccess}
+      mode={mode}
+      recipient={transfer.value.recipient}
+      sender={transfer.value.sender}
+      amount={amount}
+      parameter={parameter}
+    />
+  );
+};
+
+const BatchTransaction = ({
+  transfer,
+  onSuccess,
+}: {
+  transfer: OperationValue[];
+  onSuccess: (hash: string) => any;
+}) => {
+  const mode: SendFormMode = {
+    type: "batch",
+    data: {
+      batch: transfer,
+    },
+  };
+
+  return (
+    <SendForm
+      disabled
+      onSuccess={onSuccess}
+      mode={mode}
+      recipient={transfer[0].value.recipient}
+    />
+  );
+};
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;
@@ -45,7 +99,7 @@ export const BeaconNotification: React.FC<{
       }
 
       try {
-        const transfer: OperationValue = buildTransfer(message);
+        const transfers = buildTransfers(message);
 
         const handleSuccess = async (hash: string) => {
           const response: OperationResponseInput = {
@@ -56,29 +110,25 @@ export const BeaconNotification: React.FC<{
 
           try {
             await walletClient.respond(response);
-          } catch (error: any) {
+          } catch (error) {
             toast({
               title: "Failed to confirm Beacon operation success",
-              description: error.message,
+              description: (error as Error).message,
             });
           }
         };
 
-        const amount =
-          transfer.type === "tez" ? transfer.value.amount : undefined;
-        const parameter =
-          transfer.type === "tez" ? transfer.value.parameter : undefined;
+        if (transfers.length === 1) {
+          return (
+            <SingleTransaction
+              transfer={transfers[0]}
+              onSuccess={handleSuccess}
+            />
+          );
+        }
 
         return (
-          <SendForm
-            disabled
-            onSuccess={handleSuccess}
-            mode={{ type: transfer.type }}
-            recipient={transfer.value.recipient}
-            sender={transfer.value.sender}
-            amount={amount}
-            parameter={parameter}
-          />
+          <BatchTransaction transfer={transfers} onSuccess={handleSuccess} />
         );
       } catch (error: any) {
         return (
@@ -129,17 +179,14 @@ const beaconToUmamiOperation = (
   throw new Error(`Unsupported operation: ${operation.kind}`);
 };
 
-const buildTransfer = (o: OperationRequestOutput) => {
+const buildTransfers = (o: OperationRequestOutput) => {
   const { operationDetails } = o;
 
   if (operationDetails.length === 0) {
     throw new Error("Empty operation details!");
   }
 
-  if (operationDetails.length === 1) {
-    const operation = operationDetails[0];
-    return beaconToUmamiOperation(operation, o.sourceAddress);
-  }
-
-  throw new Error("Batch not supported");
+  return operationDetails.map((operation) =>
+    beaconToUmamiOperation(operation, o.sourceAddress)
+  );
 };
