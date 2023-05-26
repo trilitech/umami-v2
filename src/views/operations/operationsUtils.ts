@@ -34,6 +34,16 @@ export const getLevelUrl = (blockLevel: number, network: TezosNetwork) => {
 
 export const getIsInbound = (prettyAmount: string) => prettyAmount[0] === "+";
 
+export const getAmountColor = (prettyAmount: string) => {
+  const sign = prettyAmount[0];
+  if (sign === "+") {
+    return "umami.green";
+  } else if (sign === "-") {
+    return "umami.orange";
+  }
+  return "umami.gray.400";
+};
+
 const getSign = (address: string, sender: string, recipient: string) => {
   if (address === sender) {
     return "-";

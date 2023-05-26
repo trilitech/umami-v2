@@ -12,10 +12,7 @@ export type Delegation = {
   };
 };
 
-export const makeDelegation = (op?: DelegationOperation): Delegation | null => {
-  if (!op) {
-    return null;
-  }
+export const makeDelegation = (op: DelegationOperation): Delegation | null => {
   const senderAddress = op.sender?.address;
   const delegateAddress = op.newDelegate?.address;
   const timestamp = op.timestamp;
