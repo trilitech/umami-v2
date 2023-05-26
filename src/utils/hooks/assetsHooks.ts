@@ -12,7 +12,7 @@ import { objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useAccounts } from "./accountHooks";
-import { getTotalBalance } from "./accountUtils";
+import { getTotalTezBalance } from "./accountUtils";
 import { BigNumber } from "bignumber.js";
 import { mutezToTez } from "../format";
 
@@ -33,17 +33,23 @@ export const useIsBlockFinalised = () => {
 export const useAllNfts = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
-  return objectMap(allTokens, (tokens) =>
-    keepNFTs(compact(tokens.map(fromToken)).filter((t) => t.balance !== "0"))
-  );
+  return objectMap(allTokens, (tokens) => {
+    const compactedTokens = compact(tokens);
+    return keepNFTs(
+      compact(compactedTokens.map(fromToken)).filter((t) => t.balance !== "0")
+    );
+  });
 };
 
 export const useAccountAssets = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
-  return objectMap(allTokens, (tokens) =>
-    compact(tokens.map(fromToken)).filter((t) => t.balance !== "0")
-  );
+  return objectMap(allTokens, (tokens) => {
+    const compactedTokens = compact(tokens);
+    return compact(compactedTokens.map(fromToken)).filter(
+      (t) => t.balance !== "0"
+    );
+  });
 };
 
 export const useGetAccountAssets = () => {
@@ -165,7 +171,7 @@ export const useTotalBalance = () => {
   const totalMutez = useTotalMutezBalance();
   const tezBalance = totalMutez && mutezToTez(totalMutez);
 
-  if (tezBalance === null) {
+  if (tezBalance == null) {
     return null;
   }
 
@@ -193,7 +199,7 @@ export const useGetAccountBalance = () => {
 export const useTotalMutezBalance = () => {
   const balances = useAppSelector((s) => s.assets.balances.tez);
 
-  return getTotalBalance(balances);
+  return getTotalTezBalance(balances);
 };
 
 export const useAllDelegations = () => {

@@ -1,21 +1,20 @@
 import BigNumber from "bignumber.js";
+import { compact } from "lodash";
 import { MnemonicAccount } from "../../types/Account";
 import { decrypt } from "../aes";
 import { deriveSkFromMnemonic } from "../restoreAccounts";
 import { useAppSelector } from "../store/hooks";
 
-export const getTotalBalance = (balances: Record<string, string | null>) => {
-  const totalMutez = Object.values(balances)
-    .map((b) => b && new BigNumber(b))
-    .reduce((acc, curr) => {
-      if (acc === null) {
-        return curr;
-      } else {
-        return curr === null ? acc : BigNumber.sum(curr, acc);
-      }
-    }, null);
+export const getTotalTezBalance = (
+  balances: Record<string, string | undefined>
+): BigNumber | null => {
+  const filtered = compact(Object.values(balances));
 
-  return totalMutez;
+  if (filtered.length === 0) {
+    return null;
+  }
+
+  return filtered.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));
 };
 
 export const useGetSk = () => {

@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
-import { getTotalBalance } from "./accountUtils";
+import { getTotalTezBalance } from "./accountUtils";
 
-describe("getTotalBalance", () => {
-  test("getTotalBalance returns the right value", () => {
-    const result = getTotalBalance({
+describe("getTotalTezBalance", () => {
+  test("getTotalTEzBalance returns the right value", () => {
+    const result = getTotalTezBalance({
       foo: "40",
-      bar: null,
+      bar: undefined,
       baz: "60",
     });
 
@@ -13,11 +13,11 @@ describe("getTotalBalance", () => {
   });
 
   test("these edge cases should return null", () => {
-    expect(getTotalBalance({})).toEqual(null);
+    expect(getTotalTezBalance({})).toEqual(null);
     expect(
-      getTotalBalance({
-        foo: null,
-        bar: null,
+      getTotalTezBalance({
+        foo: undefined,
+        bar: undefined,
       })
     ).toEqual(null);
   });
