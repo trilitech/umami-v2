@@ -3,7 +3,7 @@ import { useToast } from "@chakra-ui/react";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import CustomAuth from "@toruslabs/customauth";
 import { TORUS_NETWORK_TYPE } from "@toruslabs/fetch-node-details";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CircleIcon, SupportedIcons } from "./components/CircleIcon";
 import { useSelectedNetwork } from "./utils/hooks/assetsHooks";
 
@@ -72,15 +72,6 @@ export const GoogleAuth: React.FC<GoogleAuthProps> = ({
 }) => {
   const [SSOisLoading, SetSSOIsLoading] = useState(false);
   const toast = useToast();
-  useEffect(() => {
-    const internalWindows = window as any;
-    if (internalWindows && internalWindows.electronAPI) {
-      internalWindows.electronAPI.onDeeplink((_: any, url: string) => {
-        const params = parseParams(url);
-        window.postMessage(params);
-      });
-    }
-  });
   const umamiNetwork = useSelectedNetwork();
   const torus = new CustomAuth({
     baseUrl: "https://umamiwallet.com/auth/",

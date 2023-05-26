@@ -21,6 +21,7 @@ import AddressBookView from "./views/addressBook/AddressBookView";
 import BatchView from "./views/batch/BatchView";
 import { resetBeacon, useBeaconInit } from "./utils/beacon/beacon";
 import TokensView from "./views/tokens/TokensView";
+import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -66,6 +67,7 @@ const MemoizedRouter = React.memo(() => {
 const LoggedInRouterWithPolling = () => {
   // This does rerenders
   useAssetsPolling();
+  useDeeplinkHandler();
   return <MemoizedRouter />;
 };
 
