@@ -1721,6 +1721,83 @@ export enum MuxThumbnailFormatType {
   Png = "png",
 }
 
+export type NetworkModelFilter = {
+  AND?: InputMaybe<Array<InputMaybe<NetworkModelFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<NetworkModelFilter>>>;
+  _createdAt?: InputMaybe<CreatedAtFilter>;
+  _firstPublishedAt?: InputMaybe<PublishedAtFilter>;
+  _isValid?: InputMaybe<BooleanFilter>;
+  _publicationScheduledAt?: InputMaybe<PublishedAtFilter>;
+  _publishedAt?: InputMaybe<PublishedAtFilter>;
+  _status?: InputMaybe<StatusFilter>;
+  _unpublishingScheduledAt?: InputMaybe<PublishedAtFilter>;
+  _updatedAt?: InputMaybe<UpdatedAtFilter>;
+  id?: InputMaybe<ItemIdFilter>;
+  name?: InputMaybe<StringFilter>;
+  nodeUrl?: InputMaybe<StringFilter>;
+  tzktExplorer?: InputMaybe<StringFilter>;
+  tzktUrl?: InputMaybe<StringFilter>;
+  wertUrl?: InputMaybe<StringFilter>;
+};
+
+export enum NetworkModelOrderBy {
+  CreatedAtAsc = "_createdAt_ASC",
+  CreatedAtDesc = "_createdAt_DESC",
+  FirstPublishedAtAsc = "_firstPublishedAt_ASC",
+  FirstPublishedAtDesc = "_firstPublishedAt_DESC",
+  IsValidAsc = "_isValid_ASC",
+  IsValidDesc = "_isValid_DESC",
+  PublicationScheduledAtAsc = "_publicationScheduledAt_ASC",
+  PublicationScheduledAtDesc = "_publicationScheduledAt_DESC",
+  PublishedAtAsc = "_publishedAt_ASC",
+  PublishedAtDesc = "_publishedAt_DESC",
+  StatusAsc = "_status_ASC",
+  StatusDesc = "_status_DESC",
+  UnpublishingScheduledAtAsc = "_unpublishingScheduledAt_ASC",
+  UnpublishingScheduledAtDesc = "_unpublishingScheduledAt_DESC",
+  UpdatedAtAsc = "_updatedAt_ASC",
+  UpdatedAtDesc = "_updatedAt_DESC",
+  IdAsc = "id_ASC",
+  IdDesc = "id_DESC",
+  NameAsc = "name_ASC",
+  NameDesc = "name_DESC",
+  NodeUrlAsc = "nodeUrl_ASC",
+  NodeUrlDesc = "nodeUrl_DESC",
+  TzktExplorerAsc = "tzktExplorer_ASC",
+  TzktExplorerDesc = "tzktExplorer_DESC",
+  TzktUrlAsc = "tzktUrl_ASC",
+  TzktUrlDesc = "tzktUrl_DESC",
+  WertUrlAsc = "wertUrl_ASC",
+  WertUrlDesc = "wertUrl_DESC",
+}
+
+/** Record of type Network (network) */
+export type NetworkRecord = RecordInterface & {
+  __typename?: "NetworkRecord";
+  _createdAt: Scalars["DateTime"];
+  _firstPublishedAt?: Maybe<Scalars["DateTime"]>;
+  _isValid: Scalars["BooleanType"];
+  _modelApiKey: Scalars["String"];
+  _publicationScheduledAt?: Maybe<Scalars["DateTime"]>;
+  _publishedAt?: Maybe<Scalars["DateTime"]>;
+  /** SEO meta tags */
+  _seoMetaTags: Array<Tag>;
+  _status: ItemStatus;
+  _unpublishingScheduledAt?: Maybe<Scalars["DateTime"]>;
+  _updatedAt: Scalars["DateTime"];
+  id: Scalars["ItemId"];
+  name?: Maybe<Scalars["String"]>;
+  nodeUrl?: Maybe<Scalars["String"]>;
+  tzktExplorer?: Maybe<Scalars["String"]>;
+  tzktUrl?: Maybe<Scalars["String"]>;
+  wertUrl?: Maybe<Scalars["String"]>;
+};
+
+/** Record of type Network (network) */
+export type NetworkRecord_SeoMetaTagsArgs = {
+  locale?: InputMaybe<SiteLocale>;
+};
+
 /** Specifies how to filter by image orientation */
 export type OrientationFilter = {
   /** Search uploads with the specified orientation */
@@ -1751,11 +1828,15 @@ export type PublishedAtFilter = {
 export type Query = {
   __typename?: "Query";
   /** Returns meta information regarding a record collection */
+  _allNetworksMeta: CollectionMetadata;
+  /** Returns meta information regarding a record collection */
   _allSlideritemsMeta: CollectionMetadata;
   /** Returns meta information regarding an assets collection */
   _allUploadsMeta: CollectionMetadata;
   /** Returns the single instance record */
   _site: Site;
+  /** Returns a collection of records */
+  allNetworks: Array<NetworkRecord>;
   /** Returns a collection of records */
   allSlideritems: Array<SlideritemRecord>;
   /** Returns a collection of assets */
@@ -1763,9 +1844,17 @@ export type Query = {
   /** Returns the single instance record */
   configuration?: Maybe<ConfigurationRecord>;
   /** Returns a specific record */
+  network?: Maybe<NetworkRecord>;
+  /** Returns a specific record */
   slideritem?: Maybe<SlideritemRecord>;
   /** Returns a specific asset */
   upload?: Maybe<FileField>;
+};
+
+/** The query root for this schema */
+export type Query_AllNetworksMetaArgs = {
+  filter?: InputMaybe<NetworkModelFilter>;
+  locale?: InputMaybe<SiteLocale>;
 };
 
 /** The query root for this schema */
@@ -1784,6 +1873,16 @@ export type Query_AllUploadsMetaArgs = {
 export type Query_SiteArgs = {
   fallbackLocales?: InputMaybe<Array<SiteLocale>>;
   locale?: InputMaybe<SiteLocale>;
+};
+
+/** The query root for this schema */
+export type QueryAllNetworksArgs = {
+  fallbackLocales?: InputMaybe<Array<SiteLocale>>;
+  filter?: InputMaybe<NetworkModelFilter>;
+  first?: InputMaybe<Scalars["IntType"]>;
+  locale?: InputMaybe<SiteLocale>;
+  orderBy?: InputMaybe<Array<InputMaybe<NetworkModelOrderBy>>>;
+  skip?: InputMaybe<Scalars["IntType"]>;
 };
 
 /** The query root for this schema */
@@ -1810,6 +1909,14 @@ export type QueryAllUploadsArgs = {
 export type QueryConfigurationArgs = {
   fallbackLocales?: InputMaybe<Array<SiteLocale>>;
   locale?: InputMaybe<SiteLocale>;
+};
+
+/** The query root for this schema */
+export type QueryNetworkArgs = {
+  fallbackLocales?: InputMaybe<Array<SiteLocale>>;
+  filter?: InputMaybe<NetworkModelFilter>;
+  locale?: InputMaybe<SiteLocale>;
+  orderBy?: InputMaybe<Array<InputMaybe<NetworkModelOrderBy>>>;
 };
 
 /** The query root for this schema */
