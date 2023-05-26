@@ -28,7 +28,7 @@ import {
 import { OperationValue } from "../../components/sendForm/types";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { Account } from "../../types/Account";
-import { formatTokenAmount, NFT } from "../../types/Asset";
+import { formatTokenAmount, tokenSymbol } from "../../types/Asset";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
@@ -41,7 +41,7 @@ const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
     case "token": {
       const amount =
-        operation.data instanceof NFT
+        operation.data.type === "nft"
           ? operation.data.balance
           : formatTokenAmount(
               operation.value.amount,
@@ -51,12 +51,12 @@ const renderAmount = (operation: OperationValue) => {
         <Flex>
           <Text mr={1}>{amount} </Text>
 
-          {operation.data instanceof NFT ? (
+          {operation.data.type === "nft" ? (
             <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
               <Image src={getIPFSurl(operation.data.metadata.displayUri)} />
             </AspectRatio>
           ) : (
-            <Text>{operation.data.symbol()}</Text>
+            <Text>{tokenSymbol(operation.data)}</Text>
           )}
         </Flex>
       );

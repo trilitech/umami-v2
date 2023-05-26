@@ -36,8 +36,7 @@ import {
   TransactionsAmount,
 } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
-import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
-import { BigNumber } from "bignumber.js";
+import BigNumber from "bignumber.js";
 
 const makeTransfer = async (
   operation: OperationValue | OperationValue[],
@@ -67,7 +66,7 @@ const makeTransfer = async (
       );
     case "token": {
       const token = operation.data;
-      if (token instanceof FA12Token) {
+      if (token.type === "fa1.2") {
         return await transferFA12Token(
           {
             amount: operation.value.amount,
@@ -84,7 +83,7 @@ const makeTransfer = async (
           contract: token.contract,
           recipient: operation.value.recipient,
           sender: operation.value.sender,
-          tokenId: (token as FA2Token).tokenId,
+          tokenId: token.tokenId,
         },
         config
       );
@@ -111,7 +110,7 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
             : renderAccountTile(transfer.value.recipient)}
         </Flex>
       )}
-      {token instanceof NFT && (
+      {token?.type === "nft" && (
         <Box mb={4}>
           <SendNFTRecapTile nft={token} />
         </Box>

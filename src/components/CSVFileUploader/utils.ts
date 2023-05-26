@@ -1,5 +1,5 @@
 import { validateAddress, ValidationResult } from "@taquito/utils";
-import { Asset, FA12Token, FA2Token } from "../../types/Asset";
+import { Asset, getRealAmount } from "../../types/Asset";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { OperationValue } from "../sendForm/types";
@@ -71,8 +71,7 @@ export const csvRowToOperationValue = (
       ? assets[0]
       : assets.find(
           (asset) =>
-            !(asset instanceof FA12Token) &&
-            (asset as FA2Token).tokenId === `${csvRow.tokenId}`
+            !(asset.type === "fa1.2") && asset.tokenId === `${csvRow.tokenId}`
         );
 
   if (!asset) {
@@ -81,7 +80,7 @@ export const csvRowToOperationValue = (
 
   if (
     csvRow.contract !== asset.contract ||
-    (asset instanceof FA12Token && csvRow.type !== "fa1.2")
+    (asset.type === "fa1.2" && csvRow.type !== "fa1.2")
   ) {
     throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
   }
@@ -91,7 +90,7 @@ export const csvRowToOperationValue = (
     value: {
       sender,
       recipient,
-      amount: asset.getRealAmount(csvRow.prettyAmount).toString(),
+      amount: getRealAmount(asset, csvRow.prettyAmount).toString(),
     },
   };
 };

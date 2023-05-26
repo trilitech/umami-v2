@@ -30,6 +30,7 @@ import { Options } from "../home/useSendFormModal";
 import { FiExternalLink } from "react-icons/fi";
 import { tzktExplorer } from "../../utils/tezos/consts";
 import { navigateToExternalLink } from "../../utils/helpers";
+import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Asset";
 
 const AccountTokensTileHeader: React.FC<{
   pkh: string;
@@ -81,18 +82,19 @@ const AccountTokensTile: React.FC<{
           </Thead>
           <Tbody>
             {tokens.map((token, i) => {
+              const iconUri = httpIconUri(token);
               return (
                 <Tr key={`${token.contract}${i}`}>
                   <Td w="15%">
                     <Flex alignItems="cnenter">
-                      {token.iconUri() ? (
-                        <Image src={token.iconUri()} w={8} h={8} />
+                      {iconUri ? (
+                        <Image src={iconUri} w={8} h={8} />
                       ) : (
                         <Icon h={8} w={8} as={MdGeneratingTokens} />
                       )}
 
                       <Heading size="sm" p={2} marginX={2}>
-                        {token.name()}
+                        {tokenName(token)}
                       </Heading>
                     </Flex>
                   </Td>
@@ -107,7 +109,9 @@ const AccountTokensTile: React.FC<{
                       }}
                     />
                   </Td>
-                  <Td w="15%">{token.prettyBalance({ showSymbol: false })}</Td>
+                  <Td w="15%">
+                    {tokenPrettyBalance(token, { showSymbol: false })}
+                  </Td>
                   <Td>
                     <Flex
                       alignItems="center"
