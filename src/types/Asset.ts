@@ -5,7 +5,7 @@ import { getIPFSurl } from "../utils/token/nftUtils";
 
 const addressParser = z.object({ address: z.string() });
 
-type AssetType = "fa1.2" | "fa2" | "nft";
+export type Asset = FA12Token | FA2Token | NFT;
 
 const fa1TokenParser = z.object({
   standard: z.string().regex(/fa1\.2/i),
@@ -43,179 +43,139 @@ const nftParser = z.object({
   token: nftTokenParser,
 });
 
-export abstract class Asset {
-  constructor(
-    public contract: string,
-    public balance: string,
-    public metadata?: TokenMetadata
-  ) {}
+export const fromToken = (raw: Token): Asset | null => {
+  const metadata = raw.token?.metadata;
 
-  abstract type(): AssetType;
+  const fa1result = fa1parser.safeParse(raw);
+  if (fa1result.success) {
+    return {
+      type: "fa1.2",
+      metadata: metadata,
+      balance: fa1result.data.balance,
+      contract: fa1result.data.token.contract.address,
+    };
+  }
 
-  static from(raw: Token): Asset | null {
-    const metadata = raw.token?.metadata;
-
-    const fa1result = fa1parser.safeParse(raw);
-    if (fa1result.success) {
-      return new FA12Token(
-        fa1result.data.token.contract.address,
-        fa1result.data.balance,
-        metadata
-      );
-    }
-
-    if (!metadata) {
-      console.log("Impossible state, FA2 metadata is empty");
-      return null;
-    }
-
-    const nftResult = nftParser.safeParse(raw);
-    if (nftResult.success) {
-      return new NFT(
-        nftResult.data.token.contract.address,
-        nftResult.data.token.tokenId,
-        nftResult.data.balance,
-        nftResult.data.account.address,
-        metadata
-      );
-    }
-
-    const fa2result = fa2parser.safeParse(raw);
-    if (fa2result.success) {
-      return new FA2Token(
-        fa2result.data.token.contract.address,
-        fa2result.data.token.tokenId,
-        fa2result.data.balance,
-        metadata
-      );
-    }
-
+  if (!metadata) {
+    console.log("Impossible state, FA2 metadata is empty");
     return null;
   }
 
-  protected abstract defaultTokenName(): string;
-  protected abstract defaultTokenSymbol(): string;
-
-  name(): string {
-    return this.metadata?.name || this.defaultTokenName();
+  const nftResult = nftParser.safeParse(raw);
+  if (nftResult.success) {
+    return {
+      metadata,
+      type: "nft",
+      contract: nftResult.data.token.contract.address,
+      tokenId: nftResult.data.token.tokenId,
+      balance: nftResult.data.balance,
+      owner: nftResult.data.account.address,
+    };
   }
 
-  symbol(): string {
-    return this.metadata?.symbol || this.defaultTokenSymbol();
+  const fa2result = fa2parser.safeParse(raw);
+  if (fa2result.success) {
+    return {
+      type: "fa2",
+      metadata,
+      contract: fa2result.data.token.contract.address,
+      tokenId: fa2result.data.token.tokenId,
+      balance: fa2result.data.balance,
+    };
   }
 
-  abstract iconUri(): string | undefined;
+  return null;
+};
 
-  prettyBalance(options?: { showSymbol?: boolean }) {
-    const symbol = this.symbol();
-    const amount = this.balance;
-    const decimals = this.metadata?.decimals;
-    const trailingSymbol = options?.showSymbol ? ` ${symbol}` : "";
-    const result = formatTokenAmount(amount, decimals);
+const defaultTokenName = (asset: FA12Token | FA2Token): string => {
+  switch (asset.type) {
+    case "fa1.2":
+      return DEFAULT_FA1_NAME;
+    case "fa2":
+      return DEFAULT_FA2_NAME;
+  }
+};
 
-    return `${result}${trailingSymbol}`;
+export const tokenName = (asset: FA12Token | FA2Token): string => {
+  return asset.metadata?.name || defaultTokenName(asset);
+};
+
+const defaultTokenSymbol = (asset: FA12Token | FA2Token): string => {
+  switch (asset.type) {
+    case "fa1.2":
+      return DEFAULT_FA1_SYMBOL;
+    case "fa2":
+      return DEFAULT_FA2_SYMBOL;
+  }
+};
+
+export const tokenSymbol = (asset: FA12Token | FA2Token): string => {
+  return asset.metadata?.symbol || defaultTokenSymbol(asset);
+};
+
+export const httpIconUri = (
+  asset: FA12Token | FA2Token
+): string | undefined => {
+  let iconUri;
+  if (asset.type === "fa1.2") {
+    iconUri = asset.metadata?.icon;
+  } else if (asset.type === "fa2") {
+    iconUri = asset.metadata?.thumbnailUri;
+  }
+  return iconUri && getIPFSurl(iconUri);
+};
+
+export const getRealAmount = (
+  asset: Asset,
+  prettyAmount: string
+): BigNumber => {
+  const amount = new BigNumber(prettyAmount);
+
+  if (asset.type === "nft") {
+    return amount;
   }
 
-  getRealAmount(prettyAmount: string): BigNumber {
-    const amount = new BigNumber(prettyAmount);
+  const decimals =
+    asset.metadata?.decimals === undefined
+      ? DEFAULT_TOKEN_DECIMALS
+      : asset.metadata.decimals;
 
-    const decimals =
-      this.metadata?.decimals === undefined
-        ? DEFAULT_TOKEN_DECIMALS
-        : this.metadata.decimals;
+  return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
+};
 
-    return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
-  }
-}
+export type FA12Token = {
+  type: "fa1.2";
+  contract: string;
+  balance: string;
+  metadata?: TokenMetadata;
+};
 
-export class FA12Token extends Asset {
-  type(): AssetType {
-    return "fa1.2";
-  }
+export type FA2Token = {
+  type: "fa2";
+  metadata?: TokenMetadata;
+  contract: string;
+  tokenId: string;
+  balance: string;
+};
 
-  defaultTokenName(): string {
-    return DEFAULT_FA1_NAME;
-  }
-
-  defaultTokenSymbol(): string {
-    return DEFAULT_FA1_SYMBOL;
-  }
-
-  iconUri(): string | undefined {
-    return this.metadata?.icon && getIPFSurl(this.metadata.icon);
-  }
-}
-
-export class FA2Token extends Asset {
-  constructor(
-    public contract: string,
-    public tokenId: string,
-    public balance: string,
-    public metadata: TokenMetadata
-  ) {
-    super(contract, balance, metadata);
-  }
-
-  type(): AssetType {
-    return "fa2";
-  }
-
-  defaultTokenName(): string {
-    return DEFAULT_FA2_NAME;
-  }
-
-  defaultTokenSymbol(): string {
-    return DEFAULT_FA2_SYMBOL;
-  }
-
-  iconUri(): string | undefined {
-    return (
-      this.metadata?.thumbnailUri && getIPFSurl(this.metadata.thumbnailUri)
-    );
-  }
-}
-
-export class NFT extends Asset {
-  constructor(
-    public contract: string,
-    public tokenId: string,
-    public balance: string,
-    public owner: string,
-    public metadata: TokenMetadata
-  ) {
-    super(contract, balance, metadata);
-  }
-
-  type(): AssetType {
-    return "nft";
-  }
-
-  defaultTokenName(): string {
-    throw new Error("NotImplementedError");
-  }
-
-  defaultTokenSymbol(): string {
-    throw new Error("NotImplementedError");
-  }
-
-  iconUri(): string | undefined {
-    return undefined;
-  }
-
-  override getRealAmount(prettyAmount: string): BigNumber {
-    return new BigNumber(prettyAmount);
-  }
-}
+export type NFT = {
+  type: "nft";
+  contract: string;
+  tokenId: string;
+  balance: string;
+  owner: string;
+  metadata: TokenMetadata;
+};
 
 export const keepNFTs = (assets: Asset[]) => {
-  return assets.filter((a) => a instanceof NFT) as NFT[];
+  return assets.filter((a) => a.type === "nft") as NFT[];
 };
 export const keepFA1s = (assets: Asset[]) => {
-  return assets.filter((a) => a instanceof FA12Token) as FA12Token[];
+  return assets.filter((a) => a.type === "fa1.2") as FA12Token[];
 };
 
 export const keepFA2s = (assets: Asset[]) => {
-  return assets.filter((a) => a instanceof FA2Token) as FA2Token[];
+  return assets.filter((a) => a.type === "fa2") as FA2Token[];
 };
 
 export const formatTokenAmount = (
@@ -223,6 +183,19 @@ export const formatTokenAmount = (
   decimals = DEFAULT_TOKEN_DECIMALS
 ) => {
   return Number(amountStr) / Math.pow(10, Number(decimals));
+};
+
+export const tokenPrettyBalance = (
+  token: FA2Token | FA12Token,
+  options?: { showSymbol?: boolean }
+) => {
+  const symbol = tokenSymbol(token);
+  const amount = token.balance;
+  const decimals = token.metadata?.decimals;
+  const trailingSymbol = options?.showSymbol ? ` ${symbol}` : "";
+  const result = formatTokenAmount(amount, decimals);
+
+  return `${result}${trailingSymbol}`;
 };
 
 // We use the defaults for FA1.2 tokens as in V1
