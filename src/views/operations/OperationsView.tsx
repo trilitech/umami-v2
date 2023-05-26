@@ -27,7 +27,7 @@ import {
   useIsBlockFinalised,
 } from "../../utils/hooks/assetsHooks";
 import {
-  getIsInbound,
+  getAmountColor,
   getKey,
   sortOperationsDisplaysBytDate,
 } from "./operationsUtils";
@@ -86,13 +86,7 @@ export const OperationsDataTable: React.FC<{
                 <Td>{op.type}</Td>
                 <Td>
                   <Flex alignItems={"center"}>
-                    <Text
-                      color={
-                        getIsInbound(op.amount.prettyDisplay)
-                          ? "umami.green"
-                          : "umami.orange"
-                      }
-                    >
+                    <Text color={getAmountColor(op.amount.prettyDisplay)}>
                       {op.amount.prettyDisplay}
                     </Text>
                     {op.amount.url && (
