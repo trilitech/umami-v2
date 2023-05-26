@@ -6,7 +6,7 @@ import { objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useAccounts } from "./accountHooks";
-import { getTotalBalance } from "./accountUtils";
+import { getTotalTezBalance } from "./accountUtils";
 import { BigNumber } from "bignumber.js";
 import { mutezToTez } from "../format";
 
@@ -193,7 +193,7 @@ export const useGetAccountBalance = () => {
 export const useTotalMutezBalance = () => {
   const balances = useAppSelector((s) => s.assets.balances.tez);
 
-  return getTotalBalance(balances);
+  return getTotalTezBalance(balances);
 };
 
 export const useAllDelegations = () => {

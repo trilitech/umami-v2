@@ -23,7 +23,7 @@ type State = {
   network: TezosNetwork;
   blockLevel: number | null;
   balances: {
-    tez: Record<string, string | null | undefined>;
+    tez: Record<string, string | undefined>;
     tokens: Record<string, Token[] | undefined>;
   };
   operations: {
