@@ -19,7 +19,7 @@ import { TransferParams } from "@taquito/taquito";
 import { validateAddress, ValidationResult } from "@taquito/utils";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Asset, NFT } from "../../../types/Asset";
+import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
@@ -118,11 +118,11 @@ const getAmountSymbol = (asset?: Asset) => {
   if (!asset) {
     return "tez";
   }
-  if (asset instanceof NFT) {
+  if (asset.type === "nft") {
     return "editions";
   }
 
-  return asset.symbol();
+  return tokenSymbol(asset);
 };
 
 export const SendTezOrNFTForm = ({
@@ -150,7 +150,7 @@ export const SendTezOrNFTForm = ({
   amount?: string;
   parameter?: TransferParams["parameter"];
 }) => {
-  const isNFT = token instanceof NFT;
+  const isNFT = token?.type === "nft";
   const mandatoryNftSender = isNFT ? token?.owner : undefined;
   const getBatchIsSimulating = useBatchIsSimulating();
 
@@ -229,7 +229,7 @@ export const SendTezOrNFTForm = ({
             )}
           </FormControl>
 
-          {token instanceof NFT ? <SendNFTRecapTile nft={token} /> : null}
+          {isNFT ? <SendNFTRecapTile nft={token} /> : null}
 
           <FormControl mb={2} mt={2}>
             <FormLabel>Amount</FormLabel>
@@ -378,7 +378,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: mode.data.getRealAmount(v.amount).toString(),
+                amount: getRealAmount(mode.data, v.amount).toString(),
                 sender: v.sender,
                 recipient: v.recipient,
               },
@@ -389,7 +389,7 @@ export const FillStep: React.FC<{
               type: "token",
               data: mode.data,
               value: {
-                amount: mode.data.getRealAmount(v.amount).toString(),
+                amount: getRealAmount(mode.data, v.amount).toString(),
                 sender: v.sender,
                 recipient: v.recipient,
               },

@@ -1,5 +1,11 @@
 import { compact } from "lodash";
-import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
+import {
+  Asset,
+  fromToken,
+  keepFA1s,
+  keepFA2s,
+  keepNFTs,
+} from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { objectMap } from "../helpers";
@@ -30,7 +36,7 @@ export const useAllNfts = () => {
   return objectMap(allTokens, (tokens) => {
     const compactedTokens = compact(tokens);
     return keepNFTs(
-      compact(compactedTokens.map(Asset.from)).filter((t) => t.balance !== "0")
+      compact(compactedTokens.map(fromToken)).filter((t) => t.balance !== "0")
     );
   });
 };
@@ -40,7 +46,7 @@ export const useAccountAssets = () => {
 
   return objectMap(allTokens, (tokens) => {
     const compactedTokens = compact(tokens);
-    return compact(compactedTokens.map(Asset.from)).filter(
+    return compact(compactedTokens.map(fromToken)).filter(
       (t) => t.balance !== "0"
     );
   });
@@ -50,7 +56,7 @@ export const useGetAccountAssets = () => {
   const allTokens = useAppSelector((s) => s.assets.balances.tokens);
 
   return (pkh: string) => {
-    return compact((allTokens[pkh] ?? []).map(Asset.from));
+    return compact((allTokens[pkh] ?? []).map(fromToken));
   };
 };
 

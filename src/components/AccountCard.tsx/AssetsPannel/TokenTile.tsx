@@ -1,16 +1,24 @@
 import { Box, Flex, Heading, Icon, Image, Text } from "@chakra-ui/react";
 import { MdGeneratingTokens } from "react-icons/md";
-import { FA12Token, FA2Token } from "../../../types/Asset";
+import {
+  FA12Token,
+  FA2Token,
+  httpIconUri,
+  tokenName,
+  tokenPrettyBalance,
+  tokenSymbol,
+} from "../../../types/Asset";
 
 const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
-  const name = token.name();
-  const symbol = token.symbol();
-  const prettyAmount = token.prettyBalance({ showSymbol: false });
+  const name = tokenName(token);
+  const symbol = tokenSymbol(token);
+  const iconUri = httpIconUri(token);
+  const prettyAmount = tokenPrettyBalance(token, { showSymbol: false });
   return (
     <Flex justifyContent={"space-around"} mb={2} data-testid="token-tile">
       <Flex flex={1}>
-        {token.iconUri() ? (
-          <Image src={token.iconUri()} w={8} h={8} />
+        {iconUri ? (
+          <Image src={iconUri} w={8} h={8} />
         ) : (
           <Icon h={8} w={8} as={MdGeneratingTokens} />
         )}

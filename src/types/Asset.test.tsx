@@ -1,55 +1,68 @@
 import { tzBtsc, hedgeHoge } from "../mocks/fa12Tokens";
 import { uUSD } from "../mocks/fa2Tokens";
 import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
-import { Asset, FA12Token, FA2Token, NFT } from "../types/Asset";
+import {
+  FA12Token,
+  FA2Token,
+  fromToken,
+  httpIconUri,
+  tokenName,
+  tokenSymbol,
+} from "../types/Asset";
 import type { TokenMetadata } from "./Token";
 
-describe("Asset.from", () => {
+describe("fromToken", () => {
   test("case fa1.2 valid", () => {
-    const result = Asset.from(fa1Token);
-    const expected = new FA12Token(
-      "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
-      "443870"
-    );
+    const result = fromToken(fa1Token);
+    const expected = {
+      type: "fa1.2",
+      contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+      balance: "443870",
+    };
     expect(result).toEqual(expected);
   });
 
-  test("case fa1.2 invalid (missing balance)", () => {
-    const result = Asset.from({ ...fa1Token, balance: null });
+  test("case fa1.2 with no balance", () => {
+    const result = fromToken({ ...fa1Token, balance: null });
     expect(result).toEqual(null);
   });
 
   test("case valid fa2 token", () => {
-    const result = Asset.from(fa2Token);
-    expect(result).toEqual(
-      new FA2Token("KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ", "1", "409412200", {
+    const result = fromToken(fa2Token);
+    expect(result).toEqual({
+      type: "fa2",
+      contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+      tokenId: "1",
+      balance: "409412200",
+      metadata: {
         decimals: "5",
         name: "Klondike3",
         symbol: "KL3",
-      })
-    );
+      },
+    });
   });
 
   test("case invalid fa2 token (missing tokenId)", () => {
-    const result = Asset.from({ ...fa2Token, token: { tokenId: undefined } });
+    const result = fromToken({ ...fa2Token, token: { tokenId: undefined } });
 
     expect(result).toEqual(null);
   });
 
   test("case valid nft", () => {
-    const result = Asset.from(nft);
-    const expected = new NFT(
-      "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-      "3",
-      "0",
-      "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-      nft.token?.metadata as TokenMetadata
-    );
+    const result = fromToken(nft);
+    const expected = {
+      type: "nft",
+      contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+      tokenId: "3",
+      balance: "0",
+      owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+      metadata: nft.token?.metadata as TokenMetadata,
+    };
     expect(result).toEqual(expected);
   });
 
   test("case invalid nft (missing contract address)", () => {
-    const result = Asset.from({
+    const result = fromToken({
       ...nft,
       token: { contract: { address: null } },
     });
@@ -58,238 +71,157 @@ describe("Asset.from", () => {
   });
 
   test("case fa1 token with name symbol and decimals (tzBTC)", () => {
-    const result = Asset.from(tzBtsc);
+    const result = fromToken(tzBtsc);
 
-    const expected = new FA12Token(
-      "KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn",
-      "2205",
-      {
+    const expected = {
+      type: "fa1.2",
+      contract: "KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn",
+      balance: "2205",
+      metadata: {
         decimals: "8",
         name: "tzBTC",
         symbol: "tzBTC",
-      }
-    );
+      },
+    };
     expect(result).toEqual(expected);
   });
 
   test("case fa1 token with name symbol decimals and icon (hedgeHoge)", () => {
-    const result = Asset.from(hedgeHoge);
+    const result = fromToken(hedgeHoge);
 
-    const expected = new FA12Token(
-      "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
-      "10000000000",
-      {
+    const expected = {
+      type: "fa1.2",
+      contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
+      balance: "10000000000",
+      metadata: {
         decimals: "6",
         name: "Hedgehoge",
         symbol: "HEH",
         icon: "ipfs://QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
-      }
-    );
+      },
+    };
     expect(result).toEqual(expected);
-    expect(result?.iconUri).toEqual(expected.iconUri);
   });
 
   test("case fa2 token with thumbnailUri (uUSD)", () => {
-    const result = Asset.from(uUSD);
-    const expected = new FA2Token(
-      "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      "0",
-      "19218750000",
-      {
+    const result = fromToken(uUSD);
+    const expected = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      tokenId: "0",
+      balance: "19218750000",
+      metadata: {
         decimals: "12",
         name: "youves uUSD",
         symbol: "uUSD",
         shouldPreferSymbol: true,
         thumbnailUri: "ipfs://QmbvhanNCxydZEbGu1RdqkG3LcpNGv7XYsCHgzWBXnmxRd",
-      }
-    );
+      },
+    };
 
     expect(result).toEqual(expected);
-    expect(result?.iconUri()).toEqual(
-      "https://ipfs.io/ipfs/QmbvhanNCxydZEbGu1RdqkG3LcpNGv7XYsCHgzWBXnmxRd"
-    );
   });
 });
 
-describe("FA12Token", () => {
-  describe("name", () => {
-    test("when metadata.name exists", () => {
-      const token = new FA12Token("KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo", "1", {
+describe("tokenName", () => {
+  test("when metadata.name exists", () => {
+    const fa1token: FA12Token = {
+      type: "fa1.2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      balance: "1",
+    };
+    expect(tokenName(fa1token)).toEqual("FA1.2 token");
+    const fa1tokenWithName = {
+      ...fa1token,
+      metadata: {
         name: "some token name",
-      });
-      expect(token.name()).toEqual("some token name");
-    });
-    test("when metadata.name is empty we use the default name", () => {
-      const token = new FA12Token("KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo", "1");
-      expect(token.name()).toEqual("FA1.2 token");
-    });
-  });
+      },
+    };
+    expect(tokenName(fa1tokenWithName)).toEqual("some token name");
 
-  describe("symbol", () => {
-    test("when metadata.symbol exists", () => {
-      const token = new FA12Token("KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo", "1", {
+    const fa2token: FA2Token = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      balance: "1",
+      tokenId: "123",
+    };
+    expect(tokenName(fa2token)).toEqual("FA2 token");
+    const fa2tokenWithName = {
+      ...fa2token,
+      metadata: {
+        name: "some token name",
+      },
+    };
+    expect(tokenName(fa2tokenWithName)).toEqual("some token name");
+  });
+});
+
+describe("tokenSymbol", () => {
+  test("when metadata.symbol exists", () => {
+    const fa1token: FA12Token = {
+      type: "fa1.2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      balance: "1",
+    };
+    expect(tokenSymbol(fa1token)).toEqual("FA1.2");
+    const fa1tokenWithSymbol = {
+      ...fa1token,
+      metadata: {
         symbol: "some token symbol",
-      });
-      expect(token.symbol()).toEqual("some token symbol");
-    });
-    test("when metadata.symbol is empty we use the default symbol", () => {
-      const token = new FA12Token("KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo", "1");
-      expect(token.symbol()).toEqual("FA1.2");
-    });
-  });
+      },
+    };
+    expect(tokenSymbol(fa1tokenWithSymbol)).toEqual("some token symbol");
 
-  describe("iconUri", () => {
-    test("when metadata.icon is not set it returns undefined", () => {
-      const token = new FA12Token("KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo", "1");
-      expect(token.iconUri()).toBeUndefined();
-    });
-
-    test("when metadata.icon is set it returns modified ipfs link", () => {
-      const token = new FA12Token("KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo", "1", {
-        icon: "ipfs://QmbvhanNCxydZEbGu1RdqkG3LcpNGv7XYsCHgzWBXnmxRd",
-      });
-      expect(token.iconUri()).toEqual(
-        "https://ipfs.io/ipfs/QmbvhanNCxydZEbGu1RdqkG3LcpNGv7XYsCHgzWBXnmxRd"
-      );
-    });
+    const fa2token: FA2Token = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      balance: "1",
+      tokenId: "123",
+    };
+    expect(tokenSymbol(fa2token)).toEqual("FA2");
+    const fa2tokenWithSymbol = {
+      ...fa2token,
+      metadata: {
+        symbol: "some token symbol",
+      },
+    };
+    expect(tokenSymbol(fa2tokenWithSymbol)).toEqual("some token symbol");
   });
 });
 
-describe("FA2Token", () => {
-  describe("name", () => {
-    test("when metadata.name exists", () => {
-      const token = new FA2Token(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        {
-          name: "some token name",
-        }
-      );
-      expect(token.name()).toEqual("some token name");
-    });
-    test("when metadata.name is empty we use the default name", () => {
-      const token = new FA2Token(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        {}
-      );
-      expect(token.name()).toEqual("FA2 token");
-    });
-  });
+describe("httpIconUri", () => {
+  test("when metadata.symbol exists", () => {
+    const fa1token: FA12Token = {
+      type: "fa1.2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      balance: "1",
+    };
+    expect(httpIconUri(fa1token)).toEqual(undefined);
+    const fa1tokenWithIcon = {
+      ...fa1token,
+      metadata: {
+        icon: "ipfs://QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
+      },
+    };
+    expect(httpIconUri(fa1tokenWithIcon)).toEqual(
+      "https://ipfs.io/ipfs/QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs"
+    );
 
-  describe("symbol", () => {
-    test("when metadata.symbol exists", () => {
-      const token = new FA2Token(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        {
-          symbol: "some token symbol",
-        }
-      );
-      expect(token.symbol()).toEqual("some token symbol");
-    });
-    test("when metadata.symbol is empty we use the default symbol", () => {
-      const token = new FA2Token(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        {}
-      );
-      expect(token.symbol()).toEqual("FA2");
-    });
-  });
-
-  describe("iconUri", () => {
-    test("when metadata.thumbnailUri is not set it returns undefined", () => {
-      const token = new FA2Token(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "2",
-        {}
-      );
-      expect(token.iconUri()).toBeUndefined();
-    });
-
-    test("when metadata.thumbnailUri is set it returns modified ipfs link", () => {
-      const token = new FA2Token(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "2",
-        {
-          thumbnailUri: "ipfs://QmbvhanNCxydZEbGu1RdqkG3LcpNGv7XYsCHgzWBXnmxRd",
-        }
-      );
-      expect(token.iconUri()).toEqual(
-        "https://ipfs.io/ipfs/QmbvhanNCxydZEbGu1RdqkG3LcpNGv7XYsCHgzWBXnmxRd"
-      );
-    });
-  });
-});
-
-describe("NFT", () => {
-  describe("name", () => {
-    test("when metadata.name exists", () => {
-      const token = new NFT(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-        {
-          name: "some token name",
-        }
-      );
-      expect(token.name()).toEqual("some token name");
-    });
-    test("when metadata.name is empty we use the default name", () => {
-      const token = new NFT(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-        {}
-      );
-      expect(() => token.name()).toThrowError();
-    });
-  });
-
-  describe("symbol", () => {
-    test("when metadata.symbol exists", () => {
-      const token = new NFT(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-        {
-          symbol: "some token symbol",
-        }
-      );
-      expect(token.symbol()).toEqual("some token symbol");
-    });
-    test("when metadata.symbol is empty we use the default symbol", () => {
-      const token = new NFT(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-        {}
-      );
-      expect(() => token.name()).toThrowError();
-    });
-  });
-
-  describe("iconUri", () => {
-    test("it always returns undefined as it's not used for NFT", () => {
-      const token = new NFT(
-        "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-        "1",
-        "1",
-        "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-        {}
-      );
-      expect(token.iconUri()).toBeUndefined();
-    });
+    const fa2token: FA2Token = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      balance: "1",
+      tokenId: "123",
+    };
+    expect(httpIconUri(fa2token)).toEqual(undefined);
+    const fa2tokenWithIcon = {
+      ...fa2token,
+      metadata: {
+        thumbnailUri: "ipfs://QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
+      },
+    };
+    expect(httpIconUri(fa2tokenWithIcon)).toEqual(
+      "https://ipfs.io/ipfs/QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs"
+    );
   });
 });

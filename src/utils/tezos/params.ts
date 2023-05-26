@@ -7,7 +7,6 @@ import {
   WalletParamsWithKind,
 } from "@taquito/taquito";
 import { OperationValue } from "../../components/sendForm/types";
-import { FA12Token, FA2Token } from "../../types/Asset";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
@@ -76,12 +75,9 @@ const makeTokenTransferParams = async (
   const { contract } = asset;
   const args = { ...operation.value, contract };
   const transferMethod =
-    asset instanceof FA12Token
+    asset.type === "fa1.2"
       ? makeFA12TransferMethod(args, signer)
-      : makeFA2TransferMethod(
-          { ...args, tokenId: (asset as FA2Token).tokenId },
-          signer
-        );
+      : makeFA2TransferMethod({ ...args, tokenId: asset.tokenId }, signer);
 
   return (await transferMethod).toTransferParams();
 };
