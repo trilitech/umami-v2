@@ -4,7 +4,6 @@ import { fakeRestoreFromMnemonic } from "../mocks/helpers";
 import { publicKeys1 } from "../mocks/publicKeys";
 import { seedPhrase } from "../mocks/seedPhrase";
 import { Account, AccountType, MnemonicAccount } from "../types/Account";
-import { UmamiEncrypted } from "../types/UmamiEncrypted";
 import accountsSlice from "./store/accountsSlice";
 
 import { store } from "./store/store";
