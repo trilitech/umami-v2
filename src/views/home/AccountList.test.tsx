@@ -5,7 +5,6 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import { store } from "../../utils/store/store";
 import { AccountsList } from "./AccountsList";
 
-import { extraArgumentFake } from "../../mocks/extraArgumentsFakes";
 import { mockPk } from "../../mocks/factories";
 import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
 import "../../mocks/mockGetRandomValues";
@@ -17,6 +16,7 @@ import {
   within,
 } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
+import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 
 const { add, reset } = accountsSlice.actions;
 
@@ -161,7 +161,7 @@ describe("<AccountList />", () => {
       expect(submitBtn).toBeEnabled();
     });
 
-    extraArgumentFake.restoreAccount.mockResolvedValue(
+    fakeExtraArguments.restoreAccount.mockResolvedValue(
       mockAccount(2, undefined, MOCK_FINGETPRINT1)
     );
 
