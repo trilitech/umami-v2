@@ -53,7 +53,7 @@ const BeaconDrawerBody = () => {
         bg="umami.blue"
         type="submit"
       >
-        'Connect with Pairing Request'
+        Connect with Pairing Request
       </Button>
       <BeaconPeers />
     </Box>
