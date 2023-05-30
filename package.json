@@ -74,7 +74,7 @@
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "yarn generate-ts-types && react-app-rewired build",
     "test": "cross-env TZ=CET react-scripts test --coverage --verbose --testPathIgnorePatterns='src/integration/*'",
     "test:tezos:integration": "cross-env TZ=CET react-scripts test --watchPathIgnorePatterns=[]",
     "generate-ts-types": "graphql-codegen --config graphql.config.yml",

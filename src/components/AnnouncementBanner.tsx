@@ -13,11 +13,7 @@ import { maintanceIcon } from "./Icons";
 const ANNOUNCEMENT_REFRESH_INTERVAL = 60 * 60 * 1000; // once an hour
 
 export const AnnouncementBanner: React.FC = () => {
-  const {
-    isOpen: isVisible,
-    onOpen,
-    onClose,
-  } = useDisclosure({ defaultIsOpen: true });
+  const [open, setOpen] = useState(false);
 
   const [message, setMessage] = useState<string | null | undefined>();
 
@@ -26,7 +22,7 @@ export const AnnouncementBanner: React.FC = () => {
       const result = await request(ConfigurationDocument);
       if (message !== result.configuration?.maintenanceMessage) {
         setMessage(result.configuration?.maintenanceMessage);
-        onOpen();
+        setOpen(true);
       }
     };
     requestConfiguration();
@@ -34,16 +30,16 @@ export const AnnouncementBanner: React.FC = () => {
       requestConfiguration();
     }, ANNOUNCEMENT_REFRESH_INTERVAL);
     return () => clearInterval(intervalId);
-  }, [message, onOpen]);
+  }, [message, open]);
 
   const MaintanceIcon = maintanceIcon;
-  return isVisible && message ? (
+  return open && message ? (
     <Alert data-testid="announcement" color="black" bg="#FC7884">
       <MaintanceIcon />
       <Box w="100%" pl="8px">
         <AlertDescription>{message}</AlertDescription>
       </Box>
-      <CloseButton onClick={onClose} />
+      <CloseButton onClick={() => setOpen(false)} />
     </Alert>
   ) : (
     <></>
