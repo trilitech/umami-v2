@@ -4,7 +4,7 @@ import { AccountTileDisplay, Props } from "./AccountTileDisplay";
 
 const AccountTile: React.FC<
   Omit<Props, "balance"> & {
-    balance: string | null;
+    balance?: string;
   }
 > = ({ address, onClick, balance, selected = false, label }) => {
   const prettyBalance = balance && `${format("mutez", "tz", balance)} ꜩ`;

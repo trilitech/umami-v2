@@ -185,6 +185,7 @@ const getDelegationOperationDisplay = (
   const delegationRequired = DelegationSchema.safeParse(delegation);
 
   if (!delegationRequired.success) {
+    console.warn("getDelegationOperationDisplay failed parsing");
     return null;
   }
 

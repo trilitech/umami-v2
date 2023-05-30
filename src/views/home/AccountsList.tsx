@@ -75,7 +75,6 @@ const AccountGroup: React.FC<{
       </Flex>
 
       {accounts.map((a) => {
-        const balance = balances[a.pkh] ?? null;
         return (
           <AccountTile
             selected={a.pkh === selected}
@@ -85,7 +84,7 @@ const AccountGroup: React.FC<{
             key={a.pkh}
             address={a.pkh}
             label={a.label || ""}
-            balance={balance ?? null}
+            balance={balances[a.pkh]}
           />
         );
       })}
