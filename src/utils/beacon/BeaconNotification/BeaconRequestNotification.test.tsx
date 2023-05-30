@@ -7,6 +7,11 @@ import {
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
+import {
+  DelegationWalletOperation,
+  Estimate,
+  TransactionOperation,
+} from "@taquito/taquito";
 import { BeaconNotification } from ".";
 import {
   mockBeaconDelegate,
@@ -15,6 +20,7 @@ import {
   objectOperationRequest,
 } from "../../../mocks/beacon";
 import { mockAccount } from "../../../mocks/factories";
+import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import {
   dispatchMockAccounts,
   fillAccountSelector,
@@ -64,10 +70,6 @@ const fixture = (
   </Modal>
 );
 
-const estimateTezTransferMock = estimateMutezTransfer as jest.Mock;
-const transferTezMock = transferMutez as jest.Mock;
-const estimateDelegationMock = estimateDelegation as jest.Mock;
-const delegateMock = delegate as jest.Mock;
 const estimateBatchMock = estimateBatch as jest.Mock;
 const submitBatchMock = submitBatch as jest.Mock;
 
@@ -75,10 +77,12 @@ beforeEach(() => {
   estimateBatchMock.mockImplementation(async (transactions: any[]) => {
     return transactions.map((_) => ({ suggestedFeeMutez: 10 }));
   });
-  estimateTezTransferMock.mockResolvedValue(FEE);
-  estimateDelegationMock.mockResolvedValue(FEE);
-  transferTezMock.mockResolvedValue(OP_HASH);
-  delegateMock.mockResolvedValue(OP_HASH);
+  fakeTezosUtils.estimateMutezTransfer.mockResolvedValue(FEE as Estimate);
+  fakeTezosUtils.estimateDelegation.mockResolvedValue(FEE as Estimate);
+  fakeTezosUtils.transferMutez.mockResolvedValue(
+    OP_HASH as TransactionOperation
+  );
+  fakeTezosUtils.delegate.mockResolvedValue(OP_HASH as any);
   submitBatchMock.mockResolvedValue(BATCH_OP_HASH);
 });
 
