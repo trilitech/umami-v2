@@ -1,5 +1,4 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { Estimate } from "@taquito/taquito";
 import { mockAccount, mockPkh } from "../../mocks/factories";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import {
@@ -7,6 +6,7 @@ import {
   dispatchMockAccounts,
   fillAccountSelector,
   resetAccounts,
+  setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
 import {
   fireEvent,
@@ -39,11 +39,7 @@ afterAll(() => {
 });
 
 beforeEach(() => {
-  fakeTezosUtils.estimateBatch.mockImplementation(
-    async (transactions: any[]) => {
-      return transactions.map((_) => ({ suggestedFeeMutez: 10 })) as Estimate[];
-    }
-  );
+  setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
 
   useGetSkMock.mockReturnValue(() => "mockSk");
   fakeTezosUtils.submitBatch.mockResolvedValue({ opHash: "foo" } as any);

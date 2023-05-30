@@ -15,6 +15,7 @@ import {
   fillAccountSelector,
   fillPassword,
   resetAccounts,
+  setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
 import {
   fireEvent,
@@ -141,13 +142,7 @@ describe("<SendForm />", () => {
     it("should allow to add transaction to batch", async () => {
       await fillForm();
 
-      fakeTezosUtils.estimateBatch.mockImplementationOnce(
-        async (transactions: any[]) => {
-          return transactions.map((_) => ({
-            suggestedFeeMutez: 33,
-          })) as Estimate[];
-        }
-      );
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 33);
       const addToBatchBtn = screen.getByRole("button", {
         name: /insert into batch/i,
       });
@@ -183,13 +178,7 @@ describe("<SendForm />", () => {
         ],
       });
 
-      fakeTezosUtils.estimateBatch.mockImplementationOnce(
-        async (transactions: any[]) => {
-          return transactions.map((_) => ({
-            suggestedFeeMutez: 33,
-          })) as Estimate[];
-        }
-      );
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 33);
       fireEvent.click(addToBatchBtn);
       await waitFor(() => {
         expect(addToBatchBtn).toBeDisabled();
