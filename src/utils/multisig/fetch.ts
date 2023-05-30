@@ -14,13 +14,16 @@ export const getAllMultiSigContracts = async (
     const url = `${tzktUrls[network]}/v1/contracts/${contractAddress}/same?includeStorage=true&limit=${MULTISIG_FETCH_LIMIT}`;
     const { data } = await axios.get<tzktGetSameMultisigsResponseType>(url);
 
-    return data.map(({ address, balance, storage: { signers } }) => ({
-      address,
-      balance,
-      storage: {
-        signers,
-      },
-    }));
+    return data.map(
+      ({ address, balance, storage: { signers, pending_ops } }) => ({
+        address,
+        balance,
+        storage: {
+          signers,
+          pending_ops,
+        },
+      })
+    );
   } catch (error: any) {
     throw new Error(
       `Error fetching same contracts from tzkt: ${error.message}`

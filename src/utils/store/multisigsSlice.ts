@@ -14,7 +14,8 @@ const multisigsSlice = createSlice({
   reducers: {
     reset: () => initialState,
     set: (state, { payload }: { payload: MultisigLookups }) => {
-      state = { ...payload };
+      state.accountToMultisigs = { ...payload.accountToMultisigs };
+      state.multiSigToSigners = { ...payload.multiSigToSigners };
     },
   },
 });

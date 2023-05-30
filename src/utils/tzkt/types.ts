@@ -14,5 +14,6 @@ export type tzktGetSameMultisigsResponseType = {
   address: string;
   storage: {
     signers: string[];
+    pending_ops: number;
   };
 }[];
