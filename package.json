@@ -118,6 +118,7 @@
     "electronmon": "^2.0.2",
     "eslint": "^8.38.0",
     "https-browserify": "^1.0.0",
+    "jest-mock-extended": "^3.0.4",
     "os-browserify": "^0.3.0",
     "prettier": "^2.8.7",
     "prop-types": "^15.8.1",

@@ -15,32 +15,28 @@ import {
   fillAccountSelector,
   fillPassword,
   resetAccounts,
+  setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { formatPkh } from "../../utils/format";
-import { useGetSk } from "../../utils/hooks/accountUtils";
+import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
-import {
-  estimateBatch,
-  estimateFA12transfer,
-  estimateFA2transfer,
-  estimateMutezTransfer,
-  transferFA12Token,
-  transferFA2Token,
-  transferMutez,
-} from "../../utils/tezos";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  within,
-} from "../../mocks/testUtils";
+
+import { Estimate } from "@taquito/taquito";
+import { mock } from "jest-mock-extended";
+import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -49,14 +45,7 @@ jest.mock("../../GoogleAuth", () => ({
 jest.mock("../../utils/tezos");
 jest.mock("../../utils/hooks/accountUtils");
 
-const estimateTezTransferMock = estimateMutezTransfer as jest.Mock;
-const estimateFA2transferMock = estimateFA2transfer as jest.Mock;
-const estimateFA12transferMock = estimateFA12transfer as jest.Mock;
-const transferTezMock = transferMutez as jest.Mock;
-const transferFA2TokenMock = transferFA2Token as jest.Mock;
-const transferFA12TokenMock = transferFA12Token as jest.Mock;
-const estimateBatchMock = estimateBatch as jest.Mock;
-const useGetSkMock = useGetSk as jest.Mock;
+const fakeAccountUtils = mock<typeof accountUtils>(accountUtils);
 
 const fixture = (sender?: string, assetType?: SendFormMode) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -67,7 +56,7 @@ const fixture = (sender?: string, assetType?: SendFormMode) => (
 const MOCK_SK = "mockSk";
 
 beforeEach(() => {
-  useGetSkMock.mockReturnValue(() => MOCK_SK);
+  fakeAccountUtils.useGetSk.mockReturnValue(() => Promise.resolve(MOCK_SK));
 });
 beforeAll(async () => {
   await store.dispatch(
@@ -132,9 +121,9 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      estimateTezTransferMock.mockResolvedValueOnce({
+      fakeTezosUtils.estimateMutezTransfer.mockResolvedValue({
         suggestedFeeMutez: 12345,
-      });
+      } as Estimate);
 
       fireEvent.click(submitBtn);
 
@@ -153,9 +142,7 @@ describe("<SendForm />", () => {
     it("should allow to add transaction to batch", async () => {
       await fillForm();
 
-      estimateBatchMock.mockImplementationOnce(async (transactions: any[]) => {
-        return transactions.map((_) => ({ suggestedFeeMutez: 33 }));
-      });
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 33);
       const addToBatchBtn = screen.getByRole("button", {
         name: /insert into batch/i,
       });
@@ -191,9 +178,7 @@ describe("<SendForm />", () => {
         ],
       });
 
-      estimateBatchMock.mockImplementationOnce(async (transactions: any[]) => {
-        return transactions.map((_) => ({ suggestedFeeMutez: 33 }));
-      });
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 33);
       fireEvent.click(addToBatchBtn);
       await waitFor(() => {
         expect(addToBatchBtn).toBeDisabled();
@@ -239,9 +224,9 @@ describe("<SendForm />", () => {
     test("it should submit transaction and display recap with tzkt link", async () => {
       await fillFormAndSimulate();
 
-      transferTezMock.mockResolvedValueOnce({
+      fakeTezosUtils.transferMutez.mockResolvedValueOnce({
         hash: "foo",
-      });
+      } as any);
 
       fillPassword("mockPass");
 
@@ -265,7 +250,7 @@ describe("<SendForm />", () => {
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
       };
-      expect(transferTezMock).toHaveBeenCalledWith(
+      expect(fakeTezosUtils.transferMutez).toHaveBeenCalledWith(
         mockPkh(7),
         23000000,
         config,
@@ -321,9 +306,9 @@ describe("<SendForm />", () => {
         expect(estimateButton).toBeEnabled();
       });
 
-      estimateFA2transferMock.mockResolvedValueOnce({
+      fakeTezosUtils.estimateFA2transfer.mockResolvedValueOnce({
         suggestedFeeMutez: MOCK_FEE,
-      });
+      } as Estimate);
 
       fireEvent.click(estimateButton);
 
@@ -331,7 +316,7 @@ describe("<SendForm />", () => {
         const fee = screen.getByLabelText(/^fee$/i);
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
-      expect(estimateFA2transferMock).toHaveBeenCalledWith(
+      expect(fakeTezosUtils.estimateFA2transfer).toHaveBeenCalledWith(
         {
           amount: "1000000",
           contract: mockFA2.contract,
@@ -345,7 +330,9 @@ describe("<SendForm />", () => {
       );
 
       fillPassword("mockPass");
-      transferFA2TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
+      fakeTezosUtils.transferFA2Token.mockResolvedValueOnce({
+        hash: "mockHash",
+      } as any);
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -365,7 +352,7 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(transferFA2TokenMock).toHaveBeenCalledWith(
+      expect(fakeTezosUtils.transferFA2Token).toHaveBeenCalledWith(
         {
           amount: "1000000",
           contract: mockFA2.contract,
@@ -424,9 +411,9 @@ describe("<SendForm />", () => {
         expect(estimateButton).toBeEnabled();
       });
 
-      estimateFA12transferMock.mockResolvedValueOnce({
+      fakeTezosUtils.estimateFA12transfer.mockResolvedValueOnce({
         suggestedFeeMutez: MOCK_FEE,
-      });
+      } as Estimate);
 
       fireEvent.click(estimateButton);
 
@@ -435,7 +422,7 @@ describe("<SendForm />", () => {
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
 
-      expect(estimateFA12transferMock).toHaveBeenCalledWith(
+      expect(fakeTezosUtils.estimateFA12transfer).toHaveBeenCalledWith(
         {
           amount: "1000000000",
           contract: mockFa1.contract,
@@ -448,7 +435,9 @@ describe("<SendForm />", () => {
       );
 
       fillPassword("mockPass");
-      transferFA12TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
+      fakeTezosUtils.transferFA12Token.mockResolvedValueOnce({
+        hash: "mockHash",
+      } as any);
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -468,7 +457,7 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(transferFA12TokenMock).toHaveBeenCalledWith(
+      expect(fakeTezosUtils.transferFA12Token).toHaveBeenCalledWith(
         {
           amount: "1000000000",
           contract: mockFa1.contract,
@@ -499,9 +488,9 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      estimateFA2transferMock.mockResolvedValueOnce({
+      fakeTezosUtils.estimateFA2transfer.mockResolvedValueOnce({
         suggestedFeeMutez: 3654,
-      });
+      } as Estimate);
 
       fireEvent.click(submitBtn);
 
@@ -540,7 +529,9 @@ describe("<SendForm />", () => {
       await fillFormAndSimulate();
 
       fillPassword("mockPass");
-      transferFA2TokenMock.mockResolvedValueOnce({ hash: "mockHash" });
+      fakeTezosUtils.transferFA2Token.mockResolvedValueOnce({
+        hash: "mockHash",
+      } as any);
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -563,7 +554,7 @@ describe("<SendForm />", () => {
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
       };
-      expect(transferFA2TokenMock).toHaveBeenCalledWith(
+      expect(fakeTezosUtils.transferFA2Token).toHaveBeenCalledWith(
         {
           amount: "1",
           contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob1",
@@ -620,9 +611,9 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      estimateTezTransferMock.mockResolvedValueOnce({
+      fakeTezosUtils.estimateMutezTransfer.mockResolvedValueOnce({
         suggestedFeeMutez: 12345,
-      });
+      } as Estimate);
 
       fireEvent.click(submitBtn);
 
@@ -650,9 +641,9 @@ describe("<SendForm />", () => {
 
       const googleSSOBtn = screen.getByText(/sign with google/i);
 
-      transferTezMock.mockResolvedValueOnce({
+      fakeTezosUtils.transferMutez.mockResolvedValueOnce({
         hash: "foo",
-      });
+      } as any);
 
       fireEvent.click(googleSSOBtn);
 
@@ -682,9 +673,9 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      estimateTezTransferMock.mockResolvedValueOnce({
+      fakeTezosUtils.estimateMutezTransfer.mockResolvedValueOnce({
         suggestedFeeMutez: 12345,
-      });
+      } as Estimate);
 
       fireEvent.click(submitBtn);
 
@@ -712,9 +703,9 @@ describe("<SendForm />", () => {
 
       const ledgerBtn = screen.getByText(/sign with ledger/i);
 
-      transferTezMock.mockResolvedValueOnce({
+      fakeTezosUtils.transferMutez.mockResolvedValueOnce({
         hash: "foo",
-      });
+      } as any);
 
       fireEvent.click(ledgerBtn);
 

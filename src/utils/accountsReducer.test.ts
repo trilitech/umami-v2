@@ -1,5 +1,5 @@
-import { extraArgumentFake } from "../mocks/extraArgumentsFakes";
 import { mockAccount } from "../mocks/factories";
+import { fakeExtraArguments } from "../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../mocks/helpers";
 import { publicKeys1 } from "../mocks/publicKeys";
 import { seedPhrase } from "../mocks/seedPhrase";
@@ -24,11 +24,11 @@ afterEach(() => {
 });
 
 beforeEach(() => {
-  extraArgumentFake.restoreAccount.mockResolvedValue({
+  fakeExtraArguments.restoreAccount.mockResolvedValue({
     pk: publicKeys1.pk,
     pkh: publicKeys1.pkh,
   });
-  extraArgumentFake.decrypt.mockResolvedValue("unencryptedFingerprint");
+  fakeExtraArguments.decrypt.mockResolvedValue("unencryptedFingerprint");
 });
 
 describe("Accounts reducer", () => {
@@ -166,10 +166,10 @@ describe("Accounts reducer", () => {
         },
       ];
 
-      extraArgumentFake.restoreMnemonicAccounts.mockResolvedValueOnce(
-        restoredAccounts
+      fakeExtraArguments.restoreMnemonicAccounts.mockResolvedValueOnce(
+        restoredAccounts as MnemonicAccount[]
       );
-      extraArgumentFake.encryptMock.mockResolvedValueOnce(mockEntrypted);
+      fakeExtraArguments.encrypt.mockResolvedValueOnce(mockEntrypted as any);
 
       await store
         .dispatch(
@@ -181,7 +181,7 @@ describe("Accounts reducer", () => {
         )
         .unwrap();
 
-      expect(extraArgumentFake.restoreMnemonicAccounts).toHaveBeenCalledWith(
+      expect(fakeExtraArguments.restoreMnemonicAccounts).toHaveBeenCalledWith(
         seedPhrase,
         mockLabel,
         undefined

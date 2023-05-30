@@ -1,44 +1,34 @@
 import { TezosNetwork } from "@airgap/tezos";
+import { mockAccount, mockPkh } from "../../mocks/factories";
+import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
+import {
+  closeModal,
+  dispatchMockAccounts,
+  fillAccountSelector,
+  resetAccounts,
+  setBatchEstimationPerTransaction,
+} from "../../mocks/helpers";
 import {
   fireEvent,
   render,
   screen,
   waitFor,
   within,
-} from "@testing-library/react";
-import { mockAccount, mockPkh } from "../../mocks/factories";
-import {
-  closeModal,
-  dispatchMockAccounts,
-  fillAccountSelector,
-  resetAccounts,
-} from "../../mocks/helpers";
-import { ReduxStore } from "../../providers/ReduxStore";
-import { UmamiTheme } from "../../providers/UmamiTheme";
+} from "../../mocks/testUtils";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { useGetSk } from "../../utils/hooks/accountUtils";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
-import { estimateBatch, submitBatch } from "../../utils/tezos";
 import BatchView from "./BatchView";
 
 // TODO refactor mocks
-jest.mock("react-router-dom");
 jest.mock("../../utils/tezos");
 jest.mock("../../utils/hooks/accountUtils");
 
-const estimateBatchMock = estimateBatch as jest.Mock;
-const submitBatchMock = submitBatch as jest.Mock;
 const useGetSkMock = useGetSk as jest.Mock;
 
-const fixture = () => (
-  <ReduxStore>
-    <UmamiTheme>
-      <BatchView />
-    </UmamiTheme>
-  </ReduxStore>
-);
+const fixture = () => <BatchView />;
 
 beforeAll(() => {
   dispatchMockAccounts([mockAccount(1), mockAccount(2), mockAccount(3)]);
@@ -48,14 +38,11 @@ afterAll(() => {
   resetAccounts();
 });
 
-// Why doesn't this work in beforeAll??
 beforeEach(() => {
-  estimateBatchMock.mockImplementation(async (transactions: any[]) => {
-    return transactions.map((_) => ({ suggestedFeeMutez: 10 }));
-  });
+  setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
 
   useGetSkMock.mockReturnValue(() => "mockSk");
-  submitBatchMock.mockResolvedValue({ opHash: "foo" });
+  fakeTezosUtils.submitBatch.mockResolvedValue({ opHash: "foo" } as any);
 });
 
 // We do a lot of modifications in assets store and we don't want them to leak between tests
@@ -291,7 +278,7 @@ describe("<BatchView />", () => {
         network: TezosNetwork.MAINNET,
         sk: "mockSk",
       };
-      expect(submitBatch).toHaveBeenCalledWith(
+      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
         [
           {
             type: "tez",
