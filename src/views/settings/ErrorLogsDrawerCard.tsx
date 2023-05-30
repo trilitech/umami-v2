@@ -28,7 +28,8 @@ const ErrorLogsDrawerCard = () => {
   };
 
   return (
-    <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen}>
+    <>
+      <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen} />
       <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
         <DrawerOverlay />
         <DrawerContent bg="umami.gray.900">
@@ -42,7 +43,7 @@ const ErrorLogsDrawerCard = () => {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </SettingsCardWithDrawerIcon>
+    </>
   );
 };
 

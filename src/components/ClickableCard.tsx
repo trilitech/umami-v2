@@ -60,8 +60,7 @@ export const SettingsCard: React.FC<{
 export const SettingsCardWithDrawerIcon: React.FC<{
   left: string;
   onClick?: () => void;
-  children?: React.ReactNode;
-}> = ({ left, onClick, children }) => {
+}> = ({ left, onClick }) => {
   return (
     <SettingsCard left={left} onClick={onClick}>
       <Icon
@@ -71,7 +70,6 @@ export const SettingsCardWithDrawerIcon: React.FC<{
           color: colors.gray[300],
         }}
       />
-      {children}
     </SettingsCard>
   );
 };
