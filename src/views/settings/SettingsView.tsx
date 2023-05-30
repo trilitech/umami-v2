@@ -1,27 +1,26 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
 import {
   Box,
-  Flex,
-  Heading,
-  Text,
-  Switch,
   Button,
   Divider,
+  Flex,
+  Heading,
   Input,
+  Switch,
+  Text,
 } from "@chakra-ui/react";
-import { useAddPeer } from "../../utils/beacon/beacon";
+import { BsFolder2Open } from "react-icons/bs";
+import { TfiReload } from "react-icons/tfi";
 import ClickableCard, {
   SettingsCard,
   SettingsCardWithDrawerIcon,
 } from "../../components/ClickableCard";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NetworkSelector from "../../components/NetworkSelector";
 import { TopBar } from "../../components/TopBar";
 import { useReset } from "../../utils/hooks/accountHooks";
-import BeaconPeers from "../../utils/beacon/BeaconPeers";
+import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import { TfiReload } from "react-icons/tfi";
-import { BsFolder2Open } from "react-icons/bs";
 
 export default function SettingsView() {
   const reset = useReset();
@@ -52,7 +51,6 @@ export default function SettingsView() {
 }
 
 const GeneralSection = () => {
-  const addPeer = useAddPeer();
   return (
     <SectionContainer title="General">
       <SettingsCard left="Theme">
@@ -68,21 +66,6 @@ const GeneralSection = () => {
         </Box>
       </SettingsCard>
       <ErrorLogsDrawerCard />
-
-      <SettingsCard left="Paste Beacon Pairing Code">
-        <Box>
-          <Button
-            onClick={async () => {
-              navigator.clipboard.readText().then((text) => {
-                addPeer(text);
-              });
-            }}
-          >
-            Paste
-          </Button>
-        </Box>
-      </SettingsCard>
-      <BeaconPeers />
     </SectionContainer>
   );
 };
@@ -177,7 +160,7 @@ const AdvancedSection = () => {
         </Box>
       </ClickableCard>
 
-      <SettingsCardWithDrawerIcon left="dApps" onClick={() => {}} />
+      <BeaconDrawerCard />
       <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
       <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={reset} />
       <SettingsCardWithDrawerIcon left="Change Password" onClick={() => {}} />

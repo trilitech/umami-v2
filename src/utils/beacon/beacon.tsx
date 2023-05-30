@@ -29,57 +29,26 @@ export const useRefreshPeers = () => {
 export const usePeers = () =>
   useQuery(PEERS_QUERY_KEY, () => walletClient.getPeers());
 
+export const useRemovePeer = () => {
+  const refresh = useRefreshPeers();
+  return (peerInfo: PeerInfo) =>
+    walletClient.removePeer(peerInfo as any).then(refresh);
+};
+
 export const useAddPeer = () => {
-  const refreshPeers = useRefreshPeers();
+  const refresh = useRefreshPeers();
   return (payload: string) => {
     const serializer = new Serializer();
     serializer
       .deserialize(payload)
       .then((peer) => {
-        walletClient.addPeer(peer as PeerInfo).then(refreshPeers);
+        walletClient.addPeer(peer as PeerInfo).then(refresh);
       })
       .catch((e) => {
-        console.error("not a valid sync code: ", payload);
+        console.error("not a valid sync code: ", payload, e);
       });
   };
 };
-// Examples created by Andy for the following usecases
-
-// const handleOperationRequest = async (message: OperationRequestOutput) => {
-//   // TODO: Show operation details in UI, allow user to approve / reject
-//   // TODO: Sign message.operationDetails
-
-//   const response: OperationResponseInput = {
-//     type: BeaconMessageType.OperationResponse,
-//     id: message.id,
-//     transactionHash: "", // TODO: TX Hash
-//   };
-
-//   walletClient.respond(response);
-// };
-// const handleBeaconMessage = (message: BeaconRequestOutputMessage) => {
-//   console.log("message", message);
-//   // eslint-disable-next-line no-debugger
-//   debugger;
-//   if (message.type === BeaconMessageType.PermissionRequest) {
-//     handlePermissionRequest(message);
-//   } else if (message.type === BeaconMessageType.OperationRequest) {
-//     handleOperationRequest(message);
-//   } else if (message.type === BeaconMessageType.SignPayloadRequest) {
-//     handleSignPayloadRequest(message);
-//   } else {
-//     console.error("Message Type Not Supported");
-//     console.error("Received: ", message);
-
-//     const response: BeaconResponseInputMessage = {
-//       type: BeaconMessageType.Error,
-//       id: message.id,
-//       errorType: BeaconErrorType.ABORTED_ERROR,
-//     };
-
-//     walletClient.respond(response);
-//   }
-// };
 
 export const useBeaconModalNotification = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
