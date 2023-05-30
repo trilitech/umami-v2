@@ -21,9 +21,7 @@ const SignButton: React.FC<{
   const { register, handleSubmit, formState } = useForm<{ password: string }>();
 
   const getSk = useGetSk();
-  const isValid = formState.isValid;
-  const isDirty = formState.isDirty;
-  const isError = isDirty && !isValid;
+  const { isValid, isDirty } = formState;
 
   const type = signerAccount.type;
   const isGoogleSSO = type === AccountType.SOCIAL;
@@ -76,9 +74,10 @@ const SignButton: React.FC<{
   return (
     <Box>
       {isMnemonic ? (
-        <FormControl isInvalid={isError} mt={4}>
-          <FormLabel>Password</FormLabel>
+        <FormControl isInvalid={isDirty && !isValid} mt={4}>
+          <FormLabel>Password:</FormLabel>
           <Input
+            mb={2}
             type="password"
             {...register("password", {
               required: true,
