@@ -15,11 +15,12 @@ export const getAllMultiSigContracts = async (
     const { data } = await axios.get<tzktGetSameMultisigsResponseType>(url);
 
     return data.map(
-      ({ address, balance, storage: { signers, pending_ops } }) => ({
+      ({ address, balance, storage: { signers, threshold, pending_ops } }) => ({
         address,
         balance,
         storage: {
           signers,
+          threshold,
           pending_ops,
         },
       })

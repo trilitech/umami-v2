@@ -9,7 +9,7 @@ export const makeMultisigLookups = (
     (acc: MultisigLookups, cur) => {
       const {
         address: multisigAddress,
-        storage: { signers, pending_ops },
+        storage: { signers, pending_ops, threshold },
       } = cur;
 
       const intersection = signers.filter((s) => accountPkhs.has(s));
@@ -23,7 +23,11 @@ export const makeMultisigLookups = (
         if (!(pkh in acc.accountToMultisigs)) {
           acc.accountToMultisigs[pkh] = [];
         }
-        acc.accountToMultisigs[pkh]?.push([multisigAddress, pending_ops]);
+        acc.accountToMultisigs[pkh]?.push({
+          address: multisigAddress,
+          pendingOps: pending_ops,
+          threshold: Number(threshold),
+        });
       });
 
       acc.multiSigToSigners[multisigAddress] = signers;

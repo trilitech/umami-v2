@@ -9,13 +9,14 @@ describe("multisig helpers", () => {
       {
         balance: 0,
         address: mockContract(0),
-        storage: { signers: [mockPkh(0)], pending_ops: 0 },
+        storage: { signers: [mockPkh(0)], threshold: "3", pending_ops: 0 },
       },
       {
         balance: 0,
         address: mockContract(1),
         storage: {
           signers: [mockPkh(0), mockPkh(2), mockPkh(3)],
+          threshold: "3",
           pending_ops: 1,
         },
       },
@@ -24,6 +25,7 @@ describe("multisig helpers", () => {
         address: mockContract(2),
         storage: {
           signers: [mockPkh(3), mockPkh(4), mockPkh(5)],
+          threshold: "3",
           pending_ops: 2,
         },
       },
@@ -41,10 +43,10 @@ describe("multisig helpers", () => {
 
     expect(accountToMultisigs).toEqual({
       [mockPkh(0)]: [
-        [mockContract(0), 0],
-        [mockContract(1), 1],
+        { address: mockContract(0), pendingOps: 0, threshold: 3 },
+        { address: mockContract(1), pendingOps: 1, threshold: 3 },
       ],
-      [mockPkh(2)]: [[mockContract(1), 1]],
+      [mockPkh(2)]: [{ address: mockContract(1), pendingOps: 1, threshold: 3 }],
     });
   });
 });

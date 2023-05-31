@@ -29,6 +29,7 @@ describe("multisi fetch", () => {
             "tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3",
             "tz1dyX3B1CFYa2DfdFLyPtiJCfQRUgPVME6E",
           ],
+          threshold: "1",
         },
       },
       {
@@ -41,6 +42,7 @@ describe("multisi fetch", () => {
             "tz1VTfGqp34NypRQJmjNiPrCTG5TRonevsmf",
             "tz1g2pCYFonfHXqjNCJNnGRy6MamDPdon4oS",
           ],
+          threshold: "2",
         },
       },
       {
@@ -52,6 +54,7 @@ describe("multisi fetch", () => {
             "tz1RVPjF88wjiZ7JhxvmLPRm6TTR9MHPAFPd",
             "tz1ajzeMEzKxM9H4keBxoD1JSQy3iGRoHPg5",
           ],
+          threshold: "1",
         },
       },
     ]);

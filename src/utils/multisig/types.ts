@@ -3,11 +3,14 @@ export type WalletUserPkh = string;
 export type MultisigAddress = string;
 export type PendingOps = number;
 
+export type Multisig = {
+  address: MultisigAddress;
+  pendingOps: PendingOps;
+  threshold: number;
+};
+
 // Mapping from a wallet account user to multisigs the accounts are signers of
-export type AccountToMultisigs = Record<
-  WalletUserPkh,
-  [MultisigAddress, PendingOps][] | undefined
->;
+export type AccountToMultisigs = Record<WalletUserPkh, Multisig[] | undefined>;
 
 // Mapping from a multisig address to its signers.
 // The multisig should have at least one of the accounts as the signer.
