@@ -180,6 +180,7 @@ const getDelegationOperationDisplay = (
     amount: z.number(),
     hash: z.string(),
     level: z.number(),
+    bakerFee: z.number(),
   });
 
   const delegationRequired = DelegationSchema.safeParse(delegation);
@@ -210,10 +211,7 @@ const getDelegationOperationDisplay = (
     sender: required.sender.address,
     tzktUrl: getHashUrl(required.hash, network),
     level,
-    fee:
-      delegation.bakerFee !== undefined
-        ? prettyTezAmount(new BigNumber(delegation.bakerFee))
-        : undefined,
+    fee: prettyTezAmount(new BigNumber(required.bakerFee)),
   };
 };
 
