@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { validateAddress, ValidationResult } from "@taquito/utils";
 import React, { useState } from "react";
+import { Noop } from "react-hook-form";
 import colors from "../../style/colors";
 import { Contact } from "../../types/Contact";
 import { useAccounts } from "../../utils/hooks/accountHooks";
@@ -18,6 +19,7 @@ type BaseProps = {
   onValidPkh: (v: string | null) => void;
   initialPkhValue?: string;
   isDisabled?: boolean;
+  onBlur?: Noop;
 };
 
 const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
@@ -93,7 +95,13 @@ const Suggestions = ({
 
 export const RecipientAutoCompleteDisplay: React.FC<
   BaseProps & { contacts: Contact[] }
-> = ({ contacts, onValidPkh, initialPkhValue, isDisabled }) => {
+> = ({
+  contacts,
+  onValidPkh,
+  initialPkhValue,
+  isDisabled,
+  onBlur = () => {},
+}) => {
   const initialValue = initialPkhValue
     ? contacts.find((e) => e.pkh === initialPkhValue)?.name || initialPkhValue
     : "";
@@ -137,6 +145,7 @@ export const RecipientAutoCompleteDisplay: React.FC<
         onBlur={(e) => {
           e.preventDefault();
           setHideSuggestions(true);
+          onBlur();
         }}
         onChange={(e) => {
           handleChange(e.target.value);
@@ -163,9 +172,7 @@ export const RecipentAutoComplete: React.FC<BaseProps> = (props) => {
 
   return (
     <RecipientAutoCompleteDisplay
-      isDisabled={Boolean(props.isDisabled)}
-      initialPkhValue={props.initialPkhValue}
-      onValidPkh={props.onValidPkh}
+      {...props}
       contacts={contacts.concat(accounts)}
     />
   );

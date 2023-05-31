@@ -256,15 +256,15 @@ export const SendTezOrNFTForm = ({
             <FormLabel>To</FormLabel>
             <Controller
               rules={{
-                required: true,
                 validate: (val) =>
                   validateAddress(val) === ValidationResult.VALID ||
-                  "Invalid address",
+                  "Invalid address or contact",
               }}
               control={control}
               name="recipient"
-              render={({ field: { onChange, value } }) => (
+              render={({ field: { onChange, onBlur } }) => (
                 <RecipentAutoComplete
+                  onBlur={onBlur}
                   isDisabled={disabled}
                   initialPkhValue={recipient}
                   onValidPkh={(pkh) => {
