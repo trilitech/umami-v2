@@ -1,4 +1,3 @@
-import { PeerInfo } from "@airgap/beacon-wallet";
 import {
   AspectRatio,
   Flex,
@@ -15,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { BsTrash } from "react-icons/bs";
 import { usePeers, useRemovePeer } from "./beacon";
+import { PeerInfo } from "./types";
 
 // Displays the list of beacon peers
 
@@ -25,7 +25,7 @@ const peerRow = (peerInfo: PeerInfo, onRemove: () => void) => {
       <Td>
         <Flex alignItems={"center"}>
           <AspectRatio width={4} ratio={1}>
-            <Image width="100%" src={(peerInfo as any).icon} />
+            <Image width="100%" src={peerInfo.icon} />
           </AspectRatio>
           <Text size={"sm"} ml={2}>
             {peerInfo.name}
@@ -34,7 +34,7 @@ const peerRow = (peerInfo: PeerInfo, onRemove: () => void) => {
       </Td>
       <Td>
         <Text size={"sm"} ml={2}>
-          {(peerInfo as any).relayServer}
+          {peerInfo.relayServer}
         </Text>
       </Td>
       <Td>
