@@ -9,32 +9,26 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { MakiLogo } from "./components/MakiLogo";
-import Slider1 from "./assets/onboarding/slider_1.png";
-import { SupportedIcons } from "./components/CircleIcon";
 import Slider from "./components/Slider";
 import SlideItem from "./components/SliderItem";
 import { useCreateOrImportSecretModal } from "./components/Onboarding/useOnboardingModal";
+import { AllSlideritemsDocument, SlideritemRecord } from "./graphql/generated";
+import { request } from "./utils/datocms/request";
+import { useEffect, useState } from "react";
 
 function ImportSeed() {
   const { onOpen, modalElement } = useCreateOrImportSecretModal();
-  // TODO: Fill with proper content
-  const sliderItems = [
-    {
-      src: Slider1,
-      text: "Manage your NFTs and integrate with dApps",
-      icon: SupportedIcons.diamont,
-    },
-    {
-      src: Slider1,
-      text: "Test",
-      icon: SupportedIcons.document,
-    },
-    {
-      src: Slider1,
-      text: "Test 2",
-      icon: SupportedIcons.document,
-    },
-  ];
+
+  const [slideItems, setSlideItems] = useState<SlideritemRecord[]>([]);
+  const requestSliderItems = async () => {
+    const result = await request(AllSlideritemsDocument);
+    setSlideItems(result.allSlideritems as SlideritemRecord[]);
+  };
+
+  useEffect(() => {
+    requestSliderItems();
+  }, []);
+
   return (
     <Box bg={"umami.gray.900"} height={"100vh"} padding={"60px"}>
       <SimpleGrid
@@ -65,8 +59,8 @@ function ImportSeed() {
           display={["none", "none", "initial"]}
         >
           <Slider>
-            {sliderItems.map((item, index) => {
-              return <SlideItem key={index} {...item} />;
+            {slideItems.map((item, index) => {
+              return <SlideItem key={index} item={item} />;
             })}
           </Slider>
         </Box>
