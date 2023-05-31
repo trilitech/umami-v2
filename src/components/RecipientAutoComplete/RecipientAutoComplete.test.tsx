@@ -14,6 +14,11 @@ const setup = (initialPkhValue?: string) => {
   );
 };
 
+const assertHiddenSuggetions = () => {
+  const suggestionContainer = screen.queryByRole("list");
+  expect(suggestionContainer).not.toBeInTheDocument();
+};
+
 describe("<RecipientAutoComplete />", () => {
   it("should fire onValidPkh when a valid pkh is entered by the user", () => {
     setup();
@@ -33,12 +38,21 @@ describe("<RecipientAutoComplete />", () => {
     expect(spy).toHaveBeenCalledWith(null);
   });
 
-  it("should hide suggestions when input is empty", async () => {
+  it("should hide suggestions when input is empty and unfocused", async () => {
     setup();
 
+    assertHiddenSuggetions();
+  });
+
+  it("should show suggestions when input is empty and focused", async () => {
+    setup();
+
+    const input = screen.getByLabelText("recipient");
+    fireEvent.focus(input);
     const suggestionContainer = screen.getByRole("list");
+
     const suggestions = within(suggestionContainer).queryAllByRole("listitem");
-    expect(suggestions).toHaveLength(0);
+    expect(suggestions).toHaveLength(3);
   });
 
   it("should hide suggestions if input is an exact suggestion", async () => {
@@ -48,9 +62,7 @@ describe("<RecipientAutoComplete />", () => {
 
     fireEvent.change(input, { target: { value: "Contact 1" } });
 
-    const suggestionContainer = screen.getByRole("list");
-    const suggestions = within(suggestionContainer).queryAllByRole("listitem");
-    expect(suggestions).toHaveLength(0);
+    assertHiddenSuggetions();
   });
 
   it("should display suggestions if user input has suggestions", async () => {
@@ -59,7 +71,7 @@ describe("<RecipientAutoComplete />", () => {
 
     expect(input).toBeEnabled();
 
-    fireEvent.change(input, { target: { value: "Contact" } });
+    fireEvent.change(input, { target: { value: "tact" } });
 
     act(() => {
       input.focus();
@@ -79,7 +91,7 @@ describe("<RecipientAutoComplete />", () => {
     ).toBeInTheDocument();
   });
 
-  test("choosing a suggestions fires the pkh, inputs the contact name and closes suggestions", () => {
+  test("choosing a suggestions submits the pkh, inputs the contact name and hides suggestions", () => {
     setup();
     const input = screen.getByLabelText("recipient");
 
@@ -95,16 +107,15 @@ describe("<RecipientAutoComplete />", () => {
 
     const sug = within(suggestionContainer).getByText(mockContact(1).name);
 
-    fireEvent.click(sug);
+    fireEvent.mouseDown(sug);
     expect(input).toHaveProperty("value", mockContact(1).name);
 
-    const suggestions = within(suggestionContainer).queryAllByRole("listitem");
-    expect(suggestions).toHaveLength(0);
+    assertHiddenSuggetions();
     expect(spy).toHaveBeenCalledWith(mockContact(1).pkh);
   });
 
   it("should display initialPkhValue's contact if any, and not display any suggestions", async () => {
-    const initialPkhValue = mockContact(0).pkh;
+    const initialPkhValue = mockContact(1).pkh;
 
     render(
       <RecipientAutoCompleteDisplay
@@ -119,7 +130,7 @@ describe("<RecipientAutoComplete />", () => {
           },
           {
             name: "foo2",
-            pkh: mockContact(1).pkh,
+            pkh: mockContact(2).pkh,
           },
         ]}
         onValidPkh={spy}
@@ -127,11 +138,9 @@ describe("<RecipientAutoComplete />", () => {
       />
     );
 
-    const suggestionContainer = screen.getByRole("list");
-    const suggestions = within(suggestionContainer).queryAllByRole("listitem");
-    expect(suggestions).toHaveLength(0);
+    assertHiddenSuggetions();
     const input = screen.getByLabelText("recipient");
-    expect(input).toHaveProperty("value", "foo");
+    expect(input).toHaveProperty("value", "foo1");
   });
 
   it("should display initialPkhValue if there is no existing contact", async () => {
@@ -139,5 +148,14 @@ describe("<RecipientAutoComplete />", () => {
 
     const input = screen.getByLabelText("recipient");
     expect(input).toHaveProperty("value", mockPkh(5));
+  });
+
+  test("Entering a pkh that belongs to a contact should display contact name in the input", () => {
+    setup();
+    const input = screen.getByLabelText("recipient");
+
+    fireEvent.change(input, { target: { value: mockContact(1).pkh } });
+
+    expect(input).toHaveProperty("value", mockContact(1).name);
   });
 });
