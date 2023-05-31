@@ -2,9 +2,10 @@ import {
   Box,
   Button,
   Flex,
-  Text,
   FormControl,
+  FormErrorMessage,
   FormLabel,
+  Heading,
   Input,
   Modal,
   ModalBody,
@@ -13,19 +14,18 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Heading,
-  FormErrorMessage,
+  Text,
 } from "@chakra-ui/react";
 import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
+import { useAccounts, useGetAccount } from "../utils/hooks/accountHooks";
 import { useContactExists } from "../utils/hooks/contactsHooks";
 import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
+import { addressIsValid } from "../utils/tezos/pureTezosUtils";
 import { CopyableAddress } from "./CopyableText";
-import { validateAddress, ValidationResult } from "@taquito/utils";
-import { useAccounts, useGetAccount } from "../utils/hooks/accountHooks";
 
 export const UpsertContactModal: FC<{
   title: string;
@@ -70,8 +70,7 @@ export const UpsertContactModal: FC<{
   const { nameExistsInContacts, addressExistsInContacts } = useContactExists();
   const getAccount = useGetAccount();
   const validatePkh = (pkh: string) => {
-    const validationResult = validateAddress(pkh);
-    if (validationResult !== ValidationResult.VALID) {
+    if (!addressIsValid(pkh)) {
       return "Invalid address";
     }
     if (isEdit && contact) {

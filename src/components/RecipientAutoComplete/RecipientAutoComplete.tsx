@@ -1,18 +1,18 @@
 import {
-  Text,
   Box,
   Divider,
   Input,
   ListItem,
+  Text,
   UnorderedList,
 } from "@chakra-ui/react";
-import { validateAddress, ValidationResult } from "@taquito/utils";
 import React, { useState } from "react";
 import { Noop } from "react-hook-form";
 import colors from "../../style/colors";
 import { Contact } from "../../types/Contact";
 import { useAccounts } from "../../utils/hooks/accountHooks";
 import { useAppSelector } from "../../utils/store/hooks";
+import { addressIsValid } from "../../utils/tezos/pureTezosUtils";
 import { Identicon } from "../Identicon";
 
 type BaseProps = {
@@ -122,8 +122,7 @@ export const RecipientAutoCompleteDisplay: React.FC<
 
     setValue(v);
 
-    const validationResult = validateAddress(v);
-    if (validationResult === ValidationResult.VALID) {
+    if (addressIsValid(v)) {
       onValidPkh(v);
       return;
     }
