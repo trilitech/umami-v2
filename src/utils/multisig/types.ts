@@ -19,7 +19,20 @@ export type MultisigToSigners = Record<
   WalletUserPkh[] | undefined
 >;
 
+export type MultisigWithPendings = {
+  address: MultisigAddress;
+  pendings: {
+    key: string;
+    rawActions: string;
+    approvals: WalletUserPkh[];
+  }[];
+  threshold: number;
+};
+
 export type MultisigLookups = {
-  accountToMultisigs: AccountToMultisigs;
+  accountToMultisigsWithPendings: Record<
+    WalletUserPkh,
+    MultisigWithPendings[] | undefined
+  >;
   multiSigToSigners: MultisigToSigners;
 };

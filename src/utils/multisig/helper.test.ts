@@ -1,6 +1,6 @@
 import { mockContract, mockPkh } from "../../mocks/factories";
 import { tzktGetSameMultisigsResponseType } from "../tzkt/types";
-import { makeMultisigLookups } from "./helpers";
+import { filterMultisigs } from "./helpers";
 
 describe("multisig helpers", () => {
   test("makeMultisigLookups", async () => {
@@ -31,7 +31,7 @@ describe("multisig helpers", () => {
       },
     ];
 
-    const { accountToMultisigs, multiSigToSigners } = makeMultisigLookups(
+    const { accountToMultisigs, multiSigToSigners } = filterMultisigs(
       accounts,
       multisigs
     );

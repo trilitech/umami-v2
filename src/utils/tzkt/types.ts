@@ -18,3 +18,12 @@ export type tzktGetSameMultisigsResponseType = {
     pending_ops: number;
   };
 }[];
+
+export type tzktGetBigMapKeysResponseType = {
+  active: boolean;
+  key: string | null;
+  value: {
+    actions: string;
+    approvals: string[];
+  } | null;
+}[];
