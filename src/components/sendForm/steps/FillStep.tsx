@@ -19,12 +19,12 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
-import { validateAddress, ValidationResult } from "@taquito/utils";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
+import { addressIsValid } from "../../../utils/tezos/pureTezosUtils";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
@@ -257,8 +257,7 @@ export const SendTezOrNFTForm = ({
             <Controller
               rules={{
                 validate: (val) =>
-                  validateAddress(val) === ValidationResult.VALID ||
-                  "Invalid address or contact",
+                  addressIsValid(val) || "Invalid address or contact",
               }}
               control={control}
               name="recipient"

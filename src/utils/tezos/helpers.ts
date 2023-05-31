@@ -1,18 +1,18 @@
 import { TezosNetwork } from "@airgap/tezos";
+import TransportWebHID from "@ledgerhq/hw-transport-webhid";
+import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import {
   ContractMethod,
   ContractProvider,
   TezosToolkit,
 } from "@taquito/taquito";
+import axios from "axios";
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
+import { tzktGetAddressResponseType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
 import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
-import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
-import TransportWebHID from "@ledgerhq/hw-transport-webhid";
-import axios from "axios";
-import { tzktGetAddressResponseType } from "../tzkt/types";
 
 export const addressExists = async (
   pkh: string,

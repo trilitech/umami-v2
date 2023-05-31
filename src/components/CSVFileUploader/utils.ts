@@ -1,7 +1,7 @@
-import { validateAddress, ValidationResult } from "@taquito/utils";
 import { Asset, getRealAmount } from "../../types/Asset";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
+import { addressIsValid } from "../../utils/tezos/pureTezosUtils";
 import { OperationValue } from "../sendForm/types";
 import { CSVRow } from "./types";
 
@@ -15,7 +15,7 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
   const [recipient, prettyAmount, contract, tokenId] = filteredRow;
   const checkedPrettyAmount = validateNonNegativeNumber(prettyAmount);
 
-  if (validateAddress(recipient) !== ValidationResult.VALID) {
+  if (!addressIsValid(recipient)) {
     throw new Error("Invalid csv value: recipient");
   }
 
@@ -30,7 +30,7 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
   };
 
   if (contract !== undefined) {
-    if (validateAddress(contract) !== ValidationResult.VALID) {
+    if (!addressIsValid(contract)) {
       throw new Error("Invalid csv value: contract address");
     }
     res = { ...res, type: "fa1.2", contract };
