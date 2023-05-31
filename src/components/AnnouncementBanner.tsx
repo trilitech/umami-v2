@@ -1,10 +1,4 @@
-import {
-  Alert,
-  AlertDescription,
-  Box,
-  CloseButton,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Alert, AlertDescription, Box, CloseButton } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ConfigurationDocument } from "../graphql/generated";
 import { request } from "../utils/datocms/request";
