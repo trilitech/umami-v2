@@ -276,10 +276,8 @@ export const SendTezOrNFTForm = ({
               <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
             )}
           </FormControl>
-
           {isNFT ? <SendNFTRecapTile nft={token} /> : null}
-
-          <FormControl mb={2} mt={2}>
+          <FormControl mb={2} mt={2} isInvalid={!!errors.amount}>
             <FormLabel>Amount</FormLabel>
             <InputGroup>
               <Input
@@ -287,7 +285,7 @@ export const SendTezOrNFTForm = ({
                 step={isNFT ? 1 : "any"}
                 type={"number"}
                 {...register("amount", {
-                  required: true,
+                  required: "Amount is required",
                 })}
                 placeholder="Enter amount..."
               />
@@ -296,8 +294,10 @@ export const SendTezOrNFTForm = ({
                 children={getAmountSymbol(token)}
               />
             </InputGroup>
+            {errors.amount && (
+              <FormErrorMessage>{errors.amount.message}</FormErrorMessage>
+            )}
           </FormControl>
-
           {parameter && (
             <FormControl mb={2} mt={2}>
               <FormLabel>Parameter</FormLabel>
