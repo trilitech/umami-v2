@@ -16,10 +16,7 @@ import { BsTrash } from "react-icons/bs";
 import { usePeers, useRemovePeer } from "./beacon";
 import { PeerInfo } from "./types";
 
-// Displays the list of beacon peers
-
 const peerRow = (peerInfo: PeerInfo, onRemove: () => void) => {
-  console.log(peerInfo);
   return (
     <Tr>
       <Td>
