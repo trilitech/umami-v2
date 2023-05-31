@@ -5,7 +5,7 @@ import {
   Serializer,
   WalletClient,
 } from "@airgap/beacon-wallet";
-import { Modal, useDisclosure } from "@chakra-ui/react";
+import { Modal, useDisclosure, useToast } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { BeaconNotification } from "./BeaconNotification";
@@ -43,6 +43,7 @@ export const useRemovePeer = () => {
 
 export const useAddPeer = () => {
   const refresh = useRefreshPeers();
+  const toast = useToast();
   return (payload: string) => {
     const serializer = new Serializer();
     serializer
@@ -50,6 +51,10 @@ export const useAddPeer = () => {
       .then(makePeerInfo)
       .then((peer) => {
         walletClient.addPeer(peer).then(refresh);
+      })
+      .catch((e) => {
+        toast({ title: "Invalid beacon sync code", description: payload });
+        console.error(e);
       });
   };
 };
