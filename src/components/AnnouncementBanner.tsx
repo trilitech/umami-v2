@@ -41,7 +41,5 @@ export const AnnouncementBanner: React.FC = () => {
       </Box>
       <CloseButton onClick={() => setOpen(false)} />
     </Alert>
-  ) : (
-    <></>
-  );
+  ) : null;
 };
