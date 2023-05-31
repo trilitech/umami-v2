@@ -1,7 +1,7 @@
 import {
   BeaconRequestOutputMessage,
   ConnectionContext,
-  PeerInfo,
+  ExtendedP2PPairingResponse,
   Serializer,
   WalletClient,
 } from "@airgap/beacon-wallet";
@@ -9,6 +9,7 @@ import { Modal, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { BeaconNotification } from "./BeaconNotification";
+import { makePeerInfo, PeerInfo } from "./types";
 
 const makeClient = () =>
   new WalletClient({
@@ -27,12 +28,17 @@ export const useRefreshPeers = () => {
 };
 
 export const usePeers = () =>
-  useQuery(PEERS_QUERY_KEY, () => walletClient.getPeers());
+  useQuery(
+    PEERS_QUERY_KEY,
+    () => walletClient.getPeers() as Promise<Array<PeerInfo>>
+  );
 
 export const useRemovePeer = () => {
   const refresh = useRefreshPeers();
   return (peerInfo: PeerInfo) =>
-    walletClient.removePeer(peerInfo as any).then(refresh);
+    walletClient
+      .removePeer(peerInfo as ExtendedP2PPairingResponse)
+      .then(refresh);
 };
 
 export const useAddPeer = () => {
@@ -41,11 +47,9 @@ export const useAddPeer = () => {
     const serializer = new Serializer();
     serializer
       .deserialize(payload)
+      .then(makePeerInfo)
       .then((peer) => {
-        walletClient.addPeer(peer as PeerInfo).then(refresh);
-      })
-      .catch((e) => {
-        console.error("not a valid sync code: ", payload, e);
+        walletClient.addPeer(peer).then(refresh);
       });
   };
 };
