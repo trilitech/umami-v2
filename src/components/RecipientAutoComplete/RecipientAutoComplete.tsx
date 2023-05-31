@@ -1,8 +1,18 @@
-import { Box, Input, ListItem, UnorderedList } from "@chakra-ui/react";
+import {
+  Text,
+  Box,
+  Divider,
+  Input,
+  ListItem,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { validateAddress, ValidationResult } from "@taquito/utils";
 import React, { useState } from "react";
+import colors from "../../style/colors";
 import { Contact } from "../../types/Contact";
+import { useAccounts } from "../../utils/hooks/accountHooks";
 import { useAppSelector } from "../../utils/store/hooks";
+import { Identicon } from "../Identicon";
 
 type BaseProps = {
   onValidPkh: (v: string | null) => void;
@@ -10,22 +20,75 @@ type BaseProps = {
   isDisabled?: boolean;
 };
 
-const getSuggestions = (inputValue: string, contacts: Contact[]): string[] => {
+const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
   if (inputValue === "") {
-    return [];
+    return contacts;
   }
 
-  const result = contacts
-    .map((c) => c.name)
-    .filter((name) =>
-      name.toLowerCase().startsWith(inputValue.trim().toLowerCase())
-    );
+  const result = contacts.filter((c) =>
+    c.name.toLowerCase().includes(inputValue.trim().toLowerCase())
+  );
 
-  if (result.length === 1 && result[0] === inputValue) {
+  // No suggestions if it's an exact match
+  if (result.length === 1 && result[0].name === inputValue) {
     return [];
   }
 
   return result;
+};
+
+const Suggestions = ({
+  hideSuggestions,
+  suggestions,
+  onChange,
+}: {
+  hideSuggestions: boolean;
+  suggestions: Contact[];
+  onChange: (name: string) => void;
+}) => {
+  const hide = hideSuggestions || suggestions.length === 0;
+
+  return hide ? null : (
+    <UnorderedList
+      overflow={"scroll"}
+      mt={2}
+      ml={0}
+      width="100%"
+      borderRadius={8}
+      listStyleType="none"
+      position={"absolute"}
+      bg="umami.gray.500"
+      zIndex={2}
+      maxHeight={300}
+    >
+      {suggestions.map((s, i) => (
+        <Box key={s.pkh}>
+          <ListItem
+            display={"flex"}
+            _hover={{
+              background: colors.gray[600],
+            }}
+            alignItems="center"
+            pl={4}
+            pr={4}
+            h={12}
+            cursor="pointer"
+            onMouseDown={() => {
+              // onMouseDown is the only way for this to fire before the onBlur callback of the Input
+              // https://stackoverflow.com/a/28963938/6797267
+              onChange(s.name);
+            }}
+          >
+            <>
+              <Identicon identiconSize={30} address={s.pkh} mr={4} />
+              <Text size="sm">{s.name}</Text>
+            </>
+          </ListItem>
+          {i !== suggestions.length - 1 && <Divider />}
+        </Box>
+      ))}
+    </UnorderedList>
+  );
 };
 
 export const RecipientAutoCompleteDisplay: React.FC<
@@ -36,18 +99,20 @@ export const RecipientAutoCompleteDisplay: React.FC<
     : "";
 
   const [value, setValue] = useState(initialValue);
-  const [hideSuggestions, setHideSuggestions] = useState(Boolean(initialValue));
+  const [hideSuggestions, setHideSuggestions] = useState(true);
 
   const handleChange = (v: string) => {
-    setValue(v);
     setHideSuggestions(false);
 
-    const contactPkh = contacts.find((c) => c.name === v)?.pkh;
+    const contact = contacts.find((c) => c.name === v || c.pkh === v);
 
-    if (contactPkh !== undefined) {
-      onValidPkh(contactPkh);
+    if (contact !== undefined) {
+      setValue(contact.name);
+      onValidPkh(contact.pkh);
       return;
     }
+
+    setValue(v);
 
     const validationResult = validateAddress(v);
     if (validationResult === ValidationResult.VALID) {
@@ -58,30 +123,7 @@ export const RecipientAutoCompleteDisplay: React.FC<
     onValidPkh(null);
   };
 
-  const allSuggestions = hideSuggestions ? [] : getSuggestions(value, contacts);
-
-  const renderSuggestions = (suggestions: string[]) => {
-    return (
-      <UnorderedList
-        listStyleType="none"
-        position={"fixed"}
-        bg="umami.gray.800"
-        zIndex={2}
-      >
-        {suggestions.map((s) => (
-          <ListItem
-            key={s}
-            onClick={(_) => {
-              handleChange(s);
-              setHideSuggestions(true);
-            }}
-          >
-            {s}
-          </ListItem>
-        ))}
-      </UnorderedList>
-    );
-  };
+  const suggestions = getSuggestions(value, contacts);
 
   return (
     <Box>
@@ -89,23 +131,42 @@ export const RecipientAutoCompleteDisplay: React.FC<
         isDisabled={isDisabled}
         aria-label="recipient"
         value={value}
-        onChange={(e) => handleChange(e.target.value)}
+        onFocus={() => {
+          setHideSuggestions(false);
+        }}
+        onBlur={(e) => {
+          e.preventDefault();
+          setHideSuggestions(true);
+        }}
+        onChange={(e) => {
+          handleChange(e.target.value);
+        }}
         autoComplete={"off"}
         placeholder="Enter tz address or contact name"
       />
-      {renderSuggestions(allSuggestions)}
+      <Suggestions
+        hideSuggestions={hideSuggestions}
+        suggestions={suggestions}
+        onChange={handleChange}
+      />
     </Box>
   );
 };
 
 export const RecipentAutoComplete: React.FC<BaseProps> = (props) => {
   const contacts = Object.values(useAppSelector((s) => s.contacts));
+
+  const accounts = useAccounts().map((a) => ({
+    name: a.label,
+    pkh: a.pkh,
+  }));
+
   return (
     <RecipientAutoCompleteDisplay
       isDisabled={Boolean(props.isDisabled)}
       initialPkhValue={props.initialPkhValue}
       onValidPkh={props.onValidPkh}
-      contacts={contacts}
+      contacts={contacts.concat(accounts)}
     />
   );
 };
