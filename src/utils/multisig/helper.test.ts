@@ -43,10 +43,12 @@ describe("multisig helpers", () => {
 
     expect(accountToMultisigs).toEqual({
       [mockPkh(0)]: [
-        { address: mockContract(0), pendingOps: 0, threshold: 3 },
-        { address: mockContract(1), pendingOps: 1, threshold: 3 },
+        { address: mockContract(0), pendingOpsId: 0, threshold: 3 },
+        { address: mockContract(1), pendingOpsId: 1, threshold: 3 },
       ],
-      [mockPkh(2)]: [{ address: mockContract(1), pendingOps: 1, threshold: 3 }],
+      [mockPkh(2)]: [
+        { address: mockContract(1), pendingOpsId: 1, threshold: 3 },
+      ],
     });
   });
 });

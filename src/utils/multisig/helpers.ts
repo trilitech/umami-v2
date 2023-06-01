@@ -7,22 +7,22 @@ import {
   Multisig,
   MultisigLookups,
   MultisigToSigners,
-  MultisigWithPendings,
+  MultisigWithPendingOps,
   WalletUserPkh,
 } from "./types";
 
-type Lookups = {
+type FilteredLookups = {
   accountToMultisigs: AccountToMultisigs;
   multiSigToSigners: MultisigToSigners;
 };
 
-// Filter out the multisgs the accountPkhs are not included.
+// Filter out the multisgs the accountPkhs are not included and construct lookups.
 export const filterMultisigs = (
   accountPkhs: Set<WalletUserPkh>,
   multisigs: tzktGetSameMultisigsResponseType
-): Lookups =>
+): FilteredLookups =>
   multisigs.reduce(
-    (acc: Lookups, cur) => {
+    (acc: FilteredLookups, cur) => {
       const {
         address: multisigAddress,
         storage: { signers, pending_ops, threshold },
@@ -41,7 +41,7 @@ export const filterMultisigs = (
         }
         acc.accountToMultisigs[pkh]?.push({
           address: multisigAddress,
-          pendingOps: pending_ops,
+          pendingOpsId: pending_ops,
           threshold: Number(threshold),
         });
       });
@@ -66,25 +66,25 @@ export const makeMultisigLookups = async (
     multisigs
   );
 
-  const accountToMultisigsWithPendings = await Promise.all(
+  const accountToMultisigsWithPendingOpsPairs = await Promise.all(
     Object.entries(accountToMultisigs).map(async ([account, multisigs]) => {
       if (!multisigs) {
-        return;
+        return null;
       }
 
-      const multisigsWithPendings = await getMultisigsWithPendings(
+      const multisigsWithPendingOps = await getMultisigsWithPendings(
         network,
         multisigs
       );
 
-      return [account, multisigsWithPendings];
+      return [account, multisigsWithPendingOps];
     })
   ).then(compact);
 
   return {
     multiSigToSigners,
-    accountToMultisigsWithPendings: Object.fromEntries(
-      accountToMultisigsWithPendings
+    accountToMultisigsWithPendingOps: Object.fromEntries(
+      accountToMultisigsWithPendingOpsPairs
     ),
   };
 };
@@ -92,30 +92,27 @@ export const makeMultisigLookups = async (
 const getMultisigsWithPendings = async (
   network: TezosNetwork,
   multisigs: Multisig[]
-): Promise<MultisigWithPendings[]> => {
+): Promise<MultisigWithPendingOps[]> => {
   const multisigsWithPendings = await Promise.all(
-    multisigs.map(async ({ address, pendingOps, threshold }) => {
-      const pendings = await getPendingOperations(network, pendingOps).then(
-        (response) =>
-          compact(
-            response
-              .filter((pendings) => pendings.active)
-              .map((pendings) => {
-                if (!pendings.value || !pendings.key) {
-                  return null;
-                }
-                return {
-                  key: pendings.key,
-                  rawActions: pendings.value.actions,
-                  approvals: pendings.value.approvals as WalletUserPkh[],
-                };
-              })
-          )
-      );
+    multisigs.map(async ({ address, pendingOpsId, threshold }) => {
+      const response = await getPendingOperations(network, pendingOpsId);
 
-      return { address, pendings, threshold };
+      const pendingOps = response
+        .filter(({ active }) => active)
+        .map(({ key, value }) => {
+          if (!value || !key) {
+            return null;
+          }
+          return {
+            key,
+            rawActions: value.actions,
+            approvals: value.approvals,
+          };
+        });
+
+      return { address, pendingOps: compact(pendingOps), threshold };
     })
-  ).then(compact);
+  );
 
   return multisigsWithPendings;
 };
