@@ -13,6 +13,7 @@ import { compact } from "lodash";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
+import { DelegationOperation } from "@tzkt/sdk-api";
 
 export const classifyTokenTransfer = (transfer: TokenTransfer) => {
   const token: Token = {
@@ -32,6 +33,16 @@ export const getLevelUrl = (blockLevel: number, network: TezosNetwork) => {
 };
 
 export const getIsInbound = (prettyAmount: string) => prettyAmount[0] === "+";
+
+export const getAmountColor = (prettyAmount: string) => {
+  const sign = prettyAmount[0];
+  if (sign === "+") {
+    return "umami.green";
+  } else if (sign === "-") {
+    return "umami.orange";
+  }
+  return "umami.gray.400";
+};
 
 const getSign = (address: string, sender: string, recipient: string) => {
   if (address === sender) {
@@ -158,6 +169,52 @@ export const getTokenOperationDisplay = (
   return result;
 };
 
+const getDelegationOperationDisplay = (
+  delegation: DelegationOperation,
+  network = TezosNetwork.MAINNET
+): OperationDisplay | null => {
+  const DelegationSchema = z.object({
+    sender: z.object({ address: z.string() }),
+    newDelegate: z.object({ address: z.string() }),
+    timestamp: z.string(),
+    amount: z.number(),
+    hash: z.string(),
+    level: z.number(),
+    bakerFee: z.number(),
+  });
+
+  const delegationRequired = DelegationSchema.safeParse(delegation);
+
+  if (!delegationRequired.success) {
+    console.warn("getDelegationOperationDisplay failed parsing");
+    return null;
+  }
+
+  const required = delegationRequired.data;
+
+  const prettyAmount = prettyTezAmount(new BigNumber(required.amount));
+
+  const prettyTimestamp = formatRelative(
+    new Date(required.timestamp),
+    new Date()
+  );
+  const level = required.level;
+
+  return {
+    type: "delegation",
+    amount: {
+      prettyDisplay: prettyAmount,
+    },
+    prettyTimestamp,
+    timestamp: required.timestamp,
+    recipient: required.newDelegate.address,
+    sender: required.sender.address,
+    tzktUrl: getHashUrl(required.hash, network),
+    level,
+    fee: prettyTezAmount(new BigNumber(required.bakerFee)),
+  };
+};
+
 export const sortOperationsDisplaysBytDate = (ops: OperationDisplay[]) => {
   return [...ops].sort((a, b) => {
     return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
@@ -167,6 +224,7 @@ export const sortOperationsDisplaysBytDate = (ops: OperationDisplay[]) => {
 export const getOperationDisplays = (
   tezTransfers: TezTransfer[] = [],
   tokenTransfers: TokenTransfer[] = [],
+  delegation: DelegationOperation | null = null,
   forAdress: string,
   network: TezosNetwork = TezosNetwork.MAINNET
 ) => {
@@ -176,6 +234,7 @@ export const getOperationDisplays = (
       ...tokenTransfers.map((t) =>
         getTokenOperationDisplay(t, forAdress, network)
       ),
+      delegation ? getDelegationOperationDisplay(delegation) : null,
     ])
   );
 };

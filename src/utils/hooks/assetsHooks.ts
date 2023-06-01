@@ -108,16 +108,12 @@ export const useGetAccountNFTs = () => {
   };
 };
 
-export const useAllOperations = () =>
-  useAppSelector((s) => s.assets.operations);
+export const useAllTransfers = () => useAppSelector((s) => s.assets.transfers);
 
 export const useAllOperationDisplays = () => {
-  const { tez, tokens } = useAppSelector((s) => s.assets.operations);
-  // Use maps because gettings values from objects is unsafe
-  // TODO implement maps upstream for reading data elsewhere
+  const { tez, tokens } = useAllTransfers();
+  const delegations = useAllDelegations();
 
-  const tezMap = new Map(Object.entries(tez));
-  const tokensMap = new Map(Object.entries(tokens));
   const accounts = useAccounts();
   const network = useSelectedNetwork();
 
@@ -125,8 +121,9 @@ export const useAllOperationDisplays = () => {
 
   accounts.forEach(({ pkh }) => {
     result[pkh] = getOperationDisplays(
-      tezMap.get(pkh),
-      tokensMap.get(pkh),
+      tez[pkh],
+      tokens[pkh],
+      delegations[pkh],
       pkh,
       network
     );

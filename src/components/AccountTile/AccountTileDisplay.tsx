@@ -7,7 +7,7 @@ import { Identicon } from "../Identicon";
 export type Props = {
   label: string;
   address: string;
-  balance: string | null;
+  balance: string | undefined;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   selected?: boolean;
 };

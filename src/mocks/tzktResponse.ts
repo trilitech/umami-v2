@@ -1,4 +1,4 @@
-import { TokenTransfer } from "@tzkt/sdk-api";
+import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
 import { TezTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
 
@@ -684,3 +684,26 @@ export const ghostMultisigContracts = [
     codeHash: -1890025422,
   },
 ];
+
+export const getLatestDelegationResult: DelegationOperation = {
+  type: "delegation",
+  id: 537704232124416,
+  level: 3414723,
+  timestamp: "2023-04-24T09:48:17Z",
+  block: "BMQqjM67WtpYZEzSUTYgQQfQpM5b7kkX5QF9pDK6HJ9vCSQMY8J",
+  hash: "onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva",
+  counter: 85715155,
+  sender: {
+    address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+  },
+  gasLimit: 1100,
+  gasUsed: 1000,
+  storageLimit: 0,
+  bakerFee: 396,
+  amount: 467532,
+  newDelegate: {
+    alias: "NFTBakery",
+    address: "tz1fHn9ZSqMwp1WNwdCLqnh52yPgzQ4QydTm",
+  },
+  status: "applied",
+};

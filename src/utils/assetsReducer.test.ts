@@ -25,8 +25,8 @@ const {
     reset,
     updateAssets: update,
     updateNetwork,
-    updateTezOperations,
-    updateTokenOperations,
+    updateTezTransfers,
+    updateTokenTransfers,
     clearBatch,
     updateBatch,
   },
@@ -43,7 +43,7 @@ describe("Assets reducer", () => {
         tez: {},
         tokens: {},
       },
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       delegations: {},
       network: "mainnet",
       conversionRate: null,
@@ -63,7 +63,7 @@ describe("Assets reducer", () => {
         },
         tokens: {},
       },
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       delegations: {},
       network: "mainnet",
       conversionRate: null,
@@ -88,7 +88,7 @@ describe("Assets reducer", () => {
         },
         tokens: {},
       },
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       delegations: {},
       network: "mainnet",
       conversionRate: null,
@@ -124,7 +124,7 @@ describe("Assets reducer", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       batches: {},
       blockLevel: null,
     });
@@ -156,7 +156,7 @@ describe("Assets reducer", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       batches: {},
       blockLevel: null,
     });
@@ -188,7 +188,7 @@ describe("Assets reducer", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       batches: {},
       blockLevel: null,
     });
@@ -197,7 +197,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: { tez: {}, tokens: {} },
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       delegations: {},
       bakers: [],
       network: "ghostnet",
@@ -233,7 +233,7 @@ describe("Assets reducer", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       batches: {},
       blockLevel: null,
     });
@@ -242,7 +242,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: { tez: {}, tokens: {} },
-      operations: { tez: {}, tokens: {} },
+      transfers: { tez: {}, tokens: {} },
       delegations: {},
       bakers: [],
       network: "mainnet",
@@ -254,12 +254,12 @@ describe("Assets reducer", () => {
 
   test("tez transfers are upserted", () => {
     store.dispatch(
-      updateTezOperations([
+      updateTezTransfers([
         {
           pkh: "foo",
-          operations: [mockTezTransaction(1), mockTezTransaction(2)],
+          transfers: [mockTezTransaction(1), mockTezTransaction(2)],
         },
-        { pkh: "bar", operations: [mockTezTransaction(3)] },
+        { pkh: "bar", transfers: [mockTezTransaction(3)] },
       ])
     );
 
@@ -273,7 +273,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "mainnet",
       batches: {},
-      operations: {
+      transfers: {
         tez: {
           foo: [mockTezTransaction(1), mockTezTransaction(2)],
           bar: [mockTezTransaction(3)],
@@ -284,14 +284,14 @@ describe("Assets reducer", () => {
     });
 
     store.dispatch(
-      updateTezOperations([
+      updateTezTransfers([
         {
           pkh: "foo",
-          operations: [mockTezTransaction(4)],
+          transfers: [mockTezTransaction(4)],
         },
         {
           pkh: "baz",
-          operations: [mockTezTransaction(5)],
+          transfers: [mockTezTransaction(5)],
         },
       ])
     );
@@ -306,7 +306,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "mainnet",
       batches: {},
-      operations: {
+      transfers: {
         tez: {
           foo: [mockTezTransaction(4)],
           bar: [mockTezTransaction(3)],
@@ -321,12 +321,12 @@ describe("Assets reducer", () => {
 
   test("token transfers are upserted", () => {
     store.dispatch(
-      updateTokenOperations([
+      updateTokenTransfers([
         {
           pkh: "foo",
-          operations: [mockTokenTransaction(1), mockTokenTransaction(2)],
+          transfers: [mockTokenTransaction(1), mockTokenTransaction(2)],
         },
-        { pkh: "bar", operations: [mockTokenTransaction(3)] },
+        { pkh: "bar", transfers: [mockTokenTransaction(3)] },
       ])
     );
 
@@ -340,7 +340,7 @@ describe("Assets reducer", () => {
       bakers: [],
       network: "mainnet",
       batches: {},
-      operations: {
+      transfers: {
         tokens: {
           foo: [mockTokenTransaction(1), mockTokenTransaction(2)],
           bar: [mockTokenTransaction(3)],
@@ -351,14 +351,14 @@ describe("Assets reducer", () => {
     });
 
     store.dispatch(
-      updateTokenOperations([
+      updateTokenTransfers([
         {
           pkh: "foo",
-          operations: [mockTokenTransaction(4)],
+          transfers: [mockTokenTransaction(4)],
         },
         {
           pkh: "baz",
-          operations: [mockTokenTransaction(5)],
+          transfers: [mockTokenTransaction(5)],
         },
       ])
     );
@@ -372,7 +372,7 @@ describe("Assets reducer", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      operations: {
+      transfers: {
         tokens: {
           foo: [mockTokenTransaction(4)],
           bar: [mockTokenTransaction(3)],
