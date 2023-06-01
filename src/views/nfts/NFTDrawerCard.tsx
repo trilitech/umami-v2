@@ -1,4 +1,5 @@
 import {
+  Accordion,
   AspectRatio,
   Box,
   Button,
@@ -11,10 +12,16 @@ import { NFT } from "../../types/Asset";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import TagsSection from "./drawer/TagsSection";
+import AttributesAccordionItem from "./drawer/AttributesAccordionItem";
 
 const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
   const { modalElement, onOpen } = useSendFormModal();
 
+  const accordionItemStyle = {
+    border: "none",
+    borderRadius: "8px",
+    marginBottom: "10px",
+  };
   return (
     <Box>
       <Card bg="umami.gray.800">
@@ -41,6 +48,8 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
         <Box data-testid="nft-description">{nft.metadata.description}</Box>
       )}
 
+      <Box>{nft.metadata.description}</Box>
+
       <Button
         mt={4}
         bg="umami.blue"
@@ -55,6 +64,10 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
       >
         Send
       </Button>
+
+      <Accordion allowMultiple={true} mt="3">
+        <AttributesAccordionItem nft={nft} style={accordionItemStyle} />
+      </Accordion>
       {modalElement}
     </Box>
   );
