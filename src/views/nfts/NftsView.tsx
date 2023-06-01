@@ -53,7 +53,7 @@ const NFTsViewBase = () => {
 
       <Drawer placement="right" onClose={onClose} size="md" isOpen={isOpen}>
         <DrawerOverlay />
-        <DrawerContent bg="umami.gray.900">
+        <DrawerContent maxW="594px" bg="umami.gray.900">
           <DrawerBody>
             <DrawerTopButtons
               onPrevious={() => {}}
