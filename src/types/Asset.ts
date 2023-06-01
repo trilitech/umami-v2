@@ -70,6 +70,7 @@ export const fromToken = (raw: Token): Asset | null => {
       tokenId: nftResult.data.token.tokenId,
       balance: nftResult.data.balance,
       owner: nftResult.data.account.address,
+      displayUri: nftResult.data.token.metadata.displayUri,
     };
   }
 
@@ -165,6 +166,7 @@ export type NFT = {
   balance: string;
   owner: string;
   metadata: TokenMetadata;
+  displayUri: string;
 };
 
 export const keepNFTs = (assets: Asset[]) => {

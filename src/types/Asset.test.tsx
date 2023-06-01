@@ -12,7 +12,7 @@ import {
 import type { TokenMetadata } from "./Token";
 
 describe("fromToken", () => {
-  test("case fa1.2 valid", () => {
+  test("fa1.2 valid", () => {
     const result = fromToken(fa1Token);
     const expected = {
       type: "fa1.2",
@@ -22,12 +22,12 @@ describe("fromToken", () => {
     expect(result).toEqual(expected);
   });
 
-  test("case fa1.2 with no balance", () => {
+  test("fa1.2 with no balance", () => {
     const result = fromToken({ ...fa1Token, balance: null });
     expect(result).toEqual(null);
   });
 
-  test("case valid fa2 token", () => {
+  test("valid fa2 token", () => {
     const result = fromToken(fa2Token);
     expect(result).toEqual({
       type: "fa2",
@@ -42,13 +42,13 @@ describe("fromToken", () => {
     });
   });
 
-  test("case invalid fa2 token (missing tokenId)", () => {
+  test("invalid fa2 token (missing tokenId)", () => {
     const result = fromToken({ ...fa2Token, token: { tokenId: undefined } });
 
     expect(result).toEqual(null);
   });
 
-  test("case valid nft", () => {
+  test("valid nft", () => {
     const result = fromToken(nft);
     const expected = {
       type: "nft",
@@ -56,12 +56,13 @@ describe("fromToken", () => {
       tokenId: "3",
       balance: "0",
       owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+      displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
       metadata: nft.token?.metadata as TokenMetadata,
     };
     expect(result).toEqual(expected);
   });
 
-  test("case invalid nft (missing contract address)", () => {
+  test("invalid nft (missing contract address)", () => {
     const result = fromToken({
       ...nft,
       token: { contract: { address: null } },
@@ -70,7 +71,7 @@ describe("fromToken", () => {
     expect(result).toEqual(null);
   });
 
-  test("case fa1 token with name symbol and decimals (tzBTC)", () => {
+  test("fa1 token with name symbol and decimals (tzBTC)", () => {
     const result = fromToken(tzBtsc);
 
     const expected = {
@@ -86,7 +87,7 @@ describe("fromToken", () => {
     expect(result).toEqual(expected);
   });
 
-  test("case fa1 token with name symbol decimals and icon (hedgeHoge)", () => {
+  test("fa1 token with name symbol decimals and icon (hedgeHoge)", () => {
     const result = fromToken(hedgeHoge);
 
     const expected = {
@@ -103,7 +104,7 @@ describe("fromToken", () => {
     expect(result).toEqual(expected);
   });
 
-  test("case fa2 token with thumbnailUri (uUSD)", () => {
+  test("fa2 token with thumbnailUri (uUSD)", () => {
     const result = fromToken(uUSD);
     const expected = {
       type: "fa2",

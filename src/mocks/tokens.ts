@@ -1,4 +1,5 @@
 import type { FA12Token, FA2Token, NFT } from "../types/Asset";
+import { nftDisplayUri } from "../utils/tezos/consts";
 import { publicKeys1 } from "./publicKeys";
 
 export const ghostTezzard: NFT = {
@@ -7,9 +8,9 @@ export const ghostTezzard: NFT = {
   tokenId: "6",
   balance: "1",
   owner: publicKeys1.pkh,
+  displayUri: nftDisplayUri,
   metadata: {
-    displayUri:
-      "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+    displayUri: nftDisplayUri,
     name: "Tezzardz #24",
     symbol: "FKR",
   },
