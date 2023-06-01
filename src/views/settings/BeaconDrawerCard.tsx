@@ -22,7 +22,7 @@ export const BeaconDrawerCard = () => {
       <SettingsCardWithDrawerIcon left="dApps" onClick={onOpen} />
       <Drawer isOpen={isOpen} placement="right" onClose={closeDrawer} size="md">
         <DrawerOverlay />
-        <DrawerContent bg="umami.gray.900">
+        <DrawerContent maxW="594px" bg="umami.gray.900">
           <DrawerTopButtons
             onPrevious={() => {}}
             onNext={() => {}}
