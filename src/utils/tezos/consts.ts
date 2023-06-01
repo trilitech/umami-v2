@@ -22,3 +22,6 @@ export const wertUrls = {
 export const coincapUrl = "https://api.coincap.io/v2/assets";
 
 export const bakersUrl = "https://api.baking-bad.org/v2/bakers";
+
+export const nftDisplayUri =
+  "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh";

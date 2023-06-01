@@ -240,15 +240,17 @@ export const mockFA1Token = (
 };
 
 export const mockNFT = (index: number, balance = "1"): NFT => {
+  const displayUri =
+    "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" + index;
   return {
     type: "nft",
     balance,
+    displayUri,
     contract: mockContract(index),
     tokenId: "mockId" + index,
     owner: mockPkh(index),
     metadata: {
-      displayUri:
-        "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" + index,
+      displayUri: displayUri,
       name: "Tezzardz #" + index,
       symbol: "FKR" + index,
     },

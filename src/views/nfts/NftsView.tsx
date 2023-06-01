@@ -1,14 +1,10 @@
 import {
-  AspectRatio,
   Box,
-  Button,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
   Flex,
-  Heading,
-  Image,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
@@ -20,9 +16,8 @@ import { TopBar } from "../../components/TopBar";
 import { NFT } from "../../types/Asset";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
-import { useSendFormModal } from "../home/useSendFormModal";
+import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
-import { getIPFSurl } from "../../utils/token/nftUtils";
 
 export const FilterController: React.FC = () => {
   return (
@@ -34,35 +29,6 @@ export const FilterController: React.FC = () => {
   );
 };
 
-const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
-  const { modalElement, onOpen } = useSendFormModal();
-  return (
-    <Box>
-      <AspectRatio width={"100%"} ratio={4 / 4}>
-        <Image width="100%" src={getIPFSurl(nft.metadata.displayUri)} />
-      </AspectRatio>
-      <Heading mt={4} size="lg">
-        {nft.metadata.name}
-      </Heading>
-
-      <Button
-        mt={4}
-        bg="umami.blue"
-        onClick={(_) => {
-          onOpen({
-            mode: {
-              type: "token",
-              data: nft,
-            },
-          });
-        }}
-      >
-        Send
-      </Button>
-      {modalElement}
-    </Box>
-  );
-};
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
 
