@@ -158,9 +158,14 @@ export const useAssetsPolling = () => {
   const multisigsQuery = useQuery("multisigs", {
     queryFn: async () => {
       const multisigs = await getAllMultiSigContracts(network);
-      dispatch(
-        multisigActions.set(makeMultisigLookups(new Set(pkhs), multisigs))
+
+      const lookups = await makeMultisigLookups(
+        network,
+        new Set(pkhs),
+        multisigs
       );
+
+      dispatch(multisigActions.set(lookups));
     },
 
     refetchInterval: REFRESH_RATE,

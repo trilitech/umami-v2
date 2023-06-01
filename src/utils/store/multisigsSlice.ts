@@ -4,7 +4,7 @@ import { MultisigLookups } from "../multisig/types";
 type State = MultisigLookups;
 
 const initialState: State = {
-  accountToMultisigs: {},
+  accountToMultisigsWithPendingOps: {},
   multiSigToSigners: {},
 };
 
@@ -14,7 +14,10 @@ const multisigsSlice = createSlice({
   reducers: {
     reset: () => initialState,
     set: (state, { payload }: { payload: MultisigLookups }) => {
-      state = { ...payload };
+      state.accountToMultisigsWithPendingOps = {
+        ...payload.accountToMultisigsWithPendingOps,
+      };
+      state.multiSigToSigners = { ...payload.multiSigToSigners };
     },
   },
 });

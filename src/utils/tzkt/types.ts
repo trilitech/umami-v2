@@ -14,5 +14,16 @@ export type tzktGetSameMultisigsResponseType = {
   address: string;
   storage: {
     signers: string[];
+    threshold: string;
+    pending_ops: number;
   };
+}[];
+
+export type tzktGetBigMapKeysResponseType = {
+  active: boolean;
+  key: string | null;
+  value: {
+    actions: string;
+    approvals: string[];
+  } | null;
 }[];
