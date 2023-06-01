@@ -72,7 +72,7 @@ export const makeMultisigLookups = async (
         return null;
       }
 
-      const multisigsWithPendingOps = await getMultisigsWithPendings(
+      const multisigsWithPendingOps = await getMultisigsWithPendingOps(
         network,
         multisigs
       );
@@ -89,7 +89,7 @@ export const makeMultisigLookups = async (
   };
 };
 
-const getMultisigsWithPendings = async (
+export const getMultisigsWithPendingOps = async (
   network: TezosNetwork,
   multisigs: Multisig[]
 ): Promise<MultisigWithPendingOps[]> => {
