@@ -1,5 +1,9 @@
 import {
   Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   AspectRatio,
   Box,
   Button,
@@ -13,6 +17,7 @@ import { useSendFormModal } from "../home/useSendFormModal";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import TagsSection from "./drawer/TagsSection";
 import AttributesAccordionItem from "./drawer/AttributesAccordionItem";
+import PropertiesAccordionItem from "./drawer/PropertiesAccordionItem";
 
 const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
   const { modalElement, onOpen } = useSendFormModal();
@@ -67,6 +72,33 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
 
       <Accordion allowMultiple={true} mt="3">
         <AttributesAccordionItem nft={nft} style={accordionItemStyle} />
+        <PropertiesAccordionItem nft={nft} style={accordionItemStyle} />
+
+        <AccordionItem bg="umami.gray.800" style={accordionItemStyle}>
+          <h2>
+            <AccordionButton>
+              <Box as="span" flex="1" textAlign="left">
+                JSON
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel>
+            <Card bg="umami.gray.700" borderRadius="5px">
+              <CardBody>
+                <pre
+                  style={{
+                    whiteSpace: "pre-wrap",
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                  }}
+                >
+                  {JSON.stringify(nft, null, 2)}
+                </pre>
+              </CardBody>
+            </Card>
+          </AccordionPanel>
+        </AccordionItem>
       </Accordion>
       {modalElement}
     </Box>

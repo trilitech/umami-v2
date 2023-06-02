@@ -1,11 +1,16 @@
 import { tzBtsc, hedgeHoge } from "../mocks/fa12Tokens";
 import { uUSD } from "../mocks/fa2Tokens";
+import { mockNFT, mockPkh } from "../mocks/factories";
 import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
 import {
+  artifactUri,
   FA12Token,
   FA2Token,
   fromToken,
   httpIconUri,
+  mimeType,
+  royalties,
+  thumbnailUri,
   tokenName,
   tokenSymbol,
 } from "../types/Asset";
@@ -224,5 +229,103 @@ describe("httpIconUri", () => {
     expect(httpIconUri(fa2tokenWithIcon)).toEqual(
       "https://ipfs.io/ipfs/QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs"
     );
+  });
+});
+
+describe("royalties", () => {
+  it("returns an empty array when royalties are absent", () => {
+    const nft = mockNFT(0);
+
+    delete nft.metadata.royalties;
+    expect(royalties(nft)).toEqual([]);
+  });
+
+  it("returns an empty array when shares are absent", () => {
+    const nft = mockNFT(0);
+
+    nft.metadata.royalties = {
+      decimals: "1",
+      shares: {},
+    };
+    expect(royalties(nft)).toEqual([]);
+  });
+
+  it("returns sorted shares as percentages", () => {
+    const nft = mockNFT(0);
+
+    nft.metadata.royalties = {
+      decimals: "4",
+      shares: {
+        [mockPkh(0)]: "5",
+        [mockPkh(2)]: "4000",
+        [mockPkh(1)]: "200",
+      },
+    };
+    expect(royalties(nft)).toEqual([
+      { address: mockPkh(2), share: 40.0 },
+      { address: mockPkh(1), share: 2.0 },
+      { address: mockPkh(0), share: 0.05 },
+    ]);
+  });
+});
+
+describe("mimeType", () => {
+  it("returns undefined if formats are absent", () => {
+    const nft = mockNFT(0);
+    delete nft.metadata.formats;
+
+    expect(mimeType(nft)).toBeUndefined();
+  });
+
+  it("returns the mime type of the artifact", () => {
+    const nft = mockNFT(0);
+    nft.metadata.artifactUri = nft.displayUri + "salt";
+    nft.metadata.formats = [
+      {
+        uri: nft.metadata.artifactUri,
+        mimeType: "image/png",
+      },
+      {
+        uri: nft.displayUri,
+        mimeType: "image/jpg",
+      },
+    ];
+
+    expect(mimeType(nft)).toEqual("image/png");
+
+    delete nft.metadata.artifactUri;
+    expect(mimeType(nft)).toEqual("image/jpg");
+  });
+});
+
+describe("artifactUri", () => {
+  it("returns artifactUri", () => {
+    const nft = mockNFT(0);
+    nft.metadata.artifactUri = nft.displayUri + "salt";
+
+    expect(artifactUri(nft)).toEqual(nft.metadata.artifactUri);
+  });
+
+  it("returns displayUri when artifactUri is absent", () => {
+    const nft = mockNFT(0);
+    delete nft.metadata.artifactUri;
+
+    expect(artifactUri(nft)).toEqual(nft.displayUri);
+  });
+});
+
+describe("thumbnailUri", () => {
+  it("returns thumbnailUri", () => {
+    const nft = mockNFT(0);
+    nft.metadata.thumbnailUri = nft.displayUri + "salt";
+
+    expect(thumbnailUri(nft)).toEqual(nft.metadata.thumbnailUri);
+  });
+
+  it("returns displayUri when thumbnailUri is absent", () => {
+    const nft = mockNFT(0);
+    delete nft.metadata.thumbnailUri;
+
+    expect(thumbnailUri(nft)).toEqual(nft.displayUri);
   });
 });
