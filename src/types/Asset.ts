@@ -200,6 +200,35 @@ export const tokenPrettyBalance = (
   return `${result}${trailingSymbol}`;
 };
 
+export const artifactUri = (nft: NFT): string => {
+  return nft.metadata.artifactUri || nft.displayUri;
+};
+
+export const thumbnailUri = (nft: NFT): string => {
+  return nft.metadata.thumbnailUri || nft.displayUri;
+};
+
+export const mimeType = (nft: NFT) => {
+  return nft.metadata.formats?.find((format) => format.uri === artifactUri(nft))
+    ?.mimeType;
+};
+
+export const royalties = (
+  nft: NFT
+): Array<{ address: string; share: number }> => {
+  const royalties = nft.metadata.royalties;
+  if (!royalties) {
+    return [];
+  }
+
+  const totalShares = Math.pow(10, Number(royalties.decimals));
+  const shares = Object.entries(royalties.shares).map(([address, share]) => {
+    return { address: address, share: (Number(share) * 100) / totalShares };
+  });
+  shares.sort((a, b) => (a.share < b.share ? 1 : -1));
+  return shares;
+};
+
 // We use the defaults for FA1.2 tokens as in V1
 export const DEFAULT_FA1_NAME = "FA1.2 token";
 export const DEFAULT_FA2_NAME = "FA2 token";

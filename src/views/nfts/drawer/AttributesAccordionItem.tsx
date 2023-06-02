@@ -11,9 +11,16 @@ import {
   CardBody,
   Heading,
 } from "@chakra-ui/react";
+import { CSSProperties } from "react";
 import { NFT } from "../../../types/Asset";
 
-const AttributesAccordionItem = ({ nft, style }: { nft: NFT; style: any }) => {
+const AttributesAccordionItem = ({
+  nft,
+  style,
+}: {
+  nft: NFT;
+  style: CSSProperties;
+}) => {
   const attributes = nft.metadata.attributes;
   if (!attributes || attributes.length === 0) {
     return null;
