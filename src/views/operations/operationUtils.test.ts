@@ -187,6 +187,7 @@ describe("getTezOperationsDisplay", () => {
       type: "transaction",
       tzktUrl: "https://mainnet.tzkt.io/2214369/operations",
       amount: {
+        id: 10899580518401,
         prettyDisplay: "+1 FKR",
         url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
       },
@@ -284,6 +285,7 @@ describe("getTezOperationsDisplay", () => {
     const expected = {
       type: "transaction",
       amount: {
+        id: 10899580518401,
         prettyDisplay: "-1 FKR",
         url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
       },
@@ -332,7 +334,11 @@ describe("getTezOperationsDisplay", () => {
     const expected = {
       type: "transaction",
       tzktUrl: "https://mainnet.tzkt.io/2215185/operations",
-      amount: { prettyDisplay: "+7.1685 KL3", url: undefined },
+      amount: {
+        id: 10898231001089,
+        prettyDisplay: "+7.1685 KL3",
+        url: undefined,
+      },
       prettyTimestamp: "today at 3:27 PM",
       recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -375,7 +381,11 @@ describe("getTezOperationsDisplay", () => {
     const expected = {
       type: "transaction",
       tzktUrl: "https://mainnet.tzkt.io/2215193/operations",
-      amount: { prettyDisplay: "-4.51 KL3", url: undefined },
+      amount: {
+        id: 10898231001089,
+        prettyDisplay: "-4.51 KL3",
+        url: undefined,
+      },
       prettyTimestamp: "today at 3:29 PM",
       recipient: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
       sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
@@ -413,7 +423,11 @@ describe("getTezOperationsDisplay", () => {
     const expected = {
       type: "transaction",
       tzktUrl: "https://mainnet.tzkt.io/2215201/operations",
-      amount: { prettyDisplay: "+2.74 FA1.2", url: undefined },
+      amount: {
+        id: 10897625972737,
+        prettyDisplay: "+2.74 FA1.2",
+        url: undefined,
+      },
       prettyTimestamp: "today at 3:30 PM",
       recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -447,7 +461,11 @@ describe("getOperationsDisplays", () => {
           "https://mainnet.tzkt.io/onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva",
       },
       {
-        amount: { prettyDisplay: "+2.74 FA1.2", url: undefined },
+        amount: {
+          id: 10897625972737,
+          prettyDisplay: "+2.74 FA1.2",
+          url: undefined,
+        },
         prettyTimestamp: "today at 3:30 PM",
         recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -457,7 +475,11 @@ describe("getOperationsDisplays", () => {
         level: 2215201,
       },
       {
-        amount: { prettyDisplay: "-4.51 KL3", url: undefined },
+        amount: {
+          id: 10898231001089,
+          prettyDisplay: "-4.51 KL3",
+          url: undefined,
+        },
         prettyTimestamp: "today at 3:29 PM",
         recipient: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
         sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
@@ -467,7 +489,11 @@ describe("getOperationsDisplays", () => {
         level: 2215193,
       },
       {
-        amount: { prettyDisplay: "+7.1685 KL3", url: undefined },
+        amount: {
+          id: 10898231001089,
+          prettyDisplay: "+7.1685 KL3",
+          url: undefined,
+        },
         prettyTimestamp: "today at 3:27 PM",
         recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -478,6 +504,7 @@ describe("getOperationsDisplays", () => {
       },
       {
         amount: {
+          id: 10899580518401,
           prettyDisplay: "-1 FKR",
           url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
         },
@@ -491,6 +518,7 @@ describe("getOperationsDisplays", () => {
       },
       {
         amount: {
+          id: 10899580518401,
           prettyDisplay: "+1 FKR",
           url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
         },
@@ -529,7 +557,11 @@ describe("getOperationsDisplays", () => {
         level: 2213611,
       },
       {
-        amount: { prettyDisplay: "+2.1 KL2", url: undefined },
+        amount: {
+          id: 10898194300929,
+          prettyDisplay: "+2.1 KL2",
+          url: undefined,
+        },
         prettyTimestamp: "yesterday at 4:38 PM",
         recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
@@ -553,6 +585,7 @@ describe("getOperationsDisplays", () => {
       },
       {
         amount: {
+          id: 10899580518401,
           prettyDisplay: "-1 FKR",
           url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
         },

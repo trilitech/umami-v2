@@ -31,6 +31,7 @@ import {
   getKey,
   sortOperationsDisplaysBytDate,
 } from "./operationsUtils";
+import { Link } from "react-router-dom";
 
 export const FilterController: React.FC = () => {
   return (
@@ -90,9 +91,11 @@ export const OperationsDataTable: React.FC<{
                       {op.amount.prettyDisplay}
                     </Text>
                     {op.amount.url && (
-                      <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
-                        <Image src={op.amount.url} />
-                      </AspectRatio>
+                      <Link to={`/nfts/${op.amount.id}`}>
+                        <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
+                          <Image src={op.amount.url} />
+                        </AspectRatio>
+                      </Link>
                     )}
                   </Flex>
                 </Td>

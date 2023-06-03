@@ -3,6 +3,7 @@ import { nftDisplayUri } from "../utils/tezos/consts";
 import { publicKeys1 } from "./publicKeys";
 
 export const ghostTezzard: NFT = {
+  id: 1,
   type: "nft",
   contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
   tokenId: "6",

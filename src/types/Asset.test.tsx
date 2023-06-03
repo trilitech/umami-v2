@@ -64,6 +64,7 @@ describe("fromToken", () => {
       balance: "0",
       owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
+      id: 10899466223617,
       metadata: nft.token?.metadata as TokenMetadata,
       totalSupply: "1",
     };

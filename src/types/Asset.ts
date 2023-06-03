@@ -30,6 +30,7 @@ const fa2parser = z.object({
 });
 
 const nftTokenParser = z.object({
+  id: z.number(),
   standard: z.string().regex(/fa2/i),
   tokenId: z.string(),
   contract: addressParser,
@@ -68,6 +69,7 @@ export const fromToken = (raw: Token): Asset | null => {
     return {
       metadata,
       type: "nft",
+      id: nftResult.data.token.id,
       contract: nftResult.data.token.contract.address,
       tokenId: nftResult.data.token.tokenId,
       balance: nftResult.data.balance,
@@ -163,6 +165,7 @@ export type FA2Token = {
 };
 
 export type NFT = {
+  id: number;
   type: "nft";
   contract: string;
   tokenId: string;
