@@ -14,6 +14,11 @@ const fixture = () => (
 );
 
 describe("NFTsView", () => {
+  it("a message 'no nfts found' is displayed", () => {
+    render(fixture());
+    expect(screen.getByText(/no nfts found/i)).toBeInTheDocument();
+  });
+
   it("displays nfts of all accounts by default", () => {
     store.dispatch(
       updateAssets([

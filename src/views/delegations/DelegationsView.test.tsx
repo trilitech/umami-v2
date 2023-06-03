@@ -8,7 +8,18 @@ import DelegationsView from "./DelegationsView";
 jest.mock("react-query");
 const { updateDelegations } = assetsSlice.actions;
 
+const fixture = () => (
+  <ReduxStore>
+    <DelegationsView />
+  </ReduxStore>
+);
+
 describe("<DelegationsView />", () => {
+  it("a message 'currently not delegating' is displayed", () => {
+    render(fixture());
+    expect(screen.getByText(/currently not delegating/i)).toBeInTheDocument();
+  });
+
   it("should display the delegations of all accounts", () => {
     store.dispatch(
       updateDelegations([
@@ -32,12 +43,7 @@ describe("<DelegationsView />", () => {
         },
       ])
     );
-    render(
-      <ReduxStore>
-        <DelegationsView />
-      </ReduxStore>
-    );
-
+    render(fixture());
     expect(screen.getAllByTestId("delegation-row")).toHaveLength(3);
   });
 });

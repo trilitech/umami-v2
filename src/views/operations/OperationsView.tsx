@@ -32,6 +32,7 @@ import {
   sortOperationsDisplaysBytDate,
 } from "./operationsUtils";
 import { Link } from "react-router-dom";
+import NoItems from "../../components/NoItems";
 
 export const FilterController: React.FC = () => {
   return (
@@ -139,13 +140,19 @@ const OperationsView = () => {
 
   return (
     <Flex direction="column" height={"100%"}>
-      <TopBar title="Operations" />
+      {allOperationsList.length > 0 ? (
+        <>
+          <TopBar title="Operations" />
 
-      <FilterController />
+          <FilterController />
 
-      <Box overflow="scroll" pb={4}>
-        <OperationsDataTable operations={allOperationsList} />
-      </Box>
+          <Box overflow="scroll" pb={4}>
+            <OperationsDataTable operations={allOperationsList} />
+          </Box>
+        </>
+      ) : (
+        <NoItems text="No operations found" />
+      )}
     </Flex>
   );
 };
