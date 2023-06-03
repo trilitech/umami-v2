@@ -12,6 +12,7 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
+import NoItems from "../../components/NoItems";
 
 export const FilterController: React.FC<{ batchPending: number }> = (props) => {
   return (
@@ -83,9 +84,13 @@ const BatchView = () => {
     <Flex direction="column" height={"100%"}>
       <TopBar title="Batch" />
       <FilterController batchPending={batchEls.length} />
-      <Box overflow={"scroll"}>
+      <Box overflow={"scroll"} minH="80%">
         {batchEls.length === 0 ? (
-          <Heading size={"3xl"}>{"Your batch is empty"}</Heading>
+          <NoItems
+            text="Your batch is currently empty"
+            primaryText="Start a Batch"
+            secondaryText="Load CSV file"
+          />
         ) : (
           batchEls
         )}

@@ -19,6 +19,8 @@ import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
 import { useParams } from "react-router-dom";
+import NoItems from "../../components/NoItems";
+import { navigateToExternalLink } from "../../utils/helpers";
 
 export const FilterController: React.FC = () => {
   return (
@@ -49,34 +51,47 @@ const NFTsViewBase = () => {
       onOpenRef.current();
     }
   }, [allOwnedNftsRef, onOpenRef]);
+  const hasNfts = () => Object.values(nfts).some((n) => n.length > 0);
 
   return (
     <Flex direction="column" height={"100%"}>
-      <TopBar title="NFTs" />
-      <FilterController />
-      <Box overflow={"scroll"}>
-        <NFTGallery
-          onSelect={(nft) => {
-            onOpen();
-            setSelectedNft(nft);
-          }}
-          nfts={allOwnedNfts}
-        />
-      </Box>
-
-      <Drawer placement="right" onClose={onClose} size="md" isOpen={isOpen}>
-        <DrawerOverlay />
-        <DrawerContent maxW="594px" bg="umami.gray.900">
-          <DrawerBody>
-            <DrawerTopButtons
-              onPrevious={() => {}}
-              onNext={() => {}}
-              onClose={onClose}
+      {hasNfts() ? (
+        <>
+          <TopBar title="NFTs" />
+          <FilterController />
+          <Box overflow={"scroll"}>
+            <NFTGallery
+              onSelect={(nft) => {
+                onOpen();
+                setSelectedNft(nft);
+              }}
+              nfts={allOwnedNfts}
             />
-            {selectedNft && <NFTDrawerCard nft={selectedNft} />}
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+          </Box>
+
+          <Drawer placement="right" onClose={onClose} size="md" isOpen={isOpen}>
+            <DrawerOverlay />
+            <DrawerContent maxW="594px" bg="umami.gray.900">
+              <DrawerBody>
+                <DrawerTopButtons
+                  onPrevious={() => {}}
+                  onNext={() => {}}
+                  onClose={onClose}
+                />
+                {selectedNft && <NFTDrawerCard nft={selectedNft} />}
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        </>
+      ) : (
+        <NoItems
+          text="No NFTs found"
+          primaryText="Buy your first NFT"
+          primaryCallback={() => {
+            navigateToExternalLink(`https://objkt.com`);
+          }}
+        />
+      )}
     </Flex>
   );
 };

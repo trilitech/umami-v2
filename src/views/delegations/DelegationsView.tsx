@@ -32,6 +32,7 @@ import { useAppDispatch } from "../../utils/store/hooks";
 import { getBakers } from "../../utils/tezos";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { useRenderBakerSmallTile } from "./BakerSmallTile";
+import NoItems from "../../components/NoItems";
 
 const DelegationsTable = ({
   delegations,
@@ -184,17 +185,26 @@ const DelegationsView = () => {
 
   return (
     <Flex direction="column" height={"100%"}>
-      <TopBar title="Delegations" />
-      <FilterController />
-      <Box overflow={"scroll"}>
-        <Box maxH={40} overflow="scroll"></Box>
-        <DelegationsTable
-          onChangeDelegate={handleEditDelegate}
-          onRemoveDelegate={handleRemoveDelegate}
-          delegations={formatedDelegations}
+      {allDelegations.length > 0 ? (
+        <>
+          <TopBar title="Delegations" />
+          <FilterController />
+          <Box overflow={"scroll"}>
+            <Box maxH={40} overflow="scroll"></Box>
+            <DelegationsTable
+              onChangeDelegate={handleEditDelegate}
+              onRemoveDelegate={handleRemoveDelegate}
+              delegations={formatedDelegations}
+            />
+          </Box>
+          {modalElement}
+        </>
+      ) : (
+        <NoItems
+          text="Currently not delegating"
+          primaryText="Start delegating"
         />
-      </Box>
-      {modalElement}
+      )}
     </Flex>
   );
 };

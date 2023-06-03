@@ -180,7 +180,9 @@ describe("<BatchView />", () => {
       render(fixture());
 
       expect(screen.getByText(/0 pending/i)).toBeInTheDocument();
-      expect(screen.getByText(/your batch is empty/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/your batch is currently empty/i)
+      ).toBeInTheDocument();
     });
 
     test("user can add transactions to batches and it displays batches of all accounts by default", async () => {
@@ -188,7 +190,7 @@ describe("<BatchView />", () => {
       await addItemsToBatchViaUI();
 
       expect(
-        screen.queryByText(/your batch is empty/i)
+        screen.queryByText(/your batch is currently empty/i)
       ).not.toBeInTheDocument();
       expect(screen.getAllByTestId(/batch-table/i)).toHaveLength(2);
     });
