@@ -1,11 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import { mockNFT } from "../../mocks/factories";
+import { ReduxStore } from "../../providers/ReduxStore";
+import { NFT } from "../../types/Asset";
 import NFTDrawerCard from "./NFTDrawerCard";
+
+const fixture = (nft: NFT) => (
+  <ReduxStore>
+    <NFTDrawerCard nft={nft} />
+  </ReduxStore>
+);
 
 describe("NFTDrawerCard", () => {
   it("renders the image", () => {
     const nft = mockNFT(0);
-    render(<NFTDrawerCard nft={nft} />);
+    render(fixture(nft));
 
     expect(screen.getByTestId("nft-image")).toHaveAttribute(
       "src",
@@ -17,14 +25,14 @@ describe("NFTDrawerCard", () => {
     it("doesn't render if name is absent", () => {
       const nft = mockNFT(0);
       delete nft.metadata.name;
-      render(<NFTDrawerCard nft={nft} />);
+      render(fixture(nft));
 
       expect(screen.queryByTestId("nft-name")).toBeNull();
     });
 
     it("renders a name when it's present", () => {
       const nft = mockNFT(0);
-      render(<NFTDrawerCard nft={nft} />);
+      render(fixture(nft));
 
       expect(screen.getByTestId("nft-name")).toHaveTextContent("Tezzardz #0");
     });
@@ -34,7 +42,7 @@ describe("NFTDrawerCard", () => {
     it("doesn't render if name is absent", () => {
       const nft = mockNFT(0);
       delete nft.metadata.name;
-      render(<NFTDrawerCard nft={nft} />);
+      render(fixture(nft));
 
       expect(screen.queryByTestId("nft-description")).toBeNull();
     });
@@ -42,7 +50,7 @@ describe("NFTDrawerCard", () => {
     it("renders a name when it's present", () => {
       const nft = mockNFT(0);
       nft.metadata.description = "Some description";
-      render(<NFTDrawerCard nft={nft} />);
+      render(fixture(nft));
 
       expect(screen.getByTestId("nft-description")).toHaveTextContent(
         "Some description"

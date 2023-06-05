@@ -8,6 +8,7 @@ import {
   FA2Token,
   fromToken,
   httpIconUri,
+  metadataUri,
   mimeType,
   royalties,
   thumbnailUri,
@@ -15,6 +16,7 @@ import {
   tokenSymbol,
 } from "../types/Asset";
 import type { TokenMetadata } from "./Token";
+import { TezosNetwork } from "@airgap/tezos";
 
 describe("fromToken", () => {
   test("fa1.2 valid", () => {
@@ -63,6 +65,7 @@ describe("fromToken", () => {
       owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
       metadata: nft.token?.metadata as TokenMetadata,
+      totalSupply: "1",
     };
     expect(result).toEqual(expected);
   });
@@ -327,5 +330,18 @@ describe("thumbnailUri", () => {
     delete nft.metadata.thumbnailUri;
 
     expect(thumbnailUri(nft)).toEqual(nft.displayUri);
+  });
+});
+
+describe("metadataUri", () => {
+  it("returns a tzkt link", () => {
+    const nft = mockNFT(0);
+
+    expect(metadataUri(nft, TezosNetwork.MAINNET)).toEqual(
+      "https://mainnet.tzkt.io/KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0/tokens/mockId0/metadata"
+    );
+    expect(metadataUri(nft, TezosNetwork.GHOSTNET)).toEqual(
+      "https://ghostnet.tzkt.io/KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0/tokens/mockId0/metadata"
+    );
   });
 });

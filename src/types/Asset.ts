@@ -2,6 +2,7 @@ import { BigNumber } from "bignumber.js";
 import type { Token, TokenMetadata } from "./Token";
 import { z } from "zod";
 import { getIPFSurl } from "../utils/token/nftUtils";
+import { TezosNetwork } from "@airgap/tezos";
 
 const addressParser = z.object({ address: z.string() });
 
@@ -32,6 +33,7 @@ const nftTokenParser = z.object({
   standard: z.string().regex(/fa2/i),
   tokenId: z.string(),
   contract: addressParser,
+  totalSupply: z.string().optional(),
   metadata: z.object({
     displayUri: z.string(),
   }),
@@ -71,6 +73,7 @@ export const fromToken = (raw: Token): Asset | null => {
       balance: nftResult.data.balance,
       owner: nftResult.data.account.address,
       displayUri: nftResult.data.token.metadata.displayUri,
+      totalSupply: nftResult.data.token.totalSupply || undefined,
     };
   }
 
@@ -167,6 +170,7 @@ export type NFT = {
   owner: string;
   metadata: TokenMetadata;
   displayUri: string;
+  totalSupply: string | undefined;
 };
 
 export const keepNFTs = (assets: Asset[]) => {
@@ -227,6 +231,10 @@ export const royalties = (
   });
   shares.sort((a, b) => (a.share < b.share ? 1 : -1));
   return shares;
+};
+
+export const metadataUri = (nft: NFT, network: TezosNetwork) => {
+  return `https://${network}.tzkt.io/${nft.contract}/tokens/${nft.tokenId}/metadata`;
 };
 
 // We use the defaults for FA1.2 tokens as in V1

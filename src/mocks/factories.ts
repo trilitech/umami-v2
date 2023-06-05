@@ -249,6 +249,7 @@ export const mockNFT = (index: number, balance = "1"): NFT => {
     contract: mockContract(index),
     tokenId: "mockId" + index,
     owner: mockPkh(index),
+    totalSupply: "1",
     metadata: {
       displayUri: displayUri,
       name: "Tezzardz #" + index,
