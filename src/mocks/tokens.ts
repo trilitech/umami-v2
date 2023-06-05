@@ -9,6 +9,7 @@ export const ghostTezzard: NFT = {
   balance: "1",
   owner: publicKeys1.pkh,
   displayUri: nftDisplayUri,
+  totalSupply: "1",
   metadata: {
     displayUri: nftDisplayUri,
     name: "Tezzardz #24",

@@ -11,7 +11,22 @@ import {
   Tbody,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import { mimeType, NFT, royalties } from "../../../types/Asset";
+import { CopyableAddress } from "../../../components/CopyableText";
+import { TzktLink } from "../../../components/TzktLink";
+import { metadataUri, mimeType, NFT, royalties } from "../../../types/Asset";
+import { truncate } from "../../../utils/format";
+import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
+
+export const creatorElement = (nft: NFT) => {
+  if (!nft.metadata.creators || nft.metadata.creators.length === 0) {
+    return "-";
+  }
+  const firstCreator = nft.metadata.creators[0];
+  if (firstCreator.startsWith("tz")) {
+    return <CopyableAddress pkh={firstCreator} />;
+  }
+  return truncate(firstCreator, 15);
+};
 
 const PropertiesAccordionItem = ({
   nft,
@@ -24,6 +39,9 @@ const PropertiesAccordionItem = ({
   const totalRoyalties = royaltyShares
     .reduce((acc, royalty) => acc + royalty.share, 0)
     .toFixed(2);
+
+  const network = useSelectedNetwork();
+
   return (
     <AccordionItem bg="umami.gray.800" style={style}>
       <h2>
@@ -38,7 +56,6 @@ const PropertiesAccordionItem = ({
         <TableContainer>
           <Table variant="stripped">
             <Tbody fontSize="14px">
-              {/* TODO finish! */}
               <Tr
                 bg="umami.gray.900"
                 borderRadius="8px"
@@ -46,6 +63,7 @@ const PropertiesAccordionItem = ({
                 borderBottomWidth="1px"
               >
                 <Td
+                  data-testid="nft-editions"
                   padding="16px 0 16px 15px"
                   w="20%"
                   borderTopLeftRadius="8px"
@@ -55,22 +73,24 @@ const PropertiesAccordionItem = ({
                   Editions:
                 </Td>
                 <Td
+                  data-testid="nft-editions-value"
                   padding="16px 0 16px 5px"
                   w="30%"
                   borderColor="umami.gray.700"
                   borderRightWidth="1px"
                 >
-                  TBD
+                  {nft.totalSupply || "?"}
                 </Td>
+
                 <Td padding="16px 0 16px 15px" w="20%" color="umami.gray.400">
-                  Owned:
+                  Token ID:
                 </Td>
                 <Td
                   padding="16px 0 16px 5px"
                   w="30%"
                   borderTopRightRadius="8px"
                 >
-                  TBD
+                  {nft.tokenId}
                 </Td>
               </Tr>
               <Tr
@@ -110,6 +130,58 @@ const PropertiesAccordionItem = ({
                   w="30%"
                 >
                   {mimeType(nft) || "-"}
+                </Td>
+              </Tr>
+
+              <Tr
+                bg="umami.gray.900"
+                borderColor="umami.gray.700"
+                borderBottomWidth="1px"
+              >
+                <Td padding="16px 0 16px 15px" color="umami.gray.400">
+                  Contract:
+                </Td>
+                <Td
+                  padding="16px 0 16px 5px"
+                  borderColor="umami.gray.700"
+                  borderRightWidth="1px"
+                >
+                  <CopyableAddress pkh={nft.contract} />
+                </Td>
+                <Td padding="16px 0 16px 15px" color="umami.gray.400">
+                  Metadata:
+                </Td>
+                <Td padding="16px 0 16px 5px" w="30%">
+                  TzKT <TzktLink url={metadataUri(nft, network)}></TzktLink>
+                </Td>
+              </Tr>
+
+              <Tr
+                bg="umami.gray.800"
+                borderColor="umami.gray.700"
+                borderBottomWidth="1px"
+              >
+                <Td
+                  data-testid="nft-creator"
+                  padding="16px 0 16px 15px"
+                  color="umami.gray.400"
+                >
+                  Creator:
+                </Td>
+                <Td
+                  data-testid="nft-creator-value"
+                  padding="16px 0 16px 5px"
+                  borderColor="umami.gray.700"
+                  borderRightWidth="1px"
+                >
+                  {creatorElement(nft)}
+                </Td>
+                <Td padding="16px 0 16px 15px" color="umami.gray.400">
+                  License:
+                </Td>
+                {/* TODO: truncate it with a tooltip https://app.asana.com/0/0/1204749792730548/f */}
+                <Td padding="16px 0 16px 5px" w="30%">
+                  {truncate(nft.metadata.rights || "-", 15)}
                 </Td>
               </Tr>
             </Tbody>
