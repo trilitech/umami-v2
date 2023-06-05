@@ -49,7 +49,9 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
               position="absolute"
               marginTop="-40px"
               marginLeft="10px"
-            >{"x" + nft.balance}</Text>
+            >
+              {"x" + nft.balance}
+            </Text>
           )}
         </CardBody>
       </Card>

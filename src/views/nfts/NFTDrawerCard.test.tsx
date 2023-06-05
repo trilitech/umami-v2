@@ -61,7 +61,7 @@ describe("NFTDrawerCard", () => {
   describe("owned counter", () => {
     it("doesn't render if I own only one nft", () => {
       const nft = mockNFT(0);
-      nft.balance = '1';
+      nft.balance = "1";
       render(fixture(nft));
 
       expect(screen.queryByTestId("nft-owned-count")).toBeNull();
@@ -69,7 +69,7 @@ describe("NFTDrawerCard", () => {
 
     it("renders the number of owned NFT instances", () => {
       const nft = mockNFT(0);
-      nft.balance = '123';
+      nft.balance = "123";
       render(fixture(nft));
 
       expect(screen.getByTestId("nft-owned-count")).toHaveTextContent("x123");
