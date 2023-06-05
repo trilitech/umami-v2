@@ -11,6 +11,7 @@ import {
   CardBody,
   Heading,
   Image,
+  Text,
 } from "@chakra-ui/react";
 import { NFT } from "../../types/Asset";
 import { useSendFormModal } from "../home/useSendFormModal";
@@ -38,6 +39,18 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
               src={getIPFSurl(nft.displayUri)}
             />
           </AspectRatio>
+          {Number(nft.balance) > 1 && (
+            <Text
+              data-testid="nft-owned-count"
+              borderRadius="100px"
+              padding="3px 8px"
+              backgroundColor="rgba(33, 33, 33, 0.75)"
+              display="inline"
+              position="absolute"
+              marginTop="-40px"
+              marginLeft="10px"
+            >{"x" + nft.balance}</Text>
+          )}
         </CardBody>
       </Card>
 
