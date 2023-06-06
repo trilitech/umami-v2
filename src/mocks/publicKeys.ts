@@ -1,4 +1,5 @@
 export const publicKeys1 = {
+  sk: "edskRicpWcBughiZrP7jDEXse7gMSwa1HG6CEEHZa9y6eBYfpoAii3BqFdemgfpehhbGjxgkPpECxqcCQReGNLsAsh46TwGDEA",
   pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
   pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
 };
