@@ -1585,8 +1585,8 @@ export const makeStorageJSON = (
 };
 
 /**
- *  Don't know why v1 uses michelson for storage.
- *  Taquito supports JSON.
+ *  Don't know why v1 uses michelson for storage. Since Taquito supports JSON.
+ *  We could just use JSON instead of passing MichelsonJSON.
  */
 export const makeStorageMichelsonJSON = (
   owner: string,
