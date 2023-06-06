@@ -8,14 +8,14 @@ export function valueOrUnit(jsonValue?: MichelsonJSON): MichelsonJSON {
   return jsonValue || { prim: "Unit" };
 }
 
-export function someOrNone(value?: MichelsonJSON): MichelsonJSON {
-  return value ? { prim: "Some", args: [value] } : { prim: "None" };
-}
+// export function someOrNone(value?: MichelsonJSON): MichelsonJSON {
+//   return value ? { prim: "Some", args: [value] } : { prim: "None" };
+// }
 
-export function buildStringPrim(str: string): MichelsonJSON {
-  return { string: str };
-}
+// export function buildStringPrim(str: string): MichelsonJSON {
+//   return { string: str };
+// }
 
-export function buildIntPrim(str: string): MichelsonJSON {
-  return { int: str };
-}
+// export function buildIntPrim(str: string): MichelsonJSON {
+//   return { int: str };
+// }

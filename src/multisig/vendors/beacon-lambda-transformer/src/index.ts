@@ -1,74 +1,68 @@
 /* eslint-disable no-case-declarations */
-import { Operation, InternalOperationKind, MichelsonJSON } from "./typings";
-import {
-  buildContractAddress,
-  buildIntPrim,
-  buildStringPrim,
-  someOrNone,
-  valueOrUnit,
-} from "./utils";
 import { RpcClient } from "./service/rpc";
+import { InternalOperationKind, MichelsonJSON, Operation } from "./typings";
+import { buildContractAddress, valueOrUnit } from "./utils";
 
 export const lambdaOfOperation =
   (rpc: RpcClient) =>
   async (op: Operation): Promise<MichelsonJSON> => {
     switch (op.kind) {
-      case InternalOperationKind.Delegation:
-        return [
-          {
-            prim: "PUSH",
-            args: [
-              { prim: "option", args: [{ prim: "key_hash" }] },
-              someOrNone(
-                op.delegate ? buildStringPrim(op.delegate) : undefined
-              ),
-            ],
-          }, // Push the delegate address to the top of the stack.
-          {
-            prim: "SET_DELEGATE",
-          }, // Create a delegation operation and add it to the top of the stack.
-          {
-            prim: "CONS",
-          }, // Append to the list of operations.
-        ];
-      case InternalOperationKind.Origination:
-        const storageField = op.script.code[1];
-        if (!("args" in storageField) || !Array.isArray(storageField.args)) {
-          throw new Error("Expected contract code to have a storage type");
-        }
-        const storageType = storageField.args[0];
-        return [
-          {
-            prim: "PUSH",
-            args: [storageType, op.script.storage],
-          }, // Push the initial storage to the top of the stack.
-          {
-            prim: "PUSH",
-            args: [{ prim: "mutez" }, buildIntPrim(op.balance)],
-          }, // Push the initial balance to the top of the stack.
-          {
-            prim: "PUSH",
-            args: [
-              { prim: "option", args: [{ prim: "key_hash" }] },
-              someOrNone(
-                op.delegate ? buildStringPrim(op.delegate) : undefined
-              ),
-            ],
-          }, // Push the delegate address to the top of the stack.
-          {
-            prim: "CREATE_CONTRACT",
-            args: op.script.code,
-          }, // Create a origination operation and add it to the top of the stack.
-          {
-            prim: "SWAP",
-          },
-          {
-            prim: "DROP",
-          },
-          {
-            prim: "CONS",
-          }, // Append to the list of operations.
-        ];
+      // case InternalOperationKind.Delegation:
+      //   return [
+      //     {
+      //       prim: "PUSH",
+      //       args: [
+      //         { prim: "option", args: [{ prim: "key_hash" }] },
+      //         someOrNone(
+      //           op.delegate ? buildStringPrim(op.delegate) : undefined
+      //         ),
+      //       ],
+      //     }, // Push the delegate address to the top of the stack.
+      //     {
+      //       prim: "SET_DELEGATE",
+      //     }, // Create a delegation operation and add it to the top of the stack.
+      //     {
+      //       prim: "CONS",
+      //     }, // Append to the list of operations.
+      //   ];
+      // case InternalOperationKind.Origination:
+      //   const storageField = op.script.code[1];
+      //   if (!("args" in storageField) || !Array.isArray(storageField.args)) {
+      //     throw new Error("Expected contract code to have a storage type");
+      //   }
+      //   const storageType = storageField.args[0];
+      //   return [
+      //     {
+      //       prim: "PUSH",
+      //       args: [storageType, op.script.storage],
+      //     }, // Push the initial storage to the top of the stack.
+      //     {
+      //       prim: "PUSH",
+      //       args: [{ prim: "mutez" }, buildIntPrim(op.balance)],
+      //     }, // Push the initial balance to the top of the stack.
+      //     {
+      //       prim: "PUSH",
+      //       args: [
+      //         { prim: "option", args: [{ prim: "key_hash" }] },
+      //         someOrNone(
+      //           op.delegate ? buildStringPrim(op.delegate) : undefined
+      //         ),
+      //       ],
+      //     }, // Push the delegate address to the top of the stack.
+      //     {
+      //       prim: "CREATE_CONTRACT",
+      //       args: op.script.code,
+      //     }, // Create a origination operation and add it to the top of the stack.
+      //     {
+      //       prim: "SWAP",
+      //     },
+      //     {
+      //       prim: "DROP",
+      //     },
+      //     {
+      //       prim: "CONS",
+      //     }, // Append to the list of operations.
+      //   ];
       case InternalOperationKind.Transaction:
         const jsonValue = op.parameters?.value;
         const argType = await rpc.getEntrypointType(
