@@ -15,6 +15,8 @@ import {
   operationValuesToBatchParams,
 } from "../utils/tezos";
 
+jest.unmock("../utils/tezos");
+
 const pk1 = publicKeys1.pk;
 const pkh1 = publicKeys1.pkh;
 const pkh2 = publicKeys2.pkh;
