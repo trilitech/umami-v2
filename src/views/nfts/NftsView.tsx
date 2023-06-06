@@ -51,11 +51,10 @@ const NFTsViewBase = () => {
       onOpenRef.current();
     }
   }, [allOwnedNftsRef, onOpenRef]);
-  const hasNfts = () => Object.values(nfts).some((n) => n.length > 0);
 
   return (
     <Flex direction="column" height={"100%"}>
-      {hasNfts() ? (
+      {allOwnedNfts.length > 0 ? (
         <>
           <TopBar title="NFTs" />
           <FilterController />
@@ -87,7 +86,7 @@ const NFTsViewBase = () => {
         <NoItems
           text="No NFTs found"
           primaryText="Buy your first NFT"
-          primaryCallback={() => {
+          onClickPrimary={() => {
             navigateToExternalLink(`https://objkt.com`);
           }}
         />

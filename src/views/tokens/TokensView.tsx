@@ -48,7 +48,7 @@ const TokensView = () => {
         <NoItems
           text="No tokens found"
           primaryText="Buy your first Token"
-          primaryCallback={() => {
+          onClickPrimary={() => {
             navigateToExternalLink(`https://quipuswap.com/`);
           }}
         />
