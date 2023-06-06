@@ -1,24 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { MultisigLookups } from "../multisig/types";
+import { AccountToMultisigs } from "../multisig/types";
 
-type State = MultisigLookups;
+type State = AccountToMultisigs;
 
-const initialState: State = {
-  accountToMultisigsWithPendingOps: {},
-  multiSigToSigners: {},
-};
+const initialState: State = {};
 
 const multisigsSlice = createSlice({
   name: "multisigs",
   initialState,
   reducers: {
     reset: () => initialState,
-    set: (state, { payload }: { payload: MultisigLookups }) => {
-      state.accountToMultisigsWithPendingOps = {
-        ...payload.accountToMultisigsWithPendingOps,
-      };
-      state.multiSigToSigners = { ...payload.multiSigToSigners };
-    },
+    set: (_, { payload }: { payload: AccountToMultisigs }) => payload,
   },
 });
 

@@ -1,6 +1,8 @@
 import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
 import { TezTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
+import { tzktGetSameMultisigsResponseType } from "../utils/tzkt/types";
+import { mockContract, mockPkh } from "./factories";
 
 export const fa1Token: Token = {
   id: 10897662672897,
@@ -707,3 +709,16 @@ export const getLatestDelegationResult: DelegationOperation = {
   },
   status: "applied",
 };
+
+export const tzktGetSameMultisigsResponse: tzktGetSameMultisigsResponseType = [
+  {
+    balance: 0,
+    address: mockContract(0),
+    storage: { threshold: "2", pending_ops: 0, signers: [mockPkh(0)] },
+  },
+  {
+    balance: 10,
+    address: mockContract(10),
+    storage: { threshold: "2", pending_ops: 0, signers: [mockPkh(10)] },
+  },
+];
