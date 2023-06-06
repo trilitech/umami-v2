@@ -1,11 +1,15 @@
+/* istanbul ignore file */
 import { TezosNetwork } from "@airgap/tezos";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import { compact } from "lodash";
 import { useAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
-import { getAllMultiSigContracts } from "./multisig/fetch";
-import { makeMultisigLookups } from "./multisig/helpers";
+import {
+  buildAccountToMultisigsMap,
+  getOperationsForMultisigs,
+  getRelevantMultisigContracts,
+} from "./multisig/helpers";
 import {
   assetsActions,
   DelegationPayload,
@@ -75,6 +79,7 @@ export const useAssetsPolling = () => {
   const accounts = useAccounts();
   const network = useSelectedNetwork();
   const pkhs = accounts.map((a) => a.pkh);
+  const accountPkhSet = new Set(pkhs);
 
   const tezQuery = useQuery("tezBalance", {
     queryFn: async () => {
@@ -157,15 +162,21 @@ export const useAssetsPolling = () => {
 
   const multisigsQuery = useQuery("multisigs", {
     queryFn: async () => {
-      const multisigs = await getAllMultiSigContracts(network);
-
-      const lookups = await makeMultisigLookups(
+      const multisigs = await getRelevantMultisigContracts(
         network,
-        new Set(pkhs),
+        accountPkhSet
+      );
+
+      const multisigsWithOperations = await getOperationsForMultisigs(
+        network,
         multisigs
       );
 
-      dispatch(multisigActions.set(lookups));
+      dispatch(
+        multisigActions.set(
+          buildAccountToMultisigsMap(multisigsWithOperations, accountPkhSet)
+        )
+      );
     },
 
     refetchInterval: REFRESH_RATE,

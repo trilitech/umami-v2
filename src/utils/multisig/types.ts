@@ -1,39 +1,21 @@
 // For now we only allow a wallet user to be a signer of multisig.
-export type WalletUserPkh = string;
+export type WalletAccountPkh = string;
 export type MultisigAddress = string;
 
-type MultisigBase = {
+export type MultisigWithOperations = {
   address: MultisigAddress;
   threshold: number;
-};
-
-export type Multisig = MultisigBase & {
-  pendingOpsId: number; //Used to fetch the pending operations.
-};
-
-export type MultisigWithPendingOps = MultisigBase & {
-  pendingOps: {
+  signers: WalletAccountPkh[];
+  balance: string;
+  operations: {
     key: string;
+    active: boolean;
     rawActions: string;
-    approvals: WalletUserPkh[];
+    approvals: WalletAccountPkh[];
   }[];
 };
 
-// Mapping from a wallet account user to multisigs the accounts are signers of
-export type AccountToMultisigs = Record<WalletUserPkh, Multisig[] | undefined>;
-export type AccountToMultisigsWithPendingOps = Record<
-  WalletUserPkh,
-  MultisigWithPendingOps[] | undefined
+export type AccountToMultisigs = Record<
+  WalletAccountPkh,
+  MultisigWithOperations[] | undefined
 >;
-
-// Mapping from a multisig address to its signers.
-// The multisig should have at least one of the accounts as the signer.
-export type MultisigToSigners = Record<
-  MultisigAddress,
-  WalletUserPkh[] | undefined
->;
-
-export type MultisigLookups = {
-  accountToMultisigsWithPendingOps: AccountToMultisigsWithPendingOps;
-  multiSigToSigners: MultisigToSigners;
-};
