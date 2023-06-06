@@ -4,15 +4,15 @@ import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
 export default function NoItems({
   text,
   primaryText,
-  primaryCallback = () => {},
+  onClickPrimary = () => {},
   secondaryText,
-  secondaryCallback = () => {},
+  onClickSecondary = () => {},
 }: {
   text: string;
   primaryText?: string;
-  primaryCallback?: () => void;
+  onClickPrimary?: () => void;
   secondaryText?: string;
-  secondaryCallback?: () => void;
+  onClickSecondary?: () => void;
 }) {
   return (
     <Flex
@@ -32,13 +32,13 @@ export default function NoItems({
                 bg="umami.blue"
                 size="lg"
                 mr="16px"
-                onClick={primaryCallback}
+                onClick={onClickPrimary}
               >
                 {primaryText}
               </Button>
             ) : null}
             {secondaryText ? (
-              <Button variant={"outline"} size="lg" onClick={secondaryCallback}>
+              <Button variant={"outline"} size="lg" onClick={onClickSecondary}>
                 {secondaryText}
               </Button>
             ) : null}

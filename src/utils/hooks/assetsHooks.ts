@@ -101,7 +101,7 @@ export const useGetAccountAllTokens = () => {
 };
 
 export const useHasTokens = () => {
-  const accounts = useAccounts();
+  const accounts = useImplicitAccounts();
   const getFA1 = useGetAccountFA1Tokens();
   const getFA2 = useGetAccountFA2Tokens();
   return () =>
@@ -118,15 +118,6 @@ export const useGetAccountNFTs = () => {
   return (pkh: string) => {
     return keepNFTs(getAssets(pkh));
   };
-};
-
-export const useHasNfts = () => {
-  const accounts = useAccounts();
-  const getAssets = useGetAccountAssets();
-  return () =>
-    accounts
-      .map((account) => keepNFTs(getAssets(account.pkh)).length > 0)
-      .includes(true);
 };
 
 export const useAllTransfers = () => useAppSelector((s) => s.assets.transfers);
