@@ -56,3 +56,25 @@ export const hedgeHoge: Token = {
   lastLevel: 1477579,
   lastTime: "2021-05-19T01:09:54Z",
 };
+
+export const ghostnetFA12: Token = {
+  id: 140510965530625,
+  account: {
+    address: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",
+  },
+  token: {
+    id: 10897625972737,
+    contract: {
+      address: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+    },
+    tokenId: "0",
+    standard: "fa1.2",
+    totalSupply: "13000000",
+  },
+  balance: "100000",
+  transfersCount: 1,
+  firstLevel: 2860584,
+  firstTime: "2023-06-05T14:14:37Z",
+  lastLevel: 2860584,
+  lastTime: "2023-06-05T14:14:37Z",
+};
