@@ -10,6 +10,8 @@ import { TextDecoder, TextEncoder } from "util";
 
 MockDate.set("2023-03-27T14:15:09.760Z");
 
+jest.mock("./utils/tezos");
+
 jest.mock("./utils/store/extraArgument");
 // https://github.com/chakra-ui/chakra-ui/issues/2684
 jest.mock("@popperjs/core", () => {
