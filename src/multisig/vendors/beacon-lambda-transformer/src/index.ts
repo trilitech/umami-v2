@@ -9,34 +9,6 @@ import {
 } from "./utils";
 import { RpcClient } from "./service/rpc";
 
-/**
- * Convert JSON operations into a lambda value.
- *
- * @param ops List of operation (https://gitlab.com/tezos/tezos/-/blob/master/src/proto_014_PtKathma/lib_protocol/operation_repr.ml)
- * @returns Lambda in Micheline format.
- */
-// export async function lambdaOfOperations(
-//   ops: Operation[],
-//   rpcEndpoint: string
-// ): Promise<MichelsonJSON> {
-//   const rpcClient = new RpcClient(rpcEndpoint);
-//   const mich = (
-//     await Promise.all(ops.map(lambdaOfOperation(rpcClient)))
-//   ).flat();
-//   return [
-//     // Drop lambda argument
-//     {
-//       prim: "DROP",
-//     },
-//     // Create empty list
-//     {
-//       prim: "NIL",
-//       args: [{ prim: "operation" }],
-//     },
-//     ...mich,
-//   ];
-// }
-
 export const lambdaOfOperation =
   (rpc: RpcClient) =>
   async (op: Operation): Promise<MichelsonJSON> => {
