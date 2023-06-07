@@ -17,9 +17,9 @@ import {
   AllAccount,
   LedgerAccount,
   MnemonicAccount,
+  MultisigAccount,
   SocialAccount,
 } from "../../types/Account";
-import { MultisigAccount } from "../../types/MultisigAccount";
 import {
   useAllAccounts,
   useRemoveMnemonic,

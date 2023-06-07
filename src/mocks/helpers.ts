@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Estimate } from "@taquito/taquito";
 import { fireEvent, screen } from "@testing-library/react";
-import { Account, MnemonicAccount } from "../types/Account";
+import { ImplicitAccount, MnemonicAccount } from "../types/Account";
 import accountsSlice from "../utils/store/accountsSlice";
 import { store } from "../utils/store/store";
 import { fakeTezosUtils } from "./fakeTezosUtils";
@@ -24,7 +24,7 @@ export const closeModal = () => {
   fireEvent.click(closeModalButton);
 };
 
-export const dispatchMockAccounts = (accounts: Account[]) => {
+export const dispatchMockAccounts = (accounts: ImplicitAccount[]) => {
   store.dispatch(accountsSlice.actions.add(accounts));
 };
 

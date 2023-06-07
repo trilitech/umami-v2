@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Account, AccountType } from "../../types/Account";
+import { ImplicitAccount, AccountType } from "../../types/Account";
 import { UmamiEncrypted } from "../../types/UmamiEncrypted";
 import {
   deriveAccount,
@@ -7,7 +7,7 @@ import {
 } from "./thunks/restoreMnemonicAccounts";
 
 type State = {
-  items: Account[];
+  items: ImplicitAccount[];
   selected: null | string;
   seedPhrases: Record<string, UmamiEncrypted | undefined>;
 };
@@ -51,7 +51,9 @@ const accountsSlice = createSlice({
     },
     add: (
       state,
-      { payload }: { type: string; payload: Account | Account[] }
+      {
+        payload,
+      }: { type: string; payload: ImplicitAccount | ImplicitAccount[] }
     ) => {
       const accounts = Array.isArray(payload) ? payload : [payload];
 
@@ -68,7 +70,10 @@ const accountsSlice = createSlice({
   },
 });
 
-const concatUnique = (existingAccounts: Account[], newAccounts: Account[]) => {
+const concatUnique = (
+  existingAccounts: ImplicitAccount[],
+  newAccounts: ImplicitAccount[]
+) => {
   newAccounts.forEach((newAccount) => {
     if (
       existingAccounts.some(

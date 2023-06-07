@@ -4,7 +4,7 @@ import { useUpsertContactModal } from "../views/home/useUpsertContactModal";
 import { formatPkh, truncate } from "../utils/format";
 import { TextAndIconBtn } from "./TextAndIconBtn";
 import { useGetContractName } from "../utils/hooks/contactsHooks";
-import { useGetAccount } from "../utils/hooks/accountHooks";
+import { useGetImplicitAccount } from "../utils/hooks/accountHooks";
 import { Box, Text } from "@chakra-ui/react";
 
 export const ContactTile: FC<{
@@ -34,7 +34,7 @@ export const ContactTile: FC<{
 
 const AccountOrContactTile: React.FC<{ pkh: string }> = ({ pkh }) => {
   const getContactName = useGetContractName();
-  const getAccount = useGetAccount();
+  const getAccount = useGetImplicitAccount();
 
   const account = getAccount(pkh);
 

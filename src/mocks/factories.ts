@@ -2,7 +2,7 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { OperationValue } from "../components/sendForm/types";
 import {
-  Account,
+  ImplicitAccount,
   AccountType,
   LedgerAccount,
   MnemonicAccount,
@@ -99,7 +99,7 @@ export const mockAccount = (
   index: number,
   type = AccountType.MNEMONIC,
   fingerPrint = "mockPrint"
-): Account => {
+): ImplicitAccount => {
   if (type === AccountType.MNEMONIC) {
     const account: MnemonicAccount = {
       curve: "ed25519",

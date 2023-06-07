@@ -13,7 +13,7 @@ import {
   OperationValue,
   SendFormMode,
 } from "../../../components/sendForm/types";
-import { useGetAccount } from "../../hooks/accountHooks";
+import { useGetImplicitAccount } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
 import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
@@ -74,7 +74,7 @@ export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;
   onSuccess: () => void;
 }> = ({ message, onSuccess }) => {
-  const getAccount = useGetAccount();
+  const getAccount = useGetImplicitAccount();
   const toast = useToast();
 
   switch (message.type) {

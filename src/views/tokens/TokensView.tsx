@@ -3,7 +3,7 @@ import React from "react";
 import { AiOutlineArrowDown } from "react-icons/ai";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { TopBar } from "../../components/TopBar";
-import { useAccounts } from "../../utils/hooks/accountHooks";
+import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import AccountTokensTile from "./AccountTokensTile";
 
@@ -20,7 +20,7 @@ export const FilterController: React.FC = () => {
 };
 
 const TokensView = () => {
-  const accounts = useAccounts();
+  const accounts = useImplicitAccounts();
   const { modalElement, onOpen } = useSendFormModal();
   return (
     <Flex direction="column" height={"100%"}>

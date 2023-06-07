@@ -1,5 +1,5 @@
 import { seedPhrase } from "../mocks/seedPhrase";
-import { Account, AccountType } from "../types/Account";
+import { ImplicitAccount, AccountType } from "../types/Account";
 import { restoreAccounts, restoreMnemonicAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
 
@@ -62,7 +62,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
     const result = await restoreMnemonicAccounts(seedPhrase);
-    const expected: Account[] = [
+    const expected: ImplicitAccount[] = [
       {
         curve: "ed25519",
         derivationPath: getDefaultMnemonicDerivationPath(0),
@@ -98,7 +98,7 @@ describe("restoreEncryptedAccounts", () => {
     const CUSTOM_LABEL = "myLabel";
     addressExistsMock.mockResolvedValueOnce(false);
     const result = await restoreMnemonicAccounts(seedPhrase, CUSTOM_LABEL);
-    const expected: Account[] = [
+    const expected: ImplicitAccount[] = [
       expect.objectContaining({
         label: CUSTOM_LABEL,
       }),
@@ -109,7 +109,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
     const result2 = await restoreMnemonicAccounts(seedPhrase, CUSTOM_LABEL);
-    const expected2: Account[] = [
+    const expected2: ImplicitAccount[] = [
       expect.objectContaining({
         label: `${CUSTOM_LABEL} 0`,
       }),
@@ -130,7 +130,7 @@ describe("restoreEncryptedAccounts", () => {
       "m/44'/1729'/?'/8'"
     );
 
-    const expected: Account[] = [
+    const expected: ImplicitAccount[] = [
       expect.objectContaining({
         label: `Account 0`,
         derivationPath: "m/44'/1729'/0'/8'",

@@ -20,7 +20,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { Identicon } from "../../components/Identicon";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import colors from "../../style/colors";
-import { Account } from "../../types/Account";
+import { ImplicitAccount } from "../../types/Account";
 import { formatPkh } from "../../utils/format";
 import {
   useGetAccountAllTokens,
@@ -54,7 +54,7 @@ const AccountTokensTileHeader: React.FC<{
 );
 
 const AccountTokensTile: React.FC<{
-  account: Account;
+  account: ImplicitAccount;
   onOpenSendModal: (options?: Options) => void;
 }> = ({ account: { pkh, label }, onOpenSendModal }) => {
   const getTokens = useGetAccountAllTokens();

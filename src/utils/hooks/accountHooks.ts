@@ -3,9 +3,9 @@ import {
   AccountType,
   AllAccount,
   LedgerAccount,
+  MultisigAccount,
   SocialAccount,
 } from "../../types/Account";
-import { MultisigAccount } from "../../types/MultisigAccount";
 import { decrypt } from "../aes";
 import { MultisigWithOperations } from "../multisig/types";
 import accountsSlice from "../store/accountsSlice";
@@ -14,12 +14,12 @@ import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
 
 const { add, removeSecret } = accountsSlice.actions;
 
-export const useAccounts = () => {
+export const useImplicitAccounts = () => {
   return useAppSelector((s) => s.accounts.items);
 };
 
-export const useGetAccount = () => {
-  const accounts = useAccounts();
+export const useGetImplicitAccount = () => {
+  const accounts = useImplicitAccounts();
   return (pkh: string) => accounts.find((a) => a.pkh === pkh);
 };
 
@@ -45,7 +45,7 @@ export const useReset = () => {
 };
 
 export const useGetOwnedAccount = () => {
-  const accounts = useAccounts();
+  const accounts = useImplicitAccounts();
   return (pkh: string) => {
     const account = accounts.find((a) => a.pkh === pkh);
     if (!account) {
@@ -139,13 +139,13 @@ export const useMultisigAccounts = (): MultisigAccount[] => {
   return multisigs.map((m, i) => ({
     label: `Multisig Account ${i}`,
     pkh: m.address,
-    proposals: m.operations,
+    operations: m.operations,
     type: AccountType.MULTISIG,
   }));
 };
 
 export const useAllAccounts = (): AllAccount[] => {
-  const implicit = useAccounts();
+  const implicit = useImplicitAccounts();
   const multisig = useMultisigAccounts();
   return [...implicit, ...multisig];
 };

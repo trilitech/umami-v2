@@ -11,7 +11,7 @@ import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { useAccounts } from "./accountHooks";
+import { useImplicitAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { BigNumber } from "bignumber.js";
 import { mutezToTez } from "../format";
@@ -114,7 +114,7 @@ export const useAllOperationDisplays = () => {
   const { tez, tokens } = useAllTransfers();
   const delegations = useAllDelegations();
 
-  const accounts = useAccounts();
+  const accounts = useImplicitAccounts();
   const network = useSelectedNetwork();
 
   const result: Record<string, OperationDisplay[]> = {};

@@ -3,7 +3,7 @@ import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { GoogleAuth } from "../../../GoogleAuth";
-import { Account, AccountType } from "../../../types/Account";
+import { ImplicitAccount, AccountType } from "../../../types/Account";
 import {
   LedgerSignerConfig,
   SignerConfig,
@@ -14,7 +14,7 @@ import { useGetSk } from "../../../utils/hooks/accountUtils";
 
 const SignButton: React.FC<{
   onSubmit: (c: SignerConfig) => void;
-  signerAccount: Account;
+  signerAccount: ImplicitAccount;
   isLoading: boolean;
   network: TezosNetwork;
 }> = ({ signerAccount, isLoading, network, onSubmit }) => {
