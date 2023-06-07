@@ -1,5 +1,13 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 import accountsSlice from "./accountsSlice";
 import assetsSlice from "./assetsSlice";
 import contactsSlice from "./contactsSlice";
@@ -26,10 +34,13 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 export const store = configureStore({
   reducer: persistedReducer,
 
-  // Needed to remove warning
-  // https://stackoverflow.com/a/71955602/6797267
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
+      serializableCheck: {
+        // Needed to remove warning
+        // https://github.com/rt2zz/redux-persist/issues/988#issuecomment-552242978
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
       thunk: {
         extraArgument,
       },
