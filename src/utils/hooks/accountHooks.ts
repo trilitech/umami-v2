@@ -139,8 +139,11 @@ export const useMultisigAccounts = (): MultisigAccount[] => {
   return multisigs.map((m, i) => ({
     label: `Multisig Account ${i}`,
     pkh: m.address,
-    operations: m.operations,
     type: AccountType.MULTISIG,
+    threshold: m.threshold,
+    signers: m.signers,
+    balance: m.balance,
+    operations: m.operations,
   }));
 };
 
