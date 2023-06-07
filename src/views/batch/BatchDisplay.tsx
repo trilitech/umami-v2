@@ -27,7 +27,7 @@ import {
 } from "../../components/sendForm/components/TezAmountRecaps";
 import { OperationValue } from "../../components/sendForm/types";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
-import { Account } from "../../types/Account";
+import { ImplicitAccount } from "../../types/Account";
 import { formatTokenAmount, tokenSymbol } from "../../types/Asset";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { navigateToExternalLink } from "../../utils/helpers";
@@ -116,7 +116,7 @@ const RightPanel = ({
 };
 
 export const BatchDisplay: React.FC<{
-  account: Account;
+  account: ImplicitAccount;
   batch: Batch;
   onDelete: () => void;
   onSend: () => void;

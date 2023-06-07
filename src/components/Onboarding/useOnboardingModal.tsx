@@ -8,7 +8,7 @@ import {
 import ModalBackground from "../../assets/onboarding/background_image.svg";
 import { ArrowBackIcon, CloseIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
-import { useAccounts } from "../../utils/hooks/accountHooks";
+import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import ConnectOptions from "./connectOptions/ConnectOptions";
 import ConnectOrCreate from "./connectOrCreate/ConnectOrCreate";
 import Eula from "./eula/Eula";
@@ -84,7 +84,7 @@ export const useCreateOrImportSecretModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalSize, setModalSize] = useState<ModalSize>(ModalSize.md);
   const [step, setStep] = useState<Step | null>(null);
-  const hasAccounts = useAccounts().length !== 0;
+  const hasAccounts = useImplicitAccounts().length !== 0;
   const [history, setHistory] = useState<Step[]>([
     { type: StepType.connectOrCreate },
   ]);

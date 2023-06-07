@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { Noop } from "react-hook-form";
 import colors from "../../style/colors";
 import { Contact } from "../../types/Contact";
-import { useAccounts } from "../../utils/hooks/accountHooks";
+import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import { useAppSelector } from "../../utils/store/hooks";
 import { addressIsValid } from "../../utils/tezos/pureTezosUtils";
 import { Identicon } from "../Identicon";
@@ -164,7 +164,7 @@ export const RecipientAutoCompleteDisplay: React.FC<
 export const RecipentAutoComplete: React.FC<BaseProps> = (props) => {
   const contacts = Object.values(useAppSelector((s) => s.contacts));
 
-  const accounts = useAccounts().map((a) => ({
+  const accounts = useImplicitAccounts().map((a) => ({
     name: a.label,
     pkh: a.pkh,
   }));

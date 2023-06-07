@@ -6,7 +6,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
-import { useGetAccount } from "../../utils/hooks/accountHooks";
+import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
@@ -42,7 +42,7 @@ const BatchView = () => {
   const batches = useAppSelector((s) => s.assets.batches);
 
   const dispatch = useAppDispatch();
-  const getAccount = useGetAccount();
+  const getAccount = useGetImplicitAccount();
 
   const { onOpen: openSendForm, modalElement: sendFormModalEl } =
     useSendFormModal();

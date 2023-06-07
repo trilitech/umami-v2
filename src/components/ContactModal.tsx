@@ -20,7 +20,10 @@ import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
-import { useAccounts, useGetAccount } from "../utils/hooks/accountHooks";
+import {
+  useImplicitAccounts,
+  useGetImplicitAccount,
+} from "../utils/hooks/accountHooks";
 import { useContactExists } from "../utils/hooks/contactsHooks";
 import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
@@ -59,7 +62,7 @@ export const UpsertContactModal: FC<{
     reset();
   };
 
-  const accounts = useAccounts();
+  const accounts = useImplicitAccounts();
   const validateName = (name: string) => {
     if (accounts.map((account) => account.label).includes(name)) {
       return "Name already used in accounts";
@@ -68,7 +71,7 @@ export const UpsertContactModal: FC<{
   };
 
   const { nameExistsInContacts, addressExistsInContacts } = useContactExists();
-  const getAccount = useGetAccount();
+  const getAccount = useGetImplicitAccount();
   const validatePkh = (pkh: string) => {
     if (!addressIsValid(pkh)) {
       return "Invalid address";

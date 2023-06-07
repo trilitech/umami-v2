@@ -1,5 +1,5 @@
 import { Curves } from "@taquito/signer";
-import { MultisigAccount } from "./MultisigAccount";
+import { MultisigOperation } from "../utils/multisig/types";
 
 export enum AccountType {
   SOCIAL = "social",
@@ -36,6 +36,13 @@ export type LedgerAccount = Base & {
   type: AccountType.LEDGER;
 };
 
-export type Account = MnemonicAccount | SocialAccount | LedgerAccount;
+export type MultisigAccount = {
+  type: AccountType.MULTISIG;
+  pkh: string;
+  label: string;
+  operations: MultisigOperation[];
+};
 
-export type AllAccount = Account | MultisigAccount;
+export type ImplicitAccount = MnemonicAccount | SocialAccount | LedgerAccount;
+
+export type AllAccount = ImplicitAccount | MultisigAccount;

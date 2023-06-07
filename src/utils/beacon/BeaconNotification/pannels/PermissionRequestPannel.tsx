@@ -16,14 +16,14 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { ConnectedAccountSelector } from "../../../../components/AccountSelector/AccountSelector";
-import { Account } from "../../../../types/Account";
+import { ImplicitAccount } from "../../../../types/Account";
 import { walletClient } from "../../beacon";
 
 const PermissionRequestPannel: React.FC<{
   request: PermissionRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
-  const [account, setAccount] = useState<Account>();
+  const [account, setAccount] = useState<ImplicitAccount>();
 
   const grant = async () => {
     if (!account) {

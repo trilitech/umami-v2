@@ -1,20 +1,20 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import React from "react";
-import { Account } from "../../types/Account";
-import { useAccounts } from "../../utils/hooks/accountHooks";
+import { ImplicitAccount } from "../../types/Account";
+import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import { AccountSmallTileDisplay } from "./AccountSmallTile";
 
-const renderAccount = (account: Account) => (
+const renderAccount = (account: ImplicitAccount) => (
   <AccountSmallTileDisplay pkh={account.pkh} label={account.label} />
 );
 
 export const ConnectedAccountSelector: React.FC<{
-  onSelect: (a: Account) => void;
+  onSelect: (a: ImplicitAccount) => void;
   selected?: string;
   isDisabled?: boolean;
 }> = ({ onSelect = () => {}, selected, isDisabled }) => {
-  const accounts = useAccounts();
+  const accounts = useImplicitAccounts();
   const selectedAccount = accounts.find((a) => a.pkh === selected);
 
   return (

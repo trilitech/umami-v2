@@ -3,7 +3,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
-import { useAccounts } from "./hooks/accountHooks";
+import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import {
   getOperationsForMultisigs,
@@ -75,7 +75,7 @@ const CONVERSION_RATE_REFRESH_RATE = 300000;
 
 export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
-  const accounts = useAccounts();
+  const accounts = useImplicitAccounts();
   const network = useSelectedNetwork();
   const pkhs = accounts.map((a) => a.pkh);
   const accountPkhSet = new Set(pkhs);

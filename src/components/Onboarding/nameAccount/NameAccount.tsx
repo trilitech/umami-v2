@@ -1,4 +1,4 @@
-import { useAccounts } from "../../../utils/hooks/accountHooks";
+import { useImplicitAccounts } from "../../../utils/hooks/accountHooks";
 import {
   Step,
   StepType,
@@ -14,7 +14,7 @@ export const NameAccount = ({
   setStep: (step: Step) => void;
   config: TemporaryAccountConfig;
 }) => {
-  const accounts = useAccounts();
+  const accounts = useImplicitAccounts();
   const onSubmit = (p: { accountName: string }) => {
     if (p.accountName.trim().length > 0) {
       config.label = p.accountName.trim();

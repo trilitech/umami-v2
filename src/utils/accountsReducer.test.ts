@@ -3,7 +3,11 @@ import { fakeExtraArguments } from "../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../mocks/helpers";
 import { publicKeys1 } from "../mocks/publicKeys";
 import { seedPhrase } from "../mocks/seedPhrase";
-import { Account, AccountType, MnemonicAccount } from "../types/Account";
+import {
+  ImplicitAccount,
+  AccountType,
+  MnemonicAccount,
+} from "../types/Account";
 import accountsSlice from "./store/accountsSlice";
 
 import { store } from "./store/store";
@@ -157,7 +161,7 @@ describe("Accounts reducer", () => {
       const fingerPrint = await getFingerPrint(seedPhrase);
       const mockEntrypted = { mock: "encrypted" };
       const mockLabel = "myLabel";
-      const restoredAccounts: Account[] = [
+      const restoredAccounts: ImplicitAccount[] = [
         {
           ...mockAccount(0),
         },

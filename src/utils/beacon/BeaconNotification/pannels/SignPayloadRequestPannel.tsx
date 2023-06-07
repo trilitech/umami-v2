@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import SignButton from "../../../../components/sendForm/components/SignButton";
 import { AccountType } from "../../../../types/Account";
 import { SignerConfig } from "../../../../types/SignerConfig";
-import { useGetAccount } from "../../../hooks/accountHooks";
+import { useGetImplicitAccount } from "../../../hooks/accountHooks";
 import { useSelectedNetwork } from "../../../hooks/assetsHooks";
 import { makeSigner } from "../../../tezos";
 import { walletClient } from "../../beacon";
@@ -24,7 +24,7 @@ const SignPayloadRequestPannel: React.FC<{
   request: SignPayloadRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
-  const getAccount = useGetAccount();
+  const getAccount = useGetImplicitAccount();
   const network = useSelectedNetwork();
   const [isLoading, setIsLoading] = useState(false);
   const signerAccount = getAccount(request.sourceAddress);

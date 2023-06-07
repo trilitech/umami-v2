@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import HomeView from "./views/home/HomeView";
 import ImportSeed from "./ImportSeed";
-import { useAccounts } from "./utils/hooks/accountHooks";
+import { useImplicitAccounts } from "./utils/hooks/accountHooks";
 import { useAssetsPolling } from "./utils/useAssetsPolling";
 import NFTsView from "./views/nfts/NftsView";
 import OperationsView from "./views/operations/OperationsView";
@@ -92,7 +92,7 @@ const LoggedOutRouter = () => {
 };
 
 const Router = () => {
-  const isLoggedIn = useAccounts().length !== 0;
+  const isLoggedIn = useImplicitAccounts().length !== 0;
 
   return isLoggedIn ? <LoggedInRouterWithPolling /> : <LoggedOutRouter />;
 };
