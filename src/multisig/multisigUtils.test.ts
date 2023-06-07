@@ -3,26 +3,22 @@ import { TezosNetwork } from "@airgap/tezos";
 import {
   ContractMethod,
   ContractProvider,
-  MANAGER_LAMBDA,
   TransferParams,
 } from "@taquito/taquito";
-import axios from "axios";
 import { mockContract } from "../mocks/factories";
 import { fakeTezosUtils } from "../mocks/fakeTezosUtils";
 import { ghotnetThezard } from "../mocks/nftTokens";
 import { publicKeys2, publicKeys3 } from "../mocks/publicKeys";
-import { makeLamba } from "./multisigUtils";
+import { FA12_TRANSFER_ARG_TYPES, FA2_TRANSFER_ARG_TYPES, makeBatchLambda } from "./multisigUtils";
 
 jest.mock("axios");
 // Originated multisig contract
 const multisigContract = "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm";
 
-const fakeGet = axios.get as jest.Mock;
-
 const MOCK_FA2_MICHELSON_PARAM = {
   parameter: {
     value: [{ prim: "mock" }],
-    entrypoint: "specialTransfer",
+    entrypoint: "transfer",
   },
   to: "",
   amount: 0,
@@ -31,16 +27,13 @@ const MOCK_FA2_MICHELSON_PARAM = {
 const MOCK_FA12_MICHELSON_PARAM = {
   parameter: {
     value: [{ prim: "mock" }],
-    entrypoint: "specialFa1Transfer",
+    entrypoint: "transfer",
   },
   to: "",
   amount: 0,
 } as TransferParams;
 
-const MOCK_RPC_PARAM_INFO = { mock: "rpcInfo" };
-
 beforeEach(() => {
-  fakeGet.mockResolvedValue({ data: MOCK_RPC_PARAM_INFO });
   fakeTezosUtils.makeFA2TransferMethod.mockResolvedValue({
     toTransferParams: () => MOCK_FA2_MICHELSON_PARAM,
   } as ContractMethod<ContractProvider>);
@@ -54,7 +47,7 @@ describe("Multisig makeLambda", () => {
   test("simple tez transaction", async () => {
     const MUTEZ_AMOUNT = "652423";
 
-    const result = await makeLamba(
+    const result = await makeBatchLambda(
       [
         {
           type: "tez",
@@ -71,14 +64,6 @@ describe("Multisig makeLambda", () => {
       ...singleTez(MUTEZ_AMOUNT, publicKeys3.pkh),
     ];
 
-    // For good measure test that we get the same result as the lambda generated with Taquito
-    const lambdaWithTaquito = MANAGER_LAMBDA.transferImplicit(
-      publicKeys3.pkh,
-      Number(MUTEZ_AMOUNT)
-    );
-
-    expect(lambdaWithTaquito).toEqual(result);
-
     expect(result).toEqual(expected);
   });
 
@@ -86,7 +71,7 @@ describe("Multisig makeLambda", () => {
     const MUTEZ_AMOUNT_1 = "652421";
     const MUTEZ_AMOUNT_2 = "652422";
 
-    const result = await makeLamba(
+    const result = await makeBatchLambda(
       [
         {
           type: "tez",
@@ -112,7 +97,7 @@ describe("Multisig makeLambda", () => {
   });
 
   test("single NFT", async () => {
-    const result = await makeLamba(
+    const result = await makeBatchLambda(
       [
         {
           type: "fa2",
@@ -136,7 +121,7 @@ describe("Multisig makeLambda", () => {
   test("fa2 tokens", async () => {
     const AMOUNT = "4536";
     const MOCK_TOKEN_ID = "7";
-    const result = await makeLamba(
+    const result = await makeBatchLambda(
       [
         {
           type: "fa2",
@@ -156,19 +141,19 @@ describe("Multisig makeLambda", () => {
       {
         args: [
           { prim: "address" },
-          { string: `${mockContract(0)}%specialTransfer` },
+          { string: `${mockContract(0)}%transfer` },
         ],
         prim: "PUSH",
       },
-      { args: [MOCK_RPC_PARAM_INFO], prim: "CONTRACT" },
+      { args: [FA2_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
       {
         args: [
           [{ prim: "UNIT" }, { prim: "FAILWITH" }],
           [
-            { args: [{ prim: "mutez" }, { int: AMOUNT }], prim: "PUSH" },
+            { args: [{ prim: "mutez" }, { int: "0" }], prim: "PUSH" },
             {
               args: [
-                MOCK_RPC_PARAM_INFO,
+                FA2_TRANSFER_ARG_TYPES,
                 MOCK_FA2_MICHELSON_PARAM.parameter?.value,
               ],
               prim: "PUSH",
@@ -184,7 +169,7 @@ describe("Multisig makeLambda", () => {
 
   test("fa1", async () => {
     const AMOUNT = "4536";
-    const result = await makeLamba(
+    const result = await makeBatchLambda(
       [
         {
           type: "fa1.2",
@@ -203,19 +188,19 @@ describe("Multisig makeLambda", () => {
       {
         args: [
           { prim: "address" },
-          { string: mockContract(0) + "%specialFa1Transfer" },
+          { string: mockContract(0) + "%transfer" },
         ],
         prim: "PUSH",
       },
-      { args: [{ mock: "rpcInfo" }], prim: "CONTRACT" },
+      { args: [FA12_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
       {
         args: [
           [{ prim: "UNIT" }, { prim: "FAILWITH" }],
           [
-            { args: [{ prim: "mutez" }, { int: AMOUNT }], prim: "PUSH" },
+            { args: [{ prim: "mutez" }, { int: "0" }], prim: "PUSH" },
             {
               args: [
-                MOCK_RPC_PARAM_INFO,
+                FA12_TRANSFER_ARG_TYPES,
                 MOCK_FA12_MICHELSON_PARAM.parameter?.value,
               ],
               prim: "PUSH",
@@ -232,7 +217,7 @@ describe("Multisig makeLambda", () => {
   });
   test("batch with NFT and tez", async () => {
     const MOCK_TEZ_AMOUNT = "55555";
-    const result = await makeLamba(
+    const result = await makeBatchLambda(
       [
         { type: "tez", amount: MOCK_TEZ_AMOUNT, recipient: publicKeys2.pkh },
 
@@ -262,19 +247,19 @@ const thezardSingleLambda = [
   {
     args: [
       { prim: "address" },
-      { string: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob%specialTransfer" },
+      { string: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob%transfer" },
     ],
     prim: "PUSH",
   },
-  { args: [{ mock: "rpcInfo" }], prim: "CONTRACT" },
+  { args: [FA2_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
   {
     args: [
       [{ prim: "UNIT" }, { prim: "FAILWITH" }],
       [
-        { args: [{ prim: "mutez" }, { int: "1" }], prim: "PUSH" },
+        { args: [{ prim: "mutez" }, { int: "0" }], prim: "PUSH" },
         {
           args: [
-            MOCK_RPC_PARAM_INFO,
+            FA2_TRANSFER_ARG_TYPES,
             MOCK_FA2_MICHELSON_PARAM.parameter?.value,
           ],
           prim: "PUSH",

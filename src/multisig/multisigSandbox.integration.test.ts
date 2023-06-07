@@ -7,7 +7,7 @@ import { ghostTezzard } from "../mocks/tokens";
 import { SignerType } from "../types/SignerConfig";
 import { makeToolkitWithSigner } from "../utils/tezos";
 import { contract, makeStorageMichelsonJSON } from "./multisigContract";
-import { makeLamba } from "./multisigUtils";
+import { makeBatchLambda } from "./multisigUtils";
 import { MultisigStorage } from "./types";
 
 jest.unmock("../utils/tezos");
@@ -108,7 +108,7 @@ describe("multisig Sandbox", () => {
     test.skip("generate proposal with tez and thezard", async () => {
       const tezos = await makeToolkit();
 
-      const batch = await makeLamba(
+      const batch = await makeBatchLambda(
         [
           { type: "tez", amount: "600000", recipient: publicKeys2.pkh },
           {

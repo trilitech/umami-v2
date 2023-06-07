@@ -1,139 +1,191 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit, MANAGER_LAMBDA } from "@taquito/taquito";
 import { makeFA12TransferMethod, makeFA2TransferMethod } from "../utils/tezos";
 import { nodeUrls } from "../utils/tezos/consts";
-import { OperationBase } from "./types";
-import { lambdaOfOperation as lambdaOfOperationRaw } from "./vendors/beacon-lambda-transformer/src";
-import { RpcClient } from "./vendors/beacon-lambda-transformer/src/service/rpc";
-import {
-  MichelsonJSON,
-  Transaction,
-} from "./vendors/beacon-lambda-transformer/src/typings";
+import { FA12Operation, FA2Operation, Operation } from "./types";
+import { MichelsonV1Expression } from "@taquito/rpc";
+import { isEqual } from "lodash";
+import { addressType } from "../types/Address";
 
-/**
- * To handle non tez transactions we rely on the following vendored and modified code (some exports added and some code commented out)
- *  https://github.com/airgap-it/beacon-sdk/pull/497
- */
-const lambdaOfNonTezTransaction = (trans: Transaction, nodeUrl: string) =>
-  lambdaOfOperationRaw(new RpcClient(nodeUrl))(trans);
+export const FA2_TRANSFER_ARG_TYPES = {
+  args: [
+    {
+      args: [
+        {
+          annots: ["%from_"],
+          prim: "address",
+        },
+        {
+          annots: ["%txs"],
+          args: [
+            {
+              args: [
+                {
+                  annots: ["%to_"],
+                  prim: "address",
+                },
+                {
+                  args: [
+                    {
+                      annots: ["%token_id"],
+                      prim: "nat",
+                    },
+                    {
+                      annots: ["%amount"],
+                      prim: "nat",
+                    },
+                  ],
+                  prim: "pair",
+                },
+              ],
+              prim: "pair",
+            },
+          ],
+          prim: "list",
+        },
+      ],
+      prim: "pair",
+    },
+  ],
+  prim: "list",
+};
 
-const lambdaOfTezTransaction = (
-  key: string,
-  mutez: string
-): MichelsonJSON[] => {
-  // Copied from taquito's LAMBDA_MANAGER.
-  // We don't include the head since content is destined to be appeneded to a batch
+export const FA12_TRANSFER_ARG_TYPES = {
+  args: [
+    {
+      annots: [":from"],
+      prim: "address",
+    },
+    {
+      args: [
+        {
+          annots: [":to"],
+          prim: "address",
+        },
+        {
+          annots: [":value"],
+          prim: "nat",
+        },
+      ],
+      prim: "pair",
+    },
+  ],
+  prim: "pair",
+};
+
+const contractLambda = (
+  operation: FA12Operation | FA2Operation,
+  argValue: MichelsonV1Expression
+) => {
+  const argTypes =
+    operation.type === "fa1.2"
+      ? FA12_TRANSFER_ARG_TYPES
+      : FA2_TRANSFER_ARG_TYPES;
   return [
-    // Ingore head
-    // { prim: "DROP" },
-    // { prim: "NIL", args: [{ prim: "operation" }] },
     {
       prim: "PUSH",
-      args: [{ prim: "key_hash" }, { string: key }],
+      args: [
+        { prim: "address" },
+        // both FA1.2 and FA2 must implement the transfer entrypoint
+        // https://gitlab.com/tezos/tzip/-/blob/master/proposals/tzip-7/tzip-7.md#approvable-ledger-interface
+        // https://gitlab.com/tezos/tzip/-/blob/master/proposals/tzip-12/tzip-12.md#interface-specification
+        { string: operation.contract + "%transfer" },
+      ],
     },
-    { prim: "IMPLICIT_ACCOUNT" },
     {
-      prim: "PUSH",
-      args: [{ prim: "mutez" }, { int: `${mutez}` }],
+      prim: "CONTRACT",
+      args: [argTypes],
     },
-    { prim: "UNIT" },
-    { prim: "TRANSFER_TOKENS" },
-    { prim: "CONS" },
+    {
+      prim: "IF_NONE",
+      args: [
+        // If contract is not valid then fail and rollback the whole transaction
+        [{ prim: "UNIT" }, { prim: "FAILWITH" }],
+        [
+          // TODO: check if this is needed, exists in V1 implementation and is always 0
+          { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+          { prim: "PUSH", args: [argTypes, argValue] },
+          { prim: "TRANSFER_TOKENS" },
+          { prim: "CONS" },
+        ],
+      ],
+    },
   ];
 };
 
-const wrapInBatch = (ops: MichelsonJSON[]) => {
+const LAMBDA_HEADER = [
+  { prim: "DROP" },
+  { prim: "NIL", args: [{ prim: "operation" }] },
+];
+
+const headlessLambda = (
+  lambda: MichelsonV1Expression[]
+): MichelsonV1Expression[] => {
+  if (isEqual(lambda.slice(0, 2), LAMBDA_HEADER)) {
+    return lambda.slice(2);
+  }
+  return lambda;
+};
+
+const wrapInBatch = (ops: MichelsonV1Expression[]) => {
   // Add head and append operations
-  return [
-    // Drop lambda argument
-    {
-      prim: "DROP",
-    },
-    // Create empty list
-    {
-      prim: "NIL",
-      args: [{ prim: "operation" }],
-    },
-    ...ops,
-  ];
+  return [...LAMBDA_HEADER, ...ops];
 };
 
-/**
- *  nodeUrl is required for:
- * - instantiating toolkit for contract
- * - fetching lambda params for token transfers
- */
-const makeLambdaSingle = async (op: OperationBase, nodeUrl: string) => {
+const makeLambda = async (op: Operation, nodeUrl: string) => {
   const toolkit = new TezosToolkit(nodeUrl);
   switch (op.type) {
     case "tez":
-      return lambdaOfTezTransaction(op.recipient, op.amount);
-    case "fa1.2": {
-      const { type, ...args } = op;
-      const method = await makeFA12TransferMethod(args, toolkit);
-
-      const parameter = method.toTransferParams().parameter;
-
-      if (!parameter?.entrypoint || !parameter.value) {
-        throw new Error("Missing parameter on FA1.2 transfer method");
+      switch (addressType(op.recipient)) {
+        case "user":
+          return MANAGER_LAMBDA.transferImplicit(
+            op.recipient,
+            Number(op.amount)
+          );
+        case "contract":
+          return MANAGER_LAMBDA.transferToContract(
+            op.recipient,
+            Number(op.amount)
+          );
       }
-
-      return lambdaOfNonTezTransaction(
-        {
-          amount: op.amount,
-          destination: op.contract,
-          kind: "transaction",
-          parameters: {
-            entrypoint: parameter.entrypoint,
-            value: parameter.value as MichelsonJSON,
-          },
-        },
-        nodeUrl
-      );
-    }
+    // eslint-disable-next-line no-fallthrough
+    case "fa1.2":
     case "fa2": {
-      const { type, ...args } = op;
-      const method = await makeFA2TransferMethod(args, toolkit);
+      const method = await (op.type === "fa2"
+        ? makeFA2TransferMethod(op, toolkit)
+        : makeFA12TransferMethod(op, toolkit));
 
       const parameter = method.toTransferParams().parameter;
 
+      // how the entrypoint is specified in taquito?
       if (!parameter?.entrypoint || !parameter.value) {
-        throw new Error("Missing parameter on FA1.2 transfer method");
+        throw new Error("Missing parameter on a token transfer method");
       }
 
-      return lambdaOfNonTezTransaction(
-        {
-          amount: op.amount,
-          destination: op.contract,
-          kind: "transaction",
-          parameters: {
-            entrypoint: parameter.entrypoint,
-            value: parameter.value as MichelsonJSON,
-          },
-        },
-        nodeUrl
-      );
+      return contractLambda(op, parameter.value);
     }
-    default: {
-      throw new Error("Unsupported operation", op);
-    }
+    case "delegation":
+      if (op.recipient) {
+        return MANAGER_LAMBDA.setDelegate(op.recipient);
+      }
+      return MANAGER_LAMBDA.removeDelegate();
   }
 };
 
 /**
  *
- * @param ops List of JSON operations
+ * @param operations List of JSON operations
  * @param network Network is needed for fetching contract parameter elements in lambda
  * @returns Lambda in MichelsonJSON (=Micheline) format
  */
-export const makeLamba = async (
-  ops: OperationBase[],
+export const makeBatchLambda = async (
+  operations: Operation[],
   network: TezosNetwork
 ) => {
   const nodeUrl = nodeUrls[network];
-  const opsLambabdas = (
-    await Promise.all(ops.map((o) => makeLambdaSingle(o, nodeUrl)))
-  ).flat();
+  const opsLambdas = (
+    await Promise.all(operations.map(op => makeLambda(op, nodeUrl)))
+  ).flatMap(headlessLambda);
 
-  return wrapInBatch(opsLambabdas);
+  return wrapInBatch(opsLambdas);
 };
