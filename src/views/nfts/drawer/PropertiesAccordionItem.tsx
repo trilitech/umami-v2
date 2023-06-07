@@ -12,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
 import { CopyableAddress } from "../../../components/CopyableText";
+import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
 import { metadataUri, mimeType, NFT, royalties } from "../../../types/Asset";
-import { truncate } from "../../../utils/format";
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 
 export const creatorElement = (nft: NFT) => {
@@ -25,7 +25,7 @@ export const creatorElement = (nft: NFT) => {
   if (firstCreator.startsWith("tz")) {
     return <CopyableAddress pkh={firstCreator} />;
   }
-  return truncate(firstCreator, 15);
+  return <TruncatedTextWithTooltip text={firstCreator} maxLength={15} />;
 };
 
 const PropertiesAccordionItem = ({
@@ -179,9 +179,11 @@ const PropertiesAccordionItem = ({
                 <Td padding="16px 0 16px 15px" color="umami.gray.400">
                   License:
                 </Td>
-                {/* TODO: truncate it with a tooltip https://app.asana.com/0/0/1204749792730548/f */}
                 <Td padding="16px 0 16px 5px" w="30%">
-                  {truncate(nft.metadata.rights || "-", 15)}
+                  <TruncatedTextWithTooltip
+                    text={nft.metadata.rights || "-"}
+                    maxLength={15}
+                  />
                 </Td>
               </Tr>
             </Tbody>

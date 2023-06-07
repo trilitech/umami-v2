@@ -6,7 +6,7 @@ export const formatPkh = (pkh: string) => {
 };
 
 export const truncate = (name: string, len: number) => {
-  return name.length > len ? name.slice(0, len) + "..." : name;
+  return name.length > len ? name.slice(0, len - 3) + "..." : name;
 };
 
 export const tezToMutez = (tez: string): BigNumber =>
