@@ -1,10 +1,16 @@
+import { useNavigate } from "react-router-dom";
+import {
+  AccountType,
+  AllAccount,
+  LedgerAccount,
+  SocialAccount,
+} from "../../types/Account";
+import { MultisigAccount } from "../../types/MultisigAccount";
 import { decrypt } from "../aes";
+import { MultisigWithOperations } from "../multisig/types";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
-import { useGetAccountBalance } from "./assetsHooks";
-import { SocialAccount, AccountType, LedgerAccount } from "../../types/Account";
-import { useNavigate } from "react-router-dom";
 
 const { add, removeSecret } = accountsSlice.actions;
 
@@ -15,20 +21,6 @@ export const useAccounts = () => {
 export const useGetAccount = () => {
   const accounts = useAccounts();
   return (pkh: string) => accounts.find((a) => a.pkh === pkh);
-};
-
-export const useSelectedAccount = () => {
-  const pkh = useAppSelector((s) => s.accounts.selected);
-  const accounts = useAppSelector((s) => s.accounts.items);
-
-  return pkh === null ? null : accounts.find((a) => a.pkh === pkh);
-};
-
-export const useSelectedAccountBalance = () => {
-  const account = useSelectedAccount();
-  const accountBalance = useGetAccountBalance();
-
-  return account && accountBalance(account.pkh);
 };
 
 export const useReset = () => {
@@ -137,4 +129,23 @@ export const useRemoveMnemonic = () => {
       })
     );
   };
+};
+
+export const useMultisigAccounts = (): MultisigAccount[] => {
+  const multisigs: MultisigWithOperations[] = useAppSelector(
+    (s) => s.multisigs.items
+  );
+
+  return multisigs.map((m, i) => ({
+    label: `Multisig Account ${i}`,
+    pkh: m.address,
+    proposals: m.operations,
+    type: AccountType.MULTISIG,
+  }));
+};
+
+export const useAllAccounts = (): AllAccount[] => {
+  const implicit = useAccounts();
+  const multisig = useMultisigAccounts();
+  return [...implicit, ...multisig];
 };

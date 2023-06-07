@@ -2,17 +2,19 @@
 export type WalletAccountPkh = string;
 export type MultisigAddress = string;
 
+export type MultisigOperation = {
+  key: string;
+  active: boolean;
+  rawActions: string;
+  approvals: WalletAccountPkh[];
+};
+
 export type MultisigWithOperations = {
   address: MultisigAddress;
   threshold: number;
   signers: WalletAccountPkh[];
   balance: string;
-  operations: {
-    key: string;
-    active: boolean;
-    rawActions: string;
-    approvals: WalletAccountPkh[];
-  }[];
+  operations: MultisigOperation[];
 };
 
 export type AccountToMultisigs = Record<

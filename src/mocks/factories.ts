@@ -132,8 +132,7 @@ export const mockAccount = (
     return account;
   }
 
-  const error: never = type;
-  throw new Error(error);
+  throw new Error("Can't mock mulitisig accounts yet!");
 };
 
 export const mockContract = (index: number) =>

@@ -13,24 +13,28 @@ import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { useCreateOrImportSecretModal } from "../../components/Onboarding/useOnboardingModal";
 import {
-  Account,
   AccountType,
+  AllAccount,
   LedgerAccount,
   MnemonicAccount,
   SocialAccount,
 } from "../../types/Account";
-import { useRemoveMnemonic } from "../../utils/hooks/accountHooks";
+import { MultisigAccount } from "../../types/MultisigAccount";
+import {
+  useAllAccounts,
+  useRemoveMnemonic,
+} from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
-import accountsSlice from "../../utils/store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { deriveAccount } from "../../utils/store/thunks/restoreMnemonicAccounts";
-import AccountDisplayDrawer from "./AccountDisplayDrawer";
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 
-const { setSelected } = accountsSlice.actions;
-
-type AccountsOfSameType = MnemonicAccount[] | LedgerAccount[] | SocialAccount[];
+type AccountsOfSameType =
+  | MnemonicAccount[]
+  | LedgerAccount[]
+  | SocialAccount[]
+  | MultisigAccount[];
 
 type GroupedByLabel = Record<string, AccountsOfSameType | undefined>;
 
@@ -92,7 +96,7 @@ const AccountGroup: React.FC<{
   );
 };
 
-const getLabel = (a: Account) => {
+const getLabel = (a: AllAccount) => {
   switch (a.type) {
     case AccountType.MNEMONIC:
       return `Seedphrase ${a.seedFingerPrint}`;
@@ -100,13 +104,15 @@ const getLabel = (a: Account) => {
       return "Social Accounts";
     case AccountType.LEDGER:
       return "Ledger Accounts";
+    case AccountType.MULTISIG:
+      return "Multisig Accounts";
     default: {
       const error: never = a;
       throw new Error(error);
     }
   }
 };
-const groupByKind = (accounts: Account[]): GroupedByLabel => {
+const groupByKind = (accounts: AllAccount[]): GroupedByLabel => {
   return accounts.reduce((group: GroupedByLabel, a) => {
     const label = getLabel(a);
 
@@ -121,6 +127,9 @@ const groupByKind = (accounts: Account[]): GroupedByLabel => {
       case AccountType.SOCIAL:
         group[label] = [...(existing as SocialAccount[]), a];
         break;
+      case AccountType.MULTISIG:
+        group[label] = [...(existing as MultisigAccount[]), a];
+        break;
       default: {
         const error: never = a;
         throw error;
@@ -131,9 +140,13 @@ const groupByKind = (accounts: Account[]): GroupedByLabel => {
   }, {});
 };
 
-export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
-  const { items: accounts, selected } = useAppSelector((s) => s.accounts);
-  const dispatch = useAppDispatch();
+export const AccountsList: React.FC<{
+  onOpen: () => void;
+  selected: string | null;
+  onSelect: (pkh: string) => void;
+}> = (props) => {
+  const selected = props.selected;
+  const accounts = useAllAccounts();
 
   const balances = useAppSelector((s) => s.assets.balances.tez);
 
@@ -189,7 +202,7 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
             onDerive={handleDerive}
             onSelect={(pkh: string) => {
               props.onOpen();
-              dispatch(setSelected(pkh));
+              props.onSelect(pkh);
             }}
           />
         ) : null;
@@ -199,12 +212,6 @@ export const AccountsList: React.FC<{ onOpen: () => void }> = (props) => {
     </Box>
   );
 };
-
-const AccountListWithDrawer = () => (
-  <AccountDisplayDrawer
-    initiator={(onOpen) => <AccountsList onOpen={onOpen} />}
-  />
-);
 
 const DeriveAcount = (props: { onDone: () => void; fingerprint: string }) => {
   const dispatch = useAppDispatch();
@@ -277,5 +284,3 @@ export const useDeriveAccountModal = () => {
     },
   };
 };
-
-export default AccountListWithDrawer;

@@ -1,9 +1,11 @@
 import { Curves } from "@taquito/signer";
+import { MultisigAccount } from "./MultisigAccount";
 
 export enum AccountType {
   SOCIAL = "social",
   MNEMONIC = "mnemonic",
   LEDGER = "ledger",
+  MULTISIG = "multisig",
 }
 
 type Base = {
@@ -35,3 +37,5 @@ export type LedgerAccount = Base & {
 };
 
 export type Account = MnemonicAccount | SocialAccount | LedgerAccount;
+
+export type AllAccount = Account | MultisigAccount;

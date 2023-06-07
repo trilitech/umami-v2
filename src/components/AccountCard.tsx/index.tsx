@@ -1,5 +1,5 @@
+import { AllAccount } from "../../types/Account";
 import { mutezToTez } from "../../utils/format";
-import { useSelectedAccount } from "../../utils/hooks/accountHooks";
 import {
   useGetAccountAllTokens,
   useGetAccountBalance,
@@ -10,8 +10,7 @@ import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { useReceiveModal } from "../ReceiveModal";
 import { AccountCardDisplay } from "./AccountCardDisplay";
 
-export const AccountCard = () => {
-  const account = useSelectedAccount();
+export const AccountCard: React.FC<{ account: AllAccount }> = ({ account }) => {
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
 

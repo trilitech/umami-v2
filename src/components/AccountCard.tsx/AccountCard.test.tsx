@@ -42,24 +42,24 @@ beforeAll(() => {
 
 describe("<AccountCard />", () => {
   it("should display account name", () => {
-    render(<AccountCard />);
+    render(<AccountCard account={account} />);
     expect(
       screen.getByRole("heading", { name: account.label })
     ).toBeInTheDocument();
   });
 
   it("should display account tez balance", () => {
-    render(<AccountCard />);
+    render(<AccountCard account={account} />);
     expect(screen.getByText("33200 ꜩ")).toBeInTheDocument();
   });
 
   it("should display assets tabs with tokens by default", () => {
-    render(<AccountCard />);
+    render(<AccountCard account={account} />);
     expect(screen.getByTestId("account-card-tokens-tab")).toBeInTheDocument();
   });
 
   test("tokens tab should display token infos correctly", () => {
-    render(<AccountCard />);
+    render(<AccountCard account={account} />);
     const tokenTiles = screen.getAllByTestId("token-tile");
     expect(tokenTiles).toHaveLength(4);
 
@@ -93,7 +93,7 @@ describe("<AccountCard />", () => {
   });
 
   it("should display nfts under nfts tab", () => {
-    render(<AccountCard />);
+    render(<AccountCard account={account} />);
     expect(screen.getByTestId("account-card-nfts-tab")).toBeInTheDocument();
     screen.getByTestId("account-card-nfts-tab").click();
     expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);

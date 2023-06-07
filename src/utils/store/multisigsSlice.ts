@@ -1,16 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AccountToMultisigs } from "../multisig/types";
+import { MultisigWithOperations } from "../multisig/types";
 
-type State = AccountToMultisigs;
+type State = {
+  items: MultisigWithOperations[];
+};
 
-const initialState: State = {};
+const initialState: State = { items: [] };
 
 const multisigsSlice = createSlice({
   name: "multisigs",
   initialState,
   reducers: {
     reset: () => initialState,
-    set: (_, { payload }: { payload: AccountToMultisigs }) => payload,
+    set: (state, { payload }: { payload: MultisigWithOperations[] }) => {
+      state.items = payload;
+    },
   },
 });
 
