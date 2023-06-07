@@ -1,5 +1,10 @@
 import "@testing-library/jest-dom";
-import { mockAccount, mockAccountLabel, mockPkh } from "../../mocks/factories";
+import {
+  mockAccount,
+  mockAccountLabel,
+  mockMultisigWithOperations,
+  mockPkh,
+} from "../../mocks/factories";
 import { formatPkh } from "../../utils/format";
 import accountsSlice from "../../utils/store/accountsSlice";
 import { store } from "../../utils/store/store";
@@ -17,6 +22,7 @@ import {
 } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
+import multisigsSlice from "../../utils/store/multisigsSlice";
 
 const { add, reset } = accountsSlice.actions;
 
@@ -55,13 +61,13 @@ describe("<AccountList />", () => {
     });
   });
 
-  it("Accounts that are restored by user are displayed by group (case mnemonic and social)", async () => {
+  it("Accounts are displayed by group (case mnemonic social and multisig)", async () => {
     await restore();
     render(
       <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
     );
-    expect(screen.getAllByTestId(/account-tile/)).toHaveLength(5);
-    expect(screen.getAllByTestId(/account-group/)).toHaveLength(3);
+    expect(screen.getAllByTestId(/account-tile/)).toHaveLength(7);
+    expect(screen.getAllByTestId(/account-group/)).toHaveLength(4);
 
     const socialAccounts = screen.getByTestId(/account-group-social/i);
     expect(within(socialAccounts).getAllByTestId(/account-tile/)).toHaveLength(
@@ -85,6 +91,13 @@ describe("<AccountList />", () => {
     expect(within(seedPhrase2).getAllByTestId(/account-tile/)).toHaveLength(1);
     expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(seedPhrase2).toHaveTextContent("Account");
+
+    const multisigAccounts = screen.getByTestId(/account-group-multisig/i);
+    expect(
+      within(multisigAccounts).getAllByTestId(/account-tile/)
+    ).toHaveLength(2);
+    expect(multisigAccounts).toHaveTextContent(/multisig account 0/i);
+    expect(multisigAccounts).toHaveTextContent(/multisig account 1/i);
   });
 
   test("All accounts linked to a given mnemonic can be deleted by a CTA action and confirmation modal", async () => {
@@ -232,5 +245,12 @@ const restore = async () => {
       pk: mockPk(7),
       label: GOOGLE_ACCOUNT_LABEL2,
     })
+  );
+
+  store.dispatch(
+    multisigsSlice.actions.set([
+      mockMultisigWithOperations(0),
+      mockMultisigWithOperations(1),
+    ])
   );
 };

@@ -17,6 +17,10 @@ import {
   getDefaultMnemonicDerivationPath,
   getLedgerDerivationPath,
 } from "../utils/account/derivationPathUtils";
+import {
+  MultisigOperation,
+  MultisigWithOperations,
+} from "../utils/multisig/types";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -133,6 +137,38 @@ export const mockAccount = (
   }
 
   throw new Error("Can't mock mulitisig accounts yet!");
+};
+
+// Might need this later
+//
+// export const mockMultisigAccount = (
+//   index: number,
+//   proposals: MultisigOperation[] = []
+// ) => {
+//   const account: MultisigAccount = {
+//     proposals: [],
+//     type: AccountType.MULTISIG,
+//     label: "Mulstisig account " + index,
+//     pkh: mockContract(index),
+//   };
+
+//   return account;
+// };
+
+export const mockMultisigWithOperations = (
+  index: number,
+  operations: MultisigOperation[] = [],
+  signers: string[] = [],
+  balance = "0",
+  threshold = 3
+): MultisigWithOperations => {
+  return {
+    address: mockContract(index),
+    balance,
+    operations,
+    signers,
+    threshold,
+  };
 };
 
 export const mockContract = (index: number) =>
