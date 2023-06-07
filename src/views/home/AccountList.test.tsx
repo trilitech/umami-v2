@@ -39,7 +39,9 @@ describe("<AccountList />", () => {
       ])
     );
 
-    render(<AccountsList onOpen={() => {}} />);
+    render(
+      <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
+    );
 
     const results = screen.getAllByTestId(/account-tile/);
     expect(results).toHaveLength(3);
@@ -55,7 +57,9 @@ describe("<AccountList />", () => {
 
   it("Accounts that are restored by user are displayed by group (case mnemonic and social)", async () => {
     await restore();
-    render(<AccountsList onOpen={() => {}} />);
+    render(
+      <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
+    );
     expect(screen.getAllByTestId(/account-tile/)).toHaveLength(5);
     expect(screen.getAllByTestId(/account-group/)).toHaveLength(3);
 
@@ -85,7 +89,9 @@ describe("<AccountList />", () => {
 
   test("All accounts linked to a given mnemonic can be deleted by a CTA action and confirmation modal", async () => {
     await restore();
-    render(<AccountsList onOpen={() => {}} />);
+    render(
+      <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
+    );
 
     expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
     const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
@@ -127,7 +133,9 @@ describe("<AccountList />", () => {
   test("User can derive a new account for a mnemonic with a CTA action, by providing a label and password", async () => {
     const LABEL = "my label";
     await restore();
-    render(<AccountsList onOpen={() => {}} />);
+    render(
+      <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
+    );
 
     expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
     const seedPhrase1 = screen.getByTestId(

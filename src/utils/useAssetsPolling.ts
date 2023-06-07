@@ -1,12 +1,11 @@
 /* istanbul ignore file */
 import { TezosNetwork } from "@airgap/tezos";
+import { compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
-import { compact } from "lodash";
 import { useAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import {
-  buildAccountToMultisigsMap,
   getOperationsForMultisigs,
   getRelevantMultisigContracts,
 } from "./multisig/helpers";
@@ -172,11 +171,7 @@ export const useAssetsPolling = () => {
         multisigs
       );
 
-      dispatch(
-        multisigActions.set(
-          buildAccountToMultisigsMap(multisigsWithOperations, accountPkhSet)
-        )
-      );
+      dispatch(multisigActions.set(multisigsWithOperations));
     },
 
     refetchInterval: REFRESH_RATE,

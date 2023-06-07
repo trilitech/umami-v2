@@ -5,28 +5,33 @@ import {
   DrawerContent,
   DrawerOverlay,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import AccountCard from "../../components/AccountCard.tsx";
-import accountsSlice from "../../utils/store/accountsSlice";
-import { useAppDispatch } from "../../utils/store/hooks";
+import { useAllAccounts } from "../../utils/hooks/accountHooks";
+import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
 
-const AccountDisplayDrawer: React.FC<{
-  initiator: (onOpen: () => void) => React.ReactElement;
-}> = (props) => {
-  const dispatch = useAppDispatch();
+const AccountListWithDrawer: React.FC = () => {
+  const [selected, setSelected] = useState<string | null>(null);
+  const allAccounts = useAllAccounts();
 
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
 
   const handleClose = () => {
-    dispatch(accountsSlice.actions.setSelected(null));
+    setSelected(null);
     closeDrawer();
   };
 
-  const el = props.initiator(onOpen);
-
+  const account = allAccounts.find((a) => a.pkh === selected);
   return (
     <>
-      {el}
+      <AccountsList
+        onOpen={onOpen}
+        selected={selected}
+        onSelect={(pkh) => {
+          setSelected(pkh);
+        }}
+      />
       <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
@@ -36,7 +41,7 @@ const AccountDisplayDrawer: React.FC<{
             onClose={handleClose}
           />
           <DrawerBody>
-            <AccountCard />
+            {account && <AccountCard account={account} />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -44,4 +49,4 @@ const AccountDisplayDrawer: React.FC<{
   );
 };
 
-export default AccountDisplayDrawer;
+export default AccountListWithDrawer;

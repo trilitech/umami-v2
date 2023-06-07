@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { TopBar } from "../../components/TopBar";
-
-import AccountListWithDrawer from "./AccountsList";
+import AccountListWithDrawer from "./AccountListWithDrawer";
 
 import { NftList } from "./NftList";
 import { OperationsList } from "./OperationsList";
