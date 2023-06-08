@@ -72,59 +72,41 @@ export const contractHeadSchema = z.object({
 /**
  * FA2
  */
-const fa2Values = z.object({
-  prim: z.literal("IF_NONE"),
-  args: z.tuple([
-    z.tuple([prim("UNIT"), prim("FAILWITH")]),
-    z.tuple([
-      prim("PUSH"),
-      z.object({
-        prim: z.literal("PUSH"),
-        args: z.tuple([
-          prim("list"),
-          z.tuple([
-            // token transfer values live here
-            z.any(),
-          ]),
-        ]),
-      }),
-      prim("TRANSFER_TOKENS"),
-      prim("CONS"),
-    ]),
-  ]),
-});
 
 export const fa2Schema = z.tuple([
   lambdaRecipientSchema,
   contractHeadSchema,
-  fa2Values,
+  z.tuple([prim("IF_NONE")]),
+  prim("PUSH"), // The zero tez transfer
+  z.object({
+    prim: z.literal("PUSH"),
+    args: z.tuple([
+      prim("list"),
+      z.tuple([
+        z.any(), // token transfer values live here
+      ]),
+    ]),
+  }),
+  prim("TRANSFER_TOKENS"),
+  prim("CONS"),
 ]);
 
 /**
  * FA1.2
  */
-export const fa1Values = z.object({
-  prim: z.literal("IF_NONE"),
-  args: z.tuple([
-    z.tuple([prim("UNIT"), prim("FAILWITH")]),
-    z.tuple([
-      prim("PUSH"),
-      z.object({
-        prim: z.literal("PUSH"),
-        args: z.tuple([
-          prim("pair"),
-          // token transfer values live here
-          z.any(),
-        ]),
-      }),
-      prim("TRANSFER_TOKENS"),
-      prim("CONS"),
-    ]),
-  ]),
-});
 
-export const fa21chema2 = z.tuple([
+export const fa1Schema = z.tuple([
   lambdaRecipientSchema,
   contractHeadSchema,
-  fa1Values,
+  z.tuple([prim("IF_NONE")]),
+  prim("PUSH"), // The zero tez transfer
+  z.object({
+    prim: z.literal("PUSH"),
+    args: z.tuple([
+      prim("pair"),
+      z.any(), // token transfer values live here
+    ]),
+  }),
+  prim("TRANSFER_TOKENS"),
+  prim("CONS"),
 ]);

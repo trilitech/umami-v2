@@ -1,10 +1,10 @@
 import { encodePubKey } from "@taquito/utils";
 import { get } from "lodash";
 import { Operation } from "../types";
-import { batchHeadSchema, fa21chema2, fa2Schema, tezSchema } from "./schemas";
+import { batchHeadSchema, fa1Schema, fa2Schema, tezSchema } from "./schemas";
 
 const TEZ_TOKEN_LENGTH = 6;
-const FA2_TOKEN_LENGTH = 3;
+const FA2_TOKEN_LENGTH = 7;
 
 export const parseTez = (michelson: any[]): Operation | null => {
   const parseResult = tezSchema.safeParse(michelson.slice(0, TEZ_TOKEN_LENGTH));
@@ -15,13 +15,13 @@ export const parseTez = (michelson: any[]): Operation | null => {
 
   const recipient = parseResult.data[0].args[1].bytes;
 
-  const amount2 = parseResult.data[2].args[1].int;
+  const amount = parseResult.data[2].args[1].int;
 
   const parsedRecipient = encodePubKey("00" + recipient);
   return {
     type: "tez",
     recipient: parsedRecipient,
-    amount: amount2,
+    amount,
   };
 };
 
@@ -31,17 +31,17 @@ const parseFa2 = (michelson: any[]): Operation | null => {
     return null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [lambdaRecipient, _, fa2Values] = parseResult.data;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-redeclare
+  const [lambdaRecipient, _1, _2, _3, vals] = parseResult.data;
 
-  const unsafeData = fa2Values.args[1][1].args[1][0];
-
+  const unsafeData = vals.args[1][0];
   const from = get(unsafeData, ["args", 0, "bytes"]);
+
   const to = get(unsafeData, ["args", 1, 0, "args", 0, "bytes"]);
-  const token_id = get(unsafeData, ["args", 1, 0, "args", 1, "args", 0, "int"]);
+  const tokenId = get(unsafeData, ["args", 1, 0, "args", 1, "args", 0, "int"]);
   const amount = get(unsafeData, ["args", 1, 0, "args", 1, "args", 1, "int"]);
 
-  if (from == null || to == null || token_id == null || amount == null) {
+  if (from == null || to == null || tokenId == null || amount == null) {
     console.warn(
       "Missing sender, recipient, tokenID or amount on fa2 transfer"
     );
@@ -53,25 +53,22 @@ const parseFa2 = (michelson: any[]): Operation | null => {
     contract: encodePubKey(lambdaRecipient.args[1].bytes),
     sender: encodePubKey(from),
     recipient: encodePubKey(to),
-    tokenId: token_id,
+    tokenId,
     amount,
   };
 };
 
 const parseFa1 = (michelson: any[]): any | null => {
-  const parseResult = fa21chema2.safeParse(
-    michelson.slice(0, FA2_TOKEN_LENGTH)
-  );
+  const parseResult = fa1Schema.safeParse(michelson.slice(0, FA2_TOKEN_LENGTH));
 
   if (!parseResult.success) {
-    console.warn(parseResult.error);
     return null;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [lambdaRecipient, _, fa1Values] = parseResult.data;
+  const [lambdaRecipient, _1, _2, _3, vals] = parseResult.data;
 
-  const unsafeData = fa1Values.args[1][1].args[1];
+  const unsafeData = vals.args[1];
 
   const sender = get(unsafeData, ["args", 0, "bytes"]);
   const recipient = get(unsafeData, ["args", 1, "args", 0, "bytes"]);
@@ -112,8 +109,8 @@ const parse = (michelson: any[], result: Operation[] = []): Operation[] => {
     return parse(michelson.slice(FA2_TOKEN_LENGTH), [...result, fa1]);
   }
 
-  console.warn(
-    `Unrecoginzed token: ${JSON.stringify(michelson[0])}. Skipping.`
+  console.log(
+    `Unrecognized michelson element: ${JSON.stringify(michelson[0])}. Skipping.`
   );
   return parse(michelson.slice(1), result);
 };

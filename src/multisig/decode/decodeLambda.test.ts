@@ -1,12 +1,4 @@
 import { decode } from "./decodeLambda";
-import {
-  simpleFa1,
-  simpleTez,
-  tezAndTezard,
-  tezAndTezardWithInvalidDataInBetween,
-  tezzard,
-  threeTez,
-} from "./storageExamples";
 
 describe("decodeLambda", () => {
   test("invalid michelsonJSON batch (no head)", () => {
@@ -30,25 +22,149 @@ describe("decodeLambda", () => {
     );
   });
 
-  test("batch with a single tez transaction", () => {
-    const result = decode(simpleTez);
-
-    expect(result).toEqual([
+  test("simple tez", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
       {
-        amount: "220000",
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
+        ],
+      },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "910000" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+    ];
+    expect(decode(input)).toEqual([
+      {
+        amount: "910000",
         recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
         type: "tez",
       },
     ]);
   });
 
-  test("batch with a single FA2 transaction", () => {
-    const result = decode(tezzard);
+  test("simple fa2", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "address" },
+          {
+            bytes:
+              "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+          },
+        ],
+      },
+      {
+        prim: "CONTRACT",
+        args: [
+          {
+            prim: "list",
+            args: [
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: ["%from_"] },
+                  {
+                    prim: "list",
+                    annots: ["%txs"],
+                    args: [
+                      {
+                        prim: "pair",
+                        args: [
+                          { prim: "address", annots: ["%to_"] },
+                          {
+                            prim: "pair",
+                            args: [
+                              { prim: "nat", annots: ["%token_id"] },
+                              { prim: "nat", annots: ["%amount"] },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      [
+        {
+          prim: "IF_NONE",
+          args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
+        },
+      ],
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+      {
+        prim: "PUSH",
+        args: [
+          {
+            prim: "list",
+            args: [
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: ["%from_"] },
+                  {
+                    prim: "list",
+                    annots: ["%txs"],
+                    args: [
+                      {
+                        prim: "pair",
+                        args: [
+                          { prim: "address", annots: ["%to_"] },
+                          {
+                            prim: "pair",
+                            args: [
+                              { prim: "nat", annots: ["%token_id"] },
+                              { prim: "nat", annots: ["%amount"] },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          [
+            {
+              prim: "Pair",
+              args: [
+                { bytes: "018e368c2083bdaef3199bae317d6c967c21d947b300" },
+                [
+                  {
+                    prim: "Pair",
+                    args: [
+                      { bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
+                      { prim: "Pair", args: [{ int: "6" }, { int: "1" }] },
+                    ],
+                  },
+                ],
+              ],
+            },
+          ],
+        ],
+      },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+    ];
+    const result = decode(input);
     const expected = [
       {
         amount: "1",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         sender: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",
         tokenId: "6",
         type: "fa2",
@@ -57,9 +173,283 @@ describe("decodeLambda", () => {
     expect(result).toEqual(expected);
   });
 
-  test("batch with a single FA1 transaction", () => {
-    const result = decode(simpleFa1);
-    const expected = [
+  test("multiple tez", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
+        ],
+      },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "20000" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
+        ],
+      },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "33333" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+    ];
+
+    expect(decode(input)).toEqual([
+      {
+        amount: "20000",
+        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+        type: "tez",
+      },
+      {
+        amount: "33333",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        type: "tez",
+      },
+    ]);
+  });
+
+  test("tez and fa2", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
+        ],
+      },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "600000" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "address" },
+          {
+            bytes:
+              "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+          },
+        ],
+      },
+      {
+        prim: "CONTRACT",
+        args: [
+          {
+            prim: "list",
+            args: [
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: ["%from_"] },
+                  {
+                    prim: "list",
+                    annots: ["%txs"],
+                    args: [
+                      {
+                        prim: "pair",
+                        args: [
+                          { prim: "address", annots: ["%to_"] },
+                          {
+                            prim: "pair",
+                            args: [
+                              { prim: "nat", annots: ["%token_id"] },
+                              { prim: "nat", annots: ["%amount"] },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      [
+        {
+          prim: "IF_NONE",
+          args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
+        },
+      ],
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+      {
+        prim: "PUSH",
+        args: [
+          {
+            prim: "list",
+            args: [
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: ["%from_"] },
+                  {
+                    prim: "list",
+                    annots: ["%txs"],
+                    args: [
+                      {
+                        prim: "pair",
+                        args: [
+                          { prim: "address", annots: ["%to_"] },
+                          {
+                            prim: "pair",
+                            args: [
+                              { prim: "nat", annots: ["%token_id"] },
+                              { prim: "nat", annots: ["%amount"] },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          [
+            {
+              prim: "Pair",
+              args: [
+                { bytes: "018e368c2083bdaef3199bae317d6c967c21d947b300" },
+                [
+                  {
+                    prim: "Pair",
+                    args: [
+                      { bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
+                      { prim: "Pair", args: [{ int: "6" }, { int: "1" }] },
+                    ],
+                  },
+                ],
+              ],
+            },
+          ],
+        ],
+      },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
+        ],
+      },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "33333" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+    ];
+
+    expect(decode(input)).toEqual([
+      {
+        amount: "600000",
+        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+        type: "tez",
+      },
+      {
+        amount: "1",
+        contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        sender: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",
+        tokenId: "6",
+        type: "fa2",
+      },
+      {
+        amount: "33333",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        type: "tez",
+      },
+    ]);
+  });
+
+  test("fa1", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "address" },
+          {
+            bytes:
+              "01d7270a1dd9a8b9ee6b48380fb60dc36a7cd521bb007472616e73666572",
+          },
+        ],
+      },
+      {
+        prim: "CONTRACT",
+        args: [
+          {
+            prim: "pair",
+            args: [
+              { prim: "address", annots: [":from"] },
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: [":to"] },
+                  { prim: "nat", annots: [":value"] },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      [
+        {
+          prim: "IF_NONE",
+          args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
+        },
+      ],
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+      {
+        prim: "PUSH",
+        args: [
+          {
+            prim: "pair",
+            args: [
+              { prim: "address", annots: [":from"] },
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: [":to"] },
+                  { prim: "nat", annots: [":value"] },
+                ],
+              },
+            ],
+          },
+          {
+            prim: "Pair",
+            args: [
+              { bytes: "018e368c2083bdaef3199bae317d6c967c21d947b300" },
+              {
+                prim: "Pair",
+                args: [
+                  { bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
+                  { int: "300" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+    ];
+
+    expect(decode(input)).toEqual([
       {
         amount: "300",
         contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
@@ -67,98 +457,289 @@ describe("decodeLambda", () => {
         sender: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",
         type: "fa1.2",
       },
-    ];
-    expect(result).toEqual(expected);
+    ]);
   });
 
-  test("batch with three tez", () => {
-    const result = decode(threeTez);
-    const expected = [
+  test("tez, fa1 and fa2", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
       {
-        amount: "1000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        type: "tez",
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
+        ],
+      },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "100000" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "address" },
+          {
+            bytes:
+              "01d7270a1dd9a8b9ee6b48380fb60dc36a7cd521bb007472616e73666572",
+          },
+        ],
       },
       {
-        amount: "2000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        type: "tez",
+        prim: "CONTRACT",
+        args: [
+          {
+            prim: "pair",
+            args: [
+              { prim: "address", annots: [":from"] },
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: [":to"] },
+                  { prim: "nat", annots: [":value"] },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      [
+        {
+          prim: "IF_NONE",
+          args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
+        },
+      ],
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+      {
+        prim: "PUSH",
+        args: [
+          {
+            prim: "pair",
+            args: [
+              { prim: "address", annots: [":from"] },
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: [":to"] },
+                  { prim: "nat", annots: [":value"] },
+                ],
+              },
+            ],
+          },
+          {
+            prim: "Pair",
+            args: [
+              { bytes: "018e368c2083bdaef3199bae317d6c967c21d947b300" },
+              {
+                prim: "Pair",
+                args: [
+                  { bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
+                  { int: "300" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "005fd0a7ece135cecfd71fcf78cf6656d5047fb980" },
+        ],
+      },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "33333" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "address" },
+          {
+            bytes:
+              "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+          },
+        ],
       },
       {
-        amount: "3000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        type: "tez",
+        prim: "CONTRACT",
+        args: [
+          {
+            prim: "list",
+            args: [
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: ["%from_"] },
+                  {
+                    prim: "list",
+                    annots: ["%txs"],
+                    args: [
+                      {
+                        prim: "pair",
+                        args: [
+                          { prim: "address", annots: ["%to_"] },
+                          {
+                            prim: "pair",
+                            args: [
+                              { prim: "nat", annots: ["%token_id"] },
+                              { prim: "nat", annots: ["%amount"] },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
+      [
+        {
+          prim: "IF_NONE",
+          args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
+        },
+      ],
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+      {
+        prim: "PUSH",
+        args: [
+          {
+            prim: "list",
+            args: [
+              {
+                prim: "pair",
+                args: [
+                  { prim: "address", annots: ["%from_"] },
+                  {
+                    prim: "list",
+                    annots: ["%txs"],
+                    args: [
+                      {
+                        prim: "pair",
+                        args: [
+                          { prim: "address", annots: ["%to_"] },
+                          {
+                            prim: "pair",
+                            args: [
+                              { prim: "nat", annots: ["%token_id"] },
+                              { prim: "nat", annots: ["%amount"] },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          [
+            {
+              prim: "Pair",
+              args: [
+                { bytes: "018e368c2083bdaef3199bae317d6c967c21d947b300" },
+                [
+                  {
+                    prim: "Pair",
+                    args: [
+                      { bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
+                      { prim: "Pair", args: [{ int: "6" }, { int: "1" }] },
+                    ],
+                  },
+                ],
+              ],
+            },
+          ],
+        ],
+      },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
     ];
-    expect(result).toEqual(expected);
-  });
 
-  test("batch with three tez transactions but 1st one is malformed and ignored", () => {
-    const invalidThreeTez = JSON.parse(JSON.stringify(threeTez));
-    invalidThreeTez[3] = { foo: "bar" };
-    const result = decode(invalidThreeTez);
-    const expected = [
+    expect(decode(input)).toEqual([
       {
-        amount: "2000",
+        amount: "100000",
         recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
         type: "tez",
       },
       {
-        amount: "3000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        type: "tez",
+        amount: "300",
+        contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        sender: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",
+        type: "fa1.2",
       },
-    ];
-    expect(result).toEqual(expected);
-  });
-
-  test("batch with tez, tezard, tez", () => {
-    const result = decode(tezAndTezard);
-    const expected = [
       {
-        amount: "732000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+        amount: "33333",
+        recipient: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         type: "tez",
       },
       {
-        amount: "77",
+        amount: "1",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         sender: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",
         tokenId: "6",
         type: "fa2",
       },
-      {
-        amount: "220000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        type: "tez",
-      },
-    ];
-    expect(result).toEqual(expected);
+    ]);
   });
 
-  test("invalid values in between valid tokens are ignored", () => {
-    const result = decode(tezAndTezardWithInvalidDataInBetween);
-    const expected = [
+  test("unrecognized elements are skipped", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
+      "hello",
+      { foo: "bar" },
       {
-        amount: "732000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        type: "tez",
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
+        ],
       },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "20000" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+      "foo",
+      { hello: "world" },
       {
-        amount: "77",
-        contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        sender: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",
-        tokenId: "6",
-        type: "fa2",
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
+        ],
       },
-      {
-        amount: "220000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        type: "tez",
-      },
+      { prim: "IMPLICIT_ACCOUNT" },
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "33333" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+      { bad: "data" },
+      "bye",
     ];
-    expect(result).toEqual(expected);
+
+    expect(decode(input)).toEqual([
+      {
+        amount: "20000",
+        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+        type: "tez",
+      },
+      {
+        amount: "33333",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        type: "tez",
+      },
+    ]);
   });
 });
