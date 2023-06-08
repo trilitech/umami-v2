@@ -6,6 +6,7 @@ import {
   LedgerAccount,
   MnemonicAccount,
   SocialAccount,
+  MultisigAccount,
 } from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
@@ -136,6 +137,18 @@ export const mockAccount = (
   }
 
   throw new Error("Can't mock mulitisig accounts yet!");
+};
+
+export const mockMultisigAccount = (index: number): MultisigAccount => {
+  return {
+    type: AccountType.MULTISIG,
+    pkh: mockPkh(index),
+    label: "label",
+    threshold: 1,
+    signers: ["signers2"],
+    balance: "1",
+    operations: [],
+  };
 };
 
 // Might need this later
