@@ -4,12 +4,12 @@ import { tzktGetSameMultisigsResponseType } from "../tzkt/types";
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
 import {
   WalletAccountPkh,
-  MultisigWithOperations,
+  MultisigWithPendingOperations,
   AccountToMultisigs,
 } from "./types";
 
 export const buildAccountToMultisigsMap = (
-  multisigs: MultisigWithOperations[],
+  multisigs: MultisigWithPendingOperations[],
   accountPkhs: Set<WalletAccountPkh>
 ): AccountToMultisigs =>
   multisigs.reduce((acc: AccountToMultisigs, cur) => {
@@ -37,7 +37,7 @@ export const getRelevantMultisigContracts = async (
 export const getOperationsForMultisigs = async (
   network: TezosNetwork,
   multisigs: tzktGetSameMultisigsResponseType
-): Promise<MultisigWithOperations[]> => {
+): Promise<MultisigWithPendingOperations[]> => {
   const multisigsWithOperations = await Promise.all(
     multisigs.map(
       async ({
@@ -65,7 +65,7 @@ export const getOperationsForMultisigs = async (
           threshold: Number(threshold),
           signers,
           balance: balance.toString(),
-          operations: compact(operations),
+          pendingOperations: compact(operations),
         };
       }
     )

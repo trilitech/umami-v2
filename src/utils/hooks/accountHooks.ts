@@ -7,7 +7,7 @@ import {
   SocialAccount,
 } from "../../types/Account";
 import { decrypt } from "../aes";
-import { MultisigWithOperations } from "../multisig/types";
+import { MultisigWithPendingOperations } from "../multisig/types";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
@@ -132,7 +132,7 @@ export const useRemoveMnemonic = () => {
 };
 
 export const useMultisigAccounts = (): MultisigAccount[] => {
-  const multisigs: MultisigWithOperations[] = useAppSelector(
+  const multisigs: MultisigWithPendingOperations[] = useAppSelector(
     (s) => s.multisigs.items
   );
 
@@ -143,7 +143,7 @@ export const useMultisigAccounts = (): MultisigAccount[] => {
     threshold: m.threshold,
     signers: m.signers,
     balance: m.balance,
-    operations: m.operations,
+    operations: m.pendingOperations,
   }));
 };
 

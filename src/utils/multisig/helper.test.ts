@@ -8,7 +8,7 @@ import {
   getRelevantMultisigContracts,
 } from "./helpers";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
-import { MultisigWithOperations } from "./types";
+import { MultisigWithPendingOperations } from "./types";
 jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -16,20 +16,20 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 describe("multisig helpers", () => {
   test("buildAccountToMultisigsMap", async () => {
     const accounts = new Set([mockPkh(0), mockPkh(1), mockPkh(2)]);
-    const multisigs: MultisigWithOperations[] = [
+    const multisigs: MultisigWithPendingOperations[] = [
       {
         balance: "1",
         address: mockContract(0),
         signers: [mockPkh(0)],
         threshold: 1,
-        operations: [],
+        pendingOperations: [],
       },
       {
         balance: "0",
         address: mockContract(1),
         signers: [mockPkh(0), mockPkh(1), mockPkh(3)],
         threshold: 3,
-        operations: [],
+        pendingOperations: [],
       },
     ];
     const result = buildAccountToMultisigsMap(multisigs, accounts);
@@ -38,7 +38,7 @@ describe("multisig helpers", () => {
         {
           address: mockContract(1),
           balance: "0",
-          operations: [],
+          pendingOperations: [],
           signers: [mockPkh(0), mockPkh(1), mockPkh(3)],
           threshold: 3,
         },
@@ -47,14 +47,14 @@ describe("multisig helpers", () => {
         {
           address: mockContract(0),
           balance: "1",
-          operations: [],
+          pendingOperations: [],
           signers: [mockPkh(0)],
           threshold: 1,
         },
         {
           address: mockContract(1),
           balance: "0",
-          operations: [],
+          pendingOperations: [],
           signers: [mockPkh(0), mockPkh(1), mockPkh(3)],
           threshold: 3,
         },
@@ -121,7 +121,7 @@ describe("multisig helpers", () => {
       {
         address: mockContract(0),
         balance: "0",
-        operations: [
+        pendingOperations: [
           {
             approvals: [mockPkh(1)],
             key: "1",
@@ -134,7 +134,7 @@ describe("multisig helpers", () => {
       {
         address: mockContract(10),
         balance: "10",
-        operations: [
+        pendingOperations: [
           {
             approvals: [mockPkh(1)],
             key: "1",

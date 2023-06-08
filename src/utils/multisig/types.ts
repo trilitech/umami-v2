@@ -8,15 +8,15 @@ export type MultisigOperation = {
   approvals: WalletAccountPkh[];
 };
 
-export type MultisigWithOperations = {
+export type MultisigWithPendingOperations = {
   address: MultisigAddress;
   threshold: number;
   signers: WalletAccountPkh[];
   balance: string;
-  operations: MultisigOperation[];
+  pendingOperations: MultisigOperation[];
 };
 
 export type AccountToMultisigs = Record<
   WalletAccountPkh,
-  MultisigWithOperations[] | undefined
+  MultisigWithPendingOperations[] | undefined
 >;
