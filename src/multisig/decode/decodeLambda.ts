@@ -10,7 +10,6 @@ export const parseTez = (michelson: any[]): Operation | null => {
   const parseResult = tezSchema.safeParse(michelson.slice(0, TEZ_TOKEN_LENGTH));
 
   if (!parseResult.success) {
-    console.warn(parseResult.error);
     return null;
   }
 
@@ -29,7 +28,6 @@ export const parseTez = (michelson: any[]): Operation | null => {
 const parseFa2 = (michelson: any[]): Operation | null => {
   const parseResult = fa2Schema.safeParse(michelson.slice(0, FA2_TOKEN_LENGTH));
   if (!parseResult.success) {
-    console.warn(parseResult.error);
     return null;
   }
 
@@ -114,6 +112,9 @@ const parse = (michelson: any[], result: Operation[] = []): Operation[] => {
     return parse(michelson.slice(FA2_TOKEN_LENGTH), [...result, fa1]);
   }
 
+  console.warn(
+    `Unrecoginzed token: ${JSON.stringify(michelson[0])}. Skipping.`
+  );
   return parse(michelson.slice(1), result);
 };
 
