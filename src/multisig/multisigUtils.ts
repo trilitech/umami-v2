@@ -94,6 +94,7 @@ const contractLambda = (
     },
     // If contract is not valid then fail and rollback the whole transaction
     [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
+    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
     { prim: "PUSH", args: [argTypes, argValue] },
     { prim: "TRANSFER_TOKENS" },
     { prim: "CONS" },

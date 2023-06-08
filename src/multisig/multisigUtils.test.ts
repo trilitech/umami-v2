@@ -254,6 +254,7 @@ const fa2Lambda = (contract: string) => {
     },
     { args: [FA2_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
     [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
+    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
     {
       args: [FA2_TRANSFER_ARG_TYPES, MOCK_FA2_MICHELSON_PARAM.parameter?.value],
       prim: "PUSH",
@@ -310,6 +311,7 @@ const fa12Lambda = (contract: string) => {
         args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
       },
     ],
+    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
     {
       args: [
         FA12_TRANSFER_ARG_TYPES,
