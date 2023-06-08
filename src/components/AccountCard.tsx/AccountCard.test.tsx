@@ -12,6 +12,7 @@ import AccountCard from ".";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { render, screen, within } from "../../mocks/testUtils";
 import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
+import { AccountType, MultisigAccount } from "../../types/Account";
 const { updateAssets } = assetsSlice.actions;
 const { add, setSelected } = accountsSlice.actions;
 
@@ -46,6 +47,22 @@ describe("<AccountCard />", () => {
     expect(
       screen.getByRole("heading", { name: account.label })
     ).toBeInTheDocument();
+  });
+
+  it("accountCard displays multisig signers", () => {
+    const mockMultisigAccount = {
+      type: AccountType.MULTISIG,
+      pkh: "pkh",
+      label: "label",
+      threshold: 1,
+      signers: ["signers2"],
+      balance: "1",
+      operations: [],
+    } as MultisigAccount;
+
+    render(<AccountCard account={mockMultisigAccount} />);
+
+    expect(screen.getByTestId("multisig-tag-section")).toBeInTheDocument();
   });
 
   it("should display account tez balance", () => {
