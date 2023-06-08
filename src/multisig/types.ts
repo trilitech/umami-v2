@@ -31,7 +31,7 @@ export type FA2Operation = {
 
 export type Delegation = {
   type: "delegation";
-  recipient: Address;
+  recipient?: Address;
 };
 
 export type Operation =

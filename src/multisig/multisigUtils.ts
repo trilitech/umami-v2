@@ -80,13 +80,11 @@ const contractLambda = (
   argValue: MichelsonV1Expression
 ) => {
   return [
+    ...LAMBDA_HEADER,
     {
       prim: "PUSH",
       args: [
         { prim: "address" },
-        // both FA1.2 and FA2 must implement the transfer entrypoint
-        // https://gitlab.com/tezos/tzip/-/blob/master/proposals/tzip-7/tzip-7.md#approvable-ledger-interface
-        // https://gitlab.com/tezos/tzip/-/blob/master/proposals/tzip-12/tzip-12.md#interface-specification
         { string: operation.contract + "%" + entrypoint },
       ],
     },
@@ -94,18 +92,11 @@ const contractLambda = (
       prim: "CONTRACT",
       args: [argTypes],
     },
-    {
-      prim: "IF_NONE",
-      args: [
-        // If contract is not valid then fail and rollback the whole transaction
-        [{ prim: "UNIT" }, { prim: "FAILWITH" }],
-        [
-          { prim: "PUSH", args: [argTypes, argValue] },
-          { prim: "TRANSFER_TOKENS" },
-          { prim: "CONS" },
-        ],
-      ],
-    },
+    // If contract is not valid then fail and rollback the whole transaction
+    [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
+    { prim: "PUSH", args: [argTypes, argValue] },
+    { prim: "TRANSFER_TOKENS" },
+    { prim: "CONS" },
   ];
 };
 
@@ -123,12 +114,11 @@ const headlessLambda = (
   return lambda;
 };
 
-const wrapInBatch = (ops: MichelsonV1Expression[]) => {
-  // Add head and append operations
-  return [...LAMBDA_HEADER, ...ops];
-};
-
-const makeLambda = async (operation: Operation, nodeUrl: string) => {
+export const makeLambda = async (
+  operation: Operation,
+  network: TezosNetwork
+) => {
+  const nodeUrl = nodeUrls[network];
   const toolkit = new TezosToolkit(nodeUrl);
   switch (operation.type) {
     case "tez":
@@ -185,10 +175,11 @@ export const makeBatchLambda = async (
   operations: Operation[],
   network: TezosNetwork
 ) => {
-  const nodeUrl = nodeUrls[network];
   const opsLambdas = (
-    await Promise.all(operations.map(operation => makeLambda(operation, nodeUrl)))
+    await Promise.all(
+      operations.map((operation) => makeLambda(operation, network))
+    )
   ).flatMap(headlessLambda);
 
-  return wrapInBatch(opsLambdas);
+  return [...LAMBDA_HEADER, ...opsLambdas];
 };
