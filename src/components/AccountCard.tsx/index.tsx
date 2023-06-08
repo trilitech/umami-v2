@@ -48,6 +48,7 @@ export const AccountCard: React.FC<{ account: AllAccount }> = ({ account }) => {
         }}
         tokens={tokens}
         nfts={nfts}
+        account={account}
       />
       {sendModal}
       {receiveModal}

@@ -1,5 +1,4 @@
 import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import React from "react";
 import { MdArrowOutward, MdSouthWest } from "react-icons/md";
 
 import { FiPlus } from "react-icons/fi";
@@ -10,6 +9,8 @@ import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
 import type { BigNumber } from "bignumber.js";
+import { AccountType, AllAccount } from "../../types/Account";
+import MultisigSigners from "./MultisigSigners";
 
 type Props = {
   onSend?: () => void;
@@ -22,6 +23,7 @@ type Props = {
   dollarBalance: BigNumber | null;
   tokens: Array<FA12Token | FA2Token>;
   nfts: Array<NFT>;
+  account: AllAccount;
 };
 
 const RoundButton: React.FC<{
@@ -54,12 +56,15 @@ export const AccountCardDisplay: React.FC<Props> = ({
   dollarBalance,
   tokens,
   nfts,
+  account,
 }) => {
+  const isMultisig = account.type === AccountType.MULTISIG;
   return (
     <Flex
       direction="column"
       alignItems={"center"}
       data-testid={`account-card-${pkh}`}
+      paddingX={4}
     >
       <Identicon address={pkh} />
       <Heading mt={4} mb={2} size={"md"}>
@@ -80,9 +85,10 @@ export const AccountCardDisplay: React.FC<Props> = ({
           icon={<MdSouthWest />}
           onClick={onReceive}
         />
-        <RoundButton label="Buy tez" icon={<FiPlus />} />
+        {!isMultisig && <RoundButton label="Buy tez" icon={<FiPlus />} />}
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
+      {isMultisig && <MultisigSigners signers={account.signers} />}
       <AssetsPannel tokens={tokens} nfts={nfts} />
     </Flex>
   );
