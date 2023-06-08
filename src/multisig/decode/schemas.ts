@@ -51,6 +51,7 @@ export const batchHeadSchema = z.tuple([
  * Tez
  */
 export const tezSchema = z.tuple([
+  lambdaRecipientSchema,
   prim("IMPLICIT_ACCOUNT"),
   z.object({
     args: z.tuple([prim("mutez"), z.object({ int: z.string() })]),
@@ -71,7 +72,7 @@ export const contractHeadSchema = z.object({
 /**
  * FA2
  */
-export const fa2Schema = z.object({
+const fa2Values = z.object({
   prim: z.literal("IF_NONE"),
   args: z.tuple([
     z.tuple([prim("UNIT"), prim("FAILWITH")]),
@@ -93,10 +94,16 @@ export const fa2Schema = z.object({
   ]),
 });
 
+export const fa2Schema = z.tuple([
+  lambdaRecipientSchema,
+  contractHeadSchema,
+  fa2Values,
+]);
+
 /**
  * FA1.2
  */
-export const fa1Schema = z.object({
+export const fa1Values = z.object({
   prim: z.literal("IF_NONE"),
   args: z.tuple([
     z.tuple([prim("UNIT"), prim("FAILWITH")]),
@@ -115,3 +122,9 @@ export const fa1Schema = z.object({
     ]),
   ]),
 });
+
+export const fa21chema2 = z.tuple([
+  lambdaRecipientSchema,
+  contractHeadSchema,
+  fa1Values,
+]);

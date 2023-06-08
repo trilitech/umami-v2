@@ -1,64 +1,40 @@
 import { encodePubKey } from "@taquito/utils";
 import { get } from "lodash";
 import { Operation } from "../types";
-import {
-  batchHeadSchema,
-  contractHeadSchema,
-  fa1Schema,
-  fa2Schema,
-  lambdaRecipientSchema,
-  tezSchema,
-} from "./schemas";
+import { batchHeadSchema, fa21chema2, fa2Schema, tezSchema } from "./schemas";
+
+const TEZ_TOKEN_LENGTH = 6;
+const FA2_TOKEN_LENGTH = 3;
 
 export const parseTez = (michelson: any[]): Operation | null => {
-  const [head, ...body] = michelson;
-  const tezBody = body.slice(0, 5);
+  const result = tezSchema.safeParse(michelson.slice(0, TEZ_TOKEN_LENGTH));
 
-  const recipient = lambdaRecipientSchema.safeParse(head);
-
-  if (!recipient.success) {
+  if (!result.success) {
     return null;
   }
 
-  const tezTransfer = tezSchema.safeParse(tezBody);
+  const recipient = result.data[0].args[1].bytes;
 
-  if (!tezTransfer.success) {
-    return null;
-  }
+  const amount2 = result.data[2].args[1].int;
 
-  const amount = tezTransfer.data[1].args[1].int;
-
-  const parsedRecipient = encodePubKey("00" + recipient.data.args[1].bytes);
+  const parsedRecipient = encodePubKey("00" + recipient);
   return {
     type: "tez",
     recipient: parsedRecipient,
-    amount: amount,
+    amount: amount2,
   };
 };
 
 const parseFa2 = (michelson: any[]): Operation | null => {
-  const [head, ...body] = michelson;
-  const fa2Body = body.slice(0, 2);
-
-  const contract = lambdaRecipientSchema.safeParse(head);
-
-  if (!contract.success) {
+  const parseResult = fa2Schema.safeParse(michelson.slice(0, FA2_TOKEN_LENGTH));
+  if (!parseResult.success) {
     return null;
   }
 
-  const [def, values] = fa2Body;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [lambdaRecipient, _, fa2Values] = parseResult.data;
 
-  const fa2Def = contractHeadSchema.safeParse(def);
-  if (!fa2Def.success) {
-    return null;
-  }
-
-  const fa2Values = fa2Schema.safeParse(values);
-  if (!fa2Values.success) {
-    return null;
-  }
-
-  const unsafeData = fa2Values.data.args[1][1].args[1][0];
+  const unsafeData = fa2Values.args[1][1].args[1][0];
 
   const from = get(unsafeData, ["args", 0, "bytes"]);
   const to = get(unsafeData, ["args", 1, 0, "args", 0, "bytes"]);
@@ -71,7 +47,7 @@ const parseFa2 = (michelson: any[]): Operation | null => {
 
   return {
     type: "fa2",
-    contract: encodePubKey(contract.data.args[1].bytes),
+    contract: encodePubKey(lambdaRecipient.args[1].bytes),
     sender: encodePubKey(from),
     recipient: encodePubKey(to),
     tokenId: token_id,
@@ -80,27 +56,18 @@ const parseFa2 = (michelson: any[]): Operation | null => {
 };
 
 const parseFa1 = (michelson: any[]): any | null => {
-  const [head, ...body] = michelson;
-  const fa2Body = body.slice(0, 2);
+  const parseResult = fa21chema2.safeParse(
+    michelson.slice(0, FA2_TOKEN_LENGTH)
+  );
 
-  const contract = lambdaRecipientSchema.safeParse(head);
-
-  if (!contract.success) {
+  if (!parseResult.success) {
     return null;
   }
 
-  const [def, values] = fa2Body;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [lambdaRecipient, _, fa1Values] = parseResult.data;
 
-  const fa2Def = contractHeadSchema.safeParse(def);
-  if (!fa2Def.success) {
-    return null;
-  }
-
-  const fa1Values = fa1Schema.safeParse(values);
-  if (!fa1Values.success) {
-    return null;
-  }
-  const unsafeData = fa1Values.data.args[1][1].args[1];
+  const unsafeData = fa1Values.args[1][1].args[1];
 
   const sender = get(unsafeData, ["args", 0, "bytes"]);
   const recipient = get(unsafeData, ["args", 1, "args", 0, "bytes"]);
@@ -113,14 +80,11 @@ const parseFa1 = (michelson: any[]): any | null => {
   return {
     type: "fa1.2",
     amount,
-    contract: encodePubKey(contract.data.args[1].bytes),
+    contract: encodePubKey(lambdaRecipient.args[1].bytes),
     recipient: encodePubKey(recipient),
     sender: encodePubKey(sender),
   };
 };
-
-const TEZ_TOKEN_LENGTH = 6;
-const FA2_TOKEN_LENGTH = 3;
 
 const parse = (michelson: any[], result: Operation[] = []): Operation[] => {
   if (michelson.length === 0) {
