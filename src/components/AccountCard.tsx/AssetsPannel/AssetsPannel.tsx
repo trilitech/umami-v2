@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { AccountType, AllAccount } from "../../../types/Account";
 import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
+import MultisigPendingList from "./MultisigPendingList";
 import { NFTsGrid } from "./NFTsGrid";
 import TokenTile from "./TokenTile";
 
@@ -43,8 +44,7 @@ export const AssetsPannel: React.FC<{
       <TabPanels>
         {isMultisig && (
           <TabPanel data-testid="account-card-pending-tab-panel">
-            {/* TODO: display pending operations */}
-            pending operations
+            <MultisigPendingList account={account} />
           </TabPanel>
         )}
         <TabPanel data-testid="account-card-tokens-tab">

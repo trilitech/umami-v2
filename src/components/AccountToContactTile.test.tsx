@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { contact1 } from "../mocks/contacts";
-import { mockAccount } from "../mocks/factories";
+import { mockImplicitAccount } from "../mocks/factories";
 import { ReduxStore } from "../providers/ReduxStore";
 import { formatPkh, truncate } from "../utils/format";
 import accountsSlice from "../utils/store/accountsSlice";
@@ -41,7 +41,7 @@ describe("ContactTile", () => {
 
 describe("AccountOrContactTile", () => {
   it("displays account label if the address is in accounts", () => {
-    const account = mockAccount(0);
+    const account = mockImplicitAccount(0);
     const pkh = account.pkh;
     store.dispatch(add(account));
     render(AccountOrContactTileFixture(pkh));

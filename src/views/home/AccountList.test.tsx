@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import {
-  mockAccount,
+  mockImplicitAccount,
   mockAccountLabel,
   mockMultisigWithOperations,
   mockPkh,
@@ -39,9 +39,9 @@ describe("<AccountList />", () => {
   test("Displays accounts in store with label and formated pkh", async () => {
     store.dispatch(
       accountsSlice.actions.add([
-        mockAccount(0),
-        mockAccount(1),
-        mockAccount(2),
+        mockImplicitAccount(0),
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
       ])
     );
 
@@ -183,7 +183,7 @@ describe("<AccountList />", () => {
     });
 
     fakeExtraArguments.restoreAccount.mockResolvedValue(
-      mockAccount(2, undefined, MOCK_FINGETPRINT1)
+      mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1)
     );
 
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
@@ -212,8 +212,8 @@ const restore = async () => {
     fakeRestoreFromMnemonic({
       seedFingerprint: MOCK_FINGETPRINT1,
       accounts: [
-        mockAccount(0, undefined, MOCK_FINGETPRINT1),
-        mockAccount(1, undefined, MOCK_FINGETPRINT1),
+        mockImplicitAccount(0, undefined, MOCK_FINGETPRINT1),
+        mockImplicitAccount(1, undefined, MOCK_FINGETPRINT1),
       ] as MnemonicAccount[],
     })
   );
@@ -222,7 +222,7 @@ const restore = async () => {
     fakeRestoreFromMnemonic({
       seedFingerprint: MOCK_FINGETPRINT2,
       accounts: [
-        mockAccount(4, undefined, MOCK_FINGETPRINT2),
+        mockImplicitAccount(4, undefined, MOCK_FINGETPRINT2),
       ] as MnemonicAccount[],
     })
   );

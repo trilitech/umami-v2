@@ -1,6 +1,7 @@
 import {
-  mockAccount,
+  mockImplicitAccount,
   mockFA1Token,
+  mockMultisigAccount,
   mockNFTToken,
   mockPkh,
 } from "../../mocks/factories";
@@ -18,7 +19,7 @@ const { add, setSelected } = accountsSlice.actions;
 
 const tezBalance = "33200000000";
 
-const account = mockAccount(0);
+const account = mockImplicitAccount(0);
 const pkh = account.pkh;
 const mockNft = mockNFTToken(0, pkh);
 beforeAll(() => {
@@ -28,7 +29,7 @@ beforeAll(() => {
   store.dispatch(
     updateAssets([
       {
-        pkh: mockAccount(0).pkh,
+        pkh: mockImplicitAccount(0).pkh,
         tokens: [
           hedgeHoge,
           tzBtsc,
@@ -50,17 +51,7 @@ describe("<AccountCard />", () => {
   });
 
   it("accountCard displays multisig signers", () => {
-    const mockMultisigAccount = {
-      type: AccountType.MULTISIG,
-      pkh: "pkh",
-      label: "label",
-      threshold: 1,
-      signers: ["signers2"],
-      balance: "1",
-      operations: [],
-    } as MultisigAccount;
-
-    render(<AccountCard account={mockMultisigAccount} />);
+    render(<AccountCard account={mockMultisigAccount(0)} />);
 
     expect(screen.getByTestId("multisig-tag-section")).toBeInTheDocument();
   });

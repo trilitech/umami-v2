@@ -3,7 +3,7 @@ import { Modal } from "@chakra-ui/react";
 
 import { TezosNetwork } from "@airgap/tezos";
 import {
-  mockAccount,
+  mockImplicitAccount,
   mockBaker,
   mockContract,
   mockNFT,
@@ -63,16 +63,16 @@ beforeAll(async () => {
     fakeRestoreFromMnemonic({
       seedFingerprint: "mockPrint",
       accounts: [
-        mockAccount(1),
-        mockAccount(2),
-        mockAccount(3),
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
       ] as MnemonicAccount[],
     })
   );
 
   dispatchMockAccounts([
-    mockAccount(4, AccountType.SOCIAL),
-    mockAccount(5, AccountType.LEDGER),
+    mockImplicitAccount(4, AccountType.SOCIAL),
+    mockImplicitAccount(5, AccountType.LEDGER),
   ]);
 });
 
@@ -94,16 +94,16 @@ describe("<SendForm />", () => {
     });
 
     test("should render first step with sender prefiled if provided", () => {
-      render(fixture(mockAccount(1).pkh));
+      render(fixture(mockImplicitAccount(1).pkh));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).pkh)
       );
     });
 
     const fillForm = async () => {
-      render(fixture(mockAccount(1).pkh));
+      render(fixture(mockImplicitAccount(1).pkh));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).pkh)
       );
 
       const amountInput = screen.getByLabelText(/amount/i);
@@ -159,7 +159,7 @@ describe("<SendForm />", () => {
         expect(screen.getByText(/added to batch/i)).toBeTruthy();
       });
 
-      const batch = store.getState().assets.batches[mockAccount(1).pkh];
+      const batch = store.getState().assets.batches[mockImplicitAccount(1).pkh];
       expect(batch).toEqual({
         isSimulating: false,
         items: [
@@ -187,7 +187,8 @@ describe("<SendForm />", () => {
         expect(screen.getAllByText(/added to batch/i)).toBeTruthy();
       });
 
-      const batch2 = store.getState().assets.batches[mockAccount(1).pkh];
+      const batch2 =
+        store.getState().assets.batches[mockImplicitAccount(1).pkh];
       expect(batch2).toEqual({
         isSimulating: false,
         items: [
@@ -293,7 +294,7 @@ describe("<SendForm />", () => {
           data: mockFA2,
         })
       );
-      fillAccountSelector(mockAccount(2).label || "");
+      fillAccountSelector(mockImplicitAccount(2).label || "");
 
       const estimateButton = screen.getByText(/preview/i);
       expect(estimateButton).toBeDisabled();
@@ -320,12 +321,12 @@ describe("<SendForm />", () => {
         {
           amount: "1000000",
           contract: mockFA2.contract,
-          recipient: mockAccount(7).pkh,
-          sender: mockAccount(2).pkh,
+          recipient: mockImplicitAccount(7).pkh,
+          sender: mockImplicitAccount(2).pkh,
           tokenId: "7",
         },
 
-        mockAccount(2).pk,
+        mockImplicitAccount(2).pk,
         "mainnet"
       );
 
@@ -398,7 +399,7 @@ describe("<SendForm />", () => {
           data: mockFa1,
         })
       );
-      fillAccountSelector(mockAccount(2).label || "");
+      fillAccountSelector(mockImplicitAccount(2).label || "");
 
       const estimateButton = screen.getByText(/preview/i);
       expect(estimateButton).toBeDisabled();
@@ -426,11 +427,11 @@ describe("<SendForm />", () => {
         {
           amount: "1000000000",
           contract: mockFa1.contract,
-          recipient: mockAccount(7).pkh,
-          sender: mockAccount(2).pkh,
+          recipient: mockImplicitAccount(7).pkh,
+          sender: mockImplicitAccount(2).pkh,
         },
 
-        mockAccount(2).pk,
+        mockImplicitAccount(2).pk,
         "mainnet"
       );
 
@@ -473,7 +474,7 @@ describe("<SendForm />", () => {
     const fillFormAndSimulate = async () => {
       render(fixture(undefined, { type: "token", data: mockNFT(1) }));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).pkh)
       );
 
       // const amountInput = screen.getByLabelText(/amount/i);
@@ -597,7 +598,7 @@ describe("<SendForm />", () => {
   });
   describe("case send tez with Google account", () => {
     const fillForm = async () => {
-      render(fixture(mockAccount(4, AccountType.SOCIAL).pkh));
+      render(fixture(mockImplicitAccount(4, AccountType.SOCIAL).pkh));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
@@ -659,7 +660,7 @@ describe("<SendForm />", () => {
 
   describe("case send tez with Ledger account", () => {
     const fillForm = async () => {
-      render(fixture(mockAccount(5, AccountType.LEDGER).pkh));
+      render(fixture(mockImplicitAccount(5, AccountType.LEDGER).pkh));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
