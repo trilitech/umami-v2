@@ -4,7 +4,6 @@ export type MultisigAddress = string;
 
 export type MultisigOperation = {
   key: string;
-  active: boolean;
   rawActions: string;
   approvals: WalletAccountPkh[];
 };
