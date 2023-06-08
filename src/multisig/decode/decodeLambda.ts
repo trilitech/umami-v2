@@ -7,15 +7,16 @@ const TEZ_TOKEN_LENGTH = 6;
 const FA2_TOKEN_LENGTH = 3;
 
 export const parseTez = (michelson: any[]): Operation | null => {
-  const result = tezSchema.safeParse(michelson.slice(0, TEZ_TOKEN_LENGTH));
+  const parseResult = tezSchema.safeParse(michelson.slice(0, TEZ_TOKEN_LENGTH));
 
-  if (!result.success) {
+  if (!parseResult.success) {
+    console.warn(parseResult.error);
     return null;
   }
 
-  const recipient = result.data[0].args[1].bytes;
+  const recipient = parseResult.data[0].args[1].bytes;
 
-  const amount2 = result.data[2].args[1].int;
+  const amount2 = parseResult.data[2].args[1].int;
 
   const parsedRecipient = encodePubKey("00" + recipient);
   return {
@@ -28,6 +29,7 @@ export const parseTez = (michelson: any[]): Operation | null => {
 const parseFa2 = (michelson: any[]): Operation | null => {
   const parseResult = fa2Schema.safeParse(michelson.slice(0, FA2_TOKEN_LENGTH));
   if (!parseResult.success) {
+    console.warn(parseResult.error);
     return null;
   }
 
@@ -42,6 +44,9 @@ const parseFa2 = (michelson: any[]): Operation | null => {
   const amount = get(unsafeData, ["args", 1, 0, "args", 1, "args", 1, "int"]);
 
   if (from == null || to == null || token_id == null || amount == null) {
+    console.warn(
+      "Missing sender, recipient, tokenID or amount on fa2 transfer"
+    );
     return null;
   }
 
@@ -61,6 +66,7 @@ const parseFa1 = (michelson: any[]): any | null => {
   );
 
   if (!parseResult.success) {
+    console.warn(parseResult.error);
     return null;
   }
 
@@ -74,6 +80,7 @@ const parseFa1 = (michelson: any[]): any | null => {
   const amount = get(unsafeData, ["args", 1, "args", 1, "int"]);
 
   if (sender == null || recipient == null || amount == null) {
+    console.warn("Missing sender, recipient, or amount on fa1 transfer");
     return null;
   }
 
