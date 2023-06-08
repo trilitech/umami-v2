@@ -3,11 +3,7 @@ export type Address = string;
 export type AddressType = "contract" | "user";
 
 export const addressType = (addressType: string): AddressType => {
-  if (
-    addressType.startsWith("tz1") ||
-    addressType.startsWith("tz2") ||
-    addressType.startsWith("tz3")
-  ) {
+  if (addressType.match(/^tz[1234]/)) {
     return "user";
   }
   if (addressType.startsWith("KT")) {
