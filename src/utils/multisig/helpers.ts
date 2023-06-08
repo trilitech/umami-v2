@@ -4,12 +4,12 @@ import { tzktGetSameMultisigsResponseType } from "../tzkt/types";
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
 import {
   WalletAccountPkh,
-  MultisigWithOperations,
+  MultisigWithPendingOperations,
   AccountToMultisigs,
 } from "./types";
 
 export const buildAccountToMultisigsMap = (
-  multisigs: MultisigWithOperations[],
+  multisigs: MultisigWithPendingOperations[],
   accountPkhs: Set<WalletAccountPkh>
 ): AccountToMultisigs =>
   multisigs.reduce((acc: AccountToMultisigs, cur) => {
@@ -37,7 +37,7 @@ export const getRelevantMultisigContracts = async (
 export const getOperationsForMultisigs = async (
   network: TezosNetwork,
   multisigs: tzktGetSameMultisigsResponseType
-): Promise<MultisigWithOperations[]> => {
+): Promise<MultisigWithPendingOperations[]> => {
   const multisigsWithOperations = await Promise.all(
     multisigs.map(
       async ({
@@ -47,24 +47,25 @@ export const getOperationsForMultisigs = async (
       }) => {
         const response = await getPendingOperations(network, pending_ops);
 
-        const operations = response.map(({ key, value, active }) => {
-          if (!value || !key) {
-            return null;
-          }
-          return {
-            key,
-            active,
-            rawActions: value.actions,
-            approvals: value.approvals,
-          };
-        });
+        const operations = response
+          .filter(({ active }) => active)
+          .map(({ key, value }) => {
+            if (!value || !key) {
+              return null;
+            }
+            return {
+              key,
+              rawActions: value.actions,
+              approvals: value.approvals,
+            };
+          });
 
         return {
           address,
           threshold: Number(threshold),
           signers,
           balance: balance.toString(),
-          operations: compact(operations),
+          pendingOperations: compact(operations),
         };
       }
     )

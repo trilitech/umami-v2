@@ -1,4 +1,4 @@
-import { MultisigWithOperations } from "./multisig/types";
+import { MultisigWithPendingOperations } from "./multisig/types";
 import { multisigActions } from "./store/multisigsSlice";
 import { store } from "./store/store";
 
@@ -12,10 +12,10 @@ describe("Contacts reducer", () => {
   });
 
   test("should set new multisigs", () => {
-    const multisig: MultisigWithOperations = {
+    const multisig: MultisigWithPendingOperations = {
       address: "mockKt1",
       balance: "44",
-      operations: [],
+      pendingOperations: [],
       signers: [],
       threshold: 8,
     };

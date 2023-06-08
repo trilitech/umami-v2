@@ -4,20 +4,19 @@ export type MultisigAddress = string;
 
 export type MultisigOperation = {
   key: string;
-  active: boolean;
   rawActions: string;
   approvals: WalletAccountPkh[];
 };
 
-export type MultisigWithOperations = {
+export type MultisigWithPendingOperations = {
   address: MultisigAddress;
   threshold: number;
   signers: WalletAccountPkh[];
   balance: string;
-  operations: MultisigOperation[];
+  pendingOperations: MultisigOperation[];
 };
 
 export type AccountToMultisigs = Record<
   WalletAccountPkh,
-  MultisigWithOperations[] | undefined
+  MultisigWithPendingOperations[] | undefined
 >;

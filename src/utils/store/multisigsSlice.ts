@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { MultisigWithOperations } from "../multisig/types";
+import { MultisigWithPendingOperations } from "../multisig/types";
 
 type State = {
-  items: MultisigWithOperations[];
+  items: MultisigWithPendingOperations[];
 };
 
 const initialState: State = { items: [] };
@@ -12,7 +12,7 @@ const multisigsSlice = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
-    set: (state, { payload }: { payload: MultisigWithOperations[] }) => {
+    set: (state, { payload }: { payload: MultisigWithPendingOperations[] }) => {
       state.items = payload;
     },
   },

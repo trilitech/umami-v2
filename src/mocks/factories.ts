@@ -19,7 +19,7 @@ import {
 } from "../utils/account/derivationPathUtils";
 import {
   MultisigOperation,
-  MultisigWithOperations,
+  MultisigWithPendingOperations,
 } from "../utils/multisig/types";
 
 export const mockTezTransaction = (id: number) => {
@@ -161,11 +161,11 @@ export const mockMultisigWithOperations = (
   signers: string[] = [],
   balance = "0",
   threshold = 3
-): MultisigWithOperations => {
+): MultisigWithPendingOperations => {
   return {
     address: mockContract(index),
     balance,
-    operations,
+    pendingOperations: operations,
     signers,
     threshold,
   };
