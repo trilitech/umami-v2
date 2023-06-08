@@ -123,13 +123,6 @@ describe("multisig helpers", () => {
         balance: "0",
         operations: [
           {
-            active: false,
-            approvals: [mockPkh(0)],
-            key: "0",
-            rawActions: "action0",
-          },
-          {
-            active: true,
             approvals: [mockPkh(1)],
             key: "1",
             rawActions: "action1",
@@ -143,13 +136,6 @@ describe("multisig helpers", () => {
         balance: "10",
         operations: [
           {
-            active: false,
-            approvals: [mockPkh(0)],
-            key: "0",
-            rawActions: "action0",
-          },
-          {
-            active: true,
             approvals: [mockPkh(1)],
             key: "1",
             rawActions: "action1",
