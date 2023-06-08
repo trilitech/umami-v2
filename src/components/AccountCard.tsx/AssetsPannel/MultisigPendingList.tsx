@@ -1,4 +1,4 @@
-import { Box, Divider, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { isArray } from "lodash";
 import React from "react";
 import { MultisigAccount } from "../../../types/Account";

@@ -6,6 +6,24 @@ import { FA12Operation, FA2Operation, Operation } from "./types";
 import { MichelsonV1Expression } from "@taquito/rpc";
 import { isEqual } from "lodash";
 import { addressType } from "../types/Address";
+import { Parser } from "@taquito/michel-codec";
+
+export const MULTISIG_PROPOSE_ARG_TYPE = {
+  args: [
+    {
+      prim: "unit",
+    },
+    {
+      args: [
+        {
+          prim: "operation",
+        },
+      ],
+      prim: "list",
+    },
+  ],
+  prim: "lambda",
+};
 
 export const FA2_TRANSFER_ARG_TYPES = {
   args: [
@@ -183,4 +201,18 @@ export const makeBatchLambda = async (
   ).flatMap(headlessLambda);
 
   return [...LAMBDA_HEADER, ...opsLambdas];
+};
+
+// Parse michelson code to JSON-encoded Michelson AST.
+// e.g.) "(Pair 1 3)" => {"prim":"Pair","args":[{"int":"3"},{"int":"3"}]}
+// e.g.) "1" => {int: 1}
+export const parseMichelineExpression = (
+  code: string
+): MichelsonV1Expression => {
+  const p = new Parser();
+  const ast = p.parseMichelineExpression(code);
+  if (!ast) {
+    throw new Error("Error parsing michelson code");
+  }
+  return ast;
 };

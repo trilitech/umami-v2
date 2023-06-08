@@ -29,7 +29,7 @@ import {
 } from "./tezos";
 
 // TODO: refactor with less repetitions
-const getBalancePayload = async (
+export const getBalancePayload = async (
   pkh: string,
   network: TezosNetwork
 ): Promise<TezBalancePayload> => {
@@ -173,7 +173,7 @@ export const useAssetsPolling = () => {
       dispatch(multisigActions.set(multisigsWithOperations));
     },
 
-    refetchInterval: REFRESH_RATE,
+    refetchInterval: 2000,
   });
 
   const tezQueryRef = useRef(tezQuery);
