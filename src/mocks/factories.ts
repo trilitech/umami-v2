@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { OperationValue } from "../components/sendForm/types";
 import {

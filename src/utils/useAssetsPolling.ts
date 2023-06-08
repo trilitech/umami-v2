@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import { TezosNetwork } from "@airgap/tezos";
 import { compact } from "lodash";
 import { useEffect, useRef } from "react";

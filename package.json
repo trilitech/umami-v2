@@ -155,6 +155,12 @@
     },
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "src/mocks/*",
+      "src/utils/useAssetsPolling.ts",
+      "src/integration/*"
     ]
   },
   "build": {
