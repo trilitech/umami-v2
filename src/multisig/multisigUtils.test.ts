@@ -9,7 +9,11 @@ import { mockContract } from "../mocks/factories";
 import { fakeTezosUtils } from "../mocks/fakeTezosUtils";
 import { ghotnetThezard } from "../mocks/nftTokens";
 import { publicKeys2, publicKeys3 } from "../mocks/publicKeys";
-import { FA12_TRANSFER_ARG_TYPES, FA2_TRANSFER_ARG_TYPES, makeBatchLambda } from "./multisigUtils";
+import {
+  FA12_TRANSFER_ARG_TYPES,
+  FA2_TRANSFER_ARG_TYPES,
+  makeBatchLambda,
+} from "./multisigUtils";
 
 jest.mock("axios");
 // Originated multisig contract
@@ -139,10 +143,7 @@ describe("Multisig makeLambda", () => {
       { prim: "DROP" },
       { args: [{ prim: "operation" }], prim: "NIL" },
       {
-        args: [
-          { prim: "address" },
-          { string: `${mockContract(0)}%transfer` },
-        ],
+        args: [{ prim: "address" }, { string: `${mockContract(0)}%transfer` }],
         prim: "PUSH",
       },
       { args: [FA2_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
@@ -150,7 +151,6 @@ describe("Multisig makeLambda", () => {
         args: [
           [{ prim: "UNIT" }, { prim: "FAILWITH" }],
           [
-            { args: [{ prim: "mutez" }, { int: "0" }], prim: "PUSH" },
             {
               args: [
                 FA2_TRANSFER_ARG_TYPES,
@@ -186,10 +186,7 @@ describe("Multisig makeLambda", () => {
       { prim: "DROP" },
       { args: [{ prim: "operation" }], prim: "NIL" },
       {
-        args: [
-          { prim: "address" },
-          { string: mockContract(0) + "%transfer" },
-        ],
+        args: [{ prim: "address" }, { string: mockContract(0) + "%transfer" }],
         prim: "PUSH",
       },
       { args: [FA12_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
@@ -197,7 +194,6 @@ describe("Multisig makeLambda", () => {
         args: [
           [{ prim: "UNIT" }, { prim: "FAILWITH" }],
           [
-            { args: [{ prim: "mutez" }, { int: "0" }], prim: "PUSH" },
             {
               args: [
                 FA12_TRANSFER_ARG_TYPES,
@@ -256,7 +252,6 @@ const thezardSingleLambda = [
     args: [
       [{ prim: "UNIT" }, { prim: "FAILWITH" }],
       [
-        { args: [{ prim: "mutez" }, { int: "0" }], prim: "PUSH" },
         {
           args: [
             FA2_TRANSFER_ARG_TYPES,
