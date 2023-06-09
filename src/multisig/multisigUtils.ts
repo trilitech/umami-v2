@@ -3,7 +3,7 @@ import { TezosToolkit, MANAGER_LAMBDA } from "@taquito/taquito";
 import { makeFA12TransferMethod, makeFA2TransferMethod } from "../utils/tezos";
 import { nodeUrls } from "../utils/tezos/consts";
 import { FA12Operation, FA2Operation, Operation } from "./types";
-import { MichelsonV1Expression } from "@taquito/rpc";
+import type { MichelsonV1Expression } from "@taquito/rpc";
 import { isEqual } from "lodash";
 import { addressType } from "../types/Address";
 

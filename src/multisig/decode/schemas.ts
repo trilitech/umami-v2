@@ -29,7 +29,10 @@ const pushAddressSchema = z.object({
   ]),
 });
 
-const pair = (first: z.ZodTypeAny, second: z.ZodTypeAny) => {
+const pair = <T extends z.ZodTypeAny, U extends z.ZodTypeAny>(
+  first: T,
+  second: U
+) => {
   return z.object({
     prim: z.literal("Pair"),
     args: z.tuple([first, second]),
@@ -106,23 +109,21 @@ export const fa2Schema = z.tuple([
     prim: z.literal("PUSH"),
     args: z.tuple([
       prim("list"), // arg types
-      z.tuple([
+      // FA2 allows to include a few transactions in a batch
+      z.array(
         pair(
           z.object({ bytes: z.string({ description: "from" }) }),
-          // TODO:
-          // Technically, FA2 allows to include a few transactions in a batch
-          // but we, as for now, only send one transaction per lambda
-          z.tuple([
+          z.array(
             pair(
               z.object({ bytes: z.string({ description: "to" }) }),
               pair(
                 z.object({ int: z.string({ description: "token_id" }) }),
                 z.object({ int: z.string({ description: "amount" }) })
               )
-            ),
-          ])
-        ),
-      ]),
+            )
+          )
+        )
+      ),
     ]),
   }),
   prim("TRANSFER_TOKENS"),

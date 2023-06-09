@@ -1,12 +1,12 @@
 import { encodePubKey } from "@taquito/utils";
-import { get } from "lodash";
 import { Operation } from "../types";
 import { batchHeadSchema, fa1Schema, fa2Schema, tezSchema } from "./schemas";
+import type { MichelsonV1Expression } from "@taquito/rpc";
 
 const TEZ_TOKEN_LENGTH = 6;
 const FA_TOKEN_LENGTH = 7;
 
-export const parseTez = (michelson: any[]): Operation | null => {
+export const parseTez = (michelson: MichelsonV1Expression[]): Operation | null => {
   const parseResult = tezSchema.safeParse(michelson.slice(0, TEZ_TOKEN_LENGTH));
 
   if (!parseResult.success) {
@@ -25,70 +25,59 @@ export const parseTez = (michelson: any[]): Operation | null => {
   };
 };
 
-const parseFa2 = (michelson: any[]): Operation | null => {
+const parseFa2 = (michelson: MichelsonV1Expression[]): Operation[] => {
   const parseResult = fa2Schema.safeParse(michelson.slice(0, FA_TOKEN_LENGTH));
   if (!parseResult.success) {
-    return null;
+    return [];
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-redeclare
-  const [lambdaRecipient, _1, _2, _3, vals] = parseResult.data;
+  const lambdaRecipient = parseResult.data[0];
+  const operations = parseResult.data[4].args[1];
 
-  const unsafeData = vals.args[1][0];
-  const from = get(unsafeData, ["args", 0, "bytes"]);
+  return operations.flatMap(operation => {
+    const from = operation.args[0].bytes;
 
-  const to = get(unsafeData, ["args", 1, 0, "args", 0, "bytes"]);
-  const tokenId = get(unsafeData, ["args", 1, 0, "args", 1, "args", 0, "int"]);
-  const amount = get(unsafeData, ["args", 1, 0, "args", 1, "args", 1, "int"]);
+    return operation.args[1].map(destination => {
+      const to = destination.args[0].bytes;
+      const tokenId = destination.args[1].args[0].int;
+      const amount = destination.args[1].args[1].int;
 
-  if (from == null || to == null || tokenId == null || amount == null) {
-    console.warn(
-      "Missing sender, recipient, tokenID or amount on fa2 transfer"
-    );
-    return null;
-  }
-
-  return {
-    type: "fa2",
-    contract: encodePubKey(lambdaRecipient.args[1].bytes),
-    sender: encodePubKey(from),
-    recipient: encodePubKey(to),
-    tokenId,
-    amount,
-  };
+      return {
+        type: "fa2",
+        contract: encodePubKey(lambdaRecipient.args[1].bytes),
+        sender: encodePubKey(from),
+        recipient: encodePubKey(to),
+        tokenId,
+        amount,
+      };
+    });
+  });
 };
 
-const parseFa1 = (michelson: any[]): any | null => {
+const parseFa1 = (michelson: MichelsonV1Expression[]): any | null => {
   const parseResult = fa1Schema.safeParse(michelson.slice(0, FA_TOKEN_LENGTH));
 
   if (!parseResult.success) {
     return null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [lambdaRecipient, _1, _2, _3, vals] = parseResult.data;
+  const lambdaRecipient = parseResult.data[0]
+  const entrypointArgs = parseResult.data[4].args[1];
 
-  const unsafeData = vals.args[1];
-
-  const sender = get(unsafeData, ["args", 0, "bytes"]);
-  const recipient = get(unsafeData, ["args", 1, "args", 0, "bytes"]);
-  const amount = get(unsafeData, ["args", 1, "args", 1, "int"]);
-
-  if (sender == null || recipient == null || amount == null) {
-    console.warn("Missing sender, recipient, or amount on fa1 transfer");
-    return null;
-  }
+  const from = entrypointArgs.args[0].bytes;
+  const to = entrypointArgs.args[1].args[0].bytes;
+  const amount =  entrypointArgs.args[1].args[1].int;
 
   return {
     type: "fa1.2",
     amount,
     contract: encodePubKey(lambdaRecipient.args[1].bytes),
-    recipient: encodePubKey(recipient),
-    sender: encodePubKey(sender),
+    recipient: encodePubKey(to),
+    sender: encodePubKey(from),
   };
 };
 
-const parse = (michelson: any[], result: Operation[] = []): Operation[] => {
+const parse = (michelson: MichelsonV1Expression[], result: Operation[] = []): Operation[] => {
   if (michelson.length === 0) {
     return result;
   }
@@ -99,8 +88,8 @@ const parse = (michelson: any[], result: Operation[] = []): Operation[] => {
   }
 
   const fa2 = parseFa2(michelson);
-  if (fa2) {
-    return parse(michelson.slice(FA_TOKEN_LENGTH), [...result, fa2]);
+  if (fa2.length > 0) {
+    return parse(michelson.slice(FA_TOKEN_LENGTH), [...result, ...fa2]);
   }
 
   const fa1 = parseFa1(michelson);
@@ -114,11 +103,11 @@ const parse = (michelson: any[], result: Operation[] = []): Operation[] => {
   );
 };
 
-const assertHead = (michelson: any[]) => {
+const assertHead = (michelson: MichelsonV1Expression[]) => {
   batchHeadSchema.parse(michelson.slice(0, 2));
 };
 
-export const decode = (michelson: any[]) => {
+export const decode = (michelson: MichelsonV1Expression[]) => {
   assertHead(michelson);
 
   return parse(michelson.slice(2));

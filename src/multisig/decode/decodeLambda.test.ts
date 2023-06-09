@@ -1,4 +1,5 @@
 import { decode } from "./decodeLambda";
+import type { MichelsonV1Expression } from "@taquito/rpc";
 
 describe("decodeLambda", () => {
   test("invalid michelsonJSON batch (no head)", () => {
@@ -729,6 +730,6 @@ describe("decodeLambda", () => {
       "bye",
     ];
 
-    expect(() => decode(input)).toThrow();
+    expect(() => decode(input as MichelsonV1Expression[])).toThrow();
   });
 });
