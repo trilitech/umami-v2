@@ -36,14 +36,18 @@ const makeDevDefaultSigner = (index: number) => {
   });
 };
 
-// Originated multisig
+// Originated multisig on ghostnet
 // threshold: 2
 // singers: makeDevDefaultSigner(0), makeDevDefaultSigner(1)
+// Pre funded with FA1.2 token (KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe).
+// KL2 FA2 token (KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ).
 const MULTISIG_GHOSTNET_1 = "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8";
 const MULTISIG_GHOSTNET_1_PENDING_OPS_BIG_MAP = 238447;
+const FA12_TOKEN_CONTRACT = "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe";
+const FA2_KL2_CONTRACT = "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ";
 
 describe("multisig Sandbox", () => {
-  test.skip("propose, approve and execute batch tez transfers", async () => {
+  test.skip("propose, approve and execute batch tez/FA transfers", async () => {
     const TEZ_TO_SEND = 2;
 
     const toolkit0 = await makeToolkitFromDefaultDevSeed(0);
@@ -69,19 +73,29 @@ describe("multisig Sandbox", () => {
     );
     await sleep(15000);
 
-    // devAccount0 propose a simple tranfer back to devAccount2
+    // devAccount0 propose a batch tez/FA tranfer to devAccount2
     // devAccount0 is going to be in the approvers as well.
     const lamndaActions = await makeBatchLambda(
       [
         {
           type: "tez",
           recipient: devAccount2Pkh,
-          amount: tezToMutez((TEZ_TO_SEND / 2).toString()).toString(),
+          amount: tezToMutez(TEZ_TO_SEND.toString()).toString(),
         },
         {
-          type: "tez",
+          type: "fa1.2",
+          sender: MULTISIG_GHOSTNET_1,
           recipient: devAccount2Pkh,
-          amount: tezToMutez((TEZ_TO_SEND / 2).toString()).toString(),
+          contract: FA12_TOKEN_CONTRACT,
+          amount: "2",
+        },
+        {
+          type: "fa2",
+          sender: MULTISIG_GHOSTNET_1,
+          recipient: devAccount2Pkh,
+          contract: FA2_KL2_CONTRACT,
+          amount: "3",
+          tokenId: "0",
         },
       ],
       TezosNetwork.GHOSTNET
