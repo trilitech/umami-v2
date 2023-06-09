@@ -291,6 +291,7 @@ export const mockNFT = (index: number, balance = "1"): NFT => {
   const displayUri =
     "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" + index;
   return {
+    id: 1,
     type: "nft",
     balance,
     displayUri,

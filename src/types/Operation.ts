@@ -20,6 +20,7 @@ export type OperationDisplay = {
   amount: {
     prettyDisplay: string;
     url?: string;
+    id?: number;
   };
   fee?: string;
   sender: string;

@@ -10,6 +10,7 @@ import { FC } from "react";
 import { NFT } from "../../../types/Asset";
 import { truncate } from "../../../utils/format";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
+import { Link } from "react-router-dom";
 
 export const NFTsGrid: FC<
   { nfts: NFT[]; showName?: boolean } & SimpleGridProps
@@ -19,7 +20,7 @@ export const NFTsGrid: FC<
       <SimpleGrid {...rest}>
         {nfts.map((nft, i) => {
           return (
-            <Box key={`${nft.contract}${i}`}>
+            <Link to={`/nfts/${nft.id}`} key={`${nft.contract}${i}`}>
               <AspectRatio key={nft.contract + i} width={"100%"} ratio={1}>
                 <Image
                   width="100%"
@@ -32,7 +33,7 @@ export const NFTsGrid: FC<
                   {truncate(nft.metadata.name, 12)}
                 </Heading>
               )}
-            </Box>
+            </Link>
           );
         })}
       </SimpleGrid>

@@ -138,6 +138,7 @@ export const getTokenOperationDisplay = (
   const sign = getSign(forAddress, required.from.address, required.to.address);
 
   const displayUri = metadata && metadata.displayUri;
+  const displayId = transfer.token?.id;
 
   const level = required.level;
 
@@ -158,6 +159,7 @@ export const getTokenOperationDisplay = (
     amount: {
       prettyDisplay: sign + prettyAmount,
       url: displayUri && getIPFSurl(displayUri),
+      id: displayId,
     },
     prettyTimestamp,
     timestamp: required.timestamp,

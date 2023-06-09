@@ -7,7 +7,7 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
 import { TbFilter } from "react-icons/tb";
@@ -18,6 +18,7 @@ import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
+import { useParams } from "react-router-dom";
 
 export const FilterController: React.FC = () => {
   return (
@@ -31,11 +32,23 @@ export const FilterController: React.FC = () => {
 
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
-
   const allOwnedNfts = Object.values(nfts).flat();
-
   const [selectedNft, setSelectedNft] = useState<NFT>();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { nftId } = useParams();
+
+  const allOwnedNftsRef = useRef(allOwnedNfts);
+  const nftIdRef = useRef(nftId);
+  const onOpenRef = useRef(onOpen);
+
+  useEffect(() => {
+    const nftId = nftIdRef.current;
+    if (nftId) {
+      const nft = allOwnedNftsRef.current.find((n) => n.id === parseInt(nftId));
+      setSelectedNft(nft);
+      onOpenRef.current();
+    }
+  }, [allOwnedNftsRef, onOpenRef]);
 
   return (
     <Flex direction="column" height={"100%"}>
