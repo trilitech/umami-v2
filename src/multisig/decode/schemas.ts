@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const caseInsensitiveLiteral = (label: string) => {
-  return z.string().regex(new RegExp(`^${label}$`, 'i'))
+  return z.string().regex(new RegExp(`^${label}$`, "i"));
 };
 
 const prim = (label: string) => {
@@ -37,10 +37,10 @@ const pair = (first: z.ZodTypeAny, second: z.ZodTypeAny) => {
 };
 
 const contractZeroTezSchema = z.object({
-  prim: z.literal('PUSH'),
+  prim: z.literal("PUSH"),
   args: z.tuple([
-    z.object({prim: z.literal('mutez')}),
-    z.object({int: z.literal('0')}),
+    z.object({ prim: z.literal("mutez") }),
+    z.object({ int: z.literal("0") }),
   ]),
 });
 
@@ -73,10 +73,10 @@ export const tezSchema = z.tuple([
   lambdaRecipientSchema,
   prim("IMPLICIT_ACCOUNT"),
   z.object({
-    prim: z.literal('PUSH'),
+    prim: z.literal("PUSH"),
     args: z.tuple([
-      z.object({prim: z.literal('mutez')}),
-      z.object({int: z.string()}),
+      z.object({ prim: z.literal("mutez") }),
+      z.object({ int: z.string() }),
     ]),
   }),
   prim("UNIT"),
@@ -105,9 +105,23 @@ export const fa2Schema = z.tuple([
   z.object({
     prim: z.literal("PUSH"),
     args: z.tuple([
-      prim("list"),
+      prim("list"), // arg types
       z.tuple([
-        z.any(), // token transfer values live here
+        pair(
+          z.object({ bytes: z.string({ description: "from" }) }),
+          // TODO:
+          // Technically, FA2 allows to include a few transactions in a batch
+          // but we, as for now, only send one transaction per lambda
+          z.tuple([
+            pair(
+              z.object({ bytes: z.string({ description: "to" }) }),
+              pair(
+                z.object({ int: z.string({ description: "token_id" }) }),
+                z.object({ int: z.string({ description: "amount" }) })
+              )
+            ),
+          ])
+        ),
       ]),
     ]),
   }),
