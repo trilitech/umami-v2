@@ -13,7 +13,6 @@ import AccountCard from ".";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { render, screen, within } from "../../mocks/testUtils";
 import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
-import { AccountType, MultisigAccount } from "../../types/Account";
 const { updateAssets } = assetsSlice.actions;
 const { add, setSelected } = accountsSlice.actions;
 

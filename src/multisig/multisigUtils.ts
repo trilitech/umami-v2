@@ -95,7 +95,8 @@ const contractLambda = (
   operation: FA12Operation | FA2Operation,
   entrypoint: string,
   argTypes: MichelsonV1Expression,
-  argValue: MichelsonV1Expression
+  argValue: MichelsonV1Expression,
+  amount = "0"
 ) => {
   return [
     ...LAMBDA_HEADER,
@@ -112,7 +113,7 @@ const contractLambda = (
     },
     // If contract is not valid then fail and rollback the whole transaction
     [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
-    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+    { prim: "PUSH", args: [{ prim: "mutez" }, { int: amount }] },
     { prim: "PUSH", args: [argTypes, argValue] },
     { prim: "TRANSFER_TOKENS" },
     { prim: "CONS" },
