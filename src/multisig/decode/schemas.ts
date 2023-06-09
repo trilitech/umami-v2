@@ -1,8 +1,12 @@
 import { z } from "zod";
 
+const caseInsensitiveLiteral = (label: string) => {
+  return z.string().regex(new RegExp(`^${label}$`, 'i'))
+};
+
 const prim = (label: string) => {
   return z.object({
-    prim: z.literal(label),
+    prim: caseInsensitiveLiteral(label),
   });
 };
 
@@ -22,6 +26,21 @@ const pushAddressSchema = z.object({
   args: z.tuple([
     z.object({ prim: z.literal("address") }),
     z.object({ bytes: z.string() }),
+  ]),
+});
+
+const pair = (first: z.ZodTypeAny, second: z.ZodTypeAny) => {
+  return z.object({
+    prim: z.literal("Pair"),
+    args: z.tuple([first, second]),
+  });
+};
+
+const contractZeroTezSchema = z.object({
+  prim: z.literal('PUSH'),
+  args: z.tuple([
+    z.object({prim: z.literal('mutez')}),
+    z.object({int: z.literal('0')}),
   ]),
 });
 
@@ -54,13 +73,18 @@ export const tezSchema = z.tuple([
   lambdaRecipientSchema,
   prim("IMPLICIT_ACCOUNT"),
   z.object({
-    args: z.tuple([prim("mutez"), z.object({ int: z.string() })]),
-    prim: z.literal("PUSH"),
+    prim: z.literal('PUSH'),
+    args: z.tuple([
+      z.object({prim: z.literal('mutez')}),
+      z.object({int: z.string()}),
+    ]),
   }),
   prim("UNIT"),
   prim("TRANSFER_TOKENS"),
   prim("CONS"),
 ]);
+
+// TODO: add contract tez schema
 
 /**
  * Contract head
@@ -77,7 +101,7 @@ export const fa2Schema = z.tuple([
   lambdaRecipientSchema,
   contractHeadSchema,
   z.tuple([prim("IF_NONE")]),
-  prim("PUSH"), // The zero tez transfer
+  contractZeroTezSchema,
   z.object({
     prim: z.literal("PUSH"),
     args: z.tuple([
@@ -99,12 +123,18 @@ export const fa1Schema = z.tuple([
   lambdaRecipientSchema,
   contractHeadSchema,
   z.tuple([prim("IF_NONE")]),
-  prim("PUSH"), // The zero tez transfer
+  contractZeroTezSchema,
   z.object({
     prim: z.literal("PUSH"),
     args: z.tuple([
-      prim("pair"),
-      z.any(), // token transfer values live here
+      prim("Pair"), // arg types
+      pair(
+        z.object({ bytes: z.string({ description: "from" }) }),
+        pair(
+          z.object({ bytes: z.string({ description: "to" }) }),
+          z.object({ int: z.string({ description: "amount" }) })
+        )
+      ),
     ]),
   }),
   prim("TRANSFER_TOKENS"),

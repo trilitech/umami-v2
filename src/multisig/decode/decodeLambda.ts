@@ -4,7 +4,7 @@ import { Operation } from "../types";
 import { batchHeadSchema, fa1Schema, fa2Schema, tezSchema } from "./schemas";
 
 const TEZ_TOKEN_LENGTH = 6;
-const FA2_TOKEN_LENGTH = 7;
+const FA_TOKEN_LENGTH = 7;
 
 export const parseTez = (michelson: any[]): Operation | null => {
   const parseResult = tezSchema.safeParse(michelson.slice(0, TEZ_TOKEN_LENGTH));
@@ -26,7 +26,7 @@ export const parseTez = (michelson: any[]): Operation | null => {
 };
 
 const parseFa2 = (michelson: any[]): Operation | null => {
-  const parseResult = fa2Schema.safeParse(michelson.slice(0, FA2_TOKEN_LENGTH));
+  const parseResult = fa2Schema.safeParse(michelson.slice(0, FA_TOKEN_LENGTH));
   if (!parseResult.success) {
     return null;
   }
@@ -59,7 +59,7 @@ const parseFa2 = (michelson: any[]): Operation | null => {
 };
 
 const parseFa1 = (michelson: any[]): any | null => {
-  const parseResult = fa1Schema.safeParse(michelson.slice(0, FA2_TOKEN_LENGTH));
+  const parseResult = fa1Schema.safeParse(michelson.slice(0, FA_TOKEN_LENGTH));
 
   if (!parseResult.success) {
     return null;
@@ -100,19 +100,18 @@ const parse = (michelson: any[], result: Operation[] = []): Operation[] => {
 
   const fa2 = parseFa2(michelson);
   if (fa2) {
-    return parse(michelson.slice(FA2_TOKEN_LENGTH), [...result, fa2]);
+    return parse(michelson.slice(FA_TOKEN_LENGTH), [...result, fa2]);
   }
 
   const fa1 = parseFa1(michelson);
 
   if (fa1) {
-    return parse(michelson.slice(FA2_TOKEN_LENGTH), [...result, fa1]);
+    return parse(michelson.slice(FA_TOKEN_LENGTH), [...result, fa1]);
   }
 
-  console.log(
-    `Unrecognized michelson element: ${JSON.stringify(michelson[0])}. Skipping.`
+  throw new Error(
+    `Unrecognized michelson element: ${JSON.stringify(michelson[0])}`
   );
-  return parse(michelson.slice(1), result);
 };
 
 const assertHead = (michelson: any[]) => {

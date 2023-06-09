@@ -693,7 +693,7 @@ describe("decodeLambda", () => {
     ]);
   });
 
-  test("unrecognized elements are skipped", () => {
+  test("throws if cannot parse", () => {
     const input = [
       { prim: "DROP" },
       { prim: "NIL", args: [{ prim: "operation" }] },
@@ -729,17 +729,6 @@ describe("decodeLambda", () => {
       "bye",
     ];
 
-    expect(decode(input)).toEqual([
-      {
-        amount: "20000",
-        recipient: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-        type: "tez",
-      },
-      {
-        amount: "33333",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        type: "tez",
-      },
-    ]);
+    expect(() => decode(input)).toThrow();
   });
 });
