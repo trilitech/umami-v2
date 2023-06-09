@@ -2,7 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
-import { useImplicitAccounts } from "./hooks/accountHooks";
+import { useImplicitAccounts, useMultisigAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import {
   getOperationsForMultisigs,
@@ -78,6 +78,7 @@ export const useAssetsPolling = () => {
   const network = useSelectedNetwork();
   const pkhs = accounts.map((a) => a.pkh);
   const accountPkhSet = new Set(pkhs);
+  const multisigPkhs = useMultisigAccounts().map((m) => m.pkh);
 
   const tezQuery = useQuery("tezBalance", {
     queryFn: async () => {
@@ -94,7 +95,7 @@ export const useAssetsPolling = () => {
   const tokenQuery = useQuery("tokenBalance", {
     queryFn: async () => {
       const tokens = await Promise.all(
-        pkhs.map((pkh) => getTokensPayload(pkh, network))
+        [...multisigPkhs, ...pkhs].map((pkh) => getTokensPayload(pkh, network))
       );
 
       dispatch(assetsActions.updateAssets(tokens));
