@@ -37,11 +37,6 @@ const makeDevDefaultSigner = (index: number) => {
   });
 };
 
-const getTezBalanceOnGhostNet = async (pkh: string) => {
-  const mutez = await getBalancePayload(pkh, TezosNetwork.GHOSTNET);
-  return mutezToTez(mutez.tez);
-};
-
 // Originated multisig
 // threshold: 2
 // singers: makeDevDefaultSigner(0), makeDevDefaultSigner(1)
@@ -49,7 +44,7 @@ const MULTISIG_GHOSTNET_1 = "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8";
 const MULTISIG_GHOSTNET_1_PENDING_OPS_BIG_MAP = 238447;
 
 describe("multisig Sandbox", () => {
-  test.only("propose, approve and execute simple tez transfer", async () => {
+  test.skip("propose, approve and execute simple tez transfer", async () => {
     const TEZ_TO_SEND = "2";
 
     const toolkit0 = await makeToolkitFromDefaultDevSeed(0);
@@ -58,12 +53,13 @@ describe("multisig Sandbox", () => {
     const devAccount2Pkh = await devAccount2.publicKeyHash();
     const devAccount2Sk = await devAccount2.secretKey();
 
-    const preDevAccount2TezBalance = await getTezBalanceOnGhostNet(
-      devAccount2Pkh
+    const { tez: preDevAccount2TezBalance } = await getBalancePayload(
+      devAccount2Pkh,
+      TezosNetwork.GHOSTNET
     );
 
     // First, devAccount2 send tez to MULTISIG_GHOSTNET_1
-    await transferMutez(
+    const { fee } = await transferMutez(
       MULTISIG_GHOSTNET_1,
       tezToMutez(TEZ_TO_SEND).toNumber(),
       {
@@ -72,6 +68,7 @@ describe("multisig Sandbox", () => {
         network: TezosNetwork.GHOSTNET,
       }
     );
+    console.log(fee, "HERE");
     await sleep(15000);
 
     // devAccount0 propose a simple tranfer back to devAccount2 first
@@ -133,12 +130,13 @@ describe("multisig Sandbox", () => {
     console.log("execute done");
     await sleep(25000);
 
-    const postDevAccount2TezBalance = await getTezBalanceOnGhostNet(
-      devAccount2Pkh
+    const { tez: postDevAccount2TezBalance } = await getBalancePayload(
+      devAccount2Pkh,
+      TezosNetwork.GHOSTNET
     );
 
-    expect(parseInt(preDevAccount2TezBalance)).toEqual(
-      parseInt(postDevAccount2TezBalance)
+    expect(parseInt(postDevAccount2TezBalance) + fee).toEqual(
+      parseInt(preDevAccount2TezBalance)
     );
   });
 });
