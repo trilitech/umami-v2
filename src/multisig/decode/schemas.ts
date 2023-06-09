@@ -10,9 +10,6 @@ const prim = (label: string) => {
   });
 };
 
-/**
- * Lambda Recipient
- */
 const pushKeyHashSchema = z.object({
   prim: z.literal("PUSH"),
   args: z.tuple([
@@ -47,14 +44,12 @@ const contractZeroTezSchema = z.object({
   ]),
 });
 
-export const lambdaRecipientSchema = z.union([
-  pushKeyHashSchema,
-  pushAddressSchema,
-]);
+const lambdaEndSchema = [prim("TRANSFER_TOKENS"), prim("CONS")];
 
-/**
- * Head of batch
- */
+const contractHeadSchema = z.object({
+  prim: z.literal("CONTRACT"),
+});
+
 export const batchHeadSchema = z.tuple([
   z.object({
     prim: z.literal("DROP"),
@@ -69,39 +64,49 @@ export const batchHeadSchema = z.tuple([
   }),
 ]);
 
-/**
- * Tez
- */
+const pushMutezSchema = z.object({
+  prim: z.literal("PUSH"),
+  args: z.tuple([
+    z.object({ prim: z.literal("mutez") }),
+    z.object({ int: z.string() }),
+  ]),
+});
+
 export const tezSchema = z.tuple([
-  lambdaRecipientSchema,
+  pushKeyHashSchema,
   prim("IMPLICIT_ACCOUNT"),
-  z.object({
-    prim: z.literal("PUSH"),
-    args: z.tuple([
-      z.object({ prim: z.literal("mutez") }),
-      z.object({ int: z.string() }),
-    ]),
-  }),
+  pushMutezSchema,
   prim("UNIT"),
-  prim("TRANSFER_TOKENS"),
+  ...lambdaEndSchema,
+]);
+
+export const contractTezSchema = z.tuple([
+  pushAddressSchema,
+  contractHeadSchema,
+  z.tuple([prim("IF_NONE")]),
+  pushMutezSchema,
+  prim("UNIT"),
+  ...lambdaEndSchema,
+]);
+
+export const setDelegateSchema = z.tuple([
+  pushKeyHashSchema,
+  prim("SOME"),
+  prim("SET_DELEGATE"),
   prim("CONS"),
 ]);
 
-// TODO: add contract tez schema
-
-/**
- * Contract head
- */
-export const contractHeadSchema = z.object({
-  prim: z.literal("CONTRACT"),
-});
-
-/**
- * FA2
- */
+export const removeDelegateSchema = z.tuple([
+  z.object({
+    prim: z.literal("PUSH"),
+    args: z.tuple([z.object({ prim: z.literal("key_hash") })]),
+  }),
+  prim("SET_DELEGATE"),
+  prim("CONS"),
+]);
 
 export const fa2Schema = z.tuple([
-  lambdaRecipientSchema,
+  pushAddressSchema,
   contractHeadSchema,
   z.tuple([prim("IF_NONE")]),
   contractZeroTezSchema,
@@ -126,16 +131,11 @@ export const fa2Schema = z.tuple([
       ),
     ]),
   }),
-  prim("TRANSFER_TOKENS"),
-  prim("CONS"),
+  ...lambdaEndSchema,
 ]);
 
-/**
- * FA1.2
- */
-
 export const fa1Schema = z.tuple([
-  lambdaRecipientSchema,
+  pushAddressSchema,
   contractHeadSchema,
   z.tuple([prim("IF_NONE")]),
   contractZeroTezSchema,
@@ -152,6 +152,5 @@ export const fa1Schema = z.tuple([
       ),
     ]),
   }),
-  prim("TRANSFER_TOKENS"),
-  prim("CONS"),
+  ...lambdaEndSchema,
 ]);

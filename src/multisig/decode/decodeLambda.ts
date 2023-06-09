@@ -1,23 +1,38 @@
 import { encodePubKey } from "@taquito/utils";
 import { Operation } from "../types";
-import { batchHeadSchema, fa1Schema, fa2Schema, tezSchema } from "./schemas";
+import {
+  batchHeadSchema,
+  contractTezSchema,
+  fa1Schema,
+  fa2Schema,
+  removeDelegateSchema,
+  setDelegateSchema,
+  tezSchema,
+} from "./schemas";
 import type { MichelsonV1Expression } from "@taquito/rpc";
 
-const TEZ_TOKEN_LENGTH = 6;
-const FA_TOKEN_LENGTH = 7;
+export const parseTez = (michelson: MichelsonV1Expression[]): Operation => {
+  const parseResult = tezSchema.parse(michelson);
 
-export const parseTez = (michelson: MichelsonV1Expression[]): Operation | null => {
-  const parseResult = tezSchema.safeParse(michelson.slice(0, TEZ_TOKEN_LENGTH));
+  const to = parseResult[0].args[1].bytes;
+  const amount = parseResult[2].args[1].int;
 
-  if (!parseResult.success) {
-    return null;
-  }
+  return {
+    type: "tez",
+    recipient: encodePubKey("00" + to),
+    amount,
+  };
+};
 
-  const recipient = parseResult.data[0].args[1].bytes;
+export const parseTezContract = (
+  michelson: MichelsonV1Expression[]
+): Operation => {
+  const parseResult = contractTezSchema.parse(michelson);
 
-  const amount = parseResult.data[2].args[1].int;
+  const to = parseResult[0].args[1].bytes;
+  const amount = parseResult[3].args[1].int;
 
-  const parsedRecipient = encodePubKey("00" + recipient);
+  const parsedRecipient = encodePubKey("00" + to); // todo check what is "00" and how it works for contracts
   return {
     type: "tez",
     recipient: parsedRecipient,
@@ -26,18 +41,14 @@ export const parseTez = (michelson: MichelsonV1Expression[]): Operation | null =
 };
 
 const parseFa2 = (michelson: MichelsonV1Expression[]): Operation[] => {
-  const parseResult = fa2Schema.safeParse(michelson.slice(0, FA_TOKEN_LENGTH));
-  if (!parseResult.success) {
-    return [];
-  }
+  const parseResult = fa2Schema.parse(michelson);
+  const lambdaRecipient = parseResult[0];
+  const operations = parseResult[4].args[1];
 
-  const lambdaRecipient = parseResult.data[0];
-  const operations = parseResult.data[4].args[1];
-
-  return operations.flatMap(operation => {
+  return operations.flatMap((operation) => {
     const from = operation.args[0].bytes;
 
-    return operation.args[1].map(destination => {
+    return operation.args[1].map((destination) => {
       const to = destination.args[0].bytes;
       const tokenId = destination.args[1].args[0].int;
       const amount = destination.args[1].args[1].int;
@@ -54,19 +65,15 @@ const parseFa2 = (michelson: MichelsonV1Expression[]): Operation[] => {
   });
 };
 
-const parseFa1 = (michelson: MichelsonV1Expression[]): any | null => {
-  const parseResult = fa1Schema.safeParse(michelson.slice(0, FA_TOKEN_LENGTH));
+const parseFa1 = (michelson: MichelsonV1Expression[]): Operation => {
+  const parseResult = fa1Schema.parse(michelson);
 
-  if (!parseResult.success) {
-    return null;
-  }
-
-  const lambdaRecipient = parseResult.data[0]
-  const entrypointArgs = parseResult.data[4].args[1];
+  const lambdaRecipient = parseResult[0];
+  const entrypointArgs = parseResult[4].args[1];
 
   const from = entrypointArgs.args[0].bytes;
   const to = entrypointArgs.args[1].args[0].bytes;
-  const amount =  entrypointArgs.args[1].args[1].int;
+  const amount = entrypointArgs.args[1].args[1].int;
 
   return {
     type: "fa1.2",
@@ -77,25 +84,52 @@ const parseFa1 = (michelson: MichelsonV1Expression[]): any | null => {
   };
 };
 
-const parse = (michelson: MichelsonV1Expression[], result: Operation[] = []): Operation[] => {
+const parseSetDelegate = (michelson: MichelsonV1Expression[]): Operation => {
+  const parseResult = setDelegateSchema.parse(michelson);
+
+  return {
+    type: "delegation",
+    recipient: encodePubKey("00" + parseResult[0].args[1].bytes),
+  };
+};
+
+const parseRemoveDelegate = (
+  _michelson: MichelsonV1Expression[]
+): Operation => {
+  return { type: "delegation" };
+};
+
+const parsings = [
+  { schema: tezSchema, parsingFn: parseTez },
+  { schema: contractTezSchema, parsingFn: parseTezContract },
+  { schema: fa2Schema, parsingFn: parseFa2 },
+  { schema: fa1Schema, parsingFn: parseFa1 },
+  { schema: setDelegateSchema, parsingFn: parseSetDelegate },
+  { schema: removeDelegateSchema, parsingFn: parseRemoveDelegate },
+];
+
+const parse = (
+  michelson: MichelsonV1Expression[],
+  acc: Operation[] = []
+): Operation[] => {
   if (michelson.length === 0) {
-    return result;
+    return acc;
   }
 
-  const tez = parseTez(michelson);
-  if (tez) {
-    return parse(michelson.slice(TEZ_TOKEN_LENGTH), [...result, tez]);
-  }
+  for (let i = 0; i < parsings.length; i++) {
+    const { schema, parsingFn } = parsings[i];
+    const parseResult = schema.safeParse(
+      michelson.slice(0, schema.items.length)
+    );
+    if (!parseResult.success) {
+      continue;
+    }
 
-  const fa2 = parseFa2(michelson);
-  if (fa2.length > 0) {
-    return parse(michelson.slice(FA_TOKEN_LENGTH), [...result, ...fa2]);
-  }
-
-  const fa1 = parseFa1(michelson);
-
-  if (fa1) {
-    return parse(michelson.slice(FA_TOKEN_LENGTH), [...result, fa1]);
+    const parsed = parsingFn(parseResult.data);
+    return parse(michelson.slice(schema.items.length), [
+      ...acc,
+      ...[parsed].flat(),
+    ]);
   }
 
   throw new Error(
