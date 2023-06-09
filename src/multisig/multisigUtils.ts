@@ -119,7 +119,7 @@ const contractLambda = (
   ];
 };
 
-const LAMBDA_HEADER = [
+const LAMBDA_HEADER: MichelsonV1Expression[] = [
   { prim: "DROP" },
   { prim: "NIL", args: [{ prim: "operation" }] },
 ];

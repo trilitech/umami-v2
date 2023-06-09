@@ -1,15 +1,14 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { InMemorySigner } from "@taquito/signer";
-import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { seedPhrase } from "../mocks/seedPhrase";
 import { SignerType } from "../types/SignerConfig";
 import { getDefaultMnemonicDerivationPath } from "../utils/account/derivationPathUtils";
-import { mutezToTez, tezToMutez } from "../utils/format";
+import { tezToMutez } from "../utils/format";
 import { getPendingOperations } from "../utils/multisig/fetch";
 import { makeToolkitWithSigner, transferMutez } from "../utils/tezos";
 import { callContract } from "../utils/tezos/contract";
 import { getBalancePayload } from "../utils/useAssetsPolling";
-import { parseMichelineExpression } from "./multisigUtils";
+import { makeBatchLambda, parseMichelineExpression } from "./multisigUtils";
 
 jest.unmock("../utils/tezos");
 
@@ -44,8 +43,8 @@ const MULTISIG_GHOSTNET_1 = "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8";
 const MULTISIG_GHOSTNET_1_PENDING_OPS_BIG_MAP = 238447;
 
 describe("multisig Sandbox", () => {
-  test.skip("propose, approve and execute simple tez transfer", async () => {
-    const TEZ_TO_SEND = "2";
+  test.skip("propose, approve and execute batch tez transfers", async () => {
+    const TEZ_TO_SEND = 2;
 
     const toolkit0 = await makeToolkitFromDefaultDevSeed(0);
     const toolkit1 = await makeToolkitFromDefaultDevSeed(1);
@@ -61,27 +60,37 @@ describe("multisig Sandbox", () => {
     // First, devAccount2 send tez to MULTISIG_GHOSTNET_1
     const { fee } = await transferMutez(
       MULTISIG_GHOSTNET_1,
-      tezToMutez(TEZ_TO_SEND).toNumber(),
+      tezToMutez(TEZ_TO_SEND.toString()).toNumber(),
       {
         type: SignerType.SK,
         sk: devAccount2Sk,
         network: TezosNetwork.GHOSTNET,
       }
     );
-    console.log(fee, "HERE");
     await sleep(15000);
 
-    // devAccount0 propose a simple tranfer back to devAccount2 first
+    // devAccount0 propose a simple tranfer back to devAccount2
     // devAccount0 is going to be in the approvers as well.
-    const lamndaAction = MANAGER_LAMBDA.transferImplicit(
-      await devAccount2.publicKeyHash(),
-      tezToMutez(TEZ_TO_SEND).toNumber()
+    const lamndaActions = await makeBatchLambda(
+      [
+        {
+          type: "tez",
+          recipient: devAccount2Pkh,
+          amount: tezToMutez((TEZ_TO_SEND / 2).toString()).toString(),
+        },
+        {
+          type: "tez",
+          recipient: devAccount2Pkh,
+          amount: tezToMutez((TEZ_TO_SEND / 2).toString()).toString(),
+        },
+      ],
+      TezosNetwork.GHOSTNET
     );
     const proposeResponse = await callContract(
       {
         contract: MULTISIG_GHOSTNET_1,
         entrypoint: "propose",
-        value: lamndaAction,
+        value: lamndaActions,
         amount: 0,
       },
       toolkit0
@@ -98,7 +107,7 @@ describe("multisig Sandbox", () => {
     );
     const activeOps = pendingOps.filter(({ active }) => active);
     expect(activeOps.length).toBeGreaterThanOrEqual(1);
-    const pendingOpKey = activeOps[0].key;
+    const pendingOpKey = activeOps[activeOps.length - 1].key;
     expect(pendingOpKey).toBeTruthy();
 
     // devAccount1 approves the proposal, meeting the threshold
@@ -125,7 +134,6 @@ describe("multisig Sandbox", () => {
       },
       toolkit0
     );
-
     expect(executeResponse.hash).toBeTruthy();
     console.log("execute done");
     await sleep(25000);
