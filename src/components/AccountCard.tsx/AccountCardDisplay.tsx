@@ -89,7 +89,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
       {isMultisig && <MultisigSigners signers={account.signers} />}
-      <AssetsPannel tokens={tokens} nfts={nfts} />
+      <AssetsPannel tokens={tokens} nfts={nfts} account={account} />
     </Flex>
   );
 };

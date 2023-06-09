@@ -15,7 +15,7 @@ import {
   objectOperationDelegationRequest,
   objectOperationRequest,
 } from "../../../mocks/beacon";
-import { mockAccount } from "../../../mocks/factories";
+import { mockImplicitAccount } from "../../../mocks/factories";
 import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import {
   dispatchMockAccounts,
@@ -71,7 +71,11 @@ beforeEach(() => {
 });
 
 beforeAll(() => {
-  dispatchMockAccounts([mockAccount(1), mockAccount(2), mockAccount(3)]);
+  dispatchMockAccounts([
+    mockImplicitAccount(1),
+    mockImplicitAccount(2),
+    mockImplicitAccount(3),
+  ]);
 });
 
 afterAll(() => {
@@ -97,7 +101,7 @@ describe("<BeaconRequestNotification />", () => {
 
     test("User can select account and grant permission", async () => {
       render(fixture(message, () => {}));
-      fillAccountSelector(mockAccount(2).label || "");
+      fillAccountSelector(mockImplicitAccount(2).label || "");
       const grantButton = screen.getByRole("button", { name: /grant/i });
       expect(grantButton).toBeEnabled();
 
@@ -106,7 +110,7 @@ describe("<BeaconRequestNotification />", () => {
         expect(walletClient.respond).toHaveBeenCalledWith({
           id: MESSAGE_ID,
           network: { type: "mainnet" },
-          publicKey: mockAccount(2).pk,
+          publicKey: mockImplicitAccount(2).pk,
           scopes: SCOPES,
           type: "permission_response",
         });
@@ -117,7 +121,7 @@ describe("<BeaconRequestNotification />", () => {
   describe("Operation request (case simple tez transaction)", () => {
     const message: OperationRequestOutput = {
       ...objectOperationRequest,
-      sourceAddress: mockAccount(2).pkh,
+      sourceAddress: mockImplicitAccount(2).pkh,
     };
     it("should display operations request with controls disabled and parameter displayed", async () => {
       render(fixture(message, () => {}));
@@ -170,7 +174,7 @@ describe("<BeaconRequestNotification />", () => {
   describe("Operation request (case delegation)", () => {
     const message: OperationRequestOutput = {
       ...objectOperationDelegationRequest,
-      sourceAddress: mockAccount(2).pkh,
+      sourceAddress: mockImplicitAccount(2).pkh,
     };
     it("should display delegation request with controls disabled", async () => {
       render(fixture(message, () => {}));
@@ -225,7 +229,7 @@ describe("<BeaconRequestNotification />", () => {
   test("User previews then submits Batches, and operation hash is sent via Beacon", async () => {
     const message: OperationRequestOutput = {
       ...objectOperationBatchRequest,
-      sourceAddress: mockAccount(2).pkh,
+      sourceAddress: mockImplicitAccount(2).pkh,
     };
     render(fixture(message, () => {}));
     const modal = screen.getByRole("dialog", { name: /recap/i });

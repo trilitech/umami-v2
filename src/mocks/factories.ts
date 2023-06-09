@@ -6,6 +6,7 @@ import {
   LedgerAccount,
   MnemonicAccount,
   SocialAccount,
+  MultisigAccount,
 } from "../types/Account";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
@@ -94,7 +95,7 @@ export const mockAccountLabel = (index: number) => `Account ${index}`;
 export const mockPk = (index: number) =>
   `edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H${index}`;
 
-export const mockAccount = (
+export const mockImplicitAccount = (
   index: number,
   type = AccountType.MNEMONIC,
   fingerPrint = "mockPrint"
@@ -136,6 +137,18 @@ export const mockAccount = (
   }
 
   throw new Error("Can't mock mulitisig accounts yet!");
+};
+
+export const mockMultisigAccount = (index: number): MultisigAccount => {
+  return {
+    type: AccountType.MULTISIG,
+    pkh: mockPkh(index),
+    label: "label",
+    threshold: 1,
+    signers: ["signers2"],
+    balance: "1",
+    operations: [],
+  };
 };
 
 // Might need this later

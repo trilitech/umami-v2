@@ -1,4 +1,4 @@
-import { mockAccount } from "../mocks/factories";
+import { mockImplicitAccount } from "../mocks/factories";
 import { fakeExtraArguments } from "../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../mocks/helpers";
 import { publicKeys1 } from "../mocks/publicKeys";
@@ -45,73 +45,121 @@ describe("Accounts reducer", () => {
   });
 
   test("should handle adding accounts and arrays of accounts", () => {
-    store.dispatch(add(mockAccount(1)));
+    store.dispatch(add(mockImplicitAccount(1)));
     expect(store.getState().accounts).toEqual({
-      items: [mockAccount(1)],
+      items: [mockImplicitAccount(1)],
       selected: null,
       seedPhrases: {},
     });
 
-    store.dispatch(add([mockAccount(2), mockAccount(3)]));
+    store.dispatch(add([mockImplicitAccount(2), mockImplicitAccount(3)]));
     expect(store.getState().accounts).toEqual({
-      items: [mockAccount(1), mockAccount(2), mockAccount(3)],
+      items: [
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ],
       selected: null,
       seedPhrases: {},
     });
   });
 
   test("adding account should throw and exception if it is a pkh duplicate and not modify state", () => {
-    store.dispatch(add([mockAccount(1), mockAccount(2), mockAccount(3)]));
+    store.dispatch(
+      add([
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ])
+    );
 
-    expect(() => store.dispatch(add(mockAccount(2)))).toThrowError(
+    expect(() => store.dispatch(add(mockImplicitAccount(2)))).toThrowError(
       `Can't add account ${
-        mockAccount(2).pkh
+        mockImplicitAccount(2).pkh
       } in store since it already exists.`
     );
 
     expect(store.getState().accounts).toEqual({
-      items: [mockAccount(1), mockAccount(2), mockAccount(3)],
+      items: [
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ],
       selected: null,
       seedPhrases: {},
     });
   });
 
   test("should allow setting an existing account as selected", () => {
-    store.dispatch(add([mockAccount(1), mockAccount(2), mockAccount(3)]));
-    store.dispatch(setSelected(mockAccount(2).pkh));
+    store.dispatch(
+      add([
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ])
+    );
+    store.dispatch(setSelected(mockImplicitAccount(2).pkh));
 
     expect(store.getState().accounts).toEqual({
-      items: [mockAccount(1), mockAccount(2), mockAccount(3)],
-      selected: mockAccount(2).pkh,
+      items: [
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ],
+      selected: mockImplicitAccount(2).pkh,
       seedPhrases: {},
     });
   });
 
   test("should ignore setting a non existing account as selected", () => {
-    store.dispatch(add([mockAccount(1), mockAccount(2), mockAccount(3)]));
-    store.dispatch(setSelected(mockAccount(4).pkh));
+    store.dispatch(
+      add([
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ])
+    );
+    store.dispatch(setSelected(mockImplicitAccount(4).pkh));
 
     expect(store.getState().accounts).toEqual({
-      items: [mockAccount(1), mockAccount(2), mockAccount(3)],
+      items: [
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ],
       selected: null,
       seedPhrases: {},
     });
   });
 
   test("should allow settings selected account to null", () => {
-    store.dispatch(add([mockAccount(1), mockAccount(2), mockAccount(3)]));
-    store.dispatch(setSelected(mockAccount(2).pkh));
+    store.dispatch(
+      add([
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ])
+    );
+    store.dispatch(setSelected(mockImplicitAccount(2).pkh));
 
     expect(store.getState().accounts).toEqual({
-      items: [mockAccount(1), mockAccount(2), mockAccount(3)],
-      selected: mockAccount(2).pkh,
+      items: [
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ],
+      selected: mockImplicitAccount(2).pkh,
       seedPhrases: {},
     });
 
     store.dispatch(setSelected(null));
 
     expect(store.getState().accounts).toEqual({
-      items: [mockAccount(1), mockAccount(2), mockAccount(3)],
+      items: [
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ],
       selected: null,
       seedPhrases: {},
     });
@@ -122,8 +170,8 @@ describe("Accounts reducer", () => {
       fakeRestoreFromMnemonic({
         seedFingerprint: "mockPrint1",
         accounts: [
-          mockAccount(1, undefined, "mockPrint1"),
-          mockAccount(3, undefined, "mockPrint1"),
+          mockImplicitAccount(1, undefined, "mockPrint1"),
+          mockImplicitAccount(3, undefined, "mockPrint1"),
         ] as MnemonicAccount[],
       })
     );
@@ -132,16 +180,16 @@ describe("Accounts reducer", () => {
       fakeRestoreFromMnemonic({
         seedFingerprint: "mockPrint2",
         accounts: [
-          mockAccount(2, undefined, "mockPrint2"),
+          mockImplicitAccount(2, undefined, "mockPrint2"),
         ] as MnemonicAccount[],
       })
     );
 
     expect(store.getState().accounts).toEqual({
       items: [
-        mockAccount(1, undefined, "mockPrint1"),
-        mockAccount(3, undefined, "mockPrint1"),
-        mockAccount(2, undefined, "mockPrint2"),
+        mockImplicitAccount(1, undefined, "mockPrint1"),
+        mockImplicitAccount(3, undefined, "mockPrint1"),
+        mockImplicitAccount(2, undefined, "mockPrint2"),
       ],
       seedPhrases: { mockPrint1: {}, mockPrint2: {} },
       selected: null,
@@ -150,7 +198,7 @@ describe("Accounts reducer", () => {
     store.dispatch(removeSecret({ fingerPrint: "mockPrint1" }));
 
     expect(store.getState().accounts).toEqual({
-      items: [mockAccount(2, undefined, "mockPrint2")],
+      items: [mockImplicitAccount(2, undefined, "mockPrint2")],
       seedPhrases: { mockPrint2: {} },
       selected: null,
     });
@@ -163,10 +211,10 @@ describe("Accounts reducer", () => {
       const mockLabel = "myLabel";
       const restoredAccounts: ImplicitAccount[] = [
         {
-          ...mockAccount(0),
+          ...mockImplicitAccount(0),
         },
         {
-          ...mockAccount(1),
+          ...mockImplicitAccount(1),
         },
       ];
 
@@ -203,7 +251,7 @@ describe("Accounts reducer", () => {
         fakeRestoreFromMnemonic({
           seedFingerprint: "mockPrint1",
           accounts: [
-            mockAccount(1, undefined, "mockPrint1"),
+            mockImplicitAccount(1, undefined, "mockPrint1"),
           ] as MnemonicAccount[],
         })
       );
@@ -233,8 +281,8 @@ describe("Accounts reducer", () => {
         fakeRestoreFromMnemonic({
           seedFingerprint: "mockPrint1",
           accounts: [
-            mockAccount(0, AccountType.MNEMONIC, "mockPrint1"),
-            mockAccount(1, AccountType.MNEMONIC, "mockPrint1"),
+            mockImplicitAccount(0, AccountType.MNEMONIC, "mockPrint1"),
+            mockImplicitAccount(1, AccountType.MNEMONIC, "mockPrint1"),
           ] as MnemonicAccount[],
         })
       );

@@ -1,5 +1,5 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { mockAccount, mockPkh } from "../../mocks/factories";
+import { mockImplicitAccount, mockPkh } from "../../mocks/factories";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import {
   closeModal,
@@ -31,7 +31,11 @@ const useGetSkMock = useGetSk as jest.Mock;
 const fixture = () => <BatchView />;
 
 beforeAll(() => {
-  dispatchMockAccounts([mockAccount(1), mockAccount(2), mockAccount(3)]);
+  dispatchMockAccounts([
+    mockImplicitAccount(1),
+    mockImplicitAccount(2),
+    mockImplicitAccount(3),
+  ]);
 });
 
 afterAll(() => {
@@ -87,13 +91,13 @@ const addItemsToBatchViaUI = async () => {
   const sendButton = screen.getByText(/send/i);
   fireEvent.click(sendButton);
 
-  await addToBatchViaUI(33, mockAccount(1).label || "", mockPkh(9));
-  await addToBatchViaUI(55, mockAccount(1).label || "", mockPkh(4));
-  await addToBatchViaUI(9, mockAccount(1).label || "", mockPkh(2));
+  await addToBatchViaUI(33, mockImplicitAccount(1).label || "", mockPkh(9));
+  await addToBatchViaUI(55, mockImplicitAccount(1).label || "", mockPkh(4));
+  await addToBatchViaUI(9, mockImplicitAccount(1).label || "", mockPkh(2));
 
-  await addToBatchViaUI(3, mockAccount(2).label || "", mockPkh(2));
-  await addToBatchViaUI(22, mockAccount(2).label || "", mockPkh(4));
-  await addToBatchViaUI(52, mockAccount(2).label || "", mockPkh(4));
+  await addToBatchViaUI(3, mockImplicitAccount(2).label || "", mockPkh(2));
+  await addToBatchViaUI(22, mockImplicitAccount(2).label || "", mockPkh(4));
+  await addToBatchViaUI(52, mockImplicitAccount(2).label || "", mockPkh(4));
   closeModal();
 };
 
@@ -101,13 +105,13 @@ const addItemsToBatchViaUI = async () => {
 const addItemsToBatchViaStore = async () => {
   await store.dispatch(
     estimateAndUpdateBatch(
-      mockAccount(1).pkh,
-      mockAccount(1).pk,
+      mockImplicitAccount(1).pkh,
+      mockImplicitAccount(1).pk,
       [
         {
           type: "tez",
           value: {
-            sender: mockAccount(1).pkh,
+            sender: mockImplicitAccount(1).pkh,
             recipient: mockPkh(1),
             amount: "1000000",
           },
@@ -115,7 +119,7 @@ const addItemsToBatchViaStore = async () => {
         {
           type: "tez",
           value: {
-            sender: mockAccount(1).pkh,
+            sender: mockImplicitAccount(1).pkh,
             recipient: mockPkh(2),
             amount: "2000000",
           },
@@ -123,7 +127,7 @@ const addItemsToBatchViaStore = async () => {
         {
           type: "tez",
           value: {
-            sender: mockAccount(1).pkh,
+            sender: mockImplicitAccount(1).pkh,
             recipient: mockPkh(3),
             amount: "3000000",
           },
@@ -136,13 +140,13 @@ const addItemsToBatchViaStore = async () => {
 
   await store.dispatch(
     estimateAndUpdateBatch(
-      mockAccount(2).pkh,
-      mockAccount(2).pk,
+      mockImplicitAccount(2).pkh,
+      mockImplicitAccount(2).pk,
       [
         {
           type: "tez",
           value: {
-            sender: mockAccount(2).pkh,
+            sender: mockImplicitAccount(2).pkh,
             recipient: mockPkh(9),
             amount: "4",
           },
@@ -150,7 +154,7 @@ const addItemsToBatchViaStore = async () => {
         {
           type: "tez",
           value: {
-            sender: mockAccount(2).pkh,
+            sender: mockImplicitAccount(2).pkh,
             recipient: mockPkh(4),
             amount: "5",
           },
@@ -158,7 +162,7 @@ const addItemsToBatchViaStore = async () => {
         {
           type: "tez",
           value: {
-            sender: mockAccount(2).pkh,
+            sender: mockImplicitAccount(2).pkh,
             recipient: mockPkh(5),
             amount: "6",
           },

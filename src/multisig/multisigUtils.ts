@@ -6,6 +6,7 @@ import { FA12Operation, FA2Operation, Operation } from "./types";
 import { MichelsonV1Expression } from "@taquito/rpc";
 import { isEqual } from "lodash";
 import { addressType } from "../types/Address";
+import { Parser } from "@taquito/michel-codec";
 
 export const FA2_TRANSFER_ARG_TYPES = {
   args: [
@@ -77,7 +78,8 @@ const contractLambda = (
   operation: FA12Operation | FA2Operation,
   entrypoint: string,
   argTypes: MichelsonV1Expression,
-  argValue: MichelsonV1Expression
+  argValue: MichelsonV1Expression,
+  amount = "0"
 ) => {
   return [
     ...LAMBDA_HEADER,
@@ -94,14 +96,14 @@ const contractLambda = (
     },
     // If contract is not valid then fail and rollback the whole transaction
     [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
-    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+    { prim: "PUSH", args: [{ prim: "mutez" }, { int: amount }] },
     { prim: "PUSH", args: [argTypes, argValue] },
     { prim: "TRANSFER_TOKENS" },
     { prim: "CONS" },
   ];
 };
 
-const LAMBDA_HEADER = [
+const LAMBDA_HEADER: MichelsonV1Expression[] = [
   { prim: "DROP" },
   { prim: "NIL", args: [{ prim: "operation" }] },
 ];
@@ -183,4 +185,18 @@ export const makeBatchLambda = async (
   ).flatMap(headlessLambda);
 
   return [...LAMBDA_HEADER, ...opsLambdas];
+};
+
+// Parse michelson code to JSON-encoded Michelson AST.
+// e.g.) "(Pair 1 3)" => {"prim":"Pair","args":[{"int":"3"},{"int":"3"}]}
+// e.g.) "1" => {int: 1}
+export const parseMichelineExpression = (
+  code: string
+): MichelsonV1Expression => {
+  const p = new Parser();
+  const ast = p.parseMichelineExpression(code);
+  if (!ast) {
+    throw new Error("Error parsing michelson code");
+  }
+  return ast;
 };

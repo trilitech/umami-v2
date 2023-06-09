@@ -5,7 +5,7 @@ import {
 import { render, screen, waitFor } from "@testing-library/react";
 import MasterPassword from "./MasterPassword";
 import { ReduxStore } from "../../../providers/ReduxStore";
-import { mockAccount } from "../../../mocks/factories";
+import { mockImplicitAccount } from "../../../mocks/factories";
 import { store } from "../../../utils/store/store";
 import accountsSlice from "../../../utils/store/accountsSlice";
 import { resetAccounts } from "../../../mocks/helpers";
@@ -16,7 +16,7 @@ const onClose = jest.fn(() => {});
 jest.mock("../../../utils/tezos/helpers");
 
 const { add } = accountsSlice.actions;
-const account = mockAccount(0);
+const account = mockImplicitAccount(0);
 
 const fixture = (config: TemporaryAccountConfig) => (
   <ReduxStore>
