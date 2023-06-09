@@ -8,23 +8,6 @@ import { isEqual } from "lodash";
 import { addressType } from "../types/Address";
 import { Parser } from "@taquito/michel-codec";
 
-export const MULTISIG_PROPOSE_ARG_TYPE = {
-  args: [
-    {
-      prim: "unit",
-    },
-    {
-      args: [
-        {
-          prim: "operation",
-        },
-      ],
-      prim: "list",
-    },
-  ],
-  prim: "lambda",
-};
-
 export const FA2_TRANSFER_ARG_TYPES = {
   args: [
     {
