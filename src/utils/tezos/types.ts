@@ -15,6 +15,14 @@ export type MultisigProposeMethodArgs = {
   lambdaActions: MichelsonV1Expression;
 };
 
+type ApproveOrExecute = "approve" | "execute";
+
+export type MultisigApproveOrExecuteMethodArgs = {
+  type: ApproveOrExecute;
+  contract: string;
+  operationId: string;
+};
+
 export type coinCapResponseType = {
   data: {
     priceUsd?: number;

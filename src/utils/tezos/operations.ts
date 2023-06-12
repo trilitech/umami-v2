@@ -8,6 +8,7 @@ import { OperationValue } from "../../components/sendForm/types";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
+  makeMultisigApproveOrExecuteMethod,
   makeMultisigProposeMethod,
   makeToolkitWithSigner,
 } from "./helpers";
@@ -16,6 +17,7 @@ import { operationValuesToWalletParams } from "./params";
 import {
   FA12TransferMethodArgs,
   FA2TransferMethodArgs,
+  MultisigApproveOrExecuteMethodArgs,
   MultisigProposeMethodArgs,
 } from "./types";
 
@@ -71,6 +73,18 @@ export const proposeMultisigLambda = async (
   const Tezos = await makeToolkitWithSigner(config);
   const proposeMethod = await makeMultisigProposeMethod(params, Tezos);
   return proposeMethod.send();
+};
+
+export const approveOrExecuteMultisigOperation = async (
+  params: MultisigApproveOrExecuteMethodArgs,
+  config: SignerConfig
+): Promise<TransactionOperation> => {
+  const Tezos = await makeToolkitWithSigner(config);
+  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(
+    params,
+    Tezos
+  );
+  return approveOrExecuteMethod.send();
 };
 
 export const submitBatch = async (

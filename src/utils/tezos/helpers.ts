@@ -15,6 +15,7 @@ import { DummySigner } from "./dummySigner";
 import {
   FA12TransferMethodArgs,
   FA2TransferMethodArgs,
+  MultisigApproveOrExecuteMethodArgs,
   MultisigProposeMethodArgs,
 } from "./types";
 
@@ -153,6 +154,14 @@ export const makeMultisigProposeMethod = async (
 ) => {
   const contractInstance = await toolkit.contract.at(contract);
   return contractInstance.methods.propose(lambdaActions);
+};
+
+export const makeMultisigApproveOrExecuteMethod = async (
+  { type, contract, operationId }: MultisigApproveOrExecuteMethodArgs,
+  toolkit: TezosToolkit
+) => {
+  const contractInstance = await toolkit.contract.at(contract);
+  return contractInstance.methods[type](operationId);
 };
 
 export const selectRandomElements = (

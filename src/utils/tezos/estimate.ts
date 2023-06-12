@@ -7,6 +7,7 @@ import { BigNumber } from "bignumber.js";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
+  makeMultisigApproveOrExecuteMethod,
   makeMultisigProposeMethod,
   makeToolkitWithDummySigner,
 } from "./helpers";
@@ -14,6 +15,7 @@ import { operationValuesToBatchParams } from "./params";
 import {
   FA12TransferMethodArgs,
   FA2TransferMethodArgs,
+  MultisigApproveOrExecuteMethodArgs,
   MultisigProposeMethodArgs,
 } from "./types";
 
@@ -69,6 +71,22 @@ export const estimateMultisigPropose = async (
   const propseMethod = await makeMultisigProposeMethod(params, Tezos);
 
   return Tezos.estimate.transfer(propseMethod.toTransferParams());
+};
+
+export const estimateMultisigApproveOrExecute = async (
+  params: MultisigApproveOrExecuteMethodArgs,
+  senderPk: string,
+  senderPkh: string,
+  network: TezosNetwork
+): Promise<Estimate> => {
+  const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
+
+  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(
+    params,
+    Tezos
+  );
+
+  return Tezos.estimate.transfer(approveOrExecuteMethod.toTransferParams());
 };
 
 export const estimateDelegation = async (
