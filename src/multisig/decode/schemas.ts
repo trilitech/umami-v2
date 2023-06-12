@@ -98,7 +98,7 @@ export const setDelegateSchema = z.tuple([
 
 export const removeDelegateSchema = z.tuple([
   z.object({
-    prim: z.literal("PUSH"),
+    prim: z.literal("NONE"),
     args: z.tuple([z.object({ prim: z.literal("key_hash") })]),
   }),
   prim("SET_DELEGATE"),

@@ -732,4 +732,37 @@ describe("decodeLambda", () => {
 
     expect(() => decode(input as MichelsonV1Expression[])).toThrow();
   });
+
+  test("remove delegate", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
+      { prim: "NONE", args: [{ prim: "key_hash" }] },
+      { prim: "SET_DELEGATE" },
+      { prim: "CONS" },
+    ];
+
+    expect(decode(input)).toEqual([{ type: "delegation" }]);
+  });
+
+  test("set delegate", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "key_hash" },
+          { bytes: "0044b31e005479eba6449274d8c6dc423946f97607" },
+        ],
+      },
+      { prim: "SOME" },
+      { prim: "SET_DELEGATE" },
+      { prim: "CONS" },
+    ];
+
+    expect(decode(input)).toEqual([
+      { type: "delegation", recipient: "tz1RuHDSj9P7mNNhfKxsyLGRDahTX5QD1DdP" },
+    ]);
+  });
 });
