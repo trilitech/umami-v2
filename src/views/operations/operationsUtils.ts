@@ -177,7 +177,7 @@ const getDelegationOperationDisplay = (
 ): OperationDisplay | null => {
   const DelegationSchema = z.object({
     sender: z.object({ address: z.string() }),
-    newDelegate: z.object({ address: z.string() }),
+    newDelegate: z.object({ address: z.string() }).optional(),
     timestamp: z.string(),
     amount: z.number(),
     hash: z.string(),
@@ -193,6 +193,10 @@ const getDelegationOperationDisplay = (
   }
 
   const required = delegationRequired.data;
+
+  if (!required.newDelegate) {
+    return null;
+  }
 
   const prettyAmount = prettyTezAmount(new BigNumber(required.amount));
 
