@@ -5,7 +5,12 @@ import { SignerType } from "../types/SignerConfig";
 import { getDefaultMnemonicDerivationPath } from "../utils/account/derivationPathUtils";
 import { tezToMutez } from "../utils/format";
 import { getPendingOperations } from "../utils/multisig/fetch";
-import { makeToolkitWithSigner, transferMutez } from "../utils/tezos";
+import {
+  estimateMultisigPropose,
+  makeToolkitWithSigner,
+  proposeMultisigLambda,
+  transferMutez,
+} from "../utils/tezos";
 import { callContract } from "../utils/tezos/contract";
 import { getBalancePayload } from "../utils/useAssetsPolling";
 import { makeBatchLambda, parseMichelineExpression } from "./multisigUtils";
@@ -51,6 +56,7 @@ describe("multisig Sandbox", () => {
     const TEZ_TO_SEND = 2;
 
     const toolkit0 = await makeToolkitFromDefaultDevSeed(0);
+    const devAccount0 = makeDevDefaultSigner(0);
     const toolkit1 = await makeToolkitFromDefaultDevSeed(1);
     const devAccount2 = makeDevDefaultSigner(2);
     const devAccount2Pkh = await devAccount2.publicKeyHash();
@@ -75,7 +81,7 @@ describe("multisig Sandbox", () => {
 
     // devAccount0 propose a batch tez/FA tranfer to devAccount2
     // devAccount0 is going to be in the approvers as well.
-    const lamndaActions = await makeBatchLambda(
+    const lambdaActions = await makeBatchLambda(
       [
         {
           type: "tez",
@@ -100,14 +106,22 @@ describe("multisig Sandbox", () => {
       ],
       TezosNetwork.GHOSTNET
     );
-    const proposeResponse = await callContract(
+
+    const proposeEstimate = await estimateMultisigPropose(
+      { contract: MULTISIG_GHOSTNET_1, lambdaActions },
+      await devAccount0.publicKey(),
+      await devAccount0.publicKeyHash(),
+      TezosNetwork.GHOSTNET
+    );
+    expect(proposeEstimate).toHaveProperty("suggestedFeeMutez");
+
+    const proposeResponse = await proposeMultisigLambda(
+      { contract: MULTISIG_GHOSTNET_1, lambdaActions },
       {
-        contract: MULTISIG_GHOSTNET_1,
-        entrypoint: "propose",
-        value: lamndaActions,
-        amount: 0,
-      },
-      toolkit0
+        type: SignerType.SK,
+        network: TezosNetwork.GHOSTNET,
+        sk: await devAccount0.secretKey(),
+      }
     );
 
     expect(proposeResponse.hash).toBeTruthy();

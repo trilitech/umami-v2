@@ -8,11 +8,16 @@ import { OperationValue } from "../../components/sendForm/types";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
+  makeMultisigProposeMethod,
   makeToolkitWithSigner,
 } from "./helpers";
 import { SignerConfig } from "../../types/SignerConfig";
 import { operationValuesToWalletParams } from "./params";
-import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "./types";
+import {
+  FA12TransferMethodArgs,
+  FA2TransferMethodArgs,
+  MultisigProposeMethodArgs,
+} from "./types";
 
 export const delegate = async (
   senderPkh: string,
@@ -57,6 +62,15 @@ export const transferMutez = async (
     parameter,
     mutez: true,
   });
+};
+
+export const proposeMultisigLambda = async (
+  params: MultisigProposeMethodArgs,
+  config: SignerConfig
+): Promise<TransactionOperation> => {
+  const Tezos = await makeToolkitWithSigner(config);
+  const proposeMethod = await makeMultisigProposeMethod(params, Tezos);
+  return proposeMethod.send();
 };
 
 export const submitBatch = async (
