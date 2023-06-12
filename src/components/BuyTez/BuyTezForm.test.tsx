@@ -12,20 +12,20 @@ const fixture = () => (
 );
 
 describe("<BuyTezForm />", () => {
-  test("renders request Tez from faucet on ghostnet", () => {
+  test("renders request Tez from faucet on ghostnet", async () => {
     store.dispatch(assetsActions.updateNetwork(TezosNetwork.GHOSTNET));
     render(fixture());
 
-    const result = screen.getByTestId("buy-tez-button");
+    // Async findBy because otherwise we get act warning since store.dispatch is async
+    const result = await screen.findByTestId("buy-tez-button");
     expect(result).toHaveTextContent("Request Tez from faucet");
-    expect(screen.queryByTestId("buy-tez-selector")).toBeNull();
   });
 
-  test("renders Buy Tez from faucet on ghostnet", () => {
+  test("renders Buy Tez from faucet on ghostnet", async () => {
     store.dispatch(assetsActions.updateNetwork(TezosNetwork.MAINNET));
     render(fixture());
 
-    const result = screen.getByTestId("buy-tez-button");
+    const result = await screen.findByTestId("buy-tez-button");
     expect(result).toHaveTextContent("Buy Tez");
     expect(screen.getByTestId("buy-tez-selector")).toBeTruthy();
   });

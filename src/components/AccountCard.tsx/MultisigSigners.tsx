@@ -4,7 +4,6 @@ import {
   Heading,
   Icon,
   Tag,
-  Text,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -42,11 +41,13 @@ const MultisigSigners: React.FC<{
                 padding="3px 8px"
                 bg={colors.gray[600]}
               >
-                <Text data-testid="multisig-tag" color={colors.gray[400]}>
-                  <Tag borderRadius="full">
-                    <AccountOrContactTile pkh={pkh} />
-                  </Tag>
-                </Text>
+                <Tag
+                  data-testid="multisig-tag"
+                  color={colors.gray[400]}
+                  borderRadius="full"
+                >
+                  <AccountOrContactTile pkh={pkh} />
+                </Tag>
               </WrapItem>
             );
           })}

@@ -8,6 +8,10 @@ import { webcrypto } from "crypto";
 
 import { TextDecoder, TextEncoder } from "util";
 
+import failOnConsole from "jest-fail-on-console";
+
+failOnConsole();
+
 MockDate.set("2023-03-27T14:15:09.760Z");
 
 jest.mock("./utils/tezos");

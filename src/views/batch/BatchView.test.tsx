@@ -22,6 +22,16 @@ import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import BatchView from "./BatchView";
 
+jest.mock("@chakra-ui/react", () => {
+  return {
+    ...jest.requireActual("@chakra-ui/react"),
+    // Mock taost since it has an erratic behavior in RTL
+    // https://github.com/chakra-ui/chakra-ui/issues/2969
+    //
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    useToast: require("../../../src/mocks/toast").useToast,
+  };
+});
 // TODO refactor mocks
 jest.mock("../../utils/tezos");
 jest.mock("../../utils/hooks/accountUtils");
@@ -192,7 +202,7 @@ describe("<BatchView />", () => {
       expect(
         screen.queryByText(/your batch is currently empty/i)
       ).not.toBeInTheDocument();
-      expect(screen.getAllByTestId(/batch-table/i)).toHaveLength(2);
+      expect(await screen.findAllByTestId(/batch-table/i)).toHaveLength(2);
     });
   });
 

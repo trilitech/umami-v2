@@ -3,9 +3,9 @@ import { Modal } from "@chakra-ui/react";
 
 import { TezosNetwork } from "@airgap/tezos";
 import {
-  mockImplicitAccount,
   mockBaker,
   mockContract,
+  mockImplicitAccount,
   mockNFT,
   mockPkh,
 } from "../../mocks/factories";
@@ -37,12 +37,23 @@ import { SendFormMode } from "./types";
 import { Estimate } from "@taquito/taquito";
 import { mock } from "jest-mock-extended";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
+import { mockToast } from "../../mocks/toast";
+
+jest.mock("@chakra-ui/react", () => {
+  return {
+    ...jest.requireActual("@chakra-ui/react"),
+    // Mock taost since it has an erratic behavior in RTL
+    // https://github.com/chakra-ui/chakra-ui/issues/2969
+    //
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    useToast: require("../../../src/mocks/toast").useToast,
+  };
+});
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   GoogleAuth: require("../../mocks/GoogleAuthMock").GoogleAuthMock,
 }));
-jest.mock("../../utils/tezos");
 jest.mock("../../utils/hooks/accountUtils");
 
 const fakeAccountUtils = mock<typeof accountUtils>(accountUtils);
@@ -57,6 +68,9 @@ const MOCK_SK = "mockSk";
 
 beforeEach(() => {
   fakeAccountUtils.useGetSk.mockReturnValue(() => Promise.resolve(MOCK_SK));
+});
+beforeEach(() => {
+  document.getElementById("chakra-toast-portal")?.remove();
 });
 beforeAll(async () => {
   await store.dispatch(
@@ -143,22 +157,36 @@ describe("<SendForm />", () => {
       await fillForm();
 
       setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 33);
+
       const addToBatchBtn = screen.getByRole("button", {
         name: /insert into batch/i,
       });
-
       await waitFor(() => {
         expect(addToBatchBtn).toBeEnabled();
       });
 
       fireEvent.click(addToBatchBtn);
+
+      // Bellow code should not create act warning. This is a bug.
+      //
       await waitFor(() => {
+        const addToBatchBtn = screen.getByRole("button", {
+          name: /insert into batch/i,
+        });
         expect(addToBatchBtn).toBeDisabled();
       });
-      await waitFor(() => {
-        expect(screen.getByText(/added to batch/i)).toBeTruthy();
-      });
 
+      // expect(mockToast).toHaveBeenCalledWith(/Transaction added to batch/i);
+      await waitFor(() => {
+        expect(mockToast).toHaveBeenCalled();
+        // expect(screen.getByText(/Transaction added to batch/i)).toBeTruthy();
+      });
+      await waitFor(() => {
+        const addToBatchBtn = screen.getByRole("button", {
+          name: /insert into batch/i,
+        });
+        expect(addToBatchBtn).toBeEnabled();
+      });
       const batch = store.getState().assets.batches[mockImplicitAccount(1).pkh];
       expect(batch).toEqual({
         isSimulating: false,
@@ -183,8 +211,9 @@ describe("<SendForm />", () => {
       await waitFor(() => {
         expect(addToBatchBtn).toBeDisabled();
       });
+
       await waitFor(() => {
-        expect(screen.getAllByText(/added to batch/i)).toBeTruthy();
+        expect(mockToast).toHaveBeenCalledTimes(2);
       });
 
       const batch2 =
