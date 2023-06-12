@@ -1,15 +1,27 @@
-import { Step, TemporaryLedgerAccountConfig } from "../useOnboardingModal";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import RestoreLedger from "./RestoreLedger";
-import { getPk } from "../../../utils/ledger/pk";
 import { Modal } from "@chakra-ui/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { getLedgerDerivationPath } from "../../../utils/account/derivationPathUtils";
+import { getPk } from "../../../utils/ledger/pk";
+import { Step, TemporaryLedgerAccountConfig } from "../useOnboardingModal";
+import RestoreLedger from "./RestoreLedger";
 
 const setStepMock = jest.fn((step: Step) => {});
 
 // TODO refactor mocks
 jest.mock("../../../utils/tezos/helpers");
 jest.mock("../../../utils/ledger/pk");
+
+jest.mock("@chakra-ui/react", () => {
+  return {
+    ...jest.requireActual("@chakra-ui/react"),
+    // Mock taost since it has an erratic behavior in RTL
+    // https://github.com/chakra-ui/chakra-ui/issues/2969
+    //
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    useToast: require("../../../mocks/toast").useToast,
+  };
+});
+
 const getPkMock = getPk as jest.Mock;
 
 const config = new TemporaryLedgerAccountConfig();
@@ -22,30 +34,17 @@ const fixture = (setStep: (step: Step) => void) => (
 );
 
 describe("<RestoreSeedphrase />", () => {
-  describe.only("Connect ledger", () => {
+  describe("Connect ledger", () => {
     test("success", async () => {
       getPkMock.mockReturnValue({ pk: "test", pkh: "test" });
       render(fixture(setStepMock));
       const confirmBtn = screen.getByRole("button", {
         name: /export public key/i,
       });
-      // await waitFor(() => {
-      confirmBtn.click();
-      // });
+      fireEvent.click(confirmBtn);
       await waitFor(() => {
         expect(confirmBtn).toBeDisabled();
       });
-      // await waitFor(() => {
-      //   expect(setStepMock).toBeCalledWith({
-      //     type: StepType.nameAccount,
-      //     config: {
-      //       derivationPath: "44'/1729'/0'/0'",
-      //       label: undefined,
-      //       pk: "test",
-      //       pkh: "test",
-      //     },
-      //   });
-      // });
     });
 
     test("aborted by user", async () => {
@@ -55,8 +54,16 @@ describe("<RestoreSeedphrase />", () => {
         name: /export public key/i,
       });
       fireEvent.click(confirmBtn);
+
+      const btn = screen.getByRole("button", { name: /Export Public Key/i });
+
+      // Control the loading cycle
+      // Otherwise you get uncontrolled setStates that lead to act warnings.
       await waitFor(() => {
-        expect(setStepMock).not.toBeCalled();
+        expect(btn).toBeDisabled();
+      });
+      await waitFor(() => {
+        expect(btn).toBeEnabled();
       });
     });
   });
