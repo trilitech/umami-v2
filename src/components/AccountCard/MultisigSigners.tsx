@@ -1,5 +1,5 @@
-import { Box, Flex, Heading, Icon, Tag, Wrap, WrapItem } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Box, Flex, Heading, Icon, Tag, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react";
+import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import colors from "../../style/colors";
 import { WalletAccountPkh } from "../../utils/multisig/types";
@@ -8,7 +8,9 @@ import AccountOrContactTile from "../AccountOrContactTile";
 const MultisigSigners: React.FC<{
   signers: WalletAccountPkh[];
 }> = ({ signers }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const { isOpen, getButtonProps } = useDisclosure({
+    defaultIsOpen: true,
+  });
   return (
     <Box w="100%" bg={colors.gray[600]} p={3} borderRadius={6} m={5}>
       <Flex justifyContent="space-between">
@@ -19,7 +21,7 @@ const MultisigSigners: React.FC<{
           _hover={{
             color: colors.gray[600],
           }}
-          onClick={() => setIsOpen(prev => !prev)}
+          {...getButtonProps()}
           data-testid="multisig-toggle-button"
         />
       </Flex>
