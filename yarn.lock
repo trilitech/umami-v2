@@ -17663,6 +17663,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-fail-on-console@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "jest-fail-on-console@npm:3.1.1"
+  dependencies:
+    chalk: ^4.1.0
+  checksum: dbc244766fb78525b2d4a7e879678b91032acefa04694e17edb5917e325abf8ee356bdf728bc1c89058d67b9c8b3da4cd45515232eb9ab1b973a6b4f57bfb7af
+  languageName: node
+  linkType: hard
+
 "jest-get-type@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest-get-type@npm:27.5.1"
@@ -26203,6 +26212,7 @@ __metadata:
     graphql: ^16.6.0
     graphql-request: ^6.0.0
     https-browserify: ^1.0.0
+    jest-fail-on-console: ^3.1.1
     jest-mock-extended: ^3.0.4
     localforage: ^1.10.0
     lodash: ^4.17.21
