@@ -3,12 +3,24 @@ import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 import RestoreSeedphrase from "./RestoreSeedphrase";
+import { mockToast } from "../../../mocks/toast";
 
 const setStepMock = jest.fn((step: Step) => {});
 const selectRandomElementsMock = selectRandomElements as jest.Mock;
 
 // TODO refactor mocks
 jest.mock("../../../utils/tezos/helpers");
+
+jest.mock("@chakra-ui/react", () => {
+  return {
+    ...jest.requireActual("@chakra-ui/react"),
+    // Mock taost since it has an erratic behavior in RTL
+    // https://github.com/chakra-ui/chakra-ui/issues/2969
+    //
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    useToast: require("../../../../src/mocks/toast").useToast,
+  };
+});
 
 beforeEach(() => {
   const splitted = seedPhrase.split(" ").map((value, index) => {
@@ -41,13 +53,13 @@ describe("<RestoreSeedphrase />", () => {
       await waitFor(() => {
         expect(confirmBtn).toBeEnabled();
       });
-      confirmBtn.click();
-
-      // TODO check why this is not working
-      // expect(screen.getByText(/invalid mnemonic/i)).toBeInTheDocument();
+      fireEvent.click(confirmBtn);
 
       await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(0);
+        expect(mockToast).toHaveBeenCalledWith({
+          description: "Mnemonic provided is invalid",
+          title: "Invalid Mnemonic",
+        });
       });
     });
 
