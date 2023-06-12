@@ -49,6 +49,41 @@ describe("decodeLambda", () => {
     ]);
   });
 
+  test("tez to contract", () => {
+    const input = [
+      { prim: "DROP" },
+      { prim: "NIL", args: [{ prim: "operation" }] },
+      {
+        prim: "PUSH",
+        args: [
+          { prim: "address" },
+          {
+            bytes:
+              "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+          },
+        ],
+      },
+      { prim: "CONTRACT", args: [{ prim: "unit" }] },
+      [
+        {
+          prim: "IF_NONE",
+          args: [[[{ prim: "UNIT" }, { prim: "FAILWITH" }]], []],
+        },
+      ],
+      { prim: "PUSH", args: [{ prim: "mutez" }, { int: "5" }] },
+      { prim: "UNIT" },
+      { prim: "TRANSFER_TOKENS" },
+      { prim: "CONS" },
+    ];
+    expect(decode(input)).toEqual([
+      {
+        type: "tez",
+        amount: "5",
+        recipient: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+      },
+    ]);
+  });
+
   test("simple fa2", () => {
     const input = [
       { prim: "DROP" },
