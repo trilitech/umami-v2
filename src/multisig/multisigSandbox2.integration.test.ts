@@ -5,14 +5,20 @@ import { SignerType } from "../types/SignerConfig";
 import { getDefaultMnemonicDerivationPath } from "../utils/account/derivationPathUtils";
 import { tezToMutez } from "../utils/format";
 import { getPendingOperations } from "../utils/multisig/fetch";
-import { makeToolkitWithSigner, transferMutez } from "../utils/tezos";
-import { callContract } from "../utils/tezos/contract";
+import {
+  approveOrExecuteMultisigOperation,
+  estimateMultisigApproveOrExecute,
+  estimateMultisigPropose,
+  makeToolkitWithSigner,
+  proposeMultisigLambda,
+  transferMutez,
+} from "../utils/tezos";
 import { getBalancePayload } from "../utils/useAssetsPolling";
-import { makeBatchLambda, parseMichelineExpression } from "./multisigUtils";
+import { makeBatchLambda } from "./multisigUtils";
 
 jest.unmock("../utils/tezos");
 
-jest.setTimeout(80000);
+jest.setTimeout(90000);
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -48,10 +54,10 @@ const FA2_KL2_CONTRACT = "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ";
 
 describe("multisig Sandbox", () => {
   test.skip("propose, approve and execute batch tez/FA transfers", async () => {
-    const TEZ_TO_SEND = 2;
+    const TEZ_TO_SEND = 1;
 
-    const toolkit0 = await makeToolkitFromDefaultDevSeed(0);
-    const toolkit1 = await makeToolkitFromDefaultDevSeed(1);
+    const devAccount0 = makeDevDefaultSigner(0);
+    const devAccount1 = makeDevDefaultSigner(1);
     const devAccount2 = makeDevDefaultSigner(2);
     const devAccount2Pkh = await devAccount2.publicKeyHash();
     const devAccount2Sk = await devAccount2.secretKey();
@@ -75,7 +81,7 @@ describe("multisig Sandbox", () => {
 
     // devAccount0 propose a batch tez/FA tranfer to devAccount2
     // devAccount0 is going to be in the approvers as well.
-    const lamndaActions = await makeBatchLambda(
+    const lambdaActions = await makeBatchLambda(
       [
         {
           type: "tez",
@@ -100,16 +106,23 @@ describe("multisig Sandbox", () => {
       ],
       TezosNetwork.GHOSTNET
     );
-    const proposeResponse = await callContract(
-      {
-        contract: MULTISIG_GHOSTNET_1,
-        entrypoint: "propose",
-        value: lamndaActions,
-        amount: 0,
-      },
-      toolkit0
-    );
 
+    const proposeEstimate = await estimateMultisigPropose(
+      { contract: MULTISIG_GHOSTNET_1, lambdaActions },
+      await devAccount0.publicKey(),
+      await devAccount0.publicKeyHash(),
+      TezosNetwork.GHOSTNET
+    );
+    expect(proposeEstimate).toHaveProperty("suggestedFeeMutez");
+
+    const proposeResponse = await proposeMultisigLambda(
+      { contract: MULTISIG_GHOSTNET_1, lambdaActions },
+      {
+        type: SignerType.SK,
+        network: TezosNetwork.GHOSTNET,
+        sk: await devAccount0.secretKey(),
+      }
+    );
     expect(proposeResponse.hash).toBeTruthy();
     console.log("propose done");
     await sleep(15000);
@@ -125,28 +138,58 @@ describe("multisig Sandbox", () => {
     expect(pendingOpKey).toBeTruthy();
 
     // devAccount1 approves the proposal, meeting the threshold
-    const approveResponse = await callContract(
+    const approveEstimate = await estimateMultisigApproveOrExecute(
       {
+        type: "approve",
         contract: MULTISIG_GHOSTNET_1,
-        entrypoint: "approve",
-        value: parseMichelineExpression(pendingOpKey as string),
-        amount: 0,
+        operationId: pendingOpKey as string,
       },
-      toolkit1
+      await devAccount1.publicKey(),
+      await devAccount1.publicKeyHash(),
+      TezosNetwork.GHOSTNET
+    );
+    expect(approveEstimate).toHaveProperty("suggestedFeeMutez");
+
+    const approveResponse = await approveOrExecuteMultisigOperation(
+      {
+        type: "approve",
+        contract: MULTISIG_GHOSTNET_1,
+        operationId: pendingOpKey as string,
+      },
+      {
+        type: SignerType.SK,
+        network: TezosNetwork.GHOSTNET,
+        sk: await devAccount1.secretKey(),
+      }
     );
     expect(approveResponse.hash).toBeTruthy();
     console.log("approve done");
     await sleep(15000);
 
     // The proposal to transfer to DevAccount2 can be executed
-    const executeResponse = await callContract(
+    const executeEstimate = await estimateMultisigApproveOrExecute(
       {
+        type: "execute",
         contract: MULTISIG_GHOSTNET_1,
-        entrypoint: "execute",
-        value: parseMichelineExpression(pendingOpKey as string),
-        amount: 0,
+        operationId: pendingOpKey as string,
       },
-      toolkit0
+      await devAccount1.publicKey(),
+      await devAccount1.publicKeyHash(),
+      TezosNetwork.GHOSTNET
+    );
+    expect(executeEstimate).toHaveProperty("suggestedFeeMutez");
+
+    const executeResponse = await approveOrExecuteMultisigOperation(
+      {
+        type: "execute",
+        contract: MULTISIG_GHOSTNET_1,
+        operationId: pendingOpKey as string,
+      },
+      {
+        type: SignerType.SK,
+        network: TezosNetwork.GHOSTNET,
+        sk: await devAccount1.secretKey(),
+      }
     );
     expect(executeResponse.hash).toBeTruthy();
     console.log("execute done");
