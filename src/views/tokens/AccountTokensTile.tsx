@@ -58,9 +58,9 @@ const AccountTokensTile: React.FC<{
   onOpenSendModal: (options?: Options) => void;
 }> = ({ account: { pkh, label }, onOpenSendModal }) => {
   const getTokens = useGetAccountAllTokens();
-  const tokens = getTokens(pkh);
   const network = useSelectedNetwork();
-
+  const tokens = getTokens(pkh);
+  if (tokens.length === 0) return null;
   return (
     <Card m={4} p={5} bgColor={colors.gray[900]} borderRadius="10px">
       <AccountTokensTileHeader pkh={pkh} label={label} />
