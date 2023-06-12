@@ -1,4 +1,5 @@
-import { TokenTransfer } from "@tzkt/sdk-api";
+import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
+import { mockPkh } from "../../mocks/factories";
 import {
   getLatestDelegationResult,
   getTokenTransactionsResult,
@@ -599,5 +600,52 @@ describe("getOperationsDisplays", () => {
       },
     ];
     expect(result).toEqual(expected);
+  });
+
+  it("includes an active delegation", () => {
+    const result = getOperationDisplays(
+      [],
+      [],
+      {
+        sender: { address: mockPkh(1) },
+        newDelegate: { address: mockPkh(1) },
+        timestamp: new Date().toISOString(),
+        amount: 100000,
+        hash: "mockHash",
+        level: 300,
+        bakerFee: 400,
+      } as DelegationOperation,
+      mockPkh(1)
+    );
+    expect(result).toEqual([
+      {
+        amount: { prettyDisplay: "0.1 ꜩ" },
+        fee: "0.0004 ꜩ",
+        level: 300,
+        prettyTimestamp: "today at 4:15 PM",
+        recipient: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+        sender: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+        timestamp: "2023-03-27T14:15:09.760Z",
+        type: "delegation",
+        tzktUrl: "https://mainnet.tzkt.io/mockHash",
+      },
+    ]);
+  });
+
+  it("ignores an inactive delegation", () => {
+    const result = getOperationDisplays(
+      [],
+      [],
+      {
+        sender: { address: mockPkh(1) },
+        timestamp: new Date().toISOString(),
+        amount: 100000,
+        hash: "mockHash",
+        level: 300,
+        bakerFee: 400,
+      } as DelegationOperation,
+      mockPkh(1)
+    );
+    expect(result).toEqual([]);
   });
 });
