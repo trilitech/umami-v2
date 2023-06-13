@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { AccountCardDisplay } from "../components/AccountCard.tsx/AccountCardDisplay";
+import { AccountCardDisplay } from "../components/AccountCard/AccountCardDisplay";
 import { BigNumber } from "bignumber.js";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

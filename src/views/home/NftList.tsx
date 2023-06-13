@@ -1,5 +1,5 @@
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
-import { NFTsGrid } from "../../components/AccountCard.tsx/AssetsPannel/NFTsGrid";
+import { NFTsGrid } from "../../components/AccountCard/AssetsPannel/NFTsGrid";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 export const NftList = () => {
   const nfts = useAllNfts();
