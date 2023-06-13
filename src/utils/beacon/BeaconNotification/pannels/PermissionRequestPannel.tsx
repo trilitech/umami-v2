@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { ConnectedAccountSelector } from "../../../../components/AccountSelector/AccountSelector";
-import { ImplicitAccount } from "../../../../types/Account";
+import { AccountType, ImplicitAccount } from "../../../../types/Account";
 import { walletClient } from "../../beacon";
 
 const PermissionRequestPannel: React.FC<{
@@ -51,6 +51,9 @@ const PermissionRequestPannel: React.FC<{
         <ConnectedAccountSelector
           selected={account && account.pkh}
           onSelect={a => {
+            if (a.type === AccountType.MULTISIG) {
+              throw new Error("Beacon doesn't support multisig");
+            }
             setAccount(a);
           }}
         />

@@ -45,8 +45,8 @@ export const useReset = () => {
 };
 
 export const useGetOwnedAccount = () => {
-  const accounts = useImplicitAccounts();
-  return (pkh: string) => {
+  const accounts = useAllAccounts();
+  return (pkh: string): AllAccount => {
     const account = accounts.find(a => a.pkh === pkh);
     if (!account) {
       throw new Error(`You do not ownn account:${pkh}`);
