@@ -2,12 +2,9 @@ import { Box, Flex, Text, Heading, Icon, useDisclosure } from "@chakra-ui/react"
 import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import colors from "../../../style/colors";
-import { MultisigAccount } from "../../../types/Account";
-import { formatPkh } from "../../../utils/format";
-import { useGetImplicitAccount } from "../../../utils/hooks/accountHooks";
-import { useGetContractName } from "../../../utils/hooks/contactsHooks";
 import { MultisigOperation, WalletAccountPkh } from "../../../utils/multisig/types";
-import { Identicon } from "../../Identicon";
+import { MultisigAccount } from "../../../types/Account";
+import MultisigSignerTile from "./MultisigSignerTile";
 
 export const MultisigPendingList: React.FC<{
   account: MultisigAccount;
@@ -33,7 +30,8 @@ const MultisigPendingCard: React.FC<{
   const { isOpen, getDisclosureProps, getButtonProps } = useDisclosure({
     defaultIsOpen: true,
   });
-  const pendingApprovals = threshold - operation.approvals.length;
+  const approvers = new Set(operation.approvals);
+  const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
     <Box bg={colors.gray[600]} p={3} borderRadius={6} marginY={5}>
       <Flex justifyContent="space-between">
@@ -61,46 +59,17 @@ const MultisigPendingCard: React.FC<{
 
         <Box marginY={5}>
           {signers.map(signer => {
-            return <SignerTile signer={signer} approvers={new Set(operation.approvals)} />;
+            return (
+              <MultisigSignerTile
+                signer={signer}
+                signerHasApproved={approvers.has(signer)}
+                waitingForApprovals={pendingApprovals > 0}
+              />
+            );
           })}
         </Box>
       </Box>
     </Box>
-  );
-};
-
-const SignerTile: React.FC<{
-  signer: WalletAccountPkh;
-  approvers: Set<WalletAccountPkh>;
-}> = ({ signer, approvers }) => {
-  const getContactName = useGetContractName();
-  const getImplicitAccount = useGetImplicitAccount();
-  const label = getImplicitAccount(signer)?.label || getContactName(signer);
-
-  return (
-    <Flex
-      mb={4}
-      p={4}
-      bg="umami.gray.900"
-      h="78px"
-      borderRadius={8}
-      border={`1px solid ${colors.gray[800]}`}
-      alignItems="center"
-    >
-      <Identicon address={signer} />
-      <Flex flex={1} justifyContent="space-between" alignItems="center">
-        <Box m={4}>
-          {label && <Heading size={"md"}>{label}</Heading>}
-          <Flex alignItems={"center"}>
-            <Text size={"sm"} color="text.dark">
-              {formatPkh(signer)}
-            </Text>
-          </Flex>
-        </Box>
-        {/* TODO: implment approve/execute */}
-        <Box>button</Box>
-      </Flex>
-    </Flex>
   );
 };
 
