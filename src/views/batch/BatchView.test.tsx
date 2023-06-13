@@ -32,8 +32,7 @@ jest.mock("@chakra-ui/react", () => {
     useToast: require("../../../src/mocks/toast").useToast,
   };
 });
-// TODO refactor mocks
-jest.mock("../../utils/tezos");
+
 jest.mock("../../utils/hooks/accountUtils");
 
 const useGetSkMock = useGetSk as jest.Mock;
@@ -283,12 +282,12 @@ describe("<BatchView />", () => {
 
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
-        // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
-        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
-          "href",
-          "https://mainnet.tzkt.io/foo"
-        );
       });
+
+      expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+        "href",
+        "https://mainnet.tzkt.io/foo"
+      );
       const config: SkSignerConfig = {
         type: SignerType.SK,
         network: TezosNetwork.MAINNET,
