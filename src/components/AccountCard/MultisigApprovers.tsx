@@ -5,7 +5,7 @@ import colors from "../../style/colors";
 import { WalletAccountPkh } from "../../utils/multisig/types";
 import AccountOrContactTile from "../AccountOrContactTile";
 
-const MultisigSigners: React.FC<{
+const MultisigApprovers: React.FC<{
   signers: WalletAccountPkh[];
 }> = ({ signers }) => {
   const { isOpen, getButtonProps } = useDisclosure({
@@ -42,4 +42,4 @@ const MultisigSigners: React.FC<{
   );
 };
 
-export default MultisigSigners;
+export default MultisigApprovers;

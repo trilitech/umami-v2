@@ -10,7 +10,7 @@ import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
 import type { BigNumber } from "bignumber.js";
 import { AccountType, AllAccount } from "../../types/Account";
-import MultisigSigners from "./MultisigSigners";
+import MultisigApprovers from "./MultisigApprovers";
 
 type Props = {
   onSend?: () => void;
@@ -75,7 +75,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
         {!isMultisig && <RoundButton label="Buy tez" icon={<FiPlus />} />}
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
-      {isMultisig && <MultisigSigners signers={account.signers} />}
+      {isMultisig && <MultisigApprovers signers={account.signers} />}
       <AssetsPannel tokens={tokens} nfts={nfts} account={account} />
     </Flex>
   );
