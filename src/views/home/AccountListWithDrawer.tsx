@@ -6,7 +6,7 @@ import {
   DrawerOverlay,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import AccountCard from "../../components/AccountCard.tsx";
+import AccountCard from "../../components/AccountCard";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
