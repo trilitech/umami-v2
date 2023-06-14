@@ -47,18 +47,16 @@ export const getOperationsForMultisigs = async (
       }) => {
         const response = await getPendingOperations(network, pending_ops);
 
-        const operations = response
-          .filter(({ active }) => active)
-          .map(({ key, value }) => {
-            if (!value || !key) {
-              return null;
-            }
-            return {
-              key,
-              rawActions: value.actions,
-              approvals: value.approvals,
-            };
-          });
+        const operations = response.map(({ key, value }) => {
+          if (!value || !key) {
+            return null;
+          }
+          return {
+            key,
+            rawActions: value.actions,
+            approvals: value.approvals,
+          };
+        });
 
         return {
           address,
