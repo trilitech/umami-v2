@@ -1,7 +1,7 @@
 import { mockImplicitAccount } from "../mocks/factories";
 import { fakeExtraArguments } from "../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../mocks/helpers";
-import { publicKeys1 } from "../mocks/publicKeys";
+import { makeDefaultDevSignerKeys } from "../mocks/publicKeys";
 import { seedPhrase } from "../mocks/seedPhrase";
 import {
   ImplicitAccount,
@@ -27,10 +27,11 @@ afterEach(() => {
   store.dispatch(reset());
 });
 
-beforeEach(() => {
+beforeEach(async () => {
+  const { pk, pkh } = await makeDefaultDevSignerKeys(0);
   fakeExtraArguments.restoreAccount.mockResolvedValue({
-    pk: publicKeys1.pk,
-    pkh: publicKeys1.pkh,
+    pk,
+    pkh,
   });
   fakeExtraArguments.decrypt.mockResolvedValue("unencryptedFingerprint");
 });
