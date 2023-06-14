@@ -1,6 +1,10 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { OperationValue } from "../components/sendForm/types";
-import { publicKeys1, publicKeys2 } from "../mocks/publicKeys";
+import {
+  devPublicKeys0,
+  devPublicKeys1,
+  makeDefaultDevSignerKeys,
+} from "../mocks/publicKeys";
 import {
   ghostFA12,
   ghostFA12WithOwner,
@@ -17,9 +21,9 @@ import {
 
 jest.unmock("../utils/tezos");
 
-const pk1 = publicKeys1.pk;
-const pkh1 = publicKeys1.pkh;
-const pkh2 = publicKeys2.pkh;
+const pk0 = devPublicKeys0.pk;
+const pkh0 = devPublicKeys0.pkh;
+const pkh1 = devPublicKeys1.pkh;
 
 describe("Tezos utils", () => {
   describe("Batch", () => {
@@ -29,8 +33,8 @@ describe("Tezos utils", () => {
           type: "tez",
           value: {
             amount: "3",
-            sender: pkh1,
-            recipient: pkh2,
+            sender: pkh0,
+            recipient: pkh1,
           },
         },
         {
@@ -38,8 +42,8 @@ describe("Tezos utils", () => {
 
           value: {
             amount: "2",
-            sender: pkh1,
-            recipient: pkh2,
+            sender: pkh0,
+            recipient: pkh1,
             parameter: {
               entrypoint: "fulfill_ask",
               value: {
@@ -52,16 +56,16 @@ describe("Tezos utils", () => {
         {
           type: "delegation",
           value: {
-            sender: pkh1,
-            recipient: pkh2,
+            sender: pkh0,
+            recipient: pkh1,
           },
         },
         {
           type: "token",
           data: ghostTezzard,
           value: {
-            sender: pkh1,
-            recipient: pkh2,
+            sender: pkh0,
+            recipient: pkh1,
             amount: "1",
           },
         },
@@ -69,8 +73,8 @@ describe("Tezos utils", () => {
           type: "token",
           data: ghostFA12,
           value: {
-            sender: pkh1,
-            recipient: pkh2,
+            sender: pkh0,
+            recipient: pkh1,
             amount: "1",
           },
         },
@@ -78,8 +82,8 @@ describe("Tezos utils", () => {
           type: "token",
           data: ghostFA2,
           value: {
-            sender: pkh1,
-            recipient: pkh2,
+            sender: pkh0,
+            recipient: pkh1,
             amount: "2",
           },
         },
@@ -87,7 +91,7 @@ describe("Tezos utils", () => {
 
       const result = await operationValuesToBatchParams(
         input,
-        pk1,
+        pk0,
         TezosNetwork.GHOSTNET
       );
       expect(result).toEqual([
@@ -156,12 +160,12 @@ describe("Tezos utils", () => {
             value: {
               args: [
                 {
-                  string: pkh1,
+                  string: pkh0,
                 },
                 {
                   args: [
                     {
-                      string: pkh2,
+                      string: pkh1,
                     },
                     {
                       int: "1",
@@ -189,11 +193,11 @@ describe("Tezos utils", () => {
             value: [
               {
                 args: [
-                  { string: pkh1 },
+                  { string: pkh0 },
                   [
                     {
                       args: [
-                        { string: pkh2 },
+                        { string: pkh1 },
                         { args: [{ int: "1" }, { int: "2" }], prim: "Pair" },
                       ],
                       prim: "Pair",
@@ -217,11 +221,11 @@ describe("Tezos utils", () => {
           {
             amount: "1",
             contract: ghostTezzard.contract,
-            recipient: pkh2,
-            sender: pkh1,
+            recipient: pkh1,
+            sender: pkh0,
             tokenId: ghostTezzard.tokenId,
           },
-          pk1,
+          pk0,
           TezosNetwork.GHOSTNET
         );
 
@@ -233,7 +237,7 @@ describe("Tezos utils", () => {
           {
             amount: "1",
             contract: ghostFA12WithOwner.contract,
-            recipient: pkh2,
+            recipient: pkh1,
             sender: ghostFA12WithOwner.owner,
           },
           "TEST_PK",
@@ -250,16 +254,16 @@ describe("Tezos utils", () => {
               type: "tez",
               value: {
                 amount: "1",
-                sender: pkh1,
-                recipient: pkh2,
+                sender: pkh0,
+                recipient: pkh1,
               },
             },
             {
               type: "token",
               data: ghostTezzard,
               value: {
-                sender: pkh1,
-                recipient: pkh2,
+                sender: pkh0,
+                recipient: pkh1,
                 amount: "1",
               },
             },
@@ -267,8 +271,8 @@ describe("Tezos utils", () => {
               type: "token",
               data: ghostFA12,
               value: {
-                sender: pkh1,
-                recipient: pkh2,
+                sender: pkh0,
+                recipient: pkh1,
                 amount: "1",
               },
             },
@@ -276,14 +280,14 @@ describe("Tezos utils", () => {
               type: "token",
               data: ghostFA2,
               value: {
-                sender: pkh1,
-                recipient: pkh2,
+                sender: pkh0,
+                recipient: pkh1,
                 amount: "1",
               },
             },
           ],
-          pkh1,
-          pk1,
+          pkh0,
+          pk0,
           TezosNetwork.GHOSTNET
         );
 
@@ -299,21 +303,21 @@ describe("Tezos utils", () => {
               type: "tez",
               value: {
                 amount: "100",
-                sender: pkh1,
-                recipient: pkh2,
+                sender: pkh0,
+                recipient: pkh1,
               },
             },
             {
               type: "tez",
               value: {
                 amount: "200",
-                sender: pkh1,
-                recipient: pkh2,
+                sender: pkh0,
+                recipient: pkh1,
               },
             },
           ],
-          pkh1,
-          pk1,
+          pkh0,
+          pk0,
           TezosNetwork.MAINNET
         );
 
@@ -330,13 +334,13 @@ describe("Tezos utils", () => {
               type: "delegation",
 
               value: {
-                sender: pkh1,
+                sender: pkh0,
                 recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
               },
             },
           ],
-          pkh1,
-          pk1,
+          pkh0,
+          pk0,
           TezosNetwork.MAINNET
         );
 
@@ -352,21 +356,21 @@ describe("Tezos utils", () => {
               type: "tez",
               value: {
                 amount: "9999999",
-                sender: pkh1,
-                recipient: pkh2,
+                sender: pkh0,
+                recipient: pkh1,
               },
             },
             {
               type: "delegation",
 
               value: {
-                sender: pkh1,
+                sender: pkh0,
                 recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
               },
             },
           ],
-          pkh1,
-          pk1,
+          pkh0,
+          pk0,
           TezosNetwork.MAINNET
         );
 
@@ -381,11 +385,11 @@ describe("Tezos utils", () => {
         {
           amount: "1",
           contract: ghostTezzard.contract,
-          recipient: pkh2,
-          sender: pkh1,
+          recipient: pkh1,
+          sender: pkh0,
           tokenId: ghostTezzard.tokenId,
         },
-        pk1,
+        pk0,
         TezosNetwork.GHOSTNET
       );
 
