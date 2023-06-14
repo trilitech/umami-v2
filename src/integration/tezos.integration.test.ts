@@ -1,10 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { OperationValue } from "../components/sendForm/types";
-import {
-  devPublicKeys0,
-  devPublicKeys1,
-  makeDefaultDevSignerKeys,
-} from "../mocks/publicKeys";
+import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
 import {
   ghostFA12,
   ghostFA12WithOwner,
