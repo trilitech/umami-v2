@@ -1,14 +1,14 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineArrowDown } from "react-icons/ai";
+import NoItems from "../../components/NoItems";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { TopBar } from "../../components/TopBar";
-import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
+import { navigateToExternalLink } from "../../utils/helpers";
+import { useAllAccounts } from "../../utils/hooks/accountHooks";
+import { useHasTokens } from "../../utils/hooks/assetsHooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import AccountTokensTile from "./AccountTokensTile";
-import { useHasTokens } from "../../utils/hooks/assetsHooks";
-import NoItems from "../../components/NoItems";
-import { navigateToExternalLink } from "../../utils/helpers";
 
 export const FilterController: React.FC = () => {
   return (
@@ -19,7 +19,7 @@ export const FilterController: React.FC = () => {
 };
 
 const TokensView = () => {
-  const accounts = useImplicitAccounts();
+  const accounts = useAllAccounts();
   const { modalElement, onOpen } = useSendFormModal();
 
   const hasTokens = useHasTokens();
