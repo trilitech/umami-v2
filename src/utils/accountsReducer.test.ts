@@ -1,7 +1,7 @@
 import { mockImplicitAccount } from "../mocks/factories";
 import { fakeExtraArguments } from "../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../mocks/helpers";
-import { makeDefaultDevSignerKeys } from "../mocks/publicKeys";
+import { makeDefaultDevSignerKeys } from "../mocks/devSignerKeys";
 import { seedPhrase } from "../mocks/seedPhrase";
 import {
   ImplicitAccount,

@@ -1,6 +1,6 @@
 import type { FA12Token, FA2Token, NFT } from "../types/Asset";
 import { nftDisplayUri } from "../utils/tezos/consts";
-import { devPublicKeys0 } from "./publicKeys";
+import { devPublicKeys0 } from "./devSignerKeys";
 
 export const ghostTezzard: NFT = {
   id: 1,

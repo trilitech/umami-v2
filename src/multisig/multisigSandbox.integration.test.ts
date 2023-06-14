@@ -5,7 +5,7 @@ import { ghotnetThezard } from "../mocks/nftTokens";
 import {
   makeDefaultDevSignerKeys,
   makeToolkitFromDefaultDevSeed,
-} from "../mocks/publicKeys";
+} from "../mocks/devSignerKeys";
 import { ghostTezzard } from "../mocks/tokens";
 import { contract, makeStorageMichelsonJSON } from "./multisigContract";
 import { makeBatchLambda } from "./multisigUtils";
