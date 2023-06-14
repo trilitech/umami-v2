@@ -145,3 +145,25 @@ export const useAllAccounts = (): AllAccount[] => {
   const multisig = useMultisigAccounts();
   return [...implicit, ...multisig];
 };
+
+export const useGetPk = () => {
+  const getAccount = useGetOwnedAccount();
+
+  return (pkh: string) => {
+    const account = getAccount(pkh);
+    if (account.type === AccountType.MULTISIG) {
+      throw new Error(
+        "Can't apply getPk to a multisig account since it has no pk"
+      );
+    }
+
+    return account.pk;
+  };
+};
+
+export const useAccountIsMultisig = () => {
+  const accounts = useMultisigAccounts();
+  return (pkh: string) => {
+    return !!accounts.find((a) => a.pkh === pkh);
+  };
+};

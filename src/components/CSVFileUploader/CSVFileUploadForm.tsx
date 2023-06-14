@@ -15,6 +15,7 @@ import {
 import Papa, { ParseResult } from "papaparse";
 import { FC, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useGetPk } from "../../utils/hooks/accountHooks";
 import {
   useBatchIsSimulating,
   useGetAccountAssetsLookup,
@@ -23,7 +24,6 @@ import {
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { ConnectedAccountSelector } from "../AccountSelector/AccountSelector";
-import { useGetPk } from "../sendForm/SendForm";
 import { CSVRow } from "./types";
 import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 
