@@ -40,7 +40,7 @@ export const getPendingOperations = async (
   network: TezosNetwork,
   bigMap: number
 ): Promise<tzktGetBigMapKeysResponseType> => {
-  const url = `${tzktUrls[network]}/v1/bigmaps/${bigMap}/keys`;
+  const url = `${tzktUrls[network]}/v1/bigmaps/${bigMap}/keys?active=true`;
   const { data } = await axios.get<tzktGetBigMapKeysResponseType>(url);
   return data.map(({ active, key, value }) => ({
     active,

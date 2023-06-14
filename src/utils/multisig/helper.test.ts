@@ -89,7 +89,7 @@ describe("multisig helpers", () => {
     const mockResponse = {
       data: [
         {
-          active: false,
+          active: true,
           key: "0",
           value: { actions: "action0", approvals: [mockPkh(0)] },
         },
@@ -113,7 +113,7 @@ describe("multisig helpers", () => {
       } = res;
 
       expect(mockedAxios.get).toBeCalledWith(
-        `https://api.ghostnet.tzkt.io/v1/bigmaps/${pending_ops}/keys`
+        `https://api.ghostnet.tzkt.io/v1/bigmaps/${pending_ops}/keys?active=true`
       );
     });
 
@@ -122,6 +122,11 @@ describe("multisig helpers", () => {
         address: mockContract(0),
         balance: "0",
         pendingOperations: [
+          {
+            approvals: [mockPkh(0)],
+            key: "0",
+            rawActions: "action0",
+          },
           {
             approvals: [mockPkh(1)],
             key: "1",
@@ -135,6 +140,11 @@ describe("multisig helpers", () => {
         address: mockContract(10),
         balance: "10",
         pendingOperations: [
+          {
+            approvals: [mockPkh(0)],
+            key: "0",
+            rawActions: "action0",
+          },
           {
             approvals: [mockPkh(1)],
             key: "1",
