@@ -3,6 +3,8 @@ import {
   Card,
   Flex,
   Heading,
+  Icon,
+  Image,
   Table,
   TableContainer,
   Tbody,
@@ -11,23 +13,21 @@ import {
   Th,
   Thead,
   Tr,
-  Image,
-  Icon,
 } from "@chakra-ui/react";
 import React from "react";
+import { FiExternalLink } from "react-icons/fi";
 import { MdArrowOutward, MdGeneratingTokens } from "react-icons/md";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { Identicon } from "../../components/Identicon";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import colors from "../../style/colors";
-import { ImplicitAccount } from "../../types/Account";
-import { formatPkh } from "../../utils/format";
-import { useGetAccountAllTokens, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import { Options } from "../home/useSendFormModal";
-import { FiExternalLink } from "react-icons/fi";
-import { tzktExplorer } from "../../utils/tezos/consts";
-import { navigateToExternalLink } from "../../utils/helpers";
+import { AllAccount } from "../../types/Account";
 import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Asset";
+import { formatPkh } from "../../utils/format";
+import { navigateToExternalLink } from "../../utils/helpers";
+import { useGetAccountAllTokens, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { tzktExplorer } from "../../utils/tezos/consts";
+import { Options } from "../home/useSendFormModal";
 
 const AccountTokensTileHeader: React.FC<{
   pkh: string;
@@ -51,7 +51,7 @@ const AccountTokensTileHeader: React.FC<{
 );
 
 const AccountTokensTile: React.FC<{
-  account: ImplicitAccount;
+  account: AllAccount;
   onOpenSendModal: (options?: Options) => void;
 }> = ({ account: { pkh, label }, onOpenSendModal }) => {
   const getTokens = useGetAccountAllTokens();
