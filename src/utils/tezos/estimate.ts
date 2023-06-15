@@ -81,10 +81,7 @@ export const estimateMultisigApproveOrExecute = async (
 ): Promise<Estimate> => {
   const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
 
-  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(
-    params,
-    Tezos
-  );
+  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, Tezos);
 
   return Tezos.estimate.transfer(approveOrExecuteMethod.toTransferParams());
 };

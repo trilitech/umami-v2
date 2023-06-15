@@ -2585,9 +2585,7 @@ export const AllSlideritemsDocument = {
                   name: { kind: "Name", value: "image" },
                   selectionSet: {
                     kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "url" } },
-                    ],
+                    selections: [{ kind: "Field", name: { kind: "Name", value: "url" } }],
                   },
                 },
                 { kind: "Field", name: { kind: "Name", value: "_status" } },
@@ -2603,9 +2601,7 @@ export const AllSlideritemsDocument = {
             name: { kind: "Name", value: "_allSlideritemsMeta" },
             selectionSet: {
               kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "count" } },
-              ],
+              selections: [{ kind: "Field", name: { kind: "Name", value: "count" } }],
             },
           },
         ],

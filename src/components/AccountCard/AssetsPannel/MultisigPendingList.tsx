@@ -9,7 +9,7 @@ export const MultisigPendingList: React.FC<{
   return (
     <Box p={10} w={"120%"}>
       <Box>threshold:{account.threshold}</Box>
-      {account.operations.map((o) => {
+      {account.operations.map(o => {
         return (
           <Box m={4}>
             {Object.entries(o).map(([k, v]) => {

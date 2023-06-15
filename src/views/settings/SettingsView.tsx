@@ -1,14 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Heading,
-  Input,
-  Switch,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Heading, Input, Switch, Text } from "@chakra-ui/react";
 import { BsFolder2Open } from "react-icons/bs";
 import { TfiReload } from "react-icons/tfi";
 import ClickableCard, {
@@ -144,13 +135,7 @@ const AdvancedSection = () => {
     <SectionContainer title="Advanced Settings">
       <ClickableCard>
         <Box>
-          <Flex
-            mb={3}
-            justifyContent="space-between"
-            alignItems="center"
-            w="100%"
-            p={1}
-          >
+          <Flex mb={3} justifyContent="space-between" alignItems="center" w="100%" p={1}>
             <Heading size="sm">Number of Confirmation Block</Heading>
           </Flex>
           <Flex alignItems="center" w="100%">

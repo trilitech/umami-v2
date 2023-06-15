@@ -119,9 +119,7 @@ export const tokenSymbol = (asset: FA12Token | FA2Token): string => {
   return asset.metadata?.symbol || defaultTokenSymbol(asset);
 };
 
-export const httpIconUri = (
-  asset: FA12Token | FA2Token
-): string | undefined => {
+export const httpIconUri = (asset: FA12Token | FA2Token): string | undefined => {
   let iconUri;
   if (asset.type === "fa1.2") {
     iconUri = asset.metadata?.icon;
@@ -131,10 +129,7 @@ export const httpIconUri = (
   return iconUri && getIPFSurl(iconUri);
 };
 
-export const getRealAmount = (
-  asset: Asset,
-  prettyAmount: string
-): BigNumber => {
+export const getRealAmount = (asset: Asset, prettyAmount: string): BigNumber => {
   const amount = new BigNumber(prettyAmount);
 
   if (asset.type === "nft") {
@@ -142,9 +137,7 @@ export const getRealAmount = (
   }
 
   const decimals =
-    asset.metadata?.decimals === undefined
-      ? DEFAULT_TOKEN_DECIMALS
-      : asset.metadata.decimals;
+    asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
 
   return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };
@@ -177,20 +170,17 @@ export type NFT = {
 };
 
 export const keepNFTs = (assets: Asset[]) => {
-  return assets.filter((a) => a.type === "nft") as NFT[];
+  return assets.filter(a => a.type === "nft") as NFT[];
 };
 export const keepFA1s = (assets: Asset[]) => {
-  return assets.filter((a) => a.type === "fa1.2") as FA12Token[];
+  return assets.filter(a => a.type === "fa1.2") as FA12Token[];
 };
 
 export const keepFA2s = (assets: Asset[]) => {
-  return assets.filter((a) => a.type === "fa2") as FA2Token[];
+  return assets.filter(a => a.type === "fa2") as FA2Token[];
 };
 
-export const formatTokenAmount = (
-  amountStr: string,
-  decimals = DEFAULT_TOKEN_DECIMALS
-) => {
+export const formatTokenAmount = (amountStr: string, decimals = DEFAULT_TOKEN_DECIMALS) => {
   return Number(amountStr) / Math.pow(10, Number(decimals));
 };
 
@@ -216,13 +206,10 @@ export const thumbnailUri = (nft: NFT): string => {
 };
 
 export const mimeType = (nft: NFT) => {
-  return nft.metadata.formats?.find((format) => format.uri === artifactUri(nft))
-    ?.mimeType;
+  return nft.metadata.formats?.find(format => format.uri === artifactUri(nft))?.mimeType;
 };
 
-export const royalties = (
-  nft: NFT
-): Array<{ address: string; share: number }> => {
+export const royalties = (nft: NFT): Array<{ address: string; share: number }> => {
   const royalties = nft.metadata.royalties;
   if (!royalties) {
     return [];

@@ -17,10 +17,7 @@ import {
   getDefaultMnemonicDerivationPath,
   getLedgerDerivationPath,
 } from "../utils/account/derivationPathUtils";
-import {
-  MultisigOperation,
-  MultisigWithPendingOperations,
-} from "../utils/multisig/types";
+import { MultisigOperation, MultisigWithPendingOperations } from "../utils/multisig/types";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -183,14 +180,9 @@ export const mockMultisigWithOperations = (
   };
 };
 
-export const mockContract = (index: number) =>
-  `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`;
+export const mockContract = (index: number) => `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`;
 
-export const mockNFTToken = (
-  index: number,
-  pkh: string,
-  balance = 1
-): Token => {
+export const mockNFTToken = (index: number, pkh: string, balance = 1): Token => {
   return {
     id: index,
     account: {
@@ -259,11 +251,7 @@ export const mockFA2Token = (
   };
 };
 
-export const mockFA1Token = (
-  index: number,
-  pkh: string,
-  balance = 1
-): Token => {
+export const mockFA1Token = (index: number, pkh: string, balance = 1): Token => {
   return {
     id: 10897662672897,
     account: {
@@ -288,8 +276,7 @@ export const mockFA1Token = (
 };
 
 export const mockNFT = (index: number, balance = "1"): NFT => {
-  const displayUri =
-    "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" + index;
+  const displayUri = "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" + index;
   return {
     id: 1,
     type: "nft",

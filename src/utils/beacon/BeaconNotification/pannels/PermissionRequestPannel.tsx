@@ -44,15 +44,13 @@ const PermissionRequestPannel: React.FC<{
 
   return (
     <ModalContent>
-      <ModalHeader>
-        Permission Request from {request.appMetadata.name}
-      </ModalHeader>
+      <ModalHeader>Permission Request from {request.appMetadata.name}</ModalHeader>
 
       <ModalCloseButton />
       <ModalBody>
         <ConnectedAccountSelector
           selected={account && account.pkh}
-          onSelect={(a) => {
+          onSelect={a => {
             setAccount(a);
           }}
         />
@@ -65,7 +63,7 @@ const PermissionRequestPannel: React.FC<{
       </ModalBody>
 
       <ModalFooter>
-        <Button isDisabled={!account} onClick={(_) => grant()}>
+        <Button isDisabled={!account} onClick={_ => grant()}>
           Grant
         </Button>
       </ModalFooter>

@@ -36,9 +36,7 @@ describe("csv utils", () => {
 
   test("throws error for row with wrong length", async () => {
     expect(() => parseToCSVRow([])).toThrow("Invalid csv format");
-    expect(() => parseToCSVRow(["a", "b", "c", "d", "e"])).toThrowError(
-      "Invalid csv format"
-    );
+    expect(() => parseToCSVRow(["a", "b", "c", "d", "e"])).toThrowError("Invalid csv format");
   });
 
   test("throws error for row with invalid recipient", async () => {
@@ -51,21 +49,19 @@ describe("csv utils", () => {
     expect(() => parseToCSVRow([mockPkh(0), "-1.23456", "", ""])).toThrow(
       "Invalid csv value: amount"
     );
-    expect(() => parseToCSVRow([mockPkh(0), "0", "", ""])).toThrow(
-      "Invalid csv value: amount"
-    );
+    expect(() => parseToCSVRow([mockPkh(0), "0", "", ""])).toThrow("Invalid csv value: amount");
   });
 
   test("throws error for row with invalid contract address", async () => {
-    expect(() =>
-      parseToCSVRow([mockPkh(0), "1.23456", "Invalid kt", ""])
-    ).toThrow("Invalid csv value: contract address");
+    expect(() => parseToCSVRow([mockPkh(0), "1.23456", "Invalid kt", ""])).toThrow(
+      "Invalid csv value: contract address"
+    );
   });
 
   test("throws error for row with invalid tokenId", async () => {
-    expect(() =>
-      parseToCSVRow([mockPkh(0), "1000", mockContract(0), "-1"])
-    ).toThrow("Invalid csv value: tokenId");
+    expect(() => parseToCSVRow([mockPkh(0), "1000", mockContract(0), "-1"])).toThrow(
+      "Invalid csv value: tokenId"
+    );
   });
 
   test("converts CSVTezTransferRow to OperationValue", () => {
@@ -163,9 +159,7 @@ describe("csv utils", () => {
       contract: ghostTezzard.contract,
       tokenId: parseInt(ghostTezzard.tokenId),
     } as CSVRow;
-    expect(() =>
-      csvRowToOperationValue(mockPkh(0), mockCSVFA2TransferRow, {})
-    ).toThrowError(
+    expect(() => csvRowToOperationValue(mockPkh(0), mockCSVFA2TransferRow, {})).toThrowError(
       `Token "${ghostTezzard.contract}" is not owned by the sender`
     );
   });

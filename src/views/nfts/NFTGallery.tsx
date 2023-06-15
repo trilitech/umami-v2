@@ -10,13 +10,7 @@ export const NFTGallery: React.FC<{
   return (
     <SimpleGrid columns={4} spacing={4} overflow="scroll">
       {nfts.map((nft, i) => {
-        return (
-          <NFTCard
-            onClick={() => onSelect(nft)}
-            key={i + nft.contract}
-            nft={nft}
-          />
-        );
+        return <NFTCard onClick={() => onSelect(nft)} key={i + nft.contract} nft={nft} />;
       })}
     </SimpleGrid>
   );

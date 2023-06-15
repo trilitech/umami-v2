@@ -52,9 +52,7 @@ describe("NFTDrawerCard", () => {
       nft.metadata.description = "Some description";
       render(fixture(nft));
 
-      expect(screen.getByTestId("nft-description")).toHaveTextContent(
-        "Some description"
-      );
+      expect(screen.getByTestId("nft-description")).toHaveTextContent("Some description");
     });
   });
 

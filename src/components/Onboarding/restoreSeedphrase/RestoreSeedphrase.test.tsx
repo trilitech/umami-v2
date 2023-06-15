@@ -29,9 +29,7 @@ beforeEach(() => {
   selectRandomElementsMock.mockReturnValue(splitted.slice(0, 5));
 });
 
-const fixture = (setStep: (step: Step) => void) => (
-  <RestoreSeedphrase setStep={setStep} />
-);
+const fixture = (setStep: (step: Step) => void) => <RestoreSeedphrase setStep={setStep} />;
 
 describe("<RestoreSeedphrase />", () => {
   describe("Form validation", () => {
@@ -47,7 +45,7 @@ describe("<RestoreSeedphrase />", () => {
       render(fixture(setStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const inputFields = screen.getAllByRole("textbox");
-      inputFields.forEach((input) => {
+      inputFields.forEach(input => {
         fireEvent.change(input, { target: { value: "test" } });
       });
       await waitFor(() => {

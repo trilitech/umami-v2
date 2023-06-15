@@ -28,17 +28,12 @@ export const useRefreshPeers = () => {
 };
 
 export const usePeers = () =>
-  useQuery(
-    PEERS_QUERY_KEY,
-    () => walletClient.getPeers() as Promise<Array<PeerInfo>>
-  );
+  useQuery(PEERS_QUERY_KEY, () => walletClient.getPeers() as Promise<Array<PeerInfo>>);
 
 export const useRemovePeer = () => {
   const refresh = useRefreshPeers();
   return (peerInfo: PeerInfo) =>
-    walletClient
-      .removePeer(peerInfo as ExtendedP2PPairingResponse)
-      .then(refresh);
+    walletClient.removePeer(peerInfo as ExtendedP2PPairingResponse).then(refresh);
 };
 
 export const useAddPeer = () => {
@@ -49,10 +44,10 @@ export const useAddPeer = () => {
     serializer
       .deserialize(payload)
       .then(makePeerInfo)
-      .then((peer) => {
+      .then(peer => {
         walletClient.addPeer(peer).then(refresh);
       })
-      .catch((e) => {
+      .catch(e => {
         toast({ title: "Invalid beacon sync code", description: payload });
         console.error(e);
       });
@@ -67,10 +62,7 @@ export const useBeaconModalNotification = () => {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
         {beaconMessage.current && (
-          <BeaconNotification
-            message={beaconMessage.current}
-            onSuccess={onClose}
-          />
+          <BeaconNotification message={beaconMessage.current} onSuccess={onClose} />
         )}
       </Modal>
     ),

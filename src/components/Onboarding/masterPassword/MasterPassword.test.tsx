@@ -1,7 +1,4 @@
-import {
-  TemporaryAccountConfig,
-  TemporaryMnemonicAccountConfig,
-} from "../useOnboardingModal";
+import { TemporaryAccountConfig, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
 import { render, screen, waitFor } from "@testing-library/react";
 import MasterPassword from "./MasterPassword";
 import { ReduxStore } from "../../../providers/ReduxStore";

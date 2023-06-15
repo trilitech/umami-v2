@@ -27,9 +27,7 @@ export const SuccessStep: React.FC<{ hash: string; network: TezosNetwork }> = ({
       <ModalHeader textAlign={"center"}>Operation Submitted</ModalHeader>
       <ModalBody>
         <Text mt={2} color={"text.dark"} textAlign="center">
-          {
-            "You can follow this operation’s progress in the Operations section."
-          }
+          {"You can follow this operation’s progress in the Operations section."}
         </Text>
       </ModalBody>
       <ModalFooter justifyContent={"center"} flexDirection="column">

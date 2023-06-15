@@ -15,14 +15,14 @@ const DeriveAccountDisplay = (props: {
       <NameAccountDisplay
         title={props.title}
         subtitle={props.subtitle}
-        onSubmit={(p) => setName(p.accountName)}
+        onSubmit={p => setName(p.accountName)}
       />
     );
   }
 
   return (
     <EnterPassword
-      onSubmit={(p) => props.onSubmit({ name, password: p })}
+      onSubmit={p => props.onSubmit({ name, password: p })}
       isLoading={props.isLoading}
     />
   );

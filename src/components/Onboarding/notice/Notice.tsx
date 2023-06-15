@@ -12,12 +12,10 @@ const Notice: React.FC<{
       content: "Write down your seed phrase and store it in a safe place.",
     },
     {
-      content:
-        "Make sure there is no one around you or looking over your shoulder.",
+      content: "Make sure there is no one around you or looking over your shoulder.",
     },
     {
-      content:
-        "Do not copy and paste the Seed Phrase or store it on your device.",
+      content: "Do not copy and paste the Seed Phrase or store it on your device.",
     },
     {
       content: "Do not take a screenshot of your Seed Phrase.",
@@ -29,12 +27,7 @@ const Notice: React.FC<{
       title="Important Notice"
       subtitle="Please read the following before you continue to see your secret Seed Phrase."
     >
-      <VStack
-        spacing={"24px"}
-        overflowX={"hidden"}
-        overflowY={"scroll"}
-        p="4px"
-      >
+      <VStack spacing={"24px"} overflowX={"hidden"} overflowY={"scroll"} p="4px">
         <OrderedList spacing={4}>
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;

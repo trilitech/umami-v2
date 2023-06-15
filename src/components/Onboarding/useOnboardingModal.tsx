@@ -1,10 +1,4 @@
-import {
-  IconButton,
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { IconButton, Modal, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import ModalBackground from "../../assets/onboarding/background_image.svg";
 import { ArrowBackIcon, CloseIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
@@ -85,24 +79,16 @@ export const useCreateOrImportSecretModal = () => {
   const [modalSize, setModalSize] = useState<ModalSize>(ModalSize.md);
   const [step, setStep] = useState<Step | null>(null);
   const hasAccounts = useImplicitAccounts().length !== 0;
-  const [history, setHistory] = useState<Step[]>([
-    { type: StepType.connectOrCreate },
-  ]);
+  const [history, setHistory] = useState<Step[]>([{ type: StepType.connectOrCreate }]);
   const historyRef = useRef(history);
 
   useEffect(() => {
-    if (
-      step &&
-      historyRef.current.map((s) => s.type).indexOf(step.type) === -1
-    ) {
+    if (step && historyRef.current.map(s => s.type).indexOf(step.type) === -1) {
       setHistory([...historyRef.current, step]);
     }
     if (
       !step ||
-      (step &&
-        ["generateSeedphrase", "restoreSeedphrase", "eula"].indexOf(
-          step?.type
-        ) > -1)
+      (step && ["generateSeedphrase", "restoreSeedphrase", "eula"].indexOf(step?.type) > -1)
     ) {
       setModalSize(ModalSize.lg);
     } else {

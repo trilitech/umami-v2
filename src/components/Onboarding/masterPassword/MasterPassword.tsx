@@ -39,22 +39,12 @@ export const MasterPassword = ({
       if (!config.label) throw new Error("Label not set");
       if (config instanceof TemporaryMnemonicAccountConfig) {
         if (!config.seedphrase) throw new Error("Seedphrase not set");
-        await restoreSecret(
-          config.seedphrase,
-          password,
-          config.label,
-          config.derivationPath
-        );
+        await restoreSecret(config.seedphrase, password, config.label, config.derivationPath);
       } else if (config instanceof TemporaryLedgerAccountConfig) {
         if (!config.derivationPath) throw new Error("DerivationPath not set");
         if (!config.pk) throw new Error("Pk not set");
         if (!config.pkh) throw new Error("Pkh not set");
-        await restoreLedger(
-          config.derivationPath,
-          config.pk,
-          config.pkh,
-          config.label
-        );
+        await restoreLedger(config.derivationPath, config.pk, config.pkh, config.label);
       } else if (config instanceof TemporarySocialAccountConfig) {
         if (!config.pk) throw new Error("Pk not set");
         if (!config.pkh) throw new Error("Pkh not set");
@@ -75,9 +65,7 @@ export const MasterPassword = ({
   if (passwordHasBeenSet) {
     return <EnterPassword isLoading={isLoading} onSubmit={handleSubmit} />;
   }
-  return (
-    <EnterAndComfirmPassword isLoading={isLoading} onSubmit={handleSubmit} />
-  );
+  return <EnterAndComfirmPassword isLoading={isLoading} onSubmit={handleSubmit} />;
 };
 
 export default MasterPassword;

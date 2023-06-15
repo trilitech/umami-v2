@@ -4,10 +4,7 @@ import { restoreAccounts, restoreMnemonicAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
 
 import "../mocks/mockGetRandomValues";
-import {
-  defaultV1Pattern,
-  getDefaultMnemonicDerivationPath,
-} from "./account/derivationPathUtils";
+import { defaultV1Pattern, getDefaultMnemonicDerivationPath } from "./account/derivationPathUtils";
 jest.mock("./tezos");
 
 const addressExistsMock = addressExists as jest.Mock;
@@ -124,11 +121,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreMnemonicAccounts(
-      seedPhrase,
-      undefined,
-      "m/44'/1729'/?'/8'"
-    );
+    const result = await restoreMnemonicAccounts(seedPhrase, undefined, "m/44'/1729'/?'/8'");
 
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
@@ -147,14 +140,8 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = restoreMnemonicAccounts(
-      seedPhrase,
-      undefined,
-      "m/44'/foo'/?'/8'"
-    );
+    const result = restoreMnemonicAccounts(seedPhrase, undefined, "m/44'/foo'/?'/8'");
 
-    await expect(result).rejects.toThrowError(
-      "Invalid derivation pattern: m/44'/foo'/?'/8'"
-    );
+    await expect(result).rejects.toThrowError("Invalid derivation pattern: m/44'/foo'/?'/8'");
   });
 });

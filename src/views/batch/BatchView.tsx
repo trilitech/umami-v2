@@ -14,7 +14,7 @@ import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
 import NoItems from "../../components/NoItems";
 
-export const FilterController: React.FC<{ batchPending: number }> = (props) => {
+export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (
     <Flex alignItems={"center"} mb={4} mt={4}>
       <Heading size="sm" color="umami.green" flex={1}>
@@ -40,13 +40,12 @@ export const FilterController: React.FC<{ batchPending: number }> = (props) => {
 };
 
 const BatchView = () => {
-  const batches = useAppSelector((s) => s.assets.batches);
+  const batches = useAppSelector(s => s.assets.batches);
 
   const dispatch = useAppDispatch();
   const getAccount = useGetImplicitAccount();
 
-  const { onOpen: openSendForm, modalElement: sendFormModalEl } =
-    useSendFormModal();
+  const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
   const { onOpen, element, onClose } = useConfirmation();
 
   const batchEls = Object.entries(batches).map(([pkh, batch]) => {
@@ -63,7 +62,7 @@ const BatchView = () => {
           openSendForm({
             mode: {
               type: "batch",
-              data: { batch: batch.items.map((i) => i.operation) },
+              data: { batch: batch.items.map(i => i.operation) },
             },
           })
         }

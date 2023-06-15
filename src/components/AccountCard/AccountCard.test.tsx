@@ -29,13 +29,7 @@ beforeAll(() => {
     updateAssets([
       {
         pkh: mockImplicitAccount(0).pkh,
-        tokens: [
-          hedgeHoge,
-          tzBtsc,
-          uUSD,
-          mockFA1Token(1, mockPkh(1), 123),
-          mockNft,
-        ],
+        tokens: [hedgeHoge, tzBtsc, uUSD, mockFA1Token(1, mockPkh(1), 123), mockNft],
       },
     ])
   );
@@ -44,9 +38,7 @@ beforeAll(() => {
 describe("<AccountCard />", () => {
   it("should display account name", () => {
     render(<AccountCard account={account} />);
-    expect(
-      screen.getByRole("heading", { name: account.label })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: account.label })).toBeInTheDocument();
   });
 
   it("accountCard displays multisig signers", () => {
@@ -104,8 +96,6 @@ describe("<AccountCard />", () => {
     expect(screen.getByTestId("account-card-nfts-tab")).toBeInTheDocument();
     screen.getByTestId("account-card-nfts-tab").click();
     expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
-    expect(
-      screen.getByText(mockNft.token?.metadata?.name as string)
-    ).toBeInTheDocument();
+    expect(screen.getByText(mockNft.token?.metadata?.name as string)).toBeInTheDocument();
   });
 });

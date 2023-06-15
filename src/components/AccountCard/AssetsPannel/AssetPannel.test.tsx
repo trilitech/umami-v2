@@ -8,8 +8,6 @@ describe("<AssetPannel/>", () => {
     render(<AssetsPannel account={multisigAccount} nfts={[]} tokens={[]} />);
 
     expect(screen.getByTestId("account-card-pending-tab")).toBeInTheDocument();
-    expect(
-      screen.getByTestId("account-card-pending-tab-panel")
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();
   });
 });

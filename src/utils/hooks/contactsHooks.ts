@@ -1,6 +1,6 @@
 import { useAppSelector } from "../store/hooks";
 import { nameExistsInContacts } from "./contactsUtils";
-export const useContacts = () => useAppSelector((s) => s.contacts);
+export const useContacts = () => useAppSelector(s => s.contacts);
 
 export const useAllSortedContacts = () => {
   const contacts = useContacts();
@@ -11,8 +11,7 @@ export const useContactExists = () => {
   const contacts = useContacts();
   return {
     addressExistsInContacts: (pkh: string) => pkh in contacts,
-    nameExistsInContacts: (name: string) =>
-      nameExistsInContacts(contacts, name),
+    nameExistsInContacts: (name: string) => nameExistsInContacts(contacts, name),
   };
 };
 

@@ -10,5 +10,5 @@ process.once("loaded", () => {
 });
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  onDeeplink: (callback) => ipcRenderer.on("deeplinkURL", callback),
+  onDeeplink: callback => ipcRenderer.on("deeplinkURL", callback),
 });

@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardBody,
-  Flex,
-  Heading,
-  Icon,
-  LayoutProps,
-} from "@chakra-ui/react";
+import { Card, CardBody, Flex, Heading, Icon, LayoutProps } from "@chakra-ui/react";
 import { useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import colors from "../style/colors";

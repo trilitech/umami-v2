@@ -77,7 +77,7 @@ const assetsSlice = createSlice({
   name: "assets",
   initialState,
   // Reset assets state if accounts are reset
-  extraReducers: (builder) =>
+  extraReducers: builder =>
     // This throw error: TS2589: Type instantiation is excessively deep and possibly infinite.
     // Because of use of Taquito TransferParams["parameter"] in OperationValue that is too complex
     // What can this be fixed?
@@ -87,23 +87,17 @@ const assetsSlice = createSlice({
     builder.addCase(accountsSlice.actions.reset, () => initialState),
   reducers: {
     reset: () => initialState,
-    updateNetwork: (
-      _,
-      { payload }: { type: string; payload: TezosNetwork }
-    ) => {
+    updateNetwork: (_, { payload }: { type: string; payload: TezosNetwork }) => {
       return { ...initialState, network: payload };
     },
     updateBlockLevel: (state, { payload }: { payload: number }) => {
       state.blockLevel = payload;
     },
-    updateTezTransfers: (
-      state,
-      { payload }: { type: string; payload: TezTransfersPayload[] }
-    ) => {
+    updateTezTransfers: (state, { payload }: { type: string; payload: TezTransfersPayload[] }) => {
       const tezOperationsPayload = payload;
       const newTezTransfers = { ...state.transfers.tez };
 
-      tezOperationsPayload.forEach((op) => {
+      tezOperationsPayload.forEach(op => {
         const { pkh, transfers } = op;
         newTezTransfers[pkh] = transfers;
       });
@@ -117,7 +111,7 @@ const assetsSlice = createSlice({
       const tezOperationsPayload = payload;
       const newTezTransfers = { ...state.transfers.tokens };
 
-      tezOperationsPayload.forEach((op) => {
+      tezOperationsPayload.forEach(op => {
         const { pkh, transfers } = op;
         newTezTransfers[pkh] = transfers;
       });
@@ -126,13 +120,11 @@ const assetsSlice = createSlice({
     },
     updateAssets: (
       state,
-      {
-        payload,
-      }: { type: string; payload: TezBalancePayload[] | TokenBalancePayload[] }
+      { payload }: { type: string; payload: TezBalancePayload[] | TokenBalancePayload[] }
     ) => {
       const tezBalancePayloads = payload;
 
-      tezBalancePayloads.forEach((payload) => {
+      tezBalancePayloads.forEach(payload => {
         if ("tez" in payload) {
           const existing = state.balances.tez;
           const newTezBalances = { ...existing, [payload.pkh]: payload.tez };
@@ -145,19 +137,14 @@ const assetsSlice = createSlice({
         state.balances.tokens = newTokens;
       });
     },
-    updateDelegations: (
-      state,
-      { payload }: { type: string; payload: DelegationPayload[] }
-    ) => {
+    updateDelegations: (state, { payload }: { type: string; payload: DelegationPayload[] }) => {
       //TODO: store a list of delegations for the operation views
-      payload.forEach((p) => {
+      payload.forEach(p => {
         state.delegations[p.pkh] = p.delegation;
       });
     },
     updateBakers: (state, { payload }: { type: string; payload: Baker[] }) => {
-      const sortedBakers = [...payload].sort((a, b) =>
-        a.name > b.name ? 1 : -1
-      );
+      const sortedBakers = [...payload].sort((a, b) => (a.name > b.name ? 1 : -1));
       state.bakers = sortedBakers;
     },
     updateConversionRate: (
@@ -169,9 +156,7 @@ const assetsSlice = createSlice({
     // Don't use this action directly. Use thunk simulateAndUpdateBatch
     updateBatch: (
       state,
-      {
-        payload: { pkh, items: transfers },
-      }: { type: string; payload: BatchPayload }
+      { payload: { pkh, items: transfers } }: { type: string; payload: BatchPayload }
     ) => {
       const existing = (state.batches[pkh] || emptyBatch) as Batch;
       const newBatch: Batch = {
@@ -200,10 +185,7 @@ const assetsSlice = createSlice({
         state.batches[pkh] = { ...existing, isSimulating: false };
       }
     },
-    clearBatch: (
-      state,
-      { payload: { pkh } }: { type: string; payload: { pkh: string } }
-    ) => {
+    clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: string } }) => {
       if (state.batches[pkh]?.isSimulating) {
         return;
       }

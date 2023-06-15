@@ -34,12 +34,9 @@ import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
 import { BatchRecap } from "./BatchRecap";
 
-const makeTransfer = async (
-  operation: OperationValue | OperationValue[],
-  config: SignerConfig
-) => {
+const makeTransfer = async (operation: OperationValue | OperationValue[], config: SignerConfig) => {
   if (Array.isArray(operation)) {
-    return submitBatch(operation, config).then((res) => {
+    return submitBatch(operation, config).then(res => {
       return {
         hash: res.opHash,
       };
@@ -48,11 +45,7 @@ const makeTransfer = async (
 
   switch (operation.type) {
     case "delegation":
-      return await delegate(
-        operation.value.sender,
-        operation.value.recipient,
-        config
-      );
+      return await delegate(operation.value.sender, operation.value.recipient, config);
     case "tez":
       return await transferMutez(
         operation.value.recipient,
@@ -112,9 +105,7 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
           <SendNFTRecapTile nft={token} />
         </Box>
       )}
-      {transfer.type === "tez" ? (
-        <Subtotal mutez={transfer.value.amount} />
-      ) : null}
+      {transfer.type === "tez" ? <Subtotal mutez={transfer.value.amount} /> : null}
     </>
   );
 };
@@ -143,17 +134,14 @@ export const RecapDisplay: React.FC<{
   const [isLoading, setIsLoading] = useState(false);
   const clearBatch = useClearBatch();
 
-  const signerAccount = getAccount(
-    (Array.isArray(transfer) ? transfer[0] : transfer).value.sender
-  );
+  const signerAccount = getAccount((Array.isArray(transfer) ? transfer[0] : transfer).value.sender);
 
   const handleConfigSubmit = async (config: SignerConfig) => {
     setIsLoading(true);
     if (signerAccount.type === AccountType.LEDGER) {
       toast({
         title: "Request sent to Ledger",
-        description:
-          "Open the Tezos app on your Ledger and accept to sign the request",
+        description: "Open the Tezos app on your Ledger and accept to sign the request",
       });
     }
 

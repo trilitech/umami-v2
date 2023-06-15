@@ -33,11 +33,7 @@ const ErrorLogsDrawerCard = () => {
       <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
-          <DrawerTopButtons
-            onPrevious={() => {}}
-            onNext={() => {}}
-            onClose={handleClose}
-          />
+          <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={handleClose} />
           <DrawerBody>
             <ErrorLogsDrawerBody />
           </DrawerBody>

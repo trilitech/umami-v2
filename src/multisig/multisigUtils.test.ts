@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { TezosNetwork } from "@airgap/tezos";
-import {
-  ContractMethod,
-  ContractProvider,
-  TransferParams,
-} from "@taquito/taquito";
+import { ContractMethod, ContractProvider, TransferParams } from "@taquito/taquito";
 import { mockContract, mockPkh } from "../mocks/factories";
 import { fakeTezosUtils } from "../mocks/fakeTezosUtils";
 import {
@@ -160,10 +156,7 @@ describe("makeLambda", () => {
         ...dropDelegationLambda,
       ]);
 
-      const undefinedResult = await makeLambda(
-        { type: "delegation" },
-        TezosNetwork.GHOSTNET
-      );
+      const undefinedResult = await makeLambda({ type: "delegation" }, TezosNetwork.GHOSTNET);
 
       expect(undefinedResult).toEqual([
         { prim: "DROP" },
@@ -313,10 +306,7 @@ const fa12Lambda = (contract: string) => {
     ],
     { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
     {
-      args: [
-        FA12_TRANSFER_ARG_TYPES,
-        MOCK_FA12_MICHELSON_PARAM.parameter?.value,
-      ],
+      args: [FA12_TRANSFER_ARG_TYPES, MOCK_FA12_MICHELSON_PARAM.parameter?.value],
       prim: "PUSH",
     },
     { prim: "TRANSFER_TOKENS" },

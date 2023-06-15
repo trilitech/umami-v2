@@ -10,7 +10,7 @@ const checkAccountsAndUpsertContact = (
 ): ThunkAction<void, RootState, unknown, AnyAction> => {
   return (dispatch, getState) => {
     const { accounts } = getState();
-    const existingAccount = accounts.items.find((account) => {
+    const existingAccount = accounts.items.find(account => {
       return account.pkh === contact.pkh || account.label === contact.name;
     });
 

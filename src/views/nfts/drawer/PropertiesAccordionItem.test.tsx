@@ -48,12 +48,8 @@ describe("PropertiesAccordionItem", () => {
       };
 
       render(fixture(nft));
-      expect(screen.getByTestId("nft-royalty")).toHaveTextContent(
-        "Royalties (2):"
-      );
-      expect(screen.getByTestId("nft-royalty-value")).toHaveTextContent(
-        "0.03%"
-      );
+      expect(screen.getByTestId("nft-royalty")).toHaveTextContent("Royalties (2):");
+      expect(screen.getByTestId("nft-royalty-value")).toHaveTextContent("0.03%");
     });
   });
 
@@ -78,9 +74,7 @@ describe("PropertiesAccordionItem", () => {
 
       render(fixture(nft));
       expect(screen.getByTestId("nft-mime")).toHaveTextContent("MIME type:");
-      expect(screen.getByTestId("nft-mime-value")).toHaveTextContent(
-        "image/png"
-      );
+      expect(screen.getByTestId("nft-mime-value")).toHaveTextContent("image/png");
     });
   });
 
@@ -110,9 +104,7 @@ describe("PropertiesAccordionItem", () => {
 
       render(fixture(nft));
       expect(screen.getByTestId("nft-creator")).toHaveTextContent("Creator:");
-      expect(screen.queryByTestId("nft-creator-value")).toHaveTextContent(
-        "Creator123"
-      );
+      expect(screen.queryByTestId("nft-creator-value")).toHaveTextContent("Creator123");
     });
 
     it("shows creator's address if it's a valid address", () => {
@@ -121,9 +113,7 @@ describe("PropertiesAccordionItem", () => {
 
       render(fixture(nft));
       expect(screen.getByTestId("nft-creator")).toHaveTextContent("Creator:");
-      expect(screen.queryByTestId("nft-creator-value")).toHaveTextContent(
-        "tz1gU...dWh7h"
-      );
+      expect(screen.queryByTestId("nft-creator-value")).toHaveTextContent("tz1gU...dWh7h");
     });
   });
 
@@ -134,9 +124,7 @@ describe("PropertiesAccordionItem", () => {
       render(fixture(nft));
 
       expect(screen.getByTestId("nft-editions")).toHaveTextContent("Editions:");
-      expect(screen.queryByTestId("nft-editions-value")).toHaveTextContent(
-        "155555"
-      );
+      expect(screen.queryByTestId("nft-editions-value")).toHaveTextContent("155555");
     });
 
     it("renders a ? when totalSupply is absent", () => {

@@ -25,13 +25,7 @@ describe("<DelegationsView />", () => {
       updateDelegations([
         {
           pkh: mockPkh(1),
-          delegation: mockDelegation(
-            1,
-            17890,
-            mockPkh(4),
-            "Baker 1",
-            new Date("2022-10-01")
-          ),
+          delegation: mockDelegation(1, 17890, mockPkh(4), "Baker 1", new Date("2022-10-01")),
         },
         {
           pkh: mockPkh(2),

@@ -1,16 +1,6 @@
-import {
-  Button,
-  VStack,
-  useToast,
-  ListItem,
-  OrderedList,
-} from "@chakra-ui/react";
+import { Button, VStack, useToast, ListItem, OrderedList } from "@chakra-ui/react";
 import { useState } from "react";
-import {
-  Step,
-  StepType,
-  TemporaryLedgerAccountConfig,
-} from "../useOnboardingModal";
+import { Step, StepType, TemporaryLedgerAccountConfig } from "../useOnboardingModal";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { getPk } from "../../../utils/ledger/pk";

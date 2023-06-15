@@ -6,7 +6,7 @@ import { OperationValue } from "../sendForm/types";
 import { CSVRow } from "./types";
 
 export const parseToCSVRow = (row: string[]): CSVRow => {
-  const filteredRow = row.filter((v) => v.length > 0);
+  const filteredRow = row.filter(v => v.length > 0);
   const len = filteredRow.length;
   if (len < 2 || 4 < len) {
     throw new Error("Invalid csv format");
@@ -69,19 +69,13 @@ export const csvRowToOperationValue = (
   const asset =
     csvRow.type === "fa1.2"
       ? assets[0]
-      : assets.find(
-          (asset) =>
-            !(asset.type === "fa1.2") && asset.tokenId === `${csvRow.tokenId}`
-        );
+      : assets.find(asset => !(asset.type === "fa1.2") && asset.tokenId === `${csvRow.tokenId}`);
 
   if (!asset) {
     throw new Error(`Token "${csvRow.contract}" is not owned by the sender`);
   }
 
-  if (
-    csvRow.contract !== asset.contract ||
-    (asset.type === "fa1.2" && csvRow.type !== "fa1.2")
-  ) {
+  if (csvRow.contract !== asset.contract || (asset.type === "fa1.2" && csvRow.type !== "fa1.2")) {
     throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
   }
   return {

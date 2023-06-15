@@ -9,7 +9,7 @@ export const parameters = {
   },
 };
 export const decorators = [
-  (Story) => (
+  Story => (
     <UmamiTheme>
       <Story />
     </UmamiTheme>

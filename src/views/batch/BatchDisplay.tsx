@@ -20,11 +20,7 @@ import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTile";
-import {
-  Fee,
-  Subtotal,
-  Total,
-} from "../../components/sendForm/components/TezAmountRecaps";
+import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
 import { OperationValue } from "../../components/sendForm/types";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { ImplicitAccount } from "../../types/Account";
@@ -43,10 +39,7 @@ const renderAmount = (operation: OperationValue) => {
       const amount =
         operation.data.type === "nft"
           ? operation.data.balance
-          : formatTokenAmount(
-              operation.value.amount,
-              operation.data.metadata?.decimals
-            );
+          : formatTokenAmount(operation.value.amount, operation.data.metadata?.decimals);
       return (
         <Flex>
           <Text mr={1}>{amount} </Text>
@@ -79,7 +72,7 @@ const RightPanel = ({
 }) => {
   const fee = getTotalFee(batch.items);
 
-  const subTotal = getBatchSubtotal(batch.items.map((item) => item.operation));
+  const subTotal = getBatchSubtotal(batch.items.map(item => item.operation));
 
   const total = subTotal.plus(fee);
   return (
@@ -93,13 +86,7 @@ const RightPanel = ({
         <Total mutez={total.toString()} paddingY={3} />
 
         <Flex justifyContent={"space-between"}>
-          <Button
-            onClick={onSend}
-            isDisabled={batch.isSimulating}
-            flex={1}
-            bg="umami.blue"
-            mr={4}
-          >
+          <Button onClick={onSend} isDisabled={batch.isSimulating} flex={1} bg="umami.blue" mr={4}>
             Submit batch
           </Button>
 
@@ -128,24 +115,14 @@ export const BatchDisplay: React.FC<{
     <Flex data-testid="batch-table" mb={4}>
       <Box flex={1} bg="umami.gray.900" p={4}>
         <Flex justifyContent="space-between" ml={2} mr={2} mb={4}>
-          <AccountSmallTileDisplay
-            ml={2}
-            pkh={account.pkh}
-            label={account.label}
-          />
+          <AccountSmallTileDisplay ml={2} pkh={account.pkh} label={account.label} />
           <Text color={"umami.gray.400"}>
             {`${items.length} transaction${items.length > 1 ? "s" : ""}`}
           </Text>
         </Flex>
         <TableContainer overflowX="unset" overflowY="unset">
           <Table>
-            <Thead
-              position="sticky"
-              top={0}
-              zIndex="docked"
-              bg="umami.gray.900"
-              borderRadius={4}
-            >
+            <Thead position="sticky" top={0} zIndex="docked" bg="umami.gray.900" borderRadius={4}>
               <Tr>
                 <Th>Type:</Th>
                 <Th>Subject:</Th>
@@ -157,11 +134,7 @@ export const BatchDisplay: React.FC<{
             <Tbody>
               {items.map(({ operation, fee }, i) => (
                 <Tr key={operation.value.sender + operation.type + i}>
-                  <Td>
-                    {operation.type !== "delegation"
-                      ? "Transaction"
-                      : operation.type}
-                  </Td>
+                  <Td>{operation.type !== "delegation" ? "Transaction" : operation.type}</Td>
                   <Td>{renderAmount(operation)}</Td>
                   <Td>
                     {operation.type === "token" && (

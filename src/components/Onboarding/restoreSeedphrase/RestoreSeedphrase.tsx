@@ -14,11 +14,7 @@ import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { FieldValues, useForm } from "react-hook-form";
 import { WarningIcon } from "@chakra-ui/icons";
-import {
-  Step,
-  StepType,
-  TemporaryMnemonicAccountConfig,
-} from "../useOnboardingModal";
+import { Step, StepType, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
 import { InMemorySigner } from "@taquito/signer";
 import { seedPhrase } from "../../../mocks/seedPhrase";
 
@@ -73,10 +69,10 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
           <VStack w="100%" spacing={4}>
             <Select
               data-testid="select"
-              onChange={(event) => setMnemonicSize(event.target.value)}
+              onChange={event => setMnemonicSize(event.target.value)}
               value={mnemonicSize}
             >
-              {[12, 15, 18, 24].reverse().map((value) => {
+              {[12, 15, 18, 24].reverse().map(value => {
                 return (
                   <option key={value} value={value}>
                     {value} Words
@@ -86,45 +82,38 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
             </Select>
 
             <Grid templateColumns="repeat(3, 1fr)" gap={3} pb="20px">
-              {Array.from({ length: parseInt(mnemonicSize) }).map(
-                (item, index) => {
-                  return (
-                    <GridItem
-                      key={index}
-                      fontSize="sm"
-                      border="1px dashed #D6D6D6;"
-                      borderRadius="4px"
-                      p="6px"
-                      display="flex"
-                    >
-                      <Text pl="8px" pr="8px">
-                        {index + 1}
-                      </Text>
-                      <Input
-                        onPaste={async (e) => {
-                          e.preventDefault();
-                          const mnemonic = await navigator.clipboard.readText();
-                          pasteMnemonic(mnemonic);
-                        }}
-                        size={"xsmall"}
-                        border="none"
-                        placeholder="Type here"
-                        {...register(`word${index}`, {
-                          required: true,
-                        })}
-                      />
-                      {errors[`${index}`] && (
-                        <WarningIcon
-                          p="8px"
-                          w={"40px"}
-                          h={"40px"}
-                          color="red"
-                        />
-                      )}
-                    </GridItem>
-                  );
-                }
-              )}
+              {Array.from({ length: parseInt(mnemonicSize) }).map((item, index) => {
+                return (
+                  <GridItem
+                    key={index}
+                    fontSize="sm"
+                    border="1px dashed #D6D6D6;"
+                    borderRadius="4px"
+                    p="6px"
+                    display="flex"
+                  >
+                    <Text pl="8px" pr="8px">
+                      {index + 1}
+                    </Text>
+                    <Input
+                      onPaste={async e => {
+                        e.preventDefault();
+                        const mnemonic = await navigator.clipboard.readText();
+                        pasteMnemonic(mnemonic);
+                      }}
+                      size={"xsmall"}
+                      border="none"
+                      placeholder="Type here"
+                      {...register(`word${index}`, {
+                        required: true,
+                      })}
+                    />
+                    {errors[`${index}`] && (
+                      <WarningIcon p="8px" w={"40px"} h={"40px"} color="red" />
+                    )}
+                  </GridItem>
+                );
+              })}
             </Grid>
             <Button
               type="submit"

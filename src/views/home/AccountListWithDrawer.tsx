@@ -1,10 +1,5 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import {
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-} from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 import { useState } from "react";
 import AccountCard from "../../components/AccountCard";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
@@ -22,27 +17,21 @@ const AccountListWithDrawer: React.FC = () => {
     closeDrawer();
   };
 
-  const account = allAccounts.find((a) => a.pkh === selected);
+  const account = allAccounts.find(a => a.pkh === selected);
   return (
     <>
       <AccountsList
         onOpen={onOpen}
         selected={selected}
-        onSelect={(pkh) => {
+        onSelect={pkh => {
           setSelected(pkh);
         }}
       />
       <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
-          <DrawerTopButtons
-            onPrevious={() => {}}
-            onNext={() => {}}
-            onClose={handleClose}
-          />
-          <DrawerBody>
-            {account && <AccountCard account={account} />}
-          </DrawerBody>
+          <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={handleClose} />
+          <DrawerBody>{account && <AccountCard account={account} />}</DrawerBody>
         </DrawerContent>
       </Drawer>
     </>

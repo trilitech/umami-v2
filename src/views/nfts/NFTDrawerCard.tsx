@@ -33,11 +33,7 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
       <Card bg="umami.gray.800">
         <CardBody>
           <AspectRatio width={"100%"} ratio={1}>
-            <Image
-              data-testid="nft-image"
-              width="100%"
-              src={getIPFSurl(nft.displayUri)}
-            />
+            <Image data-testid="nft-image" width="100%" src={getIPFSurl(nft.displayUri)} />
           </AspectRatio>
           {Number(nft.balance) > 1 && (
             <Text
@@ -73,7 +69,7 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
       <Button
         mt={4}
         bg="umami.blue"
-        onClick={(_) => {
+        onClick={_ => {
           onOpen({
             mode: {
               type: "token",

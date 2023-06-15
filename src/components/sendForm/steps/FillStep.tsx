@@ -74,7 +74,7 @@ export const DelegateForm = ({
                 <ConnectedAccountSelector
                   isDisabled={undelegate || disabled}
                   selected={value}
-                  onSelect={(a) => {
+                  onSelect={a => {
                     onChange(a.pkh);
                   }}
                 />
@@ -90,11 +90,7 @@ export const DelegateForm = ({
                 control={control}
                 name="baker"
                 render={({ field: { onChange, value } }) => (
-                  <BakerSelector
-                    disabled={disabled}
-                    selected={value}
-                    onSelect={onChange}
-                  />
+                  <BakerSelector disabled={disabled} selected={value} onSelect={onChange} />
                 )}
               />
             </FormControl>
@@ -138,7 +134,7 @@ export const FillBatchForm: React.FC<{
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
           onSubmit();
         }}
@@ -159,13 +155,7 @@ export const FillBatchForm: React.FC<{
           <Divider mb={2} mt={2} />
         </ModalBody>
         <ModalFooter justifyContent={"center"}>
-          <Button
-            type="submit"
-            width={"100%"}
-            isLoading={isLoading}
-            variant="ghost"
-            mb={2}
-          >
+          <Button type="submit" width={"100%"} isLoading={isLoading} variant="ghost" mb={2}>
             Preview
           </Button>
         </ModalFooter>
@@ -186,11 +176,7 @@ export const SendTezOrNFTForm = ({
   disabled,
 }: {
   onSubmit: (v: { sender: string; recipient: string; amount: string }) => void;
-  onSubmitBatch: (v: {
-    sender: string;
-    recipient: string;
-    amount: string;
-  }) => void;
+  onSubmitBatch: (v: { sender: string; recipient: string; amount: string }) => void;
   sender?: string;
   token?: Asset;
   isLoading?: boolean;
@@ -223,8 +209,7 @@ export const SendTezOrNFTForm = ({
   });
 
   const senderFormValue = getValues().sender;
-  const batchIsSimulating =
-    senderFormValue !== "" && getBatchIsSimulating(senderFormValue);
+  const batchIsSimulating = senderFormValue !== "" && getBatchIsSimulating(senderFormValue);
 
   const simulating = isLoading || batchIsSimulating;
 
@@ -245,7 +230,7 @@ export const SendTezOrNFTForm = ({
                 <ConnectedAccountSelector
                   isDisabled={isNFT || simulating || disabled}
                   selected={value}
-                  onSelect={(a) => {
+                  onSelect={a => {
                     onChange(a.pkh);
                   }}
                 />
@@ -256,8 +241,7 @@ export const SendTezOrNFTForm = ({
             <FormLabel>To</FormLabel>
             <Controller
               rules={{
-                validate: (val) =>
-                  addressIsValid(val) || "Invalid address or contact",
+                validate: val => addressIsValid(val) || "Invalid address or contact",
               }}
               control={control}
               name="recipient"
@@ -266,15 +250,13 @@ export const SendTezOrNFTForm = ({
                   onBlur={onBlur}
                   isDisabled={disabled}
                   initialPkhValue={recipient}
-                  onValidPkh={(pkh) => {
+                  onValidPkh={pkh => {
                     onChange(pkh === null ? "" : pkh);
                   }}
                 />
               )}
             />
-            {errors.recipient && (
-              <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
-            )}
+            {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
           </FormControl>
           {isNFT ? <SendNFTRecapTile nft={token} /> : null}
           <FormControl mb={2} mt={2} isInvalid={!!errors.amount}>
@@ -289,22 +271,14 @@ export const SendTezOrNFTForm = ({
                 })}
                 placeholder="Enter amount..."
               />
-              <InputRightAddon
-                data-testid="currency"
-                children={getAmountSymbol(token)}
-              />
+              <InputRightAddon data-testid="currency" children={getAmountSymbol(token)} />
             </InputGroup>
-            {errors.amount && (
-              <FormErrorMessage>{errors.amount.message}</FormErrorMessage>
-            )}
+            {errors.amount && <FormErrorMessage>{errors.amount.message}</FormErrorMessage>}
           </FormControl>
           {parameter && (
             <FormControl mb={2} mt={2}>
               <FormLabel>Parameter</FormLabel>
-              <Textarea
-                isDisabled={true}
-                value={JSON.stringify(parameter, null, 4)}
-              ></Textarea>
+              <Textarea isDisabled={true} value={JSON.stringify(parameter, null, 4)}></Textarea>
             </FormControl>
           )}
         </ModalBody>
@@ -369,7 +343,7 @@ export const FillStep: React.FC<{
           recipient={recipient}
           undelegate={mode.data?.undelegate}
           isLoading={isLoading}
-          onSubmit={(v) => {
+          onSubmit={v => {
             onSubmit({
               type: "delegation",
               value: {
@@ -389,7 +363,7 @@ export const FillStep: React.FC<{
           amount={amount}
           parameter={parameter}
           disabled={disabled}
-          onSubmitBatch={(v) => {
+          onSubmitBatch={v => {
             onSubmitBatch({
               type: "tez",
               value: {
@@ -400,7 +374,7 @@ export const FillStep: React.FC<{
               },
             });
           }}
-          onSubmit={(v) => {
+          onSubmit={v => {
             onSubmit({
               type: "tez",
               value: {
@@ -421,7 +395,7 @@ export const FillStep: React.FC<{
           isLoading={isLoading}
           recipient={recipient}
           parameter={parameter}
-          onSubmitBatch={(v) => {
+          onSubmitBatch={v => {
             onSubmitBatch({
               type: "token",
               data: mode.data,
@@ -432,7 +406,7 @@ export const FillStep: React.FC<{
               },
             });
           }}
-          onSubmit={(v) => {
+          onSubmit={v => {
             onSubmit({
               type: "token",
               data: mode.data,

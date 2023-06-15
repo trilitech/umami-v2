@@ -12,7 +12,7 @@ import colors from "../style/colors";
 
 const PopoverMenu: React.FC<{
   children: ReactNode;
-}> = (props) => {
+}> = props => {
   return (
     <Popover>
       <PopoverTrigger>

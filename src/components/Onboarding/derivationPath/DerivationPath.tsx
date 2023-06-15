@@ -1,13 +1,4 @@
-import {
-  Button,
-  Center,
-  FormControl,
-  Text,
-  Switch,
-  VStack,
-  Input,
-  HStack,
-} from "@chakra-ui/react";
+import { Button, Center, FormControl, Text, Switch, VStack, Input, HStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { SupportedIcons } from "../../CircleIcon";
@@ -73,10 +64,7 @@ export const DerivationPath = ({
             <FormControl>
               <HStack spacing="10px">
                 <Text fontWeight={"bold"}>Default Path</Text>
-                <Switch
-                  data-testid="switch"
-                  onChange={() => setIsDefault(!isDefault)}
-                />
+                <Switch data-testid="switch" onChange={() => setIsDefault(!isDefault)} />
                 <Text>Custom Path</Text>
               </HStack>
             </FormControl>
@@ -90,13 +78,7 @@ export const DerivationPath = ({
                 })}
               />
             </FormControl>
-            <Button
-              w="100%"
-              size="lg"
-              type="submit"
-              title="Restore accounts"
-              bg="umami.blue"
-            >
+            <Button w="100%" size="lg" type="submit" title="Restore accounts" bg="umami.blue">
               Continue
             </Button>
           </VStack>

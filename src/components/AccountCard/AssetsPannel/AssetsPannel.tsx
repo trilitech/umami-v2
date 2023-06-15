@@ -1,12 +1,4 @@
-import {
-  Box,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, UnorderedList } from "@chakra-ui/react";
 import React from "react";
 import { AccountType, AllAccount } from "../../../types/Account";
 import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
@@ -33,9 +25,7 @@ export const AssetsPannel: React.FC<{
       // https://chakra-ui.com/docs/components/tabs
     >
       <TabList>
-        {isMultisig && (
-          <Tab data-testid="account-card-pending-tab"> Pendings</Tab>
-        )}
+        {isMultisig && <Tab data-testid="account-card-pending-tab"> Pendings</Tab>}
         <Tab>Tokens</Tab>
         <Tab>NFTs</Tab>
         <Tab>Operations</Tab>
@@ -50,7 +40,7 @@ export const AssetsPannel: React.FC<{
         <TabPanel data-testid="account-card-tokens-tab">
           <Box minHeight={"10px"} overflow={"scroll"} mt={4}>
             <UnorderedList>
-              {tokens.map((t) => {
+              {tokens.map(t => {
                 return <TokenTile token={t} key={t.contract + t.balance} />;
               })}
             </UnorderedList>

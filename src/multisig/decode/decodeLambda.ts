@@ -35,9 +35,7 @@ export const parseTez = (michelson: MichelsonV1Expression[]): Operation => {
 };
 
 // TODO: define proper tests for the address
-export const parseTezContract = (
-  michelson: MichelsonV1Expression[]
-): Operation => {
+export const parseTezContract = (michelson: MichelsonV1Expression[]): Operation => {
   const parseResult = contractTezSchema.parse(michelson);
 
   const to = parseResult[0].args[1].bytes;
@@ -55,10 +53,10 @@ const parseFa2 = (michelson: MichelsonV1Expression[]): Operation[] => {
   const contractAddress = parseAddress(parseResult[0].args[1].bytes);
   const operations = parseResult[4].args[1];
 
-  return operations.flatMap((operation) => {
+  return operations.flatMap(operation => {
     const from = operation.args[0].bytes;
 
-    return operation.args[1].map((destination) => {
+    return operation.args[1].map(destination => {
       const to = destination.args[0].bytes;
       const tokenId = destination.args[1].args[0].int;
       const amount = destination.args[1].args[1].int;
@@ -103,9 +101,7 @@ const parseSetDelegate = (michelson: MichelsonV1Expression[]): Operation => {
   };
 };
 
-const parseRemoveDelegate = (
-  _michelson: MichelsonV1Expression[]
-): Operation => {
+const parseRemoveDelegate = (_michelson: MichelsonV1Expression[]): Operation => {
   return { type: "delegation" };
 };
 
@@ -118,33 +114,23 @@ const parsings = [
   { schema: removeDelegateSchema, parsingFn: parseRemoveDelegate },
 ];
 
-const parse = (
-  michelson: MichelsonV1Expression[],
-  acc: Operation[] = []
-): Operation[] => {
+const parse = (michelson: MichelsonV1Expression[], acc: Operation[] = []): Operation[] => {
   if (michelson.length === 0) {
     return acc;
   }
 
   for (let i = 0; i < parsings.length; i++) {
     const { schema, parsingFn } = parsings[i];
-    const parseResult = schema.safeParse(
-      michelson.slice(0, schema.items.length)
-    );
+    const parseResult = schema.safeParse(michelson.slice(0, schema.items.length));
     if (!parseResult.success) {
       continue;
     }
 
     const parsed = parsingFn(parseResult.data);
-    return parse(michelson.slice(schema.items.length), [
-      ...acc,
-      ...[parsed].flat(),
-    ]);
+    return parse(michelson.slice(schema.items.length), [...acc, ...[parsed].flat()]);
   }
 
-  throw new Error(
-    `Unrecognized michelson element: ${JSON.stringify(michelson[0])}`
-  );
+  throw new Error(`Unrecognized michelson element: ${JSON.stringify(michelson[0])}`);
 };
 
 const assertHead = (michelson: MichelsonV1Expression[]) => {

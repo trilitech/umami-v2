@@ -6,7 +6,7 @@ export const TezRecapDisplay: React.FC<{
   tezBalance: string;
   dollarBalance: BigNumber | null;
   center?: boolean;
-}> = (props) => {
+}> = props => {
   return (
     <Box textAlign={props.center ? "center" : "initial"}>
       <Heading size={"md"}>{`${props.tezBalance} ꜩ`}</Heading>

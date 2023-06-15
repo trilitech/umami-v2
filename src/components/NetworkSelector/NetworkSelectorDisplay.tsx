@@ -14,7 +14,7 @@ export const NetworkSelectorDisplay: React.FC<{
         color="umami.orange"
         placeholder="Choose network"
         value={value}
-        onChange={(e) => {
+        onChange={e => {
           if (e.target.value === "") {
             return;
           }

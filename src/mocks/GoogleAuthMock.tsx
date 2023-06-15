@@ -3,10 +3,10 @@ import { GoogleAuthProps } from "../GoogleAuth";
 
 export const MOCK_GOOGLE_SK = "mockGoogleSK";
 
-export const GoogleAuthMock: React.FC<GoogleAuthProps> = (props) => {
+export const GoogleAuthMock: React.FC<GoogleAuthProps> = props => {
   return (
     <button
-      onClick={(e) => {
+      onClick={e => {
         e.preventDefault();
 
         setTimeout(() => {

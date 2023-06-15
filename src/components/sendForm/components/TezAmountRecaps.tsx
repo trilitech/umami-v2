@@ -5,10 +5,7 @@ import { useTezToDollar } from "../../../utils/hooks/assetsHooks";
 
 type Props = { mutez: string } & FlexProps;
 
-export const TransactionsAmount = ({
-  amount,
-  ...flexProps
-}: { amount: number } & FlexProps) => {
+export const TransactionsAmount = ({ amount, ...flexProps }: { amount: number } & FlexProps) => {
   return (
     <Flex
       aria-label="transactions-amount"
@@ -42,8 +39,7 @@ export const Subtotal = ({ mutez, ...flexProps }: Props) => {
 
 export const Total = ({ mutez, ...flexProps }: Props) => {
   const tezToDollar = useTezToDollar();
-  const totalUsdPrice =
-    tezToDollar && tezToDollar(mutezToTez(mutez)).toFixed(2);
+  const totalUsdPrice = tezToDollar && tezToDollar(mutezToTez(mutez)).toFixed(2);
   return (
     <Flex
       aria-label="total"

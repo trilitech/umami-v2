@@ -6,9 +6,7 @@ exports.default = async function notarizing(context) {
     return;
   }
   if (process.env.CSC_IDENTITY_AUTO_DISCOVERY === "false") {
-    console.log(
-      "skipping notarizing because of CSC_IDENTITY_AUTO_DISCOVERY=false"
-    );
+    console.log("skipping notarizing because of CSC_IDENTITY_AUTO_DISCOVERY=false");
     return;
   }
   console.log("Notarizing");

@@ -12,11 +12,7 @@ import { useState } from "react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { useForm } from "react-hook-form";
-import {
-  Step,
-  StepType,
-  TemporaryMnemonicAccountConfig,
-} from "../useOnboardingModal";
+import { Step, StepType, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 
 const VerifySeedphrase = ({
@@ -50,23 +46,18 @@ const VerifySeedphrase = ({
           <VStack w="100%" spacing={4}>
             {randomElements.map((item, index) => {
               return (
-                <FormControl
-                  key={index}
-                  isInvalid={!!errors[`${item.index}`] && isDirty}
-                >
+                <FormControl key={index} isInvalid={!!errors[`${item.index}`] && isDirty}>
                   <InputGroup size="md">
                     <InputLeftElement>{item.index + 1}</InputLeftElement>
                     <Input
                       placeholder="Type here"
                       {...register(`${item.index}`, {
                         required: true,
-                        validate: (value) => value === `${item.value}`,
+                        validate: value => value === `${item.value}`,
                       })}
                     />
                   </InputGroup>
-                  {errors[`${item.index}`] && (
-                    <FormErrorMessage>Invalid input</FormErrorMessage>
-                  )}
+                  {errors[`${item.index}`] && <FormErrorMessage>Invalid input</FormErrorMessage>}
                 </FormControl>
               );
             })}

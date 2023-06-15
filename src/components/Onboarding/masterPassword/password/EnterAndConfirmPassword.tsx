@@ -22,8 +22,7 @@ export const EnterAndComfirmPassword: React.FC<{
     confirm: string;
   };
 
-  const { register, handleSubmit, formState, watch } =
-    useForm<ConfirmPasswordFormValues>();
+  const { register, handleSubmit, formState, watch } = useForm<ConfirmPasswordFormValues>();
 
   const { errors, isValid, isDirty } = formState;
 
@@ -70,9 +69,7 @@ export const EnterAndComfirmPassword: React.FC<{
                 })}
                 placeholder="Confirm your new password..."
               />
-              {errors.confirm && (
-                <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>
-              )}
+              {errors.confirm && <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>}
             </FormControl>
             <Button
               isDisabled={!isValid || isLoading}

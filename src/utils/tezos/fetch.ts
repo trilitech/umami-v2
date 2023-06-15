@@ -21,10 +21,7 @@ export const getBalance = async (pkh: string, network: TezosNetwork) => {
   return Tezos.tz.getBalance(pkh);
 };
 
-export const getTokens = async (
-  pkh: string,
-  network: TezosNetwork
-): Promise<Token[]> =>
+export const getTokens = async (pkh: string, network: TezosNetwork): Promise<Token[]> =>
   tokensGetTokenBalances(
     {
       account: { eq: pkh },
@@ -79,7 +76,7 @@ export const getLastDelegation = async (
     {
       baseUrl: tzktUrls[network],
     }
-  ).then((d) => d[0]);
+  ).then(d => d[0]);
 };
 
 // Fetch the tezos price in usd from the CoinCap API.
@@ -94,14 +91,12 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
   return priceUsd ?? null;
 };
 
-export const getLatestBlockLevel = async (
-  network = TezosNetwork.MAINNET
-): Promise<number> => {
+export const getLatestBlockLevel = async (network = TezosNetwork.MAINNET): Promise<number> => {
   return await blocksGetCount({
     baseUrl: tzktUrls[network],
   });
 };
 
 export const getBakers = async (): Promise<Baker[]> => {
-  return axios.get<Baker[]>(bakersUrl).then((d) => d.data);
+  return axios.get<Baker[]>(bakersUrl).then(d => d.data);
 };

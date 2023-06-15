@@ -30,7 +30,7 @@ const RoundButton: React.FC<{
   label: string;
   icon: any;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-}> = ({ icon, label, onClick = (_) => {} }) => {
+}> = ({ icon, label, onClick = _ => {} }) => {
   return (
     <Box textAlign="center" ml={4} mr={4}>
       <IconButton
@@ -60,31 +60,18 @@ export const AccountCardDisplay: React.FC<Props> = ({
 }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   return (
-    <Flex
-      direction="column"
-      alignItems={"center"}
-      data-testid={`account-card-${pkh}`}
-      paddingX={4}
-    >
+    <Flex direction="column" alignItems={"center"} data-testid={`account-card-${pkh}`} paddingX={4}>
       <Identicon address={pkh} />
       <Heading mt={4} mb={2} size={"md"}>
         {label}
       </Heading>
       <CopyableAddress pkh={pkh} mb={4} />
       {tezBalance !== null && (
-        <TezRecapDisplay
-          center
-          tezBalance={tezBalance}
-          dollarBalance={dollarBalance}
-        />
+        <TezRecapDisplay center tezBalance={tezBalance} dollarBalance={dollarBalance} />
       )}
       <Flex mt={6}>
         <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
-        <RoundButton
-          label="Receive"
-          icon={<MdSouthWest />}
-          onClick={onReceive}
-        />
+        <RoundButton label="Receive" icon={<MdSouthWest />} onClick={onReceive} />
         {!isMultisig && <RoundButton label="Buy tez" icon={<FiPlus />} />}
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>

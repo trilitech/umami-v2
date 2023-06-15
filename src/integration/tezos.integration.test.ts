@@ -1,12 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { OperationValue } from "../components/sendForm/types";
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
-import {
-  ghostFA12,
-  ghostFA12WithOwner,
-  ghostFA2,
-  ghostTezzard,
-} from "../mocks/tokens";
+import { ghostFA12, ghostFA12WithOwner, ghostFA2, ghostTezzard } from "../mocks/tokens";
 
 import {
   estimateBatch,
@@ -85,11 +80,7 @@ describe("Tezos utils", () => {
         },
       ];
 
-      const result = await operationValuesToBatchParams(
-        input,
-        pk0,
-        TezosNetwork.GHOSTNET
-      );
+      const result = await operationValuesToBatchParams(input, pk0, TezosNetwork.GHOSTNET);
       expect(result).toEqual([
         {
           amount: 3,

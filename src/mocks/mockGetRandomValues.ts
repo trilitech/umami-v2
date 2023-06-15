@@ -4,7 +4,7 @@ let realGetRandomvalues: any;
 beforeAll(() => {
   realGetRandomvalues = window.crypto.getRandomValues;
   // mock impure getRandomeValues
-  window.crypto.getRandomValues = (i) => i;
+  window.crypto.getRandomValues = i => i;
 });
 
 afterAll(() => {

@@ -96,13 +96,11 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
 
     try {
       const assetLookup = getAssetsLookup(sender);
-      const operationValues = csv.map((csvRow) =>
+      const operationValues = csv.map(csvRow =>
         csvRowToOperationValue(sender, csvRow, assetLookup)
       );
 
-      await dispatch(
-        estimateAndUpdateBatch(sender, getPk(sender), operationValues, network)
-      );
+      await dispatch(estimateAndUpdateBatch(sender, getPk(sender), operationValues, network));
 
       toast({ title: "CSV added to batch!" });
       onClose();
@@ -116,9 +114,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <ModalCloseButton />
       <ModalHeader textAlign={"center"}>Load CSV file</ModalHeader>
-      <Text textAlign="center">
-        Select an account and then upload the CSV file.
-      </Text>
+      <Text textAlign="center">Select an account and then upload the CSV file.</Text>
       <ModalBody>
         <FormControl paddingY={5}>
           <FormLabel>From</FormLabel>
@@ -129,7 +125,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
             render={({ field: { onChange, value } }) => (
               <ConnectedAccountSelector
                 selected={value}
-                onSelect={(account) => {
+                onSelect={account => {
                   onChange(account.pkh);
                 }}
               />
@@ -145,7 +141,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
             ref={csvRef}
             accept=".csv"
             type="file"
-            onChange={(e) => {
+            onChange={e => {
               try {
                 handleCSVFileUpload(e);
               } catch (error: any) {

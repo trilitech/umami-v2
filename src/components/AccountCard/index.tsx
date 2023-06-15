@@ -17,8 +17,7 @@ export const AccountCard: React.FC<{ account: AllAccount }> = ({ account }) => {
   const getTokens = useGetAccountAllTokens();
   const getNFTs = useGetAccountNFTs();
   const { onOpen: onOpenSend, modalElement: sendModal } = useSendFormModal();
-  const { onOpen: onOpenReceive, modalElement: receiveModal } =
-    useReceiveModal();
+  const { onOpen: onOpenReceive, modalElement: receiveModal } = useReceiveModal();
 
   if (!account) {
     return null;

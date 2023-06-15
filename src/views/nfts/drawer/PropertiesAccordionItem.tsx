@@ -28,17 +28,9 @@ export const creatorElement = (nft: NFT) => {
   return <TruncatedTextWithTooltip text={firstCreator} maxLength={15} />;
 };
 
-const PropertiesAccordionItem = ({
-  nft,
-  style,
-}: {
-  nft: NFT;
-  style: CSSProperties;
-}) => {
+const PropertiesAccordionItem = ({ nft, style }: { nft: NFT; style: CSSProperties }) => {
   const royaltyShares = royalties(nft);
-  const totalRoyalties = royaltyShares
-    .reduce((acc, royalty) => acc + royalty.share, 0)
-    .toFixed(2);
+  const totalRoyalties = royaltyShares.reduce((acc, royalty) => acc + royalty.share, 0).toFixed(2);
 
   const network = useSelectedNetwork();
 
@@ -85,29 +77,14 @@ const PropertiesAccordionItem = ({
                 <Td padding="16px 0 16px 15px" w="20%" color="umami.gray.400">
                   Token ID:
                 </Td>
-                <Td
-                  padding="16px 0 16px 5px"
-                  w="30%"
-                  borderTopRightRadius="8px"
-                >
+                <Td padding="16px 0 16px 5px" w="30%" borderTopRightRadius="8px">
                   {nft.tokenId}
                 </Td>
               </Tr>
-              <Tr
-                bg="umami.gray.800"
-                borderColor="umami.gray.700"
-                borderBottomWidth="1px"
-              >
-                <Td
-                  data-testid="nft-royalty"
-                  padding="16px 0 16px 15px"
-                  color="umami.gray.400"
-                >
+              <Tr bg="umami.gray.800" borderColor="umami.gray.700" borderBottomWidth="1px">
+                <Td data-testid="nft-royalty" padding="16px 0 16px 15px" color="umami.gray.400">
                   Royalties
-                  {royaltyShares.length > 1
-                    ? " (" + royaltyShares.length + ")"
-                    : ""}
-                  :
+                  {royaltyShares.length > 1 ? " (" + royaltyShares.length + ")" : ""}:
                 </Td>
                 <Td
                   data-testid="nft-royalty-value"
@@ -117,35 +94,19 @@ const PropertiesAccordionItem = ({
                 >
                   {royaltyShares.length > 0 ? totalRoyalties + "%" : "-"}
                 </Td>
-                <Td
-                  data-testid="nft-mime"
-                  padding="16px 0 16px 15px"
-                  color="umami.gray.400"
-                >
+                <Td data-testid="nft-mime" padding="16px 0 16px 15px" color="umami.gray.400">
                   MIME type:
                 </Td>
-                <Td
-                  data-testid="nft-mime-value"
-                  padding="16px 0 16px 5px"
-                  w="30%"
-                >
+                <Td data-testid="nft-mime-value" padding="16px 0 16px 5px" w="30%">
                   {mimeType(nft) || "-"}
                 </Td>
               </Tr>
 
-              <Tr
-                bg="umami.gray.900"
-                borderColor="umami.gray.700"
-                borderBottomWidth="1px"
-              >
+              <Tr bg="umami.gray.900" borderColor="umami.gray.700" borderBottomWidth="1px">
                 <Td padding="16px 0 16px 15px" color="umami.gray.400">
                   Contract:
                 </Td>
-                <Td
-                  padding="16px 0 16px 5px"
-                  borderColor="umami.gray.700"
-                  borderRightWidth="1px"
-                >
+                <Td padding="16px 0 16px 5px" borderColor="umami.gray.700" borderRightWidth="1px">
                   <CopyableAddress pkh={nft.contract} />
                 </Td>
                 <Td padding="16px 0 16px 15px" color="umami.gray.400">
@@ -156,16 +117,8 @@ const PropertiesAccordionItem = ({
                 </Td>
               </Tr>
 
-              <Tr
-                bg="umami.gray.800"
-                borderColor="umami.gray.700"
-                borderBottomWidth="1px"
-              >
-                <Td
-                  data-testid="nft-creator"
-                  padding="16px 0 16px 15px"
-                  color="umami.gray.400"
-                >
+              <Tr bg="umami.gray.800" borderColor="umami.gray.700" borderBottomWidth="1px">
+                <Td data-testid="nft-creator" padding="16px 0 16px 15px" color="umami.gray.400">
                   Creator:
                 </Td>
                 <Td
@@ -180,10 +133,7 @@ const PropertiesAccordionItem = ({
                   License:
                 </Td>
                 <Td padding="16px 0 16px 5px" w="30%">
-                  <TruncatedTextWithTooltip
-                    text={nft.metadata.rights || "-"}
-                    maxLength={15}
-                  />
+                  <TruncatedTextWithTooltip text={nft.metadata.rights || "-"} maxLength={15} />
                 </Td>
               </Tr>
             </Tbody>

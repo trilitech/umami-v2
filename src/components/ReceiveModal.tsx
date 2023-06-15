@@ -27,11 +27,7 @@ export const useReceiveModal = () => {
 
   return {
     modalElement: (
-      <>
-        {options?.pkh && (
-          <ReceiveModal pkh={options?.pkh} isOpen={isOpen} onClose={onClose} />
-        )}
-      </>
+      <>{options?.pkh && <ReceiveModal pkh={options?.pkh} isOpen={isOpen} onClose={onClose} />}</>
     ),
     onOpen: (options: Options) => {
       optionsRef.current = options;
@@ -52,14 +48,9 @@ const ReceiveModal: FC<{
         <ModalHeader textAlign={"center"}>Receive</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex
-            alignItems="center"
-            direction="column"
-            justifyContent="space-between"
-          >
+          <Flex alignItems="center" direction="column" justifyContent="space-between">
             <Text size="sm" color={colors.gray[400]} textAlign="center">
-              You can receive tez or other digital assets by scanning or sharing
-              this QR code
+              You can receive tez or other digital assets by scanning or sharing this QR code
             </Text>
             <Box mt={5}>
               <QRCode

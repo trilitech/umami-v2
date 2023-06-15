@@ -9,10 +9,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 import React from "react";
 import SendForm from "../../../components/sendForm";
-import {
-  OperationValue,
-  SendFormMode,
-} from "../../../components/sendForm/types";
+import { OperationValue, SendFormMode } from "../../../components/sendForm/types";
 import { useGetImplicitAccount } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
@@ -27,11 +24,9 @@ const SingleTransaction = ({
   onSuccess: (hash: string) => any;
 }) => {
   const amount = transfer.type === "tez" ? transfer.value.amount : undefined;
-  const parameter =
-    transfer.type === "tez" ? transfer.value.parameter : undefined;
+  const parameter = transfer.type === "tez" ? transfer.value.parameter : undefined;
 
-  const mode: SendFormMode =
-    transfer.type === "tez" ? { type: "tez" } : { type: "delegation" };
+  const mode: SendFormMode = transfer.type === "tez" ? { type: "tez" } : { type: "delegation" };
 
   return (
     <SendForm
@@ -61,12 +56,7 @@ const BatchTransaction = ({
   };
 
   return (
-    <SendForm
-      disabled
-      onSuccess={onSuccess}
-      mode={mode}
-      recipient={transfer[0].value.recipient}
-    />
+    <SendForm disabled onSuccess={onSuccess} mode={mode} recipient={transfer[0].value.recipient} />
   );
 };
 
@@ -79,22 +69,16 @@ export const BeaconNotification: React.FC<{
 
   switch (message.type) {
     case BeaconMessageType.PermissionRequest: {
-      return (
-        <PermissionRequestPannel request={message} onSuccess={onSuccess} />
-      );
+      return <PermissionRequestPannel request={message} onSuccess={onSuccess} />;
     }
     case BeaconMessageType.SignPayloadRequest: {
-      return (
-        <SignPayloadRequestPannel request={message} onSuccess={onSuccess} />
-      );
+      return <SignPayloadRequestPannel request={message} onSuccess={onSuccess} />;
     }
     case BeaconMessageType.OperationRequest: {
       const signerAccount = getAccount(message.sourceAddress);
       if (!signerAccount) {
         return (
-          <BeaconErrorPannel
-            message={`Account not in this wallet ${message.sourceAddress}`}
-          />
+          <BeaconErrorPannel message={`Account not in this wallet ${message.sourceAddress}`} />
         );
       }
 
@@ -119,37 +103,21 @@ export const BeaconNotification: React.FC<{
         };
 
         if (transfers.length === 1) {
-          return (
-            <SingleTransaction
-              transfer={transfers[0]}
-              onSuccess={handleSuccess}
-            />
-          );
+          return <SingleTransaction transfer={transfers[0]} onSuccess={handleSuccess} />;
         }
 
-        return (
-          <BatchTransaction transfer={transfers} onSuccess={handleSuccess} />
-        );
+        return <BatchTransaction transfer={transfers} onSuccess={handleSuccess} />;
       } catch (error: any) {
-        return (
-          <BeaconErrorPannel
-            message={`Error handling operation request: ${error.message}`}
-          />
-        );
+        return <BeaconErrorPannel message={`Error handling operation request: ${error.message}`} />;
       }
     }
 
     default:
-      return (
-        <BeaconErrorPannel message={`Unsupported request: ${message.type}`} />
-      );
+      return <BeaconErrorPannel message={`Unsupported request: ${message.type}`} />;
   }
 };
 
-const beaconToUmamiOperation = (
-  operation: PartialTezosOperation,
-  sender: string
-) => {
+const beaconToUmamiOperation = (operation: PartialTezosOperation, sender: string) => {
   if (operation.kind === TezosOperationType.TRANSACTION) {
     const result: OperationValue = {
       type: "tez",
@@ -186,7 +154,5 @@ const buildTransfers = (o: OperationRequestOutput) => {
     throw new Error("Empty operation details!");
   }
 
-  return operationDetails.map((operation) =>
-    beaconToUmamiOperation(operation, o.sourceAddress)
-  );
+  return operationDetails.map(operation => beaconToUmamiOperation(operation, o.sourceAddress));
 };

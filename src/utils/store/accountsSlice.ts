@@ -1,10 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ImplicitAccount, AccountType } from "../../types/Account";
 import { UmamiEncrypted } from "../../types/UmamiEncrypted";
-import {
-  deriveAccount,
-  restoreFromMnemonic,
-} from "./thunks/restoreMnemonicAccounts";
+import { deriveAccount, restoreFromMnemonic } from "./thunks/restoreMnemonicAccounts";
 
 type State = {
   items: ImplicitAccount[];
@@ -21,7 +18,7 @@ const initialState: State = {
 const accountsSlice = createSlice({
   name: "accounts",
   initialState,
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder.addCase(deriveAccount.fulfilled, (state, action) => {
       state.items = concatUnique(state.items, [action.payload]);
     });
@@ -35,54 +32,31 @@ const accountsSlice = createSlice({
   },
   reducers: {
     reset: () => initialState,
-    removeSecret: (
-      state,
-      { payload }: { type: string; payload: { fingerPrint: string } }
-    ) => {
+    removeSecret: (state, { payload }: { type: string; payload: { fingerPrint: string } }) => {
       const { fingerPrint } = payload;
       const newAccounts = state.items.filter(
-        (a) =>
-          !(
-            a.type === AccountType.MNEMONIC && a.seedFingerPrint === fingerPrint
-          )
+        a => !(a.type === AccountType.MNEMONIC && a.seedFingerPrint === fingerPrint)
       );
       state.items = newAccounts;
       delete state.seedPhrases[fingerPrint];
     },
-    add: (
-      state,
-      {
-        payload,
-      }: { type: string; payload: ImplicitAccount | ImplicitAccount[] }
-    ) => {
+    add: (state, { payload }: { type: string; payload: ImplicitAccount | ImplicitAccount[] }) => {
       const accounts = Array.isArray(payload) ? payload : [payload];
 
       state.items = concatUnique(state.items, accounts);
     },
-    setSelected: (
-      state,
-      { payload }: { type: string; payload: string | null }
-    ) => {
-      if (state.items.some((a) => a.pkh === payload || payload === null)) {
+    setSelected: (state, { payload }: { type: string; payload: string | null }) => {
+      if (state.items.some(a => a.pkh === payload || payload === null)) {
         state.selected = payload;
       }
     },
   },
 });
 
-const concatUnique = (
-  existingAccounts: ImplicitAccount[],
-  newAccounts: ImplicitAccount[]
-) => {
-  newAccounts.forEach((newAccount) => {
-    if (
-      existingAccounts.some(
-        (existingAccount) => existingAccount.pkh === newAccount.pkh
-      )
-    ) {
-      throw new Error(
-        `Can't add account ${newAccount.pkh} in store since it already exists.`
-      );
+const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: ImplicitAccount[]) => {
+  newAccounts.forEach(newAccount => {
+    if (existingAccounts.some(existingAccount => existingAccount.pkh === newAccount.pkh)) {
+      throw new Error(`Can't add account ${newAccount.pkh} in store since it already exists.`);
     }
   });
 

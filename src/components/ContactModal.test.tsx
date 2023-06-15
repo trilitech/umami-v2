@@ -16,9 +16,7 @@ const fixture = (selected?: string) => (
 describe("ContactSelector", () => {
   it("displays no contacts by default", () => {
     render(fixture());
-    expect(screen.queryByTestId("contact-selector")).toHaveTextContent(
-      "Select a contact"
-    );
+    expect(screen.queryByTestId("contact-selector")).toHaveTextContent("Select a contact");
   });
   it("displays contacts", () => {
     store.dispatch(checkAccountsAndUpsertContact(contact1));

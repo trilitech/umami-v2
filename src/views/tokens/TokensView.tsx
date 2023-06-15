@@ -13,11 +13,7 @@ import { navigateToExternalLink } from "../../utils/helpers";
 export const FilterController: React.FC = () => {
   return (
     <Flex alignItems={"center"} mb={4} mt={4}>
-      <TextAndIconBtn
-        icon={AiOutlineArrowDown}
-        text="Filter by Account"
-        onClick={() => {}}
-      />
+      <TextAndIconBtn icon={AiOutlineArrowDown} text="Filter by Account" onClick={() => {}} />
     </Flex>
   );
 };
@@ -34,12 +30,8 @@ const TokensView = () => {
           <TopBar title="Tokens" />
           <FilterController />
           <Box overflow={"scroll"}>
-            {accounts.map((account) => (
-              <AccountTokensTile
-                key={account.pkh}
-                account={account}
-                onOpenSendModal={onOpen}
-              />
+            {accounts.map(account => (
+              <AccountTokensTile key={account.pkh} account={account} onOpenSendModal={onOpen} />
             ))}
           </Box>
           {modalElement}

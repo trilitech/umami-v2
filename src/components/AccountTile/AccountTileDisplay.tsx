@@ -19,9 +19,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
   balance,
   label,
 }) => {
-  const border = onClick
-    ? `1px solid ${selected ? colors.orange : colors.gray[700]}`
-    : undefined;
+  const border = onClick ? `1px solid ${selected ? colors.orange : colors.gray[700]}` : undefined;
   return (
     <Flex
       data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}

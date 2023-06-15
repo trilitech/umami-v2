@@ -24,13 +24,7 @@ import {
   resetAccounts,
   setBatchEstimationPerTransaction,
 } from "../../../mocks/helpers";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "../../../mocks/testUtils";
+import { fireEvent, render, screen, waitFor, within } from "../../../mocks/testUtils";
 import { formatPkh } from "../../format";
 import { walletClient } from "../beacon";
 
@@ -50,10 +44,7 @@ const FEE = {
 const OP_HASH = { hash: "foo" };
 const BATCH_OP_HASH = { opHash: "bar" };
 
-const fixture = (
-  message: BeaconRequestOutputMessage,
-  onSuccess: () => void
-) => (
+const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => (
   <Modal isOpen={true} onClose={() => {}}>
     <BeaconNotification message={message} onSuccess={() => {}} />
   </Modal>
@@ -63,19 +54,13 @@ beforeEach(() => {
   setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
   fakeTezosUtils.estimateMutezTransfer.mockResolvedValue(FEE as Estimate);
   fakeTezosUtils.estimateDelegation.mockResolvedValue(FEE as Estimate);
-  fakeTezosUtils.transferMutez.mockResolvedValue(
-    OP_HASH as TransactionOperation
-  );
+  fakeTezosUtils.transferMutez.mockResolvedValue(OP_HASH as TransactionOperation);
   fakeTezosUtils.delegate.mockResolvedValue(OP_HASH as any);
   fakeTezosUtils.submitBatch.mockResolvedValue(BATCH_OP_HASH as any);
 });
 
 beforeAll(() => {
-  dispatchMockAccounts([
-    mockImplicitAccount(1),
-    mockImplicitAccount(2),
-    mockImplicitAccount(3),
-  ]);
+  dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
 });
 
 afterAll(() => {
@@ -146,16 +131,12 @@ describe("<BeaconRequestNotification />", () => {
       });
       screen.getByRole("button", { name: /preview/i }).click();
       await waitFor(() => {
-        expect(
-          screen.getByRole("dialog", { name: "Recap" })
-        ).toBeInTheDocument();
+        expect(screen.getByRole("dialog", { name: "Recap" })).toBeInTheDocument();
       });
 
       fillPassword("mockPass");
       await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: /submit transaction/i })
-        ).toBeEnabled();
+        expect(screen.getByRole("button", { name: /submit transaction/i })).toBeEnabled();
       });
       screen.getByRole("button", { name: /submit transaction/i }).click();
 
@@ -178,39 +159,29 @@ describe("<BeaconRequestNotification />", () => {
     };
     it("should display delegation request with controls disabled", async () => {
       render(fixture(message, () => {}));
-      expect(
-        screen.getByRole("dialog", { name: /delegation/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("dialog", { name: /delegation/i })).toBeInTheDocument();
       await waitFor(() => {
         expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
       });
       expect(screen.getByTestId("account-selector")).toBeDisabled();
       expect(screen.getByTestId("baker-selector")).toBeDisabled();
-      expect(screen.getByTestId("baker-selector")).toHaveTextContent(
-        formatPkh(mockBeaconDelegate)
-      );
+      expect(screen.getByTestId("baker-selector")).toHaveTextContent(formatPkh(mockBeaconDelegate));
     });
 
     test("User previews then submits Delegation, and operation hash is sent via Beacon", async () => {
       render(fixture(message, () => {}));
-      expect(
-        screen.getByRole("dialog", { name: /delegation/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("dialog", { name: /delegation/i })).toBeInTheDocument();
       await waitFor(() => {
         expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
       });
       screen.getByRole("button", { name: /preview/i }).click();
       await waitFor(() => {
-        expect(
-          screen.getByRole("dialog", { name: "Recap" })
-        ).toBeInTheDocument();
+        expect(screen.getByRole("dialog", { name: "Recap" })).toBeInTheDocument();
       });
 
       fillPassword("mockPass");
       await waitFor(() => {
-        expect(
-          screen.getByRole("button", { name: /submit transaction/i })
-        ).toBeEnabled();
+        expect(screen.getByRole("button", { name: /submit transaction/i })).toBeEnabled();
       });
       screen.getByRole("button", { name: /submit transaction/i }).click();
 
@@ -245,9 +216,7 @@ describe("<BeaconRequestNotification />", () => {
 
     const subTotal = getByLabelText(/sub-total/i);
     expect(subTotal).toHaveTextContent("16 ꜩ");
-    expect(
-      screen.getByRole("button", { name: /preview/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /preview/i })).toBeInTheDocument();
 
     const previewBtn = screen.getByRole("button", { name: /preview/i });
     fireEvent.click(previewBtn);
@@ -286,8 +255,6 @@ describe("<BeaconRequestNotification />", () => {
       type: BeaconMessageType.BlockchainRequest,
     } as unknown as BeaconRequestOutputMessage;
     render(fixture(message, () => {}));
-    expect(
-      screen.getByText("Unsupported request: blockchain_request")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Unsupported request: blockchain_request")).toBeInTheDocument();
   });
 });

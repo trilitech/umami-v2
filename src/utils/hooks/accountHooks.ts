@@ -15,12 +15,12 @@ import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
 const { add, removeSecret } = accountsSlice.actions;
 
 export const useImplicitAccounts = () => {
-  return useAppSelector((s) => s.accounts.items);
+  return useAppSelector(s => s.accounts.items);
 };
 
 export const useGetImplicitAccount = () => {
   const accounts = useImplicitAccounts();
-  return (pkh: string) => accounts.find((a) => a.pkh === pkh);
+  return (pkh: string) => accounts.find(a => a.pkh === pkh);
 };
 
 export const useReset = () => {
@@ -47,7 +47,7 @@ export const useReset = () => {
 export const useGetOwnedAccount = () => {
   const accounts = useImplicitAccounts();
   return (pkh: string) => {
-    const account = accounts.find((a) => a.pkh === pkh);
+    const account = accounts.find(a => a.pkh === pkh);
     if (!account) {
       throw new Error(`You do not ownn account:${pkh}`);
     }
@@ -58,12 +58,7 @@ export const useGetOwnedAccount = () => {
 export const useRestoreSecret = () => {
   const dispatch = useAppDispatch();
 
-  return (
-    seedPhrase: string,
-    password: string,
-    label?: string,
-    derivationPathPattern?: string
-  ) => {
+  return (seedPhrase: string, password: string, label?: string, derivationPathPattern?: string) => {
     return dispatch(
       restoreFromMnemonic({
         seedPhrase,
@@ -108,7 +103,7 @@ export const useRestoreSocial = () => {
  * returns null if no password has been set
  */
 export const useCheckPasswordValidity = () => {
-  const seedPhrases = useAppSelector((s) => s.accounts.seedPhrases);
+  const seedPhrases = useAppSelector(s => s.accounts.seedPhrases);
 
   const existingSeedPhrase = Object.values(seedPhrases)[0];
   if (!existingSeedPhrase) {
@@ -132,9 +127,7 @@ export const useRemoveMnemonic = () => {
 };
 
 export const useMultisigAccounts = (): MultisigAccount[] => {
-  const multisigs: MultisigWithPendingOperations[] = useAppSelector(
-    (s) => s.multisigs.items
-  );
+  const multisigs: MultisigWithPendingOperations[] = useAppSelector(s => s.multisigs.items);
 
   return multisigs.map((m, i) => ({
     label: `Multisig Account ${i}`,

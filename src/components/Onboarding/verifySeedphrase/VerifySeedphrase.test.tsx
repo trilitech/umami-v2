@@ -19,10 +19,9 @@ beforeEach(() => {
   selectRandomElementsMock.mockReturnValue(splitted.slice(0, 5));
 });
 
-const fixture = (
-  setStep: (step: Step) => void,
-  config: TemporaryMnemonicAccountConfig
-) => <VerifySeedphrase setStep={setStep} config={config} />;
+const fixture = (setStep: (step: Step) => void, config: TemporaryMnemonicAccountConfig) => (
+  <VerifySeedphrase setStep={setStep} config={config} />
+);
 
 describe("<VerifySeedphrase />", () => {
   describe("Given no mnemonic has been entered", () => {
@@ -41,7 +40,7 @@ describe("<VerifySeedphrase />", () => {
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
 
       const inputFields = screen.getAllByRole("textbox");
-      inputFields.forEach((input) => {
+      inputFields.forEach(input => {
         fireEvent.change(input, { target: { value: "test" } });
       });
       await waitFor(() => {
@@ -52,7 +51,7 @@ describe("<VerifySeedphrase />", () => {
     test("validation is working with all invalid", async () => {
       render(fixture(setStepMock, config));
       const inputFields = screen.getAllByRole("textbox");
-      inputFields.forEach((input) => {
+      inputFields.forEach(input => {
         fireEvent.change(input, { target: { value: "test" } });
         fireEvent.blur(input);
       });
@@ -72,7 +71,7 @@ describe("<VerifySeedphrase />", () => {
       fireEvent.blur(inputFields[0]);
 
       // Enter incorrect values
-      inputFields.forEach((input) => {
+      inputFields.forEach(input => {
         fireEvent.change(input, { target: { value: "test" } });
         fireEvent.blur(input);
       });

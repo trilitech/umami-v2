@@ -20,10 +20,7 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
-import {
-  useGetImplicitAccount,
-  useImplicitAccounts,
-} from "../utils/hooks/accountHooks";
+import { useGetImplicitAccount, useImplicitAccounts } from "../utils/hooks/accountHooks";
 import { useContactExists } from "../utils/hooks/contactsHooks";
 import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
@@ -38,15 +35,7 @@ export const UpsertContactModal: FC<{
   contact?: Contact; // For updating an existing contact
   onSubmitContact: (contact: Contact) => void;
   onClose: () => void;
-}> = ({
-  title,
-  buttonText,
-  contact,
-  isOpen,
-  isEdit = false,
-  onSubmitContact,
-  onClose,
-}) => {
+}> = ({ title, buttonText, contact, isOpen, isEdit = false, onSubmitContact, onClose }) => {
   const {
     handleSubmit,
     formState: { isValid, errors },
@@ -64,7 +53,7 @@ export const UpsertContactModal: FC<{
 
   const accounts = useImplicitAccounts();
   const validateName = (name: string) => {
-    if (accounts.map((account) => account.label).includes(name)) {
+    if (accounts.map(account => account.label).includes(name)) {
       return "Name already used in accounts";
     }
     return !nameExistsInContacts(name.trim()) || "Name already registered";
@@ -114,9 +103,7 @@ export const UpsertContactModal: FC<{
                 })}
                 placeholder="Enter contact’s name"
               />
-              {errors.name && (
-                <FormErrorMessage>{errors.name.message}</FormErrorMessage>
-              )}
+              {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
             <FormControl marginY={5} isInvalid={!!errors.pkh}>
               <FormLabel>Address</FormLabel>
@@ -131,9 +118,7 @@ export const UpsertContactModal: FC<{
                 disabled={isEdit}
                 placeholder="Enter contact’s tz address"
               />
-              {errors.pkh && (
-                <FormErrorMessage>{errors.pkh.message}</FormErrorMessage>
-              )}
+              {errors.pkh && <FormErrorMessage>{errors.pkh.message}</FormErrorMessage>}
             </FormControl>
           </ModalBody>
 
@@ -167,11 +152,7 @@ export const DeleteContactModal: FC<{
         <ModalHeader textAlign={"center"}>Delete Contact</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex
-            alignItems="center"
-            direction="column"
-            justifyContent="space-between"
-          >
+          <Flex alignItems="center" direction="column" justifyContent="space-between">
             <Text size="sm" color={colors.gray[400]}>
               Are you sure you want to delete this contact?
             </Text>

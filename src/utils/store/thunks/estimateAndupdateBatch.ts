@@ -5,11 +5,7 @@ import { operationValuesToBatchItems } from "../../../views/batch/batchUtils";
 import assetsSlice from "../assetsSlice";
 import { RootState } from "../store";
 
-const {
-  updateBatch: addToBatch,
-  batchSimulationEnd,
-  batchSimulationStart,
-} = assetsSlice.actions;
+const { updateBatch: addToBatch, batchSimulationEnd, batchSimulationStart } = assetsSlice.actions;
 export const estimateAndUpdateBatch = (
   pkh: string,
   pk: string,
@@ -29,12 +25,7 @@ export const estimateAndUpdateBatch = (
 
     dispatch(batchSimulationStart({ pkh }));
     try {
-      const items = await operationValuesToBatchItems(
-        operations,
-        pkh,
-        pk,
-        network
-      );
+      const items = await operationValuesToBatchItems(operations, pkh, pk, network);
       dispatch(addToBatch({ pkh, items }));
     } catch (error) {
       dispatch(batchSimulationEnd({ pkh }));

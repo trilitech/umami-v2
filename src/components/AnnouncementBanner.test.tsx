@@ -16,9 +16,7 @@ describe("AnnouncementBanner", () => {
     await waitFor(() => {
       expect(requestMock).toBeCalledTimes(1);
     });
-    expect(await screen.findByTestId("announcement")).toHaveTextContent(
-      "hello"
-    );
+    expect(await screen.findByTestId("announcement")).toHaveTextContent("hello");
   });
 
   it("displays no text if a message is empty", async () => {

@@ -22,10 +22,7 @@ import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import colors from "../../style/colors";
 import { ImplicitAccount } from "../../types/Account";
 import { formatPkh } from "../../utils/format";
-import {
-  useGetAccountAllTokens,
-  useSelectedNetwork,
-} from "../../utils/hooks/assetsHooks";
+import { useGetAccountAllTokens, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { Options } from "../home/useSendFormModal";
 import { FiExternalLink } from "react-icons/fi";
 import { tzktExplorer } from "../../utils/tezos/consts";
@@ -103,21 +100,13 @@ const AccountTokensTile: React.FC<{
                       text={formatPkh(token.contract)}
                       icon={FiExternalLink}
                       onClick={() => {
-                        navigateToExternalLink(
-                          `${tzktExplorer[network]}/${token.contract}`
-                        );
+                        navigateToExternalLink(`${tzktExplorer[network]}/${token.contract}`);
                       }}
                     />
                   </Td>
-                  <Td w="15%">
-                    {tokenPrettyBalance(token, { showSymbol: false })}
-                  </Td>
+                  <Td w="15%">{tokenPrettyBalance(token, { showSymbol: false })}</Td>
                   <Td>
-                    <Flex
-                      alignItems="center"
-                      justifyContent="space-between"
-                      paddingX={3}
-                    >
+                    <Flex alignItems="center" justifyContent="space-between" paddingX={3}>
                       {/* TODO: fetch token values  */}
                       {/* https://app.asana.com/0/1204165186238194/1204627608626297/f */}
                       <Text>≈ 1.0 ꜩ</Text>
