@@ -20,7 +20,7 @@ export const AssetsPannel: React.FC<{
       mt={4}
       bg="umami.gray.900"
       borderRadius={4}
-      w="107%"
+      w="500px"
       // color scheme not workkig even when put int 50-900 range
       // TODO Fix
       // https://chakra-ui.com/docs/components/tabs

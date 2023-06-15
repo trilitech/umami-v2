@@ -16,16 +16,17 @@ type Props = {
   pendingApprovals: number;
 };
 
-const ActionButton: React.FC<Props> = ({ signer, approvers, pendingApprovals }) => {
+export const ActionButton: React.FC<Props> = ({ signer, approvers, pendingApprovals }) => {
   const getImplicitAccount = useGetImplicitAccount();
 
-  const signerInAccounts = getImplicitAccount(signer) !== undefined;
+  const signerInOwnedAccounts = getImplicitAccount(signer) !== undefined;
   const approvedBySigner = approvers.find(approver => approver === signer) !== undefined;
   const operationIsExecutable = pendingApprovals === 0;
 
-  if (!signerInAccounts) {
+  if (!signerInOwnedAccounts) {
     return (
       <IconAndTextBtn
+        data-testid="multisig-signer-approved-or-waiting"
         icon={approvedBySigner ? RxCheckCircled : CgSandClock}
         iconColor={approvedBySigner ? colors.greenL : colors.orange}
         iconHeight={5}
@@ -36,6 +37,7 @@ const ActionButton: React.FC<Props> = ({ signer, approvers, pendingApprovals }) 
   } else if (approvedBySigner && !operationIsExecutable) {
     return (
       <IconAndTextBtn
+        data-testid="multisig-signer-approved"
         icon={RxCheckCircled}
         iconColor={colors.greenL}
         iconHeight={5}
