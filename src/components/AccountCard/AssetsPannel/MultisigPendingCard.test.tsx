@@ -1,6 +1,6 @@
 import { mockPkh } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { MultisigPendingCard } from "./MultisigPendingList";
+import MultisigPendingCard from "./MultisigPendingCard";
 
 describe("<MultisigPendingCard/>", () => {
   it("displays the correct number of pending approvals", () => {
