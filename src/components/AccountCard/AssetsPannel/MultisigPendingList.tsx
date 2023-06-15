@@ -1,30 +1,21 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { isArray } from "lodash";
+import { Box } from "@chakra-ui/react";
 import React from "react";
 import { MultisigAccount } from "../../../types/Account";
+import MultisigPendingCard from "./MultisigPendingCard";
 
 export const MultisigPendingList: React.FC<{
   account: MultisigAccount;
 }> = ({ account }) => {
   return (
-    <Box p={10} w={"120%"}>
-      <Box>threshold:{account.threshold}</Box>
-      {account.operations.map(o => {
-        return (
-          <Box m={4}>
-            {Object.entries(o).map(([k, v]) => {
-              return (
-                <Box>
-                  <Flex m={2} wordBreak="break-word">
-                    {k}:{isArray(v) ? [...v] : v}
-                  </Flex>
-                </Box>
-              );
-            })}
-            "============================================="
-          </Box>
-        );
-      })}
+    <Box w="100%">
+      {account.operations.map(operation => (
+        <MultisigPendingCard
+          key={operation.key}
+          operation={operation}
+          signers={account.signers}
+          threshold={account.threshold}
+        />
+      ))}
     </Box>
   );
 };

@@ -9,11 +9,12 @@ export const IconAndTextBtn: React.FC<
     label: string;
     iconWidth?: number;
     iconHeight?: number;
+    iconColor?: string;
   } & FlexProps
-> = ({ icon, onClick = () => {}, label, iconWidth = 6, iconHeight = 6, ...rest }) => {
+> = ({ icon, onClick = () => {}, label, iconWidth = 6, iconHeight = 6, iconColor, ...rest }) => {
   return (
     <Flex color="text.dark" alignItems={"center"} onClick={onClick} cursor="pointer" {...rest}>
-      <Icon w={iconWidth} h={iconHeight} as={icon} />
+      <Icon w={iconWidth} h={iconHeight} as={icon} color={iconColor} />
       <Text ml={2} fontSize={"sm"}>
         {label}
       </Text>
