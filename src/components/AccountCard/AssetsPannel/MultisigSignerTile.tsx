@@ -10,18 +10,62 @@ import { WalletAccountPkh } from "../../../utils/multisig/types";
 import { IconAndTextBtn } from "../../IconAndTextBtn";
 import { Identicon } from "../../Identicon";
 
-const MultisigSignerTile: React.FC<{
+type Props = {
   signer: WalletAccountPkh;
-  signerHasApproved: boolean;
-  waitingForApprovals: boolean;
-}> = ({ signer, signerHasApproved, waitingForApprovals }) => {
+  approvers: WalletAccountPkh[];
+  pendingApprovals: number;
+};
+
+const ActionButton: React.FC<Props> = ({
+  signer,
+  approvers,
+  pendingApprovals,
+}) => {
+  const getImplicitAccount = useGetImplicitAccount();
+
+  const signerInAccounts = getImplicitAccount(signer) !== undefined;
+  const approvedBySigner =
+    approvers.find((approver) => approver === signer) !== undefined;
+  const operationIsExecutable = pendingApprovals === 0;
+
+  if (!signerInAccounts) {
+    return (
+      <IconAndTextBtn
+        icon={approvedBySigner ? RxCheckCircled : CgSandClock}
+        iconColor={approvedBySigner ? colors.greenL : colors.orange}
+        iconHeight={5}
+        iconWidth={5}
+        label={approvedBySigner ? "Approved" : "Awaiting Approval"}
+      />
+    );
+  } else if (approvedBySigner && !operationIsExecutable) {
+    return (
+      <IconAndTextBtn
+        icon={RxCheckCircled}
+        iconColor={colors.greenL}
+        iconHeight={5}
+        iconWidth={5}
+        label={"Approved"}
+      />
+    );
+  }
+
+  return (
+    <Button colorScheme="gray" data-testid="multisig-signer-button">
+      {operationIsExecutable ? "Execute" : "Approve"}
+    </Button>
+  );
+};
+
+const MultisigSignerTile: React.FC<Props> = ({
+  signer,
+  approvers,
+  pendingApprovals,
+}) => {
   const getContactName = useGetContractName();
   const getImplicitAccount = useGetImplicitAccount();
   const accountLabel = getImplicitAccount(signer)?.label;
   const label = accountLabel || getContactName(signer);
-
-  const signerCanSubmitTx =
-    accountLabel !== undefined && !(signerHasApproved && waitingForApprovals);
 
   return (
     <Flex
@@ -44,19 +88,11 @@ const MultisigSignerTile: React.FC<{
           </Flex>
         </Box>
         <Box>
-          {signerCanSubmitTx ? (
-            <Button colorScheme="gray" data-testid="multisig-signer-button">
-              {waitingForApprovals ? "Approve" : "Execute"}
-            </Button>
-          ) : (
-            <IconAndTextBtn
-              icon={signerHasApproved ? RxCheckCircled : CgSandClock}
-              iconColor={signerHasApproved ? colors.greenL : colors.orange}
-              iconHeight={5}
-              iconWidth={5}
-              label={signerHasApproved ? "Approved" : "Awaiting Approval"}
-            />
-          )}
+          <ActionButton
+            signer={signer}
+            approvers={approvers}
+            pendingApprovals={pendingApprovals}
+          />
         </Box>
       </Flex>
     </Flex>

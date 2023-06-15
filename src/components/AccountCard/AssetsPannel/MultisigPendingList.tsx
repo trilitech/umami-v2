@@ -13,6 +13,7 @@ export const MultisigPendingList: React.FC<{
     <Box w="100%">
       {account.operations.map(operation => (
         <MultisigPendingCard
+          key={operation.key}
           operation={operation}
           signers={account.signers}
           threshold={account.threshold}
@@ -22,7 +23,7 @@ export const MultisigPendingList: React.FC<{
   );
 };
 
-const MultisigPendingCard: React.FC<{
+export const MultisigPendingCard: React.FC<{
   operation: MultisigOperation;
   signers: WalletAccountPkh[];
   threshold: number;
@@ -30,7 +31,7 @@ const MultisigPendingCard: React.FC<{
   const { isOpen, getDisclosureProps, getButtonProps } = useDisclosure({
     defaultIsOpen: true,
   });
-  const approvers = new Set(operation.approvals);
+
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
     <Box bg={colors.gray[600]} p={3} borderRadius={6} marginY={5}>
@@ -53,20 +54,21 @@ const MultisigPendingCard: React.FC<{
             <Heading color={colors.gray[400]} size="sm" mr={1}>
               Pending Approvals:
             </Heading>
-            <Text color="w">{pendingApprovals}</Text>
+            <Text color="w" data-testid="multisig-card-text">
+              {pendingApprovals}
+            </Text>
           </Flex>
         </Flex>
 
         <Box marginY={5}>
-          {signers.map(signer => {
-            return (
-              <MultisigSignerTile
-                signer={signer}
-                signerHasApproved={approvers.has(signer)}
-                waitingForApprovals={pendingApprovals > 0}
-              />
-            );
-          })}
+          {signers.map(signer => (
+            <MultisigSignerTile
+              key={signer}
+              signer={signer}
+              approvers={operation.approvals}
+              pendingApprovals={pendingApprovals}
+            />
+          ))}
         </Box>
       </Box>
     </Box>
