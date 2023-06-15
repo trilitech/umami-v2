@@ -16,16 +16,11 @@ type Props = {
   pendingApprovals: number;
 };
 
-const ActionButton: React.FC<Props> = ({
-  signer,
-  approvers,
-  pendingApprovals,
-}) => {
+const ActionButton: React.FC<Props> = ({ signer, approvers, pendingApprovals }) => {
   const getImplicitAccount = useGetImplicitAccount();
 
   const signerInAccounts = getImplicitAccount(signer) !== undefined;
-  const approvedBySigner =
-    approvers.find((approver) => approver === signer) !== undefined;
+  const approvedBySigner = approvers.find(approver => approver === signer) !== undefined;
   const operationIsExecutable = pendingApprovals === 0;
 
   if (!signerInAccounts) {
@@ -57,11 +52,7 @@ const ActionButton: React.FC<Props> = ({
   );
 };
 
-const MultisigSignerTile: React.FC<Props> = ({
-  signer,
-  approvers,
-  pendingApprovals,
-}) => {
+const MultisigSignerTile: React.FC<Props> = ({ signer, approvers, pendingApprovals }) => {
   const getContactName = useGetContractName();
   const getImplicitAccount = useGetImplicitAccount();
   const accountLabel = getImplicitAccount(signer)?.label;
@@ -88,11 +79,7 @@ const MultisigSignerTile: React.FC<Props> = ({
           </Flex>
         </Box>
         <Box>
-          <ActionButton
-            signer={signer}
-            approvers={approvers}
-            pendingApprovals={pendingApprovals}
-          />
+          <ActionButton signer={signer} approvers={approvers} pendingApprovals={pendingApprovals} />
         </Box>
       </Flex>
     </Flex>

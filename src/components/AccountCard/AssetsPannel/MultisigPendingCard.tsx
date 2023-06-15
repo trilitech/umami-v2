@@ -1,18 +1,8 @@
-import {
-  Box,
-  Flex,
-  Text,
-  Heading,
-  Icon,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Flex, Text, Heading, Icon, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import colors from "../../../style/colors";
-import {
-  MultisigOperation,
-  WalletAccountPkh,
-} from "../../../utils/multisig/types";
+import { MultisigOperation, WalletAccountPkh } from "../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
 
 export const MultisigPendingCard: React.FC<{
@@ -53,7 +43,7 @@ export const MultisigPendingCard: React.FC<{
         </Flex>
 
         <Box marginY={5}>
-          {signers.map((signer) => (
+          {signers.map(signer => (
             <MultisigSignerTile
               key={signer}
               signer={signer}
