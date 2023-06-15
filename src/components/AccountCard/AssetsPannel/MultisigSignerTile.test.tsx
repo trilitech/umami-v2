@@ -15,11 +15,10 @@ describe("<MultisigSignerTile/>", () => {
     render(
       <MultisigSignerTile
         signer={account.pkh}
-        signerHasApproved={false}
-        waitingForApprovals={false}
+        approvers={[]}
+        pendingApprovals={0}
       />
     );
-
     expect(screen.getByTestId("multisig-signer-button")).toBeInTheDocument();
   });
 
@@ -29,12 +28,13 @@ describe("<MultisigSignerTile/>", () => {
     render(
       <MultisigSignerTile
         signer={account.pkh}
-        signerHasApproved={true}
-        waitingForApprovals={true}
+        approvers={[account.pkh]}
+        pendingApprovals={1}
       />
     );
-
-    expect(screen.queryByTestId("multisig-signer-button")).toBeFalsy();
+    expect(
+      screen.queryByTestId("multisig-signer-button")
+    ).not.toBeInTheDocument();
   });
 
   it("should hide button for operation with signers not in the account", () => {
@@ -42,11 +42,12 @@ describe("<MultisigSignerTile/>", () => {
     render(
       <MultisigSignerTile
         signer={account.pkh}
-        signerHasApproved={true}
-        waitingForApprovals={true}
+        approvers={[account.pkh]}
+        pendingApprovals={1}
       />
     );
-
-    expect(screen.queryByTestId("multisig-signer-button")).toBeFalsy();
+    expect(
+      screen.queryByTestId("multisig-signer-button")
+    ).not.toBeInTheDocument();
   });
 });
