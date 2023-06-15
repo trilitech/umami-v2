@@ -16,7 +16,7 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
@@ -76,14 +76,13 @@ export const UpsertContactModal: FC<{
     return !addressExistsInContacts(pkh) || "Address already registered";
   };
 
-  // Do we need this?
-  // It creates act warning and exhaustive-deps warning
-  // Commenting it doesn't break tests
-  //
-  // useEffect(() => {
-  //   reset(contact);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [reset, contact?.name]);
+  const resetRef = useRef(reset);
+  useEffect(() => {
+    // Refresh form with contact values when modal opens
+    if (isOpen) {
+      resetRef.current(contact);
+    }
+  }, [isOpen, contact]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
