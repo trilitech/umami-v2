@@ -23,7 +23,7 @@ const MenuItem: React.FC<{
   label: string;
   icon: IconType;
   to: string;
-}> = (props) => {
+}> = props => {
   return (
     <Link to={props.to}>
       <Flex
@@ -63,11 +63,7 @@ const BottomIems = () => {
   return (
     <Box>
       <Divider />
-      <MenuItem
-        label="Address Book"
-        to={"/address-book"}
-        icon={MdOutlineContacts}
-      />
+      <MenuItem label="Address Book" to={"/address-book"} icon={MdOutlineContacts} />
 
       <MenuItem label="Settings" to={"/settings"} icon={MdOutlineSettings} />
       <MenuItem label="Help" to={"/help"} icon={MdSupport} />
@@ -82,10 +78,7 @@ const TotalBalance = () => {
     <Box mt={4} mb={12} height={"80px"}>
       <Text size="sm">Balance</Text>
       {balance !== null && (
-        <TezRecapDisplay
-          tezBalance={balance.tezBalance}
-          dollarBalance={balance.dollarBalance}
-        />
+        <TezRecapDisplay tezBalance={balance.tezBalance} dollarBalance={balance.dollarBalance} />
       )}
     </Box>
   );
@@ -93,13 +86,7 @@ const TotalBalance = () => {
 
 export const SideNavbar = () => {
   return (
-    <Flex
-      flexDirection={"column"}
-      bg="umami.gray.900"
-      w={"240px"}
-      pl={4}
-      pr={4}
-    >
+    <Flex flexDirection={"column"} bg="umami.gray.900" w={"240px"} pl={4} pr={4}>
       <Box>
         <Flex height={24} justifyContent="space-between" alignItems="center">
           <MakiLogo size={50} />

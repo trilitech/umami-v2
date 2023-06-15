@@ -35,11 +35,7 @@ const peerRow = (peerInfo: PeerInfo, onRemove: () => void) => {
         </Text>
       </Td>
       <Td>
-        <IconButton
-          onClick={onRemove}
-          aria-label="Remove Peer"
-          icon={<BsTrash />}
-        />
+        <IconButton onClick={onRemove} aria-label="Remove Peer" icon={<BsTrash />} />
       </Td>
     </Tr>
   );
@@ -62,11 +58,7 @@ export const PeersDisplay = ({
             <Th>Delete:</Th>
           </Tr>
         </Thead>
-        <Tbody>
-          {peerInfos.map((peerInfo) =>
-            peerRow(peerInfo, () => removePeer(peerInfo))
-          )}
-        </Tbody>
+        <Tbody>{peerInfos.map(peerInfo => peerRow(peerInfo, () => removePeer(peerInfo)))}</Tbody>
       </Table>
     </TableContainer>
   );

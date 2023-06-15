@@ -54,7 +54,7 @@ const BuyTezForm = () => {
                 render={({ field: { onChange, value } }) => (
                   <ConnectedAccountSelector
                     selected={value}
-                    onSelect={(account) => {
+                    onSelect={account => {
                       onChange(account.pkh);
                     }}
                   />
@@ -67,13 +67,7 @@ const BuyTezForm = () => {
 
       <ModalFooter>
         <Box width={"100%"} data-testid="buy-tez-button">
-          <Button
-            width={"100%"}
-            type="submit"
-            isDisabled={!isValid}
-            variant="ghost"
-            mb={2}
-          >
+          <Button width={"100%"} type="submit" isDisabled={!isValid} variant="ghost" mb={2}>
             {title}
           </Button>
         </Box>

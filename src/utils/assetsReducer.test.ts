@@ -395,17 +395,8 @@ describe("Assets reducer", () => {
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
-      const transfers = [
-        mockTezTransfer(1),
-        mockDelegationTransfer(1),
-        mockNftTransfer(1),
-      ];
-      const action = estimateAndUpdateBatch(
-        mockPkh(1),
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
+      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
 
       store.dispatch(action);
       expect(estimateBatchMock).toHaveBeenCalledWith(
@@ -414,9 +405,7 @@ describe("Assets reducer", () => {
         mockPk(1),
         TezosNetwork.MAINNET
       );
-      expect(store.getState().assets.batches[mockPkh(1)]?.isSimulating).toEqual(
-        true
-      );
+      expect(store.getState().assets.batches[mockPkh(1)]?.isSimulating).toEqual(true);
       await waitFor(() => {
         expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
           isSimulating: false,
@@ -444,12 +433,7 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
       const transfers = [mockTezTransfer(1)];
-      const action = estimateAndUpdateBatch(
-        mockPkh(1),
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
 
       store.dispatch(action);
       await waitFor(() => {
@@ -473,22 +457,11 @@ describe("Assets reducer", () => {
       const estimationError = new Error("estimation error");
       estimateBatchMock.mockRejectedValueOnce(estimationError);
 
-      const transfers = [
-        mockTezTransfer(1),
-        mockDelegationTransfer(1),
-        mockNftTransfer(1),
-      ];
-      const action = estimateAndUpdateBatch(
-        mockPkh(1),
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
+      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
 
       const dispatchResult = store.dispatch(action);
-      expect(store.getState().assets.batches[mockPkh(1)]?.isSimulating).toEqual(
-        true
-      );
+      expect(store.getState().assets.batches[mockPkh(1)]?.isSimulating).toEqual(true);
       await expect(dispatchResult).rejects.toThrow(estimationError.message);
       expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
         isSimulating: false,
@@ -506,18 +479,9 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
-      const transfers = [
-        mockTezTransfer(1),
-        mockDelegationTransfer(1),
-        mockNftTransfer(1),
-      ];
+      const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
 
-      const action = estimateAndUpdateBatch(
-        mockPkh(1),
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
 
       store.dispatch(action);
       const concurrentDispatch = store.dispatch(action);
@@ -567,9 +531,7 @@ describe("Assets reducer", () => {
 
       const dispatch = store.dispatch(action);
 
-      await expect(dispatch).rejects.toThrow(
-        `Can't add empty list of operations to batch`
-      );
+      await expect(dispatch).rejects.toThrow(`Can't add empty list of operations to batch`);
     });
 
     test("Batch can't be cleared for a given account if simulation is ongoing for a given account", async () => {
@@ -588,18 +550,9 @@ describe("Assets reducer", () => {
           items: [{ fee: "3", operation: mockTezTransfer(3) }],
         })
       );
-      const transfers = [
-        mockTezTransfer(1),
-        mockDelegationTransfer(1),
-        mockNftTransfer(1),
-      ];
+      const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
 
-      const action = estimateAndUpdateBatch(
-        mockPkh(1),
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
 
       store.dispatch(action);
       store.dispatch(clearBatch({ pkh: mockPkh(1) }));

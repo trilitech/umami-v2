@@ -27,15 +27,11 @@ const AccountOrContactTileFixture = (pkh: string) => {
 describe("ContactTile", () => {
   it("displays the address if it is not in the contacts", () => {
     render(contactTileFixture(contact1["pkh"], null));
-    expect(screen.queryByTestId("contact-tile")).toHaveTextContent(
-      formatPkh(contact1["pkh"])
-    );
+    expect(screen.queryByTestId("contact-tile")).toHaveTextContent(formatPkh(contact1["pkh"]));
   });
   it("displays the name if it is in the contacts", () => {
     render(contactTileFixture(contact1["pkh"], contact1["name"]));
-    expect(screen.queryByTestId("contact-tile")).toHaveTextContent(
-      truncate(contact1["name"], 20)
-    );
+    expect(screen.queryByTestId("contact-tile")).toHaveTextContent(truncate(contact1["name"], 20));
   });
 });
 
@@ -45,17 +41,13 @@ describe("AccountOrContactTile", () => {
     const pkh = account.pkh;
     store.dispatch(add(account));
     render(AccountOrContactTileFixture(pkh));
-    expect(screen.queryByTestId("account-or-contact-tile")).toHaveTextContent(
-      account.label
-    );
+    expect(screen.queryByTestId("account-or-contact-tile")).toHaveTextContent(account.label);
   });
 
   it("displays Contact tile if in contact", () => {
     store.dispatch(reset());
     store.dispatch(checkAccountsAndUpsertContact(contact1));
     render(AccountOrContactTileFixture(contact1.pkh));
-    expect(screen.queryByTestId("contact-tile")).toHaveTextContent(
-      truncate(contact1["name"], 20)
-    );
+    expect(screen.queryByTestId("contact-tile")).toHaveTextContent(truncate(contact1["name"], 20));
   });
 });

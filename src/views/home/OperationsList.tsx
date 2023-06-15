@@ -1,18 +1,13 @@
 import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { OperationTile } from "../../components/OperationTile";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
-import {
-  getKey,
-  sortOperationsDisplaysBytDate,
-} from "../operations/operationsUtils";
+import { getKey, sortOperationsDisplaysBytDate } from "../operations/operationsUtils";
 
 export const OperationsList = () => {
   const operations = useAllOperationDisplays();
-  const operationList = sortOperationsDisplaysBytDate(
-    Object.values(operations).flat()
-  );
+  const operationList = sortOperationsDisplaysBytDate(Object.values(operations).flat());
 
-  const operationEls = operationList.slice(0, 20).map((op) => {
+  const operationEls = operationList.slice(0, 20).map(op => {
     return <OperationTile key={getKey(op)} operation={op} />;
   });
   return (

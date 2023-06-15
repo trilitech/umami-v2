@@ -403,8 +403,7 @@ export const contract = [
                                       prim: "string",
                                     },
                                     {
-                                      string:
-                                        "FUNDING BLOCKED SINCE PARAMS ARE INVALID",
+                                      string: "FUNDING BLOCKED SINCE PARAMS ARE INVALID",
                                     },
                                   ],
                                 },
@@ -477,8 +476,7 @@ export const contract = [
                                       prim: "string",
                                     },
                                     {
-                                      string:
-                                        "TO FUND CONTRACT, PLEASE USE THE DEFAULT ENTRYPOINT",
+                                      string: "TO FUND CONTRACT, PLEASE USE THE DEFAULT ENTRYPOINT",
                                     },
                                   ],
                                 },
@@ -836,8 +834,7 @@ export const contract = [
                                       prim: "string",
                                     },
                                     {
-                                      string:
-                                        "TO FUND CONTRACT, PLEASE USE THE DEFAULT ENTRYPOINT",
+                                      string: "TO FUND CONTRACT, PLEASE USE THE DEFAULT ENTRYPOINT",
                                     },
                                   ],
                                 },
@@ -1237,8 +1234,7 @@ export const contract = [
                           prim: "string",
                         },
                         {
-                          string:
-                            "TO FUND CONTRACT, PLEASE USE THE DEFAULT ENTRYPOINT",
+                          string: "TO FUND CONTRACT, PLEASE USE THE DEFAULT ENTRYPOINT",
                         },
                       ],
                     },
@@ -1569,11 +1565,7 @@ export const contract = [
   },
 ];
 
-export const makeStorageJSON = (
-  owner: string,
-  signers: string[],
-  threshold: string
-) => {
+export const makeStorageJSON = (owner: string, signers: string[], threshold: string) => {
   return {
     owner,
     signers,
@@ -1588,11 +1580,7 @@ export const makeStorageJSON = (
  *  Don't know why v1 uses michelson for storage. Since Taquito supports JSON.
  *  We could just use JSON instead of passing MichelsonJSON.
  */
-export const makeStorageMichelsonJSON = (
-  owner: string,
-  signers: string[],
-  threshold: string
-) => {
+export const makeStorageMichelsonJSON = (owner: string, signers: string[], threshold: string) => {
   // TODO
   // Mandatory:
   // Signers have to be sorted like follows (v1 code snippet)
@@ -1608,7 +1596,7 @@ export const makeStorageMichelsonJSON = (
       {
         prim: "Pair",
         args: [
-          signers.map((signer) => ({ string: signer })),
+          signers.map(signer => ({ string: signer })),
           {
             prim: "Pair",
             args: [

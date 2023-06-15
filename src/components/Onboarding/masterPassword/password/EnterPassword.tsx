@@ -1,12 +1,4 @@
-import {
-  Button,
-  Center,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center, FormControl, FormLabel, Heading, Input, VStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";

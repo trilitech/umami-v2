@@ -2,11 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { formatRelative } from "date-fns";
 import { z } from "zod";
 import { tokenPrettyBalance } from "../../types/Asset";
-import {
-  OperationDisplay,
-  TezTransfer,
-  TokenTransfer,
-} from "../../types/Operation";
+import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import { fromToken } from "../../types/Asset";
 import { compact } from "lodash";
@@ -82,10 +78,7 @@ export const getTezOperationDisplay = (
 
     const sign = getSign(forAddress, sender, target);
 
-    const prettyTimestamp = formatRelative(
-      new Date(required.timestamp),
-      new Date()
-    );
+    const prettyTimestamp = formatRelative(new Date(required.timestamp), new Date());
 
     const result: OperationDisplay = {
       amount: {
@@ -142,10 +135,7 @@ export const getTokenOperationDisplay = (
 
   const level = required.level;
 
-  const prettyTimestamp = formatRelative(
-    new Date(required.timestamp),
-    new Date()
-  );
+  const prettyTimestamp = formatRelative(new Date(required.timestamp), new Date());
 
   let prettyAmount: string;
   if (asset.type === "nft") {
@@ -200,10 +190,7 @@ const getDelegationOperationDisplay = (
 
   const prettyAmount = prettyTezAmount(new BigNumber(required.amount));
 
-  const prettyTimestamp = formatRelative(
-    new Date(required.timestamp),
-    new Date()
-  );
+  const prettyTimestamp = formatRelative(new Date(required.timestamp), new Date());
   const level = required.level;
 
   return {
@@ -236,10 +223,8 @@ export const getOperationDisplays = (
 ) => {
   return sortOperationsDisplaysBytDate(
     compact([
-      ...tezTransfers.map((t) => getTezOperationDisplay(t, forAdress, network)),
-      ...tokenTransfers.map((t) =>
-        getTokenOperationDisplay(t, forAdress, network)
-      ),
+      ...tezTransfers.map(t => getTezOperationDisplay(t, forAdress, network)),
+      ...tokenTransfers.map(t => getTokenOperationDisplay(t, forAdress, network)),
       delegation ? getDelegationOperationDisplay(delegation) : null,
     ])
   );

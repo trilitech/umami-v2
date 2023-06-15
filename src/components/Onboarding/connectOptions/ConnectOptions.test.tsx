@@ -4,9 +4,7 @@ import ConnectOptions from "./ConnectOptions";
 
 const setStepMock = jest.fn((step: Step) => {});
 
-const fixture = (setStep: (step: Step) => void) => (
-  <ConnectOptions setStep={setStep} />
-);
+const fixture = (setStep: (step: Step) => void) => <ConnectOptions setStep={setStep} />;
 
 describe("<ConnectOptions />", () => {
   describe("Navigate to", () => {

@@ -6,15 +6,11 @@ import { useAppSelector } from "../../utils/store/hooks";
 import { BakerSmallTile } from "./BakerSmallTile";
 
 const renderBakerTile = (baker: Baker) => (
-  <BakerSmallTile
-    pkh={baker.address}
-    label={baker.name}
-    imageUrl={baker.logo}
-  />
+  <BakerSmallTile pkh={baker.address} label={baker.name} imageUrl={baker.logo} />
 );
 
 const renderBaker = (bakers: Baker[], selected: string) => {
-  const referencedBaker = bakers.find((b) => b.address === selected);
+  const referencedBaker = bakers.find(b => b.address === selected);
 
   if (!referencedBaker) {
     return <BakerSmallTile pkh={selected} />;
@@ -28,7 +24,7 @@ export const BakerSelector: React.FC<{
   selected?: string;
   disabled?: boolean;
 }> = ({ onSelect = () => {}, selected, disabled }) => {
-  const bakers = useAppSelector((s) => s.assets.bakers);
+  const bakers = useAppSelector(s => s.assets.bakers);
 
   return (
     <Menu>
@@ -41,12 +37,10 @@ export const BakerSelector: React.FC<{
         rightIcon={<ChevronDownIcon />}
         h={16}
       >
-        {selected === undefined
-          ? "Select a Baker"
-          : renderBaker(bakers, selected)}
+        {selected === undefined ? "Select a Baker" : renderBaker(bakers, selected)}
       </MenuButton>
       <MenuList bg={"umami.gray.900"} maxH={40} overflow={"scroll"}>
-        {bakers.map((baker) => (
+        {bakers.map(baker => (
           // TODO refactor with AccountTile in home
           <MenuItem
             onClick={() => {

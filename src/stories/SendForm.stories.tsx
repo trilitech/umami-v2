@@ -10,9 +10,7 @@ export default {
 } as ComponentMeta<typeof SendForm>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof SendForm> = (args) => (
-  <SendForm {...args} />
-);
+const Template: ComponentStory<typeof SendForm> = args => <SendForm {...args} />;
 
 // const mockAccounts = [
 //   {

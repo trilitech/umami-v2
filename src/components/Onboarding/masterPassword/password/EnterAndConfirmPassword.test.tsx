@@ -5,11 +5,7 @@ const fixture = (onSubmit: (password: string) => void, isLoading: boolean) => (
   <EnterAndComfirmPassword onSubmit={onSubmit} isLoading={isLoading} />
 );
 
-const checkPasswords = async (
-  password: string,
-  confirmation: string,
-  expectedResult: boolean
-) => {
+const checkPasswords = async (password: string, confirmation: string, expectedResult: boolean) => {
   const submit = screen.getByRole("button", { name: /submit/i });
   await waitFor(() => {
     expect(submit).toBeDisabled();

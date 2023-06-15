@@ -47,15 +47,12 @@ function createWindow() {
 
   // Select first ledger device in list as electron is missing the chrome picker
   // https://www.electronjs.org/docs/latest/tutorial/devices#webhid-api
-  mainWindow.webContents.session.on(
-    "select-hid-device",
-    (event, details, callback) => {
-      event.preventDefault();
-      if (details.deviceList && details.deviceList.length > 0) {
-        callback(details.deviceList[0].deviceId);
-      }
+  mainWindow.webContents.session.on("select-hid-device", (event, details, callback) => {
+    event.preventDefault();
+    if (details.deviceList && details.deviceList.length > 0) {
+      callback(details.deviceList[0].deviceId);
     }
-  );
+  });
 
   // Auto grant permission if served in electron container as electron is missing the chrome dialog
   // https://www.electronjs.org/docs/latest/api/session#sessetpermissioncheckhandlerhandler
@@ -69,7 +66,7 @@ function createWindow() {
 
   // Auto grant device permission if served in electron container as electron is missing the chrome dialog
   // https://www.electronjs.org/docs/latest/api/session#sessetdevicepermissionhandlerhandler
-  mainWindow.webContents.session.setDevicePermissionHandler((details) => {
+  mainWindow.webContents.session.setDevicePermissionHandler(details => {
     if (details.deviceType === "hid" && details.origin === "file://") {
       return true;
     }
@@ -95,7 +92,7 @@ function createWindow() {
     } else if (process.platform === "win32" || process.platform === "linux") {
       // Protocol handler for windows & linux
       const argv = process.argv;
-      const index = argv.findIndex((arg) => arg.startsWith("umami://"));
+      const index = argv.findIndex(arg => arg.startsWith("umami://"));
       if (index !== -1) {
         mainWindow.webContents.send("deeplinkURL", argv[index]);
       }
@@ -107,7 +104,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.webContents.setWindowOpenHandler((details) => {
+  mainWindow.webContents.setWindowOpenHandler(details => {
     if (details.frameName === "_blank") {
       require("electron").shell.openExternal(details.url);
       return { action: "deny" };
@@ -151,7 +148,7 @@ app.on("second-instance", (event, argv, cwd) => {
     // argv: An array of the second instance’s (command line / deep linked) arguments
     if (process.platform === "win32" || process.platform === "linux") {
       // Protocol handler for windows & linux
-      const index = argv.findIndex((arg) => arg.startsWith("umami://"));
+      const index = argv.findIndex(arg => arg.startsWith("umami://"));
       if (index !== -1) {
         mainWindow.webContents.send("deeplinkURL", argv[index]);
       }

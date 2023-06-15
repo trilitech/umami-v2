@@ -3,17 +3,9 @@ import { useState } from "react";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import {
-  Step,
-  StepType,
-  TemporaryMnemonicAccountConfig,
-} from "../useOnboardingModal";
+import { Step, StepType, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
 
-export const GenerateSeedphrase = ({
-  setStep,
-}: {
-  setStep: (step: Step) => void;
-}) => {
+export const GenerateSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
   // seedPhrase value will be stable across rerenders
   const [seedphrase] = useState(generate24WordMnemonic());
   return (
@@ -55,7 +47,7 @@ export const GenerateSeedphrase = ({
           w="100%"
           size="lg"
           minH="48px"
-          onClick={(_) => {
+          onClick={_ => {
             const config = new TemporaryMnemonicAccountConfig();
             config.seedphrase = seedphrase;
             setStep({ type: StepType.verifySeedphrase, config });

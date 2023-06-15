@@ -75,9 +75,7 @@ describe("Contacts reducer", () => {
   test("should not add contact containing Account info", () => {
     const account = mockImplicitAccount(0);
     store.dispatch(add(account));
-    store.dispatch(
-      checkAccountsAndUpsertContact({ name: account.label, pkh: account.pkh })
-    );
+    store.dispatch(checkAccountsAndUpsertContact({ name: account.label, pkh: account.pkh }));
     store.dispatch(
       checkAccountsAndUpsertContact({
         name: account.label,

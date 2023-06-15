@@ -18,7 +18,7 @@ describe("AddressBookView", () => {
   });
 
   it("displays sorted contacts", () => {
-    Object.values(contacts()).forEach((contact) => {
+    Object.values(contacts()).forEach(contact => {
       store.dispatch(checkAccountsAndUpsertContact(contact));
     });
 

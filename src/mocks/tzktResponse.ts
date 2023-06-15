@@ -373,8 +373,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
         artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
         description:
           "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-        thumbnailUri:
-          "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
+        thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
     },
     from: {
@@ -450,8 +449,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
         artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
         description:
           "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-        thumbnailUri:
-          "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
+        thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
     },
     from: {
@@ -554,8 +552,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
         artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
         description:
           "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-        thumbnailUri:
-          "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
+        thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
     },
     from: {
@@ -596,10 +593,7 @@ export const ghostMultisigContracts = [
     lastActivityTime: "2022-12-09T16:49:25Z",
     storage: {
       owner: "tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3",
-      signers: [
-        "tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3",
-        "tz1dyX3B1CFYa2DfdFLyPtiJCfQRUgPVME6E",
-      ],
+      signers: ["tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3", "tz1dyX3B1CFYa2DfdFLyPtiJCfQRUgPVME6E"],
       metadata: 216412,
       threshold: "1",
       last_op_id: "0",
@@ -673,10 +667,7 @@ export const ghostMultisigContracts = [
     lastActivityTime: "2022-12-15T21:21:20Z",
     storage: {
       owner: "tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3",
-      signers: [
-        "tz1RVPjF88wjiZ7JhxvmLPRm6TTR9MHPAFPd",
-        "tz1ajzeMEzKxM9H4keBxoD1JSQy3iGRoHPg5",
-      ],
+      signers: ["tz1RVPjF88wjiZ7JhxvmLPRm6TTR9MHPAFPd", "tz1ajzeMEzKxM9H4keBxoD1JSQy3iGRoHPg5"],
       metadata: 219536,
       threshold: "1",
       last_op_id: "0",

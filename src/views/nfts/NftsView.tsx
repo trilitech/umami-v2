@@ -46,7 +46,7 @@ const NFTsViewBase = () => {
   useEffect(() => {
     const nftId = nftIdRef.current;
     if (nftId) {
-      const nft = allOwnedNftsRef.current.find((n) => n.id === parseInt(nftId));
+      const nft = allOwnedNftsRef.current.find(n => n.id === parseInt(nftId));
       setSelectedNft(nft);
       onOpenRef.current();
     }
@@ -60,7 +60,7 @@ const NFTsViewBase = () => {
           <FilterController />
           <Box overflow={"scroll"}>
             <NFTGallery
-              onSelect={(nft) => {
+              onSelect={nft => {
                 onOpen();
                 setSelectedNft(nft);
               }}
@@ -72,11 +72,7 @@ const NFTsViewBase = () => {
             <DrawerOverlay />
             <DrawerContent maxW="594px" bg="umami.gray.900">
               <DrawerBody>
-                <DrawerTopButtons
-                  onPrevious={() => {}}
-                  onNext={() => {}}
-                  onClose={onClose}
-                />
+                <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={onClose} />
                 {selectedNft && <NFTDrawerCard nft={selectedNft} />}
               </DrawerBody>
             </DrawerContent>

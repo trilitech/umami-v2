@@ -17,9 +17,7 @@ export const operationValuesToWalletParams = async (
   operations: OperationValue[],
   signer: TezosToolkit
 ): Promise<WalletParamsWithKind[]> =>
-  operationValuesToParams(operations, signer) as Promise<
-    WalletParamsWithKind[]
-  >;
+  operationValuesToParams(operations, signer) as Promise<WalletParamsWithKind[]>;
 
 export const operationValuesToParams = async (
   operations: OperationValue[],
@@ -47,10 +45,7 @@ export const operationValuesToParams = async (
         break;
       case "token":
         {
-          const transferParams = await makeTokenTransferParams(
-            operation,
-            signer
-          );
+          const transferParams = await makeTokenTransferParams(operation, signer);
 
           result.push({
             kind: OpKind.TRANSACTION,
@@ -91,11 +86,7 @@ export const operationValuesToBatchParams = async (
     return [];
   }
 
-  const Tezos = makeToolkitWithDummySigner(
-    pk,
-    operations[0].value.sender,
-    network
-  );
+  const Tezos = makeToolkitWithDummySigner(pk, operations[0].value.sender, network);
 
   return operationValuesToParams(operations, Tezos);
 };

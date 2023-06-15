@@ -1,11 +1,5 @@
 import { Box, Center } from "@chakra-ui/react";
-import {
-  diamontIcon,
-  documentIcon,
-  googleIcon,
-  usbIcon,
-  walletIcon,
-} from "./Icons";
+import { diamontIcon, documentIcon, googleIcon, usbIcon, walletIcon } from "./Icons";
 
 const iconMap = {
   diamont: diamontIcon,

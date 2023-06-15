@@ -13,13 +13,7 @@ import { AccountsList } from "./AccountsList";
 import { mockPk } from "../../mocks/factories";
 import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
 import "../../mocks/mockGetRandomValues";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "../../mocks/testUtils";
+import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 import multisigsSlice from "../../utils/store/multisigsSlice";
@@ -45,9 +39,7 @@ describe("<AccountList />", () => {
       ])
     );
 
-    render(
-      <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
-    );
+    render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
 
     const results = screen.getAllByTestId(/account-tile/);
     expect(results).toHaveLength(3);
@@ -63,26 +55,18 @@ describe("<AccountList />", () => {
 
   it("Accounts are displayed by group (case mnemonic social and multisig)", async () => {
     await restore();
-    render(
-      <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
-    );
+    render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
     expect(screen.getAllByTestId(/account-tile/)).toHaveLength(7);
     expect(screen.getAllByTestId(/account-group/)).toHaveLength(4);
 
     const socialAccounts = screen.getByTestId(/account-group-social/i);
-    expect(within(socialAccounts).getAllByTestId(/account-tile/)).toHaveLength(
-      2
-    );
+    expect(within(socialAccounts).getAllByTestId(/account-tile/)).toHaveLength(2);
     expect(socialAccounts).toHaveTextContent("Social Accounts");
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
 
-    const seedPhrase1 = screen.getByTestId(
-      `account-group-Seedphrase ${MOCK_FINGETPRINT1}`
-    );
-    const seedPhrase2 = screen.getByTestId(
-      `account-group-Seedphrase ${MOCK_FINGETPRINT2}`
-    );
+    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
+    const seedPhrase2 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(within(seedPhrase1).getAllByTestId(/account-tile/)).toHaveLength(2);
     expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
     expect(seedPhrase1).toHaveTextContent("Account 0");
@@ -93,18 +77,14 @@ describe("<AccountList />", () => {
     expect(seedPhrase2).toHaveTextContent("Account");
 
     const multisigAccounts = screen.getByTestId(/account-group-multisig/i);
-    expect(
-      within(multisigAccounts).getAllByTestId(/account-tile/)
-    ).toHaveLength(2);
+    expect(within(multisigAccounts).getAllByTestId(/account-tile/)).toHaveLength(2);
     expect(multisigAccounts).toHaveTextContent(/multisig account 0/i);
     expect(multisigAccounts).toHaveTextContent(/multisig account 1/i);
   });
 
   test("All accounts linked to a given mnemonic can be deleted by a CTA action and confirmation modal", async () => {
     await restore();
-    render(
-      <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
-    );
+    render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
 
     expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
     const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
@@ -146,14 +126,10 @@ describe("<AccountList />", () => {
   test("User can derive a new account for a mnemonic with a CTA action, by providing a label and password", async () => {
     const LABEL = "my label";
     await restore();
-    render(
-      <AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />
-    );
+    render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
 
     expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
-    const seedPhrase1 = screen.getByTestId(
-      `account-group-Seedphrase ${MOCK_FINGETPRINT1}`
-    );
+    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
 
     const { getByTestId, getByRole } = within(seedPhrase1);
     const cta = getByTestId(/^popover-cta$/i);
@@ -189,15 +165,11 @@ describe("<AccountList />", () => {
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     await waitFor(() => {
-      expect(
-        screen.queryByText(/Enter Password to continue/i)
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/Enter Password to continue/i)).not.toBeInTheDocument();
     });
 
     {
-      const seedPhrase1 = screen.getByTestId(
-        `account-group-Seedphrase ${MOCK_FINGETPRINT1}`
-      );
+      const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
 
       const tiles = within(seedPhrase1).getAllByTestId(/account-tile/);
       expect(tiles).toHaveLength(3);
@@ -221,9 +193,7 @@ const restore = async () => {
   await store.dispatch(
     fakeRestoreFromMnemonic({
       seedFingerprint: MOCK_FINGETPRINT2,
-      accounts: [
-        mockImplicitAccount(4, undefined, MOCK_FINGETPRINT2),
-      ] as MnemonicAccount[],
+      accounts: [mockImplicitAccount(4, undefined, MOCK_FINGETPRINT2)] as MnemonicAccount[],
     })
   );
 
@@ -248,9 +218,6 @@ const restore = async () => {
   );
 
   store.dispatch(
-    multisigsSlice.actions.set([
-      mockMultisigWithOperations(0),
-      mockMultisigWithOperations(1),
-    ])
+    multisigsSlice.actions.set([mockMultisigWithOperations(0), mockMultisigWithOperations(1)])
   );
 };

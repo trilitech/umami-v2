@@ -67,10 +67,7 @@ describe("multisig helpers", () => {
       data: tzktGetSameMultisigsResponse,
     };
     mockedAxios.get.mockResolvedValue(mockResponse);
-    const result = await getRelevantMultisigContracts(
-      TezosNetwork.GHOSTNET,
-      new Set([mockPkh(0)])
-    );
+    const result = await getRelevantMultisigContracts(TezosNetwork.GHOSTNET, new Set([mockPkh(0)]));
 
     expect(result).toEqual([
       {
@@ -107,7 +104,7 @@ describe("multisig helpers", () => {
       tzktGetSameMultisigsResponse
     );
 
-    tzktGetSameMultisigsResponse.forEach((res) => {
+    tzktGetSameMultisigsResponse.forEach(res => {
       const {
         storage: { pending_ops },
       } = res;

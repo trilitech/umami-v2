@@ -22,15 +22,8 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
-import {
-  useAllOperationDisplays,
-  useIsBlockFinalised,
-} from "../../utils/hooks/assetsHooks";
-import {
-  getAmountColor,
-  getKey,
-  sortOperationsDisplaysBytDate,
-} from "./operationsUtils";
+import { useAllOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
+import { getAmountColor, getKey, sortOperationsDisplaysBytDate } from "./operationsUtils";
 import { Link } from "react-router-dom";
 import NoItems from "../../components/NoItems";
 
@@ -58,13 +51,7 @@ export const OperationsDataTable: React.FC<{
           // Finally a way to have a sticky Header
           // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
         }
-        <Thead
-          position="sticky"
-          top={0}
-          zIndex="docked"
-          bg="umami.gray.900"
-          borderRadius={4}
-        >
+        <Thead position="sticky" top={0} zIndex="docked" bg="umami.gray.900" borderRadius={4}>
           <Tr>
             <Th>Type:</Th>
             <Th>Amount:</Th>
@@ -111,18 +98,13 @@ export const OperationsDataTable: React.FC<{
                   {isBlockFinalised(op.level) ? (
                     <IconAndTextBtn icon={RxCheckCircled} label="Confirmed" />
                   ) : (
-                    <IconAndTextBtn
-                      icon={MdOutlinePending}
-                      label="Pending..."
-                    />
+                    <IconAndTextBtn icon={MdOutlinePending} label="Pending..." />
                   )}
                 </Td>
                 <Td>
                   <Flex alignItems={"center"} justifyContent={"space-between"}>
                     <Text>{op.prettyTimestamp}</Text>
-                    {op.tzktUrl && (
-                      <TzktLink url={op.tzktUrl} ml={2} w={4} h={4} />
-                    )}
+                    {op.tzktUrl && <TzktLink url={op.tzktUrl} ml={2} w={4} h={4} />}
                   </Flex>
                 </Td>
               </Tr>

@@ -64,9 +64,7 @@ const SignPayloadRequestPannel: React.FC<{
 
   return (
     <ModalContent>
-      <ModalHeader>
-        Sign payload Request from {request.appMetadata.name}
-      </ModalHeader>
+      <ModalHeader>Sign payload Request from {request.appMetadata.name}</ModalHeader>
 
       <ModalCloseButton />
       <ModalBody>{request.payload}</ModalBody>

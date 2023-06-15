@@ -13,10 +13,7 @@
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off", // TODO: change to error https://app.asana.com/0/0/1204322668303155/f
-    "@typescript-eslint/no-empty-function": [
-      "error",
-      { "allow": ["arrowFunctions"] }
-    ],
+    "@typescript-eslint/no-empty-function": ["error", { "allow": ["arrowFunctions"] }],
     "@typescript-eslint/switch-exhaustiveness-check": "error"
   },
   "overrides": [

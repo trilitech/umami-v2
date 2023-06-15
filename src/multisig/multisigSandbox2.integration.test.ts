@@ -17,7 +17,7 @@ jest.unmock("../utils/tezos");
 
 jest.setTimeout(90000);
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
 // Originated multisig on ghostnet
 // threshold: 2
@@ -177,8 +177,6 @@ describe("multisig Sandbox", () => {
       TezosNetwork.GHOSTNET
     );
 
-    expect(parseInt(postDevAccount2TezBalance) + fee).toEqual(
-      parseInt(preDevAccount2TezBalance)
-    );
+    expect(parseInt(postDevAccount2TezBalance) + fee).toEqual(parseInt(preDevAccount2TezBalance));
   });
 });

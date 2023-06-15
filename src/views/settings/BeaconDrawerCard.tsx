@@ -23,11 +23,7 @@ export const BeaconDrawerCard = () => {
       <Drawer isOpen={isOpen} placement="right" onClose={closeDrawer} size="md">
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
-          <DrawerTopButtons
-            onPrevious={() => {}}
-            onNext={() => {}}
-            onClose={closeDrawer}
-          />
+          <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={closeDrawer} />
           <DrawerBody>
             <BeaconDrawerBody />
           </DrawerBody>
@@ -46,7 +42,7 @@ const BeaconDrawerBody = () => {
       </Flex>
       <Button
         onClick={() =>
-          navigator.clipboard.readText().then((text) => {
+          navigator.clipboard.readText().then(text => {
             addPeer(text);
           })
         }

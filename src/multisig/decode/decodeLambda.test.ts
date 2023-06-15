@@ -6,10 +6,7 @@ describe("decodeLambda", () => {
     const singleTezNoHead = [
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "732000" }] },
@@ -18,9 +15,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(() => decode(singleTezNoHead)).toThrowError(
-      /Invalid literal value/i
-    );
+    expect(() => decode(singleTezNoHead)).toThrowError(/Invalid literal value/i);
   });
 
   test("simple tez", () => {
@@ -29,10 +24,7 @@ describe("decodeLambda", () => {
       { prim: "NIL", args: [{ prim: "operation" }] },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "910000" }] },
@@ -58,8 +50,7 @@ describe("decodeLambda", () => {
         args: [
           { prim: "address" },
           {
-            bytes:
-              "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+            bytes: "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
           },
         ],
       },
@@ -93,8 +84,7 @@ describe("decodeLambda", () => {
         args: [
           { prim: "address" },
           {
-            bytes:
-              "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+            bytes: "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
           },
         ],
       },
@@ -215,10 +205,7 @@ describe("decodeLambda", () => {
       { prim: "NIL", args: [{ prim: "operation" }] },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "20000" }] },
@@ -227,10 +214,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "33333" }] },
@@ -259,10 +243,7 @@ describe("decodeLambda", () => {
       { prim: "NIL", args: [{ prim: "operation" }] },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "600000" }] },
@@ -274,8 +255,7 @@ describe("decodeLambda", () => {
         args: [
           { prim: "address" },
           {
-            bytes:
-              "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+            bytes: "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
           },
         ],
       },
@@ -377,10 +357,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "33333" }] },
@@ -420,8 +397,7 @@ describe("decodeLambda", () => {
         args: [
           { prim: "address" },
           {
-            bytes:
-              "01d7270a1dd9a8b9ee6b48380fb60dc36a7cd521bb007472616e73666572",
+            bytes: "01d7270a1dd9a8b9ee6b48380fb60dc36a7cd521bb007472616e73666572",
           },
         ],
       },
@@ -472,10 +448,7 @@ describe("decodeLambda", () => {
               { bytes: "018e368c2083bdaef3199bae317d6c967c21d947b300" },
               {
                 prim: "Pair",
-                args: [
-                  { bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
-                  { int: "300" },
-                ],
+                args: [{ bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" }, { int: "300" }],
               },
             ],
           },
@@ -502,10 +475,7 @@ describe("decodeLambda", () => {
       { prim: "NIL", args: [{ prim: "operation" }] },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "100000" }] },
@@ -517,8 +487,7 @@ describe("decodeLambda", () => {
         args: [
           { prim: "address" },
           {
-            bytes:
-              "01d7270a1dd9a8b9ee6b48380fb60dc36a7cd521bb007472616e73666572",
+            bytes: "01d7270a1dd9a8b9ee6b48380fb60dc36a7cd521bb007472616e73666572",
           },
         ],
       },
@@ -569,10 +538,7 @@ describe("decodeLambda", () => {
               { bytes: "018e368c2083bdaef3199bae317d6c967c21d947b300" },
               {
                 prim: "Pair",
-                args: [
-                  { bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
-                  { int: "300" },
-                ],
+                args: [{ bytes: "0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" }, { int: "300" }],
               },
             ],
           },
@@ -582,10 +548,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "005fd0a7ece135cecfd71fcf78cf6656d5047fb980" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "005fd0a7ece135cecfd71fcf78cf6656d5047fb980" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "33333" }] },
@@ -597,8 +560,7 @@ describe("decodeLambda", () => {
         args: [
           { prim: "address" },
           {
-            bytes:
-              "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+            bytes: "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
           },
         ],
       },
@@ -737,10 +699,7 @@ describe("decodeLambda", () => {
       { foo: "bar" },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "0057c264d6d7f7257cd3d8096150b0d8be60577ca7" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "20000" }] },
@@ -751,10 +710,7 @@ describe("decodeLambda", () => {
       { hello: "world" },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e" }],
       },
       { prim: "IMPLICIT_ACCOUNT" },
       { prim: "PUSH", args: [{ prim: "mutez" }, { int: "33333" }] },
@@ -786,10 +742,7 @@ describe("decodeLambda", () => {
       { prim: "NIL", args: [{ prim: "operation" }] },
       {
         prim: "PUSH",
-        args: [
-          { prim: "key_hash" },
-          { bytes: "0044b31e005479eba6449274d8c6dc423946f97607" },
-        ],
+        args: [{ prim: "key_hash" }, { bytes: "0044b31e005479eba6449274d8c6dc423946f97607" }],
       },
       { prim: "SOME" },
       { prim: "SET_DELEGATE" },

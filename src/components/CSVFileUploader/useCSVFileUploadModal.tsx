@@ -1,9 +1,4 @@
-import {
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Modal, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import CSVFileUploadForm from "./CSVFileUploadForm";
 

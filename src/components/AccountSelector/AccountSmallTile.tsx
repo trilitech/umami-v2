@@ -24,8 +24,6 @@ export const AccountSmallTileDisplay = ({
 
 export const AccountSmallTile = ({ pkh }: { pkh: string }) => {
   const accounts = useImplicitAccounts();
-  const account = accounts.find((a) => a.pkh === pkh);
-  return account ? (
-    <AccountSmallTileDisplay pkh={account.pkh} label={account.label} />
-  ) : null;
+  const account = accounts.find(a => a.pkh === pkh);
+  return account ? <AccountSmallTileDisplay pkh={account.pkh} label={account.label} /> : null;
 };

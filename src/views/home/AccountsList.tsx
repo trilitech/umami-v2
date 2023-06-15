@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Modal,
-  ModalContent,
-  useDisclosure,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Modal, ModalContent, useDisclosure, useToast } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
@@ -20,21 +12,14 @@ import {
   MultisigAccount,
   SocialAccount,
 } from "../../types/Account";
-import {
-  useAllAccounts,
-  useRemoveMnemonic,
-} from "../../utils/hooks/accountHooks";
+import { useAllAccounts, useRemoveMnemonic } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { deriveAccount } from "../../utils/store/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 
-type AccountsOfSameType =
-  | MnemonicAccount[]
-  | LedgerAccount[]
-  | SocialAccount[]
-  | MultisigAccount[];
+type AccountsOfSameType = MnemonicAccount[] | LedgerAccount[] | SocialAccount[] | MultisigAccount[];
 
 type GroupedByLabel = Record<string, AccountsOfSameType | undefined>;
 
@@ -78,19 +63,17 @@ const AccountGroup: React.FC<{
         {showCTA && <AccountPopover onCreate={onDerive} onDelete={onDelete} />}
       </Flex>
 
-      {accounts.map((a) => {
+      {accounts.map(a => {
         return (
           <AccountTile
             selected={a.pkh === selected}
-            onClick={(_) => {
+            onClick={_ => {
               onSelect(a.pkh);
             }}
             key={a.pkh}
             address={a.pkh}
             label={a.label || ""}
-            balance={
-              a.type === AccountType.MULTISIG ? a.balance : balances[a.pkh]
-            }
+            balance={a.type === AccountType.MULTISIG ? a.balance : balances[a.pkh]}
           />
         );
       })}
@@ -146,19 +129,18 @@ export const AccountsList: React.FC<{
   onOpen: () => void;
   selected: string | null;
   onSelect: (pkh: string) => void;
-}> = (props) => {
+}> = props => {
   const selected = props.selected;
   const accounts = useAllAccounts();
 
-  const balances = useAppSelector((s) => s.assets.balances.tez);
+  const balances = useAppSelector(s => s.assets.balances.tez);
 
   const accountsByKind = groupByKind(accounts);
 
   const { onOpen, element, onClose } = useConfirmation();
   const removeMnemonic = useRemoveMnemonic();
 
-  const { element: deriveElement, onOpen: openDeriveAccount } =
-    useDeriveAccountModal();
+  const { element: deriveElement, onOpen: openDeriveAccount } = useDeriveAccountModal();
 
   return (
     <Box>
@@ -221,13 +203,7 @@ const DeriveAcount = (props: { onDone: () => void; fingerprint: string }) => {
   const [isLoading, setIsloading] = useState(false);
   const toast = useToast();
 
-  const handleSubmit = async ({
-    name,
-    password,
-  }: {
-    name: string;
-    password: string;
-  }) => {
+  const handleSubmit = async ({ name, password }: { name: string; password: string }) => {
     setIsloading(true);
     try {
       await dispatch(
@@ -272,10 +248,7 @@ export const useDeriveAccountModal = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalContent bg="umami.gray.900">
           {paramsRef.current?.fingerprint && (
-            <DeriveAcount
-              onDone={onClose}
-              fingerprint={paramsRef.current.fingerprint}
-            />
+            <DeriveAcount onDone={onClose} fingerprint={paramsRef.current.fingerprint} />
           )}
         </ModalContent>
       </Modal>

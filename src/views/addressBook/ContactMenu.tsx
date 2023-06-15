@@ -8,14 +8,9 @@ import { Contact } from "../../types/Contact";
 import { useUpsertContactModal } from "../home/useUpsertContactModal";
 
 const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
-  const { modalElement: editModal, onOpen: onOpenEdit } =
-    useUpsertContactModal();
+  const { modalElement: editModal, onOpen: onOpenEdit } = useUpsertContactModal();
 
-  const {
-    isOpen: isOpenDelete,
-    onOpen: onOpenDelete,
-    onClose: onCloseDelete,
-  } = useDisclosure();
+  const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
   return (
     <>
@@ -36,11 +31,7 @@ const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
         <TextAndIconBtn text="Remove" icon={BsTrash} onClick={onOpenDelete} />
       </PopoverMenu>
       {editModal}
-      <DeleteContactModal
-        isOpen={isOpenDelete}
-        contact={contact}
-        onClose={onCloseDelete}
-      />
+      <DeleteContactModal isOpen={isOpenDelete} contact={contact} onClose={onCloseDelete} />
     </>
   );
 };

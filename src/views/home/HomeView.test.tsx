@@ -4,11 +4,7 @@ import { fireEvent, render, screen } from "../../mocks/testUtils";
 import HomeView from "./HomeView";
 
 beforeEach(() => {
-  dispatchMockAccounts([
-    mockImplicitAccount(0),
-    mockImplicitAccount(1),
-    mockImplicitAccount(2),
-  ]);
+  dispatchMockAccounts([mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)]);
 });
 afterEach(() => {
   resetAccounts();
@@ -22,8 +18,6 @@ describe("<HomeView />", () => {
     fireEvent.click(el);
 
     await screen.findByTestId("account-card-" + mockImplicitAccount(1).pkh);
-    await screen.findByTestId(
-      "account-tile-" + mockImplicitAccount(1).pkh + "-selected"
-    );
+    await screen.findByTestId("account-tile-" + mockImplicitAccount(1).pkh + "-selected");
   });
 });

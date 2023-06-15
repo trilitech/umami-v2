@@ -23,10 +23,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { prettyTezAmount } from "../../utils/format";
-import {
-  useAllDelegations,
-  useGetAccountBalance,
-} from "../../utils/hooks/assetsHooks";
+import { useAllDelegations, useGetAccountBalance } from "../../utils/hooks/assetsHooks";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { getBakers } from "../../utils/tezos";
@@ -54,13 +51,7 @@ const DelegationsTable = ({
           // Finally a way to have a sticky Header
           // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
         }
-        <Thead
-          position="sticky"
-          top={0}
-          zIndex="docked"
-          bg="umami.gray.900"
-          borderRadius={4}
-        >
+        <Thead position="sticky" top={0} zIndex="docked" bg="umami.gray.900" borderRadius={4}>
           <Tr>
             <Th>Account:</Th>
             <Th>Initial Balance:</Th>
@@ -71,7 +62,7 @@ const DelegationsTable = ({
           </Tr>
         </Thead>
         <Tbody>
-          {delegations.map((d) => {
+          {delegations.map(d => {
             const balance = getAccountBalance(d.sender);
             return (
               <Tr key={d.id} data-testid={`delegation-row`}>
@@ -80,10 +71,7 @@ const DelegationsTable = ({
                 </Td>
                 <Td>{d.amount && prettyTezAmount(d.amount)}</Td>
                 <Td>{balance && prettyTezAmount(balance)}</Td>
-                <Td>
-                  {d.timestamp &&
-                    `Since ${formatRelative(new Date(d.timestamp), now)}`}
-                </Td>
+                <Td>{d.timestamp && `Since ${formatRelative(new Date(d.timestamp), now)}`}</Td>
                 <Td />
                 <Td>
                   <Flex alignItems={"center"}>
@@ -91,9 +79,7 @@ const DelegationsTable = ({
                     <IconButton
                       ml={2}
                       mr={2}
-                      onClick={() =>
-                        onChangeDelegate(d.sender, d.delegate.address)
-                      }
+                      onClick={() => onChangeDelegate(d.sender, d.delegate.address)}
                       borderRadius={"50%"}
                       aria-label="Change Baker"
                       icon={<MdOutlineModeEdit />}
@@ -200,10 +186,7 @@ const DelegationsView = () => {
           {modalElement}
         </>
       ) : (
-        <NoItems
-          text="Currently not delegating"
-          primaryText="Start delegating"
-        />
+        <NoItems text="Currently not delegating" primaryText="Start delegating" />
       )}
     </Flex>
   );

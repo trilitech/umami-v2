@@ -12,24 +12,15 @@ const prim = (label: string) => {
 
 const pushKeyHashSchema = z.object({
   prim: z.literal("PUSH"),
-  args: z.tuple([
-    z.object({ prim: z.literal("key_hash") }),
-    z.object({ bytes: z.string() }),
-  ]),
+  args: z.tuple([z.object({ prim: z.literal("key_hash") }), z.object({ bytes: z.string() })]),
 });
 
 const pushAddressSchema = z.object({
   prim: z.literal("PUSH"),
-  args: z.tuple([
-    z.object({ prim: z.literal("address") }),
-    z.object({ bytes: z.string() }),
-  ]),
+  args: z.tuple([z.object({ prim: z.literal("address") }), z.object({ bytes: z.string() })]),
 });
 
-const pair = <T extends z.ZodTypeAny, U extends z.ZodTypeAny>(
-  first: T,
-  second: U
-) => {
+const pair = <T extends z.ZodTypeAny, U extends z.ZodTypeAny>(first: T, second: U) => {
   return z.object({
     prim: z.literal("Pair"),
     args: z.tuple([first, second]),
@@ -38,10 +29,7 @@ const pair = <T extends z.ZodTypeAny, U extends z.ZodTypeAny>(
 
 const contractZeroTezSchema = z.object({
   prim: z.literal("PUSH"),
-  args: z.tuple([
-    z.object({ prim: z.literal("mutez") }),
-    z.object({ int: z.literal("0") }),
-  ]),
+  args: z.tuple([z.object({ prim: z.literal("mutez") }), z.object({ int: z.literal("0") })]),
 });
 
 const lambdaEndSchema = [prim("TRANSFER_TOKENS"), prim("CONS")];
@@ -66,10 +54,7 @@ export const batchHeadSchema = z.tuple([
 
 const pushMutezSchema = z.object({
   prim: z.literal("PUSH"),
-  args: z.tuple([
-    z.object({ prim: z.literal("mutez") }),
-    z.object({ int: z.string() }),
-  ]),
+  args: z.tuple([z.object({ prim: z.literal("mutez") }), z.object({ int: z.string() })]),
 });
 
 export const tezSchema = z.tuple([

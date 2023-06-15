@@ -17,13 +17,7 @@ import {
   resetAccounts,
   setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "../../mocks/testUtils";
+import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
@@ -98,9 +92,7 @@ describe("<SendForm />", () => {
   describe("case send tez", () => {
     test("should render first step with sender blank", () => {
       render(fixture());
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        /select an account/i
-      );
+      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(/select an account/i);
     });
     test("should display tez currency name", () => {
       render(fixture());
@@ -216,8 +208,7 @@ describe("<SendForm />", () => {
         expect(mockToast).toHaveBeenCalledTimes(2);
       });
 
-      const batch2 =
-        store.getState().assets.batches[mockImplicitAccount(1).pkh];
+      const batch2 = store.getState().assets.batches[mockImplicitAccount(1).pkh];
       expect(batch2).toEqual({
         isSimulating: false,
         items: [
@@ -311,9 +302,7 @@ describe("<SendForm />", () => {
         })
       );
 
-      expect(screen.getByTestId(/currency/)).toHaveTextContent(
-        MOCK_TOKEN_SYMBOL
-      );
+      expect(screen.getByTestId(/currency/)).toHaveTextContent(MOCK_TOKEN_SYMBOL);
     });
 
     test("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
@@ -416,9 +405,7 @@ describe("<SendForm />", () => {
         })
       );
 
-      expect(screen.getByTestId(/currency/)).toHaveTextContent(
-        MOCK_TOKEN_SYMBOL
-      );
+      expect(screen.getByTestId(/currency/)).toHaveTextContent(MOCK_TOKEN_SYMBOL);
     });
 
     test("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
@@ -544,9 +531,7 @@ describe("<SendForm />", () => {
     test("sender button is disabled and prefilled with NFT owner", () => {
       render(fixture(undefined, { type: "token", data: mockNFT(1) }));
 
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockNFT(1).owner)
-      );
+      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(formatPkh(mockNFT(1).owner));
 
       expect(screen.getByTestId(/account-selector/)).toBeDisabled();
     });
@@ -660,9 +645,7 @@ describe("<SendForm />", () => {
     };
     test("It doesn't display password in SubmitStep", async () => {
       await fillForm();
-      expect(
-        screen.getByRole("button", { name: /sign with google/i })
-      ).toBeTruthy();
+      expect(screen.getByRole("button", { name: /sign with google/i })).toBeTruthy();
       expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
     });
 
@@ -722,9 +705,7 @@ describe("<SendForm />", () => {
     };
     test("It doesn't display password in SubmitStep", async () => {
       await fillForm();
-      expect(
-        screen.getByRole("button", { name: /sign with ledger/i })
-      ).toBeTruthy();
+      expect(screen.getByRole("button", { name: /sign with ledger/i })).toBeTruthy();
       expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
     });
 

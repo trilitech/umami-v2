@@ -1,11 +1,7 @@
 import { Button, VStack } from "@chakra-ui/react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import {
-  Step,
-  StepType,
-  TemporaryLedgerAccountConfig,
-} from "../useOnboardingModal";
+import { Step, StepType, TemporaryLedgerAccountConfig } from "../useOnboardingModal";
 
 const ConnectOptions = ({ setStep }: { setStep: (step: Step) => void }) => {
   return (
@@ -15,7 +11,7 @@ const ConnectOptions = ({ setStep }: { setStep: (step: Step) => void }) => {
           bg="umami.blue"
           w="100%"
           size="lg"
-          onClick={(_) => setStep({ type: StepType.restoreSeedphrase })}
+          onClick={_ => setStep({ type: StepType.restoreSeedphrase })}
         >
           Import with Seed Phrase
         </Button>
@@ -25,7 +21,7 @@ const ConnectOptions = ({ setStep }: { setStep: (step: Step) => void }) => {
         <Button
           w="100%"
           variant="ghost"
-          onClick={(_) => {
+          onClick={_ => {
             setStep({
               type: StepType.derivationPath,
               config: new TemporaryLedgerAccountConfig(),

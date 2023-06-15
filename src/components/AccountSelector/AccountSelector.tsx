@@ -15,7 +15,7 @@ export const ConnectedAccountSelector: React.FC<{
   isDisabled?: boolean;
 }> = ({ onSelect = () => {}, selected, isDisabled }) => {
   const accounts = useImplicitAccounts();
-  const selectedAccount = accounts.find((a) => a.pkh === selected);
+  const selectedAccount = accounts.find(a => a.pkh === selected);
 
   return (
     <Menu>
@@ -31,11 +31,11 @@ export const ConnectedAccountSelector: React.FC<{
         {selectedAccount ? renderAccount(selectedAccount) : "Select an account"}
       </MenuButton>
       <MenuList bg={"umami.gray.900"}>
-        {accounts.map((account) => (
+        {accounts.map(account => (
           <MenuItem
             value={account.pkh}
             aria-label={account.label}
-            onClick={(e) => {
+            onClick={e => {
               onSelect(account);
             }}
             key={account.pkh}

@@ -1,9 +1,5 @@
 import { seedPhrase } from "../../../mocks/seedPhrase";
-import {
-  Step,
-  StepType,
-  TemporaryMnemonicAccountConfig,
-} from "../useOnboardingModal";
+import { Step, StepType, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
 import Notice from "./Notice";
 

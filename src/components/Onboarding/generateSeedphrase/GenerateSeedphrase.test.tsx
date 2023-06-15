@@ -10,9 +10,7 @@ jest.mock("../../../utils/mnemonic");
 const generate24WordMnemonicMock = generate24WordMnemonic as jest.Mock;
 const setStepMock = jest.fn((step: Step) => {});
 
-const fixture = (setStep: (step: Step) => void) => (
-  <GenerateSeedphrase setStep={setStep} />
-);
+const fixture = (setStep: (step: Step) => void) => <GenerateSeedphrase setStep={setStep} />;
 
 describe("<GenerateSeedphrase />", () => {
   describe("When shown", () => {
@@ -22,7 +20,7 @@ describe("<GenerateSeedphrase />", () => {
       const confirmBtn = screen.getByRole("button", {
         name: /OK, I’ve recorded it/i,
       });
-      seedPhrase.split(" ").forEach((word) => {
+      seedPhrase.split(" ").forEach(word => {
         expect(screen.getByText(word)).toBeInTheDocument();
       });
       expect(confirmBtn).toBeEnabled();

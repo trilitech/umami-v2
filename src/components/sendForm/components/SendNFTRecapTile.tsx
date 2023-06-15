@@ -1,11 +1,4 @@
-import {
-  AspectRatio,
-  Box,
-  Flex,
-  FormLabel,
-  Heading,
-  Image,
-} from "@chakra-ui/react";
+import { AspectRatio, Box, Flex, FormLabel, Heading, Image } from "@chakra-ui/react";
 import { NFT } from "../../../types/Asset";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
 

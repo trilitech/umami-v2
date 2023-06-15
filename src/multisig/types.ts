@@ -2,10 +2,7 @@ import { BigMapAbstraction } from "@taquito/taquito";
 import { BigNumber } from "bignumber.js";
 import { Address } from "../types/Address";
 
-import {
-  FA12TransferMethodArgs,
-  FA2TransferMethodArgs,
-} from "../utils/tezos/types";
+import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "../utils/tezos/types";
 
 export type MultisigStorage = {
   last_op_id: BigNumber;
@@ -34,8 +31,4 @@ export type Delegation = {
   recipient?: Address;
 };
 
-export type Operation =
-  | TezOperation
-  | FA12Operation
-  | FA2Operation
-  | Delegation;
+export type Operation = TezOperation | FA12Operation | FA2Operation | Delegation;

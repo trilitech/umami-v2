@@ -40,5 +40,4 @@ export const makeDerivationPath = (pattern: string, index: number) => {
 export const getDefaultMnemonicDerivationPath = (index: number) =>
   defaultV1Pattern.replace("?", index.toString());
 
-export const getLedgerDerivationPath = (index: number) =>
-  makeDerivationPath(ledgerPattern, index);
+export const getLedgerDerivationPath = (index: number) => makeDerivationPath(ledgerPattern, index);

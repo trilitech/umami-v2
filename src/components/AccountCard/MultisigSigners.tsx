@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Icon,
-  Tag,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Tag, Wrap, WrapItem } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import colors from "../../style/colors";
@@ -27,25 +19,16 @@ const MultisigSigners: React.FC<{
           _hover={{
             color: colors.gray[600],
           }}
-          onClick={() => setIsOpen((prev) => !prev)}
+          onClick={() => setIsOpen(prev => !prev)}
           data-testid="multisig-toggle-button"
         />
       </Flex>
       {isOpen && (
         <Wrap mt="3" data-testid="multisig-tag-section">
-          {signers.map((pkh) => {
+          {signers.map(pkh => {
             return (
-              <WrapItem
-                key={pkh}
-                borderRadius="100px"
-                padding="3px 8px"
-                bg={colors.gray[600]}
-              >
-                <Tag
-                  data-testid="multisig-tag"
-                  color={colors.gray[400]}
-                  borderRadius="full"
-                >
+              <WrapItem key={pkh} borderRadius="100px" padding="3px 8px" bg={colors.gray[600]}>
+                <Tag data-testid="multisig-tag" color={colors.gray[400]} borderRadius="full">
                   <AccountOrContactTile pkh={pkh} />
                 </Tag>
               </WrapItem>

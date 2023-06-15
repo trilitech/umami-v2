@@ -42,9 +42,7 @@ export const devPublicKeys2 = {
 };
 
 // Make the tezos toolkit with the default dev signer.
-export const makeToolkitFromDefaultDevSeed = async (
-  index: number
-): Promise<TezosToolkit> => {
+export const makeToolkitFromDefaultDevSeed = async (index: number): Promise<TezosToolkit> => {
   const { sk } = await makeDefaultDevSignerKeys(index);
 
   return makeToolkitWithSigner({

@@ -84,10 +84,7 @@ const contractLambda = (
     ...LAMBDA_HEADER,
     {
       prim: "PUSH",
-      args: [
-        { prim: "address" },
-        { string: operation.contract + "%" + entrypoint },
-      ],
+      args: [{ prim: "address" }, { string: operation.contract + "%" + entrypoint }],
     },
     {
       prim: "CONTRACT",
@@ -107,34 +104,23 @@ const LAMBDA_HEADER: MichelsonV1Expression[] = [
   { prim: "NIL", args: [{ prim: "operation" }] },
 ];
 
-const headlessLambda = (
-  lambda: MichelsonV1Expression[]
-): MichelsonV1Expression[] => {
+const headlessLambda = (lambda: MichelsonV1Expression[]): MichelsonV1Expression[] => {
   if (isEqual(lambda.slice(0, 2), LAMBDA_HEADER)) {
     return lambda.slice(2);
   }
   return lambda;
 };
 
-export const makeLambda = async (
-  operation: Operation,
-  network: TezosNetwork
-) => {
+export const makeLambda = async (operation: Operation, network: TezosNetwork) => {
   const nodeUrl = nodeUrls[network];
   const toolkit = new TezosToolkit(nodeUrl);
   switch (operation.type) {
     case "tez":
       switch (addressType(operation.recipient)) {
         case "user":
-          return MANAGER_LAMBDA.transferImplicit(
-            operation.recipient,
-            Number(operation.amount)
-          );
+          return MANAGER_LAMBDA.transferImplicit(operation.recipient, Number(operation.amount));
         case "contract":
-          return MANAGER_LAMBDA.transferToContract(
-            operation.recipient,
-            Number(operation.amount)
-          );
+          return MANAGER_LAMBDA.transferToContract(operation.recipient, Number(operation.amount));
       }
     // eslint-disable-next-line no-fallthrough
     case "fa1.2":
@@ -153,9 +139,7 @@ export const makeLambda = async (
       return contractLambda(
         operation,
         "transfer",
-        operation.type === "fa2"
-          ? FA2_TRANSFER_ARG_TYPES
-          : FA12_TRANSFER_ARG_TYPES,
+        operation.type === "fa2" ? FA2_TRANSFER_ARG_TYPES : FA12_TRANSFER_ARG_TYPES,
         parameter.value
       );
     }
@@ -173,14 +157,9 @@ export const makeLambda = async (
  * @param network Network is needed for fetching contract parameter elements in lambda
  * @returns Lambda in MichelsonJSON (=Micheline) format
  */
-export const makeBatchLambda = async (
-  operations: Operation[],
-  network: TezosNetwork
-) => {
+export const makeBatchLambda = async (operations: Operation[], network: TezosNetwork) => {
   const opsLambdas = (
-    await Promise.all(
-      operations.map((operation) => makeLambda(operation, network))
-    )
+    await Promise.all(operations.map(operation => makeLambda(operation, network)))
   ).flatMap(headlessLambda);
 
   return [...LAMBDA_HEADER, ...opsLambdas];

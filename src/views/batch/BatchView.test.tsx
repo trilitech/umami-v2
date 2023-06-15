@@ -8,13 +8,7 @@ import {
   resetAccounts,
   setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "../../mocks/testUtils";
+import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { useGetSk } from "../../utils/hooks/accountUtils";
 import assetsSlice from "../../utils/store/assetsSlice";
@@ -40,11 +34,7 @@ const useGetSkMock = useGetSk as jest.Mock;
 const fixture = () => <BatchView />;
 
 beforeAll(() => {
-  dispatchMockAccounts([
-    mockImplicitAccount(1),
-    mockImplicitAccount(2),
-    mockImplicitAccount(3),
-  ]);
+  dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
 });
 
 afterAll(() => {
@@ -63,11 +53,7 @@ afterEach(() => {
   store.dispatch(assetsSlice.actions.reset());
 });
 
-const addToBatchViaUI = async (
-  amount: number,
-  senderLabel: string,
-  recipientPkh: string
-) => {
+const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh: string) => {
   const amountInput = screen.getByLabelText(/amount/i);
   fireEvent.change(amountInput, { target: { value: Number(amount) } });
   const recipientInput = screen.getByLabelText(/^to$/i);
@@ -189,18 +175,14 @@ describe("<BatchView />", () => {
       render(fixture());
 
       expect(screen.getByText(/0 pending/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/your batch is currently empty/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/your batch is currently empty/i)).toBeInTheDocument();
     });
 
     test("user can add transactions to batches and it displays batches of all accounts by default", async () => {
       render(fixture());
       await addItemsToBatchViaUI();
 
-      expect(
-        screen.queryByText(/your batch is currently empty/i)
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(/your batch is currently empty/i)).not.toBeInTheDocument();
       expect(await screen.findAllByTestId(/batch-table/i)).toHaveLength(2);
     });
   });
@@ -256,9 +238,7 @@ describe("<BatchView />", () => {
 
       const subTotal = getByLabelText(/sub-total/i);
       expect(subTotal).toHaveTextContent("6 ꜩ");
-      expect(
-        screen.getByRole("button", { name: /preview/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /preview/i })).toBeInTheDocument();
     });
 
     test("estimating and submiting a batch executes the batch of transactions and empties it after successfull submition", async () => {

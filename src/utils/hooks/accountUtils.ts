@@ -18,7 +18,7 @@ export const getTotalTezBalance = (
 };
 
 export const useGetSk = () => {
-  const seedPhrases = useAppSelector((s) => s.accounts.seedPhrases);
+  const seedPhrases = useAppSelector(s => s.accounts.seedPhrases);
   return async (a: MnemonicAccount, password: string) => {
     const encryptedMnemonic = seedPhrases[a.seedFingerPrint];
     if (!encryptedMnemonic) {

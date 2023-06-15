@@ -48,15 +48,9 @@ const MemoizedRouter = React.memo(() => {
         <Route path="/nfts" element={withSideMenu(<NFTsView />)} />
         <Route path="/nfts/:nftId" element={withSideMenu(<NFTsView />)} />
         <Route path="/operations" element={withSideMenu(<OperationsView />)} />
-        <Route
-          path="/delegations"
-          element={withSideMenu(<DelegationsView />)}
-        />
+        <Route path="/delegations" element={withSideMenu(<DelegationsView />)} />
         <Route path="/tokens" element={withSideMenu(<TokensView />)} />
-        <Route
-          path="/address-book"
-          element={withSideMenu(<AddressBookView />)}
-        />
+        <Route path="/address-book" element={withSideMenu(<AddressBookView />)} />
         <Route path="/settings" element={withSideMenu(<SettingsView />)} />
         <Route path="/help" element={withSideMenu(<HelpView />)} />
         <Route path="/batch" element={withSideMenu(<BatchView />)} />
@@ -80,7 +74,7 @@ const LoggedOutRouter = () => {
   const ignore = useRef(false);
   useEffect(() => {
     if (!ignore.current) {
-      resetBeacon().then((_) => {
+      resetBeacon().then(_ => {
         ignore.current = false;
       });
     }

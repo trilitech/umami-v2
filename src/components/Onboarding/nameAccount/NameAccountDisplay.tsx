@@ -1,11 +1,4 @@
-import {
-  Button,
-  Center,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center, FormControl, FormLabel, Input, VStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
@@ -25,11 +18,7 @@ const NameAccountDisplay = ({
     accountName: string;
   }>({ mode: "onChange" });
   return (
-    <ModalContentWrapper
-      icon={SupportedIcons.diamont}
-      title={title}
-      subtitle={subtitle}
-    >
+    <ModalContentWrapper icon={SupportedIcons.diamont} title={title} subtitle={subtitle}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Center>
           <VStack width={300}>
@@ -45,14 +34,7 @@ const NameAccountDisplay = ({
               />
             </FormControl>
 
-            <Button
-              w="100%"
-              size="lg"
-              h="48px"
-              type="submit"
-              title="Submit"
-              bg="umami.blue"
-            >
+            <Button w="100%" size="lg" h="48px" type="submit" title="Submit" bg="umami.blue">
               Continue
             </Button>
           </VStack>

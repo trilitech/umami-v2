@@ -17,11 +17,7 @@ export const useSendFormModal = () => {
   return {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
-        <SendForm
-          sender={options?.sender}
-          recipient={options?.recipient}
-          mode={options?.mode}
-        />
+        <SendForm sender={options?.sender} recipient={options?.recipient} mode={options?.mode} />
       </Modal>
     ),
     onOpen: (options?: Options) => {

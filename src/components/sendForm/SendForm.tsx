@@ -32,12 +32,7 @@ const makeSimulation = (
 
   switch (operation.type) {
     case "delegation":
-      return estimateDelegation(
-        operation.value.sender,
-        operation.value.recipient,
-        pk,
-        network
-      );
+      return estimateDelegation(operation.value.sender, operation.value.recipient, pk, network);
     case "token": {
       const base = {
         amount: operation.value.amount,
@@ -101,9 +96,7 @@ export const SendForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [transferValues, setTransferValues] = useState<
-    EstimatedOperation | undefined
-  >(undefined);
+  const [transferValues, setTransferValues] = useState<EstimatedOperation | undefined>(undefined);
 
   const [hash, setHash] = useState<string>();
 
@@ -118,16 +111,12 @@ export const SendForm = ({
   const simulate = async (operation: OperationValue | OperationValue[]) => {
     setIsLoading(true);
     try {
-      const sender = Array.isArray(operation)
-        ? operation[0].value.sender
-        : operation.value.sender;
+      const sender = Array.isArray(operation) ? operation[0].value.sender : operation.value.sender;
 
       const pk = getPk(sender);
 
       const estimate = await makeSimulation(operation, pk, sender, network);
-      const fee = Array.isArray(estimate)
-        ? sumEstimations(estimate)
-        : estimate.suggestedFeeMutez;
+      const fee = Array.isArray(estimate) ? sumEstimations(estimate) : estimate.suggestedFeeMutez;
 
       setTransferValues({
         operation,
@@ -159,13 +148,7 @@ export const SendForm = ({
   }
 
   if (transferValues) {
-    return (
-      <RecapDisplay
-        onSucces={setHash}
-        network={network}
-        recap={transferValues}
-      />
-    );
+    return <RecapDisplay onSucces={setHash} network={network} recap={transferValues} />;
   }
 
   return (
@@ -178,7 +161,7 @@ export const SendForm = ({
       parameter={parameter}
       isLoading={isLoading}
       onSubmit={simulate}
-      onSubmitBatch={(transaction) => {
+      onSubmitBatch={transaction => {
         addToBatch(transaction);
       }}
     />

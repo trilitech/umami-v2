@@ -1,8 +1,4 @@
-import {
-  DelegateOperation,
-  TransactionOperation,
-  TransferParams,
-} from "@taquito/taquito";
+import { DelegateOperation, TransactionOperation, TransferParams } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { OperationValue } from "../../components/sendForm/types";
 import {
@@ -80,10 +76,7 @@ export const approveOrExecuteMultisigOperation = async (
   config: SignerConfig
 ): Promise<TransactionOperation> => {
   const Tezos = await makeToolkitWithSigner(config);
-  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(
-    params,
-    Tezos
-  );
+  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, Tezos);
   return approveOrExecuteMethod.send();
 };
 

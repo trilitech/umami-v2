@@ -80,15 +80,9 @@ describe("<RecipientAutoComplete />", () => {
     const suggestionContainer = screen.getByRole("list");
     const suggestions = within(suggestionContainer).getAllByRole("listitem");
     expect(suggestions).toHaveLength(3);
-    expect(
-      within(suggestionContainer).getByText(mockContact(0).name)
-    ).toBeInTheDocument();
-    expect(
-      within(suggestionContainer).getByText(mockContact(1).name)
-    ).toBeInTheDocument();
-    expect(
-      within(suggestionContainer).getByText(mockContact(2).name)
-    ).toBeInTheDocument();
+    expect(within(suggestionContainer).getByText(mockContact(0).name)).toBeInTheDocument();
+    expect(within(suggestionContainer).getByText(mockContact(1).name)).toBeInTheDocument();
+    expect(within(suggestionContainer).getByText(mockContact(2).name)).toBeInTheDocument();
   });
 
   test("choosing a suggestions submits the pkh, inputs the contact name and hides suggestions", () => {

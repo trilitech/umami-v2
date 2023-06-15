@@ -1,11 +1,4 @@
-import {
-  Box,
-  Divider,
-  Input,
-  ListItem,
-  Text,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { Box, Divider, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Noop } from "react-hook-form";
 import colors from "../../style/colors";
@@ -27,7 +20,7 @@ const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
     return contacts;
   }
 
-  const result = contacts.filter((c) =>
+  const result = contacts.filter(c =>
     c.name.toLowerCase().includes(inputValue.trim().toLowerCase())
   );
 
@@ -93,9 +86,7 @@ const Suggestions = ({
   );
 };
 
-export const RecipientAutoCompleteDisplay: React.FC<
-  BaseProps & { contacts: Contact[] }
-> = ({
+export const RecipientAutoCompleteDisplay: React.FC<BaseProps & { contacts: Contact[] }> = ({
   contacts,
   onValidPkh,
   initialPkhValue,
@@ -103,7 +94,7 @@ export const RecipientAutoCompleteDisplay: React.FC<
   onBlur = () => {},
 }) => {
   const initialValue = initialPkhValue
-    ? contacts.find((e) => e.pkh === initialPkhValue)?.name || initialPkhValue
+    ? contacts.find(e => e.pkh === initialPkhValue)?.name || initialPkhValue
     : "";
 
   const [value, setValue] = useState(initialValue);
@@ -112,7 +103,7 @@ export const RecipientAutoCompleteDisplay: React.FC<
   const handleChange = (v: string) => {
     setHideSuggestions(false);
 
-    const contact = contacts.find((c) => c.name === v || c.pkh === v);
+    const contact = contacts.find(c => c.name === v || c.pkh === v);
 
     if (contact !== undefined) {
       setValue(contact.name);
@@ -141,12 +132,12 @@ export const RecipientAutoCompleteDisplay: React.FC<
         onFocus={() => {
           setHideSuggestions(false);
         }}
-        onBlur={(e) => {
+        onBlur={e => {
           e.preventDefault();
           setHideSuggestions(true);
           onBlur();
         }}
-        onChange={(e) => {
+        onChange={e => {
           handleChange(e.target.value);
         }}
         autoComplete={"off"}
@@ -161,18 +152,13 @@ export const RecipientAutoCompleteDisplay: React.FC<
   );
 };
 
-export const RecipentAutoComplete: React.FC<BaseProps> = (props) => {
-  const contacts = Object.values(useAppSelector((s) => s.contacts));
+export const RecipentAutoComplete: React.FC<BaseProps> = props => {
+  const contacts = Object.values(useAppSelector(s => s.contacts));
 
-  const accounts = useImplicitAccounts().map((a) => ({
+  const accounts = useImplicitAccounts().map(a => ({
     name: a.label,
     pkh: a.pkh,
   }));
 
-  return (
-    <RecipientAutoCompleteDisplay
-      {...props}
-      contacts={contacts.concat(accounts)}
-    />
-  );
+  return <RecipientAutoCompleteDisplay {...props} contacts={contacts.concat(accounts)} />;
 };

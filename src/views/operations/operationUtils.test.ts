@@ -48,8 +48,7 @@ describe("getTezOperationsDisplay", () => {
       status: "confirmed",
       timestamp: "2023-03-27T08:47:30Z",
       type: "transaction",
-      tzktUrl:
-        "https://mainnet.tzkt.io/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM",
+      tzktUrl: "https://mainnet.tzkt.io/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM",
       level: 2213611,
     };
     expect(result).toEqual(expected);
@@ -93,8 +92,7 @@ describe("getTezOperationsDisplay", () => {
       status: "confirmed",
       timestamp: "2023-03-27T10:36:40Z",
       type: "transaction",
-      tzktUrl:
-        "https://mainnet.tzkt.io/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ",
+      tzktUrl: "https://mainnet.tzkt.io/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ",
       level: 2214204,
     };
 
@@ -162,14 +160,11 @@ describe("getTezOperationsDisplay", () => {
               value: "Bent Tongue Feisty",
             },
           ],
-          displayUri:
-            "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
-          artifactUri:
-            "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
+          displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+          artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
           description:
             "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-          thumbnailUri:
-            "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
+          thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
       },
       from: {
@@ -263,14 +258,11 @@ describe("getTezOperationsDisplay", () => {
               value: "Bent Tongue Feisty",
             },
           ],
-          displayUri:
-            "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
-          artifactUri:
-            "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
+          displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+          artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
           description:
             "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-          thumbnailUri:
-            "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
+          thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
       },
       from: {
@@ -458,8 +450,7 @@ describe("getOperationsDisplays", () => {
         sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         timestamp: "2023-04-24T09:48:17Z",
         type: "delegation",
-        tzktUrl:
-          "https://mainnet.tzkt.io/onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva",
+        tzktUrl: "https://mainnet.tzkt.io/onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva",
       },
       {
         amount: {
@@ -540,8 +531,7 @@ describe("getOperationsDisplays", () => {
         status: "confirmed",
         timestamp: "2023-03-27T10:36:40Z",
         type: "transaction",
-        tzktUrl:
-          "https://mainnet.tzkt.io/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ",
+        tzktUrl: "https://mainnet.tzkt.io/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ",
         level: 2214204,
       },
       {
@@ -553,8 +543,7 @@ describe("getOperationsDisplays", () => {
         status: "confirmed",
         timestamp: "2023-03-27T08:47:30Z",
         type: "transaction",
-        tzktUrl:
-          "https://mainnet.tzkt.io/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM",
+        tzktUrl: "https://mainnet.tzkt.io/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM",
         level: 2213611,
       },
       {
@@ -580,8 +569,7 @@ describe("getOperationsDisplays", () => {
         status: "confirmed",
         timestamp: "2023-03-26T14:34:47Z",
         type: "transaction",
-        tzktUrl:
-          "https://mainnet.tzkt.io/op9pGAxiJtPcv37KRnLWhYBDx2RRhTiBeTZNsKQAQ1Pxn8AsbUC",
+        tzktUrl: "https://mainnet.tzkt.io/op9pGAxiJtPcv37KRnLWhYBDx2RRhTiBeTZNsKQAQ1Pxn8AsbUC",
         level: 2207631,
       },
       {

@@ -2,10 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { ghostnetFA12 } from "../mocks/fa12Tokens";
 import { ghotnetThezard } from "../mocks/nftTokens";
-import {
-  makeDefaultDevSignerKeys,
-  makeToolkitFromDefaultDevSeed,
-} from "../mocks/devSignerKeys";
+import { makeDefaultDevSignerKeys, makeToolkitFromDefaultDevSeed } from "../mocks/devSignerKeys";
 import { ghostTezzard } from "../mocks/tokens";
 import { contract, makeStorageMichelsonJSON } from "./multisigContract";
 import { makeBatchLambda } from "./multisigUtils";
@@ -71,10 +68,7 @@ describe("multisig Sandbox", () => {
           { prim: "NIL", args: [{ prim: "operation" }] },
           {
             prim: "PUSH",
-            args: [
-              { prim: "key_hash" },
-              { string: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
-            ],
+            args: [{ prim: "key_hash" }, { string: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" }],
           },
           { prim: "IMPLICIT_ACCOUNT" },
           { prim: "PUSH", args: [{ prim: "mutez" }, { int: "9651" }] },

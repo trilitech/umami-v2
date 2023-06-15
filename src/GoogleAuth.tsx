@@ -95,8 +95,7 @@ export const GoogleAuth: React.FC<GoogleAuthProps> = ({
         aggregateVerifierType: "single_id_verifier",
         subVerifierDetailsArray: [
           {
-            clientId:
-              "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
+            clientId: "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
             typeOfLogin: "google",
             verifier: "umami",
             jwtParams: tmp,

@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Heading,
-  SimpleGrid,
-  Text,
-  VStack,
-  Center,
-} from "@chakra-ui/react";
+import { Box, Button, Divider, Heading, SimpleGrid, Text, VStack, Center } from "@chakra-ui/react";
 import { MakiLogo } from "./components/MakiLogo";
 import Slider from "./components/Slider";
 import SlideItem from "./components/SliderItem";
@@ -31,11 +22,7 @@ function ImportSeed() {
 
   return (
     <Box bg={"umami.gray.900"} height={"100vh"} padding={"60px"}>
-      <SimpleGrid
-        bg={"umami.gray.700"}
-        columns={[1, 1, 2]}
-        borderRadius={"30px"}
-      >
+      <SimpleGrid bg={"umami.gray.700"} columns={[1, 1, 2]} borderRadius={"30px"}>
         <Center>
           <VStack spacing={"16px"} maxW={"400px"} padding={"32px"}>
             <MakiLogo size={"48px"} />

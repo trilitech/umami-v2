@@ -1,12 +1,4 @@
-import {
-  Heading,
-  VStack,
-  Text,
-  Divider,
-  Checkbox,
-  Button,
-  Container,
-} from "@chakra-ui/react";
+import { Heading, VStack, Text, Divider, Checkbox, Button, Container } from "@chakra-ui/react";
 import React from "react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
@@ -49,14 +41,7 @@ const Eula: React.FC<{
       title="End User License Agreement"
       subtitle="Last updated June 25, 2021"
     >
-      <VStack
-        spacing={"10px"}
-        w="100%"
-        h="100%"
-        overflowX={"hidden"}
-        overflowY={"scroll"}
-        p="4px"
-      >
+      <VStack spacing={"10px"} w="100%" h="100%" overflowX={"hidden"} overflowY={"scroll"} p="4px">
         {eulaItems.map((item, index) => {
           return (
             <Container key={index}>
@@ -70,13 +55,8 @@ const Eula: React.FC<{
           );
         })}
         <Divider />
-        <Checkbox
-          onChange={(e) => setIsChecked(e.target.checked)}
-          pt="24px"
-          pb="24px"
-        >
-          I confirm that I have read and agreed with the terms of the User
-          Agreement
+        <Checkbox onChange={e => setIsChecked(e.target.checked)} pt="24px" pb="24px">
+          I confirm that I have read and agreed with the terms of the User Agreement
         </Checkbox>
         <Button
           w="100%"

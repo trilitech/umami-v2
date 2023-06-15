@@ -1,13 +1,5 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import {
-  Button,
-  Flex,
-  Heading,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { Button, Flex, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { FC } from "react";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
@@ -37,7 +29,7 @@ const ContactSelector: FC<{
   isDisabled?: boolean;
 }> = ({ onSelect = () => {}, selected, isDisabled }) => {
   const contacts = useAllSortedContacts();
-  const selectedContact = contacts.find((c) => c.pkh === selected);
+  const selectedContact = contacts.find(c => c.pkh === selected);
 
   return (
     <Menu>
@@ -49,14 +41,10 @@ const ContactSelector: FC<{
         h="48px"
         data-testid="contact-selector"
       >
-        {selectedContact ? (
-          <ContactSmallTile contact={selectedContact} />
-        ) : (
-          "Select a contact"
-        )}
+        {selectedContact ? <ContactSmallTile contact={selectedContact} /> : "Select a contact"}
       </MenuButton>
       <MenuList w="100%" bg={"umami.gray.900"} overflow="scroll" h="110px">
-        {contacts.map((contact) => (
+        {contacts.map(contact => (
           <MenuItem
             w="100%"
             value={contact.pkh}

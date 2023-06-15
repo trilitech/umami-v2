@@ -26,16 +26,12 @@ export const BakerSmallTile = ({
 };
 
 export const useRenderBakerSmallTile = () => {
-  const bakers = useAppSelector((s) => s.assets.bakers);
+  const bakers = useAppSelector(s => s.assets.bakers);
 
   return (pkh: string) => {
-    const baker = bakers.find((a) => a.address === pkh);
+    const baker = bakers.find(a => a.address === pkh);
     return baker ? (
-      <BakerSmallTile
-        pkh={baker.address}
-        label={baker.name}
-        imageUrl={baker.logo}
-      />
+      <BakerSmallTile pkh={baker.address} label={baker.name} imageUrl={baker.logo} />
     ) : null;
   };
 };

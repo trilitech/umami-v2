@@ -2,11 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Curves, InMemorySigner } from "@taquito/signer";
-import {
-  ContractMethod,
-  ContractProvider,
-  TezosToolkit,
-} from "@taquito/taquito";
+import { ContractMethod, ContractProvider, TezosToolkit } from "@taquito/taquito";
 import axios from "axios";
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
 import { tzktGetAddressResponseType } from "../tzkt/types";
@@ -41,7 +37,7 @@ export const getFingerPrint = async (seedPhrase: string): Promise<string> => {
   const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray
-    .map((bytes) => bytes.toString(16).padStart(2, "0"))
+    .map(bytes => bytes.toString(16).padStart(2, "0"))
     .join("")
     .slice(0, 8);
   return hashHex;
@@ -171,9 +167,7 @@ export const selectRandomElements = (
   index: number;
   value: any;
 }[] => {
-  const shuffled = arr
-    .map((value, index) => ({ value, index }))
-    .sort(() => Math.random() - 0.5);
+  const shuffled = arr.map((value, index) => ({ value, index })).sort(() => Math.random() - 0.5);
   const selected = shuffled.slice(0, n).sort((a, b) => a.index - b.index);
   return selected.map(({ index, value }) => ({ index, value }));
 };
