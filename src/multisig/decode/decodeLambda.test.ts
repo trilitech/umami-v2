@@ -1,6 +1,7 @@
-import { decode } from "./decodeLambda";
+import { decode, parseRawMichelson } from "./decodeLambda";
 import type { MichelsonV1Expression } from "@taquito/rpc";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
+import { UnrecognizedMichelsonError } from "./UnrecognizedMichelsonError";
 
 describe("decodeLambda", () => {
   test("invalid michelsonJSON batch (no head)", () => {
@@ -753,5 +754,252 @@ describe("decodeLambda", () => {
     expect(decode(input)).toEqual([
       { type: "delegation", recipient: parseImplicitPkh("tz1RuHDSj9P7mNNhfKxsyLGRDahTX5QD1DdP") },
     ]);
+  });
+
+  test("decode should throw unrecognizedMichelson error", () => {
+    const unrecognizedMichelson: MichelsonV1Expression[] = [
+      {
+        prim: "DROP",
+      },
+      {
+        prim: "NIL",
+        args: [
+          {
+            prim: "operation",
+          },
+        ],
+      },
+      {
+        prim: "PUSH",
+        args: [
+          {
+            prim: "address",
+          },
+          {
+            bytes: "0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572",
+          },
+        ],
+      },
+      {
+        prim: "CONTRACT",
+        args: [
+          {
+            prim: "list",
+            args: [
+              {
+                prim: "pair",
+                args: [
+                  {
+                    prim: "address",
+                    annots: ["%from_"],
+                  },
+                  {
+                    prim: "list",
+                    annots: ["%txs"],
+                    args: [
+                      {
+                        prim: "pair",
+                        args: [
+                          {
+                            prim: "address",
+                            annots: ["%to_"],
+                          },
+                          {
+                            prim: "pair",
+                            args: [
+                              {
+                                prim: "nat",
+                                annots: ["%token_id"],
+                              },
+                              {
+                                prim: "nat",
+                                annots: ["%amount"],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        prim: "IF_NONE",
+        args: [
+          [
+            {
+              prim: "UNIT",
+            },
+            {
+              prim: "FAILWITH",
+            },
+          ],
+          [
+            {
+              prim: "PUSH",
+              args: [
+                {
+                  prim: "mutez",
+                },
+                {
+                  int: "1",
+                },
+              ],
+            },
+            {
+              prim: "PUSH",
+              args: [
+                {
+                  prim: "list",
+                  args: [
+                    {
+                      prim: "pair",
+                      args: [
+                        {
+                          prim: "address",
+                          annots: ["%from_"],
+                        },
+                        {
+                          prim: "list",
+                          annots: ["%txs"],
+                          args: [
+                            {
+                              prim: "pair",
+                              args: [
+                                {
+                                  prim: "address",
+                                  annots: ["%to_"],
+                                },
+                                {
+                                  prim: "pair",
+                                  args: [
+                                    {
+                                      prim: "nat",
+                                      annots: ["%token_id"],
+                                    },
+                                    {
+                                      prim: "nat",
+                                      annots: ["%amount"],
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                [
+                  {
+                    prim: "Pair",
+                    args: [
+                      {
+                        bytes: "018e368c2083bdaef3199bae317d6c967c21d947b300",
+                      },
+                      [
+                        {
+                          prim: "Pair",
+                          args: [
+                            {
+                              bytes: "000057c264d6d7f7257cd3d8096150b0d8be60577ca7",
+                            },
+                            {
+                              prim: "Pair",
+                              args: [
+                                {
+                                  int: "6",
+                                },
+                                {
+                                  int: "1",
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    ],
+                  },
+                ],
+              ],
+            },
+            {
+              prim: "TRANSFER_TOKENS",
+            },
+            {
+              prim: "CONS",
+            },
+          ],
+        ],
+      },
+    ];
+
+    let thrownError;
+
+    try {
+      decode(unrecognizedMichelson);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError instanceof UnrecognizedMichelsonError).toBeTruthy();
+  });
+
+  test("parseRawMichelson decodes raw michelson", () => {
+    const rawMichelson =
+      '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"350000000000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"},{"prim":"PUSH","args":[{"prim":"address"},{"bytes":"01d7270a1dd9a8b9ee6b48380fb60dc36a7cd521bb007472616e73666572"}]},{"prim":"CONTRACT","args":[{"prim":"pair","args":[{"prim":"address","annots":[":from"]},{"prim":"pair","args":[{"prim":"address","annots":[":to"]},{"prim":"nat","annots":[":value"]}]}]}]},[{"prim":"IF_NONE","args":[[{"prim":"UNIT"},{"prim":"FAILWITH"}],[]]}],{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"0"}]},{"prim":"PUSH","args":[{"prim":"pair","args":[{"prim":"address","annots":[":from"]},{"prim":"pair","args":[{"prim":"address","annots":[":to"]},{"prim":"nat","annots":[":value"]}]}]},{"prim":"Pair","args":[{"bytes":"0156637790cdb23bc0a4c57d069d2e3577e5ed89a600"},{"prim":"Pair","args":[{"bytes":"0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"},{"int":"2"}]}]}]},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"},{"prim":"PUSH","args":[{"prim":"address"},{"bytes":"01fc1beb979d7c8da00d6e5e22c297bcf541834607007472616e73666572"}]},{"prim":"CONTRACT","args":[{"prim":"list","args":[{"prim":"pair","args":[{"prim":"address","annots":["%from_"]},{"prim":"list","annots":["%txs"],"args":[{"prim":"pair","args":[{"prim":"address","annots":["%to_"]},{"prim":"pair","args":[{"prim":"nat","annots":["%token_id"]},{"prim":"nat","annots":["%amount"]}]}]}]}]}]}]},[{"prim":"IF_NONE","args":[[{"prim":"UNIT"},{"prim":"FAILWITH"}],[]]}],{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"0"}]},{"prim":"PUSH","args":[{"prim":"list","args":[{"prim":"pair","args":[{"prim":"address","annots":["%from_"]},{"prim":"list","annots":["%txs"],"args":[{"prim":"pair","args":[{"prim":"address","annots":["%to_"]},{"prim":"pair","args":[{"prim":"nat","annots":["%token_id"]},{"prim":"nat","annots":["%amount"]}]}]}]}]}]},[{"prim":"Pair","args":[{"bytes":"0156637790cdb23bc0a4c57d069d2e3577e5ed89a600"},[{"prim":"Pair","args":[{"bytes":"0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"},{"prim":"Pair","args":[{"int":"0"},{"int":"3"}]}]}]]}]]},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]';
+    expect(parseRawMichelson(rawMichelson)).toEqual([
+      {
+        amount: "350000000000",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        type: "tez",
+      },
+      {
+        amount: "2",
+        contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        sender: "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8",
+        type: "fa1.2",
+      },
+      {
+        amount: "3",
+        contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        sender: "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8",
+        tokenId: "0",
+        type: "fa2",
+      },
+    ]);
+  });
+
+  test("parseRawMichelson should throw unrecognizedMichelson error", () => {
+    const unrcognizedRawMichelson =
+      '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"address"},{"bytes":"0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572"}]},{"prim":"CONTRACT","args":[{"prim":"list","args":[{"prim":"pair","args":[{"prim":"address","annots":["%from_"]},{"prim":"list","annots":["%txs"],"args":[{"prim":"pair","args":[{"prim":"address","annots":["%to_"]},{"prim":"pair","args":[{"prim":"nat","annots":["%token_id"]},{"prim":"nat","annots":["%amount"]}]}]}]}]}]}]},{"prim":"IF_NONE","args":[[{"prim":"UNIT"},{"prim":"FAILWITH"}],[{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"1"}]},{"prim":"PUSH","args":[{"prim":"list","args":[{"prim":"pair","args":[{"prim":"address","annots":["%from_"]},{"prim":"list","annots":["%txs"],"args":[{"prim":"pair","args":[{"prim":"address","annots":["%to_"]},{"prim":"pair","args":[{"prim":"nat","annots":["%token_id"]},{"prim":"nat","annots":["%amount"]}]}]}]}]}]},[{"prim":"Pair","args":[{"bytes":"018e368c2083bdaef3199bae317d6c967c21d947b300"},[{"prim":"Pair","args":[{"bytes":"000057c264d6d7f7257cd3d8096150b0d8be60577ca7"},{"prim":"Pair","args":[{"int":"6"},{"int":"1"}]}]}]]}]]},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]]}]';
+
+    let thrownError;
+    try {
+      parseRawMichelson(unrcognizedRawMichelson);
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError instanceof UnrecognizedMichelsonError).toBeTruthy();
+  });
+
+  test("parseRawMichelson should throw syntax error", () => {
+    const invalidJsonString = "{a:";
+
+    let thrownError;
+    try {
+      parseRawMichelson(invalidJsonString);
+    } catch (error) {
+      thrownError = error;
+    }
+    expect(thrownError instanceof SyntaxError).toBeTruthy();
   });
 });

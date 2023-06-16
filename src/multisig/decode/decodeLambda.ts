@@ -11,6 +11,7 @@ import {
 } from "./schemas";
 import type { MichelsonV1Expression } from "@taquito/rpc";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
+import { UnrecognizedMichelsonError } from "./UnrecognizedMichelsonError";
 
 const convertToPkh = (addressBytes: string): string => {
   if (addressBytes.length === 42) {
@@ -130,7 +131,9 @@ const parse = (michelson: MichelsonV1Expression[], acc: Operation[] = []): Opera
     return parse(michelson.slice(schema.items.length), [...acc, ...[parsed].flat()]);
   }
 
-  throw new Error(`Unrecognized michelson element: ${JSON.stringify(michelson[0])}`);
+  throw new UnrecognizedMichelsonError(
+    `Unrecognized michelson element: ${JSON.stringify(michelson[0])}`
+  );
 };
 
 const assertHead = (michelson: MichelsonV1Expression[]) => {
@@ -141,4 +144,9 @@ export const decode = (michelson: MichelsonV1Expression[]) => {
   assertHead(michelson);
 
   return parse(michelson.slice(2));
+};
+
+export const parseRawMichelson = (rawMichelson: string) => {
+  const michelson: MichelsonV1Expression[] = JSON.parse(rawMichelson);
+  return decode(michelson);
 };
