@@ -7,16 +7,7 @@ export const NftList = () => {
   const allOwnedNfts = Object.values(nfts).flat();
 
   return (
-    <Tabs
-      height="100%"
-      display="flex"
-      flexDirection="column"
-      bg="umami.gray.900"
-      borderRadius={4}
-      // color scheme not working even when put in 50-900 range
-      // TODO Fix
-      // https://chakra-ui.com/docs/components/tabs
-    >
+    <Tabs height="100%" display="flex" flexDirection="column" bg="umami.gray.900" borderRadius={4}>
       <TabList>
         <Tab>All NFTs</Tab>
       </TabList>

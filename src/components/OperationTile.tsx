@@ -1,33 +1,19 @@
-import { AirGapTransactionStatus } from "@airgap/coinlib-core/interfaces/IAirGapTransaction";
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsArrowDownLeft, BsArrowUpRight } from "react-icons/bs";
 import colors from "../style/colors";
-
+import { useIsBlockFinalised } from "../utils/hooks/assetsHooks";
 import { OperationDisplay } from "../types/Operation";
 import { getIsInbound } from "../views/operations/operationsUtils";
 import { CopyableAddress } from "./CopyableText";
 
-const darkColor = "umami.gray.500";
-
-const renderFromTo = (address: string, isInbound: boolean) => {
-  return (
-    <Flex alignItems="center">
-      <Heading color="text.dark" size="sm" mr={2}>
-        {`${isInbound ? "From:" : "Sent to:"} `}
-      </Heading>
-      <CopyableAddress pkh={address} />
-    </Flex>
-  );
-};
-
 export const OperationTile: React.FC<{
   operation: OperationDisplay;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-}> = ({ operation, onClick = () => {} }) => {
-  const { amount, status, prettyTimestamp, sender, recipient } = operation;
-  const success = status === AirGapTransactionStatus.APPLIED;
+}> = ({ operation }) => {
+  const isBlockFinalised = useIsBlockFinalised();
+  const { amount, prettyTimestamp, sender, recipient } = operation;
+  const success = isBlockFinalised(operation.level);
   // TODO refactor this
   const isInbound = getIsInbound(amount.prettyDisplay);
 
@@ -42,7 +28,7 @@ export const OperationTile: React.FC<{
     >
       <Icon
         alignSelf="flex-start"
-        color={darkColor}
+        color="umami.gray.500"
         mt={4}
         mr={4}
         w={4}
@@ -58,9 +44,22 @@ export const OperationTile: React.FC<{
           </Text>
         </Flex>
         <Flex justifyContent="space-between">
-          {renderFromTo(isInbound ? sender : recipient, isInbound)}
+          <Flex>
+            <Box mr="5px">
+              <Heading display="inline-flex" color="text.dark" size="sm" mr={2}>
+                Sent to:
+              </Heading>
+              <CopyableAddress display="inline-flex" pkh={recipient} />
+            </Box>
+            <Box>
+              <Heading display="inline-flex" color="text.dark" size="sm" mr={2}>
+                From:
+              </Heading>
+              <CopyableAddress display="inline-flex" pkh={sender} />
+            </Box>
+          </Flex>
           {success && (
-            //TODO handle pending and failed
+            //TODO handle pending and failed https://app.asana.com/0/1204165186238194/1204849210925962/f
             <Icon
               alignSelf="flex-end"
               color="umami.green"
