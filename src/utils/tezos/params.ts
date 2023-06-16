@@ -74,6 +74,25 @@ export const operationValuesToParams = async (
   return result;
 };
 
+const makeTokenTransferParams2 = async (
+  operation: OperationValue,
+  params: { amount: string; sender: string; recipient: string; isFa2: boolean },
+  signer: TezosToolkit
+): Promise<TransferParams> => {
+  if (operation.type !== "token") {
+    throw new Error("Incorrect type");
+  }
+  const asset = operation.data;
+  const { contract } = asset;
+  const args = { ...operation.value, contract };
+  const transferMethod =
+    asset.type === "fa1.2"
+      ? makeFA12TransferMethod(args, signer)
+      : makeFA2TransferMethod({ ...args, tokenId: asset.tokenId }, signer);
+
+  return (await transferMethod).toTransferParams();
+};
+
 const makeTokenTransferParams = async (
   operation: OperationValue,
   signer: TezosToolkit
