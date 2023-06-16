@@ -11,7 +11,7 @@ export const NetworkSelectorDisplay: React.FC<{
       <Select
         border="1px solid transparent"
         fontWeight={600}
-        color="umami.orange"
+        color="umami.green"
         placeholder="Choose network"
         value={value}
         onChange={e => {
