@@ -1,7 +1,7 @@
 import { Operation } from "../../../multisig/types";
 import { OperationValue } from "../types";
 
-export const toBatchOperation = (operation: OperationValue): Operation => {
+export const toLambdaOperation = (operation: OperationValue): Operation => {
   switch (operation.type) {
     case "tez":
       return {

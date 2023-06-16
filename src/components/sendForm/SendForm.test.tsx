@@ -28,11 +28,13 @@ import { store } from "../../utils/store/store";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 
-import { Estimate } from "@taquito/taquito";
+import { Estimate, TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { mock } from "jest-mock-extended";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import { mockToast } from "../../mocks/toast";
+import { multisigActions } from "../../utils/store/multisigsSlice";
+import { multisigs } from "../../mocks/mutlisigsWithPendingOperations";
 
 jest.mock("@chakra-ui/react", () => {
   return {
@@ -83,6 +85,8 @@ beforeAll(async () => {
     mockImplicitAccount(4, AccountType.SOCIAL),
     mockImplicitAccount(5, AccountType.LEDGER),
   ]);
+
+  store.dispatch(multisigActions.set(multisigs));
 });
 
 afterEach(() => {
@@ -788,6 +792,191 @@ describe("<SendForm />", () => {
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/foo"
+        );
+      });
+    });
+  });
+  describe("Multisig", () => {
+    it("If use selects a multisig account it displays a signer field prefiled with the first signer. Signer selector is disabled since wallet only owns one", async () => {
+      render(fixture(undefined, { type: "tez" }));
+      fillAccountSelector("Multisig Account 1");
+      const accountSelector = await screen.findByTestId(/proposal-signer-selector/i);
+      const expectedDefaultSigner = formatPkh(mockPkh(1));
+      expect(accountSelector).toHaveTextContent(expectedDefaultSigner);
+      expect(accountSelector).toBeDisabled();
+    });
+
+    test("User can acomplish a tez proposal", async () => {
+      fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
+        suggestedFeeMutez: 12345,
+      } as Estimate);
+      fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
+        hash: "mockHash",
+      } as TransactionOperation);
+
+      render(fixture(undefined, { type: "tez" }));
+      fillAccountSelector("Multisig Account 1");
+
+      const amountInput = screen.getByLabelText(/amount/i);
+      fireEvent.change(amountInput, { target: { value: 23 } });
+
+      const recipientInput = screen.getByLabelText(/to/i);
+      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+
+      const submitBtn = screen.getByText(/preview/i);
+
+      await waitFor(() => {
+        expect(submitBtn).toBeEnabled();
+      });
+
+      fireEvent.click(submitBtn);
+
+      await waitFor(() => {
+        const subTotal = screen.getByLabelText(/^sub-total$/i);
+        expect(subTotal).toHaveTextContent(/23 ꜩ/i);
+
+        const fee = screen.getByLabelText(/^fee$/i);
+        expect(fee).toHaveTextContent(/0.012345 ꜩ/i);
+
+        const total = screen.getByLabelText(/^total$/i);
+        expect(total).toHaveTextContent(/23.012345 ꜩ/i);
+      });
+
+      fillPassword("mockPass");
+
+      const submit = screen.getByRole("button", {
+        name: /submit transaction/i,
+      });
+
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
+      fireEvent.click(submit);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+          "href",
+          "https://mainnet.tzkt.io/mockHash"
+        );
+      });
+    });
+
+    test("User can acomplish an FA2 proposal", async () => {
+      fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
+        suggestedFeeMutez: 12345,
+      } as Estimate);
+      fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
+        hash: "mockHash",
+      } as TransactionOperation);
+
+      render(fixture(undefined, { type: "token", data: mockNFT(1) }));
+
+      fillAccountSelector("Multisig Account 1");
+
+      const recipientInput = screen.getByLabelText(/to/i);
+      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+
+      const submitBtn = screen.getByText(/preview/i);
+
+      await waitFor(() => {
+        expect(submitBtn).toBeEnabled();
+      });
+
+      fireEvent.click(submitBtn);
+
+      await waitFor(() => {
+        const fee = screen.getByLabelText(/^fee$/i);
+        expect(fee).toHaveTextContent(/0.012345 ꜩ/i);
+
+        const total = screen.getByLabelText(/^total$/i);
+        expect(total).toHaveTextContent(/0.012345 ꜩ/i);
+      });
+
+      fillPassword("mockPass");
+
+      const submit = screen.getByRole("button", {
+        name: /submit transaction/i,
+      });
+
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
+      fireEvent.click(submit);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+          "href",
+          "https://mainnet.tzkt.io/mockHash"
+        );
+      });
+    });
+    test("User can acomplish an FA1 proposal", async () => {
+      const MOCK_TOKEN_SYMBOL = "FA1FOO";
+
+      const mockFa1: FA12Token = {
+        type: "fa1.2",
+        contract: mockContract(2),
+        balance: "3",
+        metadata: {
+          symbol: MOCK_TOKEN_SYMBOL,
+          decimals: "8",
+        },
+      };
+      fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
+        suggestedFeeMutez: 12345,
+      } as Estimate);
+      fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
+        hash: "mockHash",
+      } as TransactionOperation);
+
+      render(
+        fixture(undefined, {
+          type: "token",
+          data: mockFa1,
+        })
+      );
+
+      fillAccountSelector("Multisig Account 1");
+
+      const recipientInput = screen.getByLabelText(/to/i);
+      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+
+      const amountInput = screen.getByLabelText(/amount/i);
+      fireEvent.change(amountInput, { target: { value: 10 } });
+      const submitBtn = screen.getByText(/preview/i);
+
+      await waitFor(() => {
+        expect(submitBtn).toBeEnabled();
+      });
+
+      fireEvent.click(submitBtn);
+
+      await waitFor(() => {
+        const fee = screen.getByLabelText(/^fee$/i);
+        expect(fee).toHaveTextContent(/0.012345 ꜩ/i);
+
+        const total = screen.getByLabelText(/^total$/i);
+        expect(total).toHaveTextContent(/0.012345 ꜩ/i);
+      });
+
+      fillPassword("mockPass");
+
+      const submit = screen.getByRole("button", {
+        name: /submit transaction/i,
+      });
+
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
+      fireEvent.click(submit);
+
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
+          "href",
+          "https://mainnet.tzkt.io/mockHash"
         );
       });
     });
