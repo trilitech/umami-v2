@@ -29,6 +29,7 @@ import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 
 import { Estimate } from "@taquito/taquito";
+import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { mock } from "jest-mock-extended";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import { mockToast } from "../../mocks/toast";
@@ -131,9 +132,11 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      fakeTezosUtils.estimateMutezTransfer.mockResolvedValue({
-        suggestedFeeMutez: 12345,
-      } as Estimate);
+      fakeTezosUtils.estimateBatch.mockResolvedValue([
+        {
+          suggestedFeeMutez: 12345,
+        } as Estimate,
+      ]);
 
       fireEvent.click(submitBtn);
 
@@ -257,9 +260,9 @@ describe("<SendForm />", () => {
 
       await fillFormAndSimulate();
 
-      fakeTezosUtils.transferMutez.mockResolvedValueOnce({
-        hash: "foo",
-      } as any);
+      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+        opHash: "foo",
+      } as BatchWalletOperation);
 
       fillPassword("mockPass");
 
@@ -282,9 +285,9 @@ describe("<SendForm />", () => {
     test("it should submit transaction and display recap with tzkt link", async () => {
       await fillFormAndSimulate();
 
-      fakeTezosUtils.transferMutez.mockResolvedValueOnce({
-        hash: "foo",
-      } as any);
+      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+        opHash: "foo",
+      } as BatchWalletOperation);
 
       fillPassword("mockPass");
 
@@ -308,11 +311,19 @@ describe("<SendForm />", () => {
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
       };
-      expect(fakeTezosUtils.transferMutez).toHaveBeenCalledWith(
-        mockPkh(7),
-        23000000,
-        config,
-        undefined
+      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
+        [
+          {
+            type: "tez",
+            value: {
+              amount: "23000000",
+              parameter: undefined,
+              recipient: mockPkh(7),
+              sender: mockPkh(1),
+            },
+          },
+        ],
+        config
       );
     });
   });
@@ -362,33 +373,36 @@ describe("<SendForm />", () => {
         expect(estimateButton).toBeEnabled();
       });
 
-      fakeTezosUtils.estimateFA2transfer.mockResolvedValueOnce({
-        suggestedFeeMutez: MOCK_FEE,
-      } as Estimate);
-
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, MOCK_FEE);
       fireEvent.click(estimateButton);
 
       await waitFor(() => {
         const fee = screen.getByLabelText(/^fee$/i);
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
-      expect(fakeTezosUtils.estimateFA2transfer).toHaveBeenCalledWith(
-        {
-          amount: "1000000",
-          contract: mockFA2.contract,
-          recipient: mockImplicitAccount(7).pkh,
-          sender: mockImplicitAccount(2).pkh,
-          tokenId: "7",
-        },
 
-        mockImplicitAccount(2).pk,
+      expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(
+        [
+          {
+            data: mockFA2,
+            type: "token",
+            value: {
+              amount: "1000000",
+              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
+              sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+            },
+          },
+        ],
+        "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+        "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
         "mainnet"
       );
 
       fillPassword("mockPass");
-      fakeTezosUtils.transferFA2Token.mockResolvedValueOnce({
-        hash: "mockHash",
-      } as any);
+
+      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+        opHash: "mockHash",
+      } as BatchWalletOperation);
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -408,15 +422,23 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(fakeTezosUtils.transferFA2Token).toHaveBeenCalledWith(
+      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
+        [
+          {
+            data: mockFA2,
+            type: "token",
+            value: {
+              amount: "1000000",
+              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
+              sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+            },
+          },
+        ],
         {
-          amount: "1000000",
-          contract: mockFA2.contract,
-          recipient: mockPkh(7),
-          sender: mockPkh(2),
-          tokenId: mockFA2.tokenId,
-        },
-        { network: "mainnet", sk: "mockSk", type: "sk" }
+          network: "mainnet",
+          sk: "mockSk",
+          type: "sk",
+        }
       );
     });
   });
@@ -465,9 +487,7 @@ describe("<SendForm />", () => {
         expect(estimateButton).toBeEnabled();
       });
 
-      fakeTezosUtils.estimateFA12transfer.mockResolvedValueOnce({
-        suggestedFeeMutez: MOCK_FEE,
-      } as Estimate);
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, MOCK_FEE);
 
       fireEvent.click(estimateButton);
 
@@ -476,22 +496,27 @@ describe("<SendForm />", () => {
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
 
-      expect(fakeTezosUtils.estimateFA12transfer).toHaveBeenCalledWith(
-        {
-          amount: "1000000000",
-          contract: mockFa1.contract,
-          recipient: mockImplicitAccount(7).pkh,
-          sender: mockImplicitAccount(2).pkh,
-        },
-
-        mockImplicitAccount(2).pk,
+      expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(
+        [
+          {
+            data: mockFa1,
+            type: "token",
+            value: {
+              amount: "1000000000",
+              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
+              sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+            },
+          },
+        ],
+        "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+        "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
         "mainnet"
       );
 
       fillPassword("mockPass");
-      fakeTezosUtils.transferFA12Token.mockResolvedValueOnce({
-        hash: "mockHash",
-      } as any);
+      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+        opHash: "mockHash",
+      } as BatchWalletOperation);
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -511,13 +536,18 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(fakeTezosUtils.transferFA12Token).toHaveBeenCalledWith(
-        {
-          amount: "1000000000",
-          contract: mockFa1.contract,
-          recipient: mockPkh(7),
-          sender: mockPkh(2),
-        },
+      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
+        [
+          {
+            data: mockFa1,
+            type: "token",
+            value: {
+              amount: "1000000000",
+              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
+              sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+            },
+          },
+        ],
         { network: "mainnet", sk: "mockSk", type: "sk" }
       );
     });
@@ -542,10 +572,7 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      fakeTezosUtils.estimateFA2transfer.mockResolvedValueOnce({
-        suggestedFeeMutez: 3654,
-      } as Estimate);
-
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 3654);
       fireEvent.click(submitBtn);
 
       await waitFor(() => {
@@ -581,9 +608,9 @@ describe("<SendForm />", () => {
       await fillFormAndSimulate();
 
       fillPassword("mockPass");
-      fakeTezosUtils.transferFA2Token.mockResolvedValueOnce({
-        hash: "mockHash",
-      } as any);
+      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+        opHash: "mockHash",
+      } as BatchWalletOperation);
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -606,14 +633,18 @@ describe("<SendForm />", () => {
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
       };
-      expect(fakeTezosUtils.transferFA2Token).toHaveBeenCalledWith(
-        {
-          amount: "1",
-          contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob1",
-          recipient: mockPkh(7),
-          sender: mockPkh(1),
-          tokenId: "mockId1",
-        },
+      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
+        [
+          {
+            data: mockNFT(1),
+            type: "token",
+            value: {
+              amount: "1",
+              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
+              sender: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+            },
+          },
+        ],
         config
       );
     });
@@ -663,10 +694,7 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      fakeTezosUtils.estimateMutezTransfer.mockResolvedValueOnce({
-        suggestedFeeMutez: 12345,
-      } as Estimate);
-
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 12345);
       fireEvent.click(submitBtn);
 
       await waitFor(() => {
@@ -691,9 +719,9 @@ describe("<SendForm />", () => {
 
       const googleSSOBtn = screen.getByText(/sign with google/i);
 
-      fakeTezosUtils.transferMutez.mockResolvedValueOnce({
-        hash: "foo",
-      } as any);
+      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+        opHash: "foo",
+      } as BatchWalletOperation);
 
       fireEvent.click(googleSSOBtn);
 
@@ -723,9 +751,7 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      fakeTezosUtils.estimateMutezTransfer.mockResolvedValueOnce({
-        suggestedFeeMutez: 12345,
-      } as Estimate);
+      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 12345);
 
       fireEvent.click(submitBtn);
 
@@ -751,9 +777,9 @@ describe("<SendForm />", () => {
 
       const ledgerBtn = screen.getByText(/sign with ledger/i);
 
-      fakeTezosUtils.transferMutez.mockResolvedValueOnce({
-        hash: "foo",
-      } as any);
+      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+        opHash: "foo",
+      } as BatchWalletOperation);
 
       fireEvent.click(ledgerBtn);
 
