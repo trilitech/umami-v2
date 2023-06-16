@@ -5,6 +5,7 @@ import { Estimate } from "@taquito/taquito";
 import { TezosNetwork } from "@airgap/tezos";
 import { estimateBatch } from "../../utils/tezos";
 import { zip } from "../../utils/helpers";
+import { toBatchOperation } from "../../components/sendForm/utils/toRawOperation";
 
 export const getTotalFee = (items: BatchItem[]): BigNumber => {
   const fee = items.reduce((acc, curr) => {
@@ -40,7 +41,7 @@ export const operationValuesToBatchItems = async (
   pk: string,
   network: TezosNetwork
 ) => {
-  const estimations = await estimateBatch(operations, pkh, pk, network);
+  const estimations = await estimateBatch(operations.map(toBatchOperation), pkh, pk, network);
   const items = zip(operations, estimations).map(([o, e]) => {
     return {
       fee: String(e.suggestedFeeMutez),

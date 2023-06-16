@@ -1,5 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { OperationValue } from "../components/sendForm/types";
+import { toBatchOperation } from "../components/sendForm/utils/toRawOperation";
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
 
@@ -75,7 +76,11 @@ describe("Tezos utils", () => {
         },
       ];
 
-      const result = await operationValuesToBatchParams(input, pk0, TezosNetwork.GHOSTNET);
+      const result = await operationValuesToBatchParams(
+        input.map(toBatchOperation),
+        pk0,
+        TezosNetwork.GHOSTNET
+      );
       expect(result).toEqual([
         {
           amount: 3,
@@ -199,44 +204,46 @@ describe("Tezos utils", () => {
 
     describe("Estimations", () => {
       test("Batch estimation works with batches containg tez, FA1.2 and FA2 tokens on ghostnet", async () => {
+        const input: OperationValue[] = [
+          {
+            type: "tez",
+            value: {
+              amount: "1",
+              sender: pkh0,
+              recipient: pkh1,
+            },
+          },
+          {
+            type: "token",
+            data: ghostTezzard,
+            value: {
+              sender: pkh0,
+              recipient: pkh1,
+              amount: "1",
+            },
+          },
+          {
+            type: "token",
+            data: ghostFA12,
+            value: {
+              sender: pkh0,
+              recipient: pkh1,
+              amount: "1",
+            },
+          },
+          {
+            type: "token",
+            data: ghostFA2,
+            value: {
+              sender: pkh0,
+              recipient: pkh1,
+              amount: "1",
+            },
+          },
+        ];
+
         const ghostnetResult = await estimateBatch(
-          [
-            {
-              type: "tez",
-              value: {
-                amount: "1",
-                sender: pkh0,
-                recipient: pkh1,
-              },
-            },
-            {
-              type: "token",
-              data: ghostTezzard,
-              value: {
-                sender: pkh0,
-                recipient: pkh1,
-                amount: "1",
-              },
-            },
-            {
-              type: "token",
-              data: ghostFA12,
-              value: {
-                sender: pkh0,
-                recipient: pkh1,
-                amount: "1",
-              },
-            },
-            {
-              type: "token",
-              data: ghostFA2,
-              value: {
-                sender: pkh0,
-                recipient: pkh1,
-                amount: "1",
-              },
-            },
-          ],
+          input.map(toBatchOperation),
           pkh0,
           pk0,
           TezosNetwork.GHOSTNET
@@ -248,25 +255,26 @@ describe("Tezos utils", () => {
       });
 
       test("Batch estimation works with batches containg tez on mainnet", async () => {
+        const input: OperationValue[] = [
+          {
+            type: "tez",
+            value: {
+              amount: "100",
+              sender: pkh0,
+              recipient: pkh1,
+            },
+          },
+          {
+            type: "tez",
+            value: {
+              amount: "200",
+              sender: pkh0,
+              recipient: pkh1,
+            },
+          },
+        ];
         const mainnetResult = await estimateBatch(
-          [
-            {
-              type: "tez",
-              value: {
-                amount: "100",
-                sender: pkh0,
-                recipient: pkh1,
-              },
-            },
-            {
-              type: "tez",
-              value: {
-                amount: "200",
-                sender: pkh0,
-                recipient: pkh1,
-              },
-            },
-          ],
+          input.map(toBatchOperation),
           pkh0,
           pk0,
           TezosNetwork.MAINNET
@@ -279,17 +287,18 @@ describe("Tezos utils", () => {
       });
 
       test("Batch estimation works with batches containing delegations on mainnet", async () => {
-        const mainnetResult = await estimateBatch(
-          [
-            {
-              type: "delegation",
+        const input: OperationValue[] = [
+          {
+            type: "delegation",
 
-              value: {
-                sender: pkh0,
-                recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
-              },
+            value: {
+              sender: pkh0,
+              recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
             },
-          ],
+          },
+        ];
+        const mainnetResult = await estimateBatch(
+          input.map(toBatchOperation),
           pkh0,
           pk0,
           TezosNetwork.MAINNET
@@ -301,25 +310,26 @@ describe("Tezos utils", () => {
       });
 
       test("Batch estimation fails with insuficient funds on mainnet", async () => {
-        const estimation = estimateBatch(
-          [
-            {
-              type: "tez",
-              value: {
-                amount: "9999999",
-                sender: pkh0,
-                recipient: pkh1,
-              },
+        const input: OperationValue[] = [
+          {
+            type: "tez",
+            value: {
+              amount: "9999999",
+              sender: pkh0,
+              recipient: pkh1,
             },
-            {
-              type: "delegation",
+          },
+          {
+            type: "delegation",
 
-              value: {
-                sender: pkh0,
-                recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
-              },
+            value: {
+              sender: pkh0,
+              recipient: "tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz",
             },
-          ],
+          },
+        ];
+        const estimation = estimateBatch(
+          input.map(toBatchOperation),
           pkh0,
           pk0,
           TezosNetwork.MAINNET
