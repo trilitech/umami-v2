@@ -113,7 +113,7 @@ export const RecapDisplay: React.FC<{
               </Heading>
               <AccountSmallTile pkh={signerAccount.pkh} />
             </Flex>
-            {transfer.length > 1 ? (
+            {isBatch ? (
               <BatchRecap transfer={transfer} />
             ) : (
               <NonBatchRecap transfer={transfer[0]} />
