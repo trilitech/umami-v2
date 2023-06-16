@@ -50,6 +50,6 @@ export type DelegationOperation = DelegationMode & {
 export type OperationValue = TezOperation | TokenOperation | DelegationOperation;
 
 export type EstimatedOperation = {
-  operation: OperationValue | OperationValue[];
+  operations: OperationValue[];
   fee: string;
 };

@@ -34,15 +34,16 @@ import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
 import { BatchRecap } from "./BatchRecap";
 
-const makeTransfer = async (operation: OperationValue | OperationValue[], config: SignerConfig) => {
-  if (Array.isArray(operation)) {
-    return submitBatch(operation, config).then(res => {
+const makeTransfer = async (operations: OperationValue[], config: SignerConfig) => {
+  if (operations.length > 1) {
+    return submitBatch(operations, config).then(res => {
       return {
         hash: res.opHash,
       };
     });
   }
 
+  const operation = operations[0];
   switch (operation.type) {
     case "delegation":
       return await delegate(operation.value.sender, operation.value.recipient, config);
@@ -110,23 +111,11 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   );
 };
 
-const getSubTotal = (t: OperationValue[] | OperationValue): BigNumber => {
-  if (Array.isArray(t)) {
-    return getBatchSubtotal(t);
-  }
-
-  if (t.type === "tez") {
-    return new BigNumber(t.value.amount);
-  }
-
-  return new BigNumber(0);
-};
-
 export const RecapDisplay: React.FC<{
   network: TezosNetwork;
   recap: EstimatedOperation;
   onSucces: (hash: string) => void;
-}> = ({ recap: { fee, operation: transfer }, network, onSucces }) => {
+}> = ({ recap: { fee, operations: transfer }, network, onSucces }) => {
   const feeNum = new BigNumber(fee);
   const getAccount = useGetOwnedAccount();
 
@@ -134,7 +123,7 @@ export const RecapDisplay: React.FC<{
   const [isLoading, setIsLoading] = useState(false);
   const clearBatch = useClearBatch();
 
-  const signerAccount = getAccount((Array.isArray(transfer) ? transfer[0] : transfer).value.sender);
+  const signerAccount = getAccount(transfer[0].value.sender);
 
   const handleConfigSubmit = async (config: SignerConfig) => {
     setIsLoading(true);
@@ -159,7 +148,7 @@ export const RecapDisplay: React.FC<{
     setIsLoading(false);
   };
 
-  const total = feeNum.plus(getSubTotal(transfer));
+  const total = feeNum.plus(getBatchSubtotal(transfer));
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
@@ -175,10 +164,10 @@ export const RecapDisplay: React.FC<{
               </Heading>
               <AccountSmallTile pkh={signerAccount.pkh} />
             </Flex>
-            {Array.isArray(transfer) ? (
+            {transfer.length > 1 ? (
               <BatchRecap transfer={transfer} />
             ) : (
-              <NonBatchRecap transfer={transfer} />
+              <NonBatchRecap transfer={transfer[0]} />
             )}
             <Fee mutez={fee} />
           </Box>
