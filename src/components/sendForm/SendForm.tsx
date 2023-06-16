@@ -11,7 +11,7 @@ import { sumEstimations } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
-import { EstimatedOperation, OperationValue, SendFormMode } from "./types";
+import { EstimatedOperation, FormOperations, OperationValue, SendFormMode } from "./types";
 
 const makeSimulation = (
   operations: OperationValue[],
@@ -63,14 +63,14 @@ export const SendForm = ({
     }
   }, [hash]);
 
-  const simulate = async (operations: OperationValue[]) => {
+  const simulate = async (operations: FormOperations) => {
     setIsLoading(true);
     try {
-      const sender = operations[0].value.sender;
+      const sender = operations.content[0].value.sender;
 
       const pk = getPk(sender);
 
-      const estimate = await makeSimulation(operations, pk, sender, network);
+      const estimate = await makeSimulation(operations.content, pk, sender, network);
 
       setTransferValues({
         operations,
