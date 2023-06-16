@@ -245,12 +245,8 @@ describe("<BatchView />", () => {
       render(fixture());
       clickSubmitOnFirstBatch();
 
-      expect(
-        screen.getByTestId("batch-table-" + mockImplicitAccount(2).pkh)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByTestId("batch-table-" + mockImplicitAccount(1).pkh)
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("batch-table-" + mockImplicitAccount(2).pkh)).toBeInTheDocument();
+      expect(screen.getByTestId("batch-table-" + mockImplicitAccount(1).pkh)).toBeInTheDocument();
 
       const previewBtn = screen.getByRole("button", { name: /preview/i });
       fireEvent.click(previewBtn);
@@ -310,9 +306,7 @@ describe("<BatchView />", () => {
         config
       );
 
-      expect(
-        screen.getByTestId("batch-table-" + mockImplicitAccount(2).pkh)
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("batch-table-" + mockImplicitAccount(2).pkh)).toBeInTheDocument();
       expect(
         screen.queryByTestId("batch-table-" + mockImplicitAccount(1).pkh)
       ).not.toBeInTheDocument();
