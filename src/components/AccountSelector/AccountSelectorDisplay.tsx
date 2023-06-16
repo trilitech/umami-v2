@@ -14,14 +14,8 @@ const AccountSelectorDisplay: React.FC<{
   accounts: AllAccount[];
   onSelect: (a: AllAccount) => void;
   dataTestid?: string;
-}> = ({
-  isDisabled,
-  selected,
-  accounts,
-  onSelect,
-  dataTestid = "account-selector",
-}) => {
-  const selectedAccount = accounts.find((a) => a.pkh === selected);
+}> = ({ isDisabled, selected, accounts, onSelect, dataTestid = "account-selector" }) => {
+  const selectedAccount = accounts.find(a => a.pkh === selected);
   return (
     <Menu>
       <MenuButton
@@ -36,7 +30,7 @@ const AccountSelectorDisplay: React.FC<{
         {selectedAccount ? renderAccount(selectedAccount) : "Select an account"}
       </MenuButton>
       <MenuList bg={"umami.gray.900"} maxHeight={300} overflow="scroll">
-        {accounts.map((account) => (
+        {accounts.map(account => (
           <MenuItem
             value={account.pkh}
             aria-label={account.label}
