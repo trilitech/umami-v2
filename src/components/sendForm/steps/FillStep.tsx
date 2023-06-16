@@ -64,6 +64,9 @@ export const DelegateForm = ({
     defaultValues: { sender, baker: recipient },
   });
   const { isValid } = formState;
+
+  const accountIsMultisig = useAccountIsMultisig();
+  const senderIsMultisig = Boolean(sender && accountIsMultisig(sender));
   const subTitle = undelegate ? "Remove delegation" : "Delegate";
   return (
     <ModalContent bg="umami.gray.900">
@@ -110,7 +113,7 @@ export const DelegateForm = ({
               width={"100%"}
               isLoading={isLoading}
               type="submit"
-              isDisabled={!isValid || isLoading}
+              isDisabled={!isValid || isLoading || senderIsMultisig}
               variant="ghost"
               mb={2}
             >
