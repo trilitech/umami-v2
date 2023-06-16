@@ -105,7 +105,7 @@ export const SendForm = ({
     return (
       <RecapDisplay
         isBatch={mode.type === "batch"}
-        onSucces={setHash}
+        onSuccess={setHash}
         network={network}
         recap={transferValues}
       />

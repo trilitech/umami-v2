@@ -61,9 +61,9 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
 export const RecapDisplay: React.FC<{
   network: TezosNetwork;
   recap: EstimatedOperation;
-  onSucces: (hash: string) => void;
+  onSuccess: (hash: string) => void;
   isBatch: boolean;
-}> = ({ recap: { fee, operations: transfer }, network, onSucces, isBatch }) => {
+}> = ({ recap: { fee, operations: transfer }, network, onSuccess: onSucces, isBatch }) => {
   const feeNum = new BigNumber(fee);
   const getAccount = useGetOwnedAccount();
 
