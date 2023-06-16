@@ -1,14 +1,9 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { OperationValue } from "../components/sendForm/types";
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
-import { ghostFA12, ghostFA12WithOwner, ghostFA2, ghostTezzard } from "../mocks/tokens";
+import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
 
-import {
-  estimateBatch,
-  estimateFA12transfer,
-  estimateFA2transfer,
-  operationValuesToBatchParams,
-} from "../utils/tezos";
+import { estimateBatch, operationValuesToBatchParams } from "../utils/tezos";
 
 jest.unmock("../utils/tezos");
 
@@ -203,37 +198,6 @@ describe("Tezos utils", () => {
     });
 
     describe("Estimations", () => {
-      test("FA2 estimation returns the right value on ghostnet", async () => {
-        const result = await estimateFA2transfer(
-          {
-            amount: "1",
-            contract: ghostTezzard.contract,
-            recipient: pkh1,
-            sender: pkh0,
-            tokenId: ghostTezzard.tokenId,
-          },
-          pk0,
-          TezosNetwork.GHOSTNET
-        );
-
-        expect(result).toHaveProperty("suggestedFeeMutez");
-      });
-
-      test("FA12 estimation returns the right value on ghostnet", async () => {
-        const result = await estimateFA12transfer(
-          {
-            amount: "1",
-            contract: ghostFA12WithOwner.contract,
-            recipient: pkh1,
-            sender: ghostFA12WithOwner.owner,
-          },
-          "TEST_PK",
-          TezosNetwork.GHOSTNET
-        );
-
-        expect(result).toHaveProperty("suggestedFeeMutez");
-      });
-
       test("Batch estimation works with batches containg tez, FA1.2 and FA2 tokens on ghostnet", async () => {
         const ghostnetResult = await estimateBatch(
           [
@@ -363,24 +327,6 @@ describe("Tezos utils", () => {
 
         await expect(estimation).rejects.toThrow(/tez.subtraction_underflow/i);
       });
-    });
-  });
-
-  describe("Single transfers", () => {
-    test("FA2 estimation returns the right value on ghostnet", async () => {
-      const result = await estimateFA2transfer(
-        {
-          amount: "1",
-          contract: ghostTezzard.contract,
-          recipient: pkh1,
-          sender: pkh0,
-          tokenId: ghostTezzard.tokenId,
-        },
-        pk0,
-        TezosNetwork.GHOSTNET
-      );
-
-      expect(result).toHaveProperty("suggestedFeeMutez");
     });
   });
 });

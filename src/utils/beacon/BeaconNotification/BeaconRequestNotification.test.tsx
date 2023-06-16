@@ -7,7 +7,6 @@ import {
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
-import { Estimate, TransactionOperation } from "@taquito/taquito";
 import { BeaconNotification } from ".";
 import {
   mockBeaconDelegate,
@@ -38,9 +37,6 @@ const SENDER_ID = "mockSenderId";
 const DAPP_NAME = "mockDappName";
 const MESSAGE_ID = "mockMessageId";
 const SCOPES = [PermissionScope.SIGN];
-const FEE = {
-  suggestedFeeMutez: 12345,
-};
 const BATCH_OP_HASH = { opHash: "bar" };
 
 const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => (
@@ -51,8 +47,6 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 
 beforeEach(() => {
   setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
-  fakeTezosUtils.estimateMutezTransfer.mockResolvedValue(FEE as Estimate);
-  fakeTezosUtils.estimateDelegation.mockResolvedValue(FEE as Estimate);
   fakeTezosUtils.submitBatch.mockResolvedValue(BATCH_OP_HASH as any);
 });
 
