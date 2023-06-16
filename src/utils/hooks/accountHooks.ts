@@ -152,9 +152,7 @@ export const useGetPk = () => {
   return (pkh: string) => {
     const account = getAccount(pkh);
     if (account.type === AccountType.MULTISIG) {
-      throw new Error(
-        "Can't apply getPk to a multisig account since it has no pk"
-      );
+      throw new Error("Can't apply getPk to a multisig account since it has no pk");
     }
 
     return account.pk;
@@ -164,6 +162,6 @@ export const useGetPk = () => {
 export const useAccountIsMultisig = () => {
   const accounts = useMultisigAccounts();
   return (pkh: string) => {
-    return !!accounts.find((a) => a.pkh === pkh);
+    return !!accounts.find(a => a.pkh === pkh);
   };
 };
