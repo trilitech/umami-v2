@@ -12,6 +12,7 @@ import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, OperationValue, SendFormMode } from "./types";
+import { toBatchOperation } from "./utils/toRawOperation";
 
 const makeSimulation = (
   operations: OperationValue[],
@@ -19,7 +20,7 @@ const makeSimulation = (
   pkh: string,
   network: TezosNetwork
 ) => {
-  return estimateBatch(operations, pkh, pk, network).then(sumEstimations);
+  return estimateBatch(operations.map(toBatchOperation), pkh, pk, network).then(sumEstimations);
 };
 
 export const useGetPk = () => {

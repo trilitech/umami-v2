@@ -7,6 +7,7 @@ export const toBatchOperation = (operation: OperationValue): BatchOperation => {
       return {
         type: "tez",
         amount: operation.value.amount,
+        sender: operation.value.sender,
         recipient: operation.value.recipient,
       };
       break;
