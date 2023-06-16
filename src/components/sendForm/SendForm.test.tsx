@@ -23,7 +23,7 @@ import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { formatPkh } from "../../utils/format";
 import * as accountUtils from "../../utils/hooks/accountUtils";
-import assetsSlice from "../../utils/store/assetsSlice";
+import assetsSlice, { BatchItem } from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
@@ -82,6 +82,10 @@ beforeAll(async () => {
     mockImplicitAccount(4, AccountType.SOCIAL),
     mockImplicitAccount(5, AccountType.LEDGER),
   ]);
+});
+
+afterEach(() => {
+  store.dispatch(assetsSlice.actions.reset());
 });
 
 afterAll(() => {
@@ -240,6 +244,39 @@ describe("<SendForm />", () => {
 
     test("should display simulation result: subtotal, fee and total", async () => {
       await fillFormAndSimulate();
+    });
+
+    test("it should submit transaction and not alter the user's batch", async () => {
+      const mockBatchItems = [{} as BatchItem];
+      store.dispatch(
+        assetsSlice.actions.updateBatch({
+          pkh: mockImplicitAccount(1).pkh,
+          items: mockBatchItems,
+        })
+      );
+
+      await fillFormAndSimulate();
+
+      fakeTezosUtils.transferMutez.mockResolvedValueOnce({
+        hash: "foo",
+      } as any);
+
+      fillPassword("mockPass");
+
+      const submit = screen.getByRole("button", {
+        name: /submit transaction/i,
+      });
+      await waitFor(() => {
+        expect(submit).toBeEnabled();
+      });
+
+      fireEvent.click(submit);
+      await waitFor(() => {
+        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+      });
+      expect(
+        store.getState().assets.batches[mockImplicitAccount(1).pkh]?.items
+      ).toEqual(mockBatchItems);
     });
 
     test("it should submit transaction and display recap with tzkt link", async () => {

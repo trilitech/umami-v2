@@ -115,7 +115,8 @@ export const RecapDisplay: React.FC<{
   network: TezosNetwork;
   recap: EstimatedOperation;
   onSucces: (hash: string) => void;
-}> = ({ recap: { fee, operations: transfer }, network, onSucces }) => {
+  isBatch: boolean;
+}> = ({ recap: { fee, operations: transfer }, network, onSucces, isBatch }) => {
   const feeNum = new BigNumber(fee);
   const getAccount = useGetOwnedAccount();
 
@@ -136,7 +137,8 @@ export const RecapDisplay: React.FC<{
 
     try {
       const result = await makeTransfer(transfer, config);
-      if (Array.isArray(transfer)) {
+      if (isBatch) {
+        // TODO this will have to me moved in a thunk
         clearBatch(signerAccount.pkh);
       }
       onSucces(result.hash);
