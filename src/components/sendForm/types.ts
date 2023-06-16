@@ -1,5 +1,5 @@
 import { TransferParams } from "@taquito/taquito";
-import { Common, Delegation } from "../../multisig/types";
+import { Common, Delegation, TezOperation as LambdaTezOperation } from "../../multisig/types";
 import { Asset } from "../../types/Asset";
 
 type TezMode = { type: "tez" };
@@ -55,4 +55,7 @@ export type EstimatedOperation = {
   fee: string;
 };
 
-export type BatchOperation = Common | (Delegation & { sender: string });
+export type BatchOperation =
+  | Common
+  | (Delegation & { sender: string })
+  | (LambdaTezOperation & { parameter?: TransferParams["parameter"] });

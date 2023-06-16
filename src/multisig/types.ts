@@ -17,7 +17,6 @@ export type TezOperation = {
   type: "tez";
   recipient: Address;
   amount: string;
-  parameter?: TransferParams["parameter"];
 };
 export type FA12Operation = {
   type: "fa1.2";
@@ -32,6 +31,6 @@ export type Delegation = {
   recipient?: Address;
 };
 
-export type Common = TezOperation | FA12Operation | FA2Operation;
+export type Common = FA12Operation | FA2Operation;
 
-export type Operation = Common | Delegation;
+export type LambdaOperations = Common | Delegation | TezOperation;

@@ -1,7 +1,7 @@
-import { Operation } from "../../../multisig/types";
-import { OperationValue } from "../types";
+import { LambdaOperations } from "../../../multisig/types";
+import { BatchOperation, OperationValue } from "../types";
 
-export const toRawOperation = (operation: OperationValue): Operation => {
+export const toBatchOperation = (operation: OperationValue): BatchOperation => {
   switch (operation.type) {
     case "tez":
       return {
@@ -33,7 +33,22 @@ export const toRawOperation = (operation: OperationValue): Operation => {
     case "delegation":
       return {
         type: "delegation",
+        sender: operation.value.sender,
         recipient: operation.value.recipient,
       };
   }
+};
+
+// Lambda operations don't support tez transfer params yet, and don't requier the sender for delegations
+export const toLambdaOperation = (operation: BatchOperation): LambdaOperations => {
+  if (operation.type === "tez") {
+    const { parameter, ...result } = operation;
+    return result;
+  }
+
+  if (operation.type === "delegation") {
+    const { sender, ...result } = operation;
+    return result;
+  }
+  return operation;
 };

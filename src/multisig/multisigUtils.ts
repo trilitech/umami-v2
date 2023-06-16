@@ -2,7 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { TezosToolkit, MANAGER_LAMBDA } from "@taquito/taquito";
 import { makeFA12TransferMethod, makeFA2TransferMethod } from "../utils/tezos";
 import { nodeUrls } from "../utils/tezos/consts";
-import { FA12Operation, FA2Operation, Operation } from "./types";
+import { FA12Operation, FA2Operation, LambdaOperations } from "./types";
 import type { MichelsonV1Expression } from "@taquito/rpc";
 import { isEqual } from "lodash";
 import { addressType } from "../types/Address";
@@ -111,7 +111,7 @@ const headlessLambda = (lambda: MichelsonV1Expression[]): MichelsonV1Expression[
   return lambda;
 };
 
-export const makeLambda = async (operation: Operation, network: TezosNetwork) => {
+export const makeLambda = async (operation: LambdaOperations, network: TezosNetwork) => {
   const nodeUrl = nodeUrls[network];
   const toolkit = new TezosToolkit(nodeUrl);
   switch (operation.type) {
@@ -157,7 +157,7 @@ export const makeLambda = async (operation: Operation, network: TezosNetwork) =>
  * @param network Network is needed for fetching contract parameter elements in lambda
  * @returns Lambda in MichelsonJSON (=Micheline) format
  */
-export const makeBatchLambda = async (operations: Operation[], network: TezosNetwork) => {
+export const makeBatchLambda = async (operations: LambdaOperations[], network: TezosNetwork) => {
   const opsLambdas = (
     await Promise.all(operations.map(operation => makeLambda(operation, network)))
   ).flatMap(headlessLambda);
