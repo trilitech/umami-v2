@@ -60,11 +60,11 @@ export type Implicit<T extends OperationValue[]> = {
   content: T;
 };
 
-export type ProposalOperation = Proposal<OperationValue[]>;
+export type ProposalOperations = Proposal<OperationValue[]>;
 
-export type ImplicitOperation = Implicit<OperationValue[]>;
+export type ImplicitOperations = Implicit<OperationValue[]>;
 
-export type FormOperations = ImplicitOperation | ProposalOperation;
+export type FormOperations = ImplicitOperations | ProposalOperations;
 
 export type EstimatedOperation = {
   operations: FormOperations;

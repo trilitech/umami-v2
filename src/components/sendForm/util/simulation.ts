@@ -3,11 +3,11 @@ import { Estimate } from "@taquito/taquito";
 import { makeBatchLambda } from "../../../multisig/multisigUtils";
 import { estimateBatch, estimateMultisigPropose } from "../../../utils/tezos";
 import { sumEstimations } from "../../../views/batch/batchUtils";
-import { FormOperations, ProposalOperation } from "../types";
+import { FormOperations, ProposalOperations } from "../types";
 import { toLambdaOperation } from "./toLambdaOperation";
 
 const makeMultisigProposalSimulation = async (
-  operation: ProposalOperation,
+  operation: ProposalOperations,
   network: TezosNetwork,
   getPk: (pkh: string) => string
 ) => {

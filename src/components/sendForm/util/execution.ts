@@ -2,7 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { makeBatchLambda } from "../../../multisig/multisigUtils";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { proposeMultisigLambda, submitBatch } from "../../../utils/tezos";
-import { ImplicitOperation, OperationValue, ProposalOperation } from "../types";
+import { ImplicitOperations, OperationValue, ProposalOperations } from "../types";
 import { toLambdaOperation } from "./toLambdaOperation";
 
 const makeProposeOperation = async (operations: OperationValue[], config: SignerConfig) => {
@@ -22,7 +22,7 @@ const makeTransferImplicit = async (operations: OperationValue[], config: Signer
   });
 };
 
-export const makeTransfer = (op: ImplicitOperation | ProposalOperation, config: SignerConfig) => {
+export const makeTransfer = (op: ImplicitOperations | ProposalOperations, config: SignerConfig) => {
   const transferToDisplay = op.content;
 
   const transfer =
