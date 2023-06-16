@@ -277,9 +277,9 @@ describe("<SendForm />", () => {
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
       });
-      expect(
-        store.getState().assets.batches[mockImplicitAccount(1).pkh]?.items
-      ).toEqual(mockBatchItems);
+      expect(store.getState().assets.batches[mockImplicitAccount(1).pkh]?.items).toEqual(
+        mockBatchItems
+      );
     });
 
     test("it should submit transaction and display recap with tzkt link", async () => {
