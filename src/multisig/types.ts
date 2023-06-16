@@ -1,4 +1,4 @@
-import { BigMapAbstraction } from "@taquito/taquito";
+import { BigMapAbstraction, TransferParams } from "@taquito/taquito";
 import { BigNumber } from "bignumber.js";
 import { Address } from "../types/Address";
 
@@ -17,6 +17,7 @@ export type TezOperation = {
   type: "tez";
   recipient: Address;
   amount: string;
+  parameter?: TransferParams["parameter"];
 };
 export type FA12Operation = {
   type: "fa1.2";
@@ -31,4 +32,6 @@ export type Delegation = {
   recipient?: Address;
 };
 
-export type Operation = TezOperation | FA12Operation | FA2Operation | Delegation;
+export type Common = TezOperation | FA12Operation | FA2Operation;
+
+export type Operation = Common | Delegation;
