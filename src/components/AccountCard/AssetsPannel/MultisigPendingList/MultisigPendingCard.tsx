@@ -1,10 +1,11 @@
 import { Box, Flex, Text, Heading, Icon, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import colors from "../../../style/colors";
-import { ImplicitAddress } from "../../../types/Address";
-import { MultisigOperation } from "../../../utils/multisig/types";
+import colors from "../../../../style/colors";
+import { MultisigOperation } from "../../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
+import MultisigOperationsDisplay from "./MultisigOperationsDisplay";
+import { ImplicitAddress } from "../../../../types/Address";
 
 export const MultisigPendingCard: React.FC<{
   operation: MultisigOperation;
@@ -14,7 +15,6 @@ export const MultisigPendingCard: React.FC<{
   const { isOpen, getDisclosureProps, getButtonProps } = useDisclosure({
     defaultIsOpen: true,
   });
-
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
     <Box bg={colors.gray[600]} p={3} borderRadius={6} marginY={5}>
@@ -31,8 +31,7 @@ export const MultisigPendingCard: React.FC<{
       </Flex>
       <Box p={1} {...getDisclosureProps()}>
         <Flex marginY={2} justifyContent="space-between">
-          {/*TODO:  decode it */}
-          <Box>operation.rawActions</Box>
+          <MultisigOperationsDisplay rawActions={operation.rawActions} />
           <Flex alignItems="center">
             <Heading color={colors.gray[400]} size="sm" mr={1}>
               Pending Approvals:

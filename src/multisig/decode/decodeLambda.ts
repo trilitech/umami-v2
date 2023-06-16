@@ -146,7 +146,7 @@ export const decode = (michelson: MichelsonV1Expression[]) => {
   return parse(michelson.slice(2));
 };
 
-export const parseRawMichelson = (rawMichelson: string) => {
+export const parseRawMichelson = (rawMichelson: string): Operation[] => {
   const michelson: MichelsonV1Expression[] = JSON.parse(rawMichelson);
   return decode(michelson);
 };
