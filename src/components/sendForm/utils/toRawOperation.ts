@@ -7,7 +7,6 @@ export const toBatchOperation = (operation: OperationValue): BatchOperation => {
       return {
         type: "tez",
         amount: operation.value.amount,
-        sender: operation.value.sender,
         recipient: operation.value.recipient,
       };
       break;
@@ -40,7 +39,7 @@ export const toBatchOperation = (operation: OperationValue): BatchOperation => {
   }
 };
 
-// Lambda operations don't support tez transfer params yet, and don't requier the sender for delegations
+// Lambda operations don't support tez transfer params yet, and don't require the sender for delegations
 export const toLambdaOperation = (operation: BatchOperation): LambdaOperations => {
   if (operation.type === "tez") {
     const { parameter, ...result } = operation;
