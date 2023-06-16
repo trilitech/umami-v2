@@ -131,9 +131,7 @@ const parse = (michelson: MichelsonV1Expression[], acc: Operation[] = []): Opera
     return parse(michelson.slice(schema.items.length), [...acc, ...[parsed].flat()]);
   }
 
-  throw new UnrecognizedMichelsonError(
-    `Unrecognized michelson element: ${JSON.stringify(michelson[0])}`
-  );
+  throw new UnrecognizedMichelsonError(`${JSON.stringify(michelson[0])}`);
 };
 
 const assertHead = (michelson: MichelsonV1Expression[]) => {
