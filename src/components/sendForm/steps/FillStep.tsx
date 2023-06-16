@@ -21,6 +21,7 @@ import {
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { AccountType } from "../../../types/Account";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
@@ -30,7 +31,7 @@ import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector"
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { RecipentAutoComplete } from "../../RecipientAutoComplete/RecipientAutoComplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
-import { OperationValue, SendFormMode } from "../types";
+import { DelegationOperation, FormOperations, OperationValue, SendFormMode } from "../types";
 import { BatchRecap } from "./BatchRecap";
 
 export const DelegateForm = ({
@@ -195,6 +196,7 @@ export const SendTezOrNFTForm = ({
     register,
     getValues,
     handleSubmit,
+    reset,
   } = useForm<{
     sender: string;
     recipient: string;
@@ -232,11 +234,37 @@ export const SendTezOrNFTForm = ({
                   selected={value}
                   onSelect={a => {
                     onChange(a.pkh);
+                    const account = getAccount(a.pkh);
+
+                    // This is needed to update the signer if a multisig account is selected
+                    const values = getValues();
+                    if (account.type === AccountType.MULTISIG) {
+                      reset({ ...values, proposalSigner: account.signers[0] });
+                    } else {
+                      reset({ ...values, proposalSigner: undefined });
+                    }
                   }}
                 />
               )}
             />
           </FormControl>
+          {multisigSender ? (
+            <FormControl mb={2}>
+              <FormLabel>Proposal Signer</FormLabel>
+              <Controller
+                rules={{ required: true }}
+                control={control}
+                name="proposalSigner"
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <ProposalSigners
+                    multisigAccount={multisigSender}
+                    onSelect={onChange}
+                    selected={value}
+                  />
+                )}
+              />
+            </FormControl>
+          ) : null}
           <FormControl mb={2} isInvalid={!!errors.recipient}>
             <FormLabel>To</FormLabel>
             <Controller
@@ -300,7 +328,7 @@ export const SendTezOrNFTForm = ({
               width={"100%"}
               isLoading={batchIsSimulating}
               type="submit"
-              isDisabled={!isValid || simulating}
+              isDisabled={!isValid || simulating || senderIsMultisig}
               variant="ghost"
               mb={2}
             >
@@ -314,7 +342,7 @@ export const SendTezOrNFTForm = ({
 };
 
 export const FillStep: React.FC<{
-  onSubmit: (v: OperationValue[]) => void;
+  onSubmit: (v: FormOperations) => void;
   onSubmitBatch: (v: OperationValue) => void;
   isLoading: boolean;
   sender?: string;
@@ -344,15 +372,15 @@ export const FillStep: React.FC<{
           undelegate={mode.data?.undelegate}
           isLoading={isLoading}
           onSubmit={v => {
-            onSubmit([
-              {
-                type: "delegation",
-                value: {
-                  sender: v.sender,
-                  recipient: v.baker,
-                },
+            const delegation: DelegationOperation = {
+              type: "delegation",
+              value: {
+                sender: v.sender,
+                recipient: v.baker,
               },
-            ]);
+            };
+
+            onSubmit({ type: "implicit", content: [delegation] });
           }}
         />
       );
@@ -377,7 +405,7 @@ export const FillStep: React.FC<{
             });
           }}
           onSubmit={v => {
-            onSubmit([
+            const value: OperationValue[] = [
               {
                 type: "tez",
                 value: {
@@ -387,7 +415,12 @@ export const FillStep: React.FC<{
                   parameter,
                 },
               },
-            ]);
+            ];
+
+            onSubmit({
+              type: "implicit",
+              content: value,
+            });
           }}
         />
       );
@@ -411,17 +444,16 @@ export const FillStep: React.FC<{
             });
           }}
           onSubmit={v => {
-            onSubmit([
-              {
-                type: "token",
-                data: mode.data,
-                value: {
-                  amount: getRealAmount(mode.data, v.amount).toString(),
-                  sender: v.sender,
-                  recipient: v.recipient,
-                },
+            const token: OperationValue = {
+              type: "token",
+              data: mode.data,
+              value: {
+                amount: getRealAmount(mode.data, v.amount).toString(),
+                sender: v.sender,
+                recipient: v.recipient,
               },
-            ]);
+            };
+            onSubmit({ content: [token], type: "implicit" });
           }}
           token={mode.data}
         />
@@ -434,10 +466,43 @@ export const FillStep: React.FC<{
           isLoading={isLoading}
           transfer={mode.data.batch}
           onSubmit={() => {
-            onSubmit(mode.data.batch);
+            onSubmit({
+              type: "implicit",
+              content: mode.data.batch,
+            });
           }}
         />
       );
     }
   }
+};
+
+const ProposalSigners = ({
+  multisigAccount,
+  selected,
+  onSelect,
+}: {
+  multisigAccount: MultisigAccount;
+  selected?: string;
+  onSelect: (pkh: string) => void;
+}) => {
+  const implicitAccounts = useImplicitAccounts();
+
+  const signers = implicitAccounts.filter(implicitAccount =>
+    multisigAccount.signers.some(s => s === implicitAccount.pkh)
+  );
+
+  if (signers.length === 0) {
+    throw new Error("Wallet doesn't own any signers for this multisig contract");
+  }
+
+  return (
+    <AccountSelectorDisplay
+      isDisabled={signers.length === 1}
+      selected={selected}
+      accounts={signers}
+      onSelect={a => onSelect(a.pkh)}
+      dataTestid="proposal-signer-selector"
+    />
+  );
 };

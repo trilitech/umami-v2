@@ -63,13 +63,14 @@ export const RecapDisplay: React.FC<{
   recap: EstimatedOperation;
   onSuccess: (hash: string) => void;
   isBatch: boolean;
-}> = ({ recap: { fee, operations: transfer }, network, onSuccess: onSucces, isBatch }) => {
+}> = ({ recap: { fee, operations }, network, onSuccess: onSucces, isBatch }) => {
   const feeNum = new BigNumber(fee);
   const getAccount = useGetOwnedAccount();
 
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const clearBatch = useClearBatch();
+  const transfer = operations.content;
 
   const signerAccount = getAccount(transfer[0].value.sender);
 
