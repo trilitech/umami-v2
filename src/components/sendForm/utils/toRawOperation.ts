@@ -8,6 +8,8 @@ export const toBatchOperation = (operation: OperationValue): BatchOperation => {
         type: "tez",
         amount: operation.value.amount,
         recipient: operation.value.recipient,
+        sender: operation.value.sender,
+        parameter: operation.value.parameter,
       };
       break;
     case "token":
