@@ -2,7 +2,7 @@ import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
 import { OperationTile } from "../../components/OperationTile";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import { getKey, sortOperationsDisplaysBytDate } from "../operations/operationsUtils";
-
+import { Link } from "react-router-dom";
 export const OperationsList = () => {
   const operations = useAllOperationDisplays();
   const operationList = sortOperationsDisplaysBytDate(Object.values(operations).flat());
@@ -15,21 +15,21 @@ export const OperationsList = () => {
       height="100%"
       display="flex"
       flexDirection="column"
-      mt={4}
+      mt={0}
       bg="umami.gray.900"
       borderRadius={4}
-      // color scheme not workkig even when put int 50-900 range
-      // TODO Fix
-      // https://chakra-ui.com/docs/components/tabs
     >
-      <TabList>
-        <Tab>All</Tab>
-        <Tab>Sent</Tab>
-        <Tab>Received</Tab>
-        <Tab>Delegations</Tab>
+      <TabList justifyContent="space-between">
+        <Tab>Operations</Tab>
+        <Link
+          to="/operations"
+          style={{ marginTop: "8px", display: "inline-block", marginRight: "12px" }}
+        >
+          View All
+        </Link>
       </TabList>
 
-      <Box minHeight="10px" overflow="scroll">
+      <Box minHeight="10px" overflowY="auto">
         {operationEls}
       </Box>
     </Tabs>

@@ -14,10 +14,10 @@ export default function HomeView() {
           <AccountListWithDrawer />
         </Box>
         <Flex direction="column" flex={1} minHeight={1} ml={2}>
-          <Box flex={1} overflow="scroll" mb={2} borderRadius={4}>
+          <Box flex={1} overflow="hidden" mb={2} borderRadius={4}>
             <OperationsList />
           </Box>
-          <Box flex={1} overflow="scroll" mb={2} borderRadius={4}>
+          <Box flex={1} overflow="hidden" mb={2} borderRadius={4}>
             <NftList />
           </Box>
         </Flex>

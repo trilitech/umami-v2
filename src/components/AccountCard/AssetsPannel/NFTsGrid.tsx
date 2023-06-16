@@ -11,7 +11,7 @@ export const NFTsGrid: FC<{ nfts: NFT[]; showName?: boolean } & SimpleGridProps>
   ...rest
 }) => {
   return (
-    <Box overflow="scroll" p={2}>
+    <Box overflowY="auto" p={2}>
       <SimpleGrid {...rest}>
         {nfts.map((nft, i) => {
           return (
