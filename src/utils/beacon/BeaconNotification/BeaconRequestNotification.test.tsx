@@ -7,6 +7,7 @@ import {
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
+import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { BeaconNotification } from ".";
 import {
   mockBeaconDelegate,
@@ -47,7 +48,7 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 
 beforeEach(() => {
   setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
-  fakeTezosUtils.submitBatch.mockResolvedValue(BATCH_OP_HASH as any);
+  fakeTezosUtils.submitBatch.mockResolvedValue(BATCH_OP_HASH as BatchWalletOperation);
 });
 
 beforeAll(() => {
