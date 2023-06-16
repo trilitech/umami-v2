@@ -58,4 +58,4 @@ export type EstimatedOperation = {
 export type BatchOperation =
   | Common
   | (Delegation & { sender: string })
-  | (LambdaTezOperation & { parameter?: TransferParams["parameter"] });
+  | (LambdaTezOperation & { parameter?: TransferParams["parameter"]; sender: string });

@@ -26,6 +26,7 @@ import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import SignButton from "../components/SignButton";
 import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
+import { toBatchOperation } from "../utils/toRawOperation";
 import { BatchRecap } from "./BatchRecap";
 
 const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
@@ -58,6 +59,10 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   );
 };
 
+const submitFormOperations = (ops: OperationValue[], config: SignerConfig) => {
+  return submitBatch(ops.map(toBatchOperation), config);
+};
+
 export const RecapDisplay: React.FC<{
   network: TezosNetwork;
   recap: EstimatedOperation;
@@ -83,7 +88,7 @@ export const RecapDisplay: React.FC<{
     }
 
     try {
-      const result = await submitBatch(transfer, config);
+      const result = await submitFormOperations(transfer, config);
       if (isBatch) {
         // TODO this will have to me moved in a thunk
         clearBatch(signerAccount.pkh);

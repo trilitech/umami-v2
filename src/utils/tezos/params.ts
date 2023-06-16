@@ -6,7 +6,7 @@ import {
   TransferParams,
   WalletParamsWithKind,
 } from "@taquito/taquito";
-import { OperationValue } from "../../components/sendForm/types";
+import { BatchOperation, OperationValue } from "../../components/sendForm/types";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
@@ -14,13 +14,13 @@ import {
 } from "./helpers";
 
 export const operationValuesToWalletParams = async (
-  operations: OperationValue[],
+  operations: BatchOperation[],
   signer: TezosToolkit
 ): Promise<WalletParamsWithKind[]> =>
   operationValuesToParams(operations, signer) as Promise<WalletParamsWithKind[]>;
 
 export const operationValuesToParams = async (
-  operations: OperationValue[],
+  operations: BatchOperation[],
   signer: TezosToolkit
 ): Promise<ParamsWithKind[]> => {
   const result: ParamsWithKind[] = [];
@@ -28,30 +28,45 @@ export const operationValuesToParams = async (
   for (const operation of operations) {
     switch (operation.type) {
       case "tez":
-        result.push({
-          kind: OpKind.TRANSACTION,
-          to: operation.value.recipient,
-          amount: parseInt(operation.value.amount),
-          parameter: operation.value.parameter,
-          mutez: true,
-        });
+        {
+          result.push({
+            kind: OpKind.TRANSACTION,
+            to: operation.recipient,
+            amount: parseInt(operation.amount),
+            parameter: operation.parameter,
+            mutez: true,
+          });
+        }
         break;
       case "delegation":
         result.push({
           kind: OpKind.DELEGATION,
-          source: operation.value.sender,
-          delegate: operation.value.recipient,
+          source: operation.sender,
+          delegate: operation.recipient,
         });
         break;
-      case "token":
+      case "fa1.2": {
+        const bar = operation.sender;
+        throw new Error("bar");
+        // const transferParams = await makeTokenTransferParams(operation, signer);
+        // result.push({
+        //   kind: OpKind.TRANSACTION,
+        //   ...transferParams,
+        // });
+      }
+      case "fa2":
         {
-          const transferParams = await makeTokenTransferParams(operation, signer);
-
-          result.push({
-            kind: OpKind.TRANSACTION,
-            ...transferParams,
-          });
+          const bar = operation.sender;
+          throw new Error("cool");
         }
+        // {
+        //   const transferParams = await makeTokenTransferParams(operation, signer);
+
+        //   result.push({
+        //     kind: OpKind.TRANSACTION,
+        //     ...transferParams,
+        //   });
+        // }
         break;
     }
   }
@@ -78,7 +93,7 @@ const makeTokenTransferParams = async (
 };
 
 export const operationValuesToBatchParams = async (
-  operations: OperationValue[],
+  operations: BatchOperation[],
   pk: string,
   network: TezosNetwork
 ): Promise<ParamsWithKind[]> => {
@@ -86,7 +101,7 @@ export const operationValuesToBatchParams = async (
     return [];
   }
 
-  const Tezos = makeToolkitWithDummySigner(pk, operations[0].value.sender, network);
+  const Tezos = makeToolkitWithDummySigner(pk, operations[0].sender, network);
 
   return operationValuesToParams(operations, Tezos);
 };
