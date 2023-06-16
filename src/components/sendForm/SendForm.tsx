@@ -150,7 +150,14 @@ export const SendForm = ({
   }
 
   if (transferValues) {
-    return <RecapDisplay onSucces={setHash} network={network} recap={transferValues} />;
+    return (
+      <RecapDisplay
+        isBatch={mode.type === "batch"}
+        onSucces={setHash}
+        network={network}
+        recap={transferValues}
+      />
+    );
   }
 
   return (
