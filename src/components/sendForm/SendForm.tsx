@@ -21,15 +21,16 @@ import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, OperationValue, SendFormMode } from "./types";
 
 const makeSimulation = (
-  operation: OperationValue | OperationValue[],
+  operations: OperationValue[],
   pk: string,
   pkh: string,
   network: TezosNetwork
 ) => {
-  if (Array.isArray(operation)) {
-    return estimateBatch(operation, pkh, pk, network);
+  if (operations.length > 1) {
+    return estimateBatch(operations, pkh, pk, network);
   }
 
+  const operation = operations[0];
   switch (operation.type) {
     case "delegation":
       return estimateDelegation(operation.value.sender, operation.value.recipient, pk, network);
@@ -108,18 +109,19 @@ export const SendForm = ({
     }
   }, [hash]);
 
-  const simulate = async (operation: OperationValue | OperationValue[]) => {
+  const simulate = async (operations: OperationValue[]) => {
     setIsLoading(true);
     try {
-      const sender = Array.isArray(operation) ? operation[0].value.sender : operation.value.sender;
+      const sender = operations[0].value.sender;
 
       const pk = getPk(sender);
 
-      const estimate = await makeSimulation(operation, pk, sender, network);
+      const estimate = await makeSimulation(operations, pk, sender, network);
+
       const fee = Array.isArray(estimate) ? sumEstimations(estimate) : estimate.suggestedFeeMutez;
 
       setTransferValues({
-        operation,
+        operations,
         fee: String(fee),
       });
     } catch (error: any) {

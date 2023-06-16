@@ -314,7 +314,7 @@ export const SendTezOrNFTForm = ({
 };
 
 export const FillStep: React.FC<{
-  onSubmit: (v: OperationValue | OperationValue[]) => void;
+  onSubmit: (v: OperationValue[]) => void;
   onSubmitBatch: (v: OperationValue) => void;
   isLoading: boolean;
   sender?: string;
@@ -344,13 +344,15 @@ export const FillStep: React.FC<{
           undelegate={mode.data?.undelegate}
           isLoading={isLoading}
           onSubmit={v => {
-            onSubmit({
-              type: "delegation",
-              value: {
-                sender: v.sender,
-                recipient: v.baker,
+            onSubmit([
+              {
+                type: "delegation",
+                value: {
+                  sender: v.sender,
+                  recipient: v.baker,
+                },
               },
-            });
+            ]);
           }}
         />
       );
@@ -375,15 +377,17 @@ export const FillStep: React.FC<{
             });
           }}
           onSubmit={v => {
-            onSubmit({
-              type: "tez",
-              value: {
-                amount: tezToMutez(v.amount).toString(),
-                sender: v.sender,
-                recipient: v.recipient,
-                parameter,
+            onSubmit([
+              {
+                type: "tez",
+                value: {
+                  amount: tezToMutez(v.amount).toString(),
+                  sender: v.sender,
+                  recipient: v.recipient,
+                  parameter,
+                },
               },
-            });
+            ]);
           }}
         />
       );
@@ -407,15 +411,17 @@ export const FillStep: React.FC<{
             });
           }}
           onSubmit={v => {
-            onSubmit({
-              type: "token",
-              data: mode.data,
-              value: {
-                amount: getRealAmount(mode.data, v.amount).toString(),
-                sender: v.sender,
-                recipient: v.recipient,
+            onSubmit([
+              {
+                type: "token",
+                data: mode.data,
+                value: {
+                  amount: getRealAmount(mode.data, v.amount).toString(),
+                  sender: v.sender,
+                  recipient: v.recipient,
+                },
               },
-            });
+            ]);
           }}
           token={mode.data}
         />
