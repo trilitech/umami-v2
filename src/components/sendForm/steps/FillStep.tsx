@@ -210,7 +210,7 @@ export const SendTezOrNFTForm = ({
   const getAccount = useGetOwnedAccount();
   const accountIsMultisig = useAccountIsMultisig();
 
-  const initialSenderAccount = sender !== undefined ? getAccount(sender) : undefined;
+  const initialSenderAccount = sender && getAccount(sender);
 
   const initialProposalSigner =
     initialSenderAccount && initialSenderAccount.type === AccountType.MULTISIG
