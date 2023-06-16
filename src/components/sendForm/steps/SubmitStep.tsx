@@ -18,13 +18,7 @@ import { AccountType } from "../../../types/Account";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
-import {
-  delegate,
-  submitBatch,
-  transferFA12Token,
-  transferFA2Token,
-  transferMutez,
-} from "../../../utils/tezos";
+import { submitBatch } from "../../../utils/tezos";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
@@ -33,53 +27,6 @@ import SignButton from "../components/SignButton";
 import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation, OperationValue } from "../types";
 import { BatchRecap } from "./BatchRecap";
-
-const makeTransfer = async (operations: OperationValue[], config: SignerConfig) => {
-  if (operations.length > 1) {
-    return submitBatch(operations, config).then(res => {
-      return {
-        hash: res.opHash,
-      };
-    });
-  }
-
-  const operation = operations[0];
-  switch (operation.type) {
-    case "delegation":
-      return await delegate(operation.value.sender, operation.value.recipient, config);
-    case "tez":
-      return await transferMutez(
-        operation.value.recipient,
-        parseInt(operation.value.amount),
-        config,
-        operation.value.parameter
-      );
-    case "token": {
-      const token = operation.data;
-      if (token.type === "fa1.2") {
-        return await transferFA12Token(
-          {
-            amount: operation.value.amount,
-            contract: token.contract,
-            recipient: operation.value.recipient,
-            sender: operation.value.sender,
-          },
-          config
-        );
-      }
-      return await transferFA2Token(
-        {
-          amount: operation.value.amount,
-          contract: token.contract,
-          recipient: operation.value.recipient,
-          sender: operation.value.sender,
-          tokenId: token.tokenId,
-        },
-        config
-      );
-    }
-  }
-};
 
 const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   const isDelegation = transfer.type === "delegation";
@@ -136,13 +83,13 @@ export const RecapDisplay: React.FC<{
     }
 
     try {
-      const result = await makeTransfer(transfer, config);
+      const result = await submitBatch(transfer, config);
       if (isBatch) {
         // TODO this will have to me moved in a thunk
         clearBatch(signerAccount.pkh);
       }
-      onSucces(result.hash);
-      toast({ title: "Success", description: result.hash });
+      onSucces(result.opHash);
+      toast({ title: "Success", description: result.opHash });
     } catch (error: any) {
       toast({ title: "Error", description: error.message });
     }

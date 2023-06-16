@@ -1,19 +1,12 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
-import { BigNumber } from "bignumber.js";
 import { useEffect, useRef, useState } from "react";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
-import {
-  estimateBatch,
-  estimateDelegation,
-  estimateFA12transfer,
-  estimateFA2transfer,
-  estimateMutezTransfer,
-} from "../../utils/tezos";
+import { estimateBatch } from "../../utils/tezos";
 import { sumEstimations } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
@@ -26,46 +19,7 @@ const makeSimulation = (
   pkh: string,
   network: TezosNetwork
 ) => {
-  if (operations.length > 1) {
-    return estimateBatch(operations, pkh, pk, network);
-  }
-
-  const operation = operations[0];
-  switch (operation.type) {
-    case "delegation":
-      return estimateDelegation(operation.value.sender, operation.value.recipient, pk, network);
-    case "token": {
-      const base = {
-        amount: operation.value.amount,
-        sender: operation.value.sender,
-        recipient: operation.value.recipient,
-        contract: operation.data.contract,
-      };
-
-      if (operation.data.type === "fa1.2") {
-        return estimateFA12transfer(base, pk, network);
-      }
-
-      return estimateFA2transfer(
-        {
-          ...base,
-          tokenId: operation.data.tokenId,
-        },
-        pk,
-        network
-      );
-    }
-
-    case "tez":
-      return estimateMutezTransfer(
-        operation.value.sender,
-        operation.value.recipient,
-        new BigNumber(operation.value.amount),
-        pk,
-        network,
-        operation.value.parameter
-      );
-  }
+  return estimateBatch(operations, pkh, pk, network).then(sumEstimations);
 };
 
 export const useGetPk = () => {
@@ -118,11 +72,9 @@ export const SendForm = ({
 
       const estimate = await makeSimulation(operations, pk, sender, network);
 
-      const fee = Array.isArray(estimate) ? sumEstimations(estimate) : estimate.suggestedFeeMutez;
-
       setTransferValues({
         operations,
-        fee: String(fee),
+        fee: String(estimate),
       });
     } catch (error: any) {
       toast({ title: "Invalid transaction", description: error.message });

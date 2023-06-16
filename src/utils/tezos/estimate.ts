@@ -1,9 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { Estimate, TezosToolkit, TransferParams } from "@taquito/taquito";
 import { OperationValue } from "../../components/sendForm/types";
-import { nodeUrls } from "./consts";
-import { DummySigner } from "./dummySigner";
-import { BigNumber } from "bignumber.js";
+import BigNumber from "bignumber.js";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
@@ -18,6 +16,8 @@ import {
   MultisigApproveOrExecuteMethodArgs,
   MultisigProposeMethodArgs,
 } from "./types";
+import { nodeUrls } from "./consts";
+import { DummySigner } from "./dummySigner";
 
 export const estimateMutezTransfer = async (
   senderPkh: string,
