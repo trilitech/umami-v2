@@ -18,14 +18,14 @@ import { AccountType } from "../../../types/Account";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useClearBatch } from "../../../utils/hooks/assetsHooks";
-import { submitBatch } from "../../../utils/tezos";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import SignButton from "../components/SignButton";
 import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
-import { EstimatedOperation, OperationValue } from "../types";
+import { EstimatedOperation, FormOperations, OperationValue } from "../types";
+import { makeTransfer } from "../util/execution";
 import { BatchRecap } from "./BatchRecap";
 
 const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
@@ -58,6 +58,25 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   );
 };
 
+const getSigner = (ops: FormOperations) => {
+  if (ops.type === "implicit") {
+    return ops.content[0].value.sender;
+  }
+  return ops.signer;
+};
+
+const useGetImplicitAccount = () => {
+  const getAccount = useGetOwnedAccount();
+  return (pkh: string) => {
+    const account = getAccount(pkh);
+    if (account.type === AccountType.MULTISIG) {
+      throw Error("bar");
+    }
+
+    return account;
+  };
+};
+
 export const RecapDisplay: React.FC<{
   network: TezosNetwork;
   recap: EstimatedOperation;
@@ -65,14 +84,14 @@ export const RecapDisplay: React.FC<{
   isBatch: boolean;
 }> = ({ recap: { fee, operations }, network, onSuccess: onSucces, isBatch }) => {
   const feeNum = new BigNumber(fee);
-  const getAccount = useGetOwnedAccount();
+  const getAccount = useGetImplicitAccount();
 
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const clearBatch = useClearBatch();
   const transfer = operations.content;
 
-  const signerAccount = getAccount(transfer[0].value.sender);
+  const signerAccount = getAccount(getSigner(operations));
 
   const handleConfigSubmit = async (config: SignerConfig) => {
     setIsLoading(true);
@@ -84,13 +103,13 @@ export const RecapDisplay: React.FC<{
     }
 
     try {
-      const result = await submitBatch(transfer, config);
+      const result = await makeTransfer(operations, config);
       if (isBatch) {
         // TODO this will have to me moved in a thunk
         clearBatch(signerAccount.pkh);
       }
-      onSucces(result.opHash);
-      toast({ title: "Success", description: result.opHash });
+      onSucces(result.hash);
+      toast({ title: "Success", description: result.hash });
     } catch (error: any) {
       toast({ title: "Error", description: error.message });
     }

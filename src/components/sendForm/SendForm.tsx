@@ -1,30 +1,26 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
+import { AccountType } from "../../types/Account";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
-import { estimateBatch } from "../../utils/tezos";
-import { sumEstimations } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, FormOperations, OperationValue, SendFormMode } from "./types";
-
-const makeSimulation = (
-  operations: OperationValue[],
-  pk: string,
-  pkh: string,
-  network: TezosNetwork
-) => {
-  return estimateBatch(operations, pkh, pk, network).then(sumEstimations);
-};
+import { makeSimulation } from "./util/simulation";
 
 export const useGetPk = () => {
   const getAccount = useGetOwnedAccount();
-  return (pkh: string) => getAccount(pkh).pk;
+  return (pkh: string) => {
+    const account = getAccount(pkh);
+    if (account.type === AccountType.MULTISIG) {
+      throw new Error();
+    }
+    return account.pk;
+  };
 };
 
 export const SendForm = ({
@@ -66,17 +62,14 @@ export const SendForm = ({
   const simulate = async (operations: FormOperations) => {
     setIsLoading(true);
     try {
-      const sender = operations.content[0].value.sender;
-
-      const pk = getPk(sender);
-
-      const estimate = await makeSimulation(operations.content, pk, sender, network);
+      const estimate = await makeSimulation(operations, getPk, network);
 
       setTransferValues({
         operations,
         fee: String(estimate),
       });
     } catch (error: any) {
+      console.log("Simulation Error", error);
       toast({ title: "Invalid transaction", description: error.message });
     }
 

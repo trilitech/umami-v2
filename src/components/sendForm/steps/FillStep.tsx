@@ -21,13 +21,20 @@ import {
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { AccountType } from "../../../types/Account";
+import { AccountType, MultisigAccount } from "../../../types/Account";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
+import {
+  useAccountIsMultisig,
+  useGetOwnedAccount,
+  useImplicitAccounts,
+  useMultisigAccounts,
+} from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
 import { addressIsValid } from "../../../utils/tezos/pureTezosUtils";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
+import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { RecipentAutoComplete } from "../../RecipientAutoComplete/RecipientAutoComplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
@@ -165,6 +172,13 @@ export const FillBatchForm: React.FC<{
   );
 };
 
+type FormValues = {
+  sender: string;
+  amount: string;
+  recipient: string;
+  proposalSigner?: string;
+};
+
 export const SendTezOrNFTForm = ({
   token,
   sender,
@@ -176,8 +190,8 @@ export const SendTezOrNFTForm = ({
   amount,
   disabled,
 }: {
-  onSubmit: (v: { sender: string; recipient: string; amount: string }) => void;
-  onSubmitBatch: (v: { sender: string; recipient: string; amount: string }) => void;
+  onSubmit: (v: FormValues) => void;
+  onSubmitBatch: (v: FormValues) => void;
   sender?: string;
   token?: Asset;
   isLoading?: boolean;
@@ -189,6 +203,16 @@ export const SendTezOrNFTForm = ({
   const isNFT = token?.type === "nft";
   const mandatoryNftSender = isNFT ? token?.owner : undefined;
   const getBatchIsSimulating = useBatchIsSimulating();
+  const multisigAccounts = useMultisigAccounts();
+  const getAccount = useGetOwnedAccount();
+  const accountIsMultisig = useAccountIsMultisig();
+
+  const initialSenderAccount = sender !== undefined ? getAccount(sender) : undefined;
+
+  const initialProposalSigner =
+    initialSenderAccount && initialSenderAccount.type === AccountType.MULTISIG
+      ? initialSenderAccount.signers[0]
+      : undefined;
 
   const {
     formState: { isValid, errors },
@@ -197,23 +221,25 @@ export const SendTezOrNFTForm = ({
     getValues,
     handleSubmit,
     reset,
-  } = useForm<{
-    sender: string;
-    recipient: string;
-    amount: string;
-  }>({
+  } = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
       sender: mandatoryNftSender || sender,
       amount: isNFT ? "1" : amount,
       recipient,
+      proposalSigner: initialProposalSigner,
     },
   });
 
   const senderFormValue = getValues().sender;
+
+  const multisigSender =
+    senderFormValue !== "" ? multisigAccounts.find(a => a.pkh === senderFormValue) : undefined;
+
   const batchIsSimulating = senderFormValue !== "" && getBatchIsSimulating(senderFormValue);
 
   const simulating = isLoading || batchIsSimulating;
+  const senderIsMultisig = accountIsMultisig(getValues("sender"));
 
   return (
     <ModalContent bg="umami.gray.900">
@@ -341,6 +367,47 @@ export const SendTezOrNFTForm = ({
   );
 };
 
+const buildTezFromFormValues = (
+  v: FormValues,
+  parameter?: TransferParams["parameter"]
+): FormOperations => {
+  const value: OperationValue[] = [
+    {
+      type: "tez",
+      value: {
+        amount: tezToMutez(v.amount).toString(),
+        sender: v.sender,
+        recipient: v.recipient,
+        parameter,
+      },
+    },
+  ];
+  if (v.proposalSigner !== undefined) {
+    return { type: "proposal", signer: v.proposalSigner, content: value };
+  }
+  return { type: "implicit", content: value };
+};
+
+const buildTokenFromFormValues = (v: FormValues, asset: Asset): FormOperations => {
+  const token: OperationValue[] = [
+    {
+      type: "token",
+      data: asset,
+      value: {
+        amount: getRealAmount(asset, v.amount).toString(),
+        sender: v.sender,
+        recipient: v.recipient,
+      },
+    },
+  ];
+
+  if (v.proposalSigner !== undefined) {
+    return { type: "proposal", signer: v.proposalSigner, content: token };
+  }
+
+  return { type: "implicit", content: token };
+};
+
 export const FillStep: React.FC<{
   onSubmit: (v: FormOperations) => void;
   onSubmitBatch: (v: OperationValue) => void;
@@ -405,22 +472,7 @@ export const FillStep: React.FC<{
             });
           }}
           onSubmit={v => {
-            const value: OperationValue[] = [
-              {
-                type: "tez",
-                value: {
-                  amount: tezToMutez(v.amount).toString(),
-                  sender: v.sender,
-                  recipient: v.recipient,
-                  parameter,
-                },
-              },
-            ];
-
-            onSubmit({
-              type: "implicit",
-              content: value,
-            });
+            onSubmit(buildTezFromFormValues(v, parameter));
           }}
         />
       );
@@ -444,16 +496,7 @@ export const FillStep: React.FC<{
             });
           }}
           onSubmit={v => {
-            const token: OperationValue = {
-              type: "token",
-              data: mode.data,
-              value: {
-                amount: getRealAmount(mode.data, v.amount).toString(),
-                sender: v.sender,
-                recipient: v.recipient,
-              },
-            };
-            onSubmit({ content: [token], type: "implicit" });
+            onSubmit(buildTokenFromFormValues(v, mode.data));
           }}
           token={mode.data}
         />
