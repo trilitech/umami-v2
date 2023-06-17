@@ -69,7 +69,7 @@ export const SendForm = ({
         fee: String(estimate),
       });
     } catch (error: any) {
-      console.log("Simulation Error", error);
+      console.warn("Simulation Error", error);
       toast({ title: "Invalid transaction", description: error.message });
     }
 
@@ -86,6 +86,7 @@ export const SendForm = ({
 
       toast({ title: "Transaction added to batch!" });
     } catch (error: any) {
+      console.warn("Failed adding transaction to batch", error);
       toast({ title: "Invalid transaction", description: error.message });
     }
   };
