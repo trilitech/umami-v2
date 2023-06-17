@@ -11,7 +11,7 @@ import { deriveAccount, restoreFromMnemonic } from "./store/thunks/restoreMnemon
 import { getFingerPrint } from "./tezos";
 
 const {
-  actions: { add, reset, setSelected, removeSecret },
+  actions: { add, reset, removeSecret },
 } = accountsSlice;
 
 jest.mock("./aes");
@@ -33,7 +33,6 @@ describe("Accounts reducer", () => {
   test("store should initialize with empty state", () => {
     expect(store.getState().accounts).toEqual({
       items: [],
-      selected: null,
       seedPhrases: {},
     });
   });
@@ -42,14 +41,12 @@ describe("Accounts reducer", () => {
     store.dispatch(add(mockImplicitAccount(1)));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1)],
-      selected: null,
       seedPhrases: {},
     });
 
     store.dispatch(add([mockImplicitAccount(2), mockImplicitAccount(3)]));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      selected: null,
       seedPhrases: {},
     });
   });
@@ -63,48 +60,6 @@ describe("Accounts reducer", () => {
 
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      selected: null,
-      seedPhrases: {},
-    });
-  });
-
-  test("should allow setting an existing account as selected", () => {
-    store.dispatch(add([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]));
-    store.dispatch(setSelected(mockImplicitAccount(2).pkh));
-
-    expect(store.getState().accounts).toEqual({
-      items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      selected: mockImplicitAccount(2).pkh,
-      seedPhrases: {},
-    });
-  });
-
-  test("should ignore setting a non existing account as selected", () => {
-    store.dispatch(add([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]));
-    store.dispatch(setSelected(mockImplicitAccount(4).pkh));
-
-    expect(store.getState().accounts).toEqual({
-      items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      selected: null,
-      seedPhrases: {},
-    });
-  });
-
-  test("should allow settings selected account to null", () => {
-    store.dispatch(add([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]));
-    store.dispatch(setSelected(mockImplicitAccount(2).pkh));
-
-    expect(store.getState().accounts).toEqual({
-      items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      selected: mockImplicitAccount(2).pkh,
-      seedPhrases: {},
-    });
-
-    store.dispatch(setSelected(null));
-
-    expect(store.getState().accounts).toEqual({
-      items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      selected: null,
       seedPhrases: {},
     });
   });
@@ -134,7 +89,6 @@ describe("Accounts reducer", () => {
         mockImplicitAccount(2, undefined, "mockPrint2"),
       ],
       seedPhrases: { mockPrint1: {}, mockPrint2: {} },
-      selected: null,
     });
 
     store.dispatch(removeSecret({ fingerPrint: "mockPrint1" }));
@@ -142,7 +96,6 @@ describe("Accounts reducer", () => {
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(2, undefined, "mockPrint2")],
       seedPhrases: { mockPrint2: {} },
-      selected: null,
     });
   });
 
