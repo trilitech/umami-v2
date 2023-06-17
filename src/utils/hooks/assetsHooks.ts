@@ -9,6 +9,7 @@ import { useImplicitAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { BigNumber } from "bignumber.js";
 import { mutezToTez } from "../format";
+import { MultisigAccount } from "../../types/Account";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.assets.network);
@@ -206,4 +207,18 @@ export const useBatchIsSimulating = () => {
 export const useClearBatch = () => {
   const dispatch = useAppDispatch();
   return (pkh: string) => dispatch(assetsSlice.actions.clearBatch({ pkh }));
+};
+
+export const useGetMultisigSigners = () => {
+  const implicitAccounts = useImplicitAccounts();
+  return (multisigAccount: MultisigAccount) => {
+    const signers = implicitAccounts.filter(implicitAccount =>
+      multisigAccount.signers.some(s => s === implicitAccount.pkh)
+    );
+
+    if (signers.length === 0) {
+      console.warn("Wallet doesn't own any signers for  multisig contract " + multisigAccount.pkh);
+    }
+    return signers;
+  };
 };

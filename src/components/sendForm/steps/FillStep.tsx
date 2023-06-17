@@ -21,7 +21,7 @@ import {
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { AccountType, MultisigAccount } from "../../../types/Account";
+import { AccountType, AllAccount, MultisigAccount } from "../../../types/Account";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
 import {
@@ -30,7 +30,7 @@ import {
   useImplicitAccounts,
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
-import { useBatchIsSimulating } from "../../../utils/hooks/assetsHooks";
+import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
 import { addressIsValid } from "../../../utils/tezos/pureTezosUtils";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
@@ -182,6 +182,20 @@ type FormValues = {
   proposalSigner?: string;
 };
 
+const useGetDefaultProposalSigner = () => {
+  const getAccount = useGetOwnedAccount();
+  const getSigners = useGetMultisigSigners();
+  return (initalSenderPkh: string) => {
+    const initialSenderAccount = (initalSenderPkh && getAccount(initalSenderPkh)) || undefined;
+
+    if (initialSenderAccount && initialSenderAccount.type === AccountType.MULTISIG) {
+      const signers = getSigners(initialSenderAccount);
+
+      return signers.length === 0 ? undefined : signers[0].pkh;
+    }
+  };
+};
+
 export const SendTezOrNFTForm = ({
   token,
   sender,
@@ -203,19 +217,15 @@ export const SendTezOrNFTForm = ({
   amount?: string;
   parameter?: TransferParams["parameter"];
 }) => {
-  const isNFT = token?.type === "nft";
-  const mandatoryNftSender = isNFT ? token?.owner : undefined;
   const getBatchIsSimulating = useBatchIsSimulating();
   const multisigAccounts = useMultisigAccounts();
-  const getAccount = useGetOwnedAccount();
   const accountIsMultisig = useAccountIsMultisig();
+  const getDefaultSigner = useGetDefaultProposalSigner();
+  const getAccount = useGetOwnedAccount();
 
-  const initialSenderAccount = sender && getAccount(sender);
-
-  const initialProposalSigner =
-    initialSenderAccount && initialSenderAccount.type === AccountType.MULTISIG
-      ? initialSenderAccount.signers[0]
-      : undefined;
+  const initialProposalSigner = (sender && getDefaultSigner(sender)) || undefined;
+  const isNFT = token?.type === "nft";
+  const mandatoryNftSender = isNFT ? token?.owner : undefined;
 
   const {
     formState: { isValid, errors },
@@ -532,15 +542,8 @@ const ProposalSigners = ({
   selected?: string;
   onSelect: (pkh: string) => void;
 }) => {
-  const implicitAccounts = useImplicitAccounts();
-
-  const signers = implicitAccounts.filter(implicitAccount =>
-    multisigAccount.signers.some(s => s === implicitAccount.pkh)
-  );
-
-  if (signers.length === 0) {
-    throw new Error("Wallet doesn't own any signers for this multisig contract");
-  }
+  const getSigners = useGetMultisigSigners();
+  const signers = getSigners(multisigAccount);
 
   return (
     <AccountSelectorDisplay
