@@ -170,14 +170,14 @@ export type NFT = {
 };
 
 export const keepNFTs = (assets: Asset[]) => {
-  return assets.filter(a => a.type === "nft") as NFT[];
+  return assets.filter((asset): asset is NFT => asset.type === "nft");
 };
 export const keepFA1s = (assets: Asset[]) => {
-  return assets.filter(a => a.type === "fa1.2") as FA12Token[];
+  return assets.filter((asset): asset is FA12Token => asset.type === "fa1.2");
 };
 
 export const keepFA2s = (assets: Asset[]) => {
-  return assets.filter(a => a.type === "fa2") as FA2Token[];
+  return assets.filter((asset): asset is FA2Token => asset.type === "fa2");
 };
 
 export const formatTokenAmount = (amountStr: string, decimals = DEFAULT_TOKEN_DECIMALS) => {
