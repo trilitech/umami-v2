@@ -57,7 +57,9 @@ const AccountTokensTile: React.FC<{
   const getTokens = useGetAccountAllTokens();
   const network = useSelectedNetwork();
   const tokens = getTokens(pkh);
-  if (tokens.length === 0) return null;
+  if (tokens.length === 0) {
+    return null;
+  }
   return (
     <Card m={4} p={5} bgColor={colors.gray[900]} borderRadius="10px">
       <AccountTokensTileHeader pkh={pkh} label={label} />

@@ -22,7 +22,9 @@ const VerifySeedphrase = ({
   setStep: (step: Step) => void;
   config: TemporaryMnemonicAccountConfig;
 }) => {
-  if (!config.seedphrase) throw new Error("Seedphrase not set");
+  if (!config.seedphrase) {
+    throw new Error("Seedphrase not set");
+  }
   const seedphraseArray = config.seedphrase.split(" ");
   const {
     register,
