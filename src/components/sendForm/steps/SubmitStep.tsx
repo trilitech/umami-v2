@@ -70,7 +70,7 @@ const useGetImplicitAccount = () => {
   return (pkh: string) => {
     const account = getAccount(pkh);
     if (account.type === AccountType.MULTISIG) {
-      throw Error("bar");
+      throw Error(`Account ${pkh} is not implicit`);
     }
 
     return account;
