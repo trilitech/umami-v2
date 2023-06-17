@@ -17,7 +17,7 @@ export const useGetPk = () => {
   return (pkh: string) => {
     const account = getAccount(pkh);
     if (account.type === AccountType.MULTISIG) {
-      throw new Error();
+      throw new Error(`Multisig accounts don't own a public key`);
     }
     return account.pk;
   };
