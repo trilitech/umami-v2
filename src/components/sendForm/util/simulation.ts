@@ -49,5 +49,5 @@ export const makeSimulation = (
   const sender = implicitOps[0].value.sender;
 
   const pk = getPk(sender);
-  return estimateBatch(implicitOps, sender, pk, network).then(sumEstimations);
+  return estimateBatch(implicitOps, sender, pk, network).then(getTotalFee);
 };
