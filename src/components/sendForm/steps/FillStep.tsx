@@ -278,7 +278,8 @@ export const SendTezOrNFTForm = ({
                     // This is needed to update the signer if a multisig account is selected
                     const values = getValues();
                     if (account.type === AccountType.MULTISIG) {
-                      reset({ ...values, proposalSigner: account.signers[0] });
+                      const defaultSigner = getDefaultSigner(account.pkh);
+                      reset({ ...values, proposalSigner: defaultSigner });
                     } else {
                       reset({ ...values, proposalSigner: undefined });
                     }
