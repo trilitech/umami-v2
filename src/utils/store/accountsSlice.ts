@@ -5,13 +5,11 @@ import { deriveAccount, restoreFromMnemonic } from "./thunks/restoreMnemonicAcco
 
 type State = {
   items: ImplicitAccount[];
-  selected: null | string;
   seedPhrases: Record<string, UmamiEncrypted | undefined>;
 };
 
 const initialState: State = {
   items: [],
-  selected: null,
   seedPhrases: {},
 };
 
@@ -44,11 +42,6 @@ const accountsSlice = createSlice({
       const accounts = Array.isArray(payload) ? payload : [payload];
 
       state.items = concatUnique(state.items, accounts);
-    },
-    setSelected: (state, { payload }: { type: string; payload: string | null }) => {
-      if (state.items.some(a => a.pkh === payload || payload === null)) {
-        state.selected = payload;
-      }
     },
   },
 });

@@ -14,7 +14,7 @@ import { uUSD } from "../../mocks/fa2Tokens";
 import { render, screen, within } from "../../mocks/testUtils";
 import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
 const { updateAssets } = assetsSlice.actions;
-const { add, setSelected } = accountsSlice.actions;
+const { add } = accountsSlice.actions;
 
 const tezBalance = "33200000000";
 
@@ -23,7 +23,6 @@ const pkh = account.pkh;
 const mockNft = mockNFTToken(0, pkh);
 beforeAll(() => {
   store.dispatch(add([account]));
-  store.dispatch(setSelected(pkh));
   store.dispatch(updateAssets([{ pkh: pkh, tez: tezBalance }]));
   store.dispatch(
     updateAssets([
