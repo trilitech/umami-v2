@@ -49,22 +49,18 @@ export type DelegationOperation = DelegationMode & {
 
 export type OperationValue = TezOperation | TokenOperation | DelegationOperation;
 
-export type Proposal<T extends OperationValue[]> = {
+export type ProposalOperations = {
   type: "proposal";
-  content: T;
+  content: OperationValue[];
   signer: string;
 };
 
-export type Implicit<T extends OperationValue[]> = {
+export type ImplicitOperations = {
   type: "implicit";
-  content: T;
+  content: OperationValue[];
 };
 
-export type ProposalOperations = Proposal<OperationValue[]>;
-
-export type ImplicitOperations = Implicit<OperationValue[]>;
-
-export type FormOperations = ImplicitOperations | ProposalOperations;
+export type FormOperations = ProposalOperations | ImplicitOperations;
 
 export type EstimatedOperation = {
   operations: FormOperations;
