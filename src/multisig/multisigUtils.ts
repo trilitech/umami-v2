@@ -5,7 +5,6 @@ import { nodeUrls } from "../utils/tezos/consts";
 import { FA12Operation, FA2Operation, Operation } from "./types";
 import type { MichelsonV1Expression } from "@taquito/rpc";
 import { isEqual } from "lodash";
-import { addressType } from "../types/Address";
 
 export const FA2_TRANSFER_ARG_TYPES = {
   args: [
@@ -84,7 +83,7 @@ const contractLambda = (
     ...LAMBDA_HEADER,
     {
       prim: "PUSH",
-      args: [{ prim: "address" }, { string: operation.contract + "%" + entrypoint }],
+      args: [{ prim: "address" }, { string: operation.contract.pkh + "%" + entrypoint }],
     },
     {
       prim: "CONTRACT",
@@ -116,11 +115,14 @@ export const makeLambda = async (operation: Operation, network: TezosNetwork) =>
   const toolkit = new TezosToolkit(nodeUrl);
   switch (operation.type) {
     case "tez":
-      switch (addressType(operation.recipient)) {
-        case "user":
-          return MANAGER_LAMBDA.transferImplicit(operation.recipient, Number(operation.amount));
+      switch (operation.recipient.type) {
+        case "implicit":
+          return MANAGER_LAMBDA.transferImplicit(operation.recipient.pkh, Number(operation.amount));
         case "contract":
-          return MANAGER_LAMBDA.transferToContract(operation.recipient, Number(operation.amount));
+          return MANAGER_LAMBDA.transferToContract(
+            operation.recipient.pkh,
+            Number(operation.amount)
+          );
       }
     // eslint-disable-next-line no-fallthrough
     case "fa1.2":
@@ -145,7 +147,7 @@ export const makeLambda = async (operation: Operation, network: TezosNetwork) =>
     }
     case "delegation":
       if (operation.recipient) {
-        return MANAGER_LAMBDA.setDelegate(operation.recipient);
+        return MANAGER_LAMBDA.setDelegate(operation.recipient.pkh);
       }
       return MANAGER_LAMBDA.removeDelegate();
   }

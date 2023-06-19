@@ -12,10 +12,14 @@ describe("<MultisigPendingCard/>", () => {
         operation={{
           key: "1",
           rawActions: "action",
-          approvals: [pkh0],
+          approvals: [{ type: "implicit", pkh: pkh0 }],
         }}
         threshold={3}
-        signers={[pkh0, pkh1, pkh2]}
+        signers={[
+          { type: "implicit", pkh: pkh0 },
+          { type: "implicit", pkh: pkh1 },
+          { type: "implicit", pkh: pkh2 },
+        ]}
       />
     );
 
@@ -31,10 +35,18 @@ describe("<MultisigPendingCard/>", () => {
         operation={{
           key: "1",
           rawActions: "action",
-          approvals: [pkh0, pkh1, pkh2],
+          approvals: [
+            { type: "implicit", pkh: pkh0 },
+            { type: "implicit", pkh: pkh1 },
+            { type: "implicit", pkh: pkh2 },
+          ],
         }}
         threshold={2}
-        signers={[pkh0, pkh1, pkh2]}
+        signers={[
+          { type: "implicit", pkh: pkh0 },
+          { type: "implicit", pkh: pkh1 },
+          { type: "implicit", pkh: pkh2 },
+        ]}
       />
     );
 

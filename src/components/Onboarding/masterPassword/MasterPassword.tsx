@@ -44,11 +44,11 @@ export const MasterPassword = ({
         if (!config.derivationPath) throw new Error("DerivationPath not set");
         if (!config.pk) throw new Error("Pk not set");
         if (!config.pkh) throw new Error("Pkh not set");
-        await restoreLedger(config.derivationPath, config.pk, config.pkh, config.label);
+        await restoreLedger(config.derivationPath, config.pkh, config.label);
       } else if (config instanceof TemporarySocialAccountConfig) {
         if (!config.pk) throw new Error("Pk not set");
         if (!config.pkh) throw new Error("Pkh not set");
-        await restoreSocial(config.pk, config.pkh, config.label);
+        await restoreSocial(config.pkh, config.label);
       } else {
         const error: never = config;
         throw new Error(error);

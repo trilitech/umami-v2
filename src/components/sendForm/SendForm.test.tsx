@@ -105,16 +105,16 @@ describe("<SendForm />", () => {
     });
 
     test("should render first step with sender prefiled if provided", () => {
-      render(fixture(mockImplicitAccount(1).pkh));
+      render(fixture(mockImplicitAccount(1).address.pkh));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).address.pkh)
       );
     });
 
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(1).pkh));
+      render(fixture(mockImplicitAccount(1).address.pkh));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).address.pkh)
       );
 
       const amountInput = screen.getByLabelText(/amount/i);
@@ -186,7 +186,7 @@ describe("<SendForm />", () => {
         });
         expect(addToBatchBtn).toBeEnabled();
       });
-      const batch = store.getState().assets.batches[mockImplicitAccount(1).pkh];
+      const batch = store.getState().assets.batches[mockImplicitAccount(1).address.pkh];
       expect(batch).toEqual({
         isSimulating: false,
         items: [
@@ -215,7 +215,7 @@ describe("<SendForm />", () => {
         expect(mockToast).toHaveBeenCalledTimes(2);
       });
 
-      const batch2 = store.getState().assets.batches[mockImplicitAccount(1).pkh];
+      const batch2 = store.getState().assets.batches[mockImplicitAccount(1).address.pkh];
       expect(batch2).toEqual({
         isSimulating: false,
         items: [
@@ -253,7 +253,7 @@ describe("<SendForm />", () => {
       const mockBatchItems = [{} as BatchItem];
       store.dispatch(
         assetsSlice.actions.updateBatch({
-          pkh: mockImplicitAccount(1).pkh,
+          pkh: mockImplicitAccount(1).address.pkh,
           items: mockBatchItems,
         })
       );
@@ -277,7 +277,7 @@ describe("<SendForm />", () => {
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
       });
-      expect(store.getState().assets.batches[mockImplicitAccount(1).pkh]?.items).toEqual(
+      expect(store.getState().assets.batches[mockImplicitAccount(1).address.pkh]?.items).toEqual(
         mockBatchItems
       );
     });
@@ -394,7 +394,6 @@ describe("<SendForm />", () => {
           },
         ],
         "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-        "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
         "mainnet"
       );
 
@@ -509,7 +508,6 @@ describe("<SendForm />", () => {
           },
         ],
         "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-        "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
         "mainnet"
       );
 
@@ -557,7 +555,7 @@ describe("<SendForm />", () => {
     const fillFormAndSimulate = async () => {
       render(fixture(undefined, { type: "token", data: mockNFT(1) }));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).address.pkh)
       );
 
       // const amountInput = screen.getByLabelText(/amount/i);
@@ -675,12 +673,12 @@ describe("<SendForm />", () => {
     //   render(fixture(undefined, { type: "delegation" }));
     //   const senderInput = screen.getByText(/select an account/i);
     //   fireEvent.click(senderInput);
-    //   // userEvent.selectOptions(senderInput, mockAccount(1).pkh);
+    //   // userEvent.selectOptions(senderInput, mockAccount(1).address.pkh);
     // });
   });
   describe("case send tez with Google account", () => {
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(4, AccountType.SOCIAL).pkh));
+      render(fixture(mockImplicitAccount(4, AccountType.SOCIAL).address.pkh));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
@@ -737,7 +735,7 @@ describe("<SendForm />", () => {
 
   describe("case send tez with Ledger account", () => {
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(5, AccountType.LEDGER).pkh));
+      render(fixture(mockImplicitAccount(5, AccountType.LEDGER).address.pkh));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });

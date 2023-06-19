@@ -53,14 +53,14 @@ const AccountTokensTileHeader: React.FC<{
 const AccountTokensTile: React.FC<{
   account: ImplicitAccount;
   onOpenSendModal: (options?: Options) => void;
-}> = ({ account: { pkh, label }, onOpenSendModal }) => {
+}> = ({ account: { address, label }, onOpenSendModal }) => {
   const getTokens = useGetAccountAllTokens();
   const network = useSelectedNetwork();
-  const tokens = getTokens(pkh);
+  const tokens = getTokens(address.pkh);
   if (tokens.length === 0) return null;
   return (
     <Card m={4} p={5} bgColor={colors.gray[900]} borderRadius="10px">
-      <AccountTokensTileHeader pkh={pkh} label={label} />
+      <AccountTokensTileHeader pkh={address.pkh} label={label} />
 
       <TableContainer
         overflowX="unset"
@@ -115,7 +115,7 @@ const AccountTokensTile: React.FC<{
                         label="Send"
                         onClick={() => {
                           onOpenSendModal({
-                            sender: pkh,
+                            sender: address.pkh,
                             mode: { type: "token", data: token },
                           });
                         }}

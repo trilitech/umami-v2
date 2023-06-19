@@ -9,7 +9,7 @@ import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
 import type { BigNumber } from "bignumber.js";
-import { AccountType, AllAccount } from "../../types/Account";
+import { AccountType, Account } from "../../types/Account";
 import MultisigApprovers from "./MultisigApprovers";
 
 type Props = {
@@ -23,7 +23,7 @@ type Props = {
   dollarBalance: BigNumber | null;
   tokens: Array<FA12Token | FA2Token>;
   nfts: Array<NFT>;
-  account: AllAccount;
+  account: Account;
 };
 
 const RoundButton: React.FC<{

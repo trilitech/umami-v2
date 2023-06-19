@@ -6,7 +6,7 @@ import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import { AccountSmallTileDisplay } from "./AccountSmallTile";
 
 const renderAccount = (account: ImplicitAccount) => (
-  <AccountSmallTileDisplay pkh={account.pkh} label={account.label} />
+  <AccountSmallTileDisplay pkh={account.address.pkh} label={account.label} />
 );
 
 export const ConnectedAccountSelector: React.FC<{
@@ -15,7 +15,7 @@ export const ConnectedAccountSelector: React.FC<{
   isDisabled?: boolean;
 }> = ({ onSelect = () => {}, selected, isDisabled }) => {
   const accounts = useImplicitAccounts();
-  const selectedAccount = accounts.find(a => a.pkh === selected);
+  const selectedAccount = accounts.find(a => a.address.pkh === selected);
 
   return (
     <Menu>
@@ -33,12 +33,12 @@ export const ConnectedAccountSelector: React.FC<{
       <MenuList bg={"umami.gray.900"}>
         {accounts.map(account => (
           <MenuItem
-            value={account.pkh}
+            value={account.address.pkh}
             aria-label={account.label}
             onClick={e => {
               onSelect(account);
             }}
-            key={account.pkh}
+            key={account.address.pkh}
             minH="48px"
             w="100%"
             // TODO implement hover color that disapeared

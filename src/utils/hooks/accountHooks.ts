@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {
   AccountType,
-  AllAccount,
+  Account,
   LedgerAccount,
   MultisigAccount,
   SocialAccount,
@@ -20,7 +20,7 @@ export const useImplicitAccounts = () => {
 
 export const useGetImplicitAccount = () => {
   const accounts = useImplicitAccounts();
-  return (pkh: string) => accounts.find(a => a.pkh === pkh);
+  return (pkh: string) => accounts.find(a => a.address.pkh === pkh); // TODO: change pkh to ImplicitAddress
 };
 
 export const useReset = () => {
@@ -47,9 +47,9 @@ export const useReset = () => {
 export const useGetOwnedAccount = () => {
   const accounts = useImplicitAccounts();
   return (pkh: string) => {
-    const account = accounts.find(a => a.pkh === pkh);
+    const account = accounts.find(a => a.address.pkh === pkh);
     if (!account) {
-      throw new Error(`You do not ownn account:${pkh}`);
+      throw new Error(`You do not own account:${pkh}`);
     }
     return account;
   };
@@ -72,13 +72,15 @@ export const useRestoreSecret = () => {
 
 export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
-  return (derivationPath: string, pk: string, pkh: string, label: string) => {
+  return (derivationPath: string, pkh: string, label: string) => {
     const account: LedgerAccount = {
       derivationPath,
       curve: "ed25519",
       type: AccountType.LEDGER,
-      pk: pk,
-      pkh: pkh,
+      address: {
+        type: "implicit",
+        pkh: pkh,
+      },
       label,
     };
     dispatch(add([account]));
@@ -87,11 +89,13 @@ export const useRestoreLedger = () => {
 
 export const useRestoreSocial = () => {
   const dispatch = useAppDispatch();
-  return (pk: string, pkh: string, label: string) => {
+  return (pkh: string, label: string) => {
     const account: SocialAccount = {
       type: AccountType.SOCIAL,
-      pk: pk,
-      pkh: pkh,
+      address: {
+        type: "implicit",
+        pkh: pkh,
+      },
       idp: "google",
       label,
     };
@@ -129,18 +133,18 @@ export const useRemoveMnemonic = () => {
 export const useMultisigAccounts = (): MultisigAccount[] => {
   const multisigs: MultisigWithPendingOperations[] = useAppSelector(s => s.multisigs.items);
 
-  return multisigs.map((m, i) => ({
+  return multisigs.map((account, i) => ({
     label: `Multisig Account ${i}`,
-    pkh: m.address,
+    address: account.address,
     type: AccountType.MULTISIG,
-    threshold: m.threshold,
-    signers: m.signers,
-    balance: m.balance,
-    operations: m.pendingOperations,
+    threshold: account.threshold,
+    signers: account.signers,
+    balance: account.balance,
+    operations: account.pendingOperations,
   }));
 };
 
-export const useAllAccounts = (): AllAccount[] => {
+export const useAllAccounts = (): Account[] => {
   const implicit = useImplicitAccounts();
   const multisig = useMultisigAccounts();
   return [...implicit, ...multisig];

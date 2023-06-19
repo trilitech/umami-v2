@@ -100,13 +100,12 @@ const addItemsToBatchViaUI = async () => {
 const addItemsToBatchViaStore = async () => {
   await store.dispatch(
     estimateAndUpdateBatch(
-      mockImplicitAccount(1).pkh,
-      mockImplicitAccount(1).pk,
+      mockImplicitAccount(1).address.pkh,
       [
         {
           type: "tez",
           value: {
-            sender: mockImplicitAccount(1).pkh,
+            sender: mockImplicitAccount(1).address.pkh,
             recipient: mockPkh(1),
             amount: "1000000",
           },
@@ -114,7 +113,7 @@ const addItemsToBatchViaStore = async () => {
         {
           type: "tez",
           value: {
-            sender: mockImplicitAccount(1).pkh,
+            sender: mockImplicitAccount(1).address.pkh,
             recipient: mockPkh(2),
             amount: "2000000",
           },
@@ -122,7 +121,7 @@ const addItemsToBatchViaStore = async () => {
         {
           type: "tez",
           value: {
-            sender: mockImplicitAccount(1).pkh,
+            sender: mockImplicitAccount(1).address.pkh,
             recipient: mockPkh(3),
             amount: "3000000",
           },
@@ -135,13 +134,12 @@ const addItemsToBatchViaStore = async () => {
 
   await store.dispatch(
     estimateAndUpdateBatch(
-      mockImplicitAccount(2).pkh,
-      mockImplicitAccount(2).pk,
+      mockImplicitAccount(2).address.pkh,
       [
         {
           type: "tez",
           value: {
-            sender: mockImplicitAccount(2).pkh,
+            sender: mockImplicitAccount(2).address.pkh,
             recipient: mockPkh(9),
             amount: "4",
           },
@@ -149,7 +147,7 @@ const addItemsToBatchViaStore = async () => {
         {
           type: "tez",
           value: {
-            sender: mockImplicitAccount(2).pkh,
+            sender: mockImplicitAccount(2).address.pkh,
             recipient: mockPkh(4),
             amount: "5",
           },
@@ -157,7 +155,7 @@ const addItemsToBatchViaStore = async () => {
         {
           type: "tez",
           value: {
-            sender: mockImplicitAccount(2).pkh,
+            sender: mockImplicitAccount(2).address.pkh,
             recipient: mockPkh(5),
             amount: "6",
           },
@@ -245,8 +243,12 @@ describe("<BatchView />", () => {
       render(fixture());
       clickSubmitOnFirstBatch();
 
-      expect(screen.getByTestId("batch-table-" + mockImplicitAccount(2).pkh)).toBeInTheDocument();
-      expect(screen.getByTestId("batch-table-" + mockImplicitAccount(1).pkh)).toBeInTheDocument();
+      expect(
+        screen.getByTestId("batch-table-" + mockImplicitAccount(2).address.pkh)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId("batch-table-" + mockImplicitAccount(1).address.pkh)
+      ).toBeInTheDocument();
 
       const previewBtn = screen.getByRole("button", { name: /preview/i });
       fireEvent.click(previewBtn);
@@ -306,9 +308,11 @@ describe("<BatchView />", () => {
         config
       );
 
-      expect(screen.getByTestId("batch-table-" + mockImplicitAccount(2).pkh)).toBeInTheDocument();
       expect(
-        screen.queryByTestId("batch-table-" + mockImplicitAccount(1).pkh)
+        screen.getByTestId("batch-table-" + mockImplicitAccount(2).address.pkh)
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("batch-table-" + mockImplicitAccount(1).address.pkh)
       ).not.toBeInTheDocument();
     });
   });

@@ -10,7 +10,6 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import { store } from "../../utils/store/store";
 import { AccountsList } from "./AccountsList";
 
-import { mockPk } from "../../mocks/factories";
 import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
 import "../../mocks/mockGetRandomValues";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
@@ -159,7 +158,7 @@ describe("<AccountList />", () => {
     });
 
     fakeExtraArguments.restoreAccount.mockResolvedValue(
-      mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1)
+      mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1).address
     );
 
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
@@ -201,8 +200,10 @@ const restore = async () => {
     add({
       type: AccountType.SOCIAL,
       idp: "google",
-      pkh: mockPkh(6),
-      pk: mockPk(6),
+      address: {
+        type: "implicit",
+        pkh: mockPkh(6),
+      },
       label: GOOGLE_ACCOUNT_LABEL1,
     })
   );
@@ -211,8 +212,10 @@ const restore = async () => {
     add({
       type: AccountType.SOCIAL,
       idp: "google",
-      pkh: mockPkh(7),
-      pk: mockPk(7),
+      address: {
+        type: "implicit",
+        pkh: mockPkh(7),
+      },
       label: GOOGLE_ACCOUNT_LABEL2,
     })
   );

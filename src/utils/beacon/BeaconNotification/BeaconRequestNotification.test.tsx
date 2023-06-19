@@ -87,7 +87,7 @@ describe("<BeaconRequestNotification />", () => {
         expect(walletClient.respond).toHaveBeenCalledWith({
           id: MESSAGE_ID,
           network: { type: "mainnet" },
-          publicKey: mockImplicitAccount(2).pk,
+          publicKey: mockImplicitAccount(2).address.pkh,
           scopes: SCOPES,
           type: "permission_response",
         });
@@ -98,7 +98,7 @@ describe("<BeaconRequestNotification />", () => {
   describe("Operation request (case simple tez transaction)", () => {
     const message: OperationRequestOutput = {
       ...objectOperationRequest,
-      sourceAddress: mockImplicitAccount(2).pkh,
+      sourceAddress: mockImplicitAccount(2).address.pkh,
     };
     it("should display operations request with controls disabled and parameter displayed", async () => {
       render(fixture(message, () => {}));
@@ -147,7 +147,7 @@ describe("<BeaconRequestNotification />", () => {
   describe("Operation request (case delegation)", () => {
     const message: OperationRequestOutput = {
       ...objectOperationDelegationRequest,
-      sourceAddress: mockImplicitAccount(2).pkh,
+      sourceAddress: mockImplicitAccount(2).address.pkh,
     };
     it("should display delegation request with controls disabled", async () => {
       render(fixture(message, () => {}));
@@ -192,7 +192,7 @@ describe("<BeaconRequestNotification />", () => {
   test("User previews then submits Batches, and operation hash is sent via Beacon", async () => {
     const message: OperationRequestOutput = {
       ...objectOperationBatchRequest,
-      sourceAddress: mockImplicitAccount(2).pkh,
+      sourceAddress: mockImplicitAccount(2).address.pkh,
     };
     render(fixture(message, () => {}));
     const modal = screen.getByRole("dialog", { name: /recap/i });

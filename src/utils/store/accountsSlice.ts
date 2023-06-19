@@ -47,9 +47,16 @@ const accountsSlice = createSlice({
 });
 
 const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: ImplicitAccount[]) => {
+  // TODO: use Set
   newAccounts.forEach(newAccount => {
-    if (existingAccounts.some(existingAccount => existingAccount.pkh === newAccount.pkh)) {
-      throw new Error(`Can't add account ${newAccount.pkh} in store since it already exists.`);
+    if (
+      existingAccounts.some(
+        existingAccount => existingAccount.address.pkh === newAccount.address.pkh
+      )
+    ) {
+      throw new Error(
+        `Can't add account ${newAccount.address.pkh} in store since it already exists.`
+      );
     }
   });
 

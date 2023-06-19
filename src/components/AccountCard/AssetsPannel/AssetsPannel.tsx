@@ -1,6 +1,6 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, UnorderedList } from "@chakra-ui/react";
 import React from "react";
-import { AccountType, AllAccount } from "../../../types/Account";
+import { AccountType, Account } from "../../../types/Account";
 import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
 import MultisigPendingList from "./MultisigPendingList";
 import { NFTsGrid } from "./NFTsGrid";
@@ -9,7 +9,7 @@ import TokenTile from "./TokenTile";
 export const AssetsPannel: React.FC<{
   tokens: Array<FA12Token | FA2Token>;
   nfts: Array<NFT>;
-  account: AllAccount;
+  account: Account;
 }> = ({ tokens, nfts, account }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   return (

@@ -21,9 +21,9 @@ afterEach(() => {
 });
 
 beforeEach(async () => {
-  const { pk, pkh } = await makeDefaultDevSignerKeys(0);
+  const { pkh } = await makeDefaultDevSignerKeys(0);
   fakeExtraArguments.restoreAccount.mockResolvedValue({
-    pk,
+    type: "implicit",
     pkh,
   });
   fakeExtraArguments.decrypt.mockResolvedValue("unencryptedFingerprint");
@@ -55,7 +55,7 @@ describe("Accounts reducer", () => {
     store.dispatch(add([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]));
 
     expect(() => store.dispatch(add(mockImplicitAccount(2)))).toThrowError(
-      `Can't add account ${mockImplicitAccount(2).pkh} in store since it already exists.`
+      `Can't add account ${mockImplicitAccount(2).address.pkh} in store since it already exists.`
     );
 
     expect(store.getState().accounts).toEqual({
@@ -193,8 +193,7 @@ describe("Accounts reducer", () => {
           curve: "ed25519",
           derivationPath: "m/44'/1729'/0'/0'",
           label: "Account 0",
-          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H0",
-          pkh: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
+          address: { type: "implicit", pkh: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h" },
           seedFingerPrint: "mockPrint1",
           type: "mnemonic",
         },
@@ -202,8 +201,7 @@ describe("Accounts reducer", () => {
           curve: "ed25519",
           derivationPath: "m/44'/1729'/1'/0'",
           label: "Account 1",
-          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H1",
-          pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+          address: { type: "implicit", pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf" },
           seedFingerPrint: "mockPrint1",
           type: "mnemonic",
         },
@@ -211,8 +209,7 @@ describe("Accounts reducer", () => {
           curve: "ed25519",
           derivationPath: "m/44'/1729'/2'/0'",
           label: "my new account",
-          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
-          pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+          address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
           seedFingerPrint: "mockPrint1",
           type: "mnemonic",
         },

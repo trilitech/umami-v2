@@ -23,15 +23,15 @@ describe("restoreAccounts", () => {
     const result = await restoreAccounts(seedPhrase, defaultV1Pattern);
     const expected = [
       {
-        pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
+        type: "implicit",
         pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       },
       {
-        pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
+        type: "implicit",
         pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
       },
       {
-        pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
+        type: "implicit",
         pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       },
     ];
@@ -43,7 +43,7 @@ describe("restoreAccounts", () => {
     const result = await restoreAccounts(seedPhrase, defaultV1Pattern);
     const expected = [
       {
-        pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
+        type: "implicit",
         pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       },
     ];
@@ -64,8 +64,7 @@ describe("restoreEncryptedAccounts", () => {
         curve: "ed25519",
         derivationPath: getDefaultMnemonicDerivationPath(0),
         type: AccountType.MNEMONIC,
-        pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
-        pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+        address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         seedFingerPrint: "mockFingerPrint",
         label: "Account 0",
       },
@@ -73,8 +72,7 @@ describe("restoreEncryptedAccounts", () => {
         curve: "ed25519",
         derivationPath: getDefaultMnemonicDerivationPath(1),
         type: AccountType.MNEMONIC,
-        pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
-        pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+        address: { type: "implicit", pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6" },
         seedFingerPrint: "mockFingerPrint",
         label: "Account 1",
       },
@@ -82,8 +80,7 @@ describe("restoreEncryptedAccounts", () => {
         curve: "ed25519",
         derivationPath: getDefaultMnemonicDerivationPath(2),
         type: AccountType.MNEMONIC,
-        pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
-        pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        address: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         seedFingerPrint: "mockFingerPrint",
         label: "Account 2",
       },

@@ -1,14 +1,12 @@
 import { Signer } from "@taquito/taquito";
 export class DummySigner implements Signer {
-  pk: string;
   pkh: string;
 
-  constructor(pk: string, pkh: string) {
-    this.pk = pk;
+  constructor(pkh: string) {
     this.pkh = pkh;
   }
   async publicKey() {
-    return this.pk;
+    return "dummy";
   }
   async publicKeyHash() {
     return this.pkh;

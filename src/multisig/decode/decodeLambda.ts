@@ -10,8 +10,9 @@ import {
   tezSchema,
 } from "./schemas";
 import type { MichelsonV1Expression } from "@taquito/rpc";
+import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 
-const parseAddress = (addressBytes: string): string => {
+const toPkh = (addressBytes: string): string => {
   if (addressBytes.length === 42) {
     // in most of cases, tz1/2/3 addresses are returned not as 44 bytes, but as 42.
     // most likely, the reason is that the first byte are always 0
@@ -29,12 +30,11 @@ export const parseTez = (michelson: MichelsonV1Expression[]): Operation => {
 
   return {
     type: "tez",
-    recipient: parseAddress(to),
+    recipient: parsePkh(toPkh(to)),
     amount,
   };
 };
 
-// TODO: define proper tests for the address
 export const parseTezContract = (michelson: MichelsonV1Expression[]): Operation => {
   const parseResult = contractTezSchema.parse(michelson);
 
@@ -43,14 +43,14 @@ export const parseTezContract = (michelson: MichelsonV1Expression[]): Operation 
 
   return {
     type: "tez",
-    recipient: parseAddress(to),
+    recipient: parsePkh(toPkh(to)),
     amount,
   };
 };
 
 const parseFa2 = (michelson: MichelsonV1Expression[]): Operation[] => {
   const parseResult = fa2Schema.parse(michelson);
-  const contractAddress = parseAddress(parseResult[0].args[1].bytes);
+  const contractAddress = parseContractPkh(toPkh(parseResult[0].args[1].bytes));
   const operations = parseResult[4].args[1];
 
   return operations.flatMap(operation => {
@@ -64,8 +64,8 @@ const parseFa2 = (michelson: MichelsonV1Expression[]): Operation[] => {
       return {
         type: "fa2",
         contract: contractAddress,
-        sender: parseAddress(from),
-        recipient: parseAddress(to),
+        sender: parsePkh(toPkh(from)),
+        recipient: parsePkh(toPkh(to)),
         tokenId,
         amount,
       };
@@ -86,9 +86,9 @@ const parseFa1 = (michelson: MichelsonV1Expression[]): Operation => {
   return {
     type: "fa1.2",
     amount,
-    contract: parseAddress(lambdaRecipient.args[1].bytes),
-    recipient: parseAddress(to),
-    sender: parseAddress(from),
+    contract: parseContractPkh(toPkh(lambdaRecipient.args[1].bytes)),
+    recipient: parsePkh(toPkh(to)),
+    sender: parsePkh(toPkh(from)),
   };
 };
 
@@ -97,7 +97,7 @@ const parseSetDelegate = (michelson: MichelsonV1Expression[]): Operation => {
 
   return {
     type: "delegation",
-    recipient: parseAddress(parseResult[0].args[1].bytes),
+    recipient: parseImplicitPkh(toPkh(parseResult[0].args[1].bytes)),
   };
 };
 

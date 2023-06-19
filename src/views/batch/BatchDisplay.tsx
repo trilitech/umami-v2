@@ -112,10 +112,10 @@ export const BatchDisplay: React.FC<{
   const network = useSelectedNetwork();
 
   return (
-    <Flex data-testid={`batch-table-${account.pkh}`} mb={4}>
+    <Flex data-testid={`batch-table-${account.address.pkh}`} mb={4}>
       <Box flex={1} bg="umami.gray.900" p={4}>
         <Flex justifyContent="space-between" ml={2} mr={2} mb={4}>
-          <AccountSmallTileDisplay ml={2} pkh={account.pkh} label={account.label} />
+          <AccountSmallTileDisplay ml={2} pkh={account.address.pkh} label={account.label} />
           <Text color={"umami.gray.400"}>
             {`${items.length} transaction${items.length > 1 ? "s" : ""}`}
           </Text>

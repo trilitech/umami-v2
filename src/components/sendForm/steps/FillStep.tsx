@@ -75,7 +75,7 @@ export const DelegateForm = ({
                   isDisabled={undelegate || disabled}
                   selected={value}
                   onSelect={a => {
-                    onChange(a.pkh);
+                    onChange(a.address.pkh);
                   }}
                 />
               )}
@@ -231,7 +231,7 @@ export const SendTezOrNFTForm = ({
                   isDisabled={isNFT || simulating || disabled}
                   selected={value}
                   onSelect={a => {
-                    onChange(a.pkh);
+                    onChange(a.address.pkh);
                   }}
                 />
               )}

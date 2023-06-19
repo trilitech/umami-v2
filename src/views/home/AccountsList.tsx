@@ -6,7 +6,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { useCreateOrImportSecretModal } from "../../components/Onboarding/useOnboardingModal";
 import {
   AccountType,
-  AllAccount,
+  Account,
   LedgerAccount,
   MnemonicAccount,
   MultisigAccount,
@@ -63,17 +63,21 @@ const AccountGroup: React.FC<{
         {showCTA && <AccountPopover onCreate={onDerive} onDelete={onDelete} />}
       </Flex>
 
-      {accounts.map(a => {
+      {accounts.map(account => {
         return (
           <AccountTile
-            selected={a.pkh === selected}
+            selected={account.address.pkh === selected}
             onClick={_ => {
-              onSelect(a.pkh);
+              onSelect(account.address.pkh);
             }}
-            key={a.pkh}
-            address={a.pkh}
-            label={a.label || ""}
-            balance={a.type === AccountType.MULTISIG ? a.balance : balances[a.pkh]}
+            key={account.address.pkh}
+            address={account.address.pkh}
+            label={account.label || ""}
+            balance={
+              account.type === AccountType.MULTISIG
+                ? account.balance
+                : balances[account.address.pkh]
+            }
           />
         );
       })}
@@ -81,7 +85,7 @@ const AccountGroup: React.FC<{
   );
 };
 
-const getLabel = (a: AllAccount) => {
+const getLabel = (a: Account) => {
   switch (a.type) {
     case AccountType.MNEMONIC:
       return `Seedphrase ${a.seedFingerPrint}`;
@@ -97,7 +101,7 @@ const getLabel = (a: AllAccount) => {
     }
   }
 };
-const groupByKind = (accounts: AllAccount[]): GroupedByLabel => {
+const groupByKind = (accounts: Account[]): GroupedByLabel => {
   return accounts.reduce((group: GroupedByLabel, a) => {
     const label = getLabel(a);
 

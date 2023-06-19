@@ -1,7 +1,6 @@
 import { AccountType, MnemonicAccount } from "../../types/Account";
 
 export const makeMnemonicAccount = (
-  pk: string,
   pkh: string,
   derivationPath: string,
   seedFingerPrint: string,
@@ -10,8 +9,7 @@ export const makeMnemonicAccount = (
   return {
     curve: "ed25519",
     derivationPath,
-    pk,
-    pkh,
+    address: { type: "implicit", pkh: pkh },
     seedFingerPrint,
     label,
     type: AccountType.MNEMONIC,

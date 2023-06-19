@@ -12,7 +12,7 @@ describe("<MultisigSignerTile/>", () => {
   it("should display a button for non-pending operation with signer included in the account", () => {
     const account = mockImplicitAccount(0);
     store.dispatch(add([account]));
-    render(<MultisigSignerTile signer={account.pkh} approvers={[]} pendingApprovals={0} />);
+    render(<MultisigSignerTile signer={account.address} approvers={[]} pendingApprovals={0} />);
     expect(screen.getByTestId("multisig-signer-button")).toBeInTheDocument();
   });
 
@@ -20,7 +20,11 @@ describe("<MultisigSignerTile/>", () => {
     const account = mockImplicitAccount(0);
     store.dispatch(add([account]));
     render(
-      <MultisigSignerTile signer={account.pkh} approvers={[account.pkh]} pendingApprovals={1} />
+      <MultisigSignerTile
+        signer={account.address}
+        approvers={[account.address]}
+        pendingApprovals={1}
+      />
     );
     expect(screen.queryByTestId("multisig-signer-button")).not.toBeInTheDocument();
   });
@@ -28,7 +32,11 @@ describe("<MultisigSignerTile/>", () => {
   it("should hide button for operation with signers not in the account", () => {
     const account = mockImplicitAccount(0);
     render(
-      <MultisigSignerTile signer={account.pkh} approvers={[account.pkh]} pendingApprovals={1} />
+      <MultisigSignerTile
+        signer={account.address}
+        approvers={[account.address]}
+        pendingApprovals={1}
+      />
     );
     expect(screen.queryByTestId("multisig-signer-button")).not.toBeInTheDocument();
   });

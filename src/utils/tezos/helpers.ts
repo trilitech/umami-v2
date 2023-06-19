@@ -93,14 +93,10 @@ export const makeToolkitWithSigner = async (config: SignerConfig) => {
   return Tezos;
 };
 
-export const makeToolkitWithDummySigner = (
-  pk: string,
-  pkh: string,
-  network: TezosNetwork
-): TezosToolkit => {
+export const makeToolkitWithDummySigner = (pkh: string, network: TezosNetwork): TezosToolkit => {
   const Tezos = new TezosToolkit(nodeUrls[network]);
   Tezos.setProvider({
-    signer: new DummySigner(pk, pkh),
+    signer: new DummySigner(pkh),
   });
   return Tezos;
 };
@@ -121,10 +117,10 @@ export const makeFA2TransferMethod = async (
 ): Promise<ContractMethod<ContractProvider>> => {
   const michelson = [
     {
-      from_: sender,
+      from_: sender.pkh,
       txs: [
         {
-          to_: recipient,
+          to_: recipient.pkh,
           token_id: tokenId,
           amount: amount,
         },
@@ -132,7 +128,7 @@ export const makeFA2TransferMethod = async (
     },
   ];
 
-  const contractInstance = await toolkit.contract.at(contract);
+  const contractInstance = await toolkit.contract.at(contract.pkh);
   return contractInstance.methods.transfer(michelson);
 };
 
@@ -140,15 +136,15 @@ export const makeFA12TransferMethod = async (
   { sender, recipient, amount, contract }: FA12TransferMethodArgs,
   toolkit: TezosToolkit
 ): Promise<ContractMethod<ContractProvider>> => {
-  const contractInstance = await toolkit.contract.at(contract);
-  return contractInstance.methods.transfer(sender, recipient, amount);
+  const contractInstance = await toolkit.contract.at(contract.pkh);
+  return contractInstance.methods.transfer(sender.pkh, recipient.pkh, amount);
 };
 
 export const makeMultisigProposeMethod = async (
   { lambdaActions, contract }: MultisigProposeMethodArgs,
   toolkit: TezosToolkit
 ) => {
-  const contractInstance = await toolkit.contract.at(contract);
+  const contractInstance = await toolkit.contract.at(contract.pkh);
   return contractInstance.methods.propose(lambdaActions);
 };
 
@@ -156,7 +152,7 @@ export const makeMultisigApproveOrExecuteMethod = async (
   { type, contract, operationId }: MultisigApproveOrExecuteMethodArgs,
   toolkit: TezosToolkit
 ) => {
-  const contractInstance = await toolkit.contract.at(contract);
+  const contractInstance = await toolkit.contract.at(contract.pkh);
   return contractInstance.methods[type](operationId);
 };
 

@@ -58,9 +58,9 @@ export const deriveAccount = createAsyncThunk<
   const pattern = deductDerivationPattern(accounts[0].derivationPath);
   const nextDerivationPath = makeDerivationPath(pattern, nextIndex);
 
-  const { pk, pkh } = await thunkAPI.extra.restoreAccount(seedphrase, nextDerivationPath);
+  const { pkh } = await thunkAPI.extra.restoreAccount(seedphrase, nextDerivationPath);
 
-  const account = makeMnemonicAccount(pk, pkh, nextDerivationPath, fingerPrint, label);
+  const account = makeMnemonicAccount(pkh, nextDerivationPath, fingerPrint, label);
 
   return account;
 });

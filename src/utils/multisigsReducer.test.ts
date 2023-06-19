@@ -13,7 +13,7 @@ describe("Contacts reducer", () => {
 
   test("should set new multisigs", () => {
     const multisig: MultisigWithPendingOperations = {
-      address: "mockKt1",
+      address: { type: "contract", pkh: "mockKt1" },
       balance: "44",
       pendingOperations: [],
       signers: [],

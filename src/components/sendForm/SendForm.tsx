@@ -2,7 +2,6 @@ import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
-import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
@@ -13,18 +12,8 @@ import { RecapDisplay } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, OperationValue, SendFormMode } from "./types";
 
-const makeSimulation = (
-  operations: OperationValue[],
-  pk: string,
-  pkh: string,
-  network: TezosNetwork
-) => {
-  return estimateBatch(operations, pkh, pk, network).then(sumEstimations);
-};
-
-export const useGetPk = () => {
-  const getAccount = useGetOwnedAccount();
-  return (pkh: string) => getAccount(pkh).pk;
+const makeSimulation = (operations: OperationValue[], pkh: string, network: TezosNetwork) => {
+  return estimateBatch(operations, pkh, network).then(sumEstimations);
 };
 
 export const SendForm = ({
@@ -46,7 +35,6 @@ export const SendForm = ({
 }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
-  const getPk = useGetPk();
   const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -68,9 +56,7 @@ export const SendForm = ({
     try {
       const sender = operations[0].value.sender;
 
-      const pk = getPk(sender);
-
-      const estimate = await makeSimulation(operations, pk, sender, network);
+      const estimate = await makeSimulation(operations, sender, network);
 
       setTransferValues({
         operations,
@@ -86,10 +72,8 @@ export const SendForm = ({
   const addToBatch = async (operation: OperationValue) => {
     const sender = operation.value.sender;
 
-    const pk = getPk(sender);
-
     try {
-      await dispatch(estimateAndUpdateBatch(sender, pk, [operation], network));
+      await dispatch(estimateAndUpdateBatch(sender, [operation], network));
 
       toast({ title: "Transaction added to batch!" });
     } catch (error: any) {

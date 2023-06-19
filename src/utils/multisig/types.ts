@@ -1,22 +1,20 @@
-// For now we only allow a wallet user to be a signer of multisig.
-export type WalletAccountPkh = string;
-export type MultisigAddress = string;
+import { ContractAddress, ImplicitAddress } from "../../types/Address";
 
 export type MultisigOperation = {
   key: string;
   rawActions: string;
-  approvals: WalletAccountPkh[];
+  approvals: ImplicitAddress[];
 };
 
 export type MultisigWithPendingOperations = {
-  address: MultisigAddress;
+  address: ContractAddress;
   threshold: number;
-  signers: WalletAccountPkh[];
+  signers: ImplicitAddress[];
   balance: string;
   pendingOperations: MultisigOperation[];
 };
 
 export type AccountToMultisigs = Record<
-  WalletAccountPkh,
+  string, // pkh
   MultisigWithPendingOperations[] | undefined
 >;

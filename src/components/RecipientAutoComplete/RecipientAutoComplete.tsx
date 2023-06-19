@@ -155,9 +155,9 @@ export const RecipientAutoCompleteDisplay: React.FC<BaseProps & { contacts: Cont
 export const RecipentAutoComplete: React.FC<BaseProps> = props => {
   const contacts = Object.values(useAppSelector(s => s.contacts));
 
-  const accounts = useImplicitAccounts().map(a => ({
-    name: a.label,
-    pkh: a.pkh,
+  const accounts = useImplicitAccounts().map(account => ({
+    name: account.label,
+    pkh: account.address.pkh,
   }));
 
   return <RecipientAutoCompleteDisplay {...props} contacts={contacts.concat(accounts)} />;

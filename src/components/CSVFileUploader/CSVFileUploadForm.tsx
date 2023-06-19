@@ -23,14 +23,12 @@ import {
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { ConnectedAccountSelector } from "../AccountSelector/AccountSelector";
-import { useGetPk } from "../sendForm/SendForm";
 import { CSVRow } from "./types";
 import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 
 const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
-  const getPk = useGetPk();
   const getAssetsLookup = useGetAccountAssetsLookup();
   const dispatch = useAppDispatch();
   const isSimulating = useBatchIsSimulating();
@@ -100,7 +98,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
         csvRowToOperationValue(sender, csvRow, assetLookup)
       );
 
-      await dispatch(estimateAndUpdateBatch(sender, getPk(sender), operationValues, network));
+      await dispatch(estimateAndUpdateBatch(sender, operationValues, network));
 
       toast({ title: "CSV added to batch!" });
       onClose();
@@ -126,7 +124,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
               <ConnectedAccountSelector
                 selected={value}
                 onSelect={account => {
-                  onChange(account.pkh);
+                  onChange(account.address.pkh);
                 }}
               />
             )}

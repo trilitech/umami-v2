@@ -2,11 +2,11 @@ import { Box, Flex, Heading, Icon, Tag, useDisclosure, Wrap, WrapItem } from "@c
 import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import colors from "../../style/colors";
-import { WalletAccountPkh } from "../../utils/multisig/types";
+import { ImplicitAddress } from "../../types/Address";
 import AccountOrContactTile from "../AccountOrContactTile";
 
 const MultisigApprovers: React.FC<{
-  signers: WalletAccountPkh[];
+  signers: ImplicitAddress[];
 }> = ({ signers }) => {
   const { isOpen, getButtonProps } = useDisclosure({
     defaultIsOpen: true,
@@ -27,11 +27,16 @@ const MultisigApprovers: React.FC<{
       </Flex>
       {isOpen && (
         <Wrap mt="3" data-testid="multisig-tag-section">
-          {signers.map(pkh => {
+          {signers.map(address => {
             return (
-              <WrapItem key={pkh} borderRadius="100px" padding="3px 8px" bg={colors.gray[600]}>
+              <WrapItem
+                key={address.pkh}
+                borderRadius="100px"
+                padding="3px 8px"
+                bg={colors.gray[600]}
+              >
                 <Tag data-testid="multisig-tag" color={colors.gray[400]} borderRadius="full">
-                  <AccountOrContactTile pkh={pkh} />
+                  <AccountOrContactTile pkh={address.pkh} />
                 </Tag>
               </WrapItem>
             );

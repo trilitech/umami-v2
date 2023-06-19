@@ -97,14 +97,17 @@ export const mockImplicitAccount = (
   type = AccountType.MNEMONIC,
   fingerPrint = "mockPrint"
 ): ImplicitAccount => {
+  // TODO: convert to switch
   if (type === AccountType.MNEMONIC) {
     const account: MnemonicAccount = {
       curve: "ed25519",
       derivationPath: getDefaultMnemonicDerivationPath(index),
       type,
       label: mockAccountLabel(index),
-      pkh: mockPkh(index),
-      pk: mockPk(index),
+      address: {
+        type: "implicit",
+        pkh: mockPkh(index),
+      },
       seedFingerPrint: `${fingerPrint}`,
     };
     return account;
@@ -114,8 +117,10 @@ export const mockImplicitAccount = (
     const account: SocialAccount = {
       type: AccountType.SOCIAL,
       label: "google " + mockAccountLabel(index),
-      pkh: mockPkh(index),
-      pk: mockPk(index),
+      address: {
+        type: "implicit",
+        pkh: mockPkh(index),
+      },
       idp: "google",
     };
     return account;
@@ -127,8 +132,10 @@ export const mockImplicitAccount = (
       derivationPath: getLedgerDerivationPath(index),
       curve: "ed25519",
       label: mockAccountLabel(index) + " ledger",
-      pkh: mockPkh(index),
-      pk: mockPk(index),
+      address: {
+        type: "implicit",
+        pkh: mockPkh(index),
+      },
     };
     return account;
   }
@@ -139,30 +146,17 @@ export const mockImplicitAccount = (
 export const mockMultisigAccount = (index: number): MultisigAccount => {
   return {
     type: AccountType.MULTISIG,
-    pkh: mockPkh(index),
+    address: {
+      type: "contract",
+      pkh: mockPkh(index),
+    },
     label: "label",
     threshold: 1,
-    signers: ["signers2"],
+    signers: [{ type: "implicit", pkh: mockPkh(index) }],
     balance: "1",
     operations: [],
   };
 };
-
-// Might need this later
-//
-// export const mockMultisigAccount = (
-//   index: number,
-//   proposals: MultisigOperation[] = []
-// ) => {
-//   const account: MultisigAccount = {
-//     proposals: [],
-//     type: AccountType.MULTISIG,
-//     label: "Mulstisig account " + index,
-//     pkh: mockContract(index),
-//   };
-
-//   return account;
-// };
 
 export const mockMultisigWithOperations = (
   index: number,
@@ -172,10 +166,10 @@ export const mockMultisigWithOperations = (
   threshold = 3
 ): MultisigWithPendingOperations => {
   return {
-    address: mockContract(index),
+    address: { type: "contract", pkh: mockContract(index) },
     balance,
     pendingOperations: operations,
-    signers,
+    signers: signers.map(pkh => ({ type: "implicit", pkh })),
     threshold,
   };
 };

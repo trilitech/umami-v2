@@ -50,7 +50,7 @@ describe("makeLambda", () => {
         {
           type: "tez",
           amount: MUTEZ_AMOUNT,
-          recipient: mockPkh(0),
+          recipient: { type: "implicit", pkh: mockPkh(0) },
         },
         TezosNetwork.GHOSTNET
       );
@@ -68,7 +68,7 @@ describe("makeLambda", () => {
         {
           type: "tez",
           amount: MUTEZ_AMOUNT,
-          recipient: mockContract(0),
+          recipient: { type: "contract", pkh: mockContract(0) },
         },
         TezosNetwork.GHOSTNET
       );
@@ -87,9 +87,9 @@ describe("makeLambda", () => {
       {
         type: "fa1.2",
         amount: AMOUNT,
-        recipient: mockPkh(0),
-        contract: mockContract(0),
-        sender: multisigContract,
+        recipient: { type: "implicit", pkh: mockPkh(0) },
+        contract: { type: "contract", pkh: mockContract(0) },
+        sender: { type: "contract", pkh: multisigContract },
       },
       TezosNetwork.GHOSTNET
     );
@@ -109,9 +109,9 @@ describe("makeLambda", () => {
         {
           type: "fa2",
           amount: AMOUNT,
-          recipient: mockPkh(0),
-          contract: mockContract(0),
-          sender: multisigContract,
+          recipient: { type: "implicit", pkh: mockPkh(0) },
+          contract: { type: "contract", pkh: mockContract(0) },
+          sender: { type: "contract", pkh: multisigContract },
           tokenId: MOCK_TOKEN_ID,
         },
       ],
@@ -130,7 +130,7 @@ describe("makeLambda", () => {
       const result = await makeLambda(
         {
           type: "delegation",
-          recipient: mockPkh(0),
+          recipient: { type: "implicit", pkh: mockPkh(0) },
         },
         TezosNetwork.GHOSTNET
       );
@@ -142,23 +142,9 @@ describe("makeLambda", () => {
     });
 
     it("can unset a delegate", async () => {
-      const emptyStringResult = await makeLambda(
-        {
-          type: "delegation",
-          recipient: "",
-        },
-        TezosNetwork.GHOSTNET
-      );
+      const result = await makeLambda({ type: "delegation" }, TezosNetwork.GHOSTNET);
 
-      expect(emptyStringResult).toEqual([
-        { prim: "DROP" },
-        { args: [{ prim: "operation" }], prim: "NIL" },
-        ...dropDelegationLambda,
-      ]);
-
-      const undefinedResult = await makeLambda({ type: "delegation" }, TezosNetwork.GHOSTNET);
-
-      expect(undefinedResult).toEqual([
+      expect(result).toEqual([
         { prim: "DROP" },
         { args: [{ prim: "operation" }], prim: "NIL" },
         ...dropDelegationLambda,
@@ -176,7 +162,7 @@ describe("makeBatchLambda", () => {
         {
           type: "tez",
           amount: MUTEZ_AMOUNT_1,
-          recipient: mockPkh(0),
+          recipient: { type: "implicit", pkh: mockPkh(0) },
         },
       ],
       TezosNetwork.GHOSTNET
@@ -195,30 +181,30 @@ describe("makeBatchLambda", () => {
     const MOCK_TEZ_AMOUNT2 = "55556";
     const result = await makeBatchLambda(
       [
-        { type: "tez", amount: MOCK_TEZ_AMOUNT, recipient: mockPkh(1) },
+        { type: "tez", amount: MOCK_TEZ_AMOUNT, recipient: { type: "implicit", pkh: mockPkh(1) } },
         {
           type: "tez",
           amount: MOCK_TEZ_AMOUNT2,
-          recipient: mockContract(0),
+          recipient: { type: "contract", pkh: mockContract(0) },
         },
         {
           type: "fa2",
           amount: "1",
-          recipient: mockPkh(0),
-          contract: mockContract(0),
-          sender: multisigContract,
+          recipient: { type: "implicit", pkh: mockPkh(0) },
+          contract: { type: "contract", pkh: mockContract(0) },
+          sender: { type: "contract", pkh: multisigContract },
           tokenId: "123",
         },
         {
           type: "fa1.2",
           amount: "1",
-          recipient: mockPkh(0),
-          contract: mockContract(1),
-          sender: multisigContract,
+          recipient: { type: "implicit", pkh: mockPkh(0) },
+          contract: { type: "contract", pkh: mockContract(1) },
+          sender: { type: "contract", pkh: multisigContract },
         },
         {
           type: "delegation",
-          recipient: mockPkh(1),
+          recipient: { type: "implicit", pkh: mockPkh(1) },
         },
         { type: "delegation" },
       ],

@@ -73,9 +73,9 @@ export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
   const accounts = useImplicitAccounts();
   const network = useSelectedNetwork();
-  const pkhs = accounts.map(a => a.pkh);
+  const pkhs = accounts.map(a => a.address.pkh);
   const accountPkhSet = new Set(pkhs);
-  const multisigPkhs = useMultisigAccounts().map(m => m.pkh);
+  const multisigPkhs = useMultisigAccounts().map(m => m.address.pkh);
 
   const tezQuery = useQuery("tezBalance", {
     queryFn: async () => {

@@ -37,10 +37,9 @@ export const sumEstimations = (es: Estimate[]) => {
 export const operationValuesToBatchItems = async (
   operations: OperationValue[],
   pkh: string,
-  pk: string,
   network: TezosNetwork
 ) => {
-  const estimations = await estimateBatch(operations, pkh, pk, network);
+  const estimations = await estimateBatch(operations, pkh, network);
   const items = zip(operations, estimations).map(([o, e]) => {
     return {
       fee: String(e.suggestedFeeMutez),

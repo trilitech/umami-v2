@@ -1,22 +1,22 @@
 import { Box, Flex, Text, Heading } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../../style/colors";
+import { ImplicitAddress } from "../../../types/Address";
 import { formatPkh } from "../../../utils/format";
 import { useGetImplicitAccount } from "../../../utils/hooks/accountHooks";
 import { useGetContractName } from "../../../utils/hooks/contactsHooks";
-import { WalletAccountPkh } from "../../../utils/multisig/types";
 import { Identicon } from "../../Identicon";
 import MultisigActionButton from "./MultisigActionButton";
 
 const MultisigSignerTile: React.FC<{
-  signer: WalletAccountPkh;
-  approvers: WalletAccountPkh[];
+  signer: ImplicitAddress;
+  approvers: ImplicitAddress[];
   pendingApprovals: number;
 }> = ({ signer, approvers, pendingApprovals }) => {
   const getContactName = useGetContractName();
   const getImplicitAccount = useGetImplicitAccount();
-  const accountLabel = getImplicitAccount(signer)?.label;
-  const label = accountLabel || getContactName(signer);
+  const accountLabel = getImplicitAccount(signer.pkh)?.label;
+  const label = accountLabel || getContactName(signer.pkh);
 
   return (
     <Flex
@@ -28,13 +28,13 @@ const MultisigSignerTile: React.FC<{
       border={`1px solid ${colors.gray[800]}`}
       alignItems="center"
     >
-      <Identicon address={signer} />
+      <Identicon address={signer.pkh} />
       <Flex flex={1} justifyContent="space-between" alignItems="center">
         <Box m={4}>
           {label && <Heading size={"md"}>{label}</Heading>}
           <Flex alignItems={"center"}>
             <Text size={"sm"} color="text.dark">
-              {formatPkh(signer)}
+              {formatPkh(signer.pkh)}
             </Text>
           </Flex>
         </Box>

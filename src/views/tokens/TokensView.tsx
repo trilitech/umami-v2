@@ -31,7 +31,11 @@ const TokensView = () => {
           <FilterController />
           <Box overflow={"scroll"}>
             {accounts.map(account => (
-              <AccountTokensTile key={account.pkh} account={account} onOpenSendModal={onOpen} />
+              <AccountTokensTile
+                key={account.address.pkh}
+                account={account}
+                onOpenSendModal={onOpen}
+              />
             ))}
           </Box>
           {modalElement}

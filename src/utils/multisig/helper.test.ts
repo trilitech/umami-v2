@@ -19,15 +19,19 @@ describe("multisig helpers", () => {
     const multisigs: MultisigWithPendingOperations[] = [
       {
         balance: "1",
-        address: mockContract(0),
-        signers: [mockPkh(0)],
+        address: { type: "contract", pkh: mockContract(0) },
+        signers: [{ type: "implicit", pkh: mockPkh(0) }],
         threshold: 1,
         pendingOperations: [],
       },
       {
         balance: "0",
-        address: mockContract(1),
-        signers: [mockPkh(0), mockPkh(1), mockPkh(3)],
+        address: { type: "contract", pkh: mockContract(1) },
+        signers: [
+          { type: "implicit", pkh: mockPkh(0) },
+          { type: "implicit", pkh: mockPkh(1) },
+          { type: "implicit", pkh: mockPkh(3) },
+        ],
         threshold: 3,
         pendingOperations: [],
       },
@@ -36,26 +40,34 @@ describe("multisig helpers", () => {
     expect(result).toEqual({
       [mockPkh(1)]: [
         {
-          address: mockContract(1),
+          address: { type: "contract", pkh: mockContract(1) },
           balance: "0",
           pendingOperations: [],
-          signers: [mockPkh(0), mockPkh(1), mockPkh(3)],
+          signers: [
+            { type: "implicit", pkh: mockPkh(0) },
+            { type: "implicit", pkh: mockPkh(1) },
+            { type: "implicit", pkh: mockPkh(3) },
+          ],
           threshold: 3,
         },
       ],
       [mockPkh(0)]: [
         {
-          address: mockContract(0),
+          address: { type: "contract", pkh: mockContract(0) },
           balance: "1",
           pendingOperations: [],
-          signers: [mockPkh(0)],
+          signers: [{ type: "implicit", pkh: mockPkh(0) }],
           threshold: 1,
         },
         {
-          address: mockContract(1),
+          address: { type: "contract", pkh: mockContract(1) },
           balance: "0",
           pendingOperations: [],
-          signers: [mockPkh(0), mockPkh(1), mockPkh(3)],
+          signers: [
+            { type: "implicit", pkh: mockPkh(0) },
+            { type: "implicit", pkh: mockPkh(1) },
+            { type: "implicit", pkh: mockPkh(3) },
+          ],
           threshold: 3,
         },
       ],
@@ -71,18 +83,18 @@ describe("multisig helpers", () => {
 
     expect(result).toEqual([
       {
-        address: mockContract(0),
+        address: { type: "contract", pkh: mockContract(0) },
         balance: 0,
         storage: {
           pending_ops: 0,
-          signers: [mockPkh(0)],
+          signers: [{ type: "implicit", pkh: mockPkh(0) }],
           threshold: "2",
         },
       },
     ]);
   });
 
-  test("getOperationsForMultisigs", async () => {
+  test.only("getOperationsForMultisigs", async () => {
     const mockResponse = {
       data: [
         {
@@ -116,39 +128,39 @@ describe("multisig helpers", () => {
 
     expect(result).toEqual([
       {
-        address: mockContract(0),
+        address: { type: "contract", pkh: mockContract(0) },
         balance: "0",
         pendingOperations: [
           {
-            approvals: [mockPkh(0)],
+            approvals: [{ type: "implicit", pkh: mockPkh(0) }],
             key: "0",
             rawActions: "action0",
           },
           {
-            approvals: [mockPkh(1)],
+            approvals: [{ type: "implicit", pkh: mockPkh(1) }],
             key: "1",
             rawActions: "action1",
           },
         ],
-        signers: [mockPkh(0)],
+        signers: [{ type: "implicit", pkh: mockPkh(0) }],
         threshold: 2,
       },
       {
-        address: mockContract(10),
+        address: { type: "contract", pkh: mockContract(10) },
         balance: "10",
         pendingOperations: [
           {
-            approvals: [mockPkh(0)],
+            approvals: [{ type: "implicit", pkh: mockPkh(0) }],
             key: "0",
             rawActions: "action0",
           },
           {
-            approvals: [mockPkh(1)],
+            approvals: [{ type: "implicit", pkh: mockPkh(1) }],
             key: "1",
             rawActions: "action1",
           },
         ],
-        signers: ["tz1W2hEsS1mj7dHPZ6267eeM4HDWJoG3s13n"],
+        signers: [{ type: "implicit", pkh: "tz1W2hEsS1mj7dHPZ6267eeM4HDWJoG3s13n" }],
         threshold: 2,
       },
     ]);

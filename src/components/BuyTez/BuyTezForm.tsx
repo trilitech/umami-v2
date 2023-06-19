@@ -55,7 +55,7 @@ const BuyTezForm = () => {
                   <ConnectedAccountSelector
                     selected={value}
                     onSelect={account => {
-                      onChange(account.pkh);
+                      onChange(account.address.pkh);
                     }}
                   />
                 )}

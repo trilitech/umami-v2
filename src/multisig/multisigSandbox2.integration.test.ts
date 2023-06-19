@@ -62,21 +62,21 @@ describe("multisig Sandbox", () => {
       [
         {
           type: "tez",
-          recipient: devAccount2Pkh,
+          recipient: { type: "implicit", pkh: devAccount2Pkh },
           amount: tezToMutez(TEZ_TO_SEND.toString()).toString(),
         },
         {
           type: "fa1.2",
-          sender: MULTISIG_GHOSTNET_1,
-          recipient: devAccount2Pkh,
-          contract: FA12_TOKEN_CONTRACT,
+          sender: { type: "implicit", pkh: MULTISIG_GHOSTNET_1 },
+          recipient: { type: "implicit", pkh: devAccount2Pkh },
+          contract: { type: "contract", pkh: FA12_TOKEN_CONTRACT },
           amount: "2",
         },
         {
           type: "fa2",
-          sender: MULTISIG_GHOSTNET_1,
-          recipient: devAccount2Pkh,
-          contract: FA2_KL2_CONTRACT,
+          sender: { type: "implicit", pkh: MULTISIG_GHOSTNET_1 },
+          recipient: { type: "implicit", pkh: devAccount2Pkh },
+          contract: { type: "contract", pkh: FA2_KL2_CONTRACT },
           amount: "3",
           tokenId: "0",
         },
@@ -85,15 +85,14 @@ describe("multisig Sandbox", () => {
     );
 
     const proposeEstimate = await estimateMultisigPropose(
-      { contract: MULTISIG_GHOSTNET_1, lambdaActions },
-      await devAccount0.publicKey(),
+      { contract: { type: "contract", pkh: MULTISIG_GHOSTNET_1 }, lambdaActions },
       await devAccount0.publicKeyHash(),
       TezosNetwork.GHOSTNET
     );
     expect(proposeEstimate).toHaveProperty("suggestedFeeMutez");
 
     const proposeResponse = await proposeMultisigLambda(
-      { contract: MULTISIG_GHOSTNET_1, lambdaActions },
+      { contract: { type: "contract", pkh: MULTISIG_GHOSTNET_1 }, lambdaActions },
       {
         type: SignerType.SK,
         network: TezosNetwork.GHOSTNET,
@@ -118,10 +117,9 @@ describe("multisig Sandbox", () => {
     const approveEstimate = await estimateMultisigApproveOrExecute(
       {
         type: "approve",
-        contract: MULTISIG_GHOSTNET_1,
+        contract: { type: "contract", pkh: MULTISIG_GHOSTNET_1 },
         operationId: pendingOpKey as string,
       },
-      await devAccount1.publicKey(),
       await devAccount1.publicKeyHash(),
       TezosNetwork.GHOSTNET
     );
@@ -130,7 +128,7 @@ describe("multisig Sandbox", () => {
     const approveResponse = await approveOrExecuteMultisigOperation(
       {
         type: "approve",
-        contract: MULTISIG_GHOSTNET_1,
+        contract: { type: "contract", pkh: MULTISIG_GHOSTNET_1 },
         operationId: pendingOpKey as string,
       },
       {
@@ -147,10 +145,9 @@ describe("multisig Sandbox", () => {
     const executeEstimate = await estimateMultisigApproveOrExecute(
       {
         type: "execute",
-        contract: MULTISIG_GHOSTNET_1,
+        contract: { type: "contract", pkh: MULTISIG_GHOSTNET_1 },
         operationId: pendingOpKey as string,
       },
-      await devAccount1.publicKey(),
       await devAccount1.publicKeyHash(),
       TezosNetwork.GHOSTNET
     );
@@ -159,7 +156,7 @@ describe("multisig Sandbox", () => {
     const executeResponse = await approveOrExecuteMultisigOperation(
       {
         type: "execute",
-        contract: MULTISIG_GHOSTNET_1,
+        contract: { type: "contract", pkh: MULTISIG_GHOSTNET_1 },
         operationId: pendingOpKey as string,
       },
       {

@@ -1,19 +1,20 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { compact } from "lodash";
+import { parseContractPkh } from "../../types/Address";
 import { tzktGetSameMultisigsResponseType } from "../tzkt/types";
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
-import { WalletAccountPkh, MultisigWithPendingOperations, AccountToMultisigs } from "./types";
+import { MultisigWithPendingOperations, AccountToMultisigs } from "./types";
 
 export const buildAccountToMultisigsMap = (
   multisigs: MultisigWithPendingOperations[],
-  accountPkhs: Set<WalletAccountPkh>
+  accountPkhs: Set<string>
 ): AccountToMultisigs =>
   multisigs.reduce((acc: AccountToMultisigs, cur) => {
     const { signers } = cur;
     signers.forEach(signer => {
-      if (accountPkhs.has(signer)) {
-        acc[signer] = acc[signer] ?? [];
-        acc[signer]?.push(cur);
+      if (accountPkhs.has(signer.pkh)) {
+        acc[signer.pkh] = acc[signer.pkh] ?? [];
+        acc[signer.pkh]?.push(cur);
       }
     });
     return acc;
@@ -21,7 +22,7 @@ export const buildAccountToMultisigsMap = (
 
 export const getRelevantMultisigContracts = async (
   network: TezosNetwork,
-  accountPkhs: Set<WalletAccountPkh>
+  accountPkhs: Set<string>
 ): Promise<tzktGetSameMultisigsResponseType> => {
   const multisigs = await getAllMultiSigContracts(network);
   return multisigs.filter(({ storage: { signers } }) => {
@@ -45,14 +46,14 @@ export const getOperationsForMultisigs = async (
         return {
           key,
           rawActions: value.actions,
-          approvals: value.approvals,
+          approvals: value.approvals.map(pkh => ({ type: "implicit", pkh: pkh } as const)),
         };
       });
 
       return {
-        address,
+        address: parseContractPkh(address),
         threshold: Number(threshold),
-        signers,
+        signers: signers.map(pkh => ({ type: "implicit", pkh: pkh } as const)),
         balance: balance.toString(),
         pendingOperations: compact(operations),
       };

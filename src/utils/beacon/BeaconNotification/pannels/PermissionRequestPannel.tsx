@@ -35,7 +35,7 @@ const PermissionRequestPannel: React.FC<{
       network: { type: request.network.type }, // Use the same network that the user requested
       scopes: request.scopes,
       id: request.id,
-      publicKey: account.pk,
+      publicKey: account.address.pkh, // TODO: check if that works
     };
 
     await walletClient.respond(response);
@@ -49,7 +49,7 @@ const PermissionRequestPannel: React.FC<{
       <ModalCloseButton />
       <ModalBody>
         <ConnectedAccountSelector
-          selected={account && account.pkh}
+          selected={account && account.address.pkh}
           onSelect={a => {
             setAccount(a);
           }}

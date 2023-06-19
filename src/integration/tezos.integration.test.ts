@@ -7,7 +7,6 @@ import { estimateBatch, operationValuesToBatchParams } from "../utils/tezos";
 
 jest.unmock("../utils/tezos");
 
-const pk0 = devPublicKeys0.pk;
 const pkh0 = devPublicKeys0.pkh;
 const pkh1 = devPublicKeys1.pkh;
 
@@ -75,7 +74,7 @@ describe("Tezos utils", () => {
         },
       ];
 
-      const result = await operationValuesToBatchParams(input, pk0, TezosNetwork.GHOSTNET);
+      const result = await operationValuesToBatchParams(input, TezosNetwork.GHOSTNET);
       expect(result).toEqual([
         {
           amount: 3,
@@ -238,7 +237,6 @@ describe("Tezos utils", () => {
             },
           ],
           pkh0,
-          pk0,
           TezosNetwork.GHOSTNET
         );
 
@@ -268,7 +266,6 @@ describe("Tezos utils", () => {
             },
           ],
           pkh0,
-          pk0,
           TezosNetwork.MAINNET
         );
 
@@ -291,7 +288,6 @@ describe("Tezos utils", () => {
             },
           ],
           pkh0,
-          pk0,
           TezosNetwork.MAINNET
         );
 
@@ -321,7 +317,6 @@ describe("Tezos utils", () => {
             },
           ],
           pkh0,
-          pk0,
           TezosNetwork.MAINNET
         );
 

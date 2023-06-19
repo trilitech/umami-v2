@@ -1,13 +1,38 @@
-export type Address = string;
+export type ContractAddress = {
+  type: "contract";
+  pkh: string;
+};
 
-export type AddressType = "contract" | "user";
+export type ImplicitAddress = {
+  type: "implicit";
+  pkh: string;
+};
 
-export const addressType = (addressType: string): AddressType => {
-  if (addressType.match(/^tz[1234]/)) {
-    return "user";
+export type Address = ContractAddress | ImplicitAddress;
+
+export const parsePkh = (pkh: string): Address => {
+  if (isValidContractPkh(pkh)) {
+    return parseContractPkh(pkh);
   }
-  if (addressType.startsWith("KT")) {
-    return "contract";
+  if (isValidImplicitPkh(pkh)) {
+    return parseImplicitPkh(pkh);
   }
-  throw new Error(`Unknown address type: ${addressType}`);
+  throw new Error(`Cannot parse address type: ${pkh}`);
+};
+
+const isValidContractPkh = (pkh: string) => pkh.match(/^KT1\w+/);
+const isValidImplicitPkh = (pkh: string) => pkh.match(/^tz[1234]\w+/);
+
+export const parseContractPkh = (pkh: string): ContractAddress => {
+  if (isValidContractPkh(pkh)) {
+    return { type: "contract", pkh };
+  }
+  throw new Error(`Invalid contract address: ${pkh}`);
+};
+
+export const parseImplicitPkh = (pkh: string): ImplicitAddress => {
+  if (isValidImplicitPkh(pkh)) {
+    return { type: "implicit", pkh };
+  }
+  throw new Error(`Invalid implicit address: ${pkh}`);
 };

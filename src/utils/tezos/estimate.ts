@@ -11,11 +11,10 @@ import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from ".
 
 export const estimateMultisigPropose = async (
   params: MultisigProposeMethodArgs,
-  senderPk: string,
   senderPkh: string,
   network: TezosNetwork
 ): Promise<Estimate> => {
-  const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
+  const Tezos = makeToolkitWithDummySigner(senderPkh, network);
 
   const propseMethod = await makeMultisigProposeMethod(params, Tezos);
 
@@ -24,11 +23,10 @@ export const estimateMultisigPropose = async (
 
 export const estimateMultisigApproveOrExecute = async (
   params: MultisigApproveOrExecuteMethodArgs,
-  senderPk: string,
   senderPkh: string,
   network: TezosNetwork
 ): Promise<Estimate> => {
-  const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
+  const Tezos = makeToolkitWithDummySigner(senderPkh, network);
 
   const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, Tezos);
 
@@ -38,12 +36,11 @@ export const estimateMultisigApproveOrExecute = async (
 export const estimateBatch = async (
   operations: OperationValue[],
   pkh: string,
-  pk: string,
   network: TezosNetwork
 ): Promise<Estimate[]> => {
-  const batch = await operationValuesToBatchParams(operations, pk, network);
+  const batch = await operationValuesToBatchParams(operations, network);
 
-  const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
+  const Tezos = makeToolkitWithDummySigner(pkh, network);
 
   return Tezos.estimate.batch(batch);
 };

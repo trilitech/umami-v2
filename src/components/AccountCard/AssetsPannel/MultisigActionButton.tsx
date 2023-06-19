@@ -3,19 +3,19 @@ import React from "react";
 import { CgSandClock } from "react-icons/cg";
 import { RxCheckCircled } from "react-icons/rx";
 import colors from "../../../style/colors";
+import { ImplicitAddress } from "../../../types/Address";
 import { useGetImplicitAccount } from "../../../utils/hooks/accountHooks";
-import { WalletAccountPkh } from "../../../utils/multisig/types";
 import { IconAndTextBtn } from "../../IconAndTextBtn";
 
 export const MultisigActionButton: React.FC<{
-  signer: WalletAccountPkh;
-  approvers: WalletAccountPkh[];
+  signer: ImplicitAddress;
+  approvers: ImplicitAddress[];
   pendingApprovals: number;
 }> = ({ signer, approvers, pendingApprovals }) => {
   const getImplicitAccount = useGetImplicitAccount();
 
-  const signerInOwnedAccounts = getImplicitAccount(signer) !== undefined;
-  const approvedBySigner = approvers.find(approver => approver === signer) !== undefined;
+  const signerInOwnedAccounts = getImplicitAccount(signer.pkh) !== undefined;
+  const approvedBySigner = approvers.find(approver => approver.pkh === signer.pkh) !== undefined;
   const operationIsExecutable = pendingApprovals === 0;
 
   if (!signerInOwnedAccounts) {

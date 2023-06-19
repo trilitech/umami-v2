@@ -17,7 +17,7 @@ const AccountListWithDrawer: React.FC = () => {
     closeDrawer();
   };
 
-  const account = allAccounts.find(a => a.pkh === selected);
+  const account = allAccounts.find(a => a.address.pkh === selected);
   return (
     <>
       <AccountsList

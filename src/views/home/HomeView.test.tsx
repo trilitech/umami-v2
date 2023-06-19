@@ -14,10 +14,10 @@ describe("<HomeView />", () => {
   test("Clicking an account tile displays Account card drawer and marks account as selected", async () => {
     render(<HomeView />);
     // If you use .click() directly on el you get the act warnings...
-    const el = screen.getByTestId("account-tile-" + mockImplicitAccount(1).pkh);
+    const el = screen.getByTestId("account-tile-" + mockImplicitAccount(1).address.pkh);
     fireEvent.click(el);
 
-    await screen.findByTestId("account-card-" + mockImplicitAccount(1).pkh);
-    await screen.findByTestId("account-tile-" + mockImplicitAccount(1).pkh + "-selected");
+    await screen.findByTestId("account-card-" + mockImplicitAccount(1).address.pkh);
+    await screen.findByTestId("account-tile-" + mockImplicitAccount(1).address.pkh + "-selected");
   });
 });

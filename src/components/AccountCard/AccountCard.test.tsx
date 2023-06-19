@@ -19,7 +19,7 @@ const { add } = accountsSlice.actions;
 const tezBalance = "33200000000";
 
 const account = mockImplicitAccount(0);
-const pkh = account.pkh;
+const pkh = account.address.pkh;
 const mockNft = mockNFTToken(0, pkh);
 beforeAll(() => {
   store.dispatch(add([account]));
@@ -27,7 +27,7 @@ beforeAll(() => {
   store.dispatch(
     updateAssets([
       {
-        pkh: mockImplicitAccount(0).pkh,
+        pkh: mockImplicitAccount(0).address.pkh,
         tokens: [hedgeHoge, tzBtsc, uUSD, mockFA1Token(1, mockPkh(1), 123), mockNft],
       },
     ])

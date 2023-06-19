@@ -8,7 +8,6 @@ import { RootState } from "../store";
 const { updateBatch: addToBatch, batchSimulationEnd, batchSimulationStart } = assetsSlice.actions;
 export const estimateAndUpdateBatch = (
   pkh: string,
-  pk: string,
   operations: OperationValue[],
   network: TezosNetwork
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
@@ -25,7 +24,7 @@ export const estimateAndUpdateBatch = (
 
     dispatch(batchSimulationStart({ pkh }));
     try {
-      const items = await operationValuesToBatchItems(operations, pkh, pk, network);
+      const items = await operationValuesToBatchItems(operations, pkh, network);
       dispatch(addToBatch({ pkh, items }));
     } catch (error) {
       dispatch(batchSimulationEnd({ pkh }));
