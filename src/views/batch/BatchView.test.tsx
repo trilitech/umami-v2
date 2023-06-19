@@ -16,6 +16,9 @@ import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import BatchView from "./BatchView";
 
+// These tests might take long in the CI
+jest.setTimeout(10000);
+
 jest.mock("@chakra-ui/react", () => {
   return {
     ...jest.requireActual("@chakra-ui/react"),
