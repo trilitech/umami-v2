@@ -18,7 +18,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
       />
     );
 
-    expect(screen.getByTestId("deocded-tez-amount")).toHaveTextContent("-1 ꜩ");
+    expect(screen.getByTestId("decoded-tez-amount")).toHaveTextContent("-1 ꜩ");
   });
 
   it("Non NFT FA tokens amount renders correctly", () => {
@@ -123,7 +123,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
         [mockFA1Token, mockFA2Token1, mockFA2Token2]
       );
 
-      expect(res).toBeTruthy();
+      expect(res).toEqual(mockFA2Token2);
     }
 
     {
@@ -138,7 +138,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
         [mockFA1Token, mockFA2Token1, mockFA2Token2]
       );
 
-      expect(res).toBeTruthy();
+      expect(res).toEqual(mockFA1Token);
     }
   });
 });
