@@ -4,20 +4,21 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import colors from "../../../../style/colors";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
-import MultisigOperationsDisplay from "./MultisigOperationsDisplay";
 import { ImplicitAddress } from "../../../../types/Address";
+import MultisigOperationsDisplay from "./MultisigDecodedOperations";
 
 export const MultisigPendingCard: React.FC<{
+  pkh: string;
   operation: MultisigOperation;
   signers: ImplicitAddress[];
   threshold: number;
-}> = ({ operation, signers, threshold }) => {
+}> = ({ pkh, operation, signers, threshold }) => {
   const { isOpen, getDisclosureProps, getButtonProps } = useDisclosure({
     defaultIsOpen: true,
   });
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
-    <Box bg={colors.gray[600]} p={3} borderRadius={6} marginY={5}>
+    <Box bg={colors.gray[800]} p={3} borderRadius={6} marginY={3}>
       <Flex justifyContent="space-between">
         <Heading size="sm">Pending #{operation.key}</Heading>
         <Icon
@@ -31,7 +32,7 @@ export const MultisigPendingCard: React.FC<{
       </Flex>
       <Box p={1} {...getDisclosureProps()}>
         <Flex marginY={2} justifyContent="space-between">
-          <MultisigOperationsDisplay rawActions={operation.rawActions} />
+          <MultisigOperationsDisplay pkh={pkh} rawActions={operation.rawActions} />
           <Flex alignItems="center">
             <Heading color={colors.gray[400]} size="sm" mr={1}>
               Pending Approvals:

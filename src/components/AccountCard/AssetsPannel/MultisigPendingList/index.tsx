@@ -10,6 +10,7 @@ export const MultisigPendingList: React.FC<{
     <Box w="100%">
       {account.operations.map(operation => (
         <MultisigPendingCard
+          pkh={account.pkh}
           key={operation.key}
           operation={operation}
           signers={account.signers}

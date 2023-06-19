@@ -50,7 +50,9 @@ export const useGetAccountAssets = () => {
   };
 };
 
-export const useGetAccountAssetsLookup = (): ((pkh: string) => Record<string, Asset[]>) => {
+export const useGetAccountAssetsLookup = (): ((
+  pkh: string
+) => Record<string, Asset[] | undefined>) => {
   const getAccountAssets = useGetAccountAssets();
 
   return (pkh: string): Record<string, Asset[]> =>

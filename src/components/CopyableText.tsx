@@ -13,13 +13,15 @@ export const CopyableAddress: React.FC<
     pkh: string;
     formatAddress?: boolean;
     copyable?: boolean;
+    iconColor?: string;
   } & FlexProps
-> = ({ pkh, formatAddress = true, copyable = true, ...rest }) => {
+> = ({ pkh, formatAddress = true, copyable = true, iconColor = colors.gray[600], ...rest }) => {
   return (
     <CopyableText
       displayText={formatAddress ? formatPkh(pkh) : pkh}
       copyValue={copyable ? pkh : undefined}
       toastMessage="Address copied to clipboard"
+      iconColor={iconColor}
       {...rest}
     />
   );
@@ -30,8 +32,9 @@ const CopyableText: React.FC<
     displayText: string;
     copyValue?: string;
     toastMessage?: string;
+    iconColor?: string;
   } & FlexProps
-> = ({ displayText, copyValue, toastMessage, ...rest }) => {
+> = ({ displayText, copyValue, toastMessage, iconColor, ...rest }) => {
   const toast = useToast();
   const onClickCopyIcon = async () => {
     if (!copyValue) {
@@ -65,7 +68,7 @@ const CopyableText: React.FC<
         <Icon
           cursor="pointer"
           onClick={() => onClickCopyIcon()}
-          color={colors.gray[600]}
+          color={iconColor}
           _hover={{
             color: colors.gray[300],
           }}

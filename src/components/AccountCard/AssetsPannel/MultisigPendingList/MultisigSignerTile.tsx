@@ -22,7 +22,7 @@ const MultisigSignerTile: React.FC<{
     <Flex
       mb={4}
       p={4}
-      bg={colors.gray[900]}
+      bg={colors.gray[700]}
       h="78px"
       borderRadius={8}
       border={`1px solid ${colors.gray[800]}`}
