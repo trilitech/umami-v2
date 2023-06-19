@@ -71,8 +71,8 @@ export const DelegateForm = ({
     <ModalContent bg="umami.gray.900">
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalCloseButton />
-        <ModalHeader textAlign={"center"}>Delegation</ModalHeader>
-        <Text textAlign={"center"}>{subTitle}</Text>
+        <ModalHeader textAlign="center">Delegation</ModalHeader>
+        <Text textAlign="center">{subTitle}</Text>
         <ModalBody>
           <FormControl mb={2}>
             <FormLabel>From</FormLabel>
@@ -107,9 +107,9 @@ export const DelegateForm = ({
           )}
         </ModalBody>
         <ModalFooter>
-          <Box width={"100%"}>
+          <Box width="100%">
             <Button
-              width={"100%"}
+              width="100%"
               isLoading={isLoading}
               type="submit"
               isDisabled={!isValid || isLoading || senderIsMultisig}
@@ -150,8 +150,8 @@ export const FillBatchForm: React.FC<{
         }}
       >
         <ModalCloseButton />
-        <ModalHeader textAlign={"center"}>Recap</ModalHeader>
-        <Text textAlign={"center"}>Transaction details</Text>
+        <ModalHeader textAlign="center">Recap</ModalHeader>
+        <Text textAlign="center">Transaction details</Text>
         <ModalBody mt={4}>
           <Box>
             <Flex mb={4}>
@@ -164,8 +164,8 @@ export const FillBatchForm: React.FC<{
           </Box>
           <Divider mb={2} mt={2} />
         </ModalBody>
-        <ModalFooter justifyContent={"center"}>
-          <Button type="submit" width={"100%"} isLoading={isLoading} variant="ghost" mb={2}>
+        <ModalFooter justifyContent="center">
+          <Button type="submit" width="100%" isLoading={isLoading} variant="ghost" mb={2}>
             Preview
           </Button>
         </ModalFooter>
@@ -257,8 +257,8 @@ export const SendTezOrNFTForm = ({
     <ModalContent bg="umami.gray.900">
       <form>
         <ModalCloseButton />
-        <ModalHeader textAlign={"center"}>Send</ModalHeader>
-        <Text textAlign={"center"}>Send one or insert into batch.</Text>
+        <ModalHeader textAlign="center">Send</ModalHeader>
+        <Text textAlign="center">Send one or insert into batch.</Text>
         <ModalBody>
           <FormControl mb={2}>
             <FormLabel>From</FormLabel>
@@ -332,7 +332,7 @@ export const SendTezOrNFTForm = ({
               <Input
                 isDisabled={simulating || disabled}
                 step={isNFT ? 1 : "any"}
-                type={"number"}
+                type="number"
                 {...register("amount", {
                   required: "Amount is required",
                 })}
@@ -350,10 +350,10 @@ export const SendTezOrNFTForm = ({
           )}
         </ModalBody>
         <ModalFooter>
-          <Box width={"100%"}>
+          <Box width="100%">
             <Button
               onClick={handleSubmit(onSubmit)}
-              width={"100%"}
+              width="100%"
               isLoading={isLoading}
               type="submit"
               isDisabled={!isValid || simulating}
@@ -364,7 +364,7 @@ export const SendTezOrNFTForm = ({
             </Button>
             <Button
               onClick={handleSubmit(onSubmitBatch)}
-              width={"100%"}
+              width="100%"
               isLoading={batchIsSimulating}
               type="submit"
               isDisabled={!isValid || simulating || senderIsMultisig}

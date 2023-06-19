@@ -37,10 +37,10 @@ const AccountTokensTileHeader: React.FC<{
     <Identicon address={pkh} />
     <Flex flex={1} justifyContent="space-between">
       <Box m={4} data-testid="account-identifiers">
-        <Heading size={"md"} mb={2}>
+        <Heading size="md" mb={2}>
           {label}
         </Heading>
-        <Flex alignItems={"center"}>
+        <Flex alignItems="center">
           <Text size="sm" color="text.dark">
             {formatPkh(pkh)}
           </Text>

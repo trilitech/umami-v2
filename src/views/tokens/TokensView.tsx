@@ -12,7 +12,7 @@ import AccountTokensTile from "./AccountTokensTile";
 
 export const FilterController: React.FC = () => {
   return (
-    <Flex alignItems={"center"} mb={4} mt={4}>
+    <Flex alignItems="center" mb={4} mt={4}>
       <TextAndIconBtn icon={AiOutlineArrowDown} text="Filter by Account" onClick={() => {}} />
     </Flex>
   );
@@ -24,12 +24,12 @@ const TokensView = () => {
 
   const hasTokens = useHasTokens();
   return (
-    <Flex direction="column" height={"100%"}>
+    <Flex direction="column" height="100%">
       {hasTokens() ? (
         <>
           <TopBar title="Tokens" />
           <FilterController />
-          <Box overflow={"scroll"}>
+          <Box overflow="scroll">
             {accounts.map(account => (
               <AccountTokensTile key={account.pkh} account={account} onOpenSendModal={onOpen} />
             ))}

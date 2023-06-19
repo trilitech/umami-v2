@@ -45,7 +45,7 @@ const ErrorLogsDrawerCard = () => {
 
 const ErrorLogsDrawerBody = () => {
   return (
-    <Flex direction="column" height={"100%"}>
+    <Flex direction="column" height="100%">
       <Flex h={24} justifyContent="space-between" alignItems="center">
         <Heading size="xl">Error Logs</Heading>
         <TextAndIconBtn text="Clear All" icon={BsTrash} onClick={() => {}} />

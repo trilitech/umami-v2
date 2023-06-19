@@ -31,9 +31,9 @@ const MultisigSignerTile: React.FC<{
       <Identicon address={signer} />
       <Flex flex={1} justifyContent="space-between" alignItems="center">
         <Box m={4}>
-          {label && <Heading size={"md"}>{label}</Heading>}
-          <Flex alignItems={"center"}>
-            <Text size={"sm"} color="text.dark">
+          {label && <Heading size="md">{label}</Heading>}
+          <Flex alignItems="center">
+            <Text size="sm" color="text.dark">
               {formatPkh(signer)}
             </Text>
           </Flex>

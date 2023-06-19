@@ -40,7 +40,7 @@ const BuyTezForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ModalCloseButton />
-      <ModalHeader textAlign={"center"}>Buy Tez</ModalHeader>
+      <ModalHeader textAlign="center">Buy Tez</ModalHeader>
       {isMainnet && (
         <>
           <Text textAlign="center">Please select the recipient account.</Text>
@@ -66,8 +66,8 @@ const BuyTezForm = () => {
       )}
 
       <ModalFooter>
-        <Box width={"100%"} data-testid="buy-tez-button">
-          <Button width={"100%"} type="submit" isDisabled={!isValid} variant="ghost" mb={2}>
+        <Box width="100%" data-testid="buy-tez-button">
+          <Button width="100%" type="submit" isDisabled={!isValid} variant="ghost" mb={2}>
             {title}
           </Button>
         </Box>

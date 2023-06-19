@@ -29,7 +29,7 @@ import NoItems from "../../components/NoItems";
 
 export const FilterController: React.FC = () => {
   return (
-    <Flex alignItems={"center"} mb={4} mt={4}>
+    <Flex alignItems="center" mb={4} mt={4}>
       <IconAndTextBtn icon={TbFilter} label="Filter" flex={1} />
       <IconAndTextBtn icon={BsArrowDownUp} label="Sort by Newest" mr={4} />
       <IconAndTextBtn icon={AiOutlineUnorderedList} label="List View" />
@@ -74,7 +74,7 @@ export const OperationsDataTable: React.FC<{
               >
                 <Td>{op.type}</Td>
                 <Td>
-                  <Flex alignItems={"center"}>
+                  <Flex alignItems="center">
                     <Text color={getAmountColor(op.amount.prettyDisplay)}>
                       {op.amount.prettyDisplay}
                     </Text>
@@ -102,7 +102,7 @@ export const OperationsDataTable: React.FC<{
                   )}
                 </Td>
                 <Td>
-                  <Flex alignItems={"center"} justifyContent={"space-between"}>
+                  <Flex alignItems="center" justifyContent="space-between">
                     <Text>{op.prettyTimestamp}</Text>
                     {op.tzktUrl && <TzktLink url={op.tzktUrl} ml={2} w={4} h={4} />}
                   </Flex>
@@ -121,7 +121,7 @@ const OperationsView = () => {
   const allOperationsList = Object.values(allOperations).flat();
 
   return (
-    <Flex direction="column" height={"100%"}>
+    <Flex direction="column" height="100%">
       {allOperationsList.length > 0 ? (
         <>
           <TopBar title="Operations" />

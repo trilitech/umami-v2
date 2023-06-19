@@ -37,7 +37,7 @@ export const MultisigActionButton: React.FC<{
         iconColor={colors.greenL}
         iconHeight={5}
         iconWidth={5}
-        label={"Approved"}
+        label="Approved"
       />
     );
   }

@@ -20,7 +20,7 @@ export const useConfirmation = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalContent bg="umami.gray.900">
           <ModalCloseButton />
-          <ModalHeader textAlign={"center"}>Confirmation</ModalHeader>
+          <ModalHeader textAlign="center">Confirmation</ModalHeader>
           <ModalBody>{paramsRef.current.body}</ModalBody>
           <ModalFooter>
             <Button onClick={() => paramsRef.current.onConfirm()} bg="umami.blue">

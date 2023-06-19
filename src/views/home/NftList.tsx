@@ -8,8 +8,8 @@ export const NftList = () => {
 
   return (
     <Tabs
-      height={"100%"}
-      display={"flex"}
+      height="100%"
+      display="flex"
       flexDirection="column"
       bg="umami.gray.900"
       borderRadius={4}

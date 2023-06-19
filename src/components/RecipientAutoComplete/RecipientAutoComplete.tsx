@@ -45,13 +45,13 @@ const Suggestions = ({
 
   return hide ? null : (
     <UnorderedList
-      overflow={"scroll"}
+      overflow="scroll"
       mt={2}
       ml={0}
       width="100%"
       borderRadius={8}
       listStyleType="none"
-      position={"absolute"}
+      position="absolute"
       bg="umami.gray.500"
       zIndex={2}
       maxHeight={300}
@@ -59,7 +59,7 @@ const Suggestions = ({
       {suggestions.map((s, i) => (
         <Box key={s.pkh}>
           <ListItem
-            display={"flex"}
+            display="flex"
             _hover={{
               background: colors.gray[600],
             }}
@@ -140,7 +140,7 @@ export const RecipientAutoCompleteDisplay: React.FC<BaseProps & { contacts: Cont
         onChange={e => {
           handleChange(e.target.value);
         }}
-        autoComplete={"off"}
+        autoComplete="off"
         placeholder="Enter tz address or contact name"
       />
       <Suggestions

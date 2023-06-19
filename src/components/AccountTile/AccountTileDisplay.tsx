@@ -39,15 +39,15 @@ export const AccountTileDisplay: React.FC<Props> = ({
       <Identicon address={address} />
       <Flex flex={1} justifyContent="space-between">
         <Box m={4} data-testid="account-identifiers">
-          <Heading size={"md"}>{label}</Heading>
-          <Flex alignItems={"center"}>
-            <Text size={"sm"} color="text.dark">
+          <Heading size="md">{label}</Heading>
+          <Flex alignItems="center">
+            <Text size="sm" color="text.dark">
               {formatPkh(address)}
             </Text>
           </Flex>
         </Box>
         {balance && (
-          <Heading mb={4} alignSelf={"flex-end"} size={"lg"}>
+          <Heading mb={4} alignSelf="flex-end" size="lg">
             {balance}
           </Heading>
         )}

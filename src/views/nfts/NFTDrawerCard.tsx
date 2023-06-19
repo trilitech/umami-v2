@@ -32,7 +32,7 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
     <Box>
       <Card bg="umami.gray.800">
         <CardBody>
-          <AspectRatio width={"100%"} ratio={1}>
+          <AspectRatio width="100%" ratio={1}>
             <Image data-testid="nft-image" width="100%" src={getIPFSurl(nft.displayUri)} />
           </AspectRatio>
           {Number(nft.balance) > 1 && (

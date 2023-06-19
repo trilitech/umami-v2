@@ -123,8 +123,8 @@ export const RecapDisplay: React.FC<{
     <ModalContent bg="umami.gray.900" data-testid="bar">
       <form>
         <ModalCloseButton />
-        <ModalHeader textAlign={"center"}>Recap</ModalHeader>
-        <Text textAlign={"center"}>Transaction details</Text>
+        <ModalHeader textAlign="center">Recap</ModalHeader>
+        <Text textAlign="center">Transaction details</Text>
         <ModalBody mt={4}>
           <Box>
             <Flex mb={4}>
@@ -143,7 +143,7 @@ export const RecapDisplay: React.FC<{
           <Divider mb={2} mt={2} />
           <Total mutez={total.toString()} />
         </ModalBody>
-        <ModalFooter justifyContent={"center"}>
+        <ModalFooter justifyContent="center">
           <SignButton
             isLoading={isLoading}
             network={network}

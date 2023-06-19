@@ -25,7 +25,7 @@ export default function Slider({ children }: Props) {
       showThumbs={false}
       interval={5000}
       transitionTime={1000}
-      width={"100%"}
+      width="100%"
       renderIndicator={(onClickHandler, isSelected, index) => {
         if (isSelected) {
           return (

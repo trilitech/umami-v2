@@ -113,7 +113,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ModalCloseButton />
-      <ModalHeader textAlign={"center"}>Load CSV file</ModalHeader>
+      <ModalHeader textAlign="center">Load CSV file</ModalHeader>
       <Text textAlign="center">Select an account and then upload the CSV file.</Text>
       <ModalBody>
         <FormControl paddingY={5}>
@@ -158,11 +158,11 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
       </ModalBody>
 
       <ModalFooter>
-        <Box width={"100%"}>
+        <Box width="100%">
           <Button
             isDisabled={!(isValid && !!csv)}
             isLoading={isSimulating(getValues("sender"))}
-            width={"100%"}
+            width="100%"
             type="submit"
             mb={2}
           >

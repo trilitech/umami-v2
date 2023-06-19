@@ -17,14 +17,14 @@ export default function HelpView() {
                   "main main"
                   "main main"
                   `}
-      gridTemplateRows={"0fr 1fr 1fr"}
-      gridTemplateColumns={"1fr 1fr"}
+      gridTemplateRows="0fr 1fr 1fr"
+      gridTemplateColumns="1fr 1fr"
       gap="1"
     >
-      <GridItem area={"header"}>
+      <GridItem area="header">
         <TopBar title="Help" />
       </GridItem>
-      <GridItem area={"main"} mt={1}>
+      <GridItem area="main" mt={1}>
         <HelpCard
           title="Learn More"
           onClick={() => {
@@ -73,7 +73,7 @@ export default function HelpView() {
             </Box>
 
             <Flex justifyContent="space-between" alignItems="center">
-              <Heading size="sm">{"Get in touch with the Community"}</Heading>
+              <Heading size="sm">Get in touch with the Community</Heading>
 
               <Flex
                 alignItems="center"

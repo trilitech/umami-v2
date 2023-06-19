@@ -24,19 +24,19 @@ export const SuccessStep: React.FC<{ hash: string; network: TezosNetwork }> = ({
   return (
     <ModalContent bg="umami.gray.900">
       <ModalCloseButton />
-      <ModalHeader textAlign={"center"}>Operation Submitted</ModalHeader>
+      <ModalHeader textAlign="center">Operation Submitted</ModalHeader>
       <ModalBody>
-        <Text mt={2} color={"text.dark"} textAlign="center">
-          {"You can follow this operation’s progress in the Operations section."}
+        <Text mt={2} color="text.dark" textAlign="center">
+          You can follow this operation’s progress in the Operations section.
         </Text>
       </ModalBody>
-      <ModalFooter justifyContent={"center"} flexDirection="column">
+      <ModalFooter justifyContent="center" flexDirection="column">
         <Link to="/operations">
-          <Button width={"100%"} bg="umami.blue">
+          <Button width="100%" bg="umami.blue">
             Go to operation
           </Button>
         </Link>
-        <Flex mt={4} alignItems={"center"} justifyContent="space-between">
+        <Flex mt={4} alignItems="center" justifyContent="space-between">
           <Text color="text.dark">View in Tzkt</Text>
           <TzktLink ml={4} url={tzktUrl} />
         </Flex>

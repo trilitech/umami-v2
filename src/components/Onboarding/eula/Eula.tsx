@@ -41,14 +41,14 @@ const Eula: React.FC<{
       title="End User License Agreement"
       subtitle="Last updated June 25, 2021"
     >
-      <VStack spacing={"10px"} w="100%" h="100%" overflowX={"hidden"} overflowY={"scroll"} p="4px">
+      <VStack spacing="10px" w="100%" h="100%" overflowX="hidden" overflowY="scroll" p="4px">
         {eulaItems.map((item, index) => {
           return (
             <Container key={index}>
-              <Heading size={"md"} w="100%">
+              <Heading size="md" w="100%">
                 {item.title}
               </Heading>
-              <Text whiteSpace="pre-wrap" pt="8px" pb="28px" size={"sm"}>
+              <Text whiteSpace="pre-wrap" pt="8px" pb="28px" size="sm">
                 {item.content}
               </Text>
             </Container>

@@ -23,15 +23,15 @@ export default function SettingsView() {
                   "main main"
                   "main main"
                   `}
-      gridTemplateRows={"0fr 1fr 1fr"}
-      gridTemplateColumns={"1fr 1fr"}
+      gridTemplateRows="0fr 1fr 1fr"
+      gridTemplateColumns="1fr 1fr"
       gap="1"
     >
-      <GridItem area={"header"}>
+      <GridItem area="header">
         <TopBar title="Settings" />
       </GridItem>
-      <GridItem area={"main"}>
-        <Button onClick={reset}>{"Erase secrets"}</Button>
+      <GridItem area="main">
+        <Button onClick={reset}>Erase secrets</Button>
         <GeneralSection />
         <AppUpdatesSection />
         <BackupSection />

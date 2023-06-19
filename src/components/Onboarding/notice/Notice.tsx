@@ -27,7 +27,7 @@ const Notice: React.FC<{
       title="Important Notice"
       subtitle="Please read the following before you continue to see your secret Seed Phrase."
     >
-      <VStack spacing={"24px"} overflowX={"hidden"} overflowY={"scroll"} p="4px">
+      <VStack spacing="24px" overflowX="hidden" overflowY="scroll" p="4px">
         <OrderedList spacing={4}>
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;
@@ -46,7 +46,7 @@ const Notice: React.FC<{
           w="100%"
           minH="48px"
           size="lg"
-          variant={"outline"}
+          variant="outline"
           onClick={() => setStep({ type: StepType.restoreSeedphrase })}
         >
           I already have a Seed Phrase

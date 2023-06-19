@@ -65,7 +65,7 @@ const DelegationsTable = ({
           {delegations.map(d => {
             const balance = getAccountBalance(d.sender);
             return (
-              <Tr key={d.id} data-testid={`delegation-row`}>
+              <Tr key={d.id} data-testid="delegation-row">
                 <Td>
                   <AccountSmallTile pkh={d.sender} />
                 </Td>
@@ -74,13 +74,13 @@ const DelegationsTable = ({
                 <Td>{d.timestamp && `Since ${formatRelative(new Date(d.timestamp), now)}`}</Td>
                 <Td />
                 <Td>
-                  <Flex alignItems={"center"}>
+                  <Flex alignItems="center">
                     {renderBakerTile(d.delegate.address)}
                     <IconButton
                       ml={2}
                       mr={2}
                       onClick={() => onChangeDelegate(d.sender, d.delegate.address)}
-                      borderRadius={"50%"}
+                      borderRadius="50%"
                       aria-label="Change Baker"
                       icon={<MdOutlineModeEdit />}
                       mb={2}
@@ -89,7 +89,7 @@ const DelegationsTable = ({
                       ml={2}
                       mr={2}
                       onClick={() => onRemoveDelegate(d.sender)}
-                      borderRadius={"50%"}
+                      borderRadius="50%"
                       aria-label="Delete Baker"
                       icon={<CiCircleRemove />}
                       mb={2}
@@ -128,7 +128,7 @@ const DelegateButton = () => {
 
 export const FilterController: React.FC = () => {
   return (
-    <Flex alignItems={"center"} mb={4} mt={4}>
+    <Flex alignItems="center" mb={4} mt={4}>
       <IconAndTextBtn icon={TbFilter} label="Filter" flex={1} />
       <DelegateButton />
     </Flex>
@@ -170,12 +170,12 @@ const DelegationsView = () => {
   };
 
   return (
-    <Flex direction="column" height={"100%"}>
+    <Flex direction="column" height="100%">
       {allDelegations.length > 0 ? (
         <>
           <TopBar title="Delegations" />
           <FilterController />
-          <Box overflow={"scroll"}>
+          <Box overflow="scroll">
             <Box maxH={40} overflow="scroll"></Box>
             <DelegationsTable
               onChangeDelegate={handleEditDelegate}

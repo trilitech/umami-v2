@@ -12,8 +12,8 @@ export const OperationsList = () => {
   });
   return (
     <Tabs
-      height={"100%"}
-      display={"flex"}
+      height="100%"
+      display="flex"
       flexDirection="column"
       mt={4}
       bg="umami.gray.900"
@@ -29,7 +29,7 @@ export const OperationsList = () => {
         <Tab>Delegations</Tab>
       </TabList>
 
-      <Box minHeight={"10px"} overflow={"scroll"}>
+      <Box minHeight="10px" overflow="scroll">
         {operationEls}
       </Box>
     </Tabs>

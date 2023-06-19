@@ -70,7 +70,7 @@ const RestoreLedger = ({
       title="Connect Ledger"
       subtitle="Complete the steps to connect."
     >
-      <VStack spacing={"24px"} overflow={"scroll"}>
+      <VStack spacing="24px" overflow="scroll">
         <OrderedList spacing={4}>
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;

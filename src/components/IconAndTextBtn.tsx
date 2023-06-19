@@ -13,9 +13,9 @@ export const IconAndTextBtn: React.FC<
   } & FlexProps
 > = ({ icon, onClick = () => {}, label, iconWidth = 6, iconHeight = 6, iconColor, ...rest }) => {
   return (
-    <Flex color="text.dark" alignItems={"center"} onClick={onClick} cursor="pointer" {...rest}>
+    <Flex color="text.dark" alignItems="center" onClick={onClick} cursor="pointer" {...rest}>
       <Icon w={iconWidth} h={iconHeight} as={icon} color={iconColor} />
-      <Text ml={2} fontSize={"sm"}>
+      <Text ml={2} fontSize="sm">
         {label}
       </Text>
     </Flex>
