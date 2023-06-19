@@ -13,7 +13,7 @@ const MultisigDecodedOperationItem: React.FC<{
   switch (operation.type) {
     case "delegation":
       return (
-        <Box marginY={6} pl={5} m={1}>
+        <Box marginY={6} pl={5} m={1} data-testid="decoded-item-delegate">
           {operation.recipient ? `Delegate to ${operation.recipient}` : "Undelegate"}
         </Box>
       );
@@ -32,7 +32,7 @@ const MultisigDecodedOperationItem: React.FC<{
   }
 };
 
-const searchFAToken = (operation: Operation, assets: Asset[]): Asset | null => {
+export const searchFAToken = (operation: Operation, assets: Asset[]): Asset | null => {
   switch (operation.type) {
     case "fa1.2":
       return assets.find(token => token.contract === operation.contract) ?? null;
@@ -56,7 +56,7 @@ const MultisigOperationAmount: React.FC<{
   switch (operation.type) {
     case "tez":
       return (
-        <Flex alignItems="center">
+        <Flex alignItems="center" data-testid="deocded-tez-amount">
           <Icon h={5} w={5} as={FiArrowUpRight} color={colors.gray[400]}></Icon>
           <Text textAlign="center" ml={1}>
             -{prettyTezAmount(operation.amount)}
@@ -77,7 +77,7 @@ const MultisigOperationAmount: React.FC<{
       const isNFT = !!token?.metadata?.displayUri;
 
       return (
-        <Flex alignItems="center">
+        <Flex alignItems="center" data-testid="deocded-fa-amount">
           <Icon h={5} w={5} as={FiArrowUpRight} color={colors.gray[400]}></Icon>
           {isNFT ? (
             <Text textAlign="center" ml={1}>
