@@ -16,7 +16,7 @@ import NoItems from "../../components/NoItems";
 
 export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (
-    <Flex alignItems={"center"} mb={4} mt={4}>
+    <Flex alignItems="center" mb={4} mt={4}>
       <Heading size="sm" color="umami.green" flex={1}>
         {props.batchPending} Pending
       </Heading>
@@ -80,10 +80,10 @@ const BatchView = () => {
   });
 
   return (
-    <Flex direction="column" height={"100%"}>
+    <Flex direction="column" height="100%">
       <TopBar title="Batch" />
       <FilterController batchPending={batchEls.length} />
-      <Box overflow={"scroll"} minH="80%">
+      <Box overflow="scroll" minH="80%">
         {batchEls.length === 0 ? (
           <NoItems
             text="Your batch is currently empty"

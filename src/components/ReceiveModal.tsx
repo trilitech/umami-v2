@@ -45,7 +45,7 @@ const ReceiveModal: FC<{
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent bg={colors.gray[900]} p={3}>
-        <ModalHeader textAlign={"center"}>Receive</ModalHeader>
+        <ModalHeader textAlign="center">Receive</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex alignItems="center" direction="column" justifyContent="space-between">

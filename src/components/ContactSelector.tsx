@@ -35,7 +35,7 @@ const ContactSelector: FC<{
     <Menu>
       <MenuButton
         isDisabled={isDisabled}
-        w={"100%"}
+        w="100%"
         as={Button}
         rightIcon={<ChevronDownIcon />}
         h="48px"
@@ -43,7 +43,7 @@ const ContactSelector: FC<{
       >
         {selectedContact ? <ContactSmallTile contact={selectedContact} /> : "Select a contact"}
       </MenuButton>
-      <MenuList w="100%" bg={"umami.gray.900"} overflow="scroll" h="110px">
+      <MenuList w="100%" bg="umami.gray.900" overflow="scroll" h="110px">
         {contacts.map(contact => (
           <MenuItem
             w="100%"

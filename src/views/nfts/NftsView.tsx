@@ -24,7 +24,7 @@ import { navigateToExternalLink } from "../../utils/helpers";
 
 export const FilterController: React.FC = () => {
   return (
-    <Flex alignItems={"center"} mb={4} mt={4}>
+    <Flex alignItems="center" mb={4} mt={4}>
       <IconAndTextBtn icon={TbFilter} label="Filter" flex={1} />
       <IconAndTextBtn icon={BsArrowDownUp} label="Sort by Newest" mr={4} />
       <IconAndTextBtn icon={AiOutlineUnorderedList} label="List View" />
@@ -53,12 +53,12 @@ const NFTsViewBase = () => {
   }, [allOwnedNftsRef, onOpenRef]);
 
   return (
-    <Flex direction="column" height={"100%"}>
+    <Flex direction="column" height="100%">
       {allOwnedNfts.length > 0 ? (
         <>
           <TopBar title="NFTs" />
           <FilterController />
-          <Box overflow={"scroll"}>
+          <Box overflow="scroll">
             <NFTGallery
               onSelect={nft => {
                 onOpen();

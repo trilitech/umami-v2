@@ -154,12 +154,12 @@ export const useCreateOrImportSecretModal = () => {
           {history.length > 1 ? (
             <IconButton
               size="lg"
-              top={"4px"}
-              left={"4px"}
+              top="4px"
+              left="4px"
               position="absolute"
               variant="ghost"
               aria-label="Back"
-              color={"umami.gray.450"}
+              color="umami.gray.450"
               icon={<ArrowBackIcon />}
               onClick={() => {
                 history.pop();
@@ -171,12 +171,12 @@ export const useCreateOrImportSecretModal = () => {
           ) : (
             <IconButton
               size="sm"
-              top={"8px"}
-              right={"8px"}
+              top="8px"
+              right="8px"
               position="absolute"
               variant="ghost"
               aria-label="Close"
-              color={"umami.gray.450"}
+              color="umami.gray.450"
               icon={<CloseIcon />}
               onClick={onClose}
             />

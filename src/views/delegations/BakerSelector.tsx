@@ -31,7 +31,7 @@ export const BakerSelector: React.FC<{
       <MenuButton
         isDisabled={disabled}
         data-testid="baker-selector"
-        w={"100%"}
+        w="100%"
         textAlign="left"
         as={Button}
         rightIcon={<ChevronDownIcon />}
@@ -39,7 +39,7 @@ export const BakerSelector: React.FC<{
       >
         {selected === undefined ? "Select a Baker" : renderBaker(bakers, selected)}
       </MenuButton>
-      <MenuList bg={"umami.gray.900"} maxH={40} overflow={"scroll"}>
+      <MenuList bg="umami.gray.900" maxH={40} overflow="scroll">
         {bakers.map(baker => (
           // TODO refactor with AccountTile in home
           <MenuItem
@@ -50,7 +50,7 @@ export const BakerSelector: React.FC<{
             minH="48px"
             w="100%"
             // TODO implement hover color that disapeared
-            bg={"umami.gray.900"}
+            bg="umami.gray.900"
           >
             {renderBakerTile(baker)}
           </MenuItem>

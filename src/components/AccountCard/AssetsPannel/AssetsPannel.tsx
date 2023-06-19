@@ -14,8 +14,8 @@ export const AssetsPannel: React.FC<{
   const isMultisig = account.type === AccountType.MULTISIG;
   return (
     <Tabs
-      height={"100%"}
-      display={"flex"}
+      height="100%"
+      display="flex"
       flexDirection="column"
       mt={4}
       bg="umami.gray.900"
@@ -39,7 +39,7 @@ export const AssetsPannel: React.FC<{
           </TabPanel>
         )}
         <TabPanel data-testid="account-card-tokens-tab">
-          <Box minHeight={"10px"} overflow={"scroll"} mt={4}>
+          <Box minHeight="10px" overflow="scroll" mt={4}>
             <UnorderedList>
               {tokens.map(t => {
                 return <TokenTile token={t} key={t.contract + t.balance} />;

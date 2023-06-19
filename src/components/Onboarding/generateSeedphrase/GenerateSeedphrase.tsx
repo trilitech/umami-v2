@@ -14,7 +14,7 @@ export const GenerateSeedphrase = ({ setStep }: { setStep: (step: Step) => void 
       title="Record Seed Phrase"
       subtitle="Please record the following 24 words in sequence in order to restore it in the future."
     >
-      <VStack overflowX={"hidden"}>
+      <VStack overflowX="hidden">
         <SimpleGrid columns={3} spacing={2}>
           {seedphrase.split(" ").map((item, index) => {
             return (

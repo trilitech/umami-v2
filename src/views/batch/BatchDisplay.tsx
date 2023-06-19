@@ -85,7 +85,7 @@ const RightPanel = ({
         <Divider />
         <Total mutez={total.toString()} paddingY={3} />
 
-        <Flex justifyContent={"space-between"}>
+        <Flex justifyContent="space-between">
           <Button onClick={onSend} isDisabled={batch.isSimulating} flex={1} bg="umami.blue" mr={4}>
             Submit batch
           </Button>
@@ -116,7 +116,7 @@ export const BatchDisplay: React.FC<{
       <Box flex={1} bg="umami.gray.900" p={4}>
         <Flex justifyContent="space-between" ml={2} mr={2} mb={4}>
           <AccountSmallTileDisplay ml={2} pkh={account.pkh} label={account.label} />
-          <Text color={"umami.gray.400"}>
+          <Text color="umami.gray.400">
             {`${items.length} transaction${items.length > 1 ? "s" : ""}`}
           </Text>
         </Flex>

@@ -89,7 +89,7 @@ export const UpsertContactModal: FC<{
       <ModalOverlay />
       <ModalContent bg={colors.gray[900]}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalHeader textAlign={"center"}>{title}</ModalHeader>
+          <ModalHeader textAlign="center">{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl marginY={5} isInvalid={!!errors.name}>
@@ -122,8 +122,8 @@ export const UpsertContactModal: FC<{
           </ModalBody>
 
           <ModalFooter>
-            <Box width={"100%"}>
-              <Button width={"100%"} type="submit" mb={2} isDisabled={!isValid}>
+            <Box width="100%">
+              <Button width="100%" type="submit" mb={2} isDisabled={!isValid}>
                 {buttonText}
               </Button>
             </Box>
@@ -148,7 +148,7 @@ export const DeleteContactModal: FC<{
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent bg={colors.gray[900]}>
-        <ModalHeader textAlign={"center"}>Delete Contact</ModalHeader>
+        <ModalHeader textAlign="center">Delete Contact</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex alignItems="center" direction="column" justifyContent="space-between">
@@ -165,8 +165,8 @@ export const DeleteContactModal: FC<{
         </ModalBody>
 
         <ModalFooter>
-          <Box width={"100%"}>
-            <Button width={"100%"} onClick={onDeleteContact} mb={2}>
+          <Box width="100%">
+            <Button width="100%" onClick={onDeleteContact} mb={2}>
               Delete
             </Button>
           </Box>

@@ -12,7 +12,7 @@ const FilterController: React.FC = () => {
   const { modalElement, onOpen } = useUpsertContactModal();
 
   return (
-    <Flex alignItems={"center"} justifyContent="space-between" mb={4} mt={4}>
+    <Flex alignItems="center" justifyContent="space-between" mb={4} mt={4}>
       <IconAndTextBtn icon={TbFilter} label="Filter" />
 
       <IconAndTextBtn
@@ -34,7 +34,7 @@ const FilterController: React.FC = () => {
 export default function AddressBookView() {
   const contacts = useAllSortedContacts();
   return (
-    <Flex direction="column" height={"100%"}>
+    <Flex direction="column" height="100%">
       <TopBar title="Address Book" />
 
       <FilterController />

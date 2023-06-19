@@ -37,9 +37,9 @@ export const CircleIcon = ({
     <Box
       height={size}
       width={size}
-      borderRadius={"full"}
-      bg={"umami.gray.700"}
-      margin={"auto"}
+      borderRadius="full"
+      bg="umami.gray.700"
+      margin="auto"
       onClick={onClick}
     >
       <Center h="100%">

@@ -35,12 +35,12 @@ const RoundButton: React.FC<{
     <Box textAlign="center" ml={4} mr={4}>
       <IconButton
         onClick={onClick}
-        borderRadius={"50%"}
+        borderRadius="50%"
         aria-label="Search database"
         icon={icon}
         mb={2}
       />
-      <Text size={"sm"}>{label}</Text>
+      <Text size="sm">{label}</Text>
     </Box>
   );
 };
@@ -60,9 +60,9 @@ export const AccountCardDisplay: React.FC<Props> = ({
 }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   return (
-    <Flex direction="column" alignItems={"center"} data-testid={`account-card-${pkh}`} paddingX={4}>
+    <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`} paddingX={4}>
       <Identicon address={pkh} />
-      <Heading mt={4} mb={2} size={"md"}>
+      <Heading mt={4} mb={2} size="md">
         {label}
       </Heading>
       <CopyableAddress pkh={pkh} mb={4} />

@@ -63,7 +63,7 @@ export const DerivationPath = ({
           <VStack spacing={5}>
             <FormControl>
               <HStack spacing="10px">
-                <Text fontWeight={"bold"}>Default Path</Text>
+                <Text fontWeight="bold">Default Path</Text>
                 <Switch data-testid="switch" onChange={() => setIsDefault(!isDefault)} />
                 <Text>Custom Path</Text>
               </HStack>

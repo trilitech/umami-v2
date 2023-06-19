@@ -21,7 +21,7 @@ const AccountSelectorDisplay: React.FC<{
       <MenuButton
         isDisabled={isDisabled}
         data-testid={dataTestid}
-        w={"100%"}
+        w="100%"
         textAlign="left"
         as={Button}
         rightIcon={<ChevronDownIcon />}
@@ -29,7 +29,7 @@ const AccountSelectorDisplay: React.FC<{
       >
         {selectedAccount ? renderAccount(selectedAccount) : "Select an account"}
       </MenuButton>
-      <MenuList bg={"umami.gray.900"} maxHeight={300} overflow="scroll">
+      <MenuList bg="umami.gray.900" maxHeight={300} overflow="scroll">
         {accounts.map(account => (
           <MenuItem
             value={account.pkh}
@@ -42,7 +42,7 @@ const AccountSelectorDisplay: React.FC<{
             w="100%"
             // TODO implement hover color that disapeared
             // https://app.asana.com/0/1204165186238194/1204412123679802/f
-            bg={"umami.gray.900"}
+            bg="umami.gray.900"
           >
             {renderAccount(account)}
           </MenuItem>

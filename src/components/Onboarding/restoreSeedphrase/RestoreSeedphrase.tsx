@@ -64,7 +64,7 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
       title="Import Seed Phrase"
       subtitle="Please fill in the Seed Phrase in sequence."
     >
-      <Box overflowX={"hidden"} p="4px" w="100%">
+      <Box overflowX="hidden" p="4px" w="100%">
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <VStack w="100%" spacing={4}>
             <Select
@@ -101,16 +101,14 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
                         const mnemonic = await navigator.clipboard.readText();
                         pasteMnemonic(mnemonic);
                       }}
-                      size={"xsmall"}
+                      size="xsmall"
                       border="none"
                       placeholder="Type here"
                       {...register(`word${index}`, {
                         required: true,
                       })}
                     />
-                    {errors[`${index}`] && (
-                      <WarningIcon p="8px" w={"40px"} h={"40px"} color="red" />
-                    )}
+                    {errors[`${index}`] && <WarningIcon p="8px" w="40px" h="40px" color="red" />}
                   </GridItem>
                 );
               })}

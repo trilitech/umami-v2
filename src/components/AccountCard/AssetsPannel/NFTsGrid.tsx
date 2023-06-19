@@ -11,12 +11,12 @@ export const NFTsGrid: FC<{ nfts: NFT[]; showName?: boolean } & SimpleGridProps>
   ...rest
 }) => {
   return (
-    <Box overflow={"scroll"} p={2}>
+    <Box overflow="scroll" p={2}>
       <SimpleGrid {...rest}>
         {nfts.map((nft, i) => {
           return (
             <Link to={`/nfts/${nft.id}`} key={`${nft.contract}${i}`}>
-              <AspectRatio key={nft.contract + i} width={"100%"} ratio={1}>
+              <AspectRatio key={nft.contract + i} width="100%" ratio={1}>
                 <Image width="100%" height={40} src={getIPFSurl(nft.metadata.displayUri)} />
               </AspectRatio>
               {showName && nft.metadata.name && (

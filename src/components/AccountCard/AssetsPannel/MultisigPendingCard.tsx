@@ -31,7 +31,7 @@ export const MultisigPendingCard: React.FC<{
       <Box p={1} {...getDisclosureProps()}>
         <Flex marginY={2} justifyContent="space-between">
           {/*TODO:  decode it */}
-          <Box>{"operation.rawActions"}</Box>
+          <Box>operation.rawActions</Box>
           <Flex alignItems="center">
             <Heading color={colors.gray[400]} size="sm" mr={1}>
               Pending Approvals:

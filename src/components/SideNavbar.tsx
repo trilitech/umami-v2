@@ -35,7 +35,7 @@ const MenuItem: React.FC<{
         mb={2}
         mt={2}
         justifyContent="flex-start"
-        alignItems={"center"}
+        alignItems="center"
         border={40}
         cursor="pointer"
       >
@@ -49,12 +49,12 @@ const MenuItem: React.FC<{
 const TopIems = () => {
   return (
     <Box>
-      <MenuItem label="Overview" to={"/home"} icon={MdViewCompact} />
-      <MenuItem label="NFTs" to={"/nfts"} icon={MdOutlineDiamond} />
-      <MenuItem label="Operations" to={"/operations"} icon={MdHistory} />
-      <MenuItem label="Delegations" to={"/delegations"} icon={RxCube} />
-      <MenuItem label="Tokens" to={"/tokens"} icon={MdMoney} />
-      <MenuItem label="Batch" to={"/batch"} icon={MdCalendarViewMonth} />
+      <MenuItem label="Overview" to="/home" icon={MdViewCompact} />
+      <MenuItem label="NFTs" to="/nfts" icon={MdOutlineDiamond} />
+      <MenuItem label="Operations" to="/operations" icon={MdHistory} />
+      <MenuItem label="Delegations" to="/delegations" icon={RxCube} />
+      <MenuItem label="Tokens" to="/tokens" icon={MdMoney} />
+      <MenuItem label="Batch" to="/batch" icon={MdCalendarViewMonth} />
     </Box>
   );
 };
@@ -63,10 +63,10 @@ const BottomIems = () => {
   return (
     <Box>
       <Divider />
-      <MenuItem label="Address Book" to={"/address-book"} icon={MdOutlineContacts} />
+      <MenuItem label="Address Book" to="/address-book" icon={MdOutlineContacts} />
 
-      <MenuItem label="Settings" to={"/settings"} icon={MdOutlineSettings} />
-      <MenuItem label="Help" to={"/help"} icon={MdSupport} />
+      <MenuItem label="Settings" to="/settings" icon={MdOutlineSettings} />
+      <MenuItem label="Help" to="/help" icon={MdSupport} />
     </Box>
   );
 };
@@ -75,7 +75,7 @@ const TotalBalance = () => {
   const balance = useTotalBalance();
 
   return (
-    <Box mt={4} mb={12} height={"80px"}>
+    <Box mt={4} mb={12} height="80px">
       <Text size="sm">Balance</Text>
       {balance !== null && (
         <TezRecapDisplay tezBalance={balance.tezBalance} dollarBalance={balance.dollarBalance} />
@@ -86,7 +86,7 @@ const TotalBalance = () => {
 
 export const SideNavbar = () => {
   return (
-    <Flex flexDirection={"column"} bg="umami.gray.900" w={"240px"} pl={4} pr={4}>
+    <Flex flexDirection="column" bg="umami.gray.900" w="240px" pl={4} pr={4}>
       <Box>
         <Flex height={24} justifyContent="space-between" alignItems="center">
           <MakiLogo size={50} />
@@ -94,7 +94,7 @@ export const SideNavbar = () => {
         </Flex>
         <Divider />
       </Box>
-      <Flex flexDirection={"column"} justifyContent={"space-between"} flex={1}>
+      <Flex flexDirection="column" justifyContent="space-between" flex={1}>
         <Box>
           <TotalBalance />
           <TopIems />

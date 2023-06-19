@@ -26,8 +26,8 @@ type GroupedByLabel = Record<string, AccountsOfSameType | undefined>;
 const Header = () => {
   const { onOpen, modalElement } = useCreateOrImportSecretModal();
   return (
-    <Flex justifyContent={"space-between"} mt={4} mb={4}>
-      <Heading size={"lg"}>Accounts</Heading>
+    <Flex justifyContent="space-between" mt={4} mb={4}>
+      <Heading size="lg">Accounts</Heading>
       <IconAndTextBtn onClick={onOpen} label="Add/Create" icon={BsWindowPlus} />
       {modalElement}
     </Flex>
@@ -55,7 +55,7 @@ const AccountGroup: React.FC<{
 }) => {
   return (
     <Box data-testid={`account-group-${groupLabel}`}>
-      <Flex justifyContent={"space-between"}>
+      <Flex justifyContent="space-between">
         <Heading size="md" mb={4}>
           {groupLabel}
         </Heading>

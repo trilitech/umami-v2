@@ -15,10 +15,10 @@ export default function NoItems({
   onClickSecondary?: () => void;
 }) {
   return (
-    <Flex width={"100%"} height={"100%"} alignContent={"center"} justifyContent={"center"}>
+    <Flex width="100%" height="100%" alignContent="center" justifyContent="center">
       <Center>
         <Box>
-          <Heading size={"3xl"} p="42px">
+          <Heading size="3xl" p="42px">
             {text}
           </Heading>
           <Center>
@@ -28,7 +28,7 @@ export default function NoItems({
               </Button>
             ) : null}
             {secondaryText ? (
-              <Button variant={"outline"} size="lg" onClick={onClickSecondary}>
+              <Button variant="outline" size="lg" onClick={onClickSecondary}>
                 {secondaryText}
               </Button>
             ) : null}

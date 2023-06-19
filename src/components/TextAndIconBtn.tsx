@@ -10,7 +10,7 @@ export const TextAndIconBtn: FC<{
 }> = ({ text, icon, onClick }) => {
   return (
     <Flex
-      role={"button"}
+      role="button"
       alignItems="center"
       color={colors.gray[400]}
       _hover={{

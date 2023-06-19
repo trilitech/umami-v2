@@ -11,7 +11,7 @@ type Props = {
 
 export default function ModalContentWrapper({ children, icon, title, subtitle }: Props) {
   return (
-    <VStack p={"40px"} maxH={"83vh"}>
+    <VStack p="40px" maxH="83vh">
       <Box p="10px">
         <CircleIcon size="48px" icon={icon} />
       </Box>

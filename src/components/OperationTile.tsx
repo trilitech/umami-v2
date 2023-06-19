@@ -14,7 +14,7 @@ const darkColor = "umami.gray.500";
 const renderFromTo = (address: string, isInbound: boolean) => {
   return (
     <Flex alignItems="center">
-      <Heading color={"text.dark"} size="sm" mr={2}>
+      <Heading color="text.dark" size="sm" mr={2}>
         {`${isInbound ? "From:" : "Sent to:"} `}
       </Heading>
       <CopyableAddress pkh={address} />
@@ -38,10 +38,10 @@ export const OperationTile: React.FC<{
       mr={4}
       ml={4}
       borderBottom={`1px solid ${colors.gray[800]}`}
-      alignItems={"center"}
+      alignItems="center"
     >
       <Icon
-        alignSelf={"flex-start"}
+        alignSelf="flex-start"
         color={darkColor}
         mt={4}
         mr={4}
@@ -51,19 +51,19 @@ export const OperationTile: React.FC<{
       />
 
       <Box flex={1}>
-        <Flex justifyContent={"space-between"}>
+        <Flex justifyContent="space-between">
           <Heading size="sm">{amount.prettyDisplay}</Heading>
           <Text size="sm" color="text.dark">
             {prettyTimestamp}
           </Text>
         </Flex>
-        <Flex justifyContent={"space-between"}>
+        <Flex justifyContent="space-between">
           {renderFromTo(isInbound ? sender : recipient, isInbound)}
           {success && (
             //TODO handle pending and failed
             <Icon
-              alignSelf={"flex-end"}
-              color={"umami.green"}
+              alignSelf="flex-end"
+              color="umami.green"
               cursor="pointer"
               w={4}
               h={4}

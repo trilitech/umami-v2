@@ -91,7 +91,7 @@ const SignButton: React.FC<{
         <GoogleAuth
           isLoading={isLoading}
           bg="umami.blue"
-          width={"100%"}
+          width="100%"
           buttonText="Sign with Google"
           onReceiveSk={onSubmitGoogleSSO}
         />
@@ -99,7 +99,7 @@ const SignButton: React.FC<{
         <Button
           onClick={handleSubmit(isLedger ? onSubmitLedger : onSubmitNominal)}
           bg="umami.blue"
-          width={"100%"}
+          width="100%"
           isLoading={isLoading}
           type="submit"
           isDisabled={(!isLedger && !isValid) || isLoading}

@@ -9,7 +9,7 @@ export const TransactionsAmount = ({ amount, ...flexProps }: { amount: number } 
   return (
     <Flex
       aria-label="transactions-amount"
-      alignItems={"center"}
+      alignItems="center"
       justifyContent="space-between"
       {...flexProps}
     >
@@ -23,12 +23,7 @@ export const TransactionsAmount = ({ amount, ...flexProps }: { amount: number } 
 
 export const Subtotal = ({ mutez, ...flexProps }: Props) => {
   return (
-    <Flex
-      aria-label="sub-total"
-      alignItems={"center"}
-      justifyContent="space-between"
-      {...flexProps}
-    >
+    <Flex aria-label="sub-total" alignItems="center" justifyContent="space-between" {...flexProps}>
       <Heading size="sm" color="text.dark">
         Subtotal
       </Heading>
@@ -43,7 +38,7 @@ export const Total = ({ mutez, ...flexProps }: Props) => {
   return (
     <Flex
       aria-label="total"
-      alignItems={"start"}
+      alignItems="start"
       justifyContent="space-between"
       {...flexProps}
       mt={2}
@@ -72,13 +67,7 @@ export const Total = ({ mutez, ...flexProps }: Props) => {
 
 export const Fee = ({ mutez, ...flexProps }: { mutez: string } & FlexProps) => {
   return (
-    <Flex
-      aria-label="fee"
-      alignItems={"center"}
-      justifyContent="space-between"
-      mb={2}
-      {...flexProps}
-    >
+    <Flex aria-label="fee" alignItems="center" justifyContent="space-between" mb={2} {...flexProps}>
       <Heading size="sm" color="text.dark">
         Fee
       </Heading>

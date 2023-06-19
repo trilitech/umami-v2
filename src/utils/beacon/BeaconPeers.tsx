@@ -20,17 +20,17 @@ const peerRow = (peerInfo: PeerInfo, onRemove: () => void) => {
   return (
     <Tr>
       <Td>
-        <Flex alignItems={"center"}>
+        <Flex alignItems="center">
           <AspectRatio width={4} ratio={1}>
             <Image width="100%" src={peerInfo.icon} />
           </AspectRatio>
-          <Text size={"sm"} ml={2}>
+          <Text size="sm" ml={2}>
             {peerInfo.name}
           </Text>
         </Flex>
       </Td>
       <Td>
-        <Text size={"sm"} ml={2}>
+        <Text size="sm" ml={2}>
           {peerInfo.relayServer}
         </Text>
       </Td>
@@ -71,7 +71,7 @@ const BeaconPeers = () => {
 
   if (peers.length === 0) {
     return (
-      <Text mt={4} color={"text.dark"}>
+      <Text mt={4} color="text.dark">
         Paste a peer request or open a deeplink from inside a dApp...
       </Text>
     );
