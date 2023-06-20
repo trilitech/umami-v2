@@ -2,7 +2,7 @@ import { Accordion } from "@chakra-ui/react";
 import { render, screen } from "@testing-library/react";
 import { mockNFT } from "../../../mocks/factories";
 import PropertiesAccordionItem from "./PropertiesAccordionItem";
-import { mockPkh } from "../../../mocks/factories";
+import { mockImplicitAddress } from "../../../mocks/factories";
 import { ReduxStore } from "../../../providers/ReduxStore";
 import { NFT } from "../../../types/Asset";
 
@@ -42,8 +42,8 @@ describe("PropertiesAccordionItem", () => {
       nft.metadata.royalties = {
         decimals: "4",
         shares: {
-          [mockPkh(0)]: "1",
-          [mockPkh(2)]: "2",
+          [mockImplicitAddress(0).pkh]: "1",
+          [mockImplicitAddress(2).pkh]: "2",
         },
       };
 
@@ -109,7 +109,7 @@ describe("PropertiesAccordionItem", () => {
 
     it("shows creator's address if it's a valid address", () => {
       const nft = mockNFT(0);
-      nft.metadata.creators = [mockPkh(0)];
+      nft.metadata.creators = [mockImplicitAddress(0).pkh];
 
       render(fixture(nft));
       expect(screen.getByTestId("nft-creator")).toHaveTextContent("Creator:");

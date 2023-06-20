@@ -7,6 +7,7 @@ import { ghostTezzard } from "../mocks/tokens";
 import { contract, makeStorageMichelsonJSON } from "./multisigContract";
 import { makeBatchLambda } from "./multisigUtils";
 import { MultisigStorage } from "./types";
+import { parseContractPkh, parsePkh } from "../types/Address";
 
 jest.unmock("../utils/tezos");
 
@@ -98,26 +99,26 @@ describe("multisig Sandbox", () => {
       const keys2 = await makeDefaultDevSignerKeys(2);
       const batch = await makeBatchLambda(
         [
-          { type: "tez", amount: "600000", recipient: keys1.pkh },
+          { type: "tez", amount: "600000", recipient: parsePkh(keys1.pkh) },
           {
             type: "fa1.2",
             amount: "300",
-            recipient: keys2.pkh,
+            recipient: parsePkh(keys2.pkh),
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            contract: ghostnetFA12!.token!.contract!.address!,
-            sender: multisigContract,
+            contract: parseContractPkh(ghostnetFA12!.token!.contract!.address!),
+            sender: parseContractPkh(multisigContract),
           },
           {
             type: "fa2",
             amount: "1",
-            recipient: keys2.pkh,
+            recipient: parsePkh(keys2.pkh),
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            contract: ghotnetThezard!.token!.contract!.address!,
-            sender: multisigContract,
+            contract: parseContractPkh(ghotnetThezard!.token!.contract!.address!),
+            sender: parseContractPkh(multisigContract),
             tokenId: ghostTezzard.tokenId,
           },
-          { type: "tez", amount: "910000", recipient: keys1.pkh },
-          { type: "tez", amount: "2000", recipient: keys2.pkh },
+          { type: "tez", amount: "910000", recipient: parsePkh(keys1.pkh) },
+          { type: "tez", amount: "2000", recipient: parsePkh(keys2.pkh) },
         ],
 
         TezosNetwork.GHOSTNET

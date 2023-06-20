@@ -7,7 +7,7 @@ import {
   mockDelegationTransfer,
   mockNftTransfer,
   mockPk,
-  mockPkh,
+  mockImplicitAddress,
   mockTezTransaction,
   mockTezTransfer,
   mockTokenTransaction,
@@ -396,18 +396,25 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
-      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
+      const action = estimateAndUpdateBatch(
+        mockImplicitAddress(1).pkh,
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
 
       store.dispatch(action);
       expect(estimateBatchMock).toHaveBeenCalledWith(
         transfers,
-        mockPkh(1),
+        mockImplicitAddress(1).pkh,
         mockPk(1),
         TezosNetwork.MAINNET
       );
-      expect(store.getState().assets.batches[mockPkh(1)]?.isSimulating).toEqual(true);
+      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(
+        true
+      );
       await waitFor(() => {
-        expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
           isSimulating: false,
           items: [
             {
@@ -433,11 +440,16 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
       const transfers = [mockTezTransfer(1)];
-      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
+      const action = estimateAndUpdateBatch(
+        mockImplicitAddress(1).pkh,
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
 
       store.dispatch(action);
       await waitFor(() => {
-        expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
           isSimulating: false,
           items: [
             {
@@ -448,9 +460,9 @@ describe("Assets reducer", () => {
         });
       });
 
-      store.dispatch(clearBatch({ pkh: mockPkh(1) }));
+      store.dispatch(clearBatch({ pkh: mockImplicitAddress(1).pkh }));
 
-      expect(store.getState().assets.batches[mockPkh(1)]).toEqual(undefined);
+      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(undefined);
     });
 
     test("Adding operations to a batch that dont't pass estimation throws an error and doesn't update the given account's batch", async () => {
@@ -458,12 +470,19 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockRejectedValueOnce(estimationError);
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
-      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
+      const action = estimateAndUpdateBatch(
+        mockImplicitAddress(1).pkh,
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
 
       const dispatchResult = store.dispatch(action);
-      expect(store.getState().assets.batches[mockPkh(1)]?.isSimulating).toEqual(true);
+      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(
+        true
+      );
       await expect(dispatchResult).rejects.toThrow(estimationError.message);
-      expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
         isSimulating: false,
         items: [],
       });
@@ -481,17 +500,22 @@ describe("Assets reducer", () => {
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
 
-      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
+      const action = estimateAndUpdateBatch(
+        mockImplicitAddress(1).pkh,
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
 
       store.dispatch(action);
       const concurrentDispatch = store.dispatch(action);
 
       await expect(concurrentDispatch).rejects.toThrow(
-        `Simulation already ongoing for ${mockPkh(1)}`
+        `Simulation already ongoing for ${mockImplicitAddress(1).pkh}`
       );
 
       await waitFor(() => {
-        expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
           isSimulating: false,
           items: [
             {
@@ -523,7 +547,7 @@ describe("Assets reducer", () => {
       const operations: OperationValue[] = [];
 
       const action = estimateAndUpdateBatch(
-        mockPkh(1),
+        mockImplicitAddress(1).pkh,
         mockPk(1),
         operations,
         TezosNetwork.MAINNET
@@ -546,19 +570,24 @@ describe("Assets reducer", () => {
 
       store.dispatch(
         updateBatch({
-          pkh: mockPkh(1),
+          pkh: mockImplicitAddress(1).pkh,
           items: [{ fee: "3", operation: mockTezTransfer(3) }],
         })
       );
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
 
-      const action = estimateAndUpdateBatch(mockPkh(1), mockPk(1), transfers, TezosNetwork.MAINNET);
+      const action = estimateAndUpdateBatch(
+        mockImplicitAddress(1).pkh,
+        mockPk(1),
+        transfers,
+        TezosNetwork.MAINNET
+      );
 
       store.dispatch(action);
-      store.dispatch(clearBatch({ pkh: mockPkh(1) }));
+      store.dispatch(clearBatch({ pkh: mockImplicitAddress(1).pkh }));
 
       await waitFor(() => {
-        expect(store.getState().assets.batches[mockPkh(1)]).toEqual({
+        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
           isSimulating: false,
           items: [
             {

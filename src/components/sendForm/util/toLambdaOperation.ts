@@ -1,4 +1,5 @@
 import { Operation } from "../../../multisig/types";
+import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { OperationValue } from "../types";
 
 export const toLambdaOperation = (operation: OperationValue): Operation => {
@@ -7,7 +8,7 @@ export const toLambdaOperation = (operation: OperationValue): Operation => {
       return {
         type: "tez",
         amount: operation.value.amount,
-        recipient: operation.value.recipient,
+        recipient: parsePkh(operation.value.recipient),
       };
       break;
     case "token":
@@ -15,17 +16,17 @@ export const toLambdaOperation = (operation: OperationValue): Operation => {
         return {
           type: "fa1.2",
           amount: operation.value.amount,
-          contract: operation.data.contract,
-          recipient: operation.value.recipient,
-          sender: operation.value.sender,
+          contract: parseContractPkh(operation.data.contract),
+          recipient: parsePkh(operation.value.recipient),
+          sender: parsePkh(operation.value.sender),
         };
       } else {
         return {
           type: "fa2",
           amount: operation.value.amount,
-          contract: operation.data.contract,
-          recipient: operation.value.recipient,
-          sender: operation.value.sender,
+          contract: parseContractPkh(operation.data.contract),
+          recipient: parsePkh(operation.value.recipient),
+          sender: parsePkh(operation.value.sender),
           tokenId: operation.data.tokenId,
         };
       }
@@ -33,7 +34,9 @@ export const toLambdaOperation = (operation: OperationValue): Operation => {
     case "delegation":
       return {
         type: "delegation",
-        recipient: operation.value.recipient,
+        recipient: operation.value.recipient
+          ? parseImplicitPkh(operation.value.recipient)
+          : undefined,
       };
   }
 };

@@ -1,17 +1,19 @@
 import { Contact } from "../types/Contact";
-import { mockPkh } from "./factories";
+import { mockImplicitAddress } from "./factories";
 
 export const contact1 = {
   name: "Lewis Hatfull",
-  pkh: mockPkh(0),
+  pkh: mockImplicitAddress(0).pkh,
 };
+
 export const contact2 = {
   name: "Lev Kowalski",
-  pkh: mockPkh(1),
+  pkh: mockImplicitAddress(1).pkh,
 };
+
 export const contact3 = {
   name: "Abhishek Jain",
-  pkh: mockPkh(2),
+  pkh: mockImplicitAddress(2).pkh,
 };
 
 export const contacts = () => {

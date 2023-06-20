@@ -21,7 +21,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { Identicon } from "../../components/Identicon";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import colors from "../../style/colors";
-import { AllAccount } from "../../types/Account";
+import { Account } from "../../types/Account";
 import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
 import { navigateToExternalLink } from "../../utils/helpers";
@@ -51,9 +51,15 @@ const AccountTokensTileHeader: React.FC<{
 );
 
 const AccountTokensTile: React.FC<{
-  account: AllAccount;
+  account: Account;
   onOpenSendModal: (options?: Options) => void;
-}> = ({ account: { pkh, label }, onOpenSendModal }) => {
+}> = ({
+  account: {
+    address: { pkh },
+    label,
+  },
+  onOpenSendModal,
+}) => {
   const getTokens = useGetAccountAllTokens();
   const network = useSelectedNetwork();
   const tokens = getTokens(pkh);

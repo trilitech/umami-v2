@@ -13,7 +13,7 @@ import {
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
 import { bakersUrl, coincapUrl, tzktUrls } from "./consts";
-import { mockPkh } from "../../mocks/factories";
+import { mockImplicitAddress } from "../../mocks/factories";
 import { TezosNetwork } from "@airgap/tezos";
 jest.mock("axios");
 
@@ -87,20 +87,20 @@ describe("tezos utils fetch", () => {
   });
 
   test("getTokens", async () => {
-    await getTokens(mockPkh(0), TezosNetwork.GHOSTNET);
+    await getTokens(mockImplicitAddress(0).pkh, TezosNetwork.GHOSTNET);
     expect(tokensGetTokenBalances).toBeCalledWith(
       {
-        account: { eq: mockPkh(0) },
+        account: { eq: mockImplicitAddress(0).pkh },
       },
       { baseUrl: tzktUrls[TezosNetwork.GHOSTNET] }
     );
   });
 
   test("getTezTransfers", async () => {
-    await getTezTransfers(mockPkh(0), TezosNetwork.GHOSTNET);
+    await getTezTransfers(mockImplicitAddress(0).pkh, TezosNetwork.GHOSTNET);
     expect(operationsGetTransactions).toBeCalledWith(
       {
-        anyof: { fields: ["sender", "target"], eq: mockPkh(0) },
+        anyof: { fields: ["sender", "target"], eq: mockImplicitAddress(0).pkh },
         sort: { desc: "level" },
         limit: 10,
       },
@@ -111,10 +111,10 @@ describe("tezos utils fetch", () => {
   });
 
   test("getTokenTransfers", async () => {
-    await getTokenTransfers(mockPkh(0), TezosNetwork.GHOSTNET);
+    await getTokenTransfers(mockImplicitAddress(0).pkh, TezosNetwork.GHOSTNET);
     expect(tokensGetTokenTransfers).toBeCalledWith(
       {
-        anyof: { fields: ["from", "to"], eq: mockPkh(0) },
+        anyof: { fields: ["from", "to"], eq: mockImplicitAddress(0).pkh },
         sort: { desc: "level" },
         limit: 10,
       },
@@ -125,7 +125,7 @@ describe("tezos utils fetch", () => {
   });
 
   test("getLastDelegation", async () => {
-    const res = await getLastDelegation(mockPkh(0), TezosNetwork.GHOSTNET);
+    const res = await getLastDelegation(mockImplicitAddress(0).pkh, TezosNetwork.GHOSTNET);
     expect(res).toEqual({ type: "delegation" });
   });
 });

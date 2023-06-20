@@ -1,5 +1,5 @@
 import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
-import { mockPkh } from "../../mocks/factories";
+import { mockImplicitAddress } from "../../mocks/factories";
 import {
   getLatestDelegationResult,
   getTokenTransactionsResult,
@@ -595,15 +595,15 @@ describe("getOperationsDisplays", () => {
       [],
       [],
       {
-        sender: { address: mockPkh(1) },
-        newDelegate: { address: mockPkh(1) },
+        sender: { address: mockImplicitAddress(1).pkh },
+        newDelegate: { address: mockImplicitAddress(1).pkh },
         timestamp: new Date().toISOString(),
         amount: 100000,
         hash: "mockHash",
         level: 300,
         bakerFee: 400,
       } as DelegationOperation,
-      mockPkh(1)
+      mockImplicitAddress(1).pkh
     );
     expect(result).toEqual([
       {
@@ -625,14 +625,14 @@ describe("getOperationsDisplays", () => {
       [],
       [],
       {
-        sender: { address: mockPkh(1) },
+        sender: { address: mockImplicitAddress(1).pkh },
         timestamp: new Date().toISOString(),
         amount: 100000,
         hash: "mockHash",
         level: 300,
         bakerFee: 400,
       } as DelegationOperation,
-      mockPkh(1)
+      mockImplicitAddress(1).pkh
     );
     expect(result).toEqual([]);
   });

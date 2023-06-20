@@ -5,6 +5,7 @@ import { Curves, InMemorySigner } from "@taquito/signer";
 import { ContractMethod, ContractProvider, TezosToolkit } from "@taquito/taquito";
 import axios from "axios";
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
+import { PublicKeyPair } from "../restoreAccounts";
 import { tzktGetAddressResponseType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
@@ -105,12 +106,7 @@ export const makeToolkitWithDummySigner = (
   return Tezos;
 };
 
-export const getPkAndPkhFromSk = async (
-  sk: string
-): Promise<{
-  pk: string;
-  pkh: string;
-}> => {
+export const getPkAndPkhFromSk = async (sk: string): Promise<PublicKeyPair> => {
   const signer = new InMemorySigner(sk);
   return { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 };
@@ -121,10 +117,10 @@ export const makeFA2TransferMethod = async (
 ): Promise<ContractMethod<ContractProvider>> => {
   const michelson = [
     {
-      from_: sender,
+      from_: sender.pkh,
       txs: [
         {
-          to_: recipient,
+          to_: recipient.pkh,
           token_id: tokenId,
           amount: amount,
         },
@@ -132,7 +128,7 @@ export const makeFA2TransferMethod = async (
     },
   ];
 
-  const contractInstance = await toolkit.contract.at(contract);
+  const contractInstance = await toolkit.contract.at(contract.pkh);
   return contractInstance.methods.transfer(michelson);
 };
 
@@ -140,15 +136,15 @@ export const makeFA12TransferMethod = async (
   { sender, recipient, amount, contract }: FA12TransferMethodArgs,
   toolkit: TezosToolkit
 ): Promise<ContractMethod<ContractProvider>> => {
-  const contractInstance = await toolkit.contract.at(contract);
-  return contractInstance.methods.transfer(sender, recipient, amount);
+  const contractInstance = await toolkit.contract.at(contract.pkh);
+  return contractInstance.methods.transfer(sender.pkh, recipient.pkh, amount);
 };
 
 export const makeMultisigProposeMethod = async (
   { lambdaActions, contract }: MultisigProposeMethodArgs,
   toolkit: TezosToolkit
 ) => {
-  const contractInstance = await toolkit.contract.at(contract);
+  const contractInstance = await toolkit.contract.at(contract.pkh);
   return contractInstance.methods.propose(lambdaActions);
 };
 
@@ -156,7 +152,7 @@ export const makeMultisigApproveOrExecuteMethod = async (
   { type, contract, operationId }: MultisigApproveOrExecuteMethodArgs,
   toolkit: TezosToolkit
 ) => {
-  const contractInstance = await toolkit.contract.at(contract);
+  const contractInstance = await toolkit.contract.at(contract.pkh);
   return contractInstance.methods[type](operationId);
 };
 

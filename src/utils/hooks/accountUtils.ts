@@ -22,7 +22,7 @@ export const useGetSk = () => {
   return async (a: MnemonicAccount, password: string) => {
     const encryptedMnemonic = seedPhrases[a.seedFingerPrint];
     if (!encryptedMnemonic) {
-      throw new Error(`Missing seedphrase for account ${a.pkh}`);
+      throw new Error(`Missing seedphrase for account ${a.address.pkh}`);
     }
 
     const mnemonic = await decrypt(encryptedMnemonic, password);

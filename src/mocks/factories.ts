@@ -8,6 +8,7 @@ import {
   SocialAccount,
   MultisigAccount,
 } from "../types/Account";
+import { ContractAddress, ImplicitAddress } from "../types/Address";
 import { NFT } from "../types/Asset";
 import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
@@ -41,7 +42,7 @@ export const mockDelegation = (
     block: "BMGrLsKz89GdctsFamoGErgKfBjt2P9aoroCQFmzqbDBbwwfKQZ",
     hash: "oo6eXUdtvpRsFDsNR9YE7zngbeCU89FsZfxQHNzMmiaNJHniF67",
     counter: 13186782,
-    sender: { address: mockPkh(id) },
+    sender: { address: mockImplicitAddress(id).pkh },
     gasLimit: 1100,
     gasUsed: 1000,
     storageLimit: 0,
@@ -80,11 +81,11 @@ const validMockPkhs = [
   "tz1W2hEsS1mj7dHPZ6267eeM4HDWJoG3s13n",
 ];
 
-export const mockPkh = (index: number) => {
+export const mockImplicitAddress = (index: number): ImplicitAddress => {
   if (index >= validMockPkhs.length) {
     throw Error("index out of bound");
   }
-  return validMockPkhs[index];
+  return { type: "implicit", pkh: validMockPkhs[index] };
 };
 
 export const mockAccountLabel = (index: number) => `Account ${index}`;
@@ -103,7 +104,7 @@ export const mockImplicitAccount = (
       derivationPath: getDefaultMnemonicDerivationPath(index),
       type,
       label: mockAccountLabel(index),
-      pkh: mockPkh(index),
+      address: mockImplicitAddress(index),
       pk: mockPk(index),
       seedFingerPrint: `${fingerPrint}`,
     };
@@ -114,7 +115,7 @@ export const mockImplicitAccount = (
     const account: SocialAccount = {
       type: AccountType.SOCIAL,
       label: "google " + mockAccountLabel(index),
-      pkh: mockPkh(index),
+      address: mockImplicitAddress(index),
       pk: mockPk(index),
       idp: "google",
     };
@@ -127,7 +128,7 @@ export const mockImplicitAccount = (
       derivationPath: getLedgerDerivationPath(index),
       curve: "ed25519",
       label: mockAccountLabel(index) + " ledger",
-      pkh: mockPkh(index),
+      address: mockImplicitAddress(index),
       pk: mockPk(index),
     };
     return account;
@@ -139,10 +140,10 @@ export const mockImplicitAccount = (
 export const mockMultisigAccount = (index: number): MultisigAccount => {
   return {
     type: AccountType.MULTISIG,
-    pkh: mockPkh(index),
+    address: mockContractAddress(index),
     label: "label",
     threshold: 1,
-    signers: ["signers2"],
+    signers: [mockImplicitAddress(index)],
     balance: "1",
     operations: [],
   };
@@ -172,15 +173,18 @@ export const mockMultisigWithOperations = (
   threshold = 3
 ): MultisigWithPendingOperations => {
   return {
-    address: mockContract(index),
+    address: mockContractAddress(index),
     balance,
     pendingOperations: operations,
-    signers,
+    signers: signers.map(pkh => ({ type: "implicit", pkh } as const)),
     threshold,
   };
 };
 
-export const mockContract = (index: number) => `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`;
+export const mockContractAddress = (index: number): ContractAddress => ({
+  type: "contract",
+  pkh: `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`,
+});
 
 export const mockNFTToken = (index: number, pkh: string, balance = 1): Token => {
   return {
@@ -191,7 +195,7 @@ export const mockNFTToken = (index: number, pkh: string, balance = 1): Token => 
     token: {
       id: index,
       contract: {
-        address: mockContract(index),
+        address: mockContractAddress(index).pkh,
       },
       tokenId: String(index),
       standard: "fa2",
@@ -231,7 +235,7 @@ export const mockFA2Token = (
     token: {
       id: 10898194300929,
       contract: {
-        address: mockContract(index),
+        address: mockContractAddress(index).pkh,
       },
       tokenId: String(index),
       standard: "fa2",
@@ -260,7 +264,7 @@ export const mockFA1Token = (index: number, pkh: string, balance = 1): Token => 
     token: {
       id: 10897625972737,
       contract: {
-        address: mockContract(index),
+        address: mockContractAddress(index).pkh,
       },
       tokenId: "0",
       standard: "fa1.2",
@@ -282,9 +286,9 @@ export const mockNFT = (index: number, balance = "1"): NFT => {
     type: "nft",
     balance,
     displayUri,
-    contract: mockContract(index),
+    contract: mockContractAddress(index).pkh,
     tokenId: "mockId" + index,
-    owner: mockPkh(index),
+    owner: mockImplicitAddress(index).pkh,
     totalSupply: "1",
     metadata: {
       displayUri: displayUri,
@@ -298,7 +302,7 @@ export const mockBaker = (index: number) =>
   ({
     name: `label${index}`,
     logo: `label${index}`,
-    address: mockPkh(index),
+    address: mockImplicitAddress(index).pkh,
   } as Baker);
 
 export const mockTezTransfer = (index: number): OperationValue => {
@@ -306,8 +310,8 @@ export const mockTezTransfer = (index: number): OperationValue => {
     type: "tez",
     value: {
       amount: String(index),
-      sender: mockPkh(index),
-      recipient: mockPkh(index + 1),
+      sender: mockImplicitAddress(index).pkh,
+      recipient: mockImplicitAddress(index + 1).pkh,
     },
   };
 };
@@ -318,8 +322,8 @@ export const mockNftTransfer = (index: number): OperationValue => {
     data: {} as NFT,
     value: {
       amount: String(index),
-      sender: mockPkh(index),
-      recipient: mockPkh(index + 1),
+      sender: mockImplicitAddress(index).pkh,
+      recipient: mockImplicitAddress(index + 1).pkh,
     },
   };
 };
@@ -328,8 +332,8 @@ export const mockDelegationTransfer = (index: number): OperationValue => {
   return {
     type: "delegation",
     value: {
-      sender: mockPkh(index),
-      recipient: mockPkh(index + 1),
+      sender: mockImplicitAddress(index).pkh,
+      recipient: mockImplicitAddress(index + 1).pkh,
     },
   };
 };
@@ -337,6 +341,6 @@ export const mockDelegationTransfer = (index: number): OperationValue => {
 export const mockContact = (index: number): Contact => {
   return {
     name: `Contact ${index}`,
-    pkh: mockPkh(index),
+    pkh: mockImplicitAddress(index).pkh,
   };
 };

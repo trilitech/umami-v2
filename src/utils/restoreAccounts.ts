@@ -1,23 +1,28 @@
 import { Curves, InMemorySigner } from "@taquito/signer";
-import { MnemonicAccount, UnencryptedAccount } from "../types/Account";
+import { MnemonicAccount } from "../types/Account";
 import { defaultV1Pattern, makeDerivationPath } from "./account/derivationPathUtils";
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { addressExists, getFingerPrint } from "./tezos";
 
-export const restoreAccount = async (seedPhrase: string, derivationPath: string) => {
+export type PublicKeyPair = {
+  pk: string;
+  pkh: string;
+};
+
+export const restoreAccount = async (
+  seedPhrase: string,
+  derivationPath: string
+): Promise<PublicKeyPair> => {
   const signer = await InMemorySigner.fromMnemonic({
     mnemonic: seedPhrase,
     derivationPath,
     curve: "ed25519",
   });
-  const pkh = await signer.publicKeyHash();
-  const pk = await signer.publicKey();
 
-  const result: UnencryptedAccount = {
-    pk,
-    pkh,
+  return {
+    pkh: await signer.publicKeyHash(),
+    pk: await signer.publicKey(),
   };
-  return result;
 };
 
 /**
@@ -42,9 +47,9 @@ export const deriveSkFromMnemonic = async (
 export const restoreAccounts = async (
   seedPhrase: string,
   derivationPathPattern: string,
-  result: UnencryptedAccount[] = [],
+  result: PublicKeyPair[] = [],
   startIndex = 0
-): Promise<UnencryptedAccount[]> => {
+): Promise<PublicKeyPair[]> => {
   const derivationPath = makeDerivationPath(derivationPathPattern, startIndex);
   const account = await restoreAccount(seedPhrase, derivationPath);
 

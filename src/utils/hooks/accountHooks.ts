@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {
   AccountType,
-  AllAccount,
+  Account,
   LedgerAccount,
   MultisigAccount,
   SocialAccount,
@@ -20,7 +20,7 @@ export const useImplicitAccounts = () => {
 
 export const useGetImplicitAccount = () => {
   const accounts = useImplicitAccounts();
-  return (pkh: string) => accounts.find(a => a.pkh === pkh);
+  return (pkh: string) => accounts.find(account => account.address.pkh === pkh);
 };
 
 export const useReset = () => {
@@ -46,8 +46,8 @@ export const useReset = () => {
 
 export const useGetOwnedAccount = () => {
   const accounts = useAllAccounts();
-  return (pkh: string): AllAccount => {
-    const account = accounts.find(a => a.pkh === pkh);
+  return (pkh: string): Account => {
+    const account = accounts.find(a => a.address.pkh === pkh);
     if (!account) {
       throw new Error(`You do not ownn account:${pkh}`);
     }
@@ -78,7 +78,7 @@ export const useRestoreLedger = () => {
       curve: "ed25519",
       type: AccountType.LEDGER,
       pk: pk,
-      pkh: pkh,
+      address: { type: "implicit", pkh },
       label,
     };
     dispatch(add([account]));
@@ -91,7 +91,7 @@ export const useRestoreSocial = () => {
     const account: SocialAccount = {
       type: AccountType.SOCIAL,
       pk: pk,
-      pkh: pkh,
+      address: { type: "implicit", pkh },
       idp: "google",
       label,
     };
@@ -131,7 +131,7 @@ export const useMultisigAccounts = (): MultisigAccount[] => {
 
   return multisigs.map((m, i) => ({
     label: `Multisig Account ${i}`,
-    pkh: m.address,
+    address: m.address,
     type: AccountType.MULTISIG,
     threshold: m.threshold,
     signers: m.signers,
@@ -140,7 +140,7 @@ export const useMultisigAccounts = (): MultisigAccount[] => {
   }));
 };
 
-export const useAllAccounts = (): AllAccount[] => {
+export const useAllAccounts = (): Account[] => {
   const implicit = useImplicitAccounts();
   const multisig = useMultisigAccounts();
   return [...implicit, ...multisig];
@@ -162,6 +162,6 @@ export const useGetPk = () => {
 export const useAccountIsMultisig = () => {
   const accounts = useMultisigAccounts();
   return (pkh: string) => {
-    return !!accounts.find(a => a.pkh === pkh);
+    return !!accounts.find(account => account.address.pkh === pkh);
   };
 };

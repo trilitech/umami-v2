@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { mockNFTToken, mockPkh } from "../../mocks/factories";
+import { mockNFTToken, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
@@ -23,8 +23,11 @@ describe("NFTsView", () => {
     store.dispatch(
       updateAssets([
         {
-          pkh: mockPkh(1),
-          tokens: [mockNFTToken(1, mockPkh(1)), mockNFTToken(2, mockPkh(1))],
+          pkh: mockImplicitAddress(1).pkh,
+          tokens: [
+            mockNFTToken(1, mockImplicitAddress(1).pkh),
+            mockNFTToken(2, mockImplicitAddress(1).pkh),
+          ],
         },
       ])
     );
@@ -32,8 +35,11 @@ describe("NFTsView", () => {
     store.dispatch(
       updateAssets([
         {
-          pkh: mockPkh(2),
-          tokens: [mockNFTToken(1, mockPkh(2)), mockNFTToken(2, mockPkh(2))],
+          pkh: mockImplicitAddress(2).pkh,
+          tokens: [
+            mockNFTToken(1, mockImplicitAddress(2).pkh),
+            mockNFTToken(2, mockImplicitAddress(2).pkh),
+          ],
         },
       ])
     );

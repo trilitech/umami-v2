@@ -1,10 +1,10 @@
 import React from "react";
-import { AllAccount } from "../../types/Account";
+import { Account } from "../../types/Account";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import AccountSelectorDisplay from "./AccountSelectorDisplay";
 
 export const ConnectedAccountSelector: React.FC<{
-  onSelect: (a: AllAccount) => void;
+  onSelect: (a: Account) => void;
   selected?: string;
   isDisabled?: boolean;
 }> = ({ onSelect = () => {}, selected, isDisabled }) => {

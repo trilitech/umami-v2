@@ -49,7 +49,7 @@ const PermissionRequestPannel: React.FC<{
       <ModalCloseButton />
       <ModalBody>
         <ConnectedAccountSelector
-          selected={account && account.pkh}
+          selected={account && account.address.pkh}
           onSelect={a => {
             if (a.type === AccountType.MULTISIG) {
               throw new Error("Beacon doesn't support multisig");

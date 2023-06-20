@@ -106,7 +106,7 @@ export const RecapDisplay: React.FC<{
       const result = await makeTransfer(operations, config);
       if (isBatch) {
         // TODO this will have to me moved in a thunk
-        clearBatch(signerAccount.pkh);
+        clearBatch(signerAccount.address.pkh);
       }
       onSucces(result.hash);
       toast({ title: "Success", description: result.hash });
@@ -131,7 +131,7 @@ export const RecapDisplay: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              <AccountSmallTile pkh={signerAccount.pkh} />
+              <AccountSmallTile pkh={signerAccount.address.pkh} />
             </Flex>
             {isBatch ? (
               <BatchRecap transfer={transfer} />

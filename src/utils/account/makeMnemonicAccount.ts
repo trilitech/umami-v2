@@ -1,4 +1,5 @@
 import { AccountType, MnemonicAccount } from "../../types/Account";
+import { parseImplicitPkh } from "../../types/Address";
 
 export const makeMnemonicAccount = (
   pk: string,
@@ -11,7 +12,7 @@ export const makeMnemonicAccount = (
     curve: "ed25519",
     derivationPath,
     pk,
-    pkh,
+    address: parseImplicitPkh(pkh),
     seedFingerPrint,
     label,
     type: AccountType.MNEMONIC,

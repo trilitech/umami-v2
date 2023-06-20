@@ -94,7 +94,7 @@ export const useHasTokens = () => {
   const getFA2 = useGetAccountFA2Tokens();
   return () =>
     accounts
-      .map(account => [...getFA1(account.pkh), ...getFA2(account.pkh)].length > 0)
+      .map(account => [...getFA1(account.address.pkh), ...getFA2(account.address.pkh)].length > 0)
       .includes(true);
 };
 
@@ -117,8 +117,14 @@ export const useAllOperationDisplays = () => {
 
   const result: Record<string, OperationDisplay[]> = {};
 
-  accounts.forEach(({ pkh }) => {
-    result[pkh] = getOperationDisplays(tez[pkh], tokens[pkh], delegations[pkh], pkh, network);
+  accounts.forEach(({ address }) => {
+    result[address.pkh] = getOperationDisplays(
+      tez[address.pkh],
+      tokens[address.pkh],
+      delegations[address.pkh],
+      address.pkh,
+      network
+    );
   });
 
   return result;
@@ -213,11 +219,13 @@ export const useGetMultisigSigners = () => {
   const implicitAccounts = useImplicitAccounts();
   return (multisigAccount: MultisigAccount) => {
     const signers = implicitAccounts.filter(implicitAccount =>
-      multisigAccount.signers.some(s => s === implicitAccount.pkh)
+      multisigAccount.signers.some(signer => signer.pkh === implicitAccount.address.pkh)
     );
 
     if (signers.length === 0) {
-      console.warn("Wallet doesn't own any signers for  multisig contract " + multisigAccount.pkh);
+      console.warn(
+        "Wallet doesn't own any signers for  multisig contract " + multisigAccount.address.pkh
+      );
     }
     return signers;
   };

@@ -3,7 +3,7 @@ import {
   mockImplicitAccount,
   mockAccountLabel,
   mockMultisigWithOperations,
-  mockPkh,
+  mockImplicitAddress,
 } from "../../mocks/factories";
 import { formatPkh } from "../../utils/format";
 import accountsSlice from "../../utils/store/accountsSlice";
@@ -49,7 +49,7 @@ describe("<AccountList />", () => {
       const identifiers = getByTestId("account-identifiers");
 
       expect(identifiers).toHaveTextContent(mockAccountLabel(i));
-      expect(identifiers).toHaveTextContent(formatPkh(mockPkh(i)));
+      expect(identifiers).toHaveTextContent(formatPkh(mockImplicitAddress(i).pkh));
     });
   });
 
@@ -158,9 +158,11 @@ describe("<AccountList />", () => {
       expect(submitBtn).toBeEnabled();
     });
 
-    fakeExtraArguments.restoreAccount.mockResolvedValue(
-      mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1)
-    );
+    const account = mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1);
+    fakeExtraArguments.restoreAccount.mockResolvedValue({
+      pkh: account.address.pkh,
+      pk: account.pk,
+    });
 
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
 
@@ -201,7 +203,7 @@ const restore = async () => {
     add({
       type: AccountType.SOCIAL,
       idp: "google",
-      pkh: mockPkh(6),
+      address: mockImplicitAddress(6),
       pk: mockPk(6),
       label: GOOGLE_ACCOUNT_LABEL1,
     })
@@ -211,7 +213,7 @@ const restore = async () => {
     add({
       type: AccountType.SOCIAL,
       idp: "google",
-      pkh: mockPkh(7),
+      address: mockImplicitAddress(7),
       pk: mockPk(7),
       label: GOOGLE_ACCOUNT_LABEL2,
     })

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { TezosNetwork } from "@airgap/tezos";
 import { ContractMethod, ContractProvider, TransferParams } from "@taquito/taquito";
-import { mockContract, mockPkh } from "../mocks/factories";
+import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
 import { fakeTezosUtils } from "../mocks/fakeTezosUtils";
+import { ContractAddress, ImplicitAddress, parseContractPkh } from "../types/Address";
 import {
   FA12_TRANSFER_ARG_TYPES,
   FA2_TRANSFER_ARG_TYPES,
@@ -11,7 +12,7 @@ import {
 } from "./multisigUtils";
 
 // Originated multisig contract
-const multisigContract = "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm";
+const multisigContractAddress = parseContractPkh("KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm");
 
 const MOCK_FA2_MICHELSON_PARAM = {
   parameter: {
@@ -50,14 +51,14 @@ describe("makeLambda", () => {
         {
           type: "tez",
           amount: MUTEZ_AMOUNT,
-          recipient: mockPkh(0),
+          recipient: mockImplicitAddress(0),
         },
         TezosNetwork.GHOSTNET
       );
       expect(result).toEqual([
         { prim: "DROP" },
         { args: [{ prim: "operation" }], prim: "NIL" },
-        ...singleTez(MUTEZ_AMOUNT, mockPkh(0)),
+        ...singleTez(MUTEZ_AMOUNT, mockImplicitAddress(0)),
       ]);
     });
 
@@ -68,7 +69,7 @@ describe("makeLambda", () => {
         {
           type: "tez",
           amount: MUTEZ_AMOUNT,
-          recipient: mockContract(0),
+          recipient: mockContractAddress(0),
         },
         TezosNetwork.GHOSTNET
       );
@@ -76,7 +77,7 @@ describe("makeLambda", () => {
       expect(result).toEqual([
         { prim: "DROP" },
         { args: [{ prim: "operation" }], prim: "NIL" },
-        ...singleTezContract(MUTEZ_AMOUNT, mockContract(0)),
+        ...singleTezContract(MUTEZ_AMOUNT, mockContractAddress(0)),
       ]);
     });
   });
@@ -87,9 +88,9 @@ describe("makeLambda", () => {
       {
         type: "fa1.2",
         amount: AMOUNT,
-        recipient: mockPkh(0),
-        contract: mockContract(0),
-        sender: multisigContract,
+        recipient: mockImplicitAddress(0),
+        contract: mockContractAddress(0),
+        sender: multisigContractAddress,
       },
       TezosNetwork.GHOSTNET
     );
@@ -97,7 +98,7 @@ describe("makeLambda", () => {
     expect(result).toEqual([
       { prim: "DROP" },
       { args: [{ prim: "operation" }], prim: "NIL" },
-      ...fa12Lambda(mockContract(0)),
+      ...fa12Lambda(mockContractAddress(0)),
     ]);
   });
 
@@ -109,9 +110,9 @@ describe("makeLambda", () => {
         {
           type: "fa2",
           amount: AMOUNT,
-          recipient: mockPkh(0),
-          contract: mockContract(0),
-          sender: multisigContract,
+          recipient: mockImplicitAddress(0),
+          contract: mockContractAddress(0),
+          sender: multisigContractAddress,
           tokenId: MOCK_TOKEN_ID,
         },
       ],
@@ -121,7 +122,7 @@ describe("makeLambda", () => {
     expect(result).toEqual([
       { prim: "DROP" },
       { args: [{ prim: "operation" }], prim: "NIL" },
-      ...fa2Lambda(mockContract(0)),
+      ...fa2Lambda(mockContractAddress(0)),
     ]);
   });
 
@@ -130,35 +131,24 @@ describe("makeLambda", () => {
       const result = await makeLambda(
         {
           type: "delegation",
-          recipient: mockPkh(0),
+          recipient: mockImplicitAddress(0),
         },
         TezosNetwork.GHOSTNET
       );
       expect(result).toEqual([
         { prim: "DROP" },
         { args: [{ prim: "operation" }], prim: "NIL" },
-        ...setDelegationLambda(mockPkh(0)),
+        ...setDelegationLambda(mockImplicitAddress(0)),
       ]);
     });
 
     it("can unset a delegate", async () => {
-      const emptyStringResult = await makeLambda(
-        {
-          type: "delegation",
-          recipient: "",
-        },
+      const result = await makeLambda(
+        { type: "delegation", recipient: undefined },
         TezosNetwork.GHOSTNET
       );
 
-      expect(emptyStringResult).toEqual([
-        { prim: "DROP" },
-        { args: [{ prim: "operation" }], prim: "NIL" },
-        ...dropDelegationLambda,
-      ]);
-
-      const undefinedResult = await makeLambda({ type: "delegation" }, TezosNetwork.GHOSTNET);
-
-      expect(undefinedResult).toEqual([
+      expect(result).toEqual([
         { prim: "DROP" },
         { args: [{ prim: "operation" }], prim: "NIL" },
         ...dropDelegationLambda,
@@ -176,7 +166,7 @@ describe("makeBatchLambda", () => {
         {
           type: "tez",
           amount: MUTEZ_AMOUNT_1,
-          recipient: mockPkh(0),
+          recipient: mockImplicitAddress(0),
         },
       ],
       TezosNetwork.GHOSTNET
@@ -185,7 +175,7 @@ describe("makeBatchLambda", () => {
     const expected = [
       { prim: "DROP" },
       { args: [{ prim: "operation" }], prim: "NIL" },
-      ...singleTez(MUTEZ_AMOUNT_1, mockPkh(0)),
+      ...singleTez(MUTEZ_AMOUNT_1, mockImplicitAddress(0)),
     ];
     expect(result).toEqual(expected);
   });
@@ -195,32 +185,32 @@ describe("makeBatchLambda", () => {
     const MOCK_TEZ_AMOUNT2 = "55556";
     const result = await makeBatchLambda(
       [
-        { type: "tez", amount: MOCK_TEZ_AMOUNT, recipient: mockPkh(1) },
+        { type: "tez", amount: MOCK_TEZ_AMOUNT, recipient: mockImplicitAddress(1) },
         {
           type: "tez",
           amount: MOCK_TEZ_AMOUNT2,
-          recipient: mockContract(0),
+          recipient: mockContractAddress(0),
         },
         {
           type: "fa2",
           amount: "1",
-          recipient: mockPkh(0),
-          contract: mockContract(0),
-          sender: multisigContract,
+          recipient: mockImplicitAddress(0),
+          contract: mockContractAddress(0),
+          sender: multisigContractAddress,
           tokenId: "123",
         },
         {
           type: "fa1.2",
           amount: "1",
-          recipient: mockPkh(0),
-          contract: mockContract(1),
-          sender: multisigContract,
+          recipient: mockImplicitAddress(0),
+          contract: mockContractAddress(1),
+          sender: multisigContractAddress,
         },
         {
           type: "delegation",
-          recipient: mockPkh(1),
+          recipient: mockImplicitAddress(1),
         },
-        { type: "delegation" },
+        { type: "delegation", recipient: undefined },
       ],
       TezosNetwork.GHOSTNET
     );
@@ -228,21 +218,21 @@ describe("makeBatchLambda", () => {
     const expected = [
       { prim: "DROP" },
       { args: [{ prim: "operation" }], prim: "NIL" },
-      ...singleTez(MOCK_TEZ_AMOUNT, mockPkh(1)),
-      ...singleTezContract(MOCK_TEZ_AMOUNT2, mockContract(0)),
-      ...fa2Lambda(mockContract(0)),
-      ...fa12Lambda(mockContract(1)),
-      ...setDelegationLambda(mockPkh(1)),
+      ...singleTez(MOCK_TEZ_AMOUNT, mockImplicitAddress(1)),
+      ...singleTezContract(MOCK_TEZ_AMOUNT2, mockContractAddress(0)),
+      ...fa2Lambda(mockContractAddress(0)),
+      ...fa12Lambda(mockContractAddress(1)),
+      ...setDelegationLambda(mockImplicitAddress(1)),
       ...dropDelegationLambda,
     ];
     expect(result).toEqual(expected);
   });
 });
 
-const fa2Lambda = (contract: string) => {
+const fa2Lambda = (address: ContractAddress) => {
   return [
     {
-      args: [{ prim: "address" }, { string: contract + "%transfer" }],
+      args: [{ prim: "address" }, { string: address.pkh + "%transfer" }],
       prim: "PUSH",
     },
     { args: [FA2_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
@@ -257,10 +247,10 @@ const fa2Lambda = (contract: string) => {
   ];
 };
 
-const singleTez = (amount: string, recipient: string) => {
+const singleTez = (amount: string, recipient: ImplicitAddress) => {
   return [
     {
-      args: [{ prim: "key_hash" }, { string: recipient }],
+      args: [{ prim: "key_hash" }, { string: recipient.pkh }],
       prim: "PUSH",
     },
     { prim: "IMPLICIT_ACCOUNT" },
@@ -271,11 +261,11 @@ const singleTez = (amount: string, recipient: string) => {
   ];
 };
 
-const singleTezContract = (amount: string, recipient: string) => {
+const singleTezContract = (amount: string, recipient: ContractAddress) => {
   return [
     {
       prim: "PUSH",
-      args: [{ prim: "address" }, { string: recipient }],
+      args: [{ prim: "address" }, { string: recipient.pkh }],
     },
     { prim: "CONTRACT", args: [{ prim: "unit" }] },
     [
@@ -291,10 +281,10 @@ const singleTezContract = (amount: string, recipient: string) => {
   ];
 };
 
-const fa12Lambda = (contract: string) => {
+const fa12Lambda = (address: ContractAddress) => {
   return [
     {
-      args: [{ prim: "address" }, { string: contract + "%transfer" }],
+      args: [{ prim: "address" }, { string: address.pkh + "%transfer" }],
       prim: "PUSH",
     },
     { args: [FA12_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
@@ -314,11 +304,11 @@ const fa12Lambda = (contract: string) => {
   ];
 };
 
-const setDelegationLambda = (recipient: string) => {
+const setDelegationLambda = (recipient: ImplicitAddress) => {
   return [
     {
       prim: "PUSH",
-      args: [{ prim: "key_hash" }, { string: recipient }],
+      args: [{ prim: "key_hash" }, { string: recipient.pkh }],
     },
     { prim: "SOME" },
     { prim: "SET_DELEGATE" },

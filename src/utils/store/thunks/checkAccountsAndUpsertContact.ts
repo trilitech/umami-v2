@@ -11,7 +11,7 @@ const checkAccountsAndUpsertContact = (
   return (dispatch, getState) => {
     const { accounts } = getState();
     const existingAccount = accounts.items.find(account => {
-      return account.pkh === contact.pkh || account.label === contact.name;
+      return account.address.pkh === contact.pkh || account.label === contact.name;
     });
 
     if (existingAccount) {

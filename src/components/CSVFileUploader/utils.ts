@@ -1,7 +1,7 @@
+import { isAddressValid, isValidContractPkh } from "../../types/Address";
 import { Asset, getRealAmount } from "../../types/Asset";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
-import { addressIsValid } from "../../utils/tezos/pureTezosUtils";
 import { OperationValue } from "../sendForm/types";
 import { CSVRow } from "./types";
 
@@ -15,7 +15,7 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
   const [recipient, prettyAmount, contract, tokenId] = filteredRow;
   const checkedPrettyAmount = validateNonNegativeNumber(prettyAmount);
 
-  if (!addressIsValid(recipient)) {
+  if (!isAddressValid(recipient)) {
     throw new Error("Invalid csv value: recipient");
   }
 
@@ -30,7 +30,7 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
   };
 
   if (contract !== undefined) {
-    if (!addressIsValid(contract)) {
+    if (!isValidContractPkh(contract)) {
       throw new Error("Invalid csv value: contract address");
     }
     res = { ...res, type: "fa1.2", contract };

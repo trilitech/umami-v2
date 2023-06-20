@@ -19,12 +19,12 @@ import {
 import { FC, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
+import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useGetImplicitAccount, useImplicitAccounts } from "../utils/hooks/accountHooks";
 import { useContactExists } from "../utils/hooks/contactsHooks";
 import { contactsActions } from "../utils/store/contactsSlice";
 import { useAppDispatch } from "../utils/store/hooks";
-import { addressIsValid } from "../utils/tezos/pureTezosUtils";
 import { CopyableAddress } from "./CopyableText";
 
 export const UpsertContactModal: FC<{
@@ -62,7 +62,7 @@ export const UpsertContactModal: FC<{
   const { nameExistsInContacts, addressExistsInContacts } = useContactExists();
   const getAccount = useGetImplicitAccount();
   const validatePkh = (pkh: string) => {
-    if (!addressIsValid(pkh)) {
+    if (!isAddressValid(pkh)) {
       return "Invalid address";
     }
     if (isEdit && contact) {

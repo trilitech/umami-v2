@@ -1,4 +1,4 @@
-import { mockContact, mockPkh } from "../../mocks/factories";
+import { mockContact, mockImplicitAddress } from "../../mocks/factories";
 import { act, fireEvent, render, screen, within } from "../../mocks/testUtils";
 import { RecipientAutoCompleteDisplay } from "./RecipientAutoComplete";
 
@@ -23,9 +23,9 @@ describe("<RecipientAutoComplete />", () => {
   it("should fire onValidPkh when a valid pkh is entered by the user", () => {
     setup();
     const input = screen.getByLabelText("recipient");
-    fireEvent.change(input, { target: { value: mockPkh(7) } });
-    expect(input).toHaveProperty("value", mockPkh(7));
-    expect(spy).toHaveBeenCalledWith(mockPkh(7));
+    fireEvent.change(input, { target: { value: mockImplicitAddress(7).pkh } });
+    expect(input).toHaveProperty("value", mockImplicitAddress(7).pkh);
+    expect(spy).toHaveBeenCalledWith(mockImplicitAddress(7).pkh);
   });
 
   it("should fire null when a value that is not a pkh or an alias is entered by the user", () => {
@@ -138,10 +138,10 @@ describe("<RecipientAutoComplete />", () => {
   });
 
   it("should display initialPkhValue if there is no existing contact", async () => {
-    setup(mockPkh(5));
+    setup(mockImplicitAddress(5).pkh);
 
     const input = screen.getByLabelText("recipient");
-    expect(input).toHaveProperty("value", mockPkh(5));
+    expect(input).toHaveProperty("value", mockImplicitAddress(5).pkh);
   });
 
   test("Entering a pkh that belongs to a contact should display contact name in the input", () => {
