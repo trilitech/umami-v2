@@ -2,17 +2,19 @@ import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
 import { AccountType } from "../../types/Account";
+import { SignerConfig } from "../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
-import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { FillStep } from "./steps/FillStep";
-import { RecapDisplay } from "./steps/SubmitStep";
+import { SubmitStep } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, FormOperations, OperationValue, SendFormMode } from "./types";
+import { makeTransfer } from "./util/execution";
 import { makeSimulation } from "./util/simulation";
 
-export const useGetPk = () => {
+const useGetPk = () => {
   const getAccount = useGetOwnedAccount();
   return (pkh: string) => {
     const account = getAccount(pkh);
@@ -44,6 +46,7 @@ export const SendForm = ({
   const toast = useToast();
   const getPk = useGetPk();
   const dispatch = useAppDispatch();
+  const clearBatch = useClearBatch();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -91,15 +94,45 @@ export const SendForm = ({
     }
   };
 
+  const execute = async (operations: FormOperations, config: SignerConfig) => {
+    setIsLoading(true);
+
+    if (config.type === "ledger") {
+      toast({
+        title: "Request sent to Ledger",
+        description: "Open the Tezos app on your Ledger and accept to sign the request",
+      });
+    }
+
+    try {
+      const result = await makeTransfer(operations, config);
+      if (mode.type === "batch") {
+        // TODO this will have to me moved in a thunk
+        const batchOwner = operations.content[0].value.sender;
+        clearBatch(batchOwner);
+      }
+      setHash(result.hash);
+      toast({ title: "Success", description: result.hash });
+    } catch (error: any) {
+      console.warn("Failed to execute operation", error);
+      toast({ title: "Error", description: error.message });
+    }
+
+    setIsLoading(false);
+  };
+
   if (hash) {
     return <SuccessStep hash={hash} network={network} />;
   }
 
   if (transferValues) {
     return (
-      <RecapDisplay
+      <SubmitStep
+        isLoading={isLoading}
+        onSubmit={config => {
+          execute(transferValues.operations, config);
+        }}
         isBatch={mode.type === "batch"}
-        onSuccess={setHash}
         network={network}
         recap={transferValues}
       />
