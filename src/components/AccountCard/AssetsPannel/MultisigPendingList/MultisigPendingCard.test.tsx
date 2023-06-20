@@ -1,5 +1,5 @@
-import { mockImplicitAddress } from "../../../mocks/factories";
-import { render, screen } from "../../../mocks/testUtils";
+import { mockImplicitAddress } from "../../../../mocks/factories";
+import { render, screen } from "../../../../mocks/testUtils";
 import MultisigPendingCard from "./MultisigPendingCard";
 
 describe("<MultisigPendingCard/>", () => {

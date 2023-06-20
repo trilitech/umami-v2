@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
-import { MultisigAccount } from "../../../types/Account";
+import { MultisigAccount } from "../../../../types/Account";
 import MultisigPendingCard from "./MultisigPendingCard";
 
 export const MultisigPendingList: React.FC<{

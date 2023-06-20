@@ -1,9 +1,9 @@
-import { mockImplicitAccount } from "../../../mocks/factories";
-import { render, screen } from "../../../mocks/testUtils";
+import { mockImplicitAccount } from "../../../../mocks/factories";
+import { render, screen } from "../../../../mocks/testUtils";
 import MultisigSignerTile from "./MultisigSignerTile";
 
-import { store } from "../../../utils/store/store";
-import accountsSlice from "../../../utils/store/accountsSlice";
+import { store } from "../../../../utils/store/store";
+import accountsSlice from "../../../../utils/store/accountsSlice";
 
 const { add, reset } = accountsSlice.actions;
 afterEach(() => store.dispatch(reset()));

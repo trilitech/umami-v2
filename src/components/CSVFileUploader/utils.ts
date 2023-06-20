@@ -49,7 +49,7 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
 export const csvRowToOperationValue = (
   sender: string,
   csvRow: CSVRow,
-  contractToAssets: Record<string, Asset[]>
+  contractToAssets: Record<string, Asset[] | undefined>
 ): OperationValue => {
   const recipient = csvRow.recipient;
 

@@ -93,30 +93,38 @@ export const fromToken = (raw: Token): Asset | null => {
   return null;
 };
 
-const defaultTokenName = (asset: FA12Token | FA2Token): string => {
+const defaultTokenName = (asset: Asset): string => {
   switch (asset.type) {
     case "fa1.2":
       return DEFAULT_FA1_NAME;
     case "fa2":
       return DEFAULT_FA2_NAME;
+    case "nft":
+      return DEFAULT_NFT_NAME;
   }
 };
 
-export const tokenName = (asset: FA12Token | FA2Token): string => {
+export const tokenName = (asset: Asset): string => {
   return asset.metadata?.name || defaultTokenName(asset);
 };
 
-const defaultTokenSymbol = (asset: FA12Token | FA2Token): string => {
+const defaultTokenSymbol = (asset: Asset): string => {
   switch (asset.type) {
     case "fa1.2":
       return DEFAULT_FA1_SYMBOL;
     case "fa2":
       return DEFAULT_FA2_SYMBOL;
+    case "nft":
+      return DEFAULT_NFT_SYMBOL;
   }
 };
 
-export const tokenSymbol = (asset: FA12Token | FA2Token): string => {
+export const tokenSymbol = (asset: Asset): string => {
   return asset.metadata?.symbol || defaultTokenSymbol(asset);
+};
+
+export const tokenDecimal = (asset: Asset): string => {
+  return asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
 };
 
 export const httpIconUri = (asset: FA12Token | FA2Token): string | undefined => {
@@ -136,8 +144,7 @@ export const getRealAmount = (asset: Asset, prettyAmount: string): BigNumber => 
     return amount;
   }
 
-  const decimals =
-    asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
+  const decimals = tokenDecimal(asset);
 
   return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };
@@ -230,6 +237,8 @@ export const metadataUri = (nft: NFT, network: TezosNetwork) => {
 // We use the defaults for FA1.2 tokens as in V1
 export const DEFAULT_FA1_NAME = "FA1.2 token";
 export const DEFAULT_FA2_NAME = "FA2 token";
+export const DEFAULT_NFT_NAME = "NFT";
 export const DEFAULT_FA1_SYMBOL = "FA1.2";
 export const DEFAULT_FA2_SYMBOL = "FA2";
+export const DEFAULT_NFT_SYMBOL = "NFT";
 export const DEFAULT_TOKEN_DECIMALS = "4";

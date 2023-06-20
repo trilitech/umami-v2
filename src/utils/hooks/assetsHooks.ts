@@ -50,7 +50,9 @@ export const useGetAccountAssets = () => {
   };
 };
 
-export const useGetAccountAssetsLookup = (): ((pkh: string) => Record<string, Asset[]>) => {
+export const useGetAccountAssetsLookup = (): ((
+  pkh: string
+) => Record<string, Asset[] | undefined>) => {
   const getAccountAssets = useGetAccountAssets();
 
   return (pkh: string): Record<string, Asset[]> =>
@@ -61,6 +63,21 @@ export const useGetAccountAssetsLookup = (): ((pkh: string) => Record<string, As
       acc[cur.contract].push(cur);
       return acc;
     }, {});
+};
+
+export const useSearchAsset = () => {
+  const allTokens = useAppSelector(s => s.assets.balances.tokens);
+  const assets = compact(Object.values(allTokens)).flatMap(tokens => tokens.map(fromToken));
+
+  return (contractAddress: string, tokenId: string | undefined) => {
+    if (!tokenId) {
+      return compact(assets).find(asset => asset.contract === contractAddress);
+    }
+
+    return compact(assets)
+      .filter(asset => asset.contract === contractAddress)
+      .find(asset => asset.type !== "fa1.2" && asset.tokenId === tokenId);
+  };
 };
 
 export const useGetAccountFA2Tokens = () => {

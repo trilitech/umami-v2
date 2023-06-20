@@ -1,11 +1,11 @@
 import { Box, Flex, Text, Heading } from "@chakra-ui/react";
 import React from "react";
-import colors from "../../../style/colors";
-import { ImplicitAddress } from "../../../types/Address";
-import { formatPkh } from "../../../utils/format";
-import { useGetImplicitAccount } from "../../../utils/hooks/accountHooks";
-import { useGetContractName } from "../../../utils/hooks/contactsHooks";
-import { Identicon } from "../../Identicon";
+import colors from "../../../../style/colors";
+import { ImplicitAddress } from "../../../../types/Address";
+import { formatPkh } from "../../../../utils/format";
+import { useGetImplicitAccount } from "../../../../utils/hooks/accountHooks";
+import { useGetContractName } from "../../../../utils/hooks/contactsHooks";
+import { Identicon } from "../../../Identicon";
 import MultisigActionButton from "./MultisigActionButton";
 
 const MultisigSignerTile: React.FC<{
@@ -22,7 +22,7 @@ const MultisigSignerTile: React.FC<{
     <Flex
       mb={4}
       p={4}
-      bg={colors.gray[900]}
+      bg={colors.gray[700]}
       h="78px"
       borderRadius={8}
       border={`1px solid ${colors.gray[800]}`}
