@@ -165,7 +165,9 @@ export const useCreateOrImportSecretModal = () => {
                 history.pop();
                 const previous = history.pop();
                 setHistory(history);
-                if (previous) setStep(previous);
+                if (previous) {
+                  setStep(previous);
+                }
               }}
             />
           ) : (
