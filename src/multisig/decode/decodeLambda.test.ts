@@ -789,21 +789,44 @@ describe("decodeLambda", () => {
     expect(parseRawMichelson(rawMichelson)).toEqual([
       {
         amount: "350000000000",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        recipient: {
+          pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+          type: "implicit",
+        },
         type: "tez",
       },
       {
         amount: "2",
-        contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        sender: "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8",
+        recipient: {
+          pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+          type: "implicit",
+        },
+        contract: {
+          pkh: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+          type: "contract",
+        },
+
+        sender: {
+          pkh: "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8",
+          type: "contract",
+        },
         type: "fa1.2",
       },
       {
         amount: "3",
-        contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        sender: "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8",
+        recipient: {
+          pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+          type: "implicit",
+        },
+        contract: {
+          pkh: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+          type: "contract",
+        },
+
+        sender: {
+          pkh: "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8",
+          type: "contract",
+        },
         tokenId: "0",
         type: "fa2",
       },

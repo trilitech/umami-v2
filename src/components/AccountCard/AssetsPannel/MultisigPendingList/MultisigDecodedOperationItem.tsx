@@ -25,7 +25,7 @@ const MultisigDecodedOperationItem: React.FC<{
             <Heading color={colors.gray[400]} size="sm" mr={1}>
               Send to :
             </Heading>
-            <CopyableAddress pkh={operation.recipient} iconColor={colors.gray[500]} />
+            <CopyableAddress pkh={operation.recipient.pkh} iconColor={colors.gray[500]} />
           </Flex>
         </Box>
       );
@@ -50,7 +50,7 @@ const MultisigOperationAmount: React.FC<{
     case "fa1.2":
     case "fa2": {
       const asset = searchAsset(
-        operation.contract,
+        operation.contract.pkh,
         operation.type === "fa2" ? operation.tokenId : undefined
       );
 

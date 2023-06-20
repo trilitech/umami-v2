@@ -1,4 +1,4 @@
-import { mockContract, mockPkh } from "../../../../mocks/factories";
+import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 import { assetsActions, TokenBalancePayload } from "../../../../utils/store/assetsSlice";
 import { store } from "../../../../utils/store/store";
@@ -11,7 +11,9 @@ afterEach(() => {
 
 describe("<MultisigDecodedOperationItem/>", () => {
   it("displays delegate", () => {
-    render(<MultisigDecodedOperationItem operation={{ type: "delegation" }} />);
+    render(
+      <MultisigDecodedOperationItem operation={{ type: "delegation", recipient: undefined }} />
+    );
 
     expect(screen.getByTestId("decoded-item-delegate")).toHaveTextContent("Undelegate");
   });
@@ -19,7 +21,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
   it("amount renders correctly for tez", () => {
     render(
       <MultisigDecodedOperationItem
-        operation={{ type: "tez", recipient: mockPkh(0), amount: "1000000" }}
+        operation={{ type: "tez", recipient: mockImplicitAddress(0), amount: "1000000" }}
       />
     );
 
@@ -27,7 +29,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
   });
 
   it("Non NFT FA tokens amount renders correctly", () => {
-    const mockContractPkh = mockContract(0);
+    const mockContract = mockContractAddress(0);
 
     const mockBalancePlayload: TokenBalancePayload = {
       pkh: "mockPkh",
@@ -35,7 +37,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
         {
           balance: "1",
           token: {
-            contract: { address: mockContractPkh },
+            contract: { address: mockContract.pkh },
             standard: "fa2",
             tokenId: "0",
             metadata: {
@@ -52,10 +54,16 @@ describe("<MultisigDecodedOperationItem/>", () => {
       <MultisigDecodedOperationItem
         operation={{
           type: "fa2",
-          recipient: mockPkh(0),
+          recipient: mockImplicitAddress(0),
           amount: "300",
-          sender: "sender",
-          contract: mockContractPkh,
+          sender: {
+            type: "implicit",
+            pkh: "sender",
+          },
+          contract: {
+            type: "contract",
+            pkh: mockContract.pkh,
+          },
           tokenId: "0",
         }}
       />
@@ -65,7 +73,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
   });
 
   it("NFT amount renders correctly", () => {
-    const mockContractPkh = mockContract(0);
+    const mockContract = mockContractAddress(0);
 
     const mockBalancePlayload: TokenBalancePayload = {
       pkh: "mockPkh",
@@ -77,7 +85,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
           },
           token: {
             id: 0,
-            contract: { address: mockContractPkh },
+            contract: { address: mockContract.pkh },
             standard: "fa2",
             tokenId: "3",
             metadata: {
@@ -95,10 +103,10 @@ describe("<MultisigDecodedOperationItem/>", () => {
       <MultisigDecodedOperationItem
         operation={{
           type: "fa2",
-          recipient: mockPkh(0),
+          recipient: mockImplicitAddress(0),
           amount: "300",
-          sender: "sender",
-          contract: mockContractPkh,
+          sender: mockImplicitAddress(0),
+          contract: mockContract,
           tokenId: "3",
         }}
       />
