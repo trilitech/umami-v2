@@ -9,7 +9,6 @@ describe("<MultisigPendingCard/>", () => {
     const pkh2 = mockImplicitAddress(2);
     render(
       <MultisigPendingCard
-        pkh={"mockPkh"}
         operation={{
           key: "1",
           rawActions: "action",
@@ -29,7 +28,6 @@ describe("<MultisigPendingCard/>", () => {
     const pkh2 = mockImplicitAddress(2);
     render(
       <MultisigPendingCard
-        pkh={"mockPkh"}
         operation={{
           key: "1",
           rawActions: "action",

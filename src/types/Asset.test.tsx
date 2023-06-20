@@ -12,6 +12,7 @@ import {
   mimeType,
   royalties,
   thumbnailUri,
+  tokenDecimal,
   tokenName,
   tokenSymbol,
 } from "../types/Asset";
@@ -164,6 +165,15 @@ describe("tokenName", () => {
     };
     expect(tokenName(fa2tokenWithName)).toEqual("some token name");
   });
+
+  test("get tokenName for NFT", () => {
+    const nft = mockNFT(0);
+
+    expect(tokenName(nft)).toEqual("Tezzardz #0");
+
+    nft.metadata = {};
+    expect(tokenName(nft)).toEqual("NFT");
+  });
 });
 
 describe("tokenSymbol", () => {
@@ -196,6 +206,14 @@ describe("tokenSymbol", () => {
       },
     };
     expect(tokenSymbol(fa2tokenWithSymbol)).toEqual("some token symbol");
+  });
+
+  test("get token symbol for NFT", () => {
+    const nft = mockNFT(0);
+    expect(tokenSymbol(nft)).toEqual("FKR0");
+
+    nft.metadata = {};
+    expect(tokenSymbol(nft)).toEqual("NFT");
   });
 });
 
@@ -344,5 +362,22 @@ describe("metadataUri", () => {
     expect(metadataUri(nft, TezosNetwork.GHOSTNET)).toEqual(
       "https://ghostnet.tzkt.io/KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0/tokens/mockId0/metadata"
     );
+  });
+});
+
+describe("tokenDecimal", () => {
+  it("returns token decimal", () => {
+    const fa2token: FA2Token = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      balance: "1",
+      tokenId: "123",
+      metadata: {
+        decimals: "3",
+      },
+    };
+    expect(tokenDecimal(fa2token)).toEqual("3");
+    fa2token.metadata = {};
+    expect(tokenDecimal(fa2token)).toEqual("4");
   });
 });
