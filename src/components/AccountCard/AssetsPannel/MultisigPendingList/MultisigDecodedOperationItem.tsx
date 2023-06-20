@@ -2,13 +2,7 @@ import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { Operation } from "../../../../multisig/types";
 import colors from "../../../../style/colors";
-import {
-  Asset,
-  formatTokenAmount,
-  tokenDecimal,
-  tokenName,
-  tokenSymbol,
-} from "../../../../types/Asset";
+import { formatTokenAmount, tokenDecimal, tokenName, tokenSymbol } from "../../../../types/Asset";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useSearchAsset } from "../../../../utils/hooks/assetsHooks";
 import { CopyableAddress } from "../../../CopyableText";
@@ -35,19 +29,6 @@ const MultisigDecodedOperationItem: React.FC<{
           </Flex>
         </Box>
       );
-  }
-};
-
-export const searchFAToken = (operation: Operation, assets: Asset[]): Asset | undefined => {
-  switch (operation.type) {
-    case "fa1.2":
-      return assets.find(asset => asset.contract === operation.contract);
-    case "fa2":
-      return assets
-        .filter(asset => asset.contract === operation.contract)
-        .find(asset => asset.type !== "fa1.2" && asset.tokenId === operation.tokenId);
-    default:
-      return undefined;
   }
 };
 
