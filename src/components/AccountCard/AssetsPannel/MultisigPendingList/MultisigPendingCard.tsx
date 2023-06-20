@@ -8,11 +8,10 @@ import { ImplicitAddress } from "../../../../types/Address";
 import MultisigOperationsDisplay from "./MultisigDecodedOperations";
 
 export const MultisigPendingCard: React.FC<{
-  pkh: string;
   operation: MultisigOperation;
   signers: ImplicitAddress[];
   threshold: number;
-}> = ({ pkh, operation, signers, threshold }) => {
+}> = ({ operation, signers, threshold }) => {
   const { isOpen, getDisclosureProps, getButtonProps } = useDisclosure({
     defaultIsOpen: true,
   });
@@ -32,7 +31,7 @@ export const MultisigPendingCard: React.FC<{
       </Flex>
       <Box p={1} {...getDisclosureProps()}>
         <Flex marginY={2} justifyContent="space-between">
-          <MultisigOperationsDisplay pkh={pkh} rawActions={operation.rawActions} />
+          <MultisigOperationsDisplay rawActions={operation.rawActions} />
           <Flex alignItems="center">
             <Heading color={colors.gray[400]} size="sm" mr={1}>
               Pending Approvals:

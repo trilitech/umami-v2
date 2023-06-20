@@ -65,6 +65,21 @@ export const useGetAccountAssetsLookup = (): ((
     }, {});
 };
 
+export const useSearchAsset = () => {
+  const allTokens = useAppSelector(s => s.assets.balances.tokens);
+  const assets = compact(Object.values(allTokens)).flatMap(tokens => tokens.map(fromToken));
+
+  return (contractAddress: string, tokenId: string | undefined) => {
+    if (!tokenId) {
+      return compact(assets).find(asset => asset.contract === contractAddress);
+    }
+
+    return compact(assets)
+      .filter(asset => asset.contract === contractAddress)
+      .find(asset => asset.type !== "fa1.2" && asset.tokenId === tokenId);
+  };
+};
+
 export const useGetAccountFA2Tokens = () => {
   const getAssets = useGetAccountAssets();
 

@@ -2,14 +2,20 @@ import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { Operation } from "../../../../multisig/types";
 import colors from "../../../../style/colors";
-import { Asset, FA12Token, FA2Token, formatTokenAmount } from "../../../../types/Asset";
+import {
+  Asset,
+  formatTokenAmount,
+  tokenDecimal,
+  tokenName,
+  tokenSymbol,
+} from "../../../../types/Asset";
 import { prettyTezAmount } from "../../../../utils/format";
+import { useSearchAsset } from "../../../../utils/hooks/assetsHooks";
 import { CopyableAddress } from "../../../CopyableText";
 
 const MultisigDecodedOperationItem: React.FC<{
   operation: Operation;
-  assets: Record<string, Asset[] | undefined>;
-}> = ({ operation, assets }) => {
+}> = ({ operation }) => {
   switch (operation.type) {
     case "delegation":
       return (
@@ -20,7 +26,7 @@ const MultisigDecodedOperationItem: React.FC<{
     default:
       return (
         <Box marginY={6}>
-          <MultisigOperationAmount operation={operation} assets={assets} />
+          <MultisigOperationAmount operation={operation} />
           <Flex alignItems="center" pl={5} m={1}>
             <Heading color={colors.gray[400]} size="sm" mr={1}>
               Send to :
@@ -32,18 +38,14 @@ const MultisigDecodedOperationItem: React.FC<{
   }
 };
 
-export const searchFAToken = (
-  operation: Operation,
-  assets: (FA2Token | FA12Token)[]
-): Asset | undefined => {
+export const searchFAToken = (operation: Operation, assets: Asset[]): Asset | undefined => {
   switch (operation.type) {
     case "fa1.2":
-      return assets.find(token => token.contract === operation.contract);
+      return assets.find(asset => asset.contract === operation.contract);
     case "fa2":
-      return assets.find(
-        token =>
-          token.contract === operation.contract && (token as FA2Token).tokenId === operation.tokenId
-      );
+      return assets
+        .filter(asset => asset.contract === operation.contract)
+        .find(asset => asset.type !== "fa1.2" && asset.tokenId === operation.tokenId);
     default:
       return undefined;
   }
@@ -51,8 +53,8 @@ export const searchFAToken = (
 
 const MultisigOperationAmount: React.FC<{
   operation: Operation;
-  assets: Record<string, Asset[] | undefined>;
-}> = ({ operation, assets }) => {
+}> = ({ operation }) => {
+  const searchAsset = useSearchAsset();
   switch (operation.type) {
     case "tez":
       return (
@@ -63,31 +65,21 @@ const MultisigOperationAmount: React.FC<{
           </Text>
         </Flex>
       );
+
     case "fa1.2":
     case "fa2": {
-      const ownedTokens = assets[operation.contract];
-
-      if (!ownedTokens) {
-        return null;
-      }
-
-      const token = searchFAToken(
-        operation,
-        ownedTokens.map(t => {
-          if (t.type === "fa1.2") {
-            return t as FA12Token;
-          }
-          return t as FA2Token;
-        })
+      const asset = searchAsset(
+        operation.contract,
+        operation.type === "fa2" ? operation.tokenId : undefined
       );
 
-      if (!token) {
+      if (!asset) {
         return null;
       }
-      const symbol = token.metadata?.symbol ?? operation.type;
-      const decimals = token.metadata?.decimals;
-      const name = token.metadata?.name;
-      const isNFT = !!token.metadata?.displayUri;
+      const symbol = tokenSymbol(asset);
+      const decimals = tokenDecimal(asset);
+      const name = tokenName(asset);
+      const isNFT = asset.type === "nft";
 
       return (
         <Flex alignItems="center" data-testid="deocded-fa-amount">
