@@ -1,6 +1,6 @@
 import { BigMapAbstraction } from "@taquito/taquito";
 import { BigNumber } from "bignumber.js";
-import { Address } from "../types/Address";
+import { Address, ImplicitAddress } from "../types/Address";
 
 import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "../utils/tezos/types";
 
@@ -28,7 +28,7 @@ export type FA2Operation = {
 
 export type Delegation = {
   type: "delegation";
-  recipient?: Address;
+  recipient: ImplicitAddress | undefined;
 };
 
 export type Operation = TezOperation | FA12Operation | FA2Operation | Delegation;

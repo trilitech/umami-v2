@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { mockDelegation, mockPkh } from "../../mocks/factories";
+import { mockDelegation, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
@@ -24,16 +24,22 @@ describe("<DelegationsView />", () => {
     store.dispatch(
       updateDelegations([
         {
-          pkh: mockPkh(1),
-          delegation: mockDelegation(1, 17890, mockPkh(4), "Baker 1", new Date("2022-10-01")),
+          pkh: mockImplicitAddress(1).pkh,
+          delegation: mockDelegation(
+            1,
+            17890,
+            mockImplicitAddress(4).pkh,
+            "Baker 1",
+            new Date("2022-10-01")
+          ),
         },
         {
-          pkh: mockPkh(2),
-          delegation: mockDelegation(2, 85000, mockPkh(5), "Baker 2"),
+          pkh: mockImplicitAddress(2).pkh,
+          delegation: mockDelegation(2, 85000, mockImplicitAddress(5).pkh, "Baker 2"),
         },
         {
-          pkh: mockPkh(3),
-          delegation: mockDelegation(3, 37490, mockPkh(6), "Baker 3"),
+          pkh: mockImplicitAddress(3).pkh,
+          delegation: mockDelegation(3, 37490, mockImplicitAddress(6).pkh, "Baker 3"),
         },
       ])
     );

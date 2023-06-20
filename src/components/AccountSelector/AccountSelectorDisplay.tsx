@@ -1,21 +1,21 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Menu, MenuButton, Button, MenuItem, MenuList } from "@chakra-ui/react";
 import React from "react";
-import { AllAccount } from "../../types/Account";
+import { Account } from "../../types/Account";
 import { AccountSmallTileDisplay } from "./AccountSmallTile";
 
-const renderAccount = (account: AllAccount) => (
-  <AccountSmallTileDisplay pkh={account.pkh} label={account.label} />
+const renderAccount = (account: Account) => (
+  <AccountSmallTileDisplay pkh={account.address.pkh} label={account.label} />
 );
 
 const AccountSelectorDisplay: React.FC<{
   isDisabled?: boolean;
   selected?: string;
-  accounts: AllAccount[];
-  onSelect: (a: AllAccount) => void;
+  accounts: Account[];
+  onSelect: (a: Account) => void;
   dataTestid?: string;
 }> = ({ isDisabled, selected, accounts, onSelect, dataTestid = "account-selector" }) => {
-  const selectedAccount = accounts.find(a => a.pkh === selected);
+  const selectedAccount = accounts.find(a => a.address.pkh === selected);
   return (
     <Menu>
       <MenuButton
@@ -32,12 +32,12 @@ const AccountSelectorDisplay: React.FC<{
       <MenuList bg="umami.gray.900" maxHeight={300} overflow="scroll">
         {accounts.map(account => (
           <MenuItem
-            value={account.pkh}
+            value={account.address.pkh}
             aria-label={account.label}
             onClick={() => {
               onSelect(account);
             }}
-            key={account.pkh}
+            key={account.address.pkh}
             minH="48px"
             w="100%"
             // TODO implement hover color that disapeared

@@ -4,10 +4,10 @@ import { Modal } from "@chakra-ui/react";
 import { TezosNetwork } from "@airgap/tezos";
 import {
   mockBaker,
-  mockContract,
+  mockContractAddress,
   mockImplicitAccount,
   mockNFT,
-  mockPkh,
+  mockImplicitAddress,
 } from "../../mocks/factories";
 import {
   dispatchMockAccounts,
@@ -110,23 +110,23 @@ describe("<SendForm />", () => {
     });
 
     test("should render first step with sender prefiled if provided", () => {
-      render(fixture(mockImplicitAccount(1).pkh));
+      render(fixture(mockImplicitAccount(1).address.pkh));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).address.pkh)
       );
     });
 
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(1).pkh));
+      render(fixture(mockImplicitAccount(1).address.pkh));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).address.pkh)
       );
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
 
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
     };
 
     const fillFormAndSimulate = async () => {
@@ -191,7 +191,7 @@ describe("<SendForm />", () => {
         });
         expect(addToBatchBtn).toBeEnabled();
       });
-      const batch = store.getState().assets.batches[mockImplicitAccount(1).pkh];
+      const batch = store.getState().assets.batches[mockImplicitAccount(1).address.pkh];
       expect(batch).toEqual({
         isSimulating: false,
         items: [
@@ -202,8 +202,8 @@ describe("<SendForm />", () => {
               value: {
                 amount: "23000000",
                 parameter: undefined,
-                recipient: mockPkh(7),
-                sender: mockPkh(1),
+                recipient: mockImplicitAddress(7).pkh,
+                sender: mockImplicitAddress(1).pkh,
               },
             },
           },
@@ -220,7 +220,7 @@ describe("<SendForm />", () => {
         expect(mockToast).toHaveBeenCalledTimes(2);
       });
 
-      const batch2 = store.getState().assets.batches[mockImplicitAccount(1).pkh];
+      const batch2 = store.getState().assets.batches[mockImplicitAccount(1).address.pkh];
       expect(batch2).toEqual({
         isSimulating: false,
         items: [
@@ -230,8 +230,8 @@ describe("<SendForm />", () => {
               type: "tez",
               value: {
                 amount: "23000000",
-                recipient: mockPkh(7),
-                sender: mockPkh(1),
+                recipient: mockImplicitAddress(7).pkh,
+                sender: mockImplicitAddress(1).pkh,
               },
             },
           },
@@ -241,8 +241,8 @@ describe("<SendForm />", () => {
               type: "tez",
               value: {
                 amount: "23000000",
-                recipient: mockPkh(7),
-                sender: mockPkh(1),
+                recipient: mockImplicitAddress(7).pkh,
+                sender: mockImplicitAddress(1).pkh,
               },
             },
           },
@@ -258,7 +258,7 @@ describe("<SendForm />", () => {
       const mockBatchItems = [{} as BatchItem];
       store.dispatch(
         assetsSlice.actions.updateBatch({
-          pkh: mockImplicitAccount(1).pkh,
+          pkh: mockImplicitAccount(1).address.pkh,
           items: mockBatchItems,
         })
       );
@@ -282,7 +282,7 @@ describe("<SendForm />", () => {
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
       });
-      expect(store.getState().assets.batches[mockImplicitAccount(1).pkh]?.items).toEqual(
+      expect(store.getState().assets.batches[mockImplicitAccount(1).address.pkh]?.items).toEqual(
         mockBatchItems
       );
     });
@@ -323,8 +323,8 @@ describe("<SendForm />", () => {
             value: {
               amount: "23000000",
               parameter: undefined,
-              recipient: mockPkh(7),
-              sender: mockPkh(1),
+              recipient: mockImplicitAddress(7).pkh,
+              sender: mockImplicitAddress(1).pkh,
             },
           },
         ],
@@ -339,7 +339,7 @@ describe("<SendForm />", () => {
     const MOCK_FEE = 3122;
     const mockFA2: FA2Token = {
       type: "fa2",
-      contract: mockContract(2),
+      contract: mockContractAddress(2).pkh,
       tokenId: MOCK_TOKEN_ID,
       balance: "14760000",
       metadata: {
@@ -370,7 +370,7 @@ describe("<SendForm />", () => {
       const estimateButton = screen.getByText(/preview/i);
       expect(estimateButton).toBeDisabled();
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 10 } });
@@ -454,7 +454,7 @@ describe("<SendForm />", () => {
 
     const mockFa1: FA12Token = {
       type: "fa1.2",
-      contract: mockContract(2),
+      contract: mockContractAddress(2).pkh,
       balance: "3",
       metadata: {
         symbol: MOCK_TOKEN_SYMBOL,
@@ -484,7 +484,7 @@ describe("<SendForm />", () => {
       const estimateButton = screen.getByText(/preview/i);
       expect(estimateButton).toBeDisabled();
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 10 } });
@@ -562,14 +562,14 @@ describe("<SendForm />", () => {
     const fillFormAndSimulate = async () => {
       render(fixture(undefined, { type: "token", data: mockNFT(1) }));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).pkh)
+        formatPkh(mockImplicitAccount(1).address.pkh)
       );
 
       // const amountInput = screen.getByLabelText(/amount/i);
       // fireEvent.change(amountInput, { target: { value: "23" } });
 
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
 
       const submitBtn = screen.getByText(/preview/i);
 
@@ -685,13 +685,13 @@ describe("<SendForm />", () => {
   });
   describe("case send tez with Google account", () => {
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(4, AccountType.SOCIAL).pkh));
+      render(fixture(mockImplicitAccount(4, AccountType.SOCIAL).address.pkh));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
 
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
 
       const submitBtn = screen.getByText(/preview/i);
 
@@ -742,13 +742,13 @@ describe("<SendForm />", () => {
 
   describe("case send tez with Ledger account", () => {
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(5, AccountType.LEDGER).pkh));
+      render(fixture(mockImplicitAccount(5, AccountType.LEDGER).address.pkh));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
 
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
 
       const submitBtn = screen.getByText(/preview/i);
 
@@ -802,7 +802,7 @@ describe("<SendForm />", () => {
       render(fixture(undefined, { type: "tez" }));
       fillAccountSelector("Multisig Account 1");
       const accountSelector = await screen.findByTestId(/proposal-signer-selector/i);
-      const expectedDefaultSigner = formatPkh(mockPkh(1));
+      const expectedDefaultSigner = formatPkh(mockImplicitAddress(1).pkh);
       expect(accountSelector).toHaveTextContent(expectedDefaultSigner);
       expect(accountSelector).toBeDisabled();
     });
@@ -822,7 +822,7 @@ describe("<SendForm />", () => {
       fireEvent.change(amountInput, { target: { value: 23 } });
 
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
 
       const submitBtn = screen.getByText(/preview/i);
 
@@ -876,7 +876,7 @@ describe("<SendForm />", () => {
       fillAccountSelector("Multisig Account 1");
 
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
 
       const submitBtn = screen.getByText(/preview/i);
 
@@ -918,7 +918,7 @@ describe("<SendForm />", () => {
 
       const mockFa1: FA12Token = {
         type: "fa1.2",
-        contract: mockContract(2),
+        contract: mockContractAddress(2).pkh,
         balance: "3",
         metadata: {
           symbol: MOCK_TOKEN_SYMBOL,
@@ -942,7 +942,7 @@ describe("<SendForm />", () => {
       fillAccountSelector("Multisig Account 1");
 
       const recipientInput = screen.getByLabelText(/to/i);
-      fireEvent.change(recipientInput, { target: { value: mockPkh(7) } });
+      fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 10 } });

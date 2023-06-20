@@ -1,6 +1,6 @@
 import { InMemorySigner } from "@taquito/signer";
 import axios from "axios";
-import { mockPkh } from "../../mocks/factories";
+import { mockImplicitAddress } from "../../mocks/factories";
 import { tzktUrls } from "./consts";
 import { addressExists, getPkAndPkhFromSk } from "./helpers";
 jest.mock("@taquito/signer");
@@ -23,8 +23,10 @@ describe("tezos utils helpers", () => {
       },
     };
     mockedAxios.get.mockResolvedValue(mockResponse);
-    const result = await addressExists(mockPkh(0));
-    expect(mockedAxios.get).toBeCalledWith(`${tzktUrls.mainnet}/v1/accounts/${mockPkh(0)}`);
+    const result = await addressExists(mockImplicitAddress(0).pkh);
+    expect(mockedAxios.get).toBeCalledWith(
+      `${tzktUrls.mainnet}/v1/accounts/${mockImplicitAddress(0).pkh}`
+    );
     expect(result).toEqual(true);
   });
 
@@ -35,8 +37,10 @@ describe("tezos utils helpers", () => {
       },
     };
     mockedAxios.get.mockResolvedValue(mockResponse);
-    const result = await addressExists(mockPkh(0));
-    expect(mockedAxios.get).toBeCalledWith(`${tzktUrls.mainnet}/v1/accounts/${mockPkh(0)}`);
+    const result = await addressExists(mockImplicitAddress(0).pkh);
+    expect(mockedAxios.get).toBeCalledWith(
+      `${tzktUrls.mainnet}/v1/accounts/${mockImplicitAddress(0).pkh}`
+    );
     expect(result).toEqual(false);
   });
 

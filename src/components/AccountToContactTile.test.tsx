@@ -38,7 +38,7 @@ describe("ContactTile", () => {
 describe("AccountOrContactTile", () => {
   it("displays account label if the address is in accounts", () => {
     const account = mockImplicitAccount(0);
-    const pkh = account.pkh;
+    const pkh = account.address.pkh;
     store.dispatch(add(account));
     render(AccountOrContactTileFixture(pkh));
     expect(screen.queryByTestId("account-or-contact-tile")).toHaveTextContent(account.label);

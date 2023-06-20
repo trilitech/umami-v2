@@ -22,6 +22,7 @@ import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
+import { isAddressValid } from "../../../types/Address";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
 import {
@@ -30,7 +31,6 @@ import {
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
-import { addressIsValid } from "../../../utils/tezos/pureTezosUtils";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay";
@@ -85,7 +85,7 @@ export const DelegateForm = ({
                   isDisabled={undelegate || disabled}
                   selected={value}
                   onSelect={a => {
-                    onChange(a.pkh);
+                    onChange(a.address.pkh);
                   }}
                 />
               )}
@@ -190,7 +190,7 @@ const useGetDefaultProposalSigner = () => {
     if (initialSenderAccount && initialSenderAccount.type === AccountType.MULTISIG) {
       const signers = getSigners(initialSenderAccount);
 
-      return signers.length === 0 ? undefined : signers[0].pkh;
+      return signers.length === 0 ? undefined : signers[0].address.pkh;
     }
   };
 };
@@ -220,7 +220,6 @@ export const SendTezOrNFTForm = ({
   const multisigAccounts = useMultisigAccounts();
   const accountIsMultisig = useAccountIsMultisig();
   const getDefaultSigner = useGetDefaultProposalSigner();
-  const getAccount = useGetOwnedAccount();
 
   const initialProposalSigner = (sender && getDefaultSigner(sender)) || undefined;
   const isNFT = token?.type === "nft";
@@ -246,7 +245,9 @@ export const SendTezOrNFTForm = ({
   const senderFormValue = getValues().sender;
 
   const multisigSender =
-    senderFormValue !== "" ? multisigAccounts.find(a => a.pkh === senderFormValue) : undefined;
+    senderFormValue !== ""
+      ? multisigAccounts.find(a => a.address.pkh === senderFormValue)
+      : undefined;
 
   const batchIsSimulating = senderFormValue !== "" && getBatchIsSimulating(senderFormValue);
 
@@ -270,14 +271,13 @@ export const SendTezOrNFTForm = ({
                 <ConnectedAccountSelector
                   isDisabled={isNFT || simulating || disabled}
                   selected={value}
-                  onSelect={a => {
-                    onChange(a.pkh);
-                    const account = getAccount(a.pkh);
+                  onSelect={account => {
+                    onChange(account.address.pkh);
 
                     // This is needed to update the signer if a multisig account is selected
                     const values = getValues();
                     if (account.type === AccountType.MULTISIG) {
-                      const defaultSigner = getDefaultSigner(account.pkh);
+                      const defaultSigner = getDefaultSigner(account.address.pkh);
                       reset({ ...values, proposalSigner: defaultSigner });
                     } else {
                       reset({ ...values, proposalSigner: undefined });
@@ -308,7 +308,7 @@ export const SendTezOrNFTForm = ({
             <FormLabel>To</FormLabel>
             <Controller
               rules={{
-                validate: val => addressIsValid(val) || "Invalid address or contact",
+                validate: val => isAddressValid(val) || "Invalid address or contact",
               }}
               control={control}
               name="recipient"
@@ -550,7 +550,7 @@ const ProposalSigners = ({
       isDisabled={signers.length === 1}
       selected={selected}
       accounts={signers}
-      onSelect={a => onSelect(a.pkh)}
+      onSelect={a => onSelect(a.address.pkh)}
       dataTestid="proposal-signer-selector"
     />
   );

@@ -4,7 +4,7 @@ import {
   OperationRequestOutput,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { mockPkh } from "./factories";
+import { mockImplicitAddress } from "./factories";
 
 export const objectOperationRequest: OperationRequestOutput = {
   appMetadata: {
@@ -89,7 +89,7 @@ export const objectOperationBatchRequest: OperationRequestOutput = {
     {
       kind: TezosOperationType.TRANSACTION,
       amount: "8000000",
-      destination: mockPkh(6),
+      destination: mockImplicitAddress(6).pkh,
     },
   ],
   sourceAddress: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",

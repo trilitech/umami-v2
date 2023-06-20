@@ -126,7 +126,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
               <ConnectedAccountSelector
                 selected={value}
                 onSelect={account => {
-                  onChange(account.pkh);
+                  onChange(account.address.pkh);
                 }}
               />
             )}

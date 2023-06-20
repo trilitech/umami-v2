@@ -1,6 +1,6 @@
 import { tzBtsc, hedgeHoge } from "../mocks/fa12Tokens";
 import { uUSD } from "../mocks/fa2Tokens";
-import { mockNFT, mockPkh } from "../mocks/factories";
+import { mockNFT, mockImplicitAddress } from "../mocks/factories";
 import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
 import {
   artifactUri,
@@ -260,15 +260,15 @@ describe("royalties", () => {
     nft.metadata.royalties = {
       decimals: "4",
       shares: {
-        [mockPkh(0)]: "5",
-        [mockPkh(2)]: "4000",
-        [mockPkh(1)]: "200",
+        [mockImplicitAddress(0).pkh]: "5",
+        [mockImplicitAddress(2).pkh]: "4000",
+        [mockImplicitAddress(1).pkh]: "200",
       },
     };
     expect(royalties(nft)).toEqual([
-      { address: mockPkh(2), share: 40.0 },
-      { address: mockPkh(1), share: 2.0 },
-      { address: mockPkh(0), share: 0.05 },
+      { address: mockImplicitAddress(2).pkh, share: 40.0 },
+      { address: mockImplicitAddress(1).pkh, share: 2.0 },
+      { address: mockImplicitAddress(0).pkh, share: 0.05 },
     ]);
   });
 });

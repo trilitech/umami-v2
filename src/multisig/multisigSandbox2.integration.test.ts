@@ -1,5 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { makeDefaultDevSigner } from "../mocks/devSignerKeys";
+import { parseContractPkh, parseImplicitPkh } from "../types/Address";
 import { SignerType } from "../types/SignerConfig";
 import { tezToMutez } from "../utils/format";
 import { getPendingOperations } from "../utils/multisig/fetch";
@@ -24,10 +25,10 @@ const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 // singers: makeDevDefaultSigner(0), makeDevDefaultSigner(1)
 // Pre funded with FA1.2 token (KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe).
 // KL2 FA2 token (KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ).
-const MULTISIG_GHOSTNET_1 = "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8";
+const MULTISIG_GHOSTNET_1 = parseContractPkh("KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8");
 const MULTISIG_GHOSTNET_1_PENDING_OPS_BIG_MAP = 238447;
-const FA12_TOKEN_CONTRACT = "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe";
-const FA2_KL2_CONTRACT = "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ";
+const FA12_TOKEN_CONTRACT = parseContractPkh("KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe");
+const FA2_KL2_CONTRACT = parseContractPkh("KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ");
 
 describe("multisig Sandbox", () => {
   test.skip("propose, approve and execute batch tez/FA transfers", async () => {
@@ -36,17 +37,17 @@ describe("multisig Sandbox", () => {
     const devAccount0 = makeDefaultDevSigner(0);
     const devAccount1 = makeDefaultDevSigner(1);
     const devAccount2 = makeDefaultDevSigner(2);
-    const devAccount2Pkh = await devAccount2.publicKeyHash();
+    const devAccount2Address = parseImplicitPkh(await devAccount2.publicKeyHash());
     const devAccount2Sk = await devAccount2.secretKey();
 
     const { tez: preDevAccount2TezBalance } = await getBalancePayload(
-      devAccount2Pkh,
+      devAccount2Address.pkh,
       TezosNetwork.GHOSTNET
     );
 
     // First, devAccount2 send tez to MULTISIG_GHOSTNET_1
     const { fee } = await transferMutez(
-      MULTISIG_GHOSTNET_1,
+      MULTISIG_GHOSTNET_1.pkh,
       tezToMutez(TEZ_TO_SEND.toString()).toNumber(),
       {
         type: SignerType.SK,
@@ -62,20 +63,20 @@ describe("multisig Sandbox", () => {
       [
         {
           type: "tez",
-          recipient: devAccount2Pkh,
+          recipient: devAccount2Address,
           amount: tezToMutez(TEZ_TO_SEND.toString()).toString(),
         },
         {
           type: "fa1.2",
           sender: MULTISIG_GHOSTNET_1,
-          recipient: devAccount2Pkh,
+          recipient: devAccount2Address,
           contract: FA12_TOKEN_CONTRACT,
           amount: "2",
         },
         {
           type: "fa2",
           sender: MULTISIG_GHOSTNET_1,
-          recipient: devAccount2Pkh,
+          recipient: devAccount2Address,
           contract: FA2_KL2_CONTRACT,
           amount: "3",
           tokenId: "0",
@@ -173,7 +174,7 @@ describe("multisig Sandbox", () => {
     await sleep(25000);
 
     const { tez: postDevAccount2TezBalance } = await getBalancePayload(
-      devAccount2Pkh,
+      devAccount2Address.pkh,
       TezosNetwork.GHOSTNET
     );
 

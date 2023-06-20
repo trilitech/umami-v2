@@ -2,10 +2,10 @@ import { Box, Divider, Input, ListItem, Text, UnorderedList } from "@chakra-ui/r
 import React, { useState } from "react";
 import { Noop } from "react-hook-form";
 import colors from "../../style/colors";
+import { isAddressValid } from "../../types/Address";
 import { Contact } from "../../types/Contact";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { useAppSelector } from "../../utils/store/hooks";
-import { addressIsValid } from "../../utils/tezos/pureTezosUtils";
 import { Identicon } from "../Identicon";
 
 type BaseProps = {
@@ -113,7 +113,7 @@ export const RecipientAutoCompleteDisplay: React.FC<BaseProps & { contacts: Cont
 
     setValue(v);
 
-    if (addressIsValid(v)) {
+    if (isAddressValid(v)) {
       onValidPkh(v);
       return;
     }
@@ -155,9 +155,9 @@ export const RecipientAutoCompleteDisplay: React.FC<BaseProps & { contacts: Cont
 export const RecipentAutoComplete: React.FC<BaseProps> = props => {
   const contacts = Object.values(useAppSelector(s => s.contacts));
 
-  const accounts = useAllAccounts().map(a => ({
-    name: a.label,
-    pkh: a.pkh,
+  const accounts = useAllAccounts().map(account => ({
+    name: account.label,
+    pkh: account.address.pkh,
   }));
 
   return <RecipientAutoCompleteDisplay {...props} contacts={contacts.concat(accounts)} />;

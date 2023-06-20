@@ -1,9 +1,10 @@
 import { MichelsonV1Expression } from "@taquito/rpc";
+import { Address, ContractAddress } from "../../types/Address";
 
 export type FA2TransferMethodArgs = {
-  sender: string;
-  recipient: string;
-  contract: string;
+  sender: Address;
+  recipient: Address;
+  contract: ContractAddress;
   tokenId: string;
   amount: string;
 };
@@ -11,7 +12,7 @@ export type FA2TransferMethodArgs = {
 export type FA12TransferMethodArgs = Omit<FA2TransferMethodArgs, "tokenId">;
 
 export type MultisigProposeMethodArgs = {
-  contract: string;
+  contract: ContractAddress;
   lambdaActions: MichelsonV1Expression;
 };
 
@@ -19,7 +20,7 @@ type ApproveOrExecute = "approve" | "execute";
 
 export type MultisigApproveOrExecuteMethodArgs = {
   type: ApproveOrExecute;
-  contract: string;
+  contract: ContractAddress;
   operationId: string;
 };
 

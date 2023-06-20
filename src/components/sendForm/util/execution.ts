@@ -1,5 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { makeBatchLambda } from "../../../multisig/multisigUtils";
+import { parseContractPkh } from "../../../types/Address";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { proposeMultisigLambda, submitBatch } from "../../../utils/tezos";
 import { FormOperations, OperationValue } from "../types";
@@ -10,7 +11,7 @@ const makeProposeOperation = async (operations: OperationValue[], config: Signer
     operations.map(toLambdaOperation),
     TezosNetwork.GHOSTNET
   );
-  const contract = operations[0].value.sender;
+  const contract = parseContractPkh(operations[0].value.sender);
 
   return proposeMultisigLambda({ contract, lambdaActions }, config);
 };

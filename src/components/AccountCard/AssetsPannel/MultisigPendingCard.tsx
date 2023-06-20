@@ -2,12 +2,13 @@ import { Box, Flex, Text, Heading, Icon, useDisclosure } from "@chakra-ui/react"
 import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import colors from "../../../style/colors";
-import { MultisigOperation, WalletAccountPkh } from "../../../utils/multisig/types";
+import { ImplicitAddress } from "../../../types/Address";
+import { MultisigOperation } from "../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
 
 export const MultisigPendingCard: React.FC<{
   operation: MultisigOperation;
-  signers: WalletAccountPkh[];
+  signers: ImplicitAddress[];
   threshold: number;
 }> = ({ operation, signers, threshold }) => {
   const { isOpen, getDisclosureProps, getButtonProps } = useDisclosure({
@@ -45,7 +46,7 @@ export const MultisigPendingCard: React.FC<{
         <Box marginY={5}>
           {signers.map(signer => (
             <MultisigSignerTile
-              key={signer}
+              key={signer.pkh}
               signer={signer}
               approvers={operation.approvals}
               pendingApprovals={pendingApprovals}

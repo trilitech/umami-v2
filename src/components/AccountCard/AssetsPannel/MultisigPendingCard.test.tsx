@@ -1,12 +1,12 @@
-import { mockPkh } from "../../../mocks/factories";
+import { mockImplicitAddress } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 import MultisigPendingCard from "./MultisigPendingCard";
 
 describe("<MultisigPendingCard/>", () => {
   it("displays the correct number of pending approvals", () => {
-    const pkh0 = mockPkh(0);
-    const pkh1 = mockPkh(1);
-    const pkh2 = mockPkh(2);
+    const pkh0 = mockImplicitAddress(0);
+    const pkh1 = mockImplicitAddress(1);
+    const pkh2 = mockImplicitAddress(2);
     render(
       <MultisigPendingCard
         operation={{
@@ -23,9 +23,9 @@ describe("<MultisigPendingCard/>", () => {
   });
 
   it("displays 0 for pending approvals if there are more approvers than the threshold", () => {
-    const pkh0 = mockPkh(0);
-    const pkh1 = mockPkh(1);
-    const pkh2 = mockPkh(2);
+    const pkh0 = mockImplicitAddress(0);
+    const pkh1 = mockImplicitAddress(1);
+    const pkh2 = mockImplicitAddress(2);
     render(
       <MultisigPendingCard
         operation={{
