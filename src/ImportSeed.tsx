@@ -28,7 +28,7 @@ function ImportSeed() {
             <MakiLogo size="48px" />
             <Heading size="3xl">Welcome to Umami</Heading>
             <Divider maxWidth="400px" />
-            <Text color="umami.gray.450">A powerfull Tezos wallet</Text>
+            <Text color="umami.gray.450">A powerful Tezos wallet</Text>
             <Button width="340px" onClick={onOpen} bg="umami.blue">
               Get started
             </Button>
