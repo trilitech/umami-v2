@@ -10,14 +10,11 @@ import {
   ModalFooter,
   ModalHeader,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
-import { useState } from "react";
 import { AccountType } from "../../../types/Account";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
-import { useClearBatch } from "../../../utils/hooks/assetsHooks";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
@@ -25,7 +22,6 @@ import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import SignButton from "../components/SignButton";
 import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation, FormOperations, OperationValue } from "../types";
-import { makeTransfer } from "../util/execution";
 import { BatchRecap } from "./BatchRecap";
 
 const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
@@ -77,45 +73,18 @@ const useGetImplicitAccount = () => {
   };
 };
 
-export const RecapDisplay: React.FC<{
+export const SubmitStep: React.FC<{
   network: TezosNetwork;
   recap: EstimatedOperation;
-  onSuccess: (hash: string) => void;
   isBatch: boolean;
-}> = ({ recap: { fee, operations }, network, onSuccess: onSucces, isBatch }) => {
+  onSubmit: (signerConfig: SignerConfig) => void;
+  isLoading: boolean;
+}> = ({ recap: { fee, operations }, network, isBatch, onSubmit, isLoading }) => {
   const feeNum = new BigNumber(fee);
   const getAccount = useGetImplicitAccount();
 
-  const toast = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-  const clearBatch = useClearBatch();
   const transfer = operations.content;
-
   const signerAccount = getAccount(getSigner(operations));
-
-  const handleConfigSubmit = async (config: SignerConfig) => {
-    setIsLoading(true);
-    if (signerAccount.type === AccountType.LEDGER) {
-      toast({
-        title: "Request sent to Ledger",
-        description: "Open the Tezos app on your Ledger and accept to sign the request",
-      });
-    }
-
-    try {
-      const result = await makeTransfer(operations, config);
-      if (isBatch) {
-        // TODO this will have to me moved in a thunk
-        clearBatch(signerAccount.address.pkh);
-      }
-      onSucces(result.hash);
-      toast({ title: "Success", description: result.hash });
-    } catch (error: any) {
-      toast({ title: "Error", description: error.message });
-    }
-
-    setIsLoading(false);
-  };
 
   const total = feeNum.plus(getBatchSubtotal(transfer));
 
@@ -147,7 +116,7 @@ export const RecapDisplay: React.FC<{
           <SignButton
             isLoading={isLoading}
             network={network}
-            onSubmit={handleConfigSubmit}
+            onSubmit={onSubmit}
             signerAccount={signerAccount}
           />
         </ModalFooter>
