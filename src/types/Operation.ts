@@ -9,7 +9,8 @@ export type TezTransfer = tzktApi.TransactionOperation;
 
 // OperationDisplay is nicely formated for display in tables
 export type OperationDisplay = {
-  type?: string;
+  id: number;
+  type: "transaction" | "delegation";
   amount: {
     prettyDisplay: string;
     url?: string;

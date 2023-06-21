@@ -12,6 +12,7 @@ export const mockTzktTezTransfer = (
   level = MOCK_LEVEL
 ): TezTransfer => {
   return {
+    id: 12345,
     type: "transaction",
     sender: { address: sender },
     target: { address: recipient },
@@ -19,5 +20,6 @@ export const mockTzktTezTransfer = (
     amount,
     hash,
     level,
+    transactionId: 54321,
   } as TezTransfer;
 };

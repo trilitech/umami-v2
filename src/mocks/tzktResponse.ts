@@ -138,7 +138,7 @@ export const nft: Token = {
   lastTime: "2022-06-15T14:05:25Z",
 };
 
-export const getTransacionsResult: TezTransfer[] = [
+export const getTransactionsResult: TezTransfer[] = [
   {
     type: "transaction",
     id: 109810172297216,
