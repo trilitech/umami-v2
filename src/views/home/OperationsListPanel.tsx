@@ -1,15 +1,10 @@
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
-import { compact } from "lodash";
 import { Link } from "react-router-dom";
-import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
-import { sortOperationsDisplaysBytDate } from "../operations/operationsUtils";
+import { useGetAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import { OperationListDisplay } from "./OpertionList/OperationListDisplay";
 
 export const OperationsListPanel = () => {
-  const operations = useAllOperationDisplays();
-  const operationDisplays = sortOperationsDisplaysBytDate(
-    compact(Object.values(operations).flat())
-  );
+  const operationDisplays = useGetAllOperationDisplays();
   return (
     <Tabs
       height="100%"

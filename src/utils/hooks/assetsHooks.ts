@@ -1,7 +1,10 @@
 import { compact } from "lodash";
 import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
-import { getOperationDisplays } from "../../views/operations/operationsUtils";
+import {
+  getOperationDisplays,
+  sortOperationsDisplaysBytDate,
+} from "../../views/operations/operationsUtils";
 import { objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -111,7 +114,7 @@ export const useGetAccountNFTs = () => {
 
 export const useAllTransfers = () => useAppSelector(s => s.assets.transfers);
 
-export const useAllOperationDisplays = () => {
+const useAllOperationDisplaysMap = () => {
   const { tez, tokens } = useAllTransfers();
   const delegations = useAllDelegations();
 
@@ -134,10 +137,17 @@ export const useAllOperationDisplays = () => {
 };
 
 export const useGetAccountOperationDisplays = () => {
-  const allOperationDisplays = useAllOperationDisplays();
+  const allOperationDisplays = useAllOperationDisplaysMap();
   return (pkh: string) => {
     return allOperationDisplays[pkh] || [];
   };
+};
+
+export const useGetAllOperationDisplays = () => {
+  const allOperations = useAllOperationDisplaysMap();
+  const allOperationsList = compact(Object.values(allOperations)).flat();
+
+  return sortOperationsDisplaysBytDate(allOperationsList);
 };
 
 export const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);
