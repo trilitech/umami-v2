@@ -26,6 +26,7 @@ import { useAllOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/
 import { getAmountColor, getKey, sortOperationsDisplaysBytDate } from "./operationsUtils";
 import { Link } from "react-router-dom";
 import NoItems from "../../components/NoItems";
+import { compact } from "lodash";
 
 export const FilterController: React.FC = () => {
   return (
@@ -118,7 +119,7 @@ export const OperationsDataTable: React.FC<{
 
 const OperationsView = () => {
   const allOperations = useAllOperationDisplays();
-  const allOperationsList = Object.values(allOperations).flat();
+  const allOperationsList = compact(Object.values(allOperations)).flat();
 
   return (
     <Flex direction="column" height="100%">

@@ -25,6 +25,7 @@ export const OperationTile: React.FC<{
       ml={4}
       borderBottom={`1px solid ${colors.gray[800]}`}
       alignItems="center"
+      data-testid="operation-tile"
     >
       <Icon
         alignSelf="flex-start"

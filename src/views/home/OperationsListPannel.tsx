@@ -1,16 +1,14 @@
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
+import { compact } from "lodash";
 import { Link } from "react-router-dom";
-import NestedScroll from "../../components/NestedScroll";
-import { OperationTile } from "../../components/OperationTile";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
-import { getKey, sortOperationsDisplaysBytDate } from "../operations/operationsUtils";
-export const OperationsList = () => {
+import { sortOperationsDisplaysBytDate } from "../operations/operationsUtils";
+import { OperationListDisplay } from "./OpertionList/OperationListDisplay";
+export const OperationsListPannel = () => {
   const operations = useAllOperationDisplays();
-  const operationList = sortOperationsDisplaysBytDate(Object.values(operations).flat());
-
-  const operationEls = operationList.slice(0, 20).map(op => {
-    return <OperationTile key={getKey(op)} operation={op} />;
-  });
+  const operationDisplays = sortOperationsDisplaysBytDate(
+    compact(Object.values(operations).flat())
+  );
   return (
     <Tabs
       height="100%"
@@ -29,8 +27,7 @@ export const OperationsList = () => {
           View All
         </Link>
       </TabList>
-
-      <NestedScroll>{operationEls}</NestedScroll>
+      <OperationListDisplay operations={operationDisplays} />
     </Tabs>
   );
 };

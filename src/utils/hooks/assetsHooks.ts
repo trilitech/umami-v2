@@ -118,7 +118,7 @@ export const useAllOperationDisplays = () => {
   const accounts = useImplicitAccounts();
   const network = useSelectedNetwork();
 
-  const result: Record<string, OperationDisplay[]> = {};
+  const result: Record<string, OperationDisplay[] | undefined> = {};
 
   accounts.forEach(({ address }) => {
     result[address.pkh] = getOperationDisplays(
@@ -131,6 +131,13 @@ export const useAllOperationDisplays = () => {
   });
 
   return result;
+};
+
+export const useGetAccountOperationDisplays = () => {
+  const allOperationDisplays = useAllOperationDisplays();
+  return (pkh: string) => {
+    return allOperationDisplays[pkh] || [];
+  };
 };
 
 export const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);

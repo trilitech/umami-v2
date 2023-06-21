@@ -5,7 +5,7 @@ import { AssetsPannel } from "./AssetsPannel";
 describe("<AssetPannel/>", () => {
   it("should display pending tabs for multisig account", () => {
     const multisigAccount = mockMultisigAccount(0);
-    render(<AssetsPannel account={multisigAccount} nfts={[]} tokens={[]} />);
+    render(<AssetsPannel account={multisigAccount} nfts={[]} tokens={[]} operationDisplays={[]} />);
 
     expect(screen.getByTestId("account-card-pending-tab")).toBeInTheDocument();
     expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();

@@ -3,7 +3,7 @@ import { TopBar } from "../../components/TopBar";
 import AccountListWithDrawer from "./AccountListWithDrawer";
 
 import { NftList } from "./NftList";
-import { OperationsList } from "./OperationsList";
+import { OperationsListPannel } from "./OperationsListPannel";
 
 export default function HomeView() {
   return (
@@ -15,7 +15,7 @@ export default function HomeView() {
         </Box>
         <Flex direction="column" flex={1} minHeight={1} ml={2}>
           <Box flex={1} overflow="hidden" mb={2} borderRadius={4}>
-            <OperationsList />
+            <OperationsListPannel />
           </Box>
           <Box flex={1} overflow="hidden" mb={2} borderRadius={4}>
             <NftList />
