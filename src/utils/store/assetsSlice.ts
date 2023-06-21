@@ -120,25 +120,27 @@ const assetsSlice = createSlice({
 
       state.transfers.tokens = newTezTransfers;
     },
-    updateAssets: (
-      state,
-      { payload }: { type: string; payload: TezBalancePayload[] | TokenBalancePayload[] }
-    ) => {
-      const tezBalancePayloads = payload;
 
-      tezBalancePayloads.forEach(payload => {
-        if ("tez" in payload) {
-          const existing = state.balances.tez;
-          const newTezBalances = { ...existing, [payload.pkh]: payload.tez };
-          state.balances.tez = newTezBalances;
-          return;
-        }
+    updateTezBalance: (state, { payload }: { type: string; payload: TezBalancePayload[] }) => {
+      const newTezBalances: Record<string, string | undefined> = {};
 
-        const existing = state.balances.tokens;
-        const newTokens = { ...existing, [payload.pkh]: compact(payload.tokens.map(fromToken)) };
-        state.balances.tokens = newTokens;
+      payload.forEach(tezBalance => {
+        newTezBalances[tezBalance.pkh] = tezBalance.tez;
       });
+
+      state.balances.tez = newTezBalances;
     },
+
+    updateTokenBalance: (state, { payload }: { type: string; payload: TokenBalancePayload[] }) => {
+      const newTokenBalances: Record<string, Asset[] | undefined> = {};
+
+      payload.forEach(tokenBalance => {
+        newTokenBalances[tokenBalance.pkh] = compact(tokenBalance.tokens.map(fromToken));
+      });
+
+      state.balances.tokens = newTokenBalances;
+    },
+
     updateDelegations: (state, { payload }: { type: string; payload: DelegationPayload[] }) => {
       //TODO: store a list of delegations for the operation views
       payload.forEach(p => {

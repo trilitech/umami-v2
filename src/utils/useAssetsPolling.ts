@@ -81,7 +81,7 @@ export const useAssetsPolling = () => {
     queryFn: async () => {
       const balances = await Promise.all(pkhs.map(pkh => getBalancePayload(pkh, network)));
 
-      dispatch(assetsActions.updateAssets(balances));
+      dispatch(assetsActions.updateTezBalance(balances));
     },
 
     refetchInterval: REFRESH_RATE,
@@ -93,7 +93,7 @@ export const useAssetsPolling = () => {
         [...multisigPkhs, ...pkhs].map(pkh => getTokensPayload(pkh, network))
       );
 
-      dispatch(assetsActions.updateAssets(tokens));
+      dispatch(assetsActions.updateTokenBalance(tokens));
     },
 
     refetchInterval: REFRESH_RATE,

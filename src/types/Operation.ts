@@ -1,10 +1,6 @@
 import * as tzktApi from "@tzkt/sdk-api";
 import { tokenInfo } from "./Token";
 
-import { IAirGapTransaction } from "@airgap/coinlib-core/interfaces/IAirGapTransaction";
-
-export type Operation = Omit<IAirGapTransaction, "protocolIdentifier" | "network">[];
-
 export type TokenTransfer = Omit<tzktApi.TokenTransfer, "token"> & {
   token?: null | tokenInfo;
 };
