@@ -208,7 +208,7 @@ const getDelegationOperationDisplay = (
   };
 };
 
-export const sortOperationsDisplaysBytDate = (ops: OperationDisplay[]) => {
+export const sortOperationsByTimestamp = (ops: OperationDisplay[]) => {
   return [...ops].sort((a, b) => {
     return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
   });
@@ -221,7 +221,7 @@ export const getOperationDisplays = (
   forAdress: string,
   network: TezosNetwork = TezosNetwork.MAINNET
 ) => {
-  return sortOperationsDisplaysBytDate(
+  return sortOperationsByTimestamp(
     compact([
       ...tezTransfers.map(t => getTezOperationDisplay(t, forAdress, network)),
       ...tokenTransfers.map(t => getTokenOperationDisplay(t, forAdress, network)),

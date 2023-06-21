@@ -25,7 +25,7 @@ import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
 import { useGetAllOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
-import { getAmountColor, getKey, sortOperationsDisplaysBytDate } from "./operationsUtils";
+import { getAmountColor, getKey, sortOperationsByTimestamp } from "./operationsUtils";
 
 export const FilterController: React.FC = () => {
   return (
@@ -41,7 +41,7 @@ export const OperationsDataTable: React.FC<{
   operations: OperationDisplay[];
 }> = ({ operations }) => {
   const operationList = Object.values(operations).flat();
-  const sorted = sortOperationsDisplaysBytDate(operationList);
+  const sorted = sortOperationsByTimestamp(operationList);
 
   const isBlockFinalised = useIsBlockFinalised();
   return (
