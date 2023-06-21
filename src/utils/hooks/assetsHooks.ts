@@ -1,18 +1,17 @@
+import { BigNumber } from "bignumber.js";
 import { compact } from "lodash";
+import { MultisigAccount } from "../../types/Account";
 import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
-import { OperationDisplay } from "../../types/Operation";
 import {
   getOperationDisplays,
   sortOperationsByTimestamp,
 } from "../../views/operations/operationsUtils";
+import { mutezToTez } from "../format";
 import { objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { useImplicitAccounts } from "./accountHooks";
+import { useAllAccounts, useImplicitAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
-import { BigNumber } from "bignumber.js";
-import { mutezToTez } from "../format";
-import { MultisigAccount } from "../../types/Account";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.assets.network);
@@ -114,40 +113,23 @@ export const useGetAccountNFTs = () => {
 
 export const useAllTransfers = () => useAppSelector(s => s.assets.transfers);
 
-const useAllOperationDisplaysMap = () => {
+export const useGetAccountOperationDisplays = () => {
   const { tez, tokens } = useAllTransfers();
   const delegations = useAllDelegations();
 
-  const accounts = useImplicitAccounts();
   const network = useSelectedNetwork();
 
-  const result: Record<string, OperationDisplay[] | undefined> = {};
-
-  accounts.forEach(({ address }) => {
-    result[address.pkh] = getOperationDisplays(
-      tez[address.pkh],
-      tokens[address.pkh],
-      delegations[address.pkh],
-      address.pkh,
-      network
-    );
-  });
-
-  return result;
-};
-
-export const useGetAccountOperationDisplays = () => {
-  const allOperationDisplays = useAllOperationDisplaysMap();
   return (pkh: string) => {
-    return allOperationDisplays[pkh] || [];
+    return getOperationDisplays(tez[pkh], tokens[pkh], delegations[pkh], pkh, network);
   };
 };
 
 export const useGetAllOperationDisplays = () => {
-  const allOperations = useAllOperationDisplaysMap();
-  const allOperationsList = compact(Object.values(allOperations)).flat();
+  const getOperations = useGetAccountOperationDisplays();
+  const accounts = useAllAccounts();
+  const allOperations = accounts.map(a => getOperations(a.address.pkh)).flat();
 
-  return sortOperationsByTimestamp(allOperationsList);
+  return sortOperationsByTimestamp(allOperations);
 };
 
 export const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);
