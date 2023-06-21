@@ -17,16 +17,15 @@ import { BsArrowDownUp } from "react-icons/bs";
 import { MdOutlinePending } from "react-icons/md";
 import { RxCheckCircled } from "react-icons/rx";
 import { TbFilter } from "react-icons/tb";
+import { Link } from "react-router-dom";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import NoItems from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
-import { useAllOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
+import { useGetAllOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
 import { getAmountColor, getKey, sortOperationsDisplaysBytDate } from "./operationsUtils";
-import { Link } from "react-router-dom";
-import NoItems from "../../components/NoItems";
-import { compact } from "lodash";
 
 export const FilterController: React.FC = () => {
   return (
@@ -118,9 +117,7 @@ export const OperationsDataTable: React.FC<{
 };
 
 const OperationsView = () => {
-  const allOperations = useAllOperationDisplays();
-  const allOperationsList = compact(Object.values(allOperations)).flat();
-
+  const allOperationsList = useGetAllOperationDisplays();
   return (
     <Flex direction="column" height="100%">
       {allOperationsList.length > 0 ? (
