@@ -1,4 +1,4 @@
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, UnorderedList } from "@chakra-ui/react";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import React from "react";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
@@ -44,13 +44,9 @@ export const AssetsPannel: React.FC<{
           </TabPanel>
         )}
         <TabPanel data-testid="account-card-tokens-tab">
-          <Box minHeight="10px" overflow="scroll" mt={4}>
-            <UnorderedList>
-              {tokens.map(t => {
-                return <TokenTile token={t} key={t.contract + t.balance} />;
-              })}
-            </UnorderedList>
-          </Box>
+          {tokens.map(t => {
+            return <TokenTile token={t} key={t.contract + t.balance} />;
+          })}
         </TabPanel>
 
         <TabPanel data-testid="account-card-nfts-tab" height="100%" overflow="hidden">
