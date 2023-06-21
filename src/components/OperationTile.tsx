@@ -20,9 +20,6 @@ export const OperationTile: React.FC<{
   return (
     <Flex
       h={16}
-      cursor="pointer"
-      mr={4}
-      ml={4}
       borderBottom={`1px solid ${colors.gray[800]}`}
       alignItems="center"
       data-testid="operation-tile"
