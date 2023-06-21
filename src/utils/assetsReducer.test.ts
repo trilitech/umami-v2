@@ -16,6 +16,7 @@ import accountsSlice from "./store/accountsSlice";
 import { estimateAndUpdateBatch } from "./store/thunks/estimateAndupdateBatch";
 import { estimateBatch } from "./tezos";
 import { OperationValue } from "../components/sendForm/types";
+import { mockBalancePlayload } from "../mocks/tzktResponse";
 jest.mock("./tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -23,7 +24,8 @@ const estimateBatchMock = estimateBatch as jest.Mock;
 const {
   actions: {
     reset,
-    updateAssets: update,
+    updateTezBalance,
+    updateTokenBalance,
     updateNetwork,
     updateTezTransfers,
     updateTokenTransfers,
@@ -40,7 +42,7 @@ describe("Assets reducer", () => {
   test("store should initialize with empty state", () => {
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       transfers: { tez: {}, tokens: {} },
@@ -53,12 +55,12 @@ describe("Assets reducer", () => {
     });
   });
 
-  test("tez balances are added", () => {
-    store.dispatch(update([{ pkh: "foo", tez: "43" }]));
+  test("tez balances are replaced", () => {
+    store.dispatch(updateTezBalance([{ pkh: "foo", tez: "43" }]));
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: {
+        mutez: {
           foo: "43",
         },
         tokens: {},
@@ -73,7 +75,7 @@ describe("Assets reducer", () => {
     });
 
     store.dispatch(
-      update([
+      updateTezBalance([
         { pkh: "bar", tez: "44" },
         { pkh: "baz", tez: "55" },
       ])
@@ -81,8 +83,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: {
-          foo: "43",
+        mutez: {
           bar: "44",
           baz: "55",
         },
@@ -100,14 +101,14 @@ describe("Assets reducer", () => {
 
   test("tez balances are updated", () => {
     store.dispatch(
-      update([
+      updateTezBalance([
         { pkh: "bar", tez: "44" },
         { pkh: "baz", tez: "55" },
       ])
     );
 
     store.dispatch(
-      update([
+      updateTezBalance([
         {
           pkh: "baz",
           tez: "66",
@@ -117,7 +118,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: "44", baz: "66" },
+        mutez: { baz: "66" },
         tokens: {},
       },
       conversionRate: null,
@@ -131,26 +132,25 @@ describe("Assets reducer", () => {
   });
 
   test("token balances are updated", () => {
-    store.dispatch(
-      update([
-        { pkh: "bar", tez: "44" },
-        { pkh: "baz", tez: "55" },
-      ])
-    );
-
-    store.dispatch(
-      update([
-        {
-          pkh: "baz",
-          tokens: [{}, {}] as any,
-        },
-      ])
-    );
+    store.dispatch(updateTokenBalance([mockBalancePlayload]));
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: "44", baz: "55" },
-        tokens: { baz: [{}, {}] },
+        mutez: {},
+        tokens: {
+          baz: [
+            {
+              balance: "1",
+              contract: "mockContract",
+              metadata: {
+                decimals: "2",
+                symbol: "mockSymbol",
+              },
+              tokenId: "0",
+              type: "fa2",
+            },
+          ],
+        },
       },
       conversionRate: null,
       delegations: {},
@@ -164,25 +164,31 @@ describe("Assets reducer", () => {
 
   test("updating network resets operations and balances", () => {
     store.dispatch(
-      update([
+      updateTezBalance([
         { pkh: "bar", tez: "44" },
         { pkh: "baz", tez: "55" },
       ])
     );
 
-    store.dispatch(
-      update([
-        {
-          pkh: "foo",
-          tokens: [{}, {}] as any,
-        },
-      ])
-    );
+    store.dispatch(updateTokenBalance([mockBalancePlayload]));
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: "44", baz: "55" },
-        tokens: { foo: [{}, {}] },
+        mutez: { bar: "44", baz: "55" },
+        tokens: {
+          baz: [
+            {
+              balance: "1",
+              contract: "mockContract",
+              metadata: {
+                decimals: "2",
+                symbol: "mockSymbol",
+              },
+              tokenId: "0",
+              type: "fa2",
+            },
+          ],
+        },
       },
       conversionRate: null,
       delegations: {},
@@ -196,7 +202,7 @@ describe("Assets reducer", () => {
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
 
     expect(store.getState().assets).toEqual({
-      balances: { tez: {}, tokens: {} },
+      balances: { mutez: {}, tokens: {} },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
       bakers: [],
@@ -209,25 +215,31 @@ describe("Assets reducer", () => {
 
   test("reseting accounts resets assetsState", () => {
     store.dispatch(
-      update([
+      updateTezBalance([
         { pkh: "bar", tez: "44" },
         { pkh: "baz", tez: "55" },
       ])
     );
 
-    store.dispatch(
-      update([
-        {
-          pkh: "foo",
-          tokens: [{}, {}] as any,
-        },
-      ])
-    );
+    store.dispatch(updateTokenBalance([mockBalancePlayload]));
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: "44", baz: "55" },
-        tokens: { foo: [{}, {}] },
+        mutez: { bar: "44", baz: "55" },
+        tokens: {
+          baz: [
+            {
+              balance: "1",
+              contract: "mockContract",
+              metadata: {
+                decimals: "2",
+                symbol: "mockSymbol",
+              },
+              tokenId: "0",
+              type: "fa2",
+            },
+          ],
+        },
       },
       conversionRate: null,
       delegations: {},
@@ -241,7 +253,7 @@ describe("Assets reducer", () => {
     store.dispatch(accountsSlice.actions.reset());
 
     expect(store.getState().assets).toEqual({
-      balances: { tez: {}, tokens: {} },
+      balances: { mutez: {}, tokens: {} },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
       bakers: [],
@@ -266,7 +278,7 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       conversionRate: null,
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       delegations: {},
@@ -299,7 +311,7 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       conversionRate: null,
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       delegations: {},
@@ -333,7 +345,7 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       conversionRate: null,
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       delegations: {},
@@ -366,7 +378,7 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       conversionRate: null,
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       delegations: {},

@@ -5,7 +5,7 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import NFTsViewBase from "./NftsView";
 
-const { updateAssets } = assetsSlice.actions;
+const { updateTokenBalance } = assetsSlice.actions;
 
 const fixture = () => (
   <ReduxStore>
@@ -21,7 +21,7 @@ describe("NFTsView", () => {
 
   it("displays nfts of all accounts by default", () => {
     store.dispatch(
-      updateAssets([
+      updateTokenBalance([
         {
           pkh: mockImplicitAddress(1).pkh,
           tokens: [
@@ -29,11 +29,6 @@ describe("NFTsView", () => {
             mockNFTToken(2, mockImplicitAddress(1).pkh),
           ],
         },
-      ])
-    );
-
-    store.dispatch(
-      updateAssets([
         {
           pkh: mockImplicitAddress(2).pkh,
           tokens: [

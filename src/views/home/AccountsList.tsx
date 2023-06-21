@@ -138,7 +138,7 @@ export const AccountsList: React.FC<{
   const selected = props.selected;
   const accounts = useAllAccounts();
 
-  const balances = useAppSelector(s => s.assets.balances.tez);
+  const mutezBalance = useAppSelector(s => s.assets.balances.mutez);
 
   const accountsByKind = groupByKind(accounts);
 
@@ -186,7 +186,7 @@ export const AccountsList: React.FC<{
         key={label}
         selected={selected}
         accounts={accountsByType}
-        balances={balances}
+        balances={mutezBalance}
         groupLabel={label}
         onDelete={handleDelete}
         onDerive={handleDerive}

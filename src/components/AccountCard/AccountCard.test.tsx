@@ -13,7 +13,7 @@ import AccountCard from ".";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { render, screen, within } from "../../mocks/testUtils";
 import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
-const { updateAssets } = assetsSlice.actions;
+const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
 const { add } = accountsSlice.actions;
 
 const tezBalance = "33200000000";
@@ -23,9 +23,9 @@ const pkh = account.address.pkh;
 const mockNft = mockNFTToken(0, pkh);
 beforeAll(() => {
   store.dispatch(add([account]));
-  store.dispatch(updateAssets([{ pkh: pkh, tez: tezBalance }]));
+  store.dispatch(updateTezBalance([{ pkh: pkh, tez: tezBalance }]));
   store.dispatch(
-    updateAssets([
+    updateTokenBalance([
       {
         pkh: mockImplicitAccount(0).address.pkh,
         tokens: [

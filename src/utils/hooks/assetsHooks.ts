@@ -1,5 +1,5 @@
 import { compact } from "lodash";
-import { Asset, fromToken, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
+import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
 import { getOperationDisplays } from "../../views/operations/operationsUtils";
 import { objectMap } from "../helpers";
@@ -25,29 +25,15 @@ export const useIsBlockFinalised = () => {
 };
 
 export const useAllNfts = () => {
-  const allTokens = useAppSelector(s => s.assets.balances.tokens);
+  const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
 
-  return objectMap(allTokens, tokens => {
-    const compactedTokens = compact(tokens);
-    return keepNFTs(compact(compactedTokens.map(fromToken)));
-  });
-};
-
-export const useAccountAssets = () => {
-  const allTokens = useAppSelector(s => s.assets.balances.tokens);
-
-  return objectMap(allTokens, tokens => {
-    const compactedTokens = compact(tokens);
-    return compact(compactedTokens.map(fromToken));
-  });
+  return objectMap(ownerToTokens, tokens => keepNFTs(compact(tokens)));
 };
 
 export const useGetAccountAssets = () => {
-  const allTokens = useAppSelector(s => s.assets.balances.tokens);
+  const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
 
-  return (pkh: string) => {
-    return compact((allTokens[pkh] ?? []).map(fromToken));
-  };
+  return (pkh: string) => ownerToTokens[pkh] ?? [];
 };
 
 export const useGetAccountAssetsLookup = (): ((
@@ -66,15 +52,15 @@ export const useGetAccountAssetsLookup = (): ((
 };
 
 export const useSearchAsset = () => {
-  const allTokens = useAppSelector(s => s.assets.balances.tokens);
-  const assets = compact(Object.values(allTokens)).flatMap(tokens => tokens.map(fromToken));
+  const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
+  const allAssets = compact(Object.values(ownerToTokens).flat());
 
   return (contractAddress: string, tokenId: string | undefined) => {
     if (!tokenId) {
-      return compact(assets).find(asset => asset.contract === contractAddress);
+      return compact(allAssets).find(asset => asset.contract === contractAddress);
     }
 
-    return compact(assets)
+    return compact(allAssets)
       .filter(asset => asset.contract === contractAddress)
       .find(asset => asset.type !== "fa1.2" && asset.tokenId === tokenId);
   };
@@ -195,9 +181,9 @@ export const useTotalBalance = () => {
 };
 
 export const useGetAccountBalance = () => {
-  const balances = useAppSelector(s => s.assets.balances.tez);
+  const mutezBalances = useAppSelector(s => s.assets.balances.mutez);
 
-  const balancesMap = new Map(Object.entries(balances));
+  const balancesMap = new Map(Object.entries(mutezBalances));
   return (pkh: string) => {
     const val = balancesMap.get(pkh);
     return val === undefined ? null : val;
@@ -205,7 +191,7 @@ export const useGetAccountBalance = () => {
 };
 
 export const useTotalMutezBalance = () => {
-  const balances = useAppSelector(s => s.assets.balances.tez);
+  const balances = useAppSelector(s => s.assets.balances.mutez);
 
   return getTotalTezBalance(balances);
 };

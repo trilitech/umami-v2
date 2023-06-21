@@ -4,7 +4,7 @@ import { assetsActions, TokenBalancePayload } from "../../../../utils/store/asse
 import { store } from "../../../../utils/store/store";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
 
-const { reset, updateAssets } = assetsActions;
+const { reset, updateTokenBalance } = assetsActions;
 afterEach(() => {
   store.dispatch(reset());
 });
@@ -48,7 +48,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
         },
       ],
     };
-    store.dispatch(updateAssets([mockBalancePlayload]));
+    store.dispatch(updateTokenBalance([mockBalancePlayload]));
 
     render(
       <MultisigDecodedOperationItem
@@ -97,7 +97,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
       ],
     };
 
-    store.dispatch(updateAssets([mockBalancePlayload]));
+    store.dispatch(updateTokenBalance([mockBalancePlayload]));
 
     render(
       <MultisigDecodedOperationItem

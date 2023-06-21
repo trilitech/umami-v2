@@ -1,8 +1,10 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
+import { compact } from "lodash";
 
 import { OperationValue } from "../../components/sendForm/types";
+import { Asset, fromToken } from "../../types/Asset";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
@@ -23,8 +25,8 @@ type State = {
   network: TezosNetwork;
   blockLevel: number | null;
   balances: {
-    tez: Record<string, string | undefined>;
-    tokens: Record<string, Token[] | undefined>;
+    mutez: Record<string, string | undefined>;
+    tokens: Record<string, Asset[] | undefined>;
   };
   transfers: {
     tez: Record<string, TezTransfer[] | undefined>;
@@ -63,7 +65,7 @@ const initialState: State = {
   network: TezosNetwork.MAINNET,
   blockLevel: null,
   balances: {
-    tez: {},
+    mutez: {},
     tokens: {},
   },
   transfers: { tez: {}, tokens: {} },
@@ -118,25 +120,19 @@ const assetsSlice = createSlice({
 
       state.transfers.tokens = newTezTransfers;
     },
-    updateAssets: (
-      state,
-      { payload }: { type: string; payload: TezBalancePayload[] | TokenBalancePayload[] }
-    ) => {
-      const tezBalancePayloads = payload;
 
-      tezBalancePayloads.forEach(payload => {
-        if ("tez" in payload) {
-          const existing = state.balances.tez;
-          const newTezBalances = { ...existing, [payload.pkh]: payload.tez };
-          state.balances.tez = newTezBalances;
-          return;
-        }
-
-        const existing = state.balances.tokens;
-        const newTokens = { ...existing, [payload.pkh]: payload.tokens };
-        state.balances.tokens = newTokens;
-      });
+    updateTezBalance: (state, { payload }: { type: string; payload: TezBalancePayload[] }) => {
+      state.balances.mutez = payload.reduce((acc, mutezBalance) => {
+        return { ...acc, [mutezBalance.pkh]: mutezBalance.tez };
+      }, {});
     },
+
+    updateTokenBalance: (state, { payload }: { type: string; payload: TokenBalancePayload[] }) => {
+      state.balances.tokens = payload.reduce((acc, tokenBalance) => {
+        return { ...acc, [tokenBalance.pkh]: compact(tokenBalance.tokens.map(fromToken)) };
+      }, {});
+    },
+
     updateDelegations: (state, { payload }: { type: string; payload: DelegationPayload[] }) => {
       //TODO: store a list of delegations for the operation views
       payload.forEach(p => {
