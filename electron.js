@@ -41,7 +41,7 @@ function createWindow() {
       sandbox: true,
       webSecurity: true,
       experimentalFeatures: false,
-      devTools: process.env.NODE_ENV !== "production",
+      devTools: process.env.ENABLE_DEV_TOOLS === "true", // Do not change. It's important for security that devtools are disabled by default
     },
   });
 
