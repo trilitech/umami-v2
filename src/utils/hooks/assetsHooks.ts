@@ -29,7 +29,7 @@ export const useAllNfts = () => {
 
   return objectMap(allTokens, tokens => {
     const compactedTokens = compact(tokens);
-    return keepNFTs(compact(compactedTokens.map(fromToken)).filter(t => t.balance !== "0"));
+    return keepNFTs(compact(compactedTokens.map(fromToken)));
   });
 };
 
@@ -38,7 +38,7 @@ export const useAccountAssets = () => {
 
   return objectMap(allTokens, tokens => {
     const compactedTokens = compact(tokens);
-    return compact(compactedTokens.map(fromToken)).filter(t => t.balance !== "0");
+    return compact(compactedTokens.map(fromToken));
   });
 };
 

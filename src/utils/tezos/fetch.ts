@@ -25,6 +25,7 @@ export const getTokens = async (pkh: string, network: TezosNetwork): Promise<Tok
   tokensGetTokenBalances(
     {
       account: { eq: pkh },
+      balance: { gt: "0" },
     },
     {
       baseUrl: tzktUrls[network],
