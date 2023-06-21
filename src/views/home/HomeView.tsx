@@ -10,7 +10,7 @@ export default function HomeView() {
     <Flex direction="column" height="100%">
       <TopBar title="Overview" />
       <Flex flex={1} minHeight={1}>
-        <Box flex={1} mr={2}>
+        <Box flex={1} mr={2} overflow="hidden" mb={2} borderRadius={4}>
           <AccountListWithDrawer />
         </Box>
         <Flex direction="column" flex={1} minHeight={1} ml={2}>

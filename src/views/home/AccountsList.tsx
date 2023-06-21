@@ -141,63 +141,74 @@ export const AccountsList: React.FC<{
 
   const accountsByKind = groupByKind(accounts);
 
-  const { onOpen, element, onClose } = useConfirmation();
+  const {
+    onOpen: openConfirmModal,
+    element: confirmModal,
+    onClose: closeConfirmModal,
+  } = useConfirmation();
   const removeMnemonic = useRemoveMnemonic();
 
-  const { element: deriveElement, onOpen: openDeriveAccount } = useDeriveAccountModal();
+  const { element: deriveAccountModal, onOpen: openDeriveAccountModal } = useDeriveAccountModal();
 
+  const accountTiles = Object.entries(accountsByKind).map(([label, accountsByType]) => {
+    if (!accountsByType) {
+      return null;
+    }
+
+    const first = accountsByType[0];
+    const isMnemonicGroup = first.type === AccountType.MNEMONIC;
+
+    const handleDelete = () => {
+      if (!isMnemonicGroup) {
+        throw new Error(`Can't delete a non mnemonic account group! `);
+      }
+
+      openConfirmModal({
+        onConfirm: () => {
+          removeMnemonic(first.seedFingerPrint);
+          closeConfirmModal();
+        },
+        body: `Are you sure you want to delete all accounts derived from ${label}?`,
+      });
+    };
+
+    const handleDerive = () => {
+      if (!isMnemonicGroup) {
+        throw new Error(`Can't derive a non mnemonic account!`);
+      }
+      openDeriveAccountModal({ fingerprint: first.seedFingerPrint });
+    };
+
+    return accountsByType ? (
+      <AccountGroup
+        showCTA={isMnemonicGroup}
+        key={label}
+        selected={selected}
+        accounts={accountsByType}
+        balances={balances}
+        groupLabel={label}
+        onDelete={handleDelete}
+        onDerive={handleDerive}
+        onSelect={(pkh: string) => {
+          props.onOpen();
+          props.onSelect(pkh);
+        }}
+      />
+    ) : null;
+  });
   return (
-    <Box>
+    <>
       <Header />
-      {Object.entries(accountsByKind).map(([label, accountsByType]) => {
-        if (!accountsByType) {
-          return null;
-        }
-
-        const first = accountsByType[0];
-        const isMnemonicGroup = first.type === AccountType.MNEMONIC;
-
-        const handleDelete = () => {
-          if (!isMnemonicGroup) {
-            throw new Error(`Can't delete a non mnemonic account group! `);
-          }
-
-          onOpen({
-            onConfirm: () => {
-              removeMnemonic(first.seedFingerPrint);
-              onClose();
-            },
-            body: `Are you sure you want to delete all accounts derived from ${label}?`,
-          });
-        };
-
-        const handleDerive = () => {
-          if (!isMnemonicGroup) {
-            throw new Error(`Can't derive a non mnemonic account!`);
-          }
-          openDeriveAccount({ fingerprint: first.seedFingerPrint });
-        };
-
-        return accountsByType ? (
-          <AccountGroup
-            showCTA={isMnemonicGroup}
-            key={label}
-            selected={selected}
-            accounts={accountsByType}
-            balances={balances}
-            groupLabel={label}
-            onDelete={handleDelete}
-            onDerive={handleDerive}
-            onSelect={(pkh: string) => {
-              props.onOpen();
-              props.onSelect(pkh);
-            }}
-          />
-        ) : null;
-      })}
-      {element}
-      {deriveElement}
-    </Box>
+      {/* For the nested element scroll to work you need:
+       * - direct parent overflow hidden
+       *  -nested element overflow auto/scroll and height 100%
+       */}
+      <Box overflowY="auto" height="100%">
+        {accountTiles}
+      </Box>
+      {confirmModal}
+      {deriveAccountModal}
+    </>
   );
 };
 
