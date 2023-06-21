@@ -91,6 +91,7 @@ describe("tezos utils fetch", () => {
     expect(tokensGetTokenBalances).toBeCalledWith(
       {
         account: { eq: mockImplicitAddress(0).pkh },
+        balance: { gt: "0" },
       },
       { baseUrl: tzktUrls[TezosNetwork.GHOSTNET] }
     );
