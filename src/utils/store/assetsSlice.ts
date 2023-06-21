@@ -122,23 +122,15 @@ const assetsSlice = createSlice({
     },
 
     updateTezBalance: (state, { payload }: { type: string; payload: TezBalancePayload[] }) => {
-      const newTezBalances: Record<string, string | undefined> = {};
-
-      payload.forEach(tezBalance => {
-        newTezBalances[tezBalance.pkh] = tezBalance.tez;
-      });
-
-      state.balances.mutez = newTezBalances;
+      state.balances.mutez = payload.reduce((acc, mutezBalance) => {
+        return { ...acc, [mutezBalance.pkh]: mutezBalance.tez };
+      }, {});
     },
 
     updateTokenBalance: (state, { payload }: { type: string; payload: TokenBalancePayload[] }) => {
-      const newTokenBalances: Record<string, Asset[] | undefined> = {};
-
-      payload.forEach(tokenBalance => {
-        newTokenBalances[tokenBalance.pkh] = compact(tokenBalance.tokens.map(fromToken));
-      });
-
-      state.balances.tokens = newTokenBalances;
+      state.balances.tokens = payload.reduce((acc, tokenBalance) => {
+        return { ...acc, [tokenBalance.pkh]: compact(tokenBalance.tokens.map(fromToken)) };
+      }, {});
     },
 
     updateDelegations: (state, { payload }: { type: string; payload: DelegationPayload[] }) => {

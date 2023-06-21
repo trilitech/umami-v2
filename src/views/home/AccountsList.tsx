@@ -186,7 +186,7 @@ export const AccountsList: React.FC<{
         key={label}
         selected={selected}
         accounts={accountsByType}
-        balances={balances}
+        balances={mutezBalance}
         groupLabel={label}
         onDelete={handleDelete}
         onDerive={handleDerive}
