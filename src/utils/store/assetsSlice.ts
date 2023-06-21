@@ -1,8 +1,10 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
+import { compact } from "lodash";
 
 import { OperationValue } from "../../components/sendForm/types";
+import { Asset, fromToken } from "../../types/Asset";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
@@ -24,7 +26,7 @@ type State = {
   blockLevel: number | null;
   balances: {
     tez: Record<string, string | undefined>;
-    tokens: Record<string, Token[] | undefined>;
+    tokens: Record<string, Asset[] | undefined>;
   };
   transfers: {
     tez: Record<string, TezTransfer[] | undefined>;
@@ -133,7 +135,7 @@ const assetsSlice = createSlice({
         }
 
         const existing = state.balances.tokens;
-        const newTokens = { ...existing, [payload.pkh]: payload.tokens };
+        const newTokens = { ...existing, [payload.pkh]: compact(payload.tokens.map(fromToken)) };
         state.balances.tokens = newTokens;
       });
     },

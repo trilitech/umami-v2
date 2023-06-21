@@ -1,4 +1,4 @@
-import assetsSlice from "./store/assetsSlice";
+import assetsSlice, { TokenBalancePayload } from "./store/assetsSlice";
 import { store } from "./store/store";
 
 import { TezosNetwork } from "@airgap/tezos";
@@ -16,6 +16,7 @@ import accountsSlice from "./store/accountsSlice";
 import { estimateAndUpdateBatch } from "./store/thunks/estimateAndupdateBatch";
 import { estimateBatch } from "./tezos";
 import { OperationValue } from "../components/sendForm/types";
+import { mockBalancePlayload } from "../mocks/tzktResponse";
 jest.mock("./tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -138,19 +139,25 @@ describe("Assets reducer", () => {
       ])
     );
 
-    store.dispatch(
-      update([
-        {
-          pkh: "baz",
-          tokens: [{}, {}] as any,
-        },
-      ])
-    );
+    store.dispatch(update([mockBalancePlayload]));
 
     expect(store.getState().assets).toEqual({
       balances: {
         tez: { bar: "44", baz: "55" },
-        tokens: { baz: [{}, {}] },
+        tokens: {
+          baz: [
+            {
+              balance: "1",
+              contract: "mockContract",
+              metadata: {
+                decimals: "2",
+                symbol: "mockSymbol",
+              },
+              tokenId: "0",
+              type: "fa2",
+            },
+          ],
+        },
       },
       conversionRate: null,
       delegations: {},
@@ -170,19 +177,25 @@ describe("Assets reducer", () => {
       ])
     );
 
-    store.dispatch(
-      update([
-        {
-          pkh: "foo",
-          tokens: [{}, {}] as any,
-        },
-      ])
-    );
+    store.dispatch(update([mockBalancePlayload]));
 
     expect(store.getState().assets).toEqual({
       balances: {
         tez: { bar: "44", baz: "55" },
-        tokens: { foo: [{}, {}] },
+        tokens: {
+          baz: [
+            {
+              balance: "1",
+              contract: "mockContract",
+              metadata: {
+                decimals: "2",
+                symbol: "mockSymbol",
+              },
+              tokenId: "0",
+              type: "fa2",
+            },
+          ],
+        },
       },
       conversionRate: null,
       delegations: {},
@@ -215,19 +228,25 @@ describe("Assets reducer", () => {
       ])
     );
 
-    store.dispatch(
-      update([
-        {
-          pkh: "foo",
-          tokens: [{}, {}] as any,
-        },
-      ])
-    );
+    store.dispatch(update([mockBalancePlayload]));
 
     expect(store.getState().assets).toEqual({
       balances: {
         tez: { bar: "44", baz: "55" },
-        tokens: { foo: [{}, {}] },
+        tokens: {
+          baz: [
+            {
+              balance: "1",
+              contract: "mockContract",
+              metadata: {
+                decimals: "2",
+                symbol: "mockSymbol",
+              },
+              tokenId: "0",
+              type: "fa2",
+            },
+          ],
+        },
       },
       conversionRate: null,
       delegations: {},

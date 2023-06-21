@@ -1,6 +1,7 @@
 import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
 import { TezTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
+import { TokenBalancePayload } from "../utils/store/assetsSlice";
 import { tzktGetSameMultisigsResponseType } from "../utils/tzkt/types";
 import { mockContractAddress, mockImplicitAddress } from "./factories";
 
@@ -713,3 +714,21 @@ export const tzktGetSameMultisigsResponse: tzktGetSameMultisigsResponseType = [
     storage: { threshold: "2", pending_ops: 0, signers: [mockImplicitAddress(10).pkh] },
   },
 ];
+
+export const mockBalancePlayload: TokenBalancePayload = {
+  pkh: "baz",
+  tokens: [
+    {
+      balance: "1",
+      token: {
+        contract: { address: "mockContract" },
+        standard: "fa2",
+        tokenId: "0",
+        metadata: {
+          decimals: "2",
+          symbol: "mockSymbol",
+        },
+      },
+    },
+  ],
+};
