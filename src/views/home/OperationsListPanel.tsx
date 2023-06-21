@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import { sortOperationsDisplaysBytDate } from "../operations/operationsUtils";
 import { OperationListDisplay } from "./OpertionList/OperationListDisplay";
-export const OperationsListPannel = () => {
+
+export const OperationsListPanel = () => {
   const operations = useAllOperationDisplays();
   const operationDisplays = sortOperationsDisplaysBytDate(
     compact(Object.values(operations).flat())
