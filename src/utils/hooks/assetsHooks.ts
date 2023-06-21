@@ -181,9 +181,9 @@ export const useTotalBalance = () => {
 };
 
 export const useGetAccountBalance = () => {
-  const balances = useAppSelector(s => s.assets.balances.tez);
+  const mutezBalances = useAppSelector(s => s.assets.balances.mutez);
 
-  const balancesMap = new Map(Object.entries(balances));
+  const balancesMap = new Map(Object.entries(mutezBalances));
   return (pkh: string) => {
     const val = balancesMap.get(pkh);
     return val === undefined ? null : val;
@@ -191,7 +191,7 @@ export const useGetAccountBalance = () => {
 };
 
 export const useTotalMutezBalance = () => {
-  const balances = useAppSelector(s => s.assets.balances.tez);
+  const balances = useAppSelector(s => s.assets.balances.mutez);
 
   return getTotalTezBalance(balances);
 };

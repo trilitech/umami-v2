@@ -25,7 +25,7 @@ type State = {
   network: TezosNetwork;
   blockLevel: number | null;
   balances: {
-    tez: Record<string, string | undefined>;
+    mutez: Record<string, string | undefined>;
     tokens: Record<string, Asset[] | undefined>;
   };
   transfers: {
@@ -65,7 +65,7 @@ const initialState: State = {
   network: TezosNetwork.MAINNET,
   blockLevel: null,
   balances: {
-    tez: {},
+    mutez: {},
     tokens: {},
   },
   transfers: { tez: {}, tokens: {} },
@@ -128,7 +128,7 @@ const assetsSlice = createSlice({
         newTezBalances[tezBalance.pkh] = tezBalance.tez;
       });
 
-      state.balances.tez = newTezBalances;
+      state.balances.mutez = newTezBalances;
     },
 
     updateTokenBalance: (state, { payload }: { type: string; payload: TokenBalancePayload[] }) => {

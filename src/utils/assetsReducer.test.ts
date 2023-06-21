@@ -42,7 +42,7 @@ describe("Assets reducer", () => {
   test("store should initialize with empty state", () => {
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       transfers: { tez: {}, tokens: {} },
@@ -60,7 +60,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: {
+        mutez: {
           foo: "43",
         },
         tokens: {},
@@ -83,7 +83,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: {
+        mutez: {
           bar: "44",
           baz: "55",
         },
@@ -118,7 +118,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { baz: "66" },
+        mutez: { baz: "66" },
         tokens: {},
       },
       conversionRate: null,
@@ -136,7 +136,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {
           baz: [
             {
@@ -174,7 +174,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: "44", baz: "55" },
+        mutez: { bar: "44", baz: "55" },
         tokens: {
           baz: [
             {
@@ -202,7 +202,7 @@ describe("Assets reducer", () => {
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
 
     expect(store.getState().assets).toEqual({
-      balances: { tez: {}, tokens: {} },
+      balances: { mutez: {}, tokens: {} },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
       bakers: [],
@@ -225,7 +225,7 @@ describe("Assets reducer", () => {
 
     expect(store.getState().assets).toEqual({
       balances: {
-        tez: { bar: "44", baz: "55" },
+        mutez: { bar: "44", baz: "55" },
         tokens: {
           baz: [
             {
@@ -253,7 +253,7 @@ describe("Assets reducer", () => {
     store.dispatch(accountsSlice.actions.reset());
 
     expect(store.getState().assets).toEqual({
-      balances: { tez: {}, tokens: {} },
+      balances: { mutez: {}, tokens: {} },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
       bakers: [],
@@ -278,7 +278,7 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       conversionRate: null,
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       delegations: {},
@@ -311,7 +311,7 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       conversionRate: null,
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       delegations: {},
@@ -345,7 +345,7 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       conversionRate: null,
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       delegations: {},
@@ -378,7 +378,7 @@ describe("Assets reducer", () => {
     expect(store.getState().assets).toEqual({
       conversionRate: null,
       balances: {
-        tez: {},
+        mutez: {},
         tokens: {},
       },
       delegations: {},
