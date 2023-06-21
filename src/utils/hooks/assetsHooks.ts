@@ -3,7 +3,7 @@ import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
 import {
   getOperationDisplays,
-  sortOperationsDisplaysBytDate,
+  sortOperationsByTimestamp,
 } from "../../views/operations/operationsUtils";
 import { objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
@@ -147,7 +147,7 @@ export const useGetAllOperationDisplays = () => {
   const allOperations = useAllOperationDisplaysMap();
   const allOperationsList = compact(Object.values(allOperations)).flat();
 
-  return sortOperationsDisplaysBytDate(allOperationsList);
+  return sortOperationsByTimestamp(allOperationsList);
 };
 
 export const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);
