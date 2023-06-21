@@ -11,6 +11,7 @@ import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
 import type { BigNumber } from "bignumber.js";
 import { AccountType, Account } from "../../types/Account";
 import MultisigApprovers from "./MultisigApprovers";
+import { OperationDisplay } from "../../types/Operation";
 
 type Props = {
   onSend?: () => void;
@@ -23,6 +24,7 @@ type Props = {
   dollarBalance: BigNumber | null;
   tokens: Array<FA12Token | FA2Token>;
   nfts: Array<NFT>;
+  operationDisplays: Array<OperationDisplay>;
   account: Account;
 };
 
@@ -57,6 +59,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
   tokens,
   nfts,
   account,
+  operationDisplays,
 }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   return (
@@ -76,7 +79,12 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPannel tokens={tokens} nfts={nfts} account={account} />
+      <AssetsPannel
+        tokens={tokens}
+        nfts={nfts}
+        account={account}
+        operationDisplays={operationDisplays}
+      />
     </Flex>
   );
 };

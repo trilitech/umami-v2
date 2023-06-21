@@ -1,33 +1,49 @@
 import {
-  mockImplicitAccount,
   mockFA1Token,
+  mockImplicitAccount,
+  mockImplicitAddress,
   mockMultisigAccount,
   mockNFTToken,
-  mockImplicitAddress,
 } from "../../mocks/factories";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 
 import AccountCard from ".";
+import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { render, screen, within } from "../../mocks/testUtils";
-import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
-const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
+import { mockTzktTezTransfer } from "../../mocks/transfers";
+const { updateTezBalance, updateTokenBalance, updateTezTransfers } = assetsSlice.actions;
 const { add } = accountsSlice.actions;
 
 const tezBalance = "33200000000";
 
-const account = mockImplicitAccount(0);
-const pkh = account.address.pkh;
+const selectedAccount = mockImplicitAccount(0);
+const pkh = selectedAccount.address.pkh;
 const mockNft = mockNFTToken(0, pkh);
-beforeAll(() => {
-  store.dispatch(add([account]));
+beforeEach(() => {
+  store.dispatch(add([selectedAccount, mockImplicitAccount(1)]));
   store.dispatch(updateTezBalance([{ pkh: pkh, tez: tezBalance }]));
   store.dispatch(
     updateTokenBalance([
       {
-        pkh: mockImplicitAccount(0).address.pkh,
+        pkh: selectedAccount.address.pkh,
+        tokens: [
+          hedgeHoge,
+          tzBtsc,
+          uUSD,
+          mockFA1Token(1, mockImplicitAddress(1).pkh, 123),
+          mockNft,
+        ],
+      },
+    ])
+  );
+
+  store.dispatch(
+    updateTokenBalance([
+      {
+        pkh: selectedAccount.address.pkh,
         tokens: [
           hedgeHoge,
           tzBtsc,
@@ -40,10 +56,15 @@ beforeAll(() => {
   );
 });
 
+afterEach(() => {
+  store.dispatch(accountsSlice.actions.reset());
+  store.dispatch(assetsSlice.actions.reset());
+});
+
 describe("<AccountCard />", () => {
   it("should display account name", () => {
-    render(<AccountCard account={account} />);
-    expect(screen.getByRole("heading", { name: account.label })).toBeInTheDocument();
+    render(<AccountCard account={selectedAccount} />);
+    expect(screen.getByRole("heading", { name: selectedAccount.label })).toBeInTheDocument();
   });
 
   it("accountCard displays multisig signers", () => {
@@ -53,17 +74,17 @@ describe("<AccountCard />", () => {
   });
 
   it("should display account tez balance", () => {
-    render(<AccountCard account={account} />);
+    render(<AccountCard account={selectedAccount} />);
     expect(screen.getByText("33200 ꜩ")).toBeInTheDocument();
   });
 
   it("should display assets tabs with tokens by default", () => {
-    render(<AccountCard account={account} />);
+    render(<AccountCard account={selectedAccount} />);
     expect(screen.getByTestId("account-card-tokens-tab")).toBeInTheDocument();
   });
 
   test("tokens tab should display token infos correctly", () => {
-    render(<AccountCard account={account} />);
+    render(<AccountCard account={selectedAccount} />);
     const tokenTiles = screen.getAllByTestId("token-tile");
     expect(tokenTiles).toHaveLength(4);
 
@@ -97,10 +118,53 @@ describe("<AccountCard />", () => {
   });
 
   it("should display nfts under nfts tab", () => {
-    render(<AccountCard account={account} />);
+    render(<AccountCard account={selectedAccount} />);
     expect(screen.getByTestId("account-card-nfts-tab")).toBeInTheDocument();
     screen.getByTestId("account-card-nfts-tab").click();
     expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
     expect(screen.getByText(mockNft.token?.metadata?.name as string)).toBeInTheDocument();
+  });
+
+  it("should accounts operations under operations tab", () => {
+    store.dispatch(
+      updateTezTransfers([
+        {
+          pkh: selectedAccount.address.pkh,
+          transfers: [
+            mockTzktTezTransfer(
+              selectedAccount.address.pkh,
+              mockImplicitAccount(1).address.pkh,
+              1000000
+            ),
+            mockTzktTezTransfer(
+              mockImplicitAccount(2).address.pkh,
+              selectedAccount.address.pkh,
+              2000000
+            ),
+          ],
+        },
+        {
+          pkh: mockImplicitAccount(1).address.pkh,
+          transfers: [
+            mockTzktTezTransfer(
+              mockImplicitAccount(1).address.pkh,
+              mockImplicitAccount(1).address.pkh,
+              5000000
+            ),
+          ],
+        },
+      ])
+    );
+
+    render(<AccountCard account={selectedAccount} />);
+    expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
+    screen.getByTestId("account-card-operations-tab").click();
+
+    expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
+    expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
+    const operations = screen.getAllByTestId("operation-tile");
+    expect(operations).toHaveLength(2);
+    expect(operations[0]).toHaveTextContent("-1 ꜩ");
+    expect(operations[1]).toHaveTextContent("+2 ꜩ");
   });
 });

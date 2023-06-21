@@ -4,6 +4,7 @@ import {
   useGetAccountAllTokens,
   useGetAccountBalance,
   useGetAccountNFTs,
+  useGetAccountOperationDisplays,
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
 import { useSendFormModal } from "../../views/home/useSendFormModal";
@@ -16,6 +17,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
 
   const getTokens = useGetAccountAllTokens();
   const getNFTs = useGetAccountNFTs();
+  const getOperations = useGetAccountOperationDisplays();
   const { onOpen: onOpenSend, modalElement: sendModal } = useSendFormModal();
   const { onOpen: onOpenReceive, modalElement: receiveModal } = useReceiveModal();
 
@@ -29,6 +31,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
 
   const tokens = getTokens(account.address.pkh);
   const nfts = getNFTs(account.address.pkh);
+  const operations = getOperations(account.address.pkh);
   return (
     <>
       <AccountCardDisplay
@@ -47,6 +50,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         }}
         tokens={tokens}
         nfts={nfts}
+        operationDisplays={operations}
         account={account}
       />
       {sendModal}

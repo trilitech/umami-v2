@@ -1,7 +1,9 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs, UnorderedList } from "@chakra-ui/react";
 import React from "react";
-import { AccountType, Account } from "../../../types/Account";
+import { Account, AccountType } from "../../../types/Account";
 import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
+import { OperationDisplay } from "../../../types/Operation";
+import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
 import MultisigPendingList from "./MultisigPendingList";
 import { NFTsGrid } from "./NFTsGrid";
 import TokenTile from "./TokenTile";
@@ -10,8 +12,10 @@ export const AssetsPannel: React.FC<{
   tokens: Array<FA12Token | FA2Token>;
   nfts: Array<NFT>;
   account: Account;
-}> = ({ tokens, nfts, account }) => {
+  operationDisplays: OperationDisplay[];
+}> = ({ tokens, nfts, account, operationDisplays }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
+
   return (
     <Tabs
       height="100%"
@@ -32,7 +36,7 @@ export const AssetsPannel: React.FC<{
         <Tab>Operations</Tab>
         <Tab>Delegations</Tab>
       </TabList>
-      <TabPanels>
+      <TabPanels height="100%">
         {isMultisig && (
           <TabPanel data-testid="account-card-pending-tab-panel">
             <MultisigPendingList account={account} />
@@ -48,8 +52,12 @@ export const AssetsPannel: React.FC<{
           </Box>
         </TabPanel>
 
-        <TabPanel data-testid="account-card-nfts-tab">
+        <TabPanel data-testid="account-card-nfts-tab" height="100%" overflow="hidden">
           <NFTsGrid nfts={nfts} showName={true} columns={3} spacing={5} />
+        </TabPanel>
+
+        <TabPanel data-testid="account-card-operations-tab">
+          <OperationListDisplay operations={operationDisplays} />
         </TabPanel>
       </TabPanels>
     </Tabs>
