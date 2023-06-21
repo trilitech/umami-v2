@@ -1,19 +1,21 @@
+import { TezosNetwork } from "@airgap/tezos";
 import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
 import { mockImplicitAddress } from "../../mocks/factories";
 import {
   getLatestDelegationResult,
   getTokenTransactionsResult,
-  getTransacionsResult,
+  getTransactionsResult,
 } from "../../mocks/tzktResponse";
 import { OperationDisplay, TezTransfer } from "../../types/Operation";
 import {
   getOperationDisplays,
   getTezOperationDisplay,
   getTokenOperationDisplay,
+  getTransactionUrl,
 } from "./operationsUtils";
 
 const forAddress = "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS";
-describe("getTezOperationsDisplay", () => {
+describe("getTezOperationDisplay", () => {
   test("case tez incoming", () => {
     const incomingTez: TezTransfer = {
       type: "transaction",
@@ -40,6 +42,7 @@ describe("getTezOperationsDisplay", () => {
     const result = getTezOperationDisplay(incomingTez, forAddress);
 
     const expected: OperationDisplay = {
+      id: 109783351820288,
       amount: { prettyDisplay: "+2.4 ꜩ" },
       fee: "0.000402 ꜩ",
       prettyTimestamp: "today at 10:47 AM",
@@ -84,6 +87,7 @@ describe("getTezOperationsDisplay", () => {
     const result = getTezOperationDisplay(outgoingTez, forAddress);
 
     const expected: OperationDisplay = {
+      id: 109810172297216,
       amount: { prettyDisplay: "-6.41 ꜩ" },
       fee: "0.000403 ꜩ",
       prettyTimestamp: "today at 12:36 PM",
@@ -180,8 +184,9 @@ describe("getTezOperationsDisplay", () => {
     const result = getTokenOperationDisplay(incomingNft, forAddress);
 
     const expected = {
+      id: 109817445220353,
       type: "transaction",
-      tzktUrl: "https://mainnet.tzkt.io/2214369/operations",
+      tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
       amount: {
         id: 10899580518401,
         prettyDisplay: "+1 FKR",
@@ -276,13 +281,14 @@ describe("getTezOperationsDisplay", () => {
     };
 
     const expected = {
+      id: 109854457856001,
       type: "transaction",
       amount: {
         id: 10899580518401,
         prettyDisplay: "-1 FKR",
         url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
       },
-      tzktUrl: "https://mainnet.tzkt.io/2215172/operations",
+      tzktUrl: "https://mainnet.tzkt.io/transactions/109854457856000",
       prettyTimestamp: "today at 3:24 PM",
       recipient: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
@@ -325,8 +331,9 @@ describe("getTezOperationsDisplay", () => {
 
     const result = getTokenOperationDisplay(incomingKL3, forAddress);
     const expected = {
+      id: 109855131041793,
       type: "transaction",
-      tzktUrl: "https://mainnet.tzkt.io/2215185/operations",
+      tzktUrl: "https://mainnet.tzkt.io/transactions/109855131041792",
       amount: {
         id: 10898231001089,
         prettyDisplay: "+7.1685 KL3",
@@ -372,8 +379,9 @@ describe("getTezOperationsDisplay", () => {
 
     const result = getTokenOperationDisplay(incomingKL3, forAddress);
     const expected = {
+      id: 109855493849090,
       type: "transaction",
-      tzktUrl: "https://mainnet.tzkt.io/2215193/operations",
+      tzktUrl: "https://mainnet.tzkt.io/transactions/109855493849088",
       amount: {
         id: 10898231001089,
         prettyDisplay: "-4.51 KL3",
@@ -414,8 +422,9 @@ describe("getTezOperationsDisplay", () => {
 
     const result = getTokenOperationDisplay(incomingFa12, forAddress);
     const expected = {
+      id: 109855847219201,
       type: "transaction",
-      tzktUrl: "https://mainnet.tzkt.io/2215201/operations",
+      tzktUrl: "https://mainnet.tzkt.io/transactions/109855847219200",
       amount: {
         id: 10897625972737,
         prettyDisplay: "+2.74 FA1.2",
@@ -434,7 +443,7 @@ describe("getTezOperationsDisplay", () => {
 describe("getOperationsDisplays", () => {
   it("returns the right value", () => {
     const result = getOperationDisplays(
-      getTransacionsResult,
+      getTransactionsResult,
       getTokenTransactionsResult,
       getLatestDelegationResult,
       forAddress
@@ -442,6 +451,7 @@ describe("getOperationsDisplays", () => {
 
     const expected: OperationDisplay[] = [
       {
+        id: 537704232124416,
         amount: { prettyDisplay: "0.467532 ꜩ" },
         fee: "0.000396 ꜩ",
         level: 3414723,
@@ -453,6 +463,7 @@ describe("getOperationsDisplays", () => {
         tzktUrl: "https://mainnet.tzkt.io/onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva",
       },
       {
+        id: 109855847219201,
         amount: {
           id: 10897625972737,
           prettyDisplay: "+2.74 FA1.2",
@@ -463,10 +474,11 @@ describe("getOperationsDisplays", () => {
         sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         timestamp: "2023-03-27T13:30:37Z",
         type: "transaction",
-        tzktUrl: "https://mainnet.tzkt.io/2215201/operations",
+        tzktUrl: "https://mainnet.tzkt.io/transactions/109855847219200",
         level: 2215201,
       },
       {
+        id: 109855493849090,
         amount: {
           id: 10898231001089,
           prettyDisplay: "-4.51 KL3",
@@ -477,10 +489,11 @@ describe("getOperationsDisplays", () => {
         sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         timestamp: "2023-03-27T13:29:22Z",
         type: "transaction",
-        tzktUrl: "https://mainnet.tzkt.io/2215193/operations",
+        tzktUrl: "https://mainnet.tzkt.io/transactions/109855493849088",
         level: 2215193,
       },
       {
+        id: 109855131041793,
         amount: {
           id: 10898231001089,
           prettyDisplay: "+7.1685 KL3",
@@ -491,10 +504,11 @@ describe("getOperationsDisplays", () => {
         sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
         timestamp: "2023-03-27T13:27:13Z",
         type: "transaction",
-        tzktUrl: "https://mainnet.tzkt.io/2215185/operations",
+        tzktUrl: "https://mainnet.tzkt.io/transactions/109855131041792",
         level: 2215185,
       },
       {
+        id: 109854457856001,
         amount: {
           id: 10899580518401,
           prettyDisplay: "-1 FKR",
@@ -505,10 +519,11 @@ describe("getOperationsDisplays", () => {
         sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         timestamp: "2023-03-27T13:24:48Z",
         type: "transaction",
-        tzktUrl: "https://mainnet.tzkt.io/2215172/operations",
+        tzktUrl: "https://mainnet.tzkt.io/transactions/109854457856000",
         level: 2215172,
       },
       {
+        id: 109817445220353,
         amount: {
           id: 10899580518401,
           prettyDisplay: "+1 FKR",
@@ -519,10 +534,11 @@ describe("getOperationsDisplays", () => {
         sender: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S",
         timestamp: "2023-03-27T11:06:40Z",
         type: "transaction",
-        tzktUrl: "https://mainnet.tzkt.io/2214369/operations",
+        tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
         level: 2214369,
       },
       {
+        id: 109810172297216,
         amount: { prettyDisplay: "-6.41 ꜩ" },
         fee: "0.000403 ꜩ",
         prettyTimestamp: "today at 12:36 PM",
@@ -535,6 +551,7 @@ describe("getOperationsDisplays", () => {
         level: 2214204,
       },
       {
+        id: 109783351820288,
         amount: { prettyDisplay: "+2.4 ꜩ" },
         fee: "0.000402 ꜩ",
         prettyTimestamp: "today at 10:47 AM",
@@ -547,6 +564,7 @@ describe("getOperationsDisplays", () => {
         level: 2213611,
       },
       {
+        id: 109511935262721,
         amount: {
           id: 10898194300929,
           prettyDisplay: "+2.1 KL2",
@@ -557,10 +575,11 @@ describe("getOperationsDisplays", () => {
         sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
         timestamp: "2023-03-26T14:38:48Z",
         type: "transaction",
-        tzktUrl: "https://mainnet.tzkt.io/2207656/operations",
+        tzktUrl: "https://mainnet.tzkt.io/transactions/109511935262720",
         level: 2207656,
       },
       {
+        id: 109510819577856,
         amount: { prettyDisplay: "-0 ꜩ" },
         fee: "0.000771 ꜩ",
         prettyTimestamp: "yesterday at 4:34 PM",
@@ -573,6 +592,7 @@ describe("getOperationsDisplays", () => {
         level: 2207631,
       },
       {
+        id: 109510819577858,
         amount: {
           id: 10899580518401,
           prettyDisplay: "-1 FKR",
@@ -583,7 +603,7 @@ describe("getOperationsDisplays", () => {
         sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         timestamp: "2023-03-26T14:34:47Z",
         type: "transaction",
-        tzktUrl: "https://mainnet.tzkt.io/2207631/operations",
+        tzktUrl: "https://mainnet.tzkt.io/transactions/109510819577856",
         level: 2207631,
       },
     ];
@@ -595,6 +615,7 @@ describe("getOperationsDisplays", () => {
       [],
       [],
       {
+        id: 12345,
         sender: { address: mockImplicitAddress(1).pkh },
         newDelegate: { address: mockImplicitAddress(1).pkh },
         timestamp: new Date().toISOString(),
@@ -607,6 +628,7 @@ describe("getOperationsDisplays", () => {
     );
     expect(result).toEqual([
       {
+        id: 12345,
         amount: { prettyDisplay: "0.1 ꜩ" },
         fee: "0.0004 ꜩ",
         level: 300,
@@ -625,6 +647,7 @@ describe("getOperationsDisplays", () => {
       [],
       [],
       {
+        id: 12345,
         sender: { address: mockImplicitAddress(1).pkh },
         timestamp: new Date().toISOString(),
         amount: 100000,
@@ -635,5 +658,44 @@ describe("getOperationsDisplays", () => {
       mockImplicitAddress(1).pkh
     );
     expect(result).toEqual([]);
+  });
+});
+
+describe("getTransactionUrl", () => {
+  it("should return a proper URL", () => {
+    [TezosNetwork.GHOSTNET, TezosNetwork.MAINNET].forEach(network => {
+      expect(
+        getTransactionUrl({
+          transactionId: 123,
+          originationId: 456,
+          migrationId: 789,
+          network: network,
+        })
+      ).toEqual(`https://${network}.tzkt.io/transactions/123`);
+      expect(
+        getTransactionUrl({
+          transactionId: undefined,
+          originationId: 456,
+          migrationId: 789,
+          network: network,
+        })
+      ).toEqual(`https://${network}.tzkt.io/originations/456`);
+      expect(
+        getTransactionUrl({
+          transactionId: undefined,
+          originationId: undefined,
+          migrationId: 789,
+          network: network,
+        })
+      ).toEqual(`https://${network}.tzkt.io/migrations/789`);
+      expect(() =>
+        getTransactionUrl({
+          transactionId: undefined,
+          originationId: undefined,
+          migrationId: undefined,
+          network: network,
+        })
+      ).toThrow();
+    });
   });
 });

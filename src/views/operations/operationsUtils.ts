@@ -24,8 +24,27 @@ export const getHashUrl = (hash: string, network: TezosNetwork) => {
   return `https://${network}.tzkt.io/${hash}`;
 };
 
-export const getLevelUrl = (blockLevel: number, network: TezosNetwork) => {
-  return `https://${network}.tzkt.io/${blockLevel}/operations`;
+export const getTransactionUrl = ({
+  transactionId,
+  originationId,
+  migrationId,
+  network,
+}: {
+  transactionId: number | undefined;
+  originationId: number | undefined;
+  migrationId: number | undefined;
+  network: TezosNetwork;
+}) => {
+  if (transactionId) {
+    return `https://${network}.tzkt.io/transactions/${transactionId}`;
+  }
+  if (originationId) {
+    return `https://${network}.tzkt.io/originations/${originationId}`;
+  }
+  if (migrationId) {
+    return `https://${network}.tzkt.io/migrations/${migrationId}`;
+  }
+  throw new Error("Cannot find transaction TzKT URL");
 };
 
 export const getIsInbound = (prettyAmount: string) => prettyAmount[0] === "+";
@@ -53,89 +72,102 @@ const getSign = (address: string, sender: string, recipient: string) => {
 };
 
 export const getKey = (op: OperationDisplay) => {
-  return op.amount.prettyDisplay + op.sender + op.recipient + op.timestamp;
+  // id is unique, but it might be that we have
+  // both the recipient and the sender accounts
+  // and in that case the only way to differentiate
+  // would be to use the operation sign (+/-)
+  return op.amount.prettyDisplay + op.id;
 };
+
+const TezTransaction = z.object({
+  id: z.number(),
+  type: z.string(),
+  sender: z.object({ address: z.string() }),
+  target: z.object({ address: z.string() }),
+  timestamp: z.string(),
+  amount: z.number(),
+  hash: z.string(),
+  level: z.number(),
+});
 
 export const getTezOperationDisplay = (
   transfer: TezTransfer,
   forAddress: string,
   network = TezosNetwork.MAINNET
 ) => {
-  const TezTransaction = z.object({
-    type: z.string().regex(/transaction/i),
-    sender: z.object({ address: z.string() }),
-    target: z.object({ address: z.string() }),
-    timestamp: z.string(),
-    amount: z.number(),
-    hash: z.string(),
-    level: z.number(),
-  });
-
-  try {
-    const required = TezTransaction.parse(transfer);
-    const sender = required.sender.address;
-    const target = required.target.address;
-
-    const sign = getSign(forAddress, sender, target);
-
-    const prettyTimestamp = formatRelative(new Date(required.timestamp), new Date());
-
-    const result: OperationDisplay = {
-      amount: {
-        prettyDisplay: sign + prettyTezAmount(new BigNumber(required.amount)),
-      },
-      prettyTimestamp,
-      timestamp: required.timestamp,
-      recipient: required.target.address,
-      sender: required.sender.address,
-      type: required.type,
-      tzktUrl: getHashUrl(required.hash, network),
-      fee:
-        transfer.bakerFee !== undefined
-          ? prettyTezAmount(new BigNumber(transfer.bakerFee))
-          : undefined,
-      status: "confirmed",
-      level: required.level,
-    };
-    return result;
-  } catch (error) {
+  const parseResult = TezTransaction.safeParse(transfer);
+  if (!parseResult.success) {
+    console.warn("getTezOperationDisplay failed parsing");
     return null;
   }
+  const parsed = parseResult.data;
+  const sender = parsed.sender.address;
+  const target = parsed.target.address;
+
+  const sign = getSign(forAddress, sender, target);
+
+  const prettyTimestamp = formatRelative(new Date(parsed.timestamp), new Date());
+
+  const result: OperationDisplay = {
+    id: parsed.id,
+    amount: {
+      prettyDisplay: sign + prettyTezAmount(new BigNumber(parsed.amount)),
+    },
+    prettyTimestamp,
+    timestamp: parsed.timestamp,
+    recipient: parsed.target.address,
+    sender: parsed.sender.address,
+    type: "transaction",
+    tzktUrl: getHashUrl(parsed.hash, network),
+    fee:
+      transfer.bakerFee !== undefined
+        ? prettyTezAmount(new BigNumber(transfer.bakerFee))
+        : undefined,
+    status: "confirmed",
+    level: parsed.level,
+  };
+  return result;
 };
+
+// TODO: cover cases where the "from" field is missing
+// Examples: https://api.tzkt.io/v1/tokens/transfers?from.null
+const TokenTransaction = z.object({
+  id: z.number(),
+  from: z.object({ address: z.string() }),
+  to: z.object({ address: z.string() }),
+  timestamp: z.string(),
+  amount: z.string(),
+  level: z.number(),
+  transactionId: z.number().optional(),
+  migrationId: z.number().optional(),
+  originationId: z.number().optional(),
+});
 
 export const getTokenOperationDisplay = (
   transfer: TokenTransfer,
   forAddress: string,
   network = TezosNetwork.MAINNET
 ) => {
-  // "from" field is missing sometimes
-  const TokenTransaction = z.object({
-    from: z.object({ address: z.string() }),
-    to: z.object({ address: z.string() }),
-    timestamp: z.string(),
-    amount: z.string(),
-    level: z.number(),
-  });
-
   const asset = classifyTokenTransfer(transfer);
 
   const transferRequired = TokenTransaction.safeParse(transfer);
 
   if (!asset || !transferRequired.success) {
+    console.warn("getTokenOperationDisplay failed parsing");
     return null;
   }
 
-  const required = transferRequired.data;
+  const parsed = transferRequired.data;
   const metadata = transfer.token?.metadata;
 
-  const sign = getSign(forAddress, required.from.address, required.to.address);
+  const sign = getSign(forAddress, parsed.from.address, parsed.to.address);
 
   const displayUri = metadata && metadata.displayUri;
   const displayId = transfer.token?.id;
 
-  const level = required.level;
+  const level = parsed.level;
 
-  const prettyTimestamp = formatRelative(new Date(required.timestamp), new Date());
+  const prettyTimestamp = formatRelative(new Date(parsed.timestamp), new Date());
 
   let prettyAmount: string;
   if (asset.type === "nft") {
@@ -145,6 +177,7 @@ export const getTokenOperationDisplay = (
   }
 
   const result: OperationDisplay = {
+    id: parsed.id,
     type: "transaction",
     amount: {
       prettyDisplay: sign + prettyAmount,
@@ -152,59 +185,66 @@ export const getTokenOperationDisplay = (
       id: displayId,
     },
     prettyTimestamp,
-    timestamp: required.timestamp,
-    recipient: required.to.address,
-    sender: required.from.address,
-    tzktUrl: getLevelUrl(level, network),
+    timestamp: parsed.timestamp,
+    recipient: parsed.to.address,
+    sender: parsed.from.address,
+    tzktUrl: getTransactionUrl({
+      transactionId: parsed.transactionId,
+      originationId: parsed.originationId,
+      migrationId: parsed.migrationId,
+      network,
+    }),
     level,
   };
   return result;
 };
 
+const DelegationSchema = z.object({
+  id: z.number(),
+  sender: z.object({ address: z.string() }),
+  newDelegate: z.object({ address: z.string() }).optional(),
+  timestamp: z.string(),
+  amount: z.number(),
+  hash: z.string(),
+  level: z.number(),
+  bakerFee: z.number(),
+});
+
 const getDelegationOperationDisplay = (
   delegation: DelegationOperation,
   network = TezosNetwork.MAINNET
 ): OperationDisplay | null => {
-  const DelegationSchema = z.object({
-    sender: z.object({ address: z.string() }),
-    newDelegate: z.object({ address: z.string() }).optional(),
-    timestamp: z.string(),
-    amount: z.number(),
-    hash: z.string(),
-    level: z.number(),
-    bakerFee: z.number(),
-  });
+  const parseResult = DelegationSchema.safeParse(delegation);
 
-  const delegationRequired = DelegationSchema.safeParse(delegation);
-
-  if (!delegationRequired.success) {
+  if (!parseResult.success) {
     console.warn("getDelegationOperationDisplay failed parsing");
     return null;
   }
 
-  const required = delegationRequired.data;
+  const parsed = parseResult.data;
 
-  if (!required.newDelegate) {
+  if (!parsed.newDelegate) {
     return null;
   }
 
-  const prettyAmount = prettyTezAmount(new BigNumber(required.amount));
+  const prettyAmount = prettyTezAmount(new BigNumber(parsed.amount));
 
-  const prettyTimestamp = formatRelative(new Date(required.timestamp), new Date());
-  const level = required.level;
+  const prettyTimestamp = formatRelative(new Date(parsed.timestamp), new Date());
+  const level = parsed.level;
 
   return {
+    id: parsed.id,
     type: "delegation",
     amount: {
       prettyDisplay: prettyAmount,
     },
     prettyTimestamp,
-    timestamp: required.timestamp,
-    recipient: required.newDelegate.address,
-    sender: required.sender.address,
-    tzktUrl: getHashUrl(required.hash, network),
+    timestamp: parsed.timestamp,
+    recipient: parsed.newDelegate.address,
+    sender: parsed.sender.address,
+    tzktUrl: getHashUrl(parsed.hash, network),
     level,
-    fee: prettyTezAmount(new BigNumber(required.bakerFee)),
+    fee: prettyTezAmount(new BigNumber(parsed.bakerFee)),
   };
 };
 
