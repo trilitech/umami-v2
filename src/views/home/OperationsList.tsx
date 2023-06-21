@@ -1,8 +1,9 @@
-import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import NestedScroll from "../../components/NestedScroll";
 import { OperationTile } from "../../components/OperationTile";
 import { useAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import { getKey, sortOperationsDisplaysBytDate } from "../operations/operationsUtils";
-import { Link } from "react-router-dom";
 export const OperationsList = () => {
   const operations = useAllOperationDisplays();
   const operationList = sortOperationsDisplaysBytDate(Object.values(operations).flat());
@@ -29,9 +30,7 @@ export const OperationsList = () => {
         </Link>
       </TabList>
 
-      <Box minHeight="10px" overflowY="auto">
-        {operationEls}
-      </Box>
+      <NestedScroll>{operationEls}</NestedScroll>
     </Tabs>
   );
 };

@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import NestedScroll from "../../components/NestedScroll";
 import { useCreateOrImportSecretModal } from "../../components/Onboarding/useOnboardingModal";
 import {
   AccountType,
@@ -197,18 +198,12 @@ export const AccountsList: React.FC<{
     ) : null;
   });
   return (
-    <>
+    <Box height="100%">
       <Header />
-      {/* For the nested element scroll to work you need:
-       * - direct parent overflow hidden
-       *  -nested element overflow auto/scroll and height 100%
-       */}
-      <Box overflowY="auto" height="100%">
-        {accountTiles}
-      </Box>
+      <NestedScroll>{accountTiles}</NestedScroll>
       {confirmModal}
       {deriveAccountModal}
-    </>
+    </Box>
   );
 };
 
