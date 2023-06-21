@@ -180,4 +180,5 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+  app.setAsDefaultProtocolClient("umami")
 });
