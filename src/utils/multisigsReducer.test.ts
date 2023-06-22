@@ -15,7 +15,6 @@ describe("Contacts reducer", () => {
   test("should set new multisigs", () => {
     const multisig: MultisigWithPendingOperations = {
       address: mockContractAddress(0),
-      balance: "44",
       pendingOperations: [],
       signers: [],
       threshold: 8,

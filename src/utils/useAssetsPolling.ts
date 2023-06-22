@@ -81,9 +81,7 @@ export const useAssetsPolling = () => {
 
   const tokenQuery = useQuery("tokenBalance", {
     queryFn: async () => {
-      const tokens = await Promise.all(
-        [...multisigPkhs, ...implicitAccountPkhs].map(pkh => getTokensPayload(pkh, network))
-      );
+      const tokens = await Promise.all(allAccountPkhs.map(pkh => getTokensPayload(pkh, network)));
 
       dispatch(assetsActions.updateTokenBalance(tokens));
     },
@@ -155,7 +153,7 @@ export const useAssetsPolling = () => {
       dispatch(multisigActions.set(multisigsWithOperations));
     },
 
-    refetchInterval: 2000,
+    refetchInterval: REFRESH_RATE,
   });
 
   const tezQueryRef = useRef(tezQuery);
@@ -169,6 +167,7 @@ export const useAssetsPolling = () => {
 
   // Refetch when network changes
   useEffect(() => {
+    multisigsQueryRef.current.refetch();
     tezQueryRef.current.refetch();
     tokenQueryRef.current.refetch();
     tezTransfersQueryRef.current.refetch();
@@ -176,6 +175,5 @@ export const useAssetsPolling = () => {
     conversionrateQueryRef.current.refetch();
     delegationsQueryRef.current.refetch();
     blockNumberQueryRef.current.refetch();
-    multisigsQueryRef.current.refetch();
   }, [network]);
 };

@@ -14,9 +14,8 @@ export const getAllMultiSigContracts = async (
     const url = `${tzktUrls[network]}/v1/contracts/${contractAddress}/same?includeStorage=true&limit=${MULTISIG_FETCH_LIMIT}`;
     const { data } = await axios.get<tzktGetSameMultisigsResponseType>(url);
 
-    return data.map(({ address, balance, storage: { signers, threshold, pending_ops } }) => ({
+    return data.map(({ address, storage: { signers, threshold, pending_ops } }) => ({
       address,
-      balance,
       storage: {
         signers,
         threshold,

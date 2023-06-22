@@ -10,6 +10,5 @@ export type MultisigWithPendingOperations = {
   address: ContractAddress;
   threshold: number;
   signers: ImplicitAddress[];
-  balance: string;
   pendingOperations: MultisigOperation[];
 };

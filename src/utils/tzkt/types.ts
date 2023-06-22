@@ -3,7 +3,6 @@ export type tzktGetAddressResponseType = {
 };
 
 export type tzktGetSameMultisigsResponseType = {
-  balance: number;
   address: string;
   storage: {
     signers: string[];

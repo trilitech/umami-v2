@@ -41,7 +41,6 @@ export type MultisigAccount = {
   label: string;
   threshold: number;
   signers: ImplicitAddress[];
-  balance: string; // TODO remove
 };
 
 export type ImplicitAccount = MnemonicAccount | SocialAccount | LedgerAccount;

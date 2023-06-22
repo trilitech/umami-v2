@@ -136,7 +136,6 @@ export const useMultisigAccounts = (): MultisigAccount[] => {
     type: AccountType.MULTISIG,
     threshold: m.threshold,
     signers: m.signers,
-    balance: m.balance,
   }));
 };
 
