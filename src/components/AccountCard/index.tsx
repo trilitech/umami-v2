@@ -21,10 +21,6 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const { onOpen: onOpenSend, modalElement: sendModal } = useSendFormModal();
   const { onOpen: onOpenReceive, modalElement: receiveModal } = useReceiveModal();
 
-  if (!account) {
-    return null;
-  }
-
   const balance = accountBalance(account.address.pkh);
   const tez = balance || null;
   const dollarBalance = getDollarBalance(account.address.pkh);
