@@ -18,7 +18,7 @@ const makeClient = () =>
     appUrl: "https://umamiwallet.com/",
   });
 
-export let walletClient = makeClient();
+export const walletClient = makeClient();
 
 const PEERS_QUERY_KEY = "beaconPeers";
 
@@ -103,6 +103,9 @@ export const useBeaconInit = () => {
 };
 
 export const resetBeacon = async () => {
-  await walletClient.destroy();
-  walletClient = makeClient();
+  // Until walletClient.destroy is fixed
+  await walletClient.removeAllAccounts();
+  await walletClient.removeAllAppMetadata();
+  await walletClient.removeAllPeers();
+  await walletClient.removeAllPermissions();
 };
