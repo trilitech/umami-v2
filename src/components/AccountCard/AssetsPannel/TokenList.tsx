@@ -9,6 +9,7 @@ import {
   tokenPrettyBalance,
   tokenSymbol,
 } from "../../../types/Asset";
+import { NoTokens } from "../../NoItems";
 
 const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
   const name = tokenName(token);
@@ -43,6 +44,19 @@ const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
         {prettyAmount}
       </Heading>
     </Flex>
+  );
+};
+
+export const TokenList = ({ tokens }: { tokens: Array<FA12Token | FA2Token> }) => {
+  if (tokens.length === 0) {
+    return <NoTokens small />;
+  }
+  return (
+    <Box>
+      {tokens.map(t => {
+        return <TokenTile token={t} key={t.contract + (t.type === "fa2" ? t.tokenId : "")} />;
+      })}
+    </Box>
   );
 };
 

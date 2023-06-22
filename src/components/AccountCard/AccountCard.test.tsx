@@ -83,6 +83,18 @@ describe("<AccountCard />", () => {
     expect(screen.getByTestId("account-card-tokens-tab")).toBeInTheDocument();
   });
 
+  test("tokens tab should display no tokens message if account has no tokens", () => {
+    // Remove all assets in the store
+    store.dispatch(assetsSlice.actions.reset());
+
+    render(<AccountCard account={selectedAccount} />);
+
+    screen.getByTestId("account-card-tokens-tab").click();
+
+    const { getByText } = within(screen.getByTestId("asset-panel"));
+    expect(getByText(/no tokens found/i)).toBeInTheDocument();
+  });
+
   test("tokens tab should display token infos correctly", () => {
     render(<AccountCard account={selectedAccount} />);
     const tokenTiles = screen.getAllByTestId("token-tile");

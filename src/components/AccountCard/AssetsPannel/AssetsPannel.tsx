@@ -6,7 +6,7 @@ import { OperationDisplay } from "../../../types/Operation";
 import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
 import MultisigPendingList from "./MultisigPendingList";
 import { NFTsGrid } from "./NFTsGrid";
-import TokenTile from "./TokenTile";
+import { TokenList } from "./TokenList";
 
 export const AssetsPannel: React.FC<{
   tokens: Array<FA12Token | FA2Token>;
@@ -44,9 +44,7 @@ export const AssetsPannel: React.FC<{
           </TabPanel>
         )}
         <TabPanel data-testid="account-card-tokens-tab">
-          {tokens.map(t => {
-            return <TokenTile token={t} key={t.contract + (t.type === "fa2" ? t.tokenId : "")} />;
-          })}
+          <TokenList tokens={tokens} />
         </TabPanel>
 
         <TabPanel data-testid="account-card-nfts-tab" height="100%" overflow="hidden">
