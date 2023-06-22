@@ -20,26 +20,24 @@ export default function NoItems({
   const headingSize = small ? "md" : "3xl";
   const buttonSize = small ? "md" : "lg";
   return (
-    <Flex width="100%" height="100%" alignContent="center" justifyContent="center">
-      <Center>
-        <Box>
-          <Heading size={headingSize} p="42px">
-            {text}
-          </Heading>
-          <Center>
-            {primaryText ? (
-              <Button bg="umami.blue" size={buttonSize} mr="16px" onClick={onClickPrimary}>
-                {primaryText}
-              </Button>
-            ) : null}
-            {secondaryText ? (
-              <Button variant="outline" size={buttonSize} onClick={onClickSecondary}>
-                {secondaryText}
-              </Button>
-            ) : null}
-          </Center>
-        </Box>
-      </Center>
+    <Flex width="100%" height="100%" justifyContent="center" alignItems="center">
+      <Box>
+        <Heading size={headingSize} p="42px">
+          {text}
+        </Heading>
+        <Center>
+          {primaryText ? (
+            <Button bg="umami.blue" size={buttonSize} onClick={onClickPrimary}>
+              {primaryText}
+            </Button>
+          ) : null}
+          {secondaryText ? (
+            <Button variant="outline" size={buttonSize} onClick={onClickSecondary}>
+              {secondaryText}
+            </Button>
+          ) : null}
+        </Center>
+      </Box>
     </Flex>
   );
 }
