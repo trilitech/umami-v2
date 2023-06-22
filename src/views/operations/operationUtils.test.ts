@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
 import { mockImplicitAddress } from "../../mocks/factories";
 import {
@@ -7,6 +6,7 @@ import {
   getTransactionsResult,
 } from "../../mocks/tzktResponse";
 import { OperationDisplay, TezTransfer } from "../../types/Operation";
+import { SupportedNetworks } from "../../utils/network";
 import {
   getOperationDisplays,
   getTezOperationDisplay,
@@ -663,7 +663,7 @@ describe("getOperationsDisplays", () => {
 
 describe("getTransactionUrl", () => {
   it("should return a proper URL", () => {
-    [TezosNetwork.GHOSTNET, TezosNetwork.MAINNET].forEach(network => {
+    SupportedNetworks.forEach(network => {
       expect(
         getTransactionUrl({
           transactionId: 123,
