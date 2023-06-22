@@ -36,9 +36,6 @@ import { mockToast } from "../../mocks/toast";
 import { multisigActions } from "../../utils/store/multisigsSlice";
 import { multisigs } from "../../mocks/mutlisigsWithPendingOperations";
 
-// These tests might take long in the CI
-jest.setTimeout(10000);
-
 jest.mock("../../multisig/multisigUtils");
 jest.mock("@chakra-ui/react", () => {
   return {

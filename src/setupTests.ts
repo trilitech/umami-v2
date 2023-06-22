@@ -14,6 +14,9 @@ failOnConsole();
 
 MockDate.set("2023-03-27T14:15:09.760Z");
 
+// Increase timeout for CI
+jest.setTimeout(10000);
+
 jest.mock("./utils/tezos");
 
 jest.mock("./utils/store/extraArgument");
