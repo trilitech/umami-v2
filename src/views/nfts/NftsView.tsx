@@ -11,16 +11,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
 import { TbFilter } from "react-icons/tb";
+import { useParams } from "react-router-dom";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { NoNFTS } from "../../components/NoItems/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { NFT } from "../../types/Asset";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
-import { useParams } from "react-router-dom";
-import NoItems from "../../components/NoItems";
-import { navigateToExternalLink } from "../../utils/helpers";
 
 export const FilterController: React.FC = () => {
   return (
@@ -79,13 +78,7 @@ const NFTsViewBase = () => {
           </Drawer>
         </>
       ) : (
-        <NoItems
-          text="No NFTs found"
-          primaryText="Buy your first NFT"
-          onClickPrimary={() => {
-            navigateToExternalLink(`https://objkt.com`);
-          }}
-        />
+        <NoNFTS />
       )}
     </Flex>
   );
