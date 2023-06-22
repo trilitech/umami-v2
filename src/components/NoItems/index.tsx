@@ -62,3 +62,14 @@ export const NoOperations: ComponentWithSizeProps = props => (
 export const NoDelegations: ComponentWithSizeProps = props => (
   <NoItems text="Currently not delegating" primaryText="Start delegating" />
 );
+
+export const NoTokens: ComponentWithSizeProps = props => (
+  <NoItems
+    {...props}
+    text="No tokens found"
+    primaryText="Buy your first Token"
+    onClickPrimary={() => {
+      navigateToExternalLink(`https://quipuswap.com/`);
+    }}
+  />
+);

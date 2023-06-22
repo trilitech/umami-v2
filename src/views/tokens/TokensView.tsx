@@ -2,9 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineArrowDown } from "react-icons/ai";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import NoItems from "../../components/NoItems";
+import { NoTokens } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
-import { navigateToExternalLink } from "../../utils/helpers";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { useHasTokens } from "../../utils/hooks/assetsHooks";
 import { useSendFormModal } from "../home/useSendFormModal";
@@ -46,13 +45,7 @@ const TokensView = () => {
           {modalElement}
         </>
       ) : (
-        <NoItems
-          text="No tokens found"
-          primaryText="Buy your first Token"
-          onClickPrimary={() => {
-            navigateToExternalLink(`https://quipuswap.com/`);
-          }}
-        />
+        <NoTokens />
       )}
     </Flex>
   );
