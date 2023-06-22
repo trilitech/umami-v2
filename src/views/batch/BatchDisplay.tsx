@@ -20,9 +20,9 @@ import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTile";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
 import { OperationValue } from "../../components/sendForm/types";
-import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { ImplicitAccount } from "../../types/Account";
 import { formatTokenAmount, tokenSymbol } from "../../types/Asset";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
@@ -138,14 +138,15 @@ export const BatchDisplay: React.FC<{
                   <Td>{renderAmount(operation)}</Td>
                   <Td>
                     {operation.type === "token" && (
-                      <TextAndIconBtn
-                        text={formatPkh(operation.data.contract)}
+                      <IconAndTextBtn
+                        label={formatPkh(operation.data.contract)}
                         icon={FiExternalLink}
                         onClick={() => {
                           navigateToExternalLink(
                             `${tzktExplorer[network]}/${operation.data.contract}`
                           );
                         }}
+                        textFirst
                       />
                     )}
                   </Td>

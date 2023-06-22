@@ -19,7 +19,6 @@ import { FiExternalLink } from "react-icons/fi";
 import { MdArrowOutward, MdGeneratingTokens } from "react-icons/md";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { Identicon } from "../../components/Identicon";
-import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Asset";
@@ -104,12 +103,13 @@ const AccountTokensTile: React.FC<{
                     </Flex>
                   </Td>
                   <Td w="15%">
-                    <TextAndIconBtn
-                      text={formatPkh(token.contract)}
+                    <IconAndTextBtn
+                      label={formatPkh(token.contract)}
                       icon={FiExternalLink}
                       onClick={() => {
                         navigateToExternalLink(`${tzktExplorer[network]}/${token.contract}`);
                       }}
+                      textFirst
                     />
                   </Td>
                   <Td w="15%">{tokenPrettyBalance(token, { showSymbol: false })}</Td>

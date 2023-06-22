@@ -2,8 +2,8 @@ import { Divider, useDisclosure } from "@chakra-ui/react";
 import { BiPencil } from "react-icons/bi";
 import { BsTrash } from "react-icons/bs";
 import { DeleteContactModal } from "../../components/ContactModal";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import PopoverMenu from "../../components/PopoverMenu";
-import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { Contact } from "../../types/Contact";
 import { useUpsertContactModal } from "../home/useUpsertContactModal";
 
@@ -15,8 +15,8 @@ const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
   return (
     <>
       <PopoverMenu>
-        <TextAndIconBtn
-          text="Rename"
+        <IconAndTextBtn
+          label="Rename"
           icon={BiPencil}
           onClick={() =>
             onOpenEdit({
@@ -26,9 +26,10 @@ const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
               contactToDisplay: contact,
             })
           }
+          textFirst
         />
         <Divider marginY={1} />
-        <TextAndIconBtn text="Remove" icon={BsTrash} onClick={onOpenDelete} />
+        <IconAndTextBtn label="Remove" icon={BsTrash} onClick={onOpenDelete} textFirst />
       </PopoverMenu>
       {editModal}
       <DeleteContactModal isOpen={isOpenDelete} contact={contact} onClose={onCloseDelete} />

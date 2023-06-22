@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineArrowDown } from "react-icons/ai";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NoItems from "../../components/NoItems";
-import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { TopBar } from "../../components/TopBar";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
@@ -13,7 +13,12 @@ import AccountTokensTile from "./AccountTokensTile";
 export const FilterController: React.FC = () => {
   return (
     <Flex alignItems="center" mb={4} mt={4}>
-      <TextAndIconBtn icon={AiOutlineArrowDown} text="Filter by Account" onClick={() => {}} />
+      <IconAndTextBtn
+        icon={AiOutlineArrowDown}
+        label="Filter by Account"
+        onClick={() => {}}
+        textFirst
+      />
     </Flex>
   );
 };
