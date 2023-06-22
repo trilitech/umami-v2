@@ -125,7 +125,7 @@ describe("<AccountCard />", () => {
     expect(screen.getByText(mockNft.token?.metadata?.name as string)).toBeInTheDocument();
   });
 
-  it("should accounts operations under operations tab", () => {
+  it("should display accounts operations under operations tab if any", () => {
     store.dispatch(
       updateTezTransfers([
         {
@@ -159,12 +159,17 @@ describe("<AccountCard />", () => {
     render(<AccountCard account={selectedAccount} />);
     expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
     screen.getByTestId("account-card-operations-tab").click();
-
-    expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
-    expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
     const operations = screen.getAllByTestId("operation-tile");
     expect(operations).toHaveLength(2);
     expect(operations[0]).toHaveTextContent("-1 ꜩ");
     expect(operations[1]).toHaveTextContent("+2 ꜩ");
+  });
+
+  it("should display no operations if account has no operations", () => {
+    render(<AccountCard account={selectedAccount} />);
+    expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
+    screen.getByTestId("account-card-operations-tab").click();
+    const { getByText } = within(screen.getByTestId("asset-panel"));
+    expect(getByText(/no operations/i)).toBeTruthy();
   });
 });
