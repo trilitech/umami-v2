@@ -13,7 +13,7 @@ import { BsArrowDownUp } from "react-icons/bs";
 import { TbFilter } from "react-icons/tb";
 import { useParams } from "react-router-dom";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import { NoNFTs } from "../../components/NoItems/NoItems";
+import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { NFT } from "../../types/Asset";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { NFT } from "../../../types/Asset";
 import { truncate } from "../../../utils/format";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
-import { NoNFTs } from "../../NoItems/NoItems";
+import { NoNFTs } from "../../NoItems";
 
 export const NFTsGrid: FC<{ nfts: NFT[]; showName?: boolean } & SimpleGridProps> = ({
   nfts,
