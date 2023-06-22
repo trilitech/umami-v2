@@ -145,7 +145,6 @@ export const mockMultisigAccount = (index: number): MultisigAccount => {
     threshold: 1,
     signers: [mockImplicitAddress(index)],
     balance: "1",
-    operations: [],
   };
 };
 
