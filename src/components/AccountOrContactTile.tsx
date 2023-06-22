@@ -2,10 +2,10 @@ import { MdPersonAddAlt } from "react-icons/md";
 import { FC } from "react";
 import { useUpsertContactModal } from "../views/home/useUpsertContactModal";
 import { formatPkh, truncate } from "../utils/format";
-import { TextAndIconBtn } from "./TextAndIconBtn";
 import { useGetContractName } from "../utils/hooks/contactsHooks";
 import { useGetImplicitAccount } from "../utils/hooks/accountHooks";
 import { Box, Text } from "@chakra-ui/react";
+import { IconAndTextBtn } from "./IconAndTextBtn";
 
 export const ContactTile: FC<{
   pkh: string;
@@ -18,12 +18,13 @@ export const ContactTile: FC<{
       {contactName ? (
         <Text size="sm">{truncate(contactName, 20)}</Text>
       ) : (
-        <TextAndIconBtn
-          text={formatPkh(pkh)}
+        <IconAndTextBtn
+          label={formatPkh(pkh)}
           icon={MdPersonAddAlt}
           onClick={() => {
             onOpen({ contactToDisplay: { name: "", pkh }, isEdit: true });
           }}
+          textFirst
         />
       )}
 

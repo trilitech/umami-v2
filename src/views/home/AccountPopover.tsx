@@ -1,8 +1,8 @@
 import { Divider } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import PopoverMenu from "../../components/PopoverMenu";
-import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 
 const AccountPopover: React.FC<{
   onDelete: () => void;
@@ -10,9 +10,9 @@ const AccountPopover: React.FC<{
 }> = ({ onDelete, onCreate }) => {
   return (
     <PopoverMenu>
-      <TextAndIconBtn text="Remove" icon={BsTrash} onClick={onDelete} />
+      <IconAndTextBtn label="Remove" icon={BsTrash} onClick={onDelete} textFirst />
       <Divider marginY={1} />
-      <TextAndIconBtn text="Create" icon={AiOutlinePlus} onClick={onCreate} />
+      <IconAndTextBtn label="Create" icon={AiOutlinePlus} onClick={onCreate} textFirst />
     </PopoverMenu>
   );
 };

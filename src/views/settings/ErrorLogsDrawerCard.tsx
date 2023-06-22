@@ -14,7 +14,7 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import { MdCopyAll } from "react-icons/md";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
-import { TextAndIconBtn } from "../../components/TextAndIconBtn";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { mockErrorLogs } from "../../mocks/errorLogs";
 import colors from "../../style/colors";
 import { ErrorLog } from "../../types/ErrorLog";
@@ -48,7 +48,7 @@ const ErrorLogsDrawerBody = () => {
     <Flex direction="column" height="100%">
       <Flex h={24} justifyContent="space-between" alignItems="center">
         <Heading size="xl">Error Logs</Heading>
-        <TextAndIconBtn text="Clear All" icon={BsTrash} onClick={() => {}} />
+        <IconAndTextBtn label="Clear All" icon={BsTrash} textFirst onClick={() => {}} />
       </Flex>
       {mockErrorLogs.map((log, i) => (
         <ErrorLogRow errorLog={log} key={i} />
