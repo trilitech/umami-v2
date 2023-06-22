@@ -46,7 +46,7 @@ export default function NoItems({
 
 type ComponentWithSizeProps = React.FC<{ small?: boolean }>;
 
-export const NoNFTS: ComponentWithSizeProps = props => (
+export const NoNFTs: ComponentWithSizeProps = props => (
   <NoItems
     {...props}
     text="No NFTs found"
