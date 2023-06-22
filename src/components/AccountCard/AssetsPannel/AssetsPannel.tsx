@@ -45,7 +45,7 @@ export const AssetsPannel: React.FC<{
         )}
         <TabPanel data-testid="account-card-tokens-tab">
           {tokens.map(t => {
-            return <TokenTile token={t} key={t.contract + t.balance} />;
+            return <TokenTile token={t} key={t.contract + (t.type === "fa2" ? t.tokenId : "")} />;
           })}
         </TabPanel>
 
