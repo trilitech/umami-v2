@@ -4,12 +4,17 @@ import { Link } from "react-router-dom";
 import { NFT } from "../../../types/Asset";
 import { truncate } from "../../../utils/format";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
+import { NoNFTS } from "../../NoItems/NoItems";
 
 export const NFTsGrid: FC<{ nfts: NFT[]; showName?: boolean } & SimpleGridProps> = ({
   nfts,
   showName,
   ...rest
 }) => {
+  if (nfts.length === 0) {
+    return <NoNFTS small />;
+  }
+
   return (
     <SimpleGrid {...rest}>
       {nfts.map((nft, i) => {
