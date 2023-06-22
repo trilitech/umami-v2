@@ -20,6 +20,7 @@ import { VscWand } from "react-icons/vsc";
 import { useQuery } from "react-query";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { NoDelegations } from "../../components/NoItems/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { prettyTezAmount } from "../../utils/format";
@@ -29,7 +30,6 @@ import { useAppDispatch } from "../../utils/store/hooks";
 import { getBakers } from "../../utils/tezos";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { useRenderBakerSmallTile } from "./BakerSmallTile";
-import NoItems from "../../components/NoItems";
 
 const DelegationsTable = ({
   delegations,
@@ -186,7 +186,7 @@ const DelegationsView = () => {
           {modalElement}
         </>
       ) : (
-        <NoItems text="Currently not delegating" primaryText="Start delegating" />
+        <NoDelegations />
       )}
     </Flex>
   );

@@ -20,7 +20,7 @@ import { TbFilter } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import NoItems from "../../components/NoItems";
+import { NoOperations } from "../../components/NoItems/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
@@ -131,7 +131,7 @@ const OperationsView = () => {
           </Box>
         </>
       ) : (
-        <NoItems text="No operations found" />
+        <NoOperations />
       )}
     </Flex>
   );

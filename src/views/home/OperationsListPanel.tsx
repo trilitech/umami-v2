@@ -1,5 +1,6 @@
-import { Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { NoOperations } from "../../components/NoItems/NoItems";
 import { useGetAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import { OperationListDisplay } from "./OpertionList/OperationListDisplay";
 
@@ -23,7 +24,15 @@ export const OperationsListPanel = () => {
           View All
         </Link>
       </TabList>
-      <OperationListDisplay operations={operationDisplays} />
+      <TabPanels>
+        <TabPanel>
+          {operationDisplays.length === 0 ? (
+            <NoOperations small />
+          ) : (
+            <OperationListDisplay operations={operationDisplays} />
+          )}
+        </TabPanel>
+      </TabPanels>
     </Tabs>
   );
 };

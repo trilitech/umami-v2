@@ -1,6 +1,7 @@
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
 import { NFTsGrid } from "../../components/AccountCard/AssetsPannel/NFTsGrid";
 import NestedScroll from "../../components/NestedScroll";
+import { NoNFTS } from "../../components/NoItems/NoItems";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 export const NftList = () => {
   const nfts = useAllNfts();
@@ -12,9 +13,14 @@ export const NftList = () => {
       <TabList>
         <Tab>All NFTs</Tab>
       </TabList>
-      <NestedScroll>
-        <NFTsGrid nfts={allOwnedNfts} columns={4} spacing={4} />
-      </NestedScroll>
+
+      {allOwnedNfts.length === 0 ? (
+        <NoNFTS small />
+      ) : (
+        <NestedScroll>
+          <NFTsGrid nfts={allOwnedNfts} columns={4} spacing={4} />
+        </NestedScroll>
+      )}
     </Tabs>
   );
 };
