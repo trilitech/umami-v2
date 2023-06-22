@@ -20,7 +20,7 @@ import { VscWand } from "react-icons/vsc";
 import { useQuery } from "react-query";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import { NoDelegations } from "../../components/NoItems/NoItems";
+import { NoDelegations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { prettyTezAmount } from "../../utils/format";

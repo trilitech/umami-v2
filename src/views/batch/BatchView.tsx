@@ -12,7 +12,7 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
-import NoItems from "../../components/NoItems/NoItems";
+import NoItems from "../../components/NoItems";
 
 export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (

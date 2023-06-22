@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineArrowDown } from "react-icons/ai";
-import NoItems from "../../components/NoItems/NoItems";
+import NoItems from "../../components/NoItems";
 import { TextAndIconBtn } from "../../components/TextAndIconBtn";
 import { TopBar } from "../../components/TopBar";
 import { navigateToExternalLink } from "../../utils/helpers";

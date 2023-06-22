@@ -20,7 +20,7 @@ import { TbFilter } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import { NoOperations } from "../../components/NoItems/NoItems";
+import { NoOperations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";

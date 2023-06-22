@@ -1,6 +1,6 @@
 import React from "react";
 import NestedScroll from "../../../components/NestedScroll";
-import { NoOperations } from "../../../components/NoItems/NoItems";
+import { NoOperations } from "../../../components/NoItems";
 import { OperationTile } from "../../../components/OperationTile";
 import { OperationDisplay } from "../../../types/Operation";
 import { getKey } from "../../operations/operationsUtils";
