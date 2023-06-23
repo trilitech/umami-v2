@@ -19,7 +19,12 @@ export const OperationsListPanel = () => {
         <SmallTab>Operations</SmallTab>
         <Link
           to="/operations"
-          style={{ marginTop: "8px", display: "inline-block", marginRight: "12px" }}
+          style={{
+            marginTop: "8px",
+            display: "inline-block",
+            marginRight: "12px",
+            fontSize: "14px",
+          }}
         >
           View All
         </Link>
