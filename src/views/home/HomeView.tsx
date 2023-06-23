@@ -7,23 +7,23 @@ import { NftList } from "./NftList";
 import { OperationsListPanel } from "./OperationsListPanel";
 
 // Reference unit for all the margin and padding ajustements
-const BASE = 6;
+const BASE = 3;
 
 export default function HomeView() {
   return (
-    <Flex direction="column" height="100%" px={BASE}>
+    <Flex direction="column" height="100%">
       <TopBar title="Overview" />
       <Flex flex={1} minHeight={1}>
         {/* Left Column*/}
-        <Flex direction="column" flex={1} mr={BASE / 2} pb={BASE / 2}>
+        <Flex direction="column" flex={1} mr={BASE} pb={BASE}>
           <AccountListHeader />
           <Box flex={1} overflow="hidden" borderRadius={4}>
             <AccountListWithDrawer />
           </Box>
         </Flex>
         {/* Right Column*/}
-        <Flex direction="column" flex={1} ml={BASE / 2} pb={BASE / 2}>
-          <Box flex={1} overflow="hidden" borderRadius={4} mb={BASE / 2}>
+        <Flex direction="column" flex={1} ml={BASE} pb={BASE}>
+          <Box flex={1} overflow="hidden" borderRadius={4} mb={BASE}>
             <OperationsListPanel />
           </Box>
           <Box flex={1} overflow="hidden" borderRadius={4}>
