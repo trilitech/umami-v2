@@ -1,5 +1,6 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import SmallTab from "../../components/SmallTab";
 import { useGetAllOperationDisplays } from "../../utils/hooks/assetsHooks";
 import { OperationListDisplay } from "./OpertionList/OperationListDisplay";
 
@@ -15,7 +16,7 @@ export const OperationsListPanel = () => {
       borderRadius={4}
     >
       <TabList justifyContent="space-between">
-        <Tab>Operations</Tab>
+        <SmallTab>Operations</SmallTab>
         <Link
           to="/operations"
           style={{ marginTop: "8px", display: "inline-block", marginRight: "12px" }}

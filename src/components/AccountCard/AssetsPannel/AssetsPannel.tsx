@@ -8,6 +8,7 @@ import { OperationDisplay } from "../../../types/Operation";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
 import { IconAndTextButtonLink } from "../../IconAndTextBtn";
+import SmallTab from "../../SmallTab";
 import MultisigPendingList from "./MultisigPendingList";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
@@ -37,11 +38,11 @@ export const AssetsPannel: React.FC<{
     >
       <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
         <Flex>
-          {isMultisig && <Tab data-testid="account-card-pending-tab"> Pendings</Tab>}
-          <Tab>Tokens</Tab>
-          <Tab>NFTs</Tab>
-          <Tab>Operations</Tab>
-          <Tab>Delegations</Tab>
+          {isMultisig && <SmallTab data-testid="account-card-pending-tab"> Pendings</SmallTab>}
+          <SmallTab>Tokens</SmallTab>
+          <SmallTab>NFTs</SmallTab>
+          <SmallTab>Operations</SmallTab>
+          <SmallTab>Delegations</SmallTab>
         </Flex>
 
         <IconAndTextButtonLink
