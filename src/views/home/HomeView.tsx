@@ -1,5 +1,4 @@
-import { Box, Flex, FlexProps } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { Box, Flex } from "@chakra-ui/react";
 import { TopBar } from "../../components/TopBar";
 import AccountListWithDrawer from "./AccountListWithDrawer";
 import { AccountListHeader } from "./AccountsList";
