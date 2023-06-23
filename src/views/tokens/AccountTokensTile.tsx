@@ -25,7 +25,7 @@ import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useGetAccountAllTokens, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import { tzktExplorer } from "../../utils/tezos/consts";
+import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { Options } from "../home/useSendFormModal";
 
 const AccountTokensTileHeader: React.FC<{
@@ -107,7 +107,7 @@ const AccountTokensTile: React.FC<{
                       label={formatPkh(token.contract)}
                       icon={FiExternalLink}
                       onClick={() => {
-                        navigateToExternalLink(`${tzktExplorer[network]}/${token.contract}`);
+                        navigateToExternalLink(buildTzktAddressUrl(network, token.contract));
                       }}
                       textFirst
                     />

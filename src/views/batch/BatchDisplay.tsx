@@ -29,8 +29,8 @@ import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { Batch } from "../../utils/store/assetsSlice";
-import { tzktExplorer } from "../../utils/tezos/consts";
 import { getIPFSurl } from "../../utils/token/nftUtils";
+import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
@@ -143,7 +143,7 @@ export const BatchDisplay: React.FC<{
                         icon={FiExternalLink}
                         onClick={() => {
                           navigateToExternalLink(
-                            `${tzktExplorer[network]}/${operation.data.contract}`
+                            buildTzktAddressUrl(network, operation.data.contract)
                           );
                         }}
                         textFirst
