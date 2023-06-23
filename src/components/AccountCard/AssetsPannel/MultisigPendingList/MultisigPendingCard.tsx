@@ -30,7 +30,7 @@ export const MultisigPendingCard: React.FC<{
         />
       </Flex>
       <Box p={1} {...getDisclosureProps()}>
-        <Flex marginY={2} justifyContent="space-between">
+        <Flex marginY={2} justifyContent="space-between" alignItems="end">
           <MultisigOperationsDisplay rawActions={operation.rawActions} />
           <Flex alignItems="flex-end" mb="25px">
             <Text color={colors.gray[400]} size="sm" mr={1}>
