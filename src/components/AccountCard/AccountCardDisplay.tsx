@@ -1,24 +1,26 @@
 import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import { MdArrowOutward, MdSouthWest } from "react-icons/md";
 
+import { TezosNetwork } from "@airgap/tezos";
+import type { BigNumber } from "bignumber.js";
 import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
+import { Account, AccountType } from "../../types/Account";
 import { FA12Token, FA2Token, NFT } from "../../types/Asset";
+import { Delegation } from "../../types/Delegation";
+import { OperationDisplay } from "../../types/Operation";
 import { CopyableAddress } from "../CopyableText";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPanel } from "./AssetsPannel/AssetsPanel";
-import type { BigNumber } from "bignumber.js";
-import { AccountType, Account } from "../../types/Account";
 import MultisigApprovers from "./MultisigApprovers";
-import { OperationDisplay } from "../../types/Operation";
-import { TezosNetwork } from "@airgap/tezos";
+import { DelegationMode } from "../sendForm/types";
 
 type Props = {
-  onSend?: () => void;
+  onSend: () => void;
   onReceive?: () => void;
   onBuyTez?: () => void;
-  onDelegate?: () => void;
+  onDelegate: (opts?: DelegationMode["data"]) => void;
   label: string;
   pkh: string;
   tezBalance: string | null;
@@ -28,6 +30,7 @@ type Props = {
   operationDisplays: Array<OperationDisplay>;
   account: Account;
   network: TezosNetwork;
+  delegation: Delegation | null;
 };
 
 const RoundButton: React.FC<{
@@ -37,13 +40,7 @@ const RoundButton: React.FC<{
 }> = ({ icon, label, onClick = _ => {} }) => {
   return (
     <Box textAlign="center" ml={4} mr={4}>
-      <IconButton
-        onClick={onClick}
-        borderRadius="50%"
-        aria-label="Search database"
-        icon={icon}
-        mb={2}
-      />
+      <IconButton onClick={onClick} borderRadius="50%" icon={icon} mb={2} aria-label="button" />
       <Text size="sm">{label}</Text>
     </Box>
   );
@@ -51,10 +48,10 @@ const RoundButton: React.FC<{
 
 export const AccountCardDisplay: React.FC<Props> = ({
   pkh,
-  onSend = () => {},
+  onSend,
   onReceive = () => {},
   onBuyTez = () => {},
-  onDelegate = () => {},
+  onDelegate,
   label,
   tezBalance,
   dollarBalance,
@@ -63,6 +60,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
   account,
   operationDisplays,
   network,
+  delegation,
 }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   return (
@@ -79,15 +77,17 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
         <RoundButton label="Receive" icon={<MdSouthWest />} onClick={onReceive} />
         {!isMultisig && <RoundButton label="Buy tez" icon={<FiPlus />} />}
-        <RoundButton label="Delegate" icon={<VscWand />} />
+        <RoundButton label="Delegate" icon={<VscWand />} onClick={() => onDelegate()} />
       </Flex>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
       <AssetsPanel
+        onDelegate={onDelegate}
         tokens={tokens}
         nfts={nfts}
         account={account}
         operationDisplays={operationDisplays}
         network={network}
+        delegation={delegation}
       />
     </Flex>
   );

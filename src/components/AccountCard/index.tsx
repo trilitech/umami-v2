@@ -1,6 +1,8 @@
 import { Account } from "../../types/Account";
+import { makeDelegation } from "../../types/Delegation";
 import { mutezToTez } from "../../utils/format";
 import {
+  useAllDelegations,
   useGetAccountAllTokens,
   useGetAccountBalance,
   useGetAccountNFTs,
@@ -16,6 +18,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
 
+  const delegation = useAllDelegations()[account.address.pkh];
   const getTokens = useGetAccountAllTokens();
   const getNFTs = useGetAccountNFTs();
   const getOperations = useGetAccountOperationDisplays();
@@ -28,6 +31,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const tez = balance || null;
   const dollarBalance = getDollarBalance(account.address.pkh);
 
+  const delegationOp = delegation ? makeDelegation(delegation) : null;
   const tokens = getTokens(account.address.pkh);
   const nfts = getNFTs(account.address.pkh);
   const operations = getOperations(account.address.pkh);
@@ -37,6 +41,12 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         onSend={() =>
           onOpenSend({
             mode: { type: "tez" },
+            sender: account?.address?.pkh,
+          })
+        }
+        onDelegate={opts =>
+          onOpenSend({
+            mode: { type: "delegation", data: opts },
             sender: account?.address?.pkh,
           })
         }
@@ -52,6 +62,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         operationDisplays={operations}
         account={account}
         network={network}
+        delegation={delegationOp}
       />
       {sendModal}
       {receiveModal}

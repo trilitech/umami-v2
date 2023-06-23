@@ -59,8 +59,13 @@ export const NoOperations: ComponentWithSizeProps = props => (
   <NoItems {...props} text="No operations found" />
 );
 
-export const NoDelegations: ComponentWithSizeProps = props => (
-  <NoItems text="Currently not delegating" primaryText="Start delegating" />
+export const NoDelegations: React.FC<{ small?: boolean; onDelegate: () => void }> = props => (
+  <NoItems
+    {...props}
+    text="Currently not delegating"
+    primaryText="Start delegating"
+    onClickPrimary={props.onDelegate}
+  />
 );
 
 export const NoTokens: ComponentWithSizeProps = props => (
