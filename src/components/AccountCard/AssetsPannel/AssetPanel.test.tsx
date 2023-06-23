@@ -1,13 +1,13 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { mockMultisigAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { AssetsPannel } from "./AssetsPannel";
+import { AssetsPanel } from "./AssetsPanel";
 
-describe("<AssetPannel/>", () => {
+describe("<AssetPanel/>", () => {
   it("should display pending tabs for multisig account", () => {
     const multisigAccount = mockMultisigAccount(0);
     render(
-      <AssetsPannel
+      <AssetsPanel
         account={multisigAccount}
         nfts={[]}
         tokens={[]}

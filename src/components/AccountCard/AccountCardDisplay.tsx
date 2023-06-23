@@ -7,7 +7,7 @@ import { FA12Token, FA2Token, NFT } from "../../types/Asset";
 import { CopyableAddress } from "../CopyableText";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
-import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
+import { AssetsPanel } from "./AssetsPannel/AssetsPanel";
 import type { BigNumber } from "bignumber.js";
 import { AccountType, Account } from "../../types/Account";
 import MultisigApprovers from "./MultisigApprovers";
@@ -82,7 +82,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPannel
+      <AssetsPanel
         tokens={tokens}
         nfts={nfts}
         account={account}

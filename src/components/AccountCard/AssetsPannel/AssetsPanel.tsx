@@ -13,7 +13,7 @@ import MultisigPendingList from "./MultisigPendingList";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
 
-export const AssetsPannel: React.FC<{
+export const AssetsPanel: React.FC<{
   tokens: Array<FA12Token | FA2Token>;
   nfts: Array<NFT>;
   account: Account;
