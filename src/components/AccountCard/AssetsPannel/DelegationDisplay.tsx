@@ -12,7 +12,6 @@ const Row: React.FC<{
   value: string | ReactNode;
   grayBg?: boolean;
 }> = ({ label, value, grayBg }) => {
-  console.log(label, value);
   return (
     <Flex
       data-testid={label}
