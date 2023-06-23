@@ -9,12 +9,12 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 
+import { TezosNetwork } from "@airgap/tezos";
 import AccountCard from ".";
 import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { act, render, screen, waitFor, within } from "../../mocks/testUtils";
+import { act, render, screen, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
-import { TezosNetwork } from "@airgap/tezos";
 const { updateTezBalance, updateTokenBalance, updateTezTransfers, updateNetwork } =
   assetsSlice.actions;
 const { add } = accountsSlice.actions;

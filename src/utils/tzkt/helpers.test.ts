@@ -1,7 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { buildTzktAddressUrl } from "./helpers";
 
-test("buildTzktUrl returns the right value for a givent network", () => {
+test("buildTzktUrl returns the right value for a given network", () => {
   expect(buildTzktAddressUrl(TezosNetwork.GHOSTNET, "mockAddress")).toEqual(
     "https://ghostnet.tzkt.io/mockAddress"
   );
