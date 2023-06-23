@@ -4,11 +4,14 @@ import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
+import { Delegation } from "../../../types/Delegation";
 import { OperationDisplay } from "../../../types/Operation";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
 import { IconAndTextBtnLink } from "../../IconAndTextBtn";
+import { DelegationMode } from "../../sendForm/types";
 import SmallTab from "../../SmallTab";
+import { DelegationDisplay } from "./DelegationDisplay";
 import MultisigPendingAccordion from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
@@ -19,7 +22,9 @@ export const AssetsPanel: React.FC<{
   account: Account;
   operationDisplays: OperationDisplay[];
   network: TezosNetwork;
-}> = ({ tokens, nfts, account, operationDisplays, network }) => {
+  delegation: Delegation | null;
+  onDelegate: (opts?: DelegationMode["data"]) => void;
+}> = ({ tokens, nfts, account, operationDisplays, network, delegation, onDelegate }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
 
   return (
@@ -42,7 +47,7 @@ export const AssetsPanel: React.FC<{
           <SmallTab>Tokens</SmallTab>
           <SmallTab>NFTs</SmallTab>
           <SmallTab>Operations</SmallTab>
-          <SmallTab>Delegations</SmallTab>
+          <SmallTab>Delegation</SmallTab>
         </Flex>
 
         <IconAndTextBtnLink
@@ -69,6 +74,9 @@ export const AssetsPanel: React.FC<{
 
         <TabPanel data-testid="account-card-operations-tab">
           <OperationListDisplay operations={operationDisplays} />
+        </TabPanel>
+        <TabPanel data-testid="account-card-delegation-tab">
+          <DelegationDisplay delegation={delegation} onDelegate={onDelegate} />
         </TabPanel>
       </TabPanels>
     </Tabs>

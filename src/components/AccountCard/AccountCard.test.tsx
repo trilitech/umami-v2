@@ -1,6 +1,7 @@
 import {
   mockFA1Token,
   mockImplicitAccount,
+  mockImplicitAddress,
   mockMultisigAccount,
   mockNFTToken,
 } from "../../mocks/factories";
@@ -10,20 +11,29 @@ import { store } from "../../utils/store/store";
 
 import { TezosNetwork } from "@airgap/tezos";
 import AccountCard from ".";
+import { mockDelegationOperation } from "../../mocks/delegations";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { act, render, screen, within } from "../../mocks/testUtils";
+import { act, fireEvent, render, screen, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
-const { updateTezBalance, updateTokenBalance, updateTezTransfers, updateNetwork } =
-  assetsSlice.actions;
+import { prettyTezAmount } from "../../utils/format";
+const {
+  updateTezBalance,
+  updateTokenBalance,
+  updateTezTransfers,
+  updateNetwork,
+  updateDelegations,
+} = assetsSlice.actions;
 const { add } = accountsSlice.actions;
 
 const selectedAccount = mockImplicitAccount(0);
 const pkh = selectedAccount.address.pkh;
 const mockNft = mockNFTToken(0, pkh);
+
+const SELECTED_ACCOUNT_BALANCE = 33200000000;
 beforeEach(() => {
   store.dispatch(add([selectedAccount, mockImplicitAccount(1)]));
-  store.dispatch(updateTezBalance([{ address: pkh, balance: 33200000000 }]));
+  store.dispatch(updateTezBalance([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }]));
   store.dispatch(
     updateTokenBalance([
       hedgehoge(selectedAccount.address),
@@ -179,5 +189,59 @@ describe("<AccountCard />", () => {
     screen.getByTestId("account-card-operations-tab").click();
     const { getByText } = within(screen.getByTestId("asset-panel"));
     expect(getByText(/no operations/i)).toBeTruthy();
+  });
+  describe("delegations", () => {
+    it("Given an account has no delegations, it should display a message saying so and a CTA button do delegate", () => {
+      render(<AccountCard account={selectedAccount} />);
+      screen.getByTestId("account-card-delegation-tab").click();
+      const { getByText } = within(screen.getByTestId("asset-panel"));
+      expect(getByText(/Currently not delegating/i)).toBeTruthy();
+      const btn = screen.getByText(/start delegating/i);
+      fireEvent.click(btn);
+      const modal = screen.getByRole("dialog");
+      expect(modal).toHaveTextContent(/delegate/i);
+    });
+
+    it("Given an account has an active delegation, it show display deletation and CTA buttons to chanage delegate or undelegate", () => {
+      store.dispatch(
+        updateDelegations([
+          {
+            pkh: selectedAccount.address.pkh,
+            delegation: mockDelegationOperation(
+              selectedAccount.address.pkh,
+              mockImplicitAddress(2).pkh,
+              6000000
+            ),
+          },
+          {
+            pkh: mockImplicitAccount(3).address.pkh,
+            delegation: mockDelegationOperation(
+              mockImplicitAccount(2).address.pkh,
+              mockImplicitAddress(3).pkh,
+              8000000
+            ),
+          },
+        ])
+      );
+
+      render(<AccountCard account={selectedAccount} />);
+      screen.getByTestId("account-card-delegation-tab").click();
+      const { getByTestId } = within(screen.getByTestId("asset-panel"));
+
+      expect(getByTestId(/initial balance/i)).toHaveTextContent("6 ꜩ");
+      expect(getByTestId(/current balance/i)).toHaveTextContent(
+        prettyTezAmount(SELECTED_ACCOUNT_BALANCE.toString())
+      );
+      expect(getByTestId(/duration/i)).toHaveTextContent("Since 05/24/2020");
+      expect(getByTestId(/baker/i)).toHaveTextContent("tz1ik...Cc43D");
+
+      const changeDelegateBtn = screen.getByText(/change baker/i);
+      const removeDelegateBtn = screen.getByText(/end delegation/i);
+      expect(removeDelegateBtn).toBeInTheDocument();
+
+      fireEvent.click(changeDelegateBtn);
+      const modal = screen.getByRole("dialog");
+      expect(modal).toHaveTextContent(/delegate/i);
+    });
   });
 });

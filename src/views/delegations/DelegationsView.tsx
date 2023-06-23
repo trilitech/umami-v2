@@ -60,12 +60,13 @@ const DelegationsTable = ({
           </Tr>
         </Thead>
         <Tbody>
-          {delegations.map(d => {
-            const { currentBalance, duration, initialBalance } = getDelegationPrettyDisplay(d);
+          {delegations.map(delegation => {
+            const { currentBalance, duration, initialBalance } =
+              getDelegationPrettyDisplay(delegation);
             return (
-              <Tr key={d.id} data-testid="delegation-row">
+              <Tr key={delegation.id} data-testid="delegation-row">
                 <Td>
-                  <AccountSmallTile pkh={d.sender} />
+                  <AccountSmallTile pkh={delegation.sender} />
                 </Td>
                 <Td>{initialBalance}</Td>
                 <Td>{currentBalance}</Td>
@@ -73,11 +74,13 @@ const DelegationsTable = ({
                 <Td />
                 <Td>
                   <Flex alignItems="center">
-                    {renderBakerTile(d.delegate.address)}
+                    {renderBakerTile(delegation.delegate.address)}
                     <IconButton
                       ml={2}
                       mr={2}
-                      onClick={() => onChangeDelegate(d.sender, d.delegate.address)}
+                      onClick={() =>
+                        onChangeDelegate(delegation.sender, delegation.delegate.address)
+                      }
                       borderRadius="50%"
                       aria-label="Change Baker"
                       icon={<MdOutlineModeEdit />}
@@ -86,7 +89,7 @@ const DelegationsTable = ({
                     <IconButton
                       ml={2}
                       mr={2}
-                      onClick={() => onRemoveDelegate(d.sender)}
+                      onClick={() => onRemoveDelegate(delegation.sender)}
                       borderRadius="50%"
                       aria-label="Delete Baker"
                       icon={<CiCircleRemove />}

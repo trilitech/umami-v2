@@ -8,7 +8,7 @@ type TokenMode = {
   data: Asset;
 };
 
-type DelegationMode = {
+export type DelegationMode = {
   type: "delegation";
   data?: {
     undelegate: boolean;
