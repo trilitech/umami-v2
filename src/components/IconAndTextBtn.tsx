@@ -49,7 +49,7 @@ export const IconAndTextBtn: React.FC<Props> = ({
   );
 };
 
-export const IconAndTextButtonLink: React.FC<Props & { href: string }> = ({ href, ...props }) => {
+export const IconAndTextBtnLink: React.FC<Props & { href: string }> = ({ href, ...props }) => {
   return (
     <Link
       role="link"

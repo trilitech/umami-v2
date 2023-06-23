@@ -7,7 +7,7 @@ import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
 import { OperationDisplay } from "../../../types/Operation";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
-import { IconAndTextButtonLink } from "../../IconAndTextBtn";
+import { IconAndTextBtnLink } from "../../IconAndTextBtn";
 import SmallTab from "../../SmallTab";
 import MultisigPendingList from "./MultisigPendingList";
 import { NFTsGrid } from "./NFTsGrid";
@@ -45,7 +45,7 @@ export const AssetsPanel: React.FC<{
           <SmallTab>Delegations</SmallTab>
         </Flex>
 
-        <IconAndTextButtonLink
+        <IconAndTextBtnLink
           data-testid="tzkt-link"
           icon={FiExternalLink}
           label="View on Tzkt"
