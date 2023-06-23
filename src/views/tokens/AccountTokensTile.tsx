@@ -17,13 +17,12 @@ import {
 import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { MdArrowOutward, MdGeneratingTokens } from "react-icons/md";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { IconAndTextBtn, IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Identicon } from "../../components/Identicon";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
-import { navigateToExternalLink } from "../../utils/helpers";
 import { useGetAccountAllTokens, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { Options } from "../home/useSendFormModal";
@@ -103,12 +102,10 @@ const AccountTokensTile: React.FC<{
                     </Flex>
                   </Td>
                   <Td w="15%">
-                    <IconAndTextBtn
+                    <IconAndTextBtnLink
                       label={formatPkh(token.contract)}
                       icon={FiExternalLink}
-                      onClick={() => {
-                        navigateToExternalLink(buildTzktAddressUrl(network, token.contract));
-                      }}
+                      href={buildTzktAddressUrl(network, token.contract)}
                       textFirst
                     />
                   </Td>
