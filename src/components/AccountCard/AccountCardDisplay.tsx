@@ -7,11 +7,12 @@ import { FA12Token, FA2Token, NFT } from "../../types/Asset";
 import { CopyableAddress } from "../CopyableText";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
-import { AssetsPannel } from "./AssetsPannel/AssetsPannel";
+import { AssetsPanel } from "./AssetsPannel/AssetsPanel";
 import type { BigNumber } from "bignumber.js";
 import { AccountType, Account } from "../../types/Account";
 import MultisigApprovers from "./MultisigApprovers";
 import { OperationDisplay } from "../../types/Operation";
+import { TezosNetwork } from "@airgap/tezos";
 
 type Props = {
   onSend?: () => void;
@@ -26,6 +27,7 @@ type Props = {
   nfts: Array<NFT>;
   operationDisplays: Array<OperationDisplay>;
   account: Account;
+  network: TezosNetwork;
 };
 
 const RoundButton: React.FC<{
@@ -60,6 +62,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
   nfts,
   account,
   operationDisplays,
+  network,
 }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   return (
@@ -79,11 +82,12 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <RoundButton label="Delegate" icon={<VscWand />} />
       </Flex>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPannel
+      <AssetsPanel
         tokens={tokens}
         nfts={nfts}
         account={account}
         operationDisplays={operationDisplays}
+        network={network}
       />
     </Flex>
   );

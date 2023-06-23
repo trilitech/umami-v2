@@ -20,17 +20,16 @@ import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTile";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
 import { OperationValue } from "../../components/sendForm/types";
 import { ImplicitAccount } from "../../types/Account";
 import { formatTokenAmount, tokenSymbol } from "../../types/Asset";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
-import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { Batch } from "../../utils/store/assetsSlice";
-import { tzktExplorer } from "../../utils/tezos/consts";
 import { getIPFSurl } from "../../utils/token/nftUtils";
+import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
@@ -138,14 +137,10 @@ export const BatchDisplay: React.FC<{
                   <Td>{renderAmount(operation)}</Td>
                   <Td>
                     {operation.type === "token" && (
-                      <IconAndTextBtn
+                      <IconAndTextBtnLink
                         label={formatPkh(operation.data.contract)}
                         icon={FiExternalLink}
-                        onClick={() => {
-                          navigateToExternalLink(
-                            `${tzktExplorer[network]}/${operation.data.contract}`
-                          );
-                        }}
+                        href={buildTzktAddressUrl(network, operation.data.contract)}
                         textFirst
                       />
                     )}

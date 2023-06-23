@@ -9,12 +9,14 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 
+import { TezosNetwork } from "@airgap/tezos";
 import AccountCard from ".";
 import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { render, screen, within } from "../../mocks/testUtils";
+import { act, render, screen, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
-const { updateTezBalance, updateTokenBalance, updateTezTransfers } = assetsSlice.actions;
+const { updateTezBalance, updateTokenBalance, updateTezTransfers, updateNetwork } =
+  assetsSlice.actions;
 const { add } = accountsSlice.actions;
 
 const selectedAccount = mockImplicitAccount(0);
@@ -74,6 +76,23 @@ describe("<AccountCard />", () => {
   it("should display account tez balance", () => {
     render(<AccountCard account={selectedAccount} />);
     expect(screen.getByText("33200 ꜩ")).toBeInTheDocument();
+  });
+
+  it("should display link to tzkt according to network", async () => {
+    render(<AccountCard account={selectedAccount} />);
+    const tzktLink = screen.getByTestId("asset-panel-tablist");
+    const link = within(tzktLink).getByRole("link", {});
+    const expectedLink = "https://tzkt.io/" + selectedAccount.address.pkh;
+    expect(link).toHaveProperty("href", expectedLink);
+
+    {
+      act(() => store.dispatch(updateNetwork(TezosNetwork.GHOSTNET)));
+
+      const tzktLink = screen.getByTestId("asset-panel-tablist");
+      const link = within(tzktLink).getByRole("link", {});
+      const expectedLink = "https://ghostnet.tzkt.io/" + selectedAccount.address.pkh;
+      expect(link).toHaveProperty("href", expectedLink);
+    }
   });
 
   it("should display assets tabs with tokens by default", () => {
