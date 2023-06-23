@@ -56,7 +56,7 @@ describe("Assets reducer", () => {
   });
 
   test("tez balances are replaced", () => {
-    store.dispatch(updateTezBalance([{ pkh: "foo", tez: "43" }]));
+    store.dispatch(updateTezBalance([{ address: "foo", balance: 43 }]));
 
     expect(store.getState().assets).toEqual({
       balances: {
@@ -76,8 +76,8 @@ describe("Assets reducer", () => {
 
     store.dispatch(
       updateTezBalance([
-        { pkh: "bar", tez: "44" },
-        { pkh: "baz", tez: "55" },
+        { address: "bar", balance: 44 },
+        { address: "baz", balance: 55 },
       ])
     );
 
@@ -102,16 +102,16 @@ describe("Assets reducer", () => {
   test("tez balances are updated", () => {
     store.dispatch(
       updateTezBalance([
-        { pkh: "bar", tez: "44" },
-        { pkh: "baz", tez: "55" },
+        { address: "bar", balance: 44 },
+        { address: "baz", balance: 55 },
       ])
     );
 
     store.dispatch(
       updateTezBalance([
         {
-          pkh: "baz",
-          tez: "66",
+          address: "baz",
+          balance: 66,
         },
       ])
     );
@@ -165,8 +165,8 @@ describe("Assets reducer", () => {
   test("updating network resets operations and balances", () => {
     store.dispatch(
       updateTezBalance([
-        { pkh: "bar", tez: "44" },
-        { pkh: "baz", tez: "55" },
+        { address: "bar", balance: 44 },
+        { address: "baz", balance: 55 },
       ])
     );
 
@@ -216,8 +216,8 @@ describe("Assets reducer", () => {
   test("reseting accounts resets assetsState", () => {
     store.dispatch(
       updateTezBalance([
-        { pkh: "bar", tez: "44" },
-        { pkh: "baz", tez: "55" },
+        { address: "bar", balance: 44 },
+        { address: "baz", balance: 55 },
       ])
     );
 

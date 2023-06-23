@@ -8,6 +8,7 @@ import { Asset, fromToken } from "../../types/Asset";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
+import { TzktAccount } from "../tezos";
 import accountsSlice from "./accountsSlice";
 
 export type BatchItem = { operation: OperationValue; fee: string };
@@ -38,7 +39,6 @@ type State = {
   batches: Record<string, Batch | undefined>;
 };
 
-export type TezBalancePayload = { pkh: string; tez: string };
 export type TokenBalancePayload = { pkh: string; tokens: Token[] };
 export type TezTransfersPayload = {
   pkh: string;
@@ -121,9 +121,9 @@ const assetsSlice = createSlice({
       state.transfers.tokens = newTezTransfers;
     },
 
-    updateTezBalance: (state, { payload }: { type: string; payload: TezBalancePayload[] }) => {
-      state.balances.mutez = payload.reduce((acc, mutezBalance) => {
-        return { ...acc, [mutezBalance.pkh]: mutezBalance.tez };
+    updateTezBalance: (state, { payload }: { payload: TzktAccount[] }) => {
+      state.balances.mutez = payload.reduce((acc, accountInfo) => {
+        return { ...acc, [accountInfo.address]: String(accountInfo.balance) };
       }, {});
     },
 

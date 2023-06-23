@@ -8,10 +8,10 @@ import {
   approveOrExecuteMultisigOperation,
   estimateMultisigApproveOrExecute,
   estimateMultisigPropose,
+  getAccounts,
   proposeMultisigLambda,
   transferMutez,
 } from "../utils/tezos";
-import { getBalancePayload } from "../utils/useAssetsPolling";
 import { makeBatchLambda } from "./multisigUtils";
 
 jest.unmock("../utils/tezos");
@@ -40,10 +40,8 @@ describe("multisig Sandbox", () => {
     const devAccount2Address = parseImplicitPkh(await devAccount2.publicKeyHash());
     const devAccount2Sk = await devAccount2.secretKey();
 
-    const { tez: preDevAccount2TezBalance } = await getBalancePayload(
-      devAccount2Address.pkh,
-      TezosNetwork.GHOSTNET
-    );
+    const accountInfos = await getAccounts([devAccount2Address.pkh], TezosNetwork.GHOSTNET);
+    const { balance: preDevAccount2TezBalance } = accountInfos[0];
 
     // First, devAccount2 send tez to MULTISIG_GHOSTNET_1
     const { fee } = await transferMutez(
@@ -173,11 +171,9 @@ describe("multisig Sandbox", () => {
     console.log("execute done");
     await sleep(25000);
 
-    const { tez: postDevAccount2TezBalance } = await getBalancePayload(
-      devAccount2Address.pkh,
-      TezosNetwork.GHOSTNET
-    );
+    const accountInfosAfter = await getAccounts([devAccount2Address.pkh], TezosNetwork.GHOSTNET);
+    const { balance: postDevAccount2TezBalance } = accountInfosAfter[0];
 
-    expect(parseInt(postDevAccount2TezBalance) + fee).toEqual(parseInt(preDevAccount2TezBalance));
+    expect(postDevAccount2TezBalance + fee).toEqual(preDevAccount2TezBalance);
   });
 });

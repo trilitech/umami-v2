@@ -17,14 +17,12 @@ import { mockTzktTezTransfer } from "../../mocks/transfers";
 const { updateTezBalance, updateTokenBalance, updateTezTransfers } = assetsSlice.actions;
 const { add } = accountsSlice.actions;
 
-const tezBalance = "33200000000";
-
 const selectedAccount = mockImplicitAccount(0);
 const pkh = selectedAccount.address.pkh;
 const mockNft = mockNFTToken(0, pkh);
 beforeEach(() => {
   store.dispatch(add([selectedAccount, mockImplicitAccount(1)]));
-  store.dispatch(updateTezBalance([{ pkh: pkh, tez: tezBalance }]));
+  store.dispatch(updateTezBalance([{ address: pkh, balance: 33200000000 }]));
   store.dispatch(
     updateTokenBalance([
       {

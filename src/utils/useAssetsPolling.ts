@@ -8,7 +8,6 @@ import { getOperationsForMultisigs, getRelevantMultisigContracts } from "./multi
 import {
   assetsActions,
   DelegationPayload,
-  TezBalancePayload,
   TezTransfersPayload,
   TokenBalancePayload,
   TokenTransfersPayload,
@@ -16,7 +15,7 @@ import {
 import { useAppDispatch } from "./store/hooks";
 import { multisigActions } from "./store/multisigsSlice";
 import {
-  getBalance,
+  getAccounts,
   getLastDelegation,
   getLatestBlockLevel,
   getTezosPriceInUSD,
@@ -24,15 +23,7 @@ import {
   getTokens,
   getTokenTransfers,
 } from "./tezos";
-
-// TODO: refactor with less repetitions
-export const getBalancePayload = async (
-  pkh: string,
-  network: TezosNetwork
-): Promise<TezBalancePayload> => {
-  const tez = await getBalance(pkh, network);
-  return { pkh, tez: tez.toString() };
-};
+import { chunk } from "lodash";
 
 const getTokensPayload = async (
   pkh: string,
@@ -68,20 +59,21 @@ const getDelegationsPayload = async (
 const REFRESH_RATE = 10000;
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
+const MAX_ADDRESSES_PER_REQUEST = 10;
 
 export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
-  const accounts = useImplicitAccounts();
+  const implicitAccounts = useImplicitAccounts();
   const network = useSelectedNetwork();
-  const pkhs = accounts.map(account => account.address.pkh);
-  const accountPkhSet = new Set(pkhs);
+  const implicitAccountPkhs = implicitAccounts.map(account => account.address.pkh);
   const multisigPkhs = useMultisigAccounts().map(multisig => multisig.address.pkh);
+  const allAccountPkhs = [...implicitAccountPkhs, ...multisigPkhs];
 
   const tezQuery = useQuery("tezBalance", {
     queryFn: async () => {
-      const balances = await Promise.all(pkhs.map(pkh => getBalancePayload(pkh, network)));
-
-      dispatch(assetsActions.updateTezBalance(balances));
+      const pkhChunks = chunk(allAccountPkhs, MAX_ADDRESSES_PER_REQUEST);
+      const accountInfos = await Promise.all(pkhChunks.flatMap(pkhs => getAccounts(pkhs, network)));
+      dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
     },
 
     refetchInterval: REFRESH_RATE,
@@ -90,7 +82,7 @@ export const useAssetsPolling = () => {
   const tokenQuery = useQuery("tokenBalance", {
     queryFn: async () => {
       const tokens = await Promise.all(
-        [...multisigPkhs, ...pkhs].map(pkh => getTokensPayload(pkh, network))
+        [...multisigPkhs, ...implicitAccountPkhs].map(pkh => getTokensPayload(pkh, network))
       );
 
       dispatch(assetsActions.updateTokenBalance(tokens));
@@ -101,7 +93,9 @@ export const useAssetsPolling = () => {
 
   const tezTransfersQuery = useQuery("tezTransfers", {
     queryFn: async () => {
-      const transfers = await Promise.all(pkhs.map(pkh => getTezTransfersPayload(pkh, network)));
+      const transfers = await Promise.all(
+        implicitAccountPkhs.map(pkh => getTezTransfersPayload(pkh, network))
+      );
 
       dispatch(assetsActions.updateTezTransfers(transfers));
     },
@@ -112,7 +106,9 @@ export const useAssetsPolling = () => {
   // TODO refactor there is some duplication piling up
   const tokensTransfersQuery = useQuery("tokensTransfers", {
     queryFn: async () => {
-      const transfers = await Promise.all(pkhs.map(pkh => getTokensTransfersPayload(pkh, network)));
+      const transfers = await Promise.all(
+        implicitAccountPkhs.map(pkh => getTokensTransfersPayload(pkh, network))
+      );
 
       dispatch(assetsActions.updateTokenTransfers(transfers));
     },
@@ -123,7 +119,7 @@ export const useAssetsPolling = () => {
   const delegationsQuery = useQuery("delegations", {
     queryFn: async () => {
       const delegations = await Promise.all(
-        pkhs.map(pkh => getDelegationsPayload(pkh, network))
+        implicitAccountPkhs.map(pkh => getDelegationsPayload(pkh, network))
       ).then(compact);
 
       dispatch(assetsActions.updateDelegations(delegations));
@@ -152,7 +148,7 @@ export const useAssetsPolling = () => {
 
   const multisigsQuery = useQuery("multisigs", {
     queryFn: async () => {
-      const multisigs = await getRelevantMultisigContracts(network, accountPkhSet);
+      const multisigs = await getRelevantMultisigContracts(network, new Set(implicitAccountPkhs));
 
       const multisigsWithOperations = await getOperationsForMultisigs(network, multisigs);
 

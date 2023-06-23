@@ -9,8 +9,8 @@ jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe("multisi fetch", () => {
-  test("getSameContractsWithStorage", async () => {
+describe("multisig fetch", () => {
+  test("getAllMultiSigContracts", async () => {
     mockedAxios.get.mockResolvedValue({ data: ghostMultisigContracts });
 
     const result = await getAllMultiSigContracts(TezosNetwork.GHOSTNET);
