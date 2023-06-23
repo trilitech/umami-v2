@@ -704,12 +704,10 @@ export const getLatestDelegationResult: DelegationOperation = {
 
 export const tzktGetSameMultisigsResponse: tzktGetSameMultisigsResponseType = [
   {
-    balance: 0,
     address: mockContractAddress(0).pkh,
     storage: { threshold: "2", pending_ops: 0, signers: [mockImplicitAddress(0).pkh] },
   },
   {
-    balance: 10,
     address: mockContractAddress(10).pkh,
     storage: { threshold: "2", pending_ops: 0, signers: [mockImplicitAddress(10).pkh] },
   },

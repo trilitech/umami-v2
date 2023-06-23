@@ -24,7 +24,6 @@ describe("multisig helpers", () => {
       expect(result).toEqual([
         {
           address: mockContractAddress(0).pkh,
-          balance: 0,
           storage: {
             pending_ops: 0,
             signers: [mockImplicitAddress(0).pkh],
@@ -66,7 +65,6 @@ describe("multisig helpers", () => {
       expect(result).toEqual([
         {
           address: mockContractAddress(0),
-          balance: "0",
           pendingOperations: [
             {
               approvals: [mockImplicitAddress(0)],
@@ -84,7 +82,6 @@ describe("multisig helpers", () => {
         },
         {
           address: mockContractAddress(10),
-          balance: "10",
           pendingOperations: [
             {
               approvals: [mockImplicitAddress(0)],

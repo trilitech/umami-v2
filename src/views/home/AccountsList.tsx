@@ -74,11 +74,7 @@ const AccountGroup: React.FC<{
             key={account.address.pkh}
             address={account.address.pkh}
             label={account.label || ""}
-            balance={
-              account.type === AccountType.MULTISIG
-                ? account.balance
-                : balances[account.address.pkh]
-            }
+            balance={balances[account.address.pkh]}
           />
         );
       })}

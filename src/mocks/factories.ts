@@ -144,8 +144,6 @@ export const mockMultisigAccount = (index: number): MultisigAccount => {
     label: "label",
     threshold: 1,
     signers: [mockImplicitAddress(index)],
-    balance: "1",
-    operations: [],
   };
 };
 
@@ -174,7 +172,6 @@ export const mockMultisigWithOperations = (
 ): MultisigWithPendingOperations => {
   return {
     address: mockContractAddress(index),
-    balance,
     pendingOperations: operations,
     signers: signers.map(pkh => ({ type: "implicit", pkh } as const)),
     threshold,

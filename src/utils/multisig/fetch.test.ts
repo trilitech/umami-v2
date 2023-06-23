@@ -22,7 +22,6 @@ describe("multisig fetch", () => {
     expect(result).toEqual([
       {
         address: "KT1Mqvf7bnYe4Ty2n7ZbGkdbebCd4WoTJUUp",
-        balance: 0,
         storage: {
           pending_ops: 216411,
           signers: ["tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3", "tz1dyX3B1CFYa2DfdFLyPtiJCfQRUgPVME6E"],
@@ -31,7 +30,6 @@ describe("multisig fetch", () => {
       },
       {
         address: "KT1VwWbTMRN5uX4bfxCcpJnPP6iAhboqhGZr",
-        balance: 0,
         storage: {
           pending_ops: 219458,
           signers: [
@@ -44,7 +42,6 @@ describe("multisig fetch", () => {
       },
       {
         address: "KT1Vdhz4izz7LASWU4tTLu3GBsvhJ8ULSi3G",
-        balance: 0,
         storage: {
           pending_ops: 219535,
           signers: ["tz1RVPjF88wjiZ7JhxvmLPRm6TTR9MHPAFPd", "tz1ajzeMEzKxM9H4keBxoD1JSQy3iGRoHPg5"],

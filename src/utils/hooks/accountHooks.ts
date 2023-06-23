@@ -11,6 +11,7 @@ import { MultisigWithPendingOperations } from "../multisig/types";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
+import { useMultisigs } from "./multisigHooks";
 
 const { add, removeSecret } = accountsSlice.actions;
 
@@ -127,7 +128,7 @@ export const useRemoveMnemonic = () => {
 };
 
 export const useMultisigAccounts = (): MultisigAccount[] => {
-  const multisigs: MultisigWithPendingOperations[] = useAppSelector(s => s.multisigs.items);
+  const multisigs: MultisigWithPendingOperations[] = useMultisigs();
 
   return multisigs.map((m, i) => ({
     label: `Multisig Account ${i}`,
@@ -135,8 +136,6 @@ export const useMultisigAccounts = (): MultisigAccount[] => {
     type: AccountType.MULTISIG,
     threshold: m.threshold,
     signers: m.signers,
-    balance: m.balance,
-    operations: m.pendingOperations,
   }));
 };
 

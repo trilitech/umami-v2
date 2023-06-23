@@ -10,14 +10,12 @@ export const multisigs: MultisigWithPendingOperations[] = [
       parseImplicitPkh("tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6"),
       parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     ],
-    balance: "0",
     pendingOperations: [],
   },
   {
     address: parseContractPkh("KT1JG7wmGuXi7Sdf3eqATscVmhqyyT3Q8Xjg"),
     threshold: 1,
     signers: [mockImplicitAddress(1), mockImplicitAddress(9)],
-    balance: "50000",
     pendingOperations: [],
   },
   {
@@ -27,7 +25,6 @@ export const multisigs: MultisigWithPendingOperations[] = [
       parseImplicitPkh("tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6"),
       parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     ],
-    balance: "190000",
     pendingOperations: [
       {
         key: "1",

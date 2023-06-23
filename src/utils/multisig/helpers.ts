@@ -21,7 +21,7 @@ export const getOperationsForMultisigs = async (
   multisigs: tzktGetSameMultisigsResponseType
 ): Promise<MultisigWithPendingOperations[]> => {
   const multisigsWithOperations = await Promise.all(
-    multisigs.map(async ({ address, balance, storage: { signers, pending_ops, threshold } }) => {
+    multisigs.map(async ({ address, storage: { signers, pending_ops, threshold } }) => {
       const response = await getPendingOperations(network, pending_ops);
 
       const operations = response.map(({ key, value }) => {
@@ -39,7 +39,6 @@ export const getOperationsForMultisigs = async (
         address: parseContractPkh(address),
         threshold: Number(threshold),
         signers: signers.map(parseImplicitPkh),
-        balance: balance.toString(),
         pendingOperations: compact(operations),
       };
     })

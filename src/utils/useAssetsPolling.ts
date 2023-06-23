@@ -56,7 +56,6 @@ const getDelegationsPayload = async (
   return delegation && { pkh, delegation };
 };
 
-const REFRESH_RATE = 10000;
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
 const MAX_ADDRESSES_PER_REQUEST = 10;
@@ -76,19 +75,17 @@ export const useAssetsPolling = () => {
       dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
     },
 
-    refetchInterval: REFRESH_RATE,
+    refetchInterval: BLOCK_TIME,
   });
 
   const tokenQuery = useQuery("tokenBalance", {
     queryFn: async () => {
-      const tokens = await Promise.all(
-        [...multisigPkhs, ...implicitAccountPkhs].map(pkh => getTokensPayload(pkh, network))
-      );
+      const tokens = await Promise.all(allAccountPkhs.map(pkh => getTokensPayload(pkh, network)));
 
       dispatch(assetsActions.updateTokenBalance(tokens));
     },
 
-    refetchInterval: REFRESH_RATE,
+    refetchInterval: BLOCK_TIME,
   });
 
   const tezTransfersQuery = useQuery("tezTransfers", {
@@ -100,7 +97,7 @@ export const useAssetsPolling = () => {
       dispatch(assetsActions.updateTezTransfers(transfers));
     },
 
-    refetchInterval: REFRESH_RATE,
+    refetchInterval: BLOCK_TIME,
   });
 
   // TODO refactor there is some duplication piling up
@@ -113,7 +110,7 @@ export const useAssetsPolling = () => {
       dispatch(assetsActions.updateTokenTransfers(transfers));
     },
 
-    refetchInterval: REFRESH_RATE,
+    refetchInterval: BLOCK_TIME,
   });
 
   const delegationsQuery = useQuery("delegations", {
@@ -125,7 +122,7 @@ export const useAssetsPolling = () => {
       dispatch(assetsActions.updateDelegations(delegations));
     },
 
-    refetchInterval: REFRESH_RATE,
+    refetchInterval: BLOCK_TIME,
   });
 
   const conversionrateQuery = useQuery("conversionRate", {
@@ -155,7 +152,7 @@ export const useAssetsPolling = () => {
       dispatch(multisigActions.set(multisigsWithOperations));
     },
 
-    refetchInterval: 2000,
+    refetchInterval: BLOCK_TIME,
   });
 
   const tezQueryRef = useRef(tezQuery);
