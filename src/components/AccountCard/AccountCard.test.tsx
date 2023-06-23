@@ -191,7 +191,7 @@ describe("<AccountCard />", () => {
     expect(getByText(/no operations/i)).toBeTruthy();
   });
   describe("delegations", () => {
-    it("Given an account has no delegations, it should display a message saying so and a CTA button do delegate", () => {
+    it("Given an account has no delegations, it should display a message saying so and a CTA button to delegate", () => {
       render(<AccountCard account={selectedAccount} />);
       screen.getByTestId("account-card-delegation-tab").click();
       const { getByText } = within(screen.getByTestId("asset-panel"));
@@ -202,7 +202,7 @@ describe("<AccountCard />", () => {
       expect(modal).toHaveTextContent(/delegate/i);
     });
 
-    it("Given an account has an active delegation, it show display deletation and CTA buttons to chanage delegate or undelegate", () => {
+    it("Given an account has an active delegation, it show display the delegation and CTA buttons to change delegate or undelegate", () => {
       store.dispatch(
         updateDelegations([
           {
