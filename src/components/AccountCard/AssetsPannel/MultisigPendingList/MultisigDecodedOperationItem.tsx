@@ -63,7 +63,7 @@ const MultisigOperationAmount: React.FC<{
       const isNFT = asset.type === "nft";
 
       return (
-        <Flex alignItems="center" data-testid="deocded-fa-amount">
+        <Flex alignItems="center" data-testid="decoded-fa-amount">
           <Icon h={5} w={5} as={FiArrowUpRight} color={colors.gray[400]}></Icon>
           {isNFT ? (
             <Text textAlign="center" ml={1}>

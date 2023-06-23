@@ -5,18 +5,16 @@ import {
   getLastDelegation,
   getTezosPriceInUSD,
   getTezTransfers,
-  getTokens,
+  getTokenBalances,
   getTokenTransfers,
 } from "./fetch";
-import {
-  tokensGetTokenBalances,
-  operationsGetTransactions,
-  tokensGetTokenTransfers,
-} from "@tzkt/sdk-api";
+import { operationsGetTransactions, tokensGetTokenTransfers } from "@tzkt/sdk-api";
 import { bakersUrl, coincapUrl, tzktUrls } from "./consts";
-import { mockImplicitAddress } from "../../mocks/factories";
+import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { TezosNetwork } from "@airgap/tezos";
 import { SupportedNetworks } from "../network";
+import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
+import { uUSD } from "../../mocks/fa2Tokens";
 jest.mock("axios");
 
 jest.mock("@tzkt/sdk-api", () => {
@@ -88,15 +86,29 @@ describe("tezos utils fetch", () => {
     expect(result).toEqual(mockResponse.data.data.priceUsd);
   });
 
-  test("getTokens", async () => {
-    await getTokens(mockImplicitAddress(0).pkh, TezosNetwork.GHOSTNET);
-    expect(tokensGetTokenBalances).toBeCalledWith(
-      {
-        account: { eq: mockImplicitAddress(0).pkh },
-        balance: { gt: "0" },
-      },
-      { baseUrl: tzktUrls[TezosNetwork.GHOSTNET] }
-    );
+  test("getTokenBalances", async () => {
+    SupportedNetworks.forEach(async network => {
+      const response = [
+        hedgehoge(mockImplicitAddress(0)),
+        uUSD(mockImplicitAddress(1)),
+        uUSD(mockImplicitAddress(2)),
+        tzBtsc(mockContractAddress(0)),
+      ];
+      mockedAxios.get.mockResolvedValue({ data: response });
+      const addresses = [
+        mockImplicitAddress(0).pkh,
+        mockImplicitAddress(1).pkh,
+        mockContractAddress(0).pkh,
+      ];
+      const res = await getTokenBalances(addresses, network);
+      expect(mockedAxios.get).toBeCalledWith(
+        `https://api.${network}.tzkt.io/v1/tokens/balances?account.in=${addresses.join(
+          ","
+        )}&balance.gt=0`
+      );
+
+      expect(res).toEqual(response);
+    });
   });
 
   test("getTezTransfers", async () => {
@@ -140,7 +152,11 @@ describe("tezos utils fetch", () => {
           { address: mockImplicitAddress(1).pkh, balance: 123456 },
         ],
       });
-      const addresses = [mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh];
+      const addresses = [
+        mockImplicitAddress(0).pkh,
+        mockImplicitAddress(1).pkh,
+        mockContractAddress(0).pkh,
+      ];
       const res = await getAccounts(addresses, network);
       expect(mockedAxios.get).toBeCalledWith(
         `https://api.${network}.tzkt.io/v1/accounts?address.in=${addresses.join(

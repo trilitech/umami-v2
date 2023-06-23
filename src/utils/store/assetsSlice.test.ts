@@ -1,5 +1,5 @@
-import assetsSlice from "./store/assetsSlice";
-import { store } from "./store/store";
+import assetsSlice from "./assetsSlice";
+import { store } from "./store";
 
 import { TezosNetwork } from "@airgap/tezos";
 import { waitFor } from "@testing-library/react";
@@ -11,13 +11,13 @@ import {
   mockTezTransaction,
   mockTezTransfer,
   mockTokenTransaction,
-} from "../mocks/factories";
-import accountsSlice from "./store/accountsSlice";
-import { estimateAndUpdateBatch } from "./store/thunks/estimateAndupdateBatch";
-import { estimateBatch } from "./tezos";
-import { OperationValue } from "../components/sendForm/types";
-import { mockBalancePlayload } from "../mocks/tzktResponse";
-jest.mock("./tezos");
+} from "../../mocks/factories";
+import accountsSlice from "./accountsSlice";
+import { estimateAndUpdateBatch } from "./thunks/estimateAndupdateBatch";
+import { estimateBatch } from "../tezos";
+import { OperationValue } from "../../components/sendForm/types";
+import { hedgehoge } from "../../mocks/fa12Tokens";
+jest.mock("../tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
 
@@ -132,22 +132,23 @@ describe("Assets reducer", () => {
   });
 
   test("token balances are updated", () => {
-    store.dispatch(updateTokenBalance([mockBalancePlayload]));
+    store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
 
     expect(store.getState().assets).toEqual({
       balances: {
         mutez: {},
         tokens: {
-          baz: [
+          [mockImplicitAddress(0).pkh]: [
             {
-              balance: "1",
-              contract: "mockContract",
+              balance: "10000000000",
+              contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
               metadata: {
-                decimals: "2",
-                symbol: "mockSymbol",
+                icon: "ipfs://QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
+                name: "Hedgehoge",
+                symbol: "HEH",
+                decimals: "6",
               },
-              tokenId: "0",
-              type: "fa2",
+              type: "fa1.2",
             },
           ],
         },
@@ -170,34 +171,7 @@ describe("Assets reducer", () => {
       ])
     );
 
-    store.dispatch(updateTokenBalance([mockBalancePlayload]));
-
-    expect(store.getState().assets).toEqual({
-      balances: {
-        mutez: { bar: "44", baz: "55" },
-        tokens: {
-          baz: [
-            {
-              balance: "1",
-              contract: "mockContract",
-              metadata: {
-                decimals: "2",
-                symbol: "mockSymbol",
-              },
-              tokenId: "0",
-              type: "fa2",
-            },
-          ],
-        },
-      },
-      conversionRate: null,
-      delegations: {},
-      bakers: [],
-      network: "mainnet",
-      transfers: { tez: {}, tokens: {} },
-      batches: {},
-      blockLevel: null,
-    });
+    store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
 
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
 
@@ -221,34 +195,7 @@ describe("Assets reducer", () => {
       ])
     );
 
-    store.dispatch(updateTokenBalance([mockBalancePlayload]));
-
-    expect(store.getState().assets).toEqual({
-      balances: {
-        mutez: { bar: "44", baz: "55" },
-        tokens: {
-          baz: [
-            {
-              balance: "1",
-              contract: "mockContract",
-              metadata: {
-                decimals: "2",
-                symbol: "mockSymbol",
-              },
-              tokenId: "0",
-              type: "fa2",
-            },
-          ],
-        },
-      },
-      conversionRate: null,
-      delegations: {},
-      bakers: [],
-      network: "mainnet",
-      transfers: { tez: {}, tokens: {} },
-      batches: {},
-      blockLevel: null,
-    });
+    store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
 
     store.dispatch(accountsSlice.actions.reset());
 

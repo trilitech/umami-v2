@@ -9,7 +9,6 @@ import {
   assetsActions,
   DelegationPayload,
   TezTransfersPayload,
-  TokenBalancePayload,
   TokenTransfersPayload,
 } from "./store/assetsSlice";
 import { useAppDispatch } from "./store/hooks";
@@ -20,18 +19,10 @@ import {
   getLatestBlockLevel,
   getTezosPriceInUSD,
   getTezTransfers,
-  getTokens,
+  getTokenBalances,
   getTokenTransfers,
 } from "./tezos";
 import { chunk } from "lodash";
-
-const getTokensPayload = async (
-  pkh: string,
-  network: TezosNetwork
-): Promise<TokenBalancePayload> => {
-  const tokens = await getTokens(pkh, network);
-  return { pkh, tokens };
-};
 
 const getTezTransfersPayload = async (
   pkh: string,
@@ -58,7 +49,12 @@ const getDelegationsPayload = async (
 
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
-const MAX_ADDRESSES_PER_REQUEST = 10;
+
+// The limit of a URI size is 2000 chars
+// according to https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
+// alongside addresses we also pass the host, path, other params, at most 200 chars
+// roughly, an address is 40 chars.
+const MAX_ADDRESSES_PER_REQUEST = 40;
 
 export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
@@ -67,10 +63,10 @@ export const useAssetsPolling = () => {
   const implicitAccountPkhs = implicitAccounts.map(account => account.address.pkh);
   const multisigPkhs = useMultisigAccounts().map(multisig => multisig.address.pkh);
   const allAccountPkhs = [...implicitAccountPkhs, ...multisigPkhs];
+  const pkhChunks = chunk(allAccountPkhs, MAX_ADDRESSES_PER_REQUEST);
 
   const tezQuery = useQuery("tezBalance", {
     queryFn: async () => {
-      const pkhChunks = chunk(allAccountPkhs, MAX_ADDRESSES_PER_REQUEST);
       const accountInfos = await Promise.all(pkhChunks.flatMap(pkhs => getAccounts(pkhs, network)));
       dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
     },
@@ -80,9 +76,10 @@ export const useAssetsPolling = () => {
 
   const tokenQuery = useQuery("tokenBalance", {
     queryFn: async () => {
-      const tokens = await Promise.all(allAccountPkhs.map(pkh => getTokensPayload(pkh, network)));
-
-      dispatch(assetsActions.updateTokenBalance(tokens));
+      const tokenBalances = await Promise.all(
+        pkhChunks.map(pkhs => getTokenBalances(pkhs, network))
+      );
+      dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
     },
 
     refetchInterval: BLOCK_TIME,
