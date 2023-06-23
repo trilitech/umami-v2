@@ -10,7 +10,6 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { formatRelative } from "date-fns";
 import { compact } from "lodash";
 import React from "react";
 import { CiCircleRemove } from "react-icons/ci";
@@ -23,8 +22,8 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoDelegations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
-import { prettyTezAmount } from "../../utils/format";
-import { useAllDelegations, useGetAccountBalance } from "../../utils/hooks/assetsHooks";
+import { useAllDelegations } from "../../utils/hooks/assetsHooks";
+import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { getBakers } from "../../utils/tezos";
@@ -40,10 +39,9 @@ const DelegationsTable = ({
   onRemoveDelegate: (pkh: string) => void;
   onChangeDelegate: (pkh: string, baker: string) => void;
 }) => {
-  const now = new Date();
   const renderBakerTile = useRenderBakerSmallTile();
 
-  const getAccountBalance = useGetAccountBalance();
+  const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
   return (
     <TableContainer overflowX="unset" overflowY="unset">
       <Table>
@@ -63,15 +61,15 @@ const DelegationsTable = ({
         </Thead>
         <Tbody>
           {delegations.map(d => {
-            const balance = getAccountBalance(d.sender);
+            const { currentBalance, duration, initialBalance } = getDelegationPrettyDisplay(d);
             return (
               <Tr key={d.id} data-testid="delegation-row">
                 <Td>
                   <AccountSmallTile pkh={d.sender} />
                 </Td>
-                <Td>{d.amount && prettyTezAmount(d.amount)}</Td>
-                <Td>{balance && prettyTezAmount(balance)}</Td>
-                <Td>{d.timestamp && `Since ${formatRelative(new Date(d.timestamp), now)}`}</Td>
+                <Td>{initialBalance}</Td>
+                <Td>{currentBalance}</Td>
+                <Td>{duration}</Td>
                 <Td />
                 <Td>
                   <Flex alignItems="center">
@@ -186,7 +184,13 @@ const DelegationsView = () => {
           {modalElement}
         </>
       ) : (
-        <NoDelegations />
+        <NoDelegations
+          onDelegate={() => {
+            onOpen({
+              mode: { type: "delegation" },
+            });
+          }}
+        />
       )}
     </Flex>
   );
