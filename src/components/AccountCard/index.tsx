@@ -6,6 +6,7 @@ import {
   useGetAccountNFTs,
   useGetAccountOperationDisplays,
   useGetDollarBalance,
+  useSelectedNetwork,
 } from "../../utils/hooks/assetsHooks";
 import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { useReceiveModal } from "../ReceiveModal";
@@ -18,6 +19,8 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const getTokens = useGetAccountAllTokens();
   const getNFTs = useGetAccountNFTs();
   const getOperations = useGetAccountOperationDisplays();
+  const network = useSelectedNetwork();
+
   const { onOpen: onOpenSend, modalElement: sendModal } = useSendFormModal();
   const { onOpen: onOpenReceive, modalElement: receiveModal } = useReceiveModal();
 
@@ -48,6 +51,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         nfts={nfts}
         operationDisplays={operations}
         account={account}
+        network={network}
       />
       {sendModal}
       {receiveModal}

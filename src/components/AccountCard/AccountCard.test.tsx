@@ -76,6 +76,14 @@ describe("<AccountCard />", () => {
     expect(screen.getByText("33200 ꜩ")).toBeInTheDocument();
   });
 
+  it("should display link to tzkt", () => {
+    render(<AccountCard account={selectedAccount} />);
+    const tzktLink = screen.getByTestId("asset-panel-tablist");
+    const link = within(tzktLink).getByRole("link", {});
+    const expectedLink = "https://tzkt.io/" + selectedAccount.address.pkh;
+    expect(link).toHaveProperty("href", expectedLink);
+  });
+
   it("should display assets tabs with tokens by default", () => {
     render(<AccountCard account={selectedAccount} />);
     expect(screen.getByTestId("account-card-tokens-tab")).toBeInTheDocument();

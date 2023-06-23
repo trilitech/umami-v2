@@ -1,9 +1,13 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { TezosNetwork } from "@airgap/tezos";
+import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import React from "react";
+import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
 import { OperationDisplay } from "../../../types/Operation";
+import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
+import { IconAndTextButtonLink } from "../../IconAndTextBtn";
 import MultisigPendingList from "./MultisigPendingList";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
@@ -13,7 +17,8 @@ export const AssetsPannel: React.FC<{
   nfts: Array<NFT>;
   account: Account;
   operationDisplays: OperationDisplay[];
-}> = ({ tokens, nfts, account, operationDisplays }) => {
+  network: TezosNetwork;
+}> = ({ tokens, nfts, account, operationDisplays, network }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
 
   return (
@@ -30,12 +35,22 @@ export const AssetsPannel: React.FC<{
       // TODO Fix
       // https://chakra-ui.com/docs/components/tabs
     >
-      <TabList>
-        {isMultisig && <Tab data-testid="account-card-pending-tab"> Pendings</Tab>}
-        <Tab>Tokens</Tab>
-        <Tab>NFTs</Tab>
-        <Tab>Operations</Tab>
-        <Tab>Delegations</Tab>
+      <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
+        <Flex>
+          {isMultisig && <Tab data-testid="account-card-pending-tab"> Pendings</Tab>}
+          <Tab>Tokens</Tab>
+          <Tab>NFTs</Tab>
+          <Tab>Operations</Tab>
+          <Tab>Delegations</Tab>
+        </Flex>
+
+        <IconAndTextButtonLink
+          data-testid="tzkt-link"
+          icon={FiExternalLink}
+          label="View on Tzkt"
+          href={buildTzktAddressUrl(network, account.address.pkh)}
+          textFirst
+        />
       </TabList>
       <TabPanels height="100%">
         {isMultisig && (
