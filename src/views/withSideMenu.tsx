@@ -5,7 +5,7 @@ export const withSideMenu = (body: React.ReactElement) => {
   return (
     <Flex height="100vh">
       <SideNavbar />
-      <Box flex={1} pl={4} pr={4} height="100%" overflowX="hidden">
+      <Box flex={1} height="100%" overflowX="hidden" px={6}>
         {body}
       </Box>
     </Flex>

@@ -24,7 +24,7 @@ type AccountsOfSameType = MnemonicAccount[] | LedgerAccount[] | SocialAccount[] 
 
 type GroupedByLabel = Record<string, AccountsOfSameType | undefined>;
 
-const Header = () => {
+export const AccountListHeader = () => {
   const { onOpen, modalElement } = useCreateOrImportSecretModal();
   return (
     <Flex justifyContent="space-between" mt={4} mb={4}>
@@ -195,7 +195,6 @@ export const AccountsList: React.FC<{
   });
   return (
     <Box height="100%">
-      <Header />
       <NestedScroll>{accountTiles}</NestedScroll>
       {confirmModal}
       {deriveAccountModal}

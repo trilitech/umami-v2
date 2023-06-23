@@ -7,14 +7,7 @@ import { OperationListDisplay } from "./OpertionList/OperationListDisplay";
 export const OperationsListPanel = () => {
   const operationDisplays = useGetAllOperationDisplays();
   return (
-    <Tabs
-      height="100%"
-      display="flex"
-      flexDirection="column"
-      mt={0}
-      bg="umami.gray.900"
-      borderRadius={4}
-    >
+    <Tabs height="100%" mt={0} bg="umami.gray.900" borderRadius={4}>
       <TabList justifyContent="space-between">
         <SmallTab>Operations</SmallTab>
         <Link
@@ -29,8 +22,8 @@ export const OperationsListPanel = () => {
           View All
         </Link>
       </TabList>
-      <TabPanels>
-        <TabPanel>
+      <TabPanels height="100%">
+        <TabPanel height="100%">
           <OperationListDisplay operations={operationDisplays} />
         </TabPanel>
       </TabPanels>
