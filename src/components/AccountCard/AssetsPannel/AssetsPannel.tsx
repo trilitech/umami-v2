@@ -38,7 +38,7 @@ export const AssetsPannel: React.FC<{
     >
       <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
         <Flex>
-          {isMultisig && <SmallTab data-testid="account-card-pending-tab"> Pendings</SmallTab>}
+          {isMultisig && <SmallTab data-testid="account-card-pending-tab"> Pending</SmallTab>}
           <SmallTab>Tokens</SmallTab>
           <SmallTab>NFTs</SmallTab>
           <SmallTab>Operations</SmallTab>
