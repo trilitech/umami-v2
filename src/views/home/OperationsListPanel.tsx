@@ -29,8 +29,8 @@ export const OperationsListPanel = () => {
           View All
         </Link>
       </TabList>
-      <TabPanels>
-        <TabPanel>
+      <TabPanels height="100%">
+        <TabPanel height="100%">
           <OperationListDisplay operations={operationDisplays} />
         </TabPanel>
       </TabPanels>
