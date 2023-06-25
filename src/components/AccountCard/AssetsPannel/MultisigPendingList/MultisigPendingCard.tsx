@@ -32,17 +32,17 @@ export const MultisigPendingCard: React.FC<{
       <Box p={1} {...getDisclosureProps()}>
         <Flex marginY={2} justifyContent="space-between">
           <MultisigOperationsDisplay rawActions={operation.rawActions} />
-          <Flex alignItems="center">
-            <Heading color={colors.gray[400]} size="sm" mr={1}>
+          <Flex alignItems="flex-end" mb="25px">
+            <Text color={colors.gray[400]} size="sm" mr={1}>
               Pending Approvals:
-            </Heading>
+            </Text>
             <Text color="w" data-testid="multisig-card-text">
               {pendingApprovals}
             </Text>
           </Flex>
         </Flex>
 
-        <Box marginY={5}>
+        <Box mb={5}>
           {signers.map(signer => (
             <MultisigSignerTile
               key={signer.pkh}
