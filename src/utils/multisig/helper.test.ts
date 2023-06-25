@@ -1,6 +1,6 @@
 import axios from "axios";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { getOperationsForMultisigs, getRelevantMultisigContracts } from "./helpers";
+import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./helpers";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
 import { SupportedNetworks } from "../network";
 jest.mock("axios");
@@ -31,7 +31,7 @@ describe("multisig helpers", () => {
       ]);
     });
 
-    test("getOperationsForMultisigs", async () => {
+    test("getPendingOperationsForMultisigs", async () => {
       mockedAxios.get.mockResolvedValueOnce({
         data: [
           {
@@ -57,7 +57,11 @@ describe("multisig helpers", () => {
       });
 
       // chunk size is set to 1 to be able to mock the responses properly (e.g. sequential execution)
-      const result = await getOperationsForMultisigs(network, tzktGetSameMultisigsResponse, 1);
+      const result = await getPendingOperationsForMultisigs(
+        network,
+        tzktGetSameMultisigsResponse,
+        1
+      );
 
       tzktGetSameMultisigsResponse.forEach(res => {
         const {
