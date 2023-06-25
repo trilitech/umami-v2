@@ -72,6 +72,7 @@ export const useAssetsPolling = () => {
     },
 
     refetchInterval: BLOCK_TIME,
+    refetchIntervalInBackground: true,
   });
 
   const tokenQuery = useQuery("tokenBalance", {
@@ -83,6 +84,7 @@ export const useAssetsPolling = () => {
     },
 
     refetchInterval: BLOCK_TIME,
+    refetchIntervalInBackground: true,
   });
 
   const tezTransfersQuery = useQuery("tezTransfers", {
@@ -95,6 +97,7 @@ export const useAssetsPolling = () => {
     },
 
     refetchInterval: BLOCK_TIME,
+    refetchIntervalInBackground: true,
   });
 
   // TODO refactor there is some duplication piling up
@@ -108,6 +111,7 @@ export const useAssetsPolling = () => {
     },
 
     refetchInterval: BLOCK_TIME,
+    refetchIntervalInBackground: true,
   });
 
   const delegationsQuery = useQuery("delegations", {
@@ -120,6 +124,7 @@ export const useAssetsPolling = () => {
     },
 
     refetchInterval: BLOCK_TIME,
+    refetchIntervalInBackground: true,
   });
 
   const conversionrateQuery = useQuery("conversionRate", {
@@ -129,6 +134,7 @@ export const useAssetsPolling = () => {
     },
 
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
+    refetchIntervalInBackground: true,
   });
 
   const blockNumberQuery = useQuery("blockNumber", {
@@ -138,6 +144,7 @@ export const useAssetsPolling = () => {
     },
 
     refetchInterval: BLOCK_TIME,
+    refetchIntervalInBackground: true,
   });
 
   const multisigsQuery = useQuery("multisigs", {
@@ -150,6 +157,7 @@ export const useAssetsPolling = () => {
     },
 
     refetchInterval: BLOCK_TIME,
+    refetchIntervalInBackground: true,
   });
 
   const tezQueryRef = useRef(tezQuery);
