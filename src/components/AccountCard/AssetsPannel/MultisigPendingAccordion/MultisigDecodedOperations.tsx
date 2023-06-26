@@ -47,9 +47,17 @@ const UnrecognizedOperationAccordion: React.FC<{ unrecoginizedRawActions: string
             <AccordionIcon />
           </AccordionButton>
         </h2>
-        <AccordionPanel pb={3} h="400px" overflow="scroll">
+        <AccordionPanel pb={3} h="400px" overflowY="scroll">
           <Card bg="umami.gray.700" borderRadius="5px">
-            <CardBody>{JSON.stringify(JSON.parse(unrecoginizedRawActions), null, 2)}</CardBody>
+            <pre
+              style={{
+                whiteSpace: "pre-wrap",
+                fontSize: "12px",
+                lineHeight: "18px",
+              }}
+            >
+              <CardBody>{JSON.stringify(JSON.parse(unrecoginizedRawActions), null, 1)}</CardBody>
+            </pre>
           </Card>
         </AccordionPanel>
       </AccordionItem>
