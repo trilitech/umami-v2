@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
-import { getOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
+import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
 import {
   assetsActions,
   DelegationPayload,
@@ -23,6 +23,7 @@ import {
   getTokenTransfers,
 } from "./tezos";
 import { chunk } from "lodash";
+import { processInBatches } from "./promise";
 
 const getTezTransfersPayload = async (
   pkh: string,
@@ -66,7 +67,7 @@ export const useAssetsPolling = () => {
     queryFn: async () => {
       const multisigs = await getRelevantMultisigContracts(network, new Set(implicitAccountPkhs));
 
-      const pendingOperations = getOperationsForMultisigs(network, multisigs).then(
+      const pendingOperations = getPendingOperationsForMultisigs(network, multisigs).then(
         multisigsWithOperations => {
           dispatch(multisigActions.set(multisigsWithOperations));
         }
@@ -87,22 +88,22 @@ export const useAssetsPolling = () => {
 
           // token transfers have to be fetched after the balances were fetched
           // because otherwise we might not have some tokens' info to display the operations
-          return Promise.all(
-            implicitAccountPkhs.map(pkh => getTokensTransfersPayload(pkh, network))
-          ).then(tokenTransfers => {
-            dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
-          });
+          processInBatches(allAccountPkhs, 5, pkh => getTokensTransfersPayload(pkh, network)).then(
+            tokenTransfers => {
+              dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
+            }
+          );
         }
       );
 
-      const tezTransfers = Promise.all(
-        implicitAccountPkhs.map(pkh => getTezTransfersPayload(pkh, network))
+      const tezTransfers = processInBatches(allAccountPkhs, 5, pkh =>
+        getTezTransfersPayload(pkh, network)
       ).then(tezTransfers => {
         dispatch(assetsActions.updateTezTransfers(tezTransfers));
       });
 
-      const delegations = Promise.all(
-        implicitAccountPkhs.map(pkh => getDelegationsPayload(pkh, network))
+      const delegations = processInBatches(allAccountPkhs, 5, pkh =>
+        getDelegationsPayload(pkh, network)
       ).then(delegations => {
         dispatch(assetsActions.updateDelegations(compact(delegations)));
       });
