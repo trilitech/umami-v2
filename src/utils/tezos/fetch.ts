@@ -4,14 +4,13 @@ import {
   DelegationOperation,
   operationsGetDelegations,
   operationsGetTransactions,
-  Token,
+  TokenBalance,
   tokensGetTokenTransfers,
   TokenTransfer,
 } from "@tzkt/sdk-api";
 import axios from "axios";
 import { bakersUrl, coincapUrl, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
-import { tokensGetTokenBalances } from "@tzkt/sdk-api";
 import { Baker } from "../../types/Baker";
 import { TezTransfer } from "../../types/Operation";
 
@@ -30,16 +29,15 @@ export const getAccounts = async (
   return response.data;
 };
 
-export const getTokens = async (pkh: string, network: TezosNetwork): Promise<Token[]> =>
-  tokensGetTokenBalances(
-    {
-      account: { eq: pkh },
-      balance: { gt: "0" },
-    },
-    {
-      baseUrl: tzktUrls[network],
-    }
+export const getTokenBalances = async (
+  pkhs: string[],
+  network: TezosNetwork
+): Promise<TokenBalance[]> => {
+  const response = await axios.get<TokenBalance[]>(
+    `${tzktUrls[network]}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
   );
+  return response.data;
+};
 
 export const getTezTransfers = (
   address: string,

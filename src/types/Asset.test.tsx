@@ -1,4 +1,4 @@
-import { tzBtsc, hedgeHoge } from "../mocks/fa12Tokens";
+import { tzBtsc, hedgehoge } from "../mocks/fa12Tokens";
 import { uUSD } from "../mocks/fa2Tokens";
 import { mockNFT, mockImplicitAddress } from "../mocks/factories";
 import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
@@ -82,7 +82,7 @@ describe("fromToken", () => {
   });
 
   test("fa1 token with name symbol and decimals (tzBTC)", () => {
-    const result = fromToken(tzBtsc);
+    const result = fromToken(tzBtsc(mockImplicitAddress(0)));
 
     const expected = {
       type: "fa1.2",
@@ -97,8 +97,8 @@ describe("fromToken", () => {
     expect(result).toEqual(expected);
   });
 
-  test("fa1 token with name symbol decimals and icon (hedgeHoge)", () => {
-    const result = fromToken(hedgeHoge);
+  test("fa1 token with name symbol decimals and icon (Hedgehoge)", () => {
+    const result = fromToken(hedgehoge(mockImplicitAddress(0)));
 
     const expected = {
       type: "fa1.2",
@@ -115,7 +115,7 @@ describe("fromToken", () => {
   });
 
   test("fa2 token with thumbnailUri (uUSD)", () => {
-    const result = fromToken(uUSD);
+    const result = fromToken(uUSD(mockImplicitAddress(0)));
     const expected = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",

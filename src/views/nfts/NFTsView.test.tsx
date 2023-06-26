@@ -22,20 +22,10 @@ describe("NFTsView", () => {
   it("displays nfts of all accounts by default", () => {
     store.dispatch(
       updateTokenBalance([
-        {
-          pkh: mockImplicitAddress(1).pkh,
-          tokens: [
-            mockNFTToken(1, mockImplicitAddress(1).pkh),
-            mockNFTToken(2, mockImplicitAddress(1).pkh),
-          ],
-        },
-        {
-          pkh: mockImplicitAddress(2).pkh,
-          tokens: [
-            mockNFTToken(1, mockImplicitAddress(2).pkh),
-            mockNFTToken(2, mockImplicitAddress(2).pkh),
-          ],
-        },
+        mockNFTToken(1, mockImplicitAddress(1).pkh),
+        mockNFTToken(2, mockImplicitAddress(1).pkh),
+        mockNFTToken(1, mockImplicitAddress(2).pkh),
+        mockNFTToken(2, mockImplicitAddress(2).pkh),
       ])
     );
 

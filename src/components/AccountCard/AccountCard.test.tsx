@@ -1,7 +1,6 @@
 import {
   mockFA1Token,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockMultisigAccount,
   mockNFTToken,
 } from "../../mocks/factories";
@@ -11,7 +10,7 @@ import { store } from "../../utils/store/store";
 
 import { TezosNetwork } from "@airgap/tezos";
 import AccountCard from ".";
-import { hedgeHoge, tzBtsc } from "../../mocks/fa12Tokens";
+import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { act, render, screen, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
@@ -27,31 +26,11 @@ beforeEach(() => {
   store.dispatch(updateTezBalance([{ address: pkh, balance: 33200000000 }]));
   store.dispatch(
     updateTokenBalance([
-      {
-        pkh: selectedAccount.address.pkh,
-        tokens: [
-          hedgeHoge,
-          tzBtsc,
-          uUSD,
-          mockFA1Token(1, mockImplicitAddress(1).pkh, 123),
-          mockNft,
-        ],
-      },
-    ])
-  );
-
-  store.dispatch(
-    updateTokenBalance([
-      {
-        pkh: selectedAccount.address.pkh,
-        tokens: [
-          hedgeHoge,
-          tzBtsc,
-          uUSD,
-          mockFA1Token(1, mockImplicitAddress(1).pkh, 123),
-          mockNft,
-        ],
-      },
+      hedgehoge(selectedAccount.address),
+      tzBtsc(selectedAccount.address),
+      uUSD(selectedAccount.address),
+      mockFA1Token(1, pkh, 123),
+      mockNft,
     ])
   );
 });

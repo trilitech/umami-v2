@@ -60,7 +60,7 @@ export const fromToken = (raw: Token): Asset | null => {
   }
 
   if (!metadata) {
-    console.log("Impossible state, FA2 metadata is empty");
+    // We don't support FA2 without metadata yet
     return null;
   }
 
