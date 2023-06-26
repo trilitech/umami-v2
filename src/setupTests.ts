@@ -40,6 +40,7 @@ beforeAll(() => {
   window.TextEncoder = TextEncoder;
   (window as any).TextDecoder = TextDecoder;
   (window as any).crypto = webcrypto;
+  window.scrollTo = jest.fn();
 });
 
 // If you wanted to restore the mutations done above

@@ -19,7 +19,7 @@ describe("<MultisigPendingCard/>", () => {
       />
     );
 
-    expect(screen.getByTestId("multisig-card-text")).toHaveTextContent("2");
+    expect(screen.getByTestId("pending-approvals-count")).toHaveTextContent("2");
   });
 
   it("displays 0 for pending approvals if there are more approvers than the threshold", () => {
@@ -38,6 +38,6 @@ describe("<MultisigPendingCard/>", () => {
       />
     );
 
-    expect(screen.getByTestId("multisig-card-text")).toHaveTextContent("0");
+    expect(screen.getByTestId("pending-approvals-count")).toHaveTextContent("0");
   });
 });
