@@ -9,7 +9,7 @@ import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
 import { IconAndTextBtnLink } from "../../IconAndTextBtn";
 import SmallTab from "../../SmallTab";
-import MultisigPendingList from "./MultisigPendingList";
+import MultisigPendingAccordion from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
 
@@ -56,7 +56,7 @@ export const AssetsPanel: React.FC<{
       <TabPanels height="100%">
         {isMultisig && (
           <TabPanel data-testid="account-card-pending-tab-panel">
-            <MultisigPendingList account={account} />
+            <MultisigPendingAccordion account={account} />
           </TabPanel>
         )}
         <TabPanel data-testid="account-card-tokens-tab">
