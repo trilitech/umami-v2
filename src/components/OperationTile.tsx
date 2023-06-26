@@ -47,13 +47,13 @@ export const OperationTile: React.FC<{
               <Heading display="inline-flex" color="text.dark" size="sm" mr={2}>
                 Sent to:
               </Heading>
-              <CopyableAddress display="inline-flex" pkh={recipient} />
+              <CopyableAddress display="inline-flex" pkh={recipient.pkh} />
             </Box>
             <Box>
               <Heading display="inline-flex" color="text.dark" size="sm" mr={2}>
                 From:
               </Heading>
-              <CopyableAddress display="inline-flex" pkh={sender} />
+              <CopyableAddress display="inline-flex" pkh={sender.pkh} />
             </Box>
           </Flex>
           {success && (

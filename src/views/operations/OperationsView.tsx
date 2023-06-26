@@ -89,10 +89,10 @@ export const OperationsDataTable: React.FC<{
                 </Td>
                 <Td>{op.fee}</Td>
                 <Td>
-                  <AccountOrContactTile pkh={op.sender} />
+                  <AccountOrContactTile pkh={op.sender.pkh} />
                 </Td>
                 <Td>
-                  <AccountOrContactTile pkh={op.recipient} />
+                  <AccountOrContactTile pkh={op.recipient.pkh} />
                 </Td>
                 <Td>
                   {isBlockFinalised(op.level) ? (

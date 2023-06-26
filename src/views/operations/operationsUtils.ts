@@ -10,6 +10,7 @@ import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { DelegationOperation } from "@tzkt/sdk-api";
+import { makeValidAddress } from "../../types/Address";
 
 export const classifyTokenTransfer = (transfer: TokenTransfer) => {
   const token: Token = {
@@ -115,8 +116,8 @@ export const getTezOperationDisplay = (
     },
     prettyTimestamp,
     timestamp: parsed.timestamp,
-    recipient: parsed.target.address,
-    sender: parsed.sender.address,
+    recipient: makeValidAddress(parsed.target.address),
+    sender: makeValidAddress(parsed.sender.address),
     type: "transaction",
     tzktUrl: getHashUrl(parsed.hash, network),
     fee:
@@ -186,8 +187,8 @@ export const getTokenOperationDisplay = (
     },
     prettyTimestamp,
     timestamp: parsed.timestamp,
-    recipient: parsed.to.address,
-    sender: parsed.from.address,
+    recipient: makeValidAddress(parsed.to.address),
+    sender: makeValidAddress(parsed.from.address),
     tzktUrl: getTransactionUrl({
       transactionId: parsed.transactionId,
       originationId: parsed.originationId,
@@ -241,8 +242,8 @@ const getDelegationOperationDisplay = (
     },
     prettyTimestamp,
     timestamp: parsed.timestamp,
-    recipient: parsed.newDelegate.address,
-    sender: parsed.sender.address,
+    recipient: makeValidAddress(parsed.newDelegate.address),
+    sender: makeValidAddress(parsed.sender.address),
     tzktUrl: getHashUrl(parsed.hash, network),
     level,
     fee: prettyTezAmount(new BigNumber(parsed.bakerFee)),

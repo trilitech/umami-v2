@@ -30,6 +30,13 @@ export const isValidContractPkh = (pkh: string) => isAddressValid(pkh) && pkh.ma
 
 export const isValidImplicitPkh = (pkh: string) => isAddressValid(pkh) && pkh.match(/^tz[1234]\w+/);
 
+export const makeValidAddress = (pkh: string): Address => {
+  if (!isAddressValid(pkh)) {
+    throw new Error(`Invalid address: ${pkh}`);
+  }
+  return { type: isValidContractPkh(pkh) ? "contract" : "implicit", pkh };
+};
+
 export const parseContractPkh = (pkh: string): ContractAddress => {
   if (isValidContractPkh(pkh)) {
     return { type: "contract", pkh };

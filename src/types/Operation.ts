@@ -1,4 +1,5 @@
 import * as tzktApi from "@tzkt/sdk-api";
+import { Address } from "./Address";
 import { tokenInfo } from "./Token";
 
 export type TokenTransfer = Omit<tzktApi.TokenTransfer, "token"> & {
@@ -17,8 +18,8 @@ export type OperationDisplay = {
     id?: number;
   };
   fee?: string;
-  sender: string;
-  recipient: string;
+  sender: Address;
+  recipient: Address;
   status?: string;
   prettyTimestamp: string;
   timestamp: string;
