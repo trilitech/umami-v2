@@ -708,6 +708,6 @@ export const tzktGetSameMultisigsResponse: tzktGetSameMultisigsResponseType = [
   },
   {
     address: mockContractAddress(10).pkh,
-    storage: { threshold: "2", pending_ops: 0, signers: [mockImplicitAddress(10).pkh] },
+    storage: { threshold: "2", pending_ops: 1, signers: [mockImplicitAddress(10).pkh] },
   },
 ];

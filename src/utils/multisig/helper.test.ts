@@ -1,9 +1,7 @@
 import axios from "axios";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { tzktGetBigMapKeysResponseType } from "../../utils/tzkt/types";
 import { getOperationsForMultisigs, getRelevantMultisigContracts } from "./helpers";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
-import { parseImplicitPkh } from "../../types/Address";
 import { SupportedNetworks } from "../network";
 jest.mock("axios");
 
@@ -34,23 +32,32 @@ describe("multisig helpers", () => {
     });
 
     test("getOperationsForMultisigs", async () => {
-      const mockResponse = {
+      mockedAxios.get.mockResolvedValueOnce({
         data: [
           {
             active: true,
             key: "0",
             value: { actions: "action0", approvals: [mockImplicitAddress(0).pkh] },
           },
+        ],
+      });
+      mockedAxios.get.mockResolvedValueOnce({
+        data: [
           {
             active: true,
             key: "1",
             value: { actions: "action1", approvals: [mockImplicitAddress(1).pkh] },
           },
-        ] as tzktGetBigMapKeysResponseType,
-      };
-      mockedAxios.get.mockResolvedValue(mockResponse);
+          {
+            active: true,
+            key: "2",
+            value: { actions: "action2", approvals: [mockImplicitAddress(2).pkh] },
+          },
+        ],
+      });
 
-      const result = await getOperationsForMultisigs(network, tzktGetSameMultisigsResponse);
+      // chunk size is set to 1 to be able to mock the responses properly (e.g. sequential execution)
+      const result = await getOperationsForMultisigs(network, tzktGetSameMultisigsResponse, 1);
 
       tzktGetSameMultisigsResponse.forEach(res => {
         const {
@@ -71,11 +78,6 @@ describe("multisig helpers", () => {
               key: "0",
               rawActions: "action0",
             },
-            {
-              approvals: [mockImplicitAddress(1)],
-              key: "1",
-              rawActions: "action1",
-            },
           ],
           signers: [mockImplicitAddress(0)],
           threshold: 2,
@@ -84,17 +86,17 @@ describe("multisig helpers", () => {
           address: mockContractAddress(10),
           pendingOperations: [
             {
-              approvals: [mockImplicitAddress(0)],
-              key: "0",
-              rawActions: "action0",
-            },
-            {
               approvals: [mockImplicitAddress(1)],
               key: "1",
               rawActions: "action1",
             },
+            {
+              approvals: [mockImplicitAddress(2)],
+              key: "2",
+              rawActions: "action2",
+            },
           ],
-          signers: [parseImplicitPkh("tz1W2hEsS1mj7dHPZ6267eeM4HDWJoG3s13n")],
+          signers: [mockImplicitAddress(10)],
           threshold: 2,
         },
       ]);
