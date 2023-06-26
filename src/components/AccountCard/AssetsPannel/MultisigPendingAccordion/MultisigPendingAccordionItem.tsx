@@ -13,7 +13,7 @@ import colors from "../../../../style/colors";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
 import { ImplicitAddress } from "../../../../types/Address";
-import MultisigOperationsDisplay from "./MultisigDecodedOperations";
+import MultisigDecodedOperations from "./MultisigDecodedOperations";
 
 export const MultisigPendingAccordionItem: React.FC<{
   operation: MultisigOperation;
@@ -34,7 +34,7 @@ export const MultisigPendingAccordionItem: React.FC<{
         </h2>
         <AccordionPanel>
           <Flex marginY={2} justifyContent="space-between" alignItems="end">
-            <MultisigOperationsDisplay rawActions={operation.rawActions} />
+            <MultisigDecodedOperations rawActions={operation.rawActions} />
             <Flex alignItems="center" mb="6">
               <Heading color={colors.gray[400]} size="sm" mr={1}>
                 Pending Approvals:

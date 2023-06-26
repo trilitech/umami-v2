@@ -2,13 +2,13 @@ import { Accordion, Box } from "@chakra-ui/react";
 import { range } from "lodash";
 import React from "react";
 import { MultisigAccount } from "../../../../types/Account";
-import { useGetMultisigPendingOperations } from "../../../../utils/hooks/multisigHooks";
+import { useGetSortedMultisigPendingOperations } from "../../../../utils/hooks/multisigHooks";
 import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
 
 export const MultisigPendingAccordion: React.FC<{
   account: MultisigAccount;
 }> = ({ account }) => {
-  const getMultisigPendingOps = useGetMultisigPendingOperations();
+  const getMultisigPendingOps = useGetSortedMultisigPendingOperations();
   const pendingOperations = getMultisigPendingOps(account.address);
   return (
     <Box w="100%">
