@@ -1,5 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { compact } from "lodash";
+import { AccountType, MultisigAccount } from "../../types/Account";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { processInBatches } from "../promise";
 import { tzktGetSameMultisigsResponseType } from "../tzkt/types";
@@ -47,4 +48,17 @@ export const getPendingOperationsForMultisigs = async (
       } as MultisigWithPendingOperations;
     }
   );
+};
+
+export const multisigWithPendingOpsToAccount = (
+  m: MultisigWithPendingOperations,
+  label: string
+): MultisigAccount => {
+  return {
+    label,
+    address: m.address,
+    type: AccountType.MULTISIG,
+    threshold: m.threshold,
+    signers: m.signers,
+  };
 };

@@ -2,7 +2,6 @@ import {
   mockFA1Token,
   mockImplicitAccount,
   mockImplicitAddress,
-  mockMultisigAccount,
   mockNFTToken,
 } from "../../mocks/factories";
 import accountsSlice from "../../utils/store/accountsSlice";
@@ -14,9 +13,13 @@ import AccountCard from ".";
 import { mockDelegationOperation } from "../../mocks/delegations";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
+import { multisigs } from "../../mocks/mutlisigsWithPendingOperations";
 import { act, fireEvent, render, screen, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
-import { prettyTezAmount } from "../../utils/format";
+import { formatPkh, prettyTezAmount } from "../../utils/format";
+import { multisigWithPendingOpsToAccount } from "../../utils/multisig/helpers";
+import { MultisigWithPendingOperations } from "../../utils/multisig/types";
+import multisigsSlice from "../../utils/store/multisigsSlice";
 const {
   updateTezBalance,
   updateTokenBalance,
@@ -26,12 +29,16 @@ const {
 } = assetsSlice.actions;
 const { add } = accountsSlice.actions;
 
+const { set } = multisigsSlice.actions;
+
 const selectedAccount = mockImplicitAccount(0);
+
 const pkh = selectedAccount.address.pkh;
 const mockNft = mockNFTToken(0, pkh);
 
 const SELECTED_ACCOUNT_BALANCE = 33200000000;
 beforeEach(() => {
+  store.dispatch(set(multisigs));
   store.dispatch(add([selectedAccount, mockImplicitAccount(1)]));
   store.dispatch(updateTezBalance([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }]));
   store.dispatch(
@@ -48,6 +55,7 @@ beforeEach(() => {
 afterEach(() => {
   store.dispatch(accountsSlice.actions.reset());
   store.dispatch(assetsSlice.actions.reset());
+  store.dispatch(multisigsSlice.actions.reset());
 });
 
 describe("<AccountCard />", () => {
@@ -56,10 +64,9 @@ describe("<AccountCard />", () => {
     expect(screen.getByRole("heading", { name: selectedAccount.label })).toBeInTheDocument();
   });
 
-  it("accountCard displays multisig signers", () => {
-    render(<AccountCard account={mockMultisigAccount(0)} />);
-
-    expect(screen.getByTestId("multisig-tag-section")).toBeInTheDocument();
+  it("should display buy tez button", () => {
+    render(<AccountCard account={selectedAccount} />);
+    expect(screen.getByText(/buy tez/i)).toBeInTheDocument();
   });
 
   it("should display account tez balance", () => {
@@ -242,6 +249,78 @@ describe("<AccountCard />", () => {
       fireEvent.click(changeDelegateBtn);
       const modal = screen.getByRole("dialog");
       expect(modal).toHaveTextContent(/delegate/i);
+    });
+  });
+
+  describe("multisig", () => {
+    const multisigAccount = multisigWithPendingOpsToAccount(multisigs[2], "my multisig");
+    test('multisig accounts don"t display a buy tez button', () => {
+      render(<AccountCard account={multisigAccount} />);
+      expect(screen.queryByText(/buy tez/i)).not.toBeInTheDocument();
+    });
+
+    test("multisig accounts display pending operations if any", () => {
+      render(<AccountCard account={multisigAccount} />);
+      const { getAllByTestId } = within(screen.getByTestId("account-card-pending-tab-panel"));
+      const pendingOps = getAllByTestId("multisig-pending-operations");
+      expect(pendingOps).toHaveLength(multisigs[2].pendingOperations.length);
+      expect(pendingOps[0]).toHaveTextContent(/-0.1 ꜩ/i);
+      expect(pendingOps[0]).toHaveTextContent(/Send to :tz1UN...oBUB3/i);
+    });
+
+    test("multisig accounts display no pending operations message if there are none", () => {
+      const multisigWithNoOps: MultisigWithPendingOperations = {
+        ...multisigs[2],
+        pendingOperations: [],
+      };
+      store.dispatch(multisigsSlice.actions.set([multisigWithNoOps]));
+      render(<AccountCard account={multisigAccount} />);
+      const { queryAllByTestId, getByText } = within(
+        screen.getByTestId("account-card-pending-tab-panel")
+      );
+      const pendingOps = queryAllByTestId("multisig-pending-operations");
+      expect(pendingOps).toHaveLength(0);
+      expect(getByText(/No multisig pending operations/i)).toBeInTheDocument();
+    });
+
+    it("multisig account display operations under operations tab if any", () => {
+      store.dispatch(
+        updateTezTransfers([
+          {
+            pkh: multisigAccount.address.pkh,
+            transfers: [
+              mockTzktTezTransfer(
+                multisigAccount.address.pkh,
+                mockImplicitAccount(1).address.pkh,
+                1000000
+              ),
+              mockTzktTezTransfer(
+                mockImplicitAccount(2).address.pkh,
+                multisigAccount.address.pkh,
+                2000000
+              ),
+            ],
+          },
+        ])
+      );
+
+      render(<AccountCard account={multisigAccount} />);
+      expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
+      screen.getByTestId("account-card-operations-tab").click();
+      const operations = screen.getAllByTestId("operation-tile");
+      expect(operations).toHaveLength(2);
+      expect(operations[0]).toHaveTextContent(/-1 ꜩ/i);
+      expect(operations[1]).toHaveTextContent(/\+2 ꜩ/i);
+    });
+
+    it("multisig accounts display multisig signers", () => {
+      render(<AccountCard account={multisigAccount} />);
+
+      const signers = screen.getByTestId("multisig-tag-section");
+      expect(signers).toBeInTheDocument();
+      const { getByText } = within(signers);
+
+      expect(getByText(formatPkh(multisigAccount.signers[0].pkh))).toBeTruthy();
     });
   });
 });
