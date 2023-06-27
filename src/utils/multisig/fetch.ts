@@ -1,7 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import axios from "axios";
 import { tzktUrls } from "../tezos/consts";
-import { tzktGetBigMapKeysResponseType, tzktGetSameMultisigsResponseType } from "../tzkt/types";
+import { RawTzktGetBigMapKeys, tzktGetSameMultisigsResponseType } from "../tzkt/types";
 import { multisigAddress } from "./consts";
 
 const MULTISIG_FETCH_LIMIT = 10000;
@@ -30,11 +30,12 @@ export const getAllMultiSigContracts = async (
 // get all pending operations for a multisig contract address
 export const getPendingOperations = async (
   network: TezosNetwork,
-  bigMap: number
-): Promise<tzktGetBigMapKeysResponseType> => {
-  const url = `${tzktUrls[network]}/v1/bigmaps/${bigMap}/keys?active=true`;
-  const { data } = await axios.get<tzktGetBigMapKeysResponseType>(url);
-  return data.map(({ active, key, value }) => ({
+  bigMaps: number[]
+): Promise<RawTzktGetBigMapKeys> => {
+  const url = `${tzktUrls[network]}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(",")}`;
+  const { data } = await axios.get<RawTzktGetBigMapKeys>(url);
+  return data.map(({ bigmap, active, key, value }) => ({
+    bigmap,
     active,
     key,
     value,

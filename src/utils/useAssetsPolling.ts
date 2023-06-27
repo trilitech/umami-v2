@@ -57,6 +57,8 @@ const BAKERS_REFRESH_RATE = 1000 * 60 * 120;
 // alongside addresses we also pass the host, path, other params, at most 200 chars
 // roughly, an address is 40 chars.
 const MAX_ADDRESSES_PER_REQUEST = 40;
+// Each bigmap id takes 6 chars.
+const MAX_BIGMAP_PER_REQUEST = 300;
 
 export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
@@ -68,16 +70,16 @@ export const useAssetsPolling = () => {
     queryFn: async () => {
       const multisigs = await getRelevantMultisigContracts(network, new Set(implicitAccountPkhs));
 
-      const pendingOperations = getPendingOperationsForMultisigs(network, multisigs).then(
-        multisigsWithOperations => {
-          dispatch(multisigActions.set(multisigsWithOperations));
-        }
-      );
+      const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
+      const pendingOperations = Promise.all(
+        multisigChunks.map(multisigs => getPendingOperationsForMultisigs(network, multisigs))
+      ).then(multisigsWithOperations => {
+        dispatch(multisigActions.set(multisigsWithOperations.flat()));
+      });
 
       const allAccountPkhs = [...implicitAccountPkhs, ...multisigs.map(acc => acc.address)];
       const pkhChunks = chunk(allAccountPkhs, MAX_ADDRESSES_PER_REQUEST);
-
-      const tezBalances = Promise.all(pkhChunks.flatMap(pkhs => getAccounts(pkhs, network))).then(
+      const tezBalances = Promise.all(pkhChunks.map(pkhs => getAccounts(pkhs, network))).then(
         accountInfos => {
           dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
         }

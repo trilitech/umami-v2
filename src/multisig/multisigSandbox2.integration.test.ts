@@ -104,10 +104,9 @@ describe("multisig Sandbox", () => {
     await sleep(15000);
 
     // get the operation id of the proposal.
-    const pendingOps = await getPendingOperations(
-      TezosNetwork.GHOSTNET,
-      MULTISIG_GHOSTNET_1_PENDING_OPS_BIG_MAP
-    );
+    const pendingOps = await getPendingOperations(TezosNetwork.GHOSTNET, [
+      MULTISIG_GHOSTNET_1_PENDING_OPS_BIG_MAP,
+    ]);
     const activeOps = pendingOps.filter(({ active }) => active);
     expect(activeOps.length).toBeGreaterThanOrEqual(1);
     const pendingOpKey = activeOps[activeOps.length - 1].key;
