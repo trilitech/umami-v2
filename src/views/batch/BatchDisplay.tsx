@@ -35,10 +35,7 @@ import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
     case "token": {
-      const amount =
-        operation.data.type === "nft"
-          ? operation.data.balance
-          : formatTokenAmount(operation.value.amount, operation.data.metadata?.decimals);
+      const amount = formatTokenAmount(operation.value.amount, operation.data.metadata?.decimals);
       return (
         <Flex>
           <Text mr={1}>{amount} </Text>
