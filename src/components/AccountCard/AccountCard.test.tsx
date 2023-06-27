@@ -254,7 +254,7 @@ describe("<AccountCard />", () => {
 
   describe("multisig", () => {
     const multisigAccount = multisigWithPendingOpsToAccount(multisigs[2], "my multisig");
-    test('multisig accounts don"t display a buy tez button', () => {
+    test("multisig accounts don't display a buy tez button", () => {
       render(<AccountCard account={multisigAccount} />);
       expect(screen.queryByText(/buy tez/i)).not.toBeInTheDocument();
     });
