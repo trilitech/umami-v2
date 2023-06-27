@@ -16,6 +16,63 @@ import {
 
 const forAddress = "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS";
 describe("getTezOperationDisplay", () => {
+  test("returns null for a tez transfer non related to reference address", () => {
+    const incomingTez: TezTransfer = {
+      type: "transaction",
+      id: 109783351820288,
+      level: 2213611,
+      timestamp: "2023-03-27T08:47:30Z",
+      block: "BM4xPHaLWYYw2KLwQrpUYjMYf1eN1mqfjtCEYUCgFpuyAd6u5cH",
+      hash: "ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM",
+      counter: 134162,
+      sender: { address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
+      gasLimit: 1101,
+      gasUsed: 1001,
+      storageLimit: 0,
+      storageUsed: 0,
+      bakerFee: 402,
+      storageFee: 0,
+      allocationFee: 0,
+      target: { address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+      amount: 2400000,
+      status: "applied",
+      hasInternals: false,
+    };
+
+    expect(getTezOperationDisplay(incomingTez, mockImplicitAddress(4).pkh)).toEqual(null);
+  });
+
+  test("returns null for a token transfer non related to reference address", () => {
+    const incomingKL3: TokenTransfer = {
+      id: 109855493849090,
+      level: 2215193,
+      timestamp: "2023-03-27T13:29:22Z",
+      token: {
+        id: 10898231001089,
+        contract: {
+          address: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+        },
+        tokenId: "1",
+        standard: "fa2",
+        totalSupply: "13000000000",
+        metadata: {
+          name: "Klondike3",
+          symbol: "KL3",
+          decimals: "5",
+        },
+      },
+      from: {
+        address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+      },
+      to: {
+        address: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+      },
+      amount: "451000",
+      transactionId: 109855493849088,
+    };
+    expect(getTokenOperationDisplay(incomingKL3, mockImplicitAddress(4).pkh)).toEqual(null);
+  });
+
   test("case tez incoming", () => {
     const incomingTez: TezTransfer = {
       type: "transaction",
