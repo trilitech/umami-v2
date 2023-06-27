@@ -12,20 +12,17 @@ import { useState } from "react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { useForm } from "react-hook-form";
-import { Step, StepType, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
+import { Step, StepType, VerifySeedphraseStep } from "../useOnboardingModal";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 
 const VerifySeedphrase = ({
-  setStep,
-  config,
+  goToStep,
+  account,
 }: {
-  setStep: (step: Step) => void;
-  config: TemporaryMnemonicAccountConfig;
+  goToStep: (step: Step) => void;
+  account: VerifySeedphraseStep["account"];
 }) => {
-  if (!config.seedphrase) {
-    throw new Error("Seedphrase not set");
-  }
-  const seedphraseArray = config.seedphrase.split(" ");
+  const seedphraseArray = account.seedphrase.split(" ");
   const {
     register,
     handleSubmit,
@@ -35,7 +32,7 @@ const VerifySeedphrase = ({
   });
   const [randomElements] = useState(selectRandomElements(seedphraseArray, 5));
   const onSubmit = () => {
-    setStep({ type: StepType.nameAccount, config });
+    goToStep({ type: StepType.nameAccount, account });
   };
   return (
     <ModalContentWrapper
@@ -43,7 +40,7 @@ const VerifySeedphrase = ({
       title="Verify Seed Phrase"
       subtitle="To verify, please type in the word that corresponds to each sequence number."
     >
-      <Box overflow="scroll" w="100%">
+      <Box overflowX="hidden" overflowY="auto" w="100%">
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <VStack w="100%" spacing={4}>
             {randomElements.map((item, index) => {
@@ -63,14 +60,7 @@ const VerifySeedphrase = ({
                 </FormControl>
               );
             })}
-            <Button
-              type="submit"
-              // bg="umami.blue"
-              w="100%"
-              size="lg"
-              minH="48px"
-              isDisabled={!isValid}
-            >
+            <Button type="submit" w="100%" size="lg" minH="48px" isDisabled={!isValid}>
               Continue
             </Button>
 

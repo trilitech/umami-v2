@@ -1,12 +1,12 @@
 import { IconButton, Modal, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import ModalBackground from "../../assets/onboarding/background_image.svg";
 import { ArrowBackIcon, CloseIcon } from "@chakra-ui/icons";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import ConnectOptions from "./connectOptions/ConnectOptions";
 import ConnectOrCreate from "./connectOrCreate/ConnectOrCreate";
 import Eula from "./eula/Eula";
-import { GenerateSeedphrase } from "./generateSeedphrase/GenerateSeedphrase";
+import ShowSeedphrase from "./showSeedphrase/ShowSeedphrase";
 import MasterPassword from "./masterPassword/MasterPassword";
 import NameAccount from "./nameAccount/NameAccount";
 import Notice from "./notice/Notice";
@@ -15,30 +15,6 @@ import RestoreSeedphrase from "./restoreSeedphrase/RestoreSeedphrase";
 import VerifySeedphrase from "./verifySeedphrase/VerifySeedphrase";
 import DerivationPath from "./derivationPath/DerivationPath";
 
-abstract class Base {
-  label?: string;
-}
-
-export class TemporaryMnemonicAccountConfig extends Base {
-  seedphrase?: string;
-  derivationPath?: string;
-}
-export class TemporaryLedgerAccountConfig extends Base {
-  derivationPath?: string;
-  pk?: string;
-  pkh?: string;
-}
-
-export class TemporarySocialAccountConfig extends Base {
-  pk?: string;
-  pkh?: string;
-}
-
-export type TemporaryAccountConfig =
-  | TemporaryMnemonicAccountConfig
-  | TemporaryLedgerAccountConfig
-  | TemporarySocialAccountConfig;
-
 export enum StepType {
   eula = "eula",
   connectOrCreate = "connectOrCreate",
@@ -46,91 +22,113 @@ export enum StepType {
   notice = "notice",
   restoreSeedphrase = "restoreSeedphrase",
   restoreLedger = "restoreLedger",
-  generateSeedphrase = "generateSeedphrase",
+  showSeedphrase = "showSeedphrase",
   verifySeedphrase = "verifySeedphrase",
   nameAccount = "nameAccount",
   derivationPath = "derivationPath",
   masterPassword = "masterPassword",
 }
 
-export type Step =
-  | { type: StepType.eula }
-  | { type: StepType.connectOrCreate }
-  | { type: StepType.connectOptions }
-  | { type: StepType.notice }
-  | { type: StepType.restoreSeedphrase }
-  | { type: StepType.generateSeedphrase }
-  | { type: StepType.restoreLedger; config: TemporaryLedgerAccountConfig }
-  | { type: StepType.verifySeedphrase; config: TemporaryMnemonicAccountConfig }
-  | { type: StepType.nameAccount; config: TemporaryAccountConfig }
-  | {
-      type: StepType.derivationPath;
-      config: TemporaryMnemonicAccountConfig | TemporaryLedgerAccountConfig;
-    }
-  | { type: StepType.masterPassword; config: TemporaryAccountConfig };
-
 export enum ModalSize {
   md = "420px",
   lg = "520px",
 }
 
+const stepModalSize = (step: Step): ModalSize => {
+  if (["eula", "showSeedphrase", "verifySeedphrase"].includes(step.type)) {
+    return ModalSize.lg;
+  }
+  return ModalSize.md;
+};
+
+export type EulaStep = { type: StepType.eula };
+export type ConnectOrCreateStep = { type: StepType.connectOrCreate };
+export type NoticeStep = { type: StepType.notice };
+export type ConnectOptionsStep = { type: StepType.connectOptions };
+export type ShowSeedphraseStep = {
+  type: StepType.showSeedphrase;
+  account: { type: "mnemonic"; seedphrase: string };
+};
+export type RestoreSeedphraseStep = { type: StepType.restoreSeedphrase };
+export type VerifySeedphraseStep = {
+  type: StepType.verifySeedphrase;
+  account: { type: "mnemonic"; seedphrase: string };
+};
+export type NameAccountStep = {
+  type: StepType.nameAccount;
+  account: { type: "mnemonic"; seedphrase: string } | { type: "ledger" };
+};
+export type DerivationPathStep = {
+  type: StepType.derivationPath;
+  account:
+    | { type: "mnemonic"; seedphrase: string; label: string }
+    | { type: "ledger"; label: string };
+};
+export type RestoreLedgerStep = {
+  type: StepType.restoreLedger;
+  account: { type: "ledger"; label: string; derivationPath: string };
+};
+export type MasterPasswordStep = {
+  type: StepType.masterPassword;
+  account: { type: "mnemonic"; seedphrase: string; label: string; derivationPath: string };
+};
+
+export type Step =
+  | EulaStep
+  | ConnectOrCreateStep
+  | NoticeStep
+  | ConnectOptionsStep
+  | ShowSeedphraseStep
+  | RestoreSeedphraseStep
+  | VerifySeedphraseStep
+  | NameAccountStep
+  | DerivationPathStep
+  | RestoreLedgerStep
+  | MasterPasswordStep;
+
 export const useCreateOrImportSecretModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [modalSize, setModalSize] = useState<ModalSize>(ModalSize.md);
-  const [step, setStep] = useState<Step | null>(null);
   const hasAccounts = useImplicitAccounts().length !== 0;
-  const [history, setHistory] = useState<Step[]>([{ type: StepType.connectOrCreate }]);
-  const historyRef = useRef(history);
+  const [step, setStep] = useState<Step>({
+    type: hasAccounts ? StepType.connectOrCreate : StepType.eula,
+  });
+  const [history, setHistory] = useState<Step[]>([step]);
 
-  useEffect(() => {
-    if (step && historyRef.current.map(s => s.type).indexOf(step.type) === -1) {
-      setHistory([...historyRef.current, step]);
-    }
-    if (
-      !step ||
-      (step && ["generateSeedphrase", "restoreSeedphrase", "eula"].indexOf(step?.type) > -1)
-    ) {
-      setModalSize(ModalSize.lg);
-    } else {
-      setModalSize(ModalSize.md);
-    }
-  }, [step, step?.type]);
+  const closeModal = () => {
+    setStep(history[0]);
+    setHistory([history[0]]);
+    onClose();
+  };
 
-  const logic = () => {
-    if (!step) {
-      if (hasAccounts) {
-        return <ConnectOrCreate setStep={setStep} />;
-      } else {
-        return <Eula setStep={setStep} />;
-      }
-    }
+  const goToStep = (step: Step) => {
+    setStep(step);
+    setHistory([...history, step]);
+  };
+
+  const getStepPage = () => {
     switch (step.type) {
-      case StepType.connectOrCreate:
-        return <ConnectOrCreate setStep={setStep} />;
-      case StepType.connectOptions:
-        return <ConnectOptions setStep={setStep} />;
       case StepType.eula:
-        return <Eula setStep={setStep} />;
+        return <Eula goToStep={goToStep} />;
+      case StepType.connectOrCreate:
+        return <ConnectOrCreate goToStep={goToStep} closeModal={closeModal} />;
+      case StepType.connectOptions:
+        return <ConnectOptions goToStep={goToStep} />;
       case StepType.notice:
-        return <Notice setStep={setStep} />;
+        return <Notice goToStep={goToStep} />;
       case StepType.restoreSeedphrase:
-        return <RestoreSeedphrase setStep={setStep} />;
-      case StepType.generateSeedphrase:
-        return <GenerateSeedphrase setStep={setStep} />;
+        return <RestoreSeedphrase goToStep={goToStep} />;
+      case StepType.showSeedphrase:
+        return <ShowSeedphrase goToStep={goToStep} {...step} />;
       case StepType.verifySeedphrase:
-        return <VerifySeedphrase setStep={setStep} config={step.config} />;
-      case StepType.restoreLedger:
-        return <RestoreLedger setStep={setStep} config={step.config} />;
+        return <VerifySeedphrase goToStep={goToStep} {...step} />;
       case StepType.nameAccount:
-        return <NameAccount setStep={setStep} config={step.config} />;
+        return <NameAccount goToStep={goToStep} {...step} />;
       case StepType.derivationPath:
-        return <DerivationPath setStep={setStep} config={step.config} />;
+        return <DerivationPath goToStep={goToStep} {...step} />;
+      case StepType.restoreLedger:
+        return <RestoreLedger closeModal={closeModal} {...step} />;
       case StepType.masterPassword:
-        return <MasterPassword config={step.config} onClose={onClose} />;
-      default: {
-        const error: never = step;
-        throw new Error(error);
-      }
+        return <MasterPassword onClose={onClose} {...step} />;
     }
   };
 
@@ -146,12 +144,12 @@ export const useCreateOrImportSecretModal = () => {
         />
         <ModalContent
           bg="umami.gray.900"
-          maxW={modalSize}
-          minW={modalSize}
+          maxW={stepModalSize(step)}
+          minW={stepModalSize(step)}
           border="1px solid #282828"
           boxShadow="0px 0px 15px 1px rgba(235, 235, 235, 0.1);"
         >
-          {history.length > 1 ? (
+          {history.length > 1 && (
             <IconButton
               size="lg"
               top="4px"
@@ -163,27 +161,24 @@ export const useCreateOrImportSecretModal = () => {
               icon={<ArrowBackIcon />}
               onClick={() => {
                 history.pop();
-                const previous = history.pop();
+                const previous = history[history.length - 1];
                 setHistory(history);
-                if (previous) {
-                  setStep(previous);
-                }
+                setStep(previous);
               }}
             />
-          ) : (
-            <IconButton
-              size="sm"
-              top="8px"
-              right="8px"
-              position="absolute"
-              variant="ghost"
-              aria-label="Close"
-              color="umami.gray.450"
-              icon={<CloseIcon />}
-              onClick={onClose}
-            />
           )}
-          {logic()}
+          <IconButton
+            size="sm"
+            top="8px"
+            right="8px"
+            position="absolute"
+            variant="ghost"
+            aria-label="Close"
+            color="umami.gray.450"
+            icon={<CloseIcon />}
+            onClick={closeModal}
+          />
+          {getStepPage()}
         </ModalContent>
       </Modal>
     ),

@@ -1,12 +1,13 @@
 import { VStack, Button, ListItem, OrderedList } from "@chakra-ui/react";
 import React from "react";
+import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
 
 const Notice: React.FC<{
-  setStep: (step: Step) => void;
-}> = ({ setStep }) => {
+  goToStep: (step: Step) => void;
+}> = ({ goToStep }) => {
   const noticeItems = [
     {
       content: "Write down your seed phrase and store it in a safe place.",
@@ -27,7 +28,7 @@ const Notice: React.FC<{
       title="Important Notice"
       subtitle="Please read the following before you continue to see your secret Seed Phrase."
     >
-      <VStack spacing="24px" overflowX="hidden" overflowY="scroll" p="4px">
+      <VStack spacing="24px" overflowX="hidden" overflowY="auto" p="4px">
         <OrderedList spacing={4}>
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;
@@ -38,7 +39,12 @@ const Notice: React.FC<{
           w="100%"
           minH="48px"
           size="lg"
-          onClick={() => setStep({ type: StepType.generateSeedphrase })}
+          onClick={() =>
+            goToStep({
+              type: StepType.showSeedphrase,
+              account: { type: "mnemonic", seedphrase: generate24WordMnemonic() },
+            })
+          }
         >
           I understand
         </Button>
@@ -47,7 +53,7 @@ const Notice: React.FC<{
           minH="48px"
           size="lg"
           variant="outline"
-          onClick={() => setStep({ type: StepType.restoreSeedphrase })}
+          onClick={() => goToStep({ type: StepType.restoreSeedphrase })}
         >
           I already have a Seed Phrase
         </Button>

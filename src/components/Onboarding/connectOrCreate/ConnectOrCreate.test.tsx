@@ -3,34 +3,37 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import ConnectOrCreate from "./ConnectOrCreate";
 import { ReduxStore } from "../../../providers/ReduxStore";
 
-const setStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn((step: Step) => {});
+const closeModalMock = jest.fn(() => {});
 
-const fixture = (setStep: (step: Step) => void) => (
+const fixture = (goToStep: (step: Step) => void) => (
   <ReduxStore>
-    <ConnectOrCreate setStep={setStep} />
+    <ConnectOrCreate goToStep={goToStep} closeModal={closeModalMock} />
   </ReduxStore>
 );
 
 describe("<ConnectOrCreate />", () => {
-  describe("Navigate to", () => {
-    test("Create new Account", async () => {
-      render(fixture(setStepMock));
-      const confirmBtn = screen.getByRole("button", {
-        name: /Create new Account/i,
-      });
-      fireEvent.click(confirmBtn);
-      expect(setStepMock).toBeCalledTimes(1);
-      expect(setStepMock).toBeCalledWith({ type: StepType.notice });
+  test("Create new Account", async () => {
+    render(fixture(goToStepMock));
+    const confirmBtn = screen.getByRole("button", {
+      name: /Create new Account/i,
     });
+    fireEvent.click(confirmBtn);
+    expect(goToStepMock).toBeCalledTimes(1);
+    expect(goToStepMock).toBeCalledWith({ type: StepType.notice });
+  });
 
-    test("I already have a wallet", async () => {
-      render(fixture(setStepMock));
-      const confirmBtn = screen.getByRole("button", {
-        name: /I already have a wallet/i,
-      });
-      fireEvent.click(confirmBtn);
-      expect(setStepMock).toBeCalledTimes(1);
-      expect(setStepMock).toBeCalledWith({ type: StepType.connectOptions });
+  test("I already have a wallet", async () => {
+    render(fixture(goToStepMock));
+    const confirmBtn = screen.getByRole("button", {
+      name: /I already have a wallet/i,
     });
+    fireEvent.click(confirmBtn);
+    expect(goToStepMock).toBeCalledTimes(1);
+    expect(goToStepMock).toBeCalledWith({ type: StepType.connectOptions });
+  });
+
+  test("Social login", async () => {
+    // TODO: Test
   });
 });

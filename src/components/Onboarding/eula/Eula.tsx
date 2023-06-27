@@ -5,8 +5,8 @@ import ModalContentWrapper from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
 
 const Eula: React.FC<{
-  setStep: (step: Step) => void;
-}> = ({ setStep }) => {
+  goToStep: (step: Step) => void;
+}> = ({ goToStep }) => {
   const [isChecked, setIsChecked] = React.useState(false);
   const eulaItems = [
     {
@@ -41,10 +41,10 @@ const Eula: React.FC<{
       title="End User License Agreement"
       subtitle="Last updated June 25, 2021"
     >
-      <VStack spacing="10px" w="100%" h="100%" overflowX="hidden" overflowY="scroll" p="4px">
-        {eulaItems.map((item, index) => {
+      <VStack spacing="10px" w="100%" h="500px" pr="4px" overflowX="hidden" overflowY="auto">
+        {eulaItems.map(item => {
           return (
-            <Container key={index}>
+            <Container key={item.title}>
               <Heading size="md" w="100%">
                 {item.title}
               </Heading>
@@ -65,7 +65,7 @@ const Eula: React.FC<{
           bg="umami.blue"
           isDisabled={!isChecked}
           onClick={() => {
-            setStep({ type: StepType.connectOrCreate });
+            goToStep({ type: StepType.connectOrCreate });
           }}
         >
           Continue

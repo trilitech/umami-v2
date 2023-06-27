@@ -1,114 +1,48 @@
-import {
-  Step,
-  StepType,
-  TemporaryLedgerAccountConfig,
-  TemporaryMnemonicAccountConfig,
-  TemporarySocialAccountConfig,
-} from "../useOnboardingModal";
+import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import NameAccount from "./NameAccount";
 import { ReduxStore } from "../../../providers/ReduxStore";
+import { seedPhrase } from "../../../mocks/seedPhrase";
 
-const setStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn((step: Step) => {});
 
-const fixture = (
-  setStep: (step: Step) => void,
-  config: TemporaryMnemonicAccountConfig | TemporaryLedgerAccountConfig
-) => (
+const fixture = (goToStep: (step: Step) => void, account: NameAccountStep["account"]) => (
   <ReduxStore>
-    <NameAccount setStep={setStep} config={config} />
+    <NameAccount goToStep={goToStep} account={account} />
   </ReduxStore>
 );
 
 describe("<NameAccount />", () => {
-  describe("Shown", () => {
-    test("Set a name", async () => {
-      render(fixture(setStepMock, new TemporaryMnemonicAccountConfig()));
+  const accounts = [
+    { type: "ledger" as const },
+    { type: "mnemonic" as const, seedphrase: seedPhrase },
+  ];
+  accounts.forEach(async account => {
+    test(`Set a name for ${account.type}`, async () => {
+      render(fixture(goToStepMock, account));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const name = screen.getByTestId("name");
       fireEvent.change(name, { target: { value: "name" } });
       fireEvent.click(confirmBtn);
       await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
+        expect(goToStepMock).toBeCalledTimes(1);
       });
-      expect(setStepMock).toBeCalledWith({
+      expect(goToStepMock).toBeCalledWith({
         type: StepType.derivationPath,
-        config: {
-          derivationPath: undefined,
-          label: "name",
-          seedphrase: undefined,
-        },
+        account: { ...account, label: "name" },
       });
     });
 
-    test("Set no name", async () => {
-      render(fixture(setStepMock, new TemporaryMnemonicAccountConfig()));
+    test(`Set no name for ${account.type}`, async () => {
+      render(fixture(goToStepMock, account));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       fireEvent.click(confirmBtn);
       await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
+        expect(goToStepMock).toBeCalledTimes(1);
       });
-      expect(setStepMock).toBeCalledWith({
+      expect(goToStepMock).toBeCalledWith({
         type: StepType.derivationPath,
-        config: {
-          derivationPath: undefined,
-          label: "Account 1",
-          seedphrase: undefined,
-        },
-      });
-    });
-  });
-
-  describe("Navigate to the right place", () => {
-    test("Mnemonic", async () => {
-      render(fixture(setStepMock, new TemporaryMnemonicAccountConfig()));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
-      });
-      expect(setStepMock).toBeCalledWith({
-        type: StepType.derivationPath,
-        config: {
-          derivationPath: undefined,
-          label: "Account 1",
-          seedphrase: undefined,
-        },
-      });
-    });
-
-    test("Social", async () => {
-      render(fixture(setStepMock, new TemporarySocialAccountConfig()));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
-      });
-      expect(setStepMock).toBeCalledWith({
-        type: StepType.derivationPath,
-        config: {
-          derivationPath: undefined,
-          label: "Account 1",
-          seedphrase: undefined,
-        },
-      });
-    });
-
-    test("Ledger", async () => {
-      render(fixture(setStepMock, new TemporaryLedgerAccountConfig()));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
-      });
-      expect(setStepMock).toBeCalledWith({
-        type: StepType.masterPassword,
-        config: {
-          derivationPath: undefined,
-          label: "Account 1",
-          pk: undefined,
-          pkh: undefined,
-        },
+        account: { ...account, label: "Account 1" },
       });
     });
   });
