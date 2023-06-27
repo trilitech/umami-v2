@@ -105,6 +105,9 @@ export const getTezOperationDisplay = (
   const target = parsed.target.address;
 
   const sign = getSign(forAddress, sender, target);
+  if (!sign) {
+    return null;
+  }
 
   const prettyTimestamp = formatRelative(new Date(parsed.timestamp), new Date());
 
@@ -161,6 +164,10 @@ export const getTokenOperationDisplay = (
   const metadata = transfer.token?.metadata;
 
   const sign = getSign(forAddress, parsed.from.address, parsed.to.address);
+
+  if (!sign) {
+    return null;
+  }
 
   const displayUri = metadata && metadata.displayUri;
   const displayId = transfer.token?.id;
