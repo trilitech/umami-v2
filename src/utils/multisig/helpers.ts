@@ -2,14 +2,14 @@ import { TezosNetwork } from "@airgap/tezos";
 import { compact } from "lodash";
 import { AccountType, MultisigAccount } from "../../types/Account";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
-import { RawTzktGetBigMapKeysItem, tzktGetSameMultisigsResponseType } from "../tzkt/types";
+import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigs } from "../tzkt/types";
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
 import { MultisigWithPendingOperations } from "./types";
 
 export const getRelevantMultisigContracts = async (
-  network: TezosNetwork,
-  accountPkhs: Set<string>
-): Promise<tzktGetSameMultisigsResponseType> => {
+  accountPkhs: Set<string>,
+  network: TezosNetwork
+): Promise<RawTzktGetSameMultisigs> => {
   const multisigs = await getAllMultiSigContracts(network);
   return multisigs.filter(({ storage: { signers } }) => {
     const intersection = signers.filter(s => accountPkhs.has(s));
@@ -18,12 +18,12 @@ export const getRelevantMultisigContracts = async (
 };
 
 export const getPendingOperationsForMultisigs = async (
-  network: TezosNetwork,
-  multisigs: tzktGetSameMultisigsResponseType
+  multisigs: RawTzktGetSameMultisigs,
+  network: TezosNetwork
 ): Promise<MultisigWithPendingOperations[]> => {
   const bigmapIds = multisigs.map(m => m.storage.pending_ops);
 
-  const bigmapLookup = await getPendingOperations(network, bigmapIds).then(response =>
+  const bigmapLookup = await getPendingOperations(bigmapIds, network).then(response =>
     response.reduce((acc: Record<number, RawTzktGetBigMapKeysItem[] | undefined>, cur) => {
       if (!acc[cur.bigmap]) {
         acc[cur.bigmap] = [];

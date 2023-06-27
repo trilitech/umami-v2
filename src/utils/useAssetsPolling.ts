@@ -57,7 +57,7 @@ const BAKERS_REFRESH_RATE = 1000 * 60 * 120;
 // alongside addresses we also pass the host, path, other params, at most 200 chars
 // roughly, an address is 40 chars.
 const MAX_ADDRESSES_PER_REQUEST = 40;
-// Each bigmap id takes 6 chars.
+// Each bigmap id takes up 6 chars.
 const MAX_BIGMAP_PER_REQUEST = 300;
 
 export const useAssetsPolling = () => {
@@ -68,11 +68,11 @@ export const useAssetsPolling = () => {
 
   const accountAssetsQuery = useQuery("allAssets", {
     queryFn: async () => {
-      const multisigs = await getRelevantMultisigContracts(network, new Set(implicitAccountPkhs));
+      const multisigs = await getRelevantMultisigContracts(new Set(implicitAccountPkhs), network);
 
       const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
       const pendingOperations = Promise.all(
-        multisigChunks.map(multisigs => getPendingOperationsForMultisigs(network, multisigs))
+        multisigChunks.map(multisigs => getPendingOperationsForMultisigs(multisigs, network))
       ).then(multisigsWithOperations => {
         dispatch(multisigActions.set(multisigsWithOperations.flat()));
       });

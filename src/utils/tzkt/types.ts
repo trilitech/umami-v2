@@ -1,4 +1,4 @@
-export type tzktGetAddressResponseType = {
+export type RawTzktGetAddressType = {
   type: "user" | "delegate" | "contract" | "ghost" | "rollup" | "smart_rollup" | "empty";
 };
 
@@ -11,16 +11,7 @@ export type RawTzktGetSameMultisigsItem = {
   };
 };
 
-export type tzktGetSameMultisigsResponseType = RawTzktGetSameMultisigsItem[];
-
-export type tzktGetBigMapKeysResponseType = {
-  active: boolean;
-  key: string | null;
-  value: {
-    actions: string;
-    approvals: string[];
-  } | null;
-}[];
+export type RawTzktGetSameMultisigs = RawTzktGetSameMultisigsItem[];
 
 export type RawTzktGetBigMapKeysItem = {
   bigmap: number;

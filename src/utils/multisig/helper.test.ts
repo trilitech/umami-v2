@@ -15,8 +15,8 @@ describe("multisig helpers", () => {
       };
       mockedAxios.get.mockResolvedValue(mockResponse);
       const result = await getRelevantMultisigContracts(
-        network,
-        new Set([mockImplicitAddress(0).pkh])
+        new Set([mockImplicitAddress(0).pkh]),
+        network
       );
 
       expect(result).toEqual([
@@ -49,7 +49,7 @@ describe("multisig helpers", () => {
         ],
       });
 
-      const result = await getPendingOperationsForMultisigs(network, tzktGetSameMultisigsResponse);
+      const result = await getPendingOperationsForMultisigs(tzktGetSameMultisigsResponse, network);
 
       expect(mockedAxios.get).toBeCalledWith(
         `https://api.${network}.tzkt.io/v1/bigmaps/keys?active=true&bigmap.in=0,1`
