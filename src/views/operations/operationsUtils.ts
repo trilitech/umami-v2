@@ -80,11 +80,13 @@ export const getKey = (op: OperationDisplay) => {
   return op.amount.prettyDisplay + op.id;
 };
 
+const Address = { address: z.string() };
+
 const TezTransaction = z.object({
   id: z.number(),
   type: z.string(),
-  sender: z.object({ address: z.string() }),
-  target: z.object({ address: z.string() }),
+  sender: z.object(Address),
+  target: z.object(Address),
   timestamp: z.string(),
   amount: z.number(),
   hash: z.string(),
@@ -130,12 +132,16 @@ export const getTezOperationDisplay = (
   return result;
 };
 
-// TODO: cover cases where the "from" field is missing
-// Examples: https://api.tzkt.io/v1/tokens/transfers?from.null
 const TokenTransaction = z.object({
   id: z.number(),
-  from: z.object({ address: z.string() }),
-  to: z.object({ address: z.string() }),
+  // When the "from" field is missing, we assume that the token is minted by the contract.
+  from: z.object(Address).optional(),
+  to: z.object(Address),
+  token: z
+    .object({
+      contract: z.object(Address),
+    })
+    .optional(),
   timestamp: z.string(),
   amount: z.string(),
   level: z.number(),
@@ -159,9 +165,15 @@ export const getTokenOperationDisplay = (
   }
 
   const parsed = transferRequired.data;
+
+  const sender = parsed.from?.address || parsed.token?.contract.address;
+  if (!sender) {
+    return null;
+  }
+
   const metadata = transfer.token?.metadata;
 
-  const sign = getSign(forAddress, parsed.from.address, parsed.to.address);
+  const sign = getSign(forAddress, sender, parsed.to.address);
 
   const displayUri = metadata && metadata.displayUri;
   const displayId = transfer.token?.id;
@@ -188,7 +200,7 @@ export const getTokenOperationDisplay = (
     prettyTimestamp,
     timestamp: parsed.timestamp,
     recipient: makeValidAddress(parsed.to.address),
-    sender: makeValidAddress(parsed.from.address),
+    sender: makeValidAddress(sender),
     tzktUrl: getTransactionUrl({
       transactionId: parsed.transactionId,
       originationId: parsed.originationId,
@@ -202,8 +214,8 @@ export const getTokenOperationDisplay = (
 
 const DelegationSchema = z.object({
   id: z.number(),
-  sender: z.object({ address: z.string() }),
-  newDelegate: z.object({ address: z.string() }).optional(),
+  sender: z.object(Address),
+  newDelegate: z.object(Address).optional(),
   timestamp: z.string(),
   amount: z.number(),
   hash: z.string(),
