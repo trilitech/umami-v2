@@ -7,6 +7,7 @@ import {
   SocialAccount,
 } from "../../types/Account";
 import { decrypt } from "../aes";
+import { multisigWithPendingOpsToAccount } from "../multisig/helpers";
 import { MultisigWithPendingOperations } from "../multisig/types";
 import accountsSlice from "../store/accountsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -130,13 +131,7 @@ export const useRemoveMnemonic = () => {
 export const useMultisigAccounts = (): MultisigAccount[] => {
   const multisigs: MultisigWithPendingOperations[] = useMultisigs();
 
-  return multisigs.map((m, i) => ({
-    label: `Multisig Account ${i}`,
-    address: m.address,
-    type: AccountType.MULTISIG,
-    threshold: m.threshold,
-    signers: m.signers,
-  }));
+  return multisigs.map((m, i) => multisigWithPendingOpsToAccount(m, `Multisig Account ${i}`));
 };
 
 export const useAllAccounts = (): Account[] => {

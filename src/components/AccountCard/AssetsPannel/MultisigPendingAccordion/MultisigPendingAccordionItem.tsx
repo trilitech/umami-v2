@@ -22,7 +22,14 @@ export const MultisigPendingAccordionItem: React.FC<{
 }> = ({ operation, signers, threshold }) => {
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
-    <Box bg={colors.gray[800]} p={3} borderRadius={6} marginY={3} pb={0}>
+    <Box
+      bg={colors.gray[800]}
+      p={3}
+      borderRadius={6}
+      marginY={3}
+      pb={0}
+      data-testid="multisig-pending-operations"
+    >
       <AccordionItem bg={colors.gray[800]} border="none" borderRadius="8px">
         <h2>
           <AccordionButton flex="1" textAlign="left" pb={0} mb={0}>
