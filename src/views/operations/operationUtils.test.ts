@@ -16,7 +16,7 @@ import {
 
 const forAddress = "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS";
 describe("getTezOperationDisplay", () => {
-  test("returns null for a tez transfer non related to reference address", () => {
+  test("it throws for a tez transfer non related to reference address", () => {
     const incomingTez: TezTransfer = {
       type: "transaction",
       id: 109783351820288,
@@ -39,7 +39,9 @@ describe("getTezOperationDisplay", () => {
       hasInternals: false,
     };
 
-    expect(getTezOperationDisplay(incomingTez, mockImplicitAddress(4).pkh)).toEqual(null);
+    expect(() => getTezOperationDisplay(incomingTez, mockImplicitAddress(4).pkh)).toThrowError(
+      "Address tz1i9imTXjMAW5HP5g3wq55Pcr43tDz8c3VZ doesn't match sender or recipient"
+    );
   });
 
   test("returns null for a token transfer non related to reference address", () => {
@@ -70,7 +72,10 @@ describe("getTezOperationDisplay", () => {
       amount: "451000",
       transactionId: 109855493849088,
     };
-    expect(getTokenOperationDisplay(incomingKL3, mockImplicitAddress(4).pkh)).toEqual(null);
+
+    expect(() => getTokenOperationDisplay(incomingKL3, mockImplicitAddress(4).pkh)).toThrowError(
+      "Address tz1i9imTXjMAW5HP5g3wq55Pcr43tDz8c3VZ doesn't match sender or recipient"
+    );
   });
 
   test("case tez incoming", () => {
