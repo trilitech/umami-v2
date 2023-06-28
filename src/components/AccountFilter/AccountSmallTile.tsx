@@ -1,6 +1,6 @@
-import { Box, Flex, FlexProps, Text } from "@chakra-ui/react";
+import { Flex, Box, Text, FlexProps } from "@chakra-ui/react";
 import { formatPkh } from "../../utils/format";
-import { useAllAccounts } from "../../utils/hooks/accountHooks";
+import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import { Identicon } from "../Identicon";
 
 export const AccountSmallTileDisplay = ({
@@ -12,18 +12,18 @@ export const AccountSmallTileDisplay = ({
   label?: string;
 } & FlexProps) => {
   return (
-    <Flex {...flexProps} data-testid="account-small-tile">
+    <Flex {...flexProps}>
       <Identicon address={pkh} mr={4} />
       <Box>
-        <Text>{label}</Text>
-        <Text color="umami.gray.600">{formatPkh(pkh)}</Text>
+        <Text color="white">{label}</Text>
+        <Text color="umami.gray.400">{formatPkh(pkh)}</Text>
       </Box>
     </Flex>
   );
 };
 
 export const AccountSmallTile = ({ pkh }: { pkh: string }) => {
-  const accounts = useAllAccounts();
+  const accounts = useImplicitAccounts();
   const account = accounts.find(a => a.address.pkh === pkh);
   return account ? (
     <AccountSmallTileDisplay pkh={account.address.pkh} label={account.label} />

@@ -1,7 +1,8 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Menu, MenuButton, Button, MenuItem, MenuList } from "@chakra-ui/react";
+import { Button, Menu, MenuButton } from "@chakra-ui/react";
 import React from "react";
 import { Account } from "../../types/Account";
+import AccountListDisplay from "./AccountListDisplay";
 import { AccountSmallTileDisplay } from "./AccountSmallTile";
 
 const renderAccount = (account: Account) => (
@@ -29,25 +30,7 @@ const AccountSelectorDisplay: React.FC<{
       >
         {selectedAccount ? renderAccount(selectedAccount) : "Select an account"}
       </MenuButton>
-      <MenuList bg="umami.gray.900" maxHeight={300} overflow="scroll">
-        {accounts.map(account => (
-          <MenuItem
-            value={account.address.pkh}
-            aria-label={account.label}
-            onClick={() => {
-              onSelect(account);
-            }}
-            key={account.address.pkh}
-            minH="48px"
-            w="100%"
-            // TODO implement hover color that disapeared
-            // https://app.asana.com/0/1204165186238194/1204412123679802/f
-            bg="umami.gray.900"
-          >
-            {renderAccount(account)}
-          </MenuItem>
-        ))}
-      </MenuList>
+      <AccountListDisplay accounts={accounts} onSelect={onSelect} />
     </Menu>
   );
 };
