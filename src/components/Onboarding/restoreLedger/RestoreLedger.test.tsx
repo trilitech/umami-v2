@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ReduxStore } from "../../../providers/ReduxStore";
+import { ledgerPattern } from "../../../utils/account/derivationPathUtils";
 import { getPk } from "../../../utils/ledger/pk";
 import RestoreLedger from "./RestoreLedger";
 
@@ -23,7 +24,7 @@ jest.mock("@chakra-ui/react", () => {
 const getPkMock = getPk as jest.Mock;
 
 const fixture = (closeModal: () => void) => {
-  const account = { type: "ledger" as const, derivationPath: "any", label: "Any Account" };
+  const account = { type: "ledger" as const, derivationPath: ledgerPattern, label: "Any Account" };
   return (
     <ReduxStore>
       <RestoreLedger closeModal={closeModal} account={account} />
@@ -33,16 +34,16 @@ const fixture = (closeModal: () => void) => {
 
 describe("<RestoreSeedphrase />", () => {
   test("success", async () => {
-    getPkMock.mockReturnValue({ pk: "test", pkh: "test" });
+    getPkMock.mockResolvedValue({ pk: "test", pkh: "test" });
     render(fixture(closeModalMock));
     const confirmBtn = screen.getByRole("button", {
       name: /export public key/i,
     });
     fireEvent.click(confirmBtn);
     await waitFor(() => {
-      expect(confirmBtn).toBeDisabled();
+      expect(closeModalMock).toBeCalledTimes(1);
     });
-    expect(closeModalMock).toBeCalledTimes(1);
+    expect(getPkMock).toBeCalledTimes(1);
   });
 
   test("aborted by user", async () => {
@@ -53,15 +54,13 @@ describe("<RestoreSeedphrase />", () => {
     });
     fireEvent.click(confirmBtn);
 
-    const btn = screen.getByRole("button", { name: /Export Public Key/i });
-
     // Control the loading cycle
     // Otherwise you get uncontrolled setStates that lead to act warnings.
     await waitFor(() => {
-      expect(btn).toBeDisabled();
+      expect(confirmBtn).toBeDisabled();
     });
     await waitFor(() => {
-      expect(btn).toBeEnabled();
+      expect(confirmBtn).toBeEnabled();
     });
   });
 });

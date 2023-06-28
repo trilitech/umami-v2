@@ -5,6 +5,7 @@ import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { getPk } from "../../../utils/ledger/pk";
 import { useRestoreLedger } from "../../../utils/hooks/accountHooks";
+import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
 
 const RestoreLedger = ({
   closeModal,
@@ -42,8 +43,9 @@ const RestoreLedger = ({
         title: "Request sent to Ledger",
         description: "Open the Tezos app on your Ledger and accept the request",
       });
-      const { pk, pkh } = await getPk(account.derivationPath);
-      restoreLedger(account.derivationPath, pk, pkh, account.label);
+      const derivationPath = makeDerivationPath(account.derivationPath, 0);
+      const { pk, pkh } = await getPk(derivationPath);
+      restoreLedger(derivationPath, pk, pkh, account.label);
       closeModal();
     } catch (error: any) {
       if (error.name === "PublicKeyRetrievalError") {
