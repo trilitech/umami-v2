@@ -4,6 +4,7 @@ import {
   getLatestDelegationResult,
   getTokenTransactionsResult,
   getTransactionsResult,
+  rawTzktNftTransfer,
 } from "../../mocks/tzktResponse";
 import { OperationDisplay, TezTransfer } from "../../types/Operation";
 import { SupportedNetworks } from "../../utils/network";
@@ -108,8 +109,8 @@ describe("getTezOperationDisplay", () => {
       amount: { prettyDisplay: "+2.4 ꜩ" },
       fee: "0.000402 ꜩ",
       prettyTimestamp: "today at 10:47 AM",
-      recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-      sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+      recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+      sender: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
       status: "confirmed",
       timestamp: "2023-03-27T08:47:30Z",
       type: "transaction",
@@ -153,8 +154,8 @@ describe("getTezOperationDisplay", () => {
       amount: { prettyDisplay: "-6.41 ꜩ" },
       fee: "0.000403 ꜩ",
       prettyTimestamp: "today at 12:36 PM",
-      recipient: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-      sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+      recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
+      sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
       status: "confirmed",
       timestamp: "2023-03-27T10:36:40Z",
       type: "transaction",
@@ -166,82 +167,7 @@ describe("getTezOperationDisplay", () => {
   });
 
   test("incoming nft", () => {
-    const incomingNft: TokenTransfer = {
-      id: 109817445220353,
-      level: 2214369,
-      timestamp: "2023-03-27T11:06:40Z",
-      token: {
-        id: 10899580518401,
-        contract: {
-          address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        },
-        tokenId: "6",
-        standard: "fa2",
-        totalSupply: "1",
-        metadata: {
-          name: "Tezzardz #24",
-          rights: "© 2021 George Goodwin. All rights reserved.",
-          symbol: "FKR",
-          formats: [
-            {
-              uri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-              mimeType: "image/png",
-            },
-          ],
-          creators: ["George Goodwin (@omgidrawedit)"],
-          decimals: "0",
-          royalties: {
-            shares: {
-              tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
-            },
-            decimals: "2",
-          },
-          attributes: [
-            {
-              name: "Background",
-              value: "Pink",
-            },
-            {
-              name: "Skin",
-              value: "White",
-            },
-            {
-              name: "Skin Pattern",
-              value: "Bolt",
-            },
-            {
-              name: "Clothing",
-              value: "Rainbow Onesie",
-            },
-            {
-              name: "Headwear",
-              value: "Backwards Cap",
-            },
-            {
-              name: "Bling Level",
-              value: "$$$",
-            },
-            {
-              name: "Face",
-              value: "Bent Tongue Feisty",
-            },
-          ],
-          displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
-          artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-          description:
-            "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-          thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
-        },
-      },
-      from: {
-        address: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S",
-      },
-      to: {
-        address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-      },
-      amount: "1",
-      transactionId: 109817445220352,
-    };
+    const incomingNft: TokenTransfer = rawTzktNftTransfer;
 
     const result = getTokenOperationDisplay(incomingNft, forAddress);
 
@@ -255,8 +181,32 @@ describe("getTezOperationDisplay", () => {
         url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
       },
       prettyTimestamp: "today at 1:06 PM",
-      recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-      sender: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S",
+      recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+      sender: { type: "implicit", pkh: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S" },
+      timestamp: "2023-03-27T11:06:40Z",
+      level: 2214369,
+    };
+
+    expect(result).toEqual(expected);
+  });
+
+  test.only("incoming nft with missing from/token", () => {
+    const incomingNft = { ...rawTzktNftTransfer, from: undefined };
+
+    const result = getTokenOperationDisplay(incomingNft, forAddress);
+
+    const expected = {
+      id: 109817445220353,
+      type: "transaction",
+      tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
+      amount: {
+        id: 10899580518401,
+        prettyDisplay: "+1 FKR",
+        url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+      },
+      prettyTimestamp: "today at 1:06 PM",
+      recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+      sender: { type: "contract", pkh: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob" },
       timestamp: "2023-03-27T11:06:40Z",
       level: 2214369,
     };
@@ -266,80 +216,13 @@ describe("getTezOperationDisplay", () => {
 
   test("outgoing Nft", () => {
     const outgoingNft = {
-      id: 109854457856001,
-      level: 2215172,
-      timestamp: "2023-03-27T13:24:48Z",
-      token: {
-        id: 10899580518401,
-        contract: {
-          address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        },
-        tokenId: "6",
-        standard: "fa2",
-        totalSupply: "1",
-        metadata: {
-          name: "Tezzardz #24",
-          rights: "© 2021 George Goodwin. All rights reserved.",
-          symbol: "FKR",
-          formats: [
-            {
-              uri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-              mimeType: "image/png",
-            },
-          ],
-          creators: ["George Goodwin (@omgidrawedit)"],
-          decimals: "0",
-          royalties: {
-            shares: {
-              tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
-            },
-            decimals: "2",
-          },
-          attributes: [
-            {
-              name: "Background",
-              value: "Pink",
-            },
-            {
-              name: "Skin",
-              value: "White",
-            },
-            {
-              name: "Skin Pattern",
-              value: "Bolt",
-            },
-            {
-              name: "Clothing",
-              value: "Rainbow Onesie",
-            },
-            {
-              name: "Headwear",
-              value: "Backwards Cap",
-            },
-            {
-              name: "Bling Level",
-              value: "$$$",
-            },
-            {
-              name: "Face",
-              value: "Bent Tongue Feisty",
-            },
-          ],
-          displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
-          artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-          description:
-            "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-          thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
-        },
-      },
+      ...rawTzktNftTransfer,
       from: {
         address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       },
       to: {
         address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       },
-      amount: "1",
-      transactionId: 109854457856000,
     };
 
     const expected = {
@@ -352,8 +235,8 @@ describe("getTezOperationDisplay", () => {
       },
       tzktUrl: "https://mainnet.tzkt.io/transactions/109854457856000",
       prettyTimestamp: "today at 3:24 PM",
-      recipient: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-      sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+      recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
+      sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
       timestamp: "2023-03-27T13:24:48Z",
       level: 2215172,
     };
@@ -402,8 +285,8 @@ describe("getTezOperationDisplay", () => {
         url: undefined,
       },
       prettyTimestamp: "today at 3:27 PM",
-      recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-      sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+      recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+      sender: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
       timestamp: "2023-03-27T13:27:13Z",
       level: 2215185,
     };
@@ -450,8 +333,8 @@ describe("getTezOperationDisplay", () => {
         url: undefined,
       },
       prettyTimestamp: "today at 3:29 PM",
-      recipient: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-      sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+      recipient: { type: "implicit", pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D" },
+      sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
       timestamp: "2023-03-27T13:29:22Z",
       level: 2215193,
     };
@@ -493,8 +376,8 @@ describe("getTezOperationDisplay", () => {
         url: undefined,
       },
       prettyTimestamp: "today at 3:30 PM",
-      recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-      sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+      recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+      sender: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
       timestamp: "2023-03-27T13:30:37Z",
       level: 2215201,
     };
@@ -518,8 +401,8 @@ describe("getOperationsDisplays", () => {
         fee: "0.000396 ꜩ",
         level: 3414723,
         prettyTimestamp: "04/24/2023",
-        recipient: "tz1fHn9ZSqMwp1WNwdCLqnh52yPgzQ4QydTm",
-        sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        recipient: { type: "implicit", pkh: "tz1fHn9ZSqMwp1WNwdCLqnh52yPgzQ4QydTm" },
+        sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         timestamp: "2023-04-24T09:48:17Z",
         type: "delegation",
         tzktUrl: "https://mainnet.tzkt.io/onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva",
@@ -532,8 +415,8 @@ describe("getOperationsDisplays", () => {
           url: undefined,
         },
         prettyTimestamp: "today at 3:30 PM",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+        recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+        sender: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         timestamp: "2023-03-27T13:30:37Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/transactions/109855847219200",
@@ -547,8 +430,8 @@ describe("getOperationsDisplays", () => {
           url: undefined,
         },
         prettyTimestamp: "today at 3:29 PM",
-        recipient: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-        sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        recipient: { type: "implicit", pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D" },
+        sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         timestamp: "2023-03-27T13:29:22Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/transactions/109855493849088",
@@ -562,8 +445,8 @@ describe("getOperationsDisplays", () => {
           url: undefined,
         },
         prettyTimestamp: "today at 3:27 PM",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+        recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+        sender: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         timestamp: "2023-03-27T13:27:13Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/transactions/109855131041792",
@@ -577,8 +460,8 @@ describe("getOperationsDisplays", () => {
           url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
         },
         prettyTimestamp: "today at 3:24 PM",
-        recipient: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-        sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
+        sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         timestamp: "2023-03-27T13:24:48Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/transactions/109854457856000",
@@ -592,8 +475,8 @@ describe("getOperationsDisplays", () => {
           url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
         },
         prettyTimestamp: "today at 1:06 PM",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        sender: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S",
+        recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+        sender: { type: "implicit", pkh: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S" },
         timestamp: "2023-03-27T11:06:40Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
@@ -604,8 +487,8 @@ describe("getOperationsDisplays", () => {
         amount: { prettyDisplay: "-6.41 ꜩ" },
         fee: "0.000403 ꜩ",
         prettyTimestamp: "today at 12:36 PM",
-        recipient: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-        sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
+        sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         status: "confirmed",
         timestamp: "2023-03-27T10:36:40Z",
         type: "transaction",
@@ -617,8 +500,8 @@ describe("getOperationsDisplays", () => {
         amount: { prettyDisplay: "+2.4 ꜩ" },
         fee: "0.000402 ꜩ",
         prettyTimestamp: "today at 10:47 AM",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        sender: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+        recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+        sender: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         status: "confirmed",
         timestamp: "2023-03-27T08:47:30Z",
         type: "transaction",
@@ -633,8 +516,8 @@ describe("getOperationsDisplays", () => {
           url: undefined,
         },
         prettyTimestamp: "yesterday at 4:38 PM",
-        recipient: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+        recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
+        sender: { type: "implicit", pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D" },
         timestamp: "2023-03-26T14:38:48Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/transactions/109511935262720",
@@ -645,8 +528,8 @@ describe("getOperationsDisplays", () => {
         amount: { prettyDisplay: "-0 ꜩ" },
         fee: "0.000771 ꜩ",
         prettyTimestamp: "yesterday at 4:34 PM",
-        recipient: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        recipient: { type: "contract", pkh: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob" },
+        sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         status: "confirmed",
         timestamp: "2023-03-26T14:34:47Z",
         type: "transaction",
@@ -661,8 +544,8 @@ describe("getOperationsDisplays", () => {
           url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
         },
         prettyTimestamp: "yesterday at 4:34 PM",
-        recipient: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-        sender: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        recipient: { type: "implicit", pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D" },
+        sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         timestamp: "2023-03-26T14:34:47Z",
         type: "transaction",
         tzktUrl: "https://mainnet.tzkt.io/transactions/109510819577856",
@@ -695,8 +578,8 @@ describe("getOperationsDisplays", () => {
         fee: "0.0004 ꜩ",
         level: 300,
         prettyTimestamp: "today at 4:15 PM",
-        recipient: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
-        sender: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+        recipient: { type: "implicit", pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf" },
+        sender: { type: "implicit", pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf" },
         timestamp: "2023-03-27T14:15:09.760Z",
         type: "delegation",
         tzktUrl: "https://mainnet.tzkt.io/mockHash",
