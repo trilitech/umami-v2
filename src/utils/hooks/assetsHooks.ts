@@ -1,7 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { compact } from "lodash";
 import { MultisigAccount } from "../../types/Account";
-import { Asset, keepFA1s, keepFA2s, keepNFTs } from "../../types/Asset";
+import { Asset, keepFA1s, keepFA2s, keepNFTs, NFT } from "../../types/Asset";
 import {
   getOperationDisplays,
   sortOperationsByTimestamp,
@@ -26,7 +26,7 @@ export const useIsBlockFinalised = () => {
   return (level: number) => (currentLevel !== null ? currentLevel - level >= 2 : null);
 };
 
-export const useAllNfts = () => {
+export const useAllNfts = (): Record<string, NFT[] | undefined> => {
   const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
 
   return objectMap(ownerToTokens, tokens => keepNFTs(compact(tokens)));
