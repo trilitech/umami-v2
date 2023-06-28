@@ -4,6 +4,7 @@ import {
   getLatestDelegationResult,
   getTokenTransactionsResult,
   getTransactionsResult,
+  rawTzktNftTransfer,
 } from "../../mocks/tzktResponse";
 import { OperationDisplay, TezTransfer } from "../../types/Operation";
 import { SupportedNetworks } from "../../utils/network";
@@ -166,82 +167,7 @@ describe("getTezOperationDisplay", () => {
   });
 
   test("incoming nft", () => {
-    const incomingNft: TokenTransfer = {
-      id: 109817445220353,
-      level: 2214369,
-      timestamp: "2023-03-27T11:06:40Z",
-      token: {
-        id: 10899580518401,
-        contract: {
-          address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        },
-        tokenId: "6",
-        standard: "fa2",
-        totalSupply: "1",
-        metadata: {
-          name: "Tezzardz #24",
-          rights: "© 2021 George Goodwin. All rights reserved.",
-          symbol: "FKR",
-          formats: [
-            {
-              uri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-              mimeType: "image/png",
-            },
-          ],
-          creators: ["George Goodwin (@omgidrawedit)"],
-          decimals: "0",
-          royalties: {
-            shares: {
-              tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
-            },
-            decimals: "2",
-          },
-          attributes: [
-            {
-              name: "Background",
-              value: "Pink",
-            },
-            {
-              name: "Skin",
-              value: "White",
-            },
-            {
-              name: "Skin Pattern",
-              value: "Bolt",
-            },
-            {
-              name: "Clothing",
-              value: "Rainbow Onesie",
-            },
-            {
-              name: "Headwear",
-              value: "Backwards Cap",
-            },
-            {
-              name: "Bling Level",
-              value: "$$$",
-            },
-            {
-              name: "Face",
-              value: "Bent Tongue Feisty",
-            },
-          ],
-          displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
-          artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-          description:
-            "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-          thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
-        },
-      },
-      from: {
-        address: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S",
-      },
-      to: {
-        address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-      },
-      amount: "1",
-      transactionId: 109817445220352,
-    };
+    const incomingNft: TokenTransfer = rawTzktNftTransfer;
 
     const result = getTokenOperationDisplay(incomingNft, forAddress);
 
@@ -265,79 +191,7 @@ describe("getTezOperationDisplay", () => {
   });
 
   test.only("incoming nft with missing from/token", () => {
-    const incomingNft: TokenTransfer = {
-      id: 109817445220353,
-      level: 2214369,
-      timestamp: "2023-03-27T11:06:40Z",
-      token: {
-        id: 10899580518401,
-        contract: {
-          address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        },
-        tokenId: "6",
-        standard: "fa2",
-        totalSupply: "1",
-        metadata: {
-          name: "Tezzardz #24",
-          rights: "© 2021 George Goodwin. All rights reserved.",
-          symbol: "FKR",
-          formats: [
-            {
-              uri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-              mimeType: "image/png",
-            },
-          ],
-          creators: ["George Goodwin (@omgidrawedit)"],
-          decimals: "0",
-          royalties: {
-            shares: {
-              tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
-            },
-            decimals: "2",
-          },
-          attributes: [
-            {
-              name: "Background",
-              value: "Pink",
-            },
-            {
-              name: "Skin",
-              value: "White",
-            },
-            {
-              name: "Skin Pattern",
-              value: "Bolt",
-            },
-            {
-              name: "Clothing",
-              value: "Rainbow Onesie",
-            },
-            {
-              name: "Headwear",
-              value: "Backwards Cap",
-            },
-            {
-              name: "Bling Level",
-              value: "$$$",
-            },
-            {
-              name: "Face",
-              value: "Bent Tongue Feisty",
-            },
-          ],
-          displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
-          artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-          description:
-            "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-          thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
-        },
-      },
-      to: {
-        address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-      },
-      amount: "1",
-      transactionId: 109817445220352,
-    };
+    const incomingNft = { ...rawTzktNftTransfer, from: undefined };
 
     const result = getTokenOperationDisplay(incomingNft, forAddress);
 
@@ -362,80 +216,13 @@ describe("getTezOperationDisplay", () => {
 
   test("outgoing Nft", () => {
     const outgoingNft = {
-      id: 109854457856001,
-      level: 2215172,
-      timestamp: "2023-03-27T13:24:48Z",
-      token: {
-        id: 10899580518401,
-        contract: {
-          address: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-        },
-        tokenId: "6",
-        standard: "fa2",
-        totalSupply: "1",
-        metadata: {
-          name: "Tezzardz #24",
-          rights: "© 2021 George Goodwin. All rights reserved.",
-          symbol: "FKR",
-          formats: [
-            {
-              uri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-              mimeType: "image/png",
-            },
-          ],
-          creators: ["George Goodwin (@omgidrawedit)"],
-          decimals: "0",
-          royalties: {
-            shares: {
-              tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
-            },
-            decimals: "2",
-          },
-          attributes: [
-            {
-              name: "Background",
-              value: "Pink",
-            },
-            {
-              name: "Skin",
-              value: "White",
-            },
-            {
-              name: "Skin Pattern",
-              value: "Bolt",
-            },
-            {
-              name: "Clothing",
-              value: "Rainbow Onesie",
-            },
-            {
-              name: "Headwear",
-              value: "Backwards Cap",
-            },
-            {
-              name: "Bling Level",
-              value: "$$$",
-            },
-            {
-              name: "Face",
-              value: "Bent Tongue Feisty",
-            },
-          ],
-          displayUri: "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
-          artifactUri: "ipfs://zdj7Wkn6y1DRrfJ3A1NEyxj1Sw2b39ZjggDPe9FEe7DGtNqoC",
-          description:
-            "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-          thumbnailUri: "ipfs://zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
-        },
-      },
+      ...rawTzktNftTransfer,
       from: {
         address: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
       },
       to: {
         address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       },
-      amount: "1",
-      transactionId: 109854457856000,
     };
 
     const expected = {

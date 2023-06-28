@@ -10,7 +10,7 @@ import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { makeValidAddress } from "../../types/Address";
+import { parsePkh } from "../../types/Address";
 
 export const classifyTokenTransfer = (transfer: TokenTransfer) => {
   const token: Token = {
@@ -118,8 +118,8 @@ export const getTezOperationDisplay = (
     },
     prettyTimestamp,
     timestamp: parsed.timestamp,
-    recipient: makeValidAddress(parsed.target.address),
-    sender: makeValidAddress(parsed.sender.address),
+    recipient: parsePkh(parsed.target.address),
+    sender: parsePkh(parsed.sender.address),
     type: "transaction",
     tzktUrl: getHashUrl(parsed.hash, network),
     fee:
@@ -137,11 +137,9 @@ const TokenTransaction = z.object({
   // When the "from" field is missing, we assume that the token is minted by the contract.
   from: z.object(Address).optional(),
   to: z.object(Address),
-  token: z
-    .object({
-      contract: z.object(Address),
-    })
-    .optional(),
+  token: z.object({
+    contract: z.object(Address),
+  }),
   timestamp: z.string(),
   amount: z.string(),
   level: z.number(),
@@ -166,10 +164,7 @@ export const getTokenOperationDisplay = (
 
   const parsed = transferRequired.data;
 
-  const sender = parsed.from?.address || parsed.token?.contract.address;
-  if (!sender) {
-    return null;
-  }
+  const sender = parsed.from?.address || parsed.token.contract.address;
 
   const metadata = transfer.token?.metadata;
 
@@ -199,8 +194,8 @@ export const getTokenOperationDisplay = (
     },
     prettyTimestamp,
     timestamp: parsed.timestamp,
-    recipient: makeValidAddress(parsed.to.address),
-    sender: makeValidAddress(sender),
+    recipient: parsePkh(parsed.to.address),
+    sender: parsePkh(sender),
     tzktUrl: getTransactionUrl({
       transactionId: parsed.transactionId,
       originationId: parsed.originationId,
@@ -254,8 +249,8 @@ const getDelegationOperationDisplay = (
     },
     prettyTimestamp,
     timestamp: parsed.timestamp,
-    recipient: makeValidAddress(parsed.newDelegate.address),
-    sender: makeValidAddress(parsed.sender.address),
+    recipient: parsePkh(parsed.newDelegate.address),
+    sender: parsePkh(parsed.sender.address),
     tzktUrl: getHashUrl(parsed.hash, network),
     level,
     fee: prettyTezAmount(new BigNumber(parsed.bakerFee)),
