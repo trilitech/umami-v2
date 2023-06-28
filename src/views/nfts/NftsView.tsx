@@ -12,6 +12,7 @@ import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
 import { TbFilter } from "react-icons/tb";
 import { useParams } from "react-router-dom";
+import { useAccountFilter } from "../../components/AccountFilter";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
@@ -33,12 +34,13 @@ export const FilterController: React.FC = () => {
 
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
-  const allOwnedNfts = Object.values(nfts).flat();
   const [selectedNft, setSelectedNft] = useState<NFT>();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { nftId } = useParams();
 
-  const allOwnedNftsRef = useRef(allOwnedNfts);
+  const { filterElement, filter } = useAccountFilter();
+  const displayedNFTs = filter(nfts);
+  const allOwnedNftsRef = useRef(displayedNFTs);
   const nftIdRef = useRef(nftId);
   const onOpenRef = useRef(onOpen);
 
@@ -53,17 +55,18 @@ const NFTsViewBase = () => {
 
   return (
     <Flex direction="column" height="100%">
-      {allOwnedNfts.length > 0 ? (
+      <TopBar title="NFTs" />
+
+      {filterElement}
+      {displayedNFTs.length > 0 ? (
         <>
-          <TopBar title="NFTs" />
-          <FilterController />
           <Box overflow="scroll">
             <NFTGallery
               onSelect={nft => {
                 onOpen();
                 setSelectedNft(nft);
               }}
-              nfts={allOwnedNfts}
+              nfts={displayedNFTs}
             />
           </Box>
 
