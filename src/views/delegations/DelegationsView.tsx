@@ -8,10 +8,10 @@ import {
   Td,
   Th,
   Thead,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
 import { compact } from "lodash";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { VscWand } from "react-icons/vsc";

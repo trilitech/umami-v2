@@ -12,11 +12,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { AiOutlineUnorderedList } from "react-icons/ai";
-import { BsArrowDownUp } from "react-icons/bs";
 import { MdOutlinePending } from "react-icons/md";
 import { RxCheckCircled } from "react-icons/rx";
-import { TbFilter } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useAccountFilter } from "../../components/AccountFilter";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
@@ -27,16 +24,6 @@ import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
 import { useGetOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
 import { getAmountColor, getKey, sortOperationsByTimestamp } from "./operationsUtils";
-
-export const FilterController: React.FC = () => {
-  return (
-    <Flex alignItems="center" mb={4} mt={4}>
-      <IconAndTextBtn icon={TbFilter} label="Filter" flex={1} />
-      <IconAndTextBtn icon={BsArrowDownUp} label="Sort by Newest" mr={4} />
-      <IconAndTextBtn icon={AiOutlineUnorderedList} label="List View" />
-    </Flex>
-  );
-};
 
 export const OperationsDataTable: React.FC<{
   operations: OperationDisplay[];
