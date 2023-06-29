@@ -44,8 +44,8 @@ export const getFingerPrint = async (seedPhrase: string): Promise<string> => {
   return hashHex;
 };
 
-export const curvesToDerivationPath = (c: Curves): DerivationType => {
-  switch (c) {
+export const curvesToDerivationPath = (curves: Curves): DerivationType => {
+  switch (curves) {
     case "ed25519":
       return DerivationType.ED25519;
     case "secp256k1":
@@ -54,33 +54,29 @@ export const curvesToDerivationPath = (c: Curves): DerivationType => {
       return DerivationType.P256;
     case "bip25519":
       throw new Error("bip25519 is not supported in Tezos");
-    default: {
-      const error: never = c;
-      throw new Error(error);
-    }
   }
 };
 
 export const makeSigner = async (config: SignerConfig) => {
-  if (config.type === SignerType.SK) {
-    return new InMemorySigner(config.sk);
-  } else if (config.type === SignerType.LEDGER) {
-    // Close existing connections to be able to reinitiate
-    const devices = await TransportWebHID.list();
-    for (let i = 0; i < devices.length; i++) {
-      devices[i].close();
+  switch (config.type) {
+    case SignerType.SK:
+      return new InMemorySigner(config.sk);
+
+    case SignerType.LEDGER: {
+      // Close existing connections to be able to reinitiate
+      const devices = await TransportWebHID.list();
+      for (let i = 0; i < devices.length; i++) {
+        devices[i].close();
+      }
+      const transport = await TransportWebHID.create();
+      const signer = new LedgerSigner(
+        transport,
+        config.derivationPath,
+        false, // PK Verification not needed
+        curvesToDerivationPath(config.derivationType)
+      );
+      return signer;
     }
-    const transport = await TransportWebHID.create();
-    const signer = new LedgerSigner(
-      transport,
-      config.derivationPath,
-      false, // PK Verification not needed
-      curvesToDerivationPath(config.derivationType)
-    );
-    return signer;
-  } else {
-    const error: never = config;
-    throw new Error(error);
   }
 };
 

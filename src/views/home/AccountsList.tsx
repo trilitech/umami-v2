@@ -1,28 +1,18 @@
 import { Box, Flex, Heading, Modal, ModalContent, useDisclosure, useToast } from "@chakra-ui/react";
+import { groupBy } from "lodash";
 import { useRef, useState } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
 import { useCreateOrImportSecretModal } from "../../components/Onboarding/useOnboardingModal";
-import {
-  AccountType,
-  Account,
-  LedgerAccount,
-  MnemonicAccount,
-  MultisigAccount,
-  SocialAccount,
-} from "../../types/Account";
+import { AccountType, Account } from "../../types/Account";
 import { useAllAccounts, useRemoveMnemonic } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { deriveAccount } from "../../utils/store/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
-
-type AccountsOfSameType = MnemonicAccount[] | LedgerAccount[] | SocialAccount[] | MultisigAccount[];
-
-type GroupedByLabel = Record<string, AccountsOfSameType | undefined>;
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useCreateOrImportSecretModal();
@@ -36,7 +26,7 @@ export const AccountListHeader = () => {
 };
 
 const AccountGroup: React.FC<{
-  accounts: AccountsOfSameType;
+  accounts: Account[];
   groupLabel: string;
   balances: Record<string, string | undefined>;
   onSelect: (pkh: string) => void;
@@ -82,48 +72,17 @@ const AccountGroup: React.FC<{
   );
 };
 
-const getLabel = (a: Account) => {
-  switch (a.type) {
+const getLabel = (account: Account) => {
+  switch (account.type) {
     case AccountType.MNEMONIC:
-      return `Seedphrase ${a.seedFingerPrint}`;
+      return `Seedphrase ${account.seedFingerPrint}`;
     case AccountType.SOCIAL:
       return "Social Accounts";
     case AccountType.LEDGER:
       return "Ledger Accounts";
     case AccountType.MULTISIG:
       return "Multisig Accounts";
-    default: {
-      const error: never = a;
-      throw new Error(error);
-    }
   }
-};
-const groupByKind = (accounts: Account[]): GroupedByLabel => {
-  return accounts.reduce((group: GroupedByLabel, a) => {
-    const label = getLabel(a);
-
-    const existing = group[label] || [];
-    switch (a.type) {
-      case AccountType.MNEMONIC:
-        group[label] = [...(existing as MnemonicAccount[]), a];
-        break;
-      case AccountType.LEDGER:
-        group[label] = [...(existing as LedgerAccount[]), a];
-        break;
-      case AccountType.SOCIAL:
-        group[label] = [...(existing as SocialAccount[]), a];
-        break;
-      case AccountType.MULTISIG:
-        group[label] = [...(existing as MultisigAccount[]), a];
-        break;
-      default: {
-        const error: never = a;
-        throw error;
-      }
-    }
-
-    return group;
-  }, {});
 };
 
 export const AccountsList: React.FC<{
@@ -136,7 +95,7 @@ export const AccountsList: React.FC<{
 
   const mutezBalance = useAppSelector(s => s.assets.balances.mutez);
 
-  const accountsByKind = groupByKind(accounts);
+  const accountsByKind = groupBy(accounts, getLabel);
 
   const {
     onOpen: openConfirmModal,
