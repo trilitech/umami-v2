@@ -2,54 +2,43 @@ import { Button, Center, FormControl, Text, Switch, VStack, Input, HStack } from
 import { useForm } from "react-hook-form";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { SupportedIcons } from "../../CircleIcon";
-import {
-  Step,
-  StepType,
-  TemporaryLedgerAccountConfig,
-  TemporaryMnemonicAccountConfig,
-} from "../useOnboardingModal";
+import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 import { useState } from "react";
-import {
-  defaultV1Pattern,
-  getLedgerDerivationPath,
-} from "../../../utils/account/derivationPathUtils";
+import { defaultV1Pattern, ledgerPattern } from "../../../utils/account/derivationPathUtils";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
 };
 
 export const DerivationPath = ({
-  setStep,
-  config,
+  goToStep,
+  account,
 }: {
-  setStep: (step: Step) => void;
-  config: TemporaryMnemonicAccountConfig | TemporaryLedgerAccountConfig;
+  goToStep: (step: Step) => void;
+  account: DerivationPathStep["account"];
 }) => {
   const { register, handleSubmit } = useForm<ConfirmDerivationPathFormValues>();
-  const [isDefault, setIsDefault] = useState(true);
+  const [useDefault, setUseDefault] = useState(true);
   const getDefaultDerivationPath = () => {
-    if (config instanceof TemporaryLedgerAccountConfig) {
-      return getLedgerDerivationPath(0);
-    } else {
-      return defaultV1Pattern;
+    switch (account.type) {
+      case "ledger":
+        return ledgerPattern;
+      case "mnemonic":
+        return defaultV1Pattern;
     }
   };
 
   const onSubmit = async (data: ConfirmDerivationPathFormValues) => {
-    if (!isDefault) {
-      config.derivationPath = data.derivationPath;
-    } else {
-      config.derivationPath = getDefaultDerivationPath();
+    const derivationPath = useDefault ? getDefaultDerivationPath() : data.derivationPath;
+
+    switch (account.type) {
+      case "ledger":
+        goToStep({ type: StepType.restoreLedger, account: { ...account, derivationPath } });
+        break;
+      case "mnemonic":
+        goToStep({ type: StepType.masterPassword, account: { ...account, derivationPath } });
+        break;
     }
-    if (config instanceof TemporaryMnemonicAccountConfig) {
-      setStep({ type: StepType.masterPassword, config });
-      return;
-    } else if (config instanceof TemporaryLedgerAccountConfig) {
-      setStep({ type: StepType.restoreLedger, config });
-      return;
-    }
-    const error: never = config;
-    throw new Error(error);
   };
 
   return (
@@ -64,15 +53,16 @@ export const DerivationPath = ({
             <FormControl>
               <HStack spacing="10px">
                 <Text fontWeight="bold">Default Path</Text>
-                <Switch data-testid="switch" onChange={() => setIsDefault(!isDefault)} />
+                <Switch data-testid="switch" onChange={() => setUseDefault(!useDefault)} />
                 <Text>Custom Path</Text>
               </HStack>
             </FormControl>
             <FormControl>
+              {/* TODO: Add derivationPath regex matching check! */}
               <Input
                 data-testid="custom-path"
                 defaultValue={getDefaultDerivationPath()}
-                isDisabled={isDefault}
+                isDisabled={useDefault}
                 {...register("derivationPath", {
                   required: false,
                 })}

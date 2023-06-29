@@ -1,31 +1,40 @@
 import { seedPhrase } from "../../../mocks/seedPhrase";
-import { Step, StepType, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
+import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
 import Notice from "./Notice";
+import { generate24WordMnemonic } from "../../../utils/mnemonic";
 
-const config = new TemporaryMnemonicAccountConfig();
-config.seedphrase = seedPhrase;
-const setStepMock = jest.fn((step: Step) => {});
+// TODO refactor mocks
+jest.mock("../../../utils/mnemonic");
 
-const fixture = (setStep: (step: Step) => void) => <Notice setStep={setStep} />;
+const generate24WordMnemonicMock = generate24WordMnemonic as jest.Mock;
+const goToStepMock = jest.fn((step: Step) => {});
+
+const fixture = (goToStep: (step: Step) => void) => <Notice goToStep={goToStep} />;
 
 describe("<Eula />", () => {
   describe("When shown", () => {
     test("press 'I understand'", async () => {
-      render(fixture(setStepMock));
+      generate24WordMnemonicMock.mockReturnValue(seedPhrase);
+      render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /I understand/i });
+
       fireEvent.click(confirmBtn);
-      expect(setStepMock).toBeCalledWith({ type: StepType.generateSeedphrase });
-      expect(setStepMock).toBeCalledTimes(1);
+      expect(goToStepMock).toBeCalledWith({
+        type: StepType.showSeedphrase,
+        account: { type: "mnemonic", seedphrase: seedPhrase },
+      });
+      expect(goToStepMock).toBeCalledTimes(1);
     });
+
     test("press 'I already have a Seed Phrase'", async () => {
-      render(fixture(setStepMock));
+      render(fixture(goToStepMock));
       const skipBtn = screen.getByRole("button", {
         name: /I already have a Seed Phrase/i,
       });
       fireEvent.click(skipBtn);
-      expect(setStepMock).toBeCalledWith({ type: StepType.restoreSeedphrase });
-      expect(setStepMock).toBeCalledTimes(1);
+      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreSeedphrase });
+      expect(goToStepMock).toBeCalledTimes(1);
     });
   });
 });

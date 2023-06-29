@@ -1,31 +1,23 @@
 import { useImplicitAccounts } from "../../../utils/hooks/accountHooks";
-import {
-  Step,
-  StepType,
-  TemporaryAccountConfig,
-  TemporaryLedgerAccountConfig,
-} from "../useOnboardingModal";
+import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 import NameAccountDisplay from "./NameAccountDisplay";
 
 export const NameAccount = ({
-  setStep,
-  config,
+  goToStep,
+  account,
 }: {
-  setStep: (step: Step) => void;
-  config: TemporaryAccountConfig;
+  goToStep: (step: Step) => void;
+  account: NameAccountStep["account"];
 }) => {
   const accounts = useImplicitAccounts();
   const onSubmit = (p: { accountName: string }) => {
+    let label;
     if (p.accountName.trim().length > 0) {
-      config.label = p.accountName.trim();
+      label = p.accountName.trim();
     } else {
-      config.label = `Account ${accounts.length + 1}`;
+      label = `Account ${accounts.length + 1}`;
     }
-    if (config instanceof TemporaryLedgerAccountConfig) {
-      setStep({ type: StepType.masterPassword, config: config });
-    } else {
-      setStep({ type: StepType.derivationPath, config: config });
-    }
+    goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
   };
 
   return (

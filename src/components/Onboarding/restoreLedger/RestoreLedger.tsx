@@ -1,18 +1,21 @@
 import { Button, VStack, useToast, ListItem, OrderedList } from "@chakra-ui/react";
 import { useState } from "react";
-import { Step, StepType, TemporaryLedgerAccountConfig } from "../useOnboardingModal";
+import { RestoreLedgerStep } from "../useOnboardingModal";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { getPk } from "../../../utils/ledger/pk";
+import { useRestoreLedger } from "../../../utils/hooks/accountHooks";
+import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
 
 const RestoreLedger = ({
-  setStep,
-  config,
+  closeModal,
+  account,
 }: {
-  setStep: (step: Step) => void;
-  config: TemporaryLedgerAccountConfig;
+  closeModal: () => void;
+  account: RestoreLedgerStep["account"];
 }) => {
   const [isLoading, setIsloading] = useState(false);
+  const restoreLedger = useRestoreLedger();
   const toast = useToast();
 
   const noticeItems = [
@@ -40,10 +43,10 @@ const RestoreLedger = ({
         title: "Request sent to Ledger",
         description: "Open the Tezos app on your Ledger and accept the request",
       });
-      const result = await getPk(config.derivationPath);
-      config.pk = result.pk;
-      config.pkh = result.pkh;
-      setStep({ type: StepType.nameAccount, config });
+      const derivationPath = makeDerivationPath(account.derivationPath, 0);
+      const { pk, pkh } = await getPk(derivationPath);
+      restoreLedger(derivationPath, pk, pkh, account.label);
+      closeModal();
     } catch (error: any) {
       if (error.name === "PublicKeyRetrievalError") {
         toast({
@@ -70,7 +73,7 @@ const RestoreLedger = ({
       title="Connect Ledger"
       subtitle="Complete the steps to connect."
     >
-      <VStack spacing="24px" overflow="scroll">
+      <VStack spacing="24px" overflowY="auto">
         <OrderedList spacing={4}>
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;

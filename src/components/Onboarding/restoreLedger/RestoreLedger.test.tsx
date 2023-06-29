@@ -1,11 +1,10 @@
-import { Modal } from "@chakra-ui/react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { getLedgerDerivationPath } from "../../../utils/account/derivationPathUtils";
+import { ReduxStore } from "../../../providers/ReduxStore";
+import { ledgerPattern } from "../../../utils/account/derivationPathUtils";
 import { getPk } from "../../../utils/ledger/pk";
-import { Step, TemporaryLedgerAccountConfig } from "../useOnboardingModal";
 import RestoreLedger from "./RestoreLedger";
 
-const setStepMock = jest.fn((step: Step) => {});
+const closeModalMock = jest.fn(() => {});
 
 // TODO refactor mocks
 jest.mock("../../../utils/tezos/helpers");
@@ -24,47 +23,44 @@ jest.mock("@chakra-ui/react", () => {
 
 const getPkMock = getPk as jest.Mock;
 
-const config = new TemporaryLedgerAccountConfig();
-config.derivationPath = getLedgerDerivationPath(0);
-
-const fixture = (setStep: (step: Step) => void) => (
-  <Modal isOpen={true} onClose={() => {}}>
-    <RestoreLedger setStep={setStep} config={config} />
-  </Modal>
-);
+const fixture = (closeModal: () => void) => {
+  const account = { type: "ledger" as const, derivationPath: ledgerPattern, label: "Any Account" };
+  return (
+    <ReduxStore>
+      <RestoreLedger closeModal={closeModal} account={account} />
+    </ReduxStore>
+  );
+};
 
 describe("<RestoreSeedphrase />", () => {
-  describe("Connect ledger", () => {
-    test("success", async () => {
-      getPkMock.mockReturnValue({ pk: "test", pkh: "test" });
-      render(fixture(setStepMock));
-      const confirmBtn = screen.getByRole("button", {
-        name: /export public key/i,
-      });
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(confirmBtn).toBeDisabled();
-      });
+  test("success", async () => {
+    getPkMock.mockResolvedValue({ pk: "test", pkh: "test" });
+    render(fixture(closeModalMock));
+    const confirmBtn = screen.getByRole("button", {
+      name: /export public key/i,
     });
+    fireEvent.click(confirmBtn);
+    await waitFor(() => {
+      expect(closeModalMock).toBeCalledTimes(1);
+    });
+    expect(getPkMock).toBeCalledTimes(1);
+  });
 
-    test("aborted by user", async () => {
-      getPkMock.mockRejectedValue(new Error());
-      render(fixture(setStepMock));
-      const confirmBtn = screen.getByRole("button", {
-        name: /export public key/i,
-      });
-      fireEvent.click(confirmBtn);
+  test("aborted by user", async () => {
+    getPkMock.mockRejectedValue(new Error());
+    render(fixture(closeModalMock));
+    const confirmBtn = screen.getByRole("button", {
+      name: /export public key/i,
+    });
+    fireEvent.click(confirmBtn);
 
-      const btn = screen.getByRole("button", { name: /Export Public Key/i });
-
-      // Control the loading cycle
-      // Otherwise you get uncontrolled setStates that lead to act warnings.
-      await waitFor(() => {
-        expect(btn).toBeDisabled();
-      });
-      await waitFor(() => {
-        expect(btn).toBeEnabled();
-      });
+    // Control the loading cycle
+    // Otherwise you get uncontrolled setStates that lead to act warnings.
+    await waitFor(() => {
+      expect(confirmBtn).toBeDisabled();
+    });
+    await waitFor(() => {
+      expect(confirmBtn).toBeEnabled();
     });
   });
 });

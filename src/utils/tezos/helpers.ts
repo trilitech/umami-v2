@@ -156,13 +156,14 @@ export const makeMultisigApproveOrExecuteMethod = async (
   return contractInstance.methods[type](operationId);
 };
 
-export const selectRandomElements = (
-  arr: any[],
+export const selectRandomElements = <T>(
+  arr: T[],
   n: number
 ): {
   index: number;
-  value: any;
+  value: T;
 }[] => {
+  // TODO: replace with lodash.shuffle
   const shuffled = arr.map((value, index) => ({ value, index })).sort(() => Math.random() - 0.5);
   const selected = shuffled.slice(0, n).sort((a, b) => a.index - b.index);
   return selected.map(({ index, value }) => ({ index, value }));

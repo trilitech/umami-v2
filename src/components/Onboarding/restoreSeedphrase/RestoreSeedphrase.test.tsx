@@ -5,7 +5,7 @@ import { selectRandomElements } from "../../../utils/tezos/helpers";
 import RestoreSeedphrase from "./RestoreSeedphrase";
 import { mockToast } from "../../../mocks/toast";
 
-const setStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn((step: Step) => {});
 const selectRandomElementsMock = selectRandomElements as jest.Mock;
 
 // TODO refactor mocks
@@ -29,12 +29,12 @@ beforeEach(() => {
   selectRandomElementsMock.mockReturnValue(splitted.slice(0, 5));
 });
 
-const fixture = (setStep: (step: Step) => void) => <RestoreSeedphrase setStep={setStep} />;
+const fixture = (goToStep: (step: Step) => void) => <RestoreSeedphrase goToStep={goToStep} />;
 
 describe("<RestoreSeedphrase />", () => {
   describe("Form validation", () => {
     test("button is disabled when empty", async () => {
-      render(fixture(setStepMock));
+      render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       await waitFor(() => {
         expect(confirmBtn).toBeDisabled();
@@ -42,7 +42,7 @@ describe("<RestoreSeedphrase />", () => {
     });
 
     test("error is shown when wrong mnemonic is entered", async () => {
-      render(fixture(setStepMock));
+      render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const inputFields = screen.getAllByRole("textbox");
       inputFields.forEach(input => {
@@ -62,7 +62,7 @@ describe("<RestoreSeedphrase />", () => {
     });
 
     test("button is enabled when filled", async () => {
-      render(fixture(setStepMock));
+      render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const splitted = seedPhrase.split(" ");
 
@@ -80,12 +80,12 @@ describe("<RestoreSeedphrase />", () => {
       });
       fireEvent.click(confirmBtn);
       await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
+        expect(goToStepMock).toBeCalledTimes(1);
       });
-      expect(setStepMock).toBeCalledWith({
+      expect(goToStepMock).toBeCalledWith({
         type: StepType.derivationPath,
-        config: {
-          derivationPath: undefined,
+        account: {
+          type: "mnemonic",
           label: "Restored account",
           seedphrase: seedPhrase,
         },

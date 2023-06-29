@@ -13,7 +13,7 @@ import ModalContentWrapper from "../../ModalContentWrapper";
 
 const MIN_LENGTH = 4;
 
-export const EnterAndComfirmPassword: React.FC<{
+export const EnterAndConfirmPassword: React.FC<{
   onSubmit: (password: string) => void;
   isLoading: boolean;
 }> = ({ onSubmit: onSubmitPassword, isLoading }) => {
@@ -44,11 +44,12 @@ export const EnterAndComfirmPassword: React.FC<{
               <Input
                 isDisabled={isLoading}
                 type="password"
+                autoComplete="off"
                 data-testid="password"
                 {...register("password", {
                   required: true,
                 })}
-                placeholder="Enter account name..."
+                placeholder="Enter master password..."
               />
             </FormControl>
 
@@ -57,6 +58,7 @@ export const EnterAndComfirmPassword: React.FC<{
               <Input
                 isDisabled={isLoading}
                 type="password"
+                autoComplete="off"
                 data-testid="confirmation"
                 {...register("confirm", {
                   required: true,
@@ -67,7 +69,7 @@ export const EnterAndComfirmPassword: React.FC<{
                     }
                   },
                 })}
-                placeholder="Confirm your new password..."
+                placeholder="Confirm your password..."
               />
               {errors.confirm && <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>}
             </FormControl>
@@ -89,3 +91,5 @@ export const EnterAndComfirmPassword: React.FC<{
     </ModalContentWrapper>
   );
 };
+
+export default EnterAndConfirmPassword;

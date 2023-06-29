@@ -1,117 +1,84 @@
-import {
-  Step,
-  StepType,
-  TemporaryLedgerAccountConfig,
-  TemporaryMnemonicAccountConfig,
-} from "../useOnboardingModal";
+import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import DerivationPath from "./DerivationPath";
+import { seedPhrase } from "../../../mocks/seedPhrase";
 
-const setStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn((step: Step) => {});
 
-const fixture = (
-  setStep: (step: Step) => void,
-  config: TemporaryMnemonicAccountConfig | TemporaryLedgerAccountConfig
-) => <DerivationPath setStep={setStep} config={config} />;
+const fixture = (goToStep: (step: Step) => void, account: DerivationPathStep["account"]) => (
+  <DerivationPath goToStep={goToStep} account={account} />
+);
 
 describe("<DerivationPath />", () => {
-  describe("When default path is selected", () => {
-    test("Return default path", async () => {
-      render(fixture(setStepMock, new TemporaryMnemonicAccountConfig()));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
-      });
-      expect(setStepMock).toBeCalledWith({
-        type: StepType.masterPassword,
-        config: {
-          derivationPath: "m/44'/1729'/?'/0'",
-          label: undefined,
-          seedphrase: undefined,
-        },
-      });
-    });
+  const testData = [
+    {
+      account: { type: "ledger" as const, label: "ledger account" },
+      nextPage: StepType.restoreLedger,
+      derivationPath: "44'/1729'/?'/0'",
+    },
+    {
+      account: { type: "mnemonic" as const, label: "mnemonic account", seedphrase: seedPhrase },
+      nextPage: StepType.masterPassword,
+      derivationPath: "m/44'/1729'/?'/0'",
+    },
+  ];
 
-    test("Return default path even if textfield has been modified", async () => {
-      render(fixture(setStepMock, new TemporaryMnemonicAccountConfig()));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      const customPath = screen.getByTestId("custom-path");
-      fireEvent.change(customPath, { target: { value: "test" } });
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
-      });
-      expect(setStepMock).toBeCalledWith({
-        type: StepType.masterPassword,
-        config: {
-          derivationPath: "m/44'/1729'/?'/0'",
-          label: undefined,
-          seedphrase: undefined,
-        },
-      });
-    });
-  });
+  testData.forEach(async ({ account, nextPage, derivationPath }) => {
+    describe(`For ${account.type}`, () => {
+      describe("When default path is selected", () => {
+        test("Return default path", async () => {
+          render(fixture(goToStepMock, account));
+          const confirmBtn = screen.getByRole("button", { name: /continue/i });
+          fireEvent.click(confirmBtn);
+          await waitFor(() => {
+            expect(goToStepMock).toBeCalledTimes(1);
+          });
+          expect(goToStepMock).toBeCalledWith({
+            type: nextPage,
+            account: {
+              ...account,
+              derivationPath,
+            },
+          });
+        });
 
-  describe("When custom path is selected", () => {
-    test("Return custom path", async () => {
-      render(fixture(setStepMock, new TemporaryMnemonicAccountConfig()));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      const customPath = screen.getByTestId("custom-path");
-      expect(customPath).toBeDisabled();
-      const switchBtn = screen.getByTestId("switch");
-      fireEvent.click(switchBtn);
-      expect(customPath).toBeEnabled();
-      fireEvent.change(customPath, { target: { value: "test" } });
-      expect(customPath).toHaveValue("test");
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
+        test("Return default path even if textfield has been modified", async () => {
+          render(fixture(goToStepMock, account));
+          const confirmBtn = screen.getByRole("button", { name: /continue/i });
+          const customPath = screen.getByTestId("custom-path");
+          fireEvent.change(customPath, { target: { value: "test" } });
+          fireEvent.click(confirmBtn);
+          await waitFor(() => {
+            expect(goToStepMock).toBeCalledTimes(1);
+          });
+          expect(goToStepMock).toBeCalledWith({
+            type: nextPage,
+            account: { ...account, derivationPath },
+          });
+        });
       });
-      expect(setStepMock).toBeCalledWith({
-        type: StepType.masterPassword,
-        config: {
-          derivationPath: "test",
-          label: undefined,
-          seedphrase: undefined,
-        },
-      });
-    });
-  });
 
-  describe("Navigate based on config type", () => {
-    test("Mnemonic path", async () => {
-      render(fixture(setStepMock, new TemporaryMnemonicAccountConfig()));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
-      });
-      expect(setStepMock).toBeCalledWith({
-        type: StepType.masterPassword,
-        config: {
-          derivationPath: "m/44'/1729'/?'/0'",
-          label: undefined,
-          seedphrase: undefined,
-        },
-      });
-    });
-
-    test("Ledger path", async () => {
-      render(fixture(setStepMock, new TemporaryLedgerAccountConfig()));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
-      await waitFor(() => {
-        expect(setStepMock).toBeCalledTimes(1);
-      });
-      expect(setStepMock).toBeCalledWith({
-        type: StepType.restoreLedger,
-        config: {
-          derivationPath: "44'/1729'/0'/0'",
-          label: undefined,
-          pk: undefined,
-          pkh: undefined,
-        },
+      test("When custom path is selected we use it instead", async () => {
+        render(fixture(goToStepMock, account));
+        const confirmBtn = screen.getByRole("button", { name: /continue/i });
+        const customPath = screen.getByTestId("custom-path");
+        expect(customPath).toBeDisabled();
+        const switchBtn = screen.getByTestId("switch");
+        fireEvent.click(switchBtn);
+        expect(customPath).toBeEnabled();
+        fireEvent.change(customPath, { target: { value: "test" } });
+        expect(customPath).toHaveValue("test");
+        fireEvent.click(confirmBtn);
+        await waitFor(() => {
+          expect(goToStepMock).toBeCalledTimes(1);
+        });
+        expect(goToStepMock).toBeCalledWith({
+          type: nextPage,
+          account: {
+            ...account,
+            derivationPath: "test",
+          },
+        });
       });
     });
   });

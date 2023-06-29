@@ -1,13 +1,15 @@
 import { Box, Button, SimpleGrid, VStack } from "@chakra-ui/react";
-import { useState } from "react";
-import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import { Step, StepType, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
+import { ShowSeedphraseStep, Step, StepType } from "../useOnboardingModal";
 
-export const GenerateSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
-  // seedPhrase value will be stable across rerenders
-  const [seedphrase] = useState(generate24WordMnemonic());
+export const ShowSeedphrase = ({
+  goToStep,
+  account,
+}: {
+  goToStep: (step: Step) => void;
+  account: ShowSeedphraseStep["account"];
+}) => {
   return (
     <ModalContentWrapper
       icon={SupportedIcons.diamont}
@@ -16,7 +18,7 @@ export const GenerateSeedphrase = ({ setStep }: { setStep: (step: Step) => void 
     >
       <VStack overflowX="hidden">
         <SimpleGrid columns={3} spacing={2}>
-          {seedphrase.split(" ").map((item, index) => {
+          {account.seedphrase.split(" ").map((item, index) => {
             return (
               <Box
                 key={index}
@@ -48,14 +50,13 @@ export const GenerateSeedphrase = ({ setStep }: { setStep: (step: Step) => void 
           size="lg"
           minH="48px"
           onClick={_ => {
-            const config = new TemporaryMnemonicAccountConfig();
-            config.seedphrase = seedphrase;
-            setStep({ type: StepType.verifySeedphrase, config });
+            goToStep({ type: StepType.verifySeedphrase, account });
           }}
         >
-          OK, I’ve recorded it
+          OK, I've recorded it
         </Button>
       </VStack>
     </ModalContentWrapper>
   );
 };
+export default ShowSeedphrase;

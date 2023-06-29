@@ -14,11 +14,11 @@ import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { FieldValues, useForm } from "react-hook-form";
 import { WarningIcon } from "@chakra-ui/icons";
-import { Step, StepType, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
+import { Step, StepType } from "../useOnboardingModal";
 import { InMemorySigner } from "@taquito/signer";
 import { seedPhrase } from "../../../mocks/seedPhrase";
 
-const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
+const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
     register,
     handleSubmit,
@@ -43,17 +43,19 @@ const RestoreSeedphrase = ({ setStep }: { setStep: (step: Step) => void }) => {
     for (const key in data) {
       seedphrase += data[key] + " ";
     }
-    const config = new TemporaryMnemonicAccountConfig();
-    config.label = "Restored account";
-    config.seedphrase = seedphrase.trim();
+    seedphrase = seedphrase.trim();
 
     try {
+      // TODO: test this
       InMemorySigner.fromMnemonic({
-        mnemonic: config.seedphrase,
+        mnemonic: seedphrase,
         derivationPath: "44'/1729'/0'/0'",
         curve: "ed25519",
       });
-      setStep({ type: StepType.derivationPath, config });
+      goToStep({
+        type: StepType.derivationPath,
+        account: { type: "mnemonic", seedphrase: seedphrase, label: "Restored account" },
+      });
     } catch (error: any) {
       toast({ title: "Invalid Mnemonic", description: error.message });
     }

@@ -1,9 +1,9 @@
 import { Button, VStack } from "@chakra-ui/react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import { Step, StepType, TemporaryLedgerAccountConfig } from "../useOnboardingModal";
+import { Step, StepType } from "../useOnboardingModal";
 
-const ConnectOptions = ({ setStep }: { setStep: (step: Step) => void }) => {
+const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   return (
     <ModalContentWrapper icon={SupportedIcons.wallet} title="Connect Options">
       <VStack w="100%" spacing={4}>
@@ -11,7 +11,7 @@ const ConnectOptions = ({ setStep }: { setStep: (step: Step) => void }) => {
           bg="umami.blue"
           w="100%"
           size="lg"
-          onClick={_ => setStep({ type: StepType.restoreSeedphrase })}
+          onClick={_ => goToStep({ type: StepType.restoreSeedphrase })}
         >
           Import with Seed Phrase
         </Button>
@@ -22,10 +22,7 @@ const ConnectOptions = ({ setStep }: { setStep: (step: Step) => void }) => {
           w="100%"
           variant="ghost"
           onClick={_ => {
-            setStep({
-              type: StepType.derivationPath,
-              config: new TemporaryLedgerAccountConfig(),
-            });
+            goToStep({ type: StepType.nameAccount, account: { type: "ledger" } });
           }}
         >
           Connect ledger

@@ -42,12 +42,13 @@ const EnterPassword = ({
               <Input
                 data-testid="password"
                 isDisabled={isLoading}
+                autoComplete="off"
                 type="password"
                 {...register("password", {
                   required: true,
                   minLength: MIN_LENGTH,
                 })}
-                placeholder="Enter your new password..."
+                placeholder="Enter your password..."
               />
             </FormControl>
 

@@ -1,13 +1,10 @@
-import { seedPhrase } from "../../../mocks/seedPhrase";
-import { Step, TemporaryMnemonicAccountConfig } from "../useOnboardingModal";
+import { Step } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
 import Eula from "./Eula";
 
-const config = new TemporaryMnemonicAccountConfig();
-config.seedphrase = seedPhrase;
 const setStepMock = jest.fn((step: Step) => {});
 
-const fixture = (setStep: (step: Step) => void) => <Eula setStep={setStep} />;
+const fixture = (setStep: (step: Step) => void) => <Eula goToStep={setStep} />;
 
 describe("<Eula />", () => {
   describe("When not accepted", () => {

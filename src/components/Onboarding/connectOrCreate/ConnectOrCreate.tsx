@@ -2,10 +2,19 @@ import { Button, Flex, VStack, Text, Divider } from "@chakra-ui/react";
 import { GoogleAuth } from "../../../GoogleAuth";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import { Step, StepType, TemporarySocialAccountConfig } from "../useOnboardingModal";
-import { getPkAndPkhFromSk } from "../../../utils/tezos";
+import { Step, StepType } from "../useOnboardingModal";
 
-const ConnectOrCreate = ({ setStep }: { setStep: (step: Step) => void }) => {
+const ConnectOrCreate = ({
+  goToStep,
+  closeModal,
+}: {
+  goToStep: (step: Step) => void;
+  closeModal: () => void;
+}) => {
+  const onReceiveSk = async (sk: string) => {
+    // TODO: complete it
+    // const { pk, pkh } = await getPkAndPkhFromSk(sk);
+  };
   return (
     <ModalContentWrapper icon={SupportedIcons.wallet} title="Connect or Create Account">
       <VStack w="100%" spacing={4}>
@@ -13,7 +22,7 @@ const ConnectOrCreate = ({ setStep }: { setStep: (step: Step) => void }) => {
           bg="umami.blue"
           w="100%"
           size="lg"
-          onClick={_ => setStep({ type: StepType.notice })}
+          onClick={_ => goToStep({ type: StepType.notice })}
         >
           Create new Account
         </Button>
@@ -21,7 +30,7 @@ const ConnectOrCreate = ({ setStep }: { setStep: (step: Step) => void }) => {
           variant="outline"
           w="100%"
           size="lg"
-          onClick={_ => setStep({ type: StepType.connectOptions })}
+          onClick={_ => goToStep({ type: StepType.connectOptions })}
         >
           I already have a wallet
         </Button>
@@ -32,16 +41,7 @@ const ConnectOrCreate = ({ setStep }: { setStep: (step: Step) => void }) => {
           </Text>
           <Divider mt="11px" />
         </Flex>
-        <GoogleAuth
-          width="100%"
-          onReceiveSk={async sk => {
-            const { pk, pkh } = await getPkAndPkhFromSk(sk);
-            const config = new TemporarySocialAccountConfig();
-            config.pk = pk;
-            config.pkh = pkh;
-            setStep({ type: StepType.nameAccount, config });
-          }}
-        />
+        <GoogleAuth width="100%" onReceiveSk={onReceiveSk} />
       </VStack>
     </ModalContentWrapper>
   );
