@@ -1,10 +1,11 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { compact } from "lodash";
+import { chunk, compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
+import { processInBatches } from "./promise";
 import {
   assetsActions,
   DelegationPayload,
@@ -15,6 +16,7 @@ import { useAppDispatch } from "./store/hooks";
 import { multisigActions } from "./store/multisigsSlice";
 import {
   getAccounts,
+  getBakers,
   getLastDelegation,
   getLatestBlockLevel,
   getTezosPriceInUSD,
@@ -22,8 +24,6 @@ import {
   getTokenBalances,
   getTokenTransfers,
 } from "./tezos";
-import { chunk } from "lodash";
-import { processInBatches } from "./promise";
 
 const getTezTransfersPayload = async (
   pkh: string,
@@ -133,6 +133,12 @@ export const useAssetsPolling = () => {
 
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
+  });
+
+  // Fetch bakers onces when app starts.
+  useQuery("bakers", async () => {
+    const bakers = await getBakers();
+    dispatch(assetsActions.updateBakers(bakers));
   });
 
   const conversionRateQueryRef = useRef(conversionrateQuery);

@@ -16,7 +16,6 @@ import { CiCircleRemove } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { TbFilter } from "react-icons/tb";
 import { VscWand } from "react-icons/vsc";
-import { useQuery } from "react-query";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoDelegations } from "../../components/NoItems";
@@ -24,9 +23,6 @@ import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { useAllDelegations } from "../../utils/hooks/assetsHooks";
 import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
-import assetsSlice from "../../utils/store/assetsSlice";
-import { useAppDispatch } from "../../utils/store/hooks";
-import { getBakers } from "../../utils/tezos";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { useRenderBakerSmallTile } from "./BakerSmallTile";
 
@@ -136,16 +132,9 @@ export const FilterController: React.FC = () => {
   );
 };
 
-const { updateBakers } = assetsSlice.actions;
-
 const DelegationsView = () => {
   const delegations = useAllDelegations();
 
-  const dispatch = useAppDispatch();
-  useQuery("bakers", async () => {
-    const bakers = await getBakers();
-    dispatch(updateBakers(bakers));
-  });
   const allDelegations = compact(Object.values(delegations).flat());
   const formatedDelegations = compact(allDelegations.map(makeDelegation));
   const { modalElement, onOpen } = useSendFormModal();
