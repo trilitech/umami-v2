@@ -18,13 +18,14 @@ import { MdOutlinePending } from "react-icons/md";
 import { RxCheckCircled } from "react-icons/rx";
 import { TbFilter } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { useAccountFilter } from "../../components/AccountFilter";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoOperations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
 import { OperationDisplay } from "../../types/Operation";
-import { useGetAllOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
+import { useGetOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
 import { getAmountColor, getKey, sortOperationsByTimestamp } from "./operationsUtils";
 
 export const FilterController: React.FC = () => {
@@ -51,7 +52,7 @@ export const OperationsDataTable: React.FC<{
           // Finally a way to have a sticky Header
           // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
         }
-        <Thead position="sticky" top={0} zIndex="docked" bg="umami.gray.900" borderRadius={4}>
+        <Thead position="sticky" top={0} zIndex="1" bg="umami.gray.900" borderRadius={4}>
           <Tr>
             <Th>Type:</Th>
             <Th>Amount:</Th>
@@ -117,19 +118,18 @@ export const OperationsDataTable: React.FC<{
 };
 
 const OperationsView = () => {
-  const allOperationsList = useGetAllOperationDisplays();
+  const { filter, filterElement } = useAccountFilter();
+  const operations = useGetOperationDisplays();
+  const operationsToDisplay = sortOperationsByTimestamp(filter(operations));
+
   return (
     <Flex direction="column" height="100%">
-      {allOperationsList.length > 0 ? (
-        <>
-          <TopBar title="Operations" />
-
-          <FilterController />
-
-          <Box overflow="scroll" pb={4}>
-            <OperationsDataTable operations={allOperationsList} />
-          </Box>
-        </>
+      <TopBar title="Operations" />
+      {filterElement}
+      {operationsToDisplay.length > 0 ? (
+        <Box overflow="scroll" pb={4}>
+          <OperationsDataTable operations={operationsToDisplay} />
+        </Box>
       ) : (
         <NoOperations />
       )}

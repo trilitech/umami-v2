@@ -2,6 +2,7 @@ import { BigNumber } from "bignumber.js";
 import { compact } from "lodash";
 import { MultisigAccount } from "../../types/Account";
 import { Asset, keepFA1s, keepFA2s, keepNFTs, NFT } from "../../types/Asset";
+import { OperationDisplay } from "../../types/Operation";
 import {
   getOperationDisplays,
   sortOperationsByTimestamp,
@@ -122,6 +123,15 @@ export const useGetAccountOperationDisplays = () => {
   return (pkh: string) => {
     return getOperationDisplays(tez[pkh], tokens[pkh], delegations[pkh], pkh, network);
   };
+};
+
+export const useGetOperationDisplays = (): Record<string, OperationDisplay[] | undefined> => {
+  const accounts = useAllAccounts();
+  const getOperations = useGetAccountOperationDisplays();
+
+  return accounts.reduce((acc, curr) => {
+    return { ...acc, [curr.address.pkh]: getOperations(curr.address.pkh) };
+  }, {});
 };
 
 export const useGetAllOperationDisplays = () => {
