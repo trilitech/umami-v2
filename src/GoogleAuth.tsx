@@ -49,18 +49,14 @@ export type GoogleAuthProps = {
 
 export const DEFAULT_BTN_TEXT = "Connect with Google";
 
-const toTorusNetwork = (n: TezosNetwork): TORUS_NETWORK_TYPE => {
-  if (n === TezosNetwork.MAINNET) {
-    return "mainnet";
+const toTorusNetwork = (network: TezosNetwork): TORUS_NETWORK_TYPE => {
+  switch (network) {
+    case TezosNetwork.MAINNET:
+      return "mainnet";
+    // Testnet not working
+    case TezosNetwork.GHOSTNET:
+      return "testnet";
   }
-
-  // Testnet not working
-  if (n === TezosNetwork.GHOSTNET) {
-    return "testnet";
-  }
-
-  const error: never = n;
-  throw new Error(error);
 };
 
 export const GoogleAuth: React.FC<GoogleAuthProps> = ({
