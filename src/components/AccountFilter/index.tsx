@@ -1,5 +1,6 @@
 import { compact } from "lodash";
 import { useState } from "react";
+import { Account } from "../../types/Account";
 import { Address } from "../../types/Address";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountFilterDisplay } from "./AccountFilterDisplay";
@@ -13,6 +14,13 @@ export function mapToFilteredArray<T>(map: Record<string, T[] | undefined>, filt
     return [...acc, ...(map[curr] || [])];
   }, [] as T[]);
 }
+
+export const getFilteredAccounts = (accounts: Account[], accountFilter: Address[]) =>
+  accountFilter.length === 0
+    ? accounts
+    : accounts.filter(account =>
+        accountFilter.some(address => address.pkh === account.address.pkh)
+      );
 
 export const useAccountFilter = () => {
   const [accountFilter, setAccountFilter] = useState<Address[]>([]);
@@ -38,12 +46,9 @@ export const useAccountFilter = () => {
     );
   }
 
-  const filteredAccounts =
-    accountFilter.length === 0
-      ? accounts
-      : accounts.filter(account =>
-          accountFilter.some(address => address.pkh === account.address.pkh)
-        );
-
-  return { filter, filterElement: el, filteredAccounts };
+  return {
+    filter,
+    filterElement: el,
+    filteredAccounts: getFilteredAccounts(accounts, accountFilter),
+  };
 };

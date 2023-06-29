@@ -1,4 +1,4 @@
-import { mapToFilteredArray, useAccountFilter } from ".";
+import { getFilteredAccounts, mapToFilteredArray, useAccountFilter } from ".";
 import { mockImplicitAccount } from "../../mocks/factories";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 import accountsSlice from "../../utils/store/accountsSlice";
@@ -78,5 +78,22 @@ describe("AccountFilter", () => {
       "hello",
       "cool",
     ]);
+  });
+
+  test("getFilteredAccounts returns the right value", () => {
+    const accounts = [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)];
+
+    expect(getFilteredAccounts(accounts, [mockImplicitAccount(1).address])).toEqual([
+      mockImplicitAccount(1),
+    ]);
+
+    expect(getFilteredAccounts(accounts, [])).toEqual(accounts);
+    expect(
+      getFilteredAccounts(accounts, [
+        mockImplicitAccount(0).address,
+        mockImplicitAccount(1).address,
+        mockImplicitAccount(2).address,
+      ])
+    ).toEqual(accounts);
   });
 });
