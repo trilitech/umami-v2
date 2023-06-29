@@ -94,16 +94,6 @@ export const useGetAccountAllTokens = () => {
   };
 };
 
-export const useHasTokens = () => {
-  const accounts = useAllAccounts();
-  const getFA1 = useGetAccountFA1Tokens();
-  const getFA2 = useGetAccountFA2Tokens();
-  return () =>
-    accounts
-      .map(account => [...getFA1(account.address.pkh), ...getFA2(account.address.pkh)].length > 0)
-      .includes(true);
-};
-
 export const useGetAccountNFTs = () => {
   const getAssets = useGetAccountAssets();
 
