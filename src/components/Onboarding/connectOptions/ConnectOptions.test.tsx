@@ -18,14 +18,6 @@ describe("<ConnectOptions />", () => {
       expect(goToStepMock).toBeCalledWith({ type: StepType.restoreSeedphrase });
     });
 
-    // test("Restore from Backup", async () => {
-    //   render(fixture(goToStepMock));
-    //   const confirmBtn = screen.getByRole("button", { name: /Restore from Backup/i });
-    //   fireEvent.click(confirmBtn);
-    //   expect(goToStepMock).toBeCalledTimes(1);
-    //   expect(goToStepMock).toBeCalledWith({ type: StepType.restoreBackup })
-    // });
-
     test("Connect ledger", async () => {
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", {
