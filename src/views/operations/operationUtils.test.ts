@@ -190,7 +190,7 @@ describe("getTezOperationDisplay", () => {
     expect(result).toEqual(expected);
   });
 
-  test.only("incoming nft with missing from/token", () => {
+  test("incoming nft with missing from/token", () => {
     const incomingNft = { ...rawTzktNftTransfer, from: undefined };
 
     const result = getTokenOperationDisplay(incomingNft, forAddress);
@@ -226,19 +226,19 @@ describe("getTezOperationDisplay", () => {
     };
 
     const expected = {
-      id: 109854457856001,
+      id: 109817445220353,
       type: "transaction",
       amount: {
         id: 10899580518401,
         prettyDisplay: "-1 FKR",
         url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
       },
-      tzktUrl: "https://mainnet.tzkt.io/transactions/109854457856000",
-      prettyTimestamp: "today at 3:24 PM",
+      tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
+      prettyTimestamp: "today at 1:06 PM",
       recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
       sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
-      timestamp: "2023-03-27T13:24:48Z",
-      level: 2215172,
+      timestamp: "2023-03-27T11:06:40Z",
+      level: 2214369,
     };
 
     const result = getTokenOperationDisplay(outgoingNft, forAddress);
