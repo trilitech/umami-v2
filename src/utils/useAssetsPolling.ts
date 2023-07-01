@@ -114,6 +114,7 @@ export const useAssetsPolling = () => {
 
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
+    refetchOnWindowFocus: false,
   });
 
   const conversionrateQuery = useQuery("conversionRate", {
@@ -124,6 +125,7 @@ export const useAssetsPolling = () => {
 
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
     refetchIntervalInBackground: true,
+    refetchOnWindowFocus: false,
   });
 
   const blockNumberQuery = useQuery("blockNumber", {
@@ -134,6 +136,7 @@ export const useAssetsPolling = () => {
 
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
+    refetchOnWindowFocus: false,
   });
 
   useQuery("bakers", {
