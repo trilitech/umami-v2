@@ -93,7 +93,9 @@ export type Step =
 export const useOnboardingModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const hasAccounts = useImplicitAccounts().length !== 0;
-  const history = useStepHistory<Step>({type: hasAccounts ? StepType.connectOrCreate : StepType.eula});
+  const history = useStepHistory<Step>({
+    type: hasAccounts ? StepType.connectOrCreate : StepType.eula,
+  });
   const { currentStep, goToStep } = history;
 
   const closeModal = () => {
