@@ -1,10 +1,11 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { compact } from "lodash";
+import { chunk, compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
+import { processInBatches } from "./promise";
 import {
   assetsActions,
   DelegationPayload,
@@ -15,6 +16,7 @@ import { useAppDispatch } from "./store/hooks";
 import { multisigActions } from "./store/multisigsSlice";
 import {
   getAccounts,
+  getBakers,
   getLastDelegation,
   getLatestBlockLevel,
   getTezosPriceInUSD,
@@ -22,8 +24,6 @@ import {
   getTokenBalances,
   getTokenTransfers,
 } from "./tezos";
-import { chunk } from "lodash";
-import { processInBatches } from "./promise";
 
 const getTezTransfersPayload = async (
   pkh: string,
@@ -50,6 +50,7 @@ const getDelegationsPayload = async (
 
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
+const BAKERS_REFRESH_RATE = 1000 * 60 * 120;
 
 // The limit of a URI size is 2000 chars
 // according to https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
@@ -133,6 +134,14 @@ export const useAssetsPolling = () => {
 
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
+  });
+
+  useQuery("bakers", {
+    queryFn: async () => {
+      const bakers = await getBakers();
+      dispatch(assetsActions.updateBakers(bakers));
+    },
+    refetchInterval: BAKERS_REFRESH_RATE,
   });
 
   const conversionRateQueryRef = useRef(conversionrateQuery);
