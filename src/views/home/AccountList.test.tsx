@@ -220,6 +220,9 @@ const restore = async () => {
   );
 
   store.dispatch(
-    multisigsSlice.actions.set([mockMultisigWithOperations(0), mockMultisigWithOperations(1)])
+    multisigsSlice.actions.setMultisigs([
+      mockMultisigWithOperations(0),
+      mockMultisigWithOperations(1),
+    ])
   );
 };

@@ -34,7 +34,7 @@ import { mock } from "jest-mock-extended";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import { mockToast } from "../../mocks/toast";
 import { multisigActions } from "../../utils/store/multisigsSlice";
-import { multisigs } from "../../mocks/mutlisigsWithPendingOperations";
+import { multisigs } from "../../mocks/multisig";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
@@ -90,7 +90,7 @@ beforeAll(async () => {
     mockImplicitAccount(5, AccountType.LEDGER),
   ]);
 
-  store.dispatch(multisigActions.set(multisigs));
+  store.dispatch(multisigActions.setMultisigs(multisigs));
 });
 
 afterEach(() => {

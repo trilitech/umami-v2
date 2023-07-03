@@ -1,5 +1,5 @@
 import { mockContractAddress } from "../mocks/factories";
-import { multisigOperation } from "../mocks/multisig";
+import { multisigOperation, multisigs } from "../mocks/multisig";
 import { Multisig } from "./multisig/types";
 import { multisigActions } from "./store/multisigsSlice";
 import { store } from "./store/store";
@@ -14,12 +14,7 @@ describe("Contacts reducer", () => {
   });
 
   test("should set new multisigs", () => {
-    const multisig: Multisig = {
-      address: mockContractAddress(0),
-      pendingOperations: 0,
-      signers: [],
-      threshold: 8,
-    };
+    const multisig = multisigs[0];
     store.dispatch(multisigActions.setMultisigs([multisig]));
     expect(store.getState().multisigs).toEqual({ items: [multisig], pendingOperations: {} });
   });

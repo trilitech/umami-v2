@@ -32,7 +32,9 @@ export const getPendingOperations = async (
   bigMaps: number[],
   network: TezosNetwork
 ): Promise<RawTzktGetBigMapKeys> => {
-  const url = `${tzktUrls[network]}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(",")}`;
+  const url = `${tzktUrls[network]}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(
+    ","
+  )}&limit=${MULTISIG_FETCH_LIMIT}`;
   const { data } = await axios.get<RawTzktGetBigMapKeys>(url);
   return data.map(({ bigmap, active, key, value }) => ({
     bigmap,

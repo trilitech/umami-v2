@@ -18,7 +18,7 @@ import {
   getDefaultMnemonicDerivationPath,
   getLedgerDerivationPath,
 } from "../utils/account/derivationPathUtils";
-import { MultisigOperation, MultisigWithPendingOperations } from "../utils/multisig/types";
+import { MultisigOperation, Multisig } from "../utils/multisig/types";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -169,10 +169,10 @@ export const mockMultisigWithOperations = (
   signers: string[] = [],
   balance = "0",
   threshold = 3
-): MultisigWithPendingOperations => {
+): Multisig => {
   return {
     address: mockContractAddress(index),
-    pendingOperations: operations,
+    pendingOperations: index,
     signers: signers.map(pkh => ({ type: "implicit", pkh } as const)),
     threshold,
   };
