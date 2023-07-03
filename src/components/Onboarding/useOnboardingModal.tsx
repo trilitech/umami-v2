@@ -1,7 +1,6 @@
 import { IconButton, Modal, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import ModalBackground from "../../assets/onboarding/background_image.svg";
 import { ArrowBackIcon, CloseIcon } from "@chakra-ui/icons";
-import { useState } from "react";
 import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import ConnectOptions from "./connectOptions/ConnectOptions";
 import ConnectOrCreate from "./connectOrCreate/ConnectOrCreate";
@@ -14,6 +13,7 @@ import RestoreLedger from "./restoreLedger/RestoreLedger";
 import RestoreSeedphrase from "./restoreSeedphrase/RestoreSeedphrase";
 import VerifySeedphrase from "./verifySeedphrase/VerifySeedphrase";
 import DerivationPath from "./derivationPath/DerivationPath";
+import { useStepHistory } from "../useStepHistory";
 
 export enum StepType {
   eula = "eula",
@@ -89,24 +89,18 @@ export type Step =
 export const useCreateOrImportSecretModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const hasAccounts = useImplicitAccounts().length !== 0;
-  const [step, setStep] = useState<Step>({
+  const history = useStepHistory<Step>({
     type: hasAccounts ? StepType.connectOrCreate : StepType.eula,
   });
-  const [history, setHistory] = useState<Step[]>([step]);
+  const { currentStep, goToStep } = history;
 
   const closeModal = () => {
-    setStep(history[0]);
-    setHistory([history[0]]);
+    history.reset();
     onClose();
   };
 
-  const goToStep = (step: Step) => {
-    setStep(step);
-    setHistory([...history, step]);
-  };
-
   const getStepPage = () => {
-    switch (step.type) {
+    switch (currentStep.type) {
       case StepType.eula:
         return <Eula goToStep={goToStep} />;
       case StepType.connectOrCreate:
@@ -118,17 +112,17 @@ export const useCreateOrImportSecretModal = () => {
       case StepType.restoreSeedphrase:
         return <RestoreSeedphrase goToStep={goToStep} />;
       case StepType.showSeedphrase:
-        return <ShowSeedphrase goToStep={goToStep} {...step} />;
+        return <ShowSeedphrase goToStep={goToStep} {...currentStep} />;
       case StepType.verifySeedphrase:
-        return <VerifySeedphrase goToStep={goToStep} {...step} />;
+        return <VerifySeedphrase goToStep={goToStep} {...currentStep} />;
       case StepType.nameAccount:
-        return <NameAccount goToStep={goToStep} {...step} />;
+        return <NameAccount goToStep={goToStep} {...currentStep} />;
       case StepType.derivationPath:
-        return <DerivationPath goToStep={goToStep} {...step} />;
+        return <DerivationPath goToStep={goToStep} {...currentStep} />;
       case StepType.restoreLedger:
-        return <RestoreLedger closeModal={closeModal} {...step} />;
+        return <RestoreLedger closeModal={closeModal} {...currentStep} />;
       case StepType.masterPassword:
-        return <MasterPassword onClose={onClose} {...step} />;
+        return <MasterPassword onClose={onClose} {...currentStep} />;
     }
   };
 
@@ -144,12 +138,12 @@ export const useCreateOrImportSecretModal = () => {
         />
         <ModalContent
           bg="umami.gray.900"
-          maxW={stepModalSize(step)}
-          minW={stepModalSize(step)}
+          maxW={stepModalSize(history.currentStep)}
+          minW={stepModalSize(history.currentStep)}
           border="1px solid #282828"
           boxShadow="0px 0px 15px 1px rgba(235, 235, 235, 0.1);"
         >
-          {history.length > 1 && (
+          {!history.atInitialStep && (
             <IconButton
               size="lg"
               top="4px"
@@ -159,12 +153,7 @@ export const useCreateOrImportSecretModal = () => {
               aria-label="Back"
               color="umami.gray.450"
               icon={<ArrowBackIcon />}
-              onClick={() => {
-                history.pop();
-                const previous = history[history.length - 1];
-                setHistory(history);
-                setStep(previous);
-              }}
+              onClick={history.goBack}
             />
           )}
           <IconButton

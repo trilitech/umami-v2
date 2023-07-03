@@ -1996,6 +1996,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.4.2":
+  version: 7.22.5
+  resolution: "@babel/runtime@npm:7.22.5"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: 12a50b7de2531beef38840d17af50c55a094253697600cee255311222390c68eed704829308d4fd305e1b3dfbce113272e428e9d9d45b1730e0fede997eaceb1
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:~7.5.4":
   version: 7.5.5
   resolution: "@babel/runtime@npm:7.5.5"
@@ -7512,6 +7521,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/react-hooks@npm:~1.0.2":
+  version: 1.0.4
+  resolution: "@testing-library/react-hooks@npm:1.0.4"
+  dependencies:
+    "@babel/runtime": ^7.4.2
+    "@types/react": ^16.8.22
+    "@types/react-test-renderer": ^16.8.2
+  peerDependencies:
+    react: ">=16.8.0"
+    react-test-renderer: ">=16.8.0"
+  checksum: c2494d9626c4557fa97caa60bb0bee95c42603907e7ab1a34322116528aa5f286d5dddc8da21a25e3f5c91cfd7c377562660bfd417e18645a6281732a5d50e2d
+  languageName: node
+  linkType: hard
+
 "@testing-library/react@npm:^13.4.0":
   version: 13.4.0
   resolution: "@testing-library/react@npm:13.4.0"
@@ -8284,6 +8307,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-test-renderer@npm:^16.8.2":
+  version: 16.9.5
+  resolution: "@types/react-test-renderer@npm:16.9.5"
+  dependencies:
+    "@types/react": ^16
+  checksum: 5ba383f05342c9bdd3bdd431591586b76d01d673f7446bf0a035f990cdb8a84c8944994089bf179855b39324f516ed1461e23c7f27e2522210a7acaba60a5172
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:*, @types/react@npm:^18.0.28":
   version: 18.2.7
   resolution: "@types/react@npm:18.2.7"
@@ -8292,6 +8324,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: caa5da4cf929766738ec789301dc6fb6624bd48dd317d851c4c9b84b1f47cd8ebe17fe01398cadaa0bc938cd4d502d67f4b9de9ff771dc132096bdc86228efba
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^16, @types/react@npm:^16.8.22":
+  version: 16.14.43
+  resolution: "@types/react@npm:16.14.43"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 10ce3f8b80eadd66178a53845bddf264fa109fcfe0a615a0dce7e027dc426768573e87aee3eba7c53a2a867e159bba928bd86cac92ba93c5bd0152a63a49ccad
   languageName: node
   linkType: hard
 
@@ -22625,6 +22668,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hooks-testing-library@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "react-hooks-testing-library@npm:0.6.0"
+  dependencies:
+    "@testing-library/react-hooks": ~1.0.2
+  peerDependencies:
+    react: ^16.8.0
+    react-test-renderer: ^16.8.0
+  checksum: 01ef520cf816f625ad332c5832c2b9bd66ce21c8891d626335206cd4d49655202029badc79c7926df8a3a9f31a76c9938ddb908ded8f85a80d30d682eefa04eb
+  languageName: node
+  linkType: hard
+
 "react-icons@npm:^4.8.0":
   version: 4.9.0
   resolution: "react-icons@npm:4.9.0"
@@ -26227,6 +26282,7 @@ __metadata:
     react-datocms: ^4.0.15
     react-dom: ^18.2.0
     react-hook-form: ^7.43.5
+    react-hooks-testing-library: ^0.6.0
     react-icons: ^4.8.0
     react-identicons: ^1.2.5
     react-native-safe-area-context: 3.3.2

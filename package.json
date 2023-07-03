@@ -53,6 +53,7 @@
     "react-datocms": "^4.0.15",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.5",
+    "react-hooks-testing-library": "^0.6.0",
     "react-icons": "^4.8.0",
     "react-identicons": "^1.2.5",
     "react-native-safe-area-context": "3.3.2",
