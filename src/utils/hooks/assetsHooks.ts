@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import { compact } from "lodash";
+import { compact, groupBy, mapValues } from "lodash";
 import { MultisigAccount } from "../../types/Account";
 import { Asset, keepFA1s, keepFA2s, keepNFTs, NFT } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
@@ -119,9 +119,8 @@ export const useGetOperationDisplays = (): Record<string, OperationDisplay[] | u
   const accounts = useAllAccounts();
   const getOperations = useGetAccountOperationDisplays();
 
-  return accounts.reduce((acc, curr) => {
-    return { ...acc, [curr.address.pkh]: getOperations(curr.address.pkh) };
-  }, {});
+  const groupedAccounts = groupBy(accounts, account => account.address.pkh);
+  return mapValues(groupedAccounts, account => getOperations(account[0].address.pkh));
 };
 
 export const useGetAllOperationDisplays = () => {
