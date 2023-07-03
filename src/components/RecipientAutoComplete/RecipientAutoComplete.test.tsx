@@ -1,83 +1,82 @@
+import { useForm } from "react-hook-form";
 import { mockContact, mockImplicitAddress } from "../../mocks/factories";
-import { act, fireEvent, render, screen, within } from "../../mocks/testUtils";
+import { fireEvent, render, renderHook, screen, within } from "../../mocks/testUtils";
 import { RecipientAutoCompleteDisplay } from "./RecipientAutoComplete";
 
-const spy = jest.fn();
+type FormFields = { destination: string };
 
-const setup = (initialPkhValue?: string) => {
+const fixture = (initialPkhValue?: string) => {
+  const { result } = renderHook(() => useForm<FormFields>());
   render(
     <RecipientAutoCompleteDisplay
       contacts={[mockContact(0), mockContact(1), mockContact(2)]}
-      onValidPkh={spy}
+      inputName="destination"
+      register={result.current.register}
+      setValue={result.current.setValue}
       initialPkhValue={initialPkhValue}
     />
   );
 };
 
-const assertHiddenSuggetions = () => {
-  const suggestionContainer = screen.queryByRole("list");
-  expect(suggestionContainer).not.toBeInTheDocument();
-};
-
 describe("<RecipientAutoComplete />", () => {
-  it("should fire onValidPkh when a valid pkh is entered by the user", () => {
-    setup();
-    const input = screen.getByLabelText("recipient");
-    fireEvent.change(input, { target: { value: mockImplicitAddress(7).pkh } });
-    expect(input).toHaveProperty("value", mockImplicitAddress(7).pkh);
-    expect(spy).toHaveBeenCalledWith(mockImplicitAddress(7).pkh);
+  it("should set the real input when a valid pkh is entered by the user", () => {
+    fixture();
+    const rawInput = screen.getByLabelText("destination");
+    const realInput = screen.getByTestId("real-address-input");
+    fireEvent.change(rawInput, { target: { value: mockImplicitAddress(7).pkh } });
+    expect(rawInput).toHaveProperty("value", mockImplicitAddress(7).pkh);
+    expect(realInput).toHaveProperty("value", mockImplicitAddress(7).pkh);
   });
 
-  it("should fire null when a value that is not a pkh or an alias is entered by the user", () => {
-    setup();
-    const input = screen.getByLabelText("recipient");
+  it("should clear the real input when a malformed pkh or contact name is entered by the user", () => {
+    fixture();
+    const rawInput = screen.getByLabelText("destination");
+    const realInput = screen.getByTestId("real-address-input");
     const INVALID = "not a pkh or an alias";
-    fireEvent.change(input, { target: { value: INVALID } });
 
-    expect(input).toHaveProperty("value", INVALID);
-    expect(spy).toHaveBeenCalledWith(null);
+    fireEvent.change(rawInput, { target: { value: mockImplicitAddress(7).pkh } });
+    fireEvent.change(rawInput, { target: { value: INVALID } });
+
+    expect(rawInput).toHaveProperty("value", INVALID);
+    expect(realInput).toHaveProperty("value", "");
   });
 
-  it("should hide suggestions when input is empty and unfocused", async () => {
-    setup();
-
-    assertHiddenSuggetions();
+  it("hides suggestions by default", async () => {
+    fixture();
+    expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
   });
 
-  it("should show suggestions when input is empty and focused", async () => {
-    setup();
+  it("shows suggestions when the input is focused", async () => {
+    fixture();
 
-    const input = screen.getByLabelText("recipient");
-    fireEvent.focus(input);
-    const suggestionContainer = screen.getByRole("list");
+    const rawInput = screen.getByLabelText("destination");
+    fireEvent.focus(rawInput);
+    const suggestionContainer = screen.getByTestId("suggestions-list");
 
     const suggestions = within(suggestionContainer).queryAllByRole("listitem");
     expect(suggestions).toHaveLength(3);
   });
 
-  it("should hide suggestions if input is an exact suggestion", async () => {
-    setup();
+  it("hides suggestions if input is an exact suggestion", async () => {
+    fixture();
 
-    const input = screen.getByLabelText("recipient");
+    const rawInput = screen.getByLabelText("destination");
 
-    fireEvent.change(input, { target: { value: "Contact 1" } });
+    fireEvent.change(rawInput, { target: { value: "Contact 1" } });
 
-    assertHiddenSuggetions();
+    expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
   });
 
-  it("should display suggestions if user input has suggestions", async () => {
-    setup();
-    const input = screen.getByLabelText("recipient");
+  it("displays suggestions if user input has suggestions", async () => {
+    fixture();
+    const rawInput = screen.getByLabelText("destination");
 
-    expect(input).toBeEnabled();
+    expect(rawInput).toBeEnabled();
 
-    fireEvent.change(input, { target: { value: "tact" } });
+    fireEvent.focus(rawInput);
+    fireEvent.change(rawInput, { target: { value: "tact" } });
 
-    act(() => {
-      input.focus();
-    });
-
-    const suggestionContainer = screen.getByRole("list");
+    const suggestionContainer = screen.getByTestId("suggestions-list");
     const suggestions = within(suggestionContainer).getAllByRole("listitem");
     expect(suggestions).toHaveLength(3);
     expect(within(suggestionContainer).getByText(mockContact(0).name)).toBeInTheDocument();
@@ -86,70 +85,54 @@ describe("<RecipientAutoComplete />", () => {
   });
 
   test("choosing a suggestions submits the pkh, inputs the contact name and hides suggestions", () => {
-    setup();
-    const input = screen.getByLabelText("recipient");
+    fixture();
+    const rawInput = screen.getByLabelText("destination");
+    const realInput = screen.getByTestId("real-address-input");
 
-    expect(input).toBeEnabled();
+    expect(rawInput).toBeEnabled();
 
-    fireEvent.change(input, { target: { value: "Contact" } });
+    fireEvent.focus(rawInput);
+    fireEvent.change(rawInput, { target: { value: "Contact" } });
 
-    act(() => {
-      input.focus();
-    });
-
-    const suggestionContainer = screen.getByRole("list");
+    const suggestionContainer = screen.getByTestId("suggestions-list");
 
     const sug = within(suggestionContainer).getByText(mockContact(1).name);
 
     fireEvent.mouseDown(sug);
-    expect(input).toHaveProperty("value", mockContact(1).name);
+    expect(rawInput).toHaveProperty("value", mockContact(1).name);
 
-    assertHiddenSuggetions();
-    expect(spy).toHaveBeenCalledWith(mockContact(1).pkh);
+    expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
+    expect(realInput).toHaveProperty("value", mockContact(1).pkh);
   });
 
   it("should display initialPkhValue's contact if any, and not display any suggestions", async () => {
-    const initialPkhValue = mockContact(1).pkh;
+    fixture(mockContact(1).name);
 
-    render(
-      <RecipientAutoCompleteDisplay
-        contacts={[
-          {
-            name: "foo",
-            pkh: mockContact(0).pkh,
-          },
-          {
-            name: "foo1",
-            pkh: mockContact(1).pkh,
-          },
-          {
-            name: "foo2",
-            pkh: mockContact(2).pkh,
-          },
-        ]}
-        onValidPkh={spy}
-        initialPkhValue={initialPkhValue}
-      />
-    );
+    const rawInput = screen.getByLabelText("destination");
+    const realInput = screen.getByTestId("real-address-input");
 
-    assertHiddenSuggetions();
-    const input = screen.getByLabelText("recipient");
-    expect(input).toHaveProperty("value", "foo1");
+    expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
+    expect(rawInput).toHaveProperty("value", mockContact(1).name);
+    expect(realInput).toHaveProperty("value", mockContact(1).pkh);
   });
 
   it("should display initialPkhValue if there is no existing contact", async () => {
-    setup(mockImplicitAddress(5).pkh);
+    fixture(mockImplicitAddress(5).pkh);
 
-    const input = screen.getByLabelText("recipient");
-    expect(input).toHaveProperty("value", mockImplicitAddress(5).pkh);
+    const rawInput = screen.getByLabelText("destination");
+    const realInput = screen.getByTestId("real-address-input");
+
+    expect(rawInput).toHaveProperty("value", mockImplicitAddress(5).pkh);
+    expect(realInput).toHaveProperty("value", mockImplicitAddress(5).pkh);
   });
 
   test("Entering a pkh that belongs to a contact should display contact name in the input", () => {
-    setup();
-    const input = screen.getByLabelText("recipient");
+    fixture();
+    const rawInput = screen.getByLabelText("destination");
+    const realInput = screen.getByTestId("real-address-input");
+    fireEvent.change(rawInput, { target: { value: mockContact(1).pkh } });
 
-    fireEvent.change(input, { target: { value: mockContact(1).pkh } });
-
-    expect(input).toHaveProperty("value", mockContact(1).name);
+    expect(rawInput).toHaveProperty("value", mockContact(1).name);
+    expect(realInput).toHaveProperty("value", mockContact(1).pkh);
   });
 });

@@ -1,6 +1,6 @@
-import { Box, Divider, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { Noop } from "react-hook-form";
+import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
+import { FieldValues, UseFormRegister, Path } from "react-hook-form";
 import colors from "../../style/colors";
 import { isAddressValid } from "../../types/Address";
 import { Contact } from "../../types/Contact";
@@ -8,11 +8,15 @@ import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { useAppSelector } from "../../utils/store/hooks";
 import { Identicon } from "../Identicon";
 
-type BaseProps = {
-  onValidPkh: (v: string | null) => void;
+// <T extends FieldValues> is needed to be compatible with the useForm return type
+// <U extends Path<T>> makes sure that we can pass in only valid inputName that
+//   exists in the useForm's fields type
+export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   initialPkhValue?: string;
   isDisabled?: boolean;
-  onBlur?: Noop;
+  inputName: U;
+  register: UseFormRegister<T>;
+  setValue: (name: U, value: string, options: { shouldValidate: boolean }) => void;
 };
 
 const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
@@ -33,20 +37,18 @@ const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
 };
 
 const Suggestions = ({
-  hideSuggestions,
   suggestions,
   onChange,
 }: {
-  hideSuggestions: boolean;
   suggestions: Contact[];
   onChange: (name: string) => void;
 }) => {
-  const hide = hideSuggestions || suggestions.length === 0;
-
-  return hide ? null : (
+  // TODO: filter suggestions here!
+  return suggestions.length === 0 ? null : (
     <UnorderedList
-      overflow="scroll"
-      mt={2}
+      data-testid="suggestions-list"
+      overflowY="auto"
+      mt={0}
       ml={0}
       width="100%"
       borderRadius={8}
@@ -86,73 +88,88 @@ const Suggestions = ({
   );
 };
 
-export const RecipientAutoCompleteDisplay: React.FC<BaseProps & { contacts: Contact[] }> = ({
+export const RecipientAutoCompleteDisplay = <T extends FieldValues, U extends Path<T>>({
   contacts,
-  onValidPkh,
   initialPkhValue,
   isDisabled,
-  onBlur = () => {},
-}) => {
-  const initialValue = initialPkhValue
-    ? contacts.find(e => e.pkh === initialPkhValue)?.name || initialPkhValue
+  register,
+  setValue: setFormValue,
+  inputName,
+}: BaseProps<T, U> & { contacts: Contact[] }) => {
+  const initialInputValue = initialPkhValue
+    ? contacts.find(c => c.pkh === initialPkhValue)?.name || initialPkhValue
     : "";
 
-  const [value, setValue] = useState(initialValue);
+  const [rawInputValue, setRawInputValue] = useState(initialInputValue);
   const [hideSuggestions, setHideSuggestions] = useState(true);
+  const [suggestions, setSuggestions] = useState(getSuggestions("", contacts));
 
-  const handleChange = (v: string) => {
-    setHideSuggestions(false);
+  const handleChange = useCallback(
+    (newValue: string) => {
+      setRawInputValue(newValue);
+      setSuggestions(getSuggestions(newValue, contacts));
 
-    const contact = contacts.find(c => c.name === v || c.pkh === v);
+      const contact = contacts.find(
+        contact => contact.name === newValue || contact.pkh === newValue
+      );
 
-    if (contact !== undefined) {
-      setValue(contact.name);
-      onValidPkh(contact.pkh);
-      return;
+      if (contact !== undefined) {
+        setRawInputValue(contact.name);
+        setFormValue(inputName, contact.pkh, { shouldValidate: true });
+      } else if (isAddressValid(newValue)) {
+        setFormValue(inputName, newValue, { shouldValidate: true });
+      } else {
+        setFormValue(inputName, "", { shouldValidate: true });
+      }
+    },
+    [contacts, inputName, setRawInputValue, setFormValue]
+  );
+
+  useEffect(() => {
+    if (initialInputValue) {
+      handleChange(initialInputValue);
     }
-
-    setValue(v);
-
-    if (isAddressValid(v)) {
-      onValidPkh(v);
-      return;
-    }
-
-    onValidPkh(null);
-  };
-
-  const suggestions = getSuggestions(value, contacts);
+  }, [initialInputValue, handleChange]);
 
   return (
     <Box>
+      <FormLabel>
+        To
+        <Input
+          isDisabled={isDisabled}
+          aria-label={inputName}
+          value={rawInputValue}
+          onFocus={() => {
+            setHideSuggestions(false);
+          }}
+          onBlur={e => {
+            e.preventDefault();
+            setHideSuggestions(true);
+            handleChange(e.target.value);
+          }}
+          onChange={e => {
+            handleChange(e.target.value);
+          }}
+          autoComplete="off"
+          placeholder="Enter address or contact name"
+        />
+      </FormLabel>
       <Input
-        isDisabled={isDisabled}
-        aria-label="recipient"
-        value={value}
-        onFocus={() => {
-          setHideSuggestions(false);
-        }}
-        onBlur={e => {
-          e.preventDefault();
-          setHideSuggestions(true);
-          onBlur();
-        }}
-        onChange={e => {
-          handleChange(e.target.value);
-        }}
-        autoComplete="off"
-        placeholder="Enter tz address or contact name"
+        {...register(inputName, { required: "Invalid address or contact name" })}
+        mb={0}
+        name={inputName}
+        type="hidden"
+        data-testid="real-address-input"
       />
-      <Suggestions
-        hideSuggestions={hideSuggestions}
-        suggestions={suggestions}
-        onChange={handleChange}
-      />
+
+      {!hideSuggestions && <Suggestions suggestions={suggestions} onChange={handleChange} />}
     </Box>
   );
 };
 
-export const RecipentAutoComplete: React.FC<BaseProps> = props => {
+export const RecipentAutoComplete = <T extends FieldValues, U extends Path<T>>(
+  props: BaseProps<T, U>
+) => {
   const contacts = Object.values(useAppSelector(s => s.contacts));
 
   const accounts = useAllAccounts().map(account => ({

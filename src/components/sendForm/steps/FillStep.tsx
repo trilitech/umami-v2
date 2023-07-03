@@ -22,7 +22,6 @@ import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
-import { isAddressValid } from "../../../types/Address";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
 import {
@@ -232,6 +231,7 @@ export const SendTezOrNFTForm = ({
     getValues,
     handleSubmit,
     reset,
+    setValue,
   } = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
@@ -267,7 +267,7 @@ export const SendTezOrNFTForm = ({
               rules={{ required: true }}
               control={control}
               name="sender"
-              render={({ field: { onChange, onBlur, value, ref } }) => (
+              render={({ field: { onChange, value } }) => (
                 <ConnectedAccountSelector
                   isDisabled={isNFT || simulating || disabled}
                   selected={value}
@@ -305,23 +305,12 @@ export const SendTezOrNFTForm = ({
             </FormControl>
           ) : null}
           <FormControl mb={2} isInvalid={!!errors.recipient}>
-            <FormLabel>To</FormLabel>
-            <Controller
-              rules={{
-                validate: val => isAddressValid(val) || "Invalid address or contact",
-              }}
-              control={control}
-              name="recipient"
-              render={({ field: { onChange, onBlur } }) => (
-                <RecipentAutoComplete
-                  onBlur={onBlur}
-                  isDisabled={disabled}
-                  initialPkhValue={recipient}
-                  onValidPkh={pkh => {
-                    onChange(pkh === null ? "" : pkh);
-                  }}
-                />
-              )}
+            <RecipentAutoComplete
+              register={register}
+              isDisabled={disabled}
+              inputName="recipient"
+              setValue={setValue}
+              initialPkhValue={recipient}
             />
             {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
           </FormControl>
