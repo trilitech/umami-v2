@@ -50,6 +50,7 @@ const getDelegationsPayload = async (
 
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
+const BAKERS_REFRESH_RATE = 1000 * 60 * 120;
 
 // The limit of a URI size is 2000 chars
 // according to https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
@@ -135,10 +136,12 @@ export const useAssetsPolling = () => {
     refetchIntervalInBackground: true,
   });
 
-  // Fetch bakers onces when app starts.
-  useQuery("bakers", async () => {
-    const bakers = await getBakers();
-    dispatch(assetsActions.updateBakers(bakers));
+  useQuery("bakers", {
+    queryFn: async () => {
+      const bakers = await getBakers();
+      dispatch(assetsActions.updateBakers(bakers));
+    },
+    refetchInterval: BAKERS_REFRESH_RATE,
   });
 
   const conversionRateQueryRef = useRef(conversionrateQuery);
