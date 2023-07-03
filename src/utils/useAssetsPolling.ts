@@ -69,15 +69,16 @@ export const useAssetsPolling = () => {
   const accountAssetsQuery = useQuery("allAssets", {
     queryFn: async () => {
       const multisigs = await getRelevantMultisigContracts(new Set(implicitAccountPkhs), network);
+      dispatch(multisigActions.setMultisigs(multisigs));
 
       const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
       const pendingOperations = Promise.all(
         multisigChunks.map(multisigs => getPendingOperationsForMultisigs(multisigs, network))
-      ).then(multisigsWithOperations => {
-        dispatch(multisigActions.set(multisigsWithOperations.flat()));
+      ).then(pendingOperations => {
+        dispatch(multisigActions.setPendingOperations(pendingOperations.flat()));
       });
 
-      const allAccountPkhs = [...implicitAccountPkhs, ...multisigs.map(acc => acc.address)];
+      const allAccountPkhs = [...implicitAccountPkhs, ...multisigs.map(acc => acc.address.pkh)];
       const pkhChunks = chunk(allAccountPkhs, MAX_ADDRESSES_PER_REQUEST);
       const tezBalances = Promise.all(pkhChunks.map(pkhs => getAccounts(pkhs, network))).then(
         accountInfos => {

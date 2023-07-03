@@ -1,6 +1,10 @@
 import axios from "axios";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./helpers";
+import {
+  getPendingOperationsForMultisigs,
+  getRelevantMultisigContracts,
+  parseMultisig,
+} from "./helpers";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
 import { SupportedNetworks } from "../network";
 jest.mock("axios");
@@ -21,12 +25,10 @@ describe("multisig helpers", () => {
 
       expect(result).toEqual([
         {
-          address: mockContractAddress(0).pkh,
-          storage: {
-            pending_ops: 0,
-            signers: [mockImplicitAddress(0).pkh],
-            threshold: "2",
-          },
+          address: mockContractAddress(0),
+          pendingOperations: 0,
+          signers: [mockImplicitAddress(0)],
+          threshold: 2,
         },
       ]);
     });
@@ -49,7 +51,10 @@ describe("multisig helpers", () => {
         ],
       });
 
-      const result = await getPendingOperationsForMultisigs(tzktGetSameMultisigsResponse, network);
+      const result = await getPendingOperationsForMultisigs(
+        tzktGetSameMultisigsResponse.map(parseMultisig),
+        network
+      );
 
       expect(mockedAxios.get).toBeCalledWith(
         `https://api.${network}.tzkt.io/v1/bigmaps/keys?active=true&bigmap.in=0,1`
@@ -57,54 +62,26 @@ describe("multisig helpers", () => {
 
       expect(result).toEqual([
         {
-          address: {
-            pkh: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0",
-            type: "contract",
-          },
-          pendingOperations: [
+          approvals: [
             {
-              approvals: [
-                {
-                  pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
-                  type: "implicit",
-                },
-              ],
-              key: "1",
-              rawActions: "action1",
-            },
-          ],
-          signers: [
-            {
-              pkh: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
+              pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
               type: "implicit",
             },
           ],
-          threshold: 2,
+          id: 0,
+          key: "1",
+          rawActions: "action1",
         },
         {
-          address: {
-            pkh: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob10",
-            type: "contract",
-          },
-          pendingOperations: [
+          approvals: [
             {
-              approvals: [
-                {
-                  pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-                  type: "implicit",
-                },
-              ],
-              key: "2",
-              rawActions: "action2",
-            },
-          ],
-          signers: [
-            {
-              pkh: "tz1W2hEsS1mj7dHPZ6267eeM4HDWJoG3s13n",
+              pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
               type: "implicit",
             },
           ],
-          threshold: 2,
+          id: 1,
+          key: "2",
+          rawActions: "action2",
         },
       ]);
     });

@@ -7,7 +7,7 @@ export type RawTzktGetSameMultisigsItem = {
   storage: {
     signers: string[];
     threshold: string;
-    pending_ops: number;
+    pending_ops: number; //bigmap id for the operations
   };
 };
 

@@ -1,63 +1,59 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { compact } from "lodash";
 import { AccountType, MultisigAccount } from "../../types/Account";
+import { compact } from "lodash";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
-import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigs } from "../tzkt/types";
+import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
-import { MultisigWithPendingOperations } from "./types";
+import { Multisig, MultisigOperation } from "./types";
+
+export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
+  address: parseContractPkh(raw.address),
+  threshold: Number(raw.storage.threshold),
+  // For now, we assume the singer is always an implicit account
+  signers: raw.storage.signers.map(parseImplicitPkh),
+  pendingOperations: raw.storage.pending_ops,
+});
 
 export const getRelevantMultisigContracts = async (
   accountPkhs: Set<string>,
   network: TezosNetwork
-): Promise<RawTzktGetSameMultisigs> => {
-  const multisigs = await getAllMultiSigContracts(network);
-  return multisigs.filter(({ storage: { signers } }) => {
-    const intersection = signers.filter(s => accountPkhs.has(s));
-    return intersection.length > 0;
-  });
+): Promise<Multisig[]> =>
+  getAllMultiSigContracts(network).then(multisigs =>
+    multisigs
+      .filter(({ storage: { signers } }) => {
+        const intersection = signers.filter(s => accountPkhs.has(s));
+        return intersection.length > 0;
+      })
+      .map(parseMultisig)
+  );
+
+const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperation | null => {
+  const { bigmap, key, value } = raw;
+  if (key === null || value === null) {
+    return null;
+  }
+
+  return {
+    id: bigmap,
+    key,
+    rawActions: value.actions,
+    // For now, we assume the approver is always an implicit account
+    approvals: value.approvals.map(parseImplicitPkh),
+  };
 };
 
 export const getPendingOperationsForMultisigs = async (
-  multisigs: RawTzktGetSameMultisigs,
+  multisigs: Multisig[],
   network: TezosNetwork
-): Promise<MultisigWithPendingOperations[]> => {
-  const bigmapIds = multisigs.map(m => m.storage.pending_ops);
+): Promise<MultisigOperation[]> => {
+  const bigmapIds = multisigs.map(m => m.pendingOperations);
 
-  const bigmapLookup = await getPendingOperations(bigmapIds, network).then(response =>
-    response.reduce((acc: Record<number, RawTzktGetBigMapKeysItem[] | undefined>, cur) => {
-      if (!acc[cur.bigmap]) {
-        acc[cur.bigmap] = [];
-      }
-      acc[cur.bigmap]?.push(cur);
-      return acc;
-    }, {})
-  );
+  const response = await getPendingOperations(bigmapIds, network);
 
-  return multisigs.map(({ address, storage: { signers, pending_ops, threshold } }) => {
-    const operations = bigmapLookup[pending_ops]?.map(({ key, value }) => {
-      if (!value || !key) {
-        return null;
-      }
-      return {
-        key,
-        rawActions: value.actions,
-        approvals: value.approvals.map(parseImplicitPkh),
-      };
-    });
-
-    return {
-      address: parseContractPkh(address),
-      threshold: Number(threshold),
-      signers: signers.map(parseImplicitPkh),
-      pendingOperations: compact(operations),
-    };
-  });
+  return compact(response.map(parseMultisigOperation));
 };
 
-export const multisigWithPendingOpsToAccount = (
-  m: MultisigWithPendingOperations,
-  label: string
-): MultisigAccount => {
+export const multisigToAccount = (m: Multisig, label: string): MultisigAccount => {
   return {
     label,
     address: m.address,
