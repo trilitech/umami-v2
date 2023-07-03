@@ -1,4 +1,4 @@
-import { compact } from "lodash";
+import { compact, intersectionWith } from "lodash";
 import { useState } from "react";
 import { Account } from "../../types/Account";
 import { Address } from "../../types/Address";
@@ -18,8 +18,10 @@ export function mapToFilteredArray<T>(map: Record<string, T[] | undefined>, filt
 export const getFilteredAccounts = (accounts: Account[], accountFilter: Address[]) =>
   accountFilter.length === 0
     ? accounts
-    : accounts.filter(account =>
-        accountFilter.some(address => address.pkh === account.address.pkh)
+    : intersectionWith(
+        accounts,
+        accountFilter,
+        (account, address) => account.address.pkh === address.pkh
       );
 
 export const useAccountFilter = () => {
