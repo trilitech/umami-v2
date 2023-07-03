@@ -1,6 +1,4 @@
-import { mockContractAddress } from "../mocks/factories";
 import { multisigOperation, multisigs } from "../mocks/multisig";
-import { Multisig } from "./multisig/types";
 import { multisigActions } from "./store/multisigsSlice";
 import { store } from "./store/store";
 

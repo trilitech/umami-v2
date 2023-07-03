@@ -116,6 +116,7 @@
     "@types/assert": "^1.5.6",
     "@types/papaparse": "^5.3.7",
     "@types/prop-types": "^15.7.5",
+    "@types/redux-mock-store": "^1.0.3",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@types/testing-library__user-event": "^4.2.0",
     "@types/wait-on": "^5.3.1",
@@ -135,6 +136,7 @@
     "prettier": "^2.8.7",
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
+    "redux-mock-store": "^1.5.4",
     "stream-http": "^3.2.0",
     "wait-on": "^7.0.1",
     "webpack": "^5.75.0"

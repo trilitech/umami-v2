@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { groupBy } from "lodash";
 import { MultisigOperation, Multisig, MultisigPendingOperations } from "../multisig/types";
 
-type State = {
+export type State = {
   items: Multisig[];
   pendingOperations: MultisigPendingOperations;
 };
