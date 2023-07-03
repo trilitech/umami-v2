@@ -16,7 +16,8 @@ export const AnnouncementBanner: React.FC = () => {
       const result = await request(ConfigurationDocument);
       if (message !== result.configuration?.maintenanceMessage) {
         setMessage(result.configuration?.maintenanceMessage);
-        setOpen(true);
+        // TODO: make the announcements not appear again after closing and uncomment this
+        // setOpen(true);
       }
     };
     requestConfiguration();
