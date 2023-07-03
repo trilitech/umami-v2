@@ -4,6 +4,7 @@ import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { ContractMethod, ContractProvider, TezosToolkit } from "@taquito/taquito";
 import axios from "axios";
+import { shuffle } from "lodash";
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
 import { PublicKeyPair } from "../restoreAccounts";
 import { RawTzktGetAddressType } from "../tzkt/types";
@@ -159,8 +160,7 @@ export const selectRandomElements = <T>(
   index: number;
   value: T;
 }[] => {
-  // TODO: replace with lodash.shuffle
-  const shuffled = arr.map((value, index) => ({ value, index })).sort(() => Math.random() - 0.5);
-  const selected = shuffled.slice(0, n).sort((a, b) => a.index - b.index);
-  return selected.map(({ index, value }) => ({ index, value }));
+  return shuffle(arr.map((value, index) => ({ value, index })))
+    .slice(0, n)
+    .sort((a, b) => a.index - b.index);
 };
