@@ -152,9 +152,7 @@ describe("decodeLambda", () => {
                           { prim: "address" },
                           {
                             prim: "pair",
-                            args: [
-                              { prim: "nat", annots: ["%token_id"] },
-                            ],
+                            args: [{ prim: "nat", annots: ["%token_id"] }],
                           },
                         ],
                       },

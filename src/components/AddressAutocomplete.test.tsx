@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
-import { mockContact, mockImplicitAddress } from "../../mocks/factories";
-import { fireEvent, render, renderHook, screen, within } from "../../mocks/testUtils";
-import { RecipientAutoCompleteDisplay } from "./RecipientAutoComplete";
+import { mockContact, mockImplicitAddress } from "../mocks/factories";
+import { fireEvent, render, renderHook, screen, within } from "../mocks/testUtils";
+import { AddressAutocomplete } from "./AddressAutocomplete";
 
 type FormFields = { destination: string };
 
 const fixture = (initialPkhValue?: string) => {
   const { result } = renderHook(() => useForm<FormFields>());
   render(
-    <RecipientAutoCompleteDisplay
+    <AddressAutocomplete
       contacts={[mockContact(0), mockContact(1), mockContact(2)]}
       inputName="destination"
       register={result.current.register}

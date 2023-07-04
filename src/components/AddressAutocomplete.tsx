@@ -1,16 +1,16 @@
 import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, UseFormRegister, Path } from "react-hook-form";
-import colors from "../../style/colors";
-import { isAddressValid } from "../../types/Address";
-import { Contact } from "../../types/Contact";
-import { useAllAccounts } from "../../utils/hooks/accountHooks";
-import { useAppSelector } from "../../utils/store/hooks";
-import { Identicon } from "../Identicon";
+import colors from "../style/colors";
+import { isAddressValid } from "../types/Address";
+import { Contact } from "../types/Contact";
+import { useAllAccounts } from "../utils/hooks/accountHooks";
+import { useAppSelector } from "../utils/store/hooks";
+import { Identicon } from "./Identicon";
 
-// <T extends FieldValues> is needed to be compatible with the useForm return type
+// <T extends FieldValues> is needed to be compatible with the useForm's type parameter
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that
-//   exists in the useForm's fields type
+//   exists in the useForm's type parameter
 export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   initialPkhValue?: string;
   isDisabled?: boolean;
@@ -24,8 +24,8 @@ const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
     return contacts;
   }
 
-  const result = contacts.filter(c =>
-    c.name.toLowerCase().includes(inputValue.trim().toLowerCase())
+  const result = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(inputValue.trim().toLowerCase())
   );
 
   // No suggestions if it's an exact match
@@ -37,14 +37,13 @@ const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
 };
 
 const Suggestions = ({
-  suggestions,
+  contacts,
   onChange,
 }: {
-  suggestions: Contact[];
+  contacts: Contact[];
   onChange: (name: string) => void;
 }) => {
-  // TODO: filter suggestions here!
-  return suggestions.length === 0 ? null : (
+  return contacts.length === 0 ? null : (
     <UnorderedList
       data-testid="suggestions-list"
       overflowY="auto"
@@ -58,8 +57,8 @@ const Suggestions = ({
       zIndex={2}
       maxHeight={300}
     >
-      {suggestions.map((s, i) => (
-        <Box key={s.pkh}>
+      {contacts.map((contact, i) => (
+        <Box key={contact.pkh}>
           <ListItem
             display="flex"
             _hover={{
@@ -73,22 +72,22 @@ const Suggestions = ({
             onMouseDown={() => {
               // onMouseDown is the only way for this to fire before the onBlur callback of the Input
               // https://stackoverflow.com/a/28963938/6797267
-              onChange(s.name);
+              onChange(contact.name);
             }}
           >
             <>
-              <Identicon identiconSize={30} address={s.pkh} mr={4} />
-              <Text size="sm">{s.name}</Text>
+              <Identicon identiconSize={30} address={contact.pkh} mr={4} />
+              <Text size="sm">{contact.name}</Text>
             </>
           </ListItem>
-          {i !== suggestions.length - 1 && <Divider />}
+          {i !== contacts.length - 1 && <Divider />}
         </Box>
       ))}
     </UnorderedList>
   );
 };
 
-export const RecipientAutoCompleteDisplay = <T extends FieldValues, U extends Path<T>>({
+export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   contacts,
   initialPkhValue,
   isDisabled,
@@ -125,6 +124,8 @@ export const RecipientAutoCompleteDisplay = <T extends FieldValues, U extends Pa
     [contacts, inputName, setRawInputValue, setFormValue]
   );
 
+  // on initial render set the real input value to the initialInputValue
+  // if it's a valid address or a contact
   useEffect(() => {
     if (initialInputValue) {
       handleChange(initialInputValue);
@@ -162,12 +163,12 @@ export const RecipientAutoCompleteDisplay = <T extends FieldValues, U extends Pa
         data-testid="real-address-input"
       />
 
-      {!hideSuggestions && <Suggestions suggestions={suggestions} onChange={handleChange} />}
+      {!hideSuggestions && <Suggestions contacts={suggestions} onChange={handleChange} />}
     </Box>
   );
 };
 
-export const RecipentAutoComplete = <T extends FieldValues, U extends Path<T>>(
+export const AllAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>
 ) => {
   const contacts = Object.values(useAppSelector(s => s.contacts));
@@ -177,5 +178,5 @@ export const RecipentAutoComplete = <T extends FieldValues, U extends Path<T>>(
     pkh: account.address.pkh,
   }));
 
-  return <RecipientAutoCompleteDisplay {...props} contacts={contacts.concat(accounts)} />;
+  return <AddressAutocomplete {...props} contacts={contacts.concat(accounts)} />;
 };
