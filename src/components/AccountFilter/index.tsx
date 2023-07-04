@@ -6,11 +6,9 @@ import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountFilterDisplay } from "./AccountFilterDisplay";
 
 export function mapToFilteredArray<T>(map: Record<string, T[] | undefined>, filter: string[]) {
-  if (filter.length === 0) {
-    return compact(Object.values(map).flat());
-  }
-
-  return flatMap(filter, account => map[account] || []);
+  return filter.length === 0
+    ? compact(Object.values(map).flat())
+    : flatMap(filter, account => map[account] || []);
 }
 
 export const getFilteredAccounts = (accounts: Account[], accountFilter: Address[]) =>
