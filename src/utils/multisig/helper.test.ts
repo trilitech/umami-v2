@@ -1,6 +1,10 @@
 import axios from "axios";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./helpers";
+import {
+  getPendingOperationsForMultisigs,
+  getRelevantMultisigContracts,
+  parseMultisig,
+} from "./helpers";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
 import { SupportedNetworks } from "../network";
 jest.mock("axios");
@@ -15,18 +19,16 @@ describe("multisig helpers", () => {
       };
       mockedAxios.get.mockResolvedValue(mockResponse);
       const result = await getRelevantMultisigContracts(
-        network,
-        new Set([mockImplicitAddress(0).pkh])
+        new Set([mockImplicitAddress(0).pkh]),
+        network
       );
 
       expect(result).toEqual([
         {
-          address: mockContractAddress(0).pkh,
-          storage: {
-            pending_ops: 0,
-            signers: [mockImplicitAddress(0).pkh],
-            threshold: "2",
-          },
+          address: mockContractAddress(0),
+          pendingOperationsBigmapId: 0,
+          signers: [mockImplicitAddress(0)],
+          threshold: 2,
         },
       ]);
     });
@@ -35,20 +37,13 @@ describe("multisig helpers", () => {
       mockedAxios.get.mockResolvedValueOnce({
         data: [
           {
-            active: true,
-            key: "0",
-            value: { actions: "action0", approvals: [mockImplicitAddress(0).pkh] },
-          },
-        ],
-      });
-      mockedAxios.get.mockResolvedValueOnce({
-        data: [
-          {
+            bigmap: 0,
             active: true,
             key: "1",
             value: { actions: "action1", approvals: [mockImplicitAddress(1).pkh] },
           },
           {
+            bigmap: 1,
             active: true,
             key: "2",
             value: { actions: "action2", approvals: [mockImplicitAddress(2).pkh] },
@@ -56,52 +51,37 @@ describe("multisig helpers", () => {
         ],
       });
 
-      // chunk size is set to 1 to be able to mock the responses properly (e.g. sequential execution)
       const result = await getPendingOperationsForMultisigs(
-        network,
-        tzktGetSameMultisigsResponse,
-        1
+        tzktGetSameMultisigsResponse.map(parseMultisig),
+        network
       );
 
-      tzktGetSameMultisigsResponse.forEach(res => {
-        const {
-          storage: { pending_ops },
-        } = res;
-
-        expect(mockedAxios.get).toBeCalledWith(
-          `https://api.${network}.tzkt.io/v1/bigmaps/${pending_ops}/keys?active=true`
-        );
-      });
+      expect(mockedAxios.get).toBeCalledWith(
+        `https://api.${network}.tzkt.io/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
+      );
 
       expect(result).toEqual([
         {
-          address: mockContractAddress(0),
-          pendingOperations: [
+          approvals: [
             {
-              approvals: [mockImplicitAddress(0)],
-              key: "0",
-              rawActions: "action0",
+              pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+              type: "implicit",
             },
           ],
-          signers: [mockImplicitAddress(0)],
-          threshold: 2,
+          id: "1",
+          bigmapId: 0,
+          rawActions: "action1",
         },
         {
-          address: mockContractAddress(10),
-          pendingOperations: [
+          approvals: [
             {
-              approvals: [mockImplicitAddress(1)],
-              key: "1",
-              rawActions: "action1",
-            },
-            {
-              approvals: [mockImplicitAddress(2)],
-              key: "2",
-              rawActions: "action2",
+              pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+              type: "implicit",
             },
           ],
-          signers: [mockImplicitAddress(10)],
-          threshold: 2,
+          id: "2",
+          bigmapId: 1,
+          rawActions: "action2",
         },
       ]);
     });

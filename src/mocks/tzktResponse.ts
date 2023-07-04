@@ -1,7 +1,7 @@
 import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
 import { TezTransfer } from "../types/Operation";
 import { Token } from "../types/Token";
-import { tzktGetSameMultisigsResponseType } from "../utils/tzkt/types";
+import { RawTzktGetSameMultisigs } from "../utils/tzkt/types";
 import { mockContractAddress, mockImplicitAddress } from "./factories";
 
 export const fa1Token: Token = {
@@ -703,7 +703,7 @@ export const getLatestDelegationResult: DelegationOperation = {
   status: "applied",
 };
 
-export const tzktGetSameMultisigsResponse: tzktGetSameMultisigsResponseType = [
+export const tzktGetSameMultisigsResponse: RawTzktGetSameMultisigs = [
   {
     address: mockContractAddress(0).pkh,
     storage: { threshold: "2", pending_ops: 0, signers: [mockImplicitAddress(0).pkh] },

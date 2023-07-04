@@ -19,7 +19,12 @@ describe("multisig fetch", () => {
         multisigAddress[TezosNetwork.GHOSTNET]
       }/same?includeStorage=true&limit=10000`
     );
-    expect(result).toEqual([
+    expect(
+      result.map(({ address, storage: { pending_ops, signers, threshold } }) => ({
+        address,
+        storage: { pending_ops, signers, threshold },
+      }))
+    ).toEqual([
       {
         address: "KT1Mqvf7bnYe4Ty2n7ZbGkdbebCd4WoTJUUp",
         storage: {

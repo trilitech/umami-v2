@@ -1,14 +1,19 @@
 import { ContractAddress, ImplicitAddress } from "../../types/Address";
 
+export type BigmapId = number;
+
 export type MultisigOperation = {
-  key: string;
+  id: string;
+  bigmapId: BigmapId;
   rawActions: string;
   approvals: ImplicitAddress[];
 };
 
-export type MultisigWithPendingOperations = {
+export type Multisig = {
   address: ContractAddress;
   threshold: number;
   signers: ImplicitAddress[];
-  pendingOperations: MultisigOperation[];
+  pendingOperationsBigmapId: BigmapId;
 };
+
+export type MultisigPendingOperations = Record<BigmapId, MultisigOperation[]>;

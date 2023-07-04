@@ -34,7 +34,7 @@ export const MultisigPendingAccordionItem: React.FC<{
         <h2>
           <AccordionButton flex="1" textAlign="left" pb={0} mb={0}>
             <Heading w="100%" size="sm">
-              Pending #{operation.key}
+              Pending #{operation.id}
             </Heading>
             <AccordionIcon />
           </AccordionButton>

@@ -6,7 +6,7 @@ import { ContractMethod, ContractProvider, TezosToolkit } from "@taquito/taquito
 import axios from "axios";
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
 import { PublicKeyPair } from "../restoreAccounts";
-import { tzktGetAddressResponseType } from "../tzkt/types";
+import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
 import {
@@ -24,7 +24,7 @@ export const addressExists = async (
     const url = `${tzktUrls[network]}/v1/accounts/${pkh}`;
     const {
       data: { type },
-    } = await axios.get<tzktGetAddressResponseType>(url);
+    } = await axios.get<RawTzktGetAddressType>(url);
     return type !== "empty";
   } catch (error: any) {
     throw new Error(`Error fetching account from tzkt ${error.message}`);
