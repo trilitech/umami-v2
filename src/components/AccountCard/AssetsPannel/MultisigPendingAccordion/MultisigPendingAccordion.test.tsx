@@ -43,7 +43,7 @@ describe("<MultisigPendingAccordion />", () => {
       bigmapId: 3,
     },
   ];
-  it.only("should display multisig executable tez operations", async () => {
+  it("should display multisig executable tez operations", async () => {
     const m: Multisig = {
       address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),
       threshold: 1,
