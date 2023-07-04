@@ -87,6 +87,7 @@ describe("AccountFilter", () => {
     expect(getFilteredAccounts(accounts, [mockImplicitAccount(1).address])).toEqual([
       mockImplicitAccount(1),
     ]);
+    expect(getFilteredAccounts(accounts, [mockImplicitAccount(5).address])).toEqual([accounts]);
 
     expect(getFilteredAccounts(accounts, [])).toEqual(accounts);
     expect(
