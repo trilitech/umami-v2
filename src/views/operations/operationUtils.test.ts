@@ -178,7 +178,7 @@ describe("getTezOperationDisplay", () => {
       amount: {
         id: 10899580518401,
         prettyDisplay: "+1 FKR",
-        url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+        url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
       prettyTimestamp: "today at 1:06 PM",
       recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
@@ -202,7 +202,7 @@ describe("getTezOperationDisplay", () => {
       amount: {
         id: 10899580518401,
         prettyDisplay: "+1 FKR",
-        url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+        url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
       prettyTimestamp: "today at 1:06 PM",
       recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
@@ -231,7 +231,7 @@ describe("getTezOperationDisplay", () => {
       amount: {
         id: 10899580518401,
         prettyDisplay: "-1 FKR",
-        url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+        url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
       tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
       prettyTimestamp: "today at 1:06 PM",
@@ -457,7 +457,7 @@ describe("getOperationsDisplays", () => {
         amount: {
           id: 10899580518401,
           prettyDisplay: "-1 FKR",
-          url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+          url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
         prettyTimestamp: "today at 3:24 PM",
         recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
@@ -472,7 +472,7 @@ describe("getOperationsDisplays", () => {
         amount: {
           id: 10899580518401,
           prettyDisplay: "+1 FKR",
-          url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+          url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
         prettyTimestamp: "today at 1:06 PM",
         recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
@@ -541,7 +541,7 @@ describe("getOperationsDisplays", () => {
         amount: {
           id: 10899580518401,
           prettyDisplay: "-1 FKR",
-          url: "https://ipfs.io/ipfs/zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh",
+          url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
         prettyTimestamp: "yesterday at 4:34 PM",
         recipient: { type: "implicit", pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D" },
