@@ -94,7 +94,7 @@ export const useGetAccountAllTokens = () => {
 };
 
 export const useHasTokens = () => {
-  const accounts = useImplicitAccounts();
+  const accounts = useAllAccounts();
   const getFA1 = useGetAccountFA1Tokens();
   const getFA2 = useGetAccountFA2Tokens();
   return () =>

@@ -29,9 +29,9 @@ const TokensView = () => {
   const hasTokens = useHasTokens();
   return (
     <Flex direction="column" height="100%">
+      <TopBar title="Tokens" />
       {hasTokens() ? (
         <>
-          <TopBar title="Tokens" />
           <FilterController />
           <Box overflow="scroll">
             {accounts.map(account => (
