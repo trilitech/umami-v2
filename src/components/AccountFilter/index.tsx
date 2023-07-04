@@ -39,7 +39,7 @@ export const useAccountFilter = () => {
     />
   );
 
-  function filter<T>(map: Record<string, T[] | undefined>): T[] {
+  function filterMap<T>(map: Record<string, T[] | undefined>): T[] {
     return mapToFilteredArray(
       map,
       accountFilter.map(a => a.pkh)
@@ -47,7 +47,7 @@ export const useAccountFilter = () => {
   }
 
   return {
-    filter,
+    filterMap,
     filterElement: el,
     filteredAccounts: getFilteredAccounts(accounts, accountFilter),
   };

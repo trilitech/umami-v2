@@ -8,7 +8,7 @@ import {
   Td,
   Th,
   Thead,
-  Tr
+  Tr,
 } from "@chakra-ui/react";
 import { compact } from "lodash";
 import { ReactNode } from "react";
@@ -137,7 +137,7 @@ const DelegationsView = () => {
   const { modalElement, onOpen } = useSendFormModal();
 
   const delegationsOps = useAllDelegations();
-  const { filter, filterElement } = useAccountFilter();
+  const { filterMap: filter, filterElement } = useAccountFilter();
   const delegationsArrays = objectMap(delegationsOps, d => (d ? [d] : undefined));
   const delegationsToDisplay = compact(filter(delegationsArrays).map(makeDelegation));
 

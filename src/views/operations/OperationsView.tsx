@@ -105,7 +105,7 @@ export const OperationsDataTable: React.FC<{
 };
 
 const OperationsView = () => {
-  const { filter, filterElement } = useAccountFilter();
+  const { filterMap: filter, filterElement } = useAccountFilter();
   const operations = useGetOperationDisplays();
   const operationsToDisplay = sortOperationsByTimestamp(filter(operations));
 

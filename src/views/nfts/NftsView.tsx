@@ -24,7 +24,7 @@ const NFTsViewBase = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { nftId } = useParams();
 
-  const { filterElement, filter } = useAccountFilter();
+  const { filterElement, filterMap: filter } = useAccountFilter();
   const displayedNFTs = filter(nfts);
   const allOwnedNftsRef = useRef(displayedNFTs);
   const nftIdRef = useRef(nftId);
