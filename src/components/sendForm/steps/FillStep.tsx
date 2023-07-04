@@ -30,7 +30,6 @@ import {
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
-import { ApproveOrExecute } from "../../../utils/tezos/types";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay";
@@ -143,7 +142,7 @@ const MULSISIG_HEADER = {
 
 export const FillBatchForm: React.FC<{
   transfer: OperationValue[];
-  onSubmit: (signer?: string) => void;
+  onSubmit: (v: { signer: string | undefined }) => void;
   isLoading?: boolean;
   approveOrExecute?: "approve" | "execute";
 }> = ({ transfer, onSubmit, isLoading = false, approveOrExecute }) => {
@@ -159,13 +158,10 @@ export const FillBatchForm: React.FC<{
       signer: getSigner(transfer[0].value.sender),
     },
   });
-  const onChange2 = ({ signer }: { signer: string | undefined }) => {
-    onSubmit(signer);
-  };
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
-      <form onSubmit={handleSubmit(onChange2)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <ModalCloseButton />
         <ModalHeader textAlign="center">Recap</ModalHeader>
         {multisigHeader && <Text textAlign="center">{multisigHeader}</Text>}
@@ -548,6 +544,7 @@ export const FillStep: React.FC<{
           isLoading={isLoading}
           transfer={mode.data.batch}
           onSubmit={() => {
+            // TODO if v.signer submit a proposal
             onSubmit({
               type: "implicit",
               content: mode.data.batch,
@@ -563,14 +560,14 @@ export const FillStep: React.FC<{
           approveOrExecute={mode.type}
           isLoading={isLoading}
           transfer={mode.data.batch}
-          onSubmit={signer => {
-            if (!signer) {
-              throw new Error("Signer is required!");
+          onSubmit={v => {
+            if (!v.signer) {
+              throw new Error("Signer is required for multisig approve or execute");
             }
             onSubmit({
               type: mode.type,
               content: mode.data.batch,
-              signer,
+              signer: v.signer,
               operationId: mode.data.operationId,
             });
           }}
