@@ -23,7 +23,7 @@ export const multisigs: Multisig[] = [
     threshold: 1,
     signers: [
       parseImplicitPkh("tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6"),
-      parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
+      parseImplicitPkh("tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h"),
     ],
     pendingOperationsBigmapId: 0,
   },

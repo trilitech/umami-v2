@@ -5,13 +5,15 @@ import { RxCheckCircled } from "react-icons/rx";
 import colors from "../../../../style/colors";
 import { ImplicitAddress } from "../../../../types/Address";
 import { useGetImplicitAccount } from "../../../../utils/hooks/accountHooks";
+import { ApproveOrExecute } from "../../../../utils/tezos/types";
 import { IconAndTextBtn } from "../../../IconAndTextBtn";
 
 export const MultisigActionButton: React.FC<{
   signer: ImplicitAddress; // TODO: change to ImplicitAccount
   approvers: ImplicitAddress[]; // TODO: change to ImplicitAccount
   pendingApprovals: number;
-}> = ({ signer, approvers, pendingApprovals }) => {
+  onApproveOrExecute: (m: { mode: ApproveOrExecute }) => void;
+}> = ({ signer, approvers, pendingApprovals, onApproveOrExecute }) => {
   const getImplicitAccount = useGetImplicitAccount();
 
   const signerInOwnedAccounts = getImplicitAccount(signer.pkh) !== undefined;
@@ -43,7 +45,13 @@ export const MultisigActionButton: React.FC<{
   }
 
   return (
-    <Button bg={colors.blue} data-testid="multisig-signer-button">
+    <Button
+      onClick={() => {
+        onApproveOrExecute({ mode: operationIsExecutable ? "execute" : "approve" });
+      }}
+      bg={colors.blue}
+      data-testid="multisig-signer-button"
+    >
       {operationIsExecutable ? "Execute" : "Approve"}
     </Button>
   );

@@ -14,12 +14,14 @@ import { MultisigOperation } from "../../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
 import { ImplicitAddress } from "../../../../types/Address";
 import MultisigDecodedOperations from "./MultisigDecodedOperations";
+import { ApproveOrExecute } from "../../../../utils/tezos/types";
 
 export const MultisigPendingAccordionItem: React.FC<{
   operation: MultisigOperation;
   signers: ImplicitAddress[];
   threshold: number;
-}> = ({ operation, signers, threshold }) => {
+  onApproveOrExecute: (m: { mode: ApproveOrExecute }) => void;
+}> = ({ operation, signers, threshold, onApproveOrExecute }) => {
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
     <Box
@@ -28,7 +30,7 @@ export const MultisigPendingAccordionItem: React.FC<{
       borderRadius={6}
       marginY={3}
       pb={0}
-      data-testid="multisig-pending-operations"
+      data-testid={"multisig-pending-operation-" + operation.key}
     >
       <AccordionItem bg={colors.gray[800]} border="none" borderRadius="8px">
         <h2>
@@ -59,6 +61,7 @@ export const MultisigPendingAccordionItem: React.FC<{
                 signer={signer}
                 approvers={operation.approvals}
                 pendingApprovals={pendingApprovals}
+                onApproveOrExecute={onApproveOrExecute}
               />
             ))}
           </Box>

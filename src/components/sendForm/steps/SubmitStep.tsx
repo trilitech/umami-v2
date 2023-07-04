@@ -89,7 +89,7 @@ export const SubmitStep: React.FC<{
   const total = feeNum.plus(getBatchSubtotal(transfer));
 
   return (
-    <ModalContent bg="umami.gray.900" data-testid="bar">
+    <ModalContent bg="umami.gray.900" data-testid="submit-step">
       <form>
         <ModalCloseButton />
         <ModalHeader textAlign="center">Recap</ModalHeader>

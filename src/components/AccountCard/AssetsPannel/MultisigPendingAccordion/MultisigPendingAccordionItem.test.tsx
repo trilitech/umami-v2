@@ -11,6 +11,7 @@ describe("<MultisigPendingCard/>", () => {
     render(
       <Accordion>
         <MultisigPendingAccordionItem
+          onApproveOrExecute={() => {}}
           operation={{
             id: "1",
             bigmapId: 0,
@@ -33,6 +34,7 @@ describe("<MultisigPendingCard/>", () => {
     render(
       <Accordion>
         <MultisigPendingAccordionItem
+          onApproveOrExecute={() => {}}
           operation={{
             id: "1",
             bigmapId: 0,

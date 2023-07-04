@@ -1,5 +1,6 @@
 import { TransferParams } from "@taquito/taquito";
 import { Asset } from "../../types/Asset";
+import { ApproveOrExecute } from "../../utils/tezos/types";
 
 type TezMode = { type: "tez" };
 
@@ -21,7 +22,29 @@ type BatchMode = {
     batch: OperationValue[];
   };
 };
-export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
+
+type ApproveMode = {
+  type: "approve";
+  data: {
+    batch: OperationValue[];
+    operationId: string;
+  };
+};
+
+type ExecuteMode = {
+  type: "execute";
+  data: {
+    batch: OperationValue[];
+    operationId: string;
+  };
+};
+export type SendFormMode =
+  | TezMode
+  | TokenMode
+  | DelegationMode
+  | BatchMode
+  | ExecuteMode
+  | ApproveMode;
 
 export type TezOperation = TezMode & {
   value: {
@@ -49,9 +72,16 @@ export type DelegationOperation = DelegationMode & {
 
 export type OperationValue = TezOperation | TokenOperation | DelegationOperation;
 
-export type ProposalOperations = {
+export type ProposeOperations = {
   type: "proposal";
   content: OperationValue[];
+  signer: string;
+};
+
+export type ApproveOrExecuteOperations = {
+  type: ApproveOrExecute;
+  content: OperationValue[];
+  operationId: string;
   signer: string;
 };
 
@@ -60,7 +90,7 @@ export type ImplicitOperations = {
   content: OperationValue[];
 };
 
-export type FormOperations = ProposalOperations | ImplicitOperations;
+export type FormOperations = ProposeOperations | ApproveOrExecuteOperations | ImplicitOperations;
 
 export type EstimatedOperation = {
   operations: FormOperations;

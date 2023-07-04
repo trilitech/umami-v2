@@ -30,6 +30,7 @@ import {
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
+import { ApproveOrExecute } from "../../../utils/tezos/types";
 import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay";
@@ -135,24 +136,59 @@ const getAmountSymbol = (asset?: Asset) => {
   return tokenSymbol(asset);
 };
 
+const MULSISIG_HEADER = {
+  approve: "Approve this mutisig transaction",
+  execute: "Execute this multisig transavtion",
+};
+
 export const FillBatchForm: React.FC<{
   transfer: OperationValue[];
-  onSubmit: () => void;
+  onSubmit: (signer?: string) => void;
   isLoading?: boolean;
-}> = ({ transfer, onSubmit, isLoading = false }) => {
+  approveOrExecute?: "approve" | "execute";
+}> = ({ transfer, onSubmit, isLoading = false, approveOrExecute }) => {
+  const multisigHeader = approveOrExecute && MULSISIG_HEADER[approveOrExecute];
+
+  const multisigAccounts = useMultisigAccounts();
+  const multisigAccount = multisigAccounts.find(a => a.address.pkh === transfer[0].value.sender);
+  const getSigner = useGetDefaultProposalSigner();
+
+  const { control, handleSubmit } = useForm<{ signer: string | undefined }>({
+    mode: "onBlur",
+    defaultValues: {
+      signer: getSigner(transfer[0].value.sender),
+    },
+  });
+  const onChange2 = ({ signer }: { signer: string | undefined }) => {
+    onSubmit(signer);
+  };
+
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          onSubmit();
-        }}
-      >
+      <form onSubmit={handleSubmit(onChange2)}>
         <ModalCloseButton />
         <ModalHeader textAlign="center">Recap</ModalHeader>
+        {multisigHeader && <Text textAlign="center">{multisigHeader}</Text>}
         <Text textAlign="center">Transaction details</Text>
         <ModalBody mt={4}>
           <Box>
+            {approveOrExecute && multisigAccount ? (
+              <FormControl mb={2}>
+                <FormLabel>Proposal Signer</FormLabel>
+                <Controller
+                  rules={{ required: true }}
+                  control={control}
+                  name="signer"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <ProposalSigners
+                      multisigAccount={multisigAccount}
+                      onSelect={onChange}
+                      selected={value}
+                    />
+                  )}
+                />
+              </FormControl>
+            ) : null}
             <Flex mb={4}>
               <Heading size="md" width={20}>
                 From:
@@ -180,7 +216,7 @@ type FormValues = {
   proposalSigner?: string;
 };
 
-const useGetDefaultProposalSigner = () => {
+export const useGetDefaultProposalSigner = () => {
   const getAccount = useGetOwnedAccount();
   const getSigners = useGetMultisigSigners();
   return (initalSenderPkh: string) => {
@@ -259,6 +295,7 @@ export const SendTezOrNFTForm = ({
       <form>
         <ModalCloseButton />
         <ModalHeader textAlign="center">Send</ModalHeader>
+        "approve"
         <Text textAlign="center">Send one or insert into batch.</Text>
         <ModalBody>
           <FormControl mb={2}>
@@ -514,6 +551,48 @@ export const FillStep: React.FC<{
             onSubmit({
               type: "implicit",
               content: mode.data.batch,
+            });
+          }}
+        />
+      );
+    }
+
+    case "execute": {
+      return (
+        <FillBatchForm
+          approveOrExecute="execute"
+          isLoading={isLoading}
+          transfer={mode.data.batch}
+          onSubmit={signer => {
+            if (!signer) {
+              throw new Error("bar");
+            }
+            onSubmit({
+              type: mode.type,
+              content: mode.data.batch,
+              signer,
+              operationId: mode.data.operationId,
+            });
+          }}
+        />
+      );
+    }
+
+    case "approve": {
+      return (
+        <FillBatchForm
+          approveOrExecute="approve"
+          isLoading={isLoading}
+          transfer={mode.data.batch}
+          onSubmit={signer => {
+            if (!signer) {
+              throw new Error("bar");
+            }
+            onSubmit({
+              type: mode.type,
+              content: mode.data.batch,
+              signer: signer,
+              operationId: mode.data.operationId,
             });
           }}
         />
