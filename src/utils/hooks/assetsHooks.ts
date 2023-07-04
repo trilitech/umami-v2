@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import { compact, fromPairs, fromPairs, groupBy, mapValues } from "lodash";
+import { compact, fromPairs } from "lodash";
 import { MultisigAccount } from "../../types/Account";
 import { Asset, keepFA1s, keepFA2s, keepNFTs, NFT } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
