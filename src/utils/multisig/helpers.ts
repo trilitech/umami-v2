@@ -11,7 +11,7 @@ export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
   threshold: Number(raw.storage.threshold),
   // For now, we assume the singer is always an implicit account
   signers: raw.storage.signers.map(parseImplicitPkh),
-  pendingOperations: raw.storage.pending_ops,
+  pendingOperationsBigmapId: raw.storage.pending_ops,
 });
 
 export const getRelevantMultisigContracts = async (
@@ -27,15 +27,15 @@ export const getRelevantMultisigContracts = async (
       .map(parseMultisig)
   );
 
-const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperation | null => {
+const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperation => {
   const { bigmap, key, value } = raw;
   if (key === null || value === null) {
-    return null;
+    throw new Error("parseMultisigOperation failed");
   }
 
   return {
-    id: bigmap,
-    key,
+    id: key,
+    bigmapId: bigmap,
     rawActions: value.actions,
     // For now, we assume the approver is always an implicit account
     approvals: value.approvals.map(parseImplicitPkh),
@@ -46,19 +46,17 @@ export const getPendingOperationsForMultisigs = async (
   multisigs: Multisig[],
   network: TezosNetwork
 ): Promise<MultisigOperation[]> => {
-  const bigmapIds = multisigs.map(m => m.pendingOperations);
+  const bigmapIds = multisigs.map(m => m.pendingOperationsBigmapId);
 
   const response = await getPendingOperations(bigmapIds, network);
 
   return compact(response.map(parseMultisigOperation));
 };
 
-export const multisigToAccount = (m: Multisig, label: string): MultisigAccount => {
+export const multisigToAccount = (multisig: Multisig, label: string): MultisigAccount => {
   return {
     label,
-    address: m.address,
     type: AccountType.MULTISIG,
-    threshold: m.threshold,
-    signers: m.signers,
+    ...multisig,
   };
 };

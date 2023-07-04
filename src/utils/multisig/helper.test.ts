@@ -26,7 +26,7 @@ describe("multisig helpers", () => {
       expect(result).toEqual([
         {
           address: mockContractAddress(0),
-          pendingOperations: 0,
+          pendingOperationsBigmapId: 0,
           signers: [mockImplicitAddress(0)],
           threshold: 2,
         },
@@ -68,8 +68,8 @@ describe("multisig helpers", () => {
               type: "implicit",
             },
           ],
-          id: 0,
-          key: "1",
+          id: "1",
+          bigmapId: 0,
           rawActions: "action1",
         },
         {
@@ -79,8 +79,8 @@ describe("multisig helpers", () => {
               type: "implicit",
             },
           ],
-          id: 1,
-          key: "2",
+          id: "2",
+          bigmapId: 1,
           rawActions: "action2",
         },
       ]);

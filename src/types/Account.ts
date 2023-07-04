@@ -1,5 +1,6 @@
 import { Curves } from "@taquito/signer";
-import { ContractAddress, ImplicitAddress } from "./Address";
+import { Multisig } from "../utils/multisig/types";
+import { ImplicitAddress } from "./Address";
 
 export enum AccountType {
   SOCIAL = "social",
@@ -35,12 +36,9 @@ export type LedgerAccount = {
   pk: string;
 };
 
-export type MultisigAccount = {
+export type MultisigAccount = Multisig & {
   type: AccountType.MULTISIG;
-  address: ContractAddress;
   label: string;
-  threshold: number;
-  signers: ImplicitAddress[];
 };
 
 export type ImplicitAccount = MnemonicAccount | SocialAccount | LedgerAccount;

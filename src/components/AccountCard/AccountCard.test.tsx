@@ -274,7 +274,7 @@ describe("<AccountCard />", () => {
     test("multisig accounts display no pending operations message if there are none", () => {
       const multisigWithNoOps: Multisig = {
         ...multisigs[2],
-        pendingOperations: 0,
+        pendingOperationsBigmapId: 0,
       };
       store.dispatch(setMultisigs([multisigWithNoOps]));
       render(<AccountCard account={multisigAccount} />);

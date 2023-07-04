@@ -14,14 +14,7 @@ export const getAllMultiSigContracts = async (
     const url = `${tzktUrls[network]}/v1/contracts/${contractAddress}/same?includeStorage=true&limit=${MULTISIG_FETCH_LIMIT}`;
     const { data } = await axios.get<RawTzktGetSameMultisigs>(url);
 
-    return data.map(({ address, storage: { signers, threshold, pending_ops } }) => ({
-      address,
-      storage: {
-        signers,
-        threshold,
-        pending_ops,
-      },
-    }));
+    return data;
   } catch (error: any) {
     throw new Error(`Error fetching same contracts from tzkt: ${error.message}`);
   }
@@ -36,10 +29,5 @@ export const getPendingOperations = async (
     ","
   )}&limit=${MULTISIG_FETCH_LIMIT}`;
   const { data } = await axios.get<RawTzktGetBigMapKeys>(url);
-  return data.map(({ bigmap, active, key, value }) => ({
-    bigmap,
-    active,
-    key,
-    value,
-  }));
+  return data;
 };

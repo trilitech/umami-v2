@@ -18,7 +18,7 @@ const multisigsSlice = createSlice({
       state.items = payload;
     },
     setPendingOperations: (state, { payload }: { payload: MultisigOperation[] }) => {
-      state.pendingOperations = groupBy(payload, operation => operation.id);
+      state.pendingOperations = groupBy(payload, operation => operation.bigmapId);
     },
   },
 });

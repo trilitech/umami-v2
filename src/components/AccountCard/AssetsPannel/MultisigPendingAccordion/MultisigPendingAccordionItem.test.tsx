@@ -12,8 +12,8 @@ describe("<MultisigPendingCard/>", () => {
       <Accordion>
         <MultisigPendingAccordionItem
           operation={{
-            id: 0,
-            key: "1",
+            id: "1",
+            bigmapId: 0,
             rawActions: "action",
             approvals: [pkh0],
           }}
@@ -34,8 +34,8 @@ describe("<MultisigPendingCard/>", () => {
       <Accordion>
         <MultisigPendingAccordionItem
           operation={{
-            id: 0,
-            key: "1",
+            id: "1",
+            bigmapId: 0,
             rawActions: "action",
             approvals: [pkh0, pkh1, pkh2],
           }}
