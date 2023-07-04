@@ -556,42 +556,21 @@ export const FillStep: React.FC<{
         />
       );
     }
-
+    case "approve":
     case "execute": {
       return (
         <FillBatchForm
-          approveOrExecute="execute"
+          approveOrExecute={mode.type}
           isLoading={isLoading}
           transfer={mode.data.batch}
           onSubmit={signer => {
             if (!signer) {
-              throw new Error("bar");
+              throw new Error("Signer is required!");
             }
             onSubmit({
               type: mode.type,
               content: mode.data.batch,
               signer,
-              operationId: mode.data.operationId,
-            });
-          }}
-        />
-      );
-    }
-
-    case "approve": {
-      return (
-        <FillBatchForm
-          approveOrExecute="approve"
-          isLoading={isLoading}
-          transfer={mode.data.batch}
-          onSubmit={signer => {
-            if (!signer) {
-              throw new Error("bar");
-            }
-            onSubmit({
-              type: mode.type,
-              content: mode.data.batch,
-              signer: signer,
               operationId: mode.data.operationId,
             });
           }}
