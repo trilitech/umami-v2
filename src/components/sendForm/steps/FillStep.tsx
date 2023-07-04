@@ -137,7 +137,7 @@ const getAmountSymbol = (asset?: Asset) => {
 
 const MULSISIG_HEADER = {
   approve: "Approve this mutisig transaction",
-  execute: "Execute this multisig transavtion",
+  execute: "Execute this multisig transaction",
 };
 
 export const FillBatchForm: React.FC<{
@@ -148,14 +148,15 @@ export const FillBatchForm: React.FC<{
 }> = ({ transfer, onSubmit, isLoading = false, approveOrExecute }) => {
   const multisigHeader = approveOrExecute && MULSISIG_HEADER[approveOrExecute];
 
+  const sender = transfer[0].value.sender;
   const multisigAccounts = useMultisigAccounts();
-  const multisigAccount = multisigAccounts.find(a => a.address.pkh === transfer[0].value.sender);
+  const multisigAccount = multisigAccounts.find(a => a.address.pkh === sender);
   const getSigner = useGetDefaultProposalSigner();
 
   const { control, handleSubmit } = useForm<{ signer: string | undefined }>({
     mode: "onBlur",
     defaultValues: {
-      signer: getSigner(transfer[0].value.sender),
+      signer: getSigner(sender),
     },
   });
 
@@ -170,12 +171,12 @@ export const FillBatchForm: React.FC<{
           <Box>
             {approveOrExecute && multisigAccount ? (
               <FormControl mb={2}>
-                <FormLabel>Proposal Signer</FormLabel>
+                <FormLabel>Signer</FormLabel>
                 <Controller
                   rules={{ required: true }}
                   control={control}
                   name="signer"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <ProposalSigners
                       multisigAccount={multisigAccount}
                       onSelect={onChange}
