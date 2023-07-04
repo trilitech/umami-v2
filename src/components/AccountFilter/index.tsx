@@ -1,4 +1,4 @@
-import { compact, intersectionWith } from "lodash";
+import { compact, flatMap, intersectionWith } from "lodash";
 import { useState } from "react";
 import { Account } from "../../types/Account";
 import { Address } from "../../types/Address";
@@ -10,9 +10,7 @@ export function mapToFilteredArray<T>(map: Record<string, T[] | undefined>, filt
     return compact(Object.values(map).flat());
   }
 
-  return filter.reduce((acc, curr) => {
-    return [...acc, ...(map[curr] || [])];
-  }, [] as T[]);
+  return flatMap(filter, account => map[account] || []);
 }
 
 export const getFilteredAccounts = (accounts: Account[], accountFilter: Address[]) =>
