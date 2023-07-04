@@ -213,7 +213,7 @@ type FormValues = {
   proposalSigner?: string;
 };
 
-export const useGetDefaultProposalSigner = () => {
+const useGetDefaultProposalSigner = () => {
   const getAccount = useGetOwnedAccount();
   const getSigners = useGetMultisigSigners();
   return (initalSenderPkh: string) => {
