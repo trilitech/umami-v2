@@ -1,4 +1,4 @@
-import { getFilteredAccounts, mapToFilteredArray, useAccountFilter } from ".";
+import { getFilteredAccounts, mapToFilteredArray, useAccountFilterUtils } from ".";
 import { mockImplicitAccount } from "../../mocks/factories";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 import accountsSlice from "../../utils/store/accountsSlice";
@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 const Fixture: React.FC = () => {
-  const { filterElement } = useAccountFilter();
+  const { filterElement } = useAccountFilterUtils();
 
   return filterElement;
 };

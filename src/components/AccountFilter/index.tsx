@@ -37,6 +37,16 @@ export const useAccountFilter = () => {
     />
   );
 
+  return {
+    filterElement: el,
+    accountFilter,
+  };
+};
+
+export const useAccountFilterUtils = () => {
+  const { filterElement, accountFilter } = useAccountFilter();
+  const accounts = useAllAccounts();
+
   function filterMap<T>(map: Record<string, T[] | undefined>): T[] {
     return mapToFilteredArray(
       map,
@@ -46,7 +56,7 @@ export const useAccountFilter = () => {
 
   return {
     filterMap,
-    filterElement: el,
+    filterElement,
     filteredAccounts: getFilteredAccounts(accounts, accountFilter),
   };
 };

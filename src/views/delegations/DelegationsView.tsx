@@ -15,7 +15,7 @@ import { ReactNode } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { VscWand } from "react-icons/vsc";
-import { useAccountFilter } from "../../components/AccountFilter";
+import { useAccountFilterUtils } from "../../components/AccountFilter";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoDelegations } from "../../components/NoItems";
@@ -137,7 +137,7 @@ const DelegationsView = () => {
   const { modalElement, onOpen } = useSendFormModal();
 
   const delegationsOps = useAllDelegations();
-  const { filterMap: filter, filterElement } = useAccountFilter();
+  const { filterMap: filter, filterElement } = useAccountFilterUtils();
   const delegationsArrays = objectMap(delegationsOps, d => (d ? [d] : undefined));
   const delegationsToDisplay = compact(filter(delegationsArrays).map(makeDelegation));
 
