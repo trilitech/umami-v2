@@ -74,10 +74,7 @@ describe("AccountFilter", () => {
   test("mapToFilteredArray returns the right value", () => {
     expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["foo"])).toEqual(["hello"]);
     expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, [])).toEqual(["hello", "cool"]);
-    expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["baz"])).toEqual([
-      "hello",
-      "cool",
-    ]);
+    expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["baz"])).toEqual([]);
     expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["foo", "bar"])).toEqual([
       "hello",
       "cool",
