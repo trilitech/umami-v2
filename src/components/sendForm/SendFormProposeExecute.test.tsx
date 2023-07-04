@@ -7,8 +7,8 @@ import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 import { ImplicitAccount } from "../../types/Account";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { useGetSk } from "../../utils/hooks/accountUtils";
-import { multisigWithPendingOpsToAccount } from "../../utils/multisig/helpers";
-import { MultisigWithPendingOperations } from "../../utils/multisig/types";
+import { multisigToAccount } from "../../utils/multisig/helpers";
+import { Multisig } from "../../utils/multisig/types";
 import accountsSlice from "../../utils/store/accountsSlice";
 import multisigsSlice from "../../utils/store/multisigsSlice";
 import { store } from "../../utils/store/store";
@@ -20,11 +20,11 @@ jest.mock("../../utils/hooks/accountUtils");
 const MOCK_ID = "mockid";
 const MOCK_SK = "mocksk";
 
-const m: MultisigWithPendingOperations = {
+const m: Multisig = {
   address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),
   threshold: 1,
   signers: [parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3")],
-  pendingOperations: [],
+  pendingOperationsBigmapId: 3,
 };
 
 const mockAccount: ImplicitAccount = {
@@ -35,7 +35,7 @@ const mockAccount: ImplicitAccount = {
 beforeEach(() => {
   (useGetSk as jest.Mock).mockReturnValue(() => Promise.resolve(MOCK_SK));
 
-  store.dispatch(multisigsSlice.actions.set([m]));
+  store.dispatch(multisigsSlice.actions.setMultisigs([m]));
   store.dispatch(accountsSlice.actions.add([mockAccount]));
 
   fakeTezosUtils.estimateMultisigApproveOrExecute.mockResolvedValueOnce({
@@ -52,7 +52,7 @@ afterEach(() => {
   store.dispatch(multisigsSlice.actions.reset());
 });
 
-const multisigAccount = multisigWithPendingOpsToAccount(m, "multi");
+const multisigAccount = multisigToAccount(m, "multi");
 
 const fixture = (sender?: string, assetType?: SendFormMode) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -90,7 +90,7 @@ describe("<SendForm /> case propose/execute", () => {
     );
 
     expect(screen.getByText(/execute/i)).toBeInTheDocument();
-    expect(screen.getByText(/proposal signer/i)).toBeInTheDocument();
+    expect(screen.getByText(/signer/i)).toBeInTheDocument();
 
     const previewButton = screen.getByText(/preview/i);
     fireEvent.click(previewButton);
@@ -154,7 +154,7 @@ describe("<SendForm /> case propose/execute", () => {
     );
 
     expect(screen.getByText(/approve/i)).toBeInTheDocument();
-    expect(screen.getByText(/proposal signer/i)).toBeInTheDocument();
+    expect(screen.getByText(/signer/i)).toBeInTheDocument();
 
     const previewButton = screen.getByText(/preview/i);
     fireEvent.click(previewButton);

@@ -30,7 +30,7 @@ export const MultisigPendingAccordionItem: React.FC<{
       borderRadius={6}
       marginY={3}
       pb={0}
-      data-testid={"multisig-pending-operation-" + operation.key}
+      data-testid={"multisig-pending-operation-" + operation.id}
     >
       <AccordionItem bg={colors.gray[800]} border="none" borderRadius="8px">
         <h2>

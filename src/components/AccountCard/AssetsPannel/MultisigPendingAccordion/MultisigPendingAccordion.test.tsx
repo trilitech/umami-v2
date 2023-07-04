@@ -6,8 +6,8 @@ import { fillPassword } from "../../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount } from "../../../../types/Account";
 import { useGetSk } from "../../../../utils/hooks/accountUtils";
-import { multisigWithPendingOpsToAccount } from "../../../../utils/multisig/helpers";
-import { MultisigWithPendingOperations } from "../../../../utils/multisig/types";
+import { multisigToAccount } from "../../../../utils/multisig/helpers";
+import { Multisig, MultisigOperation } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/store/accountsSlice";
 import multisigsSlice from "../../../../utils/store/multisigsSlice";
 import { store } from "../../../../utils/store/store";
@@ -26,28 +26,32 @@ describe("<MultisigPendingAccordion />", () => {
     expect(screen.getByText(/No multisig pending operations/i)).toBeInTheDocument();
   });
 
+  const pendingOps: MultisigOperation[] = [
+    {
+      id: "1",
+      rawActions:
+        '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"1000000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
+      approvals: [{ type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" }],
+      bigmapId: 3,
+    },
+    {
+      id: "2",
+      rawActions:
+        '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"0057c264d6d7f7257cd3d8096150b0d8be60577ca7"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"3000000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
+      approvals: [{ type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" }],
+      bigmapId: 3,
+    },
+  ];
   it("should display multisig executable tez operations", async () => {
-    const m: MultisigWithPendingOperations = {
+    const m: Multisig = {
       address: { type: "contract", pkh: "KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK" },
       threshold: 1,
       signers: [{ type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" }],
-      pendingOperations: [
-        {
-          key: "1",
-          rawActions:
-            '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"1000000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
-          approvals: [{ type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" }],
-        },
-        {
-          key: "2",
-          rawActions:
-            '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"0057c264d6d7f7257cd3d8096150b0d8be60577ca7"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"3000000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
-          approvals: [{ type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" }],
-        },
-      ],
+      pendingOperationsBigmapId: 3,
     };
-    const multisigAccount = multisigWithPendingOpsToAccount(m, "multi");
-    store.dispatch(multisigsSlice.actions.set([m]));
+    const multisigAccount = multisigToAccount(m, "multi");
+    store.dispatch(multisigsSlice.actions.setMultisigs([m]));
+    store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
     const mockAccount: ImplicitAccount = {
       ...mockImplicitAccount(0),
       address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
@@ -67,7 +71,7 @@ describe("<MultisigPendingAccordion />", () => {
     const allPending = screen.getAllByTestId(/multisig-pending-operation/);
     expect(allPending).toHaveLength(2);
     const { getByText } = within(
-      screen.getByTestId("multisig-pending-operation-" + m.pendingOperations[0].key)
+      screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id)
     );
     const executeBtn = getByText(/execute/i);
 
@@ -88,7 +92,7 @@ describe("<MultisigPendingAccordion />", () => {
     expect(fakeTezosUtils.estimateMultisigApproveOrExecute).toHaveBeenCalledWith(
       {
         contract: multisigAccount.address,
-        operationId: m.pendingOperations[0].key,
+        operationId: 3,
         type: "execute",
       },
       mockAccount.pk,
