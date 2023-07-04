@@ -1,5 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
+import { OperationValue } from "../../components/sendForm/types";
+import { Operation } from "../../multisig/types";
 import { MultisigAccount } from "../../types/Account";
 import { Asset, keepFA1s, keepFA2s, keepNFTs, NFT } from "../../types/Asset";
 import { OperationDisplay } from "../../types/Operation";
@@ -54,19 +56,91 @@ export const useGetAccountAssetsLookup = (): ((
     }, {});
 };
 
+export const operationToOperationValues = (
+  ops: Operation[],
+  sender: string,
+  allAssets: Asset[]
+): OperationValue[] => {
+  // eslint-disable-next-line array-callback-return
+  return ops.reduce<OperationValue[]>((acc, curr) => {
+    switch (curr.type) {
+      case "tez": {
+        const op: OperationValue = {
+          type: "tez",
+          value: { amount: curr.amount, recipient: curr.recipient.pkh, sender },
+        };
+        return [...acc, op];
+      }
+      case "fa1.2": {
+        const asset = searchAsset(curr.contract.pkh, undefined, allAssets);
+        if (!asset || asset.type !== "fa1.2") {
+          console.warn("Asset not found in the current wallet. Ignoring operation.");
+          return acc;
+        }
+
+        const op: OperationValue = {
+          type: "token",
+          data: asset,
+          value: { amount: curr.amount, recipient: curr.recipient.pkh, sender },
+        };
+        return [...acc, op];
+      }
+      case "fa2": {
+        const asset = searchAsset(curr.contract.pkh, curr.tokenId, allAssets);
+        if (!asset || asset.type !== "fa2") {
+          console.warn("Asset not found in the current wallet. Ignoring operation.");
+          return acc;
+        }
+
+        const op: OperationValue = {
+          type: "token",
+          data: asset,
+          value: { amount: curr.amount, recipient: curr.recipient.pkh, sender },
+        };
+        return [...acc, op];
+      }
+      case "delegation": {
+        const op: OperationValue = {
+          type: "delegation",
+          data: { undelegate: Boolean(curr.recipient?.pkh) },
+          value: { recipient: curr.recipient?.pkh, sender },
+        };
+
+        return [...acc, op];
+      }
+    }
+  }, []);
+};
+
+export const useOperationsToOperationValues = () => {
+  const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
+  const allAssets = compact(Object.values(ownerToTokens).flat());
+
+  return (ops: Operation[], sender: string) => {
+    return operationToOperationValues(ops, sender, allAssets);
+  };
+};
+export const searchAsset = (
+  contractAddress: string,
+  tokenId: string | undefined,
+  allAssets: Asset[]
+) => {
+  if (!tokenId) {
+    return allAssets.find(asset => asset.type === "fa1.2" && asset.contract === contractAddress);
+  }
+
+  return allAssets.find(
+    asset =>
+      asset.type !== "fa1.2" && asset.tokenId === tokenId && asset.contract === contractAddress
+  );
+};
+
 export const useSearchAsset = () => {
   const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
   const allAssets = compact(Object.values(ownerToTokens).flat());
 
-  return (contractAddress: string, tokenId: string | undefined) => {
-    if (!tokenId) {
-      return compact(allAssets).find(asset => asset.contract === contractAddress);
-    }
-
-    return compact(allAssets)
-      .filter(asset => asset.contract === contractAddress)
-      .find(asset => asset.type !== "fa1.2" && asset.tokenId === tokenId);
-  };
+  return (contractAddress: string, tokenId: string | undefined) =>
+    searchAsset(contractAddress, tokenId, allAssets);
 };
 
 export const useGetAccountFA2Tokens = () => {
