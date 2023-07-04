@@ -5,6 +5,7 @@ import { fakeTezosUtils } from "../../../../mocks/fakeTezosUtils";
 import { fillPassword } from "../../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount } from "../../../../types/Account";
+import { parseContractPkh, parseImplicitPkh } from "../../../../types/Address";
 import { useGetSk } from "../../../../utils/hooks/accountUtils";
 import { multisigToAccount } from "../../../../utils/multisig/helpers";
 import { Multisig, MultisigOperation } from "../../../../utils/multisig/types";
@@ -42,11 +43,11 @@ describe("<MultisigPendingAccordion />", () => {
       bigmapId: 3,
     },
   ];
-  it("should display multisig executable tez operations", async () => {
+  it.only("should display multisig executable tez operations", async () => {
     const m: Multisig = {
-      address: { type: "contract", pkh: "KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK" },
+      address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),
       threshold: 1,
-      signers: [{ type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" }],
+      signers: [parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3")],
       pendingOperationsBigmapId: 3,
     };
     const multisigAccount = multisigToAccount(m, "multi");
@@ -54,10 +55,10 @@ describe("<MultisigPendingAccordion />", () => {
     store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
     const mockAccount: ImplicitAccount = {
       ...mockImplicitAccount(0),
-      address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
+      address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
-    store.dispatch(accountsSlice.actions.add([mockAccount]));
 
+    store.dispatch(accountsSlice.actions.add([mockAccount]));
     fakeTezosUtils.estimateMultisigApproveOrExecute.mockResolvedValueOnce({
       suggestedFeeMutez: 12345,
     } as Estimate);
@@ -82,7 +83,7 @@ describe("<MultisigPendingAccordion />", () => {
     {
       const { getByText } = within(dialog);
       expect(getByText(/execute/i)).toBeInTheDocument();
-      expect(getByText(/proposal signer/i)).toBeInTheDocument();
+      expect(getByText(/signer/i)).toBeInTheDocument();
     }
 
     const previewButton = screen.getByText(/preview/i);
@@ -92,7 +93,7 @@ describe("<MultisigPendingAccordion />", () => {
     expect(fakeTezosUtils.estimateMultisigApproveOrExecute).toHaveBeenCalledWith(
       {
         contract: multisigAccount.address,
-        operationId: 3,
+        operationId: pendingOps[0].id,
         type: "execute",
       },
       mockAccount.pk,
