@@ -3,12 +3,13 @@ import MultisigPendingAccordion from ".";
 import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
 import { fakeTezosUtils } from "../../../../mocks/fakeTezosUtils";
 import { fillPassword } from "../../../../mocks/helpers";
+import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount } from "../../../../types/Account";
 import { parseContractPkh, parseImplicitPkh } from "../../../../types/Address";
 import { useGetSk } from "../../../../utils/hooks/accountUtils";
 import { multisigToAccount } from "../../../../utils/multisig/helpers";
-import { Multisig, MultisigOperation } from "../../../../utils/multisig/types";
+import { Multisig } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/store/accountsSlice";
 import multisigsSlice from "../../../../utils/store/multisigsSlice";
 import { store } from "../../../../utils/store/store";
@@ -27,22 +28,6 @@ describe("<MultisigPendingAccordion />", () => {
     expect(screen.getByText(/No multisig pending operations/i)).toBeInTheDocument();
   });
 
-  const pendingOps: MultisigOperation[] = [
-    {
-      id: "1",
-      rawActions:
-        '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"1000000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
-      approvals: [{ type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" }],
-      bigmapId: 3,
-    },
-    {
-      id: "2",
-      rawActions:
-        '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"0057c264d6d7f7257cd3d8096150b0d8be60577ca7"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"3000000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
-      approvals: [{ type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" }],
-      bigmapId: 3,
-    },
-  ];
   it("should display multisig executable tez operations", async () => {
     const m: Multisig = {
       address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),
