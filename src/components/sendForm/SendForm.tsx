@@ -31,7 +31,6 @@ export const SendForm = ({
   parameter,
   amount,
   mode = { type: "tez" },
-  disabled = false,
   onSuccess = () => {},
 }: {
   sender: string;
@@ -40,7 +39,6 @@ export const SendForm = ({
   parameter?: TransferParams["parameter"];
   onSuccess?: (hash: string) => void;
   mode: SendFormMode;
-  disabled?: boolean;
 }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
@@ -139,7 +137,6 @@ export const SendForm = ({
 
   return (
     <FillStep
-      disabled={disabled}
       recipient={recipient}
       mode={mode}
       sender={sender}
