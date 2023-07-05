@@ -59,15 +59,11 @@ export const fromToken = (raw: Token): Asset | null => {
     };
   }
 
-  if (!metadata) {
-    // We don't support FA2 without metadata yet
-    return null;
-  }
-
   const nftResult = nftParser.safeParse(raw);
   if (nftResult.success) {
     return {
-      metadata,
+      // if the nft has been parsed successfully then the metadata is definitely present
+      metadata: metadata as TokenMetadata,
       type: "nft",
       id: nftResult.data.token.id,
       contract: nftResult.data.token.contract.address,
