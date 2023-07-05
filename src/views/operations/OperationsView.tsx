@@ -15,7 +15,7 @@ import {
 import { MdOutlinePending } from "react-icons/md";
 import { RxCheckCircled } from "react-icons/rx";
 import { Link } from "react-router-dom";
-import { useAccountFilterUtils } from "../../components/AccountFilter";
+import { useAccountFilterWithMapFilter } from "../../components/AccountFilter";
 import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoOperations } from "../../components/NoItems";
@@ -105,7 +105,7 @@ export const OperationsDataTable: React.FC<{
 };
 
 const OperationsView = () => {
-  const { filterMap: filter, filterElement } = useAccountFilterUtils();
+  const { filterMap: filter, filterElement } = useAccountFilterWithMapFilter();
   const operations = useGetOperationDisplays();
   const operationsToDisplay = sortOperationsByTimestamp(filter(operations));
 

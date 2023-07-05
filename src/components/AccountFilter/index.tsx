@@ -1,6 +1,5 @@
-import { compact, flatMap, intersectionWith } from "lodash";
+import { compact, flatMap } from "lodash";
 import { useState } from "react";
-import { Account } from "../../types/Account";
 import { Address } from "../../types/Address";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountFilterDisplay } from "./AccountFilterDisplay";
@@ -10,15 +9,6 @@ export function mapToFilteredArray<T>(map: Record<string, T[] | undefined>, filt
     ? compact(Object.values(map).flat())
     : flatMap(filter, account => map[account] || []);
 }
-
-export const getFilteredAccounts = (accounts: Account[], accountFilter: Address[]) =>
-  accountFilter.length === 0
-    ? accounts
-    : intersectionWith(
-        accounts,
-        accountFilter,
-        (account, address) => account.address.pkh === address.pkh
-      );
 
 export const useAccountFilter = () => {
   const [accountFilter, setAccountFilter] = useState<Address[]>([]);
@@ -43,9 +33,8 @@ export const useAccountFilter = () => {
   };
 };
 
-export const useAccountFilterUtils = () => {
+export const useAccountFilterWithMapFilter = () => {
   const { filterElement, accountFilter } = useAccountFilter();
-  const accounts = useAllAccounts();
 
   function filterMap<T>(map: Record<string, T[] | undefined>): T[] {
     return mapToFilteredArray(
@@ -57,6 +46,5 @@ export const useAccountFilterUtils = () => {
   return {
     filterMap,
     filterElement,
-    filteredAccounts: getFilteredAccounts(accounts, accountFilter),
   };
 };
