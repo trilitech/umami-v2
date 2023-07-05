@@ -125,13 +125,9 @@ export const searchAsset = (
   tokenId: string | undefined,
   allAssets: Asset[]
 ) => {
-  if (!tokenId) {
-    return allAssets.find(asset => asset.type === "fa1.2" && asset.contract === contractAddress);
-  }
-
   return allAssets.find(
     asset =>
-      asset.type !== "fa1.2" && asset.tokenId === tokenId && asset.contract === contractAddress
+      asset.contract === contractAddress && (asset.type === "fa1.2" || asset.tokenId === tokenId)
   );
 };
 
