@@ -1,30 +1,22 @@
-import { compact } from "lodash";
-import React, { useState } from "react";
+import { compact, flatMap } from "lodash";
+import { useState } from "react";
 import { Address } from "../../types/Address";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountFilterDisplay } from "./AccountFilterDisplay";
-import { BaseAccountFilterProps } from "./types";
 
 export function mapToFilteredArray<T>(map: Record<string, T[] | undefined>, filter: string[]) {
-  if (filter.length === 0) {
-    return compact(Object.values(map).flat());
-  }
-
-  return filter.reduce((acc, curr) => {
-    return [...acc, ...(map[curr] || [])];
-  }, [] as T[]);
+  return filter.length === 0
+    ? compact(Object.values(map).flat())
+    : flatMap(filter, account => map[account] || []);
 }
-
-const ConnectedAccountFilter: React.FC<BaseAccountFilterProps> = props => {
-  const accounts = useAllAccounts();
-  return <AccountFilterDisplay accounts={accounts} {...props} />;
-};
 
 export const useAccountFilter = () => {
   const [accountFilter, setAccountFilter] = useState<Address[]>([]);
+  const accounts = useAllAccounts();
 
   const el = (
-    <ConnectedAccountFilter
+    <AccountFilterDisplay
+      accounts={accounts}
       selected={accountFilter}
       onRemove={address => {
         setAccountFilter(accountFilter.filter(a => a.pkh !== address.pkh));
@@ -35,14 +27,24 @@ export const useAccountFilter = () => {
     />
   );
 
-  function filter<T>(map: Record<string, T[] | undefined>): T[] {
+  return {
+    filterElement: el,
+    accountFilter,
+  };
+};
+
+export const useAccountFilterWithMapFilter = () => {
+  const { filterElement, accountFilter } = useAccountFilter();
+
+  function filterMap<T>(map: Record<string, T[] | undefined>): T[] {
     return mapToFilteredArray(
       map,
       accountFilter.map(a => a.pkh)
     );
   }
 
-  return { filter, filterElement: el };
+  return {
+    filterMap,
+    filterElement,
+  };
 };
-
-export default ConnectedAccountFilter;

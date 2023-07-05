@@ -11,16 +11,17 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { compact } from "lodash";
-import React from "react";
+import { ReactNode } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
-import { TbFilter } from "react-icons/tb";
 import { VscWand } from "react-icons/vsc";
+import { useAccountFilterWithMapFilter } from "../../components/AccountFilter";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoDelegations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
+import { objectMap } from "../../utils/helpers";
 import { useAllDelegations } from "../../utils/hooks/assetsHooks";
 import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
 import { useSendFormModal } from "../home/useSendFormModal";
@@ -45,7 +46,7 @@ const DelegationsTable = ({
           // Finally a way to have a sticky Header
           // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
         }
-        <Thead position="sticky" top={0} zIndex="docked" bg="umami.gray.900" borderRadius={4}>
+        <Thead position="sticky" top={0} zIndex="1" bg="umami.gray.900" borderRadius={4}>
           <Tr>
             <Th>Account:</Th>
             <Th>Initial Balance:</Th>
@@ -123,21 +124,22 @@ const DelegateButton = () => {
   );
 };
 
-export const FilterController: React.FC = () => {
+export const FilterController: React.FC<{ children: ReactNode }> = props => {
   return (
     <Flex alignItems="center" mb={4} mt={4}>
-      <IconAndTextBtn icon={TbFilter} label="Filter" flex={1} />
+      {props.children}
       <DelegateButton />
     </Flex>
   );
 };
 
 const DelegationsView = () => {
-  const delegations = useAllDelegations();
-
-  const allDelegations = compact(Object.values(delegations).flat());
-  const formatedDelegations = compact(allDelegations.map(makeDelegation));
   const { modalElement, onOpen } = useSendFormModal();
+
+  const delegationsOps = useAllDelegations();
+  const { filterMap: filter, filterElement } = useAccountFilterWithMapFilter();
+  const delegationsArrays = objectMap(delegationsOps, d => (d ? [d] : undefined));
+  const delegationsToDisplay = compact(filter(delegationsArrays).map(makeDelegation));
 
   const handleRemoveDelegate = (pkh: string) => {
     onOpen({
@@ -161,20 +163,20 @@ const DelegationsView = () => {
 
   return (
     <Flex direction="column" height="100%">
-      {allDelegations.length > 0 ? (
-        <>
-          <TopBar title="Delegations" />
-          <FilterController />
-          <Box overflow="scroll">
-            <Box maxH={40} overflow="scroll"></Box>
-            <DelegationsTable
-              onChangeDelegate={handleEditDelegate}
-              onRemoveDelegate={handleRemoveDelegate}
-              delegations={formatedDelegations}
-            />
-          </Box>
-          {modalElement}
-        </>
+      <TopBar title="Delegations" />
+      <Flex alignItems="center" justifyContent="space-between">
+        {filterElement}
+        <DelegateButton />
+      </Flex>
+      {delegationsToDisplay.length > 0 ? (
+        <Box overflow="scroll">
+          <Box maxH={40} overflow="scroll"></Box>
+          <DelegationsTable
+            onChangeDelegate={handleEditDelegate}
+            onRemoveDelegate={handleRemoveDelegate}
+            delegations={delegationsToDisplay}
+          />
+        </Box>
       ) : (
         <NoDelegations
           onDelegate={() => {
@@ -184,6 +186,7 @@ const DelegationsView = () => {
           }}
         />
       )}
+      {modalElement}
     </Flex>
   );
 };

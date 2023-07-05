@@ -7,13 +7,9 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
-import { AiOutlineUnorderedList } from "react-icons/ai";
-import { BsArrowDownUp } from "react-icons/bs";
-import { TbFilter } from "react-icons/tb";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAccountFilter } from "../../components/AccountFilter";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { useAccountFilterWithMapFilter } from "../../components/AccountFilter";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { NFT } from "../../types/Asset";
@@ -22,23 +18,13 @@ import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
 
-export const FilterController: React.FC = () => {
-  return (
-    <Flex alignItems="center" mb={4} mt={4}>
-      <IconAndTextBtn icon={TbFilter} label="Filter" flex={1} />
-      <IconAndTextBtn icon={BsArrowDownUp} label="Sort by Newest" mr={4} />
-      <IconAndTextBtn icon={AiOutlineUnorderedList} label="List View" />
-    </Flex>
-  );
-};
-
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
   const [selectedNft, setSelectedNft] = useState<NFT>();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { nftId } = useParams();
 
-  const { filterElement, filter } = useAccountFilter();
+  const { filterElement, filterMap: filter } = useAccountFilterWithMapFilter();
   const displayedNFTs = filter(nfts);
   const allOwnedNftsRef = useRef(displayedNFTs);
   const nftIdRef = useRef(nftId);

@@ -1,4 +1,4 @@
-import { mapToFilteredArray, useAccountFilter } from ".";
+import { mapToFilteredArray, useAccountFilterWithMapFilter } from ".";
 import { mockImplicitAccount } from "../../mocks/factories";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 import accountsSlice from "../../utils/store/accountsSlice";
@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 const Fixture: React.FC = () => {
-  const { filterElement } = useAccountFilter();
+  const { filterElement } = useAccountFilterWithMapFilter();
 
   return filterElement;
 };
@@ -74,6 +74,7 @@ describe("AccountFilter", () => {
   test("mapToFilteredArray returns the right value", () => {
     expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["foo"])).toEqual(["hello"]);
     expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, [])).toEqual(["hello", "cool"]);
+    expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["baz"])).toEqual([]);
     expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["foo", "bar"])).toEqual([
       "hello",
       "cool",

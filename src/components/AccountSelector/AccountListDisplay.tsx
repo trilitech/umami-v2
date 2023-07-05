@@ -8,7 +8,7 @@ export const AccountListDisplay: React.FC<{
   onSelect: (account: Account) => void;
 }> = ({ accounts, onSelect }) => {
   return (
-    <MenuList bg="umami.gray.900" maxHeight={300} overflow="scroll">
+    <MenuList bg="umami.gray.900" maxHeight={300} overflow="scroll" zIndex="docked">
       {accounts.map(account => {
         return (
           <MenuItem

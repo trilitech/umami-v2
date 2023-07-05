@@ -21,9 +21,9 @@ import { IconAndTextBtn, IconAndTextBtnLink } from "../../components/IconAndText
 import { Identicon } from "../../components/Identicon";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Asset";
+import { FA12Token, FA2Token, httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Asset";
 import { formatPkh } from "../../utils/format";
-import { useGetAccountAllTokens, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { Options } from "../home/useSendFormModal";
 
@@ -51,19 +51,16 @@ const AccountTokensTileHeader: React.FC<{
 const AccountTokensTile: React.FC<{
   account: Account;
   onOpenSendModal: (options?: Options) => void;
+  tokens: (FA12Token | FA2Token)[];
 }> = ({
   account: {
     address: { pkh },
     label,
   },
   onOpenSendModal,
+  tokens,
 }) => {
-  const getTokens = useGetAccountAllTokens();
   const network = useSelectedNetwork();
-  const tokens = getTokens(pkh);
-  if (tokens.length === 0) {
-    return null;
-  }
   return (
     <Card m={4} p={5} bgColor={colors.gray[900]} borderRadius="10px">
       <AccountTokensTileHeader pkh={pkh} label={label} />

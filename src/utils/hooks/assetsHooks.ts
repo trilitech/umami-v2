@@ -1,7 +1,8 @@
 import { BigNumber } from "bignumber.js";
-import { compact } from "lodash";
+import { compact, fromPairs } from "lodash";
 import { MultisigAccount } from "../../types/Account";
 import { Asset, keepFA1s, keepFA2s, keepNFTs, NFT } from "../../types/Asset";
+import { OperationDisplay } from "../../types/Operation";
 import {
   getOperationDisplays,
   sortOperationsByTimestamp,
@@ -93,16 +94,6 @@ export const useGetAccountAllTokens = () => {
   };
 };
 
-export const useHasTokens = () => {
-  const accounts = useAllAccounts();
-  const getFA1 = useGetAccountFA1Tokens();
-  const getFA2 = useGetAccountFA2Tokens();
-  return () =>
-    accounts
-      .map(account => [...getFA1(account.address.pkh), ...getFA2(account.address.pkh)].length > 0)
-      .includes(true);
-};
-
 export const useGetAccountNFTs = () => {
   const getAssets = useGetAccountAssets();
 
@@ -122,6 +113,13 @@ export const useGetAccountOperationDisplays = () => {
   return (pkh: string) => {
     return getOperationDisplays(tez[pkh], tokens[pkh], delegations[pkh], pkh, network);
   };
+};
+
+export const useGetOperationDisplays = (): Record<string, OperationDisplay[] | undefined> => {
+  const accounts = useAllAccounts();
+  const getOperations = useGetAccountOperationDisplays();
+
+  return fromPairs(accounts.map(account => [account, getOperations(account.address.pkh)]));
 };
 
 export const useGetAllOperationDisplays = () => {
