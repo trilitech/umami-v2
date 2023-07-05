@@ -13,7 +13,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { NFT } from "../../types/Asset";
+import { artifactUri, NFT } from "../../types/Asset";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import TagsSection from "./drawer/TagsSection";
@@ -22,6 +22,8 @@ import PropertiesAccordionItem from "./drawer/PropertiesAccordionItem";
 
 const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
   const { modalElement, onOpen } = useSendFormModal();
+  const url = getIPFSurl(artifactUri(nft));
+  const fallbackUrl = getIPFSurl(nft.displayUri);
 
   const accordionItemStyle = {
     border: "none",
@@ -33,7 +35,7 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
       <Card bg="umami.gray.800">
         <CardBody>
           <AspectRatio width="100%" ratio={1}>
-            <Image data-testid="nft-image" width="100%" src={getIPFSurl(nft.displayUri)} />
+            <Image data-testid="nft-image" width="100%" src={url} fallbackSrc={fallbackUrl} />
           </AspectRatio>
           {Number(nft.balance) > 1 && (
             <Text
