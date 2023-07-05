@@ -29,7 +29,7 @@ export const MultisigPendingAccordion: React.FC<{
         {pendingOperations.map(operation => {
           return (
             <MultisigPendingAccordionItem
-              onApproveOrExecute={({ mode }) => {
+              onApproveOrExecute={mode => {
                 const operations = parseRawMichelson(operation.rawActions);
                 const operationValues = operationToOperationValues(operations, account.address.pkh);
 

@@ -12,7 +12,7 @@ export const MultisigActionButton: React.FC<{
   signer: ImplicitAddress; // TODO: change to ImplicitAccount
   approvers: ImplicitAddress[]; // TODO: change to ImplicitAccount
   pendingApprovals: number;
-  onApproveOrExecute: (m: { mode: ApproveOrExecute }) => void;
+  onApproveOrExecute: (m: ApproveOrExecute) => void;
 }> = ({ signer, approvers, pendingApprovals, onApproveOrExecute }) => {
   const getImplicitAccount = useGetImplicitAccount();
 
@@ -47,7 +47,7 @@ export const MultisigActionButton: React.FC<{
   return (
     <Button
       onClick={() => {
-        onApproveOrExecute({ mode: operationIsExecutable ? "execute" : "approve" });
+        onApproveOrExecute(operationIsExecutable ? "execute" : "approve");
       }}
       bg={colors.blue}
       data-testid="multisig-signer-button"

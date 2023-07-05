@@ -20,7 +20,7 @@ export const MultisigPendingAccordionItem: React.FC<{
   operation: MultisigOperation;
   signers: ImplicitAddress[];
   threshold: number;
-  onApproveOrExecute: (m: { mode: ApproveOrExecute }) => void;
+  onApproveOrExecute: (m: ApproveOrExecute) => void;
 }> = ({ operation, signers, threshold, onApproveOrExecute }) => {
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
