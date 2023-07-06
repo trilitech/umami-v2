@@ -149,15 +149,19 @@ describe("<BeaconRequestNotification />", () => {
       ...objectOperationDelegationRequest,
       sourceAddress: mockImplicitAccount(2).address.pkh,
     };
-    it("should display delegation request with controls disabled", async () => {
+
+    it("should display delegation request", async () => {
       render(fixture(message, () => {}));
       expect(screen.getByRole("dialog", { name: /delegation/i })).toBeInTheDocument();
       await waitFor(() => {
         expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
       });
-      expect(screen.getByTestId("account-selector")).toBeDisabled();
-      expect(screen.getByTestId("baker-selector")).toBeDisabled();
-      expect(screen.getByTestId("baker-selector")).toHaveTextContent(formatPkh(mockBeaconDelegate));
+      await waitFor(() => {
+        expect(screen.getByTestId("real-address-input-baker")).toHaveAttribute(
+          "value",
+          mockBeaconDelegate
+        );
+      });
     });
 
     test("User previews then submits Delegation, and operation hash is sent via Beacon", async () => {

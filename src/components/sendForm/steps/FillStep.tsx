@@ -32,11 +32,14 @@ import {
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
-import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
-import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
+import {
+  AllAccountsAutocomplete,
+  BakersAutocomplete,
+  KnownAccountsAutocomplete,
+} from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { classifyAsset, FormOperations, OperationValue, SendFormMode } from "../types";
 import { BatchRecap } from "./BatchRecap";
@@ -56,14 +59,14 @@ export const DelegateForm = ({
   recipient?: string;
   disabled?: boolean;
 }) => {
-  const { formState, control, handleSubmit } = useForm<{
+  const { formState, handleSubmit, setValue, register } = useForm<{
     sender: string;
     baker: string | undefined;
   }>({
     mode: "onBlur",
     defaultValues: { sender, baker: recipient },
   });
-  const { isValid } = formState;
+  const { isValid, errors } = formState;
 
   const accountIsMultisig = useAccountIsMultisig();
   const senderIsMultisig = Boolean(sender && accountIsMultisig(sender));
@@ -76,38 +79,32 @@ export const DelegateForm = ({
         <Text textAlign="center">{subTitle}</Text>
         <ModalBody>
           <FormControl mb={2}>
-            <FormLabel>From</FormLabel>
-            <Controller
-              rules={{ required: true }}
-              control={control}
-              name="sender"
-              render={({ field: { onChange, onBlur, value, ref } }) => (
-                <ConnectedAccountSelector
-                  isDisabled={undelegate || disabled}
-                  selected={value}
-                  onSelect={a => {
-                    onChange(a.address.pkh);
-                  }}
-                />
-              )}
+            <AllAccountsAutocomplete
+              label="From"
+              register={register}
+              setValue={setValue}
+              inputName="sender"
+              initialPkhValue={sender}
+              allowUnknown={false}
             />
           </FormControl>
 
           {undelegate ? null : (
-            <FormControl mb={2}>
-              <FormLabel>Baker</FormLabel>
-              <Controller
-                rules={{ required: true }}
-                control={control}
-                name="baker"
-                render={({ field: { onChange, value } }) => (
-                  <BakerSelector disabled={disabled} selected={value} onSelect={onChange} />
-                )}
+            <FormControl mb={2} isInvalid={!!errors.baker}>
+              <BakersAutocomplete
+                label="Baker"
+                inputName="baker"
+                allowUnknown={true} // set to false when beacon stops using SendForm
+                setValue={setValue}
+                initialPkhValue={recipient}
+                register={register}
               />
+              {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
             </FormControl>
           )}
         </ModalBody>
         <ModalFooter>
+          {isValid}
           <Box width="100%">
             <Button
               width="100%"

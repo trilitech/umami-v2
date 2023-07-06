@@ -33,7 +33,7 @@ describe("<AddressAutocomplete />", () => {
   it("should set the real input when a valid pkh is entered by the user", () => {
     fixture({});
     const rawInput = screen.getByLabelText("destination");
-    const realInput = screen.getByTestId("real-address-input");
+    const realInput = screen.getByTestId("real-address-input-destination");
     fireEvent.change(rawInput, { target: { value: mockImplicitAddress(7).pkh } });
     expect(rawInput).toHaveProperty("value", mockImplicitAddress(7).pkh);
     expect(realInput).toHaveProperty("value", mockImplicitAddress(7).pkh);
@@ -42,7 +42,7 @@ describe("<AddressAutocomplete />", () => {
   it("should clear the real input when a malformed pkh or contact name is entered by the user", () => {
     fixture({});
     const rawInput = screen.getByLabelText("destination");
-    const realInput = screen.getByTestId("real-address-input");
+    const realInput = screen.getByTestId("real-address-input-destination");
     const INVALID = "not a pkh or an alias";
 
     fireEvent.change(rawInput, { target: { value: mockImplicitAddress(7).pkh } });
@@ -98,7 +98,7 @@ describe("<AddressAutocomplete />", () => {
   test("choosing a suggestions submits the pkh, inputs the contact name and hides suggestions", () => {
     fixture({});
     const rawInput = screen.getByLabelText("destination");
-    const realInput = screen.getByTestId("real-address-input");
+    const realInput = screen.getByTestId("real-address-input-destination");
 
     expect(rawInput).toBeEnabled();
 
@@ -117,10 +117,10 @@ describe("<AddressAutocomplete />", () => {
   });
 
   it("should display initialPkhValue's contact if any, and not display any suggestions", async () => {
-    fixture({ initialPkhValue: mockContact(1).name });
+    fixture({ initialPkhValue: mockContact(1).pkh });
 
     const rawInput = screen.getByLabelText("destination");
-    const realInput = screen.getByTestId("real-address-input");
+    const realInput = screen.getByTestId("real-address-input-destination");
 
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
     expect(rawInput).toHaveProperty("value", mockContact(1).name);
@@ -131,7 +131,7 @@ describe("<AddressAutocomplete />", () => {
     fixture({ initialPkhValue: mockImplicitAddress(5).pkh });
 
     const rawInput = screen.getByLabelText("destination");
-    const realInput = screen.getByTestId("real-address-input");
+    const realInput = screen.getByTestId("real-address-input-destination");
 
     expect(rawInput).toHaveProperty("value", mockImplicitAddress(5).pkh);
     expect(realInput).toHaveProperty("value", mockImplicitAddress(5).pkh);
@@ -140,7 +140,7 @@ describe("<AddressAutocomplete />", () => {
   test("Entering a pkh that belongs to a contact should display contact name in the input", () => {
     fixture({});
     const rawInput = screen.getByLabelText("destination");
-    const realInput = screen.getByTestId("real-address-input");
+    const realInput = screen.getByTestId("real-address-input-destination");
     fireEvent.change(rawInput, { target: { value: mockContact(1).pkh } });
 
     expect(rawInput).toHaveProperty("value", mockContact(1).name);
@@ -150,7 +150,7 @@ describe("<AddressAutocomplete />", () => {
   test("when allowUnknown is false it doesn't set the value to an unknown address even if it's valid", () => {
     fixture({ allowUnknown: false, contacts: [mockContact(1)] });
     const rawInput = screen.getByLabelText("destination");
-    const realInput = screen.getByTestId("real-address-input");
+    const realInput = screen.getByTestId("real-address-input-destination");
     fireEvent.change(rawInput, { target: { value: mockContact(2).pkh } });
 
     expect(rawInput).toHaveProperty("value", mockContact(2).pkh);

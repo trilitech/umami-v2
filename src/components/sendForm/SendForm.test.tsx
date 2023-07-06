@@ -647,7 +647,7 @@ describe("<SendForm />", () => {
 
       expect(screen.getByText(/delegate/i)).toBeTruthy();
 
-      const bakerInput = screen.getByTestId(/baker-selector/i);
+      const bakerInput = screen.getByTestId("real-address-input-baker");
       fireEvent.change(bakerInput, {
         target: { value: mockBaker(2).address },
       });

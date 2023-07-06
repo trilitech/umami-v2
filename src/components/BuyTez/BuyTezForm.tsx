@@ -51,7 +51,8 @@ const BuyTezForm = () => {
                 inputName="recipient"
                 register={register}
                 setValue={setValue}
-                allowUnknown={false} />
+                allowUnknown={false}
+              />
               {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
             </FormControl>
           </ModalBody>

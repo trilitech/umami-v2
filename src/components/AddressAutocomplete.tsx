@@ -1,6 +1,6 @@
 import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
-import { FieldValues, UseFormRegister, Path } from "react-hook-form";
+import { useCallback, useState } from "react";
+import { FieldValues, UseFormRegister, Path, PathValue } from "react-hook-form";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
@@ -8,11 +8,11 @@ import { useAllAccounts, useImplicitAccounts } from "../utils/hooks/accountHooks
 import { useAppSelector } from "../utils/store/hooks";
 import { Identicon } from "./Identicon";
 
-// <T extends FieldValues> is needed to be compatible with the useForm's type parameter
-// <U extends Path<T>> makes sure that we can pass in only valid inputName that
-//   exists in the useForm's type parameter
-export type BaseProps<T extends FieldValues, U extends Path<T>> = {
-  initialPkhValue?: string;
+// <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
+// <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
+// <V extends PathValue<T, U>> verifies that initialPkhValue's type matches the one in FormData
+export type BaseProps<T extends FieldValues, U extends Path<T>, V extends PathValue<T, U>> = {
+  initialPkhValue?: V;
   isDisabled?: boolean;
   inputName: U;
   allowUnknown: boolean;
@@ -38,6 +38,8 @@ const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
   return result;
 };
 
+// TODO: Display different types of suggestions differently
+// e.g. implicit vs contract vs contact vs baker
 const Suggestions = ({
   contacts,
   onChange,
@@ -89,7 +91,11 @@ const Suggestions = ({
   );
 };
 
-export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
+export const AddressAutocomplete = <
+  T extends FieldValues,
+  U extends Path<T>,
+  V extends PathValue<T, U>
+>({
   contacts,
   initialPkhValue,
   isDisabled,
@@ -98,7 +104,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   label,
   register,
   setValue: setFormValue,
-}: BaseProps<T, U> & { contacts: Contact[] }) => {
+}: BaseProps<T, U, V> & { contacts: Contact[] }) => {
   const initialInputValue = initialPkhValue
     ? contacts.find(c => c.pkh === initialPkhValue)?.name || initialPkhValue
     : "";
@@ -115,7 +121,6 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       const contact = contacts.find(
         contact => contact.name === newValue || contact.pkh === newValue
       );
-
       if (contact !== undefined) {
         setRawInputValue(contact.name);
         setFormValue(inputName, contact.pkh, { shouldValidate: true });
@@ -127,14 +132,6 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
     },
     [contacts, inputName, setRawInputValue, setFormValue, allowUnknown]
   );
-
-  // on initial render set the real input value to the initialInputValue
-  // if it's a valid address or a contact
-  useEffect(() => {
-    if (initialInputValue) {
-      handleChange(initialInputValue);
-    }
-  }, [initialInputValue, handleChange]);
 
   return (
     <Box>
@@ -160,11 +157,14 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         />
       </FormLabel>
       <Input
-        {...register(inputName, { required: "Invalid address or contact name" })}
+        {...register(inputName, {
+          required: "Invalid address or contact name",
+          value: initialPkhValue,
+        })}
         mb={0}
         name={inputName}
         type="hidden"
-        data-testid="real-address-input"
+        data-testid={`real-address-input-${inputName}`}
       />
 
       {!hideSuggestions && <Suggestions contacts={suggestions} onChange={handleChange} />}
@@ -172,8 +172,12 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   );
 };
 
-export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
-  props: BaseProps<T, U>
+export const KnownAccountsAutocomplete = <
+  T extends FieldValues,
+  U extends Path<T>,
+  V extends PathValue<T, U>
+>(
+  props: BaseProps<T, U, V>
 ) => {
   const contacts = Object.values(useAppSelector(s => s.contacts));
 
@@ -185,8 +189,12 @@ export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<
   return <AddressAutocomplete {...props} contacts={contacts.concat(accounts)} />;
 };
 
-export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
-  props: BaseProps<T, U>
+export const OwnedImplicitAccountsAutocomplete = <
+  T extends FieldValues,
+  U extends Path<T>,
+  V extends PathValue<T, U>
+>(
+  props: BaseProps<T, U, V>
 ) => {
   const accounts = useImplicitAccounts().map(account => ({
     name: account.label,
@@ -196,8 +204,12 @@ export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U exten
   return <AddressAutocomplete {...props} contacts={accounts} />;
 };
 
-export const AllAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
-  props: BaseProps<T, U>
+export const AllAccountsAutocomplete = <
+  T extends FieldValues,
+  U extends Path<T>,
+  V extends PathValue<T, U>
+>(
+  props: BaseProps<T, U, V>
 ) => {
   const accounts = useAllAccounts().map(account => ({
     name: account.label,
@@ -205,4 +217,19 @@ export const AllAccountsAutocomplete = <T extends FieldValues, U extends Path<T>
   }));
 
   return <AddressAutocomplete {...props} contacts={accounts} />;
+};
+
+export const BakersAutocomplete = <
+  T extends FieldValues,
+  U extends Path<T>,
+  V extends PathValue<T, U>
+>(
+  props: BaseProps<T, U, V>
+) => {
+  const bakers = useAppSelector(s => s.assets.bakers).map(baker => ({
+    name: baker.name,
+    pkh: baker.address,
+  }));
+
+  return <AddressAutocomplete {...props} contacts={bakers} />;
 };
