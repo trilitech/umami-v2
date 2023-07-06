@@ -352,7 +352,7 @@ describe("<SendForm />", () => {
       expect(screen.getByTestId(/currency/)).toHaveTextContent(MOCK_TOKEN_SYMBOL);
     });
 
-    test.only("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
+    test("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
       render(
         fixture(MOCK_PKH, {
           type: "token",
