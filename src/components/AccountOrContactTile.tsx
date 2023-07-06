@@ -22,7 +22,11 @@ export const ContactTile: FC<{
           label={formatPkh(pkh)}
           icon={MdPersonAddAlt}
           onClick={() => {
-            onOpen({ contactToDisplay: { name: "", pkh }, isEdit: true });
+            onOpen({
+              title: "Add Contact",
+              buttonText: "Add to Contact",
+              contact: { name: "", pkh },
+            });
           }}
           textFirst
         />

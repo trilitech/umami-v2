@@ -23,7 +23,12 @@ const FilterController: React.FC = () => {
         _hover={{
           color: colors.greenL,
         }}
-        onClick={() => onOpen()}
+        onClick={() =>
+          onOpen({
+            title: "Add Contact",
+            buttonText: "Add to Contact",
+          })
+        }
       />
 
       {modalElement}

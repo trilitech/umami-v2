@@ -31,11 +31,10 @@ export const UpsertContactModal: FC<{
   title: string;
   buttonText: string;
   isOpen: boolean;
-  isEdit?: boolean;
   contact?: Contact; // For updating an existing contact
   onSubmitContact: (contact: Contact) => void;
   onClose: () => void;
-}> = ({ title, buttonText, contact, isOpen, isEdit = false, onSubmitContact, onClose }) => {
+}> = ({ title, buttonText, contact, isOpen, onSubmitContact, onClose }) => {
   const {
     handleSubmit,
     formState: { isValid, errors },
@@ -51,6 +50,8 @@ export const UpsertContactModal: FC<{
     reset();
   };
 
+  const isEdit = contact !== undefined;
+
   const accounts = useImplicitAccounts();
   const validateName = (name: string) => {
     if (accounts.map(account => account.label).includes(name)) {
@@ -65,7 +66,7 @@ export const UpsertContactModal: FC<{
     if (!isAddressValid(pkh)) {
       return "Invalid address";
     }
-    if (isEdit && contact) {
+    if (isEdit) {
       return getValues("name") !== contact.name;
     }
 
@@ -113,7 +114,7 @@ export const UpsertContactModal: FC<{
                   validate: validatePkh,
                 })}
                 value={contact?.pkh}
-                variant={contact ? "filled" : undefined}
+                variant={isEdit ? "filled" : undefined}
                 disabled={isEdit}
                 placeholder="Enter contact’s tz address"
               />
