@@ -50,7 +50,7 @@ const AccountTokensTileHeader: React.FC<{
 
 const AccountTokensTile: React.FC<{
   account: Account;
-  onOpenSendModal: (options?: Options) => void;
+  onOpenSendModal: (options: Options) => void;
   tokens: (FA12Token | FA2Token)[];
 }> = ({
   account: {

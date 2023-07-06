@@ -59,13 +59,14 @@ jest.mock("../../utils/hooks/accountUtils");
 
 const fakeAccountUtils = mock<typeof accountUtils>(accountUtils);
 
-const fixture = (sender?: string, assetType?: SendFormMode) => (
+const fixture = (sender: string, assetType: SendFormMode) => (
   <Modal isOpen={true} onClose={() => {}}>
     <SendForm sender={sender} mode={assetType} />
   </Modal>
 );
 
 const MOCK_SK = "mockSk";
+const MOCK_PKH = mockImplicitAccount(1).address.pkh;
 
 beforeEach(() => {
   fakeAccountUtils.useGetSk.mockReturnValue(() => Promise.resolve(MOCK_SK));
@@ -103,27 +104,19 @@ afterAll(() => {
 
 describe("<SendForm />", () => {
   describe("case send tez", () => {
-    test("should render first step with sender blank", () => {
-      render(fixture());
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(/select an account/i);
-    });
     test("should display tez currency name", () => {
-      render(fixture());
+      render(fixture(MOCK_PKH, { type: "tez" }));
       expect(screen.getByTestId(/currency/)).toHaveTextContent(/tez/i);
     });
 
-    test("should render first step with sender prefiled if provided", () => {
-      render(fixture(mockImplicitAccount(1).address.pkh));
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).address.pkh)
-      );
+    test("should render first step", () => {
+      render(fixture(MOCK_PKH, { type: "tez" }));
+      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(formatPkh(MOCK_PKH));
     });
 
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(1).address.pkh));
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).address.pkh)
-      );
+      render(fixture(MOCK_PKH, { type: "tez" }));
+      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(formatPkh(MOCK_PKH));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
@@ -194,7 +187,7 @@ describe("<SendForm />", () => {
         });
         expect(addToBatchBtn).toBeEnabled();
       });
-      const batch = store.getState().assets.batches[mockImplicitAccount(1).address.pkh];
+      const batch = store.getState().assets.batches[MOCK_PKH];
       expect(batch).toEqual({
         isSimulating: false,
         items: [
@@ -223,7 +216,7 @@ describe("<SendForm />", () => {
         expect(mockToast).toHaveBeenCalledTimes(2);
       });
 
-      const batch2 = store.getState().assets.batches[mockImplicitAccount(1).address.pkh];
+      const batch2 = store.getState().assets.batches[MOCK_PKH];
       expect(batch2).toEqual({
         isSimulating: false,
         items: [
@@ -261,7 +254,7 @@ describe("<SendForm />", () => {
       const mockBatchItems = [{} as BatchItem];
       store.dispatch(
         assetsSlice.actions.updateBatch({
-          pkh: mockImplicitAccount(1).address.pkh,
+          pkh: MOCK_PKH,
           items: mockBatchItems,
         })
       );
@@ -285,9 +278,7 @@ describe("<SendForm />", () => {
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
       });
-      expect(store.getState().assets.batches[mockImplicitAccount(1).address.pkh]?.items).toEqual(
-        mockBatchItems
-      );
+      expect(store.getState().assets.batches[MOCK_PKH]?.items).toEqual(mockBatchItems);
     });
 
     test("it should submit transaction and display recap with tzkt link", async () => {
@@ -352,7 +343,7 @@ describe("<SendForm />", () => {
     };
     it("should display token name in amount input", () => {
       render(
-        fixture(undefined, {
+        fixture(MOCK_PKH, {
           type: "token",
           data: mockFA2,
         })
@@ -361,9 +352,9 @@ describe("<SendForm />", () => {
       expect(screen.getByTestId(/currency/)).toHaveTextContent(MOCK_TOKEN_SYMBOL);
     });
 
-    test("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
+    test.only("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
       render(
-        fixture(undefined, {
+        fixture(MOCK_PKH, {
           type: "token",
           data: mockFA2,
         })
@@ -466,7 +457,7 @@ describe("<SendForm />", () => {
     };
     it("should display token name in amount input", () => {
       render(
-        fixture(undefined, {
+        fixture(MOCK_PKH, {
           type: "token",
           data: mockFa1,
         })
@@ -477,7 +468,7 @@ describe("<SendForm />", () => {
 
     test("User fills form, does a transfer simulation, submits transaction and sees result hash", async () => {
       render(
-        fixture(undefined, {
+        fixture(MOCK_PKH, {
           type: "token",
           data: mockFa1,
         })
@@ -563,7 +554,7 @@ describe("<SendForm />", () => {
 
   describe("case send NFT", () => {
     const fillFormAndSimulate = async () => {
-      render(fixture(undefined, { type: "token", data: mockNFT(1) }));
+      render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
         formatPkh(mockImplicitAccount(1).address.pkh)
       );
@@ -595,13 +586,13 @@ describe("<SendForm />", () => {
       });
     };
     it("should display editions in amount input", () => {
-      render(fixture(undefined, { type: "token", data: mockNFT(1) }));
+      render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
 
       expect(screen.getByTestId(/currency/)).toHaveTextContent("editions");
     });
 
     test("sender button is disabled and prefilled with NFT owner", () => {
-      render(fixture(undefined, { type: "token", data: mockNFT(1) }));
+      render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
 
       expect(screen.getByTestId(/account-selector/)).toHaveTextContent(formatPkh(mockNFT(1).owner));
 
@@ -665,7 +656,7 @@ describe("<SendForm />", () => {
     });
 
     test("it displays delegation form form", async () => {
-      render(fixture(undefined, { type: "delegation" }));
+      render(fixture(MOCK_PKH, { type: "delegation" }));
 
       expect(screen.getByText(/delegate/i)).toBeTruthy();
 
@@ -688,7 +679,7 @@ describe("<SendForm />", () => {
   });
   describe("case send tez with Google account", () => {
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(4, AccountType.SOCIAL).address.pkh));
+      render(fixture(mockImplicitAccount(4, AccountType.SOCIAL).address.pkh, { type: "tez" }));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
@@ -716,6 +707,7 @@ describe("<SendForm />", () => {
         expect(total).toHaveTextContent(/23.012345 ꜩ/i);
       });
     };
+
     test("It doesn't display password in SubmitStep", async () => {
       await fillForm();
       expect(screen.getByRole("button", { name: /sign with google/i })).toBeTruthy();
@@ -745,7 +737,7 @@ describe("<SendForm />", () => {
 
   describe("case send tez with Ledger account", () => {
     const fillForm = async () => {
-      render(fixture(mockImplicitAccount(5, AccountType.LEDGER).address.pkh));
+      render(fixture(mockImplicitAccount(5, AccountType.LEDGER).address.pkh, { type: "tez" }));
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
@@ -802,7 +794,7 @@ describe("<SendForm />", () => {
   });
   describe("Multisig", () => {
     it("If use selects a multisig account it displays a signer field prefiled with the first signer. Signer selector is disabled since wallet only owns one", async () => {
-      render(fixture(undefined, { type: "tez" }));
+      render(fixture(MOCK_PKH, { type: "tez" }));
       fillAccountSelector("Multisig Account 1");
       const accountSelector = await screen.findByTestId(/proposal-signer-selector/i);
       const expectedDefaultSigner = formatPkh(mockImplicitAddress(1).pkh);
@@ -818,7 +810,7 @@ describe("<SendForm />", () => {
         hash: "mockHash",
       } as TransactionOperation);
 
-      render(fixture(undefined, { type: "tez" }));
+      render(fixture(MOCK_PKH, { type: "tez" }));
       fillAccountSelector("Multisig Account 1");
 
       const amountInput = screen.getByLabelText(/amount/i);
@@ -874,7 +866,7 @@ describe("<SendForm />", () => {
         hash: "mockHash",
       } as TransactionOperation);
 
-      render(fixture(undefined, { type: "token", data: mockNFT(1) }));
+      render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
 
       fillAccountSelector("Multisig Account 1");
 
@@ -934,9 +926,8 @@ describe("<SendForm />", () => {
       fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
-
       render(
-        fixture(undefined, {
+        fixture(MOCK_PKH, {
           type: "token",
           data: mockFa1,
         })

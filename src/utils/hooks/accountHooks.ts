@@ -140,6 +140,11 @@ export const useAllAccounts = (): Account[] => {
   return [...implicit, ...multisig];
 };
 
+export const useFirstAccount = (): Account => {
+  const accounts = useImplicitAccounts();
+  return accounts[0];
+};
+
 export const useGetPk = () => {
   const getAccount = useGetOwnedAccount();
 
