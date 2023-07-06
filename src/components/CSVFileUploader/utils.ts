@@ -1,4 +1,9 @@
-import { isAddressValid, isValidContractPkh } from "../../types/Address";
+import {
+  isAddressValid,
+  isValidContractPkh,
+  parseContractPkh,
+  parsePkh,
+} from "../../types/Address";
 import { Asset, getRealAmount } from "../../types/Asset";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
@@ -56,11 +61,8 @@ export const csvRowToOperationValue = (
   if (csvRow.type === "tez") {
     return {
       type: "tez",
-      value: {
-        sender,
-        recipient,
-        amount: tezToMutez(csvRow.prettyAmount).toString(),
-      },
+      recipient: parsePkh(recipient),
+      amount: tezToMutez(csvRow.prettyAmount).toString(),
     };
   }
 
@@ -78,13 +80,25 @@ export const csvRowToOperationValue = (
   if (csvRow.contract !== asset.contract || (asset.type === "fa1.2" && csvRow.type !== "fa1.2")) {
     throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
   }
-  return {
-    type: "token",
-    data: asset,
-    value: {
-      sender,
-      recipient,
+
+  if (asset.type === "fa1.2") {
+    return {
+      type: "fa1.2",
+      data: asset,
+      sender: parsePkh(sender),
+      recipient: parsePkh(recipient),
       amount: getRealAmount(asset, csvRow.prettyAmount).toString(),
-    },
+      contract: parseContractPkh(asset.contract),
+    };
+  }
+
+  return {
+    type: "fa2",
+    data: asset,
+    sender: parsePkh(sender),
+    recipient: parsePkh(recipient),
+    amount: getRealAmount(asset, csvRow.prettyAmount).toString(),
+    contract: parseContractPkh(asset.contract),
+    tokenId: asset.tokenId,
   };
 };

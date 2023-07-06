@@ -22,6 +22,7 @@ import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
+import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { tezToMutez } from "../../../utils/format";
 import {
@@ -36,8 +37,10 @@ import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { AllAccountsAutocomplete } from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
-import { DelegationOperation, FormOperations, OperationValue, SendFormMode } from "../types";
+import { classifyAsset, FormOperations, OperationValue, SendFormMode } from "../types";
 import { BatchRecap } from "./BatchRecap";
+
+import * as RawOperations from "../../../multisig/types";
 
 export const DelegateForm = ({
   onSubmit,
@@ -139,7 +142,8 @@ export const FillBatchForm: React.FC<{
   transfer: OperationValue[];
   onSubmit: () => void;
   isLoading?: boolean;
-}> = ({ transfer, onSubmit, isLoading = false }) => {
+  signer: string;
+}> = ({ transfer, onSubmit, isLoading = false, signer }) => {
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
       <form
@@ -157,7 +161,7 @@ export const FillBatchForm: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              <AccountSmallTile pkh={transfer[0].value.sender} />
+              <AccountSmallTile pkh={signer} />
             </Flex>
             <BatchRecap transfer={transfer} />
           </Box>
@@ -376,43 +380,46 @@ const buildTezFromFormValues = (
   const value: OperationValue[] = [
     {
       type: "tez",
-      value: {
-        amount: tezToMutez(v.amount).toString(),
-        sender: v.sender,
-        recipient: v.recipient,
-        parameter,
-      },
+      amount: tezToMutez(v.amount).toString(),
+      recipient: parsePkh(v.recipient),
+      parameter,
     },
   ];
   if (v.proposalSigner !== undefined) {
-    return { type: "proposal", signer: v.proposalSigner, content: value };
+    return {
+      type: "proposal",
+      signer: parseImplicitPkh(v.proposalSigner),
+      content: value,
+      sender: parseContractPkh(v.sender),
+    };
   }
-  return { type: "implicit", content: value };
+  return { type: "implicit", content: value, signer: parseImplicitPkh(v.sender) };
 };
 
 const buildTokenFromFormValues = (v: FormValues, asset: Asset): FormOperations => {
-  const token: OperationValue[] = [
-    {
-      type: "token",
-      data: asset,
-      value: {
-        amount: getRealAmount(asset, v.amount).toString(),
-        sender: v.sender,
-        recipient: v.recipient,
-      },
-    },
+  const token = [
+    classifyAsset(asset, {
+      amount: getRealAmount(asset, v.amount).toString(),
+      sender: v.sender,
+      recipient: v.recipient,
+    }),
   ];
 
   if (v.proposalSigner !== undefined) {
-    return { type: "proposal", signer: v.proposalSigner, content: token };
+    return {
+      type: "proposal",
+      signer: parseImplicitPkh(v.proposalSigner),
+      content: token,
+      sender: parseContractPkh(v.sender),
+    };
   }
 
-  return { type: "implicit", content: token };
+  return { type: "implicit", content: token, signer: parseImplicitPkh(v.sender) };
 };
 
 export const FillStep: React.FC<{
   onSubmit: (v: FormOperations) => void;
-  onSubmitBatch: (v: OperationValue) => void;
+  onSubmitBatch: (v: OperationValue, signer: string) => void;
   isLoading: boolean;
   sender: string;
   recipient?: string;
@@ -441,15 +448,16 @@ export const FillStep: React.FC<{
           undelegate={mode.data?.undelegate}
           isLoading={isLoading}
           onSubmit={v => {
-            const delegation: DelegationOperation = {
+            const delegation: RawOperations.Delegation = {
               type: "delegation",
-              value: {
-                sender: v.sender,
-                recipient: v.baker,
-              },
+              recipient: v.baker !== undefined ? parseImplicitPkh(v.baker) : undefined,
             };
 
-            onSubmit({ type: "implicit", content: [delegation] });
+            onSubmit({
+              type: "implicit",
+              content: [delegation],
+              signer: parseImplicitPkh(v.sender),
+            });
           }}
         />
       );
@@ -463,15 +471,15 @@ export const FillStep: React.FC<{
           parameter={parameter}
           disabled={disabled}
           onSubmitBatch={v => {
-            onSubmitBatch({
-              type: "tez",
-              value: {
+            onSubmitBatch(
+              {
+                type: "tez",
                 amount: tezToMutez(v.amount).toString(),
-                sender: v.sender,
-                recipient: v.recipient,
+                recipient: parsePkh(v.recipient),
                 parameter,
               },
-            });
+              v.sender
+            );
           }}
           onSubmit={v => {
             onSubmit(buildTezFromFormValues(v, parameter));
@@ -487,15 +495,14 @@ export const FillStep: React.FC<{
           recipient={recipient}
           parameter={parameter}
           onSubmitBatch={v => {
-            onSubmitBatch({
-              type: "token",
-              data: mode.data,
-              value: {
+            onSubmitBatch(
+              classifyAsset(mode.data, {
                 amount: getRealAmount(mode.data, v.amount).toString(),
                 sender: v.sender,
                 recipient: v.recipient,
-              },
-            });
+              }),
+              v.sender
+            );
           }}
           onSubmit={v => {
             onSubmit(buildTokenFromFormValues(v, mode.data));
@@ -510,10 +517,12 @@ export const FillStep: React.FC<{
         <FillBatchForm
           isLoading={isLoading}
           transfer={mode.data.batch}
+          signer={mode.data.signer}
           onSubmit={() => {
             onSubmit({
               type: "implicit",
               content: mode.data.batch,
+              signer: parseImplicitPkh(mode.data.signer),
             });
           }}
         />

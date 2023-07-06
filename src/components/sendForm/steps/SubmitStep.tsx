@@ -21,26 +21,26 @@ import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import SignButton from "../components/SignButton";
 import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
-import { EstimatedOperation, FormOperations, OperationValue } from "../types";
+import { EstimatedOperation, OperationValue } from "../types";
 import { BatchRecap } from "./BatchRecap";
 
 const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   const isDelegation = transfer.type === "delegation";
-  const token = transfer.type === "token" ? transfer.data : undefined;
+  const token = transfer.type === "fa1.2" || transfer.type === "fa2" ? transfer.data : undefined;
 
   const renderBakerTile = useRenderBakerSmallTile();
 
   return (
     <>
-      {transfer.value.recipient && (
+      {transfer.recipient && (
         <Flex mb={4}>
           <Heading size="md" width={20}>
             To:
           </Heading>
           {isDelegation ? (
-            renderBakerTile(transfer.value.recipient)
+            renderBakerTile(transfer.recipient.pkh)
           ) : (
-            <AccountSmallTile pkh={transfer.value.recipient} />
+            <AccountSmallTile pkh={transfer.recipient.pkh} />
           )}
         </Flex>
       )}
@@ -49,16 +49,9 @@ const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
           <SendNFTRecapTile nft={token} />
         </Box>
       )}
-      {transfer.type === "tez" ? <Subtotal mutez={transfer.value.amount} /> : null}
+      {transfer.type === "tez" ? <Subtotal mutez={transfer.amount} /> : null}
     </>
   );
-};
-
-const getSigner = (ops: FormOperations) => {
-  if (ops.type === "implicit") {
-    return ops.content[0].value.sender;
-  }
-  return ops.signer;
 };
 
 const useGetImplicitAccount = () => {
@@ -84,7 +77,7 @@ export const SubmitStep: React.FC<{
   const getAccount = useGetImplicitAccount();
 
   const transfer = operations.content;
-  const signerAccount = getAccount(getSigner(operations));
+  const signerAccount = getAccount(operations.signer.pkh);
 
   const total = feeNum.plus(getBatchSubtotal(transfer));
 

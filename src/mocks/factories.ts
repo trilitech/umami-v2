@@ -313,33 +313,27 @@ export const mockBaker = (index: number) =>
 export const mockTezTransfer = (index: number): OperationValue => {
   return {
     type: "tez",
-    value: {
-      amount: String(index),
-      sender: mockImplicitAddress(index).pkh,
-      recipient: mockImplicitAddress(index + 1).pkh,
-    },
+    amount: String(index),
+    recipient: mockImplicitAddress(index + 1),
   };
 };
 
 export const mockNftTransfer = (index: number): OperationValue => {
   return {
-    type: "token",
+    type: "fa2",
     data: {} as NFT,
-    value: {
-      amount: String(index),
-      sender: mockImplicitAddress(index).pkh,
-      recipient: mockImplicitAddress(index + 1).pkh,
-    },
+    amount: String(index),
+    sender: mockImplicitAddress(index),
+    recipient: mockImplicitAddress(index + 1),
+    contract: mockContractAddress(index),
+    tokenId: String(index),
   };
 };
 
 export const mockDelegationTransfer = (index: number): OperationValue => {
   return {
     type: "delegation",
-    value: {
-      sender: mockImplicitAddress(index).pkh,
-      recipient: mockImplicitAddress(index + 1).pkh,
-    },
+    recipient: mockImplicitAddress(index + 1),
   };
 };
 

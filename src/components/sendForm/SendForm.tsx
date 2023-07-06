@@ -79,9 +79,7 @@ export const SendForm = ({
     setIsLoading(false);
   };
 
-  const addToBatch = async (operation: OperationValue) => {
-    const sender = operation.value.sender;
-
+  const addToBatch = async (operation: OperationValue, sender: string) => {
     const pk = getPk(sender);
 
     try {
@@ -108,7 +106,7 @@ export const SendForm = ({
       const result = await makeTransfer(operations, config);
       if (mode.type === "batch") {
         // TODO this will have to me moved in a thunk
-        const batchOwner = operations.content[0].value.sender;
+        const batchOwner = operations.signer.pkh;
         clearBatch(batchOwner);
       }
       setHash(result.hash);
@@ -149,8 +147,8 @@ export const SendForm = ({
       parameter={parameter}
       isLoading={isLoading}
       onSubmit={simulate}
-      onSubmitBatch={transaction => {
-        addToBatch(transaction);
+      onSubmitBatch={(transaction, signer) => {
+        addToBatch(transaction, signer);
       }}
     />
   );

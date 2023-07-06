@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { FiArrowUpRight } from "react-icons/fi";
-import { Operation } from "../../../../multisig/types";
+import { RawOperation } from "../../../../multisig/types";
 import colors from "../../../../style/colors";
 import { formatTokenAmount, tokenDecimal, tokenName, tokenSymbol } from "../../../../types/Asset";
 import { prettyTezAmount } from "../../../../utils/format";
@@ -8,7 +8,7 @@ import { useSearchAsset } from "../../../../utils/hooks/assetsHooks";
 import { CopyableAddress } from "../../../CopyableText";
 
 const MultisigDecodedOperationItem: React.FC<{
-  operation: Operation;
+  operation: RawOperation;
 }> = ({ operation }) => {
   switch (operation.type) {
     case "delegation":
@@ -33,7 +33,7 @@ const MultisigDecodedOperationItem: React.FC<{
 };
 
 const MultisigOperationAmount: React.FC<{
-  operation: Operation;
+  operation: RawOperation;
 }> = ({ operation }) => {
   const searchAsset = useSearchAsset();
   switch (operation.type) {

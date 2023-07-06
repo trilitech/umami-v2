@@ -108,27 +108,18 @@ const addItemsToBatchViaStore = async () => {
       [
         {
           type: "tez",
-          value: {
-            sender: mockImplicitAccount(1).address.pkh,
-            recipient: mockImplicitAddress(1).pkh,
-            amount: "1000000",
-          },
+          recipient: mockImplicitAddress(1),
+          amount: "1000000",
         },
         {
           type: "tez",
-          value: {
-            sender: mockImplicitAccount(1).address.pkh,
-            recipient: mockImplicitAddress(2).pkh,
-            amount: "2000000",
-          },
+          recipient: mockImplicitAddress(2),
+          amount: "2000000",
         },
         {
           type: "tez",
-          value: {
-            sender: mockImplicitAccount(1).address.pkh,
-            recipient: mockImplicitAddress(3).pkh,
-            amount: "3000000",
-          },
+          recipient: mockImplicitAddress(3),
+          amount: "3000000",
         },
       ],
 
@@ -143,27 +134,18 @@ const addItemsToBatchViaStore = async () => {
       [
         {
           type: "tez",
-          value: {
-            sender: mockImplicitAccount(2).address.pkh,
-            recipient: mockImplicitAddress(9).pkh,
-            amount: "4",
-          },
+          recipient: mockImplicitAddress(9),
+          amount: "4",
         },
         {
           type: "tez",
-          value: {
-            sender: mockImplicitAccount(2).address.pkh,
-            recipient: mockImplicitAddress(4).pkh,
-            amount: "5",
-          },
+          recipient: mockImplicitAddress(4),
+          amount: "5",
         },
         {
           type: "tez",
-          value: {
-            sender: mockImplicitAccount(2).address.pkh,
-            recipient: mockImplicitAddress(5).pkh,
-            amount: "6",
-          },
+          recipient: mockImplicitAddress(5),
+          amount: "6",
         },
       ],
 
@@ -287,27 +269,18 @@ describe("<BatchView />", () => {
         [
           {
             type: "tez",
-            value: {
-              amount: "1000000",
-              recipient: mockImplicitAddress(1).pkh,
-              sender: mockImplicitAddress(1).pkh,
-            },
+            amount: "1000000",
+            recipient: mockImplicitAddress(1),
           },
           {
             type: "tez",
-            value: {
-              amount: "2000000",
-              recipient: mockImplicitAddress(2).pkh,
-              sender: mockImplicitAddress(1).pkh,
-            },
+            amount: "2000000",
+            recipient: mockImplicitAddress(2),
           },
           {
             type: "tez",
-            value: {
-              amount: "3000000",
-              recipient: mockImplicitAddress(3).pkh,
-              sender: mockImplicitAddress(1).pkh,
-            },
+            amount: "3000000",
+            recipient: mockImplicitAddress(3),
           },
         ],
         config

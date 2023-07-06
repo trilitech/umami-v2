@@ -3,6 +3,7 @@ import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 import { CSVRow } from "./types";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../../mocks/tokens";
 import type { NFT } from "../../types/Asset";
+import { parseContractPkh } from "../../types/Address";
 
 describe("csv utils", () => {
   test("parse valid csv rows", async () => {
@@ -75,11 +76,8 @@ describe("csv utils", () => {
     const res = csvRowToOperationValue(mockImplicitAddress(0).pkh, mockCSVTezTransferRow, {});
     expect(res).toEqual({
       type: "tez",
-      value: {
-        amount: "1000000",
-        recipient: mockImplicitAddress(1).pkh,
-        sender: mockImplicitAddress(0).pkh,
-      },
+      amount: "1000000",
+      recipient: mockImplicitAddress(1),
     });
   });
 
@@ -94,13 +92,12 @@ describe("csv utils", () => {
       [ghostFA12.contract]: [ghostFA12],
     });
     expect(res).toEqual({
-      type: "token",
+      type: "fa1.2",
       data: ghostFA12,
-      value: {
-        amount: "100000000",
-        recipient: mockImplicitAddress(1).pkh,
-        sender: mockImplicitAddress(0).pkh,
-      },
+      amount: "100000000",
+      recipient: mockImplicitAddress(1),
+      sender: mockImplicitAddress(0),
+      contract: parseContractPkh(ghostFA12.contract),
     });
   });
 
@@ -116,13 +113,13 @@ describe("csv utils", () => {
       [ghostFA2.contract]: [ghostFA2],
     });
     expect(res).toEqual({
-      type: "token",
+      type: "fa2",
       data: ghostFA2,
-      value: {
-        amount: "100000",
-        recipient: mockImplicitAddress(1).pkh,
-        sender: mockImplicitAddress(0).pkh,
-      },
+      amount: "100000",
+      recipient: mockImplicitAddress(1),
+      sender: mockImplicitAddress(0),
+      contract: parseContractPkh(ghostFA2.contract),
+      tokenId: ghostFA2.tokenId,
     });
   });
 
@@ -140,16 +137,16 @@ describe("csv utils", () => {
       [ghostTezzard.contract]: [ghostTezzard2, ghostTezzard1],
     });
     expect(res).toEqual({
-      type: "token",
+      type: "fa2",
       data: {
         ...ghostTezzard1,
         type: "nft",
       },
-      value: {
-        amount: "1",
-        recipient: mockImplicitAddress(1).pkh,
-        sender: mockImplicitAddress(0).pkh,
-      },
+      amount: "1",
+      recipient: mockImplicitAddress(1),
+      sender: mockImplicitAddress(0),
+      contract: parseContractPkh(ghostTezzard1.contract),
+      tokenId: ghostTezzard1.tokenId,
     });
   });
 

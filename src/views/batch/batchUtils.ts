@@ -18,7 +18,7 @@ export const getBatchSubtotal = (ops: OperationValue[]) => {
   const subTotal = ops.reduce((acc, curr) => {
     switch (curr.type) {
       case "tez":
-        return acc.plus(new BigNumber(curr.value.amount));
+        return acc.plus(new BigNumber(curr.amount));
       default:
         return acc;
     }

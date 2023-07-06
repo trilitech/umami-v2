@@ -1,32 +1,33 @@
-import { Operation } from "../../../multisig/types";
+import { RawOperation } from "../../../multisig/types";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { OperationValue } from "../types";
 
-export const toLambdaOperation = (operation: OperationValue): Operation => {
+export const toLambdaOperation = (operation: OperationValue): RawOperation => {
   switch (operation.type) {
     case "tez":
       return {
         type: "tez",
-        amount: operation.value.amount,
-        recipient: parsePkh(operation.value.recipient),
+        amount: operation.amount,
+        recipient: parsePkh(operation.recipient.pkh),
       };
       break;
-    case "token":
+    case "fa1.2":
+    case "fa2":
       if (operation.data.type === "fa1.2") {
         return {
           type: "fa1.2",
-          amount: operation.value.amount,
+          amount: operation.amount,
           contract: parseContractPkh(operation.data.contract),
-          recipient: parsePkh(operation.value.recipient),
-          sender: parsePkh(operation.value.sender),
+          recipient: parsePkh(operation.recipient.pkh),
+          sender: parsePkh(operation.sender.pkh),
         };
       } else {
         return {
           type: "fa2",
-          amount: operation.value.amount,
+          amount: operation.amount,
           contract: parseContractPkh(operation.data.contract),
-          recipient: parsePkh(operation.value.recipient),
-          sender: parsePkh(operation.value.sender),
+          recipient: parsePkh(operation.recipient.pkh),
+          sender: parsePkh(operation.sender.pkh),
           tokenId: operation.data.tokenId,
         };
       }
@@ -34,9 +35,7 @@ export const toLambdaOperation = (operation: OperationValue): Operation => {
     case "delegation":
       return {
         type: "delegation",
-        recipient: operation.value.recipient
-          ? parseImplicitPkh(operation.value.recipient)
-          : undefined,
+        recipient: operation.recipient ? parseImplicitPkh(operation.recipient.pkh) : undefined,
       };
   }
 };

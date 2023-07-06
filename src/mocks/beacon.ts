@@ -32,7 +32,7 @@ export const objectOperationRequest: OperationRequestOutput = {
   sourceAddress: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
 };
 
-export const mockBeaconDelegate = "KT1WvzYHCNBvDSdwafTHv7nJ1dWmZ8GCYuuC";
+export const mockBeaconDelegate = mockImplicitAddress(3).pkh;
 export const objectOperationDelegationRequest: OperationRequestOutput = {
   appMetadata: {
     senderId: "id1",

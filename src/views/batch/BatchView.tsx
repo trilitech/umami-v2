@@ -48,7 +48,7 @@ const BatchView = () => {
   const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
   const { onOpen, element, onClose } = useConfirmation();
 
-  const batchEls = Object.entries(batches).map(([pkh, batch]) => {
+  const batchEls = Object.entries(batches).map(([pkh, batch], i) => {
     const account = getAccount(pkh);
 
     const onConfirm = () => {
@@ -63,7 +63,7 @@ const BatchView = () => {
             sender: account.address.pkh,
             mode: {
               type: "batch",
-              data: { batch: batch.items.map(i => i.operation) },
+              data: { batch: batch.items.map(i => i.operation), signer: account.address.pkh },
             },
           })
         }
@@ -73,7 +73,7 @@ const BatchView = () => {
             body: "Are you sure you want to delete the batch?",
           })
         }
-        key={batch.items[0].operation.value.sender}
+        key={i}
         account={account}
         batch={batch}
       />
