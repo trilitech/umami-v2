@@ -36,7 +36,7 @@ import { BakerSelector } from "../../../views/delegations/BakerSelector";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
-import { AllAccountsAutocomplete } from "../../AddressAutocomplete";
+import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { classifyAsset, FormOperations, OperationValue, SendFormMode } from "../types";
 import { BatchRecap } from "./BatchRecap";
@@ -308,7 +308,8 @@ export const SendTezOrNFTForm = ({
             </FormControl>
           ) : null}
           <FormControl mb={2} isInvalid={!!errors.recipient}>
-            <AllAccountsAutocomplete
+            <KnownAccountsAutocomplete
+              label="To"
               register={register}
               isDisabled={disabled}
               inputName="recipient"

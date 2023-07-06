@@ -4,7 +4,7 @@ import { FieldValues, UseFormRegister, Path } from "react-hook-form";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
-import { useAllAccounts } from "../utils/hooks/accountHooks";
+import { useAllAccounts, useImplicitAccounts } from "../utils/hooks/accountHooks";
 import { useAppSelector } from "../utils/store/hooks";
 import { Identicon } from "./Identicon";
 
@@ -16,6 +16,7 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   isDisabled?: boolean;
   inputName: U;
   allowUnknown: boolean;
+  label: string;
   register: UseFormRegister<T>;
   setValue: (name: U, value: string, options: { shouldValidate: boolean }) => void;
 };
@@ -92,10 +93,11 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   contacts,
   initialPkhValue,
   isDisabled,
-  register,
   allowUnknown,
-  setValue: setFormValue,
   inputName,
+  label,
+  register,
+  setValue: setFormValue,
 }: BaseProps<T, U> & { contacts: Contact[] }) => {
   const initialInputValue = initialPkhValue
     ? contacts.find(c => c.pkh === initialPkhValue)?.name || initialPkhValue
@@ -137,7 +139,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   return (
     <Box>
       <FormLabel>
-        To
+        {label}
         <Input
           isDisabled={isDisabled}
           aria-label={inputName}
@@ -170,7 +172,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   );
 };
 
-export const AllAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
+export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>
 ) => {
   const contacts = Object.values(useAppSelector(s => s.contacts));
@@ -181,4 +183,15 @@ export const AllAccountsAutocomplete = <T extends FieldValues, U extends Path<T>
   }));
 
   return <AddressAutocomplete {...props} contacts={contacts.concat(accounts)} />;
+};
+
+export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
+  props: BaseProps<T, U>
+) => {
+  const accounts = useImplicitAccounts().map(account => ({
+    name: account.label,
+    pkh: account.address.pkh,
+  }));
+
+  return <AddressAutocomplete {...props} contacts={accounts} />;
 };

@@ -1,7 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import {
   FormControl,
-  FormLabel,
   ModalBody,
   ModalCloseButton,
   ModalHeader,
@@ -9,12 +8,13 @@ import {
   ModalFooter,
   Box,
   Button,
+  FormErrorMessage,
 } from "@chakra-ui/react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { wertUrls } from "../../utils/tezos/consts";
-import { ConnectedAccountSelector } from "../AccountSelector/AccountSelector";
+import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 
 const BuyTezForm = () => {
   const network = useSelectedNetwork();
@@ -29,13 +29,13 @@ const BuyTezForm = () => {
     navigateToExternalLink(url);
   };
 
-  const { control, handleSubmit, formState } = useForm<{
+  const { register, setValue, handleSubmit, formState } = useForm<{
     recipient: string;
   }>({
     mode: "onBlur",
   });
 
-  const { isValid } = formState;
+  const { isValid, errors } = formState;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -45,21 +45,14 @@ const BuyTezForm = () => {
         <>
           <Text textAlign="center">Please select the recipient account.</Text>
           <ModalBody data-testid="buy-tez-selector">
-            <FormControl paddingY={5}>
-              <FormLabel>Recipient Account</FormLabel>
-              <Controller
-                rules={{ required: isMainnet }}
-                control={control}
-                name="recipient"
-                render={({ field: { onChange, value } }) => (
-                  <ConnectedAccountSelector
-                    selected={value}
-                    onSelect={account => {
-                      onChange(account.address.pkh);
-                    }}
-                  />
-                )}
-              />
+            <FormControl paddingY={5} isInvalid={!!errors.recipient}>
+              <OwnedImplicitAccountsAutocomplete
+                label="Recipient Account"
+                inputName="recipient"
+                register={register}
+                setValue={setValue}
+                allowUnknown={false} />
+              {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
             </FormControl>
           </ModalBody>
         </>

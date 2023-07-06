@@ -19,6 +19,7 @@ const fixture = ({
   render(
     <AddressAutocomplete
       contacts={contacts}
+      label=""
       inputName="destination"
       allowUnknown={allowUnknown}
       register={result.current.register}
