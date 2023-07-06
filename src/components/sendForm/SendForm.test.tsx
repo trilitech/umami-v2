@@ -779,14 +779,19 @@ describe("<SendForm />", () => {
       });
     });
   });
+
   describe("Multisig", () => {
-    it("If use selects a multisig account it displays a signer field prefiled with the first signer. Signer selector is disabled since wallet only owns one", async () => {
-      render(fixture(MOCK_PKH, { type: "tez" }));
-      fillAccountSelector("Multisig Account 1");
-      const accountSelector = await screen.findByTestId(/proposal-signer-selector/i);
-      const expectedDefaultSigner = formatPkh(mockImplicitAddress(1).pkh);
-      expect(accountSelector).toHaveTextContent(expectedDefaultSigner);
-      expect(accountSelector).toBeDisabled();
+    it("hides the signer input if only one available", async () => {
+      render(fixture(multisigs[0].address.pkh, { type: "tez" }));
+      expect(screen.queryByTestId("real-address-input-proposalSigner")).not.toBeInTheDocument();
+    });
+
+    it("shows the signer input if more than one available", async () => {
+      render(fixture(multisigs[1].address.pkh, { type: "tez" }));
+      expect(screen.getByTestId("real-address-input-proposalSigner")).toHaveAttribute(
+        "value",
+        mockImplicitAddress(1).pkh
+      );
     });
 
     test("User can acomplish a tez proposal", async () => {

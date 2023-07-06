@@ -1,5 +1,5 @@
 import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { FieldValues, UseFormRegister, Path, PathValue } from "react-hook-form";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
@@ -105,33 +105,29 @@ export const AddressAutocomplete = <
   register,
   setValue: setFormValue,
 }: BaseProps<T, U, V> & { contacts: Contact[] }) => {
-  const initialInputValue = initialPkhValue
-    ? contacts.find(c => c.pkh === initialPkhValue)?.name || initialPkhValue
-    : "";
-
-  const [rawInputValue, setRawInputValue] = useState(initialInputValue);
+  const [rawInputValue, setRawInputValue] = useState(() => {
+    if (!initialPkhValue) {
+      return "";
+    }
+    return contacts.find(c => c.pkh === initialPkhValue)?.name || initialPkhValue;
+  });
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [suggestions, setSuggestions] = useState(getSuggestions("", contacts));
 
-  const handleChange = useCallback(
-    (newValue: string) => {
-      setRawInputValue(newValue);
-      setSuggestions(getSuggestions(newValue, contacts));
+  const handleChange = (newValue: string) => {
+    setRawInputValue(newValue);
+    setSuggestions(getSuggestions(newValue, contacts));
 
-      const contact = contacts.find(
-        contact => contact.name === newValue || contact.pkh === newValue
-      );
-      if (contact !== undefined) {
-        setRawInputValue(contact.name);
-        setFormValue(inputName, contact.pkh, { shouldValidate: true });
-      } else if (allowUnknown && isAddressValid(newValue)) {
-        setFormValue(inputName, newValue, { shouldValidate: true });
-      } else {
-        setFormValue(inputName, "", { shouldValidate: true });
-      }
-    },
-    [contacts, inputName, setRawInputValue, setFormValue, allowUnknown]
-  );
+    const contact = contacts.find(contact => contact.name === newValue || contact.pkh === newValue);
+    if (contact !== undefined) {
+      setRawInputValue(contact.name);
+      setFormValue(inputName, contact.pkh, { shouldValidate: true });
+    } else if (allowUnknown && isAddressValid(newValue)) {
+      setFormValue(inputName, newValue, { shouldValidate: true });
+    } else {
+      setFormValue(inputName, "", { shouldValidate: true });
+    }
+  };
 
   return (
     <Box>
@@ -204,7 +200,7 @@ export const OwnedImplicitAccountsAutocomplete = <
   return <AddressAutocomplete {...props} contacts={accounts} />;
 };
 
-export const AllAccountsAutocomplete = <
+export const OwnedAccountsAutocomplete = <
   T extends FieldValues,
   U extends Path<T>,
   V extends PathValue<T, U>

@@ -224,7 +224,7 @@ export const useGetMultisigSigners = () => {
 
     if (signers.length === 0) {
       console.warn(
-        "Wallet doesn't own any signers for  multisig contract " + multisigAccount.address.pkh
+        "Wallet doesn't own any signers for multisig contract " + multisigAccount.address.pkh
       );
     }
     return signers;

@@ -25,7 +25,6 @@ import {
   setBatchEstimationPerTransaction,
 } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../../mocks/testUtils";
-import { formatPkh } from "../../format";
 import { walletClient } from "../beacon";
 
 jest.mock("../../tezos");

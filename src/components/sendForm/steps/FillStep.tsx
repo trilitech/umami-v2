@@ -21,7 +21,7 @@ import {
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { AccountType, MultisigAccount } from "../../../types/Account";
+import { AccountType } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { Delegation } from "../../../types/RawOperation";
@@ -33,12 +33,12 @@ import {
 } from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
 import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
-import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import {
-  AllAccountsAutocomplete,
+  OwnedAccountsAutocomplete,
   BakersAutocomplete,
   KnownAccountsAutocomplete,
+  AddressAutocomplete,
 } from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { classifyAsset, FormOperations, OperationValue, SendFormMode } from "../types";
@@ -79,7 +79,7 @@ export const DelegateForm = ({
         <Text textAlign="center">{subTitle}</Text>
         <ModalBody>
           <FormControl mb={2}>
-            <AllAccountsAutocomplete
+            <OwnedAccountsAutocomplete
               label="From"
               register={register}
               setValue={setValue}
@@ -254,6 +254,8 @@ export const SendTezOrNFTForm = ({
   const simulating = isLoading || batchIsSimulating;
   const senderIsMultisig = accountIsMultisig(getValues("sender"));
 
+  const getMultisigSigners = useGetMultisigSigners();
+
   return (
     <ModalContent bg="umami.gray.900">
       <form>
@@ -287,23 +289,26 @@ export const SendTezOrNFTForm = ({
               )}
             />
           </FormControl>
-          {multisigSender ? (
-            <FormControl mb={2}>
-              <FormLabel>Proposal Signer</FormLabel>
-              <Controller
-                rules={{ required: true }}
-                control={control}
-                name="proposalSigner"
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <ProposalSigners
-                    multisigAccount={multisigSender}
-                    onSelect={onChange}
-                    selected={value}
-                  />
-                )}
+          {multisigSender && getMultisigSigners(multisigSender).length > 1 && (
+            <FormControl mb={2} isInvalid={!!errors.proposalSigner}>
+              <AddressAutocomplete
+                label="Proposal Signer"
+                inputName="proposalSigner"
+                contacts={getMultisigSigners(multisigSender).map(acc => ({
+                  name: acc.label,
+                  pkh: acc.address.pkh,
+                }))}
+                initialPkhValue={getMultisigSigners(multisigSender)[0].address.pkh}
+                register={register}
+                setValue={setValue}
+                allowUnknown={false}
+                isDisabled={getMultisigSigners(multisigSender).length === 1}
               />
+              {errors.proposalSigner && (
+                <FormErrorMessage>{errors.proposalSigner.message}</FormErrorMessage>
+              )}
             </FormControl>
-          ) : null}
+          )}
           <FormControl mb={2} isInvalid={!!errors.recipient}>
             <KnownAccountsAutocomplete
               label="To"
@@ -527,27 +532,4 @@ export const FillStep: React.FC<{
       );
     }
   }
-};
-
-const ProposalSigners = ({
-  multisigAccount,
-  selected,
-  onSelect,
-}: {
-  multisigAccount: MultisigAccount;
-  selected?: string;
-  onSelect: (pkh: string) => void;
-}) => {
-  const getSigners = useGetMultisigSigners();
-  const signers = getSigners(multisigAccount);
-
-  return (
-    <AccountSelectorDisplay
-      isDisabled={signers.length === 1}
-      selected={selected}
-      accounts={signers}
-      onSelect={a => onSelect(a.address.pkh)}
-      dataTestid="proposal-signer-selector"
-    />
-  );
 };
