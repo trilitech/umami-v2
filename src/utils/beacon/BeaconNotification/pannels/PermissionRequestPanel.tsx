@@ -6,6 +6,7 @@ import {
 import {
   AspectRatio,
   Button,
+  FormControl,
   Image,
   ModalBody,
   ModalCloseButton,
@@ -14,22 +15,30 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { ConnectedAccountSelector } from "../../../../components/AccountSelector/AccountSelector";
-import { AccountType, ImplicitAccount } from "../../../../types/Account";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { OwnedImplicitAccountsAutocomplete } from "../../../../components/AddressAutocomplete";
+import { useImplicitAccounts } from "../../../hooks/accountHooks";
 import { walletClient } from "../../beacon";
 
-const PermissionRequestPannel: React.FC<{
+const PermissionRequestPanel: React.FC<{
   request: PermissionRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
-  const [account, setAccount] = useState<ImplicitAccount>();
+  const accounts = useImplicitAccounts();
+  const defaultAddress = accounts[0].address.pkh;
+  const {
+    register,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<{ address: string }>({ defaultValues: { address: defaultAddress } });
 
   const grant = async () => {
+    const account = accounts.find(acc => acc.address.pkh === getValues().address);
     if (!account) {
       throw new Error("No account selected");
     }
-
     const response: BeaconResponseInputMessage = {
       type: BeaconMessageType.PermissionResponse,
       network: { type: request.network.type }, // Use the same network that the user requested
@@ -48,15 +57,16 @@ const PermissionRequestPannel: React.FC<{
 
       <ModalCloseButton />
       <ModalBody>
-        <ConnectedAccountSelector
-          selected={account && account.address.pkh}
-          onSelect={a => {
-            if (a.type === AccountType.MULTISIG) {
-              throw new Error("Beacon doesn't support multisig");
-            }
-            setAccount(a);
-          }}
-        />
+        <FormControl isInvalid={!!errors.address}>
+          <OwnedImplicitAccountsAutocomplete
+            label="Select Account"
+            allowUnknown={false}
+            setValue={setValue}
+            inputName="address"
+            register={register}
+            initialPkhValue={defaultAddress}
+          />
+        </FormControl>
         <AspectRatio mt={2} mb={2} width="100%" ratio={1}>
           <Image width="100%" height={40} src={request.appMetadata.icon} />
         </AspectRatio>
@@ -66,7 +76,7 @@ const PermissionRequestPannel: React.FC<{
       </ModalBody>
 
       <ModalFooter>
-        <Button isDisabled={!account} onClick={_ => grant()}>
+        <Button isDisabled={!!errors.address} onClick={_ => grant()}>
           Grant
         </Button>
       </ModalFooter>
@@ -74,4 +84,4 @@ const PermissionRequestPannel: React.FC<{
   );
 };
 
-export default PermissionRequestPannel;
+export default PermissionRequestPanel;

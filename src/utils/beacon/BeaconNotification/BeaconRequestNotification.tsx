@@ -13,9 +13,9 @@ import { OperationValue, SendFormMode } from "../../../components/sendForm/types
 import { parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { useFirstAccount, useGetImplicitAccount } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
-import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
-import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
-import SignPayloadRequestPannel from "./pannels/SignPayloadRequestPannel";
+import BeaconErrorPanel from "./pannels/BeaconErrorPanel";
+import PermissionRequestPanel from "./pannels/PermissionRequestPanel";
+import SignPayloadRequestPanel from "./pannels/SignPayloadRequestPanel";
 
 const SingleTransaction = ({
   transfer,
@@ -82,17 +82,15 @@ export const BeaconNotification: React.FC<{
 
   switch (message.type) {
     case BeaconMessageType.PermissionRequest: {
-      return <PermissionRequestPannel request={message} onSuccess={onSuccess} />;
+      return <PermissionRequestPanel request={message} onSuccess={onSuccess} />;
     }
     case BeaconMessageType.SignPayloadRequest: {
-      return <SignPayloadRequestPannel request={message} onSuccess={onSuccess} />;
+      return <SignPayloadRequestPanel request={message} onSuccess={onSuccess} />;
     }
     case BeaconMessageType.OperationRequest: {
       const signerAccount = getAccount(message.sourceAddress);
       if (!signerAccount) {
-        return (
-          <BeaconErrorPannel message={`Account not in this wallet ${message.sourceAddress}`} />
-        );
+        return <BeaconErrorPanel message={`Account not in this wallet ${message.sourceAddress}`} />;
       }
 
       try {
@@ -134,13 +132,12 @@ export const BeaconNotification: React.FC<{
           />
         );
       } catch (error: any) {
-        console.log(error);
-        return <BeaconErrorPannel message={`Error handling operation request: ${error.message}`} />;
+        return <BeaconErrorPanel message={`Error handling operation request: ${error.message}`} />;
       }
     }
 
     default:
-      return <BeaconErrorPannel message={`Unsupported request: ${message.type}`} />;
+      return <BeaconErrorPanel message={`Unsupported request: ${message.type}`} />;
   }
 };
 

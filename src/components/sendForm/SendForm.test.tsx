@@ -111,12 +111,12 @@ describe("<SendForm />", () => {
 
     test("should render first step", () => {
       render(fixture(MOCK_PKH, { type: "tez" }));
-      expect(screen.getByTestId("real-address-input-recipient")).toHaveAttribute("value", MOCK_PKH);
+      expect(screen.getByTestId("real-address-input-sender")).toHaveAttribute("value", MOCK_PKH);
     });
 
     const fillForm = async () => {
       render(fixture(MOCK_PKH, { type: "tez" }));
-      expect(screen.getByTestId("real-address-input-recipient")).toHaveAttribute("value", MOCK_PKH);
+      expect(screen.getByTestId("real-address-input-sender")).toHaveAttribute("value", MOCK_PKH);
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });

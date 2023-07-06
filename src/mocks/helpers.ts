@@ -6,8 +6,8 @@ import accountsSlice from "../utils/store/accountsSlice";
 import { store } from "../utils/store/store";
 import { fakeTezosUtils } from "./fakeTezosUtils";
 
-export const selectAccount = (accountLabel: string) => {
-  const input = screen.getByLabelText("From");
+export const selectAccount = (accountLabel: string, label = "From") => {
+  const input = screen.getByLabelText(label);
   fireEvent.change(input, { target: { value: accountLabel } });
 };
 
