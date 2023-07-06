@@ -11,10 +11,11 @@ import {
   useToast,
   Text,
   Flex,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
 import { FC, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useGetPk } from "../../utils/hooks/accountHooks";
 import {
   useBatchIsSimulating,
@@ -23,7 +24,7 @@ import {
 } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
-import { ConnectedAccountSelector } from "../AccountSelector/AccountSelector";
+import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { CSVRow } from "./types";
 import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 
@@ -35,12 +36,12 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const isSimulating = useBatchIsSimulating();
 
-  const { control, handleSubmit, formState, getValues } = useForm<{
+  const { register, setValue, handleSubmit, getValues, formState } = useForm<{
     sender: string;
   }>({
     mode: "onBlur",
   });
-  const { isValid } = formState;
+  const { isValid, errors } = formState;
 
   // TODO: is it possible to use the csv file with react-hook-form?
   // https://app.asana.com/0/0/1204523779791382/f
@@ -116,21 +117,16 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
       <ModalHeader textAlign="center">Load CSV file</ModalHeader>
       <Text textAlign="center">Select an account and then upload the CSV file.</Text>
       <ModalBody>
-        <FormControl paddingY={5}>
-          <FormLabel>From</FormLabel>
-          <Controller
-            rules={{ required: true }}
-            control={control}
-            name="sender"
-            render={({ field: { onChange, value } }) => (
-              <ConnectedAccountSelector
-                selected={value}
-                onSelect={account => {
-                  onChange(account.address.pkh);
-                }}
-              />
-            )}
+        <FormControl paddingY={5} isInvalid={!!errors.sender}>
+          {/* TODO: Use AllAccountsAutocomplete instead */}
+          <OwnedImplicitAccountsAutocomplete
+            label="From"
+            inputName="sender"
+            allowUnknown={false}
+            setValue={setValue}
+            register={register}
           />
+          {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
         </FormControl>
 
         <FormLabel pt={5}>Select CSV</FormLabel>

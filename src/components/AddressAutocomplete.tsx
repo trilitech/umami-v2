@@ -195,3 +195,14 @@ export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U exten
 
   return <AddressAutocomplete {...props} contacts={accounts} />;
 };
+
+export const AllAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
+  props: BaseProps<T, U>
+) => {
+  const accounts = useAllAccounts().map(account => ({
+    name: account.label,
+    pkh: account.address.pkh,
+  }));
+
+  return <AddressAutocomplete {...props} contacts={accounts} />;
+};
