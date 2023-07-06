@@ -9,8 +9,7 @@ import { contactsActions } from "../../utils/store/contactsSlice";
 type Options = {
   title?: string;
   buttonText?: string;
-  isEdit?: boolean;
-  contactToDisplay?: Contact;
+  contact?: Contact;
 };
 
 const defaultOptions = {
@@ -37,9 +36,8 @@ export const useUpsertContactModal = () => {
       <UpsertContactModal
         title={options?.title || defaultOptions.title}
         buttonText={options?.buttonText || defaultOptions.buttonText}
-        contact={options?.contactToDisplay}
+        contact={options?.contact}
         onSubmitContact={onSubmitContact}
-        isEdit={options?.isEdit}
         isOpen={isOpen}
         onClose={onClose}
       />

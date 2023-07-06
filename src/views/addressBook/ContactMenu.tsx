@@ -22,8 +22,7 @@ const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
             onOpenEdit({
               title: "Edit contact",
               buttonText: "Update",
-              isEdit: true,
-              contactToDisplay: contact,
+              contact: contact,
             })
           }
           textFirst
