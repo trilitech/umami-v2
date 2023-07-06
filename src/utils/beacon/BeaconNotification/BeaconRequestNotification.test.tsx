@@ -19,7 +19,7 @@ import { mockImplicitAccount } from "../../../mocks/factories";
 import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import {
   dispatchMockAccounts,
-  fillAccountSelector,
+  selectAccount,
   fillPassword,
   resetAccounts,
   setBatchEstimationPerTransaction,
@@ -77,7 +77,7 @@ describe("<BeaconRequestNotification />", () => {
 
     test("User can select account and grant permission", async () => {
       render(fixture(message, () => {}));
-      fillAccountSelector(mockImplicitAccount(2).label || "");
+      selectAccount(mockImplicitAccount(2).label || "");
       const grantButton = screen.getByRole("button", { name: /grant/i });
       expect(grantButton).toBeEnabled();
 

@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { AccountType } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
@@ -32,7 +32,6 @@ import {
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
-import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import {
   OwnedAccountsAutocomplete,
@@ -226,11 +225,9 @@ export const SendTezOrNFTForm = ({
 
   const {
     formState: { isValid, errors },
-    control,
     register,
     getValues,
     handleSubmit,
-    reset,
     setValue,
   } = useForm<FormValues>({
     mode: "onBlur",
@@ -256,6 +253,35 @@ export const SendTezOrNFTForm = ({
 
   const getMultisigSigners = useGetMultisigSigners();
 
+  const signerSelectorField = () => {
+    if (!multisigSender) {
+      return null;
+    }
+    const signers = getMultisigSigners(multisigSender).map(acc => ({
+      name: acc.label,
+      pkh: acc.address.pkh,
+    }));
+    if (signers.length < 2) {
+      return null;
+    }
+    return (
+      <FormControl mb={2} isInvalid={!!errors.proposalSigner}>
+        <AddressAutocomplete
+          label="Proposal Signer"
+          inputName="proposalSigner"
+          contacts={signers}
+          initialPkhValue={signers[0].pkh}
+          register={register}
+          setValue={setValue}
+          allowUnknown={false}
+        />
+        {errors.proposalSigner && (
+          <FormErrorMessage>{errors.proposalSigner.message}</FormErrorMessage>
+        )}
+      </FormControl>
+    );
+  };
+
   return (
     <ModalContent bg="umami.gray.900">
       <form>
@@ -263,52 +289,19 @@ export const SendTezOrNFTForm = ({
         <ModalHeader textAlign="center">Send</ModalHeader>
         <Text textAlign="center">Send one or insert into batch.</Text>
         <ModalBody>
-          <FormControl mb={2}>
-            <FormLabel>From</FormLabel>
-            <Controller
-              rules={{ required: true }}
-              control={control}
-              name="sender"
-              render={({ field: { onChange, value } }) => (
-                <ConnectedAccountSelector
-                  isDisabled={isNFT || simulating || disabled}
-                  selected={value}
-                  onSelect={account => {
-                    onChange(account.address.pkh);
-
-                    // This is needed to update the signer if a multisig account is selected
-                    const values = getValues();
-                    if (account.type === AccountType.MULTISIG) {
-                      const defaultSigner = getDefaultSigner(account.address.pkh);
-                      reset({ ...values, proposalSigner: defaultSigner });
-                    } else {
-                      reset({ ...values, proposalSigner: undefined });
-                    }
-                  }}
-                />
-              )}
+          <FormControl mb={2} isInvalid={!!errors.sender}>
+            <OwnedAccountsAutocomplete
+              label="From"
+              register={register}
+              setValue={setValue}
+              inputName="sender"
+              isDisabled={isNFT || simulating || disabled}
+              allowUnknown={false}
+              initialPkhValue={mandatoryNftSender || sender}
             />
+            {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
           </FormControl>
-          {multisigSender && getMultisigSigners(multisigSender).length > 1 && (
-            <FormControl mb={2} isInvalid={!!errors.proposalSigner}>
-              <AddressAutocomplete
-                label="Proposal Signer"
-                inputName="proposalSigner"
-                contacts={getMultisigSigners(multisigSender).map(acc => ({
-                  name: acc.label,
-                  pkh: acc.address.pkh,
-                }))}
-                initialPkhValue={getMultisigSigners(multisigSender)[0].address.pkh}
-                register={register}
-                setValue={setValue}
-                allowUnknown={false}
-                isDisabled={getMultisigSigners(multisigSender).length === 1}
-              />
-              {errors.proposalSigner && (
-                <FormErrorMessage>{errors.proposalSigner.message}</FormErrorMessage>
-              )}
-            </FormControl>
-          )}
+          {signerSelectorField()}
           <FormControl mb={2} isInvalid={!!errors.recipient}>
             <KnownAccountsAutocomplete
               label="To"

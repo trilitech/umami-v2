@@ -12,7 +12,7 @@ import {
 import {
   dispatchMockAccounts,
   fakeRestoreFromMnemonic,
-  fillAccountSelector,
+  selectAccount,
   fillPassword,
   resetAccounts,
   setBatchEstimationPerTransaction,
@@ -21,7 +21,6 @@ import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtil
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { FA12Token, FA2Token } from "../../types/Asset";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
-import { formatPkh } from "../../utils/format";
 import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice, { BatchItem } from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
@@ -112,12 +111,12 @@ describe("<SendForm />", () => {
 
     test("should render first step", () => {
       render(fixture(MOCK_PKH, { type: "tez" }));
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(formatPkh(MOCK_PKH));
+      expect(screen.getByTestId("real-address-input-recipient")).toHaveAttribute("value", MOCK_PKH);
     });
 
     const fillForm = async () => {
       render(fixture(MOCK_PKH, { type: "tez" }));
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(formatPkh(MOCK_PKH));
+      expect(screen.getByTestId("real-address-input-recipient")).toHaveAttribute("value", MOCK_PKH);
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
@@ -348,7 +347,7 @@ describe("<SendForm />", () => {
           data: mockFA2,
         })
       );
-      fillAccountSelector(mockImplicitAccount(2).label || "");
+      selectAccount(mockImplicitAccount(2).label || "");
 
       const estimateButton = screen.getByText(/preview/i);
       expect(estimateButton).toBeDisabled();
@@ -462,7 +461,7 @@ describe("<SendForm />", () => {
           data: mockFa1,
         })
       );
-      fillAccountSelector(mockImplicitAccount(2).label || "");
+      selectAccount(mockImplicitAccount(2).label || "");
 
       const estimateButton = screen.getByText(/preview/i);
       expect(estimateButton).toBeDisabled();
@@ -542,12 +541,10 @@ describe("<SendForm />", () => {
   describe("case send NFT", () => {
     const fillFormAndSimulate = async () => {
       render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(
-        formatPkh(mockImplicitAccount(1).address.pkh)
+      expect(screen.getByTestId("real-address-input-sender")).toHaveAttribute(
+        "value",
+        mockImplicitAccount(1).address.pkh
       );
-
-      // const amountInput = screen.getByLabelText(/amount/i);
-      // fireEvent.change(amountInput, { target: { value: "23" } });
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
@@ -572,18 +569,18 @@ describe("<SendForm />", () => {
         );
       });
     };
+
     it("should display editions in amount input", () => {
       render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
-
       expect(screen.getByTestId(/currency/)).toHaveTextContent("editions");
     });
 
-    test("sender button is disabled and prefilled with NFT owner", () => {
+    test("sender button is prefilled with NFT owner", () => {
       render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
-
-      expect(screen.getByTestId(/account-selector/)).toHaveTextContent(formatPkh(mockNFT(1).owner));
-
-      expect(screen.getByTestId(/account-selector/)).toBeDisabled();
+      expect(screen.getByTestId("real-address-input-sender")).toHaveAttribute(
+        "value",
+        mockNFT(1).owner
+      );
     });
 
     test("should display simulation result: NFT image, fee and total", async () => {
@@ -803,7 +800,7 @@ describe("<SendForm />", () => {
       } as TransactionOperation);
 
       render(fixture(MOCK_PKH, { type: "tez" }));
-      fillAccountSelector("Multisig Account 1");
+      selectAccount("Multisig Account 1");
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
@@ -860,7 +857,7 @@ describe("<SendForm />", () => {
 
       render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
 
-      fillAccountSelector("Multisig Account 1");
+      selectAccount("Multisig Account 1");
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
@@ -925,7 +922,7 @@ describe("<SendForm />", () => {
         })
       );
 
-      fillAccountSelector("Multisig Account 1");
+      selectAccount("Multisig Account 1");
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
