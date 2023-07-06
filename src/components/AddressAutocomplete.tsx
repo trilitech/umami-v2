@@ -15,6 +15,7 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   initialPkhValue?: string;
   isDisabled?: boolean;
   inputName: U;
+  allowUnknown: boolean;
   register: UseFormRegister<T>;
   setValue: (name: U, value: string, options: { shouldValidate: boolean }) => void;
 };
@@ -92,6 +93,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   initialPkhValue,
   isDisabled,
   register,
+  allowUnknown,
   setValue: setFormValue,
   inputName,
 }: BaseProps<T, U> & { contacts: Contact[] }) => {
@@ -115,13 +117,13 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       if (contact !== undefined) {
         setRawInputValue(contact.name);
         setFormValue(inputName, contact.pkh, { shouldValidate: true });
-      } else if (isAddressValid(newValue)) {
+      } else if (allowUnknown && isAddressValid(newValue)) {
         setFormValue(inputName, newValue, { shouldValidate: true });
       } else {
         setFormValue(inputName, "", { shouldValidate: true });
       }
     },
-    [contacts, inputName, setRawInputValue, setFormValue]
+    [contacts, inputName, setRawInputValue, setFormValue, allowUnknown]
   );
 
   // on initial render set the real input value to the initialInputValue

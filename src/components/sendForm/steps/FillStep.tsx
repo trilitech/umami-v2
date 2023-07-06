@@ -314,6 +314,7 @@ export const SendTezOrNFTForm = ({
               inputName="recipient"
               setValue={setValue}
               initialPkhValue={recipient}
+              allowUnknown
             />
             {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
           </FormControl>
