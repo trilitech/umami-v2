@@ -60,6 +60,7 @@ const BatchView = () => {
       <BatchDisplay
         onSend={() =>
           openSendForm({
+            sender: account.address.pkh,
             mode: {
               type: "batch",
               data: { batch: batch.items.map(i => i.operation) },

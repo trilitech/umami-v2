@@ -6,9 +6,11 @@ import { MdArrowOutward } from "react-icons/md";
 import ContactMenu from "./ContactMenu";
 import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { truncate } from "../../utils/format";
+import { useFirstAccount } from "../../utils/hooks/accountHooks";
 
 const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
   const { modalElement, onOpen } = useSendFormModal();
+  const account = useFirstAccount();
   return (
     <>
       <TableContainer overflowX="unset" overflowY="unset">
@@ -42,6 +44,7 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                           label="Send"
                           onClick={() =>
                             onOpen({
+                              sender: account.address.pkh,
                               recipient: contact.pkh,
                               mode: { type: "tez" },
                             })

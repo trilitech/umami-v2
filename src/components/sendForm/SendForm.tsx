@@ -34,12 +34,12 @@ export const SendForm = ({
   disabled = false,
   onSuccess = () => {},
 }: {
-  sender?: string;
+  sender: string;
   recipient?: string;
   amount?: string;
   parameter?: TransferParams["parameter"];
   onSuccess?: (hash: string) => void;
-  mode?: SendFormMode;
+  mode: SendFormMode;
   disabled?: boolean;
 }) => {
   const network = useSelectedNetwork();

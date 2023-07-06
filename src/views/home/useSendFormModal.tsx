@@ -1,27 +1,26 @@
 import { Modal, useDisclosure } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useState } from "react";
 import SendForm from "../../components/sendForm";
 import { SendFormMode } from "../../components/sendForm/types";
 
 export type Options = {
-  sender?: string;
+  sender: string;
   recipient?: string;
   mode: SendFormMode;
 };
 
 export const useSendFormModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const optionsRef = useRef<Options>();
-  const options = optionsRef.current;
+  const [options, setOptions] = useState<Options | undefined>(undefined);
 
   return {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
-        <SendForm sender={options?.sender} recipient={options?.recipient} mode={options?.mode} />
+        {options && <SendForm {...options} />}
       </Modal>
     ),
-    onOpen: (options?: Options) => {
-      optionsRef.current = options;
+    onOpen: (options: Options) => {
+      setOptions(options);
       onOpen();
     },
   };

@@ -22,6 +22,7 @@ import { NoDelegations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { objectMap } from "../../utils/helpers";
+import { useFirstAccount } from "../../utils/hooks/accountHooks";
 import { useAllDelegations } from "../../utils/hooks/assetsHooks";
 import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
 import { useSendFormModal } from "../home/useSendFormModal";
@@ -105,12 +106,14 @@ const DelegationsTable = ({
 
 const DelegateButton = () => {
   const { modalElement, onOpen } = useSendFormModal();
+  const account = useFirstAccount();
 
   return (
     <>
       <IconAndTextBtn
         onClick={() =>
           onOpen({
+            sender: account.address.pkh,
             mode: { type: "delegation" },
           })
         }
@@ -140,6 +143,7 @@ const DelegationsView = () => {
   const { filterMap: filter, filterElement } = useAccountFilterWithMapFilter();
   const delegationsArrays = objectMap(delegationsOps, d => (d ? [d] : undefined));
   const delegationsToDisplay = compact(filter(delegationsArrays).map(makeDelegation));
+  const account = useFirstAccount();
 
   const handleRemoveDelegate = (pkh: string) => {
     onOpen({
@@ -181,6 +185,7 @@ const DelegationsView = () => {
         <NoDelegations
           onDelegate={() => {
             onOpen({
+              sender: account.address.pkh,
               mode: { type: "delegation" },
             });
           }}

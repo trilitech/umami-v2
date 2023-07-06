@@ -50,7 +50,7 @@ export const DelegateForm = ({
   isLoading: boolean;
   onSubmit: (a: { sender: string; baker?: string }) => void;
   undelegate?: boolean;
-  sender?: string;
+  sender: string;
   recipient?: string;
   disabled?: boolean;
 }) => {
@@ -207,7 +207,7 @@ export const SendTezOrNFTForm = ({
 }: {
   onSubmit: (v: FormValues) => void;
   onSubmitBatch: (v: FormValues) => void;
-  sender?: string;
+  sender: string;
   token?: Asset;
   isLoading?: boolean;
   recipient?: string;
@@ -414,7 +414,7 @@ export const FillStep: React.FC<{
   onSubmit: (v: FormOperations) => void;
   onSubmitBatch: (v: OperationValue) => void;
   isLoading: boolean;
-  sender?: string;
+  sender: string;
   recipient?: string;
   amount?: string;
   disabled?: boolean;

@@ -19,11 +19,13 @@ import { getIPFSurl } from "../../utils/token/nftUtils";
 import TagsSection from "./drawer/TagsSection";
 import AttributesAccordionItem from "./drawer/AttributesAccordionItem";
 import PropertiesAccordionItem from "./drawer/PropertiesAccordionItem";
+import { useFirstAccount } from "../../utils/hooks/accountHooks";
 
 const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
   const { modalElement, onOpen } = useSendFormModal();
   const url = getIPFSurl(artifactUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
+  const account = useFirstAccount();
 
   const accordionItemStyle = {
     border: "none",
@@ -73,6 +75,7 @@ const NFTDrawerCard = ({ nft }: { nft: NFT }) => {
         bg="umami.blue"
         onClick={_ => {
           onOpen({
+            sender: account.address.pkh,
             mode: {
               type: "token",
               data: nft,

@@ -10,7 +10,7 @@ import { useToast } from "@chakra-ui/react";
 import React from "react";
 import SendForm from "../../../components/sendForm";
 import { OperationValue, SendFormMode } from "../../../components/sendForm/types";
-import { useGetImplicitAccount } from "../../hooks/accountHooks";
+import { useFirstAccount, useGetImplicitAccount } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
 import PermissionRequestPannel from "./pannels/PermissionRequestPannel";
@@ -48,6 +48,7 @@ const BatchTransaction = ({
   transfer: OperationValue[];
   onSuccess: (hash: string) => any;
 }) => {
+  const account = useFirstAccount();
   const mode: SendFormMode = {
     type: "batch",
     data: {
@@ -56,7 +57,13 @@ const BatchTransaction = ({
   };
 
   return (
-    <SendForm disabled onSuccess={onSuccess} mode={mode} recipient={transfer[0].value.recipient} />
+    <SendForm
+      disabled
+      sender={account.address.pkh}
+      onSuccess={onSuccess}
+      mode={mode}
+      recipient={transfer[0].value.recipient}
+    />
   );
 };
 
