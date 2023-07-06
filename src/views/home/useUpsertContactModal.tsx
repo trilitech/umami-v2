@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { Contact } from "../../types/Contact";
@@ -7,14 +7,9 @@ import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
 import { contactsActions } from "../../utils/store/contactsSlice";
 
 type Options = {
-  title?: string;
-  buttonText?: string;
+  title: string;
+  buttonText: string;
   contact?: Contact;
-};
-
-const defaultOptions = {
-  title: "Add Contact",
-  buttonText: "Add to Contact",
 };
 
 export const useUpsertContactModal = () => {
@@ -28,22 +23,21 @@ export const useUpsertContactModal = () => {
     dispatch(contactsActions.upsert(newContact));
     onClose();
   };
-  const optionsRef = useRef<Options>();
-  const options = optionsRef.current;
+  const [options, setOptions] = useState<Options | undefined>(undefined);
 
   return {
-    modalElement: (
+    modalElement: options && (
       <UpsertContactModal
-        title={options?.title || defaultOptions.title}
-        buttonText={options?.buttonText || defaultOptions.buttonText}
+        title={options.title}
+        buttonText={options.buttonText}
         contact={options?.contact}
         onSubmitContact={onSubmitContact}
         isOpen={isOpen}
         onClose={onClose}
       />
     ),
-    onOpen: (options?: Options) => {
-      optionsRef.current = options;
+    onOpen: (options: Options) => {
+      setOptions(options);
       onOpen();
     },
   };
