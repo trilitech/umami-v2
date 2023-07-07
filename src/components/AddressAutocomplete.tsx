@@ -5,6 +5,7 @@ import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useAllAccounts, useImplicitAccounts } from "../utils/hooks/accountHooks";
+import { useContacts } from "../utils/hooks/contactsHooks";
 import { useAppSelector } from "../utils/store/hooks";
 import { Identicon } from "./Identicon";
 
@@ -175,7 +176,7 @@ export const KnownAccountsAutocomplete = <
 >(
   props: BaseProps<T, U, V>
 ) => {
-  const contacts = Object.values(useAppSelector(s => s.contacts));
+  const contacts = Object.values(useContacts());
 
   const accounts = useAllAccounts().map(account => ({
     name: account.label,
