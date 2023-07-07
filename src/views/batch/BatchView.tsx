@@ -73,7 +73,7 @@ const BatchView = () => {
             body: "Are you sure you want to delete the batch?",
           })
         }
-        key={i}
+        key={account.address.pkh}
         account={account}
         batch={batch}
       />
