@@ -1,4 +1,4 @@
-import { RawOperation } from "../../../multisig/types";
+import { RawOperation } from "../../../types/RawOperation";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { OperationValue } from "../types";
 

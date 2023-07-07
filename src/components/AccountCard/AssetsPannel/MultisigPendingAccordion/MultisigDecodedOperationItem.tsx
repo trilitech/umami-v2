@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { FiArrowUpRight } from "react-icons/fi";
-import { RawOperation } from "../../../../multisig/types";
+import { RawOperation } from "../../../../types/RawOperation";
 import colors from "../../../../style/colors";
 import { formatTokenAmount, tokenDecimal, tokenName, tokenSymbol } from "../../../../types/Asset";
 import { prettyTezAmount } from "../../../../utils/format";

@@ -1,7 +1,7 @@
 import { ContractAddress, ImplicitAddress, parseContractPkh, parsePkh } from "../../types/Address";
 import { Asset, FA12Token, FA2Token, NFT } from "../../types/Asset";
 
-import * as RawOperations from "../../multisig/types";
+import * as RawOperations from "../../types/RawOperation";
 
 type TezMode = { type: "tez" };
 

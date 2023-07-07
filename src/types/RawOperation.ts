@@ -1,6 +1,6 @@
 import { BigMapAbstraction, TransferParams } from "@taquito/taquito";
 import { BigNumber } from "bignumber.js";
-import { Address, ImplicitAddress } from "../types/Address";
+import { Address, ImplicitAddress } from "./Address";
 
 import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "../utils/tezos/types";
 

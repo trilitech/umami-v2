@@ -1,5 +1,5 @@
 import { encodePubKey } from "@taquito/utils";
-import { RawOperation } from "../types";
+import { RawOperation } from "../../types/RawOperation";
 import {
   batchHeadSchema,
   contractTezSchema,

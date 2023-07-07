@@ -40,7 +40,7 @@ import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { classifyAsset, FormOperations, OperationValue, SendFormMode } from "../types";
 import { BatchRecap } from "./BatchRecap";
 
-import * as RawOperations from "../../../multisig/types";
+import * as RawOperations from "../../../types/RawOperation";
 
 export const DelegateForm = ({
   onSubmit,
