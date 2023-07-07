@@ -14,6 +14,7 @@ import RestoreSeedphrase from "./restoreSeedphrase/RestoreSeedphrase";
 import VerifySeedphrase from "./verifySeedphrase/VerifySeedphrase";
 import DerivationPath from "./derivationPath/DerivationPath";
 import { useStepHistory } from "../useStepHistory";
+import { FakeAccount } from "./FakeAccount";
 
 export enum StepType {
   eula = "eula",
@@ -27,6 +28,7 @@ export enum StepType {
   nameAccount = "nameAccount",
   derivationPath = "derivationPath",
   masterPassword = "masterPassword",
+  fakeAccount = "fakeAccount",
 }
 
 export enum ModalSize {
@@ -72,6 +74,7 @@ export type MasterPasswordStep = {
   type: StepType.masterPassword;
   account: { type: "mnemonic"; seedphrase: string; label: string; derivationPath: string };
 };
+export type FakeAccountStep = { type: StepType.fakeAccount };
 
 export type Step =
   | EulaStep
@@ -84,7 +87,8 @@ export type Step =
   | NameAccountStep
   | DerivationPathStep
   | RestoreLedgerStep
-  | MasterPasswordStep;
+  | MasterPasswordStep
+  | FakeAccountStep;
 
 export const useCreateOrImportSecretModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -123,6 +127,8 @@ export const useCreateOrImportSecretModal = () => {
         return <RestoreLedger closeModal={closeModal} {...currentStep} />;
       case StepType.masterPassword:
         return <MasterPassword onClose={onClose} {...currentStep} />;
+      case StepType.fakeAccount:
+        return <FakeAccount onClose={onClose} />;
     }
   };
 

@@ -34,6 +34,15 @@ const ConnectOrCreate = ({
         >
           I already have a wallet
         </Button>
+        {/* TODO: hide on production */}
+        <Button
+          variant="outline"
+          w="100%"
+          size="lg"
+          onClick={_ => goToStep({ type: StepType.fakeAccount })}
+        >
+          Add a Fake Account
+        </Button>
         <Flex w="100%" pt="20px" pb="20px">
           <Divider mt="11px" />
           <Text textAlign="center" minW="160px" size="sm" noOfLines={1}>

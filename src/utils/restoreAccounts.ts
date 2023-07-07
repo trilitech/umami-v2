@@ -13,7 +13,7 @@ export const restoreAccount = async (
   seedPhrase: string,
   derivationPath: string
 ): Promise<PublicKeyPair> => {
-  const signer = await InMemorySigner.fromMnemonic({
+  const signer = InMemorySigner.fromMnemonic({
     mnemonic: seedPhrase,
     derivationPath,
     curve: "ed25519",
@@ -68,15 +68,13 @@ export const restoreMnemonicAccounts = async (
   const accounts = await restoreAccounts(seedPhrase, derivationPathPattern);
   const seedFingerPrint = await getFingerPrint(seedPhrase);
 
-  return Promise.all(
-    accounts.map(async ({ pk, pkh }, i) => {
-      return makeMnemonicAccount(
-        pk,
-        pkh,
-        makeDerivationPath(derivationPathPattern, i),
-        seedFingerPrint,
-        `${label || ""}${accounts.length > 1 ? " " + i : ""}`
-      );
-    })
-  );
+  return accounts.map(({ pk, pkh }, i) => {
+    return makeMnemonicAccount(
+      pk,
+      pkh,
+      makeDerivationPath(derivationPathPattern, i),
+      seedFingerPrint,
+      `${label || ""}${accounts.length > 1 ? " " + i : ""}`
+    );
+  });
 };

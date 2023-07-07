@@ -22,14 +22,14 @@ describe("csv utils", () => {
         type: "fa2",
         recipient: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
         prettyAmount: "1000",
-        contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0",
+        contract: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
         tokenId: 2,
       },
       {
         type: "fa1.2",
         recipient: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
         prettyAmount: "123456789123456789",
-        contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0",
+        contract: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
       },
     ]);
   });

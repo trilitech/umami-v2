@@ -709,7 +709,7 @@ export const tzktGetSameMultisigsResponse: RawTzktGetSameMultisigs = [
     storage: { threshold: "2", pending_ops: 0, signers: [mockImplicitAddress(0).pkh] },
   },
   {
-    address: mockContractAddress(10).pkh,
-    storage: { threshold: "2", pending_ops: 1, signers: [mockImplicitAddress(10).pkh] },
+    address: mockContractAddress(2).pkh,
+    storage: { threshold: "2", pending_ops: 1, signers: [mockImplicitAddress(2).pkh] },
   },
 ];
