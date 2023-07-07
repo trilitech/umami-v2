@@ -101,14 +101,13 @@ describe("<BeaconRequestNotification />", () => {
       ...objectOperationRequest,
       sourceAddress: mockImplicitAccount(2).address.pkh,
     };
-    it("should display operations request with controls disabled and parameter displayed", async () => {
+
+    it("should display operations request with parameters displayed", async () => {
       render(fixture(message, () => {}));
       expect(screen.getByRole("dialog", { name: "Send" })).toBeInTheDocument();
       await waitFor(() => {
         expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
       });
-      expect(screen.getByLabelText("recipient")).toBeDisabled();
-      expect(screen.getByLabelText(/^amount$/i)).toBeDisabled();
       expect(screen.getByLabelText("Parameter")).toHaveTextContent(
         `{ "entrypoint": "fulfill_ask", "value": { "prim": "Pair", "args": [ { "int": "1232832" }, { "prim": "None" } ] } }`
       );

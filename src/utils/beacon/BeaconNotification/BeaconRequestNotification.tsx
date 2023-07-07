@@ -31,9 +31,9 @@ const SingleTransaction = ({
 
   const mode: SendFormMode = transfer.type === "tez" ? { type: "tez" } : { type: "delegation" };
 
+  // TODO: send directly to recap instead
   return (
     <SendForm
-      disabled
       onSuccess={onSuccess}
       mode={mode}
       recipient={transfer.recipient?.pkh}
@@ -62,11 +62,11 @@ const BatchTransaction = ({
     },
   };
 
+  // TODO: send directly to recap instead
   return (
     <SendForm
-      disabled
-      onSuccess={onSuccess}
       sender={account.address.pkh}
+      onSuccess={onSuccess}
       mode={mode}
       recipient={transfer[0].recipient?.pkh}
     />

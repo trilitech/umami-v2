@@ -49,14 +49,12 @@ export const DelegateForm = ({
   undelegate = false,
   sender,
   recipient,
-  disabled = false,
 }: {
   isLoading: boolean;
   onSubmit: (a: { sender: string; baker?: string }) => void;
   undelegate?: boolean;
   sender: string;
   recipient?: string;
-  disabled?: boolean;
 }) => {
   const { formState, handleSubmit, setValue, register } = useForm<{
     sender: string;
@@ -202,7 +200,6 @@ export const SendTezOrNFTForm = ({
   recipient,
   parameter,
   amount,
-  disabled,
 }: {
   onSubmit: (v: FormValues) => void;
   onSubmitBatch: (v: FormValues) => void;
@@ -210,7 +207,6 @@ export const SendTezOrNFTForm = ({
   token?: Asset;
   isLoading?: boolean;
   recipient?: string;
-  disabled?: boolean;
   amount?: string;
   parameter?: TransferParams["parameter"];
 }) => {
@@ -295,7 +291,7 @@ export const SendTezOrNFTForm = ({
               register={register}
               setValue={setValue}
               inputName="sender"
-              isDisabled={isNFT || simulating || disabled}
+              isDisabled={isNFT || simulating}
               allowUnknown={false}
               initialPkhValue={mandatoryNftSender || sender}
             />
@@ -306,7 +302,6 @@ export const SendTezOrNFTForm = ({
             <KnownAccountsAutocomplete
               label="To"
               register={register}
-              isDisabled={disabled}
               inputName="recipient"
               setValue={setValue}
               initialPkhValue={recipient}
@@ -319,7 +314,7 @@ export const SendTezOrNFTForm = ({
             <FormLabel>Amount</FormLabel>
             <InputGroup>
               <Input
-                isDisabled={simulating || disabled}
+                isDisabled={simulating}
                 step={isNFT ? 1 : "any"}
                 type="number"
                 {...register("amount", {
@@ -438,7 +433,6 @@ export const FillStep: React.FC<{
     case "delegation":
       return (
         <DelegateForm
-          disabled={disabled}
           sender={sender}
           recipient={recipient}
           undelegate={mode.data?.undelegate}
@@ -465,7 +459,6 @@ export const FillStep: React.FC<{
           recipient={recipient}
           amount={amount}
           parameter={parameter}
-          disabled={disabled}
           onSubmitBatch={v => {
             onSubmitBatch(
               {
