@@ -20,8 +20,8 @@ import {
 } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { AccountType, MultisigAccount } from "../../../types/Account";
+import { useForm } from "react-hook-form";
+import { AccountType } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { Delegation } from "../../../types/RawOperation";
@@ -32,11 +32,13 @@ import {
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
-import { BakerSelector } from "../../../views/delegations/BakerSelector";
-import { ConnectedAccountSelector } from "../../AccountSelector/AccountSelector";
-import AccountSelectorDisplay from "../../AccountSelector/AccountSelectorDisplay";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
-import { AllAccountsAutocomplete } from "../../AddressAutocomplete";
+import {
+  OwnedAccountsAutocomplete,
+  BakersAutocomplete,
+  KnownAccountsAutocomplete,
+  AddressAutocomplete,
+} from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { classifyAsset, FormOperations, OperationValue, SendFormMode } from "../types";
 import { BatchRecap } from "./BatchRecap";
@@ -56,14 +58,14 @@ export const DelegateForm = ({
   recipient?: string;
   disabled?: boolean;
 }) => {
-  const { formState, control, handleSubmit } = useForm<{
+  const { formState, handleSubmit, setValue, register } = useForm<{
     sender: string;
     baker: string | undefined;
   }>({
     mode: "onBlur",
     defaultValues: { sender, baker: recipient },
   });
-  const { isValid } = formState;
+  const { isValid, errors } = formState;
 
   const accountIsMultisig = useAccountIsMultisig();
   const senderIsMultisig = Boolean(sender && accountIsMultisig(sender));
@@ -76,38 +78,32 @@ export const DelegateForm = ({
         <Text textAlign="center">{subTitle}</Text>
         <ModalBody>
           <FormControl mb={2}>
-            <FormLabel>From</FormLabel>
-            <Controller
-              rules={{ required: true }}
-              control={control}
-              name="sender"
-              render={({ field: { onChange, onBlur, value, ref } }) => (
-                <ConnectedAccountSelector
-                  isDisabled={undelegate || disabled}
-                  selected={value}
-                  onSelect={a => {
-                    onChange(a.address.pkh);
-                  }}
-                />
-              )}
+            <OwnedAccountsAutocomplete
+              label="From"
+              register={register}
+              setValue={setValue}
+              inputName="sender"
+              initialPkhValue={sender}
+              allowUnknown={false}
             />
           </FormControl>
 
           {undelegate ? null : (
-            <FormControl mb={2}>
-              <FormLabel>Baker</FormLabel>
-              <Controller
-                rules={{ required: true }}
-                control={control}
-                name="baker"
-                render={({ field: { onChange, value } }) => (
-                  <BakerSelector disabled={disabled} selected={value} onSelect={onChange} />
-                )}
+            <FormControl mb={2} isInvalid={!!errors.baker}>
+              <BakersAutocomplete
+                label="Baker"
+                inputName="baker"
+                allowUnknown={true} // set to false when beacon stops using SendForm
+                setValue={setValue}
+                initialPkhValue={recipient}
+                register={register}
               />
+              {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
             </FormControl>
           )}
         </ModalBody>
         <ModalFooter>
+          {isValid}
           <Box width="100%">
             <Button
               width="100%"
@@ -229,11 +225,9 @@ export const SendTezOrNFTForm = ({
 
   const {
     formState: { isValid, errors },
-    control,
     register,
     getValues,
     handleSubmit,
-    reset,
     setValue,
   } = useForm<FormValues>({
     mode: "onBlur",
@@ -257,6 +251,37 @@ export const SendTezOrNFTForm = ({
   const simulating = isLoading || batchIsSimulating;
   const senderIsMultisig = accountIsMultisig(getValues("sender"));
 
+  const getMultisigSigners = useGetMultisigSigners();
+
+  const signerSelectorField = () => {
+    if (!multisigSender) {
+      return null;
+    }
+    const signers = getMultisigSigners(multisigSender).map(acc => ({
+      name: acc.label,
+      pkh: acc.address.pkh,
+    }));
+    if (signers.length < 2) {
+      return null;
+    }
+    return (
+      <FormControl mb={2} isInvalid={!!errors.proposalSigner}>
+        <AddressAutocomplete
+          label="Proposal Signer"
+          inputName="proposalSigner"
+          contacts={signers}
+          initialPkhValue={signers[0].pkh}
+          register={register}
+          setValue={setValue}
+          allowUnknown={false}
+        />
+        {errors.proposalSigner && (
+          <FormErrorMessage>{errors.proposalSigner.message}</FormErrorMessage>
+        )}
+      </FormControl>
+    );
+  };
+
   return (
     <ModalContent bg="umami.gray.900">
       <form>
@@ -264,56 +289,28 @@ export const SendTezOrNFTForm = ({
         <ModalHeader textAlign="center">Send</ModalHeader>
         <Text textAlign="center">Send one or insert into batch.</Text>
         <ModalBody>
-          <FormControl mb={2}>
-            <FormLabel>From</FormLabel>
-            <Controller
-              rules={{ required: true }}
-              control={control}
-              name="sender"
-              render={({ field: { onChange, value } }) => (
-                <ConnectedAccountSelector
-                  isDisabled={isNFT || simulating || disabled}
-                  selected={value}
-                  onSelect={account => {
-                    onChange(account.address.pkh);
-
-                    // This is needed to update the signer if a multisig account is selected
-                    const values = getValues();
-                    if (account.type === AccountType.MULTISIG) {
-                      const defaultSigner = getDefaultSigner(account.address.pkh);
-                      reset({ ...values, proposalSigner: defaultSigner });
-                    } else {
-                      reset({ ...values, proposalSigner: undefined });
-                    }
-                  }}
-                />
-              )}
+          <FormControl mb={2} isInvalid={!!errors.sender}>
+            <OwnedAccountsAutocomplete
+              label="From"
+              register={register}
+              setValue={setValue}
+              inputName="sender"
+              isDisabled={isNFT || simulating || disabled}
+              allowUnknown={false}
+              initialPkhValue={mandatoryNftSender || sender}
             />
+            {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
           </FormControl>
-          {multisigSender ? (
-            <FormControl mb={2}>
-              <FormLabel>Proposal Signer</FormLabel>
-              <Controller
-                rules={{ required: true }}
-                control={control}
-                name="proposalSigner"
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <ProposalSigners
-                    multisigAccount={multisigSender}
-                    onSelect={onChange}
-                    selected={value}
-                  />
-                )}
-              />
-            </FormControl>
-          ) : null}
+          {signerSelectorField()}
           <FormControl mb={2} isInvalid={!!errors.recipient}>
-            <AllAccountsAutocomplete
+            <KnownAccountsAutocomplete
+              label="To"
               register={register}
               isDisabled={disabled}
               inputName="recipient"
               setValue={setValue}
               initialPkhValue={recipient}
+              allowUnknown
             />
             {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
           </FormControl>
@@ -528,27 +525,4 @@ export const FillStep: React.FC<{
       );
     }
   }
-};
-
-const ProposalSigners = ({
-  multisigAccount,
-  selected,
-  onSelect,
-}: {
-  multisigAccount: MultisigAccount;
-  selected?: string;
-  onSelect: (pkh: string) => void;
-}) => {
-  const getSigners = useGetMultisigSigners();
-  const signers = getSigners(multisigAccount);
-
-  return (
-    <AccountSelectorDisplay
-      isDisabled={signers.length === 1}
-      selected={selected}
-      accounts={signers}
-      onSelect={a => onSelect(a.address.pkh)}
-      dataTestid="proposal-signer-selector"
-    />
-  );
 };

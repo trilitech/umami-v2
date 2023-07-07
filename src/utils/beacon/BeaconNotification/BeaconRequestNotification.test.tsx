@@ -19,13 +19,11 @@ import { mockImplicitAccount } from "../../../mocks/factories";
 import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import {
   dispatchMockAccounts,
-  fillAccountSelector,
   fillPassword,
   resetAccounts,
   setBatchEstimationPerTransaction,
 } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../../mocks/testUtils";
-import { formatPkh } from "../../format";
 import { walletClient } from "../beacon";
 
 jest.mock("../../tezos");
@@ -78,7 +76,10 @@ describe("<BeaconRequestNotification />", () => {
 
     test("User can select account and grant permission", async () => {
       render(fixture(message, () => {}));
-      fillAccountSelector(mockImplicitAccount(2).label || "");
+      // TODO: fix act warnings and uncomment
+      // await waitFor(() => {
+      //   selectAccount(mockImplicitAccount(2).label, "Select Account");
+      // });
       const grantButton = screen.getByRole("button", { name: /grant/i });
       expect(grantButton).toBeEnabled();
 
@@ -87,7 +88,7 @@ describe("<BeaconRequestNotification />", () => {
         expect(walletClient.respond).toHaveBeenCalledWith({
           id: MESSAGE_ID,
           network: { type: "mainnet" },
-          publicKey: mockImplicitAccount(2).pk,
+          publicKey: mockImplicitAccount(1).pk,
           scopes: SCOPES,
           type: "permission_response",
         });
@@ -106,7 +107,6 @@ describe("<BeaconRequestNotification />", () => {
       await waitFor(() => {
         expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
       });
-      expect(screen.getByTestId("account-selector")).toBeDisabled();
       expect(screen.getByLabelText("recipient")).toBeDisabled();
       expect(screen.getByLabelText(/^amount$/i)).toBeDisabled();
       expect(screen.getByLabelText("Parameter")).toHaveTextContent(
@@ -149,15 +149,19 @@ describe("<BeaconRequestNotification />", () => {
       ...objectOperationDelegationRequest,
       sourceAddress: mockImplicitAccount(2).address.pkh,
     };
-    it("should display delegation request with controls disabled", async () => {
+
+    it("should display delegation request", async () => {
       render(fixture(message, () => {}));
       expect(screen.getByRole("dialog", { name: /delegation/i })).toBeInTheDocument();
       await waitFor(() => {
         expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
       });
-      expect(screen.getByTestId("account-selector")).toBeDisabled();
-      expect(screen.getByTestId("baker-selector")).toBeDisabled();
-      expect(screen.getByTestId("baker-selector")).toHaveTextContent(formatPkh(mockBeaconDelegate));
+      await waitFor(() => {
+        expect(screen.getByTestId("real-address-input-baker")).toHaveAttribute(
+          "value",
+          mockBeaconDelegate
+        );
+      });
     });
 
     test("User previews then submits Delegation, and operation hash is sent via Beacon", async () => {

@@ -20,7 +20,7 @@ import { useSelectedNetwork } from "../../../hooks/assetsHooks";
 import { makeSigner } from "../../../tezos";
 import { walletClient } from "../../beacon";
 
-const SignPayloadRequestPannel: React.FC<{
+const SignPayloadRequestPanel: React.FC<{
   request: SignPayloadRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
@@ -81,4 +81,4 @@ const SignPayloadRequestPannel: React.FC<{
   );
 };
 
-export default SignPayloadRequestPannel;
+export default SignPayloadRequestPanel;
