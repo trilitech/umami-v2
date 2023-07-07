@@ -22,10 +22,10 @@ export const operationValuesToWalletParams = async (
 
 export const operationValuesToParams = async (
   operations: OperationValue[],
-  signer: TezosToolkit
+  toolkit: TezosToolkit
 ): Promise<ParamsWithKind[]> => {
   const result: ParamsWithKind[] = [];
-  const signerPkh = await signer.signer.publicKeyHash();
+  const signerPkh = await toolkit.signer.publicKeyHash();
 
   for (const operation of operations) {
     switch (operation.type) {
@@ -48,7 +48,7 @@ export const operationValuesToParams = async (
       case "fa1.2":
       case "fa2":
         {
-          const transferParams = await makeTokenTransferParams(operation, signer);
+          const transferParams = await makeTokenTransferParams(operation, toolkit);
 
           result.push({
             kind: OpKind.TRANSACTION,
