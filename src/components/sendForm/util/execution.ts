@@ -6,12 +6,16 @@ import { proposeMultisigLambda, submitBatch } from "../../../utils/tezos";
 import { FormOperations, OperationValue } from "../types";
 import { toLambdaOperation } from "./toLambdaOperation";
 
-const makeProposeOperation = async (operations: OperationValue[], config: SignerConfig) => {
+const makeProposeOperation = async (
+  operations: OperationValue[],
+  sender: string,
+  config: SignerConfig
+) => {
   const lambdaActions = await makeBatchLambda(
     operations.map(toLambdaOperation),
     TezosNetwork.GHOSTNET
   );
-  const contract = parseContractPkh(operations[0].value.sender);
+  const contract = parseContractPkh(sender);
 
   return proposeMultisigLambda({ contract, lambdaActions }, config);
 };
@@ -28,7 +32,7 @@ export const makeTransfer = (op: FormOperations, config: SignerConfig) => {
 
   const transfer =
     op.type === "proposal"
-      ? makeProposeOperation(transferToDisplay, config)
+      ? makeProposeOperation(transferToDisplay, op.sender.pkh, config)
       : makeTransferImplicit(transferToDisplay, config);
 
   return transfer;

@@ -34,8 +34,9 @@ import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (operation: OperationValue) => {
   switch (operation.type) {
-    case "token": {
-      const amount = formatTokenAmount(operation.value.amount, operation.data.metadata?.decimals);
+    case "fa1.2":
+    case "fa2": {
+      const amount = formatTokenAmount(operation.amount, operation.data.metadata?.decimals);
       return (
         <Flex>
           <Text mr={1}>{amount} </Text>
@@ -51,7 +52,7 @@ const renderAmount = (operation: OperationValue) => {
       );
     }
     case "tez":
-      return prettyTezAmount(operation.value.amount);
+      return prettyTezAmount(operation.amount);
     case "delegation":
       return "";
   }
@@ -129,11 +130,11 @@ export const BatchDisplay: React.FC<{
             </Thead>
             <Tbody>
               {items.map(({ operation, fee }, i) => (
-                <Tr key={operation.value.sender + operation.type + i}>
+                <Tr key={operation.recipient + operation.type + i}>
                   <Td>{operation.type !== "delegation" ? "Transaction" : operation.type}</Td>
                   <Td>{renderAmount(operation)}</Td>
                   <Td>
-                    {operation.type === "token" && (
+                    {(operation.type === "fa2" || operation.type === "fa1.2") && (
                       <IconAndTextBtnLink
                         label={formatPkh(operation.data.contract)}
                         icon={FiExternalLink}
@@ -143,9 +144,7 @@ export const BatchDisplay: React.FC<{
                     )}
                   </Td>
                   <Td>
-                    {operation.value.recipient && (
-                      <AccountOrContactTile pkh={operation.value.recipient} />
-                    )}
+                    {operation.recipient && <AccountOrContactTile pkh={operation.recipient.pkh} />}
                   </Td>
                   <Td>{prettyTezAmount(fee)}</Td>
                 </Tr>

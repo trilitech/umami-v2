@@ -10,6 +10,7 @@ import { useToast } from "@chakra-ui/react";
 import React from "react";
 import SendForm from "../../../components/sendForm";
 import { OperationValue, SendFormMode } from "../../../components/sendForm/types";
+import { parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { useFirstAccount, useGetImplicitAccount } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPannel from "./pannels/BeaconErrorPannel";
@@ -19,12 +20,14 @@ import SignPayloadRequestPannel from "./pannels/SignPayloadRequestPannel";
 const SingleTransaction = ({
   transfer,
   onSuccess,
+  sender,
 }: {
   transfer: OperationValue;
   onSuccess: (hash: string) => any;
+  sender: string;
 }) => {
-  const amount = transfer.type === "tez" ? transfer.value.amount : undefined;
-  const parameter = transfer.type === "tez" ? transfer.value.parameter : undefined;
+  const amount = transfer.type === "tez" ? transfer.amount : undefined;
+  const parameter = transfer.type === "tez" ? transfer.parameter : undefined;
 
   const mode: SendFormMode = transfer.type === "tez" ? { type: "tez" } : { type: "delegation" };
 
@@ -33,8 +36,8 @@ const SingleTransaction = ({
       disabled
       onSuccess={onSuccess}
       mode={mode}
-      recipient={transfer.value.recipient}
-      sender={transfer.value.sender}
+      recipient={transfer.recipient?.pkh}
+      sender={sender}
       amount={amount}
       parameter={parameter}
     />
@@ -44,25 +47,28 @@ const SingleTransaction = ({
 const BatchTransaction = ({
   transfer,
   onSuccess,
+  signer,
 }: {
   transfer: OperationValue[];
   onSuccess: (hash: string) => any;
+  signer: string;
 }) => {
   const account = useFirstAccount();
   const mode: SendFormMode = {
     type: "batch",
     data: {
       batch: transfer,
+      signer,
     },
   };
 
   return (
     <SendForm
       disabled
-      sender={account.address.pkh}
       onSuccess={onSuccess}
+      sender={account.address.pkh}
       mode={mode}
-      recipient={transfer[0].value.recipient}
+      recipient={transfer[0].recipient?.pkh}
     />
   );
 };
@@ -102,6 +108,7 @@ export const BeaconNotification: React.FC<{
           try {
             await walletClient.respond(response);
           } catch (error) {
+            console.warn("Failed to parse Beacon request", error);
             toast({
               title: "Failed to confirm Beacon operation success",
               description: (error as Error).message,
@@ -110,11 +117,24 @@ export const BeaconNotification: React.FC<{
         };
 
         if (transfers.length === 1) {
-          return <SingleTransaction transfer={transfers[0]} onSuccess={handleSuccess} />;
+          return (
+            <SingleTransaction
+              sender={signerAccount.address.pkh}
+              transfer={transfers[0]}
+              onSuccess={handleSuccess}
+            />
+          );
         }
 
-        return <BatchTransaction transfer={transfers} onSuccess={handleSuccess} />;
+        return (
+          <BatchTransaction
+            transfer={transfers}
+            onSuccess={handleSuccess}
+            signer={signerAccount.address.pkh}
+          />
+        );
       } catch (error: any) {
+        console.log(error);
         return <BeaconErrorPannel message={`Error handling operation request: ${error.message}`} />;
       }
     }
@@ -128,12 +148,9 @@ const beaconToUmamiOperation = (operation: PartialTezosOperation, sender: string
   if (operation.kind === TezosOperationType.TRANSACTION) {
     const result: OperationValue = {
       type: "tez",
-      value: {
-        sender,
-        amount: operation.amount,
-        recipient: operation.destination,
-        parameter: operation.parameters,
-      },
+      amount: operation.amount,
+      recipient: parsePkh(operation.destination),
+      parameter: operation.parameters,
     };
 
     return result;
@@ -142,10 +159,8 @@ const beaconToUmamiOperation = (operation: PartialTezosOperation, sender: string
   if (operation.kind === TezosOperationType.DELEGATION) {
     const result: OperationValue = {
       type: "delegation",
-      value: {
-        sender,
-        recipient: operation.delegate,
-      },
+      recipient:
+        operation.delegate !== undefined ? parseImplicitPkh(operation.delegate) : undefined,
     };
 
     return result;

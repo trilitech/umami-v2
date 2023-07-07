@@ -41,7 +41,7 @@ export const estimateBatch = async (
   pk: string,
   network: TezosNetwork
 ): Promise<Estimate[]> => {
-  const batch = await operationValuesToBatchParams(operations, pk, network);
+  const batch = await operationValuesToBatchParams(operations, pk, pkh, network);
 
   const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
 

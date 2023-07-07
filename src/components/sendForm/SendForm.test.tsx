@@ -35,6 +35,7 @@ import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import { mockToast } from "../../mocks/toast";
 import { multisigActions } from "../../utils/store/multisigsSlice";
 import { multisigs } from "../../mocks/multisig";
+import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
@@ -195,12 +196,9 @@ describe("<SendForm />", () => {
             fee: "33",
             operation: {
               type: "tez",
-              value: {
-                amount: "23000000",
-                parameter: undefined,
-                recipient: mockImplicitAddress(7).pkh,
-                sender: mockImplicitAddress(1).pkh,
-              },
+              amount: "23000000",
+              parameter: undefined,
+              recipient: mockImplicitAddress(7),
             },
           },
         ],
@@ -224,22 +222,16 @@ describe("<SendForm />", () => {
             fee: "33",
             operation: {
               type: "tez",
-              value: {
-                amount: "23000000",
-                recipient: mockImplicitAddress(7).pkh,
-                sender: mockImplicitAddress(1).pkh,
-              },
+              amount: "23000000",
+              recipient: mockImplicitAddress(7),
             },
           },
           {
             fee: "33",
             operation: {
               type: "tez",
-              value: {
-                amount: "23000000",
-                recipient: mockImplicitAddress(7).pkh,
-                sender: mockImplicitAddress(1).pkh,
-              },
+              amount: "23000000",
+              recipient: mockImplicitAddress(7),
             },
           },
         ],
@@ -314,12 +306,9 @@ describe("<SendForm />", () => {
         [
           {
             type: "tez",
-            value: {
-              amount: "23000000",
-              parameter: undefined,
-              recipient: mockImplicitAddress(7).pkh,
-              sender: mockImplicitAddress(1).pkh,
-            },
+            amount: "23000000",
+            parameter: undefined,
+            recipient: mockImplicitAddress(7),
           },
         ],
         config
@@ -384,12 +373,12 @@ describe("<SendForm />", () => {
         [
           {
             data: mockFA2,
-            type: "token",
-            value: {
-              amount: "1000000",
-              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
-              sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-            },
+            type: "fa2",
+            amount: "1000000",
+            recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
+            sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
+            contract: parseContractPkh(mockFA2.contract),
+            tokenId: mockFA2.tokenId,
           },
         ],
         "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
@@ -425,12 +414,12 @@ describe("<SendForm />", () => {
         [
           {
             data: mockFA2,
-            type: "token",
-            value: {
-              amount: "1000000",
-              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
-              sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-            },
+            type: "fa2",
+            amount: "1000000",
+            recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
+            sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
+            contract: parseContractPkh(mockFA2.contract),
+            tokenId: mockFA2.tokenId,
           },
         ],
         {
@@ -499,12 +488,11 @@ describe("<SendForm />", () => {
         [
           {
             data: mockFa1,
-            type: "token",
-            value: {
-              amount: "1000000000",
-              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
-              sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-            },
+            type: "fa1.2",
+            amount: "1000000000",
+            recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
+            sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
+            contract: parseContractPkh(mockFa1.contract),
           },
         ],
         "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
@@ -539,12 +527,11 @@ describe("<SendForm />", () => {
         [
           {
             data: mockFa1,
-            type: "token",
-            value: {
-              amount: "1000000000",
-              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
-              sender: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-            },
+            type: "fa1.2",
+            amount: "1000000000",
+            recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
+            sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
+            contract: parseContractPkh(mockFa1.contract),
           },
         ],
         { network: "mainnet", sk: "mockSk", type: "sk" }
@@ -636,12 +623,12 @@ describe("<SendForm />", () => {
         [
           {
             data: mockNFT(1),
-            type: "token",
-            value: {
-              amount: "1",
-              recipient: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP",
-              sender: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
-            },
+            type: "fa2",
+            amount: "1",
+            recipient: parseImplicitPkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
+            sender: parseImplicitPkh("tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"),
+            contract: parseContractPkh(mockNFT(1).contract),
+            tokenId: mockNFT(1).tokenId,
           },
         ],
         config

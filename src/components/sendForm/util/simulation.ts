@@ -13,10 +13,9 @@ const makeMultisigProposalSimulation = async (
   getPk: (pkh: string) => string
 ) => {
   const content = operation.content;
-  const signerPk = getPk(operation.signer);
+  const signerPk = getPk(operation.signer.pkh);
   const signerPkh = operation.signer;
-  const firstOp = content[0];
-  const multisigContract = parseContractPkh(firstOp.value.sender);
+  const multisigContract = parseContractPkh(operation.sender.pkh);
 
   const lambdaActions = await makeBatchLambda(
     content.map(toLambdaOperation),
@@ -29,7 +28,7 @@ const makeMultisigProposalSimulation = async (
     },
 
     signerPk,
-    signerPkh,
+    signerPkh.pkh,
     network
   );
   return result;
@@ -47,8 +46,8 @@ export const makeSimulation = (
     return makeMultisigProposalSimulation(operation, network, getPk).then(getTotalFee);
   }
   const implicitOps = operation.content;
-  const sender = implicitOps[0].value.sender;
+  const sender = operation.signer;
 
-  const pk = getPk(sender);
-  return estimateBatch(implicitOps, sender, pk, network).then(getTotalFee);
+  const pk = getPk(sender.pkh);
+  return estimateBatch(implicitOps, sender.pkh, pk, network).then(getTotalFee);
 };

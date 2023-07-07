@@ -7,7 +7,7 @@ import {
   WalletParamsWithKind,
 } from "@taquito/taquito";
 import { OperationValue } from "../../components/sendForm/types";
-import { parseContractPkh, parsePkh } from "../../types/Address";
+import { parseContractPkh } from "../../types/Address";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
@@ -22,31 +22,33 @@ export const operationValuesToWalletParams = async (
 
 export const operationValuesToParams = async (
   operations: OperationValue[],
-  signer: TezosToolkit
+  toolkit: TezosToolkit
 ): Promise<ParamsWithKind[]> => {
   const result: ParamsWithKind[] = [];
+  const signerPkh = await toolkit.signer.publicKeyHash();
 
   for (const operation of operations) {
     switch (operation.type) {
       case "tez":
         result.push({
           kind: OpKind.TRANSACTION,
-          to: operation.value.recipient,
-          amount: parseInt(operation.value.amount),
-          parameter: operation.value.parameter,
+          to: operation.recipient.pkh,
+          amount: parseInt(operation.amount),
+          parameter: operation.parameter,
           mutez: true,
         });
         break;
       case "delegation":
         result.push({
           kind: OpKind.DELEGATION,
-          source: operation.value.sender,
-          delegate: operation.value.recipient,
+          source: signerPkh,
+          delegate: operation.recipient?.pkh,
         });
         break;
-      case "token":
+      case "fa1.2":
+      case "fa2":
         {
-          const transferParams = await makeTokenTransferParams(operation, signer);
+          const transferParams = await makeTokenTransferParams(operation, toolkit);
 
           result.push({
             kind: OpKind.TRANSACTION,
@@ -64,15 +66,15 @@ const makeTokenTransferParams = async (
   operation: OperationValue,
   signer: TezosToolkit
 ): Promise<TransferParams> => {
-  if (operation.type !== "token") {
+  if (operation.type !== "fa1.2" && operation.type !== "fa2") {
     throw new Error("Incorrect type");
   }
   const asset = operation.data;
   const { contract } = asset;
   const args = {
-    sender: parsePkh(operation.value.sender),
-    recipient: parsePkh(operation.value.recipient),
-    amount: operation.value.amount,
+    sender: operation.sender,
+    recipient: operation.recipient,
+    amount: operation.amount,
     contract: parseContractPkh(contract),
   };
   const transferMethod =
@@ -86,13 +88,14 @@ const makeTokenTransferParams = async (
 export const operationValuesToBatchParams = async (
   operations: OperationValue[],
   pk: string,
+  pkh: string,
   network: TezosNetwork
 ): Promise<ParamsWithKind[]> => {
   if (!operations.length) {
     return [];
   }
 
-  const Tezos = makeToolkitWithDummySigner(pk, operations[0].value.sender, network);
+  const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
 
   return operationValuesToParams(operations, Tezos);
 };

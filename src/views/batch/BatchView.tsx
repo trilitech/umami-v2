@@ -63,7 +63,7 @@ const BatchView = () => {
             sender: account.address.pkh,
             mode: {
               type: "batch",
-              data: { batch: batch.items.map(i => i.operation) },
+              data: { batch: batch.items.map(i => i.operation), signer: account.address.pkh },
             },
           })
         }
@@ -73,7 +73,7 @@ const BatchView = () => {
             body: "Are you sure you want to delete the batch?",
           })
         }
-        key={batch.items[0].operation.value.sender}
+        key={account.address.pkh}
         account={account}
         batch={batch}
       />
