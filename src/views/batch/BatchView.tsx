@@ -48,7 +48,7 @@ const BatchView = () => {
   const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
   const { onOpen, element, onClose } = useConfirmation();
 
-  const batchEls = Object.entries(batches).map(([pkh, batch], i) => {
+  const batchEls = Object.entries(batches).map(([pkh, batch]) => {
     const account = getAccount(pkh);
 
     const onConfirm = () => {
