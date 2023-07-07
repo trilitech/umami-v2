@@ -55,7 +55,8 @@ describe("<RestoreSeedphrase />", () => {
 
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalledWith({
-          description: 'Invalid mnemonic "test test test test test test test test test test test test"',
+          description:
+            'Invalid mnemonic "test test test test test test test test test test test test"',
           title: "Invalid Mnemonic",
         });
       });

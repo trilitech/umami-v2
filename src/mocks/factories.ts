@@ -184,7 +184,7 @@ const validContractAddresses = [
   "KT1CSKPf2jeLpMmrgKquN2bCjBTkAcAdRVDy",
   "KT1EctCuorV2NfVb1XTQgvzJ88MQtWP8cMMv",
   "KT1Ex8LrDbCrZuTgmWin8eEo7HFw74jAqTvz",
-]
+];
 
 export const mockContractAddress = (index: number): ContractAddress => ({
   type: "contract",
