@@ -2,7 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { OperationValue } from "../components/sendForm/types";
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
-import { parseContractPkh, parseImplicitPkh, parsePkh } from "../types/Address";
+import { parseContractPkh, parseImplicitPkh } from "../types/Address";
 
 import { estimateBatch, operationValuesToBatchParams } from "../utils/tezos";
 
