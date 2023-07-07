@@ -108,7 +108,7 @@ export const BeaconNotification: React.FC<{
           try {
             await walletClient.respond(response);
           } catch (error) {
-            console.log(error);
+            console.warn("Failed to parse Beacon request", error);
             toast({
               title: "Failed to confirm Beacon operation success",
               description: (error as Error).message,
