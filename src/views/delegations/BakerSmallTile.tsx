@@ -14,7 +14,7 @@ export const BakerSmallTile = ({
 }) => {
   return (
     <Flex>
-      <AspectRatio ml={2} mr={2} height={6} width={6} ratio={4 / 4}>
+      <AspectRatio ml={2} mr={2} height={6} width={6} ratio={1}>
         <Image src={imageUrl} />
       </AspectRatio>
       <Box ml={2}>

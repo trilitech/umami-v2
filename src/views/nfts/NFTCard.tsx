@@ -10,7 +10,7 @@ const NFTCard: React.FC<{ nft: NFT; onClick: () => void }> = ({ nft, onClick }) 
   return (
     <Card cursor="pointer" data-testid="nft-card" onClick={onClick}>
       <CardBody bg="umami.gray.900" borderRadius={4}>
-        <AspectRatio width="100%" ratio={4 / 4}>
+        <AspectRatio width="100%" ratio={1}>
           <Image data-testid="nft-image" width="100%" src={url} fallbackSrc={fallbackUrl} />
         </AspectRatio>
         <Heading pt="2" fontSize="sm">
