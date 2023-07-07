@@ -357,10 +357,10 @@ describe("metadataUri", () => {
     const nft = mockNFT(0);
 
     expect(metadataUri(nft, TezosNetwork.MAINNET)).toEqual(
-      "https://mainnet.tzkt.io/KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0/tokens/mockId0/metadata"
+      "https://mainnet.tzkt.io/KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG/tokens/mockId0/metadata"
     );
     expect(metadataUri(nft, TezosNetwork.GHOSTNET)).toEqual(
-      "https://ghostnet.tzkt.io/KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob0/tokens/mockId0/metadata"
+      "https://ghostnet.tzkt.io/KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG/tokens/mockId0/metadata"
     );
   });
 });

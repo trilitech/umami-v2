@@ -179,9 +179,16 @@ export const mockMultisigWithOperations = (
   };
 };
 
+const validContractAddresses = [
+  "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+  "KT1CSKPf2jeLpMmrgKquN2bCjBTkAcAdRVDy",
+  "KT1EctCuorV2NfVb1XTQgvzJ88MQtWP8cMMv",
+  "KT1Ex8LrDbCrZuTgmWin8eEo7HFw74jAqTvz",
+]
+
 export const mockContractAddress = (index: number): ContractAddress => ({
   type: "contract",
-  pkh: `KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob${index}`,
+  pkh: validContractAddresses[index],
 });
 
 export const mockNFTToken = (index: number, pkh: string, balance = 1): Token => {
