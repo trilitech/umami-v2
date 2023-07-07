@@ -1,13 +1,8 @@
-import {
-  isAddressValid,
-  isValidContractPkh,
-  parseContractPkh,
-  parsePkh,
-} from "../../types/Address";
+import { isAddressValid, isValidContractPkh, parsePkh } from "../../types/Address";
 import { Asset, getRealAmount } from "../../types/Asset";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
-import { OperationValue } from "../sendForm/types";
+import { classifyAsset, OperationValue } from "../sendForm/types";
 import { CSVRow } from "./types";
 
 export const parseToCSVRow = (row: string[]): CSVRow => {
@@ -81,24 +76,9 @@ export const csvRowToOperationValue = (
     throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
   }
 
-  if (asset.type === "fa1.2") {
-    return {
-      type: "fa1.2",
-      data: asset,
-      sender: parsePkh(sender),
-      recipient: parsePkh(recipient),
-      amount: getRealAmount(asset, csvRow.prettyAmount).toString(),
-      contract: parseContractPkh(asset.contract),
-    };
-  }
-
-  return {
-    type: "fa2",
-    data: asset,
-    sender: parsePkh(sender),
-    recipient: parsePkh(recipient),
+  return classifyAsset(asset, {
+    sender: sender,
+    recipient: recipient,
     amount: getRealAmount(asset, csvRow.prettyAmount).toString(),
-    contract: parseContractPkh(asset.contract),
-    tokenId: asset.tokenId,
-  };
+  });
 };
