@@ -119,7 +119,9 @@ export const useGetOperationDisplays = (): Record<string, OperationDisplay[] | u
   const accounts = useAllAccounts();
   const getOperations = useGetAccountOperationDisplays();
 
-  return fromPairs(accounts.map(account => [account, getOperations(account.address.pkh)]));
+  return fromPairs(
+    accounts.map(account => [account.address.pkh, getOperations(account.address.pkh)])
+  );
 };
 
 export const useGetAllOperationDisplays = () => {
