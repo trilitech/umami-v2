@@ -24,6 +24,7 @@ import { Controller, useForm } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
+import { Delegation } from "../../../types/RawOperation";
 import { tezToMutez } from "../../../utils/format";
 import {
   useAccountIsMultisig,
@@ -39,8 +40,6 @@ import { AllAccountsAutocomplete } from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { classifyAsset, FormOperations, OperationValue, SendFormMode } from "../types";
 import { BatchRecap } from "./BatchRecap";
-
-import * as RawOperations from "../../../types/RawOperation";
 
 export const DelegateForm = ({
   onSubmit,
@@ -448,7 +447,7 @@ export const FillStep: React.FC<{
           undelegate={mode.data?.undelegate}
           isLoading={isLoading}
           onSubmit={v => {
-            const delegation: RawOperations.Delegation = {
+            const delegation: Delegation = {
               type: "delegation",
               recipient: v.baker !== undefined ? parseImplicitPkh(v.baker) : undefined,
             };

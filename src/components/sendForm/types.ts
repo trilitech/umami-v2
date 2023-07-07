@@ -1,7 +1,6 @@
 import { ContractAddress, ImplicitAddress, parseContractPkh, parsePkh } from "../../types/Address";
 import { Asset, FA12Token, FA2Token, NFT } from "../../types/Asset";
-
-import * as RawOperations from "../../types/RawOperation";
+import { Delegation, FA12Operation, FA2Operation, TezOperation } from "../../types/RawOperation";
 
 type TezMode = { type: "tez" };
 
@@ -27,14 +26,14 @@ type BatchMode = {
 
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
-type FA12OperationWithAsset = RawOperations.FA12Operation & { data: FA12Token };
-type FA2OperationWithAsset = RawOperations.FA2Operation & { data: FA2Token | NFT };
+type FA12OperationWithAsset = FA12Operation & { data: FA12Token };
+type FA2OperationWithAsset = FA2Operation & { data: FA2Token | NFT };
 
 export type OperationValue =
-  | RawOperations.TezOperation
+  | TezOperation
   | FA12OperationWithAsset
   | FA2OperationWithAsset
-  | RawOperations.Delegation;
+  | Delegation;
 
 export type ProposalOperations = {
   type: "proposal";
