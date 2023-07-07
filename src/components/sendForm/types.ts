@@ -26,8 +26,8 @@ type BatchMode = {
 
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
-type FA12OperationWithAsset = FA12Operation & { data: FA12Token };
-type FA2OperationWithAsset = FA2Operation & { data: FA2Token | NFT };
+export type FA12OperationWithAsset = FA12Operation & { data: FA12Token };
+export type FA2OperationWithAsset = FA2Operation & { data: FA2Token | NFT };
 
 export type OperationValue =
   | TezOperation

@@ -6,8 +6,11 @@ import {
   TransferParams,
   WalletParamsWithKind,
 } from "@taquito/taquito";
-import { OperationValue } from "../../components/sendForm/types";
-import { parseContractPkh } from "../../types/Address";
+import {
+  FA12OperationWithAsset,
+  FA2OperationWithAsset,
+  OperationValue,
+} from "../../components/sendForm/types";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
@@ -63,24 +66,13 @@ export const operationValuesToParams = async (
 };
 
 const makeTokenTransferParams = async (
-  operation: OperationValue,
-  signer: TezosToolkit
+  operation: FA12OperationWithAsset | FA2OperationWithAsset,
+  tezosToolkit: TezosToolkit
 ): Promise<TransferParams> => {
-  if (operation.type !== "fa1.2" && operation.type !== "fa2") {
-    throw new Error("Incorrect type");
-  }
-  const asset = operation.data;
-  const { contract } = asset;
-  const args = {
-    sender: operation.sender,
-    recipient: operation.recipient,
-    amount: operation.amount,
-    contract: parseContractPkh(contract),
-  };
   const transferMethod =
-    asset.type === "fa1.2"
-      ? makeFA12TransferMethod(args, signer)
-      : makeFA2TransferMethod({ ...args, tokenId: asset.tokenId }, signer);
+    operation.type === "fa1.2"
+      ? makeFA12TransferMethod(operation, tezosToolkit)
+      : makeFA2TransferMethod(operation, tezosToolkit);
 
   return (await transferMethod).toTransferParams();
 };
