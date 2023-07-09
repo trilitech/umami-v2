@@ -42,7 +42,7 @@ const renderAmount = (operation: OperationValue) => {
           <Text mr={1}>{amount} </Text>
 
           {operation.data.type === "nft" ? (
-            <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
+            <AspectRatio ml={2} height={6} width={6} ratio={1}>
               <Image src={getIPFSurl(operation.data.metadata.displayUri)} />
             </AspectRatio>
           ) : (

@@ -9,7 +9,7 @@ export const SendNFTRecapTile = ({ nft }: { nft: NFT }) => {
     <Box aria-label="nft">
       <FormLabel>NFT</FormLabel>
       <Flex alignItems="center">
-        <AspectRatio height={14} width={14} ratio={4 / 4}>
+        <AspectRatio height={14} width={14} ratio={1}>
           <Image src={url} fallbackSrc={fallbackUrl} />
         </AspectRatio>
         <Heading ml={4} size="sm">

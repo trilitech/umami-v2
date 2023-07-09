@@ -68,7 +68,7 @@ export const OperationsDataTable: React.FC<{
                     </Text>
                     {op.amount.url && (
                       <Link to={`/nfts/${op.amount.id}`}>
-                        <AspectRatio ml={2} height={6} width={6} ratio={4 / 4}>
+                        <AspectRatio ml={2} height={6} width={6} ratio={1}>
                           <Image src={op.amount.url} />
                         </AspectRatio>
                       </Link>
