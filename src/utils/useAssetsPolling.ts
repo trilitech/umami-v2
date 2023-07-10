@@ -2,6 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { chunk, compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
+import { TokenTransfer } from "../types/Operation";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
@@ -37,7 +38,7 @@ const getTokensTransfersPayload = async (
   network: TezosNetwork
 ): Promise<TokenTransfersPayload> => {
   const transfers = await getTokenTransfers(pkh, network);
-  return { pkh, transfers };
+  return { pkh, transfers: transfers as TokenTransfer[] };
 };
 
 const getDelegationsPayload = async (

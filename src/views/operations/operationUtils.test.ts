@@ -1,4 +1,4 @@
-import { DelegationOperation, TokenTransfer } from "@tzkt/sdk-api";
+import { DelegationOperation } from "@tzkt/sdk-api";
 import { mockImplicitAddress } from "../../mocks/factories";
 import {
   getLatestDelegationResult,
@@ -6,7 +6,7 @@ import {
   getTransactionsResult,
   rawTzktNftTransfer,
 } from "../../mocks/tzktResponse";
-import { OperationDisplay, TezTransfer } from "../../types/Operation";
+import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Operation";
 import { SupportedNetworks } from "../../utils/network";
 import {
   getOperationDisplays,
