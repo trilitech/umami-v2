@@ -9,7 +9,7 @@ import checkAccountsAndUpsertContact from "../utils/store/thunks/checkAccountsAn
 import AccountOrContactTile, { ContactTile } from "./AccountOrContactTile";
 const { add, reset } = accountsSlice.actions;
 
-const contactTileFixture = (pkh: string, contactName: string | null) => {
+const contactTileFixture = (pkh: string, contactName: string | undefined) => {
   return (
     <ReduxStore>
       <ContactTile pkh={pkh} contactName={contactName} />
@@ -26,7 +26,7 @@ const AccountOrContactTileFixture = (pkh: string) => {
 
 describe("ContactTile", () => {
   it("displays the address if it is not in the contacts", () => {
-    render(contactTileFixture(contact1["pkh"], null));
+    render(contactTileFixture(contact1["pkh"], undefined));
     expect(screen.queryByTestId("contact-tile")).toHaveTextContent(formatPkh(contact1["pkh"]));
   });
   it("displays the name if it is in the contacts", () => {
