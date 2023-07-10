@@ -217,7 +217,6 @@ export const SendTezOrNFTForm = ({
 
   const initialProposalSigner = (sender && getDefaultSigner(sender)) || undefined;
   const isNFT = token?.type === "nft";
-  const mandatoryNftSender = isNFT ? token?.owner : undefined;
 
   const {
     formState: { isValid, errors },
@@ -228,7 +227,7 @@ export const SendTezOrNFTForm = ({
   } = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
-      sender: mandatoryNftSender || sender,
+      sender: sender,
       amount: isNFT ? "1" : amount,
       recipient,
       proposalSigner: initialProposalSigner,
@@ -293,7 +292,7 @@ export const SendTezOrNFTForm = ({
               inputName="sender"
               isDisabled={isNFT || simulating}
               allowUnknown={false}
-              initialPkhValue={mandatoryNftSender || sender}
+              initialPkhValue={sender}
             />
             {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
           </FormControl>

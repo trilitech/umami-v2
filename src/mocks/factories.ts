@@ -293,7 +293,6 @@ export const mockNFT = (index: number, balance = "1"): NFTBalance => {
     displayUri,
     contract: mockContractAddress(index).pkh,
     tokenId: "mockId" + index,
-    owner: mockImplicitAddress(index).pkh,
     totalSupply: "1",
     metadata: {
       displayUri: displayUri,
