@@ -33,7 +33,7 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
     if (!isValidContractPkh(contract)) {
       throw new Error("Invalid csv value: contract address");
     }
-    res = { ...res, type: "fa1.2", contract };
+    res = { ...res, type: "fa1.2", contract, tokenId: 0 };
     if (tokenId !== undefined) {
       const checkedTokenId = validateNonNegativeNumber(tokenId);
       if (checkedTokenId === null) {

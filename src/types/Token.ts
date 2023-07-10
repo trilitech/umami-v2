@@ -72,6 +72,7 @@ export type TokenId = string;
 export type FA12Token = {
   type: "fa1.2";
   contract: string;
+  tokenId: "0"; // TzKT uses "0" as the tokenId for FA1.2 tokens
   metadata?: Metadata;
 };
 
@@ -103,6 +104,7 @@ export const fromRaw = (rawToken: RawTokenInfo): Token | null => {
         type: "fa1.2",
         metadata: metadata,
         contract: fa1result.data.contract.address,
+        tokenId: "0",
       };
     }
     console.warn("Invalid FA1 token: " + JSON.stringify(rawToken));

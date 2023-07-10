@@ -54,6 +54,7 @@ describe("Tezos utils", () => {
           recipient: pkh1,
           amount: "1",
           contract: parseContractPkh(ghostFA12.contract),
+          tokenId: "0",
         },
         {
           type: "fa2",
@@ -218,6 +219,7 @@ describe("Tezos utils", () => {
               recipient: pkh1,
               amount: "1",
               contract: parseContractPkh(ghostFA12.contract),
+              tokenId: "0",
             },
             {
               type: "fa2",
