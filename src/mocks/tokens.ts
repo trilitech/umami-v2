@@ -1,6 +1,5 @@
 import type { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../types/TokenBalance";
 import { nftDisplayUri } from "../utils/tezos/consts";
-import { devPublicKeys0 } from "./devSignerKeys";
 
 export const ghostTezzard: NFTBalance = {
   id: 1,
