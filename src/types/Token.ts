@@ -1,5 +1,6 @@
 import * as tzktApi from "@tzkt/sdk-api";
 
+// TzKT defines metadada as any, but we need to have at least some clarity of what can be inside
 export type TokenMetadata = {
   name?: string;
   symbol?: string;
@@ -38,8 +39,8 @@ export type TokenMetadata = {
   }>;
 };
 
-export type tokenInfo = Omit<tzktApi.TokenInfo, "metadata"> & {
+export type TokenInfo = Omit<tzktApi.TokenInfo, "metadata"> & {
   metadata?: TokenMetadata;
 };
 
-export type Token = Omit<tzktApi.TokenBalance, "token"> & { token?: tokenInfo };
+export type Token = Omit<tzktApi.TokenBalance, "token"> & { token: TokenInfo };

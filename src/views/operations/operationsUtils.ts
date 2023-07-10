@@ -3,7 +3,6 @@ import { formatRelative } from "date-fns";
 import { z } from "zod";
 import { tokenPrettyBalance } from "../../types/Asset";
 import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Operation";
-import { Token } from "../../types/Token";
 import { fromToken } from "../../types/Asset";
 import { compact } from "lodash";
 import { getIPFSurl } from "../../utils/token/nftUtils";
@@ -11,15 +10,6 @@ import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { parsePkh } from "../../types/Address";
-
-export const classifyTokenTransfer = (transfer: TokenTransfer) => {
-  const token: Token = {
-    balance: transfer.amount,
-    token: transfer.token === null ? undefined : transfer.token,
-  };
-
-  return fromToken(token);
-};
 
 export const getHashUrl = (hash: string, network: TezosNetwork) => {
   return `https://${network}.tzkt.io/${hash}`;
@@ -153,7 +143,7 @@ export const getTokenOperationDisplay = (
   forAddress: string,
   network = TezosNetwork.MAINNET
 ) => {
-  const asset = classifyTokenTransfer(transfer);
+  const asset = fromToken({ balance: transfer.amount, token: transfer.token });
 
   const transferRequired = TokenTransaction.safeParse(transfer);
 
