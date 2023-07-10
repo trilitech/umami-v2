@@ -31,6 +31,7 @@ describe("csv utils", () => {
         recipient: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
         prettyAmount: "123456789123456789",
         contract: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+        tokenId: 0,
       },
     ]);
   });
@@ -82,12 +83,13 @@ describe("csv utils", () => {
   });
 
   test("converts CSVFA12TransferRow to OperationValue", () => {
-    const mockCSVFA12TransferRow = {
+    const mockCSVFA12TransferRow: CSVRow = {
       type: "fa1.2",
       recipient: mockImplicitAddress(1).pkh,
       prettyAmount: "10000",
       contract: ghostFA12.contract,
-    } as CSVRow;
+      tokenId: 0,
+    };
     const res = csvRowToOperationValue(mockImplicitAddress(0).pkh, mockCSVFA12TransferRow, {
       [ghostFA12.contract]: [ghostFA12],
     });
@@ -98,17 +100,18 @@ describe("csv utils", () => {
       recipient: mockImplicitAddress(1),
       sender: mockImplicitAddress(0),
       contract: parseContractPkh(ghostFA12.contract),
+      tokenId: "0",
     });
   });
 
   test("converts CSVFA2TransferRow to OperationValue", () => {
-    const mockCSVFA2TransferRow = {
+    const mockCSVFA2TransferRow: CSVRow = {
       type: "fa2",
       recipient: mockImplicitAddress(1).pkh,
       prettyAmount: "1",
       contract: ghostFA2.contract,
       tokenId: parseInt(ghostFA2.tokenId),
-    } as CSVRow;
+    };
     const res = csvRowToOperationValue(mockImplicitAddress(0).pkh, mockCSVFA2TransferRow, {
       [ghostFA2.contract]: [ghostFA2],
     });

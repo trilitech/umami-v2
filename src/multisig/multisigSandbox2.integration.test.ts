@@ -69,6 +69,7 @@ describe("multisig Sandbox", () => {
           sender: MULTISIG_GHOSTNET_1,
           recipient: devAccount2Address,
           contract: FA12_TOKEN_CONTRACT,
+          tokenId: "0",
           amount: "2",
         },
         {

@@ -142,6 +142,7 @@ describe("Assets reducer", () => {
             {
               balance: "10000000000",
               contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
+              tokenId: "0",
               metadata: {
                 icon: "ipfs://QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
                 name: "Hedgehoge",

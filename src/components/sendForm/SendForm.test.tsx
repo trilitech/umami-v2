@@ -437,6 +437,7 @@ describe("<SendForm />", () => {
     const mockFa1: FA12TokenBalance = {
       type: "fa1.2",
       contract: mockContractAddress(2).pkh,
+      tokenId: "0",
       balance: "3",
       metadata: {
         symbol: MOCK_TOKEN_SYMBOL,
@@ -492,6 +493,7 @@ describe("<SendForm />", () => {
             recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
             sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
             contract: parseContractPkh(mockFa1.contract),
+            tokenId: "0",
           },
         ],
         "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
@@ -531,6 +533,7 @@ describe("<SendForm />", () => {
             recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
             sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
             contract: parseContractPkh(mockFa1.contract),
+            tokenId: "0",
           },
         ],
         { network: "mainnet", sk: "mockSk", type: "sk" }
@@ -894,6 +897,7 @@ describe("<SendForm />", () => {
       const mockFa1: FA12TokenBalance = {
         type: "fa1.2",
         contract: mockContractAddress(2).pkh,
+        tokenId: "0",
         balance: "3",
         metadata: {
           symbol: MOCK_TOKEN_SYMBOL,
