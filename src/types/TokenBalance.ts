@@ -1,55 +1,35 @@
+import * as tzktApi from "@tzkt/sdk-api";
 import { BigNumber } from "bignumber.js";
-import type { RawToken, Metadata } from "./Token";
+import { Metadata, FA12TokenSchema, FA2TokenSchema, NFTSchema, RawTokenInfo } from "./Token";
 import { z } from "zod";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
-
-const addressSchema = z.object({ address: z.string() });
+import { Schema as AddressSchema } from "./Address";
 
 export type TokenBalance = FA12TokenBalance | FA2TokenBalance | NFTBalance;
 
-const fa1TokenSchema = z.object({
-  standard: z.string().regex(/^fa1\.2$/i),
-  contract: addressSchema,
-});
+export type RawTokenBalance = Omit<tzktApi.TokenBalance, "token"> & { token: RawTokenInfo };
 
-const fa1BalanceSchema = z.object({
+const FA12BalanceSchema = z.object({
   balance: z.string(),
-  token: fa1TokenSchema,
+  token: FA12TokenSchema,
 });
 
-const fa2TokenSchema = z.object({
-  standard: z.string().regex(/^fa2$/i),
-  tokenId: z.string(),
-  contract: addressSchema,
-});
-
-const fa2BalanceSchema = z.object({
+const FA2BalanceSchema = z.object({
   balance: z.string(),
-  token: fa2TokenSchema,
+  token: FA2TokenSchema,
 });
 
-const nftTokenSchema = z.object({
-  id: z.number(),
-  standard: z.string().regex(/^fa2$/i),
-  tokenId: z.string(),
-  contract: addressSchema,
-  totalSupply: z.string().optional(),
-  metadata: z.object({
-    displayUri: z.string(),
-  }),
-});
-
-const nftBalanceSchema = z.object({
+const NFTBalanceSchema = z.object({
   balance: z.string(),
-  account: addressSchema,
-  token: nftTokenSchema,
+  account: AddressSchema,
+  token: NFTSchema,
 });
 
-export const fromToken = (raw: RawToken): TokenBalance | null => {
+export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
   const metadata = raw.token.metadata;
 
-  const fa1result = fa1BalanceSchema.safeParse(raw);
+  const fa1result = FA12BalanceSchema.safeParse(raw);
   if (fa1result.success) {
     return {
       type: "fa1.2",
@@ -59,7 +39,7 @@ export const fromToken = (raw: RawToken): TokenBalance | null => {
     };
   }
 
-  const nftResult = nftBalanceSchema.safeParse(raw);
+  const nftResult = NFTBalanceSchema.safeParse(raw);
   if (nftResult.success) {
     return {
       // if the nft has been parsed successfully then the metadata is definitely present
@@ -75,7 +55,7 @@ export const fromToken = (raw: RawToken): TokenBalance | null => {
     };
   }
 
-  const fa2result = fa2BalanceSchema.safeParse(raw);
+  const fa2result = FA2BalanceSchema.safeParse(raw);
   if (fa2result.success) {
     return {
       type: "fa2",

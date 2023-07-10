@@ -4,10 +4,10 @@ import { DelegationOperation, TokenBalance as TzktTokenBalance } from "@tzkt/sdk
 import { compact, groupBy, mapValues } from "lodash";
 
 import { OperationValue } from "../../components/sendForm/types";
-import { TokenBalance, fromToken } from "../../types/TokenBalance";
+import { TokenBalance, fromRaw } from "../../types/TokenBalance";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
-import { RawToken } from "../../types/Token";
+import { RawTokenBalance } from "../../types/TokenBalance";
 import { TzktAccount } from "../tezos";
 import accountsSlice from "./accountsSlice";
 
@@ -134,7 +134,7 @@ const assetsSlice = createSlice({
       });
       state.balances.tokens = mapValues(groupedByPkh, rawTokenBalances => {
         return compact(
-          rawTokenBalances.map(rawTokenBalance => fromToken(rawTokenBalance as RawToken))
+          rawTokenBalances.map(rawTokenBalance => fromRaw(rawTokenBalance as RawTokenBalance))
         );
       });
     },

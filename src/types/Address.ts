@@ -1,4 +1,5 @@
 import { validateAddress, ValidationResult } from "@taquito/utils";
+import { z } from "zod";
 
 export type RawPkh = string;
 
@@ -11,6 +12,8 @@ export type ImplicitAddress = {
   type: "implicit";
   pkh: RawPkh;
 };
+
+export const Schema = z.object({ address: z.string() });
 
 export type Address = ContractAddress | ImplicitAddress;
 

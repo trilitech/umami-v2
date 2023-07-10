@@ -1,5 +1,10 @@
 import { ContractAddress, ImplicitAddress, parseContractPkh, parsePkh } from "../../types/Address";
-import { TokenBalance, FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
+import {
+  TokenBalance,
+  FA12TokenBalance,
+  FA2TokenBalance,
+  NFTBalance,
+} from "../../types/TokenBalance";
 import { Delegation, FA12Operation, FA2Operation, TezOperation } from "../../types/RawOperation";
 
 type TezMode = { type: "tez" };

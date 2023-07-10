@@ -6,7 +6,7 @@ import {
   artifactUri,
   FA12TokenBalance,
   FA2TokenBalance,
-  fromToken,
+  fromRaw,
   httpIconUri,
   metadataUri,
   mimeType,
@@ -21,7 +21,7 @@ import { TezosNetwork } from "@airgap/tezos";
 
 describe("fromToken", () => {
   test("fa1.2 valid", () => {
-    const result = fromToken(fa1Token);
+    const result = fromRaw(fa1Token);
     const expected = {
       type: "fa1.2",
       contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
@@ -31,12 +31,12 @@ describe("fromToken", () => {
   });
 
   test("fa1.2 with no balance", () => {
-    const result = fromToken({ ...fa1Token, balance: null });
+    const result = fromRaw({ ...fa1Token, balance: null });
     expect(result).toEqual(null);
   });
 
   test("valid fa2 token", () => {
-    const result = fromToken(fa2Token);
+    const result = fromRaw(fa2Token);
     expect(result).toEqual({
       type: "fa2",
       contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
@@ -51,13 +51,13 @@ describe("fromToken", () => {
   });
 
   test("invalid fa2 token (missing tokenId)", () => {
-    const result = fromToken({ ...fa2Token, token: { tokenId: undefined } });
+    const result = fromRaw({ ...fa2Token, token: { tokenId: undefined } });
 
     expect(result).toEqual(null);
   });
 
   test("valid nft", () => {
-    const result = fromToken(nft);
+    const result = fromRaw(nft);
     const expected = {
       type: "nft",
       contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
@@ -73,7 +73,7 @@ describe("fromToken", () => {
   });
 
   test("invalid nft (missing contract address)", () => {
-    const result = fromToken({
+    const result = fromRaw({
       ...nft,
       token: { contract: { address: null } },
     });
@@ -82,7 +82,7 @@ describe("fromToken", () => {
   });
 
   test("fa1 token with name symbol and decimals (tzBTC)", () => {
-    const result = fromToken(tzBtsc(mockImplicitAddress(0)));
+    const result = fromRaw(tzBtsc(mockImplicitAddress(0)));
 
     const expected = {
       type: "fa1.2",
@@ -98,7 +98,7 @@ describe("fromToken", () => {
   });
 
   test("fa1 token with name symbol decimals and icon (Hedgehoge)", () => {
-    const result = fromToken(hedgehoge(mockImplicitAddress(0)));
+    const result = fromRaw(hedgehoge(mockImplicitAddress(0)));
 
     const expected = {
       type: "fa1.2",
@@ -115,7 +115,7 @@ describe("fromToken", () => {
   });
 
   test("fa2 token with thumbnailUri (uUSD)", () => {
-    const result = fromToken(uUSD(mockImplicitAddress(0)));
+    const result = fromRaw(uUSD(mockImplicitAddress(0)));
     const expected = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
