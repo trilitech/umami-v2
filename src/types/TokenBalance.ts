@@ -28,15 +28,19 @@ const NFTBalanceSchema = z.object({
 
 export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
   const metadata = raw.token.metadata;
+  if (raw.token.standard === "fa1.2") {
+    const fa1result = FA12BalanceSchema.safeParse(raw);
+    if (fa1result.success) {
+      return {
+        type: "fa1.2",
+        metadata: metadata,
+        balance: fa1result.data.balance,
+        contract: fa1result.data.token.contract.address,
+      };
+    }
+    console.warn("Invalid FA1 token balance: " + JSON.stringify(raw));
 
-  const fa1result = FA12BalanceSchema.safeParse(raw);
-  if (fa1result.success) {
-    return {
-      type: "fa1.2",
-      metadata: metadata,
-      balance: fa1result.data.balance,
-      contract: fa1result.data.token.contract.address,
-    };
+    return null;
   }
 
   const nftResult = NFTBalanceSchema.safeParse(raw);
@@ -51,7 +55,7 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
       balance: nftResult.data.balance,
       owner: nftResult.data.account.address,
       displayUri: nftResult.data.token.metadata.displayUri,
-      totalSupply: nftResult.data.token.totalSupply || undefined,
+      totalSupply: nftResult.data.token.totalSupply,
     };
   }
 
@@ -66,6 +70,7 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
     };
   }
 
+  console.warn("Invalid FA2 token balance: " + JSON.stringify(raw));
   return null;
 };
 
