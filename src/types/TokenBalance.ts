@@ -75,6 +75,7 @@ export const getRealAmount = (asset: TokenBalance, prettyAmount: string): BigNum
 export type FA12TokenBalance = {
   type: "fa1.2";
   contract: string;
+  tokenId: "0";
   balance: string;
   metadata?: Metadata;
 };

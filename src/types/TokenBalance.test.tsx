@@ -25,6 +25,7 @@ describe("fromRaw", () => {
     const expected = {
       type: "fa1.2",
       contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+      tokenId: "0",
       balance: "443870",
     };
     expect(result).toEqual(expected);
@@ -88,6 +89,7 @@ describe("fromRaw", () => {
     const expected = {
       type: "fa1.2",
       contract: "KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn",
+      tokenId: "0",
       balance: "2205",
       metadata: {
         decimals: "8",
@@ -105,6 +107,7 @@ describe("fromRaw", () => {
       type: "fa1.2",
       contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
       balance: "10000000000",
+      tokenId: "0",
       metadata: {
         decimals: "6",
         name: "Hedgehoge",
@@ -140,6 +143,7 @@ describe("tokenName", () => {
     const fa1token: FA12TokenBalance = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      tokenId: "0",
       balance: "1",
     };
     expect(tokenName(fa1token)).toEqual("FA1.2 token");
@@ -182,6 +186,7 @@ describe("tokenSymbol", () => {
     const fa1token: FA12TokenBalance = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      tokenId: "0",
       balance: "1",
     };
     expect(tokenSymbol(fa1token)).toEqual("FA1.2");
@@ -223,6 +228,7 @@ describe("httpIconUri", () => {
     const fa1token: FA12TokenBalance = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      tokenId: "0",
       balance: "1",
     };
     expect(httpIconUri(fa1token)).toEqual(undefined);

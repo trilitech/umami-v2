@@ -464,6 +464,7 @@ describe("decodeLambda", () => {
       {
         amount: "300",
         contract: parseContractPkh("KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe"),
+        tokenId: "0",
         recipient: parseImplicitPkh("tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS"),
         sender: parseContractPkh("KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm"),
         type: "fa1.2",
@@ -673,6 +674,7 @@ describe("decodeLambda", () => {
       {
         amount: "300",
         contract: parseContractPkh("KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe"),
+        tokenId: "0",
         recipient: parseImplicitPkh("tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS"),
         sender: parseContractPkh("KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm"),
         type: "fa1.2",
@@ -805,7 +807,7 @@ describe("decodeLambda", () => {
           pkh: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
           type: "contract",
         },
-
+        tokenId: "0",
         sender: {
           pkh: "KT1GTYqMXwnsvqYwNGcTHcgqNRASuyM5TzY8",
           type: "contract",
