@@ -2,7 +2,12 @@ import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { RawOperation } from "../../../../types/RawOperation";
 import colors from "../../../../style/colors";
-import { formatTokenAmount, tokenDecimal, tokenName, tokenSymbol } from "../../../../types/Asset";
+import {
+  formatTokenAmount,
+  tokenDecimal,
+  tokenName,
+  tokenSymbol,
+} from "../../../../types/TokenBalance";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useSearchAsset } from "../../../../utils/hooks/assetsHooks";
 import { CopyableAddress } from "../../../CopyableText";

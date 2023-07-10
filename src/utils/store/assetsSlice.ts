@@ -1,10 +1,10 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
-import { DelegationOperation, TokenBalance } from "@tzkt/sdk-api";
+import { DelegationOperation, TokenBalance as TzktTokenBalance } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
 
 import { OperationValue } from "../../components/sendForm/types";
-import { Asset, fromToken } from "../../types/Asset";
+import { TokenBalance, fromToken } from "../../types/TokenBalance";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
@@ -27,7 +27,7 @@ type State = {
   blockLevel: number | null;
   balances: {
     mutez: Record<string, string | undefined>;
-    tokens: Record<string, Asset[] | undefined>;
+    tokens: Record<string, TokenBalance[] | undefined>;
   };
   transfers: {
     tez: Record<string, TezTransfer[] | undefined>;
@@ -126,7 +126,7 @@ const assetsSlice = createSlice({
       }, {});
     },
 
-    updateTokenBalance: (state, { payload }: { payload: TokenBalance[] }) => {
+    updateTokenBalance: (state, { payload }: { payload: TzktTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => {
         // there are no token balances without an owner
         // URL to verify https://api.mainnet.tzkt.io/v1/tokens/balances?account.null

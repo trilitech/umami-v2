@@ -12,9 +12,9 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import { NFT } from "../../../types/Asset";
+import { NFTBalance } from "../../../types/TokenBalance";
 
-const AttributesAccordionItem = ({ nft, style }: { nft: NFT; style: CSSProperties }) => {
+const AttributesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSProperties }) => {
   const attributes = nft.metadata.attributes;
   if (!attributes || attributes.length === 0) {
     return null;

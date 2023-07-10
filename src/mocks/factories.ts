@@ -9,7 +9,7 @@ import {
   MultisigAccount,
 } from "../types/Account";
 import { ContractAddress, ImplicitAddress } from "../types/Address";
-import { NFT } from "../types/Asset";
+import { NFTBalance } from "../types/TokenBalance";
 import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
@@ -284,7 +284,7 @@ export const mockFA1Token = (index: number, pkh: string, balance = 1): Token => 
   };
 };
 
-export const mockNFT = (index: number, balance = "1"): NFT => {
+export const mockNFT = (index: number, balance = "1"): NFTBalance => {
   const displayUri = "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" + index;
   return {
     id: 1,
@@ -321,7 +321,7 @@ export const mockTezTransfer = (index: number): OperationValue => {
 export const mockNftTransfer = (index: number): OperationValue => {
   return {
     type: "fa2",
-    data: {} as NFT,
+    data: {} as NFTBalance,
     amount: String(index),
     sender: mockImplicitAddress(index),
     recipient: mockImplicitAddress(index + 1),

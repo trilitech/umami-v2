@@ -1,8 +1,8 @@
 import { AspectRatio, Image, Card, CardBody, Heading, Text } from "@chakra-ui/react";
-import { NFT, thumbnailUri } from "../../types/Asset";
+import { NFTBalance, thumbnailUri } from "../../types/TokenBalance";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 
-const NFTCard: React.FC<{ nft: NFT; onClick: () => void }> = ({ nft, onClick }) => {
+const NFTCard: React.FC<{ nft: NFTBalance; onClick: () => void }> = ({ nft, onClick }) => {
   const url = getIPFSurl(thumbnailUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const name = nft.metadata.name;
