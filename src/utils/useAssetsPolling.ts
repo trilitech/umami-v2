@@ -15,6 +15,7 @@ import {
 } from "./store/assetsSlice";
 import { useAppDispatch } from "./store/hooks";
 import { multisigActions } from "./store/multisigsSlice";
+import { tokensActions } from "./store/tokensSlice";
 import {
   getAccounts,
   getBakers,
@@ -91,12 +92,21 @@ export const useAssetsPolling = () => {
 
       const tokens = Promise.all(pkhChunks.map(pkhs => getTokenBalances(pkhs, network))).then(
         async tokenBalances => {
+          dispatch(
+            tokensActions.addTokens({ network, tokens: tokenBalances.flat().map(b => b.token) })
+          );
           dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
 
           // token transfers have to be fetched after the balances were fetched
           // because otherwise we might not have some tokens' info to display the operations
           processInBatches(allAccountPkhs, 5, pkh => getTokensTransfersPayload(pkh, network)).then(
             tokenTransfers => {
+              dispatch(
+                tokensActions.addTokens({
+                  network,
+                  tokens: tokenTransfers.flatMap(x => x.transfers).map(b => b.token),
+                })
+              );
               dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
             }
           );
