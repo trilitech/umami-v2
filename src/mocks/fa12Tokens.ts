@@ -1,7 +1,7 @@
 import { Address } from "../types/Address";
-import { Token } from "../types/Token";
+import { RawToken } from "../types/Token";
 
-export const tzBtsc = (owner: Address): Token => {
+export const tzBtsc = (owner: Address): RawToken => {
   return {
     id: 25018298793985,
     account: {
@@ -31,7 +31,7 @@ export const tzBtsc = (owner: Address): Token => {
   };
 };
 
-export const hedgehoge = (owner: Address): Token => {
+export const hedgehoge = (owner: Address): RawToken => {
   return {
     id: 53252621074433,
     account: {
@@ -62,7 +62,7 @@ export const hedgehoge = (owner: Address): Token => {
   };
 };
 
-export const ghostnetFA12: Token = {
+export const ghostnetFA12: RawToken = {
   id: 140510965530625,
   account: {
     address: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",

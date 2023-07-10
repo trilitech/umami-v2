@@ -16,7 +16,7 @@ import {
   tokenName,
   tokenSymbol,
 } from "./TokenBalance";
-import type { TokenMetadata } from "./Token";
+import type { Metadata } from "./Token";
 import { TezosNetwork } from "@airgap/tezos";
 
 describe("fromToken", () => {
@@ -66,7 +66,7 @@ describe("fromToken", () => {
       owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
       id: 10899466223617,
-      metadata: nft.token?.metadata as TokenMetadata,
+      metadata: nft.token.metadata as Metadata,
       totalSupply: "1",
     };
     expect(result).toEqual(expected);

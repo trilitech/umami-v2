@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import type { Token, TokenMetadata } from "./Token";
+import type { RawToken, Metadata } from "./Token";
 import { z } from "zod";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
@@ -46,8 +46,8 @@ const nftBalanceSchema = z.object({
   token: nftTokenSchema,
 });
 
-export const fromToken = (raw: Token): TokenBalance | null => {
-  const metadata = raw.token?.metadata;
+export const fromToken = (raw: RawToken): TokenBalance | null => {
+  const metadata = raw.token.metadata;
 
   const fa1result = fa1BalanceSchema.safeParse(raw);
   if (fa1result.success) {
@@ -63,7 +63,7 @@ export const fromToken = (raw: Token): TokenBalance | null => {
   if (nftResult.success) {
     return {
       // if the nft has been parsed successfully then the metadata is definitely present
-      metadata: metadata as TokenMetadata,
+      metadata: metadata as Metadata,
       type: "nft",
       id: nftResult.data.token.id,
       contract: nftResult.data.token.contract.address,
@@ -149,12 +149,12 @@ export type FA12TokenBalance = {
   type: "fa1.2";
   contract: string;
   balance: string;
-  metadata?: TokenMetadata;
+  metadata?: Metadata;
 };
 
 export type FA2TokenBalance = {
   type: "fa2";
-  metadata?: TokenMetadata;
+  metadata?: Metadata;
   contract: string;
   tokenId: string;
   balance: string;
@@ -167,7 +167,7 @@ export type NFTBalance = {
   tokenId: string;
   balance: string;
   owner: string;
-  metadata: TokenMetadata;
+  metadata: Metadata;
   displayUri: string;
   totalSupply: string | undefined;
 };

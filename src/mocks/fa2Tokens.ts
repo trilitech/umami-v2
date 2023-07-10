@@ -1,7 +1,7 @@
 import { Address } from "../types/Address";
-import { Token } from "../types/Token";
+import { RawToken } from "../types/Token";
 
-export const uUSD = (owner: Address): Token => {
+export const uUSD = (owner: Address): RawToken => {
   return {
     id: 64166129827842,
     account: {

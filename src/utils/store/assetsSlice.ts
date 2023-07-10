@@ -7,7 +7,7 @@ import { OperationValue } from "../../components/sendForm/types";
 import { TokenBalance, fromToken } from "../../types/TokenBalance";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
-import { Token } from "../../types/Token";
+import { RawToken } from "../../types/Token";
 import { TzktAccount } from "../tezos";
 import accountsSlice from "./accountsSlice";
 
@@ -134,7 +134,7 @@ const assetsSlice = createSlice({
       });
       state.balances.tokens = mapValues(groupedByPkh, rawTokenBalances => {
         return compact(
-          rawTokenBalances.map(rawTokenBalance => fromToken(rawTokenBalance as Token))
+          rawTokenBalances.map(rawTokenBalance => fromToken(rawTokenBalance as RawToken))
         );
       });
     },
