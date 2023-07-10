@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { mockNFT } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { NFT } from "../../types/Asset";
+import { NFTBalance } from "../../types/Asset";
 import NFTDrawerCard from "./NFTDrawerCard";
 
-const fixture = (nft: NFT) => (
+const fixture = (nft: NFTBalance) => (
   <ReduxStore>
     <NFTDrawerCard nft={nft} />
   </ReduxStore>

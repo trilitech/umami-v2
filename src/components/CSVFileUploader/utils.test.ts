@@ -2,7 +2,7 @@ import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories"
 import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 import { CSVRow } from "./types";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../../mocks/tokens";
-import type { NFT } from "../../types/Asset";
+import type { NFTBalance } from "../../types/Asset";
 import { parseContractPkh } from "../../types/Address";
 
 describe("csv utils", () => {
@@ -125,7 +125,7 @@ describe("csv utils", () => {
 
   test("converts NFT CSVFA2TransferRow to OperationValue", () => {
     const ghostTezzard1 = ghostTezzard;
-    const ghostTezzard2: NFT = { ...ghostTezzard, tokenId: "8" };
+    const ghostTezzard2: NFTBalance = { ...ghostTezzard, tokenId: "8" };
     const mockCSVFA2TransferRow = {
       type: "fa2",
       recipient: mockImplicitAddress(1).pkh,

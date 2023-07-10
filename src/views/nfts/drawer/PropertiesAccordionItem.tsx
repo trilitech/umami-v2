@@ -14,10 +14,10 @@ import { CSSProperties } from "react";
 import { CopyableAddress } from "../../../components/CopyableText";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
-import { metadataUri, mimeType, NFT, royalties } from "../../../types/Asset";
+import { metadataUri, mimeType, NFTBalance, royalties } from "../../../types/Asset";
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 
-export const creatorElement = (nft: NFT) => {
+export const creatorElement = (nft: NFTBalance) => {
   if (!nft.metadata.creators || nft.metadata.creators.length === 0) {
     return "-";
   }
@@ -28,7 +28,7 @@ export const creatorElement = (nft: NFT) => {
   return <TruncatedTextWithTooltip text={firstCreator} maxLength={15} />;
 };
 
-const PropertiesAccordionItem = ({ nft, style }: { nft: NFT; style: CSSProperties }) => {
+const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSProperties }) => {
   const royaltyShares = royalties(nft);
   const totalRoyalties = royaltyShares.reduce((acc, royalty) => acc + royalty.share, 0).toFixed(2);
 

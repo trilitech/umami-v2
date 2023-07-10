@@ -3,7 +3,7 @@ import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
-import { FA12Token, FA2Token, NFT } from "../../../types/Asset";
+import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/Asset";
 import { Delegation } from "../../../types/Delegation";
 import { OperationDisplay } from "../../../types/Operation";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
@@ -17,8 +17,8 @@ import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
 
 export const AssetsPanel: React.FC<{
-  tokens: Array<FA12Token | FA2Token>;
-  nfts: Array<NFT>;
+  tokens: Array<FA12TokenBalance | FA2TokenBalance>;
+  nfts: Array<NFTBalance>;
   account: Account;
   operationDisplays: OperationDisplay[];
   network: TezosNetwork;

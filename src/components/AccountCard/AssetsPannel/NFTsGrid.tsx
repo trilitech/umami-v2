@@ -1,12 +1,12 @@
 import { AspectRatio, Heading, Image, SimpleGrid, SimpleGridProps } from "@chakra-ui/react";
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { NFT, thumbnailUri } from "../../../types/Asset";
+import { NFTBalance, thumbnailUri } from "../../../types/Asset";
 import { truncate } from "../../../utils/format";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
 import { NoNFTs } from "../../NoItems";
 
-export const NFTsGrid: FC<{ nfts: NFT[]; showName?: boolean } & SimpleGridProps> = ({
+export const NFTsGrid: FC<{ nfts: NFTBalance[]; showName?: boolean } & SimpleGridProps> = ({
   nfts,
   showName,
   ...rest

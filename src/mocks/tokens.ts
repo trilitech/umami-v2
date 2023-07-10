@@ -1,8 +1,8 @@
-import type { FA12Token, FA2Token, NFT } from "../types/Asset";
+import type { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../types/Asset";
 import { nftDisplayUri } from "../utils/tezos/consts";
 import { devPublicKeys0 } from "./devSignerKeys";
 
-export const ghostTezzard: NFT = {
+export const ghostTezzard: NFTBalance = {
   id: 1,
   type: "nft",
   contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
@@ -18,7 +18,7 @@ export const ghostTezzard: NFT = {
   },
 };
 
-export const ghostFA12: FA12Token = {
+export const ghostFA12: FA12TokenBalance = {
   type: "fa1.2",
   contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
   balance: "1",
@@ -29,7 +29,7 @@ export const ghostFA12WithOwner = {
   owner: devPublicKeys0.pkh,
 };
 
-export const ghostFA2: FA2Token = {
+export const ghostFA2: FA2TokenBalance = {
   type: "fa2",
   contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
   tokenId: "1",

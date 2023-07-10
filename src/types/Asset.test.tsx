@@ -4,8 +4,8 @@ import { mockNFT, mockImplicitAddress } from "../mocks/factories";
 import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
 import {
   artifactUri,
-  FA12Token,
-  FA2Token,
+  FA12TokenBalance,
+  FA2TokenBalance,
   fromToken,
   httpIconUri,
   metadataUri,
@@ -136,7 +136,7 @@ describe("fromToken", () => {
 
 describe("tokenName", () => {
   test("when metadata.name exists", () => {
-    const fa1token: FA12Token = {
+    const fa1token: FA12TokenBalance = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       balance: "1",
@@ -150,7 +150,7 @@ describe("tokenName", () => {
     };
     expect(tokenName(fa1tokenWithName)).toEqual("some token name");
 
-    const fa2token: FA2Token = {
+    const fa2token: FA2TokenBalance = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       balance: "1",
@@ -178,7 +178,7 @@ describe("tokenName", () => {
 
 describe("tokenSymbol", () => {
   test("when metadata.symbol exists", () => {
-    const fa1token: FA12Token = {
+    const fa1token: FA12TokenBalance = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       balance: "1",
@@ -192,7 +192,7 @@ describe("tokenSymbol", () => {
     };
     expect(tokenSymbol(fa1tokenWithSymbol)).toEqual("some token symbol");
 
-    const fa2token: FA2Token = {
+    const fa2token: FA2TokenBalance = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       balance: "1",
@@ -219,7 +219,7 @@ describe("tokenSymbol", () => {
 
 describe("httpIconUri", () => {
   test("when metadata.symbol exists", () => {
-    const fa1token: FA12Token = {
+    const fa1token: FA12TokenBalance = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       balance: "1",
@@ -235,7 +235,7 @@ describe("httpIconUri", () => {
       "https://ipfs.io/ipfs/QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs"
     );
 
-    const fa2token: FA2Token = {
+    const fa2token: FA2TokenBalance = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       balance: "1",
@@ -367,7 +367,7 @@ describe("metadataUri", () => {
 
 describe("tokenDecimal", () => {
   it("returns token decimal", () => {
-    const fa2token: FA2Token = {
+    const fa2token: FA2TokenBalance = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       balance: "1",

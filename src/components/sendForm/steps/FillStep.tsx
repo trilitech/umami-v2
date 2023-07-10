@@ -23,7 +23,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { AccountType } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
-import { Asset, getRealAmount, tokenSymbol } from "../../../types/Asset";
+import { TokenBalance, getRealAmount, tokenSymbol } from "../../../types/Asset";
 import { Delegation } from "../../../types/RawOperation";
 import { tezToMutez } from "../../../utils/format";
 import {
@@ -120,7 +120,7 @@ export const DelegateForm = ({
   );
 };
 
-const getAmountSymbol = (asset?: Asset) => {
+const getAmountSymbol = (asset?: TokenBalance) => {
   if (!asset) {
     return "tez";
   }
@@ -204,7 +204,7 @@ export const SendTezOrNFTForm = ({
   onSubmit: (v: FormValues) => void;
   onSubmitBatch: (v: FormValues) => void;
   sender: string;
-  token?: Asset;
+  token?: TokenBalance;
   isLoading?: boolean;
   recipient?: string;
   amount?: string;
@@ -387,7 +387,7 @@ const buildTezFromFormValues = (
   return { type: "implicit", content: value, signer: parseImplicitPkh(v.sender) };
 };
 
-const buildTokenFromFormValues = (v: FormValues, asset: Asset): FormOperations => {
+const buildTokenFromFormValues = (v: FormValues, asset: TokenBalance): FormOperations => {
   const token = [
     classifyAsset(asset, {
       amount: getRealAmount(asset, v.amount).toString(),

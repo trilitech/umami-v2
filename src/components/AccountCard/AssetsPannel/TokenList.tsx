@@ -2,8 +2,8 @@ import { Box, Flex, Heading, Icon, Image, Text } from "@chakra-ui/react";
 import { MdGeneratingTokens } from "react-icons/md";
 import colors from "../../../style/colors";
 import {
-  FA12Token,
-  FA2Token,
+  FA12TokenBalance,
+  FA2TokenBalance,
   httpIconUri,
   tokenName,
   tokenPrettyBalance,
@@ -11,7 +11,7 @@ import {
 } from "../../../types/Asset";
 import { NoTokens } from "../../NoItems";
 
-const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
+const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {
   const name = tokenName(token);
   const symbol = tokenSymbol(token);
   const iconUri = httpIconUri(token);
@@ -47,7 +47,7 @@ const TokenTile = ({ token }: { token: FA12Token | FA2Token }) => {
   );
 };
 
-export const TokenList = ({ tokens }: { tokens: Array<FA12Token | FA2Token> }) => {
+export const TokenList = ({ tokens }: { tokens: Array<FA12TokenBalance | FA2TokenBalance> }) => {
   if (tokens.length === 0) {
     return <NoTokens small />;
   }

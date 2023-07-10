@@ -1,5 +1,5 @@
 import { isAddressValid, isValidContractPkh, parsePkh } from "../../types/Address";
-import { Asset, getRealAmount } from "../../types/Asset";
+import { TokenBalance, getRealAmount } from "../../types/Asset";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { classifyAsset, OperationValue } from "../sendForm/types";
@@ -49,7 +49,7 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
 export const csvRowToOperationValue = (
   sender: string,
   csvRow: CSVRow,
-  contractToAssets: Record<string, Asset[] | undefined>
+  contractToAssets: Record<string, TokenBalance[] | undefined>
 ): OperationValue => {
   const recipient = csvRow.recipient;
 
