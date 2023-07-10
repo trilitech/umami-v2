@@ -31,6 +31,7 @@ describe("fromToken", () => {
   });
 
   test("fa1.2 with no balance", () => {
+    jest.spyOn(console, 'warn').mockImplementation();
     const result = fromRaw({ ...fa1Token, balance: null });
     expect(result).toEqual(null);
   });
@@ -51,8 +52,8 @@ describe("fromToken", () => {
   });
 
   test("invalid fa2 token (missing tokenId)", () => {
+    jest.spyOn(console, 'warn').mockImplementation();
     const result = fromRaw({ ...fa2Token, token: { tokenId: undefined } });
-
     expect(result).toEqual(null);
   });
 
@@ -73,6 +74,7 @@ describe("fromToken", () => {
   });
 
   test("invalid nft (missing contract address)", () => {
+    jest.spyOn(console, 'warn').mockImplementation();
     const result = fromRaw({
       ...nft,
       token: { contract: { address: null } },
