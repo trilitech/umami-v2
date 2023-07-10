@@ -4,7 +4,6 @@ import { Metadata, FA12TokenSchema, FA2TokenSchema, NFTSchema, RawTokenInfo } fr
 import { z } from "zod";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
-import { Schema as AddressSchema } from "./Address";
 
 export type TokenBalance = FA12TokenBalance | FA2TokenBalance | NFTBalance;
 
@@ -22,7 +21,6 @@ const FA2BalanceSchema = z.object({
 
 const NFTBalanceSchema = z.object({
   balance: z.string(),
-  account: AddressSchema,
   token: NFTSchema,
 });
 
@@ -53,7 +51,6 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
       contract: nftResult.data.token.contract.address,
       tokenId: nftResult.data.token.tokenId,
       balance: nftResult.data.balance,
-      owner: nftResult.data.account.address,
       displayUri: nftResult.data.token.metadata.displayUri,
       totalSupply: nftResult.data.token.totalSupply,
     };
@@ -151,7 +148,6 @@ export type NFTBalance = {
   contract: string;
   tokenId: string;
   balance: string;
-  owner: string;
   metadata: Metadata;
   displayUri: string;
   totalSupply: string | undefined;

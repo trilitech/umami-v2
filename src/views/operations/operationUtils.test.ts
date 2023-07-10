@@ -177,7 +177,7 @@ describe("getTezOperationDisplay", () => {
       tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
       amount: {
         id: 10899580518401,
-        prettyDisplay: "+1 FKR",
+        prettyDisplay: "+1",
         url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
       prettyTimestamp: "today at 1:06 PM",
@@ -190,7 +190,7 @@ describe("getTezOperationDisplay", () => {
     expect(result).toEqual(expected);
   });
 
-  test("incoming nft with missing from/token", () => {
+  test("incoming nft with missing from", () => {
     const incomingNft = { ...rawTzktNftTransfer, from: undefined };
 
     const result = getTokenOperationDisplay(incomingNft, forAddress);
@@ -201,7 +201,7 @@ describe("getTezOperationDisplay", () => {
       tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
       amount: {
         id: 10899580518401,
-        prettyDisplay: "+1 FKR",
+        prettyDisplay: "+1",
         url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
       prettyTimestamp: "today at 1:06 PM",
@@ -230,7 +230,7 @@ describe("getTezOperationDisplay", () => {
       type: "transaction",
       amount: {
         id: 10899580518401,
-        prettyDisplay: "-1 FKR",
+        prettyDisplay: "-1",
         url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
       },
       tzktUrl: "https://mainnet.tzkt.io/transactions/109817445220352",
@@ -456,7 +456,7 @@ describe("getOperationsDisplays", () => {
         id: 109854457856001,
         amount: {
           id: 10899580518401,
-          prettyDisplay: "-1 FKR",
+          prettyDisplay: "-1",
           url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
         prettyTimestamp: "today at 3:24 PM",
@@ -471,7 +471,7 @@ describe("getOperationsDisplays", () => {
         id: 109817445220353,
         amount: {
           id: 10899580518401,
-          prettyDisplay: "+1 FKR",
+          prettyDisplay: "+1",
           url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
         prettyTimestamp: "today at 1:06 PM",
@@ -540,7 +540,7 @@ describe("getOperationsDisplays", () => {
         id: 109510819577858,
         amount: {
           id: 10899580518401,
-          prettyDisplay: "-1 FKR",
+          prettyDisplay: "-1",
           url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
         prettyTimestamp: "yesterday at 4:34 PM",

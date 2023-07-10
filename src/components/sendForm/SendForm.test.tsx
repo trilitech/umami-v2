@@ -575,14 +575,6 @@ describe("<SendForm />", () => {
       expect(screen.getByTestId(/currency/)).toHaveTextContent("editions");
     });
 
-    test("sender button is prefilled with NFT owner", () => {
-      render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
-      expect(screen.getByTestId("real-address-input-sender")).toHaveAttribute(
-        "value",
-        mockNFT(1).owner
-      );
-    });
-
     test("should display simulation result: NFT image, fee and total", async () => {
       await fillFormAndSimulate();
     });
@@ -855,7 +847,7 @@ describe("<SendForm />", () => {
         hash: "mockHash",
       } as TransactionOperation);
       const multisigPkh = multisigs[1].address.pkh;
-      render(fixture(multisigPkh, { type: "token", data: { ...mockNFT(1), owner: multisigPkh } }));
+      render(fixture(multisigPkh, { type: "token", data: mockNFT(1) }));
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });

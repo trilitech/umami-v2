@@ -238,12 +238,11 @@ export const SendTezOrNFTForm = ({
   const getDefaultSigner = useGetDefaultProposalSigner();
 
   const isNFT = token?.type === "nft";
-  const mandatoryNftSender = isNFT ? token?.owner : undefined;
 
   const form = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
-      sender: mandatoryNftSender || sender,
+      sender: sender,
       amount: isNFT ? "1" : amount,
       recipient,
       proposalSigner: sender && getDefaultSigner(sender),
