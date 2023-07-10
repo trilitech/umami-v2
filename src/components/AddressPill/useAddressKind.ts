@@ -2,7 +2,7 @@ import { Address } from "../../types/Address";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
 import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
 import { AccountType } from "../../types/Account";
-import { useGetBaker, useSearchAsset } from "../../utils/hooks/assetsHooks";
+import { useGetBaker, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import {
   AddressKind,
   BakerAddress,
@@ -12,6 +12,7 @@ import {
   OwnedImplicitAccountAddress,
   OwnedMultisigAccountAddress,
 } from "./types";
+import { useGetTokenType } from "../../utils/hooks/tokensHooks";
 
 const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
@@ -56,25 +57,25 @@ const useOwnedAccountAddressKind = ({
 };
 
 const useTokenAddressKind = ({ pkh }: Address): FA12Address | FA2Address | null => {
-  const searchToken = useSearchAsset();
-  const token = searchToken(pkh, undefined);
-  if (!token) {
+  const network = useSelectedNetwork();
+  const getTokenType = useGetTokenType(network);
+  const tokenType = getTokenType(pkh);
+  if (!tokenType) {
     return null;
   }
-  const label = token.metadata?.name || null;
-  switch (token.type) {
+  switch (tokenType) {
     case "fa1.2":
       return {
         pkh,
         type: "fa1.2",
-        label,
+        label: null,
       };
     case "fa2":
     case "nft":
       return {
         pkh,
         type: "fa2",
-        label,
+        label: null,
       };
   }
 };

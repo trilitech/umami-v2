@@ -4,7 +4,6 @@ import {
   DelegationOperation,
   operationsGetDelegations,
   operationsGetTransactions,
-  TokenBalance,
   tokensGetTokenTransfers,
   TokenTransfer,
 } from "@tzkt/sdk-api";
@@ -13,6 +12,7 @@ import { bakersUrl, coincapUrl, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
 import { Baker } from "../../types/Baker";
 import { TezTransfer } from "../../types/Operation";
+import { RawTokenBalance } from "../../types/TokenBalance";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
@@ -32,8 +32,8 @@ export const getAccounts = async (
 export const getTokenBalances = async (
   pkhs: string[],
   network: TezosNetwork
-): Promise<TokenBalance[]> => {
-  const response = await axios.get<TokenBalance[]>(
+): Promise<RawTokenBalance[]> => {
+  const response = await axios.get<RawTokenBalance[]>(
     `${tzktUrls[network]}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
   );
   return response.data;

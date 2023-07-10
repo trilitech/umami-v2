@@ -27,12 +27,12 @@ export type OwnedMultisigAccountAddress = AddressKindBase & {
 
 export type FA12Address = AddressKindBase & {
   type: "fa1.2";
-  label: string | null;
+  label: null;
 };
 
 export type FA2Address = AddressKindBase & {
   type: "fa2";
-  label: string | null;
+  label: null;
 };
 
 export type BakerAddress = AddressKindBase & {
