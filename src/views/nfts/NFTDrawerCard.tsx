@@ -13,7 +13,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { artifactUri, NFTBalance } from "../../types/Asset";
+import { artifactUri, NFTBalance } from "../../types/TokenBalance";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import TagsSection from "./drawer/TagsSection";

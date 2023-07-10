@@ -14,7 +14,7 @@ import { CSSProperties } from "react";
 import { CopyableAddress } from "../../../components/CopyableText";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
-import { metadataUri, mimeType, NFTBalance, royalties } from "../../../types/Asset";
+import { metadataUri, mimeType, NFTBalance, royalties } from "../../../types/TokenBalance";
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 
 export const creatorElement = (nft: NFTBalance) => {

@@ -1,5 +1,5 @@
 import { AspectRatio, Image, Card, CardBody, Heading, Text } from "@chakra-ui/react";
-import { NFTBalance, thumbnailUri } from "../../types/Asset";
+import { NFTBalance, thumbnailUri } from "../../types/TokenBalance";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 
 const NFTCard: React.FC<{ nft: NFTBalance; onClick: () => void }> = ({ nft, onClick }) => {

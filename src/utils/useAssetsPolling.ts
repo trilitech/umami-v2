@@ -2,7 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { chunk, compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
-import { TokenInfo } from "../types/Token";
+import { RawTokenInfo } from "../types/Token";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
@@ -39,7 +39,7 @@ const getTokensTransfersPayload = async (
 ): Promise<TokenTransfersPayload> => {
   const rawTransfers = await getTokenTransfers(pkh, network);
   // there shouldn't be any token transfers without a token assigned
-  const transfers = rawTransfers.map(t => ({ ...t, token: t.token as TokenInfo }));
+  const transfers = rawTransfers.map(t => ({ ...t, token: t.token as RawTokenInfo }));
   return { pkh, transfers };
 };
 

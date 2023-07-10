@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { mockNFT } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { NFTBalance } from "../../types/Asset";
+import { NFTBalance } from "../../types/TokenBalance";
 import NFTDrawerCard from "./NFTDrawerCard";
 
 const fixture = (nft: NFTBalance) => (

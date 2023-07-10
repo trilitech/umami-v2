@@ -1,6 +1,6 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import React from "react";
-import type { NFTBalance } from "../../types/Asset";
+import type { NFTBalance } from "../../types/TokenBalance";
 import NFTCard from "./NFTCard";
 
 export const NFTGallery: React.FC<{

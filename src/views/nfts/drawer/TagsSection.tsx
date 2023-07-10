@@ -1,5 +1,5 @@
 import { Wrap, WrapItem, Text } from "@chakra-ui/react";
-import { NFTBalance } from "../../../types/Asset";
+import { NFTBalance } from "../../../types/TokenBalance";
 
 const TagsSection = ({ nft }: { nft: NFTBalance }) => {
   const tags = nft.metadata.tags;

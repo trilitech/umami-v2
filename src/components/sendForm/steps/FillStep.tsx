@@ -23,7 +23,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { AccountType } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
-import { TokenBalance, getRealAmount, tokenSymbol } from "../../../types/Asset";
+import { TokenBalance, getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
 import { Delegation } from "../../../types/RawOperation";
 import { tezToMutez } from "../../../utils/format";
 import {

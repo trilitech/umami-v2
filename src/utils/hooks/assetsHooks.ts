@@ -1,7 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
 import { MultisigAccount } from "../../types/Account";
-import { TokenBalance, keepFA1s, keepFA2s, keepNFTs, NFTBalance } from "../../types/Asset";
+import { TokenBalance, keepFA1s, keepFA2s, keepNFTs, NFTBalance } from "../../types/TokenBalance";
 import { OperationDisplay } from "../../types/Operation";
 import {
   getOperationDisplays,

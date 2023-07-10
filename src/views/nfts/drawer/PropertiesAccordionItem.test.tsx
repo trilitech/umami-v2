@@ -4,7 +4,7 @@ import { mockNFT } from "../../../mocks/factories";
 import PropertiesAccordionItem from "./PropertiesAccordionItem";
 import { mockImplicitAddress } from "../../../mocks/factories";
 import { ReduxStore } from "../../../providers/ReduxStore";
-import { NFTBalance } from "../../../types/Asset";
+import { NFTBalance } from "../../../types/TokenBalance";
 
 const fixture = (nft: NFTBalance) => (
   <ReduxStore>

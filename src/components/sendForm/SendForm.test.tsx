@@ -19,7 +19,7 @@ import {
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance } from "../../types/Asset";
+import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice, { BatchItem } from "../../utils/store/assetsSlice";

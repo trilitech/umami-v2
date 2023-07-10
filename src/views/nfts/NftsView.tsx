@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import { useAccountFilterWithMapFilter } from "../../components/AccountFilter";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
-import { NFTBalance } from "../../types/Asset";
+import { NFTBalance } from "../../types/TokenBalance";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";

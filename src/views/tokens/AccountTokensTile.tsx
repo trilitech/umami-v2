@@ -27,7 +27,7 @@ import {
   httpIconUri,
   tokenName,
   tokenPrettyBalance,
-} from "../../types/Asset";
+} from "../../types/TokenBalance";
 import { formatPkh } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";

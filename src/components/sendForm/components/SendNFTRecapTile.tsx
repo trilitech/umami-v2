@@ -1,5 +1,5 @@
 import { AspectRatio, Box, Flex, FormLabel, Heading, Image } from "@chakra-ui/react";
-import { thumbnailUri, NFTBalance } from "../../../types/Asset";
+import { thumbnailUri, NFTBalance } from "../../../types/TokenBalance";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
 
 export const SendNFTRecapTile = ({ nft }: { nft: NFTBalance }) => {

@@ -8,7 +8,7 @@ import {
   tokenName,
   tokenPrettyBalance,
   tokenSymbol,
-} from "../../../types/Asset";
+} from "../../../types/TokenBalance";
 import { NoTokens } from "../../NoItems";
 
 const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {

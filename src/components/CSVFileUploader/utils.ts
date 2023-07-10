@@ -1,5 +1,5 @@
 import { isAddressValid, isValidContractPkh, parsePkh } from "../../types/Address";
-import { TokenBalance, getRealAmount } from "../../types/Asset";
+import { TokenBalance, getRealAmount } from "../../types/TokenBalance";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { classifyAsset, OperationValue } from "../sendForm/types";

@@ -1,7 +1,7 @@
 import { AspectRatio, Heading, Image, SimpleGrid, SimpleGridProps } from "@chakra-ui/react";
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { NFTBalance, thumbnailUri } from "../../../types/Asset";
+import { NFTBalance, thumbnailUri } from "../../../types/TokenBalance";
 import { truncate } from "../../../utils/format";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
 import { NoNFTs } from "../../NoItems";

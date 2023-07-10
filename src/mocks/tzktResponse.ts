@@ -1,10 +1,10 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
-import { Token } from "../types/Token";
+import { RawToken } from "../types/Token";
 import { RawTzktGetSameMultisigs } from "../utils/tzkt/types";
 import { mockContractAddress, mockImplicitAddress } from "./factories";
 
-export const fa1Token: Token = {
+export const fa1Token: RawToken = {
   id: 10897662672897,
   account: {
     address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -53,7 +53,7 @@ export const fa2Token = {
   lastTime: "2022-10-20T13:36:35Z",
 };
 
-export const nft: Token = {
+export const nft: RawToken = {
   id: 10899466223618,
   account: {
     address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",

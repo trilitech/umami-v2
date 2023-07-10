@@ -12,7 +12,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import { NFTBalance } from "../../../types/Asset";
+import { NFTBalance } from "../../../types/TokenBalance";
 
 const AttributesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSProperties }) => {
   const attributes = nft.metadata.attributes;

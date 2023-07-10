@@ -2,7 +2,7 @@ import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories"
 import { csvRowToOperationValue, parseToCSVRow } from "./utils";
 import { CSVRow } from "./types";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../../mocks/tokens";
-import type { NFTBalance } from "../../types/Asset";
+import type { NFTBalance } from "../../types/TokenBalance";
 import { parseContractPkh } from "../../types/Address";
 
 describe("csv utils", () => {

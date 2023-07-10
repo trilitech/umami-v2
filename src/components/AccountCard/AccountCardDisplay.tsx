@@ -6,7 +6,7 @@ import type { BigNumber } from "bignumber.js";
 import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
 import { Account, AccountType } from "../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/Asset";
+import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
 import { Delegation } from "../../types/Delegation";
 import { OperationDisplay } from "../../types/Operation";
 import { CopyableAddress } from "../CopyableText";
