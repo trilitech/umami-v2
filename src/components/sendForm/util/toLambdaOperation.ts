@@ -18,6 +18,7 @@ export const toLambdaOperation = (operation: OperationValue): RawOperation => {
           type: "fa1.2",
           amount: operation.amount,
           contract: parseContractPkh(operation.data.contract),
+          tokenId: "0",
           recipient: parsePkh(operation.recipient.pkh),
           sender: parsePkh(operation.sender.pkh),
         };

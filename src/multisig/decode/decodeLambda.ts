@@ -90,6 +90,7 @@ const parseFa1 = (michelson: MichelsonV1Expression[]): RawOperation => {
     contract: parseContractPkh(convertToPkh(lambdaRecipient.args[1].bytes)),
     recipient: parsePkh(convertToPkh(to)),
     sender: parsePkh(convertToPkh(from)),
+    tokenId: "0",
   };
 };
 

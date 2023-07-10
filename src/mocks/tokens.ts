@@ -20,6 +20,7 @@ export const ghostTezzard: NFTBalance = {
 export const ghostFA12: FA12TokenBalance = {
   type: "fa1.2",
   contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
+  tokenId: "0",
   balance: "1",
 };
 

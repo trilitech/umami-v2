@@ -58,15 +58,10 @@ export const useSearchAsset = () => {
   const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
   const allAssets = compact(Object.values(ownerToTokens).flat());
 
-  return (contractAddress: string, tokenId: string | undefined) => {
-    if (!tokenId) {
-      return compact(allAssets).find(asset => asset.contract === contractAddress);
-    }
-
-    return compact(allAssets)
-      .filter(asset => asset.contract === contractAddress)
-      .find(asset => asset.type !== "fa1.2" && asset.tokenId === tokenId);
-  };
+  return (contractAddress: string, tokenId: string) =>
+    compact(allAssets).find(
+      asset => asset.contract === contractAddress && asset.tokenId === tokenId
+    );
 };
 
 export const useGetAccountFA2Tokens = () => {

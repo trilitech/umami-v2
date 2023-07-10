@@ -54,10 +54,7 @@ const MultisigOperationAmount: React.FC<{
 
     case "fa1.2":
     case "fa2": {
-      const asset = searchAsset(
-        operation.contract.pkh,
-        operation.type === "fa2" ? operation.tokenId : undefined
-      );
+      const asset = searchAsset(operation.contract.pkh, operation.tokenId);
 
       if (!asset) {
         return null;

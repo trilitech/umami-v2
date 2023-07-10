@@ -13,7 +13,7 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
   if (!token || !raw.balance) {
     return null;
   }
-  return {balance: raw.balance, ...token};
+  return { balance: raw.balance, ...token };
 };
 
 const defaultTokenName = (asset: TokenBalance): string => {
@@ -75,6 +75,7 @@ export const getRealAmount = (asset: TokenBalance, prettyAmount: string): BigNum
 export type FA12TokenBalance = {
   type: "fa1.2";
   contract: string;
+  tokenId: "0";
   balance: string;
   metadata?: Metadata;
 };

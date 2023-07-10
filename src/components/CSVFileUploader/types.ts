@@ -13,6 +13,7 @@ interface CSVTezTransferRow extends CSVRowBase {
 interface CSVFA12TransferRow extends CSVRowBase {
   type: "fa1.2";
   contract: string;
+  tokenId: 0;
 }
 
 interface CSVFA2TransferRow extends CSVRowBase {

@@ -144,7 +144,7 @@ export const getTokenOperationDisplay = (
   network = TezosNetwork.MAINNET
 ) => {
   const asset = fromRaw({ balance: transfer.amount, token: transfer.token });
-  console.log(JSON.stringify(asset));
+
   const transferRequired = TokenTransaction.safeParse(transfer);
 
   if (!asset || !transferRequired.success) {
