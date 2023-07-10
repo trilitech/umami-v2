@@ -46,9 +46,20 @@ export const useReset = () => {
   };
 };
 
-export const useGetOwnedAccount = () => {
+export const useGetOwnedAccountSafe = () => {
   const accounts = useAllAccounts();
   return (pkh: string): Account | undefined => accounts.find(a => a.address.pkh === pkh);
+};
+
+export const useGetOwnedAccount = () => {
+  const getOwnedAccount = useGetOwnedAccountSafe();
+  return (pkh: string): Account => {
+    const account = getOwnedAccount(pkh);
+    if (!account) {
+      throw new Error(`You do not own account:${pkh}`);
+    }
+    return account;
+  };
 };
 
 export const useRestoreSecret = () => {
@@ -144,9 +155,6 @@ export const useGetPk = () => {
 
   return (pkh: string) => {
     const account = getAccount(pkh);
-    if (!account) {
-      throw new Error("Account doesn't exist");
-    }
     if (account.type === AccountType.MULTISIG) {
       throw new Error("Can't apply getPk to a multisig account since it has no pk");
     }

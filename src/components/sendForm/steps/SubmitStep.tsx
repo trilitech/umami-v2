@@ -58,9 +58,6 @@ const useGetImplicitAccount = () => {
   const getAccount = useGetOwnedAccount();
   return (pkh: string) => {
     const account = getAccount(pkh);
-    if (!account) {
-      throw new Error("Account doesn't exist");
-    }
     if (account.type === AccountType.MULTISIG) {
       throw Error(`Account ${pkh} is not implicit`);
     }
@@ -96,7 +93,7 @@ export const SubmitStep: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              {signerAccount && <AccountSmallTile pkh={signerAccount.address.pkh} />}
+              <AccountSmallTile pkh={signerAccount.address.pkh} />
             </Flex>
             {isBatch ? (
               <BatchRecap transfer={transfer} />
