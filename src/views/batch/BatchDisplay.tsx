@@ -22,8 +22,8 @@ import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTile";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
-import { OperationValue } from "../../components/sendForm/types";
 import { ImplicitAccount } from "../../types/Account";
+import { RawOperation } from "../../types/RawOperation";
 import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
@@ -33,7 +33,7 @@ import { getIPFSurl } from "../../utils/token/nftUtils";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
-const renderAmount = (operation: OperationValue, getToken: TokenLookup) => {
+const renderAmount = (operation: RawOperation, getToken: TokenLookup) => {
   switch (operation.type) {
     case "fa1.2":
     case "fa2": {

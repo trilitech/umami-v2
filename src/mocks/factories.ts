@@ -1,5 +1,4 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { OperationValue } from "../components/sendForm/types";
 import {
   ImplicitAccount,
   AccountType,
@@ -19,6 +18,7 @@ import {
   getLedgerDerivationPath,
 } from "../utils/account/derivationPathUtils";
 import { MultisigOperation, Multisig } from "../utils/multisig/types";
+import { RawOperation } from "../types/RawOperation";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -309,7 +309,7 @@ export const mockBaker = (index: number) =>
     address: mockImplicitAddress(index).pkh,
   } as Baker);
 
-export const mockTezTransfer = (index: number): OperationValue => {
+export const mockTezTransfer = (index: number): RawOperation => {
   return {
     type: "tez",
     amount: String(index),
@@ -317,7 +317,7 @@ export const mockTezTransfer = (index: number): OperationValue => {
   };
 };
 
-export const mockNftTransfer = (index: number): OperationValue => {
+export const mockNftTransfer = (index: number): RawOperation => {
   return {
     type: "fa2",
     amount: String(index),
@@ -328,7 +328,7 @@ export const mockNftTransfer = (index: number): OperationValue => {
   };
 };
 
-export const mockDelegationTransfer = (index: number): OperationValue => {
+export const mockDelegationTransfer = (index: number): RawOperation => {
   return {
     type: "delegation",
     recipient: mockImplicitAddress(index + 1),
