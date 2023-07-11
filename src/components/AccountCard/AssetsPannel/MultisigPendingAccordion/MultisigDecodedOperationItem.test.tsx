@@ -1,8 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { TokenBalance } from "@tzkt/sdk-api";
 import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
-import { RawTokenInfo } from "../../../../types/Token";
+import { RawTokenBalance } from "../../../../types/TokenBalance";
 import { assetsActions } from "../../../../utils/store/assetsSlice";
 import { store } from "../../../../utils/store/store";
 import tokensSlice from "../../../../utils/store/tokensSlice";
@@ -40,7 +39,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
   it("Non NFT FA tokens amount renders correctly", () => {
     const mockContract = mockContractAddress(0);
 
-    const mockBalancePlayload: TokenBalance = {
+    const mockBalancePlayload: RawTokenBalance = {
       account: { address: "mockPkh" },
 
       balance: "1",
@@ -58,7 +57,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
     store.dispatch(
       tokensSlice.actions.addTokens({
         network: TezosNetwork.MAINNET,
-        tokens: [mockBalancePlayload.token as RawTokenInfo],
+        tokens: [mockBalancePlayload.token],
       })
     );
 
@@ -87,7 +86,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
   it("NFT amount renders correctly", () => {
     const mockContract = mockContractAddress(0);
 
-    const mockBalancePlayload: TokenBalance = {
+    const mockBalancePlayload: RawTokenBalance = {
       account: { address: mockImplicitAddress(0).pkh },
       balance: "1",
       token: {
@@ -106,7 +105,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
     store.dispatch(
       tokensSlice.actions.addTokens({
         network: TezosNetwork.MAINNET,
-        tokens: [mockBalancePlayload.token as RawTokenInfo],
+        tokens: [mockBalancePlayload.token],
       })
     );
 

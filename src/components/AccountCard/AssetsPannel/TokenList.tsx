@@ -15,7 +15,7 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
   const name = tokenName(token);
   const symbol = tokenSymbol(token);
   const iconUri = httpIconUri(token);
-  const prettyAmount = tokenPrettyBalance(token, { showSymbol: false });
+  const prettyAmount = tokenPrettyBalance(token.balance, token, { showSymbol: false });
   return (
     <Flex
       justifyContent="space-around"

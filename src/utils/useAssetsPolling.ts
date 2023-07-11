@@ -40,7 +40,11 @@ const getTokensTransfersPayload = async (
 ): Promise<TokenTransfersPayload> => {
   const rawTransfers = await getTokenTransfers(pkh, network);
   // there shouldn't be any token transfers without a token assigned
-  const transfers = rawTransfers.map(t => ({ ...t, token: t.token as RawTokenInfo }));
+  const transfers = rawTransfers.map(t => ({
+    ...t,
+    token: t.token as RawTokenInfo,
+    amount: t.amount as string,
+  }));
   return { pkh, transfers };
 };
 

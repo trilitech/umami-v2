@@ -1,14 +1,25 @@
 import * as tzktApi from "@tzkt/sdk-api";
 import { BigNumber } from "bignumber.js";
-import { Metadata, RawTokenInfo, Token, fromRaw as fromRawToken, NFT } from "./Token";
+import {
+  Metadata,
+  RawTokenInfo,
+  Token,
+  fromRaw as fromRawToken,
+  NFT,
+  FA2Token,
+  FA12Token,
+} from "./Token";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
-import { RawPkh } from "./Address";
+import { RawAlias, RawPkh } from "./Address";
 
 export type TokenBalance = { balance: string; contract: RawPkh; tokenId: string };
 export type TokenBalanceWithToken = TokenBalance & Token;
 
-export type RawTokenBalance = Omit<tzktApi.TokenBalance, "token"> & { token: RawTokenInfo };
+export type RawTokenBalance = Omit<tzktApi.TokenBalance, "account" | "token"> & {
+  account: RawAlias;
+  token: RawTokenInfo;
+};
 
 export const fromRaw = (raw: RawTokenBalance): TokenBalanceWithToken | null => {
   const token = fromRawToken(raw.token);
@@ -16,6 +27,11 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalanceWithToken | null => {
     return null;
   }
   return { balance: raw.balance, ...token };
+};
+
+export const eraseToken = (tokenBalance: TokenBalanceWithToken): TokenBalance => {
+  const { balance, contract, tokenId } = tokenBalance;
+  return { balance, contract, tokenId };
 };
 
 const defaultTokenName = (asset: Token): string => {
@@ -117,11 +133,11 @@ export const formatTokenAmount = (amountStr: string, decimals = DEFAULT_TOKEN_DE
 };
 
 export const tokenPrettyBalance = (
-  token: FA2TokenBalance | FA12TokenBalance,
+  amount: string,
+  token: FA2Token | FA12Token,
   options?: { showSymbol?: boolean }
 ) => {
   const symbol = tokenSymbol(token);
-  const amount = token.balance;
   const decimals = token.metadata?.decimals;
   const trailingSymbol = options?.showSymbol ? ` ${symbol}` : "";
   const result = formatTokenAmount(amount, decimals);
