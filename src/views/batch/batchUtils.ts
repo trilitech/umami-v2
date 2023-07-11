@@ -1,10 +1,10 @@
-import { OperationValue } from "../../components/sendForm/types";
 import { BatchItem } from "../../utils/store/assetsSlice";
 import { BigNumber } from "bignumber.js";
 import { Estimate } from "@taquito/taquito";
 import { TezosNetwork } from "@airgap/tezos";
 import { estimateBatch } from "../../utils/tezos";
 import { zip } from "../../utils/helpers";
+import { RawOperation } from "../../types/RawOperation";
 
 export const getTotalFee = (items: BatchItem[]): BigNumber => {
   const fee = items.reduce((acc, curr) => {
@@ -14,7 +14,7 @@ export const getTotalFee = (items: BatchItem[]): BigNumber => {
   return fee;
 };
 
-export const getBatchSubtotal = (ops: OperationValue[]) => {
+export const getBatchSubtotal = (ops: RawOperation[]) => {
   const subTotal = ops.reduce((acc, curr) => {
     switch (curr.type) {
       case "tez":
@@ -34,8 +34,8 @@ export const sumEstimations = (es: Estimate[]) => {
     .toNumber();
 };
 
-export const operationValuesToBatchItems = async (
-  operations: OperationValue[],
+export const operationsToBatchItems = async (
+  operations: RawOperation[],
   pkh: string,
   pk: string,
   network: TezosNetwork

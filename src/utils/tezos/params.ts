@@ -6,22 +6,21 @@ import {
   TransferParams,
   WalletParamsWithKind,
 } from "@taquito/taquito";
-import { OperationValue } from "../../components/sendForm/types";
-import { FA12Operation, FA2Operation } from "../../types/RawOperation";
+import { FA12Operation, FA2Operation, RawOperation } from "../../types/RawOperation";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
   makeToolkitWithDummySigner,
 } from "./helpers";
 
-export const operationValuesToWalletParams = async (
-  operations: OperationValue[],
+export const operationsToWalletParams = async (
+  operations: RawOperation[],
   signer: TezosToolkit
 ): Promise<WalletParamsWithKind[]> =>
-  operationValuesToParams(operations, signer) as Promise<WalletParamsWithKind[]>;
+  operationsToParams(operations, signer) as Promise<WalletParamsWithKind[]>;
 
-export const operationValuesToParams = async (
-  operations: OperationValue[],
+export const operationsToParams = async (
+  operations: RawOperation[],
   toolkit: TezosToolkit
 ): Promise<ParamsWithKind[]> => {
   const result: ParamsWithKind[] = [];
@@ -74,8 +73,8 @@ const makeTokenTransferParams = async (
   return (await transferMethod).toTransferParams();
 };
 
-export const operationValuesToBatchParams = async (
-  operations: OperationValue[],
+export const operationsToBatchParams = async (
+  operations: RawOperation[],
   pk: string,
   pkh: string,
   network: TezosNetwork
@@ -86,5 +85,5 @@ export const operationValuesToBatchParams = async (
 
   const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
 
-  return operationValuesToParams(operations, Tezos);
+  return operationsToParams(operations, Tezos);
 };

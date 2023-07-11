@@ -1,10 +1,10 @@
 import { TezosNetwork } from "@airgap/tezos";
-import { OperationValue } from "../components/sendForm/types";
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
 import { parseContractPkh, parseImplicitPkh } from "../types/Address";
+import { RawOperation } from "../types/RawOperation";
 
-import { estimateBatch, operationValuesToBatchParams } from "../utils/tezos";
+import { estimateBatch, operationsToBatchParams } from "../utils/tezos";
 
 jest.unmock("../utils/tezos");
 
@@ -15,7 +15,7 @@ const pkh1 = parseImplicitPkh(devPublicKeys1.pkh);
 describe("Tezos utils", () => {
   describe("Batch", () => {
     test("batchParams are generated correctly for tez, tez with params, FA1.2, FA2 contracts and delegations", async () => {
-      const input: OperationValue[] = [
+      const input: RawOperation[] = [
         {
           type: "tez",
           amount: "3",
@@ -64,12 +64,7 @@ describe("Tezos utils", () => {
         },
       ];
 
-      const result = await operationValuesToBatchParams(
-        input,
-        pk0,
-        pkh0.pkh,
-        TezosNetwork.GHOSTNET
-      );
+      const result = await operationsToBatchParams(input, pk0, pkh0.pkh, TezosNetwork.GHOSTNET);
       expect(result).toEqual([
         {
           amount: 3,

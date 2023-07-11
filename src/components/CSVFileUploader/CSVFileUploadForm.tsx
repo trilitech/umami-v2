@@ -23,7 +23,7 @@ import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { CSVRow } from "./types";
-import { csvRowToOperationValue, parseToCSVRow } from "./utils";
+import { csvRowToOperation, parseToCSVRow } from "./utils";
 
 const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const network = useSelectedNetwork();
@@ -93,7 +93,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
     }
 
     try {
-      const operations = csv.map(csvRow => csvRowToOperationValue(sender, csvRow, getToken));
+      const operations = csv.map(csvRow => csvRowToOperation(sender, csvRow, getToken));
 
       await dispatch(estimateAndUpdateBatch(sender, getPk(sender), operations, network));
 

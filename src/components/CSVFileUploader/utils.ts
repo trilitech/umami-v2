@@ -4,11 +4,11 @@ import {
   parseContractPkh,
   parsePkh,
 } from "../../types/Address";
+import { RawOperation } from "../../types/RawOperation";
 import { Token } from "../../types/Token";
 import { getRealAmount } from "../../types/TokenBalance";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
-import { OperationValue } from "../sendForm/types";
 import { CSVRow } from "./types";
 
 export const parseToCSVRow = (row: string[]): CSVRow => {
@@ -52,11 +52,11 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
   return res;
 };
 
-export const csvRowToOperationValue = (
+export const csvRowToOperation = (
   sender: string,
   csvRow: CSVRow,
   getToken: (contract: string, tokenId: string) => Token | undefined
-): OperationValue => {
+): RawOperation => {
   if (csvRow.type === "tez") {
     return {
       type: "tez",

@@ -1,5 +1,5 @@
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { csvRowToOperationValue, parseToCSVRow } from "./utils";
+import { csvRowToOperation, parseToCSVRow } from "./utils";
 import { CSVRow } from "./types";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../../mocks/tokens";
 import { parseContractPkh } from "../../types/Address";
@@ -67,13 +67,13 @@ describe("csv utils", () => {
     ).toThrow("Invalid csv value: tokenId");
   });
 
-  test("converts CSVTezTransferRow to OperationValue", () => {
+  test("converts CSVTezTransferRow to RawOperation", () => {
     const mockCSVTezTransferRow: CSVRow = {
       type: "tez",
       recipient: mockImplicitAddress(1).pkh,
       prettyAmount: "1",
     };
-    const res = csvRowToOperationValue(
+    const res = csvRowToOperation(
       mockImplicitAddress(0).pkh,
       mockCSVTezTransferRow,
       (_contract, _tokenId) => undefined
@@ -85,7 +85,7 @@ describe("csv utils", () => {
     });
   });
 
-  test("converts CSVFA12TransferRow to OperationValue", () => {
+  test("converts CSVFA12TransferRow to RawOperation", () => {
     const mockCSVFA12TransferRow: CSVRow = {
       type: "fa1.2",
       recipient: mockImplicitAddress(1).pkh,
@@ -93,7 +93,7 @@ describe("csv utils", () => {
       contract: ghostFA12.contract,
       tokenId: "0",
     };
-    const res = csvRowToOperationValue(
+    const res = csvRowToOperation(
       mockImplicitAddress(0).pkh,
       mockCSVFA12TransferRow,
       (_contract, _tokenId) => ghostFA12
@@ -108,7 +108,7 @@ describe("csv utils", () => {
     });
   });
 
-  test("converts CSVFA2TransferRow to OperationValue", () => {
+  test("converts CSVFA2TransferRow to RawOperation", () => {
     const mockCSVFA2TransferRow: CSVRow = {
       type: "fa2",
       recipient: mockImplicitAddress(1).pkh,
@@ -116,7 +116,7 @@ describe("csv utils", () => {
       contract: ghostFA2.contract,
       tokenId: ghostFA2.tokenId,
     };
-    const res = csvRowToOperationValue(
+    const res = csvRowToOperation(
       mockImplicitAddress(0).pkh,
       mockCSVFA2TransferRow,
       (_contract, _tokenId) => ghostFA2
@@ -131,7 +131,7 @@ describe("csv utils", () => {
     });
   });
 
-  test("converts NFT CSVFA2TransferRow to OperationValue", () => {
+  test("converts NFT CSVFA2TransferRow to RawOperation", () => {
     const ghostTezzard1 = ghostTezzard;
     const mockCSVFA2TransferRow: CSVRow = {
       type: "fa2",
@@ -140,7 +140,7 @@ describe("csv utils", () => {
       contract: ghostTezzard1.contract,
       tokenId: ghostTezzard1.tokenId,
     };
-    const res = csvRowToOperationValue(
+    const res = csvRowToOperation(
       mockImplicitAddress(0).pkh,
       mockCSVFA2TransferRow,
       (_contract, _tokenId) => ghostTezzard1
@@ -164,7 +164,7 @@ describe("csv utils", () => {
       tokenId: ghostTezzard.tokenId,
     };
     expect(() =>
-      csvRowToOperationValue(
+      csvRowToOperation(
         mockImplicitAddress(0).pkh,
         mockCSVFA2TransferRow,
         (_contract, _tokenId) => undefined
