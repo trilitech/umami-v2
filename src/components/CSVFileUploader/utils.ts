@@ -4,7 +4,7 @@ import {
   parseContractPkh,
   parsePkh,
 } from "../../types/Address";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import { getRealAmount } from "../../types/TokenBalance";
 import { tezToMutez } from "../../utils/format";
@@ -56,7 +56,7 @@ export const csvRowToOperation = (
   sender: string,
   csvRow: CSVRow,
   getToken: (contract: string, tokenId: string) => Token | undefined
-): RawOperation => {
+): Operation => {
   if (csvRow.type === "tez") {
     return {
       type: "tez",

@@ -11,7 +11,7 @@ import axios from "axios";
 import { bakersUrl, coincapUrl, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
 import { Baker } from "../../types/Baker";
-import { TezTransfer } from "../../types/Operation";
+import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
 
 // TzKT defines type Account = {type: string};

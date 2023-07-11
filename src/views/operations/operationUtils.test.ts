@@ -6,7 +6,7 @@ import {
   getTransactionsResult,
   rawTzktNftTransfer,
 } from "../../mocks/tzktResponse";
-import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Operation";
+import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Transfer";
 import { SupportedNetworks } from "../../utils/network";
 import {
   getOperationDisplays,

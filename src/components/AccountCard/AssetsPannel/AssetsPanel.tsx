@@ -5,7 +5,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
 import { Delegation } from "../../../types/Delegation";
-import { OperationDisplay } from "../../../types/Operation";
+import { OperationDisplay } from "../../../types/Transfer";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
 import { IconAndTextBtnLink } from "../../IconAndTextBtn";

@@ -2,7 +2,7 @@ import React from "react";
 import NestedScroll from "../../../components/NestedScroll";
 import { NoOperations } from "../../../components/NoItems";
 import { OperationTile } from "../../../components/OperationTile";
-import { OperationDisplay } from "../../../types/Operation";
+import { OperationDisplay } from "../../../types/Transfer";
 import { getKey } from "../../operations/operationsUtils";
 
 export const OperationListDisplay: React.FC<{ operations: OperationDisplay[] }> = ({

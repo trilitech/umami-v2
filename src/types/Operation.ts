@@ -1,29 +1,35 @@
-import * as tzktApi from "@tzkt/sdk-api";
-import { Address } from "./Address";
-import { RawTokenInfo } from "./Token";
+import { BigMapAbstraction, TransferParams } from "@taquito/taquito";
+import { BigNumber } from "bignumber.js";
+import { Address, ImplicitAddress } from "./Address";
 
-export type TokenTransfer = Omit<tzktApi.TokenTransfer, "amount" | "token"> & {
-  amount: string;
-  token: RawTokenInfo;
+import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "../utils/tezos/types";
+
+export type MultisigStorage = {
+  last_op_id: BigNumber;
+  pending_ops: BigMapAbstraction;
+  threshold: BigNumber;
+  owner: Address;
+  metadata: BigMapAbstraction;
+  signers: Address[];
 };
 
-export type TezTransfer = tzktApi.TransactionOperation;
-
-// OperationDisplay is nicely formated for display in tables
-export type OperationDisplay = {
-  id: number;
-  type: "transaction" | "delegation";
-  amount: {
-    prettyDisplay: string;
-    url?: string;
-    id?: number;
-  };
-  fee?: string;
-  sender: Address;
+export type TezOperation = {
+  type: "tez";
   recipient: Address;
-  status?: string;
-  prettyTimestamp: string;
-  timestamp: string;
-  tzktUrl?: string;
-  level: number;
+  amount: string;
+  parameter?: TransferParams["parameter"];
 };
+export type FA12Operation = {
+  type: "fa1.2";
+} & FA12TransferMethodArgs;
+
+export type FA2Operation = {
+  type: "fa2";
+} & FA2TransferMethodArgs;
+
+export type Delegation = {
+  type: "delegation";
+  recipient: ImplicitAddress | undefined;
+};
+
+export type Operation = TezOperation | FA12Operation | FA2Operation | Delegation;

@@ -1,5 +1,5 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { TezTransfer, TokenTransfer } from "../types/Operation";
+import { TezTransfer, TokenTransfer } from "../types/Transfer";
 import { RawTokenBalance } from "../types/TokenBalance";
 import { RawTzktGetSameMultisigs } from "../utils/tzkt/types";
 import { mockContractAddress, mockImplicitAddress } from "./factories";

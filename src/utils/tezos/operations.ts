@@ -1,6 +1,6 @@
 import { TransactionOperation, TransferParams } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import {
   makeMultisigApproveOrExecuteMethod,
@@ -44,7 +44,7 @@ export const approveOrExecuteMultisigOperation = async (
 };
 
 export const submitBatch = async (
-  operation: RawOperation[],
+  operation: Operation[],
   config: SignerConfig
 ): Promise<BatchWalletOperation> => {
   const Tezos = await makeToolkitWithSigner(config);

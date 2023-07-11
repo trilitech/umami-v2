@@ -23,7 +23,7 @@ import { AccountSmallTileDisplay } from "../../components/AccountSelector/Accoun
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
 import { ImplicitAccount } from "../../types/Account";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import { Token } from "../../types/Token";
 import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
@@ -35,7 +35,7 @@ import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (
-  operation: RawOperation,
+  operation: Operation,
   getToken: (contract: string, tokenId: string) => Token | undefined
 ) => {
   switch (operation.type) {
