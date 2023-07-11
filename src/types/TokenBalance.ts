@@ -8,12 +8,13 @@ import {
   NFT,
   FA2Token,
   FA12Token,
+  FullTokenId,
 } from "./Token";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
-import { RawAlias, RawPkh } from "./Address";
+import { RawAlias } from "./Address";
 
-export type TokenBalance = { balance: string; contract: RawPkh; tokenId: string };
+export type TokenBalance = { balance: string } & FullTokenId;
 export type TokenBalanceWithToken = TokenBalance & Token;
 
 export type RawTokenBalance = Omit<tzktApi.TokenBalance, "account" | "token"> & {

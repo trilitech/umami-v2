@@ -9,6 +9,7 @@ import { RawTokenBalance } from "../../types/TokenBalance";
 import { TzktAccount } from "../tezos";
 import accountsSlice from "./accountsSlice";
 import { Operation } from "../../types/Operation";
+import { RawPkh } from "../../types/Address";
 
 export type BatchItem = { operation: Operation; fee: string };
 export type Batch = {
@@ -25,37 +26,37 @@ type State = {
   network: TezosNetwork;
   blockLevel: number | null;
   balances: {
-    mutez: Record<string, string | undefined>;
-    tokens: Record<string, TokenBalance[] | undefined>;
+    mutez: Record<RawPkh, string | undefined>;
+    tokens: Record<RawPkh, TokenBalance[] | undefined>;
   };
   transfers: {
-    tez: Record<string, TezTransfer[] | undefined>;
-    tokens: Record<string, TokenTransfer[] | undefined>;
+    tez: Record<RawPkh, TezTransfer[] | undefined>;
+    tokens: Record<RawPkh, TokenTransfer[] | undefined>; // TODO: make it not store token info because it's stored already in the tokensSlice
   };
-  delegations: Record<string, DelegationOperation | undefined>;
+  delegations: Record<RawPkh, DelegationOperation | undefined>;
   bakers: Baker[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: Record<string, Batch | undefined>;
+  batches: Record<RawPkh, Batch | undefined>;
 };
 
 export type TezTransfersPayload = {
-  pkh: string;
+  pkh: RawPkh;
   transfers: TezTransfer[];
 };
 export type TokenTransfersPayload = {
-  pkh: string;
+  pkh: RawPkh;
   transfers: TokenTransfer[];
 };
 
 export type DelegationPayload = {
-  pkh: string;
+  pkh: RawPkh;
   delegation: DelegationOperation;
 };
 
 export type ConversionRatePayload = { rate: State["conversionRate"] };
 
 export type BatchPayload = {
-  pkh: string;
+  pkh: RawPkh;
   items: Array<BatchItem>;
 };
 
@@ -87,13 +88,13 @@ const assetsSlice = createSlice({
     builder.addCase(accountsSlice.actions.reset, () => initialState),
   reducers: {
     reset: () => initialState,
-    updateNetwork: (_, { payload }: { type: string; payload: TezosNetwork }) => {
+    updateNetwork: (_, { payload }: { payload: TezosNetwork }) => {
       return { ...initialState, network: payload };
     },
     updateBlockLevel: (state, { payload }: { payload: number }) => {
       state.blockLevel = payload;
     },
-    updateTezTransfers: (state, { payload }: { type: string; payload: TezTransfersPayload[] }) => {
+    updateTezTransfers: (state, { payload }: { payload: TezTransfersPayload[] }) => {
       const tezOperationsPayload = payload;
       const newTezTransfers = { ...state.transfers.tez };
 
@@ -104,10 +105,7 @@ const assetsSlice = createSlice({
       state.transfers.tez = newTezTransfers;
     },
     // TODO refactor duplication
-    updateTokenTransfers: (
-      state,
-      { payload }: { type: string; payload: TokenTransfersPayload[] }
-    ) => {
+    updateTokenTransfers: (state, { payload }: { payload: TokenTransfersPayload[] }) => {
       const tezOperationsPayload = payload;
       const newTezTransfers = { ...state.transfers.tokens };
 
@@ -134,27 +132,21 @@ const assetsSlice = createSlice({
       });
     },
 
-    updateDelegations: (state, { payload }: { type: string; payload: DelegationPayload[] }) => {
+    updateDelegations: (state, { payload }: { payload: DelegationPayload[] }) => {
       //TODO: store a list of delegations for the operation views
       payload.forEach(p => {
         state.delegations[p.pkh] = p.delegation;
       });
     },
-    updateBakers: (state, { payload }: { type: string; payload: Baker[] }) => {
+    updateBakers: (state, { payload }: { payload: Baker[] }) => {
       const sortedBakers = [...payload].sort((a, b) => (a.name > b.name ? 1 : -1));
       state.bakers = sortedBakers;
     },
-    updateConversionRate: (
-      state,
-      { payload: { rate } }: { type: string; payload: ConversionRatePayload }
-    ) => {
+    updateConversionRate: (state, { payload: { rate } }: { payload: ConversionRatePayload }) => {
       state.conversionRate = rate;
     },
     // Don't use this action directly. Use thunk simulateAndUpdateBatch
-    updateBatch: (
-      state,
-      { payload: { pkh, items: transfers } }: { type: string; payload: BatchPayload }
-    ) => {
+    updateBatch: (state, { payload: { pkh, items: transfers } }: { payload: BatchPayload }) => {
       const existing = (state.batches[pkh] || emptyBatch) as Batch;
       const newBatch: Batch = {
         ...existing,
@@ -162,27 +154,21 @@ const assetsSlice = createSlice({
       };
       state.batches[pkh] = newBatch;
     },
-    batchSimulationStart: (
-      state,
-      { payload: { pkh } }: { type: string; payload: { pkh: string } }
-    ) => {
+    batchSimulationStart: (state, { payload: { pkh } }: { payload: { pkh: RawPkh } }) => {
       const existing = state.batches[pkh] || emptyBatch;
 
       if (existing) {
         state.batches[pkh] = { ...existing, isSimulating: true };
       }
     },
-    batchSimulationEnd: (
-      state,
-      { payload: { pkh } }: { type: string; payload: { pkh: string } }
-    ) => {
+    batchSimulationEnd: (state, { payload: { pkh } }: { payload: { pkh: RawPkh } }) => {
       const existing = state.batches[pkh];
 
       if (existing) {
         state.batches[pkh] = { ...existing, isSimulating: false };
       }
     },
-    clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: string } }) => {
+    clearBatch: (state, { payload: { pkh } }: { payload: { pkh: RawPkh } }) => {
       if (state.batches[pkh]?.isSimulating) {
         return;
       }

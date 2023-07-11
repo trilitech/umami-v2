@@ -3,6 +3,7 @@ import { Token } from "../../types/Token";
 import { useAppSelector } from "../store/hooks";
 import { useSelectedNetwork } from "./assetsHooks";
 
+// TODO: Make it fetch missing tokens
 export const useGetToken = () => {
   const network = useSelectedNetwork();
   const tokens = useAppSelector(s => s.tokens[network]);

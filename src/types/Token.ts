@@ -1,6 +1,6 @@
 import * as tzktApi from "@tzkt/sdk-api";
 import { z } from "zod";
-import { Schema as AddressSchema } from "./Address";
+import { RawPkh, Schema as AddressSchema } from "./Address";
 
 // TzKT defines metadada as any, but we need to have at least some clarity of what can be inside
 export type Metadata = {
@@ -72,26 +72,22 @@ export const NFTSchema = z.object({
 });
 
 export type TokenId = string;
+export type FullTokenId = { contract: RawPkh; tokenId: TokenId };
 
-export type FA12Token = {
+export type FA12Token = FullTokenId & {
   type: "fa1.2";
-  contract: string;
   tokenId: "0"; // TzKT uses "0" as the tokenId for FA1.2 tokens
   metadata?: Metadata;
 };
 
-export type FA2Token = {
+export type FA2Token = FullTokenId & {
   type: "fa2";
-  contract: string;
-  tokenId: string;
   metadata?: Metadata;
 };
 
-export type NFT = {
+export type NFT = FullTokenId & {
   id: number; // TODO: replace with contract + tokenId
   type: "nft";
-  contract: string;
-  tokenId: string;
   metadata: Metadata;
   displayUri: string;
   totalSupply: string | undefined;
