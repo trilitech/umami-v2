@@ -112,7 +112,7 @@ export const BatchDisplay: React.FC<{
 }> = ({ account, batch, onDelete, onSend }) => {
   const items = batch.items;
   const network = useSelectedNetwork();
-  const getToken = useGetToken(network);
+  const getToken = useGetToken();
 
   return (
     <Flex data-testid={`batch-table-${account.address.pkh}`} mb={4}>

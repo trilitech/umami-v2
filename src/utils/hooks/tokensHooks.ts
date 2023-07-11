@@ -3,10 +3,12 @@ import { get } from "lodash";
 import { RawPkh } from "../../types/Address";
 import { Token } from "../../types/Token";
 import { useAppSelector } from "../store/hooks";
+import { useSelectedNetwork } from "./assetsHooks";
 
 export type TokenLookup = (contract: RawPkh, tokenId: string) => Token | undefined;
 
-export const useGetToken = (network: TezosNetwork): TokenLookup => {
+export const useGetToken = (): TokenLookup => {
+  const network = useSelectedNetwork();
   const tokens = useAppSelector(s => s.tokens[network]);
   return (contract, tokenId) => get(tokens, [contract, tokenId]);
 };

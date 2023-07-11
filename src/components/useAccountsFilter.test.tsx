@@ -12,10 +12,6 @@ beforeEach(() => {
   store.dispatch(accountsSlice.actions.add(accounts));
 });
 
-afterEach(() => {
-  store.dispatch(accountsSlice.actions.reset());
-});
-
 const TestComponent = () => {
   const { accountsFilter } = useAccountsFilter();
   return accountsFilter;

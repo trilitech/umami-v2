@@ -1,10 +1,9 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
-import { DelegationOperation, TokenBalance as TzktTokenBalance } from "@tzkt/sdk-api";
+import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
-
 import { OperationValue } from "../../components/sendForm/types";
-import { TokenBalance, fromRaw } from "../../types/TokenBalance";
+import { TokenBalance, fromRaw, eraseToken } from "../../types/TokenBalance";
 import { Baker } from "../../types/Baker";
 import { TezTransfer, TokenTransfer } from "../../types/Operation";
 import { RawTokenBalance } from "../../types/TokenBalance";
@@ -126,16 +125,10 @@ const assetsSlice = createSlice({
       }, {});
     },
 
-    updateTokenBalance: (state, { payload }: { payload: TzktTokenBalance[] }) => {
-      const groupedByPkh = groupBy(payload, tokenBalance => {
-        // there are no token balances without an owner
-        // URL to verify https://api.mainnet.tzkt.io/v1/tokens/balances?account.null
-        return tokenBalance.account?.address as string;
-      });
+    updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
+      const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);
       state.balances.tokens = mapValues(groupedByPkh, rawTokenBalances => {
-        return compact(
-          rawTokenBalances.map(rawTokenBalance => fromRaw(rawTokenBalance as RawTokenBalance))
-        );
+        return compact(rawTokenBalances.map(fromRaw)).map(eraseToken);
       });
     },
 

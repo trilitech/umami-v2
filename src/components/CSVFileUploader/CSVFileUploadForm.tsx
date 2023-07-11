@@ -38,7 +38,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
   const getPk = useGetPk();
-  const getToken = useGetToken(network);
+  const getToken = useGetToken();
   const dispatch = useAppDispatch();
   const isSimulating = useBatchIsSimulating();
   const clearBatch = useClearBatch();

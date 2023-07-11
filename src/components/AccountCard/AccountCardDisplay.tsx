@@ -50,7 +50,6 @@ export const AccountCardDisplay: React.FC<Props> = ({
   pkh,
   onSend,
   onReceive = () => {},
-  onBuyTez = () => {},
   onDelegate,
   label,
   tezBalance,

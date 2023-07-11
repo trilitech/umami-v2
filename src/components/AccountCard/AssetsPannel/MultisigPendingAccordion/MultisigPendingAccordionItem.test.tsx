@@ -22,9 +22,6 @@ jest.mock("../../../../utils/hooks/accountUtils");
 beforeEach(() => {
   (useGetSk as jest.Mock).mockReturnValue(() => Promise.resolve("mockkey"));
 });
-afterEach(() => {
-  store.dispatch(accountsSlice.actions.reset());
-});
 
 describe("<MultisigPendingCard/>", () => {
   it("displays the correct number of pending approvals", () => {

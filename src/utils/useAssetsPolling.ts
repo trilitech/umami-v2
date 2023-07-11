@@ -39,6 +39,7 @@ const getTokensTransfersPayload = async (
   network: TezosNetwork
 ): Promise<TokenTransfersPayload> => {
   const transfers = await getTokenTransfers(pkh, network);
+  // there are no token transfers without a token & amount assigned
   return { pkh, transfers: transfers as TokenTransfer[] };
 };
 

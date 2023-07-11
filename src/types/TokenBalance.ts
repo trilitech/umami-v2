@@ -1,14 +1,27 @@
 import * as tzktApi from "@tzkt/sdk-api";
 import { BigNumber } from "bignumber.js";
-import { Metadata, RawTokenInfo, Token, fromRaw as fromRawToken, NFT } from "./Token";
+import {
+  Metadata,
+  RawTokenInfo,
+  Token,
+  fromRaw as fromRawToken,
+  NFT,
+  FA2Token,
+  FA12Token,
+} from "./Token";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
+import { RawAlias, RawPkh } from "./Address";
 
-export type TokenBalance = Token & { balance: string };
+export type TokenBalance = { balance: string; contract: RawPkh; tokenId: string };
+export type TokenBalanceWithToken = TokenBalance & Token;
 
-export type RawTokenBalance = Omit<tzktApi.TokenBalance, "token"> & { token: RawTokenInfo };
+export type RawTokenBalance = Omit<tzktApi.TokenBalance, "account" | "token"> & {
+  account: RawAlias;
+  token: RawTokenInfo;
+};
 
-export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
+export const fromRaw = (raw: RawTokenBalance): TokenBalanceWithToken | null => {
   const token = fromRawToken(raw.token);
   if (!token || !raw.balance) {
     return null;
@@ -16,7 +29,12 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
   return { balance: raw.balance, ...token };
 };
 
-const defaultTokenName = (asset: TokenBalance): string => {
+export const eraseToken = (tokenBalance: TokenBalanceWithToken): TokenBalance => {
+  const { balance, contract, tokenId } = tokenBalance;
+  return { balance, contract, tokenId };
+};
+
+const defaultTokenName = (asset: Token): string => {
   switch (asset.type) {
     case "fa1.2":
       return DEFAULT_FA1_NAME;
@@ -27,7 +45,7 @@ const defaultTokenName = (asset: TokenBalance): string => {
   }
 };
 
-export const tokenName = (asset: TokenBalance): string => {
+export const tokenName = (asset: Token): string => {
   return asset.metadata?.name || defaultTokenName(asset);
 };
 
@@ -99,14 +117,14 @@ export type NFTBalance = {
   totalSupply: string | undefined;
 };
 
-export const keepNFTs = (assets: TokenBalance[]) => {
+export const keepNFTs = (assets: TokenBalanceWithToken[]) => {
   return assets.filter((asset): asset is NFTBalance => asset.type === "nft");
 };
-export const keepFA1s = (assets: TokenBalance[]) => {
+export const keepFA1s = (assets: TokenBalanceWithToken[]) => {
   return assets.filter((asset): asset is FA12TokenBalance => asset.type === "fa1.2");
 };
 
-export const keepFA2s = (assets: TokenBalance[]) => {
+export const keepFA2s = (assets: TokenBalanceWithToken[]) => {
   return assets.filter((asset): asset is FA2TokenBalance => asset.type === "fa2");
 };
 
@@ -115,11 +133,11 @@ export const formatTokenAmount = (amountStr: string, decimals = DEFAULT_TOKEN_DE
 };
 
 export const tokenPrettyBalance = (
-  token: FA2TokenBalance | FA12TokenBalance,
+  amount: string,
+  token: FA2Token | FA12Token,
   options?: { showSymbol?: boolean }
 ) => {
   const symbol = tokenSymbol(token);
-  const amount = token.balance;
   const decimals = token.metadata?.decimals;
   const trailingSymbol = options?.showSymbol ? ` ${symbol}` : "";
   const result = formatTokenAmount(amount, decimals);
