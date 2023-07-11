@@ -1,8 +1,14 @@
-import { isAddressValid, isValidContractPkh, parsePkh } from "../../types/Address";
-import { TokenBalance, getRealAmount } from "../../types/TokenBalance";
+import {
+  isAddressValid,
+  isValidContractPkh,
+  parseContractPkh,
+  parsePkh,
+} from "../../types/Address";
+import { Token } from "../../types/Token";
+import { getRealAmount } from "../../types/TokenBalance";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
-import { classifyAsset, OperationValue } from "../sendForm/types";
+import { OperationValue } from "../sendForm/types";
 import { CSVRow } from "./types";
 
 export const parseToCSVRow = (row: string[]): CSVRow => {
@@ -33,13 +39,13 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
     if (!isValidContractPkh(contract)) {
       throw new Error("Invalid csv value: contract address");
     }
-    res = { ...res, type: "fa1.2", contract, tokenId: 0 };
+    res = { ...res, type: "fa1.2", contract, tokenId: "0" };
     if (tokenId !== undefined) {
       const checkedTokenId = validateNonNegativeNumber(tokenId);
       if (checkedTokenId === null) {
         throw new Error("Invalid csv value: tokenId");
       }
-      res = { ...res, type: "fa2", tokenId: Number(checkedTokenId) };
+      res = { ...res, type: "fa2", tokenId: checkedTokenId };
     }
   }
 
@@ -49,36 +55,35 @@ export const parseToCSVRow = (row: string[]): CSVRow => {
 export const csvRowToOperationValue = (
   sender: string,
   csvRow: CSVRow,
-  contractToAssets: Record<string, TokenBalance[] | undefined>
+  getToken: (contract: string, tokenId: string) => Token | undefined
 ): OperationValue => {
-  const recipient = csvRow.recipient;
-
   if (csvRow.type === "tez") {
     return {
       type: "tez",
-      recipient: parsePkh(recipient),
+      recipient: parsePkh(csvRow.recipient),
       amount: tezToMutez(csvRow.prettyAmount).toString(),
     };
   }
-
-  const assets = contractToAssets[csvRow.contract] ?? [];
-
-  const asset =
-    csvRow.type === "fa1.2"
-      ? assets[0]
-      : assets.find(asset => !(asset.type === "fa1.2") && asset.tokenId === `${csvRow.tokenId}`);
-
-  if (!asset) {
-    throw new Error(`Token "${csvRow.contract}" is not owned by the sender`);
+  const token = getToken(csvRow.contract, csvRow.tokenId);
+  if (!token) {
+    throw new Error(`Unknown token ${csvRow.contract} ${csvRow.tokenId}`);
   }
-
-  if (csvRow.contract !== asset.contract || (asset.type === "fa1.2" && csvRow.type !== "fa1.2")) {
-    throw new Error(`Inconsistent csv value for token ${csvRow.contract}`);
+  const commonValues = {
+    sender: parsePkh(sender),
+    recipient: parsePkh(csvRow.recipient),
+    amount: getRealAmount(token, csvRow.prettyAmount).toString(),
+    contract: parseContractPkh(csvRow.contract),
+  };
+  if (csvRow.type === "fa1.2") {
+    return {
+      ...commonValues,
+      type: "fa1.2",
+      tokenId: csvRow.tokenId,
+    };
   }
-
-  return classifyAsset(asset, {
-    sender: sender,
-    recipient: recipient,
-    amount: getRealAmount(asset, csvRow.prettyAmount).toString(),
-  });
+  return {
+    ...commonValues,
+    type: "fa2",
+    tokenId: csvRow.tokenId,
+  };
 };

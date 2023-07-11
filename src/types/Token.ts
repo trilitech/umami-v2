@@ -41,7 +41,11 @@ export type Metadata = {
   }>;
 };
 
-export type RawTokenInfo = Omit<tzktApi.TokenInfo, "metadata"> & {
+// All the fields in TzKT are optional and it doesn't differ from the type `any`
+// meaning that you can pass in anything as RawTokenInfo and it will be accepted
+// but no token can exist without a contract. It provides at least some type safety
+export type RawTokenInfo = Omit<tzktApi.TokenInfo, "contract" | "metadata"> & {
+  contract: tzktApi.Alias;
   metadata?: Metadata;
 };
 

@@ -17,11 +17,8 @@ import Papa, { ParseResult } from "papaparse";
 import { FC, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useGetPk } from "../../utils/hooks/accountHooks";
-import {
-  useBatchIsSimulating,
-  useGetAccountAssetsLookup,
-  useSelectedNetwork,
-} from "../../utils/hooks/assetsHooks";
+import { useBatchIsSimulating, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
@@ -32,7 +29,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
   const getPk = useGetPk();
-  const getAssetsLookup = useGetAccountAssetsLookup();
+  const getToken = useGetToken(network);
   const dispatch = useAppDispatch();
   const isSimulating = useBatchIsSimulating();
 
@@ -100,12 +97,9 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
     }
 
     try {
-      const assetLookup = getAssetsLookup(sender);
-      const operationValues = csv.map(csvRow =>
-        csvRowToOperationValue(sender, csvRow, assetLookup)
-      );
+      const operations = csv.map(csvRow => csvRowToOperationValue(sender, csvRow, getToken));
 
-      await dispatch(estimateAndUpdateBatch(sender, getPk(sender), operationValues, network));
+      await dispatch(estimateAndUpdateBatch(sender, getPk(sender), operations, network));
 
       toast({ title: "CSV added to batch!" });
       onClose();

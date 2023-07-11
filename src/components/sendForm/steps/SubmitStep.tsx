@@ -15,6 +15,8 @@ import BigNumber from "bignumber.js";
 import { AccountType } from "../../../types/Account";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
+import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
+import { useGetToken } from "../../../utils/hooks/tokensHooks";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
@@ -26,7 +28,12 @@ import { BatchRecap } from "./BatchRecap";
 
 const NonBatchRecap = ({ transfer }: { transfer: OperationValue }) => {
   const isDelegation = transfer.type === "delegation";
-  const token = transfer.type === "fa1.2" || transfer.type === "fa2" ? transfer.data : undefined;
+  const network = useSelectedNetwork();
+  const getToken = useGetToken(network);
+  const token =
+    transfer.type === "fa1.2" || transfer.type === "fa2"
+      ? getToken(transfer.contract.pkh, transfer.tokenId)
+      : undefined;
 
   const renderBakerTile = useRenderBakerSmallTile();
 
