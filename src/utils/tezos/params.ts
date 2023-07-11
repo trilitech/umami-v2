@@ -6,11 +6,8 @@ import {
   TransferParams,
   WalletParamsWithKind,
 } from "@taquito/taquito";
-import {
-  FA12OperationWithAsset,
-  FA2OperationWithAsset,
-  OperationValue,
-} from "../../components/sendForm/types";
+import { OperationValue } from "../../components/sendForm/types";
+import { FA12Operation, FA2Operation } from "../../types/RawOperation";
 import {
   makeFA12TransferMethod,
   makeFA2TransferMethod,
@@ -66,7 +63,7 @@ export const operationValuesToParams = async (
 };
 
 const makeTokenTransferParams = async (
-  operation: FA12OperationWithAsset | FA2OperationWithAsset,
+  operation: FA12Operation | FA2Operation,
   tezosToolkit: TezosToolkit
 ): Promise<TransferParams> => {
   const transferMethod =

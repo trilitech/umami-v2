@@ -5,5 +5,5 @@ import { useAppSelector } from "../store/hooks";
 
 export const useGetToken = (network: TezosNetwork) => {
   const tokens = useAppSelector(s => s.tokens[network]);
-  return (contract: string, tokenId: number): Token | undefined => get(tokens, [contract, tokenId]);
+  return (contract: string, tokenId: string): Token | undefined => get(tokens, [contract, tokenId]);
 };

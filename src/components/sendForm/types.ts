@@ -1,17 +1,12 @@
 import { ContractAddress, ImplicitAddress, parseContractPkh, parsePkh } from "../../types/Address";
-import {
-  TokenBalance,
-  FA12TokenBalance,
-  FA2TokenBalance,
-  NFTBalance,
-} from "../../types/TokenBalance";
 import { Delegation, FA12Operation, FA2Operation, TezOperation } from "../../types/RawOperation";
+import { Token } from "../../types/Token";
 
 type TezMode = { type: "tez" };
 
 type TokenMode = {
   type: "token";
-  data: TokenBalance;
+  data: Token;
 };
 
 export type DelegationMode = {
@@ -31,14 +26,7 @@ type BatchMode = {
 
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
-export type FA12OperationWithAsset = FA12Operation & { data: FA12TokenBalance };
-export type FA2OperationWithAsset = FA2Operation & { data: FA2TokenBalance | NFTBalance };
-
-export type OperationValue =
-  | TezOperation
-  | FA12OperationWithAsset
-  | FA2OperationWithAsset
-  | Delegation;
+export type OperationValue = TezOperation | FA12Operation | FA2Operation | Delegation;
 
 export type ProposalOperations = {
   type: "proposal";
@@ -60,28 +48,30 @@ export type EstimatedOperation = {
   fee: string;
 };
 
-export const classifyAsset = (
-  a: TokenBalance,
+export const toOperation = (
+  token: Token,
   value: { amount: string; sender: string; recipient: string }
-): FA12OperationWithAsset | FA2OperationWithAsset => {
-  if (a.type === "fa1.2") {
-    return {
-      type: "fa1.2",
-      data: a,
-      amount: value.amount,
-      sender: parsePkh(value.sender),
-      recipient: parsePkh(value.recipient),
-      contract: parseContractPkh(a.contract),
-      tokenId: "0",
-    };
+): FA12Operation | FA2Operation => {
+  switch (token.type) {
+    case "fa1.2":
+      return {
+        type: "fa1.2",
+        amount: value.amount,
+        sender: parsePkh(value.sender),
+        recipient: parsePkh(value.recipient),
+        contract: parseContractPkh(token.contract),
+        tokenId: "0",
+      };
+
+    case "fa2":
+    case "nft":
+      return {
+        type: "fa2",
+        amount: value.amount,
+        sender: parsePkh(value.sender),
+        recipient: parsePkh(value.recipient),
+        contract: parseContractPkh(token.contract),
+        tokenId: token.tokenId,
+      };
   }
-  return {
-    type: "fa2",
-    data: a,
-    amount: value.amount,
-    sender: parsePkh(value.sender),
-    recipient: parsePkh(value.recipient),
-    tokenId: a.tokenId,
-    contract: parseContractPkh(a.contract),
-  };
 };

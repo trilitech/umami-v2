@@ -19,7 +19,7 @@ import {
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
+import { FA12TokenBalance, FA2TokenBalance, fromRaw, TokenBalance } from "../../types/TokenBalance";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice, { BatchItem } from "../../utils/store/assetsSlice";
@@ -35,6 +35,8 @@ import { mockToast } from "../../mocks/toast";
 import { multisigActions } from "../../utils/store/multisigsSlice";
 import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
+import tokensSlice from "../../utils/store/tokensSlice";
+import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
@@ -59,9 +61,9 @@ jest.mock("../../utils/hooks/accountUtils");
 
 const fakeAccountUtils = mock<typeof accountUtils>(accountUtils);
 
-const fixture = (sender: string, assetType: SendFormMode) => (
+const fixture = (sender: string, mode: SendFormMode) => (
   <Modal isOpen={true} onClose={() => {}}>
-    <SendForm sender={sender} mode={assetType} />
+    <SendForm sender={sender} mode={mode} />
   </Modal>
 );
 
@@ -70,9 +72,13 @@ const MOCK_PKH = mockImplicitAccount(1).address.pkh;
 
 beforeEach(() => {
   fakeAccountUtils.useGetSk.mockReturnValue(() => Promise.resolve(MOCK_SK));
-});
-beforeEach(() => {
   document.getElementById("chakra-toast-portal")?.remove();
+  store.dispatch(
+    tokensSlice.actions.addTokens({
+      network: TezosNetwork.MAINNET,
+      tokens: [fa1Token.token, fa2Token.token, nft.token],
+    })
+  );
 });
 beforeAll(async () => {
   await store.dispatch(
@@ -96,6 +102,7 @@ beforeAll(async () => {
 
 afterEach(() => {
   store.dispatch(assetsSlice.actions.reset());
+  store.dispatch(tokensSlice.actions.reset());
 });
 
 afterAll(() => {
@@ -329,6 +336,7 @@ describe("<SendForm />", () => {
         decimals: "5",
       },
     };
+
     it("should display token name in amount input", () => {
       render(
         fixture(MOCK_PKH, {
@@ -371,7 +379,6 @@ describe("<SendForm />", () => {
       expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(
         [
           {
-            data: mockFA2,
             type: "fa2",
             amount: "1000000",
             recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
@@ -412,7 +419,6 @@ describe("<SendForm />", () => {
       expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
         [
           {
-            data: mockFA2,
             type: "fa2",
             amount: "1000000",
             recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
@@ -487,7 +493,6 @@ describe("<SendForm />", () => {
       expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(
         [
           {
-            data: mockFa1,
             type: "fa1.2",
             amount: "1000000000",
             recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
@@ -527,7 +532,6 @@ describe("<SendForm />", () => {
       expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
         [
           {
-            data: mockFa1,
             type: "fa1.2",
             amount: "1000000000",
             recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
@@ -543,7 +547,7 @@ describe("<SendForm />", () => {
 
   describe("case send NFT", () => {
     const fillFormAndSimulate = async () => {
-      render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
+      render(fixture(MOCK_PKH, { type: "token", data: fromRaw(nft) as TokenBalance }));
       expect(screen.getByTestId("real-address-input-sender")).toHaveAttribute(
         "value",
         mockImplicitAccount(1).address.pkh
@@ -568,7 +572,7 @@ describe("<SendForm />", () => {
         const nft = screen.getByLabelText(/^nft$/i);
         expect(within(nft).getByRole("img")).toHaveProperty(
           "src",
-          "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG1"
+          "https://ipfs.io/ipfs/zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz"
         );
       });
     };
@@ -611,16 +615,16 @@ describe("<SendForm />", () => {
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
       };
+      const contractAddress = nft.token?.contract?.address as string;
       expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
         [
           {
-            data: mockNFT(1),
             type: "fa2",
             amount: "1",
             recipient: parseImplicitPkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
             sender: parseImplicitPkh("tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"),
-            contract: parseContractPkh(mockNFT(1).contract),
-            tokenId: mockNFT(1).tokenId,
+            contract: parseContractPkh(contractAddress),
+            tokenId: nft.token?.tokenId,
           },
         ],
         config

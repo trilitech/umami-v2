@@ -54,7 +54,7 @@ describe("fromRaw", () => {
 
   test("invalid fa2 token (missing tokenId)", () => {
     jest.spyOn(console, "warn").mockImplementation();
-    const result = fromRaw({ ...fa2Token, token: { tokenId: undefined } });
+    const result = fromRaw({ ...fa2Token, token: { contract: fa2Token.token.contract } });
     expect(result).toEqual(null);
   });
 

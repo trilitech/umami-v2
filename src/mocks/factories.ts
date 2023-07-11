@@ -320,7 +320,6 @@ export const mockTezTransfer = (index: number): OperationValue => {
 export const mockNftTransfer = (index: number): OperationValue => {
   return {
     type: "fa2",
-    data: {} as NFTBalance,
     amount: String(index),
     sender: mockImplicitAddress(index),
     recipient: mockImplicitAddress(index + 1),

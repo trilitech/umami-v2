@@ -5,7 +5,6 @@ import { parseContractPkh } from "../../../types/Address";
 import { estimateBatch, estimateMultisigPropose } from "../../../utils/tezos";
 import { sumEstimations } from "../../../views/batch/batchUtils";
 import { FormOperations, ProposalOperations } from "../types";
-import { toLambdaOperation } from "./toLambdaOperation";
 
 const makeMultisigProposalSimulation = async (
   operation: ProposalOperations,
@@ -17,10 +16,7 @@ const makeMultisigProposalSimulation = async (
   const signerPkh = operation.signer;
   const multisigContract = parseContractPkh(operation.sender.pkh);
 
-  const lambdaActions = await makeBatchLambda(
-    content.map(toLambdaOperation),
-    TezosNetwork.GHOSTNET
-  );
+  const lambdaActions = await makeBatchLambda(content, TezosNetwork.GHOSTNET);
   const result = await estimateMultisigPropose(
     {
       lambdaActions,
@@ -37,7 +33,7 @@ const makeMultisigProposalSimulation = async (
 const getTotalFee = (estimate: Estimate[] | Estimate) =>
   String(Array.isArray(estimate) ? sumEstimations(estimate) : estimate.suggestedFeeMutez);
 
-export const makeSimulation = (
+export const makeSimulation = async (
   operation: FormOperations,
   getPk: (pkh: string) => string,
   network: TezosNetwork

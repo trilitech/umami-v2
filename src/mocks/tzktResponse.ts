@@ -26,7 +26,7 @@ export const fa1Token: RawTokenBalance = {
   lastTime: "2022-10-20T13:36:35Z",
 };
 
-export const fa2Token = {
+export const fa2Token: RawTokenBalance = {
   id: 10898310692865,
   account: {
     address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",

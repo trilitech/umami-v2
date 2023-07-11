@@ -24,29 +24,38 @@ import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
 import { OperationValue } from "../../components/sendForm/types";
 import { ImplicitAccount } from "../../types/Account";
+import { Token } from "../../types/Token";
 import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { Batch } from "../../utils/store/assetsSlice";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
-const renderAmount = (operation: OperationValue) => {
+const renderAmount = (
+  operation: OperationValue,
+  getToken: (contract: string, tokenId: string) => Token | undefined
+) => {
   switch (operation.type) {
     case "fa1.2":
     case "fa2": {
-      const amount = formatTokenAmount(operation.amount, operation.data.metadata?.decimals);
+      const token = getToken(operation.contract.pkh, operation.tokenId);
+      if (!token) {
+        throw new Error(`Token not found ${operation.contract.pkh} ${operation.tokenId}}`);
+      }
+      const amount = formatTokenAmount(operation.amount, token.metadata?.decimals);
       return (
         <Flex>
           <Text mr={1}>{amount} </Text>
 
-          {operation.data.type === "nft" ? (
+          {token.type === "nft" ? (
             <AspectRatio ml={2} height={6} width={6} ratio={1}>
-              <Image src={getIPFSurl(operation.data.metadata.displayUri)} />
+              <Image src={getIPFSurl(token.metadata.displayUri)} />
             </AspectRatio>
           ) : (
-            <Text>{tokenSymbol(operation.data)}</Text>
+            <Text>{tokenSymbol(token)}</Text>
           )}
         </Flex>
       );
@@ -107,6 +116,7 @@ export const BatchDisplay: React.FC<{
 }> = ({ account, batch, onDelete, onSend }) => {
   const items = batch.items;
   const network = useSelectedNetwork();
+  const getToken = useGetToken(network);
 
   return (
     <Flex data-testid={`batch-table-${account.address.pkh}`} mb={4}>
@@ -132,13 +142,13 @@ export const BatchDisplay: React.FC<{
               {items.map(({ operation, fee }, i) => (
                 <Tr key={operation.recipient + operation.type + i}>
                   <Td>{operation.type !== "delegation" ? "Transaction" : operation.type}</Td>
-                  <Td>{renderAmount(operation)}</Td>
+                  <Td>{renderAmount(operation, getToken)}</Td>
                   <Td>
                     {(operation.type === "fa2" || operation.type === "fa1.2") && (
                       <IconAndTextBtnLink
-                        label={formatPkh(operation.data.contract)}
+                        label={formatPkh(operation.contract.pkh)}
                         icon={FiExternalLink}
-                        href={buildTzktAddressUrl(network, operation.data.contract)}
+                        href={buildTzktAddressUrl(network, operation.contract.pkh)}
                         textFirst
                       />
                     )}
