@@ -1,7 +1,9 @@
 import { validateAddress, ValidationResult } from "@taquito/utils";
+import { Alias } from "@tzkt/sdk-api";
 import { z } from "zod";
 
 export type RawPkh = string;
+export type RawAlias = Omit<Alias, "address"> & { address: RawPkh };
 
 export type ContractAddress = {
   type: "contract";

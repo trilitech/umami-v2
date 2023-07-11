@@ -3,7 +3,7 @@ import { formatRelative } from "date-fns";
 import { z } from "zod";
 import { tokenPrettyBalance } from "../../types/TokenBalance";
 import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Operation";
-import { fromRaw } from "../../types/TokenBalance";
+import { fromRaw } from "../../types/Token";
 import { compact } from "lodash";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";
@@ -143,11 +143,11 @@ export const getTokenOperationDisplay = (
   forAddress: string,
   network = TezosNetwork.MAINNET
 ) => {
-  const asset = fromRaw({ balance: transfer.amount, token: transfer.token });
+  const token = fromRaw(transfer.token);
 
   const transferRequired = TokenTransaction.safeParse(transfer);
 
-  if (!asset || !transferRequired.success) {
+  if (!token || !transferRequired.success) {
     console.warn("getTokenOperationDisplay failed parsing");
     return null;
   }
@@ -168,10 +168,10 @@ export const getTokenOperationDisplay = (
   const prettyTimestamp = formatRelative(new Date(parsed.timestamp), new Date());
 
   let prettyAmount: string;
-  if (asset.type === "nft") {
-    prettyAmount = asset.balance;
+  if (token.type === "nft") {
+    prettyAmount = transfer.amount;
   } else {
-    prettyAmount = tokenPrettyBalance(asset, { showSymbol: true });
+    prettyAmount = tokenPrettyBalance(transfer.amount, token, { showSymbol: true });
   }
 
   const result: OperationDisplay = {

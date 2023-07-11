@@ -1,11 +1,17 @@
-import { TokenBalance } from "@tzkt/sdk-api";
+import { TezosNetwork } from "@airgap/tezos";
 import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
+import { RawTokenBalance } from "../../../../types/TokenBalance";
 import { assetsActions } from "../../../../utils/store/assetsSlice";
 import { store } from "../../../../utils/store/store";
+import tokensSlice from "../../../../utils/store/tokensSlice";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
 
-const { updateTokenBalance } = assetsActions;
+const { updateTokenBalance, updateNetwork } = assetsActions;
+
+beforeEach(() => {
+  store.dispatch(updateNetwork(TezosNetwork.MAINNET));
+});
 
 describe("<MultisigDecodedOperationItem/>", () => {
   it("displays delegate", () => {
@@ -29,7 +35,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
   it("Non NFT FA tokens amount renders correctly", () => {
     const mockContract = mockContractAddress(0);
 
-    const mockBalancePlayload: TokenBalance = {
+    const mockBalancePlayload: RawTokenBalance = {
       account: { address: "mockPkh" },
 
       balance: "1",
@@ -44,6 +50,12 @@ describe("<MultisigDecodedOperationItem/>", () => {
       },
     };
     store.dispatch(updateTokenBalance([mockBalancePlayload]));
+    store.dispatch(
+      tokensSlice.actions.addTokens({
+        network: TezosNetwork.MAINNET,
+        tokens: [mockBalancePlayload.token],
+      })
+    );
 
     render(
       <MultisigDecodedOperationItem
@@ -70,7 +82,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
   it("NFT amount renders correctly", () => {
     const mockContract = mockContractAddress(0);
 
-    const mockBalancePlayload: TokenBalance = {
+    const mockBalancePlayload: RawTokenBalance = {
       account: { address: mockImplicitAddress(0).pkh },
       balance: "1",
       token: {
@@ -86,6 +98,12 @@ describe("<MultisigDecodedOperationItem/>", () => {
     };
 
     store.dispatch(updateTokenBalance([mockBalancePlayload]));
+    store.dispatch(
+      tokensSlice.actions.addTokens({
+        network: TezosNetwork.MAINNET,
+        tokens: [mockBalancePlayload.token],
+      })
+    );
 
     render(
       <MultisigDecodedOperationItem

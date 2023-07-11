@@ -112,7 +112,7 @@ const AccountTokensTile: React.FC<{
                       textFirst
                     />
                   </Td>
-                  <Td w="15%">{tokenPrettyBalance(token, { showSymbol: false })}</Td>
+                  <Td w="15%">{tokenPrettyBalance(token.balance, token, { showSymbol: false })}</Td>
                   <Td>
                     <Flex alignItems="center" justifyContent="space-between" paddingX={3}>
                       {/* TODO: fetch token values  */}
