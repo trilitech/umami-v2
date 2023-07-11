@@ -2,7 +2,7 @@ import { MdPersonAddAlt } from "react-icons/md";
 import { FC } from "react";
 import { useUpsertContactModal } from "../views/home/useUpsertContactModal";
 import { formatPkh, truncate } from "../utils/format";
-import { useGetContractName } from "../utils/hooks/contactsHooks";
+import { useGetContactName } from "../utils/hooks/contactsHooks";
 import { useGetImplicitAccount } from "../utils/hooks/accountHooks";
 import { Box, Text } from "@chakra-ui/react";
 import { IconAndTextBtn } from "./IconAndTextBtn";
@@ -38,7 +38,7 @@ export const ContactTile: FC<{
 };
 
 const AccountOrContactTile: React.FC<{ pkh: string }> = ({ pkh }) => {
-  const getContactName = useGetContractName();
+  const getContactName = useGetContactName();
   const getAccount = useGetImplicitAccount();
 
   const account = getAccount(pkh);

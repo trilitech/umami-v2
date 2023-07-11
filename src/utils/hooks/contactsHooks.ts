@@ -15,7 +15,7 @@ export const useContactExists = () => {
   };
 };
 
-export const useGetContractName = (): ((pkh: string) => string | undefined) => {
+export const useGetContactName = (): ((pkh: string) => string | undefined) => {
   const contacts = useContacts();
   return (pkh: string) => contacts[pkh]?.name;
 };
