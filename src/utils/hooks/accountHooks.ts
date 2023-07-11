@@ -46,12 +46,17 @@ export const useReset = () => {
   };
 };
 
-export const useGetOwnedAccount = () => {
+export const useGetOwnedAccountSafe = () => {
   const accounts = useAllAccounts();
+  return (pkh: string): Account | undefined => accounts.find(a => a.address.pkh === pkh);
+};
+
+export const useGetOwnedAccount = () => {
+  const getOwnedAccount = useGetOwnedAccountSafe();
   return (pkh: string): Account => {
-    const account = accounts.find(a => a.address.pkh === pkh);
+    const account = getOwnedAccount(pkh);
     if (!account) {
-      throw new Error(`You do not ownn account:${pkh}`);
+      throw new Error(`You do not own account:${pkh}`);
     }
     return account;
   };

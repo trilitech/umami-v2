@@ -9,7 +9,7 @@ import { IconAndTextBtn } from "./IconAndTextBtn";
 
 export const ContactTile: FC<{
   pkh: string;
-  contactName: string | null;
+  contactName: string | undefined;
 }> = ({ pkh, contactName }) => {
   const { modalElement, onOpen } = useUpsertContactModal();
 

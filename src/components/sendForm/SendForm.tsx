@@ -1,9 +1,8 @@
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
-import { AccountType } from "../../types/Account";
 import { SignerConfig } from "../../types/SignerConfig";
-import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
+import { useGetPk } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
@@ -13,17 +12,6 @@ import { SuccessStep } from "./steps/SuccessStep";
 import { EstimatedOperation, FormOperations, OperationValue, SendFormMode } from "./types";
 import { makeTransfer } from "./util/execution";
 import { makeSimulation } from "./util/simulation";
-
-const useGetPk = () => {
-  const getAccount = useGetOwnedAccount();
-  return (pkh: string) => {
-    const account = getAccount(pkh);
-    if (account.type === AccountType.MULTISIG) {
-      throw new Error(`Multisig accounts don't own a public key`);
-    }
-    return account.pk;
-  };
-};
 
 export const SendForm = ({
   sender,
