@@ -1,8 +1,8 @@
-import { RawOperation } from "../../../types/RawOperation";
+import { Operation } from "../../../types/Operation";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { Subtotal, TransactionsAmount } from "../components/TezAmountRecaps";
 
-export const BatchRecap = ({ transfer }: { transfer: RawOperation[] }) => {
+export const BatchRecap = ({ transfer }: { transfer: Operation[] }) => {
   return (
     <>
       <TransactionsAmount amount={transfer.length} />

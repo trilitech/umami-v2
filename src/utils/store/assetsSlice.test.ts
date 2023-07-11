@@ -16,7 +16,7 @@ import accountsSlice from "./accountsSlice";
 import { estimateAndUpdateBatch } from "./thunks/estimateAndupdateBatch";
 import { estimateBatch } from "../tezos";
 import { hedgehoge } from "../../mocks/fa12Tokens";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 jest.mock("../tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -492,7 +492,7 @@ describe("Assets reducer", () => {
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
-      const operations: RawOperation[] = [];
+      const operations: Operation[] = [];
 
       const action = estimateAndUpdateBatch(
         mockImplicitAddress(1).pkh,

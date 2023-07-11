@@ -8,7 +8,7 @@ import { VscWand } from "react-icons/vsc";
 import { Account, AccountType } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
 import { Delegation } from "../../types/Delegation";
-import { OperationDisplay } from "../../types/Operation";
+import { OperationDisplay } from "../../types/Transfer";
 import { CopyableAddress } from "../CopyableText";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";

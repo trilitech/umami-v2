@@ -1,16 +1,16 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { OpKind, ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import { makeTokenTransferParams, makeToolkitWithDummySigner } from "./helpers";
 
 export const operationsToWalletParams = async (
-  operations: RawOperation[],
+  operations: Operation[],
   signer: TezosToolkit
 ): Promise<WalletParamsWithKind[]> =>
   operationsToParams(operations, signer) as Promise<WalletParamsWithKind[]>;
 
 export const operationsToParams = async (
-  operations: RawOperation[],
+  operations: Operation[],
   toolkit: TezosToolkit
 ): Promise<ParamsWithKind[]> => {
   const result: ParamsWithKind[] = [];
@@ -48,7 +48,7 @@ export const operationsToParams = async (
 };
 
 export const operationsToBatchParams = async (
-  operations: RawOperation[],
+  operations: Operation[],
   pk: string,
   pkh: string,
   network: TezosNetwork

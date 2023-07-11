@@ -1,7 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import { useGetPk } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
@@ -66,7 +66,7 @@ export const SendForm = ({
     setIsLoading(false);
   };
 
-  const addToBatch = async (operation: RawOperation, sender: string) => {
+  const addToBatch = async (operation: Operation, sender: string) => {
     const pk = getPk(sender);
 
     try {

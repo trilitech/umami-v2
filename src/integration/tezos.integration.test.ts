@@ -2,7 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
 import { parseContractPkh, parseImplicitPkh } from "../types/Address";
-import { RawOperation } from "../types/RawOperation";
+import { Operation } from "../types/Operation";
 
 import { estimateBatch, operationsToBatchParams } from "../utils/tezos";
 
@@ -15,7 +15,7 @@ const pkh1 = parseImplicitPkh(devPublicKeys1.pkh);
 describe("Tezos utils", () => {
   describe("Batch", () => {
     test("batchParams are generated correctly for tez, tez with params, FA1.2, FA2 contracts and delegations", async () => {
-      const input: RawOperation[] = [
+      const input: Operation[] = [
         {
           type: "tez",
           amount: "3",

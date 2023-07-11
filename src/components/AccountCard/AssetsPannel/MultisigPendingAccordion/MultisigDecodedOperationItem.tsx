@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { FiArrowUpRight } from "react-icons/fi";
-import { RawOperation } from "../../../../types/RawOperation";
+import { Operation } from "../../../../types/Operation";
 import colors from "../../../../style/colors";
 import {
   formatTokenAmount,
@@ -13,7 +13,7 @@ import { CopyableAddress } from "../../../CopyableText";
 import { useGetToken } from "../../../../utils/hooks/tokensHooks";
 
 const MultisigDecodedOperationItem: React.FC<{
-  operation: RawOperation;
+  operation: Operation;
 }> = ({ operation }) => {
   switch (operation.type) {
     case "delegation":
@@ -38,7 +38,7 @@ const MultisigDecodedOperationItem: React.FC<{
 };
 
 const MultisigOperationAmount: React.FC<{
-  operation: RawOperation;
+  operation: Operation;
 }> = ({ operation }) => {
   const getToken = useGetToken();
 

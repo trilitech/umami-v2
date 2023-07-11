@@ -4,13 +4,13 @@ import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
 import { TokenBalance, fromRaw, eraseToken } from "../../types/TokenBalance";
 import { Baker } from "../../types/Baker";
-import { TezTransfer, TokenTransfer } from "../../types/Operation";
+import { TezTransfer, TokenTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { TzktAccount } from "../tezos";
 import accountsSlice from "./accountsSlice";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 
-export type BatchItem = { operation: RawOperation; fee: string };
+export type BatchItem = { operation: Operation; fee: string };
 export type Batch = {
   isSimulating: boolean;
   items: Array<BatchItem>;

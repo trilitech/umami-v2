@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
 import { AccountType } from "../../../types/Account";
-import { RawOperation } from "../../../types/RawOperation";
+import { Operation } from "../../../types/Operation";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useGetToken } from "../../../utils/hooks/tokensHooks";
@@ -26,7 +26,7 @@ import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation } from "../types";
 import { BatchRecap } from "./BatchRecap";
 
-const NonBatchRecap = ({ transfer }: { transfer: RawOperation }) => {
+const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
   const isDelegation = transfer.type === "delegation";
   const getToken = useGetToken();
   const token =

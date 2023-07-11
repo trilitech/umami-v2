@@ -24,7 +24,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
-import { Delegation, RawOperation } from "../../../types/RawOperation";
+import { Delegation, Operation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import {
   useAccountIsMultisig,
@@ -127,7 +127,7 @@ const getAmountSymbol = (asset?: Token) => {
 };
 
 export const FillBatchForm: React.FC<{
-  transfer: RawOperation[];
+  transfer: Operation[];
   onSubmit: () => void;
   isLoading?: boolean;
   signer: string;
@@ -350,7 +350,7 @@ const buildTezFromFormValues = (
   v: FormValues,
   parameter?: TransferParams["parameter"]
 ): FormOperations => {
-  const value: RawOperation[] = [
+  const value: Operation[] = [
     {
       type: "tez",
       amount: tezToMutez(v.amount).toString(),
@@ -392,7 +392,7 @@ const buildTokenFromFormValues = (v: FormValues, asset: Token): FormOperations =
 
 export const FillStep: React.FC<{
   onSubmit: (v: FormOperations) => void;
-  onSubmitBatch: (v: RawOperation, signer: string) => void;
+  onSubmitBatch: (v: Operation, signer: string) => void;
   isLoading: boolean;
   sender: string;
   recipient?: string;

@@ -2,7 +2,7 @@ import { TezosNetwork } from "@airgap/tezos";
 import { formatRelative } from "date-fns";
 import { z } from "zod";
 import { tokenPrettyBalance } from "../../types/TokenBalance";
-import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Operation";
+import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Transfer";
 import { fromRaw } from "../../types/Token";
 import { compact } from "lodash";
 import { getIPFSurl } from "../../utils/token/nftUtils";

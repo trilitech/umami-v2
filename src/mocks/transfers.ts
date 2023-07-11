@@ -1,4 +1,4 @@
-import { TezTransfer } from "../types/Operation";
+import { TezTransfer } from "../types/Transfer";
 
 const MOCK_TIMESTAMP = "2020-05-24T13:12:18Z";
 const MOCK_HASH = "onqKcUZLbN9LdoJsPeRtDrHqYibm4osdtQJmGGQ4GAg3SjQUMT3";

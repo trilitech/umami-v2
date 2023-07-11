@@ -5,7 +5,7 @@ import { makeDefaultDevSignerKeys, makeToolkitFromDefaultDevSeed } from "../mock
 import { ghostTezzard } from "../mocks/tokens";
 import { contract, makeStorageMichelsonJSON } from "./multisigContract";
 import { makeBatchLambda } from "./multisigUtils";
-import { MultisigStorage } from "../types/RawOperation";
+import { MultisigStorage } from "../types/Operation";
 import { parseContractPkh, parsePkh } from "../types/Address";
 
 jest.unmock("../utils/tezos");

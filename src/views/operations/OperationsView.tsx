@@ -21,7 +21,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoOperations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
-import { OperationDisplay } from "../../types/Operation";
+import { OperationDisplay } from "../../types/Transfer";
 import { useGetOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
 import { getAmountColor, getKey, sortOperationsByTimestamp } from "./operationsUtils";
 

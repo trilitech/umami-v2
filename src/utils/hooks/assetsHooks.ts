@@ -8,7 +8,7 @@ import {
   keepNFTs,
   NFTBalance,
 } from "../../types/TokenBalance";
-import { OperationDisplay } from "../../types/Operation";
+import { OperationDisplay } from "../../types/Transfer";
 import {
   getOperationDisplays,
   sortOperationsByTimestamp,

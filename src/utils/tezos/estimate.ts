@@ -1,6 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { Estimate } from "@taquito/taquito";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import {
   makeMultisigApproveOrExecuteMethod,
   makeMultisigProposeMethod,
@@ -36,7 +36,7 @@ export const estimateMultisigApproveOrExecute = async (
 };
 
 export const estimateBatch = async (
-  operations: RawOperation[],
+  operations: Operation[],
   pkh: string,
   pk: string,
   network: TezosNetwork
