@@ -9,8 +9,8 @@ import {
   tokenSymbol,
 } from "../../../../types/TokenBalance";
 import { prettyTezAmount } from "../../../../utils/format";
-import { useSearchAsset } from "../../../../utils/hooks/assetsHooks";
 import { CopyableAddress } from "../../../CopyableText";
+import { useGetToken } from "../../../../utils/hooks/tokensHooks";
 
 const MultisigDecodedOperationItem: React.FC<{
   operation: RawOperation;
@@ -40,7 +40,8 @@ const MultisigDecodedOperationItem: React.FC<{
 const MultisigOperationAmount: React.FC<{
   operation: RawOperation;
 }> = ({ operation }) => {
-  const searchAsset = useSearchAsset();
+  const getToken = useGetToken();
+
   switch (operation.type) {
     case "tez":
       return (
@@ -54,7 +55,7 @@ const MultisigOperationAmount: React.FC<{
 
     case "fa1.2":
     case "fa2": {
-      const asset = searchAsset(operation.contract.pkh, operation.tokenId);
+      const asset = getToken(operation.contract.pkh, operation.tokenId);
 
       if (!asset) {
         return null;

@@ -20,6 +20,7 @@ import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { multisigToAccount } from "../../utils/multisig/helpers";
 import { Multisig } from "../../utils/multisig/types";
 import multisigsSlice, { multisigActions } from "../../utils/store/multisigsSlice";
+import tokensSlice from "../../utils/store/tokensSlice";
 const {
   updateTezBalance,
   updateTokenBalance,
@@ -38,6 +39,7 @@ const mockNft = mockNFTToken(0, pkh);
 
 const SELECTED_ACCOUNT_BALANCE = 33200000000;
 beforeEach(() => {
+  store.dispatch(assetsSlice.actions.updateNetwork(TezosNetwork.MAINNET));
   store.dispatch(setMultisigs(multisigs));
   store.dispatch(add([selectedAccount, mockImplicitAccount(1)]));
   store.dispatch(updateTezBalance([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }]));
@@ -50,12 +52,25 @@ beforeEach(() => {
       mockNft,
     ])
   );
+  store.dispatch(
+    tokensSlice.actions.addTokens({
+      network: TezosNetwork.MAINNET,
+      tokens: [
+        hedgehoge(selectedAccount.address).token,
+        tzBtsc(selectedAccount.address).token,
+        uUSD(selectedAccount.address).token,
+        mockFA1Token(1, pkh, 123).token,
+        mockNft.token,
+      ],
+    })
+  );
 });
 
 afterEach(() => {
   store.dispatch(accountsSlice.actions.reset());
   store.dispatch(assetsSlice.actions.reset());
   store.dispatch(multisigsSlice.actions.reset());
+  store.dispatch(tokensSlice.actions.reset());
 });
 
 describe("<AccountCard />", () => {

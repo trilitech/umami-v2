@@ -3,12 +3,14 @@ import { BigNumber } from "bignumber.js";
 import { Metadata, RawTokenInfo, Token, fromRaw as fromRawToken, NFT } from "./Token";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
+import { RawPkh } from "./Address";
 
-export type TokenBalance = Token & { balance: string };
+export type TokenBalance = { balance: string; contract: RawPkh; tokenId: string };
+export type TokenBalanceWithToken = TokenBalance & Token;
 
 export type RawTokenBalance = Omit<tzktApi.TokenBalance, "token"> & { token: RawTokenInfo };
 
-export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
+export const fromRaw = (raw: RawTokenBalance): TokenBalanceWithToken | null => {
   const token = fromRawToken(raw.token);
   if (!token || !raw.balance) {
     return null;
@@ -16,7 +18,7 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
   return { balance: raw.balance, ...token };
 };
 
-const defaultTokenName = (asset: TokenBalance): string => {
+const defaultTokenName = (asset: Token): string => {
   switch (asset.type) {
     case "fa1.2":
       return DEFAULT_FA1_NAME;
@@ -27,7 +29,7 @@ const defaultTokenName = (asset: TokenBalance): string => {
   }
 };
 
-export const tokenName = (asset: TokenBalance): string => {
+export const tokenName = (asset: Token): string => {
   return asset.metadata?.name || defaultTokenName(asset);
 };
 
@@ -99,14 +101,14 @@ export type NFTBalance = {
   totalSupply: string | undefined;
 };
 
-export const keepNFTs = (assets: TokenBalance[]) => {
+export const keepNFTs = (assets: TokenBalanceWithToken[]) => {
   return assets.filter((asset): asset is NFTBalance => asset.type === "nft");
 };
-export const keepFA1s = (assets: TokenBalance[]) => {
+export const keepFA1s = (assets: TokenBalanceWithToken[]) => {
   return assets.filter((asset): asset is FA12TokenBalance => asset.type === "fa1.2");
 };
 
-export const keepFA2s = (assets: TokenBalance[]) => {
+export const keepFA2s = (assets: TokenBalanceWithToken[]) => {
   return assets.filter((asset): asset is FA2TokenBalance => asset.type === "fa2");
 };
 

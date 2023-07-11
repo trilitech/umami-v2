@@ -1,18 +1,25 @@
 import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
 import { MultisigAccount } from "../../types/Account";
-import { TokenBalance, keepFA1s, keepFA2s, keepNFTs, NFTBalance } from "../../types/TokenBalance";
+import {
+  TokenBalanceWithToken,
+  keepFA1s,
+  keepFA2s,
+  keepNFTs,
+  NFTBalance,
+} from "../../types/TokenBalance";
 import { OperationDisplay } from "../../types/Operation";
 import {
   getOperationDisplays,
   sortOperationsByTimestamp,
 } from "../../views/operations/operationsUtils";
 import { mutezToTez } from "../format";
-import { objectMap } from "../helpers";
 import assetsSlice from "../store/assetsSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useAllAccounts, useImplicitAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
+import { useGetToken } from "./tokensHooks";
+import { RawPkh } from "../../types/Address";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.assets.network);
@@ -27,74 +34,50 @@ export const useIsBlockFinalised = () => {
   return (level: number) => (currentLevel !== null ? currentLevel - level >= 2 : null);
 };
 
-export const useAllNfts = (): Record<string, NFTBalance[] | undefined> => {
-  const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
-
-  return objectMap(ownerToTokens, tokens => keepNFTs(compact(tokens)));
+export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
+  const getAccountNFTs = useGetAccountNFTs();
+  const accountAddresses = useAppSelector(s => Object.keys(s.assets.balances.tokens));
+  return fromPairs(accountAddresses.map(address => [address, getAccountNFTs(address)]));
 };
 
 export const useGetAccountAssets = () => {
-  const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
+  const getToken = useGetToken();
+  const ownerToTokenBalances = useAppSelector(s => s.assets.balances.tokens);
 
-  return (pkh: string) => ownerToTokens[pkh] ?? [];
-};
-
-export const useGetAccountAssetsLookup = (): ((
-  pkh: string
-) => Record<string, TokenBalance[] | undefined>) => {
-  const getAccountAssets = useGetAccountAssets();
-
-  return (pkh: string): Record<string, TokenBalance[]> =>
-    getAccountAssets(pkh).reduce((acc: Record<string, TokenBalance[]>, cur) => {
-      if (!acc[cur.contract]) {
-        acc[cur.contract] = [];
-      }
-      acc[cur.contract].push(cur);
-      return acc;
-    }, {});
-};
-
-export const useSearchAsset = () => {
-  const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
-  const allAssets = compact(Object.values(ownerToTokens).flat());
-
-  return (contractAddress: string, tokenId: string) =>
-    compact(allAssets).find(
-      asset => asset.contract === contractAddress && asset.tokenId === tokenId
+  return (pkh: string): TokenBalanceWithToken[] => {
+    const balances = ownerToTokenBalances[pkh] || [];
+    return compact(
+      balances.map(({ contract, tokenId, balance }) => {
+        const token = getToken(contract, tokenId);
+        return token && { ...token, balance };
+      })
     );
+  };
 };
 
 export const useGetAccountFA2Tokens = () => {
   const getAssets = useGetAccountAssets();
 
-  return (pkh: string) => {
-    return keepFA2s(getAssets(pkh));
-  };
+  return (pkh: string) => keepFA2s(getAssets(pkh));
 };
 
 export const useGetAccountFA1Tokens = () => {
   const getAssets = useGetAccountAssets();
 
-  return (pkh: string) => {
-    return keepFA1s(getAssets(pkh));
-  };
+  return (pkh: string) => keepFA1s(getAssets(pkh));
 };
 
 export const useGetAccountAllTokens = () => {
   const getFA1 = useGetAccountFA1Tokens();
   const getFA2 = useGetAccountFA2Tokens();
 
-  return (pkh: string) => {
-    return [...getFA1(pkh), ...getFA2(pkh)];
-  };
+  return (pkh: string) => [...getFA1(pkh), ...getFA2(pkh)];
 };
 
 export const useGetAccountNFTs = () => {
   const getAssets = useGetAccountAssets();
 
-  return (pkh: string) => {
-    return keepNFTs(getAssets(pkh));
-  };
+  return (pkh: string) => keepNFTs(getAssets(pkh));
 };
 
 export const useAllTransfers = () => useAppSelector(s => s.assets.transfers);
@@ -105,9 +88,8 @@ export const useGetAccountOperationDisplays = () => {
 
   const network = useSelectedNetwork();
 
-  return (pkh: string) => {
-    return getOperationDisplays(tez[pkh], tokens[pkh], delegations[pkh], pkh, network);
-  };
+  return (pkh: string) =>
+    getOperationDisplays(tez[pkh], tokens[pkh], delegations[pkh], pkh, network);
 };
 
 export const useGetOperationDisplays = (): Record<string, OperationDisplay[] | undefined> => {
@@ -168,10 +150,7 @@ export const useTotalBalance = () => {
   const dollarBalance =
     tezToDollar !== null && tezBalance !== null ? tezToDollar(tezBalance) : null;
 
-  return {
-    tezBalance,
-    dollarBalance,
-  };
+  return { tezBalance, dollarBalance };
 };
 
 export const useGetAccountBalance = () => {
@@ -191,13 +170,7 @@ export const useTotalMutezBalance = () => {
 };
 
 export const useAllDelegations = () => {
-  const allDelegations = useAppSelector(s => s.assets.delegations);
-
-  // const result = objectMap(activeDelegations, (d) => {
-  //   return { sender: d.sender?.address } as Delegation;
-  // });
-
-  return allDelegations;
+  return useAppSelector(s => s.assets.delegations);
 };
 
 export const useAllBatches = () => useAppSelector(s => s.assets.batches);

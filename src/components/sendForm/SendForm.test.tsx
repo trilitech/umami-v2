@@ -19,7 +19,12 @@ import {
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance, fromRaw, TokenBalance } from "../../types/TokenBalance";
+import {
+  FA12TokenBalance,
+  FA2TokenBalance,
+  fromRaw,
+  TokenBalanceWithToken,
+} from "../../types/TokenBalance";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice, { BatchItem } from "../../utils/store/assetsSlice";
@@ -547,7 +552,7 @@ describe("<SendForm />", () => {
 
   describe("case send NFT", () => {
     const fillFormAndSimulate = async () => {
-      render(fixture(MOCK_PKH, { type: "token", data: fromRaw(nft) as TokenBalance }));
+      render(fixture(MOCK_PKH, { type: "token", data: fromRaw(nft) as TokenBalanceWithToken }));
       expect(screen.getByTestId("real-address-input-sender")).toHaveAttribute(
         "value",
         mockImplicitAccount(1).address.pkh
