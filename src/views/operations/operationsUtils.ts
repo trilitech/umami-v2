@@ -1,10 +1,10 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { formatRelative } from "date-fns";
 import { z } from "zod";
-import { tokenPrettyBalance } from "../../types/Asset";
+import { tokenPrettyBalance } from "../../types/TokenBalance";
 import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Operation";
 import { Token } from "../../types/Token";
-import { fromToken } from "../../types/Asset";
+import { fromToken } from "../../types/TokenBalance";
 import { compact } from "lodash";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";

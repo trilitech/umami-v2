@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import { useAccountFilterWithMapFilter } from "../../components/AccountFilter";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
-import { NFT } from "../../types/Asset";
+import { NFTBalance } from "../../types/TokenBalance";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";
@@ -20,7 +20,7 @@ import NFTGallery from "./NFTGallery";
 
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
-  const [selectedNft, setSelectedNft] = useState<NFT>();
+  const [selectedNft, setSelectedNft] = useState<NFTBalance>();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { nftId } = useParams();
 

@@ -1,12 +1,17 @@
 import { ContractAddress, ImplicitAddress, parseContractPkh, parsePkh } from "../../types/Address";
-import { Asset, FA12Token, FA2Token, NFT } from "../../types/Asset";
+import {
+  TokenBalance,
+  FA12TokenBalance,
+  FA2TokenBalance,
+  NFTBalance,
+} from "../../types/TokenBalance";
 import { Delegation, FA12Operation, FA2Operation, TezOperation } from "../../types/RawOperation";
 
 type TezMode = { type: "tez" };
 
 type TokenMode = {
   type: "token";
-  data: Asset;
+  data: TokenBalance;
 };
 
 export type DelegationMode = {
@@ -26,8 +31,8 @@ type BatchMode = {
 
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
-export type FA12OperationWithAsset = FA12Operation & { data: FA12Token };
-export type FA2OperationWithAsset = FA2Operation & { data: FA2Token | NFT };
+export type FA12OperationWithAsset = FA12Operation & { data: FA12TokenBalance };
+export type FA2OperationWithAsset = FA2Operation & { data: FA2TokenBalance | NFTBalance };
 
 export type OperationValue =
   | TezOperation
@@ -56,7 +61,7 @@ export type EstimatedOperation = {
 };
 
 export const classifyAsset = (
-  a: Asset,
+  a: TokenBalance,
   value: { amount: string; sender: string; recipient: string }
 ): FA12OperationWithAsset | FA2OperationWithAsset => {
   if (a.type === "fa1.2") {

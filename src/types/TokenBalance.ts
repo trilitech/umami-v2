@@ -4,52 +4,52 @@ import { z } from "zod";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
 
-const addressParser = z.object({ address: z.string() });
+const addressSchema = z.object({ address: z.string() });
 
-export type Asset = FA12Token | FA2Token | NFT;
+export type TokenBalance = FA12TokenBalance | FA2TokenBalance | NFTBalance;
 
-const fa1TokenParser = z.object({
-  standard: z.string().regex(/fa1\.2/i),
-  contract: addressParser,
+const fa1TokenSchema = z.object({
+  standard: z.string().regex(/^fa1\.2$/i),
+  contract: addressSchema,
 });
 
-const fa1parser = z.object({
+const fa1BalanceSchema = z.object({
   balance: z.string(),
-  token: fa1TokenParser,
+  token: fa1TokenSchema,
 });
 
-const fa2TokenParser = z.object({
-  standard: z.string().regex(/fa2/i),
+const fa2TokenSchema = z.object({
+  standard: z.string().regex(/^fa2$/i),
   tokenId: z.string(),
-  contract: addressParser,
+  contract: addressSchema,
 });
 
-const fa2parser = z.object({
+const fa2BalanceSchema = z.object({
   balance: z.string(),
-  token: fa2TokenParser,
+  token: fa2TokenSchema,
 });
 
-const nftTokenParser = z.object({
+const nftTokenSchema = z.object({
   id: z.number(),
-  standard: z.string().regex(/fa2/i),
+  standard: z.string().regex(/^fa2$/i),
   tokenId: z.string(),
-  contract: addressParser,
+  contract: addressSchema,
   totalSupply: z.string().optional(),
   metadata: z.object({
     displayUri: z.string(),
   }),
 });
 
-const nftParser = z.object({
+const nftBalanceSchema = z.object({
   balance: z.string(),
-  account: addressParser,
-  token: nftTokenParser,
+  account: addressSchema,
+  token: nftTokenSchema,
 });
 
-export const fromToken = (raw: Token): Asset | null => {
+export const fromToken = (raw: Token): TokenBalance | null => {
   const metadata = raw.token?.metadata;
 
-  const fa1result = fa1parser.safeParse(raw);
+  const fa1result = fa1BalanceSchema.safeParse(raw);
   if (fa1result.success) {
     return {
       type: "fa1.2",
@@ -59,7 +59,7 @@ export const fromToken = (raw: Token): Asset | null => {
     };
   }
 
-  const nftResult = nftParser.safeParse(raw);
+  const nftResult = nftBalanceSchema.safeParse(raw);
   if (nftResult.success) {
     return {
       // if the nft has been parsed successfully then the metadata is definitely present
@@ -75,7 +75,7 @@ export const fromToken = (raw: Token): Asset | null => {
     };
   }
 
-  const fa2result = fa2parser.safeParse(raw);
+  const fa2result = fa2BalanceSchema.safeParse(raw);
   if (fa2result.success) {
     return {
       type: "fa2",
@@ -89,7 +89,7 @@ export const fromToken = (raw: Token): Asset | null => {
   return null;
 };
 
-const defaultTokenName = (asset: Asset): string => {
+const defaultTokenName = (asset: TokenBalance): string => {
   switch (asset.type) {
     case "fa1.2":
       return DEFAULT_FA1_NAME;
@@ -100,11 +100,11 @@ const defaultTokenName = (asset: Asset): string => {
   }
 };
 
-export const tokenName = (asset: Asset): string => {
+export const tokenName = (asset: TokenBalance): string => {
   return asset.metadata?.name || defaultTokenName(asset);
 };
 
-const defaultTokenSymbol = (asset: Asset): string => {
+const defaultTokenSymbol = (asset: TokenBalance): string => {
   switch (asset.type) {
     case "fa1.2":
       return DEFAULT_FA1_SYMBOL;
@@ -115,15 +115,15 @@ const defaultTokenSymbol = (asset: Asset): string => {
   }
 };
 
-export const tokenSymbol = (asset: Asset): string => {
+export const tokenSymbol = (asset: TokenBalance): string => {
   return asset.metadata?.symbol || defaultTokenSymbol(asset);
 };
 
-export const tokenDecimal = (asset: Asset): string => {
+export const tokenDecimal = (asset: TokenBalance): string => {
   return asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
 };
 
-export const httpIconUri = (asset: FA12Token | FA2Token): string | undefined => {
+export const httpIconUri = (asset: FA12TokenBalance | FA2TokenBalance): string | undefined => {
   let iconUri;
   if (asset.type === "fa1.2") {
     iconUri = asset.metadata?.icon;
@@ -133,7 +133,7 @@ export const httpIconUri = (asset: FA12Token | FA2Token): string | undefined => 
   return iconUri && getIPFSurl(iconUri);
 };
 
-export const getRealAmount = (asset: Asset, prettyAmount: string): BigNumber => {
+export const getRealAmount = (asset: TokenBalance, prettyAmount: string): BigNumber => {
   const amount = new BigNumber(prettyAmount);
 
   if (asset.type === "nft") {
@@ -145,14 +145,14 @@ export const getRealAmount = (asset: Asset, prettyAmount: string): BigNumber => 
   return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };
 
-export type FA12Token = {
+export type FA12TokenBalance = {
   type: "fa1.2";
   contract: string;
   balance: string;
   metadata?: TokenMetadata;
 };
 
-export type FA2Token = {
+export type FA2TokenBalance = {
   type: "fa2";
   metadata?: TokenMetadata;
   contract: string;
@@ -160,8 +160,8 @@ export type FA2Token = {
   balance: string;
 };
 
-export type NFT = {
-  id: number;
+export type NFTBalance = {
+  id: number; // TODO: replace with contract + tokenId
   type: "nft";
   contract: string;
   tokenId: string;
@@ -172,15 +172,15 @@ export type NFT = {
   totalSupply: string | undefined;
 };
 
-export const keepNFTs = (assets: Asset[]) => {
-  return assets.filter((asset): asset is NFT => asset.type === "nft");
+export const keepNFTs = (assets: TokenBalance[]) => {
+  return assets.filter((asset): asset is NFTBalance => asset.type === "nft");
 };
-export const keepFA1s = (assets: Asset[]) => {
-  return assets.filter((asset): asset is FA12Token => asset.type === "fa1.2");
+export const keepFA1s = (assets: TokenBalance[]) => {
+  return assets.filter((asset): asset is FA12TokenBalance => asset.type === "fa1.2");
 };
 
-export const keepFA2s = (assets: Asset[]) => {
-  return assets.filter((asset): asset is FA2Token => asset.type === "fa2");
+export const keepFA2s = (assets: TokenBalance[]) => {
+  return assets.filter((asset): asset is FA2TokenBalance => asset.type === "fa2");
 };
 
 export const formatTokenAmount = (amountStr: string, decimals = DEFAULT_TOKEN_DECIMALS) => {
@@ -188,7 +188,7 @@ export const formatTokenAmount = (amountStr: string, decimals = DEFAULT_TOKEN_DE
 };
 
 export const tokenPrettyBalance = (
-  token: FA2Token | FA12Token,
+  token: FA2TokenBalance | FA12TokenBalance,
   options?: { showSymbol?: boolean }
 ) => {
   const symbol = tokenSymbol(token);
@@ -200,19 +200,19 @@ export const tokenPrettyBalance = (
   return `${result}${trailingSymbol}`;
 };
 
-export const artifactUri = (nft: NFT): string => {
+export const artifactUri = (nft: NFTBalance): string => {
   return nft.metadata.artifactUri || nft.displayUri;
 };
 
-export const thumbnailUri = (nft: NFT): string => {
+export const thumbnailUri = (nft: NFTBalance): string => {
   return nft.metadata.thumbnailUri || nft.displayUri;
 };
 
-export const mimeType = (nft: NFT) => {
+export const mimeType = (nft: NFTBalance) => {
   return nft.metadata.formats?.find(format => format.uri === artifactUri(nft))?.mimeType;
 };
 
-export const royalties = (nft: NFT): Array<{ address: string; share: number }> => {
+export const royalties = (nft: NFTBalance): Array<{ address: string; share: number }> => {
   const royalties = nft.metadata.royalties;
   if (!royalties) {
     return [];
@@ -226,7 +226,7 @@ export const royalties = (nft: NFT): Array<{ address: string; share: number }> =
   return shares;
 };
 
-export const metadataUri = (nft: NFT, network: TezosNetwork) => {
+export const metadataUri = (nft: NFTBalance, network: TezosNetwork) => {
   return `https://${network}.tzkt.io/${nft.contract}/tokens/${nft.tokenId}/metadata`;
 };
 

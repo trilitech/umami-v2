@@ -19,7 +19,7 @@ import {
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
-import { FA12Token, FA2Token } from "../../types/Asset";
+import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice, { BatchItem } from "../../utils/store/assetsSlice";
@@ -319,7 +319,7 @@ describe("<SendForm />", () => {
     const MOCK_TOKEN_SYMBOL = "FOO";
     const MOCK_TOKEN_ID = "7";
     const MOCK_FEE = 3122;
-    const mockFA2: FA2Token = {
+    const mockFA2: FA2TokenBalance = {
       type: "fa2",
       contract: mockContractAddress(2).pkh,
       tokenId: MOCK_TOKEN_ID,
@@ -434,7 +434,7 @@ describe("<SendForm />", () => {
     const MOCK_TOKEN_SYMBOL = "FA1FOO";
     const MOCK_FEE = 4122;
 
-    const mockFa1: FA12Token = {
+    const mockFa1: FA12TokenBalance = {
       type: "fa1.2",
       contract: mockContractAddress(2).pkh,
       balance: "3",
@@ -900,7 +900,7 @@ describe("<SendForm />", () => {
     test("User can acomplish an FA1 proposal", async () => {
       const MOCK_TOKEN_SYMBOL = "FA1FOO";
 
-      const mockFa1: FA12Token = {
+      const mockFa1: FA12TokenBalance = {
         type: "fa1.2",
         contract: mockContractAddress(2).pkh,
         balance: "3",

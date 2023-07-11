@@ -1,11 +1,11 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import React from "react";
-import type { NFT } from "../../types/Asset";
+import type { NFTBalance } from "../../types/TokenBalance";
 import NFTCard from "./NFTCard";
 
 export const NFTGallery: React.FC<{
-  nfts: NFT[];
-  onSelect: (nft: NFT) => void;
+  nfts: NFTBalance[];
+  onSelect: (nft: NFTBalance) => void;
 }> = ({ nfts, onSelect }) => {
   return (
     <SimpleGrid columns={4} spacing={4} overflow="scroll">

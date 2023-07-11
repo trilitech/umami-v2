@@ -1,7 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
 import { MultisigAccount } from "../../types/Account";
-import { Asset, keepFA1s, keepFA2s, keepNFTs, NFT } from "../../types/Asset";
+import { TokenBalance, keepFA1s, keepFA2s, keepNFTs, NFTBalance } from "../../types/TokenBalance";
 import { OperationDisplay } from "../../types/Operation";
 import {
   getOperationDisplays,
@@ -27,7 +27,7 @@ export const useIsBlockFinalised = () => {
   return (level: number) => (currentLevel !== null ? currentLevel - level >= 2 : null);
 };
 
-export const useAllNfts = (): Record<string, NFT[] | undefined> => {
+export const useAllNfts = (): Record<string, NFTBalance[] | undefined> => {
   const ownerToTokens = useAppSelector(s => s.assets.balances.tokens);
 
   return objectMap(ownerToTokens, tokens => keepNFTs(compact(tokens)));
@@ -41,11 +41,11 @@ export const useGetAccountAssets = () => {
 
 export const useGetAccountAssetsLookup = (): ((
   pkh: string
-) => Record<string, Asset[] | undefined>) => {
+) => Record<string, TokenBalance[] | undefined>) => {
   const getAccountAssets = useGetAccountAssets();
 
-  return (pkh: string): Record<string, Asset[]> =>
-    getAccountAssets(pkh).reduce((acc: Record<string, Asset[]>, cur) => {
+  return (pkh: string): Record<string, TokenBalance[]> =>
+    getAccountAssets(pkh).reduce((acc: Record<string, TokenBalance[]>, cur) => {
       if (!acc[cur.contract]) {
         acc[cur.contract] = [];
       }
