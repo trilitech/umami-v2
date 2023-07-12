@@ -25,7 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { deriveAccount } from "../../utils/store/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
-import { useCreateMultisigModal } from "./useCreateMultisigModal";
+import { useCreateMultisigModal } from "./Multisig/useCreateMultisigModal";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
