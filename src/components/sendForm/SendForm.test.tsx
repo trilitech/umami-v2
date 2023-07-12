@@ -12,7 +12,7 @@ import {
 import {
   dispatchMockAccounts,
   fakeRestoreFromMnemonic,
-  selectAccount,
+  selectSender,
   fillPassword,
   resetAccounts,
   setBatchEstimationPerTransaction,
@@ -347,7 +347,7 @@ describe("<SendForm />", () => {
           data: mockFA2,
         })
       );
-      selectAccount(mockImplicitAccount(2).label || "");
+      selectSender(mockImplicitAccount(2).label);
 
       const estimateButton = screen.getByText(/preview/i);
       expect(estimateButton).toBeDisabled();
@@ -461,7 +461,7 @@ describe("<SendForm />", () => {
           data: mockFa1,
         })
       );
-      selectAccount(mockImplicitAccount(2).label || "");
+      selectSender(mockImplicitAccount(2).label);
 
       const estimateButton = screen.getByText(/preview/i);
       expect(estimateButton).toBeDisabled();
@@ -800,7 +800,7 @@ describe("<SendForm />", () => {
       } as TransactionOperation);
 
       render(fixture(MOCK_PKH, { type: "tez" }));
-      selectAccount("Multisig Account 1");
+      selectSender("Multisig Account 1");
 
       const amountInput = screen.getByLabelText(/amount/i);
       fireEvent.change(amountInput, { target: { value: 23 } });
@@ -854,10 +854,8 @@ describe("<SendForm />", () => {
       fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
-
-      render(fixture(MOCK_PKH, { type: "token", data: mockNFT(1) }));
-
-      selectAccount("Multisig Account 1");
+      const multisigPkh = multisigs[1].address.pkh;
+      render(fixture(multisigPkh, { type: "token", data: { ...mockNFT(1), owner: multisigPkh } }));
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });
@@ -897,6 +895,7 @@ describe("<SendForm />", () => {
         );
       });
     });
+
     test("User can acomplish an FA1 proposal", async () => {
       const MOCK_TOKEN_SYMBOL = "FA1FOO";
 
@@ -922,7 +921,7 @@ describe("<SendForm />", () => {
         })
       );
 
-      selectAccount("Multisig Account 1");
+      selectSender("Multisig Account 1");
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });

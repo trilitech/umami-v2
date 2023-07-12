@@ -1,6 +1,6 @@
 import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { useState } from "react";
-import { FieldValues, UseFormRegister, Path, PathValue } from "react-hook-form";
+import { FieldValues, Path, useFormContext } from "react-hook-form";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
@@ -11,15 +11,12 @@ import { Identicon } from "./Identicon";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
-// <V extends PathValue<T, U>> verifies that initialPkhValue's type matches the one in FormData
-export type BaseProps<T extends FieldValues, U extends Path<T>, V extends PathValue<T, U>> = {
-  initialPkhValue?: V;
+export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   isDisabled?: boolean;
   inputName: U;
   allowUnknown: boolean;
   label: string;
-  register: UseFormRegister<T>;
-  setValue: (name: U, value: string, options: { shouldValidate: boolean }) => void;
+  onUpdate?: (value: string) => void;
 };
 
 const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
@@ -92,52 +89,67 @@ const Suggestions = ({
   );
 };
 
-export const AddressAutocomplete = <
-  T extends FieldValues,
-  U extends Path<T>,
-  V extends PathValue<T, U>
->({
+export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   contacts,
-  initialPkhValue,
   isDisabled,
   allowUnknown,
   inputName,
+  onUpdate,
   label,
-  register,
-  setValue: setFormValue,
-}: BaseProps<T, U, V> & { contacts: Contact[] }) => {
-  const [rawInputValue, setRawInputValue] = useState(() => {
-    if (!initialPkhValue) {
+}: BaseProps<T, U> & { contacts: Contact[] }) => {
+  const {
+    register,
+    setValue,
+    formState: { defaultValues },
+  } = useFormContext<T>();
+  // Cannot avoid this cast because of how types are arranged in UseFormReturn
+  const setRealValue = setValue as (
+    name: U,
+    value: string,
+    options: { shouldValidate: boolean }
+  ) => void;
+
+  const [rawValue, setRawValue] = useState(() => {
+    if (!defaultValues) {
       return "";
     }
-    return contacts.find(c => c.pkh === initialPkhValue)?.name || initialPkhValue;
+    const defaultAddress = defaultValues[inputName];
+    if (!defaultAddress) {
+      return "";
+    }
+    return contacts.find(c => c.pkh === defaultAddress)?.name || defaultAddress;
   });
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [suggestions, setSuggestions] = useState(getSuggestions("", contacts));
 
   const handleChange = (newValue: string) => {
-    setRawInputValue(newValue);
+    setRawValue(newValue);
     setSuggestions(getSuggestions(newValue, contacts));
 
     const contact = contacts.find(contact => contact.name === newValue || contact.pkh === newValue);
+    let newRealValue;
     if (contact !== undefined) {
-      setRawInputValue(contact.name);
-      setFormValue(inputName, contact.pkh, { shouldValidate: true });
+      setRawValue(contact.name);
+      newRealValue = contact.pkh;
     } else if (allowUnknown && isAddressValid(newValue)) {
-      setFormValue(inputName, newValue, { shouldValidate: true });
+      newRealValue = newValue;
     } else {
-      setFormValue(inputName, "", { shouldValidate: true });
+      newRealValue = "";
+    }
+    setRealValue(inputName, newRealValue, { shouldValidate: true });
+    if (onUpdate) {
+      onUpdate(newRealValue);
     }
   };
 
   return (
     <Box>
-      <FormLabel>
+      <FormLabel m={0}>
         {label}
         <Input
           isDisabled={isDisabled}
           aria-label={inputName}
-          value={rawInputValue}
+          value={rawValue}
           onFocus={() => {
             setHideSuggestions(false);
           }}
@@ -154,10 +166,7 @@ export const AddressAutocomplete = <
         />
       </FormLabel>
       <Input
-        {...register(inputName, {
-          required: "Invalid address or contact name",
-          value: initialPkhValue,
-        })}
+        {...register<U>(inputName, { required: "Invalid address or contact name" })}
         mb={0}
         name={inputName}
         type="hidden"
@@ -169,12 +178,8 @@ export const AddressAutocomplete = <
   );
 };
 
-export const KnownAccountsAutocomplete = <
-  T extends FieldValues,
-  U extends Path<T>,
-  V extends PathValue<T, U>
->(
-  props: BaseProps<T, U, V>
+export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
+  props: BaseProps<T, U>
 ) => {
   const contacts = Object.values(useContacts());
 
@@ -186,12 +191,8 @@ export const KnownAccountsAutocomplete = <
   return <AddressAutocomplete {...props} contacts={contacts.concat(accounts)} />;
 };
 
-export const OwnedImplicitAccountsAutocomplete = <
-  T extends FieldValues,
-  U extends Path<T>,
-  V extends PathValue<T, U>
->(
-  props: BaseProps<T, U, V>
+export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
+  props: BaseProps<T, U>
 ) => {
   const accounts = useImplicitAccounts().map(account => ({
     name: account.label,
@@ -201,12 +202,8 @@ export const OwnedImplicitAccountsAutocomplete = <
   return <AddressAutocomplete {...props} contacts={accounts} />;
 };
 
-export const OwnedAccountsAutocomplete = <
-  T extends FieldValues,
-  U extends Path<T>,
-  V extends PathValue<T, U>
->(
-  props: BaseProps<T, U, V>
+export const OwnedAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
+  props: BaseProps<T, U>
 ) => {
   const accounts = useAllAccounts().map(account => ({
     name: account.label,
@@ -216,12 +213,8 @@ export const OwnedAccountsAutocomplete = <
   return <AddressAutocomplete {...props} contacts={accounts} />;
 };
 
-export const BakersAutocomplete = <
-  T extends FieldValues,
-  U extends Path<T>,
-  V extends PathValue<T, U>
->(
-  props: BaseProps<T, U, V>
+export const BakersAutocomplete = <T extends FieldValues, U extends Path<T>>(
+  props: BaseProps<T, U>
 ) => {
   const bakers = useAppSelector(s => s.assets.bakers).map(baker => ({
     name: baker.name,

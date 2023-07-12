@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
 import { FC, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useGetPk } from "../../utils/hooks/accountHooks";
 import {
   useBatchIsSimulating,
@@ -36,12 +36,16 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const isSimulating = useBatchIsSimulating();
 
-  const { register, setValue, handleSubmit, getValues, formState } = useForm<{
+  const form = useForm<{
     sender: string;
   }>({
     mode: "onBlur",
   });
-  const { isValid, errors } = formState;
+  const {
+    handleSubmit,
+    getValues,
+    formState: { isValid, errors },
+  } = form;
 
   // TODO: is it possible to use the csv file with react-hook-form?
   // https://app.asana.com/0/0/1204523779791382/f
@@ -112,61 +116,61 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <ModalCloseButton />
-      <ModalHeader textAlign="center">Load CSV file</ModalHeader>
-      <Text textAlign="center">Select an account and then upload the CSV file.</Text>
-      <ModalBody>
-        <FormControl paddingY={5} isInvalid={!!errors.sender}>
-          {/* TODO: Use AllAccountsAutocomplete instead */}
-          <OwnedImplicitAccountsAutocomplete
-            label="From"
-            inputName="sender"
-            allowUnknown={false}
-            setValue={setValue}
-            register={register}
-          />
-          {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
-        </FormControl>
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ModalCloseButton />
+        <ModalHeader textAlign="center">Load CSV file</ModalHeader>
+        <Text textAlign="center">Select an account and then upload the CSV file.</Text>
+        <ModalBody>
+          <FormControl paddingY={5} isInvalid={!!errors.sender}>
+            {/* TODO: Use AllAccountsAutocomplete instead */}
+            <OwnedImplicitAccountsAutocomplete
+              label="From"
+              inputName="sender"
+              allowUnknown={false}
+            />
+            {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
+          </FormControl>
 
-        <FormLabel pt={5}>Select CSV</FormLabel>
-        <Flex>
-          <Input
-            p={2}
-            mb={5}
-            ref={csvRef}
-            accept=".csv"
-            type="file"
-            onChange={e => {
-              try {
-                handleCSVFileUpload(e);
-              } catch (error: any) {
-                resetFile();
-                toast({
-                  title: "Error loading csv file",
-                  description: error.message,
-                });
-              }
-            }}
-            variant="unstyled"
-          />
-        </Flex>
-      </ModalBody>
+          <FormLabel pt={5}>Select CSV</FormLabel>
+          <Flex>
+            <Input
+              p={2}
+              mb={5}
+              ref={csvRef}
+              accept=".csv"
+              type="file"
+              onChange={e => {
+                try {
+                  handleCSVFileUpload(e);
+                } catch (error: any) {
+                  resetFile();
+                  toast({
+                    title: "Error loading csv file",
+                    description: error.message,
+                  });
+                }
+              }}
+              variant="unstyled"
+            />
+          </Flex>
+        </ModalBody>
 
-      <ModalFooter>
-        <Box width="100%">
-          <Button
-            isDisabled={!(isValid && !!csv)}
-            isLoading={isSimulating(getValues("sender"))}
-            width="100%"
-            type="submit"
-            mb={2}
-          >
-            Upload
-          </Button>
-        </Box>
-      </ModalFooter>
-    </form>
+        <ModalFooter>
+          <Box width="100%">
+            <Button
+              isDisabled={!(isValid && !!csv)}
+              isLoading={isSimulating(getValues("sender"))}
+              width="100%"
+              type="submit"
+              mb={2}
+            >
+              Upload
+            </Button>
+          </Box>
+        </ModalFooter>
+      </form>
+    </FormProvider>
   );
 };
 

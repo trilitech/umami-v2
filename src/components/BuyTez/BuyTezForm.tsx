@@ -10,7 +10,7 @@ import {
   Button,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { wertUrls } from "../../utils/tezos/consts";
@@ -29,44 +29,44 @@ const BuyTezForm = () => {
     navigateToExternalLink(url);
   };
 
-  const { register, setValue, handleSubmit, formState } = useForm<{
-    recipient: string;
-  }>({
-    mode: "onBlur",
-  });
-
-  const { isValid, errors } = formState;
+  const form = useForm<{ recipient: string }>({ mode: "onBlur" });
+  const {
+    handleSubmit,
+    formState: { isValid, errors },
+  } = form;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <ModalCloseButton />
-      <ModalHeader textAlign="center">Buy Tez</ModalHeader>
-      {isMainnet && (
-        <>
-          <Text textAlign="center">Please select the recipient account.</Text>
-          <ModalBody data-testid="buy-tez-selector">
-            <FormControl paddingY={5} isInvalid={!!errors.recipient}>
-              <OwnedImplicitAccountsAutocomplete
-                label="Recipient Account"
-                inputName="recipient"
-                register={register}
-                setValue={setValue}
-                allowUnknown={false}
-              />
-              {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
-            </FormControl>
-          </ModalBody>
-        </>
-      )}
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ModalCloseButton />
+        <ModalHeader textAlign="center">Buy Tez</ModalHeader>
+        {isMainnet && (
+          <>
+            <Text textAlign="center">Please select the recipient account.</Text>
+            <ModalBody data-testid="buy-tez-selector">
+              <FormControl paddingY={5} isInvalid={!!errors.recipient}>
+                <OwnedImplicitAccountsAutocomplete
+                  label="Recipient Account"
+                  inputName="recipient"
+                  allowUnknown={false}
+                />
+                {errors.recipient && (
+                  <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
+                )}
+              </FormControl>
+            </ModalBody>
+          </>
+        )}
 
-      <ModalFooter>
-        <Box width="100%" data-testid="buy-tez-button">
-          <Button width="100%" type="submit" isDisabled={!isValid} variant="ghost" mb={2}>
-            {title}
-          </Button>
-        </Box>
-      </ModalFooter>
-    </form>
+        <ModalFooter>
+          <Box width="100%" data-testid="buy-tez-button">
+            <Button width="100%" type="submit" isDisabled={!isValid} variant="ghost" mb={2}>
+              {title}
+            </Button>
+          </Box>
+        </ModalFooter>
+      </form>
+    </FormProvider>
   );
 };
 
