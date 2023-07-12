@@ -20,8 +20,8 @@ import {
 } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { AccountType } from "../../../types/Account";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { AccountType, MultisigAccount } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { TokenBalance, getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
 import { Delegation } from "../../../types/RawOperation";
@@ -56,67 +56,61 @@ export const DelegateForm = ({
   sender: string;
   recipient?: string;
 }) => {
-  const { formState, handleSubmit, setValue, register } = useForm<{
+  const form = useForm<{
     sender: string;
     baker: string | undefined;
   }>({
     mode: "onBlur",
     defaultValues: { sender, baker: recipient },
   });
-  const { isValid, errors } = formState;
+  const {
+    formState: { isValid, errors },
+    handleSubmit,
+  } = form;
 
   const accountIsMultisig = useAccountIsMultisig();
   const senderIsMultisig = Boolean(sender && accountIsMultisig(sender));
   const subTitle = undelegate ? "Remove delegation" : "Delegate";
   return (
-    <ModalContent bg="umami.gray.900">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalCloseButton />
-        <ModalHeader textAlign="center">Delegation</ModalHeader>
-        <Text textAlign="center">{subTitle}</Text>
-        <ModalBody>
-          <FormControl mb={2}>
-            <OwnedAccountsAutocomplete
-              label="From"
-              register={register}
-              setValue={setValue}
-              inputName="sender"
-              initialPkhValue={sender}
-              allowUnknown={false}
-            />
-          </FormControl>
-
-          {undelegate ? null : (
-            <FormControl mb={2} isInvalid={!!errors.baker}>
-              <BakersAutocomplete
-                label="Baker"
-                inputName="baker"
-                allowUnknown={true} // set to false when beacon stops using SendForm
-                setValue={setValue}
-                initialPkhValue={recipient}
-                register={register}
-              />
-              {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
+    <FormProvider {...form}>
+      <ModalContent bg="umami.gray.900">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ModalCloseButton />
+          <ModalHeader textAlign="center">Delegation</ModalHeader>
+          <Text textAlign="center">{subTitle}</Text>
+          <ModalBody>
+            <FormControl mb={2}>
+              <OwnedAccountsAutocomplete label="From" inputName="sender" allowUnknown={false} />
             </FormControl>
-          )}
-        </ModalBody>
-        <ModalFooter>
-          {isValid}
-          <Box width="100%">
-            <Button
-              width="100%"
-              isLoading={isLoading}
-              type="submit"
-              isDisabled={!isValid || isLoading || senderIsMultisig}
-              variant="ghost"
-              mb={2}
-            >
-              Preview
-            </Button>
-          </Box>
-        </ModalFooter>
-      </form>
-    </ModalContent>
+
+            {undelegate ? null : (
+              <FormControl mb={2} isInvalid={!!errors.baker}>
+                <BakersAutocomplete
+                  label="Baker"
+                  inputName="baker"
+                  allowUnknown={true} // set to false when beacon stops using SendForm
+                />
+                {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
+              </FormControl>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Box width="100%">
+              <Button
+                width="100%"
+                isLoading={isLoading}
+                type="submit"
+                isDisabled={!isValid || isLoading || senderIsMultisig}
+                variant="ghost"
+                mb={2}
+              >
+                Preview
+              </Button>
+            </Box>
+          </ModalFooter>
+        </form>
+      </ModalContent>
+    </FormProvider>
   );
 };
 
@@ -191,6 +185,34 @@ const useGetDefaultProposalSigner = () => {
   };
 };
 
+const SignerSelectorField: React.FC<{ account: MultisigAccount }> = ({ account }) => {
+  const getMultisigSigners = useGetMultisigSigners();
+  const signers = getMultisigSigners(account).map(acc => ({
+    name: acc.label,
+    pkh: acc.address.pkh,
+  }));
+  const {
+    formState: { errors },
+  } = useFormContext<FormValues>();
+
+  if (signers.length < 2) {
+    return null;
+  }
+  return (
+    <FormControl mb={2} isInvalid={!!errors.proposalSigner}>
+      <AddressAutocomplete
+        label="Proposal Signer"
+        inputName="proposalSigner"
+        contacts={signers}
+        allowUnknown={false}
+      />
+      {errors.proposalSigner && (
+        <FormErrorMessage>{errors.proposalSigner.message}</FormErrorMessage>
+      )}
+    </FormControl>
+  );
+};
+
 export const SendTezOrNFTForm = ({
   token,
   sender,
@@ -215,152 +237,112 @@ export const SendTezOrNFTForm = ({
   const accountIsMultisig = useAccountIsMultisig();
   const getDefaultSigner = useGetDefaultProposalSigner();
 
-  const initialProposalSigner = (sender && getDefaultSigner(sender)) || undefined;
   const isNFT = token?.type === "nft";
   const mandatoryNftSender = isNFT ? token?.owner : undefined;
 
-  const {
-    formState: { isValid, errors },
-    register,
-    getValues,
-    handleSubmit,
-    setValue,
-  } = useForm<FormValues>({
+  const form = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
       sender: mandatoryNftSender || sender,
       amount: isNFT ? "1" : amount,
       recipient,
-      proposalSigner: initialProposalSigner,
+      proposalSigner: sender && getDefaultSigner(sender),
     },
   });
-
+  const {
+    formState: { isValid, errors },
+    register,
+    getValues,
+    handleSubmit,
+  } = form;
   const senderFormValue = getValues().sender;
 
-  const multisigSender =
-    senderFormValue !== ""
-      ? multisigAccounts.find(a => a.address.pkh === senderFormValue)
-      : undefined;
+  const multisigSender = multisigAccounts.find(a => a.address.pkh === senderFormValue);
 
   const batchIsSimulating = senderFormValue !== "" && getBatchIsSimulating(senderFormValue);
 
   const simulating = isLoading || batchIsSimulating;
-  const senderIsMultisig = accountIsMultisig(getValues("sender"));
-
-  const getMultisigSigners = useGetMultisigSigners();
-
-  const signerSelectorField = () => {
-    if (!multisigSender) {
-      return null;
-    }
-    const signers = getMultisigSigners(multisigSender).map(acc => ({
-      name: acc.label,
-      pkh: acc.address.pkh,
-    }));
-    if (signers.length < 2) {
-      return null;
-    }
-    return (
-      <FormControl mb={2} isInvalid={!!errors.proposalSigner}>
-        <AddressAutocomplete
-          label="Proposal Signer"
-          inputName="proposalSigner"
-          contacts={signers}
-          initialPkhValue={signers[0].pkh}
-          register={register}
-          setValue={setValue}
-          allowUnknown={false}
-        />
-        {errors.proposalSigner && (
-          <FormErrorMessage>{errors.proposalSigner.message}</FormErrorMessage>
-        )}
-      </FormControl>
-    );
-  };
 
   return (
-    <ModalContent bg="umami.gray.900">
-      <form>
-        <ModalCloseButton />
-        <ModalHeader textAlign="center">Send</ModalHeader>
-        <Text textAlign="center">Send one or insert into batch.</Text>
-        <ModalBody>
-          <FormControl mb={2} isInvalid={!!errors.sender}>
-            <OwnedAccountsAutocomplete
-              label="From"
-              register={register}
-              setValue={setValue}
-              inputName="sender"
-              isDisabled={isNFT || simulating}
-              allowUnknown={false}
-              initialPkhValue={mandatoryNftSender || sender}
-            />
-            {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
-          </FormControl>
-          {signerSelectorField()}
-          <FormControl mb={2} isInvalid={!!errors.recipient}>
-            <KnownAccountsAutocomplete
-              label="To"
-              register={register}
-              inputName="recipient"
-              setValue={setValue}
-              initialPkhValue={recipient}
-              allowUnknown
-            />
-            {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
-          </FormControl>
-          {isNFT ? <SendNFTRecapTile nft={token} /> : null}
-          <FormControl mb={2} mt={2} isInvalid={!!errors.amount}>
-            <FormLabel>Amount</FormLabel>
-            <InputGroup>
-              <Input
-                isDisabled={simulating}
-                step={isNFT ? 1 : "any"}
-                type="number"
-                {...register("amount", {
-                  required: "Amount is required",
-                })}
-                placeholder="Enter amount..."
+    <FormProvider {...form}>
+      <ModalContent bg="umami.gray.900">
+        <form>
+          <ModalCloseButton />
+          <ModalHeader textAlign="center">Send</ModalHeader>
+          <Text textAlign="center">Send one or insert into batch.</Text>
+          <ModalBody>
+            <FormControl mb={2} isInvalid={!!errors.sender}>
+              <OwnedAccountsAutocomplete
+                label="From"
+                inputName="sender"
+                isDisabled={isNFT || simulating}
+                allowUnknown={false}
+                onUpdate={sender => {
+                  if (accountIsMultisig(sender)) {
+                    form.setValue("proposalSigner", getDefaultSigner(sender));
+                  }
+                }}
               />
-              <InputRightAddon data-testid="currency" children={getAmountSymbol(token)} />
-            </InputGroup>
-            {errors.amount && <FormErrorMessage>{errors.amount.message}</FormErrorMessage>}
-          </FormControl>
-          {parameter && (
-            <FormControl mb={2} mt={2}>
-              <FormLabel>Parameter</FormLabel>
-              <Textarea isDisabled={true} value={JSON.stringify(parameter, null, 4)}></Textarea>
+              {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
             </FormControl>
-          )}
-        </ModalBody>
-        <ModalFooter>
-          <Box width="100%">
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              width="100%"
-              isLoading={isLoading}
-              type="submit"
-              isDisabled={!isValid || simulating}
-              variant="ghost"
-              mb={2}
-            >
-              Preview
-            </Button>
-            <Button
-              onClick={handleSubmit(onSubmitBatch)}
-              width="100%"
-              isLoading={batchIsSimulating}
-              type="submit"
-              isDisabled={!isValid || simulating || senderIsMultisig}
-              variant="ghost"
-              mb={2}
-            >
-              Insert Into Batch
-            </Button>
-          </Box>
-        </ModalFooter>
-      </form>
-    </ModalContent>
+            {multisigSender && <SignerSelectorField account={multisigSender} />}
+            <FormControl mb={2} isInvalid={!!errors.recipient}>
+              <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
+              {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
+            </FormControl>
+            {isNFT ? <SendNFTRecapTile nft={token} /> : null}
+            <FormControl mb={2} mt={2} isInvalid={!!errors.amount}>
+              <FormLabel>Amount</FormLabel>
+              <InputGroup>
+                <Input
+                  isDisabled={simulating}
+                  step={isNFT ? 1 : "any"}
+                  type="number"
+                  {...register("amount", {
+                    required: "Amount is required",
+                  })}
+                  placeholder="Enter amount..."
+                />
+                <InputRightAddon data-testid="currency" children={getAmountSymbol(token)} />
+              </InputGroup>
+              {errors.amount && <FormErrorMessage>{errors.amount.message}</FormErrorMessage>}
+            </FormControl>
+            {parameter && (
+              <FormControl mb={2} mt={2}>
+                <FormLabel>Parameter</FormLabel>
+                <Textarea isDisabled={true} value={JSON.stringify(parameter, null, 4)}></Textarea>
+              </FormControl>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Box width="100%">
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                width="100%"
+                isLoading={isLoading}
+                type="submit"
+                isDisabled={!isValid || simulating}
+                variant="ghost"
+                mb={2}
+              >
+                Preview
+              </Button>
+              <Button
+                onClick={handleSubmit(onSubmitBatch)}
+                width="100%"
+                isLoading={batchIsSimulating}
+                type="submit"
+                isDisabled={!isValid || simulating}
+                variant="ghost"
+                mb={2}
+              >
+                Insert Into Batch
+              </Button>
+            </Box>
+          </ModalFooter>
+        </form>
+      </ModalContent>
+    </FormProvider>
   );
 };
 
@@ -415,20 +397,9 @@ export const FillStep: React.FC<{
   sender: string;
   recipient?: string;
   amount?: string;
-  disabled?: boolean;
   parameter?: TransferParams["parameter"];
   mode: SendFormMode;
-}> = ({
-  onSubmit,
-  isLoading,
-  sender,
-  recipient,
-  amount,
-  parameter,
-  mode,
-  onSubmitBatch,
-  disabled,
-}) => {
+}> = ({ onSubmit, isLoading, sender, recipient, amount, parameter, mode, onSubmitBatch }) => {
   switch (mode.type) {
     case "delegation":
       return (

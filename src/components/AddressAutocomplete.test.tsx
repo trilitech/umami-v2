@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { mockContact, mockImplicitAddress } from "../mocks/factories";
 import { fireEvent, render, renderHook, screen, within } from "../mocks/testUtils";
 import { Contact } from "../types/Contact";
@@ -7,25 +7,26 @@ import { AddressAutocomplete } from "./AddressAutocomplete";
 type FormFields = { destination: string };
 
 const fixture = ({
-  initialPkhValue,
+  defaultDestination,
   allowUnknown = true,
   contacts = [mockContact(0), mockContact(1), mockContact(2)],
 }: {
-  initialPkhValue?: string;
+  defaultDestination?: string;
   allowUnknown?: boolean;
   contacts?: Contact[];
 }) => {
-  const { result } = renderHook(() => useForm<FormFields>());
+  const view = renderHook(() =>
+    useForm<FormFields>({ defaultValues: { destination: defaultDestination } })
+  );
   render(
-    <AddressAutocomplete
-      contacts={contacts}
-      label=""
-      inputName="destination"
-      allowUnknown={allowUnknown}
-      register={result.current.register}
-      setValue={result.current.setValue}
-      initialPkhValue={initialPkhValue}
-    />
+    <FormProvider {...view.result.current}>
+      <AddressAutocomplete
+        contacts={contacts}
+        label=""
+        inputName="destination"
+        allowUnknown={allowUnknown}
+      />
+    </FormProvider>
   );
 };
 
@@ -116,8 +117,8 @@ describe("<AddressAutocomplete />", () => {
     expect(realInput).toHaveProperty("value", mockContact(1).pkh);
   });
 
-  it("should display initialPkhValue's contact if any, and not display any suggestions", async () => {
-    fixture({ initialPkhValue: mockContact(1).pkh });
+  it("should display default address's contact if any, and not display any suggestions", async () => {
+    fixture({ defaultDestination: mockContact(1).pkh });
 
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");
@@ -127,8 +128,8 @@ describe("<AddressAutocomplete />", () => {
     expect(realInput).toHaveProperty("value", mockContact(1).pkh);
   });
 
-  it("should display initialPkhValue if there is no existing contact", async () => {
-    fixture({ initialPkhValue: mockImplicitAddress(5).pkh });
+  it("should display default address if there is no existing contact", async () => {
+    fixture({ defaultDestination: mockImplicitAddress(5).pkh });
 
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");

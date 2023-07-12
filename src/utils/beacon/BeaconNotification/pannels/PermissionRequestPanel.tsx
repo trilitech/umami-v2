@@ -16,7 +16,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { OwnedImplicitAccountsAutocomplete } from "../../../../components/AddressAutocomplete";
 import { useImplicitAccounts } from "../../../hooks/accountHooks";
 import { walletClient } from "../../beacon";
@@ -27,12 +27,11 @@ const PermissionRequestPanel: React.FC<{
 }> = ({ request, onSuccess: onSubmit }) => {
   const accounts = useImplicitAccounts();
   const defaultAddress = accounts[0].address.pkh;
+  const form = useForm<{ address: string }>({ defaultValues: { address: defaultAddress } });
   const {
-    register,
-    setValue,
     getValues,
     formState: { errors },
-  } = useForm<{ address: string }>({ defaultValues: { address: defaultAddress } });
+  } = form;
 
   const grant = async () => {
     const account = accounts.find(acc => acc.address.pkh === getValues().address);
@@ -57,16 +56,15 @@ const PermissionRequestPanel: React.FC<{
 
       <ModalCloseButton />
       <ModalBody>
-        <FormControl isInvalid={!!errors.address}>
-          <OwnedImplicitAccountsAutocomplete
-            label="Select Account"
-            allowUnknown={false}
-            setValue={setValue}
-            inputName="address"
-            register={register}
-            initialPkhValue={defaultAddress}
-          />
-        </FormControl>
+        <FormProvider {...form}>
+          <FormControl isInvalid={!!errors.address}>
+            <OwnedImplicitAccountsAutocomplete
+              label="Select Account"
+              allowUnknown={false}
+              inputName="address"
+            />
+          </FormControl>
+        </FormProvider>
         <AspectRatio mt={2} mb={2} width="100%" ratio={1}>
           <Image width="100%" height={40} src={request.appMetadata.icon} />
         </AspectRatio>

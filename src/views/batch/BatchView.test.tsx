@@ -4,7 +4,7 @@ import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import {
   closeModal,
   dispatchMockAccounts,
-  selectAccount,
+  selectSender,
   resetAccounts,
   setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
@@ -62,7 +62,7 @@ const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh
   const recipientInput = screen.getByLabelText(/^to$/i);
   fireEvent.change(recipientInput, { target: { value: recipientPkh } });
 
-  selectAccount(senderLabel);
+  selectSender(senderLabel);
 
   const addToBatchButton = screen.getByRole("button", {
     name: /insert into batch/i,
