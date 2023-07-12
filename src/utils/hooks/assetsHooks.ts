@@ -232,3 +232,10 @@ export const useGetMultisigSigners = () => {
     return signers;
   };
 };
+
+export const useGetBaker = () => {
+  const bakers = useAppSelector(state => state.assets.bakers);
+  return (rawPkh: string) => {
+    return bakers.find(baker => baker.address === rawPkh);
+  };
+};
