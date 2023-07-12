@@ -5,7 +5,7 @@ import { BsWindowPlus } from "react-icons/bs";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
-import { useCreateOrImportSecretModal } from "../../components/Onboarding/useOnboardingModal";
+import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
 import { AccountType, Account } from "../../types/Account";
 import { useAllAccounts, useRemoveMnemonic } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
@@ -15,7 +15,7 @@ import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 
 export const AccountListHeader = () => {
-  const { onOpen, modalElement } = useCreateOrImportSecretModal();
+  const { onOpen, modalElement } = useOnboardingModal();
   return (
     <Flex justifyContent="space-between" mt={4} mb={4}>
       <Heading size="lg">Accounts</Heading>

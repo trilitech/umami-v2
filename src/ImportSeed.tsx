@@ -2,13 +2,13 @@ import { Box, Button, Divider, Heading, SimpleGrid, Text, VStack, Center } from 
 import { MakiLogo } from "./components/MakiLogo";
 import Slider from "./components/Slider";
 import SlideItem from "./components/SliderItem";
-import { useCreateOrImportSecretModal } from "./components/Onboarding/useOnboardingModal";
+import { useOnboardingModal } from "./components/Onboarding/useOnboardingModal";
 import { AllSlideritemsDocument, SlideritemRecord } from "./graphql/generated";
 import { request } from "./utils/datocms/request";
 import { useEffect, useState } from "react";
 
 function ImportSeed() {
-  const { onOpen, modalElement } = useCreateOrImportSecretModal();
+  const { onOpen, modalElement } = useOnboardingModal();
 
   const [slideItems, setSlideItems] = useState<SlideritemRecord[]>([]);
   const requestSliderItems = async () => {

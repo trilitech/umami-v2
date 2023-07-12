@@ -90,7 +90,7 @@ export type Step =
   | MasterPasswordStep
   | FakeAccountStep;
 
-export const useCreateOrImportSecretModal = () => {
+export const useOnboardingModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const hasAccounts = useImplicitAccounts().length !== 0;
   const history = useStepHistory<Step>({
