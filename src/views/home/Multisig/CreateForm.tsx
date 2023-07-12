@@ -15,6 +15,7 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
 import colors from "../../../style/colors";
+import { isValidImplicitPkh } from "../../../types/Address";
 import { Step, InitialStep, MultisigFields } from "./useCreateMultisigModal";
 
 export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep: InitialStep }> = ({
@@ -36,12 +37,12 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
     control,
     register,
     handleSubmit,
-    watch,
+    getValues,
   } = form;
   const signersArray = useFieldArray({
     control,
     name: "signers",
-    rules: { minLength: 1 }, // TODO: add uniqueness validation and the address type check
+    rules: { minLength: 1 },
   });
 
   const onSubmit = (multisigFields: MultisigFields) => {
@@ -50,7 +51,6 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
     goToStep({ type: "review", data: multisigFields });
   };
 
-  const signersWatch = watch("signers");
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,14 +91,23 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
                 mb={2}
                 key={field.id}
                 isInvalid={!!error}
-                width={signersWatch.length > 1 ? "355px" : "400px"}
+                width={getValues("signers").length > 1 ? "355px" : "400px"}
               >
                 <OwnedImplicitAccountsAutocomplete
                   label={label}
                   inputName={`signers.${index}.val` as const}
+                  validate={signer => {
+                    if (!isValidImplicitPkh(signer)) {
+                      return "Signer must be valid TZ address";
+                    }
+                    const addresses = getValues("signers").map(s => s.val);
+                    if (addresses.length > new Set(addresses).size) {
+                      return "Duplicate signer";
+                    }
+                  }}
                   allowUnknown
                 />
-                {signersWatch.length > 1 && (
+                {getValues("signers").length > 1 && (
                   <IconButton
                     size="md"
                     variant="ghost"
@@ -136,8 +145,8 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
                   {...register("threshold", {
                     required: "No. of approvals is required",
                     max: {
-                      value: signersWatch.length,
-                      message: `Max no. of approvals is ${signersWatch.length}`,
+                      value: getValues("signers").length,
+                      message: `Max no. of approvals is ${getValues("signers").length}`,
                     },
                     min: {
                       value: 1,
@@ -147,7 +156,7 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
                 />
               </InputGroup>
               <Text display="inline" ml="10px">
-                out of {signersWatch.length}
+                out of {getValues("signers").length}
               </Text>
             </FormLabel>
             {errors.threshold && <FormErrorMessage>{errors.threshold.message}</FormErrorMessage>}
