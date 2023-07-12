@@ -22603,12 +22603,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.43.5":
-  version: 7.44.2
-  resolution: "react-hook-form@npm:7.44.2"
+"react-hook-form@npm:^7.45.1":
+  version: 7.45.1
+  resolution: "react-hook-form@npm:7.45.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: 0c17f8fc33b52ff3caa9de433e1ff3e79f9b797bddd2e80f1156d8a6324710cc360b700e560562ee822e129b440f730f2990caa1e79a3eb66094d9e235410b46
+  checksum: 3abe1dcf449a3d438b4e5403d93d1502f6dab05afd5c5215f0fc88a32f3d06e7f4b77bee75479359c22a418af6ea0f52711478c73773cb5fd0f43da50669aa17
   languageName: node
   linkType: hard
 
@@ -26236,7 +26236,7 @@ __metadata:
     react-app-rewired: ^2.2.1
     react-datocms: ^4.0.15
     react-dom: ^18.2.0
-    react-hook-form: ^7.43.5
+    react-hook-form: ^7.45.1
     react-hooks-testing-library: ^0.6.0
     react-icons: ^4.8.0
     react-identicons: ^1.2.5
