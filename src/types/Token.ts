@@ -1,4 +1,6 @@
 import * as tzktApi from "@tzkt/sdk-api";
+import { z } from "zod";
+import { Schema as AddressSchema } from "./Address";
 
 // TzKT defines metadada as any, but we need to have at least some clarity of what can be inside
 export type Metadata = {
@@ -43,4 +45,24 @@ export type RawTokenInfo = Omit<tzktApi.TokenInfo, "metadata"> & {
   metadata?: Metadata;
 };
 
-export type RawToken = Omit<tzktApi.TokenBalance, "token"> & { token: RawTokenInfo };
+export const FA12TokenSchema = z.object({
+  standard: z.string().regex(/^fa1\.2$/i),
+  contract: AddressSchema,
+});
+
+export const FA2TokenSchema = z.object({
+  standard: z.string().regex(/^fa2$/i),
+  tokenId: z.string(),
+  contract: AddressSchema,
+});
+
+export const NFTSchema = z.object({
+  id: z.number(),
+  standard: z.string().regex(/^fa2$/i),
+  tokenId: z.string(),
+  contract: AddressSchema,
+  totalSupply: z.string().optional(),
+  metadata: z.object({
+    displayUri: z.string(),
+  }),
+});

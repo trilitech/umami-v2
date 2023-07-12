@@ -3,7 +3,7 @@ import { formatRelative } from "date-fns";
 import { z } from "zod";
 import { tokenPrettyBalance } from "../../types/TokenBalance";
 import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Operation";
-import { fromToken } from "../../types/TokenBalance";
+import { fromRaw } from "../../types/TokenBalance";
 import { compact } from "lodash";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { BigNumber } from "bignumber.js";
@@ -143,7 +143,7 @@ export const getTokenOperationDisplay = (
   forAddress: string,
   network = TezosNetwork.MAINNET
 ) => {
-  const asset = fromToken({ balance: transfer.amount, token: transfer.token });
+  const asset = fromRaw({ balance: transfer.amount, token: transfer.token });
 
   const transferRequired = TokenTransaction.safeParse(transfer);
 
@@ -156,12 +156,12 @@ export const getTokenOperationDisplay = (
 
   const sender = parsed.from?.address || parsed.token.contract.address;
 
-  const metadata = transfer.token?.metadata;
+  const metadata = transfer.token.metadata;
 
   const sign = getSign(forAddress, sender, parsed.to.address);
 
   const uri = metadata && (metadata.thumbnailUri || metadata.displayUri);
-  const displayId = transfer.token?.id;
+  const displayId = transfer.token.id;
 
   const level = parsed.level;
 
