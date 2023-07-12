@@ -13,7 +13,7 @@ import { NFTBalance } from "../types/TokenBalance";
 import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Operation";
-import { Token } from "../types/Token";
+import { RawToken } from "../types/Token";
 import {
   getDefaultMnemonicDerivationPath,
   getLedgerDerivationPath,
@@ -191,7 +191,7 @@ export const mockContractAddress = (index: number): ContractAddress => ({
   pkh: validContractAddresses[index],
 });
 
-export const mockNFTToken = (index: number, pkh: string, balance = 1): Token => {
+export const mockNFTToken = (index: number, pkh: string, balance = 1): RawToken => {
   return {
     id: index,
     account: {
@@ -231,7 +231,7 @@ export const mockFA2Token = (
   decimals = 4,
   symbol = "KL2",
   name = "Klondike2"
-): Token => {
+): RawToken => {
   return {
     id: 10898270846977,
     account: {
@@ -260,7 +260,7 @@ export const mockFA2Token = (
   };
 };
 
-export const mockFA1Token = (index: number, pkh: string, balance = 1): Token => {
+export const mockFA1Token = (index: number, pkh: string, balance = 1): RawToken => {
   return {
     id: 10897662672897,
     account: {

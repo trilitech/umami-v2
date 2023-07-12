@@ -1,6 +1,6 @@
-import { Token } from "../types/Token";
+import { RawToken } from "../types/Token";
 
-export const ghotnetThezard: Token = {
+export const ghotnetThezard: RawToken = {
   id: 139206711050241,
   account: {
     address: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",
