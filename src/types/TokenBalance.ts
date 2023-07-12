@@ -1,72 +1,19 @@
 import * as tzktApi from "@tzkt/sdk-api";
 import { BigNumber } from "bignumber.js";
-import { Metadata, FA12TokenSchema, FA2TokenSchema, NFTSchema, RawTokenInfo } from "./Token";
-import { z } from "zod";
+import { Metadata, RawTokenInfo, Token, fromRaw as fromRawToken } from "./Token";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
-import { Schema as AddressSchema } from "./Address";
 
-export type TokenBalance = FA12TokenBalance | FA2TokenBalance | NFTBalance;
+export type TokenBalance = Token & { balance: string };
 
 export type RawTokenBalance = Omit<tzktApi.TokenBalance, "token"> & { token: RawTokenInfo };
 
-const FA12BalanceSchema = z.object({
-  balance: z.string(),
-  token: FA12TokenSchema,
-});
-
-const FA2BalanceSchema = z.object({
-  balance: z.string(),
-  token: FA2TokenSchema,
-});
-
-const NFTBalanceSchema = z.object({
-  balance: z.string(),
-  account: AddressSchema,
-  token: NFTSchema,
-});
-
 export const fromRaw = (raw: RawTokenBalance): TokenBalance | null => {
-  const metadata = raw.token.metadata;
-
-  const fa1result = FA12BalanceSchema.safeParse(raw);
-  if (fa1result.success) {
-    return {
-      type: "fa1.2",
-      metadata: metadata,
-      balance: fa1result.data.balance,
-      contract: fa1result.data.token.contract.address,
-    };
+  const token = fromRawToken(raw.token);
+  if (!token || !raw.balance) {
+    return null;
   }
-
-  const nftResult = NFTBalanceSchema.safeParse(raw);
-  if (nftResult.success) {
-    return {
-      // if the nft has been parsed successfully then the metadata is definitely present
-      metadata: metadata as Metadata,
-      type: "nft",
-      id: nftResult.data.token.id,
-      contract: nftResult.data.token.contract.address,
-      tokenId: nftResult.data.token.tokenId,
-      balance: nftResult.data.balance,
-      owner: nftResult.data.account.address,
-      displayUri: nftResult.data.token.metadata.displayUri,
-      totalSupply: nftResult.data.token.totalSupply || undefined,
-    };
-  }
-
-  const fa2result = FA2BalanceSchema.safeParse(raw);
-  if (fa2result.success) {
-    return {
-      type: "fa2",
-      metadata,
-      contract: fa2result.data.token.contract.address,
-      tokenId: fa2result.data.token.tokenId,
-      balance: fa2result.data.balance,
-    };
-  }
-
-  return null;
+  return { balance: raw.balance, ...token };
 };
 
 const defaultTokenName = (asset: TokenBalance): string => {
@@ -146,7 +93,6 @@ export type NFTBalance = {
   contract: string;
   tokenId: string;
   balance: string;
-  owner: string;
   metadata: Metadata;
   displayUri: string;
   totalSupply: string | undefined;

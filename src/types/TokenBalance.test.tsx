@@ -19,7 +19,7 @@ import {
 import type { Metadata } from "./Token";
 import { TezosNetwork } from "@airgap/tezos";
 
-describe("fromToken", () => {
+describe("fromRaw", () => {
   test("fa1.2 valid", () => {
     const result = fromRaw(fa1Token);
     const expected = {
@@ -31,6 +31,7 @@ describe("fromToken", () => {
   });
 
   test("fa1.2 with no balance", () => {
+    jest.spyOn(console, "warn").mockImplementation();
     const result = fromRaw({ ...fa1Token, balance: null });
     expect(result).toEqual(null);
   });
@@ -51,8 +52,8 @@ describe("fromToken", () => {
   });
 
   test("invalid fa2 token (missing tokenId)", () => {
+    jest.spyOn(console, "warn").mockImplementation();
     const result = fromRaw({ ...fa2Token, token: { tokenId: undefined } });
-
     expect(result).toEqual(null);
   });
 
@@ -63,7 +64,6 @@ describe("fromToken", () => {
       contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
       tokenId: "3",
       balance: "0",
-      owner: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
       displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
       id: 10899466223617,
       metadata: nft.token.metadata as Metadata,
@@ -73,6 +73,7 @@ describe("fromToken", () => {
   });
 
   test("invalid nft (missing contract address)", () => {
+    jest.spyOn(console, "warn").mockImplementation();
     const result = fromRaw({
       ...nft,
       token: { contract: { address: null } },
