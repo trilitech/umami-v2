@@ -1,4 +1,5 @@
 import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import { get } from "lodash";
 import { useState } from "react";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
 import colors from "../style/colors";
@@ -113,7 +114,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
     if (!defaultValues) {
       return "";
     }
-    const defaultAddress = defaultValues[inputName];
+    const defaultAddress = get(defaultValues, inputName);
     if (!defaultAddress) {
       return "";
     }
