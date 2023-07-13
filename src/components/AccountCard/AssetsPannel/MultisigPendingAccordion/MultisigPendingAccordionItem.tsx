@@ -14,7 +14,7 @@ import { MultisigOperation } from "../../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
 import { ContractAddress, ImplicitAddress } from "../../../../types/Address";
 import MultisigDecodedOperations from "./MultisigDecodedOperations";
-import { useApproveOrExecuteModdal } from "../../ApproveExecuteForm/useApproveExecuteModal";
+import { useApproveOrExecuteModdal } from "../../ApproveExecuteForm/useApproveOrExecuteModal";
 
 export const MultisigPendingAccordionItem: React.FC<{
   operation: MultisigOperation;
