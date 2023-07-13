@@ -38,7 +38,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
     >
       <Identicon address={address} />
       <Flex flex={1} justifyContent="space-between">
-        <Box m={4} data-testid="account-identifiers">
+        <Box m={4} data-testid="account-identifier">
           <Heading size="md">{label}</Heading>
           <Flex alignItems="center">
             <Text size="sm" color="text.dark">

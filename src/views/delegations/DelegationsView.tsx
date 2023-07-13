@@ -15,7 +15,7 @@ import { ReactNode } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { VscWand } from "react-icons/vsc";
-import { useAccountFilterWithMapFilter } from "../../components/AccountFilter";
+import { useAccountsFilterWithMapFilter } from "../../components/useAccountsFilter";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoDelegations } from "../../components/NoItems";
@@ -140,7 +140,7 @@ const DelegationsView = () => {
   const { modalElement, onOpen } = useSendFormModal();
 
   const delegationsOps = useAllDelegations();
-  const { filterMap: filter, filterElement } = useAccountFilterWithMapFilter();
+  const { filterMap: filter, accountsFilter } = useAccountsFilterWithMapFilter();
   const delegationsArrays = objectMap(delegationsOps, d => (d ? [d] : undefined));
   const delegationsToDisplay = compact(filter(delegationsArrays).map(makeDelegation));
   const account = useFirstAccount();
@@ -169,7 +169,7 @@ const DelegationsView = () => {
     <Flex direction="column" height="100%">
       <TopBar title="Delegations" />
       <Flex alignItems="center" justifyContent="space-between">
-        {filterElement}
+        {accountsFilter}
         <DelegateButton />
       </Flex>
       {delegationsToDisplay.length > 0 ? (

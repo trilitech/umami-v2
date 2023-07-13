@@ -1,8 +1,10 @@
-import { mapToFilteredArray, useAccountFilterWithMapFilter } from ".";
-import { mockImplicitAccount } from "../../mocks/factories";
-import { fireEvent, render, screen } from "../../mocks/testUtils";
-import accountsSlice from "../../utils/store/accountsSlice";
-import { store } from "../../utils/store/store";
+import { useAccountsFilter } from "./useAccountsFilter";
+import { mockImplicitAccount } from "../mocks/factories";
+import { fireEvent, screen } from "../mocks/testUtils";
+import accountsSlice from "../utils/store/accountsSlice";
+import { store } from "../utils/store/store";
+import { ReduxStore } from "../providers/ReduxStore";
+import { render } from "@testing-library/react";
 
 const accounts = [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)];
 
@@ -14,15 +16,22 @@ afterEach(() => {
   store.dispatch(accountsSlice.actions.reset());
 });
 
-const Fixture: React.FC = () => {
-  const { filterElement } = useAccountFilterWithMapFilter();
-
-  return filterElement;
+const TestComponent = () => {
+  const { accountsFilter } = useAccountsFilter();
+  return accountsFilter;
 };
 
-describe("AccountFilter", () => {
+const fixture = () => {
+  return (
+    <ReduxStore>
+      <TestComponent />
+    </ReduxStore>
+  );
+};
+
+describe("useAccountsFilter", () => {
   test("Clicking account filter should display a list of all the accounts in store", () => {
-    render(<Fixture />);
+    render(fixture());
     fireEvent.click(screen.getByTestId("account-filter"));
     const listItems = screen.getAllByTestId("account-small-tile");
     expect(listItems).toHaveLength(3);
@@ -32,7 +41,7 @@ describe("AccountFilter", () => {
   });
 
   test("selected accounts are removed from the list and added as pills", () => {
-    render(<Fixture />);
+    render(fixture());
 
     fireEvent.click(screen.getByTestId("account-filter"));
     const listItems = screen.getAllByTestId("account-small-tile");
@@ -51,7 +60,7 @@ describe("AccountFilter", () => {
   });
 
   test("account pills can be removed", () => {
-    render(<Fixture />);
+    render(fixture());
 
     fireEvent.click(screen.getByTestId("account-filter"));
     const listItems = screen.getAllByTestId("account-small-tile");
@@ -69,15 +78,5 @@ describe("AccountFilter", () => {
       expect(pills).toHaveLength(1);
       expect(pills[0]).toHaveTextContent(accounts[2].label);
     }
-  });
-
-  test("mapToFilteredArray returns the right value", () => {
-    expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["foo"])).toEqual(["hello"]);
-    expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, [])).toEqual(["hello", "cool"]);
-    expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["baz"])).toEqual([]);
-    expect(mapToFilteredArray({ foo: ["hello"], bar: ["cool"] }, ["foo", "bar"])).toEqual([
-      "hello",
-      "cool",
-    ]);
   });
 });
