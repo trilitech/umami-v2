@@ -69,7 +69,12 @@ export const AssetsPanel: React.FC<{
         </TabPanel>
 
         <TabPanel data-testid="account-card-nfts-tab" height="100%" overflow="hidden">
-          <NFTsGrid nfts={nfts} showName={true} columns={3} spacing={5} />
+          <NFTsGrid
+            nftsByOwner={{ [account.address.pkh]: nfts }}
+            showName={true}
+            columns={3}
+            spacing={5}
+          />
         </TabPanel>
 
         <TabPanel data-testid="account-card-operations-tab">

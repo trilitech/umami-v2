@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { mockNFTToken, mockImplicitAccount } from "../../mocks/factories";
+import { HashRouter } from "react-router-dom";
 import { ReduxStore } from "../../providers/ReduxStore";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
@@ -14,7 +15,9 @@ beforeEach(() => {
 
 const fixture = () => (
   <ReduxStore>
-    <NFTsViewBase />
+    <HashRouter>
+      <NFTsViewBase />
+    </HashRouter>
   </ReduxStore>
 );
 
@@ -38,5 +41,6 @@ describe("NFTsView", () => {
     render(fixture());
 
     expect(screen.getAllByTestId("nft-card")).toHaveLength(4);
+    expect(screen.getAllByText("Tezzardz #10")).toHaveLength(4);
   });
 });

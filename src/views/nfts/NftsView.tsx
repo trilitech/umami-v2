@@ -1,18 +1,10 @@
-import {
-  Box,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-  Flex,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useAccountsFilterWithMapFilter } from "../../components/useAccountsFilter";
+import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
+import { every, pick } from "lodash";
+import { useNavigate, useParams } from "react-router-dom";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
-import { NFTBalance } from "../../types/TokenBalance";
+import { useAccountsFilter } from "../../components/useAccountsFilter";
+import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";
@@ -20,58 +12,51 @@ import NFTGallery from "./NFTGallery";
 
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
-  const [selectedNft, setSelectedNft] = useState<NFTBalance>();
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const { nftId } = useParams();
+  const { accountsFilter, selectedAccounts } = useAccountsFilter();
+  const navigate = useNavigate();
+  const { ownerPkh, nftId } = useParams();
 
-  const { accountsFilter, filterMap: filter } = useAccountsFilterWithMapFilter();
-  const displayedNFTs = filter(nfts);
-  const allOwnedNftsRef = useRef(displayedNFTs);
-  const nftIdRef = useRef(nftId);
-  const onOpenRef = useRef(onOpen);
-
-  useEffect(() => {
-    const nftId = nftIdRef.current;
-    if (nftId) {
-      const nft = allOwnedNftsRef.current.find(n => n.id === parseInt(nftId));
-      setSelectedNft(nft);
-      onOpenRef.current();
-    }
-  }, [allOwnedNftsRef, onOpenRef]);
+  const drawerOnClose = () => {
+    navigate(`/nfts`);
+  };
+  const selectedNFTs = pick(
+    nfts,
+    selectedAccounts.map(account => account.address.pkh)
+  );
+  const noNFTs = every(selectedNFTs, nfts => !nfts || nfts.length === 0);
+  const drawerNFT = ownerPkh && (nfts[ownerPkh] || []).find(nft => nft && fullId(nft) === nftId);
 
   return (
     <Flex direction="column" height="100%">
       <TopBar title="NFTs" />
-
       {accountsFilter}
-      {displayedNFTs.length > 0 ? (
+
+      {noNFTs ? (
+        <NoNFTs />
+      ) : (
         <>
           <Box overflow="scroll">
             <NFTGallery
-              onSelect={nft => {
-                onOpen();
-                setSelectedNft(nft);
+              onSelect={(owner, nft) => {
+                navigate(`/nfts/${owner}/${fullId(nft)}`);
               }}
-              nfts={displayedNFTs}
+              nftsByOwner={selectedNFTs}
             />
           </Box>
 
-          <Drawer placement="right" onClose={onClose} size="md" isOpen={isOpen}>
+          <Drawer placement="right" onClose={drawerOnClose} size="md" isOpen={!!drawerNFT}>
             <DrawerOverlay />
             <DrawerContent maxW="594px" bg="umami.gray.900">
               <DrawerBody>
-                <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={onClose} />
-                {selectedNft && <NFTDrawerCard nft={selectedNft} />}
+                <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={drawerOnClose} />
+                {drawerNFT && <NFTDrawerCard nft={drawerNFT} ownerPkh={ownerPkh} />}
               </DrawerBody>
             </DrawerContent>
           </Drawer>
         </>
-      ) : (
-        <NoNFTs />
       )}
     </Flex>
   );
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default NFTsViewBase;
