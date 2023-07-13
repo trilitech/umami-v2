@@ -5,6 +5,7 @@ import { ImplicitAddress } from "../../../../types/Address";
 import { formatPkh } from "../../../../utils/format";
 import { useGetImplicitAccount } from "../../../../utils/hooks/accountHooks";
 import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
+import { ApproveOrExecute } from "../../../../utils/tezos/types";
 import { Identicon } from "../../../Identicon";
 import MultisigActionButton from "./MultisigActionButton";
 
@@ -12,7 +13,10 @@ const MultisigSignerTile: React.FC<{
   signer: ImplicitAddress; // TODO: change to ImplicitAccount
   approvers: ImplicitAddress[]; // TODO: change to ImplicitAccount[]
   pendingApprovals: number;
-}> = ({ signer, approvers, pendingApprovals }) => {
+  onApproveOrExecute: (a: ApproveOrExecute) => void;
+  isLoading?: boolean;
+}> = props => {
+  const signer = props.signer;
   const getContactName = useGetContactName();
   const getImplicitAccount = useGetImplicitAccount();
   const accountLabel = getImplicitAccount(signer.pkh)?.label;
@@ -39,11 +43,7 @@ const MultisigSignerTile: React.FC<{
           </Flex>
         </Box>
         <Box>
-          <MultisigActionButton
-            signer={signer}
-            approvers={approvers}
-            pendingApprovals={pendingApprovals}
-          />
+          <MultisigActionButton {...props} />
         </Box>
       </Flex>
     </Flex>

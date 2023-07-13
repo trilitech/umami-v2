@@ -6,7 +6,7 @@ export type MultisigProposeMethodArgs = {
   lambdaActions: MichelsonV1Expression;
 };
 
-type ApproveOrExecute = "approve" | "execute";
+export type ApproveOrExecute = "approve" | "execute";
 
 export type MultisigApproveOrExecuteMethodArgs = {
   type: ApproveOrExecute;

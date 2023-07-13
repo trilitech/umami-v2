@@ -23,6 +23,7 @@ export const MultisigPendingAccordion: React.FC<{
             operation={operation}
             signers={account.signers}
             threshold={account.threshold}
+            multisigAddress={account.address}
           />
         ))}
       </Accordion>
