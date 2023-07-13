@@ -21,7 +21,10 @@ export type TezOperation = {
 };
 export type FA12Operation = {
   type: "fa1.2";
-} & FA12TransferMethodArgs;
+} & FA12TransferMethodArgs & { tokenId: "0" };
+// Convienience to match RawOperation with TokenBalance
+// withouth specifying tokenId = 0 if fa1.2
+// Also leaves the low level FA12TransferMethodArgs unaware of the magic tokenId
 
 export type FA2Operation = {
   type: "fa2";

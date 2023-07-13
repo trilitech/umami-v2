@@ -9,7 +9,7 @@ export type FA2TransferMethodArgs = {
   amount: string;
 };
 
-export type FA12TransferMethodArgs = Omit<FA2TransferMethodArgs, "tokenId"> & { tokenId: "0" };
+export type FA12TransferMethodArgs = Omit<FA2TransferMethodArgs, "tokenId">;
 
 export type MultisigProposeMethodArgs = {
   contract: ContractAddress;
