@@ -17,7 +17,7 @@ const AddressPillText: React.FC<
     return <Text {...rest}>{formattedPkh}</Text>;
   }
 
-  return <Text {...rest}>{nameOrLabel ? truncate(nameOrLabel, 20) : formattedPkh}</Text>;
+  return <Text {...rest}>{nameOrLabel ? truncate(nameOrLabel, 21) : formattedPkh}</Text>;
 };
 
 export default AddressPillText;

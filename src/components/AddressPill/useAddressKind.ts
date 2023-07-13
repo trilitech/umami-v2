@@ -42,13 +42,15 @@ const useOwnedAccountAddressKind = ({
     case AccountType.MULTISIG:
       return {
         pkh,
-        type: "multisig",
+        type: "ownedMultisig",
         label: account.label,
       };
-    default:
+    case AccountType.SOCIAL:
+    case AccountType.LEDGER:
+    case AccountType.MNEMONIC:
       return {
         pkh,
-        type: "implicit",
+        type: "ownedImplicit",
         label: account.label,
       };
   }
@@ -68,7 +70,8 @@ const useTokenAddressKind = ({ pkh }: Address): FA12Address | FA2Address | null 
         type: "fa1.2",
         label,
       };
-    default:
+    case "fa2":
+    case "nft":
       return {
         pkh,
         type: "fa2",

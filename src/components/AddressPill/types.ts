@@ -1,6 +1,13 @@
 import { RawPkh } from "../../types/Address";
 
-type AddressKindType = "contact" | "implicit" | "multisig" | "fa1.2" | "fa2" | "baker" | "unknown";
+type AddressKindType =
+  | "ownedImplicit"
+  | "ownedMultisig"
+  | "fa1.2"
+  | "fa2"
+  | "baker"
+  | "contact"
+  | "unknown";
 
 type AddressKindBase = {
   type: AddressKindType;
@@ -9,12 +16,12 @@ type AddressKindBase = {
 };
 
 export type OwnedImplicitAccountAddress = AddressKindBase & {
-  type: "implicit";
+  type: "ownedImplicit";
   label: string;
 };
 
 export type OwnedMultisigAccountAddress = AddressKindBase & {
-  type: "multisig";
+  type: "ownedMultisig";
   label: string;
 };
 

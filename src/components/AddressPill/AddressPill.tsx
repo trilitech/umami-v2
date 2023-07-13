@@ -32,9 +32,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
   const onClickAddress = async () => {
     onOpen();
     await navigator.clipboard.writeText(address.pkh);
-    setTimeout(() => {
-      onClose();
-    }, 1000);
+    setTimeout(onClose, 1000);
   };
 
   // Needed to handle styling after contact modal opens
@@ -46,14 +44,20 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
     },
   });
 
-  const bgColorHoverColor = mouseHover ? colors.gray[450] : colors.gray[500];
-  const bgColor = isOpen ? `${colors.green} !important` : bgColorHoverColor;
-
-  const iconHoverColor = mouseHover ? colors.gray[400] : colors.gray[450];
-  const iconColor = isOpen ? colors.gray[300] : iconHoverColor;
-
-  const textHoverColor = mouseHover ? colors.gray[200] : colors.gray[300];
-  const textColor = isOpen ? "white" : textHoverColor;
+  let bgColor, iconColor, textColor;
+  if (isOpen) {
+    bgColor = colors.green;
+    iconColor = colors.gray[300];
+    textColor = "white";
+  } else if (mouseHover) {
+    bgColor = colors.gray[450];
+    iconColor = colors.gray[400];
+    textColor = colors.gray[200];
+  } else {
+    bgColor = colors.gray[500];
+    iconColor = colors.gray[450];
+    textColor = colors.gray[300];
+  }
 
   return (
     <Box maxW="max-content">
@@ -72,13 +76,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
       >
         {showIcons && <LeftIcon addressKind={addressKind} ml={2} stroke={iconColor} />}
 
-        <Popover
-          isOpen={isOpen}
-          onOpen={async () => {
-            await onClickAddress();
-          }}
-          autoFocus={false}
-        >
+        <Popover isOpen={isOpen} onOpen={onClickAddress} autoFocus={false}>
           <PopoverTrigger>
             <Button variant="unstyled" h={7}>
               <AddressPillText

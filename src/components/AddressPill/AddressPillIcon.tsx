@@ -11,23 +11,23 @@ import { useUpsertContactModal } from "../../views/home/useUpsertContactModal";
 import XMark from "../../assets/icons/XMark";
 
 export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
-  addressKind: { type, pkh },
+  addressKind: { type },
   ...rest
 }) => {
-  const { addressExistsInContacts } = useContactExists();
-  const addressExists = addressExistsInContacts(pkh);
   switch (type) {
-    case "multisig":
+    case "ownedMultisig":
       return <KeyIcon {...rest} />;
-    case "implicit":
-      return addressExists ? <ContactIcon {...rest} /> : null;
+    case "ownedImplicit":
+      return null;
     case "fa1.2":
       return <FA12Icon {...rest} />;
     case "fa2":
       return <FA2Icon {...rest} />;
     case "baker":
       return <BakerIcon {...rest} />;
-    default:
+    case "contact":
+      return <ContactIcon {...rest} />;
+    case "unknown":
       return null;
   }
 };
@@ -44,7 +44,7 @@ export const RightIcon: React.FC<{ addressKind: AddressKind; isRemove: boolean }
     return <XMark {...rest} />;
   }
 
-  const knownType = ["implicit", "multisig", "baker", "contact"].includes(type);
+  const knownType = ["implicit", "multisig", "baker"].includes(type);
   const isInContacts = addressExistsInContacts(pkh);
 
   if (knownType || isInContacts) {
