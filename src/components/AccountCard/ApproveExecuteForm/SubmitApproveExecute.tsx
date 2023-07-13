@@ -30,7 +30,7 @@ type Props = {
 };
 
 const TITLE: Record<ApproveOrExecute, string> = {
-  approve: "Approve transactionj",
+  approve: "Approve transaction",
   execute: "Execute transaction",
 };
 
