@@ -49,7 +49,7 @@ export const useApproveOrExecuteModdal = () => {
       onOpen({ ...params, suggestedFeeMutez });
     } catch (error: any) {
       console.warn("Failed simulation", error);
-      toast({ title: "Failed simulation", description: error.message });
+      toast({ title: "Failed simulation", description: error.message, status: "warning" });
     }
 
     setIsLoading(false);
