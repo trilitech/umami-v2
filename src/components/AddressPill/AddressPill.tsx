@@ -30,8 +30,8 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [mouseHover, setMouseHover] = useState(false);
   const onClickAddress = async () => {
-    onOpen();
     await navigator.clipboard.writeText(address.pkh);
+    onOpen();
     setTimeout(onClose, 1000);
   };
 
@@ -74,7 +74,14 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
         }}
         paddingX={1}
       >
-        {showIcons && <LeftIcon addressKind={addressKind} ml={2} stroke={iconColor} />}
+        {showIcons && (
+          <LeftIcon
+            data-testid="address-pill-left-icon"
+            addressKind={addressKind}
+            ml={2}
+            stroke={iconColor}
+          />
+        )}
 
         <Popover isOpen={isOpen} onOpen={onClickAddress} autoFocus={false}>
           <PopoverTrigger>
@@ -100,6 +107,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
         </Popover>
         {showIcons && (
           <RightIcon
+            data-testid="address-pill-right-icon"
             addressKind={addressKind}
             isRemove={isRemovable}
             cursor="pointer"

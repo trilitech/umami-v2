@@ -1,6 +1,6 @@
 import { RawPkh } from "../../types/Address";
 
-type AddressKindType =
+export type AddressKindType =
   | "ownedImplicit"
   | "ownedMultisig"
   | "fa1.2"

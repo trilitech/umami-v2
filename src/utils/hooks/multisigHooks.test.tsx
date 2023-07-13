@@ -2,25 +2,18 @@ import { renderHook } from "@testing-library/react";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { useGetPendingOperations } from "./multisigHooks";
 import configureStore from "redux-mock-store";
-import { AnyAction, Store } from "redux";
-import { Provider } from "react-redux";
 import { State as MultisigState } from "../store/multisigsSlice";
 import { multisigToAccount } from "../multisig/helpers";
-
-const getWrapper = (store: Store<any, AnyAction>): React.FC => {
-  return ({ children }: { children?: React.ReactNode }) => (
-    <Provider store={store}>{children}</Provider>
-  );
-};
+import { getWrapper } from "../../mocks/store";
 
 describe("useMultisigHooks", () => {
   const operation1 = multisigOperation;
   const operation2 = { ...multisigOperation, id: "2" };
-  const initialState = {
+  const initialState: { multisigs: MultisigState } = {
     multisigs: {
       items: multisigs,
       pendingOperations: { 0: [operation1, operation2] },
-    } as MultisigState,
+    },
   };
 
   const mockStore = configureStore();

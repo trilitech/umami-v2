@@ -3,7 +3,7 @@ import ContactIcon from "../../assets/icons/Contact";
 import FA12Icon from "../../assets/icons/FA1.2";
 import FA2Icon from "../../assets/icons/FA2";
 import BakerIcon from "../../assets/icons/Baker";
-import { AddressKind } from "./types";
+import { AddressKind, AddressKindType } from "./types";
 import { IconProps } from "@chakra-ui/react";
 import { useContactExists } from "../../utils/hooks/contactsHooks";
 import AddContactIcon from "../../assets/icons/AddContact";
@@ -16,18 +16,17 @@ export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
 }) => {
   switch (type) {
     case "ownedMultisig":
-      return <KeyIcon {...rest} />;
-    case "ownedImplicit":
-      return null;
+      return <KeyIcon data-testid={`${type}-icon`} {...rest} />;
     case "fa1.2":
-      return <FA12Icon {...rest} />;
+      return <FA12Icon data-testid={`${type}-icon`} {...rest} />;
     case "fa2":
-      return <FA2Icon {...rest} />;
+      return <FA2Icon data-testid={`${type}-icon`} {...rest} />;
     case "baker":
-      return <BakerIcon {...rest} />;
+      return <BakerIcon data-testid={`${type}-icon`} {...rest} />;
     case "contact":
-      return <ContactIcon {...rest} />;
+      return <ContactIcon data-testid={`${type}-icon`} {...rest} />;
     case "unknown":
+    case "ownedImplicit":
       return null;
   }
 };
@@ -41,19 +40,19 @@ export const RightIcon: React.FC<{ addressKind: AddressKind; isRemove: boolean }
   const { modalElement, onOpen } = useUpsertContactModal();
 
   if (isRemove) {
-    return <XMark {...rest} />;
+    return <XMark data-testid="x-mark-icon" {...rest} />;
   }
 
-  const knownType = ["implicit", "multisig", "baker"].includes(type);
-  const isInContacts = addressExistsInContacts(pkh);
+  const knownTypes: AddressKindType[] = ["ownedImplicit", "ownedMultisig", "baker"];
 
-  if (knownType || isInContacts) {
+  if (knownTypes.includes(type) || addressExistsInContacts(pkh)) {
     return null;
   }
 
   return (
     <>
       <AddContactIcon
+        data-testid="add-contact-icon"
         onClick={() => {
           onOpen({
             title: "Add Contact",
