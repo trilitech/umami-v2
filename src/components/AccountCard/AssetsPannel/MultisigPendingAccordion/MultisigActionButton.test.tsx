@@ -16,7 +16,7 @@ describe("<ActionButton/>", () => {
         signer={account.address}
         approvers={[]}
         pendingApprovals={0}
-        onApproveOrExecute={() => {}}
+        onClickApproveOrExecute={() => {}}
       />
     );
     expect(screen.getByTestId("multisig-signer-button")).toHaveTextContent("Execute");
@@ -30,7 +30,7 @@ describe("<ActionButton/>", () => {
         signer={account.address}
         approvers={[]}
         pendingApprovals={1}
-        onApproveOrExecute={() => {}}
+        onClickApproveOrExecute={() => {}}
       />
     );
     expect(screen.getByTestId("multisig-signer-button")).toHaveTextContent("Approve");
@@ -44,7 +44,7 @@ describe("<ActionButton/>", () => {
         signer={account.address}
         approvers={[account.address]}
         pendingApprovals={1}
-        onApproveOrExecute={() => {}}
+        onClickApproveOrExecute={() => {}}
       />
     );
     expect(screen.getByTestId("multisig-signer-approved")).toHaveTextContent("Approved");
@@ -57,7 +57,7 @@ describe("<ActionButton/>", () => {
         signer={account.address}
         approvers={[account.address]}
         pendingApprovals={1}
-        onApproveOrExecute={() => {}}
+        onClickApproveOrExecute={() => {}}
       />
     );
     expect(screen.getByTestId("multisig-signer-approved-or-waiting")).toHaveTextContent("Approved");
@@ -70,7 +70,7 @@ describe("<ActionButton/>", () => {
         signer={account.address}
         approvers={[]}
         pendingApprovals={1}
-        onApproveOrExecute={() => {}}
+        onClickApproveOrExecute={() => {}}
       />
     );
     expect(screen.getByTestId("multisig-signer-approved-or-waiting")).toHaveTextContent(

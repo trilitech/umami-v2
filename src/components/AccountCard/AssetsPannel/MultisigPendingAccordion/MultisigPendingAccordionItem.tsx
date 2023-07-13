@@ -63,7 +63,7 @@ export const MultisigPendingAccordionItem: React.FC<{
                 signer={signer}
                 approvers={operation.approvals}
                 pendingApprovals={pendingApprovals}
-                onApproveOrExecute={a => {
+                onClickApproveOrExecute={a => {
                   approveOrExecute({ type: a, operation, signer, multisigAddress });
                 }}
               />

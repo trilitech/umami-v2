@@ -16,7 +16,7 @@ describe("<MultisigSignerTile/>", () => {
         signer={account.address}
         approvers={[]}
         pendingApprovals={0}
-        onApproveOrExecute={() => {}}
+        onClickApproveOrExecute={() => {}}
       />
     );
     expect(screen.getByTestId("multisig-signer-button")).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe("<MultisigSignerTile/>", () => {
         signer={account.address}
         approvers={[account.address]}
         pendingApprovals={1}
-        onApproveOrExecute={() => {}}
+        onClickApproveOrExecute={() => {}}
       />
     );
     expect(screen.queryByTestId("multisig-signer-button")).not.toBeInTheDocument();
@@ -43,7 +43,7 @@ describe("<MultisigSignerTile/>", () => {
         signer={account.address}
         approvers={[account.address]}
         pendingApprovals={1}
-        onApproveOrExecute={() => {}}
+        onClickApproveOrExecute={() => {}}
       />
     );
     expect(screen.queryByTestId("multisig-signer-button")).not.toBeInTheDocument();

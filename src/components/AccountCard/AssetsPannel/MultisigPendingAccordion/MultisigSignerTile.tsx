@@ -13,7 +13,7 @@ const MultisigSignerTile: React.FC<{
   signer: ImplicitAddress; // TODO: change to ImplicitAccount
   approvers: ImplicitAddress[]; // TODO: change to ImplicitAccount[]
   pendingApprovals: number;
-  onApproveOrExecute: (a: ApproveOrExecute) => void;
+  onClickApproveOrExecute: (a: ApproveOrExecute) => void;
   isLoading?: boolean;
 }> = props => {
   const signer = props.signer;
