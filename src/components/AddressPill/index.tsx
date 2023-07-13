@@ -17,8 +17,16 @@ import useAddressKind from "./useAddressKind";
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
 import AddressPillText from "./AddressPillText";
 
-const AddressPill: React.FC<{ address: Address; isRemove: boolean }> = ({ address, isRemove }) => {
+type AddressPillMode = "default" | "removable" | "no_icons";
+
+const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
+  address,
+  mode = "default",
+}) => {
   const addressKind = useAddressKind(address);
+  const showIcons = mode !== "no_icons";
+  const isRemovable = mode === "removable";
+
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [mouseHover, setMouseHover] = useState(false);
   const onClickAddress = async () => {
@@ -48,7 +56,7 @@ const AddressPill: React.FC<{ address: Address; isRemove: boolean }> = ({ addres
   const textColor = isOpen ? "white" : textHoverColor;
 
   return (
-    <Box maxW="max-content" mt={5}>
+    <Box maxW="max-content">
       <Flex
         ref={ref}
         alignItems="center"
@@ -62,7 +70,7 @@ const AddressPill: React.FC<{ address: Address; isRemove: boolean }> = ({ addres
         }}
         paddingX={1}
       >
-        <LeftIcon addressKind={addressKind} ml={2} stroke={iconColor} />
+        {showIcons && <LeftIcon addressKind={addressKind} ml={2} stroke={iconColor} />}
 
         <Popover
           isOpen={isOpen}
@@ -75,6 +83,7 @@ const AddressPill: React.FC<{ address: Address; isRemove: boolean }> = ({ addres
             <Button variant="unstyled" h={7}>
               <AddressPillText
                 addressKind={addressKind}
+                showPkh={!showIcons}
                 cursor="pointer"
                 marginX={2}
                 color={textColor}
@@ -91,13 +100,15 @@ const AddressPill: React.FC<{ address: Address; isRemove: boolean }> = ({ addres
             </PopoverBody>
           </PopoverContent>
         </Popover>
-        <RightIcon
-          addressKind={addressKind}
-          isRemove={isRemove}
-          cursor="pointer"
-          stroke={textColor}
-          mr={2}
-        />
+        {showIcons && (
+          <RightIcon
+            addressKind={addressKind}
+            isRemove={isRemovable}
+            cursor="pointer"
+            stroke={textColor}
+            mr={2}
+          />
+        )}
       </Flex>
     </Box>
   );

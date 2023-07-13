@@ -6,13 +6,18 @@ import { AddressKind } from "./types";
 const AddressPillText: React.FC<
   {
     addressKind: AddressKind;
+    showPkh: boolean;
   } & TextProps
-> = ({ addressKind: { pkh, label }, ...rest }) => {
+> = ({ addressKind: { pkh, label }, showPkh, ...rest }) => {
   const getContactName = useGetContactName();
-  const name = getContactName(pkh) || label;
-  const text = name ? truncate(name, 20) : formatPkh(pkh);
+  const formattedPkh = formatPkh(pkh);
+  const nameOrLabel = getContactName(pkh) || label;
 
-  return <Text {...rest}>{text}</Text>;
+  if (showPkh) {
+    return <Text {...rest}>{formattedPkh}</Text>;
+  }
+
+  return <Text {...rest}>{nameOrLabel ? truncate(nameOrLabel, 20) : formattedPkh}</Text>;
 };
 
 export default AddressPillText;
