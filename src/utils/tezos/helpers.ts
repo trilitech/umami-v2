@@ -1,21 +1,18 @@
 import { TezosNetwork } from "@airgap/tezos";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
+import { TransactionOperationParameter } from "@taquito/rpc";
 import { Curves, InMemorySigner } from "@taquito/signer";
-import { ContractMethod, ContractProvider, TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit, TransferParams } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
+import { FA12Operation, FA2Operation } from "../../types/RawOperation";
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
 import { PublicKeyPair } from "../restoreAccounts";
 import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { DummySigner } from "./dummySigner";
-import {
-  FA12TransferMethodArgs,
-  FA2TransferMethodArgs,
-  MultisigApproveOrExecuteMethodArgs,
-  MultisigProposeMethodArgs,
-} from "./types";
+import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const addressExists = async (
   pkh: string,
@@ -108,33 +105,89 @@ export const getPkAndPkhFromSk = async (sk: string): Promise<PublicKeyPair> => {
   return { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 };
 
-export const makeFA2TransferMethod = async (
-  { sender, recipient, tokenId, amount, contract }: FA2TransferMethodArgs,
-  toolkit: TezosToolkit
-): Promise<ContractMethod<ContractProvider>> => {
-  const michelson = [
-    {
-      from_: sender.pkh,
-      txs: [
+export const makeFA12TransactionParameter = ({
+  sender,
+  recipient,
+  amount,
+}: FA12Operation): TransactionOperationParameter => {
+  return {
+    entrypoint: "transfer",
+    value: {
+      prim: "Pair",
+      args: [
         {
-          to_: recipient.pkh,
-          token_id: tokenId,
-          amount: amount,
+          string: sender.pkh,
+        },
+        {
+          prim: "Pair",
+          args: [
+            {
+              string: recipient.pkh,
+            },
+            {
+              int: amount,
+            },
+          ],
         },
       ],
     },
-  ];
-
-  const contractInstance = await toolkit.contract.at(contract.pkh);
-  return contractInstance.methods.transfer(michelson);
+  };
 };
 
-export const makeFA12TransferMethod = async (
-  { sender, recipient, amount, contract }: FA12TransferMethodArgs,
-  toolkit: TezosToolkit
-): Promise<ContractMethod<ContractProvider>> => {
-  const contractInstance = await toolkit.contract.at(contract.pkh);
-  return contractInstance.methods.transfer(sender.pkh, recipient.pkh, amount);
+export const makeFA2TransactionParameter = ({
+  sender,
+  recipient,
+  tokenId,
+  amount,
+}: FA2Operation): TransactionOperationParameter => {
+  return {
+    entrypoint: "transfer",
+    value: [
+      {
+        prim: "Pair",
+        args: [
+          {
+            string: sender.pkh,
+          },
+          [
+            {
+              prim: "Pair",
+              args: [
+                {
+                  string: recipient.pkh,
+                },
+                {
+                  prim: "Pair",
+                  args: [
+                    {
+                      int: tokenId,
+                    },
+                    {
+                      int: amount,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ],
+      },
+    ],
+  };
+};
+
+export const makeTokenTransferParams = (
+  operation: FA12Operation | FA2Operation
+): TransferParams => {
+  return {
+    amount: 0,
+    to: operation.contract.pkh,
+    mutez: false,
+    parameter:
+      operation.type === "fa1.2"
+        ? makeFA12TransactionParameter(operation)
+        : makeFA2TransactionParameter(operation),
+  };
 };
 
 export const makeMultisigProposeMethod = async (

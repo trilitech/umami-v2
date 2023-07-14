@@ -57,32 +57,29 @@ describe("multisig Sandbox", () => {
 
     // devAccount0 propose a batch tez/FA tranfer to devAccount2
     // devAccount0 is going to be in the approvers as well.
-    const lambdaActions = await makeBatchLambda(
-      [
-        {
-          type: "tez",
-          recipient: devAccount2Address,
-          amount: tezToMutez(TEZ_TO_SEND.toString()).toString(),
-        },
-        {
-          type: "fa1.2",
-          sender: MULTISIG_GHOSTNET_1,
-          recipient: devAccount2Address,
-          contract: FA12_TOKEN_CONTRACT,
-          tokenId: "0",
-          amount: "2",
-        },
-        {
-          type: "fa2",
-          sender: MULTISIG_GHOSTNET_1,
-          recipient: devAccount2Address,
-          contract: FA2_KL2_CONTRACT,
-          amount: "3",
-          tokenId: "0",
-        },
-      ],
-      TezosNetwork.GHOSTNET
-    );
+    const lambdaActions = await makeBatchLambda([
+      {
+        type: "tez",
+        recipient: devAccount2Address,
+        amount: tezToMutez(TEZ_TO_SEND.toString()).toString(),
+      },
+      {
+        type: "fa1.2",
+        sender: MULTISIG_GHOSTNET_1,
+        recipient: devAccount2Address,
+        contract: FA12_TOKEN_CONTRACT,
+        tokenId: "0",
+        amount: "2",
+      },
+      {
+        type: "fa2",
+        sender: MULTISIG_GHOSTNET_1,
+        recipient: devAccount2Address,
+        contract: FA2_KL2_CONTRACT,
+        amount: "3",
+        tokenId: "0",
+      },
+    ]);
 
     const proposeEstimate = await estimateMultisigPropose(
       { contract: MULTISIG_GHOSTNET_1, lambdaActions },

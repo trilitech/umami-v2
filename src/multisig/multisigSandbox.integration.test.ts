@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { ghostnetFA12 } from "../mocks/fa12Tokens";
 import { ghotnetThezard } from "../mocks/nftTokens";
@@ -97,33 +96,29 @@ describe("multisig Sandbox", () => {
       const tezos = await makeToolkitFromDefaultDevSeed(0);
       const keys1 = await makeDefaultDevSignerKeys(1);
       const keys2 = await makeDefaultDevSignerKeys(2);
-      const batch = await makeBatchLambda(
-        [
-          { type: "tez", amount: "600000", recipient: parsePkh(keys1.pkh) },
-          {
-            type: "fa1.2",
-            amount: "300",
-            recipient: parsePkh(keys2.pkh),
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            contract: parseContractPkh(ghostnetFA12!.token!.contract!.address!),
-            tokenId: "0",
-            sender: parseContractPkh(multisigContract),
-          },
-          {
-            type: "fa2",
-            amount: "1",
-            recipient: parsePkh(keys2.pkh),
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            contract: parseContractPkh(ghotnetThezard!.token!.contract!.address!),
-            sender: parseContractPkh(multisigContract),
-            tokenId: ghostTezzard.tokenId,
-          },
-          { type: "tez", amount: "910000", recipient: parsePkh(keys1.pkh) },
-          { type: "tez", amount: "2000", recipient: parsePkh(keys2.pkh) },
-        ],
-
-        TezosNetwork.GHOSTNET
-      );
+      const batch = await makeBatchLambda([
+        { type: "tez", amount: "600000", recipient: parsePkh(keys1.pkh) },
+        {
+          type: "fa1.2",
+          amount: "300",
+          recipient: parsePkh(keys2.pkh),
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          contract: parseContractPkh(ghostnetFA12!.token!.contract!.address!),
+          tokenId: "0",
+          sender: parseContractPkh(multisigContract),
+        },
+        {
+          type: "fa2",
+          amount: "1",
+          recipient: parsePkh(keys2.pkh),
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          contract: parseContractPkh(ghotnetThezard!.token!.contract!.address!),
+          sender: parseContractPkh(multisigContract),
+          tokenId: ghostTezzard.tokenId,
+        },
+        { type: "tez", amount: "910000", recipient: parsePkh(keys1.pkh) },
+        { type: "tez", amount: "2000", recipient: parsePkh(keys2.pkh) },
+      ]);
 
       const contract = await tezos.contract.at(multisigContract);
       const result = await contract.methods["propose"](batch).send();
