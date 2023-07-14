@@ -1,7 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { mockImplicitAccount } from "../../mocks/factories";
+import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
+import { uUSD } from "../../mocks/fa2Tokens";
+import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
-import TokensView, { getFilteredAccounts } from "./TokensView";
+import accountsSlice from "../../utils/store/accountsSlice";
+import assetsSlice from "../../utils/store/assetsSlice";
+import { store } from "../../utils/store/store";
+import TokensView from "./TokensView";
 
 const fixture = () => (
   <ReduxStore>
@@ -9,27 +14,34 @@ const fixture = () => (
   </ReduxStore>
 );
 
+beforeEach(() => {
+  store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
+});
+
+afterEach(() => {
+  store.dispatch(accountsSlice.actions.reset());
+  store.dispatch(assetsSlice.actions.reset());
+});
+
 describe("<TokensView />", () => {
   it("a message 'no tokens found' is displayed", () => {
     render(fixture());
     expect(screen.getByText(/no tokens found/i)).toBeInTheDocument();
   });
 
-  test("getFilteredAccounts returns the right value", () => {
-    const accounts = [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)];
+  it("shows all available tokens from all accounts", () => {
+    store.dispatch(accountsSlice.actions.add([mockImplicitAccount(1)]));
+    const tokenBalances = [
+      hedgehoge(mockImplicitAddress(0)),
+      hedgehoge(mockImplicitAddress(1)),
+      tzBtsc(mockImplicitAddress(1)),
+      uUSD(mockImplicitAddress(0)),
+    ];
+    store.dispatch(assetsSlice.actions.updateTokenBalance(tokenBalances));
+    render(fixture());
 
-    expect(getFilteredAccounts(accounts, [mockImplicitAccount(1).address])).toEqual([
-      mockImplicitAccount(1),
-    ]);
-    expect(getFilteredAccounts(accounts, [mockImplicitAccount(5).address])).toEqual([]);
-
-    expect(getFilteredAccounts(accounts, [])).toEqual(accounts);
-    expect(
-      getFilteredAccounts(accounts, [
-        mockImplicitAccount(0).address,
-        mockImplicitAccount(1).address,
-        mockImplicitAccount(2).address,
-      ])
-    ).toEqual(accounts);
+    expect(screen.getAllByText("Hedgehoge")).toHaveLength(2);
+    expect(screen.getAllByText("tzBTC")).toHaveLength(1);
+    expect(screen.getAllByText("youves uUSD")).toHaveLength(1);
   });
 });

@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAccountFilterWithMapFilter } from "../../components/AccountFilter";
+import { useAccountsFilterWithMapFilter } from "../../components/useAccountsFilter";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { NFTBalance } from "../../types/TokenBalance";
@@ -24,7 +24,7 @@ const NFTsViewBase = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { nftId } = useParams();
 
-  const { filterElement, filterMap: filter } = useAccountFilterWithMapFilter();
+  const { accountsFilter, filterMap: filter } = useAccountsFilterWithMapFilter();
   const displayedNFTs = filter(nfts);
   const allOwnedNftsRef = useRef(displayedNFTs);
   const nftIdRef = useRef(nftId);
@@ -43,7 +43,7 @@ const NFTsViewBase = () => {
     <Flex direction="column" height="100%">
       <TopBar title="NFTs" />
 
-      {filterElement}
+      {accountsFilter}
       {displayedNFTs.length > 0 ? (
         <>
           <Box overflow="scroll">

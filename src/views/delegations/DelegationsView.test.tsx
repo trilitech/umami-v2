@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { mockDelegation, mockImplicitAddress } from "../../mocks/factories";
+import { mockDelegation, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
+import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import DelegationsView from "./DelegationsView";
@@ -14,6 +15,15 @@ const fixture = () => (
   </ReduxStore>
 );
 
+beforeEach(() => {
+  store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
+});
+
+afterEach(() => {
+  store.dispatch(accountsSlice.actions.reset());
+  store.dispatch(assetsSlice.actions.reset());
+});
+
 describe("<DelegationsView />", () => {
   it("a message 'currently not delegating' is displayed", () => {
     render(fixture());
@@ -22,9 +32,16 @@ describe("<DelegationsView />", () => {
 
   it("should display the delegations of all accounts", () => {
     store.dispatch(
+      accountsSlice.actions.add([
+        mockImplicitAccount(1),
+        mockImplicitAccount(2),
+        mockImplicitAccount(3),
+      ])
+    );
+    store.dispatch(
       updateDelegations([
         {
-          pkh: mockImplicitAddress(1).pkh,
+          pkh: mockImplicitAccount(1).address.pkh,
           delegation: mockDelegation(
             1,
             17890,
@@ -34,11 +51,11 @@ describe("<DelegationsView />", () => {
           ),
         },
         {
-          pkh: mockImplicitAddress(2).pkh,
+          pkh: mockImplicitAccount(2).address.pkh,
           delegation: mockDelegation(2, 85000, mockImplicitAddress(5).pkh, "Baker 2"),
         },
         {
-          pkh: mockImplicitAddress(3).pkh,
+          pkh: mockImplicitAccount(3).address.pkh,
           delegation: mockDelegation(3, 37490, mockImplicitAddress(6).pkh, "Baker 3"),
         },
       ])

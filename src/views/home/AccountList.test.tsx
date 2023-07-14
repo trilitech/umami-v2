@@ -46,7 +46,7 @@ describe("<AccountList />", () => {
 
     results.forEach((result, i) => {
       const { getByTestId } = within(result);
-      const identifiers = getByTestId("account-identifiers");
+      const identifiers = getByTestId("account-identifier");
 
       expect(identifiers).toHaveTextContent(mockAccountLabel(i));
       expect(identifiers).toHaveTextContent(formatPkh(mockImplicitAddress(i).pkh));

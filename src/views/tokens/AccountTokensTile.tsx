@@ -40,7 +40,7 @@ const AccountTokensTileHeader: React.FC<{
   <Flex p={4} bg="umami.gray.900" h={90} borderRadius="8px" alignItems="center">
     <Identicon address={pkh} />
     <Flex flex={1} justifyContent="space-between">
-      <Box m={4} data-testid="account-identifiers">
+      <Box m={4} data-testid="account-identifier">
         <Heading size="md" mb={2}>
           {label}
         </Heading>
