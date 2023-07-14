@@ -6,7 +6,7 @@ import {
   selectSender,
   setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
-import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
+import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { useGetSk } from "../../utils/hooks/accountUtils";
@@ -193,13 +193,14 @@ describe("<BatchView />", () => {
 
       const { getByRole } = within(batchTable);
       const submitBatchBtn = getByRole("button", { name: /submit batch/i });
-
       fireEvent.click(submitBatchBtn);
     };
 
     test("clicking submit batch button displays 'preview' form", () => {
       render(fixture());
-      clickSubmitOnFirstBatch();
+      act(() => {
+        clickSubmitOnFirstBatch();
+      });
       const modal = screen.getByRole("dialog");
       const { getByText, getByLabelText } = within(modal);
       expect(getByText(/transaction details/i)).toBeInTheDocument();
@@ -214,7 +215,9 @@ describe("<BatchView />", () => {
 
     test("estimating and submiting a batch executes the batch of transactions and empties it after successfull submition", async () => {
       render(fixture());
-      clickSubmitOnFirstBatch();
+      act(() => {
+        clickSubmitOnFirstBatch();
+      });
 
       expect(
         screen.getByTestId("batch-table-" + mockImplicitAccount(2).address.pkh)

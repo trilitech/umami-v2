@@ -6,14 +6,13 @@ import {
   AccordionPanel,
   Box,
   Heading,
-  Tag,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
 import { ImplicitAddress } from "../../types/Address";
-import AccountOrContactTile from "../AccountOrContactTile";
+import AddressPill from "../AddressPill/AddressPill";
 
 const MultisigApprovers: React.FC<{
   signers: ImplicitAddress[];
@@ -35,9 +34,7 @@ const MultisigApprovers: React.FC<{
               {signers.map(signer => {
                 return (
                   <WrapItem key={signer.pkh} borderRadius="100px" padding="3px 8px">
-                    <Tag color={colors.gray[400]} borderRadius="full">
-                      <AccountOrContactTile pkh={signer.pkh} />
-                    </Tag>
+                    <AddressPill address={signer} />
                   </WrapItem>
                 );
               })}

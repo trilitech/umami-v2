@@ -16,14 +16,14 @@ import { MdOutlinePending } from "react-icons/md";
 import { RxCheckCircled } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { useAccountsFilterWithMapFilter } from "../../components/useAccountsFilter";
-import AccountOrContactTile from "../../components/AccountOrContactTile";
+import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { NoOperations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { TzktLink } from "../../components/TzktLink";
-import { OperationDisplay } from "../../types/Transfer";
 import { useGetOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
 import { getAmountColor, getKey, sortOperationsByTimestamp } from "./operationsUtils";
+import { OperationDisplay } from "../../types/Transfer";
 
 export const OperationsDataTable: React.FC<{
   operations: OperationDisplay[];
@@ -77,10 +77,10 @@ export const OperationsDataTable: React.FC<{
                 </Td>
                 <Td>{op.fee}</Td>
                 <Td>
-                  <AccountOrContactTile pkh={op.sender.pkh} />
+                  <AddressPill address={op.sender} />
                 </Td>
                 <Td>
-                  <AccountOrContactTile pkh={op.recipient.pkh} />
+                  <AddressPill address={op.recipient} />
                 </Td>
                 <Td>
                   {isBlockFinalised(op.level) ? (
