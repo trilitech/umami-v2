@@ -139,3 +139,8 @@ export const fromRaw = (rawToken: RawTokenInfo): Token | null => {
   console.warn("Invalid FA2 token: " + JSON.stringify(rawToken));
   return null;
 };
+
+export const fullId = (token: Token): string => {
+  // TODO: remove condition when token id becomes 0 for fa1.2
+  return `${token.contract}:${"tokenId" in token ? token.tokenId : "0"}`;
+};
