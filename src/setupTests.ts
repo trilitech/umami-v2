@@ -9,6 +9,12 @@ import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
 import failOnConsole from "jest-fail-on-console";
+import { contactsActions } from "./utils/store/contactsSlice";
+import { store } from "./utils/store/store";
+import multisigsSlice from "./utils/store/multisigsSlice";
+import assetsSlice from "./utils/store/assetsSlice";
+import accountsSlice from "./utils/store/accountsSlice";
+import { act } from "@testing-library/react";
 
 failOnConsole();
 
@@ -41,6 +47,15 @@ beforeAll(() => {
   (window as any).TextDecoder = TextDecoder;
   (window as any).crypto = webcrypto;
   window.scrollTo = jest.fn();
+});
+
+afterEach(() => {
+  act(() => {
+    store.dispatch(accountsSlice.actions.reset());
+    store.dispatch(assetsSlice.actions.reset());
+    store.dispatch(multisigsSlice.actions.reset());
+    store.dispatch(contactsActions.reset());
+  });
 });
 
 // If you wanted to restore the mutations done above

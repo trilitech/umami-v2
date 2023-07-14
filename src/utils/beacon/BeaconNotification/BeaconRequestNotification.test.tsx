@@ -20,7 +20,6 @@ import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import {
   dispatchMockAccounts,
   fillPassword,
-  resetAccounts,
   setBatchEstimationPerTransaction,
 } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../../mocks/testUtils";
@@ -47,14 +46,7 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 beforeEach(() => {
   setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
   fakeTezosUtils.submitBatch.mockResolvedValue(BATCH_OP_HASH as BatchWalletOperation);
-});
-
-beforeAll(() => {
   dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
-});
-
-afterAll(() => {
-  resetAccounts();
 });
 
 describe("<BeaconRequestNotification />", () => {

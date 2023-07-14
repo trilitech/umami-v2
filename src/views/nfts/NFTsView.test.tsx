@@ -12,11 +12,6 @@ beforeEach(() => {
   store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
 });
 
-afterEach(() => {
-  store.dispatch(accountsSlice.actions.reset());
-  store.dispatch(assetsSlice.actions.reset());
-});
-
 const fixture = () => (
   <ReduxStore>
     <NFTsViewBase />

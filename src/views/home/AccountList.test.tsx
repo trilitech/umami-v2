@@ -18,7 +18,7 @@ import { AccountType, MnemonicAccount } from "../../types/Account";
 import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 import multisigsSlice from "../../utils/store/multisigsSlice";
 
-const { add, reset } = accountsSlice.actions;
+const { add: addAccounts } = accountsSlice.actions;
 
 jest.mock("../../utils/tezos");
 
@@ -27,16 +27,10 @@ const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
 const MOCK_FINGETPRINT1 = "mockFin1";
 const MOCK_FINGETPRINT2 = "mockFin2";
 
-afterEach(() => store.dispatch(reset()));
-
 describe("<AccountList />", () => {
   test("Displays accounts in store with label and formated pkh", async () => {
     store.dispatch(
-      accountsSlice.actions.add([
-        mockImplicitAccount(0),
-        mockImplicitAccount(1),
-        mockImplicitAccount(2),
-      ])
+      addAccounts([mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)])
     );
 
     render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
@@ -200,7 +194,7 @@ const restore = async () => {
   );
 
   store.dispatch(
-    add({
+    addAccounts({
       type: AccountType.SOCIAL,
       idp: "google",
       address: mockImplicitAddress(6),
@@ -210,7 +204,7 @@ const restore = async () => {
   );
 
   store.dispatch(
-    add({
+    addAccounts({
       type: AccountType.SOCIAL,
       idp: "google",
       address: mockImplicitAddress(7),

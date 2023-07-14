@@ -5,8 +5,7 @@ import MultisigSignerTile from "./MultisigSignerTile";
 import { store } from "../../../../utils/store/store";
 import accountsSlice from "../../../../utils/store/accountsSlice";
 
-const { add, reset } = accountsSlice.actions;
-afterEach(() => store.dispatch(reset()));
+const { add } = accountsSlice.actions;
 
 describe("<MultisigSignerTile/>", () => {
   it("should display a button for non-pending operation with signer included in the account", () => {

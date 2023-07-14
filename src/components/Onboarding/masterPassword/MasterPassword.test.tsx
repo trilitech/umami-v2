@@ -4,7 +4,6 @@ import { ReduxStore } from "../../../providers/ReduxStore";
 import { mockImplicitAccount } from "../../../mocks/factories";
 import { store } from "../../../utils/store/store";
 import accountsSlice from "../../../utils/store/accountsSlice";
-import { resetAccounts } from "../../../mocks/helpers";
 import { seedPhrase } from "../../../mocks/seedPhrase";
 
 const onClose = jest.fn(() => {});
@@ -28,10 +27,6 @@ const fixture = () => {
     </ReduxStore>
   );
 };
-
-afterAll(() => {
-  resetAccounts();
-});
 
 describe("<MasterPassword />", () => {
   test("Display set password", async () => {

@@ -14,7 +14,6 @@ import {
   fakeRestoreFromMnemonic,
   selectSender,
   fillPassword,
-  resetAccounts,
   setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
@@ -68,13 +67,11 @@ const fixture = (sender: string, assetType: SendFormMode) => (
 const MOCK_SK = "mockSk";
 const MOCK_PKH = mockImplicitAccount(1).address.pkh;
 
-beforeEach(() => {
+beforeEach(async () => {
   fakeAccountUtils.useGetSk.mockReturnValue(() => Promise.resolve(MOCK_SK));
-});
-beforeEach(() => {
+
   document.getElementById("chakra-toast-portal")?.remove();
-});
-beforeAll(async () => {
+
   await store.dispatch(
     fakeRestoreFromMnemonic({
       seedFingerprint: "mockPrint",
@@ -92,14 +89,6 @@ beforeAll(async () => {
   ]);
 
   store.dispatch(multisigActions.setMultisigs(multisigs));
-});
-
-afterEach(() => {
-  store.dispatch(assetsSlice.actions.reset());
-});
-
-afterAll(() => {
-  resetAccounts();
 });
 
 describe("<SendForm />", () => {

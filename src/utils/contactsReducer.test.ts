@@ -5,12 +5,8 @@ import { contactsActions } from "./store/contactsSlice";
 
 import { store } from "./store/store";
 import checkAccountsAndUpsertContact from "./store/thunks/checkAccountsAndUpsertContact";
-const { reset, remove } = contactsActions;
+const { remove } = contactsActions;
 const { add } = accountsSlice.actions;
-
-afterEach(() => {
-  store.dispatch(reset());
-});
 
 describe("Contacts reducer", () => {
   test("store should initialize with empty state", () => {

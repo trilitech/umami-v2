@@ -18,11 +18,6 @@ beforeEach(() => {
   store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
 });
 
-afterEach(() => {
-  store.dispatch(accountsSlice.actions.reset());
-  store.dispatch(assetsSlice.actions.reset());
-});
-
 describe("<TokensView />", () => {
   it("a message 'no tokens found' is displayed", () => {
     render(fixture());

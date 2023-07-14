@@ -5,10 +5,7 @@ import { assetsActions } from "../../../../utils/store/assetsSlice";
 import { store } from "../../../../utils/store/store";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
 
-const { reset, updateTokenBalance } = assetsActions;
-afterEach(() => {
-  store.dispatch(reset());
-});
+const { updateTokenBalance } = assetsActions;
 
 describe("<MultisigDecodedOperationItem/>", () => {
   it("displays delegate", () => {

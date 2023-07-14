@@ -52,12 +52,6 @@ beforeEach(() => {
   );
 });
 
-afterEach(() => {
-  store.dispatch(accountsSlice.actions.reset());
-  store.dispatch(assetsSlice.actions.reset());
-  store.dispatch(multisigsSlice.actions.reset());
-});
-
 describe("<AccountCard />", () => {
   it("should display account name", () => {
     render(<AccountCard account={selectedAccount} />);

@@ -1,13 +1,10 @@
 import { mockImplicitAccount } from "../../mocks/factories";
-import { dispatchMockAccounts, resetAccounts } from "../../mocks/helpers";
+import { dispatchMockAccounts } from "../../mocks/helpers";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 import HomeView from "./HomeView";
 
 beforeEach(() => {
   dispatchMockAccounts([mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)]);
-});
-afterEach(() => {
-  resetAccounts();
 });
 
 describe("<HomeView />", () => {
