@@ -10,7 +10,7 @@ beforeEach(() => {
   store.dispatch(reset());
 });
 describe("AddressPill Icons", () => {
-  test("Left icon renders", () => {
+  it("Left icon renders", () => {
     const addressKindTypesWithLeftIcon: AddressKindType[] = [
       "ownedMultisig",
       "fa1.2",
@@ -24,11 +24,11 @@ describe("AddressPill Icons", () => {
         <LeftIcon addressKind={{ type, pkh: mockContractAddress(0).pkh, label: "label" as any }} />
       );
 
-      expect(screen.getByTestId(`${type}-icon`)).toBeTruthy();
+      expect(screen.getByTestId(`${type}-icon`)).toBeInTheDocument();
     });
   });
 
-  test("Left icon with unknown/ownedImplicit address returns null", () => {
+  it("Left icon with unknown/ownedImplicit address returns null", () => {
     expect(
       LeftIcon({
         addressKind: { type: "ownedImplicit", pkh: mockContractAddress(0).pkh, label: "label" },
@@ -40,12 +40,12 @@ describe("AddressPill Icons", () => {
     ).toBeNull();
   });
 
-  test("Right icon renders", () => {
+  it("Right icon renders", () => {
     render(<RightIcon addressKind={mockFA2Address} isRemove={false} />);
     expect(screen.getByTestId("add-contact-icon")).toBeInTheDocument();
   });
 
-  test("Right icon returns x mark icon", () => {
+  it("Right icon returns x mark icon", () => {
     render(<RightIcon addressKind={mockFA2Address} isRemove={true} />);
     expect(screen.getByTestId("x-mark-icon")).toBeInTheDocument();
   });

@@ -29,7 +29,6 @@ const useAddressKind = (address: Address): AddressKind => {
 
 export default useAddressKind;
 
-// Helper hooks
 const useOwnedAccountAddressKind = ({
   pkh,
 }: Address): OwnedImplicitAccountAddress | OwnedMultisigAccountAddress | null => {
