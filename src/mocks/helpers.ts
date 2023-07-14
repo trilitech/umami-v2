@@ -25,10 +25,6 @@ export const dispatchMockAccounts = (accounts: ImplicitAccount[]) => {
   store.dispatch(accountsSlice.actions.add(accounts));
 };
 
-export const resetAccounts = () => {
-  store.dispatch(accountsSlice.actions.reset());
-};
-
 export const fakeRestoreFromMnemonic = createAsyncThunk(
   "accounts/restoreFromMnemonic",
   async ({

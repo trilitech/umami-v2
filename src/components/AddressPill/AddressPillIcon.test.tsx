@@ -1,14 +1,9 @@
 import { mockFA2Address } from "../../mocks/addressKind";
 import { mockContractAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { contactsActions } from "../../utils/store/contactsSlice";
-import { store } from "../../utils/store/store";
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
 import { AddressKindType } from "./types";
-const { reset } = contactsActions;
-beforeEach(() => {
-  store.dispatch(reset());
-});
+
 describe("AddressPill Icons", () => {
   it("Left icon renders", () => {
     const addressKindTypesWithLeftIcon: AddressKindType[] = [

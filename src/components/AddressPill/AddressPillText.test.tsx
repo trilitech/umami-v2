@@ -4,10 +4,8 @@ import { formatPkh } from "../../utils/format";
 import { contactsActions } from "../../utils/store/contactsSlice";
 import { store } from "../../utils/store/store";
 import AddressPillText from "./AddressPillText";
-const { reset, upsert } = contactsActions;
-beforeEach(() => {
-  store.dispatch(reset());
-});
+const { upsert } = contactsActions;
+
 describe("<AddressPillText />", () => {
   it("AddressPillText shows the name in contact", () => {
     store.dispatch(upsert({ name: "FA2Name", pkh: mockFA2Address.pkh }));

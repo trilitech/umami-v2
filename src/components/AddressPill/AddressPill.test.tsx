@@ -6,12 +6,8 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import { contactsActions } from "../../utils/store/contactsSlice";
 import { store } from "../../utils/store/store";
 import AddressPill from "./AddressPill";
-const { reset, upsert } = contactsActions;
-const { updateTokenBalance, reset: resetAssets } = assetsSlice.actions;
-beforeEach(() => {
-  store.dispatch(reset());
-  store.dispatch(resetAssets());
-});
+const { upsert } = contactsActions;
+const { updateTokenBalance } = assetsSlice.actions;
 
 describe("<AddressPill />", () => {
   it("AddressPill displays left icon", () => {
@@ -36,7 +32,7 @@ describe("<AddressPill />", () => {
     expect(screen.getByTestId("xmark-icon-path")).toBeInTheDocument();
   });
 
-  it.only("AddressPill is removable for two icons", () => {
+  it("AddressPill is removable for two icons", () => {
     const address = mockImplicitAddress(0);
     const fa1 = mockFA1Token(1, address.pkh, 123);
     store.dispatch(updateTokenBalance([fa1]));

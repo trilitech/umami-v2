@@ -19,11 +19,6 @@ beforeEach(() => {
   store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
 });
 
-afterEach(() => {
-  store.dispatch(accountsSlice.actions.reset());
-  store.dispatch(assetsSlice.actions.reset());
-});
-
 describe("<DelegationsView />", () => {
   it("a message 'currently not delegating' is displayed", () => {
     render(fixture());

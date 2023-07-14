@@ -12,14 +12,10 @@ import { getFingerPrint } from "./tezos";
 import { parseImplicitPkh } from "../types/Address";
 
 const {
-  actions: { add, reset, removeSecret },
+  actions: { add, removeSecret },
 } = accountsSlice;
 
 jest.mock("./aes");
-
-afterEach(() => {
-  store.dispatch(reset());
-});
 
 beforeEach(async () => {
   const { pk, pkh } = await makeDefaultDevSignerKeys(0);

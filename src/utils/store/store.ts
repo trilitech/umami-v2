@@ -14,6 +14,7 @@ const persistConfig = {
   storage,
 };
 
+// if you add more slices then add their reset action to setupTests.ts
 const reducers = combineReducers({
   accounts: accountsSlice.reducer,
   assets: assetsSlice.reducer,

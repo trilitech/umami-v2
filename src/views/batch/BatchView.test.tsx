@@ -5,13 +5,11 @@ import {
   closeModal,
   dispatchMockAccounts,
   selectSender,
-  resetAccounts,
   setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { useGetSk } from "../../utils/hooks/accountUtils";
-import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import BatchView from "./BatchView";
@@ -36,24 +34,12 @@ const useGetSkMock = useGetSk as jest.Mock;
 
 const fixture = () => <BatchView />;
 
-beforeAll(() => {
-  dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
-});
-
-afterAll(() => {
-  resetAccounts();
-});
-
 beforeEach(() => {
+  dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
   setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
 
   useGetSkMock.mockReturnValue(() => "mockSk");
   fakeTezosUtils.submitBatch.mockResolvedValue({ opHash: "foo" } as any);
-});
-
-// We do a lot of modifications in assets store and we don't want them to leak between tests
-afterEach(() => {
-  store.dispatch(assetsSlice.actions.reset());
 });
 
 const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh: string) => {
@@ -89,13 +75,13 @@ const addItemsToBatchViaUI = async () => {
   const sendButton = screen.getByText(/send/i);
   fireEvent.click(sendButton);
 
-  await addToBatchViaUI(33, mockImplicitAccount(1).label || "", mockImplicitAddress(9).pkh);
-  await addToBatchViaUI(55, mockImplicitAccount(1).label || "", mockImplicitAddress(4).pkh);
-  await addToBatchViaUI(9, mockImplicitAccount(1).label || "", mockImplicitAddress(2).pkh);
+  await addToBatchViaUI(33, mockImplicitAccount(1).label, mockImplicitAddress(9).pkh);
+  await addToBatchViaUI(55, mockImplicitAccount(1).label, mockImplicitAddress(4).pkh);
+  await addToBatchViaUI(9, mockImplicitAccount(1).label, mockImplicitAddress(2).pkh);
 
-  await addToBatchViaUI(3, mockImplicitAccount(2).label || "", mockImplicitAddress(2).pkh);
-  await addToBatchViaUI(22, mockImplicitAccount(2).label || "", mockImplicitAddress(4).pkh);
-  await addToBatchViaUI(52, mockImplicitAccount(2).label || "", mockImplicitAddress(4).pkh);
+  await addToBatchViaUI(3, mockImplicitAccount(2).label, mockImplicitAddress(2).pkh);
+  await addToBatchViaUI(22, mockImplicitAccount(2).label, mockImplicitAddress(4).pkh);
+  await addToBatchViaUI(52, mockImplicitAccount(2).label, mockImplicitAddress(4).pkh);
   closeModal();
 };
 

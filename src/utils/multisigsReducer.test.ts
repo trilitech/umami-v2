@@ -2,10 +2,6 @@ import { multisigOperation, multisigs } from "../mocks/multisig";
 import { multisigActions } from "./store/multisigsSlice";
 import { store } from "./store/store";
 
-afterEach(() => {
-  store.dispatch(multisigActions.reset());
-});
-
 describe("Contacts reducer", () => {
   test("store should initialize with empty state", () => {
     expect(store.getState().multisigs).toEqual({ items: [], pendingOperations: {} });

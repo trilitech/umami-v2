@@ -23,7 +23,6 @@ const estimateBatchMock = estimateBatch as jest.Mock;
 
 const {
   actions: {
-    reset,
     updateTezBalance,
     updateTokenBalance,
     updateNetwork,
@@ -33,10 +32,6 @@ const {
     updateBatch,
   },
 } = assetsSlice;
-
-afterEach(() => {
-  store.dispatch(reset());
-});
 
 describe("Assets reducer", () => {
   test("store should initialize with empty state", () => {
