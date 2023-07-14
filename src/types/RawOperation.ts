@@ -1,8 +1,6 @@
 import { BigMapAbstraction, TransferParams } from "@taquito/taquito";
 import { BigNumber } from "bignumber.js";
-import { Address, ImplicitAddress } from "./Address";
-
-import { FA12TransferMethodArgs, FA2TransferMethodArgs } from "../utils/tezos/types";
+import { Address, ContractAddress, ImplicitAddress } from "./Address";
 
 export type MultisigStorage = {
   last_op_id: BigNumber;
@@ -19,13 +17,20 @@ export type TezOperation = {
   amount: string;
   parameter?: TransferParams["parameter"];
 };
-export type FA12Operation = {
-  type: "fa1.2";
-} & FA12TransferMethodArgs;
 
 export type FA2Operation = {
   type: "fa2";
-} & FA2TransferMethodArgs;
+  sender: Address;
+  recipient: Address;
+  contract: ContractAddress;
+  tokenId: string;
+  amount: string;
+};
+
+export type FA12Operation = Omit<FA2Operation, "type" | "tokenId"> & {
+  type: "fa1.2";
+  tokenId: "0";
+};
 
 export type Delegation = {
   type: "delegation";
