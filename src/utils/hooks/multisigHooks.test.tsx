@@ -1,25 +1,17 @@
 import { renderHook } from "@testing-library/react";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { useGetPendingOperations } from "./multisigHooks";
-import configureStore from "redux-mock-store";
-import { State as MultisigState } from "../store/multisigsSlice";
 import { multisigToAccount } from "../multisig/helpers";
 import { getWrapper } from "../../mocks/store";
+import { store } from "../store/store";
+import { multisigActions } from "../store/multisigsSlice";
 
 describe("useMultisigHooks", () => {
-  const operation1 = multisigOperation;
-  const operation2 = { ...multisigOperation, id: "2" };
-  const initialState: { multisigs: MultisigState } = {
-    multisigs: {
-      items: multisigs,
-      pendingOperations: { 0: [operation1, operation2] },
-    },
-  };
-
-  const mockStore = configureStore();
   it("useGetSortedMultisigPendingOperations sorts operations by id", () => {
-    const store = mockStore(initialState);
-
+    const operation1 = multisigOperation;
+    const operation2 = { ...multisigOperation, id: "2" };
+    store.dispatch(multisigActions.setMultisigs(multisigs));
+    store.dispatch(multisigActions.setPendingOperations([operation1, operation2]));
     const { result: getMultisigOperationsRef } = renderHook(() => useGetPendingOperations(), {
       wrapper: getWrapper(store),
     });

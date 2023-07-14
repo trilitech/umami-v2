@@ -10,29 +10,29 @@ const { upsert } = contactsActions;
 const { updateTokenBalance } = assetsSlice.actions;
 
 describe("<AddressPill />", () => {
-  it("AddressPill displays left icon", () => {
+  it("displays left icon", () => {
     store.dispatch(upsert(contact1));
     render(<AddressPill address={parseImplicitPkh(contact1.pkh)} />);
     expect(screen.getByTestId("address-pill-left-icon")).toBeInTheDocument();
   });
 
-  it("AddressPill displays right icon", () => {
+  it("displays right icon", () => {
     render(<AddressPill address={parseImplicitPkh(contact1.pkh)} />);
     expect(screen.getByTestId("address-pill-right-icon")).toBeInTheDocument();
   });
 
-  it("AddressPill hides icon", () => {
+  it("hides icon", () => {
     store.dispatch(upsert(contact1));
     render(<AddressPill address={parseImplicitPkh(contact1.pkh)} mode="no_icons" />);
     expect(screen.queryByTestId("address-pill-left-icon")).toBeNull();
   });
 
-  it("AddressPill is removable", () => {
+  it("is removable", () => {
     render(<AddressPill address={parseImplicitPkh(contact1.pkh)} mode="removable" />);
     expect(screen.getByTestId("xmark-icon-path")).toBeInTheDocument();
   });
 
-  it("AddressPill is removable for two icons", () => {
+  it("is removable for two icons", () => {
     const address = mockImplicitAddress(0);
     const fa1 = mockFA1Token(1, address.pkh, 123);
     store.dispatch(updateTokenBalance([fa1]));
