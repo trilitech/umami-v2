@@ -106,6 +106,7 @@ describe("multisig Sandbox", () => {
             recipient: parsePkh(keys2.pkh),
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             contract: parseContractPkh(ghostnetFA12!.token!.contract!.address!),
+            tokenId: "0",
             sender: parseContractPkh(multisigContract),
           },
           {

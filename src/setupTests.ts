@@ -15,6 +15,7 @@ import multisigsSlice from "./utils/store/multisigsSlice";
 import assetsSlice from "./utils/store/assetsSlice";
 import accountsSlice from "./utils/store/accountsSlice";
 import { act } from "@testing-library/react";
+import { tokensActions } from "./utils/store/tokensSlice";
 
 failOnConsole();
 
@@ -55,6 +56,7 @@ afterEach(() => {
     store.dispatch(assetsSlice.actions.reset());
     store.dispatch(multisigsSlice.actions.reset());
     store.dispatch(contactsActions.reset());
+    store.dispatch(tokensActions.reset());
   });
 });
 

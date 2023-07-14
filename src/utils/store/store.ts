@@ -6,6 +6,7 @@ import contactsSlice from "./contactsSlice";
 import { extraArgument } from "./extraArgument";
 import multisigsSlice from "./multisigsSlice";
 import storage from "./storage";
+import tokensSlice from "./tokensSlice";
 
 // See this answer for configuration of redux toolkit with redux-persist
 // https://stackoverflow.com/a/63818121/6797267
@@ -20,6 +21,7 @@ const reducers = combineReducers({
   assets: assetsSlice.reducer,
   contacts: contactsSlice.reducer,
   multisigs: multisigsSlice.reducer,
+  tokens: tokensSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

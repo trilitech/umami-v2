@@ -1,4 +1,5 @@
 import { mockFA2Address } from "../../mocks/addressKind";
+import { mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
 import { contactsActions } from "../../utils/store/contactsSlice";
@@ -20,11 +21,18 @@ describe("<AddressPillText />", () => {
     expect(screen.getByText(formatPkh(mockFA2Address.pkh))).toBeInTheDocument();
   });
 
-  it("shows lable", () => {
+  it("shows label", () => {
     render(
-      <AddressPillText addressKind={{ ...mockFA2Address, label: "FA2Label" }} showPkh={false} />
+      <AddressPillText
+        addressKind={{
+          type: "ownedImplicit",
+          pkh: mockImplicitAddress(0).pkh,
+          label: "Some label",
+        }}
+        showPkh={false}
+      />
     );
-    expect(screen.getByText("FA2Label")).toBeInTheDocument();
+    expect(screen.getByText("Some label")).toBeInTheDocument();
   });
 
   it("fallbacks to formatted pkh", () => {

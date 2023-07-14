@@ -72,6 +72,7 @@ export const classifyAsset = (
       sender: parsePkh(value.sender),
       recipient: parsePkh(value.recipient),
       contract: parseContractPkh(a.contract),
+      tokenId: "0",
     };
   }
   return {

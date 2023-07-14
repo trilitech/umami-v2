@@ -90,6 +90,7 @@ describe("makeLambda", () => {
         amount: AMOUNT,
         recipient: mockImplicitAddress(0),
         contract: mockContractAddress(0),
+        tokenId: "0",
         sender: multisigContractAddress,
       },
       TezosNetwork.GHOSTNET
@@ -204,6 +205,7 @@ describe("makeBatchLambda", () => {
           amount: "1",
           recipient: mockImplicitAddress(0),
           contract: mockContractAddress(1),
+          tokenId: "0",
           sender: multisigContractAddress,
         },
         {

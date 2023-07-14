@@ -1,3 +1,4 @@
+import { TezosNetwork } from "@airgap/tezos";
 import { renderHook } from "@testing-library/react";
 import { cloneDeep } from "lodash";
 import { hedgehoge } from "../../mocks/fa12Tokens";
@@ -12,13 +13,11 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import contactsSlice from "../../utils/store/contactsSlice";
 import multisigsSlice from "../../utils/store/multisigsSlice";
 import { store } from "../../utils/store/store";
+import tokensSlice from "../../utils/store/tokensSlice";
 import useAddressKind from "./useAddressKind";
 
-afterEach(() => {
-  store.dispatch(accountsSlice.actions.reset());
-  store.dispatch(contactsSlice.actions.reset());
-  store.dispatch(multisigsSlice.actions.reset());
-  store.dispatch(assetsSlice.actions.reset());
+beforeEach(() => {
+  store.dispatch(assetsSlice.actions.updateNetwork(TezosNetwork.MAINNET));
 });
 
 describe("useAddressKind", () => {
@@ -57,7 +56,12 @@ describe("useAddressKind", () => {
       it("returns empty label if name is not present", () => {
         const withoutName = cloneDeep(tokenBalance);
         delete withoutName.token.metadata?.name;
-        store.dispatch(assetsSlice.actions.updateTokenBalance([withoutName]));
+        store.dispatch(
+          tokensSlice.actions.addTokens({
+            network: TezosNetwork.MAINNET,
+            tokens: [withoutName.token],
+          })
+        );
 
         const { result: addressKindRef } = renderHook(() => useAddressKind(tokenContractAddress), {
           wrapper: getWrapper(store),
@@ -70,7 +74,12 @@ describe("useAddressKind", () => {
       });
 
       it("returns label", () => {
-        store.dispatch(assetsSlice.actions.updateTokenBalance([tokenBalance]));
+        store.dispatch(
+          tokensSlice.actions.addTokens({
+            network: TezosNetwork.MAINNET,
+            tokens: [tokenBalance.token],
+          })
+        );
 
         const { result: addressKindRef } = renderHook(() => useAddressKind(tokenContractAddress), {
           wrapper: getWrapper(store),
@@ -79,7 +88,7 @@ describe("useAddressKind", () => {
         expect(addressKindRef.current).toEqual({
           type: type,
           pkh: tokenContractAddress.pkh,
-          label: tokenBalance.token.metadata?.name,
+          label: null,
         });
       });
     });
@@ -130,10 +139,10 @@ describe("useAddressKind", () => {
         store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
         store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
         store.dispatch(
-          assetsSlice.actions.updateTokenBalance([
-            hedgehoge(mockImplicitAddress(0)),
-            uUSD(mockImplicitAddress(0)),
-          ])
+          tokensSlice.actions.addTokens({
+            network: TezosNetwork.MAINNET,
+            tokens: [hedgehoge(mockImplicitAddress(0)).token, uUSD(mockImplicitAddress(0)).token],
+          })
         );
         store.dispatch(assetsSlice.actions.updateBakers([mockBaker(1)]));
 

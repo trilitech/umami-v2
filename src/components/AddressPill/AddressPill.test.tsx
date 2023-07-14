@@ -1,3 +1,4 @@
+import { TezosNetwork } from "@airgap/tezos";
 import { contact1 } from "../../mocks/contacts";
 import { mockFA1Token, mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
@@ -5,9 +6,10 @@ import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { contactsActions } from "../../utils/store/contactsSlice";
 import { store } from "../../utils/store/store";
+import tokensSlice from "../../utils/store/tokensSlice";
 import AddressPill from "./AddressPill";
 const { upsert } = contactsActions;
-const { updateTokenBalance } = assetsSlice.actions;
+const { updateNetwork } = assetsSlice.actions;
 
 describe("<AddressPill />", () => {
   it("displays left icon", () => {
@@ -35,7 +37,10 @@ describe("<AddressPill />", () => {
   it("is removable for two icons", () => {
     const address = mockImplicitAddress(0);
     const fa1 = mockFA1Token(1, address.pkh, 123);
-    store.dispatch(updateTokenBalance([fa1]));
+    store.dispatch(updateNetwork(TezosNetwork.MAINNET));
+    store.dispatch(
+      tokensSlice.actions.addTokens({ network: TezosNetwork.MAINNET, tokens: [fa1.token] })
+    );
     render(
       <AddressPill
         address={parseContractPkh(fa1.token.contract?.address as string)}
