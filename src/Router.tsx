@@ -46,7 +46,7 @@ const MemoizedRouter = React.memo(() => {
       <Routes>
         <Route path="/home" element={withSideMenu(<HomeView />)} />
         <Route path="/nfts" element={withSideMenu(<NFTsView />)} />
-        <Route path="/nfts/:nftId" element={withSideMenu(<NFTsView />)} />
+        <Route path="/nfts/:ownerPkh/:nftId" element={withSideMenu(<NFTsView />)} />
         <Route path="/operations" element={withSideMenu(<OperationsView />)} />
         <Route path="/delegations" element={withSideMenu(<DelegationsView />)} />
         <Route path="/tokens" element={withSideMenu(<TokensView />)} />
