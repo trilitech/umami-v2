@@ -74,7 +74,7 @@ export const restoreMnemonicAccounts = async (
       pkh,
       makeDerivationPath(derivationPathPattern, i),
       seedFingerPrint,
-      `${label || ""}${accounts.length > 1 ? " " + i : ""}`
+      `${label}${accounts.length > 1 ? " " + i : ""}`
     );
   });
 };

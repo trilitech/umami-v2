@@ -63,7 +63,7 @@ const AccountGroup: React.FC<{
             }}
             key={account.address.pkh}
             address={account.address.pkh}
-            label={account.label || ""}
+            label={account.label}
             balance={balances[account.address.pkh]}
           />
         );

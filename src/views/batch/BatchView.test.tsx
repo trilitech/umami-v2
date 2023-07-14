@@ -89,13 +89,13 @@ const addItemsToBatchViaUI = async () => {
   const sendButton = screen.getByText(/send/i);
   fireEvent.click(sendButton);
 
-  await addToBatchViaUI(33, mockImplicitAccount(1).label || "", mockImplicitAddress(9).pkh);
-  await addToBatchViaUI(55, mockImplicitAccount(1).label || "", mockImplicitAddress(4).pkh);
-  await addToBatchViaUI(9, mockImplicitAccount(1).label || "", mockImplicitAddress(2).pkh);
+  await addToBatchViaUI(33, mockImplicitAccount(1).label, mockImplicitAddress(9).pkh);
+  await addToBatchViaUI(55, mockImplicitAccount(1).label, mockImplicitAddress(4).pkh);
+  await addToBatchViaUI(9, mockImplicitAccount(1).label, mockImplicitAddress(2).pkh);
 
-  await addToBatchViaUI(3, mockImplicitAccount(2).label || "", mockImplicitAddress(2).pkh);
-  await addToBatchViaUI(22, mockImplicitAccount(2).label || "", mockImplicitAddress(4).pkh);
-  await addToBatchViaUI(52, mockImplicitAccount(2).label || "", mockImplicitAddress(4).pkh);
+  await addToBatchViaUI(3, mockImplicitAccount(2).label, mockImplicitAddress(2).pkh);
+  await addToBatchViaUI(22, mockImplicitAccount(2).label, mockImplicitAddress(4).pkh);
+  await addToBatchViaUI(52, mockImplicitAccount(2).label, mockImplicitAddress(4).pkh);
   closeModal();
 };
 

@@ -51,7 +51,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
           })
         }
         pkh={account.address.pkh}
-        label={account.label || ""}
+        label={account.label}
         tezBalance={tez && mutezToTez(tez)}
         dollarBalance={dollarBalance}
         onReceive={() => {
