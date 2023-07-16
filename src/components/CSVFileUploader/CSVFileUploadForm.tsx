@@ -108,8 +108,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
       await dispatch(
         estimateAndUpdateBatch(operationValues, {
           type: "fake",
-          pkh: sender,
-          pk: getPk(sender),
+          publicKeyPair: { pkh: sender, pk: getPk(sender) },
           network,
         })
       );

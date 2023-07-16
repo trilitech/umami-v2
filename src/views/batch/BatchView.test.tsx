@@ -108,8 +108,7 @@ const addItemsToBatchViaStore = async () => {
       ],
       {
         type: "fake",
-        pkh: mockImplicitAccount(1).address.pkh,
-        pk: mockImplicitAccount(1).pk,
+        publicKeyPair: { pkh: mockImplicitAccount(1).address.pkh, pk: mockImplicitAccount(1).pk },
         network: TezosNetwork.MAINNET,
       }
     )
@@ -137,8 +136,7 @@ const addItemsToBatchViaStore = async () => {
 
       {
         type: "fake",
-        pkh: mockImplicitAccount(2).address.pkh,
-        pk: mockImplicitAccount(2).pk,
+        publicKeyPair: { pkh: mockImplicitAccount(2).address.pkh, pk: mockImplicitAccount(2).pk },
         network: TezosNetwork.MAINNET,
       }
     )

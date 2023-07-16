@@ -36,8 +36,7 @@ const {
 
 const dummySingerConfig: FakeToolkitConfig = {
   type: "fake",
-  pkh: mockImplicitAddress(1).pkh,
-  pk: mockPk(1),
+  publicKeyPair: { pkh: mockImplicitAddress(1).pkh, pk: mockPk(1) },
   network: TezosNetwork.MAINNET,
 };
 
@@ -364,8 +363,7 @@ describe("Assets reducer", () => {
       store.dispatch(action);
       expect(estimateBatchMock).toHaveBeenCalledWith(transfers, {
         type: "fake",
-        pkh: mockImplicitAddress(1).pkh,
-        pk: mockPk(1),
+        publicKeyPair: { pkh: mockImplicitAddress(1).pkh, pk: mockPk(1) },
         network: TezosNetwork.MAINNET,
       });
       expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(

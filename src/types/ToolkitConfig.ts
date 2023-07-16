@@ -1,6 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
+import { PublicKeyPair } from "../utils/restoreAccounts";
 import { buildLedgerSigner, nodeUrls } from "../utils/tezos";
 import { DummySigner } from "../utils/tezos/dummySigner";
 
@@ -26,8 +27,7 @@ export type LedgerToolkitConfig = BaseToolkitConfig & {
 
 export type FakeToolkitConfig = BaseToolkitConfig & {
   type: "fake";
-  pk: string;
-  pkh: string;
+  publicKeyPair: PublicKeyPair;
 };
 
 export const makeToolkit = async (config: ToolkitConfig): Promise<TezosToolkit> => {
@@ -41,7 +41,7 @@ export const makeToolkit = async (config: ToolkitConfig): Promise<TezosToolkit> 
       break;
     case "fake":
       toolkit.setProvider({
-        signer: new DummySigner(config),
+        signer: new DummySigner(config.publicKeyPair),
       });
       break;
   }

@@ -84,8 +84,10 @@ describe("multisig Sandbox", () => {
       { contract: MULTISIG_GHOSTNET_1, lambdaActions },
       {
         type: "fake",
-        pk: await devAccount0.publicKey(),
-        pkh: await devAccount0.publicKeyHash(),
+        publicKeyPair: {
+          pkh: await devAccount0.publicKeyHash(),
+          pk: await devAccount0.publicKey(),
+        },
         network: TezosNetwork.GHOSTNET,
       }
     );
@@ -122,8 +124,10 @@ describe("multisig Sandbox", () => {
       },
       {
         type: "fake",
-        pk: await devAccount1.publicKey(),
-        pkh: await devAccount1.publicKeyHash(),
+        publicKeyPair: {
+          pkh: await devAccount1.publicKeyHash(),
+          pk: await devAccount1.publicKey(),
+        },
         network: TezosNetwork.GHOSTNET,
       }
     );
@@ -154,8 +158,10 @@ describe("multisig Sandbox", () => {
       },
       {
         type: "fake",
-        pk: await devAccount1.publicKey(),
-        pkh: await devAccount1.publicKeyHash(),
+        publicKeyPair: {
+          pkh: await devAccount1.publicKeyHash(),
+          pk: await devAccount1.publicKey(),
+        },
         network: TezosNetwork.GHOSTNET,
       }
     );

@@ -10,6 +10,9 @@ export const estimateAndUpdateBatch = (
   operations: OperationValue[],
   config: FakeToolkitConfig
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
+  const {
+    publicKeyPair: { pkh },
+  } = config;
   return async (dispatch, getState) => {
     if (operations.length === 0) {
       throw new Error("Can't add empty list of operations to batch!");
@@ -17,19 +20,19 @@ export const estimateAndUpdateBatch = (
 
     const batches = getState().assets.batches;
 
-    if (batches[config.pkh]?.isSimulating) {
-      throw new Error(`Simulation already ongoing for ${config.pkh}`);
+    if (batches[pkh]?.isSimulating) {
+      throw new Error(`Simulation already ongoing for ${pkh}`);
     }
 
-    dispatch(batchSimulationStart({ pkh: config.pkh }));
+    dispatch(batchSimulationStart({ pkh }));
     try {
       const operationsWithFee = await estimateFeeForEachOperation(operations, config);
-      dispatch(addToBatch({ pkh: config.pkh, items: operationsWithFee }));
+      dispatch(addToBatch({ pkh, items: operationsWithFee }));
     } catch (error) {
-      dispatch(batchSimulationEnd({ pkh: config.pkh }));
+      dispatch(batchSimulationEnd({ pkh }));
       throw error;
     }
 
-    dispatch(batchSimulationEnd({ pkh: config.pkh }));
+    dispatch(batchSimulationEnd({ pkh }));
   };
 };

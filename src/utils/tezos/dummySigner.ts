@@ -1,9 +1,10 @@
 import { Signer } from "@taquito/taquito";
+import { PublicKeyPair } from "../restoreAccounts";
 export class DummySigner implements Signer {
   pk: string;
   pkh: string;
 
-  constructor({ pk, pkh }: { pk: string; pkh: string }) {
+  constructor({ pk, pkh }: PublicKeyPair) {
     this.pk = pk;
     this.pkh = pkh;
   }

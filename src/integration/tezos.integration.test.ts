@@ -15,8 +15,10 @@ const pkh1 = parseImplicitPkh(devPublicKeys1.pkh);
 
 const dummySignerConfig0: FakeToolkitConfig = {
   type: "fake",
-  pkh: pkh0.pkh,
-  pk: pk0,
+  publicKeyPair: {
+    pkh: pkh0.pkh,
+    pk: pk0,
+  },
   network: TezosNetwork.MAINNET,
 };
 

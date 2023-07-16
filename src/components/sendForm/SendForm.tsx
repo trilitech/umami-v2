@@ -70,7 +70,11 @@ export const SendForm = ({
 
     try {
       await dispatch(
-        estimateAndUpdateBatch([operation], { type: "fake", pkh: sender, pk, network })
+        estimateAndUpdateBatch([operation], {
+          type: "fake",
+          publicKeyPair: { pkh: sender, pk },
+          network,
+        })
       );
 
       toast({ title: "Transaction added to batch!" });

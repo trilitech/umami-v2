@@ -369,8 +369,10 @@ describe("<SendForm />", () => {
         ],
         {
           type: "fake",
-          pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
+          publicKeyPair: {
+            pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+            pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
+          },
           network: "mainnet",
         }
       );
@@ -488,8 +490,10 @@ describe("<SendForm />", () => {
         ],
         {
           type: "fake",
-          pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
+          publicKeyPair: {
+            pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+            pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
+          },
           network: "mainnet",
         }
       );
