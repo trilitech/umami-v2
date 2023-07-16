@@ -1,9 +1,7 @@
-import { TezosNetwork } from "@airgap/tezos";
-import { TezosToolkit, MANAGER_LAMBDA } from "@taquito/taquito";
-import { makeFA12TransferMethod, makeFA2TransferMethod } from "../utils/tezos";
-import { nodeUrls } from "../utils/tezos/consts";
+import { MANAGER_LAMBDA } from "@taquito/taquito";
+import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 import { FA12Operation, FA2Operation, RawOperation } from "../types/RawOperation";
-import type { MichelsonV1Expression } from "@taquito/rpc";
+import type { MichelsonV1Expression, TransactionOperationParameter } from "@taquito/rpc";
 import { isEqual } from "lodash";
 
 export const FA2_TRANSFER_ARG_TYPES = {
@@ -74,16 +72,17 @@ export const FA12_TRANSFER_ARG_TYPES = {
 
 const contractLambda = (
   operation: FA12Operation | FA2Operation,
-  entrypoint: string,
   argTypes: MichelsonV1Expression,
-  argValue: MichelsonV1Expression,
-  amount = "0"
+  transactionParameter: TransactionOperationParameter
 ) => {
   return [
     ...LAMBDA_HEADER,
     {
       prim: "PUSH",
-      args: [{ prim: "address" }, { string: operation.contract.pkh + "%" + entrypoint }],
+      args: [
+        { prim: "address" },
+        { string: operation.contract.pkh + "%" + transactionParameter.entrypoint },
+      ],
     },
     {
       prim: "CONTRACT",
@@ -91,8 +90,8 @@ const contractLambda = (
     },
     // If contract is not valid then fail and rollback the whole transaction
     [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
-    { prim: "PUSH", args: [{ prim: "mutez" }, { int: amount }] },
-    { prim: "PUSH", args: [argTypes, argValue] },
+    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+    { prim: "PUSH", args: [argTypes, transactionParameter.value] },
     { prim: "TRANSFER_TOKENS" },
     { prim: "CONS" },
   ];
@@ -110,9 +109,7 @@ const headlessLambda = (lambda: MichelsonV1Expression[]): MichelsonV1Expression[
   return lambda;
 };
 
-export const makeLambda = async (operation: RawOperation, network: TezosNetwork) => {
-  const nodeUrl = nodeUrls[network];
-  const toolkit = new TezosToolkit(nodeUrl);
+export const makeLambda = (operation: RawOperation): MichelsonV1Expression[] => {
   switch (operation.type) {
     case "tez":
       switch (operation.recipient.type) {
@@ -126,23 +123,16 @@ export const makeLambda = async (operation: RawOperation, network: TezosNetwork)
       }
     // eslint-disable-next-line no-fallthrough
     case "fa1.2":
-    case "fa2": {
-      const method = await (operation.type === "fa2"
-        ? makeFA2TransferMethod(operation, toolkit)
-        : makeFA12TransferMethod(operation, toolkit));
-
-      const parameter = method.toTransferParams().parameter;
-
-      // how the entrypoint is specified in taquito?
-      if (!parameter?.entrypoint || !parameter.value) {
-        throw new Error("Missing parameter on a token transfer method");
-      }
-
       return contractLambda(
         operation,
-        "transfer",
-        operation.type === "fa2" ? FA2_TRANSFER_ARG_TYPES : FA12_TRANSFER_ARG_TYPES,
-        parameter.value
+        FA12_TRANSFER_ARG_TYPES,
+        makeFA12TransactionParameter(operation)
+      );
+    case "fa2": {
+      return contractLambda(
+        operation,
+        FA2_TRANSFER_ARG_TYPES,
+        makeFA2TransactionParameter(operation)
       );
     }
     case "delegation":
@@ -159,10 +149,8 @@ export const makeLambda = async (operation: RawOperation, network: TezosNetwork)
  * @param network Network is needed for fetching contract parameter elements in lambda
  * @returns Lambda in MichelsonJSON (=Micheline) format
  */
-export const makeBatchLambda = async (operations: RawOperation[], network: TezosNetwork) => {
-  const opsLambdas = (
-    await Promise.all(operations.map(operation => makeLambda(operation, network)))
-  ).flatMap(headlessLambda);
+export const makeBatchLambda = (operations: RawOperation[]) => {
+  const opsLambdas = operations.map(operation => makeLambda(operation)).flatMap(headlessLambda);
 
   return [...LAMBDA_HEADER, ...opsLambdas];
 };

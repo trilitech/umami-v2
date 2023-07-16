@@ -17,10 +17,7 @@ const makeMultisigProposalSimulation = async (
   const signerPkh = operation.signer;
   const multisigContract = parseContractPkh(operation.sender.pkh);
 
-  const lambdaActions = await makeBatchLambda(
-    content.map(toLambdaOperation),
-    TezosNetwork.GHOSTNET
-  );
+  const lambdaActions = makeBatchLambda(content.map(toLambdaOperation));
   const result = await estimateMultisigPropose(
     {
       lambdaActions,
@@ -37,7 +34,7 @@ const makeMultisigProposalSimulation = async (
 const getTotalFee = (estimate: Estimate[] | Estimate) =>
   String(Array.isArray(estimate) ? sumEstimations(estimate) : estimate.suggestedFeeMutez);
 
-export const makeSimulation = (
+export const makeSimulation = async (
   operation: FormOperations,
   getPk: (pkh: string) => string,
   network: TezosNetwork

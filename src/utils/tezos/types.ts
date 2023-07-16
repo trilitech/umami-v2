@@ -1,15 +1,5 @@
 import { MichelsonV1Expression } from "@taquito/rpc";
-import { Address, ContractAddress } from "../../types/Address";
-
-export type FA2TransferMethodArgs = {
-  sender: Address;
-  recipient: Address;
-  contract: ContractAddress;
-  tokenId: string;
-  amount: string;
-};
-
-export type FA12TransferMethodArgs = Omit<FA2TransferMethodArgs, "tokenId"> & { tokenId: "0" };
+import { ContractAddress } from "../../types/Address";
 
 export type MultisigProposeMethodArgs = {
   contract: ContractAddress;

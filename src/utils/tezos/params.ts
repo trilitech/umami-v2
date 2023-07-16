@@ -1,21 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
-import {
-  OpKind,
-  ParamsWithKind,
-  TezosToolkit,
-  TransferParams,
-  WalletParamsWithKind,
-} from "@taquito/taquito";
-import {
-  FA12OperationWithAsset,
-  FA2OperationWithAsset,
-  OperationValue,
-} from "../../components/sendForm/types";
-import {
-  makeFA12TransferMethod,
-  makeFA2TransferMethod,
-  makeToolkitWithDummySigner,
-} from "./helpers";
+import { OpKind, ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
+import { OperationValue } from "../../components/sendForm/types";
+import { makeTokenTransferParams, makeToolkitWithDummySigner } from "./helpers";
 
 export const operationValuesToWalletParams = async (
   operations: OperationValue[],
@@ -50,31 +36,15 @@ export const operationValuesToParams = async (
         break;
       case "fa1.2":
       case "fa2":
-        {
-          const transferParams = await makeTokenTransferParams(operation, toolkit);
-
-          result.push({
-            kind: OpKind.TRANSACTION,
-            ...transferParams,
-          });
-        }
+        result.push({
+          kind: OpKind.TRANSACTION,
+          ...makeTokenTransferParams(operation),
+        });
         break;
     }
   }
 
   return result;
-};
-
-const makeTokenTransferParams = async (
-  operation: FA12OperationWithAsset | FA2OperationWithAsset,
-  tezosToolkit: TezosToolkit
-): Promise<TransferParams> => {
-  const transferMethod =
-    operation.type === "fa1.2"
-      ? makeFA12TransferMethod(operation, tezosToolkit)
-      : makeFA2TransferMethod(operation, tezosToolkit);
-
-  return (await transferMethod).toTransferParams();
 };
 
 export const operationValuesToBatchParams = async (
