@@ -1,49 +1,40 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Estimate } from "@taquito/taquito";
 import { OperationValue } from "../../components/sendForm/types";
-import {
-  makeMultisigApproveOrExecuteMethod,
-  makeMultisigProposeMethod,
-  makeToolkitWithDummySigner,
-} from "./helpers";
+import { makeToolkit } from "../../types/ToolkitConfig";
+import { FakeToolkitConfig } from "../../types/ToolkitConfig";
+import { makeMultisigApproveOrExecuteMethod, makeMultisigProposeMethod } from "./helpers";
 import { operationValuesToBatchParams } from "./params";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const estimateMultisigPropose = async (
   params: MultisigProposeMethodArgs,
-  senderPk: string,
-  senderPkh: string,
-  network: TezosNetwork
+  config: FakeToolkitConfig
 ): Promise<Estimate> => {
-  const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
+  const signer = await makeToolkit(config);
 
-  const propseMethod = await makeMultisigProposeMethod(params, Tezos);
+  const propseMethod = await makeMultisigProposeMethod(params, signer);
 
-  return Tezos.estimate.transfer(propseMethod.toTransferParams());
+  return signer.estimate.transfer(propseMethod.toTransferParams());
 };
 
 export const estimateMultisigApproveOrExecute = async (
   params: MultisigApproveOrExecuteMethodArgs,
-  senderPk: string,
-  senderPkh: string,
-  network: TezosNetwork
+  config: FakeToolkitConfig
 ): Promise<Estimate> => {
-  const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
+  const signer = await makeToolkit(config);
 
-  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, Tezos);
+  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, signer);
 
-  return Tezos.estimate.transfer(approveOrExecuteMethod.toTransferParams());
+  return signer.estimate.transfer(approveOrExecuteMethod.toTransferParams());
 };
 
 export const estimateBatch = async (
   operations: OperationValue[],
-  pkh: string,
-  pk: string,
-  network: TezosNetwork
+  config: FakeToolkitConfig
 ): Promise<Estimate[]> => {
-  const batch = await operationValuesToBatchParams(operations, pk, pkh, network);
+  const batch = await operationValuesToBatchParams(operations, config);
 
-  const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
+  const signer = await makeToolkit(config);
 
-  return Tezos.estimate.batch(batch);
+  return signer.estimate.batch(batch);
 };

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
 import { AccountType } from "../../../types/Account";
-import { SignerConfig } from "../../../types/SignerConfig";
+import { LedgerToolkitConfig, SecretkeyToolkitConfig } from "../../../types/ToolkitConfig";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
@@ -70,7 +70,7 @@ export const SubmitStep: React.FC<{
   network: TezosNetwork;
   recap: EstimatedOperation;
   isBatch: boolean;
-  onSubmit: (signerConfig: SignerConfig) => void;
+  onSubmit: (config: LedgerToolkitConfig | SecretkeyToolkitConfig) => void;
   isLoading: boolean;
 }> = ({ recap: { fee, operations }, network, isBatch, onSubmit, isLoading }) => {
   const feeNum = new BigNumber(fee);

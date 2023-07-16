@@ -1,13 +1,14 @@
-import { TezosNetwork } from "@airgap/tezos";
+import { makeTokenTransferParams } from "./helpers";
 import { OpKind, ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import { OperationValue } from "../../components/sendForm/types";
-import { makeTokenTransferParams, makeToolkitWithDummySigner } from "./helpers";
+import { makeToolkit } from "../../types/ToolkitConfig";
+import { FakeToolkitConfig } from "../../types/ToolkitConfig";
 
 export const operationValuesToWalletParams = async (
   operations: OperationValue[],
-  signer: TezosToolkit
+  toolkit: TezosToolkit
 ): Promise<WalletParamsWithKind[]> =>
-  operationValuesToParams(operations, signer) as Promise<WalletParamsWithKind[]>;
+  operationValuesToParams(operations, toolkit) as Promise<WalletParamsWithKind[]>;
 
 export const operationValuesToParams = async (
   operations: OperationValue[],
@@ -49,15 +50,12 @@ export const operationValuesToParams = async (
 
 export const operationValuesToBatchParams = async (
   operations: OperationValue[],
-  pk: string,
-  pkh: string,
-  network: TezosNetwork
+  config: FakeToolkitConfig
 ): Promise<ParamsWithKind[]> => {
   if (!operations.length) {
-    return [];
+    throw new Error("no operations provided");
   }
+  const dummySigner = await makeToolkit(config);
 
-  const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
-
-  return operationValuesToParams(operations, Tezos);
+  return operationValuesToParams(operations, dummySigner);
 };

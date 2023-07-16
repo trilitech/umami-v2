@@ -1,7 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
-import { SignerConfig } from "../../types/SignerConfig";
+import { LedgerToolkitConfig, SecretkeyToolkitConfig } from "../../types/ToolkitConfig";
 import { useGetPk } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
@@ -69,7 +69,9 @@ export const SendForm = ({
     const pk = getPk(sender);
 
     try {
-      await dispatch(estimateAndUpdateBatch(sender, pk, [operation], network));
+      await dispatch(
+        estimateAndUpdateBatch([operation], { type: "fake", pkh: sender, pk, network })
+      );
 
       toast({ title: "Transaction added to batch!" });
     } catch (error: any) {
@@ -78,7 +80,10 @@ export const SendForm = ({
     }
   };
 
-  const execute = async (operations: FormOperations, config: SignerConfig) => {
+  const execute = async (
+    operations: FormOperations,
+    config: SecretkeyToolkitConfig | LedgerToolkitConfig
+  ) => {
     setIsLoading(true);
 
     if (config.type === "ledger") {

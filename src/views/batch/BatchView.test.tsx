@@ -8,7 +8,7 @@ import {
   setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
-import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
+import { SecretkeyToolkitConfig } from "../../types/ToolkitConfig";
 import { useGetSk } from "../../utils/hooks/accountUtils";
 import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
@@ -89,8 +89,6 @@ const addItemsToBatchViaUI = async () => {
 const addItemsToBatchViaStore = async () => {
   await store.dispatch(
     estimateAndUpdateBatch(
-      mockImplicitAccount(1).address.pkh,
-      mockImplicitAccount(1).pk,
       [
         {
           type: "tez",
@@ -108,15 +106,17 @@ const addItemsToBatchViaStore = async () => {
           amount: "3000000",
         },
       ],
-
-      TezosNetwork.MAINNET
+      {
+        type: "fake",
+        pkh: mockImplicitAccount(1).address.pkh,
+        pk: mockImplicitAccount(1).pk,
+        network: TezosNetwork.MAINNET,
+      }
     )
   );
 
   await store.dispatch(
     estimateAndUpdateBatch(
-      mockImplicitAccount(2).address.pkh,
-      mockImplicitAccount(2).pk,
       [
         {
           type: "tez",
@@ -135,7 +135,12 @@ const addItemsToBatchViaStore = async () => {
         },
       ],
 
-      TezosNetwork.MAINNET
+      {
+        type: "fake",
+        pkh: mockImplicitAccount(2).address.pkh,
+        pk: mockImplicitAccount(2).pk,
+        network: TezosNetwork.MAINNET,
+      }
     )
   );
 };
@@ -246,8 +251,8 @@ describe("<BatchView />", () => {
         "href",
         "https://mainnet.tzkt.io/foo"
       );
-      const config: SkSignerConfig = {
-        type: SignerType.SK,
+      const config: SecretkeyToolkitConfig = {
+        type: "secretKey",
         network: TezosNetwork.MAINNET,
         sk: "mockSk",
       };

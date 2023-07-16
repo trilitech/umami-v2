@@ -1,6 +1,10 @@
 import { makeBatchLambda } from "../../../multisig/multisigUtils";
 import { parseContractPkh } from "../../../types/Address";
-import { SignerConfig } from "../../../types/SignerConfig";
+import {
+  LedgerToolkitConfig,
+  SecretkeyToolkitConfig,
+  ToolkitConfig,
+} from "../../../types/ToolkitConfig";
 import { proposeMultisigLambda, submitBatch } from "../../../utils/tezos";
 import { FormOperations, OperationValue } from "../types";
 import { toLambdaOperation } from "./toLambdaOperation";
@@ -8,14 +12,14 @@ import { toLambdaOperation } from "./toLambdaOperation";
 const makeProposeOperation = async (
   operations: OperationValue[],
   sender: string,
-  config: SignerConfig
+  config: LedgerToolkitConfig | SecretkeyToolkitConfig
 ) => {
   const lambdaActions = makeBatchLambda(operations.map(toLambdaOperation));
   const contract = parseContractPkh(sender);
 
   return proposeMultisigLambda({ contract, lambdaActions }, config);
 };
-const makeTransferImplicit = async (operations: OperationValue[], config: SignerConfig) => {
+const makeTransferImplicit = async (operations: OperationValue[], config: ToolkitConfig) => {
   return submitBatch(operations, config).then(res => {
     return {
       hash: res.opHash,
@@ -23,7 +27,10 @@ const makeTransferImplicit = async (operations: OperationValue[], config: Signer
   });
 };
 
-export const makeTransfer = (op: FormOperations, config: SignerConfig) => {
+export const makeTransfer = (
+  op: FormOperations,
+  config: LedgerToolkitConfig | SecretkeyToolkitConfig
+) => {
   const transferToDisplay = op.content;
 
   const transfer =

@@ -1,9 +1,8 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
-import { SignerType } from "../types/SignerConfig";
+import { makeToolkit } from "../types/ToolkitConfig";
 import { getDefaultMnemonicDerivationPath } from "../utils/account/derivationPathUtils";
-import { makeToolkitWithSigner } from "../utils/tezos";
 import { seedPhrase } from "./seedPhrase";
 
 // make the default signer used in the dev mode.
@@ -45,9 +44,9 @@ export const devPublicKeys2 = {
 export const makeToolkitFromDefaultDevSeed = async (index: number): Promise<TezosToolkit> => {
   const { sk } = await makeDefaultDevSignerKeys(index);
 
-  return makeToolkitWithSigner({
+  return makeToolkit({
+    type: "secretKey",
     sk,
-    type: SignerType.SK,
     network: TezosNetwork.GHOSTNET,
   });
 };

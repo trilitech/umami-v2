@@ -1,6 +1,5 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import { Modal } from "@chakra-ui/react";
-
 import { TezosNetwork } from "@airgap/tezos";
 import {
   mockBaker,
@@ -19,13 +18,11 @@ import {
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
-import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice, { BatchItem } from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
-
 import { Estimate, TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { mock } from "jest-mock-extended";
@@ -34,6 +31,7 @@ import { mockToast } from "../../mocks/toast";
 import { multisigActions } from "../../utils/store/multisigsSlice";
 import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
+import { SecretkeyToolkitConfig } from "../../types/ToolkitConfig";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
@@ -285,8 +283,8 @@ describe("<SendForm />", () => {
           "https://mainnet.tzkt.io/foo"
         );
       });
-      const config: SkSignerConfig = {
-        type: SignerType.SK,
+      const config: SecretkeyToolkitConfig = {
+        type: "secretKey",
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
       };
@@ -369,9 +367,12 @@ describe("<SendForm />", () => {
             tokenId: mockFA2.tokenId,
           },
         ],
-        "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-        "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
-        "mainnet"
+        {
+          type: "fake",
+          pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
+          network: "mainnet",
+        }
       );
 
       fillPassword("mockPass");
@@ -413,7 +414,7 @@ describe("<SendForm />", () => {
         {
           network: "mainnet",
           sk: "mockSk",
-          type: "sk",
+          type: "secretKey",
         }
       );
     });
@@ -485,9 +486,12 @@ describe("<SendForm />", () => {
             tokenId: "0",
           },
         ],
-        "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-        "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
-        "mainnet"
+        {
+          type: "fake",
+          pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
+          pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
+          network: "mainnet",
+        }
       );
 
       fillPassword("mockPass");
@@ -525,7 +529,7 @@ describe("<SendForm />", () => {
             tokenId: "0",
           },
         ],
-        { network: "mainnet", sk: "mockSk", type: "sk" }
+        { network: "mainnet", sk: "mockSk", type: "secretKey" }
       );
     });
   });
@@ -595,8 +599,8 @@ describe("<SendForm />", () => {
           "https://mainnet.tzkt.io/mockHash"
         );
       });
-      const config: SkSignerConfig = {
-        type: SignerType.SK,
+      const config: SecretkeyToolkitConfig = {
+        type: "secretKey",
         network: TezosNetwork.MAINNET,
         sk: MOCK_SK,
       };

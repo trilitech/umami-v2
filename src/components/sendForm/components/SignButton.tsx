@@ -4,16 +4,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { GoogleAuth } from "../../../GoogleAuth";
 import { ImplicitAccount, AccountType } from "../../../types/Account";
-import {
-  LedgerSignerConfig,
-  SignerConfig,
-  SignerType,
-  SkSignerConfig,
-} from "../../../types/SignerConfig";
+import { LedgerToolkitConfig, SecretkeyToolkitConfig } from "../../../types/ToolkitConfig";
 import { useGetSk } from "../../../utils/hooks/accountUtils";
 
 const SignButton: React.FC<{
-  onSubmit: (c: SignerConfig) => void;
+  onSubmit: (config: LedgerToolkitConfig | SecretkeyToolkitConfig) => void;
   signerAccount: ImplicitAccount;
   isLoading: boolean;
   network: TezosNetwork;
@@ -33,11 +28,12 @@ const SignButton: React.FC<{
       throw new Error(`Wrong signing method called`);
     }
 
-    const config: SkSignerConfig = {
+    const config: SecretkeyToolkitConfig = {
+      type: "secretKey",
       sk,
       network,
-      type: SignerType.SK,
     };
+
     onSubmit(config);
   };
 
@@ -46,11 +42,11 @@ const SignButton: React.FC<{
       throw new Error(`Wrong signing method called`);
     }
 
-    const config: LedgerSignerConfig = {
+    const config: LedgerToolkitConfig = {
+      type: "ledger",
       network,
       derivationPath: signerAccount.derivationPath,
       derivationType: signerAccount.curve,
-      type: SignerType.LEDGER,
     };
 
     onSubmit(config);
@@ -63,10 +59,10 @@ const SignButton: React.FC<{
 
     // TODO disabled submit button since it"s loading
     const sk = await getSk(signerAccount, password);
-    const config: SkSignerConfig = {
+    const config: SecretkeyToolkitConfig = {
+      type: "secretKey",
       sk,
       network,
-      type: SignerType.SK,
     };
 
     onSubmit(config);

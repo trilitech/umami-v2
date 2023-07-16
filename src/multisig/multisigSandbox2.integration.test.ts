@@ -1,7 +1,6 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { makeDefaultDevSigner } from "../mocks/devSignerKeys";
 import { parseContractPkh, parseImplicitPkh } from "../types/Address";
-import { SignerType } from "../types/SignerConfig";
 import { tezToMutez } from "../utils/format";
 import { getPendingOperations } from "../utils/multisig/fetch";
 import {
@@ -48,7 +47,7 @@ describe("multisig Sandbox", () => {
       MULTISIG_GHOSTNET_1.pkh,
       tezToMutez(TEZ_TO_SEND.toString()).toNumber(),
       {
-        type: SignerType.SK,
+        type: "secretKey",
         sk: devAccount2Sk,
         network: TezosNetwork.GHOSTNET,
       }
@@ -83,16 +82,19 @@ describe("multisig Sandbox", () => {
 
     const proposeEstimate = await estimateMultisigPropose(
       { contract: MULTISIG_GHOSTNET_1, lambdaActions },
-      await devAccount0.publicKey(),
-      await devAccount0.publicKeyHash(),
-      TezosNetwork.GHOSTNET
+      {
+        type: "fake",
+        pk: await devAccount0.publicKey(),
+        pkh: await devAccount0.publicKeyHash(),
+        network: TezosNetwork.GHOSTNET,
+      }
     );
     expect(proposeEstimate).toHaveProperty("suggestedFeeMutez");
 
     const proposeResponse = await proposeMultisigLambda(
       { contract: MULTISIG_GHOSTNET_1, lambdaActions },
       {
-        type: SignerType.SK,
+        type: "secretKey",
         network: TezosNetwork.GHOSTNET,
         sk: await devAccount0.secretKey(),
       }
@@ -118,9 +120,12 @@ describe("multisig Sandbox", () => {
         contract: MULTISIG_GHOSTNET_1,
         operationId: pendingOpKey as string,
       },
-      await devAccount1.publicKey(),
-      await devAccount1.publicKeyHash(),
-      TezosNetwork.GHOSTNET
+      {
+        type: "fake",
+        pk: await devAccount1.publicKey(),
+        pkh: await devAccount1.publicKeyHash(),
+        network: TezosNetwork.GHOSTNET,
+      }
     );
     expect(approveEstimate).toHaveProperty("suggestedFeeMutez");
 
@@ -131,7 +136,7 @@ describe("multisig Sandbox", () => {
         operationId: pendingOpKey as string,
       },
       {
-        type: SignerType.SK,
+        type: "secretKey",
         network: TezosNetwork.GHOSTNET,
         sk: await devAccount1.secretKey(),
       }
@@ -147,9 +152,12 @@ describe("multisig Sandbox", () => {
         contract: MULTISIG_GHOSTNET_1,
         operationId: pendingOpKey as string,
       },
-      await devAccount1.publicKey(),
-      await devAccount1.publicKeyHash(),
-      TezosNetwork.GHOSTNET
+      {
+        type: "fake",
+        pk: await devAccount1.publicKey(),
+        pkh: await devAccount1.publicKeyHash(),
+        network: TezosNetwork.GHOSTNET,
+      }
     );
     expect(executeEstimate).toHaveProperty("suggestedFeeMutez");
 
@@ -160,7 +168,7 @@ describe("multisig Sandbox", () => {
         operationId: pendingOpKey as string,
       },
       {
-        type: SignerType.SK,
+        type: "secretKey",
         network: TezosNetwork.GHOSTNET,
         sk: await devAccount1.secretKey(),
       }

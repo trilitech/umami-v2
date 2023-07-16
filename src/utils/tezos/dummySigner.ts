@@ -3,7 +3,7 @@ export class DummySigner implements Signer {
   pk: string;
   pkh: string;
 
-  constructor(pk: string, pkh: string) {
+  constructor({ pk, pkh }: { pk: string; pkh: string }) {
     this.pk = pk;
     this.pkh = pkh;
   }

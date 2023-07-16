@@ -7,11 +7,10 @@ import { TezosToolkit, TransferParams } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
 import { FA12Operation, FA2Operation } from "../../types/RawOperation";
-import { SignerConfig, SignerType } from "../../types/SignerConfig";
+import { LedgerToolkitConfig } from "../../types/ToolkitConfig";
 import { PublicKeyPair } from "../restoreAccounts";
 import { RawTzktGetAddressType } from "../tzkt/types";
-import { nodeUrls, tzktUrls } from "./consts";
-import { DummySigner } from "./dummySigner";
+import { tzktUrls } from "./consts";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const addressExists = async (
@@ -55,49 +54,20 @@ export const curvesToDerivationPath = (curves: Curves): DerivationType => {
   }
 };
 
-export const makeSigner = async (config: SignerConfig) => {
-  switch (config.type) {
-    case SignerType.SK:
-      return new InMemorySigner(config.sk);
-
-    case SignerType.LEDGER: {
-      // Close existing connections to be able to reinitiate
-      const devices = await TransportWebHID.list();
-      for (let i = 0; i < devices.length; i++) {
-        devices[i].close();
-      }
-      const transport = await TransportWebHID.create();
-      const signer = new LedgerSigner(
-        transport,
-        config.derivationPath,
-        false, // PK Verification not needed
-        curvesToDerivationPath(config.derivationType)
-      );
-      return signer;
-    }
+export const buildLedgerSigner = async (config: LedgerToolkitConfig): Promise<LedgerSigner> => {
+  // Close existing connections to be able to reinitiate
+  const devices = await TransportWebHID.list();
+  for (let i = 0; i < devices.length; i++) {
+    devices[i].close();
   }
-};
-
-export const makeToolkitWithSigner = async (config: SignerConfig) => {
-  const Tezos = new TezosToolkit(nodeUrls[config.network]);
-  const signer = await makeSigner(config);
-
-  Tezos.setProvider({
-    signer,
-  });
-  return Tezos;
-};
-
-export const makeToolkitWithDummySigner = (
-  pk: string,
-  pkh: string,
-  network: TezosNetwork
-): TezosToolkit => {
-  const Tezos = new TezosToolkit(nodeUrls[network]);
-  Tezos.setProvider({
-    signer: new DummySigner(pk, pkh),
-  });
-  return Tezos;
+  const transport = await TransportWebHID.create();
+  const signer = new LedgerSigner(
+    transport,
+    config.derivationPath,
+    false, // PK Verification not needed
+    curvesToDerivationPath(config.derivationType)
+  );
+  return signer;
 };
 
 export const getPkAndPkhFromSk = async (sk: string): Promise<PublicKeyPair> => {

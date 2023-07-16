@@ -17,6 +17,7 @@ import { estimateAndUpdateBatch } from "./thunks/estimateAndupdateBatch";
 import { estimateBatch } from "../tezos";
 import { OperationValue } from "../../components/sendForm/types";
 import { hedgehoge } from "../../mocks/fa12Tokens";
+import { FakeToolkitConfig } from "../../types/ToolkitConfig";
 jest.mock("../tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -32,6 +33,13 @@ const {
     updateBatch,
   },
 } = assetsSlice;
+
+const dummySingerConfig: FakeToolkitConfig = {
+  type: "fake",
+  pkh: mockImplicitAddress(1).pkh,
+  pk: mockPk(1),
+  network: TezosNetwork.MAINNET,
+};
 
 describe("Assets reducer", () => {
   test("store should initialize with empty state", () => {
@@ -351,20 +359,15 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
-      const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(transfers, dummySingerConfig);
 
       store.dispatch(action);
-      expect(estimateBatchMock).toHaveBeenCalledWith(
-        transfers,
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
-        TezosNetwork.MAINNET
-      );
+      expect(estimateBatchMock).toHaveBeenCalledWith(transfers, {
+        type: "fake",
+        pkh: mockImplicitAddress(1).pkh,
+        pk: mockPk(1),
+        network: TezosNetwork.MAINNET,
+      });
       expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(
         true
       );
@@ -395,12 +398,7 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
       const transfers = [mockTezTransfer(1)];
-      const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(transfers, dummySingerConfig);
 
       store.dispatch(action);
       await waitFor(() => {
@@ -425,12 +423,7 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockRejectedValueOnce(estimationError);
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
-      const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(transfers, dummySingerConfig);
 
       const dispatchResult = store.dispatch(action);
       expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(
@@ -455,12 +448,7 @@ describe("Assets reducer", () => {
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
 
-      const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(transfers, dummySingerConfig);
 
       store.dispatch(action);
       const concurrentDispatch = store.dispatch(action);
@@ -501,12 +489,7 @@ describe("Assets reducer", () => {
 
       const operations: OperationValue[] = [];
 
-      const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
-        operations,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(operations, dummySingerConfig);
 
       const dispatch = store.dispatch(action);
 
@@ -531,12 +514,7 @@ describe("Assets reducer", () => {
       );
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
 
-      const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
+      const action = estimateAndUpdateBatch(transfers, dummySingerConfig);
 
       store.dispatch(action);
       store.dispatch(clearBatch({ pkh: mockImplicitAddress(1).pkh }));

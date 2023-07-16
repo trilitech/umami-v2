@@ -14,10 +14,10 @@ import {
 import React, { useState } from "react";
 import SignButton from "../../../../components/sendForm/components/SignButton";
 import { AccountType } from "../../../../types/Account";
-import { SignerConfig } from "../../../../types/SignerConfig";
+import { makeToolkit } from "../../../../types/ToolkitConfig";
+import { LedgerToolkitConfig, SecretkeyToolkitConfig } from "../../../../types/ToolkitConfig";
 import { useGetImplicitAccount } from "../../../hooks/accountHooks";
 import { useSelectedNetwork } from "../../../hooks/assetsHooks";
-import { makeSigner } from "../../../tezos";
 import { walletClient } from "../../beacon";
 
 const SignPayloadRequestPanel: React.FC<{
@@ -33,15 +33,14 @@ const SignPayloadRequestPanel: React.FC<{
   if (!signerAccount) {
     return <div>"unknown account"</div>;
   }
-  const sign = async (config: SignerConfig) => {
+  const sign = async (config: LedgerToolkitConfig | SecretkeyToolkitConfig) => {
     setIsLoading(true);
     if (signerAccount.type === AccountType.LEDGER) {
       toast({ title: "connect ledger" });
     }
 
     try {
-      const signer = await makeSigner(config);
-
+      const { signer } = await makeToolkit(config);
       const result = await signer.sign(request.payload);
 
       const response: SignPayloadResponseInput = {

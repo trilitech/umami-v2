@@ -1,23 +1,20 @@
 import { TransactionOperation, TransferParams } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { OperationValue } from "../../components/sendForm/types";
-import { SignerConfig } from "../../types/SignerConfig";
-import {
-  makeMultisigApproveOrExecuteMethod,
-  makeMultisigProposeMethod,
-  makeToolkitWithSigner,
-} from "./helpers";
+import { makeToolkit } from "../../types/ToolkitConfig";
+import { ToolkitConfig } from "../../types/ToolkitConfig";
+import { makeMultisigApproveOrExecuteMethod, makeMultisigProposeMethod } from "./helpers";
 import { operationValuesToWalletParams } from "./params";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const transferMutez = async (
   recipient: string,
   amount: number,
-  config: SignerConfig,
+  config: ToolkitConfig,
   parameter?: TransferParams["parameter"]
 ): Promise<TransactionOperation> => {
-  const Tezos = await makeToolkitWithSigner(config);
-  return Tezos.contract.transfer({
+  const signer = await makeToolkit(config);
+  return signer.contract.transfer({
     to: recipient,
     amount: amount,
     parameter,
@@ -27,27 +24,27 @@ export const transferMutez = async (
 
 export const proposeMultisigLambda = async (
   params: MultisigProposeMethodArgs,
-  config: SignerConfig
+  config: ToolkitConfig
 ): Promise<TransactionOperation> => {
-  const Tezos = await makeToolkitWithSigner(config);
-  const proposeMethod = await makeMultisigProposeMethod(params, Tezos);
+  const signer = await makeToolkit(config);
+  const proposeMethod = await makeMultisigProposeMethod(params, signer);
   return proposeMethod.send();
 };
 
 export const approveOrExecuteMultisigOperation = async (
   params: MultisigApproveOrExecuteMethodArgs,
-  config: SignerConfig
+  config: ToolkitConfig
 ): Promise<TransactionOperation> => {
-  const Tezos = await makeToolkitWithSigner(config);
-  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, Tezos);
+  const signer = await makeToolkit(config);
+  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, signer);
   return approveOrExecuteMethod.send();
 };
 
 export const submitBatch = async (
   operation: OperationValue[],
-  config: SignerConfig
+  config: ToolkitConfig
 ): Promise<BatchWalletOperation> => {
-  const Tezos = await makeToolkitWithSigner(config);
-  const params = await operationValuesToWalletParams(operation, Tezos);
-  return Tezos.wallet.batch(params).send();
+  const signer = await makeToolkit(config);
+  const params = await operationValuesToWalletParams(operation, signer);
+  return signer.wallet.batch(params).send();
 };

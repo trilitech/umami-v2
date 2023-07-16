@@ -3,6 +3,7 @@ import { OperationValue } from "../components/sendForm/types";
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
 import { parseContractPkh, parseImplicitPkh } from "../types/Address";
+import { FakeToolkitConfig } from "../types/ToolkitConfig";
 
 import { estimateBatch, operationValuesToBatchParams } from "../utils/tezos";
 
@@ -11,6 +12,13 @@ jest.unmock("../utils/tezos");
 const pk0 = devPublicKeys0.pk;
 const pkh0 = parseImplicitPkh(devPublicKeys0.pkh);
 const pkh1 = parseImplicitPkh(devPublicKeys1.pkh);
+
+const dummySignerConfig0: FakeToolkitConfig = {
+  type: "fake",
+  pkh: pkh0.pkh,
+  pk: pk0,
+  network: TezosNetwork.MAINNET,
+};
 
 describe("Tezos utils", () => {
   describe("Batch", () => {
@@ -67,12 +75,7 @@ describe("Tezos utils", () => {
         },
       ];
 
-      const result = await operationValuesToBatchParams(
-        input,
-        pk0,
-        pkh0.pkh,
-        TezosNetwork.GHOSTNET
-      );
+      const result = await operationValuesToBatchParams(input, dummySignerConfig0);
       expect(result).toEqual([
         {
           amount: 3,
@@ -231,9 +234,7 @@ describe("Tezos utils", () => {
               tokenId: ghostFA2.tokenId,
             },
           ],
-          pkh0.pkh,
-          pk0,
-          TezosNetwork.GHOSTNET
+          { ...dummySignerConfig0, network: TezosNetwork.GHOSTNET }
         );
 
         for (let i = 0; i < ghostnetResult.length; i += 1) {
@@ -255,9 +256,7 @@ describe("Tezos utils", () => {
               recipient: pkh1,
             },
           ],
-          pkh0.pkh,
-          pk0,
-          TezosNetwork.MAINNET
+          dummySignerConfig0
         );
 
         expect(mainnetResult).toHaveLength(2);
@@ -274,9 +273,8 @@ describe("Tezos utils", () => {
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
           ],
-          pkh0.pkh,
-          pk0,
-          TezosNetwork.MAINNET
+
+          dummySignerConfig0
         );
 
         expect(mainnetResult).toHaveLength(1);
@@ -298,9 +296,7 @@ describe("Tezos utils", () => {
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
           ],
-          pkh0.pkh,
-          pk0,
-          TezosNetwork.MAINNET
+          dummySignerConfig0
         );
 
         await expect(estimation).rejects.toThrow(/tez.subtraction_underflow/i);

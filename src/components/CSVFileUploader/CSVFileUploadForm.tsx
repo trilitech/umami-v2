@@ -105,7 +105,14 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
         csvRowToOperationValue(sender, csvRow, assetLookup)
       );
 
-      await dispatch(estimateAndUpdateBatch(sender, getPk(sender), operationValues, network));
+      await dispatch(
+        estimateAndUpdateBatch(operationValues, {
+          type: "fake",
+          pkh: sender,
+          pk: getPk(sender),
+          network,
+        })
+      );
 
       toast({ title: "CSV added to batch!" });
       onClose();

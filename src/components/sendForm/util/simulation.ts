@@ -24,9 +24,7 @@ const makeMultisigProposalSimulation = async (
       contract: multisigContract,
     },
 
-    signerPk,
-    signerPkh.pkh,
-    network
+    { type: "fake", pk: signerPk, pkh: signerPkh.pkh, network }
   );
   return result;
 };
@@ -46,5 +44,7 @@ export const makeSimulation = async (
   const sender = operation.signer;
 
   const pk = getPk(sender.pkh);
-  return estimateBatch(implicitOps, sender.pkh, pk, network).then(getTotalFee);
+  return estimateBatch(implicitOps, { type: "fake", pkh: sender.pkh, pk, network }).then(
+    getTotalFee
+  );
 };
