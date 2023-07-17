@@ -4,9 +4,11 @@ import { RawPkh } from "../../types/Address";
 import { Token } from "../../types/Token";
 import { useAppSelector } from "../store/hooks";
 
-export const useGetToken = (network: TezosNetwork) => {
+export type TokenLookup = (contract: RawPkh, tokenId: string) => Token | undefined;
+
+export const useGetToken = (network: TezosNetwork): TokenLookup => {
   const tokens = useAppSelector(s => s.tokens[network]);
-  return (contract: RawPkh, tokenId: string): Token | undefined => get(tokens, [contract, tokenId]);
+  return (contract, tokenId) => get(tokens, [contract, tokenId]);
 };
 
 export const useGetTokenType = (network: TezosNetwork) => {

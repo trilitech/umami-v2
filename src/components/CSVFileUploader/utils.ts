@@ -1,89 +1,77 @@
 import {
+  Address,
   isAddressValid,
   isValidContractPkh,
   parseContractPkh,
   parsePkh,
 } from "../../types/Address";
-import { Token } from "../../types/Token";
+import { RawOperation } from "../../types/RawOperation";
 import { getRealAmount } from "../../types/TokenBalance";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
-import { OperationValue } from "../sendForm/types";
-import { CSVRow } from "./types";
+import { TokenLookup } from "../../utils/hooks/tokensHooks";
 
-export const parseToCSVRow = (row: string[]): CSVRow => {
-  const filteredRow = row.filter(v => v.length > 0);
+export const parseOperation = (
+  sender: Address,
+  row: string[],
+  getToken: TokenLookup
+): RawOperation => {
+  const filteredRow = row.filter(col => col.length > 0);
   const len = filteredRow.length;
   if (len < 2 || 4 < len) {
     throw new Error("Invalid csv format");
   }
-
-  const [recipient, prettyAmount, contract, tokenId] = filteredRow;
-  const checkedPrettyAmount = validateNonNegativeNumber(prettyAmount);
-
-  if (!isAddressValid(recipient)) {
+  const [recipientPkh, prettyAmount, contractPkh] = filteredRow;
+  if (!isAddressValid(recipientPkh)) {
     throw new Error("Invalid csv value: recipient");
   }
+  const recipient = parsePkh(recipientPkh);
 
-  if (checkedPrettyAmount === null || checkedPrettyAmount === "0") {
+  if (validateNonNegativeNumber(prettyAmount) === null) {
     throw new Error("Invalid csv value: amount");
   }
 
-  let res: CSVRow = {
-    type: "tez",
-    recipient,
-    prettyAmount,
-  };
-
-  if (contract !== undefined) {
-    if (!isValidContractPkh(contract)) {
-      throw new Error("Invalid csv value: contract address");
-    }
-    res = { ...res, type: "fa1.2", contract, tokenId: "0" };
-    if (tokenId !== undefined) {
-      const checkedTokenId = validateNonNegativeNumber(tokenId);
-      if (checkedTokenId === null) {
-        throw new Error("Invalid csv value: tokenId");
-      }
-      res = { ...res, type: "fa2", tokenId: checkedTokenId };
-    }
-  }
-
-  return res;
-};
-
-export const csvRowToOperationValue = (
-  sender: string,
-  csvRow: CSVRow,
-  getToken: (contract: string, tokenId: string) => Token | undefined
-): OperationValue => {
-  if (csvRow.type === "tez") {
+  if (len === 2) {
     return {
       type: "tez",
-      recipient: parsePkh(csvRow.recipient),
-      amount: tezToMutez(csvRow.prettyAmount).toString(),
+      recipient,
+      amount: tezToMutez(prettyAmount).toString(),
     };
   }
-  const token = getToken(csvRow.contract, csvRow.tokenId);
+
+  if (!isValidContractPkh(contractPkh)) {
+    throw new Error("Invalid csv value: contract address");
+  }
+
+  const contract = parseContractPkh(contractPkh);
+  const tokenId = filteredRow[3] || "0";
+  if (validateNonNegativeNumber(tokenId) === null) {
+    throw new Error("Invalid csv value: tokenId");
+  }
+
+  const token = getToken(contractPkh, tokenId);
   if (!token) {
-    throw new Error(`Unknown token ${csvRow.contract} ${csvRow.tokenId}`);
+    throw new Error(`Unknown token ${contractPkh} ${tokenId}`);
   }
-  const commonValues = {
-    sender: parsePkh(sender),
-    recipient: parsePkh(csvRow.recipient),
-    amount: getRealAmount(token, csvRow.prettyAmount).toString(),
-    contract: parseContractPkh(csvRow.contract),
-  };
-  if (csvRow.type === "fa1.2") {
+  const amount = getRealAmount(token, prettyAmount).toString();
+
+  if (token.type === "fa1.2") {
     return {
-      ...commonValues,
       type: "fa1.2",
-      tokenId: csvRow.tokenId,
+      sender,
+      amount,
+      recipient,
+      contract,
+      tokenId: "0",
     };
   }
+
   return {
-    ...commonValues,
     type: "fa2",
-    tokenId: csvRow.tokenId,
+    sender,
+    recipient,
+    contract,
+    tokenId,
+    amount,
   };
 };

@@ -1,11 +1,7 @@
 import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
 import { ContractAddress, ImplicitAddress, parseContractPkh } from "../types/Address";
 import { FA12Operation, FA2Operation } from "../types/RawOperation";
-import {
-  makeFA12TransactionParameter,
-  makeFA2TransactionParameter,
-  makeTokenTransferParams,
-} from "../utils/tezos";
+import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 import {
   FA12_TRANSFER_ARG_TYPES,
   FA2_TRANSFER_ARG_TYPES,
@@ -63,7 +59,6 @@ describe("makeLambda", () => {
       sender: multisigContractAddress,
     };
     const result = makeLambda(operation);
-    console.log(makeTokenTransferParams(operation));
 
     expect(result).toEqual([
       { prim: "DROP" },
