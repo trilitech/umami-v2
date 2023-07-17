@@ -24,20 +24,16 @@ import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
 import { OperationValue } from "../../components/sendForm/types";
 import { ImplicitAccount } from "../../types/Account";
-import { Token } from "../../types/Token";
 import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import { useGetToken } from "../../utils/hooks/tokensHooks";
+import { TokenLookup, useGetToken } from "../../utils/hooks/tokensHooks";
 import { Batch } from "../../utils/store/assetsSlice";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
-const renderAmount = (
-  operation: OperationValue,
-  getToken: (contract: string, tokenId: string) => Token | undefined
-) => {
+const renderAmount = (operation: OperationValue, getToken: TokenLookup) => {
   switch (operation.type) {
     case "fa1.2":
     case "fa2": {

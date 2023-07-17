@@ -14,18 +14,23 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
-import { FC, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { Address, parsePkh } from "../../types/Address";
+import { RawOperation } from "../../types/RawOperation";
 import { useGetPk } from "../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
-import { CSVRow } from "./types";
-import { csvRowToOperationValue, parseToCSVRow } from "./utils";
+import { parseOperation } from "./utils";
 
-const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
+type FormFields = {
+  sender: string;
+  file: FileList;
+};
+
+const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
   const getPk = useGetPk();
@@ -33,9 +38,7 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const dispatch = useAppDispatch();
   const isSimulating = useBatchIsSimulating();
 
-  const form = useForm<{
-    sender: string;
-  }>({
+  const form = useForm<FormFields>({
     mode: "onBlur",
   });
   const {
@@ -44,69 +47,42 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
     formState: { isValid, errors },
   } = form;
 
-  // TODO: is it possible to use the csv file with react-hook-form?
-  // https://app.asana.com/0/0/1204523779791382/f
-  const [csv, setCSV] = useState<CSVRow[] | null>(null);
-  const csvRef = useRef<HTMLInputElement>(null);
-
-  const resetFile = () => {
-    // Reset file input.
-    if (csvRef.current) {
-      csvRef.current.value = "";
-    }
-  };
-
-  const onCSVFileUploadComplete = async (rows: ParseResult<string[]>) => {
+  const onCSVFileUploadComplete = async (sender: Address, rows: ParseResult<string[]>) => {
     if (rows.errors.length > 0) {
       throw new Error("Error loading csv file.");
     }
 
-    // Iterate through the csv
-    const csv: CSVRow[] = [];
-    rows.data.forEach((row, i) => {
+    const operations: RawOperation[] = [];
+    for (let i = 0; i < rows.data.length; i++) {
+      const row = rows.data[i];
       try {
-        csv.push(parseToCSVRow(row));
+        operations.push(parseOperation(sender, row, getToken));
       } catch (error: any) {
-        resetFile();
         toast({
           title: "error",
-          description: `Error at row ${i}: ${error?.message}`,
+          description: `Error at row #${i + 1}: ${error?.message}`,
+          status: "error",
         });
+        return;
       }
-    });
-
-    const isValidCSV = csv.length === rows.data.length;
-    setCSV(isValidCSV ? csv : null);
-  };
-
-  const handleCSVFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileUploaded = event.target.files?.item(0);
-    if (!fileUploaded) {
-      throw new Error("Error uploading csv file.");
-    }
-
-    Papa.parse<string[]>(fileUploaded, {
-      skipEmptyLines: true,
-      complete: onCSVFileUploadComplete,
-    });
-  };
-
-  const onSubmit = async ({ sender }: { sender: string }) => {
-    if (!csv) {
-      return;
     }
 
     try {
-      const operations = csv.map(csvRow => csvRowToOperationValue(sender, csvRow, getToken));
-
-      await dispatch(estimateAndUpdateBatch(sender, getPk(sender), operations, network));
+      await dispatch(estimateAndUpdateBatch(sender.pkh, getPk(sender.pkh), operations, network));
 
       toast({ title: "CSV added to batch!" });
       onClose();
     } catch (error: any) {
-      resetFile();
-      toast({ title: "Invalid transaction", description: error.message });
+      toast({ title: "Invalid transaction", description: error.message, status: "error" });
     }
+  };
+
+  const onSubmit = async ({ file, sender }: FormFields) => {
+    const senderAddress = parsePkh(sender);
+    Papa.parse<string[]>(file[0], {
+      skipEmptyLines: true,
+      complete: (rows: ParseResult<string[]>) => onCSVFileUploadComplete(senderAddress, rows),
+    });
   };
 
   return (
@@ -126,34 +102,25 @@ const CSVFileUploadForm: FC<{ onClose: () => void }> = ({ onClose }) => {
             {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
           </FormControl>
 
-          <FormLabel pt={5}>Select CSV</FormLabel>
-          <Flex>
-            <Input
-              p={2}
-              mb={5}
-              ref={csvRef}
-              accept=".csv"
-              type="file"
-              onChange={e => {
-                try {
-                  handleCSVFileUpload(e);
-                } catch (error: any) {
-                  resetFile();
-                  toast({
-                    title: "Error loading csv file",
-                    description: error.message,
-                  });
-                }
-              }}
-              variant="unstyled"
-            />
-          </Flex>
+          <FormControl pt={5} isInvalid={!!errors.file}>
+            <FormLabel>Select CSV</FormLabel>
+            <Flex>
+              <Input
+                p={2}
+                {...form.register("file", { required: "File is required" })}
+                accept=".csv"
+                type="file"
+                variant="unstyled"
+              />
+            </Flex>
+            {errors.file && <FormErrorMessage mt={0}>{errors.file.message}</FormErrorMessage>}
+          </FormControl>
         </ModalBody>
 
         <ModalFooter>
           <Box width="100%">
             <Button
-              isDisabled={!(isValid && !!csv)}
+              isDisabled={!isValid}
               isLoading={isSimulating(getValues("sender"))}
               width="100%"
               type="submit"
