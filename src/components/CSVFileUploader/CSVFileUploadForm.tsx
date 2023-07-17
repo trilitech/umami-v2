@@ -18,7 +18,11 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Address, parsePkh } from "../../types/Address";
 import { RawOperation } from "../../types/RawOperation";
 import { useGetPk } from "../../utils/hooks/accountHooks";
-import { useBatchIsSimulating, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import {
+  useBatchIsSimulating,
+  useClearBatch,
+  useSelectedNetwork,
+} from "../../utils/hooks/assetsHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/store/hooks";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
@@ -37,6 +41,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   const getToken = useGetToken(network);
   const dispatch = useAppDispatch();
   const isSimulating = useBatchIsSimulating();
+  const clearBatch = useClearBatch();
 
   const form = useForm<FormFields>({
     mode: "onBlur",
@@ -73,6 +78,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
       toast({ title: "CSV added to batch!" });
       onClose();
     } catch (error: any) {
+      clearBatch(sender.pkh);
       toast({ title: "Invalid transaction", description: error.message, status: "error" });
     }
   };
