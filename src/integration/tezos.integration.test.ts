@@ -40,7 +40,6 @@ describe("Tezos utils", () => {
         },
         {
           type: "fa2",
-          data: ghostTezzard,
           sender: pkh0,
           recipient: pkh1,
           amount: "1",
@@ -49,7 +48,6 @@ describe("Tezos utils", () => {
         },
         {
           type: "fa1.2",
-          data: ghostFA12,
           sender: pkh0,
           recipient: pkh1,
           amount: "1",
@@ -58,7 +56,6 @@ describe("Tezos utils", () => {
         },
         {
           type: "fa2",
-          data: ghostFA2,
           sender: pkh0,
           recipient: pkh1,
           amount: "2",
@@ -205,7 +202,6 @@ describe("Tezos utils", () => {
             },
             {
               type: "fa2",
-              data: ghostTezzard,
               sender: pkh0,
               recipient: pkh1,
               amount: "1",
@@ -214,7 +210,6 @@ describe("Tezos utils", () => {
             },
             {
               type: "fa1.2",
-              data: ghostFA12,
               sender: pkh0,
               recipient: pkh1,
               amount: "1",
@@ -223,7 +218,6 @@ describe("Tezos utils", () => {
             },
             {
               type: "fa2",
-              data: ghostFA2,
               sender: pkh0,
               recipient: pkh1,
               amount: "1",

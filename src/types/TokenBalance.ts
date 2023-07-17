@@ -1,6 +1,6 @@
 import * as tzktApi from "@tzkt/sdk-api";
 import { BigNumber } from "bignumber.js";
-import { Metadata, RawTokenInfo, Token, fromRaw as fromRawToken } from "./Token";
+import { Metadata, RawTokenInfo, Token, fromRaw as fromRawToken, NFT } from "./Token";
 import { getIPFSurl } from "../utils/token/nftUtils";
 import { TezosNetwork } from "@airgap/tezos";
 
@@ -31,8 +31,8 @@ export const tokenName = (asset: TokenBalance): string => {
   return asset.metadata?.name || defaultTokenName(asset);
 };
 
-const defaultTokenSymbol = (asset: TokenBalance): string => {
-  switch (asset.type) {
+const defaultTokenSymbol = (token: Token): string => {
+  switch (token.type) {
     case "fa1.2":
       return DEFAULT_FA1_SYMBOL;
     case "fa2":
@@ -42,11 +42,11 @@ const defaultTokenSymbol = (asset: TokenBalance): string => {
   }
 };
 
-export const tokenSymbol = (asset: TokenBalance): string => {
-  return asset.metadata?.symbol || defaultTokenSymbol(asset);
+export const tokenSymbol = (token: Token): string => {
+  return token.metadata?.symbol || defaultTokenSymbol(token);
 };
 
-export const tokenDecimal = (asset: TokenBalance): string => {
+export const tokenDecimal = (asset: Token): string => {
   return asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
 };
 
@@ -60,7 +60,7 @@ export const httpIconUri = (asset: FA12TokenBalance | FA2TokenBalance): string |
   return iconUri && getIPFSurl(iconUri);
 };
 
-export const getRealAmount = (asset: TokenBalance, prettyAmount: string): BigNumber => {
+export const getRealAmount = (asset: Token, prettyAmount: string): BigNumber => {
   const amount = new BigNumber(prettyAmount);
 
   if (asset.type === "nft") {
@@ -131,7 +131,7 @@ export const artifactUri = (nft: NFTBalance): string => {
   return nft.metadata.artifactUri || nft.displayUri;
 };
 
-export const thumbnailUri = (nft: NFTBalance): string => {
+export const thumbnailUri = (nft: NFT): string => {
   return nft.metadata.thumbnailUri || nft.displayUri;
 };
 

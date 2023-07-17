@@ -23,7 +23,7 @@ import React from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
-import { TokenBalance, getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
+import { getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
 import { Delegation } from "../../../types/RawOperation";
 import { tezToMutez } from "../../../utils/format";
 import {
@@ -40,8 +40,9 @@ import {
   AddressAutocomplete,
 } from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
-import { classifyAsset, FormOperations, OperationValue, SendFormMode } from "../types";
+import { toOperation, FormOperations, OperationValue, SendFormMode } from "../types";
 import { BatchRecap } from "./BatchRecap";
+import { Token } from "../../../types/Token";
 
 export const DelegateForm = ({
   onSubmit,
@@ -114,7 +115,7 @@ export const DelegateForm = ({
   );
 };
 
-const getAmountSymbol = (asset?: TokenBalance) => {
+const getAmountSymbol = (asset?: Token) => {
   if (!asset) {
     return "tez";
   }
@@ -226,7 +227,7 @@ export const SendTezOrNFTForm = ({
   onSubmit: (v: FormValues) => void;
   onSubmitBatch: (v: FormValues) => void;
   sender: string;
-  token?: TokenBalance;
+  token?: Token;
   isLoading?: boolean;
   recipient?: string;
   amount?: string;
@@ -368,9 +369,9 @@ const buildTezFromFormValues = (
   return { type: "implicit", content: value, signer: parseImplicitPkh(v.sender) };
 };
 
-const buildTokenFromFormValues = (v: FormValues, asset: TokenBalance): FormOperations => {
+const buildTokenFromFormValues = (v: FormValues, asset: Token): FormOperations => {
   const token = [
-    classifyAsset(asset, {
+    toOperation(asset, {
       amount: getRealAmount(asset, v.amount).toString(),
       sender: v.sender,
       recipient: v.recipient,
@@ -455,7 +456,7 @@ export const FillStep: React.FC<{
           parameter={parameter}
           onSubmitBatch={v => {
             onSubmitBatch(
-              classifyAsset(mode.data, {
+              toOperation(mode.data, {
                 amount: getRealAmount(mode.data, v.amount).toString(),
                 sender: v.sender,
                 recipient: v.recipient,
