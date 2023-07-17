@@ -4,29 +4,29 @@ import ApproveExecuteForm from "./ApproveExecuteForm";
 import { useGetPk } from "../../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { estimateMultisigApproveOrExecute } from "../../../utils/tezos";
-import { ParamsWithFee, ApproveExecuteParams } from "./types";
+import { ApproveExecuteParams } from "./types";
 
-const useModal = () => {
+function useModal<T>(Component: React.ComponentType<{ params: T }>) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const paramsRef = useRef<ParamsWithFee | undefined>(undefined);
+  const paramsRef = useRef<T | undefined>(undefined);
 
   return {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
-        {paramsRef.current && <ApproveExecuteForm params={paramsRef.current} />}
+        {paramsRef.current && <Component params={paramsRef.current} />}
       </Modal>
     ),
-    onOpen: (options: ParamsWithFee) => {
+    onOpen: (options: T) => {
       // We use a ref because since setState is async we have no guarantee that
       // params will be up to date when we call onOpen
       paramsRef.current = options;
       onOpen();
     },
   };
-};
+}
 
 export const useApproveOrExecuteModdal = () => {
-  const { modalElement, onOpen } = useModal();
+  const { modalElement, onOpen } = useModal(ApproveExecuteForm);
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const network = useSelectedNetwork();
