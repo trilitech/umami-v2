@@ -259,7 +259,7 @@ describe("<AccountCard />", () => {
 
       render(<AccountCard account={multisigAccount} />);
       const { getAllByTestId } = within(screen.getByTestId("account-card-pending-tab-panel"));
-      const pendingOps = getAllByTestId("multisig-pending-operations");
+      const pendingOps = getAllByTestId(/multisig-pending-operation/i);
       expect(pendingOps).toHaveLength(1);
       expect(pendingOps[0]).toHaveTextContent(/-0.1 ꜩ/i);
       expect(pendingOps[0]).toHaveTextContent(/Send to :tz1UN...oBUB3/i);
@@ -275,7 +275,7 @@ describe("<AccountCard />", () => {
       const { queryAllByTestId, getByText } = within(
         screen.getByTestId("account-card-pending-tab-panel")
       );
-      const pendingOps = queryAllByTestId("multisig-pending-operations");
+      const pendingOps = queryAllByTestId(/multisig-pending-operations/i);
       expect(pendingOps).toHaveLength(0);
       expect(getByText(/No multisig pending operations/i)).toBeInTheDocument();
     });
