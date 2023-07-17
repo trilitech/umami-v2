@@ -68,7 +68,7 @@ export const tezSchema = z.tuple([
 export const contractTezSchema = z.tuple([
   pushAddressSchema,
   contractHeadSchema,
-  z.tuple([prim("IF_NONE")]),
+  prim("IF_NONE"),
   pushMutezSchema,
   prim("UNIT"),
   ...lambdaEndSchema,
