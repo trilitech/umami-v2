@@ -25,7 +25,7 @@ export const FilterController: React.FC<{ batchPending: number }> = props => {
         ml={4}
         icon={TfiNewWindow}
         label="See file specs"
-        color={colors.gray[600]}
+        color={colors.gray[400]}
         _hover={{
           color: colors.gray[300],
         }}
@@ -84,7 +84,7 @@ const BatchView = () => {
     <Flex direction="column" height="100%">
       <TopBar title="Batch" />
       <FilterController batchPending={batchEls.length} />
-      <Box overflow="scroll" minH="80%">
+      <Box overflowY="auto" minH="80%">
         {batchEls.length === 0 ? (
           <NoItems
             text="Your batch is currently empty"
