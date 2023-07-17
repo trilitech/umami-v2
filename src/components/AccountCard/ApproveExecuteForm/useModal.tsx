@@ -12,8 +12,6 @@ export function useModal<T>(Component: React.ComponentType<{ params: T }>) {
       </Modal>
     ),
     onOpen: (options: T) => {
-      // We use a ref because since setState is async we have no guarantee that
-      // params will be up to date when we call onOpen
       paramsRef.current = options;
       onOpen();
     },
