@@ -225,12 +225,10 @@ const singleTezContract = (amount: string, recipient: ContractAddress) => {
       args: [{ prim: "address" }, { string: recipient.pkh }],
     },
     { prim: "CONTRACT", args: [{ prim: "unit" }] },
-    [
-      {
-        prim: "IF_NONE",
-        args: [[[{ prim: "UNIT" }, { prim: "FAILWITH" }]], []],
-      },
-    ],
+    {
+      prim: "IF_NONE",
+      args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
+    },
     { prim: "PUSH", args: [{ prim: "mutez" }, { int: amount }] },
     { prim: "UNIT" },
     { prim: "TRANSFER_TOKENS" },
