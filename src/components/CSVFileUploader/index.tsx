@@ -11,7 +11,7 @@ const CSVFileUploader = () => {
       <IconAndTextBtn
         icon={HiOutlineDocumentDownload}
         label="Load CSV file"
-        color={colors.gray[600]}
+        color={colors.gray[400]}
         _hover={{
           color: colors.gray[300],
         }}

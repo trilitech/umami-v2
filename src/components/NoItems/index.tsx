@@ -32,7 +32,7 @@ export default function NoItems({
             </Button>
           ) : null}
           {secondaryText ? (
-            <Button variant="outline" size={buttonSize} onClick={onClickSecondary}>
+            <Button variant="outline" size={buttonSize} onClick={onClickSecondary} ml={5}>
               {secondaryText}
             </Button>
           ) : null}
