@@ -2,10 +2,10 @@ import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { RpcClient } from "@taquito/rpc";
 import { nodeUrls } from "../../utils/tezos/consts";
-import { ledgerPattern } from "../../utils/account/derivationPathUtils";
 import { SupportedIcons } from "../CircleIcon";
 import ModalContentWrapper from "./ModalContentWrapper";
 import { useRestoreLedger } from "../../utils/hooks/accountHooks";
+import { defaultV1Pattern } from "../../utils/account/derivationPathUtils";
 
 export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const {
@@ -19,7 +19,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
     const rpc = new RpcClient(nodeUrls["mainnet"]);
     const managerKey = await rpc.getManagerKey(pkh);
     const pk = typeof managerKey === "string" ? managerKey : managerKey.key;
-    restoreLedger(ledgerPattern, pk, pkh, name);
+    restoreLedger(defaultV1Pattern, pk, pkh, name);
     onClose();
   };
   return (

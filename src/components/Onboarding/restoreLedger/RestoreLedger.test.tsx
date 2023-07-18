@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ReduxStore } from "../../../providers/ReduxStore";
-import { ledgerPattern } from "../../../utils/account/derivationPathUtils";
+import { defaultV1Pattern } from "../../../utils/account/derivationPathUtils";
 import { getPk } from "../../../utils/ledger/pk";
 import RestoreLedger from "./RestoreLedger";
 
@@ -24,7 +24,11 @@ jest.mock("@chakra-ui/react", () => {
 const getPkMock = getPk as jest.Mock;
 
 const fixture = (closeModal: () => void) => {
-  const account = { type: "ledger" as const, derivationPath: ledgerPattern, label: "Any Account" };
+  const account = {
+    type: "ledger" as const,
+    derivationPath: defaultV1Pattern,
+    label: "Any Account",
+  };
   return (
     <ReduxStore>
       <RestoreLedger closeModal={closeModal} account={account} />

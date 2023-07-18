@@ -1,8 +1,7 @@
-// This is the default derivation path pattern used by V1
-export const defaultV1Pattern = "m/44'/1729'/?'/0'";
-
 // This is the derivation path pattern used by ledger
-export const ledgerPattern = "44'/1729'/?'/0'";
+// Umami V1 adds a prefix as follows: "m/44'/1729'/?'/0'" which has no effect.
+// Therefore we use the ledger derivation path withouth prefix everywhere.
+export const defaultV1Pattern = "44'/1729'/?'/0'";
 
 // derivation path pattern sanity check regex
 const patternRegex = /^(m\/)?\d+'\/\d+'\/\?'\/\d+'$/;
@@ -39,5 +38,3 @@ export const makeDerivationPath = (pattern: string, index: number) => {
 
 export const getDefaultMnemonicDerivationPath = (index: number) =>
   defaultV1Pattern.replace("?", index.toString());
-
-export const getLedgerDerivationPath = (index: number) => makeDerivationPath(ledgerPattern, index);

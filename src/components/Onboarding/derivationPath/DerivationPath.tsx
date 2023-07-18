@@ -4,7 +4,7 @@ import ModalContentWrapper from "../ModalContentWrapper";
 import { SupportedIcons } from "../../CircleIcon";
 import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 import { useState } from "react";
-import { defaultV1Pattern, ledgerPattern } from "../../../utils/account/derivationPathUtils";
+import { defaultV1Pattern } from "../../../utils/account/derivationPathUtils";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
@@ -19,17 +19,9 @@ export const DerivationPath = ({
 }) => {
   const { register, handleSubmit } = useForm<ConfirmDerivationPathFormValues>();
   const [useDefault, setUseDefault] = useState(true);
-  const getDefaultDerivationPath = () => {
-    switch (account.type) {
-      case "ledger":
-        return ledgerPattern;
-      case "mnemonic":
-        return defaultV1Pattern;
-    }
-  };
 
   const onSubmit = async (data: ConfirmDerivationPathFormValues) => {
-    const derivationPath = useDefault ? getDefaultDerivationPath() : data.derivationPath;
+    const derivationPath = useDefault ? defaultV1Pattern : data.derivationPath;
 
     switch (account.type) {
       case "ledger":
@@ -61,7 +53,7 @@ export const DerivationPath = ({
               {/* TODO: Add derivationPath regex matching check! */}
               <Input
                 data-testid="custom-path"
-                defaultValue={getDefaultDerivationPath()}
+                defaultValue={defaultV1Pattern}
                 isDisabled={useDefault}
                 {...register("derivationPath", {
                   required: false,

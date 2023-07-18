@@ -1,7 +1,6 @@
 import {
   deductDerivationPattern,
   defaultV1Pattern,
-  ledgerPattern,
   makeDerivationPath,
 } from "./derivationPathUtils";
 
@@ -10,11 +9,6 @@ describe("makeDerivationPath", () => {
     {
       const result = makeDerivationPath(defaultV1Pattern, 3);
       expect(result).toEqual("m/44'/1729'/3'/0'");
-    }
-
-    {
-      const result = makeDerivationPath(ledgerPattern, 1);
-      expect(result).toEqual("44'/1729'/1'/0'");
     }
 
     {
