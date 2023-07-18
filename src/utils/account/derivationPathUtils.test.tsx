@@ -8,7 +8,7 @@ describe("makeDerivationPath", () => {
   test("generates derivation path against a valid patterns", () => {
     {
       const result = makeDerivationPath(defaultV1Pattern, 3);
-      expect(result).toEqual("m/44'/1729'/3'/0'");
+      expect(result).toEqual("44'/1729'/3'/0'");
     }
 
     {
@@ -27,8 +27,8 @@ describe("makeDerivationPath", () => {
 describe("deductDerivationPattern", () => {
   test("it generates derivation patern against valid derivation path", () => {
     {
-      const result = deductDerivationPattern("m/44'/1729'/3'/0'");
-      expect(result).toEqual("m/44'/1729'/?'/0'");
+      const result = deductDerivationPattern("44'/1729'/3'/0'");
+      expect(result).toEqual("44'/1729'/?'/0'");
     }
 
     {
@@ -43,8 +43,8 @@ describe("deductDerivationPattern", () => {
   });
 
   test("throws an error if provided derivation path is not valid", () => {
-    expect(() => deductDerivationPattern("m/44'/1729'/3'/0/3'")).toThrowError(
-      "Invalid derivation path: m/44'/1729'/3'/0/3'"
+    expect(() => deductDerivationPattern("44'/1729'/3'/0/3'")).toThrowError(
+      "Invalid derivation path: 44'/1729'/3'/0/3'"
     );
   });
 });

@@ -121,16 +121,16 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreMnemonicAccounts(seedPhrase, undefined, "m/44'/1729'/?'/8'");
+    const result = await restoreMnemonicAccounts(seedPhrase, undefined, "44'/1729'/?'/8'");
 
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
         label: `Account 0`,
-        derivationPath: "m/44'/1729'/0'/8'",
+        derivationPath: "44'/1729'/0'/8'",
       }),
       expect.objectContaining({
         label: `Account 1`,
-        derivationPath: "m/44'/1729'/1'/8'",
+        derivationPath: "44'/1729'/1'/8'",
       }),
     ];
     expect(result).toEqual(expected);
@@ -140,8 +140,8 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = restoreMnemonicAccounts(seedPhrase, undefined, "m/44'/foo'/?'/8'");
+    const result = restoreMnemonicAccounts(seedPhrase, undefined, "44'/foo'/?'/8'");
 
-    await expect(result).rejects.toThrowError("Invalid derivation pattern: m/44'/foo'/?'/8'");
+    await expect(result).rejects.toThrowError("Invalid derivation pattern: 44'/foo'/?'/8'");
   });
 });
