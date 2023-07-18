@@ -16,12 +16,12 @@ import { BsTrash } from "react-icons/bs";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
 import colors from "../../../style/colors";
 import { isValidImplicitPkh } from "../../../types/Address";
-import { Step, InitialStep, MultisigFields } from "./useCreateMultisigModal";
+import { ReviewStep, InitialStep, MultisigFields } from "./useCreateMultisigModal";
 
-export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep: InitialStep }> = ({
-  goToStep,
-  currentStep,
-}) => {
+export const CreateForm: React.FC<{
+  goToStep: (step: ReviewStep) => void;
+  currentStep: InitialStep;
+}> = ({ goToStep, currentStep }) => {
   const { defaultOwner, data } = currentStep;
   const form = useForm<MultisigFields>({
     mode: "onBlur",
@@ -38,12 +38,15 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
     register,
     handleSubmit,
     getValues,
+    watch,
   } = form;
   const signersArray = useFieldArray({
     control,
     name: "signers",
     rules: { minLength: 1 },
   });
+
+  const signers = watch("signers");
 
   const onSubmit = (multisigFields: MultisigFields) => {
     // saves the form for history to work
@@ -71,7 +74,9 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
                 placeholder="The name is only stored locally"
               />
             </InputGroup>
-            {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
+            {errors.name && (
+              <FormErrorMessage data-testid="name-error">{errors.name.message}</FormErrorMessage>
+            )}
           </FormControl>
 
           <FormControl mb={2} isInvalid={!!errors.owner}>
@@ -80,7 +85,9 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
               inputName="owner"
               allowUnknown={false}
             />
-            {errors.owner && <FormErrorMessage>{errors.owner.message}</FormErrorMessage>}
+            {errors.owner && (
+              <FormErrorMessage data-testid="owner-error">{errors.owner.message}</FormErrorMessage>
+            )}
           </FormControl>
           {signersArray.fields.map((field, index) => {
             const error = errors.signers && errors.signers[index];
@@ -88,10 +95,11 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
 
             return (
               <FormControl
+                data-testid={`signer-input-${index}`}
                 mb={2}
                 key={field.id}
                 isInvalid={!!error}
-                width={getValues("signers").length > 1 ? "355px" : "400px"}
+                width={signers.length > 1 ? "355px" : "400px"}
               >
                 <OwnedImplicitAccountsAutocomplete
                   label={label}
@@ -107,7 +115,7 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
                   }}
                   allowUnknown
                 />
-                {getValues("signers").length > 1 && (
+                {signers.length > 1 && (
                   <IconButton
                     size="md"
                     variant="ghost"
@@ -117,11 +125,16 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
                     mt="-40px"
                     ml="360px"
                     color="umami.gray.450"
+                    data-testid={`remove-signer-${index}`}
                     icon={<BsTrash />}
                     onClick={() => signersArray.remove(index)}
                   />
                 )}
-                {error && <FormErrorMessage>{error.val?.message}</FormErrorMessage>}
+                {error && (
+                  <FormErrorMessage data-testid={`signer-${index}-error`}>
+                    {error.val?.message}
+                  </FormErrorMessage>
+                )}
               </FormControl>
             );
           })}
@@ -142,11 +155,12 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
                   type="number"
                   color="white"
                   step={1}
+                  data-testid="threshold-input"
                   {...register("threshold", {
                     required: "No. of approvals is required",
                     max: {
-                      value: getValues("signers").length,
-                      message: `Max no. of approvals is ${getValues("signers").length}`,
+                      value: signers.length,
+                      message: `Max no. of approvals is ${signers.length}`,
                     },
                     min: {
                       value: 1,
@@ -155,11 +169,15 @@ export const CreateForm: React.FC<{ goToStep: (step: Step) => void; currentStep:
                   })}
                 />
               </InputGroup>
-              <Text display="inline" ml="10px">
-                out of {getValues("signers").length}
+              <Text display="inline" ml="10px" data-testid="max-signers">
+                out of {signers.length}
               </Text>
             </FormLabel>
-            {errors.threshold && <FormErrorMessage>{errors.threshold.message}</FormErrorMessage>}
+            {errors.threshold && (
+              <FormErrorMessage data-testid="threshold-error">
+                {errors.threshold.message}
+              </FormErrorMessage>
+            )}
           </FormControl>
         </ModalBody>
         <ModalFooter>

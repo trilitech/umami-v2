@@ -168,8 +168,9 @@ export const AccountsList: React.FC<{
   });
   return (
     <>
+      {/* TODO: put into correct place under the multisig section */}
       <Button onClick={createMultisigModal.open}>
-        {/* TODO: rotate */}
+        {/* TODO: use correct icon from figma */}
         <Icon as={TfiKey} />
         <Text>Create New Multisig</Text>
       </Button>

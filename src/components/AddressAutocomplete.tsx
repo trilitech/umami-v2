@@ -146,7 +146,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   };
 
   return (
-    <Box>
+    <Box data-testid={`address-autocomplete-${inputName}`}>
       <FormLabel m={0}>
         {label}
         <Input
