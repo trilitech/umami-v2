@@ -1,7 +1,19 @@
-import { Box, Flex, Heading, Modal, ModalContent, useDisclosure, useToast } from "@chakra-ui/react";
-import { groupBy } from "lodash";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Modal,
+  ModalContent,
+  Text,
+  Icon,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
+import { compact, groupBy } from "lodash";
 import { useRef, useState } from "react";
 import { BsWindowPlus } from "react-icons/bs";
+import { TfiKey } from "react-icons/tfi";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
@@ -13,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
 import { deriveAccount } from "../../utils/store/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
+import { useCreateMultisigModal } from "./Multisig/useCreateMultisigModal";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -89,13 +102,14 @@ export const AccountsList: React.FC<{
   onOpen: () => void;
   selected: string | null;
   onSelect: (pkh: string) => void;
-}> = props => {
-  const selected = props.selected;
+}> = ({ onOpen, selected, onSelect }) => {
   const accounts = useAllAccounts();
 
   const mutezBalance = useAppSelector(s => s.assets.balances.mutez);
 
   const accountsByKind = groupBy(accounts, getLabel);
+
+  const createMultisigModal = useCreateMultisigModal();
 
   const {
     onOpen: openConfirmModal,
@@ -135,7 +149,7 @@ export const AccountsList: React.FC<{
       openDeriveAccountModal({ fingerprint: first.seedFingerPrint });
     };
 
-    return accountsByType ? (
+    return (
       <AccountGroup
         showCTA={isMnemonicGroup}
         key={label}
@@ -146,22 +160,31 @@ export const AccountsList: React.FC<{
         onDelete={handleDelete}
         onDerive={handleDerive}
         onSelect={(pkh: string) => {
-          props.onOpen();
-          props.onSelect(pkh);
+          onOpen();
+          onSelect(pkh);
         }}
       />
-    ) : null;
+    );
   });
   return (
-    <Box height="100%">
-      <NestedScroll>{accountTiles}</NestedScroll>
-      {confirmModal}
-      {deriveAccountModal}
-    </Box>
+    <>
+      {/* TODO: put into correct place under the multisig section */}
+      <Button onClick={createMultisigModal.open}>
+        {/* TODO: use correct icon from figma */}
+        <Icon as={TfiKey} />
+        <Text>Create New Multisig</Text>
+      </Button>
+      <Box height="100%">
+        <NestedScroll>{compact(accountTiles)}</NestedScroll>
+        {confirmModal}
+        {deriveAccountModal}
+        {createMultisigModal.element}
+      </Box>
+    </>
   );
 };
 
-const DeriveAcount = (props: { onDone: () => void; fingerprint: string }) => {
+const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
   const dispatch = useAppDispatch();
 
   const [isLoading, setIsloading] = useState(false);
@@ -183,10 +206,10 @@ const DeriveAcount = (props: { onDone: () => void; fingerprint: string }) => {
         title: "New account created!",
         description: `Successfully derived account from ${props.fingerprint}`,
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Failed to derive new account",
-        description: (error as Error).message,
+        description: error.message,
       });
     }
 
@@ -212,7 +235,7 @@ export const useDeriveAccountModal = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalContent bg="umami.gray.900">
           {paramsRef.current?.fingerprint && (
-            <DeriveAcount onDone={onClose} fingerprint={paramsRef.current.fingerprint} />
+            <DeriveAccount onDone={onClose} fingerprint={paramsRef.current.fingerprint} />
           )}
         </ModalContent>
       </Modal>

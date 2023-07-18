@@ -18,6 +18,7 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   allowUnknown: boolean;
   label: string;
   onUpdate?: (value: string) => void;
+  validate?: (value: string) => string | undefined;
 };
 
 const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
@@ -96,6 +97,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   allowUnknown,
   inputName,
   onUpdate,
+  validate,
   label,
 }: BaseProps<T, U> & { contacts: Contact[] }) => {
   const {
@@ -144,7 +146,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   };
 
   return (
-    <Box>
+    <Box data-testid={`address-autocomplete-${inputName}`}>
       <FormLabel m={0}>
         {label}
         <Input
@@ -167,7 +169,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         />
       </FormLabel>
       <Input
-        {...register<U>(inputName, { required: "Invalid address or contact name" })}
+        {...register<U>(inputName, { required: "Invalid address or contact name", validate })}
         mb={0}
         name={inputName}
         type="hidden"
