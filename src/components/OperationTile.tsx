@@ -4,7 +4,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsArrowDownLeft, BsArrowUpRight } from "react-icons/bs";
 import colors from "../style/colors";
 import { useIsBlockFinalised } from "../utils/hooks/assetsHooks";
-import { OperationDisplay } from "../types/Operation";
+import { OperationDisplay } from "../types/Transfer";
 import { getIsInbound } from "../views/operations/operationsUtils";
 import { CopyableAddress } from "./CopyableText";
 

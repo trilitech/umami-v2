@@ -1,11 +1,12 @@
 import { makeBatchLambda } from "../../../multisig/multisigUtils";
 import { parseContractPkh } from "../../../types/Address";
+import { Operation } from "../../../types/Operation";
 import { SignerConfig } from "../../../types/SignerConfig";
 import { proposeMultisigLambda, submitBatch } from "../../../utils/tezos";
-import { FormOperations, OperationValue } from "../types";
+import { FormOperations } from "../types";
 
 const makeProposeOperation = async (
-  operations: OperationValue[],
+  operations: Operation[],
   sender: string,
   config: SignerConfig
 ) => {
@@ -15,7 +16,7 @@ const makeProposeOperation = async (
   return proposeMultisigLambda({ contract, lambdaActions }, config);
 };
 
-const makeTransferImplicit = async (operations: OperationValue[], config: SignerConfig) => {
+const makeTransferImplicit = async (operations: Operation[], config: SignerConfig) => {
   return submitBatch(operations, config).then(res => {
     return {
       hash: res.opHash,

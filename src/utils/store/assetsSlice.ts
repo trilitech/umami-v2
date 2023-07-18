@@ -2,15 +2,15 @@ import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
-import { OperationValue } from "../../components/sendForm/types";
 import { TokenBalance, fromRaw, eraseToken } from "../../types/TokenBalance";
 import { Baker } from "../../types/Baker";
-import { TezTransfer, TokenTransfer } from "../../types/Operation";
+import { TezTransfer, TokenTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { TzktAccount } from "../tezos";
 import accountsSlice from "./accountsSlice";
+import { Operation } from "../../types/Operation";
 
-export type BatchItem = { operation: OperationValue; fee: string };
+export type BatchItem = { operation: Operation; fee: string };
 export type Batch = {
   isSimulating: boolean;
   items: Array<BatchItem>;
@@ -79,7 +79,7 @@ const assetsSlice = createSlice({
   // Reset assets state if accounts are reset
   extraReducers: builder =>
     // This throw error: TS2589: Type instantiation is excessively deep and possibly infinite.
-    // Because of use of Taquito TransferParams["parameter"] in OperationValue that is too complex
+    // Because of use of Taquito TransferParams["parameter"] in Operation that is too complex
     // What can this be fixed?
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

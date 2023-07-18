@@ -1,7 +1,7 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { OperationValue } from "../../../components/sendForm/types";
-import { operationValuesToBatchItems } from "../../../views/batch/batchUtils";
+import { Operation } from "../../../types/Operation";
+import { operationsToBatchItems } from "../../../views/batch/batchUtils";
 import assetsSlice from "../assetsSlice";
 import { RootState } from "../store";
 
@@ -9,7 +9,7 @@ const { updateBatch: addToBatch, batchSimulationEnd, batchSimulationStart } = as
 export const estimateAndUpdateBatch = (
   pkh: string,
   pk: string,
-  operations: OperationValue[],
+  operations: Operation[],
   network: TezosNetwork
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async (dispatch, getState) => {
@@ -25,7 +25,7 @@ export const estimateAndUpdateBatch = (
 
     dispatch(batchSimulationStart({ pkh }));
     try {
-      const items = await operationValuesToBatchItems(operations, pkh, pk, network);
+      const items = await operationsToBatchItems(operations, pkh, pk, network);
       dispatch(addToBatch({ pkh, items }));
     } catch (error) {
       dispatch(batchSimulationEnd({ pkh }));

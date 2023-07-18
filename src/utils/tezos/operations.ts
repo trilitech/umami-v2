@@ -1,13 +1,13 @@
 import { TransactionOperation, TransferParams } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { OperationValue } from "../../components/sendForm/types";
+import { Operation } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import {
   makeMultisigApproveOrExecuteMethod,
   makeMultisigProposeMethod,
   makeToolkitWithSigner,
 } from "./helpers";
-import { operationValuesToWalletParams } from "./params";
+import { operationsToWalletParams } from "./params";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const transferMutez = async (
@@ -44,10 +44,10 @@ export const approveOrExecuteMultisigOperation = async (
 };
 
 export const submitBatch = async (
-  operation: OperationValue[],
+  operation: Operation[],
   config: SignerConfig
 ): Promise<BatchWalletOperation> => {
   const Tezos = await makeToolkitWithSigner(config);
-  const params = await operationValuesToWalletParams(operation, Tezos);
+  const params = await operationsToWalletParams(operation, Tezos);
   return Tezos.wallet.batch(params).send();
 };

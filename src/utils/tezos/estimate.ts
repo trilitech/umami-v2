@@ -1,12 +1,12 @@
 import { TezosNetwork } from "@airgap/tezos";
 import { Estimate } from "@taquito/taquito";
-import { OperationValue } from "../../components/sendForm/types";
+import { Operation } from "../../types/Operation";
 import {
   makeMultisigApproveOrExecuteMethod,
   makeMultisigProposeMethod,
   makeToolkitWithDummySigner,
 } from "./helpers";
-import { operationValuesToBatchParams } from "./params";
+import { operationsToBatchParams } from "./params";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const estimateMultisigPropose = async (
@@ -36,12 +36,12 @@ export const estimateMultisigApproveOrExecute = async (
 };
 
 export const estimateBatch = async (
-  operations: OperationValue[],
+  operations: Operation[],
   pkh: string,
   pk: string,
   network: TezosNetwork
 ): Promise<Estimate[]> => {
-  const batch = await operationValuesToBatchParams(operations, pk, pkh, network);
+  const batch = await operationsToBatchParams(operations, pk, pkh, network);
 
   const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
 

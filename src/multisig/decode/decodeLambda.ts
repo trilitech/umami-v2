@@ -1,5 +1,5 @@
 import { encodePubKey } from "@taquito/utils";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import {
   batchHeadSchema,
   contractTezSchema,
@@ -23,7 +23,7 @@ const convertToPkh = (addressBytes: string): string => {
   return encodePubKey(addressBytes);
 };
 
-export const parseTez = (michelson: MichelsonV1Expression[]): RawOperation => {
+export const parseTez = (michelson: MichelsonV1Expression[]): Operation => {
   const parseResult = tezSchema.parse(michelson);
 
   const to = parseResult[0].args[1].bytes;
@@ -36,7 +36,7 @@ export const parseTez = (michelson: MichelsonV1Expression[]): RawOperation => {
   };
 };
 
-export const parseTezContract = (michelson: MichelsonV1Expression[]): RawOperation => {
+export const parseTezContract = (michelson: MichelsonV1Expression[]): Operation => {
   const parseResult = contractTezSchema.parse(michelson);
 
   const to = parseResult[0].args[1].bytes;
@@ -49,7 +49,7 @@ export const parseTezContract = (michelson: MichelsonV1Expression[]): RawOperati
   };
 };
 
-const parseFa2 = (michelson: MichelsonV1Expression[]): RawOperation[] => {
+const parseFa2 = (michelson: MichelsonV1Expression[]): Operation[] => {
   const parseResult = fa2Schema.parse(michelson);
   const contractAddress = parseContractPkh(convertToPkh(parseResult[0].args[1].bytes));
   const operations = parseResult[4].args[1];
@@ -74,7 +74,7 @@ const parseFa2 = (michelson: MichelsonV1Expression[]): RawOperation[] => {
   });
 };
 
-const parseFa1 = (michelson: MichelsonV1Expression[]): RawOperation => {
+const parseFa1 = (michelson: MichelsonV1Expression[]): Operation => {
   const parseResult = fa1Schema.parse(michelson);
 
   const lambdaRecipient = parseResult[0];
@@ -94,7 +94,7 @@ const parseFa1 = (michelson: MichelsonV1Expression[]): RawOperation => {
   };
 };
 
-const parseSetDelegate = (michelson: MichelsonV1Expression[]): RawOperation => {
+const parseSetDelegate = (michelson: MichelsonV1Expression[]): Operation => {
   const parseResult = setDelegateSchema.parse(michelson);
 
   return {
@@ -103,7 +103,7 @@ const parseSetDelegate = (michelson: MichelsonV1Expression[]): RawOperation => {
   };
 };
 
-const parseRemoveDelegate = (_michelson: MichelsonV1Expression[]): RawOperation => {
+const parseRemoveDelegate = (_michelson: MichelsonV1Expression[]): Operation => {
   return { type: "delegation", recipient: undefined };
 };
 
@@ -116,7 +116,7 @@ const parsings = [
   { schema: removeDelegateSchema, parsingFn: parseRemoveDelegate },
 ];
 
-const parse = (michelson: MichelsonV1Expression[], acc: RawOperation[] = []): RawOperation[] => {
+const parse = (michelson: MichelsonV1Expression[], acc: Operation[] = []): Operation[] => {
   if (michelson.length === 0) {
     return acc;
   }
@@ -145,7 +145,7 @@ export const decode = (michelson: MichelsonV1Expression[]) => {
   return parse(michelson.slice(2));
 };
 
-export const parseRawMichelson = (rawMichelson: string): RawOperation[] => {
+export const parseRawMichelson = (rawMichelson: string): Operation[] => {
   const michelson: MichelsonV1Expression[] = JSON.parse(rawMichelson);
   return decode(michelson);
 };

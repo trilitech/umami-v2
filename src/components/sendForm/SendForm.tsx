@@ -1,6 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
+import { Operation } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import { useGetPk } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
@@ -9,7 +10,7 @@ import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupda
 import { FillStep } from "./steps/FillStep";
 import { SubmitStep } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
-import { EstimatedOperation, FormOperations, OperationValue, SendFormMode } from "./types";
+import { EstimatedOperation, FormOperations, SendFormMode } from "./types";
 import { makeTransfer } from "./util/execution";
 import { makeSimulation } from "./util/simulation";
 
@@ -65,7 +66,7 @@ export const SendForm = ({
     setIsLoading(false);
   };
 
-  const addToBatch = async (operation: OperationValue, sender: string) => {
+  const addToBatch = async (operation: Operation, sender: string) => {
     const pk = getPk(sender);
 
     try {

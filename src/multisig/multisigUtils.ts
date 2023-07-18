@@ -1,6 +1,6 @@
 import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
-import { FA12Operation, FA2Operation, RawOperation } from "../types/RawOperation";
+import { FA12Operation, FA2Operation, Operation } from "../types/Operation";
 import type { MichelsonV1Expression, TransactionOperationParameter } from "@taquito/rpc";
 import { isEqual } from "lodash";
 
@@ -109,7 +109,7 @@ const headlessLambda = (lambda: MichelsonV1Expression[]): MichelsonV1Expression[
   return lambda;
 };
 
-export const makeLambda = (operation: RawOperation): MichelsonV1Expression[] => {
+export const makeLambda = (operation: Operation): MichelsonV1Expression[] => {
   switch (operation.type) {
     case "tez":
       switch (operation.recipient.type) {
@@ -149,7 +149,7 @@ export const makeLambda = (operation: RawOperation): MichelsonV1Expression[] => 
  * @param network Network is needed for fetching contract parameter elements in lambda
  * @returns Lambda in MichelsonJSON (=Micheline) format
  */
-export const makeBatchLambda = (operations: RawOperation[]) => {
+export const makeBatchLambda = (operations: Operation[]) => {
   const opsLambdas = operations.map(operation => makeLambda(operation)).flatMap(headlessLambda);
 
   return [...LAMBDA_HEADER, ...opsLambdas];

@@ -1,5 +1,4 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { OperationValue } from "../components/sendForm/types";
 import {
   ImplicitAccount,
   AccountType,
@@ -12,13 +11,14 @@ import { ContractAddress, ImplicitAddress } from "../types/Address";
 import { NFTBalance } from "../types/TokenBalance";
 import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
-import { TezTransfer, TokenTransfer } from "../types/Operation";
+import { TezTransfer, TokenTransfer } from "../types/Transfer";
 import { RawTokenBalance } from "../types/TokenBalance";
 import {
   getDefaultMnemonicDerivationPath,
   getLedgerDerivationPath,
 } from "../utils/account/derivationPathUtils";
 import { MultisigOperation, Multisig } from "../utils/multisig/types";
+import { Operation } from "../types/Operation";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -309,7 +309,7 @@ export const mockBaker = (index: number) =>
     address: mockImplicitAddress(index).pkh,
   } as Baker);
 
-export const mockTezTransfer = (index: number): OperationValue => {
+export const mockTezTransfer = (index: number): Operation => {
   return {
     type: "tez",
     amount: String(index),
@@ -317,7 +317,7 @@ export const mockTezTransfer = (index: number): OperationValue => {
   };
 };
 
-export const mockNftTransfer = (index: number): OperationValue => {
+export const mockNftTransfer = (index: number): Operation => {
   return {
     type: "fa2",
     amount: String(index),
@@ -328,7 +328,7 @@ export const mockNftTransfer = (index: number): OperationValue => {
   };
 };
 
-export const mockDelegationTransfer = (index: number): OperationValue => {
+export const mockDelegationTransfer = (index: number): Operation => {
   return {
     type: "delegation",
     recipient: mockImplicitAddress(index + 1),

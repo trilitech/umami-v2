@@ -1,5 +1,5 @@
 import { ContractAddress, ImplicitAddress, parseContractPkh, parsePkh } from "../../types/Address";
-import { Delegation, FA12Operation, FA2Operation, TezOperation } from "../../types/RawOperation";
+import { FA12Operation, FA2Operation, Operation } from "../../types/Operation";
 import { Token } from "../../types/Token";
 
 type TezMode = { type: "tez" };
@@ -19,25 +19,23 @@ export type DelegationMode = {
 type BatchMode = {
   type: "batch";
   data: {
-    batch: OperationValue[];
+    batch: Operation[];
     signer: string;
   };
 };
 
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
-export type OperationValue = TezOperation | FA12Operation | FA2Operation | Delegation;
-
 export type ProposalOperations = {
   type: "proposal";
-  content: OperationValue[];
+  content: Operation[];
   sender: ContractAddress;
   signer: ImplicitAddress;
 };
 
 export type ImplicitOperations = {
   type: "implicit";
-  content: OperationValue[];
+  content: Operation[];
   signer: ImplicitAddress;
 };
 

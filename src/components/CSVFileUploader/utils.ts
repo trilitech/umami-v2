@@ -5,7 +5,7 @@ import {
   parseContractPkh,
   parsePkh,
 } from "../../types/Address";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import { getRealAmount } from "../../types/TokenBalance";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
@@ -15,7 +15,7 @@ export const parseOperation = (
   sender: Address,
   row: string[],
   getToken: TokenLookup
-): RawOperation => {
+): Operation => {
   const filteredRow = row.filter(col => col.length > 0);
   const len = filteredRow.length;
   if (len < 2 || 4 < len) {

@@ -9,8 +9,9 @@ import {
 import { useToast } from "@chakra-ui/react";
 import React from "react";
 import SendForm from "../../../components/sendForm";
-import { OperationValue, SendFormMode } from "../../../components/sendForm/types";
+import { SendFormMode } from "../../../components/sendForm/types";
 import { parseImplicitPkh, parsePkh } from "../../../types/Address";
+import { Operation } from "../../../types/Operation";
 import { useFirstAccount, useGetImplicitAccount } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPanel from "./pannels/BeaconErrorPanel";
@@ -22,7 +23,7 @@ const SingleTransaction = ({
   onSuccess,
   sender,
 }: {
-  transfer: OperationValue;
+  transfer: Operation;
   onSuccess: (hash: string) => any;
   sender: string;
 }) => {
@@ -49,7 +50,7 @@ const BatchTransaction = ({
   onSuccess,
   signer,
 }: {
-  transfer: OperationValue[];
+  transfer: Operation[];
   onSuccess: (hash: string) => any;
   signer: string;
 }) => {
@@ -143,7 +144,7 @@ export const BeaconNotification: React.FC<{
 
 const beaconToUmamiOperation = (operation: PartialTezosOperation, sender: string) => {
   if (operation.kind === TezosOperationType.TRANSACTION) {
-    const result: OperationValue = {
+    const result: Operation = {
       type: "tez",
       amount: operation.amount,
       recipient: parsePkh(operation.destination),
@@ -154,7 +155,7 @@ const beaconToUmamiOperation = (operation: PartialTezosOperation, sender: string
   }
 
   if (operation.kind === TezosOperationType.DELEGATION) {
-    const result: OperationValue = {
+    const result: Operation = {
       type: "delegation",
       recipient:
         operation.delegate !== undefined ? parseImplicitPkh(operation.delegate) : undefined,
