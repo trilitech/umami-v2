@@ -55,7 +55,6 @@ export const deriveAccount = createAsyncThunk<
   const nextIndex = accounts.length;
 
   // Newly derived accounts use a derivation path in the same pattern as the first account
-  // const pattern = deductDerivationPattern(accounts[0].derivationPath);
   const pattern = accounts[0].derivationPathPattern;
   const nextDerivationPath = makeDerivationPath(pattern, nextIndex);
 
