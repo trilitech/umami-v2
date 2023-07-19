@@ -6,14 +6,13 @@ import {
   Modal,
   ModalContent,
   Text,
-  Icon,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { compact, groupBy } from "lodash";
 import { useRef, useState } from "react";
 import { BsWindowPlus } from "react-icons/bs";
-import { TfiKey } from "react-icons/tfi";
+import KeyIcon from "../../assets/icons/Key";
 import AccountTile from "../../components/AccountTile";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
@@ -168,14 +167,23 @@ export const AccountsList: React.FC<{
   });
   return (
     <>
-      {/* TODO: put into correct place under the multisig section */}
-      <Button onClick={createMultisigModal.open}>
-        {/* TODO: use correct icon from figma */}
-        <Icon as={TfiKey} />
-        <Text>Create New Multisig</Text>
-      </Button>
-      <Box height="100%">
-        <NestedScroll>{compact(accountTiles)}</NestedScroll>
+      <Box height="100%" mr={0}>
+        <NestedScroll>
+          {compact(accountTiles)}
+          <Button
+            onClick={createMultisigModal.open}
+            width="100%"
+            bg="umami.black"
+            border="1px dashed"
+            height="90px"
+            borderColor="umami.gray.500"
+          >
+            <Text display="block" m={5} width="100%" textAlign="center" color="umami.gray.400">
+              <KeyIcon stroke="umami.gray.450" mr={1} />
+              Create New Multisig
+            </Text>
+          </Button>
+        </NestedScroll>
         {confirmModal}
         {deriveAccountModal}
         {createMultisigModal.element}
