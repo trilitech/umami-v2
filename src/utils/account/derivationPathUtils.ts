@@ -1,6 +1,6 @@
 export const defaultDerivationPathPattern = "44'/1729'/?'/0'";
 
-// Regex that enforces the standars used by Tezbox Ledger, and Galleon
+// Regex that enforces the standard used by Umami v1, Tezbox, Ledger, and Galleon
 // https://tezostaquito.io/docs/ledger_signer/
 export const validDerivationPathRegex = /^44'\/1729'\/((\?'(\/0')?\/0')|(0'(\/0')?\/\?'))$/;
 
