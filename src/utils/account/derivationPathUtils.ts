@@ -4,10 +4,10 @@
 export const defaultV1Pattern = "44'/1729'/?'/0'";
 
 // derivation path pattern sanity check regex
-const patternRegex = /^(m\/)?\d+'\/\d+'\/\?'\/\d+'$/;
+const patternRegex = /^44'\/1729'\/\?'\/\d+'$/;
 
 // derivation path sanity check regex
-const pathRegex = /^(m\/)?\d+'\/\d+'\/\d+'\/\d+'$/;
+const pathRegex = /^44'\/1729'\/\d+'\/\d+'$/;
 
 /**
  *  Returns the pattern of a given derivation path.

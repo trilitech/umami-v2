@@ -37,8 +37,8 @@ describe("deductDerivationPattern", () => {
     }
 
     {
-      const result = deductDerivationPattern("322'/1729'/0'/88'");
-      expect(result).toEqual("322'/1729'/?'/88'");
+      const result = deductDerivationPattern("44'/1729'/0'/88'");
+      expect(result).toEqual("44'/1729'/?'/88'");
     }
   });
 
