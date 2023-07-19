@@ -1,10 +1,8 @@
-// This is the derivation path pattern used by ledger
-// Umami V1 adds a prefix as follows: "m/44'/1729'/?'/0'" which has no effect.
-// Therefore we use the ledger derivation path withouth prefix everywhere.
-export const defaultV1Pattern = "44'/1729'/?'/0'";
+export const defaultDerivationPathPattern = "44'/1729'/?'/0'";
 
-// derivation path pattern sanity check regex
-const patternRegex = /^44'\/1729'\/\?'\/\d+'$/;
+// Regex that enforces the standars used by Tezbox Ledger, and Galleon
+// https://tezostaquito.io/docs/ledger_signer/
+const patternRegex = /^44'\/1729'\/((\?'(\/0')?\/0')|(0'(\/0')?\/\?'))$/;
 
 export const makeDerivationPath = (pattern: string, index: number) => {
   if (!patternRegex.test(pattern)) {

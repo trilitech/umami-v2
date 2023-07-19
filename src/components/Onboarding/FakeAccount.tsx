@@ -5,7 +5,7 @@ import { nodeUrls } from "../../utils/tezos/consts";
 import { SupportedIcons } from "../CircleIcon";
 import ModalContentWrapper from "./ModalContentWrapper";
 import { useRestoreLedger } from "../../utils/hooks/accountHooks";
-import { defaultV1Pattern } from "../../utils/account/derivationPathUtils";
+import { defaultDerivationPathPattern } from "../../utils/account/derivationPathUtils";
 
 export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const {
@@ -19,7 +19,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
     const rpc = new RpcClient(nodeUrls["mainnet"]);
     const managerKey = await rpc.getManagerKey(pkh);
     const pk = typeof managerKey === "string" ? managerKey : managerKey.key;
-    restoreLedger(defaultV1Pattern, pk, pkh, name);
+    restoreLedger(defaultDerivationPathPattern, pk, pkh, name);
     onClose();
   };
   return (

@@ -4,7 +4,7 @@ import { restoreAccounts, restoreMnemonicAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
 
 import "../mocks/mockGetRandomValues";
-import { defaultV1Pattern } from "./account/derivationPathUtils";
+import { defaultDerivationPathPattern } from "./account/derivationPathUtils";
 import { getDefaultMnemonicDerivationPath } from "../mocks/devSignerKeys";
 jest.mock("./tezos");
 
@@ -21,7 +21,7 @@ describe("restoreAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreAccounts(seedPhrase, defaultV1Pattern);
+    const result = await restoreAccounts(seedPhrase, defaultDerivationPathPattern);
     const expected = [
       {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
@@ -41,7 +41,7 @@ describe("restoreAccounts", () => {
 
   it("should restore first account if none exists", async () => {
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreAccounts(seedPhrase, defaultV1Pattern);
+    const result = await restoreAccounts(seedPhrase, defaultDerivationPathPattern);
     const expected = [
       {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",

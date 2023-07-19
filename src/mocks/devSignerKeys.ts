@@ -2,12 +2,12 @@ import { TezosNetwork } from "@airgap/tezos";
 import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
 import { SignerType } from "../types/SignerConfig";
-import { defaultV1Pattern } from "../utils/account/derivationPathUtils";
+import { defaultDerivationPathPattern } from "../utils/account/derivationPathUtils";
 import { makeToolkitWithSigner } from "../utils/tezos";
 import { seedPhrase } from "./seedPhrase";
 
 export const getDefaultMnemonicDerivationPath = (index: number) =>
-  defaultV1Pattern.replace("?", index.toString());
+  defaultDerivationPathPattern.replace("?", index.toString());
 // make the default signer used in the dev mode.
 // e.g. makeDefaultDevSigner(0) is equivalent to the "restored account 0".
 export const makeDefaultDevSigner = (index: number): InMemorySigner => {

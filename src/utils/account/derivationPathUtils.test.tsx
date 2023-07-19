@@ -1,9 +1,9 @@
-import { defaultV1Pattern, makeDerivationPath } from "./derivationPathUtils";
+import { defaultDerivationPathPattern, makeDerivationPath } from "./derivationPathUtils";
 
 describe("makeDerivationPath", () => {
   test("generates derivation path against a valid patterns", () => {
     {
-      const result = makeDerivationPath(defaultV1Pattern, 3);
+      const result = makeDerivationPath(defaultDerivationPathPattern, 3);
       expect(result).toEqual("44'/1729'/3'/0'");
     }
 
