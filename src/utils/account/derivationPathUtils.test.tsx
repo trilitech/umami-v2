@@ -1,8 +1,4 @@
-import {
-  deductDerivationPattern,
-  defaultV1Pattern,
-  makeDerivationPath,
-} from "./derivationPathUtils";
+import { defaultV1Pattern, makeDerivationPath } from "./derivationPathUtils";
 
 describe("makeDerivationPath", () => {
   test("generates derivation path against a valid patterns", () => {
@@ -24,27 +20,27 @@ describe("makeDerivationPath", () => {
   });
 });
 
-describe("deductDerivationPattern", () => {
-  test("it generates derivation patern against valid derivation path", () => {
-    {
-      const result = deductDerivationPattern("44'/1729'/3'/0'");
-      expect(result).toEqual("44'/1729'/?'/0'");
-    }
+// describe("deductDerivationPattern", () => {
+//   test("it generates derivation patern against valid derivation path", () => {
+//     {
+//       const result = deductDerivationPattern("44'/1729'/3'/0'");
+//       expect(result).toEqual("44'/1729'/?'/0'");
+//     }
 
-    {
-      const result = deductDerivationPattern("44'/1729'/773'/0'");
-      expect(result).toEqual("44'/1729'/?'/0'");
-    }
+//     {
+//       const result = deductDerivationPattern("44'/1729'/773'/0'");
+//       expect(result).toEqual("44'/1729'/?'/0'");
+//     }
 
-    {
-      const result = deductDerivationPattern("44'/1729'/0'/88'");
-      expect(result).toEqual("44'/1729'/?'/88'");
-    }
-  });
+//     {
+//       const result = deductDerivationPattern("44'/1729'/0'/88'");
+//       expect(result).toEqual("44'/1729'/?'/88'");
+//     }
+//   });
 
-  test("throws an error if provided derivation path is not valid", () => {
-    expect(() => deductDerivationPattern("44'/1729'/3'/0/3'")).toThrowError(
-      "Invalid derivation path: 44'/1729'/3'/0/3'"
-    );
-  });
-});
+//   test("throws an error if provided derivation path is not valid", () => {
+//     expect(() => deductDerivationPattern("44'/1729'/3'/0/3'")).toThrowError(
+//       "Invalid derivation path: 44'/1729'/3'/0/3'"
+//     );
+//   });
+// });

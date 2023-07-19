@@ -69,6 +69,7 @@ describe("restoreEncryptedAccounts", () => {
         address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         seedFingerPrint: "mockFingerPrint",
         label: "Account 0",
+        derivationPathPattern: "44'/1729'/?'/0'",
       },
       {
         curve: "ed25519",
@@ -78,6 +79,7 @@ describe("restoreEncryptedAccounts", () => {
         address: { type: "implicit", pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6" },
         seedFingerPrint: "mockFingerPrint",
         label: "Account 1",
+        derivationPathPattern: "44'/1729'/?'/0'",
       },
       {
         curve: "ed25519",
@@ -87,6 +89,7 @@ describe("restoreEncryptedAccounts", () => {
         address: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         seedFingerPrint: "mockFingerPrint",
         label: "Account 2",
+        derivationPathPattern: "44'/1729'/?'/0'",
       },
     ];
     expect(result).toEqual(expected);

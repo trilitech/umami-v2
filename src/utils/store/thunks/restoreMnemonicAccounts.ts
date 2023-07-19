@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AccountType, MnemonicAccount } from "../../../types/Account";
 import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
-import { deductDerivationPattern, makeDerivationPath } from "../../account/derivationPathUtils";
+import { makeDerivationPath } from "../../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
 import { getFingerPrint } from "../../tezos";
 import { AppDispatch, ExtraArgument, RootState } from "../store";
@@ -55,12 +55,13 @@ export const deriveAccount = createAsyncThunk<
   const nextIndex = accounts.length;
 
   // Newly derived accounts use a derivation path in the same pattern as the first account
-  const pattern = deductDerivationPattern(accounts[0].derivationPath);
+  // const pattern = deductDerivationPattern(accounts[0].derivationPath);
+  const pattern = accounts[0].derivationPathPattern;
   const nextDerivationPath = makeDerivationPath(pattern, nextIndex);
 
   const { pk, pkh } = await thunkAPI.extra.restoreAccount(seedphrase, nextDerivationPath);
 
-  const account = makeMnemonicAccount(pk, pkh, nextDerivationPath, fingerPrint, label);
+  const account = makeMnemonicAccount(pk, pkh, nextDerivationPath, pattern, fingerPrint, label);
 
   return account;
 });

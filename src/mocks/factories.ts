@@ -99,6 +99,7 @@ export const mockImplicitAccount = (
     const account: MnemonicAccount = {
       curve: "ed25519",
       derivationPath: getDefaultMnemonicDerivationPath(index),
+      derivationPathPattern: "44'/1729'/?'/0'",
       type,
       label: mockAccountLabel(index),
       address: mockImplicitAddress(index),

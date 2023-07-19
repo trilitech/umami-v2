@@ -73,6 +73,7 @@ export const restoreMnemonicAccounts = async (
       pk,
       pkh,
       makeDerivationPath(derivationPathPattern, i),
+      derivationPathPattern,
       seedFingerPrint,
       `${label}${accounts.length > 1 ? " " + i : ""}`
     );

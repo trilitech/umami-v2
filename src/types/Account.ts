@@ -21,6 +21,7 @@ export type MnemonicAccount = {
   label: string;
   curve: "ed25519";
   derivationPath: string;
+  derivationPathPattern: string;
   type: AccountType.MNEMONIC;
   seedFingerPrint: string;
   address: ImplicitAddress;
