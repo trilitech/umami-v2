@@ -4,7 +4,8 @@ import { restoreAccounts, restoreMnemonicAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
 
 import "../mocks/mockGetRandomValues";
-import { defaultV1Pattern, getDefaultMnemonicDerivationPath } from "./account/derivationPathUtils";
+import { defaultV1Pattern } from "./account/derivationPathUtils";
+import { getDefaultMnemonicDerivationPath } from "../mocks/devSignerKeys";
 jest.mock("./tezos");
 
 const addressExistsMock = addressExists as jest.Mock;

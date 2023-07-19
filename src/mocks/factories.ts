@@ -13,9 +13,9 @@ import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Transfer";
 import { RawTokenBalance } from "../types/TokenBalance";
-import { getDefaultMnemonicDerivationPath } from "../utils/account/derivationPathUtils";
 import { MultisigOperation, Multisig } from "../utils/multisig/types";
 import { Operation } from "../types/Operation";
+import { getDefaultMnemonicDerivationPath } from "./devSignerKeys";
 
 export const mockTezTransaction = (id: number) => {
   return {

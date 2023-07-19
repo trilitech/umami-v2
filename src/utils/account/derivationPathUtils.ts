@@ -35,6 +35,3 @@ export const makeDerivationPath = (pattern: string, index: number) => {
 
   return pattern.replace("?", index.toString());
 };
-
-export const getDefaultMnemonicDerivationPath = (index: number) =>
-  defaultV1Pattern.replace("?", index.toString());
