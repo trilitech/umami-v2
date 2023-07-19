@@ -1,6 +1,6 @@
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { MnemonicAccount } from "../types/Account";
-import { defaultV1Pattern, makeDerivationPath } from "./account/derivationPathUtils";
+import { defaultDerivationPathPattern, makeDerivationPath } from "./account/derivationPathUtils";
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { addressExists, getFingerPrint } from "./tezos";
 
@@ -63,7 +63,7 @@ export const restoreAccounts = async (
 export const restoreMnemonicAccounts = async (
   seedPhrase: string,
   label = "Account",
-  derivationPathPattern = defaultV1Pattern
+  derivationPathPattern = defaultDerivationPathPattern
 ): Promise<MnemonicAccount[]> => {
   const accounts = await restoreAccounts(seedPhrase, derivationPathPattern);
   const seedFingerPrint = await getFingerPrint(seedPhrase);
@@ -73,6 +73,7 @@ export const restoreMnemonicAccounts = async (
       pk,
       pkh,
       makeDerivationPath(derivationPathPattern, i),
+      derivationPathPattern,
       seedFingerPrint,
       `${label}${accounts.length > 1 ? " " + i : ""}`
     );

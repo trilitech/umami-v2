@@ -13,12 +13,9 @@ import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Transfer";
 import { RawTokenBalance } from "../types/TokenBalance";
-import {
-  getDefaultMnemonicDerivationPath,
-  getLedgerDerivationPath,
-} from "../utils/account/derivationPathUtils";
 import { MultisigOperation, Multisig } from "../utils/multisig/types";
 import { Operation } from "../types/Operation";
+import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -101,7 +98,8 @@ export const mockImplicitAccount = (
   if (type === AccountType.MNEMONIC) {
     const account: MnemonicAccount = {
       curve: "ed25519",
-      derivationPath: getDefaultMnemonicDerivationPath(index),
+      derivationPath: getDefaultDerivationPath(index),
+      derivationPathPattern: "44'/1729'/?'/0'",
       type,
       label: mockAccountLabel(index),
       address: mockImplicitAddress(index),
@@ -125,7 +123,7 @@ export const mockImplicitAccount = (
   if (type === AccountType.LEDGER) {
     const account: LedgerAccount = {
       type,
-      derivationPath: getLedgerDerivationPath(index),
+      derivationPath: getDefaultDerivationPath(index),
       curve: "ed25519",
       label: mockAccountLabel(index) + " ledger",
       address: mockImplicitAddress(index),
