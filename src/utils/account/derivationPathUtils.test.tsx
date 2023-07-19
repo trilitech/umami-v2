@@ -12,8 +12,8 @@ describe("makeDerivationPath", () => {
     }
 
     {
-      const result = makeDerivationPath("3'/4'/?'/9'", 18);
-      expect(result).toEqual("3'/4'/18'/9'");
+      const result = makeDerivationPath("44'/1729'/?'/9'", 18);
+      expect(result).toEqual("44'/1729'/18'/9'");
     }
   });
 
