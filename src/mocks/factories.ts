@@ -15,7 +15,7 @@ import { TezTransfer, TokenTransfer } from "../types/Transfer";
 import { RawTokenBalance } from "../types/TokenBalance";
 import { MultisigOperation, Multisig } from "../utils/multisig/types";
 import { Operation } from "../types/Operation";
-import { getDefaultMnemonicDerivationPath } from "./devSignerKeys";
+import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -98,7 +98,7 @@ export const mockImplicitAccount = (
   if (type === AccountType.MNEMONIC) {
     const account: MnemonicAccount = {
       curve: "ed25519",
-      derivationPath: getDefaultMnemonicDerivationPath(index),
+      derivationPath: getDefaultDerivationPath(index),
       derivationPathPattern: "44'/1729'/?'/0'",
       type,
       label: mockAccountLabel(index),
@@ -123,7 +123,7 @@ export const mockImplicitAccount = (
   if (type === AccountType.LEDGER) {
     const account: LedgerAccount = {
       type,
-      derivationPath: getDefaultMnemonicDerivationPath(index),
+      derivationPath: getDefaultDerivationPath(index),
       curve: "ed25519",
       label: mockAccountLabel(index) + " ledger",
       address: mockImplicitAddress(index),

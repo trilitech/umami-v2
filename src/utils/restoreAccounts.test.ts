@@ -4,8 +4,10 @@ import { restoreAccounts, restoreMnemonicAccounts } from "./restoreAccounts";
 import { addressExists, getFingerPrint } from "./tezos";
 
 import "../mocks/mockGetRandomValues";
-import { defaultDerivationPathPattern } from "./account/derivationPathUtils";
-import { getDefaultMnemonicDerivationPath } from "../mocks/devSignerKeys";
+import {
+  defaultDerivationPathPattern,
+  getDefaultDerivationPath,
+} from "./account/derivationPathUtils";
 jest.mock("./tezos");
 
 const addressExistsMock = addressExists as jest.Mock;
@@ -63,7 +65,7 @@ describe("restoreEncryptedAccounts", () => {
     const expected: ImplicitAccount[] = [
       {
         curve: "ed25519",
-        derivationPath: getDefaultMnemonicDerivationPath(0),
+        derivationPath: getDefaultDerivationPath(0),
         type: AccountType.MNEMONIC,
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
         address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
@@ -73,7 +75,7 @@ describe("restoreEncryptedAccounts", () => {
       },
       {
         curve: "ed25519",
-        derivationPath: getDefaultMnemonicDerivationPath(1),
+        derivationPath: getDefaultDerivationPath(1),
         type: AccountType.MNEMONIC,
         pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
         address: { type: "implicit", pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6" },
@@ -83,7 +85,7 @@ describe("restoreEncryptedAccounts", () => {
       },
       {
         curve: "ed25519",
-        derivationPath: getDefaultMnemonicDerivationPath(2),
+        derivationPath: getDefaultDerivationPath(2),
         type: AccountType.MNEMONIC,
         pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
         address: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
