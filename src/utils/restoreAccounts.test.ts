@@ -125,16 +125,16 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreMnemonicAccounts(seedPhrase, undefined, "44'/1729'/?'/8'");
+    const result = await restoreMnemonicAccounts(seedPhrase, undefined, "44'/1729'/?'/0'");
 
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
         label: `Account 0`,
-        derivationPath: "44'/1729'/0'/8'",
+        derivationPath: "44'/1729'/0'/0'",
       }),
       expect.objectContaining({
         label: `Account 1`,
-        derivationPath: "44'/1729'/1'/8'",
+        derivationPath: "44'/1729'/1'/0'",
       }),
     ];
     expect(result).toEqual(expected);
