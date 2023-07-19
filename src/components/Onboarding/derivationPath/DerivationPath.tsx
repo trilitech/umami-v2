@@ -4,7 +4,10 @@ import ModalContentWrapper from "../ModalContentWrapper";
 import { SupportedIcons } from "../../CircleIcon";
 import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 import { useState } from "react";
-import { defaultDerivationPathPattern } from "../../../utils/account/derivationPathUtils";
+import {
+  defaultDerivationPathPattern,
+  validDerivationPathRegex,
+} from "../../../utils/account/derivationPathUtils";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
@@ -17,7 +20,11 @@ export const DerivationPath = ({
   goToStep: (step: Step) => void;
   account: DerivationPathStep["account"];
 }) => {
-  const { register, handleSubmit } = useForm<ConfirmDerivationPathFormValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, isDirty },
+  } = useForm<ConfirmDerivationPathFormValues>();
   const [useDefault, setUseDefault] = useState(true);
 
   const onSubmit = async (data: ConfirmDerivationPathFormValues) => {
@@ -57,10 +64,21 @@ export const DerivationPath = ({
                 isDisabled={useDefault}
                 {...register("derivationPath", {
                   required: false,
+                  pattern: {
+                    value: validDerivationPathRegex,
+                    message: "Please enter a valid derivation path",
+                  },
                 })}
               />
             </FormControl>
-            <Button w="100%" size="lg" type="submit" title="Restore accounts" bg="umami.blue">
+            <Button
+              isDisabled={isDirty && !isValid}
+              w="100%"
+              size="lg"
+              type="submit"
+              title="Restore accounts"
+              bg="umami.blue"
+            >
               Continue
             </Button>
           </VStack>

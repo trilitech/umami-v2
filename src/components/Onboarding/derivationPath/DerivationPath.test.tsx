@@ -47,6 +47,10 @@ describe("<DerivationPath />", () => {
           const confirmBtn = screen.getByRole("button", { name: /continue/i });
           const customPath = screen.getByTestId("custom-path");
           fireEvent.change(customPath, { target: { value: "test" } });
+
+          await waitFor(() => {
+            expect(confirmBtn).toBeEnabled();
+          });
           fireEvent.click(confirmBtn);
           await waitFor(() => {
             expect(goToStepMock).toBeCalledTimes(1);
@@ -58,7 +62,7 @@ describe("<DerivationPath />", () => {
         });
       });
 
-      test("When custom path is selected we use it instead", async () => {
+      test("When valid custom path is selected we use it instead", async () => {
         render(fixture(goToStepMock, account));
         const confirmBtn = screen.getByRole("button", { name: /continue/i });
         const customPath = screen.getByTestId("custom-path");
@@ -66,8 +70,14 @@ describe("<DerivationPath />", () => {
         const switchBtn = screen.getByTestId("switch");
         fireEvent.click(switchBtn);
         expect(customPath).toBeEnabled();
-        fireEvent.change(customPath, { target: { value: "test" } });
-        expect(customPath).toHaveValue("test");
+
+        const standard5PieceDerivationPath = "44'/1729'/?'/0'/0'";
+
+        fireEvent.change(customPath, { target: { value: standard5PieceDerivationPath } });
+        expect(customPath).toHaveValue(standard5PieceDerivationPath);
+        await waitFor(() => {
+          expect(confirmBtn).toBeEnabled();
+        });
         fireEvent.click(confirmBtn);
         await waitFor(() => {
           expect(goToStepMock).toBeCalledTimes(1);
@@ -76,7 +86,7 @@ describe("<DerivationPath />", () => {
           type: nextPage,
           account: {
             ...account,
-            derivationPath: "test",
+            derivationPath: standard5PieceDerivationPath,
           },
         });
       });
