@@ -11,7 +11,7 @@ describe("useBakerList", () => {
     store.dispatch(assetsSlice.actions.updateNetwork(TezosNetwork.MAINNET));
     store.dispatch(assetsSlice.actions.updateBakers([mockBaker(1), mockBaker(2)]));
 
-    const { result } = renderHook(() => useBakerList(), {
+    const { result } = renderHook(useBakerList, {
       wrapper: ReduxStore,
     });
 
@@ -22,7 +22,7 @@ describe("useBakerList", () => {
     store.dispatch(assetsSlice.actions.updateNetwork(TezosNetwork.GHOSTNET));
     store.dispatch(assetsSlice.actions.updateBakers([mockBaker(1), mockBaker(2)]));
 
-    const { result } = renderHook(() => useBakerList(), {
+    const { result } = renderHook(useBakerList, {
       wrapper: ReduxStore,
     });
 
