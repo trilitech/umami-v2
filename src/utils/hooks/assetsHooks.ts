@@ -20,7 +20,6 @@ import { useAllAccounts, useImplicitAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
-import { TezosNetwork } from "@airgap/tezos";
 import { Baker } from "../../types/Baker";
 
 export const useSelectedNetwork = () => {
