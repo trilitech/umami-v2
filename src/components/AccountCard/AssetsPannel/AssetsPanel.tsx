@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import React from "react";
 import { FiExternalLink } from "react-icons/fi";
@@ -15,6 +14,7 @@ import { DelegationDisplay } from "./DelegationDisplay";
 import MultisigPendingAccordion from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
+import { TezosNetwork } from "../../../types/TezosNetwork";
 
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;

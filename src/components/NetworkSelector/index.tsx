@@ -1,4 +1,4 @@
-import { TezosNetwork } from "@airgap/tezos";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { useAppDispatch } from "../../utils/store/hooks";

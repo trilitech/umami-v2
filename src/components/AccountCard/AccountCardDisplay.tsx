@@ -1,7 +1,6 @@
 import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import { MdArrowOutward, MdSouthWest } from "react-icons/md";
 
-import { TezosNetwork } from "@airgap/tezos";
 import type { BigNumber } from "bignumber.js";
 import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
@@ -15,6 +14,7 @@ import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPanel } from "./AssetsPannel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
 import { DelegationMode } from "../sendForm/types";
+import { TezosNetwork } from "../../types/TezosNetwork";
 
 type Props = {
   onSend: () => void;

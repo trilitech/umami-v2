@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import {
   Button,
   Flex,
@@ -15,6 +14,7 @@ import { Link } from "react-router-dom";
 import React from "react";
 import { getHashUrl } from "../../../views/operations/operationsUtils";
 import { TzktLink } from "../../TzktLink";
+import { TezosNetwork } from "../../../types/TezosNetwork";
 
 export const SuccessStep: React.FC<{ hash: string; network: TezosNetwork }> = ({
   hash,

@@ -1,5 +1,5 @@
-import { TezosNetwork } from "@airgap/tezos";
 import axios from "axios";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { tzktUrls } from "../tezos/consts";
 import { RawTzktGetBigMapKeys, RawTzktGetSameMultisigs } from "../tzkt/types";
 import { multisigAddress } from "./consts";

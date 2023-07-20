@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -10,6 +9,7 @@ import {
   SignerType,
   SkSignerConfig,
 } from "../../../types/SignerConfig";
+import { TezosNetwork } from "../../../types/TezosNetwork";
 import { useGetSk } from "../../../utils/hooks/accountUtils";
 
 const SignButton: React.FC<{

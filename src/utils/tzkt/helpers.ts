@@ -1,4 +1,4 @@
-import { TezosNetwork } from "@airgap/tezos";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { tzktExplorer } from "../tezos/consts";
 
 export const buildTzktAddressUrl = (network: TezosNetwork, pkh: string) =>

@@ -8,7 +8,6 @@ import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 
-import { TezosNetwork } from "@airgap/tezos";
 import AccountCard from ".";
 import { mockDelegationOperation } from "../../mocks/delegations";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
@@ -21,6 +20,7 @@ import { multisigToAccount } from "../../utils/multisig/helpers";
 import { Multisig } from "../../utils/multisig/types";
 import multisigsSlice, { multisigActions } from "../../utils/store/multisigsSlice";
 import tokensSlice from "../../utils/store/tokensSlice";
+import { TezosNetwork } from "../../types/TezosNetwork";
 const {
   updateTezBalance,
   updateTokenBalance,

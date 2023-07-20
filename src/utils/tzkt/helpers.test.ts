@@ -1,4 +1,4 @@
-import { TezosNetwork } from "@airgap/tezos";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { buildTzktAddressUrl } from "./helpers";
 
 test("buildTzktUrl returns the right value for a given network", () => {

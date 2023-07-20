@@ -1,5 +1,5 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Curves } from "@taquito/signer";
+import { TezosNetwork } from "./TezosNetwork";
 
 export enum SignerType {
   SK = "sk",

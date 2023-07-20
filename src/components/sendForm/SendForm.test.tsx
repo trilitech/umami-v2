@@ -1,7 +1,6 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import { Modal } from "@chakra-ui/react";
 
-import { TezosNetwork } from "@airgap/tezos";
 import {
   mockBaker,
   mockContractAddress,
@@ -41,6 +40,7 @@ import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 import tokensSlice from "../../utils/store/tokensSlice";
 import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
+import { TezosNetwork } from "../../types/TezosNetwork";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);

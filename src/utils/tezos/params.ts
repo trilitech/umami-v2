@@ -1,6 +1,6 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { OpKind, ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import { Operation } from "../../types/Operation";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { makeTokenTransferParams, makeToolkitWithDummySigner } from "./helpers";
 
 export const operationsToWalletParams = async (

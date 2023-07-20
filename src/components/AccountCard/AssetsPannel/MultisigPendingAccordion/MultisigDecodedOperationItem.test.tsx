@@ -1,6 +1,6 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
+import { TezosNetwork } from "../../../../types/TezosNetwork";
 import { RawTokenBalance } from "../../../../types/TokenBalance";
 import { assetsActions } from "../../../../utils/store/assetsSlice";
 import { store } from "../../../../utils/store/store";

@@ -1,10 +1,10 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { useToast } from "@chakra-ui/react";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import CustomAuth from "@toruslabs/customauth";
 import { TORUS_NETWORK_TYPE } from "@toruslabs/fetch-node-details";
 import { useState } from "react";
 import { CircleIcon, SupportedIcons } from "./components/CircleIcon";
+import { TezosNetwork } from "./types/TezosNetwork";
 import { useSelectedNetwork } from "./utils/hooks/assetsHooks";
 
 export const parseParams = (url: string) => {

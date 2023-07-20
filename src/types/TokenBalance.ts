@@ -10,8 +10,8 @@ import {
   FA12Token,
 } from "./Token";
 import { getIPFSurl } from "../utils/token/nftUtils";
-import { TezosNetwork } from "@airgap/tezos";
 import { RawAlias, RawPkh } from "./Address";
+import { TezosNetwork } from "./TezosNetwork";
 
 export type TokenBalance = { balance: string; contract: RawPkh; tokenId: string };
 export type TokenBalanceWithToken = TokenBalance & Token;

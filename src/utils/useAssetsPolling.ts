@@ -1,7 +1,7 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { chunk, compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
+import { TezosNetwork } from "../types/TezosNetwork";
 import { TokenTransfer } from "../types/Transfer";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useSelectedNetwork } from "./hooks/assetsHooks";

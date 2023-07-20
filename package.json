@@ -9,7 +9,6 @@
   "main": "./public/electron.js",
   "dependencies": {
     "@airgap/beacon-wallet": "^4.0.2",
-    "@airgap/tezos": "^0.13.11",
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",

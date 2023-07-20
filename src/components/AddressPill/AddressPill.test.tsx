@@ -1,8 +1,8 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { contact1 } from "../../mocks/contacts";
 import { mockFA1Token, mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import assetsSlice from "../../utils/store/assetsSlice";
 import { contactsActions } from "../../utils/store/contactsSlice";
 import { store } from "../../utils/store/store";

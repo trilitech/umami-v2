@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import {
   blocksGetCount,
   DelegationOperation,
@@ -13,6 +12,7 @@ import { coinCapResponseType } from "./types";
 import { Baker } from "../../types/Baker";
 import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
+import { TezosNetwork } from "../../types/TezosNetwork";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts

@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { TransactionOperationParameter } from "@taquito/rpc";
@@ -8,6 +7,7 @@ import axios from "axios";
 import { shuffle } from "lodash";
 import { FA12Operation, FA2Operation } from "../../types/RawOperation";
 import { SignerConfig, SignerType } from "../../types/SignerConfig";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { PublicKeyPair } from "../restoreAccounts";
 import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";

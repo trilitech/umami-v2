@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import {
   FormControl,
   ModalBody,
@@ -11,6 +10,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { wertUrls } from "../../utils/tezos/consts";

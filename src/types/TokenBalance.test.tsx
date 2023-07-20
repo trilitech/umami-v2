@@ -17,7 +17,7 @@ import {
   tokenSymbol,
 } from "./TokenBalance";
 import type { Metadata } from "./Token";
-import { TezosNetwork } from "@airgap/tezos";
+import { TezosNetwork } from "./TezosNetwork";
 
 describe("fromRaw", () => {
   test("fa1.2 valid", () => {
