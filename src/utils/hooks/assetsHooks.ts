@@ -21,6 +21,7 @@ import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
 import { TezosNetwork } from "@airgap/tezos";
+import { Baker } from "../../types/Baker";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.assets.network);
@@ -202,7 +203,7 @@ export const useGetMultisigSigners = () => {
   };
 };
 
-export const useBakerList = () => {
+export const useBakerList = (): Baker[] => {
   const bakers = useAppSelector(state => state.assets.bakers);
   const network = useSelectedNetwork();
 
@@ -210,7 +211,7 @@ export const useBakerList = () => {
 };
 
 export const useGetBaker = () => {
-  const bakers = useAppSelector(state => state.assets.bakers);
+  const bakers = useBakerList();
   return (rawPkh: string) => {
     return bakers.find(baker => baker.address === rawPkh);
   };

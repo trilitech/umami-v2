@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { get } from "lodash";
 import { useState } from "react";
@@ -7,9 +6,8 @@ import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useAllAccounts, useImplicitAccounts } from "../utils/hooks/accountHooks";
-import { useBakerList, useSelectedNetwork } from "../utils/hooks/assetsHooks";
+import { useBakerList } from "../utils/hooks/assetsHooks";
 import { useContacts } from "../utils/hooks/contactsHooks";
-import { useAppSelector } from "../utils/store/hooks";
 import { Identicon } from "./Identicon";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
