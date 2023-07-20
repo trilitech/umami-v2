@@ -105,6 +105,9 @@ export const getLatestBlockLevel = async (network = TezosNetwork.MAINNET): Promi
   });
 };
 
-export const getBakers = async (): Promise<Baker[]> => {
+export const getBakers = async (network: TezosNetwork): Promise<Baker[]> => {
+  if (network === TezosNetwork.GHOSTNET) {
+    return [];
+  }
   return axios.get<Baker[]>(bakersUrl).then(d => d.data);
 };

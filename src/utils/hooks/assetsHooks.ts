@@ -204,10 +204,7 @@ export const useGetMultisigSigners = () => {
 };
 
 export const useBakerList = (): Baker[] => {
-  const bakers = useAppSelector(state => state.assets.bakers);
-  const network = useSelectedNetwork();
-
-  return network === TezosNetwork.MAINNET ? bakers : [];
+  return useAppSelector(state => state.assets.bakers);
 };
 
 export const useGetBaker = () => {
