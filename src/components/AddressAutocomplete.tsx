@@ -7,7 +7,7 @@ import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useAllAccounts, useImplicitAccounts } from "../utils/hooks/accountHooks";
-import { useSelectedNetwork } from "../utils/hooks/assetsHooks";
+import { useBakerList, useSelectedNetwork } from "../utils/hooks/assetsHooks";
 import { useContacts } from "../utils/hooks/contactsHooks";
 import { useAppSelector } from "../utils/store/hooks";
 import { Identicon } from "./Identicon";
@@ -221,13 +221,10 @@ export const OwnedAccountsAutocomplete = <T extends FieldValues, U extends Path<
 export const BakersAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>
 ) => {
-  const network = useSelectedNetwork();
-  const mainnetBakers = useAppSelector(s => s.assets.bakers).map(baker => ({
+  const bakers = useBakerList().map(baker => ({
     name: baker.name,
     pkh: baker.address,
   }));
-
-  const bakers = network === TezosNetwork.MAINNET ? mainnetBakers : [];
 
   return <AddressAutocomplete {...props} contacts={bakers} />;
 };

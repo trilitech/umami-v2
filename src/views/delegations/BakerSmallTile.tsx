@@ -1,7 +1,6 @@
-import React from "react";
 import { AspectRatio, Image, Flex, Box, Text } from "@chakra-ui/react";
 import { formatPkh } from "../../utils/format";
-import { useAppSelector } from "../../utils/store/hooks";
+import { useBakerList } from "../../utils/hooks/assetsHooks";
 
 export const BakerSmallTile = ({
   pkh,
@@ -26,7 +25,7 @@ export const BakerSmallTile = ({
 };
 
 export const useRenderBakerSmallTile = () => {
-  const bakers = useAppSelector(s => s.assets.bakers);
+  const bakers = useBakerList();
 
   return (pkh: string) => {
     const baker = bakers.find(a => a.address === pkh);

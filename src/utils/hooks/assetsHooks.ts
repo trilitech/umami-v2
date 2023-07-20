@@ -20,6 +20,7 @@ import { useAllAccounts, useImplicitAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
+import { TezosNetwork } from "@airgap/tezos";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.assets.network);
@@ -199,6 +200,13 @@ export const useGetMultisigSigners = () => {
     }
     return signers;
   };
+};
+
+export const useBakerList = () => {
+  const bakers = useAppSelector(state => state.assets.bakers);
+  const network = useSelectedNetwork();
+
+  return network === TezosNetwork.MAINNET ? bakers : [];
 };
 
 export const useGetBaker = () => {
