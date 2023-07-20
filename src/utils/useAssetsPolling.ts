@@ -154,8 +154,12 @@ export const useAssetsPolling = () => {
     refetchOnWindowFocus: false,
   });
 
-  useQuery("bakers", {
+  const bakersQuery = useQuery("bakers", {
     queryFn: async () => {
+      if (network !== TezosNetwork.MAINNET) {
+        return;
+      }
+
       const bakers = await getBakers();
       dispatch(assetsActions.updateBakers(bakers));
     },
@@ -165,6 +169,7 @@ export const useAssetsPolling = () => {
   const conversionRateQueryRef = useRef(conversionrateQuery);
   const blockNumberQueryRef = useRef(blockNumberQuery);
   const accountAssetsQueryRef = useRef(accountAssetsQuery);
+  const bakersQueryRef = useRef(bakersQuery);
 
   // Refetch when network changes
   // TODO: implement proper query cancellation
@@ -175,5 +180,6 @@ export const useAssetsPolling = () => {
     conversionRateQueryRef.current.refetch();
     blockNumberQueryRef.current.refetch();
     accountAssetsQueryRef.current.refetch();
+    bakersQueryRef.current.refetch();
   }, [network]);
 };

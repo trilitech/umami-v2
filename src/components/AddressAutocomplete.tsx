@@ -6,8 +6,8 @@ import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useAllAccounts, useImplicitAccounts } from "../utils/hooks/accountHooks";
+import { useBakerList } from "../utils/hooks/assetsHooks";
 import { useContacts } from "../utils/hooks/contactsHooks";
-import { useAppSelector } from "../utils/store/hooks";
 import { Identicon } from "./Identicon";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
@@ -219,7 +219,7 @@ export const OwnedAccountsAutocomplete = <T extends FieldValues, U extends Path<
 export const BakersAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>
 ) => {
-  const bakers = useAppSelector(s => s.assets.bakers).map(baker => ({
+  const bakers = useBakerList().map(baker => ({
     name: baker.name,
     pkh: baker.address,
   }));

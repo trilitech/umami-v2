@@ -86,11 +86,7 @@ export const DelegateForm = ({
 
             {undelegate ? null : (
               <FormControl mb={2} isInvalid={!!errors.baker}>
-                <BakersAutocomplete
-                  label="Baker"
-                  inputName="baker"
-                  allowUnknown={true} // set to false when beacon stops using SendForm
-                />
+                <BakersAutocomplete label="Baker" inputName="baker" allowUnknown={true} />
                 {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
               </FormControl>
             )}
