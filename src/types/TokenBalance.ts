@@ -182,4 +182,4 @@ export const DEFAULT_NFT_NAME = "NFT";
 export const DEFAULT_FA1_SYMBOL = "FA1.2";
 export const DEFAULT_FA2_SYMBOL = "FA2";
 export const DEFAULT_NFT_SYMBOL = "NFT";
-export const DEFAULT_TOKEN_DECIMALS = "4";
+export const DEFAULT_TOKEN_DECIMALS = "0";
