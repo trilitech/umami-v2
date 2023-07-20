@@ -373,7 +373,7 @@ describe("metadataUri", () => {
 });
 
 describe("tokenDecimal", () => {
-  it("returns token decimal", () => {
+  it("returns token decimal if it's present in the metadata", () => {
     const fa2token: FA2TokenBalance = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
@@ -384,7 +384,16 @@ describe("tokenDecimal", () => {
       },
     };
     expect(tokenDecimal(fa2token)).toEqual("3");
-    fa2token.metadata = {};
-    expect(tokenDecimal(fa2token)).toEqual("4");
+  });
+
+  it("returns 0 if metadata doesn't have the decimal field", () => {
+    const fa2token: FA2TokenBalance = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      balance: "1",
+      tokenId: "123",
+      metadata: {},
+    };
+    expect(tokenDecimal(fa2token)).toEqual("0");
   });
 });

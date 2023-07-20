@@ -58,7 +58,7 @@ describe("csv utils", () => {
     });
   });
 
-  it("converts Tez transfer to OperationValue", () => {
+  it("converts Tez transfer to Operation", () => {
     expect(fixture([mockImplicitAddress(1).pkh, "1"])).toEqual({
       type: "tez",
       amount: "1000000",
@@ -66,11 +66,11 @@ describe("csv utils", () => {
     });
   });
 
-  it("converts FA1.2 transfer to OperationValue", () => {
+  it("converts FA1.2 transfer to Operation", () => {
     const mockCSVFA12TransferRow = [mockImplicitAddress(1).pkh, "10000", ghostFA12.contract];
     expect(fixture(mockCSVFA12TransferRow, (_contract, _tokenId) => ghostFA12)).toEqual({
       type: "fa1.2",
-      amount: "100000000",
+      amount: "10000",
       recipient: mockImplicitAddress(1),
       sender,
       contract: parseContractPkh(ghostFA12.contract),
@@ -78,7 +78,7 @@ describe("csv utils", () => {
     });
   });
 
-  it("converts FA2 transfer to OperationValue", () => {
+  it("converts FA2 transfer to Operation", () => {
     const mockCSVFA2TransferRow = [
       mockImplicitAddress(1).pkh,
       "1",

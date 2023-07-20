@@ -372,7 +372,7 @@ describe("getTezOperationDisplay", () => {
       tzktUrl: "https://mainnet.tzkt.io/transactions/109855847219200",
       amount: {
         id: 10897625972737,
-        prettyDisplay: "+2.74 FA1.2",
+        prettyDisplay: "+27400 FA1.2",
         url: undefined,
       },
       prettyTimestamp: "today at 3:30 PM",
@@ -411,7 +411,7 @@ describe("getOperationsDisplays", () => {
         id: 109855847219201,
         amount: {
           id: 10897625972737,
-          prettyDisplay: "+2.74 FA1.2",
+          prettyDisplay: "+27400 FA1.2",
           url: undefined,
         },
         prettyTimestamp: "today at 3:30 PM",
