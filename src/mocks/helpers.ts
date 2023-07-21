@@ -48,7 +48,7 @@ export const setBatchEstimationPerTransaction = (
 ) => {
   fakeEstimateBatch.mockImplementation(async (transactions: any[]) => {
     return transactions.map(_ => ({
-      suggestedFeeMutez: mutez,
+      totalCost: mutez,
     })) as Estimate[];
   });
 };

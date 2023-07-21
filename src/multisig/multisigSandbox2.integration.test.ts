@@ -87,7 +87,7 @@ describe("multisig Sandbox", () => {
       await devAccount0.publicKeyHash(),
       TezosNetwork.GHOSTNET
     );
-    expect(proposeEstimate).toHaveProperty("suggestedFeeMutez");
+    expect(proposeEstimate).toHaveProperty("totalCost");
 
     const proposeResponse = await proposeMultisigLambda(
       { contract: MULTISIG_GHOSTNET_1, lambdaActions },
@@ -122,7 +122,7 @@ describe("multisig Sandbox", () => {
       await devAccount1.publicKeyHash(),
       TezosNetwork.GHOSTNET
     );
-    expect(approveEstimate).toHaveProperty("suggestedFeeMutez");
+    expect(approveEstimate).toHaveProperty("totalCost");
 
     const approveResponse = await approveOrExecuteMultisigOperation(
       {
@@ -151,7 +151,7 @@ describe("multisig Sandbox", () => {
       await devAccount1.publicKeyHash(),
       TezosNetwork.GHOSTNET
     );
-    expect(executeEstimate).toHaveProperty("suggestedFeeMutez");
+    expect(executeEstimate).toHaveProperty("totalCost");
 
     const executeResponse = await approveOrExecuteMultisigOperation(
       {

@@ -29,7 +29,7 @@ export const getBatchSubtotal = (ops: Operation[]) => {
 export const sumEstimations = (es: Estimate[]) => {
   return es
     .reduce((acc, curr) => {
-      return acc.plus(curr.suggestedFeeMutez);
+      return acc.plus(curr.totalCost);
     }, new BigNumber(0))
     .toNumber();
 };
@@ -43,7 +43,7 @@ export const operationsToBatchItems = async (
   const estimations = await estimateBatch(operations, pkh, pk, network);
   const items = zip(operations, estimations).map(([o, e]) => {
     return {
-      fee: String(e.suggestedFeeMutez),
+      fee: String(e.totalCost),
       operation: o,
     };
   });

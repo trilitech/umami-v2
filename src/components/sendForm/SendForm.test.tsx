@@ -135,7 +135,7 @@ describe("<SendForm />", () => {
 
       fakeTezosUtils.estimateBatch.mockResolvedValue([
         {
-          suggestedFeeMutez: 12345,
+          totalCost: 12345,
         } as Estimate,
       ]);
 
@@ -785,7 +785,7 @@ describe("<SendForm />", () => {
 
     test("User can acomplish a tez proposal", async () => {
       fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
-        suggestedFeeMutez: 12345,
+        totalCost: 12345,
       } as Estimate);
       fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
         hash: "mockHash",
@@ -841,7 +841,7 @@ describe("<SendForm />", () => {
 
     test("User can acomplish an FA2 proposal", async () => {
       fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
-        suggestedFeeMutez: 12345,
+        totalCost: 12345,
       } as Estimate);
       fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
         hash: "mockHash",
@@ -902,7 +902,7 @@ describe("<SendForm />", () => {
         },
       };
       fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
-        suggestedFeeMutez: 12345,
+        totalCost: 12345,
       } as Estimate);
       fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
         hash: "mockHash",

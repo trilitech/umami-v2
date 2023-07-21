@@ -18,7 +18,7 @@ export const useApproveOrExecuteModdal = () => {
     setIsLoading(true);
     try {
       const pk = getPk(params.signer.pkh);
-      const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
+      const { totalCost } = await estimateMultisigApproveOrExecute(
         {
           type: params.type,
           contract: params.multisigAddress,
@@ -28,7 +28,7 @@ export const useApproveOrExecuteModdal = () => {
         params.signer.pkh,
         network
       );
-      onOpen({ ...params, suggestedFeeMutez });
+      onOpen({ ...params, totalCost });
     } catch (error: any) {
       console.warn("Failed simulation", error);
       toast({ title: "Failed simulation", description: error.message, status: "warning" });

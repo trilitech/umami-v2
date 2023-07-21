@@ -335,11 +335,7 @@ describe("Assets reducer", () => {
 
   describe("Batch", () => {
     test("Adding operations to batch starts an estimation and updates the given account's batch with the result", async () => {
-      const mockEstimations = [
-        { suggestedFeeMutez: "323" },
-        { suggestedFeeMutez: "423" },
-        { suggestedFeeMutez: "523" },
-      ];
+      const mockEstimations = [{ totalCost: "323" }, { totalCost: "423" }, { totalCost: "523" }];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
@@ -366,15 +362,15 @@ describe("Assets reducer", () => {
           isSimulating: false,
           items: [
             {
-              fee: mockEstimations[0].suggestedFeeMutez,
+              fee: mockEstimations[0].totalCost,
               operation: transfers[0],
             },
             {
-              fee: mockEstimations[1].suggestedFeeMutez,
+              fee: mockEstimations[1].totalCost,
               operation: transfers[1],
             },
             {
-              fee: mockEstimations[2].suggestedFeeMutez,
+              fee: mockEstimations[2].totalCost,
               operation: transfers[2],
             },
           ],
@@ -383,7 +379,7 @@ describe("Assets reducer", () => {
     });
 
     test("Batches can be cleared for a given account", async () => {
-      const mockEstimations = [{ suggestedFeeMutez: "323" }];
+      const mockEstimations = [{ totalCost: "323" }];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
@@ -401,7 +397,7 @@ describe("Assets reducer", () => {
           isSimulating: false,
           items: [
             {
-              fee: mockEstimations[0].suggestedFeeMutez,
+              fee: mockEstimations[0].totalCost,
               operation: transfers[0],
             },
           ],
@@ -437,11 +433,7 @@ describe("Assets reducer", () => {
     });
 
     test("Running a concurrent estimation for a given account is not possible", async () => {
-      const mockEstimations = [
-        { suggestedFeeMutez: "323" },
-        { suggestedFeeMutez: "423" },
-        { suggestedFeeMutez: "523" },
-      ];
+      const mockEstimations = [{ totalCost: "323" }, { totalCost: "423" }, { totalCost: "523" }];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -467,15 +459,15 @@ describe("Assets reducer", () => {
           isSimulating: false,
           items: [
             {
-              fee: mockEstimations[0].suggestedFeeMutez,
+              fee: mockEstimations[0].totalCost,
               operation: transfers[0],
             },
             {
-              fee: mockEstimations[1].suggestedFeeMutez,
+              fee: mockEstimations[1].totalCost,
               operation: transfers[1],
             },
             {
-              fee: mockEstimations[2].suggestedFeeMutez,
+              fee: mockEstimations[2].totalCost,
               operation: transfers[2],
             },
           ],
@@ -484,11 +476,7 @@ describe("Assets reducer", () => {
     });
 
     test("You can't add an empty list of operations to a batch", async () => {
-      const mockEstimations = [
-        { suggestedFeeMutez: "323" },
-        { suggestedFeeMutez: "423" },
-        { suggestedFeeMutez: "523" },
-      ];
+      const mockEstimations = [{ totalCost: "323" }, { totalCost: "423" }, { totalCost: "523" }];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
@@ -507,11 +495,7 @@ describe("Assets reducer", () => {
     });
 
     test("Batch can't be cleared for a given account if simulation is ongoing for a given account", async () => {
-      const mockEstimations = [
-        { suggestedFeeMutez: "323" },
-        { suggestedFeeMutez: "423" },
-        { suggestedFeeMutez: "523" },
-      ];
+      const mockEstimations = [{ totalCost: "323" }, { totalCost: "423" }, { totalCost: "523" }];
 
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
@@ -543,16 +527,16 @@ describe("Assets reducer", () => {
               operation: mockTezTransfer(3),
             },
             {
-              fee: mockEstimations[0].suggestedFeeMutez,
+              fee: mockEstimations[0].totalCost,
               operation: transfers[0],
             },
 
             {
-              fee: mockEstimations[1].suggestedFeeMutez,
+              fee: mockEstimations[1].totalCost,
               operation: transfers[1],
             },
             {
-              fee: mockEstimations[2].suggestedFeeMutez,
+              fee: mockEstimations[2].totalCost,
               operation: transfers[2],
             },
           ],

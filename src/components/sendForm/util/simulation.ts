@@ -31,7 +31,7 @@ const makeMultisigProposalSimulation = async (
 };
 
 const getTotalFee = (estimate: Estimate[] | Estimate) =>
-  String(Array.isArray(estimate) ? sumEstimations(estimate) : estimate.suggestedFeeMutez);
+  String(Array.isArray(estimate) ? sumEstimations(estimate) : estimate.totalCost);
 
 export const makeSimulation = async (
   operation: FormOperations,

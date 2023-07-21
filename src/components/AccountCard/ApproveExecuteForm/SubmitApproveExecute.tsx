@@ -83,7 +83,7 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
           <Heading size="sm" color="text.dark">
             Fee
           </Heading>
-          <Text size="sm">{prettyTezAmount(String(params.suggestedFeeMutez))}</Text>
+          <Text size="sm">{prettyTezAmount(String(params.totalCost))}</Text>
         </Flex>
       </ModalBody>
 

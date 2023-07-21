@@ -76,7 +76,7 @@ describe("<MultisigPendingCard/>", () => {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
     fakeTezosUtils.estimateMultisigApproveOrExecute.mockResolvedValue({
-      suggestedFeeMutez: 33,
+      totalCost: 33,
     } as Estimate);
 
     fakeTezosUtils.approveOrExecuteMultisigOperation.mockResolvedValue({
@@ -144,7 +144,7 @@ describe("<MultisigPendingCard/>", () => {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
     fakeTezosUtils.estimateMultisigApproveOrExecute.mockResolvedValue({
-      suggestedFeeMutez: 33,
+      totalCost: 33,
     } as Estimate);
 
     fakeTezosUtils.approveOrExecuteMultisigOperation.mockResolvedValue({

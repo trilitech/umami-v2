@@ -28,7 +28,7 @@ describe("<MultisigPendingAccordion />", () => {
 
   it("should display multisig executable tez operations", async () => {
     fakeTezosUtils.estimateMultisigApproveOrExecute.mockResolvedValue({
-      suggestedFeeMutez: 33,
+      totalCost: 33,
     } as Estimate);
     const m: Multisig = {
       address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),

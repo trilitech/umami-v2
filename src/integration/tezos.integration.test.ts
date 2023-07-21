@@ -226,7 +226,7 @@ describe("Tezos utils", () => {
         );
 
         for (let i = 0; i < ghostnetResult.length; i += 1) {
-          expect(ghostnetResult[i]).toHaveProperty("suggestedFeeMutez");
+          expect(ghostnetResult[i]).toHaveProperty("totalCost");
         }
       });
 
@@ -251,8 +251,8 @@ describe("Tezos utils", () => {
 
         expect(mainnetResult).toHaveLength(2);
 
-        expect(mainnetResult[0]).toHaveProperty("suggestedFeeMutez");
-        expect(mainnetResult[1]).toHaveProperty("suggestedFeeMutez");
+        expect(mainnetResult[0]).toHaveProperty("totalCost");
+        expect(mainnetResult[1]).toHaveProperty("totalCost");
       });
 
       test("Batch estimation works with batches containing delegations on mainnet", async () => {
@@ -270,7 +270,7 @@ describe("Tezos utils", () => {
 
         expect(mainnetResult).toHaveLength(1);
 
-        expect(mainnetResult[0]).toHaveProperty("suggestedFeeMutez");
+        expect(mainnetResult[0]).toHaveProperty("totalCost");
       });
 
       test("Batch estimation fails with insuficient funds on mainnet", async () => {
