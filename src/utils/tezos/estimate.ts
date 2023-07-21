@@ -1,6 +1,6 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Estimate } from "@taquito/taquito";
 import { Operation } from "../../types/Operation";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import {
   makeMultisigApproveOrExecuteMethod,
   makeMultisigProposeMethod,

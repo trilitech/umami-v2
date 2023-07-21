@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { render, screen } from "@testing-library/react";
 import { mockNFTToken, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { HashRouter } from "react-router-dom";
@@ -8,6 +7,7 @@ import assetsSlice from "../../utils/store/assetsSlice";
 import { store } from "../../utils/store/store";
 import tokensSlice from "../../utils/store/tokensSlice";
 import NFTsViewBase from "./NftsView";
+import { TezosNetwork } from "../../types/TezosNetwork";
 
 const { updateTokenBalance, updateNetwork } = assetsSlice.actions;
 

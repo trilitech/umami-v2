@@ -1,7 +1,7 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
 import { SignerType } from "../types/SignerConfig";
+import { TezosNetwork } from "../types/TezosNetwork";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 import { makeToolkitWithSigner } from "../utils/tezos";
 import { seedPhrase } from "./seedPhrase";

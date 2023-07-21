@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import {
   Box,
   Divider,
@@ -15,6 +14,7 @@ import BigNumber from "bignumber.js";
 import { AccountType } from "../../../types/Account";
 import { Operation } from "../../../types/Operation";
 import { SignerConfig } from "../../../types/SignerConfig";
+import { TezosNetwork } from "../../../types/TezosNetwork";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useGetToken } from "../../../utils/hooks/tokensHooks";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";

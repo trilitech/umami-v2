@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import {
@@ -9,6 +8,7 @@ import {
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { useGetSk } from "../../utils/hooks/accountUtils";
 import { store } from "../../utils/store/store";
 import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";

@@ -1,6 +1,6 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Box, Select } from "@chakra-ui/react";
 import React from "react";
+import { TezosNetwork } from "../../types/TezosNetwork";
 
 export const NetworkSelectorDisplay: React.FC<{
   value: TezosNetwork;

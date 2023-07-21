@@ -1,7 +1,7 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { Estimate } from "@taquito/taquito";
 import { makeBatchLambda } from "../../../multisig/multisigUtils";
 import { parseContractPkh } from "../../../types/Address";
+import { TezosNetwork } from "../../../types/TezosNetwork";
 import { estimateBatch, estimateMultisigPropose } from "../../../utils/tezos";
 import { sumEstimations } from "../../../views/batch/batchUtils";
 import { FormOperations, ProposalOperations } from "../types";

@@ -1,7 +1,7 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { makeDefaultDevSigner } from "../mocks/devSignerKeys";
 import { parseContractPkh, parseImplicitPkh } from "../types/Address";
 import { SignerType } from "../types/SignerConfig";
+import { TezosNetwork } from "../types/TezosNetwork";
 import { tezToMutez } from "../utils/format";
 import { getPendingOperations } from "../utils/multisig/fetch";
 import {

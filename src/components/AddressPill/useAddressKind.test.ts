@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { renderHook } from "@testing-library/react";
 import { cloneDeep } from "lodash";
 import { hedgehoge } from "../../mocks/fa12Tokens";
@@ -8,6 +7,7 @@ import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import accountsSlice from "../../utils/store/accountsSlice";
 import assetsSlice from "../../utils/store/assetsSlice";
 import contactsSlice from "../../utils/store/contactsSlice";

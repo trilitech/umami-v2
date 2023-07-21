@@ -1,4 +1,4 @@
-import { TezosNetwork } from "@airgap/tezos";
+import { TezosNetwork } from "../../types/TezosNetwork";
 
 export const multisigAddress = {
   [TezosNetwork.MAINNET]: `KT1Lw11GPDxpdWXWudFUUBMA2Cihevmt8QCf`,

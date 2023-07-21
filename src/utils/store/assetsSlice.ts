@@ -1,4 +1,3 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
@@ -9,6 +8,7 @@ import { RawTokenBalance } from "../../types/TokenBalance";
 import { TzktAccount } from "../tezos";
 import accountsSlice from "./accountsSlice";
 import { Operation } from "../../types/Operation";
+import { TezosNetwork } from "../../types/TezosNetwork";
 
 export type BatchItem = { operation: Operation; fee: string };
 export type Batch = {

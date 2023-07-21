@@ -1,6 +1,6 @@
-import { TezosNetwork } from "@airgap/tezos";
 import axios from "axios";
 import { ghostMultisigContracts } from "../../mocks/tzktResponse";
+import { TezosNetwork } from "../../types/TezosNetwork";
 import { tzktUrls } from "../tezos/consts";
 import { multisigAddress } from "./consts";
 import { getAllMultiSigContracts } from "./fetch";

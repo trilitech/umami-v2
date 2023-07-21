@@ -11,10 +11,10 @@ import {
 import { operationsGetTransactions, tokensGetTokenTransfers } from "@tzkt/sdk-api";
 import { bakersUrl, coincapUrl, tzktUrls } from "./consts";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { TezosNetwork } from "@airgap/tezos";
 import { SupportedNetworks } from "../network";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
+import { TezosNetwork } from "../../types/TezosNetwork";
 jest.mock("axios");
 
 jest.mock("@tzkt/sdk-api", () => {

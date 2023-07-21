@@ -1,7 +1,6 @@
 import assetsSlice from "./assetsSlice";
 import { store } from "./store";
 
-import { TezosNetwork } from "@airgap/tezos";
 import { waitFor } from "@testing-library/react";
 import {
   mockDelegationTransfer,
@@ -17,6 +16,7 @@ import { estimateAndUpdateBatch } from "./thunks/estimateAndupdateBatch";
 import { estimateBatch } from "../tezos";
 import { hedgehoge } from "../../mocks/fa12Tokens";
 import { Operation } from "../../types/Operation";
+import { TezosNetwork } from "../../types/TezosNetwork";
 jest.mock("../tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;

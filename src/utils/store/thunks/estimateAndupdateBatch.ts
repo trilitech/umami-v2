@@ -1,6 +1,6 @@
-import { TezosNetwork } from "@airgap/tezos";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { Operation } from "../../../types/Operation";
+import { TezosNetwork } from "../../../types/TezosNetwork";
 import { operationsToBatchItems } from "../../../views/batch/batchUtils";
 import assetsSlice from "../assetsSlice";
 import { RootState } from "../store";
