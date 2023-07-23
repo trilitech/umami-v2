@@ -194,23 +194,27 @@ const restore = async () => {
   );
 
   store.dispatch(
-    addAccounts({
-      type: AccountType.SOCIAL,
-      idp: "google",
-      address: mockImplicitAddress(6),
-      pk: mockPk(6),
-      label: GOOGLE_ACCOUNT_LABEL1,
-    })
+    addAccounts([
+      {
+        type: AccountType.SOCIAL,
+        idp: "google",
+        address: mockImplicitAddress(6),
+        pk: mockPk(6),
+        label: GOOGLE_ACCOUNT_LABEL1,
+      },
+    ])
   );
 
   store.dispatch(
-    addAccounts({
-      type: AccountType.SOCIAL,
-      idp: "google",
-      address: mockImplicitAddress(7),
-      pk: mockPk(7),
-      label: GOOGLE_ACCOUNT_LABEL2,
-    })
+    addAccounts([
+      {
+        type: AccountType.SOCIAL,
+        idp: "google",
+        address: mockImplicitAddress(7),
+        pk: mockPk(7),
+        label: GOOGLE_ACCOUNT_LABEL2,
+      },
+    ])
   );
 
   store.dispatch(

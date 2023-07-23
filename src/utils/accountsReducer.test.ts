@@ -35,7 +35,7 @@ describe("Accounts reducer", () => {
   });
 
   test("should handle adding accounts and arrays of accounts", () => {
-    store.dispatch(add(mockImplicitAccount(1)));
+    store.dispatch(add([mockImplicitAccount(1)]));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1)],
       seedPhrases: {},
@@ -51,7 +51,7 @@ describe("Accounts reducer", () => {
   test("adding account should throw and exception if it is a pkh duplicate and not modify state", () => {
     store.dispatch(add([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]));
 
-    expect(() => store.dispatch(add(mockImplicitAccount(2)))).toThrowError(
+    expect(() => store.dispatch(add([mockImplicitAccount(2)]))).toThrowError(
       `Can't add account ${mockImplicitAccount(2).address.pkh} in store since it already exists.`
     );
 

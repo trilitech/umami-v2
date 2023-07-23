@@ -38,10 +38,8 @@ const accountsSlice = createSlice({
       state.items = newAccounts;
       delete state.seedPhrases[fingerPrint];
     },
-    add: (state, { payload }: { type: string; payload: ImplicitAccount | ImplicitAccount[] }) => {
-      const accounts = Array.isArray(payload) ? payload : [payload];
-
-      state.items = concatUnique(state.items, accounts);
+    add: (state, { payload }: { type: string; payload: ImplicitAccount[] }) => {
+      state.items = concatUnique(state.items, payload);
     },
   },
 });
