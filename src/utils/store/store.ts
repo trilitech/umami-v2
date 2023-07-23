@@ -5,7 +5,7 @@ import assetsSlice from "./assetsSlice";
 import contactsSlice from "./contactsSlice";
 import { extraArgument } from "./extraArgument";
 import multisigsSlice from "./multisigsSlice";
-import storage from "./storage";
+import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 import tokensSlice from "./tokensSlice";
 
 // See this answer for configuration of redux toolkit with redux-persist
