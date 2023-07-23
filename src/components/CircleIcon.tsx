@@ -1,11 +1,10 @@
 import { Box, Center } from "@chakra-ui/react";
-import { diamontIcon, documentIcon, googleIcon, usbIcon, walletIcon } from "./Icons";
+import { diamontIcon, documentIcon, usbIcon, walletIcon } from "./Icons";
 
 const iconMap = {
   diamont: diamontIcon,
   document: documentIcon,
   wallet: walletIcon,
-  google: googleIcon,
   usb: usbIcon,
 };
 
@@ -13,7 +12,6 @@ export enum SupportedIcons {
   diamont = "diamont",
   document = "document",
   wallet = "wallet",
-  google = "google",
   usb = "usb",
 }
 

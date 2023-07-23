@@ -1,13 +1,12 @@
-import { useToast } from "@chakra-ui/react";
+import { IconButton, useToast } from "@chakra-ui/react";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import CustomAuth from "@toruslabs/customauth";
-import { TORUS_NETWORK_TYPE } from "@toruslabs/fetch-node-details";
 import { useState } from "react";
-import { CircleIcon, SupportedIcons } from "./components/CircleIcon";
-import { TezosNetwork } from "./types/TezosNetwork";
-import { useSelectedNetwork } from "./utils/hooks/assetsHooks";
+import { FcGoogle } from "react-icons/fc";
 
-export const parseParams = (url: string) => {
+// These parameters are built by
+// https://github.com/torusresearch/CustomAuth/blob/master/serviceworker/redirect.html
+export const parseTorusRedirectParams = (url: string) => {
   const correctUrl = url.replace("umami://auth/", "");
   const params = new URLSearchParams(correctUrl);
   const instanceParams = {
@@ -40,49 +39,29 @@ export const parseParams = (url: string) => {
 };
 
 export type GoogleAuthProps = {
-  buttonText?: string;
-  onReceiveSk: (sk: string) => void;
-  width?: string;
-  bg?: string;
+  onSuccessfulAuth: (sk: string, email: string) => void;
   isLoading?: boolean;
 };
 
-export const DEFAULT_BTN_TEXT = "Connect with Google";
-
-const toTorusNetwork = (network: TezosNetwork): TORUS_NETWORK_TYPE => {
-  switch (network) {
-    case TezosNetwork.MAINNET:
-      return "mainnet";
-    // Testnet not working
-    case TezosNetwork.GHOSTNET:
-      return "testnet";
-  }
-};
-
-export const GoogleAuth: React.FC<GoogleAuthProps> = ({
-  buttonText = DEFAULT_BTN_TEXT,
-  onReceiveSk,
-  width,
-  bg,
-  isLoading = false,
-}) => {
-  const [SSOisLoading, SetSSOIsLoading] = useState(false);
+export const GoogleAuth: React.FC<GoogleAuthProps> = ({ onSuccessfulAuth }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-  const umamiNetwork = useSelectedNetwork();
-  const torus = new CustomAuth({
-    baseUrl: "https://umamiwallet.com/auth/",
-    redirectPathName: "redirect.html",
-    redirectToOpener: true,
-    uxMode: "popup",
-    network: toTorusNetwork(umamiNetwork),
-  });
 
   const authenticate = async () => {
-    SetSSOIsLoading(true);
-    const tmp = {
-      prompt: "consent",
-      display: "popup",
-    };
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+
+    const torus = new CustomAuth({
+      web3AuthClientId:
+        "BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g",
+      baseUrl: "https://umamiwallet.com/auth/v2/",
+      redirectPathName: "redirect.html",
+      redirectToOpener: true,
+      uxMode: "popup",
+      network: "mainnet",
+    });
     await torus.init({ skipSw: true });
 
     try {
@@ -94,23 +73,30 @@ export const GoogleAuth: React.FC<GoogleAuthProps> = ({
             clientId: "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
             typeOfLogin: "google",
             verifier: "umami",
-            jwtParams: tmp,
           },
         ],
       });
-
-      const sk = b58cencode(result.privateKey, prefix[Prefix.SPSK]);
-      onReceiveSk(sk);
+      const privateKey = result.finalKeyData.privKey || result.oAuthKeyData.privKey;
+      const sk = b58cencode(privateKey, prefix[Prefix.SPSK]);
+      onSuccessfulAuth(sk, result.userInfo[0].email);
     } catch (error: any) {
-      toast({ title: "Torus SSO failed", description: error.message });
+      toast({ title: "Torus SSO failed", description: error.message, status: "error" });
+    } finally {
+      setIsLoading(false);
     }
-    SetSSOIsLoading(false);
   };
 
+  // TODO: correct the BG colours when we have the design ready
   return (
-    <CircleIcon
-      onClick={isLoading || SSOisLoading ? undefined : authenticate}
-      icon={SupportedIcons.google}
+    <IconButton
+      bg="white"
+      borderRadius="50%"
+      height="48px"
+      width="48px"
+      aria-label="Google SSO"
+      onClick={authenticate}
+      isLoading={isLoading}
+      icon={<FcGoogle size="24px" />}
     />
   );
 };

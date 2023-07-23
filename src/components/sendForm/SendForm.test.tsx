@@ -684,16 +684,13 @@ describe("<SendForm />", () => {
       });
     };
 
-    test("It doesn't display password in SubmitStep", async () => {
-      await fillForm();
-      expect(screen.getByRole("button", { name: /sign with google/i })).toBeTruthy();
-      expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
-    });
-
     test("Clicking on submit transaction signs with google private key and shows operation submitted message", async () => {
       await fillForm();
 
-      const googleSSOBtn = screen.getByText(/sign with google/i);
+      // doesn't display password in SubmitStep
+      expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
+
+      const googleSSOBtn = screen.getByTestId("google-auth-button");
 
       fakeTezosUtils.submitBatch.mockResolvedValueOnce({
         opHash: "foo",
