@@ -29,7 +29,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^13.5.0",
-    "@toruslabs/customauth": "^11.5.0",
+    "@toruslabs/customauth": "^15.0.3",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.14",
     "@types/react": "^18.0.28",
@@ -90,7 +90,7 @@
     "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
     "build-storybook": "build-storybook -s public",
     "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js",
-    "electron:package:mac:debug": "cross-env NODE_ENV=development && CSC_IDENTITY_AUTO_DISCOVERY=false && electron-builder -m -c.extraMetadata.main=build/electron.js",
+    "electron:package:mac:debug": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "electron-builder -w -c.extraMetadata.main=build/electron.js",
     "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
