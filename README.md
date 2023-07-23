@@ -55,10 +55,10 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-### `yarn electron start`
+### `yarn electron:start`
 
 Runs the electron app in the development mode.
-In order to get the dev tools work please make sure to set the `ENABLE_DEV_TOOLS` env variable to `true`
+In order to get the dev tools work please make sure to set the `devTools` to `true` in the `webPreferences`
 
 ### `yarn electron:package:(mac|win|linux)`
 
