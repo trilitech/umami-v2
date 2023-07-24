@@ -64,7 +64,6 @@ const MemoizedRouter = React.memo(() => {
 const LoggedInRouterWithPolling = () => {
   // This does rerenders
   useAssetsPolling();
-  useDeeplinkHandler();
   return <MemoizedRouter />;
 };
 
@@ -87,6 +86,7 @@ const LoggedOutRouter = () => {
 };
 
 const Router = () => {
+  useDeeplinkHandler();
   const isLoggedIn = useImplicitAccounts().length !== 0;
 
   return isLoggedIn ? <LoggedInRouterWithPolling /> : <LoggedOutRouter />;

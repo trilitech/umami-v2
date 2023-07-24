@@ -6,15 +6,16 @@ export const MOCK_GOOGLE_SK = "mockGoogleSK";
 export const GoogleAuthMock: React.FC<GoogleAuthProps> = props => {
   return (
     <button
+      data-testid="google-auth-button"
       onClick={e => {
         e.preventDefault();
 
         setTimeout(() => {
-          props.onReceiveSk(MOCK_GOOGLE_SK);
+          props.onSuccessfulAuth(MOCK_GOOGLE_SK, "mockGoogleEmail");
         });
       }}
     >
-      {props.buttonText || "connect with google"}
+      Connect with Google
     </button>
   );
 };

@@ -88,13 +88,7 @@ const SignButton: React.FC<{
         </FormControl>
       ) : null}
       {isGoogleSSO ? (
-        <GoogleAuth
-          isLoading={isLoading}
-          bg="umami.blue"
-          width="100%"
-          buttonText="Sign with Google"
-          onReceiveSk={onSubmitGoogleSSO}
-        />
+        <GoogleAuth onSuccessfulAuth={onSubmitGoogleSSO} />
       ) : (
         <Button
           onClick={handleSubmit(isLedger ? onSubmitLedger : onSubmitNominal)}

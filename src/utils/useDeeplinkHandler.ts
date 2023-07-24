@@ -1,7 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { useAddPeer } from "./beacon/beacon";
-import { parseParams } from "../GoogleAuth";
+import { parseTorusRedirectParams } from "../GoogleAuth";
 
 export const useDeeplinkHandler = () => {
   const toast = useToast();
@@ -14,8 +14,11 @@ export const useDeeplinkHandler = () => {
     // Print for debugging
     console.log("onDeeplink", url);
     if (url.startsWith("umami://auth/")) {
-      // Deeplink handler for Kukai
-      const params = parseParams(url);
+      // Deeplink handler for GoogleAuth
+      const params = parseTorusRedirectParams(url);
+      // we simulate the default toruslabs/CustomAuth flow
+      // that's how it works https://github.com/torusresearch/CustomAuth/blob/master/serviceworker/redirect.html
+      // so the deeplink is just a bridge between Google's redirect and the CustomAuth code
       window.postMessage(params);
     } else if (url.startsWith("umami://?type=tzip10&data=")) {
       // Deeplink handler for beacon

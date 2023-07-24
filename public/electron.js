@@ -41,7 +41,7 @@ function createWindow() {
       sandbox: true,
       webSecurity: true,
       experimentalFeatures: false,
-      devTools: process.env.ENABLE_DEV_TOOLS === "true", // Do not change. It's important for security that devtools are disabled by default
+      devTools: false, // Do not change. It's important for security that devtools are disabled by default
     },
   });
 
@@ -96,11 +96,6 @@ function createWindow() {
       if (index !== -1) {
         mainWindow.webContents.send("deeplinkURL", argv[index]);
       }
-    }
-
-    // Open dev tools for dev builds
-    if (process.env.NODE_ENV !== "production") {
-      mainWindow.webContents.openDevTools();
     }
   });
 

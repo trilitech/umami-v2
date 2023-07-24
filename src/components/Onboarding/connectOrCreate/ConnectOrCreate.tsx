@@ -1,5 +1,7 @@
-import { Button, Flex, VStack, Text, Divider } from "@chakra-ui/react";
+import { Button, Flex, VStack, Text, Divider, useToast } from "@chakra-ui/react";
 import { GoogleAuth } from "../../../GoogleAuth";
+import { useRestoreSocial } from "../../../utils/hooks/accountHooks";
+import { getPkAndPkhFromSk } from "../../../utils/tezos";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
@@ -11,9 +13,14 @@ const ConnectOrCreate = ({
   goToStep: (step: Step) => void;
   closeModal: () => void;
 }) => {
-  const onReceiveSk = async (sk: string) => {
-    // TODO: complete it
-    // const { pk, pkh } = await getPkAndPkhFromSk(sk);
+  const restoreSocial = useRestoreSocial();
+  const toast = useToast();
+
+  const onSuccessfulSocialAuth = async (sk: string, email: string) => {
+    const { pk, pkh } = await getPkAndPkhFromSk(sk);
+    restoreSocial(pk, pkh, email);
+    toast({ title: `Successfully added ${email} account`, status: "success" });
+    closeModal();
   };
   return (
     <ModalContentWrapper icon={SupportedIcons.wallet} title="Connect or Create Account">
@@ -50,7 +57,7 @@ const ConnectOrCreate = ({
           </Text>
           <Divider mt="11px" />
         </Flex>
-        <GoogleAuth width="100%" onReceiveSk={onReceiveSk} />
+        <GoogleAuth onSuccessfulAuth={onSuccessfulSocialAuth} />
       </VStack>
     </ModalContentWrapper>
   );
