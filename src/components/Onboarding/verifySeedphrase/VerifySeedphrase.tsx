@@ -64,11 +64,13 @@ const VerifySeedphrase = ({
               Continue
             </Button>
 
-            {process.env.NODE_ENV === "development" && (
+            {
+              /* devblock:start */
               <Button onClick={onSubmit} w="100%" size="lg" minH="48px">
                 Bypass (Dev only)
               </Button>
-            )}
+              /* devblock:end */
+            }
           </VStack>
         </form>
       </Box>

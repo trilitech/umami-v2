@@ -1914,7 +1914,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.21.5":
+"@babel/runtime@npm:^7.21.5, @babel/runtime@npm:^7.22.6":
   version: 7.22.6
   resolution: "@babel/runtime@npm:7.22.6"
   dependencies:
@@ -18125,7 +18125,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^1.2.3":
+"loader-utils@npm:^1.1.0, loader-utils@npm:^1.2.3":
   version: 1.4.2
   resolution: "loader-utils@npm:1.4.2"
   dependencies:
@@ -25453,6 +25453,7 @@ __metadata:
   resolution: "umami@workspace:."
   dependencies:
     "@airgap/beacon-wallet": ^4.0.2
+    "@babel/runtime": ^7.22.6
     "@chakra-ui/icons": ^2.0.17
     "@chakra-ui/react": ^2.5.1
     "@emotion/react": ^11.10.6
@@ -25553,6 +25554,7 @@ __metadata:
     wait-on: ^7.0.1
     web-vitals: ^2.1.4
     webpack: ^5.75.0
+    webpack-remove-code-blocks: ^0.1.5
     zod: ^3.21.4
   languageName: unknown
   linkType: soft
@@ -26517,6 +26519,17 @@ __metadata:
   peerDependencies:
     webpack: ^4.44.2 || ^5.47.0
   checksum: 426982030d3b0ef26432d98960ee1fa33889d8f0ed79b3d2c8e37be9b4e4beba7524c60631297ea557c642a340b76d70b0eb6a1e08b86a769409037185795038
+  languageName: node
+  linkType: hard
+
+"webpack-remove-code-blocks@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "webpack-remove-code-blocks@npm:0.1.5"
+  dependencies:
+    loader-utils: ^1.1.0
+  peerDependencies:
+    webpack: ">=3.0.0"
+  checksum: a56b48fb208cfd18c31a7c20969c2e45881c5712efb6f50904c17b4aa4c6aee36774851a51079a7a4569fad99cf37740dfa60ffa9d1e015ac76d8d0626b23f32
   languageName: node
   linkType: hard
 
