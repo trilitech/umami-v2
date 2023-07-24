@@ -1,4 +1,4 @@
-import { TransactionOperation, TransferParams } from "@taquito/taquito";
+import { TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { Operation } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
@@ -9,21 +9,6 @@ import {
 } from "./helpers";
 import { operationsToWalletParams } from "./params";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
-
-export const transferMutez = async (
-  recipient: string,
-  amount: number,
-  config: SignerConfig,
-  parameter?: TransferParams["parameter"]
-): Promise<TransactionOperation> => {
-  const Tezos = await makeToolkitWithSigner(config);
-  return Tezos.contract.transfer({
-    to: recipient,
-    amount: amount,
-    parameter,
-    mutez: true,
-  });
-};
 
 export const proposeMultisigLambda = async (
   params: MultisigProposeMethodArgs,
