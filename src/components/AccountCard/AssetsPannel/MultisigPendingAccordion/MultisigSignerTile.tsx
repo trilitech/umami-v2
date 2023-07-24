@@ -1,22 +1,24 @@
 import { Box, Flex, Text, Heading } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../../../style/colors";
+import { MultisigAccount } from "../../../../types/Account";
 import { ImplicitAddress } from "../../../../types/Address";
 import { formatPkh } from "../../../../utils/format";
 import { useGetImplicitAccount } from "../../../../utils/hooks/accountHooks";
 import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
-import { ApproveOrExecute } from "../../../../utils/tezos/types";
+import { MultisigOperation } from "../../../../utils/multisig/types";
+import { ParamsWithFee } from "../../../ApproveExecuteForm/types";
 import { Identicon } from "../../../Identicon";
 import MultisigActionButton from "./MultisigActionButton";
 
 const MultisigSignerTile: React.FC<{
-  signer: ImplicitAddress; // TODO: change to ImplicitAccount
-  approvers: ImplicitAddress[]; // TODO: change to ImplicitAccount[]
+  signerAddress: ImplicitAddress;
   pendingApprovals: number;
-  onClickApproveOrExecute: (a: ApproveOrExecute) => void;
-  isLoading?: boolean;
+  operation: MultisigOperation;
+  account: MultisigAccount;
+  openSignModal: (params: ParamsWithFee) => void;
 }> = props => {
-  const signer = props.signer;
+  const signer = props.signerAddress;
   const getContactName = useGetContactName();
   const getImplicitAccount = useGetImplicitAccount();
   const accountLabel = getImplicitAccount(signer.pkh)?.label;

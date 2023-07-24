@@ -10,12 +10,10 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { TezosToolkit } from "@taquito/taquito";
 import BigNumber from "bignumber.js";
-import { AccountType } from "../../../types/Account";
 import { Operation } from "../../../types/Operation";
-import { SignerConfig } from "../../../types/SignerConfig";
 import { TezosNetwork } from "../../../types/TezosNetwork";
-import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { useGetToken } from "../../../utils/hooks/tokensHooks";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
@@ -60,30 +58,15 @@ const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
   );
 };
 
-const useGetImplicitAccount = () => {
-  const getAccount = useGetOwnedAccount();
-  return (pkh: string) => {
-    const account = getAccount(pkh);
-    if (account.type === AccountType.MULTISIG) {
-      throw Error(`Account ${pkh} is not implicit`);
-    }
-
-    return account;
-  };
-};
-
 export const SubmitStep: React.FC<{
   network: TezosNetwork;
   recap: EstimatedOperation;
   isBatch: boolean;
-  onSubmit: (signerConfig: SignerConfig) => void;
-  isLoading: boolean;
-}> = ({ recap: { fee, operations }, network, isBatch, onSubmit, isLoading }) => {
+  onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
+}> = ({ recap: { fee, operations }, network, isBatch, onSubmit }) => {
   const feeNum = new BigNumber(fee);
-  const getAccount = useGetImplicitAccount();
 
   const transfer = operations.content;
-  const signerAccount = getAccount(operations.signer.pkh);
 
   const total = feeNum.plus(getBatchSubtotal(transfer));
 
@@ -99,7 +82,7 @@ export const SubmitStep: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              <AccountSmallTile pkh={signerAccount.address.pkh} />
+              <AccountSmallTile pkh={operations.signer.address.pkh} />
             </Flex>
             {isBatch ? (
               <BatchRecap transfer={transfer} />
@@ -112,12 +95,7 @@ export const SubmitStep: React.FC<{
           <Total mutez={total.toString()} />
         </ModalBody>
         <ModalFooter justifyContent="center">
-          <SignButton
-            isLoading={isLoading}
-            network={network}
-            onSubmit={onSubmit}
-            signerAccount={signerAccount}
-          />
+          <SignButton network={network} onSubmit={onSubmit} signerAccount={operations.signer} />
         </ModalFooter>
       </form>
     </ModalContent>

@@ -1,38 +1,32 @@
-import { TransactionOperation } from "@taquito/taquito";
+import { TezosToolkit, TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import { Account } from "../../types/Account";
 import { Operation } from "../../types/Operation";
-import { SignerConfig } from "../../types/SignerConfig";
-import {
-  makeMultisigApproveOrExecuteMethod,
-  makeMultisigProposeMethod,
-  makeToolkitWithSigner,
-} from "./helpers";
+import { makeMultisigApproveOrExecuteMethod, makeMultisigProposeMethod } from "./helpers";
 import { operationsToWalletParams } from "./params";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const proposeMultisigLambda = async (
   params: MultisigProposeMethodArgs,
-  config: SignerConfig
+  tezosToolkit: TezosToolkit
 ): Promise<TransactionOperation> => {
-  const Tezos = await makeToolkitWithSigner(config);
-  const proposeMethod = await makeMultisigProposeMethod(params, Tezos);
+  const proposeMethod = await makeMultisigProposeMethod(params, tezosToolkit);
   return proposeMethod.send();
 };
 
 export const approveOrExecuteMultisigOperation = async (
   params: MultisigApproveOrExecuteMethodArgs,
-  config: SignerConfig
+  tezosToolkit: TezosToolkit
 ): Promise<TransactionOperation> => {
-  const Tezos = await makeToolkitWithSigner(config);
-  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, Tezos);
+  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, tezosToolkit);
   return approveOrExecuteMethod.send();
 };
 
 export const submitBatch = async (
   operation: Operation[],
-  config: SignerConfig
+  sender: Account,
+  tezosToolkit: TezosToolkit
 ): Promise<BatchWalletOperation> => {
-  const Tezos = await makeToolkitWithSigner(config);
-  const params = await operationsToWalletParams(operation, Tezos);
-  return Tezos.wallet.batch(params).send();
+  const params = await operationsToWalletParams(operation, sender);
+  return tezosToolkit.wallet.batch(params).send();
 };

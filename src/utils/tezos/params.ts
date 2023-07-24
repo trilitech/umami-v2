@@ -1,20 +1,19 @@
-import { OpKind, ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
+import { OpKind, ParamsWithKind, WalletParamsWithKind } from "@taquito/taquito";
+import { Account } from "../../types/Account";
 import { Operation } from "../../types/Operation";
-import { TezosNetwork } from "../../types/TezosNetwork";
-import { makeTokenTransferParams, makeToolkitWithDummySigner } from "./helpers";
+import { makeTokenTransferParams } from "./helpers";
 
 export const operationsToWalletParams = async (
   operations: Operation[],
-  signer: TezosToolkit
+  sender: Account
 ): Promise<WalletParamsWithKind[]> =>
-  operationsToParams(operations, signer) as Promise<WalletParamsWithKind[]>;
+  operationsToParams(operations, sender) as Promise<WalletParamsWithKind[]>;
 
 export const operationsToParams = async (
   operations: Operation[],
-  toolkit: TezosToolkit
+  sender: Account
 ): Promise<ParamsWithKind[]> => {
   const result: ParamsWithKind[] = [];
-  const signerPkh = await toolkit.signer.publicKeyHash();
 
   for (const operation of operations) {
     switch (operation.type) {
@@ -30,7 +29,7 @@ export const operationsToParams = async (
       case "delegation":
         result.push({
           kind: OpKind.DELEGATION,
-          source: signerPkh,
+          source: sender.address.pkh,
           delegate: operation.recipient?.pkh,
         });
         break;
@@ -49,15 +48,10 @@ export const operationsToParams = async (
 
 export const operationsToBatchParams = async (
   operations: Operation[],
-  pk: string,
-  pkh: string,
-  network: TezosNetwork
+  sender: Account
 ): Promise<ParamsWithKind[]> => {
   if (!operations.length) {
     return [];
   }
-
-  const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
-
-  return operationsToParams(operations, Tezos);
+  return operationsToParams(operations, sender);
 };

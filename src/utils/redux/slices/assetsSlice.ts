@@ -11,6 +11,7 @@ import { Operation } from "../../../types/Operation";
 
 export type BatchItem = { operation: Operation; fee: string };
 export type Batch = {
+  // TODO: check if it is really needed
   isSimulating: boolean;
   items: Array<BatchItem>;
 };

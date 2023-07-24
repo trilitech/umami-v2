@@ -5,14 +5,14 @@ import { waitFor } from "@testing-library/react";
 import {
   mockDelegationTransfer,
   mockNftTransfer,
-  mockPk,
   mockImplicitAddress,
   mockTezTransaction,
   mockTezTransfer,
   mockTokenTransaction,
+  mockImplicitAccount,
 } from "../../../mocks/factories";
 import accountsSlice from "./accountsSlice";
-import { estimateAndUpdateBatch } from "../thunks/estimateAndupdateBatch";
+import { estimateAndUpdateBatch } from "../thunks/estimateAndUpdateBatch";
 import { estimateBatch } from "../../tezos";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
 import { Operation } from "../../../types/Operation";
@@ -345,8 +345,8 @@ describe("Assets reducer", () => {
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
       const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
         transfers,
         TezosNetwork.MAINNET
       );
@@ -354,8 +354,8 @@ describe("Assets reducer", () => {
       store.dispatch(action);
       expect(estimateBatchMock).toHaveBeenCalledWith(
         transfers,
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
         TezosNetwork.MAINNET
       );
       expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(
@@ -389,8 +389,8 @@ describe("Assets reducer", () => {
 
       const transfers = [mockTezTransfer(1)];
       const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
         transfers,
         TezosNetwork.MAINNET
       );
@@ -419,8 +419,8 @@ describe("Assets reducer", () => {
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
       const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
         transfers,
         TezosNetwork.MAINNET
       );
@@ -449,8 +449,8 @@ describe("Assets reducer", () => {
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
 
       const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
         transfers,
         TezosNetwork.MAINNET
       );
@@ -495,8 +495,8 @@ describe("Assets reducer", () => {
       const operations: Operation[] = [];
 
       const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
         operations,
         TezosNetwork.MAINNET
       );
@@ -518,15 +518,15 @@ describe("Assets reducer", () => {
 
       store.dispatch(
         updateBatch({
-          pkh: mockImplicitAddress(1).pkh,
+          pkh: mockImplicitAccount(1).address.pkh,
           items: [{ fee: "3", operation: mockTezTransfer(3) }],
         })
       );
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
 
       const action = estimateAndUpdateBatch(
-        mockImplicitAddress(1).pkh,
-        mockPk(1),
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
         transfers,
         TezosNetwork.MAINNET
       );

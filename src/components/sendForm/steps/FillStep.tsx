@@ -21,13 +21,15 @@ import {
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { AccountType, MultisigAccount } from "../../../types/Account";
-import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
+import { AccountType, ImplicitAccount, MultisigAccount } from "../../../types/Account";
+import { parseImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
 import { getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
 import { Delegation, Operation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import {
   useAccountIsMultisig,
+  useGetImplicitAccount,
+  useGetMultisigAccount,
   useGetOwnedAccount,
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
@@ -343,47 +345,62 @@ export const SendTezOrNFTForm = ({
 };
 
 const buildTezFromFormValues = (
-  v: FormValues,
+  formValues: FormValues,
+  getImplicitAccount: (pkh: RawPkh) => ImplicitAccount | undefined,
+  getMultisigAccount: (pkh: RawPkh) => MultisigAccount | undefined,
   parameter?: TransferParams["parameter"]
 ): FormOperations => {
   const value: Operation[] = [
     {
       type: "tez",
-      amount: tezToMutez(v.amount).toString(),
-      recipient: parsePkh(v.recipient),
+      amount: tezToMutez(formValues.amount).toString(),
+      recipient: parsePkh(formValues.recipient),
       parameter,
     },
   ];
-  if (v.proposalSigner !== undefined) {
+  if (formValues.proposalSigner !== undefined) {
     return {
       type: "proposal",
-      signer: parseImplicitPkh(v.proposalSigner),
+      signer: getImplicitAccount(formValues.proposalSigner) as ImplicitAccount,
       content: value,
-      sender: parseContractPkh(v.sender),
+      sender: getMultisigAccount(formValues.sender) as MultisigAccount,
     };
   }
-  return { type: "implicit", content: value, signer: parseImplicitPkh(v.sender) };
+  return {
+    type: "implicit",
+    content: value,
+    signer: getImplicitAccount(formValues.sender) as ImplicitAccount,
+  };
 };
 
-const buildTokenFromFormValues = (v: FormValues, asset: Token): FormOperations => {
+const buildTokenFromFormValues = (
+  formValues: FormValues,
+  asset: Token,
+  getImplicitAccount: (pkh: RawPkh) => ImplicitAccount | undefined,
+  getMultisigAccount: (pkh: RawPkh) => MultisigAccount | undefined
+): FormOperations => {
   const token = [
     toOperation(asset, {
-      amount: getRealAmount(asset, v.amount).toString(),
-      sender: v.sender,
-      recipient: v.recipient,
+      amount: getRealAmount(asset, formValues.amount).toString(),
+      sender: formValues.sender,
+      recipient: formValues.recipient,
     }),
   ];
 
-  if (v.proposalSigner !== undefined) {
+  if (formValues.proposalSigner !== undefined) {
     return {
       type: "proposal",
-      signer: parseImplicitPkh(v.proposalSigner),
+      signer: getImplicitAccount(formValues.proposalSigner) as ImplicitAccount,
       content: token,
-      sender: parseContractPkh(v.sender),
+      sender: getMultisigAccount(formValues.sender) as MultisigAccount,
     };
   }
 
-  return { type: "implicit", content: token, signer: parseImplicitPkh(v.sender) };
+  return {
+    type: "implicit",
+    content: token,
+    signer: getImplicitAccount(formValues.sender) as ImplicitAccount,
+  };
 };
 
 export const FillStep: React.FC<{
@@ -396,6 +413,9 @@ export const FillStep: React.FC<{
   parameter?: TransferParams["parameter"];
   mode: SendFormMode;
 }> = ({ onSubmit, isLoading, sender, recipient, amount, parameter, mode, onSubmitBatch }) => {
+  const getImplicitAccount = useGetImplicitAccount();
+  const getMultisigAccount = useGetMultisigAccount();
+
   switch (mode.type) {
     case "delegation":
       return (
@@ -404,16 +424,17 @@ export const FillStep: React.FC<{
           recipient={recipient}
           undelegate={mode.data?.undelegate}
           isLoading={isLoading}
-          onSubmit={v => {
+          onSubmit={formValues => {
             const delegation: Delegation = {
               type: "delegation",
-              recipient: v.baker !== undefined ? parseImplicitPkh(v.baker) : undefined,
+              recipient:
+                formValues.baker !== undefined ? parseImplicitPkh(formValues.baker) : undefined,
             };
 
             onSubmit({
               type: "implicit",
               content: [delegation],
-              signer: parseImplicitPkh(v.sender),
+              signer: getImplicitAccount(formValues.sender) as ImplicitAccount,
             });
           }}
         />
@@ -437,8 +458,10 @@ export const FillStep: React.FC<{
               v.sender
             );
           }}
-          onSubmit={v => {
-            onSubmit(buildTezFromFormValues(v, parameter));
+          onSubmit={formValues => {
+            onSubmit(
+              buildTezFromFormValues(formValues, getImplicitAccount, getMultisigAccount, parameter)
+            );
           }}
         />
       );
@@ -460,8 +483,15 @@ export const FillStep: React.FC<{
               v.sender
             );
           }}
-          onSubmit={v => {
-            onSubmit(buildTokenFromFormValues(v, mode.data));
+          onSubmit={formValues => {
+            onSubmit(
+              buildTokenFromFormValues(
+                formValues,
+                mode.data,
+                getImplicitAccount,
+                getMultisigAccount
+              )
+            );
           }}
           token={mode.data}
         />
@@ -478,7 +508,7 @@ export const FillStep: React.FC<{
             onSubmit({
               type: "implicit",
               content: mode.data.batch,
-              signer: parseImplicitPkh(mode.data.signer),
+              signer: getImplicitAccount(mode.data.signer) as ImplicitAccount,
             });
           }}
         />

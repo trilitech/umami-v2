@@ -11,16 +11,16 @@ import {
   Flex,
   useToast,
 } from "@chakra-ui/react";
-import SignButton from "../../sendForm/components/SignButton";
-import { ImplicitAccount } from "../../../types/Account";
-import { SignerConfig } from "../../../types/SignerConfig";
+import SignButton from "../sendForm/components/SignButton";
+import { ImplicitAccount } from "../../types/Account";
 import { ParamsWithFee } from "./types";
-import { prettyTezAmount } from "../../../utils/format";
-import MultisigDecodedOperations from "../AssetsPannel/MultisigPendingAccordion/MultisigDecodedOperations";
-import { approveOrExecuteMultisigOperation } from "../../../utils/tezos";
-import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
-import { ApproveOrExecute } from "../../../utils/tezos/types";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { prettyTezAmount } from "../../utils/format";
+import MultisigDecodedOperations from "../AccountCard/AssetsPannel/MultisigPendingAccordion/MultisigDecodedOperations";
+import { approveOrExecuteMultisigOperation } from "../../utils/tezos";
+import { AccountSmallTile } from "../AccountSelector/AccountSmallTile";
+import { ApproveOrExecute } from "../../utils/tezos/types";
+import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosToolkit } from "@taquito/taquito";
 
 type Props = {
   signerAccount: ImplicitAccount;
@@ -41,10 +41,8 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
   params,
 }) => {
   const toast = useToast();
-  const [isLoading, setIsLoading] = React.useState(false);
 
-  const approveOrExecute = async (config: SignerConfig) => {
-    setIsLoading(true);
+  const approveOrExecute = async (tezosToolkit: TezosToolkit) => {
     try {
       const result = await approveOrExecuteMultisigOperation(
         {
@@ -52,14 +50,13 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
           operationId: params.operation.id,
           type: params.type,
         },
-        config
+        tezosToolkit
       );
       onSuccess(result.hash);
     } catch (error: any) {
-      toast({ title: "Failed propose or execute", description: error.message });
+      toast({ title: "Failed propose or execute", description: error.message, status: "error" });
       console.warn("Failed propose or execute", error);
     }
-    setIsLoading(false);
   };
 
   return (
@@ -88,12 +85,7 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
       </ModalBody>
 
       <ModalFooter justifyContent="center">
-        <SignButton
-          isLoading={isLoading}
-          network={network}
-          onSubmit={approveOrExecute}
-          signerAccount={signerAccount}
-        />
+        <SignButton network={network} onSubmit={approveOrExecute} signerAccount={signerAccount} />
       </ModalFooter>
     </ModalContent>
   );

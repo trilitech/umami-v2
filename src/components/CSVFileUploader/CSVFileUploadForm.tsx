@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
 import { FormProvider, useForm } from "react-hook-form";
-import { Address, parsePkh } from "../../types/Address";
+import { ImplicitAccount } from "../../types/Account";
 import { RawOperation } from "../../types/RawOperation";
-import { useGetPk } from "../../utils/hooks/accountHooks";
+import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
 import {
   useBatchIsSimulating,
   useClearBatch,
@@ -25,7 +25,7 @@ import {
 } from "../../utils/hooks/assetsHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
-import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndupdateBatch";
+import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { parseOperation } from "./utils";
 
@@ -34,14 +34,15 @@ type FormFields = {
   file: FileList;
 };
 
+// TODO: add support for multisig
 const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
-  const getPk = useGetPk();
   const getToken = useGetToken();
   const dispatch = useAppDispatch();
   const isSimulating = useBatchIsSimulating();
   const clearBatch = useClearBatch();
+  const getAccount = useGetImplicitAccount();
 
   const form = useForm<FormFields>({
     mode: "onBlur",
@@ -52,7 +53,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
     formState: { isValid, errors },
   } = form;
 
-  const onCSVFileUploadComplete = async (sender: Address, rows: ParseResult<string[]>) => {
+  const onCSVFileUploadComplete = async (sender: ImplicitAccount, rows: ParseResult<string[]>) => {
     if (rows.errors.length > 0) {
       throw new Error("Error loading csv file.");
     }
@@ -61,7 +62,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
     for (let i = 0; i < rows.data.length; i++) {
       const row = rows.data[i];
       try {
-        operations.push(parseOperation(sender, row, getToken));
+        operations.push(parseOperation(sender.address, row, getToken));
       } catch (error: any) {
         toast({
           title: "error",
@@ -73,21 +74,22 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
     }
 
     try {
-      await dispatch(estimateAndUpdateBatch(sender.pkh, getPk(sender.pkh), operations, network));
+      // TODO: add support for Multisig
+      await dispatch(estimateAndUpdateBatch(sender, sender, operations, network));
 
       toast({ title: "CSV added to batch!" });
       onClose();
     } catch (error: any) {
-      clearBatch(sender.pkh);
+      clearBatch(sender.address.pkh);
       toast({ title: "Invalid transaction", description: error.message, status: "error" });
     }
   };
 
   const onSubmit = async ({ file, sender }: FormFields) => {
-    const senderAddress = parsePkh(sender);
+    const account = getAccount(sender) as ImplicitAccount;
     Papa.parse<string[]>(file[0], {
       skipEmptyLines: true,
-      complete: (rows: ParseResult<string[]>) => onCSVFileUploadComplete(senderAddress, rows),
+      complete: (rows: ParseResult<string[]>) => onCSVFileUploadComplete(account, rows),
     });
   };
 

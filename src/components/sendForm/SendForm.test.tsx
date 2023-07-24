@@ -23,14 +23,13 @@ import {
   fromRaw,
   TokenBalanceWithToken,
 } from "../../types/TokenBalance";
-import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice, { BatchItem } from "../../utils/redux/slices/assetsSlice";
 import store from "../../utils/redux/store";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 
-import { Estimate, TransactionOperation } from "@taquito/taquito";
+import { Estimate, TezosToolkit, TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { mock } from "jest-mock-extended";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
@@ -73,9 +72,11 @@ const fixture = (sender: string, mode: SendFormMode) => (
 
 const MOCK_SK = "mockSk";
 const MOCK_PKH = mockImplicitAccount(1).address.pkh;
+const MOCK_TEZOS_TOOLKIT = {} as TezosToolkit;
 
 beforeEach(async () => {
-  fakeAccountUtils.useGetSk.mockReturnValue(() => Promise.resolve(MOCK_SK));
+  fakeAccountUtils.useGetSecretKey.mockReturnValue(() => Promise.resolve(MOCK_SK));
+  fakeTezosUtils.makeToolkit.mockResolvedValue(MOCK_TEZOS_TOOLKIT);
   document.getElementById("chakra-toast-portal")?.remove();
   store.dispatch(
     tokensSlice.actions.addTokens({
@@ -179,7 +180,7 @@ describe("<SendForm />", () => {
       // expect(mockToast).toHaveBeenCalledWith(/Transaction added to batch/i);
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalled();
-        // expect(screen.getByText(/Transaction added to batch/i)).toBeTruthy();
+        // expect(screen.getByText(/Transaction added to batch/i)).toBeInTheDocument();
       });
       await waitFor(() => {
         const addToBatchBtn = screen.getByRole("button", {
@@ -267,7 +268,7 @@ describe("<SendForm />", () => {
 
       fireEvent.click(submit);
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
       });
       expect(store.getState().assets.batches[MOCK_PKH]?.items).toEqual(mockBatchItems);
     });
@@ -290,17 +291,12 @@ describe("<SendForm />", () => {
 
       fireEvent.click(submit);
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/foo"
         );
       });
-      const config: SkSignerConfig = {
-        type: SignerType.SK,
-        network: TezosNetwork.MAINNET,
-        sk: MOCK_SK,
-      };
       expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
         [
           {
@@ -310,7 +306,8 @@ describe("<SendForm />", () => {
             recipient: mockImplicitAddress(7),
           },
         ],
-        config
+        mockImplicitAccount(1),
+        MOCK_TEZOS_TOOLKIT
       );
     });
   });
@@ -380,8 +377,8 @@ describe("<SendForm />", () => {
             tokenId: mockFA2.tokenId,
           },
         ],
-        "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-        "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
+        mockImplicitAccount(2),
+        mockImplicitAccount(2),
         "mainnet"
       );
 
@@ -402,7 +399,7 @@ describe("<SendForm />", () => {
       submit.click();
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/mockHash"
@@ -420,11 +417,8 @@ describe("<SendForm />", () => {
             tokenId: mockFA2.tokenId,
           },
         ],
-        {
-          network: "mainnet",
-          sk: "mockSk",
-          type: "sk",
-        }
+        mockImplicitAccount(2),
+        MOCK_TEZOS_TOOLKIT
       );
     });
   });
@@ -494,8 +488,8 @@ describe("<SendForm />", () => {
             tokenId: "0",
           },
         ],
-        "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D",
-        "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H2",
+        mockImplicitAccount(2),
+        mockImplicitAccount(2),
         "mainnet"
       );
 
@@ -515,7 +509,7 @@ describe("<SendForm />", () => {
       submit.click();
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/mockHash"
@@ -533,7 +527,8 @@ describe("<SendForm />", () => {
             tokenId: "0",
           },
         ],
-        { network: "mainnet", sk: "mockSk", type: "sk" }
+        mockImplicitAccount(2),
+        MOCK_TEZOS_TOOLKIT
       );
     });
   });
@@ -597,17 +592,13 @@ describe("<SendForm />", () => {
       fireEvent.click(submit);
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/mockHash"
         );
       });
-      const config: SkSignerConfig = {
-        type: SignerType.SK,
-        network: TezosNetwork.MAINNET,
-        sk: MOCK_SK,
-      };
+
       const contractAddress = nft.token?.contract?.address as string;
       expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
         [
@@ -620,7 +611,8 @@ describe("<SendForm />", () => {
             tokenId: nft.token?.tokenId,
           },
         ],
-        config
+        mockImplicitAccount(1),
+        MOCK_TEZOS_TOOLKIT
       );
     });
   });
@@ -634,7 +626,7 @@ describe("<SendForm />", () => {
     test("it displays delegation form form", async () => {
       render(fixture(MOCK_PKH, { type: "delegation" }));
 
-      expect(screen.getByText(/delegate/i)).toBeTruthy();
+      expect(screen.getByText(/delegate/i)).toBeInTheDocument();
 
       const bakerInput = screen.getByTestId("real-address-input-baker");
       fireEvent.change(bakerInput, {
@@ -699,7 +691,7 @@ describe("<SendForm />", () => {
       fireEvent.click(googleSSOBtn);
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/foo"
@@ -741,23 +733,22 @@ describe("<SendForm />", () => {
     };
     test("It doesn't display password in SubmitStep", async () => {
       await fillForm();
-      expect(screen.getByRole("button", { name: /sign with ledger/i })).toBeTruthy();
+      expect(screen.getByRole("button", { name: /sign with ledger/i })).toBeInTheDocument();
       expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
     });
 
     test("Clicking on submit transaction signs with ledger and shows operation submitted message", async () => {
       await fillForm();
 
-      const ledgerBtn = screen.getByText(/sign with ledger/i);
-
       fakeTezosUtils.submitBatch.mockResolvedValueOnce({
         opHash: "foo",
       } as BatchWalletOperation);
 
+      const ledgerBtn = screen.getByText(/sign with ledger/i);
       fireEvent.click(ledgerBtn);
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/foo"
@@ -828,7 +819,7 @@ describe("<SendForm />", () => {
       fireEvent.click(submit);
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/mockHash"
@@ -877,7 +868,7 @@ describe("<SendForm />", () => {
       fireEvent.click(submit);
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/mockHash"
@@ -946,7 +937,7 @@ describe("<SendForm />", () => {
       fireEvent.click(submit);
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
         expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
           "href",
           "https://mainnet.tzkt.io/mockHash"

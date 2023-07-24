@@ -6,12 +6,12 @@ import { TezosToolkit, TransferParams } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
 import { FA12Operation, FA2Operation } from "../../types/RawOperation";
-import { SignerConfig, SignerType } from "../../types/SignerConfig";
+import { SignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { PublicKeyPair } from "../restoreAccounts";
 import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
-import { DummySigner } from "./dummySigner";
+import { FakeSigner } from "./fakeSigner";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const addressExists = async (
@@ -51,16 +51,16 @@ export const curvesToDerivationPath = (curves: Curves): DerivationType => {
     case "p256":
       return DerivationType.P256;
     case "bip25519":
-      throw new Error("bip25519 is not supported in Tezos");
+      throw new Error("bip25519 is not supported in Tezos"); // TODO: Verify this statement
   }
 };
 
 export const makeSigner = async (config: SignerConfig) => {
   switch (config.type) {
-    case SignerType.SK:
-      return new InMemorySigner(config.sk);
-
-    case SignerType.LEDGER: {
+    case "social":
+    case "mnemonic":
+      return new InMemorySigner(config.secretKey);
+    case "ledger": {
       // Close existing connections to be able to reinitiate
       const devices = await TransportWebHID.list();
       for (let i = 0; i < devices.length; i++) {
@@ -69,35 +69,22 @@ export const makeSigner = async (config: SignerConfig) => {
       const transport = await TransportWebHID.create();
       const signer = new LedgerSigner(
         transport,
-        config.derivationPath,
+        config.account.derivationPath,
         false, // PK Verification not needed
-        curvesToDerivationPath(config.derivationType)
+        curvesToDerivationPath(config.account.curve)
       );
       return signer;
     }
+    case "fake":
+      return new FakeSigner(config.signer.pk, config.signer.address.pkh);
   }
 };
 
-export const makeToolkitWithSigner = async (config: SignerConfig) => {
-  const Tezos = new TezosToolkit(nodeUrls[config.network]);
+export const makeToolkit = async (config: SignerConfig) => {
+  const toolkit = new TezosToolkit(nodeUrls[config.network]);
   const signer = await makeSigner(config);
-
-  Tezos.setProvider({
-    signer,
-  });
-  return Tezos;
-};
-
-export const makeToolkitWithDummySigner = (
-  pk: string,
-  pkh: string,
-  network: TezosNetwork
-): TezosToolkit => {
-  const Tezos = new TezosToolkit(nodeUrls[network]);
-  Tezos.setProvider({
-    signer: new DummySigner(pk, pkh),
-  });
-  return Tezos;
+  toolkit.setSignerProvider(signer);
+  return toolkit;
 };
 
 export const getPkAndPkhFromSk = async (sk: string): Promise<PublicKeyPair> => {
@@ -190,6 +177,7 @@ export const makeTokenTransferParams = (
   };
 };
 
+// TODO: convert to an offline method
 export const makeMultisigProposeMethod = async (
   { lambdaActions, contract }: MultisigProposeMethodArgs,
   toolkit: TezosToolkit
@@ -198,6 +186,7 @@ export const makeMultisigProposeMethod = async (
   return contractInstance.methods.propose(lambdaActions);
 };
 
+// TODO: convert to an offline method
 export const makeMultisigApproveOrExecuteMethod = async (
   { type, contract, operationId }: MultisigApproveOrExecuteMethodArgs,
   toolkit: TezosToolkit

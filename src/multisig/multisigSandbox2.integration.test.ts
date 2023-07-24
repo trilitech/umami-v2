@@ -1,6 +1,6 @@
 import { makeDefaultDevSigner } from "../mocks/devSignerKeys";
+import { mockImplicitAccount } from "../mocks/factories";
 import { parseContractPkh, parseImplicitPkh } from "../types/Address";
-import { SignerType } from "../types/SignerConfig";
 import { TezosNetwork } from "../types/TezosNetwork";
 import { tezToMutez } from "../utils/format";
 import { getPendingOperations } from "../utils/multisig/fetch";
@@ -9,6 +9,7 @@ import {
   estimateMultisigApproveOrExecute,
   estimateMultisigPropose,
   getAccounts,
+  makeToolkit,
   proposeMultisigLambda,
   submitBatch,
 } from "../utils/tezos";
@@ -37,6 +38,8 @@ describe("multisig Sandbox", () => {
     const devAccount1 = makeDefaultDevSigner(1);
     const devAccount2 = makeDefaultDevSigner(2);
     const devAccount2Address = parseImplicitPkh(await devAccount2.publicKeyHash());
+    const devAccount0Sk = await devAccount0.secretKey();
+    const devAccount1Sk = await devAccount1.secretKey();
     const devAccount2Sk = await devAccount2.secretKey();
     const accountInfos = await getAccounts([devAccount2Address.pkh], TezosNetwork.GHOSTNET);
     const { balance: preDevAccount2TezBalance } = accountInfos[0];
@@ -50,12 +53,18 @@ describe("multisig Sandbox", () => {
         },
       ],
       {
-        type: SignerType.SK,
-        sk: devAccount2Sk,
+        ...mockImplicitAccount(0),
+        address: parseImplicitPkh(await devAccount2.publicKeyHash()),
+        pk: await devAccount2.publicKey(),
+      },
+      await makeToolkit({
+        type: "mnemonic",
+        secretKey: devAccount2Sk,
         network: TezosNetwork.GHOSTNET,
-      }
+      })
     );
     await sleep(15000);
+
     // devAccount0 propose a batch tez/FA tranfer to devAccount2
     // devAccount0 is going to be in the approvers as well.
     const lambdaActions = makeBatchLambda([
@@ -83,18 +92,24 @@ describe("multisig Sandbox", () => {
     ]);
     const proposeEstimate = await estimateMultisigPropose(
       { contract: MULTISIG_GHOSTNET_1, lambdaActions },
-      await devAccount0.publicKey(),
-      await devAccount0.publicKeyHash(),
+      {
+        ...mockImplicitAccount(0),
+        address: parseImplicitPkh(await devAccount0.publicKeyHash()),
+        pk: await devAccount0.publicKey(),
+      },
       TezosNetwork.GHOSTNET
     );
     expect(proposeEstimate).toHaveProperty("suggestedFeeMutez");
     const proposeResponse = await proposeMultisigLambda(
-      { contract: MULTISIG_GHOSTNET_1, lambdaActions },
       {
-        type: SignerType.SK,
+        contract: MULTISIG_GHOSTNET_1,
+        lambdaActions,
+      },
+      await makeToolkit({
+        type: "mnemonic",
+        secretKey: devAccount0Sk,
         network: TezosNetwork.GHOSTNET,
-        sk: await devAccount0.secretKey(),
-      }
+      })
     );
     expect(proposeResponse.hash).toBeTruthy();
     console.log("propose done");
@@ -115,8 +130,11 @@ describe("multisig Sandbox", () => {
         contract: MULTISIG_GHOSTNET_1,
         operationId: pendingOpKey as string,
       },
-      await devAccount1.publicKey(),
-      await devAccount1.publicKeyHash(),
+      {
+        ...mockImplicitAccount(0),
+        address: parseImplicitPkh(await devAccount1.publicKeyHash()),
+        pk: await devAccount1.publicKey(),
+      },
       TezosNetwork.GHOSTNET
     );
     expect(approveEstimate).toHaveProperty("suggestedFeeMutez");
@@ -126,11 +144,11 @@ describe("multisig Sandbox", () => {
         contract: MULTISIG_GHOSTNET_1,
         operationId: pendingOpKey as string,
       },
-      {
-        type: SignerType.SK,
+      await makeToolkit({
+        type: "mnemonic",
+        secretKey: devAccount1Sk,
         network: TezosNetwork.GHOSTNET,
-        sk: await devAccount1.secretKey(),
-      }
+      })
     );
     expect(approveResponse.hash).toBeTruthy();
     console.log("approve done");
@@ -142,8 +160,11 @@ describe("multisig Sandbox", () => {
         contract: MULTISIG_GHOSTNET_1,
         operationId: pendingOpKey as string,
       },
-      await devAccount1.publicKey(),
-      await devAccount1.publicKeyHash(),
+      {
+        ...mockImplicitAccount(0),
+        address: parseImplicitPkh(await devAccount1.publicKeyHash()),
+        pk: await devAccount1.publicKey(),
+      },
       TezosNetwork.GHOSTNET
     );
     expect(executeEstimate).toHaveProperty("suggestedFeeMutez");
@@ -153,11 +174,11 @@ describe("multisig Sandbox", () => {
         contract: MULTISIG_GHOSTNET_1,
         operationId: pendingOpKey as string,
       },
-      {
-        type: SignerType.SK,
+      await makeToolkit({
+        type: "mnemonic",
+        secretKey: devAccount1Sk,
         network: TezosNetwork.GHOSTNET,
-        sk: await devAccount1.secretKey(),
-      }
+      })
     );
     expect(executeResponse.hash).toBeTruthy();
     console.log("execute done");

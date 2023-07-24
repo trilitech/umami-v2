@@ -1,6 +1,6 @@
 import { Estimate } from "@taquito/taquito";
 import { makeBatchLambda } from "../../../multisig/multisigUtils";
-import { parseContractPkh } from "../../../types/Address";
+import { ImplicitAccount } from "../../../types/Account";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { estimateBatch, estimateMultisigPropose } from "../../../utils/tezos";
 import { sumEstimations } from "../../../views/batch/batchUtils";
@@ -9,41 +9,32 @@ import { FormOperations, ProposalOperations } from "../types";
 const makeMultisigProposalSimulation = async (
   operation: ProposalOperations,
   network: TezosNetwork,
-  getPk: (pkh: string) => string
+  signer: ImplicitAccount
 ) => {
   const content = operation.content;
-  const signerPk = getPk(operation.signer.pkh);
-  const signerPkh = operation.signer;
-  const multisigContract = parseContractPkh(operation.sender.pkh);
 
   const lambdaActions = makeBatchLambda(content);
   const result = await estimateMultisigPropose(
     {
       lambdaActions,
-      contract: multisigContract,
+      contract: operation.sender.address,
     },
 
-    signerPk,
-    signerPkh.pkh,
+    signer,
     network
   );
   return result;
 };
 
+// TODO: uncouple and split into two inlined functions
 const getTotalFee = (estimate: Estimate[] | Estimate) =>
   String(Array.isArray(estimate) ? sumEstimations(estimate) : estimate.suggestedFeeMutez);
 
-export const makeSimulation = async (
-  operation: FormOperations,
-  getPk: (pkh: string) => string,
-  network: TezosNetwork
-) => {
+export const makeSimulation = async (operation: FormOperations, network: TezosNetwork) => {
   if (operation.type === "proposal") {
-    return makeMultisigProposalSimulation(operation, network, getPk).then(getTotalFee);
+    return makeMultisigProposalSimulation(operation, network, operation.signer).then(getTotalFee);
   }
   const implicitOps = operation.content;
-  const sender = operation.signer;
 
-  const pk = getPk(sender.pkh);
-  return estimateBatch(implicitOps, sender.pkh, pk, network).then(getTotalFee);
+  return estimateBatch(implicitOps, operation.signer, operation.signer, network).then(getTotalFee);
 };

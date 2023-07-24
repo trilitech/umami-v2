@@ -6,7 +6,7 @@ import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount } from "../../../../types/Account";
 import { parseContractPkh, parseImplicitPkh } from "../../../../types/Address";
-import { useGetSk } from "../../../../utils/hooks/accountUtils";
+import { useGetSecretKey } from "../../../../utils/hooks/accountUtils";
 import { multisigToAccount } from "../../../../utils/multisig/helpers";
 import { Multisig } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
@@ -16,7 +16,7 @@ import store from "../../../../utils/redux/store";
 jest.mock("../../../../utils/hooks/accountUtils");
 
 beforeEach(() => {
-  (useGetSk as jest.Mock).mockReturnValue(() => Promise.resolve("mockkey"));
+  (useGetSecretKey as jest.Mock).mockReturnValue(() => Promise.resolve("mockkey"));
 });
 const multisigAccount = mockMultisigAccount(0);
 

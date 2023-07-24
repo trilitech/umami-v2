@@ -9,21 +9,22 @@ import {
   AccordionPanel,
 } from "@chakra-ui/react";
 import React from "react";
-import colors from "../../../../style/colors";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
-import { ContractAddress, ImplicitAddress } from "../../../../types/Address";
 import MultisigDecodedOperations from "./MultisigDecodedOperations";
-import { useApproveOrExecuteModdal } from "../../ApproveExecuteForm/useApproveOrExecuteModal";
+import { MultisigAccount } from "../../../../types/Account";
+import ApproveExecuteForm from "../../../ApproveExecuteForm/ApproveExecuteForm";
+import { useModal } from "../../../useModal";
+import colors from "../../../../style/colors";
 
 export const MultisigPendingAccordionItem: React.FC<{
   operation: MultisigOperation;
-  signers: ImplicitAddress[];
-  threshold: number;
-  multisigAddress: ContractAddress;
-}> = ({ operation, signers, threshold, multisigAddress }) => {
+  account: MultisigAccount;
+}> = ({ operation, account }) => {
+  const { modalElement, onOpen } = useModal(ApproveExecuteForm);
+
+  const { signers, threshold } = account;
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
-  const { isLoading, modalElement, approveOrExecute } = useApproveOrExecuteModdal();
   return (
     <Box
       bg={colors.gray[800]}
@@ -33,7 +34,7 @@ export const MultisigPendingAccordionItem: React.FC<{
       pb={0}
       data-testid={"multisig-pending-operation-" + operation.id}
     >
-      <AccordionItem bg={colors.gray[800]} border="none" borderRadius="8px">
+      <AccordionItem border="none" borderRadius="8px">
         <h2>
           <AccordionButton flex="1" textAlign="left" pb={0} mb={0}>
             <Heading w="100%" size="sm">
@@ -58,14 +59,12 @@ export const MultisigPendingAccordionItem: React.FC<{
           <Box marginY={5}>
             {signers.map(signer => (
               <MultisigSignerTile
-                isLoading={isLoading}
                 key={signer.pkh}
-                signer={signer}
-                approvers={operation.approvals}
+                signerAddress={signer}
                 pendingApprovals={pendingApprovals}
-                onClickApproveOrExecute={a => {
-                  approveOrExecute({ type: a, operation, signer, multisigAddress });
-                }}
+                openSignModal={onOpen}
+                account={account}
+                operation={operation}
               />
             ))}
           </Box>

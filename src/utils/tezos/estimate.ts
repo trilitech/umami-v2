@@ -1,49 +1,48 @@
 import { Estimate } from "@taquito/taquito";
+import { Account, ImplicitAccount } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import {
   makeMultisigApproveOrExecuteMethod,
   makeMultisigProposeMethod,
-  makeToolkitWithDummySigner,
+  makeToolkit,
 } from "./helpers";
 import { operationsToBatchParams } from "./params";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 
 export const estimateMultisigPropose = async (
   params: MultisigProposeMethodArgs,
-  senderPk: string,
-  senderPkh: string,
+  signer: ImplicitAccount,
   network: TezosNetwork
 ): Promise<Estimate> => {
-  const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
+  const tezosToolkit = await makeToolkit({ type: "fake", signer, network });
 
-  const propseMethod = await makeMultisigProposeMethod(params, Tezos);
+  const propseMethod = await makeMultisigProposeMethod(params, tezosToolkit);
 
-  return Tezos.estimate.transfer(propseMethod.toTransferParams());
+  return tezosToolkit.estimate.transfer(propseMethod.toTransferParams());
 };
 
 export const estimateMultisigApproveOrExecute = async (
   params: MultisigApproveOrExecuteMethodArgs,
-  senderPk: string,
-  senderPkh: string,
+  signer: ImplicitAccount,
   network: TezosNetwork
 ): Promise<Estimate> => {
-  const Tezos = makeToolkitWithDummySigner(senderPk, senderPkh, network);
+  const tezosToolkit = await makeToolkit({ type: "fake", signer, network });
 
-  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, Tezos);
+  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, tezosToolkit);
 
-  return Tezos.estimate.transfer(approveOrExecuteMethod.toTransferParams());
+  return tezosToolkit.estimate.transfer(approveOrExecuteMethod.toTransferParams());
 };
 
 export const estimateBatch = async (
   operations: Operation[],
-  pkh: string,
-  pk: string,
+  sender: Account,
+  signer: ImplicitAccount,
   network: TezosNetwork
 ): Promise<Estimate[]> => {
-  const batch = await operationsToBatchParams(operations, pk, pkh, network);
+  const batch = await operationsToBatchParams(operations, sender);
 
-  const Tezos = makeToolkitWithDummySigner(pk, pkh, network);
+  const tezosToolkit = await makeToolkit({ type: "fake", signer, network });
 
-  return Tezos.estimate.batch(batch);
+  return tezosToolkit.estimate.batch(batch);
 };

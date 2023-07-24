@@ -12,7 +12,7 @@ import {
 } from "./helpers";
 jest.mock("@taquito/signer");
 jest.mock("@taquito/taquito");
-jest.mock("./dummySigner");
+jest.mock("./fakeSigner");
 jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;

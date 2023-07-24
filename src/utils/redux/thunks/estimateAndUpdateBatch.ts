@@ -1,4 +1,5 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
+import { Account, ImplicitAccount } from "../../../types/Account";
 import { Operation } from "../../../types/Operation";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { operationsToBatchItems } from "../../../views/batch/batchUtils";
@@ -7,8 +8,8 @@ import { RootState } from "../store";
 
 const { updateBatch: addToBatch, batchSimulationEnd, batchSimulationStart } = assetsSlice.actions;
 export const estimateAndUpdateBatch = (
-  pkh: string,
-  pk: string,
+  sender: Account,
+  signer: ImplicitAccount,
   operations: Operation[],
   network: TezosNetwork
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
@@ -19,19 +20,19 @@ export const estimateAndUpdateBatch = (
 
     const batches = getState().assets.batches;
 
-    if (batches[pkh]?.isSimulating) {
-      throw new Error(`Simulation already ongoing for ${pkh}`);
+    if (batches[sender.address.pkh]?.isSimulating) {
+      throw new Error(`Simulation already ongoing for ${sender.address.pkh}`);
     }
 
-    dispatch(batchSimulationStart({ pkh }));
+    dispatch(batchSimulationStart({ pkh: sender.address.pkh }));
     try {
-      const items = await operationsToBatchItems(operations, pkh, pk, network);
-      dispatch(addToBatch({ pkh, items }));
+      const items = await operationsToBatchItems(operations, sender, signer, network);
+      dispatch(addToBatch({ pkh: sender.address.pkh, items }));
     } catch (error) {
-      dispatch(batchSimulationEnd({ pkh }));
+      dispatch(batchSimulationEnd({ pkh: sender.address.pkh }));
       throw error;
     }
 
-    dispatch(batchSimulationEnd({ pkh }));
+    dispatch(batchSimulationEnd({ pkh: sender.address.pkh }));
   };
 };

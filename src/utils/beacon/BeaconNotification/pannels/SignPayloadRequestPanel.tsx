@@ -11,13 +11,11 @@ import {
   ModalHeader,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { TezosToolkit } from "@taquito/taquito";
+import React from "react";
 import SignButton from "../../../../components/sendForm/components/SignButton";
-import { AccountType } from "../../../../types/Account";
-import { SignerConfig } from "../../../../types/SignerConfig";
 import { useGetImplicitAccount } from "../../../hooks/accountHooks";
 import { useSelectedNetwork } from "../../../hooks/assetsHooks";
-import { makeSigner } from "../../../tezos";
 import { walletClient } from "../../beacon";
 
 const SignPayloadRequestPanel: React.FC<{
@@ -26,40 +24,26 @@ const SignPayloadRequestPanel: React.FC<{
 }> = ({ request, onSuccess: onSubmit }) => {
   const getAccount = useGetImplicitAccount();
   const network = useSelectedNetwork();
-  const [isLoading, setIsLoading] = useState(false);
   const signerAccount = getAccount(request.sourceAddress);
   const toast = useToast();
 
   if (!signerAccount) {
     return <div>"unknown account"</div>;
   }
-  const sign = async (config: SignerConfig) => {
-    setIsLoading(true);
-    if (signerAccount.type === AccountType.LEDGER) {
-      toast({ title: "connect ledger" });
-    }
+  const sign = async (tezosToolkit: TezosToolkit) => {
+    const result = await tezosToolkit.signer.sign(request.payload);
 
-    try {
-      const signer = await makeSigner(config);
+    const response: SignPayloadResponseInput = {
+      type: BeaconMessageType.SignPayloadResponse,
+      id: request.id,
+      signingType: request.signingType,
+      signature: result.prefixSig, // TODO: Check if it works
+    };
 
-      const result = await signer.sign(request.payload);
+    await walletClient.respond(response);
 
-      const response: SignPayloadResponseInput = {
-        type: BeaconMessageType.SignPayloadResponse,
-        id: request.id,
-        signingType: request.signingType,
-        signature: result.prefixSig, // TODO: Signature
-      };
-
-      await walletClient.respond(response);
-
-      toast({ title: "Success" });
-      onSubmit();
-    } catch (error) {
-      toast({ title: "Error" });
-    }
-
-    setIsLoading(false);
+    toast({ title: "Successfully submitted Beacon operation", status: "success" });
+    onSubmit();
   };
 
   return (
@@ -70,12 +54,7 @@ const SignPayloadRequestPanel: React.FC<{
       <ModalBody>{request.payload}</ModalBody>
 
       <ModalFooter justifyContent="center" display="flex">
-        <SignButton
-          signerAccount={signerAccount}
-          onSubmit={sign}
-          isLoading={isLoading}
-          network={network}
-        />
+        <SignButton signerAccount={signerAccount} onSubmit={sign} network={network} />
       </ModalFooter>
     </ModalContent>
   );
