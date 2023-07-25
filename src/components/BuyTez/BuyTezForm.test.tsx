@@ -2,7 +2,7 @@ import { Modal } from "@chakra-ui/react";
 import { render, screen } from "../../mocks/testUtils";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { store } from "../../utils/redux/store";
+import store from "../../utils/redux/store";
 import BuyTezForm from "./BuyTezForm";
 
 const fixture = () => (

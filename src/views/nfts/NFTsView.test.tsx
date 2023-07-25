@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { mockNFTToken, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { HashRouter } from "react-router-dom";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { store } from "../../utils/redux/store";
+import store from "../../utils/redux/store";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import NFTsViewBase from "./NftsView";
 import { TezosNetwork } from "../../types/TezosNetwork";

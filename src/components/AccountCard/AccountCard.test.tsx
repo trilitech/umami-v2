@@ -6,7 +6,7 @@ import {
 } from "../../mocks/factories";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
-import { store } from "../../utils/redux/store";
+import store from "../../utils/redux/store";
 
 import AccountCard from ".";
 import { mockDelegationOperation } from "../../mocks/delegations";

@@ -7,3 +7,5 @@ export const extraArgument = {
   decrypt,
   encrypt,
 };
+
+export type ExtraArgument = typeof extraArgument;

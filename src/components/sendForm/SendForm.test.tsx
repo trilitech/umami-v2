@@ -26,7 +26,7 @@ import {
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice, { BatchItem } from "../../utils/redux/slices/assetsSlice";
-import { store } from "../../utils/redux/store";
+import store from "../../utils/redux/store";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 

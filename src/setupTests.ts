@@ -10,7 +10,7 @@ import { TextDecoder, TextEncoder } from "util";
 
 import failOnConsole from "jest-fail-on-console";
 import { contactsActions } from "./utils/redux/slices/contactsSlice";
-import { store } from "./utils/redux/store";
+import store from "./utils/redux/store";
 import multisigsSlice from "./utils/redux/slices/multisigsSlice";
 import assetsSlice from "./utils/redux/slices/assetsSlice";
 import accountsSlice from "./utils/redux/slices/accountsSlice";

@@ -2,7 +2,7 @@ import { useAccountsFilter } from "./useAccountsFilter";
 import { mockImplicitAccount } from "../mocks/factories";
 import { fireEvent, screen } from "../mocks/testUtils";
 import accountsSlice from "../utils/redux/slices/accountsSlice";
-import { store } from "../utils/redux/store";
+import store from "../utils/redux/store";
 import { ReduxStore } from "../providers/ReduxStore";
 import { render } from "@testing-library/react";
 

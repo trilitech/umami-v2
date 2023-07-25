@@ -1,7 +1,7 @@
 import { contact1, contact2 } from "../../../mocks/contacts";
 import { mockImplicitAccount, mockImplicitAddress } from "../../../mocks/factories";
 
-import { store } from "../store";
+import store from "../store";
 import checkAccountsAndUpsertContact from "../thunks/checkAccountsAndUpsertContact";
 import accountsSlice from "./accountsSlice";
 import { contactsActions } from "./contactsSlice";

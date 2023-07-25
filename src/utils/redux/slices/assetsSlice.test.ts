@@ -1,5 +1,5 @@
 import assetsSlice from "./assetsSlice";
-import { store } from "../store";
+import store from "../store";
 
 import { waitFor } from "@testing-library/react";
 import {

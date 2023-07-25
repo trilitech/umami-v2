@@ -5,7 +5,7 @@ import { ReduxStore } from "../../providers/ReduxStore";
 import { fromRaw } from "../../types/Token";
 import { SupportedNetworks } from "../network";
 import { assetsActions } from "../redux/slices/assetsSlice";
-import { store } from "../redux/store";
+import store from "../redux/store";
 import { tokensActions } from "../redux/slices/tokensSlice";
 import { useGetToken, useGetTokenType } from "./tokensHooks";
 

@@ -4,7 +4,7 @@ import { uUSD } from "../../mocks/fa2Tokens";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { SupportedNetworks } from "../../utils/network";
-import { store } from "../../utils/redux/store";
+import store from "../../utils/redux/store";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import TokensView from "./TokensView";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";

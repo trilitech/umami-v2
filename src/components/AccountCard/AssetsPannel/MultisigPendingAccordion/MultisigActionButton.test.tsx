@@ -1,7 +1,7 @@
 import { mockImplicitAccount } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 
-import { store } from "../../../../utils/redux/store";
+import store from "../../../../utils/redux/store";
 import MultisigActionButton from "./MultisigSignerTile";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 

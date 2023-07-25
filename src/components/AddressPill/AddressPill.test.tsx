@@ -5,7 +5,7 @@ import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
-import { store } from "../../utils/redux/store";
+import store from "../../utils/redux/store";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import AddressPill from "./AddressPill";
 const { upsert } = contactsActions;

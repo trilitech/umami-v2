@@ -6,7 +6,7 @@ import {
   mockImplicitAddress,
 } from "../../mocks/factories";
 import { formatPkh } from "../../utils/format";
-import { store } from "../../utils/redux/store";
+import store from "../../utils/redux/store";
 import { AccountsList } from "./AccountsList";
 
 import { mockPk } from "../../mocks/factories";

@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react";
 import { mockBaker } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import assetsSlice from "../redux/slices/assetsSlice";
-import { store } from "../redux/store";
+import store from "../redux/store";
 import { useBakerList } from "./assetsHooks";
 
 describe("useBakerList", () => {

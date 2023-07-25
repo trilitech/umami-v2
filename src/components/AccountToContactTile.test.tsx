@@ -4,7 +4,7 @@ import { mockImplicitAccount } from "../mocks/factories";
 import { ReduxStore } from "../providers/ReduxStore";
 import { formatPkh, truncate } from "../utils/format";
 import accountsSlice from "../utils/redux/slices/accountsSlice";
-import { store } from "../utils/redux/store";
+import store from "../utils/redux/store";
 import checkAccountsAndUpsertContact from "../utils/redux/thunks/checkAccountsAndUpsertContact";
 import AccountOrContactTile, { ContactTile } from "./AccountOrContactTile";
 const { add, reset } = accountsSlice.actions;

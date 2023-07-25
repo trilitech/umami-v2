@@ -5,7 +5,7 @@ import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
 import { seedPhrase } from "../../../mocks/seedPhrase";
 import { ImplicitAccount, AccountType, MnemonicAccount } from "../../../types/Account";
 
-import { store } from "../store";
+import store from "../store";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
 import { getFingerPrint } from "../../tezos";
 import { parseImplicitPkh } from "../../../types/Address";

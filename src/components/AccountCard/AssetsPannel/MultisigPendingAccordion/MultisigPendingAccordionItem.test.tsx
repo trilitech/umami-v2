@@ -14,7 +14,7 @@ import { parseImplicitPkh } from "../../../../types/Address";
 import { useGetSk } from "../../../../utils/hooks/accountUtils";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../../utils/redux/store";
+import store from "../../../../utils/redux/store";
 import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
 
 jest.mock("../../../../utils/hooks/accountUtils");

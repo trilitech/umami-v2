@@ -7,7 +7,7 @@ import {
 } from "../../../mocks/factories";
 import { CreateForm } from "./CreateForm";
 import { ReviewStep } from "./useCreateMultisigModal";
-import { store } from "../../../utils/redux/store";
+import store from "../../../utils/redux/store";
 import { multisigs } from "../../../mocks/multisig";
 import { render } from "../../../mocks/testUtils";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";

@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import MasterPassword from "./MasterPassword";
 import { ReduxStore } from "../../../providers/ReduxStore";
 import { mockImplicitAccount } from "../../../mocks/factories";
-import { store } from "../../../utils/redux/store";
+import store from "../../../utils/redux/store";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import { seedPhrase } from "../../../mocks/seedPhrase";
 

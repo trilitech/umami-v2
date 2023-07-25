@@ -10,7 +10,7 @@ import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtil
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { useGetSk } from "../../utils/hooks/accountUtils";
-import { store } from "../../utils/redux/store";
+import store from "../../utils/redux/store";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndupdateBatch";
 import BatchView from "./BatchView";
 

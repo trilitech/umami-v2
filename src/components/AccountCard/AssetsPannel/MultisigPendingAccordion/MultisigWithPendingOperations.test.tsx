@@ -11,7 +11,7 @@ import { multisigToAccount } from "../../../../utils/multisig/helpers";
 import { Multisig } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import multisigsSlice from "../../../../utils/redux/slices/multisigsSlice";
-import { store } from "../../../../utils/redux/store";
+import store from "../../../../utils/redux/store";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 
