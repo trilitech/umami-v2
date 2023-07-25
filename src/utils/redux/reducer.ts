@@ -7,20 +7,24 @@ import assetsSlice from "./slices/assetsSlice";
 import contactsSlice from "./slices/contactsSlice";
 import multisigsSlice from "./slices/multisigsSlice";
 
-// See this answer for configuration of redux toolkit with redux-persist
-// https://stackoverflow.com/a/63818121/6797267
-const persistConfig = {
+const rootPersistConfig = {
   key: "root",
+  storage,
+  blacklist: ["accounts"],
+};
+
+const accountsPersistConfig = {
+  key: "accounts",
   storage,
 };
 
 // if you add more slices then add their reset action to setupTests.ts
-const reducers = combineReducers({
-  accounts: accountsSlice.reducer,
+const rootReducers = combineReducers({
+  accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
   assets: assetsSlice.reducer,
   contacts: contactsSlice.reducer,
   multisigs: multisigsSlice.reducer,
   tokens: tokensSlice.reducer,
 });
 
-export default persistReducer(persistConfig, reducers);
+export default persistReducer(rootPersistConfig, rootReducers);
