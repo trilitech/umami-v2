@@ -7,6 +7,7 @@ import {
   useDisclosure,
   Button,
   useOutsideClick,
+  BoxProps,
 } from "@chakra-ui/react";
 
 import { Flex, Text, Box } from "@chakra-ui/react";
@@ -19,9 +20,10 @@ import AddressPillText from "./AddressPillText";
 
 type AddressPillMode = "default" | "removable" | "no_icons";
 
-const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
+const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxProps> = ({
   address,
   mode = "default",
+  ...rest
 }) => {
   const addressKind = useAddressKind(address);
   const showIcons = mode !== "no_icons";
@@ -60,7 +62,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode }> = ({
   }
 
   return (
-    <Box maxW="max-content">
+    <Box maxW="max-content" {...rest}>
       <Flex
         ref={ref}
         alignItems="center"

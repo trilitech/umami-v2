@@ -18,8 +18,8 @@ import {
 import React from "react";
 import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
-import AccountOrContactTile from "../../components/AccountOrContactTile";
 import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTile";
+import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
 import { ImplicitAccount } from "../../types/Account";
@@ -149,9 +149,7 @@ export const BatchDisplay: React.FC<{
                       />
                     )}
                   </Td>
-                  <Td>
-                    {operation.recipient && <AccountOrContactTile pkh={operation.recipient.pkh} />}
-                  </Td>
+                  <Td>{operation.recipient && <AddressPill address={operation.recipient} />}</Td>
                   <Td>{prettyTezAmount(fee)}</Td>
                 </Tr>
               ))}

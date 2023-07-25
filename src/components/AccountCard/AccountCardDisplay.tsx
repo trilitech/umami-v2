@@ -7,13 +7,13 @@ import { VscWand } from "react-icons/vsc";
 import { Account, AccountType } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
 import { Delegation } from "../../types/Delegation";
-import { OperationDisplay } from "../../types/Transfer";
-import { CopyableAddress } from "../CopyableText";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPanel } from "./AssetsPannel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
 import { DelegationMode } from "../sendForm/types";
+import AddressPill from "../AddressPill/AddressPill";
+import { OperationDisplay } from "../../types/Transfer";
 import { TezosNetwork } from "../../types/TezosNetwork";
 
 type Props = {
@@ -65,10 +65,10 @@ export const AccountCardDisplay: React.FC<Props> = ({
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
       <Identicon address={pkh} />
-      <Heading mt={4} mb={2} size="md">
+      <Heading mt={4} size="md">
         {label}
       </Heading>
-      <CopyableAddress pkh={pkh} mb={4} />
+      <AddressPill address={account.address} mode="no_icons" my={2} />
       {tezBalance !== null && (
         <TezRecapDisplay center tezBalance={tezBalance} dollarBalance={dollarBalance} />
       )}
