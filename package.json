@@ -9,6 +9,7 @@
   "main": "./public/electron.js",
   "dependencies": {
     "@airgap/beacon-wallet": "^4.0.2",
+    "@babel/runtime": "^7.22.6",
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
@@ -72,6 +73,7 @@
     "stream-browserify": "^3.0.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
+    "webpack-remove-code-blocks": "^0.1.5",
     "zod": "^3.21.4"
   },
   "scripts": {

@@ -18,5 +18,17 @@ module.exports = function override(config) {
       Buffer: ["buffer", "Buffer"],
     }),
   ]);
+
+  if (process.env.NODE_ENV === "production") {
+    config.module.rules.push({
+      test: /\.[jt]sx?$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: "webpack-remove-code-blocks",
+        },
+      ],
+    });
+  }
   return config;
 };

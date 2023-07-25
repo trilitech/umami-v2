@@ -126,18 +126,22 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
               Continue
             </Button>
 
-            <Button
-              onClick={() => {
-                setMnemonicSize("24");
-                pasteMnemonic(seedPhrase);
-              }}
-              bg="umami.blue"
-              w="100%"
-              size="lg"
-              minH="48px"
-            >
-              Enter test seedphrase (Dev only)
-            </Button>
+            {
+              /* devblock:start */
+              <Button
+                onClick={() => {
+                  setMnemonicSize("24");
+                  pasteMnemonic(seedPhrase);
+                }}
+                bg="umami.blue"
+                w="100%"
+                size="lg"
+                minH="48px"
+              >
+                Enter test seedphrase (Dev only)
+              </Button>
+              /* devblock:end */
+            }
           </VStack>
         </form>
       </Box>
