@@ -5,6 +5,7 @@ import {
   LedgerAccount,
   MultisigAccount,
   SocialAccount,
+  ImplicitAccount,
 } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
 import { decrypt } from "../aes";
@@ -21,9 +22,11 @@ export const useImplicitAccounts = () => {
   return useAppSelector(s => s.accounts.items);
 };
 
+// For cleaner code and ease of use this hook returns an ImplicitAccount
+// Please make sure not to pass in non existing Pkh
 export const useGetImplicitAccount = () => {
   const accounts = useImplicitAccounts();
-  return (pkh: RawPkh) => accounts.find(account => account.address.pkh === pkh);
+  return (pkh: RawPkh) => accounts.find(account => account.address.pkh === pkh) as ImplicitAccount;
 };
 
 export const useReset = () => {
@@ -141,10 +144,11 @@ export const useMultisigAccounts = (): MultisigAccount[] => {
   return multisigs.map((m, i) => multisigToAccount(m, `Multisig Account ${i}`));
 };
 
+// For cleaner code and ease of use this hook returns a MultisigAccount
+// Please make sure not to pass in non existing Pkh
 export const useGetMultisigAccount = () => {
   const accounts = useMultisigAccounts();
-  return (pkh: RawPkh): MultisigAccount | undefined =>
-    accounts.find(account => account.address.pkh === pkh);
+  return (pkh: RawPkh) => accounts.find(account => account.address.pkh === pkh) as MultisigAccount;
 };
 
 export const useAllAccounts = (): Account[] => {

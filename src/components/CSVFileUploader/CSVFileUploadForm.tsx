@@ -86,7 +86,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   };
 
   const onSubmit = async ({ file, sender }: FormFields) => {
-    const account = getAccount(sender) as ImplicitAccount;
+    const account = getAccount(sender);
     Papa.parse<string[]>(file[0], {
       skipEmptyLines: true,
       complete: (rows: ParseResult<string[]>) => onCSVFileUploadComplete(account, rows),

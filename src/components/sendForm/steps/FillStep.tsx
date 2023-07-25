@@ -346,8 +346,8 @@ export const SendTezOrNFTForm = ({
 
 const buildTezFromFormValues = (
   formValues: FormValues,
-  getImplicitAccount: (pkh: RawPkh) => ImplicitAccount | undefined,
-  getMultisigAccount: (pkh: RawPkh) => MultisigAccount | undefined,
+  getImplicitAccount: (pkh: RawPkh) => ImplicitAccount,
+  getMultisigAccount: (pkh: RawPkh) => MultisigAccount,
   parameter?: TransferParams["parameter"]
 ): FormOperations => {
   const value: Operation[] = [
@@ -361,23 +361,23 @@ const buildTezFromFormValues = (
   if (formValues.proposalSigner !== undefined) {
     return {
       type: "proposal",
-      signer: getImplicitAccount(formValues.proposalSigner) as ImplicitAccount,
+      signer: getImplicitAccount(formValues.proposalSigner),
       content: value,
-      sender: getMultisigAccount(formValues.sender) as MultisigAccount,
+      sender: getMultisigAccount(formValues.sender),
     };
   }
   return {
     type: "implicit",
     content: value,
-    signer: getImplicitAccount(formValues.sender) as ImplicitAccount,
+    signer: getImplicitAccount(formValues.sender),
   };
 };
 
 const buildTokenFromFormValues = (
   formValues: FormValues,
   asset: Token,
-  getImplicitAccount: (pkh: RawPkh) => ImplicitAccount | undefined,
-  getMultisigAccount: (pkh: RawPkh) => MultisigAccount | undefined
+  getImplicitAccount: (pkh: RawPkh) => ImplicitAccount,
+  getMultisigAccount: (pkh: RawPkh) => MultisigAccount
 ): FormOperations => {
   const token = [
     toOperation(asset, {
@@ -390,16 +390,16 @@ const buildTokenFromFormValues = (
   if (formValues.proposalSigner !== undefined) {
     return {
       type: "proposal",
-      signer: getImplicitAccount(formValues.proposalSigner) as ImplicitAccount,
+      signer: getImplicitAccount(formValues.proposalSigner),
       content: token,
-      sender: getMultisigAccount(formValues.sender) as MultisigAccount,
+      sender: getMultisigAccount(formValues.sender),
     };
   }
 
   return {
     type: "implicit",
     content: token,
-    signer: getImplicitAccount(formValues.sender) as ImplicitAccount,
+    signer: getImplicitAccount(formValues.sender),
   };
 };
 
@@ -434,7 +434,7 @@ export const FillStep: React.FC<{
             onSubmit({
               type: "implicit",
               content: [delegation],
-              signer: getImplicitAccount(formValues.sender) as ImplicitAccount,
+              signer: getImplicitAccount(formValues.sender),
             });
           }}
         />
@@ -508,7 +508,7 @@ export const FillStep: React.FC<{
             onSubmit({
               type: "implicit",
               content: mode.data.batch,
-              signer: getImplicitAccount(mode.data.signer) as ImplicitAccount,
+              signer: getImplicitAccount(mode.data.signer),
             });
           }}
         />

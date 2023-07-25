@@ -1,7 +1,6 @@
 import { useToast } from "@chakra-ui/react";
 import { TezosToolkit, TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
-import { ImplicitAccount } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
 import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
@@ -73,7 +72,7 @@ export const SendForm = ({
 
   const addToBatch = async (operation: Operation, senderPkh: RawPkh) => {
     // TODO: add support for Multisig
-    const sender = getAccount(senderPkh) as ImplicitAccount;
+    const sender = getAccount(senderPkh);
 
     try {
       // TODO: add support for Multisig

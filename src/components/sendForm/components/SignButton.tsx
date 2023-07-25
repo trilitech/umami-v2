@@ -26,13 +26,17 @@ const SignButton: React.FC<{
   signerAccount: ImplicitAccount;
   network: TezosNetwork;
 }> = ({ signerAccount, network, onSubmit }) => {
-  const { register, handleSubmit, formState } = useForm<{ password: string }>({ mode: "onBlur" });
-  const { errors } = formState;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{ password: string }>({ mode: "onBlur" });
 
   const getSecretKey = useGetSecretKey();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
+  // wrapper function that handles changing the isLoading state & error handling
   const handleSign = async (getToolkit: () => Promise<TezosToolkit>) => {
     if (isLoading) {
       return;
@@ -98,7 +102,7 @@ const SignButton: React.FC<{
       )}
       {signerAccount.type === AccountType.SOCIAL && <GoogleAuth onSuccessfulAuth={onSocialSign} />}
       {signerAccount.type === AccountType.LEDGER && (
-        <Button onClick={() => onLedgerSign()} bg="umami.blue" width="100%" isLoading={isLoading}>
+        <Button onClick={onLedgerSign} bg="umami.blue" width="100%" isLoading={isLoading}>
           Sign with Ledger
         </Button>
       )}
