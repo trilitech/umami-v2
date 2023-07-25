@@ -1,14 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
-import { TokenBalance, fromRaw, eraseToken } from "../../types/TokenBalance";
-import { Baker } from "../../types/Baker";
-import { TezTransfer, TokenTransfer } from "../../types/Transfer";
-import { RawTokenBalance } from "../../types/TokenBalance";
-import { TzktAccount } from "../tezos";
 import accountsSlice from "./accountsSlice";
-import { Operation } from "../../types/Operation";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../../types/TezosNetwork";
+import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
+import { TzktAccount } from "../../tezos";
+import { eraseToken, fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
+import { Baker } from "../../../types/Baker";
+import { Operation } from "../../../types/Operation";
 
 export type BatchItem = { operation: Operation; fee: string };
 export type Batch = {

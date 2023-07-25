@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { contact1, contact2, contact3, contacts } from "../../mocks/contacts";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { store } from "../../utils/store/store";
-import checkAccountsAndUpsertContact from "../../utils/store/thunks/checkAccountsAndUpsertContact";
+import store from "../../utils/redux/store";
+import checkAccountsAndUpsertContact from "../../utils/redux/thunks/checkAccountsAndUpsertContact";
 import AddressBookViewBase from "./AddressBookView";
 
 const fixture = () => (

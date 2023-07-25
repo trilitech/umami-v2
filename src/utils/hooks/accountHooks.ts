@@ -9,9 +9,9 @@ import {
 import { decrypt } from "../aes";
 import { multisigToAccount } from "../multisig/helpers";
 import { Multisig } from "../multisig/types";
-import accountsSlice from "../store/accountsSlice";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { restoreFromMnemonic } from "../store/thunks/restoreMnemonicAccounts";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import accountsSlice from "../redux/slices/accountsSlice";
+import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { useMultisigs } from "./multisigHooks";
 
 const { add, removeSecret } = accountsSlice.actions;

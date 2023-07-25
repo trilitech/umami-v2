@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Estimate } from "@taquito/taquito";
 import { fireEvent, screen } from "@testing-library/react";
 import { ImplicitAccount, MnemonicAccount } from "../types/Account";
-import accountsSlice from "../utils/store/accountsSlice";
-import { store } from "../utils/store/store";
+import accountsSlice from "../utils/redux/slices/accountsSlice";
+import store from "../utils/redux/store";
 import { fakeTezosUtils } from "./fakeTezosUtils";
 
 export const selectSender = (accountLabel: string) => {

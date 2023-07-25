@@ -8,11 +8,11 @@ import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
-import assetsSlice from "../../utils/store/assetsSlice";
-import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
+import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
 import NoItems from "../../components/NoItems";
+import assetsSlice from "../../utils/redux/slices/assetsSlice";
 
 export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (

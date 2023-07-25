@@ -6,7 +6,7 @@ import Router from "./Router";
 
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import { store } from "./utils/store/store";
+import store from "./utils/redux/store";
 
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";

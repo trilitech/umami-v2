@@ -2,7 +2,7 @@ import { get } from "lodash";
 import { RawPkh } from "../../types/Address";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { Token } from "../../types/Token";
-import { useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../redux/hooks";
 import { useSelectedNetwork } from "./assetsHooks";
 
 export type TokenLookup = (contract: RawPkh, tokenId: string) => Token | undefined;

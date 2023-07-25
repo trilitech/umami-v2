@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { Contact } from "../../types/Contact";
 import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
-import { contactsActions } from "../../utils/store/contactsSlice";
+import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 
 type Options = {
   title: string;

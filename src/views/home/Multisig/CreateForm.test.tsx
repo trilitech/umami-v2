@@ -7,11 +7,11 @@ import {
 } from "../../../mocks/factories";
 import { CreateForm } from "./CreateForm";
 import { ReviewStep } from "./useCreateMultisigModal";
-import { store } from "../../../utils/store/store";
-import accountsSlice from "../../../utils/store/accountsSlice";
-import { multisigActions } from "../../../utils/store/multisigsSlice";
+import store from "../../../utils/redux/store";
 import { multisigs } from "../../../mocks/multisig";
 import { render } from "../../../mocks/testUtils";
+import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
+import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 
 const fixture = ({ goToStep = _ => {} }: { goToStep?: (step: ReviewStep) => void }) => {
   return (

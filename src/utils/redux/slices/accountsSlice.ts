@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ImplicitAccount, AccountType } from "../../types/Account";
-import { UmamiEncrypted } from "../../types/UmamiEncrypted";
-import { deriveAccount, restoreFromMnemonic } from "./thunks/restoreMnemonicAccounts";
+import { AccountType, ImplicitAccount } from "../../../types/Account";
+import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
+import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
 
 type State = {
   items: ImplicitAccount[];

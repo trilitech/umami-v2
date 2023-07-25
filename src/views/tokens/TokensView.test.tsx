@@ -4,11 +4,11 @@ import { uUSD } from "../../mocks/fa2Tokens";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { SupportedNetworks } from "../../utils/network";
-import accountsSlice from "../../utils/store/accountsSlice";
-import assetsSlice, { assetsActions } from "../../utils/store/assetsSlice";
-import { store } from "../../utils/store/store";
-import { tokensActions } from "../../utils/store/tokensSlice";
+import store from "../../utils/redux/store";
+import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import TokensView from "./TokensView";
+import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import assetsSlice, { assetsActions } from "../../utils/redux/slices/assetsSlice";
 
 const fixture = () => (
   <ReduxStore>

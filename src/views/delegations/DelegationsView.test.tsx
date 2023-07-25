@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { mockDelegation, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
-import accountsSlice from "../../utils/store/accountsSlice";
-import assetsSlice from "../../utils/store/assetsSlice";
-import { store } from "../../utils/store/store";
+import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import assetsSlice from "../../utils/redux/slices/assetsSlice";
+import store from "../../utils/redux/store";
 import DelegationsView from "./DelegationsView";
 
 jest.mock("react-query");

@@ -2,12 +2,12 @@ import { render, screen } from "@testing-library/react";
 import { mockNFTToken, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { HashRouter } from "react-router-dom";
 import { ReduxStore } from "../../providers/ReduxStore";
-import accountsSlice from "../../utils/store/accountsSlice";
-import assetsSlice from "../../utils/store/assetsSlice";
-import { store } from "../../utils/store/store";
-import tokensSlice from "../../utils/store/tokensSlice";
+import store from "../../utils/redux/store";
+import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import NFTsViewBase from "./NftsView";
 import { TezosNetwork } from "../../types/TezosNetwork";
+import assetsSlice from "../../utils/redux/slices/assetsSlice";
+import accountsSlice from "../../utils/redux/slices/accountsSlice";
 
 const { updateTokenBalance, updateNetwork } = assetsSlice.actions;
 

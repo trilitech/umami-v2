@@ -25,8 +25,8 @@ import {
 } from "../../types/TokenBalance";
 import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import * as accountUtils from "../../utils/hooks/accountUtils";
-import assetsSlice, { BatchItem } from "../../utils/store/assetsSlice";
-import { store } from "../../utils/store/store";
+import assetsSlice, { BatchItem } from "../../utils/redux/slices/assetsSlice";
+import store from "../../utils/redux/store";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 
@@ -35,10 +35,10 @@ import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-o
 import { mock } from "jest-mock-extended";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import { mockToast } from "../../mocks/toast";
-import { multisigActions } from "../../utils/store/multisigsSlice";
+import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
-import tokensSlice from "../../utils/store/tokensSlice";
+import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
 import { TezosNetwork } from "../../types/TezosNetwork";
 

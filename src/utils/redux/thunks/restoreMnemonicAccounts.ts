@@ -4,7 +4,8 @@ import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
 import { makeDerivationPath } from "../../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
 import { getFingerPrint } from "../../tezos";
-import { AppDispatch, ExtraArgument, RootState } from "../store";
+import { ExtraArgument } from "../extraArgument";
+import { AppDispatch, RootState } from "../store";
 
 export const restoreFromMnemonic = createAsyncThunk<
   {

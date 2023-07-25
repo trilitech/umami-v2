@@ -3,7 +3,7 @@ import { compact } from "lodash";
 import { MnemonicAccount } from "../../types/Account";
 import { decrypt } from "../aes";
 import { deriveSkFromMnemonic } from "../restoreAccounts";
-import { useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../redux/hooks";
 
 export const getTotalTezBalance = (
   balances: Record<string, string | undefined>

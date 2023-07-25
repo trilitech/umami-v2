@@ -1,9 +1,9 @@
 import { mockImplicitAccount } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 
-import { store } from "../../../../utils/store/store";
+import store from "../../../../utils/redux/store";
 import MultisigActionButton from "./MultisigSignerTile";
-import accountsSlice from "../../../../utils/store/accountsSlice";
+import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 
 const { add } = accountsSlice.actions;
 

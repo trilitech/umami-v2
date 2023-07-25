@@ -14,13 +14,13 @@ import {
   sortOperationsByTimestamp,
 } from "../../views/operations/operationsUtils";
 import { mutezToTez } from "../format";
-import assetsSlice from "../store/assetsSlice";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useAllAccounts, useImplicitAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
 import { Baker } from "../../types/Baker";
+import assetsSlice from "../redux/slices/assetsSlice";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.assets.network);

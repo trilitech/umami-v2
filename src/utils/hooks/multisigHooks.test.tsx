@@ -3,8 +3,8 @@ import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { useGetPendingOperations } from "./multisigHooks";
 import { multisigToAccount } from "../multisig/helpers";
 import { getWrapper } from "../../mocks/store";
-import { store } from "../store/store";
-import { multisigActions } from "../store/multisigsSlice";
+import store from "../redux/store";
+import { multisigActions } from "../redux/slices/multisigsSlice";
 
 describe("useMultisigHooks", () => {
   it("useGetSortedMultisigPendingOperations sorts operations by id", () => {

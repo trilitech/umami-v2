@@ -12,10 +12,10 @@ import {
   DelegationPayload,
   TezTransfersPayload,
   TokenTransfersPayload,
-} from "./store/assetsSlice";
-import { useAppDispatch } from "./store/hooks";
-import { multisigActions } from "./store/multisigsSlice";
-import { tokensActions } from "./store/tokensSlice";
+} from "./redux/slices/assetsSlice";
+import { useAppDispatch } from "./redux/hooks";
+import { multisigActions } from "./redux/slices/multisigsSlice";
+import { tokensActions } from "./redux/slices/tokensSlice";
 import {
   getAccounts,
   getBakers,

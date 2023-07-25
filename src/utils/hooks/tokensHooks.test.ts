@@ -4,9 +4,9 @@ import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories"
 import { ReduxStore } from "../../providers/ReduxStore";
 import { fromRaw } from "../../types/Token";
 import { SupportedNetworks } from "../network";
-import { assetsActions } from "../store/assetsSlice";
-import { store } from "../store/store";
-import { tokensActions } from "../store/tokensSlice";
+import { assetsActions } from "../redux/slices/assetsSlice";
+import store from "../redux/store";
+import { tokensActions } from "../redux/slices/tokensSlice";
 import { useGetToken, useGetTokenType } from "./tokensHooks";
 
 describe("useGetToken", () => {

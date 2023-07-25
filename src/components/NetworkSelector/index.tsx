@@ -1,7 +1,7 @@
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import assetsSlice from "../../utils/store/assetsSlice";
-import { useAppDispatch } from "../../utils/store/hooks";
+import { useAppDispatch } from "../../utils/redux/hooks";
+import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import { NetworkSelectorDisplay } from "./NetworkSelectorDisplay";
 
 export const NetworkSelector = () => {
