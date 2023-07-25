@@ -4,8 +4,8 @@ import ContactSelector from "./ContactSelector";
 
 import { contact1 } from "../mocks/contacts";
 import { formatPkh } from "../utils/format";
-import { store } from "../utils/store/store";
-import checkAccountsAndUpsertContact from "../utils/store/thunks/checkAccountsAndUpsertContact";
+import { store } from "../utils/redux/store";
+import checkAccountsAndUpsertContact from "../utils/redux/thunks/checkAccountsAndUpsertContact";
 
 const fixture = (selected?: string) => (
   <ReduxStore>

@@ -8,12 +8,12 @@ import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 import { TezosNetwork } from "../../types/TezosNetwork";
-import accountsSlice from "../../utils/store/accountsSlice";
-import assetsSlice from "../../utils/store/assetsSlice";
-import contactsSlice from "../../utils/store/contactsSlice";
-import multisigsSlice from "../../utils/store/multisigsSlice";
-import { store } from "../../utils/store/store";
-import tokensSlice from "../../utils/store/tokensSlice";
+import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import assetsSlice from "../../utils/redux/slices/assetsSlice";
+import contactsSlice from "../../utils/redux/slices/contactsSlice";
+import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
+import { store } from "../../utils/redux/store";
+import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import useAddressKind from "./useAddressKind";
 
 beforeEach(() => {

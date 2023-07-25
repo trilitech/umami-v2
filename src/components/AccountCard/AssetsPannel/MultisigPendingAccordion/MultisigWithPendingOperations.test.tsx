@@ -9,9 +9,9 @@ import { parseContractPkh, parseImplicitPkh } from "../../../../types/Address";
 import { useGetSk } from "../../../../utils/hooks/accountUtils";
 import { multisigToAccount } from "../../../../utils/multisig/helpers";
 import { Multisig } from "../../../../utils/multisig/types";
-import accountsSlice from "../../../../utils/store/accountsSlice";
-import multisigsSlice from "../../../../utils/store/multisigsSlice";
-import { store } from "../../../../utils/store/store";
+import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
+import multisigsSlice from "../../../../utils/redux/slices/multisigsSlice";
+import { store } from "../../../../utils/redux/store";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 

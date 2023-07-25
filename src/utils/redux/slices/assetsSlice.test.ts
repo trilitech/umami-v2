@@ -1,5 +1,5 @@
 import assetsSlice from "./assetsSlice";
-import { store } from "./store";
+import { store } from "../store";
 
 import { waitFor } from "@testing-library/react";
 import {
@@ -10,14 +10,14 @@ import {
   mockTezTransaction,
   mockTezTransfer,
   mockTokenTransaction,
-} from "../../mocks/factories";
+} from "../../../mocks/factories";
 import accountsSlice from "./accountsSlice";
-import { estimateAndUpdateBatch } from "./thunks/estimateAndupdateBatch";
-import { estimateBatch } from "../tezos";
-import { hedgehoge } from "../../mocks/fa12Tokens";
-import { Operation } from "../../types/Operation";
-import { TezosNetwork } from "../../types/TezosNetwork";
-jest.mock("../tezos");
+import { estimateAndUpdateBatch } from "../thunks/estimateAndupdateBatch";
+import { estimateBatch } from "../../tezos";
+import { hedgehoge } from "../../../mocks/fa12Tokens";
+import { Operation } from "../../../types/Operation";
+import { TezosNetwork } from "../../../types/TezosNetwork";
+jest.mock("../../tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
 

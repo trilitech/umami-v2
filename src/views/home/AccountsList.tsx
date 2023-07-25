@@ -20,8 +20,8 @@ import { useOnboardingModal } from "../../components/Onboarding/useOnboardingMod
 import { AccountType, Account } from "../../types/Account";
 import { useAllAccounts, useRemoveMnemonic } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
-import { useAppDispatch, useAppSelector } from "../../utils/store/hooks";
-import { deriveAccount } from "../../utils/store/thunks/restoreMnemonicAccounts";
+import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
+import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 import { useCreateMultisigModal } from "./Multisig/useCreateMultisigModal";

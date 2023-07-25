@@ -23,8 +23,8 @@ import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useGetImplicitAccount, useImplicitAccounts } from "../utils/hooks/accountHooks";
 import { useContactExists } from "../utils/hooks/contactsHooks";
-import { contactsActions } from "../utils/store/contactsSlice";
-import { useAppDispatch } from "../utils/store/hooks";
+import { useAppDispatch } from "../utils/redux/hooks";
+import { contactsActions } from "../utils/redux/slices/contactsSlice";
 import { CopyableAddress } from "./CopyableText";
 
 export const UpsertContactModal: FC<{

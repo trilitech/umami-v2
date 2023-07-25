@@ -6,8 +6,7 @@ import {
   mockImplicitAddress,
 } from "../../mocks/factories";
 import { formatPkh } from "../../utils/format";
-import accountsSlice from "../../utils/store/accountsSlice";
-import { store } from "../../utils/store/store";
+import { store } from "../../utils/redux/store";
 import { AccountsList } from "./AccountsList";
 
 import { mockPk } from "../../mocks/factories";
@@ -16,7 +15,8 @@ import "../../mocks/mockGetRandomValues";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
-import multisigsSlice from "../../utils/store/multisigsSlice";
+import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
+import accountsSlice from "../../utils/redux/slices/accountsSlice";
 
 const { add: addAccounts } = accountsSlice.actions;
 

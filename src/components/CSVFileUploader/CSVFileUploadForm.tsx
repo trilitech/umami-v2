@@ -24,8 +24,8 @@ import {
   useSelectedNetwork,
 } from "../../utils/hooks/assetsHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
-import { useAppDispatch } from "../../utils/store/hooks";
-import { estimateAndUpdateBatch } from "../../utils/store/thunks/estimateAndupdateBatch";
+import { useAppDispatch } from "../../utils/redux/hooks";
+import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndupdateBatch";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { parseOperation } from "./utils";
 

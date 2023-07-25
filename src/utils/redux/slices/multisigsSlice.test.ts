@@ -1,6 +1,6 @@
-import { multisigOperation, multisigs } from "../mocks/multisig";
-import { multisigActions } from "./store/multisigsSlice";
-import { store } from "./store/store";
+import { multisigOperation, multisigs } from "../../../mocks/multisig";
+import { store } from "../store";
+import { multisigActions } from "./multisigsSlice";
 
 describe("Contacts reducer", () => {
   test("store should initialize with empty state", () => {

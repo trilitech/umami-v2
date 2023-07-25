@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from "redux-persist";
-import accountsSlice from "./accountsSlice";
-import assetsSlice from "./assetsSlice";
-import contactsSlice from "./contactsSlice";
 import { extraArgument } from "./extraArgument";
-import multisigsSlice from "./multisigsSlice";
 import storage from "redux-persist/lib/storage"; // Defaults to localStorage
-import tokensSlice from "./tokensSlice";
+import tokensSlice from "./slices/tokensSlice";
+import accountsSlice from "./slices/accountsSlice";
+import assetsSlice from "./slices/assetsSlice";
+import contactsSlice from "./slices/contactsSlice";
+import multisigsSlice from "./slices/multisigsSlice";
 
 // See this answer for configuration of redux toolkit with redux-persist
 // https://stackoverflow.com/a/63818121/6797267

@@ -2,9 +2,9 @@ import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/fact
 import { render, screen } from "../../../../mocks/testUtils";
 import { TezosNetwork } from "../../../../types/TezosNetwork";
 import { RawTokenBalance } from "../../../../types/TokenBalance";
-import { assetsActions } from "../../../../utils/store/assetsSlice";
-import { store } from "../../../../utils/store/store";
-import tokensSlice from "../../../../utils/store/tokensSlice";
+import { assetsActions } from "../../../../utils/redux/slices/assetsSlice";
+import { store } from "../../../../utils/redux/store";
+import tokensSlice from "../../../../utils/redux/slices/tokensSlice";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
 
 const { updateTokenBalance, updateNetwork } = assetsActions;

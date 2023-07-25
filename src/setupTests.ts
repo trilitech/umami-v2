@@ -9,13 +9,13 @@ import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
 import failOnConsole from "jest-fail-on-console";
-import { contactsActions } from "./utils/store/contactsSlice";
-import { store } from "./utils/store/store";
-import multisigsSlice from "./utils/store/multisigsSlice";
-import assetsSlice from "./utils/store/assetsSlice";
-import accountsSlice from "./utils/store/accountsSlice";
+import { contactsActions } from "./utils/redux/slices/contactsSlice";
+import { store } from "./utils/redux/store";
+import multisigsSlice from "./utils/redux/slices/multisigsSlice";
+import assetsSlice from "./utils/redux/slices/assetsSlice";
+import accountsSlice from "./utils/redux/slices/accountsSlice";
 import { act } from "@testing-library/react";
-import { tokensActions } from "./utils/store/tokensSlice";
+import { tokensActions } from "./utils/redux/slices/tokensSlice";
 
 failOnConsole();
 
@@ -23,7 +23,7 @@ MockDate.set("2023-03-27T14:15:09.760Z");
 
 jest.mock("./utils/tezos");
 
-jest.mock("./utils/store/extraArgument");
+jest.mock("./utils/redux/extraArgument");
 // https://github.com/chakra-ui/chakra-ui/issues/2684
 jest.mock("@popperjs/core", () => {
   return {

@@ -1,21 +1,21 @@
-import { mockImplicitAccount } from "../mocks/factories";
-import { fakeExtraArguments } from "../mocks/fakeExtraArgument";
-import { fakeRestoreFromMnemonic } from "../mocks/helpers";
-import { makeDefaultDevSignerKeys } from "../mocks/devSignerKeys";
-import { seedPhrase } from "../mocks/seedPhrase";
-import { ImplicitAccount, AccountType, MnemonicAccount } from "../types/Account";
-import accountsSlice from "./store/accountsSlice";
+import { mockImplicitAccount } from "../../../mocks/factories";
+import { fakeExtraArguments } from "../../../mocks/fakeExtraArgument";
+import { fakeRestoreFromMnemonic } from "../../../mocks/helpers";
+import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
+import { seedPhrase } from "../../../mocks/seedPhrase";
+import { ImplicitAccount, AccountType, MnemonicAccount } from "../../../types/Account";
 
-import { store } from "./store/store";
-import { deriveAccount, restoreFromMnemonic } from "./store/thunks/restoreMnemonicAccounts";
-import { getFingerPrint } from "./tezos";
-import { parseImplicitPkh } from "../types/Address";
+import { store } from "../store";
+import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
+import { getFingerPrint } from "../../tezos";
+import { parseImplicitPkh } from "../../../types/Address";
+import accountsSlice from "./accountsSlice";
 
 const {
   actions: { add, removeSecret },
 } = accountsSlice;
 
-jest.mock("./aes");
+jest.mock("../../aes");
 
 beforeEach(async () => {
   const { pk, pkh } = await makeDefaultDevSignerKeys(0);

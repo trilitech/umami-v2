@@ -2,8 +2,8 @@ import { mockFA2Address } from "../../mocks/addressKind";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
-import { contactsActions } from "../../utils/store/contactsSlice";
-import { store } from "../../utils/store/store";
+import { contactsActions } from "../../utils/redux/slices/contactsSlice";
+import { store } from "../../utils/redux/store";
 import AddressPillText from "./AddressPillText";
 const { upsert } = contactsActions;
 

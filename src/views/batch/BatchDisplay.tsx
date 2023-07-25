@@ -28,7 +28,7 @@ import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { TokenLookup, useGetToken } from "../../utils/hooks/tokensHooks";
-import { Batch } from "../../utils/store/assetsSlice";
+import { Batch } from "../../utils/redux/slices/assetsSlice";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";

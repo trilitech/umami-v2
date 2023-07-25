@@ -2,7 +2,7 @@ import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { Operation } from "../../../types/Operation";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { operationsToBatchItems } from "../../../views/batch/batchUtils";
-import assetsSlice from "../assetsSlice";
+import assetsSlice from "../slices/assetsSlice";
 import { RootState } from "../store";
 
 const { updateBatch: addToBatch, batchSimulationEnd, batchSimulationStart } = assetsSlice.actions;

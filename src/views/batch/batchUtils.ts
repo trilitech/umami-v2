@@ -1,10 +1,10 @@
-import { BatchItem } from "../../utils/store/assetsSlice";
 import { BigNumber } from "bignumber.js";
 import { Estimate } from "@taquito/taquito";
 import { estimateBatch } from "../../utils/tezos";
 import { zip } from "../../utils/helpers";
 import { Operation } from "../../types/Operation";
 import { TezosNetwork } from "../../types/TezosNetwork";
+import { BatchItem } from "../../utils/redux/slices/assetsSlice";
 
 export const getTotalFee = (items: BatchItem[]): BigNumber => {
   const fee = items.reduce((acc, curr) => {

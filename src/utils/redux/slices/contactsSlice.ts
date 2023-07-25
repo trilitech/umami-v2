@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Contact } from "../../types/Contact";
-import { nameExistsInContacts } from "../hooks/contactsUtils";
+import { Contact } from "../../../types/Contact";
+import { nameExistsInContacts } from "../../hooks/contactsUtils";
 
 type State = Record<string, Contact>;
 

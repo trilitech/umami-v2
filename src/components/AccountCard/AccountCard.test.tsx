@@ -4,9 +4,9 @@ import {
   mockImplicitAddress,
   mockNFTToken,
 } from "../../mocks/factories";
-import accountsSlice from "../../utils/store/accountsSlice";
-import assetsSlice from "../../utils/store/assetsSlice";
-import { store } from "../../utils/store/store";
+import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import assetsSlice from "../../utils/redux/slices/assetsSlice";
+import { store } from "../../utils/redux/store";
 
 import AccountCard from ".";
 import { mockDelegationOperation } from "../../mocks/delegations";
@@ -18,8 +18,8 @@ import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { multisigToAccount } from "../../utils/multisig/helpers";
 import { Multisig } from "../../utils/multisig/types";
-import multisigsSlice, { multisigActions } from "../../utils/store/multisigsSlice";
-import tokensSlice from "../../utils/store/tokensSlice";
+import multisigsSlice, { multisigActions } from "../../utils/redux/slices/multisigsSlice";
+import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { TezosNetwork } from "../../types/TezosNetwork";
 const {
   updateTezBalance,
