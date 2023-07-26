@@ -14,9 +14,9 @@ import { parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
 import { useFirstAccount, useGetImplicitAccount } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
-import BeaconErrorPanel from "./pannels/BeaconErrorPanel";
-import PermissionRequestPanel from "./pannels/PermissionRequestPanel";
-import SignPayloadRequestPanel from "./pannels/SignPayloadRequestPanel";
+import BeaconErrorPanel from "./panels/BeaconErrorPanel";
+import PermissionRequestPanel from "./panels/PermissionRequestPanel";
+import SignPayloadRequestPanel from "./panels/SignPayloadRequestPanel";
 
 const SingleTransaction = ({
   transfer,

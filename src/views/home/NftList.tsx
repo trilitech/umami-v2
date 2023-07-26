@@ -1,5 +1,5 @@
 import { TabList, Tabs } from "@chakra-ui/react";
-import { NFTsGrid } from "../../components/AccountCard/AssetsPannel/NFTsGrid";
+import { NFTsGrid } from "../../components/AccountCard/AssetsPanel/NFTsGrid";
 import NestedScroll from "../../components/NestedScroll";
 import SmallTab from "../../components/SmallTab";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
