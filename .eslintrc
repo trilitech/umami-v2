@@ -19,7 +19,8 @@
     "curly": ["error", "all"],
     "jest/no-focused-tests": "warn",
     "jest/no-identical-title": "warn",
-    "jest/valid-expect": "warn"
+    "jest/valid-expect": "warn",
+    "@typescript-eslint/await-thenable": "error"
   },
   "overrides": [
     {
