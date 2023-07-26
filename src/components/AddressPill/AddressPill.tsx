@@ -89,6 +89,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
           <PopoverTrigger>
             <Button variant="unstyled" h={7}>
               <AddressPillText
+                data-testid="address-pill-text"
                 addressKind={addressKind}
                 showPkh={!showIcons}
                 cursor="pointer"

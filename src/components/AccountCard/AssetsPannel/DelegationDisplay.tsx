@@ -1,9 +1,10 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
 import colors from "../../../style/colors";
+import { parsePkh } from "../../../types/Address";
 import { Delegation } from "../../../types/Delegation";
 import { useGetDelegationPrettyDisplayValues } from "../../../utils/hooks/delegationHooks";
-import { CopyableAddress } from "../../CopyableText";
+import AddressPill from "../../AddressPill/AddressPill";
 import { NoDelegations } from "../../NoItems";
 import { DelegationMode } from "../../sendForm/types";
 
@@ -46,7 +47,7 @@ export const DelegationDisplay: React.FC<{
       <Row label="Initial Balance:" value={initialBalance} grayBg />
       {currentBalance && <Row label="Current Balance:" value={currentBalance} />}
       <Row label="Duration:" value={duration} />
-      <Row label="Baker:" value={<CopyableAddress pkh={delegation.delegate.address} />} />
+      <Row label="Baker:" value={<AddressPill address={parsePkh(delegation.delegate.address)} />} />
       <Flex>
         <Button flex={1} mr={2} bg="umami.blue" onClick={() => onDelegate()}>
           Change Baker

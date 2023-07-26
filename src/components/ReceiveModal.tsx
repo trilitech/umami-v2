@@ -13,8 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { FC, useRef } from "react";
 import colors from "../style/colors";
-import { CopyableAddress } from "./CopyableText";
 import { QRCode } from "react-qrcode-logo";
+import AddressPill from "./AddressPill/AddressPill";
+import { parsePkh } from "../types/Address";
 
 type Options = {
   pkh: string;
@@ -68,7 +69,7 @@ const ReceiveModal: FC<{
 
         <ModalFooter>
           <Flex justifyContent="center" w="100%">
-            <CopyableAddress pkh={pkh} />
+            <AddressPill address={parsePkh(pkh)} />
           </Flex>
         </ModalFooter>
       </ModalContent>
