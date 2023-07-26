@@ -1,6 +1,6 @@
 import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
 import { ContractAddress, ImplicitAddress, parseContractPkh } from "../types/Address";
-import { FA12Operation, FA2Operation } from "../types/RawOperation";
+import { FA12Operation, FA2Operation } from "../types/Operation";
 import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 import {
   FA12_TRANSFER_ARG_TYPES,

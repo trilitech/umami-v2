@@ -16,7 +16,7 @@ import {
 import Papa, { ParseResult } from "papaparse";
 import { FormProvider, useForm } from "react-hook-form";
 import { ImplicitAccount } from "../../types/Account";
-import { RawOperation } from "../../types/RawOperation";
+import { Operation } from "../../types/Operation";
 import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
 import {
   useBatchIsSimulating,
@@ -58,7 +58,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
       throw new Error("Error loading csv file.");
     }
 
-    const operations: RawOperation[] = [];
+    const operations: Operation[] = [];
     for (let i = 0; i < rows.data.length; i++) {
       const row = rows.data[i];
       try {
