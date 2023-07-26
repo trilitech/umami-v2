@@ -306,7 +306,6 @@ describe("<SendForm />", () => {
             recipient: mockImplicitAddress(7),
           },
         ],
-        mockImplicitAccount(1),
         MOCK_TEZOS_TOOLKIT
       );
     });
@@ -378,7 +377,6 @@ describe("<SendForm />", () => {
           },
         ],
         mockImplicitAccount(2),
-        mockImplicitAccount(2),
         "mainnet"
       );
 
@@ -417,7 +415,6 @@ describe("<SendForm />", () => {
             tokenId: mockFA2.tokenId,
           },
         ],
-        mockImplicitAccount(2),
         MOCK_TEZOS_TOOLKIT
       );
     });
@@ -489,7 +486,6 @@ describe("<SendForm />", () => {
           },
         ],
         mockImplicitAccount(2),
-        mockImplicitAccount(2),
         "mainnet"
       );
 
@@ -527,7 +523,6 @@ describe("<SendForm />", () => {
             tokenId: "0",
           },
         ],
-        mockImplicitAccount(2),
         MOCK_TEZOS_TOOLKIT
       );
     });
@@ -611,7 +606,6 @@ describe("<SendForm />", () => {
             tokenId: nft.token?.tokenId,
           },
         ],
-        mockImplicitAccount(1),
         MOCK_TEZOS_TOOLKIT
       );
     });

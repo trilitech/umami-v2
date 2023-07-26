@@ -5,7 +5,7 @@ import { zip } from "../../utils/helpers";
 import { Operation } from "../../types/Operation";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { BatchItem } from "../../utils/redux/slices/assetsSlice";
-import { Account, ImplicitAccount } from "../../types/Account";
+import { ImplicitAccount } from "../../types/Account";
 
 export const getTotalFee = (items: BatchItem[]): BigNumber => {
   const fee = items.reduce((acc, curr) => {
@@ -37,12 +37,11 @@ export const sumEstimations = (es: Estimate[]) => {
 
 export const operationsToBatchItems = async (
   operations: Operation[],
-  sender: Account,
   signer: ImplicitAccount,
   network: TezosNetwork
 ) => {
   // TODO: add support for Multisig
-  const estimations = await estimateBatch(operations, sender, signer, network);
+  const estimations = await estimateBatch(operations, signer, network);
 
   return zip(operations, estimations).map(([operation, estimate]) => {
     return {

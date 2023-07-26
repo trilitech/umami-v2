@@ -355,7 +355,6 @@ describe("Assets reducer", () => {
       expect(estimateBatchMock).toHaveBeenCalledWith(
         transfers,
         mockImplicitAccount(1),
-        mockImplicitAccount(1),
         TezosNetwork.MAINNET
       );
       expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(

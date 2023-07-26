@@ -36,5 +36,5 @@ export const makeSimulation = async (operation: FormOperations, network: TezosNe
   }
   const implicitOps = operation.content;
 
-  return estimateBatch(implicitOps, operation.signer, operation.signer, network).then(getTotalFee);
+  return estimateBatch(implicitOps, operation.signer, network).then(getTotalFee);
 };

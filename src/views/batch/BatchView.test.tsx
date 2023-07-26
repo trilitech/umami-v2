@@ -264,7 +264,6 @@ describe("<BatchView />", () => {
             recipient: mockImplicitAddress(3),
           },
         ],
-        mockImplicitAccount(1),
         MOCK_TEZOS_TOOLKIT
       );
 

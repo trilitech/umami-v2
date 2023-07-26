@@ -1,6 +1,6 @@
 import { TezosToolkit } from "@taquito/taquito";
 import { makeBatchLambda } from "../../../multisig/multisigUtils";
-import { ImplicitAccount, MultisigAccount } from "../../../types/Account";
+import { MultisigAccount } from "../../../types/Account";
 import { Operation } from "../../../types/Operation";
 import { proposeMultisigLambda, submitBatch } from "../../../utils/tezos";
 import { FormOperations } from "../types";
@@ -15,12 +15,8 @@ const makeProposeOperation = async (
   return proposeMultisigLambda({ contract: sender.address, lambdaActions }, tezosToolkit);
 };
 
-const makeTransferImplicit = async (
-  operations: Operation[],
-  sender: ImplicitAccount,
-  tezosToolkit: TezosToolkit
-) => {
-  return submitBatch(operations, sender, tezosToolkit).then(({ opHash }) => ({ hash: opHash }));
+const makeTransferImplicit = async (operations: Operation[], tezosToolkit: TezosToolkit) => {
+  return submitBatch(operations, tezosToolkit).then(({ opHash }) => ({ hash: opHash }));
 };
 
 export const makeTransfer = (op: FormOperations, tezosToolkit: TezosToolkit) => {
@@ -29,7 +25,7 @@ export const makeTransfer = (op: FormOperations, tezosToolkit: TezosToolkit) => 
   const transfer =
     op.type === "proposal"
       ? makeProposeOperation(transferToDisplay, op.sender, tezosToolkit)
-      : makeTransferImplicit(transferToDisplay, op.signer, tezosToolkit);
+      : makeTransferImplicit(transferToDisplay, tezosToolkit);
 
   return transfer;
 };
