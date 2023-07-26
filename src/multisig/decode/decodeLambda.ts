@@ -12,6 +12,7 @@ import {
 import type { MichelsonV1Expression } from "@taquito/rpc";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 import { UnrecognizedMichelsonError } from "./UnrecognizedMichelsonError";
+import { MultisigAccount } from "../../types/Account";
 
 const convertToPkh = (addressBytes: string): string => {
   if (addressBytes.length === 42) {
@@ -94,17 +95,24 @@ const parseFa1 = (michelson: MichelsonV1Expression[]): Operation => {
   };
 };
 
-const parseSetDelegate = (michelson: MichelsonV1Expression[]): Operation => {
+const parseSetDelegate = (
+  michelson: MichelsonV1Expression[],
+  account: MultisigAccount
+): Operation => {
   const parseResult = setDelegateSchema.parse(michelson);
 
   return {
     type: "delegation",
+    sender: account.address,
     recipient: parseImplicitPkh(convertToPkh(parseResult[0].args[1].bytes)),
   };
 };
 
-const parseRemoveDelegate = (_michelson: MichelsonV1Expression[]): Operation => {
-  return { type: "delegation", recipient: undefined };
+const parseRemoveDelegate = (
+  _michelson: MichelsonV1Expression[],
+  account: MultisigAccount
+): Operation => {
+  return { type: "delegation", sender: account.address, recipient: undefined };
 };
 
 const parsings = [
@@ -116,7 +124,11 @@ const parsings = [
   { schema: removeDelegateSchema, parsingFn: parseRemoveDelegate },
 ];
 
-const parse = (michelson: MichelsonV1Expression[], acc: Operation[] = []): Operation[] => {
+const parse = (
+  michelson: MichelsonV1Expression[],
+  account: MultisigAccount,
+  acc: Operation[] = []
+): Operation[] => {
   if (michelson.length === 0) {
     return acc;
   }
@@ -128,8 +140,8 @@ const parse = (michelson: MichelsonV1Expression[], acc: Operation[] = []): Opera
       continue;
     }
 
-    const parsed = parsingFn(parseResult.data);
-    return parse(michelson.slice(schema.items.length), [...acc, ...[parsed].flat()]);
+    const parsed = parsingFn(parseResult.data, account);
+    return parse(michelson.slice(schema.items.length), account, [...acc, ...[parsed].flat()]);
   }
 
   throw new UnrecognizedMichelsonError(`${JSON.stringify(michelson[0])}`);
@@ -139,13 +151,13 @@ const assertHead = (michelson: MichelsonV1Expression[]) => {
   batchHeadSchema.parse(michelson.slice(0, 2));
 };
 
-export const decode = (michelson: MichelsonV1Expression[]) => {
+export const decode = (michelson: MichelsonV1Expression[], account: MultisigAccount) => {
   assertHead(michelson);
 
-  return parse(michelson.slice(2));
+  return parse(michelson.slice(2), account);
 };
 
-export const parseRawMichelson = (rawMichelson: string): Operation[] => {
+export const parseRawMichelson = (rawMichelson: string, account: MultisigAccount): Operation[] => {
   const michelson: MichelsonV1Expression[] = JSON.parse(rawMichelson);
-  return decode(michelson);
+  return decode(michelson, account);
 };

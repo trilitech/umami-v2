@@ -142,7 +142,7 @@ export const BeaconNotification: React.FC<{
   }
 };
 
-const beaconToUmamiOperation = (operation: PartialTezosOperation, sender: string) => {
+const beaconToUmamiOperation = (operation: PartialTezosOperation, sourceAddress: string) => {
   if (operation.kind === TezosOperationType.TRANSACTION) {
     const result: Operation = {
       type: "tez",
@@ -157,6 +157,7 @@ const beaconToUmamiOperation = (operation: PartialTezosOperation, sender: string
   if (operation.kind === TezosOperationType.DELEGATION) {
     const result: Operation = {
       type: "delegation",
+      sender: parsePkh(sourceAddress),
       recipient:
         operation.delegate !== undefined ? parseImplicitPkh(operation.delegate) : undefined,
     };
@@ -167,12 +168,10 @@ const beaconToUmamiOperation = (operation: PartialTezosOperation, sender: string
   throw new Error(`Unsupported operation: ${operation.kind}`);
 };
 
-const buildTransfers = (o: OperationRequestOutput) => {
-  const { operationDetails } = o;
-
+const buildTransfers = ({ operationDetails, sourceAddress }: OperationRequestOutput) => {
   if (operationDetails.length === 0) {
     throw new Error("Empty operation details!");
   }
 
-  return operationDetails.map(operation => beaconToUmamiOperation(operation, o.sourceAddress));
+  return operationDetails.map(operation => beaconToUmamiOperation(operation, sourceAddress));
 };

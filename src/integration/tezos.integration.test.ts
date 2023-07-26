@@ -37,6 +37,7 @@ describe("Tezos utils", () => {
         },
         {
           type: "delegation",
+          sender: sender.address,
           recipient: pkh1,
         },
         {
@@ -253,6 +254,7 @@ describe("Tezos utils", () => {
           [
             {
               type: "delegation",
+              sender: sender.address,
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
           ],
@@ -273,6 +275,7 @@ describe("Tezos utils", () => {
             },
             {
               type: "delegation",
+              sender: sender.address,
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
           ],

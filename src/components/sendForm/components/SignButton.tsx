@@ -23,9 +23,9 @@ import { makeToolkit } from "../../../utils/tezos";
 
 const SignButton: React.FC<{
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
-  signerAccount: ImplicitAccount;
+  signer: ImplicitAccount;
   network: TezosNetwork;
-}> = ({ signerAccount, network, onSubmit }) => {
+}> = ({ signer, network, onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -52,7 +52,7 @@ const SignButton: React.FC<{
 
   const onMnemonicSign = async ({ password }: { password: string }) => {
     return handleSign(async () => {
-      const secretKey = await getSecretKey(signerAccount as MnemonicAccount, password);
+      const secretKey = await getSecretKey(signer as MnemonicAccount, password);
       return makeToolkit({ type: "mnemonic", secretKey, network });
     });
   };
@@ -65,14 +65,14 @@ const SignButton: React.FC<{
     handleSign(() =>
       makeToolkit({
         type: "ledger",
-        account: signerAccount as LedgerAccount,
+        account: signer as LedgerAccount,
         network,
       })
     );
 
   return (
     <Box width="100%">
-      {signerAccount.type === AccountType.MNEMONIC && (
+      {signer.type === AccountType.MNEMONIC && (
         <>
           <FormControl isInvalid={!!errors.password} mt={4}>
             <FormLabel>Password:</FormLabel>
@@ -100,8 +100,8 @@ const SignButton: React.FC<{
           </Button>
         </>
       )}
-      {signerAccount.type === AccountType.SOCIAL && <GoogleAuth onSuccessfulAuth={onSocialSign} />}
-      {signerAccount.type === AccountType.LEDGER && (
+      {signer.type === AccountType.SOCIAL && <GoogleAuth onSuccessfulAuth={onSocialSign} />}
+      {signer.type === AccountType.LEDGER && (
         <Button onClick={onLedgerSign} bg="umami.blue" width="100%" isLoading={isLoading}>
           Sign with Ledger
         </Button>

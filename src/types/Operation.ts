@@ -34,6 +34,7 @@ export type FA12Operation = Omit<FA2Operation, "type" | "tokenId"> & {
 
 export type Delegation = {
   type: "delegation";
+  sender: Address;
   recipient: ImplicitAddress | undefined;
 };
 

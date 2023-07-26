@@ -95,7 +95,7 @@ export const SubmitStep: React.FC<{
           <Total mutez={total.toString()} />
         </ModalBody>
         <ModalFooter justifyContent="center">
-          <SignButton network={network} onSubmit={onSubmit} signerAccount={operations.signer} />
+          <SignButton network={network} onSubmit={onSubmit} signer={operations.signer} />
         </ModalFooter>
       </form>
     </ModalContent>

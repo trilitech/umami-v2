@@ -16,15 +16,9 @@ export const MultisigActionButton: React.FC<{
   signerAddress: ImplicitAddress;
   pendingApprovals: number;
   operation: MultisigOperation;
-  account: MultisigAccount;
+  sender: MultisigAccount;
   openSignModal: (params: ParamsWithFee) => void;
-}> = ({
-  signerAddress,
-  account: { address: multisigAddress },
-  operation,
-  pendingApprovals,
-  openSignModal,
-}) => {
+}> = ({ signerAddress, sender, operation, pendingApprovals, openSignModal }) => {
   const getImplicitAccount = useGetImplicitAccount();
   const network = useSelectedNetwork();
   const signer = getImplicitAccount(signerAddress.pkh);
@@ -64,7 +58,7 @@ export const MultisigActionButton: React.FC<{
     const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
       {
         type: actionType,
-        contract: multisigAddress,
+        contract: sender.address,
         operationId: operation.id,
       },
       signer,
@@ -73,7 +67,7 @@ export const MultisigActionButton: React.FC<{
     openSignModal({
       type: actionType,
       operation: operation,
-      multisigAddress,
+      sender,
       signer,
       suggestedFeeMutez,
     });

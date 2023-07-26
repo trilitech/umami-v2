@@ -10,13 +10,15 @@ import {
 } from "@chakra-ui/react";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import { UnrecognizedMichelsonError } from "../../../../multisig/decode/UnrecognizedMichelsonError";
+import { MultisigAccount } from "../../../../types/Account";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
 
 const MultisigDecodedOperations: React.FC<{
   rawActions: string;
-}> = ({ rawActions }) => {
+  sender: MultisigAccount;
+}> = ({ rawActions, sender }) => {
   try {
-    const operations = parseRawMichelson(rawActions);
+    const operations = parseRawMichelson(rawActions, sender);
     return (
       <Box>
         {operations.map((operation, i) => (

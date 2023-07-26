@@ -12,7 +12,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import SignButton from "../sendForm/components/SignButton";
-import { ImplicitAccount } from "../../types/Account";
 import { ParamsWithFee } from "./types";
 import { prettyTezAmount } from "../../utils/format";
 import MultisigDecodedOperations from "../AccountCard/AssetsPanel/MultisigPendingAccordion/MultisigDecodedOperations";
@@ -22,11 +21,9 @@ import { ApproveOrExecute } from "../../utils/tezos/types";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { TezosToolkit } from "@taquito/taquito";
 
-type Props = {
-  signerAccount: ImplicitAccount;
+type Props = ParamsWithFee & {
   onSuccess: (hash: string) => void;
   network: TezosNetwork;
-  params: ParamsWithFee;
 };
 
 const TITLE: Record<ApproveOrExecute, string> = {
@@ -37,8 +34,11 @@ const TITLE: Record<ApproveOrExecute, string> = {
 export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
   network,
   onSuccess,
-  signerAccount,
-  params,
+  signer,
+  sender,
+  suggestedFeeMutez,
+  operation,
+  type: actionType,
 }) => {
   const toast = useToast();
 
@@ -46,9 +46,9 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
     try {
       const result = await approveOrExecuteMultisigOperation(
         {
-          contract: params.multisigAddress,
-          operationId: params.operation.id,
-          type: params.type,
+          contract: sender.address,
+          operationId: operation.id,
+          type: actionType,
         },
         tezosToolkit
       );
@@ -62,30 +62,30 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
   return (
     <ModalContent bg="umami.gray.900">
       <ModalCloseButton />
-      <ModalHeader textAlign="center">{TITLE[params.type]}</ModalHeader>
+      <ModalHeader textAlign="center">{TITLE[actionType]}</ModalHeader>
       <ModalBody>
         <Text mt={2} color="text.dark" textAlign="center">
-          {TITLE[params.type]}
+          {TITLE[actionType]}
         </Text>
 
         <Flex my={4}>
           <Heading size="md" width={20}>
             Signer:
           </Heading>
-          <AccountSmallTile pkh={signerAccount.address.pkh} />
+          <AccountSmallTile pkh={signer.address.pkh} />
         </Flex>
-        <MultisigDecodedOperations rawActions={params.operation.rawActions} />
+        <MultisigDecodedOperations rawActions={operation.rawActions} sender={sender} />
 
         <Flex aria-label="fee" alignItems="center" justifyContent="space-between">
           <Heading size="sm" color="text.dark">
             Fee
           </Heading>
-          <Text size="sm">{prettyTezAmount(String(params.suggestedFeeMutez))}</Text>
+          <Text size="sm">{prettyTezAmount(String(suggestedFeeMutez))}</Text>
         </Flex>
       </ModalBody>
 
       <ModalFooter justifyContent="center">
-        <SignButton network={network} onSubmit={approveOrExecute} signerAccount={signerAccount} />
+        <SignButton network={network} onSubmit={approveOrExecute} signer={signer} />
       </ModalFooter>
     </ModalContent>
   );

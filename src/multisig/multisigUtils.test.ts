@@ -91,6 +91,7 @@ describe("makeLambda", () => {
     it("can set a delegate", () => {
       const result = makeLambda({
         type: "delegation",
+        sender: multisigContractAddress,
         recipient: mockImplicitAddress(0),
       });
       expect(result).toEqual([
@@ -101,7 +102,11 @@ describe("makeLambda", () => {
     });
 
     it("can unset a delegate", () => {
-      const result = makeLambda({ type: "delegation", recipient: undefined });
+      const result = makeLambda({
+        type: "delegation",
+        sender: multisigContractAddress,
+        recipient: undefined,
+      });
 
       expect(result).toEqual([
         { prim: "DROP" },
@@ -162,9 +167,10 @@ describe("makeBatchLambda", () => {
       fa12Operation,
       {
         type: "delegation",
+        sender: multisigContractAddress,
         recipient: mockImplicitAddress(1),
       },
-      { type: "delegation", recipient: undefined },
+      { type: "delegation", sender: multisigContractAddress, recipient: undefined },
     ]);
 
     const expected = [

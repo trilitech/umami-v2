@@ -329,6 +329,7 @@ export const mockNftTransfer = (index: number): Operation => {
 export const mockDelegationTransfer = (index: number): Operation => {
   return {
     type: "delegation",
+    sender: mockImplicitAddress(index),
     recipient: mockImplicitAddress(index + 1),
   };
 };

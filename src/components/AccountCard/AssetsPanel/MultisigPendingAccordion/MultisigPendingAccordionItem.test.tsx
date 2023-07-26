@@ -33,7 +33,7 @@ describe("<MultisigPendingCard/>", () => {
     render(
       <Accordion>
         <MultisigPendingAccordionItem
-          account={account}
+          sender={account}
           operation={{
             id: "1",
             bigmapId: 0,
@@ -51,7 +51,7 @@ describe("<MultisigPendingCard/>", () => {
     render(
       <Accordion>
         <MultisigPendingAccordionItem
-          account={mockMultisigAccount(0)}
+          sender={mockMultisigAccount(0)}
           operation={{
             id: "1",
             bigmapId: 0,
@@ -85,7 +85,7 @@ describe("<MultisigPendingCard/>", () => {
 
     render(
       <Accordion>
-        <MultisigPendingAccordionItem account={multisig} operation={executablePendingOp} />
+        <MultisigPendingAccordionItem sender={multisig} operation={executablePendingOp} />
       </Accordion>
     );
     const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
@@ -145,7 +145,7 @@ describe("<MultisigPendingCard/>", () => {
     const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
     render(
       <Accordion>
-        <MultisigPendingAccordionItem account={account} operation={approvablePendingOp} />
+        <MultisigPendingAccordionItem sender={account} operation={approvablePendingOp} />
       </Accordion>
     );
     const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);

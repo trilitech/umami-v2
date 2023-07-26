@@ -16,7 +16,9 @@ beforeEach(() => {
 describe("<MultisigDecodedOperationItem/>", () => {
   it("displays delegate", () => {
     render(
-      <MultisigDecodedOperationItem operation={{ type: "delegation", recipient: undefined }} />
+      <MultisigDecodedOperationItem
+        operation={{ type: "delegation", sender: mockImplicitAddress(0), recipient: undefined }}
+      />
     );
 
     expect(screen.getByTestId("decoded-item-delegate")).toHaveTextContent("Undelegate");
