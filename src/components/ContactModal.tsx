@@ -19,13 +19,13 @@ import {
 import { FC, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
-import { isAddressValid, parsePkh } from "../types/Address";
+import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useGetImplicitAccount, useImplicitAccounts } from "../utils/hooks/accountHooks";
 import { useContactExists } from "../utils/hooks/contactsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
-import AddressPill from "./AddressPill/AddressPill";
+import { CopyableAddress } from "./CopyableText";
 
 export const UpsertContactModal: FC<{
   title: string;
@@ -160,7 +160,7 @@ export const DeleteContactModal: FC<{
               <Heading size="md" textAlign="center" mb={3}>
                 {contact.name}
               </Heading>
-              <AddressPill address={parsePkh(contact.pkh)} mode="no_icons" />
+              <CopyableAddress pkh={contact.pkh} />
             </Box>
           </Flex>
         </ModalBody>
