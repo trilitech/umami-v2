@@ -1,4 +1,5 @@
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
+import { mockImplicitAccount } from "../mocks/factories";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
 import { parseContractPkh, parseImplicitPkh } from "../types/Address";
 import { Operation } from "../types/Operation";
@@ -11,6 +12,7 @@ jest.unmock("../utils/tezos");
 const pk0 = devPublicKeys0.pk;
 const pkh0 = parseImplicitPkh(devPublicKeys0.pkh);
 const pkh1 = parseImplicitPkh(devPublicKeys1.pkh);
+const sender = { ...mockImplicitAccount(0), pk: pk0, address: pkh0 };
 
 describe("Tezos utils", () => {
   describe("Batch", () => {
@@ -23,7 +25,6 @@ describe("Tezos utils", () => {
         },
         {
           type: "tez",
-
           amount: "2",
           recipient: pkh1,
           parameter: {
@@ -63,8 +64,7 @@ describe("Tezos utils", () => {
           tokenId: ghostFA2.tokenId,
         },
       ];
-
-      const result = await operationsToBatchParams(input, pk0, pkh0.pkh, TezosNetwork.GHOSTNET);
+      const result = await operationsToBatchParams(input, sender);
       expect(result).toEqual([
         {
           amount: 3,
@@ -152,7 +152,6 @@ describe("Tezos utils", () => {
           storageLimit: undefined,
           to: ghostFA12.contract,
         },
-
         {
           amount: 0,
           fee: undefined,
@@ -185,7 +184,6 @@ describe("Tezos utils", () => {
         },
       ]);
     });
-
     describe("Estimations", () => {
       test("Batch estimation works with batches containg tez, FA1.2 and FA2 tokens on ghostnet", async () => {
         const ghostnetResult = await estimateBatch(
@@ -220,16 +218,14 @@ describe("Tezos utils", () => {
               tokenId: ghostFA2.tokenId,
             },
           ],
-          pkh0.pkh,
-          pk0,
+          sender,
+          sender,
           TezosNetwork.GHOSTNET
         );
-
         for (let i = 0; i < ghostnetResult.length; i += 1) {
           expect(ghostnetResult[i]).toHaveProperty("suggestedFeeMutez");
         }
       });
-
       test("Batch estimation works with batches containg tez on mainnet", async () => {
         const mainnetResult = await estimateBatch(
           [
@@ -244,17 +240,14 @@ describe("Tezos utils", () => {
               recipient: pkh1,
             },
           ],
-          pkh0.pkh,
-          pk0,
+          sender,
+          sender,
           TezosNetwork.MAINNET
         );
-
         expect(mainnetResult).toHaveLength(2);
-
         expect(mainnetResult[0]).toHaveProperty("suggestedFeeMutez");
         expect(mainnetResult[1]).toHaveProperty("suggestedFeeMutez");
       });
-
       test("Batch estimation works with batches containing delegations on mainnet", async () => {
         const mainnetResult = await estimateBatch(
           [
@@ -263,16 +256,13 @@ describe("Tezos utils", () => {
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
           ],
-          pkh0.pkh,
-          pk0,
+          sender,
+          sender,
           TezosNetwork.MAINNET
         );
-
         expect(mainnetResult).toHaveLength(1);
-
         expect(mainnetResult[0]).toHaveProperty("suggestedFeeMutez");
       });
-
       test("Batch estimation fails with insuficient funds on mainnet", async () => {
         const estimation = estimateBatch(
           [
@@ -283,15 +273,13 @@ describe("Tezos utils", () => {
             },
             {
               type: "delegation",
-
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
           ],
-          pkh0.pkh,
-          pk0,
+          sender,
+          sender,
           TezosNetwork.MAINNET
         );
-
         await expect(estimation).rejects.toThrow(/tez.subtraction_underflow/i);
       });
     });

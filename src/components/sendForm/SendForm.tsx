@@ -1,12 +1,12 @@
 import { useToast } from "@chakra-ui/react";
-import { TransferParams } from "@taquito/taquito";
+import { TezosToolkit, TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
+import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
-import { SignerConfig } from "../../types/SignerConfig";
-import { useGetPk } from "../../utils/hooks/accountHooks";
+import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
-import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndupdateBatch";
+import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { FillStep } from "./steps/FillStep";
 import { SubmitStep } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
@@ -31,9 +31,9 @@ export const SendForm = ({
 }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
-  const getPk = useGetPk();
   const dispatch = useAppDispatch();
   const clearBatch = useClearBatch();
+  const getAccount = useGetImplicitAccount();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,8 +54,9 @@ export const SendForm = ({
       return;
     }
     setIsLoading(true);
+
     try {
-      const estimate = await makeSimulation(operations, getPk, network);
+      const estimate = await makeSimulation(operations, network);
 
       setTransferValues({
         operations,
@@ -63,17 +64,19 @@ export const SendForm = ({
       });
     } catch (error: any) {
       console.warn("Simulation Error", error);
-      toast({ title: "Invalid transaction", description: error.message });
+      toast({ title: "Invalid transaction", description: error.message, status: "error" });
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
-  const addToBatch = async (operation: Operation, sender: string) => {
-    const pk = getPk(sender);
+  const addToBatch = async (operation: Operation, senderPkh: RawPkh) => {
+    // TODO: add support for Multisig
+    const sender = getAccount(senderPkh);
 
     try {
-      await dispatch(estimateAndUpdateBatch(sender, pk, [operation], network));
+      // TODO: add support for Multisig
+      await dispatch(estimateAndUpdateBatch(sender, sender, [operation], network));
 
       toast({ title: "Transaction added to batch!" });
     } catch (error: any) {
@@ -82,24 +85,18 @@ export const SendForm = ({
     }
   };
 
-  const execute = async (operations: FormOperations, config: SignerConfig) => {
+  const execute = async (operations: FormOperations, tezosToolkit: TezosToolkit) => {
+    // TODO: add support for Multisig
     if (isLoading) {
       return;
     }
     setIsLoading(true);
 
-    if (config.type === "ledger") {
-      toast({
-        title: "Request sent to Ledger",
-        description: "Open the Tezos app on your Ledger and accept to sign the request",
-      });
-    }
-
     try {
-      const result = await makeTransfer(operations, config);
+      const result = await makeTransfer(operations, tezosToolkit);
       if (mode.type === "batch") {
         // TODO this will have to me moved in a thunk
-        const batchOwner = operations.signer.pkh;
+        const batchOwner = operations.signer.address.pkh;
         clearBatch(batchOwner);
       }
       setHash(result.hash);
@@ -107,9 +104,9 @@ export const SendForm = ({
     } catch (error: any) {
       console.warn("Failed to execute operation", error);
       toast({ title: "Error", description: error.message });
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   if (hash) {
@@ -119,10 +116,7 @@ export const SendForm = ({
   if (transferValues) {
     return (
       <SubmitStep
-        isLoading={isLoading}
-        onSubmit={config => {
-          execute(transferValues.operations, config);
-        }}
+        onSubmit={tezosToolkit => execute(transferValues.operations, tezosToolkit)}
         isBatch={mode.type === "batch"}
         network={network}
         recap={transferValues}

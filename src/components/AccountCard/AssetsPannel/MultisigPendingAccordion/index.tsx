@@ -21,9 +21,7 @@ export const MultisigPendingAccordion: React.FC<{
           <MultisigPendingAccordionItem
             key={operation.id}
             operation={operation}
-            signers={account.signers}
-            threshold={account.threshold}
-            multisigAddress={account.address}
+            account={account}
           />
         ))}
       </Accordion>

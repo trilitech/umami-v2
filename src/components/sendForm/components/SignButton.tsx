@@ -1,104 +1,109 @@
-import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
-import React from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  useToast,
+} from "@chakra-ui/react";
+import { TezosToolkit } from "@taquito/taquito";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GoogleAuth } from "../../../GoogleAuth";
-import { ImplicitAccount, AccountType } from "../../../types/Account";
 import {
-  LedgerSignerConfig,
-  SignerConfig,
-  SignerType,
-  SkSignerConfig,
-} from "../../../types/SignerConfig";
+  ImplicitAccount,
+  AccountType,
+  MnemonicAccount,
+  LedgerAccount,
+} from "../../../types/Account";
 import { TezosNetwork } from "../../../types/TezosNetwork";
-import { useGetSk } from "../../../utils/hooks/accountUtils";
+import { useGetSecretKey } from "../../../utils/hooks/accountUtils";
+import { makeToolkit } from "../../../utils/tezos";
 
 const SignButton: React.FC<{
-  onSubmit: (c: SignerConfig) => void;
+  onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
   signerAccount: ImplicitAccount;
-  isLoading: boolean;
   network: TezosNetwork;
-}> = ({ signerAccount, isLoading, network, onSubmit }) => {
-  const { register, handleSubmit, formState } = useForm<{ password: string }>();
+}> = ({ signerAccount, network, onSubmit }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{ password: string }>({ mode: "onBlur" });
 
-  const getSk = useGetSk();
-  const { isValid, isDirty } = formState;
+  const getSecretKey = useGetSecretKey();
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const type = signerAccount.type;
-  const isGoogleSSO = type === AccountType.SOCIAL;
-  const isLedger = type === AccountType.LEDGER;
-  const isMnemonic = type === AccountType.MNEMONIC;
-
-  const onSubmitGoogleSSO = (sk: string) => {
-    if (signerAccount.type !== AccountType.SOCIAL) {
-      throw new Error(`Wrong signing method called`);
+  // wrapper function that handles changing the isLoading state & error handling
+  const handleSign = async (getToolkit: () => Promise<TezosToolkit>) => {
+    if (isLoading) {
+      return;
     }
 
-    const config: SkSignerConfig = {
-      sk,
-      network,
-      type: SignerType.SK,
-    };
-    onSubmit(config);
+    setIsLoading(true);
+
+    getToolkit()
+      .then(onSubmit)
+      .catch((error: any) => toast({ title: "Error", description: error.message, status: "error" }))
+      .finally(() => setIsLoading(false));
   };
 
-  const onSubmitLedger = () => {
-    if (signerAccount.type !== AccountType.LEDGER) {
-      throw new Error(`Wrong signing method called`);
-    }
-
-    const config: LedgerSignerConfig = {
-      network,
-      derivationPath: signerAccount.derivationPath,
-      derivationType: signerAccount.curve,
-      type: SignerType.LEDGER,
-    };
-
-    onSubmit(config);
+  const onMnemonicSign = async ({ password }: { password: string }) => {
+    return handleSign(async () => {
+      const secretKey = await getSecretKey(signerAccount as MnemonicAccount, password);
+      return makeToolkit({ type: "mnemonic", secretKey, network });
+    });
   };
 
-  const onSubmitNominal = async ({ password }: { password: string }) => {
-    if (signerAccount.type !== AccountType.MNEMONIC) {
-      throw new Error(`Wrong signing method called`);
-    }
-
-    // TODO disabled submit button since it"s loading
-    const sk = await getSk(signerAccount, password);
-    const config: SkSignerConfig = {
-      sk,
-      network,
-      type: SignerType.SK,
-    };
-
-    onSubmit(config);
+  const onSocialSign = async (secretKey: string) => {
+    return handleSign(() => makeToolkit({ type: "social", secretKey, network }));
   };
+
+  const onLedgerSign = () =>
+    handleSign(() =>
+      makeToolkit({
+        type: "ledger",
+        account: signerAccount as LedgerAccount,
+        network,
+      })
+    );
+
   return (
-    <Box>
-      {isMnemonic ? (
-        <FormControl isInvalid={isDirty && !isValid} mt={4}>
-          <FormLabel>Password:</FormLabel>
-          <Input
-            mb={2}
-            type="password"
-            {...register("password", {
-              required: true,
-              minLength: 4,
-            })}
-            placeholder="Enter password..."
-          />
-        </FormControl>
-      ) : null}
-      {isGoogleSSO ? (
-        <GoogleAuth onSuccessfulAuth={onSubmitGoogleSSO} />
-      ) : (
-        <Button
-          onClick={handleSubmit(isLedger ? onSubmitLedger : onSubmitNominal)}
-          bg="umami.blue"
-          width="100%"
-          isLoading={isLoading}
-          type="submit"
-          isDisabled={(!isLedger && !isValid) || isLoading}
-        >
-          {isLedger ? <>Sign with Ledger</> : <>Submit Transaction</>}
+    <Box width="100%">
+      {signerAccount.type === AccountType.MNEMONIC && (
+        <>
+          <FormControl isInvalid={!!errors.password} mt={4}>
+            <FormLabel>Password:</FormLabel>
+            <Input
+              mb={2}
+              type="password"
+              autoComplete="off"
+              {...register("password", {
+                required: "Password is required",
+                minLength: 4,
+              })}
+              placeholder="Enter password..."
+            />
+            {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
+          </FormControl>
+          <Button
+            onClick={handleSubmit(onMnemonicSign)}
+            bg="umami.blue"
+            width="100%"
+            mt={2}
+            isLoading={isLoading}
+            type="submit"
+          >
+            Submit Transaction
+          </Button>
+        </>
+      )}
+      {signerAccount.type === AccountType.SOCIAL && <GoogleAuth onSuccessfulAuth={onSocialSign} />}
+      {signerAccount.type === AccountType.LEDGER && (
+        <Button onClick={onLedgerSign} bg="umami.blue" width="100%" isLoading={isLoading}>
+          Sign with Ledger
         </Button>
       )}
     </Box>

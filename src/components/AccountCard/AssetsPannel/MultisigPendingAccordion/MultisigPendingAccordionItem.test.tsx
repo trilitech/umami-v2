@@ -1,17 +1,18 @@
 import { Accordion } from "@chakra-ui/react";
-import { Estimate, TransactionOperation } from "@taquito/taquito";
+import { Estimate, TezosToolkit, TransactionOperation } from "@taquito/taquito";
 import {
   mockContractAddress,
   mockImplicitAccount,
   mockImplicitAddress,
+  mockMultisigAccount,
 } from "../../../../mocks/factories";
 import { fakeTezosUtils } from "../../../../mocks/fakeTezosUtils";
 import { fillPassword } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
-import { act, fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
+import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount } from "../../../../types/Account";
 import { parseImplicitPkh } from "../../../../types/Address";
-import { useGetSk } from "../../../../utils/hooks/accountUtils";
+import { useGetSecretKey } from "../../../../utils/hooks/accountUtils";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import store from "../../../../utils/redux/store";
@@ -19,27 +20,26 @@ import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 
+const MOCK_TEZOS_TOOLKIT = {};
 beforeEach(() => {
-  (useGetSk as jest.Mock).mockReturnValue(() => Promise.resolve("mockkey"));
+  (useGetSecretKey as jest.Mock).mockReturnValue(() => Promise.resolve("mockkey"));
+  fakeTezosUtils.makeToolkit.mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
 });
 
 describe("<MultisigPendingCard/>", () => {
   it("displays the correct number of pending approvals", () => {
     const pkh0 = mockImplicitAddress(0);
-    const pkh1 = mockImplicitAddress(1);
-    const pkh2 = mockImplicitAddress(2);
+    const account = { ...mockMultisigAccount(0), threshold: 3 };
     render(
       <Accordion>
         <MultisigPendingAccordionItem
-          multisigAddress={mockContractAddress(0)}
+          account={account}
           operation={{
             id: "1",
             bigmapId: 0,
             rawActions: "action",
             approvals: [pkh0],
           }}
-          threshold={3}
-          signers={[pkh0, pkh1, pkh2]}
         />
       </Accordion>
     );
@@ -48,21 +48,16 @@ describe("<MultisigPendingCard/>", () => {
   });
 
   it("displays 0 for pending approvals if there are more approvers than the threshold", () => {
-    const pkh0 = mockImplicitAddress(0);
-    const pkh1 = mockImplicitAddress(1);
-    const pkh2 = mockImplicitAddress(2);
     render(
       <Accordion>
         <MultisigPendingAccordionItem
-          multisigAddress={mockContractAddress(0)}
+          account={mockMultisigAccount(0)}
           operation={{
             id: "1",
             bigmapId: 0,
             rawActions: "action",
-            approvals: [pkh0, pkh1, pkh2],
+            approvals: [mockImplicitAddress(0), mockImplicitAddress(1)],
           }}
-          threshold={2}
-          signers={[pkh0, pkh1, pkh2]}
         />
       </Accordion>
     );
@@ -83,19 +78,14 @@ describe("<MultisigPendingCard/>", () => {
       hash: "mockHash",
     } as TransactionOperation);
 
-    act(() => {
-      store.dispatch(accountsSlice.actions.add([account]));
-    });
+    store.dispatch(accountsSlice.actions.add([account]));
 
     const executablePendingOp: MultisigOperation = pendingOps[0];
+    const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
+
     render(
       <Accordion>
-        <MultisigPendingAccordionItem
-          multisigAddress={mockContractAddress(0)}
-          operation={executablePendingOp}
-          threshold={1}
-          signers={[account.address]}
-        />
+        <MultisigPendingAccordionItem account={multisig} operation={executablePendingOp} />
       </Accordion>
     );
     const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
@@ -112,8 +102,7 @@ describe("<MultisigPendingCard/>", () => {
         operationId: executablePendingOp.id,
         type: "execute",
       },
-      account.pk,
-      account.address.pkh,
+      account,
       "mainnet"
     );
 
@@ -134,12 +123,12 @@ describe("<MultisigPendingCard/>", () => {
         operationId: executablePendingOp.id,
         type: "execute",
       },
-      { network: "mainnet", sk: "mockkey", type: "sk" }
+      MOCK_TEZOS_TOOLKIT
     );
   });
 
   test("User can accomplish a proposal approval", async () => {
-    const account: ImplicitAccount = {
+    const signer: ImplicitAccount = {
       ...mockImplicitAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
@@ -151,19 +140,12 @@ describe("<MultisigPendingCard/>", () => {
       hash: "mockHash",
     } as TransactionOperation);
 
-    act(() => {
-      store.dispatch(accountsSlice.actions.add([account]));
-    });
-
+    store.dispatch(accountsSlice.actions.add([signer]));
+    const account = { ...mockMultisigAccount(0), signers: [signer.address] };
     const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
     render(
       <Accordion>
-        <MultisigPendingAccordionItem
-          multisigAddress={mockContractAddress(0)}
-          operation={approvablePendingOp}
-          threshold={1}
-          signers={[account.address]}
-        />
+        <MultisigPendingAccordionItem account={account} operation={approvablePendingOp} />
       </Accordion>
     );
     const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
@@ -180,8 +162,7 @@ describe("<MultisigPendingCard/>", () => {
         operationId: approvablePendingOp.id,
         type: "approve",
       },
-      account.pk,
-      account.address.pkh,
+      signer,
       "mainnet"
     );
 
@@ -202,7 +183,7 @@ describe("<MultisigPendingCard/>", () => {
         operationId: approvablePendingOp.id,
         type: "approve",
       },
-      { network: "mainnet", sk: "mockkey", type: "sk" }
+      MOCK_TEZOS_TOOLKIT
     );
   });
 });

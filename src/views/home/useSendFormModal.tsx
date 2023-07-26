@@ -1,4 +1,4 @@
-import { useModal } from "../../components/AccountCard/ApproveExecuteForm/useModal";
+import { useModal } from "../../components/useModal";
 import SendForm from "../../components/sendForm";
 import { SendFormMode } from "../../components/sendForm/types";
 

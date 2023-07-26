@@ -1,5 +1,5 @@
 import { Signer } from "@taquito/taquito";
-export class DummySigner implements Signer {
+export class FakeSigner implements Signer {
   pk: string;
   pkh: string;
 

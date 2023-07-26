@@ -5,20 +5,32 @@ import { RxCheckCircled } from "react-icons/rx";
 import colors from "../../../../style/colors";
 import { ImplicitAddress } from "../../../../types/Address";
 import { useGetImplicitAccount } from "../../../../utils/hooks/accountHooks";
-import { ApproveOrExecute } from "../../../../utils/tezos/types";
+import { useSelectedNetwork } from "../../../../utils/hooks/assetsHooks";
+import { estimateMultisigApproveOrExecute } from "../../../../utils/tezos";
 import { IconAndTextBtn } from "../../../IconAndTextBtn";
+import { ParamsWithFee } from "../../../ApproveExecuteForm/types";
+import { MultisigOperation } from "../../../../utils/multisig/types";
+import { MultisigAccount } from "../../../../types/Account";
 
 export const MultisigActionButton: React.FC<{
-  signer: ImplicitAddress; // TODO: change to ImplicitAccount
-  approvers: ImplicitAddress[]; // TODO: change to ImplicitAccount
+  signerAddress: ImplicitAddress;
   pendingApprovals: number;
-  onClickApproveOrExecute: (a: ApproveOrExecute) => void;
-  isLoading?: boolean;
-}> = ({ signer, approvers, pendingApprovals, onClickApproveOrExecute, isLoading = false }) => {
+  operation: MultisigOperation;
+  account: MultisigAccount;
+  openSignModal: (params: ParamsWithFee) => void;
+}> = ({
+  signerAddress,
+  account: { address: multisigAddress },
+  operation,
+  pendingApprovals,
+  openSignModal,
+}) => {
   const getImplicitAccount = useGetImplicitAccount();
+  const network = useSelectedNetwork();
+  const signer = getImplicitAccount(signerAddress.pkh);
+  const signerInOwnedAccounts = !!signer;
 
-  const signerInOwnedAccounts = !!getImplicitAccount(signer.pkh);
-  const approvedBySigner = !!approvers.find(approver => approver === signer);
+  const approvedBySigner = !!operation.approvals.find(approver => approver === signerAddress);
   const operationIsExecutable = pendingApprovals === 0;
 
   if (!signerInOwnedAccounts) {
@@ -47,13 +59,28 @@ export const MultisigActionButton: React.FC<{
     );
   }
 
+  const onButtonClick = async () => {
+    const actionType = operationIsExecutable ? "execute" : "approve";
+    const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
+      {
+        type: actionType,
+        contract: multisigAddress,
+        operationId: operation.id,
+      },
+      signer,
+      network
+    );
+    openSignModal({
+      type: actionType,
+      operation: operation,
+      multisigAddress,
+      signer,
+      suggestedFeeMutez,
+    });
+  };
+
   return (
-    <Button
-      isLoading={isLoading}
-      bg={colors.blue}
-      data-testid="multisig-signer-button"
-      onClick={() => onClickApproveOrExecute(operationIsExecutable ? "execute" : "approve")}
-    >
+    <Button bg={colors.blue} data-testid="multisig-signer-button" onClick={onButtonClick}>
       {operationIsExecutable ? "Execute" : "Approve"}
     </Button>
   );

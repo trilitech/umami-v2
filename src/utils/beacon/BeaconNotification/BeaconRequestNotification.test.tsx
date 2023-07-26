@@ -28,7 +28,7 @@ import { walletClient } from "../beacon";
 jest.mock("../../tezos");
 jest.mock("../beacon");
 jest.mock("../../hooks/accountUtils", () => ({
-  useGetSk: () => () => "mockSk",
+  useGetSecretKey: () => () => "mockSk",
 }));
 
 const SENDER_ID = "mockSenderId";
@@ -222,7 +222,7 @@ describe("<BeaconRequestNotification />", () => {
     fireEvent.click(submit);
 
     await waitFor(() => {
-      expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+      expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
       // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
       expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
         "href",

@@ -30,20 +30,14 @@ export const restoreAccount = async (
  * Use this to get SK for a mnemonic account.
  * Get the corresponding mnemonic via the fingerprint field
  */
-export const deriveSkFromMnemonic = async (
-  mnemonic: string,
-  derivationPath: string,
-  curve: Curves
-) => {
-  const signer = await InMemorySigner.fromMnemonic({
+export const deriveSkFromMnemonic = (mnemonic: string, derivationPath: string, curve: Curves) =>
+  InMemorySigner.fromMnemonic({
     mnemonic,
     derivationPath,
     curve,
-  });
+  }).secretKey();
 
-  return signer.secretKey();
-};
-
+// TODO: fix, doesn't restore all the accounts, but only the first three
 export const restoreAccounts = async (
   seedPhrase: string,
   derivationPathPattern: string,

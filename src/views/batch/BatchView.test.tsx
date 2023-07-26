@@ -1,3 +1,4 @@
+import { TezosToolkit } from "@taquito/taquito";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import {
@@ -7,11 +8,10 @@ import {
   setBatchEstimationPerTransaction,
 } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
-import { SignerType, SkSignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
-import { useGetSk } from "../../utils/hooks/accountUtils";
+import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import store from "../../utils/redux/store";
-import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndupdateBatch";
+import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import BatchView from "./BatchView";
 
 // These tests might take long in the CI
@@ -30,7 +30,7 @@ jest.mock("@chakra-ui/react", () => {
 
 jest.mock("../../utils/hooks/accountUtils");
 
-const useGetSkMock = useGetSk as jest.Mock;
+const useGetSecretKeyMock = useGetSecretKey as jest.Mock;
 
 const fixture = () => <BatchView />;
 
@@ -38,7 +38,7 @@ beforeEach(() => {
   dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
   setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
 
-  useGetSkMock.mockReturnValue(() => "mockSk");
+  useGetSecretKeyMock.mockReturnValue(() => "mockSk");
   fakeTezosUtils.submitBatch.mockResolvedValue({ opHash: "foo" } as any);
 });
 
@@ -85,61 +85,6 @@ const addItemsToBatchViaUI = async () => {
   closeModal();
 };
 
-// Can run in beforeEach
-const addItemsToBatchViaStore = async () => {
-  await store.dispatch(
-    estimateAndUpdateBatch(
-      mockImplicitAccount(1).address.pkh,
-      mockImplicitAccount(1).pk,
-      [
-        {
-          type: "tez",
-          recipient: mockImplicitAddress(1),
-          amount: "1000000",
-        },
-        {
-          type: "tez",
-          recipient: mockImplicitAddress(2),
-          amount: "2000000",
-        },
-        {
-          type: "tez",
-          recipient: mockImplicitAddress(3),
-          amount: "3000000",
-        },
-      ],
-
-      TezosNetwork.MAINNET
-    )
-  );
-
-  await store.dispatch(
-    estimateAndUpdateBatch(
-      mockImplicitAccount(2).address.pkh,
-      mockImplicitAccount(2).pk,
-      [
-        {
-          type: "tez",
-          recipient: mockImplicitAddress(9),
-          amount: "4",
-        },
-        {
-          type: "tez",
-          recipient: mockImplicitAddress(4),
-          amount: "5",
-        },
-        {
-          type: "tez",
-          recipient: mockImplicitAddress(5),
-          amount: "6",
-        },
-      ],
-
-      TezosNetwork.MAINNET
-    )
-  );
-};
-
 describe("<BatchView />", () => {
   describe("Given no batch has beed added", () => {
     it("a message 'no batches are present' is displayed", () => {
@@ -159,9 +104,60 @@ describe("<BatchView />", () => {
   });
 
   describe("Given batches have been added", () => {
+    const MOCK_TEZOS_TOOLKIT = {};
     beforeEach(async () => {
-      // This is fast and can run before each test
-      await addItemsToBatchViaStore();
+      await store.dispatch(
+        estimateAndUpdateBatch(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [
+            {
+              type: "tez",
+              recipient: mockImplicitAddress(1),
+              amount: "1000000",
+            },
+            {
+              type: "tez",
+              recipient: mockImplicitAddress(2),
+              amount: "2000000",
+            },
+            {
+              type: "tez",
+              recipient: mockImplicitAddress(3),
+              amount: "3000000",
+            },
+          ],
+
+          TezosNetwork.MAINNET
+        )
+      );
+
+      store.dispatch(
+        estimateAndUpdateBatch(
+          mockImplicitAccount(2),
+          mockImplicitAccount(2),
+          [
+            {
+              type: "tez",
+              recipient: mockImplicitAddress(9),
+              amount: "4",
+            },
+            {
+              type: "tez",
+              recipient: mockImplicitAddress(4),
+              amount: "5",
+            },
+            {
+              type: "tez",
+              recipient: mockImplicitAddress(5),
+              amount: "6",
+            },
+          ],
+
+          TezosNetwork.MAINNET
+        )
+      );
+      fakeTezosUtils.makeToolkit.mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
     });
 
     it("should display fee total and subtotal for a given batch", async () => {
@@ -242,18 +238,14 @@ describe("<BatchView />", () => {
       fireEvent.click(submit);
 
       await waitFor(() => {
-        expect(screen.getByText(/Operation Submitted/i)).toBeTruthy();
+        expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
       });
 
       expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
         "href",
         "https://mainnet.tzkt.io/foo"
       );
-      const config: SkSignerConfig = {
-        type: SignerType.SK,
-        network: TezosNetwork.MAINNET,
-        sk: "mockSk",
-      };
+
       expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
         [
           {
@@ -272,7 +264,8 @@ describe("<BatchView />", () => {
             recipient: mockImplicitAddress(3),
           },
         ],
-        config
+        mockImplicitAccount(1),
+        MOCK_TEZOS_TOOLKIT
       );
 
       expect(
