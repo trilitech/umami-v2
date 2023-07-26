@@ -14,15 +14,12 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ImplicitAccount } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
-import {
-  useBatchIsSimulating,
-  useClearBatch,
-  useSelectedNetwork,
-} from "../../utils/hooks/assetsHooks";
+import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
@@ -40,16 +37,15 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   const toast = useToast();
   const getToken = useGetToken();
   const dispatch = useAppDispatch();
-  const isSimulating = useBatchIsSimulating();
   const clearBatch = useClearBatch();
   const getAccount = useGetImplicitAccount();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormFields>({
     mode: "onBlur",
   });
   const {
     handleSubmit,
-    getValues,
     formState: { isValid, errors },
   } = form;
 
@@ -82,10 +78,16 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
     } catch (error: any) {
       clearBatch(sender.address.pkh);
       toast({ title: "Invalid transaction", description: error.message, status: "error" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const onSubmit = async ({ file, sender }: FormFields) => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
     const account = getAccount(sender);
     Papa.parse<string[]>(file[0], {
       skipEmptyLines: true,
@@ -127,13 +129,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
 
         <ModalFooter>
           <Box width="100%">
-            <Button
-              isDisabled={!isValid}
-              isLoading={isSimulating(getValues("sender"))}
-              width="100%"
-              type="submit"
-              mb={2}
-            >
+            <Button isDisabled={!isValid} isLoading={isLoading} width="100%" type="submit" mb={2}>
               Upload
             </Button>
           </Box>

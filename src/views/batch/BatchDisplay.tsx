@@ -88,16 +88,11 @@ const RightPanel = ({
         <Total mutez={total.toString()} paddingY={3} />
 
         <Flex justifyContent="space-between">
-          <Button onClick={onSend} isDisabled={batch.isSimulating} flex={1} bg="umami.blue" mr={4}>
+          <Button onClick={onSend} flex={1} bg="umami.blue" mr={4}>
             Submit batch
           </Button>
 
-          <IconButton
-            isDisabled={batch.isSimulating}
-            onClick={onDelete}
-            aria-label="Delete Batch"
-            icon={<BsTrash />}
-          />
+          <IconButton onClick={onDelete} aria-label="Delete Batch" icon={<BsTrash />} />
         </Flex>
       </Box>
     </Flex>

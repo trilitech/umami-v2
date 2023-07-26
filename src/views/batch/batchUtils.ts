@@ -39,7 +39,7 @@ export const operationsToBatchItems = async (
   operations: Operation[],
   signer: ImplicitAccount,
   network: TezosNetwork
-) => {
+): Promise<{ operation: Operation; fee: string }[]> => {
   // TODO: add support for Multisig
   const estimations = await estimateBatch(operations, signer, network);
 

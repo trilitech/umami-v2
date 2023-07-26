@@ -33,7 +33,7 @@ import {
   useGetOwnedAccountSafe,
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
-import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
+import { useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import {
   OwnedAccountsAutocomplete,
@@ -231,7 +231,6 @@ export const SendTezOrNFTForm = ({
   amount?: string;
   parameter?: TransferParams["parameter"];
 }) => {
-  const getBatchIsSimulating = useBatchIsSimulating();
   const multisigAccounts = useMultisigAccounts();
   const accountIsMultisig = useAccountIsMultisig();
   const getDefaultSigner = useGetDefaultProposalSigner();
@@ -257,10 +256,6 @@ export const SendTezOrNFTForm = ({
 
   const multisigSender = multisigAccounts.find(a => a.address.pkh === senderFormValue);
 
-  const batchIsSimulating = senderFormValue !== "" && getBatchIsSimulating(senderFormValue);
-
-  const simulating = isLoading || batchIsSimulating;
-
   return (
     <FormProvider {...form}>
       <ModalContent bg="umami.gray.900">
@@ -273,7 +268,7 @@ export const SendTezOrNFTForm = ({
               <OwnedAccountsAutocomplete
                 label="From"
                 inputName="sender"
-                isDisabled={isNFT || simulating}
+                isDisabled={isNFT}
                 allowUnknown={false}
                 onUpdate={sender => {
                   if (accountIsMultisig(sender)) {
@@ -293,7 +288,7 @@ export const SendTezOrNFTForm = ({
               <FormLabel>Amount</FormLabel>
               <InputGroup>
                 <Input
-                  isDisabled={simulating}
+                  isDisabled={isLoading}
                   step={isNFT ? 1 : "any"}
                   type="number"
                   {...register("amount", {
@@ -319,7 +314,7 @@ export const SendTezOrNFTForm = ({
                 width="100%"
                 isLoading={isLoading}
                 type="submit"
-                isDisabled={!isValid || simulating}
+                isDisabled={!isValid}
                 variant="ghost"
                 mb={2}
               >
@@ -328,9 +323,9 @@ export const SendTezOrNFTForm = ({
               <Button
                 onClick={handleSubmit(onSubmitBatch)}
                 width="100%"
-                isLoading={batchIsSimulating}
+                isLoading={isLoading}
                 type="submit"
-                isDisabled={!isValid || simulating}
+                isDisabled={!isValid}
                 variant="ghost"
                 mb={2}
               >

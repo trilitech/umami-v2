@@ -168,15 +168,6 @@ describe("<SendForm />", () => {
 
       fireEvent.click(addToBatchBtn);
 
-      // Bellow code should not create act warning. This is a bug.
-      //
-      await waitFor(() => {
-        const addToBatchBtn = screen.getByRole("button", {
-          name: /insert into batch/i,
-        });
-        expect(addToBatchBtn).toBeDisabled();
-      });
-
       // expect(mockToast).toHaveBeenCalledWith(/Transaction added to batch/i);
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalled();
@@ -190,7 +181,6 @@ describe("<SendForm />", () => {
       });
       const batch = store.getState().assets.batches[MOCK_PKH];
       expect(batch).toEqual({
-        isSimulating: false,
         items: [
           {
             fee: "33",
@@ -206,9 +196,6 @@ describe("<SendForm />", () => {
 
       setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 33);
       fireEvent.click(addToBatchBtn);
-      await waitFor(() => {
-        expect(addToBatchBtn).toBeDisabled();
-      });
 
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalledTimes(2);
@@ -216,7 +203,6 @@ describe("<SendForm />", () => {
 
       const batch2 = store.getState().assets.batches[MOCK_PKH];
       expect(batch2).toEqual({
-        isSimulating: false,
         items: [
           {
             fee: "33",
@@ -245,7 +231,7 @@ describe("<SendForm />", () => {
     test("it should submit transaction and not alter the user's batch", async () => {
       const mockBatchItems = [{} as BatchItem];
       store.dispatch(
-        assetsSlice.actions.updateBatch({
+        assetsSlice.actions.addToBatch({
           pkh: MOCK_PKH,
           items: mockBatchItems,
         })

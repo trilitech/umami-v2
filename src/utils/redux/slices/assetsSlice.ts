@@ -10,14 +10,12 @@ import { Baker } from "../../../types/Baker";
 import { Operation } from "../../../types/Operation";
 
 export type BatchItem = { operation: Operation; fee: string };
+// TODO: inline
 export type Batch = {
-  // TODO: check if it is really needed
-  isSimulating: boolean;
   items: Array<BatchItem>;
 };
 
 const emptyBatch: Batch = {
-  isSimulating: false,
   items: [],
 };
 
@@ -149,7 +147,7 @@ const assetsSlice = createSlice({
       state.conversionRate = rate;
     },
     // Don't use this action directly. Use thunk simulateAndUpdateBatch
-    updateBatch: (
+    addToBatch: (
       state,
       { payload: { pkh, items: transfers } }: { type: string; payload: BatchPayload }
     ) => {
@@ -160,29 +158,7 @@ const assetsSlice = createSlice({
       };
       state.batches[pkh] = newBatch;
     },
-    batchSimulationStart: (
-      state,
-      { payload: { pkh } }: { type: string; payload: { pkh: string } }
-    ) => {
-      const existing = state.batches[pkh] || emptyBatch;
-
-      state.batches[pkh] = { ...existing, isSimulating: true };
-    },
-    batchSimulationEnd: (
-      state,
-      { payload: { pkh } }: { type: string; payload: { pkh: string } }
-    ) => {
-      const existing = state.batches[pkh];
-
-      if (existing) {
-        state.batches[pkh] = { ...existing, isSimulating: false };
-      }
-    },
     clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: string } }) => {
-      if (state.batches[pkh]?.isSimulating) {
-        return;
-      }
-
       delete state.batches[pkh];
     },
   },

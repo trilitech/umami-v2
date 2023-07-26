@@ -59,14 +59,6 @@ const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh
   });
 
   fireEvent.click(addToBatchButton);
-
-  await waitFor(() => {
-    expect(addToBatchButton).toBeDisabled();
-  });
-
-  await waitFor(() => {
-    expect(addToBatchButton).toBeEnabled();
-  });
 };
 
 // Can't run in beforeEach because it requires a render

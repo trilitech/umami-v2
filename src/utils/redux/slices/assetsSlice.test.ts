@@ -15,7 +15,6 @@ import accountsSlice from "./accountsSlice";
 import { estimateAndUpdateBatch } from "../thunks/estimateAndUpdateBatch";
 import { estimateBatch } from "../../tezos";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
-import { Operation } from "../../../types/Operation";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 jest.mock("../../tezos");
 
@@ -29,7 +28,6 @@ const {
     updateTezTransfers,
     updateTokenTransfers,
     clearBatch,
-    updateBatch,
   },
 } = assetsSlice;
 
@@ -357,12 +355,8 @@ describe("Assets reducer", () => {
         mockImplicitAccount(1),
         TezosNetwork.MAINNET
       );
-      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(
-        true
-      );
       await waitFor(() => {
         expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
-          isSimulating: false,
           items: [
             {
               fee: mockEstimations[0].suggestedFeeMutez,
@@ -397,7 +391,6 @@ describe("Assets reducer", () => {
       store.dispatch(action);
       await waitFor(() => {
         expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
-          isSimulating: false,
           items: [
             {
               fee: mockEstimations[0].suggestedFeeMutez,
@@ -425,138 +418,8 @@ describe("Assets reducer", () => {
       );
 
       const dispatchResult = store.dispatch(action);
-      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]?.isSimulating).toEqual(
-        true
-      );
       await expect(dispatchResult).rejects.toThrow(estimationError.message);
-      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
-        isSimulating: false,
-        items: [],
-      });
-    });
-
-    test("Running a concurrent estimation for a given account is not possible", async () => {
-      const mockEstimations = [
-        { suggestedFeeMutez: "323" },
-        { suggestedFeeMutez: "423" },
-        { suggestedFeeMutez: "523" },
-      ];
-
-      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
-      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
-
-      const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
-
-      const action = estimateAndUpdateBatch(
-        mockImplicitAccount(1),
-        mockImplicitAccount(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
-
-      store.dispatch(action);
-      const concurrentDispatch = store.dispatch(action);
-
-      await expect(concurrentDispatch).rejects.toThrow(
-        `Simulation already ongoing for ${mockImplicitAddress(1).pkh}`
-      );
-
-      await waitFor(() => {
-        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
-          isSimulating: false,
-          items: [
-            {
-              fee: mockEstimations[0].suggestedFeeMutez,
-              operation: transfers[0],
-            },
-            {
-              fee: mockEstimations[1].suggestedFeeMutez,
-              operation: transfers[1],
-            },
-            {
-              fee: mockEstimations[2].suggestedFeeMutez,
-              operation: transfers[2],
-            },
-          ],
-        });
-      });
-    });
-
-    test("You can't add an empty list of operations to a batch", async () => {
-      const mockEstimations = [
-        { suggestedFeeMutez: "323" },
-        { suggestedFeeMutez: "423" },
-        { suggestedFeeMutez: "523" },
-      ];
-
-      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
-
-      const operations: Operation[] = [];
-
-      const action = estimateAndUpdateBatch(
-        mockImplicitAccount(1),
-        mockImplicitAccount(1),
-        operations,
-        TezosNetwork.MAINNET
-      );
-
-      const dispatch = store.dispatch(action);
-
-      await expect(dispatch).rejects.toThrow(`Can't add empty list of operations to batch`);
-    });
-
-    test("Batch can't be cleared for a given account if simulation is ongoing for a given account", async () => {
-      const mockEstimations = [
-        { suggestedFeeMutez: "323" },
-        { suggestedFeeMutez: "423" },
-        { suggestedFeeMutez: "523" },
-      ];
-
-      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
-      estimateBatchMock.mockResolvedValueOnce(mockEstimations);
-
-      store.dispatch(
-        updateBatch({
-          pkh: mockImplicitAccount(1).address.pkh,
-          items: [{ fee: "3", operation: mockTezTransfer(3) }],
-        })
-      );
-      const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
-
-      const action = estimateAndUpdateBatch(
-        mockImplicitAccount(1),
-        mockImplicitAccount(1),
-        transfers,
-        TezosNetwork.MAINNET
-      );
-
-      store.dispatch(action);
-      store.dispatch(clearBatch({ pkh: mockImplicitAddress(1).pkh }));
-
-      await waitFor(() => {
-        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
-          isSimulating: false,
-          items: [
-            {
-              fee: "3",
-              operation: mockTezTransfer(3),
-            },
-            {
-              fee: mockEstimations[0].suggestedFeeMutez,
-              operation: transfers[0],
-            },
-
-            {
-              fee: mockEstimations[1].suggestedFeeMutez,
-              operation: transfers[1],
-            },
-            {
-              fee: mockEstimations[2].suggestedFeeMutez,
-              operation: transfers[2],
-            },
-          ],
-        });
-      });
+      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(undefined);
     });
   });
 });
