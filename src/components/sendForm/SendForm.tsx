@@ -50,6 +50,9 @@ export const SendForm = ({
   }, [hash]);
 
   const simulate = async (operations: FormOperations) => {
+    if (isLoading) {
+      return;
+    }
     setIsLoading(true);
     try {
       const estimate = await makeSimulation(operations, getPk, network);
@@ -80,6 +83,9 @@ export const SendForm = ({
   };
 
   const execute = async (operations: FormOperations, config: SignerConfig) => {
+    if (isLoading) {
+      return;
+    }
     setIsLoading(true);
 
     if (config.type === "ledger") {

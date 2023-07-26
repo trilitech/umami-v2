@@ -199,6 +199,9 @@ const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
   const toast = useToast();
 
   const handleSubmit = async ({ name, password }: { name: string; password: string }) => {
+    if (isLoading) {
+      return;
+    }
     setIsloading(true);
     try {
       await dispatch(

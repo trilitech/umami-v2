@@ -19,6 +19,9 @@ export const MasterPassword = ({
   const [isLoading, setIsloading] = useState(false);
   const toast = useToast();
   const handleSubmit = async (password: string) => {
+    if (isLoading) {
+      return;
+    }
     setIsloading(true);
     if (passwordHasBeenSet) {
       await checkPassword(password);
