@@ -9,8 +9,8 @@ import {
   tokenSymbol,
 } from "../../../../types/TokenBalance";
 import { prettyTezAmount } from "../../../../utils/format";
-import { CopyableAddress } from "../../../CopyableText";
 import { useGetToken } from "../../../../utils/hooks/tokensHooks";
+import AddressPill from "../../../AddressPill/AddressPill";
 
 const MultisigDecodedOperationItem: React.FC<{
   operation: Operation;
@@ -27,10 +27,10 @@ const MultisigDecodedOperationItem: React.FC<{
         <Box marginY={6}>
           <MultisigOperationAmount operation={operation} />
           <Flex alignItems="center" pl={5} m={1}>
-            <Heading color={colors.gray[400]} size="sm" mr={1}>
+            <Heading color={colors.gray[400]} size="sm" mr={2}>
               Send to :
             </Heading>
-            <CopyableAddress pkh={operation.recipient.pkh} iconColor={colors.gray[500]} />
+            <AddressPill address={operation.recipient} />
           </Flex>
         </Box>
       );

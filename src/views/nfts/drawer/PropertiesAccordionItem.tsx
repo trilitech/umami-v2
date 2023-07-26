@@ -11,9 +11,10 @@ import {
   Tbody,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import { CopyableAddress } from "../../../components/CopyableText";
+import AddressPill from "../../../components/AddressPill/AddressPill";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
+import { parsePkh } from "../../../types/Address";
 import { metadataUri, mimeType, NFTBalance, royalties } from "../../../types/TokenBalance";
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 
@@ -23,7 +24,7 @@ export const creatorElement = (nft: NFTBalance) => {
   }
   const firstCreator = nft.metadata.creators[0];
   if (firstCreator.startsWith("tz")) {
-    return <CopyableAddress pkh={firstCreator} />;
+    return <AddressPill address={parsePkh(firstCreator)} mr={1} />;
   }
   return <TruncatedTextWithTooltip text={firstCreator} maxLength={15} />;
 };
@@ -107,7 +108,7 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                   Contract:
                 </Td>
                 <Td padding="16px 0 16px 5px" borderColor="umami.gray.700" borderRightWidth="1px">
-                  <CopyableAddress pkh={nft.contract} />
+                  <AddressPill address={parsePkh(nft.contract)} mr={1} />
                 </Td>
                 <Td padding="16px 0 16px 15px" color="umami.gray.400">
                   Metadata:

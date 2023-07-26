@@ -6,7 +6,7 @@ import colors from "../style/colors";
 import { useIsBlockFinalised } from "../utils/hooks/assetsHooks";
 import { OperationDisplay } from "../types/Transfer";
 import { getIsInbound } from "../views/operations/operationsUtils";
-import { CopyableAddress } from "./CopyableText";
+import AddressPill from "./AddressPill/AddressPill";
 
 export const OperationTile: React.FC<{
   operation: OperationDisplay;
@@ -43,18 +43,18 @@ export const OperationTile: React.FC<{
         </Flex>
         <Flex justifyContent="space-between">
           <Flex>
-            <Box mr="5px">
-              <Heading display="inline-flex" color="text.dark" size="sm" mr={2}>
+            <Flex alignItems="center" mr="5px">
+              <Heading color="text.dark" size="sm" mr={2}>
                 Sent to:
               </Heading>
-              <CopyableAddress display="inline-flex" pkh={recipient.pkh} />
-            </Box>
-            <Box>
-              <Heading display="inline-flex" color="text.dark" size="sm" mr={2}>
+              <AddressPill address={recipient} />
+            </Flex>
+            <Flex alignItems="center">
+              <Heading color="text.dark" size="sm" mr={2}>
                 From:
               </Heading>
-              <CopyableAddress display="inline-flex" pkh={sender.pkh} />
-            </Box>
+              <AddressPill address={sender} />
+            </Flex>
           </Flex>
           {success && (
             //TODO handle pending and failed https://app.asana.com/0/1204165186238194/1204849210925962/f
