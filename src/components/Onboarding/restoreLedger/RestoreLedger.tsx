@@ -37,6 +37,9 @@ const RestoreLedger = ({
   ];
 
   const connectLedger = async () => {
+    if (isLoading) {
+      return;
+    }
     setIsloading(true);
     try {
       toast({
