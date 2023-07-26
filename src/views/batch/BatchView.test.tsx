@@ -244,16 +244,19 @@ describe("<BatchView />", () => {
             type: "tez",
             amount: "1000000",
             recipient: mockImplicitAddress(1),
+            fee: "10",
           },
           {
             type: "tez",
             amount: "2000000",
             recipient: mockImplicitAddress(2),
+            fee: "10",
           },
           {
             type: "tez",
             amount: "3000000",
             recipient: mockImplicitAddress(3),
+            fee: "10",
           },
         ],
         MOCK_TEZOS_TOOLKIT

@@ -13,7 +13,9 @@ export const estimateAndUpdateBatch = (
   network: TezosNetwork
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async dispatch => {
-    const items = await operationsToBatchItems(operations, signer, network);
-    dispatch(assetsSlice.actions.addToBatch({ pkh: sender.address.pkh, items }));
+    const operationsWithFee = await operationsToBatchItems(operations, signer, network);
+    dispatch(
+      assetsSlice.actions.addToBatch({ pkh: sender.address.pkh, operations: operationsWithFee })
+    );
   };
 };

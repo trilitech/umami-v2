@@ -2,12 +2,11 @@ import { BigNumber } from "bignumber.js";
 import { Estimate } from "@taquito/taquito";
 import { estimateBatch } from "../../utils/tezos";
 import { zip } from "../../utils/helpers";
-import { Operation } from "../../types/Operation";
+import { Operation, OperationWithFee } from "../../types/Operation";
 import { TezosNetwork } from "../../types/TezosNetwork";
-import { BatchItem } from "../../utils/redux/slices/assetsSlice";
 import { ImplicitAccount } from "../../types/Account";
 
-export const getTotalFee = (items: BatchItem[]): BigNumber => {
+export const getTotalFee = (items: OperationWithFee[]): BigNumber => {
   const fee = items.reduce((acc, curr) => {
     return acc.plus(curr.fee);
   }, new BigNumber(0));
@@ -39,14 +38,14 @@ export const operationsToBatchItems = async (
   operations: Operation[],
   signer: ImplicitAccount,
   network: TezosNetwork
-): Promise<{ operation: Operation; fee: string }[]> => {
+): Promise<OperationWithFee[]> => {
   // TODO: add support for Multisig
   const estimations = await estimateBatch(operations, signer, network);
 
   return zip(operations, estimations).map(([operation, estimate]) => {
     return {
+      ...operation,
       fee: String(estimate.suggestedFeeMutez),
-      operation,
     };
   });
 };

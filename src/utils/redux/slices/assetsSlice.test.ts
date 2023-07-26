@@ -356,22 +356,20 @@ describe("Assets reducer", () => {
         TezosNetwork.MAINNET
       );
       await waitFor(() => {
-        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
-          items: [
-            {
-              fee: mockEstimations[0].suggestedFeeMutez,
-              operation: transfers[0],
-            },
-            {
-              fee: mockEstimations[1].suggestedFeeMutez,
-              operation: transfers[1],
-            },
-            {
-              fee: mockEstimations[2].suggestedFeeMutez,
-              operation: transfers[2],
-            },
-          ],
-        });
+        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual([
+          {
+            ...transfers[0],
+            fee: mockEstimations[0].suggestedFeeMutez,
+          },
+          {
+            ...transfers[1],
+            fee: mockEstimations[1].suggestedFeeMutez,
+          },
+          {
+            ...transfers[2],
+            fee: mockEstimations[2].suggestedFeeMutez,
+          },
+        ]);
       });
     });
 
@@ -390,14 +388,12 @@ describe("Assets reducer", () => {
 
       store.dispatch(action);
       await waitFor(() => {
-        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual({
-          items: [
-            {
-              fee: mockEstimations[0].suggestedFeeMutez,
-              operation: transfers[0],
-            },
-          ],
-        });
+        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual([
+          {
+            ...transfers[0],
+            fee: mockEstimations[0].suggestedFeeMutez,
+          },
+        ]);
       });
 
       store.dispatch(clearBatch({ pkh: mockImplicitAddress(1).pkh }));

@@ -23,12 +23,11 @@ import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
 import { ImplicitAccount } from "../../types/Account";
-import { Operation } from "../../types/Operation";
+import { Operation, OperationWithFee } from "../../types/Operation";
 import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { TokenLookup, useGetToken } from "../../utils/hooks/tokensHooks";
-import { Batch } from "../../utils/redux/slices/assetsSlice";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { getBatchSubtotal, getTotalFee } from "./batchUtils";
@@ -64,17 +63,17 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
 };
 
 const RightPanel = ({
-  batch,
+  operations,
   onDelete,
   onSend,
 }: {
-  batch: Batch;
+  operations: OperationWithFee[];
   onDelete: () => void;
   onSend: () => void;
 }) => {
-  const fee = getTotalFee(batch.items);
+  const fee = getTotalFee(operations);
 
-  const subTotal = getBatchSubtotal(batch.items.map(item => item.operation));
+  const subTotal = getBatchSubtotal(operations);
 
   const total = subTotal.plus(fee);
   return (
@@ -101,11 +100,10 @@ const RightPanel = ({
 
 export const BatchDisplay: React.FC<{
   account: ImplicitAccount;
-  batch: Batch;
+  operations: OperationWithFee[];
   onDelete: () => void;
   onSend: () => void;
-}> = ({ account, batch, onDelete, onSend }) => {
-  const items = batch.items;
+}> = ({ account, operations, onDelete, onSend }) => {
   const network = useSelectedNetwork();
   const getToken = useGetToken();
 
@@ -115,7 +113,8 @@ export const BatchDisplay: React.FC<{
         <Flex justifyContent="space-between" ml={2} mr={2} mb={4}>
           <AccountSmallTileDisplay ml={2} pkh={account.address.pkh} label={account.label} />
           <Text color="umami.gray.400">
-            {`${items.length} transaction${items.length > 1 ? "s" : ""}`}
+            {/* TODO: use pluralize.js for that */}
+            {`${operations.length} transaction${operations.length > 1 ? "s" : ""}`}
           </Text>
         </Flex>
         <TableContainer overflowX="unset" overflowY="unset">
@@ -130,7 +129,10 @@ export const BatchDisplay: React.FC<{
               </Tr>
             </Thead>
             <Tbody>
-              {items.map(({ operation, fee }, i) => (
+              {operations.map((operation, i) => (
+                // TODO: add better key for operations
+                // If you add two 1-tez transfers to the same recipient, the key will be the same
+                // `i` should not be used in the key
                 <Tr key={operation.recipient + operation.type + i}>
                   <Td>{operation.type !== "delegation" ? "Transaction" : operation.type}</Td>
                   <Td>{renderAmount(operation, getToken)}</Td>
@@ -145,14 +147,14 @@ export const BatchDisplay: React.FC<{
                     )}
                   </Td>
                   <Td>{operation.recipient && <AddressPill address={operation.recipient} />}</Td>
-                  <Td>{prettyTezAmount(fee)}</Td>
+                  <Td>{prettyTezAmount(operation.fee)}</Td>
                 </Tr>
               ))}
             </Tbody>
           </Table>
         </TableContainer>
       </Box>
-      <RightPanel onDelete={onDelete} onSend={onSend} batch={batch} />
+      <RightPanel onDelete={onDelete} onSend={onSend} operations={operations} />
     </Flex>
   );
 };
