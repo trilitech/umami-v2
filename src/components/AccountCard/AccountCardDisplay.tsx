@@ -9,7 +9,7 @@ import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/Token
 import { Delegation } from "../../types/Delegation";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
-import { AssetsPanel } from "./AssetsPannel/AssetsPanel";
+import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
 import { DelegationMode } from "../sendForm/types";
 import AddressPill from "../AddressPill/AddressPill";

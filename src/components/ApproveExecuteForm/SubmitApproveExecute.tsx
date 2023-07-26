@@ -15,7 +15,7 @@ import SignButton from "../sendForm/components/SignButton";
 import { ImplicitAccount } from "../../types/Account";
 import { ParamsWithFee } from "./types";
 import { prettyTezAmount } from "../../utils/format";
-import MultisigDecodedOperations from "../AccountCard/AssetsPannel/MultisigPendingAccordion/MultisigDecodedOperations";
+import MultisigDecodedOperations from "../AccountCard/AssetsPanel/MultisigPendingAccordion/MultisigDecodedOperations";
 import { approveOrExecuteMultisigOperation } from "../../utils/tezos";
 import { AccountSmallTile } from "../AccountSelector/AccountSmallTile";
 import { ApproveOrExecute } from "../../utils/tezos/types";
