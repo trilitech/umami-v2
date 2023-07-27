@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { differenceInSeconds } from "date-fns";
+import { formatDistance } from "date-fns";
 import React, { useEffect, useState } from "react";
 import FetchingIcon from "../assets/icons/Fetching";
 import colors from "../style/colors";
@@ -13,16 +13,15 @@ const UpdateButton = () => {
   const dispatch = useAppDispatch();
   const isLoading = useIsLoading();
   const lastTimeUpdated = useLastTimeUpdated();
-  const [timestamp, setTimestamp] = useState<string | null>(null);
+  const [relativeTimestamp, setRelativeTimestamp] = useState<string | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (lastTimeUpdated) {
-        const seconds = differenceInSeconds(new Date(), new Date(lastTimeUpdated));
-        setTimestamp(`${seconds} second(s) ago`);
-      }
-    });
-    return () => clearInterval(interval);
+    if (lastTimeUpdated) {
+      const interval = setInterval(() => {
+        setRelativeTimestamp(formatDistance(new Date(lastTimeUpdated), new Date()));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
   }, [lastTimeUpdated]);
 
   const onClick = () => {
@@ -31,10 +30,9 @@ const UpdateButton = () => {
 
   return (
     <>
-      {/* TODO: use pluralize.js */}
-      {timestamp && (
+      {relativeTimestamp && (
         <Text size="sm" color={colors.gray[400]} display="inline">
-          {timestamp}
+          Last updated: {relativeTimestamp} ago
         </Text>
       )}
       <IconButton

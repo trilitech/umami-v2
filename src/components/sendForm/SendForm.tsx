@@ -6,6 +6,7 @@ import { Operation } from "../../types/Operation";
 import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
+import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { getTotalFee, operationsToBatchItems } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
@@ -106,6 +107,12 @@ export const SendForm = ({
       }
       setHash(result.hash);
       toast({ title: "Success", description: result.hash });
+
+      // user won't see anything immediately on their operations page
+      // so we refetch with a delay to let tzkt index the new operation
+      setTimeout(() => {
+        dispatch(assetsActions.refetch());
+      }, 3000);
     } catch (error: any) {
       console.warn("Failed to execute operation", error);
       toast({ title: "Error", description: error.message });

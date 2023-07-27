@@ -74,36 +74,38 @@ export const useAssetsPolling = () => {
 
   const accountAssetsQuery = useQuery("allAssets", {
     queryFn: async () => {
-      dispatch(assetsActions.setIsLoading(true));
-      const multisigs = await getRelevantMultisigContracts(new Set(implicitAccountPkhs), network);
-      dispatch(multisigActions.setMultisigs(multisigs));
+      try {
+        dispatch(assetsActions.setIsLoading(true));
+        const multisigs = await getRelevantMultisigContracts(new Set(implicitAccountPkhs), network);
+        dispatch(multisigActions.setMultisigs(multisigs));
 
-      const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
-      const pendingOperations = Promise.all(
-        multisigChunks.map(multisigs => getPendingOperationsForMultisigs(multisigs, network))
-      ).then(pendingOperations => {
-        dispatch(multisigActions.setPendingOperations(pendingOperations.flat()));
-      });
+        const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
+        const pendingOperations = Promise.all(
+          multisigChunks.map(multisigs => getPendingOperationsForMultisigs(multisigs, network))
+        ).then(pendingOperations => {
+          dispatch(multisigActions.setPendingOperations(pendingOperations.flat()));
+        });
 
-      const allAccountPkhs = [...implicitAccountPkhs, ...multisigs.map(acc => acc.address.pkh)];
-      const pkhChunks = chunk(allAccountPkhs, MAX_ADDRESSES_PER_REQUEST);
-      const tezBalances = Promise.all(pkhChunks.map(pkhs => getAccounts(pkhs, network))).then(
-        accountInfos => {
-          dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
-        }
-      );
+        const allAccountPkhs = [...implicitAccountPkhs, ...multisigs.map(acc => acc.address.pkh)];
+        const pkhChunks = chunk(allAccountPkhs, MAX_ADDRESSES_PER_REQUEST);
+        const tezBalances = Promise.all(pkhChunks.map(pkhs => getAccounts(pkhs, network))).then(
+          accountInfos => {
+            dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
+          }
+        );
 
-      const tokens = Promise.all(pkhChunks.map(pkhs => getTokenBalances(pkhs, network))).then(
-        async tokenBalances => {
-          dispatch(
-            tokensActions.addTokens({ network, tokens: tokenBalances.flat().map(b => b.token) })
-          );
-          dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
+        const tokens = Promise.all(pkhChunks.map(pkhs => getTokenBalances(pkhs, network))).then(
+          async tokenBalances => {
+            dispatch(
+              tokensActions.addTokens({ network, tokens: tokenBalances.flat().map(b => b.token) })
+            );
+            dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
 
-          // token transfers have to be fetched after the balances were fetched
-          // because otherwise we might not have some tokens' info to display the operations
-          processInBatches(allAccountPkhs, 5, pkh => getTokensTransfersPayload(pkh, network)).then(
-            tokenTransfers => {
+            // token transfers have to be fetched after the balances were fetched
+            // because otherwise we might not have some tokens' info to display the operations
+            processInBatches(allAccountPkhs, 5, pkh =>
+              getTokensTransfersPayload(pkh, network)
+            ).then(tokenTransfers => {
               dispatch(
                 tokensActions.addTokens({
                   network,
@@ -111,31 +113,32 @@ export const useAssetsPolling = () => {
                 })
               );
               dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
-            }
-          );
-        }
-      );
+            });
+          }
+        );
 
-      const tezTransfers = processInBatches(allAccountPkhs, 5, pkh =>
-        getTezTransfersPayload(pkh, network)
-      ).then(tezTransfers => {
-        dispatch(assetsActions.updateTezTransfers(tezTransfers));
-      });
-
-      const delegations = processInBatches(allAccountPkhs, 5, pkh =>
-        getDelegationsPayload(pkh, network)
-      ).then(delegations => {
-        dispatch(assetsActions.updateDelegations(compact(delegations)));
-      });
-
-      return Promise.all([pendingOperations, tezBalances, tokens, tezTransfers, delegations])
-        .then(() => {
-          dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
-        })
-        .catch(err => console.warn(err))
-        .finally(() => {
-          dispatch(assetsActions.setIsLoading(false));
+        const tezTransfers = processInBatches(allAccountPkhs, 5, pkh =>
+          getTezTransfersPayload(pkh, network)
+        ).then(tezTransfers => {
+          dispatch(assetsActions.updateTezTransfers(tezTransfers));
         });
+
+        const delegations = processInBatches(allAccountPkhs, 5, pkh =>
+          getDelegationsPayload(pkh, network)
+        ).then(delegations => {
+          dispatch(assetsActions.updateDelegations(compact(delegations)));
+        });
+
+        await Promise.all([pendingOperations, tezBalances, tokens, tezTransfers, delegations]).then(
+          () => {
+            dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
+          }
+        );
+      } catch (error: any) {
+        console.warn(error);
+      } finally {
+        dispatch(assetsActions.setIsLoading(false));
+      }
     },
 
     refetchInterval: BLOCK_TIME,
