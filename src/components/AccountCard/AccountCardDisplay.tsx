@@ -68,7 +68,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
       <Heading mt={4} size="md">
         {label}
       </Heading>
-      <AddressPill address={account.address} mode="no_icons" my={2} />
+      <AddressPill address={account.address} mode={{ type: "no_icons" }} my={2} />
       {tezBalance !== null && (
         <TezRecapDisplay center tezBalance={tezBalance} dollarBalance={dollarBalance} />
       )}

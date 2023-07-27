@@ -18,16 +18,18 @@ import useAddressKind from "./useAddressKind";
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
 import AddressPillText from "./AddressPillText";
 
-type AddressPillMode = "default" | "removable" | "no_icons";
+export type AddressPillMode =
+  | { type: "default" }
+  | { type: "removable"; onRemove: () => void }
+  | { type: "no_icons" };
 
 const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxProps> = ({
   address,
-  mode = "default",
+  mode = { type: "default" },
   ...rest
 }) => {
   const addressKind = useAddressKind(address);
-  const showIcons = mode !== "no_icons";
-  const isRemovable = mode === "removable";
+  const showIcons = mode.type !== "no_icons";
 
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [mouseHover, setMouseHover] = useState(false);
@@ -112,7 +114,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
           <RightIcon
             data-testid="address-pill-right-icon"
             addressKind={addressKind}
-            isRemove={isRemovable}
+            addressPillMode={mode}
             cursor="pointer"
             stroke={textColor}
             mr={2}
