@@ -67,7 +67,7 @@ describe("useAccountsFilter", () => {
     expect(pills).toHaveLength(2);
     expect(pills[0]).toHaveTextContent(accounts[0].label);
     expect(pills[1]).toHaveTextContent(accounts[2].label);
-    fireEvent.click(screen.getByTestId(`account-pill-close-${accounts[0].address.pkh}`));
+    fireEvent.click(screen.getAllByTestId("xmark-icon-path")[0]);
 
     {
       const pills = screen.getAllByTestId("account-pill");
