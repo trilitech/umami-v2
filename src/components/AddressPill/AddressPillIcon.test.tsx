@@ -36,12 +36,17 @@ describe("AddressPill Icons", () => {
   });
 
   it("Right icon renders", () => {
-    render(<RightIcon addressKind={mockFA2Address} isRemove={false} />);
+    render(<RightIcon addressKind={mockFA2Address} addressPillMode={{ type: "default" }} />);
     expect(screen.getByTestId("add-contact-icon")).toBeInTheDocument();
   });
 
   it("Right icon returns x mark icon", () => {
-    render(<RightIcon addressKind={mockFA2Address} isRemove={true} />);
-    expect(screen.getByTestId("x-mark-icon")).toBeInTheDocument();
+    render(
+      <RightIcon
+        addressKind={mockFA2Address}
+        addressPillMode={{ type: "removable", onRemove: () => {} }}
+      />
+    );
+    expect(screen.getByTestId("xmark-icon-path")).toBeInTheDocument();
   });
 });

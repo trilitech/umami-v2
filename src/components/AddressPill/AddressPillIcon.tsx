@@ -9,6 +9,7 @@ import { useContactExists } from "../../utils/hooks/contactsHooks";
 import AddContactIcon from "../../assets/icons/AddContact";
 import { useUpsertContactModal } from "../../views/home/useUpsertContactModal";
 import XMark from "../../assets/icons/XMark";
+import { AddressPillMode } from "./AddressPill";
 
 export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   addressKind: { type },
@@ -31,16 +32,14 @@ export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   }
 };
 
-export const RightIcon: React.FC<{ addressKind: AddressKind; isRemove: boolean } & IconProps> = ({
-  addressKind: { type, pkh },
-  isRemove,
-  ...rest
-}) => {
+export const RightIcon: React.FC<
+  { addressKind: AddressKind; addressPillMode: AddressPillMode } & IconProps
+> = ({ addressKind: { type, pkh }, addressPillMode, ...rest }) => {
   const { addressExistsInContacts } = useContactExists();
   const { modalElement, onOpen } = useUpsertContactModal();
 
-  if (isRemove) {
-    return <XMark data-testid="x-mark-icon" {...rest} />;
+  if (addressPillMode.type === "removable") {
+    return <XMark cursor="pointer" onClick={addressPillMode.onRemove} {...rest} />;
   }
 
   const knownTypes: AddressKindType[] = ["ownedImplicit", "ownedMultisig", "baker"];

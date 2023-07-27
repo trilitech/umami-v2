@@ -1,12 +1,12 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Button, Flex, Menu, MenuButton, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
+import { Button, Flex, Menu, MenuButton, Wrap } from "@chakra-ui/react";
 import { compact, differenceBy, pick } from "lodash";
 import { useState } from "react";
 import { Account } from "../types/Account";
 import { RawPkh } from "../types/Address";
-import { formatPkh } from "../utils/format";
 import { useAllAccounts } from "../utils/hooks/accountHooks";
 import AccountListDisplay from "./AccountSelector/AccountListDisplay";
+import AddressPill from "./AddressPill/AddressPill";
 
 export const useAccountsFilter = () => {
   const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);
@@ -40,17 +40,24 @@ export const useAccountsFilter = () => {
             }}
           />
         </Menu>
-        {selectedAccounts.map(account => (
-          <Pill
-            account={account}
-            key={account.address.pkh}
-            onClose={() => {
-              setSelectedAccounts(
-                selectedAccounts.filter(a => a.address.pkh !== account.address.pkh)
-              );
-            }}
-          />
-        ))}
+        <Wrap p={2} width="90%">
+          {selectedAccounts.map(account => (
+            <AddressPill
+              data-testid="account-pill"
+              key={account.address.pkh}
+              address={account.address}
+              mode={{
+                type: "removable",
+                onRemove: () => {
+                  setSelectedAccounts(
+                    selectedAccounts.filter(a => a.address.pkh !== account.address.pkh)
+                  );
+                },
+              }}
+              mr={2}
+            />
+          ))}
+        </Wrap>
       </Flex>
     ),
   };
@@ -74,26 +81,4 @@ export const useAccountsFilterWithMapFilter = () => {
     filterMap,
     accountsFilter,
   };
-};
-
-const Pill: React.FC<{ account: Account; onClose: () => void }> = ({ account, onClose }) => {
-  return (
-    <Tag
-      borderRadius="full"
-      bg="#2C2B2B"
-      pl="8px"
-      pr="8px"
-      pt="3px"
-      pb="3px"
-      mx={1}
-      height={4}
-      key={account.address.pkh}
-      data-testid="account-pill"
-    >
-      <TagLabel fontSize="14px" lineHeight="18px">
-        {account.label ?? formatPkh(account.address.pkh)}
-      </TagLabel>
-      <TagCloseButton onClick={onClose} data-testid={`account-pill-close-${account.address.pkh}`} />
-    </Tag>
-  );
 };
