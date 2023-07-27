@@ -24,6 +24,9 @@ type State = {
   bakers: Baker[];
   conversionRate: number | null; // XTZ/USD conversion rate
   batches: Record<string, OperationWithFee[] | undefined>;
+  refetchTrigger: number;
+  isLoading: boolean;
+  lastTimeUpdated: string | null;
 };
 
 export type TezTransfersPayload = {
@@ -59,6 +62,9 @@ const initialState: State = {
   bakers: [],
   conversionRate: null,
   batches: {},
+  refetchTrigger: 0,
+  isLoading: false,
+  lastTimeUpdated: null,
 };
 
 const assetsSlice = createSlice({
@@ -146,6 +152,15 @@ const assetsSlice = createSlice({
     },
     clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: string } }) => {
       delete state.batches[pkh];
+    },
+    refetch: state => {
+      state.refetchTrigger += 1;
+    },
+    setIsLoading: (state, { payload: isLoading }: { payload: boolean }) => {
+      state.isLoading = isLoading;
+    },
+    setLastTimeUpdated: (state, { payload: lastTimeUpdated }: { payload: string }) => {
+      state.lastTimeUpdated = lastTimeUpdated;
     },
   },
 });

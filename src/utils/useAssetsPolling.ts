@@ -1,10 +1,10 @@
 import { chunk, compact } from "lodash";
 import { useEffect, useRef } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { TezosNetwork } from "../types/TezosNetwork";
 import { TokenTransfer } from "../types/Transfer";
 import { useImplicitAccounts } from "./hooks/accountHooks";
-import { useSelectedNetwork } from "./hooks/assetsHooks";
+import { useRefetchTrigger, useSelectedNetwork } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
 import { processInBatches } from "./promise";
 import {
@@ -66,11 +66,15 @@ const MAX_BIGMAP_PER_REQUEST = 300;
 export const useAssetsPolling = () => {
   const dispatch = useAppDispatch();
   const implicitAccounts = useImplicitAccounts();
+  const refetchTrigger = useRefetchTrigger();
   const network = useSelectedNetwork();
+  const queryClient = useQueryClient();
+
   const implicitAccountPkhs = implicitAccounts.map(account => account.address.pkh);
 
   const accountAssetsQuery = useQuery("allAssets", {
     queryFn: async () => {
+      dispatch(assetsActions.setIsLoading(true));
       const multisigs = await getRelevantMultisigContracts(new Set(implicitAccountPkhs), network);
       dispatch(multisigActions.setMultisigs(multisigs));
 
@@ -124,7 +128,14 @@ export const useAssetsPolling = () => {
         dispatch(assetsActions.updateDelegations(compact(delegations)));
       });
 
-      return Promise.all([pendingOperations, tezBalances, tokens, tezTransfers, delegations]);
+      return Promise.all([pendingOperations, tezBalances, tokens, tezTransfers, delegations])
+        .then(() => {
+          dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
+        })
+        .catch(err => console.warn(err))
+        .finally(() => {
+          dispatch(assetsActions.setIsLoading(false));
+        });
     },
 
     refetchInterval: BLOCK_TIME,
@@ -164,6 +175,7 @@ export const useAssetsPolling = () => {
       dispatch(assetsActions.updateBakers(bakers));
     },
     refetchInterval: BAKERS_REFRESH_RATE,
+    refetchOnWindowFocus: false,
   });
 
   const conversionRateQueryRef = useRef(conversionrateQuery);
@@ -171,15 +183,15 @@ export const useAssetsPolling = () => {
   const accountAssetsQueryRef = useRef(accountAssetsQuery);
   const bakersQueryRef = useRef(bakersQuery);
 
-  // Refetch when network changes
-  // TODO: implement proper query cancellation
-  //       otherwise we might change the network in the middle of
-  //       receiving data and the data will be broken
-  // https://app.asana.com/0/1204165186238194/1204890035700189/f
   useEffect(() => {
+    queryClient.cancelQueries({ queryKey: "allAssets" });
+    queryClient.cancelQueries({ queryKey: "conversionRate" });
+    queryClient.cancelQueries({ queryKey: "blockNumber" });
+    queryClient.cancelQueries({ queryKey: "bakers" });
+
     conversionRateQueryRef.current.refetch();
     blockNumberQueryRef.current.refetch();
     accountAssetsQueryRef.current.refetch();
     bakersQueryRef.current.refetch();
-  }, [network]);
+  }, [network, refetchTrigger, queryClient]);
 };
