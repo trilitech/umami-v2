@@ -24,7 +24,9 @@ export const MultisigActionButton: React.FC<{
   const signer = getImplicitAccount(signerAddress.pkh);
   const signerInOwnedAccounts = !!signer;
 
-  const approvedBySigner = !!operation.approvals.find(approver => approver === signerAddress);
+  const approvedBySigner = !!operation.approvals.find(
+    approver => approver.pkh === signerAddress.pkh
+  );
   const operationIsExecutable = pendingApprovals === 0;
 
   if (!signerInOwnedAccounts) {
