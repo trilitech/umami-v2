@@ -5,7 +5,7 @@ import { Curves, InMemorySigner } from "@taquito/signer";
 import { TezosToolkit, TransferParams } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
-import { FA12Operation, FA2Operation } from "../../types/RawOperation";
+import { FA12Operation, FA2Operation } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { PublicKeyPair } from "../restoreAccounts";

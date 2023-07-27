@@ -18,7 +18,7 @@ describe("<ActionButton/>", () => {
         pendingApprovals={0}
         openSignModal={_ => {}}
         operation={pendingOps[0]}
-        account={mockMultisigAccount(0)}
+        sender={mockMultisigAccount(0)}
       />
     );
     expect(screen.getByTestId("multisig-signer-button")).toHaveTextContent("Execute");
@@ -32,7 +32,7 @@ describe("<ActionButton/>", () => {
         pendingApprovals={1}
         openSignModal={_ => {}}
         operation={pendingOps[0]}
-        account={mockMultisigAccount(0)}
+        sender={mockMultisigAccount(0)}
       />
     );
     expect(screen.getByTestId("multisig-signer-button")).toHaveTextContent("Approve");
@@ -47,7 +47,7 @@ describe("<ActionButton/>", () => {
         pendingApprovals={1}
         openSignModal={_ => {}}
         operation={operation}
-        account={mockMultisigAccount(0)}
+        sender={mockMultisigAccount(0)}
       />
     );
     expect(screen.getByTestId("multisig-signer-approved")).toHaveTextContent("Approved");
@@ -61,7 +61,7 @@ describe("<ActionButton/>", () => {
         pendingApprovals={1}
         openSignModal={_ => {}}
         operation={operation}
-        account={mockMultisigAccount(0)}
+        sender={mockMultisigAccount(0)}
       />
     );
     expect(screen.getByTestId("multisig-signer-approved-or-waiting")).toHaveTextContent("Approved");
@@ -74,7 +74,7 @@ describe("<ActionButton/>", () => {
         pendingApprovals={1}
         openSignModal={_ => {}}
         operation={pendingOps[0]}
-        account={mockMultisigAccount(0)}
+        sender={mockMultisigAccount(0)}
       />
     );
     expect(screen.getByTestId("multisig-signer-approved-or-waiting")).toHaveTextContent(

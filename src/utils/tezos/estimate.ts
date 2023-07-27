@@ -1,5 +1,5 @@
 import { Estimate } from "@taquito/taquito";
-import { Account, ImplicitAccount } from "../../types/Account";
+import { ImplicitAccount } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import {
@@ -36,11 +36,10 @@ export const estimateMultisigApproveOrExecute = async (
 
 export const estimateBatch = async (
   operations: Operation[],
-  sender: Account,
   signer: ImplicitAccount,
   network: TezosNetwork
 ): Promise<Estimate[]> => {
-  const batch = await operationsToBatchParams(operations, sender);
+  const batch = operationsToBatchParams(operations);
 
   const tezosToolkit = await makeToolkit({ type: "fake", signer, network });
 

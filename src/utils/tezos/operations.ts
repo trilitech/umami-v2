@@ -1,6 +1,5 @@
 import { TezosToolkit, TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { Account } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { makeMultisigApproveOrExecuteMethod, makeMultisigProposeMethod } from "./helpers";
 import { operationsToWalletParams } from "./params";
@@ -24,9 +23,8 @@ export const approveOrExecuteMultisigOperation = async (
 
 export const submitBatch = async (
   operation: Operation[],
-  sender: Account,
   tezosToolkit: TezosToolkit
 ): Promise<BatchWalletOperation> => {
-  const params = await operationsToWalletParams(operation, sender);
+  const params = operationsToWalletParams(operation);
   return tezosToolkit.wallet.batch(params).send();
 };

@@ -427,6 +427,7 @@ export const FillStep: React.FC<{
           onSubmit={formValues => {
             const delegation: Delegation = {
               type: "delegation",
+              sender: parsePkh(sender),
               recipient:
                 formValues.baker !== undefined ? parseImplicitPkh(formValues.baker) : undefined,
             };

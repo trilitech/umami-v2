@@ -1,7 +1,7 @@
 import { InMemorySigner } from "@taquito/signer";
 import axios from "axios";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { FA12Operation, FA2Operation } from "../../types/RawOperation";
+import { FA12Operation, FA2Operation } from "../../types/Operation";
 import { tzktUrls } from "./consts";
 import {
   addressExists,

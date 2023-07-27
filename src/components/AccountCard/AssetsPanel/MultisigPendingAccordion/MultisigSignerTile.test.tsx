@@ -20,7 +20,7 @@ describe("<MultisigSignerTile/>", () => {
         signerAddress={signer.address}
         pendingApprovals={0}
         operation={pendingOps[0]}
-        account={mockMultisigAccount(0)}
+        sender={mockMultisigAccount(0)}
         openSignModal={_ => {}}
       />
     );
@@ -33,7 +33,7 @@ describe("<MultisigSignerTile/>", () => {
         signerAddress={signer.address}
         pendingApprovals={1}
         operation={{ ...pendingOps[0], approvals: [signer.address] }}
-        account={mockMultisigAccount(0)}
+        sender={mockMultisigAccount(0)}
         openSignModal={_ => {}}
       />
     );
@@ -47,7 +47,7 @@ describe("<MultisigSignerTile/>", () => {
         signerAddress={mockImplicitAccount(1).address}
         pendingApprovals={1}
         operation={pendingOps[0]}
-        account={account}
+        sender={account}
         openSignModal={_ => {}}
       />
     );

@@ -52,11 +52,6 @@ describe("multisig Sandbox", () => {
           recipient: MULTISIG_GHOSTNET_1,
         },
       ],
-      {
-        ...mockImplicitAccount(0),
-        address: parseImplicitPkh(await devAccount2.publicKeyHash()),
-        pk: await devAccount2.publicKey(),
-      },
       await makeToolkit({
         type: "mnemonic",
         secretKey: devAccount2Sk,

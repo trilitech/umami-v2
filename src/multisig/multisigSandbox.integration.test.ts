@@ -96,7 +96,7 @@ describe("multisig Sandbox", () => {
       const tezos = await makeToolkitFromDefaultDevSeed(0);
       const keys1 = await makeDefaultDevSignerKeys(1);
       const keys2 = await makeDefaultDevSignerKeys(2);
-      const batch = await makeBatchLambda([
+      const batch = makeBatchLambda([
         { type: "tez", amount: "600000", recipient: parsePkh(keys1.pkh) },
         {
           type: "fa1.2",

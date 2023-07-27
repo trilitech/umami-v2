@@ -19,11 +19,11 @@ import colors from "../../../../style/colors";
 
 export const MultisigPendingAccordionItem: React.FC<{
   operation: MultisigOperation;
-  account: MultisigAccount;
-}> = ({ operation, account }) => {
+  sender: MultisigAccount;
+}> = ({ operation, sender }) => {
   const { modalElement, onOpen } = useModal(ApproveExecuteForm);
 
-  const { signers, threshold } = account;
+  const { signers, threshold } = sender;
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
     <Box
@@ -45,7 +45,7 @@ export const MultisigPendingAccordionItem: React.FC<{
         </h2>
         <AccordionPanel>
           <Flex marginY={2} justifyContent="space-between" alignItems="end">
-            <MultisigDecodedOperations rawActions={operation.rawActions} />
+            <MultisigDecodedOperations rawActions={operation.rawActions} sender={sender} />
             <Flex alignItems="center" mb="6">
               <Heading color={colors.gray[400]} size="sm" mr={1}>
                 Pending Approvals:
@@ -63,7 +63,7 @@ export const MultisigPendingAccordionItem: React.FC<{
                 signerAddress={signer}
                 pendingApprovals={pendingApprovals}
                 openSignModal={onOpen}
-                account={account}
+                sender={sender}
                 operation={operation}
               />
             ))}

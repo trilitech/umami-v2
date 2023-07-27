@@ -15,12 +15,11 @@ const ApproveExecuteForm: React.FC<{ params: ParamsWithFee }> = ({ params }) => 
   if (history.currentStep.type === "submit") {
     return (
       <SubmitApproveOrExecuteForm
-        params={params}
+        {...params}
         network={network}
         onSuccess={hash => {
           history.goToStep({ type: "success", hash });
         }}
-        signerAccount={params.signer}
       />
     );
   }

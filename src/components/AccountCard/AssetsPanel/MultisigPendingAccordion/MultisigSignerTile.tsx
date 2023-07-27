@@ -15,7 +15,7 @@ const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;
   pendingApprovals: number;
   operation: MultisigOperation;
-  account: MultisigAccount;
+  sender: MultisigAccount;
   openSignModal: (params: ParamsWithFee) => void;
 }> = props => {
   const signer = props.signerAddress;

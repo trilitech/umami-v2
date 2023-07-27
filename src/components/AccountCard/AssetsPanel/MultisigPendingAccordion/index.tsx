@@ -18,11 +18,7 @@ export const MultisigPendingAccordion: React.FC<{
     <Box w="100%">
       <Accordion allowMultiple={true} defaultIndex={range(pendingOperations.length)}>
         {pendingOperations.map(operation => (
-          <MultisigPendingAccordionItem
-            key={operation.id}
-            operation={operation}
-            account={account}
-          />
+          <MultisigPendingAccordionItem key={operation.id} operation={operation} sender={account} />
         ))}
       </Accordion>
     </Box>

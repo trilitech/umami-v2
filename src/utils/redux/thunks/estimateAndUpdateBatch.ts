@@ -26,7 +26,7 @@ export const estimateAndUpdateBatch = (
 
     dispatch(batchSimulationStart({ pkh: sender.address.pkh }));
     try {
-      const items = await operationsToBatchItems(operations, sender, signer, network);
+      const items = await operationsToBatchItems(operations, signer, network);
       dispatch(addToBatch({ pkh: sender.address.pkh, items }));
     } catch (error) {
       dispatch(batchSimulationEnd({ pkh: sender.address.pkh }));

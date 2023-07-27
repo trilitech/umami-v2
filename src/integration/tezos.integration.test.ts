@@ -37,6 +37,7 @@ describe("Tezos utils", () => {
         },
         {
           type: "delegation",
+          sender: sender.address,
           recipient: pkh1,
         },
         {
@@ -64,7 +65,7 @@ describe("Tezos utils", () => {
           tokenId: ghostFA2.tokenId,
         },
       ];
-      const result = await operationsToBatchParams(input, sender);
+      const result = operationsToBatchParams(input);
       expect(result).toEqual([
         {
           amount: 3,
@@ -219,7 +220,6 @@ describe("Tezos utils", () => {
             },
           ],
           sender,
-          sender,
           TezosNetwork.GHOSTNET
         );
         for (let i = 0; i < ghostnetResult.length; i += 1) {
@@ -241,7 +241,6 @@ describe("Tezos utils", () => {
             },
           ],
           sender,
-          sender,
           TezosNetwork.MAINNET
         );
         expect(mainnetResult).toHaveLength(2);
@@ -253,10 +252,10 @@ describe("Tezos utils", () => {
           [
             {
               type: "delegation",
+              sender: sender.address,
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
           ],
-          sender,
           sender,
           TezosNetwork.MAINNET
         );
@@ -273,10 +272,10 @@ describe("Tezos utils", () => {
             },
             {
               type: "delegation",
+              sender: sender.address,
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
           ],
-          sender,
           sender,
           TezosNetwork.MAINNET
         );

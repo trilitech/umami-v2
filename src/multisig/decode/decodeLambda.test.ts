@@ -2,6 +2,9 @@ import { decode, parseRawMichelson } from "./decodeLambda";
 import type { MichelsonV1Expression } from "@taquito/rpc";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { UnrecognizedMichelsonError } from "./UnrecognizedMichelsonError";
+import { mockMultisigAccount } from "../../mocks/factories";
+
+const multisig = mockMultisigAccount(0);
 
 describe("decodeLambda", () => {
   test("invalid michelsonJSON batch (no head)", () => {
@@ -17,7 +20,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(() => decode(singleTezNoHead)).toThrowError(/Invalid literal value/i);
+    expect(() => decode(singleTezNoHead, multisig)).toThrowError(/Invalid literal value/i);
   });
 
   test("simple tez", () => {
@@ -34,7 +37,7 @@ describe("decodeLambda", () => {
       { prim: "TRANSFER_TOKENS" },
       { prim: "CONS" },
     ];
-    expect(decode(input)).toEqual([
+    expect(decode(input, multisig)).toEqual([
       {
         amount: "910000",
         recipient: parseImplicitPkh("tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6"),
@@ -66,7 +69,7 @@ describe("decodeLambda", () => {
       { prim: "TRANSFER_TOKENS" },
       { prim: "CONS" },
     ];
-    expect(decode(input)).toEqual([
+    expect(decode(input, multisig)).toEqual([
       {
         type: "tez",
         amount: "5",
@@ -185,7 +188,7 @@ describe("decodeLambda", () => {
       { prim: "TRANSFER_TOKENS" },
       { prim: "CONS" },
     ];
-    const result = decode(input);
+    const result = decode(input, multisig);
     const expected = [
       {
         amount: "1",
@@ -223,7 +226,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(decode(input)).toEqual([
+    expect(decode(input, multisig)).toEqual([
       {
         amount: "20000",
         recipient: parseImplicitPkh("tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6"),
@@ -366,7 +369,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(decode(input)).toEqual([
+    expect(decode(input, multisig)).toEqual([
       {
         amount: "600000",
         recipient: parseImplicitPkh("tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6"),
@@ -458,7 +461,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(decode(input)).toEqual([
+    expect(decode(input, multisig)).toEqual([
       {
         amount: "300",
         contract: parseContractPkh("KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe"),
@@ -663,7 +666,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(decode(input)).toEqual([
+    expect(decode(input, multisig)).toEqual([
       {
         amount: "100000",
         recipient: parseImplicitPkh("tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6"),
@@ -723,7 +726,7 @@ describe("decodeLambda", () => {
       "bye",
     ];
 
-    expect(() => decode(input as MichelsonV1Expression[])).toThrow();
+    expect(() => decode(input as MichelsonV1Expression[], multisig)).toThrow();
   });
 
   test("remove delegate", () => {
@@ -735,7 +738,9 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(decode(input)).toEqual([{ type: "delegation" }]);
+    expect(decode(input, multisig)).toEqual([
+      { type: "delegation", sender: multisig.address, recipient: undefined },
+    ]);
   });
 
   test("set delegate", () => {
@@ -751,8 +756,12 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(decode(input)).toEqual([
-      { type: "delegation", recipient: parseImplicitPkh("tz1RuHDSj9P7mNNhfKxsyLGRDahTX5QD1DdP") },
+    expect(decode(input, multisig)).toEqual([
+      {
+        type: "delegation",
+        sender: multisig.address,
+        recipient: parseImplicitPkh("tz1RuHDSj9P7mNNhfKxsyLGRDahTX5QD1DdP"),
+      },
     ]);
   });
 
@@ -780,13 +789,13 @@ describe("decodeLambda", () => {
       },
     ];
 
-    expect(() => decode(unrecognizableMichelson)).toThrow(UnrecognizedMichelsonError);
+    expect(() => decode(unrecognizableMichelson, multisig)).toThrow(UnrecognizedMichelsonError);
   });
 
   test("parseRawMichelson decodes raw michelson", () => {
     const rawMichelson =
       '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"00e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"350000000000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"},{"prim":"PUSH","args":[{"prim":"address"},{"bytes":"01d7270a1dd9a8b9ee6b48380fb60dc36a7cd521bb007472616e73666572"}]},{"prim":"CONTRACT","args":[{"prim":"pair","args":[{"prim":"address","annots":[":from"]},{"prim":"pair","args":[{"prim":"address","annots":[":to"]},{"prim":"nat","annots":[":value"]}]}]}]},[{"prim":"IF_NONE","args":[[{"prim":"UNIT"},{"prim":"FAILWITH"}],[]]}],{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"0"}]},{"prim":"PUSH","args":[{"prim":"pair","args":[{"prim":"address","annots":[":from"]},{"prim":"pair","args":[{"prim":"address","annots":[":to"]},{"prim":"nat","annots":[":value"]}]}]},{"prim":"Pair","args":[{"bytes":"0156637790cdb23bc0a4c57d069d2e3577e5ed89a600"},{"prim":"Pair","args":[{"bytes":"0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"},{"int":"2"}]}]}]},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"},{"prim":"PUSH","args":[{"prim":"address"},{"bytes":"01fc1beb979d7c8da00d6e5e22c297bcf541834607007472616e73666572"}]},{"prim":"CONTRACT","args":[{"prim":"list","args":[{"prim":"pair","args":[{"prim":"address","annots":["%from_"]},{"prim":"list","annots":["%txs"],"args":[{"prim":"pair","args":[{"prim":"address","annots":["%to_"]},{"prim":"pair","args":[{"prim":"nat","annots":["%token_id"]},{"prim":"nat","annots":["%amount"]}]}]}]}]}]}]},[{"prim":"IF_NONE","args":[[{"prim":"UNIT"},{"prim":"FAILWITH"}],[]]}],{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"0"}]},{"prim":"PUSH","args":[{"prim":"list","args":[{"prim":"pair","args":[{"prim":"address","annots":["%from_"]},{"prim":"list","annots":["%txs"],"args":[{"prim":"pair","args":[{"prim":"address","annots":["%to_"]},{"prim":"pair","args":[{"prim":"nat","annots":["%token_id"]},{"prim":"nat","annots":["%amount"]}]}]}]}]}]},[{"prim":"Pair","args":[{"bytes":"0156637790cdb23bc0a4c57d069d2e3577e5ed89a600"},[{"prim":"Pair","args":[{"bytes":"0000e09454275ac1a764ca6f8b1f52a2eeff1fd4fe0e"},{"prim":"Pair","args":[{"int":"0"},{"int":"3"}]}]}]]}]]},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]';
-    expect(parseRawMichelson(rawMichelson)).toEqual([
+    expect(parseRawMichelson(rawMichelson, multisig)).toEqual([
       {
         amount: "350000000000",
         recipient: {
@@ -837,12 +846,14 @@ describe("decodeLambda", () => {
     const unrecognizableRawMichelson =
       '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"address"},{"bytes":"0156cb5559a8d8c945944e71edec63dd04a8e76b87007472616e73666572"}]},{"prim":"CONTRACT","args":[{"prim":"list","args":[{"prim":"pair","args":[{"prim":"address","annots":["%from_"]},{"prim":"list","annots":["%txs"],"args":[{"prim":"pair","args":[{"prim":"address","annots":["%to_"]},{"prim":"pair","args":[{"prim":"nat","annots":["%token_id"]},{"prim":"nat","annots":["%amount"]}]}]}]}]}]}]},{"prim":"IF_NONE","args":[[{"prim":"UNIT"},{"prim":"FAILWITH"}],[{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"1"}]},{"prim":"PUSH","args":[{"prim":"list","args":[{"prim":"pair","args":[{"prim":"address","annots":["%from_"]},{"prim":"list","annots":["%txs"],"args":[{"prim":"pair","args":[{"prim":"address","annots":["%to_"]},{"prim":"pair","args":[{"prim":"nat","annots":["%token_id"]},{"prim":"nat","annots":["%amount"]}]}]}]}]}]},[{"prim":"Pair","args":[{"bytes":"018e368c2083bdaef3199bae317d6c967c21d947b300"},[{"prim":"Pair","args":[{"bytes":"000057c264d6d7f7257cd3d8096150b0d8be60577ca7"},{"prim":"Pair","args":[{"int":"6"},{"int":"1"}]}]}]]}]]},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]]}]';
 
-    expect(() => parseRawMichelson(unrecognizableRawMichelson)).toThrow(UnrecognizedMichelsonError);
+    expect(() => parseRawMichelson(unrecognizableRawMichelson, multisig)).toThrow(
+      UnrecognizedMichelsonError
+    );
   });
 
   test("parseRawMichelson should throw syntax error", () => {
     const invalidJsonString = "{a:";
 
-    expect(() => parseRawMichelson(invalidJsonString)).toThrow(SyntaxError);
+    expect(() => parseRawMichelson(invalidJsonString, multisig)).toThrow(SyntaxError);
   });
 });

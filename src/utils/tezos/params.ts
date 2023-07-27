@@ -1,57 +1,34 @@
 import { OpKind, ParamsWithKind, WalletParamsWithKind } from "@taquito/taquito";
-import { Account } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { makeTokenTransferParams } from "./helpers";
 
-export const operationsToWalletParams = async (
-  operations: Operation[],
-  sender: Account
-): Promise<WalletParamsWithKind[]> =>
-  operationsToParams(operations, sender) as Promise<WalletParamsWithKind[]>;
-
-export const operationsToParams = async (
-  operations: Operation[],
-  sender: Account
-): Promise<ParamsWithKind[]> => {
-  const result: ParamsWithKind[] = [];
-
-  for (const operation of operations) {
+export const operationsToBatchParams = (operations: Operation[]): ParamsWithKind[] =>
+  // eslint-disable-next-line array-callback-return
+  operations.map(operation => {
     switch (operation.type) {
       case "tez":
-        result.push({
+        return {
           kind: OpKind.TRANSACTION,
           to: operation.recipient.pkh,
           amount: parseInt(operation.amount),
           parameter: operation.parameter,
           mutez: true,
-        });
-        break;
+        };
       case "delegation":
-        result.push({
+        return {
           kind: OpKind.DELEGATION,
-          source: sender.address.pkh,
+          source: operation.sender.pkh,
           delegate: operation.recipient?.pkh,
-        });
-        break;
+        };
       case "fa1.2":
       case "fa2":
-        result.push({
+        return {
           kind: OpKind.TRANSACTION,
           ...makeTokenTransferParams(operation),
-        });
-        break;
+        };
     }
-  }
+  });
 
-  return result;
-};
-
-export const operationsToBatchParams = async (
-  operations: Operation[],
-  sender: Account
-): Promise<ParamsWithKind[]> => {
-  if (!operations.length) {
-    return [];
-  }
-  return operationsToParams(operations, sender);
-};
+export const operationsToWalletParams = operationsToBatchParams as (
+  operations: Operation[]
+) => WalletParamsWithKind[];
