@@ -343,17 +343,21 @@ describe("<SendForm />", () => {
       });
 
       expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(
-        [
-          {
-            type: "fa2",
-            amount: "1000000",
-            recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
-            sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
-            contract: parseContractPkh(mockFA2.contract),
-            tokenId: mockFA2.tokenId,
-          },
-        ],
-        mockImplicitAccount(2),
+        {
+          type: "implicit",
+          content: [
+            {
+              type: "fa2",
+              amount: "1000000",
+              recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
+              sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
+              contract: parseContractPkh(mockFA2.contract),
+              tokenId: mockFA2.tokenId,
+            },
+          ],
+          sender: mockImplicitAccount(2),
+          signer: mockImplicitAccount(2),
+        },
         "mainnet"
       );
 
@@ -452,17 +456,21 @@ describe("<SendForm />", () => {
       });
 
       expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(
-        [
-          {
-            type: "fa1.2",
-            amount: "1000000000",
-            recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
-            sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
-            contract: parseContractPkh(mockFa1.contract),
-            tokenId: "0",
-          },
-        ],
-        mockImplicitAccount(2),
+        {
+          type: "implicit",
+          content: [
+            {
+              type: "fa1.2",
+              amount: "1000000000",
+              recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
+              sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
+              contract: parseContractPkh(mockFa1.contract),
+              tokenId: "0",
+            },
+          ],
+          sender: mockImplicitAccount(2),
+          signer: mockImplicitAccount(2),
+        },
         "mainnet"
       );
 
@@ -729,6 +737,10 @@ describe("<SendForm />", () => {
   });
 
   describe("Multisig", () => {
+    beforeEach(() => {
+      store.dispatch(multisigActions.setMultisigs(multisigs));
+    });
+
     it("hides the signer input if only one available", async () => {
       render(fixture(multisigs[0].address.pkh, { type: "tez" }));
       expect(screen.queryByTestId("real-address-input-proposalSigner")).not.toBeInTheDocument();
@@ -743,9 +755,11 @@ describe("<SendForm />", () => {
     });
 
     test("User can acomplish a tez proposal", async () => {
-      fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
-        suggestedFeeMutez: 12345,
-      } as Estimate);
+      fakeTezosUtils.estimateBatch.mockResolvedValueOnce([
+        {
+          suggestedFeeMutez: 12345,
+        } as Estimate,
+      ]);
       fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
@@ -799,9 +813,11 @@ describe("<SendForm />", () => {
     });
 
     test("User can acomplish an FA2 proposal", async () => {
-      fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
-        suggestedFeeMutez: 12345,
-      } as Estimate);
+      fakeTezosUtils.estimateBatch.mockResolvedValueOnce([
+        {
+          suggestedFeeMutez: 12345,
+        } as Estimate,
+      ]);
       fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
@@ -860,20 +876,21 @@ describe("<SendForm />", () => {
           decimals: "8",
         },
       };
-      fakeTezosUtils.estimateMultisigPropose.mockResolvedValueOnce({
-        suggestedFeeMutez: 12345,
-      } as Estimate);
+      fakeTezosUtils.estimateBatch.mockResolvedValueOnce([
+        {
+          suggestedFeeMutez: 12345,
+        } as Estimate,
+      ]);
       fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
+
       render(
-        fixture(MOCK_PKH, {
+        fixture(multisigs[0].address.pkh, {
           type: "token",
           data: mockFa1,
         })
       );
-
-      selectSender("Multisig Account 1");
 
       const recipientInput = screen.getByLabelText(/to/i);
       fireEvent.change(recipientInput, { target: { value: mockImplicitAddress(7).pkh } });

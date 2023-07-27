@@ -1,10 +1,9 @@
 import { BigNumber } from "bignumber.js";
-import { Estimate } from "@taquito/taquito";
 import { estimateBatch } from "../../utils/tezos";
 import { zip } from "lodash";
 import { Operation, OperationWithFee } from "../../types/Operation";
 import { TezosNetwork } from "../../types/TezosNetwork";
-import { ImplicitAccount } from "../../types/Account";
+import { FormOperations } from "../../components/sendForm/types";
 
 export const getTotalFee = (items: OperationWithFee[]): BigNumber => {
   const fee = items.reduce((acc, curr) => {
@@ -26,23 +25,13 @@ export const getBatchSubtotal = (ops: Operation[]) => {
   return subTotal;
 };
 
-export const sumEstimations = (es: Estimate[]) => {
-  return es
-    .reduce((acc, curr) => {
-      return acc.plus(curr.suggestedFeeMutez);
-    }, new BigNumber(0))
-    .toNumber();
-};
-
 export const operationsToBatchItems = async (
-  operations: Operation[],
-  signer: ImplicitAccount,
+  operations: FormOperations,
   network: TezosNetwork
 ): Promise<OperationWithFee[]> => {
-  // TODO: add support for Multisig
-  const estimations = await estimateBatch(operations, signer, network);
+  const estimations = await estimateBatch(operations, network);
 
-  return zip(operations, estimations).map(([operation, estimate]) => {
+  return zip(operations.content, estimations).map(([operation, estimate]) => {
     return {
       ...(operation as OperationWithFee), // operations.length is always >= estimations.length
       // The way taquito works we need to take the max of suggestedFeeMutez and totalCost

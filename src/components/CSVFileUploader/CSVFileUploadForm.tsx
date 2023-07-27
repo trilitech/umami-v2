@@ -16,29 +16,31 @@ import {
 import Papa, { ParseResult } from "papaparse";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { ImplicitAccount } from "../../types/Account";
+import { Account } from "../../types/Account";
 import { Operation } from "../../types/Operation";
-import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
-import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { RawPkh } from "../../types/Address";
+import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
+import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
+import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
 import { parseOperation } from "./utils";
+import { makeFormOperations } from "../sendForm/types";
 
 type FormFields = {
-  sender: string;
+  sender: RawPkh;
   file: FileList;
 };
 
-// TODO: add support for multisig
 const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   const network = useSelectedNetwork();
   const toast = useToast();
   const getToken = useGetToken();
   const dispatch = useAppDispatch();
-  const clearBatch = useClearBatch();
-  const getAccount = useGetImplicitAccount();
+  const getAccount = useGetOwnedAccount();
+  const getSigner = useGetBestSignerForAccount();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<FormFields>({
@@ -49,38 +51,32 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
     formState: { isValid, errors },
   } = form;
 
-  const onCSVFileUploadComplete = async (sender: ImplicitAccount, rows: ParseResult<string[]>) => {
-    if (rows.errors.length > 0) {
-      throw new Error("Error loading csv file.");
-    }
-
-    const operations: Operation[] = [];
-    for (let i = 0; i < rows.data.length; i++) {
-      const row = rows.data[i];
-      try {
-        operations.push(parseOperation(sender.address, row, getToken));
-      } catch (error: any) {
-        toast({
-          title: "error",
-          description: `Error at row #${i + 1}: ${error?.message}`,
-          status: "error",
-        });
-        return;
-      }
-    }
-
+  const onCSVFileUploadComplete = async (sender: Account, rows: ParseResult<string[]>) => {
     try {
-      // TODO: add support for Multisig
-      await dispatch(estimateAndUpdateBatch(sender, sender, operations, network));
+      if (rows.errors.length > 0) {
+        throw new Error("Error loading csv file: " + rows.errors.map(e => e.message).join(", "));
+      }
 
-      toast({ title: "CSV added to batch!" });
+      const operations: Operation[] = [];
+      for (let i = 0; i < rows.data.length; i++) {
+        const row = rows.data[i];
+        try {
+          operations.push(parseOperation(sender.address, row, getToken));
+        } catch (error: any) {
+          throw new Error(`Error at row #${i + 1}: ${error?.message}`);
+        }
+      }
+
+      await dispatch(
+        estimateAndUpdateBatch(makeFormOperations(sender, getSigner(sender), operations), network)
+      );
+
+      toast({ title: "CSV added to batch!", status: "success" });
       onClose();
     } catch (error: any) {
-      clearBatch(sender.address.pkh);
-      toast({ title: "Invalid transaction", description: error.message, status: "error" });
-    } finally {
-      setIsLoading(false);
+      toast({ title: "Error", description: error.message, status: "error" });
     }
+    setIsLoading(false);
   };
 
   const onSubmit = async ({ file, sender }: FormFields) => {
@@ -103,12 +99,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
         <Text textAlign="center">Select an account and then upload the CSV file.</Text>
         <ModalBody>
           <FormControl paddingY={5} isInvalid={!!errors.sender}>
-            {/* TODO: Use AllAccountsAutocomplete instead */}
-            <OwnedImplicitAccountsAutocomplete
-              label="From"
-              inputName="sender"
-              allowUnknown={false}
-            />
+            <OwnedAccountsAutocomplete label="From" inputName="sender" allowUnknown={false} />
             {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
           </FormControl>
 

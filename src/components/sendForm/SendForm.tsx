@@ -3,16 +3,16 @@ import { TezosToolkit, TransferParams } from "@taquito/taquito";
 import { useEffect, useRef, useState } from "react";
 import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
-import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
+import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
+import { getTotalFee, operationsToBatchItems } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { SubmitStep } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
-import { EstimatedOperation, FormOperations, SendFormMode } from "./types";
+import { EstimatedOperation, FormOperations, makeFormOperations, SendFormMode } from "./types";
 import { makeTransfer } from "./util/execution";
-import { makeSimulation } from "./util/simulation";
 
 export const SendForm = ({
   sender,
@@ -33,7 +33,8 @@ export const SendForm = ({
   const toast = useToast();
   const dispatch = useAppDispatch();
   const clearBatch = useClearBatch();
-  const getAccount = useGetImplicitAccount();
+  const getAccount = useGetOwnedAccount();
+  const getSigner = useGetBestSignerForAccount();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,11 +57,11 @@ export const SendForm = ({
     setIsLoading(true);
 
     try {
-      const estimate = await makeSimulation(operations, network);
+      const estimates = await operationsToBatchItems(operations, network);
 
       setTransferValues({
         operations,
-        fee: String(estimate),
+        fee: String(getTotalFee(estimates)),
       });
     } catch (error: any) {
       console.warn("Simulation Error", error);
@@ -71,16 +72,17 @@ export const SendForm = ({
   };
 
   const addToBatch = async (operation: Operation, senderPkh: RawPkh) => {
-    // TODO: add support for Multisig
     if (isLoading) {
       return;
     }
     setIsLoading(true);
     const sender = getAccount(senderPkh);
+    const signer = getSigner(sender);
 
     try {
-      // TODO: add support for Multisig
-      await dispatch(estimateAndUpdateBatch(sender, sender, [operation], network));
+      await dispatch(
+        estimateAndUpdateBatch(makeFormOperations(sender, signer, [operation]), network)
+      );
 
       toast({ title: "Transaction added to batch!", status: "success" });
     } catch (error: any) {
@@ -91,7 +93,6 @@ export const SendForm = ({
   };
 
   const execute = async (operations: FormOperations, tezosToolkit: TezosToolkit) => {
-    // TODO: add support for Multisig
     if (isLoading) {
       return;
     }
@@ -101,8 +102,7 @@ export const SendForm = ({
       const result = await makeTransfer(operations, tezosToolkit);
       if (mode.type === "batch") {
         // TODO this will have to me moved in a thunk
-        const batchOwner = operations.signer.address.pkh;
-        clearBatch(batchOwner);
+        clearBatch(operations.sender);
       }
       setHash(result.hash);
       toast({ title: "Success", description: result.hash });

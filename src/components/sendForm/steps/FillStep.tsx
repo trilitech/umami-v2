@@ -31,9 +31,9 @@ import {
   useGetImplicitAccount,
   useGetMultisigAccount,
   useGetOwnedAccountSafe,
+  useGetMultisigSigners,
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
-import { useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import {
   OwnedAccountsAutocomplete,
@@ -361,10 +361,13 @@ const buildTezFromFormValues = (
       sender: getMultisigAccount(formValues.sender),
     };
   }
+  const signer = getImplicitAccount(formValues.sender);
+
   return {
     type: "implicit",
     content: value,
-    signer: getImplicitAccount(formValues.sender),
+    sender: signer,
+    signer,
   };
 };
 
@@ -390,11 +393,13 @@ const buildTokenFromFormValues = (
       sender: getMultisigAccount(formValues.sender),
     };
   }
+  const signer = getImplicitAccount(formValues.sender);
 
   return {
     type: "implicit",
     content: token,
-    signer: getImplicitAccount(formValues.sender),
+    sender: signer,
+    signer,
   };
 };
 
@@ -427,10 +432,13 @@ export const FillStep: React.FC<{
                 formValues.baker !== undefined ? parseImplicitPkh(formValues.baker) : undefined,
             };
 
+            const signer = getImplicitAccount(formValues.sender);
+
             onSubmit({
               type: "implicit",
               content: [delegation],
-              signer: getImplicitAccount(formValues.sender),
+              sender: signer,
+              signer,
             });
           }}
         />
@@ -498,15 +506,9 @@ export const FillStep: React.FC<{
       return (
         <FillBatchForm
           isLoading={isLoading}
-          transfer={mode.data.batch}
-          signer={mode.data.signer}
-          onSubmit={() => {
-            onSubmit({
-              type: "implicit",
-              content: mode.data.batch,
-              signer: getImplicitAccount(mode.data.signer),
-            });
-          }}
+          transfer={mode.data.content}
+          signer={mode.data.signer.address.pkh}
+          onSubmit={() => onSubmit(mode.data)}
         />
       );
     }
