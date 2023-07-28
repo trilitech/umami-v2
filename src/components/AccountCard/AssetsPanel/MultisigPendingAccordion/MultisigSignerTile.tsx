@@ -4,7 +4,7 @@ import colors from "../../../../style/colors";
 import { MultisigAccount } from "../../../../types/Account";
 import { ImplicitAddress } from "../../../../types/Address";
 import { formatPkh } from "../../../../utils/format";
-import { useGetImplicitAccount } from "../../../../utils/hooks/accountHooks";
+import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
 import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import { ParamsWithFee } from "../../../ApproveExecuteForm/types";
@@ -20,7 +20,7 @@ const MultisigSignerTile: React.FC<{
 }> = props => {
   const signer = props.signerAddress;
   const getContactName = useGetContactName();
-  const getImplicitAccount = useGetImplicitAccount();
+  const getImplicitAccount = useGetImplicitAccountSafe();
   const accountLabel = getImplicitAccount(signer.pkh)?.label;
   const label = accountLabel || getContactName(signer.pkh);
 

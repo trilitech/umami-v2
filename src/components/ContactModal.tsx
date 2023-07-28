@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
-import { useGetImplicitAccount, useImplicitAccounts } from "../utils/hooks/accountHooks";
+import { useGetOwnedAccountSafe, useImplicitAccounts } from "../utils/hooks/accountHooks";
 import { useContactExists } from "../utils/hooks/contactsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
@@ -61,7 +61,7 @@ export const UpsertContactModal: FC<{
   };
 
   const { nameExistsInContacts, addressExistsInContacts } = useContactExists();
-  const getAccount = useGetImplicitAccount();
+  const getAccount = useGetOwnedAccountSafe();
   const validatePkh = (pkh: string) => {
     if (!isAddressValid(pkh)) {
       return "Invalid address";

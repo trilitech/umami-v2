@@ -22,11 +22,16 @@ export const useImplicitAccounts = () => {
   return useAppSelector(s => s.accounts.items);
 };
 
+export const useGetImplicitAccountSafe = () => {
+  const accounts = useImplicitAccounts();
+  return (pkh: RawPkh) => accounts.find(account => account.address.pkh === pkh);
+};
+
 // For cleaner code and ease of use this hook returns an ImplicitAccount
 // Please make sure not to pass in non existing Pkh
 export const useGetImplicitAccount = () => {
-  const accounts = useImplicitAccounts();
-  return (pkh: RawPkh) => accounts.find(account => account.address.pkh === pkh) as ImplicitAccount;
+  const getAccount = useGetImplicitAccountSafe();
+  return (pkh: RawPkh) => getAccount(pkh) as ImplicitAccount;
 };
 
 export const useReset = () => {

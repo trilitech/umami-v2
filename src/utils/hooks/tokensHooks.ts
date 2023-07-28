@@ -16,14 +16,14 @@ export const useGetToken = (): TokenLookup => {
 export const useGetTokenType = (network: TezosNetwork) => {
   const tokens = useAppSelector(s => s.tokens[network]);
   return (contract: RawPkh): Token["type"] | undefined => {
-    const contractTokens = tokens[contract];
-    if (!contractTokens) {
+    if (!(contract in tokens)) {
       return undefined;
     }
+    const contractTokens = tokens[contract];
     const anyTokenId = Object.keys(contractTokens)[0];
     if (!anyTokenId) {
       return undefined;
     }
-    return contractTokens[anyTokenId]?.type;
+    return contractTokens[anyTokenId].type;
   };
 };

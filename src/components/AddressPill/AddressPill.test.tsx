@@ -48,7 +48,7 @@ describe("<AddressPill />", () => {
     );
     render(
       <AddressPill
-        address={parseContractPkh(fa1.token.contract?.address as string)}
+        address={parseContractPkh(fa1.token.contract.address as string)}
         mode={{ type: "removable", onRemove: () => {} }}
       />
     );

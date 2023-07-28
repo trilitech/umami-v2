@@ -30,7 +30,7 @@ import {
   useAccountIsMultisig,
   useGetImplicitAccount,
   useGetMultisigAccount,
-  useGetOwnedAccount,
+  useGetOwnedAccountSafe,
   useMultisigAccounts,
 } from "../../../utils/hooks/accountHooks";
 import { useBatchIsSimulating, useGetMultisigSigners } from "../../../utils/hooks/assetsHooks";
@@ -171,7 +171,7 @@ type FormValues = {
 };
 
 const useGetDefaultProposalSigner = () => {
-  const getAccount = useGetOwnedAccount();
+  const getAccount = useGetOwnedAccountSafe();
   const getSigners = useGetMultisigSigners();
   return (initalSenderPkh: string) => {
     const initialSenderAccount = (initalSenderPkh && getAccount(initalSenderPkh)) || undefined;

@@ -16,4 +16,4 @@ export type Multisig = {
   pendingOperationsBigmapId: BigmapId;
 };
 
-export type MultisigPendingOperations = Record<BigmapId, MultisigOperation[]>;
+export type MultisigPendingOperations = Record<BigmapId, MultisigOperation[] | undefined>;

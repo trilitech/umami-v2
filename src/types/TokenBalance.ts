@@ -70,10 +70,13 @@ export const tokenDecimal = (asset: Token): string => {
 
 export const httpIconUri = (asset: FA12TokenBalance | FA2TokenBalance): string | undefined => {
   let iconUri;
-  if (asset.type === "fa1.2") {
-    iconUri = asset.metadata?.icon;
-  } else if (asset.type === "fa2") {
-    iconUri = asset.metadata?.thumbnailUri;
+  switch (asset.type) {
+    case "fa1.2":
+      iconUri = asset.metadata?.icon;
+      break;
+    case "fa2":
+      iconUri = asset.metadata?.thumbnailUri;
+      break;
   }
   return iconUri && getIPFSurl(iconUri);
 };

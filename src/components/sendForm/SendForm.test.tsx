@@ -594,7 +594,7 @@ describe("<SendForm />", () => {
         );
       });
 
-      const contractAddress = nft.token?.contract?.address as string;
+      const contractAddress = nft.token.contract.address as string;
       expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
         [
           {
@@ -603,7 +603,7 @@ describe("<SendForm />", () => {
             recipient: parseImplicitPkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
             sender: parseImplicitPkh("tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"),
             contract: parseContractPkh(contractAddress),
-            tokenId: nft.token?.tokenId,
+            tokenId: nft.token.tokenId,
           },
         ],
         MOCK_TEZOS_TOOLKIT

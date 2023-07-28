@@ -4,7 +4,7 @@ import { CgSandClock } from "react-icons/cg";
 import { RxCheckCircled } from "react-icons/rx";
 import colors from "../../../../style/colors";
 import { ImplicitAddress } from "../../../../types/Address";
-import { useGetImplicitAccount } from "../../../../utils/hooks/accountHooks";
+import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../../../utils/hooks/assetsHooks";
 import { estimateMultisigApproveOrExecute } from "../../../../utils/tezos";
 import { IconAndTextBtn } from "../../../IconAndTextBtn";
@@ -19,7 +19,7 @@ export const MultisigActionButton: React.FC<{
   sender: MultisigAccount;
   openSignModal: (params: ParamsWithFee) => void;
 }> = ({ signerAddress, sender, operation, pendingApprovals, openSignModal }) => {
-  const getImplicitAccount = useGetImplicitAccount();
+  const getImplicitAccount = useGetImplicitAccountSafe();
   const network = useSelectedNetwork();
   const signer = getImplicitAccount(signerAddress.pkh);
   const signerInOwnedAccounts = !!signer;
