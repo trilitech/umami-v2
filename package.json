@@ -11,7 +11,7 @@
     "@airgap/beacon-wallet": "^4.0.2",
     "@babel/runtime": "^7.22.6",
     "@chakra-ui/icons": "^2.0.17",
-    "@chakra-ui/react": "^2.5.1",
+    "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@graphql-codegen/cli": "^3.3.1",
@@ -94,7 +94,9 @@
     "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:mac:debug": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "electron-builder -w -c.extraMetadata.main=build/electron.js",
-    "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js"
+    "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js",
+    "theme": "chakra-cli tokens src/style/theme.ts",
+    "theme:watch": "chakra-cli tokens src/style/theme.ts --watch"
   },
   "browserslist": {
     "production": [
@@ -105,6 +107,7 @@
     ]
   },
   "devDependencies": {
+    "@chakra-ui/cli": "^2.4.1",
     "@storybook/addon-actions": "^6.5.16",
     "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-interactions": "^6.5.16",
