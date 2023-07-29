@@ -35,6 +35,13 @@ export const estimateMultisigApproveOrExecute = async (
   return tezosToolkit.estimate.transfer(approveOrExecuteMethod.toTransferParams());
 };
 
+export const estimateSingle = async (
+  operation: FormOperations,
+  network: TezosNetwork
+): Promise<Estimate> => {
+  return estimateBatch(operation, network).then(estimates => estimates[0]);
+};
+
 export const estimateBatch = async (
   operations: FormOperations,
   network: TezosNetwork

@@ -9,7 +9,7 @@ import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { getTotalFee, operationsToBatchItems } from "../../views/batch/batchUtils";
+import { getTotalFee, estimateOperations } from "../../views/batch/batchUtils";
 import { FillStep } from "./steps/FillStep";
 import { SubmitStep } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
@@ -54,7 +54,7 @@ export const SendForm = ({
   const simulate = (operations: FormOperations) =>
     handleAsyncAction(
       async () => {
-        const estimates = await operationsToBatchItems(operations, network);
+        const estimates = await estimateOperations(operations, network);
 
         setTransferValues({
           operations,
@@ -96,7 +96,7 @@ export const SendForm = ({
     });
 
   if (hash) {
-    return <SuccessStep hash={hash} network={network} />;
+    return <SuccessStep hash={hash} />;
   }
 
   if (transferValues) {
@@ -104,7 +104,6 @@ export const SendForm = ({
       <SubmitStep
         onSubmit={tezosToolkit => execute(transferValues.operations, tezosToolkit)}
         isBatch={mode.type === "batch"}
-        network={network}
         recap={transferValues}
       />
     );

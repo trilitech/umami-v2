@@ -71,7 +71,7 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
 
       <Button
         mt={4}
-        bg="umami.blue"
+        variant="primary"
         onClick={_ => {
           onOpen({
             sender: ownerPkh,
