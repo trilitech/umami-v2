@@ -27,6 +27,7 @@ export const useAccountsFilter = () => {
             _hover={{ bg: "none" }}
             _active={{ bg: "none" }}
             maxH="26px"
+            w="48px"
             fontWeight="normal"
             data-testid="account-filter"
             my={4}

@@ -1,4 +1,5 @@
 import { AspectRatio, Image, Flex, Box, Text } from "@chakra-ui/react";
+import colors from "../../style/colors";
 import { formatPkh } from "../../utils/format";
 import { useBakerList } from "../../utils/hooks/assetsHooks";
 
@@ -17,8 +18,10 @@ export const BakerSmallTile = ({
         <Image src={imageUrl} />
       </AspectRatio>
       <Box ml={2}>
-        <Text>{label}</Text>
-        <Text color="umami.gray.600">{formatPkh(pkh)}</Text>
+        <Text fontWeight={600}>{label}</Text>
+        <Text color={colors.gray[300]} size="sm">
+          {formatPkh(pkh)}
+        </Text>
       </Box>
     </Flex>
   );

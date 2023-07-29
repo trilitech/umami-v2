@@ -27,6 +27,7 @@ import { useAllDelegations } from "../../utils/hooks/assetsHooks";
 import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { useRenderBakerSmallTile } from "./BakerSmallTile";
+import colors from "../../style/colors";
 
 const DelegationsTable = ({
   delegations,
@@ -41,13 +42,13 @@ const DelegationsTable = ({
 
   const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
   return (
-    <TableContainer overflowX="unset" overflowY="unset">
+    <TableContainer>
       <Table>
         {
           // Finally a way to have a sticky Header
           // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
         }
-        <Thead position="sticky" top={0} zIndex="1" bg="umami.gray.900" borderRadius={4}>
+        <Thead position="sticky" top={0} zIndex="1" bg={colors.gray[900]} borderRadius={4}>
           <Tr>
             <Th>Account:</Th>
             <Th>Initial Balance:</Th>
@@ -55,6 +56,7 @@ const DelegationsTable = ({
             <Th>Duration:</Th>
             <Th>Last Reward:</Th>
             <Th>Baker:</Th>
+            <Th>{/* For buttons */}</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -70,30 +72,26 @@ const DelegationsTable = ({
                 <Td>{currentBalance}</Td>
                 <Td>{duration}</Td>
                 <Td />
+                <Td>{renderBakerTile(delegation.delegate.address)}</Td>
                 <Td>
-                  <Flex alignItems="center">
-                    {renderBakerTile(delegation.delegate.address)}
-                    <IconButton
-                      ml={2}
-                      mr={2}
-                      onClick={() =>
-                        onChangeDelegate(delegation.sender, delegation.delegate.address)
-                      }
-                      borderRadius="50%"
-                      aria-label="Change Baker"
-                      icon={<MdOutlineModeEdit />}
-                      mb={2}
-                    />
-                    <IconButton
-                      ml={2}
-                      mr={2}
-                      onClick={() => onRemoveDelegate(delegation.sender)}
-                      borderRadius="50%"
-                      aria-label="Delete Baker"
-                      icon={<CiCircleRemove />}
-                      mb={2}
-                    />
-                  </Flex>
+                  <IconButton
+                    ml={2}
+                    mr={2}
+                    onClick={() => onChangeDelegate(delegation.sender, delegation.delegate.address)}
+                    borderRadius="50%"
+                    aria-label="Change Baker"
+                    icon={<MdOutlineModeEdit />}
+                    mb={2}
+                  />
+                  <IconButton
+                    ml={2}
+                    mr={2}
+                    onClick={() => onRemoveDelegate(delegation.sender)}
+                    borderRadius="50%"
+                    aria-label="Delete Baker"
+                    icon={<CiCircleRemove />}
+                    mb={2}
+                  />
                 </Td>
               </Tr>
             );
@@ -168,13 +166,12 @@ const DelegationsView = () => {
   return (
     <Flex direction="column" height="100%">
       <TopBar title="Delegations" />
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex alignItems="left" justifyContent="space-between">
         {accountsFilter}
         <DelegateButton />
       </Flex>
       {delegationsToDisplay.length > 0 ? (
-        <Box overflow="scroll">
-          <Box maxH={40} overflow="scroll"></Box>
+        <Box overflowY="auto">
           <DelegationsTable
             onChangeDelegate={handleEditDelegate}
             onRemoveDelegate={handleRemoveDelegate}
