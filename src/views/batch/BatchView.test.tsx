@@ -67,7 +67,11 @@ const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh
 const addItemsToBatchViaUI = async () => {
   const sendButton = screen.getByText(/send/i);
   fireEvent.click(sendButton);
+  fireEvent.click(sendButton);
 
+  await waitFor(() => {
+    expect(screen.getByLabelText(/amount/i)).toBeInTheDocument();
+  });
   await addToBatchViaUI(33, mockImplicitAccount(1).label, mockImplicitAddress(9).pkh);
   await addToBatchViaUI(55, mockImplicitAccount(1).label, mockImplicitAddress(4).pkh);
   await addToBatchViaUI(9, mockImplicitAccount(1).label, mockImplicitAddress(2).pkh);

@@ -114,10 +114,12 @@ export const useConversionRate = () => useAppSelector(s => s.assets.conversionRa
 
 export const useTezToDollar = () => {
   const rate = useConversionRate();
-  if (rate === null) {
-    return null;
-  }
-  return (tezosBalance: string) => new BigNumber(tezosBalance).multipliedBy(rate);
+
+  return (tezosBalance: string) => {
+    return rate === null
+      ? null
+      : new BigNumber(tezosBalance).multipliedBy(rate).decimalPlaces(2, BigNumber.ROUND_UP);
+  };
 };
 
 export const useGetDollarBalance = () => {
@@ -128,7 +130,7 @@ export const useGetDollarBalance = () => {
   return (pkh: string) => {
     const mutezBalance = getAccountBalance(pkh);
 
-    if (mutezBalance == null || tezToDollar === null) {
+    if (mutezBalance == null) {
       return null;
     }
 
@@ -148,7 +150,7 @@ export const useTotalBalance = () => {
     return null;
   }
 
-  const dollarBalance = tezToDollar !== null ? tezToDollar(tezBalance) : null;
+  const dollarBalance = tezToDollar(tezBalance);
 
   return { tezBalance, dollarBalance };
 };

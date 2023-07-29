@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Account } from "../../types/Account";
 import { makeDelegation } from "../../types/Delegation";
 import { mutezToTez } from "../../utils/format";
@@ -11,7 +12,9 @@ import {
   useSelectedNetwork,
 } from "../../utils/hooks/assetsHooks";
 import { useSendFormModal } from "../../views/home/useSendFormModal";
+import { DynamicModalContext } from "../DynamicModal";
 import { useReceiveModal } from "../ReceiveModal";
+import Tez from "../SendFlow/Tez";
 import { AccountCardDisplay } from "./AccountCardDisplay";
 
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
@@ -26,6 +29,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
 
   const { onOpen: onOpenSend, modalElement: sendModal } = useSendFormModal();
   const { onOpen: onOpenReceive, modalElement: receiveModal } = useReceiveModal();
+  const { openWith } = useContext(DynamicModalContext);
 
   const balance = accountBalance(account.address.pkh);
   const dollarBalance = getDollarBalance(account.address.pkh);
@@ -37,12 +41,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   return (
     <>
       <AccountCardDisplay
-        onSend={() =>
-          onOpenSend({
-            mode: { type: "tez" },
-            sender: account.address.pkh,
-          })
-        }
+        onSend={() => openWith(<Tez sender={account} />)}
         onDelegate={opts =>
           onOpenSend({
             mode: { type: "delegation", data: opts },

@@ -17,13 +17,11 @@ import MultisigDecodedOperations from "../AccountCard/AssetsPanel/MultisigPendin
 import { approveOrExecuteMultisigOperation } from "../../utils/tezos";
 import { AccountSmallTile } from "../AccountSelector/AccountSmallTile";
 import { ApproveOrExecute } from "../../utils/tezos/types";
-import { TezosNetwork } from "../../types/TezosNetwork";
 import { TezosToolkit } from "@taquito/taquito";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 
 type Props = ParamsWithFee & {
   onSuccess: (hash: string) => void;
-  network: TezosNetwork;
 };
 
 const TITLE: Record<ApproveOrExecute, string> = {
@@ -32,7 +30,6 @@ const TITLE: Record<ApproveOrExecute, string> = {
 };
 
 export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
-  network,
   onSuccess,
   signer,
   sender,
@@ -84,7 +81,7 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
       </ModalBody>
 
       <ModalFooter justifyContent="center">
-        <SignButton network={network} onSubmit={approveOrExecute} signer={signer} />
+        <SignButton onSubmit={approveOrExecute} signer={signer} />
       </ModalFooter>
     </ModalContent>
   );

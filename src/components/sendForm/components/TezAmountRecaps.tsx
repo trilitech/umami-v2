@@ -34,7 +34,7 @@ export const Subtotal = ({ mutez, ...flexProps }: Props) => {
 
 export const Total = ({ mutez, ...flexProps }: Props) => {
   const tezToDollar = useTezToDollar();
-  const totalUsdPrice = tezToDollar && tezToDollar(mutezToTez(mutez)).toFixed(2);
+  const totalUsdPrice = tezToDollar(mutezToTez(mutez));
   return (
     <Flex
       aria-label="total"
@@ -56,7 +56,7 @@ export const Total = ({ mutez, ...flexProps }: Props) => {
               USD:
             </Heading>
             <Text size="sm" color={colors.gray[400]}>
-              ${totalUsdPrice}
+              ${totalUsdPrice.toFixed(2)}
             </Text>
           </Flex>
         )}
