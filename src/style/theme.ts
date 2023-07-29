@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
 import colors from "./colors";
+import { modalTheme } from "./theme/modal";
 
 const config = {
   initialColorMode: "dark",
@@ -147,9 +148,7 @@ const theme = extendTheme({
       },
       sizes,
     },
-    Modal: {
-      sizes: { md: { dialog: { maxW: "482px" } } },
-    },
+    Modal: modalTheme,
   },
   config,
   colors: {

@@ -5,13 +5,12 @@ import { Operation, OperationWithFee } from "../../types/Operation";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { FormOperations } from "../../components/sendForm/types";
 
-export const getTotalFee = (items: OperationWithFee[]): BigNumber => {
-  const fee = items.reduce((acc, curr) => {
-    return acc.plus(curr.fee);
-  }, new BigNumber(0));
+// for tez it will return tez, for mutez - mutez
+export const getTotal = (items: string[]): BigNumber =>
+  items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));
 
-  return fee;
-};
+export const getTotalFee = (operations: OperationWithFee[]): BigNumber =>
+  getTotal(operations.map(op => op.fee));
 
 export const getBatchSubtotal = (ops: Operation[]) => {
   const subTotal = ops.reduce((acc, curr) => {
@@ -25,7 +24,12 @@ export const getBatchSubtotal = (ops: Operation[]) => {
   return subTotal;
 };
 
-export const operationsToBatchItems = async (
+export const estimateTotalFee = async (
+  operations: FormOperations,
+  network: TezosNetwork
+): Promise<BigNumber> => estimateOperations(operations, network).then(getTotalFee);
+
+export const estimateOperations = async (
   operations: FormOperations,
   network: TezosNetwork
 ): Promise<OperationWithFee[]> => {

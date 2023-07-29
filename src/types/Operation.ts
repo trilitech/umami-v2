@@ -14,7 +14,7 @@ export type MultisigStorage = {
 export type TezOperation = {
   type: "tez";
   recipient: Address;
-  amount: string;
+  amount: string; // TODO: enforce mutez format here
   parameter?: TransferParams["parameter"];
 };
 

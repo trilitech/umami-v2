@@ -87,7 +87,7 @@ const RightPanel = ({
         <Total mutez={total.toString()} paddingY={3} />
 
         <Flex justifyContent="space-between">
-          <Button onClick={onSend} flex={1} bg="umami.blue" mr={4}>
+          <Button onClick={onSend} flex={1} variant="primary" mr={4}>
             Submit batch
           </Button>
 

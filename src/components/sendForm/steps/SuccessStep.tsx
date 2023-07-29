@@ -11,28 +11,32 @@ import {
 
 import { Link } from "react-router-dom";
 
-import React from "react";
+import React, { useContext } from "react";
 import { getHashUrl } from "../../../views/operations/operationsUtils";
 import { TzktLink } from "../../TzktLink";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
+import { DynamicModalContext } from "../../DynamicModal";
 
-export const SuccessStep: React.FC<{ hash: string; network: TezosNetwork }> = ({
-  hash,
-  network,
-}) => {
+export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
+  const network = useSelectedNetwork();
   const tzktUrl = getHashUrl(hash, network);
+  const { onClose } = useContext(DynamicModalContext);
+
   return (
-    <ModalContent bg="umami.gray.900">
+    <ModalContent paddingY="20px">
       <ModalCloseButton />
-      <ModalHeader textAlign="center">Operation Submitted</ModalHeader>
-      <ModalBody>
-        <Text mt={2} color="text.dark" textAlign="center">
-          You can follow this operation's progress in the Operations section.
-        </Text>
-      </ModalBody>
+      <ModalHeader textAlign="center">
+        Operation Submitted
+        <Flex justifyContent="center">
+          <Text color="text.dark" size="sm" textAlign="center" width="340px">
+            You can follow this operation's progress in the Operations section.
+          </Text>
+        </Flex>
+      </ModalHeader>
+      <ModalBody p="0"></ModalBody>
       <ModalFooter justifyContent="center" flexDirection="column">
         <Link to="/operations">
-          <Button width="100%" bg="umami.blue">
+          <Button width="100%" variant="primary" onClick={onClose}>
             Go to operation
           </Button>
         </Link>
