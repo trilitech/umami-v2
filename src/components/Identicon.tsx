@@ -9,10 +9,9 @@ const ReactIdenticons = require("react-identicons").default;
 export const Identicon: React.FC<
   {
     address: string;
-
     identiconSize?: number;
   } & ChakraProps
-> = ({ address, identiconSize = 48, ...props }) => {
+> = ({ address, identiconSize = 32, ...props }) => {
   return (
     <Box
       sx={{
@@ -20,12 +19,16 @@ export const Identicon: React.FC<
           borderRadius: "4px",
         },
       }}
+      bg="white"
+      borderRadius="4px"
+      p="8px"
       {...props}
     >
       <ReactIdenticons
         style={{
           borderRadius: 4,
         }}
+        bg="white"
         size={identiconSize}
         string={address}
       />

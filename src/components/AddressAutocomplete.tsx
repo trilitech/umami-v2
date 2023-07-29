@@ -80,7 +80,7 @@ const Suggestions = ({
             }}
           >
             <>
-              <Identicon identiconSize={30} address={contact.pkh} mr={4} />
+              <Identicon identiconSize={20} p="5px" address={contact.pkh} mr={4} />
               <Text size="sm">{contact.name}</Text>
             </>
           </ListItem>
