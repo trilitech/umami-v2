@@ -14,9 +14,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
-import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Account } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { RawPkh } from "../../types/Address";
 import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
@@ -27,6 +25,7 @@ import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpda
 import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
 import { parseOperation } from "./utils";
 import { makeFormOperations } from "../sendForm/types";
+import { useSafeLoading } from "../../utils/hooks/useSafeLoading";
 
 type FormFields = {
   sender: RawPkh;
@@ -40,8 +39,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   const dispatch = useAppDispatch();
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
-
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, withLoading } = useSafeLoading();
 
   const form = useForm<FormFields>({
     mode: "onBlur",
@@ -51,8 +49,12 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
     formState: { isValid, errors },
   } = form;
 
-  const onCSVFileUploadComplete = async (sender: Account, rows: ParseResult<string[]>) => {
-    try {
+  const onSubmit = async ({ file, sender }: FormFields) =>
+    withLoading(async () => {
+      const senderAccount = getAccount(sender);
+      const rows = await new Promise<ParseResult<string[]>>(resolve => {
+        Papa.parse(file[0], { skipEmptyLines: true, complete: resolve });
+      });
       if (rows.errors.length > 0) {
         throw new Error("Error loading csv file: " + rows.errors.map(e => e.message).join(", "));
       }
@@ -61,35 +63,22 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
       for (let i = 0; i < rows.data.length; i++) {
         const row = rows.data[i];
         try {
-          operations.push(parseOperation(sender.address, row, getToken));
+          operations.push(parseOperation(senderAccount.address, row, getToken));
         } catch (error: any) {
           throw new Error(`Error at row #${i + 1}: ${error?.message}`);
         }
       }
 
       await dispatch(
-        estimateAndUpdateBatch(makeFormOperations(sender, getSigner(sender), operations), network)
+        estimateAndUpdateBatch(
+          makeFormOperations(senderAccount, getSigner(senderAccount), operations),
+          network
+        )
       );
 
       toast({ title: "CSV added to batch!", status: "success" });
       onClose();
-    } catch (error: any) {
-      toast({ title: "Error", description: error.message, status: "error" });
-    }
-    setIsLoading(false);
-  };
-
-  const onSubmit = async ({ file, sender }: FormFields) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    const account = getAccount(sender);
-    Papa.parse<string[]>(file[0], {
-      skipEmptyLines: true,
-      complete: (rows: ParseResult<string[]>) => onCSVFileUploadComplete(account, rows),
     });
-  };
 
   return (
     <FormProvider {...form}>

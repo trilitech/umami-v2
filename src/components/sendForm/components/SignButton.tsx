@@ -1,14 +1,6 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { GoogleAuth } from "../../../GoogleAuth";
 import {
@@ -19,6 +11,7 @@ import {
 } from "../../../types/Account";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { useGetSecretKey } from "../../../utils/hooks/accountUtils";
+import { useSafeLoading } from "../../../utils/hooks/useSafeLoading";
 import { makeToolkit } from "../../../utils/tezos";
 
 const SignButton: React.FC<{
@@ -33,41 +26,26 @@ const SignButton: React.FC<{
   } = useForm<{ password: string }>({ mode: "onBlur" });
 
   const getSecretKey = useGetSecretKey();
-  const toast = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, withLoading } = useSafeLoading();
 
-  // wrapper function that handles changing the isLoading state & error handling
-  const handleSign = async (getToolkit: () => Promise<TezosToolkit>) => {
-    if (isLoading) {
-      return;
-    }
-
-    setIsLoading(true);
-
-    getToolkit()
-      .then(onSubmit)
-      .catch((error: any) => toast({ title: "Error", description: error.message, status: "error" }))
-      .finally(() => setIsLoading(false));
-  };
-
-  const onMnemonicSign = async ({ password }: { password: string }) => {
-    return handleSign(async () => {
+  const onMnemonicSign = async ({ password }: { password: string }) =>
+    withLoading(async () => {
       const secretKey = await getSecretKey(signer as MnemonicAccount, password);
-      return makeToolkit({ type: "mnemonic", secretKey, network });
+      onSubmit(await makeToolkit({ type: "mnemonic", secretKey, network }));
     });
-  };
 
-  const onSocialSign = async (secretKey: string) => {
-    return handleSign(() => makeToolkit({ type: "social", secretKey, network }));
-  };
+  const onSocialSign = async (secretKey: string) =>
+    withLoading(async () => onSubmit(await makeToolkit({ type: "social", secretKey, network })));
 
-  const onLedgerSign = () =>
-    handleSign(() =>
-      makeToolkit({
-        type: "ledger",
-        account: signer as LedgerAccount,
-        network,
-      })
+  const onLedgerSign = async () =>
+    withLoading(async () =>
+      onSubmit(
+        await makeToolkit({
+          type: "ledger",
+          account: signer as LedgerAccount,
+          network,
+        })
+      )
     );
 
   return (

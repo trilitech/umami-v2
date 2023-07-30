@@ -208,8 +208,10 @@ describe("<BeaconRequestNotification />", () => {
     const previewBtn = screen.getByRole("button", { name: /preview/i });
     fireEvent.click(previewBtn);
 
-    const passwordInput = await screen.findByLabelText(/password/i);
-    fireEvent.change(passwordInput, { target: { value: "mockPass" } });
+    await waitFor(() => {
+      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    });
+    fillPassword("mockPass");
 
     const submit = screen.getByRole("button", {
       name: /submit transaction/i,
