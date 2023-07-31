@@ -27,7 +27,7 @@ describe("useGetToken", () => {
       const { result: getTokenRef } = renderHook(() => useGetToken(), {
         wrapper: ReduxStore,
       });
-      expect(getTokenRef.current(tokenBalance.token.contract?.address as string, "0")).toEqual(
+      expect(getTokenRef.current(tokenBalance.token.contract.address as string, "0")).toEqual(
         fromRaw(tokenBalance.token)
       );
     });
@@ -49,7 +49,7 @@ describe("useGetToken", () => {
             wrapper: ReduxStore,
           });
           expect(
-            getTokenRef.current(tokenBalance.token.contract?.address as string, "0")
+            getTokenRef.current(tokenBalance.token.contract.address as string, "0")
           ).toBeUndefined();
         }
       );
@@ -73,9 +73,7 @@ describe("useGetTokenType", () => {
         const { result: getTokenRef } = renderHook(() => useGetTokenType(network), {
           wrapper: ReduxStore,
         });
-        expect(getTokenRef.current(tokenBalance.token.contract?.address as string)).toEqual(
-          "fa1.2"
-        );
+        expect(getTokenRef.current(tokenBalance.token.contract.address as string)).toEqual("fa1.2");
       });
 
       SupportedNetworks.forEach(anotherNetwork => {
@@ -92,7 +90,7 @@ describe("useGetTokenType", () => {
             wrapper: ReduxStore,
           });
           expect(
-            getTokenRef.current(tokenBalance.token.contract?.address as string)
+            getTokenRef.current(tokenBalance.token.contract.address as string)
           ).toBeUndefined();
         });
       });

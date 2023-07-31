@@ -24,7 +24,7 @@ const NFTsViewBase = () => {
     selectedAccounts.map(account => account.address.pkh)
   );
   const noNFTs = every(selectedNFTs, nfts => !nfts || nfts.length === 0);
-  const drawerNFT = ownerPkh && (nfts[ownerPkh] || []).find(nft => nft && fullId(nft) === nftId);
+  const drawerNFT = ownerPkh && (nfts[ownerPkh] || []).find(nft => fullId(nft) === nftId);
 
   return (
     <Flex direction="column" height="100%">

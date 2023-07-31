@@ -120,10 +120,6 @@ export const AccountsList: React.FC<{
   const { element: deriveAccountModal, onOpen: openDeriveAccountModal } = useDeriveAccountModal();
 
   const accountTiles = Object.entries(accountsByKind).map(([label, accountsByType]) => {
-    if (!accountsByType) {
-      return null;
-    }
-
     const first = accountsByType[0];
     const isMnemonicGroup = first.type === AccountType.MNEMONIC;
 

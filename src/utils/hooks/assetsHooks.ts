@@ -148,8 +148,7 @@ export const useTotalBalance = () => {
     return null;
   }
 
-  const dollarBalance =
-    tezToDollar !== null && tezBalance !== null ? tezToDollar(tezBalance) : null;
+  const dollarBalance = tezToDollar !== null ? tezToDollar(tezBalance) : null;
 
   return { tezBalance, dollarBalance };
 };

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { Contact } from "../../types/Contact";
-import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
+import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 
 type Options = {
@@ -15,7 +15,7 @@ type Options = {
 export const useUpsertContactModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
-  const getAccount = useGetImplicitAccount();
+  const getAccount = useGetOwnedAccountSafe();
   const onSubmitContact = (newContact: Contact) => {
     if (getAccount(newContact.pkh)) {
       return;
@@ -30,7 +30,7 @@ export const useUpsertContactModal = () => {
       <UpsertContactModal
         title={options.title}
         buttonText={options.buttonText}
-        contact={options?.contact}
+        contact={options.contact}
         onSubmitContact={onSubmitContact}
         isOpen={isOpen}
         onClose={onClose}

@@ -6,7 +6,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
-import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
+import { useGetImplicitAccountSafe } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
@@ -43,7 +43,7 @@ const BatchView = () => {
   const batches = useAppSelector(s => s.assets.batches);
 
   const dispatch = useAppDispatch();
-  const getAccount = useGetImplicitAccount();
+  const getAccount = useGetImplicitAccountSafe();
 
   const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
   const { onOpen, element, onClose } = useConfirmation();

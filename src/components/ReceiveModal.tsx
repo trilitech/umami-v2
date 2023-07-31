@@ -28,7 +28,7 @@ export const useReceiveModal = () => {
 
   return {
     modalElement: (
-      <>{options?.pkh && <ReceiveModal pkh={options?.pkh} isOpen={isOpen} onClose={onClose} />}</>
+      <>{options?.pkh && <ReceiveModal pkh={options.pkh} isOpen={isOpen} onClose={onClose} />}</>
     ),
     onOpen: (options: Options) => {
       optionsRef.current = options;

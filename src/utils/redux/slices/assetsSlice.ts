@@ -166,9 +166,7 @@ const assetsSlice = createSlice({
     ) => {
       const existing = state.batches[pkh] || emptyBatch;
 
-      if (existing) {
-        state.batches[pkh] = { ...existing, isSimulating: true };
-      }
+      state.batches[pkh] = { ...existing, isSimulating: true };
     },
     batchSimulationEnd: (
       state,

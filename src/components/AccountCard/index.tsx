@@ -28,7 +28,6 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const { onOpen: onOpenReceive, modalElement: receiveModal } = useReceiveModal();
 
   const balance = accountBalance(account.address.pkh);
-  const tez = balance || null;
   const dollarBalance = getDollarBalance(account.address.pkh);
 
   const delegationOp = delegation ? makeDelegation(delegation) : null;
@@ -41,18 +40,18 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         onSend={() =>
           onOpenSend({
             mode: { type: "tez" },
-            sender: account?.address?.pkh,
+            sender: account.address.pkh,
           })
         }
         onDelegate={opts =>
           onOpenSend({
             mode: { type: "delegation", data: opts },
-            sender: account?.address?.pkh,
+            sender: account.address.pkh,
           })
         }
         pkh={account.address.pkh}
         label={account.label}
-        tezBalance={tez && mutezToTez(tez)}
+        tezBalance={balance && mutezToTez(balance)}
         dollarBalance={dollarBalance}
         onReceive={() => {
           onOpenReceive({ pkh: account.address.pkh });

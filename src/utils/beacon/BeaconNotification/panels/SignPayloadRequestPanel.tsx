@@ -14,7 +14,7 @@ import {
 import { TezosToolkit } from "@taquito/taquito";
 import React from "react";
 import SignButton from "../../../../components/sendForm/components/SignButton";
-import { useGetImplicitAccount } from "../../../hooks/accountHooks";
+import { useGetImplicitAccountSafe } from "../../../hooks/accountHooks";
 import { useSelectedNetwork } from "../../../hooks/assetsHooks";
 import { walletClient } from "../../beacon";
 
@@ -22,7 +22,7 @@ const SignPayloadRequestPanel: React.FC<{
   request: SignPayloadRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
-  const getAccount = useGetImplicitAccount();
+  const getAccount = useGetImplicitAccountSafe();
   const network = useSelectedNetwork();
   const signerAccount = getAccount(request.sourceAddress);
   const toast = useToast();
