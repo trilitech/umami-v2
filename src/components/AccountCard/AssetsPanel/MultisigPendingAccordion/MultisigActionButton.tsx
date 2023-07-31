@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import React from "react";
 import { CgSandClock } from "react-icons/cg";
 import { RxCheckCircled } from "react-icons/rx";
@@ -21,8 +21,11 @@ export const MultisigActionButton: React.FC<{
 }> = ({ signerAddress, sender, operation, pendingApprovals, openSignModal }) => {
   const getImplicitAccount = useGetImplicitAccountSafe();
   const network = useSelectedNetwork();
+  const toast = useToast();
+
   const signer = getImplicitAccount(signerAddress.pkh);
   const signerInOwnedAccounts = !!signer;
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const approvedBySigner = !!operation.approvals.find(
     approver => approver.pkh === signerAddress.pkh
@@ -56,27 +59,41 @@ export const MultisigActionButton: React.FC<{
   }
 
   const onButtonClick = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
     const actionType = operationIsExecutable ? "execute" : "approve";
-    const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
-      {
+    try {
+      const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
+        {
+          type: actionType,
+          contract: sender.address,
+          operationId: operation.id,
+        },
+        signer,
+        network
+      );
+      openSignModal({
         type: actionType,
-        contract: sender.address,
-        operationId: operation.id,
-      },
-      signer,
-      network
-    );
-    openSignModal({
-      type: actionType,
-      operation: operation,
-      sender,
-      signer,
-      suggestedFeeMutez,
-    });
+        operation: operation,
+        sender,
+        signer,
+        suggestedFeeMutez,
+      });
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, status: "error" });
+    }
+    setIsLoading(false);
   };
 
   return (
-    <Button bg={colors.blue} data-testid="multisig-signer-button" onClick={onButtonClick}>
+    <Button
+      bg={colors.blue}
+      data-testid="multisig-signer-button"
+      onClick={onButtonClick}
+      isLoading={isLoading}
+    >
       {operationIsExecutable ? "Execute" : "Approve"}
     </Button>
   );
