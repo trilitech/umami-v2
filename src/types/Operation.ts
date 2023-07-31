@@ -39,3 +39,5 @@ export type Delegation = {
 };
 
 export type Operation = TezOperation | FA12Operation | FA2Operation | Delegation;
+
+export type OperationWithFee = Operation & { fee: string };

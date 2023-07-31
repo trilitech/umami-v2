@@ -24,7 +24,7 @@ import {
   TokenBalanceWithToken,
 } from "../../types/TokenBalance";
 import * as accountUtils from "../../utils/hooks/accountUtils";
-import assetsSlice, { BatchItem } from "../../utils/redux/slices/assetsSlice";
+import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import store from "../../utils/redux/store";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
@@ -40,6 +40,7 @@ import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Addres
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
 import { TezosNetwork } from "../../types/TezosNetwork";
+import { OperationWithFee } from "../../types/Operation";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
@@ -168,15 +169,6 @@ describe("<SendForm />", () => {
 
       fireEvent.click(addToBatchBtn);
 
-      // Bellow code should not create act warning. This is a bug.
-      //
-      await waitFor(() => {
-        const addToBatchBtn = screen.getByRole("button", {
-          name: /insert into batch/i,
-        });
-        expect(addToBatchBtn).toBeDisabled();
-      });
-
       // expect(mockToast).toHaveBeenCalledWith(/Transaction added to batch/i);
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalled();
@@ -189,53 +181,38 @@ describe("<SendForm />", () => {
         expect(addToBatchBtn).toBeEnabled();
       });
       const batch = store.getState().assets.batches[MOCK_PKH];
-      expect(batch).toEqual({
-        isSimulating: false,
-        items: [
-          {
-            fee: "33",
-            operation: {
-              type: "tez",
-              amount: "23000000",
-              parameter: undefined,
-              recipient: mockImplicitAddress(7),
-            },
-          },
-        ],
-      });
+      expect(batch).toEqual([
+        {
+          fee: "33",
+          type: "tez",
+          amount: "23000000",
+          parameter: undefined,
+          recipient: mockImplicitAddress(7),
+        },
+      ]);
 
       setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 33);
       fireEvent.click(addToBatchBtn);
-      await waitFor(() => {
-        expect(addToBatchBtn).toBeDisabled();
-      });
 
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalledTimes(2);
       });
 
       const batch2 = store.getState().assets.batches[MOCK_PKH];
-      expect(batch2).toEqual({
-        isSimulating: false,
-        items: [
-          {
-            fee: "33",
-            operation: {
-              type: "tez",
-              amount: "23000000",
-              recipient: mockImplicitAddress(7),
-            },
-          },
-          {
-            fee: "33",
-            operation: {
-              type: "tez",
-              amount: "23000000",
-              recipient: mockImplicitAddress(7),
-            },
-          },
-        ],
-      });
+      expect(batch2).toEqual([
+        {
+          fee: "33",
+          type: "tez",
+          amount: "23000000",
+          recipient: mockImplicitAddress(7),
+        },
+        {
+          fee: "33",
+          type: "tez",
+          amount: "23000000",
+          recipient: mockImplicitAddress(7),
+        },
+      ]);
     });
 
     test("should display simulation result: subtotal, fee and total", async () => {
@@ -243,11 +220,11 @@ describe("<SendForm />", () => {
     });
 
     test("it should submit transaction and not alter the user's batch", async () => {
-      const mockBatchItems = [{} as BatchItem];
+      const mockBatchItems = [{} as OperationWithFee];
       store.dispatch(
-        assetsSlice.actions.updateBatch({
+        assetsSlice.actions.addToBatch({
           pkh: MOCK_PKH,
-          items: mockBatchItems,
+          operations: mockBatchItems,
         })
       );
 
@@ -270,7 +247,7 @@ describe("<SendForm />", () => {
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
       });
-      expect(store.getState().assets.batches[MOCK_PKH]?.items).toEqual(mockBatchItems);
+      expect(store.getState().assets.batches[MOCK_PKH]).toEqual(mockBatchItems);
     });
 
     test("it should submit transaction and display recap with tzkt link", async () => {

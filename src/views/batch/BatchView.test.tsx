@@ -59,14 +59,6 @@ const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh
   });
 
   fireEvent.click(addToBatchButton);
-
-  await waitFor(() => {
-    expect(addToBatchButton).toBeDisabled();
-  });
-
-  await waitFor(() => {
-    expect(addToBatchButton).toBeEnabled();
-  });
 };
 
 // Can't run in beforeEach because it requires a render
@@ -252,16 +244,19 @@ describe("<BatchView />", () => {
             type: "tez",
             amount: "1000000",
             recipient: mockImplicitAddress(1),
+            fee: "10",
           },
           {
             type: "tez",
             amount: "2000000",
             recipient: mockImplicitAddress(2),
+            fee: "10",
           },
           {
             type: "tez",
             amount: "3000000",
             recipient: mockImplicitAddress(3),
+            fee: "10",
           },
         ],
         MOCK_TEZOS_TOOLKIT

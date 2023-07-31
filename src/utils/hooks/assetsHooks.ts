@@ -175,11 +175,6 @@ export const useAllDelegations = () => {
 
 export const useAllBatches = () => useAppSelector(s => s.assets.batches);
 
-export const useBatchIsSimulating = () => {
-  const batches = useAllBatches();
-  return (pkh: string) => batches[pkh]?.isSimulating || false;
-};
-
 export const useClearBatch = () => {
   const dispatch = useAppDispatch();
   return (pkh: string) => dispatch(assetsSlice.actions.clearBatch({ pkh }));

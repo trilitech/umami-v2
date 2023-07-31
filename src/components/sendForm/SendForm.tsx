@@ -72,17 +72,22 @@ export const SendForm = ({
 
   const addToBatch = async (operation: Operation, senderPkh: RawPkh) => {
     // TODO: add support for Multisig
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
     const sender = getAccount(senderPkh);
 
     try {
       // TODO: add support for Multisig
       await dispatch(estimateAndUpdateBatch(sender, sender, [operation], network));
 
-      toast({ title: "Transaction added to batch!" });
+      toast({ title: "Transaction added to batch!", status: "success" });
     } catch (error: any) {
       console.warn("Failed adding transaction to batch", error);
-      toast({ title: "Invalid transaction", description: error.message });
+      toast({ title: "Invalid transaction", description: error.message, status: "error" });
     }
+    setIsLoading(false);
   };
 
   const execute = async (operations: FormOperations, tezosToolkit: TezosToolkit) => {
@@ -104,9 +109,8 @@ export const SendForm = ({
     } catch (error: any) {
       console.warn("Failed to execute operation", error);
       toast({ title: "Error", description: error.message });
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   if (hash) {

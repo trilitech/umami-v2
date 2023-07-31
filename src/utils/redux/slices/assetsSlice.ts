@@ -7,19 +7,7 @@ import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { eraseToken, fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Baker } from "../../../types/Baker";
-import { Operation } from "../../../types/Operation";
-
-export type BatchItem = { operation: Operation; fee: string };
-export type Batch = {
-  // TODO: check if it is really needed
-  isSimulating: boolean;
-  items: Array<BatchItem>;
-};
-
-const emptyBatch: Batch = {
-  isSimulating: false,
-  items: [],
-};
+import { OperationWithFee } from "../../../types/Operation";
 
 type State = {
   network: TezosNetwork;
@@ -35,7 +23,7 @@ type State = {
   delegations: Record<string, DelegationOperation | undefined>;
   bakers: Baker[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: Record<string, Batch | undefined>;
+  batches: Record<string, OperationWithFee[] | undefined>;
 };
 
 export type TezTransfersPayload = {
@@ -56,7 +44,7 @@ export type ConversionRatePayload = { rate: State["conversionRate"] };
 
 export type BatchPayload = {
   pkh: string;
-  items: Array<BatchItem>;
+  operations: OperationWithFee[];
 };
 
 const initialState: State = {
@@ -149,40 +137,14 @@ const assetsSlice = createSlice({
       state.conversionRate = rate;
     },
     // Don't use this action directly. Use thunk simulateAndUpdateBatch
-    updateBatch: (
+    addToBatch: (
       state,
-      { payload: { pkh, items: transfers } }: { type: string; payload: BatchPayload }
+      { payload: { pkh, operations } }: { type: string; payload: BatchPayload }
     ) => {
-      const existing = (state.batches[pkh] || emptyBatch) as Batch;
-      const newBatch: Batch = {
-        ...existing,
-        items: [...existing.items, ...transfers],
-      };
-      state.batches[pkh] = newBatch;
-    },
-    batchSimulationStart: (
-      state,
-      { payload: { pkh } }: { type: string; payload: { pkh: string } }
-    ) => {
-      const existing = state.batches[pkh] || emptyBatch;
-
-      state.batches[pkh] = { ...existing, isSimulating: true };
-    },
-    batchSimulationEnd: (
-      state,
-      { payload: { pkh } }: { type: string; payload: { pkh: string } }
-    ) => {
-      const existing = state.batches[pkh];
-
-      if (existing) {
-        state.batches[pkh] = { ...existing, isSimulating: false };
-      }
+      const existing = (state.batches[pkh] || []) as OperationWithFee[];
+      state.batches = { ...state.batches, [pkh]: [...existing, ...operations] };
     },
     clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: string } }) => {
-      if (state.batches[pkh]?.isSimulating) {
-        return;
-      }
-
       delete state.batches[pkh];
     },
   },
