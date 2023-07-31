@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Estimate } from "@taquito/taquito";
 import { fireEvent, screen } from "@testing-library/react";
+import { FormOperations } from "../components/sendForm/types";
 import { ImplicitAccount, MnemonicAccount } from "../types/Account";
 import accountsSlice from "../utils/redux/slices/accountsSlice";
 import store from "../utils/redux/store";
@@ -44,11 +45,9 @@ export const fakeRestoreFromMnemonic = createAsyncThunk(
 
 export const setBatchEstimationPerTransaction = (
   fakeEstimateBatch: typeof fakeTezosUtils.estimateBatch,
-  mutez: number
+  suggestedFeeMutez: number
 ) => {
-  fakeEstimateBatch.mockImplementation(async (transactions: any[]) => {
-    return transactions.map(_ => ({
-      suggestedFeeMutez: mutez,
-    })) as Estimate[];
+  fakeEstimateBatch.mockImplementation(async (operations: FormOperations) => {
+    return operations.content.map(_ => ({ suggestedFeeMutez } as Estimate));
   });
 };

@@ -22,7 +22,7 @@ import { AccountSmallTileDisplay } from "../../components/AccountSelector/Accoun
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
-import { ImplicitAccount } from "../../types/Account";
+import { Account } from "../../types/Account";
 import { Operation, OperationWithFee } from "../../types/Operation";
 import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
@@ -99,7 +99,7 @@ const RightPanel = ({
 };
 
 export const BatchDisplay: React.FC<{
-  account: ImplicitAccount;
+  account: Account;
   operations: OperationWithFee[];
   onDelete: () => void;
   onSend: () => void;

@@ -1,4 +1,5 @@
 import { TezosToolkit } from "@taquito/taquito";
+import { makeFormOperations } from "../../components/sendForm/types";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import {
@@ -100,9 +101,7 @@ describe("<BatchView />", () => {
     beforeEach(async () => {
       await store.dispatch(
         estimateAndUpdateBatch(
-          mockImplicitAccount(1),
-          mockImplicitAccount(1),
-          [
+          makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
             {
               type: "tez",
               recipient: mockImplicitAddress(1),
@@ -118,17 +117,14 @@ describe("<BatchView />", () => {
               recipient: mockImplicitAddress(3),
               amount: "3000000",
             },
-          ],
-
+          ]),
           TezosNetwork.MAINNET
         )
       );
 
       store.dispatch(
         estimateAndUpdateBatch(
-          mockImplicitAccount(2),
-          mockImplicitAccount(2),
-          [
+          makeFormOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
             {
               type: "tez",
               recipient: mockImplicitAddress(9),
@@ -144,8 +140,7 @@ describe("<BatchView />", () => {
               recipient: mockImplicitAddress(5),
               amount: "6",
             },
-          ],
-
+          ]),
           TezosNetwork.MAINNET
         )
       );

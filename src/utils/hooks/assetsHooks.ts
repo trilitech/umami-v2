@@ -1,6 +1,5 @@
 import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
-import { MultisigAccount } from "../../types/Account";
 import {
   TokenBalanceWithToken,
   keepFA1s,
@@ -15,12 +14,13 @@ import {
 } from "../../views/operations/operationsUtils";
 import { mutezToTez } from "../format";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { useAllAccounts, useImplicitAccounts } from "./accountHooks";
+import { useAllAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
 import { Baker } from "../../types/Baker";
 import assetsSlice from "../redux/slices/assetsSlice";
+import { Account } from "../../types/Account";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.assets.network);
@@ -177,23 +177,8 @@ export const useAllBatches = () => useAppSelector(s => s.assets.batches);
 
 export const useClearBatch = () => {
   const dispatch = useAppDispatch();
-  return (pkh: string) => dispatch(assetsSlice.actions.clearBatch({ pkh }));
-};
-
-export const useGetMultisigSigners = () => {
-  const implicitAccounts = useImplicitAccounts();
-  return (multisigAccount: MultisigAccount) => {
-    const signers = implicitAccounts.filter(implicitAccount =>
-      multisigAccount.signers.some(signer => signer.pkh === implicitAccount.address.pkh)
-    );
-
-    if (signers.length === 0) {
-      console.warn(
-        "Wallet doesn't own any signers for multisig contract " + multisigAccount.address.pkh
-      );
-    }
-    return signers;
-  };
+  return (account: Account) =>
+    dispatch(assetsSlice.actions.clearBatch({ pkh: account.address.pkh }));
 };
 
 export const useBakerList = (): Baker[] => {

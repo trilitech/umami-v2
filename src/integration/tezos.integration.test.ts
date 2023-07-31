@@ -1,3 +1,4 @@
+import { makeFormOperations } from "../components/sendForm/types";
 import { devPublicKeys0, devPublicKeys1 } from "../mocks/devSignerKeys";
 import { mockImplicitAccount } from "../mocks/factories";
 import { ghostFA12, ghostFA2, ghostTezzard } from "../mocks/tokens";
@@ -188,7 +189,7 @@ describe("Tezos utils", () => {
     describe("Estimations", () => {
       test("Batch estimation works with batches containg tez, FA1.2 and FA2 tokens on ghostnet", async () => {
         const ghostnetResult = await estimateBatch(
-          [
+          makeFormOperations(sender, sender, [
             {
               type: "tez",
               amount: "1",
@@ -218,8 +219,7 @@ describe("Tezos utils", () => {
               contract: parseContractPkh(ghostFA2.contract),
               tokenId: ghostFA2.tokenId,
             },
-          ],
-          sender,
+          ]),
           TezosNetwork.GHOSTNET
         );
         for (let i = 0; i < ghostnetResult.length; i += 1) {
@@ -228,7 +228,7 @@ describe("Tezos utils", () => {
       });
       test("Batch estimation works with batches containg tez on mainnet", async () => {
         const mainnetResult = await estimateBatch(
-          [
+          makeFormOperations(sender, sender, [
             {
               type: "tez",
               amount: "100",
@@ -239,8 +239,7 @@ describe("Tezos utils", () => {
               amount: "200",
               recipient: pkh1,
             },
-          ],
-          sender,
+          ]),
           TezosNetwork.MAINNET
         );
         expect(mainnetResult).toHaveLength(2);
@@ -249,14 +248,13 @@ describe("Tezos utils", () => {
       });
       test("Batch estimation works with batches containing delegations on mainnet", async () => {
         const mainnetResult = await estimateBatch(
-          [
+          makeFormOperations(sender, sender, [
             {
               type: "delegation",
               sender: sender.address,
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
-          ],
-          sender,
+          ]),
           TezosNetwork.MAINNET
         );
         expect(mainnetResult).toHaveLength(1);
@@ -264,7 +262,7 @@ describe("Tezos utils", () => {
       });
       test("Batch estimation fails with insuficient funds on mainnet", async () => {
         const estimation = estimateBatch(
-          [
+          makeFormOperations(sender, sender, [
             {
               type: "tez",
               amount: "9999999",
@@ -275,8 +273,7 @@ describe("Tezos utils", () => {
               sender: sender.address,
               recipient: parseImplicitPkh("tz1fXRwGcgoz81Fsksx9L2rVD5wE6CpTMkLz"),
             },
-          ],
-          sender,
+          ]),
           TezosNetwork.MAINNET
         );
         await expect(estimation).rejects.toThrow(/tez.subtraction_underflow/i);

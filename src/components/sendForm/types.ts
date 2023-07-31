@@ -1,4 +1,4 @@
-import { ImplicitAccount, MultisigAccount } from "../../types/Account";
+import { Account, AccountType, ImplicitAccount, MultisigAccount } from "../../types/Account";
 import { parseContractPkh, parsePkh } from "../../types/Address";
 import { FA12Operation, FA2Operation, Operation } from "../../types/Operation";
 import { Token } from "../../types/Token";
@@ -19,10 +19,7 @@ export type DelegationMode = {
 
 type BatchMode = {
   type: "batch";
-  data: {
-    batch: Operation[];
-    signer: string;
-  };
+  data: FormOperations;
 };
 
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
@@ -37,10 +34,41 @@ export type ProposalOperations = {
 export type ImplicitOperations = {
   type: "implicit";
   content: Operation[];
-  signer: ImplicitAccount;
+  sender: ImplicitAccount;
+  signer: ImplicitAccount; // must be the same as sender
 };
 
+// TODO: come up with a better name
 export type FormOperations = ProposalOperations | ImplicitOperations;
+
+export const makeFormOperations = (
+  sender: Account,
+  signer: ImplicitAccount,
+  operations: Operation[]
+): FormOperations => {
+  switch (sender.type) {
+    case AccountType.LEDGER:
+    case AccountType.MNEMONIC:
+    case AccountType.SOCIAL:
+      if (sender.address.pkh !== signer.address.pkh) {
+        throw new Error("Sender and Signer must be the same");
+      }
+      return {
+        type: "implicit",
+        content: operations,
+        signer: sender,
+        sender,
+      };
+
+    case AccountType.MULTISIG:
+      return {
+        type: "proposal",
+        content: operations,
+        sender,
+        signer,
+      };
+  }
+};
 
 export type EstimatedOperation = {
   operations: FormOperations;

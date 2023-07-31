@@ -6,13 +6,14 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
-import { useGetImplicitAccountSafe } from "../../utils/hooks/accountHooks";
+import { useGetBestSignerForAccount, useGetImplicitAccount } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
 import NoItems from "../../components/NoItems";
-import assetsSlice from "../../utils/redux/slices/assetsSlice";
+import { makeFormOperations } from "../../components/sendForm/types";
+import { useClearBatch } from "../../utils/hooks/assetsHooks";
 
 export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (
@@ -43,7 +44,10 @@ const BatchView = () => {
   const batches = useAppSelector(s => s.assets.batches);
 
   const dispatch = useAppDispatch();
-  const getAccount = useGetImplicitAccountSafe();
+  const getAccount = useGetImplicitAccount();
+  // TODO: allow user to select signer for multisig
+  const getSigner = useGetBestSignerForAccount();
+  const clearBatch = useClearBatch();
 
   const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
   const { onOpen, element, onClose } = useConfirmation();
@@ -52,18 +56,18 @@ const BatchView = () => {
     const account = getAccount(pkh);
 
     const onConfirm = () => {
-      dispatch(assetsSlice.actions.clearBatch({ pkh }));
+      dispatch(clearBatch(account));
       onClose();
     };
 
-    return account && operations && operations.length > 0 ? (
+    return operations && operations.length > 0 ? (
       <BatchDisplay
         onSend={() =>
           openSendForm({
             sender: account.address.pkh,
             mode: {
               type: "batch",
-              data: { batch: operations, signer: account.address.pkh },
+              data: makeFormOperations(account, getSigner(account), operations),
             },
           })
         }

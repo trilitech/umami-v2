@@ -9,10 +9,11 @@ import {
 import { useToast } from "@chakra-ui/react";
 import React from "react";
 import SendForm from "../../../components/sendForm";
-import { SendFormMode } from "../../../components/sendForm/types";
+import { makeFormOperations, SendFormMode } from "../../../components/sendForm/types";
+import { ImplicitAccount } from "../../../types/Account";
 import { parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
-import { useFirstAccount, useGetImplicitAccountSafe } from "../../hooks/accountHooks";
+import { useGetImplicitAccountSafe } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPanel from "./panels/BeaconErrorPanel";
 import PermissionRequestPanel from "./panels/PermissionRequestPanel";
@@ -46,21 +47,17 @@ const SingleTransaction = ({
 };
 
 const BatchTransaction = ({
-  transfer,
+  operations,
   onSuccess,
-  signer,
+  account,
 }: {
-  transfer: Operation[];
+  operations: Operation[];
   onSuccess: (hash: string) => any;
-  signer: string;
+  account: ImplicitAccount;
 }) => {
-  const account = useFirstAccount();
   const mode: SendFormMode = {
     type: "batch",
-    data: {
-      batch: transfer,
-      signer,
-    },
+    data: makeFormOperations(account, account, operations),
   };
 
   // TODO: send directly to recap instead
@@ -69,7 +66,7 @@ const BatchTransaction = ({
       sender={account.address.pkh}
       onSuccess={onSuccess}
       mode={mode}
-      recipient={transfer[0].recipient?.pkh}
+      recipient={operations[0].recipient?.pkh}
     />
   );
 };
@@ -127,9 +124,9 @@ export const BeaconNotification: React.FC<{
 
         return (
           <BatchTransaction
-            transfer={transfers}
+            operations={transfers}
             onSuccess={handleSuccess}
-            signer={signerAccount.address.pkh}
+            account={signerAccount}
           />
         );
       } catch (error: any) {

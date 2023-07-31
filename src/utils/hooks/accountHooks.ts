@@ -1,3 +1,4 @@
+import { maxBy } from "lodash";
 import { useNavigate } from "react-router-dom";
 import {
   AccountType,
@@ -14,6 +15,7 @@ import { Multisig } from "../multisig/types";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import accountsSlice from "../redux/slices/accountsSlice";
 import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
+import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigs } from "./multisigHooks";
 
 const { add, removeSecret } = accountsSlice.actions;
@@ -167,22 +169,54 @@ export const useFirstAccount = (): Account => {
   return accounts[0];
 };
 
-export const useGetPk = () => {
-  const getAccount = useGetOwnedAccount();
-
-  return (pkh: string) => {
-    const account = getAccount(pkh);
-    if (account.type === AccountType.MULTISIG) {
-      throw new Error("Can't apply getPk to a multisig account since it has no pk");
-    }
-
-    return account.pk;
-  };
-};
-
 export const useAccountIsMultisig = () => {
   const accounts = useMultisigAccounts();
   return (pkh: string) => {
     return !!accounts.find(account => account.address.pkh === pkh);
   };
+};
+
+export const useGetMultisigSigners = () => {
+  const implicitAccounts = useImplicitAccounts();
+  return (multisigAccount: MultisigAccount) => {
+    const signers = implicitAccounts.filter(implicitAccount =>
+      multisigAccount.signers.some(signer => signer.pkh === implicitAccount.address.pkh)
+    );
+
+    if (signers.length === 0) {
+      console.warn(
+        "Wallet doesn't own any signers for multisig contract " + multisigAccount.address.pkh
+      );
+    }
+    return signers;
+  };
+};
+
+export const useGetOwnedSignersForAccount = () => {
+  const getMultisigSigners = useGetMultisigSigners();
+
+  return (account: Account) => {
+    switch (account.type) {
+      case AccountType.LEDGER:
+      case AccountType.MNEMONIC:
+      case AccountType.SOCIAL:
+        return [account];
+      case AccountType.MULTISIG:
+        return getMultisigSigners(account);
+    }
+  };
+};
+
+// The best signer is the one with the most tez
+// For implicit accounts it will be the account itself
+// For multisig accounts it will be the associated implicit signer with the most tez
+export const useGetBestSignerForAccount = () => {
+  const getSigners = useGetOwnedSignersForAccount();
+  const accountBalance = useGetAccountBalance();
+
+  return (account: Account) =>
+    maxBy(
+      getSigners(account),
+      signer => accountBalance(signer.address.pkh) || "0"
+    ) as ImplicitAccount;
 };

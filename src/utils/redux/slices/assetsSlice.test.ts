@@ -16,6 +16,7 @@ import { estimateAndUpdateBatch } from "../thunks/estimateAndUpdateBatch";
 import { estimateBatch } from "../../tezos";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
 import { TezosNetwork } from "../../../types/TezosNetwork";
+import { makeFormOperations } from "../../../components/sendForm/types";
 jest.mock("../../tezos");
 
 const estimateBatchMock = estimateBatch as jest.Mock;
@@ -342,19 +343,15 @@ describe("Assets reducer", () => {
       estimateBatchMock.mockResolvedValueOnce(mockEstimations);
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
-      const action = estimateAndUpdateBatch(
+      const formOperations = makeFormOperations(
         mockImplicitAccount(1),
         mockImplicitAccount(1),
-        transfers,
-        TezosNetwork.MAINNET
+        transfers
       );
+      const action = estimateAndUpdateBatch(formOperations, TezosNetwork.MAINNET);
 
       store.dispatch(action);
-      expect(estimateBatchMock).toHaveBeenCalledWith(
-        transfers,
-        mockImplicitAccount(1),
-        TezosNetwork.MAINNET
-      );
+      expect(estimateBatchMock).toHaveBeenCalledWith(formOperations, TezosNetwork.MAINNET);
       await waitFor(() => {
         expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual([
           {
@@ -380,9 +377,7 @@ describe("Assets reducer", () => {
 
       const transfers = [mockTezTransfer(1)];
       const action = estimateAndUpdateBatch(
-        mockImplicitAccount(1),
-        mockImplicitAccount(1),
-        transfers,
+        makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
         TezosNetwork.MAINNET
       );
 
@@ -407,9 +402,7 @@ describe("Assets reducer", () => {
 
       const transfers = [mockTezTransfer(1), mockDelegationTransfer(1), mockNftTransfer(1)];
       const action = estimateAndUpdateBatch(
-        mockImplicitAccount(1),
-        mockImplicitAccount(1),
-        transfers,
+        makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
         TezosNetwork.MAINNET
       );
 
