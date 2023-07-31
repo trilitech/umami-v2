@@ -1,8 +1,8 @@
 const colors = {
-  orange: "#F74F18",
+  orange: "#FB4F57",
   orangeL: "#FF7362",
   blue: "#0D99FF",
-  blueL: "#1ABCFE",
+  blueL: "#4FA2FF",
   green: "#00C39A",
   greenL: "#0ACF83",
   black: "#000000",

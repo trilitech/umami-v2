@@ -1,6 +1,6 @@
 import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { get } from "lodash";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
@@ -91,6 +91,7 @@ const Suggestions = ({
   );
 };
 
+// TODO: add chevron and cross buttons
 export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   contacts,
   isDisabled,
@@ -111,6 +112,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
     value: string,
     options: { shouldValidate: boolean }
   ) => void;
+  const inputId = useId();
 
   const [rawValue, setRawValue] = useState(() => {
     if (!defaultValues) {
@@ -147,27 +149,28 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
 
   return (
     <Box data-testid={`address-autocomplete-${inputName}`}>
-      <FormLabel m={0}>
-        {label}
-        <Input
-          isDisabled={isDisabled}
-          aria-label={inputName}
-          value={rawValue}
-          onFocus={() => {
-            setHideSuggestions(false);
-          }}
-          onBlur={e => {
-            e.preventDefault();
-            setHideSuggestions(true);
-            handleChange(e.target.value);
-          }}
-          onChange={e => {
-            handleChange(e.target.value);
-          }}
-          autoComplete="off"
-          placeholder="Enter address or contact name"
-        />
-      </FormLabel>
+      <FormLabel htmlFor={inputId}>{label}</FormLabel>
+
+      <Input
+        id={inputId}
+        variant="filled"
+        isDisabled={isDisabled}
+        aria-label={inputName}
+        value={rawValue}
+        onFocus={() => {
+          setHideSuggestions(false);
+        }}
+        onBlur={e => {
+          e.preventDefault();
+          setHideSuggestions(true);
+          handleChange(e.target.value);
+        }}
+        onChange={e => {
+          handleChange(e.target.value);
+        }}
+        autoComplete="off"
+        placeholder="Enter address or contact name"
+      />
       <Input
         {...register<U>(inputName, { required: "Invalid address or contact name", validate })}
         mb={0}
