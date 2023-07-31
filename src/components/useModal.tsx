@@ -1,19 +1,18 @@
 import { Modal, useDisclosure } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useState } from "react";
 
 export function useModal<T>(Component: React.ComponentType<{ params: T }>) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // TODO: convert to useState
-  const paramsRef = useRef<T | undefined>(undefined);
+  const [params, setParams] = useState<T | undefined>(undefined);
 
   return {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
-        {paramsRef.current && <Component params={paramsRef.current} />}
+        {params && <Component params={params} />}
       </Modal>
     ),
     onOpen: (options: T) => {
-      paramsRef.current = options;
+      setParams(options);
       onOpen();
     },
   };
