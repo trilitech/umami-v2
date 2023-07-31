@@ -14,7 +14,6 @@ import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 
 export default function SettingsView() {
-  const reset = useReset();
   return (
     <Grid
       h="100%"
@@ -31,7 +30,6 @@ export default function SettingsView() {
         <TopBar title="Settings" />
       </GridItem>
       <GridItem area="main">
-        <Button onClick={reset}>Erase secrets</Button>
         <GeneralSection />
         <AppUpdatesSection />
         <BackupSection />
