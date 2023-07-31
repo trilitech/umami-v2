@@ -9,16 +9,23 @@ import { assetsActions } from "../utils/redux/slices/assetsSlice";
 import SendButton from "../views/home/SendButton";
 import useBuyTezModal from "./BuyTez/useBuyTezModal";
 
+const formatRelativeTimestamp = (timestamp: string) => {
+  return formatDistance(new Date(timestamp), new Date());
+};
+
 const UpdateButton = () => {
   const dispatch = useAppDispatch();
   const isLoading = useIsLoading();
   const lastTimeUpdated = useLastTimeUpdated();
-  const [relativeTimestamp, setRelativeTimestamp] = useState<string | null>(null);
+
+  const [relativeTimestamp, setRelativeTimestamp] = useState<string | null>(
+    lastTimeUpdated && formatRelativeTimestamp(lastTimeUpdated)
+  );
 
   useEffect(() => {
     if (lastTimeUpdated) {
       const interval = setInterval(() => {
-        setRelativeTimestamp(formatDistance(new Date(lastTimeUpdated), new Date()));
+        setRelativeTimestamp(formatRelativeTimestamp(lastTimeUpdated));
       }, 1000);
       return () => clearInterval(interval);
     }
