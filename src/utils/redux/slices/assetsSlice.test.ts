@@ -32,7 +32,7 @@ const {
   },
 } = assetsSlice;
 
-describe("Assets reducer", () => {
+describe("assetsSlice", () => {
   test("store should initialize with empty state", () => {
     expect(store.getState().assets).toEqual({
       balances: {
@@ -46,6 +46,9 @@ describe("Assets reducer", () => {
       bakers: [],
       batches: {},
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
   });
 
@@ -66,6 +69,9 @@ describe("Assets reducer", () => {
       bakers: [],
       batches: {},
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
 
     store.dispatch(
@@ -90,6 +96,9 @@ describe("Assets reducer", () => {
       bakers: [],
       batches: {},
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
   });
 
@@ -122,6 +131,9 @@ describe("Assets reducer", () => {
       transfers: { tez: {}, tokens: {} },
       batches: {},
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
   });
 
@@ -148,6 +160,9 @@ describe("Assets reducer", () => {
       transfers: { tez: {}, tokens: {} },
       batches: {},
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
   });
 
@@ -172,6 +187,9 @@ describe("Assets reducer", () => {
       conversionRate: null,
       batches: {},
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
   });
 
@@ -196,6 +214,9 @@ describe("Assets reducer", () => {
       conversionRate: null,
       batches: {},
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
   });
 
@@ -228,6 +249,9 @@ describe("Assets reducer", () => {
         tokens: {},
       },
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
 
     store.dispatch(
@@ -262,6 +286,9 @@ describe("Assets reducer", () => {
         tokens: {},
       },
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
     store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
   });
@@ -295,6 +322,9 @@ describe("Assets reducer", () => {
         tez: {},
       },
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
 
     store.dispatch(
@@ -329,6 +359,9 @@ describe("Assets reducer", () => {
       },
       batches: {},
       blockLevel: null,
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
   });
 

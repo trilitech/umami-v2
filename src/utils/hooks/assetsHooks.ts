@@ -191,3 +191,15 @@ export const useGetBaker = () => {
     return bakers.find(baker => baker.address === rawPkh);
   };
 };
+
+export const useRefetchTrigger = () => {
+  return useAppSelector(state => state.assets.refetchTrigger);
+};
+
+export const useIsLoading = () => {
+  return useAppSelector(state => state.assets.isLoading);
+};
+
+export const useLastTimeUpdated = () => {
+  return useAppSelector(state => state.assets.lastTimeUpdated);
+};
