@@ -8,8 +8,8 @@ import ClickableCard, {
 } from "../../components/ClickableCard";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NetworkSelector from "../../components/NetworkSelector";
+import useOffboarsingModal from "../../components/Offboarding/useOffboardingModal";
 import { TopBar } from "../../components/TopBar";
-import { useReset } from "../../utils/hooks/accountHooks";
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 
@@ -128,7 +128,7 @@ const BackupSection = () => {
 };
 
 const AdvancedSection = () => {
-  const reset = useReset();
+  const { modalElement, onOpen } = useOffboarsingModal();
   return (
     <SectionContainer title="Advanced Settings">
       <ClickableCard>
@@ -145,8 +145,9 @@ const AdvancedSection = () => {
 
       <BeaconDrawerCard />
       <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
-      <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={reset} />
+      <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={onOpen} />
       <SettingsCardWithDrawerIcon left="Change Password" onClick={() => {}} />
+      {modalElement}
     </SectionContainer>
   );
 };
