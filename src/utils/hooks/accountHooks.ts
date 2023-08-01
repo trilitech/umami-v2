@@ -18,7 +18,7 @@ import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigs } from "./multisigHooks";
 
-const { add, removeSecret } = accountsSlice.actions;
+const { addAccount, removeMnemonicAndAccounts: removeMnemonic } = accountsSlice.actions;
 
 export const useImplicitAccounts = () => {
   return useAppSelector(s => s.accounts.items);
@@ -99,7 +99,7 @@ export const useRestoreLedger = () => {
       address: { type: "implicit", pkh },
       label,
     };
-    dispatch(add([account]));
+    dispatch(addAccount([account]));
   };
 };
 
@@ -113,7 +113,7 @@ export const useRestoreSocial = () => {
       idp: "google",
       label,
     };
-    dispatch(add([account]));
+    dispatch(addAccount([account]));
   };
 };
 
@@ -137,7 +137,7 @@ export const useRemoveMnemonic = () => {
   const dispatch = useAppDispatch();
   return (fingerPrint: string) => {
     dispatch(
-      removeSecret({
+      removeMnemonic({
         fingerPrint,
       })
     );

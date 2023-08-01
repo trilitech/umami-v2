@@ -12,7 +12,7 @@ describe("accountHooks", () => {
     it("returns the account itself for implicit accounts", () => {
       const account = mockImplicitAccount(0);
 
-      store.dispatch(accountsSlice.actions.add([account]));
+      store.dispatch(accountsSlice.actions.addAccount([account]));
 
       const { result } = renderHook(() => useGetBestSignerForAccount(), { wrapper: ReduxStore });
       expect(result.current(account)).toEqual(account);
@@ -22,7 +22,7 @@ describe("accountHooks", () => {
       const signers = [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)];
       const multisig = { ...mockMultisigAccount(0), signers: signers.map(s => s.address) };
 
-      store.dispatch(accountsSlice.actions.add(signers));
+      store.dispatch(accountsSlice.actions.addAccount(signers));
       store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
 
       store.dispatch(

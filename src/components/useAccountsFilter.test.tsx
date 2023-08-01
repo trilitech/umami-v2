@@ -9,7 +9,7 @@ import { render } from "@testing-library/react";
 const accounts = [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)];
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.add(accounts));
+  store.dispatch(accountsSlice.actions.addAccount(accounts));
 });
 
 const TestComponent = () => {

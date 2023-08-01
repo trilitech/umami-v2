@@ -18,7 +18,7 @@ import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 
-const { add: addAccounts } = accountsSlice.actions;
+const { addAccount } = accountsSlice.actions;
 
 jest.mock("../../utils/tezos");
 
@@ -30,7 +30,7 @@ const MOCK_FINGETPRINT2 = "mockFin2";
 describe("<AccountList />", () => {
   test("Displays accounts in store with label and formated pkh", async () => {
     store.dispatch(
-      addAccounts([mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)])
+      addAccount([mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)])
     );
 
     render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
@@ -153,7 +153,7 @@ describe("<AccountList />", () => {
     });
 
     const account = mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1);
-    fakeExtraArguments.restoreAccount.mockResolvedValue({
+    fakeExtraArguments.derivePublicKeyPair.mockResolvedValue({
       pkh: account.address.pkh,
       pk: account.pk,
     });
@@ -194,7 +194,7 @@ const restore = async () => {
   );
 
   store.dispatch(
-    addAccounts([
+    addAccount([
       {
         type: AccountType.SOCIAL,
         idp: "google",
@@ -206,7 +206,7 @@ const restore = async () => {
   );
 
   store.dispatch(
-    addAccounts([
+    addAccount([
       {
         type: AccountType.SOCIAL,
         idp: "google",

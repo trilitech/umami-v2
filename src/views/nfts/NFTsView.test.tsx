@@ -12,7 +12,7 @@ import accountsSlice from "../../utils/redux/slices/accountsSlice";
 const { updateTokenBalance, updateNetwork } = assetsSlice.actions;
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
 });
 
 const fixture = () => (
@@ -30,7 +30,9 @@ describe("NFTsView", () => {
   });
 
   it("displays nfts of all accounts by default", () => {
-    store.dispatch(accountsSlice.actions.add([mockImplicitAccount(1), mockImplicitAccount(2)]));
+    store.dispatch(
+      accountsSlice.actions.addAccount([mockImplicitAccount(1), mockImplicitAccount(2)])
+    );
     store.dispatch(updateNetwork(TezosNetwork.MAINNET));
     store.dispatch(
       updateTokenBalance([

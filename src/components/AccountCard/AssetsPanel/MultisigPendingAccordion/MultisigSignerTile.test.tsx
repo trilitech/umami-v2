@@ -6,12 +6,12 @@ import store from "../../../../utils/redux/store";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
-const { add } = accountsSlice.actions;
+const { addAccount } = accountsSlice.actions;
 
 const signer = mockImplicitAccount(0);
 describe("<MultisigSignerTile/>", () => {
   beforeEach(() => {
-    store.dispatch(add([signer]));
+    store.dispatch(addAccount([signer]));
   });
 
   it("should display a button for non-pending operation with signer included in the account", () => {

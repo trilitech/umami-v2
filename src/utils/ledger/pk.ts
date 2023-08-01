@@ -1,6 +1,6 @@
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { LedgerSigner } from "@taquito/ledger-signer";
-import { PublicKeyPair } from "../restoreAccounts";
+import { PublicKeyPair } from "../mnemonic";
 
 export const getPk = async (derivationPath?: string): Promise<PublicKeyPair> => {
   const transport = await TransportWebHID.create();

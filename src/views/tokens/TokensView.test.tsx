@@ -17,7 +17,7 @@ const fixture = () => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
 });
 
 describe("<TokensView />", () => {
@@ -28,7 +28,7 @@ describe("<TokensView />", () => {
 
   test.each(SupportedNetworks)("shows all available tokens from all accounts on %s", network => {
     store.dispatch(assetsActions.updateNetwork(network));
-    store.dispatch(accountsSlice.actions.add([mockImplicitAccount(1)]));
+    store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(1)]));
     const tokenBalances = [
       hedgehoge(mockImplicitAddress(0)),
       hedgehoge(mockImplicitAddress(1)),

@@ -12,14 +12,14 @@ import { parseImplicitPkh } from "../../../types/Address";
 import accountsSlice from "./accountsSlice";
 
 const {
-  actions: { add, removeSecret },
+  actions: { addAccount, removeMnemonicAndAccounts: removeMnemonic },
 } = accountsSlice;
 
 jest.mock("../../aes");
 
 beforeEach(async () => {
   const { pk, pkh } = await makeDefaultDevSignerKeys(0);
-  fakeExtraArguments.restoreAccount.mockResolvedValue({
+  fakeExtraArguments.derivePublicKeyPair.mockResolvedValue({
     pk,
     pkh,
   });
@@ -35,13 +35,13 @@ describe("Accounts reducer", () => {
   });
 
   test("should handle adding accounts and arrays of accounts", () => {
-    store.dispatch(add([mockImplicitAccount(1)]));
+    store.dispatch(addAccount([mockImplicitAccount(1)]));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1)],
       seedPhrases: {},
     });
 
-    store.dispatch(add([mockImplicitAccount(2), mockImplicitAccount(3)]));
+    store.dispatch(addAccount([mockImplicitAccount(2), mockImplicitAccount(3)]));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
       seedPhrases: {},
@@ -49,9 +49,11 @@ describe("Accounts reducer", () => {
   });
 
   test("adding account should throw and exception if it is a pkh duplicate and not modify state", () => {
-    store.dispatch(add([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]));
+    store.dispatch(
+      addAccount([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)])
+    );
 
-    expect(() => store.dispatch(add([mockImplicitAccount(2)]))).toThrowError(
+    expect(() => store.dispatch(addAccount([mockImplicitAccount(2)]))).toThrowError(
       `Can't add account ${mockImplicitAccount(2).address.pkh} in store since it already exists.`
     );
 
@@ -88,7 +90,7 @@ describe("Accounts reducer", () => {
       seedPhrases: { mockPrint1: {}, mockPrint2: {} },
     });
 
-    store.dispatch(removeSecret({ fingerPrint: "mockPrint1" }));
+    store.dispatch(removeMnemonic({ fingerPrint: "mockPrint1" }));
 
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(2, undefined, "mockPrint2")],
@@ -110,7 +112,7 @@ describe("Accounts reducer", () => {
         },
       ];
 
-      fakeExtraArguments.restoreMnemonicAccounts.mockResolvedValueOnce(
+      fakeExtraArguments.restoreRevealedMnemonicAccounts.mockResolvedValueOnce(
         restoredAccounts as MnemonicAccount[]
       );
       fakeExtraArguments.encrypt.mockResolvedValueOnce(mockEntrypted as any);
@@ -125,7 +127,7 @@ describe("Accounts reducer", () => {
         )
         .unwrap();
 
-      expect(fakeExtraArguments.restoreMnemonicAccounts).toHaveBeenCalledWith(
+      expect(fakeExtraArguments.restoreRevealedMnemonicAccounts).toHaveBeenCalledWith(
         seedPhrase,
         mockLabel,
         undefined

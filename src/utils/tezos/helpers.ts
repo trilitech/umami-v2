@@ -8,7 +8,7 @@ import { shuffle } from "lodash";
 import { FA12Operation, FA2Operation } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
-import { PublicKeyPair } from "../restoreAccounts";
+import { PublicKeyPair } from "../mnemonic";
 import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { FakeSigner } from "./fakeSigner";
