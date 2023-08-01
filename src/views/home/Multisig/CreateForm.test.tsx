@@ -25,7 +25,7 @@ const fixture = ({ goToStep = _ => {} }: { goToStep?: (step: ReviewStep) => void
 };
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
 });
 
 describe("CreateForm", () => {

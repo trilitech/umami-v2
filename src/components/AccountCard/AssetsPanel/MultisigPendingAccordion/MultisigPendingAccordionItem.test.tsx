@@ -78,7 +78,7 @@ describe("<MultisigPendingCard/>", () => {
       hash: "mockHash",
     } as TransactionOperation);
 
-    store.dispatch(accountsSlice.actions.add([account]));
+    store.dispatch(accountsSlice.actions.addAccount([account]));
 
     const executablePendingOp: MultisigOperation = pendingOps[0];
     const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
@@ -140,7 +140,7 @@ describe("<MultisigPendingCard/>", () => {
       hash: "mockHash",
     } as TransactionOperation);
 
-    store.dispatch(accountsSlice.actions.add([signer]));
+    store.dispatch(accountsSlice.actions.addAccount([signer]));
     const account = { ...mockMultisigAccount(0), signers: [signer.address] };
     const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
     render(

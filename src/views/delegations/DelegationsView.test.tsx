@@ -16,7 +16,7 @@ const fixture = () => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
 });
 
 describe("<DelegationsView />", () => {
@@ -27,7 +27,7 @@ describe("<DelegationsView />", () => {
 
   it("should display the delegations of all accounts", () => {
     store.dispatch(
-      accountsSlice.actions.add([
+      accountsSlice.actions.addAccount([
         mockImplicitAccount(1),
         mockImplicitAccount(2),
         mockImplicitAccount(3),

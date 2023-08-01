@@ -23,7 +23,7 @@ beforeEach(() => {
 describe("useAddressKind", () => {
   test("owned implicit account", () => {
     const implicitAccount0 = mockImplicitAccount(0);
-    store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
+    store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
     const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
       wrapper: ReduxStore,
     });
@@ -137,7 +137,7 @@ describe("useAddressKind", () => {
     ].forEach(({ type, address }) => {
       it(`prioritises ${type} over the contact`, () => {
         store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
-        store.dispatch(accountsSlice.actions.add([mockImplicitAccount(0)]));
+        store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
         store.dispatch(
           tokensSlice.actions.addTokens({
             network: TezosNetwork.MAINNET,

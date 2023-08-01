@@ -11,7 +11,7 @@ const onClose = jest.fn(() => {});
 // TODO refactor mocks
 jest.mock("../../../utils/tezos/helpers");
 
-const { add } = accountsSlice.actions;
+const { addAccount } = accountsSlice.actions;
 const account = mockImplicitAccount(0);
 
 const fixture = () => {
@@ -38,7 +38,7 @@ describe("<MasterPassword />", () => {
   });
 
   test("Display enter password", async () => {
-    store.dispatch(add([account]));
+    store.dispatch(addAccount([account]));
     render(fixture());
     const confirmation = screen.getByTestId("confirmation");
     await waitFor(() => {

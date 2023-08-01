@@ -28,7 +28,7 @@ const {
   updateNetwork,
   updateDelegations,
 } = assetsSlice.actions;
-const { add } = accountsSlice.actions;
+const { addAccount } = accountsSlice.actions;
 
 const { setMultisigs } = multisigsSlice.actions;
 
@@ -41,7 +41,7 @@ const SELECTED_ACCOUNT_BALANCE = 33200000000;
 beforeEach(() => {
   store.dispatch(assetsSlice.actions.updateNetwork(TezosNetwork.MAINNET));
   store.dispatch(setMultisigs(multisigs));
-  store.dispatch(add([selectedAccount, mockImplicitAccount(1)]));
+  store.dispatch(addAccount([selectedAccount, mockImplicitAccount(1)]));
   store.dispatch(updateTezBalance([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }]));
   store.dispatch(
     updateTokenBalance([

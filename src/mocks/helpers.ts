@@ -23,7 +23,7 @@ export const closeModal = () => {
 };
 
 export const dispatchMockAccounts = (accounts: ImplicitAccount[]) => {
-  store.dispatch(accountsSlice.actions.add(accounts));
+  store.dispatch(accountsSlice.actions.addAccount(accounts));
 };
 
 export const fakeRestoreFromMnemonic = createAsyncThunk(

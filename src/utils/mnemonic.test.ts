@@ -1,6 +1,6 @@
 import { seedPhrase } from "../mocks/seedPhrase";
 import { ImplicitAccount, AccountType } from "../types/Account";
-import { restoreAccounts, restoreMnemonicAccounts } from "./restoreAccounts";
+import { restoreRevealedMnemonicAccounts, restoreRevealedPublickKeyPairs } from "./mnemonic";
 import { addressExists, getFingerPrint } from "./tezos";
 
 import "../mocks/mockGetRandomValues";
@@ -23,7 +23,7 @@ describe("restoreAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreAccounts(seedPhrase, defaultDerivationPathPattern);
+    const result = await restoreRevealedPublickKeyPairs(seedPhrase, defaultDerivationPathPattern);
     const expected = [
       {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
@@ -43,7 +43,7 @@ describe("restoreAccounts", () => {
 
   it("should restore first account if none exists", async () => {
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreAccounts(seedPhrase, defaultDerivationPathPattern);
+    const result = await restoreRevealedPublickKeyPairs(seedPhrase, defaultDerivationPathPattern);
     const expected = [
       {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
@@ -61,7 +61,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreMnemonicAccounts(seedPhrase);
+    const result = await restoreRevealedMnemonicAccounts(seedPhrase);
     const expected: ImplicitAccount[] = [
       {
         curve: "ed25519",
@@ -100,7 +100,7 @@ describe("restoreEncryptedAccounts", () => {
   it("should restore exising accounts with a provided label", async () => {
     const CUSTOM_LABEL = "myLabel";
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreMnemonicAccounts(seedPhrase, CUSTOM_LABEL);
+    const result = await restoreRevealedMnemonicAccounts(seedPhrase, CUSTOM_LABEL);
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
         label: CUSTOM_LABEL,
@@ -111,7 +111,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result2 = await restoreMnemonicAccounts(seedPhrase, CUSTOM_LABEL);
+    const result2 = await restoreRevealedMnemonicAccounts(seedPhrase, CUSTOM_LABEL);
     const expected2: ImplicitAccount[] = [
       expect.objectContaining({
         label: `${CUSTOM_LABEL} 0`,
@@ -127,7 +127,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreMnemonicAccounts(seedPhrase, undefined, "44'/1729'/?'/0'");
+    const result = await restoreRevealedMnemonicAccounts(seedPhrase, undefined, "44'/1729'/?'/0'");
 
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
@@ -146,7 +146,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = restoreMnemonicAccounts(seedPhrase, undefined, "44'/foo'/?'/8'");
+    const result = restoreRevealedMnemonicAccounts(seedPhrase, undefined, "44'/foo'/?'/8'");
 
     await expect(result).rejects.toThrowError("Invalid derivation pattern: 44'/foo'/?'/8'");
   });

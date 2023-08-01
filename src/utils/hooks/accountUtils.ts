@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { compact } from "lodash";
 import { MnemonicAccount } from "../../types/Account";
 import { decrypt } from "../aes";
-import { deriveSkFromMnemonic } from "../restoreAccounts";
+import { deriveSecretKey } from "../mnemonic";
 import { useAppSelector } from "../redux/hooks";
 
 export const getTotalTezBalance = (
@@ -27,7 +27,7 @@ export const useGetSecretKey = () => {
 
     try {
       const mnemonic = await decrypt(encryptedMnemonic, password);
-      return deriveSkFromMnemonic(mnemonic, account.derivationPath, account.curve);
+      return deriveSecretKey(mnemonic, account.derivationPath, account.curve);
     } catch (error: any) {
       if (error.message) {
         throw error;

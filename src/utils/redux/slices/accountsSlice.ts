@@ -5,6 +5,7 @@ import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAcc
 
 type State = {
   items: ImplicitAccount[];
+  //TODO: Rename to encryptedMnemonics
   seedPhrases: Record<string, UmamiEncrypted | undefined>;
 };
 
@@ -30,7 +31,10 @@ const accountsSlice = createSlice({
   },
   reducers: {
     reset: () => initialState,
-    removeSecret: (state, { payload }: { type: string; payload: { fingerPrint: string } }) => {
+    removeMnemonicAndAccounts: (
+      state,
+      { payload }: { type: string; payload: { fingerPrint: string } }
+    ) => {
       const { fingerPrint } = payload;
       const newAccounts = state.items.filter(
         a => !(a.type === AccountType.MNEMONIC && a.seedFingerPrint === fingerPrint)
@@ -38,7 +42,7 @@ const accountsSlice = createSlice({
       state.items = newAccounts;
       delete state.seedPhrases[fingerPrint];
     },
-    add: (state, { payload }: { type: string; payload: ImplicitAccount[] }) => {
+    addAccount: (state, { payload }: { type: string; payload: ImplicitAccount[] }) => {
       state.items = concatUnique(state.items, payload);
     },
   },

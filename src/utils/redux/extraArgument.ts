@@ -1,9 +1,9 @@
 import { decrypt, encrypt } from "../aes";
-import { restoreAccount, restoreMnemonicAccounts } from "../restoreAccounts";
+import { derivePublicKeyPair, restoreRevealedMnemonicAccounts } from "../mnemonic";
 
 export const extraArgument = {
-  restoreAccount,
-  restoreMnemonicAccounts,
+  derivePublicKeyPair,
+  restoreRevealedMnemonicAccounts,
   decrypt,
   encrypt,
 };
