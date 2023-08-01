@@ -19,7 +19,13 @@ const MultisigDecodedOperationItem: React.FC<{
     case "delegation":
       return (
         <Box marginY={6} pl={5} m={1} data-testid="decoded-item-delegate">
-          {operation.recipient ? `Delegate to ${operation.recipient}` : "Undelegate"}
+          {!operation.recipient ? (
+            "Undelegate"
+          ) : (
+            <>
+              Delegate to <AddressPill address={operation.recipient} />
+            </>
+          )}
         </Box>
       );
     default:

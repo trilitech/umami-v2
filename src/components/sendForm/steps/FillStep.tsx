@@ -21,18 +21,19 @@ import {
 import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { AccountType, ImplicitAccount, MultisigAccount } from "../../../types/Account";
-import { parseImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
+import { AccountType, MultisigAccount } from "../../../types/Account";
+import { parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
 import { Delegation, Operation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import {
   useAccountIsMultisig,
-  useGetImplicitAccount,
-  useGetMultisigAccount,
   useGetOwnedAccountSafe,
   useGetMultisigSigners,
   useMultisigAccounts,
+  useGetBestSignerForAccount,
+  useGetOwnedAccount,
+  useGetImplicitAccountSafe,
 } from "../../../utils/hooks/accountHooks";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import {
@@ -42,7 +43,7 @@ import {
   AddressAutocomplete,
 } from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
-import { toOperation, FormOperations, SendFormMode } from "../types";
+import { toOperation, FormOperations, SendFormMode, makeFormOperations } from "../types";
 import { BatchRecap } from "./BatchRecap";
 import { Token } from "../../../types/Token";
 
@@ -71,8 +72,6 @@ export const DelegateForm = ({
     handleSubmit,
   } = form;
 
-  const accountIsMultisig = useAccountIsMultisig();
-  const senderIsMultisig = Boolean(sender && accountIsMultisig(sender));
   const subTitle = undelegate ? "Remove delegation" : "Delegate";
   return (
     <FormProvider {...form}>
@@ -99,7 +98,7 @@ export const DelegateForm = ({
                 width="100%"
                 isLoading={isLoading}
                 type="submit"
-                isDisabled={!isValid || isLoading || senderIsMultisig}
+                isDisabled={!isValid}
                 variant="ghost"
                 mb={2}
               >
@@ -339,70 +338,6 @@ export const SendTezOrNFTForm = ({
   );
 };
 
-const buildTezFromFormValues = (
-  formValues: FormValues,
-  getImplicitAccount: (pkh: RawPkh) => ImplicitAccount,
-  getMultisigAccount: (pkh: RawPkh) => MultisigAccount,
-  parameter?: TransferParams["parameter"]
-): FormOperations => {
-  const value: Operation[] = [
-    {
-      type: "tez",
-      amount: tezToMutez(formValues.amount).toString(),
-      recipient: parsePkh(formValues.recipient),
-      parameter,
-    },
-  ];
-  if (formValues.proposalSigner !== undefined) {
-    return {
-      type: "proposal",
-      signer: getImplicitAccount(formValues.proposalSigner),
-      content: value,
-      sender: getMultisigAccount(formValues.sender),
-    };
-  }
-  const signer = getImplicitAccount(formValues.sender);
-
-  return {
-    type: "implicit",
-    content: value,
-    sender: signer,
-    signer,
-  };
-};
-
-const buildTokenFromFormValues = (
-  formValues: FormValues,
-  asset: Token,
-  getImplicitAccount: (pkh: RawPkh) => ImplicitAccount,
-  getMultisigAccount: (pkh: RawPkh) => MultisigAccount
-): FormOperations => {
-  const token = [
-    toOperation(asset, {
-      amount: getRealAmount(asset, formValues.amount).toString(),
-      sender: formValues.sender,
-      recipient: formValues.recipient,
-    }),
-  ];
-
-  if (formValues.proposalSigner !== undefined) {
-    return {
-      type: "proposal",
-      signer: getImplicitAccount(formValues.proposalSigner),
-      content: token,
-      sender: getMultisigAccount(formValues.sender),
-    };
-  }
-  const signer = getImplicitAccount(formValues.sender);
-
-  return {
-    type: "implicit",
-    content: token,
-    sender: signer,
-    signer,
-  };
-};
-
 export const FillStep: React.FC<{
   onSubmit: (v: FormOperations) => void;
   onSubmitBatch: (v: Operation, signer: string) => void;
@@ -413,8 +348,9 @@ export const FillStep: React.FC<{
   parameter?: TransferParams["parameter"];
   mode: SendFormMode;
 }> = ({ onSubmit, isLoading, sender, recipient, amount, parameter, mode, onSubmitBatch }) => {
-  const getImplicitAccount = useGetImplicitAccount();
-  const getMultisigAccount = useGetMultisigAccount();
+  const getSigner = useGetBestSignerForAccount();
+  const getImplicitAccount = useGetImplicitAccountSafe();
+  const getAccount = useGetOwnedAccount();
 
   switch (mode.type) {
     case "delegation":
@@ -427,19 +363,15 @@ export const FillStep: React.FC<{
           onSubmit={formValues => {
             const delegation: Delegation = {
               type: "delegation",
-              sender: parsePkh(sender),
+              sender: parsePkh(formValues.sender),
               recipient:
                 formValues.baker !== undefined ? parseImplicitPkh(formValues.baker) : undefined,
             };
 
-            const signer = getImplicitAccount(formValues.sender);
-
-            onSubmit({
-              type: "implicit",
-              content: [delegation],
-              sender: signer,
-              signer,
-            });
+            const senderAccount = getAccount(formValues.sender);
+            const signer = getSigner(senderAccount);
+            const operations = makeFormOperations(senderAccount, signer, [delegation]);
+            onSubmit(operations);
           }}
         />
       );
@@ -463,9 +395,20 @@ export const FillStep: React.FC<{
             );
           }}
           onSubmit={formValues => {
-            onSubmit(
-              buildTezFromFormValues(formValues, getImplicitAccount, getMultisigAccount, parameter)
-            );
+            const senderAccount = getAccount(formValues.sender);
+            // if the signer has been selected in the form, use it, otherwise use the automatically assigned one
+            const signer =
+              (formValues.proposalSigner && getImplicitAccount(formValues.proposalSigner)) ||
+              getSigner(senderAccount);
+            const operations = makeFormOperations(senderAccount, signer, [
+              {
+                type: "tez",
+                amount: tezToMutez(formValues.amount).toString(),
+                recipient: parsePkh(formValues.recipient),
+                parameter,
+              },
+            ]);
+            onSubmit(operations);
           }}
         />
       );
@@ -488,14 +431,19 @@ export const FillStep: React.FC<{
             );
           }}
           onSubmit={formValues => {
-            onSubmit(
-              buildTokenFromFormValues(
-                formValues,
-                mode.data,
-                getImplicitAccount,
-                getMultisigAccount
-              )
-            );
+            const senderAccount = getAccount(formValues.sender);
+            // if the signer has been selected in the form, use it, otherwise use the automatically assigned one
+            const signer =
+              (formValues.proposalSigner && getImplicitAccount(formValues.proposalSigner)) ||
+              getSigner(senderAccount);
+            const operations = makeFormOperations(senderAccount, signer, [
+              toOperation(mode.data, {
+                amount: getRealAmount(mode.data, formValues.amount).toString(),
+                sender: formValues.sender,
+                recipient: formValues.recipient,
+              }),
+            ]);
+            onSubmit(operations);
           }}
           token={mode.data}
         />
