@@ -24,7 +24,7 @@ export const MasterPassword = ({
         await checkPassword(password);
       }
       await restoreSecret(account.seedphrase, password, account.label, account.derivationPath);
-      toast({ title: "Successful account restore" });
+      toast({ title: "Successful account restore", status: "success" });
       onClose();
     });
 

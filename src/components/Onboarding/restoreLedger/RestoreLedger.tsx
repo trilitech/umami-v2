@@ -42,6 +42,7 @@ const RestoreLedger = ({
         toast({
           title: "Request sent to Ledger",
           description: "Open the Tezos app on your Ledger and approve the operation",
+          status: "info",
         });
         const derivationPath = makeDerivationPath(account.derivationPath, 0);
         const { pk, pkh } = await getPk(derivationPath);
