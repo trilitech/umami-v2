@@ -1,5 +1,16 @@
 import { renderHook, act } from "@testing-library/react";
+import { mockToast } from "../../mocks/toast";
 import { useSafeLoading } from "./useSafeLoading";
+jest.mock("@chakra-ui/react", () => {
+  return {
+    ...jest.requireActual("@chakra-ui/react"),
+    // Mock taost since it has an erratic behavior in RTL
+    // https://github.com/chakra-ui/chakra-ui/issues/2969
+    //
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    useToast: require("../../mocks/toast").useToast,
+  };
+});
 
 describe("useSafeLoading", () => {
   describe("isLoading", () => {
@@ -88,6 +99,40 @@ describe("useSafeLoading", () => {
         })
       );
       expect(result).toBe(undefined);
+    });
+
+    it("passes in the right arguments in toast with an object", async () => {
+      const view = renderHook(() => useSafeLoading());
+      await act(async () =>
+        view.result.current.withLoading(
+          async () => {
+            throw new Error("test");
+          },
+          { title: "testTitle", description: "testDescription" }
+        )
+      );
+      expect(mockToast).toHaveBeenCalledWith({
+        title: "testTitle",
+        description: "testDescription",
+        status: "error",
+      });
+    });
+
+    it("passes in the right arguments in toast with a function", async () => {
+      const view = renderHook(() => useSafeLoading());
+      await act(async () =>
+        view.result.current.withLoading(
+          async () => {
+            throw new Error("test");
+          },
+          (err: any) => ({ title: "testTitle", description: err.message })
+        )
+      );
+      expect(mockToast).toHaveBeenCalledWith({
+        title: "testTitle",
+        description: "test",
+        status: "error",
+      });
     });
   });
 

@@ -1,8 +1,8 @@
-import { IconButton, useToast } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import CustomAuth from "@toruslabs/customauth";
-import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useSafeLoading } from "./utils/hooks/useSafeLoading";
 
 // These parameters are built by
 // https://github.com/torusresearch/CustomAuth/blob/master/serviceworker/redirect.html
@@ -44,47 +44,41 @@ export type GoogleAuthProps = {
 };
 
 export const GoogleAuth: React.FC<GoogleAuthProps> = ({ onSuccessfulAuth }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const toast = useToast();
+  const { isLoading, withLoading } = useSafeLoading();
 
-  const authenticate = async () => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
+  const authenticate = () =>
+    withLoading(
+      async () => {
+        const torus = new CustomAuth({
+          web3AuthClientId:
+            "BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g",
+          baseUrl: "https://umamiwallet.com/auth/v2/",
+          redirectPathName: "redirect.html",
+          redirectToOpener: true,
+          uxMode: "popup",
+          network: "mainnet",
+        });
+        await torus.init({ skipSw: true });
 
-    const torus = new CustomAuth({
-      web3AuthClientId:
-        "BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g",
-      baseUrl: "https://umamiwallet.com/auth/v2/",
-      redirectPathName: "redirect.html",
-      redirectToOpener: true,
-      uxMode: "popup",
-      network: "mainnet",
-    });
-    await torus.init({ skipSw: true });
-
-    try {
-      const result = await torus.triggerAggregateLogin({
-        verifierIdentifier: "tezos-google",
-        aggregateVerifierType: "single_id_verifier",
-        subVerifierDetailsArray: [
-          {
-            clientId: "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
-            typeOfLogin: "google",
-            verifier: "umami",
-          },
-        ],
-      });
-      const privateKey = result.finalKeyData.privKey || result.oAuthKeyData.privKey;
-      const sk = b58cencode(privateKey, prefix[Prefix.SPSK]);
-      onSuccessfulAuth(sk, result.userInfo[0].email);
-    } catch (error: any) {
-      toast({ title: "Torus SSO failed", description: error.message, status: "error" });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        const result = await torus.triggerAggregateLogin({
+          verifierIdentifier: "tezos-google",
+          aggregateVerifierType: "single_id_verifier",
+          subVerifierDetailsArray: [
+            {
+              clientId: "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
+              typeOfLogin: "google",
+              verifier: "umami",
+            },
+          ],
+        });
+        const privateKey = result.finalKeyData.privKey || result.oAuthKeyData.privKey;
+        const sk = b58cencode(privateKey, prefix[Prefix.SPSK]);
+        onSuccessfulAuth(sk, result.userInfo[0].email);
+      },
+      {
+        title: "Torus SSO failed",
+      }
+    );
 
   // TODO: correct the BG colours when we have the design ready
   return (

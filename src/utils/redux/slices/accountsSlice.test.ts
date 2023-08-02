@@ -12,7 +12,7 @@ import { parseImplicitPkh } from "../../../types/Address";
 import accountsSlice from "./accountsSlice";
 
 const {
-  actions: { addAccount, removeMnemonicAndAccounts: removeMnemonic },
+  actions: { addAccount, removeMnemonicAndAccounts },
 } = accountsSlice;
 
 jest.mock("../../aes");
@@ -90,7 +90,7 @@ describe("Accounts reducer", () => {
       seedPhrases: { mockPrint1: {}, mockPrint2: {} },
     });
 
-    store.dispatch(removeMnemonic({ fingerPrint: "mockPrint1" }));
+    store.dispatch(removeMnemonicAndAccounts({ fingerPrint: "mockPrint1" }));
 
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(2, undefined, "mockPrint2")],
