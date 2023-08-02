@@ -64,6 +64,15 @@ export const TopBar: React.FC<{ title: string }> = ({ title }) => {
         <Heading size="xl">{title}</Heading>
         <Box>
           <UpdateButton />
+          <Button
+            variant="outline"
+            onClick={() => {
+              window.open("mailto:umami-support@trili.tech?subject=Umami V2 feedback");
+            }}
+            mr={4}
+          >
+            Feedback
+          </Button>
           <Button variant="outline" onClick={onOpen}>
             Buy Tez
           </Button>
