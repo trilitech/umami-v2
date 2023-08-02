@@ -61,7 +61,7 @@ export const SendForm = ({
           fee: String(getTotalFee(estimates)),
         });
       },
-      () => ({ title: "Invalid transaction" })
+      { title: "Invalid transaction" }
     );
 
   const addToBatch = (operation: Operation, senderPkh: RawPkh) =>
@@ -75,7 +75,7 @@ export const SendForm = ({
 
         toast({ title: "Transaction added to batch!", status: "success" });
       },
-      () => ({ title: "Invalid transaction" })
+      { title: "Invalid transaction" }
     );
 
   const execute = async (operations: FormOperations, tezosToolkit: TezosToolkit) =>

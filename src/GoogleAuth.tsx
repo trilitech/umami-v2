@@ -75,9 +75,9 @@ export const GoogleAuth: React.FC<GoogleAuthProps> = ({ onSuccessfulAuth }) => {
         const sk = b58cencode(privateKey, prefix[Prefix.SPSK]);
         onSuccessfulAuth(sk, result.userInfo[0].email);
       },
-      () => ({
+      {
         title: "Torus SSO failed",
-      })
+      }
     );
 
   // TODO: correct the BG colours when we have the design ready

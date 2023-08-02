@@ -49,9 +49,9 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
           account: { type: "mnemonic", seedphrase: seedphrase, label: "Restored account" },
         });
       },
-      () => ({
+      {
         title: "Invalid Mnemonic",
-      })
+      }
     );
   return (
     <ModalContentWrapper

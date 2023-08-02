@@ -15,7 +15,7 @@ export const useSafeLoading = () => {
   // (though it's most likely is still vulnerable to race conditions)
   const withLoadingUnsafe = async <T>(
     fn: () => Promise<T>,
-    getToastOptions?: (error: any) => UseToastOptions
+    getToastOptions?: UseToastOptions | ((error: any) => UseToastOptions)
   ): Promise<T | void> => {
     if (isLoading) {
       return;
@@ -32,7 +32,10 @@ export const useSafeLoading = () => {
       }
       let toastOptions: UseToastOptions = { title: "Error", description, status: "error" };
       if (getToastOptions) {
-        toastOptions = { ...toastOptions, ...getToastOptions(error) };
+        toastOptions = {
+          ...toastOptions,
+          ...(typeof getToastOptions === "object" ? getToastOptions : getToastOptions(error)),
+        };
       }
       toast(toastOptions);
       throw error;
@@ -44,7 +47,7 @@ export const useSafeLoading = () => {
   // same as withLoadingUnsafe, but returns undefined instead of throwing an error
   const withLoading = async <T>(
     fn: () => Promise<T>,
-    getToastOptions?: (error: any) => UseToastOptions
+    getToastOptions?: UseToastOptions | ((error: any) => UseToastOptions)
   ): Promise<T | void> => withLoadingUnsafe(fn, getToastOptions).catch(() => {});
 
   return { isLoading, withLoading, withLoadingUnsafe };

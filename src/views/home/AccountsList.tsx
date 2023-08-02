@@ -211,7 +211,7 @@ const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
           description: `Successfully derived account from ${props.fingerprint}`,
         });
       },
-      () => ({ title: "Failed to derive new account" })
+      { title: "Failed to derive new account" }
     );
 
   return (

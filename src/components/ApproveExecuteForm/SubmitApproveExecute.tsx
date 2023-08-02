@@ -55,7 +55,7 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
         );
         onSuccess(result.hash);
       },
-      () => ({ title: "Failed propose or execute" })
+      { title: "Failed propose or execute" }
     );
 
   return (
