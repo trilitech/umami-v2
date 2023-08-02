@@ -6,7 +6,7 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
-import { useGetBestSignerForAccount, useGetImplicitAccount } from "../../utils/hooks/accountHooks";
+import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
@@ -44,7 +44,7 @@ const BatchView = () => {
   const batches = useAppSelector(s => s.assets.batches);
 
   const dispatch = useAppDispatch();
-  const getAccount = useGetImplicitAccount();
+  const getAccount = useGetOwnedAccount();
   // TODO: allow user to select signer for multisig
   const getSigner = useGetBestSignerForAccount();
   const clearBatch = useClearBatch();
