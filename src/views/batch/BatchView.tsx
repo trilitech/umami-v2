@@ -6,7 +6,11 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
-import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
+import {
+  useFirstAccount,
+  useGetBestSignerForAccount,
+  useGetOwnedAccount,
+} from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
@@ -14,6 +18,7 @@ import { BatchDisplay } from "./BatchDisplay";
 import NoItems from "../../components/NoItems";
 import { makeFormOperations } from "../../components/sendForm/types";
 import { useClearBatch } from "../../utils/hooks/assetsHooks";
+import useCSVFileUploadModal from "../../components/CSVFileUploader/useCSVFileUploadModal";
 
 export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (
@@ -50,7 +55,9 @@ const BatchView = () => {
   const clearBatch = useClearBatch();
 
   const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
-  const { onOpen, element, onClose } = useConfirmation();
+  const { onOpen, element: confirmationElement, onClose } = useConfirmation();
+  const ownerAccount = useFirstAccount();
+  const { modalElement: csvUploadModalElement, onOpen: onOpenCsvUpload } = useCSVFileUploadModal();
 
   const batchEls = Object.entries(batches).map(([pkh, operations]) => {
     const account = getAccount(pkh);
@@ -89,18 +96,23 @@ const BatchView = () => {
       <TopBar title="Batch" />
       <FilterController batchPending={batchEls.length} />
       <Box overflowY="auto" minH="80%">
-        {batchEls.length === 0 ? (
+        {batchEls.length > 0 ? (
+          batchEls
+        ) : (
           <NoItems
             text="Your batch is currently empty"
             primaryText="Start a Batch"
+            onClickPrimary={() =>
+              openSendForm({ mode: { type: "tez" }, sender: ownerAccount.address.pkh })
+            }
             secondaryText="Load CSV file"
+            onClickSecondary={onOpenCsvUpload}
           />
-        ) : (
-          batchEls
         )}
       </Box>
       {sendFormModalEl}
-      {element}
+      {confirmationElement}
+      {csvUploadModalElement}
     </Flex>
   );
 };

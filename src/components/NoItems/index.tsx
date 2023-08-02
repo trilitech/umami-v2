@@ -27,12 +27,12 @@ export default function NoItems({
         </Heading>
         <Center>
           {primaryText ? (
-            <Button bg="umami.blue" size={buttonSize} onClick={onClickPrimary}>
+            <Button variant="primary" size={buttonSize} onClick={onClickPrimary}>
               {primaryText}
             </Button>
           ) : null}
           {secondaryText ? (
-            <Button variant="outline" size={buttonSize} onClick={onClickSecondary} ml={5}>
+            <Button variant="tertiary" size={buttonSize} onClick={onClickSecondary} ml={5}>
               {secondaryText}
             </Button>
           ) : null}
