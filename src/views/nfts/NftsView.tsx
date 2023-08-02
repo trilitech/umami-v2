@@ -48,7 +48,7 @@ const NFTsViewBase = () => {
             <DrawerOverlay />
             <DrawerContent maxW="594px" bg="umami.gray.900">
               <DrawerBody>
-                <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={drawerOnClose} />
+                <DrawerTopButtons onClose={drawerOnClose} />
                 {drawerNFT && <NFTDrawerCard nft={drawerNFT} ownerPkh={ownerPkh} />}
               </DrawerBody>
             </DrawerContent>
