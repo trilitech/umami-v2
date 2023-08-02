@@ -1,14 +1,4 @@
-import {
-  VStack,
-  Text,
-  Input,
-  Box,
-  Button,
-  GridItem,
-  Grid,
-  Select,
-  useToast,
-} from "@chakra-ui/react";
+import { VStack, Text, Input, Box, Button, GridItem, Grid, Select } from "@chakra-ui/react";
 import { useState } from "react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
@@ -17,6 +7,7 @@ import { WarningIcon } from "@chakra-ui/icons";
 import { Step, StepType } from "../useOnboardingModal";
 import { InMemorySigner } from "@taquito/signer";
 import { seedPhrase } from "../../../mocks/seedPhrase";
+import { useSafeLoading } from "../../../utils/hooks/useSafeLoading";
 
 const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
@@ -28,7 +19,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
   } = useForm({
     mode: "onBlur",
   });
-  const toast = useToast();
+  const { withLoading } = useSafeLoading();
   const [mnemonicSize, setMnemonicSize] = useState("12");
 
   const pasteMnemonic = (mnemonic: string) => {
@@ -38,28 +29,30 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
     trigger();
   };
 
-  const onSubmit = async (data: FieldValues) => {
-    let seedphrase = "";
-    for (const key in data) {
-      seedphrase += data[key] + " ";
-    }
-    seedphrase = seedphrase.trim();
+  const onSubmit = (data: FieldValues) =>
+    withLoading(
+      async () => {
+        let seedphrase = "";
+        for (const key in data) {
+          seedphrase += data[key] + " ";
+        }
+        seedphrase = seedphrase.trim();
 
-    try {
-      // TODO: test this
-      InMemorySigner.fromMnemonic({
-        mnemonic: seedphrase,
-        derivationPath: "44'/1729'/0'/0'",
-        curve: "ed25519",
-      });
-      goToStep({
-        type: StepType.derivationPath,
-        account: { type: "mnemonic", seedphrase: seedphrase, label: "Restored account" },
-      });
-    } catch (error: any) {
-      toast({ title: "Invalid Mnemonic", description: error.message });
-    }
-  };
+        // TODO: test this
+        InMemorySigner.fromMnemonic({
+          mnemonic: seedphrase,
+          derivationPath: "44'/1729'/0'/0'",
+          curve: "ed25519",
+        });
+        goToStep({
+          type: StepType.derivationPath,
+          account: { type: "mnemonic", seedphrase: seedphrase, label: "Restored account" },
+        });
+      },
+      () => ({
+        title: "Invalid Mnemonic",
+      })
+    );
   return (
     <ModalContentWrapper
       icon={SupportedIcons.wallet}

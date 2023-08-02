@@ -10,7 +10,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { compact, groupBy } from "lodash";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import KeyIcon from "../../assets/icons/Key";
 import AccountTile from "../../components/AccountTile";
@@ -20,6 +20,7 @@ import { useOnboardingModal } from "../../components/Onboarding/useOnboardingMod
 import { AccountType, Account } from "../../types/Account";
 import { useAllAccounts, useRemoveMnemonic } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
+import { useSafeLoading } from "../../utils/hooks/useSafeLoading";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
@@ -190,38 +191,28 @@ export const AccountsList: React.FC<{
 
 const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
   const dispatch = useAppDispatch();
-
-  const [isLoading, setIsloading] = useState(false);
+  const { isLoading, withLoading } = useSafeLoading();
   const toast = useToast();
 
-  const handleSubmit = async ({ name, password }: { name: string; password: string }) => {
-    if (isLoading) {
-      return;
-    }
-    setIsloading(true);
-    try {
-      await dispatch(
-        deriveAccount({
-          fingerPrint: props.fingerprint,
-          password,
-          label: name,
-        })
-      ).unwrap();
-      props.onDone();
+  const handleSubmit = ({ name, password }: { name: string; password: string }) =>
+    withLoading(
+      async () => {
+        await dispatch(
+          deriveAccount({
+            fingerPrint: props.fingerprint,
+            password,
+            label: name,
+          })
+        ).unwrap();
+        props.onDone();
 
-      toast({
-        title: "New account created!",
-        description: `Successfully derived account from ${props.fingerprint}`,
-      });
-    } catch (error: any) {
-      toast({
-        title: "Failed to derive new account",
-        description: error.message,
-      });
-    }
-
-    setIsloading(false);
-  };
+        toast({
+          title: "New account created!",
+          description: `Successfully derived account from ${props.fingerprint}`,
+        });
+      },
+      () => ({ title: "Failed to derive new account" })
+    );
 
   return (
     <DeriveAccountDisplay

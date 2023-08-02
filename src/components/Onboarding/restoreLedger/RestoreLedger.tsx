@@ -1,11 +1,11 @@
-import { Button, VStack, useToast, ListItem, OrderedList } from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, VStack, ListItem, OrderedList, useToast } from "@chakra-ui/react";
 import { RestoreLedgerStep } from "../useOnboardingModal";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { getPk } from "../../../utils/ledger/pk";
 import { useRestoreLedger } from "../../../utils/hooks/accountHooks";
 import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
+import { useSafeLoading } from "../../../utils/hooks/useSafeLoading";
 
 const RestoreLedger = ({
   closeModal,
@@ -14,9 +14,9 @@ const RestoreLedger = ({
   closeModal: () => void;
   account: RestoreLedgerStep["account"];
 }) => {
-  const [isLoading, setIsloading] = useState(false);
   const restoreLedger = useRestoreLedger();
   const toast = useToast();
+  const { isLoading, withLoading } = useSafeLoading();
 
   const noticeItems = [
     {
@@ -36,39 +36,36 @@ const RestoreLedger = ({
     },
   ];
 
-  const connectLedger = async () => {
-    if (isLoading) {
-      return;
-    }
-    setIsloading(true);
-    try {
-      toast({
-        title: "Request sent to Ledger",
-        description: "Open the Tezos app on your Ledger and accept the request",
-      });
-      const derivationPath = makeDerivationPath(account.derivationPath, 0);
-      const { pk, pkh } = await getPk(derivationPath);
-      restoreLedger(derivationPath, pk, pkh, account.label);
-      closeModal();
-    } catch (error: any) {
-      if (error.name === "PublicKeyRetrievalError") {
+  const connectLedger = () =>
+    withLoading(
+      async () => {
         toast({
-          title: "Request rejected",
-          description: "Please unlock your Ledger and open the Tezos app",
+          title: "Request sent to Ledger",
+          description: "Open the Tezos app on your Ledger and approve the operation",
         });
-      } else if (error.name === "InvalidStateError") {
-        toast({
-          title: "Request pending",
-          description: "Check your ledger...",
-        });
-      } else if (error.name !== undefined) {
-        toast({ title: "Request cancelled", description: error.name });
-      } else {
-        toast({ title: "Ledger Error", description: error.message });
+        const derivationPath = makeDerivationPath(account.derivationPath, 0);
+        const { pk, pkh } = await getPk(derivationPath);
+        restoreLedger(derivationPath, pk, pkh, account.label);
+        closeModal();
+      },
+      error => {
+        if (error.name === "PublicKeyRetrievalError") {
+          return {
+            title: "Request rejected",
+            description: "Please unlock your Ledger and open the Tezos app",
+          };
+        } else if (error.name === "InvalidStateError") {
+          return {
+            title: "Request pending",
+            description: "Check your ledger...",
+          };
+        } else if (error.name !== undefined) {
+          return { title: "Request cancelled", description: error.name };
+        }
+
+        return { title: "Ledger Error", description: error.message };
       }
-    }
-    setIsloading(false);
-  };
+    );
 
   return (
     <ModalContentWrapper

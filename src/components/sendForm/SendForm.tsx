@@ -5,6 +5,7 @@ import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
 import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useSafeLoading } from "../../utils/hooks/useSafeLoading";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
@@ -36,8 +37,7 @@ export const SendForm = ({
   const clearBatch = useClearBatch();
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
-
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, withLoading } = useSafeLoading();
 
   const [transferValues, setTransferValues] = useState<EstimatedOperation | undefined>(undefined);
 
@@ -51,55 +51,35 @@ export const SendForm = ({
     }
   }, [hash]);
 
-  const simulate = async (operations: FormOperations) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
+  const simulate = (operations: FormOperations) =>
+    withLoading(
+      async () => {
+        const estimates = await operationsToBatchItems(operations, network);
 
-    try {
-      const estimates = await operationsToBatchItems(operations, network);
+        setTransferValues({
+          operations,
+          fee: String(getTotalFee(estimates)),
+        });
+      },
+      () => ({ title: "Invalid transaction" })
+    );
 
-      setTransferValues({
-        operations,
-        fee: String(getTotalFee(estimates)),
-      });
-    } catch (error: any) {
-      console.warn("Simulation Error", error);
-      toast({ title: "Invalid transaction", description: error.message, status: "error" });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const addToBatch = (operation: Operation, senderPkh: RawPkh) =>
+    withLoading(
+      async () => {
+        const sender = getAccount(senderPkh);
+        const signer = getSigner(sender);
+        await dispatch(
+          estimateAndUpdateBatch(makeFormOperations(sender, signer, [operation]), network)
+        );
 
-  const addToBatch = async (operation: Operation, senderPkh: RawPkh) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    const sender = getAccount(senderPkh);
-    const signer = getSigner(sender);
+        toast({ title: "Transaction added to batch!", status: "success" });
+      },
+      () => ({ title: "Invalid transaction" })
+    );
 
-    try {
-      await dispatch(
-        estimateAndUpdateBatch(makeFormOperations(sender, signer, [operation]), network)
-      );
-
-      toast({ title: "Transaction added to batch!", status: "success" });
-    } catch (error: any) {
-      console.warn("Failed adding transaction to batch", error);
-      toast({ title: "Invalid transaction", description: error.message, status: "error" });
-    }
-    setIsLoading(false);
-  };
-
-  const execute = async (operations: FormOperations, tezosToolkit: TezosToolkit) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-
-    try {
+  const execute = async (operations: FormOperations, tezosToolkit: TezosToolkit) =>
+    withLoading(async () => {
       const result = await makeTransfer(operations, tezosToolkit);
       if (mode.type === "batch") {
         // TODO this will have to me moved in a thunk
@@ -113,12 +93,7 @@ export const SendForm = ({
       setTimeout(() => {
         dispatch(assetsActions.refetch());
       }, 3000);
-    } catch (error: any) {
-      console.warn("Failed to execute operation", error);
-      toast({ title: "Error", description: error.message });
-    }
-    setIsLoading(false);
-  };
+    });
 
   if (hash) {
     return <SuccessStep hash={hash} network={network} />;

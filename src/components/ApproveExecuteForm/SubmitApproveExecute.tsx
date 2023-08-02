@@ -9,7 +9,6 @@ import {
   Text,
   Heading,
   Flex,
-  useToast,
 } from "@chakra-ui/react";
 import SignButton from "../sendForm/components/SignButton";
 import { ParamsWithFee } from "./types";
@@ -20,6 +19,7 @@ import { AccountSmallTile } from "../AccountSelector/AccountSmallTile";
 import { ApproveOrExecute } from "../../utils/tezos/types";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { TezosToolkit } from "@taquito/taquito";
+import { useSafeLoading } from "../../utils/hooks/useSafeLoading";
 
 type Props = ParamsWithFee & {
   onSuccess: (hash: string) => void;
@@ -40,24 +40,23 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
   operation,
   type: actionType,
 }) => {
-  const toast = useToast();
+  const { withLoading } = useSafeLoading();
 
-  const approveOrExecute = async (tezosToolkit: TezosToolkit) => {
-    try {
-      const result = await approveOrExecuteMultisigOperation(
-        {
-          contract: sender.address,
-          operationId: operation.id,
-          type: actionType,
-        },
-        tezosToolkit
-      );
-      onSuccess(result.hash);
-    } catch (error: any) {
-      toast({ title: "Failed propose or execute", description: error.message, status: "error" });
-      console.warn("Failed propose or execute", error);
-    }
-  };
+  const approveOrExecute = (tezosToolkit: TezosToolkit) =>
+    withLoading(
+      async () => {
+        const result = await approveOrExecuteMultisigOperation(
+          {
+            contract: sender.address,
+            operationId: operation.id,
+            type: actionType,
+          },
+          tezosToolkit
+        );
+        onSuccess(result.hash);
+      },
+      () => ({ title: "Failed propose or execute" })
+    );
 
   return (
     <ModalContent bg="umami.gray.900">
