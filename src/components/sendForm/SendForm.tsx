@@ -5,7 +5,7 @@ import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
 import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import { useSafeLoading } from "../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
@@ -37,7 +37,7 @@ export const SendForm = ({
   const clearBatch = useClearBatch();
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
-  const { isLoading, withLoading } = useSafeLoading();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const [transferValues, setTransferValues] = useState<EstimatedOperation | undefined>(undefined);
 
@@ -52,7 +52,7 @@ export const SendForm = ({
   }, [hash]);
 
   const simulate = (operations: FormOperations) =>
-    withLoading(
+    handleAsyncAction(
       async () => {
         const estimates = await operationsToBatchItems(operations, network);
 
@@ -65,7 +65,7 @@ export const SendForm = ({
     );
 
   const addToBatch = (operation: Operation, senderPkh: RawPkh) =>
-    withLoading(
+    handleAsyncAction(
       async () => {
         const sender = getAccount(senderPkh);
         const signer = getSigner(sender);
@@ -79,7 +79,7 @@ export const SendForm = ({
     );
 
   const execute = async (operations: FormOperations, tezosToolkit: TezosToolkit) =>
-    withLoading(async () => {
+    handleAsyncAction(async () => {
       const result = await makeTransfer(operations, tezosToolkit);
       if (mode.type === "batch") {
         // TODO this will have to me moved in a thunk

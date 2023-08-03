@@ -2,7 +2,7 @@ import { IconButton } from "@chakra-ui/react";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import CustomAuth from "@toruslabs/customauth";
 import { FcGoogle } from "react-icons/fc";
-import { useSafeLoading } from "./utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "./utils/hooks/useAsyncActionHandler";
 
 // These parameters are built by
 // https://github.com/torusresearch/CustomAuth/blob/master/serviceworker/redirect.html
@@ -44,10 +44,10 @@ export type GoogleAuthProps = {
 };
 
 export const GoogleAuth: React.FC<GoogleAuthProps> = ({ onSuccessfulAuth }) => {
-  const { isLoading, withLoading } = useSafeLoading();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const authenticate = () =>
-    withLoading(
+    handleAsyncAction(
       async () => {
         const torus = new CustomAuth({
           web3AuthClientId:

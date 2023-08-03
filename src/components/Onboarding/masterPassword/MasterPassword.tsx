@@ -1,6 +1,6 @@
 import { useToast } from "@chakra-ui/react";
 import { useCheckPasswordValidity, useRestoreSecret } from "../../../utils/hooks/accountHooks";
-import { useSafeLoading } from "../../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { MasterPasswordStep } from "../useOnboardingModal";
 import EnterAndConfirmPassword from "./password/EnterAndConfirmPassword";
 import EnterPassword from "./password/EnterPassword";
@@ -16,10 +16,10 @@ export const MasterPassword = ({
   const checkPassword = useCheckPasswordValidity();
   const passwordHasBeenSet = checkPassword !== null;
 
-  const { isLoading, withLoading } = useSafeLoading();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const toast = useToast();
   const handleSubmit = (password: string) =>
-    withLoading(async () => {
+    handleAsyncAction(async () => {
       if (passwordHasBeenSet) {
         await checkPassword(password);
       }

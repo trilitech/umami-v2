@@ -7,7 +7,7 @@ import { WarningIcon } from "@chakra-ui/icons";
 import { Step, StepType } from "../useOnboardingModal";
 import { InMemorySigner } from "@taquito/signer";
 import { seedPhrase } from "../../../mocks/seedPhrase";
-import { useSafeLoading } from "../../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 
 const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
@@ -19,7 +19,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
   } = useForm({
     mode: "onBlur",
   });
-  const { withLoading } = useSafeLoading();
+  const { handleAsyncAction } = useAsyncActionHandler();
   const [mnemonicSize, setMnemonicSize] = useState("12");
 
   const pasteMnemonic = (mnemonic: string) => {
@@ -30,7 +30,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
   };
 
   const onSubmit = (data: FieldValues) =>
-    withLoading(
+    handleAsyncAction(
       async () => {
         let seedphrase = "";
         for (const key in data) {

@@ -11,7 +11,7 @@ import {
 } from "../../../types/Account";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { useGetSecretKey } from "../../../utils/hooks/accountUtils";
-import { useSafeLoading } from "../../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { makeToolkit } from "../../../utils/tezos";
 
 const SignButton: React.FC<{
@@ -26,19 +26,21 @@ const SignButton: React.FC<{
   } = useForm<{ password: string }>({ mode: "onBlur" });
 
   const getSecretKey = useGetSecretKey();
-  const { isLoading, withLoading } = useSafeLoading();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const onMnemonicSign = async ({ password }: { password: string }) =>
-    withLoading(async () => {
+    handleAsyncAction(async () => {
       const secretKey = await getSecretKey(signer as MnemonicAccount, password);
       onSubmit(await makeToolkit({ type: "mnemonic", secretKey, network }));
     });
 
   const onSocialSign = async (secretKey: string) =>
-    withLoading(async () => onSubmit(await makeToolkit({ type: "social", secretKey, network })));
+    handleAsyncAction(async () =>
+      onSubmit(await makeToolkit({ type: "social", secretKey, network }))
+    );
 
   const onLedgerSign = async () =>
-    withLoading(async () =>
+    handleAsyncAction(async () =>
       onSubmit(
         await makeToolkit({
           type: "ledger",
