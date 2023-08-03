@@ -8,6 +8,8 @@ type ErrorInfo = {
 
 type State = ErrorInfo[];
 
+const MAX_ERRORS_LEN = 100;
+
 const initialState: State = [];
 
 const errorsSlice = createSlice({
@@ -17,7 +19,7 @@ const errorsSlice = createSlice({
     reset: () => initialState,
 
     add(state, { payload }: { payload: ErrorInfo }) {
-      if (state.length === 100) {
+      if (state.length === MAX_ERRORS_LEN) {
         state.shift();
       }
       state.push(payload);

@@ -1,5 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { mockToast } from "../../mocks/toast";
+import { ReduxStore } from "../../providers/ReduxStore";
 import { useAsyncActionHandler } from "./useAsyncActionHandler";
 jest.mock("@chakra-ui/react", () => {
   return {
@@ -12,15 +13,17 @@ jest.mock("@chakra-ui/react", () => {
   };
 });
 
-describe("useSafeLoading", () => {
+const fixture = () => renderHook(() => useAsyncActionHandler(), { wrapper: ReduxStore });
+
+describe("useAsyncActionHandler", () => {
   describe("isLoading", () => {
     it("is false by default", () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
       expect(view.result.current.isLoading).toBe(false);
     });
 
     it("changes to true during computation and back to false when done", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
 
       await act(() =>
         view.result.current.handleAsyncAction(async () => {
@@ -31,7 +34,7 @@ describe("useSafeLoading", () => {
     });
 
     it("changes to true during computation and back to false when the computation fails", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
 
       await act(() =>
         view.result.current.handleAsyncAction(async () => {
@@ -43,7 +46,7 @@ describe("useSafeLoading", () => {
     });
 
     it("prevents multiple computations from running at the same time", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
 
       const sharedVariable = { data: 0 };
 
@@ -65,7 +68,7 @@ describe("useSafeLoading", () => {
     });
 
     it("allows multiple computations to be run sequentially", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
 
       const sharedVariable = { data: 0 };
 
@@ -81,9 +84,9 @@ describe("useSafeLoading", () => {
     });
   });
 
-  describe("withLoading", () => {
+  describe("handleAsyncAction", () => {
     it("returns the result of the computation", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
       let result;
       await act(async () => {
         result = await view.result.current.handleAsyncAction(async () => 42);
@@ -92,7 +95,7 @@ describe("useSafeLoading", () => {
     });
 
     it("returns undefined when the computation fails", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
       const result = await act(async () =>
         view.result.current.handleAsyncAction(async () => {
           throw new Error("test");
@@ -102,7 +105,7 @@ describe("useSafeLoading", () => {
     });
 
     it("passes in the right arguments in toast with an object", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
       await act(async () =>
         view.result.current.handleAsyncAction(
           async () => {
@@ -119,7 +122,7 @@ describe("useSafeLoading", () => {
     });
 
     it("passes in the right arguments in toast with a function", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
       await act(async () =>
         view.result.current.handleAsyncAction(
           async () => {
@@ -136,9 +139,9 @@ describe("useSafeLoading", () => {
     });
   });
 
-  describe("withLoadingUnsafe", () => {
+  describe("handleAsyncActionUnsafe", () => {
     it("returns the result of the computation", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
       const result = await act(async () =>
         view.result.current.handleAsyncActionUnsafe(async () => 42)
       );
@@ -146,7 +149,7 @@ describe("useSafeLoading", () => {
     });
 
     it("throws when the computation fails", async () => {
-      const view = renderHook(() => useAsyncActionHandler());
+      const view = fixture();
 
       await expect(
         act(async () =>
