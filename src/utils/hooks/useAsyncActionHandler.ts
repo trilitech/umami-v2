@@ -1,9 +1,12 @@
 import { useToast, UseToastOptions } from "@chakra-ui/react";
 import { useState } from "react";
+import { useAppDispatch } from "../redux/hooks";
+import errorsSlice from "../redux/slices/errorsSlice";
 
 export const useAsyncActionHandler = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+  const dispatch = useAppDispatch();
 
   // wraps an async function that might throw an error (e.g. network call, decryption, raw input parsing, etc.)
   // handles `isLoading` state and sets it back to `false` after the function is done
@@ -37,6 +40,19 @@ export const useAsyncActionHandler = () => {
         status: "error",
         ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
       });
+
+      let stacktrace = "";
+      if ("stack" in error) {
+        stacktrace = error.stack;
+      }
+      dispatch(
+        errorsSlice.actions.add({
+          timestamp: new Date().toISOString(),
+          description,
+          stacktrace,
+        })
+      );
+
       throw error;
     } finally {
       setIsLoading(false);
