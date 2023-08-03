@@ -1,0 +1,27 @@
+export type ErrorContext = {
+  timestamp: string;
+  description: string;
+  stacktrace: string;
+};
+
+const getErrorContext = (error: any): ErrorContext => {
+  let description = "Something went wrong";
+  if ("message" in error) {
+    description = error.message;
+  } else if (typeof error === "string") {
+    description = error;
+  }
+
+  let stacktrace = "";
+  if ("stack" in error) {
+    stacktrace = error.stack;
+  }
+
+  return {
+    timestamp: new Date().toISOString(),
+    description,
+    stacktrace,
+  };
+};
+
+export default getErrorContext;

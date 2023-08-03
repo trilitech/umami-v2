@@ -1,5 +1,6 @@
 import { useToast, UseToastOptions } from "@chakra-ui/react";
 import { useState } from "react";
+import getErrorContext from "../getErrorContext";
 import { useAppDispatch } from "../redux/hooks";
 import errorsSlice from "../redux/slices/errorsSlice";
 
@@ -27,32 +28,16 @@ export const useAsyncActionHandler = () => {
     try {
       return await fn();
     } catch (error: any) {
-      let description = "Something went wrong";
-      if ("message" in error) {
-        description = error.message;
-      } else if (typeof error === "string") {
-        description = error;
-      }
+      const errorContext = getErrorContext(error);
 
       toast({
         title: "Error",
-        description,
+        description: errorContext.description,
         status: "error",
         ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
       });
 
-      let stacktrace = "";
-      if ("stack" in error) {
-        stacktrace = error.stack;
-      }
-      dispatch(
-        errorsSlice.actions.add({
-          timestamp: new Date().toISOString(),
-          description,
-          stacktrace,
-        })
-      );
-
+      dispatch(errorsSlice.actions.add(errorContext));
       throw error;
     } finally {
       setIsLoading(false);
