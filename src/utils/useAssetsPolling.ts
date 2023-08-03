@@ -103,7 +103,7 @@ export const useAssetsPolling = () => {
 
             // token transfers have to be fetched after the balances were fetched
             // because otherwise we might not have some tokens' info to display the operations
-            processInBatches(allAccountPkhs, 5, pkh =>
+            processInBatches(allAccountPkhs, 3, pkh =>
               getTokensTransfersPayload(pkh, network)
             ).then(tokenTransfers => {
               dispatch(
