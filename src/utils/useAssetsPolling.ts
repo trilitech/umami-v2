@@ -56,6 +56,7 @@ const getDelegationsPayload = async (
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
 const BAKERS_REFRESH_RATE = 1000 * 60 * 120;
+const CHUNK_SIZE = 3;
 
 // The limit of a URI size is 2000 chars
 // according to https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
@@ -105,7 +106,7 @@ export const useAssetsPolling = () => {
 
             // token transfers have to be fetched after the balances were fetched
             // because otherwise we might not have some tokens' info to display the operations
-            processInBatches(allAccountPkhs, 3, pkh =>
+            processInBatches(allAccountPkhs, CHUNK_SIZE, pkh =>
               getTokensTransfersPayload(pkh, network)
             ).then(tokenTransfers => {
               dispatch(
@@ -119,13 +120,13 @@ export const useAssetsPolling = () => {
           }
         );
 
-        const tezTransfers = processInBatches(allAccountPkhs, 5, pkh =>
+        const tezTransfers = processInBatches(allAccountPkhs, CHUNK_SIZE, pkh =>
           getTezTransfersPayload(pkh, network)
         ).then(tezTransfers => {
           dispatch(assetsActions.updateTezTransfers(tezTransfers));
         });
 
-        const delegations = processInBatches(allAccountPkhs, 5, pkh =>
+        const delegations = processInBatches(allAccountPkhs, CHUNK_SIZE, pkh =>
           getDelegationsPayload(pkh, network)
         ).then(delegations => {
           dispatch(assetsActions.updateDelegations(compact(delegations)));
