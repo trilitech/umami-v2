@@ -9,6 +9,8 @@ import { assetsActions } from "../utils/redux/slices/assetsSlice";
 import SendButton from "../views/home/SendButton";
 import useBuyTezModal from "./BuyTez/useBuyTezModal";
 
+const emailBodyTemplate =
+  "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
 const formatRelativeTimestamp = (timestamp: string) => {
   return formatDistance(new Date(timestamp), new Date());
 };
@@ -64,7 +66,14 @@ export const TopBar: React.FC<{ title: string }> = ({ title }) => {
         <Heading size="xl">{title}</Heading>
         <Box>
           <UpdateButton />
-          <Button variant="outline" onClick={onOpen}>
+          <a
+            href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${emailBodyTemplate}`}
+          >
+            <Button variant="tertiary" mr={4}>
+              Share Feedback
+            </Button>
+          </a>
+          <Button variant="tertiary" onClick={onOpen}>
             Buy Tez
           </Button>
           <SendButton />
