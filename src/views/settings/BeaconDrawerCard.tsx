@@ -7,6 +7,7 @@ import {
   DrawerOverlay,
   Flex,
   Heading,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
@@ -23,7 +24,7 @@ export const BeaconDrawerCard = () => {
       <Drawer isOpen={isOpen} placement="right" onClose={closeDrawer} size="md">
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
-          <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={closeDrawer} />
+          <DrawerTopButtons onClose={closeDrawer} />
           <DrawerBody>
             <BeaconDrawerBody />
           </DrawerBody>
@@ -46,11 +47,13 @@ const BeaconDrawerBody = () => {
             addPeer(text);
           })
         }
-        bg="umami.blue"
-        type="submit"
+        variant="primary"
       >
-        Connect with Pairing Request
+        Paste a peer request code
       </Button>
+      <Text mt={4} color="text.dark">
+        or open a deeplink from inside the dApp...
+      </Text>
       <BeaconPeers />
     </Box>
   );

@@ -16,7 +16,7 @@ import { BsTrash } from "react-icons/bs";
 import { usePeers, useRemovePeer } from "./beacon";
 import { PeerInfo } from "./types";
 
-const peerRow = (peerInfo: PeerInfo, onRemove: () => void) => {
+const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => void }) => {
   return (
     <Tr>
       <Td>
@@ -58,7 +58,15 @@ export const PeersDisplay = ({
             <Th>Delete:</Th>
           </Tr>
         </Thead>
-        <Tbody>{peerInfos.map(peerInfo => peerRow(peerInfo, () => removePeer(peerInfo)))}</Tbody>
+        <Tbody>
+          {peerInfos.map(peerInfo => (
+            <PeerRow
+              key={peerInfo.name}
+              peerInfo={peerInfo}
+              onRemove={() => removePeer(peerInfo)}
+            />
+          ))}
+        </Tbody>
       </Table>
     </TableContainer>
   );
@@ -70,11 +78,7 @@ const BeaconPeers = () => {
   const peers = data || [];
 
   if (peers.length === 0) {
-    return (
-      <Text mt={4} color="text.dark">
-        Paste a peer request or open a deeplink from inside a dApp...
-      </Text>
-    );
+    return null;
   }
 
   return <PeersDisplay peerInfos={peers} removePeer={removePeer} />;

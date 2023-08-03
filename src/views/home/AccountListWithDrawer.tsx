@@ -30,7 +30,7 @@ const AccountListWithDrawer: React.FC = () => {
       <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
-          <DrawerTopButtons onPrevious={() => {}} onNext={() => {}} onClose={handleClose} />
+          <DrawerTopButtons onClose={handleClose} />
           <DrawerBody>{account && <AccountCard account={account} />}</DrawerBody>
         </DrawerContent>
       </Drawer>
