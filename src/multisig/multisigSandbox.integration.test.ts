@@ -3,7 +3,7 @@ import { ghostnetFA12 } from "../mocks/fa12Tokens";
 import { ghotnetThezard } from "../mocks/nftTokens";
 import { makeDefaultDevSignerKeys, makeToolkitFromDefaultDevSeed } from "../mocks/devSignerKeys";
 import { ghostTezzard } from "../mocks/tokens";
-import { contract, makeStorageMichelsonJSON } from "./multisigContract";
+import { contract, makeStorageJSON } from "./multisigContract";
 import { makeBatchLambda } from "./multisigUtils";
 import { MultisigStorage } from "../types/Operation";
 import { parseContractPkh, parsePkh } from "../types/Address";
@@ -15,7 +15,7 @@ const originate = async () => {
   const keys0 = await makeDefaultDevSignerKeys(0);
   return tezos.contract.originate({
     code: contract,
-    init: makeStorageMichelsonJSON(keys0.pkh, [keys0.pkh], "1"),
+    init: makeStorageJSON(keys0.pkh, [keys0.pkh], "1"),
   });
 };
 

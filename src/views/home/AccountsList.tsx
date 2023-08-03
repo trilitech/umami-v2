@@ -10,10 +10,11 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { compact, groupBy } from "lodash";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import KeyIcon from "../../assets/icons/Key";
 import AccountTile from "../../components/AccountTile";
+import { DynamicModalContext } from "../../components/DynamicModal";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
 import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
@@ -25,7 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
-import { useCreateMultisigModal } from "./Multisig/useCreateMultisigModal";
+import { CreateForm } from "./Multisig/CreateForm";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -109,7 +110,7 @@ export const AccountsList: React.FC<{
 
   const accountsByKind = groupBy(accounts, getLabel);
 
-  const createMultisigModal = useCreateMultisigModal();
+  const { openWith } = useContext(DynamicModalContext);
 
   const {
     onOpen: openConfirmModal,
@@ -168,7 +169,7 @@ export const AccountsList: React.FC<{
         <NestedScroll>
           {compact(accountTiles)}
           <Button
-            onClick={createMultisigModal.open}
+            onClick={() => openWith(<CreateForm />)}
             width="100%"
             bg="umami.black"
             border="1px dashed"
@@ -183,7 +184,6 @@ export const AccountsList: React.FC<{
         </NestedScroll>
         {confirmModal}
         {deriveAccountModal}
-        {createMultisigModal.element}
       </Box>
     </>
   );

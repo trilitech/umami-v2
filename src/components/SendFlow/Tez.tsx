@@ -106,12 +106,7 @@ const Tez: React.FC<FormProps> = props => {
 
   return (
     <FormProvider {...form}>
-      <ModalContent
-        bg={colors.gray[900]}
-        borderColor={colors.gray[700]}
-        borderWidth="1px"
-        borderRadius="8px"
-      >
+      <ModalContent>
         <form>
           <ModalHeader textAlign="center" p="40px 0 32px 0">
             <Text size="2xl" fontWeight="600">

@@ -8,8 +8,11 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 
 const baseStyle = definePartsStyle({
   dialog: {
+    paddint: "40px",
     _dark: {
       bg: colors.gray[900], // TODO: add opacity & blur
+      border: "1px solid",
+      borderColor: colors.gray[700],
     },
   },
 });

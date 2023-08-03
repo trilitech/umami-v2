@@ -3,7 +3,9 @@
  * https://github.com/SamREye/tezos-multisig-managed-onchain
  */
 
-export const contract = [
+import { MichelsonV1Expression } from "@taquito/rpc";
+
+export const contract: MichelsonV1Expression[] = [
   {
     prim: "storage",
     args: [
@@ -1573,52 +1575,5 @@ export const makeStorageJSON = (owner: string, signers: string[], threshold: str
     last_op_id: "0",
     pending_ops: [],
     metadata: [],
-  };
-};
-
-/**
- *  Don't know why v1 uses michelson for storage. Since Taquito supports JSON.
- *  We could just use JSON instead of passing MichelsonJSON.
- */
-export const makeStorageMichelsonJSON = (owner: string, signers: string[], threshold: string) => {
-  // TODO
-  // Mandatory:
-  // Signers have to be sorted like follows (v1 code snippet)
-  //   signers->SortArray.stableSortInPlaceBy((a, b) =>
-  //    (a :> string)->ReTaquitoUtils.b58decode->String.compare((b :> string)->ReTaquitoUtils.b58decode)
-  //  )
-  return {
-    prim: "Pair",
-    args: [
-      {
-        string: owner,
-      },
-      {
-        prim: "Pair",
-        args: [
-          signers.map(signer => ({ string: signer })),
-          {
-            prim: "Pair",
-            args: [
-              {
-                int: threshold,
-              },
-              {
-                prim: "Pair",
-                args: [
-                  {
-                    int: "0",
-                  },
-                  {
-                    prim: "Pair",
-                    args: [[], []],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
   };
 };

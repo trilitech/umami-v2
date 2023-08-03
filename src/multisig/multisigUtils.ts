@@ -140,6 +140,8 @@ export const makeLambda = (operation: Operation): MichelsonV1Expression[] => {
         return MANAGER_LAMBDA.setDelegate(operation.recipient.pkh);
       }
       return MANAGER_LAMBDA.removeDelegate();
+    case "contract_origination":
+      throw new Error("Contract origination is not supported yet");
   }
 };
 
