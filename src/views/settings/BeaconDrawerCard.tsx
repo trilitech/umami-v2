@@ -7,6 +7,7 @@ import {
   DrawerOverlay,
   Flex,
   Heading,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
@@ -46,11 +47,13 @@ const BeaconDrawerBody = () => {
             addPeer(text);
           })
         }
-        bg="umami.blue"
-        type="submit"
+        variant="primary"
       >
-        Connect with Pairing Request
+        Paste a peer request code
       </Button>
+      <Text mt={4} color="text.dark">
+        or open a deeplink from inside the dApp...
+      </Text>
       <BeaconPeers />
     </Box>
   );
