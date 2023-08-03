@@ -5,7 +5,7 @@ import ModalContentWrapper from "../ModalContentWrapper";
 import { getPk } from "../../../utils/ledger/pk";
 import { useRestoreLedger } from "../../../utils/hooks/accountHooks";
 import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
-import { useSafeLoading } from "../../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 
 const RestoreLedger = ({
   closeModal,
@@ -16,7 +16,7 @@ const RestoreLedger = ({
 }) => {
   const restoreLedger = useRestoreLedger();
   const toast = useToast();
-  const { isLoading, withLoading } = useSafeLoading();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const noticeItems = [
     {
@@ -37,7 +37,7 @@ const RestoreLedger = ({
   ];
 
   const connectLedger = () =>
-    withLoading(
+    handleAsyncAction(
       async () => {
         toast({
           title: "Request sent to Ledger",

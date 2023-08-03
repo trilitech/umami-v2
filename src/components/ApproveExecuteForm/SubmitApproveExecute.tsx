@@ -19,7 +19,7 @@ import { AccountSmallTile } from "../AccountSelector/AccountSmallTile";
 import { ApproveOrExecute } from "../../utils/tezos/types";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { TezosToolkit } from "@taquito/taquito";
-import { useSafeLoading } from "../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 
 type Props = ParamsWithFee & {
   onSuccess: (hash: string) => void;
@@ -40,10 +40,10 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
   operation,
   type: actionType,
 }) => {
-  const { withLoading } = useSafeLoading();
+  const { handleAsyncAction } = useAsyncActionHandler();
 
   const approveOrExecute = (tezosToolkit: TezosToolkit) =>
-    withLoading(
+    handleAsyncAction(
       async () => {
         const result = await approveOrExecuteMultisigOperation(
           {

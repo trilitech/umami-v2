@@ -20,7 +20,7 @@ import { useOnboardingModal } from "../../components/Onboarding/useOnboardingMod
 import { AccountType, Account } from "../../types/Account";
 import { useAllAccounts, useRemoveMnemonic } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
-import { useSafeLoading } from "../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
@@ -191,11 +191,11 @@ export const AccountsList: React.FC<{
 
 const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
   const dispatch = useAppDispatch();
-  const { isLoading, withLoading } = useSafeLoading();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const toast = useToast();
 
   const handleSubmit = ({ name, password }: { name: string; password: string }) =>
-    withLoading(
+    handleAsyncAction(
       async () => {
         await dispatch(
           deriveAccount({

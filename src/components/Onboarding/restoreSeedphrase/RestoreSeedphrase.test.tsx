@@ -4,6 +4,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 import RestoreSeedphrase from "./RestoreSeedphrase";
 import { mockToast } from "../../../mocks/toast";
+import { Provider } from "react-redux";
+import store from "../../../utils/redux/store";
 
 const goToStepMock = jest.fn((step: Step) => {});
 const selectRandomElementsMock = selectRandomElements as jest.Mock;
@@ -29,7 +31,11 @@ beforeEach(() => {
   selectRandomElementsMock.mockReturnValue(splitted.slice(0, 5));
 });
 
-const fixture = (goToStep: (step: Step) => void) => <RestoreSeedphrase goToStep={goToStep} />;
+const fixture = (goToStep: (step: Step) => void) => (
+  <Provider store={store}>
+    <RestoreSeedphrase goToStep={goToStep} />;
+  </Provider>
+);
 
 describe("<RestoreSeedphrase />", () => {
   describe("Form validation", () => {

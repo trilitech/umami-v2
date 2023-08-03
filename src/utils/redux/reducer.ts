@@ -6,6 +6,7 @@ import accountsSlice from "./slices/accountsSlice";
 import assetsSlice from "./slices/assetsSlice";
 import contactsSlice from "./slices/contactsSlice";
 import multisigsSlice from "./slices/multisigsSlice";
+import errorsSlice from "./slices/errorsSlice";
 
 const rootPersistConfig = {
   key: "root",
@@ -25,6 +26,7 @@ const rootReducers = combineReducers({
   contacts: contactsSlice.reducer,
   multisigs: multisigsSlice.reducer,
   tokens: tokensSlice.reducer,
+  errors: errorsSlice.reducer,
 });
 
 export default persistReducer(rootPersistConfig, rootReducers);

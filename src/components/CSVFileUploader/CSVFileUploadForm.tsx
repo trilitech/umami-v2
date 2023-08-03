@@ -25,7 +25,7 @@ import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpda
 import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
 import { parseOperation } from "./utils";
 import { makeFormOperations } from "../sendForm/types";
-import { useSafeLoading } from "../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 
 type FormFields = {
   sender: RawPkh;
@@ -39,7 +39,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   const dispatch = useAppDispatch();
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
-  const { isLoading, withLoading } = useSafeLoading();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const form = useForm<FormFields>({
     mode: "onBlur",
@@ -50,7 +50,7 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
   } = form;
 
   const onSubmit = async ({ file, sender }: FormFields) =>
-    withLoading(async () => {
+    handleAsyncAction(async () => {
       const senderAccount = getAccount(sender);
       const rows = await new Promise<ParseResult<string[]>>(resolve => {
         Papa.parse(file[0], { skipEmptyLines: true, complete: resolve });

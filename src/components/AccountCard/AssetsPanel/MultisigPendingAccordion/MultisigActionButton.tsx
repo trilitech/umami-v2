@@ -11,7 +11,7 @@ import { IconAndTextBtn } from "../../../IconAndTextBtn";
 import { ParamsWithFee } from "../../../ApproveExecuteForm/types";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import { MultisigAccount } from "../../../../types/Account";
-import { useSafeLoading } from "../../../../utils/hooks/useSafeLoading";
+import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 
 export const MultisigActionButton: React.FC<{
   signerAddress: ImplicitAddress;
@@ -25,7 +25,7 @@ export const MultisigActionButton: React.FC<{
 
   const signer = getImplicitAccount(signerAddress.pkh);
   const signerInOwnedAccounts = !!signer;
-  const { isLoading, withLoading } = useSafeLoading();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const approvedBySigner = !!operation.approvals.find(
     approver => approver.pkh === signerAddress.pkh
@@ -59,7 +59,7 @@ export const MultisigActionButton: React.FC<{
   }
 
   const onButtonClick = () =>
-    withLoading(async () => {
+    handleAsyncAction(async () => {
       const actionType = operationIsExecutable ? "execute" : "approve";
       const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
         {
