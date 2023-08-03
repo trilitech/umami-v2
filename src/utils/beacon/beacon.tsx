@@ -48,7 +48,11 @@ export const useAddPeer = () => {
         walletClient.addPeer(peer).then(refresh);
       })
       .catch(e => {
-        toast({ title: "Invalid beacon sync code", description: payload });
+        toast({
+          title: "Beacon sync code in the clipboard is invalid",
+          description: "Please copy a beacon sync code from the dApp",
+          status: "error",
+        });
         console.error(e);
       });
   };
