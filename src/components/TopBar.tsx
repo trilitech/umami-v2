@@ -66,17 +66,13 @@ export const TopBar: React.FC<{ title: string }> = ({ title }) => {
         <Heading size="xl">{title}</Heading>
         <Box>
           <UpdateButton />
-          <Button
-            variant="tertiary"
-            onClick={() => {
-              window.open(
-                `mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${emailBodyTemplate}`
-              );
-            }}
-            mr={4}
+          <a
+            href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${emailBodyTemplate}`}
           >
-            Share Feedback
-          </Button>
+            <Button variant="tertiary" mr={4}>
+              Share Feedback
+            </Button>
+          </a>
           <Button variant="tertiary" onClick={onOpen}>
             Buy Tez
           </Button>
