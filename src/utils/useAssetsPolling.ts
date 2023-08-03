@@ -26,6 +26,8 @@ import {
   getTokenBalances,
   getTokenTransfers,
 } from "./tezos";
+import errorsSlice from "./redux/slices/errorsSlice";
+import getErrorContext from "./getErrorContext";
 
 const getTezTransfersPayload = async (
   pkh: string,
@@ -136,6 +138,7 @@ export const useAssetsPolling = () => {
         );
       } catch (error: any) {
         console.warn(error);
+        dispatch(errorsSlice.actions.add(getErrorContext(error)));
       } finally {
         dispatch(assetsActions.setIsLoading(false));
       }
