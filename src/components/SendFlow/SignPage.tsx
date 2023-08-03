@@ -34,13 +34,6 @@ import { SuccessStep } from "../sendForm/steps/SuccessStep";
 
 export type Mode = "single" | "batch";
 
-type Props = {
-  goBack?: () => void;
-  operations: FormOperations;
-  fee: BigNumber;
-  mode: Mode;
-};
-
 export const header = (operationType: FormOperations["type"], mode: Mode): string => {
   let action;
   switch (operationType) {
@@ -82,12 +75,12 @@ export const mutezToPrettyTez = (amount: BigNumber): string => {
   return `${formatter.format(amount.dividedBy(10 ** 6).toNumber())} ${TEZ}`;
 };
 
-const SignPage: React.FC<Props> = ({
-  goBack,
-  mode,
-  operations: initialOperations,
-  fee: initialFee,
-}: Props) => {
+const SignPage: React.FC<{
+  goBack?: () => void;
+  operations: FormOperations;
+  fee: BigNumber;
+  mode: Mode;
+}> = ({ goBack, mode, operations: initialOperations, fee: initialFee }) => {
   const getSigner = useGetImplicitAccount();
   const clearBatch = useClearBatch();
   const network = useSelectedNetwork();

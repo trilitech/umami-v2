@@ -1,4 +1,13 @@
-import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  FormLabel,
+  Input,
+  ListItem,
+  StyleProps,
+  Text,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { get } from "lodash";
 import { useId, useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
@@ -27,6 +36,7 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   keepValid?: boolean;
   onUpdate?: (value: string) => void;
   validate?: RegisterOptions<T, U>["validate"];
+  style?: StyleProps;
 };
 
 const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
@@ -106,6 +116,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   validate,
   label,
   keepValid,
+  style,
 }: BaseProps<T, U> & { contacts: Contact[] }) => {
   const {
     register,
@@ -163,6 +174,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       <FormLabel htmlFor={inputId}>{label}</FormLabel>
 
       <Input
+        {...style}
         id={inputId}
         variant="filled"
         isDisabled={isDisabled}

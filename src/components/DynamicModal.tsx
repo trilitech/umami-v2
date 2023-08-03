@@ -1,6 +1,7 @@
 import { Modal, useDisclosure } from "@chakra-ui/react";
 import { createContext, ReactElement, useState } from "react";
 
+// this should be used in components as useContext(DynamicModalContext);
 export const DynamicModalContext = createContext<{
   openWith: (content: ReactElement) => void;
   onClose: () => void;
@@ -18,6 +19,8 @@ export const DynamicModalContext = createContext<{
 //
 // This hook solves this problem. It wraps the whole app in a context provider so that any
 // component can open a modal from anywhere in the app using the `openWith` function.
+// This hook should be used only once in the app. You place the modal wrapper and then
+// use the `openWith` provided by the `DynamicModalContext` in components.
 // TODO: Add tests
 export const useDynamicModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -33,7 +36,7 @@ export const useDynamicModal = () => {
     onClose,
     openWith,
     content: (
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false} isCentered>
         {modalContent}
       </Modal>
     ),

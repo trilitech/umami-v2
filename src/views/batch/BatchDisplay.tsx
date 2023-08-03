@@ -58,6 +58,7 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
     case "tez":
       return prettyTezAmount(operation.amount);
     case "delegation":
+    case "contract_origination":
       return "";
   }
 };
