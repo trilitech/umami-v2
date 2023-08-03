@@ -10,8 +10,7 @@ import SendButton from "../views/home/SendButton";
 import useBuyTezModal from "./BuyTez/useBuyTezModal";
 
 const emailBodyTemplate =
-  "What do you like?%0A%0A What do you not like?%0A%0A Which functionality is missing?%0A%0A Did you experience any errors?";
-
+  "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
 const formatRelativeTimestamp = (timestamp: string) => {
   return formatDistance(new Date(timestamp), new Date());
 };
