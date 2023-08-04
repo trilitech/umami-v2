@@ -42,7 +42,7 @@ const ErrorLogsDrawerCard = () => {
 };
 
 const ErrorLogsDrawerBody = () => {
-  const errors = useAppSelector(s => s.errors).reverse();
+  const errors = [...useAppSelector(s => s.errors)].reverse();
   return (
     <Flex direction="column" height="100%">
       <Flex h={24} justifyContent="space-between" alignItems="center">
