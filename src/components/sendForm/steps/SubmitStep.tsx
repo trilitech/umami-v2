@@ -82,7 +82,7 @@ export const SubmitStep: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              <AccountSmallTile pkh={operations.signer.address.pkh} />
+              <AccountSmallTile pkh={operations.sender.address.pkh} />
             </Flex>
             {isBatch ? (
               <BatchRecap transfer={transfer} />
