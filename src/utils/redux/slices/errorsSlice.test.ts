@@ -1,3 +1,4 @@
+import { errorContext1, errorContext2 } from "../../../mocks/errorContext";
 import store from "../store";
 import errorsSlice from "./errorsSlice";
 const { add } = errorsSlice.actions;
@@ -8,16 +9,6 @@ describe("Errors reducer", () => {
   });
 
   test("errors are added to the store", () => {
-    const errorContext1 = {
-      timestamp: "timestamp",
-      description: `error1`,
-      stacktrace: "stacktrace",
-    };
-    const errorContext2 = {
-      timestamp: "timestamp",
-      description: `error2`,
-      stacktrace: "stacktrace",
-    };
     store.dispatch(add(errorContext1));
     store.dispatch(add(errorContext2));
 
