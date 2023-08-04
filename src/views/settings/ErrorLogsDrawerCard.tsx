@@ -9,15 +9,13 @@ import {
   Icon,
   useDisclosure,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
-import { BsTrash } from "react-icons/bs";
-import { MdCopyAll } from "react-icons/md";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import { mockErrorLogs } from "../../mocks/errorLogs";
 import colors from "../../style/colors";
-import { ErrorLog } from "../../types/ErrorLog";
+import { ErrorContext } from "../../utils/getErrorContext";
+import { useAppSelector } from "../../utils/redux/hooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 
 const ErrorLogsDrawerCard = () => {
@@ -44,21 +42,29 @@ const ErrorLogsDrawerCard = () => {
 };
 
 const ErrorLogsDrawerBody = () => {
+  const errors = useAppSelector(s => s.errors).reverse();
   return (
     <Flex direction="column" height="100%">
       <Flex h={24} justifyContent="space-between" alignItems="center">
         <Heading size="xl">Error Logs</Heading>
-        <IconAndTextBtn label="Clear All" icon={BsTrash} textFirst onClick={() => {}} />
+        <a
+          download="UmamiErrorLogs.json"
+          href={`data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(errors))}`}
+        >
+          <Button variant="tertiary">Download error logs</Button>
+        </a>
+        {/* TODO:Implement delete */}
+        {/* <IconAndTextBtn label="Clear All" icon={BsTrash} textFirst onClick={() => {}} /> */}
       </Flex>
-      {mockErrorLogs.map((log, i) => (
-        <ErrorLogRow errorLog={log} key={i} />
+      {errors.map((error, i) => (
+        <ErrorLogRow errorLog={error} key={error.timestamp} />
       ))}
     </Flex>
   );
 };
 
 const ErrorLogRow: React.FC<{
-  errorLog: ErrorLog;
+  errorLog: ErrorContext;
 }> = ({ errorLog }) => {
   return (
     <>
@@ -68,14 +74,15 @@ const ErrorLogRow: React.FC<{
           <Icon as={AiOutlineExclamationCircle} mr={2} mt="1px" />
           <Flex direction="column">
             <Heading size="sm" wordBreak="break-all">
-              {errorLog.message}
+              {errorLog.description}
             </Heading>
             <Text color={colors.gray[600]} size="sm">
               {errorLog.timestamp}
             </Text>
           </Flex>
         </Flex>
-        <Flex justifyContent="space-around">
+        {/* TODO:Implement delete */}
+        {/* <Flex justifyContent="space-around">
           <Icon
             as={MdCopyAll}
             mr={3}
@@ -93,7 +100,7 @@ const ErrorLogRow: React.FC<{
               color: colors.gray[300],
             }}
           />
-        </Flex>
+        </Flex> */}
       </Flex>
     </>
   );
