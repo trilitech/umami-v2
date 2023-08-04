@@ -22,7 +22,7 @@ import { AccountSmallTileDisplay } from "../../components/AccountSelector/Accoun
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
-import { Account } from "../../types/Account";
+import { Account, AccountType } from "../../types/Account";
 import { Operation, OperationWithFee } from "../../types/Operation";
 import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
@@ -63,10 +63,12 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
 };
 
 const RightPanel = ({
+  account,
   operations,
   onDelete,
   onSend,
 }: {
+  account: Account;
   operations: OperationWithFee[];
   onDelete: () => void;
   onSend: () => void;
@@ -88,7 +90,7 @@ const RightPanel = ({
 
         <Flex justifyContent="space-between">
           <Button onClick={onSend} flex={1} bg="umami.blue" mr={4}>
-            Submit batch
+            {account.type === AccountType.MULTISIG ? "Propose batch" : "Submit batch"}
           </Button>
 
           <IconButton onClick={onDelete} aria-label="Delete Batch" icon={<BsTrash />} />
@@ -154,7 +156,7 @@ export const BatchDisplay: React.FC<{
           </Table>
         </TableContainer>
       </Box>
-      <RightPanel onDelete={onDelete} onSend={onSend} operations={operations} />
+      <RightPanel account={account} onDelete={onDelete} onSend={onSend} operations={operations} />
     </Flex>
   );
 };
