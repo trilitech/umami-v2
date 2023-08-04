@@ -1,3 +1,4 @@
+import { errorContext1, errorContext2 } from "../../../mocks/errorContext";
 import store from "../store";
 import errorsSlice from "./errorsSlice";
 const { add } = errorsSlice.actions;
@@ -8,12 +9,10 @@ describe("Errors reducer", () => {
   });
 
   test("errors are added to the store", () => {
-    const errorInfo1 = { timestamp: "timestamp", description: `error1`, stacktrace: "stacktrace" };
-    const errorInfo2 = { timestamp: "timestamp", description: `error2`, stacktrace: "stacktrace" };
-    store.dispatch(add(errorInfo1));
-    store.dispatch(add(errorInfo2));
+    store.dispatch(add(errorContext1));
+    store.dispatch(add(errorContext2));
 
-    expect(store.getState().errors).toEqual([errorInfo1, errorInfo2]);
+    expect(store.getState().errors).toEqual([errorContext1, errorContext2]);
   });
 
   test("errors rotate after 100", () => {

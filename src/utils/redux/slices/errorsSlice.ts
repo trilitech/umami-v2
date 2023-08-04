@@ -1,12 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ErrorContext } from "../../getErrorContext";
 
-type ErrorInfo = {
-  timestamp: string;
-  description: string;
-  stacktrace: string;
-};
-
-type State = ErrorInfo[];
+type State = ErrorContext[];
 
 const MAX_ERRORS_LEN = 100;
 
@@ -18,7 +13,7 @@ const errorsSlice = createSlice({
   reducers: {
     reset: () => initialState,
 
-    add(state, { payload }: { payload: ErrorInfo }) {
+    add(state, { payload }: { payload: ErrorContext }) {
       if (state.length === MAX_ERRORS_LEN) {
         state.shift();
       }
