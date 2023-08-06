@@ -15,22 +15,26 @@ import {
 import { TezosToolkit } from "@taquito/taquito";
 import { useContext, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import colors from "../../style/colors";
-import { RawPkh } from "../../types/Address";
-import { TezOperation } from "../../types/Operation";
-import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
-import { useClearBatch, useSelectedNetwork, useTezToDollar } from "../../utils/hooks/assetsHooks";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { estimateTotalFee, getTotal } from "../../views/batch/batchUtils";
-import { AvailableSignersAutocomplete, OwnedAccountsAutocomplete } from "../AddressAutocomplete";
-import SignButton from "../sendForm/components/SignButton";
-import { FormOperations } from "../sendForm/types";
-import { makeTransfer } from "../sendForm/util/execution";
+import colors from "../../../style/colors";
+import { RawPkh } from "../../../types/Address";
+import { TezOperation } from "../../../types/Operation";
+import { useGetImplicitAccount } from "../../../utils/hooks/accountHooks";
+import {
+  useClearBatch,
+  useSelectedNetwork,
+  useTezToDollar,
+} from "../../../utils/hooks/assetsHooks";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { estimateTotalFee, getTotal } from "../../../views/batch/batchUtils";
+import { AvailableSignersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import SignButton from "../../sendForm/components/SignButton";
+import { FormOperations } from "../../sendForm/types";
+import { makeTransfer } from "../../sendForm/util/execution";
 import { BigNumber } from "bignumber.js";
-import { mutezToTez } from "../../utils/format";
-import { DynamicModalContext } from "../DynamicModal";
-import { SuccessStep } from "../sendForm/steps/SuccessStep";
-import { TEZ } from "../../utils/tezos";
+import { mutezToTez } from "../../../utils/format";
+import { DynamicModalContext } from "../../DynamicModal";
+import { SuccessStep } from "../../sendForm/steps/SuccessStep";
+import { TEZ } from "../../../utils/tezos";
 
 export type Mode = "single" | "batch";
 

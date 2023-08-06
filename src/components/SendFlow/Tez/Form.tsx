@@ -17,20 +17,21 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import colors from "../../style/colors";
-import { Account } from "../../types/Account";
-import { parsePkh, RawPkh } from "../../types/Address";
-import { tezToMutez } from "../../utils/format";
-import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
-import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { useAppDispatch } from "../../utils/redux/hooks";
-import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { estimateTotalFee } from "../../views/batch/batchUtils";
-import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../AddressAutocomplete";
-import { DynamicModalContext } from "../DynamicModal";
-import { makeFormOperations } from "../sendForm/types";
-import SignPage from "./SignPage";
+import colors from "../../../style/colors";
+import { Account } from "../../../types/Account";
+import { parsePkh, RawPkh } from "../../../types/Address";
+import { tezToMutez } from "../../../utils/format";
+import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
+import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { useAppDispatch } from "../../../utils/redux/hooks";
+import { estimateAndUpdateBatch } from "../../../utils/redux/thunks/estimateAndUpdateBatch";
+import { TEZ } from "../../../utils/tezos";
+import { estimateTotalFee } from "../../../views/batch/batchUtils";
+import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { DynamicModalContext } from "../../DynamicModal";
+import { makeFormOperations } from "../../sendForm/types";
+import Sign from "./Sign";
 
 export type FormValues = {
   sender: RawPkh;
@@ -39,8 +40,6 @@ export type FormValues = {
 };
 
 export type FormProps = { sender?: Account; form?: FormValues };
-
-export const TEZ = "ꜩ";
 
 const defaultValues = ({ sender, form }: FormProps) => {
   if (form) {
@@ -86,7 +85,7 @@ const Tez: React.FC<FormProps> = props => {
     handleAsyncAction(async () => {
       const operations = buildOperations(formValues);
       openWith(
-        <SignPage
+        <Sign
           goBack={() => openWith(<Tez {...props} form={formValues} />)}
           operations={operations}
           fee={await estimateTotalFee(operations, network)}

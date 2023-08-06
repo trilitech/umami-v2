@@ -14,7 +14,7 @@ import {
 import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { DynamicModalContext } from "../DynamicModal";
 import { useReceiveModal } from "../ReceiveModal";
-import Tez from "../SendFlow/Tez";
+import SendTezForm from "../SendFlow/Tez/Form";
 import { AccountCardDisplay } from "./AccountCardDisplay";
 
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
@@ -41,7 +41,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   return (
     <>
       <AccountCardDisplay
-        onSend={() => openWith(<Tez sender={account} />)}
+        onSend={() => openWith(<SendTezForm sender={account} />)}
         onDelegate={opts =>
           onOpenSend({
             mode: { type: "delegation", data: opts },

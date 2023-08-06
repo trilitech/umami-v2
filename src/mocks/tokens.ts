@@ -1,5 +1,6 @@
 import type { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../types/TokenBalance";
-import { nftDisplayUri } from "../utils/tezos/consts";
+
+export const nftDisplayUri = "ipfs://zdj7WWXMC8RpzC6RkR2DXtD2zcfLc2QWu6tu7f6vnkeeUvSoh";
 
 export const ghostTezzard: NFTBalance = {
   id: 1,
