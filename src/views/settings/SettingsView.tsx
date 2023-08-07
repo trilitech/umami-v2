@@ -1,4 +1,3 @@
-import { Grid, GridItem } from "@chakra-ui/layout";
 import { Box, Divider, Flex, Heading, Input, Switch, Text } from "@chakra-ui/react";
 import { BsFolder2Open } from "react-icons/bs";
 import { TfiReload } from "react-icons/tfi";
@@ -15,27 +14,15 @@ import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 
 export default function SettingsView() {
   return (
-    <Grid
-      h="100%"
-      templateAreas={`
-                  "header header"
-                  "main main"
-                  "main main"
-                  `}
-      gridTemplateRows="0fr 1fr 1fr"
-      gridTemplateColumns="1fr 1fr"
-      gap="1"
-    >
-      <GridItem area="header">
-        <TopBar title="Settings" />
-      </GridItem>
-      <GridItem area="main">
+    <Flex direction="column" height="100%">
+      <TopBar title="Settings" />
+      <Box overflow="scroll">
         <GeneralSection />
         <AppUpdatesSection />
         <BackupSection />
         <AdvancedSection />
-      </GridItem>
-    </Grid>
+      </Box>
+    </Flex>
   );
 }
 
