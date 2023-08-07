@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, shell } = require("electron");
 const path = require("path");
 const url = require("url");
 
@@ -102,8 +102,8 @@ function createWindow() {
   });
 
   mainWindow.webContents.setWindowOpenHandler(details => {
-    if (details.frameName === "_blank") {
-      require("electron").shell.openExternal(details.url);
+    if (details.url.startsWith("https")) {
+      shell.openExternal(details.url);
       return { action: "deny" };
     } else {
       return { action: "allow" };
