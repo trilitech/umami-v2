@@ -1,5 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
-import { Box, Button, Divider, Flex, Heading, Input, Switch, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, Input, Switch, Text } from "@chakra-ui/react";
 import { BsFolder2Open } from "react-icons/bs";
 import { TfiReload } from "react-icons/tfi";
 import ClickableCard, {
@@ -131,18 +131,6 @@ const AdvancedSection = () => {
   const { modalElement, onOpen } = useOffboarsingModal();
   return (
     <SectionContainer title="Advanced Settings">
-      <ClickableCard>
-        <Box>
-          <Flex mb={3} justifyContent="space-between" alignItems="center" w="100%" p={1}>
-            <Heading size="sm">Number of Confirmation Block</Heading>
-          </Flex>
-          <Flex alignItems="center" w="100%">
-            <Input mr={3} />
-            <Button>Save</Button>
-          </Flex>
-        </Box>
-      </ClickableCard>
-
       <BeaconDrawerCard />
       <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
       <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={onOpen} />

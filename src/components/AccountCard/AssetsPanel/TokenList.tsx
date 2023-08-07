@@ -9,7 +9,7 @@ import {
   tokenPrettyBalance,
   tokenSymbol,
 } from "../../../types/TokenBalance";
-import { NoTokens } from "../../NoItems";
+import NoItems from "../../NoItems";
 
 const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {
   const name = tokenName(token);
@@ -49,7 +49,7 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
 
 export const TokenList = ({ tokens }: { tokens: Array<FA12TokenBalance | FA2TokenBalance> }) => {
   if (tokens.length === 0) {
-    return <NoTokens small />;
+    return <NoItems text="No Tokens found" small />;
   }
   return (
     <Box>

@@ -67,14 +67,3 @@ export const NoDelegations: React.FC<{ small?: boolean; onDelegate: () => void }
     onClickPrimary={props.onDelegate}
   />
 );
-
-export const NoTokens: ComponentWithSizeProps = props => (
-  <NoItems
-    {...props}
-    text="No tokens found"
-    primaryText="Buy your first Token"
-    onClickPrimary={() => {
-      navigateToExternalLink(`https://quipuswap.com/`);
-    }}
-  />
-);
