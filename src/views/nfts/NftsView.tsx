@@ -44,7 +44,13 @@ const NFTsViewBase = () => {
             />
           </Box>
 
-          <Drawer placement="right" onClose={drawerOnClose} size="md" isOpen={!!drawerNFT}>
+          <Drawer
+            placement="right"
+            onClose={drawerOnClose}
+            size="md"
+            isOpen={!!drawerNFT}
+            autoFocus={false}
+          >
             <DrawerOverlay />
             <DrawerContent maxW="594px" bg="umami.gray.900">
               <DrawerBody>
