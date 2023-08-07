@@ -8,6 +8,25 @@ beforeEach(() => {
 });
 
 describe("<HomeView />", () => {
+  beforeEach(() => {
+    // Taken from Jest's official documentation
+    // https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+    // needed for useMediaQuery hook
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(), // deprecated
+        removeListener: jest.fn(), // deprecated
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
+  });
+
   test("Clicking an account tile displays Account card drawer and marks account as selected", async () => {
     render(<HomeView />);
     // If you use .click() directly on el you get the act warnings...
