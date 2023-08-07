@@ -9,8 +9,9 @@ import { assetsActions } from "../utils/redux/slices/assetsSlice";
 import SendButton from "../views/home/SendButton";
 import useBuyTezModal from "./BuyTez/useBuyTezModal";
 
-const emailBodyTemplate =
+export const emailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
+
 const formatRelativeTimestamp = (timestamp: string) => {
   return formatDistance(new Date(timestamp), new Date());
 };
