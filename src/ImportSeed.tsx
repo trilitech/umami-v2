@@ -40,7 +40,7 @@ function ImportSeed() {
           width="100%"
           borderTopRightRadius="30px"
           borderBottomRightRadius="30px"
-          height="100%"
+          height="665px"
           overflow="hidden"
           bg="black"
           display={["none", "none", "initial"]}
