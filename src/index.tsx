@@ -10,22 +10,27 @@ import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
 import { ErrorBoundary } from "react-error-boundary";
-import Fallback from "./components/Fallback";
+import ErrorPage from "./components/ErrorPage";
+import errorsSlice from "./utils/redux/slices/errorsSlice";
+import getErrorContext from "./utils/getErrorContext";
 
-const logError = (error: Error, info: { componentStack: string }) => {};
+const logError = (error: Error, info: { componentStack: string }) => {
+  const errorContext = { ...getErrorContext(error), stacktrace: info.componentStack };
+  store.dispatch(errorsSlice.actions.add(errorContext));
+};
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
     <UmamiTheme>
       <ReduxStore>
-        <ErrorBoundary FallbackComponent={Fallback} onError={logError}>
-          <PersistGate loading={null} persistor={persistStore(store)}>
+        <PersistGate loading={null} persistor={persistStore(store)}>
+          <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <Router />
             </ReactQueryProvider>
-          </PersistGate>
-        </ErrorBoundary>
+          </ErrorBoundary>
+        </PersistGate>
       </ReduxStore>
     </UmamiTheme>
   </React.StrictMode>
