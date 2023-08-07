@@ -22,7 +22,7 @@ import { TransferParams } from "@taquito/taquito";
 import React from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
-import { parseImplicitPkh, parsePkh } from "../../../types/Address";
+import { parseImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
 import { getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
 import { Delegation, Operation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
@@ -127,8 +127,8 @@ export const FillBatchForm: React.FC<{
   transfer: Operation[];
   onSubmit: () => void;
   isLoading?: boolean;
-  signer: string;
-}> = ({ transfer, onSubmit, isLoading = false, signer }) => {
+  sender: RawPkh;
+}> = ({ transfer, onSubmit, isLoading = false, sender }) => {
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
       <form
@@ -146,7 +146,7 @@ export const FillBatchForm: React.FC<{
               <Heading size="md" width={20}>
                 From:
               </Heading>
-              <AccountSmallTile pkh={signer} />
+              <AccountSmallTile pkh={sender} />
             </Flex>
             <BatchRecap transfer={transfer} />
           </Box>
@@ -455,8 +455,8 @@ export const FillStep: React.FC<{
         <FillBatchForm
           isLoading={isLoading}
           transfer={mode.data.content}
-          signer={mode.data.signer.address.pkh}
           onSubmit={() => onSubmit(mode.data)}
+          sender={mode.data.sender.address.pkh}
         />
       );
     }
