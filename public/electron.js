@@ -29,6 +29,8 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1440,
     height: 1024,
+    minWidth: 1200,
+    minHeight: 900,
     show: false,
     icon: path.join(__dirname, "icon.ico"),
     webPreferences: {
