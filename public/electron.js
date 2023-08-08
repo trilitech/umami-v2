@@ -103,7 +103,7 @@ function createWindow() {
   });
 
   mainWindow.webContents.setWindowOpenHandler(details => {
-    if (details.url.startsWith("https")) {
+    if (details.url.startsWith("https") || details.url.startsWith("mailto")) {
       shell.openExternal(details.url);
       return { action: "deny" };
     } else {
