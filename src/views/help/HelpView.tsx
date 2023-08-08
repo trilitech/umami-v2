@@ -41,17 +41,13 @@ export default function HelpView() {
         <HelpCard
           title="Questions?"
           onClick={() => {
-            navigateToExternalLink(
-              "https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
-            );
+            navigateToExternalLink("https://github.com/trilitech/umami-v1/wiki");
           }}
         >
           <HelpLinkRow
             about="Browse FAQs"
             onClickIcon={() => {
-              navigateToExternalLink(
-                "https://gitlab.com/nomadic-labs/umami-wallet/umami/-/wikis/home#faq-support-knowledge-base"
-              );
+              navigateToExternalLink("https://github.com/trilitech/umami-v1/wiki");
             }}
           />
         </HelpCard>
