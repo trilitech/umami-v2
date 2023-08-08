@@ -4,7 +4,6 @@ import { FiExternalLink } from "react-icons/fi";
 import React from "react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import CopyableText from "../../components/CopyableText";
 import ClickableCard from "../../components/ClickableCard";
 import { navigateToExternalLink } from "../../utils/helpers";
 
@@ -61,11 +60,18 @@ export default function HelpView() {
           <Box>
             <Flex justifyContent="space-between" alignItems="center">
               <Heading size="sm">Contact our Support Team</Heading>
-              <CopyableText
-                displayText="umami-support@trili.tech"
-                copyValue="umami-support@trili.tech"
-                toastMessage="Email address copied to clipboard"
-              />
+              <Flex
+                alignItems="center"
+                color={colors.gray[400]}
+                _hover={{
+                  color: colors.gray[300],
+                }}
+                cursor="pointer"
+                onClick={() => navigateToExternalLink("mailto:umami-support@trili.tech")}
+              >
+                <Text size="sm">umami-support@trili.tech</Text>
+                <Icon as={FiExternalLink} ml={2} />
+              </Flex>
             </Flex>
 
             <Box marginY={4}>
