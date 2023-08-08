@@ -70,7 +70,7 @@ const RestoreLedger = ({
 
   return (
     <ModalContentWrapper
-      icon={SupportedIcons.document}
+      icon={SupportedIcons.usb}
       title="Connect Ledger"
       subtitle="Complete the steps to connect."
     >

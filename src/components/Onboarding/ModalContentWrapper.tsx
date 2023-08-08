@@ -1,6 +1,7 @@
 import { ReactChild } from "react";
 import { VStack, Heading, Box, Text } from "@chakra-ui/react";
 import { CircleIcon, SupportedIcons } from "../CircleIcon";
+import colors from "../../style/colors";
 
 type Props = {
   title: string;
@@ -16,7 +17,7 @@ export default function ModalContentWrapper({ children, icon, title, subtitle }:
         <CircleIcon size="48px" icon={icon} />
       </Box>
       <Heading size="xl">{title}</Heading>
-      <Text textAlign="center" size="sm" color="umami.gray.450">
+      <Text textAlign="center" size="sm" color={colors.gray[400]}>
         {subtitle}
       </Text>
       <Box h="20px" />
