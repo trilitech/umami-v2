@@ -1,5 +1,6 @@
 import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
 import { every, pick } from "lodash";
+import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
@@ -16,9 +17,21 @@ const NFTsViewBase = () => {
   const navigate = useNavigate();
   const { ownerPkh, nftId } = useParams();
 
-  const drawerOnClose = () => {
+  const openNFTsPage = useCallback(() => {
     navigate(`/nfts`);
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        openNFTsPage();
+      }
+    };
+    document.addEventListener("keydown", onEscape);
+
+    return () => document.removeEventListener("keydown", onEscape);
+  }, [openNFTsPage]);
+
   const selectedNFTs = pick(
     nfts,
     selectedAccounts.map(account => account.address.pkh)
@@ -46,7 +59,7 @@ const NFTsViewBase = () => {
 
           <Drawer
             placement="right"
-            onClose={drawerOnClose}
+            onClose={openNFTsPage}
             size="md"
             isOpen={!!drawerNFT}
             autoFocus={false}
@@ -54,7 +67,7 @@ const NFTsViewBase = () => {
             <DrawerOverlay />
             <DrawerContent maxW="594px" bg="umami.gray.900">
               <DrawerBody>
-                <DrawerTopButtons onClose={drawerOnClose} />
+                <DrawerTopButtons onClose={openNFTsPage} />
                 {drawerNFT && <NFTDrawerCard nft={drawerNFT} ownerPkh={ownerPkh} />}
               </DrawerBody>
             </DrawerContent>
