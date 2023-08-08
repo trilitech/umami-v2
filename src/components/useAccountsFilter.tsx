@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Button, Flex, Menu, MenuButton, Wrap } from "@chakra-ui/react";
+import { Box, Button, Menu, MenuButton, Wrap } from "@chakra-ui/react";
 import { compact, differenceBy, pick } from "lodash";
 import { useState } from "react";
 import { Account } from "../types/Account";
@@ -17,7 +17,7 @@ export const useAccountsFilter = () => {
   return {
     selectedAccounts: selectedAccounts.length === 0 ? allAccounts : selectedAccounts,
     accountsFilter: (
-      <Flex alignItems="center">
+      <Box>
         <Menu>
           <MenuButton
             isDisabled={alreadySelectedAll}
@@ -27,7 +27,7 @@ export const useAccountsFilter = () => {
             _hover={{ bg: "none" }}
             _active={{ bg: "none" }}
             maxH="26px"
-            w="48px"
+            pl={0}
             fontWeight="normal"
             data-testid="account-filter"
             my={4}
@@ -59,7 +59,7 @@ export const useAccountsFilter = () => {
             />
           ))}
         </Wrap>
-      </Flex>
+      </Box>
     ),
   };
 };
