@@ -11,7 +11,6 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { compact } from "lodash";
-import { ReactNode } from "react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { VscWand } from "react-icons/vsc";
@@ -122,15 +121,6 @@ const DelegateButton = () => {
 
       {modalElement}
     </>
-  );
-};
-
-export const FilterController: React.FC<{ children: ReactNode }> = props => {
-  return (
-    <Flex alignItems="center" mb={4} mt={4}>
-      {props.children}
-      <DelegateButton />
-    </Flex>
   );
 };
 
