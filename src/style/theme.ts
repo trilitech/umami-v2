@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
 import colors from "./colors";
+import { tabsTheme } from "./theme/tabs";
 
 const config = {
   initialColorMode: "dark",
@@ -41,6 +42,7 @@ const sizes = {
 
 const theme = extendTheme({
   components: {
+    Tabs: tabsTheme,
     Text: {
       baseStyle: {
         fontWeight: "400",
