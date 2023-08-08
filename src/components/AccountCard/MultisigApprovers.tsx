@@ -26,7 +26,7 @@ const MultisigApprovers: React.FC<{
               <Heading w="100%" size="sm">
                 Approvers
               </Heading>
-              <AccordionIcon />
+              <AccordionIcon cursor="pointer" />
             </AccordionButton>
           </h2>
           <AccordionPanel>
