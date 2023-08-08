@@ -10,12 +10,14 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
+  Heading,
 } from "@chakra-ui/react";
 import { FC, useRef } from "react";
 import colors from "../style/colors";
 import { QRCode } from "react-qrcode-logo";
 import AddressPill from "./AddressPill/AddressPill";
 import { parsePkh } from "../types/Address";
+import { useGetOwnedAccountSafe } from "../utils/hooks/accountHooks";
 
 type Options = {
   pkh: string;
@@ -42,6 +44,8 @@ const ReceiveModal: FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ pkh, isOpen, onClose }) => {
+  const getOwnedAccount = useGetOwnedAccountSafe();
+  const account = getOwnedAccount(pkh);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -54,23 +58,22 @@ const ReceiveModal: FC<{
               You can receive tez or other digital assets by scanning or sharing this QR code
             </Text>
             <Box mt={5}>
-              <QRCode
-                value={pkh}
-                size={400}
-                logoPadding={7}
-                qrStyle="dots"
-                fgColor={colors.orange}
-                bgColor={colors.gray[900]}
-                logoImage="icon.png"
-              />
+              <QRCode value={pkh} size={400} />
             </Box>
           </Flex>
         </ModalBody>
 
         <ModalFooter>
-          <Flex justifyContent="center" w="100%">
-            <AddressPill address={parsePkh(pkh)} mode={{ type: "no_icons" }} />
-          </Flex>
+          <Box w="100%">
+            {account && (
+              <Heading textAlign="center" marginY={2}>
+                {account.label}
+              </Heading>
+            )}
+            <Flex justifyContent="center" w="100%">
+              <AddressPill address={parsePkh(pkh)} mode={{ type: "no_icons" }} />
+            </Flex>
+          </Box>
         </ModalFooter>
       </ModalContent>
     </Modal>
