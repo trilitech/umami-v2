@@ -10,17 +10,6 @@ const closeModalMock = jest.fn(() => {});
 jest.mock("../../../utils/tezos/helpers");
 jest.mock("../../../utils/ledger/pk");
 
-jest.mock("@chakra-ui/react", () => {
-  return {
-    ...jest.requireActual("@chakra-ui/react"),
-    // Mock taost since it has an erratic behavior in RTL
-    // https://github.com/chakra-ui/chakra-ui/issues/2969
-    //
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    useToast: require("../../../mocks/toast").useToast,
-  };
-});
-
 const getPkMock = getPk as jest.Mock;
 
 const fixture = (closeModal: () => void) => {

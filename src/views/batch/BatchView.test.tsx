@@ -18,17 +18,6 @@ import BatchView from "./BatchView";
 // These tests might take long in the CI
 jest.setTimeout(10000);
 
-jest.mock("@chakra-ui/react", () => {
-  return {
-    ...jest.requireActual("@chakra-ui/react"),
-    // Mock taost since it has an erratic behavior in RTL
-    // https://github.com/chakra-ui/chakra-ui/issues/2969
-    //
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    useToast: require("../../../src/mocks/toast").useToast,
-  };
-});
-
 jest.mock("../../utils/hooks/accountUtils");
 
 const useGetSecretKeyMock = useGetSecretKey as jest.Mock;

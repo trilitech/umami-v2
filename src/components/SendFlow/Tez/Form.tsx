@@ -51,7 +51,7 @@ const defaultValues = ({ sender, form }: FormProps) => {
   }
 };
 
-const Tez: React.FC<FormProps> = props => {
+const FormPage: React.FC<FormProps> = props => {
   const toast = useToast();
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
@@ -59,7 +59,6 @@ const Tez: React.FC<FormProps> = props => {
   const dispatch = useAppDispatch();
   const { openWith } = useContext(DynamicModalContext);
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-
   const senderSelectorDisabled = !!props.sender;
 
   const form = useForm<FormValues>({
@@ -82,11 +81,11 @@ const Tez: React.FC<FormProps> = props => {
   };
 
   const onSingleSubmit = async (formValues: FormValues) => {
-    handleAsyncAction(async () => {
+    return handleAsyncAction(async () => {
       const operations = buildOperations(formValues);
       openWith(
         <Sign
-          goBack={() => openWith(<Tez {...props} form={formValues} />)}
+          goBack={() => openWith(<FormPage {...props} form={formValues} />)}
           operations={operations}
           fee={await estimateTotalFee(operations, network)}
           mode="single"
@@ -124,11 +123,19 @@ const Tez: React.FC<FormProps> = props => {
                 inputName="sender"
                 allowUnknown={false}
               />
-              {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
+              {errors.sender && (
+                <FormErrorMessage data-testid="from-error">
+                  {errors.sender.message}
+                </FormErrorMessage>
+              )}
             </FormControl>
             <FormControl mb={2} isInvalid={!!errors.recipient}>
               <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
-              {errors.recipient && <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>}
+              {errors.recipient && (
+                <FormErrorMessage data-testid="recipient-error">
+                  {errors.recipient.message}
+                </FormErrorMessage>
+              )}
             </FormControl>
 
             <FormControl mb={2} mt={2} isInvalid={!!errors.prettyAmount}>
@@ -146,11 +153,13 @@ const Tez: React.FC<FormProps> = props => {
                   })}
                   placeholder="0.000000"
                 />
-                <InputRightElement data-testid="currency">{TEZ}</InputRightElement>
+                <InputRightElement>{TEZ}</InputRightElement>
               </InputGroup>
               {/* TODO: make a custom FormErrorMessage because its styling cannot be applied through theme.ts */}
               {errors.prettyAmount && (
-                <FormErrorMessage>{errors.prettyAmount.message}</FormErrorMessage>
+                <FormErrorMessage data-testid="amount-error">
+                  {errors.prettyAmount.message}
+                </FormErrorMessage>
               )}
             </FormControl>
           </ModalBody>
@@ -184,4 +193,4 @@ const Tez: React.FC<FormProps> = props => {
     </FormProvider>
   );
 };
-export default Tez;
+export default FormPage;

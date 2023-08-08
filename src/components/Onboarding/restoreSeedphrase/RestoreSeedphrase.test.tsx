@@ -13,17 +13,6 @@ const selectRandomElementsMock = selectRandomElements as jest.Mock;
 // TODO refactor mocks
 jest.mock("../../../utils/tezos/helpers");
 
-jest.mock("@chakra-ui/react", () => {
-  return {
-    ...jest.requireActual("@chakra-ui/react"),
-    // Mock taost since it has an erratic behavior in RTL
-    // https://github.com/chakra-ui/chakra-ui/issues/2969
-    //
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    useToast: require("../../../../src/mocks/toast").useToast,
-  };
-});
-
 beforeEach(() => {
   const splitted = mnemonic1.split(" ").map((value, index) => {
     return { index, value };

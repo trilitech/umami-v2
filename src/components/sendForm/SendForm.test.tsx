@@ -44,16 +44,6 @@ import { TezosNetwork } from "../../types/TezosNetwork";
 jest.setTimeout(10000);
 
 jest.mock("../../multisig/multisigUtils");
-jest.mock("@chakra-ui/react", () => {
-  return {
-    ...jest.requireActual("@chakra-ui/react"),
-    // Mock taost since it has an erratic behavior in RTL
-    // https://github.com/chakra-ui/chakra-ui/issues/2969
-    //
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    useToast: require("../../../src/mocks/toast").useToast,
-  };
-});
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires

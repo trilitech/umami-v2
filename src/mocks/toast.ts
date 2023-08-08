@@ -1,5 +1,5 @@
 export const mockToast = jest.fn();
 
-export const useToast = () => {
+export const mockUseToast = () => {
   return mockToast;
 };

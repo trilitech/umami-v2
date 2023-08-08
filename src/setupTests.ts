@@ -17,6 +17,7 @@ import accountsSlice from "./utils/redux/slices/accountsSlice";
 import { act } from "@testing-library/react";
 import { tokensActions } from "./utils/redux/slices/tokensSlice";
 import errorsSlice from "./utils/redux/slices/errorsSlice";
+import { mockUseToast } from "./mocks/toast";
 
 failOnConsole();
 
@@ -45,6 +46,15 @@ jest.mock("react-identicons", () => {
 
 // Add missing browser APIs
 Object.assign(window, { TextDecoder, TextEncoder, crypto: webcrypto, scrollTo: jest.fn() });
+
+jest.mock("@chakra-ui/react", () => {
+  return {
+    ...jest.requireActual("@chakra-ui/react"),
+    // Mock taost since it has an erratic behavior in RTL
+    // https://github.com/chakra-ui/chakra-ui/issues/2969
+    useToast: mockUseToast,
+  };
+});
 
 afterEach(() => {
   act(() => {

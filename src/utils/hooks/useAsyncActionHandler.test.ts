@@ -2,16 +2,6 @@ import { renderHook, act } from "@testing-library/react";
 import { mockToast } from "../../mocks/toast";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { useAsyncActionHandler } from "./useAsyncActionHandler";
-jest.mock("@chakra-ui/react", () => {
-  return {
-    ...jest.requireActual("@chakra-ui/react"),
-    // Mock taost since it has an erratic behavior in RTL
-    // https://github.com/chakra-ui/chakra-ui/issues/2969
-    //
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    useToast: require("../../mocks/toast").useToast,
-  };
-});
 
 const fixture = () => renderHook(() => useAsyncActionHandler(), { wrapper: ReduxStore });
 
