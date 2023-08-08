@@ -58,18 +58,9 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ### `yarn electron:start`
 
 Runs the electron app in the development mode.
-In order to get the dev tools work please make sure to set the `devTools` to `true` in the `webPreferences`
+In order to get the dev tools work please make sure to set the `devTools` to `true` in the `webPreferences` in `public/electron.js`
+Note: you still have to have your `yarn start` running in a separate terminal
 
 ### `yarn electron:package:(mac|win|linux)`
 
 Build electron app for desired platform (don't forget to run `yarn build` before running this one)
-
-### `yarn storybook`
-
-Start storybook (duh).
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
