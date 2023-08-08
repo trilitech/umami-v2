@@ -26,7 +26,6 @@ type Props = {
 export const CircleIcon = ({
   icon,
   size = "58px",
-  iconSize = 6,
   color = "umami.gray.400",
   onClick = () => {},
 }: Props) => {
