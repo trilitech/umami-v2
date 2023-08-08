@@ -27,7 +27,7 @@ const AccountListWithDrawer: React.FC = () => {
           setSelected(pkh);
         }}
       />
-      <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
+      <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md" autoFocus={false}>
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
           <DrawerTopButtons onClose={handleClose} />
