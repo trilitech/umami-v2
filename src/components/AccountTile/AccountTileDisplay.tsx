@@ -19,7 +19,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
   balance,
   label,
 }) => {
-  const border = onClick ? `1px solid ${selected ? colors.orange : colors.gray[700]}` : undefined;
+  const border = onClick ? `1px solid ${selected ? colors.orangeL : colors.gray[700]}` : undefined;
   return (
     <Flex
       data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
@@ -28,7 +28,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
       bg="umami.gray.900"
       h={90}
       borderRadius={4}
-      border={`1px solid ${selected ? colors.orange : colors.gray[800]}`} // string theme colors "umami.orange" don't work for borders
+      border={`1px solid ${selected ? colors.orangeL : colors.gray[800]}`}
       onClick={onClick}
       cursor="pointer"
       _hover={{
