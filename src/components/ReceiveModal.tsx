@@ -69,7 +69,7 @@ const ReceiveModal: FC<{
 
         <ModalFooter>
           <Flex justifyContent="center" w="100%">
-            <AddressPill address={parsePkh(pkh)} />
+            <AddressPill address={parsePkh(pkh)} mode={{ type: "no_icons" }} />
           </Flex>
         </ModalFooter>
       </ModalContent>
