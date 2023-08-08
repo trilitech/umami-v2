@@ -33,21 +33,17 @@ export const AssetsPanel: React.FC<{
       display="flex"
       flexDirection="column"
       mt={4}
-      bg="umami.gray.900"
       borderRadius={4}
       data-testid="asset-panel"
       w="100%"
-      // color scheme not workkig even when put int 50-900 range
-      // TODO Fix
-      // https://chakra-ui.com/docs/components/tabs
     >
       <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
         <Flex>
-          {isMultisig && <SmallTab data-testid="account-card-pending-tab"> Pending</SmallTab>}
-          <SmallTab>Tokens</SmallTab>
-          <SmallTab>NFTs</SmallTab>
+          {isMultisig && <SmallTab data-testid="account-card-pending-tab">Pending</SmallTab>}
           <SmallTab>Operations</SmallTab>
           <SmallTab>Delegation</SmallTab>
+          <SmallTab>NFTs</SmallTab>
+          <SmallTab>Tokens</SmallTab>
         </Flex>
 
         <IconAndTextBtnLink
@@ -64,8 +60,13 @@ export const AssetsPanel: React.FC<{
             <MultisigPendingAccordion account={account} />
           </TabPanel>
         )}
-        <TabPanel data-testid="account-card-tokens-tab">
-          <TokenList tokens={tokens} />
+
+        <TabPanel data-testid="account-card-operations-tab">
+          <OperationListDisplay operations={operationDisplays} />
+        </TabPanel>
+
+        <TabPanel data-testid="account-card-delegation-tab">
+          <DelegationDisplay delegation={delegation} onDelegate={onDelegate} />
         </TabPanel>
 
         <TabPanel data-testid="account-card-nfts-tab" height="100%" overflow="hidden">
@@ -77,11 +78,8 @@ export const AssetsPanel: React.FC<{
           />
         </TabPanel>
 
-        <TabPanel data-testid="account-card-operations-tab">
-          <OperationListDisplay operations={operationDisplays} />
-        </TabPanel>
-        <TabPanel data-testid="account-card-delegation-tab">
-          <DelegationDisplay delegation={delegation} onDelegate={onDelegate} />
+        <TabPanel data-testid="account-card-tokens-tab">
+          <TokenList tokens={tokens} />
         </TabPanel>
       </TabPanels>
     </Tabs>
