@@ -62,8 +62,8 @@ const AppUpdatesSection = () => {
           <Flex alignItems="center" h="100%">
             <Flex justifyContent="space-between" alignItems="center" w="100%">
               <Flex alignItems="center">
-                <Heading size="sm">Version</Heading>
-                <Text>: v0.8.7</Text>
+                <Heading size="sm">Version:</Heading>
+                <Text>&nbsp;2.0.0-alpha</Text>
               </Flex>
               <IconAndTextBtn
                 label="Check for updates"
