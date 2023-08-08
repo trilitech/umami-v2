@@ -32,7 +32,7 @@ function ImportSeed() {
             <Button width="340px" onClick={onOpen} bg="umami.blue">
               Get started
             </Button>
-            <Text color="umami.gray.400">Umami v2.0.0</Text>
+            <Text color="umami.gray.400">Umami v2.0.0-alpha</Text>
             {modalElement}
           </VStack>
         </Center>
