@@ -17,25 +17,25 @@ const TokensView = () => {
     .map(account => [account, getTokens(account.address.pkh)] as const)
     .filter(([, tokens]) => tokens.length > 0);
 
-  if (accountsWithTokens.length === 0) {
-    return <NoItems text="No Tokens found" />;
-  }
-
   return (
     <Flex direction="column" height="100%">
       <TopBar title="Tokens" />
       {accountsFilter}
+      {accountsWithTokens.length === 0 ? (
+        <NoItems text="No Tokens found" />
+      ) : (
+        <Box overflow="auto">
+          {accountsWithTokens.map(([account, tokens]) => (
+            <AccountTokensTile
+              key={account.address.pkh}
+              tokens={tokens}
+              account={account}
+              onOpenSendModal={onOpen}
+            />
+          ))}
+        </Box>
+      )}
 
-      <Box overflow="auto">
-        {accountsWithTokens.map(([account, tokens]) => (
-          <AccountTokensTile
-            key={account.address.pkh}
-            tokens={tokens}
-            account={account}
-            onOpenSendModal={onOpen}
-          />
-        ))}
-      </Box>
       {modalElement}
     </Flex>
   );
