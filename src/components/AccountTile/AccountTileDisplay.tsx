@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import React from "react";
 import colors from "../../style/colors";
-import { formatPkh } from "../../utils/format";
+import { formatPkh } from "../../utils/formatPkh";
 import { Identicon } from "../Identicon";
 
 export type Props = {

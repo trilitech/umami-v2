@@ -1,7 +1,7 @@
 import { MenuItem, MenuList } from "@chakra-ui/react";
 import React from "react";
 import { Account } from "../../types/Account";
-import { AccountSmallTileDisplay } from "./AccountSmallTile";
+import { AccountSmallTileDisplay } from "./AccountSmallTileDisplay";
 
 export const AccountListDisplay: React.FC<{
   accounts: Account[];
