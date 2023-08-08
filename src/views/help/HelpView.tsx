@@ -77,7 +77,7 @@ export default function HelpView() {
 
               <Flex
                 alignItems="center"
-                color={colors.gray[600]}
+                color={colors.gray[400]}
                 _hover={{
                   color: colors.gray[300],
                 }}
