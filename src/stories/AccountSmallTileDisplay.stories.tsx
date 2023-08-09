@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { AccountSmallTileDisplay } from "../components/AccountSelector/AccountSmallTileDisplay";
 
 export default {
-  title: "Umami/AccountSmallTile",
+  title: "Umami/AccountSmallTileDisplay",
   component: AccountSmallTileDisplay,
   argTypes: {
     backgroundColor: { control: "color" },

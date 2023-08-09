@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { AccountTileDisplay } from "../components/AccountTile/AccountTileDisplay";
 
 export default {
-  title: "Umami/AccountTile",
+  title: "Umami/AccountTileDisplay",
   component: AccountTileDisplay,
 } as ComponentMeta<typeof AccountTileDisplay>;
 
