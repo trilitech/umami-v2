@@ -20,8 +20,6 @@ Default.args = {
 
 export const Selected = Template.bind({});
 Selected.args = {
+  ...Default.args,
   selected: true,
-  label: "My super account",
-  address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-  balance: "34,12 tez",
 };
