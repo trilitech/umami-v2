@@ -14,11 +14,16 @@ import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import { makeFormOperations } from "../../../components/sendForm/types";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
+import { Estimate } from "@taquito/taquito";
+import BigNumber from "bignumber.js";
+import { DynamicModalContext } from "../../../components/DynamicModal";
+import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
+import SignPage from "../../../components/SendFlow/SignPage";
 
 const fixture = (formValues?: MultisigFields) => {
   return (
     <Modal isOpen={true} onClose={() => {}}>
-      <CreateForm formValues={formValues} />
+      <CreateForm form={formValues} />
     </Modal>
   );
 };
@@ -211,7 +216,7 @@ describe("CreateForm", () => {
       render(
         fixture({
           name: "Test account",
-          owner: mockImplicitAccount(0).address.pkh,
+          sender: mockImplicitAccount(0).address.pkh,
           signers: [
             { val: mockImplicitAccount(0).address.pkh },
             { val: mockImplicitAccount(1).address.pkh },
@@ -230,7 +235,11 @@ describe("CreateForm", () => {
   });
 
   test("submit", async () => {
-    render(fixture());
+    render(
+      <DynamicModalContext.Provider value={dynamicModalContextMock}>
+        {fixture()}
+      </DynamicModalContext.Provider>
+    );
 
     fireEvent.change(screen.getByLabelText("Name the Contract"), {
       target: { value: "some name" },
@@ -248,20 +257,28 @@ describe("CreateForm", () => {
     });
     fireEvent.click(submitButton);
 
+    const operations = makeFormOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+      {
+        type: "contract_origination",
+        sender: mockImplicitAccount(0).address,
+        code: contract,
+        storage: makeStorageJSON(
+          mockImplicitAccount(0).address.pkh,
+          [mockImplicitAddress(1).pkh],
+          "1"
+        ),
+      },
+    ]);
+    fakeTezosUtils.estimateBatch.mockResolvedValue([{ suggestedFeeMutez: 100 } as Estimate]);
     await waitFor(() => {
-      const operations = makeFormOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
-        {
-          type: "contract_origination",
-          sender: mockImplicitAccount(0).address,
-          code: contract,
-          storage: makeStorageJSON(
-            mockImplicitAccount(0).address.pkh,
-            [mockImplicitAddress(1).pkh],
-            "1"
-          ),
-        },
-      ]);
-      expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(operations, "mainnet");
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+        <SignPage
+          mode="single"
+          goBack={expect.any(Function)}
+          operations={operations}
+          fee={new BigNumber(100)}
+        />
+      );
     });
   });
 });

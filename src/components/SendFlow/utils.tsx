@@ -11,6 +11,7 @@ import { FormOperations, makeFormOperations } from "../sendForm/types";
 import BigNumber from "bignumber.js";
 import { Operation } from "../../types/Operation";
 import { Account } from "../../types/Account";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 
 export type FormProps<T> = { sender?: Account; form?: T };
 
@@ -27,8 +28,7 @@ export const useFormHelpers = <FormProps, FormValues extends { sender: RawPkh }>
   defaultFormProps: FormProps,
   FormComponent: React.FC<FormProps>,
   SignPageComponent: React.FC<SignPageProps>,
-  // todo fix type
-  handleAsyncAction: any,
+  handleAsyncAction: ReturnType<typeof useAsyncActionHandler>["handleAsyncAction"],
   buildOperation: (formValues: FormValues) => Operation
 ) => {
   const getAccount = useGetOwnedAccount();

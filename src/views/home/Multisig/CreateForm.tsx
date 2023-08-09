@@ -13,37 +13,38 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { useContext } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
-import { DynamicModalContext } from "../../../components/DynamicModal";
 import SignPage from "../../../components/SendFlow/SignPage";
-import { makeFormOperations } from "../../../components/sendForm/types";
+import { useFormHelpers } from "../../../components/SendFlow/utils";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
 import { isValidImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
-import { ContractOrigination } from "../../../types/Operation";
-import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
-import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { estimateTotalFee } from "../../batch/batchUtils";
 
 export type MultisigFields = {
   name: string;
-  owner: RawPkh;
+  sender: RawPkh;
   signers: { val: RawPkh }[];
   threshold: number;
 };
 
+const formValuesToOperation = (formValues: MultisigFields) => ({
+  type: "contract_origination" as const,
+  sender: parsePkh(formValues.sender),
+  code: contract,
+  storage: makeStorageJSON(
+    formValues.sender,
+    formValues.signers.map(s => s.val),
+    String(formValues.threshold)
+  ),
+});
+
 export const CreateForm: React.FC<{
-  formValues?: MultisigFields;
-}> = ({ formValues: defaultValues }) => {
-  const { openWith } = useContext(DynamicModalContext);
+  form?: MultisigFields;
+}> = ({ form: defaultValues }) => {
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-  const getAccount = useGetOwnedAccount();
-  const getSigner = useGetBestSignerForAccount();
-  const network = useSelectedNetwork();
   const form = useForm<MultisigFields>({
     mode: "onBlur",
     defaultValues: defaultValues || { signers: [{ val: "" }] },
@@ -63,38 +64,20 @@ export const CreateForm: React.FC<{
     rules: { minLength: 1 },
   });
 
+  const formHelpers = useFormHelpers(
+    {},
+    CreateForm,
+    SignPage,
+    handleAsyncAction,
+    formValuesToOperation
+  );
+
   const signers = watch("signers");
-
-  const onSubmit = async (formValues: MultisigFields) =>
-    handleAsyncAction(async () => {
-      const operation: ContractOrigination = {
-        type: "contract_origination",
-        sender: parsePkh(formValues.owner),
-        code: contract,
-        storage: makeStorageJSON(
-          formValues.owner,
-          formValues.signers.map(s => s.val),
-          String(formValues.threshold)
-        ),
-      };
-      const sender = getAccount(formValues.owner);
-      const operations = makeFormOperations(sender, getSigner(sender), [operation]);
-      const fee = await estimateTotalFee(operations, network);
-
-      openWith(
-        <SignPage
-          mode="single"
-          operations={operations}
-          fee={fee}
-          goBack={() => openWith(<CreateForm formValues={formValues} />)}
-        />
-      );
-    });
 
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(formHelpers.onSingleSubmit)}>
           <ModalHeader textAlign="center">
             <Text size="2xl" fontWeight="600">
               Create Multisig
@@ -121,15 +104,15 @@ export const CreateForm: React.FC<{
               )}
             </FormControl>
 
-            <FormControl mb={2} isInvalid={!!errors.owner}>
+            <FormControl mb={2} isInvalid={!!errors.sender}>
               <OwnedImplicitAccountsAutocomplete
                 label="Select Owner"
-                inputName="owner"
+                inputName="sender"
                 allowUnknown={false}
               />
-              {errors.owner && (
+              {errors.sender && (
                 <FormErrorMessage data-testid="owner-error">
-                  {errors.owner.message}
+                  {errors.sender.message}
                 </FormErrorMessage>
               )}
             </FormControl>
