@@ -1,29 +1,5 @@
-import { Box, Flex, FlexProps, Text } from "@chakra-ui/react";
-import colors from "../../style/colors";
-import { formatPkh } from "../../utils/format";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
-import { Identicon } from "../Identicon";
-
-export const AccountSmallTileDisplay = ({
-  pkh,
-  label,
-  ...flexProps
-}: {
-  pkh: string;
-  label?: string;
-} & FlexProps) => {
-  return (
-    <Flex {...flexProps} data-testid="account-small-tile">
-      <Identicon address={pkh} mr={4} />
-      <Box>
-        <Text fontWeight={600}>{label}</Text>
-        <Text color={colors.gray[300]} size="sm">
-          {formatPkh(pkh)}
-        </Text>
-      </Box>
-    </Flex>
-  );
-};
+import { AccountSmallTileDisplay } from "./AccountSmallTileDisplay";
 
 export const AccountSmallTile = ({ pkh }: { pkh: string }) => {
   const accounts = useAllAccounts();

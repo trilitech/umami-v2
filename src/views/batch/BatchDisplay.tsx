@@ -18,7 +18,7 @@ import {
 import React from "react";
 import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
-import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTile";
+import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTileDisplay";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
