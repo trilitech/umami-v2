@@ -7,14 +7,15 @@ import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import store from "../../../utils/redux/store";
-import FormPage, { FormProps } from "./Form";
+import FormPage, { FormValues } from "./Form";
 import SignPage from "./Sign";
 import BigNumber from "bignumber.js";
 import { makeFormOperations } from "../../sendForm/types";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
+import { FormProps } from "../utils";
 
-const fixture = (props: FormProps = {}) => (
+const fixture = (props: FormProps<FormValues> = {}) => (
   <Modal isOpen={true} onClose={() => {}}>
     <FormPage {...props} />
   </Modal>
@@ -210,6 +211,8 @@ describe("<Form />", () => {
         status: "error",
       });
     });
+
+    // TODO: test multisig
 
     it("opens a sign page if estimation succeeds", async () => {
       render(

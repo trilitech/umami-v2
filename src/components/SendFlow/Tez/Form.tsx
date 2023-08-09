@@ -1,6 +1,4 @@
 import {
-  Box,
-  Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -13,25 +11,18 @@ import {
   ModalFooter,
   ModalHeader,
   Text,
-  useToast,
 } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import colors from "../../../style/colors";
-import { Account } from "../../../types/Account";
 import { parsePkh, RawPkh } from "../../../types/Address";
+import { TezOperation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
-import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
-import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { useAppDispatch } from "../../../utils/redux/hooks";
-import { estimateAndUpdateBatch } from "../../../utils/redux/thunks/estimateAndUpdateBatch";
 import { TEZ } from "../../../utils/tezos";
-import { estimateTotalFee } from "../../../views/batch/batchUtils";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { DynamicModalContext } from "../../DynamicModal";
-import { makeFormOperations } from "../../sendForm/types";
-import Sign from "./Sign";
+import { formDefaultValues, FormProps, FormSubmitButtons, useFormHelpers } from "../utils";
+import SignPage from "./Sign";
 
 export type FormValues = {
   sender: RawPkh;
@@ -39,68 +30,33 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-export type FormProps = { sender?: Account; form?: FormValues };
+const formValuesToOperation = (formValues: FormValues): TezOperation => ({
+  type: "tez",
+  amount: tezToMutez(formValues.prettyAmount).toString(),
+  recipient: parsePkh(formValues.recipient),
+});
 
-const defaultValues = ({ sender, form }: FormProps) => {
-  if (form) {
-    return form;
-  } else if (sender) {
-    return { sender: sender.address.pkh };
-  } else {
-    return {};
-  }
-};
-
-const FormPage: React.FC<FormProps> = props => {
-  const toast = useToast();
-  const getAccount = useGetOwnedAccount();
-  const getSigner = useGetBestSignerForAccount();
-  const network = useSelectedNetwork();
-  const dispatch = useAppDispatch();
-  const { openWith } = useContext(DynamicModalContext);
+const FormPage: React.FC<FormProps<FormValues>> = props => {
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const senderSelectorDisabled = !!props.sender;
 
+  const formHelpers = useFormHelpers(
+    props,
+    FormPage,
+    SignPage,
+    handleAsyncAction,
+    formValuesToOperation
+  );
+
   const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: defaultValues(props),
+    defaultValues: formDefaultValues(props),
   });
   const {
     formState: { isValid, errors },
     register,
     handleSubmit,
   } = form;
-
-  const buildOperations = (formValues: FormValues) => {
-    const sender = getAccount(formValues.sender);
-    const recipient = parsePkh(formValues.recipient);
-    const signer = getSigner(sender);
-    return makeFormOperations(sender, signer, [
-      { type: "tez", amount: tezToMutez(formValues.prettyAmount).toString(), recipient },
-    ]);
-  };
-
-  const onSingleSubmit = async (formValues: FormValues) => {
-    return handleAsyncAction(async () => {
-      const operations = buildOperations(formValues);
-      openWith(
-        <Sign
-          goBack={() => openWith(<FormPage {...props} form={formValues} />)}
-          operations={operations}
-          fee={await estimateTotalFee(operations, network)}
-          mode="single"
-        />
-      );
-    });
-  };
-
-  const onAddToBatch = async (formValues: FormValues) => {
-    handleAsyncAction(async () => {
-      const operations = buildOperations(formValues);
-      await dispatch(estimateAndUpdateBatch(operations, network));
-      toast({ title: "Transaction added to batch!", status: "success" });
-    });
-  };
 
   return (
     <FormProvider {...form}>
@@ -164,29 +120,12 @@ const FormPage: React.FC<FormProps> = props => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Box width="100%">
-              <Button
-                onClick={handleSubmit(onSingleSubmit)}
-                width="100%"
-                isLoading={isLoading}
-                type="submit"
-                isDisabled={!isValid}
-                variant="primary"
-                mb="16px"
-              >
-                Preview
-              </Button>
-              <Button
-                onClick={handleSubmit(onAddToBatch)}
-                width="100%"
-                isLoading={isLoading}
-                type="submit"
-                isDisabled={!isValid}
-                variant="tertiary"
-              >
-                Insert Into Batch
-              </Button>
-            </Box>
+            <FormSubmitButtons
+              isLoading={isLoading}
+              isValid={isValid}
+              onSingleSubmit={handleSubmit(formHelpers.onSingleSubmit)}
+              onAddToBatch={handleSubmit(formHelpers.onAddToBatch)}
+            />
           </ModalFooter>
         </form>
       </ModalContent>

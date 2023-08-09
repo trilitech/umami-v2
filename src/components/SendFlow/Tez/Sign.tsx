@@ -35,10 +35,9 @@ import { mutezToTez } from "../../../utils/format";
 import { DynamicModalContext } from "../../DynamicModal";
 import { SuccessStep } from "../../sendForm/steps/SuccessStep";
 import { TEZ } from "../../../utils/tezos";
+import { SignPageMode, SignPageProps } from "../utils";
 
-export type Mode = "single" | "batch";
-
-export const header = (operationType: FormOperations["type"], mode: Mode): string => {
+export const header = (operationType: FormOperations["type"], mode: SignPageMode): string => {
   let action;
   switch (operationType) {
     case "implicit":
@@ -79,12 +78,12 @@ export const mutezToPrettyTez = (amount: BigNumber): string => {
   return `${formatter.format(amount.dividedBy(10 ** 6).toNumber())} ${TEZ}`;
 };
 
-const SignPage: React.FC<{
-  goBack?: () => void;
-  operations: FormOperations;
-  fee: BigNumber;
-  mode: Mode;
-}> = ({ goBack, mode, operations: initialOperations, fee: initialFee }) => {
+const SignPage: React.FC<SignPageProps> = ({
+  goBack,
+  mode,
+  operations: initialOperations,
+  fee: initialFee,
+}) => {
   const getSigner = useGetImplicitAccount();
   const clearBatch = useClearBatch();
   const network = useSelectedNetwork();
