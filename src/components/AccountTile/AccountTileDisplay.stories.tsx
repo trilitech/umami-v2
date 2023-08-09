@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { AccountTileDisplay } from "../components/AccountTile/AccountTileDisplay";
+import { AccountTileDisplay } from "./AccountTileDisplay";
 
 export default {
   title: "Umami/AccountTileDisplay",
