@@ -3,7 +3,7 @@ import { AccountTileBase, LabelAndAdress } from "../../../AccountTile/AccountTil
 import { Identicon } from "../../../Identicon";
 import MultisigActionButton from "./MultisigActionButton";
 
-export type MultisigState =
+export type MultisigSignerState =
   | "awaitingApprovalByExternalSigner"
   | "approved"
   | "executable"
@@ -13,7 +13,7 @@ export const MultisigSignerTileDisplay: React.FC<{
   pkh: string;
   label?: string;
   onClickApproveExecute: () => void;
-  signerState: MultisigState;
+  signerState: MultisigSignerState;
   isLoading?: boolean;
 }> = ({ pkh, label, isLoading = false, ...rest }) => (
   <AccountTileBase
