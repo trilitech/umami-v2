@@ -5,7 +5,6 @@ import {
   Input,
   ListItem,
   StyleProps,
-  Text,
   UnorderedList,
 } from "@chakra-ui/react";
 import { get } from "lodash";
@@ -21,7 +20,7 @@ import {
 } from "../utils/hooks/accountHooks";
 import { useBakerList } from "../utils/hooks/assetsHooks";
 import { useContacts } from "../utils/hooks/contactsHooks";
-import { Identicon } from "./Identicon";
+import { AccountSmallTileDisplay } from "./AccountSelector/AccountSmallTileDisplay";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
@@ -83,22 +82,13 @@ const Suggestions = ({
       {contacts.map((contact, i) => (
         <Box key={contact.pkh}>
           <ListItem
-            display="flex"
-            alignItems="center"
-            pl={4}
-            pr={4}
-            h={12}
-            cursor="pointer"
             onMouseDown={() => {
               // onMouseDown is the only way for this to fire before the onBlur callback of the Input
               // https://stackoverflow.com/a/28963938/6797267
               onChange(contact.name);
             }}
           >
-            <>
-              <Identicon identiconSize={20} p="5px" address={contact.pkh} mr={4} />
-              <Text size="sm">{contact.name}</Text>
-            </>
+            <AccountSmallTileDisplay pkh={contact.pkh} label={contact.name} />
           </ListItem>
           {i !== contacts.length - 1 && <Divider />}
         </Box>

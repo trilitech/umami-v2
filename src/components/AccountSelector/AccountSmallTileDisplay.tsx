@@ -1,4 +1,5 @@
-import { Box, Flex, FlexProps, Text } from "@chakra-ui/react";
+import { Flex, FlexProps, Text } from "@chakra-ui/react";
+import colors from "../../style/colors";
 import { formatPkh } from "../../utils/formatPkh";
 import { Identicon } from "../Identicon";
 
@@ -11,12 +12,25 @@ export const AccountSmallTileDisplay = ({
   label?: string;
 } & FlexProps) => {
   return (
-    <Flex {...flexProps} data-testid="account-small-tile">
-      <Identicon address={pkh} mr={4} />
-      <Box>
-        <Text>{label}</Text>
-        <Text color="umami.gray.600">{formatPkh(pkh)}</Text>
-      </Box>
+    <Flex
+      data-testid="account-small-tile"
+      {...flexProps}
+      _hover={{
+        background: colors.gray[600],
+      }}
+      alignItems="center"
+      pl={4}
+      pr={4}
+      h={12}
+      cursor="pointer"
+    >
+      <Identicon identiconSize={20} p="5px" address={formatPkh(pkh)} mr={4} />
+      <Text size="sm" mx={2}>
+        {label}
+      </Text>
+      <Text size="xs" color="text.dark" mx={2}>
+        {formatPkh(pkh)}
+      </Text>
     </Flex>
   );
 };
