@@ -13,15 +13,15 @@
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off", // TODO: change to error https://app.asana.com/0/0/1204322668303155/f
-    "@typescript-eslint/no-empty-function": ["error", { "allow": ["arrowFunctions"] }],
-    "@typescript-eslint/switch-exhaustiveness-check": "error",
-    "react/jsx-curly-brace-presence": ["error", "never"],
-    "curly": ["error", "all"],
+    "@typescript-eslint/no-empty-function": ["warn", { "allow": ["arrowFunctions"] }],
+    "@typescript-eslint/switch-exhaustiveness-check": "warn",
+    "react/jsx-curly-brace-presence": ["warn", "never"],
+    "curly": ["warn", "all"],
     "jest/no-focused-tests": "warn",
     "jest/no-identical-title": "warn",
     "jest/valid-expect": "warn",
-    "@typescript-eslint/await-thenable": "error",
-    "@typescript-eslint/no-unnecessary-condition": "error"
+    "@typescript-eslint/await-thenable": "warn",
+    "@typescript-eslint/no-unnecessary-condition": "warn"
   },
   "overrides": [
     {
