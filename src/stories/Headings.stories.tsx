@@ -8,7 +8,7 @@ export default {
 } as ComponentMeta<typeof Heading>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Heading> = args => <Heading {...args} />;
+const Template: ComponentStory<typeof Heading> = (args: any) => <Heading {...args} />;
 
 const exampleTxt = "This is an Umami heading";
 export const Xs = Template.bind({});
