@@ -43,13 +43,8 @@ jest.mock("react-identicons", () => {
   return { default: (props: any) => props.children };
 });
 
-// Setup web crypto environment
-beforeAll(() => {
-  window.TextEncoder = TextEncoder;
-  (window as any).TextDecoder = TextDecoder;
-  (window as any).crypto = webcrypto;
-  window.scrollTo = jest.fn();
-});
+// Add missing browser APIs
+Object.assign(window, { TextDecoder, TextEncoder, crypto: webcrypto, scrollTo: jest.fn() });
 
 afterEach(() => {
   act(() => {
@@ -61,15 +56,6 @@ afterEach(() => {
     store.dispatch(errorsSlice.actions.reset());
   });
 });
-
-// If you wanted to restore the mutations done above
-// Do as follows:
-
-// afterAll(() => {
-//   delete (window as any)["crypto"];
-//   delete (window as any)["TextEncoder"];
-//   delete (window as any)["TextDecoder"];
-// });
 
 // Fixes: Cannot find module '@tzkt/oazapfts/runtime' from 'node_modules/@tzkt/sdk-api/build/main/index.js'
 jest.mock("@tzkt/sdk-api", () => {
