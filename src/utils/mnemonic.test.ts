@@ -3,7 +3,6 @@ import { ImplicitAccount, AccountType } from "../types/Account";
 import { restoreRevealedMnemonicAccounts, restoreRevealedPublickKeyPairs } from "./mnemonic";
 import { addressExists, getFingerPrint } from "./tezos";
 
-import "../mocks/mockGetRandomValues";
 import {
   defaultDerivationPathPattern,
   getDefaultDerivationPath,

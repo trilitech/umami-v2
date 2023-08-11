@@ -2,8 +2,6 @@ import { decrypt, encrypt } from "./aes";
 
 import { umamiBackup } from "../mocks/umamiV1BackupFile";
 
-// This is an integration test since aes call crypto.getRandomValues which is impure
-
 describe("AES", () => {
   test("Umami v1 format can be restored", async () => {
     const secret = umamiBackup.recoveryPhrases[0];

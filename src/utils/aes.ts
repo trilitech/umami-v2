@@ -5,8 +5,8 @@ async function encryptMessage(key: CryptoKey, message: string) {
   const enc = new TextEncoder();
   const encoded = enc.encode(message);
   // The iv must never be reused with a given key.
-  const iv = window.crypto.getRandomValues(new Uint8Array(12));
-  const data = await window.crypto.subtle.encrypt(
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const data = await crypto.subtle.encrypt(
     {
       name: "AES-GCM",
       iv: iv,
@@ -20,10 +20,7 @@ async function encryptMessage(key: CryptoKey, message: string) {
 
 const derivableKeyFromPassword = async (password: string) => {
   const buffer = Buffer.alloc(32, password);
-  return window.crypto.subtle.importKey("raw", buffer, "PBKDF2", false, [
-    "deriveBits",
-    "deriveKey",
-  ]);
+  return crypto.subtle.importKey("raw", buffer, "PBKDF2", false, ["deriveBits", "deriveKey"]);
 };
 
 const deriveKeyWithSalt = (salt: any, key: CryptoKey) =>

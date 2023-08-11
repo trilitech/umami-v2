@@ -11,7 +11,6 @@ import { AccountsList } from "./AccountsList";
 
 import { mockPk } from "../../mocks/factories";
 import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
-import "../../mocks/mockGetRandomValues";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
 import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
