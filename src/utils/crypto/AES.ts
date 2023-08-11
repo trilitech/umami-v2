@@ -54,6 +54,6 @@ export const decrypt = async (
     );
     return Buffer.from(decrypted).toString("utf-8");
   } catch (error: any) {
-    throw new Error("Error decrypting data");
+    throw new Error(`Error decrypting data: ${error.message || error}`);
   }
 };

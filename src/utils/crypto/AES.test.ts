@@ -1,4 +1,4 @@
-import { mnemonic } from "../../mocks/mockMnemonic";
+import { seedPhrase as mnemonic } from "../../mocks/seedPhrase";
 import { recoveredPhrases, umamiBackup } from "../../mocks/umamiV1BackupFile";
 import { decrypt, encrypt } from "./AES";
 

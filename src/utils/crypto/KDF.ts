@@ -5,7 +5,7 @@ const BYTE_TO_BIT = 8;
 const KEY_SIZE = 32;
 
 const NUM_ITERATIONS_V2 = 600000; // https://en.wikipedia.org/wiki/PBKDF2
-const NUM_ITERATIONS_V1 = 10000; // https://en.wikipedia.org/wiki/PBKDF2
+const NUM_ITERATIONS_V1 = 10000; // https://github.com/trilitech/umami-v1/blob/main/src/utils/SecureStorage.res#L168
 
 export const derivePasswordBasedKeyV1 = async (
   password: string,
@@ -27,7 +27,7 @@ const derivePasswordBasedKey = async (
   // PBKDF2 (Password Based Key Derivation Function 2) is typically used for deriving a cryptographic key from a password
   const algorithm = {
     name: "PBKDF2",
-    salt: salt,
+    salt,
     iterations,
     hash: "SHA-256",
   };

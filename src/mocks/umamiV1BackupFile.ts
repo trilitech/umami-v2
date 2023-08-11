@@ -1,5 +1,5 @@
-import { UmamiBackup } from "../types/UmamiEncrypted";
-import { mnemonic } from "./mockMnemonic";
+import { UmamiBackup } from "../types/UmamiBackup";
+import { seedPhrase as mnemonic } from "./seedPhrase";
 
 export const umamiBackup: UmamiBackup = {
   // password = password !
