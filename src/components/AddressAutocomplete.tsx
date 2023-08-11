@@ -10,6 +10,7 @@ import {
 import { get } from "lodash";
 import { useId, useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
+import colors from "../style/colors";
 import { Account } from "../types/Account";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
@@ -88,7 +89,13 @@ const Suggestions = ({
               onChange(contact.name);
             }}
           >
-            <AccountSmallTileDisplay pkh={contact.pkh} label={contact.name} />
+            <AccountSmallTileDisplay
+              pkh={contact.pkh}
+              label={contact.name}
+              _hover={{
+                background: colors.gray[600],
+              }}
+            />
           </ListItem>
           {i !== contacts.length - 1 && <Divider />}
         </Box>

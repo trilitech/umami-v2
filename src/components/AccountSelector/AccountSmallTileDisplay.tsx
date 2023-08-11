@@ -15,9 +15,6 @@ export const AccountSmallTileDisplay = ({
     <Flex
       data-testid="account-small-tile"
       {...flexProps}
-      _hover={{
-        background: colors.gray[600],
-      }}
       alignItems="center"
       pl={4}
       pr={4}
