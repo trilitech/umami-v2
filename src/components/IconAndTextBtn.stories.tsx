@@ -12,12 +12,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const WithArrowIcon: Story = {
-  icon: MdArrowOutward,
-  label: "TextGoesHere",
+  args: {
+    icon: MdArrowOutward,
+    label: "TextGoesHere",
+  },
 };
 
 export const TextFirst: Story = {
-  icon: MdArrowOutward,
-  label: "TextGoesHere",
-  textFirst: true,
+  args: {
+    icon: MdArrowOutward,
+    label: "TextGoesHere",
+    textFirst: true,
+  },
 };
