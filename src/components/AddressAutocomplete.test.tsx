@@ -2,18 +2,22 @@ import { FormProvider, useForm } from "react-hook-form";
 import { mockContact, mockImplicitAddress } from "../mocks/factories";
 import { fireEvent, render, renderHook, screen, within } from "../mocks/testUtils";
 import { Contact } from "../types/Contact";
-import { AddressAutocomplete } from "./AddressAutocomplete";
+import { AddressAutocomplete, getSuggestions } from "./AddressAutocomplete";
 
 type FormFields = { destination: string };
 
 const fixture = ({
-  defaultDestination,
+  defaultDestination = "",
   allowUnknown = true,
   contacts = [mockContact(0), mockContact(1), mockContact(2)],
+  label = "",
+  keepValid,
 }: {
   defaultDestination?: string;
-  allowUnknown?: boolean;
   contacts?: Contact[];
+  allowUnknown?: boolean;
+  label?: string;
+  keepValid?: boolean;
 }) => {
   const view = renderHook(() =>
     useForm<FormFields>({ defaultValues: { destination: defaultDestination } })
@@ -22,9 +26,10 @@ const fixture = ({
     <FormProvider {...view.result.current}>
       <AddressAutocomplete
         contacts={contacts}
-        label=""
+        label={label}
         inputName="destination"
         allowUnknown={allowUnknown}
+        keepValid={keepValid}
       />
     </FormProvider>
   );
@@ -51,6 +56,16 @@ describe("<AddressAutocomplete />", () => {
 
     expect(rawInput).toHaveProperty("value", INVALID);
     expect(realInput).toHaveProperty("value", "");
+  });
+
+  it("should keep the valid value if user enters invalid data, but keepValid is true", () => {
+    fixture({ defaultDestination: mockContact(0).pkh, keepValid: true });
+    const rawInput = screen.getByLabelText("destination");
+    const realInput = screen.getByTestId("real-address-input-destination");
+    fireEvent.change(rawInput, { target: { value: "invalid" } });
+
+    expect(rawInput).toHaveProperty("value", "invalid");
+    expect(realInput).toHaveProperty("value", mockContact(0).pkh);
   });
 
   it("hides suggestions by default", async () => {
@@ -156,5 +171,32 @@ describe("<AddressAutocomplete />", () => {
 
     expect(rawInput).toHaveProperty("value", mockContact(2).pkh);
     expect(realInput).toHaveProperty("value", "");
+  });
+});
+
+describe("getSuggestions", () => {
+  it("returns all contacts if input is empty", () => {
+    expect(getSuggestions("", [mockContact(0), mockContact(1)])).toEqual([
+      mockContact(0),
+      mockContact(1),
+    ]);
+  });
+
+  it("returns all contacts if input is a substring of a contact's name", () => {
+    expect(
+      getSuggestions("cd", [
+        { ...mockContact(0), name: "abcd" },
+        { ...mockContact(1), name: "efgh" },
+      ])
+    ).toEqual([{ ...mockContact(0), name: "abcd" }]);
+  });
+
+  it("returns an empty result if nothing matches the input", () => {
+    expect(
+      getSuggestions("de", [
+        { ...mockContact(0), name: "abcd" },
+        { ...mockContact(1), name: "efgh" },
+      ])
+    ).toEqual([]);
   });
 });

@@ -32,6 +32,7 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   label: string;
   // do not set the actual input value to an empty string when the user selects an unknown address or in the mid of typing
   // this is useful when the input is used as a select box
+  // it is assumed that there is at least one valid suggestion present and one of them is selected
   // TODO: make a separate selector component for that
   keepValid?: boolean;
   onUpdate?: (value: string) => void;
@@ -39,7 +40,7 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   style?: StyleProps;
 };
 
-const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
+export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
   if (inputValue === "") {
     return contacts;
   }
@@ -156,7 +157,6 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       newRealValue = contact.pkh;
     } else if (allowUnknown && isAddressValid(newValue)) {
       newRealValue = newValue;
-      // TODO: test
     } else if (keepValid) {
       return;
     } else {
