@@ -21,7 +21,6 @@ export const DynamicModalContext = createContext<{
 // component can open a modal from anywhere in the app using the `openWith` function.
 // This hook should be used only once in the app. You place the modal wrapper and then
 // use the `openWith` provided by the `DynamicModalContext` in components.
-// TODO: Add tests
 export const useDynamicModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
