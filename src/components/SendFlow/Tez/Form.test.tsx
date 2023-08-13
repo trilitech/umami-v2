@@ -181,6 +181,7 @@ describe("<Form />", () => {
   describe("single transaction", () => {
     beforeEach(() => {
       store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+      store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
     });
 
     it("shows a toast if estimation fails", async () => {
@@ -212,40 +213,41 @@ describe("<Form />", () => {
       });
     });
 
-    // TODO: test multisig
-
-    it("opens a sign page if estimation succeeds", async () => {
-      render(
-        <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {fixture({
-            form: {
-              sender: mockImplicitAccount(0).address.pkh,
-              recipient: mockImplicitAccount(1).address.pkh,
-              prettyAmount: "1",
-            },
-          })}
-        </DynamicModalContext.Provider>
-      );
-      const submitButton = screen.getByText("Preview");
-      await waitFor(() => {
-        expect(submitButton).toBeEnabled();
-      });
-      fireEvent.click(submitButton);
-      fakeTezosUtils.estimateBatch.mockResolvedValue([{ suggestedFeeMutez: 100 } as Estimate]);
-      const operations = makeFormOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
-        { type: "tez", amount: "1000000", recipient: mockImplicitAccount(1).address },
-      ]);
-      await waitFor(() => {
-        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-          <SignPage
-            mode="single"
-            goBack={expect.any(Function)}
-            operations={operations}
-            fee={new BigNumber(100)}
-          />
+    test.each([mockImplicitAccount(0), mockMultisigAccount(0)])(
+      "opens a sign page if estimation succeeds",
+      async sender => {
+        render(
+          <DynamicModalContext.Provider value={dynamicModalContextMock}>
+            {fixture({
+              form: {
+                sender: sender.address.pkh,
+                recipient: mockImplicitAccount(1).address.pkh,
+                prettyAmount: "1",
+              },
+            })}
+          </DynamicModalContext.Provider>
         );
-      });
-      expect(mockToast).not.toHaveBeenCalled();
-    });
+        const submitButton = screen.getByText("Preview");
+        await waitFor(() => {
+          expect(submitButton).toBeEnabled();
+        });
+        fireEvent.click(submitButton);
+        fakeTezosUtils.estimateBatch.mockResolvedValue([{ suggestedFeeMutez: 100 } as Estimate]);
+        const operations = makeFormOperations(sender, mockImplicitAccount(0), [
+          { type: "tez", amount: "1000000", recipient: mockImplicitAccount(1).address },
+        ]);
+        await waitFor(() => {
+          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+            <SignPage
+              mode="single"
+              goBack={expect.any(Function)}
+              operations={operations}
+              fee={new BigNumber(100)}
+            />
+          );
+        });
+        expect(mockToast).not.toHaveBeenCalled();
+      }
+    );
   });
 });
