@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
 
-const MIN_LENGTH = 4;
+export const MIN_LENGTH = 4;
 
 export const EnterAndConfirmPassword: React.FC<{
   onSubmit: (password: string) => void;
@@ -22,9 +22,14 @@ export const EnterAndConfirmPassword: React.FC<{
     confirm: string;
   };
 
-  const { register, handleSubmit, formState, watch } = useForm<ConfirmPasswordFormValues>();
-
-  const { errors, isValid, isDirty } = formState;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    getValues,
+  } = useForm<ConfirmPasswordFormValues>({
+    mode: "onBlur",
+  });
 
   const onSubmit = async (data: ConfirmPasswordFormValues) => {
     onSubmitPassword(data.confirm);
@@ -39,34 +44,33 @@ export const EnterAndConfirmPassword: React.FC<{
       <form onSubmit={handleSubmit(onSubmit)}>
         <Center>
           <VStack width={300}>
-            <FormControl isInvalid={!isValid && isDirty}>
+            <FormControl isInvalid={!!errors.password}>
               <FormLabel>Set Password</FormLabel>
               <Input
-                isDisabled={isLoading}
                 type="password"
                 autoComplete="off"
                 data-testid="password"
                 {...register("password", {
                   required: true,
+                  validate: (val: string) =>
+                    val.length >= MIN_LENGTH ||
+                    `Your password must be at least ${MIN_LENGTH} characters long`,
                 })}
                 placeholder="Enter master password..."
               />
+              {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
             </FormControl>
 
-            <FormControl isInvalid={!!errors.confirm && isDirty}>
+            <FormControl isInvalid={!!errors.confirm}>
               <FormLabel>Confirm Password</FormLabel>
               <Input
-                isDisabled={isLoading}
                 type="password"
                 autoComplete="off"
                 data-testid="confirmation"
                 {...register("confirm", {
                   required: true,
-                  minLength: MIN_LENGTH,
                   validate: (val: string) => {
-                    if (watch("password") !== val) {
-                      return "Your passwords do no match";
-                    }
+                    return getValues("password") === val || "Your passwords do no match";
                   },
                 })}
                 placeholder="Confirm your password..."
@@ -74,6 +78,7 @@ export const EnterAndConfirmPassword: React.FC<{
               {errors.confirm && <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>}
             </FormControl>
             <Button
+              mt={5}
               isDisabled={!isValid || isLoading}
               isLoading={isLoading}
               type="submit"
