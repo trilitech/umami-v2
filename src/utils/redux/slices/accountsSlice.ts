@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AccountType, ImplicitAccount } from "../../../types/Account";
 import { EncryptedData } from "../../crypto/types";
+import changeMnemonicPassword from "../thunks/changeMnemonicPassword";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
 
-type State = {
+export type State = {
   items: ImplicitAccount[];
   //TODO: Rename to encryptedMnemonics
   seedPhrases: Record<string, EncryptedData | undefined>;
@@ -27,6 +28,12 @@ const accountsSlice = createSlice({
       state.items = concatUnique(state.items, accounts);
       // updated seedphrase after a successfull restoration.
       state.seedPhrases[seedFingerprint] = encryptedMnemonic;
+    });
+
+    builder.addCase(changeMnemonicPassword.fulfilled, (state, action) => {
+      const { newEncryptedMnemonics } = action.payload;
+      // Only update the mnemonic in the store if the password change was successful. The account remains unchanged.
+      state.seedPhrases = newEncryptedMnemonics;
     });
   },
   reducers: {
