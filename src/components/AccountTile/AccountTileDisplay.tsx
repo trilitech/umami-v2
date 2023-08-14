@@ -23,7 +23,7 @@ export const AccountTileBase: React.FC<
     <Flex
       mb={4}
       p={4}
-      bg="umami.gray.900"
+      bg={colors.gray[900]}
       h={90}
       borderRadius={4}
       border={`1px solid ${colors.gray[800]}`}
