@@ -1,0 +1,41 @@
+import { Modal } from "@chakra-ui/react";
+import { render, screen } from "../../mocks/testUtils";
+import { headerText, SignPageHeader } from "./SignPageHeader";
+
+const fixture = (props: Parameters<typeof SignPageHeader>[0]) => {
+  return (
+    <Modal isOpen={true} onClose={() => {}}>
+      <SignPageHeader {...props} />
+    </Modal>
+  );
+};
+describe("<SignPageHeader />", () => {
+  describe("goBack", () => {
+    it("is hidden if goBack is not provided", () => {
+      render(fixture({ mode: "single", operationsType: "implicit" }));
+      expect(screen.queryByTestId("go-back-button")).not.toBeInTheDocument();
+    });
+  });
+});
+
+describe("headerText", () => {
+  describe("single operation", () => {
+    test("from implicit", () => {
+      expect(headerText("implicit", "single")).toBe("Confirm Transaction");
+    });
+
+    test("from multisig", () => {
+      expect(headerText("proposal", "single")).toBe("Propose Transaction");
+    });
+  });
+
+  describe("batch operation", () => {
+    test("from implicit", () => {
+      expect(headerText("implicit", "batch")).toBe("Confirm Batch");
+    });
+
+    test("from multisig", () => {
+      expect(headerText("proposal", "batch")).toBe("Propose Batch");
+    });
+  });
+});

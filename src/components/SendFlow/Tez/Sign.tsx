@@ -1,58 +1,25 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
   Box,
   Divider,
   Flex,
   FormControl,
-  IconButton,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { TezosToolkit } from "@taquito/taquito";
-import { useContext, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import { RawPkh } from "../../../types/Address";
 import { TezOperation } from "../../../types/Operation";
-import { useGetImplicitAccount } from "../../../utils/hooks/accountHooks";
-import {
-  useClearBatch,
-  useSelectedNetwork,
-  useTezToDollar,
-} from "../../../utils/hooks/assetsHooks";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { estimateTotalFee, getTotal } from "../../../views/batch/batchUtils";
+import { useTezToDollar } from "../../../utils/hooks/assetsHooks";
+import { getTotal } from "../../../views/batch/batchUtils";
 import { AvailableSignersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { FormOperations } from "../../sendForm/types";
-import { makeTransfer } from "../../sendForm/util/execution";
 import { BigNumber } from "bignumber.js";
 import { mutezToTez } from "../../../utils/format";
-import { DynamicModalContext } from "../../DynamicModal";
-import { SuccessStep } from "../../sendForm/steps/SuccessStep";
-import { TEZ } from "../../../utils/tezos";
-import { SignPageMode, SignPageProps } from "../utils";
-
-export const header = (operationType: FormOperations["type"], mode: SignPageMode): string => {
-  let action;
-  switch (operationType) {
-    case "implicit":
-      action = "Confirm";
-      break;
-    case "proposal":
-      action = "Propose";
-  }
-  switch (mode) {
-    case "single":
-      return `${action} Transaction`;
-    case "batch":
-      return `${action} Batch`;
-  }
-};
+import { mutezToPrettyTez, SignPageProps, useSignPageHelpers } from "../utils";
+import { SignPageHeader, headerText } from "../SignPageHeader";
 
 export const getTezAmount = (operations: FormOperations): BigNumber | undefined => {
   switch (operations.type) {
@@ -69,100 +36,23 @@ export const getTezAmount = (operations: FormOperations): BigNumber | undefined 
   }
 };
 
-export const mutezToPrettyTez = (amount: BigNumber): string => {
-  // make sure we always show 6 digits after the decimal point
-  const formatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 6,
-    maximumFractionDigits: 6,
-  });
-  return `${formatter.format(amount.dividedBy(10 ** 6).toNumber())} ${TEZ}`;
-};
-
-const SignPage: React.FC<SignPageProps> = ({
-  goBack,
-  mode,
-  operations: initialOperations,
-  fee: initialFee,
-}) => {
-  const getSigner = useGetImplicitAccount();
-  const clearBatch = useClearBatch();
-  const network = useSelectedNetwork();
-  const [fee, setFee] = useState<BigNumber>(initialFee);
-  const [operations, setOperations] = useState<FormOperations>(initialOperations);
-  const [estimationFailed, setEstimationFailed] = useState(false);
-  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
+const SignPage: React.FC<SignPageProps> = props => {
+  const { mode, operations: initialOperations, fee: initialFee } = props;
+  const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
+    useSignPageHelpers(initialFee, initialOperations, mode);
   const convertTezToDallars = useTezToDollar();
-  const { openWith } = useContext(DynamicModalContext);
-
-  const form = useForm<{ sender: string; signer: string }>({
-    mode: "onBlur",
-    defaultValues: { signer: operations.signer.address.pkh, sender: operations.sender.address.pkh },
-  });
-
-  const signerWatch = form.watch("signer");
 
   const tezAmount = getTezAmount(operations);
   const totalCost = fee.plus(tezAmount ?? 0);
   const totalCostInUSD = convertTezToDallars(mutezToTez(totalCost));
 
-  const onSign = async (tezosToolkit: TezosToolkit) =>
-    handleAsyncAction(async () => {
-      const { hash } = await makeTransfer(operations, tezosToolkit);
-      if (mode === "batch") {
-        clearBatch(operations.sender);
-      }
-      openWith(<SuccessStep hash={hash} />);
-    });
-
-  // if it fails then the sign button must be disabled
-  // and the user is supposed to either come back to the form and amend it
-  // or choose another signer
-  const reestimate = async (newSigner: RawPkh) =>
-    handleAsyncActionUnsafe(
-      async () => {
-        const operationsWithNewSigner = {
-          ...operations,
-          signer: getSigner(newSigner),
-        };
-        setFee(await estimateTotalFee(operations, network));
-        setOperations(operationsWithNewSigner);
-        setEstimationFailed(false);
-      },
-      {
-        isClosable: true,
-        duration: null, // it makes the toast stick until the user closes it
-      }
-    ).catch(() => setEstimationFailed(true));
-
   return (
     <FormProvider {...form}>
       <ModalContent bg={colors.gray[900]} borderColor={colors.gray[700]} borderRadius="8px">
         <form>
-          <ModalHeader textAlign="center" p="40px 0 32px 0">
-            {goBack && (
-              <IconButton
-                size="lg"
-                top="4px"
-                left="4px"
-                position="absolute"
-                variant="ghost"
-                aria-label="Back"
-                color="umami.gray.450"
-                icon={<ArrowBackIcon />}
-                onClick={goBack}
-              />
-            )}
-            <Text size="2xl" fontWeight="600">
-              {header(operations.type, mode)}
-            </Text>
-            <Text textAlign="center" size="sm" color={colors.gray[400]}>
-              Confirm the transaction by signing it with your private key.
-            </Text>
-            <ModalCloseButton />
-          </ModalHeader>
+          <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
             <FormControl mb="24px">
-              {/* TODO: Until we separate the AccountTile from the AddressAutocomplete we use a disabled input */}
               <OwnedAccountsAutocomplete
                 inputName="sender"
                 label="From"
@@ -186,7 +76,7 @@ const SignPage: React.FC<SignPageProps> = ({
               <Text size="sm" color={colors.gray[450]} fontWeight="600">
                 Fee:
               </Text>
-              <Text size="sm" color={colors.gray[400]}>
+              <Text size="sm" data-testid="fee" color={colors.gray[400]}>
                 {mutezToPrettyTez(fee)}
               </Text>
             </Flex>
@@ -221,7 +111,7 @@ const SignPage: React.FC<SignPageProps> = ({
                   inputName="signer"
                   label="Select Proposer"
                   isDisabled={isLoading}
-                  onUpdate={reestimate}
+                  onUpdate={reEstimate}
                   keepValid
                 />
               </FormControl>
@@ -231,9 +121,9 @@ const SignPage: React.FC<SignPageProps> = ({
             <SignButton
               isLoading={isLoading}
               isDisabled={estimationFailed}
-              signer={getSigner(signerWatch)}
+              signer={signer}
               onSubmit={onSign}
-              text={header(operations.type, mode)}
+              text={headerText(operations.type, mode)}
             />
           </ModalFooter>
         </form>

@@ -21,7 +21,6 @@ import { useFormHelpers } from "../../../components/SendFlow/utils";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
 import { isValidImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 
 export type MultisigFields = {
   name: string;
@@ -44,7 +43,6 @@ const formValuesToOperation = (formValues: MultisigFields) => ({
 export const CreateForm: React.FC<{
   form?: MultisigFields;
 }> = ({ form: defaultValues }) => {
-  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const form = useForm<MultisigFields>({
     mode: "onBlur",
     defaultValues: defaultValues || { signers: [{ val: "" }] },
@@ -64,11 +62,10 @@ export const CreateForm: React.FC<{
     rules: { minLength: 1 },
   });
 
-  const formHelpers = useFormHelpers(
+  const { isLoading, onSingleSubmit } = useFormHelpers(
     {},
     CreateForm,
     SignPage,
-    handleAsyncAction,
     formValuesToOperation
   );
 
@@ -77,7 +74,7 @@ export const CreateForm: React.FC<{
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form onSubmit={handleSubmit(formHelpers.onSingleSubmit)}>
+        <form onSubmit={handleSubmit(onSingleSubmit)}>
           <ModalHeader textAlign="center">
             <Text size="2xl" fontWeight="600">
               Create Multisig

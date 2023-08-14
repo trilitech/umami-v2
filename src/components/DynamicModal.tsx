@@ -1,4 +1,4 @@
-import { Modal, useDisclosure } from "@chakra-ui/react";
+import { Modal, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import { createContext, ReactElement, useState } from "react";
 
 // this should be used in components as useContext(DynamicModalContext);
@@ -36,6 +36,7 @@ export const useDynamicModal = () => {
     openWith,
     content: (
       <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false} isCentered>
+        <ModalOverlay />
         {modalContent}
       </Modal>
     ),

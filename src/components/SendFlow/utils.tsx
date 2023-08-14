@@ -1,8 +1,12 @@
 import { Box, Button, useToast } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { RawPkh } from "../../types/Address";
-import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
-import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import {
+  useGetBestSignerForAccount,
+  useGetImplicitAccount,
+  useGetOwnedAccount,
+} from "../../utils/hooks/accountHooks";
+import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { estimateTotalFee } from "../../views/batch/batchUtils";
@@ -12,6 +16,11 @@ import BigNumber from "bignumber.js";
 import { Operation } from "../../types/Operation";
 import { Account } from "../../types/Account";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { TezosToolkit } from "@taquito/taquito";
+import { makeTransfer } from "../sendForm/util/execution";
+import { SuccessStep } from "../sendForm/steps/SuccessStep";
+import { TEZ } from "../../utils/tezos";
+import { useForm } from "react-hook-form";
 
 export type FormProps<T> = { sender?: Account; form?: T };
 
@@ -24,11 +33,17 @@ export type SignPageProps = {
   mode: SignPageMode;
 };
 
+// contains the logic for both submit buttons: submit single operation and add to batch
+// should be used on the Send page
+// TODO: test this
 export const useFormHelpers = <FormProps, FormValues extends { sender: RawPkh }>(
+  // the form might have some default values and in order to instantiate it again
+  // with the same values when to go back from the sign page we need to pass them here
   defaultFormProps: FormProps,
+  // current form component
   FormComponent: React.FC<FormProps>,
+  // the sign page the form should navigate to on single submit
   SignPageComponent: React.FC<SignPageProps>,
-  handleAsyncAction: ReturnType<typeof useAsyncActionHandler>["handleAsyncAction"],
   buildOperation: (formValues: FormValues) => Operation
 ) => {
   const getAccount = useGetOwnedAccount();
@@ -37,6 +52,7 @@ export const useFormHelpers = <FormProps, FormValues extends { sender: RawPkh }>
   const dispatch = useAppDispatch();
   const toast = useToast();
   const network = useSelectedNetwork();
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const buildFormOperations = (formValues: FormValues) => {
     const sender = getAccount(formValues.sender);
@@ -49,7 +65,14 @@ export const useFormHelpers = <FormProps, FormValues extends { sender: RawPkh }>
       const operations = buildFormOperations(formValues);
       openWith(
         <SignPageComponent
-          goBack={() => openWith(<FormComponent {...defaultFormProps} form={formValues} />)}
+          goBack={() => {
+            openWith(
+              <FormComponent
+                {...defaultFormProps}
+                form={formValues} // whatever user selects on the form should override the default values
+              />
+            );
+          }}
           operations={operations}
           fee={await estimateTotalFee(operations, network)}
           mode="single"
@@ -67,6 +90,7 @@ export const useFormHelpers = <FormProps, FormValues extends { sender: RawPkh }>
   };
 
   return {
+    isLoading,
     onAddToBatch,
     onSingleSubmit,
     buildOperations: buildFormOperations,
@@ -121,4 +145,75 @@ export const formDefaultValues = <T,>({ sender, form }: FormProps<T>) => {
   } else {
     return {};
   }
+};
+
+// TODO: test this
+export const useSignPageHelpers = (
+  // the fee & operations you've got from the form
+  initialFee: BigNumber,
+  initialOperations: FormOperations,
+  mode: SignPageMode
+) => {
+  const [estimationFailed, setEstimationFailed] = useState(false);
+  const getSigner = useGetImplicitAccount();
+  const [fee, setFee] = useState<BigNumber>(initialFee);
+  const [operations, setOperations] = useState<FormOperations>(initialOperations);
+  const network = useSelectedNetwork();
+  const clearBatch = useClearBatch();
+  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
+  const { openWith } = useContext(DynamicModalContext);
+  const form = useForm<{ sender: string; signer: string }>({
+    mode: "onBlur",
+    defaultValues: { signer: operations.signer.address.pkh, sender: operations.sender.address.pkh },
+  });
+  const signer = form.watch("signer");
+
+  // if it fails then the sign button must be disabled
+  // and the user is supposed to either come back to the form and amend it
+  // or choose another signer
+  const reEstimate = async (newSigner: RawPkh) =>
+    handleAsyncActionUnsafe(
+      async () => {
+        const operationsWithNewSigner = {
+          ...operations,
+          signer: getSigner(newSigner),
+        };
+        setFee(await estimateTotalFee(operations, network));
+        setOperations(operationsWithNewSigner);
+        setEstimationFailed(false);
+      },
+      {
+        isClosable: true,
+        duration: null, // it makes the toast stick until the user closes it
+      }
+    ).catch(() => setEstimationFailed(true));
+
+  const onSign = async (tezosToolkit: TezosToolkit) =>
+    handleAsyncAction(async () => {
+      const { hash } = await makeTransfer(operations, tezosToolkit);
+      if (mode === "batch") {
+        clearBatch(operations.sender);
+      }
+      openWith(<SuccessStep hash={hash} />);
+    });
+
+  return {
+    fee,
+    estimationFailed,
+    operations,
+    isLoading,
+    form,
+    signer: getSigner(signer),
+    reEstimate,
+    onSign,
+  };
+};
+
+export const mutezToPrettyTez = (amount: BigNumber): string => {
+  // make sure we always show 6 digits after the decimal point
+  const formatter = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 6,
+    maximumFractionDigits: 6,
+  });
+  return `${formatter.format(amount.dividedBy(10 ** 6).toNumber())} ${TEZ}`;
 };

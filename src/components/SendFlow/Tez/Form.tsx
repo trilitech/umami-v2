@@ -18,7 +18,6 @@ import colors from "../../../style/colors";
 import { parsePkh, RawPkh } from "../../../types/Address";
 import { TezOperation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { TEZ } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { formDefaultValues, FormProps, FormSubmitButtons, useFormHelpers } from "../utils";
@@ -37,14 +36,12 @@ const formValuesToOperation = (formValues: FormValues): TezOperation => ({
 });
 
 const FormPage: React.FC<FormProps<FormValues>> = props => {
-  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const senderSelectorDisabled = !!props.sender;
 
-  const formHelpers = useFormHelpers(
+  const { isLoading, onSingleSubmit, onAddToBatch } = useFormHelpers(
     props,
     FormPage,
     SignPage,
-    handleAsyncAction,
     formValuesToOperation
   );
 
@@ -123,8 +120,8 @@ const FormPage: React.FC<FormProps<FormValues>> = props => {
             <FormSubmitButtons
               isLoading={isLoading}
               isValid={isValid}
-              onSingleSubmit={handleSubmit(formHelpers.onSingleSubmit)}
-              onAddToBatch={handleSubmit(formHelpers.onAddToBatch)}
+              onSingleSubmit={handleSubmit(onSingleSubmit)}
+              onAddToBatch={handleSubmit(onAddToBatch)}
             />
           </ModalFooter>
         </form>

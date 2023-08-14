@@ -74,7 +74,7 @@ export const mutezToPrettyTez = (amount: BigNumber): string => {
   });
   return `${formatter.format(amount.dividedBy(10 ** 6).toNumber())} ${TEZ}`;
 };
-
+// TODO: convert to a contract origination sign page (and remove unused code)
 const SignPage: React.FC<{
   goBack?: () => void;
   operations: FormOperations;
@@ -114,7 +114,7 @@ const SignPage: React.FC<{
   // if it fails then the sign button must be disabled
   // and the user is supposed to either come back to the form and amend it
   // or choose another signer
-  const reestimate = async (newSigner: RawPkh) =>
+  const reEstimate = async (newSigner: RawPkh) =>
     handleAsyncActionUnsafe(
       async () => {
         const operationsWithNewSigner = {
@@ -218,7 +218,7 @@ const SignPage: React.FC<{
                   inputName="signer"
                   label="Select Proposer"
                   isDisabled={isLoading}
-                  onUpdate={reestimate}
+                  onUpdate={reEstimate}
                   keepValid
                 />
               </FormControl>
