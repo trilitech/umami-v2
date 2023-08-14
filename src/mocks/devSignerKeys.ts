@@ -3,13 +3,13 @@ import { TezosToolkit } from "@taquito/taquito";
 import { TezosNetwork } from "../types/TezosNetwork";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 import { makeToolkit } from "../utils/tezos";
-import { seedPhrase } from "./seedPhrase";
+import { mnemonic1 } from "./mockMnemonic";
 
 // make the default signer used in the dev mode.
 // e.g. makeDefaultDevSigner(0) is equivalent to the "restored account 0".
 export const makeDefaultDevSigner = (index: number): InMemorySigner => {
   return InMemorySigner.fromMnemonic({
-    mnemonic: seedPhrase,
+    mnemonic: mnemonic1,
     derivationPath: getDefaultDerivationPath(index),
     curve: "ed25519",
   });

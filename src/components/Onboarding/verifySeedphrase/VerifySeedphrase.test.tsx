@@ -1,4 +1,4 @@
-import { seedPhrase } from "../../../mocks/seedPhrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
 import VerifySeedphrase from "./VerifySeedphrase";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
@@ -11,14 +11,14 @@ const selectRandomElementsMock = selectRandomElements as jest.Mock;
 jest.mock("../../../utils/tezos/helpers");
 
 beforeEach(() => {
-  const splitted = seedPhrase.split(" ").map((value, index) => {
+  const splitted = mnemonic1.split(" ").map((value, index) => {
     return { index, value };
   });
   selectRandomElementsMock.mockReturnValue(splitted.slice(0, 5));
 });
 
 const fixture = (goToStep: (step: Step) => void) => (
-  <VerifySeedphrase goToStep={goToStep} account={{ type: "mnemonic", seedphrase: seedPhrase }} />
+  <VerifySeedphrase goToStep={goToStep} account={{ type: "mnemonic", seedphrase: mnemonic1 }} />
 );
 
 describe("<VerifySeedphrase />", () => {
@@ -61,7 +61,7 @@ describe("<VerifySeedphrase />", () => {
 
     // Enter correct value
     fireEvent.change(inputFields[0], {
-      target: { value: seedPhrase.split(" ")[0] },
+      target: { value: mnemonic1.split(" ")[0] },
     });
     fireEvent.blur(inputFields[0]);
 
@@ -80,7 +80,7 @@ describe("<VerifySeedphrase />", () => {
     const inputFields = screen.getAllByRole("textbox");
 
     // Enter correct value
-    const splitted = seedPhrase.split(" ");
+    const splitted = mnemonic1.split(" ");
 
     // Enter incorrect values
     inputFields.forEach((input, index) => {
@@ -100,7 +100,7 @@ describe("<VerifySeedphrase />", () => {
     });
     expect(goToStepMock).toBeCalledWith({
       type: StepType.nameAccount,
-      account: { type: "mnemonic", seedphrase: seedPhrase },
+      account: { type: "mnemonic", seedphrase: mnemonic1 },
     });
   });
 });

@@ -1,4 +1,4 @@
-import { seedPhrase } from "../../../mocks/seedPhrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
 import Notice from "./Notice";
@@ -15,14 +15,14 @@ const fixture = (goToStep: (step: Step) => void) => <Notice goToStep={goToStep} 
 describe("<Eula />", () => {
   describe("When shown", () => {
     test("press 'I understand'", async () => {
-      generate24WordMnemonicMock.mockReturnValue(seedPhrase);
+      generate24WordMnemonicMock.mockReturnValue(mnemonic1);
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /I understand/i });
 
       fireEvent.click(confirmBtn);
       expect(goToStepMock).toBeCalledWith({
         type: StepType.showSeedphrase,
-        account: { type: "mnemonic", seedphrase: seedPhrase },
+        account: { type: "mnemonic", seedphrase: mnemonic1 },
       });
       expect(goToStepMock).toBeCalledTimes(1);
     });

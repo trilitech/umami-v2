@@ -2,7 +2,7 @@ import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import NameAccount from "./NameAccount";
 import { ReduxStore } from "../../../providers/ReduxStore";
-import { seedPhrase } from "../../../mocks/seedPhrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 
 const goToStepMock = jest.fn((step: Step) => {});
 
@@ -15,7 +15,7 @@ const fixture = (goToStep: (step: Step) => void, account: NameAccountStep["accou
 describe("<NameAccount />", () => {
   const accounts = [
     { type: "ledger" as const },
-    { type: "mnemonic" as const, seedphrase: seedPhrase },
+    { type: "mnemonic" as const, seedphrase: mnemonic1 },
   ];
   accounts.forEach(async account => {
     test(`Set a name for ${account.type}`, async () => {
