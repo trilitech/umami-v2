@@ -1,5 +1,5 @@
 import React from "react";
-import { AccountTileBase, LabelAndAdress } from "../../../AccountTile/AccountTileDisplay";
+import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTileDisplay";
 import { Identicon } from "../../../Identicon";
 import MultisigActionButton from "./MultisigActionButton";
 
@@ -18,7 +18,7 @@ export const MultisigSignerTileDisplay: React.FC<{
 }> = ({ pkh, label, isLoading = false, ...rest }) => (
   <AccountTileBase
     icon={<Identicon address={pkh} />}
-    leftElement={<LabelAndAdress label={label} pkh={pkh} />}
+    leftElement={<LabelAndAddress label={label} pkh={pkh} />}
     rightElement={<MultisigActionButton isLoading={isLoading} {...rest} />}
   />
 );

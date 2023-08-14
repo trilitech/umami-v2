@@ -39,7 +39,7 @@ export const AccountTileBase: React.FC<
   );
 };
 
-export const LabelAndAdress: React.FC<{ label?: string; pkh: string }> = ({ label, pkh }) => {
+export const LabelAndAddress: React.FC<{ label?: string; pkh: string }> = ({ label, pkh }) => {
   return (
     <Box m={4} data-testid="account-identifier">
       {label && <Heading size="md">{label}</Heading>}
@@ -72,7 +72,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
         border,
       }}
       icon={<Identicon address={address} />}
-      leftElement={<LabelAndAdress pkh={address} label={label} />}
+      leftElement={<LabelAndAddress pkh={address} label={label} />}
       rightElement={
         balance && (
           <Heading mb={4} alignSelf="flex-end" size="lg">
