@@ -9,7 +9,7 @@ import {
   ImplicitAccount,
 } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
-import { decrypt } from "../aes";
+import { decrypt } from "../crypto/AES";
 import { multisigToAccount } from "../multisig/helpers";
 import { Multisig } from "../multisig/types";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";

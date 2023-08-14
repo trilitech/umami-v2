@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AccountType, ImplicitAccount } from "../../../types/Account";
-import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
+import { EncryptedData } from "../../crypto/types";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
 
 type State = {
   items: ImplicitAccount[];
   //TODO: Rename to encryptedMnemonics
-  seedPhrases: Record<string, UmamiEncrypted | undefined>;
+  seedPhrases: Record<string, EncryptedData | undefined>;
 };
 
 const initialState: State = {

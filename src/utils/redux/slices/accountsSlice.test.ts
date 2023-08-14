@@ -15,8 +15,6 @@ const {
   actions: { addAccount, removeMnemonicAndAccounts },
 } = accountsSlice;
 
-jest.mock("../../aes");
-
 beforeEach(async () => {
   const { pk, pkh } = await makeDefaultDevSignerKeys(0);
   fakeExtraArguments.derivePublicKeyPair.mockResolvedValue({

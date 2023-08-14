@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { compact } from "lodash";
 import { MnemonicAccount } from "../../types/Account";
-import { decrypt } from "../aes";
+import { decrypt } from "../crypto/AES";
 import { deriveSecretKey } from "../mnemonic";
 import { useAppSelector } from "../redux/hooks";
 

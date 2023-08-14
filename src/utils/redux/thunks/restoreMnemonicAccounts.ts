@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AccountType, MnemonicAccount } from "../../../types/Account";
-import { UmamiEncrypted } from "../../../types/UmamiEncrypted";
 import { makeDerivationPath } from "../../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
+import { EncryptedData } from "../../crypto/types";
 import { getFingerPrint } from "../../tezos";
 import { ExtraArgument } from "../extraArgument";
 import { AppDispatch, RootState } from "../store";
@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from "../store";
 export const restoreFromMnemonic = createAsyncThunk<
   {
     seedFingerprint: string;
-    encryptedMnemonic: UmamiEncrypted;
+    encryptedMnemonic: EncryptedData;
     accounts: MnemonicAccount[];
   },
   {
