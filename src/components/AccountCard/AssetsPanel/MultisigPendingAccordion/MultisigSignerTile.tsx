@@ -1,5 +1,5 @@
 import React from "react";
-import { MultisigAccount } from "../../../../types/Account";
+import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
 import { ImplicitAddress } from "../../../../types/Address";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
 import { useSelectedNetwork } from "../../../../utils/hooks/assetsHooks";
@@ -31,10 +31,6 @@ const MultisigSignerTile: React.FC<{
   const network = useSelectedNetwork();
 
   const signerAccount = getImplicitAccount(signerAddress.pkh);
-
-  const approvedBySigner = !!operation.approvals.find(
-    approver => approver.pkh === signerAddress.pkh
-  );
 
   const operationIsExecutable = pendingApprovals === 0;
 
@@ -68,9 +64,10 @@ const MultisigSignerTile: React.FC<{
       pkh={signer.pkh}
       label={label}
       signerState={getMultisigSignerState({
-        approvedBySigner,
+        approvals: operation.approvals,
+        signerAddress: signerAddress,
         operationIsExecutable,
-        signerInOwnedAccounts: !!signerAccount,
+        signerAccount: signerAccount,
       })}
       onClickApproveExecute={() => {
         onButtonClick();
@@ -81,15 +78,19 @@ const MultisigSignerTile: React.FC<{
 };
 
 const getMultisigSignerState = ({
-  signerInOwnedAccounts,
+  signerAccount,
   operationIsExecutable,
-  approvedBySigner,
+  approvals,
+  signerAddress: signer,
 }: {
-  signerInOwnedAccounts: boolean;
+  signerAccount?: ImplicitAccount;
   operationIsExecutable: boolean;
-  approvedBySigner: boolean;
+  approvals: ImplicitAddress[];
+  signerAddress: ImplicitAddress;
 }): MultisigSignerState => {
-  if (!signerInOwnedAccounts) {
+  const approvedBySigner = !!approvals.find(approver => approver.pkh === signer.pkh);
+
+  if (!signerAccount) {
     return approvedBySigner ? "approved" : "awaitingApprovalByExternalSigner";
   }
 
