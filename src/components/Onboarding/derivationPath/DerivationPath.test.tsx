@@ -1,7 +1,7 @@
 import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import DerivationPath from "./DerivationPath";
-import { seedPhrase } from "../../../mocks/seedPhrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 
 const goToStepMock = jest.fn((step: Step) => {});
 
@@ -17,7 +17,7 @@ describe("<DerivationPath />", () => {
       derivationPath: "44'/1729'/?'/0'",
     },
     {
-      account: { type: "mnemonic" as const, label: "mnemonic account", seedphrase: seedPhrase },
+      account: { type: "mnemonic" as const, label: "mnemonic account", seedphrase: mnemonic1 },
       nextPage: StepType.masterPassword,
       derivationPath: "44'/1729'/?'/0'",
     },

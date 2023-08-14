@@ -1,5 +1,5 @@
 import { UmamiBackup } from "../types/UmamiBackup";
-import { seedPhrase as mnemonic } from "./seedPhrase";
+import { mnemonic1, mnemonic2 } from "./mockMnemonic";
 
 export const umamiBackup: UmamiBackup = {
   // password = password !
@@ -19,7 +19,4 @@ export const umamiBackup: UmamiBackup = {
   ],
 };
 
-export const recoveredPhrases = [
-  "tone ahead staff legend common seek dove struggle ancient praise person injury poverty space enrich trick option defense ripple approve garlic favorite omit dose",
-  mnemonic,
-];
+export const recoveredPhrases = [mnemonic2, mnemonic1];

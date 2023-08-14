@@ -4,7 +4,7 @@ import { ReduxStore } from "../../../providers/ReduxStore";
 import { mockImplicitAccount } from "../../../mocks/factories";
 import store from "../../../utils/redux/store";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import { seedPhrase } from "../../../mocks/seedPhrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 
 const onClose = jest.fn(() => {});
 
@@ -17,7 +17,7 @@ const account = mockImplicitAccount(0);
 const fixture = () => {
   const account = {
     type: "mnemonic" as const,
-    seedphrase: seedPhrase,
+    seedphrase: mnemonic1,
     label: "Some Account",
     derivationPath: "any",
   };

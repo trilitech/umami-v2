@@ -2,7 +2,7 @@ import { mockImplicitAccount } from "../../../mocks/factories";
 import { fakeExtraArguments } from "../../../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../../../mocks/helpers";
 import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
-import { seedPhrase } from "../../../mocks/seedPhrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { ImplicitAccount, AccountType, MnemonicAccount } from "../../../types/Account";
 
 import store from "../store";
@@ -98,7 +98,7 @@ describe("Accounts reducer", () => {
 
   describe("restoreFromMnemonic thunk", () => {
     it("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
-      const fingerPrint = await getFingerPrint(seedPhrase);
+      const fingerPrint = await getFingerPrint(mnemonic1);
       const mockEntrypted = { mock: "encrypted" };
       const mockLabel = "myLabel";
       const restoredAccounts: ImplicitAccount[] = [
@@ -118,7 +118,7 @@ describe("Accounts reducer", () => {
       await store
         .dispatch(
           restoreFromMnemonic({
-            seedPhrase: seedPhrase,
+            seedPhrase: mnemonic1,
             password: "cool",
             label: mockLabel,
           })
@@ -126,7 +126,7 @@ describe("Accounts reducer", () => {
         .unwrap();
 
       expect(fakeExtraArguments.restoreRevealedMnemonicAccounts).toHaveBeenCalledWith(
-        seedPhrase,
+        mnemonic1,
         mockLabel,
         undefined
       );

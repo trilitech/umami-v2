@@ -1,4 +1,4 @@
-import { seedPhrase } from "../../../mocks/seedPhrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
@@ -25,7 +25,7 @@ jest.mock("@chakra-ui/react", () => {
 });
 
 beforeEach(() => {
-  const splitted = seedPhrase.split(" ").map((value, index) => {
+  const splitted = mnemonic1.split(" ").map((value, index) => {
     return { index, value };
   });
   selectRandomElementsMock.mockReturnValue(splitted.slice(0, 5));
@@ -72,7 +72,7 @@ describe("<RestoreSeedphrase />", () => {
     test("button is enabled when filled", async () => {
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      const splitted = seedPhrase.split(" ");
+      const splitted = mnemonic1.split(" ");
 
       const selectElement = screen.getByRole("combobox");
       expect(selectElement).toHaveValue("12");
@@ -95,7 +95,7 @@ describe("<RestoreSeedphrase />", () => {
         account: {
           type: "mnemonic",
           label: "Restored account",
-          seedphrase: seedPhrase,
+          seedphrase: mnemonic1,
         },
       });
     });

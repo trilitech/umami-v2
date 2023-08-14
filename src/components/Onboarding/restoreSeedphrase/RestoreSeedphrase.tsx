@@ -6,7 +6,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { WarningIcon } from "@chakra-ui/icons";
 import { Step, StepType } from "../useOnboardingModal";
 import { InMemorySigner } from "@taquito/signer";
-import { seedPhrase } from "../../../mocks/seedPhrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 
 const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => {
@@ -124,7 +124,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
               <Button
                 onClick={() => {
                   setMnemonicSize("24");
-                  pasteMnemonic(seedPhrase);
+                  pasteMnemonic(mnemonic1);
                 }}
                 bg="umami.blue"
                 w="100%"

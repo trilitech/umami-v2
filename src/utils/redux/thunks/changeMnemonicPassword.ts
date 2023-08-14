@@ -18,7 +18,7 @@ const changeMnemonicPassword = createAsyncThunk<
   "accounts/changeMnemonicPassword",
   async ({ currentPassword, newPassword }, { getState, extra }) => {
     if (currentPassword === newPassword) {
-      throw new Error("New password must be different than current password");
+      throw new Error("New password must be different from the current password");
     }
 
     const { items: accounts, seedPhrases } = getState().accounts;
@@ -29,8 +29,8 @@ const changeMnemonicPassword = createAsyncThunk<
 
     const newEncryptedMnemonics = await Promise.all(
       Object.entries(seedPhrases).map(async ([fingerprint, currentEncryptedMnemonic]) => {
-        if (!fingerprint || !currentEncryptedMnemonic) {
-          throw new Error("No fingerprint or encrypted mnemonic found");
+        if (!currentEncryptedMnemonic) {
+          throw new Error("No encrypted mnemonic found");
         }
         try {
           // Re-encrypt mnemonic with new password
