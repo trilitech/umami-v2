@@ -1,9 +1,17 @@
-import { Button, Center, FormControl, FormLabel, Heading, Input, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
-
-const MIN_LENGTH = 4;
+import { MIN_LENGTH } from "./EnterAndConfirmPassword";
 
 const EnterPassword = ({
   onSubmit: onSubmitPassword,
@@ -12,7 +20,11 @@ const EnterPassword = ({
   onSubmit: (s: string) => void;
   isLoading: boolean;
 }) => {
-  const { register, handleSubmit, formState } = useForm<{
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<{
     password: string;
   }>({
     mode: "onBlur",
@@ -21,11 +33,6 @@ const EnterPassword = ({
   const onSubmit = (p: { password: string }) => {
     onSubmitPassword(p.password);
   };
-
-  const { isDirty, isValid } = formState;
-
-  const isInvalid = isDirty && !isValid;
-  const isDisabled = !isDirty || isInvalid;
 
   return (
     <ModalContentWrapper
@@ -37,23 +44,26 @@ const EnterPassword = ({
         <Center>
           <VStack width={300}>
             <Heading>Enter Password to continue</Heading>
-            <FormControl isInvalid={isInvalid}>
+            <FormControl isInvalid={!!errors.password}>
               <FormLabel>Password</FormLabel>
               <Input
                 data-testid="password"
-                isDisabled={isLoading}
                 autoComplete="off"
                 type="password"
                 {...register("password", {
                   required: true,
-                  minLength: MIN_LENGTH,
+                  minLength: {
+                    value: MIN_LENGTH,
+                    message: `Password must be at least ${MIN_LENGTH} characters long`,
+                  },
                 })}
                 placeholder="Enter your password..."
               />
+              {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
             </FormControl>
 
             <Button
-              isDisabled={isDisabled || isLoading}
+              isDisabled={!isValid || isLoading}
               isLoading={isLoading}
               type="submit"
               colorScheme="gray"
