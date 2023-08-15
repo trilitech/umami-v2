@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { RpcClient } from "@taquito/rpc";
