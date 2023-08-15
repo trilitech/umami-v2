@@ -144,7 +144,7 @@ describe("<AccountList />", () => {
 
     const passwordInput = screen.getByLabelText(/password/i);
 
-    fireEvent.change(passwordInput, { target: { value: "myPass" } });
+    fireEvent.change(passwordInput, { target: { value: "myPassword" } });
 
     await waitFor(() => {
       const submitBtn = screen.getByRole("button", { name: /submit/i });

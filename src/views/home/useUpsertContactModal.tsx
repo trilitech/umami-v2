@@ -1,9 +1,9 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { Contact } from "../../types/Contact";
 import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
+import { useAppDispatch } from "../../utils/redux/hooks";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 
 type Options = {
@@ -14,7 +14,7 @@ type Options = {
 
 export const useUpsertContactModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const getAccount = useGetOwnedAccountSafe();
   const onSubmitContact = (newContact: Contact) => {
     if (getAccount(newContact.pkh)) {
