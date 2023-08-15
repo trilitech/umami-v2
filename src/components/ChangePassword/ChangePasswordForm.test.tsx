@@ -5,7 +5,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react";
 const fixture = () => {
   return (
     <Modal isOpen={true} onClose={() => {}}>
-      <ChangePasswordFrom onSubmitChangePassword={() => {}} isLoading={false} />
+      <ChangePasswordFrom />
     </Modal>
   );
 };
@@ -45,11 +45,11 @@ describe("ChangePassword Form", () => {
       });
     });
 
-    it("requires 8 charactor", async () => {
+    it("requires 8 characters", async () => {
       render(fixture());
-      const newPaswordInput = screen.getByTestId("new-password");
-      fireEvent.change(newPaswordInput, { target: { value: "myPass" } });
-      fireEvent.blur(newPaswordInput);
+      const newPasswordInput = screen.getByTestId("new-password");
+      fireEvent.change(newPasswordInput, { target: { value: "myPass" } });
+      fireEvent.blur(newPasswordInput);
       await waitFor(() => {
         expect(screen.getByTestId("new-password-error")).toHaveTextContent(
           "Your password must be at least 8 characters long"
@@ -76,15 +76,31 @@ describe("ChangePassword Form", () => {
 
     it("requires same password", async () => {
       render(fixture());
-      const newPaswordInput = screen.getByTestId("new-password");
-      const newPaswordConfirmationInput = screen.getByTestId("new-password-confirmation");
-      fireEvent.change(newPaswordInput, { target: { value: "myPassword" } });
-      fireEvent.change(newPaswordConfirmationInput, { target: { value: "myWrongPassword" } });
-      fireEvent.blur(newPaswordConfirmationInput);
+      const newPasswordInput = screen.getByTestId("new-password");
+      const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
+      fireEvent.change(newPasswordInput, { target: { value: "myPassword" } });
+      fireEvent.change(newPasswordConfirmationInput, { target: { value: "myWrongPassword" } });
+      fireEvent.blur(newPasswordConfirmationInput);
       await waitFor(() => {
         expect(screen.getByTestId("new-password-confirmation-error")).toHaveTextContent(
           "Your new passwords do no match"
         );
+      });
+    });
+  });
+
+  describe("Submit Button", () => {
+    it("Submit Button is enabled with valid form", async () => {
+      render(fixture());
+      const currentPasswordInput = screen.getByTestId("current-password");
+      const newPasswordInput = screen.getByTestId("new-password");
+      const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
+      fireEvent.change(currentPasswordInput, { target: { value: "myOldPassword" } });
+      fireEvent.change(newPasswordInput, { target: { value: "myNewPassword" } });
+      fireEvent.change(newPasswordConfirmationInput, { target: { value: "myNewPassword" } });
+      const submitBtn = screen.getByRole("button", { name: "Submit" });
+      await waitFor(() => {
+        expect(submitBtn).toBeEnabled();
       });
     });
   });

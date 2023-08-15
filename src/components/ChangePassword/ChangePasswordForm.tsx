@@ -11,9 +11,15 @@ import {
   ModalBody,
   ModalFooter,
   ModalContent,
+  useToast,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { useAppDispatch } from "../../utils/redux/hooks";
+import changeMnemonicPassword from "../../utils/redux/thunks/changeMnemonicPassword";
 import { MIN_LENGTH } from "../Onboarding/masterPassword/password/EnterAndConfirmPassword";
+import { DynamicModalContext } from "../DynamicModal";
+import { useContext } from "react";
 
 type ChangePasswordFormValues = {
   currentPassword: string;
@@ -21,12 +27,12 @@ type ChangePasswordFormValues = {
   newPasswordConfirmation: string;
 };
 
-export const ChangePasswordForm: React.FC<{
-  onSubmitChangePassword: (currentPassword: string, newPassword: string) => void;
-  isLoading: boolean;
-}> = ({ onSubmitChangePassword, isLoading }) => {
+export const ChangePasswordForm: React.FC = () => {
+  const { onClose } = useContext(DynamicModalContext);
   const form = useForm<ChangePasswordFormValues>({ mode: "onBlur" });
-
+  const toast = useToast();
+  const dispatch = useAppDispatch();
+  const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const {
     register,
     handleSubmit,
@@ -42,12 +48,17 @@ export const ChangePasswordForm: React.FC<{
     if (currentPassword === newPassword || newPassword !== newPasswordConfirmation) {
       return;
     }
-    onSubmitChangePassword(currentPassword, newPassword);
+
+    handleAsyncAction(async () => {
+      await dispatch(changeMnemonicPassword({ currentPassword, newPassword })).unwrap();
+      toast({ title: "Password updated", status: "success" });
+      onClose();
+    });
   };
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testid="change-password-modal">
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalCloseButton />
 
@@ -62,6 +73,7 @@ export const ChangePasswordForm: React.FC<{
               <Input
                 type="password"
                 autoComplete="off"
+                data-testid="current-password"
                 {...register("currentPassword", {
                   required: "Current password is required",
                   minLength: {
@@ -103,7 +115,7 @@ export const ChangePasswordForm: React.FC<{
             </FormControl>
 
             <FormControl isInvalid={!!errors.newPasswordConfirmation} mt={3}>
-              <FormLabel>New Password</FormLabel>
+              <FormLabel>Confirm Password</FormLabel>
               <Input
                 type="password"
                 autoComplete="off"
@@ -125,14 +137,10 @@ export const ChangePasswordForm: React.FC<{
           <ModalFooter>
             <Button
               marginY={3}
-              isDisabled={!isValid || isLoading}
+              isDisabled={!isValid}
               isLoading={isLoading}
-              type="submit"
-              title="Submit"
               w="100%"
-              size="lg"
-              h="48px"
-              bg="umami.blue"
+              variant="primary"
             >
               Submit
             </Button>

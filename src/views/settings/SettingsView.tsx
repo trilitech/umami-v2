@@ -1,11 +1,13 @@
 import { Box, Divider, Flex, Heading, Input, Switch, Text } from "@chakra-ui/react";
+import { useContext } from "react";
 import { BsFolder2Open } from "react-icons/bs";
 import { TfiReload } from "react-icons/tfi";
-import useOpenChangePasswordModal from "../../components/ChangePassword/useOpenChangePasswordModal";
+import ChangePasswordForm from "../../components/ChangePassword/ChangePasswordForm";
 import ClickableCard, {
   SettingsCard,
   SettingsCardWithDrawerIcon,
 } from "../../components/ClickableCard";
+import { DynamicModalContext } from "../../components/DynamicModal";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NetworkSelector from "../../components/NetworkSelector";
 import useOffboardingModal from "../../components/Offboarding/useOffboardingModal";
@@ -117,7 +119,7 @@ const BackupSection = () => {
 
 const AdvancedSection = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
-  const openChangePasswordModal = useOpenChangePasswordModal();
+  const { openWith } = useContext(DynamicModalContext);
 
   return (
     <SectionContainer title="Advanced Settings">
@@ -126,7 +128,7 @@ const AdvancedSection = () => {
       <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={onOpenOffboardingModal} />
       <SettingsCardWithDrawerIcon
         left="Change Password"
-        onClick={() => openChangePasswordModal()}
+        onClick={() => openWith(<ChangePasswordForm />)}
       />
       {OffboardingModal}
     </SectionContainer>
