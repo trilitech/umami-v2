@@ -1,5 +1,6 @@
 import { MenuItem, MenuList } from "@chakra-ui/react";
 import React from "react";
+import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { AccountSmallTileDisplay } from "./AccountSmallTileDisplay";
 
@@ -33,6 +34,12 @@ export const AccountListDisplay: React.FC<{
 };
 
 const renderAccount = (account: Account) => (
-  <AccountSmallTileDisplay pkh={account.address.pkh} label={account.label} />
+  <AccountSmallTileDisplay
+    _hover={{
+      background: colors.gray[600],
+    }}
+    pkh={account.address.pkh}
+    label={account.label}
+  />
 );
 export default AccountListDisplay;

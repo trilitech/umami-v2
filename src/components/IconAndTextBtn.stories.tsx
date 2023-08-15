@@ -1,24 +1,27 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { IconAndTextBtn } from "../components/IconAndTextBtn";
 import { MdArrowOutward } from "react-icons/md";
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-export default {
+const meta = {
   title: "Umami/IconAndTextBtn",
   component: IconAndTextBtn,
-} as ComponentMeta<typeof IconAndTextBtn>;
+} as Meta<typeof IconAndTextBtn>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof IconAndTextBtn> = args => <IconAndTextBtn {...args} />;
+export default meta;
 
-export const WithArrowIcon = Template.bind({});
-WithArrowIcon.args = {
-  icon: MdArrowOutward,
-  label: "TextGoesHere",
+type Story = StoryObj<typeof meta>;
+
+export const WithArrowIcon: Story = {
+  args: {
+    icon: MdArrowOutward,
+    label: "TextGoesHere",
+  },
 };
 
-export const TextFirst = Template.bind({});
-TextFirst.args = {
-  icon: MdArrowOutward,
-  label: "TextGoesHere",
-  textFirst: true,
+export const TextFirst: Story = {
+  args: {
+    icon: MdArrowOutward,
+    label: "TextGoesHere",
+    textFirst: true,
+  },
 };

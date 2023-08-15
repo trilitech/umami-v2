@@ -64,7 +64,7 @@ describe("<ActionButton/>", () => {
         sender={mockMultisigAccount(0)}
       />
     );
-    expect(screen.getByTestId("multisig-signer-approved-or-waiting")).toHaveTextContent("Approved");
+    expect(screen.getByTestId("multisig-signer-approved")).toHaveTextContent("Approved");
   });
 
   it("should show Awaiting approval for operation with signers not owned by the user account that hasn't approved", () => {
@@ -77,7 +77,7 @@ describe("<ActionButton/>", () => {
         sender={mockMultisigAccount(0)}
       />
     );
-    expect(screen.getByTestId("multisig-signer-approved-or-waiting")).toHaveTextContent(
+    expect(screen.getByTestId("multisig-signer-awaiting-approval")).toHaveTextContent(
       "Awaiting Approval"
     );
   });

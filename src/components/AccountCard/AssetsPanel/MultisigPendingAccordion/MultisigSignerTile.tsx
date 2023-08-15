@@ -1,15 +1,14 @@
-import { Box, Flex, Text, Heading } from "@chakra-ui/react";
 import React from "react";
-import colors from "../../../../style/colors";
-import { MultisigAccount } from "../../../../types/Account";
+import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
 import { ImplicitAddress } from "../../../../types/Address";
-import { formatPkh } from "../../../../utils/format";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
+import { useSelectedNetwork } from "../../../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
+import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
+import { estimateMultisigApproveOrExecute } from "../../../../utils/tezos";
 import { ParamsWithFee } from "../../../ApproveExecuteForm/types";
-import { Identicon } from "../../../Identicon";
-import MultisigActionButton from "./MultisigActionButton";
+import { MultisigSignerTileDisplay, MultisigSignerState } from "./MultisigSignerTileDisplay";
 
 const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;
@@ -17,39 +16,81 @@ const MultisigSignerTile: React.FC<{
   operation: MultisigOperation;
   sender: MultisigAccount;
   openSignModal: (params: ParamsWithFee) => void;
-}> = props => {
-  const signer = props.signerAddress;
+}> = ({ pendingApprovals, sender, operation, openSignModal, signerAddress }) => {
   const getContactName = useGetContactName();
   const getImplicitAccount = useGetImplicitAccountSafe();
-  const accountLabel = getImplicitAccount(signer.pkh)?.label;
-  const label = accountLabel || getContactName(signer.pkh);
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
+  const network = useSelectedNetwork();
+
+  const accountLabel = getImplicitAccount(signerAddress.pkh)?.label;
+  const label = accountLabel || getContactName(signerAddress.pkh);
+
+  const signerAccount = getImplicitAccount(signerAddress.pkh);
+
+  const operationIsExecutable = pendingApprovals === 0;
+
+  const onButtonClick = () =>
+    handleAsyncAction(async () => {
+      if (!signerAccount) {
+        throw new Error("Can't approve or execute with an account you don't own");
+      }
+
+      const actionType = operationIsExecutable ? "execute" : "approve";
+      const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
+        {
+          type: actionType,
+          contract: sender.address,
+          operationId: operation.id,
+        },
+        signerAccount,
+        network
+      );
+      openSignModal({
+        type: actionType,
+        operation: operation,
+        sender,
+        signer: signerAccount,
+        suggestedFeeMutez,
+      });
+    });
 
   return (
-    <Flex
-      mb={4}
-      p={4}
-      bg={colors.gray[700]}
-      h="78px"
-      borderRadius={8}
-      border={`1px solid ${colors.gray[800]}`}
-      alignItems="center"
-    >
-      <Identicon address={signer.pkh} />
-      <Flex flex={1} justifyContent="space-between" alignItems="center">
-        <Box m={4}>
-          {label && <Heading size="md">{label}</Heading>}
-          <Flex alignItems="center">
-            <Text size="sm" color="text.dark">
-              {formatPkh(signer.pkh)}
-            </Text>
-          </Flex>
-        </Box>
-        <Box>
-          <MultisigActionButton {...props} />
-        </Box>
-      </Flex>
-    </Flex>
+    <MultisigSignerTileDisplay
+      pkh={signerAddress.pkh}
+      label={label}
+      signerState={getMultisigSignerState({
+        approvals: operation.approvals,
+        signerAddress,
+        operationIsExecutable,
+        signerAccount,
+      })}
+      onClickApproveExecute={onButtonClick}
+      isLoading={isLoading}
+    />
   );
 };
 
+const getMultisigSignerState = ({
+  signerAccount,
+  operationIsExecutable,
+  approvals,
+  signerAddress: signer,
+}: {
+  signerAccount?: ImplicitAccount;
+  operationIsExecutable: boolean;
+  approvals: ImplicitAddress[];
+  signerAddress: ImplicitAddress;
+}): MultisigSignerState => {
+  const approvedBySigner = !!approvals.find(approver => approver.pkh === signer.pkh);
+
+  if (!signerAccount) {
+    return approvedBySigner ? "approved" : "awaitingApprovalByExternalSigner";
+  }
+
+  if (approvedBySigner && !operationIsExecutable) {
+    return "approved";
+  }
+
+  return operationIsExecutable ? "executable" : "approvable";
+};
 export default MultisigSignerTile;
