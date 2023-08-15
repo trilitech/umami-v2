@@ -3,11 +3,11 @@ import { createContext, ReactElement, useState } from "react";
 
 // this should be used in components as useContext(DynamicModalContext);
 export const DynamicModalContext = createContext<{
-  openWith: (content: ReactElement) => void;
+  openWith: (content: ReactElement) => Promise<void>;
   onClose: () => void;
   isOpen: boolean;
 }>({
-  openWith: _ => {},
+  openWith: _ => Promise.resolve(),
   onClose: () => {},
   isOpen: false,
 });
@@ -35,7 +35,13 @@ export const useDynamicModal = () => {
     onClose,
     openWith,
     content: (
-      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        closeOnOverlayClick={false}
+        autoFocus={false}
+        isCentered
+      >
         <ModalOverlay />
         {modalContent}
       </Modal>
