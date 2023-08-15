@@ -1,7 +1,7 @@
 import { Box, Divider, Flex, Heading, Input, Switch, Text } from "@chakra-ui/react";
 import { BsFolder2Open } from "react-icons/bs";
 import { TfiReload } from "react-icons/tfi";
-import useChangePasswordModal from "../../components/ChangePassword/useChangePasswordModal";
+import useOpenChangePasswordModal from "../../components/ChangePassword/useOpenChangePasswordModal";
 import ClickableCard, {
   SettingsCard,
   SettingsCardWithDrawerIcon,
@@ -117,16 +117,18 @@ const BackupSection = () => {
 
 const AdvancedSection = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
-  const { modalElement: ChangePasswordModal, onOpen: onOpenChangePasswordModal } =
-    useChangePasswordModal();
+  const openChangePasswordModal = useOpenChangePasswordModal();
+
   return (
     <SectionContainer title="Advanced Settings">
       <BeaconDrawerCard />
       <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
       <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={onOpenOffboardingModal} />
-      <SettingsCardWithDrawerIcon left="Change Password" onClick={onOpenChangePasswordModal} />
+      <SettingsCardWithDrawerIcon
+        left="Change Password"
+        onClick={() => openChangePasswordModal()}
+      />
       {OffboardingModal}
-      {ChangePasswordModal}
     </SectionContainer>
   );
 };

@@ -15,16 +15,16 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { MIN_LENGTH } from "../Onboarding/masterPassword/password/EnterAndConfirmPassword";
 
-export const ChangePasswordFrom: React.FC<{
+type ChangePasswordFormValues = {
+  currentPassword: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
+};
+
+export const ChangePasswordForm: React.FC<{
   onSubmitChangePassword: (currentPassword: string, newPassword: string) => void;
   isLoading: boolean;
 }> = ({ onSubmitChangePassword, isLoading }) => {
-  type ChangePasswordFormValues = {
-    currentPassword: string;
-    newPassword: string;
-    newPasswordConfirmation: string;
-  };
-
   const form = useForm<ChangePasswordFormValues>({ mode: "onBlur" });
 
   const {
@@ -143,4 +143,4 @@ export const ChangePasswordFrom: React.FC<{
   );
 };
 
-export default ChangePasswordFrom;
+export default ChangePasswordForm;
