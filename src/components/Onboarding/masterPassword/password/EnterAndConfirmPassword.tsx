@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
 
-export const MIN_LENGTH = 4;
+export const MIN_LENGTH = 8;
 
 export const EnterAndConfirmPassword: React.FC<{
   onSubmit: (password: string) => void;
@@ -52,9 +52,10 @@ export const EnterAndConfirmPassword: React.FC<{
                 data-testid="password"
                 {...register("password", {
                   required: true,
-                  validate: (val: string) =>
-                    val.length >= MIN_LENGTH ||
-                    `Your password must be at least ${MIN_LENGTH} characters long`,
+                  minLength: {
+                    value: MIN_LENGTH,
+                    message: `Your password must be at least ${MIN_LENGTH} characters long`,
+                  },
                 })}
                 placeholder="Enter master password..."
               />
