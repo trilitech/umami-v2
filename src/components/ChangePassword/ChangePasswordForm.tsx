@@ -10,6 +10,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  ModalContent,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { MIN_LENGTH } from "../Onboarding/masterPassword/password/EnterAndConfirmPassword";
@@ -46,94 +47,98 @@ export const ChangePasswordFrom: React.FC<{
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalCloseButton />
+      <ModalContent>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ModalCloseButton />
 
-        <ModalHeader mt={5} textAlign="center">
-          <Box>
-            <Text>Change Password</Text>
-          </Box>
-        </ModalHeader>
-        <ModalBody>
-          <FormControl isInvalid={!!errors.currentPassword} mt={3}>
-            <FormLabel>Current Password</FormLabel>
-            <Input
-              type="password"
-              autoComplete="off"
-              {...register("currentPassword", {
-                required: "Current password is required",
-                minLength: {
-                  value: MIN_LENGTH,
-                  message: `Your password must be at least ${MIN_LENGTH} characters long`,
-                },
-              })}
-              placeholder="Enter current password..."
-            />
-            {errors.currentPassword && (
-              <FormErrorMessage data-testid="current-password-error">
-                {errors.currentPassword.message}
-              </FormErrorMessage>
-            )}
-          </FormControl>
+          <ModalHeader mt={5} textAlign="center">
+            <Box>
+              <Text>Change Password</Text>
+            </Box>
+          </ModalHeader>
+          <ModalBody>
+            <FormControl isInvalid={!!errors.currentPassword} mt={3}>
+              <FormLabel>Current Password</FormLabel>
+              <Input
+                type="password"
+                autoComplete="off"
+                {...register("currentPassword", {
+                  required: "Current password is required",
+                  minLength: {
+                    value: MIN_LENGTH,
+                    message: `Your password must be at least ${MIN_LENGTH} characters long`,
+                  },
+                })}
+                placeholder="Enter current password..."
+              />
+              {errors.currentPassword && (
+                <FormErrorMessage data-testid="current-password-error">
+                  {errors.currentPassword.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
 
-          <FormControl isInvalid={!!errors.newPassword} mt={3}>
-            <FormLabel>New Password</FormLabel>
-            <Input
-              type="password"
-              autoComplete="off"
-              data-testid="new-password"
-              {...register("newPassword", {
-                required: "New password is required",
-                minLength: {
-                  value: MIN_LENGTH,
-                  message: `Your password must be at least ${MIN_LENGTH} characters long`,
-                },
-                validate: (val: string) =>
-                  getValues("currentPassword") !== val || "Cannot be the same as old password",
-              })}
-              placeholder="Enter your new password..."
-            />
-            {errors.newPassword && (
-              <FormErrorMessage data-testid="new-password-error">
-                {errors.newPassword.message}
-              </FormErrorMessage>
-            )}
-          </FormControl>
+            <FormControl isInvalid={!!errors.newPassword} mt={3}>
+              <FormLabel>New Password</FormLabel>
+              <Input
+                type="password"
+                autoComplete="off"
+                data-testid="new-password"
+                {...register("newPassword", {
+                  required: "New password is required",
+                  minLength: {
+                    value: MIN_LENGTH,
+                    message: `Your password must be at least ${MIN_LENGTH} characters long`,
+                  },
+                  validate: (val: string) =>
+                    getValues("currentPassword") !== val || "Cannot be the same as old password",
+                })}
+                placeholder="Enter your new password..."
+              />
+              {errors.newPassword && (
+                <FormErrorMessage data-testid="new-password-error">
+                  {errors.newPassword.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
 
-          <FormControl isInvalid={!!errors.newPasswordConfirmation} mt={3}>
-            <FormLabel>New Password</FormLabel>
-            <Input
-              type="password"
-              autoComplete="off"
-              data-testid="newPasswordConfirmation"
-              {...register("newPasswordConfirmation", {
-                required: "Confirmation is required",
-                validate: (val: string) =>
-                  getValues("newPassword") === val || "Your new passwords do no match",
-              })}
-              placeholder="Confirm your new password..."
-            />
-            {errors.newPasswordConfirmation && (
-              <FormErrorMessage>{errors.newPasswordConfirmation.message}</FormErrorMessage>
-            )}
-          </FormControl>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            marginY={3}
-            isDisabled={!isValid || isLoading}
-            isLoading={isLoading}
-            type="submit"
-            title="Submit"
-            w="100%"
-            size="lg"
-            h="48px"
-            bg="umami.blue"
-          >
-            Submit
-          </Button>
-        </ModalFooter>
-      </form>
+            <FormControl isInvalid={!!errors.newPasswordConfirmation} mt={3}>
+              <FormLabel>New Password</FormLabel>
+              <Input
+                type="password"
+                autoComplete="off"
+                data-testid="new-password-confirmation"
+                {...register("newPasswordConfirmation", {
+                  required: "Confirmation is required",
+                  validate: (val: string) =>
+                    getValues("newPassword") === val || "Your new passwords do no match",
+                })}
+                placeholder="Confirm your new password..."
+              />
+              {errors.newPasswordConfirmation && (
+                <FormErrorMessage data-testid="new-password-confirmation-error">
+                  {errors.newPasswordConfirmation.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              marginY={3}
+              isDisabled={!isValid || isLoading}
+              isLoading={isLoading}
+              type="submit"
+              title="Submit"
+              w="100%"
+              size="lg"
+              h="48px"
+              bg="umami.blue"
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </form>
+      </ModalContent>
     </FormProvider>
   );
 };
