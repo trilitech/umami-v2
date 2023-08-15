@@ -16,19 +16,14 @@ const MultisigSignerTile: React.FC<{
   operation: MultisigOperation;
   sender: MultisigAccount;
   openSignModal: (params: ParamsWithFee) => void;
-}> = props => {
-  const signer = props.signerAddress;
+}> = ({ pendingApprovals, sender, operation, openSignModal, signerAddress }) => {
   const getContactName = useGetContactName();
-
   const getImplicitAccount = useGetImplicitAccountSafe();
-  const accountLabel = getImplicitAccount(signer.pkh)?.label;
-  const label = accountLabel || getContactName(signer.pkh);
-
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-
-  const { pendingApprovals, sender, operation, openSignModal, signerAddress } = props;
-
   const network = useSelectedNetwork();
+
+  const accountLabel = getImplicitAccount(signerAddress.pkh)?.label;
+  const label = accountLabel || getContactName(signerAddress.pkh);
 
   const signerAccount = getImplicitAccount(signerAddress.pkh);
 
@@ -44,8 +39,8 @@ const MultisigSignerTile: React.FC<{
       const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
         {
           type: actionType,
-          contract: props.sender.address,
-          operationId: props.operation.id,
+          contract: sender.address,
+          operationId: operation.id,
         },
         signerAccount,
         network
@@ -61,17 +56,15 @@ const MultisigSignerTile: React.FC<{
 
   return (
     <MultisigSignerTileDisplay
-      pkh={signer.pkh}
+      pkh={signerAddress.pkh}
       label={label}
       signerState={getMultisigSignerState({
         approvals: operation.approvals,
-        signerAddress: signerAddress,
+        signerAddress,
         operationIsExecutable,
-        signerAccount: signerAccount,
+        signerAccount,
       })}
-      onClickApproveExecute={() => {
-        onButtonClick();
-      }}
+      onClickApproveExecute={onButtonClick}
       isLoading={isLoading}
     />
   );
