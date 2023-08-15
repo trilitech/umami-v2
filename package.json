@@ -158,20 +158,22 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 70,
-        "functions": 69,
-        "lines": 73,
-        "statements": 73
+        "branches": 72,
+        "functions": 72,
+        "lines": 77,
+        "statements": 77
       }
     },
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
+      "src/**/*.{ts,tsx}"
     ],
     "coveragePathIgnorePatterns": [
       "node_modules",
       "src/mocks/*",
       "src/utils/useAssetsPolling.ts",
-      "src/integration/*"
+      "src/integration/*",
+      "src/stories/*",
+      "src/.*\\.stories\\.tsx?"
     ]
   },
   "build": {
