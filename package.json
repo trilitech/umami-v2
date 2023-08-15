@@ -71,7 +71,6 @@
     "redux-persist": "^6.0.0",
     "sort-by": "^1.2.0",
     "stream-browserify": "^3.0.0",
-    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "webpack-remove-code-blocks": "^0.1.5",
     "zod": "^3.21.4"
@@ -132,7 +131,7 @@
     "electron-builder": "^23.6.0",
     "electron-notarize": "^1.2.2",
     "electronmon": "^2.0.2",
-    "eslint": "^8.42.0",
+    "eslint": "^8.47.0",
     "eslint-plugin-storybook": "^0.6.13",
     "https-browserify": "^1.0.0",
     "jest-fail-on-console": "^3.1.1",
@@ -145,6 +144,7 @@
     "redux-mock-store": "^1.5.4",
     "storybook": "^7.2.2",
     "stream-http": "^3.2.0",
+    "typescript": "5.0.4",
     "wait-on": "^7.0.1",
     "webpack": "^5.75.0"
   },
