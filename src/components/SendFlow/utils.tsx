@@ -36,12 +36,12 @@ export type SignPageProps = {
 // contains the logic for both submit buttons: submit single operation and add to batch
 // should be used on the Send page
 // TODO: test this
-export const useFormHelpers = <FormProps, FormValues extends { sender: RawPkh }>(
+export const useFormHelpers = <FormValues extends { sender: RawPkh }>(
   // the form might have some default values and in order to instantiate it again
   // with the same values when to go back from the sign page we need to pass them here
-  defaultFormProps: FormProps,
+  defaultFormProps: FormProps<FormValues>,
   // current form component
-  FormComponent: React.FC<FormProps>,
+  FormComponent: React.FC<FormProps<FormValues>>,
   // the sign page the form should navigate to on single submit
   SignPageComponent: React.FC<SignPageProps>,
   buildOperation: (formValues: FormValues) => Operation
