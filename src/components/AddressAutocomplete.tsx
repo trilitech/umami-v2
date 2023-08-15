@@ -1,11 +1,24 @@
-import { Box, Divider, FormLabel, Input, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  FormLabel,
+  Input,
+  ListItem,
+  StyleProps,
+  Text,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { get } from "lodash";
 import { useId, useState } from "react";
-import { FieldValues, Path, useFormContext } from "react-hook-form";
-import colors from "../style/colors";
+import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
+import { Account } from "../types/Account";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
-import { useAllAccounts, useImplicitAccounts } from "../utils/hooks/accountHooks";
+import {
+  useAllAccounts,
+  useGetOwnedSignersForAccount,
+  useImplicitAccounts,
+} from "../utils/hooks/accountHooks";
 import { useBakerList } from "../utils/hooks/assetsHooks";
 import { useContacts } from "../utils/hooks/contactsHooks";
 import { Identicon } from "./Identicon";
@@ -17,11 +30,17 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   inputName: U;
   allowUnknown: boolean;
   label: string;
+  // do not set the actual input value to an empty string when the user selects an unknown address or in the mid of typing
+  // this is useful when the input is used as a select box
+  // it is assumed that there is at least one valid suggestion present and one of them is selected
+  // TODO: make a separate selector component for that
+  keepValid?: boolean;
   onUpdate?: (value: string) => void;
-  validate?: (value: string) => string | undefined;
+  validate?: RegisterOptions<T, U>["validate"];
+  style?: StyleProps;
 };
 
-const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
+export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
   if (inputValue === "") {
     return contacts;
   }
@@ -65,9 +84,6 @@ const Suggestions = ({
         <Box key={contact.pkh}>
           <ListItem
             display="flex"
-            _hover={{
-              background: colors.gray[600],
-            }}
             alignItems="center"
             pl={4}
             pr={4}
@@ -100,11 +116,14 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   onUpdate,
   validate,
   label,
+  keepValid,
+  style,
 }: BaseProps<T, U> & { contacts: Contact[] }) => {
   const {
     register,
     setValue,
     formState: { defaultValues },
+    getValues,
   } = useFormContext<T>();
   // Cannot avoid this cast because of how types are arranged in UseFormReturn
   const setRealValue = setValue as (
@@ -138,9 +157,12 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       newRealValue = contact.pkh;
     } else if (allowUnknown && isAddressValid(newValue)) {
       newRealValue = newValue;
+    } else if (keepValid) {
+      return;
     } else {
       newRealValue = "";
     }
+
     setRealValue(inputName, newRealValue, { shouldValidate: true });
     if (onUpdate) {
       onUpdate(newRealValue);
@@ -152,6 +174,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       <FormLabel htmlFor={inputId}>{label}</FormLabel>
 
       <Input
+        {...style}
         id={inputId}
         variant="filled"
         isDisabled={isDisabled}
@@ -163,7 +186,12 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         onBlur={e => {
           e.preventDefault();
           setHideSuggestions(true);
-          handleChange(e.target.value);
+          if (keepValid && getValues(inputName) !== e.target.value) {
+            // if the user types something invalid and then blurs, we want to keep the last valid value
+            handleChange(getValues(inputName));
+          } else {
+            handleChange(e.target.value);
+          }
         }}
         onChange={e => {
           handleChange(e.target.value);
@@ -228,4 +256,23 @@ export const BakersAutocomplete = <T extends FieldValues, U extends Path<T>>(
   }));
 
   return <AddressAutocomplete {...props} contacts={bakers} />;
+};
+
+export const AvailableSignersAutocomplete = <T extends FieldValues, U extends Path<T>>(
+  props: Omit<BaseProps<T, U>, "allowUnknown"> & { account: Account }
+) => {
+  const getSigners = useGetOwnedSignersForAccount();
+  const signers = getSigners(props.account).map(signer => ({
+    name: signer.label,
+    pkh: signer.address.pkh,
+  }));
+
+  return (
+    <AddressAutocomplete
+      contacts={signers}
+      isDisabled={signers.length === 1}
+      allowUnknown={false}
+      {...props}
+    />
+  );
 };

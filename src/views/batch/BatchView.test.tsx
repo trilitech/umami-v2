@@ -18,17 +18,6 @@ import BatchView from "./BatchView";
 // These tests might take long in the CI
 jest.setTimeout(10000);
 
-jest.mock("@chakra-ui/react", () => {
-  return {
-    ...jest.requireActual("@chakra-ui/react"),
-    // Mock taost since it has an erratic behavior in RTL
-    // https://github.com/chakra-ui/chakra-ui/issues/2969
-    //
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    useToast: require("../../../src/mocks/toast").useToast,
-  };
-});
-
 jest.mock("../../utils/hooks/accountUtils");
 
 const useGetSecretKeyMock = useGetSecretKey as jest.Mock;
@@ -67,7 +56,11 @@ const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh
 const addItemsToBatchViaUI = async () => {
   const sendButton = screen.getByText(/send/i);
   fireEvent.click(sendButton);
+  fireEvent.click(sendButton);
 
+  await waitFor(() => {
+    expect(screen.getByLabelText(/amount/i)).toBeInTheDocument();
+  });
   await addToBatchViaUI(33, mockImplicitAccount(1).label, mockImplicitAddress(9).pkh);
   await addToBatchViaUI(55, mockImplicitAccount(1).label, mockImplicitAddress(4).pkh);
   await addToBatchViaUI(9, mockImplicitAccount(1).label, mockImplicitAddress(2).pkh);

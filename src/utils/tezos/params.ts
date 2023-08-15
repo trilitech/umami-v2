@@ -26,6 +26,12 @@ export const operationsToBatchParams = (operations: Operation[]): ParamsWithKind
           kind: OpKind.TRANSACTION,
           ...makeTokenTransferParams(operation),
         };
+      case "contract_origination": {
+        return {
+          kind: OpKind.ORIGINATION,
+          ...operation,
+        };
+      }
     }
   });
 

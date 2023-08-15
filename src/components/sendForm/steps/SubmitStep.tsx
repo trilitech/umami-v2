@@ -13,7 +13,6 @@ import {
 import { TezosToolkit } from "@taquito/taquito";
 import BigNumber from "bignumber.js";
 import { Operation } from "../../../types/Operation";
-import { TezosNetwork } from "../../../types/TezosNetwork";
 import { useGetToken } from "../../../utils/hooks/tokensHooks";
 import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
@@ -59,11 +58,10 @@ const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
 };
 
 export const SubmitStep: React.FC<{
-  network: TezosNetwork;
   recap: EstimatedOperation;
   isBatch: boolean;
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
-}> = ({ recap: { fee, operations }, network, isBatch, onSubmit }) => {
+}> = ({ recap: { fee, operations }, isBatch, onSubmit }) => {
   const feeNum = new BigNumber(fee);
 
   const transfer = operations.content;
@@ -95,7 +93,7 @@ export const SubmitStep: React.FC<{
           <Total mutez={total.toString()} />
         </ModalBody>
         <ModalFooter justifyContent="center">
-          <SignButton network={network} onSubmit={onSubmit} signer={operations.signer} />
+          <SignButton onSubmit={onSubmit} signer={operations.signer} />
         </ModalFooter>
       </form>
     </ModalContent>

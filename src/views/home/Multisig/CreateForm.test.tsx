@@ -5,21 +5,25 @@ import {
   mockImplicitAccount,
   mockImplicitAddress,
 } from "../../../mocks/factories";
-import { CreateForm } from "./CreateForm";
-import { ReviewStep } from "./useCreateMultisigModal";
+import { CreateForm, MultisigFields } from "./CreateForm";
 import store from "../../../utils/redux/store";
 import { multisigs } from "../../../mocks/multisig";
 import { render } from "../../../mocks/testUtils";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
+import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
+import { makeFormOperations } from "../../../components/sendForm/types";
+import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
+import { Estimate } from "@taquito/taquito";
+import BigNumber from "bignumber.js";
+import { DynamicModalContext } from "../../../components/DynamicModal";
+import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
+import SignPage from "../../../components/SendFlow/SignPage";
 
-const fixture = ({ goToStep = _ => {} }: { goToStep?: (step: ReviewStep) => void }) => {
+const fixture = (formValues?: MultisigFields) => {
   return (
-    <Modal isOpen onClose={() => {}}>
-      <CreateForm
-        goToStep={goToStep}
-        currentStep={{ type: "initial", defaultOwner: mockImplicitAccount(0) }}
-      />
+    <Modal isOpen={true} onClose={() => {}}>
+      <CreateForm form={formValues} />
     </Modal>
   );
 };
@@ -31,12 +35,12 @@ beforeEach(() => {
 describe("CreateForm", () => {
   describe("name", () => {
     it("is empty by default", () => {
-      render(fixture({}));
+      render(fixture());
       expect(screen.getByLabelText("Name the Contract")).toHaveValue("");
     });
 
     it("is required", async () => {
-      render(fixture({}));
+      render(fixture());
 
       fireEvent.blur(screen.getByLabelText("Name the Contract"));
       await waitFor(() => {
@@ -46,14 +50,8 @@ describe("CreateForm", () => {
   });
 
   describe("owner", () => {
-    it("displays the default owner address", () => {
-      render(fixture({}));
-
-      expect(screen.getByLabelText("Select Owner")).toHaveValue(mockImplicitAccount(0).label);
-    });
-
     it("doesn't allow custom addresses", async () => {
-      render(fixture({}));
+      render(fixture());
       const ownerInput = screen.getByLabelText("Select Owner");
       fireEvent.change(ownerInput, { target: { value: mockImplicitAccount(1).address.pkh } });
       await waitFor(() => {
@@ -63,7 +61,7 @@ describe("CreateForm", () => {
 
     it("doesn't allow non-implicit addresses", async () => {
       store.dispatch(multisigActions.setMultisigs(multisigs));
-      render(fixture({}));
+      render(fixture());
       const ownerInput = screen.getByLabelText("Select Owner");
       fireEvent.change(ownerInput, { target: { value: multisigs[0].address.pkh } });
       await waitFor(() => {
@@ -75,7 +73,7 @@ describe("CreateForm", () => {
   describe("signers", () => {
     describe("add button", () => {
       it("adds a new signer field", async () => {
-        render(fixture({}));
+        render(fixture());
         const addSignerButton = screen.getByRole("button", { name: "+ Add Signer" });
 
         fireEvent.click(addSignerButton);
@@ -92,12 +90,12 @@ describe("CreateForm", () => {
 
     describe("remove button", () => {
       it("is hidden when there is only one signer", () => {
-        render(fixture({}));
+        render(fixture());
         expect(screen.queryByTestId(/remove-signer-/)).not.toBeInTheDocument();
       });
 
       it("appears when you have 2+ signers", async () => {
-        render(fixture({}));
+        render(fixture());
         const addSignerButton = screen.getByRole("button", { name: "+ Add Signer" });
 
         fireEvent.click(addSignerButton);
@@ -107,7 +105,7 @@ describe("CreateForm", () => {
       });
 
       it("removes the correct signer", async () => {
-        render(fixture({}));
+        render(fixture());
         const addSignerButton = screen.getByRole("button", { name: "+ Add Signer" });
 
         fireEvent.click(addSignerButton);
@@ -138,7 +136,7 @@ describe("CreateForm", () => {
     });
 
     it("doesn't allow non-tz addresses", async () => {
-      render(fixture({}));
+      render(fixture());
       fireEvent.change(screen.getByLabelText("Select 1 signer"), {
         target: { value: mockContractAddress(0).pkh },
       });
@@ -150,7 +148,7 @@ describe("CreateForm", () => {
     });
 
     it("doesn't allow duplications", async () => {
-      render(fixture({}));
+      render(fixture());
       const addSignerButton = screen.getByRole("button", { name: "+ Add Signer" });
 
       fireEvent.click(addSignerButton);
@@ -170,7 +168,7 @@ describe("CreateForm", () => {
 
   describe("threshold", () => {
     it("doesn't allow values < 1", async () => {
-      render(fixture({}));
+      render(fixture());
       fireEvent.change(screen.getByTestId("threshold-input"), { target: { value: "0" } });
       fireEvent.blur(screen.getByTestId("threshold-input"));
       await waitFor(() => {
@@ -181,7 +179,7 @@ describe("CreateForm", () => {
     });
 
     it("doesn't allow values above the number of signers", async () => {
-      render(fixture({}));
+      render(fixture());
       fireEvent.change(screen.getByTestId("threshold-input"), { target: { value: "2" } });
       fireEvent.blur(screen.getByTestId("threshold-input"));
       await waitFor(() => {
@@ -202,7 +200,7 @@ describe("CreateForm", () => {
     });
 
     it("shows the correct max threshold", async () => {
-      render(fixture({}));
+      render(fixture());
       expect(screen.getByTestId("max-signers")).toHaveTextContent("out of 1");
 
       const addSignerButton = screen.getByRole("button", { name: "+ Add Signer" });
@@ -213,9 +211,35 @@ describe("CreateForm", () => {
     });
   });
 
+  describe("prefilled form", () => {
+    it("can be rendered with preselected values", async () => {
+      render(
+        fixture({
+          name: "Test account",
+          sender: mockImplicitAccount(0).address.pkh,
+          signers: [
+            { val: mockImplicitAccount(0).address.pkh },
+            { val: mockImplicitAccount(1).address.pkh },
+          ],
+          threshold: 1,
+        })
+      );
+      await waitFor(() => {
+        expect(screen.getByText("Review")).toBeEnabled();
+      });
+      expect(screen.getByLabelText("Select Owner")).toHaveValue(mockImplicitAccount(0).label);
+      expect(screen.getByLabelText("Select 1 signer")).toHaveValue(mockImplicitAccount(0).label);
+      expect(screen.getByLabelText("2 signer")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      expect(screen.getByTestId("threshold-input")).toHaveValue(1);
+    });
+  });
+
   test("submit", async () => {
-    const mockGoToStep = jest.fn((step: ReviewStep) => {});
-    render(fixture({ goToStep: mockGoToStep }));
+    render(
+      <DynamicModalContext.Provider value={dynamicModalContextMock}>
+        {fixture()}
+      </DynamicModalContext.Provider>
+    );
 
     fireEvent.change(screen.getByLabelText("Name the Contract"), {
       target: { value: "some name" },
@@ -233,16 +257,28 @@ describe("CreateForm", () => {
     });
     fireEvent.click(submitButton);
 
+    const operations = makeFormOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+      {
+        type: "contract_origination",
+        sender: mockImplicitAccount(0).address,
+        code: contract,
+        storage: makeStorageJSON(
+          mockImplicitAccount(0).address.pkh,
+          [mockImplicitAddress(1).pkh],
+          "1"
+        ),
+      },
+    ]);
+    fakeTezosUtils.estimateBatch.mockResolvedValue([{ suggestedFeeMutez: 100 } as Estimate]);
     await waitFor(() => {
-      expect(mockGoToStep).toHaveBeenCalledWith({
-        type: "review",
-        data: {
-          name: "some name",
-          owner: mockImplicitAccount(0).address.pkh,
-          signers: [{ val: mockImplicitAddress(1).pkh }],
-          threshold: 1,
-        },
-      });
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+        <SignPage
+          mode="single"
+          goBack={expect.any(Function)}
+          operations={operations}
+          fee={new BigNumber(100)}
+        />
+      );
     });
   });
 });

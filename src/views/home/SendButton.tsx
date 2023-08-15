@@ -1,28 +1,15 @@
 import { Button } from "@chakra-ui/react";
-import { useFirstAccount } from "../../utils/hooks/accountHooks";
-import { useSendFormModal } from "./useSendFormModal";
+import { useContext } from "react";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import SendTezForm from "../../components/SendFlow/Tez/Form";
 
 const SendButton = () => {
-  const { modalElement, onOpen } = useSendFormModal();
-  const account = useFirstAccount();
+  const { openWith } = useContext(DynamicModalContext);
 
   return (
-    <>
-      <Button
-        ml={4}
-        bg="umami.blue"
-        onClick={() =>
-          onOpen({
-            sender: account.address.pkh,
-            mode: { type: "tez" },
-          })
-        }
-      >
-        Send
-      </Button>
-
-      {modalElement}
-    </>
+    <Button ml={4} variant="primary" onClick={() => openWith(<SendTezForm />)}>
+      Send
+    </Button>
   );
 };
 

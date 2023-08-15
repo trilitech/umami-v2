@@ -1,37 +1,70 @@
-import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  useToast,
+} from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { useForm } from "react-hook-form";
-import { GoogleAuth } from "../../../GoogleAuth";
+import { GoogleAuthProps, useGetGoogleCredentials } from "../../../GoogleAuth";
 import {
   ImplicitAccount,
   AccountType,
   MnemonicAccount,
   LedgerAccount,
 } from "../../../types/Account";
-import { TezosNetwork } from "../../../types/TezosNetwork";
 import { useGetSecretKey } from "../../../utils/hooks/accountUtils";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { makeToolkit } from "../../../utils/tezos";
+
+export const SignWithGoogleButton: React.FC<
+  PropsWithChildren<{
+    isDisabled?: boolean;
+    onSuccessfulAuth: GoogleAuthProps["onSuccessfulAuth"];
+  }>
+> = ({ isDisabled, onSuccessfulAuth, children }) => {
+  const { isLoading, getCredentials } = useGetGoogleCredentials();
+
+  return (
+    <Button
+      variant="primary"
+      onClick={() => getCredentials(onSuccessfulAuth)}
+      width="100%"
+      isDisabled={isDisabled}
+      isLoading={isLoading}
+    >
+      {children}
+    </Button>
+  );
+};
 
 const SignButton: React.FC<{
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
   signer: ImplicitAccount;
-  network: TezosNetwork;
-}> = ({ signer, network, onSubmit }) => {
+  isLoading?: boolean;
+  isDisabled?: boolean;
+  text?: string; // TODO: after FillStep migration change to the header value from SignPage
+}> = ({ signer, onSubmit, isLoading: externalIsLoading, isDisabled, text }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<{ password: string }>({ mode: "onBlur" });
-
+  const network = useSelectedNetwork();
   const getSecretKey = useGetSecretKey();
-  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
+  const toast = useToast();
+  const { isLoading: internalIsLoading, handleAsyncAction } = useAsyncActionHandler();
+  const isLoading = internalIsLoading || externalIsLoading;
 
   const onMnemonicSign = async ({ password }: { password: string }) =>
     handleAsyncAction(async () => {
       const secretKey = await getSecretKey(signer as MnemonicAccount, password);
-      onSubmit(await makeToolkit({ type: "mnemonic", secretKey, network }));
+      return onSubmit(await makeToolkit({ type: "mnemonic", secretKey, network }));
     });
 
   const onSocialSign = async (secretKey: string) =>
@@ -40,15 +73,22 @@ const SignButton: React.FC<{
     );
 
   const onLedgerSign = async () =>
-    handleAsyncAction(async () =>
-      onSubmit(
+    handleAsyncAction(async () => {
+      toast({
+        title: "Request sent to Ledger",
+        description: "Open the Tezos app on your Ledger and approve the operation",
+        status: "info",
+        duration: 60000,
+        isClosable: true,
+      });
+      return onSubmit(
         await makeToolkit({
           type: "ledger",
           account: signer as LedgerAccount,
           network,
         })
-      )
-    );
+      );
+    });
 
   return (
     <Box width="100%">
@@ -70,20 +110,31 @@ const SignButton: React.FC<{
           </FormControl>
           <Button
             onClick={handleSubmit(onMnemonicSign)}
-            bg="umami.blue"
+            variant="primary"
             width="100%"
             mt={2}
             isLoading={isLoading}
+            isDisabled={isDisabled}
             type="submit"
           >
-            Submit Transaction
+            {text || "Submit Transaction"}
           </Button>
         </>
       )}
-      {signer.type === AccountType.SOCIAL && <GoogleAuth onSuccessfulAuth={onSocialSign} />}
+      {signer.type === AccountType.SOCIAL && (
+        <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={isDisabled}>
+          {text || "Sign with Google"}
+        </SignWithGoogleButton>
+      )}
       {signer.type === AccountType.LEDGER && (
-        <Button onClick={onLedgerSign} bg="umami.blue" width="100%" isLoading={isLoading}>
-          Sign with Ledger
+        <Button
+          onClick={onLedgerSign}
+          variant="primary"
+          width="100%"
+          isLoading={isLoading}
+          isDisabled={isDisabled}
+        >
+          {text || "Sign with Ledger"}
         </Button>
       )}
     </Box>

@@ -23,6 +23,7 @@ import { resetBeacon, useBeaconInit } from "./utils/beacon/beacon";
 import TokensView from "./views/tokens/TokensView";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
+import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -40,22 +41,28 @@ const loggedOutRouter = createHashRouter([
 
 const MemoizedRouter = React.memo(() => {
   const beaconNotificationModal = useBeaconInit();
+  const dynamicModal = useDynamicModal();
+
   return (
     <HashRouter>
-      <AnnouncementBanner />
-      <Routes>
-        <Route path="/home" element={withSideMenu(<HomeView />)} />
-        <Route path="/nfts" element={withSideMenu(<NFTsView />)} />
-        <Route path="/nfts/:ownerPkh/:nftId" element={withSideMenu(<NFTsView />)} />
-        <Route path="/operations" element={withSideMenu(<OperationsView />)} />
-        <Route path="/delegations" element={withSideMenu(<DelegationsView />)} />
-        <Route path="/tokens" element={withSideMenu(<TokensView />)} />
-        <Route path="/address-book" element={withSideMenu(<AddressBookView />)} />
-        <Route path="/settings" element={withSideMenu(<SettingsView />)} />
-        <Route path="/help" element={withSideMenu(<HelpView />)} />
-        <Route path="/batch" element={withSideMenu(<BatchView />)} />
-        <Route path="/*" element={<Navigate to="/home" />} />
-      </Routes>
+      <DynamicModalContext.Provider value={dynamicModal}>
+        <AnnouncementBanner />
+        <Routes>
+          <Route path="/home" element={withSideMenu(<HomeView />)} />
+          <Route path="/nfts" element={withSideMenu(<NFTsView />)} />
+          <Route path="/nfts/:ownerPkh/:nftId" element={withSideMenu(<NFTsView />)} />
+          <Route path="/operations" element={withSideMenu(<OperationsView />)} />
+          <Route path="/delegations" element={withSideMenu(<DelegationsView />)} />
+          <Route path="/tokens" element={withSideMenu(<TokensView />)} />
+          <Route path="/address-book" element={withSideMenu(<AddressBookView />)} />
+          <Route path="/settings" element={withSideMenu(<SettingsView />)} />
+          <Route path="/help" element={withSideMenu(<HelpView />)} />
+          <Route path="/batch" element={withSideMenu(<BatchView />)} />
+          <Route path="/*" element={<Navigate to="/home" />} />
+        </Routes>
+        {dynamicModal.content}
+      </DynamicModalContext.Provider>
+
       {beaconNotificationModal}
     </HashRouter>
   );

@@ -58,6 +58,7 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
     case "tez":
       return prettyTezAmount(operation.amount);
     case "delegation":
+    case "contract_origination":
       return "";
   }
 };
@@ -89,7 +90,7 @@ const RightPanel = ({
         <Total mutez={total.toString()} paddingY={3} />
 
         <Flex justifyContent="space-between">
-          <Button onClick={onSend} flex={1} bg="umami.blue" mr={4}>
+          <Button onClick={onSend} flex={1} variant="primary" mr={4}>
             {account.type === AccountType.MULTISIG ? "Propose batch" : "Submit batch"}
           </Button>
 
