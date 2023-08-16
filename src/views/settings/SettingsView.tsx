@@ -1,13 +1,16 @@
 import { Box, Divider, Flex, Heading, Input, Switch, Text } from "@chakra-ui/react";
+import { useContext } from "react";
 import { BsFolder2Open } from "react-icons/bs";
 import { TfiReload } from "react-icons/tfi";
+import ChangePasswordForm from "../../components/ChangePassword/ChangePasswordForm";
 import ClickableCard, {
   SettingsCard,
   SettingsCardWithDrawerIcon,
 } from "../../components/ClickableCard";
+import { DynamicModalContext } from "../../components/DynamicModal";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NetworkSelector from "../../components/NetworkSelector";
-import useOffboarsingModal from "../../components/Offboarding/useOffboardingModal";
+import useOffboardingModal from "../../components/Offboarding/useOffboardingModal";
 import { TopBar } from "../../components/TopBar";
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
@@ -115,14 +118,19 @@ const BackupSection = () => {
 };
 
 const AdvancedSection = () => {
-  const { modalElement, onOpen } = useOffboarsingModal();
+  const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
+  const { openWith } = useContext(DynamicModalContext);
+
   return (
     <SectionContainer title="Advanced Settings">
       <BeaconDrawerCard />
       <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
-      <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={onOpen} />
-      <SettingsCardWithDrawerIcon left="Change Password" onClick={() => {}} />
-      {modalElement}
+      <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={onOpenOffboardingModal} />
+      <SettingsCardWithDrawerIcon
+        left="Change Password"
+        onClick={() => openWith(<ChangePasswordForm />)}
+      />
+      {OffboardingModal}
     </SectionContainer>
   );
 };
