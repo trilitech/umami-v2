@@ -7,7 +7,7 @@ import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { eraseToken, fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Baker } from "../../../types/Baker";
-import { OperationWithFee } from "../../../types/Operation";
+import { FormOperations } from "../../../components/sendForm/types";
 
 type State = {
   network: TezosNetwork;
@@ -23,7 +23,7 @@ type State = {
   delegations: Record<string, DelegationOperation | undefined>;
   bakers: Baker[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: Record<string, OperationWithFee[] | undefined>;
+  batches: Record<string, FormOperations | undefined>;
   refetchTrigger: number;
   isLoading: boolean;
   lastTimeUpdated: string | null;
@@ -47,7 +47,7 @@ export type ConversionRatePayload = { rate: State["conversionRate"] };
 
 export type BatchPayload = {
   pkh: string;
-  operations: OperationWithFee[];
+  operations: FormOperations;
 };
 
 const initialState: State = {
@@ -143,12 +143,13 @@ const assetsSlice = createSlice({
       state.conversionRate = rate;
     },
     // Don't use this action directly. Use thunk simulateAndUpdateBatch
-    addToBatch: (
-      state,
-      { payload: { pkh, operations } }: { type: string; payload: BatchPayload }
-    ) => {
-      const existing = (state.batches[pkh] || []) as OperationWithFee[];
-      state.batches = { ...state.batches, [pkh]: [...existing, ...operations] };
+    addToBatch: (state, { payload: { pkh, operations } }: { payload: BatchPayload }) => {
+      const existing = state.batches[pkh] as FormOperations | undefined;
+      if (existing) {
+        existing.content.push(...operations.content);
+        return;
+      }
+      state.batches[pkh] = operations;
     },
     clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: string } }) => {
       delete state.batches[pkh];

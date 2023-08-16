@@ -8,8 +8,6 @@ import { makeBatchLambda } from "./multisigUtils";
 import { MultisigStorage } from "../types/Operation";
 import { parseContractPkh, parsePkh } from "../types/Address";
 
-jest.unmock("../utils/tezos");
-
 const originate = async () => {
   const tezos = await makeToolkitFromDefaultDevSeed(0);
   const keys0 = await makeDefaultDevSignerKeys(0);

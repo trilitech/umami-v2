@@ -6,17 +6,12 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
-import {
-  useFirstAccount,
-  useGetBestSignerForAccount,
-  useGetOwnedAccount,
-} from "../../utils/hooks/accountHooks";
+import { useFirstAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
 import NoItems from "../../components/NoItems";
-import { makeFormOperations } from "../../components/sendForm/types";
 import { useClearBatch } from "../../utils/hooks/assetsHooks";
 import useCSVFileUploadModal from "../../components/CSVFileUploader/useCSVFileUploadModal";
 
@@ -50,8 +45,6 @@ const BatchView = () => {
 
   const dispatch = useAppDispatch();
   const getAccount = useGetOwnedAccount();
-  // TODO: allow user to select signer for multisig
-  const getSigner = useGetBestSignerForAccount();
   const clearBatch = useClearBatch();
 
   const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
@@ -67,14 +60,14 @@ const BatchView = () => {
       onClose();
     };
 
-    return operations && operations.length > 0 ? (
+    return operations && operations.content.length > 0 ? (
       <BatchDisplay
         onSend={() =>
           openSendForm({
             sender: account.address.pkh,
             mode: {
               type: "batch",
-              data: makeFormOperations(account, getSigner(account), operations),
+              data: operations,
             },
           })
         }

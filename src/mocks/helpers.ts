@@ -1,11 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Estimate } from "@taquito/taquito";
 import { fireEvent, screen } from "@testing-library/react";
-import { FormOperations } from "../components/sendForm/types";
 import { ImplicitAccount, MnemonicAccount } from "../types/Account";
 import accountsSlice from "../utils/redux/slices/accountsSlice";
 import store from "../utils/redux/store";
-import { fakeTezosUtils } from "./fakeTezosUtils";
+import BigNumber from "bignumber.js";
+import { estimate } from "../utils/tezos";
 
 export const selectSender = (accountLabel: string) => {
   const input = screen.getByLabelText("From");
@@ -43,11 +42,6 @@ export const fakeRestoreFromMnemonic = createAsyncThunk(
   }
 );
 
-export const setBatchEstimationPerTransaction = (
-  fakeEstimateBatch: typeof fakeTezosUtils.estimateBatch,
-  suggestedFeeMutez: number
-) => {
-  fakeEstimateBatch.mockImplementation(async (operations: FormOperations) => {
-    return operations.content.map(_ => ({ suggestedFeeMutez } as Estimate));
-  });
+export const mockEstimatedFee = (fee: number | string | BigNumber) => {
+  (estimate as jest.Mock).mockResolvedValue(BigNumber(fee));
 };

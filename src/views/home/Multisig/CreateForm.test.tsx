@@ -11,14 +11,13 @@ import { multisigs } from "../../../mocks/multisig";
 import { render } from "../../../mocks/testUtils";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import { makeFormOperations } from "../../../components/sendForm/types";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
-import { Estimate } from "@taquito/taquito";
 import BigNumber from "bignumber.js";
 import { DynamicModalContext } from "../../../components/DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import SignPage from "../../../components/SendFlow/SignPage";
+import { mockEstimatedFee } from "../../../mocks/helpers";
 
 const fixture = (formValues?: MultisigFields) => {
   return (
@@ -269,7 +268,7 @@ describe("CreateForm", () => {
         ),
       },
     ]);
-    fakeTezosUtils.estimateBatch.mockResolvedValue([{ suggestedFeeMutez: 100 } as Estimate]);
+    mockEstimatedFee(100);
     await waitFor(() => {
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <SignPage

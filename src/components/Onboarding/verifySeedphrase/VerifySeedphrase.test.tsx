@@ -7,7 +7,6 @@ import { selectRandomElements } from "../../../utils/tezos/helpers";
 const goToStepMock = jest.fn((step: Step) => {});
 const selectRandomElementsMock = selectRandomElements as jest.Mock;
 
-// TODO refactor mocks
 jest.mock("../../../utils/tezos/helpers");
 
 beforeEach(() => {

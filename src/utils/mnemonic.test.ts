@@ -7,7 +7,6 @@ import {
   defaultDerivationPathPattern,
   getDefaultDerivationPath,
 } from "./account/derivationPathUtils";
-jest.mock("./tezos");
 
 const addressExistsMock = addressExists as jest.Mock;
 const getFingerPrintMock = getFingerPrint as jest.Mock;

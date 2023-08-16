@@ -11,10 +11,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
-import BigNumber from "bignumber.js";
 import { Operation } from "../../../types/Operation";
 import { useGetToken } from "../../../utils/hooks/tokensHooks";
-import { getBatchSubtotal } from "../../../views/batch/batchUtils";
 import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
@@ -62,11 +60,7 @@ export const SubmitStep: React.FC<{
   isBatch: boolean;
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
 }> = ({ recap: { fee, operations }, isBatch, onSubmit }) => {
-  const feeNum = new BigNumber(fee);
-
   const transfer = operations.content;
-
-  const total = feeNum.plus(getBatchSubtotal(transfer));
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">
@@ -90,7 +84,7 @@ export const SubmitStep: React.FC<{
             <Fee mutez={fee} />
           </Box>
           <Divider mb={2} mt={2} />
-          <Total mutez={total.toString()} />
+          <Total mutez={fee} />
         </ModalBody>
         <ModalFooter justifyContent="center">
           <SignButton onSubmit={onSubmit} signer={operations.signer} />

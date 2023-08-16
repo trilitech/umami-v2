@@ -6,10 +6,12 @@ import {
   makeMultisigApproveOrExecuteMethod,
   makeMultisigProposeMethod,
   makeToolkit,
+  sumTez,
 } from "./helpers";
 import { operationsToBatchParams } from "./params";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 import { makeBatchLambda } from "../../multisig/multisigUtils";
+import BigNumber from "bignumber.js";
 
 export const estimateMultisigPropose = async (
   params: MultisigProposeMethodArgs,
@@ -63,4 +65,18 @@ export const estimateBatch = async (
       return [estimation];
     }
   }
+};
+
+export const estimate = async (
+  operations: FormOperations,
+  network: TezosNetwork
+): Promise<BigNumber> => {
+  const estimations = await estimateBatch(operations, network);
+  // The way taquito works we need to take the max of suggestedFeeMutez and totalCost
+  // because the suggestedFeeMutez does not include the storage & execution cost
+  // and in these cases the totalCost is the one to go (so, for contract calls)
+  // though totalCost doesn't work well with simple tez transfers and suggestedFeeMutez is more accurate
+  return sumTez(
+    estimations.map(estimate => Math.max(estimate.suggestedFeeMutez, estimate.totalCost).toString())
+  );
 };

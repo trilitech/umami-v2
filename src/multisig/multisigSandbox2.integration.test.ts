@@ -15,8 +15,6 @@ import {
 } from "../utils/tezos";
 import { makeBatchLambda } from "./multisigUtils";
 
-jest.unmock("../utils/tezos");
-
 jest.setTimeout(90000);
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));

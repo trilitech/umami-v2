@@ -307,7 +307,7 @@ export const mockBaker = (index: number) =>
     address: mockImplicitAddress(index).pkh,
   } as Baker);
 
-export const mockTezTransfer = (index: number): Operation => {
+export const mockTezOperation = (index: number): Operation => {
   return {
     type: "tez",
     amount: String(index),
@@ -315,7 +315,7 @@ export const mockTezTransfer = (index: number): Operation => {
   };
 };
 
-export const mockNftTransfer = (index: number): Operation => {
+export const mockNftOperation = (index: number): Operation => {
   return {
     type: "fa2",
     amount: String(index),
@@ -326,7 +326,7 @@ export const mockNftTransfer = (index: number): Operation => {
   };
 };
 
-export const mockDelegationTransfer = (index: number): Operation => {
+export const mockDelegationOperation = (index: number): Operation => {
   return {
     type: "delegation",
     sender: mockImplicitAddress(index),

@@ -1,7 +1,6 @@
 import { Estimate } from "@taquito/taquito";
 import MultisigPendingAccordion from ".";
 import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
-import { fakeTezosUtils } from "../../../../mocks/fakeTezosUtils";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount } from "../../../../types/Account";
@@ -12,6 +11,7 @@ import { Multisig } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import multisigsSlice from "../../../../utils/redux/slices/multisigsSlice";
 import store from "../../../../utils/redux/store";
+import { estimateMultisigApproveOrExecute } from "../../../../utils/tezos";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 
@@ -27,7 +27,7 @@ describe("<MultisigPendingAccordion />", () => {
   });
 
   it("should display multisig executable tez operations", async () => {
-    fakeTezosUtils.estimateMultisigApproveOrExecute.mockResolvedValue({
+    (estimateMultisigApproveOrExecute as jest.Mock).mockResolvedValue({
       suggestedFeeMutez: 33,
     } as Estimate);
     const m: Multisig = {

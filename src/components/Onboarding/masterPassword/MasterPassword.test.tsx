@@ -8,9 +8,6 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 
 const onClose = jest.fn(() => {});
 
-// TODO refactor mocks
-jest.mock("../../../utils/tezos/helpers");
-
 const { addAccount } = accountsSlice.actions;
 const account = mockImplicitAccount(0);
 

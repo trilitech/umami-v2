@@ -10,7 +10,6 @@ import store from "../../../utils/redux/store";
 const goToStepMock = jest.fn((step: Step) => {});
 const selectRandomElementsMock = selectRandomElements as jest.Mock;
 
-// TODO refactor mocks
 jest.mock("../../../utils/tezos/helpers");
 
 beforeEach(() => {
