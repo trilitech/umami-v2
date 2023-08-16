@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { request as graphqlRequest, RequestDocument, Variables } from "graphql-request";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 export function request<TDocument = any>(

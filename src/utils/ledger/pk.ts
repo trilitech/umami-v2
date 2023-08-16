@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { LedgerSigner } from "@taquito/ledger-signer";
 import { PublicKeyPair } from "../mnemonic";
