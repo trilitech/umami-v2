@@ -14,6 +14,7 @@ export const Identicon: React.FC<
 > = ({ address, identiconSize = 32, ...props }) => {
   return (
     <Box
+      data-testid="identicon"
       sx={{
         canvas: {
           borderRadius: "4px",
