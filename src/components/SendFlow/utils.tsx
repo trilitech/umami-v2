@@ -25,25 +25,33 @@ export type FormProps<T> = { sender?: Account; form?: T };
 
 export type SignPageMode = "single" | "batch";
 
-export type SignPageProps = {
+export type SignPageProps<T = undefined> = {
   goBack?: () => void;
   operations: FormOperations;
   fee: BigNumber;
   mode: SignPageMode;
+  data?: T;
 };
 
 // contains the logic for both submit buttons: submit single operation and add to batch
 // should be used on the Send page
 // TODO: test this
-export const useFormHelpers = <FormValues extends { sender: RawPkh }>(
+export const useFormHelpers = <
+  FormValues extends { sender: RawPkh },
+  Props extends FormProps<FormValues>,
+  SignPageData
+>(
   // the form might have some default values and in order to instantiate it again
   // with the same values when to go back from the sign page we need to pass them here
-  defaultFormProps: FormProps<FormValues>,
+  defaultFormPageProps: Props,
   // current form component
-  FormComponent: React.FC<FormProps<FormValues>>,
+  FormPageComponent: React.FC<Props>,
   // the sign page the form should navigate to on single submit
-  SignPageComponent: React.FC<SignPageProps>,
-  buildOperation: (formValues: FormValues) => Operation
+  SignPageComponent: React.FC<SignPageProps<SignPageData>>,
+  buildOperation: (formValues: FormValues) => Operation,
+  // you might need to pass in some data to the sign page (like NFT or any other token)
+  // so that you don't have to fetch it again from the store
+  signPageData?: SignPageData
 ) => {
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
@@ -64,10 +72,11 @@ export const useFormHelpers = <FormValues extends { sender: RawPkh }>(
       const operations = buildFormOperations(formValues);
       openWith(
         <SignPageComponent
+          data={signPageData}
           goBack={() => {
             openWith(
-              <FormComponent
-                {...defaultFormProps}
+              <FormPageComponent
+                {...defaultFormPageProps}
                 form={formValues} // whatever user selects on the form should override the default values
               />
             );

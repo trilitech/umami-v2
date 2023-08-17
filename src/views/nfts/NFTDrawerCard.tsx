@@ -14,17 +14,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { artifactUri, NFTBalance } from "../../types/TokenBalance";
-import { useSendFormModal } from "../home/useSendFormModal";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import TagsSection from "./drawer/TagsSection";
 import AttributesAccordionItem from "./drawer/AttributesAccordionItem";
 import PropertiesAccordionItem from "./drawer/PropertiesAccordionItem";
 import { RawPkh } from "../../types/Address";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import { useContext } from "react";
+import SendNFTForm from "../../components/SendFlow/NFT/Form";
+import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 
 const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
-  const { modalElement, onOpen } = useSendFormModal();
   const url = getIPFSurl(artifactUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
+  const getAccount = useGetOwnedAccount();
+  const { openWith } = useContext(DynamicModalContext);
 
   const accordionItemStyle = {
     border: "none",
@@ -72,14 +76,8 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
       <Button
         mt={4}
         variant="primary"
-        onClick={_ => {
-          onOpen({
-            sender: ownerPkh,
-            mode: {
-              type: "token",
-              data: nft,
-            },
-          });
+        onClick={() => {
+          openWith(<SendNFTForm sender={getAccount(ownerPkh)} nft={nft} />);
         }}
       >
         Send
@@ -115,7 +113,6 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      {modalElement}
     </Box>
   );
 };
