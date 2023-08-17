@@ -8,7 +8,7 @@ import { useAppDispatch } from "../utils/redux/hooks";
 import { assetsActions } from "../utils/redux/slices/assetsSlice";
 import useBuyTezModal from "./BuyTez/useBuyTezModal";
 import { DynamicModalContext } from "./DynamicModal";
-import SendTezForm from "../components/SendFlow/Tez/Form";
+import SendTezForm from "./SendFlow/Tez/FormPage";
 
 export const emailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";

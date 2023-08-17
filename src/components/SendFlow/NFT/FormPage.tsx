@@ -20,7 +20,7 @@ import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
 import { FA2Operation } from "../../../types/Operation";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { formDefaultValues, FormProps, FormSubmitButtons, useFormHelpers } from "../utils";
-import SignPage from "./Sign";
+import SignPage from "./SignPage";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
 

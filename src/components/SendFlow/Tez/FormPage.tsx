@@ -21,7 +21,7 @@ import { tezToMutez } from "../../../utils/format";
 import { TEZ } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { formDefaultValues, FormProps, FormSubmitButtons, useFormHelpers } from "../utils";
-import SignPage from "./Sign";
+import SignPage from "./SignPage";
 
 export type FormValues = {
   sender: RawPkh;

@@ -21,7 +21,7 @@ import PropertiesAccordionItem from "./drawer/PropertiesAccordionItem";
 import { RawPkh } from "../../types/Address";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { useContext } from "react";
-import SendNFTForm from "../../components/SendFlow/NFT/Form";
+import SendNFTForm from "../../components/SendFlow/NFT/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 
 const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
