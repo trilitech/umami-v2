@@ -10,7 +10,7 @@ export const SendNFTRecapTile = ({ nft }: { nft: NFT }) => {
   const fallbackUrl = getIPFSurl(nft.displayUri);
   return (
     <Box aria-label="nft" w="100%">
-      <Flex alignItems="center" bg={colors.gray[800]} p={3} h="60px">
+      <Flex alignItems="center" bg={colors.gray[800]} p={3} h="60px" data-testid="nft-name">
         <AspectRatio w="30px" h="30px" ratio={1}>
           <Image src={url} fallbackSrc={fallbackUrl} />
         </AspectRatio>

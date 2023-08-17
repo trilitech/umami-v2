@@ -1,0 +1,208 @@
+import { Modal } from "@chakra-ui/react";
+import { mockImplicitAccount, mockNFT } from "../../../mocks/factories";
+import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import FormPage, { FormValues } from "./FormPage";
+import { FormPagePropsWithSender } from "../utils";
+import { NFTBalance } from "../../../types/TokenBalance";
+import { DynamicModalContext } from "../../DynamicModal";
+import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
+import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
+import { makeFormOperations } from "../../sendForm/types";
+import { parseContractPkh } from "../../../types/Address";
+import BigNumber from "bignumber.js";
+import { mockToast } from "../../../mocks/toast";
+import { Estimate } from "@taquito/taquito";
+import accountsSlice from "../../../utils/redux/slices/accountsSlice";
+import store from "../../../utils/redux/store";
+import SignPage from "./SignPage";
+
+const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
+  <Modal isOpen={true} onClose={() => {}}>
+    <FormPage {...props} nft={nft} />
+  </Modal>
+);
+
+describe("<FormPage />", () => {
+  describe("default values", () => {
+    it("renders a form with a prefilled sender", () => {
+      render(fixture({ sender: mockImplicitAccount(1) }));
+
+      expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      expect(screen.getByLabelText("From")).toBeDisabled();
+    });
+    it("renders a form with default form values", async () => {
+      render(
+        fixture({
+          sender: mockImplicitAccount(0),
+          form: {
+            sender: mockImplicitAccount(0).address.pkh,
+            quantity: 1,
+            recipient: mockImplicitAccount(1).address.pkh,
+          },
+        })
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
+      });
+      expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      expect(screen.getByTestId("quantity-input")).toHaveValue(1);
+    });
+  });
+
+  describe("nft", () => {
+    it("displays the correct name", async () => {
+      render(
+        fixture(
+          {
+            sender: mockImplicitAccount(0),
+          },
+          mockNFT(1, "10")
+        )
+      );
+
+      await waitFor(() => {
+        expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
+      });
+      expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string);
+    });
+
+    it("renders the correct balance", async () => {
+      render(
+        fixture(
+          {
+            sender: mockImplicitAccount(0),
+          },
+          mockNFT(1, "10")
+        )
+      );
+
+      await waitFor(() => {
+        expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
+      });
+      expect(screen.getByTestId("out-of-nft")).toHaveTextContent("10");
+    });
+  });
+
+  describe("validation", () => {
+    describe("To", () => {
+      it("is required", async () => {
+        render(
+          fixture({
+            sender: mockImplicitAccount(0),
+          })
+        );
+
+        fireEvent.blur(screen.getByLabelText("To"));
+        await waitFor(() => {
+          expect(screen.getByTestId("recipient-error")).toHaveTextContent(
+            "Invalid address or contact"
+          );
+        });
+      });
+
+      it("allows only valid addresses", async () => {
+        render(
+          fixture({
+            sender: mockImplicitAccount(0),
+          })
+        );
+
+        fireEvent.change(screen.getByLabelText("To"), {
+          target: { value: "invalid" },
+        });
+        await waitFor(() => {
+          expect(screen.getByTestId("recipient-error")).toHaveTextContent(
+            "Invalid address or contact"
+          );
+        });
+
+        fireEvent.change(screen.getByLabelText("To"), {
+          target: { value: mockImplicitAccount(0).address.pkh },
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByTestId("recipient-error")).not.toBeInTheDocument();
+        });
+      });
+
+      describe("quantity", () => {
+        it("doesn't allow values < 1", async () => {
+          render(
+            fixture({
+              sender: mockImplicitAccount(0),
+            })
+          );
+          fireEvent.change(screen.getByTestId("quantity-input"), { target: { value: "0" } });
+          fireEvent.blur(screen.getByTestId("quantity-input"));
+          await waitFor(() => {
+            expect(screen.getByTestId("quantity-error")).toHaveTextContent("Min quantity is 1");
+          });
+        });
+
+        it("doesn't allow values above the nft balance", async () => {
+          render(
+            fixture(
+              {
+                sender: mockImplicitAccount(0),
+              },
+              mockNFT(1, "5")
+            )
+          );
+          fireEvent.change(screen.getByTestId("quantity-input"), { target: { value: "7" } });
+          fireEvent.blur(screen.getByTestId("quantity-input"));
+          await waitFor(() => {
+            expect(screen.getByTestId("quantity-error")).toHaveTextContent("Max quantity is 5");
+          });
+        });
+      });
+    });
+
+    describe("single transaction", () => {
+      it("opens a sign page if estimation succeeds", async () => {
+        store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+        const sender = mockImplicitAccount(0);
+        render(
+          <DynamicModalContext.Provider value={dynamicModalContextMock}>
+            {fixture({
+              sender,
+              form: {
+                sender: sender.address.pkh,
+                recipient: mockImplicitAccount(1).address.pkh,
+                quantity: 1,
+              },
+            })}
+          </DynamicModalContext.Provider>
+        );
+        const submitButton = screen.getByText("Preview");
+        await waitFor(() => {
+          expect(submitButton).toBeEnabled();
+        });
+        fireEvent.click(submitButton);
+        fakeTezosUtils.estimateBatch.mockResolvedValue([{ suggestedFeeMutez: 100 } as Estimate]);
+        const operations = makeFormOperations(sender, mockImplicitAccount(0), [
+          {
+            type: "fa2",
+            amount: "1",
+            sender: sender.address,
+            recipient: mockImplicitAccount(1).address,
+            contract: parseContractPkh(mockNFT(1).contract),
+            tokenId: mockNFT(1).tokenId,
+          },
+        ]);
+        await waitFor(() => {
+          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+            <SignPage
+              data={{ nft: mockNFT(1) }}
+              mode="single"
+              goBack={expect.any(Function)}
+              operations={operations}
+              fee={new BigNumber(100)}
+            />
+          );
+        });
+        expect(mockToast).not.toHaveBeenCalled();
+      });
+    });
+  });
+});

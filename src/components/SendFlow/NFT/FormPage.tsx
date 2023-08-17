@@ -88,7 +88,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
               <Heading size="sm" mr={1} color={colors.gray[450]}>
                 Owned:
               </Heading>
-              <Text size="sm" color={colors.gray[400]}>
+              <Text size="sm" color={colors.gray[400]} data-testid="nft-owned">
                 {nft.balance}
               </Text>
             </Flex>
@@ -121,7 +121,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
                         })}
                       />
                     </InputGroup>
-                    <Text>out of {nft.balance}</Text>
+                    <Text data-testid="out-of-nft">out of {nft.balance}</Text>
                   </Flex>
                 </Flex>
               </FormLabel>

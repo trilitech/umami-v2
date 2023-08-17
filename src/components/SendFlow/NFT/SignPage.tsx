@@ -41,7 +41,7 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
                 <Heading size="sm" mr={1} color={colors.gray[450]}>
                   Owned:
                 </Heading>
-                <Text size="sm" color={colors.gray[400]}>
+                <Text size="sm" data-testid="nft-owned" color={colors.gray[400]}>
                   {nft.balance}
                 </Text>
               </Flex>
