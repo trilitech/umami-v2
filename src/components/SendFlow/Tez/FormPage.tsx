@@ -20,7 +20,7 @@ import { TezOperation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormProps, FormSubmitButtons, useFormHelpers } from "../utils";
+import { formDefaultValues, FormPageProps, FormSubmitButtons, useFormPageHelpers } from "../utils";
 import SignPage from "./SignPage";
 
 export type FormValues = {
@@ -35,10 +35,10 @@ const formValuesToOperation = (formValues: FormValues): TezOperation => ({
   recipient: parsePkh(formValues.recipient),
 });
 
-const FormPage: React.FC<FormProps<FormValues>> = props => {
+const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const senderSelectorDisabled = !!props.sender;
 
-  const { isLoading, onSingleSubmit, onAddToBatch } = useFormHelpers(
+  const { isLoading, onSingleSubmit, onAddToBatch } = useFormPageHelpers(
     props,
     FormPage,
     SignPage,

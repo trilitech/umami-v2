@@ -21,7 +21,15 @@ import { SuccessStep } from "../sendForm/steps/SuccessStep";
 import { estimate, TEZ } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
 
-export type FormProps<T> = { sender?: Account; form?: T };
+export type FormPageProps<T> = { sender?: Account; form?: T };
+
+// Convert given optional fields to required
+// For example:
+// type A = {a?:number, b:string}
+// RequiredFields<A, "a"> === {a:number, b:string}
+type RequiredFields<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+
+export type FormPagePropsWithSender<T> = RequiredFields<FormPageProps<T>, "sender">;
 
 export type SignPageMode = "single" | "batch";
 
@@ -36,9 +44,9 @@ export type SignPageProps<T = undefined> = {
 // contains the logic for both submit buttons: submit single operation and add to batch
 // should be used on the Send page
 // TODO: test this
-export const useFormHelpers = <
+export const useFormPageHelpers = <
   FormValues extends { sender: RawPkh },
-  Props extends FormProps<FormValues>,
+  Props extends FormPageProps<FormValues>,
   SignPageData
 >(
   // the form might have some default values and in order to instantiate it again
@@ -145,7 +153,7 @@ export const FormSubmitButtons = ({
   );
 };
 
-export const formDefaultValues = <T,>({ sender, form }: FormProps<T>) => {
+export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
   if (form) {
     return form;
   } else if (sender) {

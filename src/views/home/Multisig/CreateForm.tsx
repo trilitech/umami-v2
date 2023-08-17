@@ -17,7 +17,7 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
 import SignPage from "../../../components/SendFlow/SignPage";
-import { useFormHelpers } from "../../../components/SendFlow/utils";
+import { useFormPageHelpers } from "../../../components/SendFlow/utils";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
 import { isValidImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
@@ -62,7 +62,7 @@ export const CreateForm: React.FC<{
     rules: { minLength: 1 },
   });
 
-  const { isLoading, onSingleSubmit } = useFormHelpers(
+  const { isLoading, onSingleSubmit } = useFormPageHelpers(
     {},
     CreateForm,
     SignPage,

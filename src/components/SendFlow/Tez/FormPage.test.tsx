@@ -11,11 +11,11 @@ import BigNumber from "bignumber.js";
 import { makeFormOperations } from "../../sendForm/types";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
-import { FormProps } from "../utils";
 import { estimate } from "../../../utils/tezos";
 import { mockEstimatedFee } from "../../../mocks/helpers";
+import { FormPageProps } from "../utils";
 
-const fixture = (props: FormProps<FormValues> = {}) => (
+const fixture = (props: FormPageProps<FormValues> = {}) => (
   <Modal isOpen={true} onClose={() => {}}>
     <FormPage {...props} />
   </Modal>

@@ -19,7 +19,12 @@ import colors from "../../../style/colors";
 import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
 import { FA2Operation } from "../../../types/Operation";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormProps, FormSubmitButtons, useFormHelpers } from "../utils";
+import {
+  formDefaultValues,
+  FormPagePropsWithSender,
+  FormSubmitButtons,
+  useFormPageHelpers,
+} from "../utils";
 import SignPage from "./SignPage";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
@@ -41,10 +46,10 @@ const buildFormValuesToOperation =
     amount: formValues.quantity.toString(), // We assume NFT has 0 decimals
   });
 
-const FormPage: React.FC<FormProps<FormValues> & { nft: NFTBalance }> = props => {
+const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance }> = props => {
   const { nft } = props;
 
-  const { isLoading, onSingleSubmit, onAddToBatch } = useFormHelpers(
+  const { isLoading, onSingleSubmit, onAddToBatch } = useFormPageHelpers(
     props,
     FormPage,
     SignPage,
