@@ -1,52 +1,90 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
-import React from "react";
+import { Meta, StoryObj } from "@storybook/react";
+import { AccountType } from "../../../../types/Account";
 import { MultisigSignerTileDisplay } from "./MultisigSignerTileDisplay";
 
-export default {
+const meta = {
   title: "Umami/MultisigSignerTileDisplay",
   component: MultisigSignerTileDisplay,
-} as ComponentMeta<typeof MultisigSignerTileDisplay>;
+} satisfies Meta<typeof MultisigSignerTileDisplay>;
 
-const Template: ComponentStory<typeof MultisigSignerTileDisplay> = args => (
-  <MultisigSignerTileDisplay {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const AwaitingApproval = Template.bind({});
-AwaitingApproval.args = {
-  label: "Multisig signer",
-  pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-  signerState: "awaitingApprovalByExternalSigner",
+const pkh = "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3";
+
+export const AwaitingApproval: Story = {
+  args: {
+    label: "Multisig signer",
+    pkh,
+    signerState: "awaitingApprovalByExternalSigner",
+    kind: AccountType.MNEMONIC,
+  },
 };
 
-export const Approved = Template.bind({});
-Approved.args = {
-  label: "Multisig signer",
-  pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-  onClickApproveExecute: () => {},
-  signerState: "approved",
+export const AwaitingApprovalSocial: Story = {
+  args: {
+    label: "Multisig signer",
+    pkh,
+    signerState: "awaitingApprovalByExternalSigner",
+    kind: AccountType.SOCIAL,
+  },
 };
 
-export const Executable = Template.bind({});
-Executable.args = {
-  label: "Multisig signer",
-  pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-  onClickApproveExecute: () => {},
-  signerState: "executable",
+export const AwaitingApprovalContact: Story = {
+  args: {
+    label: "Multisig signer",
+    pkh,
+    signerState: "awaitingApprovalByExternalSigner",
+    kind: "contact",
+  },
 };
 
-export const LoadingExecution = Template.bind({});
-LoadingExecution.args = {
-  label: "Multisig signer",
-  pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-  onClickApproveExecute: () => {},
-  signerState: "executable",
-  isLoading: true,
+export const AwaitingApprovalUnknownAddress: Story = {
+  args: {
+    label: "Multisig signer",
+    pkh,
+    signerState: "awaitingApprovalByExternalSigner",
+    kind: "unknownContact",
+  },
 };
 
-export const Approvable = Template.bind({});
-Approvable.args = {
-  label: "Multisig signer",
-  pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-  onClickApproveExecute: () => {},
-  signerState: "approvable",
+export const Approved = {
+  args: {
+    label: "Multisig signer",
+    pkh,
+    onClickApproveExecute: () => {},
+    signerState: "approved",
+    kind: AccountType.MNEMONIC,
+  },
+};
+
+export const Executable = {
+  args: {
+    label: "Multisig signer",
+    pkh,
+    onClickApproveExecute: () => {},
+    signerState: "executable",
+    kind: AccountType.MNEMONIC,
+  },
+};
+
+export const LoadingExecution = {
+  args: {
+    label: "Multisig signer",
+    pkh,
+    onClickApproveExecute: () => {},
+    signerState: "executable",
+    isLoading: true,
+    kind: AccountType.MNEMONIC,
+  },
+};
+
+export const Approvable = {
+  args: {
+    label: "Multisig signer",
+    pkh,
+    onClickApproveExecute: () => {},
+    signerState: "approvable",
+    kind: AccountType.MNEMONIC,
+  },
 };
