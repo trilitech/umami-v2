@@ -16,50 +16,54 @@ const Wrapper = chakra(Flex, {
   backgroundColor: "umami.gray.500",
 });
 
-export const getIcon = (kind?: AccountType | "contact" | "unknownContact", address?: string) => {
-  if (kind === "contact") {
-    return (
-      <Wrapper>
-        <ContactIcon stroke={colors.gray[400]} height="28px" width="28px" />
-      </Wrapper>
-    );
-  }
+const iconProps = {
+  stroke: colors.gray[400],
+  height: "28px",
+  width: "28px",
+};
 
-  if (kind === "unknownContact") {
-    return (
-      <Wrapper>
-        <UnknownContactIcon stroke={colors.gray[400]} height="28px" width="28px" />
-      </Wrapper>
-    );
+export const getIcon = (kind: AccountType | "contact" | "unknownContact", address?: string) => {
+  switch (kind) {
+    case "contact": {
+      return (
+        <Wrapper>
+          <ContactIcon {...iconProps} />
+        </Wrapper>
+      );
+    }
+    case "unknownContact": {
+      return (
+        <Wrapper>
+          <UnknownContactIcon {...iconProps} />
+        </Wrapper>
+      );
+    }
+    case AccountType.SOCIAL: {
+      return (
+        <Wrapper backgroundColor={colors.white}>
+          <SocialIcon />
+        </Wrapper>
+      );
+    }
+    case AccountType.MULTISIG: {
+      return (
+        <Wrapper>
+          <KeyIcon {...iconProps} />
+        </Wrapper>
+      );
+    }
+    case AccountType.LEDGER: {
+      return (
+        <Wrapper>
+          <LedgerIcon {...iconProps} />
+        </Wrapper>
+      );
+    }
+    case AccountType.MNEMONIC: {
+      if (!address) {
+        throw new Error("Address is required for mnemonic account");
+      }
+      return <Identicon address={address} />;
+    }
   }
-
-  if (kind === AccountType.SOCIAL) {
-    return (
-      <Wrapper backgroundColor="umami.white">
-        <SocialIcon />
-      </Wrapper>
-    );
-  }
-
-  if (kind === AccountType.MULTISIG) {
-    return (
-      <Wrapper>
-        <KeyIcon stroke={colors.gray[400]} height="28px" width="28px" />
-      </Wrapper>
-    );
-  }
-
-  if (kind === AccountType.LEDGER) {
-    return (
-      <Wrapper>
-        <LedgerIcon stroke={colors.gray[400]} height="28px" width="28px" />
-      </Wrapper>
-    );
-  }
-
-  if (kind === AccountType.MNEMONIC && address !== undefined) {
-    return <Identicon address={address} />;
-  }
-
-  return null;
 };
