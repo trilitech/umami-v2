@@ -1,6 +1,6 @@
 import { Flex, chakra } from "@chakra-ui/react";
 import ContactIcon from "../../assets/icons/Contact";
-import UnknownContactIcon from "../../assets/icons/UnknownContactIcon";
+import UnknownContactIcon from "../../assets/icons/UnknownContact";
 import KeyIcon from "../../assets/icons/Key";
 import LedgerIcon from "../../assets/icons/Ledger";
 import SocialIcon from "../../assets/icons/Social";
