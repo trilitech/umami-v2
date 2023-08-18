@@ -6,15 +6,14 @@ import { FormPagePropsWithSender } from "../utils";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
-import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import { makeFormOperations } from "../../sendForm/types";
 import { parseContractPkh } from "../../../types/Address";
 import BigNumber from "bignumber.js";
 import { mockToast } from "../../../mocks/toast";
-import { Estimate } from "@taquito/taquito";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import store from "../../../utils/redux/store";
 import SignPage from "./SignPage";
+import { mockEstimatedFee } from "../../../mocks/helpers";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -179,7 +178,7 @@ describe("<FormPage />", () => {
           expect(submitButton).toBeEnabled();
         });
         fireEvent.click(submitButton);
-        fakeTezosUtils.estimateBatch.mockResolvedValue([{ suggestedFeeMutez: 100 } as Estimate]);
+        mockEstimatedFee(100);
         const operations = makeFormOperations(sender, mockImplicitAccount(0), [
           {
             type: "fa2",

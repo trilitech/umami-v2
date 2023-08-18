@@ -238,6 +238,7 @@ describe("<Form />", () => {
         await waitFor(() => {
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
             <SignPage
+              data={undefined}
               mode="single"
               goBack={expect.any(Function)}
               operations={operations}

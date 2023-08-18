@@ -54,14 +54,14 @@ const SignButton: React.FC<{
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<{ password: string }>({ mode: "onBlur", defaultValues: { password: "" } });
   const network = useSelectedNetwork();
   const getSecretKey = useGetSecretKey();
   const toast = useToast();
   const { isLoading: internalIsLoading, handleAsyncAction } = useAsyncActionHandler();
   const isLoading = internalIsLoading || externalIsLoading;
-  const disableButton = isDisabled || !!errors.password;
+  const buttonIsDisabled = isDisabled || !isValid;
 
   const onMnemonicSign = async ({ password }: { password: string }) =>
     handleAsyncAction(async () => {
@@ -116,7 +116,7 @@ const SignButton: React.FC<{
             width="100%"
             mt={2}
             isLoading={isLoading}
-            isDisabled={disableButton}
+            isDisabled={buttonIsDisabled}
             type="submit"
           >
             {text || "Submit Transaction"}
@@ -124,7 +124,7 @@ const SignButton: React.FC<{
         </>
       )}
       {signer.type === AccountType.SOCIAL && (
-        <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={disableButton}>
+        <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={buttonIsDisabled}>
           {text || "Sign with Google"}
         </SignWithGoogleButton>
       )}
@@ -134,7 +134,7 @@ const SignButton: React.FC<{
           variant="primary"
           width="100%"
           isLoading={isLoading}
-          isDisabled={disableButton}
+          isDisabled={buttonIsDisabled}
         >
           {text || "Sign with Ledger"}
         </Button>

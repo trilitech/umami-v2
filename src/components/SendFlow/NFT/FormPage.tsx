@@ -19,15 +19,15 @@ import colors from "../../../style/colors";
 import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
 import { FA2Operation } from "../../../types/Operation";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import {
-  formDefaultValues,
-  FormPagePropsWithSender,
-  FormSubmitButtons,
-  useFormPageHelpers,
-} from "../utils";
+import { formDefaultValues, FormPagePropsWithSender, FormSubmitButtons } from "../utils";
 import SignPage from "./SignPage";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
+import {
+  useAddToBatchFormAction,
+  useHandleOnSubmitFormActions,
+  useOpenSignPageFormAction,
+} from "../onSubmitFormActionHooks";
 
 export type FormValues = {
   quantity: number;
@@ -35,7 +35,7 @@ export type FormValues = {
   recipient: RawPkh;
 };
 
-const buildFormValuesToOperation =
+const toOperation =
   (nft: NFTBalance) =>
   (formValues: FormValues): FA2Operation => ({
     type: "fa2",
@@ -49,17 +49,24 @@ const buildFormValuesToOperation =
 const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance }> = props => {
   const { nft } = props;
 
-  const { isLoading, onSingleSubmit, onAddToBatch } = useFormPageHelpers(
-    props,
-    FormPage,
+  const openSignPage = useOpenSignPageFormAction({
     SignPage,
-    buildFormValuesToOperation(nft),
-    { nft }
-  );
+    signPageExtraData: { nft },
+    FormPage,
+    defaultFormPageProps: props,
+    toOperation: toOperation(nft),
+  });
+
+  const addToBatch = useAddToBatchFormAction(toOperation(nft));
+
+  const {
+    onFormSubmitActionHandlers: [onSingleSubmit, onBatchSubmit],
+    isLoading,
+  } = useHandleOnSubmitFormActions([openSignPage, addToBatch]);
 
   const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: formDefaultValues(props),
+    defaultValues: { ...formDefaultValues(props), quantity: 1 },
   });
   const {
     formState: { isValid, errors },
@@ -161,7 +168,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
               isLoading={isLoading}
               isValid={isValid}
               onSingleSubmit={handleSubmit(onSingleSubmit)}
-              onAddToBatch={handleSubmit(onAddToBatch)}
+              onAddToBatch={handleSubmit(onBatchSubmit)}
             />
           </ModalFooter>
         </form>

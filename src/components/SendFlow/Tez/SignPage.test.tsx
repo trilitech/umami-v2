@@ -32,6 +32,7 @@ describe("<Sign />", () => {
         ]),
         fee: new BigNumber(1234567),
         mode: "single",
+        data: undefined,
       };
       render(fixture(props));
       expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);

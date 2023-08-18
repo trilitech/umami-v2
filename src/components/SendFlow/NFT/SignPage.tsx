@@ -19,13 +19,15 @@ import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
 import { FA2Operation } from "../../../types/Operation";
 
 const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
-  const { mode, operations: initialOperations, fee: initialFee } = props;
+  const {
+    mode,
+    operations: initialOperations,
+    fee: initialFee,
+    data: { nft },
+  } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
-  const nft = props.data?.nft;
-  if (!nft) {
-    return null;
-  }
+
   return (
     <FormProvider {...form}>
       <ModalContent bg={colors.gray[900]} borderColor={colors.gray[700]} borderRadius="8px">
