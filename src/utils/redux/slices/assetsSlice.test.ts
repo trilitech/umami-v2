@@ -378,7 +378,7 @@ describe("assetsSlice", () => {
       const action = estimateAndUpdateBatch(formOperations, TezosNetwork.MAINNET);
 
       store.dispatch(action);
-      expect(estimate as jest.Mock).toHaveBeenCalledWith(formOperations, TezosNetwork.MAINNET);
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(formOperations, TezosNetwork.MAINNET);
       await waitFor(() => {
         expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(formOperations);
       });

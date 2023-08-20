@@ -8,7 +8,7 @@ const closeModalMock = jest.fn(() => {});
 
 jest.mock("../../../utils/ledger/pk");
 
-const getPkMock = getPk as jest.Mock;
+const getPkMock = jest.mocked(getPk);
 
 const fixture = (closeModal: () => void) => {
   const account = {

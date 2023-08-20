@@ -5,7 +5,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 
 const goToStepMock = jest.fn((step: Step) => {});
-const selectRandomElementsMock = selectRandomElements as jest.Mock;
+const selectRandomElementsMock = jest.mocked(selectRandomElements);
 
 jest.mock("../../../utils/tezos/helpers");
 

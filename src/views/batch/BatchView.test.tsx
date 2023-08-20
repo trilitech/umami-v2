@@ -20,7 +20,7 @@ jest.setTimeout(10000);
 
 jest.mock("../../utils/hooks/accountUtils");
 
-const useGetSecretKeyMock = useGetSecretKey as jest.Mock;
+const useGetSecretKeyMock = jest.mocked(useGetSecretKey);
 
 const fixture = () => <BatchView />;
 
@@ -28,8 +28,8 @@ beforeEach(() => {
   dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
   mockEstimatedFee(10);
 
-  useGetSecretKeyMock.mockReturnValue(() => "mockSk");
-  (submitBatch as jest.Mock).mockResolvedValue({ opHash: "foo" } as any);
+  useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");
+  jest.mocked(submitBatch).mockResolvedValue({ opHash: "foo" } as any);
 });
 
 const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh: string) => {
@@ -137,7 +137,7 @@ describe("<BatchView />", () => {
           TezosNetwork.MAINNET
         )
       );
-      (makeToolkit as jest.Mock).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
+      jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
     });
 
     test("a batch can be deleted by clicking the delete button and confirming", () => {
@@ -212,7 +212,7 @@ describe("<BatchView />", () => {
         "https://mainnet.tzkt.io/foo"
       );
 
-      expect(submitBatch as jest.Mock).toHaveBeenCalledWith(
+      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
         [
           {
             type: "tez",

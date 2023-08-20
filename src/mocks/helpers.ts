@@ -43,5 +43,5 @@ export const fakeRestoreFromMnemonic = createAsyncThunk(
 );
 
 export const mockEstimatedFee = (fee: number | string | BigNumber) => {
-  (estimate as jest.Mock).mockResolvedValue(BigNumber(fee));
+  jest.mocked(estimate).mockResolvedValue(BigNumber(fee));
 };

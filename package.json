@@ -36,7 +36,6 @@
     "framer-motion": "^10.15.2",
     "graphql": "^16.8.0",
     "graphql-request": "^6.1.0",
-    "jest-mock-extended": "3.0.4",
     "lodash": "^4.17.21",
     "mockdate": "^3.0.5",
     "papaparse": "^5.4.1",

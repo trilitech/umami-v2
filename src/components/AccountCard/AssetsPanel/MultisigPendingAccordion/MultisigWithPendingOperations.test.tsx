@@ -16,7 +16,7 @@ import { estimateMultisigApproveOrExecute } from "../../../../utils/tezos";
 jest.mock("../../../../utils/hooks/accountUtils");
 
 beforeEach(() => {
-  (useGetSecretKey as jest.Mock).mockReturnValue(() => Promise.resolve("mockkey"));
+  jest.mocked(useGetSecretKey).mockReturnValue(() => Promise.resolve("mockkey"));
 });
 const multisigAccount = mockMultisigAccount(0);
 
@@ -27,7 +27,7 @@ describe("<MultisigPendingAccordion />", () => {
   });
 
   it("should display multisig executable tez operations", async () => {
-    (estimateMultisigApproveOrExecute as jest.Mock).mockResolvedValue({
+    jest.mocked(estimateMultisigApproveOrExecute).mockResolvedValue({
       suggestedFeeMutez: 33,
     } as Estimate);
     const m: Multisig = {

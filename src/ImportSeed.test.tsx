@@ -5,11 +5,11 @@ import ImportSeed from "./ImportSeed";
 const fixture = () => <ImportSeed />;
 
 jest.mock("./utils/datocms/request");
-const requestMock = request as jest.Mock;
+const requestMock = jest.mocked(request);
 
 describe("ImportSeed", () => {
   it("Display slider items", async () => {
-    requestMock.mockReturnValue({
+    requestMock.mockResolvedValue({
       allSlideritems: [
         {
           id: "1",

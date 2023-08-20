@@ -199,7 +199,7 @@ describe("<Form />", () => {
         expect(submitButton).toBeEnabled();
       });
       fireEvent.click(submitButton);
-      const estimateMock = estimate as jest.Mock;
+      const estimateMock = jest.mocked(estimate);
       estimateMock.mockRejectedValue(new Error("Some error occurred"));
 
       await waitFor(() => {

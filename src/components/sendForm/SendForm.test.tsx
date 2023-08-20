@@ -31,7 +31,6 @@ import { SendFormMode } from "./types";
 
 import { TezosToolkit, TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { mock } from "jest-mock-extended";
 import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
@@ -51,7 +50,7 @@ jest.mock("../../GoogleAuth", () => ({
 }));
 jest.mock("../../utils/hooks/accountUtils");
 
-const fakeAccountUtils = mock<typeof accountUtils>(accountUtils);
+const fakeAccountUtils = jest.mocked(accountUtils);
 
 const fixture = (sender: string, mode: SendFormMode) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -65,7 +64,7 @@ const MOCK_TEZOS_TOOLKIT = {} as TezosToolkit;
 
 beforeEach(async () => {
   fakeAccountUtils.useGetSecretKey.mockReturnValue(() => Promise.resolve(MOCK_SK));
-  (makeToolkit as jest.Mock).mockResolvedValue(MOCK_TEZOS_TOOLKIT);
+  jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT);
   document.getElementById("chakra-toast-portal")?.remove();
   store.dispatch(
     tokensSlice.actions.addTokens({
@@ -147,7 +146,7 @@ describe("<SendForm />", () => {
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
 
-      expect(estimate as jest.Mock).toHaveBeenCalledWith(
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(
         {
           type: "implicit",
           content: [
@@ -168,7 +167,7 @@ describe("<SendForm />", () => {
 
       fillPassword("mockPass");
 
-      (submitBatch as jest.Mock).mockResolvedValueOnce({
+      jest.mocked(submitBatch).mockResolvedValueOnce({
         opHash: "mockHash",
       } as BatchWalletOperation);
 
@@ -190,7 +189,7 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(submitBatch as jest.Mock).toHaveBeenCalledWith(
+      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
         [
           {
             type: "fa2",
@@ -260,7 +259,7 @@ describe("<SendForm />", () => {
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
 
-      expect(estimate as jest.Mock).toHaveBeenCalledWith(
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(
         {
           type: "implicit",
           content: [
@@ -280,7 +279,7 @@ describe("<SendForm />", () => {
       );
 
       fillPassword("mockPass");
-      (submitBatch as jest.Mock).mockResolvedValueOnce({
+      jest.mocked(submitBatch).mockResolvedValueOnce({
         opHash: "mockHash",
       } as BatchWalletOperation);
 
@@ -302,7 +301,7 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(submitBatch as jest.Mock).toHaveBeenCalledWith(
+      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
         [
           {
             type: "fa1.2",
@@ -363,7 +362,7 @@ describe("<SendForm />", () => {
       await fillFormAndSimulate();
 
       fillPassword("mockPass");
-      (submitBatch as jest.Mock).mockResolvedValueOnce({
+      jest.mocked(submitBatch).mockResolvedValueOnce({
         opHash: "mockHash",
       } as BatchWalletOperation);
 
@@ -385,7 +384,7 @@ describe("<SendForm />", () => {
       });
 
       const contractAddress = nft.token.contract.address as string;
-      expect(submitBatch as jest.Mock).toHaveBeenCalledWith(
+      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
         [
           {
             type: "fa2",
@@ -450,7 +449,7 @@ describe("<SendForm />", () => {
 
     test("User can acomplish a tez proposal", async () => {
       mockEstimatedFee(12345);
-      (proposeMultisigLambda as jest.Mock).mockResolvedValueOnce({
+      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
 
@@ -504,7 +503,7 @@ describe("<SendForm />", () => {
 
     test("User can acomplish an FA2 proposal", async () => {
       mockEstimatedFee(12345);
-      (proposeMultisigLambda as jest.Mock).mockResolvedValueOnce({
+      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
       const multisigPkh = multisigs[1].address.pkh;
@@ -563,7 +562,7 @@ describe("<SendForm />", () => {
         },
       };
       mockEstimatedFee(12345);
-      (proposeMultisigLambda as jest.Mock).mockResolvedValueOnce({
+      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
 

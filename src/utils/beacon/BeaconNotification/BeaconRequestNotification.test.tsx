@@ -40,7 +40,7 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 
 beforeEach(() => {
   mockEstimatedFee(10);
-  (submitBatch as jest.Mock).mockResolvedValue(BATCH_OP_HASH as BatchWalletOperation);
+  jest.mocked(submitBatch).mockResolvedValue(BATCH_OP_HASH as BatchWalletOperation);
   dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
 });
 
