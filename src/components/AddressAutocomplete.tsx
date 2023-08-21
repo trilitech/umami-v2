@@ -194,7 +194,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
           handleChange(e.target.value);
         }}
         autoComplete="off"
-        placeholder="Enter address or contact name"
+        placeholder="Paste tz address or select from accounts"
       />
       <Input
         {...register<U>(inputName, { required: "Invalid address or contact name", validate })}

@@ -66,7 +66,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
 
   const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: { ...formDefaultValues(props), quantity: 1 },
+    defaultValues: { quantity: 1, ...formDefaultValues(props) },
   });
   const {
     formState: { isValid, errors },
