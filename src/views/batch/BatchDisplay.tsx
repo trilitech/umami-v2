@@ -10,8 +10,6 @@ import {
   Tbody,
   Td,
   Text,
-  Th,
-  Thead,
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
@@ -20,7 +18,7 @@ import { FiExternalLink } from "react-icons/fi";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { AccountOperations } from "../../components/sendForm/types";
-import { Account, AccountType } from "../../types/Account";
+import { Account } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { formatTokenAmount, tokenSymbol } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
@@ -30,6 +28,8 @@ import { getIPFSurl } from "../../utils/token/nftUtils";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import colors from "../../style/colors";
+import pluralize from "pluralize";
+import { headerText } from "../../components/SendFlow/SignPageHeader";
 
 const renderAmount = (operation: Operation, getToken: TokenLookup) => {
   switch (operation.type) {
@@ -64,61 +64,41 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
   }
 };
 
-const RightPanel = ({
-  account,
-  onDelete,
-  onSend,
-}: {
-  account: Account;
-  onDelete: () => void;
-  onSend: () => void;
-}) => {
-  return (
-    <Flex bg={colors.gray[800]} w={292} p={4} flexDirection="column">
-      <Flex justifyContent="space-between">
-        <Button onClick={onSend} flex={1} mr={4}>
-          {account.type === AccountType.MULTISIG ? "Propose batch" : "Submit batch"}
-        </Button>
-
-        <IconButton onClick={onDelete} aria-label="Delete Batch" icon={<BsTrash />} />
-      </Flex>
-    </Flex>
-  );
-};
-
 export const BatchDisplay: React.FC<{
   account: Account;
   operations: AccountOperations;
-  onDelete: () => void;
-  onSend: () => void;
-}> = ({ account, operations, onDelete, onSend }) => {
+}> = ({ account, operations: accountOperations }) => {
+  const { operations, type: operationsType } = accountOperations;
   const network = useSelectedNetwork();
   const getToken = useGetToken();
 
   return (
     <Flex data-testid={`batch-table-${account.address.pkh}`} mb={4}>
-      <Box flex={1} bg={colors.gray[900]} p={4}>
-        <Flex justifyContent="space-between" ml={2} mr={2} mb={4}>
-          <AccountSmallTile ml={2} pkh={account.address.pkh} />
-          <Text color={colors.gray[400]}>
-            {/* TODO: use pluralize.js for that */}
-            {`${operations.operations.length} transaction${
-              operations.operations.length > 1 ? "s" : ""
-            }`}
-          </Text>
+      <Box flex={1}>
+        <Flex
+          justifyContent="space-between"
+          borderRadius="8px 8px 0 0"
+          p="20px 23px 20px 30px"
+          bg={colors.gray[800]}
+          verticalAlign="middle"
+        >
+          <Box pt="5px">
+            <AccountSmallTile pkh={account.address.pkh} />
+          </Box>
+          <Box justifyContent="space-between" verticalAlign="middle">
+            <Text color={colors.gray[400]} size="sm" display="inline-block">
+              {pluralize("transaction", operations.length, true)}
+            </Text>
+            <Button size="sm" variant="primary" ml="30px">
+              {headerText(operationsType, "batch")}
+            </Button>
+            <IconButton aria-label="remove-batch" ml="18px" size="sm" icon={<BsTrash />} />
+          </Box>
         </Flex>
         <TableContainer overflowX="unset" overflowY="unset">
           <Table>
-            <Thead position="sticky" top={0} zIndex="docked" bg={colors.gray[900]} borderRadius={4}>
-              <Tr>
-                <Th>Type:</Th>
-                <Th>Subject:</Th>
-                <Th>Contract:</Th>
-                <Th>Recipient:</Th>
-              </Tr>
-            </Thead>
             <Tbody>
-              {operations.operations.map((operation, i) => (
+              {operations.map((operation, i) => (
                 // TODO: add better key for operations
                 // If you add two 1-tez transfers to the same recipient, the key will be the same
                 // `i` should not be used in the key
@@ -136,10 +116,7 @@ export const BatchDisplay: React.FC<{
                     )}
                   </Td>
                   <Td>
-                    {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-                    {"recipient" in operation && operation.recipient && (
-                      <AddressPill address={operation.recipient} />
-                    )}
+                    {"recipient" in operation && <AddressPill address={operation.recipient} />}
                   </Td>
                 </Tr>
               ))}
@@ -147,7 +124,6 @@ export const BatchDisplay: React.FC<{
           </Table>
         </TableContainer>
       </Box>
-      <RightPanel account={account} onDelete={onDelete} onSend={onSend} />
     </Flex>
   );
 };
