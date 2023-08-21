@@ -117,12 +117,14 @@ const FormPage: React.FC<
                     required: "Amount is required",
                     max: {
                       value: prettyBalance.toString(),
-                      message: `Max quantity is ${prettyBalance}`,
+                      message: `Max amount is ${prettyBalance}`,
                     },
                   })}
                   placeholder="0"
                 />
-                <InputRightElement pr={3}>{tokenSymbol(token)}</InputRightElement>
+                <InputRightElement pr={3} data-testid="token-symbol">
+                  {tokenSymbol(token)}
+                </InputRightElement>
               </InputGroup>
               {/* TODO: make a custom FormErrorMessage because its styling cannot be applied through theme.ts */}
               {errors.prettyAmount && (

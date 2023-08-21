@@ -1,5 +1,5 @@
 import {
-  mockFA1Token,
+  mockFA1TokenRaw,
   mockImplicitAccount,
   mockImplicitAddress,
   mockNFTToken,
@@ -48,7 +48,7 @@ beforeEach(() => {
       hedgehoge(selectedAccount.address),
       tzBtsc(selectedAccount.address),
       uUSD(selectedAccount.address),
-      mockFA1Token(1, pkh, 123),
+      mockFA1TokenRaw(1, pkh, 123),
       mockNft,
     ])
   );
@@ -59,7 +59,7 @@ beforeEach(() => {
         hedgehoge(selectedAccount.address).token,
         tzBtsc(selectedAccount.address).token,
         uUSD(selectedAccount.address).token,
-        mockFA1Token(1, pkh, 123).token,
+        mockFA1TokenRaw(1, pkh, 123).token,
         mockNft.token,
       ],
     })

@@ -41,13 +41,16 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
             <FormLabel>Amount</FormLabel>
             <InputGroup>
               <Input
+                data-testid="token-amount"
                 isDisabled={true}
                 type="number"
                 variant="filled"
                 disabled={true}
                 value={formatTokenAmount(amount, token.metadata?.decimals)}
               />
-              <InputRightElement pr={3}>{tokenSymbol(token)}</InputRightElement>
+              <InputRightElement pr={3} data-testid="token-symbol">
+                {tokenSymbol(token)}
+              </InputRightElement>
             </InputGroup>
 
             <Flex my={3} alignItems="center" justifyContent="end" px={1}>

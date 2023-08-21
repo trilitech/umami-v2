@@ -6,9 +6,10 @@ import {
   MnemonicAccount,
   SocialAccount,
   MultisigAccount,
+  Account,
 } from "../types/Account";
 import { ContractAddress, ImplicitAddress } from "../types/Address";
-import { NFTBalance } from "../types/TokenBalance";
+import { FA2TokenBalance, NFTBalance, fromRaw } from "../types/TokenBalance";
 import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Transfer";
@@ -224,6 +225,18 @@ export const mockNFTToken = (index: number, pkh: string, balance = 1): RawTokenB
 
 export const mockFA2Token = (
   index: number,
+  account: Account,
+  balance = 1,
+  decimals = 4,
+  symbol = "KL2",
+  name = "Klondike2"
+): FA2TokenBalance =>
+  fromRaw(
+    mockFA2TokenRaw(index, account.address.pkh, balance, decimals, symbol, name)
+  ) as FA2TokenBalance;
+
+export const mockFA2TokenRaw = (
+  index: number,
   pkh: string,
   balance = 1,
   decimals = 4,
@@ -258,7 +271,7 @@ export const mockFA2Token = (
   };
 };
 
-export const mockFA1Token = (index: number, pkh: string, balance = 1): RawTokenBalance => {
+export const mockFA1TokenRaw = (index: number, pkh: string, balance = 1): RawTokenBalance => {
   return {
     id: 10897662672897,
     account: {

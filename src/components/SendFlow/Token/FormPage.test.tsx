@@ -1,9 +1,9 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockNFT } from "../../../mocks/factories";
+import { mockFA2Token, mockFA2TokenRaw, mockImplicitAccount } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import FormPage, { FormValues } from "./FormPage";
 import { FormPagePropsWithSender } from "../utils";
-import { NFTBalance } from "../../../types/TokenBalance";
+import { FA2TokenBalance } from "../../../types/TokenBalance";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { makeFormOperations } from "../../sendForm/types";
@@ -14,10 +14,17 @@ import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import store from "../../../utils/redux/store";
 import SignPage from "./SignPage";
 import { mockEstimatedFee } from "../../../mocks/helpers";
+import assetsSlice from "../../../utils/redux/slices/assetsSlice";
 
-const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
+const mockAccount = mockImplicitAccount(0);
+const mocktTokenRaw = mockFA2TokenRaw(0, mockAccount.address.pkh);
+const mockToken = mockFA2Token(0, mockAccount);
+const fixture = (
+  props: FormPagePropsWithSender<FormValues>,
+  token: FA2TokenBalance = mockToken
+) => (
   <Modal isOpen={true} onClose={() => {}}>
-    <FormPage {...props} nft={nft} />
+    <FormPage {...props} token={token} />
   </Modal>
 );
 
@@ -32,54 +39,36 @@ describe("<FormPage />", () => {
     it("renders a form with default form values", async () => {
       render(
         fixture({
-          sender: mockImplicitAccount(0),
+          sender: mockAccount,
           form: {
-            sender: mockImplicitAccount(0).address.pkh,
-            quantity: 1,
+            sender: mockAccount.address.pkh,
+            prettyAmount: "1",
             recipient: mockImplicitAccount(1).address.pkh,
           },
         })
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
+        expect(screen.getByLabelText("From")).toHaveValue(mockAccount.address.pkh);
       });
       expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
-      expect(screen.getByTestId("quantity-input")).toHaveValue(1);
+      expect(screen.getByLabelText("Amount")).toHaveValue(1);
     });
   });
 
-  describe("nft", () => {
-    it("displays the correct name", async () => {
+  describe("token", () => {
+    it("displays the correct token symbol", async () => {
       render(
-        fixture(
-          {
-            sender: mockImplicitAccount(0),
-          },
-          mockNFT(1, "10")
-        )
+        fixture({
+          sender: mockAccount,
+        })
       );
 
       await waitFor(() => {
-        expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
+        expect(screen.getByTestId("token-symbol")).toHaveTextContent(
+          mockToken.metadata?.symbol as string
+        );
       });
-      expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string);
-    });
-
-    it("renders the correct balance", async () => {
-      render(
-        fixture(
-          {
-            sender: mockImplicitAccount(0),
-          },
-          mockNFT(1, "10")
-        )
-      );
-
-      await waitFor(() => {
-        expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
-      });
-      expect(screen.getByTestId("out-of-nft")).toHaveTextContent("10");
     });
   });
 
@@ -88,7 +77,7 @@ describe("<FormPage />", () => {
       it("is required", async () => {
         render(
           fixture({
-            sender: mockImplicitAccount(0),
+            sender: mockAccount,
           })
         );
 
@@ -103,7 +92,7 @@ describe("<FormPage />", () => {
       it("allows only valid addresses", async () => {
         render(
           fixture({
-            sender: mockImplicitAccount(0),
+            sender: mockAccount,
           })
         );
 
@@ -117,7 +106,7 @@ describe("<FormPage />", () => {
         });
 
         fireEvent.change(screen.getByLabelText("To"), {
-          target: { value: mockImplicitAccount(0).address.pkh },
+          target: { value: mockAccount.address.pkh },
         });
 
         await waitFor(() => {
@@ -126,51 +115,42 @@ describe("<FormPage />", () => {
       });
     });
 
-    describe("quantity", () => {
-      it("doesn't allow values < 1", async () => {
-        render(
-          fixture({
-            sender: mockImplicitAccount(0),
-          })
-        );
-        fireEvent.change(screen.getByTestId("quantity-input"), { target: { value: "0" } });
-        fireEvent.blur(screen.getByTestId("quantity-input"));
-        await waitFor(() => {
-          expect(screen.getByTestId("quantity-error")).toHaveTextContent("Min quantity is 1");
-        });
-      });
-
-      it("doesn't allow values above the nft balance", async () => {
+    describe("amount", () => {
+      it("doesn't allow values above the token balance", async () => {
         render(
           fixture(
             {
-              sender: mockImplicitAccount(0),
+              sender: mockAccount,
             },
-            mockNFT(1, "5")
+            mockFA2Token(1, mockAccount, 5, 0)
           )
         );
-        fireEvent.change(screen.getByTestId("quantity-input"), { target: { value: "7" } });
-        fireEvent.blur(screen.getByTestId("quantity-input"));
+        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "7" } });
+        fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() => {
-          expect(screen.getByTestId("quantity-error")).toHaveTextContent("Max quantity is 5");
+          expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 5");
         });
       });
     });
 
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
-        store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
-        const sender = mockImplicitAccount(0);
+        store.dispatch(accountsSlice.actions.addAccount([mockAccount]));
+        store.dispatch(assetsSlice.actions.updateTokenBalance([mocktTokenRaw]));
+        const sender = mockAccount;
         render(
           <DynamicModalContext.Provider value={dynamicModalContextMock}>
-            {fixture({
-              sender,
-              form: {
-                sender: sender.address.pkh,
-                recipient: mockImplicitAccount(1).address.pkh,
-                quantity: 1,
+            {fixture(
+              {
+                sender,
+                form: {
+                  sender: sender.address.pkh,
+                  recipient: mockImplicitAccount(1).address.pkh,
+                  prettyAmount: "1",
+                },
               },
-            })}
+              mockFA2Token(0, mockAccount, 2, 0)
+            )}
           </DynamicModalContext.Provider>
         );
         const submitButton = screen.getByText("Preview");
@@ -179,20 +159,20 @@ describe("<FormPage />", () => {
         });
         fireEvent.click(submitButton);
         mockEstimatedFee(100);
-        const operations = makeFormOperations(sender, mockImplicitAccount(0), [
+        const operations = makeFormOperations(sender, mockAccount, [
           {
             type: "fa2",
             amount: "1",
             sender: sender.address,
             recipient: mockImplicitAccount(1).address,
-            contract: parseContractPkh(mockNFT(1).contract),
-            tokenId: mockNFT(1).tokenId,
+            contract: parseContractPkh(mockToken.contract),
+            tokenId: mockToken.tokenId,
           },
         ]);
         await waitFor(() => {
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
             <SignPage
-              data={{ nft: mockNFT(1) }}
+              data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
               mode="single"
               goBack={expect.any(Function)}
               operations={operations}
