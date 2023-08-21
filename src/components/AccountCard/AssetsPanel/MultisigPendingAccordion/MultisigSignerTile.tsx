@@ -80,7 +80,7 @@ const getKind = (signerAccount?: ImplicitAccount, contactName?: string) => {
     return "contact";
   }
 
-  return signerAccount?.type || "unknownContact";
+  return signerAccount?.type || "unknown";
 };
 
 const getMultisigSignerState = ({

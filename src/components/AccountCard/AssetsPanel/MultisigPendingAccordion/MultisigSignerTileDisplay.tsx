@@ -2,6 +2,7 @@ import React from "react";
 import { AccountType } from "../../../../types/Account";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTileDisplay";
 import { getIcon } from "../../../AccountTile/getIcon";
+import { AddressKind } from "../../../AccountTile/AddressKind";
 import MultisigActionButton from "./MultisigActionButton";
 
 export type MultisigSignerState =
@@ -16,17 +17,12 @@ export const MultisigSignerTileDisplay: React.FC<{
   onClickApproveExecute: () => void;
   signerState: MultisigSignerState;
   isLoading?: boolean;
-  kind:
-    | AccountType.LEDGER
-    | AccountType.MNEMONIC
-    | AccountType.SOCIAL
-    | "contact"
-    | "unknownContact";
+  kind: Exclude<AddressKind, AccountType.MULTISIG>;
 }> = ({ pkh, label, isLoading = false, kind, ...rest }) => {
   return (
     <AccountTileBase
       icon={getIcon(kind, pkh)}
-      leftElement={<LabelAndAddress label={label} pkh={pkh} fullPkh={kind === "unknownContact"} />}
+      leftElement={<LabelAndAddress label={label} pkh={pkh} fullPkh={kind === "unknown"} />}
       rightElement={<MultisigActionButton isLoading={isLoading} {...rest} />}
     />
   );

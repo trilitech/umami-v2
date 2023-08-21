@@ -7,6 +7,7 @@ import SocialIcon from "../../assets/icons/Social";
 import colors from "../../style/colors";
 import { AccountType } from "../../types/Account";
 import { Identicon } from "../Identicon";
+import { AddressKind } from "./AddressKind";
 
 const Wrapper = chakra(Flex, {
   baseStyle: {
@@ -24,7 +25,7 @@ const iconProps = {
   width: "28px",
 };
 
-export const getIcon = (kind: AccountType | "contact" | "unknownContact", address?: string) => {
+export const getIcon = (kind: AddressKind, address?: string) => {
   switch (kind) {
     case "contact": {
       return (
@@ -33,7 +34,7 @@ export const getIcon = (kind: AccountType | "contact" | "unknownContact", addres
         </Wrapper>
       );
     }
-    case "unknownContact": {
+    case "unknown": {
       return (
         <Wrapper>
           <UnknownContactIcon {...iconProps} />
