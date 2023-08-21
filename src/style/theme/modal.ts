@@ -10,9 +10,15 @@ const baseStyle = definePartsStyle({
   dialog: {
     paddint: "40px",
     _dark: {
-      bg: colors.gray[900], // TODO: add opacity & blur
+      bg: colors.gray[900],
       border: "1px solid",
       borderColor: colors.gray[700],
+      borderRadius: "8px",
+    },
+  },
+  overlay: {
+    _dark: {
+      bg: "rgba(0, 0, 0, 0.85)",
     },
   },
 });
