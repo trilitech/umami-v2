@@ -5,24 +5,24 @@ import {
   mockImplicitAccount,
   mockImplicitAddress,
 } from "../../../mocks/factories";
-import { CreateForm, MultisigFields } from "./CreateForm";
+import { FormPage, FormValues } from "./FormPage";
 import store from "../../../utils/redux/store";
 import { multisigs } from "../../../mocks/multisig";
 import { render } from "../../../mocks/testUtils";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import { makeFormOperations } from "../../../components/sendForm/types";
+import { makeFormOperations } from "../../sendForm/types";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import BigNumber from "bignumber.js";
-import { DynamicModalContext } from "../../../components/DynamicModal";
+import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
-import SignPage from "../../../components/SendFlow/SignPage";
+import SignPage from "./SignPage";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 
-const fixture = (formValues?: MultisigFields) => {
+const fixture = (formValues?: FormValues) => {
   return (
     <Modal isOpen={true} onClose={() => {}}>
-      <CreateForm form={formValues} />
+      <FormPage form={formValues} />
     </Modal>
   );
 };
@@ -31,7 +31,7 @@ beforeEach(() => {
   store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
 });
 
-describe("CreateForm", () => {
+describe("FormPage", () => {
   describe("name", () => {
     it("is empty by default", () => {
       render(fixture());
@@ -273,6 +273,12 @@ describe("CreateForm", () => {
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <SignPage
           mode="single"
+          data={{
+            sender: mockImplicitAccount(0).address.pkh,
+            threshold: 1,
+            signers: [{ val: mockImplicitAddress(1).pkh }],
+            name: "some name",
+          }}
           goBack={expect.any(Function)}
           operations={operations}
           fee={new BigNumber(100)}

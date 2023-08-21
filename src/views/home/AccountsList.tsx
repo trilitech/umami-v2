@@ -26,7 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
-import { CreateForm } from "./Multisig/CreateForm";
+import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -169,7 +169,7 @@ export const AccountsList: React.FC<{
         <NestedScroll>
           {compact(accountTiles)}
           <Button
-            onClick={() => openWith(<CreateForm />)}
+            onClick={() => openWith(<FormPage />)}
             width="100%"
             bg="umami.black"
             border="1px dashed"
