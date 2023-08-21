@@ -7,7 +7,7 @@ import { MultisigSignerTileDisplay } from "./MultisigSignerTileDisplay";
 const pkh = mockImplicitAccount(0).address.pkh;
 
 describe("<MultisigSignerTileDisplay />", () => {
-  it("renders the right icon and a shrinked address given an account type", () => {
+  it("renders the right icon and with a shrinked address for known addresses", () => {
     const shrinkedAddress = formatPkh(pkh);
     render(
       <MultisigSignerTileDisplay
@@ -57,7 +57,7 @@ describe("<MultisigSignerTileDisplay />", () => {
     expect(screen.getByText(shrinkedAddress)).toBeInTheDocument();
   });
 
-  it("should render correct icon and full address on unknown accounts", () => {
+  it("renders the right icon and a full address for unknown addresses", () => {
     render(
       <MultisigSignerTileDisplay
         kind="unknown"
