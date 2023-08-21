@@ -64,6 +64,18 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
   }
 };
 
+const RightHeader = ({ operations }: { operations: AccountOperations }) => (
+  <Box justifyContent="space-between" verticalAlign="middle">
+    <Text color={colors.gray[400]} size="sm" display="inline-block">
+      {pluralize("transaction", operations.operations.length, true)}
+    </Text>
+    <Button size="sm" variant="primary" ml="30px">
+      {headerText(operations.type, "batch")}
+    </Button>
+    <IconButton aria-label="remove-batch" ml="18px" w="38px" size="sm" icon={<BsTrash />} />
+  </Box>
+);
+
 export const BatchDisplay: React.FC<{
   account: Account;
   operations: AccountOperations;
@@ -123,6 +135,17 @@ export const BatchDisplay: React.FC<{
             </Tbody>
           </Table>
         </TableContainer>
+        {operations.length > 10 && (
+          <Flex
+            justifyContent="end"
+            borderRadius="0 0 8px 8px"
+            p="20px 23px 20px 30px"
+            bg={colors.gray[800]}
+            verticalAlign="middle"
+          >
+            <RightHeader operations={accountOperations} />
+          </Flex>
+        )}
       </Box>
     </Flex>
   );
