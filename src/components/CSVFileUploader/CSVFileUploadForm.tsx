@@ -11,6 +11,7 @@ import {
   useToast,
   Text,
   Flex,
+  ModalContent,
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
 import { FormProvider, useForm } from "react-hook-form";
@@ -26,19 +27,22 @@ import { parseOperation } from "./utils";
 import { makeFormOperations } from "../sendForm/types";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { FormErrorMessage } from "../FormErrorMessage";
+import { useContext } from "react";
+import { DynamicModalContext } from "../DynamicModal";
 
 type FormFields = {
   sender: RawPkh;
   file: FileList;
 };
 
-const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
+const CSVFileUploadForm = () => {
   const network = useSelectedNetwork();
   const toast = useToast();
   const getToken = useGetToken();
   const dispatch = useAppDispatch();
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
+  const { onClose } = useContext(DynamicModalContext);
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const form = useForm<FormFields>({
@@ -82,39 +86,41 @@ const CSVFileUploadForm = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalCloseButton />
-        <ModalHeader textAlign="center">Load CSV file</ModalHeader>
-        <Text textAlign="center">Select an account and then upload the CSV file.</Text>
-        <ModalBody>
-          <FormControl paddingY={5} isInvalid={!!errors.sender}>
-            <OwnedAccountsAutocomplete label="From" inputName="sender" allowUnknown={false} />
-            {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
-          </FormControl>
+      <ModalContent>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ModalCloseButton />
+          <ModalHeader textAlign="center">Load CSV file</ModalHeader>
+          <Text textAlign="center">Select an account and then upload the CSV file.</Text>
+          <ModalBody>
+            <FormControl paddingY={5} isInvalid={!!errors.sender}>
+              <OwnedAccountsAutocomplete label="From" inputName="sender" allowUnknown={false} />
+              {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
+            </FormControl>
 
-          <FormControl pt={5} isInvalid={!!errors.file}>
-            <FormLabel>Select CSV</FormLabel>
-            <Flex>
-              <Input
-                p={2}
-                {...form.register("file", { required: "File is required" })}
-                accept=".csv"
-                type="file"
-                variant="unstyled"
-              />
-            </Flex>
-            {errors.file && <FormErrorMessage mt={0}>{errors.file.message}</FormErrorMessage>}
-          </FormControl>
-        </ModalBody>
+            <FormControl pt={5} isInvalid={!!errors.file}>
+              <FormLabel>Select CSV</FormLabel>
+              <Flex>
+                <Input
+                  p={2}
+                  {...form.register("file", { required: "File is required" })}
+                  accept=".csv"
+                  type="file"
+                  variant="unstyled"
+                />
+              </Flex>
+              {errors.file && <FormErrorMessage mt={0}>{errors.file.message}</FormErrorMessage>}
+            </FormControl>
+          </ModalBody>
 
-        <ModalFooter>
-          <Box width="100%">
-            <Button isDisabled={!isValid} isLoading={isLoading} width="100%" type="submit" mb={2}>
-              Upload
-            </Button>
-          </Box>
-        </ModalFooter>
-      </form>
+          <ModalFooter>
+            <Box width="100%">
+              <Button isDisabled={!isValid} isLoading={isLoading} width="100%" type="submit" mb={2}>
+                Upload
+              </Button>
+            </Box>
+          </ModalFooter>
+        </form>
+      </ModalContent>
     </FormProvider>
   );
 };

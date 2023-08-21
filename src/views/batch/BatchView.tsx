@@ -1,19 +1,21 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import { TfiNewWindow } from "react-icons/tfi";
 import CSVFileUploader from "../../components/CSVFileUploader";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
-import { useFirstAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
+import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
 import NoItems from "../../components/NoItems";
 import { useClearBatch } from "../../utils/hooks/assetsHooks";
-import useCSVFileUploadModal from "../../components/CSVFileUploader/useCSVFileUploadModal";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import SendTezForm from "../../components/SendFlow/Tez/FormPage";
+import CSVFileUploadForm from "../../components/CSVFileUploader/CSVFileUploadForm";
 
 export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (
@@ -47,10 +49,9 @@ const BatchView = () => {
   const getAccount = useGetOwnedAccount();
   const clearBatch = useClearBatch();
 
+  const { openWith } = useContext(DynamicModalContext);
   const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
   const { onOpen, element: confirmationElement, onClose } = useConfirmation();
-  const ownerAccount = useFirstAccount();
-  const { modalElement: csvUploadModalElement, onOpen: onOpenCsvUpload } = useCSVFileUploadModal();
 
   const batchEls = Object.entries(batches).map(([pkh, operations]) => {
     const account = getAccount(pkh);
@@ -95,17 +96,14 @@ const BatchView = () => {
           <NoItems
             text="Your batch is currently empty"
             primaryText="Start a Batch"
-            onClickPrimary={() =>
-              openSendForm({ mode: { type: "tez" }, sender: ownerAccount.address.pkh })
-            }
+            onClickPrimary={() => openWith(<SendTezForm />)}
             secondaryText="Load CSV file"
-            onClickSecondary={onOpenCsvUpload}
+            onClickSecondary={() => openWith(<CSVFileUploadForm />)}
           />
         )}
       </Box>
       {sendFormModalEl}
       {confirmationElement}
-      {csvUploadModalElement}
     </Flex>
   );
 };
