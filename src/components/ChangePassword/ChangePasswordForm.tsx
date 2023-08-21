@@ -141,6 +141,7 @@ export const ChangePasswordForm: React.FC = () => {
               isLoading={isLoading}
               w="100%"
               variant="primary"
+              type="submit"
             >
               Submit
             </Button>
