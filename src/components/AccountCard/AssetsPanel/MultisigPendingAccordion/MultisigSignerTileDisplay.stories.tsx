@@ -44,7 +44,7 @@ export const AwaitingApprovalUnknownAddress: Story = {
     label: "Multisig signer",
     pkh,
     signerState: "awaitingApprovalByExternalSigner",
-    kind: "unknownContact",
+    kind: "unknown",
   },
 };
 
