@@ -41,13 +41,17 @@ export const AccountTileBase: React.FC<
   );
 };
 
-export const LabelAndAddress: React.FC<{ label?: string; pkh: string }> = ({ label, pkh }) => {
+export const LabelAndAddress: React.FC<{ label?: string; pkh: string; fullPkh?: boolean }> = ({
+  label,
+  pkh,
+  fullPkh = false,
+}) => {
   return (
     <Box m={4} data-testid="account-identifier">
       {label && <Heading size="md">{label}</Heading>}
       <Flex alignItems="center">
         <Text size="sm" color="text.dark">
-          {formatPkh(pkh)}
+          {fullPkh ? pkh : formatPkh(pkh)}
         </Text>
       </Flex>
     </Box>
