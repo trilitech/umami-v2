@@ -42,6 +42,7 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
               color={colors.gray[50]}
               borderRadius="6px"
               mb="24px"
+              data-testid="contract-name"
             >
               {name}
             </Text>
@@ -59,7 +60,9 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
               <Text color={colors.gray[450]} fontWeight="600" mr="2px">
                 Fee:
               </Text>
-              <Text color={colors.gray[400]}>{mutezToPrettyTez(fee)}</Text>
+              <Text color={colors.gray[400]} data-testid="fee">
+                {mutezToPrettyTez(fee)}
+              </Text>
             </Flex>
             {/* TODO: add the Approvers list here when account tiles are ready */}
             <FormLabel>
@@ -71,6 +74,7 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
                 ml="16px"
                 borderRadius="6px"
                 color={colors.gray[300]}
+                data-testid="threshold"
               >
                 {threshold} out of {signers.length}
               </Text>

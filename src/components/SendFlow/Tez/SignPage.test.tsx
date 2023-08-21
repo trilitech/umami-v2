@@ -19,7 +19,7 @@ beforeEach(() => {
   store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
 });
 
-describe("<Sign />", () => {
+describe("<SignPage />", () => {
   describe("fee", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps = {
