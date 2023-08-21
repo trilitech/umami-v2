@@ -30,7 +30,7 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
 
   return (
     <FormProvider {...form}>
-      <ModalContent bg={colors.gray[900]} borderColor={colors.gray[700]} borderRadius="8px">
+      <ModalContent>
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>

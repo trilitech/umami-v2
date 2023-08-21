@@ -115,6 +115,7 @@ export const useConversionRate = () => useAppSelector(s => s.assets.conversionRa
 export const useTezToDollar = () => {
   const rate = useConversionRate();
 
+  // tezosBalance is in tez
   return (tezosBalance: string) => {
     return rate === null
       ? null

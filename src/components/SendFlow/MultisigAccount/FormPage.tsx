@@ -16,7 +16,7 @@ import {
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
-import SignPage from "../../../components/SendFlow/SignPage";
+import SignPage from "./SignPage";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
 import { isValidImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
@@ -24,15 +24,16 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../../../components/SendFlow/onSubmitFormActionHooks";
+import { formDefaultValues, FormPageProps } from "../utils";
 
-export type MultisigFields = {
+export type FormValues = {
   name: string;
   sender: RawPkh;
   signers: { val: RawPkh }[];
   threshold: number;
 };
 
-const toOperation = (formValues: MultisigFields) => ({
+const toOperation = (formValues: FormValues) => ({
   type: "contract_origination" as const,
   sender: parsePkh(formValues.sender),
   code: contract,
@@ -43,12 +44,10 @@ const toOperation = (formValues: MultisigFields) => ({
   ),
 });
 
-export const CreateForm: React.FC<{
-  form?: MultisigFields;
-}> = ({ form: defaultValues }) => {
-  const form = useForm<MultisigFields>({
+export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
+  const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: defaultValues || { signers: [{ val: "" }] },
+    defaultValues: { signers: [{ val: "" }], threshold: 1, ...formDefaultValues(props) },
   });
 
   const {
@@ -65,10 +64,12 @@ export const CreateForm: React.FC<{
     rules: { minLength: 1 },
   });
 
+  const signersCount = watch("signers").length;
+
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
-    signPageExtraData: undefined,
-    FormPage: CreateForm,
+    signPageExtraData: watch(),
+    FormPage,
     defaultFormPageProps: {},
     toOperation,
   });
@@ -77,8 +78,6 @@ export const CreateForm: React.FC<{
     onFormSubmitActionHandlers: [onSingleSubmit],
     isLoading,
   } = useHandleOnSubmitFormActions([openSignPage]);
-
-  const signers = watch("signers");
 
   return (
     <FormProvider {...form}>
@@ -126,7 +125,7 @@ export const CreateForm: React.FC<{
               const error = errors.signers && errors.signers[index];
               const label = `${index === 0 ? "Select " : ""}${index + 1} signer`;
               // TODO: make modal padding match figma and set the max width to 400px
-              const inputWidth = signers.length > 1 ? "390px" : "434px";
+              const inputWidth = signersCount > 1 ? "390px" : "434px";
               return (
                 <FormControl
                   data-testid={`signer-input-${index}`}
@@ -151,7 +150,7 @@ export const CreateForm: React.FC<{
                     }}
                     allowUnknown
                   />
-                  {signers.length > 1 && (
+                  {signersCount > 1 && (
                     <IconButton
                       size="md"
                       variant="ghost"
@@ -197,8 +196,8 @@ export const CreateForm: React.FC<{
                     {...register("threshold", {
                       required: "No. of approvals is required",
                       max: {
-                        value: signers.length,
-                        message: `Max no. of approvals is ${signers.length}`,
+                        value: signersCount,
+                        message: `Max no. of approvals is ${signersCount}`,
                       },
                       min: {
                         value: 1,
@@ -208,7 +207,7 @@ export const CreateForm: React.FC<{
                   />
                 </InputGroup>
                 <Text display="inline" ml="10px" data-testid="max-signers">
-                  out of {signers.length}
+                  out of {signersCount}
                 </Text>
               </FormLabel>
               {errors.threshold && (
