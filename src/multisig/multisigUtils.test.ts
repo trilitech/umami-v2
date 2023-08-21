@@ -103,9 +103,8 @@ describe("makeLambda", () => {
 
     it("can unset a delegate", () => {
       const result = makeLambda({
-        type: "delegation",
+        type: "undelegation",
         sender: multisigContractAddress,
-        recipient: undefined,
       });
 
       expect(result).toEqual([
@@ -170,7 +169,7 @@ describe("makeBatchLambda", () => {
         sender: multisigContractAddress,
         recipient: mockImplicitAddress(1),
       },
-      { type: "delegation", sender: multisigContractAddress, recipient: undefined },
+      { type: "undelegation", sender: multisigContractAddress },
     ]);
 
     const expected = [

@@ -20,6 +20,12 @@ export const operationsToBatchParams = (operations: Operation[]): ParamsWithKind
           source: operation.sender.pkh,
           delegate: operation.recipient?.pkh,
         };
+      case "undelegation":
+        return {
+          kind: OpKind.DELEGATION,
+          source: operation.sender.pkh,
+          delegate: undefined,
+        };
       case "fa1.2":
       case "fa2":
         return {

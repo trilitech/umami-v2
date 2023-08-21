@@ -57,6 +57,7 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
     case "tez":
       return prettyTezAmount(operation.amount);
     case "delegation":
+    case "undelegation":
     case "contract_origination":
       return "";
   }
@@ -118,7 +119,7 @@ export const BatchDisplay: React.FC<{
                 // TODO: add better key for operations
                 // If you add two 1-tez transfers to the same recipient, the key will be the same
                 // `i` should not be used in the key
-                <Tr key={operation.recipient + operation.type + i}>
+                <Tr key={operation.type + i}>
                   <Td>{operation.type !== "delegation" ? "Transaction" : operation.type}</Td>
                   <Td>{renderAmount(operation, getToken)}</Td>
                   <Td>
@@ -131,7 +132,12 @@ export const BatchDisplay: React.FC<{
                       />
                     )}
                   </Td>
-                  <Td>{operation.recipient && <AddressPill address={operation.recipient} />}</Td>
+                  <Td>
+                    {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+                    {"recipient" in operation && operation.recipient && (
+                      <AddressPill address={operation.recipient} />
+                    )}
+                  </Td>
                 </Tr>
               ))}
             </Tbody>

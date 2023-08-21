@@ -17,11 +17,28 @@ describe("<MultisigDecodedOperationItem/>", () => {
   it("displays delegate", () => {
     render(
       <MultisigDecodedOperationItem
-        operation={{ type: "delegation", sender: mockImplicitAddress(0), recipient: undefined }}
+        operation={{
+          type: "delegation",
+          sender: mockImplicitAddress(0),
+          recipient: mockImplicitAddress(1),
+        }}
       />
     );
 
-    expect(screen.getByTestId("decoded-item-delegate")).toHaveTextContent("Undelegate");
+    expect(screen.getByTestId("decoded-item-delegate")).toHaveTextContent("Delegate to");
+  });
+
+  it("displays undelegate", () => {
+    render(
+      <MultisigDecodedOperationItem
+        operation={{
+          type: "undelegation",
+          sender: mockImplicitAddress(0),
+        }}
+      />
+    );
+
+    expect(screen.getByTestId("decoded-item-undelegate")).toHaveTextContent("End Delegation");
   });
 
   it("amount renders correctly for tez", () => {

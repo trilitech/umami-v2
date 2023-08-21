@@ -37,7 +37,12 @@ export type FA12Operation = Omit<FA2Operation, "type" | "tokenId"> & {
 export type Delegation = {
   type: "delegation";
   sender: Address;
-  recipient: ImplicitAddress | undefined;
+  recipient: ImplicitAddress;
+};
+
+export type Undelegation = {
+  type: "undelegation";
+  sender: Address;
 };
 
 export type ContractOrigination = {
@@ -45,7 +50,6 @@ export type ContractOrigination = {
   sender: Address;
   code: MichelsonV1Expression[];
   storage: any;
-  recipient?: undefined; // TODO: remove this. is used for compatibility with the rest of the codebase
 };
 
 export type Operation =
@@ -53,6 +57,7 @@ export type Operation =
   | FA12Operation
   | FA2Operation
   | Delegation
+  | Undelegation
   | ContractOrigination;
 
 export type OperationWithFee = Operation & { fee: string };

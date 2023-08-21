@@ -22,7 +22,8 @@ const MultisigDecodedOperations: React.FC<{
     return (
       <Box>
         {operations.map((operation, i) => (
-          <MultisigDecodedOperationItem key={`${operation.recipient}${i}`} operation={operation} />
+          // it is safe to use index here because the array is static
+          <MultisigDecodedOperationItem key={i} operation={operation} />
         ))}
       </Box>
     );
