@@ -15,7 +15,7 @@ test("<MultisigSignerTileDisplay /> renders the right icon given an account type
 
   render(
     <MultisigSignerTileDisplay
-      kind="unknownContact"
+      kind="unknown"
       pkh="foo"
       signerState="approvable"
       onClickApproveExecute={() => {}}
