@@ -5,17 +5,17 @@ import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import store from "../../../utils/redux/store";
-import FormPage, { FormValues } from "./Form";
-import SignPage from "./Sign";
+import FormPage, { FormValues } from "./FormPage";
+import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
 import { makeFormOperations } from "../../sendForm/types";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
-import { FormProps } from "../utils";
 import { estimate } from "../../../utils/tezos";
 import { mockEstimatedFee } from "../../../mocks/helpers";
+import { FormPageProps } from "../utils";
 
-const fixture = (props: FormProps<FormValues> = {}) => (
+const fixture = (props: FormPageProps<FormValues> = {}) => (
   <Modal isOpen={true} onClose={() => {}}>
     <FormPage {...props} />
   </Modal>
@@ -238,6 +238,7 @@ describe("<Form />", () => {
         await waitFor(() => {
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
             <SignPage
+              data={undefined}
               mode="single"
               goBack={expect.any(Function)}
               operations={operations}

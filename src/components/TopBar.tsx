@@ -1,13 +1,14 @@
 import { Box, Button, Divider, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import { formatDistance } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FetchingIcon from "../assets/icons/Fetching";
 import colors from "../style/colors";
 import { useIsLoading, useLastTimeUpdated } from "../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { assetsActions } from "../utils/redux/slices/assetsSlice";
-import SendButton from "../views/home/SendButton";
 import useBuyTezModal from "./BuyTez/useBuyTezModal";
+import { DynamicModalContext } from "./DynamicModal";
+import SendTezForm from "./SendFlow/Tez/FormPage";
 
 export const emailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
@@ -61,6 +62,7 @@ const UpdateButton = () => {
 
 export const TopBar: React.FC<{ title: string }> = ({ title }) => {
   const { modalElement, onOpen } = useBuyTezModal();
+  const { openWith } = useContext(DynamicModalContext);
   return (
     <Box>
       <Flex h={24} justifyContent="space-between" alignItems="center">
@@ -77,7 +79,9 @@ export const TopBar: React.FC<{ title: string }> = ({ title }) => {
           <Button variant="tertiary" onClick={onOpen}>
             Buy Tez
           </Button>
-          <SendButton />
+          <Button ml={4} variant="primary" onClick={() => openWith(<SendTezForm />)}>
+            Send
+          </Button>
         </Box>
         {modalElement}
       </Flex>

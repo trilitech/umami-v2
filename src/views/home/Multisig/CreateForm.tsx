@@ -17,10 +17,13 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { BsTrash } from "react-icons/bs";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
 import SignPage from "../../../components/SendFlow/SignPage";
-import { useFormHelpers } from "../../../components/SendFlow/utils";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
 import { isValidImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
+import {
+  useHandleOnSubmitFormActions,
+  useOpenSignPageFormAction,
+} from "../../../components/SendFlow/onSubmitFormActionHooks";
 
 export type MultisigFields = {
   name: string;
@@ -29,7 +32,7 @@ export type MultisigFields = {
   threshold: number;
 };
 
-const formValuesToOperation = (formValues: MultisigFields) => ({
+const toOperation = (formValues: MultisigFields) => ({
   type: "contract_origination" as const,
   sender: parsePkh(formValues.sender),
   code: contract,
@@ -62,12 +65,18 @@ export const CreateForm: React.FC<{
     rules: { minLength: 1 },
   });
 
-  const { isLoading, onSingleSubmit } = useFormHelpers(
-    {},
-    CreateForm,
+  const openSignPage = useOpenSignPageFormAction({
     SignPage,
-    formValuesToOperation
-  );
+    signPageExtraData: undefined,
+    FormPage: CreateForm,
+    defaultFormPageProps: {},
+    toOperation,
+  });
+
+  const {
+    onFormSubmitActionHandlers: [onSingleSubmit],
+    isLoading,
+  } = useHandleOnSubmitFormActions([openSignPage]);
 
   const signers = watch("signers");
 

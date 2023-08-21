@@ -20,8 +20,13 @@ import { TezOperation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormProps, FormSubmitButtons, useFormHelpers } from "../utils";
-import SignPage from "./Sign";
+import { formDefaultValues, FormPageProps, FormSubmitButtons } from "../utils";
+import SignPage from "./SignPage";
+import {
+  useAddToBatchFormAction,
+  useHandleOnSubmitFormActions,
+  useOpenSignPageFormAction,
+} from "../onSubmitFormActionHooks";
 
 export type FormValues = {
   sender: RawPkh;
@@ -29,21 +34,29 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-const formValuesToOperation = (formValues: FormValues): TezOperation => ({
+const toOperation = (formValues: FormValues): TezOperation => ({
   type: "tez",
   amount: tezToMutez(formValues.prettyAmount).toString(),
   recipient: parsePkh(formValues.recipient),
 });
 
-const FormPage: React.FC<FormProps<FormValues>> = props => {
+const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const senderSelectorDisabled = !!props.sender;
 
-  const { isLoading, onSingleSubmit, onAddToBatch } = useFormHelpers(
-    props,
-    FormPage,
+  const openSignPage = useOpenSignPageFormAction({
     SignPage,
-    formValuesToOperation
-  );
+    signPageExtraData: undefined,
+    FormPage,
+    defaultFormPageProps: props,
+    toOperation,
+  });
+
+  const addToBatch = useAddToBatchFormAction(toOperation);
+
+  const {
+    onFormSubmitActionHandlers: [onSingleSubmit, onBatchSubmit],
+    isLoading,
+  } = useHandleOnSubmitFormActions([openSignPage, addToBatch]);
 
   const form = useForm<FormValues>({
     mode: "onBlur",
@@ -121,7 +134,7 @@ const FormPage: React.FC<FormProps<FormValues>> = props => {
               isLoading={isLoading}
               isValid={isValid}
               onSingleSubmit={handleSubmit(onSingleSubmit)}
-              onAddToBatch={handleSubmit(onAddToBatch)}
+              onAddToBatch={handleSubmit(onBatchSubmit)}
             />
           </ModalFooter>
         </form>

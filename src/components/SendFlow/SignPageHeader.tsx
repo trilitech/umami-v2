@@ -46,7 +46,7 @@ export const SignPageHeader: React.FC<{
         {headerText(operationsType, mode)}
       </Text>
       <Text textAlign="center" size="sm" color={colors.gray[400]}>
-        Confirm the transaction by signing it with your private key.
+        Enter your password to confirm this transaction.
       </Text>
       <ModalCloseButton />
     </ModalHeader>

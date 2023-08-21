@@ -14,7 +14,7 @@ import {
 import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { DynamicModalContext } from "../DynamicModal";
 import { useReceiveModal } from "../ReceiveModal";
-import SendTezForm from "../SendFlow/Tez/Form";
+import SendTezForm from "../SendFlow/Tez/FormPage";
 import { AccountCardDisplay } from "./AccountCardDisplay";
 
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {

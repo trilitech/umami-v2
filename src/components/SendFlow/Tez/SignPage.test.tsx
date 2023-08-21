@@ -3,7 +3,7 @@ import { mockImplicitAccount, mockImplicitAddress } from "../../../mocks/factori
 import { render, screen } from "../../../mocks/testUtils";
 import { makeFormOperations } from "../../sendForm/types";
 import { SignPageProps } from "../utils";
-import SignPage from "./Sign";
+import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
 import store from "../../../utils/redux/store";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -32,6 +32,7 @@ describe("<Sign />", () => {
         ]),
         fee: new BigNumber(1234567),
         mode: "single",
+        data: undefined,
       };
       render(fixture(props));
       expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);

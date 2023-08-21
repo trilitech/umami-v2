@@ -1,4 +1,4 @@
-import { Box, Button, useToast } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { RawPkh } from "../../types/Address";
 import {
@@ -7,8 +7,6 @@ import {
   useGetOwnedAccount,
 } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import { useAppDispatch } from "../../utils/redux/hooks";
-import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { DynamicModalContext } from "../DynamicModal";
 import { FormOperations, makeFormOperations } from "../sendForm/types";
 import BigNumber from "bignumber.js";
@@ -21,79 +19,30 @@ import { SuccessStep } from "../sendForm/steps/SuccessStep";
 import { estimate, TEZ } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
 
-export type FormProps<T> = { sender?: Account; form?: T };
+// Convert given optional fields to required
+// For example:
+// type A = {a?:number, b:string}
+// RequiredFields<A, "a"> === {a:number, b:string}
+type RequiredFields<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+
+export type FormPageProps<T> = { sender?: Account; form?: T };
+
+// FormPagePropsWithSender is the same as FormPageProps but with sender required,
+// Use this when we don't want to give the users options to select the sender
+// (e.g. the nft and token form)
+export type FormPagePropsWithSender<T> = RequiredFields<FormPageProps<T>, "sender">;
+
+// Form values should always have a sender field.
+export type BaseFormValues = { sender: RawPkh };
 
 export type SignPageMode = "single" | "batch";
 
-export type SignPageProps = {
+export type SignPageProps<T = undefined> = {
   goBack?: () => void;
   operations: FormOperations;
   fee: BigNumber;
   mode: SignPageMode;
-};
-
-// contains the logic for both submit buttons: submit single operation and add to batch
-// should be used on the Send page
-// TODO: test this
-export const useFormHelpers = <FormValues extends { sender: RawPkh }>(
-  // the form might have some default values and in order to instantiate it again
-  // with the same values when to go back from the sign page we need to pass them here
-  defaultFormProps: FormProps<FormValues>,
-  // current form component
-  FormComponent: React.FC<FormProps<FormValues>>,
-  // the sign page the form should navigate to on single submit
-  SignPageComponent: React.FC<SignPageProps>,
-  buildOperation: (formValues: FormValues) => Operation
-) => {
-  const getAccount = useGetOwnedAccount();
-  const getSigner = useGetBestSignerForAccount();
-  const { openWith } = useContext(DynamicModalContext);
-  const dispatch = useAppDispatch();
-  const toast = useToast();
-  const network = useSelectedNetwork();
-  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-
-  const buildFormOperations = (formValues: FormValues) => {
-    const sender = getAccount(formValues.sender);
-    const signer = getSigner(sender);
-    return makeFormOperations(sender, signer, [buildOperation(formValues)]);
-  };
-
-  const onSingleSubmit = async (formValues: FormValues) => {
-    return handleAsyncAction(async () => {
-      const operations = buildFormOperations(formValues);
-      openWith(
-        <SignPageComponent
-          goBack={() => {
-            openWith(
-              <FormComponent
-                {...defaultFormProps}
-                form={formValues} // whatever user selects on the form should override the default values
-              />
-            );
-          }}
-          operations={operations}
-          fee={await estimate(operations, network)}
-          mode="single"
-        />
-      );
-    });
-  };
-
-  const onAddToBatch = async (formValues: FormValues) => {
-    handleAsyncAction(async () => {
-      const operations = buildFormOperations(formValues);
-      await dispatch(estimateAndUpdateBatch(operations, network));
-      toast({ title: "Transaction added to batch!", status: "success" });
-    });
-  };
-
-  return {
-    isLoading,
-    onAddToBatch,
-    onSingleSubmit,
-    buildOperations: buildFormOperations,
-  };
+  data: T;
 };
 
 export const FormSubmitButtons = ({
@@ -136,7 +85,7 @@ export const FormSubmitButtons = ({
   );
 };
 
-export const formDefaultValues = <T,>({ sender, form }: FormProps<T>) => {
+export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
   if (form) {
     return form;
   } else if (sender) {
@@ -215,4 +164,16 @@ export const mutezToPrettyTez = (amount: BigNumber): string => {
     maximumFractionDigits: 6,
   });
   return `${formatter.format(amount.dividedBy(10 ** 6).toNumber())} ${TEZ}`;
+};
+
+export const useMakeFormOperations = <FormValues extends BaseFormValues>(
+  toOperation: (formValues: FormValues) => Operation
+): ((formValues: FormValues) => FormOperations) => {
+  const getAccount = useGetOwnedAccount();
+  const getSigner = useGetBestSignerForAccount();
+
+  return (formValues: FormValues) => {
+    const sender = getAccount(formValues.sender);
+    return makeFormOperations(sender, getSigner(sender), [toOperation(formValues)]);
+  };
 };

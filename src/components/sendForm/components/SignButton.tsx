@@ -21,6 +21,7 @@ import { useGetSecretKey } from "../../../utils/hooks/accountUtils";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { makeToolkit } from "../../../utils/tezos";
+import { MIN_LENGTH } from "../../Onboarding/masterPassword/password/EnterAndConfirmPassword";
 
 export const SignWithGoogleButton: React.FC<
   PropsWithChildren<{
@@ -53,13 +54,14 @@ const SignButton: React.FC<{
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<{ password: string }>({ mode: "onBlur" });
+    formState: { errors, isValid },
+  } = useForm<{ password: string }>({ mode: "onBlur", defaultValues: { password: "" } });
   const network = useSelectedNetwork();
   const getSecretKey = useGetSecretKey();
   const toast = useToast();
   const { isLoading: internalIsLoading, handleAsyncAction } = useAsyncActionHandler();
   const isLoading = internalIsLoading || externalIsLoading;
+  const buttonIsDisabled = isDisabled || !isValid;
 
   const onMnemonicSign = async ({ password }: { password: string }) =>
     handleAsyncAction(async () => {
@@ -102,7 +104,7 @@ const SignButton: React.FC<{
               autoComplete="off"
               {...register("password", {
                 required: "Password is required",
-                minLength: 4,
+                minLength: MIN_LENGTH,
               })}
               placeholder="Enter password..."
             />
@@ -114,7 +116,7 @@ const SignButton: React.FC<{
             width="100%"
             mt={2}
             isLoading={isLoading}
-            isDisabled={isDisabled}
+            isDisabled={buttonIsDisabled}
             type="submit"
           >
             {text || "Submit Transaction"}
@@ -122,7 +124,7 @@ const SignButton: React.FC<{
         </>
       )}
       {signer.type === AccountType.SOCIAL && (
-        <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={isDisabled}>
+        <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={buttonIsDisabled}>
           {text || "Sign with Google"}
         </SignWithGoogleButton>
       )}
@@ -132,7 +134,7 @@ const SignButton: React.FC<{
           variant="primary"
           width="100%"
           isLoading={isLoading}
-          isDisabled={isDisabled}
+          isDisabled={buttonIsDisabled}
         >
           {text || "Sign with Ledger"}
         </Button>
