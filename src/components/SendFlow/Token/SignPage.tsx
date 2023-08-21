@@ -38,6 +38,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
+            {/* TODO: Until we create a token tile we use a disabled input */}
             <FormLabel>Amount</FormLabel>
             <InputGroup>
               <Input

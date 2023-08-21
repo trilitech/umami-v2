@@ -3,12 +3,9 @@ import { useAccountsFilter } from "../../components/useAccountsFilter";
 import NoItems from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useGetAccountAllTokens } from "../../utils/hooks/assetsHooks";
-import { useSendFormModal } from "../home/useSendFormModal";
 import AccountTokensTile from "./AccountTokensTile";
 
 const TokensView = () => {
-  const { modalElement, onOpen } = useSendFormModal();
-
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
 
   const getTokens = useGetAccountAllTokens();
@@ -26,17 +23,10 @@ const TokensView = () => {
       ) : (
         <Box overflow="auto">
           {accountsWithTokens.map(([account, tokens]) => (
-            <AccountTokensTile
-              key={account.address.pkh}
-              tokens={tokens}
-              account={account}
-              onOpenSendModal={onOpen}
-            />
+            <AccountTokensTile key={account.address.pkh} tokens={tokens} account={account} />
           ))}
         </Box>
       )}
-
-      {modalElement}
     </Flex>
   );
 };

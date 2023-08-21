@@ -134,7 +134,7 @@ const FormPage: React.FC<
               )}
             </FormControl>
 
-            <FormControl my={8} isInvalid={!!errors.sender}>
+            <FormControl my={5} isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
                 isDisabled={true}
