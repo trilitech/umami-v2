@@ -15,7 +15,7 @@ const Wrapper = chakra(Flex, {
     p: "8px",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "umami.gray.500",
+    backgroundColor: colors.gray[500],
   },
 });
 
@@ -58,7 +58,7 @@ export const getIcon = (kind: AddressKind, address?: string) => {
     case AccountType.LEDGER: {
       return (
         <Wrapper>
-          <LedgerIcon {...iconProps} />
+          <LedgerIcon {...iconProps} color={colors.gray[400]} />
         </Wrapper>
       );
     }
