@@ -9,11 +9,13 @@ import { AccountType } from "../../types/Account";
 import { Identicon } from "../Identicon";
 
 const Wrapper = chakra(Flex, {
-  borderRadius: "4px",
-  p: "8px",
-  justifyContent: "center",
-  alignItems: "center",
-  backgroundColor: "umami.gray.500",
+  baseStyle: {
+    borderRadius: "4px",
+    p: "8px",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "umami.gray.500",
+  },
 });
 
 const iconProps = {
