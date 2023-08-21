@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import React, { PropsWithChildren } from "react";
 import { useForm } from "react-hook-form";
@@ -22,6 +14,7 @@ import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandle
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { makeToolkit } from "../../../utils/tezos";
 import { MIN_LENGTH } from "../../Onboarding/masterPassword/password/EnterAndConfirmPassword";
+import { FormErrorMessage } from "../../FormErrorMessage";
 
 export const SignWithGoogleButton: React.FC<
   PropsWithChildren<{

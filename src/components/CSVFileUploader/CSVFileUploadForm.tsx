@@ -11,7 +11,6 @@ import {
   useToast,
   Text,
   Flex,
-  FormErrorMessage,
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
 import { FormProvider, useForm } from "react-hook-form";
@@ -26,6 +25,7 @@ import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
 import { parseOperation } from "./utils";
 import { makeFormOperations } from "../sendForm/types";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { FormErrorMessage } from "../FormErrorMessage";
 
 type FormFields = {
   sender: RawPkh;

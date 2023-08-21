@@ -3,7 +3,6 @@ import {
   Button,
   Flex,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
@@ -26,6 +25,7 @@ import { useContactExists } from "../utils/hooks/contactsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 import { CopyableAddress } from "./CopyableText";
+import { FormErrorMessage } from "./FormErrorMessage";
 
 export const UpsertContactModal: FC<{
   title: string;

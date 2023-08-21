@@ -1,7 +1,6 @@
 import {
   Flex,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
@@ -28,6 +27,7 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
+import { FormErrorMessage } from "../../FormErrorMessage";
 
 export type FormValues = {
   quantity: number;

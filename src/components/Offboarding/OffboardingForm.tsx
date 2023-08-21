@@ -7,7 +7,6 @@ import {
   ModalFooter,
   Box,
   Button,
-  FormErrorMessage,
   Input,
   Checkbox,
   Divider,
@@ -16,6 +15,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import WarningIcon from "../../assets/icons/Warning";
 import colors from "../../style/colors";
 import { useReset } from "../../utils/hooks/accountHooks";
+import { FormErrorMessage } from "../FormErrorMessage";
 
 const CONFIRMATION_CODE = "wasabi";
 
