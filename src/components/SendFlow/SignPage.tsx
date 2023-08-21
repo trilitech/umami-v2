@@ -21,7 +21,7 @@ import { TezOperation } from "../../types/Operation";
 import { useGetImplicitAccount } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork, useTezToDollar } from "../../utils/hooks/assetsHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { estimateTotalFee, getTotal } from "../../views/batch/batchUtils";
+import { estimate, sumTez } from "../../utils/tezos";
 import { AvailableSignersAutocomplete, OwnedAccountsAutocomplete } from "../AddressAutocomplete";
 import SignButton from "../sendForm/components/SignButton";
 import { FormOperations } from "../sendForm/types";
@@ -61,7 +61,7 @@ export const getTezAmount = (operations: FormOperations): BigNumber | undefined 
       const amounts = operations.content
         .filter((op): op is TezOperation => op.type === "tez")
         .map(op => op.amount);
-      return getTotal(amounts);
+      return sumTez(amounts);
     }
   }
 };
@@ -121,7 +121,7 @@ const SignPage: React.FC<{
           ...operations,
           signer: getSigner(newSigner),
         };
-        setFee(await estimateTotalFee(operations, network));
+        setFee(await estimate(operations, network));
         setOperations(operationsWithNewSigner);
         setEstimationFailed(false);
       },

@@ -5,12 +5,12 @@ import { request } from "../utils/datocms/request";
 const fixture = () => <AnnouncementBanner />;
 
 jest.mock("../utils/datocms/request");
-const requestMock = request as jest.Mock;
+const requestMock = jest.mocked(request);
 
 describe("AnnouncementBanner", () => {
   // TODO: enable when AnnouncementBanner is fixed
   it.skip("displays text if a message has been set", async () => {
-    requestMock.mockReturnValue({
+    requestMock.mockResolvedValue({
       configuration: { maintenanceMessage: "hello" },
     });
     render(fixture());
@@ -21,7 +21,7 @@ describe("AnnouncementBanner", () => {
   });
 
   it("displays no text if a message is empty", async () => {
-    requestMock.mockReturnValue({ configuration: { maintenanceMessage: "" } });
+    requestMock.mockResolvedValue({ configuration: { maintenanceMessage: "" } });
     render(fixture());
     await waitFor(() => {
       expect(requestMock).toBeCalledTimes(1);

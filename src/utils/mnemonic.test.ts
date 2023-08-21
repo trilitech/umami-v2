@@ -7,10 +7,9 @@ import {
   defaultDerivationPathPattern,
   getDefaultDerivationPath,
 } from "./account/derivationPathUtils";
-jest.mock("./tezos");
 
-const addressExistsMock = addressExists as jest.Mock;
-const getFingerPrintMock = getFingerPrint as jest.Mock;
+const addressExistsMock = jest.mocked(addressExists);
+const getFingerPrintMock = jest.mocked(getFingerPrint);
 
 beforeEach(() => {
   getFingerPrintMock.mockResolvedValue("mockFingerPrint");

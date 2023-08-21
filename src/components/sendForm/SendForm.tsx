@@ -9,7 +9,7 @@ import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { getTotalFee, estimateOperations } from "../../views/batch/batchUtils";
+import { estimate } from "../../utils/tezos";
 import { FillStep } from "./steps/FillStep";
 import { SubmitStep } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
@@ -54,12 +54,9 @@ export const SendForm = ({
   const simulate = (operations: FormOperations) =>
     handleAsyncAction(
       async () => {
-        const estimates = await estimateOperations(operations, network);
+        const fee = await estimate(operations, network);
 
-        setTransferValues({
-          operations,
-          fee: String(getTotalFee(estimates)),
-        });
+        setTransferValues({ operations, fee: fee.toString() });
       },
       { title: "Invalid transaction" }
     );

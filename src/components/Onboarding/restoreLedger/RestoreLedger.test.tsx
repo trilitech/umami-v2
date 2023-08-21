@@ -6,11 +6,9 @@ import RestoreLedger from "./RestoreLedger";
 
 const closeModalMock = jest.fn(() => {});
 
-// TODO refactor mocks
-jest.mock("../../../utils/tezos/helpers");
 jest.mock("../../../utils/ledger/pk");
 
-const getPkMock = getPk as jest.Mock;
+const getPkMock = jest.mocked(getPk);
 
 const fixture = (closeModal: () => void) => {
   const account = {

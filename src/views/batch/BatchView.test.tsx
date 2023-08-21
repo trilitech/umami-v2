@@ -1,18 +1,18 @@
 import { TezosToolkit } from "@taquito/taquito";
 import { makeFormOperations } from "../../components/sendForm/types";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
-import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import {
   closeModal,
   dispatchMockAccounts,
   selectSender,
-  setBatchEstimationPerTransaction,
+  mockEstimatedFee,
 } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import store from "../../utils/redux/store";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
+import { makeToolkit, submitBatch } from "../../utils/tezos";
 import BatchView from "./BatchView";
 
 // These tests might take long in the CI
@@ -20,16 +20,16 @@ jest.setTimeout(10000);
 
 jest.mock("../../utils/hooks/accountUtils");
 
-const useGetSecretKeyMock = useGetSecretKey as jest.Mock;
+const useGetSecretKeyMock = jest.mocked(useGetSecretKey);
 
 const fixture = () => <BatchView />;
 
 beforeEach(() => {
   dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
-  setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
+  mockEstimatedFee(10);
 
-  useGetSecretKeyMock.mockReturnValue(() => "mockSk");
-  fakeTezosUtils.submitBatch.mockResolvedValue({ opHash: "foo" } as any);
+  useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");
+  jest.mocked(submitBatch).mockResolvedValue({ opHash: "foo" } as any);
 });
 
 const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh: string) => {
@@ -137,19 +137,7 @@ describe("<BatchView />", () => {
           TezosNetwork.MAINNET
         )
       );
-      fakeTezosUtils.makeToolkit.mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
-    });
-
-    it("should display fee total and subtotal for a given batch", async () => {
-      render(fixture());
-      const firstBatch = screen.getAllByTestId(/batch-table/i)[0];
-      const { getByLabelText } = within(firstBatch);
-      const subTotal = getByLabelText(/^sub-total$/i);
-      expect(subTotal).toHaveTextContent(/6 ꜩ/i);
-      const fee = getByLabelText(/^fee$/i);
-      expect(fee).toHaveTextContent(/0.00003 ꜩ/i);
-      const total = getByLabelText(/^total$/i);
-      expect(total).toHaveTextContent(/6.00003 ꜩ/i);
+      jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
     });
 
     test("a batch can be deleted by clicking the delete button and confirming", () => {
@@ -184,8 +172,6 @@ describe("<BatchView />", () => {
       const txsAmount = getByLabelText(/transactions-amount/i);
       expect(txsAmount).toHaveTextContent("3");
 
-      const subTotal = getByLabelText(/sub-total/i);
-      expect(subTotal).toHaveTextContent("6 ꜩ");
       expect(screen.getByRole("button", { name: /preview/i })).toBeInTheDocument();
     });
 
@@ -226,25 +212,22 @@ describe("<BatchView />", () => {
         "https://mainnet.tzkt.io/foo"
       );
 
-      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
+      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
         [
           {
             type: "tez",
             amount: "1000000",
             recipient: mockImplicitAddress(1),
-            fee: "10",
           },
           {
             type: "tez",
             amount: "2000000",
             recipient: mockImplicitAddress(2),
-            fee: "10",
           },
           {
             type: "tez",
             amount: "3000000",
             recipient: mockImplicitAddress(3),
-            fee: "10",
           },
         ],
         MOCK_TEZOS_TOOLKIT

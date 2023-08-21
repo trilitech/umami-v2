@@ -1,7 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { Estimate } from "@taquito/taquito";
 import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
-import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -14,6 +12,8 @@ import { makeFormOperations } from "../../sendForm/types";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { FormProps } from "../utils";
+import { estimate } from "../../../utils/tezos";
+import { mockEstimatedFee } from "../../../mocks/helpers";
 
 const fixture = (props: FormProps<FormValues> = {}) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -199,12 +199,11 @@ describe("<Form />", () => {
         expect(submitButton).toBeEnabled();
       });
       fireEvent.click(submitButton);
-      // TODO: change to estimateTotalFee instead because views shouldn't know
-      //       *how* we get the total fee
-      fakeTezosUtils.estimateBatch.mockRejectedValue(new Error("Some error occurred"));
+      const estimateMock = jest.mocked(estimate);
+      estimateMock.mockRejectedValue(new Error("Some error occurred"));
 
       await waitFor(() => {
-        expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledTimes(1);
+        expect(estimateMock).toHaveBeenCalledTimes(1);
       });
       expect(mockToast).toHaveBeenCalledWith({
         title: "Error",
@@ -232,7 +231,7 @@ describe("<Form />", () => {
           expect(submitButton).toBeEnabled();
         });
         fireEvent.click(submitButton);
-        fakeTezosUtils.estimateBatch.mockResolvedValue([{ suggestedFeeMutez: 100 } as Estimate]);
+        mockEstimatedFee(100);
         const operations = makeFormOperations(sender, mockImplicitAccount(0), [
           { type: "tez", amount: "1000000", recipient: mockImplicitAccount(1).address },
         ]);

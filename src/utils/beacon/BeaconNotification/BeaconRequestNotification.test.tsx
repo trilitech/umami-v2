@@ -16,16 +16,11 @@ import {
   objectOperationRequest,
 } from "../../../mocks/beacon";
 import { mockImplicitAccount } from "../../../mocks/factories";
-import { fakeTezosUtils } from "../../../mocks/fakeTezosUtils";
-import {
-  dispatchMockAccounts,
-  fillPassword,
-  setBatchEstimationPerTransaction,
-} from "../../../mocks/helpers";
+import { dispatchMockAccounts, fillPassword, mockEstimatedFee } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../../mocks/testUtils";
 import { walletClient } from "../beacon";
+import { submitBatch } from "../../tezos";
 
-jest.mock("../../tezos");
 jest.mock("../beacon");
 jest.mock("../../hooks/accountUtils", () => ({
   useGetSecretKey: () => () => "mockSk",
@@ -44,8 +39,8 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 );
 
 beforeEach(() => {
-  setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 10);
-  fakeTezosUtils.submitBatch.mockResolvedValue(BATCH_OP_HASH as BatchWalletOperation);
+  mockEstimatedFee(10);
+  jest.mocked(submitBatch).mockResolvedValue(BATCH_OP_HASH as BatchWalletOperation);
   dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
 });
 
@@ -201,10 +196,6 @@ describe("<BeaconRequestNotification />", () => {
     const txsAmount = getByLabelText(/transactions-amount/i);
     expect(txsAmount).toHaveTextContent("3");
 
-    const subTotal = getByLabelText(/sub-total/i);
-    expect(subTotal).toHaveTextContent("16 ꜩ");
-    expect(screen.getByRole("button", { name: /preview/i })).toBeInTheDocument();
-
     const previewBtn = screen.getByRole("button", { name: /preview/i });
     fireEvent.click(previewBtn);
 
@@ -225,12 +216,8 @@ describe("<BeaconRequestNotification />", () => {
 
     await waitFor(() => {
       expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
-      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
-      expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
-        "href",
-        "https://mainnet.tzkt.io/bar"
-      );
     });
+    expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://mainnet.tzkt.io/bar");
 
     expect(walletClient.respond).toHaveBeenCalledWith({
       id: objectOperationBatchRequest.id,

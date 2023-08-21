@@ -12,7 +12,6 @@ import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
 import { TezOperation } from "../../../types/Operation";
 import { useTezToDollar } from "../../../utils/hooks/assetsHooks";
-import { getTotal } from "../../../views/batch/batchUtils";
 import { AvailableSignersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { FormOperations } from "../../sendForm/types";
@@ -20,6 +19,7 @@ import { BigNumber } from "bignumber.js";
 import { mutezToTez } from "../../../utils/format";
 import { mutezToPrettyTez, SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
+import { sumTez } from "../../../utils/tezos";
 
 export const getTezAmount = (operations: FormOperations): BigNumber | undefined => {
   switch (operations.type) {
@@ -31,7 +31,7 @@ export const getTezAmount = (operations: FormOperations): BigNumber | undefined 
       const amounts = operations.content
         .filter((op): op is TezOperation => op.type === "tez")
         .map(op => op.amount);
-      return getTotal(amounts);
+      return sumTez(amounts);
     }
   }
 };

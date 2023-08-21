@@ -9,7 +9,6 @@ import {
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { estimateTotalFee } from "../../views/batch/batchUtils";
 import { DynamicModalContext } from "../DynamicModal";
 import { FormOperations, makeFormOperations } from "../sendForm/types";
 import BigNumber from "bignumber.js";
@@ -19,7 +18,7 @@ import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { TezosToolkit } from "@taquito/taquito";
 import { makeTransfer } from "../sendForm/util/execution";
 import { SuccessStep } from "../sendForm/steps/SuccessStep";
-import { TEZ } from "../../utils/tezos";
+import { estimate, TEZ } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
 
 export type FormProps<T> = { sender?: Account; form?: T };
@@ -74,7 +73,7 @@ export const useFormHelpers = <FormValues extends { sender: RawPkh }>(
             );
           }}
           operations={operations}
-          fee={await estimateTotalFee(operations, network)}
+          fee={await estimate(operations, network)}
           mode="single"
         />
       );
@@ -178,7 +177,7 @@ export const useSignPageHelpers = (
           ...operations,
           signer: getSigner(newSigner),
         };
-        setFee(await estimateTotalFee(operations, network));
+        setFee(await estimate(operations, network));
         setOperations(operationsWithNewSigner);
         setEstimationFailed(false);
       },

@@ -6,7 +6,6 @@ import {
   mockImplicitAddress,
   mockMultisigAccount,
 } from "../../../../mocks/factories";
-import { fakeTezosUtils } from "../../../../mocks/fakeTezosUtils";
 import { fillPassword } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
@@ -17,13 +16,18 @@ import { MultisigOperation } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import store from "../../../../utils/redux/store";
 import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
+import {
+  approveOrExecuteMultisigOperation,
+  estimateMultisigApproveOrExecute,
+  makeToolkit,
+} from "../../../../utils/tezos";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 
 const MOCK_TEZOS_TOOLKIT = {};
 beforeEach(() => {
-  (useGetSecretKey as jest.Mock).mockReturnValue(() => Promise.resolve("mockkey"));
-  fakeTezosUtils.makeToolkit.mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
+  jest.mocked(useGetSecretKey).mockReturnValue(() => Promise.resolve("mockkey"));
+  jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
 });
 
 describe("<MultisigPendingCard/>", () => {
@@ -70,11 +74,11 @@ describe("<MultisigPendingCard/>", () => {
       ...mockImplicitAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
-    fakeTezosUtils.estimateMultisigApproveOrExecute.mockResolvedValue({
+    jest.mocked(estimateMultisigApproveOrExecute).mockResolvedValue({
       suggestedFeeMutez: 33,
     } as Estimate);
 
-    fakeTezosUtils.approveOrExecuteMultisigOperation.mockResolvedValue({
+    jest.mocked(approveOrExecuteMultisigOperation).mockResolvedValue({
       hash: "mockHash",
     } as TransactionOperation);
 
@@ -96,7 +100,7 @@ describe("<MultisigPendingCard/>", () => {
     const dialog = await screen.findByRole("dialog");
     expect(dialog).toBeInTheDocument();
 
-    expect(fakeTezosUtils.estimateMultisigApproveOrExecute).toHaveBeenCalledWith(
+    expect(jest.mocked(estimateMultisigApproveOrExecute)).toHaveBeenCalledWith(
       {
         contract: mockContractAddress(0),
         operationId: executablePendingOp.id,
@@ -117,7 +121,7 @@ describe("<MultisigPendingCard/>", () => {
 
     await screen.findByText(/operation submitted/i);
 
-    expect(fakeTezosUtils.approveOrExecuteMultisigOperation).toHaveBeenCalledWith(
+    expect(jest.mocked(approveOrExecuteMultisigOperation)).toHaveBeenCalledWith(
       {
         contract: mockContractAddress(0),
         operationId: executablePendingOp.id,
@@ -132,11 +136,11 @@ describe("<MultisigPendingCard/>", () => {
       ...mockImplicitAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
-    fakeTezosUtils.estimateMultisigApproveOrExecute.mockResolvedValue({
+    jest.mocked(estimateMultisigApproveOrExecute).mockResolvedValue({
       suggestedFeeMutez: 33,
     } as Estimate);
 
-    fakeTezosUtils.approveOrExecuteMultisigOperation.mockResolvedValue({
+    jest.mocked(approveOrExecuteMultisigOperation).mockResolvedValue({
       hash: "mockHash",
     } as TransactionOperation);
 
@@ -156,7 +160,7 @@ describe("<MultisigPendingCard/>", () => {
     const dialog = await screen.findByRole("dialog");
     expect(dialog).toBeInTheDocument();
 
-    expect(fakeTezosUtils.estimateMultisigApproveOrExecute).toHaveBeenCalledWith(
+    expect(jest.mocked(estimateMultisigApproveOrExecute)).toHaveBeenCalledWith(
       {
         contract: mockContractAddress(0),
         operationId: approvablePendingOp.id,
@@ -177,7 +181,7 @@ describe("<MultisigPendingCard/>", () => {
 
     await screen.findByText(/operation submitted/i);
 
-    expect(fakeTezosUtils.approveOrExecuteMultisigOperation).toHaveBeenCalledWith(
+    expect(jest.mocked(approveOrExecuteMultisigOperation)).toHaveBeenCalledWith(
       {
         contract: mockContractAddress(0),
         operationId: approvablePendingOp.id,

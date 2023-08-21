@@ -13,7 +13,7 @@ import {
   fakeRestoreFromMnemonic,
   selectSender,
   fillPassword,
-  setBatchEstimationPerTransaction,
+  mockEstimatedFee,
 } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { AccountType, MnemonicAccount } from "../../types/Account";
@@ -29,16 +29,15 @@ import store from "../../utils/redux/store";
 import { SendForm } from "./SendForm";
 import { SendFormMode } from "./types";
 
-import { Estimate, TezosToolkit, TransactionOperation } from "@taquito/taquito";
+import { TezosToolkit, TransactionOperation } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { mock } from "jest-mock-extended";
-import { fakeTezosUtils } from "../../mocks/fakeTezosUtils";
 import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
 import { TezosNetwork } from "../../types/TezosNetwork";
+import { estimate, makeToolkit, proposeMultisigLambda, submitBatch } from "../../utils/tezos";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
@@ -51,7 +50,7 @@ jest.mock("../../GoogleAuth", () => ({
 }));
 jest.mock("../../utils/hooks/accountUtils");
 
-const fakeAccountUtils = mock<typeof accountUtils>(accountUtils);
+const fakeAccountUtils = jest.mocked(accountUtils);
 
 const fixture = (sender: string, mode: SendFormMode) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -65,7 +64,7 @@ const MOCK_TEZOS_TOOLKIT = {} as TezosToolkit;
 
 beforeEach(async () => {
   fakeAccountUtils.useGetSecretKey.mockReturnValue(() => Promise.resolve(MOCK_SK));
-  fakeTezosUtils.makeToolkit.mockResolvedValue(MOCK_TEZOS_TOOLKIT);
+  jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT);
   document.getElementById("chakra-toast-portal")?.remove();
   store.dispatch(
     tokensSlice.actions.addTokens({
@@ -139,7 +138,7 @@ describe("<SendForm />", () => {
         expect(estimateButton).toBeEnabled();
       });
 
-      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, MOCK_FEE);
+      mockEstimatedFee(MOCK_FEE);
       fireEvent.click(estimateButton);
 
       await waitFor(() => {
@@ -147,7 +146,7 @@ describe("<SendForm />", () => {
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
 
-      expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(
         {
           type: "implicit",
           content: [
@@ -168,7 +167,7 @@ describe("<SendForm />", () => {
 
       fillPassword("mockPass");
 
-      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+      jest.mocked(submitBatch).mockResolvedValueOnce({
         opHash: "mockHash",
       } as BatchWalletOperation);
 
@@ -190,7 +189,7 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
+      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
         [
           {
             type: "fa2",
@@ -251,7 +250,7 @@ describe("<SendForm />", () => {
         expect(estimateButton).toBeEnabled();
       });
 
-      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, MOCK_FEE);
+      mockEstimatedFee(MOCK_FEE);
 
       fireEvent.click(estimateButton);
 
@@ -260,7 +259,7 @@ describe("<SendForm />", () => {
         expect(fee).toHaveTextContent(`${MOCK_FEE} ꜩ`);
       });
 
-      expect(fakeTezosUtils.estimateBatch).toHaveBeenCalledWith(
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(
         {
           type: "implicit",
           content: [
@@ -280,7 +279,7 @@ describe("<SendForm />", () => {
       );
 
       fillPassword("mockPass");
-      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+      jest.mocked(submitBatch).mockResolvedValueOnce({
         opHash: "mockHash",
       } as BatchWalletOperation);
 
@@ -302,7 +301,7 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
+      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
         [
           {
             type: "fa1.2",
@@ -335,7 +334,7 @@ describe("<SendForm />", () => {
         expect(submitBtn).toBeEnabled();
       });
 
-      setBatchEstimationPerTransaction(fakeTezosUtils.estimateBatch, 3654);
+      mockEstimatedFee(3654);
       fireEvent.click(submitBtn);
 
       await waitFor(() => {
@@ -363,7 +362,7 @@ describe("<SendForm />", () => {
       await fillFormAndSimulate();
 
       fillPassword("mockPass");
-      fakeTezosUtils.submitBatch.mockResolvedValueOnce({
+      jest.mocked(submitBatch).mockResolvedValueOnce({
         opHash: "mockHash",
       } as BatchWalletOperation);
 
@@ -385,7 +384,7 @@ describe("<SendForm />", () => {
       });
 
       const contractAddress = nft.token.contract.address as string;
-      expect(fakeTezosUtils.submitBatch).toHaveBeenCalledWith(
+      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
         [
           {
             type: "fa2",
@@ -449,12 +448,8 @@ describe("<SendForm />", () => {
     });
 
     test("User can acomplish a tez proposal", async () => {
-      fakeTezosUtils.estimateBatch.mockResolvedValueOnce([
-        {
-          suggestedFeeMutez: 12345,
-        } as Estimate,
-      ]);
-      fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
+      mockEstimatedFee(12345);
+      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
 
@@ -483,7 +478,7 @@ describe("<SendForm />", () => {
         expect(fee).toHaveTextContent(/0.012345 ꜩ/i);
 
         const total = screen.getByLabelText(/^total$/i);
-        expect(total).toHaveTextContent(/23.012345 ꜩ/i);
+        expect(total).toHaveTextContent(/0.012345 ꜩ/i);
       });
 
       fillPassword("mockPass");
@@ -507,12 +502,8 @@ describe("<SendForm />", () => {
     });
 
     test("User can acomplish an FA2 proposal", async () => {
-      fakeTezosUtils.estimateBatch.mockResolvedValueOnce([
-        {
-          suggestedFeeMutez: 12345,
-        } as Estimate,
-      ]);
-      fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
+      mockEstimatedFee(12345);
+      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
       const multisigPkh = multisigs[1].address.pkh;
@@ -570,12 +561,8 @@ describe("<SendForm />", () => {
           decimals: "8",
         },
       };
-      fakeTezosUtils.estimateBatch.mockResolvedValueOnce([
-        {
-          suggestedFeeMutez: 12345,
-        } as Estimate,
-      ]);
-      fakeTezosUtils.proposeMultisigLambda.mockResolvedValueOnce({
+      mockEstimatedFee(12345);
+      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
 

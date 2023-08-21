@@ -19,8 +19,6 @@ import accountsSlice from "../../utils/redux/slices/accountsSlice";
 
 const { addAccount } = accountsSlice.actions;
 
-jest.mock("../../utils/tezos");
-
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
 const MOCK_FINGETPRINT1 = "mockFin1";

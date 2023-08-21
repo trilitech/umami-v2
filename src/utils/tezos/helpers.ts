@@ -13,6 +13,7 @@ import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { FakeSigner } from "./fakeSigner";
 import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
+import BigNumber from "bignumber.js";
 
 export const addressExists = async (
   pkh: string,
@@ -206,3 +207,7 @@ export const selectRandomElements = <T>(
     .slice(0, n)
     .sort((a, b) => a.index - b.index);
 };
+
+// for tez it will return tez, for mutez - mutez
+export const sumTez = (items: string[]): BigNumber =>
+  items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));

@@ -2,7 +2,6 @@ import {
   AspectRatio,
   Box,
   Button,
-  Divider,
   Flex,
   IconButton,
   Image,
@@ -21,16 +20,15 @@ import { FiExternalLink } from "react-icons/fi";
 import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTileDisplay";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
-import { Fee, Subtotal, Total } from "../../components/sendForm/components/TezAmountRecaps";
+import { FormOperations } from "../../components/sendForm/types";
 import { Account, AccountType } from "../../types/Account";
-import { Operation, OperationWithFee } from "../../types/Operation";
+import { Operation } from "../../types/Operation";
 import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { TokenLookup, useGetToken } from "../../utils/hooks/tokensHooks";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
-import { getBatchSubtotal, getTotalFee } from "./batchUtils";
 
 const renderAmount = (operation: Operation, getToken: TokenLookup) => {
   switch (operation.type) {
@@ -65,45 +63,29 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
 
 const RightPanel = ({
   account,
-  operations,
   onDelete,
   onSend,
 }: {
   account: Account;
-  operations: OperationWithFee[];
   onDelete: () => void;
   onSend: () => void;
 }) => {
-  const fee = getTotalFee(operations);
-
-  const subTotal = getBatchSubtotal(operations);
-
-  const total = subTotal.plus(fee);
   return (
     <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
-      <Box flex={1}>
-        <Subtotal mutez={subTotal.toString()} marginY={4} />
-        <Fee mutez={fee.toString()} />
-      </Box>
-      <Box>
-        <Divider />
-        <Total mutez={total.toString()} paddingY={3} />
+      <Flex justifyContent="space-between">
+        <Button onClick={onSend} flex={1} variant="primary" mr={4}>
+          {account.type === AccountType.MULTISIG ? "Propose batch" : "Submit batch"}
+        </Button>
 
-        <Flex justifyContent="space-between">
-          <Button onClick={onSend} flex={1} variant="primary" mr={4}>
-            {account.type === AccountType.MULTISIG ? "Propose batch" : "Submit batch"}
-          </Button>
-
-          <IconButton onClick={onDelete} aria-label="Delete Batch" icon={<BsTrash />} />
-        </Flex>
-      </Box>
+        <IconButton onClick={onDelete} aria-label="Delete Batch" icon={<BsTrash />} />
+      </Flex>
     </Flex>
   );
 };
 
 export const BatchDisplay: React.FC<{
   account: Account;
-  operations: OperationWithFee[];
+  operations: FormOperations;
   onDelete: () => void;
   onSend: () => void;
 }> = ({ account, operations, onDelete, onSend }) => {
@@ -117,7 +99,7 @@ export const BatchDisplay: React.FC<{
           <AccountSmallTileDisplay ml={2} pkh={account.address.pkh} label={account.label} />
           <Text color="umami.gray.400">
             {/* TODO: use pluralize.js for that */}
-            {`${operations.length} transaction${operations.length > 1 ? "s" : ""}`}
+            {`${operations.content.length} transaction${operations.content.length > 1 ? "s" : ""}`}
           </Text>
         </Flex>
         <TableContainer overflowX="unset" overflowY="unset">
@@ -128,11 +110,10 @@ export const BatchDisplay: React.FC<{
                 <Th>Subject:</Th>
                 <Th>Contract:</Th>
                 <Th>Recipient:</Th>
-                <Th>Fee:</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {operations.map((operation, i) => (
+              {operations.content.map((operation, i) => (
                 // TODO: add better key for operations
                 // If you add two 1-tez transfers to the same recipient, the key will be the same
                 // `i` should not be used in the key
@@ -150,14 +131,13 @@ export const BatchDisplay: React.FC<{
                     )}
                   </Td>
                   <Td>{operation.recipient && <AddressPill address={operation.recipient} />}</Td>
-                  <Td>{prettyTezAmount(operation.fee)}</Td>
                 </Tr>
               ))}
             </Tbody>
           </Table>
         </TableContainer>
       </Box>
-      <RightPanel account={account} onDelete={onDelete} onSend={onSend} operations={operations} />
+      <RightPanel account={account} onDelete={onDelete} onSend={onSend} />
     </Flex>
   );
 };

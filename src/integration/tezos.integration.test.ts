@@ -8,8 +8,6 @@ import { TezosNetwork } from "../types/TezosNetwork";
 
 import { estimateBatch, operationsToBatchParams } from "../utils/tezos";
 
-jest.unmock("../utils/tezos");
-
 const pk0 = devPublicKeys0.pk;
 const pkh0 = parseImplicitPkh(devPublicKeys0.pkh);
 const pkh1 = parseImplicitPkh(devPublicKeys1.pkh);

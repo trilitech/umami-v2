@@ -7,7 +7,7 @@ import { generate24WordMnemonic } from "../../../utils/mnemonic";
 // TODO refactor mocks
 jest.mock("../../../utils/mnemonic");
 
-const generate24WordMnemonicMock = generate24WordMnemonic as jest.Mock;
+const generate24WordMnemonicMock = jest.mocked(generate24WordMnemonic);
 const goToStepMock = jest.fn((step: Step) => {});
 
 const fixture = (goToStep: (step: Step) => void) => <Notice goToStep={goToStep} />;
