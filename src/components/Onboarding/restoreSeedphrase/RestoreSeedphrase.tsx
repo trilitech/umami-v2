@@ -23,9 +23,12 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
   const [mnemonicSize, setMnemonicSize] = useState("12");
 
   const pasteMnemonic = (mnemonic: string) => {
-    mnemonic.split(" ").forEach((word, i) => {
-      setFormValue(`word${i}`, word);
-    });
+    mnemonic
+      .split(" ")
+      .slice(0, Number(mnemonicSize))
+      .forEach((word, i) => {
+        setFormValue(`word${i}`, word);
+      });
     trigger();
   };
 
