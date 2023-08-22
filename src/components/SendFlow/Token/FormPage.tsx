@@ -1,6 +1,5 @@
 import {
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   InputGroup,
@@ -35,6 +34,7 @@ import {
   tokenSymbol,
 } from "../../../types/TokenBalance";
 import FormPageHeader from "../FormPageHeader";
+import { FormErrorMessage } from "../../FormErrorMessage";
 
 export type FormValues = {
   sender: RawPkh;
@@ -132,7 +132,6 @@ const FormPage: React.FC<
                   {tokenSymbol(token)}
                 </InputRightElement>
               </InputGroup>
-              {/* TODO: make a custom FormErrorMessage because its styling cannot be applied through theme.ts */}
               {errors.prettyAmount && (
                 <FormErrorMessage data-testid="amount-error">
                   {errors.prettyAmount.message}
