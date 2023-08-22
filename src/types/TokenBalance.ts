@@ -64,7 +64,7 @@ export const tokenSymbol = (token: Token): string => {
   return token.metadata?.symbol || defaultTokenSymbol(token);
 };
 
-export const tokenDecimal = (asset: Token): string => {
+export const tokenDecimals = (asset: Token): string => {
   return asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
 };
 
@@ -88,7 +88,7 @@ export const getRealAmount = (asset: Token, prettyAmount: string): BigNumber => 
     return amount;
   }
 
-  const decimals = tokenDecimal(asset);
+  const decimals = tokenDecimals(asset);
 
   return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };

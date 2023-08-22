@@ -4,7 +4,7 @@ import { Operation } from "../../../../types/Operation";
 import colors from "../../../../style/colors";
 import {
   formatTokenAmount,
-  tokenDecimal,
+  tokenDecimals,
   tokenName,
   tokenSymbol,
 } from "../../../../types/TokenBalance";
@@ -69,7 +69,7 @@ const MultisigOperationAmount: React.FC<{
         return null;
       }
       const symbol = tokenSymbol(asset);
-      const decimals = tokenDecimal(asset);
+      const decimals = tokenDecimals(asset);
       const name = tokenName(asset);
       const isNFT = asset.type === "nft";
 

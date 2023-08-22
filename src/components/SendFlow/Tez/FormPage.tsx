@@ -5,15 +5,11 @@ import {
   InputGroup,
   InputRightElement,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
-  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import colors from "../../../style/colors";
 import { parsePkh, RawPkh } from "../../../types/Address";
 import { TezOperation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
@@ -27,6 +23,7 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import FormPageHeader from "../FormPageHeader";
 
 export type FormValues = {
   sender: RawPkh;
@@ -72,15 +69,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <ModalHeader textAlign="center" p="40px 0 32px 0">
-            <Text size="2xl" fontWeight="600">
-              Send
-            </Text>
-            <Text textAlign="center" size="sm" color={colors.gray[400]}>
-              Send one or insert into batch.
-            </Text>
-            <ModalCloseButton />
-          </ModalHeader>
+          <FormPageHeader />
           <ModalBody>
             <FormControl mb={2} isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete

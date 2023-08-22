@@ -14,7 +14,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { MdArrowOutward, MdGeneratingTokens } from "react-icons/md";
 import { IconAndTextBtn, IconAndTextBtnLink } from "../../components/IconAndTextBtn";
@@ -31,7 +31,8 @@ import {
 import { formatPkh } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
-import { Options } from "../home/useSendFormModal";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import SendTokenFormPage from "../../components/SendFlow/Token/FormPage";
 
 const AccountTokensTileHeader: React.FC<{
   pkh: string;
@@ -56,17 +57,14 @@ const AccountTokensTileHeader: React.FC<{
 
 const AccountTokensTile: React.FC<{
   account: Account;
-  onOpenSendModal: (options: Options) => void;
   tokens: (FA12TokenBalance | FA2TokenBalance)[];
-}> = ({
-  account: {
+}> = ({ account, tokens }) => {
+  const network = useSelectedNetwork();
+  const { openWith } = useContext(DynamicModalContext);
+  const {
     address: { pkh },
     label,
-  },
-  onOpenSendModal,
-  tokens,
-}) => {
-  const network = useSelectedNetwork();
+  } = account;
   return (
     <Card m={4} p={5} bgColor={colors.gray[900]} borderRadius="10px">
       <AccountTokensTileHeader pkh={pkh} label={label} />
@@ -122,10 +120,7 @@ const AccountTokensTile: React.FC<{
                         icon={MdArrowOutward}
                         label="Send"
                         onClick={() => {
-                          onOpenSendModal({
-                            sender: pkh,
-                            mode: { type: "token", data: token },
-                          });
+                          openWith(<SendTokenFormPage sender={account} token={token} />);
                         }}
                       />
                     </Flex>

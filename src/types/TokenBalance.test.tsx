@@ -12,7 +12,7 @@ import {
   mimeType,
   royalties,
   thumbnailUri,
-  tokenDecimal,
+  tokenDecimals,
   tokenName,
   tokenSymbol,
 } from "./TokenBalance";
@@ -383,7 +383,7 @@ describe("tokenDecimal", () => {
         decimals: "3",
       },
     };
-    expect(tokenDecimal(fa2token)).toEqual("3");
+    expect(tokenDecimals(fa2token)).toEqual("3");
   });
 
   it("returns 0 if metadata doesn't have the decimal field", () => {
@@ -394,6 +394,6 @@ describe("tokenDecimal", () => {
       tokenId: "123",
       metadata: {},
     };
-    expect(tokenDecimal(fa2token)).toEqual("0");
+    expect(tokenDecimals(fa2token)).toEqual("0");
   });
 });

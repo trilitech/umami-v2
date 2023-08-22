@@ -1,5 +1,5 @@
 import { contact1 } from "../../mocks/contacts";
-import { mockFA1Token, mockImplicitAddress } from "../../mocks/factories";
+import { mockFA1TokenRaw, mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { TezosNetwork } from "../../types/TezosNetwork";
@@ -41,7 +41,7 @@ describe("<AddressPill />", () => {
 
   it("is removable for two icons", () => {
     const address = mockImplicitAddress(0);
-    const fa1 = mockFA1Token(1, address.pkh, 123);
+    const fa1 = mockFA1TokenRaw(1, address.pkh, 123);
     store.dispatch(updateNetwork(TezosNetwork.MAINNET));
     store.dispatch(
       tokensSlice.actions.addTokens({ network: TezosNetwork.MAINNET, tokens: [fa1.token] })
