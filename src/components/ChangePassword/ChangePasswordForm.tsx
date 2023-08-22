@@ -3,7 +3,6 @@ import {
   Button,
   Text,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   ModalCloseButton,
@@ -20,6 +19,7 @@ import changeMnemonicPassword from "../../utils/redux/thunks/changeMnemonicPassw
 import { MIN_LENGTH } from "../Onboarding/masterPassword/password/EnterAndConfirmPassword";
 import { DynamicModalContext } from "../DynamicModal";
 import { useContext } from "react";
+import { FormErrorMessage } from "../FormErrorMessage";
 
 type ChangePasswordFormValues = {
   currentPassword: string;

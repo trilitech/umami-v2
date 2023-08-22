@@ -1,7 +1,6 @@
 import {
   Button,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   IconButton,
   Input,
@@ -25,6 +24,7 @@ import {
   useOpenSignPageFormAction,
 } from "../../../components/SendFlow/onSubmitFormActionHooks";
 import { formDefaultValues, FormPageProps } from "../utils";
+import { FormErrorMessage } from "../../FormErrorMessage";
 
 export type FormValues = {
   name: string;

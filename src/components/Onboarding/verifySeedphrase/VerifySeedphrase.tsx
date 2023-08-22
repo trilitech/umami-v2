@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
@@ -14,6 +13,7 @@ import ModalContentWrapper from "../ModalContentWrapper";
 import { useForm } from "react-hook-form";
 import { Step, StepType, VerifySeedphraseStep } from "../useOnboardingModal";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
+import { FormErrorMessage } from "../../FormErrorMessage";
 
 const VerifySeedphrase = ({
   goToStep,

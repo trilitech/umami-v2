@@ -1,17 +1,9 @@
-import {
-  Button,
-  Center,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center, FormControl, FormLabel, Heading, Input, VStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
 import { MIN_LENGTH } from "./EnterAndConfirmPassword";
+import { FormErrorMessage } from "../../../FormErrorMessage";
 
 const EnterPassword = ({
   onSubmit: onSubmitPassword,

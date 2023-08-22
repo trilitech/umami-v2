@@ -1,6 +1,5 @@
 import {
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   InputGroup,
@@ -27,6 +26,7 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
+import { FormErrorMessage } from "../../FormErrorMessage";
 
 export type FormValues = {
   sender: RawPkh;
@@ -121,7 +121,6 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                 />
                 <InputRightElement>{TEZ}</InputRightElement>
               </InputGroup>
-              {/* TODO: make a custom FormErrorMessage because its styling cannot be applied through theme.ts */}
               {errors.prettyAmount && (
                 <FormErrorMessage data-testid="amount-error">
                   {errors.prettyAmount.message}

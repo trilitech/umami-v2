@@ -1,15 +1,8 @@
-import {
-  Button,
-  Center,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center, FormControl, FormLabel, Input, VStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
+import { FormErrorMessage } from "../../../FormErrorMessage";
 
 export const MIN_LENGTH = 8;
 

@@ -4,7 +4,6 @@ import {
   Divider,
   Flex,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
@@ -46,6 +45,7 @@ import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import { toOperation, FormOperations, SendFormMode, makeFormOperations } from "../types";
 import { BatchRecap } from "./BatchRecap";
 import { Token } from "../../../types/Token";
+import { FormErrorMessage } from "../../FormErrorMessage";
 
 export const DelegateForm = ({
   onSubmit,

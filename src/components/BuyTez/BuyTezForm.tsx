@@ -7,7 +7,6 @@ import {
   ModalFooter,
   Box,
   Button,
-  FormErrorMessage,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { TezosNetwork } from "../../types/TezosNetwork";
@@ -15,6 +14,7 @@ import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { wertUrls } from "../../utils/tezos/consts";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
+import { FormErrorMessage } from "../FormErrorMessage";
 
 const BuyTezForm = () => {
   const network = useSelectedNetwork();
