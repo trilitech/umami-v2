@@ -6,10 +6,8 @@ import {
   Input,
   InputGroup,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   Text,
 } from "@chakra-ui/react";
 import React from "react";
@@ -28,6 +26,7 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import FormPageHeader from "../FormPageHeader";
 
 export type FormValues = {
   quantity: number;
@@ -78,15 +77,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <ModalHeader textAlign="center" p="40px 0 32px 0">
-            <Text size="2xl" fontWeight="600">
-              Send
-            </Text>
-            <Text textAlign="center" size="sm" color={colors.gray[400]}>
-              Send one or insert into batch.
-            </Text>
-            <ModalCloseButton />
-          </ModalHeader>
+          <FormPageHeader />
           <ModalBody>
             <Flex my={3}>
               <SendNFTRecapTile nft={props.nft} />
