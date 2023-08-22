@@ -6,19 +6,20 @@ import {
   InputGroup,
   InputRightElement,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
-  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import colors from "../../../style/colors";
 import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
 import { FA12Operation, FA2Operation } from "../../../types/Operation";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormPagePropsWithSender, FormSubmitButtons } from "../utils";
+import {
+  formDefaultValues,
+  FormPagePropsWithSender,
+  FormSubmitButtons,
+  smallestUnit,
+} from "../utils";
 import SignPage from "./SignPage";
 import {
   useAddToBatchFormAction,
@@ -30,8 +31,10 @@ import {
   FA2TokenBalance,
   formatTokenAmount,
   getRealAmount,
+  tokenDecimals,
   tokenSymbol,
 } from "../../../types/TokenBalance";
+import FormPageHeader from "../FormPageHeader";
 
 export type FormValues = {
   sender: RawPkh;
@@ -89,21 +92,14 @@ const FormPage: React.FC<
     handleSubmit,
   } = form;
 
-  const prettyBalance = formatTokenAmount(token.balance, token.metadata?.decimals);
+  const decimals = tokenDecimals(token);
+  const prettyBalance = formatTokenAmount(token.balance, decimals);
 
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <ModalHeader textAlign="center" p="40px 0 32px 0">
-            <Text size="2xl" fontWeight="600">
-              Send
-            </Text>
-            <Text textAlign="center" size="sm" color={colors.gray[400]}>
-              Send one or insert into batch.
-            </Text>
-            <ModalCloseButton />
-          </ModalHeader>
+          <FormPageHeader />
           <ModalBody>
             <FormControl mt={3} mb={7} isInvalid={!!errors.prettyAmount}>
               <FormLabel>Amount</FormLabel>
@@ -119,8 +115,17 @@ const FormPage: React.FC<
                       value: prettyBalance.toString(),
                       message: `Max amount is ${prettyBalance}`,
                     },
+                    validate: (val: string) => {
+                      if (val.includes(".")) {
+                        const decimalPart = val.split(".")[1];
+                        if (decimalPart.length > Number(decimals)) {
+                          return `Please enter a value with up to ${decimals} decimal places`;
+                        }
+                      }
+                      return true;
+                    },
                   })}
-                  placeholder="0"
+                  placeholder={smallestUnit(Number(decimals))}
                 />
                 <InputRightElement pr={3} data-testid="token-symbol">
                   {tokenSymbol(token)}

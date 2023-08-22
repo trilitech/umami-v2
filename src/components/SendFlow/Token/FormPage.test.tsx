@@ -131,6 +131,41 @@ describe("<FormPage />", () => {
           expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 5");
         });
       });
+
+      it("doesn't allow values above the token balance with decimals", async () => {
+        render(
+          fixture(
+            {
+              sender: mockAccount,
+            },
+            mockFA2Token(1, mockAccount, 1234)
+          )
+        );
+        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "0.1235" } });
+        fireEvent.blur(screen.getByLabelText("Amount"));
+        await waitFor(() => {
+          expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 0.1234");
+        });
+      });
+
+      it("doesn't allow values with more decmial places", async () => {
+        const decimals = 2;
+        render(
+          fixture(
+            {
+              sender: mockAccount,
+            },
+            mockFA2Token(1, mockAccount, 1, decimals)
+          )
+        );
+        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "0.00007" } });
+        fireEvent.blur(screen.getByLabelText("Amount"));
+        await waitFor(() => {
+          expect(screen.getByTestId("amount-error")).toHaveTextContent(
+            `Please enter a value with up to ${decimals} decimal places`
+          );
+        });
+      });
     });
 
     describe("single transaction", () => {

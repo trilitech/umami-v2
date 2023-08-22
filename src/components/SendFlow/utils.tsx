@@ -18,6 +18,7 @@ import { makeTransfer } from "../sendForm/util/execution";
 import { SuccessStep } from "../sendForm/steps/SuccessStep";
 import { estimate, TEZ } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
+import { repeat } from "lodash";
 
 // Convert given optional fields to required
 // For example:
@@ -176,4 +177,13 @@ export const useMakeFormOperations = <FormValues extends BaseFormValues>(
     const sender = getAccount(formValues.sender);
     return makeFormOperations(sender, getSigner(sender), [toOperation(formValues)]);
   };
+};
+
+export const smallestUnit = (decimals: number): string => {
+  if (decimals < 0) {
+    throw new Error("Decimals cannot be negative");
+  }
+
+  const leadingZeroes = decimals === 0 ? "" : "0." + repeat("0", decimals - 1);
+  return `${leadingZeroes}1`;
 };

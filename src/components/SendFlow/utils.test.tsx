@@ -1,7 +1,7 @@
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 import { RawPkh } from "../../types/Address";
-import { formDefaultValues, FormSubmitButtons, mutezToPrettyTez } from "./utils";
+import { formDefaultValues, FormSubmitButtons, mutezToPrettyTez, smallestUnit } from "./utils";
 import BigNumber from "bignumber.js";
 
 describe("SendFlow utils", () => {
@@ -56,5 +56,17 @@ describe("SendFlow utils", () => {
     expect(mutezToPrettyTez(BigNumber(1000000))).toBe("1.000000 ꜩ");
     expect(mutezToPrettyTez(BigNumber(123))).toBe("0.000123 ꜩ");
     expect(mutezToPrettyTez(BigNumber(10000123))).toBe("10.000123 ꜩ");
+  });
+
+  describe("smallestUnit", () => {
+    it("returns the correct value", () => {
+      expect(smallestUnit(0)).toEqual("1");
+      expect(smallestUnit(1)).toEqual("0.1");
+      expect(smallestUnit(2)).toEqual("0.01");
+    });
+
+    it("throws error if decimals is negative", () => {
+      expect(() => smallestUnit(-1)).toThrowError("Decimals cannot be negative");
+    });
   });
 });
