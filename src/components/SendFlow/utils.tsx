@@ -188,3 +188,13 @@ export const getSmallestUnit = (decimals: number): string => {
   const leadingZeroes = decimals === 0 ? "" : "0." + repeat("0", decimals - 1);
   return `${leadingZeroes}1`;
 };
+
+export const makeValidateDecimals = (decimals: number) => (val: string) => {
+  if (val.includes(".")) {
+    const decimalPart = val.split(".")[1];
+    if (decimalPart.length > decimals) {
+      return `Please enter a value with up to ${decimals} decimal places`;
+    }
+  }
+  return true;
+};

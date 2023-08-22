@@ -13,9 +13,15 @@ import { FormProvider, useForm } from "react-hook-form";
 import { parsePkh, RawPkh } from "../../../types/Address";
 import { TezOperation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
-import { TEZ } from "../../../utils/tezos";
+import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormPageProps, FormSubmitButtons } from "../utils";
+import {
+  formDefaultValues,
+  FormPageProps,
+  FormSubmitButtons,
+  getSmallestUnit,
+  makeValidateDecimals,
+} from "../utils";
 import SignPage from "./SignPage";
 import {
   useAddToBatchFormAction,
@@ -100,11 +106,11 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                 <Input
                   isDisabled={isLoading}
                   type="number"
-                  step="any"
+                  step={getSmallestUnit(TEZ_DECIMALS)}
                   variant="filled"
                   {...register("prettyAmount", {
-                    // TODO: add validation on format (no more than 6 decimals after dot)
                     required: "Amount is required",
+                    validate: makeValidateDecimals(TEZ_DECIMALS),
                   })}
                   placeholder="0.000000"
                 />

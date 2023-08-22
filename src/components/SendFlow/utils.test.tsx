@@ -1,7 +1,13 @@
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 import { RawPkh } from "../../types/Address";
-import { formDefaultValues, FormSubmitButtons, mutezToPrettyTez, getSmallestUnit } from "./utils";
+import {
+  formDefaultValues,
+  FormSubmitButtons,
+  mutezToPrettyTez,
+  getSmallestUnit,
+  makeValidateDecimals,
+} from "./utils";
 import BigNumber from "bignumber.js";
 
 describe("SendFlow utils", () => {
@@ -68,6 +74,15 @@ describe("SendFlow utils", () => {
     it("returns 1 if decimals is negative", () => {
       jest.spyOn(console, "warn").mockImplementation();
       expect(getSmallestUnit(-1)).toEqual("1");
+    });
+  });
+
+  describe("makeValidateDecimals", () => {
+    it("validates value with decimals", () => {
+      const validateDecimals = makeValidateDecimals(3);
+      expect(validateDecimals("1")).toBe(true);
+      expect(validateDecimals("0.001")).toBe(true);
+      expect(validateDecimals("0.0001")).toBe("Please enter a value with up to 3 decimal places");
     });
   });
 });
