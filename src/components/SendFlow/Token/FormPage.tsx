@@ -18,7 +18,7 @@ import {
   formDefaultValues,
   FormPagePropsWithSender,
   FormSubmitButtons,
-  smallestUnit,
+  getSmallestUnit,
 } from "../utils";
 import SignPage from "./SignPage";
 import {
@@ -94,6 +94,7 @@ const FormPage: React.FC<
 
   const decimals = tokenDecimals(token);
   const prettyBalance = formatTokenAmount(token.balance, decimals);
+  const smallestUnit = getSmallestUnit(Number(decimals));
 
   return (
     <FormProvider {...form}>
@@ -107,7 +108,7 @@ const FormPage: React.FC<
                 <Input
                   isDisabled={isLoading}
                   type="number"
-                  step="any"
+                  step={smallestUnit}
                   variant="filled"
                   {...register("prettyAmount", {
                     required: "Amount is required",
@@ -125,7 +126,7 @@ const FormPage: React.FC<
                       return true;
                     },
                   })}
-                  placeholder={smallestUnit(Number(decimals))}
+                  placeholder={smallestUnit}
                 />
                 <InputRightElement pr={3} data-testid="token-symbol">
                   {tokenSymbol(token)}

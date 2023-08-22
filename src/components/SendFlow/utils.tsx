@@ -179,9 +179,10 @@ export const useMakeFormOperations = <FormValues extends BaseFormValues>(
   };
 };
 
-export const smallestUnit = (decimals: number): string => {
+export const getSmallestUnit = (decimals: number): string => {
   if (decimals < 0) {
-    throw new Error("Decimals cannot be negative");
+    console.warn("Decimals cannot be negative");
+    decimals = 0;
   }
 
   const leadingZeroes = decimals === 0 ? "" : "0." + repeat("0", decimals - 1);

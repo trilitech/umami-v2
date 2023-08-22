@@ -1,7 +1,7 @@
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 import { RawPkh } from "../../types/Address";
-import { formDefaultValues, FormSubmitButtons, mutezToPrettyTez, smallestUnit } from "./utils";
+import { formDefaultValues, FormSubmitButtons, mutezToPrettyTez, getSmallestUnit } from "./utils";
 import BigNumber from "bignumber.js";
 
 describe("SendFlow utils", () => {
@@ -60,13 +60,14 @@ describe("SendFlow utils", () => {
 
   describe("smallestUnit", () => {
     it("returns the correct value", () => {
-      expect(smallestUnit(0)).toEqual("1");
-      expect(smallestUnit(1)).toEqual("0.1");
-      expect(smallestUnit(2)).toEqual("0.01");
+      expect(getSmallestUnit(0)).toEqual("1");
+      expect(getSmallestUnit(1)).toEqual("0.1");
+      expect(getSmallestUnit(2)).toEqual("0.01");
     });
 
-    it("throws error if decimals is negative", () => {
-      expect(() => smallestUnit(-1)).toThrowError("Decimals cannot be negative");
+    it("returns 1 if decimals is negative", () => {
+      jest.spyOn(console, "warn").mockImplementation();
+      expect(getSmallestUnit(-1)).toEqual("1");
     });
   });
 });

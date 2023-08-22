@@ -12,13 +12,14 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import { AvailableSignersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { mutezToPrettyTez, SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { FATokenBalance } from "./FormPage";
 import { formatTokenAmount, tokenSymbol } from "../../../types/TokenBalance";
 import { FA12Operation } from "../../../types/Operation";
+import { OperationSignerSelector } from "../OperationSignerSelector";
 
 const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const {
@@ -77,18 +78,12 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
 
             {/* TODO: Add recipient address tile */}
 
-            {initialOperations.type === "proposal" && (
-              <FormControl>
-                <AvailableSignersAutocomplete
-                  account={initialOperations.sender}
-                  inputName="signer"
-                  label="Select Proposer"
-                  isDisabled={isLoading}
-                  onUpdate={reEstimate}
-                  keepValid
-                />
-              </FormControl>
-            )}
+            <OperationSignerSelector
+              sender={operations.sender}
+              isDisabled={isLoading}
+              operationType={operations.type}
+              reEstimate={reEstimate}
+            />
           </ModalBody>
           <ModalFooter>
             <SignButton
