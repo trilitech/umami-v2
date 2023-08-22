@@ -10,13 +10,14 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import { AvailableSignersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { mutezToPrettyTez, SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
 import { FA2Operation } from "../../../types/Operation";
+import { OperationSignerSelector } from "../OperationSignerSelector";
 
 const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {
@@ -79,18 +80,12 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
 
             {/* TODO: Add recipient address tile */}
 
-            {initialOperations.type === "proposal" && (
-              <FormControl>
-                <AvailableSignersAutocomplete
-                  account={initialOperations.sender}
-                  inputName="signer"
-                  label="Select Proposer"
-                  isDisabled={isLoading}
-                  onUpdate={reEstimate}
-                  keepValid
-                />
-              </FormControl>
-            )}
+            <OperationSignerSelector
+              sender={operations.sender}
+              isDisabled={isLoading}
+              operationType={operations.type}
+              reEstimate={reEstimate}
+            />
           </ModalBody>
           <ModalFooter>
             <SignButton

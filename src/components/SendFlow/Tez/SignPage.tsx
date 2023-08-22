@@ -12,7 +12,7 @@ import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
 import { TezOperation } from "../../../types/Operation";
 import { useTezToDollar } from "../../../utils/hooks/assetsHooks";
-import { AvailableSignersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { FormOperations } from "../../sendForm/types";
 import { BigNumber } from "bignumber.js";
@@ -20,6 +20,7 @@ import { mutezToTez } from "../../../utils/format";
 import { mutezToPrettyTez, SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { sumTez } from "../../../utils/tezos";
+import { OperationSignerSelector } from "../OperationSignerSelector";
 
 export const getTezAmount = (operations: FormOperations): BigNumber | undefined => {
   switch (operations.type) {
@@ -104,18 +105,12 @@ const SignPage: React.FC<SignPageProps> = props => {
               </Box>
             </Flex>
 
-            {initialOperations.type === "proposal" && (
-              <FormControl>
-                <AvailableSignersAutocomplete
-                  account={initialOperations.sender}
-                  inputName="signer"
-                  label="Select Proposer"
-                  isDisabled={isLoading}
-                  onUpdate={reEstimate}
-                  keepValid
-                />
-              </FormControl>
-            )}
+            <OperationSignerSelector
+              sender={operations.sender}
+              isDisabled={isLoading}
+              operationType={operations.type}
+              reEstimate={reEstimate}
+            />
           </ModalBody>
           <ModalFooter>
             <SignButton
