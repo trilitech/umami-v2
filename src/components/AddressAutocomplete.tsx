@@ -1,12 +1,4 @@
-import {
-  Box,
-  Divider,
-  FormLabel,
-  Input,
-  ListItem,
-  StyleProps,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { Box, FormLabel, Input, ListItem, StyleProps, UnorderedList } from "@chakra-ui/react";
 import { get } from "lodash";
 import { useId, useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
@@ -70,13 +62,15 @@ const Suggestions = ({
     <UnorderedList
       data-testid="suggestions-list"
       overflowY="auto"
-      mt={0}
+      mt="8px"
       ml={0}
       width="100%"
-      borderRadius={8}
+      borderRadius="8px"
       listStyleType="none"
       position="absolute"
-      bg="umami.gray.500"
+      border="1px solid"
+      borderColor={colors.gray[500]}
+      bg={colors.gray[700]}
       zIndex={2}
       maxHeight={300}
     >
@@ -88,16 +82,20 @@ const Suggestions = ({
               // https://stackoverflow.com/a/28963938/6797267
               onChange(contact.name);
             }}
+            padding="5px 15px 0 5px"
+            mb={i === contacts.length - 1 ? "5px" : 0}
           >
             <AccountSmallTileDisplay
               pkh={contact.pkh}
               label={contact.name}
               _hover={{
-                background: colors.gray[600],
+                background: colors.gray[500],
               }}
+              borderRadius="4px"
+              padding="7px 5px"
+              height="40px"
             />
           </ListItem>
-          {i !== contacts.length - 1 && <Divider />}
         </Box>
       ))}
     </UnorderedList>
