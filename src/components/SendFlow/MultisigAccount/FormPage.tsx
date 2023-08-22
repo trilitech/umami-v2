@@ -13,7 +13,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
-import { BsTrash } from "react-icons/bs";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
 import SignPage from "./SignPage";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
@@ -25,6 +24,7 @@ import {
 } from "../../../components/SendFlow/onSubmitFormActionHooks";
 import { formDefaultValues, FormPageProps } from "../utils";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import Trash from "../../../assets/icons/Trash";
 
 export type FormValues = {
   name: string;
@@ -158,7 +158,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                       color="umami.gray.450"
                       position="absolute"
                       data-testid={`remove-signer-${index}`}
-                      icon={<BsTrash />}
+                      icon={<Trash />}
                       onClick={() => signersArray.remove(index)}
                       height="40px"
                       ml="396px"

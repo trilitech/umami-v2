@@ -12,9 +12,9 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { BsTrash } from "react-icons/bs";
 import { usePeers, useRemovePeer } from "./beacon";
 import { PeerInfo } from "./types";
+import Trash from "../../assets/icons/Trash";
 
 const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => void }) => {
   return (
@@ -35,7 +35,7 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => v
         </Text>
       </Td>
       <Td>
-        <IconButton onClick={onRemove} aria-label="Remove Peer" icon={<BsTrash />} />
+        <IconButton onClick={onRemove} aria-label="Remove Peer" icon={<Trash />} />
       </Td>
     </Tr>
   );

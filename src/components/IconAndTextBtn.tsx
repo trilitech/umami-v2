@@ -1,10 +1,10 @@
-import { Flex, FlexProps, Icon, Text, Link } from "@chakra-ui/react";
+import { Flex, FlexProps, Icon, Text, Link, IconProps } from "@chakra-ui/react";
 import React from "react";
 import { IconType } from "react-icons/lib";
 import colors from "../style/colors";
 
 type Props = {
-  icon: IconType;
+  icon: IconType | React.FC<IconProps>;
   onClick?: () => void;
   label: string;
   iconWidth?: number;
@@ -34,6 +34,7 @@ export const IconAndTextBtn: React.FC<Props> = ({
     <Flex
       role="button"
       color="text.dark"
+      justifyContent="space-between"
       alignItems="center"
       onClick={onClick}
       cursor="pointer"
