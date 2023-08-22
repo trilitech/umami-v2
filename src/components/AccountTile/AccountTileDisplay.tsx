@@ -1,8 +1,9 @@
 import { Box, Flex, FlexProps, Heading, Text } from "@chakra-ui/layout";
 import React from "react";
 import colors from "../../style/colors";
+import { AccountType } from "../../types/Account";
 import { formatPkh } from "../../utils/formatPkh";
-import { Identicon } from "../Identicon";
+import { getIcon } from "./getIcon";
 
 export type Props = {
   label: string;
@@ -10,6 +11,7 @@ export type Props = {
   balance: string | undefined;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   selected?: boolean;
+  kind: AccountType;
 };
 
 export const AccountTileBase: React.FC<
@@ -39,13 +41,17 @@ export const AccountTileBase: React.FC<
   );
 };
 
-export const LabelAndAddress: React.FC<{ label?: string; pkh: string }> = ({ label, pkh }) => {
+export const LabelAndAddress: React.FC<{ label?: string; pkh: string; fullPkh?: boolean }> = ({
+  label,
+  pkh,
+  fullPkh = false,
+}) => {
   return (
     <Box m={4} data-testid="account-identifier">
       {label && <Heading size="md">{label}</Heading>}
       <Flex alignItems="center">
         <Text size="sm" color="text.dark">
-          {formatPkh(pkh)}
+          {fullPkh ? pkh : formatPkh(pkh)}
         </Text>
       </Flex>
     </Box>
@@ -58,6 +64,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
   address,
   balance,
   label,
+  kind,
 }) => {
   const border = onClick ? `1px solid ${selected ? colors.orangeL : colors.gray[700]}` : undefined;
 
@@ -71,7 +78,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
       _hover={{
         border,
       }}
-      icon={<Identicon address={address} />}
+      icon={getIcon(kind, address)}
       leftElement={<LabelAndAddress pkh={address} label={label} />}
       rightElement={
         balance && (

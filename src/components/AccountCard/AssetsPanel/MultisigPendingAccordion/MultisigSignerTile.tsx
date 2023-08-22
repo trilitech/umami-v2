@@ -22,8 +22,12 @@ const MultisigSignerTile: React.FC<{
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const network = useSelectedNetwork();
 
-  const accountLabel = getImplicitAccount(signerAddress.pkh)?.label;
-  const label = accountLabel || getContactName(signerAddress.pkh);
+  const implicitAccount = getImplicitAccount(signerAddress.pkh);
+  const contactName = getContactName(signerAddress.pkh);
+
+  const accountLabel = implicitAccount?.label;
+
+  const label = accountLabel || contactName;
 
   const signerAccount = getImplicitAccount(signerAddress.pkh);
 
@@ -56,6 +60,7 @@ const MultisigSignerTile: React.FC<{
 
   return (
     <MultisigSignerTileDisplay
+      kind={getKind(signerAccount, contactName)}
       pkh={signerAddress.pkh}
       label={label}
       signerState={getMultisigSignerState({
@@ -68,6 +73,14 @@ const MultisigSignerTile: React.FC<{
       isLoading={isLoading}
     />
   );
+};
+
+const getKind = (signerAccount?: ImplicitAccount, contactName?: string) => {
+  if (contactName) {
+    return "contact";
+  }
+
+  return signerAccount?.type || "unknown";
 };
 
 const getMultisigSignerState = ({

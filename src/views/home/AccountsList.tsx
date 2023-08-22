@@ -71,6 +71,7 @@ const AccountGroup: React.FC<{
       {accounts.map(account => {
         return (
           <AccountTile
+            kind={account.type}
             selected={account.address.pkh === selected}
             onClick={_ => {
               onSelect(account.address.pkh);

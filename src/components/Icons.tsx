@@ -1,4 +1,6 @@
-import { createIcon } from "@chakra-ui/icons";
+import { createIcon, Icon } from "@chakra-ui/icons";
+import { IconProps } from "@chakra-ui/react";
+import { MdUsb } from "react-icons/md";
 import colors from "../style/colors";
 
 const defaultPathProps = {
@@ -42,16 +44,9 @@ export const walletIcon = createIcon({
   ),
 });
 
-export const usbIcon = createIcon({
-  displayName: "Usb",
-  viewBox: "0 0 22 22",
-  path: (
-    <path
-      d="M14.667 9.167h.917v1.834h-3.667V5.5h1.833L11 1.834 8.25 5.501h1.834v7.333H6.417v-2.087a1.826 1.826 0 00.38-2.876 1.833 1.833 0 00-3.13 1.296c0 .677.37 1.262.917 1.58v2.087c0 1.011.822 1.833 1.833 1.833h3.667v2.088a1.824 1.824 0 00-.38 2.875 1.833 1.833 0 003.13-1.296c0-.677-.37-1.261-.917-1.58v-3.92h3.667a1.835 1.835 0 001.833-1.833V9.167h.917V5.501h-3.667v3. 666z"
-      fill={colors.gray[450]}
-    />
-  ),
-});
+export const usbIcon = (props: IconProps) => (
+  <Icon as={MdUsb} data-testid="ledger-icon" viewBox="0 0 22 22" {...props} />
+);
 
 export const maintanceIcon = createIcon({
   displayName: "Maintance",

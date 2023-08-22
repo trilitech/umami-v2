@@ -6,7 +6,7 @@ const AccountTile: React.FC<
   Omit<Props, "balance"> & {
     balance: string | undefined;
   }
-> = ({ address, onClick, balance, selected = false, label }) => {
+> = ({ address, onClick, balance, selected = false, label, kind }) => {
   const prettyBalance = balance && `${format("mutez", "tz", balance)} ꜩ`;
   return (
     <AccountTileDisplay
@@ -15,6 +15,7 @@ const AccountTile: React.FC<
       address={address}
       balance={prettyBalance}
       label={label}
+      kind={kind}
     />
   );
 };
