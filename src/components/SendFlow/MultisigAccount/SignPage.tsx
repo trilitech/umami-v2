@@ -12,8 +12,9 @@ import colors from "../../../style/colors";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageHeader, headerText } from "../SignPageHeader";
-import { mutezToPrettyTez, useSignPageHelpers, SignPageProps } from "../utils";
+import { useSignPageHelpers, SignPageProps } from "../utils";
 import { FormValues } from "./FormPage";
+import { prettyTezAmount } from "../../../utils/format";
 
 const SignPage: React.FC<SignPageProps<FormValues>> = props => {
   const {
@@ -61,7 +62,7 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
                 Fee:
               </Text>
               <Text color={colors.gray[400]} data-testid="fee">
-                {mutezToPrettyTez(fee)}
+                {prettyTezAmount(fee)}
               </Text>
             </Flex>
             {/* TODO: add the Approvers list here when account tiles are ready */}

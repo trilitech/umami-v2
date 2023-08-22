@@ -13,7 +13,6 @@ import { compact, groupBy } from "lodash";
 import { useContext, useRef } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import KeyIcon from "../../assets/icons/Key";
-import AccountTile from "../../components/AccountTile";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
@@ -27,6 +26,7 @@ import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts"
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
+import { AccountTileDisplay } from "../../components/AccountTile/AccountTileDisplay";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -70,12 +70,10 @@ const AccountGroup: React.FC<{
 
       {accounts.map(account => {
         return (
-          <AccountTile
+          <AccountTileDisplay
             kind={account.type}
             selected={account.address.pkh === selected}
-            onClick={_ => {
-              onSelect(account.address.pkh);
-            }}
+            onClick={_ => onSelect(account.address.pkh)}
             key={account.address.pkh}
             address={account.address.pkh}
             label={account.label}

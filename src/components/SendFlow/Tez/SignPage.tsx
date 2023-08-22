@@ -14,7 +14,8 @@ import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { FormOperations } from "../../sendForm/types";
 import { BigNumber } from "bignumber.js";
-import { mutezToPrettyTez, SignPageProps, useSignPageHelpers } from "../utils";
+import { SignPageProps, useSignPageHelpers } from "../utils";
+
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { sumTez } from "../../../utils/tezos";
 import { OperationSignerSelector } from "../OperationSignerSelector";
@@ -70,7 +71,7 @@ const SignPage: React.FC<SignPageProps> = props => {
                   Fee:
                 </Text>
                 <Text size="sm" data-testid="fee" color={colors.gray[400]}>
-                  {mutezToPrettyTez(fee)}
+                  {prettyTezAmount(fee)}
                 </Text>
               </Flex>
             </Flex>

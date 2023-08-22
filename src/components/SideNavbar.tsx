@@ -77,9 +77,7 @@ const TotalBalance = () => {
   return (
     <Box mt={4} mb={12} height="80px">
       <Text size="sm">Balance</Text>
-      {balance !== null && (
-        <TezRecapDisplay tezBalance={balance.tezBalance} dollarBalance={balance.dollarBalance} />
-      )}
+      {balance !== null && <TezRecapDisplay balance={balance.mutez} dollarBalance={balance.usd} />}
     </Box>
   );
 };

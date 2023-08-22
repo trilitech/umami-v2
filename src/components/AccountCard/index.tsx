@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { Account } from "../../types/Account";
 import { makeDelegation } from "../../types/Delegation";
-import { mutezToTez } from "../../utils/format";
 import {
   useAllDelegations,
   useGetAccountAllTokens,
@@ -50,7 +49,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         }
         pkh={account.address.pkh}
         label={account.label}
-        tezBalance={balance && mutezToTez(balance)}
+        balance={balance}
         dollarBalance={dollarBalance}
         onReceive={() => {
           onOpenReceive({ pkh: account.address.pkh });

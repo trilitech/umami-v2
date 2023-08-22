@@ -17,7 +17,6 @@ import {
 import React from "react";
 import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
-import { AccountSmallTileDisplay } from "../../components/AccountSelector/AccountSmallTileDisplay";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { FormOperations } from "../../components/sendForm/types";
@@ -29,6 +28,8 @@ import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { TokenLookup, useGetToken } from "../../utils/hooks/tokensHooks";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
+import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
+import colors from "../../style/colors";
 
 const renderAmount = (operation: Operation, getToken: TokenLookup) => {
   switch (operation.type) {
@@ -71,7 +72,7 @@ const RightPanel = ({
   onSend: () => void;
 }) => {
   return (
-    <Flex bg="umami.gray.800" w={292} p={4} flexDirection="column">
+    <Flex bg={colors.gray[800]} w={292} p={4} flexDirection="column">
       <Flex justifyContent="space-between">
         <Button onClick={onSend} flex={1} variant="primary" mr={4}>
           {account.type === AccountType.MULTISIG ? "Propose batch" : "Submit batch"}
@@ -94,17 +95,17 @@ export const BatchDisplay: React.FC<{
 
   return (
     <Flex data-testid={`batch-table-${account.address.pkh}`} mb={4}>
-      <Box flex={1} bg="umami.gray.900" p={4}>
+      <Box flex={1} bg={colors.gray[900]} p={4}>
         <Flex justifyContent="space-between" ml={2} mr={2} mb={4}>
-          <AccountSmallTileDisplay ml={2} pkh={account.address.pkh} label={account.label} />
-          <Text color="umami.gray.400">
+          <AccountSmallTile ml={2} pkh={account.address.pkh} />
+          <Text color={colors.gray[400]}>
             {/* TODO: use pluralize.js for that */}
             {`${operations.content.length} transaction${operations.content.length > 1 ? "s" : ""}`}
           </Text>
         </Flex>
         <TableContainer overflowX="unset" overflowY="unset">
           <Table>
-            <Thead position="sticky" top={0} zIndex="docked" bg="umami.gray.900" borderRadius={4}>
+            <Thead position="sticky" top={0} zIndex="docked" bg={colors.gray[900]} borderRadius={4}>
               <Tr>
                 <Th>Type:</Th>
                 <Th>Subject:</Th>
