@@ -174,14 +174,16 @@ export const useAssetsPolling = () => {
 
   const bakersQuery = useQuery("bakers", {
     queryFn: async () => {
-      if (network !== TezosNetwork.MAINNET) {
-        return;
-      }
-
-      const bakers = await getBakers();
+      const rawBakers = await getBakers(network);
+      const bakers = rawBakers.map(({ address, alias, stakingBalance }) => ({
+        address: address as string,
+        stakingBalance: stakingBalance as number,
+        name: alias ?? "Unknown baker",
+      }));
       dispatch(assetsActions.updateBakers(bakers));
     },
     refetchInterval: BAKERS_REFRESH_RATE,
+    refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 

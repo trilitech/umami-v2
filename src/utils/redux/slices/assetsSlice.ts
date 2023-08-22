@@ -6,7 +6,7 @@ import { TezosNetwork } from "../../../types/TezosNetwork";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { eraseToken, fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
-import { Baker } from "../../../types/Baker";
+import { Delegate } from "../../../types/Delegate";
 import { FormOperations } from "../../../components/sendForm/types";
 
 type State = {
@@ -21,7 +21,7 @@ type State = {
     tokens: Record<string, TokenTransfer[] | undefined>;
   };
   delegations: Record<string, DelegationOperation | undefined>;
-  bakers: Baker[];
+  bakers: Delegate[];
   conversionRate: number | null; // XTZ/USD conversion rate
   batches: Record<string, FormOperations | undefined>;
   refetchTrigger: number;
@@ -132,9 +132,8 @@ const assetsSlice = createSlice({
         state.delegations[p.pkh] = p.delegation;
       });
     },
-    updateBakers: (state, { payload }: { type: string; payload: Baker[] }) => {
-      const sortedBakers = [...payload].sort((a, b) => (a.name > b.name ? 1 : -1));
-      state.bakers = sortedBakers;
+    updateBakers: (state, { payload }: { payload: Delegate[] }) => {
+      state.bakers = payload;
     },
     updateConversionRate: (
       state,

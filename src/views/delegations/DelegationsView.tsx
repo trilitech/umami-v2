@@ -25,8 +25,8 @@ import { useFirstAccount } from "../../utils/hooks/accountHooks";
 import { useAllDelegations } from "../../utils/hooks/assetsHooks";
 import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
 import { useSendFormModal } from "../home/useSendFormModal";
-import { useRenderBakerSmallTile } from "./BakerSmallTile";
 import colors from "../../style/colors";
+import { BakerSmallTile } from "./BakerSmallTile";
 
 const DelegationsTable = ({
   delegations,
@@ -37,8 +37,6 @@ const DelegationsTable = ({
   onRemoveDelegate: (pkh: string) => void;
   onChangeDelegate: (pkh: string, baker: string) => void;
 }) => {
-  const renderBakerTile = useRenderBakerSmallTile();
-
   const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
   return (
     <TableContainer>
@@ -53,7 +51,6 @@ const DelegationsTable = ({
             <Th>Initial Balance:</Th>
             <Th>Current Balance:</Th>
             <Th>Duration:</Th>
-            <Th>Last Reward:</Th>
             <Th>Baker:</Th>
             <Th>{/* For buttons */}</Th>
           </Tr>
@@ -70,8 +67,9 @@ const DelegationsTable = ({
                 <Td>{initialBalance}</Td>
                 <Td>{currentBalance}</Td>
                 <Td>{duration}</Td>
-                <Td />
-                <Td>{renderBakerTile(delegation.delegate.address)}</Td>
+                <Td>
+                  <BakerSmallTile pkh={delegation.delegate.address} />
+                </Td>
                 <Td>
                   <IconButton
                     ml={2}

@@ -18,9 +18,9 @@ import { useAllAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
-import { Baker } from "../../types/Baker";
 import assetsSlice from "../redux/slices/assetsSlice";
 import { Account } from "../../types/Account";
+import { Delegate } from "../../types/Delegate";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.assets.network);
@@ -184,7 +184,7 @@ export const useClearBatch = () => {
     dispatch(assetsSlice.actions.clearBatch({ pkh: account.address.pkh }));
 };
 
-export const useBakerList = (): Baker[] => {
+export const useBakerList = (): Delegate[] => {
   return useAppSelector(state => state.assets.bakers);
 };
 
