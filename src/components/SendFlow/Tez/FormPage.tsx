@@ -43,18 +43,7 @@ const toOperation = (formValues: FormValues): TezOperation => ({
   recipient: parsePkh(formValues.recipient),
 });
 
-type TezFormPageProps = FormPageProps<FormValues> & { recipient?: RawPkh };
-
-const tezFormDefaultValues = (props: TezFormPageProps) => ({
-  ...formDefaultValues(props),
-  // use the recipient from the form as fallback in case the recipient is not known
-  // (e.g. when going back from the sign page)
-  recipient: props.recipient || props.form?.recipient,
-});
-
-const FormPage: React.FC<TezFormPageProps> = props => {
-  const { sender, recipient } = props;
-
+const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,
@@ -72,7 +61,7 @@ const FormPage: React.FC<TezFormPageProps> = props => {
 
   const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: tezFormDefaultValues(props),
+    defaultValues: formDefaultValues(props),
   });
   const {
     formState: { isValid, errors },
@@ -89,7 +78,7 @@ const FormPage: React.FC<TezFormPageProps> = props => {
             <FormControl mb={2} isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
-                isDisabled={!!sender}
+                isDisabled={!!props.sender}
                 inputName="sender"
                 allowUnknown={false}
               />
@@ -100,12 +89,7 @@ const FormPage: React.FC<TezFormPageProps> = props => {
               )}
             </FormControl>
             <FormControl mb={2} isInvalid={!!errors.recipient}>
-              <KnownAccountsAutocomplete
-                label="To"
-                inputName="recipient"
-                allowUnknown
-                isDisabled={!!recipient}
-              />
+              <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">
                   {errors.recipient.message}

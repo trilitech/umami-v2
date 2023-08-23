@@ -42,7 +42,13 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                         <IconAndTextBtn
                           icon={MdArrowOutward}
                           label="Send"
-                          onClick={() => openWith(<FormPage recipient={contact.pkh} />)}
+                          onClick={() =>
+                            openWith(
+                              <FormPage
+                                form={{ sender: "", recipient: contact.pkh, prettyAmount: "" }}
+                              />
+                            )
+                          }
                         />
                       </Flex>
                       <ContactMenu contact={contact} />
