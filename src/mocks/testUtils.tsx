@@ -5,7 +5,7 @@ import { ReactQueryProvider } from "../providers/ReactQueryProvider";
 import { ReduxStore } from "../providers/ReduxStore";
 import { UmamiTheme } from "../providers/UmamiTheme";
 
-const AllTheProviders = (props: any) => {
+export const AllTheProviders = (props: any) => {
   const dynamicModal = useDynamicModal();
   return (
     <HashRouter>

@@ -1,15 +1,16 @@
 import {
   blocksGetCount,
+  Delegate,
   DelegationOperation,
   operationsGetDelegations,
   operationsGetTransactions,
   tokensGetTokenTransfers,
+  delegatesGet,
   TokenTransfer,
 } from "@tzkt/sdk-api";
 import axios from "axios";
-import { bakersUrl, coincapUrl, tzktUrls } from "./consts";
+import { coincapUrl, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
-import { Baker } from "../../types/Baker";
 import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { TezosNetwork } from "../../types/TezosNetwork";
@@ -105,6 +106,16 @@ export const getLatestBlockLevel = async (network = TezosNetwork.MAINNET): Promi
   });
 };
 
-export const getBakers = async (): Promise<Baker[]> => {
-  return axios.get<Baker[]>(bakersUrl).then(d => d.data);
+export const getBakers = async (network: TezosNetwork): Promise<Delegate[]> => {
+  return delegatesGet(
+    {
+      sort: { desc: "stakingBalance" },
+      active: { eq: true },
+      limit: 10000,
+      select: { fields: ["address,alias,stakingBalance"] },
+    },
+    {
+      baseUrl: tzktUrls[network],
+    }
+  );
 };

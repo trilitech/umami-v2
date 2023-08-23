@@ -13,13 +13,13 @@ import {
 import { TezosToolkit } from "@taquito/taquito";
 import { Operation } from "../../../types/Operation";
 import { useGetToken } from "../../../utils/hooks/tokensHooks";
-import { useRenderBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { AccountSmallTile } from "../../AccountSelector/AccountSmallTile";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
 import SignButton from "../components/SignButton";
 import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation } from "../types";
 import { BatchRecap } from "./BatchRecap";
+import { BakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 
 const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
   const isDelegation = transfer.type === "delegation";
@@ -29,8 +29,6 @@ const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
       ? getToken(transfer.contract.pkh, transfer.tokenId)
       : undefined;
 
-  const renderBakerTile = useRenderBakerSmallTile();
-
   return (
     <>
       {transfer.recipient && (
@@ -39,7 +37,7 @@ const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
             To:
           </Heading>
           {isDelegation ? (
-            renderBakerTile(transfer.recipient.pkh)
+            <BakerSmallTile pkh={transfer.recipient.pkh} />
           ) : (
             <AccountSmallTile pkh={transfer.recipient.pkh} />
           )}

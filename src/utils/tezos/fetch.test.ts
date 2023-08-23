@@ -1,7 +1,6 @@
 import axios from "axios";
 import {
   getAccounts,
-  getBakers,
   getLastDelegation,
   getTezosPriceInUSD,
   getTezTransfers,
@@ -9,7 +8,7 @@ import {
   getTokenTransfers,
 } from "./fetch";
 import { operationsGetTransactions, tokensGetTokenTransfers } from "@tzkt/sdk-api";
-import { bakersUrl, coincapUrl, tzktUrls } from "./consts";
+import { coincapUrl, tzktUrls } from "./consts";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { SupportedNetworks } from "../network";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
@@ -29,38 +28,6 @@ jest.mock("@tzkt/sdk-api", () => {
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("tezos utils fetch", () => {
-  test("getBakers", async () => {
-    const mockResponse = {
-      data: [
-        {
-          address: "tz1gfArv665EUkSg2ojMBzcbfwuPxAvqPvjo",
-          name: "Kraken Baker",
-          logo: "https://services.tzkt.io/v1/avatars/tz1gfArv665EUkSg2ojMBzcbfwuPxAvqPvjo",
-          balance: 7011211.558821,
-          stakingBalance: 20857605.698361,
-          stakingCapacity: 70112115.58821,
-          maxStakingBalance: 70112115.58821,
-          freeSpace: 49254509.88984901,
-          fee: 0,
-          minDelegation: 0,
-          payoutDelay: 6,
-          payoutPeriod: 1,
-          openForDelegation: true,
-          estimatedRoi: 0.055,
-          serviceType: "exchange",
-          serviceHealth: "active",
-          payoutTiming: "no_data",
-          payoutAccuracy: "no_data",
-          insuranceCoverage: 0,
-        },
-      ],
-    };
-    mockedAxios.get.mockResolvedValue(mockResponse);
-    const result = await getBakers();
-    expect(mockedAxios.get).toBeCalledWith(bakersUrl);
-    expect(result).toEqual(mockResponse.data);
-  });
-
   test("getTezosPriceInUSD", async () => {
     const mockResponse = {
       data: {

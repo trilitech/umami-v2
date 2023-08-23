@@ -10,13 +10,13 @@ import {
 } from "../types/Account";
 import { ContractAddress, ImplicitAddress } from "../types/Address";
 import { FA2TokenBalance, NFTBalance, fromRaw } from "../types/TokenBalance";
-import { Baker } from "../types/Baker";
 import { Contact } from "../types/Contact";
 import { TezTransfer, TokenTransfer } from "../types/Transfer";
 import { RawTokenBalance } from "../types/TokenBalance";
 import { MultisigOperation, Multisig } from "../utils/multisig/types";
 import { Operation } from "../types/Operation";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
+import { Delegate } from "../types/Delegate";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -313,12 +313,11 @@ export const mockNFT = (index: number, balance = "1"): NFTBalance => {
   };
 };
 
-export const mockBaker = (index: number) =>
-  ({
-    name: `label${index}`,
-    logo: `label${index}`,
-    address: mockImplicitAddress(index).pkh,
-  } as Baker);
+export const mockBaker = (index: number): Delegate => ({
+  name: `label${index}`,
+  address: mockImplicitAddress(index).pkh,
+  stakingBalance: 100000 + index,
+});
 
 export const mockTezOperation = (index: number): Operation => {
   return {
