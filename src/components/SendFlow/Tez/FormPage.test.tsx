@@ -14,8 +14,9 @@ import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { estimate } from "../../../utils/tezos";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 import { FormPageProps } from "../utils";
+import { RawPkh } from "../../../types/Address";
 
-const fixture = (props: FormPageProps<FormValues> = {}) => (
+const fixture = (props: FormPageProps<FormValues> & { recipient?: RawPkh } = {}) => (
   <Modal isOpen={true} onClose={() => {}}>
     <FormPage {...props} />
   </Modal>
@@ -76,6 +77,19 @@ describe("<Form />", () => {
       expect(screen.getByLabelText("From")).toBeDisabled();
       expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
       expect(screen.getByLabelText("Amount")).toHaveValue(1);
+    });
+
+    it("renders a form with recipient and disables recipient if it's provided", async () => {
+      render(
+        fixture({
+          recipient: mockImplicitAccount(1).address.pkh,
+        })
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      });
+      expect(screen.getByLabelText("To")).toBeDisabled();
     });
   });
 
