@@ -20,12 +20,13 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
     mode: "onBlur",
   });
   const { handleAsyncAction } = useAsyncActionHandler();
+  //TODO: see if we could use useForm instead of the useState
   const [mnemonicSize, setMnemonicSize] = useState("12");
 
-  const pasteMnemonic = (mnemonic: string) => {
+  const pasteMnemonic = (mnemonic: string, mnemonicSize: number) => {
     mnemonic
       .split(" ")
-      .slice(0, Number(mnemonicSize))
+      .slice(0, mnemonicSize)
       .forEach((word, i) => {
         setFormValue(`word${i}`, word);
       });
@@ -80,7 +81,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
             </Select>
 
             <Grid templateColumns="repeat(3, 1fr)" gap={3} pb="20px">
-              {Array.from({ length: parseInt(mnemonicSize) }).map((item, index) => {
+              {Array.from({ length: parseInt(mnemonicSize) }).map((_, index) => {
                 return (
                   <GridItem
                     key={index}
@@ -97,7 +98,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
                       onPaste={async e => {
                         e.preventDefault();
                         const mnemonic = await navigator.clipboard.readText();
-                        pasteMnemonic(mnemonic);
+                        pasteMnemonic(mnemonic, parseInt(mnemonicSize));
                       }}
                       size="xsmall"
                       border="none"
@@ -127,7 +128,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
               <Button
                 onClick={() => {
                   setMnemonicSize("24");
-                  pasteMnemonic(mnemonic1);
+                  pasteMnemonic(mnemonic1, mnemonic1.split(" ").length);
                 }}
                 bg="umami.blue"
                 w="100%"
