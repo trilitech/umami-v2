@@ -16,7 +16,7 @@ import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { TezosToolkit } from "@taquito/taquito";
 import { makeTransfer } from "../sendForm/util/execution";
 import { SuccessStep } from "../sendForm/steps/SuccessStep";
-import { estimate, TEZ } from "../../utils/tezos";
+import { estimate } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
 import { repeat } from "lodash";
 
@@ -156,15 +156,6 @@ export const useSignPageHelpers = (
     reEstimate,
     onSign,
   };
-};
-
-export const mutezToPrettyTez = (amount: BigNumber): string => {
-  // make sure we always show 6 digits after the decimal point
-  const formatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 6,
-    maximumFractionDigits: 6,
-  });
-  return `${formatter.format(amount.dividedBy(10 ** 6).toNumber())} ${TEZ}`;
 };
 
 export const useMakeFormOperations = <FormValues extends BaseFormValues>(

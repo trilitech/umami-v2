@@ -472,7 +472,7 @@ describe("<SendForm />", () => {
 
       await waitFor(() => {
         const subTotal = screen.getByLabelText(/^sub-total$/i);
-        expect(subTotal).toHaveTextContent(/23 ꜩ/i);
+        expect(subTotal).toHaveTextContent(/23.000000 ꜩ/i);
 
         const fee = screen.getByLabelText(/^fee$/i);
         expect(fee).toHaveTextContent(/0.012345 ꜩ/i);

@@ -12,12 +12,13 @@ import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
-import { mutezToPrettyTez, SignPageProps, useSignPageHelpers } from "../utils";
+import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
 import { FA2Operation } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
+import { prettyTezAmount } from "../../../utils/format";
 
 const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {
@@ -53,7 +54,7 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
                   Fee:
                 </Text>
                 <Text size="sm" data-testid="fee" color={colors.gray[400]}>
-                  {mutezToPrettyTez(fee)}
+                  {prettyTezAmount(fee)}
                 </Text>
               </Flex>
             </Flex>

@@ -79,7 +79,7 @@ describe("<AccountCard />", () => {
 
   it("should display account tez balance", () => {
     render(<AccountCard account={selectedAccount} />);
-    expect(screen.getByText("33200 ꜩ")).toBeInTheDocument();
+    expect(screen.getByText("33,200.000000 ꜩ")).toBeInTheDocument();
   });
 
   it("should display link to tzkt according to network", async () => {
@@ -194,8 +194,8 @@ describe("<AccountCard />", () => {
     screen.getByTestId("account-card-operations-tab").click();
     const operations = screen.getAllByTestId("operation-tile");
     expect(operations).toHaveLength(2);
-    expect(operations[0]).toHaveTextContent("-1 ꜩ");
-    expect(operations[1]).toHaveTextContent("+2 ꜩ");
+    expect(operations[0]).toHaveTextContent("-1.000000 ꜩ");
+    expect(operations[1]).toHaveTextContent("+2.000000 ꜩ");
   });
 
   it("should display no operations if account has no operations", () => {
@@ -243,7 +243,7 @@ describe("<AccountCard />", () => {
       screen.getByTestId("account-card-delegation-tab").click();
       const { getByTestId } = within(screen.getByTestId("asset-panel"));
 
-      expect(getByTestId(/initial balance/i)).toHaveTextContent("6 ꜩ");
+      expect(getByTestId(/initial balance/i)).toHaveTextContent("6.000000 ꜩ");
       expect(getByTestId(/current balance/i)).toHaveTextContent(
         prettyTezAmount(SELECTED_ACCOUNT_BALANCE.toString())
       );
@@ -275,7 +275,7 @@ describe("<AccountCard />", () => {
       const { getAllByTestId } = within(screen.getByTestId("account-card-pending-tab-panel"));
       const pendingOps = getAllByTestId(/multisig-pending-operation/i);
       expect(pendingOps).toHaveLength(1);
-      expect(pendingOps[0]).toHaveTextContent(/-0.1 ꜩ/i);
+      expect(pendingOps[0]).toHaveTextContent(/-0.100000 ꜩ/i);
       expect(pendingOps[0]).toHaveTextContent(/Send to :tz1UN...oBUB3/i);
     });
 
@@ -320,8 +320,8 @@ describe("<AccountCard />", () => {
       screen.getByTestId("account-card-operations-tab").click();
       const operations = screen.getAllByTestId("operation-tile");
       expect(operations).toHaveLength(2);
-      expect(operations[0]).toHaveTextContent(/-1 ꜩ/i);
-      expect(operations[1]).toHaveTextContent(/\+2 ꜩ/i);
+      expect(operations[0]).toHaveTextContent(/-1.000000 ꜩ/i);
+      expect(operations[1]).toHaveTextContent(/\+2.000000 ꜩ/i);
     });
 
     it("multisig accounts display multisig signers", () => {

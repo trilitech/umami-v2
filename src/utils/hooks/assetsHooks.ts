@@ -142,34 +142,22 @@ export const useGetDollarBalance = () => {
 
 // Returns the total balance in both tez and dollar
 export const useTotalBalance = () => {
+  const balances = useAppSelector(s => s.assets.balances.mutez);
   const tezToDollar = useTezToDollar();
+  const totalBalance = getTotalTezBalance(balances);
 
-  const totalMutez = useTotalMutezBalance();
-  const tezBalance = totalMutez && mutezToTez(totalMutez);
-
-  if (tezBalance == null) {
+  if (totalBalance == null) {
     return null;
   }
 
-  const dollarBalance = tezToDollar(tezBalance);
+  const usdBalance = tezToDollar(mutezToTez(totalBalance));
 
-  return { tezBalance, dollarBalance };
+  return { mutez: totalBalance.toString(), usd: usdBalance };
 };
 
 export const useGetAccountBalance = () => {
   const mutezBalances = useAppSelector(s => s.assets.balances.mutez);
-
-  const balancesMap = new Map(Object.entries(mutezBalances));
-  return (pkh: string) => {
-    const val = balancesMap.get(pkh);
-    return val === undefined ? null : val;
-  };
-};
-
-export const useTotalMutezBalance = () => {
-  const balances = useAppSelector(s => s.assets.balances.mutez);
-
-  return getTotalTezBalance(balances);
+  return (pkh: string) => mutezBalances[pkh];
 };
 
 export const useAllDelegations = () => {

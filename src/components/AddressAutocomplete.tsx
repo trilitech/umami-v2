@@ -94,6 +94,7 @@ const Suggestions = ({
               borderRadius="4px"
               padding="7px 5px"
               height="40px"
+              balance={undefined}
             />
           </ListItem>
         </Box>

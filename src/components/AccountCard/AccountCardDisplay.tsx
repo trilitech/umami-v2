@@ -23,7 +23,7 @@ type Props = {
   onDelegate: (opts?: DelegationMode["data"]) => void;
   label: string;
   pkh: string;
-  tezBalance: string | null;
+  balance: string | undefined;
   dollarBalance: BigNumber | null;
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
@@ -59,7 +59,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
   onReceive = () => {},
   onDelegate,
   label,
-  tezBalance,
+  balance,
   dollarBalance,
   tokens,
   nfts,
@@ -76,9 +76,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
         {label}
       </Heading>
       <AddressPill address={account.address} mode={{ type: "no_icons" }} my={2} />
-      {tezBalance !== null && (
-        <TezRecapDisplay center tezBalance={tezBalance} dollarBalance={dollarBalance} />
-      )}
+      {balance && <TezRecapDisplay center balance={balance} dollarBalance={dollarBalance} />}
       <Flex mt={6}>
         <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
         <RoundButton label="Receive" icon={<MdSouthWest />} onClick={onReceive} />

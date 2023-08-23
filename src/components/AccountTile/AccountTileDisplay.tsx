@@ -4,6 +4,7 @@ import colors from "../../style/colors";
 import { AccountType } from "../../types/Account";
 import { formatPkh } from "../../utils/formatPkh";
 import { getIcon } from "./getIcon";
+import { prettyTezAmount } from "../../utils/format";
 
 export type Props = {
   label: string;
@@ -83,7 +84,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
       rightElement={
         balance && (
           <Heading mb={4} alignSelf="flex-end" size="lg">
-            {balance}
+            {prettyTezAmount(balance)}
           </Heading>
         )
       }

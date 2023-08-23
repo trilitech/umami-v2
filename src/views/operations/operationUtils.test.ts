@@ -106,7 +106,7 @@ describe("getTezOperationDisplay", () => {
 
     const expected: OperationDisplay = {
       id: 109783351820288,
-      amount: { prettyDisplay: "+2.4 ꜩ" },
+      amount: { prettyDisplay: "+2.400000 ꜩ" },
       fee: "0.000402 ꜩ",
       prettyTimestamp: "today at 10:47 AM",
       recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
@@ -151,7 +151,7 @@ describe("getTezOperationDisplay", () => {
 
     const expected: OperationDisplay = {
       id: 109810172297216,
-      amount: { prettyDisplay: "-6.41 ꜩ" },
+      amount: { prettyDisplay: "-6.410000 ꜩ" },
       fee: "0.000403 ꜩ",
       prettyTimestamp: "today at 12:36 PM",
       recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
@@ -385,7 +385,7 @@ describe("getTezOperationDisplay", () => {
   });
 });
 
-describe("getOperationsDisplays", () => {
+describe("getOperationDisplays", () => {
   it("returns the right value", () => {
     const result = getOperationDisplays(
       getTransactionsResult,
@@ -484,7 +484,7 @@ describe("getOperationsDisplays", () => {
       },
       {
         id: 109810172297216,
-        amount: { prettyDisplay: "-6.41 ꜩ" },
+        amount: { prettyDisplay: "-6.410000 ꜩ" },
         fee: "0.000403 ꜩ",
         prettyTimestamp: "today at 12:36 PM",
         recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
@@ -497,7 +497,7 @@ describe("getOperationsDisplays", () => {
       },
       {
         id: 109783351820288,
-        amount: { prettyDisplay: "+2.4 ꜩ" },
+        amount: { prettyDisplay: "+2.400000 ꜩ" },
         fee: "0.000402 ꜩ",
         prettyTimestamp: "today at 10:47 AM",
         recipient: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
@@ -525,7 +525,7 @@ describe("getOperationsDisplays", () => {
       },
       {
         id: 109510819577856,
-        amount: { prettyDisplay: "-0 ꜩ" },
+        amount: { prettyDisplay: "-0.000000 ꜩ" },
         fee: "0.000771 ꜩ",
         prettyTimestamp: "yesterday at 4:34 PM",
         recipient: { type: "contract", pkh: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob" },
@@ -574,8 +574,8 @@ describe("getOperationsDisplays", () => {
     expect(result).toEqual([
       {
         id: 12345,
-        amount: { prettyDisplay: "0.1 ꜩ" },
-        fee: "0.0004 ꜩ",
+        amount: { prettyDisplay: "0.100000 ꜩ" },
+        fee: "0.000400 ꜩ",
         level: 300,
         prettyTimestamp: "today at 4:15 PM",
         recipient: { type: "implicit", pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf" },

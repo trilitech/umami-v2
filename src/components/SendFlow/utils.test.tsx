@@ -4,11 +4,9 @@ import { RawPkh } from "../../types/Address";
 import {
   formDefaultValues,
   FormSubmitButtons,
-  mutezToPrettyTez,
   getSmallestUnit,
   makeValidateDecimals,
 } from "./utils";
-import BigNumber from "bignumber.js";
 
 describe("SendFlow utils", () => {
   describe("formDefaultValues", () => {
@@ -56,12 +54,6 @@ describe("SendFlow utils", () => {
       fireEvent.click(screen.getByText("Insert Into Batch"));
       expect(mockSingle).toHaveBeenCalled();
     });
-  });
-
-  test("mutezToPrettyTez displays 6 digits after the decimal point", () => {
-    expect(mutezToPrettyTez(BigNumber(1000000))).toBe("1.000000 ꜩ");
-    expect(mutezToPrettyTez(BigNumber(123))).toBe("0.000123 ꜩ");
-    expect(mutezToPrettyTez(BigNumber(10000123))).toBe("10.000123 ꜩ");
   });
 
   describe("smallestUnit", () => {
