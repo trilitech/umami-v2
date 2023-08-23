@@ -1,8 +1,7 @@
 import {
-  Box,
-  Divider,
   Flex,
   FormControl,
+  Heading,
   ModalBody,
   ModalContent,
   ModalFooter,
@@ -11,16 +10,15 @@ import {
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
 import { TezOperation } from "../../../types/Operation";
-import { useTezToDollar } from "../../../utils/hooks/assetsHooks";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { FormOperations } from "../../sendForm/types";
 import { BigNumber } from "bignumber.js";
-import { mutezToTez } from "../../../utils/format";
 import { mutezToPrettyTez, SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { sumTez } from "../../../utils/tezos";
 import { OperationSignerSelector } from "../OperationSignerSelector";
+import { prettyTezAmount } from "../../../utils/format";
 
 export const getTezAmount = (operations: FormOperations): BigNumber | undefined => {
   switch (operations.type) {
@@ -41,11 +39,8 @@ const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
-  const convertTezToDallars = useTezToDollar();
 
   const tezAmount = getTezAmount(operations);
-  const totalCost = fee.plus(tezAmount ?? 0);
-  const totalCostInUSD = convertTezToDallars(mutezToTez(totalCost));
 
   return (
     <FormProvider {...form}>
@@ -53,6 +48,34 @@ const SignPage: React.FC<SignPageProps> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
+            {/* TODO: Import icon and adjust text size */}
+            {tezAmount && (
+              <Flex
+                h="60px"
+                w="100%"
+                borderRadius="4px"
+                bg={colors.gray[800]}
+                alignItems="center"
+                px={2}
+                py={3}
+              >
+                <Heading size="sm">{prettyTezAmount(tezAmount).toString()}</Heading>
+              </Flex>
+            )}
+
+            {/* TODO: Come up with a better way to show the fee when tezAmount === null (e.g. proposal) */}
+            <Flex my={3} alignItems="center" justifyContent="end" px={1}>
+              <Flex>
+                <Text size="sm" mr={1} color={colors.gray[450]}>
+                  Fee:
+                </Text>
+                <Text size="sm" data-testid="fee" color={colors.gray[400]}>
+                  {mutezToPrettyTez(fee)}
+                </Text>
+              </Flex>
+            </Flex>
+
+            {/* TODO: Add sender address tile */}
             <FormControl mb="24px">
               <OwnedAccountsAutocomplete
                 inputName="sender"
@@ -62,48 +85,7 @@ const SignPage: React.FC<SignPageProps> = props => {
               />
             </FormControl>
 
-            {tezAmount && (
-              <Flex justifyContent="space-between">
-                <Text size="sm" color={colors.gray[450]} fontWeight="600">
-                  Tez Amount:
-                </Text>
-                <Text size="sm" color={colors.gray[400]}>
-                  {mutezToPrettyTez(tezAmount)}
-                </Text>
-              </Flex>
-            )}
-
-            <Flex justifyContent="space-between" mb={3}>
-              <Text size="sm" color={colors.gray[450]} fontWeight="600">
-                Fee:
-              </Text>
-              <Text size="sm" data-testid="fee" color={colors.gray[400]}>
-                {mutezToPrettyTez(fee)}
-              </Text>
-            </Flex>
-
-            <Divider />
-
-            <Flex justifyContent="space-between" mb={3}>
-              <Text color={colors.gray[400]} fontWeight="600">
-                Total:
-              </Text>
-              <Box>
-                <Text color="white" fontWeight="600">
-                  {mutezToPrettyTez(totalCost)}
-                </Text>
-                {totalCostInUSD && (
-                  <Box textAlign="right">
-                    <Text color={colors.gray[450]} fontWeight="600" display="inline">
-                      USD:
-                    </Text>
-                    <Text color={colors.gray[400]} display="inline">
-                      {` ${totalCostInUSD.toFixed(2)}$`}
-                    </Text>
-                  </Box>
-                )}
-              </Box>
-            </Flex>
+            {/* TODO: Add recipient address tile */}
 
             <OperationSignerSelector
               sender={operations.sender}

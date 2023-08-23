@@ -18,6 +18,7 @@ import {
   FormPagePropsWithSender,
   FormSubmitButtons,
   getSmallestUnit,
+  makeValidateDecimals,
 } from "../utils";
 import SignPage from "./SignPage";
 import {
@@ -116,15 +117,7 @@ const FormPage: React.FC<
                       value: prettyBalance.toString(),
                       message: `Max amount is ${prettyBalance}`,
                     },
-                    validate: (val: string) => {
-                      if (val.includes(".")) {
-                        const decimalPart = val.split(".")[1];
-                        if (decimalPart.length > Number(decimals)) {
-                          return `Please enter a value with up to ${decimals} decimal places`;
-                        }
-                      }
-                      return true;
-                    },
+                    validate: makeValidateDecimals(Number(decimals)),
                   })}
                   placeholder={smallestUnit}
                 />

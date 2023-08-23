@@ -25,3 +25,5 @@ export const coincapUrl = "https://api.coincap.io/v2/assets";
 export const bakersUrl = "https://api.baking-bad.org/v2/bakers";
 
 export const TEZ = "ꜩ";
+
+export const TEZ_DECIMALS = 6;
