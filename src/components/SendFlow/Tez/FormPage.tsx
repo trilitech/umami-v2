@@ -44,8 +44,6 @@ const toOperation = (formValues: FormValues): TezOperation => ({
 });
 
 const FormPage: React.FC<FormPageProps<FormValues>> = props => {
-  const senderSelectorDisabled = !!props.sender;
-
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,
@@ -80,7 +78,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             <FormControl mb={2} isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
-                isDisabled={!!senderSelectorDisabled}
+                isDisabled={!!props.sender}
                 inputName="sender"
                 allowUnknown={false}
               />

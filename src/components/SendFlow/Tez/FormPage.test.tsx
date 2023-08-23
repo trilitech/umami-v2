@@ -77,6 +77,23 @@ describe("<Form />", () => {
       expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
       expect(screen.getByLabelText("Amount")).toHaveValue(1);
     });
+
+    it("renders a form with prefilled recipient", async () => {
+      render(
+        fixture({
+          form: {
+            sender: "",
+            prettyAmount: "",
+            recipient: mockImplicitAccount(1).address.pkh,
+          },
+        })
+      );
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      });
+      expect(screen.getByLabelText("To")).toBeEnabled();
+    });
   });
 
   // TODO: add custom matchers for the fields so that this code doesn't have to be repeated over and over again
