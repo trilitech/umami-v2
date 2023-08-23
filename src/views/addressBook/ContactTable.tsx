@@ -4,13 +4,13 @@ import { Contact } from "../../types/Contact";
 import { CopyableAddress } from "../../components/CopyableText";
 import { MdArrowOutward } from "react-icons/md";
 import ContactMenu from "./ContactMenu";
-import { useSendFormModal } from "../../views/home/useSendFormModal";
 import { truncate } from "../../utils/format";
-import { useFirstAccount } from "../../utils/hooks/accountHooks";
+import { useContext } from "react";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import FormPage from "../../components/SendFlow/Tez/FormPage";
 
 const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
-  const { modalElement, onOpen } = useSendFormModal();
-  const account = useFirstAccount();
+  const { openWith } = useContext(DynamicModalContext);
   return (
     <>
       <TableContainer overflowX="unset" overflowY="unset">
@@ -42,13 +42,7 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                         <IconAndTextBtn
                           icon={MdArrowOutward}
                           label="Send"
-                          onClick={() =>
-                            onOpen({
-                              sender: account.address.pkh,
-                              recipient: contact.pkh,
-                              mode: { type: "tez" },
-                            })
-                          }
+                          onClick={() => openWith(<FormPage recipient={contact.pkh} />)}
                         />
                       </Flex>
                       <ContactMenu contact={contact} />
@@ -60,7 +54,6 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
           </Tbody>
         </Table>
       </TableContainer>
-      {modalElement}
     </>
   );
 };
