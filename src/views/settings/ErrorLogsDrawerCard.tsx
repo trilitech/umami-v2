@@ -54,7 +54,7 @@ const ErrorLogsDrawerBody = () => {
           <Button variant="tertiary">Download error logs</Button>
         </a>
         {/* TODO:Implement delete */}
-        {/* <IconAndTextBtn label="Clear All" icon={BsTrash} textFirst onClick={() => {}} /> */}
+        {/* <IconAndTextBtn label="Clear All" icon={Trash} textFirst onClick={() => {}} /> */}
       </Flex>
       {errors.map((error, i) => (
         <ErrorLogRow errorLog={error} key={error.timestamp} />
@@ -93,7 +93,7 @@ const ErrorLogRow: React.FC<{
             }}
           />
           <Icon
-            as={BsTrash}
+            as={Trash}
             cursor="pointer"
             color={colors.gray[600]}
             _hover={{
