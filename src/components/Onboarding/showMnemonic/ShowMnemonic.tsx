@@ -1,14 +1,14 @@
 import { Box, Button, SimpleGrid, VStack } from "@chakra-ui/react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
-import { ShowSeedphraseStep, Step, StepType } from "../useOnboardingModal";
+import { ShowMnemonicStep, Step, StepType } from "../useOnboardingModal";
 
-export const ShowSeedphrase = ({
+export const ShowMnemonic = ({
   goToStep,
   account,
 }: {
   goToStep: (step: Step) => void;
-  account: ShowSeedphraseStep["account"];
+  account: ShowMnemonicStep["account"];
 }) => {
   return (
     <ModalContentWrapper
@@ -18,7 +18,7 @@ export const ShowSeedphrase = ({
     >
       <VStack overflowX="hidden">
         <SimpleGrid columns={3} spacing={2}>
-          {account.seedphrase.split(" ").map((item, index) => {
+          {account.mnemonic.split(" ").map((item, index) => {
             return (
               <Box
                 key={index}
@@ -50,7 +50,7 @@ export const ShowSeedphrase = ({
           size="lg"
           minH="48px"
           onClick={_ => {
-            goToStep({ type: StepType.verifySeedphrase, account });
+            goToStep({ type: StepType.verifyMnemonic, account });
           }}
         >
           OK, I've recorded it
@@ -59,4 +59,4 @@ export const ShowSeedphrase = ({
     </ModalContentWrapper>
   );
 };
-export default ShowSeedphrase;
+export default ShowMnemonic;

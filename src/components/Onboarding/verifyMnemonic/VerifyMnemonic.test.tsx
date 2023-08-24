@@ -1,6 +1,6 @@
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
-import VerifySeedphrase from "./VerifySeedphrase";
+import VerifyMnemonic from "./VerifyMnemonic";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 
@@ -17,10 +17,10 @@ beforeEach(() => {
 });
 
 const fixture = (goToStep: (step: Step) => void) => (
-  <VerifySeedphrase goToStep={goToStep} account={{ type: "mnemonic", seedphrase: mnemonic1 }} />
+  <VerifyMnemonic goToStep={goToStep} account={{ type: "mnemonic", mnemonic: mnemonic1 }} />
 );
 
-describe("<VerifySeedphrase />", () => {
+describe("<VerifyMnemonic />", () => {
   test("When no mnemonic has been entered the button is disabled", async () => {
     render(fixture(goToStepMock));
     const confirmBtn = screen.getByRole("button", { name: /continue/i });
@@ -99,7 +99,7 @@ describe("<VerifySeedphrase />", () => {
     });
     expect(goToStepMock).toBeCalledWith({
       type: StepType.nameAccount,
-      account: { type: "mnemonic", seedphrase: mnemonic1 },
+      account: { type: "mnemonic", mnemonic: mnemonic1 },
     });
   });
 });

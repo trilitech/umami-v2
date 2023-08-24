@@ -23,7 +23,7 @@ export const MasterPassword = ({
       if (passwordHasBeenSet) {
         await checkPassword(password);
       }
-      await restoreSecret(account.seedphrase, password, account.label, account.derivationPath);
+      await restoreSecret(account.mnemonic, password, account.label, account.derivationPath);
       toast({ title: "Successful account restore", status: "success" });
       onClose();
     });

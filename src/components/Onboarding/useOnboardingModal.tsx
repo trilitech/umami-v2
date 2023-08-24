@@ -5,13 +5,13 @@ import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import ConnectOptions from "./connectOptions/ConnectOptions";
 import ConnectOrCreate from "./connectOrCreate/ConnectOrCreate";
 import Eula from "./eula/Eula";
-import ShowSeedphrase from "./showSeedphrase/ShowSeedphrase";
+import ShowMnemonic from "./showMnemonic/ShowMnemonic";
 import MasterPassword from "./masterPassword/MasterPassword";
 import NameAccount from "./nameAccount/NameAccount";
 import Notice from "./notice/Notice";
 import RestoreLedger from "./restoreLedger/RestoreLedger";
-import RestoreSeedphrase from "./restoreSeedphrase/RestoreSeedphrase";
-import VerifySeedphrase from "./verifySeedphrase/VerifySeedphrase";
+import RestoreMnemonic from "./restoreMnemonic/RestoreMnemonic";
+import VerifyMnemonic from "./verifyMnemonic/VerifyMnemonic";
 import DerivationPath from "./derivationPath/DerivationPath";
 import { useStepHistory } from "../useStepHistory";
 import { FakeAccount } from "./FakeAccount";
@@ -21,10 +21,10 @@ export enum StepType {
   connectOrCreate = "connectOrCreate",
   connectOptions = "connectOptions",
   notice = "notice",
-  restoreSeedphrase = "restoreSeedphrase",
+  restoreMnemonic = "restoreMnemonic",
   restoreLedger = "restoreLedger",
-  showSeedphrase = "showSeedphrase",
-  verifySeedphrase = "verifySeedphrase",
+  showMnemonic = "showMnemonic",
+  verifyMnemonic = "verifyMnemonic",
   nameAccount = "nameAccount",
   derivationPath = "derivationPath",
   masterPassword = "masterPassword",
@@ -37,7 +37,7 @@ export enum ModalSize {
 }
 
 const stepModalSize = (step: Step): ModalSize => {
-  if (["eula", "showSeedphrase", "verifySeedphrase"].includes(step.type)) {
+  if (["eula", "showMnemonic", "verifyMnemonic"].includes(step.type)) {
     return ModalSize.lg;
   }
   return ModalSize.md;
@@ -47,23 +47,23 @@ export type EulaStep = { type: StepType.eula };
 export type ConnectOrCreateStep = { type: StepType.connectOrCreate };
 export type NoticeStep = { type: StepType.notice };
 export type ConnectOptionsStep = { type: StepType.connectOptions };
-export type ShowSeedphraseStep = {
-  type: StepType.showSeedphrase;
-  account: { type: "mnemonic"; seedphrase: string };
+export type ShowMnemonicStep = {
+  type: StepType.showMnemonic;
+  account: { type: "mnemonic"; mnemonic: string };
 };
-export type RestoreSeedphraseStep = { type: StepType.restoreSeedphrase };
-export type VerifySeedphraseStep = {
-  type: StepType.verifySeedphrase;
-  account: { type: "mnemonic"; seedphrase: string };
+export type RestoreMnemonicStep = { type: StepType.restoreMnemonic };
+export type VerifyMnemonicStep = {
+  type: StepType.verifyMnemonic;
+  account: { type: "mnemonic"; mnemonic: string };
 };
 export type NameAccountStep = {
   type: StepType.nameAccount;
-  account: { type: "mnemonic"; seedphrase: string } | { type: "ledger" };
+  account: { type: "mnemonic"; mnemonic: string } | { type: "ledger" };
 };
 export type DerivationPathStep = {
   type: StepType.derivationPath;
   account:
-    | { type: "mnemonic"; seedphrase: string; label: string }
+    | { type: "mnemonic"; mnemonic: string; label: string }
     | { type: "ledger"; label: string };
 };
 export type RestoreLedgerStep = {
@@ -72,7 +72,7 @@ export type RestoreLedgerStep = {
 };
 export type MasterPasswordStep = {
   type: StepType.masterPassword;
-  account: { type: "mnemonic"; seedphrase: string; label: string; derivationPath: string };
+  account: { type: "mnemonic"; mnemonic: string; label: string; derivationPath: string };
 };
 export type FakeAccountStep = { type: StepType.fakeAccount };
 
@@ -81,9 +81,9 @@ export type Step =
   | ConnectOrCreateStep
   | NoticeStep
   | ConnectOptionsStep
-  | ShowSeedphraseStep
-  | RestoreSeedphraseStep
-  | VerifySeedphraseStep
+  | ShowMnemonicStep
+  | RestoreMnemonicStep
+  | VerifyMnemonicStep
   | NameAccountStep
   | DerivationPathStep
   | RestoreLedgerStep
@@ -113,12 +113,12 @@ export const useOnboardingModal = () => {
         return <ConnectOptions goToStep={goToStep} />;
       case StepType.notice:
         return <Notice goToStep={goToStep} />;
-      case StepType.restoreSeedphrase:
-        return <RestoreSeedphrase goToStep={goToStep} />;
-      case StepType.showSeedphrase:
-        return <ShowSeedphrase goToStep={goToStep} {...currentStep} />;
-      case StepType.verifySeedphrase:
-        return <VerifySeedphrase goToStep={goToStep} {...currentStep} />;
+      case StepType.restoreMnemonic:
+        return <RestoreMnemonic goToStep={goToStep} />;
+      case StepType.showMnemonic:
+        return <ShowMnemonic goToStep={goToStep} {...currentStep} />;
+      case StepType.verifyMnemonic:
+        return <VerifyMnemonic goToStep={goToStep} {...currentStep} />;
       case StepType.nameAccount:
         return <NameAccount goToStep={goToStep} {...currentStep} />;
       case StepType.derivationPath:

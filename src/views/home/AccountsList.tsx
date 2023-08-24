@@ -88,7 +88,7 @@ const AccountGroup: React.FC<{
 const getLabel = (account: Account) => {
   switch (account.type) {
     case AccountType.MNEMONIC:
-      return `Seedphrase ${account.seedFingerPrint}`;
+      return `Mnemonic ${account.seedFingerPrint}`;
     case AccountType.SOCIAL:
       return "Social Accounts";
     case AccountType.LEDGER:
@@ -215,7 +215,7 @@ const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
 
   return (
     <DeriveAccountDisplay
-      subtitle={`Name the new account dervied from seedphrase ${props.fingerprint}`}
+      subtitle={`Name the new account dervied from mnemonic ${props.fingerprint}`}
       onSubmit={handleSubmit}
       isLoading={isLoading}
     />

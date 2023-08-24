@@ -30,10 +30,10 @@ export const addressExists = async (
   }
 };
 
-// Temporary solution for generating fingerprint for seedphrase
+// Temporary solution for generating fingerprint for mnemonic
 // https://remarkablemark.medium.com/how-to-generate-a-sha-256-hash-with-javascript-d3b2696382fd
-export const getFingerPrint = async (seedPhrase: string): Promise<string> => {
-  const utf8 = new TextEncoder().encode(seedPhrase);
+export const getFingerPrint = async (mnemonic: string): Promise<string> => {
+  const utf8 = new TextEncoder().encode(mnemonic);
   const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray

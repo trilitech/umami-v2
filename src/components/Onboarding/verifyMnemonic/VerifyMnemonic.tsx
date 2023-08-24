@@ -11,18 +11,18 @@ import { useState } from "react";
 import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { useForm } from "react-hook-form";
-import { Step, StepType, VerifySeedphraseStep } from "../useOnboardingModal";
+import { Step, StepType, VerifyMnemonicStep } from "../useOnboardingModal";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 import { FormErrorMessage } from "../../FormErrorMessage";
 
-const VerifySeedphrase = ({
+const VerifyMnemonic = ({
   goToStep,
   account,
 }: {
   goToStep: (step: Step) => void;
-  account: VerifySeedphraseStep["account"];
+  account: VerifyMnemonicStep["account"];
 }) => {
-  const seedphraseArray = account.seedphrase.split(" ");
+  const mnemonicArray = account.mnemonic.split(" ");
   const {
     register,
     handleSubmit,
@@ -30,7 +30,7 @@ const VerifySeedphrase = ({
   } = useForm({
     mode: "onBlur",
   });
-  const [randomElements] = useState(selectRandomElements(seedphraseArray, 5));
+  const [randomElements] = useState(selectRandomElements(mnemonicArray, 5));
   const onSubmit = () => {
     goToStep({ type: StepType.nameAccount, account });
   };
@@ -78,4 +78,4 @@ const VerifySeedphrase = ({
   );
 };
 
-export default VerifySeedphrase;
+export default VerifyMnemonic;

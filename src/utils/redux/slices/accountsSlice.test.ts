@@ -28,7 +28,7 @@ describe("Accounts reducer", () => {
   test("store should initialize with empty state", () => {
     expect(store.getState().accounts).toEqual({
       items: [],
-      seedPhrases: {},
+      mnemonics: {},
     });
   });
 
@@ -36,13 +36,13 @@ describe("Accounts reducer", () => {
     store.dispatch(addAccount([mockImplicitAccount(1)]));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1)],
-      seedPhrases: {},
+      mnemonics: {},
     });
 
     store.dispatch(addAccount([mockImplicitAccount(2), mockImplicitAccount(3)]));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      seedPhrases: {},
+      mnemonics: {},
     });
   });
 
@@ -57,11 +57,11 @@ describe("Accounts reducer", () => {
 
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      seedPhrases: {},
+      mnemonics: {},
     });
   });
 
-  it("should handle deleting seedphrases and all derived accounts", async () => {
+  it("should handle deleting mnemonics and all derived accounts", async () => {
     await store.dispatch(
       fakeRestoreFromMnemonic({
         seedFingerprint: "mockPrint1",
@@ -85,19 +85,19 @@ describe("Accounts reducer", () => {
         mockImplicitAccount(3, undefined, "mockPrint1"),
         mockImplicitAccount(2, undefined, "mockPrint2"),
       ],
-      seedPhrases: { mockPrint1: {}, mockPrint2: {} },
+      mnemonics: { mockPrint1: {}, mockPrint2: {} },
     });
 
     store.dispatch(removeMnemonicAndAccounts({ fingerPrint: "mockPrint1" }));
 
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(2, undefined, "mockPrint2")],
-      seedPhrases: { mockPrint2: {} },
+      mnemonics: { mockPrint2: {} },
     });
   });
 
   describe("restoreFromMnemonic thunk", () => {
-    it("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
+    it("should restore accounts from mnemonic, encrypt mnemonic and store result in state", async () => {
       const fingerPrint = await getFingerPrint(mnemonic1);
       const mockEntrypted = { mock: "encrypted" };
       const mockLabel = "myLabel";
@@ -118,7 +118,7 @@ describe("Accounts reducer", () => {
       await store
         .dispatch(
           restoreFromMnemonic({
-            seedPhrase: mnemonic1,
+            mnemonic: mnemonic1,
             password: "cool",
             label: mockLabel,
           })
@@ -131,14 +131,14 @@ describe("Accounts reducer", () => {
         undefined
       );
       expect(store.getState().accounts.items).toEqual(restoredAccounts);
-      expect(store.getState().accounts.seedPhrases).toEqual({
+      expect(store.getState().accounts.mnemonics).toEqual({
         [fingerPrint]: mockEntrypted,
       });
     });
   });
 
   describe("deriveAccount thunk", () => {
-    it("should throw if we try to derive from an unknown seedphrase", async () => {
+    it("should throw if we try to derive from an unknown mnemonic", async () => {
       await store.dispatch(
         fakeRestoreFromMnemonic({
           seedFingerprint: "mockPrint1",
@@ -161,7 +161,7 @@ describe("Accounts reducer", () => {
         message = error.message;
       }
 
-      expect(message).toEqual("No seedphrase found with fingerprint:unknown fingerprint");
+      expect(message).toEqual("No mnemonic found with fingerprint:unknown fingerprint");
     });
 
     it("should derive and add an account after the last index", async () => {

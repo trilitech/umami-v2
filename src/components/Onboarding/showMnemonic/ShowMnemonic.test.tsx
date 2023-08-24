@@ -1,17 +1,17 @@
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ShowSeedphrase } from "./ShowSeedphrase";
+import { ShowMnemonic } from "./ShowMnemonic";
 
 const goToStepMock = jest.fn((step: Step) => {});
 
 const fixture = (goToStep: (step: Step) => void) => {
-  const account = { type: "mnemonic" as const, seedphrase: mnemonic1 };
-  return <ShowSeedphrase goToStep={goToStep} account={account} />;
+  const account = { type: "mnemonic" as const, mnemonic: mnemonic1 };
+  return <ShowMnemonic goToStep={goToStep} account={account} />;
 };
 
-describe("<ShowSeedphrase />", () => {
-  test("seedphrase is displayed", async () => {
+describe("<ShowMnemonic />", () => {
+  test("mnemonic is displayed", async () => {
     render(fixture(goToStepMock));
     const confirmBtn = screen.getByRole("button", {
       name: /OK, I've recorded it/i,
@@ -23,10 +23,10 @@ describe("<ShowSeedphrase />", () => {
     fireEvent.click(confirmBtn);
     expect(goToStepMock).toBeCalledTimes(1);
     expect(goToStepMock).toBeCalledWith({
-      type: StepType.verifySeedphrase,
+      type: StepType.verifyMnemonic,
       account: {
         type: "mnemonic",
-        seedphrase: mnemonic1,
+        mnemonic: mnemonic1,
       },
     });
   });

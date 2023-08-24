@@ -48,7 +48,7 @@ const setupStore = async () => {
   return mockStore({
     accounts: {
       items: mockAccounts,
-      seedPhrases: {
+      mnemonics: {
         [mockAccounts[0].seedFingerPrint]: await encrypt(mnemonic1, currentPassword),
         [mockAccounts[1].seedFingerPrint]: await encrypt(mnemonic2, currentPassword),
       },

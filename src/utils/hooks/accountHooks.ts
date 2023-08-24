@@ -76,10 +76,10 @@ export const useGetOwnedAccount = () => {
 export const useRestoreSecret = () => {
   const dispatch = useAppDispatch();
 
-  return (seedPhrase: string, password: string, label?: string, derivationPathPattern?: string) => {
+  return (mnemonic: string, password: string, label?: string, derivationPathPattern?: string) => {
     return dispatch(
       restoreFromMnemonic({
-        seedPhrase,
+        mnemonic,
         password,
         label,
         derivationPathPattern,
@@ -121,15 +121,15 @@ export const useRestoreSocial = () => {
  * returns null if no password has been set
  */
 export const useCheckPasswordValidity = () => {
-  const seedPhrases = useAppSelector(s => s.accounts.seedPhrases);
+  const mnemonics = useAppSelector(s => s.accounts.mnemonics);
 
-  const existingSeedPhrase = Object.values(seedPhrases)[0];
-  if (!existingSeedPhrase) {
+  const existingMnemonic = Object.values(mnemonics)[0];
+  if (!existingMnemonic) {
     return null;
   }
 
   return async (password: string) => {
-    await decrypt(existingSeedPhrase, password);
+    await decrypt(existingMnemonic, password);
   };
 };
 

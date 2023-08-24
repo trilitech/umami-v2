@@ -18,11 +18,11 @@ export const getTotalTezBalance = (
 };
 
 export const useGetSecretKey = () => {
-  const seedPhrases = useAppSelector(s => s.accounts.seedPhrases);
+  const mnemonics = useAppSelector(s => s.accounts.mnemonics);
   return async (account: MnemonicAccount, password: string) => {
-    const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
+    const encryptedMnemonic = mnemonics[account.seedFingerPrint];
     if (!encryptedMnemonic) {
-      throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
+      throw new Error(`Missing mnemonic for account ${account.address.pkh}`);
     }
 
     try {

@@ -21,14 +21,14 @@ const changeMnemonicPassword = createAsyncThunk<
       throw new Error("New password must be different from the current password");
     }
 
-    const { items: accounts, seedPhrases } = getState().accounts;
+    const { items: accounts, mnemonics } = getState().accounts;
 
     if (accounts.filter(account => account.type === AccountType.MNEMONIC).length === 0) {
       throw new Error("No mnemonic accounts found");
     }
 
     const newEncryptedMnemonics = await Promise.all(
-      Object.entries(seedPhrases).map(async ([fingerprint, currentEncryptedMnemonic]) => {
+      Object.entries(mnemonics).map(async ([fingerprint, currentEncryptedMnemonic]) => {
         if (!currentEncryptedMnemonic) {
           throw new Error("No encrypted mnemonic found");
         }

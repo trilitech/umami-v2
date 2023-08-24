@@ -9,7 +9,7 @@ import { InMemorySigner } from "@taquito/signer";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 
-const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
     register,
     handleSubmit,
@@ -35,21 +35,21 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
   const onSubmit = (data: FieldValues) =>
     handleAsyncAction(
       async () => {
-        let seedphrase = "";
+        let mnemonic = "";
         for (const key in data) {
-          seedphrase += data[key] + " ";
+          mnemonic += data[key] + " ";
         }
-        seedphrase = seedphrase.trim();
+        mnemonic = mnemonic.trim();
 
         // TODO: test this
         InMemorySigner.fromMnemonic({
-          mnemonic: seedphrase,
+          mnemonic: mnemonic,
           derivationPath: "44'/1729'/0'/0'",
           curve: "ed25519",
         });
         goToStep({
           type: StepType.derivationPath,
-          account: { type: "mnemonic", seedphrase: seedphrase, label: "Restored account" },
+          account: { type: "mnemonic", mnemonic: mnemonic, label: "Restored account" },
         });
       },
       {
@@ -134,7 +134,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
                 size="lg"
                 minH="48px"
               >
-                Enter test seedphrase (Dev only)
+                Enter test mnemonic (Dev only)
               </Button>
               /* devblock:end */
             }
@@ -145,4 +145,4 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
   );
 };
 
-export default RestoreSeedphrase;
+export default RestoreMnemonic;

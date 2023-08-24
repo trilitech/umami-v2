@@ -56,16 +56,16 @@ describe("<AccountList />", () => {
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
 
-    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
-    const seedPhrase2 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT2}`);
-    expect(within(seedPhrase1).getAllByTestId(/account-tile/)).toHaveLength(2);
-    expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
-    expect(seedPhrase1).toHaveTextContent("Account 0");
-    expect(seedPhrase1).toHaveTextContent("Account 1");
+    const mnemonic1 = screen.getByTestId(`account-group-Mnemonic ${MOCK_FINGETPRINT1}`);
+    const mnemonic2 = screen.getByTestId(`account-group-Mnemonic ${MOCK_FINGETPRINT2}`);
+    expect(within(mnemonic1).getAllByTestId(/account-tile/)).toHaveLength(2);
+    expect(mnemonic1).toHaveTextContent(`Mnemonic ${MOCK_FINGETPRINT1}`);
+    expect(mnemonic1).toHaveTextContent("Account 0");
+    expect(mnemonic1).toHaveTextContent("Account 1");
 
-    expect(within(seedPhrase2).getAllByTestId(/account-tile/)).toHaveLength(1);
-    expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT2}`);
-    expect(seedPhrase2).toHaveTextContent("Account");
+    expect(within(mnemonic2).getAllByTestId(/account-tile/)).toHaveLength(1);
+    expect(mnemonic2).toHaveTextContent(`Mnemonic ${MOCK_FINGETPRINT2}`);
+    expect(mnemonic2).toHaveTextContent("Account");
 
     const multisigAccounts = screen.getByTestId(/account-group-multisig/i);
     expect(within(multisigAccounts).getAllByTestId(/account-tile/)).toHaveLength(2);
@@ -77,10 +77,10 @@ describe("<AccountList />", () => {
     await restore();
     render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
 
-    expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
-    const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
+    expect(screen.getAllByTestId(/account-group-mnemonic/i)).toHaveLength(2);
+    const mnemonic1 = screen.getAllByTestId(/account-group-mnemonic/i)[0];
 
-    const { getByTestId, getByRole } = within(seedPhrase1);
+    const { getByTestId, getByRole } = within(mnemonic1);
     const cta = getByTestId(/^popover-cta$/i);
     fireEvent.click(cta);
 
@@ -95,7 +95,7 @@ describe("<AccountList />", () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          `Are you sure you want to delete all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+          `Are you sure you want to delete all accounts derived from Mnemonic ${MOCK_FINGETPRINT1}?`
         )
       ).toBeInTheDocument();
     });
@@ -104,11 +104,11 @@ describe("<AccountList />", () => {
 
     fireEvent.click(confirmBtn);
 
-    expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(1);
+    expect(screen.getAllByTestId(/account-group-mnemonic/i)).toHaveLength(1);
     await waitFor(() => {
       expect(
         screen.queryByText(
-          `Are you sure you want to delete all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+          `Are you sure you want to delete all accounts derived from Mnemonic ${MOCK_FINGETPRINT1}?`
         )
       ).not.toBeInTheDocument();
     });
@@ -119,10 +119,10 @@ describe("<AccountList />", () => {
     await restore();
     render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
 
-    expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
-    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
+    expect(screen.getAllByTestId(/account-group-mnemonic/i)).toHaveLength(2);
+    const mnemonic1 = screen.getByTestId(`account-group-Mnemonic ${MOCK_FINGETPRINT1}`);
 
-    const { getByTestId, getByRole } = within(seedPhrase1);
+    const { getByTestId, getByRole } = within(mnemonic1);
     const cta = getByTestId(/^popover-cta$/i);
     fireEvent.click(cta);
 
@@ -162,9 +162,9 @@ describe("<AccountList />", () => {
     });
 
     {
-      const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
+      const mnemonic1 = screen.getByTestId(`account-group-Mnemonic ${MOCK_FINGETPRINT1}`);
 
-      const tiles = within(seedPhrase1).getAllByTestId(/account-tile/);
+      const tiles = within(mnemonic1).getAllByTestId(/account-tile/);
       expect(tiles).toHaveLength(3);
 
       expect(tiles[2]).toHaveTextContent(LABEL);

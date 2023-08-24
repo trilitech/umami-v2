@@ -11,7 +11,7 @@ const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
           bg="umami.blue"
           w="100%"
           size="lg"
-          onClick={_ => goToStep({ type: StepType.restoreSeedphrase })}
+          onClick={_ => goToStep({ type: StepType.restoreMnemonic })}
         >
           Import with Seed Phrase
         </Button>

@@ -41,8 +41,8 @@ const Notice: React.FC<{
           size="lg"
           onClick={() =>
             goToStep({
-              type: StepType.showSeedphrase,
-              account: { type: "mnemonic", seedphrase: generate24WordMnemonic() },
+              type: StepType.showMnemonic,
+              account: { type: "mnemonic", mnemonic: generate24WordMnemonic() },
             })
           }
         >
@@ -53,7 +53,7 @@ const Notice: React.FC<{
           minH="48px"
           size="lg"
           variant="outline"
-          onClick={() => goToStep({ type: StepType.restoreSeedphrase })}
+          onClick={() => goToStep({ type: StepType.restoreMnemonic })}
         >
           I already have a Seed Phrase
         </Button>

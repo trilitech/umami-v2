@@ -23,7 +23,7 @@ const fixture = (closeModal: () => void) => {
   );
 };
 
-describe("<RestoreSeedphrase />", () => {
+describe("<RestoreMnemonic />", () => {
   test("success", async () => {
     getPkMock.mockResolvedValue({ pk: "test", pkh: "test" });
     render(fixture(closeModalMock));

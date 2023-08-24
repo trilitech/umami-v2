@@ -7,12 +7,12 @@ import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAcc
 export type State = {
   items: ImplicitAccount[];
   //TODO: Rename to encryptedMnemonics
-  seedPhrases: Record<string, EncryptedData | undefined>;
+  mnemonics: Record<string, EncryptedData | undefined>;
 };
 
 const initialState: State = {
   items: [],
-  seedPhrases: {},
+  mnemonics: {},
 };
 
 const accountsSlice = createSlice({
@@ -26,14 +26,14 @@ const accountsSlice = createSlice({
     builder.addCase(restoreFromMnemonic.fulfilled, (state, action) => {
       const { accounts, encryptedMnemonic, seedFingerprint } = action.payload;
       state.items = concatUnique(state.items, accounts);
-      // updated seedphrase after a successfull restoration.
-      state.seedPhrases[seedFingerprint] = encryptedMnemonic;
+      // updated mnemonic after a successfull restoration.
+      state.mnemonics[seedFingerprint] = encryptedMnemonic;
     });
 
     builder.addCase(changeMnemonicPassword.fulfilled, (state, action) => {
       const { newEncryptedMnemonics } = action.payload;
       // Only update the mnemonic in the store if the password change was successful. The account remains unchanged.
-      state.seedPhrases = newEncryptedMnemonics;
+      state.mnemonics = newEncryptedMnemonics;
     });
   },
   reducers: {
@@ -47,7 +47,7 @@ const accountsSlice = createSlice({
         a => !(a.type === AccountType.MNEMONIC && a.seedFingerPrint === fingerPrint)
       );
       state.items = newAccounts;
-      delete state.seedPhrases[fingerPrint];
+      delete state.mnemonics[fingerPrint];
     },
     addAccount: (state, { payload }: { type: string; payload: ImplicitAccount[] }) => {
       state.items = concatUnique(state.items, payload);
