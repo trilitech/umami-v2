@@ -3,3 +3,4 @@ build
 coverage
 dist
 package.json
+src/package.alias.json
