@@ -1,25 +1,24 @@
 import {
   Box,
   Button,
-  Text,
   FormControl,
-  FormLabel,
-  Input,
   ModalCloseButton,
   ModalHeader,
   ModalBody,
   ModalFooter,
   ModalContent,
   useToast,
+  Heading,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import changeMnemonicPassword from "../../utils/redux/thunks/changeMnemonicPassword";
-import { MIN_LENGTH } from "../Onboarding/masterPassword/password/EnterAndConfirmPassword";
 import { DynamicModalContext } from "../DynamicModal";
 import { useContext } from "react";
 import { FormErrorMessage } from "../FormErrorMessage";
+import PasswordInput from "../PasswordInput";
+import colors from "../../style/colors";
 
 type ChangePasswordFormValues = {
   currentPassword: string;
@@ -34,7 +33,6 @@ export const ChangePasswordForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const {
-    register,
     handleSubmit,
     formState: { isValid, errors },
     getValues,
@@ -58,30 +56,23 @@ export const ChangePasswordForm: React.FC = () => {
 
   return (
     <FormProvider {...form}>
-      <ModalContent data-testid="change-password-modal">
+      <ModalContent data-testid="change-password-modal" bg={colors.gray[700]}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalCloseButton />
 
           <ModalHeader mt={5} textAlign="center">
             <Box>
-              <Text>Change Password</Text>
+              <Heading>Change Password</Heading>
             </Box>
           </ModalHeader>
           <ModalBody>
             <FormControl isInvalid={!!errors.currentPassword} mt={3}>
-              <FormLabel>Current Password</FormLabel>
-              <Input
-                type="password"
-                autoComplete="off"
+              <PasswordInput
+                inputName="currentPassword"
+                label="Current Password"
+                required="Current password is required"
                 data-testid="current-password"
-                {...register("currentPassword", {
-                  required: "Current password is required",
-                  minLength: {
-                    value: MIN_LENGTH,
-                    message: `Your password must be at least ${MIN_LENGTH} characters long`,
-                  },
-                })}
-                placeholder="Enter current password..."
+                placeholder="Enter your current password"
               />
               {errors.currentPassword && (
                 <FormErrorMessage data-testid="current-password-error">
@@ -90,22 +81,16 @@ export const ChangePasswordForm: React.FC = () => {
               )}
             </FormControl>
 
-            <FormControl isInvalid={!!errors.newPassword} mt={3}>
-              <FormLabel>New Password</FormLabel>
-              <Input
-                type="password"
-                autoComplete="off"
+            <FormControl isInvalid={!!errors.newPassword} my={6}>
+              <PasswordInput
+                inputName="newPassword"
+                label="New Password"
+                required="New password is required"
                 data-testid="new-password"
-                {...register("newPassword", {
-                  required: "New password is required",
-                  minLength: {
-                    value: MIN_LENGTH,
-                    message: `Your password must be at least ${MIN_LENGTH} characters long`,
-                  },
-                  validate: (val: string) =>
-                    getValues("currentPassword") !== val || "Cannot be the same as old password",
-                })}
-                placeholder="Enter your new password..."
+                placeholder="Enter new password"
+                validate={(val: string) =>
+                  getValues("currentPassword") !== val || "Cannot be the same as old password"
+                }
               />
               {errors.newPassword && (
                 <FormErrorMessage data-testid="new-password-error">
@@ -115,18 +100,17 @@ export const ChangePasswordForm: React.FC = () => {
             </FormControl>
 
             <FormControl isInvalid={!!errors.newPasswordConfirmation} mt={3}>
-              <FormLabel>Confirm Password</FormLabel>
-              <Input
-                type="password"
-                autoComplete="off"
+              <PasswordInput
+                inputName="newPasswordConfirmation"
+                label="Confirm New Password"
+                required="Confirmation is required"
                 data-testid="new-password-confirmation"
-                {...register("newPasswordConfirmation", {
-                  required: "Confirmation is required",
-                  validate: (val: string) =>
-                    getValues("newPassword") === val || "Your new passwords do no match",
-                })}
-                placeholder="Confirm your new password..."
+                placeholder="Confirm new password"
+                validate={(val: string) =>
+                  getValues("newPassword") === val || "Your new passwords do no match"
+                }
               />
+
               {errors.newPasswordConfirmation && (
                 <FormErrorMessage data-testid="new-password-confirmation-error">
                   {errors.newPasswordConfirmation.message}
@@ -143,7 +127,7 @@ export const ChangePasswordForm: React.FC = () => {
               variant="primary"
               type="submit"
             >
-              Submit
+              Update Password
             </Button>
           </ModalFooter>
         </form>

@@ -98,7 +98,7 @@ describe("ChangePassword Form", () => {
       fireEvent.change(currentPasswordInput, { target: { value: "myOldPassword" } });
       fireEvent.change(newPasswordInput, { target: { value: "myNewPassword" } });
       fireEvent.change(newPasswordConfirmationInput, { target: { value: "myNewPassword" } });
-      const submitBtn = screen.getByRole("button", { name: "Submit" });
+      const submitBtn = screen.getByRole("button", { name: "Update Password" });
       await waitFor(() => {
         expect(submitBtn).toBeEnabled();
       });
