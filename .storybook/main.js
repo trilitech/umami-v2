@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 module.exports = {
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
@@ -15,4 +16,13 @@ module.exports = {
     autodocs: true,
   },
   staticDirs: ["../public"],
+  async webpackFinal(config) {
+    config.plugins = (config.plugins || []).concat([
+      new webpack.ProvidePlugin({
+        Buffer: ["buffer", "Buffer"],
+      }),
+    ]);
+
+    return config;
+  },
 };
