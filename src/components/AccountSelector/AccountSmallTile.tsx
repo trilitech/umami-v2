@@ -16,6 +16,7 @@ export const AccountSmallTile = ({ pkh, ...flexProps }: { pkh: string } & FlexPr
     <AccountSmallTileDisplay
       pkh={account.address.pkh}
       label={account.label}
+      kind={account.type}
       balance={getBalance(pkh)}
       {...flexProps}
     />

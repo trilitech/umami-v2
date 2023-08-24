@@ -17,6 +17,7 @@ import { MultisigOperation, Multisig } from "../utils/multisig/types";
 import { Operation } from "../types/Operation";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 import { Delegate } from "../types/Delegate";
+import { ContactWithKind } from "../components/AddressAutocomplete";
 
 export const mockTezTransaction = (id: number) => {
   return {
@@ -350,5 +351,15 @@ export const mockContact = (index: number): Contact => {
   return {
     name: `Contact ${index}`,
     pkh: mockImplicitAddress(index).pkh,
+  };
+};
+
+export const mockContactWithKind = (
+  index: number,
+  kind = AccountType.MNEMONIC
+): ContactWithKind => {
+  return {
+    ...mockContact(index),
+    kind,
   };
 };

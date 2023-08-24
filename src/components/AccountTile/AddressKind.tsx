@@ -1,3 +1,3 @@
 import { AccountType } from "../../types/Account";
 
-export type AddressKind = AccountType | "contact" | "unknown";
+export type AddressKind = AccountType | "contact" | "unknown" | "baker";

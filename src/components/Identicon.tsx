@@ -22,7 +22,6 @@ export const Identicon: React.FC<
       }}
       bg="white"
       borderRadius="4px"
-      p="8px"
       {...props}
     >
       <ReactIdenticons

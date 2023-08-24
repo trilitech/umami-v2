@@ -2,9 +2,9 @@ import { Box, Flex, FlexProps, Heading, Text } from "@chakra-ui/layout";
 import React from "react";
 import colors from "../../style/colors";
 import { AccountType } from "../../types/Account";
-import { formatPkh } from "../../utils/formatPkh";
-import { getIcon } from "./getIcon";
 import { prettyTezAmount } from "../../utils/format";
+import { formatPkh } from "../../utils/formatPkh";
+import { AddressIcon } from "./AddressIcon";
 
 export type Props = {
   label: string;
@@ -79,7 +79,7 @@ export const AccountTileDisplay: React.FC<Props> = ({
       _hover={{
         border,
       }}
-      icon={getIcon(kind, address)}
+      icon={<AddressIcon kind={kind} address={address} />}
       leftElement={<LabelAndAddress pkh={address} label={label} />}
       rightElement={
         balance && (

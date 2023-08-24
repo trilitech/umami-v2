@@ -188,6 +188,7 @@ const SignerSelectorField: React.FC<{ account: MultisigAccount }> = ({ account }
   const signers = getMultisigSigners(account).map(acc => ({
     name: acc.label,
     pkh: acc.address.pkh,
+    kind: acc.type,
   }));
   const {
     formState: { errors },

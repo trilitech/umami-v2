@@ -1,20 +1,19 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { mockContact, mockImplicitAddress } from "../mocks/factories";
+import { mockContactWithKind, mockImplicitAddress } from "../mocks/factories";
 import { fireEvent, render, renderHook, screen, within } from "../mocks/testUtils";
-import { Contact } from "../types/Contact";
-import { AddressAutocomplete, getSuggestions } from "./AddressAutocomplete";
+import { AddressAutocomplete, ContactWithKind, getSuggestions } from "./AddressAutocomplete";
 
 type FormFields = { destination: string };
 
 const fixture = ({
   defaultDestination = "",
   allowUnknown = true,
-  contacts = [mockContact(0), mockContact(1), mockContact(2)],
+  contacts = [mockContactWithKind(0), mockContactWithKind(1), mockContactWithKind(2)],
   label = "",
   keepValid,
 }: {
   defaultDestination?: string;
-  contacts?: Contact[];
+  contacts?: ContactWithKind[];
   allowUnknown?: boolean;
   label?: string;
   keepValid?: boolean;
@@ -59,13 +58,13 @@ describe("<AddressAutocomplete />", () => {
   });
 
   it("should keep the valid value if user enters invalid data, but keepValid is true", () => {
-    fixture({ defaultDestination: mockContact(0).pkh, keepValid: true });
+    fixture({ defaultDestination: mockContactWithKind(0).pkh, keepValid: true });
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");
     fireEvent.change(rawInput, { target: { value: "invalid" } });
 
     expect(rawInput).toHaveProperty("value", "invalid");
-    expect(realInput).toHaveProperty("value", mockContact(0).pkh);
+    expect(realInput).toHaveProperty("value", mockContactWithKind(0).pkh);
   });
 
   it("hides suggestions by default", async () => {
@@ -106,9 +105,9 @@ describe("<AddressAutocomplete />", () => {
     const suggestionContainer = screen.getByTestId("suggestions-list");
     const suggestions = within(suggestionContainer).getAllByRole("listitem");
     expect(suggestions).toHaveLength(3);
-    expect(within(suggestionContainer).getByText(mockContact(0).name)).toBeInTheDocument();
-    expect(within(suggestionContainer).getByText(mockContact(1).name)).toBeInTheDocument();
-    expect(within(suggestionContainer).getByText(mockContact(2).name)).toBeInTheDocument();
+    expect(within(suggestionContainer).getByText(mockContactWithKind(0).name)).toBeInTheDocument();
+    expect(within(suggestionContainer).getByText(mockContactWithKind(1).name)).toBeInTheDocument();
+    expect(within(suggestionContainer).getByText(mockContactWithKind(2).name)).toBeInTheDocument();
   });
 
   test("choosing a suggestions submits the pkh, inputs the contact name and hides suggestions", () => {
@@ -123,24 +122,24 @@ describe("<AddressAutocomplete />", () => {
 
     const suggestionContainer = screen.getByTestId("suggestions-list");
 
-    const sug = within(suggestionContainer).getByText(mockContact(1).name);
+    const sug = within(suggestionContainer).getByText(mockContactWithKind(1).name);
 
     fireEvent.mouseDown(sug);
-    expect(rawInput).toHaveProperty("value", mockContact(1).name);
+    expect(rawInput).toHaveProperty("value", mockContactWithKind(1).name);
 
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
-    expect(realInput).toHaveProperty("value", mockContact(1).pkh);
+    expect(realInput).toHaveProperty("value", mockContactWithKind(1).pkh);
   });
 
   it("should display default address's contact if any, and not display any suggestions", async () => {
-    fixture({ defaultDestination: mockContact(1).pkh });
+    fixture({ defaultDestination: mockContactWithKind(1).pkh });
 
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");
 
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
-    expect(rawInput).toHaveProperty("value", mockContact(1).name);
-    expect(realInput).toHaveProperty("value", mockContact(1).pkh);
+    expect(rawInput).toHaveProperty("value", mockContactWithKind(1).name);
+    expect(realInput).toHaveProperty("value", mockContactWithKind(1).pkh);
   });
 
   it("should display default address if there is no existing contact", async () => {
@@ -157,45 +156,45 @@ describe("<AddressAutocomplete />", () => {
     fixture({});
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");
-    fireEvent.change(rawInput, { target: { value: mockContact(1).pkh } });
+    fireEvent.change(rawInput, { target: { value: mockContactWithKind(1).pkh } });
 
-    expect(rawInput).toHaveProperty("value", mockContact(1).name);
-    expect(realInput).toHaveProperty("value", mockContact(1).pkh);
+    expect(rawInput).toHaveProperty("value", mockContactWithKind(1).name);
+    expect(realInput).toHaveProperty("value", mockContactWithKind(1).pkh);
   });
 
   test("when allowUnknown is false it doesn't set the value to an unknown address even if it's valid", () => {
-    fixture({ allowUnknown: false, contacts: [mockContact(1)] });
+    fixture({ allowUnknown: false, contacts: [mockContactWithKind(1)] });
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");
-    fireEvent.change(rawInput, { target: { value: mockContact(2).pkh } });
+    fireEvent.change(rawInput, { target: { value: mockContactWithKind(2).pkh } });
 
-    expect(rawInput).toHaveProperty("value", mockContact(2).pkh);
+    expect(rawInput).toHaveProperty("value", mockContactWithKind(2).pkh);
     expect(realInput).toHaveProperty("value", "");
   });
 });
 
 describe("getSuggestions", () => {
   it("returns all contacts if input is empty", () => {
-    expect(getSuggestions("", [mockContact(0), mockContact(1)])).toEqual([
-      mockContact(0),
-      mockContact(1),
+    expect(getSuggestions("", [mockContactWithKind(0), mockContactWithKind(1)])).toEqual([
+      mockContactWithKind(0),
+      mockContactWithKind(1),
     ]);
   });
 
   it("returns all contacts if input is a substring of a contact's name", () => {
     expect(
       getSuggestions("cd", [
-        { ...mockContact(0), name: "abcd" },
-        { ...mockContact(1), name: "efgh" },
+        { ...mockContactWithKind(0), name: "abcd" },
+        { ...mockContactWithKind(1), name: "efgh" },
       ])
-    ).toEqual([{ ...mockContact(0), name: "abcd" }]);
+    ).toEqual([{ ...mockContactWithKind(0), name: "abcd" }]);
   });
 
   it("returns an empty result if nothing matches the input", () => {
     expect(
       getSuggestions("de", [
-        { ...mockContact(0), name: "abcd" },
-        { ...mockContact(1), name: "efgh" },
+        { ...mockContactWithKind(0), name: "abcd" },
+        { ...mockContactWithKind(1), name: "efgh" },
       ])
     ).toEqual([]);
   });

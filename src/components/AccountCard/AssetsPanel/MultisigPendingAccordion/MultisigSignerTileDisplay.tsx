@@ -1,7 +1,7 @@
 import React from "react";
 import { AccountType } from "../../../../types/Account";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTileDisplay";
-import { getIcon } from "../../../AccountTile/getIcon";
+import { AddressIcon } from "../../../AccountTile/AddressIcon";
 import { AddressKind } from "../../../AccountTile/AddressKind";
 import MultisigActionButton from "./MultisigActionButton";
 
@@ -21,7 +21,7 @@ export const MultisigSignerTileDisplay: React.FC<{
 }> = ({ pkh, label, isLoading = false, kind, ...rest }) => {
   return (
     <AccountTileBase
-      icon={getIcon(kind, pkh)}
+      icon={<AddressIcon kind={kind} address={pkh} />}
       leftElement={
         <LabelAndAddress
           label={kind === "unknown" ? undefined : label}

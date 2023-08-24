@@ -14,6 +14,9 @@ import {
 import { useBakerList } from "../utils/hooks/assetsHooks";
 import { useContacts } from "../utils/hooks/contactsHooks";
 import { AccountSmallTileDisplay } from "./AccountSelector/AccountSmallTileDisplay";
+import { AddressKind } from "./AccountTile/AddressKind";
+
+export type ContactWithKind = Contact & { kind: AddressKind };
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
@@ -32,7 +35,10 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   style?: StyleProps;
 };
 
-export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
+export const getSuggestions = (
+  inputValue: string,
+  contacts: ContactWithKind[]
+): ContactWithKind[] => {
   if (inputValue === "") {
     return contacts;
   }
@@ -55,7 +61,7 @@ const Suggestions = ({
   contacts,
   onChange,
 }: {
-  contacts: Contact[];
+  contacts: ContactWithKind[];
   onChange: (name: string) => void;
 }) => {
   return contacts.length === 0 ? null : (
@@ -83,9 +89,10 @@ const Suggestions = ({
               onChange(contact.name);
             }}
             padding="5px 15px 0 5px"
-            mb={i === contacts.length - 1 ? "5px" : 0}
+            mb={i === contacts.length - 1 ? "15px" : 0}
           >
             <AccountSmallTileDisplay
+              kind={contact.kind}
               pkh={contact.pkh}
               label={contact.name}
               _hover={{
@@ -114,7 +121,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   label,
   keepValid,
   style,
-}: BaseProps<T, U> & { contacts: Contact[] }) => {
+}: BaseProps<T, U> & { contacts: ContactWithKind[] }) => {
   const {
     register,
     setValue,
@@ -211,11 +218,17 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
 export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>
 ) => {
-  const contacts = Object.values(useContacts());
+  const contacts = Object.values(useContacts()).map(
+    (c): ContactWithKind => ({
+      ...c,
+      kind: "contact",
+    })
+  );
 
   const accounts = useAllAccounts().map(account => ({
     name: account.label,
     pkh: account.address.pkh,
+    kind: account.type,
   }));
 
   return <AddressAutocomplete {...props} contacts={contacts.concat(accounts)} />;
@@ -227,6 +240,7 @@ export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U exten
   const accounts = useImplicitAccounts().map(account => ({
     name: account.label,
     pkh: account.address.pkh,
+    kind: account.type,
   }));
 
   return <AddressAutocomplete {...props} contacts={accounts} />;
@@ -238,6 +252,7 @@ export const OwnedAccountsAutocomplete = <T extends FieldValues, U extends Path<
   const accounts = useAllAccounts().map(account => ({
     name: account.label,
     pkh: account.address.pkh,
+    kind: account.type,
   }));
 
   return <AddressAutocomplete {...props} contacts={accounts} />;
@@ -246,10 +261,13 @@ export const OwnedAccountsAutocomplete = <T extends FieldValues, U extends Path<
 export const BakersAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>
 ) => {
-  const bakers = useBakerList().map(baker => ({
-    name: baker.name,
-    pkh: baker.address,
-  }));
+  const bakers = useBakerList().map(
+    (baker): ContactWithKind => ({
+      name: baker.name,
+      pkh: baker.address,
+      kind: "baker",
+    })
+  );
 
   return <AddressAutocomplete {...props} contacts={bakers} />;
 };
@@ -261,6 +279,7 @@ export const AvailableSignersAutocomplete = <T extends FieldValues, U extends Pa
   const signers = getSigners(props.account).map(signer => ({
     name: signer.label,
     pkh: signer.address.pkh,
+    kind: signer.type,
   }));
 
   return (
