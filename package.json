@@ -86,12 +86,8 @@
     "typecheck": "tsc"
   },
   "browserslist": {
-    "production": [
-      "last 1 electron version"
-    ],
-    "development": [
-      "last 1 electron version"
-    ]
+    "production": ["last 1 electron version"],
+    "development": ["last 1 electron version"]
   },
   "devDependencies": {
     "@chakra-ui/cli": "^2.4.1",
@@ -153,9 +149,7 @@
       "axios": "axios/dist/node/axios.cjs",
       "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing"
     },
-    "watchPathIgnorePatterns": [
-      "src/integration"
-    ],
+    "watchPathIgnorePatterns": ["src/integration"],
     "coverageThreshold": {
       "global": {
         "branches": 70,
@@ -164,9 +158,7 @@
         "statements": 76
       }
     },
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ],
+    "collectCoverageFrom": ["src/**/*.{ts,tsx}"],
     "coveragePathIgnorePatterns": [
       "node_modules",
       "src/mocks/*",
@@ -179,10 +171,7 @@
   "build": {
     "appId": "com.trilitech.umami",
     "productName": "Umami",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
+    "files": ["build/**/*", "node_modules/**/*"],
     "directories": {
       "buildResources": "public"
     },
@@ -193,10 +182,7 @@
       "target": [
         {
           "target": "dmg",
-          "arch": [
-            "arm64",
-            "x64"
-          ]
+          "arch": ["arm64", "x64"]
         }
       ]
     },
@@ -205,43 +191,24 @@
       "target": [
         {
           "target": "portable",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ]
     },
     "linux": {
       "icon": "build/logo512.png",
-      "target": [
-        "deb",
-        "rpm"
-      ],
+      "target": ["deb", "rpm"],
       "category": "Finance",
-      "mimeTypes": [
-        "x-scheme-handler/umami"
-      ]
+      "mimeTypes": ["x-scheme-handler/umami"]
     },
     "snap": {
-      "plugs": [
-        "default",
-        "raw-usb",
-        "hidraw"
-      ],
-      "buildPackages": [
-        "libusb-1.0-0-dev",
-        "libudev-dev"
-      ],
-      "stagePackages": [
-        "libusb-1.0-0",
-        "libnss3"
-      ]
+      "plugs": ["default", "raw-usb", "hidraw"],
+      "buildPackages": ["libusb-1.0-0-dev", "libudev-dev"],
+      "stagePackages": ["libusb-1.0-0", "libnss3"]
     },
     "protocols": {
       "name": "umami",
-      "schemes": [
-        "umami"
-      ]
+      "schemes": ["umami"]
     },
     "afterSign": "scripts/notarize.js"
   },
@@ -250,8 +217,6 @@
     "nwsapi": "2.2.2"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   }
 }
