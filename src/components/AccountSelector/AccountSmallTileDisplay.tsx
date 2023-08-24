@@ -14,7 +14,7 @@ export const AccountSmallTileDisplay = ({
   pkh: string;
   label?: string;
   kind: AddressKind;
-  balance?: string;
+  balance: string | undefined;
 } & FlexProps) => {
   return (
     <Flex data-testid="account-small-tile" {...flexProps} alignItems="center" cursor="pointer">
