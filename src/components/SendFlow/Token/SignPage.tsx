@@ -2,6 +2,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   InputGroup,
   InputRightElement,
@@ -58,9 +59,9 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
 
             <Flex my={3} alignItems="center" justifyContent="end" px={1}>
               <Flex>
-                <Text size="sm" mr={1} color={colors.gray[450]}>
+                <Heading size="sm" mr={1} color={colors.gray[450]}>
                   Fee:
-                </Text>
+                </Heading>
                 <Text size="sm" data-testid="fee" color={colors.gray[400]}>
                   {prettyTezAmount(fee)}
                 </Text>
