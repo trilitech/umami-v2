@@ -37,6 +37,7 @@ const PasswordInput = <T extends FieldValues, U extends Path<T>>({
         <Input
           type={showPassword ? "text" : "password"}
           autoComplete="off"
+          aria-label={label}
           {...register(inputName, {
             required,
             minLength: {
@@ -49,7 +50,11 @@ const PasswordInput = <T extends FieldValues, U extends Path<T>>({
         />
         <InputRightElement>
           <Button variant="unstyled" onClick={() => setShowPassword(val => !val)}>
-            {showPassword ? <EyeSlashIcon /> : <EyeIcon w="16.5px" />}
+            {showPassword ? (
+              <EyeSlashIcon data-testid="eye-slash-icon" />
+            ) : (
+              <EyeIcon w="16.5px" data-testid="eye-icon" />
+            )}
           </Button>
         </InputRightElement>
       </InputGroup>
