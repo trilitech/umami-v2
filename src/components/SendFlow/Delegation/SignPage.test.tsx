@@ -9,7 +9,7 @@ import store from "../../../utils/redux/store";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import { TEZ } from "../../../utils/tezos";
 
-const fixture = (props: SignPageProps<{ undelegate?: boolean }>) => (
+const fixture = (props: SignPageProps) => (
   <Modal isOpen={true} onClose={() => {}}>
     <SignPage {...props} />
   </Modal>
@@ -30,11 +30,11 @@ describe("<SignPage />", () => {
   ]);
   describe("fee", () => {
     it("displays the fee in tez", () => {
-      const props: SignPageProps<{ undelegate?: false }> = {
+      const props: SignPageProps = {
         operations,
         fee: new BigNumber(1234567),
         mode: "single",
-        data: {},
+        data: undefined,
       };
       render(fixture(props));
       expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);

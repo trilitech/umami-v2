@@ -28,7 +28,8 @@ import colors from "../../style/colors";
 import { BakerSmallTile } from "./BakerSmallTile";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import DelegationFormPage, { FormValues } from "../../components/SendFlow/Delegation/FormPage";
+import DelegationFormPage from "../../components/SendFlow/Delegation/FormPage";
+import { useSendFormModal } from "../home/useSendFormModal";
 
 const DelegationsTable = ({
   delegations,
@@ -109,11 +110,8 @@ const DelegationsView = () => {
   const { openWith } = useContext(DynamicModalContext);
   const getOwnedAccount = useGetOwnedAccount();
 
-  const openDelegationForm = (sender: string, form: FormValues, undelegate = false) => {
-    openWith(
-      <DelegationFormPage sender={getOwnedAccount(sender)} form={form} undelegate={undelegate} />
-    );
-  };
+  //TODO: remove after undelegete is implemented
+  const { modalElement, onOpen } = useSendFormModal();
 
   return (
     <Flex direction="column" height="100%">
@@ -130,14 +128,27 @@ const DelegationsView = () => {
       {delegationsToDisplay.length > 0 ? (
         <Box overflowY="auto">
           <DelegationsTable
-            onClickChangeDelegate={(sender, baker) => openDelegationForm(sender, { sender, baker })}
-            onClickUndelegate={sender => openDelegationForm(sender, { sender }, true)}
+            onClickChangeDelegate={(sender, baker) =>
+              openWith(
+                <DelegationFormPage sender={getOwnedAccount(sender)} form={{ sender, baker }} />
+              )
+            }
+            onClickUndelegate={sender =>
+              onOpen({
+                sender,
+                mode: {
+                  type: "delegation",
+                  data: { undelegate: true },
+                },
+              })
+            }
             delegations={delegationsToDisplay}
           />
         </Box>
       ) : (
         <NoDelegations onDelegate={() => openWith(<DelegationFormPage />)} />
       )}
+      {modalElement}
     </Flex>
   );
 };

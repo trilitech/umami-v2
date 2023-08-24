@@ -16,7 +16,7 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
 
-const SignPage: React.FC<SignPageProps<{ undelegate?: boolean }>> = props => {
+const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
@@ -46,8 +46,6 @@ const SignPage: React.FC<SignPageProps<{ undelegate?: boolean }>> = props => {
                 </Text>
               </Flex>
             </Flex>
-
-            {/* Implement baker tile for if undelegate === false*/}
 
             <OperationSignerSelector
               sender={operations.sender}

@@ -23,32 +23,25 @@ import { FormErrorMessage } from "../../FormErrorMessage";
 
 export type FormValues = {
   sender: RawPkh;
-  // If the baker is undefined, we undelegate
-  baker?: RawPkh;
+  baker: RawPkh;
 };
 
-const toOperation =
-  (undelegate: boolean) =>
-  (formValues: FormValues): DelegationOperation => ({
-    type: "delegation",
-    sender: parsePkh(formValues.sender),
-    recipient: !undelegate && formValues.baker ? parseImplicitPkh(formValues.baker) : undefined,
-  });
+const toOperation = (formValues: FormValues): DelegationOperation => ({
+  type: "delegation",
+  sender: parsePkh(formValues.sender),
+  recipient: parseImplicitPkh(formValues.baker),
+});
 
-const FormPage: React.FC<FormPageProps<FormValues> & { undelegate?: boolean }> = ({
-  undelegate = false,
-  ...rest
-}) => {
-  const props = { ...rest, undelegate };
+const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
-    signPageExtraData: { undelegate },
+    signPageExtraData: undefined,
     FormPage,
     defaultFormPageProps: props,
-    toOperation: toOperation(undelegate),
+    toOperation,
   });
 
-  const addToBatch = useAddToBatchFormAction(toOperation(undelegate));
+  const addToBatch = useAddToBatchFormAction(toOperation);
 
   const {
     onFormSubmitActionHandlers: [onSingleSubmit, onBatchSubmit],
@@ -71,7 +64,7 @@ const FormPage: React.FC<FormPageProps<FormValues> & { undelegate?: boolean }> =
         <form>
           <ModalHeader textAlign="center" p="40px 0 32px 0">
             <Text size="2xl" fontWeight="600">
-              {undelegate ? "Remove Delegation" : "Delegation"}
+              Delegation
             </Text>
 
             <ModalCloseButton />
@@ -92,12 +85,10 @@ const FormPage: React.FC<FormPageProps<FormValues> & { undelegate?: boolean }> =
               )}
             </FormControl>
 
-            {!undelegate && (
-              <FormControl mb={2} isInvalid={!!errors.baker} data-testid="baker">
-                <BakersAutocomplete label="Baker" inputName="baker" allowUnknown={true} />
-                {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
-              </FormControl>
-            )}
+            <FormControl mb={2} isInvalid={!!errors.baker} data-testid="baker">
+              <BakersAutocomplete label="Baker" inputName="baker" allowUnknown={true} />
+              {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
+            </FormControl>
           </ModalBody>
           <ModalFooter>
             <FormSubmitButtons

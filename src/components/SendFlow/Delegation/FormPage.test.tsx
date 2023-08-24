@@ -15,9 +15,7 @@ import { estimate } from "../../../utils/tezos";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 import { FormPageProps } from "../utils";
 
-const fixture = (
-  props: FormPageProps<FormValues> & { undelegate?: boolean } = { undelegate: false }
-) => (
+const fixture = (props: FormPageProps<FormValues>) => (
   <Modal isOpen={true} onClose={() => {}}>
     <FormPage {...props} />
   </Modal>
@@ -26,14 +24,14 @@ const fixture = (
 describe("<Form />", () => {
   describe("default values", () => {
     it("renders an empty form by default", () => {
-      render(fixture({ undelegate: false }));
+      render(fixture({}));
 
       expect(screen.getByLabelText("From")).toHaveValue("");
       expect(screen.getByLabelText("From")).toBeEnabled();
     });
 
     it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(0), undelegate: false }));
+      render(fixture({ sender: mockImplicitAccount(0) }));
 
       expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
       expect(screen.getByLabelText("From")).toBeDisabled();
@@ -70,40 +68,6 @@ describe("<Form />", () => {
         expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
       });
       expect(screen.getByLabelText("From")).toBeDisabled();
-    });
-  });
-
-  describe("undelegate", () => {
-    it("undelegate renders a form with sender disabled", async () => {
-      render(
-        fixture({
-          undelegate: true,
-          form: {
-            sender: mockImplicitAccount(0).address.pkh,
-          },
-          sender: mockImplicitAccount(0),
-        })
-      );
-
-      await waitFor(() => {
-        expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
-      });
-      expect(screen.getByLabelText("From")).toBeDisabled();
-    });
-
-    it("hides the baker auto compolete", async () => {
-      render(
-        fixture({
-          undelegate: true,
-          form: {
-            sender: mockImplicitAccount(0).address.pkh,
-          },
-          sender: mockImplicitAccount(0),
-        })
-      );
-      await waitFor(() => {
-        expect(screen.queryByLabelText("Baker")).not.toBeInTheDocument();
-      });
     });
   });
 
@@ -170,7 +134,7 @@ describe("<Form />", () => {
       await waitFor(() => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
-            data={{ undelegate: false }}
+            data={undefined}
             mode="single"
             goBack={expect.any(Function)}
             operations={operations}
