@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormLabel, Input, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import React, { PropsWithChildren } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { GoogleAuthProps, useGetGoogleCredentials } from "../../../GoogleAuth";
 import {
   ImplicitAccount,
@@ -44,11 +44,12 @@ const SignButton: React.FC<{
   isDisabled?: boolean;
   text?: string; // TODO: after FillStep migration change to the header value from SignPage
 }> = ({ signer, onSubmit, isLoading: externalIsLoading, isDisabled, text }) => {
+  const form = useForm<{ password: string }>({ mode: "onBlur", defaultValues: { password: "" } });
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<{ password: string }>({ mode: "onBlur", defaultValues: { password: "" } });
+  } = form;
   const network = useSelectedNetwork();
   const getSecretKey = useGetSecretKey();
   const toast = useToast();
@@ -88,7 +89,7 @@ const SignButton: React.FC<{
   return (
     <Box width="100%">
       {signer.type === AccountType.MNEMONIC && (
-        <>
+        <FormProvider {...form}>
           <FormControl isInvalid={!!errors.password} mt={4}>
             <FormLabel>Password:</FormLabel>
             <Input
@@ -97,7 +98,10 @@ const SignButton: React.FC<{
               autoComplete="off"
               {...register("password", {
                 required: "Password is required",
-                minLength: MIN_LENGTH,
+                minLength: {
+                  value: MIN_LENGTH,
+                  message: `Your password must be at least ${MIN_LENGTH} characters long`,
+                },
               })}
               placeholder="Enter password..."
             />
@@ -114,7 +118,7 @@ const SignButton: React.FC<{
           >
             {text || "Submit Transaction"}
           </Button>
-        </>
+        </FormProvider>
       )}
       {signer.type === AccountType.SOCIAL && (
         <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={buttonIsDisabled}>
