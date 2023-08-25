@@ -1,5 +1,3 @@
-// <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
-
 import {
   Button,
   FormLabel,
@@ -13,6 +11,8 @@ import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-f
 import EyeSlashIcon from "../assets/icons/EyeSlash";
 import EyeIcon from "../assets/icons/Eye";
 const MIN_LENGTH = 8;
+
+// <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
 export type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   inputName: U;
