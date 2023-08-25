@@ -25,6 +25,7 @@ const iconProps = {
   width: "28px",
 };
 
+// TODO: make a proper component
 export const getIcon = (kind: AddressKind, address?: string) => {
   switch (kind) {
     case "contact": {
@@ -66,7 +67,7 @@ export const getIcon = (kind: AddressKind, address?: string) => {
       if (!address) {
         throw new Error("Address is required for mnemonic account");
       }
-      return <Identicon address={address} />;
+      return <Identicon w="48px" h="48px" p="8px" identiconSize={32} address={address} />;
     }
   }
 };

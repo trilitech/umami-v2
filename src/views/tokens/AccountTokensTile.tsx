@@ -38,8 +38,8 @@ const AccountTokensTileHeader: React.FC<{
   pkh: string;
   label: string;
 }> = ({ pkh, label }) => (
-  <Flex p={4} bg="umami.gray.900" h={90} borderRadius="8px" alignItems="center">
-    <Identicon address={pkh} />
+  <Flex p={4} bg={colors.gray[900]} h={90} borderRadius="8px" alignItems="center">
+    <Identicon identiconSize={32} address={pkh} />
     <Flex flex={1} justifyContent="space-between">
       <Box m={4} data-testid="account-identifier">
         <Heading size="md" mb={2}>

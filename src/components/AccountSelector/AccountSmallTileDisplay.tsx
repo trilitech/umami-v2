@@ -1,7 +1,8 @@
-import { Flex, FlexProps, Text } from "@chakra-ui/react";
+import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 import { formatPkh } from "../../utils/formatPkh";
 import { Identicon } from "../Identicon";
 import { prettyTezAmount } from "../../utils/format";
+import colors from "../../style/colors";
 
 export const AccountSmallTileDisplay = ({
   pkh,
@@ -13,26 +14,16 @@ export const AccountSmallTileDisplay = ({
   label?: string;
   balance: string | undefined;
 } & FlexProps) => (
-  <Flex
-    data-testid="account-small-tile"
-    alignItems="space-between"
-    pl={4}
-    pr={4}
-    h="24px"
-    cursor="pointer"
-    {...flexProps}
-  >
-    <Identicon identiconSize={20} p="5px" address={formatPkh(pkh)} mr={4} />
-    <Text size="sm" mx={2}>
-      {label}
-    </Text>
-    <Text size="xs" color="text.dark" mx={2}>
-      {formatPkh(pkh)}
-    </Text>
-    {balance && (
-      <Text size="sm" color="white" fontWeight={600}>
-        {prettyTezAmount(balance)}
+  <Flex data-testid="account-small-tile" alignItems="space-between" cursor="pointer" {...flexProps}>
+    <Identicon height="30px" identiconSize={20} p="5px" address={formatPkh(pkh)} mr="7px" />
+    <Flex height="20px" alignSelf="center">
+      <Heading size="sm" mx={2}>
+        {label}
+      </Heading>
+      <Text size="xs" color={colors.gray[300]} mx={2}>
+        {formatPkh(pkh)}
       </Text>
-    )}
+      {balance && <Heading size="sm">{prettyTezAmount(balance)}</Heading>}
+    </Flex>
   </Flex>
 );

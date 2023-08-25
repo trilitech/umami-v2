@@ -64,7 +64,7 @@ export const AccountCardDisplay: React.FC<Props> = ({
   const isMultisig = account.type === AccountType.MULTISIG;
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
-      <Identicon address={pkh} />
+      <Identicon identiconSize={32} address={pkh} />
       <Heading mt={4} size="md">
         {label}
       </Heading>

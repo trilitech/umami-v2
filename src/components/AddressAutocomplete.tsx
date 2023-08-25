@@ -92,9 +92,9 @@ const Suggestions = ({
                 background: colors.gray[500],
               }}
               borderRadius="4px"
-              padding="7px 5px"
+              padding="5px"
               height="40px"
-              balance={undefined}
+              balance={undefined} // TODO: add balance where possible
             />
           </ListItem>
         </Box>
