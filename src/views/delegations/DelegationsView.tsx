@@ -21,23 +21,27 @@ import { NoDelegations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { objectMap } from "../../utils/helpers";
-import { useFirstAccount } from "../../utils/hooks/accountHooks";
+import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useAllDelegations } from "../../utils/hooks/assetsHooks";
 import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
-import { useSendFormModal } from "../home/useSendFormModal";
 import colors from "../../style/colors";
 import { BakerSmallTile } from "./BakerSmallTile";
+import { useContext } from "react";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import DelegationFormPage from "../../components/SendFlow/Delegation/FormPage";
+import { useSendFormModal } from "../home/useSendFormModal";
 
 const DelegationsTable = ({
   delegations,
-  onRemoveDelegate,
-  onChangeDelegate,
+  onClickUndelegate,
 }: {
   delegations: Delegation[];
-  onRemoveDelegate: (pkh: string) => void;
-  onChangeDelegate: (pkh: string, baker: string) => void;
+  //TODO: remove after undelegete is implemented
+  onClickUndelegate: (sender: string) => void;
 }) => {
   const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
+  const { openWith } = useContext(DynamicModalContext);
+  const getOwnedAccount = useGetOwnedAccount();
   return (
     <TableContainer>
       <Table>
@@ -74,7 +78,14 @@ const DelegationsTable = ({
                   <IconButton
                     ml={2}
                     mr={2}
-                    onClick={() => onChangeDelegate(delegation.sender, delegation.delegate.address)}
+                    onClick={() => {
+                      openWith(
+                        <DelegationFormPage
+                          sender={getOwnedAccount(delegation.sender)}
+                          form={{ sender: delegation.sender, baker: delegation.delegate.address }}
+                        />
+                      );
+                    }}
                     borderRadius="50%"
                     aria-label="Change Baker"
                     icon={<MdOutlineModeEdit />}
@@ -83,7 +94,7 @@ const DelegationsTable = ({
                   <IconButton
                     ml={2}
                     mr={2}
-                    onClick={() => onRemoveDelegate(delegation.sender)}
+                    onClick={() => onClickUndelegate(delegation.sender)}
                     borderRadius="50%"
                     aria-label="Delete Baker"
                     icon={<CiCircleRemove />}
@@ -99,82 +110,44 @@ const DelegationsTable = ({
   );
 };
 
-const DelegateButton = () => {
-  const { modalElement, onOpen } = useSendFormModal();
-  const account = useFirstAccount();
-
-  return (
-    <>
-      <IconAndTextBtn
-        onClick={() =>
-          onOpen({
-            sender: account.address.pkh,
-            mode: { type: "delegation" },
-          })
-        }
-        color="umami.green"
-        icon={VscWand}
-        label="Delegate"
-      />
-
-      {modalElement}
-    </>
-  );
-};
-
 const DelegationsView = () => {
-  const { modalElement, onOpen } = useSendFormModal();
-
   const delegationsOps = useAllDelegations();
   const { filterMap: filter, accountsFilter } = useAccountsFilterWithMapFilter();
   const delegationsArrays = objectMap(delegationsOps, d => (d ? [d] : undefined));
   const delegationsToDisplay = compact(filter(delegationsArrays).map(makeDelegation));
-  const account = useFirstAccount();
-
-  const handleRemoveDelegate = (pkh: string) => {
-    onOpen({
-      sender: pkh,
-      mode: {
-        type: "delegation",
-        data: { undelegate: true },
-      },
-    });
-  };
-
-  const handleEditDelegate = (pkh: string, baker: string) => {
-    onOpen({
-      sender: pkh,
-      recipient: baker,
-      mode: {
-        type: "delegation",
-      },
-    });
-  };
+  const { openWith } = useContext(DynamicModalContext);
+  //TODO: remove after undelegete is implemented
+  const { modalElement, onOpen } = useSendFormModal();
 
   return (
     <Flex direction="column" height="100%">
       <TopBar title="Delegations" />
       <Flex alignItems="left" justifyContent="space-between">
         {accountsFilter}
-        <DelegateButton />
+        <IconAndTextBtn
+          onClick={() => openWith(<DelegationFormPage />)}
+          color={colors.green}
+          icon={VscWand}
+          label="Delegate"
+        />
       </Flex>
       {delegationsToDisplay.length > 0 ? (
         <Box overflowY="auto">
           <DelegationsTable
-            onChangeDelegate={handleEditDelegate}
-            onRemoveDelegate={handleRemoveDelegate}
+            onClickUndelegate={sender =>
+              onOpen({
+                sender,
+                mode: {
+                  type: "delegation",
+                  data: { undelegate: true },
+                },
+              })
+            }
             delegations={delegationsToDisplay}
           />
         </Box>
       ) : (
-        <NoDelegations
-          onDelegate={() => {
-            onOpen({
-              sender: account.address.pkh,
-              mode: { type: "delegation" },
-            });
-          }}
-        />
+        <NoDelegations onDelegate={() => openWith(<DelegationFormPage />)} />
       )}
       {modalElement}
     </Flex>

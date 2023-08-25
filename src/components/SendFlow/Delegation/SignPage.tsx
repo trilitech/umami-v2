@@ -1,11 +1,7 @@
 import {
   Flex,
   FormControl,
-  FormLabel,
   Heading,
-  Input,
-  InputGroup,
-  InputRightElement,
   ModalBody,
   ModalContent,
   ModalFooter,
@@ -17,58 +13,20 @@ import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
-import { FATokenBalance } from "./FormPage";
-import { formatTokenAmount, tokenSymbol } from "../../../types/TokenBalance";
-import { FA12Operation } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
 
-const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
-  const {
-    mode,
-    operations: initialOperations,
-    fee: initialFee,
-    data: { token },
-  } = props;
+const SignPage: React.FC<SignPageProps> = props => {
+  const { mode, operations: initialOperations, fee: initialFee } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
-
-  const amount = (operations.content[0] as FA12Operation).amount;
-
   return (
     <FormProvider {...form}>
-      <ModalContent bg={colors.gray[900]} borderColor={colors.gray[700]} borderRadius="8px">
+      <ModalContent>
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            {/* TODO: Until we create a token tile we use a disabled input */}
-            <FormLabel>Amount</FormLabel>
-            <InputGroup>
-              <Input
-                data-testid="token-amount"
-                isDisabled={true}
-                type="number"
-                variant="filled"
-                disabled={true}
-                value={formatTokenAmount(amount, token.metadata?.decimals)}
-              />
-              <InputRightElement pr={3} data-testid="token-symbol">
-                {tokenSymbol(token)}
-              </InputRightElement>
-            </InputGroup>
-
-            <Flex my={3} alignItems="center" justifyContent="end" px={1}>
-              <Flex>
-                <Heading size="sm" mr={1} color={colors.gray[450]}>
-                  Fee:
-                </Heading>
-                <Text size="sm" data-testid="fee" color={colors.gray[400]}>
-                  {prettyTezAmount(fee)}
-                </Text>
-              </Flex>
-            </Flex>
-
-            {/* TODO: Add sender address tile */}
+            {/* TODO: Make AccountAutoComplete display the address and balance*/}
             <FormControl my={3}>
               <OwnedAccountsAutocomplete
                 inputName="sender"
@@ -78,7 +36,18 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
               />
             </FormControl>
 
-            {/* TODO: Add recipient address tile */}
+            <Flex my={2} alignItems="center" justifyContent="end" px={1}>
+              <Flex alignItems="center">
+                <Heading size="sm" mr={1} color={colors.gray[450]}>
+                  Fee:
+                </Heading>
+                <Text size="sm" data-testid="fee" color={colors.gray[400]}>
+                  {prettyTezAmount(fee)}
+                </Text>
+              </Flex>
+            </Flex>
+
+            {/* TODO: add sign tile */}
 
             <OperationSignerSelector
               sender={operations.sender}

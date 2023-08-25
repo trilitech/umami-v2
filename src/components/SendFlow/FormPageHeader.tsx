@@ -1,9 +1,16 @@
-import { ModalHeader, Text, ModalCloseButton } from "@chakra-ui/react";
+import { ModalHeader, Text, ModalCloseButton, chakra } from "@chakra-ui/react";
 import colors from "../../style/colors";
+
+export const HeaderWrapper = chakra(ModalHeader, {
+  baseStyle: {
+    p: "40px 0 32px 0",
+    textAlign: "center",
+  },
+});
 
 const FormPageHeader = () => {
   return (
-    <ModalHeader textAlign="center" p="40px 0 32px 0">
+    <HeaderWrapper>
       <Text size="2xl" fontWeight="600">
         Send
       </Text>
@@ -11,7 +18,7 @@ const FormPageHeader = () => {
         Send one or insert into batch.
       </Text>
       <ModalCloseButton />
-    </ModalHeader>
+    </HeaderWrapper>
   );
 };
 

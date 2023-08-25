@@ -87,7 +87,7 @@ export const DelegateForm = ({
 
             {undelegate ? null : (
               <FormControl mb={2} isInvalid={!!errors.baker}>
-                <BakersAutocomplete label="Baker" inputName="baker" allowUnknown={true} />
+                <BakersAutocomplete label="Baker" inputName="baker" allowUnknown />
                 {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
               </FormControl>
             )}
