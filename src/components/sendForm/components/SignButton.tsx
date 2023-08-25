@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Input, useToast } from "@chakra-ui/react";
+import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import React, { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -13,8 +13,8 @@ import { useGetSecretKey } from "../../../utils/hooks/accountUtils";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { makeToolkit } from "../../../utils/tezos";
-import { MIN_LENGTH } from "../../Onboarding/masterPassword/password/EnterAndConfirmPassword";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import PasswordInput from "../../PasswordInput";
 
 export const SignWithGoogleButton: React.FC<
   PropsWithChildren<{
@@ -46,7 +46,6 @@ const SignButton: React.FC<{
 }> = ({ signer, onSubmit, isLoading: externalIsLoading, isDisabled, text }) => {
   const form = useForm<{ password: string }>({ mode: "onBlur", defaultValues: { password: "" } });
   const {
-    register,
     handleSubmit,
     formState: { errors, isValid },
   } = form;
@@ -90,21 +89,8 @@ const SignButton: React.FC<{
     <Box width="100%">
       {signer.type === AccountType.MNEMONIC && (
         <FormProvider {...form}>
-          <FormControl isInvalid={!!errors.password} mt={4}>
-            <FormLabel>Password:</FormLabel>
-            <Input
-              mb={2}
-              type="password"
-              autoComplete="off"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: MIN_LENGTH,
-                  message: `Your password must be at least ${MIN_LENGTH} characters long`,
-                },
-              })}
-              placeholder="Enter password..."
-            />
+          <FormControl isInvalid={!!errors.password} my={4}>
+            <PasswordInput inputName="password" />
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
           </FormControl>
           <Button

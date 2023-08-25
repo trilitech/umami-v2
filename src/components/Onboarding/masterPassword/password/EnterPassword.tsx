@@ -1,9 +1,9 @@
-import { Button, Center, FormControl, FormLabel, Heading, Input, VStack } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
+import { Button, Center, FormControl, Heading, VStack } from "@chakra-ui/react";
+import { FormProvider, useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
-import { MIN_LENGTH } from "./EnterAndConfirmPassword";
 import { FormErrorMessage } from "../../../FormErrorMessage";
+import PasswordInput from "../../../PasswordInput";
 
 const EnterPassword = ({
   onSubmit: onSubmitPassword,
@@ -12,15 +12,16 @@ const EnterPassword = ({
   onSubmit: (s: string) => void;
   isLoading: boolean;
 }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<{
+  const form = useForm<{
     password: string;
   }>({
     mode: "onBlur",
   });
+
+  const {
+    handleSubmit,
+    formState: { errors, isValid },
+  } = form;
 
   const onSubmit = (p: { password: string }) => {
     onSubmitPassword(p.password);
@@ -32,40 +33,23 @@ const EnterPassword = ({
       title="Umami Master Password"
       subtitle="Enter your master password for Umami."
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Center>
-          <VStack width={300}>
-            <Heading>Enter Password to continue</Heading>
-            <FormControl isInvalid={!!errors.password}>
-              <FormLabel>Password</FormLabel>
-              <Input
-                data-testid="password"
-                autoComplete="off"
-                type="password"
-                {...register("password", {
-                  required: true,
-                  minLength: {
-                    value: MIN_LENGTH,
-                    message: `Password must be at least ${MIN_LENGTH} characters long`,
-                  },
-                })}
-                placeholder="Enter your password..."
-              />
-              {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
-            </FormControl>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Center>
+            <VStack width={300}>
+              <Heading>Enter Password to continue</Heading>
+              <FormControl isInvalid={!!errors.password}>
+                <PasswordInput inputName="password" data-testid="password" />
+                {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
+              </FormControl>
 
-            <Button
-              isDisabled={!isValid || isLoading}
-              isLoading={isLoading}
-              type="submit"
-              colorScheme="gray"
-              title="Submit"
-            >
-              Submit
-            </Button>
-          </VStack>
-        </Center>
-      </form>
+              <Button isDisabled={!isValid || isLoading} isLoading={isLoading} type="submit">
+                Submit
+              </Button>
+            </VStack>
+          </Center>
+        </form>
+      </FormProvider>
     </ModalContentWrapper>
   );
 };
