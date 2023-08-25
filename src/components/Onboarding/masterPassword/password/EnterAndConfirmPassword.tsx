@@ -3,7 +3,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
 import { FormErrorMessage } from "../../../FormErrorMessage";
-import colors from "../../../../style/colors";
 import PasswordInput from "../../../PasswordInput";
 
 export const MIN_LENGTH = 8;
@@ -68,11 +67,8 @@ export const EnterAndConfirmPassword: React.FC<{
                 isDisabled={!isValid || isLoading}
                 isLoading={isLoading}
                 type="submit"
-                title="Submit"
                 w="100%"
                 size="lg"
-                h="48px"
-                bg={colors.blue}
               >
                 Submit
               </Button>

@@ -7,7 +7,7 @@ const fixture = () => {
   const view = renderHook(() => useForm<FormFields>({ defaultValues: { destination: "" } }));
   return (
     <FormProvider {...view.result.current}>
-      <PasswordInput inputName="password" label="Password" />
+      <PasswordInput inputName="password" />
     </FormProvider>
   );
 };
@@ -29,5 +29,22 @@ describe("<PasswordInput/>", () => {
       expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
     });
     expect(screen.getByTestId("eye-slash-icon")).toBeInTheDocument();
+  });
+
+  it("shows and hide password on click icon", async () => {
+    render(fixture());
+    const eyeButton = screen.getByTestId("eye-icon");
+
+    fireEvent.click(eyeButton);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
+    });
+
+    expect(screen.getByTestId("eye-slash-icon")).toBeInTheDocument();
+    const eyeSlashButton = screen.getByTestId("eye-slash-icon");
+    fireEvent.click(eyeSlashButton);
+    await waitFor(() => {
+      expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
+    });
   });
 });
