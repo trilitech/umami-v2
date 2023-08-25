@@ -38,48 +38,47 @@ export const EnterAndConfirmPassword: React.FC<{
       subtitle="Please choose a master password for Umami. You will need to use this password in order to perform any operations within Umami."
     >
       <FormProvider {...form}>
-        <Center>
-          <VStack width={300}>
-            <FormControl isInvalid={!!errors.password}>
-              <PasswordInput
-                inputName="password"
-                label="Set Password"
-                data-testid="password"
-                placeholder="Enter master password"
-                required="Password is required"
-              />
-              {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
-            </FormControl>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Center>
+            <VStack width={300}>
+              <FormControl isInvalid={!!errors.password}>
+                <PasswordInput
+                  inputName="password"
+                  data-testid="password"
+                  placeholder="Enter master password"
+                />
+                {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
+              </FormControl>
 
-            <FormControl isInvalid={!!errors.confirm}>
-              <PasswordInput
-                inputName="confirm"
-                label="Confirm Password"
-                data-testid="confirmation"
-                placeholder="Confirm your password"
-                required="Confirmation is required"
-                validate={(val: string) =>
-                  getValues("password") === val || "Your passwords do no match"
-                }
-              />
-              {errors.confirm && <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>}
-            </FormControl>
-            <Button
-              mt={5}
-              isDisabled={!isValid || isLoading}
-              isLoading={isLoading}
-              type="submit"
-              title="Submit"
-              w="100%"
-              size="lg"
-              h="48px"
-              bg={colors.blue}
-              onClick={handleSubmit(onSubmit)}
-            >
-              Submit
-            </Button>
-          </VStack>
-        </Center>
+              <FormControl isInvalid={!!errors.confirm}>
+                <PasswordInput
+                  inputName="confirm"
+                  label="Confirm Password"
+                  data-testid="confirmation"
+                  placeholder="Confirm your password"
+                  required="Confirmation is required"
+                  validate={(val: string) =>
+                    getValues("password") === val || "Your passwords do no match"
+                  }
+                />
+                {errors.confirm && <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>}
+              </FormControl>
+              <Button
+                mt={5}
+                isDisabled={!isValid || isLoading}
+                isLoading={isLoading}
+                type="submit"
+                title="Submit"
+                w="100%"
+                size="lg"
+                h="48px"
+                bg={colors.blue}
+              >
+                Submit
+              </Button>
+            </VStack>
+          </Center>
+        </form>
       </FormProvider>
     </ModalContentWrapper>
   );

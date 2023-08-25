@@ -16,15 +16,17 @@ const MIN_LENGTH = 8;
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
 export type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   inputName: U;
-  label: string;
-
-  required?: RegisterOptions<T, U>["required"];
+  label?: string;
+  placeholder?: string;
+  required?: string;
   validate?: RegisterOptions<T, U>["validate"];
 } & InputProps;
+
 const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   inputName,
-  label,
-  required,
+  label = "Password",
+  placeholder = "Enter your password",
+  required = "Password is required",
   validate,
   ...rest
 }: PasswordInputProps<T, U>) => {
@@ -38,6 +40,7 @@ const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           type={showPassword ? "text" : "password"}
           autoComplete="off"
           aria-label={label}
+          placeholder={placeholder}
           {...register(inputName, {
             required,
             minLength: {
@@ -49,7 +52,7 @@ const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           {...rest}
         />
         <InputRightElement>
-          <Button variant="unstyled" onClick={() => setShowPassword(val => !val)}>
+          <Button tabIndex={-1} variant="unstyled" onClick={() => setShowPassword(val => !val)}>
             {showPassword ? (
               <EyeSlashIcon data-testid="eye-slash-icon" />
             ) : (

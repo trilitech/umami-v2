@@ -34,32 +34,27 @@ const EnterPassword = ({
       subtitle="Enter your master password for Umami."
     >
       <FormProvider {...form}>
-        <Center>
-          <VStack width={300}>
-            <Heading>Enter Password to continue</Heading>
-            <FormControl isInvalid={!!errors.password}>
-              <PasswordInput
-                inputName="password"
-                label="Password"
-                required="Password is required"
-                data-testid="password"
-                placeholder="Enter your password..."
-              />
-              {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
-            </FormControl>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Center>
+            <VStack width={300}>
+              <Heading>Enter Password to continue</Heading>
+              <FormControl isInvalid={!!errors.password}>
+                <PasswordInput inputName="password" data-testid="password" />
+                {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
+              </FormControl>
 
-            <Button
-              isDisabled={!isValid || isLoading}
-              isLoading={isLoading}
-              type="submit"
-              colorScheme="gray"
-              title="Submit"
-              onClick={handleSubmit(onSubmit)}
-            >
-              Submit
-            </Button>
-          </VStack>
-        </Center>
+              <Button
+                isDisabled={!isValid || isLoading}
+                isLoading={isLoading}
+                type="submit"
+                colorScheme="gray"
+                title="Submit"
+              >
+                Submit
+              </Button>
+            </VStack>
+          </Center>
+        </form>
       </FormProvider>
     </ModalContentWrapper>
   );
