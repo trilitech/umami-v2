@@ -1,6 +1,11 @@
-import { IconButton, Modal, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import ModalBackground from "../../assets/onboarding/background_image.svg";
-import { ArrowBackIcon, CloseIcon } from "@chakra-ui/icons";
 import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import ConnectOptions from "./connectOptions/ConnectOptions";
 import ConnectOrCreate from "./connectOrCreate/ConnectOrCreate";
@@ -15,6 +20,8 @@ import VerifySeedphrase from "./verifySeedphrase/VerifySeedphrase";
 import DerivationPath from "./derivationPath/DerivationPath";
 import { useStepHistory } from "../useStepHistory";
 import { FakeAccount } from "./FakeAccount";
+import colors from "../../style/colors";
+import { ModalBackButton } from "../ModalBackButton";
 
 export enum StepType {
   eula = "eula",
@@ -143,36 +150,14 @@ export const useOnboardingModal = () => {
           bgSize="cover"
         />
         <ModalContent
-          bg="umami.gray.900"
+          bg={colors.gray[900]}
           maxW={stepModalSize(history.currentStep)}
           minW={stepModalSize(history.currentStep)}
           border="1px solid #282828"
           boxShadow="0px 0px 15px 1px rgba(235, 235, 235, 0.1);"
         >
-          {!history.atInitialStep && (
-            <IconButton
-              size="lg"
-              top="4px"
-              left="4px"
-              position="absolute"
-              variant="ghost"
-              aria-label="Back"
-              color="umami.gray.450"
-              icon={<ArrowBackIcon />}
-              onClick={history.goBack}
-            />
-          )}
-          <IconButton
-            size="sm"
-            top="8px"
-            right="8px"
-            position="absolute"
-            variant="ghost"
-            aria-label="Close"
-            color="umami.gray.450"
-            icon={<CloseIcon />}
-            onClick={closeModal}
-          />
+          {!history.atInitialStep && <ModalBackButton onClick={history.goBack} />}
+          <ModalCloseButton onClick={closeModal} />
           {getStepPage()}
         </ModalContent>
       </Modal>

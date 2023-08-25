@@ -80,15 +80,7 @@ const RestoreLedger = ({
             return <ListItem key={index}>{item.content}</ListItem>;
           })}
         </OrderedList>
-        <Button
-          bg="umami.blue"
-          w="100%"
-          minH="48px"
-          size="lg"
-          isLoading={isLoading}
-          onClick={connectLedger}
-          overflowX="unset"
-        >
+        <Button w="100%" size="lg" isLoading={isLoading} onClick={connectLedger}>
           Export Public Key
         </Button>
       </VStack>

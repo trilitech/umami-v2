@@ -32,7 +32,7 @@ export const ErrorPage: React.FC = () => {
             Ooops, something went wrong!
           </Heading>
 
-          <Button variant="primary" onClick={onRefresh} mr={2}>
+          <Button onClick={onRefresh} mr={2}>
             Refresh the page
           </Button>
           <Button mr={2} variant="secondary" onClick={onBackup}>

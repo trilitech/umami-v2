@@ -49,12 +49,12 @@ const UpdateButton = () => {
       <IconButton
         ml={2}
         mr={8}
-        width="48px"
-        borderRadius="50%"
         aria-label="refetch"
         icon={<FetchingIcon />}
         onClick={onClick}
         isLoading={isLoading}
+        variant="circle"
+        _active={{ color: "white", bg: colors.green }}
       />
     </>
   );
@@ -79,7 +79,7 @@ export const TopBar: React.FC<{ title: string }> = ({ title }) => {
           <Button variant="tertiary" onClick={onOpen}>
             Buy Tez
           </Button>
-          <Button ml={4} variant="primary" onClick={() => openWith(<SendTezForm />)}>
+          <Button ml={4} onClick={() => openWith(<SendTezForm />)}>
             Send
           </Button>
         </Box>

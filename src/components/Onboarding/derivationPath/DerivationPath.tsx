@@ -1,4 +1,14 @@
-import { Button, Center, FormControl, Text, Switch, VStack, Input, HStack } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  FormControl,
+  Text,
+  Switch,
+  VStack,
+  Input,
+  HStack,
+  FormErrorMessage,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { SupportedIcons } from "../../CircleIcon";
@@ -23,13 +33,15 @@ export const DerivationPath = ({
   const {
     register,
     handleSubmit,
-    formState: { isValid, isDirty },
-  } = useForm<ConfirmDerivationPathFormValues>();
+    setValue,
+    formState: { isValid, errors },
+  } = useForm<ConfirmDerivationPathFormValues>({
+    mode: "onBlur",
+    defaultValues: { derivationPath: defaultDerivationPathPattern },
+  });
   const [useDefault, setUseDefault] = useState(true);
 
-  const onSubmit = async (data: ConfirmDerivationPathFormValues) => {
-    const derivationPath = useDefault ? defaultDerivationPathPattern : data.derivationPath;
-
+  const onSubmit = async ({ derivationPath }: ConfirmDerivationPathFormValues) => {
     switch (account.type) {
       case "ledger":
         goToStep({ type: StepType.restoreLedger, account: { ...account, derivationPath } });
@@ -52,7 +64,16 @@ export const DerivationPath = ({
             <FormControl>
               <HStack spacing="10px">
                 <Text fontWeight="bold">Default Path</Text>
-                <Switch data-testid="switch" onChange={() => setUseDefault(!useDefault)} />
+                <Switch
+                  data-testid="switch"
+                  onChange={() => {
+                    // set back to default
+                    if (!useDefault) {
+                      setValue("derivationPath", defaultDerivationPathPattern);
+                    }
+                    setUseDefault(!useDefault);
+                  }}
+                />
                 <Text>Custom Path</Text>
               </HStack>
             </FormControl>
@@ -63,22 +84,17 @@ export const DerivationPath = ({
                 defaultValue={defaultDerivationPathPattern}
                 isDisabled={useDefault}
                 {...register("derivationPath", {
-                  required: false,
                   pattern: {
                     value: validDerivationPathRegex,
                     message: "Please enter a valid derivation path",
                   },
                 })}
               />
+              {errors.derivationPath && (
+                <FormErrorMessage>{errors.derivationPath.message}</FormErrorMessage>
+              )}
             </FormControl>
-            <Button
-              isDisabled={isDirty && !isValid}
-              w="100%"
-              size="lg"
-              type="submit"
-              title="Restore accounts"
-              bg="umami.blue"
-            >
+            <Button isDisabled={!isValid} w="100%" size="lg" type="submit">
               Continue
             </Button>
           </VStack>

@@ -1,10 +1,24 @@
 import { modalAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers } from "@chakra-ui/styled-system";
+import { createMultiStyleConfigHelpers, defineStyle } from "@chakra-ui/styled-system";
 import colors from "../colors";
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(
   modalAnatomy.keys
 );
+
+const closeButtonStyle = defineStyle({
+  position: "absolute",
+  top: "10px",
+  insetEnd: "10px",
+  color: colors.gray[400],
+});
+
+export const backButtonStyle = defineStyle({
+  position: "absolute" as const,
+  top: "10px",
+  insetStart: "10px",
+  color: colors.gray[400],
+});
 
 const baseStyle = definePartsStyle({
   dialog: {
@@ -21,6 +35,7 @@ const baseStyle = definePartsStyle({
       bg: "rgba(0, 0, 0, 0.85)",
     },
   },
+  closeButton: closeButtonStyle,
 });
 
 export const modalTheme = defineMultiStyleConfig({

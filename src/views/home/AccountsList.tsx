@@ -27,6 +27,7 @@ import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
 import { AccountTileDisplay } from "../../components/AccountTile/AccountTileDisplay";
+import colors from "../../style/colors";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -170,13 +171,14 @@ export const AccountsList: React.FC<{
           <Button
             onClick={() => openWith(<FormPage />)}
             width="100%"
-            bg="umami.black"
+            bg={colors.black}
             border="1px dashed"
             height="90px"
-            borderColor="umami.gray.500"
+            variant="outline"
+            borderColor={colors.gray[500]}
           >
-            <Text display="block" m={5} width="100%" textAlign="center" color="umami.gray.400">
-              <KeyIcon stroke="umami.gray.450" mr={1} />
+            <Text display="block" m={5} width="100%" textAlign="center" color={colors.gray[400]}>
+              <KeyIcon stroke={colors.gray[450]} mr={1} />
               Create New Multisig
             </Text>
           </Button>
@@ -230,7 +232,7 @@ export const useDeriveAccountModal = () => {
   return {
     element: (
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalContent bg="umami.gray.900">
+        <ModalContent bg={colors.gray[900]}>
           {paramsRef.current?.fingerprint && (
             <DeriveAccount onDone={onClose} fingerprint={paramsRef.current.fingerprint} />
           )}

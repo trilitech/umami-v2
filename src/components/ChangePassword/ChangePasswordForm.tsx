@@ -119,14 +119,7 @@ export const ChangePasswordForm: React.FC = () => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button
-              marginY={3}
-              isDisabled={!isValid}
-              isLoading={isLoading}
-              w="100%"
-              variant="primary"
-              type="submit"
-            >
+            <Button marginY={3} isDisabled={!isValid} isLoading={isLoading} w="100%" type="submit">
               Update Password
             </Button>
           </ModalFooter>

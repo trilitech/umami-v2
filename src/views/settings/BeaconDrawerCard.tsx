@@ -47,7 +47,6 @@ const BeaconDrawerBody = () => {
             addPeer(text);
           })
         }
-        variant="primary"
       >
         Paste a peer request code
       </Button>

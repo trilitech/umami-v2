@@ -34,7 +34,7 @@ const NameAccountDisplay = ({
               />
             </FormControl>
 
-            <Button w="100%" size="lg" h="48px" type="submit" title="Submit" bg="umami.blue">
+            <Button w="100%" size="lg" type="submit">
               Continue
             </Button>
           </VStack>

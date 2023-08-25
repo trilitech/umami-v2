@@ -125,7 +125,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               const error = errors.signers && errors.signers[index];
               const label = `${index === 0 ? "Select " : ""}${index + 1} signer`;
               // TODO: make modal padding match figma and set the max width to 400px
-              const inputWidth = signersCount > 1 ? "390px" : "434px";
+              const inputWidth = signersCount > 1 ? "400px" : "434px";
               return (
                 <FormControl
                   data-testid={`signer-input-${index}`}
@@ -152,17 +152,17 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                   />
                   {signersCount > 1 && (
                     <IconButton
-                      size="md"
-                      variant="ghost"
+                      size="xs"
+                      variant="tertiary"
                       aria-label="Remove"
-                      color="umami.gray.450"
                       position="absolute"
+                      bg={colors.gray[500]}
                       data-testid={`remove-signer-${index}`}
-                      icon={<Trash />}
+                      icon={<Trash h="14px" w="12px" />}
                       onClick={() => signersArray.remove(index)}
-                      height="40px"
-                      ml="396px"
-                      mt="-44px"
+                      height="24px"
+                      ml="406px"
+                      mt="-36px"
                       isRound
                     />
                   )}
@@ -221,9 +221,9 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             <Button
               isDisabled={!isValid}
               isLoading={isLoading}
+              size="lg"
               type="submit"
               width="100%"
-              variant="primary"
             >
               Review
             </Button>

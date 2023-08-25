@@ -45,10 +45,8 @@ export const ShowSeedphrase = ({
           })}
         </SimpleGrid>
         <Button
-          bg="umami.blue"
           w="100%"
           size="lg"
-          minH="48px"
           onClick={_ => {
             goToStep({ type: StepType.verifySeedphrase, account });
           }}

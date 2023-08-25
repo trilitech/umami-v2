@@ -60,13 +60,13 @@ const VerifySeedphrase = ({
                 </FormControl>
               );
             })}
-            <Button type="submit" w="100%" size="lg" minH="48px" isDisabled={!isValid}>
+            <Button type="submit" w="100%" size="lg" isDisabled={!isValid}>
               Continue
             </Button>
 
             {
               /* devblock:start */
-              <Button onClick={onSubmit} w="100%" size="lg" minH="48px">
+              <Button onClick={onSubmit} w="100%" size="lg">
                 Bypass (Dev only)
               </Button>
               /* devblock:end */

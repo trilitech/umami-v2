@@ -167,7 +167,7 @@ export const DeleteContactModal: FC<{
 
         <ModalFooter>
           <Box width="100%">
-            <Button width="100%" onClick={onDeleteContact} mb={2}>
+            <Button width="100%" variant="warning" onClick={onDeleteContact} mb={2}>
               Delete
             </Button>
           </Box>

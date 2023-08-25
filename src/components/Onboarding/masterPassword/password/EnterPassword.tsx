@@ -43,7 +43,7 @@ const EnterPassword = ({
                 {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
               </FormControl>
 
-              <Button isDisabled={!isValid || isLoading} isLoading={isLoading} type="submit">
+              <Button isDisabled={!isValid} isLoading={isLoading} size="lg" type="submit">
                 Submit
               </Button>
             </VStack>
