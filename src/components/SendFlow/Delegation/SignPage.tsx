@@ -47,6 +47,8 @@ const SignPage: React.FC<SignPageProps> = props => {
               </Flex>
             </Flex>
 
+            {/* TODO: add sign tile */}
+
             <OperationSignerSelector
               sender={operations.sender}
               isDisabled={isLoading}

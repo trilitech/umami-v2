@@ -4,7 +4,6 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   Text,
 } from "@chakra-ui/react";
 import React from "react";
@@ -18,15 +17,16 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { DelegationOperation } from "../../../types/Operation";
+import { Delegation } from "../../../types/Operation";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import { HeaderWrapper } from "../FormPageHeader";
 
 export type FormValues = {
   sender: RawPkh;
   baker: RawPkh;
 };
 
-const toOperation = (formValues: FormValues): DelegationOperation => ({
+const toOperation = (formValues: FormValues): Delegation => ({
   type: "delegation",
   sender: parsePkh(formValues.sender),
   recipient: parseImplicitPkh(formValues.baker),
@@ -62,13 +62,13 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <ModalHeader textAlign="center" p="40px 0 32px 0">
+          <HeaderWrapper>
             <Text size="2xl" fontWeight="600">
-              Delegation
+              Delegate
             </Text>
-
             <ModalCloseButton />
-          </ModalHeader>
+          </HeaderWrapper>
+
           <ModalBody>
             {/* TODO: Make AccountAutoComplete display the address and balance*/}
             <FormControl mb={2} isInvalid={!!errors.sender}>
@@ -86,7 +86,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             </FormControl>
 
             <FormControl mb={2} isInvalid={!!errors.baker} data-testid="baker">
-              <BakersAutocomplete label="Baker" inputName="baker" allowUnknown={true} />
+              <BakersAutocomplete label="Baker" inputName="baker" allowUnknown />
               {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
             </FormControl>
           </ModalBody>

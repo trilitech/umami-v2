@@ -34,7 +34,7 @@ export type FA12Operation = Omit<FA2Operation, "type" | "tokenId"> & {
   tokenId: "0";
 };
 
-export type DelegationOperation = {
+export type Delegation = {
   type: "delegation";
   sender: Address;
   recipient: ImplicitAddress | undefined;
@@ -52,7 +52,7 @@ export type Operation =
   | TezOperation
   | FA12Operation
   | FA2Operation
-  | DelegationOperation
+  | Delegation
   | ContractOrigination;
 
 export type OperationWithFee = Operation & { fee: string };

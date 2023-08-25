@@ -23,7 +23,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
 import { parseImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
 import { getRealAmount, tokenSymbol } from "../../../types/TokenBalance";
-import { DelegationOperation, Operation } from "../../../types/Operation";
+import { Delegation, Operation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import {
   useAccountIsMultisig,
@@ -87,7 +87,7 @@ export const DelegateForm = ({
 
             {undelegate ? null : (
               <FormControl mb={2} isInvalid={!!errors.baker}>
-                <BakersAutocomplete label="Baker" inputName="baker" allowUnknown={true} />
+                <BakersAutocomplete label="Baker" inputName="baker" allowUnknown />
                 {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
               </FormControl>
             )}
@@ -361,7 +361,7 @@ export const FillStep: React.FC<{
           undelegate={mode.data?.undelegate}
           isLoading={isLoading}
           onSubmit={formValues => {
-            const delegation: DelegationOperation = {
+            const delegation: Delegation = {
               type: "delegation",
               sender: parsePkh(formValues.sender),
               recipient:

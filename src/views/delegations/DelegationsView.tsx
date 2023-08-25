@@ -34,13 +34,14 @@ import { useSendFormModal } from "../home/useSendFormModal";
 const DelegationsTable = ({
   delegations,
   onClickUndelegate,
-  onClickChangeDelegate: onChangeDelegate,
 }: {
   delegations: Delegation[];
+  //TODO: remove after undelegete is implemented
   onClickUndelegate: (sender: string) => void;
-  onClickChangeDelegate: (sender: string, baker: string) => void;
 }) => {
   const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
+  const { openWith } = useContext(DynamicModalContext);
+  const getOwnedAccount = useGetOwnedAccount();
   return (
     <TableContainer>
       <Table>
@@ -77,7 +78,14 @@ const DelegationsTable = ({
                   <IconButton
                     ml={2}
                     mr={2}
-                    onClick={() => onChangeDelegate(delegation.sender, delegation.delegate.address)}
+                    onClick={() => {
+                      openWith(
+                        <DelegationFormPage
+                          sender={getOwnedAccount(delegation.sender)}
+                          form={{ sender: delegation.sender, baker: delegation.delegate.address }}
+                        />
+                      );
+                    }}
                     borderRadius="50%"
                     aria-label="Change Baker"
                     icon={<MdOutlineModeEdit />}
@@ -108,8 +116,6 @@ const DelegationsView = () => {
   const delegationsArrays = objectMap(delegationsOps, d => (d ? [d] : undefined));
   const delegationsToDisplay = compact(filter(delegationsArrays).map(makeDelegation));
   const { openWith } = useContext(DynamicModalContext);
-  const getOwnedAccount = useGetOwnedAccount();
-
   //TODO: remove after undelegete is implemented
   const { modalElement, onOpen } = useSendFormModal();
 
@@ -120,7 +126,7 @@ const DelegationsView = () => {
         {accountsFilter}
         <IconAndTextBtn
           onClick={() => openWith(<DelegationFormPage />)}
-          color="umami.green"
+          color={colors.green}
           icon={VscWand}
           label="Delegate"
         />
@@ -128,11 +134,6 @@ const DelegationsView = () => {
       {delegationsToDisplay.length > 0 ? (
         <Box overflowY="auto">
           <DelegationsTable
-            onClickChangeDelegate={(sender, baker) =>
-              openWith(
-                <DelegationFormPage sender={getOwnedAccount(sender)} form={{ sender, baker }} />
-              )
-            }
             onClickUndelegate={sender =>
               onOpen({
                 sender,

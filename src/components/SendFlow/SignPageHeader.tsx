@@ -1,8 +1,9 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { IconButton, ModalCloseButton, ModalHeader, Text } from "@chakra-ui/react";
+import { IconButton, ModalCloseButton, Text } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import { FormOperations } from "../sendForm/types";
 import { SignPageMode } from "./utils";
+import { HeaderWrapper } from "./FormPageHeader";
 
 export const headerText = (operationType: FormOperations["type"], mode: SignPageMode): string => {
   let action;
@@ -27,7 +28,7 @@ export const SignPageHeader: React.FC<{
   operationsType: FormOperations["type"];
 }> = ({ goBack, mode, operationsType }) => {
   return (
-    <ModalHeader textAlign="center" p="40px 0 32px 0">
+    <HeaderWrapper>
       {goBack && (
         <IconButton
           size="lg"
@@ -49,6 +50,6 @@ export const SignPageHeader: React.FC<{
         Enter your password to confirm this transaction.
       </Text>
       <ModalCloseButton />
-    </ModalHeader>
+    </HeaderWrapper>
   );
 };
