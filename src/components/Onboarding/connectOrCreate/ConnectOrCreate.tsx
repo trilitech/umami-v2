@@ -25,16 +25,11 @@ const ConnectOrCreate = ({
   return (
     <ModalContentWrapper icon={SupportedIcons.wallet} title="Connect or Create Account">
       <VStack w="100%" spacing={4}>
-        <Button
-          bg="umami.blue"
-          w="100%"
-          size="lg"
-          onClick={_ => goToStep({ type: StepType.notice })}
-        >
+        <Button w="100%" size="lg" onClick={_ => goToStep({ type: StepType.notice })}>
           Create new Account
         </Button>
         <Button
-          variant="outline"
+          variant="tertiary"
           w="100%"
           size="lg"
           onClick={_ => goToStep({ type: StepType.connectOptions })}
@@ -44,7 +39,7 @@ const ConnectOrCreate = ({
         {
           /* devblock:start */
           <Button
-            variant="outline"
+            variant="tertiary"
             w="100%"
             size="lg"
             onClick={_ => goToStep({ type: StepType.fakeAccount })}

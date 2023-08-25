@@ -39,7 +39,6 @@ export const MultisigActionButton: React.FC<{
     case "executable": {
       return (
         <Button
-          bg={colors.blue}
           data-testid="multisig-signer-button"
           onClick={onClickApproveExecute}
           isLoading={isLoading}
@@ -52,7 +51,6 @@ export const MultisigActionButton: React.FC<{
     case "approvable": {
       return (
         <Button
-          bg={colors.blue}
           data-testid="multisig-signer-button"
           onClick={onClickApproveExecute}
           isLoading={isLoading}

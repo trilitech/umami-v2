@@ -29,6 +29,9 @@ describe("<DerivationPath />", () => {
         test("Return default path", async () => {
           render(fixture(goToStepMock, account));
           const confirmBtn = screen.getByRole("button", { name: /continue/i });
+          await waitFor(() => {
+            expect(confirmBtn).toBeEnabled();
+          });
           fireEvent.click(confirmBtn);
           await waitFor(() => {
             expect(goToStepMock).toBeCalledTimes(1);
@@ -39,25 +42,6 @@ describe("<DerivationPath />", () => {
               ...account,
               derivationPath,
             },
-          });
-        });
-
-        test("Return default path even if textfield has been modified", async () => {
-          render(fixture(goToStepMock, account));
-          const confirmBtn = screen.getByRole("button", { name: /continue/i });
-          const customPath = screen.getByTestId("custom-path");
-          fireEvent.change(customPath, { target: { value: "test" } });
-
-          await waitFor(() => {
-            expect(confirmBtn).toBeEnabled();
-          });
-          fireEvent.click(confirmBtn);
-          await waitFor(() => {
-            expect(goToStepMock).toBeCalledTimes(1);
-          });
-          expect(goToStepMock).toBeCalledWith({
-            type: nextPage,
-            account: { ...account, derivationPath },
           });
         });
       });

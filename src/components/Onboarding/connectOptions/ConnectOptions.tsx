@@ -7,20 +7,16 @@ const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   return (
     <ModalContentWrapper icon={SupportedIcons.wallet} title="Connect Options">
       <VStack w="100%" spacing={4}>
-        <Button
-          bg="umami.blue"
-          w="100%"
-          size="lg"
-          onClick={_ => goToStep({ type: StepType.restoreSeedphrase })}
-        >
+        <Button w="100%" size="lg" onClick={_ => goToStep({ type: StepType.restoreSeedphrase })}>
           Import with Seed Phrase
         </Button>
-        <Button variant="outline" w="100%" size="lg" disabled={true}>
+        <Button variant="tertiary" w="100%" size="lg" isDisabled>
           Restore from Backup
         </Button>
         <Button
           w="100%"
-          variant="ghost"
+          size="lg"
+          variant="tertiary"
           onClick={_ => {
             goToStep({ type: StepType.nameAccount, account: { type: "ledger" } });
           }}

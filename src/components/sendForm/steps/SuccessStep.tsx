@@ -36,7 +36,7 @@ export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
       <ModalBody p="0"></ModalBody>
       <ModalFooter justifyContent="center" flexDirection="column">
         <Link to="/operations">
-          <Button width="100%" variant="primary" onClick={onClose}>
+          <Button width="100%" onClick={onClose}>
             Go to operation
           </Button>
         </Link>

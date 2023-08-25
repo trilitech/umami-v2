@@ -43,7 +43,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
             autoComplete="off"
           />
         </FormControl>
-        <Button bg="umami.blue" w="100%" size="lg" minH="48px" type="submit" mt={2}>
+        <Button w="100%" size="lg" type="submit" mt={2}>
           Add account
         </Button>
       </form>

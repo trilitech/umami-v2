@@ -74,7 +74,7 @@ const RightPanel = ({
   return (
     <Flex bg={colors.gray[800]} w={292} p={4} flexDirection="column">
       <Flex justifyContent="space-between">
-        <Button onClick={onSend} flex={1} variant="primary" mr={4}>
+        <Button onClick={onSend} flex={1} mr={4}>
           {account.type === AccountType.MULTISIG ? "Propose batch" : "Submit batch"}
         </Button>
 

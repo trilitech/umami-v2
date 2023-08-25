@@ -27,7 +27,7 @@ export default function NoItems({
         </Heading>
         <Center>
           {primaryText ? (
-            <Button variant="primary" size={buttonSize} onClick={onClickPrimary}>
+            <Button size={buttonSize} onClick={onClickPrimary}>
               {primaryText}
             </Button>
           ) : null}

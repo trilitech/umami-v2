@@ -49,7 +49,7 @@ export const DelegationDisplay: React.FC<{
       <Row label="Duration:" value={duration} />
       <Row label="Baker:" value={<AddressPill address={parsePkh(delegation.delegate.address)} />} />
       <Flex>
-        <Button flex={1} mr={2} bg="umami.blue" onClick={() => onDelegate()}>
+        <Button flex={1} mr={2} onClick={() => onDelegate()}>
           Change Baker
         </Button>
         <Button flex={1} ml={2} onClick={() => onDelegate({ undelegate: true })}>

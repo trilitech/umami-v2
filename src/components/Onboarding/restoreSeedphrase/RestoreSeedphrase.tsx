@@ -111,14 +111,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
                 );
               })}
             </Grid>
-            <Button
-              type="submit"
-              bg="umami.blue"
-              w="100%"
-              size="lg"
-              minH="48px"
-              isDisabled={!isValid}
-            >
+            <Button type="submit" w="100%" size="lg" isDisabled={!isValid}>
               Continue
             </Button>
 
@@ -129,10 +122,8 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
                   setMnemonicSize("24");
                   pasteMnemonic(mnemonic1);
                 }}
-                bg="umami.blue"
                 w="100%"
                 size="lg"
-                minH="48px"
               >
                 Enter test seedphrase (Dev only)
               </Button>

@@ -35,9 +35,7 @@ const Notice: React.FC<{
           })}
         </OrderedList>
         <Button
-          bg="umami.blue"
           w="100%"
-          minH="48px"
           size="lg"
           onClick={() =>
             goToStep({
@@ -50,9 +48,8 @@ const Notice: React.FC<{
         </Button>
         <Button
           w="100%"
-          minH="48px"
           size="lg"
-          variant="outline"
+          variant="tertiary"
           onClick={() => goToStep({ type: StepType.restoreSeedphrase })}
         >
           I already have a Seed Phrase

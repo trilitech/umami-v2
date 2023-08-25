@@ -1,4 +1,5 @@
 import { Box, Center } from "@chakra-ui/react";
+import colors from "../style/colors";
 import { diamontIcon, documentIcon, usbIcon, walletIcon } from "./Icons";
 
 const iconMap = {
@@ -23,19 +24,14 @@ type Props = {
   onClick?: () => void;
 };
 
-export const CircleIcon = ({
-  icon,
-  size = "58px",
-  color = "umami.gray.400",
-  onClick = () => {},
-}: Props) => {
+export const CircleIcon = ({ icon, size, color = colors.gray[400], onClick = () => {} }: Props) => {
   const CompName = iconMap[icon];
   return (
     <Box
       height={size}
       width={size}
       borderRadius="full"
-      bg="umami.gray.700"
+      bg={colors.gray[700]}
       margin="auto"
       onClick={onClick}
     >

@@ -114,7 +114,14 @@ const CSVFileUploadForm = () => {
 
           <ModalFooter>
             <Box width="100%">
-              <Button isDisabled={!isValid} isLoading={isLoading} width="100%" type="submit" mb={2}>
+              <Button
+                isDisabled={!isValid}
+                isLoading={isLoading}
+                size="lg"
+                width="100%"
+                type="submit"
+                mb={2}
+              >
                 Upload
               </Button>
             </Box>

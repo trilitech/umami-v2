@@ -26,9 +26,9 @@ export const SignWithGoogleButton: React.FC<
 
   return (
     <Button
-      variant="primary"
       onClick={() => getCredentials(onSuccessfulAuth)}
       width="100%"
+      size="lg"
       isDisabled={isDisabled}
       isLoading={isLoading}
     >
@@ -95,8 +95,8 @@ const SignButton: React.FC<{
           </FormControl>
           <Button
             onClick={handleSubmit(onMnemonicSign)}
-            variant="primary"
             width="100%"
+            size="lg"
             mt={2}
             isLoading={isLoading}
             isDisabled={buttonIsDisabled}
@@ -114,8 +114,8 @@ const SignButton: React.FC<{
       {signer.type === AccountType.LEDGER && (
         <Button
           onClick={onLedgerSign}
-          variant="primary"
           width="100%"
+          size="lg"
           isLoading={isLoading}
           isDisabled={buttonIsDisabled}
         >

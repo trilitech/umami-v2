@@ -23,9 +23,7 @@ export const useConfirmation = () => {
           <ModalHeader textAlign="center">Confirmation</ModalHeader>
           <ModalBody>{paramsRef.current.body}</ModalBody>
           <ModalFooter>
-            <Button onClick={() => paramsRef.current.onConfirm()} bg="umami.blue">
-              Confirm
-            </Button>
+            <Button onClick={() => paramsRef.current.onConfirm()}>Confirm</Button>
             <Button onClick={onClose} ml={2}>
               Cancel
             </Button>

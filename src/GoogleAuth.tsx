@@ -2,6 +2,7 @@ import { IconButton } from "@chakra-ui/react";
 import { b58cencode, Prefix, prefix } from "@taquito/utils";
 import CustomAuth from "@toruslabs/customauth";
 import { FcGoogle } from "react-icons/fc";
+import colors from "./style/colors";
 import { useAsyncActionHandler } from "./utils/hooks/useAsyncActionHandler";
 
 // These parameters are built by
@@ -91,13 +92,15 @@ export const GoogleAuth: React.FC<GoogleAuthProps> = ({ onSuccessfulAuth, isDisa
   return (
     <IconButton
       bg="white"
-      borderRadius="50%"
-      height="48px"
+      borderRadius="full"
+      size="lg"
       width="48px"
       aria-label="Google SSO"
       onClick={() => getCredentials(onSuccessfulAuth)}
       isLoading={isLoading}
       isDisabled={isDisabled}
+      variant="outline"
+      _disabled={{ bg: colors.gray[900] }}
       icon={<FcGoogle size="24px" />}
     />
   );

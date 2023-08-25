@@ -6,6 +6,7 @@ import { useOnboardingModal } from "./components/Onboarding/useOnboardingModal";
 import { AllSlideritemsDocument, SlideritemRecord } from "./graphql/generated";
 import { request } from "./utils/datocms/request";
 import { useEffect, useState } from "react";
+import colors from "./style/colors";
 
 function ImportSeed() {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -21,18 +22,18 @@ function ImportSeed() {
   }, []);
 
   return (
-    <Box bg="umami.gray.900" height="100vh" padding="60px">
-      <SimpleGrid bg="umami.gray.700" columns={[1, 1, 2]} borderRadius="30px">
+    <Box bg={colors.gray[900]} height="100vh" padding="60px">
+      <SimpleGrid bg={colors.gray[700]} columns={[1, 1, 2]} borderRadius="30px">
         <Center>
           <VStack spacing="16px" maxW="400px" padding="32px">
             <MakiLogo size="48px" />
             <Heading size="3xl">Welcome to Umami</Heading>
             <Divider maxWidth="400px" />
-            <Text color="umami.gray.450">A powerful Tezos wallet</Text>
-            <Button width="340px" onClick={onOpen} bg="umami.blue">
+            <Text color={colors.gray[450]}>A powerful Tezos wallet</Text>
+            <Button w="100%" onClick={onOpen}>
               Get started
             </Button>
-            <Text color="umami.gray.400">Umami v2.0.0-alpha</Text>
+            <Text color={colors.gray[400]}>Umami v2.0.0-alpha</Text>
             {modalElement}
           </VStack>
         </Center>

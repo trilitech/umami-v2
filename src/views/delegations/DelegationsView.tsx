@@ -86,16 +86,16 @@ const DelegationsTable = ({
                         />
                       );
                     }}
-                    borderRadius="50%"
                     aria-label="Change Baker"
                     icon={<MdOutlineModeEdit />}
+                    variant="circle"
                     mb={2}
                   />
                   <IconButton
                     ml={2}
                     mr={2}
                     onClick={() => onClickUndelegate(delegation.sender)}
-                    borderRadius="50%"
+                    variant="circle"
                     aria-label="Delete Baker"
                     icon={<CiCircleRemove />}
                     mb={2}

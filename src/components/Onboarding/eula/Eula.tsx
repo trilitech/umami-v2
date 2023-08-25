@@ -214,9 +214,8 @@ const Eula: React.FC<{
         </Checkbox>
         <Button
           w="100%"
-          minH="48px"
           size="lg"
-          bg="umami.blue"
+          minH="48px" // VStack breaks button height
           isDisabled={!isChecked}
           onClick={() => {
             goToStep({ type: StepType.connectOrCreate });

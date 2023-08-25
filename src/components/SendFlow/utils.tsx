@@ -63,10 +63,10 @@ export const FormSubmitButtons = ({
         <Button
           onClick={onSingleSubmit}
           width="100%"
+          size="lg"
           isLoading={isLoading}
           type="submit"
           isDisabled={!isValid}
-          variant="primary"
           mb="16px"
         >
           Preview
@@ -74,6 +74,7 @@ export const FormSubmitButtons = ({
         <Button
           onClick={onAddToBatch}
           width="100%"
+          size="lg"
           isLoading={isLoading}
           type="submit"
           isDisabled={!isValid}
