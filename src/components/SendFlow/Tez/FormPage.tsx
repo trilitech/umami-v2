@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { parsePkh, RawPkh } from "../../../types/Address";
-import { TezOperation } from "../../../types/Operation";
+import { TezTransfer } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
@@ -37,7 +37,7 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-const toOperation = (formValues: FormValues): TezOperation => ({
+const toOperation = (formValues: FormValues): TezTransfer => ({
   type: "tez",
   amount: tezToMutez(formValues.prettyAmount).toString(),
   recipient: parsePkh(formValues.recipient),

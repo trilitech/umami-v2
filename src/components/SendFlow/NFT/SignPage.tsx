@@ -16,7 +16,7 @@ import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
-import { FA2Operation } from "../../../types/Operation";
+import { FA2Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
 
@@ -64,7 +64,7 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
               </Heading>
               <Center w="100px" h="48px" bg={colors.gray[800]}>
                 <Text textAlign="center">
-                  {(operations.content[0] as FA2Operation).amount} out of {nft.balance}
+                  {(operations.content[0] as FA2Transfer).amount} out of {nft.balance}
                 </Text>
               </Center>
             </Flex>

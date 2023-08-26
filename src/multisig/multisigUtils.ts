@@ -1,6 +1,6 @@
 import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
-import { FA12Operation, FA2Operation, Operation } from "../types/Operation";
+import { FA12Transfer, FA2Transfer, Operation } from "../types/Operation";
 import type { MichelsonV1Expression, TransactionOperationParameter } from "@taquito/rpc";
 import { isEqual } from "lodash";
 
@@ -71,7 +71,7 @@ export const FA12_TRANSFER_ARG_TYPES = {
 };
 
 const contractLambda = (
-  operation: FA12Operation | FA2Operation,
+  operation: FA12Transfer | FA2Transfer,
   argTypes: MichelsonV1Expression,
   transactionParameter: TransactionOperationParameter
 ) => {

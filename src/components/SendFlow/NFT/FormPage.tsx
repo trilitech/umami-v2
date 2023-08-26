@@ -14,7 +14,7 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import colors from "../../../style/colors";
 import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
-import { FA2Operation } from "../../../types/Operation";
+import { FA2Transfer } from "../../../types/Operation";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { formDefaultValues, FormPagePropsWithSender, FormSubmitButtons } from "../utils";
 import SignPage from "./SignPage";
@@ -36,7 +36,7 @@ export type FormValues = {
 
 const toOperation =
   (nft: NFTBalance) =>
-  (formValues: FormValues): FA2Operation => ({
+  (formValues: FormValues): FA2Transfer => ({
     type: "fa2",
     sender: parsePkh(formValues.sender),
     recipient: parsePkh(formValues.recipient),

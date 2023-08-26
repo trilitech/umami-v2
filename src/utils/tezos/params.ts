@@ -18,7 +18,7 @@ export const operationsToBatchParams = (operations: Operation[]): ParamsWithKind
         return {
           kind: OpKind.DELEGATION,
           source: operation.sender.pkh,
-          delegate: operation.recipient?.pkh,
+          delegate: operation.recipient.pkh,
         };
       case "undelegation":
         return {

@@ -5,7 +5,7 @@ import { Curves, InMemorySigner } from "@taquito/signer";
 import { TezosToolkit, TransferParams } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
-import { FA12Operation, FA2Operation } from "../../types/Operation";
+import { FA12Transfer, FA2Transfer } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { PublicKeyPair } from "../mnemonic";
@@ -97,7 +97,7 @@ export const makeFA12TransactionParameter = ({
   sender,
   recipient,
   amount,
-}: FA12Operation): TransactionOperationParameter => {
+}: FA12Transfer): TransactionOperationParameter => {
   return {
     entrypoint: "transfer",
     value: {
@@ -127,7 +127,7 @@ export const makeFA2TransactionParameter = ({
   recipient,
   tokenId,
   amount,
-}: FA2Operation): TransactionOperationParameter => {
+}: FA2Transfer): TransactionOperationParameter => {
   return {
     entrypoint: "transfer",
     value: [
@@ -164,9 +164,7 @@ export const makeFA2TransactionParameter = ({
   };
 };
 
-export const makeTokenTransferParams = (
-  operation: FA12Operation | FA2Operation
-): TransferParams => {
+export const makeTokenTransferParams = (operation: FA12Transfer | FA2Transfer): TransferParams => {
   return {
     amount: 0,
     to: operation.contract.pkh,

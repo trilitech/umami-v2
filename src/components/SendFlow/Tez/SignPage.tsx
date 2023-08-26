@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import { TezOperation } from "../../../types/Operation";
+import { TezTransfer } from "../../../types/Operation";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { FormOperations } from "../../sendForm/types";
@@ -29,7 +29,7 @@ export const getTezAmount = (operations: FormOperations): BigNumber | undefined 
       return;
     case "implicit": {
       const amounts = operations.content
-        .filter((op): op is TezOperation => op.type === "tez")
+        .filter((op): op is TezTransfer => op.type === "tez")
         .map(op => op.amount);
       return sumTez(amounts);
     }
