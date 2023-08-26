@@ -26,7 +26,7 @@
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
     "storybook": "storybook dev -p 6006",
     "test:tezos:integration": "cross-env TZ=CET react-scripts test --verbose --watchPathIgnorePatterns=[]",
-    "test": "cross-env TZ=CET react-scripts test --coverage --verbose --testPathIgnorePatterns='src/integration/*'",
+    "test": "cross-env TZ=CET react-scripts test --resetModules --coverage --verbose --testPathIgnorePatterns='src/integration/*'",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts",
     "typecheck": "tsc"
