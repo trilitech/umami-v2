@@ -14,6 +14,7 @@ import useOffboardingModal from "../../components/Offboarding/useOffboardingModa
 import { TopBar } from "../../components/TopBar";
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
+import packageInfo from "../../../package.json";
 
 export default function SettingsView() {
   return (
@@ -66,7 +67,7 @@ const AppUpdatesSection = () => {
             <Flex justifyContent="space-between" alignItems="center" w="100%">
               <Flex alignItems="center">
                 <Heading size="sm">Version:</Heading>
-                <Text>&nbsp;2.0.0-alpha</Text>
+                <Text>&nbsp;{packageInfo.version}</Text>
               </Flex>
               <IconAndTextBtn
                 label="Check for updates"
