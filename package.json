@@ -180,8 +180,7 @@
     "appId": "com.trilitech.umami",
     "productName": "Umami",
     "files": [
-      "build/**/*",
-      "node_modules/**/*"
+      "build/**/*"
     ],
     "directories": {
       "buildResources": "public"
