@@ -88,7 +88,14 @@ const OffboardingForm = () => {
         </Box>
 
         <ModalFooter>
-          <Button width="100%" type="submit" isDisabled={!isValid} variant="warning" mb={2}>
+          <Button
+            width="100%"
+            size="lg"
+            type="submit"
+            isDisabled={!isValid}
+            variant="warning"
+            mb={2}
+          >
             Confirm
           </Button>
         </ModalFooter>

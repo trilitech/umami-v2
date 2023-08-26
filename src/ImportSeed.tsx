@@ -30,7 +30,7 @@ function ImportSeed() {
             <Heading size="3xl">Welcome to Umami</Heading>
             <Divider maxWidth="400px" />
             <Text color={colors.gray[450]}>A powerful Tezos wallet</Text>
-            <Button w="100%" onClick={onOpen}>
+            <Button w="100%" size="lg" onClick={onOpen}>
               Get started
             </Button>
             <Text color={colors.gray[400]}>Umami v2.0.0-alpha</Text>
