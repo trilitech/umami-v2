@@ -1,15 +1,9 @@
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -67,6 +61,8 @@ export type ColorField = {
 export type ConfigurationRecord = RecordInterface & {
   __typename?: "ConfigurationRecord";
   _createdAt: Scalars["DateTime"];
+  /** Editing URL */
+  _editingUrl?: Maybe<Scalars["String"]>;
   _firstPublishedAt?: Maybe<Scalars["DateTime"]>;
   _isValid: Scalars["BooleanType"];
   _modelApiKey: Scalars["String"];
@@ -118,6 +114,8 @@ export enum FaviconType {
 export type FileField = FileFieldInterface & {
   __typename?: "FileField";
   _createdAt: Scalars["DateTime"];
+  /** Editing URL */
+  _editingUrl?: Maybe<Scalars["String"]>;
   _updatedAt: Scalars["DateTime"];
   alt?: Maybe<Scalars["String"]>;
   author?: Maybe<Scalars["String"]>;
@@ -187,6 +185,8 @@ export type FileFieldUrlArgs = {
 
 export type FileFieldInterface = {
   _createdAt: Scalars["DateTime"];
+  /** Editing URL */
+  _editingUrl?: Maybe<Scalars["String"]>;
   _updatedAt: Scalars["DateTime"];
   alt?: Maybe<Scalars["String"]>;
   author?: Maybe<Scalars["String"]>;
@@ -1775,6 +1775,8 @@ export enum NetworkModelOrderBy {
 export type NetworkRecord = RecordInterface & {
   __typename?: "NetworkRecord";
   _createdAt: Scalars["DateTime"];
+  /** Editing URL */
+  _editingUrl?: Maybe<Scalars["String"]>;
   _firstPublishedAt?: Maybe<Scalars["DateTime"]>;
   _isValid: Scalars["BooleanType"];
   _modelApiKey: Scalars["String"];
@@ -1937,6 +1939,8 @@ export type QueryUploadArgs = {
 
 export type RecordInterface = {
   _createdAt: Scalars["DateTime"];
+  /** Editing URL */
+  _editingUrl?: Maybe<Scalars["String"]>;
   _firstPublishedAt?: Maybe<Scalars["DateTime"]>;
   _isValid: Scalars["BooleanType"];
   _modelApiKey: Scalars["String"];
@@ -2066,6 +2070,8 @@ export enum SlideritemModelOrderBy {
 export type SlideritemRecord = RecordInterface & {
   __typename?: "SlideritemRecord";
   _createdAt: Scalars["DateTime"];
+  /** Editing URL */
+  _editingUrl?: Maybe<Scalars["String"]>;
   _firstPublishedAt?: Maybe<Scalars["DateTime"]>;
   _isValid: Scalars["BooleanType"];
   _modelApiKey: Scalars["String"];
@@ -2509,10 +2515,7 @@ export type ConfigurationQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ConfigurationQuery = {
   __typename?: "Query";
-  configuration?: {
-    __typename?: "ConfigurationRecord";
-    maintenanceMessage?: string | null;
-  } | null;
+  configuration?: { __typename?: "ConfigurationRecord"; maintenanceMessage?: string | null } | null;
 };
 
 export type AllSlideritemsQueryVariables = Exact<{ [key: string]: never }>;
@@ -2547,12 +2550,7 @@ export const ConfigurationDocument = {
             name: { kind: "Name", value: "configuration" },
             selectionSet: {
               kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "maintenanceMessage" },
-                },
-              ],
+              selections: [{ kind: "Field", name: { kind: "Name", value: "maintenanceMessage" } }],
             },
           },
         ],
@@ -2589,10 +2587,7 @@ export const AllSlideritemsDocument = {
                   },
                 },
                 { kind: "Field", name: { kind: "Name", value: "_status" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "_firstPublishedAt" },
-                },
+                { kind: "Field", name: { kind: "Name", value: "_firstPublishedAt" } },
               ],
             },
           },

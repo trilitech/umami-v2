@@ -74,7 +74,7 @@
     "electron:start": "electronmon .",
     "format:ci": "prettier --check .",
     "format": "prettier --write .",
-    "generate-ts-types": "graphql-codegen --config graphql.config.yml",
+    "generate-ts-types": "graphql-codegen --config graphql.config.yml && prettier --write src/graphql/generated.ts",
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
