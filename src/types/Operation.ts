@@ -1,17 +1,6 @@
 import { MichelsonV1Expression } from "@taquito/rpc";
-import { BigMapAbstraction, TransferParams } from "@taquito/taquito";
-import { BigNumber } from "bignumber.js";
+import { TransferParams } from "@taquito/taquito";
 import { Address, ContractAddress, ImplicitAddress } from "./Address";
-
-// TODO: move to a multisig specific file
-export type MultisigStorage = {
-  last_op_id: BigNumber;
-  pending_ops: BigMapAbstraction;
-  threshold: BigNumber;
-  owner: Address;
-  metadata: BigMapAbstraction;
-  signers: Address[];
-};
 
 export type TezOperation = {
   type: "tez";

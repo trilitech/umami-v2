@@ -5,7 +5,6 @@ import { makeDefaultDevSignerKeys, makeToolkitFromDefaultDevSeed } from "../mock
 import { ghostTezzard } from "../mocks/tokens";
 import { contract, makeStorageJSON } from "./multisigContract";
 import { makeBatchLambda } from "./multisigUtils";
-import { MultisigStorage } from "../types/Operation";
 import { parseContractPkh, parsePkh } from "../types/Address";
 
 const originate = async () => {
@@ -55,7 +54,7 @@ describe("multisig Sandbox", () => {
     test.skip("fetch proposals of contract", async () => {
       const toolkit = await makeToolkitFromDefaultDevSeed(0);
       const contract = await toolkit.contract.at(multisigContract);
-      const storage = (await contract.storage()) as MultisigStorage;
+      const storage = (await contract.storage()) as any;
       const result = await storage.pending_ops.get(2);
       const keys2 = await makeDefaultDevSignerKeys(2);
       const proposedLambda = MANAGER_LAMBDA.transferImplicit(keys2.pkh, 9651);
