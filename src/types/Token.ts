@@ -68,6 +68,7 @@ export const NFTSchema = z.object({
   totalSupply: z.string().optional(),
   metadata: z.object({
     displayUri: z.string(),
+    decimals: z.void().or(z.string().regex(/^0$/)),
   }),
 });
 

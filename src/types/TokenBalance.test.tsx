@@ -58,29 +58,51 @@ describe("fromRaw", () => {
     expect(result).toEqual(null);
   });
 
-  test("valid nft", () => {
-    const result = fromRaw(nft);
-    const expected = {
-      type: "nft",
-      contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-      tokenId: "3",
-      balance: "0",
-      displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
-      id: 10899466223617,
-      metadata: nft.token.metadata as Metadata,
-      totalSupply: "1",
-    };
-    expect(result).toEqual(expected);
-  });
+  describe("NFT", () => {
+    it("returns null if contract is missing", () => {
+      jest.spyOn(console, "warn").mockImplementation();
+      const result = fromRaw({
+        ...nft,
+        token: { contract: { address: null } },
+      });
 
-  test("invalid nft (missing contract address)", () => {
-    jest.spyOn(console, "warn").mockImplementation();
-    const result = fromRaw({
-      ...nft,
-      token: { contract: { address: null } },
+      expect(result).toEqual(null);
     });
 
-    expect(result).toEqual(null);
+    it("returns FA2 token if decimals field is present", () => {
+      const result = fromRaw({
+        ...nft,
+        token: { ...nft.token, metadata: { decimals: "5" } },
+      });
+      expect(result).toEqual({
+        type: "fa2",
+        contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+        tokenId: "3",
+        balance: "0",
+        metadata: { decimals: "5" },
+      });
+    });
+
+    it("parses valid NFT", () => {
+      const expected = {
+        type: "nft",
+        contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+        tokenId: "3",
+        balance: "0",
+        displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
+        id: 10899466223617,
+        metadata: nft.token.metadata as Metadata,
+        totalSupply: "1",
+      };
+
+      const metadata = nft.token.metadata as Metadata;
+      metadata.decimals = "0";
+      expect(fromRaw(nft)).toEqual(expected);
+      metadata.decimals = undefined;
+      expect(fromRaw(nft)).toEqual(expected);
+      delete metadata.decimals;
+      expect(fromRaw(nft)).toEqual(expected);
+    });
   });
 
   test("fa1 token with name symbol and decimals (tzBTC)", () => {
