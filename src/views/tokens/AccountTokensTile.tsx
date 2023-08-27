@@ -21,13 +21,8 @@ import { IconAndTextBtn, IconAndTextBtnLink } from "../../components/IconAndText
 import { Identicon } from "../../components/Identicon";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import {
-  FA12TokenBalance,
-  FA2TokenBalance,
-  httpIconUri,
-  tokenName,
-  tokenPrettyBalance,
-} from "../../types/TokenBalance";
+import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
+import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Token";
 import { formatPkh } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";

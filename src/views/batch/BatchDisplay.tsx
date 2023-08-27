@@ -22,7 +22,7 @@ import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { FormOperations } from "../../components/sendForm/types";
 import { Account, AccountType } from "../../types/Account";
 import { Operation } from "../../types/Operation";
-import { formatTokenAmount, tokenSymbol } from "../../types/TokenBalance";
+import { formatTokenAmount, tokenSymbol } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { TokenLookup, useGetToken } from "../../utils/hooks/tokensHooks";

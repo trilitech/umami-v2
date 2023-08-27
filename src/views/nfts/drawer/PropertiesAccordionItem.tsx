@@ -15,12 +15,13 @@ import AddressPill from "../../../components/AddressPill/AddressPill";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
 import { parsePkh } from "../../../types/Address";
-import { metadataUri, mimeType, NFTBalance, royalties } from "../../../types/TokenBalance";
+import { metadataUri, mimeType, royalties } from "../../../types/Token";
 import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
+import { NFTBalance } from "../../../types/TokenBalance";
 
-export const creatorElement = (nft: NFTBalance) => {
+const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   if (!nft.metadata.creators || nft.metadata.creators.length === 0) {
-    return "-";
+    return <>-</>;
   }
   const firstCreator = nft.metadata.creators[0];
   if (firstCreator.startsWith("tz")) {
@@ -128,7 +129,7 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                   borderColor="umami.gray.700"
                   borderRightWidth="1px"
                 >
-                  {creatorElement(nft)}
+                  <CreatorElement nft={nft} />
                 </Td>
                 <Td padding="16px 0 16px 15px" color="umami.gray.400">
                   License:

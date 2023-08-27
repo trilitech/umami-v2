@@ -18,7 +18,7 @@ import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { FATokenBalance } from "./FormPage";
-import { formatTokenAmount, tokenSymbol } from "../../../types/TokenBalance";
+import { formatTokenAmount, tokenSymbol } from "../../../types/Token";
 import { FA12Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
