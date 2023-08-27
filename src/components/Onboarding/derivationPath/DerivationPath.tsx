@@ -1,14 +1,4 @@
-import {
-  Button,
-  Center,
-  FormControl,
-  Text,
-  Switch,
-  VStack,
-  Input,
-  HStack,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { Button, Center, FormControl, Text, Switch, VStack, Input, HStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { SupportedIcons } from "../../CircleIcon";
@@ -18,6 +8,7 @@ import {
   defaultDerivationPathPattern,
   validDerivationPathRegex,
 } from "../../../utils/account/derivationPathUtils";
+import { FormErrorMessage } from "../../FormErrorMessage";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
@@ -77,11 +68,10 @@ export const DerivationPath = ({
                 <Text>Custom Path</Text>
               </HStack>
             </FormControl>
-            <FormControl>
-              {/* TODO: Add derivationPath regex matching check! */}
+            <FormControl isInvalid={!isValid}>
               <Input
                 data-testid="custom-path"
-                defaultValue={defaultDerivationPathPattern}
+                variant="filled"
                 isDisabled={useDefault}
                 {...register("derivationPath", {
                   pattern: {
@@ -91,7 +81,9 @@ export const DerivationPath = ({
                 })}
               />
               {errors.derivationPath && (
-                <FormErrorMessage>{errors.derivationPath.message}</FormErrorMessage>
+                <FormErrorMessage data-testid="error-message">
+                  {errors.derivationPath.message}
+                </FormErrorMessage>
               )}
             </FormControl>
             <Button isDisabled={!isValid} w="100%" size="lg" type="submit">

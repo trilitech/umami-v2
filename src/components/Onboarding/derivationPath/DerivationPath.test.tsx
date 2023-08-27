@@ -25,40 +25,38 @@ describe("<DerivationPath />", () => {
 
   testData.forEach(async ({ account, nextPage, derivationPath }) => {
     describe(`For ${account.type}`, () => {
-      describe("When default path is selected", () => {
-        test("Return default path", async () => {
-          render(fixture(goToStepMock, account));
-          const confirmBtn = screen.getByRole("button", { name: /continue/i });
-          await waitFor(() => {
-            expect(confirmBtn).toBeEnabled();
-          });
-          fireEvent.click(confirmBtn);
-          await waitFor(() => {
-            expect(goToStepMock).toBeCalledTimes(1);
-          });
-          expect(goToStepMock).toBeCalledWith({
-            type: nextPage,
-            account: {
-              ...account,
-              derivationPath,
-            },
-          });
+      it("uses default path", async () => {
+        render(fixture(goToStepMock, account));
+        const confirmBtn = screen.getByRole("button", { name: /continue/i });
+        await waitFor(() => {
+          expect(confirmBtn).toBeEnabled();
+        });
+        fireEvent.click(confirmBtn);
+        await waitFor(() => {
+          expect(goToStepMock).toBeCalledTimes(1);
+        });
+        expect(goToStepMock).toBeCalledWith({
+          type: nextPage,
+          account: {
+            ...account,
+            derivationPath,
+          },
         });
       });
 
-      test("When valid custom path is selected we use it instead", async () => {
+      it("allows to specify a custom path", async () => {
         render(fixture(goToStepMock, account));
         const confirmBtn = screen.getByRole("button", { name: /continue/i });
-        const customPath = screen.getByTestId("custom-path");
-        expect(customPath).toBeDisabled();
+        const customPathInput = screen.getByTestId("custom-path");
+        expect(customPathInput).toBeDisabled();
         const switchBtn = screen.getByTestId("switch");
         fireEvent.click(switchBtn);
-        expect(customPath).toBeEnabled();
+        expect(customPathInput).toBeEnabled();
 
         const standard5PieceDerivationPath = "44'/1729'/?'/0'/0'";
 
-        fireEvent.change(customPath, { target: { value: standard5PieceDerivationPath } });
-        expect(customPath).toHaveValue(standard5PieceDerivationPath);
+        fireEvent.change(customPathInput, { target: { value: standard5PieceDerivationPath } });
+        expect(customPathInput).toHaveValue(standard5PieceDerivationPath);
         await waitFor(() => {
           expect(confirmBtn).toBeEnabled();
         });
@@ -73,6 +71,28 @@ describe("<DerivationPath />", () => {
             derivationPath: standard5PieceDerivationPath,
           },
         });
+      });
+
+      it("displays an error if the derivation path is invalid", async () => {
+        render(fixture(goToStepMock, account));
+        const confirmBtn = screen.getByRole("button", { name: /continue/i });
+        const customPathInput = screen.getByTestId("custom-path");
+        expect(customPathInput).toBeDisabled();
+        fireEvent.click(screen.getByTestId("switch"));
+        expect(customPathInput).toBeEnabled();
+
+        await waitFor(() => {
+          expect(confirmBtn).toBeEnabled();
+        });
+
+        fireEvent.change(customPathInput, { target: { value: "bad data" } });
+        fireEvent.blur(customPathInput);
+        await waitFor(() => {
+          expect(customPathInput).toHaveValue("bad data");
+        });
+        expect(screen.getByTestId("error-message")).toHaveTextContent(
+          "Please enter a valid derivation path"
+        );
       });
     });
   });
