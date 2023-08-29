@@ -13,7 +13,7 @@ import { validateMnemonic } from "bip39";
 type MnemonicSize = 12 | 15 | 18 | 24;
 const mnemonicSizes: MnemonicSize[] = [12, 15, 18, 24];
 
-const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+const ImportWalletForm = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
     register,
     handleSubmit,
@@ -62,7 +62,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
       async () => {
         const mnemonic = Object.values(data).join(" ").trim();
         if (!validateMnemonic(mnemonic)) {
-          throw new Error(`"${mnemonic}" is not a valid mnemonic"`);
+          throw new Error(`"${mnemonic}" is not a valid mnemonic`);
         }
         goToStep({
           type: StepType.derivationPath,
@@ -142,7 +142,7 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
                 w="100%"
                 size="lg"
               >
-                Enter test seedphrase (Dev only)
+                Enter test mnemonic (Dev only)
               </Button>
               /* devblock:end */
             }
@@ -153,4 +153,4 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
   );
 };
 
-export default RestoreSeedphrase;
+export default ImportWalletForm;

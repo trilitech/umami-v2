@@ -33,7 +33,7 @@ describe("<Eula />", () => {
         name: /I already have a Seed Phrase/i,
       });
       fireEvent.click(skipBtn);
-      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreSeedphrase });
+      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreMnemonic });
       expect(goToStepMock).toBeCalledTimes(1);
     });
   });

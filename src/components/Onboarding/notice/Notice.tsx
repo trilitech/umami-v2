@@ -50,7 +50,7 @@ const Notice: React.FC<{
           w="100%"
           size="lg"
           variant="tertiary"
-          onClick={() => goToStep({ type: StepType.restoreSeedphrase })}
+          onClick={() => goToStep({ type: StepType.restoreMnemonic })}
         >
           I already have a Seed Phrase
         </Button>

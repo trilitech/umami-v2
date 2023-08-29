@@ -2,7 +2,7 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
-import RestoreSeedphrase from "./RestoreSeedphrase";
+import ImportWalletForm from "./RestoreMnemonic";
 import { mockToast } from "../../../mocks/toast";
 import { Provider } from "react-redux";
 import store from "../../../utils/redux/store";
@@ -21,11 +21,11 @@ beforeEach(() => {
 
 const fixture = (goToStep: (step: Step) => void) => (
   <Provider store={store}>
-    <RestoreSeedphrase goToStep={goToStep} />;
+    <ImportWalletForm goToStep={goToStep} />;
   </Provider>
 );
 
-describe("<RestoreSeedphrase />", () => {
+describe("<RestoreMnemonic />", () => {
   describe("Form validation", () => {
     test("button is disabled when empty", async () => {
       render(fixture(goToStepMock));

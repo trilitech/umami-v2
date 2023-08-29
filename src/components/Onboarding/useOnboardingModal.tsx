@@ -15,20 +15,20 @@ import MasterPassword from "./masterPassword/MasterPassword";
 import NameAccount from "./nameAccount/NameAccount";
 import Notice from "./notice/Notice";
 import RestoreLedger from "./restoreLedger/RestoreLedger";
-import RestoreSeedphrase from "./restoreSeedphrase/RestoreSeedphrase";
 import VerifySeedphrase from "./verifySeedphrase/VerifySeedphrase";
 import DerivationPath from "./derivationPath/DerivationPath";
 import { useStepHistory } from "../useStepHistory";
 import { FakeAccount } from "./FakeAccount";
 import colors from "../../style/colors";
 import { ModalBackButton } from "../ModalBackButton";
+import RestoreMnemonic from "./restoreMnemonic/RestoreMnemonic";
 
 export enum StepType {
   eula = "eula",
   connectOrCreate = "connectOrCreate",
   connectOptions = "connectOptions",
   notice = "notice",
-  restoreSeedphrase = "restoreSeedphrase",
+  restoreMnemonic = "restoreMnemonic",
   restoreLedger = "restoreLedger",
   showSeedphrase = "showSeedphrase",
   verifySeedphrase = "verifySeedphrase",
@@ -58,7 +58,7 @@ export type ShowSeedphraseStep = {
   type: StepType.showSeedphrase;
   account: { type: "mnemonic"; seedphrase: string };
 };
-export type RestoreSeedphraseStep = { type: StepType.restoreSeedphrase };
+export type RestoreSeedphraseStep = { type: StepType.restoreMnemonic };
 export type VerifySeedphraseStep = {
   type: StepType.verifySeedphrase;
   account: { type: "mnemonic"; seedphrase: string };
@@ -120,8 +120,8 @@ export const useOnboardingModal = () => {
         return <ConnectOptions goToStep={goToStep} />;
       case StepType.notice:
         return <Notice goToStep={goToStep} />;
-      case StepType.restoreSeedphrase:
-        return <RestoreSeedphrase goToStep={goToStep} />;
+      case StepType.restoreMnemonic:
+        return <RestoreMnemonic goToStep={goToStep} />;
       case StepType.showSeedphrase:
         return <ShowSeedphrase goToStep={goToStep} {...currentStep} />;
       case StepType.verifySeedphrase:
