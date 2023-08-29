@@ -19,7 +19,7 @@ import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { FATokenBalance } from "./FormPage";
 import { formatTokenAmount, tokenSymbol } from "../../../types/TokenBalance";
-import { FA12Operation } from "../../../types/Operation";
+import { FA12Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
 
@@ -33,7 +33,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
 
-  const amount = (operations.content[0] as FA12Operation).amount;
+  const amount = (operations.content[0] as FA12Transfer).amount;
 
   return (
     <FormProvider {...form}>

@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
-import { FA12Operation, FA2Operation } from "../../../types/Operation";
+import { FA12Transfer, FA2Transfer } from "../../../types/Operation";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import {
   formDefaultValues,
@@ -47,8 +47,8 @@ export type FATokenBalance = FA12TokenBalance | FA2TokenBalance;
 
 const toOperation =
   (token: FATokenBalance) =>
-  (formValues: FormValues): FA12Operation | FA2Operation => {
-    const fa2Operation: FA2Operation = {
+  (formValues: FormValues): FA12Transfer | FA2Transfer => {
+    const fa2Operation: FA2Transfer = {
       type: "fa2",
       sender: parsePkh(formValues.sender),
       recipient: parsePkh(formValues.recipient),

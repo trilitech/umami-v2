@@ -1,7 +1,7 @@
 import { InMemorySigner } from "@taquito/signer";
 import axios from "axios";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { FA12Operation, FA2Operation } from "../../types/Operation";
+import { FA12Transfer, FA2Transfer } from "../../types/Operation";
 import { tzktUrls } from "./consts";
 import {
   addressExists,
@@ -53,7 +53,7 @@ describe("tezos utils helpers", () => {
 
   describe("token transfers", () => {
     test("makeFA2TransactionParameter", () => {
-      const operation: FA2Operation = {
+      const operation: FA2Transfer = {
         type: "fa2",
         amount: "10",
         tokenId: "5",
@@ -99,7 +99,7 @@ describe("tezos utils helpers", () => {
     });
 
     test("makeFA12TransactionParameter", () => {
-      const operation: FA12Operation = {
+      const operation: FA12Transfer = {
         type: "fa1.2",
         amount: "110",
         recipient: mockImplicitAddress(1),
@@ -134,7 +134,7 @@ describe("tezos utils helpers", () => {
 
     describe("makeTokenTransferParams", () => {
       test("fa1.2", () => {
-        const operation: FA12Operation = {
+        const operation: FA12Transfer = {
           type: "fa1.2",
           amount: "110",
           recipient: mockImplicitAddress(1),
@@ -151,7 +151,7 @@ describe("tezos utils helpers", () => {
       });
 
       test("fa2", () => {
-        const operation: FA2Operation = {
+        const operation: FA2Transfer = {
           type: "fa2",
           amount: "110",
           tokenId: "123",

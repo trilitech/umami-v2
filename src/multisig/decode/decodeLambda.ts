@@ -112,7 +112,7 @@ const parseRemoveDelegate = (
   _michelson: MichelsonV1Expression[],
   account: MultisigAccount
 ): Operation => {
-  return { type: "delegation", sender: account.address, recipient: undefined };
+  return { type: "undelegation", sender: account.address };
 };
 
 const parsings = [

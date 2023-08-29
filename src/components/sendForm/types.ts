@@ -1,6 +1,6 @@
 import { Account, AccountType, ImplicitAccount, MultisigAccount } from "../../types/Account";
 import { parseContractPkh, parsePkh } from "../../types/Address";
-import { FA12Operation, FA2Operation, Operation } from "../../types/Operation";
+import { FA12Transfer, FA2Transfer, Operation } from "../../types/Operation";
 import { Token } from "../../types/Token";
 
 type TezMode = { type: "tez" };
@@ -78,7 +78,7 @@ export type EstimatedOperation = {
 export const toOperation = (
   token: Token,
   value: { amount: string; sender: string; recipient: string }
-): FA12Operation | FA2Operation => {
+): FA12Transfer | FA2Transfer => {
   switch (token.type) {
     case "fa1.2":
       return {

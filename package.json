@@ -168,7 +168,7 @@
       "node_modules",
       "src/mocks/*",
       "src/utils/useAssetsPolling.ts",
-      "src/integration/*",
+      "src/*integration*",
       "src/stories/*",
       "src/.*\\.stories\\.tsx?"
     ]

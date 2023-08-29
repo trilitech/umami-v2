@@ -31,7 +31,8 @@ const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
 
   return (
     <>
-      {transfer.recipient && (
+      {/* eslint-disable-next-line  @typescript-eslint/no-unnecessary-condition */}
+      {"recipient" in transfer && transfer.recipient !== undefined && (
         <Flex mb={4}>
           <Heading size="md" width={20}>
             To:

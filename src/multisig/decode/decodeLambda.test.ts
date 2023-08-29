@@ -738,9 +738,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(decode(input, multisig)).toEqual([
-      { type: "delegation", sender: multisig.address, recipient: undefined },
-    ]);
+    expect(decode(input, multisig)).toEqual([{ type: "undelegation", sender: multisig.address }]);
   });
 
   test("set delegate", () => {

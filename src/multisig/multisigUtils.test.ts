@@ -1,6 +1,6 @@
 import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
 import { ContractAddress, ImplicitAddress, parseContractPkh } from "../types/Address";
-import { FA12Operation, FA2Operation } from "../types/Operation";
+import { FA12Transfer, FA2Transfer } from "../types/Operation";
 import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 import {
   FA12_TRANSFER_ARG_TYPES,
@@ -50,7 +50,7 @@ describe("makeLambda", () => {
 
   test("fa1.2", () => {
     const AMOUNT = "4536";
-    const operation: FA12Operation = {
+    const operation: FA12Transfer = {
       type: "fa1.2",
       amount: AMOUNT,
       recipient: mockImplicitAddress(0),
@@ -70,7 +70,7 @@ describe("makeLambda", () => {
   test("fa2", () => {
     const AMOUNT = "4536";
     const MOCK_TOKEN_ID = "7";
-    const operation: FA2Operation = {
+    const operation: FA2Transfer = {
       type: "fa2",
       amount: AMOUNT,
       recipient: mockImplicitAddress(0),
@@ -103,9 +103,8 @@ describe("makeLambda", () => {
 
     it("can unset a delegate", () => {
       const result = makeLambda({
-        type: "delegation",
+        type: "undelegation",
         sender: multisigContractAddress,
-        recipient: undefined,
       });
 
       expect(result).toEqual([
@@ -140,7 +139,7 @@ describe("makeBatchLambda", () => {
   test("all kinds of operations batch", () => {
     const MOCK_TEZ_AMOUNT = "55555";
     const MOCK_TEZ_AMOUNT2 = "55556";
-    const fa2Operation: FA2Operation = {
+    const fa2Operation: FA2Transfer = {
       type: "fa2",
       amount: "1",
       recipient: mockImplicitAddress(0),
@@ -148,7 +147,7 @@ describe("makeBatchLambda", () => {
       sender: multisigContractAddress,
       tokenId: "123",
     };
-    const fa12Operation: FA12Operation = {
+    const fa12Operation: FA12Transfer = {
       type: "fa1.2",
       amount: "1",
       tokenId: "0",
@@ -170,7 +169,7 @@ describe("makeBatchLambda", () => {
         sender: multisigContractAddress,
         recipient: mockImplicitAddress(1),
       },
-      { type: "delegation", sender: multisigContractAddress, recipient: undefined },
+      { type: "undelegation", sender: multisigContractAddress },
     ]);
 
     const expected = [
@@ -187,7 +186,7 @@ describe("makeBatchLambda", () => {
   });
 });
 
-const fa2Lambda = (operation: FA2Operation) => {
+const fa2Lambda = (operation: FA2Transfer) => {
   return [
     {
       args: [{ prim: "address" }, { string: operation.contract.pkh + "%transfer" }],
@@ -237,7 +236,7 @@ const singleTezContract = (amount: string, recipient: ContractAddress) => {
   ];
 };
 
-const fa12Lambda = (operation: FA12Operation) => {
+const fa12Lambda = (operation: FA12Transfer) => {
   return [
     {
       args: [{ prim: "address" }, { string: operation.contract.pkh + "%transfer" }],

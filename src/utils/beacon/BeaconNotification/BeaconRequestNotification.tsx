@@ -38,7 +38,7 @@ const SingleTransaction = ({
     <SendForm
       onSuccess={onSuccess}
       mode={mode}
-      recipient={transfer.recipient?.pkh}
+      recipient={"recipient" in transfer ? transfer.recipient.pkh : undefined}
       sender={sender}
       amount={amount}
       parameter={parameter}
@@ -66,7 +66,7 @@ const BatchTransaction = ({
       sender={account.address.pkh}
       onSuccess={onSuccess}
       mode={mode}
-      recipient={operations[0].recipient?.pkh}
+      recipient={(operations[0] as any).recipient?.pkh}
     />
   );
 };
@@ -152,12 +152,14 @@ const beaconToUmamiOperation = (operation: PartialTezosOperation, sourceAddress:
   }
 
   if (operation.kind === TezosOperationType.DELEGATION) {
-    const result: Operation = {
-      type: "delegation",
-      sender: parsePkh(sourceAddress),
-      recipient:
-        operation.delegate !== undefined ? parseImplicitPkh(operation.delegate) : undefined,
-    };
+    const sender = parsePkh(sourceAddress);
+    const result: Operation = operation.delegate
+      ? {
+          type: "delegation",
+          sender,
+          recipient: parseImplicitPkh(operation.delegate),
+        }
+      : { type: "undelegation", sender };
 
     return result;
   }
