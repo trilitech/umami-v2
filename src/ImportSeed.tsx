@@ -7,6 +7,7 @@ import { AllSlideritemsDocument, SlideritemRecord } from "./graphql/generated";
 import { request } from "./utils/datocms/request";
 import { useEffect, useState } from "react";
 import colors from "./style/colors";
+import packageInfo from "../package.json";
 
 function ImportSeed() {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -33,7 +34,7 @@ function ImportSeed() {
             <Button w="100%" size="lg" onClick={onOpen}>
               Get started
             </Button>
-            <Text color={colors.gray[400]}>Umami v2.0.0-alpha</Text>
+            <Text color={colors.gray[400]}>Umami {packageInfo.version}</Text>
             {modalElement}
           </VStack>
         </Center>
