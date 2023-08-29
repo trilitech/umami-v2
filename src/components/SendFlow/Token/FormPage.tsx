@@ -26,14 +26,8 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import {
-  FA12TokenBalance,
-  FA2TokenBalance,
-  formatTokenAmount,
-  getRealAmount,
-  tokenDecimals,
-  tokenSymbol,
-} from "../../../types/TokenBalance";
+import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
+import { formatTokenAmount, getRealAmount, tokenDecimals, tokenSymbol } from "../../../types/Token";
 import FormPageHeader from "../FormPageHeader";
 import { FormErrorMessage } from "../../FormErrorMessage";
 

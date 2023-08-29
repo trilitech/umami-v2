@@ -6,7 +6,7 @@ import {
   parsePkh,
 } from "../../types/Address";
 import { Operation } from "../../types/Operation";
-import { getRealAmount } from "../../types/TokenBalance";
+import { getRealAmount } from "../../types/Token";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { TokenLookup } from "../../utils/hooks/tokensHooks";

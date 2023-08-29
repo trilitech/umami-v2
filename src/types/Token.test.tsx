@@ -3,9 +3,9 @@ import { uUSD } from "../mocks/fa2Tokens";
 import { mockNFT, mockImplicitAddress } from "../mocks/factories";
 import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
 import {
+  FA12Token,
+  FA2Token,
   artifactUri,
-  FA12TokenBalance,
-  FA2TokenBalance,
   fromRaw,
   httpIconUri,
   metadataUri,
@@ -15,82 +15,88 @@ import {
   tokenDecimals,
   tokenName,
   tokenSymbol,
-} from "./TokenBalance";
+} from "./Token";
 import type { Metadata } from "./Token";
 import { TezosNetwork } from "./TezosNetwork";
 
+beforeEach(() => {
+  jest.spyOn(console, "warn").mockImplementation();
+});
+
 describe("fromRaw", () => {
-  test("fa1.2 valid", () => {
-    const result = fromRaw(fa1Token);
+  test("fa1.2", () => {
+    const result = fromRaw(fa1Token.token);
     const expected = {
       type: "fa1.2",
       contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
       tokenId: "0",
-      balance: "443870",
     };
     expect(result).toEqual(expected);
   });
 
-  test("fa1.2 with no balance", () => {
-    jest.spyOn(console, "warn").mockImplementation();
-    const result = fromRaw({ ...fa1Token, balance: null });
-    expect(result).toEqual(null);
-  });
+  describe("fa2", () => {
+    test("valid fa2 token", () => {
+      const result = fromRaw(fa2Token.token);
+      expect(result).toEqual({
+        type: "fa2",
+        contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
+        tokenId: "1",
+        metadata: {
+          decimals: "5",
+          name: "Klondike3",
+          symbol: "KL3",
+        },
+      });
+    });
 
-  test("valid fa2 token", () => {
-    const result = fromRaw(fa2Token);
-    expect(result).toEqual({
-      type: "fa2",
-      contract: "KT1XZoJ3PAidWVWRiKWESmPj64eKN7CEHuWZ",
-      tokenId: "1",
-      balance: "409412200",
-      metadata: {
-        decimals: "5",
-        name: "Klondike3",
-        symbol: "KL3",
-      },
+    test("invalid fa2 token (missing tokenId)", () => {
+      const { token } = fa2Token;
+      delete token.tokenId;
+      const result = fromRaw(token);
+      expect(result).toEqual(null);
     });
   });
 
-  test("invalid fa2 token (missing tokenId)", () => {
-    jest.spyOn(console, "warn").mockImplementation();
-    const result = fromRaw({ ...fa2Token, token: { contract: fa2Token.token.contract } });
-    expect(result).toEqual(null);
-  });
-
-  test("valid nft", () => {
-    const result = fromRaw(nft);
-    const expected = {
-      type: "nft",
-      contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
-      tokenId: "3",
-      balance: "0",
-      displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
-      id: 10899466223617,
-      metadata: nft.token.metadata as Metadata,
-      totalSupply: "1",
-    };
-    expect(result).toEqual(expected);
-  });
-
-  test("invalid nft (missing contract address)", () => {
-    jest.spyOn(console, "warn").mockImplementation();
-    const result = fromRaw({
-      ...nft,
-      token: { contract: { address: null } },
+  describe("NFT", () => {
+    it("returns FA2 token if decimals field is present", () => {
+      const result = fromRaw({ ...nft.token, metadata: { decimals: "5" } });
+      expect(result).toEqual({
+        type: "fa2",
+        contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+        tokenId: "3",
+        metadata: { decimals: "5" },
+      });
     });
 
-    expect(result).toEqual(null);
+    it("parses valid NFT", () => {
+      const expected = {
+        type: "nft",
+        contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+        tokenId: "3",
+        displayUri: "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWGz",
+        id: 10899466223617,
+        metadata: nft.token.metadata as Metadata,
+        totalSupply: "1",
+      };
+
+      const { token } = nft;
+      const metadata = token.metadata as Metadata;
+      metadata.decimals = "0";
+      expect(fromRaw(token)).toEqual(expected);
+      metadata.decimals = undefined;
+      expect(fromRaw(token)).toEqual(expected);
+      delete metadata.decimals;
+      expect(fromRaw(token)).toEqual(expected);
+    });
   });
 
   test("fa1 token with name symbol and decimals (tzBTC)", () => {
-    const result = fromRaw(tzBtsc(mockImplicitAddress(0)));
+    const result = fromRaw(tzBtsc(mockImplicitAddress(0)).token);
 
     const expected = {
       type: "fa1.2",
       contract: "KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn",
       tokenId: "0",
-      balance: "2205",
       metadata: {
         decimals: "8",
         name: "tzBTC",
@@ -101,12 +107,11 @@ describe("fromRaw", () => {
   });
 
   test("fa1 token with name symbol decimals and icon (Hedgehoge)", () => {
-    const result = fromRaw(hedgehoge(mockImplicitAddress(0)));
+    const result = fromRaw(hedgehoge(mockImplicitAddress(0)).token);
 
     const expected = {
       type: "fa1.2",
       contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
-      balance: "10000000000",
       tokenId: "0",
       metadata: {
         decimals: "6",
@@ -119,12 +124,11 @@ describe("fromRaw", () => {
   });
 
   test("fa2 token with thumbnailUri (uUSD)", () => {
-    const result = fromRaw(uUSD(mockImplicitAddress(0)));
+    const result = fromRaw(uUSD(mockImplicitAddress(0)).token);
     const expected = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "0",
-      balance: "19218750000",
       metadata: {
         decimals: "12",
         name: "youves uUSD",
@@ -140,11 +144,10 @@ describe("fromRaw", () => {
 
 describe("tokenName", () => {
   test("when metadata.name exists", () => {
-    const fa1token: FA12TokenBalance = {
+    const fa1token: FA12Token = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "0",
-      balance: "1",
     };
     expect(tokenName(fa1token)).toEqual("FA1.2 token");
     const fa1tokenWithName = {
@@ -155,10 +158,9 @@ describe("tokenName", () => {
     };
     expect(tokenName(fa1tokenWithName)).toEqual("some token name");
 
-    const fa2token: FA2TokenBalance = {
+    const fa2token: FA2Token = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      balance: "1",
       tokenId: "123",
     };
     expect(tokenName(fa2token)).toEqual("FA2 token");
@@ -183,11 +185,10 @@ describe("tokenName", () => {
 
 describe("tokenSymbol", () => {
   test("when metadata.symbol exists", () => {
-    const fa1token: FA12TokenBalance = {
+    const fa1token: FA12Token = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "0",
-      balance: "1",
     };
     expect(tokenSymbol(fa1token)).toEqual("FA1.2");
     const fa1tokenWithSymbol = {
@@ -198,10 +199,9 @@ describe("tokenSymbol", () => {
     };
     expect(tokenSymbol(fa1tokenWithSymbol)).toEqual("some token symbol");
 
-    const fa2token: FA2TokenBalance = {
+    const fa2token: FA2Token = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      balance: "1",
       tokenId: "123",
     };
     expect(tokenSymbol(fa2token)).toEqual("FA2");
@@ -225,11 +225,10 @@ describe("tokenSymbol", () => {
 
 describe("httpIconUri", () => {
   test("when metadata.symbol exists", () => {
-    const fa1token: FA12TokenBalance = {
+    const fa1token: FA12Token = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "0",
-      balance: "1",
     };
     expect(httpIconUri(fa1token)).toEqual(undefined);
     const fa1tokenWithIcon = {
@@ -242,10 +241,9 @@ describe("httpIconUri", () => {
       "https://ipfs.io/ipfs/QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs"
     );
 
-    const fa2token: FA2TokenBalance = {
+    const fa2token: FA2Token = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      balance: "1",
       tokenId: "123",
     };
     expect(httpIconUri(fa2token)).toEqual(undefined);
@@ -374,10 +372,9 @@ describe("metadataUri", () => {
 
 describe("tokenDecimal", () => {
   it("returns token decimal if it's present in the metadata", () => {
-    const fa2token: FA2TokenBalance = {
+    const fa2token: FA2Token = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      balance: "1",
       tokenId: "123",
       metadata: {
         decimals: "3",
@@ -387,10 +384,9 @@ describe("tokenDecimal", () => {
   });
 
   it("returns 0 if metadata doesn't have the decimal field", () => {
-    const fa2token: FA2TokenBalance = {
+    const fa2token: FA2Token = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      balance: "1",
       tokenId: "123",
       metadata: {},
     };

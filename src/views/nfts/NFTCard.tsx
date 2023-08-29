@@ -1,6 +1,8 @@
 import { AspectRatio, Image, Card, CardBody, Heading, Text } from "@chakra-ui/react";
-import { NFTBalance, thumbnailUri } from "../../types/TokenBalance";
+import { NFTBalance } from "../../types/TokenBalance";
 import { getIPFSurl } from "../../utils/token/nftUtils";
+import { thumbnailUri } from "../../types/Token";
+import colors from "../../style/colors";
 
 const NFTCard: React.FC<{ nft: NFTBalance; onClick: () => void }> = ({ nft, onClick }) => {
   const url = getIPFSurl(thumbnailUri(nft));
@@ -9,7 +11,7 @@ const NFTCard: React.FC<{ nft: NFTBalance; onClick: () => void }> = ({ nft, onCl
 
   return (
     <Card cursor="pointer" data-testid="nft-card" onClick={onClick}>
-      <CardBody bg="umami.gray.900" borderRadius={4}>
+      <CardBody bg={colors.gray[900]} borderRadius={4}>
         <AspectRatio width="100%" ratio={1}>
           <Image data-testid="nft-image" width="100%" src={url} fallbackSrc={fallbackUrl} />
         </AspectRatio>
@@ -17,7 +19,7 @@ const NFTCard: React.FC<{ nft: NFTBalance; onClick: () => void }> = ({ nft, onCl
           {name}
         </Heading>
 
-        <Text pt="2" fontSize="xs" color="umami.gray.400">
+        <Text pt="2" fontSize="xs" color={colors.gray[400]}>
           Editions:1
         </Text>
       </CardBody>

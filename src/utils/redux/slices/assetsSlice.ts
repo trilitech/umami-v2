@@ -5,7 +5,7 @@ import accountsSlice from "./accountsSlice";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
-import { eraseToken, fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
+import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Delegate } from "../../../types/Delegate";
 import { FormOperations } from "../../../components/sendForm/types";
 
@@ -122,7 +122,11 @@ const assetsSlice = createSlice({
     updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);
       state.balances.tokens = mapValues(groupedByPkh, rawTokenBalances => {
-        return compact(rawTokenBalances.map(fromRaw)).map(eraseToken);
+        return compact(rawTokenBalances.map(fromRaw)).map(({ balance, contract, tokenId }) => ({
+          balance,
+          contract,
+          tokenId,
+        }));
       });
     },
 

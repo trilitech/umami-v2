@@ -13,7 +13,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { artifactUri, NFTBalance } from "../../types/TokenBalance";
+import { NFTBalance } from "../../types/TokenBalance";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import TagsSection from "./drawer/TagsSection";
 import AttributesAccordionItem from "./drawer/AttributesAccordionItem";
@@ -23,6 +23,7 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { useContext } from "react";
 import SendNFTForm from "../../components/SendFlow/NFT/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
+import { artifactUri } from "../../types/Token";
 
 const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
   const url = getIPFSurl(artifactUri(nft));
