@@ -5,51 +5,68 @@ import ModalContentWrapper from "../ModalContentWrapper";
 import { FieldValues, useForm } from "react-hook-form";
 import { WarningIcon } from "@chakra-ui/icons";
 import { Step, StepType } from "../useOnboardingModal";
-import { InMemorySigner } from "@taquito/signer";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { range } from "lodash";
+import { validateMnemonic } from "bip39";
+
+type MnemonicSize = 12 | 15 | 18 | 24;
+const mnemonicSizes: MnemonicSize[] = [12, 15, 18, 24];
 
 const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
     register,
     handleSubmit,
-    setValue: setFormValue,
+    setValue,
     trigger,
     formState: { errors, isValid },
   } = useForm({
     mode: "onBlur",
   });
   const { handleAsyncAction } = useAsyncActionHandler();
-  const [mnemonicSize, setMnemonicSize] = useState("12");
+  const [mnemonicSize, setMnemonicSize] = useState<MnemonicSize>(24);
 
-  const pasteMnemonic = (mnemonic: string) => {
-    mnemonic
-      .split(" ")
-      .slice(0, Number(mnemonicSize))
-      .forEach((word, i) => {
-        setFormValue(`word${i}`, word);
-      });
+  const handleMnemonicSizeChange = (value: string) => {
+    const size = Number(value) as MnemonicSize;
+    if (!mnemonicSizes.includes(size)) {
+      return;
+    }
+
+    setMnemonicSize(prevSize => {
+      // If the users reduces the size, we will trim the words down to the new size
+      if (prevSize > size) {
+        range(size, 24).forEach(index => {
+          setValue(`word${index}`, undefined);
+        });
+      }
+
+      return size;
+    });
     trigger();
   };
+
+  const pasteMnemonic = (mnemonic: string) =>
+    handleAsyncAction(async () => {
+      const words = mnemonic.split(" ");
+      if (!mnemonicSizes.includes(words.length as MnemonicSize)) {
+        throw new Error("the mnemonic must be 12, 15, 18 or 24 words long");
+      }
+      words.slice(0, mnemonicSize).forEach((word, i) => {
+        setValue(`word${i}`, word);
+      });
+      trigger();
+    });
 
   const onSubmit = (data: FieldValues) =>
     handleAsyncAction(
       async () => {
-        let seedphrase = "";
-        for (const key in data) {
-          seedphrase += data[key] + " ";
+        const mnemonic = Object.values(data).join(" ").trim();
+        if (!validateMnemonic(mnemonic)) {
+          throw new Error(`"${mnemonic}" is not a valid mnemonic"`);
         }
-        seedphrase = seedphrase.trim();
-
-        // TODO: test this
-        InMemorySigner.fromMnemonic({
-          mnemonic: seedphrase,
-          derivationPath: "44'/1729'/0'/0'",
-          curve: "ed25519",
-        });
         goToStep({
           type: StepType.derivationPath,
-          account: { type: "mnemonic", seedphrase: seedphrase, label: "Restored account" },
+          account: { type: "mnemonic", seedphrase: mnemonic, label: "Restored account" },
         });
       },
       {
@@ -67,10 +84,10 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
           <VStack w="100%" spacing={4}>
             <Select
               data-testid="select"
-              onChange={event => setMnemonicSize(event.target.value)}
+              onChange={event => handleMnemonicSizeChange(event.target.value)}
               value={mnemonicSize}
             >
-              {[12, 15, 18, 24].reverse().map(value => {
+              {mnemonicSizes.reverse().map(value => {
                 return (
                   <option key={value} value={value}>
                     {value} Words
@@ -80,20 +97,21 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
             </Select>
 
             <Grid templateColumns="repeat(3, 1fr)" gap={3} pb="20px">
-              {Array.from({ length: parseInt(mnemonicSize) }).map((item, index) => {
+              {range(mnemonicSize).map(index => {
                 return (
                   <GridItem
                     key={index}
                     fontSize="sm"
                     border="1px dashed #D6D6D6;"
                     borderRadius="4px"
-                    p="6px"
+                    p="4px"
                     display="flex"
                   >
-                    <Text pl="8px" pr="8px">
+                    <Text p="1px" mr="1px">
                       {index + 1}
                     </Text>
                     <Input
+                      autoComplete="off"
                       onPaste={async e => {
                         e.preventDefault();
                         const mnemonic = await navigator.clipboard.readText();
@@ -119,7 +137,6 @@ const RestoreSeedphrase = ({ goToStep }: { goToStep: (step: Step) => void }) => 
               /* devblock:start */
               <Button
                 onClick={() => {
-                  setMnemonicSize("24");
                   pasteMnemonic(mnemonic1);
                 }}
                 w="100%"
