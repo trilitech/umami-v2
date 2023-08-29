@@ -41,9 +41,6 @@ module.exports = function override(config) {
       ],
     });
   }
-  // keep sources as they are for error reporting
-  // source maps do not work without devtools enabled in electron
-  // TODO: find a better solution, check how rollbar & sentry handle this
-  config.optimization.minimize = false;
+
   return config;
 };
