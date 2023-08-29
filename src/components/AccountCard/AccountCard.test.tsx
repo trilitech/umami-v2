@@ -13,7 +13,7 @@ import { mockDelegationOperation } from "../../mocks/delegations";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
-import { act, fireEvent, render, screen, within } from "../../mocks/testUtils";
+import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { multisigToAccount } from "../../utils/multisig/helpers";
@@ -217,7 +217,7 @@ describe("<AccountCard />", () => {
       expect(modal).toHaveTextContent(/delegate/i);
     });
 
-    it("Given an account has an active delegation, it show display the delegation and CTA buttons to change delegate or undelegate", () => {
+    it("Given an account has an active delegation, it show display the delegation and CTA buttons to change delegate or undelegate", async () => {
       store.dispatch(
         updateDelegations([
           {
@@ -255,8 +255,10 @@ describe("<AccountCard />", () => {
       expect(removeDelegateBtn).toBeInTheDocument();
 
       fireEvent.click(changeDelegateBtn);
-      const modal = screen.getByRole("dialog");
-      expect(modal).toHaveTextContent(/delegate/i);
+      await waitFor(() => {
+        const modal = screen.getByRole("dialog");
+        expect(modal).toHaveTextContent(/delegate/i);
+      });
     });
   });
 

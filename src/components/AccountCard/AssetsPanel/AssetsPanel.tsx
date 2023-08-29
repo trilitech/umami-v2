@@ -3,18 +3,18 @@ import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
-import { Delegation } from "../../../types/Delegation";
+import { makeDelegation } from "../../../types/Delegation";
 import { OperationDisplay } from "../../../types/Transfer";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
 import { IconAndTextBtnLink } from "../../IconAndTextBtn";
-import { DelegationMode } from "../../sendForm/types";
 import SmallTab from "../../SmallTab";
 import { DelegationDisplay } from "./DelegationDisplay";
 import MultisigPendingAccordion from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
 import { TezosNetwork } from "../../../types/TezosNetwork";
+import { useAllDelegations } from "../../../utils/hooks/assetsHooks";
 
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
@@ -22,10 +22,10 @@ export const AssetsPanel: React.FC<{
   account: Account;
   operationDisplays: OperationDisplay[];
   network: TezosNetwork;
-  delegation: Delegation | null;
-  onDelegate: (opts?: DelegationMode["data"]) => void;
-}> = ({ tokens, nfts, account, operationDisplays, network, delegation, onDelegate }) => {
+}> = ({ tokens, nfts, account, operationDisplays, network }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
+  const rawDelegations = useAllDelegations()[account.address.pkh];
+  const delegation = rawDelegations ? makeDelegation(rawDelegations) : null;
 
   return (
     <Tabs
@@ -66,7 +66,7 @@ export const AssetsPanel: React.FC<{
         </TabPanel>
 
         <TabPanel data-testid="account-card-delegation-tab">
-          <DelegationDisplay delegation={delegation} onDelegate={onDelegate} />
+          <DelegationDisplay delegation={delegation} />
         </TabPanel>
 
         <TabPanel data-testid="account-card-nfts-tab" height="100%" overflow="hidden">
