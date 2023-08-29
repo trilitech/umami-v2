@@ -11,7 +11,6 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import { Undelegation } from "../../../types/Operation";
-import { FormErrorMessage } from "../../FormErrorMessage";
 import FormPageHeader from "../FormPageHeader";
 
 export type FormValues = {
@@ -44,10 +43,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
     defaultValues: formDefaultValues({ sender }),
   });
 
-  const {
-    formState: { isValid, errors },
-    handleSubmit,
-  } = form;
+  const { handleSubmit } = form;
 
   return (
     <FormProvider {...form}>
@@ -60,18 +56,13 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
 
           <ModalBody>
             {/* TODO: Make AccountAutoComplete display the address and balance*/}
-            <FormControl mb={2} isInvalid={!!errors.sender}>
+            <FormControl mb={2}>
               <OwnedAccountsAutocomplete
                 label="From"
-                isDisabled={true}
                 inputName="sender"
                 allowUnknown={false}
+                isDisabled
               />
-              {errors.sender && (
-                <FormErrorMessage data-testid="from-error">
-                  {errors.sender.message}
-                </FormErrorMessage>
-              )}
             </FormControl>
 
             {/*TODO: Add baker tile */}
@@ -79,7 +70,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
           <ModalFooter>
             <FormSubmitButtons
               isLoading={isLoading}
-              isValid={isValid}
+              isValid
               onSingleSubmit={handleSubmit(onSingleSubmit)}
               onAddToBatch={handleSubmit(onBatchSubmit)}
             />
