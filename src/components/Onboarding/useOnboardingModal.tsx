@@ -56,21 +56,21 @@ export type NoticeStep = { type: StepType.notice };
 export type ConnectOptionsStep = { type: StepType.connectOptions };
 export type ShowSeedphraseStep = {
   type: StepType.showSeedphrase;
-  account: { type: "mnemonic"; seedphrase: string };
+  account: { type: "mnemonic"; mnemonic: string };
 };
 export type RestoreSeedphraseStep = { type: StepType.restoreMnemonic };
 export type VerifySeedphraseStep = {
   type: StepType.verifySeedphrase;
-  account: { type: "mnemonic"; seedphrase: string };
+  account: { type: "mnemonic"; mnemonic: string };
 };
 export type NameAccountStep = {
   type: StepType.nameAccount;
-  account: { type: "mnemonic"; seedphrase: string } | { type: "ledger" };
+  account: { type: "mnemonic"; mnemonic: string } | { type: "ledger" };
 };
 export type DerivationPathStep = {
   type: StepType.derivationPath;
   account:
-    | { type: "mnemonic"; seedphrase: string; label: string }
+    | { type: "mnemonic"; mnemonic: string; label: string }
     | { type: "ledger"; label: string };
 };
 export type RestoreLedgerStep = {
@@ -79,7 +79,7 @@ export type RestoreLedgerStep = {
 };
 export type MasterPasswordStep = {
   type: StepType.masterPassword;
-  account: { type: "mnemonic"; seedphrase: string; label: string; derivationPath: string };
+  account: { type: "mnemonic"; mnemonic: string; label: string; derivationPath: string };
 };
 export type FakeAccountStep = { type: StepType.fakeAccount };
 

@@ -17,7 +17,7 @@ beforeEach(() => {
 });
 
 const fixture = (goToStep: (step: Step) => void) => (
-  <VerifySeedphrase goToStep={goToStep} account={{ type: "mnemonic", seedphrase: mnemonic1 }} />
+  <VerifySeedphrase goToStep={goToStep} account={{ type: "mnemonic", mnemonic: mnemonic1 }} />
 );
 
 describe("<VerifySeedphrase />", () => {
@@ -99,7 +99,7 @@ describe("<VerifySeedphrase />", () => {
     });
     expect(goToStepMock).toBeCalledWith({
       type: StepType.nameAccount,
-      account: { type: "mnemonic", seedphrase: mnemonic1 },
+      account: { type: "mnemonic", mnemonic: mnemonic1 },
     });
   });
 });

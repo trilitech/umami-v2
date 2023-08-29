@@ -22,7 +22,7 @@ describe("<Eula />", () => {
       fireEvent.click(confirmBtn);
       expect(goToStepMock).toBeCalledWith({
         type: StepType.showSeedphrase,
-        account: { type: "mnemonic", seedphrase: mnemonic1 },
+        account: { type: "mnemonic", mnemonic: mnemonic1 },
       });
       expect(goToStepMock).toBeCalledTimes(1);
     });

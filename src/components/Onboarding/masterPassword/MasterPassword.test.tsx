@@ -14,7 +14,7 @@ const account = mockImplicitAccount(0);
 const fixture = () => {
   const account = {
     type: "mnemonic" as const,
-    seedphrase: mnemonic1,
+    mnemonic: mnemonic1,
     label: "Some Account",
     derivationPath: "any",
   };

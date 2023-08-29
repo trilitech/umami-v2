@@ -22,7 +22,7 @@ const VerifySeedphrase = ({
   goToStep: (step: Step) => void;
   account: VerifySeedphraseStep["account"];
 }) => {
-  const seedphraseArray = account.seedphrase.split(" ");
+  const seedphraseArray = account.mnemonic.split(" ");
   const {
     register,
     handleSubmit,

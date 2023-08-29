@@ -109,7 +109,7 @@ describe("<RestoreMnemonic />", () => {
         account: {
           type: "mnemonic",
           label: "Restored account",
-          seedphrase: mnemonic1,
+          mnemonic: mnemonic1,
         },
       });
     });

@@ -40,7 +40,7 @@ const Notice: React.FC<{
           onClick={() =>
             goToStep({
               type: StepType.showSeedphrase,
-              account: { type: "mnemonic", seedphrase: generate24WordMnemonic() },
+              account: { type: "mnemonic", mnemonic: generate24WordMnemonic() },
             })
           }
         >

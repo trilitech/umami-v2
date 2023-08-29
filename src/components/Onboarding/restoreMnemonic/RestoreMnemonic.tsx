@@ -65,7 +65,7 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
         }
         goToStep({
           type: StepType.derivationPath,
-          account: { type: "mnemonic", seedphrase: mnemonic, label: "Restored account" },
+          account: { type: "mnemonic", mnemonic: mnemonic, label: "Restored account" },
         });
       },
       {
