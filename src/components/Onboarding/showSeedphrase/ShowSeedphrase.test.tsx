@@ -6,12 +6,12 @@ import { ShowSeedphrase } from "./ShowSeedphrase";
 const goToStepMock = jest.fn((step: Step) => {});
 
 const fixture = (goToStep: (step: Step) => void) => {
-  const account = { type: "mnemonic" as const, seedphrase: mnemonic1 };
+  const account = { type: "mnemonic" as const, mnemonic: mnemonic1 };
   return <ShowSeedphrase goToStep={goToStep} account={account} />;
 };
 
 describe("<ShowSeedphrase />", () => {
-  test("seedphrase is displayed", async () => {
+  test("mnemonic is displayed", async () => {
     render(fixture(goToStepMock));
     const confirmBtn = screen.getByRole("button", {
       name: /OK, I've recorded it/i,
@@ -26,7 +26,7 @@ describe("<ShowSeedphrase />", () => {
       type: StepType.verifySeedphrase,
       account: {
         type: "mnemonic",
-        seedphrase: mnemonic1,
+        mnemonic: mnemonic1,
       },
     });
   });

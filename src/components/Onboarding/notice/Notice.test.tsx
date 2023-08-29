@@ -22,7 +22,7 @@ describe("<Eula />", () => {
       fireEvent.click(confirmBtn);
       expect(goToStepMock).toBeCalledWith({
         type: StepType.showSeedphrase,
-        account: { type: "mnemonic", seedphrase: mnemonic1 },
+        account: { type: "mnemonic", mnemonic: mnemonic1 },
       });
       expect(goToStepMock).toBeCalledTimes(1);
     });
@@ -33,7 +33,7 @@ describe("<Eula />", () => {
         name: /I already have a Seed Phrase/i,
       });
       fireEvent.click(skipBtn);
-      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreSeedphrase });
+      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreMnemonic });
       expect(goToStepMock).toBeCalledTimes(1);
     });
   });

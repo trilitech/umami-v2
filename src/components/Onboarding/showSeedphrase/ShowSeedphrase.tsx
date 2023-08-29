@@ -18,7 +18,7 @@ export const ShowSeedphrase = ({
     >
       <VStack overflowX="hidden">
         <SimpleGrid columns={3} spacing={2}>
-          {account.seedphrase.split(" ").map((item, index) => {
+          {account.mnemonic.split(" ").map((item, index) => {
             return (
               <Box
                 key={index}

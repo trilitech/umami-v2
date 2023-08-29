@@ -17,7 +17,7 @@ describe("<DerivationPath />", () => {
       derivationPath: "44'/1729'/?'/0'",
     },
     {
-      account: { type: "mnemonic" as const, label: "mnemonic account", seedphrase: mnemonic1 },
+      account: { type: "mnemonic" as const, label: "mnemonic account", mnemonic: mnemonic1 },
       nextPage: StepType.masterPassword,
       derivationPath: "44'/1729'/?'/0'",
     },

@@ -15,7 +15,7 @@ describe("<ConnectOptions />", () => {
       });
       fireEvent.click(confirmBtn);
       expect(goToStepMock).toBeCalledTimes(1);
-      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreSeedphrase });
+      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreMnemonic });
     });
 
     test("Connect ledger", async () => {
