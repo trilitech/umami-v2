@@ -81,7 +81,7 @@ describe("<RestoreMnemonic />", () => {
 
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalledWith({
-          description: "the mnemonic must be 12, 15, 18 or 24 words long",
+          description: "the mnemonic must be 12, 15, 18, 24 words long",
           status: "error",
           title: "Error",
         });

@@ -10,8 +10,7 @@ import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandle
 import { range } from "lodash";
 import { validateMnemonic } from "bip39";
 
-type MnemonicSize = 12 | 15 | 18 | 24;
-const mnemonicSizes: MnemonicSize[] = [12, 15, 18, 24];
+const mnemonicSizes = [12, 15, 18, 24];
 
 const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
@@ -24,10 +23,10 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
     mode: "onBlur",
   });
   const { handleAsyncAction } = useAsyncActionHandler();
-  const [mnemonicSize, setMnemonicSize] = useState<MnemonicSize>(24);
+  const [mnemonicSize, setMnemonicSize] = useState(24);
 
   const handleMnemonicSizeChange = (value: string) => {
-    const size = Number(value) as MnemonicSize;
+    const size = Number(value);
     if (!mnemonicSizes.includes(size)) {
       return;
     }
@@ -35,7 +34,7 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
     setMnemonicSize(prevSize => {
       // If the users reduces the size, we will trim the words down to the new size
       if (prevSize > size) {
-        range(size, 24).forEach(index => {
+        range(size, Math.max(...mnemonicSizes)).forEach(index => {
           setValue(`word${index}`, undefined);
         });
       }
@@ -48,8 +47,8 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const pasteMnemonic = (mnemonic: string) =>
     handleAsyncAction(async () => {
       const words = mnemonic.split(" ");
-      if (!mnemonicSizes.includes(words.length as MnemonicSize)) {
-        throw new Error("the mnemonic must be 12, 15, 18 or 24 words long");
+      if (!mnemonicSizes.includes(words.length)) {
+        throw new Error(`the mnemonic must be ${mnemonicSizes.join(", ")} words long`);
       }
       words.slice(0, mnemonicSize).forEach((word, i) => {
         setValue(`word${i}`, word);
@@ -60,7 +59,7 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const onSubmit = (data: FieldValues) =>
     handleAsyncAction(
       async () => {
-        const mnemonic = Object.values(data).join(" ").trim();
+        const mnemonic = Object.values(data).join(" ");
         if (!validateMnemonic(mnemonic)) {
           throw new Error(`"${mnemonic}" is not a valid mnemonic`);
         }
