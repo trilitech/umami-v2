@@ -2,10 +2,18 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
-import ImportWalletForm from "./RestoreMnemonic";
+import RestoreMnemonic from "./RestoreMnemonic";
 import { mockToast } from "../../../mocks/toast";
 import { Provider } from "react-redux";
 import store from "../../../utils/redux/store";
+
+const mockNavigator = jest.mocked(
+  Object.assign(navigator, {
+    clipboard: {
+      readText: jest.fn(),
+    },
+  })
+);
 
 const goToStepMock = jest.fn((step: Step) => {});
 const selectRandomElementsMock = jest.mocked(selectRandomElements);
@@ -21,13 +29,13 @@ beforeEach(() => {
 
 const fixture = (goToStep: (step: Step) => void) => (
   <Provider store={store}>
-    <ImportWalletForm goToStep={goToStep} />;
+    <RestoreMnemonic goToStep={goToStep} />;
   </Provider>
 );
 
 describe("<RestoreMnemonic />", () => {
-  describe("Form validation", () => {
-    test("button is disabled when empty", async () => {
+  describe("default", () => {
+    it("disables continue button when empty", async () => {
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       await waitFor(() => {
@@ -35,7 +43,15 @@ describe("<RestoreMnemonic />", () => {
       });
     });
 
-    test("error is shown when wrong mnemonic is entered", async () => {
+    it("selects 24 words by default", async () => {
+      render(fixture(goToStepMock));
+      const selectElement = screen.getByRole("combobox");
+      expect(selectElement).toHaveValue("24");
+    });
+  });
+
+  describe("Form validation", () => {
+    it("displays error is when wrong mnemonic is entered", async () => {
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const inputFields = screen.getAllByRole("textbox");
@@ -50,22 +66,32 @@ describe("<RestoreMnemonic />", () => {
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalledWith({
           description:
-            'Invalid mnemonic "test test test test test test test test test test test test"',
+            '"test test test test test test test test test test test test test test test test test test test test test test test test" is not a valid mnemonic',
           status: "error",
           title: "Invalid Mnemonic",
         });
       });
     });
 
-    test("button is enabled when filled", async () => {
+    it("displays error when the number of mnemonic is wrong", async () => {
+      render(fixture(goToStepMock));
+      const inputField = screen.getAllByRole("textbox")[0];
+      mockNavigator.clipboard.readText.mockReturnValue("test test");
+      fireEvent.paste(inputField);
+
+      await waitFor(() => {
+        expect(mockToast).toHaveBeenCalledWith({
+          description: "the mnemonic must be 12, 15, 18 or 24 words long",
+          status: "error",
+          title: "Error",
+        });
+      });
+    });
+
+    it("enabls button when filled", async () => {
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const splitted = mnemonic1.split(" ");
-
-      const selectElement = screen.getByRole("combobox");
-      expect(selectElement).toHaveValue("12");
-      fireEvent.change(selectElement, { target: { value: "24" } });
-      expect(selectElement).toHaveValue("24");
 
       const inputFields = screen.getAllByRole("textbox");
       inputFields.forEach((input, index) => {

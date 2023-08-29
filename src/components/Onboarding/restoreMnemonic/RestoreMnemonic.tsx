@@ -13,7 +13,7 @@ import { validateMnemonic } from "bip39";
 type MnemonicSize = 12 | 15 | 18 | 24;
 const mnemonicSizes: MnemonicSize[] = [12, 15, 18, 24];
 
-const ImportWalletForm = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
     register,
     handleSubmit,
@@ -153,4 +153,4 @@ const ImportWalletForm = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   );
 };
 
-export default ImportWalletForm;
+export default RestoreMnemonic;
