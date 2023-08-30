@@ -69,7 +69,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
         ref={ref}
         alignItems="center"
         bg={bgColor}
-        borderRadius="100px"
+        borderRadius="full"
         onMouseEnter={() => {
           setMouseHover(true);
         }}
@@ -89,7 +89,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
 
         <Popover isOpen={isOpen} onOpen={onClickAddress} autoFocus={false}>
           <PopoverTrigger>
-            <Button variant="unstyled" h={7} _focus={{ boxShadow: "none" }}>
+            <Button variant="unstyled" h="24px" _focus={{ boxShadow: "none" }}>
               <AddressPillText
                 data-testid="address-pill-text"
                 addressKind={addressKind}
