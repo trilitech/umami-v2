@@ -20,6 +20,7 @@ import {
 import { Delegation } from "../../../types/Operation";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { HeaderWrapper } from "../FormPageHeader";
+import { useGetBakerFor } from "../../../utils/hooks/assetsHooks";
 
 export type FormValues = {
   sender: RawPkh;
@@ -33,6 +34,9 @@ const toOperation = (formValues: FormValues): Delegation => ({
 });
 
 const FormPage: React.FC<FormPageProps<FormValues>> = props => {
+  const getBakerFor = useGetBakerFor();
+  const baker = props.sender ? getBakerFor(props.sender) : undefined;
+
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,
@@ -64,7 +68,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
         <form>
           <HeaderWrapper>
             <Text size="2xl" fontWeight="600">
-              Delegate
+              {baker ? "Change Baker" : "Delegate"}
             </Text>
             <ModalCloseButton />
           </HeaderWrapper>
