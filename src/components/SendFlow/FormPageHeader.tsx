@@ -8,14 +8,17 @@ export const HeaderWrapper = chakra(ModalHeader, {
   },
 });
 
-const FormPageHeader = () => {
+const FormPageHeader: React.FC<{
+  title?: string;
+  subTitle?: string;
+}> = ({ title = "Send", subTitle = "Send one or insert into batch" }) => {
   return (
     <HeaderWrapper>
       <Text size="2xl" fontWeight="600">
-        Send
+        {title}
       </Text>
       <Text textAlign="center" size="sm" color={colors.gray[400]}>
-        Send one or insert into batch.
+        {subTitle}
       </Text>
       <ModalCloseButton />
     </HeaderWrapper>
