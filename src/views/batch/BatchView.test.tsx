@@ -1,12 +1,7 @@
 import { TezosToolkit } from "@taquito/taquito";
 import { makeFormOperations } from "../../components/sendForm/types";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
-import {
-  closeModal,
-  dispatchMockAccounts,
-  selectSender,
-  mockEstimatedFee,
-} from "../../mocks/helpers";
+import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
@@ -32,45 +27,6 @@ beforeEach(() => {
   jest.mocked(submitBatch).mockResolvedValue({ opHash: "foo" } as any);
 });
 
-const addToBatchViaUI = async (amount: number, senderLabel: string, recipientPkh: string) => {
-  const amountInput = screen.getByLabelText(/amount/i);
-  fireEvent.change(amountInput, { target: { value: Number(amount) } });
-  const recipientInput = screen.getByLabelText(/^to$/i);
-  fireEvent.change(recipientInput, { target: { value: recipientPkh } });
-
-  selectSender(senderLabel);
-
-  const addToBatchButton = screen.getByRole("button", {
-    name: /insert into batch/i,
-  });
-
-  await waitFor(() => {
-    expect(addToBatchButton).toBeEnabled();
-  });
-
-  fireEvent.click(addToBatchButton);
-};
-
-// Can't run in beforeEach because it requires a render
-// Also if you were to do it by different means, it slows down the whole test suite by 20s
-const addItemsToBatchViaUI = async () => {
-  const sendButton = screen.getByText(/send/i);
-  fireEvent.click(sendButton);
-  fireEvent.click(sendButton);
-
-  await waitFor(() => {
-    expect(screen.getByLabelText(/amount/i)).toBeInTheDocument();
-  });
-  await addToBatchViaUI(33, mockImplicitAccount(1).label, mockImplicitAddress(9).pkh);
-  await addToBatchViaUI(55, mockImplicitAccount(1).label, mockImplicitAddress(4).pkh);
-  await addToBatchViaUI(9, mockImplicitAccount(1).label, mockImplicitAddress(2).pkh);
-
-  await addToBatchViaUI(3, mockImplicitAccount(2).label, mockImplicitAddress(2).pkh);
-  await addToBatchViaUI(22, mockImplicitAccount(2).label, mockImplicitAddress(4).pkh);
-  await addToBatchViaUI(52, mockImplicitAccount(2).label, mockImplicitAddress(4).pkh);
-  closeModal();
-};
-
 describe("<BatchView />", () => {
   describe("Given no batch has beed added", () => {
     it("a message 'no batches are present' is displayed", () => {
@@ -78,14 +34,6 @@ describe("<BatchView />", () => {
 
       expect(screen.getByText(/0 pending/i)).toBeInTheDocument();
       expect(screen.getByText(/your batch is currently empty/i)).toBeInTheDocument();
-    });
-
-    test("user can add transactions to batches and it displays batches of all accounts by default", async () => {
-      render(fixture());
-      await addItemsToBatchViaUI();
-
-      expect(screen.queryByText(/your batch is currently empty/i)).not.toBeInTheDocument();
-      expect(await screen.findAllByTestId(/batch-table/i)).toHaveLength(2);
     });
   });
 

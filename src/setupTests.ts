@@ -18,6 +18,7 @@ import { act } from "@testing-library/react";
 import { tokensActions } from "./utils/redux/slices/tokensSlice";
 import errorsSlice from "./utils/redux/slices/errorsSlice";
 import { mockUseToast } from "./mocks/toast";
+import React from "react";
 
 failOnConsole();
 
@@ -47,12 +48,38 @@ jest.mock("react-identicons", () => {
 // Add missing browser APIs
 Object.assign(window, { TextDecoder, TextEncoder, crypto: webcrypto, scrollTo: jest.fn() });
 
+const MockModal = ({ children, isOpen }: any) => {
+  return React.createElement("div", { "data-testid": "mock-modal" }, isOpen ? children : null);
+};
+const MockModalHeader = ({ children }: any) => {
+  return React.createElement("header", { id: "modal-header" }, children);
+};
+const MockModalContent = ({ children }: any) => {
+  return React.createElement(
+    "section",
+    { role: "dialog", "aria-labelledby": "modal-header", "aria-modal": true },
+    children
+  );
+};
+
+const MockModalInnerComponent = ({ children }: any) => React.createElement("div", {}, children);
+
+const MockModalCloseButton = ({ children }: any) =>
+  React.createElement("button", { "aria-label": "Close" }, children);
+
 jest.mock("@chakra-ui/react", () => {
   return {
     ...jest.requireActual("@chakra-ui/react"),
     // Mock taost since it has an erratic behavior in RTL
     // https://github.com/chakra-ui/chakra-ui/issues/2969
     useToast: mockUseToast,
+    Modal: MockModal,
+    ModalContent: MockModalContent,
+    ModalBody: MockModalInnerComponent,
+    ModalHeader: MockModalHeader,
+    ModalFooter: MockModalInnerComponent,
+    ModalOverlay: MockModalInnerComponent,
+    ModalCloseButton: MockModalCloseButton,
   };
 });
 
