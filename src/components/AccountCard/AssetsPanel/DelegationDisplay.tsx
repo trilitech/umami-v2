@@ -6,7 +6,11 @@ import { Delegation } from "../../../types/Delegation";
 import { useGetDelegationPrettyDisplayValues } from "../../../utils/hooks/delegationHooks";
 import AddressPill from "../../AddressPill/AddressPill";
 import { NoDelegations } from "../../NoItems";
-import { DelegationMode } from "../../sendForm/types";
+import { DynamicModalContext } from "../../DynamicModal";
+import { useContext } from "react";
+import DelegationFormPage from "../../SendFlow/Delegation/FormPage";
+import UndelegationFormPage from "../../SendFlow/Undelegation/FormPage";
+import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 
 const Row: React.FC<{
   label: string;
@@ -33,14 +37,27 @@ const Row: React.FC<{
 
 export const DelegationDisplay: React.FC<{
   delegation: Delegation | null;
-  onDelegate: (opts?: DelegationMode["data"]) => void;
-}> = ({ delegation, onDelegate }) => {
+}> = ({ delegation }) => {
+  const { openWith } = useContext(DynamicModalContext);
+  const getOwnedAccount = useGetOwnedAccount();
   const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
   if (!delegation) {
-    return <NoDelegations small onDelegate={onDelegate} />;
+    return (
+      <NoDelegations
+        small
+        onDelegate={() => {
+          openWith(<DelegationFormPage />);
+        }}
+      />
+    );
   }
 
   const { currentBalance, duration, initialBalance } = getDelegationPrettyDisplay(delegation);
+  const {
+    sender,
+    delegate: { address: baker },
+  } = delegation;
+  const senderAccount = getOwnedAccount(sender);
 
   return (
     <Box>
@@ -48,11 +65,22 @@ export const DelegationDisplay: React.FC<{
       {currentBalance && <Row label="Current Balance:" value={currentBalance} />}
       <Row label="Duration:" value={duration} />
       <Row label="Baker:" value={<AddressPill address={parsePkh(delegation.delegate.address)} />} />
+
       <Flex>
-        <Button flex={1} mr={2} onClick={() => onDelegate()}>
+        <Button
+          flex={1}
+          mr={2}
+          onClick={() => {
+            openWith(<DelegationFormPage sender={senderAccount} form={{ sender, baker }} />);
+          }}
+        >
           Change Baker
         </Button>
-        <Button flex={1} ml={2} onClick={() => onDelegate({ undelegate: true })}>
+        <Button
+          flex={1}
+          ml={2}
+          onClick={() => openWith(<UndelegationFormPage sender={senderAccount} />)}
+        >
           End Delegation
         </Button>
       </Flex>

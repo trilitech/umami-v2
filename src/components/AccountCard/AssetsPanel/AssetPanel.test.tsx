@@ -13,8 +13,6 @@ describe("<AssetPanel/>", () => {
         tokens={[]}
         operationDisplays={[]}
         network={TezosNetwork.MAINNET}
-        delegation={null}
-        onDelegate={() => {}}
       />
     );
 

@@ -29,16 +29,9 @@ import { BakerSmallTile } from "./BakerSmallTile";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import DelegationFormPage from "../../components/SendFlow/Delegation/FormPage";
-import { useSendFormModal } from "../home/useSendFormModal";
+import UndelegationFormPage from "../../components/SendFlow/Undelegation/FormPage";
 
-const DelegationsTable = ({
-  delegations,
-  onClickUndelegate,
-}: {
-  delegations: Delegation[];
-  //TODO: remove after undelegete is implemented
-  onClickUndelegate: (sender: string) => void;
-}) => {
+const DelegationsTable = ({ delegations }: { delegations: Delegation[] }) => {
   const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
   const { openWith } = useContext(DynamicModalContext);
   const getOwnedAccount = useGetOwnedAccount();
@@ -63,6 +56,7 @@ const DelegationsTable = ({
           {delegations.map(delegation => {
             const { currentBalance, duration, initialBalance } =
               getDelegationPrettyDisplay(delegation);
+            const sender = getOwnedAccount(delegation.sender);
             return (
               <Tr key={delegation.id} data-testid="delegation-row">
                 <Td>
@@ -81,7 +75,7 @@ const DelegationsTable = ({
                     onClick={() => {
                       openWith(
                         <DelegationFormPage
-                          sender={getOwnedAccount(delegation.sender)}
+                          sender={sender}
                           form={{ sender: delegation.sender, baker: delegation.delegate.address }}
                         />
                       );
@@ -94,7 +88,7 @@ const DelegationsTable = ({
                   <IconButton
                     ml={2}
                     mr={2}
-                    onClick={() => onClickUndelegate(delegation.sender)}
+                    onClick={() => openWith(<UndelegationFormPage sender={sender} />)}
                     variant="circle"
                     aria-label="Delete Baker"
                     icon={<CiCircleRemove />}
@@ -116,8 +110,6 @@ const DelegationsView = () => {
   const delegationsArrays = objectMap(delegationsOps, d => (d ? [d] : undefined));
   const delegationsToDisplay = compact(filter(delegationsArrays).map(makeDelegation));
   const { openWith } = useContext(DynamicModalContext);
-  //TODO: remove after undelegete is implemented
-  const { modalElement, onOpen } = useSendFormModal();
 
   return (
     <Flex direction="column" height="100%">
@@ -133,23 +125,11 @@ const DelegationsView = () => {
       </Flex>
       {delegationsToDisplay.length > 0 ? (
         <Box overflowY="auto">
-          <DelegationsTable
-            onClickUndelegate={sender =>
-              onOpen({
-                sender,
-                mode: {
-                  type: "delegation",
-                  data: { undelegate: true },
-                },
-              })
-            }
-            delegations={delegationsToDisplay}
-          />
+          <DelegationsTable delegations={delegationsToDisplay} />
         </Box>
       ) : (
         <NoDelegations onDelegate={() => openWith(<DelegationFormPage />)} />
       )}
-      {modalElement}
     </Flex>
   );
 };

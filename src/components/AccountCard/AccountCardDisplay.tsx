@@ -6,21 +6,22 @@ import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
 import { Account, AccountType } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
-import { Delegation } from "../../types/Delegation";
 import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
-import { DelegationMode } from "../sendForm/types";
 import AddressPill from "../AddressPill/AddressPill";
 import { OperationDisplay } from "../../types/Transfer";
 import { TezosNetwork } from "../../types/TezosNetwork";
+import { DynamicModalContext } from "../DynamicModal";
+import { useContext } from "react";
+import DelegationFormPage from "../SendFlow/Delegation/FormPage";
+import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 
 type Props = {
   onSend: () => void;
   onReceive?: () => void;
   onBuyTez?: () => void;
-  onDelegate: (opts?: DelegationMode["data"]) => void;
   label: string;
   pkh: string;
   balance: string | undefined;
@@ -30,7 +31,6 @@ type Props = {
   operationDisplays: Array<OperationDisplay>;
   account: Account;
   network: TezosNetwork;
-  delegation: Delegation | null;
 };
 
 const RoundButton: React.FC<{
@@ -50,7 +50,6 @@ export const AccountCardDisplay: React.FC<Props> = ({
   pkh,
   onSend,
   onReceive = () => {},
-  onDelegate,
   label,
   balance,
   dollarBalance,
@@ -59,9 +58,11 @@ export const AccountCardDisplay: React.FC<Props> = ({
   account,
   operationDisplays,
   network,
-  delegation,
 }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
+  const getOwnedAccount = useGetOwnedAccount();
+  const { openWith } = useContext(DynamicModalContext);
+  // TODO: create a hook to retrieve the baker if the account is delegating.
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
       <Identicon identiconSize={32} address={pkh} />
@@ -74,17 +75,21 @@ export const AccountCardDisplay: React.FC<Props> = ({
         <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
         <RoundButton label="Receive" icon={<MdSouthWest />} onClick={onReceive} />
         {!isMultisig && <RoundButton label="Buy tez" icon={<FiPlus />} />}
-        <RoundButton label="Delegate" icon={<VscWand />} onClick={() => onDelegate()} />
+        <RoundButton
+          label="Delegate"
+          icon={<VscWand />}
+          onClick={() => {
+            openWith(<DelegationFormPage sender={getOwnedAccount(pkh)} />);
+          }}
+        />
       </Flex>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
       <AssetsPanel
-        onDelegate={onDelegate}
         tokens={tokens}
         nfts={nfts}
         account={account}
         operationDisplays={operationDisplays}
         network={network}
-        delegation={delegation}
       />
     </Flex>
   );
