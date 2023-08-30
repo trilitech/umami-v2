@@ -19,7 +19,7 @@ import SignButton from "../components/SignButton";
 import { Fee, Subtotal, Total } from "../components/TezAmountRecaps";
 import { EstimatedOperation } from "../types";
 import { BatchRecap } from "./BatchRecap";
-import { BakerSmallTile } from "../../../views/delegations/BakerSmallTile";
+import { OldBakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 
 const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
   const isDelegation = transfer.type === "delegation";
@@ -38,7 +38,7 @@ const NonBatchRecap = ({ transfer }: { transfer: Operation }) => {
             To:
           </Heading>
           {isDelegation ? (
-            <BakerSmallTile pkh={transfer.recipient.pkh} />
+            <OldBakerSmallTile pkh={transfer.recipient.pkh} />
           ) : (
             <AccountSmallTile pkh={transfer.recipient.pkh} />
           )}

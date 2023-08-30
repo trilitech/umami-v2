@@ -1,10 +1,49 @@
-import { AspectRatio, Image, Flex, Box, Text } from "@chakra-ui/react";
+import { AspectRatio, Image, Flex, Box, Text, Heading } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import { formatPkh } from "../../utils/format";
-import { useGetBaker } from "../../utils/hooks/assetsHooks";
+import { useGetBaker, useGetBakerFor } from "../../utils/hooks/assetsHooks";
+import { Account } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
 
-export const BakerSmallTile = ({ pkh }: { pkh: RawPkh }) => {
+type Mode = { type: "bakerPkh"; pkh: RawPkh } | { type: "delegatorAccount"; account: Account };
+
+export const BakerSmallTile: React.FC<{ mode: Mode }> = ({ mode }) => {
+  const getBakerFor = useGetBakerFor();
+  const getBaker = useGetBaker();
+  const bakerAddress = mode.type === "bakerPkh" ? mode.pkh : getBakerFor(mode.account)?.address;
+  const baker = bakerAddress ? getBaker(bakerAddress) : undefined;
+
+  if (!baker) {
+    return null;
+  }
+
+  const logoUrl = `https://services.tzkt.io/v1/avatars/${baker.address}`;
+
+  return (
+    <Flex
+      bg={colors.gray[800]}
+      w="100%"
+      alignItems="center"
+      px="15px"
+      py="9px"
+      data-testid="baker-tile"
+    >
+      <AspectRatio mr="8px" height="30px" width="30px" ratio={1}>
+        {/* TODO: handle the case when the image doesn't render  */}
+        <Image src={logoUrl} />
+      </AspectRatio>
+      <Flex ml="8px" alignItems="center">
+        <Heading size="sm">{baker.name}</Heading>
+        <Text mx="12px" color={colors.gray[300]} size="sm">
+          {formatPkh(baker.address)}
+        </Text>
+      </Flex>
+    </Flex>
+  );
+};
+
+//TODO: Remove this once fillstep is removed
+export const OldBakerSmallTile = ({ pkh }: { pkh: RawPkh }) => {
   const getBaker = useGetBaker();
   const baker = getBaker(pkh);
   if (!baker) {

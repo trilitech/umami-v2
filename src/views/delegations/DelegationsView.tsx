@@ -25,7 +25,6 @@ import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useAllDelegations } from "../../utils/hooks/assetsHooks";
 import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
 import colors from "../../style/colors";
-import { BakerSmallTile } from "./BakerSmallTile";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import DelegationFormPage from "../../components/SendFlow/Delegation/FormPage";
