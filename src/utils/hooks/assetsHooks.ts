@@ -189,10 +189,8 @@ export const useGetBakerFor = () => {
   const delegations = useAllDelegations();
   return (account: Account): Delegate | undefined => {
     const bakerAddress = delegations[account.address.pkh]?.newDelegate?.address;
-    if (!bakerAddress) {
-      return undefined;
-    }
-    return getBaker(bakerAddress);
+
+    return bakerAddress ? getBaker(bakerAddress) : undefined;
   };
 };
 
