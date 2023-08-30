@@ -1,6 +1,8 @@
 import {
+  Box,
   Flex,
   FormControl,
+  FormLabel,
   Heading,
   ModalBody,
   ModalContent,
@@ -15,11 +17,14 @@ import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
+import { BakerSmallTile } from "../../../views/delegations/BakerSmallTile";
+import { Delegation } from "../../../types/Operation";
 
 const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
+  const bakerPkh = (operations.content[0] as Delegation).recipient.pkh;
   return (
     <FormProvider {...form}>
       <ModalContent>
@@ -47,7 +52,15 @@ const SignPage: React.FC<SignPageProps> = props => {
               </Flex>
             </Flex>
 
-            {/* TODO: add sign tile */}
+            <Box mb="42px">
+              <FormLabel>To</FormLabel>
+              <BakerSmallTile
+                mode={{
+                  type: "bakerPkh",
+                  pkh: bakerPkh,
+                }}
+              />
+            </Box>
 
             <OperationSignerSelector
               sender={operations.sender}
