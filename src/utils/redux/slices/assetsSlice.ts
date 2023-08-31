@@ -8,6 +8,7 @@ import { TzktAccount } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Delegate } from "../../../types/Delegate";
 import { FormOperations } from "../../../components/sendForm/types";
+import { RawPkh } from "../../../types/Address";
 
 type State = {
   network: TezosNetwork;
@@ -23,32 +24,27 @@ type State = {
   delegations: Record<string, DelegationOperation | undefined>;
   bakers: Delegate[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: Record<string, FormOperations | undefined>;
+  batches: Record<string, FormOperations>;
   refetchTrigger: number;
   isLoading: boolean;
   lastTimeUpdated: string | null;
 };
 
 export type TezTransfersPayload = {
-  pkh: string;
+  pkh: RawPkh;
   transfers: TezTransfer[];
 };
 export type TokenTransfersPayload = {
-  pkh: string;
+  pkh: RawPkh;
   transfers: TokenTransfer[];
 };
 
 export type DelegationPayload = {
-  pkh: string;
+  pkh: RawPkh;
   delegation: DelegationOperation;
 };
 
 export type ConversionRatePayload = { rate: State["conversionRate"] };
-
-export type BatchPayload = {
-  pkh: string;
-  operations: FormOperations;
-};
 
 const initialState: State = {
   network: TezosNetwork.MAINNET,
@@ -145,17 +141,30 @@ const assetsSlice = createSlice({
     ) => {
       state.conversionRate = rate;
     },
-    // Don't use this action directly. Use thunk simulateAndUpdateBatch
-    addToBatch: (state, { payload: { pkh, operations } }: { payload: BatchPayload }) => {
-      const existing = state.batches[pkh] as FormOperations | undefined;
-      if (existing) {
-        existing.content.push(...operations.content);
+    // Don't use this action directly. Use thunk estimateAndUpdateBatch
+    addToBatch: (state, { payload: operations }: { payload: FormOperations }) => {
+      const pkh = operations.sender.address.pkh;
+      if (pkh in state.batches) {
+        (state.batches[pkh] as FormOperations).content.push(...operations.content);
         return;
       }
       state.batches[pkh] = operations;
     },
-    clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: string } }) => {
+    clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: RawPkh } }) => {
       delete state.batches[pkh];
+    },
+    removeBatchItem: (
+      state,
+      { payload: { pkh, index } }: { payload: { pkh: RawPkh; index: number } }
+    ) => {
+      if (!(pkh in state.batches)) {
+        return;
+      }
+      if (state.batches[pkh].content.length === 1) {
+        delete state.batches[pkh];
+        return;
+      }
+      state.batches[pkh].content.splice(index, 1);
     },
     refetch: state => {
       state.refetchTrigger += 1;

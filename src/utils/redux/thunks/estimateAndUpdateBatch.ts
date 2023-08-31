@@ -12,11 +12,6 @@ export const estimateAndUpdateBatch = (
   return async dispatch => {
     // check that the operation can be executed at least on its own
     await estimate(operations, network);
-    dispatch(
-      assetsSlice.actions.addToBatch({
-        pkh: operations.sender.address.pkh,
-        operations,
-      })
-    );
+    dispatch(assetsSlice.actions.addToBatch(operations));
   };
 };

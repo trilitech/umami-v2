@@ -123,7 +123,8 @@ describe("<BatchView />", () => {
       expect(screen.getByRole("button", { name: /preview/i })).toBeInTheDocument();
     });
 
-    test("estimating and submiting a batch executes the batch of transactions and empties it after successfull submition", async () => {
+    test("estimating and submiting a batch executes the batch of transactions and empties it after successful submition", async () => {
+      mockEstimatedFee(10);
       render(fixture());
       act(() => {
         clickSubmitOnFirstBatch();

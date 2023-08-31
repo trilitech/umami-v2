@@ -164,7 +164,7 @@ export const useAllDelegations = () => {
   return useAppSelector(s => s.assets.delegations);
 };
 
-export const useAllBatches = () => useAppSelector(s => s.assets.batches);
+export const useBatches = () => useAppSelector(s => s.assets.batches);
 
 export const useClearBatch = () => {
   const dispatch = useAppDispatch();
