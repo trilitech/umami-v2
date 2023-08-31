@@ -50,11 +50,7 @@ const BatchView = () => {
       <Box overflowY="auto" minH="80%">
         {batches.length > 0 ? (
           batches.map(operations => (
-            <BatchDisplay
-              key={operations.sender.address.pkh}
-              account={operations.sender}
-              operations={operations}
-            />
+            <BatchDisplay key={operations.sender.address.pkh} operations={operations} />
           ))
         ) : (
           <NoItems

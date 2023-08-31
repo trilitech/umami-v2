@@ -1,7 +1,6 @@
 import { Box, Button, Divider, Flex, Heading, IconButton, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import { AccountOperations } from "../../components/sendForm/types";
-import { Account } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { prettyTezAmount } from "../../utils/format";
 import { useClearBatch } from "../../utils/hooks/assetsHooks";
@@ -144,13 +143,12 @@ const OperationRecipient = ({ operation }: { operation: Operation }) => {
 };
 
 export const BatchDisplay: React.FC<{
-  account: Account;
   operations: AccountOperations;
-}> = ({ account, operations: accountOperations }) => {
-  const { operations } = accountOperations;
+}> = ({ operations: accountOperations }) => {
+  const { operations, sender } = accountOperations;
 
   return (
-    <Box data-testid={`batch-table-${account.address.pkh}`} mb={4} w="100%">
+    <Box data-testid={`batch-table-${sender.address.pkh}`} mb={4} w="100%">
       <Flex
         borderTopRadius="8px"
         justifyContent="space-between"
@@ -158,7 +156,7 @@ export const BatchDisplay: React.FC<{
         bg={colors.gray[800]}
       >
         <Flex alignItems="center">
-          <AccountSmallTile pkh={account.address.pkh} pl={0} />
+          <AccountSmallTile pkh={sender.address.pkh} pl={0} />
         </Flex>
         <RightHeader operations={accountOperations} />
       </Flex>
