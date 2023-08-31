@@ -140,7 +140,8 @@ export const makeLambda = (operation: Operation): MichelsonV1Expression[] => {
     case "undelegation":
       return MANAGER_LAMBDA.removeDelegate();
     case "contract_origination":
-      throw new Error("Contract origination is not supported yet");
+    case "contract_call":
+      throw new Error(`${operation.type} is not supported yet`);
   }
 };
 

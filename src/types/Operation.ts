@@ -6,7 +6,7 @@ export type TezTransfer = {
   type: "tez";
   recipient: Address;
   amount: string; // TODO: enforce mutez format here
-  parameter?: TransferParams["parameter"];
+  parameter?: TransferParams["parameter"]; //TODO: remove this
 };
 
 export type FA2Transfer = {
@@ -41,10 +41,19 @@ export type ContractOrigination = {
   storage: any;
 };
 
+export type ContractCall = {
+  type: "contract_call";
+  contract: ContractAddress;
+  amount: string;
+  entrypoint: string;
+  arguments: MichelsonV1Expression;
+};
+
 export type Operation =
   | TezTransfer
   | FA12Transfer
   | FA2Transfer
   | Delegation
   | Undelegation
-  | ContractOrigination;
+  | ContractOrigination
+  | ContractCall;

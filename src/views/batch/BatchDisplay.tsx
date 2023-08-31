@@ -59,6 +59,7 @@ const renderAmount = (operation: Operation, getToken: TokenLookup) => {
     case "delegation":
     case "undelegation":
     case "contract_origination":
+    case "contract_call":
       return "";
   }
 };

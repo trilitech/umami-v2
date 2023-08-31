@@ -24,7 +24,8 @@ const MultisigDecodedOperationItem: React.FC<{
         </Box>
       );
     case "contract_origination":
-      throw new Error("contract_origination is not suported yet");
+    case "contract_call":
+      throw new Error(`${operation.type} is not suported yet`);
     default:
       return (
         <Box marginY={6}>
@@ -86,6 +87,7 @@ const MultisigOperationAmount: React.FC<{
     case "delegation":
     case "undelegation":
     case "contract_origination":
+    case "contract_call":
       return null;
   }
 };

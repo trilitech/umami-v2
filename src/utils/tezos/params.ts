@@ -7,13 +7,20 @@ export const operationsToBatchParams = (operations: Operation[]): ParamsWithKind
   operations.map(operation => {
     switch (operation.type) {
       case "tez":
+      case "contract_call": {
+        const to = operation.type === "tez" ? operation.recipient.pkh : operation.contract.pkh;
+        const parameter =
+          operation.type === "tez"
+            ? operation.parameter // TODO: set it to undefined after beacon uses contract_call
+            : { entrypoint: operation.entrypoint, value: operation.arguments };
         return {
           kind: OpKind.TRANSACTION,
-          to: operation.recipient.pkh,
+          to,
           amount: parseInt(operation.amount),
-          parameter: operation.parameter,
           mutez: true,
+          parameter,
         };
+      }
       case "delegation":
         return {
           kind: OpKind.DELEGATION,
