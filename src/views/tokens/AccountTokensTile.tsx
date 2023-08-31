@@ -22,7 +22,7 @@ import { Identicon } from "../../components/Identicon";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
-import { httpIconUri, tokenName, tokenPrettyBalance } from "../../types/Token";
+import { httpIconUri, tokenName, tokenPrettyAmount } from "../../types/Token";
 import { formatPkh } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
@@ -105,7 +105,7 @@ const AccountTokensTile: React.FC<{
                       textFirst
                     />
                   </Td>
-                  <Td w="15%">{tokenPrettyBalance(token.balance, token, { showSymbol: false })}</Td>
+                  <Td w="15%">{tokenPrettyAmount(token.balance, token, { showSymbol: false })}</Td>
                   <Td>
                     <Flex alignItems="center" justifyContent="space-between" paddingX={3}>
                       {/* TODO: fetch token values  */}

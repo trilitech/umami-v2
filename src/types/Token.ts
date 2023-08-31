@@ -216,11 +216,14 @@ export const formatTokenAmount = (amountStr: string, decimals = DEFAULT_TOKEN_DE
   return Number(amountStr) / Math.pow(10, Number(decimals));
 };
 
-export const tokenPrettyBalance = (
+export const tokenPrettyAmount = (
   amount: string,
-  token: FA2Token | FA12Token,
+  token: Token,
   options?: { showSymbol?: boolean }
 ) => {
+  if (token.type === "nft") {
+    return amount;
+  }
   const symbol = tokenSymbol(token);
   const decimals = token.metadata?.decimals;
   const trailingSymbol = options?.showSymbol ? ` ${symbol}` : "";

@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Heading, IconButton, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import { AccountOperations } from "../../components/sendForm/types";
 import { Account } from "../../types/Account";
@@ -13,6 +13,8 @@ import Trash from "../../assets/icons/Trash";
 import { nanoid } from "nanoid";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { TEZ } from "../../utils/tezos";
+import { useGetToken } from "../../utils/hooks/tokensHooks";
+import { tokenName, tokenPrettyAmount } from "../../types/Token";
 
 const RightHeader = ({
   operations: { type: operationsType, sender, operations },
@@ -59,6 +61,7 @@ export const prettyOperationType = (operation: Operation) => {
 };
 
 const OperationDisplay = ({ operation }: { operation: Operation }) => {
+  const getToken = useGetToken();
   switch (operation.type) {
     case "tez":
       return (
@@ -67,7 +70,39 @@ const OperationDisplay = ({ operation }: { operation: Operation }) => {
         </Flex>
       );
     case "fa1.2":
-    case "fa2":
+    case "fa2": {
+      const token = getToken(operation.contract.pkh, operation.tokenId);
+      if (token?.type === "nft") {
+        // TODO: Add tooltip
+        return (
+          <Flex>
+            {Number(operation.amount) > 1 && (
+              <>
+                <Heading size="sm" color={colors.gray[450]}>
+                  x{operation.amount}
+                </Heading>
+                &nbsp;
+              </>
+            )}
+            <Heading size="sm">{tokenName(token)}</Heading>
+          </Flex>
+        );
+      }
+
+      const prettyAmount = token
+        ? tokenPrettyAmount(operation.amount, token, { showSymbol: true })
+        : operation.amount;
+      const name = token ? tokenName(token) : undefined;
+      // TODO: Finish it. looks ugly. no idea what the token it is
+      return (
+        <Flex>
+          <Tooltip label={name}>
+            <Heading size="sm">{prettyAmount}</Heading>
+          </Tooltip>
+        </Flex>
+      );
+    }
+    // TODO: Add some title
     case "delegation":
     case "undelegation":
     case "contract_origination":

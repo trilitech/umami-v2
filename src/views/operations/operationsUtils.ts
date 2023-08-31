@@ -1,6 +1,6 @@
 import { formatRelative } from "date-fns";
 import { z } from "zod";
-import { tokenPrettyBalance } from "../../types/Token";
+import { tokenPrettyAmount } from "../../types/Token";
 import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Transfer";
 import { fromRaw } from "../../types/Token";
 import { compact } from "lodash";
@@ -171,7 +171,7 @@ export const getTokenOperationDisplay = (
   if (token.type === "nft") {
     prettyAmount = transfer.amount;
   } else {
-    prettyAmount = tokenPrettyBalance(transfer.amount, token, { showSymbol: true });
+    prettyAmount = tokenPrettyAmount(transfer.amount, token, { showSymbol: true });
   }
 
   const result: OperationDisplay = {
