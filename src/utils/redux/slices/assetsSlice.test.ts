@@ -43,7 +43,7 @@ describe("assetsSlice", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -66,7 +66,7 @@ describe("assetsSlice", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -93,7 +93,7 @@ describe("assetsSlice", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -128,7 +128,7 @@ describe("assetsSlice", () => {
       bakers: [],
       network: "mainnet",
       transfers: { tez: {}, tokens: {} },
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -157,7 +157,7 @@ describe("assetsSlice", () => {
       bakers: [],
       network: "mainnet",
       transfers: { tez: {}, tokens: {} },
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -184,7 +184,7 @@ describe("assetsSlice", () => {
       bakers: [],
       network: "ghostnet",
       conversionRate: null,
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -211,7 +211,7 @@ describe("assetsSlice", () => {
       bakers: [],
       network: "mainnet",
       conversionRate: null,
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -239,7 +239,7 @@ describe("assetsSlice", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      batches: {},
+      batches: [],
       transfers: {
         tez: {
           foo: [mockTezTransaction(1), mockTezTransaction(2)],
@@ -275,7 +275,7 @@ describe("assetsSlice", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      batches: {},
+      batches: [],
       transfers: {
         tez: {
           foo: [mockTezTransaction(4)],
@@ -312,7 +312,7 @@ describe("assetsSlice", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      batches: {},
+      batches: [],
       transfers: {
         tokens: {
           foo: [mockTokenTransaction(1), mockTokenTransaction(2)],
@@ -356,7 +356,7 @@ describe("assetsSlice", () => {
         },
         tez: {},
       },
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -372,9 +372,7 @@ describe("assetsSlice", () => {
         ]);
         store.dispatch(addToBatch(formOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual({
-            [mockImplicitAccount(1).address.pkh]: formOperations,
-          });
+          expect(store.getState().assets.batches).toEqual([formOperations]);
         });
       });
 
@@ -395,9 +393,9 @@ describe("assetsSlice", () => {
           transfers.push(operation);
 
           await waitFor(() => {
-            expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(
-              makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers)
-            );
+            expect(store.getState().assets.batches).toEqual([
+              makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
+            ]);
           });
         }
       });
@@ -410,10 +408,10 @@ describe("assetsSlice", () => {
         const anotherAccountFormOperations = { ...formOperations, sender: mockImplicitAccount(2) };
         store.dispatch(addToBatch(anotherAccountFormOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual({
-            [mockImplicitAccount(1).address.pkh]: formOperations,
-            [mockImplicitAccount(2).address.pkh]: anotherAccountFormOperations,
-          });
+          expect(store.getState().assets.batches).toEqual([
+            formOperations,
+            anotherAccountFormOperations,
+          ]);
         });
       });
     });
@@ -428,28 +426,28 @@ describe("assetsSlice", () => {
         const pkh = mockImplicitAccount(1).address.pkh;
         store.dispatch(addToBatch(formOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual({ [pkh]: formOperations });
+          expect(store.getState().assets.batches).toEqual([formOperations]);
         });
         store.dispatch(clearBatch({ pkh }));
         await waitFor(() => {
-          expect(pkh in store.getState().assets.batches).toEqual(false);
+          expect(store.getState().assets.batches).toEqual([]);
         });
       });
     });
 
     describe("removeBatchItem", () => {
-      it("removes everything if there is just one operation", async () => {
+      it("removes the whole batch if there is just one operation", async () => {
         const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
           mockTezOperation(0),
         ]);
         const pkh = mockImplicitAccount(1).address.pkh;
         store.dispatch(addToBatch(formOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual({ [pkh]: formOperations });
+          expect(store.getState().assets.batches).toEqual([formOperations]);
         });
-        store.dispatch(removeBatchItem({ pkh, index: 155 }));
+        store.dispatch(removeBatchItem({ pkh, index: 0 }));
         await waitFor(() => {
-          expect(pkh in store.getState().assets.batches).toEqual(false);
+          expect(store.getState().assets.batches).toEqual([]);
         });
       });
 
@@ -462,7 +460,7 @@ describe("assetsSlice", () => {
         const pkh = mockImplicitAccount(1).address.pkh;
         store.dispatch(addToBatch(formOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual({ [pkh]: formOperations });
+          expect(store.getState().assets.batches).toEqual([formOperations]);
         });
         store.dispatch(removeBatchItem({ pkh, index: 1 }));
         const newFormOperations = {
@@ -470,7 +468,37 @@ describe("assetsSlice", () => {
           content: [mockTezOperation(0), mockNftOperation(0)],
         };
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual({ [pkh]: newFormOperations });
+          expect(store.getState().assets.batches).toEqual([newFormOperations]);
+        });
+      });
+
+      it("does nothing if the index is out of bounds", async () => {
+        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+        ]);
+        const pkh = mockImplicitAccount(1).address.pkh;
+        store.dispatch(addToBatch(formOperations));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+        store.dispatch(removeBatchItem({ pkh, index: 5 }));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+      });
+
+      it("does nothing if the batch does not exist", async () => {
+        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+        ]);
+        store.dispatch(addToBatch(formOperations));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+
+        store.dispatch(removeBatchItem({ pkh: mockImplicitAccount(2).address.pkh, index: 5 }));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
         });
       });
     });

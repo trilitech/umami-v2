@@ -3,7 +3,6 @@ import { makeFormOperations } from "../../../components/sendForm/types";
 import {
   mockDelegationOperation,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockTezOperation,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
@@ -26,7 +25,7 @@ describe("estimateAndUpdateBatch", () => {
       store.dispatch(action);
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(formOperations, network);
       await waitFor(() => {
-        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(formOperations);
+        expect(store.getState().assets.batches).toEqual([formOperations]);
       });
     });
 
@@ -41,7 +40,7 @@ describe("estimateAndUpdateBatch", () => {
       store.dispatch(estimateAndUpdateBatch(formOperations, network));
 
       await waitFor(() => {
-        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(formOperations);
+        expect(store.getState().assets.batches).toEqual([formOperations]);
       });
 
       const failedOperation = mockDelegationOperation(0);
@@ -51,7 +50,7 @@ describe("estimateAndUpdateBatch", () => {
 
       await expect(() => store.dispatch(action)).rejects.toThrowError("Estimation failed");
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(formOperations, network);
-      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(formOperations);
+      expect(store.getState().assets.batches).toEqual([formOperations]);
     });
   });
 });

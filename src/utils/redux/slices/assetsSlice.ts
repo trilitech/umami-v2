@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { compact, groupBy, mapValues } from "lodash";
+import { compact, findIndex, groupBy, mapValues } from "lodash";
 import accountsSlice from "./accountsSlice";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
@@ -24,7 +24,7 @@ type State = {
   delegations: Record<string, DelegationOperation | undefined>;
   bakers: Delegate[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: Record<string, FormOperations>;
+  batches: FormOperations[];
   refetchTrigger: number;
   isLoading: boolean;
   lastTimeUpdated: string | null;
@@ -57,7 +57,7 @@ const initialState: State = {
   delegations: {},
   bakers: [],
   conversionRate: null,
-  batches: {},
+  batches: [],
   refetchTrigger: 0,
   isLoading: false,
   lastTimeUpdated: null,
@@ -143,28 +143,37 @@ const assetsSlice = createSlice({
     },
     // Don't use this action directly. Use thunk estimateAndUpdateBatch
     addToBatch: (state, { payload: operations }: { payload: FormOperations }) => {
-      const pkh = operations.sender.address.pkh;
-      if (pkh in state.batches) {
-        (state.batches[pkh] as FormOperations).content.push(...operations.content);
+      const existing = state.batches.find(
+        batch => batch.sender.address.pkh === operations.sender.address.pkh
+      );
+      if (existing) {
+        (existing as FormOperations).content.push(...operations.content);
         return;
       }
-      state.batches[pkh] = operations;
+      state.batches.push(operations);
     },
     clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: RawPkh } }) => {
-      delete state.batches[pkh];
+      const index = findIndex(state.batches, batch => batch.sender.address.pkh === pkh);
+      if (index === -1) {
+        return;
+      }
+      state.batches.splice(index, 1);
     },
     removeBatchItem: (
       state,
       { payload: { pkh, index } }: { payload: { pkh: RawPkh; index: number } }
     ) => {
-      if (!(pkh in state.batches)) {
+      const batchIndex = findIndex(state.batches, batch => batch.sender.address.pkh === pkh);
+      if (batchIndex === -1) {
         return;
       }
-      if (state.batches[pkh].content.length === 1) {
-        delete state.batches[pkh];
-        return;
+      const existingBatch = state.batches[batchIndex];
+      if (index < existingBatch.content.length) {
+        existingBatch.content.splice(index, 1);
       }
-      state.batches[pkh].content.splice(index, 1);
+      if (existingBatch.content.length === 0) {
+        state.batches.splice(batchIndex, 1);
+      }
     },
     refetch: state => {
       state.refetchTrigger += 1;
