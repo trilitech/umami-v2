@@ -16,11 +16,6 @@ export const fillPassword = (value: string) => {
   fireEvent.change(passwordInput, { target: { value } });
 };
 
-export const closeModal = () => {
-  const closeModalButton = screen.getByLabelText("Close");
-  fireEvent.click(closeModalButton);
-};
-
 export const dispatchMockAccounts = (accounts: ImplicitAccount[]) => {
   store.dispatch(accountsSlice.actions.addAccount(accounts));
 };

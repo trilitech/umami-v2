@@ -43,8 +43,12 @@ const BuyTezForm = () => {
         {isMainnet && (
           <>
             <Text textAlign="center">Please select the recipient account.</Text>
-            <ModalBody data-testid="buy-tez-selector">
-              <FormControl paddingY={5} isInvalid={!!errors.recipient}>
+            <ModalBody>
+              <FormControl
+                data-testid="buy-tez-selector"
+                paddingY={5}
+                isInvalid={!!errors.recipient}
+              >
                 <OwnedImplicitAccountsAutocomplete
                   label="Recipient Account"
                   inputName="recipient"
