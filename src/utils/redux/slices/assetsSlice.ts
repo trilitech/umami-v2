@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { compact, groupBy, mapValues } from "lodash";
+import { compact, findIndex, groupBy, mapValues } from "lodash";
 import accountsSlice from "./accountsSlice";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
@@ -8,6 +8,7 @@ import { TzktAccount } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Delegate } from "../../../types/Delegate";
 import { FormOperations } from "../../../components/sendForm/types";
+import { RawPkh } from "../../../types/Address";
 
 type State = {
   network: TezosNetwork;
@@ -23,32 +24,27 @@ type State = {
   delegations: Record<string, DelegationOperation | undefined>;
   bakers: Delegate[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: Record<string, FormOperations | undefined>;
+  batches: FormOperations[];
   refetchTrigger: number;
   isLoading: boolean;
   lastTimeUpdated: string | null;
 };
 
 export type TezTransfersPayload = {
-  pkh: string;
+  pkh: RawPkh;
   transfers: TezTransfer[];
 };
 export type TokenTransfersPayload = {
-  pkh: string;
+  pkh: RawPkh;
   transfers: TokenTransfer[];
 };
 
 export type DelegationPayload = {
-  pkh: string;
+  pkh: RawPkh;
   delegation: DelegationOperation;
 };
 
 export type ConversionRatePayload = { rate: State["conversionRate"] };
-
-export type BatchPayload = {
-  pkh: string;
-  operations: FormOperations;
-};
 
 const initialState: State = {
   network: TezosNetwork.MAINNET,
@@ -61,7 +57,7 @@ const initialState: State = {
   delegations: {},
   bakers: [],
   conversionRate: null,
-  batches: {},
+  batches: [],
   refetchTrigger: 0,
   isLoading: false,
   lastTimeUpdated: null,
@@ -145,17 +141,39 @@ const assetsSlice = createSlice({
     ) => {
       state.conversionRate = rate;
     },
-    // Don't use this action directly. Use thunk simulateAndUpdateBatch
-    addToBatch: (state, { payload: { pkh, operations } }: { payload: BatchPayload }) => {
-      const existing = state.batches[pkh] as FormOperations | undefined;
+    // Don't use this action directly. Use thunk estimateAndUpdateBatch
+    addToBatch: (state, { payload: operations }: { payload: FormOperations }) => {
+      const existing = state.batches.find(
+        batch => batch.sender.address.pkh === operations.sender.address.pkh
+      );
       if (existing) {
-        existing.content.push(...operations.content);
+        (existing as FormOperations).content.push(...operations.content);
         return;
       }
-      state.batches[pkh] = operations;
+      state.batches.push(operations);
     },
-    clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: string } }) => {
-      delete state.batches[pkh];
+    clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: RawPkh } }) => {
+      const index = findIndex(state.batches, batch => batch.sender.address.pkh === pkh);
+      if (index === -1) {
+        return;
+      }
+      state.batches.splice(index, 1);
+    },
+    removeBatchItem: (
+      state,
+      { payload: { pkh, index } }: { payload: { pkh: RawPkh; index: number } }
+    ) => {
+      const batchIndex = findIndex(state.batches, batch => batch.sender.address.pkh === pkh);
+      if (batchIndex === -1) {
+        return;
+      }
+      const existingBatch = state.batches[batchIndex];
+      if (index < existingBatch.content.length) {
+        existingBatch.content.splice(index, 1);
+      }
+      if (existingBatch.content.length === 0) {
+        state.batches.splice(batchIndex, 1);
+      }
     },
     refetch: state => {
       state.refetchTrigger += 1;

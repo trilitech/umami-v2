@@ -6,13 +6,12 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { navigateToExternalLink } from "../../utils/helpers";
-import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
-import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
+import { useAppDispatch } from "../../utils/redux/hooks";
 import { useSendFormModal } from "../home/useSendFormModal";
 import { BatchDisplay } from "./BatchDisplay";
 import NoItems from "../../components/NoItems";
-import { useClearBatch } from "../../utils/hooks/assetsHooks";
+import { useBatches, useClearBatch } from "../../utils/hooks/assetsHooks";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import SendTezForm from "../../components/SendFlow/Tez/FormPage";
 import CSVFileUploadForm from "../../components/CSVFileUploader/CSVFileUploadForm";
@@ -43,29 +42,28 @@ export const FilterController: React.FC<{ batchPending: number }> = props => {
 };
 
 const BatchView = () => {
-  const batches = useAppSelector(s => s.assets.batches);
+  const batches = useBatches();
 
   const dispatch = useAppDispatch();
-  const getAccount = useGetOwnedAccount();
   const clearBatch = useClearBatch();
 
   const { openWith } = useContext(DynamicModalContext);
   const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
   const { onOpen, element: confirmationElement, onClose } = useConfirmation();
 
-  const batchEls = Object.entries(batches).map(([pkh, operations]) => {
-    const account = getAccount(pkh);
+  const batchEls = batches.map(operations => {
+    const sender = operations.sender;
 
     const onConfirm = () => {
-      dispatch(clearBatch(account));
+      dispatch(clearBatch(sender));
       onClose();
     };
 
-    return operations && operations.content.length > 0 ? (
+    return operations.content.length > 0 ? (
       <BatchDisplay
         onSend={() =>
           openSendForm({
-            sender: account.address.pkh,
+            sender: sender.address.pkh,
             mode: {
               type: "batch",
               data: operations,
@@ -78,8 +76,8 @@ const BatchView = () => {
             body: "Are you sure you want to delete the batch?",
           })
         }
-        key={account.address.pkh}
-        account={account}
+        key={sender.address.pkh}
+        account={sender}
         operations={operations}
       />
     ) : null;

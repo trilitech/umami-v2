@@ -12,13 +12,11 @@ import {
   mockImplicitAccount,
 } from "../../../mocks/factories";
 import accountsSlice from "./accountsSlice";
-import { estimateAndUpdateBatch } from "../thunks/estimateAndUpdateBatch";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { makeFormOperations } from "../../../components/sendForm/types";
-import { estimate } from "../../tezos";
-import { mockEstimatedFee } from "../../../mocks/helpers";
 import { Operation } from "../../../types/Operation";
+import { ImplicitOperations } from "../../../components/sendForm/types";
 
 const {
   actions: {
@@ -28,6 +26,8 @@ const {
     updateTezTransfers,
     updateTokenTransfers,
     clearBatch,
+    addToBatch,
+    removeBatchItem,
   },
 } = assetsSlice;
 
@@ -43,7 +43,7 @@ describe("assetsSlice", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -66,7 +66,7 @@ describe("assetsSlice", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -93,7 +93,7 @@ describe("assetsSlice", () => {
       network: "mainnet",
       conversionRate: null,
       bakers: [],
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -128,7 +128,7 @@ describe("assetsSlice", () => {
       bakers: [],
       network: "mainnet",
       transfers: { tez: {}, tokens: {} },
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -157,7 +157,7 @@ describe("assetsSlice", () => {
       bakers: [],
       network: "mainnet",
       transfers: { tez: {}, tokens: {} },
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -184,7 +184,7 @@ describe("assetsSlice", () => {
       bakers: [],
       network: "ghostnet",
       conversionRate: null,
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -211,7 +211,7 @@ describe("assetsSlice", () => {
       bakers: [],
       network: "mainnet",
       conversionRate: null,
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -239,7 +239,7 @@ describe("assetsSlice", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      batches: {},
+      batches: [],
       transfers: {
         tez: {
           foo: [mockTezTransaction(1), mockTezTransaction(2)],
@@ -275,7 +275,7 @@ describe("assetsSlice", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      batches: {},
+      batches: [],
       transfers: {
         tez: {
           foo: [mockTezTransaction(4)],
@@ -312,7 +312,7 @@ describe("assetsSlice", () => {
       delegations: {},
       bakers: [],
       network: "mainnet",
-      batches: {},
+      batches: [],
       transfers: {
         tokens: {
           foo: [mockTokenTransaction(1), mockTokenTransaction(2)],
@@ -356,7 +356,7 @@ describe("assetsSlice", () => {
         },
         tez: {},
       },
-      batches: {},
+      batches: [],
       blockLevel: null,
       refetchTrigger: 0,
       lastTimeUpdated: null,
@@ -364,87 +364,143 @@ describe("assetsSlice", () => {
     });
   });
 
-  describe("Batch", () => {
-    test("Adding operations to batch starts an estimation and updates the given account's batch with the result", async () => {
-      const transfers = [mockTezOperation(1), mockDelegationOperation(1), mockNftOperation(1)];
-
-      mockEstimatedFee(12345);
-
-      const formOperations = makeFormOperations(
-        mockImplicitAccount(1),
-        mockImplicitAccount(1),
-        transfers
-      );
-      const action = estimateAndUpdateBatch(formOperations, TezosNetwork.MAINNET);
-
-      store.dispatch(action);
-      expect(jest.mocked(estimate)).toHaveBeenCalledWith(formOperations, TezosNetwork.MAINNET);
-      await waitFor(() => {
-        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(formOperations);
-      });
-    });
-
-    it("can add new operations to the same account", async () => {
-      mockEstimatedFee(12345);
-      const transfers: Operation[] = [];
-
-      for (const operation of [
-        mockTezOperation(1),
-        mockDelegationOperation(1),
-        mockNftOperation(1),
-      ]) {
+  describe("batch", () => {
+    describe("addToBatch", () => {
+      it("can add operations to a non-existing batch", async () => {
         const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-          operation,
+          mockTezOperation(0),
         ]);
-        const action = estimateAndUpdateBatch(formOperations, TezosNetwork.MAINNET);
-        store.dispatch(action);
-        expect(jest.mocked(estimate)).toHaveBeenCalledWith(formOperations, TezosNetwork.MAINNET);
-        transfers.push(operation);
-
+        store.dispatch(addToBatch(formOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(
-            makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers)
-          );
+          expect(store.getState().assets.batches).toEqual([formOperations]);
         });
-      }
-    });
-
-    test("Batches can be cleared for a given account", async () => {
-      const transfers = [mockTezOperation(1)];
-
-      mockEstimatedFee(323);
-
-      const formOperations = makeFormOperations(
-        mockImplicitAccount(1),
-        mockImplicitAccount(1),
-        transfers
-      );
-
-      const action = estimateAndUpdateBatch(formOperations, TezosNetwork.MAINNET);
-
-      store.dispatch(action);
-      await waitFor(() => {
-        expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(formOperations);
       });
 
-      store.dispatch(clearBatch({ pkh: mockImplicitAddress(1).pkh }));
+      it("can add new operations to the same account", async () => {
+        const transfers: Operation[] = [];
 
-      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(undefined);
+        for (const operation of [
+          mockTezOperation(1),
+          mockDelegationOperation(1),
+          mockNftOperation(1),
+        ]) {
+          const formOperations = makeFormOperations(
+            mockImplicitAccount(1),
+            mockImplicitAccount(1),
+            [operation]
+          );
+          store.dispatch(addToBatch(formOperations));
+          transfers.push(operation);
+
+          await waitFor(() => {
+            expect(store.getState().assets.batches).toEqual([
+              makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
+            ]);
+          });
+        }
+      });
+
+      it("can add operations to different sender accounts", async () => {
+        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+        ]) as ImplicitOperations;
+        store.dispatch(addToBatch(formOperations));
+        const anotherAccountFormOperations = { ...formOperations, sender: mockImplicitAccount(2) };
+        store.dispatch(addToBatch(anotherAccountFormOperations));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([
+            formOperations,
+            anotherAccountFormOperations,
+          ]);
+        });
+      });
     });
 
-    test("Adding operations to a batch that dont't pass estimation throws an error and doesn't update the given account's batch", async () => {
-      const estimationError = new Error("estimation error");
-      jest.mocked(estimate).mockRejectedValueOnce(estimationError);
+    describe("clearBatch", () => {
+      it("removes everything under a given account", async () => {
+        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+          mockDelegationOperation(0),
+          mockNftOperation(0),
+        ]);
+        const pkh = mockImplicitAccount(1).address.pkh;
+        store.dispatch(addToBatch(formOperations));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+        store.dispatch(clearBatch({ pkh }));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([]);
+        });
+      });
+    });
 
-      const transfers = [mockTezOperation(1), mockDelegationOperation(1), mockNftOperation(1)];
-      const action = estimateAndUpdateBatch(
-        makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
-        TezosNetwork.MAINNET
-      );
+    describe("removeBatchItem", () => {
+      it("removes the whole batch if there is just one operation", async () => {
+        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+        ]);
+        const pkh = mockImplicitAccount(1).address.pkh;
+        store.dispatch(addToBatch(formOperations));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+        store.dispatch(removeBatchItem({ pkh, index: 0 }));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([]);
+        });
+      });
 
-      const dispatchResult = store.dispatch(action);
-      await expect(dispatchResult).rejects.toThrow(estimationError.message);
-      expect(store.getState().assets.batches[mockImplicitAddress(1).pkh]).toEqual(undefined);
+      it("removes the operation at the given index", async () => {
+        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+          mockDelegationOperation(0),
+          mockNftOperation(0),
+        ]);
+        const pkh = mockImplicitAccount(1).address.pkh;
+        store.dispatch(addToBatch(formOperations));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+        store.dispatch(removeBatchItem({ pkh, index: 1 }));
+        const newFormOperations = {
+          ...formOperations,
+          content: [mockTezOperation(0), mockNftOperation(0)],
+        };
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([newFormOperations]);
+        });
+      });
+
+      it("does nothing if the index is out of bounds", async () => {
+        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+        ]);
+        const pkh = mockImplicitAccount(1).address.pkh;
+        store.dispatch(addToBatch(formOperations));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+        store.dispatch(removeBatchItem({ pkh, index: 5 }));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+      });
+
+      it("does nothing if the batch does not exist", async () => {
+        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+        ]);
+        store.dispatch(addToBatch(formOperations));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+
+        store.dispatch(removeBatchItem({ pkh: mockImplicitAccount(2).address.pkh, index: 5 }));
+        await waitFor(() => {
+          expect(store.getState().assets.batches).toEqual([formOperations]);
+        });
+      });
     });
   });
 });
