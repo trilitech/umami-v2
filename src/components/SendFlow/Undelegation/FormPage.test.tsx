@@ -34,7 +34,7 @@ describe("<Form />", () => {
       expect(screen.getByLabelText("From")).toBeDisabled();
     });
 
-    it("shows the baker tile with the baker of the sender", async () => {
+    it("shows sender baker's tile", async () => {
       const sender = mockImplicitAccount(0);
       const baker = mockImplicitAccount(1);
       store.dispatch(

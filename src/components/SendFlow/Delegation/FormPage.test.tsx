@@ -84,7 +84,7 @@ describe("<Form />", () => {
       });
     });
 
-    it("displays change baker for address who is not delegating", async () => {
+    it("displays change baker for address who is delegating", async () => {
       const sender = mockImplicitAccount(0);
       const baker = mockImplicitAccount(1);
       store.dispatch(

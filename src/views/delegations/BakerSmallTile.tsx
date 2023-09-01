@@ -1,17 +1,13 @@
 import { AspectRatio, Image, Flex, Box, Text, Heading } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import { formatPkh } from "../../utils/format";
-import { useGetBaker, useGetBakerFor } from "../../utils/hooks/assetsHooks";
-import { Account } from "../../types/Account";
+import { useGetBaker, useGetDelegateOf } from "../../utils/hooks/assetsHooks";
 import { RawPkh } from "../../types/Address";
+import { Account } from "../../types/Account";
 
-type Mode = { type: "bakerPkh"; pkh: RawPkh } | { type: "delegatorAccount"; account: Account };
-
-export const BakerSmallTile: React.FC<{ mode: Mode }> = ({ mode }) => {
-  const getBakerFor = useGetBakerFor();
+export const BakerSmallTile: React.FC<{ pkh: RawPkh }> = ({ pkh }) => {
   const getBaker = useGetBaker();
-  const bakerAddress = mode.type === "bakerPkh" ? mode.pkh : getBakerFor(mode.account)?.address;
-  const baker = bakerAddress ? getBaker(bakerAddress) : undefined;
+  const baker = getBaker(pkh);
 
   if (!baker) {
     return null;
@@ -29,7 +25,6 @@ export const BakerSmallTile: React.FC<{ mode: Mode }> = ({ mode }) => {
       data-testid="baker-tile"
     >
       <AspectRatio mr="8px" height="30px" width="30px" ratio={1}>
-        {/* TODO: handle the case when the image doesn't render  */}
         <Image src={logoUrl} />
       </AspectRatio>
       <Flex ml="8px" alignItems="center">
@@ -40,6 +35,16 @@ export const BakerSmallTile: React.FC<{ mode: Mode }> = ({ mode }) => {
       </Flex>
     </Flex>
   );
+};
+
+// Get the baker of the account's delegation
+export const DelegateSmallTile: React.FC<{ account: Account }> = ({ account }) => {
+  const getDelegateOf = useGetDelegateOf();
+  const baker = getDelegateOf(account);
+  if (!baker) {
+    return null;
+  }
+  return <BakerSmallTile pkh={baker.address} />;
 };
 
 //TODO: Remove this once fillstep is removed

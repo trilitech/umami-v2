@@ -184,7 +184,7 @@ export const useGetBaker = () => {
 };
 
 // Returns the baker of the account if the account is delegating
-export const useGetBakerFor = () => {
+export const useGetDelegateOf = () => {
   const getBaker = useGetBaker();
   const delegations = useAllDelegations();
   return (account: Account): Delegate | undefined => {

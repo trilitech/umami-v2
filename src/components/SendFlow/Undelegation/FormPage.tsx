@@ -12,7 +12,7 @@ import {
 } from "../onSubmitFormActionHooks";
 import { Undelegation } from "../../../types/Operation";
 import FormPageHeader from "../FormPageHeader";
-import { BakerSmallTile } from "../../../views/delegations/BakerSmallTile";
+import { DelegateSmallTile } from "../../../views/delegations/BakerSmallTile";
 
 export type FormValues = {
   sender: RawPkh;
@@ -65,9 +65,8 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
                 isDisabled
               />
             </FormControl>
-
             <FormLabel>Baker</FormLabel>
-            <BakerSmallTile mode={{ type: "delegatorAccount", account: sender }} />
+            <DelegateSmallTile account={sender} />
           </ModalBody>
           <ModalFooter>
             <FormSubmitButtons

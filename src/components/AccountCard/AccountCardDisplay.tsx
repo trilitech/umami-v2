@@ -17,7 +17,7 @@ import { DynamicModalContext } from "../DynamicModal";
 import { useContext } from "react";
 import DelegationFormPage from "../SendFlow/Delegation/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
-import { useGetBakerFor } from "../../utils/hooks/assetsHooks";
+import { useGetDelegateOf } from "../../utils/hooks/assetsHooks";
 
 type Props = {
   onSend: () => void;
@@ -63,8 +63,8 @@ export const AccountCardDisplay: React.FC<Props> = ({
   const isMultisig = account.type === AccountType.MULTISIG;
   const getOwnedAccount = useGetOwnedAccount();
   const { openWith } = useContext(DynamicModalContext);
-  const getBakerFor = useGetBakerFor();
-  const baker = getBakerFor(account);
+  const getDelegateOf = useGetDelegateOf();
+  const baker = getDelegateOf(account);
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
       <Identicon identiconSize={32} address={pkh} />

@@ -54,12 +54,7 @@ const SignPage: React.FC<SignPageProps> = props => {
 
             <Box mb="42px">
               <FormLabel>To</FormLabel>
-              <BakerSmallTile
-                mode={{
-                  type: "bakerPkh",
-                  pkh: bakerPkh,
-                }}
-              />
+              <BakerSmallTile pkh={bakerPkh} />
             </Box>
 
             <OperationSignerSelector
