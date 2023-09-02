@@ -102,7 +102,9 @@ export const BatchDisplay: React.FC<{
           <AccountSmallTile ml={2} pkh={account.address.pkh} />
           <Text color={colors.gray[400]}>
             {/* TODO: use pluralize.js for that */}
-            {`${operations.content.length} transaction${operations.content.length > 1 ? "s" : ""}`}
+            {`${operations.operations.length} transaction${
+              operations.operations.length > 1 ? "s" : ""
+            }`}
           </Text>
         </Flex>
         <TableContainer overflowX="unset" overflowY="unset">
@@ -116,7 +118,7 @@ export const BatchDisplay: React.FC<{
               </Tr>
             </Thead>
             <Tbody>
-              {operations.content.map((operation, i) => (
+              {operations.operations.map((operation, i) => (
                 // TODO: add better key for operations
                 // If you add two 1-tez transfers to the same recipient, the key will be the same
                 // `i` should not be used in the key

@@ -20,7 +20,7 @@ const makeTransferImplicit = async (operations: Operation[], tezosToolkit: Tezos
 };
 
 export const makeTransfer = (op: FormOperations, tezosToolkit: TezosToolkit) => {
-  const transferToDisplay = op.content;
+  const transferToDisplay = op.operations;
 
   const transfer =
     op.type === "proposal"

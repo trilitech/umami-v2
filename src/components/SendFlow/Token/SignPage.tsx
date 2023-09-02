@@ -33,7 +33,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
 
-  const amount = (operations.content[0] as FA12Transfer).amount;
+  const amount = (operations.operations[0] as FA12Transfer).amount;
 
   return (
     <FormProvider {...form}>

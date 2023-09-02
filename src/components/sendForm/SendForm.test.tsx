@@ -149,7 +149,7 @@ describe("<SendForm />", () => {
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(
         {
           type: "implicit",
-          content: [
+          operations: [
             {
               type: "fa2",
               amount: "1000000",
@@ -262,7 +262,7 @@ describe("<SendForm />", () => {
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(
         {
           type: "implicit",
-          content: [
+          operations: [
             {
               type: "fa1.2",
               amount: "1000000000",

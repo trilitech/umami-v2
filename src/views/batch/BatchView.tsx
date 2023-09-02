@@ -59,7 +59,7 @@ const BatchView = () => {
       onClose();
     };
 
-    return operations.content.length > 0 ? (
+    return operations.operations.length > 0 ? (
       <BatchDisplay
         onSend={() =>
           openSendForm({

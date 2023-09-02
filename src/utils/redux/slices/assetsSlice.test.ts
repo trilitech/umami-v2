@@ -465,7 +465,7 @@ describe("assetsSlice", () => {
         store.dispatch(removeBatchItem({ pkh, index: 1 }));
         const newFormOperations = {
           ...formOperations,
-          content: [mockTezOperation(0), mockNftOperation(0)],
+          operations: [mockTezOperation(0), mockNftOperation(0)],
         };
         await waitFor(() => {
           expect(store.getState().assets.batches).toEqual([newFormOperations]);

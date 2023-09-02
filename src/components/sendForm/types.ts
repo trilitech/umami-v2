@@ -26,14 +26,14 @@ export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
 export type ProposalOperations = {
   type: "proposal";
-  content: Operation[];
+  operations: Operation[];
   sender: MultisigAccount;
   signer: ImplicitAccount;
 };
 
 export type ImplicitOperations = {
   type: "implicit";
-  content: Operation[];
+  operations: Operation[];
   sender: ImplicitAccount;
   signer: ImplicitAccount; // must be the same as sender
 };
@@ -55,7 +55,7 @@ export const makeFormOperations = (
       }
       return {
         type: "implicit",
-        content: operations,
+        operations: operations,
         signer: sender,
         sender,
       };
@@ -63,7 +63,7 @@ export const makeFormOperations = (
     case AccountType.MULTISIG:
       return {
         type: "proposal",
-        content: operations,
+        operations: operations,
         sender,
         signer,
       };

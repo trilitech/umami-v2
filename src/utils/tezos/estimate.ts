@@ -43,14 +43,14 @@ export const estimateBatch = async (
 ): Promise<Estimate[]> => {
   switch (operations.type) {
     case "implicit": {
-      const batch = operationsToBatchParams(operations.content);
+      const batch = operationsToBatchParams(operations.operations);
 
       const tezosToolkit = await makeToolkit({ type: "fake", signer: operations.signer, network });
 
       return tezosToolkit.estimate.batch(batch);
     }
     case "proposal": {
-      const content = operations.content;
+      const content = operations.operations;
 
       const lambdaActions = makeBatchLambda(content);
       const estimation = await estimateMultisigPropose(

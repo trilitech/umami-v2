@@ -28,7 +28,7 @@ export const getTezAmount = (operations: FormOperations): BigNumber | undefined 
     case "proposal":
       return;
     case "implicit": {
-      const amounts = operations.content
+      const amounts = operations.operations
         .filter((op): op is TezTransfer => op.type === "tez")
         .map(op => op.amount);
       return sumTez(amounts);
