@@ -12,7 +12,7 @@ import colors from "../../../style/colors";
 import { TezTransfer } from "../../../types/Operation";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
-import { FormOperations } from "../../sendForm/types";
+import { AccountOperations } from "../../sendForm/types";
 import { BigNumber } from "bignumber.js";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
@@ -21,7 +21,7 @@ import { sumTez } from "../../../utils/tezos";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
 
-export const getTezAmount = (operations: FormOperations): BigNumber | undefined => {
+export const getTezAmount = (operations: AccountOperations): BigNumber | undefined => {
   switch (operations.type) {
     // for proposal operations the signer pays only the operation fee
     // tez will be sent by the multisig contract on execute call

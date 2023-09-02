@@ -24,7 +24,7 @@ import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
 import { parseOperation } from "./utils";
-import { makeFormOperations } from "../sendForm/types";
+import { makeAccountOperations } from "../sendForm/types";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { useContext } from "react";
@@ -75,7 +75,7 @@ const CSVFileUploadForm = () => {
 
       await dispatch(
         estimateAndUpdateBatch(
-          makeFormOperations(senderAccount, getSigner(senderAccount), operations),
+          makeAccountOperations(senderAccount, getSigner(senderAccount), operations),
           network
         )
       );

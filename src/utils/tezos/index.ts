@@ -1,6 +1,6 @@
 export * from "./estimate";
 export * from "./fetch";
-export * from "./operations";
+export * from "./execute";
 export * from "./params";
 export * from "./helpers";
 export * from "./consts";

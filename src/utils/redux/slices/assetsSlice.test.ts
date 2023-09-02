@@ -14,7 +14,7 @@ import {
 import accountsSlice from "./accountsSlice";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
 import { TezosNetwork } from "../../../types/TezosNetwork";
-import { makeFormOperations } from "../../../components/sendForm/types";
+import { makeAccountOperations } from "../../../components/sendForm/types";
 import { Operation } from "../../../types/Operation";
 import { ImplicitOperations } from "../../../components/sendForm/types";
 
@@ -367,12 +367,14 @@ describe("assetsSlice", () => {
   describe("batch", () => {
     describe("addToBatch", () => {
       it("can add operations to a non-existing batch", async () => {
-        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-          mockTezOperation(0),
-        ]);
-        store.dispatch(addToBatch(formOperations));
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0)]
+        );
+        store.dispatch(addToBatch(accountOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual([formOperations]);
+          expect(store.getState().assets.batches).toEqual([accountOperations]);
         });
       });
 
@@ -384,32 +386,37 @@ describe("assetsSlice", () => {
           mockDelegationOperation(1),
           mockNftOperation(1),
         ]) {
-          const formOperations = makeFormOperations(
+          const accountOperations = makeAccountOperations(
             mockImplicitAccount(1),
             mockImplicitAccount(1),
             [operation]
           );
-          store.dispatch(addToBatch(formOperations));
+          store.dispatch(addToBatch(accountOperations));
           transfers.push(operation);
 
           await waitFor(() => {
             expect(store.getState().assets.batches).toEqual([
-              makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
+              makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
             ]);
           });
         }
       });
 
       it("can add operations to different sender accounts", async () => {
-        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-          mockTezOperation(0),
-        ]) as ImplicitOperations;
-        store.dispatch(addToBatch(formOperations));
-        const anotherAccountFormOperations = { ...formOperations, sender: mockImplicitAccount(2) };
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0)]
+        ) as ImplicitOperations;
+        store.dispatch(addToBatch(accountOperations));
+        const anotherAccountFormOperations = {
+          ...accountOperations,
+          sender: mockImplicitAccount(2),
+        };
         store.dispatch(addToBatch(anotherAccountFormOperations));
         await waitFor(() => {
           expect(store.getState().assets.batches).toEqual([
-            formOperations,
+            accountOperations,
             anotherAccountFormOperations,
           ]);
         });
@@ -418,15 +425,15 @@ describe("assetsSlice", () => {
 
     describe("clearBatch", () => {
       it("removes everything under a given account", async () => {
-        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-          mockTezOperation(0),
-          mockDelegationOperation(0),
-          mockNftOperation(0),
-        ]);
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0), mockDelegationOperation(0), mockNftOperation(0)]
+        );
         const pkh = mockImplicitAccount(1).address.pkh;
-        store.dispatch(addToBatch(formOperations));
+        store.dispatch(addToBatch(accountOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual([formOperations]);
+          expect(store.getState().assets.batches).toEqual([accountOperations]);
         });
         store.dispatch(clearBatch({ pkh }));
         await waitFor(() => {
@@ -437,13 +444,15 @@ describe("assetsSlice", () => {
 
     describe("removeBatchItem", () => {
       it("removes the whole batch if there is just one operation", async () => {
-        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-          mockTezOperation(0),
-        ]);
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0)]
+        );
         const pkh = mockImplicitAccount(1).address.pkh;
-        store.dispatch(addToBatch(formOperations));
+        store.dispatch(addToBatch(accountOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual([formOperations]);
+          expect(store.getState().assets.batches).toEqual([accountOperations]);
         });
         store.dispatch(removeBatchItem({ pkh, index: 0 }));
         await waitFor(() => {
@@ -452,19 +461,19 @@ describe("assetsSlice", () => {
       });
 
       it("removes the operation at the given index", async () => {
-        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-          mockTezOperation(0),
-          mockDelegationOperation(0),
-          mockNftOperation(0),
-        ]);
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0), mockDelegationOperation(0), mockNftOperation(0)]
+        );
         const pkh = mockImplicitAccount(1).address.pkh;
-        store.dispatch(addToBatch(formOperations));
+        store.dispatch(addToBatch(accountOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual([formOperations]);
+          expect(store.getState().assets.batches).toEqual([accountOperations]);
         });
         store.dispatch(removeBatchItem({ pkh, index: 1 }));
         const newFormOperations = {
-          ...formOperations,
+          ...accountOperations,
           operations: [mockTezOperation(0), mockNftOperation(0)],
         };
         await waitFor(() => {
@@ -473,32 +482,36 @@ describe("assetsSlice", () => {
       });
 
       it("does nothing if the index is out of bounds", async () => {
-        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-          mockTezOperation(0),
-        ]);
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0)]
+        );
         const pkh = mockImplicitAccount(1).address.pkh;
-        store.dispatch(addToBatch(formOperations));
+        store.dispatch(addToBatch(accountOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual([formOperations]);
+          expect(store.getState().assets.batches).toEqual([accountOperations]);
         });
         store.dispatch(removeBatchItem({ pkh, index: 5 }));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual([formOperations]);
+          expect(store.getState().assets.batches).toEqual([accountOperations]);
         });
       });
 
       it("does nothing if the batch does not exist", async () => {
-        const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-          mockTezOperation(0),
-        ]);
-        store.dispatch(addToBatch(formOperations));
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0)]
+        );
+        store.dispatch(addToBatch(accountOperations));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual([formOperations]);
+          expect(store.getState().assets.batches).toEqual([accountOperations]);
         });
 
         store.dispatch(removeBatchItem({ pkh: mockImplicitAccount(2).address.pkh, index: 5 }));
         await waitFor(() => {
-          expect(store.getState().assets.batches).toEqual([formOperations]);
+          expect(store.getState().assets.batches).toEqual([accountOperations]);
         });
       });
     });

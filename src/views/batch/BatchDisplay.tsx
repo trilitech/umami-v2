@@ -19,7 +19,7 @@ import { BsTrash } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { IconAndTextBtnLink } from "../../components/IconAndTextBtn";
-import { FormOperations } from "../../components/sendForm/types";
+import { AccountOperations } from "../../components/sendForm/types";
 import { Account, AccountType } from "../../types/Account";
 import { Operation } from "../../types/Operation";
 import { formatTokenAmount, tokenSymbol } from "../../types/Token";
@@ -88,7 +88,7 @@ const RightPanel = ({
 
 export const BatchDisplay: React.FC<{
   account: Account;
-  operations: FormOperations;
+  operations: AccountOperations;
   onDelete: () => void;
   onSend: () => void;
 }> = ({ account, operations, onDelete, onSend }) => {

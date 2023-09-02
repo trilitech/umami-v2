@@ -7,7 +7,7 @@ import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Delegate } from "../../../types/Delegate";
-import { FormOperations } from "../../../components/sendForm/types";
+import { AccountOperations } from "../../../components/sendForm/types";
 import { RawPkh } from "../../../types/Address";
 
 type State = {
@@ -24,7 +24,7 @@ type State = {
   delegations: Record<string, DelegationOperation | undefined>;
   bakers: Delegate[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: FormOperations[];
+  batches: AccountOperations[];
   refetchTrigger: number;
   isLoading: boolean;
   lastTimeUpdated: string | null;
@@ -142,12 +142,12 @@ const assetsSlice = createSlice({
       state.conversionRate = rate;
     },
     // Don't use this action directly. Use thunk estimateAndUpdateBatch
-    addToBatch: (state, { payload: operations }: { payload: FormOperations }) => {
+    addToBatch: (state, { payload: operations }: { payload: AccountOperations }) => {
       const existing = state.batches.find(
         batch => batch.sender.address.pkh === operations.sender.address.pkh
       );
       if (existing) {
-        (existing as FormOperations).operations.push(...operations.operations);
+        (existing as AccountOperations).operations.push(...operations.operations);
         return;
       }
       state.batches.push(operations);

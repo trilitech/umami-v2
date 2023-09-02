@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/react";
-import { makeFormOperations } from "../../../components/sendForm/types";
+import { makeAccountOperations } from "../../../components/sendForm/types";
 import {
   mockDelegationOperation,
   mockImplicitAccount,
@@ -17,15 +17,17 @@ describe("estimateAndUpdateBatch", () => {
       const operation = mockTezOperation(1);
 
       mockEstimatedFee(1000);
-      const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-        operation,
-      ]);
-      const action = estimateAndUpdateBatch(formOperations, network);
+      const accountOperations = makeAccountOperations(
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
+        [operation]
+      );
+      const action = estimateAndUpdateBatch(accountOperations, network);
 
       store.dispatch(action);
-      expect(jest.mocked(estimate)).toHaveBeenCalledWith(formOperations, network);
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(accountOperations, network);
       await waitFor(() => {
-        expect(store.getState().assets.batches).toEqual([formOperations]);
+        expect(store.getState().assets.batches).toEqual([accountOperations]);
       });
     });
 
@@ -34,23 +36,25 @@ describe("estimateAndUpdateBatch", () => {
       const operation = mockTezOperation(1);
       mockEstimatedFee(1000);
 
-      const formOperations = makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
-        operation,
-      ]);
-      store.dispatch(estimateAndUpdateBatch(formOperations, network));
+      const accountOperations = makeAccountOperations(
+        mockImplicitAccount(1),
+        mockImplicitAccount(1),
+        [operation]
+      );
+      store.dispatch(estimateAndUpdateBatch(accountOperations, network));
 
       await waitFor(() => {
-        expect(store.getState().assets.batches).toEqual([formOperations]);
+        expect(store.getState().assets.batches).toEqual([accountOperations]);
       });
 
       const failedOperation = mockDelegationOperation(0);
-      const failedFormOperations = { ...formOperations, operations: [failedOperation] };
+      const failedFormOperations = { ...accountOperations, operations: [failedOperation] };
       const action = estimateAndUpdateBatch(failedFormOperations, network);
       jest.mocked(estimate).mockRejectedValueOnce(new Error("Estimation failed"));
 
       await expect(() => store.dispatch(action)).rejects.toThrowError("Estimation failed");
-      expect(jest.mocked(estimate)).toHaveBeenCalledWith(formOperations, network);
-      expect(store.getState().assets.batches).toEqual([formOperations]);
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(accountOperations, network);
+      expect(store.getState().assets.batches).toEqual([accountOperations]);
     });
   });
 });

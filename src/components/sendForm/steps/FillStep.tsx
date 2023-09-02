@@ -42,7 +42,7 @@ import {
   AddressAutocomplete,
 } from "../../AddressAutocomplete";
 import { SendNFTRecapTile } from "../components/SendNFTRecapTile";
-import { toOperation, FormOperations, SendFormMode, makeFormOperations } from "../types";
+import { toOperation, AccountOperations, SendFormMode, makeAccountOperations } from "../types";
 import { BatchRecap } from "./BatchRecap";
 import { Token } from "../../../types/Token";
 import { FormErrorMessage } from "../../FormErrorMessage";
@@ -339,7 +339,7 @@ export const SendTezOrNFTForm = ({
 };
 
 export const FillStep: React.FC<{
-  onSubmit: (v: FormOperations) => void;
+  onSubmit: (v: AccountOperations) => void;
   onSubmitBatch: (v: Operation, signer: string) => void;
   isLoading: boolean;
   sender: string;
@@ -372,7 +372,7 @@ export const FillStep: React.FC<{
 
             const senderAccount = getAccount(formValues.sender);
             const signer = getSigner(senderAccount);
-            const operations = makeFormOperations(senderAccount, signer, [delegation]);
+            const operations = makeAccountOperations(senderAccount, signer, [delegation]);
             onSubmit(operations);
           }}
         />
@@ -402,7 +402,7 @@ export const FillStep: React.FC<{
             const signer =
               (formValues.proposalSigner && getImplicitAccount(formValues.proposalSigner)) ||
               getSigner(senderAccount);
-            const operations = makeFormOperations(senderAccount, signer, [
+            const operations = makeAccountOperations(senderAccount, signer, [
               {
                 type: "tez",
                 amount: tezToMutez(formValues.amount).toString(),
@@ -438,7 +438,7 @@ export const FillStep: React.FC<{
             const signer =
               (formValues.proposalSigner && getImplicitAccount(formValues.proposalSigner)) ||
               getSigner(senderAccount);
-            const operations = makeFormOperations(senderAccount, signer, [
+            const operations = makeAccountOperations(senderAccount, signer, [
               toOperation(mode.data, {
                 amount: getRealAmount(mode.data, formValues.amount).toString(),
                 sender: formValues.sender,

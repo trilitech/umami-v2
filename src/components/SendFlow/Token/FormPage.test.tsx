@@ -6,7 +6,7 @@ import { FormPagePropsWithSender } from "../utils";
 import { FA2TokenBalance } from "../../../types/TokenBalance";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
-import { makeFormOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../sendForm/types";
 import { parseContractPkh } from "../../../types/Address";
 import BigNumber from "bignumber.js";
 import { mockToast } from "../../../mocks/toast";
@@ -194,7 +194,7 @@ describe("<FormPage />", () => {
         });
         fireEvent.click(submitButton);
         mockEstimatedFee(100);
-        const operations = makeFormOperations(sender, mockAccount, [
+        const operations = makeAccountOperations(sender, mockAccount, [
           {
             type: "fa2",
             amount: "1",

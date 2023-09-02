@@ -18,9 +18,9 @@ import { AccountSmallTile } from "../AccountSelector/AccountSmallTile";
 import { ApproveOrExecute } from "../../utils/tezos/types";
 import { TezosToolkit } from "@taquito/taquito";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { makeFormOperations } from "../sendForm/types";
-import { makeTransfer } from "../sendForm/util/execution";
+import { makeAccountOperations } from "../sendForm/types";
 import { makeMultisigApproveOrExecuteOperation } from "../../types/Operation";
+import { executeAccountOperations } from "../../utils/tezos";
 
 type Props = ParamsWithFee & {
   onSuccess: (hash: string) => void;
@@ -44,11 +44,11 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
   const approveOrExecute = (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
-        const executeOrApprove = makeFormOperations(signer, signer, [
+        const executeOrApprove = makeAccountOperations(signer, signer, [
           makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
         ]);
 
-        const { hash } = await makeTransfer(executeOrApprove, tezosToolkit);
+        const { hash } = await executeAccountOperations(executeOrApprove, tezosToolkit);
 
         onSuccess(hash);
       },

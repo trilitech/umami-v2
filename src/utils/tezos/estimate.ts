@@ -1,11 +1,11 @@
-import { FormOperations } from "../../components/sendForm/types";
+import { AccountOperations } from "../../components/sendForm/types";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { makeToolkit, sumTez } from "./helpers";
 import { operationsToBatchParams } from "./params";
 import BigNumber from "bignumber.js";
 
 export const estimate = async (
-  { operations, signer }: FormOperations,
+  { operations, signer }: AccountOperations,
   network: TezosNetwork
 ): Promise<BigNumber> => {
   const tezosToolkit = await makeToolkit({ type: "fake", signer: signer, network });

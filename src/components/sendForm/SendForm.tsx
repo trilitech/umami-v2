@@ -9,12 +9,16 @@ import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { estimate } from "../../utils/tezos";
+import { estimate, executeAccountOperations } from "../../utils/tezos";
 import { FillStep } from "./steps/FillStep";
 import { SubmitStep } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
-import { EstimatedOperation, FormOperations, makeFormOperations, SendFormMode } from "./types";
-import { makeTransfer } from "./util/execution";
+import {
+  EstimatedOperation,
+  AccountOperations,
+  makeAccountOperations,
+  SendFormMode,
+} from "./types";
 
 export const SendForm = ({
   sender,
@@ -51,7 +55,7 @@ export const SendForm = ({
     }
   }, [hash]);
 
-  const simulate = (operations: FormOperations) =>
+  const simulate = (operations: AccountOperations) =>
     handleAsyncAction(
       async () => {
         const fee = await estimate(operations, network);
@@ -64,11 +68,10 @@ export const SendForm = ({
   const addToBatch = (operation: Operation, senderPkh: RawPkh) =>
     handleAsyncAction(
       async () => {
-        console.log("ADD to batch");
         const sender = getAccount(senderPkh);
         const signer = getSigner(sender);
         await dispatch(
-          estimateAndUpdateBatch(makeFormOperations(sender, signer, [operation]), network)
+          estimateAndUpdateBatch(makeAccountOperations(sender, signer, [operation]), network)
         );
 
         toast({ title: "Transaction added to batch!", status: "success" });
@@ -76,9 +79,9 @@ export const SendForm = ({
       { title: "Invalid transaction" }
     );
 
-  const execute = async (operations: FormOperations, tezosToolkit: TezosToolkit) =>
+  const execute = async (operations: AccountOperations, tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const result = await makeTransfer(operations, tezosToolkit);
+      const result = await executeAccountOperations(operations, tezosToolkit);
       if (mode.type === "batch") {
         // TODO this will have to me moved in a thunk
         clearBatch(operations.sender);

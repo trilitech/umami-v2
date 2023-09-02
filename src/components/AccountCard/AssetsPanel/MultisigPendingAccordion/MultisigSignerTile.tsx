@@ -8,7 +8,7 @@ import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHan
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import { ParamsWithFee } from "../../../ApproveExecuteForm/types";
 import { MultisigSignerTileDisplay, MultisigSignerState } from "./MultisigSignerTileDisplay";
-import { makeFormOperations } from "../../../sendForm/types";
+import { makeAccountOperations } from "../../../sendForm/types";
 import { estimate } from "../../../../utils/tezos";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 
@@ -43,7 +43,7 @@ const MultisigSignerTile: React.FC<{
 
       const actionType = operationIsExecutable ? "execute" : "approve";
 
-      const executeOrApprove = makeFormOperations(signer, signer, [
+      const executeOrApprove = makeAccountOperations(signer, signer, [
         makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
       ]);
       const suggestedFeeMutez = await estimate(executeOrApprove, network);
