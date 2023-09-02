@@ -1,22 +1,12 @@
-import { TezosToolkit, TransactionOperation } from "@taquito/taquito";
+import { TezosToolkit } from "@taquito/taquito";
 import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { Operation } from "../../types/Operation";
-import { makeMultisigProposeMethod } from "./helpers";
 import { operationsToWalletParams } from "./params";
-import { MultisigProposeMethodArgs } from "./types";
-
-export const proposeMultisigLambda = async (
-  params: MultisigProposeMethodArgs,
-  tezosToolkit: TezosToolkit
-): Promise<TransactionOperation> => {
-  const proposeMethod = await makeMultisigProposeMethod(params, tezosToolkit);
-  return proposeMethod.send();
-};
+import { Operation } from "../../types/Operation";
 
 export const submitBatch = async (
-  operation: Operation[],
+  operations: Operation[],
   tezosToolkit: TezosToolkit
 ): Promise<BatchWalletOperation> => {
-  const params = operationsToWalletParams(operation);
+  const params = operationsToWalletParams(operations);
   return tezosToolkit.wallet.batch(params).send();
 };

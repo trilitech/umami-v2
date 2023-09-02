@@ -11,7 +11,6 @@ import { PublicKeyPair } from "../mnemonic";
 import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { FakeSigner } from "./fakeSigner";
-import { MultisigProposeMethodArgs } from "./types";
 import BigNumber from "bignumber.js";
 import { TransactionOperationParameter } from "@taquito/rpc";
 
@@ -174,15 +173,6 @@ export const makeTokenTransferParams = (operation: FA12Transfer | FA2Transfer): 
         ? makeFA12TransactionParameter(operation)
         : makeFA2TransactionParameter(operation),
   };
-};
-
-// TODO: convert to an offline method
-export const makeMultisigProposeMethod = async (
-  { lambdaActions, contract }: MultisigProposeMethodArgs,
-  toolkit: TezosToolkit
-) => {
-  const contractInstance = await toolkit.contract.at(contract.pkh);
-  return contractInstance.methods.propose(lambdaActions);
 };
 
 export const selectRandomElements = <T>(

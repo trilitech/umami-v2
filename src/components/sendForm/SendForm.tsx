@@ -64,6 +64,7 @@ export const SendForm = ({
   const addToBatch = (operation: Operation, senderPkh: RawPkh) =>
     handleAsyncAction(
       async () => {
+        console.log("ADD to batch");
         const sender = getAccount(senderPkh);
         const signer = getSigner(sender);
         await dispatch(

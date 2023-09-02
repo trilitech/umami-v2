@@ -55,7 +55,7 @@ export const makeFormOperations = (
       }
       return {
         type: "implicit",
-        operations: operations,
+        operations,
         signer: sender,
         sender,
       };
@@ -63,7 +63,7 @@ export const makeFormOperations = (
     case AccountType.MULTISIG:
       return {
         type: "proposal",
-        operations: operations,
+        operations,
         sender,
         signer,
       };
