@@ -1,6 +1,7 @@
 import { MichelsonV1Expression } from "@taquito/rpc";
 import { TransferParams } from "@taquito/taquito";
 import { Address, ContractAddress, ImplicitAddress } from "./Address";
+import { ApproveOrExecute } from "../utils/tezos/types";
 
 export type TezTransfer = {
   type: "tez";
@@ -57,3 +58,27 @@ export type Operation =
   | Undelegation
   | ContractOrigination
   | ContractCall;
+
+export const makeMultisigApproveOrExecuteOperation = (
+  contract: ContractAddress,
+  entrypoint: ApproveOrExecute,
+  operationId: string
+): ContractCall =>
+  makeContractCallOperation(contract, entrypoint, {
+    int: operationId,
+  });
+
+export const makeContractCallOperation = (
+  contract: ContractAddress,
+  entrypoint: string,
+  args: MichelsonV1Expression,
+  amount = "0" // Most of the time, we don't need to send any tez on contract calls
+): ContractCall => {
+  return {
+    type: "contract_call",
+    contract,
+    entrypoint,
+    arguments: args,
+    amount,
+  };
+};

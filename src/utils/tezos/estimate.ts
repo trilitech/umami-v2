@@ -2,14 +2,9 @@ import { Estimate } from "@taquito/taquito";
 import { ImplicitAccount } from "../../types/Account";
 import { FormOperations } from "../../components/sendForm/types";
 import { TezosNetwork } from "../../types/TezosNetwork";
-import {
-  makeMultisigApproveOrExecuteMethod,
-  makeMultisigProposeMethod,
-  makeToolkit,
-  sumTez,
-} from "./helpers";
+import { makeMultisigProposeMethod, makeToolkit, sumTez } from "./helpers";
 import { operationsToBatchParams } from "./params";
-import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
+import { MultisigProposeMethodArgs } from "./types";
 import { makeBatchLambda } from "../../multisig/multisigUtils";
 import BigNumber from "bignumber.js";
 
@@ -23,18 +18,6 @@ export const estimateMultisigPropose = async (
   const propseMethod = await makeMultisigProposeMethod(params, tezosToolkit);
 
   return tezosToolkit.estimate.transfer(propseMethod.toTransferParams());
-};
-
-export const estimateMultisigApproveOrExecute = async (
-  params: MultisigApproveOrExecuteMethodArgs,
-  signer: ImplicitAccount,
-  network: TezosNetwork
-): Promise<Estimate> => {
-  const tezosToolkit = await makeToolkit({ type: "fake", signer, network });
-
-  const approveOrExecuteMethod = await makeMultisigApproveOrExecuteMethod(params, tezosToolkit);
-
-  return tezosToolkit.estimate.transfer(approveOrExecuteMethod.toTransferParams());
 };
 
 export const estimateBatch = async (

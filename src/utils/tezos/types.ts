@@ -8,12 +8,6 @@ export type MultisigProposeMethodArgs = {
 
 export type ApproveOrExecute = "approve" | "execute";
 
-export type MultisigApproveOrExecuteMethodArgs = {
-  type: ApproveOrExecute;
-  contract: ContractAddress;
-  operationId: string;
-};
-
 export type coinCapResponseType = {
   data: {
     priceUsd?: number;

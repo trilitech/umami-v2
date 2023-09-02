@@ -1,7 +1,6 @@
 import { Accordion } from "@chakra-ui/react";
-import { Estimate, TezosToolkit, TransactionOperation } from "@taquito/taquito";
+import { TezosToolkit, TransactionOperation } from "@taquito/taquito";
 import {
-  mockContractAddress,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMultisigAccount,
@@ -16,13 +15,15 @@ import { MultisigOperation } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import store from "../../../../utils/redux/store";
 import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
-import {
-  approveOrExecuteMultisigOperation,
-  estimateMultisigApproveOrExecute,
-  makeToolkit,
-} from "../../../../utils/tezos";
+import { estimate, makeToolkit } from "../../../../utils/tezos";
+
+import BigNumber from "bignumber.js";
+import { makeFormOperations } from "../../../sendForm/types";
+import { makeTransfer } from "../../../sendForm/util/execution";
+import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 
 jest.mock("../../../../utils/hooks/accountUtils");
+jest.mock("../../../sendForm/util/execution");
 
 const MOCK_TEZOS_TOOLKIT = {};
 beforeEach(() => {
@@ -74,13 +75,11 @@ describe("<MultisigPendingCard/>", () => {
       ...mockImplicitAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
-    jest.mocked(estimateMultisigApproveOrExecute).mockResolvedValue({
-      suggestedFeeMutez: 33,
-    } as Estimate);
+    jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
 
-    jest.mocked(approveOrExecuteMultisigOperation).mockResolvedValue({
+    jest.mocked(makeTransfer).mockResolvedValue({
       hash: "mockHash",
-    } as TransactionOperation);
+    });
 
     store.dispatch(accountsSlice.actions.addAccount([account]));
 
@@ -100,15 +99,11 @@ describe("<MultisigPendingCard/>", () => {
     const dialog = await screen.findByRole("dialog");
     expect(dialog).toBeInTheDocument();
 
-    expect(jest.mocked(estimateMultisigApproveOrExecute)).toHaveBeenCalledWith(
-      {
-        contract: mockContractAddress(0),
-        operationId: executablePendingOp.id,
-        type: "execute",
-      },
-      account,
-      "mainnet"
-    );
+    const operation = makeFormOperations(account, account, [
+      makeMultisigApproveOrExecuteOperation(multisig.address, "execute", pendingOps[0].id),
+    ]);
+
+    expect(jest.mocked(estimate)).toHaveBeenCalledWith(operation, "mainnet");
 
     fillPassword("mockPass");
 
@@ -121,14 +116,7 @@ describe("<MultisigPendingCard/>", () => {
 
     await screen.findByText(/operation submitted/i);
 
-    expect(jest.mocked(approveOrExecuteMultisigOperation)).toHaveBeenCalledWith(
-      {
-        contract: mockContractAddress(0),
-        operationId: executablePendingOp.id,
-        type: "execute",
-      },
-      MOCK_TEZOS_TOOLKIT
-    );
+    expect(jest.mocked(makeTransfer)).toHaveBeenCalledWith(operation, MOCK_TEZOS_TOOLKIT);
   });
 
   test("User can accomplish a proposal approval", async () => {
@@ -136,20 +124,19 @@ describe("<MultisigPendingCard/>", () => {
       ...mockImplicitAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
-    jest.mocked(estimateMultisigApproveOrExecute).mockResolvedValue({
-      suggestedFeeMutez: 33,
-    } as Estimate);
 
-    jest.mocked(approveOrExecuteMultisigOperation).mockResolvedValue({
+    jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
+
+    jest.mocked(makeTransfer).mockResolvedValue({
       hash: "mockHash",
     } as TransactionOperation);
 
     store.dispatch(accountsSlice.actions.addAccount([signer]));
-    const account = { ...mockMultisigAccount(0), signers: [signer.address] };
+    const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
     const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
     render(
       <Accordion>
-        <MultisigPendingAccordionItem sender={account} operation={approvablePendingOp} />
+        <MultisigPendingAccordionItem sender={multisig} operation={approvablePendingOp} />
       </Accordion>
     );
     const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
@@ -160,15 +147,11 @@ describe("<MultisigPendingCard/>", () => {
     const dialog = await screen.findByRole("dialog");
     expect(dialog).toBeInTheDocument();
 
-    expect(jest.mocked(estimateMultisigApproveOrExecute)).toHaveBeenCalledWith(
-      {
-        contract: mockContractAddress(0),
-        operationId: approvablePendingOp.id,
-        type: "approve",
-      },
-      signer,
-      "mainnet"
-    );
+    const operations = makeFormOperations(signer, signer, [
+      makeMultisigApproveOrExecuteOperation(multisig.address, "approve", pendingOps[0].id),
+    ]);
+
+    expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, "mainnet");
 
     fillPassword("mockPass");
 
@@ -181,13 +164,6 @@ describe("<MultisigPendingCard/>", () => {
 
     await screen.findByText(/operation submitted/i);
 
-    expect(jest.mocked(approveOrExecuteMultisigOperation)).toHaveBeenCalledWith(
-      {
-        contract: mockContractAddress(0),
-        operationId: approvablePendingOp.id,
-        type: "approve",
-      },
-      MOCK_TEZOS_TOOLKIT
-    );
+    expect(jest.mocked(makeTransfer)).toHaveBeenCalledWith(operations, MOCK_TEZOS_TOOLKIT);
   });
 });
