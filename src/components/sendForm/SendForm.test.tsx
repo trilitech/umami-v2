@@ -27,22 +27,24 @@ import * as accountUtils from "../../utils/hooks/accountUtils";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import store from "../../utils/redux/store";
 import { SendForm } from "./SendForm";
-import { SendFormMode } from "./types";
+import { SendFormMode, makeFormOperations } from "./types";
 
 import { TezosToolkit, TransactionOperation } from "@taquito/taquito";
-import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { multisigs } from "../../mocks/multisig";
-import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
+import { parseContractPkh, parsePkh } from "../../types/Address";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
 import { TezosNetwork } from "../../types/TezosNetwork";
-import { estimate, makeToolkit, proposeMultisigLambda, submitBatch } from "../../utils/tezos";
+import { estimate, makeToolkit } from "../../utils/tezos";
+import { makeTransfer } from "./util/execution";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
 
 jest.mock("../../multisig/multisigUtils");
+
+jest.mock("./util/execution");
 
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -167,9 +169,9 @@ describe("<SendForm />", () => {
 
       fillPassword("mockPass");
 
-      jest.mocked(submitBatch).mockResolvedValueOnce({
-        opHash: "mockHash",
-      } as BatchWalletOperation);
+      jest.mocked(makeTransfer).mockResolvedValueOnce({
+        hash: "mockHash",
+      } as TransactionOperation);
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -189,17 +191,17 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
-        [
+      expect(jest.mocked(makeTransfer)).toHaveBeenCalledWith(
+        makeFormOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
           {
-            type: "fa2",
             amount: "1000000",
-            recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
-            sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
-            contract: parseContractPkh(mockFA2.contract),
-            tokenId: mockFA2.tokenId,
+            contract: { pkh: "KT1EctCuorV2NfVb1XTQgvzJ88MQtWP8cMMv", type: "contract" },
+            recipient: { pkh: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP", type: "implicit" },
+            sender: { pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D", type: "implicit" },
+            tokenId: "7",
+            type: "fa2",
           },
-        ],
+        ]),
         MOCK_TEZOS_TOOLKIT
       );
     });
@@ -279,9 +281,9 @@ describe("<SendForm />", () => {
       );
 
       fillPassword("mockPass");
-      jest.mocked(submitBatch).mockResolvedValueOnce({
-        opHash: "mockHash",
-      } as BatchWalletOperation);
+      jest.mocked(makeTransfer).mockResolvedValueOnce({
+        hash: "mockHash",
+      } as TransactionOperation);
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -301,17 +303,17 @@ describe("<SendForm />", () => {
         );
       });
 
-      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
-        [
+      expect(jest.mocked(makeTransfer)).toHaveBeenCalledWith(
+        makeFormOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
           {
-            type: "fa1.2",
             amount: "1000000000",
-            recipient: parsePkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
-            sender: parsePkh("tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D"),
-            contract: parseContractPkh(mockFa1.contract),
+            contract: { pkh: "KT1EctCuorV2NfVb1XTQgvzJ88MQtWP8cMMv", type: "contract" },
+            recipient: { pkh: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP", type: "implicit" },
+            sender: { pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D", type: "implicit" },
             tokenId: "0",
+            type: "fa1.2",
           },
-        ],
+        ]),
         MOCK_TEZOS_TOOLKIT
       );
     });
@@ -362,9 +364,9 @@ describe("<SendForm />", () => {
       await fillFormAndSimulate();
 
       fillPassword("mockPass");
-      jest.mocked(submitBatch).mockResolvedValueOnce({
-        opHash: "mockHash",
-      } as BatchWalletOperation);
+      jest.mocked(makeTransfer).mockResolvedValueOnce({
+        hash: "mockHash",
+      });
 
       const submit = screen.getByRole("button", {
         name: /submit transaction/i,
@@ -384,17 +386,17 @@ describe("<SendForm />", () => {
       });
 
       const contractAddress = nft.token.contract.address as string;
-      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
-        [
+      expect(jest.mocked(makeTransfer)).toHaveBeenCalledWith(
+        makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
           {
-            type: "fa2",
             amount: "1",
-            recipient: parseImplicitPkh("tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP"),
-            sender: parseImplicitPkh("tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"),
-            contract: parseContractPkh(contractAddress),
-            tokenId: nft.token.tokenId,
+            contract: { pkh: contractAddress, type: "contract" },
+            recipient: { pkh: "tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP", type: "implicit" },
+            sender: { pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf", type: "implicit" },
+            tokenId: "3",
+            type: "fa2",
           },
-        ],
+        ]),
         MOCK_TEZOS_TOOLKIT
       );
     });
@@ -449,7 +451,7 @@ describe("<SendForm />", () => {
 
     test("User can acomplish a tez proposal", async () => {
       mockEstimatedFee(12345);
-      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
+      jest.mocked(makeTransfer).mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
 
@@ -503,9 +505,10 @@ describe("<SendForm />", () => {
 
     test("User can acomplish an FA2 proposal", async () => {
       mockEstimatedFee(12345);
-      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
+
+      jest.mocked(makeTransfer).mockResolvedValueOnce({
         hash: "mockHash",
-      } as TransactionOperation);
+      });
       const multisigPkh = multisigs[1].address.pkh;
       render(fixture(multisigPkh, { type: "token", data: mockNFT(1) }));
 
@@ -562,7 +565,7 @@ describe("<SendForm />", () => {
         },
       };
       mockEstimatedFee(12345);
-      jest.mocked(proposeMultisigLambda).mockResolvedValueOnce({
+      jest.mocked(makeTransfer).mockResolvedValueOnce({
         hash: "mockHash",
       } as TransactionOperation);
 

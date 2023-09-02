@@ -7,13 +7,15 @@ import { TezosNetwork } from "../../types/TezosNetwork";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import store from "../../utils/redux/store";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { makeToolkit, submitBatch } from "../../utils/tezos";
+import { makeToolkit } from "../../utils/tezos";
 import BatchView from "./BatchView";
+import { makeTransfer } from "../../components/sendForm/util/execution";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
 
 jest.mock("../../utils/hooks/accountUtils");
+jest.mock("../../components/sendForm/util/execution");
 
 const useGetSecretKeyMock = jest.mocked(useGetSecretKey);
 
@@ -24,7 +26,7 @@ beforeEach(() => {
   mockEstimatedFee(10);
 
   useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");
-  jest.mocked(submitBatch).mockResolvedValue({ opHash: "foo" } as any);
+  jest.mocked(makeTransfer).mockResolvedValueOnce({ hash: "foo" });
 });
 
 describe("<BatchView />", () => {
@@ -161,24 +163,24 @@ describe("<BatchView />", () => {
         "https://mainnet.tzkt.io/foo"
       );
 
-      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
-        [
+      expect(jest.mocked(makeTransfer)).toHaveBeenCalledWith(
+        makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
           {
-            type: "tez",
             amount: "1000000",
-            recipient: mockImplicitAddress(1),
+            recipient: { pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf", type: "implicit" },
+            type: "tez",
           },
           {
-            type: "tez",
             amount: "2000000",
-            recipient: mockImplicitAddress(2),
+            recipient: { pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D", type: "implicit" },
+            type: "tez",
           },
           {
-            type: "tez",
             amount: "3000000",
-            recipient: mockImplicitAddress(3),
+            recipient: { pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS", type: "implicit" },
+            type: "tez",
           },
-        ],
+        ]),
         MOCK_TEZOS_TOOLKIT
       );
 
