@@ -456,7 +456,7 @@ export const FillStep: React.FC<{
       return (
         <FillBatchForm
           isLoading={isLoading}
-          transfer={mode.data.content}
+          transfer={mode.data.operations}
           onSubmit={() => onSubmit(mode.data)}
           sender={mode.data.sender.address.pkh}
         />

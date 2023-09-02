@@ -64,7 +64,7 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
               </Heading>
               <Center w="100px" h="48px" bg={colors.gray[800]}>
                 <Text textAlign="center">
-                  {(operations.content[0] as FA2Transfer).amount} out of {nft.balance}
+                  {(operations.operations[0] as FA2Transfer).amount} out of {nft.balance}
                 </Text>
               </Center>
             </Flex>

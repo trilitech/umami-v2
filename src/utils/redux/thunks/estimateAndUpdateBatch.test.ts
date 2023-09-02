@@ -44,7 +44,7 @@ describe("estimateAndUpdateBatch", () => {
       });
 
       const failedOperation = mockDelegationOperation(0);
-      const failedFormOperations = { ...formOperations, content: [failedOperation] };
+      const failedFormOperations = { ...formOperations, operations: [failedOperation] };
       const action = estimateAndUpdateBatch(failedFormOperations, network);
       jest.mocked(estimate).mockRejectedValueOnce(new Error("Estimation failed"));
 

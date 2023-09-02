@@ -147,7 +147,7 @@ const assetsSlice = createSlice({
         batch => batch.sender.address.pkh === operations.sender.address.pkh
       );
       if (existing) {
-        (existing as FormOperations).content.push(...operations.content);
+        (existing as FormOperations).operations.push(...operations.operations);
         return;
       }
       state.batches.push(operations);
@@ -168,10 +168,10 @@ const assetsSlice = createSlice({
         return;
       }
       const existingBatch = state.batches[batchIndex];
-      if (index < existingBatch.content.length) {
-        existingBatch.content.splice(index, 1);
+      if (index < existingBatch.operations.length) {
+        existingBatch.operations.splice(index, 1);
       }
-      if (existingBatch.content.length === 0) {
+      if (existingBatch.operations.length === 0) {
         state.batches.splice(batchIndex, 1);
       }
     },
