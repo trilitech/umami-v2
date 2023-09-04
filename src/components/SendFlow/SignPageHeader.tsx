@@ -1,11 +1,14 @@
 import { ModalCloseButton, Text } from "@chakra-ui/react";
 import colors from "../../style/colors";
-import { FormOperations } from "../sendForm/types";
+import { AccountOperations } from "../sendForm/types";
 import { SignPageMode } from "./utils";
 import { HeaderWrapper } from "./FormPageHeader";
 import { ModalBackButton } from "../ModalBackButton";
 
-export const headerText = (operationType: FormOperations["type"], mode: SignPageMode): string => {
+export const headerText = (
+  operationType: AccountOperations["type"],
+  mode: SignPageMode
+): string => {
   let action;
   switch (operationType) {
     case "implicit":
@@ -25,7 +28,7 @@ export const headerText = (operationType: FormOperations["type"], mode: SignPage
 export const SignPageHeader: React.FC<{
   goBack?: () => void;
   mode: SignPageMode;
-  operationsType: FormOperations["type"];
+  operationsType: AccountOperations["type"];
 }> = ({ goBack, mode, operationsType }) => {
   return (
     <HeaderWrapper>

@@ -19,33 +19,32 @@ export type DelegationMode = {
 
 type BatchMode = {
   type: "batch";
-  data: FormOperations;
+  data: AccountOperations;
 };
 
 export type SendFormMode = TezMode | TokenMode | DelegationMode | BatchMode;
 
 export type ProposalOperations = {
   type: "proposal";
-  content: Operation[];
+  operations: Operation[];
   sender: MultisigAccount;
   signer: ImplicitAccount;
 };
 
 export type ImplicitOperations = {
   type: "implicit";
-  content: Operation[];
+  operations: Operation[];
   sender: ImplicitAccount;
   signer: ImplicitAccount; // must be the same as sender
 };
 
-// TODO: come up with a better name
-export type FormOperations = ProposalOperations | ImplicitOperations;
+export type AccountOperations = ProposalOperations | ImplicitOperations;
 
-export const makeFormOperations = (
+export const makeAccountOperations = (
   sender: Account,
   signer: ImplicitAccount,
   operations: Operation[]
-): FormOperations => {
+): AccountOperations => {
   switch (sender.type) {
     case AccountType.LEDGER:
     case AccountType.MNEMONIC:
@@ -55,7 +54,7 @@ export const makeFormOperations = (
       }
       return {
         type: "implicit",
-        content: operations,
+        operations,
         signer: sender,
         sender,
       };
@@ -63,7 +62,7 @@ export const makeFormOperations = (
     case AccountType.MULTISIG:
       return {
         type: "proposal",
-        content: operations,
+        operations,
         sender,
         signer,
       };
@@ -71,7 +70,7 @@ export const makeFormOperations = (
 };
 
 export type EstimatedOperation = {
-  operations: FormOperations;
+  operations: AccountOperations;
   fee: string;
 };
 

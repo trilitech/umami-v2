@@ -1,7 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 import { mockDelegation, mockImplicitAccount } from "../../../mocks/factories";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
-import { makeFormOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../sendForm/types";
 import { SignPageProps } from "../utils";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
@@ -22,7 +22,7 @@ beforeEach(() => {
 
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);
-  const operations = makeFormOperations(sender, mockImplicitAccount(0), [
+  const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
     {
       type: "delegation",
       sender: sender.address,

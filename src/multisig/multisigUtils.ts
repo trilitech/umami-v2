@@ -1,10 +1,10 @@
 import { MANAGER_LAMBDA } from "@taquito/taquito";
-import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 import { FA12Transfer, FA2Transfer, Operation } from "../types/Operation";
 import type { MichelsonV1Expression, TransactionOperationParameter } from "@taquito/rpc";
 import { isEqual } from "lodash";
+import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 
-export const FA2_TRANSFER_ARG_TYPES = {
+export const FA2_TRANSFER_ARG_TYPES: MichelsonV1Expression = {
   args: [
     {
       args: [
@@ -47,7 +47,7 @@ export const FA2_TRANSFER_ARG_TYPES = {
   prim: "list",
 };
 
-export const FA12_TRANSFER_ARG_TYPES = {
+export const FA12_TRANSFER_ARG_TYPES: MichelsonV1Expression = {
   args: [
     {
       annots: [":from"],
@@ -140,7 +140,8 @@ export const makeLambda = (operation: Operation): MichelsonV1Expression[] => {
     case "undelegation":
       return MANAGER_LAMBDA.removeDelegate();
     case "contract_origination":
-      throw new Error("Contract origination is not supported yet");
+    case "contract_call":
+      throw new Error(`${operation.type} is not supported yet`);
   }
 };
 

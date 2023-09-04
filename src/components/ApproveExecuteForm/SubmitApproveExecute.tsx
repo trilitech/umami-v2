@@ -14,11 +14,13 @@ import SignButton from "../sendForm/components/SignButton";
 import { ParamsWithFee } from "./types";
 import { prettyTezAmount } from "../../utils/format";
 import MultisigDecodedOperations from "../AccountCard/AssetsPanel/MultisigPendingAccordion/MultisigDecodedOperations";
-import { approveOrExecuteMultisigOperation } from "../../utils/tezos";
 import { AccountSmallTile } from "../AccountSelector/AccountSmallTile";
 import { ApproveOrExecute } from "../../utils/tezos/types";
 import { TezosToolkit } from "@taquito/taquito";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { makeAccountOperations } from "../sendForm/types";
+import { makeMultisigApproveOrExecuteOperation } from "../../types/Operation";
+import { executeOperations } from "../../utils/tezos";
 
 type Props = ParamsWithFee & {
   onSuccess: (hash: string) => void;
@@ -42,15 +44,13 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
   const approveOrExecute = (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
-        const result = await approveOrExecuteMultisigOperation(
-          {
-            contract: sender.address,
-            operationId: operation.id,
-            type: actionType,
-          },
-          tezosToolkit
-        );
-        onSuccess(result.hash);
+        const executeOrApprove = makeAccountOperations(signer, signer, [
+          makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
+        ]);
+
+        const { opHash } = await executeOperations(executeOrApprove, tezosToolkit);
+
+        onSuccess(opHash);
       },
       { title: "Failed approve or execute" }
     );

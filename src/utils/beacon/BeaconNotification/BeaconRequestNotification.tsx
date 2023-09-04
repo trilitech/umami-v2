@@ -9,7 +9,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 import React from "react";
 import SendForm from "../../../components/sendForm";
-import { makeFormOperations, SendFormMode } from "../../../components/sendForm/types";
+import { makeAccountOperations, SendFormMode } from "../../../components/sendForm/types";
 import { ImplicitAccount } from "../../../types/Account";
 import { parseImplicitPkh, parsePkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
@@ -57,7 +57,7 @@ const BatchTransaction = ({
 }) => {
   const mode: SendFormMode = {
     type: "batch",
-    data: makeFormOperations(account, account, operations),
+    data: makeAccountOperations(account, account, operations),
   };
 
   // TODO: send directly to recap instead

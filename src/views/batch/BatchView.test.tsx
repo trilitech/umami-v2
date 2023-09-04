@@ -1,5 +1,5 @@
 import { TezosToolkit } from "@taquito/taquito";
-import { makeFormOperations } from "../../components/sendForm/types";
+import { makeAccountOperations } from "../../components/sendForm/types";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
@@ -7,13 +7,14 @@ import { TezosNetwork } from "../../types/TezosNetwork";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import store from "../../utils/redux/store";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { makeToolkit, submitBatch } from "../../utils/tezos";
+import { executeOperations, makeToolkit } from "../../utils/tezos";
 import BatchView from "./BatchView";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
 
 jest.mock("../../utils/hooks/accountUtils");
+jest.mock("../../utils/tezos");
 
 const useGetSecretKeyMock = jest.mocked(useGetSecretKey);
 
@@ -24,7 +25,7 @@ beforeEach(() => {
   mockEstimatedFee(10);
 
   useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");
-  jest.mocked(submitBatch).mockResolvedValue({ opHash: "foo" } as any);
+  jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" });
 });
 
 describe("<BatchView />", () => {
@@ -42,7 +43,7 @@ describe("<BatchView />", () => {
     beforeEach(async () => {
       await store.dispatch(
         estimateAndUpdateBatch(
-          makeFormOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
             {
               type: "tez",
               recipient: mockImplicitAddress(1),
@@ -65,7 +66,7 @@ describe("<BatchView />", () => {
 
       store.dispatch(
         estimateAndUpdateBatch(
-          makeFormOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+          makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
             {
               type: "tez",
               recipient: mockImplicitAddress(9),
@@ -161,24 +162,24 @@ describe("<BatchView />", () => {
         "https://mainnet.tzkt.io/foo"
       );
 
-      expect(jest.mocked(submitBatch)).toHaveBeenCalledWith(
-        [
+      expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(
+        makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
           {
-            type: "tez",
             amount: "1000000",
-            recipient: mockImplicitAddress(1),
+            recipient: { pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf", type: "implicit" },
+            type: "tez",
           },
           {
-            type: "tez",
             amount: "2000000",
-            recipient: mockImplicitAddress(2),
+            recipient: { pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D", type: "implicit" },
+            type: "tez",
           },
           {
-            type: "tez",
             amount: "3000000",
-            recipient: mockImplicitAddress(3),
+            recipient: { pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS", type: "implicit" },
+            type: "tez",
           },
-        ],
+        ]),
         MOCK_TEZOS_TOOLKIT
       );
 

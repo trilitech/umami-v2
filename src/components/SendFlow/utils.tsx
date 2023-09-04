@@ -8,15 +8,14 @@ import {
 } from "../../utils/hooks/accountHooks";
 import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { DynamicModalContext } from "../DynamicModal";
-import { FormOperations, makeFormOperations } from "../sendForm/types";
+import { AccountOperations, makeAccountOperations } from "../sendForm/types";
 import BigNumber from "bignumber.js";
 import { Operation } from "../../types/Operation";
 import { Account } from "../../types/Account";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { TezosToolkit } from "@taquito/taquito";
-import { makeTransfer } from "../sendForm/util/execution";
 import { SuccessStep } from "../sendForm/steps/SuccessStep";
-import { estimate } from "../../utils/tezos";
+import { estimate, executeOperations } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
 import { repeat } from "lodash";
 
@@ -40,7 +39,7 @@ export type SignPageMode = "single" | "batch";
 
 export type SignPageProps<T = undefined> = {
   goBack?: () => void;
-  operations: FormOperations;
+  operations: AccountOperations;
   fee: BigNumber;
   mode: SignPageMode;
   data: T;
@@ -101,13 +100,13 @@ export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
 export const useSignPageHelpers = (
   // the fee & operations you've got from the form
   initialFee: BigNumber,
-  initialOperations: FormOperations,
+  initialOperations: AccountOperations,
   mode: SignPageMode
 ) => {
   const [estimationFailed, setEstimationFailed] = useState(false);
   const getSigner = useGetImplicitAccount();
   const [fee, setFee] = useState<BigNumber>(initialFee);
-  const [operations, setOperations] = useState<FormOperations>(initialOperations);
+  const [operations, setOperations] = useState<AccountOperations>(initialOperations);
   const network = useSelectedNetwork();
   const clearBatch = useClearBatch();
   const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
@@ -140,11 +139,11 @@ export const useSignPageHelpers = (
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const { hash } = await makeTransfer(operations, tezosToolkit);
+      const { opHash } = await executeOperations(operations, tezosToolkit);
       if (mode === "batch") {
         clearBatch(operations.sender);
       }
-      openWith(<SuccessStep hash={hash} />);
+      openWith(<SuccessStep hash={opHash} />);
     });
 
   return {
@@ -161,13 +160,13 @@ export const useSignPageHelpers = (
 
 export const useMakeFormOperations = <FormValues extends BaseFormValues>(
   toOperation: (formValues: FormValues) => Operation
-): ((formValues: FormValues) => FormOperations) => {
+): ((formValues: FormValues) => AccountOperations) => {
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
 
   return (formValues: FormValues) => {
     const sender = getAccount(formValues.sender);
-    return makeFormOperations(sender, getSigner(sender), [toOperation(formValues)]);
+    return makeAccountOperations(sender, getSigner(sender), [toOperation(formValues)]);
   };
 };
 

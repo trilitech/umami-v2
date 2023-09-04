@@ -11,7 +11,7 @@ import { multisigs } from "../../../mocks/multisig";
 import { render } from "../../../mocks/testUtils";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import { makeFormOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../sendForm/types";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import BigNumber from "bignumber.js";
 import { DynamicModalContext } from "../../DynamicModal";
@@ -256,7 +256,7 @@ describe("FormPage", () => {
     });
     fireEvent.click(submitButton);
 
-    const operations = makeFormOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+    const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
       {
         type: "contract_origination",
         sender: mockImplicitAccount(0).address,

@@ -1,12 +1,12 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { FormOperations } from "../../../components/sendForm/types";
+import { AccountOperations } from "../../../components/sendForm/types";
 import { TezosNetwork } from "../../../types/TezosNetwork";
 import { estimate } from "../../tezos";
 import assetsSlice from "../slices/assetsSlice";
 import { RootState } from "../store";
 
 export const estimateAndUpdateBatch = (
-  operations: FormOperations,
+  operations: AccountOperations,
   network: TezosNetwork
 ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> => {
   return async dispatch => {

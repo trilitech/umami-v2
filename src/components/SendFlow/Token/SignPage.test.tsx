@@ -1,7 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 import { mockFA2Token, mockImplicitAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { makeFormOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../sendForm/types";
 import { SignPageProps } from "../utils";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
@@ -25,7 +25,7 @@ const mockAccount = mockImplicitAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);
-  const operations = makeFormOperations(sender, mockImplicitAccount(0), [
+  const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
     {
       type: "fa2",
       amount: "10",

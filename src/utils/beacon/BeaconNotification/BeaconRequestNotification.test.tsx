@@ -7,7 +7,6 @@ import {
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
-import { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { BeaconNotification } from ".";
 import {
   mockBeaconDelegate,
@@ -19,9 +18,10 @@ import { mockImplicitAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, fillPassword, mockEstimatedFee } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../../mocks/testUtils";
 import { walletClient } from "../beacon";
-import { submitBatch } from "../../tezos";
+import { executeOperations } from "../../tezos";
 
 jest.mock("../beacon");
+jest.mock("../../tezos");
 jest.mock("../../hooks/accountUtils", () => ({
   useGetSecretKey: () => () => "mockSk",
 }));
@@ -40,7 +40,7 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 
 beforeEach(() => {
   mockEstimatedFee(10);
-  jest.mocked(submitBatch).mockResolvedValue(BATCH_OP_HASH as BatchWalletOperation);
+  jest.mocked(executeOperations).mockResolvedValue({ opHash: BATCH_OP_HASH.opHash });
   dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
 });
 

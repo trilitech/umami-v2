@@ -1,8 +1,7 @@
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
-import { TransactionOperationParameter } from "@taquito/rpc";
 import { Curves, InMemorySigner } from "@taquito/signer";
-import { TezosToolkit, TransferParams } from "@taquito/taquito";
+import { TezosToolkit } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
 import { FA12Transfer, FA2Transfer } from "../../types/Operation";
@@ -12,8 +11,8 @@ import { PublicKeyPair } from "../mnemonic";
 import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { FakeSigner } from "./fakeSigner";
-import { MultisigApproveOrExecuteMethodArgs, MultisigProposeMethodArgs } from "./types";
 import BigNumber from "bignumber.js";
+import { TransactionOperationParameter } from "@taquito/rpc";
 
 export const addressExists = async (
   pkh: string,
@@ -162,36 +161,6 @@ export const makeFA2TransactionParameter = ({
       },
     ],
   };
-};
-
-export const makeTokenTransferParams = (operation: FA12Transfer | FA2Transfer): TransferParams => {
-  return {
-    amount: 0,
-    to: operation.contract.pkh,
-    mutez: false,
-    parameter:
-      operation.type === "fa1.2"
-        ? makeFA12TransactionParameter(operation)
-        : makeFA2TransactionParameter(operation),
-  };
-};
-
-// TODO: convert to an offline method
-export const makeMultisigProposeMethod = async (
-  { lambdaActions, contract }: MultisigProposeMethodArgs,
-  toolkit: TezosToolkit
-) => {
-  const contractInstance = await toolkit.contract.at(contract.pkh);
-  return contractInstance.methods.propose(lambdaActions);
-};
-
-// TODO: convert to an offline method
-export const makeMultisigApproveOrExecuteMethod = async (
-  { type, contract, operationId }: MultisigApproveOrExecuteMethodArgs,
-  toolkit: TezosToolkit
-) => {
-  const contractInstance = await toolkit.contract.at(contract.pkh);
-  return contractInstance.methods[type](operationId);
 };
 
 export const selectRandomElements = <T>(

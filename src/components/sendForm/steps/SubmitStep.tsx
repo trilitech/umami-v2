@@ -59,7 +59,7 @@ export const SubmitStep: React.FC<{
   isBatch: boolean;
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
 }> = ({ recap: { fee, operations }, isBatch, onSubmit }) => {
-  const transfer = operations.content;
+  const transfer = operations.operations;
 
   return (
     <ModalContent bg="umami.gray.900" data-testid="bar">

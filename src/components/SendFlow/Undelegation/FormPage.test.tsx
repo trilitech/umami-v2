@@ -8,7 +8,7 @@ import store from "../../../utils/redux/store";
 import FormPage, { FormValues } from "./FormPage";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
-import { makeFormOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../sendForm/types";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { estimate } from "../../../utils/tezos";
@@ -109,7 +109,7 @@ describe("<Form />", () => {
       });
       fireEvent.click(submitButton);
       mockEstimatedFee(100);
-      const operations = makeFormOperations(sender, sender, [
+      const operations = makeAccountOperations(sender, sender, [
         {
           type: "undelegation",
           sender: sender.address,

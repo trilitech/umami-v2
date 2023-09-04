@@ -1,6 +1,6 @@
 import { FormControl } from "@chakra-ui/react";
 import { AvailableSignersAutocomplete } from "../AddressAutocomplete";
-import { FormOperations } from "../sendForm/types";
+import { AccountOperations } from "../sendForm/types";
 import { Account } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
 
@@ -11,7 +11,7 @@ export const OperationSignerSelector = ({
   reEstimate,
 }: {
   sender: Account;
-  operationType: FormOperations["type"];
+  operationType: AccountOperations["type"];
   isDisabled: boolean;
   reEstimate: (newSigner: RawPkh) => Promise<void>;
 }) => {

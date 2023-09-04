@@ -6,9 +6,11 @@ import { useSelectedNetwork } from "../../../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import { estimateMultisigApproveOrExecute } from "../../../../utils/tezos";
 import { ParamsWithFee } from "../../../ApproveExecuteForm/types";
 import { MultisigSignerTileDisplay, MultisigSignerState } from "./MultisigSignerTileDisplay";
+import { makeAccountOperations } from "../../../sendForm/types";
+import { estimate } from "../../../../utils/tezos";
+import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 
 const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;
@@ -29,45 +31,42 @@ const MultisigSignerTile: React.FC<{
 
   const label = accountLabel || contactName;
 
-  const signerAccount = getImplicitAccount(signerAddress.pkh);
+  const signer = getImplicitAccount(signerAddress.pkh);
 
   const operationIsExecutable = pendingApprovals === 0;
 
   const onButtonClick = () =>
     handleAsyncAction(async () => {
-      if (!signerAccount) {
+      if (!signer) {
         throw new Error("Can't approve or execute with an account you don't own");
       }
 
       const actionType = operationIsExecutable ? "execute" : "approve";
-      const { suggestedFeeMutez } = await estimateMultisigApproveOrExecute(
-        {
-          type: actionType,
-          contract: sender.address,
-          operationId: operation.id,
-        },
-        signerAccount,
-        network
-      );
+
+      const executeOrApprove = makeAccountOperations(signer, signer, [
+        makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
+      ]);
+      const suggestedFeeMutez = await estimate(executeOrApprove, network);
+
       openSignModal({
         type: actionType,
         operation: operation,
         sender,
-        signer: signerAccount,
-        suggestedFeeMutez,
+        signer,
+        suggestedFeeMutez: suggestedFeeMutez.toNumber(),
       });
     });
 
   return (
     <MultisigSignerTileDisplay
-      kind={getKind(signerAccount, contactName)}
+      kind={getKind(signer, contactName)}
       pkh={signerAddress.pkh}
       label={label}
       signerState={getMultisigSignerState({
         approvals: operation.approvals,
         signerAddress,
         operationIsExecutable,
-        signerAccount,
+        signerAccount: signer,
       })}
       onClickApproveExecute={onButtonClick}
       isLoading={isLoading}

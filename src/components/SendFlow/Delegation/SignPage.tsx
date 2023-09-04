@@ -24,7 +24,7 @@ const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
-  const bakerPkh = (operations.content[0] as Delegation).recipient.pkh;
+  const bakerPkh = (operations.operations[0] as Delegation).recipient.pkh;
   return (
     <FormProvider {...form}>
       <ModalContent>

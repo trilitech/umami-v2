@@ -1,7 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 import { mockImplicitAccount, mockImplicitAddress } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { makeFormOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../sendForm/types";
 import { SignPageProps } from "../utils";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
@@ -23,7 +23,7 @@ describe("<SignPage />", () => {
   describe("fee", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps = {
-        operations: makeFormOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+        operations: makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
           {
             type: "tez",
             amount: "1000000",

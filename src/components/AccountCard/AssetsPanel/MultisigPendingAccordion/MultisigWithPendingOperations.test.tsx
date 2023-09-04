@@ -1,4 +1,3 @@
-import { Estimate } from "@taquito/taquito";
 import MultisigPendingAccordion from ".";
 import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
 import { pendingOps } from "../../../../mocks/multisig";
@@ -11,7 +10,8 @@ import { Multisig } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import multisigsSlice from "../../../../utils/redux/slices/multisigsSlice";
 import store from "../../../../utils/redux/store";
-import { estimateMultisigApproveOrExecute } from "../../../../utils/tezos";
+import { estimate } from "../../../../utils/tezos";
+import { BigNumber } from "bignumber.js";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 
@@ -27,9 +27,7 @@ describe("<MultisigPendingAccordion />", () => {
   });
 
   it("should display multisig executable tez operations", async () => {
-    jest.mocked(estimateMultisigApproveOrExecute).mockResolvedValue({
-      suggestedFeeMutez: 33,
-    } as Estimate);
+    jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
     const m: Multisig = {
       address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),
       threshold: 1,
