@@ -21,7 +21,6 @@ describe("<MultisigSignerTile/>", () => {
         pendingApprovals={0}
         operation={pendingOps[0]}
         sender={mockMultisigAccount(0)}
-        openSignModal={_ => {}}
       />
     );
     expect(screen.getByTestId("multisig-signer-button")).toBeInTheDocument();
@@ -34,7 +33,6 @@ describe("<MultisigSignerTile/>", () => {
         pendingApprovals={1}
         operation={{ ...pendingOps[0], approvals: [signer.address] }}
         sender={mockMultisigAccount(0)}
-        openSignModal={_ => {}}
       />
     );
     expect(screen.queryByTestId("multisig-signer-button")).not.toBeInTheDocument();
@@ -48,7 +46,6 @@ describe("<MultisigSignerTile/>", () => {
         pendingApprovals={1}
         operation={pendingOps[0]}
         sender={account}
-        openSignModal={_ => {}}
       />
     );
     expect(screen.queryByTestId("multisig-signer-button")).not.toBeInTheDocument();

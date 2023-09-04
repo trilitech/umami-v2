@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
 import { ImplicitAddress } from "../../../../types/Address";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
@@ -6,22 +6,24 @@ import { useSelectedNetwork } from "../../../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import { ParamsWithFee } from "../../../ApproveExecuteForm/types";
-import { MultisigSignerTileDisplay, MultisigSignerState } from "./MultisigSignerTileDisplay";
+import { MultisigSignerState } from "./MultisigActionButton";
 import { makeAccountOperations } from "../../../sendForm/types";
-import { estimate } from "../../../../utils/tezos";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
+import { estimate } from "../../../../utils/tezos";
+import { DynamicModalContext } from "../../../DynamicModal";
+import SignPage from "../../../SendFlow/Multisig/SignPage";
+import { MultisigSignerTileDisplay } from "./MultisigSignerTileDisplay";
 
 const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;
   pendingApprovals: number;
   operation: MultisigOperation;
   sender: MultisigAccount;
-  openSignModal: (params: ParamsWithFee) => void;
-}> = ({ pendingApprovals, sender, operation, openSignModal, signerAddress }) => {
+}> = ({ pendingApprovals, sender, operation, signerAddress }) => {
   const getContactName = useGetContactName();
   const getImplicitAccount = useGetImplicitAccountSafe();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
+  const { openWith } = useContext(DynamicModalContext);
   const network = useSelectedNetwork();
 
   const implicitAccount = getImplicitAccount(signerAddress.pkh);
@@ -35,6 +37,8 @@ const MultisigSignerTile: React.FC<{
 
   const operationIsExecutable = pendingApprovals === 0;
 
+  const kind = contactName ? "contact" : signer?.type ?? "unknown";
+
   const onButtonClick = () =>
     handleAsyncAction(async () => {
       if (!signer) {
@@ -46,20 +50,22 @@ const MultisigSignerTile: React.FC<{
       const executeOrApprove = makeAccountOperations(signer, signer, [
         makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
       ]);
-      const suggestedFeeMutez = await estimate(executeOrApprove, network);
+      const fee = await estimate(executeOrApprove, network);
 
-      openSignModal({
-        type: actionType,
-        operation: operation,
-        sender,
-        signer,
-        suggestedFeeMutez: suggestedFeeMutez.toNumber(),
-      });
+      openWith(
+        <SignPage
+          fee={fee}
+          type={actionType}
+          signer={signer}
+          sender={sender}
+          operation={operation}
+        />
+      );
     });
 
   return (
     <MultisigSignerTileDisplay
-      kind={getKind(signer, contactName)}
+      kind={kind}
       pkh={signerAddress.pkh}
       label={label}
       signerState={getMultisigSignerState({
@@ -72,14 +78,6 @@ const MultisigSignerTile: React.FC<{
       isLoading={isLoading}
     />
   );
-};
-
-const getKind = (signerAccount?: ImplicitAccount, contactName?: string) => {
-  if (contactName) {
-    return "contact";
-  }
-
-  return signerAccount?.type || "unknown";
 };
 
 const getMultisigSignerState = ({
