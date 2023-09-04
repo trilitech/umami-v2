@@ -6,6 +6,7 @@ import {
   FA12Token,
   FA2Token,
   artifactUri,
+  formatTokenAmount,
   fromRaw,
   httpIconUri,
   metadataUri,
@@ -13,8 +14,8 @@ import {
   royalties,
   thumbnailUri,
   tokenDecimals,
-  tokenName,
-  tokenSymbol,
+  tokenNameSafe,
+  tokenSymbolSafe,
 } from "./Token";
 import type { Metadata } from "./Token";
 import { TezosNetwork } from "./TezosNetwork";
@@ -142,84 +143,84 @@ describe("fromRaw", () => {
   });
 });
 
-describe("tokenName", () => {
+describe("tokenNameSafe", () => {
   test("when metadata.name exists", () => {
     const fa1token: FA12Token = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "0",
     };
-    expect(tokenName(fa1token)).toEqual("FA1.2 token");
+    expect(tokenNameSafe(fa1token)).toEqual("FA1.2 token");
     const fa1tokenWithName = {
       ...fa1token,
       metadata: {
         name: "some token name",
       },
     };
-    expect(tokenName(fa1tokenWithName)).toEqual("some token name");
+    expect(tokenNameSafe(fa1tokenWithName)).toEqual("some token name");
 
     const fa2token: FA2Token = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "123",
     };
-    expect(tokenName(fa2token)).toEqual("FA2 token");
+    expect(tokenNameSafe(fa2token)).toEqual("FA2 token");
     const fa2tokenWithName = {
       ...fa2token,
       metadata: {
         name: "some token name",
       },
     };
-    expect(tokenName(fa2tokenWithName)).toEqual("some token name");
+    expect(tokenNameSafe(fa2tokenWithName)).toEqual("some token name");
   });
 
   test("get tokenName for NFT", () => {
     const nft = mockNFT(0);
 
-    expect(tokenName(nft)).toEqual("Tezzardz #0");
+    expect(tokenNameSafe(nft)).toEqual("Tezzardz #0");
 
     nft.metadata = {};
-    expect(tokenName(nft)).toEqual("NFT");
+    expect(tokenNameSafe(nft)).toEqual("NFT");
   });
 });
 
-describe("tokenSymbol", () => {
+describe("tokenSymbolSafe", () => {
   test("when metadata.symbol exists", () => {
     const fa1token: FA12Token = {
       type: "fa1.2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "0",
     };
-    expect(tokenSymbol(fa1token)).toEqual("FA1.2");
+    expect(tokenSymbolSafe(fa1token)).toEqual("FA1.2");
     const fa1tokenWithSymbol = {
       ...fa1token,
       metadata: {
         symbol: "some token symbol",
       },
     };
-    expect(tokenSymbol(fa1tokenWithSymbol)).toEqual("some token symbol");
+    expect(tokenSymbolSafe(fa1tokenWithSymbol)).toEqual("some token symbol");
 
     const fa2token: FA2Token = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "123",
     };
-    expect(tokenSymbol(fa2token)).toEqual("FA2");
+    expect(tokenSymbolSafe(fa2token)).toEqual("FA2");
     const fa2tokenWithSymbol = {
       ...fa2token,
       metadata: {
         symbol: "some token symbol",
       },
     };
-    expect(tokenSymbol(fa2tokenWithSymbol)).toEqual("some token symbol");
+    expect(tokenSymbolSafe(fa2tokenWithSymbol)).toEqual("some token symbol");
   });
 
   test("get token symbol for NFT", () => {
     const nft = mockNFT(0);
-    expect(tokenSymbol(nft)).toEqual("FKR0");
+    expect(tokenSymbolSafe(nft)).toEqual("FKR0");
 
     nft.metadata = {};
-    expect(tokenSymbol(nft)).toEqual("NFT");
+    expect(tokenSymbolSafe(nft)).toEqual("NFT");
   });
 });
 
@@ -391,5 +392,23 @@ describe("tokenDecimal", () => {
       metadata: {},
     };
     expect(tokenDecimals(fa2token)).toEqual("0");
+  });
+});
+
+describe("formatTokenAmount", () => {
+  it("returns raw amount if no decimals are present", () => {
+    expect(formatTokenAmount("1000")).toEqual("1,000");
+  });
+
+  it("returns raw amount if decimals field is 0", () => {
+    expect(formatTokenAmount("1000", "0")).toEqual("1,000");
+  });
+
+  it("returns pretty amount if decimals field is present", () => {
+    expect(formatTokenAmount("1000", "5")).toEqual("0.01000");
+  });
+
+  it("shows all decimals even if amount is integer", () => {
+    expect(formatTokenAmount("100000", "3")).toEqual("100.000");
   });
 });

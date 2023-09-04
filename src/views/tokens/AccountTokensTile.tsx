@@ -22,7 +22,7 @@ import { Identicon } from "../../components/Identicon";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
-import { httpIconUri, tokenName, tokenPrettyAmount } from "../../types/Token";
+import { httpIconUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { formatPkh } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
@@ -93,7 +93,7 @@ const AccountTokensTile: React.FC<{
                       )}
 
                       <Heading size="sm" p={2} marginX={2}>
-                        {tokenName(token)}
+                        {tokenNameSafe(token)}
                       </Heading>
                     </Flex>
                   </Td>

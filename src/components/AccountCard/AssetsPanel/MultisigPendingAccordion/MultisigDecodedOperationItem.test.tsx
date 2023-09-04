@@ -95,7 +95,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
       />
     );
 
-    expect(screen.getByTestId("decoded-fa-amount")).toHaveTextContent("-3 mockSymbol");
+    expect(screen.getByTestId("decoded-fa-amount")).toHaveTextContent("-3.00 mockSymbol");
   });
 
   it("NFT amount renders correctly", () => {

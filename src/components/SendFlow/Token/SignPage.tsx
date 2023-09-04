@@ -16,7 +16,7 @@ import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { FATokenBalance } from "./FormPage";
-import { formatTokenAmount, tokenSymbol } from "../../../types/Token";
+import { formatTokenAmount, tokenSymbolSafe } from "../../../types/Token";
 import { FA12Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import SignPageFee from "../SignPageFee";
@@ -51,7 +51,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
                 value={formatTokenAmount(amount, token.metadata?.decimals)}
               />
               <InputRightElement pr={3} data-testid="token-symbol">
-                {tokenSymbol(token)}
+                {tokenSymbolSafe(token)}
               </InputRightElement>
             </InputGroup>
 

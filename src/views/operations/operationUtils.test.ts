@@ -281,7 +281,7 @@ describe("getTezOperationDisplay", () => {
       tzktUrl: "https://mainnet.tzkt.io/transactions/109855131041792",
       amount: {
         id: 10898231001089,
-        prettyDisplay: "+7.1685 KL3",
+        prettyDisplay: "+7.16850 KL3",
         url: undefined,
       },
       prettyTimestamp: "today at 3:27 PM",
@@ -329,7 +329,7 @@ describe("getTezOperationDisplay", () => {
       tzktUrl: "https://mainnet.tzkt.io/transactions/109855493849088",
       amount: {
         id: 10898231001089,
-        prettyDisplay: "-4.51 KL3",
+        prettyDisplay: "-4.51000 KL3",
         url: undefined,
       },
       prettyTimestamp: "today at 3:29 PM",
@@ -372,7 +372,7 @@ describe("getTezOperationDisplay", () => {
       tzktUrl: "https://mainnet.tzkt.io/transactions/109855847219200",
       amount: {
         id: 10897625972737,
-        prettyDisplay: "+27400 FA1.2",
+        prettyDisplay: "+27,400 FA1.2",
         url: undefined,
       },
       prettyTimestamp: "today at 3:30 PM",
@@ -411,7 +411,7 @@ describe("getOperationDisplays", () => {
         id: 109855847219201,
         amount: {
           id: 10897625972737,
-          prettyDisplay: "+27400 FA1.2",
+          prettyDisplay: "+27,400 FA1.2",
           url: undefined,
         },
         prettyTimestamp: "today at 3:30 PM",
@@ -426,7 +426,7 @@ describe("getOperationDisplays", () => {
         id: 109855493849090,
         amount: {
           id: 10898231001089,
-          prettyDisplay: "-4.51 KL3",
+          prettyDisplay: "-4.51000 KL3",
           url: undefined,
         },
         prettyTimestamp: "today at 3:29 PM",
@@ -441,7 +441,7 @@ describe("getOperationDisplays", () => {
         id: 109855131041793,
         amount: {
           id: 10898231001089,
-          prettyDisplay: "+7.1685 KL3",
+          prettyDisplay: "+7.16850 KL3",
           url: undefined,
         },
         prettyTimestamp: "today at 3:27 PM",
@@ -512,7 +512,7 @@ describe("getOperationDisplays", () => {
         id: 109511935262721,
         amount: {
           id: 10898194300929,
-          prettyDisplay: "+2.1 KL2",
+          prettyDisplay: "+2.10000 KL2",
           url: undefined,
         },
         prettyTimestamp: "yesterday at 4:38 PM",

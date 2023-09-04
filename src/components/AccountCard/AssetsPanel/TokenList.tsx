@@ -2,12 +2,17 @@ import { Box, Flex, Heading, Icon, Image, Text } from "@chakra-ui/react";
 import { MdGeneratingTokens } from "react-icons/md";
 import colors from "../../../style/colors";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
-import { httpIconUri, tokenName, tokenPrettyAmount, tokenSymbol } from "../../../types/Token";
+import {
+  httpIconUri,
+  tokenNameSafe,
+  tokenPrettyAmount,
+  tokenSymbolSafe,
+} from "../../../types/Token";
 import NoItems from "../../NoItems";
 
 const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {
-  const name = tokenName(token);
-  const symbol = tokenSymbol(token);
+  const name = tokenNameSafe(token);
+  const symbol = tokenSymbolSafe(token);
   const iconUri = httpIconUri(token);
   const prettyAmount = tokenPrettyAmount(token.balance, token, { showSymbol: false });
   return (

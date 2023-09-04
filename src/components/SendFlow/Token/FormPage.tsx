@@ -27,7 +27,12 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
-import { formatTokenAmount, getRealAmount, tokenDecimals, tokenSymbol } from "../../../types/Token";
+import {
+  formatTokenAmount,
+  getRealAmount,
+  tokenDecimals,
+  tokenSymbolSafe,
+} from "../../../types/Token";
 import FormPageHeader from "../FormPageHeader";
 import { FormErrorMessage } from "../../FormErrorMessage";
 
@@ -116,7 +121,7 @@ const FormPage: React.FC<
                   placeholder={smallestUnit}
                 />
                 <InputRightElement pr={3} data-testid="token-symbol">
-                  {tokenSymbol(token)}
+                  {tokenSymbolSafe(token)}
                 </InputRightElement>
               </InputGroup>
               {errors.prettyAmount && (
