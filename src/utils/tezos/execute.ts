@@ -1,7 +1,7 @@
 import { TezosToolkit } from "@taquito/taquito";
-import { operationsToWalletParams } from "./params";
 import { makeMultisigProposeOperation } from "../../types/Operation";
 import { AccountOperations } from "../../components/sendForm/types";
+import { operationsToWalletParams } from "./helpers";
 
 export const executeOperations = async (
   { type, operations, sender }: AccountOperations,

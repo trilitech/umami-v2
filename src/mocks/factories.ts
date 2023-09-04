@@ -11,18 +11,25 @@ import {
 import { ContractAddress, ImplicitAddress } from "../types/Address";
 import { FA2TokenBalance, NFTBalance, fromRaw } from "../types/TokenBalance";
 import { Contact } from "../types/Contact";
-import { TezTransfer, TokenTransfer } from "../types/Transfer";
+import { TezTransfer as TzktTezTransfer, TokenTransfer } from "../types/Transfer";
 import { RawTokenBalance } from "../types/TokenBalance";
 import { MultisigOperation, Multisig } from "../utils/multisig/types";
-import { Operation } from "../types/Operation";
+import {
+  Delegation,
+  FA12Transfer,
+  FA2Transfer,
+  TezTransfer,
+  Undelegation,
+} from "../types/Operation";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 import { Delegate } from "../types/Delegate";
 
+// TODO: separate TZKT factories from internal ones
 export const mockTezTransaction = (id: number) => {
   return {
     sender: { address: `mockSender${id}` },
     target: { address: `mockTarget${id}` },
-  } as TezTransfer;
+  } as TzktTezTransfer;
 };
 
 export const mockDelegation = (
@@ -146,22 +153,6 @@ export const mockMultisigAccount = (index: number): MultisigAccount => {
     pendingOperationsBigmapId: index,
   };
 };
-
-// Might need this later
-//
-// export const mockMultisigAccount = (
-//   index: number,
-//   proposals: MultisigOperation[] = []
-// ) => {
-//   const account: MultisigAccount = {
-//     proposals: [],
-//     type: AccountType.MULTISIG,
-//     label: "Mulstisig account " + index,
-//     pkh: mockContract(index),
-//   };
-
-//   return account;
-// };
 
 export const mockMultisigWithOperations = (
   index: number,
@@ -319,30 +310,42 @@ export const mockBaker = (index: number): Delegate => ({
   stakingBalance: 100000 + index,
 });
 
-export const mockTezOperation = (index: number): Operation => {
-  return {
-    type: "tez",
-    amount: String(index),
-    recipient: mockImplicitAddress(index + 1),
-  };
-};
+export const mockTezOperation = (index: number): TezTransfer => ({
+  type: "tez",
+  amount: String(index),
+  recipient: mockImplicitAddress(index + 1),
+});
 
-export const mockNftOperation = (index: number): Operation => {
-  return {
-    type: "fa2",
-    amount: String(index),
-    sender: mockImplicitAddress(index),
-    recipient: mockImplicitAddress(index + 1),
-    contract: mockContractAddress(index),
-    tokenId: String(index),
-  };
-};
+export const mockFA12Operation = (index: number): FA12Transfer => ({
+  type: "fa1.2",
+  amount: String(index),
+  sender: mockImplicitAddress(index),
+  recipient: mockImplicitAddress(index + 1),
+  contract: mockContractAddress(index),
+  tokenId: "0",
+});
 
-export const mockDelegationOperation = (index: number): Operation => {
+export const mockNftOperation = (index: number): FA2Transfer => ({
+  type: "fa2",
+  amount: String(index),
+  sender: mockImplicitAddress(index),
+  recipient: mockImplicitAddress(index + 1),
+  contract: mockContractAddress(index),
+  tokenId: String(index),
+});
+
+export const mockDelegationOperation = (index: number): Delegation => {
   return {
     type: "delegation",
     sender: mockImplicitAddress(index),
     recipient: mockImplicitAddress(index + 1),
+  };
+};
+
+export const mockUndelegationOperation = (index: number): Undelegation => {
+  return {
+    type: "undelegation",
+    sender: mockImplicitAddress(index),
   };
 };
 

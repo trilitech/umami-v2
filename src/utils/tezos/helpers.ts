@@ -1,10 +1,10 @@
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Curves, InMemorySigner } from "@taquito/signer";
-import { TezosToolkit } from "@taquito/taquito";
+import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
-import { FA12Transfer, FA2Transfer } from "../../types/Operation";
+import { FA12Transfer, FA2Transfer, Operation } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { PublicKeyPair } from "../mnemonic";
@@ -12,7 +12,7 @@ import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
 import { FakeSigner } from "./fakeSigner";
 import BigNumber from "bignumber.js";
-import { TransactionOperationParameter } from "@taquito/rpc";
+import { OpKind, TransactionOperationParameter } from "@taquito/rpc";
 
 export const addressExists = async (
   pkh: string,
@@ -178,3 +178,64 @@ export const selectRandomElements = <T>(
 // for tez it will return tez, for mutez - mutez
 export const sumTez = (items: string[]): BigNumber =>
   items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));
+
+export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
+  switch (operation.type) {
+    case "tez":
+      return {
+        kind: OpKind.TRANSACTION,
+        to: operation.recipient.pkh,
+        amount: parseInt(operation.amount),
+        mutez: true,
+        parameter: operation.parameter, // TODO: remove after beacon uses contract_call,
+      };
+    case "contract_call":
+      return {
+        kind: OpKind.TRANSACTION,
+        to: operation.contract.pkh,
+        amount: parseInt(operation.amount),
+        mutez: true,
+        parameter: { entrypoint: operation.entrypoint, value: operation.arguments },
+      };
+
+    case "delegation":
+      return {
+        kind: OpKind.DELEGATION,
+        source: operation.sender.pkh,
+        delegate: operation.recipient.pkh,
+      };
+    case "undelegation":
+      return {
+        kind: OpKind.DELEGATION,
+        source: operation.sender.pkh,
+        delegate: undefined,
+      };
+    case "fa1.2":
+      return {
+        kind: OpKind.TRANSACTION,
+        amount: 0,
+        to: operation.contract.pkh,
+        parameter: makeFA12TransactionParameter(operation),
+      };
+    case "fa2":
+      return {
+        kind: OpKind.TRANSACTION,
+        amount: 0,
+        to: operation.contract.pkh,
+        parameter: makeFA2TransactionParameter(operation),
+      };
+    case "contract_origination": {
+      return {
+        kind: OpKind.ORIGINATION,
+        ...operation,
+      };
+    }
+  }
+};
+
+export const operationsToBatchParams = (operations: Operation[]): ParamsWithKind[] =>
+  operations.map(operationToTaquitoOperation);
+
+export const operationsToWalletParams = operationsToBatchParams as (
+  operations: Operation[]
+) => WalletParamsWithKind[];
