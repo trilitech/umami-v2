@@ -16,7 +16,6 @@ describe("<ActionButton/>", () => {
       <MultisigActionButton
         signerAddress={account.address}
         pendingApprovals={0}
-        openSignModal={_ => {}}
         operation={pendingOps[0]}
         sender={mockMultisigAccount(0)}
       />
@@ -30,7 +29,6 @@ describe("<ActionButton/>", () => {
       <MultisigActionButton
         signerAddress={account.address}
         pendingApprovals={1}
-        openSignModal={_ => {}}
         operation={pendingOps[0]}
         sender={mockMultisigAccount(0)}
       />
@@ -45,7 +43,6 @@ describe("<ActionButton/>", () => {
       <MultisigActionButton
         signerAddress={account.address}
         pendingApprovals={1}
-        openSignModal={_ => {}}
         operation={operation}
         sender={mockMultisigAccount(0)}
       />
@@ -59,7 +56,6 @@ describe("<ActionButton/>", () => {
       <MultisigActionButton
         signerAddress={account.address}
         pendingApprovals={1}
-        openSignModal={_ => {}}
         operation={operation}
         sender={mockMultisigAccount(0)}
       />
@@ -72,7 +68,6 @@ describe("<ActionButton/>", () => {
       <MultisigActionButton
         signerAddress={account.address}
         pendingApprovals={1}
-        openSignModal={_ => {}}
         operation={pendingOps[0]}
         sender={mockMultisigAccount(0)}
       />
