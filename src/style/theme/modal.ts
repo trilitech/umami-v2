@@ -22,7 +22,7 @@ export const backButtonStyle = defineStyle({
 
 const baseStyle = definePartsStyle({
   dialog: {
-    paddint: "40px",
+    padding: "40px",
     _dark: {
       bg: colors.gray[900],
       border: "1px solid",
@@ -36,6 +36,15 @@ const baseStyle = definePartsStyle({
     },
   },
   closeButton: closeButtonStyle,
+  body: {
+    padding: 0,
+  },
+  footer: {
+    padding: "24px 0 0 0",
+  },
+  header: {
+    padding: 0,
+  },
 });
 
 export const modalTheme = defineMultiStyleConfig({

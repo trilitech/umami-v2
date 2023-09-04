@@ -48,7 +48,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
 
   return (
     <FormProvider {...form}>
-      <ModalContent p="40px" pt="8px">
+      <ModalContent>
         <form>
           <FormPageHeader
             title="End delegation"

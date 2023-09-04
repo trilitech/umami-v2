@@ -124,8 +124,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             {signersArray.fields.map((field, index) => {
               const error = errors.signers && errors.signers[index];
               const label = `${index === 0 ? "Select " : ""}${index + 1} signer`;
-              // TODO: make modal padding match figma and set the max width to 400px
-              const inputWidth = signersCount > 1 ? "400px" : "434px";
+              const inputWidth = signersCount > 1 ? "368px" : "100%";
               return (
                 <FormControl
                   data-testid={`signer-input-${index}`}
@@ -161,7 +160,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                       icon={<Trash h="14px" w="12px" />}
                       onClick={() => signersArray.remove(index)}
                       height="24px"
-                      ml="406px"
+                      ml="374px"
                       mt="-36px"
                       isRound
                     />

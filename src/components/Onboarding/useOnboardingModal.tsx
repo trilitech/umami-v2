@@ -38,18 +38,6 @@ export enum StepType {
   fakeAccount = "fakeAccount",
 }
 
-export enum ModalSize {
-  md = "420px",
-  lg = "520px",
-}
-
-const stepModalSize = (step: Step): ModalSize => {
-  if (["eula", "showSeedphrase", "verifySeedphrase"].includes(step.type)) {
-    return ModalSize.lg;
-  }
-  return ModalSize.md;
-};
-
 export type EulaStep = { type: StepType.eula };
 export type ConnectOrCreateStep = { type: StepType.connectOrCreate };
 export type NoticeStep = { type: StepType.notice };
@@ -141,7 +129,13 @@ export const useOnboardingModal = () => {
 
   return {
     modalElement: (
-      <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        closeOnOverlayClick={false}
+        size={currentStep.type === StepType.eula ? "lg" : "md"}
+        isCentered
+      >
         <ModalOverlay
           bgImage={hasAccounts ? undefined : ModalBackground}
           bgColor={hasAccounts ? undefined : "#0A0A0A"}
@@ -151,8 +145,6 @@ export const useOnboardingModal = () => {
         />
         <ModalContent
           bg={colors.gray[900]}
-          maxW={stepModalSize(history.currentStep)}
-          minW={stepModalSize(history.currentStep)}
           border="1px solid #282828"
           boxShadow="0px 0px 15px 1px rgba(235, 235, 235, 0.1);"
         >
