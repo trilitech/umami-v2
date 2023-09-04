@@ -1,4 +1,4 @@
-import { FormControl, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { FormControl, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { parsePkh, RawPkh } from "../../../types/Address";
@@ -12,6 +12,7 @@ import {
 } from "../onSubmitFormActionHooks";
 import { Undelegation } from "../../../types/Operation";
 import FormPageHeader from "../FormPageHeader";
+import { DelegateSmallTile } from "../../../views/delegations/BakerSmallTile";
 
 export type FormValues = {
   sender: RawPkh;
@@ -47,16 +48,16 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
 
   return (
     <FormProvider {...form}>
-      <ModalContent p="40px" pt={2}>
+      <ModalContent p="40px" pt="8px">
         <form>
           <FormPageHeader
             title="End delegation"
             subTitle="Select preview to end delegation or insert this transaction into a Batch."
           />
 
-          <ModalBody>
+          <ModalBody mb="16px">
             {/* TODO: Make AccountAutoComplete display the address and balance*/}
-            <FormControl mb={2}>
+            <FormControl mb="8px">
               <OwnedAccountsAutocomplete
                 label="From"
                 inputName="sender"
@@ -64,8 +65,8 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
                 isDisabled
               />
             </FormControl>
-
-            {/*TODO: Add baker tile */}
+            <FormLabel>Baker</FormLabel>
+            <DelegateSmallTile account={sender} />
           </ModalBody>
           <ModalFooter>
             <FormSubmitButtons

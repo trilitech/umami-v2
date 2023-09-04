@@ -11,6 +11,7 @@ import { useContext } from "react";
 import DelegationFormPage from "../../SendFlow/Delegation/FormPage";
 import UndelegationFormPage from "../../SendFlow/Undelegation/FormPage";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
+import { Account } from "../../../types/Account";
 
 const Row: React.FC<{
   label: string;
@@ -36,8 +37,9 @@ const Row: React.FC<{
 };
 
 export const DelegationDisplay: React.FC<{
+  account: Account;
   delegation: Delegation | null;
-}> = ({ delegation }) => {
+}> = ({ delegation, account }) => {
   const { openWith } = useContext(DynamicModalContext);
   const getOwnedAccount = useGetOwnedAccount();
   const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
@@ -46,7 +48,7 @@ export const DelegationDisplay: React.FC<{
       <NoDelegations
         small
         onDelegate={() => {
-          openWith(<DelegationFormPage />);
+          openWith(<DelegationFormPage sender={account} />);
         }}
       />
     );

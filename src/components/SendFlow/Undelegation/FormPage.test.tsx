@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
+import { mockDelegation, mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -14,6 +14,7 @@ import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { estimate } from "../../../utils/tezos";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 import { FormPagePropsWithSender } from "../utils";
+import assetsSlice from "../../../utils/redux/slices/assetsSlice";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -31,6 +32,29 @@ describe("<Form />", () => {
       });
 
       expect(screen.getByLabelText("From")).toBeDisabled();
+    });
+
+    it("shows sender baker's tile", async () => {
+      const sender = mockImplicitAccount(0);
+      const baker = mockImplicitAccount(1);
+      store.dispatch(
+        assetsSlice.actions.updateBakers([
+          { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
+        ])
+      );
+      store.dispatch(
+        assetsSlice.actions.updateDelegations([
+          {
+            pkh: sender.address.pkh,
+            delegation: mockDelegation(0, 1, baker.address.pkh, "baker1"),
+          },
+        ])
+      );
+      render(fixture({ sender: mockImplicitAccount(0) }));
+
+      await waitFor(() => {
+        expect(screen.getByTestId("baker-tile")).toHaveTextContent("baker1");
+      });
     });
   });
 

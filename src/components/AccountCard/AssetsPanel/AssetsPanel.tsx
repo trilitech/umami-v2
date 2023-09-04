@@ -66,7 +66,7 @@ export const AssetsPanel: React.FC<{
         </TabPanel>
 
         <TabPanel data-testid="account-card-delegation-tab">
-          <DelegationDisplay delegation={delegation} />
+          <DelegationDisplay account={account} delegation={delegation} />
         </TabPanel>
 
         <TabPanel data-testid="account-card-nfts-tab" height="100%" overflow="hidden">

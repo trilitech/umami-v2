@@ -183,6 +183,17 @@ export const useGetBaker = () => {
   };
 };
 
+// Returns the baker of the account if the account is delegating
+export const useGetDelegateOf = () => {
+  const getBaker = useGetBaker();
+  const delegations = useAllDelegations();
+  return (account: Account): Delegate | undefined => {
+    const bakerAddress = delegations[account.address.pkh]?.newDelegate?.address;
+
+    return bakerAddress ? getBaker(bakerAddress) : undefined;
+  };
+};
+
 export const useRefetchTrigger = () => {
   return useAppSelector(state => state.assets.refetchTrigger);
 };

@@ -25,11 +25,12 @@ import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useAllDelegations } from "../../utils/hooks/assetsHooks";
 import { useGetDelegationPrettyDisplayValues } from "../../utils/hooks/delegationHooks";
 import colors from "../../style/colors";
-import { BakerSmallTile } from "./BakerSmallTile";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import DelegationFormPage from "../../components/SendFlow/Delegation/FormPage";
 import UndelegationFormPage from "../../components/SendFlow/Undelegation/FormPage";
+import AddressPill from "../../components/AddressPill/AddressPill";
+import { parsePkh } from "../../types/Address";
 
 const DelegationsTable = ({ delegations }: { delegations: Delegation[] }) => {
   const getDelegationPrettyDisplay = useGetDelegationPrettyDisplayValues();
@@ -66,7 +67,7 @@ const DelegationsTable = ({ delegations }: { delegations: Delegation[] }) => {
                 <Td>{currentBalance}</Td>
                 <Td>{duration}</Td>
                 <Td>
-                  <BakerSmallTile pkh={delegation.delegate.address} />
+                  <AddressPill address={parsePkh(delegation.delegate.address)} />
                 </Td>
                 <Td>
                   <IconButton
