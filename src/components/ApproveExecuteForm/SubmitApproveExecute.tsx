@@ -20,7 +20,7 @@ import { TezosToolkit } from "@taquito/taquito";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { makeAccountOperations } from "../sendForm/types";
 import { makeMultisigApproveOrExecuteOperation } from "../../types/Operation";
-import { executeAccountOperations } from "../../utils/tezos";
+import { executeOperations } from "../../utils/tezos";
 
 type Props = ParamsWithFee & {
   onSuccess: (hash: string) => void;
@@ -48,9 +48,9 @@ export const SubmitApproveOrExecuteForm: React.FC<Props> = ({
           makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
         ]);
 
-        const { hash } = await executeAccountOperations(executeOrApprove, tezosToolkit);
+        const { opHash } = await executeOperations(executeOrApprove, tezosToolkit);
 
-        onSuccess(hash);
+        onSuccess(opHash);
       },
       { title: "Failed approve or execute" }
     );

@@ -9,7 +9,7 @@ import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { estimate, executeAccountOperations } from "../../utils/tezos";
+import { estimate, executeOperations } from "../../utils/tezos";
 import { FillStep } from "./steps/FillStep";
 import { SubmitStep } from "./steps/SubmitStep";
 import { SuccessStep } from "./steps/SuccessStep";
@@ -81,13 +81,13 @@ export const SendForm = ({
 
   const execute = async (operations: AccountOperations, tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const result = await executeAccountOperations(operations, tezosToolkit);
+      const result = await executeOperations(operations, tezosToolkit);
       if (mode.type === "batch") {
         // TODO this will have to me moved in a thunk
         clearBatch(operations.sender);
       }
-      setHash(result.hash);
-      toast({ title: "Success", description: result.hash });
+      setHash(result.opHash);
+      toast({ title: "Success", description: result.opHash });
 
       // user won't see anything immediately on their operations page
       // so we refetch with a delay to let tzkt index the new operation

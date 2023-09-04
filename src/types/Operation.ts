@@ -70,12 +70,12 @@ export const makeMultisigApproveOrExecuteOperation = (
   });
 
 // Wraps the `proposableOperation` in a `ContractCall` to make proposal for a multisig contract.
-// Note that the `proposableOperation` excludes `ContractOrigination` and `ContractCall` operations.
+// Note that the `proposedOperations` excludes `ContractOrigination` and `ContractCall` operations.
 export const makeMultisigProposeOperation = (
   contract: ContractAddress,
-  proposableOperation: Operation[] // TODO: Use type like Exclude<Operation, ContractOrigination | ContractCall>
+  proposedOperations: Operation[]
 ): ContractCall => {
-  const lambdaActions = makeBatchLambda(proposableOperation);
+  const lambdaActions = makeBatchLambda(proposedOperations);
   return makeContractCallOperation(contract, "propose", lambdaActions);
 };
 

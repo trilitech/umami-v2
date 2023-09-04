@@ -1,7 +1,7 @@
 import TransportWebHID from "@ledgerhq/hw-transport-webhid";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Curves, InMemorySigner } from "@taquito/signer";
-import { TezosToolkit, TransferParams } from "@taquito/taquito";
+import { TezosToolkit } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
 import { FA12Transfer, FA2Transfer } from "../../types/Operation";
@@ -160,18 +160,6 @@ export const makeFA2TransactionParameter = ({
         ],
       },
     ],
-  };
-};
-
-export const makeTokenTransferParams = (operation: FA12Transfer | FA2Transfer): TransferParams => {
-  return {
-    amount: 0,
-    to: operation.contract.pkh,
-    mutez: false,
-    parameter:
-      operation.type === "fa1.2"
-        ? makeFA12TransactionParameter(operation)
-        : makeFA2TransactionParameter(operation),
   };
 };
 

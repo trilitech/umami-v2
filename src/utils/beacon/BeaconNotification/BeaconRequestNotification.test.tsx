@@ -18,7 +18,7 @@ import { mockImplicitAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, fillPassword, mockEstimatedFee } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../../mocks/testUtils";
 import { walletClient } from "../beacon";
-import { executeAccountOperations } from "../../tezos";
+import { executeOperations } from "../../tezos";
 
 jest.mock("../beacon");
 jest.mock("../../tezos");
@@ -40,7 +40,7 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 
 beforeEach(() => {
   mockEstimatedFee(10);
-  jest.mocked(executeAccountOperations).mockResolvedValue({ hash: BATCH_OP_HASH.opHash });
+  jest.mocked(executeOperations).mockResolvedValue({ opHash: BATCH_OP_HASH.opHash });
   dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
 });
 

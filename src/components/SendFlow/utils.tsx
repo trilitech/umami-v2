@@ -15,7 +15,7 @@ import { Account } from "../../types/Account";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { TezosToolkit } from "@taquito/taquito";
 import { SuccessStep } from "../sendForm/steps/SuccessStep";
-import { estimate, executeAccountOperations } from "../../utils/tezos";
+import { estimate, executeOperations } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
 import { repeat } from "lodash";
 
@@ -139,11 +139,11 @@ export const useSignPageHelpers = (
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const { hash } = await executeAccountOperations(operations, tezosToolkit);
+      const { opHash } = await executeOperations(operations, tezosToolkit);
       if (mode === "batch") {
         clearBatch(operations.sender);
       }
-      openWith(<SuccessStep hash={hash} />);
+      openWith(<SuccessStep hash={opHash} />);
     });
 
   return {

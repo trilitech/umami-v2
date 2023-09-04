@@ -1,5 +1,5 @@
 import { Accordion } from "@chakra-ui/react";
-import { TezosToolkit, TransactionOperation } from "@taquito/taquito";
+import { TezosToolkit } from "@taquito/taquito";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
@@ -15,7 +15,7 @@ import { MultisigOperation } from "../../../../utils/multisig/types";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import store from "../../../../utils/redux/store";
 import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
-import { estimate, executeAccountOperations, makeToolkit } from "../../../../utils/tezos";
+import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezos";
 
 import BigNumber from "bignumber.js";
 import { makeAccountOperations } from "../../../sendForm/types";
@@ -76,8 +76,8 @@ describe("<MultisigPendingCard/>", () => {
     };
     jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
 
-    jest.mocked(executeAccountOperations).mockResolvedValue({
-      hash: "mockHash",
+    jest.mocked(executeOperations).mockResolvedValue({
+      opHash: "mockHash",
     });
 
     store.dispatch(accountsSlice.actions.addAccount([account]));
@@ -115,10 +115,7 @@ describe("<MultisigPendingCard/>", () => {
 
     await screen.findByText(/operation submitted/i);
 
-    expect(jest.mocked(executeAccountOperations)).toHaveBeenCalledWith(
-      operation,
-      MOCK_TEZOS_TOOLKIT
-    );
+    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(operation, MOCK_TEZOS_TOOLKIT);
   });
 
   test("User can accomplish a proposal approval", async () => {
@@ -129,9 +126,9 @@ describe("<MultisigPendingCard/>", () => {
 
     jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
 
-    jest.mocked(executeAccountOperations).mockResolvedValue({
-      hash: "mockHash",
-    } as TransactionOperation);
+    jest.mocked(executeOperations).mockResolvedValue({
+      opHash: "mockHash",
+    });
 
     store.dispatch(accountsSlice.actions.addAccount([signer]));
     const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
@@ -166,9 +163,6 @@ describe("<MultisigPendingCard/>", () => {
 
     await screen.findByText(/operation submitted/i);
 
-    expect(jest.mocked(executeAccountOperations)).toHaveBeenCalledWith(
-      operations,
-      MOCK_TEZOS_TOOLKIT
-    );
+    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(operations, MOCK_TEZOS_TOOLKIT);
   });
 });

@@ -7,7 +7,7 @@ import { TezosNetwork } from "../../types/TezosNetwork";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import store from "../../utils/redux/store";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { executeAccountOperations, makeToolkit } from "../../utils/tezos";
+import { executeOperations, makeToolkit } from "../../utils/tezos";
 import BatchView from "./BatchView";
 
 // These tests might take long in the CI
@@ -25,7 +25,7 @@ beforeEach(() => {
   mockEstimatedFee(10);
 
   useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");
-  jest.mocked(executeAccountOperations).mockResolvedValue({ hash: "foo" });
+  jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" });
 });
 
 describe("<BatchView />", () => {
@@ -162,7 +162,7 @@ describe("<BatchView />", () => {
         "https://mainnet.tzkt.io/foo"
       );
 
-      expect(jest.mocked(executeAccountOperations)).toHaveBeenCalledWith(
+      expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(
         makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
           {
             amount: "1000000",

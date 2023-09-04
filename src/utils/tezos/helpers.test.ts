@@ -8,7 +8,6 @@ import {
   getPkAndPkhFromSk,
   makeFA12TransactionParameter,
   makeFA2TransactionParameter,
-  makeTokenTransferParams,
 } from "./helpers";
 jest.mock("@taquito/signer");
 jest.mock("@taquito/taquito");
@@ -129,42 +128,6 @@ describe("tezos utils helpers", () => {
             },
           ],
         },
-      });
-    });
-
-    describe("makeTokenTransferParams", () => {
-      test("fa1.2", () => {
-        const operation: FA12Transfer = {
-          type: "fa1.2",
-          amount: "110",
-          recipient: mockImplicitAddress(1),
-          contract: mockContractAddress(2),
-          tokenId: "0",
-          sender: mockContractAddress(1),
-        };
-        expect(makeTokenTransferParams(operation)).toEqual({
-          parameter: makeFA12TransactionParameter(operation),
-          to: mockContractAddress(2).pkh,
-          mutez: false,
-          amount: 0,
-        });
-      });
-
-      test("fa2", () => {
-        const operation: FA2Transfer = {
-          type: "fa2",
-          amount: "110",
-          tokenId: "123",
-          recipient: mockImplicitAddress(1),
-          contract: mockContractAddress(1),
-          sender: mockContractAddress(1),
-        };
-        expect(makeTokenTransferParams(operation)).toEqual({
-          parameter: makeFA2TransactionParameter(operation),
-          to: mockContractAddress(1).pkh,
-          mutez: false,
-          amount: 0,
-        });
       });
     });
   });

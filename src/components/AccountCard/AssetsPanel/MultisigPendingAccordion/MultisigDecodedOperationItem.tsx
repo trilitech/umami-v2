@@ -23,10 +23,9 @@ const MultisigDecodedOperationItem: React.FC<{
           End Delegation
         </Box>
       );
-    case "contract_origination":
-    case "contract_call":
-      throw new Error(`${operation.type} is not suported yet`);
-    default:
+    case "tez":
+    case "fa1.2":
+    case "fa2":
       return (
         <Box marginY={6}>
           <MultisigOperationAmount operation={operation} />
@@ -38,6 +37,9 @@ const MultisigDecodedOperationItem: React.FC<{
           </Flex>
         </Box>
       );
+    case "contract_origination":
+    case "contract_call":
+      throw new Error(`${operation.type} is not suported yet`);
   }
 };
 
