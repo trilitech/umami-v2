@@ -1,7 +1,6 @@
 import { AccountOperations } from "../../components/sendForm/types";
 import { TezosNetwork } from "../../types/TezosNetwork";
-import { makeToolkit, sumTez } from "./helpers";
-import { operationsToBatchParams } from "./params";
+import { makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
 import BigNumber from "bignumber.js";
 
 export const estimate = async (
