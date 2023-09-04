@@ -11,7 +11,7 @@ import {
   Tooltip,
   Image,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import { AccountOperations } from "../../components/sendForm/types";
 import { Operation } from "../../types/Operation";
 import { prettyTezAmount } from "../../utils/format";
@@ -40,13 +40,16 @@ import {
 } from "../../types/Token";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { compact } from "lodash";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { Account } from "../../types/Account";
 
 const RightHeader = ({
   operations: { type: operationsType, sender, operations },
 }: {
   operations: AccountOperations;
 }) => {
-  const clearBatch = useClearBatch();
+  const { openWith } = useContext(DynamicModalContext);
   return (
     <Box justifyContent="space-between" alignItems="center">
       <Text color={colors.gray[400]} size="sm" display="inline-block">
@@ -56,7 +59,7 @@ const RightHeader = ({
         {headerText(operationsType, "batch")}
       </Button>
       <IconButton
-        onClick={() => clearBatch(sender)} // TODO: add a confirmation modal
+        onClick={() => openWith(<ClearBatchConfirmationModal sender={sender} />, "sm")}
         aria-label="remove-batch"
         ml="18px"
         variant="circle"
@@ -81,6 +84,19 @@ const prettyOperationType = (operation: Operation) => {
     case "contract_call":
       throw new Error(`${operation.type} is not suported yet`);
   }
+};
+
+const ClearBatchConfirmationModal = ({ sender }: { sender: Account }) => {
+  const clearBatch = useClearBatch();
+
+  return (
+    <ConfirmationModal
+      title="Are you sure?"
+      description="It will remove all the transactions from the batch."
+      onSubmit={() => clearBatch(sender)}
+      buttonLabel="Clear"
+    />
+  );
 };
 
 export const tokenTitle = (token: Token | undefined, amount: string) => {

@@ -1,9 +1,9 @@
-import { Modal, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalProps, useDisclosure } from "@chakra-ui/react";
 import { createContext, ReactElement, useState } from "react";
 
 // this should be used in components as useContext(DynamicModalContext);
 export const DynamicModalContext = createContext<{
-  openWith: (content: ReactElement) => Promise<void>;
+  openWith: (content: ReactElement, size?: ModalProps["size"]) => Promise<void>;
   onClose: () => void;
   isOpen: boolean;
 }>({
@@ -24,8 +24,10 @@ export const DynamicModalContext = createContext<{
 export const useDynamicModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
+  const [size, setSize] = useState<ModalProps["size"]>("md");
 
-  const openWith = async (content: ReactElement) => {
+  const openWith = async (content: ReactElement, size: ModalProps["size"] = "md") => {
+    setSize(size);
     setModalContent(content);
     onOpen();
   };
@@ -40,6 +42,7 @@ export const useDynamicModal = () => {
         onClose={onClose}
         closeOnOverlayClick={false}
         autoFocus={false}
+        size={size}
         isCentered
       >
         <ModalOverlay />

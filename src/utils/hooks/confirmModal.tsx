@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
+// TODO: replace with ConfirmationModal
 export const useConfirmation = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
