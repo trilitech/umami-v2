@@ -4,7 +4,9 @@ import {
   mockContractAddress,
   mockDelegationOperation,
   mockFA12Operation,
+  mockImplicitAccount,
   mockImplicitAddress,
+  mockMultisigAccount,
   mockNftOperation,
   mockTezOperation,
   mockUndelegationOperation,
@@ -22,9 +24,10 @@ import {
   makeFA12TransactionParameter,
   makeFA2TransactionParameter,
   operationToTaquitoOperation,
+  operationsToBatchParams,
 } from "./helpers";
+import { makeAccountOperations } from "../../components/sendForm/types";
 jest.mock("@taquito/signer");
-jest.mock("@taquito/taquito");
 jest.mock("./fakeSigner");
 jest.mock("axios");
 
@@ -308,6 +311,157 @@ describe("tezos utils helpers", () => {
           ],
         },
         to: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+      });
+    });
+  });
+
+  describe("operationsToBatchParams", () => {
+    describe("implicit", () => {
+      test("1 operation", () => {
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(0),
+          mockImplicitAccount(0),
+          [mockTezOperation(0)]
+        );
+        expect(operationsToBatchParams(accountOperations)).toEqual([
+          {
+            amount: 0,
+            kind: "transaction",
+            mutez: true,
+            to: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+          },
+        ]);
+      });
+
+      test(">1 operations", () => {
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(0),
+          mockImplicitAccount(0),
+          [mockTezOperation(0), mockDelegationOperation(0)]
+        );
+        expect(operationsToBatchParams(accountOperations)).toEqual([
+          {
+            amount: 0,
+            kind: "transaction",
+            mutez: true,
+            to: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+          },
+          {
+            delegate: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+            kind: "delegation",
+            source: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
+          },
+        ]);
+      });
+    });
+
+    describe("multisig", () => {
+      test("1 operation", () => {
+        const accountOperations = makeAccountOperations(
+          mockMultisigAccount(0),
+          mockImplicitAccount(0),
+          [mockTezOperation(0)]
+        );
+        expect(operationsToBatchParams(accountOperations)).toEqual([
+          {
+            amount: 0,
+            kind: "transaction",
+            mutez: true,
+            parameter: {
+              entrypoint: "propose",
+              value: [
+                {
+                  prim: "DROP",
+                },
+                {
+                  args: [
+                    {
+                      prim: "operation",
+                    },
+                  ],
+                  prim: "NIL",
+                },
+                {
+                  args: [
+                    {
+                      prim: "key_hash",
+                    },
+                    {
+                      string: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+                    },
+                  ],
+                  prim: "PUSH",
+                },
+                {
+                  prim: "IMPLICIT_ACCOUNT",
+                },
+                {
+                  args: [
+                    {
+                      prim: "mutez",
+                    },
+                    {
+                      int: "0",
+                    },
+                  ],
+                  prim: "PUSH",
+                },
+                {
+                  prim: "UNIT",
+                },
+                {
+                  prim: "TRANSFER_TOKENS",
+                },
+                {
+                  prim: "CONS",
+                },
+              ],
+            },
+            to: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+          },
+        ]);
+      });
+
+      test(">1 operations", () => {
+        const accountOperations = makeAccountOperations(
+          mockMultisigAccount(0),
+          mockImplicitAccount(0),
+          [
+            mockTezOperation(0),
+            { ...mockDelegationOperation(0), sender: mockMultisigAccount(0).address },
+          ]
+        );
+        expect(operationsToBatchParams(accountOperations)).toEqual([
+          {
+            amount: 0,
+            kind: "transaction",
+            mutez: true,
+            parameter: {
+              entrypoint: "propose",
+              value: [
+                { prim: "DROP" },
+                { args: [{ prim: "operation" }], prim: "NIL" },
+                {
+                  args: [{ prim: "key_hash" }, { string: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf" }],
+                  prim: "PUSH",
+                },
+                { prim: "IMPLICIT_ACCOUNT" },
+                { args: [{ prim: "mutez" }, { int: "0" }], prim: "PUSH" },
+                { prim: "UNIT" },
+                { prim: "TRANSFER_TOKENS" },
+                { prim: "CONS" },
+                {
+                  args: [{ prim: "key_hash" }, { string: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf" }],
+                  prim: "PUSH",
+                },
+                { prim: "SOME" },
+                { prim: "SET_DELEGATE" },
+                { prim: "CONS" },
+              ],
+            },
+            to: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+          },
+        ]);
       });
     });
   });

@@ -4,7 +4,12 @@ import { Curves, InMemorySigner } from "@taquito/signer";
 import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle } from "lodash";
-import { FA12Transfer, FA2Transfer, Operation } from "../../types/Operation";
+import {
+  FA12Transfer,
+  FA2Transfer,
+  Operation,
+  makeMultisigProposeOperation,
+} from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
 import { TezosNetwork } from "../../types/TezosNetwork";
 import { PublicKeyPair } from "../mnemonic";
@@ -13,6 +18,7 @@ import { nodeUrls, tzktUrls } from "./consts";
 import { FakeSigner } from "./fakeSigner";
 import BigNumber from "bignumber.js";
 import { OpKind, TransactionOperationParameter } from "@taquito/rpc";
+import { AccountOperations } from "../../components/sendForm/types";
 
 export const addressExists = async (
   pkh: string,
@@ -233,9 +239,18 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
   }
 };
 
-export const operationsToBatchParams = (operations: Operation[]): ParamsWithKind[] =>
-  operations.map(operationToTaquitoOperation);
+export const operationsToBatchParams = ({
+  type: operationsType,
+  operations: originalOperations,
+  sender,
+}: AccountOperations): ParamsWithKind[] => {
+  const operations =
+    operationsType === "implicit"
+      ? originalOperations
+      : [makeMultisigProposeOperation(sender.address, originalOperations)];
+  return operations.map(operationToTaquitoOperation);
+};
 
 export const operationsToWalletParams = operationsToBatchParams as (
-  operations: Operation[]
+  operations: AccountOperations
 ) => WalletParamsWithKind[];

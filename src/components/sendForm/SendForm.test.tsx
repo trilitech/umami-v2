@@ -41,8 +41,6 @@ import { estimate, executeOperations, makeToolkit } from "../../utils/tezos";
 // These tests might take long in the CI
 jest.setTimeout(10000);
 
-jest.mock("../../multisig/multisigUtils");
-
 jest.mock("../../GoogleAuth", () => ({
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   GoogleAuth: require("../../mocks/GoogleAuthMock").GoogleAuthMock,

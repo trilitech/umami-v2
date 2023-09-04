@@ -4,10 +4,10 @@ import { makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
 import BigNumber from "bignumber.js";
 
 export const estimate = async (
-  { operations, signer }: AccountOperations,
+  operations: AccountOperations,
   network: TezosNetwork
 ): Promise<BigNumber> => {
-  const tezosToolkit = await makeToolkit({ type: "fake", signer: signer, network });
+  const tezosToolkit = await makeToolkit({ type: "fake", signer: operations.signer, network });
 
   const estimations = await tezosToolkit.estimate.batch(operationsToBatchParams(operations));
   // The way taquito works we need to take the max of suggestedFeeMutez and totalCost
