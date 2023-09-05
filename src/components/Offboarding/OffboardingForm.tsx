@@ -50,7 +50,7 @@ const OffboardingForm = () => {
             <Text>Off-board Wallet</Text>
           </Box>
         </ModalHeader>
-        <Box marginX="5" paddingX={2}>
+        <Box>
           <Text textAlign="center" color={colors.gray[400]} fontWeight="bold" size="sm" mb={2}>
             This will permanently delete any data from this computer.
           </Text>

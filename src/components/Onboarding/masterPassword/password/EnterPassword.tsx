@@ -1,4 +1,4 @@
-import { Button, Center, FormControl, Heading, VStack } from "@chakra-ui/react";
+import { Button, FormControl, Heading } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
@@ -34,20 +34,23 @@ const EnterPassword = ({
       subtitle="Enter your master password for Umami."
     >
       <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Center>
-            <VStack width={300}>
-              <Heading>Enter Password to continue</Heading>
-              <FormControl isInvalid={!!errors.password}>
-                <PasswordInput inputName="password" data-testid="password" />
-                {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
-              </FormControl>
+        <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+          <Heading>Enter Password to continue</Heading>
+          <FormControl isInvalid={!!errors.password}>
+            <PasswordInput inputName="password" data-testid="password" />
+            {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
+          </FormControl>
 
-              <Button isDisabled={!isValid} isLoading={isLoading} size="lg" type="submit">
-                Submit
-              </Button>
-            </VStack>
-          </Center>
+          <Button
+            mt="12px"
+            width="100%"
+            isDisabled={!isValid}
+            isLoading={isLoading}
+            size="lg"
+            type="submit"
+          >
+            Submit
+          </Button>
         </form>
       </FormProvider>
     </ModalContentWrapper>

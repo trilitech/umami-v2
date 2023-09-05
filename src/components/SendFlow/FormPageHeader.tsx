@@ -3,7 +3,8 @@ import colors from "../../style/colors";
 
 export const HeaderWrapper = chakra(ModalHeader, {
   baseStyle: {
-    p: "40px 0 32px 0",
+    padding: 0,
+    paddingBottom: "32px",
     textAlign: "center",
   },
 });
