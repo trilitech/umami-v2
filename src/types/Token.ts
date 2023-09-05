@@ -170,7 +170,7 @@ export const tokenNameSafe = (token: Token): string => {
 
 export const tokenName = (token: Token): string | undefined => token.metadata?.name;
 
-const defaultTokenSymbol = (token: Token): string => {
+export const defaultTokenSymbol = (token: Token): string => {
   switch (token.type) {
     case "fa1.2":
       return DEFAULT_FA1_SYMBOL;

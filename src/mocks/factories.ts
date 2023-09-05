@@ -334,6 +334,8 @@ export const mockNftOperation = (index: number): FA2Transfer => ({
   tokenId: String(index),
 });
 
+export const mockFA2Operation = mockNftOperation;
+
 export const mockDelegationOperation = (index: number): Delegation => {
   return {
     type: "delegation",

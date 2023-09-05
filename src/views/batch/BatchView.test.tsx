@@ -1,11 +1,56 @@
+import { makeAccountOperations } from "../../components/sendForm/types";
+import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
+import { render, screen, within } from "../../mocks/testUtils";
 import { ghostFA2, ghostTezzard } from "../../mocks/tokens";
-import { tokenTitle } from "./BatchView";
+import { Operation } from "../../types/Operation";
+import { BatchView, tokenTitle } from "./BatchView";
 
-describe("<BatchView />", () => {});
+describe("<BatchView />", () => {
+  test("header", () => {
+    const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+      mockTezOperation(0),
+    ]);
+    render(<BatchView operations={operations} />);
+    const header = screen.getByTestId("header");
+    expect(header).toBeInTheDocument();
+    expect(within(header).getByTestId("right-header")).toBeInTheDocument();
+  });
+
+  test("body", () => {
+    const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+      mockTezOperation(0),
+      mockTezOperation(0),
+      mockTezOperation(0),
+    ]);
+    render(<BatchView operations={operations} />);
+    expect(screen.getAllByTestId("operation").length).toEqual(3);
+  });
+
+  describe("footer", () => {
+    it("is hidden until there are > 9 operations", () => {
+      const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+        mockTezOperation(0),
+      ]);
+      render(<BatchView operations={operations} />);
+      expect(screen.queryByTestId("footer")).not.toBeInTheDocument();
+    });
+
+    it("shows up when there are too many operations", () => {
+      const ops: Operation[] = [];
+      for (let i = 0; i < 10; i++) {
+        ops.push(mockTezOperation(i));
+      }
+      const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), ops);
+      render(<BatchView operations={operations} />);
+      const footer = screen.getByTestId("footer");
+      expect(within(footer).getByTestId("right-header")).toBeInTheDocument();
+    });
+  });
+});
 
 describe("tokenTitle", () => {
   it("returns raw amount if token is missing", () => {
-    expect(tokenTitle(undefined, "1000000")).toBe("1000000");
+    expect(tokenTitle(undefined, "1000000")).toBe("1000000 Unknown Token");
   });
 
   it("doesn't return symbol if token name is absent", () => {
