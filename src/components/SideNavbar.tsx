@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Icon, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, FlexProps, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { IconType } from "react-icons/lib";
 import {
@@ -18,12 +18,15 @@ import { useTotalBalance } from "../utils/hooks/assetsHooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
+import { AppVersion } from "./AppVersion";
 
-const MenuItem: React.FC<{
-  label: string;
-  icon: IconType;
-  to: string;
-}> = props => {
+const MenuItem: React.FC<
+  {
+    label: string;
+    icon: IconType;
+    to: string;
+  } & FlexProps
+> = props => {
   return (
     <Link to={props.to}>
       <Flex
@@ -38,36 +41,12 @@ const MenuItem: React.FC<{
         alignItems="center"
         border={40}
         cursor="pointer"
+        {...props}
       >
         <Icon w={6} h={6} ml={2} mr={4} as={props.icon} />
         <Text size="sm">{props.label}</Text>
       </Flex>
     </Link>
-  );
-};
-
-const TopIems = () => {
-  return (
-    <Box>
-      <MenuItem label="Overview" to="/home" icon={MdViewCompact} />
-      <MenuItem label="NFTs" to="/nfts" icon={MdOutlineDiamond} />
-      <MenuItem label="Operations" to="/operations" icon={MdHistory} />
-      <MenuItem label="Delegations" to="/delegations" icon={RxCube} />
-      <MenuItem label="Tokens" to="/tokens" icon={MdMoney} />
-      <MenuItem label="Batch" to="/batch" icon={MdCalendarViewMonth} />
-    </Box>
-  );
-};
-
-const BottomIems = () => {
-  return (
-    <Box>
-      <Divider />
-      <MenuItem label="Address Book" to="/address-book" icon={MdOutlineContacts} />
-
-      <MenuItem label="Settings" to="/settings" icon={MdOutlineSettings} />
-      <MenuItem label="Help" to="/help" icon={MdSupport} />
-    </Box>
   );
 };
 
@@ -84,7 +63,7 @@ const TotalBalance = () => {
 
 export const SideNavbar = () => {
   return (
-    <Flex flexDirection="column" bg="umami.gray.900" w="240px" pl={4} pr={4}>
+    <Flex flexDirection="column" bg={colors.gray[900]} w="240px" pl={4} pr={4}>
       <Box>
         <Flex height={24} justifyContent="space-between" alignItems="center">
           <MakiLogo size={50} />
@@ -95,9 +74,23 @@ export const SideNavbar = () => {
       <Flex flexDirection="column" justifyContent="space-between" flex={1}>
         <Box>
           <TotalBalance />
-          <TopIems />
+          <Box>
+            <MenuItem label="Overview" to="/home" icon={MdViewCompact} />
+            <MenuItem label="NFTs" to="/nfts" icon={MdOutlineDiamond} />
+            <MenuItem label="Operations" to="/operations" icon={MdHistory} />
+            <MenuItem label="Delegations" to="/delegations" icon={RxCube} />
+            <MenuItem label="Tokens" to="/tokens" icon={MdMoney} />
+            <MenuItem label="Batch" to="/batch" icon={MdCalendarViewMonth} />
+          </Box>
         </Box>
-        <BottomIems />
+        <Box>
+          <Divider />
+          <MenuItem label="Address Book" to="/address-book" icon={MdOutlineContacts} />
+
+          <MenuItem label="Settings" to="/settings" icon={MdOutlineSettings} />
+          <MenuItem label="Help" to="/help" icon={MdSupport} mb="24px" pb={0} />
+          <AppVersion mb="24px" />
+        </Box>
       </Flex>
     </Flex>
   );
