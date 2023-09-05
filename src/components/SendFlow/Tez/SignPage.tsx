@@ -1,48 +1,21 @@
-import {
-  Flex,
-  FormControl,
-  Heading,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, FormControl, ModalBody, ModalContent, ModalFooter, Text } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
 import { TezTransfer } from "../../../types/Operation";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
-import { AccountOperations } from "../../sendForm/types";
-import { BigNumber } from "bignumber.js";
 import { SignPageProps, useSignPageHelpers } from "../utils";
-
 import { SignPageHeader, headerText } from "../SignPageHeader";
-import { sumTez } from "../../../utils/tezos";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
-import { TezTile } from "./TezTile";
-
-export const getTezAmount = (operations: AccountOperations): BigNumber | undefined => {
-  switch (operations.type) {
-    // for proposal operations the signer pays only the operation fee
-    // tez will be sent by the multisig contract on execute call
-    case "proposal":
-      return;
-    case "implicit": {
-      const amounts = operations.operations
-        .filter((op): op is TezTransfer => op.type === "tez")
-        .map(op => op.amount);
-      return sumTez(amounts);
-    }
-  }
-};
+import { TezTile } from "../../AssetTiles/TezTile";
 
 const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
 
-  const tezAmount = getTezAmount(operations);
+  const tezAmount = (operations.operations[0] as TezTransfer).amount;
 
   return (
     <FormProvider {...form}>
@@ -50,9 +23,8 @@ const SignPage: React.FC<SignPageProps> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            {tezAmount && <TezTile tezAmount={tezAmount} />}
+            <TezTile tezAmount={tezAmount} />
 
-            {/* TODO: Come up with a better way to show the fee when tezAmount === null (e.g. proposal) */}
             <Flex my={3} alignItems="center" justifyContent="end">
               <Flex>
                 <Text size="sm" mr={1} color={colors.gray[450]}>
