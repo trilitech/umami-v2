@@ -1,14 +1,13 @@
-import { Flex, FormControl, ModalBody, ModalContent, ModalFooter, Text } from "@chakra-ui/react";
+import { Flex, FormControl, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
-import colors from "../../../style/colors";
 import { TezTransfer } from "../../../types/Operation";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
-import { prettyTezAmount } from "../../../utils/format";
 import { TezTile } from "../../AssetTiles/TezTile";
+import SignPageFee from "../SignPageFee";
 
 const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
@@ -26,14 +25,7 @@ const SignPage: React.FC<SignPageProps> = props => {
             <TezTile tezAmount={tezAmount} />
 
             <Flex my={3} alignItems="center" justifyContent="end">
-              <Flex>
-                <Text size="sm" mr={1} color={colors.gray[450]}>
-                  Fee:
-                </Text>
-                <Text size="sm" data-testid="fee" color={colors.gray[400]}>
-                  {prettyTezAmount(fee)}
-                </Text>
-              </Flex>
+              <SignPageFee fee={fee} />
             </Flex>
 
             {/* TODO: Add sender address tile */}

@@ -20,11 +20,11 @@ import { makeAccountOperations } from "../../sendForm/types";
 import { executeOperations } from "../../../utils/tezos";
 import { SuccessStep } from "../../sendForm/steps/SuccessStep";
 import colors from "../../../style/colors";
-import { prettyTezAmount } from "../../../utils/format";
 import SignButton from "../../sendForm/components/SignButton";
 import { BigNumber } from "bignumber.js";
 import { parseRawMichelson } from "../../../multisig/decode/decodeLambda";
 import { capitalize } from "lodash";
+import SignPageFee from "../SignPageFee";
 
 export const SignPage: React.FC<{
   type: ApproveOrExecute;
@@ -56,7 +56,7 @@ export const SignPage: React.FC<{
       <ModalHeader textAlign="center">{`${capitalize(actionType)} transaction`}</ModalHeader>
       <ModalBody>
         {/* TODO: Use account small tile*/}
-        <Flex my={3} alignItems="center" justifyContent="space-between" px={1}>
+        <Flex my="12px" px="4px" alignItems="center" justifyContent="space-between">
           <Flex>
             <Text size="sm" mr={1} color={colors.gray[450]}>
               Transactions:
@@ -65,18 +65,11 @@ export const SignPage: React.FC<{
               {operations.length}
             </Text>
           </Flex>
-          <Flex>
-            <Text size="sm" mr={1} color={colors.gray[450]}>
-              Fee:
-            </Text>
-            <Text size="sm" data-testid="fee" color={colors.gray[400]}>
-              {prettyTezAmount(`${fee}`)}
-            </Text>
-          </Flex>
+          <SignPageFee fee={fee} />
         </Flex>
       </ModalBody>
 
-      <ModalFooter justifyContent="center">
+      <ModalFooter>
         <SignButton onSubmit={approveOrExecute} signer={signer} />
       </ModalFooter>
     </ModalContent>

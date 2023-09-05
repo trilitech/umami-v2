@@ -3,22 +3,19 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   ModalBody,
   ModalContent,
   ModalFooter,
-  Text,
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
-import colors from "../../../style/colors";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
-import { prettyTezAmount } from "../../../utils/format";
 import { BakerSmallTile } from "../../../views/delegations/BakerSmallTile";
 import { Delegation } from "../../../types/Operation";
+import SignPageFee from "../SignPageFee";
 
 const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
@@ -43,12 +40,7 @@ const SignPage: React.FC<SignPageProps> = props => {
 
             <Flex my={2} alignItems="center" justifyContent="end" px={1}>
               <Flex alignItems="center">
-                <Heading size="sm" mr={1} color={colors.gray[450]}>
-                  Fee:
-                </Heading>
-                <Text size="sm" data-testid="fee" color={colors.gray[400]}>
-                  {prettyTezAmount(fee)}
-                </Text>
+                <SignPageFee fee={fee} />
               </Flex>
             </Flex>
 

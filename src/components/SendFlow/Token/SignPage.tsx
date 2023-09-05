@@ -2,14 +2,12 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   InputGroup,
   InputRightElement,
   ModalBody,
   ModalContent,
   ModalFooter,
-  Text,
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
@@ -21,7 +19,7 @@ import { FATokenBalance } from "./FormPage";
 import { formatTokenAmount, tokenSymbol } from "../../../types/Token";
 import { FA12Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
-import { prettyTezAmount } from "../../../utils/format";
+import SignPageFee from "../SignPageFee";
 
 const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const {
@@ -59,12 +57,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
 
             <Flex my={3} alignItems="center" justifyContent="end" px={1}>
               <Flex>
-                <Heading size="sm" mr={1} color={colors.gray[450]}>
-                  Fee:
-                </Heading>
-                <Text size="sm" data-testid="fee" color={colors.gray[400]}>
-                  {prettyTezAmount(fee)}
-                </Text>
+                <SignPageFee fee={fee} />
               </Flex>
             </Flex>
 
