@@ -21,9 +21,10 @@ import { executeOperations } from "../../../utils/tezos";
 import { SuccessStep } from "../../sendForm/steps/SuccessStep";
 import colors from "../../../style/colors";
 import { prettyTezAmount } from "../../../utils/format";
-import MultisigDecodedOperations from "../../AccountCard/AssetsPanel/MultisigPendingAccordion/MultisigDecodedOperations";
 import SignButton from "../../sendForm/components/SignButton";
 import { BigNumber } from "bignumber.js";
+import { parseRawMichelson } from "../../../multisig/decode/decodeLambda";
+import { capitalize } from "lodash";
 
 export const SignPage: React.FC<{
   type: ApproveOrExecute;
@@ -31,14 +32,15 @@ export const SignPage: React.FC<{
   signer: ImplicitAccount;
   sender: MultisigAccount;
   fee: BigNumber;
-}> = ({ signer, sender, fee, operation, type: actionType }) => {
+}> = ({ signer, sender, fee, operation: multisigOperation, type: actionType }) => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
+  const operations = parseRawMichelson(multisigOperation.rawActions, sender);
   const approveOrExecute = (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
         const executeOrApprove = makeAccountOperations(signer, signer, [
-          makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
+          makeMultisigApproveOrExecuteOperation(sender.address, actionType, multisigOperation.id),
         ]);
 
         const { opHash } = await executeOperations(executeOrApprove, tezosToolkit);
@@ -49,14 +51,20 @@ export const SignPage: React.FC<{
     );
 
   return (
-    <ModalContent bg={colors.gray[900]} p="20px">
+    <ModalContent>
       <ModalCloseButton />
-      <ModalHeader textAlign="center">{`${
-        actionType[0].toUpperCase() + actionType.slice(1)
-      } transaction`}</ModalHeader>
+      <ModalHeader textAlign="center">{`${capitalize(actionType)} transaction`}</ModalHeader>
       <ModalBody>
         {/* TODO: Use account small tile*/}
-        <Flex my={3} alignItems="center" justifyContent="end" px={1}>
+        <Flex my={3} alignItems="center" justifyContent="space-between" px={1}>
+          <Flex>
+            <Text size="sm" mr={1} color={colors.gray[450]}>
+              Transactions:
+            </Text>
+            <Text size="sm" data-testid="transaction-length" color={colors.gray[400]}>
+              {operations.length}
+            </Text>
+          </Flex>
           <Flex>
             <Text size="sm" mr={1} color={colors.gray[450]}>
               Fee:
@@ -66,8 +74,6 @@ export const SignPage: React.FC<{
             </Text>
           </Flex>
         </Flex>
-
-        <MultisigDecodedOperations rawActions={operation.rawActions} sender={sender} />
       </ModalBody>
 
       <ModalFooter justifyContent="center">
