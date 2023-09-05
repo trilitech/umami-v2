@@ -3,13 +3,7 @@ import { AccountType } from "../../../../types/Account";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTileDisplay";
 import { getIcon } from "../../../AccountTile/getIcon";
 import { AddressKind } from "../../../AccountTile/AddressKind";
-import MultisigActionButton from "./MultisigActionButton";
-
-export type MultisigSignerState =
-  | "awaitingApprovalByExternalSigner"
-  | "approved"
-  | "executable"
-  | "approvable";
+import MultisigActionButton, { MultisigSignerState } from "./MultisigActionButton";
 
 export const MultisigSignerTileDisplay: React.FC<{
   pkh: string;

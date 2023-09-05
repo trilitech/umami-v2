@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
-import { useGetPendingOperations } from "./multisigHooks";
+import { useGetPendingMultisigOperations } from "./multisigHooks";
 import { multisigToAccount } from "../multisig/helpers";
 import { getWrapper } from "../../mocks/store";
 import store from "../redux/store";
@@ -12,9 +12,12 @@ describe("useMultisigHooks", () => {
     const operation2 = { ...multisigOperation, id: "2" };
     store.dispatch(multisigActions.setMultisigs(multisigs));
     store.dispatch(multisigActions.setPendingOperations([operation1, operation2]));
-    const { result: getMultisigOperationsRef } = renderHook(() => useGetPendingOperations(), {
-      wrapper: getWrapper(store),
-    });
+    const { result: getMultisigOperationsRef } = renderHook(
+      () => useGetPendingMultisigOperations(),
+      {
+        wrapper: getWrapper(store),
+      }
+    );
     expect(getMultisigOperationsRef.current(multisigToAccount(multisigs[0], "label1"))).toEqual([
       {
         id: "2",

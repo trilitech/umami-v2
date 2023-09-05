@@ -13,16 +13,12 @@ import { MultisigOperation } from "../../../../utils/multisig/types";
 import MultisigSignerTile from "./MultisigSignerTile";
 import MultisigDecodedOperations from "./MultisigDecodedOperations";
 import { MultisigAccount } from "../../../../types/Account";
-import ApproveExecuteForm from "../../../ApproveExecuteForm/ApproveExecuteForm";
-import { useModal } from "../../../useModal";
 import colors from "../../../../style/colors";
 
 export const MultisigPendingAccordionItem: React.FC<{
   operation: MultisigOperation;
   sender: MultisigAccount;
 }> = ({ operation, sender }) => {
-  const { modalElement, onOpen } = useModal(ApproveExecuteForm);
-
   const { signers, threshold } = sender;
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
@@ -62,7 +58,6 @@ export const MultisigPendingAccordionItem: React.FC<{
                 key={signer.pkh}
                 signerAddress={signer}
                 pendingApprovals={pendingApprovals}
-                openSignModal={onOpen}
                 sender={sender}
                 operation={operation}
               />
@@ -70,7 +65,6 @@ export const MultisigPendingAccordionItem: React.FC<{
           </Box>
         </AccordionPanel>
       </AccordionItem>
-      {modalElement}
     </Box>
   );
 };

@@ -14,7 +14,7 @@ import SignButton from "../../sendForm/components/SignButton";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { useSignPageHelpers, SignPageProps } from "../utils";
 import { FormValues } from "./FormPage";
-import { prettyTezAmount } from "../../../utils/format";
+import SignPageFee from "../SignPageFee";
 
 const SignPage: React.FC<SignPageProps<FormValues>> = props => {
   const {
@@ -58,12 +58,7 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
             </FormControl>
 
             <Flex justifyContent="flex-end" mb="24px">
-              <Text color={colors.gray[450]} fontWeight="600" mr="2px">
-                Fee:
-              </Text>
-              <Text color={colors.gray[400]} data-testid="fee">
-                {prettyTezAmount(fee)}
-              </Text>
+              <SignPageFee fee={fee} />
             </Flex>
             {/* TODO: add the Approvers list here when account tiles are ready */}
             <FormLabel>

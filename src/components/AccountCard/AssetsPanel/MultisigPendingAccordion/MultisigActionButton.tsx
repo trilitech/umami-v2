@@ -4,7 +4,12 @@ import { CgSandClock } from "react-icons/cg";
 import { RxCheckCircled } from "react-icons/rx";
 import colors from "../../../../style/colors";
 import { IconAndTextBtn } from "../../../IconAndTextBtn";
-import { MultisigSignerState } from "./MultisigSignerTileDisplay";
+
+export type MultisigSignerState =
+  | "awaitingApprovalByExternalSigner"
+  | "approved"
+  | "executable"
+  | "approvable";
 
 export const MultisigActionButton: React.FC<{
   signerState: MultisigSignerState;

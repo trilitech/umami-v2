@@ -6,7 +6,9 @@ export const useMultisigs = () => {
   return useAppSelector(s => s.multisigs.items);
 };
 
-export const useGetPendingOperations = (): ((account: MultisigAccount) => MultisigOperation[]) => {
+export const useGetPendingMultisigOperations = (): ((
+  account: MultisigAccount
+) => MultisigOperation[]) => {
   const pendingOperations = useAppSelector(s => s.multisigs.pendingOperations);
 
   return (account: MultisigAccount) => {
