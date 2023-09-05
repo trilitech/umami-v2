@@ -20,6 +20,7 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { sumTez } from "../../../utils/tezos";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { prettyTezAmount } from "../../../utils/format";
+import { TezTile } from "./TezTile";
 
 export const getTezAmount = (operations: AccountOperations): BigNumber | undefined => {
   switch (operations.type) {
@@ -49,23 +50,10 @@ const SignPage: React.FC<SignPageProps> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            {/* TODO: Import icon and adjust text size */}
-            {tezAmount && (
-              <Flex
-                h="60px"
-                w="100%"
-                borderRadius="4px"
-                bg={colors.gray[800]}
-                alignItems="center"
-                px={2}
-                py={3}
-              >
-                <Heading size="sm">{prettyTezAmount(tezAmount).toString()}</Heading>
-              </Flex>
-            )}
+            {tezAmount && <TezTile tezAmount={tezAmount} />}
 
             {/* TODO: Come up with a better way to show the fee when tezAmount === null (e.g. proposal) */}
-            <Flex my={3} alignItems="center" justifyContent="end" px={1}>
+            <Flex my={3} alignItems="center" justifyContent="end">
               <Flex>
                 <Text size="sm" mr={1} color={colors.gray[450]}>
                   Fee:
