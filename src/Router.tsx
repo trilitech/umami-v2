@@ -16,7 +16,6 @@ import OperationsView from "./views/operations/OperationsView";
 import SettingsView from "./views/settings/SettingsView";
 import { withSideMenu } from "./views/withSideMenu";
 import HelpView from "./views/help/HelpView";
-import DelegationsView from "./views/delegations/DelegationsView";
 import AddressBookView from "./views/addressBook/AddressBookView";
 import BatchView from "./views/batch/BatchView";
 import { resetBeacon, useBeaconInit } from "./utils/beacon/beacon";
@@ -52,7 +51,6 @@ const MemoizedRouter = React.memo(() => {
           <Route path="/nfts" element={withSideMenu(<NFTsView />)} />
           <Route path="/nfts/:ownerPkh/:nftId" element={withSideMenu(<NFTsView />)} />
           <Route path="/operations" element={withSideMenu(<OperationsView />)} />
-          <Route path="/delegations" element={withSideMenu(<DelegationsView />)} />
           <Route path="/tokens" element={withSideMenu(<TokensView />)} />
           <Route path="/address-book" element={withSideMenu(<AddressBookView />)} />
           <Route path="/settings" element={withSideMenu(<SettingsView />)} />
