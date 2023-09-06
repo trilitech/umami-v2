@@ -6,13 +6,13 @@ import {
   parseMultisig,
 } from "./helpers";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
-import { SupportedNetworks } from "../network";
+import { DefaultNetworks } from "../../types/TezosNetwork";
 jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("multisig helpers", () => {
-  SupportedNetworks.forEach(async network => {
+  DefaultNetworks.forEach(async network => {
     test("getRelevantMultisigContracts", async () => {
       const mockResponse = {
         data: tzktGetSameMultisigsResponse,

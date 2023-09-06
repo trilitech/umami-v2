@@ -10,10 +10,9 @@ import {
 import { operationsGetTransactions, tokensGetTokenTransfers } from "@tzkt/sdk-api";
 import { coincapUrl, tzktUrls } from "./consts";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { SupportedNetworks } from "../network";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { DefaultNetworks, TezosNetwork } from "../../types/TezosNetwork";
 jest.mock("axios");
 
 jest.mock("@tzkt/sdk-api", () => {
@@ -54,7 +53,7 @@ describe("tezos utils fetch", () => {
   });
 
   test("getTokenBalances", async () => {
-    SupportedNetworks.forEach(async network => {
+    DefaultNetworks.forEach(async network => {
       const response = [
         hedgehoge(mockImplicitAddress(0)),
         uUSD(mockImplicitAddress(1)),
@@ -112,7 +111,7 @@ describe("tezos utils fetch", () => {
   });
 
   test("getAccounts", async () => {
-    SupportedNetworks.forEach(async network => {
+    DefaultNetworks.forEach(async network => {
       mockedAxios.get.mockResolvedValue({
         data: [
           { address: mockImplicitAddress(0).pkh, balance: 12345 },

@@ -7,13 +7,13 @@ import {
   rawTzktNftTransfer,
 } from "../../mocks/tzktResponse";
 import { OperationDisplay, TezTransfer, TokenTransfer } from "../../types/Transfer";
-import { SupportedNetworks } from "../../utils/network";
 import {
   getOperationDisplays,
   getTezOperationDisplay,
   getTokenOperationDisplay,
   getTransactionUrl,
 } from "./operationsUtils";
+import { DefaultNetworks } from "../../types/TezosNetwork";
 
 const forAddress = "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS";
 describe("getTezOperationDisplay", () => {
@@ -608,7 +608,7 @@ describe("getOperationDisplays", () => {
 
 describe("getTransactionUrl", () => {
   it("should return a proper URL", () => {
-    SupportedNetworks.forEach(network => {
+    DefaultNetworks.forEach(network => {
       expect(
         getTransactionUrl({
           transactionId: 123,

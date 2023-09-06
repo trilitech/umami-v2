@@ -1,11 +1,11 @@
 import { AllTheProviders, renderHook, waitFor } from "../mocks/testUtils";
 import { useAssetsPolling } from "./useAssetsPolling";
-import { SupportedNetworks } from "./network";
 import { tzktUrls } from "./tezos";
 import { delegatesGet } from "@tzkt/sdk-api";
 import store from "./redux/store";
 import { assetsActions } from "./redux/slices/assetsSlice";
 import { mockBaker } from "../mocks/factories";
+import { DefaultNetworks } from "../types/TezosNetwork";
 
 jest.unmock("./tezos");
 jest.mock("@tzkt/sdk-api", () => {
@@ -15,7 +15,7 @@ jest.mock("@tzkt/sdk-api", () => {
 });
 
 describe("useAssetsPolling", () => {
-  describe.each(SupportedNetworks)("network: %s", network => {
+  describe.each(DefaultNetworks)("network: %s", network => {
     beforeAll(() => {
       store.dispatch(assetsActions.updateNetwork(network));
     });

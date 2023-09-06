@@ -6,13 +6,13 @@ import {
   mockTezOperation,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { SupportedNetworks } from "../../network";
 import { estimate } from "../../tezos";
 import store from "../store";
 import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
+import { DefaultNetworks } from "../../../types/TezosNetwork";
 
 describe("estimateAndUpdateBatch", () => {
-  describe.each(SupportedNetworks)("on %s", network => {
+  describe.each(DefaultNetworks)("on %s", network => {
     it("adds an operation to batch if the estimation succeeds", async () => {
       const operation = mockTezOperation(1);
 
