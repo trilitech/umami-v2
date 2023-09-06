@@ -9,7 +9,7 @@ export const getAllMultiSigContracts = async (
   network: Network
 ): Promise<RawTzktGetSameMultisigs> => {
   try {
-    const url = `${network.tzktUrl}/v1/contracts?typeHash=${TYPE_HASH}&codeHash=${CODE_HASH}&includeStorage=true&limit=${MULTISIG_FETCH_LIMIT}`;
+    const url = `${network.tzktApiUrl}/v1/contracts?typeHash=${TYPE_HASH}&codeHash=${CODE_HASH}&includeStorage=true&limit=${MULTISIG_FETCH_LIMIT}`;
     const { data } = await axios.get<RawTzktGetSameMultisigs>(url);
 
     return data;
@@ -23,7 +23,7 @@ export const getPendingOperations = async (
   bigMaps: number[],
   network: Network
 ): Promise<RawTzktGetBigMapKeys> => {
-  const url = `${network.tzktUrl}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(
+  const url = `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(
     ","
   )}&limit=${MULTISIG_FETCH_LIMIT}`;
   const { data } = await axios.get<RawTzktGetBigMapKeys>(url);

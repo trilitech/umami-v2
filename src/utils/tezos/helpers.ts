@@ -21,7 +21,7 @@ import { Network } from "../../types/Network";
 
 export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
   try {
-    const url = `${network.tzktUrl}/v1/accounts/${pkh}`;
+    const url = `${network.tzktApiUrl}/v1/accounts/${pkh}`;
     const {
       data: { type },
     } = await axios.get<RawTzktGetAddressType>(url);

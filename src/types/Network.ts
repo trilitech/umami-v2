@@ -1,4 +1,4 @@
-export const MAINNET = {
+export const MAINNET: Network = {
   name: "mainnet",
   rpcUrl: "https://prod.tcinfra.net/rpc/mainnet/",
   tzktApiUrl: "https://api.mainnet.tzkt.io",
@@ -6,10 +6,10 @@ export const MAINNET = {
   buyTezUrl: "https://widget.wert.io",
 };
 
-export const GHOSTNET = {
+export const GHOSTNET: Network = {
   name: "ghostnet",
   rpcUrl: "https://ghostnet.ecadinfra.com",
-  tzktUrl: "https://api.ghostnet.tzkt.io",
+  tzktApiUrl: "https://api.ghostnet.tzkt.io",
   tzktExplorerUrl: "https://ghostnet.tzkt.io",
   buyTezUrl: "https://faucet.ghostnet.teztnets.xyz/",
 };
@@ -19,7 +19,7 @@ export type NetworkName = string; // must be unique
 export type Network = {
   name: NetworkName;
   rpcUrl: string;
-  tzktUrl: string; // TODO: rename to tzktApiUrl
+  tzktApiUrl: string;
   tzktExplorerUrl?: string;
   buyTezUrl?: string;
 };

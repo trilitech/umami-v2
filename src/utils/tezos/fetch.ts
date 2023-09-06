@@ -22,7 +22,7 @@ export type TzktAccount = { address: string; balance: number };
 
 export const getAccounts = async (pkhs: string[], network: Network): Promise<TzktAccount[]> => {
   const response = await axios.get<TzktAccount[]>(
-    `${network.tzktUrl}/v1/accounts?address.in=${pkhs.join(",")}&select=address,balance`
+    `${network.tzktApiUrl}/v1/accounts?address.in=${pkhs.join(",")}&select=address,balance`
   );
   return response.data;
 };
@@ -32,7 +32,7 @@ export const getTokenBalances = async (
   network: Network
 ): Promise<RawTokenBalance[]> => {
   const response = await axios.get<RawTokenBalance[]>(
-    `${network.tzktUrl}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
+    `${network.tzktApiUrl}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
   );
   return response.data;
 };
@@ -45,7 +45,7 @@ export const getTezTransfers = (address: string, network: Network): Promise<TezT
       limit: 10,
     },
     {
-      baseUrl: network.tzktUrl,
+      baseUrl: network.tzktApiUrl,
     }
   );
 };
@@ -58,7 +58,7 @@ export const getTokenTransfers = (address: string, network: Network): Promise<To
       limit: 10,
     },
     {
-      baseUrl: network.tzktUrl,
+      baseUrl: network.tzktApiUrl,
     }
   );
 };
@@ -74,7 +74,7 @@ export const getLastDelegation = async (
       limit: 1,
     },
     {
-      baseUrl: network.tzktUrl,
+      baseUrl: network.tzktApiUrl,
     }
   ).then(d => d[0]);
 };
@@ -93,7 +93,7 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
 
 export const getLatestBlockLevel = async (network: Network): Promise<number> => {
   return await blocksGetCount({
-    baseUrl: network.tzktUrl,
+    baseUrl: network.tzktApiUrl,
   });
 };
 
@@ -106,7 +106,7 @@ export const getBakers = async (network: Network): Promise<Delegate[]> => {
       select: { fields: ["address,alias,stakingBalance"] },
     },
     {
-      baseUrl: network.tzktUrl,
+      baseUrl: network.tzktApiUrl,
     }
   );
 };

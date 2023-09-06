@@ -57,7 +57,7 @@ describe("multisig helpers", () => {
       );
 
       expect(mockedAxios.get).toBeCalledWith(
-        `${network.tzktUrl}/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
+        `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
       );
 
       expect(result).toEqual([

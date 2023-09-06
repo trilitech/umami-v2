@@ -48,7 +48,7 @@ describe("tezos utils helpers", () => {
     mockedAxios.get.mockResolvedValue(mockResponse);
     const result = await addressExists(mockImplicitAddress(0).pkh, MAINNET);
     expect(mockedAxios.get).toBeCalledWith(
-      `${MAINNET.tzktUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
+      `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
     );
     expect(result).toEqual(true);
   });
@@ -62,7 +62,7 @@ describe("tezos utils helpers", () => {
     mockedAxios.get.mockResolvedValue(mockResponse);
     const result = await addressExists(mockImplicitAddress(0).pkh, MAINNET);
     expect(mockedAxios.get).toBeCalledWith(
-      `${MAINNET.tzktUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
+      `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
     );
     expect(result).toEqual(false);
   });

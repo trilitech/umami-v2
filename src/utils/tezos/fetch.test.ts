@@ -68,7 +68,7 @@ describe("tezos utils fetch", () => {
       ];
       const res = await getTokenBalances(addresses, network);
       expect(mockedAxios.get).toBeCalledWith(
-        `${network.tzktUrl}/v1/tokens/balances?account.in=${addresses.join(",")}&balance.gt=0`
+        `${network.tzktApiUrl}/v1/tokens/balances?account.in=${addresses.join(",")}&balance.gt=0`
       );
 
       expect(res).toEqual(response);
@@ -83,7 +83,7 @@ describe("tezos utils fetch", () => {
           limit: 10,
         },
         {
-          baseUrl: network.tzktUrl,
+          baseUrl: network.tzktApiUrl,
         }
       );
     });
@@ -97,7 +97,7 @@ describe("tezos utils fetch", () => {
           limit: 10,
         },
         {
-          baseUrl: network.tzktUrl,
+          baseUrl: network.tzktApiUrl,
         }
       );
     });
@@ -121,7 +121,7 @@ describe("tezos utils fetch", () => {
       ];
       const res = await getAccounts(addresses, network);
       expect(mockedAxios.get).toBeCalledWith(
-        `${network.tzktUrl}/v1/accounts?address.in=${addresses.join(",")}&select=address,balance`
+        `${network.tzktApiUrl}/v1/accounts?address.in=${addresses.join(",")}&select=address,balance`
       );
 
       expect(res).toEqual([

@@ -20,7 +20,7 @@ describe("useAssetsPolling", () => {
     });
 
     test("bakers", async () => {
-      const baseUrl = network.tzktUrl;
+      const baseUrl = network.tzktApiUrl;
       (delegatesGet as jest.Mock).mockResolvedValue([
         { ...mockBaker(0), alias: mockBaker(0).name },
         { ...mockBaker(1), alias: mockBaker(1).name },
