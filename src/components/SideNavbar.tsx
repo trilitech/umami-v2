@@ -11,7 +11,6 @@ import {
   MdSupport,
   MdViewCompact,
 } from "react-icons/md";
-import { RxCube } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import colors from "../style/colors";
 import { useTotalBalance } from "../utils/hooks/assetsHooks";
@@ -78,7 +77,6 @@ export const SideNavbar = () => {
             <MenuItem label="Overview" to="/home" icon={MdViewCompact} />
             <MenuItem label="NFTs" to="/nfts" icon={MdOutlineDiamond} />
             <MenuItem label="Operations" to="/operations" icon={MdHistory} />
-            <MenuItem label="Delegations" to="/delegations" icon={RxCube} />
             <MenuItem label="Tokens" to="/tokens" icon={MdMoney} />
             <MenuItem label="Batch" to="/batch" icon={MdCalendarViewMonth} />
           </Box>
