@@ -6,11 +6,12 @@ import store from "../../../../utils/redux/store";
 import tokensSlice from "../../../../utils/redux/slices/tokensSlice";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
 import { MAINNET } from "../../../../types/Network";
+import { networksActions } from "../../../../utils/redux/slices/networks";
 
-const { updateTokenBalance, updateNetwork } = assetsActions;
+const { updateTokenBalance } = assetsActions;
 
 beforeEach(() => {
-  store.dispatch(updateNetwork(MAINNET));
+  store.dispatch(networksActions.setCurrent(MAINNET));
 });
 
 describe("<MultisigDecodedOperationItem/>", () => {

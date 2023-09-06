@@ -3,7 +3,7 @@ import { RawPkh } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { Token } from "../../types/Token";
 import { useAppSelector } from "../redux/hooks";
-import { useSelectedNetwork } from "./assetsHooks";
+import { useSelectedNetwork } from "./networkHooks";
 
 export type TokenLookup = (contract: RawPkh, tokenId: string) => Token | undefined;
 

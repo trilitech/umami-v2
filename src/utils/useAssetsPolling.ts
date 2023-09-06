@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { Network } from "../types/Network";
 import { TokenTransfer } from "../types/Transfer";
 import { useImplicitAccounts } from "./hooks/accountHooks";
-import { useRefetchTrigger, useSelectedNetwork } from "./hooks/assetsHooks";
+import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
 import { processInBatches } from "./promise";
 import {
@@ -28,6 +28,7 @@ import {
 } from "./tezos";
 import errorsSlice from "./redux/slices/errorsSlice";
 import getErrorContext from "./getErrorContext";
+import { useSelectedNetwork } from "./hooks/networkHooks";
 
 const getTezTransfersPayload = async (
   pkh: string,

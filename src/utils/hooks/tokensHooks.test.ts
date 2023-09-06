@@ -3,16 +3,16 @@ import { hedgehoge } from "../../mocks/fa12Tokens";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { fromRaw } from "../../types/Token";
-import { assetsActions } from "../redux/slices/assetsSlice";
 import store from "../redux/store";
 import { tokensActions } from "../redux/slices/tokensSlice";
 import { useGetToken, useGetTokenType } from "./tokensHooks";
 import { DefaultNetworks } from "../../types/Network";
+import { networksActions } from "../redux/slices/networks";
 
 describe("useGetToken", () => {
   describe.each(DefaultNetworks)("on $name", network => {
     beforeEach(() => {
-      store.dispatch(assetsActions.updateNetwork(network));
+      store.dispatch(networksActions.setCurrent(network));
     });
     it("returns undefined if token is not found", () => {
       const { result: getTokenRef } = renderHook(() => useGetToken(), {

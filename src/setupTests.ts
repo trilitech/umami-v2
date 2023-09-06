@@ -12,13 +12,13 @@ import failOnConsole from "jest-fail-on-console";
 import { contactsActions } from "./utils/redux/slices/contactsSlice";
 import store from "./utils/redux/store";
 import multisigsSlice from "./utils/redux/slices/multisigsSlice";
-import assetsSlice from "./utils/redux/slices/assetsSlice";
 import accountsSlice from "./utils/redux/slices/accountsSlice";
 import { act } from "@testing-library/react";
 import { tokensActions } from "./utils/redux/slices/tokensSlice";
 import errorsSlice from "./utils/redux/slices/errorsSlice";
 import { mockUseToast } from "./mocks/toast";
 import React from "react";
+import { networksActions } from "./utils/redux/slices/networks";
 
 failOnConsole();
 
@@ -86,11 +86,11 @@ jest.mock("@chakra-ui/react", () => {
 afterEach(() => {
   act(() => {
     store.dispatch(accountsSlice.actions.reset());
-    store.dispatch(assetsSlice.actions.reset());
     store.dispatch(multisigsSlice.actions.reset());
     store.dispatch(contactsActions.reset());
     store.dispatch(tokensActions.reset());
     store.dispatch(errorsSlice.actions.reset());
+    store.dispatch(networksActions.reset());
   });
 });
 

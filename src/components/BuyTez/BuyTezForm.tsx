@@ -10,9 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { navigateToExternalLink } from "../../utils/helpers";
-import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { FormErrorMessage } from "../FormErrorMessage";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 const BuyTezForm = () => {
   const network = useSelectedNetwork();

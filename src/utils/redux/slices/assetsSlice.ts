@@ -2,16 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, findIndex, groupBy, mapValues } from "lodash";
 import accountsSlice from "./accountsSlice";
-import { MAINNET, Network } from "../../../types/Network";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Delegate } from "../../../types/Delegate";
 import { AccountOperations } from "../../../components/sendForm/types";
 import { RawPkh } from "../../../types/Address";
+import { networksActions } from "./networks";
 
 type State = {
-  network: Network;
   blockLevel: number | null;
   balances: {
     mutez: Record<string, string | undefined>;
@@ -47,7 +46,6 @@ export type DelegationPayload = {
 export type ConversionRatePayload = { rate: State["conversionRate"] };
 
 const initialState: State = {
-  network: MAINNET,
   blockLevel: null,
   balances: {
     mutez: {},
@@ -74,12 +72,12 @@ const assetsSlice = createSlice({
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    builder.addCase(accountsSlice.actions.reset, () => initialState),
+    builder
+      .addCase(accountsSlice.actions.reset, () => initialState)
+      .addCase(networksActions.reset, () => initialState)
+      .addCase(networksActions.setCurrent, () => initialState),
   reducers: {
     reset: () => initialState,
-    updateNetwork: (_, { payload }: { type: string; payload: Network }) => {
-      return { ...initialState, network: payload };
-    },
     updateBlockLevel: (state, { payload }: { payload: number }) => {
       state.blockLevel = payload;
     },

@@ -21,10 +21,7 @@ import { RawPkh } from "../../types/Address";
 import assetsSlice from "../redux/slices/assetsSlice";
 import { Account } from "../../types/Account";
 import { Delegate } from "../../types/Delegate";
-
-export const useSelectedNetwork = () => {
-  return useAppSelector(s => s.assets.network);
-};
+import { useSelectedNetwork } from "./networkHooks";
 
 export const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
 

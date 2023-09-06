@@ -15,9 +15,10 @@ import store from "../../utils/redux/store";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import useAddressKind from "./useAddressKind";
 import { MAINNET } from "../../types/Network";
+import { networksActions } from "../../utils/redux/slices/networks";
 
 beforeEach(() => {
-  store.dispatch(assetsSlice.actions.updateNetwork(MAINNET));
+  store.dispatch(networksActions.setCurrent(MAINNET));
 });
 
 describe("useAddressKind", () => {

@@ -1,7 +1,7 @@
 import { Network } from "../../types/Network";
-import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
-import assetsSlice from "../../utils/redux/slices/assetsSlice";
+import { networksActions } from "../../utils/redux/slices/networks";
 import { NetworkSelectorDisplay } from "./NetworkSelectorDisplay";
 
 export const NetworkSelector = () => {
@@ -9,7 +9,7 @@ export const NetworkSelector = () => {
   const dispatch = useAppDispatch();
 
   const changeNetwork = (network: Network) => {
-    dispatch(assetsSlice.actions.updateNetwork(network));
+    dispatch(networksActions.setCurrent(network));
   };
 
   return <NetworkSelectorDisplay value={network} onChange={changeNetwork} />;
