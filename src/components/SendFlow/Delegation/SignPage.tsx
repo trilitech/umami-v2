@@ -13,7 +13,7 @@ import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
-import { BakerSmallTile } from "../../../views/delegations/BakerSmallTile";
+import { BakerSmallTile } from "../BakerSmallTile";
 import { Delegation } from "../../../types/Operation";
 import SignPageFee from "../SignPageFee";
 

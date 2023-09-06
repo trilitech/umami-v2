@@ -12,7 +12,7 @@ import {
 } from "../onSubmitFormActionHooks";
 import { Undelegation } from "../../../types/Operation";
 import FormPageHeader from "../FormPageHeader";
-import { DelegateSmallTile } from "../../../views/delegations/BakerSmallTile";
+import { DelegateSmallTile } from "../BakerSmallTile";
 
 export type FormValues = {
   sender: RawPkh;

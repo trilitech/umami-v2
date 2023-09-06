@@ -1,4 +1,4 @@
-import { AspectRatio, Image, Flex, Box, Text, Heading } from "@chakra-ui/react";
+import { AspectRatio, Image, Flex, Text, Heading } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import { formatPkh } from "../../utils/format";
 import { useGetBaker, useGetDelegateOf } from "../../utils/hooks/assetsHooks";
@@ -45,29 +45,4 @@ export const DelegateSmallTile: React.FC<{ account: Account }> = ({ account }) =
     return null;
   }
   return <BakerSmallTile pkh={baker.address} />;
-};
-
-//TODO: Remove this once fillstep is removed
-export const OldBakerSmallTile = ({ pkh }: { pkh: RawPkh }) => {
-  const getBaker = useGetBaker();
-  const baker = getBaker(pkh);
-  if (!baker) {
-    return null;
-  }
-
-  const logoUrl = `https://services.tzkt.io/v1/avatars/${pkh}`;
-
-  return (
-    <Flex>
-      <AspectRatio ml={2} mr={2} height="40px" width="40px" ratio={1}>
-        <Image src={logoUrl} />
-      </AspectRatio>
-      <Box ml={2}>
-        <Text fontWeight={600}>{baker.name}</Text>
-        <Text color={colors.gray[300]} size="sm">
-          {formatPkh(pkh)}
-        </Text>
-      </Box>
-    </Flex>
-  );
 };
