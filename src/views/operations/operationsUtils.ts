@@ -86,7 +86,7 @@ const TezTransaction = z.object({
 export const getTezOperationDisplay = (
   transfer: TezTransfer,
   forAddress: string,
-  network = "mainnet"
+  network: Network
 ) => {
   const parseResult = TezTransaction.safeParse(transfer);
   if (!parseResult.success) {
@@ -141,7 +141,7 @@ const TokenTransaction = z.object({
 export const getTokenOperationDisplay = (
   transfer: TokenTransfer,
   forAddress: string,
-  network = "mainnet"
+  network: Network
 ) => {
   const token = fromRaw(transfer.token);
 
@@ -210,7 +210,7 @@ const DelegationSchema = z.object({
 
 const getDelegationOperationDisplay = (
   delegation: DelegationOperation,
-  network = "mainnet"
+  network: Network
 ): OperationDisplay | null => {
   const parseResult = DelegationSchema.safeParse(delegation);
 
@@ -258,13 +258,13 @@ export const getOperationDisplays = (
   tokenTransfers: TokenTransfer[] = [],
   delegation: DelegationOperation | null = null,
   forAdress: string,
-  network: Network = "mainnet" // TODO: remove the default value
+  network: Network
 ) => {
   return sortOperationsByTimestamp(
     compact([
       ...tezTransfers.map(t => getTezOperationDisplay(t, forAdress, network)),
       ...tokenTransfers.map(t => getTokenOperationDisplay(t, forAdress, network)),
-      delegation ? getDelegationOperationDisplay(delegation) : null,
+      delegation ? getDelegationOperationDisplay(delegation, network) : null,
     ])
   );
 };

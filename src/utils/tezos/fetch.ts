@@ -40,10 +40,7 @@ export const getTokenBalances = async (
   return response.data;
 };
 
-export const getTezTransfers = (
-  address: string,
-  network: Network = "mainnet" // TODO: remove the default value
-): Promise<TezTransfer[]> => {
+export const getTezTransfers = (address: string, network: Network): Promise<TezTransfer[]> => {
   return operationsGetTransactions(
     {
       anyof: { fields: ["sender", "target"], eq: address },
@@ -56,10 +53,7 @@ export const getTezTransfers = (
   );
 };
 
-export const getTokenTransfers = (
-  address: string,
-  network: Network = "mainnet" // TODO: remove the default value
-): Promise<TokenTransfer[]> => {
+export const getTokenTransfers = (address: string, network: Network): Promise<TokenTransfer[]> => {
   return tokensGetTokenTransfers(
     {
       anyof: { fields: ["from", "to"], eq: address },
@@ -74,7 +68,7 @@ export const getTokenTransfers = (
 
 export const getLastDelegation = async (
   address: string,
-  network: Network = "mainnet" // TODO: remove the default value
+  network: Network
 ): Promise<DelegationOperation | undefined> => {
   return operationsGetDelegations(
     {
