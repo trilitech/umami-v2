@@ -8,7 +8,7 @@ import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import TokensView from "./TokensView";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import assetsSlice, { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { DefaultNetworks } from "../../types/TezosNetwork";
+import { DefaultNetworks } from "../../types/Network";
 
 const fixture = () => (
   <ReduxStore>

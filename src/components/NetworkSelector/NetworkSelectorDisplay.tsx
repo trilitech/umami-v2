@@ -1,6 +1,6 @@
 import { Box, Select } from "@chakra-ui/react";
 import React from "react";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 
 export const NetworkSelectorDisplay: React.FC<{
   value: TezosNetwork;

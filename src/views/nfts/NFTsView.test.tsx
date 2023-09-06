@@ -5,7 +5,7 @@ import { ReduxStore } from "../../providers/ReduxStore";
 import store from "../../utils/redux/store";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import NFTsViewBase from "./NftsView";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 

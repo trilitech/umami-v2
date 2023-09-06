@@ -1,6 +1,6 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { AccountOperations } from "../../../components/sendForm/types";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { TezosNetwork } from "../../../types/Network";
 import { estimate } from "../../tezos";
 import assetsSlice from "../slices/assetsSlice";
 import { RootState } from "../store";

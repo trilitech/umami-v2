@@ -13,7 +13,7 @@ import { DelegationDisplay } from "./DelegationDisplay";
 import MultisigPendingAccordion from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { TezosNetwork } from "../../../types/Network";
 import { useAllDelegations } from "../../../utils/hooks/assetsHooks";
 
 export const AssetsPanel: React.FC<{

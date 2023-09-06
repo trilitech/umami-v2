@@ -1,4 +1,4 @@
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 
 export const nodeUrls = {
   [TezosNetwork.GHOSTNET]: `https://tezos-ghostnet-node.prod.gke.papers.tech`,

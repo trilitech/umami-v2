@@ -1,7 +1,7 @@
 import { chunk, compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
-import { TezosNetwork } from "../types/TezosNetwork";
+import { TezosNetwork } from "../types/Network";
 import { TokenTransfer } from "../types/Transfer";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useRefetchTrigger, useSelectedNetwork } from "./hooks/assetsHooks";

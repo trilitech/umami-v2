@@ -1,5 +1,5 @@
 import { AccountOperations } from "../../components/sendForm/types";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
 import BigNumber from "bignumber.js";
 

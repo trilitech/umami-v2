@@ -12,7 +12,7 @@ import { coincapUrl, tzktUrls } from "./consts";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { DefaultNetworks, TezosNetwork } from "../../types/TezosNetwork";
+import { DefaultNetworks, TezosNetwork } from "../../types/Network";
 jest.mock("axios");
 
 jest.mock("@tzkt/sdk-api", () => {

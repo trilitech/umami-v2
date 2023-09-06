@@ -9,7 +9,7 @@ import { mockEstimatedFee } from "../../../mocks/helpers";
 import { estimate } from "../../tezos";
 import store from "../store";
 import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
-import { DefaultNetworks } from "../../../types/TezosNetwork";
+import { DefaultNetworks } from "../../../types/Network";
 
 describe("estimateAndUpdateBatch", () => {
   describe.each(DefaultNetworks)("on %s", network => {

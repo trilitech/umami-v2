@@ -20,7 +20,7 @@ import { multisigToAccount } from "../../utils/multisig/helpers";
 import { Multisig } from "../../utils/multisig/types";
 import multisigsSlice, { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 const {
   updateTezBalance,
   updateTokenBalance,

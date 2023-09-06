@@ -9,7 +9,7 @@ import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { parsePkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 
 export const getHashUrl = (hash: string, network: TezosNetwork) => {
   return `https://${network}.tzkt.io/${hash}`;

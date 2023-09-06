@@ -9,7 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { wertUrls } from "../../utils/tezos/consts";

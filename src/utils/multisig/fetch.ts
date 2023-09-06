@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { tzktUrls } from "../tezos/consts";
 import { RawTzktGetBigMapKeys, RawTzktGetSameMultisigs } from "../tzkt/types";
 const MULTISIG_FETCH_LIMIT = 10000;

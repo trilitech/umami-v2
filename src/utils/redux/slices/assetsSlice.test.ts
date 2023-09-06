@@ -13,7 +13,7 @@ import {
 } from "../../../mocks/factories";
 import accountsSlice from "./accountsSlice";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { TezosNetwork } from "../../../types/Network";
 import { makeAccountOperations } from "../../../components/sendForm/types";
 import { Operation } from "../../../types/Operation";
 import { ImplicitOperations } from "../../../components/sendForm/types";

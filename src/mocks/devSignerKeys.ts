@@ -1,6 +1,6 @@
 import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
-import { TezosNetwork } from "../types/TezosNetwork";
+import { TezosNetwork } from "../types/Network";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 import { makeToolkit } from "../utils/tezos";
 import { mnemonic1 } from "./mockMnemonic";

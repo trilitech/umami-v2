@@ -18,7 +18,7 @@ import {
   tokenSymbolSafe,
 } from "./Token";
 import type { Metadata } from "./Token";
-import { TezosNetwork } from "./TezosNetwork";
+import { TezosNetwork } from "./Network";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation();

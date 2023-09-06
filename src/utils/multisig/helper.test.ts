@@ -6,7 +6,7 @@ import {
   parseMultisig,
 } from "./helpers";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
-import { DefaultNetworks } from "../../types/TezosNetwork";
+import { DefaultNetworks } from "../../types/Network";
 jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ghostMultisigContracts } from "../../mocks/tzktResponse";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { tzktUrls } from "../tezos/consts";
 import { getAllMultiSigContracts } from "./fetch";
 

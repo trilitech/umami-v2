@@ -35,7 +35,7 @@ import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parsePkh } from "../../types/Address";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { estimate, executeOperations, makeToolkit } from "../../utils/tezos";
 
 // These tests might take long in the CI

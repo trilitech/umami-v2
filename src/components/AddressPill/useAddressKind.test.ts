@@ -7,7 +7,7 @@ import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import contactsSlice from "../../utils/redux/slices/contactsSlice";

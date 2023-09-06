@@ -7,7 +7,7 @@ import { assetsActions } from "../redux/slices/assetsSlice";
 import store from "../redux/store";
 import { tokensActions } from "../redux/slices/tokensSlice";
 import { useGetToken, useGetTokenType } from "./tokensHooks";
-import { DefaultNetworks } from "../../types/TezosNetwork";
+import { DefaultNetworks } from "../../types/Network";
 
 describe("useGetToken", () => {
   describe.each(DefaultNetworks)("on %s", network => {

@@ -13,7 +13,7 @@ import { coincapUrl, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
 import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts

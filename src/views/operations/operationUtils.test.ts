@@ -13,7 +13,7 @@ import {
   getTokenOperationDisplay,
   getTransactionUrl,
 } from "./operationsUtils";
-import { DefaultNetworks } from "../../types/TezosNetwork";
+import { DefaultNetworks } from "../../types/Network";
 
 const forAddress = "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS";
 describe("getTezOperationDisplay", () => {

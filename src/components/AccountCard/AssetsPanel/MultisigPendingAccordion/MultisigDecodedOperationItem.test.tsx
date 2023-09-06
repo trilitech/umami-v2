@@ -1,6 +1,6 @@
 import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
-import { TezosNetwork } from "../../../../types/TezosNetwork";
+import { TezosNetwork } from "../../../../types/Network";
 import { RawTokenBalance } from "../../../../types/TokenBalance";
 import { assetsActions } from "../../../../utils/redux/slices/assetsSlice";
 import store from "../../../../utils/redux/store";

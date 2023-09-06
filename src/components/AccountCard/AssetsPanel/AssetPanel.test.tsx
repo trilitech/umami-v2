@@ -1,6 +1,6 @@
 import { mockMultisigAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { TezosNetwork } from "../../../types/Network";
 import { AssetsPanel } from "./AssetsPanel";
 
 describe("<AssetPanel/>", () => {

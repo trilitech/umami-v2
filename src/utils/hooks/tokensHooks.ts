@@ -1,6 +1,6 @@
 import { get } from "lodash";
 import { RawPkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { Token } from "../../types/Token";
 import { useAppSelector } from "../redux/hooks";
 import { useSelectedNetwork } from "./assetsHooks";

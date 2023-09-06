@@ -2,7 +2,7 @@ import { contact1 } from "../../mocks/contacts";
 import { mockFA1TokenRaw, mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import store from "../../utils/redux/store";

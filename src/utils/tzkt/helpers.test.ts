@@ -1,4 +1,4 @@
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { buildTzktAddressUrl } from "./helpers";
 
 test("buildTzktUrl returns the right value for a given network", () => {

@@ -12,7 +12,7 @@ import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
 import AddressPill from "../AddressPill/AddressPill";
 import { OperationDisplay } from "../../types/Transfer";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { DynamicModalContext } from "../DynamicModal";
 import { useContext } from "react";
 import DelegationFormPage from "../SendFlow/Delegation/FormPage";

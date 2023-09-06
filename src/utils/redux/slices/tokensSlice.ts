@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { compact, setWith } from "lodash";
 import { RawPkh } from "../../../types/Address";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { TezosNetwork } from "../../../types/Network";
 import { fromRaw, RawTokenInfo, Token, TokenId } from "../../../types/Token";
 
 type State = Record<TezosNetwork, Record<RawPkh, Record<TokenId, Token>>>;

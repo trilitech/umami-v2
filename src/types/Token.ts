@@ -3,7 +3,7 @@ import { z } from "zod";
 import { Schema as AddressSchema } from "./Address";
 import BigNumber from "bignumber.js";
 import { getIPFSurl } from "../utils/token/nftUtils";
-import { TezosNetwork } from "./TezosNetwork";
+import { TezosNetwork } from "./Network";
 
 // TzKT defines metadada as any, but we need to have at least some clarity of what can be inside
 export type Metadata = {

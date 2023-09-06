@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, findIndex, groupBy, mapValues } from "lodash";
 import accountsSlice from "./accountsSlice";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { TezosNetwork } from "../../../types/Network";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";

@@ -11,7 +11,7 @@ import {
   makeMultisigProposeOperation,
 } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 import { PublicKeyPair } from "../mnemonic";
 import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";

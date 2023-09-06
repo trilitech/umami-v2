@@ -5,7 +5,7 @@ import { delegatesGet } from "@tzkt/sdk-api";
 import store from "./redux/store";
 import { assetsActions } from "./redux/slices/assetsSlice";
 import { mockBaker } from "../mocks/factories";
-import { DefaultNetworks } from "../types/TezosNetwork";
+import { DefaultNetworks } from "../types/Network";
 
 jest.unmock("./tezos");
 jest.mock("@tzkt/sdk-api", () => {

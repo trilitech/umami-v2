@@ -4,7 +4,7 @@ import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
 import { Multisig, MultisigOperation } from "./types";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { TezosNetwork } from "../../types/Network";
 
 export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
   address: parseContractPkh(raw.address),
