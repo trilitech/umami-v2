@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.5b16202c.css",
-    "main.js": "./static/js/main.40342f33.js",
+    "main.js": "./static/js/main.aa7a06c7.js",
     "static/js/180.acaa5337.chunk.js": "./static/js/180.acaa5337.chunk.js",
     "static/media/maki-default.png": "./static/media/maki-default.9b24fbf6d7fd050fb08b.png",
     "static/media/tez.svg": "./static/media/tez.ee59a85037aa1727d7a3c5c5373e5e1d.svg",
@@ -9,11 +9,11 @@
     "static/media/background_image.svg": "./static/media/background_image.970e9c6d8c5e0e9bd53b7bc2cc0da4a1.svg",
     "index.html": "./index.html",
     "main.5b16202c.css.map": "./static/css/main.5b16202c.css.map",
-    "main.40342f33.js.map": "./static/js/main.40342f33.js.map",
+    "main.aa7a06c7.js.map": "./static/js/main.aa7a06c7.js.map",
     "180.acaa5337.chunk.js.map": "./static/js/180.acaa5337.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.5b16202c.css",
-    "static/js/main.40342f33.js"
+    "static/js/main.aa7a06c7.js"
   ]
 }
