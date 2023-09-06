@@ -8,7 +8,6 @@ import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBala
 import { Delegate } from "../../../types/Delegate";
 import { AccountOperations } from "../../../components/sendForm/types";
 import { RawPkh } from "../../../types/Address";
-import { networksActions } from "./networks";
 
 type State = {
   blockLevel: number | null;
@@ -72,10 +71,7 @@ const assetsSlice = createSlice({
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    builder
-      .addCase(accountsSlice.actions.reset, () => initialState)
-      .addCase(networksActions.reset, () => initialState)
-      .addCase(networksActions.setCurrent, () => initialState),
+    builder.addCase(accountsSlice.actions.reset, () => initialState),
   reducers: {
     reset: () => initialState,
     updateBlockLevel: (state, { payload }: { payload: number }) => {

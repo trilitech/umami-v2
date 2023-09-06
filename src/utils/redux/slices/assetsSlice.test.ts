@@ -160,32 +160,6 @@ describe("assetsSlice", () => {
     });
   });
 
-  test("updating network resets all assets", () => {
-    store.dispatch(
-      updateTezBalance([
-        { address: "bar", balance: 44 },
-        { address: "baz", balance: 55 },
-      ])
-    );
-
-    store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
-
-    store.dispatch(networksActions.setCurrent(GHOSTNET));
-
-    expect(store.getState().assets).toEqual({
-      balances: { mutez: {}, tokens: {} },
-      transfers: { tez: {}, tokens: {} },
-      delegations: {},
-      bakers: [],
-      conversionRate: null,
-      batches: [],
-      blockLevel: null,
-      refetchTrigger: 0,
-      lastTimeUpdated: null,
-      isLoading: false,
-    });
-  });
-
   test("reseting accounts resets assetsState", () => {
     store.dispatch(
       updateTezBalance([
