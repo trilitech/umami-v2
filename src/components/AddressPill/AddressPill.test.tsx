@@ -2,7 +2,6 @@ import { contact1 } from "../../mocks/contacts";
 import { mockFA1TokenRaw, mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/Network";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import store from "../../utils/redux/store";
@@ -42,10 +41,8 @@ describe("<AddressPill />", () => {
   it("is removable for two icons", () => {
     const address = mockImplicitAddress(0);
     const fa1 = mockFA1TokenRaw(1, address.pkh, 123);
-    store.dispatch(updateNetwork(TezosNetwork.MAINNET));
-    store.dispatch(
-      tokensSlice.actions.addTokens({ network: TezosNetwork.MAINNET, tokens: [fa1.token] })
-    );
+    store.dispatch(updateNetwork("mainnet"));
+    store.dispatch(tokensSlice.actions.addTokens({ network: "mainnet", tokens: [fa1.token] }));
     render(
       <AddressPill
         address={parseContractPkh(fa1.token.contract.address as string)}

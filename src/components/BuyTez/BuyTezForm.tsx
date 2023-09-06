@@ -9,7 +9,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { TezosNetwork } from "../../types/Network";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { wertUrls } from "../../utils/tezos/consts";
@@ -18,7 +17,7 @@ import { FormErrorMessage } from "../FormErrorMessage";
 
 const BuyTezForm = () => {
   const network = useSelectedNetwork();
-  const isMainnet = network === TezosNetwork.MAINNET;
+  const isMainnet = network === "mainnet";
   const title = isMainnet ? "Buy Tez" : "Request Tez from faucet";
 
   const onSubmit = async ({ recipient }: { recipient: string }) => {

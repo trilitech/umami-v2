@@ -1,6 +1,5 @@
 import { Modal } from "@chakra-ui/react";
 import { render, screen } from "../../mocks/testUtils";
-import { TezosNetwork } from "../../types/Network";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import store from "../../utils/redux/store";
 import BuyTezForm from "./BuyTezForm";
@@ -13,7 +12,7 @@ const fixture = () => (
 
 describe("<BuyTezForm />", () => {
   test("renders request Tez from faucet on ghostnet", async () => {
-    store.dispatch(assetsActions.updateNetwork(TezosNetwork.GHOSTNET));
+    store.dispatch(assetsActions.updateNetwork("ghostnet"));
     render(fixture());
 
     // Async findBy because otherwise we get act warning since store.dispatch is async
@@ -22,7 +21,7 @@ describe("<BuyTezForm />", () => {
   });
 
   test("renders Buy Tez from faucet on ghostnet", async () => {
-    store.dispatch(assetsActions.updateNetwork(TezosNetwork.MAINNET));
+    store.dispatch(assetsActions.updateNetwork("mainnet"));
     render(fixture());
 
     const result = await screen.findByTestId("buy-tez-button");

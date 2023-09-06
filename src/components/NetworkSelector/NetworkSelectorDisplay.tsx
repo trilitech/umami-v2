@@ -21,8 +21,8 @@ export const NetworkSelectorDisplay: React.FC<{
           onChange(e.target.value as TezosNetwork);
         }}
       >
-        <option value={TezosNetwork.GHOSTNET}>Ghostnet</option>
-        <option value={TezosNetwork.MAINNET}>Mainnet</option>
+        <option value="ghostnet">Ghostnet</option>
+        <option value="mainnet">Mainnet</option>
       </Select>
     </Box>
   );

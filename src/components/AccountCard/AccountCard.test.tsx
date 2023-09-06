@@ -20,7 +20,6 @@ import { multisigToAccount } from "../../utils/multisig/helpers";
 import { Multisig } from "../../utils/multisig/types";
 import multisigsSlice, { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
-import { TezosNetwork } from "../../types/Network";
 const {
   updateTezBalance,
   updateTokenBalance,
@@ -39,7 +38,7 @@ const mockNft = mockNFTToken(0, pkh);
 
 const SELECTED_ACCOUNT_BALANCE = 33200000000;
 beforeEach(() => {
-  store.dispatch(assetsSlice.actions.updateNetwork(TezosNetwork.MAINNET));
+  store.dispatch(assetsSlice.actions.updateNetwork("mainnet"));
   store.dispatch(setMultisigs(multisigs));
   store.dispatch(addAccount([selectedAccount, mockImplicitAccount(1)]));
   store.dispatch(updateTezBalance([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }]));
@@ -54,7 +53,7 @@ beforeEach(() => {
   );
   store.dispatch(
     tokensSlice.actions.addTokens({
-      network: TezosNetwork.MAINNET,
+      network: "mainnet",
       tokens: [
         hedgehoge(selectedAccount.address).token,
         tzBtsc(selectedAccount.address).token,
@@ -90,7 +89,7 @@ describe("<AccountCard />", () => {
     expect(link).toHaveProperty("href", expectedLink);
 
     {
-      act(() => store.dispatch(updateNetwork(TezosNetwork.GHOSTNET)));
+      act(() => store.dispatch(updateNetwork("ghostnet")));
 
       const tzktLink = screen.getByTestId("asset-panel-tablist");
       const link = within(tzktLink).getByRole("link", {});

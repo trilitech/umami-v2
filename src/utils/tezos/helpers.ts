@@ -11,7 +11,6 @@ import {
   makeMultisigProposeOperation,
 } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
-import { TezosNetwork } from "../../types/Network";
 import { PublicKeyPair } from "../mnemonic";
 import { RawTzktGetAddressType } from "../tzkt/types";
 import { nodeUrls, tzktUrls } from "./consts";
@@ -20,10 +19,7 @@ import BigNumber from "bignumber.js";
 import { OpKind, TransactionOperationParameter } from "@taquito/rpc";
 import { AccountOperations } from "../../components/sendForm/types";
 
-export const addressExists = async (
-  pkh: string,
-  network = TezosNetwork.MAINNET
-): Promise<boolean> => {
+export const addressExists = async (pkh: string, network = "mainnet"): Promise<boolean> => {
   try {
     const url = `${tzktUrls[network]}/v1/accounts/${pkh}`;
     const {

@@ -13,7 +13,6 @@ import {
 } from "../../../mocks/factories";
 import accountsSlice from "./accountsSlice";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
-import { TezosNetwork } from "../../../types/Network";
 import { makeAccountOperations } from "../../../components/sendForm/types";
 import { Operation } from "../../../types/Operation";
 import { ImplicitOperations } from "../../../components/sendForm/types";
@@ -175,7 +174,7 @@ describe("assetsSlice", () => {
 
     store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
 
-    store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
+    store.dispatch(updateNetwork("ghostnet"));
 
     expect(store.getState().assets).toEqual({
       balances: { mutez: {}, tokens: {} },
@@ -289,7 +288,7 @@ describe("assetsSlice", () => {
       lastTimeUpdated: null,
       isLoading: false,
     });
-    store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
+    store.dispatch(updateNetwork("ghostnet"));
   });
 
   test("token transfers are upserted", () => {

@@ -1,6 +1,5 @@
 import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
-import { TezosNetwork } from "../types/Network";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 import { makeToolkit } from "../utils/tezos";
 import { mnemonic1 } from "./mockMnemonic";
@@ -47,6 +46,6 @@ export const makeToolkitFromDefaultDevSeed = async (index: number): Promise<Tezo
   return makeToolkit({
     secretKey,
     type: "mnemonic",
-    network: TezosNetwork.GHOSTNET,
+    network: "ghostnet",
   });
 };

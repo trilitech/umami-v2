@@ -7,8 +7,8 @@ import { fromRaw, RawTokenInfo, Token, TokenId } from "../../../types/Token";
 type State = Record<TezosNetwork, Record<RawPkh, Record<TokenId, Token>>>;
 
 const initialState: State = {
-  [TezosNetwork.MAINNET]: {},
-  [TezosNetwork.GHOSTNET]: {},
+  mainnet: {},
+  ghostnet: {},
 };
 
 const tokensSlice = createSlice({

@@ -47,7 +47,7 @@ export type DelegationPayload = {
 export type ConversionRatePayload = { rate: State["conversionRate"] };
 
 const initialState: State = {
-  network: TezosNetwork.MAINNET,
+  network: "mainnet",
   blockLevel: null,
   balances: {
     mutez: {},

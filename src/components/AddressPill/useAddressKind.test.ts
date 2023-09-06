@@ -7,7 +7,6 @@ import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/Network";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import contactsSlice from "../../utils/redux/slices/contactsSlice";
@@ -17,7 +16,7 @@ import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import useAddressKind from "./useAddressKind";
 
 beforeEach(() => {
-  store.dispatch(assetsSlice.actions.updateNetwork(TezosNetwork.MAINNET));
+  store.dispatch(assetsSlice.actions.updateNetwork("mainnet"));
 });
 
 describe("useAddressKind", () => {
@@ -58,7 +57,7 @@ describe("useAddressKind", () => {
         delete withoutName.token.metadata?.name;
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: TezosNetwork.MAINNET,
+            network: "mainnet",
             tokens: [withoutName.token],
           })
         );
@@ -76,7 +75,7 @@ describe("useAddressKind", () => {
       it("returns label", () => {
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: TezosNetwork.MAINNET,
+            network: "mainnet",
             tokens: [tokenBalance.token],
           })
         );
@@ -140,7 +139,7 @@ describe("useAddressKind", () => {
         store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: TezosNetwork.MAINNET,
+            network: "mainnet",
             tokens: [hedgehoge(mockImplicitAddress(0)).token, uUSD(mockImplicitAddress(0)).token],
           })
         );

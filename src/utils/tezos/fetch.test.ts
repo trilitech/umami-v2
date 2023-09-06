@@ -12,7 +12,7 @@ import { coincapUrl, tzktUrls } from "./consts";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { DefaultNetworks, TezosNetwork } from "../../types/Network";
+import { DefaultNetworks } from "../../types/Network";
 jest.mock("axios");
 
 jest.mock("@tzkt/sdk-api", () => {
@@ -78,7 +78,7 @@ describe("tezos utils fetch", () => {
   });
 
   test("getTezTransfers", async () => {
-    await getTezTransfers(mockImplicitAddress(0).pkh, TezosNetwork.GHOSTNET);
+    await getTezTransfers(mockImplicitAddress(0).pkh, "ghostnet");
     expect(operationsGetTransactions).toBeCalledWith(
       {
         anyof: { fields: ["sender", "target"], eq: mockImplicitAddress(0).pkh },
@@ -86,13 +86,13 @@ describe("tezos utils fetch", () => {
         limit: 10,
       },
       {
-        baseUrl: tzktUrls[TezosNetwork.GHOSTNET],
+        baseUrl: tzktUrls["ghostnet"],
       }
     );
   });
 
   test("getTokenTransfers", async () => {
-    await getTokenTransfers(mockImplicitAddress(0).pkh, TezosNetwork.GHOSTNET);
+    await getTokenTransfers(mockImplicitAddress(0).pkh, "ghostnet");
     expect(tokensGetTokenTransfers).toBeCalledWith(
       {
         anyof: { fields: ["from", "to"], eq: mockImplicitAddress(0).pkh },
@@ -100,13 +100,13 @@ describe("tezos utils fetch", () => {
         limit: 10,
       },
       {
-        baseUrl: tzktUrls[TezosNetwork.GHOSTNET],
+        baseUrl: tzktUrls["ghostnet"],
       }
     );
   });
 
   test("getLastDelegation", async () => {
-    const res = await getLastDelegation(mockImplicitAddress(0).pkh, TezosNetwork.GHOSTNET);
+    const res = await getLastDelegation(mockImplicitAddress(0).pkh, "ghostnet");
     expect(res).toEqual({ type: "delegation" });
   });
 

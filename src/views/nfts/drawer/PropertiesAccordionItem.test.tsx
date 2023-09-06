@@ -84,7 +84,7 @@ describe("PropertiesAccordionItem", () => {
       delete nft.metadata.creators;
 
       render(fixture(nft));
-      // act(() => store.dispatch(assetsActions.updateNetwork(TezosNetwork.MAINNET)));
+      // act(() => store.dispatch(assetsActions.updateNetwork("mainnet")));
       expect(screen.getByTestId("nft-creator")).toHaveTextContent("Creator:");
       expect(screen.queryByTestId("nft-creator-value")).toHaveTextContent("-");
     });

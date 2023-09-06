@@ -35,7 +35,6 @@ import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parsePkh } from "../../types/Address";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
-import { TezosNetwork } from "../../types/Network";
 import { estimate, executeOperations, makeToolkit } from "../../utils/tezos";
 
 // These tests might take long in the CI
@@ -65,7 +64,7 @@ beforeEach(async () => {
   document.getElementById("chakra-toast-portal")?.remove();
   store.dispatch(
     tokensSlice.actions.addTokens({
-      network: TezosNetwork.MAINNET,
+      network: "mainnet",
       tokens: [fa1Token.token, fa2Token.token, nft.token],
     })
   );

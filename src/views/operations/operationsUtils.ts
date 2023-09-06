@@ -9,9 +9,9 @@ import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { parsePkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/Network";
+import { Network } from "../../types/Network";
 
-export const getHashUrl = (hash: string, network: TezosNetwork) => {
+export const getHashUrl = (hash: string, network: Network) => {
   return `https://${network}.tzkt.io/${hash}`;
 };
 
@@ -24,7 +24,7 @@ export const getTransactionUrl = ({
   transactionId: number | undefined;
   originationId: number | undefined;
   migrationId: number | undefined;
-  network: TezosNetwork;
+  network: Network;
 }) => {
   if (transactionId) {
     return `https://${network}.tzkt.io/transactions/${transactionId}`;
@@ -86,7 +86,7 @@ const TezTransaction = z.object({
 export const getTezOperationDisplay = (
   transfer: TezTransfer,
   forAddress: string,
-  network = TezosNetwork.MAINNET
+  network = "mainnet"
 ) => {
   const parseResult = TezTransaction.safeParse(transfer);
   if (!parseResult.success) {
@@ -141,7 +141,7 @@ const TokenTransaction = z.object({
 export const getTokenOperationDisplay = (
   transfer: TokenTransfer,
   forAddress: string,
-  network = TezosNetwork.MAINNET
+  network = "mainnet"
 ) => {
   const token = fromRaw(transfer.token);
 
@@ -210,7 +210,7 @@ const DelegationSchema = z.object({
 
 const getDelegationOperationDisplay = (
   delegation: DelegationOperation,
-  network = TezosNetwork.MAINNET
+  network = "mainnet"
 ): OperationDisplay | null => {
   const parseResult = DelegationSchema.safeParse(delegation);
 
@@ -258,7 +258,7 @@ export const getOperationDisplays = (
   tokenTransfers: TokenTransfer[] = [],
   delegation: DelegationOperation | null = null,
   forAdress: string,
-  network: TezosNetwork = TezosNetwork.MAINNET
+  network: Network = "mainnet" // TODO: remove the default value
 ) => {
   return sortOperationsByTimestamp(
     compact([

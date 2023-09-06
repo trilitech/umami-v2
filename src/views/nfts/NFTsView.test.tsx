@@ -5,7 +5,6 @@ import { ReduxStore } from "../../providers/ReduxStore";
 import store from "../../utils/redux/store";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import NFTsViewBase from "./NftsView";
-import { TezosNetwork } from "../../types/Network";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 
@@ -33,7 +32,7 @@ describe("NFTsView", () => {
     store.dispatch(
       accountsSlice.actions.addAccount([mockImplicitAccount(1), mockImplicitAccount(2)])
     );
-    store.dispatch(updateNetwork(TezosNetwork.MAINNET));
+    store.dispatch(updateNetwork("mainnet"));
     store.dispatch(
       updateTokenBalance([
         mockNFTToken(1, mockImplicitAccount(1).address.pkh),
@@ -44,7 +43,7 @@ describe("NFTsView", () => {
     );
     store.dispatch(
       tokensSlice.actions.addTokens({
-        network: TezosNetwork.MAINNET,
+        network: "mainnet",
         tokens: [
           mockNFTToken(1, mockImplicitAddress(1).pkh).token,
           mockNFTToken(2, mockImplicitAddress(1).pkh).token,

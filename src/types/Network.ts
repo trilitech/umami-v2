@@ -1,8 +1,5 @@
-export enum TezosNetwork {
-  MAINNET = "mainnet",
-  GHOSTNET = "ghostnet",
-}
+export type TezosNetwork = "mainnet" | "ghostnet";
 
 export type Network = string;
 
-export const DefaultNetworks = [TezosNetwork.GHOSTNET, TezosNetwork.MAINNET];
+export const DefaultNetworks: TezosNetwork[] = ["mainnet", "ghostnet"];

@@ -18,7 +18,6 @@ import {
   tokenSymbolSafe,
 } from "./Token";
 import type { Metadata } from "./Token";
-import { TezosNetwork } from "./Network";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation();
@@ -362,10 +361,10 @@ describe("metadataUri", () => {
   it("returns a tzkt link", () => {
     const nft = mockNFT(0);
 
-    expect(metadataUri(nft, TezosNetwork.MAINNET)).toEqual(
+    expect(metadataUri(nft, "mainnet")).toEqual(
       "https://mainnet.tzkt.io/KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG/tokens/mockId0/metadata"
     );
-    expect(metadataUri(nft, TezosNetwork.GHOSTNET)).toEqual(
+    expect(metadataUri(nft, "ghostnet")).toEqual(
       "https://ghostnet.tzkt.io/KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG/tokens/mockId0/metadata"
     );
   });

@@ -13,7 +13,7 @@ import { coincapUrl, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
 import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
-import { TezosNetwork } from "../../types/Network";
+import { Network, TezosNetwork } from "../../types/Network";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
@@ -42,7 +42,7 @@ export const getTokenBalances = async (
 
 export const getTezTransfers = (
   address: string,
-  network = TezosNetwork.MAINNET
+  network: Network = "mainnet" // TODO: remove the default value
 ): Promise<TezTransfer[]> => {
   return operationsGetTransactions(
     {
@@ -58,7 +58,7 @@ export const getTezTransfers = (
 
 export const getTokenTransfers = (
   address: string,
-  network = TezosNetwork.MAINNET
+  network: Network = "mainnet" // TODO: remove the default value
 ): Promise<TokenTransfer[]> => {
   return tokensGetTokenTransfers(
     {
@@ -74,7 +74,7 @@ export const getTokenTransfers = (
 
 export const getLastDelegation = async (
   address: string,
-  network = TezosNetwork.MAINNET
+  network: Network = "mainnet" // TODO: remove the default value
 ): Promise<DelegationOperation | undefined> => {
   return operationsGetDelegations(
     {
@@ -100,13 +100,16 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
   return priceUsd ?? null;
 };
 
-export const getLatestBlockLevel = async (network = TezosNetwork.MAINNET): Promise<number> => {
+export const getLatestBlockLevel = async (
+  // TODO: remove the default value
+  network: Network = "mainnet"
+): Promise<number> => {
   return await blocksGetCount({
     baseUrl: tzktUrls[network],
   });
 };
 
-export const getBakers = async (network: TezosNetwork): Promise<Delegate[]> => {
+export const getBakers = async (network: Network): Promise<Delegate[]> => {
   return delegatesGet(
     {
       sort: { desc: "stakingBalance" },
