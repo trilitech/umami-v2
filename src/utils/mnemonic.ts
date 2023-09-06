@@ -4,6 +4,7 @@ import { defaultDerivationPathPattern, makeDerivationPath } from "./account/deri
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { addressExists, getFingerPrint } from "./tezos";
 import { generateMnemonic } from "bip39";
+import { Network } from "../types/Network";
 
 // This is put in a separate file for mocking purposes in tests
 export const generate24WordMnemonic = () => {
@@ -41,16 +42,18 @@ export const deriveSecretKey = (mnemonic: string, derivationPath: string, curve:
 export const restoreRevealedPublickKeyPairs = async (
   mnemonic: string,
   derivationPathPattern: string,
+  network: Network,
   result: PublicKeyPair[] = [],
   startIndex = 0
 ): Promise<PublicKeyPair[]> => {
   const derivationPath = makeDerivationPath(derivationPathPattern, startIndex);
   const pubKeyPair = await derivePublicKeyPair(mnemonic, derivationPath);
 
-  if (await addressExists(pubKeyPair.pkh)) {
+  if (await addressExists(pubKeyPair.pkh, network)) {
     return restoreRevealedPublickKeyPairs(
       mnemonic,
       derivationPathPattern,
+      network,
       [...result, pubKeyPair],
       startIndex + 1
     );
@@ -61,10 +64,15 @@ export const restoreRevealedPublickKeyPairs = async (
 
 export const restoreRevealedMnemonicAccounts = async (
   mnemonic: string,
+  network: Network,
   label = "Account",
   derivationPathPattern = defaultDerivationPathPattern
 ): Promise<MnemonicAccount[]> => {
-  const pubKeyPairs = await restoreRevealedPublickKeyPairs(mnemonic, derivationPathPattern);
+  const pubKeyPairs = await restoreRevealedPublickKeyPairs(
+    mnemonic,
+    derivationPathPattern,
+    network
+  );
   const seedFingerPrint = await getFingerPrint(mnemonic);
 
   return pubKeyPairs.map(({ pk, pkh }, i) => {

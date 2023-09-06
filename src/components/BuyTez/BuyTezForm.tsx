@@ -11,17 +11,19 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { navigateToExternalLink } from "../../utils/helpers";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
-import { wertUrls } from "../../utils/tezos/consts";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { FormErrorMessage } from "../FormErrorMessage";
 
 const BuyTezForm = () => {
   const network = useSelectedNetwork();
-  const isMainnet = network === "mainnet";
+  const isMainnet = network.name === "mainnet";
   const title = isMainnet ? "Buy Tez" : "Request Tez from faucet";
 
   const onSubmit = async ({ recipient }: { recipient: string }) => {
-    let url = wertUrls[network];
+    let url = network.buyTezUrl;
+    if (!url) {
+      throw new Error(`${network.name} does not have a buyTezUrl defined`);
+    }
     if (isMainnet) {
       url += `/default/widget/?commodity=XTZ%3ATezos&address=${recipient}`;
     }

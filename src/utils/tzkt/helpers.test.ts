@@ -1,8 +1,9 @@
+import { GHOSTNET, MAINNET } from "../../types/Network";
 import { buildTzktAddressUrl } from "./helpers";
 
 test("buildTzktUrl returns the right value for a given network", () => {
-  expect(buildTzktAddressUrl("ghostnet", "mockAddress")).toEqual(
+  expect(buildTzktAddressUrl(GHOSTNET, "mockAddress")).toEqual(
     "https://ghostnet.tzkt.io/mockAddress"
   );
-  expect(buildTzktAddressUrl("mainnet", "mockAddress")).toEqual("https://tzkt.io/mockAddress");
+  expect(buildTzktAddressUrl(MAINNET, "mockAddress")).toEqual("https://tzkt.io/mockAddress");
 });

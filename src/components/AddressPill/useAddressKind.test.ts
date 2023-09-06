@@ -14,9 +14,10 @@ import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import store from "../../utils/redux/store";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import useAddressKind from "./useAddressKind";
+import { MAINNET } from "../../types/Network";
 
 beforeEach(() => {
-  store.dispatch(assetsSlice.actions.updateNetwork("mainnet"));
+  store.dispatch(assetsSlice.actions.updateNetwork(MAINNET));
 });
 
 describe("useAddressKind", () => {
@@ -57,7 +58,7 @@ describe("useAddressKind", () => {
         delete withoutName.token.metadata?.name;
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: "mainnet",
+            network: MAINNET,
             tokens: [withoutName.token],
           })
         );
@@ -75,7 +76,7 @@ describe("useAddressKind", () => {
       it("returns label", () => {
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: "mainnet",
+            network: MAINNET,
             tokens: [tokenBalance.token],
           })
         );
@@ -139,7 +140,7 @@ describe("useAddressKind", () => {
         store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: "mainnet",
+            network: MAINNET,
             tokens: [hedgehoge(mockImplicitAddress(0)).token, uUSD(mockImplicitAddress(0)).token],
           })
         );

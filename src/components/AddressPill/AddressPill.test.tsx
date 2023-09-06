@@ -7,6 +7,7 @@ import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import store from "../../utils/redux/store";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import AddressPill from "./AddressPill";
+import { MAINNET } from "../../types/Network";
 const { upsert } = contactsActions;
 const { updateNetwork } = assetsSlice.actions;
 
@@ -41,8 +42,8 @@ describe("<AddressPill />", () => {
   it("is removable for two icons", () => {
     const address = mockImplicitAddress(0);
     const fa1 = mockFA1TokenRaw(1, address.pkh, 123);
-    store.dispatch(updateNetwork("mainnet"));
-    store.dispatch(tokensSlice.actions.addTokens({ network: "mainnet", tokens: [fa1.token] }));
+    store.dispatch(updateNetwork(MAINNET));
+    store.dispatch(tokensSlice.actions.addTokens({ network: MAINNET, tokens: [fa1.token] }));
     render(
       <AddressPill
         address={parseContractPkh(fa1.token.contract.address as string)}

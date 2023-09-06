@@ -1,5 +1,6 @@
 import { mockMultisigAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
+import { MAINNET } from "../../../types/Network";
 import { AssetsPanel } from "./AssetsPanel";
 
 describe("<AssetPanel/>", () => {
@@ -11,7 +12,7 @@ describe("<AssetPanel/>", () => {
         nfts={[]}
         tokens={[]}
         operationDisplays={[]}
-        network="mainnet"
+        network={MAINNET}
       />
     );
 

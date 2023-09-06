@@ -3,6 +3,7 @@ import { render, screen } from "../../mocks/testUtils";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import store from "../../utils/redux/store";
 import BuyTezForm from "./BuyTezForm";
+import { GHOSTNET, MAINNET } from "../../types/Network";
 
 const fixture = () => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -12,7 +13,7 @@ const fixture = () => (
 
 describe("<BuyTezForm />", () => {
   test("renders request Tez from faucet on ghostnet", async () => {
-    store.dispatch(assetsActions.updateNetwork("ghostnet"));
+    store.dispatch(assetsActions.updateNetwork(GHOSTNET));
     render(fixture());
 
     // Async findBy because otherwise we get act warning since store.dispatch is async
@@ -21,11 +22,11 @@ describe("<BuyTezForm />", () => {
   });
 
   test("renders Buy Tez from faucet on ghostnet", async () => {
-    store.dispatch(assetsActions.updateNetwork("mainnet"));
+    store.dispatch(assetsActions.updateNetwork(MAINNET));
     render(fixture());
 
     const result = await screen.findByTestId("buy-tez-button");
     expect(result).toHaveTextContent("Buy Tez");
-    expect(screen.getByTestId("buy-tez-selector")).toBeTruthy();
+    expect(screen.getByTestId("buy-tez-selector")).toBeInTheDocument();
   });
 });

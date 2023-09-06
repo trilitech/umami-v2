@@ -1,11 +1,15 @@
 import { Box, Select } from "@chakra-ui/react";
 import React from "react";
-import { Network } from "../../types/Network";
+import { DefaultNetworks, Network } from "../../types/Network";
+import { capitalize } from "lodash";
 
+// TODO: merge with NetworkSelector component
+// TODO: remove empty option
 export const NetworkSelectorDisplay: React.FC<{
   value: Network;
   onChange: (val: Network) => void;
-}> = ({ value, onChange }) => {
+}> = ({ value: network, onChange }) => {
+  const availableNetworks = DefaultNetworks; // TODO: add support for custom networks
   return (
     <Box width={120}>
       <Select
@@ -13,16 +17,19 @@ export const NetworkSelectorDisplay: React.FC<{
         fontWeight={600}
         color="umami.green"
         placeholder="Choose network"
-        value={value}
+        value={network.name}
         onChange={e => {
           if (e.target.value === "") {
             return;
           }
-          onChange(e.target.value as Network);
+          onChange(availableNetworks.find(network => network.name === e.target.value) as Network);
         }}
       >
-        <option value="ghostnet">Ghostnet</option>
-        <option value="mainnet">Mainnet</option>
+        {availableNetworks.map(network => (
+          <option key={network.name} value={network.name}>
+            {capitalize(network.name)}
+          </option>
+        ))}
       </Select>
     </Box>
   );

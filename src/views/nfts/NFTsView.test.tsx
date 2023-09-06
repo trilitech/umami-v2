@@ -7,6 +7,7 @@ import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import NFTsViewBase from "./NftsView";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import { MAINNET } from "../../types/Network";
 
 const { updateTokenBalance, updateNetwork } = assetsSlice.actions;
 
@@ -32,7 +33,7 @@ describe("NFTsView", () => {
     store.dispatch(
       accountsSlice.actions.addAccount([mockImplicitAccount(1), mockImplicitAccount(2)])
     );
-    store.dispatch(updateNetwork("mainnet"));
+    store.dispatch(updateNetwork(MAINNET));
     store.dispatch(
       updateTokenBalance([
         mockNFTToken(1, mockImplicitAccount(1).address.pkh),
@@ -43,7 +44,7 @@ describe("NFTsView", () => {
     );
     store.dispatch(
       tokensSlice.actions.addTokens({
-        network: "mainnet",
+        network: MAINNET,
         tokens: [
           mockNFTToken(1, mockImplicitAddress(1).pkh).token,
           mockNFTToken(2, mockImplicitAddress(1).pkh).token,

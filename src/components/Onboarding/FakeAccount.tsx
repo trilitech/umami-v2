@@ -2,11 +2,11 @@
 import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { RpcClient } from "@taquito/rpc";
-import { nodeUrls } from "../../utils/tezos/consts";
 import { SupportedIcons } from "../CircleIcon";
 import ModalContentWrapper from "./ModalContentWrapper";
 import { useRestoreLedger } from "../../utils/hooks/accountHooks";
 import { defaultDerivationPathPattern } from "../../utils/account/derivationPathUtils";
+import { MAINNET } from "../../types/Network";
 
 export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const {
@@ -17,7 +17,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const restoreLedger = useRestoreLedger();
 
   const onSubmit = async ({ pkh, name }: { pkh: string; name: string }) => {
-    const rpc = new RpcClient(nodeUrls["mainnet"]);
+    const rpc = new RpcClient(MAINNET.rpcUrl);
     const managerKey = await rpc.getManagerKey(pkh);
     const pk = typeof managerKey === "string" ? managerKey : managerKey.key;
     restoreLedger(defaultDerivationPathPattern, pk, pkh, name);

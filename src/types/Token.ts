@@ -266,12 +266,12 @@ export const royalties = (nft: NFT): Array<{ address: string; share: number }> =
   return shares;
 };
 
-export const metadataUri = ({ contract, tokenId }: Token, network: Network) => {
-  return `https://${network}.tzkt.io/${contract}/tokens/${tokenId}/metadata`;
+export const metadataUri = (token: Token, network: Network) => {
+  return `${tokenUri(token, network)}/metadata`;
 };
 
 export const tokenUri = ({ contract, tokenId }: Token, network: Network) => {
-  return `https://${network}.tzkt.io/${contract}/tokens/${tokenId}`;
+  return `${network.tzktExplorerUrl}/${contract}/tokens/${tokenId}`;
 };
 
 export const DEFAULT_FA1_NAME = "FA1.2 token";

@@ -5,11 +5,12 @@ import { assetsActions } from "../../../../utils/redux/slices/assetsSlice";
 import store from "../../../../utils/redux/store";
 import tokensSlice from "../../../../utils/redux/slices/tokensSlice";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
+import { MAINNET } from "../../../../types/Network";
 
 const { updateTokenBalance, updateNetwork } = assetsActions;
 
 beforeEach(() => {
-  store.dispatch(updateNetwork("mainnet"));
+  store.dispatch(updateNetwork(MAINNET));
 });
 
 describe("<MultisigDecodedOperationItem/>", () => {
@@ -70,7 +71,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
     store.dispatch(updateTokenBalance([mockBalancePlayload]));
     store.dispatch(
       tokensSlice.actions.addTokens({
-        network: "mainnet",
+        network: MAINNET,
         tokens: [mockBalancePlayload.token],
       })
     );
@@ -118,7 +119,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
     store.dispatch(updateTokenBalance([mockBalancePlayload]));
     store.dispatch(
       tokensSlice.actions.addTokens({
-        network: "mainnet",
+        network: MAINNET,
         tokens: [mockBalancePlayload.token],
       })
     );

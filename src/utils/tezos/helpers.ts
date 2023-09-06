@@ -13,15 +13,15 @@ import {
 import { SignerConfig } from "../../types/SignerConfig";
 import { PublicKeyPair } from "../mnemonic";
 import { RawTzktGetAddressType } from "../tzkt/types";
-import { nodeUrls, tzktUrls } from "./consts";
 import { FakeSigner } from "./fakeSigner";
 import BigNumber from "bignumber.js";
 import { OpKind, TransactionOperationParameter } from "@taquito/rpc";
 import { AccountOperations } from "../../components/sendForm/types";
+import { Network } from "../../types/Network";
 
-export const addressExists = async (pkh: string, network = "mainnet"): Promise<boolean> => {
+export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
   try {
-    const url = `${tzktUrls[network]}/v1/accounts/${pkh}`;
+    const url = `${network.tzktUrl}/v1/accounts/${pkh}`;
     const {
       data: { type },
     } = await axios.get<RawTzktGetAddressType>(url);
@@ -83,7 +83,7 @@ export const makeSigner = async (config: SignerConfig) => {
 };
 
 export const makeToolkit = async (config: SignerConfig) => {
-  const toolkit = new TezosToolkit(nodeUrls[config.network]);
+  const toolkit = new TezosToolkit(config.network.rpcUrl);
   const signer = await makeSigner(config);
   toolkit.setSignerProvider(signer);
   return toolkit;

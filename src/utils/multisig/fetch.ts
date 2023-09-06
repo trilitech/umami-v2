@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Network } from "../../types/Network";
-import { tzktUrls } from "../tezos/consts";
 import { RawTzktGetBigMapKeys, RawTzktGetSameMultisigs } from "../tzkt/types";
 const MULTISIG_FETCH_LIMIT = 10000;
 const TYPE_HASH = 1963879877;
@@ -10,7 +9,7 @@ export const getAllMultiSigContracts = async (
   network: Network
 ): Promise<RawTzktGetSameMultisigs> => {
   try {
-    const url = `${tzktUrls[network]}/v1/contracts?typeHash=${TYPE_HASH}&codeHash=${CODE_HASH}&includeStorage=true&limit=${MULTISIG_FETCH_LIMIT}`;
+    const url = `${network.tzktUrl}/v1/contracts?typeHash=${TYPE_HASH}&codeHash=${CODE_HASH}&includeStorage=true&limit=${MULTISIG_FETCH_LIMIT}`;
     const { data } = await axios.get<RawTzktGetSameMultisigs>(url);
 
     return data;
@@ -24,7 +23,7 @@ export const getPendingOperations = async (
   bigMaps: number[],
   network: Network
 ): Promise<RawTzktGetBigMapKeys> => {
-  const url = `${tzktUrls[network]}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(
+  const url = `${network.tzktUrl}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(
     ","
   )}&limit=${MULTISIG_FETCH_LIMIT}`;
   const { data } = await axios.get<RawTzktGetBigMapKeys>(url);

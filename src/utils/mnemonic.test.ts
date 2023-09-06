@@ -7,6 +7,7 @@ import {
   defaultDerivationPathPattern,
   getDefaultDerivationPath,
 } from "./account/derivationPathUtils";
+import { MAINNET } from "../types/Network";
 
 const addressExistsMock = jest.mocked(addressExists);
 const getFingerPrintMock = jest.mocked(getFingerPrint);
@@ -21,7 +22,11 @@ describe("restoreAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreRevealedPublickKeyPairs(mnemonic1, defaultDerivationPathPattern);
+    const result = await restoreRevealedPublickKeyPairs(
+      mnemonic1,
+      defaultDerivationPathPattern,
+      MAINNET
+    );
     const expected = [
       {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
@@ -41,7 +46,11 @@ describe("restoreAccounts", () => {
 
   it("should restore first account if none exists", async () => {
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreRevealedPublickKeyPairs(mnemonic1, defaultDerivationPathPattern);
+    const result = await restoreRevealedPublickKeyPairs(
+      mnemonic1,
+      defaultDerivationPathPattern,
+      MAINNET
+    );
     const expected = [
       {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
@@ -59,7 +68,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreRevealedMnemonicAccounts(mnemonic1);
+    const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET);
     const expected: ImplicitAccount[] = [
       {
         curve: "ed25519",
@@ -98,7 +107,7 @@ describe("restoreEncryptedAccounts", () => {
   it("should restore exising accounts with a provided label", async () => {
     const CUSTOM_LABEL = "myLabel";
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreRevealedMnemonicAccounts(mnemonic1, CUSTOM_LABEL);
+    const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, CUSTOM_LABEL);
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
         label: CUSTOM_LABEL,
@@ -109,7 +118,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result2 = await restoreRevealedMnemonicAccounts(mnemonic1, CUSTOM_LABEL);
+    const result2 = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, CUSTOM_LABEL);
     const expected2: ImplicitAccount[] = [
       expect.objectContaining({
         label: `${CUSTOM_LABEL} 0`,
@@ -125,7 +134,12 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreRevealedMnemonicAccounts(mnemonic1, undefined, "44'/1729'/?'/0'");
+    const result = await restoreRevealedMnemonicAccounts(
+      mnemonic1,
+      MAINNET,
+      undefined,
+      "44'/1729'/?'/0'"
+    );
 
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
@@ -144,7 +158,7 @@ describe("restoreEncryptedAccounts", () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = restoreRevealedMnemonicAccounts(mnemonic1, undefined, "44'/foo'/?'/8'");
+    const result = restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, undefined, "44'/foo'/?'/8'");
 
     await expect(result).rejects.toThrowError("Invalid derivation pattern: 44'/foo'/?'/8'");
   });

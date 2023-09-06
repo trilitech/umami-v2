@@ -10,7 +10,7 @@ import { useGetToken, useGetTokenType } from "./tokensHooks";
 import { DefaultNetworks } from "../../types/Network";
 
 describe("useGetToken", () => {
-  describe.each(DefaultNetworks)("on %s", network => {
+  describe.each(DefaultNetworks)("on $name", network => {
     beforeEach(() => {
       store.dispatch(assetsActions.updateNetwork(network));
     });

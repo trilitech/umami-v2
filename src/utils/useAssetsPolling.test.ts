@@ -1,6 +1,5 @@
 import { AllTheProviders, renderHook, waitFor } from "../mocks/testUtils";
 import { useAssetsPolling } from "./useAssetsPolling";
-import { tzktUrls } from "./tezos";
 import { delegatesGet } from "@tzkt/sdk-api";
 import store from "./redux/store";
 import { assetsActions } from "./redux/slices/assetsSlice";
@@ -15,13 +14,13 @@ jest.mock("@tzkt/sdk-api", () => {
 });
 
 describe("useAssetsPolling", () => {
-  describe.each(DefaultNetworks)("network: %s", network => {
+  describe.each(DefaultNetworks)("on $name", network => {
     beforeAll(() => {
       store.dispatch(assetsActions.updateNetwork(network));
     });
 
     test("bakers", async () => {
-      const baseUrl = tzktUrls[network];
+      const baseUrl = network.tzktUrl;
       (delegatesGet as jest.Mock).mockResolvedValue([
         { ...mockBaker(0), alias: mockBaker(0).name },
         { ...mockBaker(1), alias: mockBaker(1).name },

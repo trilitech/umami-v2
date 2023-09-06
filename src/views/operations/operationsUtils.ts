@@ -12,7 +12,7 @@ import { parsePkh } from "../../types/Address";
 import { Network } from "../../types/Network";
 
 export const getHashUrl = (hash: string, network: Network) => {
-  return `https://${network}.tzkt.io/${hash}`;
+  return `${network.tzktExplorerUrl}/${hash}`;
 };
 
 export const getTransactionUrl = ({
@@ -27,13 +27,13 @@ export const getTransactionUrl = ({
   network: Network;
 }) => {
   if (transactionId) {
-    return `https://${network}.tzkt.io/transactions/${transactionId}`;
+    return `${network.tzktExplorerUrl}/transactions/${transactionId}`;
   }
   if (originationId) {
-    return `https://${network}.tzkt.io/originations/${originationId}`;
+    return `${network.tzktExplorerUrl}/originations/${originationId}`;
   }
   if (migrationId) {
-    return `https://${network}.tzkt.io/migrations/${migrationId}`;
+    return `${network.tzktExplorerUrl}/migrations/${migrationId}`;
   }
   throw new Error("Cannot find transaction TzKT URL");
 };

@@ -10,6 +10,7 @@ import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAcc
 import { getFingerPrint } from "../../tezos";
 import { parseImplicitPkh } from "../../../types/Address";
 import accountsSlice from "./accountsSlice";
+import { MAINNET } from "../../../types/Network";
 
 const {
   actions: { addAccount, removeMnemonicAndAccounts },
@@ -127,6 +128,7 @@ describe("Accounts reducer", () => {
 
       expect(fakeExtraArguments.restoreRevealedMnemonicAccounts).toHaveBeenCalledWith(
         mnemonic1,
+        MAINNET,
         mockLabel,
         undefined
       );

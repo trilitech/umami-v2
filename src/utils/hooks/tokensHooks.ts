@@ -9,12 +9,12 @@ export type TokenLookup = (contract: RawPkh, tokenId: string) => Token | undefin
 
 export const useGetToken = (): TokenLookup => {
   const network = useSelectedNetwork();
-  const tokens = useAppSelector(s => s.tokens[network]);
+  const tokens = useAppSelector(s => s.tokens[network.name]);
   return (contract, tokenId) => get(tokens, [contract, tokenId]);
 };
 
 export const useGetTokenType = (network: Network) => {
-  const tokens = useAppSelector(s => s.tokens[network]);
+  const tokens = useAppSelector(s => s.tokens[network.name]);
   return (contract: RawPkh): Token["type"] | undefined => {
     if (!(tokens && contract in tokens)) {
       return undefined;

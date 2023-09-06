@@ -16,7 +16,7 @@ import {
 import { DefaultNetworks } from "../../types/Network";
 
 const forAddress = "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS";
-describe.each(DefaultNetworks)("on %s", network => {
+describe.each(DefaultNetworks)("on $name", network => {
   describe("getTezOperationDisplay", () => {
     test("it throws for a tez transfer non related to reference address", () => {
       const incomingTez: TezTransfer = {
@@ -119,7 +119,7 @@ describe.each(DefaultNetworks)("on %s", network => {
         status: "confirmed",
         timestamp: "2023-03-27T08:47:30Z",
         type: "transaction",
-        tzktUrl: `https://${network}.tzkt.io/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM`,
+        tzktUrl: `${network.tzktExplorerUrl}/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM`,
         level: 2213611,
       };
       expect(result).toEqual(expected);
@@ -164,7 +164,7 @@ describe.each(DefaultNetworks)("on %s", network => {
         status: "confirmed",
         timestamp: "2023-03-27T10:36:40Z",
         type: "transaction",
-        tzktUrl: `https://${network}.tzkt.io/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ`,
+        tzktUrl: `${network.tzktExplorerUrl}/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ`,
         level: 2214204,
       };
 
@@ -179,7 +179,7 @@ describe.each(DefaultNetworks)("on %s", network => {
       const expected = {
         id: 109817445220353,
         type: "transaction",
-        tzktUrl: `https://${network}.tzkt.io/transactions/109817445220352`,
+        tzktUrl: `${network.tzktExplorerUrl}/transactions/109817445220352`,
         amount: {
           id: 10899580518401,
           prettyDisplay: "+1",
@@ -203,7 +203,7 @@ describe.each(DefaultNetworks)("on %s", network => {
       const expected = {
         id: 109817445220353,
         type: "transaction",
-        tzktUrl: `https://${network}.tzkt.io/transactions/109817445220352`,
+        tzktUrl: `${network.tzktExplorerUrl}/transactions/109817445220352`,
         amount: {
           id: 10899580518401,
           prettyDisplay: "+1",
@@ -238,7 +238,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           prettyDisplay: "-1",
           url: "https://ipfs.io/ipfs/zb2rhfbacgmTnG13DiCvjs6J21hzMeAueYVWg37C5owThnpfQ",
         },
-        tzktUrl: `https://${network}.tzkt.io/transactions/109817445220352`,
+        tzktUrl: `${network.tzktExplorerUrl}/transactions/109817445220352`,
         prettyTimestamp: "today at 1:06 PM",
         recipient: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
@@ -283,10 +283,10 @@ describe.each(DefaultNetworks)("on %s", network => {
       const expected = {
         id: 109855131041793,
         type: "transaction",
-        tzktUrl: `https://${network}.tzkt.io/transactions/109855131041792`,
+        tzktUrl: `${network.tzktExplorerUrl}/transactions/109855131041792`,
         amount: {
           id: 10898231001089,
-          prettyDisplay: "+7.1685 KL3",
+          prettyDisplay: "+7.16850 KL3",
           url: undefined,
         },
         prettyTimestamp: "today at 3:27 PM",
@@ -331,10 +331,10 @@ describe.each(DefaultNetworks)("on %s", network => {
       const expected = {
         id: 109855493849090,
         type: "transaction",
-        tzktUrl: `https://${network}.tzkt.io/transactions/109855493849088`,
+        tzktUrl: `${network.tzktExplorerUrl}/transactions/109855493849088`,
         amount: {
           id: 10898231001089,
-          prettyDisplay: "-4.51 KL3",
+          prettyDisplay: "-4.51000 KL3",
           url: undefined,
         },
         prettyTimestamp: "today at 3:29 PM",
@@ -374,10 +374,10 @@ describe.each(DefaultNetworks)("on %s", network => {
       const expected = {
         id: 109855847219201,
         type: "transaction",
-        tzktUrl: `https://${network}.tzkt.io/transactions/109855847219200`,
+        tzktUrl: `${network.tzktExplorerUrl}/transactions/109855847219200`,
         amount: {
           id: 10897625972737,
-          prettyDisplay: "+27400 FA1.2",
+          prettyDisplay: "+27,400 FA1.2",
           url: undefined,
         },
         prettyTimestamp: "today at 3:30 PM",
@@ -411,13 +411,13 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
           timestamp: "2023-04-24T09:48:17Z",
           type: "delegation",
-          tzktUrl: `https://${network}.tzkt.io/onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva`,
+          tzktUrl: `${network.tzktExplorerUrl}/onxgPmNMo4756y7PhXeYethMVf2e3HUSHoZuia8rY5qFujgbqva`,
         },
         {
           id: 109855847219201,
           amount: {
             id: 10897625972737,
-            prettyDisplay: "+27400 FA1.2",
+            prettyDisplay: "+27,400 FA1.2",
             url: undefined,
           },
           prettyTimestamp: "today at 3:30 PM",
@@ -425,14 +425,14 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
           timestamp: "2023-03-27T13:30:37Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/transactions/109855847219200`,
+          tzktUrl: `${network.tzktExplorerUrl}/transactions/109855847219200`,
           level: 2215201,
         },
         {
           id: 109855493849090,
           amount: {
             id: 10898231001089,
-            prettyDisplay: "-4.51 KL3",
+            prettyDisplay: "-4.51000 KL3",
             url: undefined,
           },
           prettyTimestamp: "today at 3:29 PM",
@@ -440,14 +440,14 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
           timestamp: "2023-03-27T13:29:22Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/transactions/109855493849088`,
+          tzktUrl: `${network.tzktExplorerUrl}/transactions/109855493849088`,
           level: 2215193,
         },
         {
           id: 109855131041793,
           amount: {
             id: 10898231001089,
-            prettyDisplay: "+7.1685 KL3",
+            prettyDisplay: "+7.16850 KL3",
             url: undefined,
           },
           prettyTimestamp: "today at 3:27 PM",
@@ -455,7 +455,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
           timestamp: "2023-03-27T13:27:13Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/transactions/109855131041792`,
+          tzktUrl: `${network.tzktExplorerUrl}/transactions/109855131041792`,
           level: 2215185,
         },
         {
@@ -470,7 +470,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
           timestamp: "2023-03-27T13:24:48Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/transactions/109854457856000`,
+          tzktUrl: `${network.tzktExplorerUrl}/transactions/109854457856000`,
           level: 2215172,
         },
         {
@@ -485,7 +485,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1W5iRhKWPoLviqExtDDKJqCcPRLBWMhg6S" },
           timestamp: "2023-03-27T11:06:40Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/transactions/109817445220352`,
+          tzktUrl: `${network.tzktExplorerUrl}/transactions/109817445220352`,
           level: 2214369,
         },
         {
@@ -498,7 +498,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           status: "confirmed",
           timestamp: "2023-03-27T10:36:40Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ`,
+          tzktUrl: `${network.tzktExplorerUrl}/oo3Moa2XToLeCjiVhQFHWe3aJkFtqbbW2GKvG9Zvb5aZLs6tHWZ`,
           level: 2214204,
         },
         {
@@ -511,14 +511,14 @@ describe.each(DefaultNetworks)("on %s", network => {
           status: "confirmed",
           timestamp: "2023-03-27T08:47:30Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM`,
+          tzktUrl: `${network.tzktExplorerUrl}/ooZCfnsMgXvxni6umn999MKfpT6zmVJpDzZmmCCh6AZ89gvUHGM`,
           level: 2213611,
         },
         {
           id: 109511935262721,
           amount: {
             id: 10898194300929,
-            prettyDisplay: "+2.1 KL2",
+            prettyDisplay: "+2.10000 KL2",
             url: undefined,
           },
           prettyTimestamp: "yesterday at 4:38 PM",
@@ -526,7 +526,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1ikfEcj3LmsmxpcC1RMZNzBHbEmybCc43D" },
           timestamp: "2023-03-26T14:38:48Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/transactions/109511935262720`,
+          tzktUrl: `${network.tzktExplorerUrl}/transactions/109511935262720`,
           level: 2207656,
         },
         {
@@ -539,7 +539,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           status: "confirmed",
           timestamp: "2023-03-26T14:34:47Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/op9pGAxiJtPcv37KRnLWhYBDx2RRhTiBeTZNsKQAQ1Pxn8AsbUC`,
+          tzktUrl: `${network.tzktExplorerUrl}/op9pGAxiJtPcv37KRnLWhYBDx2RRhTiBeTZNsKQAQ1Pxn8AsbUC`,
           level: 2207631,
         },
         {
@@ -554,7 +554,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
           timestamp: "2023-03-26T14:34:47Z",
           type: "transaction",
-          tzktUrl: `https://${network}.tzkt.io/transactions/109510819577856`,
+          tzktUrl: `${network.tzktExplorerUrl}/transactions/109510819577856`,
           level: 2207631,
         },
       ];
@@ -589,7 +589,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           sender: { type: "implicit", pkh: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf" },
           timestamp: "2023-03-27T14:15:09.760Z",
           type: "delegation",
-          tzktUrl: `https://${network}.tzkt.io/mockHash`,
+          tzktUrl: `${network.tzktExplorerUrl}/mockHash`,
         },
       ]);
     });
@@ -623,7 +623,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           migrationId: 789,
           network: network,
         })
-      ).toEqual(`https://${network}.tzkt.io/transactions/123`);
+      ).toEqual(`${network.tzktExplorerUrl}/transactions/123`);
       expect(
         getTransactionUrl({
           transactionId: undefined,
@@ -631,7 +631,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           migrationId: 789,
           network: network,
         })
-      ).toEqual(`https://${network}.tzkt.io/originations/456`);
+      ).toEqual(`${network.tzktExplorerUrl}/originations/456`);
       expect(
         getTransactionUrl({
           transactionId: undefined,
@@ -639,7 +639,7 @@ describe.each(DefaultNetworks)("on %s", network => {
           migrationId: 789,
           network: network,
         })
-      ).toEqual(`https://${network}.tzkt.io/migrations/789`);
+      ).toEqual(`${network.tzktExplorerUrl}/migrations/789`);
       expect(() =>
         getTransactionUrl({
           transactionId: undefined,
