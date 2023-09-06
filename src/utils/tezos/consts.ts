@@ -1,6 +1,6 @@
 import { Network } from "../../types/Network";
 
-export const nodeUrls = {
+export const nodeUrls: Record<Network, string> = {
   ghostnet: `https://tezos-ghostnet-node.prod.gke.papers.tech`,
   mainnet: `https://mainnet.api.tez.ie`,
 };

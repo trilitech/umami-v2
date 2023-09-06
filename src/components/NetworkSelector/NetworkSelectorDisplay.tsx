@@ -1,10 +1,10 @@
 import { Box, Select } from "@chakra-ui/react";
 import React from "react";
-import { TezosNetwork } from "../../types/Network";
+import { Network } from "../../types/Network";
 
 export const NetworkSelectorDisplay: React.FC<{
-  value: TezosNetwork;
-  onChange: (val: TezosNetwork) => void;
+  value: Network;
+  onChange: (val: Network) => void;
 }> = ({ value, onChange }) => {
   return (
     <Box width={120}>
@@ -18,7 +18,7 @@ export const NetworkSelectorDisplay: React.FC<{
           if (e.target.value === "") {
             return;
           }
-          onChange(e.target.value as TezosNetwork);
+          onChange(e.target.value as Network);
         }}
       >
         <option value="ghostnet">Ghostnet</option>

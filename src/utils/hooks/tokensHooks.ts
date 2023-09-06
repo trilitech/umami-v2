@@ -1,6 +1,6 @@
 import { get } from "lodash";
 import { RawPkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/Network";
+import { Network } from "../../types/Network";
 import { Token } from "../../types/Token";
 import { useAppSelector } from "../redux/hooks";
 import { useSelectedNetwork } from "./assetsHooks";
@@ -13,10 +13,10 @@ export const useGetToken = (): TokenLookup => {
   return (contract, tokenId) => get(tokens, [contract, tokenId]);
 };
 
-export const useGetTokenType = (network: TezosNetwork) => {
+export const useGetTokenType = (network: Network) => {
   const tokens = useAppSelector(s => s.tokens[network]);
   return (contract: RawPkh): Token["type"] | undefined => {
-    if (!(contract in tokens)) {
+    if (!(tokens && contract in tokens)) {
       return undefined;
     }
     const contractTokens = tokens[contract];

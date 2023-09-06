@@ -1,8 +1,6 @@
-export const MAINNET: TezosNetwork = "mainnet";
-export const GHOSTNET: TezosNetwork = "ghostnet";
-
-export type TezosNetwork = "mainnet" | "ghostnet";
+export const MAINNET = "mainnet";
+export const GHOSTNET = "ghostnet";
 
 export type Network = string;
 
-export const DefaultNetworks: TezosNetwork[] = [MAINNET, GHOSTNET];
+export const DefaultNetworks: Network[] = [MAINNET, GHOSTNET];

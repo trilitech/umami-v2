@@ -13,17 +13,14 @@ import { coincapUrl, tzktUrls } from "./consts";
 import { coinCapResponseType } from "./types";
 import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
-import { Network, TezosNetwork } from "../../types/Network";
+import { Network } from "../../types/Network";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
 // for now we need only the balance, but we can extend it later
 export type TzktAccount = { address: string; balance: number };
 
-export const getAccounts = async (
-  pkhs: string[],
-  network: TezosNetwork
-): Promise<TzktAccount[]> => {
+export const getAccounts = async (pkhs: string[], network: Network): Promise<TzktAccount[]> => {
   const response = await axios.get<TzktAccount[]>(
     `${tzktUrls[network]}/v1/accounts?address.in=${pkhs.join(",")}&select=address,balance`
   );
@@ -32,7 +29,7 @@ export const getAccounts = async (
 
 export const getTokenBalances = async (
   pkhs: string[],
-  network: TezosNetwork
+  network: Network
 ): Promise<RawTokenBalance[]> => {
   const response = await axios.get<RawTokenBalance[]>(
     `${tzktUrls[network]}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`

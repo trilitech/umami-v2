@@ -1,4 +1,4 @@
-import { TezosNetwork } from "../../types/Network";
+import { Network } from "../../types/Network";
 import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
@@ -8,7 +8,7 @@ export const NetworkSelector = () => {
   const network = useSelectedNetwork();
   const dispatch = useAppDispatch();
 
-  const changeNetwork = (network: TezosNetwork) => {
+  const changeNetwork = (network: Network) => {
     dispatch(assetsSlice.actions.updateNetwork(network));
   };
 

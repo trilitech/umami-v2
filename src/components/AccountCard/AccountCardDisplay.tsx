@@ -12,7 +12,7 @@ import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
 import AddressPill from "../AddressPill/AddressPill";
 import { OperationDisplay } from "../../types/Transfer";
-import { TezosNetwork } from "../../types/Network";
+import { Network } from "../../types/Network";
 import { DynamicModalContext } from "../DynamicModal";
 import { useContext } from "react";
 import DelegationFormPage from "../SendFlow/Delegation/FormPage";
@@ -31,7 +31,7 @@ type Props = {
   nfts: Array<NFTBalance>;
   operationDisplays: Array<OperationDisplay>;
   account: Account;
-  network: TezosNetwork;
+  network: Network;
 };
 
 const RoundButton: React.FC<{

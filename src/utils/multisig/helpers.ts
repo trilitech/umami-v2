@@ -4,7 +4,7 @@ import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
 import { Multisig, MultisigOperation } from "./types";
-import { TezosNetwork } from "../../types/Network";
+import { Network } from "../../types/Network";
 
 export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
   address: parseContractPkh(raw.address),
@@ -16,7 +16,7 @@ export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
 
 export const getRelevantMultisigContracts = async (
   accountPkhs: Set<string>,
-  network: TezosNetwork
+  network: Network
 ): Promise<Multisig[]> =>
   getAllMultiSigContracts(network).then(multisigs =>
     multisigs
@@ -44,7 +44,7 @@ const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperatio
 
 export const getPendingOperationsForMultisigs = async (
   multisigs: Multisig[],
-  network: TezosNetwork
+  network: Network
 ): Promise<MultisigOperation[]> => {
   const bigmapIds = multisigs.map(m => m.pendingOperationsBigmapId);
 
