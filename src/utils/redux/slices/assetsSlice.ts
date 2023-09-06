@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { compact, findIndex, groupBy, mapValues } from "lodash";
+import { compact, groupBy, mapValues } from "lodash";
 import accountsSlice from "./accountsSlice";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Delegate } from "../../../types/Delegate";
-import { AccountOperations } from "../../../components/sendForm/types";
 import { RawPkh } from "../../../types/Address";
 
 type State = {
@@ -22,7 +21,6 @@ type State = {
   delegations: Record<string, DelegationOperation | undefined>;
   bakers: Delegate[];
   conversionRate: number | null; // XTZ/USD conversion rate
-  batches: AccountOperations[];
   refetchTrigger: number;
   isLoading: boolean;
   lastTimeUpdated: string | null;
@@ -54,7 +52,6 @@ const initialState: State = {
   delegations: {},
   bakers: [],
   conversionRate: null,
-  batches: [],
   refetchTrigger: 0,
   isLoading: false,
   lastTimeUpdated: null,
@@ -65,12 +62,7 @@ const assetsSlice = createSlice({
   initialState,
   // Reset assets state if accounts are reset
   extraReducers: builder =>
-    // This throw error: TS2589: Type instantiation is excessively deep and possibly infinite.
-    // Because of use of Taquito TransferParams["parameter"] in Operation that is too complex
-    // What can this be fixed?
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-ignore: TS2589 Type instantiation is excessively deep and possibly infinite
     builder.addCase(accountsSlice.actions.reset, () => initialState),
   reducers: {
     reset: () => initialState,
@@ -134,40 +126,6 @@ const assetsSlice = createSlice({
       { payload: { rate } }: { type: string; payload: ConversionRatePayload }
     ) => {
       state.conversionRate = rate;
-    },
-    // Don't use this action directly. Use thunk estimateAndUpdateBatch
-    addToBatch: (state, { payload: operations }: { payload: AccountOperations }) => {
-      const existing = state.batches.find(
-        batch => batch.sender.address.pkh === operations.sender.address.pkh
-      );
-      if (existing) {
-        (existing as AccountOperations).operations.push(...operations.operations);
-        return;
-      }
-      state.batches.push(operations);
-    },
-    clearBatch: (state, { payload: { pkh } }: { type: string; payload: { pkh: RawPkh } }) => {
-      const index = findIndex(state.batches, batch => batch.sender.address.pkh === pkh);
-      if (index === -1) {
-        return;
-      }
-      state.batches.splice(index, 1);
-    },
-    removeBatchItem: (
-      state,
-      { payload: { pkh, index } }: { payload: { pkh: RawPkh; index: number } }
-    ) => {
-      const batchIndex = findIndex(state.batches, batch => batch.sender.address.pkh === pkh);
-      if (batchIndex === -1) {
-        return;
-      }
-      const existingBatch = state.batches[batchIndex];
-      if (index < existingBatch.operations.length) {
-        existingBatch.operations.splice(index, 1);
-      }
-      if (existingBatch.operations.length === 0) {
-        state.batches.splice(batchIndex, 1);
-      }
     },
     refetch: state => {
       state.refetchTrigger += 1;

@@ -8,6 +8,7 @@ import contactsSlice from "./slices/contactsSlice";
 import multisigsSlice from "./slices/multisigsSlice";
 import errorsSlice from "./slices/errorsSlice";
 import { networksSlice } from "./slices/networks";
+import { batchesSlice } from "./slices/batches";
 
 const rootPersistConfig = {
   key: "root",
@@ -29,6 +30,7 @@ const rootReducers = combineReducers({
   tokens: tokensSlice.reducer,
   errors: errorsSlice.reducer,
   networks: networksSlice.reducer,
+  batches: batchesSlice.reducer,
 });
 
 export default persistReducer(rootPersistConfig, rootReducers);

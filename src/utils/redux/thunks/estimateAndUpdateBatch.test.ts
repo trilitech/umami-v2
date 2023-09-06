@@ -27,7 +27,7 @@ describe("estimateAndUpdateBatch", () => {
       store.dispatch(action);
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(accountOperations, network);
       await waitFor(() => {
-        expect(store.getState().assets.batches).toEqual([accountOperations]);
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
       });
     });
 
@@ -44,7 +44,7 @@ describe("estimateAndUpdateBatch", () => {
       store.dispatch(estimateAndUpdateBatch(accountOperations, network));
 
       await waitFor(() => {
-        expect(store.getState().assets.batches).toEqual([accountOperations]);
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
       });
 
       const failedOperation = mockDelegationOperation(0);
@@ -54,7 +54,7 @@ describe("estimateAndUpdateBatch", () => {
 
       await expect(() => store.dispatch(action)).rejects.toThrowError("Estimation failed");
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(accountOperations, network);
-      expect(store.getState().assets.batches).toEqual([accountOperations]);
+      expect(store.getState().batches[network.name]).toEqual([accountOperations]);
     });
   });
 });

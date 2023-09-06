@@ -6,7 +6,7 @@ import {
   useGetImplicitAccount,
   useGetOwnedAccount,
 } from "../../utils/hooks/accountHooks";
-import { useClearBatch } from "../../utils/hooks/assetsHooks";
+import { useClearBatch } from "../../utils/hooks/batchesHooks";
 import { DynamicModalContext } from "../DynamicModal";
 import { AccountOperations, makeAccountOperations } from "../sendForm/types";
 import BigNumber from "bignumber.js";

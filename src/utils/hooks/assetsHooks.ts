@@ -13,12 +13,11 @@ import {
   sortOperationsByTimestamp,
 } from "../../views/operations/operationsUtils";
 import { mutezToTez } from "../format";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "../redux/hooks";
 import { useAllAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
-import assetsSlice from "../redux/slices/assetsSlice";
 import { Account } from "../../types/Account";
 import { Delegate } from "../../types/Delegate";
 import { useSelectedNetwork } from "./networkHooks";
@@ -159,20 +158,6 @@ export const useGetAccountBalance = () => {
 
 export const useAllDelegations = () => {
   return useAppSelector(s => s.assets.delegations);
-};
-
-export const useBatches = () => useAppSelector(s => s.assets.batches);
-
-export const useClearBatch = () => {
-  const dispatch = useAppDispatch();
-  return (account: Account) =>
-    dispatch(assetsSlice.actions.clearBatch({ pkh: account.address.pkh }));
-};
-
-export const useRemoveBatchItem = () => {
-  const dispatch = useAppDispatch();
-  return (account: Account, index: number) =>
-    dispatch(assetsSlice.actions.removeBatchItem({ pkh: account.address.pkh, index }));
 };
 
 export const useBakerList = (): Delegate[] => {

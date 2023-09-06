@@ -6,7 +6,8 @@ import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import store from "../../utils/redux/store";
 import { executeOperations } from "../../utils/tezos";
 import BatchPage from "./BatchPage";
-import { assetsActions } from "../../utils/redux/slices/assetsSlice";
+import { batchesActions } from "../../utils/redux/slices/batches";
+import { MAINNET } from "../../types/Network";
 
 jest.mock("../../utils/hooks/accountUtils");
 jest.mock("../../utils/tezos");
@@ -37,24 +38,26 @@ describe("<BatchPage />", () => {
 
     it("shows the number of different pending batches", () => {
       store.dispatch(
-        assetsActions.addToBatch(
-          makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+        batchesActions.add({
+          network: MAINNET,
+          operations: makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
             mockTezOperation(0),
             mockTezOperation(0),
-          ])
-        )
+          ]),
+        })
       );
       render(<BatchPage />);
 
       expect(screen.getByText(/1 pending/i)).toBeInTheDocument();
       act(() => {
         store.dispatch(
-          assetsActions.addToBatch(
-            makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+          batchesActions.add({
+            network: MAINNET,
+            operations: makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
               mockTezOperation(0),
               mockTezOperation(0),
-            ])
-          )
+            ]),
+          })
         );
       });
       expect(screen.getByText(/2 pending/i)).toBeInTheDocument();
@@ -63,20 +66,22 @@ describe("<BatchPage />", () => {
 
   it("renders all the batches", () => {
     store.dispatch(
-      assetsActions.addToBatch(
-        makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+      batchesActions.add({
+        network: MAINNET,
+        operations: makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
           mockTezOperation(0),
           mockTezOperation(0),
-        ])
-      )
+        ]),
+      })
     );
     store.dispatch(
-      assetsActions.addToBatch(
-        makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+      batchesActions.add({
+        network: MAINNET,
+        operations: makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
           mockTezOperation(0),
           mockTezOperation(0),
-        ])
-      )
+        ]),
+      })
     );
 
     render(<BatchPage />);
@@ -87,12 +92,13 @@ describe("<BatchPage />", () => {
   describe("action buttons", () => {
     beforeEach(() => {
       store.dispatch(
-        assetsActions.addToBatch(
-          makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+        batchesActions.add({
+          network: MAINNET,
+          operations: makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
             mockTezOperation(0),
             mockTezOperation(0),
-          ])
-        )
+          ]),
+        })
       );
     });
 
