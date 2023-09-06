@@ -124,7 +124,7 @@ describe("<AccountCard />", () => {
     {
       const { getByTestId } = within(tokenTiles[0]);
       expect(getByTestId("token-name")).toHaveTextContent("Hedgehoge");
-      expect(getByTestId("token-balance")).toHaveTextContent("10000");
+      expect(getByTestId("token-balance")).toHaveTextContent("10,000.000000");
       expect(getByTestId("token-symbol")).toHaveTextContent("HEH");
     }
 

@@ -2,7 +2,7 @@ import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { Operation } from "../../../../types/Operation";
 import colors from "../../../../style/colors";
-import { formatTokenAmount, tokenDecimals, tokenName, tokenSymbol } from "../../../../types/Token";
+import { tokenNameSafe, tokenPrettyAmount } from "../../../../types/Token";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useGetToken } from "../../../../utils/hooks/tokensHooks";
 import AddressPill from "../../../AddressPill/AddressPill";
@@ -66,9 +66,7 @@ const MultisigOperationAmount: React.FC<{
       if (!asset) {
         return null;
       }
-      const symbol = tokenSymbol(asset);
-      const decimals = tokenDecimals(asset);
-      const name = tokenName(asset);
+      const name = tokenNameSafe(asset);
       const isNFT = asset.type === "nft";
 
       return (
@@ -80,7 +78,7 @@ const MultisigOperationAmount: React.FC<{
             </Text>
           ) : (
             <Text textAlign="center" ml={1}>
-              -{formatTokenAmount(operation.amount, decimals)} {symbol}
+              -{tokenPrettyAmount(operation.amount, asset, { showSymbol: true })}
             </Text>
           )}
         </Flex>

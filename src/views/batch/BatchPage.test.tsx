@@ -1,0 +1,123 @@
+import { makeAccountOperations } from "../../components/sendForm/types";
+import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
+import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
+import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
+import { useGetSecretKey } from "../../utils/hooks/accountUtils";
+import store from "../../utils/redux/store";
+import { executeOperations } from "../../utils/tezos";
+import BatchPage from "./BatchPage";
+import { assetsActions } from "../../utils/redux/slices/assetsSlice";
+
+jest.mock("../../utils/hooks/accountUtils");
+jest.mock("../../utils/tezos");
+
+const useGetSecretKeyMock = jest.mocked(useGetSecretKey);
+
+beforeEach(() => {
+  dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
+  mockEstimatedFee(10);
+
+  useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");
+  jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" });
+});
+
+describe("<BatchPage />", () => {
+  it("shows empty batch message by default", () => {
+    render(<BatchPage />);
+
+    expect(screen.getByText(/your batch is currently empty/i)).toBeInTheDocument();
+  });
+
+  describe("pending", () => {
+    it("shows 0 when no batches exist", () => {
+      render(<BatchPage />);
+
+      expect(screen.getByText(/0 pending/i)).toBeInTheDocument();
+    });
+
+    it("shows the number of different pending batches", () => {
+      store.dispatch(
+        assetsActions.addToBatch(
+          makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+            mockTezOperation(0),
+            mockTezOperation(0),
+          ])
+        )
+      );
+      render(<BatchPage />);
+
+      expect(screen.getByText(/1 pending/i)).toBeInTheDocument();
+      act(() => {
+        store.dispatch(
+          assetsActions.addToBatch(
+            makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+              mockTezOperation(0),
+              mockTezOperation(0),
+            ])
+          )
+        );
+      });
+      expect(screen.getByText(/2 pending/i)).toBeInTheDocument();
+    });
+  });
+
+  it("renders all the batches", () => {
+    store.dispatch(
+      assetsActions.addToBatch(
+        makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+          mockTezOperation(0),
+        ])
+      )
+    );
+    store.dispatch(
+      assetsActions.addToBatch(
+        makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+          mockTezOperation(0),
+          mockTezOperation(0),
+        ])
+      )
+    );
+
+    render(<BatchPage />);
+
+    expect(screen.getAllByTestId(/batch-table/i)).toHaveLength(2);
+  });
+
+  describe("action buttons", () => {
+    beforeEach(() => {
+      store.dispatch(
+        assetsActions.addToBatch(
+          makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+            mockTezOperation(0),
+            mockTezOperation(0),
+          ])
+        )
+      );
+    });
+
+    test("delete batch", () => {
+      render(<BatchPage />);
+
+      const deleteButton = screen.getByTestId("remove-batch");
+      fireEvent.click(deleteButton);
+      expect(screen.getByText(/Are you sure/i)).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Clear" }));
+      expect(screen.queryByTestId(/batch-table/i)).not.toBeInTheDocument();
+    });
+
+    // TODO: write a complete test after migration to dynamic modal
+    test("submit batch", async () => {
+      render(<BatchPage />);
+      const submitBatchButton = screen.getByRole("button", { name: /confirm batch/i });
+      fireEvent.click(submitBatchButton);
+      const modal = screen.getByRole("dialog");
+      mockEstimatedFee(10);
+      fireEvent.click(within(modal).getByRole("button", { name: "Preview" }));
+
+      await waitFor(() => {
+        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+      });
+    });
+  });
+});

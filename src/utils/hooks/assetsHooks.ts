@@ -172,6 +172,12 @@ export const useClearBatch = () => {
     dispatch(assetsSlice.actions.clearBatch({ pkh: account.address.pkh }));
 };
 
+export const useRemoveBatchItem = () => {
+  const dispatch = useAppDispatch();
+  return (account: Account, index: number) =>
+    dispatch(assetsSlice.actions.removeBatchItem({ pkh: account.address.pkh, index }));
+};
+
 export const useBakerList = (): Delegate[] => {
   return useAppSelector(state => state.assets.bakers);
 };

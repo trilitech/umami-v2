@@ -8419,6 +8419,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/pluralize@npm:^0.0.30":
+  version: 0.0.30
+  resolution: "@types/pluralize@npm:0.0.30"
+  checksum: 7a9a4a24aac1f74bd63e592a824ebec114486e0635a94496e92aa37fa388fac585be108d3ccfc7b2c490963679ec4900fbf394d22fa6cbf419f22cc499ab5a29
+  languageName: node
+  linkType: hard
+
 "@types/prettier@npm:^2.1.5":
   version: 2.7.3
   resolution: "@types/prettier@npm:2.7.3"
@@ -18138,6 +18145,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nano-id@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "nano-id@npm:1.1.0"
+  checksum: 83c786ac58279ed2bc5e6e2ba59df0ee727eaddafc2e927e91904165fca462635b30ab01d892da00dd5f7c621b49be82708e859c702e0b9170b4ba4019499087
+  languageName: node
+  linkType: hard
+
 "nano-time@npm:1.0.0":
   version: 1.0.0
   resolution: "nano-time@npm:1.0.0"
@@ -19131,6 +19145,13 @@ __metadata:
     base64-js: ^1.5.1
     xmlbuilder: ^15.1.1
   checksum: e21390fab8a3c388f8f51b76c0aa187242a40537119ce865d8637630e7d7df79b21f841ec6a4668e7c68d409a6f584d696619099a6125d28011561639c0823b8
+  languageName: node
+  linkType: hard
+
+"pluralize@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "pluralize@npm:8.0.0"
+  checksum: 08931d4a6a4a5561a7f94f67a31c17e6632cb21e459ab3ff4f6f629d9a822984cf8afef2311d2005fbea5d7ef26016ebb090db008e2d8bce39d0a9a9d218736e
   languageName: node
   linkType: hard
 
@@ -23675,6 +23696,7 @@ __metadata:
     "@types/jest": 27.5.1
     "@types/node": 18.15.0
     "@types/papaparse": ^5.3.7
+    "@types/pluralize": ^0.0.30
     "@types/prop-types": ^15.7.5
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.0
@@ -23705,8 +23727,10 @@ __metadata:
     jest-fail-on-console: ^3.1.1
     lodash: ^4.17.21
     mockdate: ^3.0.5
+    nano-id: ^1.1.0
     os-browserify: ^0.3.0
     papaparse: ^5.4.1
+    pluralize: ^8.0.0
     prettier: ^2.8.8
     process: ^0.11.10
     prop-types: ^15.8.1

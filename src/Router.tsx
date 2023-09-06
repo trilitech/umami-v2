@@ -17,7 +17,7 @@ import SettingsView from "./views/settings/SettingsView";
 import { withSideMenu } from "./views/withSideMenu";
 import HelpView from "./views/help/HelpView";
 import AddressBookView from "./views/addressBook/AddressBookView";
-import BatchView from "./views/batch/BatchView";
+import BatchPage from "./views/batch/BatchPage";
 import { resetBeacon, useBeaconInit } from "./utils/beacon/beacon";
 import TokensView from "./views/tokens/TokensView";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
@@ -55,7 +55,7 @@ const MemoizedRouter = React.memo(() => {
           <Route path="/address-book" element={withSideMenu(<AddressBookView />)} />
           <Route path="/settings" element={withSideMenu(<SettingsView />)} />
           <Route path="/help" element={withSideMenu(<HelpView />)} />
-          <Route path="/batch" element={withSideMenu(<BatchView />)} />
+          <Route path="/batch" element={withSideMenu(<BatchPage />)} />
           <Route path="/*" element={<Navigate to="/home" />} />
         </Routes>
         {dynamicModal.content}

@@ -164,11 +164,13 @@ const defaultTokenName = (asset: Token): string => {
   }
 };
 
-export const tokenName = (asset: Token): string => {
-  return asset.metadata?.name || defaultTokenName(asset);
+export const tokenNameSafe = (token: Token): string => {
+  return tokenName(token) || defaultTokenName(token);
 };
 
-const defaultTokenSymbol = (token: Token): string => {
+export const tokenName = (token: Token): string | undefined => token.metadata?.name;
+
+export const defaultTokenSymbol = (token: Token): string => {
   switch (token.type) {
     case "fa1.2":
       return DEFAULT_FA1_SYMBOL;
@@ -179,9 +181,10 @@ const defaultTokenSymbol = (token: Token): string => {
   }
 };
 
-export const tokenSymbol = (token: Token): string => {
-  return token.metadata?.symbol || defaultTokenSymbol(token);
-};
+export const tokenSymbolSafe = (token: Token): string =>
+  tokenSymbol(token) || defaultTokenSymbol(token);
+
+export const tokenSymbol = (token: Token): string | undefined => token.metadata?.symbol;
 
 export const tokenDecimals = (asset: Token): string => {
   return asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
@@ -212,16 +215,24 @@ export const getRealAmount = (asset: Token, prettyAmount: string): BigNumber => 
   return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };
 
-export const formatTokenAmount = (amountStr: string, decimals = DEFAULT_TOKEN_DECIMALS) => {
-  return Number(amountStr) / Math.pow(10, Number(decimals));
+export const formatTokenAmount = (amount: string, decimals = DEFAULT_TOKEN_DECIMALS): string => {
+  const realAmount = BigNumber(amount).dividedBy(BigNumber(10).pow(decimals));
+  const formatter = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: Number(decimals),
+    maximumFractionDigits: Number(decimals),
+  });
+  return formatter.format(realAmount.toNumber());
 };
 
-export const tokenPrettyBalance = (
+export const tokenPrettyAmount = (
   amount: string,
-  token: FA2Token | FA12Token,
+  token: Token,
   options?: { showSymbol?: boolean }
 ) => {
-  const symbol = tokenSymbol(token);
+  if (token.type === "nft") {
+    return amount;
+  }
+  const symbol = tokenSymbolSafe(token);
   const decimals = token.metadata?.decimals;
   const trailingSymbol = options?.showSymbol ? ` ${symbol}` : "";
   const result = formatTokenAmount(amount, decimals);
@@ -255,8 +266,12 @@ export const royalties = (nft: NFT): Array<{ address: string; share: number }> =
   return shares;
 };
 
-export const metadataUri = (nft: NFT, network: TezosNetwork) => {
-  return `https://${network}.tzkt.io/${nft.contract}/tokens/${nft.tokenId}/metadata`;
+export const metadataUri = ({ contract, tokenId }: Token, network: TezosNetwork) => {
+  return `https://${network}.tzkt.io/${contract}/tokens/${tokenId}/metadata`;
+};
+
+export const tokenUri = ({ contract, tokenId }: Token, network: TezosNetwork) => {
+  return `https://${network}.tzkt.io/${contract}/tokens/${tokenId}`;
 };
 
 export const DEFAULT_FA1_NAME = "FA1.2 token";

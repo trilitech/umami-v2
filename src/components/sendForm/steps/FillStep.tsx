@@ -22,7 +22,7 @@ import React from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AccountType, MultisigAccount } from "../../../types/Account";
 import { parseImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
-import { getRealAmount, tokenSymbol } from "../../../types/Token";
+import { getRealAmount, tokenSymbolSafe } from "../../../types/Token";
 import { Operation } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import {
@@ -120,7 +120,7 @@ const getAmountSymbol = (asset?: Token) => {
     return "editions";
   }
 
-  return tokenSymbol(asset);
+  return tokenSymbolSafe(asset);
 };
 
 export const FillBatchForm: React.FC<{
