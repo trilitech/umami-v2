@@ -16,8 +16,8 @@ import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithT
 import { TzktLink } from "../../../components/TzktLink";
 import { parsePkh } from "../../../types/Address";
 import { metadataUri, mimeType, royalties } from "../../../types/Token";
-import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { NFTBalance } from "../../../types/TokenBalance";
+import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 
 const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   if (!nft.metadata.creators || nft.metadata.creators.length === 0) {

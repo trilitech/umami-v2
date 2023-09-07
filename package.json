@@ -102,6 +102,7 @@
     "electronmon": "^2.0.2",
     "eslint": "^8.47.0",
     "eslint-plugin-storybook": "^0.6.13",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "framer-motion": "^10.15.2",
     "graphql": "^16.8.0",
     "graphql-request": "^6.1.0",

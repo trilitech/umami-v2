@@ -2,6 +2,7 @@ import { tzBtsc, hedgehoge } from "../mocks/fa12Tokens";
 import { uUSD } from "../mocks/fa2Tokens";
 import { mockNFT, mockImplicitAddress } from "../mocks/factories";
 import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
+import { GHOSTNET, MAINNET } from "./Network";
 import {
   FA12Token,
   FA2Token,
@@ -18,7 +19,6 @@ import {
   tokenSymbolSafe,
 } from "./Token";
 import type { Metadata } from "./Token";
-import { TezosNetwork } from "./TezosNetwork";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation();
@@ -362,10 +362,10 @@ describe("metadataUri", () => {
   it("returns a tzkt link", () => {
     const nft = mockNFT(0);
 
-    expect(metadataUri(nft, TezosNetwork.MAINNET)).toEqual(
-      "https://mainnet.tzkt.io/KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG/tokens/mockId0/metadata"
+    expect(metadataUri(nft, MAINNET)).toEqual(
+      "https://tzkt.io/KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG/tokens/mockId0/metadata"
     );
-    expect(metadataUri(nft, TezosNetwork.GHOSTNET)).toEqual(
+    expect(metadataUri(nft, GHOSTNET)).toEqual(
       "https://ghostnet.tzkt.io/KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG/tokens/mockId0/metadata"
     );
   });

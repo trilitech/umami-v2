@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
 import { ImplicitAddress } from "../../../../types/Address";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
-import { useSelectedNetwork } from "../../../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
@@ -13,6 +12,7 @@ import { estimate } from "../../../../utils/tezos";
 import { DynamicModalContext } from "../../../DynamicModal";
 import SignPage from "../../../SendFlow/Multisig/SignPage";
 import { MultisigSignerTileDisplay } from "./MultisigSignerTileDisplay";
+import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 
 const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;

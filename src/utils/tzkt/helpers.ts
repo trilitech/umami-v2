@@ -1,5 +1,4 @@
-import { TezosNetwork } from "../../types/TezosNetwork";
-import { tzktExplorer } from "../tezos/consts";
+import { Network } from "../../types/Network";
 
-export const buildTzktAddressUrl = (network: TezosNetwork, pkh: string) =>
-  `${tzktExplorer[network]}/${pkh}`;
+export const buildTzktAddressUrl = (network: Network, pkh: string) =>
+  `${network.tzktExplorerUrl}/${pkh}`;

@@ -9,41 +9,35 @@ import {
   TokenTransfer,
 } from "@tzkt/sdk-api";
 import axios from "axios";
-import { coincapUrl, tzktUrls } from "./consts";
+import { coincapUrl } from "./consts";
 import { coinCapResponseType } from "./types";
 import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { Network } from "../../types/Network";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
 // for now we need only the balance, but we can extend it later
 export type TzktAccount = { address: string; balance: number };
 
-export const getAccounts = async (
-  pkhs: string[],
-  network: TezosNetwork
-): Promise<TzktAccount[]> => {
+export const getAccounts = async (pkhs: string[], network: Network): Promise<TzktAccount[]> => {
   const response = await axios.get<TzktAccount[]>(
-    `${tzktUrls[network]}/v1/accounts?address.in=${pkhs.join(",")}&select=address,balance`
+    `${network.tzktApiUrl}/v1/accounts?address.in=${pkhs.join(",")}&select=address,balance`
   );
   return response.data;
 };
 
 export const getTokenBalances = async (
   pkhs: string[],
-  network: TezosNetwork
+  network: Network
 ): Promise<RawTokenBalance[]> => {
   const response = await axios.get<RawTokenBalance[]>(
-    `${tzktUrls[network]}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
+    `${network.tzktApiUrl}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
   );
   return response.data;
 };
 
-export const getTezTransfers = (
-  address: string,
-  network = TezosNetwork.MAINNET
-): Promise<TezTransfer[]> => {
+export const getTezTransfers = (address: string, network: Network): Promise<TezTransfer[]> => {
   return operationsGetTransactions(
     {
       anyof: { fields: ["sender", "target"], eq: address },
@@ -51,15 +45,12 @@ export const getTezTransfers = (
       limit: 10,
     },
     {
-      baseUrl: tzktUrls[network],
+      baseUrl: network.tzktApiUrl,
     }
   );
 };
 
-export const getTokenTransfers = (
-  address: string,
-  network = TezosNetwork.MAINNET
-): Promise<TokenTransfer[]> => {
+export const getTokenTransfers = (address: string, network: Network): Promise<TokenTransfer[]> => {
   return tokensGetTokenTransfers(
     {
       anyof: { fields: ["from", "to"], eq: address },
@@ -67,14 +58,14 @@ export const getTokenTransfers = (
       limit: 10,
     },
     {
-      baseUrl: tzktUrls[network],
+      baseUrl: network.tzktApiUrl,
     }
   );
 };
 
 export const getLastDelegation = async (
   address: string,
-  network = TezosNetwork.MAINNET
+  network: Network
 ): Promise<DelegationOperation | undefined> => {
   return operationsGetDelegations(
     {
@@ -83,7 +74,7 @@ export const getLastDelegation = async (
       limit: 1,
     },
     {
-      baseUrl: tzktUrls[network],
+      baseUrl: network.tzktApiUrl,
     }
   ).then(d => d[0]);
 };
@@ -100,13 +91,13 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
   return priceUsd ?? null;
 };
 
-export const getLatestBlockLevel = async (network = TezosNetwork.MAINNET): Promise<number> => {
+export const getLatestBlockLevel = async (network: Network): Promise<number> => {
   return await blocksGetCount({
-    baseUrl: tzktUrls[network],
+    baseUrl: network.tzktApiUrl,
   });
 };
 
-export const getBakers = async (network: TezosNetwork): Promise<Delegate[]> => {
+export const getBakers = async (network: Network): Promise<Delegate[]> => {
   return delegatesGet(
     {
       sort: { desc: "stakingBalance" },
@@ -115,7 +106,7 @@ export const getBakers = async (network: TezosNetwork): Promise<Delegate[]> => {
       select: { fields: ["address,alias,stakingBalance"] },
     },
     {
-      baseUrl: tzktUrls[network],
+      baseUrl: network.tzktApiUrl,
     }
   );
 };

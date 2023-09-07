@@ -4,7 +4,7 @@
     "project": "./tsconfig.json",
     "parser": "@typescript-eslint/parser"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "unused-imports"],
   "extends": [
     "react-app",
     "react-app/jest",
@@ -21,7 +21,8 @@
     "jest/no-identical-title": "warn",
     "jest/valid-expect": "warn",
     "@typescript-eslint/await-thenable": "warn",
-    "@typescript-eslint/no-unnecessary-condition": "warn"
+    "@typescript-eslint/no-unnecessary-condition": "warn",
+    "unused-imports/no-unused-imports": "warn"
   },
   "overrides": [
     {

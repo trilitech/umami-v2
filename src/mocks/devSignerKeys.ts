@@ -1,9 +1,9 @@
 import { InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
-import { TezosNetwork } from "../types/TezosNetwork";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 import { makeToolkit } from "../utils/tezos";
 import { mnemonic1 } from "./mockMnemonic";
+import { GHOSTNET } from "../types/Network";
 
 // make the default signer used in the dev mode.
 // e.g. makeDefaultDevSigner(0) is equivalent to the "restored account 0".
@@ -47,6 +47,6 @@ export const makeToolkitFromDefaultDevSeed = async (index: number): Promise<Tezo
   return makeToolkit({
     secretKey,
     type: "mnemonic",
-    network: TezosNetwork.GHOSTNET,
+    network: GHOSTNET,
   });
 };

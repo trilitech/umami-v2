@@ -13,16 +13,16 @@ import {
 } from "../../../mocks/factories";
 import accountsSlice from "./accountsSlice";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
-import { TezosNetwork } from "../../../types/TezosNetwork";
 import { makeAccountOperations } from "../../../components/sendForm/types";
 import { Operation } from "../../../types/Operation";
 import { ImplicitOperations } from "../../../components/sendForm/types";
+import { GHOSTNET } from "../../../types/Network";
+import { networksActions } from "./networks";
 
 const {
   actions: {
     updateTezBalance,
     updateTokenBalance,
-    updateNetwork,
     updateTezTransfers,
     updateTokenTransfers,
     clearBatch,
@@ -40,7 +40,6 @@ describe("assetsSlice", () => {
       },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
-      network: "mainnet",
       conversionRate: null,
       bakers: [],
       batches: [],
@@ -63,7 +62,6 @@ describe("assetsSlice", () => {
       },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
-      network: "mainnet",
       conversionRate: null,
       bakers: [],
       batches: [],
@@ -90,7 +88,6 @@ describe("assetsSlice", () => {
       },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
-      network: "mainnet",
       conversionRate: null,
       bakers: [],
       batches: [],
@@ -126,7 +123,6 @@ describe("assetsSlice", () => {
       conversionRate: null,
       delegations: {},
       bakers: [],
-      network: "mainnet",
       transfers: { tez: {}, tokens: {} },
       batches: [],
       blockLevel: null,
@@ -155,35 +151,7 @@ describe("assetsSlice", () => {
       conversionRate: null,
       delegations: {},
       bakers: [],
-      network: "mainnet",
       transfers: { tez: {}, tokens: {} },
-      batches: [],
-      blockLevel: null,
-      refetchTrigger: 0,
-      lastTimeUpdated: null,
-      isLoading: false,
-    });
-  });
-
-  test("updating network resets operations and balances", () => {
-    store.dispatch(
-      updateTezBalance([
-        { address: "bar", balance: 44 },
-        { address: "baz", balance: 55 },
-      ])
-    );
-
-    store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
-
-    store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
-
-    expect(store.getState().assets).toEqual({
-      balances: { mutez: {}, tokens: {} },
-      transfers: { tez: {}, tokens: {} },
-      delegations: {},
-      bakers: [],
-      network: "ghostnet",
-      conversionRate: null,
       batches: [],
       blockLevel: null,
       refetchTrigger: 0,
@@ -209,7 +177,6 @@ describe("assetsSlice", () => {
       transfers: { tez: {}, tokens: {} },
       delegations: {},
       bakers: [],
-      network: "mainnet",
       conversionRate: null,
       batches: [],
       blockLevel: null,
@@ -238,7 +205,6 @@ describe("assetsSlice", () => {
       },
       delegations: {},
       bakers: [],
-      network: "mainnet",
       batches: [],
       transfers: {
         tez: {
@@ -274,7 +240,6 @@ describe("assetsSlice", () => {
       },
       delegations: {},
       bakers: [],
-      network: "mainnet",
       batches: [],
       transfers: {
         tez: {
@@ -289,7 +254,7 @@ describe("assetsSlice", () => {
       lastTimeUpdated: null,
       isLoading: false,
     });
-    store.dispatch(updateNetwork(TezosNetwork.GHOSTNET));
+    store.dispatch(networksActions.setCurrent(GHOSTNET));
   });
 
   test("token transfers are upserted", () => {
@@ -311,7 +276,6 @@ describe("assetsSlice", () => {
       },
       delegations: {},
       bakers: [],
-      network: "mainnet",
       batches: [],
       transfers: {
         tokens: {
@@ -347,7 +311,6 @@ describe("assetsSlice", () => {
       },
       delegations: {},
       bakers: [],
-      network: "mainnet",
       transfers: {
         tokens: {
           foo: [mockTokenTransaction(4)],

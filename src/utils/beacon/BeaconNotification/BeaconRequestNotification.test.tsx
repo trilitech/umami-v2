@@ -217,7 +217,7 @@ describe("<BeaconRequestNotification />", () => {
     await waitFor(() => {
       expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
     });
-    expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://mainnet.tzkt.io/bar");
+    expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://tzkt.io/bar");
 
     expect(walletClient.respond).toHaveBeenCalledWith({
       id: objectOperationBatchRequest.id,

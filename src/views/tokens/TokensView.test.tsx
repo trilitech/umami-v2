@@ -3,12 +3,13 @@ import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { SupportedNetworks } from "../../utils/network";
 import store from "../../utils/redux/store";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import TokensView from "./TokensView";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
-import assetsSlice, { assetsActions } from "../../utils/redux/slices/assetsSlice";
+import assetsSlice from "../../utils/redux/slices/assetsSlice";
+import { DefaultNetworks } from "../../types/Network";
+import { networksActions } from "../../utils/redux/slices/networks";
 
 const fixture = () => (
   <ReduxStore>
@@ -26,8 +27,8 @@ describe("<TokensView />", () => {
     expect(screen.getByText(/no tokens found/i)).toBeInTheDocument();
   });
 
-  test.each(SupportedNetworks)("shows all available tokens from all accounts on %s", network => {
-    store.dispatch(assetsActions.updateNetwork(network));
+  test.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
+    store.dispatch(networksActions.setCurrent(network));
     store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(1)]));
     const tokenBalances = [
       hedgehoge(mockImplicitAddress(0)),

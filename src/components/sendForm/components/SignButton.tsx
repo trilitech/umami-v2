@@ -11,10 +11,10 @@ import {
 } from "../../../types/Account";
 import { useGetSecretKey } from "../../../utils/hooks/accountUtils";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { useSelectedNetwork } from "../../../utils/hooks/assetsHooks";
 import { makeToolkit } from "../../../utils/tezos";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import PasswordInput from "../../PasswordInput";
+import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 
 export const SignWithGoogleButton: React.FC<
   PropsWithChildren<{

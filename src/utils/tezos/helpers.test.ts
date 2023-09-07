@@ -17,7 +17,6 @@ import {
   FA12Transfer,
   FA2Transfer,
 } from "../../types/Operation";
-import { tzktUrls } from "./consts";
 import {
   addressExists,
   getPkAndPkhFromSk,
@@ -27,6 +26,7 @@ import {
   operationsToBatchParams,
 } from "./helpers";
 import { makeAccountOperations } from "../../components/sendForm/types";
+import { MAINNET } from "../../types/Network";
 jest.mock("@taquito/signer");
 jest.mock("./fakeSigner");
 jest.mock("axios");
@@ -46,9 +46,9 @@ describe("tezos utils helpers", () => {
       },
     };
     mockedAxios.get.mockResolvedValue(mockResponse);
-    const result = await addressExists(mockImplicitAddress(0).pkh);
+    const result = await addressExists(mockImplicitAddress(0).pkh, MAINNET);
     expect(mockedAxios.get).toBeCalledWith(
-      `${tzktUrls.mainnet}/v1/accounts/${mockImplicitAddress(0).pkh}`
+      `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
     );
     expect(result).toEqual(true);
   });
@@ -60,9 +60,9 @@ describe("tezos utils helpers", () => {
       },
     };
     mockedAxios.get.mockResolvedValue(mockResponse);
-    const result = await addressExists(mockImplicitAddress(0).pkh);
+    const result = await addressExists(mockImplicitAddress(0).pkh, MAINNET);
     expect(mockedAxios.get).toBeCalledWith(
-      `${tzktUrls.mainnet}/v1/accounts/${mockImplicitAddress(0).pkh}`
+      `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
     );
     expect(result).toEqual(false);
   });

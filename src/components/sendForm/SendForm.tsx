@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
 import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
-import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useClearBatch } from "../../utils/hooks/assetsHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
@@ -19,6 +19,7 @@ import {
   makeAccountOperations,
   SendFormMode,
 } from "./types";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 export const SendForm = ({
   sender,

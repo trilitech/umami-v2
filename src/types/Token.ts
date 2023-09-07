@@ -3,7 +3,7 @@ import { z } from "zod";
 import { Schema as AddressSchema } from "./Address";
 import BigNumber from "bignumber.js";
 import { getIPFSurl } from "../utils/token/nftUtils";
-import { TezosNetwork } from "./TezosNetwork";
+import { Network } from "./Network";
 
 // TzKT defines metadada as any, but we need to have at least some clarity of what can be inside
 export type Metadata = {
@@ -266,12 +266,12 @@ export const royalties = (nft: NFT): Array<{ address: string; share: number }> =
   return shares;
 };
 
-export const metadataUri = ({ contract, tokenId }: Token, network: TezosNetwork) => {
-  return `https://${network}.tzkt.io/${contract}/tokens/${tokenId}/metadata`;
+export const metadataUri = (token: Token, network: Network) => {
+  return `${tokenUri(token, network)}/metadata`;
 };
 
-export const tokenUri = ({ contract, tokenId }: Token, network: TezosNetwork) => {
-  return `https://${network}.tzkt.io/${contract}/tokens/${tokenId}`;
+export const tokenUri = ({ contract, tokenId }: Token, network: Network) => {
+  return `${network.tzktExplorerUrl}/${contract}/tokens/${tokenId}`;
 };
 
 export const DEFAULT_FA1_NAME = "FA1.2 token";

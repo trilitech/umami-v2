@@ -1,10 +1,10 @@
 import { chunk, compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
-import { TezosNetwork } from "../types/TezosNetwork";
+import { Network } from "../types/Network";
 import { TokenTransfer } from "../types/Transfer";
 import { useImplicitAccounts } from "./hooks/accountHooks";
-import { useRefetchTrigger, useSelectedNetwork } from "./hooks/assetsHooks";
+import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
 import { processInBatches } from "./promise";
 import {
@@ -28,17 +28,18 @@ import {
 } from "./tezos";
 import errorsSlice from "./redux/slices/errorsSlice";
 import getErrorContext from "./getErrorContext";
+import { useSelectedNetwork } from "./hooks/networkHooks";
 
 const getTezTransfersPayload = async (
   pkh: string,
-  network: TezosNetwork
+  network: Network
 ): Promise<TezTransfersPayload> => {
   const transfers = await getTezTransfers(pkh, network);
   return { pkh, transfers };
 };
 const getTokensTransfersPayload = async (
   pkh: string,
-  network: TezosNetwork
+  network: Network
 ): Promise<TokenTransfersPayload> => {
   const transfers = await getTokenTransfers(pkh, network);
   // there are no token transfers without a token & amount assigned
@@ -47,7 +48,7 @@ const getTokensTransfersPayload = async (
 
 const getDelegationsPayload = async (
   pkh: string,
-  network: TezosNetwork
+  network: Network
 ): Promise<DelegationPayload | undefined> => {
   const delegation = await getLastDelegation(pkh, network);
   return delegation && { pkh, delegation };

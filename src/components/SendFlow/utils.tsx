@@ -6,7 +6,7 @@ import {
   useGetImplicitAccount,
   useGetOwnedAccount,
 } from "../../utils/hooks/accountHooks";
-import { useClearBatch, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useClearBatch } from "../../utils/hooks/assetsHooks";
 import { DynamicModalContext } from "../DynamicModal";
 import { AccountOperations, makeAccountOperations } from "../sendForm/types";
 import BigNumber from "bignumber.js";
@@ -18,6 +18,7 @@ import { SuccessStep } from "../sendForm/steps/SuccessStep";
 import { estimate, executeOperations } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
 import { repeat } from "lodash";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 // Convert given optional fields to required
 // For example:

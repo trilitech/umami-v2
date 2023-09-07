@@ -24,10 +24,10 @@ import { Account } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
 import { httpIconUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { formatPkh } from "../../utils/format";
-import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import SendTokenFormPage from "../../components/SendFlow/Token/FormPage";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 const AccountTokensTileHeader: React.FC<{
   pkh: string;

@@ -1,7 +1,7 @@
 import { ImplicitAccount, LedgerAccount } from "./Account";
-import { TezosNetwork } from "./TezosNetwork";
+import { Network } from "./Network";
 
-export type SignerConfig = { network: TezosNetwork } & (
+export type SignerConfig = { network: Network } & (
   | { type: "ledger"; account: LedgerAccount }
   | { type: "mnemonic"; secretKey: string }
   | { type: "social"; secretKey: string }

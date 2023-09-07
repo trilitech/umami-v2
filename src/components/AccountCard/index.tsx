@@ -6,12 +6,12 @@ import {
   useGetAccountNFTs,
   useGetAccountOperationDisplays,
   useGetDollarBalance,
-  useSelectedNetwork,
 } from "../../utils/hooks/assetsHooks";
 import { DynamicModalContext } from "../DynamicModal";
 import { useReceiveModal } from "../ReceiveModal";
 import SendTezForm from "../SendFlow/Tez/FormPage";
 import { AccountCardDisplay } from "./AccountCardDisplay";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const accountBalance = useGetAccountBalance();

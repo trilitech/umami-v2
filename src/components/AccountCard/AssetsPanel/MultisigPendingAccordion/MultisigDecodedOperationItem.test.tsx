@@ -1,16 +1,17 @@
 import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
-import { TezosNetwork } from "../../../../types/TezosNetwork";
 import { RawTokenBalance } from "../../../../types/TokenBalance";
 import { assetsActions } from "../../../../utils/redux/slices/assetsSlice";
 import store from "../../../../utils/redux/store";
 import tokensSlice from "../../../../utils/redux/slices/tokensSlice";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
+import { MAINNET } from "../../../../types/Network";
+import { networksActions } from "../../../../utils/redux/slices/networks";
 
-const { updateTokenBalance, updateNetwork } = assetsActions;
+const { updateTokenBalance } = assetsActions;
 
 beforeEach(() => {
-  store.dispatch(updateNetwork(TezosNetwork.MAINNET));
+  store.dispatch(networksActions.setCurrent(MAINNET));
 });
 
 describe("<MultisigDecodedOperationItem/>", () => {
@@ -71,7 +72,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
     store.dispatch(updateTokenBalance([mockBalancePlayload]));
     store.dispatch(
       tokensSlice.actions.addTokens({
-        network: TezosNetwork.MAINNET,
+        network: MAINNET,
         tokens: [mockBalancePlayload.token],
       })
     );
@@ -119,7 +120,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
     store.dispatch(updateTokenBalance([mockBalancePlayload]));
     store.dispatch(
       tokensSlice.actions.addTokens({
-        network: TezosNetwork.MAINNET,
+        network: MAINNET,
         tokens: [mockBalancePlayload.token],
       })
     );

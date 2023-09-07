@@ -18,7 +18,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Operation } from "../../types/Operation";
 import { RawPkh } from "../../types/Address";
 import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
-import { useSelectedNetwork } from "../../utils/hooks/assetsHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
@@ -29,6 +28,7 @@ import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { useContext } from "react";
 import { DynamicModalContext } from "../DynamicModal";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 type FormFields = {
   sender: RawPkh;

@@ -6,13 +6,13 @@ import {
   parseMultisig,
 } from "./helpers";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
-import { SupportedNetworks } from "../network";
+import { DefaultNetworks } from "../../types/Network";
 jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("multisig helpers", () => {
-  SupportedNetworks.forEach(async network => {
+  DefaultNetworks.forEach(async network => {
     test("getRelevantMultisigContracts", async () => {
       const mockResponse = {
         data: tzktGetSameMultisigsResponse,
@@ -57,7 +57,7 @@ describe("multisig helpers", () => {
       );
 
       expect(mockedAxios.get).toBeCalledWith(
-        `https://api.${network}.tzkt.io/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
+        `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
       );
 
       expect(result).toEqual([

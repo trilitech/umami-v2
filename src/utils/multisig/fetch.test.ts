@@ -1,8 +1,7 @@
 import axios from "axios";
 import { ghostMultisigContracts } from "../../mocks/tzktResponse";
-import { TezosNetwork } from "../../types/TezosNetwork";
-import { tzktUrls } from "../tezos/consts";
 import { getAllMultiSigContracts } from "./fetch";
+import { GHOSTNET } from "../../types/Network";
 
 jest.mock("axios");
 
@@ -12,11 +11,9 @@ describe("multisig fetch", () => {
   test("getAllMultiSigContracts", async () => {
     mockedAxios.get.mockResolvedValue({ data: ghostMultisigContracts });
 
-    const result = await getAllMultiSigContracts(TezosNetwork.GHOSTNET);
+    const result = await getAllMultiSigContracts(GHOSTNET);
     expect(mockedAxios.get).toBeCalledWith(
-      `${
-        tzktUrls[TezosNetwork.GHOSTNET]
-      }/v1/contracts?typeHash=1963879877&codeHash=-1890025422&includeStorage=true&limit=10000`
+      `${GHOSTNET.tzktApiUrl}/v1/contracts?typeHash=1963879877&codeHash=-1890025422&includeStorage=true&limit=10000`
     );
     expect(
       result.map(({ address, storage: { pending_ops, signers, threshold } }) => ({

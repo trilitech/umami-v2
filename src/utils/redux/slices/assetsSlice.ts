@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, findIndex, groupBy, mapValues } from "lodash";
 import accountsSlice from "./accountsSlice";
-import { TezosNetwork } from "../../../types/TezosNetwork";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
@@ -11,7 +10,6 @@ import { AccountOperations } from "../../../components/sendForm/types";
 import { RawPkh } from "../../../types/Address";
 
 type State = {
-  network: TezosNetwork;
   blockLevel: number | null;
   balances: {
     mutez: Record<string, string | undefined>;
@@ -47,7 +45,6 @@ export type DelegationPayload = {
 export type ConversionRatePayload = { rate: State["conversionRate"] };
 
 const initialState: State = {
-  network: TezosNetwork.MAINNET,
   blockLevel: null,
   balances: {
     mutez: {},
@@ -77,9 +74,6 @@ const assetsSlice = createSlice({
     builder.addCase(accountsSlice.actions.reset, () => initialState),
   reducers: {
     reset: () => initialState,
-    updateNetwork: (_, { payload }: { type: string; payload: TezosNetwork }) => {
-      return { ...initialState, network: payload };
-    },
     updateBlockLevel: (state, { payload }: { payload: number }) => {
       state.blockLevel = payload;
     },

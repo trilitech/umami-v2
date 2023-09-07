@@ -20,6 +20,7 @@ import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezo
 import BigNumber from "bignumber.js";
 import { makeAccountOperations } from "../../../sendForm/types";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
+import { MAINNET } from "../../../../types/Network";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 jest.mock("../../../sendForm/types");
@@ -102,7 +103,7 @@ describe("<MultisigPendingCard/>", () => {
       makeMultisigApproveOrExecuteOperation(multisig.address, "execute", pendingOps[0].id),
     ]);
 
-    expect(jest.mocked(estimate)).toHaveBeenCalledWith(operation, "mainnet");
+    expect(jest.mocked(estimate)).toHaveBeenCalledWith(operation, MAINNET);
 
     fillPassword("mockPass");
 
@@ -150,7 +151,7 @@ describe("<MultisigPendingCard/>", () => {
       makeMultisigApproveOrExecuteOperation(multisig.address, "approve", pendingOps[0].id),
     ]);
 
-    expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, "mainnet");
+    expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
 
     fillPassword("mockPass");
 

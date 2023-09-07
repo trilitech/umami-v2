@@ -2,7 +2,7 @@ import { Address } from "../../types/Address";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
 import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
 import { AccountType } from "../../types/Account";
-import { useGetBaker, useSelectedNetwork } from "../../utils/hooks/assetsHooks";
+import { useGetBaker } from "../../utils/hooks/assetsHooks";
 import {
   AddressKind,
   BakerAddress,
@@ -13,6 +13,7 @@ import {
   OwnedMultisigAccountAddress,
 } from "./types";
 import { useGetTokenType } from "../../utils/hooks/tokensHooks";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);

@@ -7,7 +7,6 @@ import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/TezosNetwork";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import contactsSlice from "../../utils/redux/slices/contactsSlice";
@@ -15,9 +14,11 @@ import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import store from "../../utils/redux/store";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import useAddressKind from "./useAddressKind";
+import { MAINNET } from "../../types/Network";
+import { networksActions } from "../../utils/redux/slices/networks";
 
 beforeEach(() => {
-  store.dispatch(assetsSlice.actions.updateNetwork(TezosNetwork.MAINNET));
+  store.dispatch(networksActions.setCurrent(MAINNET));
 });
 
 describe("useAddressKind", () => {
@@ -58,7 +59,7 @@ describe("useAddressKind", () => {
         delete withoutName.token.metadata?.name;
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: TezosNetwork.MAINNET,
+            network: MAINNET,
             tokens: [withoutName.token],
           })
         );
@@ -76,7 +77,7 @@ describe("useAddressKind", () => {
       it("returns label", () => {
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: TezosNetwork.MAINNET,
+            network: MAINNET,
             tokens: [tokenBalance.token],
           })
         );
@@ -140,7 +141,7 @@ describe("useAddressKind", () => {
         store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
         store.dispatch(
           tokensSlice.actions.addTokens({
-            network: TezosNetwork.MAINNET,
+            network: MAINNET,
             tokens: [hedgehoge(mockImplicitAddress(0)).token, uUSD(mockImplicitAddress(0)).token],
           })
         );

@@ -35,8 +35,8 @@ import { multisigs } from "../../mocks/multisig";
 import { parseContractPkh, parsePkh } from "../../types/Address";
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { fa1Token, fa2Token, nft } from "../../mocks/tzktResponse";
-import { TezosNetwork } from "../../types/TezosNetwork";
 import { estimate, executeOperations, makeToolkit } from "../../utils/tezos";
+import { MAINNET } from "../../types/Network";
 
 // These tests might take long in the CI
 jest.setTimeout(10000);
@@ -65,7 +65,7 @@ beforeEach(async () => {
   document.getElementById("chakra-toast-portal")?.remove();
   store.dispatch(
     tokensSlice.actions.addTokens({
-      network: TezosNetwork.MAINNET,
+      network: MAINNET,
       tokens: [fa1Token.token, fa2Token.token, nft.token],
     })
   );
@@ -159,7 +159,7 @@ describe("<SendForm />", () => {
           sender: mockImplicitAccount(2),
           signer: mockImplicitAccount(2),
         },
-        "mainnet"
+        MAINNET
       );
 
       fillPassword("mockPass");
@@ -180,10 +180,7 @@ describe("<SendForm />", () => {
 
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
-          "href",
-          "https://mainnet.tzkt.io/mockHash"
-        );
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://tzkt.io/mockHash");
       });
 
       expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(
@@ -272,7 +269,7 @@ describe("<SendForm />", () => {
           sender: mockImplicitAccount(2),
           signer: mockImplicitAccount(2),
         },
-        "mainnet"
+        MAINNET
       );
 
       fillPassword("mockPass");
@@ -292,10 +289,7 @@ describe("<SendForm />", () => {
 
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
-          "href",
-          "https://mainnet.tzkt.io/mockHash"
-        );
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://tzkt.io/mockHash");
       });
 
       expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(
@@ -374,10 +368,7 @@ describe("<SendForm />", () => {
 
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
-          "href",
-          "https://mainnet.tzkt.io/mockHash"
-        );
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://tzkt.io/mockHash");
       });
 
       const contractAddress = nft.token.contract.address as string;
@@ -491,10 +482,7 @@ describe("<SendForm />", () => {
 
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
-          "href",
-          "https://mainnet.tzkt.io/mockHash"
-        );
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://tzkt.io/mockHash");
       });
     });
 
@@ -539,10 +527,7 @@ describe("<SendForm />", () => {
 
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
-          "href",
-          "https://mainnet.tzkt.io/mockHash"
-        );
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://tzkt.io/mockHash");
       });
     });
 
@@ -605,10 +590,7 @@ describe("<SendForm />", () => {
 
       await waitFor(() => {
         expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
-        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty(
-          "href",
-          "https://mainnet.tzkt.io/mockHash"
-        );
+        expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://tzkt.io/mockHash");
       });
     });
   });

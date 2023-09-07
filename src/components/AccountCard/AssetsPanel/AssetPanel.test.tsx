@@ -1,6 +1,6 @@
 import { mockMultisigAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { TezosNetwork } from "../../../types/TezosNetwork";
+import { MAINNET } from "../../../types/Network";
 import { AssetsPanel } from "./AssetsPanel";
 
 describe("<AssetPanel/>", () => {
@@ -12,7 +12,7 @@ describe("<AssetPanel/>", () => {
         nfts={[]}
         tokens={[]}
         operationDisplays={[]}
-        network={TezosNetwork.MAINNET}
+        network={MAINNET}
       />
     );
 

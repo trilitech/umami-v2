@@ -3,16 +3,16 @@ import { hedgehoge } from "../../mocks/fa12Tokens";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { fromRaw } from "../../types/Token";
-import { SupportedNetworks } from "../network";
-import { assetsActions } from "../redux/slices/assetsSlice";
 import store from "../redux/store";
 import { tokensActions } from "../redux/slices/tokensSlice";
 import { useGetToken, useGetTokenType } from "./tokensHooks";
+import { DefaultNetworks } from "../../types/Network";
+import { networksActions } from "../redux/slices/networks";
 
 describe("useGetToken", () => {
-  describe.each(SupportedNetworks)("on %s", network => {
+  describe.each(DefaultNetworks)("on $name", network => {
     beforeEach(() => {
-      store.dispatch(assetsActions.updateNetwork(network));
+      store.dispatch(networksActions.setCurrent(network));
     });
     it("returns undefined if token is not found", () => {
       const { result: getTokenRef } = renderHook(() => useGetToken(), {
@@ -32,12 +32,12 @@ describe("useGetToken", () => {
       );
     });
 
-    SupportedNetworks.forEach(anotherNetwork => {
+    DefaultNetworks.forEach(anotherNetwork => {
       if (anotherNetwork === network) {
         return;
       }
 
-      test.each(SupportedNetworks.filter(another => another !== network))(
+      test.each(DefaultNetworks.filter(another => another !== network))(
         `can't find a token even if it exists on another network (%s)`,
         anotherNetwork => {
           const tokenBalance = hedgehoge(mockImplicitAddress(0));
@@ -58,7 +58,7 @@ describe("useGetToken", () => {
 });
 
 describe("useGetTokenType", () => {
-  SupportedNetworks.forEach(network => {
+  DefaultNetworks.forEach(network => {
     describe(`on ${network}`, () => {
       it("returns undefined if contract is not found", () => {
         const { result: getTokenRef } = renderHook(() => useGetTokenType(network), {
@@ -76,7 +76,7 @@ describe("useGetTokenType", () => {
         expect(getTokenRef.current(tokenBalance.token.contract.address as string)).toEqual("fa1.2");
       });
 
-      SupportedNetworks.forEach(anotherNetwork => {
+      DefaultNetworks.forEach(anotherNetwork => {
         if (anotherNetwork === network) {
           return;
         }

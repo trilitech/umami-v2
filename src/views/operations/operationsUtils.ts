@@ -9,10 +9,10 @@ import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { parsePkh } from "../../types/Address";
-import { TezosNetwork } from "../../types/TezosNetwork";
+import { Network } from "../../types/Network";
 
-export const getHashUrl = (hash: string, network: TezosNetwork) => {
-  return `https://${network}.tzkt.io/${hash}`;
+export const getHashUrl = (hash: string, network: Network) => {
+  return `${network.tzktExplorerUrl}/${hash}`;
 };
 
 export const getTransactionUrl = ({
@@ -24,16 +24,16 @@ export const getTransactionUrl = ({
   transactionId: number | undefined;
   originationId: number | undefined;
   migrationId: number | undefined;
-  network: TezosNetwork;
+  network: Network;
 }) => {
   if (transactionId) {
-    return `https://${network}.tzkt.io/transactions/${transactionId}`;
+    return `${network.tzktExplorerUrl}/transactions/${transactionId}`;
   }
   if (originationId) {
-    return `https://${network}.tzkt.io/originations/${originationId}`;
+    return `${network.tzktExplorerUrl}/originations/${originationId}`;
   }
   if (migrationId) {
-    return `https://${network}.tzkt.io/migrations/${migrationId}`;
+    return `${network.tzktExplorerUrl}/migrations/${migrationId}`;
   }
   throw new Error("Cannot find transaction TzKT URL");
 };
@@ -86,7 +86,7 @@ const TezTransaction = z.object({
 export const getTezOperationDisplay = (
   transfer: TezTransfer,
   forAddress: string,
-  network = TezosNetwork.MAINNET
+  network: Network
 ) => {
   const parseResult = TezTransaction.safeParse(transfer);
   if (!parseResult.success) {
@@ -141,7 +141,7 @@ const TokenTransaction = z.object({
 export const getTokenOperationDisplay = (
   transfer: TokenTransfer,
   forAddress: string,
-  network = TezosNetwork.MAINNET
+  network: Network
 ) => {
   const token = fromRaw(transfer.token);
 
@@ -210,7 +210,7 @@ const DelegationSchema = z.object({
 
 const getDelegationOperationDisplay = (
   delegation: DelegationOperation,
-  network = TezosNetwork.MAINNET
+  network: Network
 ): OperationDisplay | null => {
   const parseResult = DelegationSchema.safeParse(delegation);
 
@@ -258,13 +258,13 @@ export const getOperationDisplays = (
   tokenTransfers: TokenTransfer[] = [],
   delegation: DelegationOperation | null = null,
   forAdress: string,
-  network: TezosNetwork = TezosNetwork.MAINNET
+  network: Network
 ) => {
   return sortOperationsByTimestamp(
     compact([
       ...tezTransfers.map(t => getTezOperationDisplay(t, forAdress, network)),
       ...tokenTransfers.map(t => getTokenOperationDisplay(t, forAdress, network)),
-      delegation ? getDelegationOperationDisplay(delegation) : null,
+      delegation ? getDelegationOperationDisplay(delegation, network) : null,
     ])
   );
 };
