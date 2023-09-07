@@ -2,18 +2,11 @@ import { Address } from "../../types/Address";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
 import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
 import { AccountType } from "../../types/Account";
-import { useGetBaker } from "../../utils/hooks/assetsHooks";
-import {
-  AddressKind,
-  BakerAddress,
-  ContactAddress,
-  FA12Address,
-  FA2Address,
-  OwnedImplicitAccountAddress,
-  OwnedMultisigAccountAddress,
-} from "./types";
+import { AddressKind, FA12Address, FA2Address, OwnedImplicitAddress } from "./types";
 import { useGetTokenType } from "../../utils/hooks/tokensHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { OwnedMultisigAddress } from "../AddressTile/types";
+import { useBakerAddressKind, useContactAddressKind } from "../AddressTile/useAddressKind";
 
 const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
@@ -33,7 +26,7 @@ export default useAddressKind;
 
 const useOwnedAccountAddressKind = ({
   pkh,
-}: Address): OwnedImplicitAccountAddress | OwnedMultisigAccountAddress | null => {
+}: Address): OwnedImplicitAddress | OwnedMultisigAddress | null => {
   const getOwnedAccount = useGetOwnedAccountSafe();
   const account = getOwnedAccount(pkh);
   if (!account) {
@@ -79,30 +72,4 @@ const useTokenAddressKind = ({ pkh }: Address): FA12Address | FA2Address | null 
         label: null,
       };
   }
-};
-
-const useBakerAddressKind = ({ pkh }: Address): BakerAddress | null => {
-  const getBaker = useGetBaker();
-  const baker = getBaker(pkh);
-  if (!baker) {
-    return null;
-  }
-  return {
-    pkh,
-    type: "baker",
-    label: baker.name,
-  };
-};
-
-const useContactAddressKind = ({ pkh }: Address): ContactAddress | null => {
-  const getContactName = useGetContactName();
-  const contactName = getContactName(pkh);
-  if (!contactName) {
-    return null;
-  }
-  return {
-    pkh,
-    type: "contact",
-    label: contactName,
-  };
 };

@@ -1,4 +1,10 @@
 import { RawPkh } from "../../types/Address";
+import {
+  BakerAddress,
+  ContactAddress,
+  OwnedMultisigAddress,
+  UnknownAddress,
+} from "../AddressTile/types";
 
 export type AddressKindType =
   | "ownedImplicit"
@@ -15,13 +21,8 @@ type AddressKindBase = {
   label: string | null;
 };
 
-export type OwnedImplicitAccountAddress = AddressKindBase & {
+export type OwnedImplicitAddress = AddressKindBase & {
   type: "ownedImplicit";
-  label: string;
-};
-
-export type OwnedMultisigAccountAddress = AddressKindBase & {
-  type: "ownedMultisig";
   label: string;
 };
 
@@ -35,24 +36,9 @@ export type FA2Address = AddressKindBase & {
   label: null;
 };
 
-export type BakerAddress = AddressKindBase & {
-  type: "baker";
-  label: string;
-};
-
-export type ContactAddress = AddressKindBase & {
-  type: "contact";
-  label: string;
-};
-
-export type UnknownAddress = AddressKindBase & {
-  type: "unknown";
-  label: null;
-};
-
 export type AddressKind =
-  | OwnedImplicitAccountAddress
-  | OwnedMultisigAccountAddress
+  | OwnedImplicitAddress
+  | OwnedMultisigAddress
   | FA12Address
   | FA2Address
   | BakerAddress
