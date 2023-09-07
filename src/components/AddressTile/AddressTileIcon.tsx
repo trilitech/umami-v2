@@ -27,7 +27,7 @@ const AddressTileIcon: React.FC<{
       return <SocialIcon {...baseIconProps} bg="white" />;
     case "ledger":
       return <LedgerIcon {...baseIconProps} color={colors.gray[400]} />;
-    case "ownedMultisig":
+    case "multisig":
       return <KeyIcon {...baseIconProps} />;
     case "contact":
       return <ContactIcon {...baseIconProps} />;

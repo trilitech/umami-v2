@@ -21,7 +21,7 @@ describe("<AddressTileIcon />", () => {
   });
 
   it("displays the multisig icon", () => {
-    render(fixture({ type: "ownedMultisig", pkh: "tz1", label: "label" }));
+    render(fixture({ type: "multisig", pkh: "tz1", label: "label" }));
     expect(screen.getByTestId("key-icon")).toBeInTheDocument();
   });
 

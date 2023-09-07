@@ -1,9 +1,8 @@
-import { AccountType } from "../../types/Account";
 import { Address } from "../../types/Address";
 import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
 import { useGetBaker } from "../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
-import { AddressKind, AddressKindType, BakerAddress, ContactAddress, OwnedAddreess } from "./types";
+import { AddressKind, BakerAddress, ContactAddress, OwnedAddreess } from "./types";
 
 const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
@@ -26,24 +25,8 @@ const useOwnedAccountAddressKind = ({ pkh }: Address): OwnedAddreess | null => {
     return null;
   }
 
-  let type: AddressKindType;
-  switch (account.type) {
-    case AccountType.MULTISIG:
-      type = "ownedMultisig";
-      break;
-    case AccountType.SOCIAL:
-      type = "social";
-      break;
-    case AccountType.LEDGER:
-      type = "ledger";
-      break;
-    case AccountType.MNEMONIC:
-      type = "mnemonic";
-      break;
-  }
-
   return {
-    type,
+    type: account.type,
     pkh,
     label: account.label,
   };

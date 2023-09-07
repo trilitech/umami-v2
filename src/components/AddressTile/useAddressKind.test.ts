@@ -58,7 +58,7 @@ describe("useAddressKind", () => {
       wrapper: ReduxStore,
     });
     expect(addressKindRef.current).toEqual({
-      type: "ownedMultisig",
+      type: "multisig",
       pkh: multisigs[0].address.pkh,
       label: "Multisig Account 0",
     });
