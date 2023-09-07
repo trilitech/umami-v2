@@ -25,9 +25,9 @@ const MenuItem: React.FC<
     icon: IconType;
     to: string;
   } & FlexProps
-> = props => {
+> = ({ icon, label, to, ...flexProps }) => {
   return (
-    <Link to={props.to}>
+    <Link to={to}>
       <Flex
         _hover={{
           background: colors.gray[800],
@@ -40,10 +40,10 @@ const MenuItem: React.FC<
         alignItems="center"
         border={40}
         cursor="pointer"
-        {...props}
+        {...flexProps}
       >
-        <Icon w={6} h={6} ml={2} mr={4} as={props.icon} />
-        <Text size="sm">{props.label}</Text>
+        <Icon w={6} h={6} ml={2} mr={4} as={icon} />
+        <Text size="sm">{label}</Text>
       </Flex>
     </Link>
   );
