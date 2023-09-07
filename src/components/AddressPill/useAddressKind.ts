@@ -1,11 +1,5 @@
 import { Address } from "../../types/Address";
-import {
-  AddressKind,
-  AddressKindType,
-  FA12Address,
-  FA2Address,
-  OwnedImplicitAddress,
-} from "./types";
+import { AddressKind, FA12Address, FA2Address, OwnedImplicitAddress } from "./types";
 import { useGetTokenType } from "../../utils/hooks/tokensHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { OwnedMultisigAddress } from "../AddressTile/types";
@@ -34,25 +28,14 @@ export default useAddressKind;
 const useOwnedAccountAddressKind = (
   address: Address
 ): OwnedImplicitAddress | OwnedMultisigAddress | null => {
-  const addressTileAddrssKind = useAddressTileOwnedAccountAddressKind(address);
-  if (!addressTileAddrssKind) {
+  const addressTileAddressKind = useAddressTileOwnedAccountAddressKind(address);
+  if (!addressTileAddressKind) {
     return null;
   }
-  const { pkh, label } = addressTileAddrssKind;
-
-  let type: AddressKindType;
-  switch (addressTileAddrssKind.type) {
-    case "ownedMultisig":
-      type = "ownedMultisig";
-      break;
-    case "social":
-    case "ledger":
-    case "mnemonic":
-      type = "ownedImplicit";
-  }
+  const { pkh, label } = addressTileAddressKind;
 
   return {
-    type,
+    type: addressTileAddressKind.type === "multisig" ? "multisig" : "implicit",
     pkh,
     label,
   };

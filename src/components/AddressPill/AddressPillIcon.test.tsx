@@ -7,7 +7,7 @@ import { AddressKindType } from "./types";
 describe("AddressPill Icons", () => {
   it("Left icon renders", () => {
     const addressKindTypesWithLeftIcon: AddressKindType[] = [
-      "ownedMultisig",
+      "multisig",
       "fa1.2",
       "fa2",
       "baker",
@@ -23,10 +23,10 @@ describe("AddressPill Icons", () => {
     });
   });
 
-  it("Left icon with unknown/ownedImplicit address returns null", () => {
+  it("Left icon with unknown/implicit address returns null", () => {
     expect(
       LeftIcon({
-        addressKind: { type: "ownedImplicit", pkh: mockContractAddress(0).pkh, label: "label" },
+        addressKind: { type: "implicit", pkh: mockContractAddress(0).pkh, label: "label" },
       })
     ).toBeNull();
 

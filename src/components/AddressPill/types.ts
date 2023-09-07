@@ -7,8 +7,8 @@ import {
 } from "../AddressTile/types";
 
 export type AddressKindType =
-  | "ownedImplicit"
-  | "ownedMultisig"
+  | "implicit"
+  | "multisig"
   | "fa1.2"
   | "fa2"
   | "baker"
@@ -22,7 +22,7 @@ type AddressKindBase = {
 };
 
 export type OwnedImplicitAddress = AddressKindBase & {
-  type: "ownedImplicit";
+  type: "implicit";
   label: string;
 };
 

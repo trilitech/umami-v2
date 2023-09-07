@@ -16,7 +16,7 @@ export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   ...rest
 }) => {
   switch (type) {
-    case "ownedMultisig":
+    case "multisig":
       return <KeyIcon data-testid={`${type}-icon`} {...rest} />;
     case "fa1.2":
       return <FA12Icon data-testid={`${type}-icon`} {...rest} />;
@@ -27,7 +27,7 @@ export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
     case "contact":
       return <ContactIcon data-testid={`${type}-icon`} {...rest} />;
     case "unknown":
-    case "ownedImplicit":
+    case "implicit":
       return null;
   }
 };
@@ -42,7 +42,7 @@ export const RightIcon: React.FC<
     return <XMark cursor="pointer" onClick={addressPillMode.onRemove} {...rest} />;
   }
 
-  const knownTypes: AddressKindType[] = ["ownedImplicit", "ownedMultisig", "baker"];
+  const knownTypes: AddressKindType[] = ["implicit", "multisig", "baker"];
 
   if (knownTypes.includes(type) || addressExistsInContacts(pkh)) {
     return null;
