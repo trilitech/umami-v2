@@ -2,7 +2,7 @@ import { render, screen } from "../../mocks/testUtils";
 import { TezTile } from "./TezTile";
 import { TEZ } from "../../utils/tezos";
 
-const fixture = (tezAmount: string) => <TezTile tezAmount={tezAmount} />;
+const fixture = (tezAmount: string) => <TezTile mutezAmount={tezAmount} />;
 
 describe("<SignPage />", () => {
   it("displays the icon", () => {
