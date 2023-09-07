@@ -1,12 +1,19 @@
 import { Address } from "../../types/Address";
-import { useGetContactName } from "../../utils/hooks/contactsHooks";
-import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
-import { AccountType } from "../../types/Account";
-import { AddressKind, FA12Address, FA2Address, OwnedImplicitAddress } from "./types";
+import {
+  AddressKind,
+  AddressKindType,
+  FA12Address,
+  FA2Address,
+  OwnedImplicitAddress,
+} from "./types";
 import { useGetTokenType } from "../../utils/hooks/tokensHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { OwnedMultisigAddress } from "../AddressTile/types";
-import { useBakerAddressKind, useContactAddressKind } from "../AddressTile/useAddressKind";
+import {
+  useBakerAddressKind,
+  useContactAddressKind,
+  useOwnedAccountAddressKind as useAddressTileOwnedAccountAddressKind,
+} from "../AddressTile/useAddressKind";
 
 const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
@@ -24,30 +31,31 @@ const useAddressKind = (address: Address): AddressKind => {
 
 export default useAddressKind;
 
-const useOwnedAccountAddressKind = ({
-  pkh,
-}: Address): OwnedImplicitAddress | OwnedMultisigAddress | null => {
-  const getOwnedAccount = useGetOwnedAccountSafe();
-  const account = getOwnedAccount(pkh);
-  if (!account) {
+const useOwnedAccountAddressKind = (
+  address: Address
+): OwnedImplicitAddress | OwnedMultisigAddress | null => {
+  const addressTileAddrssKind = useAddressTileOwnedAccountAddressKind(address);
+  if (!addressTileAddrssKind) {
     return null;
   }
-  switch (account.type) {
-    case AccountType.MULTISIG:
-      return {
-        pkh,
-        type: "ownedMultisig",
-        label: account.label,
-      };
-    case AccountType.SOCIAL:
-    case AccountType.LEDGER:
-    case AccountType.MNEMONIC:
-      return {
-        pkh,
-        type: "ownedImplicit",
-        label: account.label,
-      };
+  const { pkh, label } = addressTileAddrssKind;
+
+  let type: AddressKindType;
+  switch (addressTileAddrssKind.type) {
+    case "ownedMultisig":
+      type = "ownedMultisig";
+      break;
+    case "social":
+    case "ledger":
+    case "mnemonic":
+      type = "ownedImplicit";
   }
+
+  return {
+    type,
+    pkh,
+    label,
+  };
 };
 
 const useTokenAddressKind = ({ pkh }: Address): FA12Address | FA2Address | null => {
