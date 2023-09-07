@@ -1,5 +1,4 @@
 import { render, screen } from "../../mocks/testUtils";
-import { TEZ } from "../../utils/tezos";
 import AddressTileIcon from "./AddressTileIcon";
 import { AddressKind } from "./types";
 

@@ -1,9 +1,5 @@
 import { renderHook } from "@testing-library/react";
-import { cloneDeep } from "lodash";
-import { hedgehoge } from "../../mocks/fa12Tokens";
-import { uUSD } from "../../mocks/fa2Tokens";
 import { mockBaker, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
-import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
@@ -14,10 +10,7 @@ import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import store from "../../utils/redux/store";
 import useAddressKind from "./useAddressKind";
 import { AccountType } from "../../types/Account";
-
-// afterEach(() => {
-//   store.dispatch(accountsSlice.actions.reset());
-// });
+import { multisigs } from "../../mocks/multisig";
 
 describe("useAddressKind", () => {
   it("returns mnemonic account", () => {

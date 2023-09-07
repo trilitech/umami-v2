@@ -1,20 +1,23 @@
-import { Flex, FormControl, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import { TezTransfer } from "../../../types/Operation";
-import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { TezTile } from "../../AssetTiles/TezTile";
 import SignPageFee from "../SignPageFee";
+import AddressTile from "../../AddressTile/AddressTile";
+import { parsePkh } from "../../../types/Address";
 
 const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
 
-  const tezAmount = (operations.operations[0] as TezTransfer).amount;
+  const { amount: mutezAmount, recipient } = operations.operations[0] as TezTransfer;
+
+  const sender = form.getValues("sender");
 
   return (
     <FormProvider {...form}>
@@ -22,21 +25,17 @@ const SignPage: React.FC<SignPageProps> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            <TezTile tezAmount={tezAmount} />
+            <TezTile mutezAmount={mutezAmount} />
 
-            <Flex my={3} alignItems="center" justifyContent="end">
+            <Flex mt="12px" alignItems="center" justifyContent="end">
               <SignPageFee fee={fee} />
             </Flex>
 
-            {/* TODO: Add sender address tile */}
-            <FormControl mb="24px">
-              <OwnedAccountsAutocomplete
-                inputName="sender"
-                label="From"
-                allowUnknown={false}
-                isDisabled
-              />
-            </FormControl>
+            <FormLabel mt="24px">From </FormLabel>
+            <AddressTile address={parsePkh(sender)} />
+
+            <FormLabel mt="24px">To </FormLabel>
+            <AddressTile mb="24px" address={recipient} />
 
             {/* TODO: Add recipient address tile */}
 
