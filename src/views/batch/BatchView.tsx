@@ -2,7 +2,6 @@ import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { AccountOperations } from "../../components/sendForm/types";
 import { Operation } from "../../types/Operation";
-import { useClearBatch, useRemoveBatchItem } from "../../utils/hooks/assetsHooks";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import colors from "../../style/colors";
 import pluralize from "pluralize";
@@ -18,6 +17,7 @@ import { Account } from "../../types/Account";
 import { OperationView } from "./OperationView";
 import { OperationRecipient } from "./OperationRecipient";
 import { useSendFormModal } from "../home/useSendFormModal";
+import { useClearBatch, useRemoveBatchItem } from "../../utils/hooks/batchesHooks";
 
 const RightHeader = ({ operations: accountOperations }: { operations: AccountOperations }) => {
   const { type: operationsType, sender, operations } = accountOperations;

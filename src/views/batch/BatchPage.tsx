@@ -11,7 +11,7 @@ import NoItems from "../../components/NoItems";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import SendTezForm from "../../components/SendFlow/Tez/FormPage";
 import CSVFileUploadForm from "../../components/CSVFileUploader/CSVFileUploadForm";
-import { useBatches } from "../../utils/hooks/assetsHooks";
+import { useBatches } from "../../utils/hooks/batchesHooks";
 
 export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (

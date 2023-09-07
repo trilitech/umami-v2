@@ -19,6 +19,7 @@ import errorsSlice from "./utils/redux/slices/errorsSlice";
 import { mockUseToast } from "./mocks/toast";
 import React from "react";
 import { networksActions } from "./utils/redux/slices/networks";
+import { batchesActions } from "./utils/redux/slices/batches";
 
 failOnConsole();
 
@@ -91,6 +92,7 @@ afterEach(() => {
     store.dispatch(tokensActions.reset());
     store.dispatch(errorsSlice.actions.reset());
     store.dispatch(networksActions.reset());
+    store.dispatch(batchesActions.reset());
   });
 });
 

@@ -22,7 +22,8 @@
     "jest/valid-expect": "warn",
     "@typescript-eslint/await-thenable": "warn",
     "@typescript-eslint/no-unnecessary-condition": "warn",
-    "unused-imports/no-unused-imports": "warn"
+    "unused-imports/no-unused-imports": "warn",
+    "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": "allow-with-description" }]
   },
   "overrides": [
     {
