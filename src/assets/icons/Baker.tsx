@@ -3,6 +3,7 @@ import { Icon, IconProps } from "@chakra-ui/react";
 const BakerIcon: React.FC<IconProps> = props => {
   return (
     <Icon
+      data-testid="baker-icon"
       width="18"
       height="18"
       viewBox="0 0 18 18"
