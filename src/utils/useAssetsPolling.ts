@@ -6,7 +6,6 @@ import { TokenTransfer } from "../types/Transfer";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
-import { processInBatches } from "./promise";
 import {
   assetsActions,
   DelegationPayload,
@@ -57,7 +56,6 @@ const getDelegationsPayload = async (
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
 const BAKERS_REFRESH_RATE = 1000 * 60 * 120;
-const CHUNK_SIZE = 3;
 
 // The limit of a URI size is 2000 chars
 // according to https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
@@ -100,35 +98,31 @@ export const useAssetsPolling = () => {
 
         const tokens = Promise.all(pkhChunks.map(pkhs => getTokenBalances(pkhs, network))).then(
           async tokenBalances => {
-            dispatch(
-              tokensActions.addTokens({ network, tokens: tokenBalances.flat().map(b => b.token) })
-            );
-            dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
-
             // token transfers have to be fetched after the balances were fetched
             // because otherwise we might not have some tokens' info to display the operations
-            processInBatches(allAccountPkhs, CHUNK_SIZE, pkh =>
-              getTokensTransfersPayload(pkh, network)
-            ).then(tokenTransfers => {
-              dispatch(
-                tokensActions.addTokens({
-                  network,
-                  tokens: tokenTransfers.flatMap(x => x.transfers).map(b => b.token),
-                })
-              );
-              dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
-            });
+            Promise.all(allAccountPkhs.map(pkh => getTokensTransfersPayload(pkh, network))).then(
+              tokenTransfers => {
+                const tokens = [
+                  ...tokenBalances.flat(),
+                  ...tokenTransfers.flatMap(x => x.transfers),
+                ].map(b => b.token);
+                dispatch(tokensActions.addTokens({ network, tokens }));
+
+                dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
+                dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
+              }
+            );
           }
         );
 
-        const tezTransfers = processInBatches(allAccountPkhs, CHUNK_SIZE, pkh =>
-          getTezTransfersPayload(pkh, network)
+        const tezTransfers = Promise.all(
+          allAccountPkhs.map(pkh => getTezTransfersPayload(pkh, network))
         ).then(tezTransfers => {
           dispatch(assetsActions.updateTezTransfers(tezTransfers));
         });
 
-        const delegations = processInBatches(allAccountPkhs, CHUNK_SIZE, pkh =>
-          getDelegationsPayload(pkh, network)
+        const delegations = Promise.all(
+          allAccountPkhs.map(pkh => getDelegationsPayload(pkh, network))
         ).then(delegations => {
           dispatch(assetsActions.updateDelegations(compact(delegations)));
         });

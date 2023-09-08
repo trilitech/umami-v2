@@ -3098,6 +3098,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chriscdn/promise-semaphore@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@chriscdn/promise-semaphore@npm:2.0.1"
+  checksum: bde01d0adf2a6542d5c1b65547cf6deffb67e96e66905359b09ccb1a232220bc6a8e39dfb5e9481c34a00b7107890a095532940e068f9c718875dbe3cfd7e47f
+  languageName: node
+  linkType: hard
+
 "@colors/colors@npm:1.5.0":
   version: 1.5.0
   resolution: "@colors/colors@npm:1.5.0"
@@ -23686,6 +23693,7 @@ __metadata:
     "@chakra-ui/cli": ^2.4.1
     "@chakra-ui/icons": ^2.1.0
     "@chakra-ui/react": ^2.8.0
+    "@chriscdn/promise-semaphore": ^2.0.1
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
     "@graphql-codegen/cli": 3.3.1

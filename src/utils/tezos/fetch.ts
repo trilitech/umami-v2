@@ -14,70 +14,84 @@ import { coinCapResponseType } from "./types";
 import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { Network } from "../../types/Network";
+import Semaphore from "@chriscdn/promise-semaphore";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
 // for now we need only the balance, but we can extend it later
 export type TzktAccount = { address: string; balance: number };
 
-export const getAccounts = async (pkhs: string[], network: Network): Promise<TzktAccount[]> => {
-  const response = await axios.get<TzktAccount[]>(
-    `${network.tzktApiUrl}/v1/accounts?address.in=${pkhs.join(",")}&select=address,balance`
-  );
-  return response.data;
-};
+const tzktRateLimiter = new Semaphore(10);
+
+const withRateLimit = <T>(fn: () => Promise<T>) =>
+  tzktRateLimiter
+    .acquire()
+    .then(fn)
+    .finally(() => tzktRateLimiter.release());
+
+export const getAccounts = async (pkhs: string[], network: Network): Promise<TzktAccount[]> =>
+  withRateLimit(async () => {
+    const response = await axios.get<TzktAccount[]>(
+      `${network.tzktApiUrl}/v1/accounts?address.in=${pkhs.join(",")}&select=address,balance`
+    );
+    return response.data;
+  });
 
 export const getTokenBalances = async (
   pkhs: string[],
   network: Network
-): Promise<RawTokenBalance[]> => {
-  const response = await axios.get<RawTokenBalance[]>(
-    `${network.tzktApiUrl}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
-  );
-  return response.data;
-};
+): Promise<RawTokenBalance[]> =>
+  withRateLimit(async () => {
+    const response = await axios.get<RawTokenBalance[]>(
+      `${network.tzktApiUrl}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
+    );
+    return response.data;
+  });
 
-export const getTezTransfers = (address: string, network: Network): Promise<TezTransfer[]> => {
-  return operationsGetTransactions(
-    {
-      anyof: { fields: ["sender", "target"], eq: address },
-      sort: { desc: "level" },
-      limit: 10,
-    },
-    {
-      baseUrl: network.tzktApiUrl,
-    }
-  );
-};
+export const getTezTransfers = (address: string, network: Network): Promise<TezTransfer[]> =>
+  withRateLimit(async () => {
+    return operationsGetTransactions(
+      {
+        anyof: { fields: ["sender", "target"], eq: address },
+        sort: { desc: "level" },
+        limit: 10,
+      },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    );
+  });
 
-export const getTokenTransfers = (address: string, network: Network): Promise<TokenTransfer[]> => {
-  return tokensGetTokenTransfers(
-    {
-      anyof: { fields: ["from", "to"], eq: address },
-      sort: { desc: "level" },
-      limit: 10,
-    },
-    {
-      baseUrl: network.tzktApiUrl,
-    }
-  );
-};
+export const getTokenTransfers = (address: string, network: Network): Promise<TokenTransfer[]> =>
+  withRateLimit(async () => {
+    return tokensGetTokenTransfers(
+      {
+        anyof: { fields: ["from", "to"], eq: address },
+        sort: { desc: "level" },
+        limit: 10,
+      },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    );
+  });
 
 export const getLastDelegation = async (
   address: string,
   network: Network
-): Promise<DelegationOperation | undefined> => {
-  return operationsGetDelegations(
-    {
-      sender: { eq: address },
-      sort: { desc: "level" },
-      limit: 1,
-    },
-    {
-      baseUrl: network.tzktApiUrl,
-    }
-  ).then(d => d[0]);
-};
+): Promise<DelegationOperation | undefined> =>
+  withRateLimit(async () => {
+    return operationsGetDelegations(
+      {
+        sender: { eq: address },
+        sort: { desc: "level" },
+        limit: 1,
+      },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    ).then(d => d[0]);
+  });
 
 // Fetch the tezos price in usd from the CoinCap API.
 // The CoinCap API documentation: https://docs.coincap.io
@@ -91,22 +105,24 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
   return priceUsd ?? null;
 };
 
-export const getLatestBlockLevel = async (network: Network): Promise<number> => {
-  return await blocksGetCount({
-    baseUrl: network.tzktApiUrl,
-  });
-};
-
-export const getBakers = async (network: Network): Promise<Delegate[]> => {
-  return delegatesGet(
-    {
-      sort: { desc: "stakingBalance" },
-      active: { eq: true },
-      limit: 10000,
-      select: { fields: ["address,alias,stakingBalance"] },
-    },
-    {
+export const getLatestBlockLevel = async (network: Network): Promise<number> =>
+  withRateLimit(async () => {
+    return await blocksGetCount({
       baseUrl: network.tzktApiUrl,
-    }
-  );
-};
+    });
+  });
+
+export const getBakers = async (network: Network): Promise<Delegate[]> =>
+  withRateLimit(async () => {
+    return delegatesGet(
+      {
+        sort: { desc: "stakingBalance" },
+        active: { eq: true },
+        limit: 10000,
+        select: { fields: ["address,alias,stakingBalance"] },
+      },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    );
+  });

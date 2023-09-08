@@ -46,6 +46,7 @@
     "@chakra-ui/cli": "^2.4.1",
     "@chakra-ui/icons": "^2.1.0",
     "@chakra-ui/react": "^2.8.0",
+    "@chriscdn/promise-semaphore": "^2.0.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@graphql-codegen/cli": "3.3.1",
