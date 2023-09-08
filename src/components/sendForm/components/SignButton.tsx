@@ -90,7 +90,7 @@ const SignButton: React.FC<{
       {signer.type === AccountType.MNEMONIC && (
         <FormProvider {...form}>
           <FormControl isInvalid={!!errors.password} my={4}>
-            <PasswordInput inputName="password" />
+            <PasswordInput inputName="password" data-testid="password" />
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
           </FormControl>
           <Button

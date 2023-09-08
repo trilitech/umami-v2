@@ -12,7 +12,7 @@ export const selectSender = (accountLabel: string) => {
 };
 
 export const fillPassword = (value: string) => {
-  const passwordInput = screen.getByLabelText(/password/i);
+  const passwordInput = screen.getByTestId("password");
   fireEvent.change(passwordInput, { target: { value } });
 };
 

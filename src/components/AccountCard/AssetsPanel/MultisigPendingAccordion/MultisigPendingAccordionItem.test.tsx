@@ -31,7 +31,7 @@ beforeEach(() => {
   jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
 });
 
-describe("<MultisigPendingCard/>", () => {
+describe("<MultisigPendingAccordionItem/>", () => {
   it("displays the correct number of pending approvals", () => {
     const pkh0 = mockImplicitAddress(0);
     const account = { ...mockMultisigAccount(0), threshold: 3 };
