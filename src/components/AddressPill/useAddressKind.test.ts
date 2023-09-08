@@ -29,7 +29,7 @@ describe("useAddressKind", () => {
       wrapper: ReduxStore,
     });
     expect(addressKindRef.current).toEqual({
-      type: "ownedImplicit",
+      type: "implicit",
       pkh: implicitAccount0.address.pkh,
       label: "Account 0",
     });
@@ -41,7 +41,7 @@ describe("useAddressKind", () => {
       wrapper: ReduxStore,
     });
     expect(addressKindRef.current).toEqual({
-      type: "ownedMultisig",
+      type: "multisig",
       pkh: multisigs[0].address.pkh,
       label: "Multisig Account 0",
     });
@@ -127,8 +127,8 @@ describe("useAddressKind", () => {
     });
 
     [
-      { type: "ownedImplicit", address: mockImplicitAccount(0).address.pkh },
-      { type: "ownedMultisig", address: multisigs[0].address.pkh },
+      { type: "implicit", address: mockImplicitAccount(0).address.pkh },
+      { type: "multisig", address: multisigs[0].address.pkh },
       {
         type: "fa1.2",
         address: hedgehoge(mockImplicitAddress(0)).token.contract.address as string,
@@ -136,7 +136,7 @@ describe("useAddressKind", () => {
       { type: "fa2", address: uUSD(mockImplicitAddress(0)).token.contract.address as string },
       { type: "baker", address: mockBaker(1).address },
     ].forEach(({ type, address }) => {
-      it(`prioritises ${type} over the contact`, () => {
+      it(`prioritizes ${type} over the contact`, () => {
         store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
         store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
         store.dispatch(

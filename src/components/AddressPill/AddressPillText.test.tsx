@@ -25,7 +25,7 @@ describe("<AddressPillText />", () => {
     render(
       <AddressPillText
         addressKind={{
-          type: "ownedImplicit",
+          type: "implicit",
           pkh: mockImplicitAddress(0).pkh,
           label: "Some label",
         }}

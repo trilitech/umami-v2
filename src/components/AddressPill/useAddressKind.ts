@@ -1,19 +1,13 @@
 import { Address } from "../../types/Address";
-import { useGetContactName } from "../../utils/hooks/contactsHooks";
-import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
-import { AccountType } from "../../types/Account";
-import { useGetBaker } from "../../utils/hooks/assetsHooks";
-import {
-  AddressKind,
-  BakerAddress,
-  ContactAddress,
-  FA12Address,
-  FA2Address,
-  OwnedImplicitAccountAddress,
-  OwnedMultisigAccountAddress,
-} from "./types";
+import { AddressKind, FA12Address, FA2Address, OwnedImplicitAddress } from "./types";
 import { useGetTokenType } from "../../utils/hooks/tokensHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { OwnedMultisigAddress } from "../AddressTile/types";
+import {
+  useBakerAddressKind,
+  useContactAddressKind,
+  useOwnedAccountAddressKind as useAddressTileOwnedAccountAddressKind,
+} from "../AddressTile/useAddressKind";
 
 const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
@@ -31,30 +25,20 @@ const useAddressKind = (address: Address): AddressKind => {
 
 export default useAddressKind;
 
-const useOwnedAccountAddressKind = ({
-  pkh,
-}: Address): OwnedImplicitAccountAddress | OwnedMultisigAccountAddress | null => {
-  const getOwnedAccount = useGetOwnedAccountSafe();
-  const account = getOwnedAccount(pkh);
-  if (!account) {
+const useOwnedAccountAddressKind = (
+  address: Address
+): OwnedImplicitAddress | OwnedMultisigAddress | null => {
+  const addressTileAddressKind = useAddressTileOwnedAccountAddressKind(address);
+  if (!addressTileAddressKind) {
     return null;
   }
-  switch (account.type) {
-    case AccountType.MULTISIG:
-      return {
-        pkh,
-        type: "ownedMultisig",
-        label: account.label,
-      };
-    case AccountType.SOCIAL:
-    case AccountType.LEDGER:
-    case AccountType.MNEMONIC:
-      return {
-        pkh,
-        type: "ownedImplicit",
-        label: account.label,
-      };
-  }
+  const { pkh, label } = addressTileAddressKind;
+
+  return {
+    type: addressTileAddressKind.type === "multisig" ? "multisig" : "implicit",
+    pkh,
+    label,
+  };
 };
 
 const useTokenAddressKind = ({ pkh }: Address): FA12Address | FA2Address | null => {
@@ -79,30 +63,4 @@ const useTokenAddressKind = ({ pkh }: Address): FA12Address | FA2Address | null 
         label: null,
       };
   }
-};
-
-const useBakerAddressKind = ({ pkh }: Address): BakerAddress | null => {
-  const getBaker = useGetBaker();
-  const baker = getBaker(pkh);
-  if (!baker) {
-    return null;
-  }
-  return {
-    pkh,
-    type: "baker",
-    label: baker.name,
-  };
-};
-
-const useContactAddressKind = ({ pkh }: Address): ContactAddress | null => {
-  const getContactName = useGetContactName();
-  const contactName = getContactName(pkh);
-  if (!contactName) {
-    return null;
-  }
-  return {
-    pkh,
-    type: "contact",
-    label: contactName,
-  };
 };

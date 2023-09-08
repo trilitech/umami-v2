@@ -18,7 +18,7 @@ const useAddressKind = (address: Address): AddressKind => {
 
 export default useAddressKind;
 
-const useOwnedAccountAddressKind = ({ pkh }: Address): OwnedAddreess | null => {
+export const useOwnedAccountAddressKind = ({ pkh }: Address): OwnedAddreess | null => {
   const getOwnedAccount = useGetOwnedAccountSafe();
   const account = getOwnedAccount(pkh);
   if (!account) {
@@ -45,7 +45,7 @@ export const useBakerAddressKind = ({ pkh }: Address): BakerAddress | null => {
   };
 };
 
-const useContactAddressKind = ({ pkh }: Address): ContactAddress | null => {
+export const useContactAddressKind = ({ pkh }: Address): ContactAddress | null => {
   const getContactName = useGetContactName();
   const contactName = getContactName(pkh);
   if (!contactName) {
