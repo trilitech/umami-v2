@@ -1,11 +1,11 @@
-import { Flex, FormControl, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
-import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import SignPageFee from "../SignPageFee";
+import AddressTile from "../../AddressTile/AddressTile";
 
 const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
@@ -17,17 +17,10 @@ const SignPage: React.FC<SignPageProps> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            {/* TODO: Make AccountAutoComplete display the address and balance*/}
-            <FormControl my={3}>
-              <OwnedAccountsAutocomplete
-                inputName="sender"
-                label="From"
-                allowUnknown={false}
-                isDisabled
-              />
-            </FormControl>
+            <FormLabel>From</FormLabel>
+            <AddressTile address={signer.address} />
 
-            <Flex my={2} alignItems="center" justifyContent="end" px={1}>
+            <Flex mt="12px" alignItems="center" justifyContent="end" px={1}>
               <SignPageFee fee={fee} />
             </Flex>
 

@@ -44,9 +44,11 @@ export type FormValues = {
 
 export type FATokenBalance = FA12TokenBalance | FA2TokenBalance;
 
+export type FATransfer = FA12Transfer | FA2Transfer;
+
 const toOperation =
   (token: FATokenBalance) =>
-  (formValues: FormValues): FA12Transfer | FA2Transfer => {
+  (formValues: FormValues): FATransfer => {
     const fa2Operation: FA2Transfer = {
       type: "fa2",
       sender: parsePkh(formValues.sender),

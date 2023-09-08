@@ -25,6 +25,8 @@ import { BigNumber } from "bignumber.js";
 import { parseRawMichelson } from "../../../multisig/decode/decodeLambda";
 import { capitalize } from "lodash";
 import SignPageFee from "../SignPageFee";
+import AddressTile from "../../AddressTile/AddressTile";
+import { HeaderWrapper } from "../FormPageHeader";
 
 export const SignPage: React.FC<{
   type: ApproveOrExecute;
@@ -53,9 +55,16 @@ export const SignPage: React.FC<{
   return (
     <ModalContent>
       <ModalCloseButton />
-      <ModalHeader textAlign="center">{`${capitalize(actionType)} transaction`}</ModalHeader>
+
+      <HeaderWrapper>
+        <ModalHeader textAlign="center">{`${capitalize(actionType)} transaction`}</ModalHeader>
+        <Text textAlign="center" size="sm" color={colors.gray[400]}>
+          Enter your password to confirm this transaction.
+        </Text>
+      </HeaderWrapper>
+
       <ModalBody>
-        {/* TODO: Use account small tile*/}
+        <AddressTile address={signer.address} />
         <Flex my="12px" px="4px" alignItems="center" justifyContent="space-between">
           <Flex>
             <Text size="sm" mr={1} color={colors.gray[450]}>
