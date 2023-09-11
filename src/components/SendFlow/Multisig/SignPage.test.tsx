@@ -3,17 +3,25 @@ import { render, screen } from "../../../mocks/testUtils";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
 import { TEZ } from "../../../utils/tezos";
-import { multisigOperation } from "../../../mocks/multisig";
+import { makeAccountOperations } from "../../sendForm/types";
+import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
 
-const fixture = () => (
-  <SignPage
-    type="approve"
-    fee={new BigNumber(1234567)}
-    signer={mockImplicitAccount(0)}
-    sender={mockMultisigAccount(0)}
-    operation={multisigOperation}
-  />
-);
+const fixture = () => {
+  const account = mockImplicitAccount(0);
+  const multisig = mockMultisigAccount(1);
+  const operation = makeAccountOperations(account, account, [
+    makeMultisigApproveOrExecuteOperation(multisig.address, "execute", "3"),
+  ]);
+  return (
+    <SignPage
+      actionType="approve"
+      fee={new BigNumber(1234567)}
+      signer={account}
+      operation={operation}
+      transactionCount={1}
+    />
+  );
+};
 
 describe("<SignPage />", () => {
   describe("fee", () => {

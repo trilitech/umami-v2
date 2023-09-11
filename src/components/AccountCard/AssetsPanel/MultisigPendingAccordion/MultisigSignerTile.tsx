@@ -13,6 +13,7 @@ import { DynamicModalContext } from "../../../DynamicModal";
 import SignPage from "../../../SendFlow/Multisig/SignPage";
 import { MultisigSignerTileDisplay } from "./MultisigSignerTileDisplay";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
+import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 
 const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;
@@ -47,18 +48,20 @@ const MultisigSignerTile: React.FC<{
 
       const actionType = operationIsExecutable ? "execute" : "approve";
 
-      const executeOrApprove = makeAccountOperations(signer, signer, [
+      const approveOrExecute = makeAccountOperations(signer, signer, [
         makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
       ]);
-      const fee = await estimate(executeOrApprove, network);
+      const fee = await estimate(approveOrExecute, network);
+
+      const transactionCount = parseRawMichelson(operation.rawActions, sender).length;
 
       openWith(
         <SignPage
           fee={fee}
-          type={actionType}
+          actionType={actionType}
           signer={signer}
-          sender={sender}
-          operation={operation}
+          operation={approveOrExecute}
+          transactionCount={transactionCount}
         />
       );
     });
