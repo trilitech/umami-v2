@@ -30,6 +30,7 @@ import getErrorContext from "./getErrorContext";
 import { useSelectedNetwork } from "./hooks/networkHooks";
 import { AppDispatch } from "./redux/store";
 import { RawPkh } from "../types/Address";
+import { useToast } from "@chakra-ui/react";
 
 const getTezTransfersPayload = async (
   pkh: string,
@@ -68,69 +69,84 @@ const MAX_ADDRESSES_PER_REQUEST = 40;
 // Each bigmap id takes up 6 chars.
 const MAX_BIGMAP_PER_REQUEST = 300;
 
+const updatePendingOperations = async (
+  dispatch: AppDispatch,
+  multisigs: any[],
+  network: Network
+) => {
+  const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
+  const pendingOperations = await Promise.all(
+    multisigChunks.map(multisigs => getPendingOperationsForMultisigs(multisigs, network))
+  );
+  dispatch(multisigActions.setPendingOperations(pendingOperations.flat()));
+};
+
+const updateTezBalances = async (dispatch: AppDispatch, network: Network, addresses: RawPkh[]) => {
+  const addressChunks = chunk(addresses, MAX_ADDRESSES_PER_REQUEST);
+  const accountInfos = await Promise.all(
+    addressChunks.map(addresses => getAccounts(addresses, network))
+  );
+  dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
+};
+
+const updateTezTransfers = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
+  const tezTransfers = await Promise.all(pkhs.map(pkh => getTezTransfersPayload(pkh, network)));
+  dispatch(assetsActions.updateTezTransfers(tezTransfers));
+};
+
+const updateDelegations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
+  const delegations = await Promise.all(pkhs.map(pkh => getDelegationsPayload(pkh, network)));
+  dispatch(assetsActions.updateDelegations(compact(delegations)));
+};
+
+const updateTokenTransfers = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
+  const addressChunks = chunk(pkhs, MAX_ADDRESSES_PER_REQUEST);
+
+  // token transfers have to be fetched after the balances were fetched
+  // because otherwise we might not have some tokens' info to display the operations
+  const tokenBalances = await Promise.all(
+    addressChunks.map(pkhs => getTokenBalances(pkhs, network))
+  );
+  const tokenTransfers = await Promise.all(
+    pkhs.map(pkh => getTokensTransfersPayload(pkh, network))
+  );
+  const tokens = [...tokenBalances.flat(), ...tokenTransfers.flatMap(x => x.transfers)].map(
+    b => b.token
+  );
+
+  dispatch(tokensActions.addTokens({ network, tokens }));
+  dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
+  dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
+};
+
 const updateAccountAssets = async (
   dispatch: AppDispatch,
   network: Network,
-  implicitAccountPkhs: RawPkh[]
+  implicitAccountAddresses: RawPkh[]
 ) => {
   try {
     dispatch(assetsActions.setIsLoading(true));
-    const multisigs = await getRelevantMultisigContracts(new Set(implicitAccountPkhs), network);
+    const multisigs = await getRelevantMultisigContracts(
+      new Set(implicitAccountAddresses),
+      network
+    );
     dispatch(multisigActions.setMultisigs(multisigs));
 
-    const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
-    const pendingOperations = Promise.all(
-      multisigChunks.map(multisigs => getPendingOperationsForMultisigs(multisigs, network))
-    ).then(pendingOperations => {
-      dispatch(multisigActions.setPendingOperations(pendingOperations.flat()));
-    });
+    const allAccountAddresses = [
+      ...implicitAccountAddresses,
+      ...multisigs.map(acc => acc.address.pkh),
+    ];
 
-    const allAccountPkhs = [...implicitAccountPkhs, ...multisigs.map(acc => acc.address.pkh)];
-    const pkhChunks = chunk(allAccountPkhs, MAX_ADDRESSES_PER_REQUEST);
-    const tezBalances = Promise.all(pkhChunks.map(pkhs => getAccounts(pkhs, network))).then(
-      accountInfos => {
-        dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
-      }
-    );
-
-    const tezTransfers = Promise.all(
-      allAccountPkhs.map(pkh => getTezTransfersPayload(pkh, network))
-    ).then(tezTransfers => {
-      dispatch(assetsActions.updateTezTransfers(tezTransfers));
-    });
-
-    const delegations = Promise.all(
-      allAccountPkhs.map(pkh => getDelegationsPayload(pkh, network))
-    ).then(delegations => {
-      dispatch(assetsActions.updateDelegations(compact(delegations)));
-    });
-
-    // token transfers have to be fetched after the balances were fetched
-    // because otherwise we might not have some tokens' info to display the operations
-    const tokenBalances = await Promise.all(pkhChunks.map(pkhs => getTokenBalances(pkhs, network)));
-    const tokenTransfers = Promise.all(
-      allAccountPkhs.map(pkh => getTokensTransfersPayload(pkh, network))
-    ).then(tokenTransfers => {
-      const tokens = [...tokenBalances.flat(), ...tokenTransfers.flatMap(x => x.transfers)].map(
-        b => b.token
-      );
-      dispatch(tokensActions.addTokens({ network, tokens }));
-
-      dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
-      dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
-    });
+    // all these requests should happen only after we fetched the multisigs
+    // otherwise, we might miss multisig operations until after the next fetch happens
     await Promise.all([
-      pendingOperations,
-      tezBalances,
-      tokenTransfers,
-      tezTransfers,
-      delegations,
-    ]).then(() => {
-      dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
-    });
-  } catch (error: any) {
-    console.warn(error);
-    dispatch(errorsSlice.actions.add(getErrorContext(error)));
+      updatePendingOperations(dispatch, multisigs, network),
+      updateTezBalances(dispatch, network, allAccountAddresses),
+      updateTezTransfers(dispatch, network, allAccountAddresses),
+      updateDelegations(dispatch, network, allAccountAddresses),
+      updateTokenTransfers(dispatch, network, allAccountAddresses),
+    ]);
+    dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
   } finally {
     dispatch(assetsActions.setIsLoading(false));
   }
@@ -162,11 +178,21 @@ export const useAssetsPolling = () => {
   const refetchTrigger = useRefetchTrigger();
   const network = useSelectedNetwork();
   const queryClient = useQueryClient();
+  const toast = useToast();
 
-  const implicitAccountPkhs = implicitAccounts.map(account => account.address.pkh);
+  const implicitAddresses = implicitAccounts.map(account => account.address.pkh);
 
   const accountAssetsQuery = useQuery("allAssets", {
-    queryFn: () => updateAccountAssets(dispatch, network, implicitAccountPkhs),
+    queryFn: () => updateAccountAssets(dispatch, network, implicitAddresses),
+    onError: (error: any) => {
+      dispatch(errorsSlice.actions.add(getErrorContext(error)));
+      toast({
+        title: "Data fetching error",
+        description: error.message,
+        status: "error",
+        isClosable: true,
+      });
+    },
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
