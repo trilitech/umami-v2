@@ -15,6 +15,7 @@ import { TezTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { Network } from "../../types/Network";
 import Semaphore from "@chriscdn/promise-semaphore";
+import promiseRetry from "promise-retry";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
@@ -26,7 +27,7 @@ const tzktRateLimiter = new Semaphore(10);
 export const withRateLimit = <T>(fn: () => Promise<T>) =>
   tzktRateLimiter
     .acquire()
-    .then(fn)
+    .then(() => promiseRetry(fn, { retries: 3, minTimeout: 100 }))
     .finally(() => tzktRateLimiter.release());
 
 export const getAccounts = async (pkhs: string[], network: Network): Promise<TzktAccount[]> =>

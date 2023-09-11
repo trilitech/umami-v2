@@ -10,6 +10,7 @@ jest.unmock("./tezos");
 jest.mock("@tzkt/sdk-api", () => {
   return {
     delegatesGet: jest.fn(),
+    blocksGetCount: jest.fn(),
   };
 });
 

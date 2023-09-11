@@ -31,6 +31,7 @@ import { useSelectedNetwork } from "./hooks/networkHooks";
 import { AppDispatch } from "./redux/store";
 import { RawPkh } from "../types/Address";
 import { useToast } from "@chakra-ui/react";
+import { Multisig } from "./multisig/types";
 
 const getTezTransfersPayload = async (
   pkh: string,
@@ -45,6 +46,7 @@ const getTokensTransfersPayload = async (
   network: Network
 ): Promise<TokenTransfersPayload> => {
   const transfers = await getTokenTransfers(pkh, network);
+
   // there are no token transfers without a token & amount assigned
   return { pkh, transfers: transfers as TokenTransfer[] };
 };
@@ -71,8 +73,8 @@ const MAX_BIGMAP_PER_REQUEST = 300;
 
 const updatePendingOperations = async (
   dispatch: AppDispatch,
-  multisigs: any[],
-  network: Network
+  network: Network,
+  multisigs: Multisig[]
 ) => {
   const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
   const pendingOperations = await Promise.all(
@@ -140,7 +142,7 @@ const updateAccountAssets = async (
     // all these requests should happen only after we fetched the multisigs
     // otherwise, we might miss multisig operations until after the next fetch happens
     await Promise.all([
-      updatePendingOperations(dispatch, multisigs, network),
+      updatePendingOperations(dispatch, network, multisigs),
       updateTezBalances(dispatch, network, allAccountAddresses),
       updateTezTransfers(dispatch, network, allAccountAddresses),
       updateDelegations(dispatch, network, allAccountAddresses),
@@ -193,6 +195,7 @@ export const useAssetsPolling = () => {
         isClosable: true,
       });
     },
+    retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
@@ -207,6 +210,7 @@ export const useAssetsPolling = () => {
 
   const blockNumberQuery = useQuery("blockNumber", {
     queryFn: () => updateBlockLevel(dispatch, network),
+    retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
@@ -214,6 +218,7 @@ export const useAssetsPolling = () => {
 
   const bakersQuery = useQuery("bakers", {
     queryFn: () => updateBakers(dispatch, network),
+    retry: false, // retries are handled by the underlying functions
     refetchInterval: BAKERS_REFRESH_RATE,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,

@@ -4,6 +4,7 @@ import { getAllMultiSigContracts } from "./fetch";
 import { GHOSTNET } from "../../types/Network";
 
 jest.mock("axios");
+jest.unmock("../tezos");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
