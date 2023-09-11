@@ -1,7 +1,9 @@
 import {
+  Box,
+  Center,
   Flex,
-  FormControl,
   FormLabel,
+  Heading,
   ModalBody,
   ModalContent,
   ModalFooter,
@@ -9,19 +11,20 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { useSignPageHelpers, SignPageProps } from "../utils";
 import { FormValues } from "./FormPage";
 import SignPageFee from "../SignPageFee";
+import AddressTile from "../../AddressTile/AddressTile";
+import { parsePkh } from "../../../types/Address";
 
 const SignPage: React.FC<SignPageProps<FormValues>> = props => {
   const {
     mode,
     operations: initialOperations,
     fee: initialFee,
-    data: { threshold, signers, name },
+    data: { threshold, signers, name, sender },
   } = props;
 
   const { fee, operations, estimationFailed, isLoading, form, signer, onSign } = useSignPageHelpers(
@@ -47,34 +50,37 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
             >
               {name}
             </Text>
-            <FormControl mb="6px">
-              {/* TODO: Until we separate the AccountTile from the AddressAutocomplete we use a disabled input */}
-              <OwnedAccountsAutocomplete
-                inputName="sender"
-                label="Owner"
-                allowUnknown={false}
-                isDisabled
-              />
-            </FormControl>
 
-            <Flex justifyContent="flex-end" mb="24px">
-              <SignPageFee fee={fee} />
+            <Box mb="24px">
+              <FormLabel>Owner</FormLabel>
+              <AddressTile mb="12px" address={parsePkh(sender)} />
+              <Flex justifyContent="flex-end">
+                <SignPageFee fee={fee} />
+              </Flex>
+            </Box>
+
+            <FormLabel>Approvers</FormLabel>
+            {signers.map(signer => {
+              return (
+                <AddressTile
+                  key={signer.val}
+                  mb="12px"
+                  address={parsePkh(signer.val)}
+                  data-testid={`approver-${signer.val}`}
+                />
+              );
+            })}
+
+            <Flex mt="24px" mb="24px" alignItems="center">
+              <Heading size="md" mr="12px">
+                Min No. of approvals:
+              </Heading>
+              <Center w="100px" h="48px" bg={colors.gray[800]} borderRadius="4px">
+                <Text textAlign="center" data-testid="threshold">
+                  {threshold} out of {signers.length}
+                </Text>
+              </Center>
             </Flex>
-            {/* TODO: add the Approvers list here when account tiles are ready */}
-            <FormLabel>
-              Min No. of approvals:
-              <Text
-                bg={colors.gray[800]}
-                display="inline"
-                p="15px"
-                ml="16px"
-                borderRadius="6px"
-                color={colors.gray[300]}
-                data-testid="threshold"
-              >
-                {threshold} out of {signers.length}
-              </Text>
-            </FormLabel>
           </ModalBody>
           <ModalFooter>
             <SignButton

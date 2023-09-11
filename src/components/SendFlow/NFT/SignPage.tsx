@@ -1,7 +1,7 @@
 import {
   Center,
   Flex,
-  FormControl,
+  FormLabel,
   Heading,
   ModalBody,
   ModalContent,
@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
@@ -19,6 +18,7 @@ import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
 import { FA2Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import SignPageFee from "../SignPageFee";
+import AddressTile from "../../AddressTile/AddressTile";
 
 const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {
@@ -30,19 +30,21 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
 
+  const { recipient } = operations.operations[0] as FA2Transfer;
+
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            <Flex my={3}>
+            <Flex mb="12px">
               <SendNFTRecapTile nft={nft} />
             </Flex>
 
-            <Flex my={3} alignItems="center" justifyContent="space-between" px={1}>
+            <Flex my="12px" px="4px" alignItems="center" justifyContent="space-between">
               <Flex alignItems="center">
-                <Heading size="sm" mr={1} color={colors.gray[450]}>
+                <Heading size="sm" mr="4px" color={colors.gray[450]}>
                   Owned:
                 </Heading>
                 <Text size="sm" data-testid="nft-owned" color={colors.gray[400]}>
@@ -52,28 +54,22 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
 
               <SignPageFee fee={fee} />
             </Flex>
-            <Flex my={4} alignItems="center">
-              <Heading size="md" mr={3}>
+
+            <Flex mt="12px" mb="24px" alignItems="center">
+              <Heading size="md" mr="12px">
                 Quantity:
               </Heading>
-              <Center w="100px" h="48px" bg={colors.gray[800]}>
+              <Center w="100px" h="48px" bg={colors.gray[800]} borderRadius="4px">
                 <Text textAlign="center">
                   {(operations.operations[0] as FA2Transfer).amount} out of {nft.balance}
                 </Text>
               </Center>
             </Flex>
 
-            {/* TODO: Add sender address tile */}
-            <FormControl my={3}>
-              <OwnedAccountsAutocomplete
-                inputName="sender"
-                label="From"
-                allowUnknown={false}
-                isDisabled
-              />
-            </FormControl>
-
-            {/* TODO: Add recipient address tile */}
+            <FormLabel>From</FormLabel>
+            <AddressTile mb="24px" address={operations.sender.address} />
+            <FormLabel>To</FormLabel>
+            <AddressTile address={recipient} />
 
             <OperationSignerSelector
               sender={operations.sender}

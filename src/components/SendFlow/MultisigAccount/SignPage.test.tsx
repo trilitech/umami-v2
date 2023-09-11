@@ -54,4 +54,11 @@ describe("<SignPage />", () => {
     render(fixture(props));
     expect(screen.getByTestId("contract-name")).toHaveTextContent("Contract name");
   });
+
+  it("displays the approvers", () => {
+    render(fixture(props));
+    props.data.signers.forEach(signer => {
+      expect(screen.getByTestId(`approver-${signer.val}`)).toBeInTheDocument();
+    });
+  });
 });

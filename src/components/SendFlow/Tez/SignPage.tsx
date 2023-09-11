@@ -35,9 +35,7 @@ const SignPage: React.FC<SignPageProps> = props => {
             <AddressTile address={parsePkh(sender)} />
 
             <FormLabel mt="24px">To </FormLabel>
-            <AddressTile mb="24px" address={recipient} />
-
-            {/* TODO: Add recipient address tile */}
+            <AddressTile address={recipient} />
 
             <OperationSignerSelector
               sender={operations.sender}

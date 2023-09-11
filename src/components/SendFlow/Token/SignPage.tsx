@@ -1,6 +1,5 @@
 import {
   Flex,
-  FormControl,
   FormLabel,
   Input,
   InputGroup,
@@ -11,15 +10,14 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
-import { FATokenBalance } from "./FormPage";
+import { FATokenBalance, FATransfer } from "./FormPage";
 import { formatTokenAmount, tokenSymbolSafe } from "../../../types/Token";
-import { FA12Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import SignPageFee from "../SignPageFee";
+import AddressTile from "../../AddressTile/AddressTile";
 
 const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const {
@@ -31,7 +29,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
 
-  const amount = (operations.operations[0] as FA12Transfer).amount;
+  const { amount, recipient } = operations.operations[0] as FATransfer;
 
   return (
     <FormProvider {...form}>
@@ -50,28 +48,21 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
                 disabled={true}
                 value={formatTokenAmount(amount, token.metadata?.decimals)}
               />
-              <InputRightElement pr={3} data-testid="token-symbol">
+              <InputRightElement pr="12px" data-testid="token-symbol">
                 {tokenSymbolSafe(token)}
               </InputRightElement>
             </InputGroup>
 
-            <Flex my={3} alignItems="center" justifyContent="end" px={1}>
+            <Flex mt="12px" mb="24px" alignItems="center" justifyContent="end" px="4px">
               <Flex>
                 <SignPageFee fee={fee} />
               </Flex>
             </Flex>
 
-            {/* TODO: Add sender address tile */}
-            <FormControl my={3}>
-              <OwnedAccountsAutocomplete
-                inputName="sender"
-                label="From"
-                allowUnknown={false}
-                isDisabled
-              />
-            </FormControl>
-
-            {/* TODO: Add recipient address tile */}
+            <FormLabel>From</FormLabel>
+            <AddressTile mb="24px" address={operations.sender.address} />
+            <FormLabel>To</FormLabel>
+            <AddressTile address={recipient} />
 
             <OperationSignerSelector
               sender={operations.sender}
