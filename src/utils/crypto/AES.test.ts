@@ -4,6 +4,8 @@ import { decrypt, encrypt } from "./AES";
 
 const password = "password";
 
+const DECRYPTION_ERROR_MESSAGE = "Error decrypting data: Invalid password";
+
 describe("AES", () => {
   it("encryption and decryption works", async () => {
     const encrypted = await encrypt(mnemonic1, password);
@@ -24,21 +26,21 @@ describe("AES", () => {
   it("V1 decryption fails with V2 encryption", async () => {
     const encrypted = await encrypt(mnemonic1, password);
 
-    await expect(decrypt(encrypted, password, "V1")).rejects.toThrowError("Error decrypting data");
+    await expect(decrypt(encrypted, password, "V1")).rejects.toThrowError(DECRYPTION_ERROR_MESSAGE);
   });
 
   it("decryption fails with cyclic password", async () => {
     // Used to work in V1. Now it fails.
     const encrypted = await encrypt(mnemonic1, "abc");
 
-    await expect(decrypt(encrypted, "abcabc")).rejects.toThrowError("Error decrypting data");
+    await expect(decrypt(encrypted, "abcabc")).rejects.toThrowError(DECRYPTION_ERROR_MESSAGE);
   });
 
   it("decryption fails with wrong password", async () => {
     const encrypted = await encrypt(mnemonic1, password);
 
     await expect(decrypt(encrypted, `wrong ${password}`)).rejects.toThrowError(
-      "Error decrypting data"
+      DECRYPTION_ERROR_MESSAGE
     );
   });
 });
