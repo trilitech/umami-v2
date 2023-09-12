@@ -3,7 +3,7 @@ import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
 import accountsSlice from "./accountsSlice";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
-import { TzktAccount } from "../../tezos";
+import { TzktAccount, TzktCombinedOperation } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
 import { Delegate } from "../../../types/Delegate";
 import { RawPkh } from "../../../types/Address";
@@ -18,6 +18,7 @@ type State = {
     tez: Record<string, TezTransfer[] | undefined>;
     tokens: Record<string, TokenTransfer[] | undefined>;
   };
+  latestOperations: TzktCombinedOperation[];
   delegations: Record<string, DelegationOperation | undefined>;
   bakers: Delegate[];
   conversionRate: number | null; // XTZ/USD conversion rate
@@ -50,6 +51,7 @@ const initialState: State = {
   },
   transfers: { tez: {}, tokens: {} },
   delegations: {},
+  latestOperations: [],
   bakers: [],
   conversionRate: null,
   refetchTrigger: 0,
@@ -135,6 +137,9 @@ const assetsSlice = createSlice({
     },
     setLastTimeUpdated: (state, { payload: lastTimeUpdated }: { payload: string }) => {
       state.lastTimeUpdated = lastTimeUpdated;
+    },
+    updateOperations: (state, { payload }: { payload: TzktCombinedOperation[] }) => {
+      state.latestOperations = payload;
     },
   },
 });

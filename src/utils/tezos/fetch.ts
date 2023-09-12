@@ -7,6 +7,9 @@ import {
   tokensGetTokenTransfers,
   delegatesGet,
   TokenTransfer,
+  operationsGetOriginations,
+  TransactionOperation,
+  OriginationOperation,
 } from "@tzkt/sdk-api";
 import axios from "axios";
 import { coincapUrl } from "./consts";
@@ -16,11 +19,13 @@ import { RawTokenBalance } from "../../types/TokenBalance";
 import { Network } from "../../types/Network";
 import Semaphore from "@chriscdn/promise-semaphore";
 import promiseRetry from "promise-retry";
+import { RawPkh } from "../../types/Address";
+import { sortBy } from "lodash";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
 // for now we need only the balance, but we can extend it later
-export type TzktAccount = { address: string; balance: number };
+export type TzktAccount = { address: RawPkh; balance: number };
 
 const tzktRateLimiter = new Semaphore(10);
 
@@ -49,7 +54,8 @@ export const getTokenBalances = async (
     return response.data;
   });
 
-export const getTezTransfers = (address: string, network: Network): Promise<TezTransfer[]> =>
+// TODO: remove it when transition to combined operations is done
+export const getTezTransfers = (address: RawPkh, network: Network): Promise<TezTransfer[]> =>
   withRateLimit(() =>
     operationsGetTransactions(
       {
@@ -63,7 +69,69 @@ export const getTezTransfers = (address: string, network: Network): Promise<TezT
     )
   );
 
-export const getTokenTransfers = (address: string, network: Network): Promise<TokenTransfer[]> =>
+export const getDelegations = async (
+  addresses: RawPkh[],
+  network: Network
+): Promise<DelegationOperation[]> =>
+  withRateLimit(() =>
+    operationsGetDelegations(
+      { sender: { in: [addresses.join(",")] }, sort: { desc: "id" }, limit: 100 },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    )
+  );
+
+export const getTransactions = async (
+  addresses: RawPkh[],
+  network: Network
+): Promise<DelegationOperation[]> =>
+  withRateLimit(() =>
+    operationsGetTransactions(
+      {
+        anyof: { fields: ["sender", "target"], in: [addresses.join(",")] },
+        sort: { desc: "id" },
+        limit: 100,
+      },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    )
+  );
+
+export const getOriginations = async (
+  addresses: RawPkh[],
+  network: Network
+): Promise<DelegationOperation[]> =>
+  withRateLimit(() =>
+    operationsGetOriginations(
+      { sender: { in: [addresses.join(",")] }, sort: { desc: "id" }, limit: 100 },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    )
+  );
+
+export type TzktCombinedOperation =
+  | DelegationOperation
+  | TransactionOperation
+  | OriginationOperation;
+
+export const getCombinedOperations = async (
+  addresses: RawPkh[],
+  network: Network
+): Promise<TzktCombinedOperation[]> => {
+  const operations = await Promise.all([
+    getTransactions(addresses, network),
+    getDelegations(addresses, network),
+    getOriginations(addresses, network),
+  ]);
+  return sortBy(operations.flat(), op => op.id)
+    .reverse() // TODO: add an option to sort asc too
+    .slice(0, 100); // TODO: make limit configurable to push the same number down to the API
+};
+
+export const getTokenTransfers = (address: RawPkh, network: Network): Promise<TokenTransfer[]> =>
   withRateLimit(() =>
     tokensGetTokenTransfers(
       {
@@ -78,7 +146,7 @@ export const getTokenTransfers = (address: string, network: Network): Promise<To
   );
 
 export const getLastDelegation = async (
-  address: string,
+  address: RawPkh,
   network: Network
 ): Promise<DelegationOperation | undefined> =>
   withRateLimit(() =>
