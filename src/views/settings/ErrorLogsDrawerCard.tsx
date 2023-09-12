@@ -18,9 +18,11 @@ import { ErrorContext } from "../../utils/getErrorContext";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import { nanoid } from "@reduxjs/toolkit";
+import { useDynamicModal } from "../../components/DynamicModal";
 
 const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
+  const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
   const handleClose = () => {
     closeDrawer();
@@ -30,7 +32,7 @@ const ErrorLogsDrawerCard = () => {
     <>
       <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen} />
       <Drawer
-        blockScrollOnMount={false}
+        blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
         placement="right"
         onClose={handleClose}

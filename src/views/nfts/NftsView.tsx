@@ -10,12 +10,14 @@ import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
+import { useDynamicModal } from "../../components/DynamicModal";
 
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
   const navigate = useNavigate();
   const { ownerPkh, nftId } = useParams();
+  const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
   const openNFTsPage = useCallback(() => {
     navigate(`/nfts`);
@@ -58,7 +60,7 @@ const NFTsViewBase = () => {
           </Box>
 
           <Drawer
-            blockScrollOnMount={false}
+            blockScrollOnMount={!isDynamicModalOpen}
             placement="right"
             onClose={openNFTsPage}
             size="md"

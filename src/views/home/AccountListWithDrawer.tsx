@@ -5,12 +5,14 @@ import AccountCard from "../../components/AccountDrawer";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
+import { useDynamicModal } from "../../components/DynamicModal";
 
 const AccountListWithDrawer: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const allAccounts = useAllAccounts();
 
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
+  const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
   const handleClose = () => {
     setSelected(null);
@@ -28,7 +30,7 @@ const AccountListWithDrawer: React.FC = () => {
         }}
       />
       <Drawer
-        blockScrollOnMount={false}
+        blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
         placement="right"
         onClose={handleClose}
