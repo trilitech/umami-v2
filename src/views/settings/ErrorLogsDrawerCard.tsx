@@ -17,9 +17,12 @@ import colors from "../../style/colors";
 import { ErrorContext } from "../../utils/getErrorContext";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
+import { nanoid } from "@reduxjs/toolkit";
+import { useDynamicModal } from "../../components/DynamicModal";
 
 const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
+  const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
   const handleClose = () => {
     closeDrawer();
@@ -28,7 +31,13 @@ const ErrorLogsDrawerCard = () => {
   return (
     <>
       <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen} />
-      <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
+      <Drawer
+        blockScrollOnMount={!isDynamicModalOpen}
+        isOpen={isOpen}
+        placement="right"
+        onClose={handleClose}
+        size="md"
+      >
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
           <DrawerTopButtons onClose={handleClose} />
@@ -56,8 +65,8 @@ const ErrorLogsDrawerBody = () => {
         {/* TODO:Implement delete */}
         {/* <IconAndTextBtn label="Clear All" icon={Trash} textFirst onClick={() => {}} /> */}
       </Flex>
-      {errors.map((error, i) => (
-        <ErrorLogRow errorLog={error} key={error.timestamp} />
+      {errors.map(error => (
+        <ErrorLogRow errorLog={error} key={nanoid()} />
       ))}
     </Flex>
   );

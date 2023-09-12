@@ -20866,7 +20866,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-remove-scroll@npm:^2.5.5":
+"react-remove-scroll@npm:^2.5.5, react-remove-scroll@npm:^2.5.6":
   version: 2.5.6
   resolution: "react-remove-scroll@npm:2.5.6"
   dependencies:
@@ -23798,6 +23798,7 @@ __metadata:
     react-qrcode-logo: ^2.9.0
     react-query: ^3.39.3
     react-redux: 8.0.5
+    react-remove-scroll: ^2.5.6
     react-responsive-carousel: ^3.2.23
     react-router-dom: ^6.15.0
     react-scripts: 5.0.1
