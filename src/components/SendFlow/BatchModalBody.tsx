@@ -1,10 +1,10 @@
 import React from "react";
 
-import { ModalHeader, ModalBody, Text, Flex } from "@chakra-ui/react";
+import { ModalBody, Text, Flex, FormLabel } from "@chakra-ui/react";
 
 import { BigNumber } from "bignumber.js";
 import colors from "../../style/colors";
-import { HeaderWrapper } from "./FormPageHeader";
+import FormPageHeader from "./FormPageHeader";
 import AddressTile from "../AddressTile/AddressTile";
 import SignPageFee from "./SignPageFee";
 import { ImplicitAddress } from "../../types/Address";
@@ -17,14 +17,9 @@ export const BatchModalBody: React.FC<{
 }> = ({ title, fee, transactionCount, signerAddress }) => {
   return (
     <>
-      <HeaderWrapper>
-        <ModalHeader textAlign="center">{title}</ModalHeader>
-        <Text textAlign="center" size="sm" color={colors.gray[400]}>
-          Enter your password to confirm this transaction.
-        </Text>
-      </HeaderWrapper>
-
+      <FormPageHeader title={title} subTitle=" Enter your password to confirm this transaction." />
       <ModalBody>
+        <FormLabel>From</FormLabel>
         <AddressTile address={signerAddress} />
         <Flex my="12px" px="4px" alignItems="center" justifyContent="space-between">
           <Flex>

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { ModalContent, ModalCloseButton, ModalFooter } from "@chakra-ui/react";
+import { ModalContent, ModalFooter } from "@chakra-ui/react";
 import { ApproveOrExecute } from "../../../utils/tezos/types";
 import { ImplicitAccount } from "../../../types/Account";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
@@ -39,20 +39,19 @@ export const SignPage: React.FC<{
 
   return (
     <ModalContent>
-      <ModalCloseButton />
+      <form>
+        <BatchModalBody
+          fee={fee}
+          title={title}
+          signerAddress={signer.address}
+          transactionCount={transactionCount}
+        />
 
-      <BatchModalBody
-        fee={fee}
-        title={title}
-        signerAddress={signer.address}
-        transactionCount={transactionCount}
-      />
-
-      <ModalFooter>
-        <SignButton onSubmit={approveOrExecute} signer={signer} text={title} />
-      </ModalFooter>
+        <ModalFooter>
+          <SignButton onSubmit={approveOrExecute} signer={signer} text={title} />
+        </ModalFooter>
+      </form>
     </ModalContent>
   );
 };
-
 export default SignPage;
