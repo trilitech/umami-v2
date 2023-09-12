@@ -8,7 +8,7 @@ import pluralize from "pluralize";
 import { headerText } from "../../components/SendFlow/SignPageHeader";
 import Trash from "../../assets/icons/Trash";
 import { nanoid } from "nanoid";
-import { TEZ } from "../../utils/tezos";
+import { TEZ, estimate } from "../../utils/tezos";
 import { Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
 import { compact } from "lodash";
 import { DynamicModalContext } from "../../components/DynamicModal";
@@ -16,33 +16,30 @@ import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { Account } from "../../types/Account";
 import { OperationView } from "./OperationView";
 import { OperationRecipient } from "./OperationRecipient";
-import { useSendFormModal } from "../home/useSendFormModal";
 import { useClearBatch, useRemoveBatchItem } from "../../utils/hooks/batchesHooks";
+import SignPage from "../../components/SendFlow/Batch/SignPage";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
-const RightHeader = ({ operations: accountOperations }: { operations: AccountOperations }) => {
+const RightHeader: React.FC<{ accountOperations: AccountOperations }> = ({ accountOperations }) => {
   const { type: operationsType, sender, operations } = accountOperations;
   const { openWith } = useContext(DynamicModalContext);
 
-  const { onOpen: openSendForm, modalElement: sendFormModalEl } = useSendFormModal();
+  const { handleAsyncAction, isLoading } = useAsyncActionHandler();
+  const network = useSelectedNetwork();
+
+  const onButtonClick = () =>
+    handleAsyncAction(async () => {
+      const initialFee = await estimate(accountOperations, network);
+      openWith(<SignPage initialFee={initialFee} initialOperations={accountOperations} />);
+    });
 
   return (
     <Box justifyContent="space-between" alignItems="center" data-testid="right-header">
       <Text color={colors.gray[400]} size="sm" display="inline-block">
         {pluralize("transaction", operations.length, true)}
       </Text>
-      <Button
-        variant="primary"
-        ml="30px"
-        onClick={() =>
-          openSendForm({
-            sender: sender.address.pkh,
-            mode: {
-              type: "batch",
-              data: accountOperations,
-            },
-          })
-        }
-      >
+      <Button variant="primary" ml="30px" onClick={onButtonClick} isLoading={isLoading}>
         {headerText(operationsType, "batch")}
       </Button>
       <IconButton
@@ -54,7 +51,6 @@ const RightHeader = ({ operations: accountOperations }: { operations: AccountOpe
         icon={<Trash />}
         data-testid="remove-batch"
       />
-      {sendFormModalEl}
     </Box>
   );
 };
@@ -121,7 +117,7 @@ export const BatchView: React.FC<{
         <Flex alignItems="center">
           <AccountSmallTile pkh={sender.address.pkh} pl={0} />
         </Flex>
-        <RightHeader operations={accountOperations} />
+        <RightHeader accountOperations={accountOperations} />
       </Flex>
       <Flex
         bg={colors.gray[900]}
@@ -172,7 +168,7 @@ export const BatchView: React.FC<{
           verticalAlign="middle"
           data-testid="footer"
         >
-          <RightHeader operations={accountOperations} />
+          <RightHeader accountOperations={accountOperations} />
         </Flex>
       )}
     </Box>
