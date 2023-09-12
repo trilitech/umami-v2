@@ -39,18 +39,19 @@ export const SignPage: React.FC<{
 
   return (
     <ModalContent>
-      <BatchModalBody
-        fee={fee}
-        title={title}
-        signerAddress={signer.address}
-        transactionCount={transactionCount}
-      />
+      <form>
+        <BatchModalBody
+          fee={fee}
+          title={title}
+          signerAddress={signer.address}
+          transactionCount={transactionCount}
+        />
 
-      <ModalFooter>
-        <SignButton onSubmit={approveOrExecute} signer={signer} text={title} />
-      </ModalFooter>
+        <ModalFooter>
+          <SignButton onSubmit={approveOrExecute} signer={signer} text={title} />
+        </ModalFooter>
+      </form>
     </ModalContent>
   );
 };
-
 export default SignPage;

@@ -1,20 +1,29 @@
-import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
+import { mockImplicitAccount, mockMultisigAccount, mockNFT } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
 import { TEZ } from "../../../utils/tezos";
 import { makeAccountOperations } from "../../sendForm/types";
 import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
-import { useSignPageHelpers } from "../utils";
 import store from "../../../utils/redux/store";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
+import { parseContractPkh } from "../../../types/Address";
 
 const account = mockImplicitAccount(0);
 const multisig = mockMultisigAccount(1);
 const operation = makeAccountOperations(account, account, [
   makeMultisigApproveOrExecuteOperation(multisig.address, "execute", "3"),
+  {
+    type: "fa2",
+    amount: "1",
+    sender: account.address,
+    recipient: mockImplicitAccount(1).address,
+    contract: parseContractPkh(mockNFT(1).contract),
+    tokenId: mockNFT(1).tokenId,
+  },
 ]);
-const fee = new BigNumber(1234567);
+
+const fee = BigNumber(1234567);
 const fixture = () => {
   return <SignPage initialFee={fee} initialOperations={operation} />;
 };
@@ -34,7 +43,7 @@ describe("<SignPage />", () => {
   describe("number of transactions", () => {
     it("displays the correct number of transactions", () => {
       render(fixture());
-      expect(screen.getByTestId("transaction-length")).toHaveTextContent("1");
+      expect(screen.getByTestId("transaction-length")).toHaveTextContent("2");
     });
   });
 });
