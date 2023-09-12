@@ -107,7 +107,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
     fillPassword("mockPass");
 
-    const submitButton = screen.getByText(/submit transaction/i);
+    const submitButton = screen.getByRole("button", { name: /execute transaction/i });
     await waitFor(() => {
       expect(submitButton).toBeEnabled();
     });
@@ -155,7 +155,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
     fillPassword("mockPass");
 
-    const submitButton = screen.getByText(/submit transaction/i);
+    const submitButton = screen.getByRole("button", { name: /approve transaction/i });
     await waitFor(() => {
       expect(submitButton).toBeEnabled();
     });
