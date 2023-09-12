@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ModalHeader, ModalBody, Text, Flex } from "@chakra-ui/react";
+import { ModalHeader, ModalBody, Text, Flex, ModalCloseButton } from "@chakra-ui/react";
 
 import { BigNumber } from "bignumber.js";
 import colors from "../../style/colors";
@@ -17,6 +17,7 @@ export const BatchModalBody: React.FC<{
 }> = ({ title, fee, transactionCount, signerAddress }) => {
   return (
     <>
+      <ModalCloseButton />
       <HeaderWrapper>
         <ModalHeader textAlign="center">{title}</ModalHeader>
         <Text textAlign="center" size="sm" color={colors.gray[400]}>
