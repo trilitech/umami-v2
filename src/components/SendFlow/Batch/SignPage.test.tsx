@@ -6,7 +6,8 @@ import { TEZ } from "../../../utils/tezos";
 import { makeAccountOperations } from "../../sendForm/types";
 import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
 import { useSignPageHelpers } from "../utils";
-jest.mock("../utils");
+import store from "../../../utils/redux/store";
+import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 
 const account = mockImplicitAccount(0);
 const multisig = mockMultisigAccount(1);
@@ -18,12 +19,11 @@ const fixture = () => {
   return <SignPage initialFee={fee} initialOperations={operation} />;
 };
 
+beforeEach(() => {
+  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+});
+
 describe("<SignPage />", () => {
-  beforeEach(() => {
-    jest
-      .mocked(useSignPageHelpers)
-      .mockReturnValue({ signer: mockImplicitAccount(0), operations: operation, fee } as any);
-  });
   describe("fee", () => {
     it("displays the fee in tez", () => {
       render(fixture());

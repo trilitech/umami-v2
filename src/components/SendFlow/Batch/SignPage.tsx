@@ -19,29 +19,31 @@ export const SignPage: React.FC<{
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <BatchModalBody
-          fee={fee}
-          title={title}
-          signerAddress={signer.address}
-          transactionCount={operations.operations.length}
-        />
-
-        <OperationSignerSelector
-          sender={operations.sender}
-          isDisabled={isLoading}
-          operationType={operations.type}
-          reEstimate={reEstimate}
-        />
-
-        <ModalFooter>
-          <SignButton
-            onSubmit={onSign}
-            isLoading={isLoading}
-            isDisabled={estimationFailed}
-            signer={signer}
-            text={title}
+        <form>
+          <BatchModalBody
+            fee={fee}
+            title={title}
+            signerAddress={signer.address}
+            transactionCount={operations.operations.length}
           />
-        </ModalFooter>
+
+          <OperationSignerSelector
+            sender={operations.sender}
+            isDisabled={isLoading}
+            operationType={operations.type}
+            reEstimate={reEstimate}
+          />
+
+          <ModalFooter>
+            <SignButton
+              onSubmit={onSign}
+              isLoading={isLoading}
+              isDisabled={estimationFailed}
+              signer={signer}
+              text={title}
+            />
+          </ModalFooter>
+        </form>
       </ModalContent>
     </FormProvider>
   );
