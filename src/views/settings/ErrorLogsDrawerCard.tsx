@@ -17,6 +17,7 @@ import colors from "../../style/colors";
 import { ErrorContext } from "../../utils/getErrorContext";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
+import { nanoid } from "@reduxjs/toolkit";
 
 const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
@@ -62,8 +63,8 @@ const ErrorLogsDrawerBody = () => {
         {/* TODO:Implement delete */}
         {/* <IconAndTextBtn label="Clear All" icon={Trash} textFirst onClick={() => {}} /> */}
       </Flex>
-      {errors.map((error, i) => (
-        <ErrorLogRow errorLog={error} key={error.timestamp} />
+      {errors.map(error => (
+        <ErrorLogRow errorLog={error} key={nanoid()} />
       ))}
     </Flex>
   );
