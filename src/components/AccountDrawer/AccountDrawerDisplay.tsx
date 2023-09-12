@@ -47,7 +47,7 @@ const RoundButton: React.FC<{
   );
 };
 
-export const AccountCardDisplay: React.FC<Props> = ({
+export const AccountDrawerDisplay: React.FC<Props> = ({
   pkh,
   onSend,
   onReceive = () => {},
@@ -67,7 +67,8 @@ export const AccountCardDisplay: React.FC<Props> = ({
   const baker = getDelegateOf(account);
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
-      <Identicon identiconSize={32} address={pkh} />
+      {/* TODO: make the icon match account card on the overview page */}
+      <Identicon w="48px" h="48px" p="8px" identiconSize={32} address={pkh} />
       <Heading mt={4} size="md">
         {label}
       </Heading>

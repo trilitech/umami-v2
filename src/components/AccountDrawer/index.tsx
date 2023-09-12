@@ -10,7 +10,7 @@ import {
 import { DynamicModalContext } from "../DynamicModal";
 import { useReceiveModal } from "../ReceiveModal";
 import SendTezForm from "../SendFlow/Tez/FormPage";
-import { AccountCardDisplay } from "./AccountCardDisplay";
+import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
@@ -33,7 +33,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const operations = getOperations(account.address.pkh);
   return (
     <>
-      <AccountCardDisplay
+      <AccountDrawerDisplay
         onSend={() => openWith(<SendTezForm sender={account} />)}
         pkh={account.address.pkh}
         label={account.label}

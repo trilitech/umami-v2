@@ -1,6 +1,6 @@
 import { Link, TabList, Tabs } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { NFTsGrid } from "../../components/AccountCard/AssetsPanel/NFTsGrid";
+import { NFTsGrid } from "../../components/AccountDrawer/AssetsPanel/NFTsGrid";
 import NestedScroll from "../../components/NestedScroll";
 import SmallTab from "../../components/SmallTab";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";

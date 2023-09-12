@@ -1,7 +1,7 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 import { useState } from "react";
-import AccountCard from "../../components/AccountCard";
+import AccountCard from "../../components/AccountDrawer";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
