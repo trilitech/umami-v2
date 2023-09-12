@@ -5,6 +5,7 @@ import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/t
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
 import { Multisig, MultisigOperation } from "./types";
 import { Network } from "../../types/Network";
+import { withRateLimit } from "../tezos";
 
 export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
   address: parseContractPkh(raw.address),
@@ -18,13 +19,15 @@ export const getRelevantMultisigContracts = async (
   accountPkhs: Set<string>,
   network: Network
 ): Promise<Multisig[]> =>
-  getAllMultiSigContracts(network).then(multisigs =>
-    multisigs
-      .filter(({ storage: { signers } }) => {
-        const intersection = signers.filter(s => accountPkhs.has(s));
-        return intersection.length > 0;
-      })
-      .map(parseMultisig)
+  withRateLimit(() =>
+    getAllMultiSigContracts(network).then(multisigs =>
+      multisigs
+        .filter(({ storage: { signers } }) => {
+          const intersection = signers.filter(s => accountPkhs.has(s));
+          return intersection.length > 0;
+        })
+        .map(parseMultisig)
+    )
   );
 
 const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperation => {
@@ -45,13 +48,14 @@ const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperatio
 export const getPendingOperationsForMultisigs = async (
   multisigs: Multisig[],
   network: Network
-): Promise<MultisigOperation[]> => {
-  const bigmapIds = multisigs.map(m => m.pendingOperationsBigmapId);
+): Promise<MultisigOperation[]> =>
+  withRateLimit(async () => {
+    const bigmapIds = multisigs.map(m => m.pendingOperationsBigmapId);
 
-  const response = await getPendingOperations(bigmapIds, network);
+    const response = await getPendingOperations(bigmapIds, network);
 
-  return compact(response.map(parseMultisigOperation));
-};
+    return compact(response.map(parseMultisigOperation));
+  });
 
 export const multisigToAccount = (multisig: Multisig, label: string): MultisigAccount => {
   return {
