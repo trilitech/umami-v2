@@ -1,5 +1,6 @@
 import { Modal, ModalOverlay, ModalProps, useDisclosure } from "@chakra-ui/react";
 import { createContext, ReactElement, useState } from "react";
+import { RemoveScroll } from "react-remove-scroll";
 
 // this should be used in components as useContext(DynamicModalContext);
 export const DynamicModalContext = createContext<{
@@ -41,12 +42,13 @@ export const useDynamicModal = () => {
         isOpen={isOpen}
         onClose={onClose}
         closeOnOverlayClick={false}
+        blockScrollOnMount={false}
         autoFocus={false}
         size={size}
         isCentered
       >
         <ModalOverlay />
-        {modalContent}
+        <RemoveScroll enabled={isOpen}>{modalContent}</RemoveScroll>
       </Modal>
     ),
   };

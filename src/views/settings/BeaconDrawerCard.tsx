@@ -14,14 +14,21 @@ import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { useAddPeer } from "../../utils/beacon/beacon";
 import BeaconPeers from "../../utils/beacon/BeaconPeers";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
+import { useDynamicModal } from "../../components/DynamicModal";
 
 export const BeaconDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
-
+  const { isOpen: isDynamicModalOpen } = useDynamicModal();
   return (
     <>
       <SettingsCardWithDrawerIcon left="dApps" onClick={onOpen} />
-      <Drawer isOpen={isOpen} placement="right" onClose={closeDrawer} size="md">
+      <Drawer
+        blockScrollOnMount={!isDynamicModalOpen}
+        isOpen={isOpen}
+        placement="right"
+        onClose={closeDrawer}
+        size="md"
+      >
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
           <DrawerTopButtons onClose={closeDrawer} />
