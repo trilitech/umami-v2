@@ -1,14 +1,14 @@
 import { makeAccountOperations } from "../../components/sendForm/types";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
-import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
+import { act, fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import store from "../../utils/redux/store";
-import { executeOperations } from "../../utils/tezos";
+import { estimate, executeOperations } from "../../utils/tezos";
 import BatchPage from "./BatchPage";
 import { batchesActions } from "../../utils/redux/slices/batches";
 import { MAINNET } from "../../types/Network";
-
+import { Modal } from "@chakra-ui/react";
 jest.mock("../../utils/hooks/accountUtils");
 jest.mock("../../utils/tezos");
 
@@ -90,14 +90,16 @@ describe("<BatchPage />", () => {
   });
 
   describe("action buttons", () => {
+    const operations = makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+      mockTezOperation(0),
+      mockTezOperation(0),
+    ]);
+
     beforeEach(() => {
       store.dispatch(
         batchesActions.add({
           network: MAINNET,
-          operations: makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
-            mockTezOperation(0),
-            mockTezOperation(0),
-          ]),
+          operations,
         })
       );
     });
@@ -112,18 +114,22 @@ describe("<BatchPage />", () => {
       expect(screen.queryByTestId(/batch-table/i)).not.toBeInTheDocument();
     });
 
-    // TODO: write a complete test after migration to dynamic modal
     test("submit batch", async () => {
-      render(<BatchPage />);
+      mockEstimatedFee(10);
+      render(
+        <Modal isOpen={true} onClose={() => {}}>
+          <BatchPage />
+        </Modal>
+      );
       const submitBatchButton = screen.getByRole("button", { name: /confirm batch/i });
       fireEvent.click(submitBatchButton);
-      const modal = screen.getByRole("dialog");
-      mockEstimatedFee(10);
-      fireEvent.click(within(modal).getByRole("button", { name: "Preview" }));
 
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
       await waitFor(() => {
-        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
       });
+
+      expect(screen.getByLabelText("Password")).toBeInTheDocument();
     });
   });
 });

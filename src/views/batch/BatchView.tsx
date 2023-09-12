@@ -21,14 +21,16 @@ import SignPage from "../../components/SendFlow/Batch/SignPage";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
-const RightHeader: React.FC<{ accountOperations: AccountOperations }> = ({ accountOperations }) => {
+const RightHeader: React.FC<{ operations: AccountOperations }> = ({
+  operations: accountOperations,
+}) => {
   const { type: operationsType, sender, operations } = accountOperations;
   const { openWith } = useContext(DynamicModalContext);
 
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const network = useSelectedNetwork();
 
-  const onButtonClick = () =>
+  const openBatchSignPage = () =>
     handleAsyncAction(async () => {
       const initialFee = await estimate(accountOperations, network);
       openWith(<SignPage initialFee={initialFee} initialOperations={accountOperations} />);
@@ -39,7 +41,7 @@ const RightHeader: React.FC<{ accountOperations: AccountOperations }> = ({ accou
       <Text color={colors.gray[400]} size="sm" display="inline-block">
         {pluralize("transaction", operations.length, true)}
       </Text>
-      <Button variant="primary" ml="30px" onClick={onButtonClick} isLoading={isLoading}>
+      <Button variant="primary" ml="30px" onClick={openBatchSignPage} isLoading={isLoading}>
         {headerText(operationsType, "batch")}
       </Button>
       <IconButton
@@ -67,7 +69,7 @@ const prettyOperationType = (operation: Operation) => {
       return `${TEZ} Transfer`;
     case "contract_origination":
     case "contract_call":
-      throw new Error(`${operation.type} is not suported yet`);
+      throw new Error(`${operation.type} is not supported yet`);
   }
 };
 
@@ -117,7 +119,7 @@ export const BatchView: React.FC<{
         <Flex alignItems="center">
           <AccountSmallTile pkh={sender.address.pkh} pl={0} />
         </Flex>
-        <RightHeader accountOperations={accountOperations} />
+        <RightHeader operations={accountOperations} />
       </Flex>
       <Flex
         bg={colors.gray[900]}
@@ -168,7 +170,7 @@ export const BatchView: React.FC<{
           verticalAlign="middle"
           data-testid="footer"
         >
-          <RightHeader accountOperations={accountOperations} />
+          <RightHeader operations={accountOperations} />
         </Flex>
       )}
     </Box>
