@@ -58,6 +58,7 @@ const NFTsViewBase = () => {
           </Box>
 
           <Drawer
+            blockScrollOnMount={false}
             placement="right"
             onClose={openNFTsPage}
             size="md"

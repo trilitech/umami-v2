@@ -28,7 +28,13 @@ const ErrorLogsDrawerCard = () => {
   return (
     <>
       <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen} />
-      <Drawer isOpen={isOpen} placement="right" onClose={handleClose} size="md">
+      <Drawer
+        blockScrollOnMount={false}
+        isOpen={isOpen}
+        placement="right"
+        onClose={handleClose}
+        size="md"
+      >
         <DrawerOverlay />
         <DrawerContent maxW="594px" bg="umami.gray.900">
           <DrawerTopButtons onClose={handleClose} />
