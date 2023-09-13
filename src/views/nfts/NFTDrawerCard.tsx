@@ -24,6 +24,7 @@ import { useContext } from "react";
 import SendNFTForm from "../../components/SendFlow/NFT/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { artifactUri } from "../../types/Token";
+import JsValueWrap from "../../components/AccountDrawer/JsValueWrap";
 
 const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
   const url = getIPFSurl(artifactUri(nft));
@@ -97,19 +98,7 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
             </AccordionButton>
           </h2>
           <AccordionPanel>
-            <Card bg="umami.gray.700" borderRadius="5px">
-              <CardBody>
-                <pre
-                  style={{
-                    whiteSpace: "pre-wrap",
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                  }}
-                >
-                  {JSON.stringify(nft, null, 2)}
-                </pre>
-              </CardBody>
-            </Card>
+            <JsValueWrap value={nft} />
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

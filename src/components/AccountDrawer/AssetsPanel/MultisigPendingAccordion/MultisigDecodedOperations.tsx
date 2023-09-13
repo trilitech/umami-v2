@@ -5,13 +5,12 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Card,
-  CardBody,
 } from "@chakra-ui/react";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import { UnrecognizedMichelsonError } from "../../../../multisig/decode/UnrecognizedMichelsonError";
 import { MultisigAccount } from "../../../../types/Account";
 import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
+import JsValueWrap from "../../JsValueWrap";
 
 const MultisigDecodedOperations: React.FC<{
   rawActions: string;
@@ -51,17 +50,7 @@ const UnrecognizedOperationAccordion: React.FC<{ unrecoginizedRawActions: string
           </AccordionButton>
         </h2>
         <AccordionPanel pb={3} h="400px" overflowY="scroll">
-          <Card bg="umami.gray.700" borderRadius="5px">
-            <pre
-              style={{
-                whiteSpace: "pre-wrap",
-                fontSize: "12px",
-                lineHeight: "18px",
-              }}
-            >
-              <CardBody>{JSON.stringify(JSON.parse(unrecoginizedRawActions), null, 1)}</CardBody>
-            </pre>
-          </Card>
+          <JsValueWrap value={JSON.parse(unrecoginizedRawActions)} space={1} />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
