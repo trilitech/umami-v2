@@ -13,7 +13,7 @@ const baseIconProps = {
   height: "30px",
   width: "30px",
   borderRadius: "4px",
-  p: "3.5px",
+  p: "5px",
   bg: colors.gray[500],
 };
 
@@ -22,7 +22,7 @@ const AddressTileIcon: React.FC<{
 }> = ({ addressKind }) => {
   switch (addressKind.type) {
     case "mnemonic":
-      return <Identicon identiconSize={32} address={addressKind.pkh} />;
+      return <Identicon p="5px" identiconSize={20} address={addressKind.pkh} />;
     case "social":
       return <SocialIcon {...baseIconProps} bg="white" />;
     case "ledger":

@@ -15,7 +15,7 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
     <Flex
       alignItems="center"
       w="400px"
-      p="9px 15px"
+      p="9px 10px"
       borderRadius="4px"
       bg={colors.gray[800]}
       justifyContent="space-between"
