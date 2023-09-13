@@ -8,7 +8,6 @@ import { OperationSignerSelector } from "../OperationSignerSelector";
 import { TezTile } from "../../AssetTiles/TezTile";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
-import { parsePkh } from "../../../types/Address";
 
 const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
@@ -16,8 +15,6 @@ const SignPage: React.FC<SignPageProps> = props => {
     useSignPageHelpers(initialFee, initialOperations, mode);
 
   const { amount: mutezAmount, recipient } = operations.operations[0] as TezTransfer;
-
-  const sender = form.getValues("sender");
 
   return (
     <FormProvider {...form}>
@@ -32,7 +29,7 @@ const SignPage: React.FC<SignPageProps> = props => {
             </Flex>
 
             <FormLabel mt="24px">From </FormLabel>
-            <AddressTile address={parsePkh(sender)} />
+            <AddressTile address={operations.sender.address} />
 
             <FormLabel mt="24px">To </FormLabel>
             <AddressTile address={recipient} />

@@ -295,7 +295,7 @@ describe("tezos utils helpers", () => {
         contract: mockContractAddress(0),
         amount: "10",
         entrypoint: "test",
-        arguments: [{ prim: "unit" }],
+        args: [{ prim: "unit" }],
       };
 
       expect(operationToTaquitoOperation(operation)).toEqual({
