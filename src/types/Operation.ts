@@ -48,7 +48,7 @@ export type ContractCall = {
   contract: ContractAddress;
   amount: string;
   entrypoint: string;
-  arguments: MichelsonV1Expression;
+  args: MichelsonV1Expression;
 };
 
 export type Operation =
@@ -89,7 +89,7 @@ export const makeContractCallOperation = (
     type: "contract_call",
     contract,
     entrypoint,
-    arguments: args,
+    args,
     amount,
   };
 };

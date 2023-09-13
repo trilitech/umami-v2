@@ -197,7 +197,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         to: operation.contract.pkh,
         amount: parseInt(operation.amount),
         mutez: true,
-        parameter: { entrypoint: operation.entrypoint, value: operation.arguments },
+        parameter: { entrypoint: operation.entrypoint, value: operation.args },
       };
 
     case "delegation":
