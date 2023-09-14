@@ -1,4 +1,4 @@
-import { chunk, compact } from "lodash";
+import { compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { Network } from "../types/Network";
@@ -63,31 +63,17 @@ const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
 const BAKERS_REFRESH_RATE = 1000 * 60 * 120;
 
-// The limit of a URI size is 2000 chars
-// according to https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
-// alongside addresses we also pass the host, path, other params, at most 200 chars
-// roughly, an address is 40 chars.
-const MAX_ADDRESSES_PER_REQUEST = 40;
-// Each bigmap id takes up 6 chars.
-const MAX_BIGMAP_PER_REQUEST = 300;
-
 const updatePendingOperations = async (
   dispatch: AppDispatch,
   network: Network,
   multisigs: Multisig[]
 ) => {
-  const multisigChunks = chunk(multisigs, MAX_BIGMAP_PER_REQUEST);
-  const pendingOperations = await Promise.all(
-    multisigChunks.map(multisigs => getPendingOperationsForMultisigs(multisigs, network))
-  );
+  const pendingOperations = await getPendingOperationsForMultisigs(multisigs, network);
   dispatch(multisigActions.setPendingOperations(pendingOperations.flat()));
 };
 
 const updateTezBalances = async (dispatch: AppDispatch, network: Network, addresses: RawPkh[]) => {
-  const addressChunks = chunk(addresses, MAX_ADDRESSES_PER_REQUEST);
-  const accountInfos = await Promise.all(
-    addressChunks.map(addresses => getAccounts(addresses, network))
-  );
+  const accountInfos = await getAccounts(addresses, network);
   dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
 };
 
@@ -102,13 +88,9 @@ const updateDelegations = async (dispatch: AppDispatch, network: Network, pkhs: 
 };
 
 const updateTokenTransfers = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
-  const addressChunks = chunk(pkhs, MAX_ADDRESSES_PER_REQUEST);
-
   // token transfers have to be fetched after the balances were fetched
   // because otherwise we might not have some tokens' info to display the operations
-  const tokenBalances = await Promise.all(
-    addressChunks.map(pkhs => getTokenBalances(pkhs, network))
-  );
+  const tokenBalances = await getTokenBalances(pkhs, network);
   const tokenTransfers = await Promise.all(
     pkhs.map(pkh => getTokensTransfersPayload(pkh, network))
   );
