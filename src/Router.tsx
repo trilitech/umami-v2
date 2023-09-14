@@ -59,9 +59,8 @@ const MemoizedRouter = React.memo(() => {
           <Route path="/*" element={<Navigate to="/home" />} />
         </Routes>
         {dynamicModal.content}
+        {beaconNotificationModal}
       </DynamicModalContext.Provider>
-
-      {beaconNotificationModal}
     </HashRouter>
   );
 });

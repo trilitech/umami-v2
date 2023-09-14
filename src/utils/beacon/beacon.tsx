@@ -66,7 +66,7 @@ export const useBeaconModalNotification = () => {
     modalElement: (
       <Modal isOpen={isOpen} onClose={onClose}>
         {beaconMessage.current && (
-          <BeaconNotification message={beaconMessage.current} onSuccess={onClose} />
+          <BeaconNotification message={beaconMessage.current} onClose={onClose} />
         )}
       </Modal>
     ),
