@@ -193,3 +193,7 @@ export const useIsLoading = () => {
 export const useLastTimeUpdated = () => {
   return useAppSelector(state => state.assets.lastTimeUpdated);
 };
+
+export const useGetLatestOperations = () => {
+  return useAppSelector(state => state.assets.latestOperations);
+};
