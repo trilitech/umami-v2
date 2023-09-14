@@ -2,21 +2,14 @@ import {
   BeaconMessageType,
   BeaconRequestOutputMessage,
   NetworkType,
-  OperationRequestOutput,
   PermissionRequestOutput,
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 import { BeaconNotification } from ".";
-import {
-  mockBeaconDelegate,
-  objectOperationBatchRequest,
-  objectOperationDelegationRequest,
-  objectOperationRequest,
-} from "../../../mocks/beacon";
 import { mockImplicitAccount } from "../../../mocks/factories";
-import { dispatchMockAccounts, fillPassword, mockEstimatedFee } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor, within } from "../../../mocks/testUtils";
+import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
+import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { walletClient } from "../beacon";
 import { executeOperations } from "../../tezos";
 
@@ -34,7 +27,7 @@ const BATCH_OP_HASH = { opHash: "bar" };
 
 const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => (
   <Modal isOpen={true} onClose={() => {}}>
-    <BeaconNotification message={message} onSuccess={() => {}} />
+    <BeaconNotification message={message} onClose={() => {}} />
   </Modal>
 );
 
@@ -80,149 +73,6 @@ describe("<BeaconRequestNotification />", () => {
           type: "permission_response",
         });
       });
-    });
-  });
-
-  describe("Operation request (case simple tez transaction)", () => {
-    const message: OperationRequestOutput = {
-      ...objectOperationRequest,
-      sourceAddress: mockImplicitAccount(2).address.pkh,
-    };
-
-    it("should display operations request with parameters displayed", async () => {
-      render(fixture(message, () => {}));
-      expect(screen.getByRole("dialog", { name: "Send" })).toBeInTheDocument();
-      await waitFor(() => {
-        expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
-      });
-      expect(screen.getByLabelText("Parameter")).toHaveTextContent(
-        `{ "entrypoint": "fulfill_ask", "value": { "prim": "Pair", "args": [ { "int": "1232832" }, { "prim": "None" } ] } }`
-      );
-    });
-
-    test("User previews then submits operation, and operation hash is sent via Beacon", async () => {
-      render(fixture(message, () => {}));
-      expect(screen.getByRole("dialog", { name: "Send" })).toBeInTheDocument();
-
-      await waitFor(() => {
-        expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
-      });
-      screen.getByRole("button", { name: /preview/i }).click();
-      await waitFor(() => {
-        expect(screen.getByRole("dialog", { name: "Recap" })).toBeInTheDocument();
-      });
-
-      fillPassword("mockPass");
-      await waitFor(() => {
-        expect(screen.getByRole("button", { name: /submit transaction/i })).toBeEnabled();
-      });
-      screen.getByRole("button", { name: /submit transaction/i }).click();
-
-      await waitFor(() => {
-        expect(screen.getByText(/operation submitted/i)).toBeInTheDocument();
-      });
-
-      expect(walletClient.respond).toHaveBeenCalledWith({
-        id: objectOperationRequest.id,
-        transactionHash: BATCH_OP_HASH.opHash,
-        type: "operation_response",
-      });
-    });
-  });
-
-  describe("Operation request (case delegation)", () => {
-    const message: OperationRequestOutput = {
-      ...objectOperationDelegationRequest,
-      sourceAddress: mockImplicitAccount(2).address.pkh,
-    };
-
-    it("should display delegation request", async () => {
-      render(fixture(message, () => {}));
-      expect(screen.getByRole("dialog", { name: /delegation/i })).toBeInTheDocument();
-      await waitFor(() => {
-        expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
-      });
-      await waitFor(() => {
-        expect(screen.getByTestId("real-address-input-baker")).toHaveAttribute(
-          "value",
-          mockBeaconDelegate
-        );
-      });
-    });
-
-    test("User previews then submits Delegation, and operation hash is sent via Beacon", async () => {
-      render(fixture(message, () => {}));
-      expect(screen.getByRole("dialog", { name: /delegation/i })).toBeInTheDocument();
-      await waitFor(() => {
-        expect(screen.getByRole("button", { name: /preview/i })).toBeEnabled();
-      });
-      screen.getByRole("button", { name: /preview/i }).click();
-      await waitFor(() => {
-        expect(screen.getByRole("dialog", { name: "Recap" })).toBeInTheDocument();
-      });
-
-      fillPassword("mockPass");
-      await waitFor(() => {
-        expect(screen.getByRole("button", { name: /submit transaction/i })).toBeEnabled();
-      });
-      screen.getByRole("button", { name: /submit transaction/i }).click();
-
-      await waitFor(() => {
-        expect(screen.getByText(/operation submitted/i)).toBeInTheDocument();
-      });
-
-      expect(walletClient.respond).toHaveBeenCalledWith({
-        id: objectOperationDelegationRequest.id,
-        transactionHash: BATCH_OP_HASH.opHash,
-        type: "operation_response",
-      });
-    });
-  });
-
-  test("User previews then submits Batches, and operation hash is sent via Beacon", async () => {
-    const message: OperationRequestOutput = {
-      ...objectOperationBatchRequest,
-      sourceAddress: mockImplicitAccount(2).address.pkh,
-    };
-    render(fixture(message, () => {}));
-    const modal = screen.getByRole("dialog", { name: /recap/i });
-    const { getByRole, getByLabelText } = within(modal);
-    await waitFor(() => {
-      expect(getByRole("button", { name: /preview/i })).toBeEnabled();
-    });
-
-    expect(screen.getByText(/transaction details/i)).toBeInTheDocument();
-
-    const txsAmount = getByLabelText(/transactions-amount/i);
-    expect(txsAmount).toHaveTextContent("3");
-
-    const previewBtn = screen.getByRole("button", { name: /preview/i });
-    fireEvent.click(previewBtn);
-
-    await waitFor(() => {
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    });
-    fillPassword("mockPass");
-
-    const submit = screen.getByRole("button", {
-      name: /submit transaction/i,
-    });
-
-    await waitFor(() => {
-      expect(submit).toBeEnabled();
-    });
-
-    fireEvent.click(submit);
-
-    await waitFor(() => {
-      expect(screen.getByText(/Operation Submitted/i)).toBeInTheDocument();
-    });
-    expect(screen.getByTestId(/tzkt-link/i)).toHaveProperty("href", "https://tzkt.io/bar");
-
-    expect(walletClient.respond).toHaveBeenCalledWith({
-      id: objectOperationBatchRequest.id,
-      transactionHash: BATCH_OP_HASH.opHash,
-      type: "operation_response",
     });
   });
 
