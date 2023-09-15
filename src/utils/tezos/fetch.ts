@@ -142,11 +142,12 @@ export const getCombinedOperations = async (
     sort?: "asc" | "desc";
   }
 ): Promise<TzktCombinedOperation[]> => {
-  const limit = options?.limit || 1;
+  const limit = options?.limit || 10;
+  const sort = options?.sort ?? "desc";
   const tzktRequestOptions = {
     limit,
     offset: options?.lastId ? { cr: options.lastId } : undefined,
-    sort: { [options?.sort ?? "desc"]: "id" },
+    sort: { [sort]: "id" },
   };
 
   const operations = await Promise.all([
@@ -157,9 +158,10 @@ export const getCombinedOperations = async (
 
   // ID is a shared sequence among all operations in TzKT
   // so it's safe to use it for sorting & pagination
-  return sortBy(operations.flat(), op => op.id)
-    .reverse() // TODO: add an option to sort asc too
-    .slice(0, limit);
+  return sortBy(
+    operations.flat(),
+    operation => (sort === "asc" ? operation.id : -(operation.id as number)) // operation#id is always defined
+  ).slice(0, limit);
 };
 
 export const getTokenTransfers = (address: RawPkh, network: Network): Promise<TokenTransfer[]> =>
