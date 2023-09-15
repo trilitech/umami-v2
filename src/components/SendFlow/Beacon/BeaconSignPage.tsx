@@ -29,7 +29,6 @@ const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSucc
     case "fa1.2":
     case "fa2":
     case "contract_origination":
-      // this line will not reach, but better safe than sorry
       throw new Error("Unsupported operation type");
   }
 };

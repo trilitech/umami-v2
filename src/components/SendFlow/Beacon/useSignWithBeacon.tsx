@@ -13,10 +13,10 @@ export const useSignWithBeacon = (
   operation: ImplicitOperations,
   onBeaconSuccess: (hash: string) => Promise<void>
 ) => {
+  const { onClose } = useContext(DynamicModalContext);
   const [fee, setFee] = useState<BigNumber | null>(null);
   const network = useSelectedNetwork();
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
-  const { handleAsyncAction: handleFeeEstimation } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
   const form = useForm<{ sender: string; signer: string }>({
     mode: "onBlur",
@@ -27,20 +27,25 @@ export const useSignWithBeacon = (
   });
 
   useEffect(() => {
-    const estimateFee = () =>
-      handleFeeEstimation(
+    const estimateFee = () => {
+      handleAsyncAction(
         async () => {
           const fee = await estimate(operation, network);
           setFee(fee);
         },
-        err => ({
-          title: "Error",
-          description: `Error while processing beacon request: ${err.message}`,
-          status: "error",
-        })
+        err => {
+          onClose();
+          return {
+            title: "Error",
+            description: `Error while processing beacon request: ${err.message}`,
+            status: "error",
+          };
+        }
       );
+    };
     estimateFee();
-  }, [network, operation, handleFeeEstimation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [network, operation]);
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
