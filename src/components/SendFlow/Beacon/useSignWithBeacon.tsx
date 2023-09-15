@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { ImplicitOperations } from "../../sendForm/types";
 import BigNumber from "bignumber.js";
 import { TezosToolkit } from "@taquito/taquito";
@@ -8,15 +8,17 @@ import { DynamicModalContext } from "../../DynamicModal";
 import { useForm } from "react-hook-form";
 import { estimate, executeOperations } from "../../../utils/tezos";
 import { SuccessStep } from "../../sendForm/steps/SuccessStep";
+import { useToast } from "@chakra-ui/react";
 
 export const useSignWithBeacon = (
   operation: ImplicitOperations,
   onBeaconSuccess: (hash: string) => Promise<void>
 ) => {
+  console.log(operation, "OPERATION");
   const [fee, setFee] = useState<BigNumber | null>(null);
   const network = useSelectedNetwork();
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
-  const { handleAsyncAction: handleFeeEstimation } = useAsyncActionHandler();
+  const toast = useToast();
   const { openWith } = useContext(DynamicModalContext);
   const form = useForm<{ sender: string; signer: string }>({
     mode: "onBlur",
@@ -27,20 +29,21 @@ export const useSignWithBeacon = (
   });
 
   useEffect(() => {
-    const estimateFee = () =>
-      handleFeeEstimation(
-        async () => {
-          const fee = await estimate(operation, network);
-          setFee(fee);
-        },
-        err => ({
+    const estimateFee = async () => {
+      console.log("HERE");
+      try {
+        const fee = await estimate(operation, network);
+        setFee(fee);
+      } catch (err: any) {
+        toast({
           title: "Error",
           description: `Error while processing beacon request: ${err.message}`,
           status: "error",
-        })
-      );
+        });
+      }
+    };
     estimateFee();
-  }, [network, operation, handleFeeEstimation]);
+  }, [network, operation, toast]);
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {

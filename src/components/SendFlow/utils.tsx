@@ -138,13 +138,18 @@ export const useSignPageHelpers = (
       }
     ).catch(() => setEstimationFailed(true));
 
-  const onSign = async (tezosToolkit: TezosToolkit) =>
+  const onSign = async (tezosToolkit: TezosToolkit) => {
+    await onSignWithTxHash(tezosToolkit);
+  };
+
+  const onSignWithTxHash = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
       const { opHash } = await executeOperations(operations, tezosToolkit);
       if (mode === "batch") {
         clearBatch(operations.sender);
       }
       openWith(<SuccessStep hash={opHash} />);
+      return opHash;
     });
 
   return {
@@ -156,6 +161,7 @@ export const useSignPageHelpers = (
     signer: getSigner(signer),
     reEstimate,
     onSign,
+    onSignWithTxHash,
   };
 };
 

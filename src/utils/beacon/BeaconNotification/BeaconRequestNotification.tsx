@@ -3,6 +3,7 @@ import {
   BeaconRequestOutputMessage,
   OperationRequestOutput,
   OperationResponseInput,
+  PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
@@ -29,6 +30,7 @@ export const BeaconNotification: React.FC<{
 }> = ({ message, onClose }) => {
   const getAccount = useGetImplicitAccountSafe();
   const toast = useToast();
+  console.log(message, "BeaconNotification");
 
   switch (message.type) {
     case BeaconMessageType.PermissionRequest: {
@@ -38,6 +40,7 @@ export const BeaconNotification: React.FC<{
       return <SignPayloadRequestPanel request={message} onSuccess={onClose} />;
     }
     case BeaconMessageType.OperationRequest: {
+      console.log(message, "Operation request");
       const signer = getAccount(message.sourceAddress);
       if (!signer) {
         return <BeaconErrorPanel message={`Account not in this wallet ${message.sourceAddress}`} />;
@@ -78,8 +81,50 @@ export const BeaconNotification: React.FC<{
   }
 };
 
+const partialOperationToOperation = (
+  partialOperation: PartialTezosOperation,
+  signer: ImplicitAccount
+): Operation | null => {
+  switch (partialOperation.kind) {
+    case TezosOperationType.TRANSACTION: {
+      const { destination, amount, parameters } = partialOperation;
+      const isContractCall = isValidContractPkh(destination) && parameters;
+      if (isContractCall) {
+        return {
+          type: "contract_call",
+          amount,
+          contract: parseContractPkh(destination),
+          entrypoint: parameters.entrypoint,
+          args: parameters.value,
+        };
+      } else {
+        return {
+          type: "tez",
+          amount,
+          recipient: parseImplicitPkh(partialOperation.destination),
+        };
+      }
+    }
+    case TezosOperationType.DELEGATION: {
+      const { delegate } = partialOperation;
+
+      if (delegate) {
+        return {
+          type: "delegation",
+          sender: signer.address,
+          recipient: parseImplicitPkh(delegate),
+        };
+      } else {
+        return { type: "undelegation", sender: signer.address };
+      }
+    }
+    default:
+      return null;
+  }
+};
+
 const toOperation = (
-  { operationDetails, sourceAddress }: OperationRequestOutput,
+  { operationDetails }: OperationRequestOutput,
   signer: ImplicitAccount
 ): ImplicitOperations => {
   if (operationDetails.length === 0) {
@@ -92,34 +137,7 @@ const toOperation = (
 
   const partialOperation = operationDetails[0];
 
-  let operation: Operation | undefined = undefined;
-
-  if (partialOperation.kind === TezosOperationType.TRANSACTION) {
-    const { destination, amount, parameters } = partialOperation;
-    operation =
-      isValidContractPkh(destination) && parameters
-        ? {
-            type: "contract_call",
-            amount,
-            contract: parseContractPkh(destination),
-            entrypoint: parameters.entrypoint,
-            args: parameters.value,
-          }
-        : {
-            type: "tez",
-            amount,
-            recipient: parseImplicitPkh(partialOperation.destination),
-          };
-  } else if (partialOperation.kind === TezosOperationType.DELEGATION) {
-    const sender = parsePkh(sourceAddress);
-    operation = partialOperation.delegate
-      ? {
-          type: "delegation",
-          sender,
-          recipient: parseImplicitPkh(partialOperation.delegate),
-        }
-      : { type: "undelegation", sender };
-  }
+  const operation = partialOperationToOperation(partialOperation, signer);
 
   if (!operation) {
     throw new Error(`Unsupported operation: ${partialOperation.kind}`);
