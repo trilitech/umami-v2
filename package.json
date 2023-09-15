@@ -157,7 +157,8 @@
   "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs",
-      "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing"
+      "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing",
+      "@tzkt/oazapfts/runtime": "@tzkt/oazapfts/lib/runtime"
     },
     "watchPathIgnorePatterns": [
       "src/integration"
