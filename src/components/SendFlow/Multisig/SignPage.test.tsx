@@ -3,7 +3,7 @@ import { render, screen } from "../../../mocks/testUtils";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
 import { TEZ } from "../../../utils/tezos";
-import { makeAccountOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../../types/AccountOperations";
 import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
 
 const fixture = () => {

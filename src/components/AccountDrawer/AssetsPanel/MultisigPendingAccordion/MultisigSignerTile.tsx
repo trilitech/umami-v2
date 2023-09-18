@@ -6,7 +6,7 @@ import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import { MultisigSignerState } from "./MultisigActionButton";
-import { makeAccountOperations } from "../../../sendForm/types";
+import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import { estimate } from "../../../../utils/tezos";
 import { DynamicModalContext } from "../../../DynamicModal";

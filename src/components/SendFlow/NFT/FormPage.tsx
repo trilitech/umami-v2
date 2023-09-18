@@ -19,7 +19,6 @@ import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../Addr
 import { formDefaultValues, FormPagePropsWithSender, FormSubmitButtons } from "../utils";
 import SignPage from "./SignPage";
 import { NFTBalance } from "../../../types/TokenBalance";
-import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
@@ -27,6 +26,7 @@ import {
 } from "../onSubmitFormActionHooks";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import FormPageHeader from "../FormPageHeader";
+import { SendNFTRecapTile } from "../SendNFTRecapTile";
 
 export type FormValues = {
   quantity: number;

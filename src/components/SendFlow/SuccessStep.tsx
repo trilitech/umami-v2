@@ -12,10 +12,10 @@ import {
 import { Link } from "react-router-dom";
 
 import React, { useContext } from "react";
-import { getHashUrl } from "../../../views/operations/operationsUtils";
-import { TzktLink } from "../../TzktLink";
-import { DynamicModalContext } from "../../DynamicModal";
-import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
+import { getHashUrl } from "../../views/operations/operationsUtils";
+import { TzktLink } from "../TzktLink";
+import { DynamicModalContext } from "../DynamicModal";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
   const network = useSelectedNetwork();

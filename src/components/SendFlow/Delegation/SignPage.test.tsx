@@ -1,7 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 import { mockDelegation, mockImplicitAccount } from "../../../mocks/factories";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
-import { makeAccountOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../../types/AccountOperations";
 import { SignPageProps } from "../utils";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";

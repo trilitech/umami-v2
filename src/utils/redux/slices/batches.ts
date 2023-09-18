@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AccountOperations } from "../../../components/sendForm/types";
+import { AccountOperations } from "../../../types/AccountOperations";
 import { DefaultNetworks, Network, NetworkName } from "../../../types/Network";
 import { findIndex, fromPairs } from "lodash";
 import { RawPkh } from "../../../types/Address";

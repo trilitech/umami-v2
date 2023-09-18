@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/react";
-import { makeAccountOperations } from "../../../components/sendForm/types";
+import { makeAccountOperations } from "../../../types/AccountOperations";
 import {
   mockDelegationOperation,
   mockImplicitAccount,

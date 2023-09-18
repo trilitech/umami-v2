@@ -6,13 +6,13 @@ import { ImplicitAccount } from "../../../types/Account";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { DynamicModalContext } from "../../DynamicModal";
 import { TezosToolkit } from "@taquito/taquito";
-import { AccountOperations } from "../../sendForm/types";
+import { AccountOperations } from "../../../types/AccountOperations";
 import { executeOperations } from "../../../utils/tezos";
-import { SuccessStep } from "../../sendForm/steps/SuccessStep";
-import SignButton from "../../sendForm/components/SignButton";
 import { BigNumber } from "bignumber.js";
 import { capitalize } from "lodash";
 import BatchModalBody from "../BatchModalBody";
+import SignButton from "../SignButton";
+import { SuccessStep } from "../SuccessStep";
 
 export const SignPage: React.FC<{
   fee: BigNumber;

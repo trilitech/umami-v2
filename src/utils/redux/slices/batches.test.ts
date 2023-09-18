@@ -1,4 +1,4 @@
-import { ImplicitOperations, makeAccountOperations } from "../../../components/sendForm/types";
+import { ImplicitOperations, makeAccountOperations } from "../../../types/AccountOperations";
 import {
   mockDelegationOperation,
   mockImplicitAccount,

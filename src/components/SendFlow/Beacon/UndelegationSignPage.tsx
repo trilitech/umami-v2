@@ -3,9 +3,9 @@ import useSignWithBeacon from "./useSignWithBeacon";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
-import SignButton from "../../sendForm/components/SignButton";
 import { FormProvider } from "react-hook-form";
 import { BeaconSignPageProps } from "./BeaconSignPage";
+import SignButton from "../SignButton";
 
 const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
   const { isSigning, form, onSign, fee } = useSignWithBeacon(operation, onBeaconSuccess);

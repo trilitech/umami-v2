@@ -8,7 +8,7 @@ import {
 } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import React from "react";
-import { ImplicitOperations } from "../../../components/sendForm/types";
+import { ImplicitOperations } from "../../../types/AccountOperations";
 import { isValidContractPkh, parseContractPkh, parseImplicitPkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
 import { useGetImplicitAccountSafe } from "../../hooks/accountHooks";

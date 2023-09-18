@@ -13,9 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import React from "react";
-import SignButton from "../../../../components/sendForm/components/SignButton";
 import { useGetImplicitAccountSafe } from "../../../hooks/accountHooks";
 import { walletClient } from "../../beacon";
+import SignButton from "../../../../components/SendFlow/SignButton";
 
 const SignPayloadRequestPanel: React.FC<{
   request: SignPayloadRequestOutput;

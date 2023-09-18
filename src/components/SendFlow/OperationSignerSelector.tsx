@@ -1,6 +1,6 @@
 import { FormControl } from "@chakra-ui/react";
 import { AvailableSignersAutocomplete } from "../AddressAutocomplete";
-import { AccountOperations } from "../sendForm/types";
+import { AccountOperations } from "../../types/AccountOperations";
 import { Account } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
 

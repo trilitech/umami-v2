@@ -23,7 +23,7 @@ import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
 import { parseOperation } from "./utils";
-import { makeAccountOperations } from "../sendForm/types";
+import { makeAccountOperations } from "../../types/AccountOperations";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { useContext } from "react";

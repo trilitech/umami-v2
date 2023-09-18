@@ -8,17 +8,17 @@ import {
 } from "../../utils/hooks/accountHooks";
 import { useClearBatch } from "../../utils/hooks/batchesHooks";
 import { DynamicModalContext } from "../DynamicModal";
-import { AccountOperations, makeAccountOperations } from "../sendForm/types";
+import { AccountOperations, makeAccountOperations } from "../../types/AccountOperations";
 import BigNumber from "bignumber.js";
 import { Operation } from "../../types/Operation";
 import { Account } from "../../types/Account";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { TezosToolkit } from "@taquito/taquito";
-import { SuccessStep } from "../sendForm/steps/SuccessStep";
 import { estimate, executeOperations } from "../../utils/tezos";
 import { useForm } from "react-hook-form";
 import { repeat } from "lodash";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { SuccessStep } from "./SuccessStep";
 
 // Convert given optional fields to required
 // For example:

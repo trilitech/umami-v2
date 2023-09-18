@@ -1,13 +1,13 @@
 import React from "react";
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
-import { AccountOperations } from "../../sendForm/types";
-import SignButton from "../../sendForm/components/SignButton";
+import { AccountOperations } from "../../../types/AccountOperations";
 import { BigNumber } from "bignumber.js";
 import { useSignPageHelpers } from "../utils";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { headerText } from "../SignPageHeader";
 import { FormProvider } from "react-hook-form";
 import BatchModalBody from "../BatchModalBody";
+import SignButton from "../SignButton";
 
 export const SignPage: React.FC<{
   initialOperations: AccountOperations;

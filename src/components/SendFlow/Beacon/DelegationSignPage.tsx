@@ -4,10 +4,10 @@ import useSignWithBeacon from "./useSignWithBeacon";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
-import SignButton from "../../sendForm/components/SignButton";
 import { FormProvider } from "react-hook-form";
 import { BeaconSignPageProps } from "./BeaconSignPage";
 import { BakerSmallTile } from "../BakerSmallTile";
+import SignButton from "../SignButton";
 
 const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
   const { recipient } = operation.operations[0] as Delegation;

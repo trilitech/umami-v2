@@ -1,6 +1,5 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
-import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
@@ -8,6 +7,7 @@ import { BakerSmallTile } from "../BakerSmallTile";
 import { Delegation } from "../../../types/Operation";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
+import SignButton from "../SignButton";
 
 const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;

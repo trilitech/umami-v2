@@ -5,9 +5,9 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { TezTile } from "../../AssetTiles/TezTile";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
-import SignButton from "../../sendForm/components/SignButton";
 import { FormProvider } from "react-hook-form";
 import { BeaconSignPageProps } from "./BeaconSignPage";
+import SignButton from "../SignButton";
 
 const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
   const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
