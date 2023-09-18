@@ -17,11 +17,11 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { TezTile } from "../../AssetTiles/TezTile";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
-import SignButton from "../../sendForm/components/SignButton";
 import { FormProvider } from "react-hook-form";
 import { BeaconSignPageProps } from "./BeaconSignPage";
 import JsValueWrap from "../../AccountDrawer/JsValueWrap";
 import colors from "../../../style/colors";
+import SignButton from "../SignButton";
 
 const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
   const {

@@ -1,4 +1,4 @@
-import { makeAccountOperations } from "../../components/sendForm/types";
+import { makeAccountOperations } from "../../types/AccountOperations";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, waitFor } from "../../mocks/testUtils";

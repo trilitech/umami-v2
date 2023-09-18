@@ -6,7 +6,7 @@ import { FormPagePropsWithSender } from "../utils";
 import { FA2TokenBalance } from "../../../types/TokenBalance";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
-import { makeAccountOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import BigNumber from "bignumber.js";
 import { mockToast } from "../../../mocks/toast";

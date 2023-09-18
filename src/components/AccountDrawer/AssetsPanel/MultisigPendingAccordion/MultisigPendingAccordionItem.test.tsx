@@ -18,12 +18,11 @@ import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
 import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezos";
 
 import BigNumber from "bignumber.js";
-import { makeAccountOperations } from "../../../sendForm/types";
+import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import { MAINNET } from "../../../../types/Network";
 
 jest.mock("../../../../utils/hooks/accountUtils");
-jest.mock("../../../sendForm/types");
 
 const MOCK_TEZOS_TOOLKIT = {};
 beforeEach(() => {

@@ -10,15 +10,15 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { NFTBalance } from "../../../types/TokenBalance";
-import { SendNFTRecapTile } from "../../sendForm/components/SendNFTRecapTile";
 import { FA2Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
+import SignButton from "../SignButton";
+import { SendNFTRecapTile } from "../SendNFTRecapTile";
 
 const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {

@@ -2,19 +2,14 @@ import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import React, { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { GoogleAuthProps, useGetGoogleCredentials } from "../../../GoogleAuth";
-import {
-  ImplicitAccount,
-  AccountType,
-  MnemonicAccount,
-  LedgerAccount,
-} from "../../../types/Account";
-import { useGetSecretKey } from "../../../utils/hooks/accountUtils";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { makeToolkit } from "../../../utils/tezos";
-import { FormErrorMessage } from "../../FormErrorMessage";
-import PasswordInput from "../../PasswordInput";
-import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
+import { GoogleAuthProps, useGetGoogleCredentials } from "../../GoogleAuth";
+import { ImplicitAccount, AccountType, MnemonicAccount, LedgerAccount } from "../../types/Account";
+import { useGetSecretKey } from "../../utils/hooks/accountUtils";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { makeToolkit } from "../../utils/tezos";
+import { FormErrorMessage } from "../FormErrorMessage";
+import PasswordInput from "../PasswordInput";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 export const SignWithGoogleButton: React.FC<
   PropsWithChildren<{

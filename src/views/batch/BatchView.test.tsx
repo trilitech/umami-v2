@@ -1,4 +1,4 @@
-import { makeAccountOperations } from "../../components/sendForm/types";
+import { makeAccountOperations } from "../../types/AccountOperations";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { render, screen, within } from "../../mocks/testUtils";
 import { ghostFA2, ghostTezzard } from "../../mocks/tokens";

@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import SignButton from "../../sendForm/components/SignButton";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { FATokenBalance, FATransfer } from "./FormPage";
@@ -18,6 +17,7 @@ import { formatTokenAmount, tokenSymbolSafe } from "../../../types/Token";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
+import SignButton from "../SignButton";
 
 const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const {

@@ -25,7 +25,7 @@ import {
   operationToTaquitoOperation,
   operationsToBatchParams,
 } from "./helpers";
-import { makeAccountOperations } from "../../components/sendForm/types";
+import { makeAccountOperations } from "../../types/AccountOperations";
 import { MAINNET } from "../../types/Network";
 jest.mock("@taquito/signer");
 jest.mock("./fakeSigner");

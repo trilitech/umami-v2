@@ -1,4 +1,4 @@
-import { ImplicitOperations } from "../../sendForm/types";
+import { ImplicitOperations } from "../../../types/AccountOperations";
 
 import BeaconTezSignPage from "./TezSignPage";
 import ContractCallSignPage from "./ContractCallSignPage";

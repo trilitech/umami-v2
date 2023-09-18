@@ -16,7 +16,7 @@ import { RawTzktGetAddressType } from "../tzkt/types";
 import { FakeSigner } from "./fakeSigner";
 import BigNumber from "bignumber.js";
 import { OpKind, TransactionOperationParameter } from "@taquito/rpc";
-import { AccountOperations } from "../../components/sendForm/types";
+import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
 export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {

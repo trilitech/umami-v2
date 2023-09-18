@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import { AccountOperations } from "../../components/sendForm/types";
+import { AccountOperations } from "../../types/AccountOperations";
 import { Operation } from "../../types/Operation";
 import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import colors from "../../style/colors";

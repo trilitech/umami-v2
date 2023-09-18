@@ -8,7 +8,7 @@ import store from "../../../utils/redux/store";
 import FormPage, { FormValues } from "./FormPage";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
-import { makeAccountOperations } from "../../sendForm/types";
+import { makeAccountOperations } from "../../../types/AccountOperations";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { estimate } from "../../../utils/tezos";

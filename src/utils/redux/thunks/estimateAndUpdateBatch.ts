@@ -1,5 +1,5 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { AccountOperations } from "../../../components/sendForm/types";
+import { AccountOperations } from "../../../types/AccountOperations";
 import { Network } from "../../../types/Network";
 import { estimate } from "../../tezos";
 import { RootState } from "../store";

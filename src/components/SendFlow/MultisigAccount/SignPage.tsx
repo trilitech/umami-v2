@@ -11,13 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
-import SignButton from "../../sendForm/components/SignButton";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { useSignPageHelpers, SignPageProps } from "../utils";
 import { FormValues } from "./FormPage";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
 import { parsePkh } from "../../../types/Address";
+import SignButton from "../SignButton";
 
 const SignPage: React.FC<SignPageProps<FormValues>> = props => {
   const {

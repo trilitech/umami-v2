@@ -1,4 +1,4 @@
-import { AccountOperations } from "../../components/sendForm/types";
+import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 import { makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
 import BigNumber from "bignumber.js";

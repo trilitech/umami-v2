@@ -1,6 +1,6 @@
 import { ModalCloseButton, Text } from "@chakra-ui/react";
 import colors from "../../style/colors";
-import { AccountOperations } from "../sendForm/types";
+import { AccountOperations } from "../../types/AccountOperations";
 import { SignPageMode } from "./utils";
 import { HeaderWrapper } from "./FormPageHeader";
 import { ModalBackButton } from "../ModalBackButton";
