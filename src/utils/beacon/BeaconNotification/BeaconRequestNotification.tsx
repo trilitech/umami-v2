@@ -8,91 +8,41 @@ import {
 } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import React from "react";
-import SendForm from "../../../components/sendForm";
-import { makeAccountOperations, SendFormMode } from "../../../components/sendForm/types";
-import { ImplicitAccount } from "../../../types/Account";
-import { parseImplicitPkh, parsePkh } from "../../../types/Address";
+import { ImplicitOperations } from "../../../components/sendForm/types";
+import { isValidContractPkh, parseContractPkh, parseImplicitPkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
 import { useGetImplicitAccountSafe } from "../../hooks/accountHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPanel from "./panels/BeaconErrorPanel";
 import PermissionRequestPanel from "./panels/PermissionRequestPanel";
 import SignPayloadRequestPanel from "./panels/SignPayloadRequestPanel";
-
-const SingleTransaction = ({
-  transfer,
-  onSuccess,
-  sender,
-}: {
-  transfer: Operation;
-  onSuccess: (hash: string) => any;
-  sender: string;
-}) => {
-  const amount = transfer.type === "tez" ? transfer.amount : undefined;
-  const parameter = transfer.type === "tez" ? transfer.parameter : undefined;
-
-  const mode: SendFormMode = transfer.type === "tez" ? { type: "tez" } : { type: "delegation" };
-
-  // TODO: send directly to recap instead
-  return (
-    <SendForm
-      onSuccess={onSuccess}
-      mode={mode}
-      recipient={"recipient" in transfer ? transfer.recipient.pkh : undefined}
-      sender={sender}
-      amount={amount}
-      parameter={parameter}
-    />
-  );
-};
-
-const BatchTransaction = ({
-  operations,
-  onSuccess,
-  account,
-}: {
-  operations: Operation[];
-  onSuccess: (hash: string) => any;
-  account: ImplicitAccount;
-}) => {
-  const mode: SendFormMode = {
-    type: "batch",
-    data: makeAccountOperations(account, account, operations),
-  };
-
-  // TODO: send directly to recap instead
-  return (
-    <SendForm
-      sender={account.address.pkh}
-      onSuccess={onSuccess}
-      mode={mode}
-      recipient={(operations[0] as any).recipient?.pkh}
-    />
-  );
-};
+import BeaconSignPage from "../../../components/SendFlow/Beacon/BeaconSignPage";
+import { ImplicitAccount } from "../../../types/Account";
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;
-  onSuccess: () => void;
-}> = ({ message, onSuccess }) => {
+  onClose: () => void;
+}> = ({ message, onClose }) => {
   const getAccount = useGetImplicitAccountSafe();
   const toast = useToast();
 
   switch (message.type) {
     case BeaconMessageType.PermissionRequest: {
-      return <PermissionRequestPanel request={message} onSuccess={onSuccess} />;
+      return <PermissionRequestPanel request={message} onSuccess={onClose} />;
     }
     case BeaconMessageType.SignPayloadRequest: {
-      return <SignPayloadRequestPanel request={message} onSuccess={onSuccess} />;
+      return <SignPayloadRequestPanel request={message} onSuccess={onClose} />;
     }
     case BeaconMessageType.OperationRequest: {
-      const signerAccount = getAccount(message.sourceAddress);
-      if (!signerAccount) {
+      const signer = getAccount(message.sourceAddress);
+      if (!signer) {
         return <BeaconErrorPanel message={`Account not in this wallet ${message.sourceAddress}`} />;
       }
 
       try {
-        const transfers = buildTransfers(message);
+        // Beacon operation is a single operation that is one of the following:
+        // tez transfer, contract call, delegation or undelegation
+        const beaconOperation = toOperation(message, signer);
 
         const handleSuccess = async (hash: string) => {
           const response: OperationResponseInput = {
@@ -100,7 +50,6 @@ export const BeaconNotification: React.FC<{
             id: message.id,
             transactionHash: hash,
           };
-
           try {
             await walletClient.respond(response);
           } catch (error: any) {
@@ -109,26 +58,12 @@ export const BeaconNotification: React.FC<{
               title: "Failed to confirm Beacon operation success",
               description: error.message,
             });
+          } finally {
+            onClose();
           }
         };
 
-        if (transfers.length === 1) {
-          return (
-            <SingleTransaction
-              sender={signerAccount.address.pkh}
-              transfer={transfers[0]}
-              onSuccess={handleSuccess}
-            />
-          );
-        }
-
-        return (
-          <BatchTransaction
-            operations={transfers}
-            onSuccess={handleSuccess}
-            account={signerAccount}
-          />
-        );
+        return <BeaconSignPage onBeaconSuccess={handleSuccess} operation={beaconOperation} />;
       } catch (error: any) {
         return <BeaconErrorPanel message={`Error handling operation request: ${error.message}`} />;
       }
@@ -139,38 +74,71 @@ export const BeaconNotification: React.FC<{
   }
 };
 
-const beaconToUmamiOperation = (operation: PartialTezosOperation, sourceAddress: string) => {
-  if (operation.kind === TezosOperationType.TRANSACTION) {
-    const result: Operation = {
-      type: "tez",
-      amount: operation.amount,
-      recipient: parsePkh(operation.destination),
-      parameter: operation.parameters,
-    };
+const partialOperationToOperation = (
+  partialOperation: PartialTezosOperation,
+  signer: ImplicitAccount
+): Operation | null => {
+  switch (partialOperation.kind) {
+    case TezosOperationType.TRANSACTION: {
+      const { destination, amount, parameters } = partialOperation;
+      const isContractCall = isValidContractPkh(destination) && parameters;
+      if (isContractCall) {
+        return {
+          type: "contract_call",
+          amount,
+          contract: parseContractPkh(destination),
+          entrypoint: parameters.entrypoint,
+          args: parameters.value,
+        };
+      } else {
+        return {
+          type: "tez",
+          amount,
+          recipient: parseImplicitPkh(partialOperation.destination),
+        };
+      }
+    }
+    case TezosOperationType.DELEGATION: {
+      const { delegate } = partialOperation;
 
-    return result;
-  }
-
-  if (operation.kind === TezosOperationType.DELEGATION) {
-    const sender = parsePkh(sourceAddress);
-    const result: Operation = operation.delegate
-      ? {
+      if (delegate) {
+        return {
           type: "delegation",
-          sender,
-          recipient: parseImplicitPkh(operation.delegate),
-        }
-      : { type: "undelegation", sender };
-
-    return result;
+          sender: signer.address,
+          recipient: parseImplicitPkh(delegate),
+        };
+      } else {
+        return { type: "undelegation", sender: signer.address };
+      }
+    }
+    default:
+      return null;
   }
-
-  throw new Error(`Unsupported operation: ${operation.kind}`);
 };
 
-const buildTransfers = ({ operationDetails, sourceAddress }: OperationRequestOutput) => {
+const toOperation = (
+  { operationDetails }: OperationRequestOutput,
+  signer: ImplicitAccount
+): ImplicitOperations => {
   if (operationDetails.length === 0) {
     throw new Error("Empty operation details!");
   }
 
-  return operationDetails.map(operation => beaconToUmamiOperation(operation, sourceAddress));
+  if (operationDetails.length > 1) {
+    throw new Error("Batch operation is not supported");
+  }
+
+  const partialOperation = operationDetails[0];
+
+  const operation = partialOperationToOperation(operationDetails[0], signer);
+  if (!operation) {
+    throw new Error(`Unsupported operation: ${partialOperation.kind}`);
+  }
+
+  return {
+    type: "implicit",
+    operations: [operation],
+    sender: signer,
+    signer,
+  };
 };

@@ -1,15 +1,10 @@
-import {
-  BeaconRequestOutputMessage,
-  ConnectionContext,
-  ExtendedP2PPairingResponse,
-  Serializer,
-  WalletClient,
-} from "@airgap/beacon-wallet";
-import { Modal, useDisclosure, useToast } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
+import { ExtendedP2PPairingResponse, Serializer, WalletClient } from "@airgap/beacon-wallet";
+import { useToast } from "@chakra-ui/react";
+import { useContext, useEffect } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { BeaconNotification } from "./BeaconNotification";
 import { makePeerInfo, PeerInfo } from "./types";
+import { DynamicModalContext } from "../../components/DynamicModal";
 
 const makeClient = () =>
   new WalletClient({
@@ -58,52 +53,22 @@ export const useAddPeer = () => {
   };
 };
 
-export const useBeaconModalNotification = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const beaconMessage = useRef<BeaconRequestOutputMessage>();
-
-  return {
-    modalElement: (
-      <Modal isOpen={isOpen} onClose={onClose}>
-        {beaconMessage.current && (
-          <BeaconNotification message={beaconMessage.current} onSuccess={onClose} />
-        )}
-      </Modal>
-    ),
-
-    onOpen: (message: BeaconRequestOutputMessage, _: ConnectionContext) => {
-      beaconMessage.current = message;
-      onOpen();
-    },
-  };
-};
-
-// Need this ignore BS because useEffect runs twice in development:
-// https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
-export const useBeaconInit = () => {
-  const { modalElement: beaconModal, onOpen } = useBeaconModalNotification();
-  const ignore = useRef(false);
-  const handleBeaconMessage = useRef(onOpen);
-
+export const BeaconProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
+  const { openWith, onClose } = useContext(DynamicModalContext);
   useEffect(() => {
-    if (!ignore.current) {
-      walletClient
-        .init()
-        .then(() => {
-          walletClient.connect(handleBeaconMessage.current);
-        })
-        .catch(console.error)
-        .finally(() => {
-          ignore.current = false;
+    walletClient
+      .init()
+      .then(() => {
+        walletClient.connect(message => {
+          openWith(<BeaconNotification message={message} onClose={onClose} />);
         });
-    }
+      })
+      .catch(console.error);
+  }, [onClose, openWith]);
 
-    return () => {
-      ignore.current = true;
-    };
-  }, []);
-
-  return beaconModal;
+  return <>{children}</>;
 };
 
 export const resetBeacon = async () => {
