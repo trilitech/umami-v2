@@ -11,6 +11,7 @@ const closeButtonStyle = defineStyle({
   top: "10px",
   insetEnd: "10px",
   color: colors.gray[400],
+  borderRadius: "18px",
 });
 
 export const backButtonStyle = defineStyle({
