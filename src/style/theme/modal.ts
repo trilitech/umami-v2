@@ -6,19 +6,21 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
   modalAnatomy.keys
 );
 
-const closeButtonStyle = defineStyle({
-  position: "absolute",
+const modalButtonBaseStyle = {
   top: "10px",
-  insetEnd: "10px",
+  position: "absolute" as const,
   color: colors.gray[400],
   borderRadius: "18px",
+};
+
+const closeButtonStyle = defineStyle({
+  ...modalButtonBaseStyle,
+  insetEnd: "10px",
 });
 
 export const backButtonStyle = defineStyle({
-  position: "absolute" as const,
-  top: "10px",
+  ...modalButtonBaseStyle,
   insetStart: "10px",
-  color: colors.gray[400],
 });
 
 const baseStyle = definePartsStyle({
