@@ -104,7 +104,7 @@ const FormPage: React.FC<
         <form>
           <FormPageHeader />
           <ModalBody>
-            <FormControl mt={3} mb={7} isInvalid={!!errors.prettyAmount}>
+            <FormControl isInvalid={!!errors.prettyAmount}>
               <FormLabel>Amount</FormLabel>
               <InputGroup>
                 <Input
@@ -122,7 +122,7 @@ const FormPage: React.FC<
                   })}
                   placeholder={smallestUnit}
                 />
-                <InputRightElement pr={3} data-testid="token-symbol">
+                <InputRightElement pr="12px" data-testid="token-symbol">
                   {tokenSymbolSafe(token)}
                 </InputRightElement>
               </InputGroup>
@@ -133,7 +133,7 @@ const FormPage: React.FC<
               )}
             </FormControl>
 
-            <FormControl my={5} isInvalid={!!errors.sender}>
+            <FormControl mt="24px" isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
                 isDisabled={true}
@@ -147,7 +147,7 @@ const FormPage: React.FC<
               )}
             </FormControl>
 
-            <FormControl my={3} isInvalid={!!errors.recipient}>
+            <FormControl mt="24px" isInvalid={!!errors.recipient}>
               <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">

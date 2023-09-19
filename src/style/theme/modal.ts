@@ -43,7 +43,7 @@ const baseStyle = definePartsStyle({
     padding: 0,
   },
   footer: {
-    padding: "24px 0 0 0",
+    padding: "32px 0 0 0",
   },
   header: {
     padding: 0,

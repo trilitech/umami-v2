@@ -6,10 +6,8 @@ import {
   Input,
   InputGroup,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   Text,
 } from "@chakra-ui/react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -25,6 +23,7 @@ import {
 import { formDefaultValues, FormPageProps } from "../utils";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import Trash from "../../../assets/icons/Trash";
+import FormPageHeader from "../FormPageHeader";
 
 export type FormValues = {
   name: string;
@@ -83,18 +82,13 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     <FormProvider {...form}>
       <ModalContent>
         <form onSubmit={handleSubmit(onSingleSubmit)}>
-          <ModalHeader textAlign="center">
-            <Text size="2xl" fontWeight="600">
-              Create Multisig
-            </Text>
-            <Text textAlign="center" size="sm" color={colors.gray[400]}>
-              Name your contract, select an owner and the signers of the contract.
-            </Text>
-            <ModalCloseButton />
-          </ModalHeader>
+          <FormPageHeader
+            title="Create Multisig"
+            subTitle="Name your contract, select an owner and the signers of the contract."
+          />
 
           <ModalBody>
-            <FormControl mb={2} isInvalid={!!errors.name}>
+            <FormControl isInvalid={!!errors.name}>
               <FormLabel>Name the Contract</FormLabel>
               <InputGroup>
                 <Input
@@ -109,7 +103,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               )}
             </FormControl>
 
-            <FormControl mb={2} isInvalid={!!errors.sender}>
+            <FormControl my="24px" isInvalid={!!errors.sender}>
               <OwnedImplicitAccountsAutocomplete
                 label="Select Owner"
                 inputName="sender"
@@ -128,7 +122,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               return (
                 <FormControl
                   data-testid={`signer-input-${index}`}
-                  mb={2}
+                  mb="8px"
                   key={field.id}
                   width={inputWidth}
                   display="inline-block"
@@ -181,7 +175,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               + Add Signer
             </Button>
 
-            <FormControl mb={2} isInvalid={!!errors.threshold}>
+            <FormControl mt="24px" isInvalid={!!errors.threshold}>
               <FormLabel display="inline">
                 Min No. of approvals:
                 <InputGroup display="inline" ml="10px">

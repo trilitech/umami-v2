@@ -55,9 +55,9 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
             subTitle="Select preview to end delegation or insert this transaction into a Batch."
           />
 
-          <ModalBody mb="16px">
+          <ModalBody>
             {/* TODO: Make AccountAutoComplete display the address and balance*/}
-            <FormControl mb="8px">
+            <FormControl>
               <OwnedAccountsAutocomplete
                 label="From"
                 inputName="sender"
@@ -65,7 +65,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
                 isDisabled
               />
             </FormControl>
-            <FormLabel>Baker</FormLabel>
+            <FormLabel mt="24px">Baker</FormLabel>
             <DelegateSmallTile account={sender} />
           </ModalBody>
           <ModalFooter>

@@ -79,11 +79,11 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
         <form>
           <FormPageHeader />
           <ModalBody>
-            <Flex my={3}>
+            <Flex mb="12px">
               <SendNFTRecapTile nft={props.nft} />
             </Flex>
             <Flex alignItems="center">
-              <Heading size="sm" mr={1} color={colors.gray[450]}>
+              <Heading size="sm" mr="4px" color={colors.gray[450]}>
                 Owned:
               </Heading>
               <Text size="sm" color={colors.gray[400]} data-testid="nft-owned">
@@ -91,10 +91,10 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
               </Text>
             </Flex>
 
-            <FormControl my={4} isInvalid={!!errors.quantity}>
+            <FormControl mt="24px" isInvalid={!!errors.quantity}>
               <FormLabel>
                 <Flex alignItems="center">
-                  <Heading size="md" mr={2}>
+                  <Heading size="md" mr="8px">
                     Quantity:
                   </Heading>
                   <Flex alignItems="center">
@@ -130,7 +130,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
               )}
             </FormControl>
 
-            <FormControl my={3} isInvalid={!!errors.sender}>
+            <FormControl mt="24px" isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
                 inputName="sender"
@@ -144,8 +144,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
               )}
             </FormControl>
 
-            {/* TODO: fix scrolling */}
-            <FormControl my={3} isInvalid={!!errors.recipient}>
+            <FormControl mt="24px" isInvalid={!!errors.recipient}>
               <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">
