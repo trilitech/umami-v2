@@ -75,7 +75,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
 
           <ModalBody>
             {/* TODO: Make AccountAutoComplete display the address and balance*/}
-            <FormControl mb={2} isInvalid={!!errors.sender}>
+            <FormControl isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
                 isDisabled={!!props.sender}
@@ -89,7 +89,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               )}
             </FormControl>
 
-            <FormControl mb={2} isInvalid={!!errors.baker} data-testid="baker">
+            <FormControl mt="24px" isInvalid={!!errors.baker} data-testid="baker">
               <BakersAutocomplete label="Baker" inputName="baker" allowUnknown />
               {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
             </FormControl>

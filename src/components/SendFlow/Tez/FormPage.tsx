@@ -75,29 +75,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
         <form>
           <FormPageHeader />
           <ModalBody>
-            <FormControl mb={2} isInvalid={!!errors.sender}>
-              <OwnedAccountsAutocomplete
-                label="From"
-                isDisabled={!!props.sender}
-                inputName="sender"
-                allowUnknown={false}
-              />
-              {errors.sender && (
-                <FormErrorMessage data-testid="from-error">
-                  {errors.sender.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl mb={2} isInvalid={!!errors.recipient}>
-              <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
-              {errors.recipient && (
-                <FormErrorMessage data-testid="recipient-error">
-                  {errors.recipient.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
-
-            <FormControl mb={2} mt={2} isInvalid={!!errors.prettyAmount}>
+            <FormControl isInvalid={!!errors.prettyAmount}>
               <FormLabel>Amount</FormLabel>
 
               <InputGroup>
@@ -117,6 +95,28 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               {errors.prettyAmount && (
                 <FormErrorMessage data-testid="amount-error">
                   {errors.prettyAmount.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <FormControl mt="24px" isInvalid={!!errors.sender}>
+              <OwnedAccountsAutocomplete
+                label="From"
+                isDisabled={!!props.sender}
+                inputName="sender"
+                allowUnknown={false}
+              />
+              {errors.sender && (
+                <FormErrorMessage data-testid="from-error">
+                  {errors.sender.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl mt="24px" isInvalid={!!errors.recipient}>
+              <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
+              {errors.recipient && (
+                <FormErrorMessage data-testid="recipient-error">
+                  {errors.recipient.message}
                 </FormErrorMessage>
               )}
             </FormControl>
