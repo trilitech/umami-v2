@@ -189,7 +189,6 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         to: operation.recipient.pkh,
         amount: parseInt(operation.amount),
         mutez: true,
-        parameter: operation.parameter, // TODO: remove after beacon uses contract_call,
       };
     case "contract_call":
       return {
