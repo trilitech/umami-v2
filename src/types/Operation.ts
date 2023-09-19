@@ -1,5 +1,4 @@
 import { MichelsonV1Expression } from "@taquito/rpc";
-import { TransferParams } from "@taquito/taquito";
 import { Address, ContractAddress, ImplicitAddress } from "./Address";
 import { ApproveOrExecute } from "../utils/tezos/types";
 import { makeBatchLambda } from "../multisig/multisigUtils";
@@ -8,7 +7,6 @@ export type TezTransfer = {
   type: "tez";
   recipient: Address;
   amount: string; // TODO: enforce mutez format here
-  parameter?: TransferParams["parameter"]; //TODO: remove this
 };
 
 export type FA2Transfer = {

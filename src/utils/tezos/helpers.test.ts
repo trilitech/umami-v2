@@ -159,20 +159,6 @@ describe("tezos utils helpers", () => {
       });
     });
 
-    test("tez with parameter", () => {
-      const operation = {
-        ...mockTezOperation(0),
-        parameter: { entrypoint: "test", value: [{ prim: "unit" }] },
-      };
-      expect(operationToTaquitoOperation(operation)).toEqual({
-        amount: 0,
-        kind: "transaction",
-        mutez: true,
-        to: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
-        parameter: { entrypoint: "test", value: [{ prim: "unit" }] },
-      });
-    });
-
     test("fa1.2", () => {
       expect(operationToTaquitoOperation(mockFA12Operation(0))).toEqual({
         amount: 0,
