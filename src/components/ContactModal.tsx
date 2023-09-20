@@ -15,7 +15,7 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useContext } from "react";
 import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
@@ -26,15 +26,14 @@ import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 import { CopyableAddress } from "./CopyableText";
 import { FormErrorMessage } from "./FormErrorMessage";
+import { DynamicModalContext } from "./DynamicModal";
 
 export const UpsertContactModal: FC<{
   title: string;
   buttonText: string;
-  isOpen: boolean;
   contact?: Contact; // For updating an existing contact
   onSubmitContact: (contact: Contact) => void;
-  onClose: () => void;
-}> = ({ title, buttonText, contact, isOpen, onSubmitContact, onClose }) => {
+}> = ({ title, buttonText, contact, onSubmitContact }) => {
   const {
     handleSubmit,
     formState: { isValid, errors },
@@ -49,6 +48,7 @@ export const UpsertContactModal: FC<{
     onSubmitContact({ name: name.trim(), pkh });
     reset();
   };
+  const { isOpen } = useContext(DynamicModalContext);
 
   const isEdit = contact !== undefined;
 
@@ -86,52 +86,49 @@ export const UpsertContactModal: FC<{
   }, [isOpen, contact]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent bg={colors.gray[900]}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalHeader textAlign="center">{title}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl marginY={5} isInvalid={!!errors.name}>
-              <FormLabel>Name</FormLabel>
-              <Input
-                type="text"
-                {...register("name", {
-                  required: true,
-                  validate: validateName,
-                })}
-                placeholder="Enter contact’s name"
-              />
-              {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
-            </FormControl>
-            <FormControl marginY={5} isInvalid={!!errors.pkh}>
-              <FormLabel>Address</FormLabel>
-              <Input
-                type="text"
-                {...register("pkh", {
-                  required: true,
-                  validate: validatePkh,
-                })}
-                value={contact?.pkh}
-                variant={isEdit ? "filled" : undefined}
-                disabled={isEdit}
-                placeholder="Enter contact’s tz address"
-              />
-              {errors.pkh && <FormErrorMessage>{errors.pkh.message}</FormErrorMessage>}
-            </FormControl>
-          </ModalBody>
+    <ModalContent bg={colors.gray[900]}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ModalHeader textAlign="center">{title}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <FormControl marginY={5} isInvalid={!!errors.name}>
+            <FormLabel>Name</FormLabel>
+            <Input
+              type="text"
+              {...register("name", {
+                required: true,
+                validate: validateName,
+              })}
+              placeholder="Enter contact’s name"
+            />
+            {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
+          </FormControl>
+          <FormControl marginY={5} isInvalid={!!errors.pkh}>
+            <FormLabel>Address</FormLabel>
+            <Input
+              type="text"
+              {...register("pkh", {
+                required: true,
+                validate: validatePkh,
+              })}
+              value={contact?.pkh}
+              variant={isEdit ? "filled" : undefined}
+              disabled={isEdit}
+              placeholder="Enter contact’s tz address"
+            />
+            {errors.pkh && <FormErrorMessage>{errors.pkh.message}</FormErrorMessage>}
+          </FormControl>
+        </ModalBody>
 
-          <ModalFooter>
-            <Box width="100%">
-              <Button width="100%" type="submit" mb={2} isDisabled={!isValid}>
-                {buttonText}
-              </Button>
-            </Box>
-          </ModalFooter>
-        </form>
-      </ModalContent>
-    </Modal>
+        <ModalFooter>
+          <Box width="100%">
+            <Button width="100%" type="submit" mb={2} isDisabled={!isValid}>
+              {buttonText}
+            </Button>
+          </Box>
+        </ModalFooter>
+      </form>
+    </ModalContent>
   );
 };
 

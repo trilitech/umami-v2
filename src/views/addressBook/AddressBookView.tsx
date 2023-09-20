@@ -6,10 +6,10 @@ import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import ContactTable from "./ContactTable";
 import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
-import { useUpsertContactModal } from "../home/useUpsertContactModal";
+import { useOpenUpsertContactModal } from "../home/useUpsertContactModal";
 
 const FilterController: React.FC = () => {
-  const { modalElement, onOpen } = useUpsertContactModal();
+  const openContactModal = useOpenUpsertContactModal();
 
   return (
     <Flex alignItems="center" justifyContent="space-between" mb={4} mt={4}>
@@ -24,14 +24,12 @@ const FilterController: React.FC = () => {
           color: colors.greenL,
         }}
         onClick={() =>
-          onOpen({
+          openContactModal({
             title: "Add Contact",
             buttonText: "Add to Contact",
           })
         }
       />
-
-      {modalElement}
     </Flex>
   );
 };

@@ -7,7 +7,7 @@ import { AddressKind, AddressKindType } from "./types";
 import { IconProps } from "@chakra-ui/react";
 import { useContactExists } from "../../utils/hooks/contactsHooks";
 import AddContactIcon from "../../assets/icons/AddContact";
-import { useUpsertContactModal } from "../../views/home/useUpsertContactModal";
+import { useOpenUpsertContactModal } from "../../views/home/useUpsertContactModal";
 import XMark from "../../assets/icons/XMark";
 import { AddressPillMode } from "./AddressPill";
 
@@ -36,7 +36,7 @@ export const RightIcon: React.FC<
   { addressKind: AddressKind; addressPillMode: AddressPillMode } & IconProps
 > = ({ addressKind: { type, pkh }, addressPillMode, ...rest }) => {
   const { addressExistsInContacts } = useContactExists();
-  const { modalElement, onOpen } = useUpsertContactModal();
+  const openContactModal = useOpenUpsertContactModal();
 
   if (addressPillMode.type === "removable") {
     return <XMark cursor="pointer" onClick={addressPillMode.onRemove} {...rest} />;
@@ -53,7 +53,7 @@ export const RightIcon: React.FC<
       <AddContactIcon
         data-testid="add-contact-icon"
         onClick={() => {
-          onOpen({
+          openContactModal({
             title: "Add Contact",
             buttonText: "Add to Contact",
             contact: { name: "", pkh },
@@ -61,7 +61,6 @@ export const RightIcon: React.FC<
         }}
         {...rest}
       />
-      {modalElement}
     </>
   );
 };
