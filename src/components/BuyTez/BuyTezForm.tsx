@@ -14,8 +14,11 @@ import { navigateToExternalLink } from "../../utils/helpers";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { RawPkh } from "../../types/Address";
 
-const BuyTezForm = () => {
+const BuyTezForm: React.FC<{
+  recipient?: RawPkh;
+}> = ({ recipient = "" }) => {
   const network = useSelectedNetwork();
   const isMainnet = network.name === "mainnet";
   const title = isMainnet ? "Buy Tez" : "Request Tez from faucet";
@@ -31,7 +34,12 @@ const BuyTezForm = () => {
     navigateToExternalLink(url);
   };
 
-  const form = useForm<{ recipient: string }>({ mode: "onBlur" });
+  const form = useForm<{ recipient: string }>({
+    mode: "onBlur",
+    defaultValues: {
+      recipient,
+    },
+  });
   const {
     handleSubmit,
     formState: { isValid, errors },
@@ -56,6 +64,7 @@ const BuyTezForm = () => {
                     label="Recipient Account"
                     inputName="recipient"
                     allowUnknown={false}
+                    isDisabled={!!recipient}
                   />
                   {errors.recipient && (
                     <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
