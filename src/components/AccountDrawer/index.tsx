@@ -8,7 +8,7 @@ import {
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
 import { DynamicModalContext } from "../DynamicModal";
-import { useReceiveModal } from "../ReceiveModal";
+import { ReceiveModal } from "../ReceiveModal";
 import SendTezForm from "../SendFlow/Tez/FormPage";
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
@@ -22,7 +22,6 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const getOperations = useGetAccountOperationDisplays();
   const network = useSelectedNetwork();
 
-  const { onOpen: onOpenReceive, modalElement: receiveModal } = useReceiveModal();
   const { openWith } = useContext(DynamicModalContext);
 
   const balance = accountBalance(account.address.pkh);
@@ -40,7 +39,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         balance={balance}
         dollarBalance={dollarBalance}
         onReceive={() => {
-          onOpenReceive({ pkh: account.address.pkh });
+          openWith(<ReceiveModal pkh={account.address.pkh} />);
         }}
         tokens={tokens}
         nfts={nfts}
@@ -48,7 +47,6 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         account={account}
         network={network}
       />
-      {receiveModal}
     </>
   );
 };
