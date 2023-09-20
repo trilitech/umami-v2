@@ -6,11 +6,12 @@ import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import ContactTable from "./ContactTable";
 import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
-import { useOpenUpsertContactModal } from "../home/useUpsertContactModal";
+import { UpsertContactModal } from "../../components/ContactModal";
+import { useContext } from "react";
+import { DynamicModalContext } from "../../components/DynamicModal";
 
 const FilterController: React.FC = () => {
-  const openContactModal = useOpenUpsertContactModal();
-
+  const { openWith } = useContext(DynamicModalContext);
   return (
     <Flex alignItems="center" justifyContent="space-between" mb={4} mt={4}>
       <IconAndTextBtn icon={TbFilter} label="Filter" />
@@ -24,10 +25,7 @@ const FilterController: React.FC = () => {
           color: colors.greenL,
         }}
         onClick={() =>
-          openContactModal({
-            title: "Add Contact",
-            buttonText: "Add to Contact",
-          })
+          openWith(<UpsertContactModal title="Add contact" buttonText="Add to Contact" />)
         }
       />
     </Flex>

@@ -30,8 +30,19 @@ export const UpsertContactModal: FC<{
   title: string;
   buttonText: string;
   contact?: Contact; // For updating an existing contact
-  onSubmitContact: (contact: Contact) => void;
-}> = ({ title, buttonText, contact, onSubmitContact }) => {
+}> = ({ title, buttonText, contact }) => {
+  const dispatch = useAppDispatch();
+  const getAccount = useGetOwnedAccountSafe();
+  const { isOpen, onClose } = useContext(DynamicModalContext);
+
+  const onSubmitContact = (newContact: Contact) => {
+    if (getAccount(newContact.pkh)) {
+      return;
+    }
+    dispatch(contactsActions.upsert(newContact));
+    onClose();
+  };
+
   const {
     handleSubmit,
     formState: { isValid, errors },
@@ -46,7 +57,6 @@ export const UpsertContactModal: FC<{
     onSubmitContact({ name: name.trim(), pkh });
     reset();
   };
-  const { isOpen } = useContext(DynamicModalContext);
 
   const isEdit = contact !== undefined;
 
@@ -59,7 +69,7 @@ export const UpsertContactModal: FC<{
   };
 
   const { nameExistsInContacts, addressExistsInContacts } = useContactExists();
-  const getAccount = useGetOwnedAccountSafe();
+
   const validatePkh = (pkh: string) => {
     if (!isAddressValid(pkh)) {
       return "Invalid address";
