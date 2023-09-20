@@ -1,16 +1,15 @@
-import { Divider, useDisclosure } from "@chakra-ui/react";
+import { Divider } from "@chakra-ui/react";
 import { BiPencil } from "react-icons/bi";
-import { DeleteContactModal } from "../../components/ContactModal";
+import { DeleteContactModal, UpsertContactModal } from "../../components/ContactModal";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import PopoverMenu from "../../components/PopoverMenu";
 import { Contact } from "../../types/Contact";
-import { useUpsertContactModal } from "../home/useUpsertContactModal";
 import Trash from "../../assets/icons/Trash";
+import { useContext } from "react";
+import { DynamicModalContext } from "../../components/DynamicModal";
 
 const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
-  const { modalElement: editModal, onOpen: onOpenEdit } = useUpsertContactModal();
-
-  const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
+  const { openWith } = useContext(DynamicModalContext);
 
   return (
     <>
@@ -19,19 +18,22 @@ const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
           label="Rename"
           icon={BiPencil}
           onClick={() =>
-            onOpenEdit({
-              title: "Edit contact",
-              buttonText: "Update",
-              contact: contact,
-            })
+            openWith(
+              <UpsertContactModal title="Edit contact" buttonText="Update" contact={contact} />
+            )
           }
           textFirst
         />
         <Divider marginY={1} />
-        <IconAndTextBtn label="Remove" icon={Trash} onClick={onOpenDelete} textFirst />
+        <IconAndTextBtn
+          label="Remove"
+          icon={Trash}
+          onClick={() => {
+            openWith(<DeleteContactModal contact={contact} />);
+          }}
+          textFirst
+        />
       </PopoverMenu>
-      {editModal}
-      <DeleteContactModal isOpen={isOpenDelete} contact={contact} onClose={onCloseDelete} />
     </>
   );
 };

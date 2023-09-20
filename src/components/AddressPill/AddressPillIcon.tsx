@@ -7,9 +7,11 @@ import { AddressKind, AddressKindType } from "./types";
 import { IconProps } from "@chakra-ui/react";
 import { useContactExists } from "../../utils/hooks/contactsHooks";
 import AddContactIcon from "../../assets/icons/AddContact";
-import { useUpsertContactModal } from "../../views/home/useUpsertContactModal";
 import XMark from "../../assets/icons/XMark";
 import { AddressPillMode } from "./AddressPill";
+import { useContext } from "react";
+import { DynamicModalContext } from "../DynamicModal";
+import { UpsertContactModal } from "../ContactModal";
 
 export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   addressKind: { type },
@@ -36,7 +38,7 @@ export const RightIcon: React.FC<
   { addressKind: AddressKind; addressPillMode: AddressPillMode } & IconProps
 > = ({ addressKind: { type, pkh }, addressPillMode, ...rest }) => {
   const { addressExistsInContacts } = useContactExists();
-  const { modalElement, onOpen } = useUpsertContactModal();
+  const { openWith } = useContext(DynamicModalContext);
 
   if (addressPillMode.type === "removable") {
     return <XMark cursor="pointer" onClick={addressPillMode.onRemove} {...rest} />;
@@ -53,15 +55,16 @@ export const RightIcon: React.FC<
       <AddContactIcon
         data-testid="add-contact-icon"
         onClick={() => {
-          onOpen({
-            title: "Add Contact",
-            buttonText: "Add to Contact",
-            contact: { name: "", pkh },
-          });
+          openWith(
+            <UpsertContactModal
+              title="Add contact"
+              buttonText="Add to Contact"
+              contact={{ name: "", pkh }}
+            />
+          );
         }}
         {...rest}
       />
-      {modalElement}
     </>
   );
 };
