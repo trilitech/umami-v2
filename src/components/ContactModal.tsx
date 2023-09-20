@@ -6,13 +6,11 @@ import {
   FormLabel,
   Heading,
   Input,
-  Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Text,
 } from "@chakra-ui/react";
 import { FC, useEffect, useRef, useContext } from "react";
@@ -86,7 +84,7 @@ export const UpsertContactModal: FC<{
   }, [isOpen, contact]);
 
   return (
-    <ModalContent bg={colors.gray[900]}>
+    <ModalContent>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalHeader textAlign="center">{title}</ModalHeader>
         <ModalCloseButton />
@@ -133,43 +131,39 @@ export const UpsertContactModal: FC<{
 };
 
 export const DeleteContactModal: FC<{
-  isOpen: boolean;
   contact: Contact;
-  onClose: () => void;
-}> = ({ contact, isOpen, onClose }) => {
+}> = ({ contact }) => {
   const dispatch = useAppDispatch();
+  const { onClose } = useContext(DynamicModalContext);
   const onDeleteContact = () => {
     dispatch(contactsActions.remove(contact.pkh));
     onClose();
   };
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent bg={colors.gray[900]}>
-        <ModalHeader textAlign="center">Delete Contact</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Flex alignItems="center" direction="column" justifyContent="space-between">
-            <Text size="sm" color={colors.gray[400]}>
-              Are you sure you want to delete this contact?
-            </Text>
-            <Box mt={5}>
-              <Heading size="md" textAlign="center" mb={3}>
-                {contact.name}
-              </Heading>
-              <CopyableAddress pkh={contact.pkh} />
-            </Box>
-          </Flex>
-        </ModalBody>
-
-        <ModalFooter>
-          <Box width="100%">
-            <Button width="100%" variant="warning" onClick={onDeleteContact} mb={2}>
-              Delete
-            </Button>
+    <ModalContent>
+      <ModalHeader textAlign="center">Delete Contact</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <Flex alignItems="center" direction="column" justifyContent="space-between">
+          <Text size="sm" color={colors.gray[400]}>
+            Are you sure you want to delete this contact?
+          </Text>
+          <Box mt={5}>
+            <Heading size="md" textAlign="center" mb={3}>
+              {contact.name}
+            </Heading>
+            <CopyableAddress pkh={contact.pkh} />
           </Box>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </Flex>
+      </ModalBody>
+
+      <ModalFooter>
+        <Box width="100%">
+          <Button width="100%" variant="warning" onClick={onDeleteContact} mb={2}>
+            Delete
+          </Button>
+        </Box>
+      </ModalFooter>
+    </ModalContent>
   );
 };

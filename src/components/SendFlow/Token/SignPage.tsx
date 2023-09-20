@@ -9,7 +9,6 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
-import colors from "../../../style/colors";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { FATokenBalance, FATransfer } from "./FormPage";
@@ -33,7 +32,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
 
   return (
     <FormProvider {...form}>
-      <ModalContent bg={colors.gray[900]} borderColor={colors.gray[700]} borderRadius="8px">
+      <ModalContent>
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
