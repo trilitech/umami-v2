@@ -1,12 +1,13 @@
 import {
   FormControl,
   ModalBody,
-  ModalCloseButton,
   ModalHeader,
   Text,
   ModalFooter,
   Box,
   Button,
+  ModalContent,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { navigateToExternalLink } from "../../utils/helpers";
@@ -38,39 +39,41 @@ const BuyTezForm = () => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalCloseButton />
-        <ModalHeader textAlign="center">Buy Tez</ModalHeader>
-        {isMainnet && (
-          <>
-            <Text textAlign="center">Please select the recipient account.</Text>
-            <ModalBody>
-              <FormControl
-                data-testid="buy-tez-selector"
-                paddingY={5}
-                isInvalid={!!errors.recipient}
-              >
-                <OwnedImplicitAccountsAutocomplete
-                  label="Recipient Account"
-                  inputName="recipient"
-                  allowUnknown={false}
-                />
-                {errors.recipient && (
-                  <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
-                )}
-              </FormControl>
-            </ModalBody>
-          </>
-        )}
+      <ModalContent>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <ModalCloseButton />
+          <ModalHeader textAlign="center">Buy Tez</ModalHeader>
+          {isMainnet && (
+            <>
+              <Text textAlign="center">Please select the recipient account.</Text>
+              <ModalBody>
+                <FormControl
+                  data-testid="buy-tez-selector"
+                  paddingY={5}
+                  isInvalid={!!errors.recipient}
+                >
+                  <OwnedImplicitAccountsAutocomplete
+                    label="Recipient Account"
+                    inputName="recipient"
+                    allowUnknown={false}
+                  />
+                  {errors.recipient && (
+                    <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
+                  )}
+                </FormControl>
+              </ModalBody>
+            </>
+          )}
 
-        <ModalFooter>
-          <Box width="100%" data-testid="buy-tez-button">
-            <Button width="100%" type="submit" size="lg" isDisabled={!isValid} mb={2}>
-              {title}
-            </Button>
-          </Box>
-        </ModalFooter>
-      </form>
+          <ModalFooter>
+            <Box width="100%" data-testid="buy-tez-button">
+              <Button width="100%" type="submit" size="lg" isDisabled={!isValid} mb={2}>
+                {title}
+              </Button>
+            </Box>
+          </ModalFooter>
+        </form>
+      </ModalContent>
     </FormProvider>
   );
 };

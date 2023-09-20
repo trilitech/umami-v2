@@ -21,7 +21,7 @@ describe("<BuyTezForm />", () => {
     expect(result).toHaveTextContent("Request Tez from faucet");
   });
 
-  test("renders Buy Tez from faucet on ghostnet", async () => {
+  test("renders Buy Tez from faucet on mainnet", async () => {
     store.dispatch(networksActions.setCurrent(MAINNET));
     render(fixture());
 
