@@ -57,7 +57,7 @@ describe("<SignPage />", () => {
         data: { token: mockFAToken },
       };
       render(fixture(props));
-      expect(screen.getByTestId("token-symbol")).toHaveTextContent(
+      expect(screen.getByTestId("token-tile")).toHaveTextContent(
         mockFAToken.metadata?.symbol as string
       );
     });
@@ -70,7 +70,7 @@ describe("<SignPage />", () => {
         data: { token: mockFA2Token(0, mockAccount, 1, 0) },
       };
       render(fixture(props));
-      expect(screen.getByTestId("token-amount")).toHaveValue(10);
+      expect(screen.getByTestId("pretty-number")).toHaveTextContent("10");
     });
   });
 });

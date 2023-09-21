@@ -1,22 +1,13 @@
-import {
-  Flex,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-} from "@chakra-ui/react";
+import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { FATokenBalance, FATransfer } from "./FormPage";
-import { formatTokenAmount, tokenSymbolSafe } from "../../../types/Token";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
 import SignButton from "../SignButton";
+import TokenTile from "../../TokenTile";
 
 const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const {
@@ -36,21 +27,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            {/* TODO: Until we create a token tile we use a disabled input */}
-            <FormLabel>Amount</FormLabel>
-            <InputGroup>
-              <Input
-                data-testid="token-amount"
-                isDisabled={true}
-                type="number"
-                variant="filled"
-                disabled={true}
-                value={formatTokenAmount(amount, token.metadata?.decimals)}
-              />
-              <InputRightElement pr="12px" data-testid="token-symbol">
-                {tokenSymbolSafe(token)}
-              </InputRightElement>
-            </InputGroup>
+            <TokenTile token={token} amount={amount} />
 
             <Flex mt="12px" mb="24px" alignItems="center" justifyContent="end" px="4px">
               <Flex>
