@@ -8,8 +8,8 @@ const pkh = mockImplicitAccount(0).address.pkh;
 const label = "my label";
 
 describe("<MultisigSignerTileDisplay />", () => {
+  const shrinkedAddress = formatPkh(pkh);
   it("renders the right icon with a shrinked address and label l for known addresses", () => {
-    const shrinkedAddress = formatPkh(pkh);
     render(
       <MultisigSignerTileDisplay
         kind="contact"
@@ -66,7 +66,7 @@ describe("<MultisigSignerTileDisplay />", () => {
     expect(screen.getByText(label)).toBeInTheDocument();
   });
 
-  it("renders the right icon with a full address and no label for unknown addresses", () => {
+  it("renders the right icon with no label for unknown addresses", () => {
     render(
       <MultisigSignerTileDisplay
         kind="unknown"
@@ -77,7 +77,7 @@ describe("<MultisigSignerTileDisplay />", () => {
       />
     );
     expect(screen.getByTestId("unknown-contact-icon")).toBeInTheDocument();
-    expect(screen.getByText(pkh)).toBeInTheDocument();
+    expect(screen.getByText(shrinkedAddress)).toBeInTheDocument();
     expect(screen.queryByText(label)).not.toBeInTheDocument();
   });
 });
