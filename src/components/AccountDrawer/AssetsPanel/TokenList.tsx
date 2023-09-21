@@ -1,19 +1,13 @@
-import { Box, Flex, Heading, Icon, Image, Text } from "@chakra-ui/react";
-import { MdGeneratingTokens } from "react-icons/md";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import colors from "../../../style/colors";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
-import {
-  httpIconUri,
-  tokenNameSafe,
-  tokenPrettyAmount,
-  tokenSymbolSafe,
-} from "../../../types/Token";
+import { tokenNameSafe, tokenPrettyAmount, tokenSymbolSafe } from "../../../types/Token";
 import NoItems from "../../NoItems";
+import TokenIcon from "../../../assets/icons/Token";
 
 const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {
   const name = tokenNameSafe(token);
   const symbol = tokenSymbolSafe(token);
-  const iconUri = httpIconUri(token);
   const prettyAmount = tokenPrettyAmount(token.balance, token, { showSymbol: false });
   return (
     <Flex
@@ -25,11 +19,7 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
       data-testid="token-tile"
     >
       <Flex flex={1}>
-        {iconUri ? (
-          <Image src={iconUri} w={12} h={12} />
-        ) : (
-          <Icon h={12} w={12} as={MdGeneratingTokens} />
-        )}
+        <TokenIcon w="38px" contract={token.contract} bg={colors.gray[500]} borderRadius="4px" />
         <Box ml={4}>
           <Heading data-testid="token-symbol" size="md">
             {symbol}
