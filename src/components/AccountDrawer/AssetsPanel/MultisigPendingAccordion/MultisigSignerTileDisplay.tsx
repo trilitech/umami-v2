@@ -16,13 +16,7 @@ export const MultisigSignerTileDisplay: React.FC<{
   return (
     <AccountTileBase
       icon={getIcon(kind, pkh)}
-      leftElement={
-        <LabelAndAddress
-          label={kind === "unknown" ? undefined : label}
-          pkh={pkh}
-          fullPkh={kind === "unknown"}
-        />
-      }
+      leftElement={<LabelAndAddress label={kind === "unknown" ? undefined : label} pkh={pkh} />}
       rightElement={<MultisigActionButton isLoading={isLoading} {...rest} />}
     />
   );
