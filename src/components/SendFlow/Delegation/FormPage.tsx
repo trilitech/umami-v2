@@ -6,7 +6,7 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { parsePkh, RawPkh, parseImplicitPkh } from "../../../types/Address";
 import { BakersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
@@ -21,6 +21,7 @@ import { Delegation } from "../../../types/Operation";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { HeaderWrapper } from "../FormPageHeader";
 import { useGetDelegateOf } from "../../../utils/hooks/assetsHooks";
+import { DynamicModalContext } from "../../DynamicModal";
 
 export type FormValues = {
   sender: RawPkh;
@@ -36,6 +37,7 @@ const toOperation = (formValues: FormValues): Delegation => ({
 const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const getDelegateOf = useGetDelegateOf();
   const baker = props.sender ? getDelegateOf(props.sender) : undefined;
+  const { onClose } = useContext(DynamicModalContext);
 
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
@@ -45,7 +47,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     toOperation,
   });
 
-  const addToBatch = useAddToBatchFormAction(toOperation);
+  const addToBatch = useAddToBatchFormAction(toOperation, onClose);
 
   const {
     onFormSubmitActionHandlers: [onSingleSubmit, onBatchSubmit],
