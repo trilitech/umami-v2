@@ -18,6 +18,7 @@ import { useContext } from "react";
 import DelegationFormPage from "../SendFlow/Delegation/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useGetDelegateOf } from "../../utils/hooks/assetsHooks";
+import BuyTezForm from "../BuyTez/BuyTezForm";
 
 type Props = {
   onSend: () => void;
@@ -64,6 +65,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   const getOwnedAccount = useGetOwnedAccount();
   const { openWith } = useContext(DynamicModalContext);
   const getDelegateOf = useGetDelegateOf();
+  const sender = getOwnedAccount(pkh);
   const baker = getDelegateOf(account);
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
@@ -77,14 +79,22 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
       <Flex mt={6}>
         <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
         <RoundButton label="Receive" icon={<MdSouthWest />} onClick={onReceive} />
-        {!isMultisig && <RoundButton label="Buy tez" icon={<FiPlus />} />}
+        {!isMultisig && (
+          <RoundButton
+            label="Buy tez"
+            icon={<FiPlus />}
+            onClick={() => {
+              openWith(<BuyTezForm recipient={sender.address.pkh} />);
+            }}
+          />
+        )}
         <RoundButton
           label="Delegate"
           icon={<VscWand />}
           onClick={() => {
             openWith(
               <DelegationFormPage
-                sender={getOwnedAccount(pkh)}
+                sender={sender}
                 form={baker ? { baker: baker.address, sender: pkh } : undefined}
               />
             );

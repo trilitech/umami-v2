@@ -6,9 +6,9 @@ import colors from "../style/colors";
 import { useIsLoading, useLastTimeUpdated } from "../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { assetsActions } from "../utils/redux/slices/assetsSlice";
-import useBuyTezModal from "./BuyTez/useBuyTezModal";
 import { DynamicModalContext } from "./DynamicModal";
 import SendTezForm from "./SendFlow/Tez/FormPage";
+import BuyTezForm from "./BuyTez/BuyTezForm";
 
 export const emailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
@@ -61,7 +61,6 @@ const UpdateButton = () => {
 };
 
 export const TopBar: React.FC<{ title: string }> = ({ title }) => {
-  const { modalElement, onOpen } = useBuyTezModal();
   const { openWith } = useContext(DynamicModalContext);
   return (
     <Box>
@@ -76,14 +75,13 @@ export const TopBar: React.FC<{ title: string }> = ({ title }) => {
               Share Feedback
             </Button>
           </a>
-          <Button variant="tertiary" onClick={onOpen}>
+          <Button variant="tertiary" onClick={() => openWith(<BuyTezForm />)}>
             Buy Tez
           </Button>
           <Button ml={4} onClick={() => openWith(<SendTezForm />)}>
             Send
           </Button>
         </Box>
-        {modalElement}
       </Flex>
       <Divider />
     </Box>
