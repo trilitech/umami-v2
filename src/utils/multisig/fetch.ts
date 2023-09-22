@@ -18,15 +18,20 @@ export const getAllMultiSigContracts = (network: Network): Promise<RawTzktGetSam
     }
   });
 
-// get all pending operations for a multisig contract address
+// get all pending operations for a multisig contract address specified by the big map id
 export const getPendingOperations = (
   bigMaps: number[],
   network: Network
-): Promise<RawTzktGetBigMapKeys> =>
-  withRateLimit(async () => {
+): Promise<RawTzktGetBigMapKeys> => {
+  if (bigMaps.length === 0) {
+    return Promise.resolve([]);
+  }
+
+  return withRateLimit(async () => {
     const url = `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(
       ","
     )}&limit=${MULTISIG_FETCH_LIMIT}`;
     const { data } = await axios.get<RawTzktGetBigMapKeys>(url);
     return data;
   });
+};

@@ -48,14 +48,18 @@ const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperatio
 export const getPendingOperationsForMultisigs = async (
   multisigs: Multisig[],
   network: Network
-): Promise<MultisigOperation[]> =>
-  withRateLimit(async () => {
+): Promise<MultisigOperation[]> => {
+  if (multisigs.length === 0) {
+    return [];
+  }
+  return withRateLimit(async () => {
     const bigmapIds = multisigs.map(m => m.pendingOperationsBigmapId);
 
     const response = await getPendingOperations(bigmapIds, network);
 
     return compact(response.map(parseMultisigOperation));
   });
+};
 
 export const multisigToAccount = (multisig: Multisig, label: string): MultisigAccount => {
   return {
