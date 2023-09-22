@@ -13,7 +13,6 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
     <Flex
       justifyContent="space-around"
       alignItems="center"
-      mb={2}
       borderBottom={`1px solid ${colors.gray[800]}`}
       h={20}
       data-testid="token-tile"
