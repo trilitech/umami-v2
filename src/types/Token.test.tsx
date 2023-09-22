@@ -9,7 +9,6 @@ import {
   artifactUri,
   formatTokenAmount,
   fromRaw,
-  httpIconUri,
   metadataUri,
   mimeType,
   royalties,
@@ -221,42 +220,6 @@ describe("tokenSymbolSafe", () => {
 
     nft.metadata = {};
     expect(tokenSymbolSafe(nft)).toEqual("NFT");
-  });
-});
-
-describe("httpIconUri", () => {
-  test("when metadata.symbol exists", () => {
-    const fa1token: FA12Token = {
-      type: "fa1.2",
-      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      tokenId: "0",
-    };
-    expect(httpIconUri(fa1token)).toEqual(undefined);
-    const fa1tokenWithIcon = {
-      ...fa1token,
-      metadata: {
-        icon: "ipfs://QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
-      },
-    };
-    expect(httpIconUri(fa1tokenWithIcon)).toEqual(
-      "https://ipfs.io/ipfs/QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs"
-    );
-
-    const fa2token: FA2Token = {
-      type: "fa2",
-      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
-      tokenId: "123",
-    };
-    expect(httpIconUri(fa2token)).toEqual(undefined);
-    const fa2tokenWithIcon = {
-      ...fa2token,
-      metadata: {
-        thumbnailUri: "ipfs://QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
-      },
-    };
-    expect(httpIconUri(fa2tokenWithIcon)).toEqual(
-      "https://ipfs.io/ipfs/QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs"
-    );
   });
 });
 

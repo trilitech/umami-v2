@@ -3,8 +3,6 @@ import {
   Card,
   Flex,
   Heading,
-  Icon,
-  Image,
   Table,
   TableContainer,
   Tbody,
@@ -16,18 +14,19 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { FiExternalLink } from "react-icons/fi";
-import { MdArrowOutward, MdGeneratingTokens } from "react-icons/md";
+import { MdArrowOutward } from "react-icons/md";
 import { IconAndTextBtn, IconAndTextBtnLink } from "../../components/IconAndTextBtn";
 import { Identicon } from "../../components/Identicon";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
-import { httpIconUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
+import { tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { formatPkh } from "../../utils/format";
 import { buildTzktAddressUrl } from "../../utils/tzkt/helpers";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import SendTokenFormPage from "../../components/SendFlow/Token/FormPage";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import TokenIcon from "../../assets/icons/Token";
 
 const AccountTokensTileHeader: React.FC<{
   pkh: string;
@@ -81,16 +80,11 @@ const AccountTokensTile: React.FC<{
           </Thead>
           <Tbody>
             {tokens.map((token, i) => {
-              const iconUri = httpIconUri(token);
               return (
                 <Tr key={`${token.contract}${i}`}>
                   <Td w="15%">
-                    <Flex alignItems="cnenter">
-                      {iconUri ? (
-                        <Image src={iconUri} w={8} h={8} />
-                      ) : (
-                        <Icon h={8} w={8} as={MdGeneratingTokens} />
-                      )}
+                    <Flex alignItems="center">
+                      <TokenIcon contract={token.contract} w="38px" />
 
                       <Heading size="sm" p={2} marginX={2}>
                         {tokenNameSafe(token)}

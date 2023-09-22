@@ -2,7 +2,6 @@ import * as tzktApi from "@tzkt/sdk-api";
 import { z } from "zod";
 import { Schema as AddressSchema } from "./Address";
 import BigNumber from "bignumber.js";
-import { getIPFSurl } from "../utils/token/nftUtils";
 import { Network } from "./Network";
 
 // TzKT defines metadada as any, but we need to have at least some clarity of what can be inside
@@ -188,19 +187,6 @@ export const tokenSymbol = (token: Token): string | undefined => token.metadata?
 
 export const tokenDecimals = (asset: Token): string => {
   return asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
-};
-
-export const httpIconUri = (asset: FA12Token | FA2Token): string | undefined => {
-  let iconUri;
-  switch (asset.type) {
-    case "fa1.2":
-      iconUri = asset.metadata?.icon;
-      break;
-    case "fa2":
-      iconUri = asset.metadata?.thumbnailUri;
-      break;
-  }
-  return iconUri && getIPFSurl(iconUri);
 };
 
 export const getRealAmount = (asset: Token, prettyAmount: string): BigNumber => {
