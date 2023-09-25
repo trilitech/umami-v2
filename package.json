@@ -99,7 +99,7 @@
     "cross-env": "^7.0.3",
     "date-fns": "^2.30.0",
     "electron": "^23.3.12",
-    "electron-builder": "^23.6.0",
+    "electron-builder": "^24.6.4",
     "electron-notarize": "^1.2.2",
     "electronmon": "^2.0.2",
     "eslint": "^8.47.0",
@@ -201,7 +201,11 @@
             "x64"
           ]
         }
-      ]
+      ],
+      "notarize": {
+        "appBundleId": "com.trilitech.umami",
+        "teamId": "JHLP96SU5D"
+      }
     },
     "win": {
       "icon": "build/logo512.png",
@@ -245,8 +249,7 @@
       "schemes": [
         "umami"
       ]
-    },
-    "afterSign": "scripts/notarize.js"
+    }
   },
   "packageManager": "yarn@3.5.0",
   "resolutions": {
