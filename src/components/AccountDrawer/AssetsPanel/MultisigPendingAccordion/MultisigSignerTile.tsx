@@ -59,7 +59,6 @@ const MultisigSignerTile: React.FC<{
 
   return (
     <MultisigSignerTileDisplay
-      pkh={signerAddress.pkh}
       addressKind={addressKind}
       signerState={getMultisigSignerState({
         approvals: operation.approvals,

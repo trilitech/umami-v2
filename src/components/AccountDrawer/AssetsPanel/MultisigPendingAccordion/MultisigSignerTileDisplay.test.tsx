@@ -6,17 +6,16 @@ import { MultisigSignerTileDisplay } from "./MultisigSignerTileDisplay";
 
 const pkh = mockImplicitAccount(0).address.pkh;
 const label = "my label";
+const shrinkedAddress = formatPkh(pkh);
 
 describe("<MultisigSignerTileDisplay />", () => {
-  const shrinkedAddress = formatPkh(pkh);
   it("renders the right icon with a shrinked address and label l for known addresses", () => {
     render(
       <MultisigSignerTileDisplay
-        kind="contact"
-        pkh={pkh}
+        addressKind={{ type: "contact", pkh, label }}
         signerState="approvable"
         onClickApproveExecute={() => {}}
-        label={label}
+        isLoading={false}
       />
     );
     expect(screen.getByTestId("contact-icon")).toBeInTheDocument();
@@ -26,11 +25,10 @@ describe("<MultisigSignerTileDisplay />", () => {
     cleanup();
     render(
       <MultisigSignerTileDisplay
-        kind={AccountType.LEDGER}
-        pkh={pkh}
+        addressKind={{ type: AccountType.LEDGER, pkh, label }}
         signerState="approvable"
         onClickApproveExecute={() => {}}
-        label={label}
+        isLoading={false}
       />
     );
     expect(screen.getByTestId("ledger-icon")).toBeInTheDocument();
@@ -40,11 +38,10 @@ describe("<MultisigSignerTileDisplay />", () => {
     cleanup();
     render(
       <MultisigSignerTileDisplay
-        kind={AccountType.MNEMONIC}
-        pkh={pkh}
+        addressKind={{ type: "mnemonic", pkh, label }}
         signerState="approvable"
         onClickApproveExecute={() => {}}
-        label={label}
+        isLoading={false}
       />
     );
     expect(screen.getByTestId("identicon")).toBeInTheDocument();
@@ -54,11 +51,10 @@ describe("<MultisigSignerTileDisplay />", () => {
     cleanup();
     render(
       <MultisigSignerTileDisplay
-        kind={AccountType.SOCIAL}
-        pkh={pkh}
+        addressKind={{ type: "social", pkh, label }}
         signerState="approvable"
         onClickApproveExecute={() => {}}
-        label={label}
+        isLoading={false}
       />
     );
     expect(screen.getByTestId("social-icon")).toBeInTheDocument();
@@ -66,14 +62,13 @@ describe("<MultisigSignerTileDisplay />", () => {
     expect(screen.getByText(label)).toBeInTheDocument();
   });
 
-  it("renders the right icon with no label for unknown addresses", () => {
+  it("renders the right icon and no label for unknown addresses", () => {
     render(
       <MultisigSignerTileDisplay
-        kind="unknown"
-        pkh={pkh}
+        addressKind={{ type: "unknown", pkh, label: null }}
         signerState="approvable"
         onClickApproveExecute={() => {}}
-        label={label}
+        isLoading={false}
       />
     );
     expect(screen.getByTestId("unknown-contact-icon")).toBeInTheDocument();
