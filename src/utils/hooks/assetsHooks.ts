@@ -8,10 +8,7 @@ import {
   NFTBalance,
 } from "../../types/TokenBalance";
 import { OperationDisplay } from "../../types/Transfer";
-import {
-  getOperationDisplays,
-  sortOperationsByTimestamp,
-} from "../../views/operations/operationsUtils";
+import { sortOperationsByTimestamp } from "../../views/operations/operationsUtils";
 import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
 import { useAllAccounts } from "./accountHooks";
@@ -20,7 +17,6 @@ import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
 import { Account } from "../../types/Account";
 import { Delegate } from "../../types/Delegate";
-import { useSelectedNetwork } from "./networkHooks";
 
 export const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
 
@@ -79,14 +75,9 @@ export const useGetAccountNFTs = () => {
 
 export const useAllTransfers = () => useAppSelector(s => s.assets.transfers);
 
+// TODO: replace
 export const useGetAccountOperationDisplays = () => {
-  const { tez, tokens } = useAllTransfers();
-  const delegations = useAllDelegations();
-
-  const network = useSelectedNetwork();
-
-  return (pkh: string) =>
-    getOperationDisplays(tez[pkh], tokens[pkh], delegations[pkh], pkh, network);
+  return (pkh: string) => [];
 };
 
 export const useGetOperationDisplays = (): Record<string, OperationDisplay[] | undefined> => {

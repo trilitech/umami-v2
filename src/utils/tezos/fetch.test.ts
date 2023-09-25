@@ -100,12 +100,10 @@ describe("tezos utils fetch", () => {
     });
 
     test("getTokenTransfers", async () => {
-      await getTokenTransfers(mockImplicitAddress(0).pkh, network);
+      await getTokenTransfers([1, 2, 3], network);
       expect(tokensGetTokenTransfers).toBeCalledWith(
         {
-          anyof: { fields: ["from", "to"], eq: mockImplicitAddress(0).pkh },
-          sort: { desc: "level" },
-          limit: 10,
+          transactionId: { in: [1, 2, 3] },
         },
         {
           baseUrl: network.tzktApiUrl,

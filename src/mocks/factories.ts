@@ -69,6 +69,7 @@ export const mockTokenTransaction = (id: number) => {
   return {
     from: { address: `mockSender${id}` },
     to: { address: `mockTarget${id}` },
+    transactionId: 100 + id,
   } as TokenTransfer;
 };
 

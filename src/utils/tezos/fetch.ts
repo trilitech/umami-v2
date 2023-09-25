@@ -164,17 +164,14 @@ export const getCombinedOperations = async (
   ).slice(0, limit);
 };
 
-export const getTokenTransfers = (address: RawPkh, network: Network): Promise<TokenTransfer[]> =>
+export const getTokenTransfers = (
+  transactionIds: number[],
+  network: Network
+): Promise<TokenTransfer[]> =>
   withRateLimit(() =>
     tokensGetTokenTransfers(
-      {
-        anyof: { fields: ["from", "to"], eq: address },
-        sort: { desc: "level" },
-        limit: 10,
-      },
-      {
-        baseUrl: network.tzktApiUrl,
-      }
+      { transactionId: { in: transactionIds } },
+      { baseUrl: network.tzktApiUrl }
     )
   );
 

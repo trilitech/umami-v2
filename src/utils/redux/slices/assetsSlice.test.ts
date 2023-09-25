@@ -242,72 +242,19 @@ describe("assetsSlice", () => {
   });
 
   test("token transfers are upserted", () => {
-    store.dispatch(
-      updateTokenTransfers([
-        {
-          pkh: "foo",
-          transfers: [mockTokenTransaction(1), mockTokenTransaction(2)],
-        },
-        { pkh: "bar", transfers: [mockTokenTransaction(3)] },
-      ])
-    );
+    store.dispatch(updateTokenTransfers([mockTokenTransaction(1), mockTokenTransaction(2)]));
 
-    expect(store.getState().assets).toEqual({
-      conversionRate: null,
-      balances: {
-        mutez: {},
-        tokens: {},
-      },
-      delegations: {},
-      bakers: [],
-      transfers: {
-        tokens: {
-          foo: [mockTokenTransaction(1), mockTokenTransaction(2)],
-          bar: [mockTokenTransaction(3)],
-        },
-        tez: {},
-      },
-      blockLevel: null,
-      refetchTrigger: 0,
-      lastTimeUpdated: null,
-      isLoading: false,
-      latestOperations: [],
+    expect(store.getState().assets.transfers.tokens).toEqual({
+      101: mockTokenTransaction(1),
+      102: mockTokenTransaction(2),
     });
 
-    store.dispatch(
-      updateTokenTransfers([
-        {
-          pkh: "foo",
-          transfers: [mockTokenTransaction(4)],
-        },
-        {
-          pkh: "baz",
-          transfers: [mockTokenTransaction(5)],
-        },
-      ])
-    );
+    store.dispatch(updateTokenTransfers([mockTokenTransaction(4)]));
 
-    expect(store.getState().assets).toEqual({
-      conversionRate: null,
-      balances: {
-        mutez: {},
-        tokens: {},
-      },
-      delegations: {},
-      bakers: [],
-      transfers: {
-        tokens: {
-          foo: [mockTokenTransaction(4)],
-          bar: [mockTokenTransaction(3)],
-          baz: [mockTokenTransaction(5)],
-        },
-        tez: {},
-      },
-      blockLevel: null,
-      refetchTrigger: 0,
-      lastTimeUpdated: null,
-      isLoading: false,
-      latestOperations: [],
+    expect(store.getState().assets.transfers.tokens).toEqual({
+      101: mockTokenTransaction(1),
+      102: mockTokenTransaction(2),
+      104: mockTokenTransaction(4),
     });
   });
 });

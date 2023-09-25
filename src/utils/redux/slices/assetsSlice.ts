@@ -8,6 +8,8 @@ import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBala
 import { Delegate } from "../../../types/Delegate";
 import { RawPkh } from "../../../types/Address";
 
+type TransactionId = number;
+
 type State = {
   blockLevel: number | null;
   balances: {
@@ -16,7 +18,7 @@ type State = {
   };
   transfers: {
     tez: Record<string, TezTransfer[] | undefined>;
-    tokens: Record<string, TokenTransfer[] | undefined>;
+    tokens: Record<TransactionId, TokenTransfer | undefined>;
   };
   latestOperations: TzktCombinedOperation[];
   delegations: Record<string, DelegationOperation | undefined>;
@@ -30,10 +32,6 @@ type State = {
 export type TezTransfersPayload = {
   pkh: RawPkh;
   transfers: TezTransfer[];
-};
-export type TokenTransfersPayload = {
-  pkh: RawPkh;
-  transfers: TokenTransfer[];
 };
 
 export type DelegationPayload = {
@@ -81,20 +79,10 @@ const assetsSlice = createSlice({
       });
       state.transfers.tez = newTezTransfers;
     },
-    // TODO refactor duplication
-    updateTokenTransfers: (
-      state,
-      { payload }: { type: string; payload: TokenTransfersPayload[] }
-    ) => {
-      const tezOperationsPayload = payload;
-      const newTezTransfers = { ...state.transfers.tokens };
-
-      tezOperationsPayload.forEach(op => {
-        const { pkh, transfers } = op;
-        newTezTransfers[pkh] = transfers;
+    updateTokenTransfers: (state, { payload: transfers }: { payload: TokenTransfer[] }) => {
+      transfers.forEach(transfer => {
+        state.transfers.tokens[transfer.transactionId as number] = transfer;
       });
-
-      state.transfers.tokens = newTezTransfers;
     },
 
     updateTezBalance: (state, { payload }: { payload: TzktAccount[] }) => {
