@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
 import { ImplicitAddress } from "../../../../types/Address";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
-import { useGetContactName } from "../../../../utils/hooks/contactsHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import { MultisigSignerState } from "./MultisigActionButton";
@@ -14,6 +13,7 @@ import SignPage from "../../../SendFlow/Multisig/SignPage";
 import { MultisigSignerTileDisplay } from "./MultisigSignerTileDisplay";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
+import useAddressKind from "../../../AddressTile/useAddressKind";
 
 const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;
@@ -21,24 +21,15 @@ const MultisigSignerTile: React.FC<{
   operation: MultisigOperation;
   sender: MultisigAccount;
 }> = ({ pendingApprovals, sender, operation, signerAddress }) => {
-  const getContactName = useGetContactName();
+  const addressKind = useAddressKind(signerAddress);
   const getImplicitAccount = useGetImplicitAccountSafe();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
   const network = useSelectedNetwork();
 
-  const implicitAccount = getImplicitAccount(signerAddress.pkh);
-  const contactName = getContactName(signerAddress.pkh);
-
-  const accountLabel = implicitAccount?.label;
-
-  const label = accountLabel || contactName;
-
   const signer = getImplicitAccount(signerAddress.pkh);
 
   const operationIsExecutable = pendingApprovals === 0;
-
-  const kind = contactName ? "contact" : signer?.type ?? "unknown";
 
   const onButtonClick = () =>
     handleAsyncAction(async () => {
@@ -68,9 +59,8 @@ const MultisigSignerTile: React.FC<{
 
   return (
     <MultisigSignerTileDisplay
-      kind={kind}
       pkh={signerAddress.pkh}
-      label={label}
+      addressKind={addressKind}
       signerState={getMultisigSignerState({
         approvals: operation.approvals,
         signerAddress,
