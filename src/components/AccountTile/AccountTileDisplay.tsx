@@ -42,7 +42,10 @@ export const AccountTileBase: React.FC<
   );
 };
 
-export const LabelAndAddress: React.FC<{ label?: string; pkh: string }> = ({ label, pkh }) => {
+export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = ({
+  label,
+  pkh,
+}) => {
   return (
     <Box m={4} data-testid="account-identifier">
       {label && <Heading size="md">{label}</Heading>}

@@ -1,22 +1,20 @@
 import React from "react";
 import { AccountType } from "../../../../types/Account";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTileDisplay";
-import { getIcon } from "../../../AccountTile/getIcon";
-import { AddressKind } from "../../../AccountTile/AddressKind";
 import MultisigActionButton, { MultisigSignerState } from "./MultisigActionButton";
+import { AddressKind } from "../../../AddressTile/types";
+import AccountTileIcon from "../../../AccountTile/AccountTileIcon";
 
 export const MultisigSignerTileDisplay: React.FC<{
-  pkh: string;
-  label?: string;
   onClickApproveExecute: () => void;
   signerState: MultisigSignerState;
-  isLoading?: boolean;
-  kind: Exclude<AddressKind, AccountType.MULTISIG>;
-}> = ({ pkh, label, isLoading = false, kind, ...rest }) => {
+  isLoading: boolean;
+  addressKind: Exclude<AddressKind, AccountType.MULTISIG>;
+}> = ({ isLoading, addressKind, ...rest }) => {
   return (
     <AccountTileBase
-      icon={getIcon(kind, pkh)}
-      leftElement={<LabelAndAddress label={kind === "unknown" ? undefined : label} pkh={pkh} />}
+      icon={<AccountTileIcon addressKind={addressKind} />}
+      leftElement={<LabelAndAddress label={addressKind.label} pkh={addressKind.pkh} />}
       rightElement={<MultisigActionButton isLoading={isLoading} {...rest} />}
     />
   );
