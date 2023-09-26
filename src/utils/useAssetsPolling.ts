@@ -18,6 +18,7 @@ import { tokensActions } from "./redux/slices/tokensSlice";
 import {
   getAccounts,
   getBakers,
+  getCombinedOperations,
   getLastDelegation,
   getLatestBlockLevel,
   getTezosPriceInUSD,
@@ -103,6 +104,11 @@ const updateTokenTransfers = async (dispatch: AppDispatch, network: Network, pkh
   dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
 };
 
+const updateOperations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
+  const operations = await getCombinedOperations(pkhs, network);
+  dispatch(assetsActions.updateOperations(operations));
+};
+
 const updateAccountAssets = async (
   dispatch: AppDispatch,
   network: Network,
@@ -129,6 +135,7 @@ const updateAccountAssets = async (
       updateTezTransfers(dispatch, network, allAccountAddresses),
       updateDelegations(dispatch, network, allAccountAddresses),
       updateTokenTransfers(dispatch, network, allAccountAddresses),
+      updateOperations(dispatch, network, allAccountAddresses),
     ]);
     dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
   } finally {

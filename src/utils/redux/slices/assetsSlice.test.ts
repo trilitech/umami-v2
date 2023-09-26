@@ -30,6 +30,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
   });
 
@@ -51,6 +52,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
 
     store.dispatch(
@@ -76,6 +78,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
   });
 
@@ -109,6 +112,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
   });
 
@@ -136,6 +140,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
   });
 
@@ -161,6 +166,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
   });
 
@@ -194,6 +200,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
 
     store.dispatch(
@@ -229,6 +236,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
     store.dispatch(networksActions.setCurrent(GHOSTNET));
   });
@@ -263,6 +271,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
 
     store.dispatch(
@@ -298,6 +307,7 @@ describe("assetsSlice", () => {
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
+      latestOperations: [],
     });
   });
 });
