@@ -4,16 +4,17 @@ import { ImplicitAddress } from "../../../../types/Address";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import { MultisigSignerState } from "./MultisigActionButton";
+import MultisigActionButton, { MultisigSignerState } from "./MultisigActionButton";
 import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import { estimate } from "../../../../utils/tezos";
 import { DynamicModalContext } from "../../../DynamicModal";
 import SignPage from "../../../SendFlow/Multisig/SignPage";
-import { MultisigSignerTileDisplay } from "./MultisigSignerTileDisplay";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import useAddressKind from "../../../AddressTile/useAddressKind";
+import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTileDisplay";
+import AccountTileIcon from "../../../AccountTile/AccountTileIcon";
 
 const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;
@@ -31,7 +32,7 @@ const MultisigSignerTile: React.FC<{
 
   const operationIsExecutable = pendingApprovals === 0;
 
-  const onButtonClick = () =>
+  const onClickApproveExecute = () =>
     handleAsyncAction(async () => {
       if (!signer) {
         throw new Error("Can't approve or execute with an account you don't own");
@@ -57,17 +58,24 @@ const MultisigSignerTile: React.FC<{
       );
     });
 
+  const signerState = getMultisigSignerState({
+    approvals: operation.approvals,
+    signerAddress,
+    operationIsExecutable,
+    signerAccount: signer,
+  });
+
   return (
-    <MultisigSignerTileDisplay
-      addressKind={addressKind}
-      signerState={getMultisigSignerState({
-        approvals: operation.approvals,
-        signerAddress,
-        operationIsExecutable,
-        signerAccount: signer,
-      })}
-      onClickApproveExecute={onButtonClick}
-      isLoading={isLoading}
+    <AccountTileBase
+      icon={<AccountTileIcon addressKind={addressKind} />}
+      leftElement={<LabelAndAddress label={addressKind.label} pkh={addressKind.pkh} />}
+      rightElement={
+        <MultisigActionButton
+          isLoading={isLoading}
+          signerState={signerState}
+          onClickApproveExecute={onClickApproveExecute}
+        />
+      }
     />
   );
 };
