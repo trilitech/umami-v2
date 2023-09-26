@@ -83,7 +83,7 @@ const theme = extendTheme({
     FormLabel: {
       baseStyle: {
         fontWeight: "600",
-        marginBottom: "4px",
+        marginBottom: "12px",
         size: "md",
       },
       sizes,
