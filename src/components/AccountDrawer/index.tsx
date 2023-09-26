@@ -4,7 +4,6 @@ import {
   useGetAccountAllTokens,
   useGetAccountBalance,
   useGetAccountNFTs,
-  useGetAccountOperationDisplays,
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
 import { DynamicModalContext } from "../DynamicModal";
@@ -12,6 +11,7 @@ import { ReceiveModal } from "../ReceiveModal";
 import SendTezForm from "../SendFlow/Tez/FormPage";
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { useGetOperations } from "../../views/operations/useGetOperations";
 
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const accountBalance = useGetAccountBalance();
@@ -19,7 +19,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
 
   const getTokens = useGetAccountAllTokens();
   const getNFTs = useGetAccountNFTs();
-  const getOperations = useGetAccountOperationDisplays();
+  const { operations } = useGetOperations(); // TODO: apply filtering
   const network = useSelectedNetwork();
 
   const { openWith } = useContext(DynamicModalContext);
@@ -29,7 +29,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
 
   const tokens = getTokens(account.address.pkh);
   const nfts = getNFTs(account.address.pkh);
-  const operations = getOperations(account.address.pkh);
+
   return (
     <>
       <AccountDrawerDisplay
@@ -43,7 +43,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
         }}
         tokens={tokens}
         nfts={nfts}
-        operationDisplays={operations}
+        operationDisplays={[]} // TODO: replace current component with the underlying one
         account={account}
         network={network}
       />

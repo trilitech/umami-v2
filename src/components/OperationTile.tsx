@@ -1,77 +1,48 @@
-import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Link, LinkProps, Text } from "@chakra-ui/react";
 import React from "react";
-import { AiOutlineCheckCircle } from "react-icons/ai";
-import { BsArrowDownLeft, BsArrowUpRight } from "react-icons/bs";
 import colors from "../style/colors";
 import { useGetTokenTransfer, useIsBlockFinalised } from "../utils/hooks/assetsHooks";
-import { OperationDisplay } from "../types/Transfer";
-import { getIsInbound } from "../views/operations/operationsUtils";
+import { TokenTransfer } from "../types/Transfer";
+import { getHashUrl } from "../views/operations/operationsUtils";
 import AddressPill from "./AddressPill/AddressPill";
-import { TzktCombinedOperation, TransactionOperation } from "../utils/tezos";
+import {
+  TzktCombinedOperation,
+  TransactionOperation,
+  DelegationOperation,
+  OriginationOperation,
+} from "../utils/tezos";
 import { RawPkh, parsePkh } from "../types/Address";
 import { useAllAccounts } from "../utils/hooks/accountHooks";
 import { formatRelative } from "date-fns";
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../utils/format";
 import { useGetToken } from "../utils/hooks/tokensHooks";
+import { tokenNameSafe, tokenPrettyAmount } from "../types/Token";
+import { useSelectedNetwork } from "../utils/hooks/networkHooks";
+import CheckmarkIcon from "../assets/icons/Checkmark";
+import CrossedCircleIcon from "../assets/icons/CrossedCircle";
+import HourglassIcon from "../assets/icons/Hourglass";
+import { CODE_HASH, TYPE_HASH } from "../utils/multisig/fetch";
+import BakerIcon from "../assets/icons/Baker";
+import IncomingArrow from "../assets/icons/IncomingArrow";
+import OutgoingArrow from "../assets/icons/OutgoingArrow";
+import Contract from "../assets/icons/Contract";
 
-const TokenTransferTile: React.FC<{
-  operation: TransactionOperation;
-  tokenId: string;
-  contract: RawPkh;
-}> = ({ operation, tokenId, contract }) => {
-  const getToken = useGetToken();
-  const isIncoming = useIsIncomingOperation(operation);
+// TODO: add smaller version for the drawer without fee, transaction type, from/to based on the current selected account
 
-  const token = getToken(contract, tokenId);
-  const isNFT = token?.type === "nft";
-
-  const amount = isNFT ? operation.amount : ;
-
+const TzktLink: React.FC<
+  React.PropsWithChildren<{ operation: TzktCombinedOperation } & LinkProps>
+> = ({ operation, children, ...props }) => {
+  const network = useSelectedNetwork();
+  const url = getHashUrl({
+    hash: operation.hash as string, // TODO: use zod
+    counter: operation.counter as number, // TODO: use zod
+    network,
+  });
   return (
-    <Flex direction="column" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
-        <Flex>
-          <Flex mr="8px">
-            {isIncoming ? (
-              <Text fontWeight="600" color={colors.orange}>
-                - {prettyTezAmount(String(operation.amount))}
-              </Text>
-            ) : (
-              <Text fontWeight="600" color={colors.green}>
-                + {prettyTezAmount(String(operation.amount))}
-              </Text>
-            )}
-          </Flex>
-          <Fee operation={operation} />
-        </Flex>
-        <Flex alignSelf="flex-end">
-          <Timestamp timestamp={operation.timestamp} />
-        </Flex>
-      </Flex>
-      <Box>
-        <Flex justifyContent="space-between">
-          <Flex>
-            <Flex mr="15px">
-              <Text mr="6px" color={colors.gray[450]}>
-                From:
-              </Text>
-              <AddressPill address={parsePkh(operation.sender?.address as string)} />
-            </Flex>
-
-            <Flex>
-              <Text mr="6px" color={colors.gray[450]}>
-                To:
-              </Text>
-              <AddressPill address={parsePkh(operation.target?.address as string)} />
-            </Flex>
-          </Flex>
-          <Flex alignSelf="flex-end">
-            <Text color={colors.gray[300]}>Transaction</Text>
-          </Flex>
-        </Flex>
-      </Box>
-    </Flex>
+    <Link href={url} isExternal {...props}>
+      {children}
+    </Link>
   );
 };
 
@@ -81,13 +52,17 @@ const Fee: React.FC<{ operation: TzktCombinedOperation }> = ({ operation }) => {
     fee = fee.plus(operation.storageFee || 0);
   }
 
-  if (fee.gt(0)) {
+  if ("allocationFee" in operation) {
+    fee = fee.plus(operation.allocationFee || 0);
+  }
+
+  if (fee.eq(0)) {
     return null;
   }
 
   return (
-    <Flex>
-      <Heading color={colors.gray[450]} mr="4px">
+    <Flex align="center">
+      <Heading size="sm" color={colors.gray[450]} mr="4px">
         Fee:
       </Heading>
       <Text color={colors.gray[400]}>{prettyTezAmount(fee)}</Text>
@@ -95,10 +70,22 @@ const Fee: React.FC<{ operation: TzktCombinedOperation }> = ({ operation }) => {
   );
 };
 
-const useIsIncomingOperation = (operation: TransactionOperation) => {
+const OperationStatus: React.FC<{ operation: TzktCombinedOperation }> = ({ operation }) => {
+  const isFinalised = useIsBlockFinalised(operation.level as number); // TODO: use zod
+
+  if (operation.status === "applied") {
+    if (isFinalised) {
+      return <CheckmarkIcon />;
+    } else {
+      return <HourglassIcon />;
+    }
+  }
+  return <CrossedCircleIcon />;
+};
+
+export const useIsIncomingOperation = (operation: TransactionOperation) => {
   const ownedAccounts = useAllAccounts();
-  // TODO: check how that works!
-  return !ownedAccounts.map(acc => acc.address.pkh).includes(operation.target?.address as string);
+  return ownedAccounts.map(acc => acc.address.pkh).includes(operation.target?.address as string);
 };
 
 const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timestamp }) => {
@@ -111,22 +98,269 @@ const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timestamp }) =
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
   const isIncoming = useIsIncomingOperation(operation);
+  const amount = prettyTezAmount(String(operation.amount));
 
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
-        <Flex>
-          <Flex mr="8px">
-            {isIncoming ? (
-              <Text fontWeight="600" color={colors.orange}>
-                - {prettyTezAmount(String(operation.amount))}
+        <Flex align="center">
+          {isIncoming ? (
+            <>
+              <IncomingArrow mr="8px" />
+              <TzktLink operation={operation} mr="8px">
+                <Text fontWeight="600" size="sm" color={colors.green}>
+                  + {amount}
+                </Text>
+              </TzktLink>
+            </>
+          ) : (
+            <>
+              <OutgoingArrow mr="8px" />
+              <TzktLink operation={operation} mr="8px">
+                <Text fontWeight="600" size="sm" color={colors.orange}>
+                  - {amount}
+                </Text>
+              </TzktLink>
+            </>
+          )}
+          <Fee operation={operation} />
+        </Flex>
+        <Flex alignSelf="flex-end">
+          <Timestamp timestamp={operation.timestamp} />
+        </Flex>
+      </Flex>
+      <Box>
+        <Flex justifyContent="space-between">
+          <Flex>
+            <Flex mr="15px">
+              <Text mr="6px" color={colors.gray[450]}>
+                To:
               </Text>
-            ) : (
-              <Text fontWeight="600" color={colors.green}>
-                + {prettyTezAmount(String(operation.amount))}
+              {/* TODO: use zod */}
+              <AddressPill address={parsePkh(operation.target?.address as string)} />
+            </Flex>
+            <Flex>
+              <Text mr="6px" color={colors.gray[450]}>
+                From:
               </Text>
-            )}
+              {/* TODO: use zod */}
+              <AddressPill address={parsePkh(operation.sender?.address as string)} />
+            </Flex>
           </Flex>
+          <Flex alignSelf="flex-end" align="center">
+            <Text color={colors.gray[300]} mr="4px">
+              Transaction
+            </Text>
+            <OperationStatus operation={operation} />
+          </Flex>
+        </Flex>
+      </Box>
+    </Flex>
+  );
+};
+
+const TokenTransferTile: React.FC<{
+  operation: TransactionOperation;
+  tokenTransfer: TokenTransfer;
+}> = ({ operation, tokenTransfer }) => {
+  const tokenId = tokenTransfer.token.tokenId as string; // TODO: use zod
+  const contract = tokenTransfer.token.contract.address as RawPkh; // TODO: use zod
+  const rawAmount = tokenTransfer.amount as string; // TODO: use zod
+
+  const getToken = useGetToken();
+  const isIncoming = useIsIncomingOperation(operation);
+
+  const token = getToken(contract, tokenId);
+  if (!token) {
+    // If we don't have the token yet to present it's fine to fallback to
+    // the transaction tile because it is a transaction by nature
+    return <TransactionTile operation={operation} />;
+  }
+  const tokenAmount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
+
+  const tokenNameElement = (
+    <Text display="inline" fontWeight="600" size="sm">
+      {" "}
+      {tokenNameSafe(token)}
+    </Text>
+  );
+
+  return (
+    <Flex direction="column" w="100%">
+      <Flex justifyContent="space-between" mb="10px">
+        <Flex align="center">
+          {isIncoming ? (
+            <>
+              <IncomingArrow mr="8px" />
+              <TzktLink operation={operation} mr="8px">
+                <Text display="inline" fontWeight="600" size="sm" color={colors.green}>
+                  + {tokenAmount}
+                </Text>
+                {token.type === "nft" && tokenNameElement}
+              </TzktLink>
+            </>
+          ) : (
+            <>
+              <OutgoingArrow mr="8px" />
+              <TzktLink operation={operation} mr="8px">
+                <Text display="inline" fontWeight="600" size="sm" color={colors.orange}>
+                  - {tokenAmount}
+                </Text>
+                {token.type === "nft" && tokenNameElement}
+              </TzktLink>
+            </>
+          )}
+
+          <Fee operation={operation} />
+        </Flex>
+        <Flex alignSelf="flex-end">
+          <Timestamp timestamp={operation.timestamp} />
+        </Flex>
+      </Flex>
+      <Box>
+        <Flex justifyContent="space-between">
+          <Flex>
+            <Flex mr="15px">
+              <Text mr="6px" color={colors.gray[450]}>
+                To:
+              </Text>
+              {/* TODO: use zod */}
+
+              <AddressPill address={parsePkh(tokenTransfer.to?.address as string)} />
+            </Flex>
+            <Flex>
+              <Text mr="6px" color={colors.gray[450]}>
+                From:
+              </Text>
+              {/* TODO: use zod */}
+
+              <AddressPill address={parsePkh(operation.sender?.address as string)} />
+            </Flex>
+          </Flex>
+          <Flex alignSelf="flex-end" align="center">
+            <Text color={colors.gray[300]} mr="4px">
+              Token Transfer
+            </Text>
+            <OperationStatus operation={operation} />
+          </Flex>
+        </Flex>
+      </Box>
+    </Flex>
+  );
+};
+
+const ContractCallTile: React.FC<{
+  operation: TransactionOperation;
+}> = ({ operation }) => {
+  return (
+    <Flex direction="column" w="100%">
+      <Flex justifyContent="space-between" mb="10px">
+        <Flex align="center">
+          <Contract mr="8px" />
+          <TzktLink operation={operation} mr="8px">
+            <Heading size="sm">Contract Call: {operation.parameter?.entrypoint}</Heading>
+          </TzktLink>
+          <Fee operation={operation} />
+        </Flex>
+        <Flex alignSelf="flex-end">
+          <Timestamp timestamp={operation.timestamp} />
+        </Flex>
+      </Flex>
+      <Box>
+        <Flex justifyContent="space-between">
+          <Flex>
+            <Flex mr="15px">
+              <Text mr="6px" color={colors.gray[450]}>
+                To:
+              </Text>
+              {/* TODO: use zod */}
+              <AddressPill address={parsePkh(operation.target?.address as string)} />
+            </Flex>
+            <Flex>
+              <Text mr="6px" color={colors.gray[450]}>
+                From:
+              </Text>
+              {/* TODO: use zod */}
+              <AddressPill address={parsePkh(operation.sender?.address as string)} />
+            </Flex>
+          </Flex>
+          <Flex alignSelf="flex-end" align="center">
+            <Text color={colors.gray[300]} mr="4px">
+              Contract Call
+            </Text>
+            <OperationStatus operation={operation} />
+          </Flex>
+        </Flex>
+      </Box>
+    </Flex>
+  );
+};
+
+const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operation }) => {
+  const isDelegating = !!operation.newDelegate;
+  const operationType = isDelegating ? "Delegate" : "Delegation Ended";
+
+  return (
+    <Flex direction="column" w="100%">
+      <Flex justifyContent="space-between" mb="10px">
+        <Flex align="center">
+          <BakerIcon stroke={colors.gray[450]} mr="8px" />
+          <TzktLink operation={operation} mr="8px">
+            <Heading size="sm">{operationType}</Heading>
+          </TzktLink>
+          <Fee operation={operation} />
+        </Flex>
+        <Flex alignSelf="flex-end">
+          <Timestamp timestamp={operation.timestamp} />
+        </Flex>
+      </Flex>
+      <Box>
+        <Flex justifyContent="space-between">
+          <Flex>
+            {isDelegating && (
+              <Flex mr="15px">
+                <Text mr="6px" color={colors.gray[450]}>
+                  To:
+                </Text>
+
+                <AddressPill address={parsePkh(operation.newDelegate?.address as string)} />
+              </Flex>
+            )}
+            <Flex>
+              <Text mr="6px" color={colors.gray[450]}>
+                From:
+              </Text>
+              {/* TODO: use zod */}
+              <AddressPill address={parsePkh(operation.sender?.address as string)} />
+            </Flex>
+          </Flex>
+          <Flex alignSelf="flex-end" align="center">
+            <Text color={colors.gray[300]} mr="4px">
+              {operationType}
+            </Text>
+            <OperationStatus operation={operation} />
+          </Flex>
+        </Flex>
+      </Box>
+    </Flex>
+  );
+};
+
+const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {
+  const isMultisig =
+    operation.originatedContract?.codeHash === CODE_HASH &&
+    operation.originatedContract.typeHash === TYPE_HASH;
+
+  const contractTitle = isMultisig ? "Multisig Account Created" : "Contract Origination";
+
+  return (
+    <Flex direction="column" w="100%">
+      <Flex justifyContent="space-between" mb="10px">
+        <Flex align="center">
+          <Contract mr="8px" />
+          <TzktLink operation={operation} mr="8px">
+            <Heading size="sm">{contractTitle}</Heading>
+          </TzktLink>
           <Fee operation={operation} />
         </Flex>
         <Flex alignSelf="flex-end">
@@ -140,18 +374,15 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
               <Text mr="6px" color={colors.gray[450]}>
                 From:
               </Text>
+              {/* TODO: use zod */}
               <AddressPill address={parsePkh(operation.sender?.address as string)} />
             </Flex>
-
-            <Flex>
-              <Text mr="6px" color={colors.gray[450]}>
-                To:
-              </Text>
-              <AddressPill address={parsePkh(operation.target?.address as string)} />
-            </Flex>
           </Flex>
-          <Flex alignSelf="flex-end">
-            <Text color={colors.gray[300]}>Transaction</Text>
+          <Flex alignSelf="flex-end" align="center">
+            <Text color={colors.gray[300]} mr="4px">
+              Contract Origination
+            </Text>
+            <OperationStatus operation={operation} />
           </Flex>
         </Flex>
       </Box>
@@ -163,25 +394,33 @@ export const OperationTile: React.FC<{
   operation: TzktCombinedOperation;
 }> = ({ operation }) => {
   const getTokenTransfer = useGetTokenTransfer();
-  const tokenTransfer = getTokenTransfer(operation.id as number);
+  const tokenTransfer = getTokenTransfer(operation.id as number); // TODO: use zod
+
+  let element = null;
+
+  switch (operation.type) {
+    case "transaction": {
+      const isContractCall = !!operation.parameter;
+      if (tokenTransfer) {
+        element = <TokenTransferTile operation={operation} tokenTransfer={tokenTransfer} />;
+      } else if (isContractCall) {
+        element = <ContractCallTile operation={operation} />;
+      } else {
+        element = <TransactionTile operation={operation} />;
+      }
+      break;
+    }
+    case "delegation":
+      element = <DelegationTile operation={operation} />;
+      break;
+    case "origination":
+      element = <OriginationTile operation={operation} />;
+      break;
+  }
 
   return (
-    <Flex p="20px">
-      {operation.type === "transaction" && tokenTransfer && (
-        <TokenTransferTile
-          operation={operation}
-          tokenId={tokenTransfer.token.tokenId as string}
-          contract={tokenTransfer.token.contract.address as string}
-        />
-      )}
-      {operation.type === "transaction" && !tokenTransfer && (
-        <TransactionTile operation={operation} />
-      )}
-
-      {/* TODO: define */}
-      {operation.type === "delegation" && <Box>Delegation</Box>}
-      {/* TODO: define */}
-      {operation.type === "origination" && <Box>Origination</Box>}
+    <Flex p="20px" bg={colors.gray[900]}>
+      {element}
     </Flex>
   );
 };

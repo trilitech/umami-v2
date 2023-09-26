@@ -79,6 +79,6 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
       );
     case "contract_origination":
     case "contract_call":
-      throw new Error(`${operation.type} is not suported yet`);
+      throw new Error(`${operation.type} is not supported yet`);
   }
 };

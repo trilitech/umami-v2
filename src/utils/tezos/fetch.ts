@@ -1,18 +1,16 @@
 import {
   blocksGetCount,
   Delegate,
-  DelegationOperation,
   operationsGetDelegations,
   operationsGetTransactions,
   tokensGetTokenTransfers,
   delegatesGet,
   TokenTransfer,
   operationsGetOriginations,
-  TransactionOperation,
-  OriginationOperation,
   OffsetParameter,
   SortParameter,
 } from "@tzkt/sdk-api";
+import * as tzktApi from "@tzkt/sdk-api";
 import axios from "axios";
 import { coincapUrl } from "./consts";
 import { coinCapResponseType } from "./types";
@@ -36,6 +34,15 @@ export const withRateLimit = <T>(fn: () => Promise<T>) =>
     .acquire()
     .then(() => promiseRetry(fn, { retries: 3, minTimeout: 100 }))
     .finally(() => tzktRateLimiter.release());
+
+export type DelegationOperation = tzktApi.DelegationOperation & { type: "delegation" };
+export type TransactionOperation = tzktApi.TransactionOperation & { type: "transaction" };
+export type OriginationOperation = tzktApi.OriginationOperation & { type: "origination" };
+
+export type TzktCombinedOperation =
+  | DelegationOperation
+  | TransactionOperation
+  | OriginationOperation;
 
 export const getAccounts = async (pkhs: string[], network: Network): Promise<TzktAccount[]> =>
   withRateLimit(async () => {
@@ -79,7 +86,7 @@ export const getDelegations = async (
     sort: SortParameter;
     limit: number;
   }
-): Promise<DelegationOperation[]> =>
+) =>
   withRateLimit(() =>
     operationsGetDelegations(
       { sender: { in: [addresses.join(",")] }, ...options },
@@ -87,7 +94,7 @@ export const getDelegations = async (
         baseUrl: network.tzktApiUrl,
       }
     )
-  );
+  ) as Promise<DelegationOperation[]>;
 
 export const getTransactions = async (
   addresses: RawPkh[],
@@ -97,7 +104,7 @@ export const getTransactions = async (
     sort: SortParameter;
     limit: number;
   }
-): Promise<DelegationOperation[]> =>
+) =>
   withRateLimit(() =>
     operationsGetTransactions(
       {
@@ -108,7 +115,7 @@ export const getTransactions = async (
         baseUrl: network.tzktApiUrl,
       }
     )
-  );
+  ) as Promise<DelegationOperation[]>;
 
 export const getOriginations = async (
   addresses: RawPkh[],
@@ -118,7 +125,7 @@ export const getOriginations = async (
     sort: SortParameter;
     limit: number;
   }
-): Promise<DelegationOperation[]> =>
+) =>
   withRateLimit(() =>
     operationsGetOriginations(
       { sender: { in: [addresses.join(",")] }, ...options },
@@ -126,12 +133,7 @@ export const getOriginations = async (
         baseUrl: network.tzktApiUrl,
       }
     )
-  );
-
-export type TzktCombinedOperation =
-  | DelegationOperation
-  | TransactionOperation
-  | OriginationOperation;
+  ) as Promise<DelegationOperation[]>;
 
 export const getCombinedOperations = async (
   addresses: RawPkh[],
@@ -142,7 +144,7 @@ export const getCombinedOperations = async (
     sort?: "asc" | "desc";
   }
 ): Promise<TzktCombinedOperation[]> => {
-  const limit = options?.limit || 10;
+  const limit = options?.limit || 100;
   const sort = options?.sort ?? "desc";
   const tzktRequestOptions = {
     limit,
@@ -161,7 +163,7 @@ export const getCombinedOperations = async (
   return sortBy(
     operations.flat(),
     operation => (sort === "asc" ? operation.id : -(operation.id as number)) // operation#id is always defined
-  ).slice(0, limit);
+  ).slice(0, limit) as TzktCombinedOperation[];
 };
 
 export const getTokenTransfers = (
@@ -170,15 +172,14 @@ export const getTokenTransfers = (
 ): Promise<TokenTransfer[]> =>
   withRateLimit(() =>
     tokensGetTokenTransfers(
-      { transactionId: { in: transactionIds } },
+      // tzkt doesn't work with the `in` operator correctly
+      // the only way is to have just one element in it and join it with a comma manually
+      { transactionId: { in: [transactionIds.join(",")] as any } },
       { baseUrl: network.tzktApiUrl }
     )
   );
 
-export const getLastDelegation = async (
-  address: RawPkh,
-  network: Network
-): Promise<DelegationOperation | undefined> =>
+export const getLastDelegation = async (address: RawPkh, network: Network) =>
   withRateLimit(() =>
     operationsGetDelegations(
       {
@@ -190,7 +191,7 @@ export const getLastDelegation = async (
         baseUrl: network.tzktApiUrl,
       }
     ).then(d => d[0])
-  );
+  ) as Promise<DelegationOperation | undefined>;
 
 // Fetch the tezos price in usd from the CoinCap API.
 // The CoinCap API documentation: https://docs.coincap.io

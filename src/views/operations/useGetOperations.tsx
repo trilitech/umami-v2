@@ -11,6 +11,7 @@ export const operationKey = (operation: TzktCombinedOperation): string =>
 // TODO: add support for filtering by account
 // just offline filtering should be fine
 // don't forget about sender/target
+// TODO: handle network change
 export const useGetOperations = () => {
   const latestOperations = useGetLatestOperations();
   const network = useSelectedNetwork();

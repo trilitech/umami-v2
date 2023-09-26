@@ -3,8 +3,8 @@ import { Network } from "../../types/Network";
 import { RawTzktGetBigMapKeys, RawTzktGetSameMultisigs } from "../tzkt/types";
 import { withRateLimit } from "../tezos";
 const MULTISIG_FETCH_LIMIT = 10000;
-const TYPE_HASH = 1963879877;
-const CODE_HASH = -1890025422;
+export const TYPE_HASH = 1963879877;
+export const CODE_HASH = -1890025422;
 
 export const getAllMultiSigContracts = (network: Network): Promise<RawTzktGetSameMultisigs> =>
   withRateLimit(async () => {

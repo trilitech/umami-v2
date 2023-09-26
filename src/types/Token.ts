@@ -4,7 +4,7 @@ import { Schema as AddressSchema } from "./Address";
 import BigNumber from "bignumber.js";
 import { Network } from "./Network";
 
-// TzKT defines metadada as any, but we need to have at least some clarity of what can be inside
+// TzKT defines metadata as any, but we need to have at least some clarity of what can be inside
 export type Metadata = {
   name?: string;
   symbol?: string;
@@ -182,18 +182,13 @@ export const tokenSymbolSafe = (token: Token): string =>
 
 export const tokenSymbol = (token: Token): string | undefined => token.metadata?.symbol;
 
-export const tokenDecimals = (asset: Token): string => {
-  return asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
-};
+export const tokenDecimals = (asset: Token): string =>
+  asset.metadata?.decimals ?? DEFAULT_TOKEN_DECIMALS;
 
-export const getRealAmount = (asset: Token, prettyAmount: string): string => {
+export const getRealAmount = (token: Token, prettyAmount: string): string => {
   const amount = new BigNumber(prettyAmount);
 
-  if (asset.type === "nft") {
-    return amount.toFixed();
-  }
-
-  const decimals = tokenDecimals(asset);
+  const decimals = tokenDecimals(token);
 
   return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals)).toFixed();
 };
@@ -207,6 +202,7 @@ export const formatTokenAmount = (amount: string, decimals = DEFAULT_TOKEN_DECIM
   return formatter.format(realAmount.toNumber());
 };
 
+// TODO: rebuild, unusable (especially with NFTs)
 export const tokenPrettyAmount = (
   amount: string,
   token: Token,

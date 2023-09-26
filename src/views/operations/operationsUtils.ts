@@ -11,9 +11,17 @@ import { DelegationOperation } from "@tzkt/sdk-api";
 import { parsePkh } from "../../types/Address";
 import { Network } from "../../types/Network";
 
-export const getHashUrl = (hash: string, network: Network) => {
-  return `${network.tzktExplorerUrl}/${hash}`;
-};
+// When submitting batch it makes sense to use the whole batch URL which can be accessed by the operation hash
+// But when it comes to showing individual operations, it's worth adding nonce counter to the URL to navigate to the exact operation
+export const getHashUrl = ({
+  hash,
+  counter,
+  network,
+}: {
+  hash: string;
+  counter?: number;
+  network: Network;
+}) => compact([network.tzktExplorerUrl, hash, counter]).join("/");
 
 export const getTransactionUrl = ({
   transactionId,
@@ -111,7 +119,7 @@ export const getTezOperationDisplay = (
     recipient: parsePkh(parsed.target.address),
     sender: parsePkh(parsed.sender.address),
     type: "transaction",
-    tzktUrl: getHashUrl(parsed.hash, network),
+    tzktUrl: getHashUrl({ ...parsed, network }),
     fee:
       transfer.bakerFee !== undefined
         ? prettyTezAmount(new BigNumber(transfer.bakerFee))
@@ -241,7 +249,7 @@ const getDelegationOperationDisplay = (
     timestamp: parsed.timestamp,
     recipient: parsePkh(parsed.newDelegate.address),
     sender: parsePkh(parsed.sender.address),
-    tzktUrl: getHashUrl(parsed.hash, network),
+    tzktUrl: getHashUrl({ ...parsed, network }),
     level,
     fee: prettyTezAmount(new BigNumber(parsed.bakerFee)),
   };

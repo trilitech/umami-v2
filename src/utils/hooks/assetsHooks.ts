@@ -7,11 +7,8 @@ import {
   keepNFTs,
   NFTBalance,
 } from "../../types/TokenBalance";
-import { OperationDisplay } from "../../types/Transfer";
-import { sortOperationsByTimestamp } from "../../views/operations/operationsUtils";
 import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
-import { useAllAccounts } from "./accountHooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
@@ -21,10 +18,10 @@ import { Delegate } from "../../types/Delegate";
 export const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
 
 // Tenderbake guarantees block finality after 2 confirmations
-export const useIsBlockFinalised = () => {
+export const useIsBlockFinalised = (level: number) => {
   const currentLevel = useBlockLevel();
 
-  return (level: number) => (currentLevel !== null ? currentLevel - level >= 2 : null);
+  return currentLevel !== null ? currentLevel - level >= 2 : null;
 };
 
 export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
@@ -73,28 +70,9 @@ export const useGetAccountNFTs = () => {
   return (pkh: string) => keepNFTs(getAssets(pkh));
 };
 
-export const useAllTransfers = () => useAppSelector(s => s.assets.transfers);
-
-// TODO: replace
-export const useGetAccountOperationDisplays = () => {
-  return (pkh: string) => [];
-};
-
-export const useGetOperationDisplays = (): Record<string, OperationDisplay[] | undefined> => {
-  const accounts = useAllAccounts();
-  const getOperations = useGetAccountOperationDisplays();
-
-  return fromPairs(
-    accounts.map(account => [account.address.pkh, getOperations(account.address.pkh)])
-  );
-};
-
-export const useGetAllOperationDisplays = () => {
-  const getOperations = useGetAccountOperationDisplays();
-  const accounts = useAllAccounts();
-  const allOperations = accounts.map(a => getOperations(a.address.pkh)).flat();
-
-  return sortOperationsByTimestamp(allOperations);
+export const useGetTokenTransfer = () => {
+  const tokenTransfers = useAppSelector(s => s.assets.transfers.tokens);
+  return (transactionId: number) => tokenTransfers[transactionId];
 };
 
 export const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);

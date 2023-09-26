@@ -19,7 +19,7 @@ import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
   const network = useSelectedNetwork();
-  const tzktUrl = getHashUrl(hash, network);
+  const tzktUrl = getHashUrl({ hash, network });
   const { onClose } = useContext(DynamicModalContext);
 
   return (

@@ -102,13 +102,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
         />
       </Flex>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPanel
-        tokens={tokens}
-        nfts={nfts}
-        account={account}
-        operationDisplays={operationDisplays}
-        network={network}
-      />
+      <AssetsPanel tokens={tokens} nfts={nfts} account={account} network={network} />
     </Flex>
   );
 };

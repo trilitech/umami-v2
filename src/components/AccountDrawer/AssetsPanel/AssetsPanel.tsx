@@ -4,9 +4,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
 import { makeDelegation } from "../../../types/Delegation";
-import { OperationDisplay } from "../../../types/Transfer";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
-import { OperationListDisplay } from "../../../views/home/OpertionList/OperationListDisplay";
 import { IconAndTextBtnLink } from "../../IconAndTextBtn";
 import SmallTab from "../../SmallTab";
 import { DelegationDisplay } from "./DelegationDisplay";
@@ -20,9 +18,8 @@ export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;
-  operationDisplays: OperationDisplay[];
   network: Network;
-}> = ({ tokens, nfts, account, operationDisplays, network }) => {
+}> = ({ tokens, nfts, account, network }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   const rawDelegations = useAllDelegations()[account.address.pkh];
   const delegation = rawDelegations ? makeDelegation(rawDelegations) : null;
@@ -62,7 +59,8 @@ export const AssetsPanel: React.FC<{
         )}
 
         <TabPanel p="24px 0 60px 0" data-testid="account-card-operations-tab">
-          <OperationListDisplay operations={operationDisplays} />
+          {/* TODO: implement */}
+          {/* <OperationListDisplay operations={operationDisplays} /> */}
         </TabPanel>
 
         <TabPanel p="24px 0 60px 0" data-testid="account-card-delegation-tab">
