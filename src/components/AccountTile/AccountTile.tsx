@@ -1,19 +1,11 @@
 import { Box, Flex, FlexProps, Heading, Text } from "@chakra-ui/layout";
 import React from "react";
 import colors from "../../style/colors";
-import { AccountType } from "../../types/Account";
 import { formatPkh } from "../../utils/formatPkh";
-import { getIcon } from "./getIcon";
 import { prettyTezAmount } from "../../utils/format";
-
-export type Props = {
-  label: string;
-  address: string;
-  balance: string | undefined;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-  selected?: boolean;
-  kind: AccountType;
-};
+import useAddressKind from "../AddressTile/useAddressKind";
+import { RawPkh, parsePkh } from "../../types/Address";
+import AccountTileIcon from "./AccountTileIcon";
 
 export const AccountTileBase: React.FC<
   {
@@ -58,16 +50,14 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
   );
 };
 
-export const AccountTileDisplay: React.FC<Props> = ({
-  selected,
-  onClick,
-  address,
-  balance,
-  label,
-  kind,
-}) => {
+export const AccountTile: React.FC<{
+  address: RawPkh;
+  balance: string | undefined;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  selected?: boolean;
+}> = ({ selected, onClick, address, balance }) => {
   const border = onClick ? `1px solid ${selected ? colors.orangeL : colors.gray[700]}` : undefined;
-
+  const addressKind = useAddressKind(parsePkh(address));
   return (
     <AccountTileBase
       data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
@@ -78,8 +68,8 @@ export const AccountTileDisplay: React.FC<Props> = ({
       _hover={{
         border,
       }}
-      icon={getIcon(kind, address)}
-      leftElement={<LabelAndAddress pkh={address} label={label} />}
+      icon={<AccountTileIcon addressKind={addressKind} />}
+      leftElement={<LabelAndAddress pkh={address} label={addressKind.label} />}
       rightElement={
         balance && (
           <Heading mb={4} alignSelf="flex-end" size="lg">

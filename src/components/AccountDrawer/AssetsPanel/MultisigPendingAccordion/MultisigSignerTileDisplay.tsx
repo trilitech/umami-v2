@@ -1,6 +1,6 @@
 import React from "react";
 import { AccountType } from "../../../../types/Account";
-import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTileDisplay";
+import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import MultisigActionButton, { MultisigSignerState } from "./MultisigActionButton";
 import { AddressKind } from "../../../AddressTile/types";
 import AccountTileIcon from "../../../AccountTile/AccountTileIcon";
