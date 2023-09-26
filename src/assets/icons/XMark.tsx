@@ -1,6 +1,6 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-const FA2Icon: React.FC<IconProps> = props => {
+const XMark: React.FC<IconProps> = props => {
   return (
     <Icon width="3.5" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
@@ -14,4 +14,4 @@ const FA2Icon: React.FC<IconProps> = props => {
   );
 };
 
-export default FA2Icon;
+export default XMark;
