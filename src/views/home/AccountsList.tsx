@@ -26,7 +26,7 @@ import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts"
 import AccountPopover from "./AccountPopover";
 import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
-import { AccountTileDisplay } from "../../components/AccountTile/AccountTileDisplay";
+import { AccountTile } from "../../components/AccountTile/AccountTile";
 import colors from "../../style/colors";
 
 export const AccountListHeader = () => {
@@ -71,13 +71,11 @@ const AccountGroup: React.FC<{
 
       {accounts.map(account => {
         return (
-          <AccountTileDisplay
-            kind={account.type}
+          <AccountTile
             selected={account.address.pkh === selected}
             onClick={_ => onSelect(account.address.pkh)}
             key={account.address.pkh}
             address={account.address.pkh}
-            label={account.label}
             balance={balances[account.address.pkh]}
           />
         );

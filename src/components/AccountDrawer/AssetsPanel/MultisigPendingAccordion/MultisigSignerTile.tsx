@@ -13,7 +13,7 @@ import SignPage from "../../../SendFlow/Multisig/SignPage";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import useAddressKind from "../../../AddressTile/useAddressKind";
-import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTileDisplay";
+import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import AccountTileIcon from "../../../AccountTile/AccountTileIcon";
 
 const MultisigSignerTile: React.FC<{
