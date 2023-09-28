@@ -4,8 +4,8 @@ import colors from "../../style/colors";
 const Contract: React.FC<IconProps> = props => {
   return (
     <Icon
-      width="18"
-      height="18"
+      width="18px"
+      height="18px"
       viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
