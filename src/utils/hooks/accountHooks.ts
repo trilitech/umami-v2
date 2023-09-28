@@ -18,7 +18,7 @@ import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigs } from "./multisigHooks";
 
-const { addAccount, removeMnemonicAndAccounts } = accountsSlice.actions;
+const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
 
 export const useImplicitAccounts = () => {
   return useAppSelector(s => s.accounts.items);
@@ -139,6 +139,16 @@ export const useRemoveMnemonic = () => {
     dispatch(
       removeMnemonicAndAccounts({
         fingerPrint,
+      })
+    );
+  };
+};
+export const useRemoveNonMnemonic = () => {
+  const dispatch = useAppDispatch();
+  return (accountType: AccountType) => {
+    dispatch(
+      removeNonMnemonicAccounts({
+        accountType,
       })
     );
   };

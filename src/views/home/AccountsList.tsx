@@ -18,7 +18,11 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
 import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
 import { AccountType, Account } from "../../types/Account";
-import { useAllAccounts, useRemoveMnemonic } from "../../utils/hooks/accountHooks";
+import {
+  useAllAccounts,
+  useRemoveMnemonic,
+  useRemoveNonMnemonic,
+} from "../../utils/hooks/accountHooks";
 import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
@@ -46,19 +50,39 @@ const AccountGroup: React.FC<{
   balances: Record<string, string | undefined>;
   onSelect: (pkh: string) => void;
   selected: string | null;
-  onDelete?: () => void;
-  onDerive: () => void;
-  showCTA: boolean;
-}> = ({
-  groupLabel,
-  accounts,
-  balances,
-  onSelect,
-  selected,
-  onDelete = () => {},
-  onDerive,
-  showCTA = false,
-}) => {
+}> = ({ groupLabel, accounts, balances, onSelect, selected }) => {
+  const first = accounts[0];
+  const isMultisig = first.type === AccountType.MULTISIG;
+  const isMnemonic = first.type === AccountType.MNEMONIC;
+  const { element: deriveAccountModal, onOpen: openDeriveAccountModal } = useDeriveAccountModal();
+  const {
+    onOpen: openConfirmModal,
+    element: confirmModal,
+    onClose: closeConfirmModal,
+  } = useConfirmation();
+  const removeMnemonic = useRemoveMnemonic();
+  const removeNonMnemonic = useRemoveNonMnemonic();
+  const onDelete = () => {
+    openConfirmModal({
+      onConfirm: () => {
+        if (isMnemonic) {
+          removeMnemonic(first.seedFingerPrint);
+        } else {
+          removeNonMnemonic(first.type);
+        }
+        closeConfirmModal();
+      },
+      body: isMnemonic
+        ? `Are you sure you want to delete all accounts derived from ${getLabel(first)}?`
+        : `Are you sure you want to delete all of your ${getLabel(first)}?`,
+    });
+  };
+  const onDerive = () => {
+    if (!isMnemonic) {
+      throw new Error(`Can't derive a non mnemonic account!`);
+    }
+    openDeriveAccountModal({ fingerprint: first.seedFingerPrint });
+  };
   return (
     <Box data-testid={`account-group-${groupLabel}`}>
       <Flex justifyContent="space-between">
@@ -66,7 +90,9 @@ const AccountGroup: React.FC<{
           {groupLabel}
         </Heading>
 
-        {showCTA && <AccountPopover onCreate={onDerive} onDelete={onDelete} />}
+        {isMultisig ? null : (
+          <AccountPopover onCreate={isMnemonic ? onDerive : undefined} onDelete={onDelete} />
+        )}
       </Flex>
 
       {accounts.map(account => {
@@ -80,6 +106,8 @@ const AccountGroup: React.FC<{
           />
         );
       })}
+      {confirmModal}
+      {deriveAccountModal}
     </Box>
   );
 };
@@ -110,50 +138,14 @@ export const AccountsList: React.FC<{
 
   const { openWith } = useContext(DynamicModalContext);
 
-  const {
-    onOpen: openConfirmModal,
-    element: confirmModal,
-    onClose: closeConfirmModal,
-  } = useConfirmation();
-  const removeMnemonic = useRemoveMnemonic();
-
-  const { element: deriveAccountModal, onOpen: openDeriveAccountModal } = useDeriveAccountModal();
-
   const accountTiles = Object.entries(accountsByKind).map(([label, accountsByType]) => {
-    const first = accountsByType[0];
-    const isMnemonicGroup = first.type === AccountType.MNEMONIC;
-
-    const handleDelete = () => {
-      if (!isMnemonicGroup) {
-        throw new Error(`Can't delete a non mnemonic account group! `);
-      }
-
-      openConfirmModal({
-        onConfirm: () => {
-          removeMnemonic(first.seedFingerPrint);
-          closeConfirmModal();
-        },
-        body: `Are you sure you want to delete all accounts derived from ${label}?`,
-      });
-    };
-
-    const handleDerive = () => {
-      if (!isMnemonicGroup) {
-        throw new Error(`Can't derive a non mnemonic account!`);
-      }
-      openDeriveAccountModal({ fingerprint: first.seedFingerPrint });
-    };
-
     return (
       <AccountGroup
-        showCTA={isMnemonicGroup}
         key={label}
         selected={selected}
         accounts={accountsByType}
         balances={mutezBalance}
         groupLabel={label}
-        onDelete={handleDelete}
-        onDerive={handleDerive}
         onSelect={(pkh: string) => {
           onOpen();
           onSelect(pkh);
@@ -181,8 +173,6 @@ export const AccountsList: React.FC<{
             </Text>
           </Button>
         </NestedScroll>
-        {confirmModal}
-        {deriveAccountModal}
       </Box>
     </>
   );
