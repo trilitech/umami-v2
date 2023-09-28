@@ -1,16 +1,6 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Modal,
-  ModalContent,
-  Text,
-  useDisclosure,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text, useToast } from "@chakra-ui/react";
 import { compact, groupBy } from "lodash";
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import KeyIcon from "../../assets/icons/Key";
 import { DynamicModalContext } from "../../components/DynamicModal";
@@ -54,7 +44,6 @@ const AccountGroup: React.FC<{
   const first = accounts[0];
   const isMultisig = first.type === AccountType.MULTISIG;
   const isMnemonic = first.type === AccountType.MNEMONIC;
-  const { element: deriveAccountModal, onOpen: openDeriveAccountModal } = useDeriveAccountModal();
   const { openWith, onClose } = useContext(DynamicModalContext);
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
@@ -79,12 +68,14 @@ const AccountGroup: React.FC<{
       />
     );
   };
+
   const onDerive = () => {
     if (!isMnemonic) {
       throw new Error(`Can't derive a non mnemonic account!`);
     }
-    openDeriveAccountModal({ fingerprint: first.seedFingerPrint });
+    openWith(<DeriveAccount onDone={onClose} fingerprint={first.seedFingerPrint} />);
   };
+
   return (
     <Box data-testid={`account-group-${groupLabel}`}>
       <Flex justifyContent="space-between">
@@ -92,7 +83,7 @@ const AccountGroup: React.FC<{
           {groupLabel}
         </Heading>
 
-        {isMultisig ? null : (
+        {!isMultisig && (
           <AccountPopover onCreate={isMnemonic ? onDerive : undefined} onDelete={onDelete} />
         )}
       </Flex>
@@ -108,7 +99,6 @@ const AccountGroup: React.FC<{
           />
         );
       })}
-      {deriveAccountModal}
     </Box>
   );
 };
@@ -211,26 +201,4 @@ const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
       isLoading={isLoading}
     />
   );
-};
-
-export const useDeriveAccountModal = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const paramsRef = useRef<{ fingerprint: string }>();
-
-  return {
-    element: (
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalContent bg={colors.gray[900]}>
-          {paramsRef.current?.fingerprint && (
-            <DeriveAccount onDone={onClose} fingerprint={paramsRef.current.fingerprint} />
-          )}
-        </ModalContent>
-      </Modal>
-    ),
-    onOpen: (params: { fingerprint: string }) => {
-      paramsRef.current = params;
-      onOpen();
-    },
-  };
 };
