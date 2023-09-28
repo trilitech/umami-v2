@@ -23,7 +23,6 @@ import {
   useRemoveMnemonic,
   useRemoveNonMnemonic,
 } from "../../utils/hooks/accountHooks";
-import { useConfirmation } from "../../utils/hooks/confirmModal";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
@@ -32,6 +31,7 @@ import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
 import colors from "../../style/colors";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -55,27 +55,29 @@ const AccountGroup: React.FC<{
   const isMultisig = first.type === AccountType.MULTISIG;
   const isMnemonic = first.type === AccountType.MNEMONIC;
   const { element: deriveAccountModal, onOpen: openDeriveAccountModal } = useDeriveAccountModal();
-  const {
-    onOpen: openConfirmModal,
-    element: confirmModal,
-    onClose: closeConfirmModal,
-  } = useConfirmation();
+  const { openWith, onClose } = useContext(DynamicModalContext);
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
+  const modalBody = isMnemonic
+    ? `Are you sure you want to delete all accounts derived from ${getLabel(first)}?`
+    : `Are you sure you want to delete all of your ${getLabel(first)}?`;
+
   const onDelete = () => {
-    openConfirmModal({
-      onConfirm: () => {
-        if (isMnemonic) {
-          removeMnemonic(first.seedFingerPrint);
-        } else {
-          removeNonMnemonic(first.type);
-        }
-        closeConfirmModal();
-      },
-      body: isMnemonic
-        ? `Are you sure you want to delete all accounts derived from ${getLabel(first)}?`
-        : `Are you sure you want to delete all of your ${getLabel(first)}?`,
-    });
+    openWith(
+      <ConfirmationModal
+        title="Confirmation"
+        buttonLabel="Confirm"
+        description={modalBody}
+        onSubmit={() => {
+          if (isMnemonic) {
+            removeMnemonic(first.seedFingerPrint);
+          } else {
+            removeNonMnemonic(first.type);
+          }
+          onClose();
+        }}
+      />
+    );
   };
   const onDerive = () => {
     if (!isMnemonic) {
@@ -106,7 +108,6 @@ const AccountGroup: React.FC<{
           />
         );
       })}
-      {confirmModal}
       {deriveAccountModal}
     </Box>
   );
