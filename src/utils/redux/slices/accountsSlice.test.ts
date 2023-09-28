@@ -97,6 +97,44 @@ describe("Accounts reducer", () => {
     });
   });
 
+  describe("removeNonMnemonicAccounts", () => {
+    const mnemonic = mockImplicitAccount(0);
+    const social1 = mockImplicitAccount(1, AccountType.SOCIAL);
+    const social2 = mockImplicitAccount(2, AccountType.SOCIAL);
+    const ledger = mockImplicitAccount(2, AccountType.LEDGER);
+
+    beforeEach(() => {
+      store.dispatch(addAccount([mnemonic, social1, social2, ledger]));
+    });
+
+    it("does nothing for mnemonic account", async () => {
+      store.dispatch(
+        accountsSlice.actions.removeNonMnemonicAccounts({
+          accountType: AccountType.MNEMONIC,
+        })
+      );
+      expect(store.getState().accounts.items).toHaveLength(4);
+    });
+
+    it("should remove ledger account", async () => {
+      store.dispatch(
+        accountsSlice.actions.removeNonMnemonicAccounts({
+          accountType: AccountType.LEDGER,
+        })
+      );
+      expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2]);
+    });
+
+    it("should remove multiple social accounts", async () => {
+      store.dispatch(
+        accountsSlice.actions.removeNonMnemonicAccounts({
+          accountType: AccountType.SOCIAL,
+        })
+      );
+      expect(store.getState().accounts.items).toEqual([mnemonic, ledger]);
+    });
+  });
+
   describe("restoreFromMnemonic thunk", () => {
     it("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
       const fingerPrint = await getFingerPrint(mnemonic1);
