@@ -12,7 +12,6 @@ import {
   OriginationOperation,
 } from "../../utils/tezos";
 import { RawPkh, parsePkh } from "../../types/Address";
-import { formatRelative } from "date-fns";
 import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
@@ -25,6 +24,7 @@ import Contract from "../../assets/icons/Contract";
 import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
 import { useIsIncomingOperation } from "./useIsIncomingOperation";
+import { Timestamp } from "./Timestamp";
 
 // TODO: add smaller version for the drawer without fee, transaction type, from/to based on the current selected account
 
@@ -42,14 +42,6 @@ const TzktLink: React.FC<
       {children}
     </Link>
   );
-};
-
-const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timestamp }) => {
-  if (!timestamp) {
-    return null;
-  }
-  const relativeTimestamp = formatRelative(new Date(timestamp as string), new Date());
-  return <Text color={colors.gray[400]}>{relativeTimestamp}</Text>;
 };
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
