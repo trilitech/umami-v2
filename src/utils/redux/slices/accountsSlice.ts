@@ -3,6 +3,7 @@ import { AccountType, ImplicitAccount } from "../../../types/Account";
 import { EncryptedData } from "../../crypto/types";
 import changeMnemonicPassword from "../thunks/changeMnemonicPassword";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
+import { remove } from "lodash";
 
 export type State = {
   items: ImplicitAccount[];
@@ -48,6 +49,14 @@ const accountsSlice = createSlice({
       );
       state.items = newAccounts;
       delete state.seedPhrases[fingerPrint];
+    },
+    removeNonMnemonicAccounts: (
+      state,
+      { payload }: { type: string; payload: { accountType: AccountType } }
+    ) => {
+      state.items = remove(state.items, account => {
+        return account.type === AccountType.MNEMONIC || account.type !== payload.accountType;
+      });
     },
     addAccount: (state, { payload }: { type: string; payload: ImplicitAccount[] }) => {
       state.items = concatUnique(state.items, payload);
