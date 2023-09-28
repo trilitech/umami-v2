@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Link, LinkProps, Text } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
-import { useGetTokenTransfer, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
+import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 import { TokenTransfer } from "../../types/Transfer";
 import { getHashUrl } from "../../views/operations/operationsUtils";
 import AddressPill from "../AddressPill/AddressPill";
@@ -18,15 +18,13 @@ import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import CheckmarkIcon from "../../assets/icons/Checkmark";
-import CrossedCircleIcon from "../../assets/icons/CrossedCircle";
-import HourglassIcon from "../../assets/icons/Hourglass";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import BakerIcon from "../../assets/icons/Baker";
 import IncomingArrow from "../../assets/icons/IncomingArrow";
 import OutgoingArrow from "../../assets/icons/OutgoingArrow";
 import Contract from "../../assets/icons/Contract";
 import { Fee } from "./Fee";
+import { OperationStatus } from "./OperationStatus";
 
 // TODO: add smaller version for the drawer without fee, transaction type, from/to based on the current selected account
 
@@ -44,19 +42,6 @@ const TzktLink: React.FC<
       {children}
     </Link>
   );
-};
-
-const OperationStatus: React.FC<{ operation: TzktCombinedOperation }> = ({ operation }) => {
-  const isFinalised = useIsBlockFinalised(operation.level as number); // TODO: use zod
-
-  if (operation.status === "applied") {
-    if (isFinalised) {
-      return <CheckmarkIcon />;
-    } else {
-      return <HourglassIcon />;
-    }
-  }
-  return <CrossedCircleIcon />;
 };
 
 export const useIsIncomingOperation = (operation: TransactionOperation) => {
