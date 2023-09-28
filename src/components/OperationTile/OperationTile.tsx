@@ -12,7 +12,6 @@ import {
   OriginationOperation,
 } from "../../utils/tezos";
 import { RawPkh, parsePkh } from "../../types/Address";
-import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { formatRelative } from "date-fns";
 import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
@@ -25,6 +24,7 @@ import OutgoingArrow from "../../assets/icons/OutgoingArrow";
 import Contract from "../../assets/icons/Contract";
 import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
+import { useIsIncomingOperation } from "./useIsIncomingOperation";
 
 // TODO: add smaller version for the drawer without fee, transaction type, from/to based on the current selected account
 
@@ -42,11 +42,6 @@ const TzktLink: React.FC<
       {children}
     </Link>
   );
-};
-
-export const useIsIncomingOperation = (operation: TransactionOperation) => {
-  const ownedAccounts = useAllAccounts();
-  return ownedAccounts.map(acc => acc.address.pkh).includes(operation.target?.address as string);
 };
 
 const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timestamp }) => {
