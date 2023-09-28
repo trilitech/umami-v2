@@ -1,9 +1,8 @@
-import { Box, Flex, Heading, Link, LinkProps, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 import { TokenTransfer } from "../../types/Transfer";
-import { getHashUrl } from "../../views/operations/operationsUtils";
 import AddressPill from "../AddressPill/AddressPill";
 import {
   TzktCombinedOperation,
@@ -15,7 +14,6 @@ import { RawPkh, parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import BakerIcon from "../../assets/icons/Baker";
 import IncomingArrow from "../../assets/icons/IncomingArrow";
@@ -25,24 +23,9 @@ import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
 import { useIsIncomingOperation } from "./useIsIncomingOperation";
 import { Timestamp } from "./Timestamp";
+import { TzktLink } from "./TzktLink";
 
 // TODO: add smaller version for the drawer without fee, transaction type, from/to based on the current selected account
-
-const TzktLink: React.FC<
-  React.PropsWithChildren<{ operation: TzktCombinedOperation } & LinkProps>
-> = ({ operation, children, ...props }) => {
-  const network = useSelectedNetwork();
-  const url = getHashUrl({
-    hash: operation.hash as string, // TODO: use zod
-    counter: operation.counter as number, // TODO: use zod
-    network,
-  });
-  return (
-    <Link href={url} isExternal {...props}>
-      {children}
-    </Link>
-  );
-};
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
   const isIncoming = useIsIncomingOperation(operation);
