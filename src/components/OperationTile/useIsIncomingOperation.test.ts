@@ -8,23 +8,24 @@ import { useIsIncomingOperation } from "./useIsIncomingOperation";
 
 describe("useIsIncomingOperation", () => {
   it("returns false if the operation target is not owned", () => {
-    const transaction = {
-      target: { address: mockImplicitAccount(0).address.pkh },
-    } as TransactionOperation;
-    const { result } = renderHook(() => useIsIncomingOperation(transaction), {
-      wrapper: AllTheProviders,
-    });
+    const { result } = renderHook(
+      () => useIsIncomingOperation(mockImplicitAccount(0).address.pkh),
+      {
+        wrapper: AllTheProviders,
+      }
+    );
     expect(result.current).toEqual(false);
   });
 
   it("returns true if the operation target is in owned accounts", () => {
     store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
-    const transaction = {
-      target: { address: mockImplicitAccount(0).address.pkh },
-    } as TransactionOperation;
-    const { result } = renderHook(() => useIsIncomingOperation(transaction), {
-      wrapper: AllTheProviders,
-    });
+
+    const { result } = renderHook(
+      () => useIsIncomingOperation(mockImplicitAccount(0).address.pkh),
+      {
+        wrapper: AllTheProviders,
+      }
+    );
     expect(result.current).toEqual(true);
   });
 });

@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { AspectRatio, Box, Flex, Heading, Image, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
@@ -13,7 +13,7 @@ import {
 import { RawPkh, parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
-import { tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
+import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import BakerIcon from "../../assets/icons/Baker";
 import IncomingArrow from "../../assets/icons/IncomingArrow";
@@ -24,37 +24,28 @@ import { OperationStatus } from "./OperationStatus";
 import { useIsIncomingOperation } from "./useIsIncomingOperation";
 import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 // TODO: add smaller version for the drawer without fee, transaction type, from/to based on the current selected account
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
-  const isIncoming = useIsIncomingOperation(operation);
+  const isIncoming = useIsIncomingOperation(operation.target?.address as string); // TODO: use zod
   const amount = prettyTezAmount(String(operation.amount));
+
+  const titleColor = isIncoming ? colors.green : colors.orange;
+  const sign = isIncoming ? "+" : "-";
 
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Flex align="center">
-          {isIncoming ? (
-            <>
-              <IncomingArrow mr="8px" />
-              <TzktLink operation={operation} mr="8px">
-                <Text fontWeight="600" size="sm" color={colors.green}>
-                  + {amount}
-                </Text>
-              </TzktLink>
-            </>
-          ) : (
-            <>
-              <OutgoingArrow mr="8px" />
-              <TzktLink operation={operation} mr="8px">
-                <Text fontWeight="600" size="sm" color={colors.orange}>
-                  - {amount}
-                </Text>
-              </TzktLink>
-            </>
-          )}
-          <Fee operation={operation} />
+          {isIncoming ? <IncomingArrow mr="8px" /> : <OutgoingArrow mr="8px" />}
+          <TzktLink operation={operation} mr="8px" color={titleColor}>
+            <Text fontWeight="600" size="sm" color={titleColor}>
+              {sign} {amount}
+            </Text>
+          </TzktLink>
+          {!isIncoming && <Fee operation={operation} />}
         </Flex>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />
@@ -99,7 +90,7 @@ const TokenTransferTile: React.FC<{
   const rawAmount = tokenTransfer.amount as string; // TODO: use zod
 
   const getToken = useGetToken();
-  const isIncoming = useIsIncomingOperation(operation);
+  const isIncoming = useIsIncomingOperation(tokenTransfer.to?.address as string); // TODO: use zod
 
   const token = getToken(contract, tokenId);
   if (!token) {
@@ -107,42 +98,53 @@ const TokenTransferTile: React.FC<{
     // the transaction tile because it is a transaction by nature
     return <TransactionTile operation={operation} />;
   }
-  const tokenAmount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
+  const isNFT = token.type === "nft";
 
-  const tokenNameElement = (
-    <Text display="inline" fontWeight="600" size="sm">
-      {" "}
-      {tokenNameSafe(token)}
-    </Text>
+  const tokenAmount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
+  const titleColor = isIncoming ? colors.green : colors.orange;
+  const underlineColor = isNFT ? "white" : titleColor;
+  const sign = isIncoming ? "+" : "-";
+  const arrowIcon = isIncoming ? <IncomingArrow mr="8px" /> : <OutgoingArrow mr="8px" />;
+  const titleElement = isNFT ? (
+    <Tooltip
+      bg={colors.gray[700]}
+      border="1px solid"
+      borderColor={colors.gray[500]}
+      borderRadius="8px"
+      p="8px"
+      label={
+        <AspectRatio w="170px" h="170px" ratio={1}>
+          <Image src={getIPFSurl(thumbnailUri(token))} />
+        </AspectRatio>
+      }
+    >
+      <Flex>
+        <TzktLink operation={operation} mr="8px" color={underlineColor}>
+          <Text display="inline" fontWeight="600" size="sm" color={titleColor}>
+            {sign} {tokenAmount}
+          </Text>
+          <Text display="inline" fontWeight="600" size="sm">
+            {" "}
+            {tokenNameSafe(token)}
+          </Text>
+        </TzktLink>
+      </Flex>
+    </Tooltip>
+  ) : (
+    <TzktLink operation={operation} mr="8px" color={underlineColor}>
+      <Text display="inline" fontWeight="600" size="sm" color={titleColor}>
+        {sign} {tokenAmount}
+      </Text>
+    </TzktLink>
   );
 
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Flex align="center">
-          {isIncoming ? (
-            <>
-              <IncomingArrow mr="8px" />
-              <TzktLink operation={operation} mr="8px">
-                <Text display="inline" fontWeight="600" size="sm" color={colors.green}>
-                  + {tokenAmount}
-                </Text>
-                {token.type === "nft" && tokenNameElement}
-              </TzktLink>
-            </>
-          ) : (
-            <>
-              <OutgoingArrow mr="8px" />
-              <TzktLink operation={operation} mr="8px">
-                <Text display="inline" fontWeight="600" size="sm" color={colors.orange}>
-                  - {tokenAmount}
-                </Text>
-                {token.type === "nft" && tokenNameElement}
-              </TzktLink>
-            </>
-          )}
-
-          <Fee operation={operation} />
+          {arrowIcon}
+          {titleElement}
+          {!isIncoming && <Fee operation={operation} />}
         </Flex>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />

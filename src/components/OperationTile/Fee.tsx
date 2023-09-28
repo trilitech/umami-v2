@@ -4,7 +4,6 @@ import { TzktCombinedOperation } from "../../utils/tezos";
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { get } from "lodash";
-
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];
 
 export const Fee: React.FC<{ operation: TzktCombinedOperation }> = ({ operation }) => {
