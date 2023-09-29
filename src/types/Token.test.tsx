@@ -9,6 +9,8 @@ import {
   artifactUri,
   formatTokenAmount,
   fromRaw,
+  getRealAmount,
+  getRealAmountInString,
   metadataUri,
   mimeType,
   royalties,
@@ -373,5 +375,39 @@ describe("formatTokenAmount", () => {
 
   it("shows all decimals even if amount is integer", () => {
     expect(formatTokenAmount("100000", "3")).toEqual("100.000");
+  });
+});
+
+describe("getRealAmountInString", () => {
+  it("returns the same amount for token with no decimals", () => {
+    const fa2token: FA2Token = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      tokenId: "123",
+    };
+    const amount = getRealAmountInString(fa2token, "10000");
+    expect(amount).toEqual("10000");
+  });
+
+  it("returns the real amount for token with decimals", () => {
+    const fa2token: FA2Token = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      tokenId: "123",
+      metadata: { decimals: "2" },
+    };
+    const amount = getRealAmountInString(fa2token, "10000");
+    expect(amount).toEqual("1000000");
+  });
+
+  it("does not return the scientific notation for token with large number", () => {
+    const fa2token: FA2Token = {
+      type: "fa2",
+      contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
+      tokenId: "123",
+      metadata: { decimals: "18" },
+    };
+    const amount = getRealAmountInString(fa2token, "1000");
+    expect(amount).toEqual("1000000000000000000000");
   });
 });

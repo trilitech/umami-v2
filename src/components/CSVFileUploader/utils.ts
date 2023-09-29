@@ -6,7 +6,7 @@ import {
   parsePkh,
 } from "../../types/Address";
 import { Operation } from "../../types/Operation";
-import { getRealAmount } from "../../types/Token";
+import { getRealAmountInString } from "../../types/Token";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { TokenLookup } from "../../utils/hooks/tokensHooks";
@@ -35,7 +35,7 @@ export const parseOperation = (
     return {
       type: "tez",
       recipient,
-      amount: tezToMutez(prettyAmount).toString(),
+      amount: tezToMutez(prettyAmount).toFixed(),
     };
   }
 
@@ -53,7 +53,7 @@ export const parseOperation = (
   if (!token) {
     throw new Error(`Unknown token ${contractPkh} ${tokenId}`);
   }
-  const amount = getRealAmount(token, prettyAmount).toString();
+  const amount = getRealAmountInString(token, prettyAmount);
 
   if (token.type === "fa1.2") {
     return {

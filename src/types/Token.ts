@@ -201,6 +201,10 @@ export const getRealAmount = (asset: Token, prettyAmount: string): BigNumber => 
   return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
 };
 
+// To avoid scientific notation for BigNumber with value > 1e+21, we should use `toFixed()` over `toString()`
+export const getRealAmountInString = (asset: Token, prettyAmount: string): string =>
+  getRealAmount(asset, prettyAmount).toFixed();
+
 export const formatTokenAmount = (amount: string, decimals = DEFAULT_TOKEN_DECIMALS): string => {
   const realAmount = BigNumber(amount).dividedBy(BigNumber(10).pow(decimals));
   const formatter = new Intl.NumberFormat("en-US", {
