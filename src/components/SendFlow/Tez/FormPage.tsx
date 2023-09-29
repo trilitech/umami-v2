@@ -39,7 +39,7 @@ export type FormValues = {
 
 const toOperation = (formValues: FormValues): TezTransfer => ({
   type: "tez",
-  amount: tezToMutez(formValues.prettyAmount).toString(),
+  amount: tezToMutez(formValues.prettyAmount).toFixed(),
   recipient: parsePkh(formValues.recipient),
 });
 

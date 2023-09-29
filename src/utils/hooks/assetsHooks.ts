@@ -148,7 +148,7 @@ export const useTotalBalance = () => {
 
   const usdBalance = tezToDollar(mutezToTez(totalBalance));
 
-  return { mutez: totalBalance.toString(), usd: usdBalance };
+  return { mutez: totalBalance.toFixed(), usd: usdBalance };
 };
 
 export const useGetAccountBalance = () => {

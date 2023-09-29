@@ -55,7 +55,7 @@ const toOperation =
       recipient: parsePkh(formValues.recipient),
       contract: parseContractPkh(token.contract),
       tokenId: token.tokenId,
-      amount: getRealAmount(token, formValues.prettyAmount).toString(),
+      amount: getRealAmount(token, formValues.prettyAmount),
     };
 
     if (token.type === "fa2") {
