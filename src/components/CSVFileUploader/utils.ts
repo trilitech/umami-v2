@@ -6,7 +6,7 @@ import {
   parsePkh,
 } from "../../types/Address";
 import { Operation } from "../../types/Operation";
-import { getRealAmountInString } from "../../types/Token";
+import { getRealAmount } from "../../types/Token";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { TokenLookup } from "../../utils/hooks/tokensHooks";
@@ -53,7 +53,7 @@ export const parseOperation = (
   if (!token) {
     throw new Error(`Unknown token ${contractPkh} ${tokenId}`);
   }
-  const amount = getRealAmountInString(token, prettyAmount);
+  const amount = getRealAmount(token, prettyAmount);
 
   if (token.type === "fa1.2") {
     return {

@@ -9,7 +9,7 @@ import {
   artifactUri,
   formatTokenAmount,
   fromRaw,
-  getRealAmountInString,
+  getRealAmount,
   metadataUri,
   mimeType,
   royalties,
@@ -377,14 +377,14 @@ describe("formatTokenAmount", () => {
   });
 });
 
-describe("getRealAmountInString", () => {
+describe("getRealAmount", () => {
   it("returns the same amount for token with no decimals", () => {
     const fa2token: FA2Token = {
       type: "fa2",
       contract: "KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo",
       tokenId: "123",
     };
-    const amount = getRealAmountInString(fa2token, "10000");
+    const amount = getRealAmount(fa2token, "10000");
     expect(amount).toEqual("10000");
   });
 
@@ -395,7 +395,7 @@ describe("getRealAmountInString", () => {
       tokenId: "123",
       metadata: { decimals: "2" },
     };
-    const amount = getRealAmountInString(fa2token, "10000");
+    const amount = getRealAmount(fa2token, "10000");
     expect(amount).toEqual("1000000");
   });
 
@@ -406,7 +406,7 @@ describe("getRealAmountInString", () => {
       tokenId: "123",
       metadata: { decimals: "18" },
     };
-    const amount = getRealAmountInString(fa2token, "1000");
+    const amount = getRealAmount(fa2token, "1000");
     expect(amount).toEqual("1000000000000000000000");
   });
 });

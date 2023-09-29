@@ -29,7 +29,7 @@ import {
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import {
   formatTokenAmount,
-  getRealAmountInString,
+  getRealAmount,
   tokenDecimals,
   tokenSymbolSafe,
 } from "../../../types/Token";
@@ -55,7 +55,7 @@ const toOperation =
       recipient: parsePkh(formValues.recipient),
       contract: parseContractPkh(token.contract),
       tokenId: token.tokenId,
-      amount: getRealAmountInString(token, formValues.prettyAmount),
+      amount: getRealAmount(token, formValues.prettyAmount),
     };
 
     if (token.type === "fa2") {
