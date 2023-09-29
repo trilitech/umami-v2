@@ -5,7 +5,8 @@ import accountsSlice from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import multisigsSlice from "../redux/slices/multisigsSlice";
 import store from "../redux/store";
-import { useGetBestSignerForAccount } from "./accountHooks";
+import { useGetBestSignerForAccount, useIsOwnedAddress } from "./accountHooks";
+import { AllTheProviders } from "../../mocks/testUtils";
 
 describe("accountHooks", () => {
   describe("useGetBestSignerForAccount", () => {
@@ -35,5 +36,20 @@ describe("accountHooks", () => {
       const { result } = renderHook(() => useGetBestSignerForAccount(), { wrapper: ReduxStore });
       expect(result.current(multisig)).toEqual(mockImplicitAccount(1));
     });
+  });
+
+  test("useIsOwnedAddress", () => {
+    store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+
+    let view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh), {
+      wrapper: AllTheProviders,
+    });
+    expect(view.result.current).toEqual(true);
+
+    view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(2).address.pkh), {
+      wrapper: AllTheProviders,
+    });
+
+    expect(view.result.current).toEqual(false);
   });
 });

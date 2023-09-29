@@ -1,4 +1,4 @@
-import { AspectRatio, Box, Flex, Heading, Image, Text, Tooltip } from "@chakra-ui/react";
+import { AspectRatio, Box, Flex, Heading, IconProps, Image, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
@@ -21,31 +21,32 @@ import OutgoingArrow from "../../assets/icons/OutgoingArrow";
 import Contract from "../../assets/icons/Contract";
 import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
-import { useIsIncomingOperation } from "./useIsIncomingOperation";
 import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
 import { getIPFSurl } from "../../utils/token/nftUtils";
+import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
 
 // TODO: add smaller version for the drawer without fee, transaction type, from/to based on the current selected account
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
-  const isIncoming = useIsIncomingOperation(operation.target?.address as string); // TODO: use zod
+  const isOutgoing = useIsOwnedAddress(operation.sender?.address as string); // TODO: use zod
   const amount = prettyTezAmount(String(operation.amount));
 
-  const titleColor = isIncoming ? colors.green : colors.orange;
-  const sign = isIncoming ? "+" : "-";
+  const titleColor = isOutgoing ? colors.orange : colors.green;
+  const sign = isOutgoing ? "-" : "+";
 
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
+        {/* TODO: try to use Center instead */}
         <Flex align="center">
-          {isIncoming ? <IncomingArrow mr="8px" /> : <OutgoingArrow mr="8px" />}
+          <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
           <TzktLink operation={operation} mr="8px" color={titleColor}>
             <Text fontWeight="600" size="sm" color={titleColor}>
               {sign} {amount}
             </Text>
           </TzktLink>
-          {!isIncoming && <Fee operation={operation} />}
+          <Fee operation={operation} />
         </Flex>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />
@@ -81,6 +82,13 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
   );
 };
 
+const TransactionDirectionIcon = ({
+  isOutgoing,
+  ...props
+}: { isOutgoing: boolean } & IconProps) => {
+  return isOutgoing ? <OutgoingArrow {...props} /> : <IncomingArrow {...props} />;
+};
+
 const TokenTransferTile: React.FC<{
   operation: TransactionOperation;
   tokenTransfer: TokenTransfer;
@@ -90,21 +98,22 @@ const TokenTransferTile: React.FC<{
   const rawAmount = tokenTransfer.amount as string; // TODO: use zod
 
   const getToken = useGetToken();
-  const isIncoming = useIsIncomingOperation(tokenTransfer.to?.address as string); // TODO: use zod
+  const isOutgoing = useIsOwnedAddress(operation.sender?.address as string); // TODO: use zod
 
   const token = getToken(contract, tokenId);
   if (!token) {
     // If we don't have the token yet to present it's fine to fallback to
     // the transaction tile because it is a transaction by nature
+    // TODO: add an effect to fetch it in the background
     return <TransactionTile operation={operation} />;
   }
   const isNFT = token.type === "nft";
 
   const tokenAmount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
-  const titleColor = isIncoming ? colors.green : colors.orange;
+  const titleColor = isOutgoing ? colors.orange : colors.green;
   const underlineColor = isNFT ? "white" : titleColor;
-  const sign = isIncoming ? "+" : "-";
-  const arrowIcon = isIncoming ? <IncomingArrow mr="8px" /> : <OutgoingArrow mr="8px" />;
+  const sign = isOutgoing ? "-" : "+";
+
   const titleElement = isNFT ? (
     <Tooltip
       bg={colors.gray[700]}
@@ -142,9 +151,9 @@ const TokenTransferTile: React.FC<{
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Flex align="center">
-          {arrowIcon}
+          <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
           {titleElement}
-          {!isIncoming && <Fee operation={operation} />}
+          <Fee operation={operation} />
         </Flex>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />
@@ -327,33 +336,24 @@ export const OperationTile: React.FC<{
   operation: TzktCombinedOperation;
 }> = ({ operation }) => {
   const getTokenTransfer = useGetTokenTransfer();
-  const tokenTransfer = getTokenTransfer(operation.id as number); // TODO: use zod
-
-  let element = null;
 
   switch (operation.type) {
     case "transaction": {
       const isContractCall = !!operation.parameter;
+      const tokenTransfer = getTokenTransfer(operation.id as number); // TODO: use zod
+
       if (tokenTransfer) {
-        element = <TokenTransferTile operation={operation} tokenTransfer={tokenTransfer} />;
+        return <TokenTransferTile operation={operation} tokenTransfer={tokenTransfer} />;
       } else if (isContractCall) {
-        element = <ContractCallTile operation={operation} />;
+        return <ContractCallTile operation={operation} />;
       } else {
-        element = <TransactionTile operation={operation} />;
+        return <TransactionTile operation={operation} />;
       }
-      break;
     }
     case "delegation":
-      element = <DelegationTile operation={operation} />;
-      break;
-    case "origination":
-      element = <OriginationTile operation={operation} />;
-      break;
-  }
+      return <DelegationTile operation={operation} />;
 
-  return (
-    <Flex p="20px" bg={colors.gray[900]}>
-      {element}
-    </Flex>
-  );
+    case "origination":
+      return <OriginationTile operation={operation} />;
+  }
 };
