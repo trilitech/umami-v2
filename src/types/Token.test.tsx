@@ -9,7 +9,6 @@ import {
   artifactUri,
   formatTokenAmount,
   fromRaw,
-  getRealAmount,
   getRealAmountInString,
   metadataUri,
   mimeType,

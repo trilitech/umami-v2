@@ -9,7 +9,7 @@ export function validateNonNegativeNumber(num: string): string | null {
   if (val.isLessThan(0)) {
     return null;
   }
-  return val.toString();
+  return val.toFixed();
 }
 
 export const navigateToExternalLink = (link: string) => {
