@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Center, Heading, Text } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import { TzktCombinedOperation } from "../../utils/tezos";
 import { BigNumber } from "bignumber.js";
@@ -30,13 +30,13 @@ export const Fee: React.FC<{
   }
 
   return (
-    <Flex align="center">
+    <Center>
       <Heading size="sm" color={colors.gray[450]} mr="4px">
         Fee:
       </Heading>
-      <Text color={colors.gray[400]} data-testid="fee">
+      <Text size="sm" color={colors.gray[400]} data-testid="fee">
         {prettyTezAmount(totalFee)}
       </Text>
-    </Flex>
+    </Center>
   );
 };

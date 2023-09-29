@@ -1,4 +1,14 @@
-import { AspectRatio, Box, Flex, Heading, IconProps, Image, Text, Tooltip } from "@chakra-ui/react";
+import {
+  AspectRatio,
+  Box,
+  Center,
+  Flex,
+  Heading,
+  IconProps,
+  Image,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
@@ -38,8 +48,7 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
-        {/* TODO: try to use Center instead */}
-        <Flex align="center">
+        <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
           <TzktLink operation={operation} mr="8px" color={titleColor}>
             <Text fontWeight="600" size="sm" color={titleColor}>
@@ -47,7 +56,7 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
             </Text>
           </TzktLink>
           <Fee operation={operation} />
-        </Flex>
+        </Center>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />
         </Flex>
@@ -150,11 +159,11 @@ const TokenTransferTile: React.FC<{
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
-        <Flex align="center">
+        <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
           {titleElement}
           <Fee operation={operation} />
-        </Flex>
+        </Center>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />
         </Flex>
@@ -179,12 +188,12 @@ const TokenTransferTile: React.FC<{
               <AddressPill address={parsePkh(operation.sender?.address as string)} />
             </Flex>
           </Flex>
-          <Flex alignSelf="flex-end" align="center">
+          <Center alignSelf="flex-end">
             <Text color={colors.gray[300]} mr="4px">
               Token Transfer
             </Text>
             <OperationStatus operation={operation} />
-          </Flex>
+          </Center>
         </Flex>
       </Box>
     </Flex>
@@ -197,13 +206,13 @@ const ContractCallTile: React.FC<{
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
-        <Flex align="center">
+        <Center>
           <Contract mr="8px" />
           <TzktLink operation={operation} mr="8px">
             <Heading size="sm">Contract Call: {operation.parameter?.entrypoint}</Heading>
           </TzktLink>
           <Fee operation={operation} />
-        </Flex>
+        </Center>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />
         </Flex>
@@ -245,13 +254,13 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
-        <Flex align="center">
+        <Center>
           <BakerIcon stroke={colors.gray[450]} mr="8px" />
           <TzktLink operation={operation} mr="8px">
             <Heading size="sm">{operationType}</Heading>
           </TzktLink>
           <Fee operation={operation} />
-        </Flex>
+        </Center>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />
         </Flex>
@@ -298,13 +307,13 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
-        <Flex align="center">
+        <Center>
           <Contract mr="8px" />
           <TzktLink operation={operation} mr="8px">
             <Heading size="sm">{contractTitle}</Heading>
           </TzktLink>
           <Fee operation={operation} />
-        </Flex>
+        </Center>
         <Flex alignSelf="flex-end">
           <Timestamp timestamp={operation.timestamp} />
         </Flex>
