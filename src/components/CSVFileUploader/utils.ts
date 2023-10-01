@@ -35,7 +35,7 @@ export const parseOperation = (
     return {
       type: "tez",
       recipient,
-      amount: tezToMutez(prettyAmount).toString(),
+      amount: tezToMutez(prettyAmount).toFixed(),
     };
   }
 
@@ -53,7 +53,7 @@ export const parseOperation = (
   if (!token) {
     throw new Error(`Unknown token ${contractPkh} ${tokenId}`);
   }
-  const amount = getRealAmount(token, prettyAmount).toString();
+  const amount = getRealAmount(token, prettyAmount);
 
   if (token.type === "fa1.2") {
     return {

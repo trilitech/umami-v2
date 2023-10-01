@@ -189,16 +189,16 @@ export const tokenDecimals = (asset: Token): string => {
   return asset.metadata?.decimals === undefined ? DEFAULT_TOKEN_DECIMALS : asset.metadata.decimals;
 };
 
-export const getRealAmount = (asset: Token, prettyAmount: string): BigNumber => {
+export const getRealAmount = (asset: Token, prettyAmount: string): string => {
   const amount = new BigNumber(prettyAmount);
 
   if (asset.type === "nft") {
-    return amount;
+    return amount.toFixed();
   }
 
   const decimals = tokenDecimals(asset);
 
-  return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals));
+  return amount.multipliedBy(new BigNumber(10).exponentiatedBy(decimals)).toFixed();
 };
 
 export const formatTokenAmount = (amount: string, decimals = DEFAULT_TOKEN_DECIMALS): string => {
