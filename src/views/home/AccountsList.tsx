@@ -1,16 +1,6 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Modal,
-  ModalContent,
-  Text,
-  useDisclosure,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text, useToast } from "@chakra-ui/react";
 import { compact, groupBy } from "lodash";
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { BsWindowPlus } from "react-icons/bs";
 import KeyIcon from "../../assets/icons/Key";
 import { DynamicModalContext } from "../../components/DynamicModal";
@@ -18,8 +8,11 @@ import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
 import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
 import { AccountType, Account } from "../../types/Account";
-import { useAllAccounts, useRemoveMnemonic } from "../../utils/hooks/accountHooks";
-import { useConfirmation } from "../../utils/hooks/confirmModal";
+import {
+  useAllAccounts,
+  useRemoveMnemonic,
+  useRemoveNonMnemonic,
+} from "../../utils/hooks/accountHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
@@ -28,6 +21,7 @@ import DeriveAccountDisplay from "./DeriveAccountDisplay.tsx";
 import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
 import colors from "../../style/colors";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -46,19 +40,42 @@ const AccountGroup: React.FC<{
   balances: Record<string, string | undefined>;
   onSelect: (pkh: string) => void;
   selected: string | null;
-  onDelete?: () => void;
-  onDerive: () => void;
-  showCTA: boolean;
-}> = ({
-  groupLabel,
-  accounts,
-  balances,
-  onSelect,
-  selected,
-  onDelete = () => {},
-  onDerive,
-  showCTA = false,
-}) => {
+}> = ({ groupLabel, accounts, balances, onSelect, selected }) => {
+  const first = accounts[0];
+  const isMultisig = first.type === AccountType.MULTISIG;
+  const isMnemonic = first.type === AccountType.MNEMONIC;
+  const { openWith, onClose } = useContext(DynamicModalContext);
+  const removeMnemonic = useRemoveMnemonic();
+  const removeNonMnemonic = useRemoveNonMnemonic();
+  const modalBody = isMnemonic
+    ? `Are you sure you want to delete all accounts derived from ${getLabel(first)}?`
+    : `Are you sure you want to delete all of your ${getLabel(first)}?`;
+
+  const onDelete = () => {
+    openWith(
+      <ConfirmationModal
+        title="Confirmation"
+        buttonLabel="Confirm"
+        description={modalBody}
+        onSubmit={() => {
+          if (isMnemonic) {
+            removeMnemonic(first.seedFingerPrint);
+          } else {
+            removeNonMnemonic(first.type);
+          }
+          onClose();
+        }}
+      />
+    );
+  };
+
+  const onDerive = () => {
+    if (!isMnemonic) {
+      throw new Error(`Can't derive a non mnemonic account!`);
+    }
+    openWith(<DeriveAccount onDone={onClose} fingerprint={first.seedFingerPrint} />);
+  };
+
   return (
     <Box data-testid={`account-group-${groupLabel}`}>
       <Flex justifyContent="space-between">
@@ -66,7 +83,9 @@ const AccountGroup: React.FC<{
           {groupLabel}
         </Heading>
 
-        {showCTA && <AccountPopover onCreate={onDerive} onDelete={onDelete} />}
+        {!isMultisig && (
+          <AccountPopover onCreate={isMnemonic ? onDerive : undefined} onDelete={onDelete} />
+        )}
       </Flex>
 
       {accounts.map(account => {
@@ -110,50 +129,14 @@ export const AccountsList: React.FC<{
 
   const { openWith } = useContext(DynamicModalContext);
 
-  const {
-    onOpen: openConfirmModal,
-    element: confirmModal,
-    onClose: closeConfirmModal,
-  } = useConfirmation();
-  const removeMnemonic = useRemoveMnemonic();
-
-  const { element: deriveAccountModal, onOpen: openDeriveAccountModal } = useDeriveAccountModal();
-
   const accountTiles = Object.entries(accountsByKind).map(([label, accountsByType]) => {
-    const first = accountsByType[0];
-    const isMnemonicGroup = first.type === AccountType.MNEMONIC;
-
-    const handleDelete = () => {
-      if (!isMnemonicGroup) {
-        throw new Error(`Can't delete a non mnemonic account group! `);
-      }
-
-      openConfirmModal({
-        onConfirm: () => {
-          removeMnemonic(first.seedFingerPrint);
-          closeConfirmModal();
-        },
-        body: `Are you sure you want to delete all accounts derived from ${label}?`,
-      });
-    };
-
-    const handleDerive = () => {
-      if (!isMnemonicGroup) {
-        throw new Error(`Can't derive a non mnemonic account!`);
-      }
-      openDeriveAccountModal({ fingerprint: first.seedFingerPrint });
-    };
-
     return (
       <AccountGroup
-        showCTA={isMnemonicGroup}
         key={label}
         selected={selected}
         accounts={accountsByType}
         balances={mutezBalance}
         groupLabel={label}
-        onDelete={handleDelete}
-        onDerive={handleDerive}
         onSelect={(pkh: string) => {
           onOpen();
           onSelect(pkh);
@@ -181,8 +164,6 @@ export const AccountsList: React.FC<{
             </Text>
           </Button>
         </NestedScroll>
-        {confirmModal}
-        {deriveAccountModal}
       </Box>
     </>
   );
@@ -220,26 +201,4 @@ const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
       isLoading={isLoading}
     />
   );
-};
-
-export const useDeriveAccountModal = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const paramsRef = useRef<{ fingerprint: string }>();
-
-  return {
-    element: (
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalContent bg={colors.gray[900]}>
-          {paramsRef.current?.fingerprint && (
-            <DeriveAccount onDone={onClose} fingerprint={paramsRef.current.fingerprint} />
-          )}
-        </ModalContent>
-      </Modal>
-    ),
-    onOpen: (params: { fingerprint: string }) => {
-      paramsRef.current = params;
-      onOpen();
-    },
-  };
 };

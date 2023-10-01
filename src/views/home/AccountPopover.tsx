@@ -6,13 +6,17 @@ import Trash from "../../assets/icons/Trash";
 
 const AccountPopover: React.FC<{
   onDelete: () => void;
-  onCreate: () => void;
+  onCreate?: () => void;
 }> = ({ onDelete, onCreate }) => {
   return (
     <PopoverMenu>
       <IconAndTextBtn label="Remove" icon={Trash} onClick={onDelete} textFirst />
-      <Divider marginY={1} />
-      <IconAndTextBtn label="Create" icon={AiOutlinePlus} onClick={onCreate} textFirst />
+      {onCreate && (
+        <>
+          <Divider marginY={1} />
+          <IconAndTextBtn label="Create" icon={AiOutlinePlus} onClick={onCreate} textFirst />
+        </>
+      )}
     </PopoverMenu>
   );
 };
