@@ -11,8 +11,6 @@ import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
 import AddressPill from "../AddressPill/AddressPill";
-import { OperationDisplay } from "../../types/Transfer";
-import { Network } from "../../types/Network";
 import { DynamicModalContext } from "../DynamicModal";
 import { useContext } from "react";
 import DelegationFormPage from "../SendFlow/Delegation/FormPage";
@@ -30,9 +28,7 @@ type Props = {
   dollarBalance: BigNumber | null;
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
-  operationDisplays: Array<OperationDisplay>;
   account: Account;
-  network: Network;
 };
 
 const RoundButton: React.FC<{
@@ -58,8 +54,6 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   tokens,
   nfts,
   account,
-  operationDisplays,
-  network,
 }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   const getOwnedAccount = useGetOwnedAccount();
@@ -102,7 +96,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
         />
       </Flex>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPanel tokens={tokens} nfts={nfts} account={account} network={network} />
+      <AssetsPanel tokens={tokens} nfts={nfts} account={account} />
     </Flex>
   );
 };

@@ -2,7 +2,7 @@ import { TabList, TabPanel, TabPanels, Tabs, Link } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import SmallTab from "../../components/SmallTab";
 import colors from "../../style/colors";
-import { OperationListDisplay } from "./OpertionList/OperationListDisplay";
+import { OperationListDisplay } from "./OperationListDisplay";
 import { useGetOperations } from "../operations/useGetOperations";
 
 export const OperationsListPanel = () => {

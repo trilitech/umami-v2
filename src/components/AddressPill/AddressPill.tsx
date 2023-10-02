@@ -64,7 +64,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
   }
 
   return (
-    <Box maxW="max-content" {...rest}>
+    <Box data-testid="address-pill" maxW="max-content" {...rest}>
       <Flex
         ref={ref}
         alignItems="center"

@@ -3,25 +3,23 @@ import {
   Box,
   Center,
   Flex,
-  FlexProps,
   Heading,
   IconProps,
   Image,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import React, { PropsWithChildren, useContext } from "react";
+import React from "react";
 import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 import { TokenTransfer } from "../../types/Transfer";
-import AddressPill from "../AddressPill/AddressPill";
 import {
   TzktCombinedOperation,
   TransactionOperation,
   DelegationOperation,
   OriginationOperation,
 } from "../../utils/tezos";
-import { Address, RawPkh, parsePkh } from "../../types/Address";
+import { RawPkh, parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
@@ -36,31 +34,20 @@ import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
-import { OperationType } from "./OperationType";
-import { OperationTileContext } from "./OperationTileContext";
-
-// It won't show the address pill if the address in it
-// is the one that is selected in the drawer
-const AddressPillWrapper: React.FC<PropsWithChildren<{ address: Address } & FlexProps>> = ({
-  children,
-  address,
-  ...props
-}) => {
-  const { selectedAddress } = useContext(OperationTileContext);
-  if (selectedAddress?.pkh === address.pkh) {
-    return null;
-  }
-  return (
-    <Flex {...props}>
-      {children}
-      <AddressPill address={address} />
-    </Flex>
-  );
-};
+import { OperationTypeWrapper } from "./OperationTypeWrapper";
+import { useShowAddress } from "./useShowAddress";
+import AddressPill from "../AddressPill/AddressPill";
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
   const isOutgoing = useIsOwnedAddress(operation.sender?.address as string); // TODO: use zod
   const amount = prettyTezAmount(String(operation.amount));
+  const showToAddress = useShowAddress(operation.target?.address as string); // TODO: use zod
+  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
+  // if you send assets between your own accounts you need to see at least one address
+  const showAnyAddress = !showToAddress && !showFromAddress;
+  if (operation.amount === 1000000) {
+    console.log(operation, showToAddress, showFromAddress, showAnyAddress);
+  }
 
   const titleColor = isOutgoing ? colors.orange : colors.green;
   const sign = isOutgoing ? "-" : "+";
@@ -84,21 +71,25 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            {/* TODO: use zod */}
-            <AddressPillWrapper mr="15px" address={parsePkh(operation.target?.address as string)}>
-              <Text mr="6px" color={colors.gray[450]}>
-                To:
-              </Text>
-            </AddressPillWrapper>
-            {/* TODO: use zod */}
-            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)}>
-              <Text mr="6px" color={colors.gray[450]}>
-                From:
-              </Text>
-            </AddressPillWrapper>
+            {showToAddress && (
+              <Flex mr="15px">
+                <Text mr="6px" color={colors.gray[450]}>
+                  To:
+                </Text>
+                <AddressPill address={parsePkh(operation.target?.address as string)} />
+              </Flex>
+            )}
+            {(showFromAddress || showAnyAddress) && (
+              <Flex>
+                <Text mr="6px" color={colors.gray[450]}>
+                  From:
+                </Text>
+                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+              </Flex>
+            )}
           </Flex>
           <Flex alignSelf="flex-end" align="center">
-            <OperationType>Transaction</OperationType>
+            <OperationTypeWrapper>Transaction</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Flex>
         </Flex>
@@ -121,6 +112,11 @@ const TokenTransferTile: React.FC<{
   const tokenId = tokenTransfer.token.tokenId as string; // TODO: use zod
   const contract = tokenTransfer.token.contract.address as RawPkh; // TODO: use zod
   const rawAmount = tokenTransfer.amount as string; // TODO: use zod
+
+  const showToAddress = useShowAddress(tokenTransfer.to?.address as string); // TODO: use zod
+  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
+  // if you send assets between your own accounts you need to see at least one address
+  const showAnyAddress = !showToAddress && !showFromAddress;
 
   const getToken = useGetToken();
   const isOutgoing = useIsOwnedAddress(operation.sender?.address as string); // TODO: use zod
@@ -187,21 +183,25 @@ const TokenTransferTile: React.FC<{
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            {/* TODO: use zod */}
-            <AddressPillWrapper address={parsePkh(tokenTransfer.to?.address as string)} mr="15px">
-              <Text mr="6px" color={colors.gray[450]}>
-                To:
-              </Text>
-            </AddressPillWrapper>
-            {/* TODO: use zod */}
-            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)}>
-              <Text mr="6px" color={colors.gray[450]}>
-                From:
-              </Text>
-            </AddressPillWrapper>
+            {showToAddress && (
+              <Flex>
+                <Text mr="6px" color={colors.gray[450]}>
+                  To:
+                </Text>
+                <AddressPill address={parsePkh(tokenTransfer.to?.address as string)} />
+              </Flex>
+            )}
+            {(showFromAddress || showAnyAddress) && (
+              <Flex>
+                <Text mr="6px" color={colors.gray[450]}>
+                  From:
+                </Text>
+                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+              </Flex>
+            )}
           </Flex>
           <Center alignSelf="flex-end">
-            <OperationType>Token Transfer</OperationType>
+            <OperationTypeWrapper>Token Transfer</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Center>
         </Flex>
@@ -213,6 +213,11 @@ const TokenTransferTile: React.FC<{
 const ContractCallTile: React.FC<{
   operation: TransactionOperation;
 }> = ({ operation }) => {
+  const showToAddress = useShowAddress(operation.target?.address as string); // TODO: use zod
+  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
+  // if you send assets between your own accounts you need to see at least one address
+  const showAnyAddress = !showToAddress && !showFromAddress;
+
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between" mb="10px">
@@ -230,21 +235,25 @@ const ContractCallTile: React.FC<{
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            {/* TODO: use zod */}
-            <AddressPillWrapper address={parsePkh(operation.target?.address as string)} mr="15px">
-              <Text mr="6px" color={colors.gray[450]}>
-                To:
-              </Text>
-            </AddressPillWrapper>
-            {/* TODO: use zod */}
-            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)}>
-              <Text mr="6px" color={colors.gray[450]}>
-                From:
-              </Text>
-            </AddressPillWrapper>
+            {showToAddress && (
+              <Flex mr="15px">
+                <Text mr="6px" color={colors.gray[450]}>
+                  To:
+                </Text>
+                <AddressPill address={parsePkh(operation.target?.address as string)} />
+              </Flex>
+            )}
+            {(showFromAddress || showAnyAddress) && (
+              <Flex>
+                <Text mr="6px" color={colors.gray[450]}>
+                  From:
+                </Text>
+                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+              </Flex>
+            )}
           </Flex>
           <Flex alignSelf="flex-end" align="center">
-            <OperationType>Contract Call</OperationType>
+            <OperationTypeWrapper>Contract Call</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Flex>
         </Flex>
@@ -256,6 +265,7 @@ const ContractCallTile: React.FC<{
 const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operation }) => {
   const isDelegating = !!operation.newDelegate;
   const operationType = isDelegating ? "Delegate" : "Delegation Ended";
+  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
 
   return (
     <Flex direction="column" w="100%">
@@ -275,25 +285,25 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
         <Flex justifyContent="space-between">
           <Flex>
             {isDelegating && (
-              <AddressPillWrapper
-                // TODO: use zod
-                address={parsePkh(operation.newDelegate?.address as string)}
-                mr="15px"
-              >
+              <Flex mr="15px">
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-              </AddressPillWrapper>
+                <AddressPill address={parsePkh(operation.newDelegate?.address as string)} />
+              </Flex>
             )}
-            {/* TODO: use zod */}
-            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)}>
-              <Text mr="6px" color={colors.gray[450]}>
-                From:
-              </Text>
-            </AddressPillWrapper>
+            {showFromAddress && (
+              <Flex>
+                <Text mr="6px" color={colors.gray[450]}>
+                  From:
+                </Text>
+                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+              </Flex>
+            )}
+            {!isDelegating && !showFromAddress && <Text color={colors.gray[450]}>N/A</Text>}
           </Flex>
           <Flex alignSelf="flex-end" align="center">
-            <OperationType>{operationType}</OperationType>
+            <OperationTypeWrapper>{operationType}</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Flex>
         </Flex>
@@ -308,6 +318,8 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
     operation.originatedContract.typeHash === TYPE_HASH;
 
   const contractTitle = isMultisig ? "Multisig Account Created" : "Contract Origination";
+
+  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
 
   return (
     <Flex direction="column" w="100%">
@@ -326,15 +338,19 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            {/* TODO: use zod */}
-            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)} mr="15px">
-              <Text mr="6px" color={colors.gray[450]}>
-                From:
-              </Text>
-            </AddressPillWrapper>
+            {!showFromAddress ? (
+              <Text color={colors.gray[450]}>N/A</Text>
+            ) : (
+              <Flex mr="15px">
+                <Text mr="6px" color={colors.gray[450]}>
+                  From:
+                </Text>
+                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+              </Flex>
+            )}
           </Flex>
           <Flex alignSelf="flex-end" align="center">
-            <OperationType>Contract Origination</OperationType>
+            <OperationTypeWrapper>Contract Origination</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Flex>
         </Flex>

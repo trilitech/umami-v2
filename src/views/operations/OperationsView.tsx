@@ -19,14 +19,14 @@ const OperationsView = () => {
         {operations.length === 0 ? (
           <NoOperations />
         ) : (
-          operations.map(operation => (
-            <Box key={operation.id} height="90px">
-              <OperationTileContext.Provider value={{ size: "full" }}>
+          <OperationTileContext.Provider value={{ mode: "page" }}>
+            {operations.map(operation => (
+              <Box key={operation.id} height="90px">
                 <OperationTile operation={operation} />
-              </OperationTileContext.Provider>
-              <Divider mt="20px" />
-            </Box>
-          ))
+                <Divider mt="20px" />
+              </Box>
+            ))}
+          </OperationTileContext.Provider>
         )}
       </Box>
     </Flex>

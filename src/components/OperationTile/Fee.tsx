@@ -13,9 +13,9 @@ export const Fee: React.FC<{
   operation: TzktCombinedOperation;
 }> = ({ operation }) => {
   const tileContext = useContext(OperationTileContext);
-  const isOutgoing = useIsOwnedAddress(operation.sender?.address as string);
+  const isOutgoing = useIsOwnedAddress(operation.sender?.address as string); // TODO: use zod
 
-  if (tileContext.size === "small") {
+  if (tileContext.mode === "drawer") {
     return null;
   }
 

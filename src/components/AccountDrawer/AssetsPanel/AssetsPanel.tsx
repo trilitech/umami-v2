@@ -1,5 +1,5 @@
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
@@ -11,18 +11,40 @@ import { DelegationDisplay } from "./DelegationDisplay";
 import MultisigPendingAccordion from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
-import { Network } from "../../../types/Network";
 import { useAllDelegations } from "../../../utils/hooks/assetsHooks";
+import {
+  TzktCombinedOperation,
+  getCombinedOperations,
+  getTokenTransfers,
+} from "../../../utils/tezos";
+import { OperationListDisplay } from "../../../views/home/OperationListDisplay";
+import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
+import { OperationTileContext } from "../../OperationTile";
+import { useAppDispatch } from "../../../utils/redux/hooks";
+import { assetsActions } from "../../../utils/redux/slices/assetsSlice";
+import { TokenTransfer } from "../../../types/Transfer";
 
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;
-  network: Network;
-}> = ({ tokens, nfts, account, network }) => {
+}> = ({ tokens, nfts, account }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   const rawDelegations = useAllDelegations()[account.address.pkh];
   const delegation = rawDelegations ? makeDelegation(rawDelegations) : null;
+  const network = useSelectedNetwork();
+  const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    getCombinedOperations([account.address.pkh], network).then(async operations => {
+      setOperations(operations);
+
+      const transactionIds = operations.map(op => op.id as number); // TODO: use zod
+      const tokenTransfers = await getTokenTransfers(transactionIds, network);
+      dispatch(assetsActions.updateTokenTransfers(tokenTransfers as TokenTransfer[]));
+    });
+  }, [account, network, setOperations, dispatch]);
 
   return (
     <Tabs
@@ -59,8 +81,11 @@ export const AssetsPanel: React.FC<{
         )}
 
         <TabPanel p="24px 0 60px 0" data-testid="account-card-operations-tab">
-          {/* TODO: implement */}
-          {/* <OperationListDisplay operations={operationDisplays} /> */}
+          <OperationTileContext.Provider
+            value={{ mode: "drawer", selectedAddress: account.address }}
+          >
+            <OperationListDisplay operations={operations} />
+          </OperationTileContext.Provider>
         </TabPanel>
 
         <TabPanel p="24px 0 60px 0" data-testid="account-card-delegation-tab">

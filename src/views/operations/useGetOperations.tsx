@@ -13,6 +13,8 @@ export const operationKey = (operation: TzktCombinedOperation): string =>
 // don't forget about sender/target
 // TODO: handle network change
 export const useGetOperations = () => {
+  // TODO: replace it with a reverse cursor because
+  // if we load 100 ops each time, but the user has 101, then the first one will be lost
   const latestOperations = useGetLatestOperations();
   const network = useSelectedNetwork();
   const accounts = useAllAccounts();

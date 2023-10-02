@@ -10,17 +10,14 @@ import { DynamicModalContext } from "../DynamicModal";
 import { ReceiveModal } from "../ReceiveModal";
 import SendTezForm from "../SendFlow/Tez/FormPage";
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useGetOperations } from "../../views/operations/useGetOperations";
 
+// TODO: replace current component with the underlying one
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
 
   const getTokens = useGetAccountAllTokens();
   const getNFTs = useGetAccountNFTs();
-  const { operations } = useGetOperations(); // TODO: apply filtering
-  const network = useSelectedNetwork();
 
   const { openWith } = useContext(DynamicModalContext);
 
@@ -31,23 +28,19 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const nfts = getNFTs(account.address.pkh);
 
   return (
-    <>
-      <AccountDrawerDisplay
-        onSend={() => openWith(<SendTezForm sender={account} />)}
-        pkh={account.address.pkh}
-        label={account.label}
-        balance={balance}
-        dollarBalance={dollarBalance}
-        onReceive={() => {
-          openWith(<ReceiveModal pkh={account.address.pkh} />);
-        }}
-        tokens={tokens}
-        nfts={nfts}
-        operationDisplays={[]} // TODO: replace current component with the underlying one
-        account={account}
-        network={network}
-      />
-    </>
+    <AccountDrawerDisplay
+      onSend={() => openWith(<SendTezForm sender={account} />)}
+      pkh={account.address.pkh}
+      label={account.label}
+      balance={balance}
+      dollarBalance={dollarBalance}
+      onReceive={() => {
+        openWith(<ReceiveModal pkh={account.address.pkh} />);
+      }}
+      tokens={tokens}
+      nfts={nfts}
+      account={account}
+    />
   );
 };
 
