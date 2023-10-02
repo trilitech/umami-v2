@@ -1,7 +1,7 @@
 import React from "react";
 import NestedScroll from "../../../components/NestedScroll";
 import { NoOperations } from "../../../components/NoItems";
-import { OperationTile } from "../../../components/OperationTile";
+import { OperationTile, OperationTileContext } from "../../../components/OperationTile";
 import { TzktCombinedOperation } from "../../../utils/tezos";
 
 export const OperationListDisplay: React.FC<{ operations: TzktCombinedOperation[] }> = ({
@@ -11,9 +11,13 @@ export const OperationListDisplay: React.FC<{ operations: TzktCombinedOperation[
     return <NoOperations small />;
   }
 
-  const operationEls = operations.slice(0, 20).map(operation => {
-    return <OperationTile key={operation.id} operation={operation} />;
-  });
-
-  return <NestedScroll>{operationEls}</NestedScroll>;
+  return (
+    <NestedScroll>
+      {operations.slice(0, 20).map(operation => (
+        <OperationTileContext.Provider key={operation.id} value={{ size: "small" }}>
+          <OperationTile operation={operation} />
+        </OperationTileContext.Provider>
+      ))}
+    </NestedScroll>
+  );
 };

@@ -3,13 +3,14 @@ import {
   Box,
   Center,
   Flex,
+  FlexProps,
   Heading,
   IconProps,
   Image,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { PropsWithChildren, useContext } from "react";
 import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 import { TokenTransfer } from "../../types/Transfer";
@@ -20,7 +21,7 @@ import {
   DelegationOperation,
   OriginationOperation,
 } from "../../utils/tezos";
-import { RawPkh, parsePkh } from "../../types/Address";
+import { Address, RawPkh, parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
@@ -35,8 +36,27 @@ import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
+import { OperationType } from "./OperationType";
+import { OperationTileContext } from "./OperationTileContext";
 
-// TODO: add smaller version for the drawer without fee, transaction type, from/to based on the current selected account
+// It won't show the address pill if the address in it
+// is the one that is selected in the drawer
+const AddressPillWrapper: React.FC<PropsWithChildren<{ address: Address } & FlexProps>> = ({
+  children,
+  address,
+  ...props
+}) => {
+  const { selectedAddress } = useContext(OperationTileContext);
+  if (selectedAddress?.pkh === address.pkh) {
+    return null;
+  }
+  return (
+    <Flex {...props}>
+      {children}
+      <AddressPill address={address} />
+    </Flex>
+  );
+};
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
   const isOutgoing = useIsOwnedAddress(operation.sender?.address as string); // TODO: use zod
@@ -64,25 +84,21 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            <Flex mr="15px">
+            {/* TODO: use zod */}
+            <AddressPillWrapper mr="15px" address={parsePkh(operation.target?.address as string)}>
               <Text mr="6px" color={colors.gray[450]}>
                 To:
               </Text>
-              {/* TODO: use zod */}
-              <AddressPill address={parsePkh(operation.target?.address as string)} />
-            </Flex>
-            <Flex>
+            </AddressPillWrapper>
+            {/* TODO: use zod */}
+            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)}>
               <Text mr="6px" color={colors.gray[450]}>
                 From:
               </Text>
-              {/* TODO: use zod */}
-              <AddressPill address={parsePkh(operation.sender?.address as string)} />
-            </Flex>
+            </AddressPillWrapper>
           </Flex>
           <Flex alignSelf="flex-end" align="center">
-            <Text color={colors.gray[300]} mr="4px">
-              Transaction
-            </Text>
+            <OperationType>Transaction</OperationType>
             <OperationStatus operation={operation} />
           </Flex>
         </Flex>
@@ -171,27 +187,21 @@ const TokenTransferTile: React.FC<{
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            <Flex mr="15px">
+            {/* TODO: use zod */}
+            <AddressPillWrapper address={parsePkh(tokenTransfer.to?.address as string)} mr="15px">
               <Text mr="6px" color={colors.gray[450]}>
                 To:
               </Text>
-              {/* TODO: use zod */}
-
-              <AddressPill address={parsePkh(tokenTransfer.to?.address as string)} />
-            </Flex>
-            <Flex>
+            </AddressPillWrapper>
+            {/* TODO: use zod */}
+            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)}>
               <Text mr="6px" color={colors.gray[450]}>
                 From:
               </Text>
-              {/* TODO: use zod */}
-
-              <AddressPill address={parsePkh(operation.sender?.address as string)} />
-            </Flex>
+            </AddressPillWrapper>
           </Flex>
           <Center alignSelf="flex-end">
-            <Text color={colors.gray[300]} mr="4px">
-              Token Transfer
-            </Text>
+            <OperationType>Token Transfer</OperationType>
             <OperationStatus operation={operation} />
           </Center>
         </Flex>
@@ -220,25 +230,21 @@ const ContractCallTile: React.FC<{
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            <Flex mr="15px">
+            {/* TODO: use zod */}
+            <AddressPillWrapper address={parsePkh(operation.target?.address as string)} mr="15px">
               <Text mr="6px" color={colors.gray[450]}>
                 To:
               </Text>
-              {/* TODO: use zod */}
-              <AddressPill address={parsePkh(operation.target?.address as string)} />
-            </Flex>
-            <Flex>
+            </AddressPillWrapper>
+            {/* TODO: use zod */}
+            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)}>
               <Text mr="6px" color={colors.gray[450]}>
                 From:
               </Text>
-              {/* TODO: use zod */}
-              <AddressPill address={parsePkh(operation.sender?.address as string)} />
-            </Flex>
+            </AddressPillWrapper>
           </Flex>
           <Flex alignSelf="flex-end" align="center">
-            <Text color={colors.gray[300]} mr="4px">
-              Contract Call
-            </Text>
+            <OperationType>Contract Call</OperationType>
             <OperationStatus operation={operation} />
           </Flex>
         </Flex>
@@ -269,26 +275,25 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
         <Flex justifyContent="space-between">
           <Flex>
             {isDelegating && (
-              <Flex mr="15px">
+              <AddressPillWrapper
+                // TODO: use zod
+                address={parsePkh(operation.newDelegate?.address as string)}
+                mr="15px"
+              >
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-
-                <AddressPill address={parsePkh(operation.newDelegate?.address as string)} />
-              </Flex>
+              </AddressPillWrapper>
             )}
-            <Flex>
+            {/* TODO: use zod */}
+            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)}>
               <Text mr="6px" color={colors.gray[450]}>
                 From:
               </Text>
-              {/* TODO: use zod */}
-              <AddressPill address={parsePkh(operation.sender?.address as string)} />
-            </Flex>
+            </AddressPillWrapper>
           </Flex>
           <Flex alignSelf="flex-end" align="center">
-            <Text color={colors.gray[300]} mr="4px">
-              {operationType}
-            </Text>
+            <OperationType>{operationType}</OperationType>
             <OperationStatus operation={operation} />
           </Flex>
         </Flex>
@@ -321,18 +326,15 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            <Flex mr="15px">
+            {/* TODO: use zod */}
+            <AddressPillWrapper address={parsePkh(operation.sender?.address as string)} mr="15px">
               <Text mr="6px" color={colors.gray[450]}>
                 From:
               </Text>
-              {/* TODO: use zod */}
-              <AddressPill address={parsePkh(operation.sender?.address as string)} />
-            </Flex>
+            </AddressPillWrapper>
           </Flex>
           <Flex alignSelf="flex-end" align="center">
-            <Text color={colors.gray[300]} mr="4px">
-              Contract Origination
-            </Text>
+            <OperationType>Contract Origination</OperationType>
             <OperationStatus operation={operation} />
           </Flex>
         </Flex>

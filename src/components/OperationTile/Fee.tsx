@@ -5,12 +5,19 @@ import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { get } from "lodash";
 import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
+import { OperationTileContext } from "./OperationTileContext";
+import React, { useContext } from "react";
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];
 
 export const Fee: React.FC<{
   operation: TzktCombinedOperation;
 }> = ({ operation }) => {
+  const tileContext = useContext(OperationTileContext);
   const isOutgoing = useIsOwnedAddress(operation.sender?.address as string);
+
+  if (tileContext.size === "small") {
+    return null;
+  }
 
   // if the wallet holder paid the fee then we show it, otherwise there is no need to
   if (!isOutgoing) {

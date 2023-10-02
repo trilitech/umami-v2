@@ -3,7 +3,7 @@ import { useAccountsFilterWithMapFilter } from "../../components/useAccountsFilt
 import { NoOperations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useGetOperations } from "./useGetOperations";
-import { OperationTile } from "../../components/OperationTile";
+import { OperationTile, OperationTileContext } from "../../components/OperationTile";
 import colors from "../../style/colors";
 
 const OperationsView = () => {
@@ -21,7 +21,9 @@ const OperationsView = () => {
         ) : (
           operations.map(operation => (
             <Box key={operation.id} height="90px">
-              <OperationTile operation={operation} />
+              <OperationTileContext.Provider value={{ size: "full" }}>
+                <OperationTile operation={operation} />
+              </OperationTileContext.Provider>
               <Divider mt="20px" />
             </Box>
           ))
