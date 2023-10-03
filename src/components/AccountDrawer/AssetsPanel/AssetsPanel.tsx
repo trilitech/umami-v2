@@ -1,4 +1,4 @@
-import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
@@ -13,11 +13,11 @@ import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
 import { useAllDelegations } from "../../../utils/hooks/assetsHooks";
 
-
 import { OperationListDisplay } from "../../../views/home/OperationListDisplay";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { OperationTileContext } from "../../OperationTile";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
+import colors from "../../../style/colors";
 
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
@@ -28,7 +28,7 @@ export const AssetsPanel: React.FC<{
   const rawDelegations = useAllDelegations()[account.address.pkh];
   const delegation = rawDelegations ? makeDelegation(rawDelegations) : null;
   const network = useSelectedNetwork();
-  const { operations } = useGetOperations([account.address.pkh]);
+  const { operations, isLoading } = useGetOperations([account.address.pkh]);
 
   return (
     <Tabs
@@ -68,7 +68,13 @@ export const AssetsPanel: React.FC<{
           <OperationTileContext.Provider
             value={{ mode: "drawer", selectedAddress: account.address }}
           >
-            <OperationListDisplay operations={operations} />
+            {isLoading ? (
+              <Text textAlign="center" color={colors.gray[500]}>
+                Loading...
+              </Text>
+            ) : (
+              <OperationListDisplay operations={operations} />
+            )}
           </OperationTileContext.Provider>
         </TabPanel>
 

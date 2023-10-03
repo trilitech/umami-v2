@@ -1,9 +1,8 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Box, Button, Menu, MenuButton, Wrap } from "@chakra-ui/react";
-import { compact, differenceBy, pick } from "lodash";
+import { differenceBy } from "lodash";
 import { useState } from "react";
 import { Account } from "../types/Account";
-import { RawPkh } from "../types/Address";
 import { useAllAccounts } from "../utils/hooks/accountHooks";
 import AccountListDisplay from "./AccountSelector/AccountListDisplay";
 import AddressPill from "./AddressPill/AddressPill";
@@ -61,26 +60,5 @@ export const useAccountsFilter = () => {
         </Wrap>
       </Box>
     ),
-  };
-};
-
-export const useAccountsFilterWithMapFilter = () => {
-  const { accountsFilter, selectedAccounts } = useAccountsFilter();
-
-  const filterMap = <T,>(assetsByAccount: Record<RawPkh, T[] | undefined>): T[] => {
-    return compact(
-      Object.values(
-        pick(
-          assetsByAccount,
-          selectedAccounts.map(acc => acc.address.pkh)
-        )
-      ).flat()
-    );
-  };
-
-  return {
-    filterMap,
-    accountsFilter,
-    selectedAccounts,
   };
 };
