@@ -181,7 +181,7 @@ const TokenTransferTile: React.FC<{
         <Flex justifyContent="space-between">
           <Flex>
             {showToAddress && (
-              <Flex>
+              <Flex mr="15px">
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
