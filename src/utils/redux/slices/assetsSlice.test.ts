@@ -12,7 +12,7 @@ import { GHOSTNET } from "../../../types/Network";
 import { networksActions } from "./networks";
 
 const {
-  actions: { updateTezBalance, updateTokenBalance, updateTezTransfers, updateTokenTransfers },
+  actions: { updateTezBalance, updateTokenBalance, updateTokenTransfers },
 } = assetsSlice;
 
 describe("assetsSlice", () => {
@@ -168,77 +168,6 @@ describe("assetsSlice", () => {
       isLoading: false,
       latestOperations: [],
     });
-  });
-
-  test("tez transfers are upserted", () => {
-    store.dispatch(
-      updateTezTransfers([
-        {
-          pkh: "foo",
-          transfers: [mockTezTransaction(1), mockTezTransaction(2)],
-        },
-        { pkh: "bar", transfers: [mockTezTransaction(3)] },
-      ])
-    );
-
-    expect(store.getState().assets).toEqual({
-      conversionRate: null,
-      balances: {
-        mutez: {},
-        tokens: {},
-      },
-      delegations: {},
-      bakers: [],
-      transfers: {
-        tez: {
-          foo: [mockTezTransaction(1), mockTezTransaction(2)],
-          bar: [mockTezTransaction(3)],
-        },
-        tokens: {},
-      },
-      blockLevel: null,
-      refetchTrigger: 0,
-      lastTimeUpdated: null,
-      isLoading: false,
-      latestOperations: [],
-    });
-
-    store.dispatch(
-      updateTezTransfers([
-        {
-          pkh: "foo",
-          transfers: [mockTezTransaction(4)],
-        },
-        {
-          pkh: "baz",
-          transfers: [mockTezTransaction(5)],
-        },
-      ])
-    );
-
-    expect(store.getState().assets).toEqual({
-      conversionRate: null,
-      balances: {
-        mutez: {},
-        tokens: {},
-      },
-      delegations: {},
-      bakers: [],
-      transfers: {
-        tez: {
-          foo: [mockTezTransaction(4)],
-          bar: [mockTezTransaction(3)],
-          baz: [mockTezTransaction(5)],
-        },
-        tokens: {},
-      },
-      blockLevel: null,
-      refetchTrigger: 0,
-      lastTimeUpdated: null,
-      isLoading: false,
-      latestOperations: [],
-    });
-    store.dispatch(networksActions.setCurrent(GHOSTNET));
   });
 
   test("token transfers are upserted", () => {

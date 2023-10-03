@@ -309,6 +309,7 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
   );
 };
 
+// TODO: Add tests to all of the tiles
 const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {
   const isMultisig =
     operation.originatedContract?.codeHash === CODE_HASH &&

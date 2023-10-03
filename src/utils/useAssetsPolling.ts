@@ -5,7 +5,7 @@ import { Network } from "../types/Network";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
-import { assetsActions, DelegationPayload, TezTransfersPayload } from "./redux/slices/assetsSlice";
+import { assetsActions, DelegationPayload } from "./redux/slices/assetsSlice";
 import { useAppDispatch } from "./redux/hooks";
 import { multisigActions } from "./redux/slices/multisigsSlice";
 import { tokensActions } from "./redux/slices/tokensSlice";
@@ -16,7 +16,6 @@ import {
   getLastDelegation,
   getLatestBlockLevel,
   getTezosPriceInUSD,
-  getTezTransfers,
   getTokenBalances,
   getTokenTransfers,
 } from "./tezos";
@@ -27,14 +26,6 @@ import { AppDispatch } from "./redux/store";
 import { RawPkh } from "../types/Address";
 import { useToast } from "@chakra-ui/react";
 import { Multisig } from "./multisig/types";
-
-const getTezTransfersPayload = async (
-  pkh: string,
-  network: Network
-): Promise<TezTransfersPayload> => {
-  const transfers = await getTezTransfers(pkh, network);
-  return { pkh, transfers };
-};
 
 const getDelegationsPayload = async (
   pkh: string,
@@ -60,11 +51,6 @@ const updatePendingOperations = async (
 const updateTezBalances = async (dispatch: AppDispatch, network: Network, addresses: RawPkh[]) => {
   const accountInfos = await getAccounts(addresses, network);
   dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
-};
-
-const updateTezTransfers = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
-  const tezTransfers = await Promise.all(pkhs.map(pkh => getTezTransfersPayload(pkh, network)));
-  dispatch(assetsActions.updateTezTransfers(tezTransfers));
 };
 
 const updateDelegations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
@@ -129,7 +115,6 @@ const updateAccountAssets = async (
     await Promise.all([
       updatePendingOperations(dispatch, network, multisigs),
       updateTezBalances(dispatch, network, allAccountAddresses),
-      updateTezTransfers(dispatch, network, allAccountAddresses),
       updateDelegations(dispatch, network, allAccountAddresses),
       updateTokenBalances(dispatch, network, allAccountAddresses),
       updateOperations(dispatch, network, allAccountAddresses),

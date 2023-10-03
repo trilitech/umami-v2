@@ -29,11 +29,6 @@ type State = {
   lastTimeUpdated: string | null;
 };
 
-export type TezTransfersPayload = {
-  pkh: RawPkh;
-  transfers: TezTransfer[];
-};
-
 export type DelegationPayload = {
   pkh: RawPkh;
   delegation: DelegationOperation;
@@ -68,16 +63,6 @@ const assetsSlice = createSlice({
     reset: () => initialState,
     updateBlockLevel: (state, { payload }: { payload: number }) => {
       state.blockLevel = payload;
-    },
-    updateTezTransfers: (state, { payload }: { type: string; payload: TezTransfersPayload[] }) => {
-      const tezOperationsPayload = payload;
-      const newTezTransfers = { ...state.transfers.tez };
-
-      tezOperationsPayload.forEach(op => {
-        const { pkh, transfers } = op;
-        newTezTransfers[pkh] = transfers;
-      });
-      state.transfers.tez = newTezTransfers;
     },
     updateTokenTransfers: (state, { payload: transfers }: { payload: TokenTransfer[] }) => {
       transfers.forEach(transfer => {

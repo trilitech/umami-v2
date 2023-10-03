@@ -48,6 +48,7 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
     fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses)
       .then(latestOperations => {
         setOperations(latestOperations);
+        setHasMore(latestOperations.length > 0);
         setUpdatesTrigger(prev => prev + 1);
       })
       .finally(() => setIsLoading(false));

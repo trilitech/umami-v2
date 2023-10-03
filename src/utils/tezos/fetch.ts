@@ -187,8 +187,11 @@ export const getCombinedOperations = async (
   ).slice(0, limit) as TzktCombinedOperation[];
 };
 
-export const getTokenTransfers = (transactionIds: number[], network: Network) =>
-  withRateLimit(() =>
+export const getTokenTransfers = async (transactionIds: number[], network: Network) => {
+  if (transactionIds.length === 0) {
+    return [];
+  }
+  return withRateLimit(() =>
     tokensGetTokenTransfers(
       // tzkt doesn't work with the `in` operator correctly
       // the only way is to have just one element in it and join it with a comma manually
@@ -196,6 +199,7 @@ export const getTokenTransfers = (transactionIds: number[], network: Network) =>
       { baseUrl: network.tzktApiUrl }
     )
   ) as Promise<TokenTransfer[]>;
+};
 
 export const getLastDelegation = async (address: RawPkh, network: Network) =>
   withRateLimit(() =>
