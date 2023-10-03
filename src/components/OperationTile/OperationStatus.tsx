@@ -5,7 +5,7 @@ import { useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
 import { TzktCombinedOperation } from "../../utils/tezos";
 
 export const OperationStatus: React.FC<{ operation: TzktCombinedOperation }> = ({ operation }) => {
-  const isFinalised = useIsBlockFinalised(operation.level as number); // TODO: use zod
+  const isFinalised = useIsBlockFinalised(operation.level);
 
   if (operation.status === "applied") {
     if (isFinalised) {

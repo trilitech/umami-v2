@@ -1,10 +1,11 @@
 import * as tzktApi from "@tzkt/sdk-api";
-import { Address } from "./Address";
+import { Address, TzktAlias } from "./Address";
 import { RawTokenInfo } from "./Token";
 
-export type TokenTransfer = Omit<tzktApi.TokenTransfer, "amount" | "token"> & {
+export type TokenTransfer = Omit<tzktApi.TokenTransfer, "amount" | "token" | "to"> & {
   amount: string;
   token: RawTokenInfo;
+  to: TzktAlias;
 };
 
 export type TezTransfer = tzktApi.TransactionOperation;

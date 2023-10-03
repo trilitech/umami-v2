@@ -19,7 +19,7 @@ import {
   DelegationOperation,
   OriginationOperation,
 } from "../../utils/tezos";
-import { RawPkh, parsePkh } from "../../types/Address";
+import { parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
@@ -39,15 +39,12 @@ import { useShowAddress } from "./useShowAddress";
 import AddressPill from "../AddressPill/AddressPill";
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
-  const isOutgoing = useIsOwnedAddress(operation.sender?.address as string); // TODO: use zod
+  const isOutgoing = useIsOwnedAddress(operation.sender.address);
   const amount = prettyTezAmount(String(operation.amount));
-  const showToAddress = useShowAddress(operation.target?.address as string); // TODO: use zod
-  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
+  const showToAddress = useShowAddress(operation.target.address);
+  const showFromAddress = useShowAddress(operation.sender.address);
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
-  if (operation.amount === 1000000) {
-    console.log(operation, showToAddress, showFromAddress, showAnyAddress);
-  }
 
   const titleColor = isOutgoing ? colors.orange : colors.green;
   const sign = isOutgoing ? "-" : "+";
@@ -76,7 +73,7 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(operation.target?.address as string)} />
+                <AddressPill address={parsePkh(operation.target.address)} />
               </Flex>
             )}
             {(showFromAddress || showAnyAddress) && (
@@ -84,7 +81,7 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+                <AddressPill address={parsePkh(operation.sender.address)} />
               </Flex>
             )}
           </Flex>
@@ -109,17 +106,17 @@ const TokenTransferTile: React.FC<{
   operation: TransactionOperation;
   tokenTransfer: TokenTransfer;
 }> = ({ operation, tokenTransfer }) => {
-  const tokenId = tokenTransfer.token.tokenId as string; // TODO: use zod
-  const contract = tokenTransfer.token.contract.address as RawPkh; // TODO: use zod
-  const rawAmount = tokenTransfer.amount as string; // TODO: use zod
+  const tokenId = tokenTransfer.token.tokenId;
+  const contract = tokenTransfer.token.contract.address;
+  const rawAmount = tokenTransfer.amount;
 
-  const showToAddress = useShowAddress(tokenTransfer.to?.address as string); // TODO: use zod
-  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
+  const showToAddress = useShowAddress(tokenTransfer.to.address);
+  const showFromAddress = useShowAddress(operation.sender.address);
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
 
   const getToken = useGetToken();
-  const isOutgoing = useIsOwnedAddress(operation.sender?.address as string); // TODO: use zod
+  const isOutgoing = useIsOwnedAddress(operation.sender.address);
 
   const token = getToken(contract, tokenId);
   if (!token) {
@@ -188,7 +185,7 @@ const TokenTransferTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(tokenTransfer.to?.address as string)} />
+                <AddressPill address={parsePkh(tokenTransfer.to.address)} />
               </Flex>
             )}
             {(showFromAddress || showAnyAddress) && (
@@ -196,7 +193,7 @@ const TokenTransferTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+                <AddressPill address={parsePkh(operation.sender.address)} />
               </Flex>
             )}
           </Flex>
@@ -213,8 +210,8 @@ const TokenTransferTile: React.FC<{
 const ContractCallTile: React.FC<{
   operation: TransactionOperation;
 }> = ({ operation }) => {
-  const showToAddress = useShowAddress(operation.target?.address as string); // TODO: use zod
-  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
+  const showToAddress = useShowAddress(operation.target.address);
+  const showFromAddress = useShowAddress(operation.sender.address);
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
 
@@ -240,7 +237,7 @@ const ContractCallTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(operation.target?.address as string)} />
+                <AddressPill address={parsePkh(operation.target.address)} />
               </Flex>
             )}
             {(showFromAddress || showAnyAddress) && (
@@ -248,7 +245,7 @@ const ContractCallTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+                <AddressPill address={parsePkh(operation.sender.address)} />
               </Flex>
             )}
           </Flex>
@@ -265,7 +262,7 @@ const ContractCallTile: React.FC<{
 const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operation }) => {
   const isDelegating = !!operation.newDelegate;
   const operationType = isDelegating ? "Delegate" : "Delegation Ended";
-  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
+  const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
     <Flex direction="column" w="100%">
@@ -297,7 +294,7 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+                <AddressPill address={parsePkh(operation.sender.address)} />
               </Flex>
             )}
             {!isDelegating && !showFromAddress && <Text color={colors.gray[450]}>N/A</Text>}
@@ -319,7 +316,7 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
 
   const contractTitle = isMultisig ? "Multisig Account Created" : "Contract Origination";
 
-  const showFromAddress = useShowAddress(operation.sender?.address as string); // TODO: use zod
+  const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
     <Flex direction="column" w="100%">
@@ -345,7 +342,7 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender?.address as string)} />
+                <AddressPill address={parsePkh(operation.sender.address)} />
               </Flex>
             )}
           </Flex>
@@ -367,7 +364,7 @@ export const OperationTile: React.FC<{
   switch (operation.type) {
     case "transaction": {
       const isContractCall = !!operation.parameter;
-      const tokenTransfer = getTokenTransfer(operation.id as number); // TODO: use zod
+      const tokenTransfer = getTokenTransfer(operation.id as number);
 
       if (tokenTransfer) {
         return <TokenTransferTile operation={operation} tokenTransfer={tokenTransfer} />;

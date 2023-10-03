@@ -5,7 +5,6 @@ import {
   operationsGetTransactions,
   tokensGetTokenTransfers,
   delegatesGet,
-  TokenTransfer,
   operationsGetOriginations,
   OffsetParameter,
   SortParameter,
@@ -14,12 +13,12 @@ import * as tzktApi from "@tzkt/sdk-api";
 import axios from "axios";
 import { coincapUrl } from "./consts";
 import { coinCapResponseType } from "./types";
-import { TezTransfer } from "../../types/Transfer";
+import { TezTransfer, TokenTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { Network } from "../../types/Network";
 import Semaphore from "@chriscdn/promise-semaphore";
 import promiseRetry from "promise-retry";
-import { RawPkh } from "../../types/Address";
+import { RawPkh, TzktAlias } from "../../types/Address";
 import { sortBy } from "lodash";
 
 // TzKT defines type Account = {type: string};
@@ -35,9 +34,31 @@ export const withRateLimit = <T>(fn: () => Promise<T>) =>
     .then(() => promiseRetry(fn, { retries: 3, minTimeout: 100 }))
     .finally(() => tzktRateLimiter.release());
 
-export type DelegationOperation = tzktApi.DelegationOperation & { type: "delegation" };
-export type TransactionOperation = tzktApi.TransactionOperation & { type: "transaction" };
-export type OriginationOperation = tzktApi.OriginationOperation & { type: "origination" };
+export type DelegationOperation = tzktApi.DelegationOperation & {
+  id: number;
+  level: number;
+  hash: string;
+  counter: number;
+  type: "delegation";
+  sender: TzktAlias;
+};
+export type TransactionOperation = tzktApi.TransactionOperation & {
+  id: number;
+  level: number;
+  hash: string;
+  counter: number;
+  type: "transaction";
+  sender: TzktAlias;
+  target: TzktAlias;
+};
+export type OriginationOperation = tzktApi.OriginationOperation & {
+  id: number;
+  level: number;
+  hash: string;
+  counter: number;
+  type: "origination";
+  sender: TzktAlias;
+};
 
 export type TzktCombinedOperation =
   | DelegationOperation
@@ -166,10 +187,7 @@ export const getCombinedOperations = async (
   ).slice(0, limit) as TzktCombinedOperation[];
 };
 
-export const getTokenTransfers = (
-  transactionIds: number[],
-  network: Network
-): Promise<TokenTransfer[]> =>
+export const getTokenTransfers = (transactionIds: number[], network: Network) =>
   withRateLimit(() =>
     tokensGetTokenTransfers(
       // tzkt doesn't work with the `in` operator correctly
@@ -177,7 +195,7 @@ export const getTokenTransfers = (
       { transactionId: { in: [transactionIds.join(",")] as any } },
       { baseUrl: network.tzktApiUrl }
     )
-  );
+  ) as Promise<TokenTransfer[]>;
 
 export const getLastDelegation = async (address: RawPkh, network: Network) =>
   withRateLimit(() =>

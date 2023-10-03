@@ -9,8 +9,8 @@ export const TzktLink: React.FC<
 > = ({ operation, children, ...props }) => {
   const network = useSelectedNetwork();
   const url = getHashUrl({
-    hash: operation.hash as string, // TODO: use zod
-    counter: operation.counter as number, // TODO: use zod
+    hash: operation.hash,
+    counter: operation.counter,
     network,
   });
   return (

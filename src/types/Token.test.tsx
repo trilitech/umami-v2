@@ -52,7 +52,7 @@ describe("fromRaw", () => {
 
     test("invalid fa2 token (missing tokenId)", () => {
       const { token } = fa2Token;
-      delete token.tokenId;
+      delete (token as any).tokenId;
       const result = fromRaw(token);
       expect(result).toEqual(null);
     });

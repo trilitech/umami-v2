@@ -40,7 +40,7 @@ export const AssetsPanel: React.FC<{
     getCombinedOperations([account.address.pkh], network).then(async operations => {
       setOperations(operations);
 
-      const transactionIds = operations.map(op => op.id as number); // TODO: use zod
+      const transactionIds = operations.map(op => op.id);
       const tokenTransfers = await getTokenTransfers(transactionIds, network);
       dispatch(assetsActions.updateTokenTransfers(tokenTransfers as TokenTransfer[]));
     });
