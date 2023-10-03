@@ -1,33 +1,28 @@
 import { useEffect, useState } from "react";
 import { TzktCombinedOperation, getCombinedOperations } from "../../utils/tezos";
-import { useGetLatestOperations } from "../../utils/hooks/assetsHooks";
-import { uniqBy } from "lodash";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
+import { RawPkh } from "../../types/Address";
+import { fetchOperationsAndUpdateTokensInfo } from "../../utils/useAssetsPolling";
+import { useAppDispatch } from "../../utils/redux/hooks";
 
-export const operationKey = (operation: TzktCombinedOperation): string =>
-  `${operation.type}-${operation.id}`;
-
-// TODO: add support for filtering by account
-// just offline filtering should be fine
-// don't forget about sender/target
-// TODO: handle network change
-export const useGetOperations = () => {
-  // TODO: replace it with a reverse cursor because
-  // if we load 100 ops each time, but the user has 101, then the first one will be lost
-  const latestOperations = useGetLatestOperations();
+// TODO: use reverse cursor for latest updates
+export const useGetOperations = (initialAddresses: RawPkh[]) => {
   const network = useSelectedNetwork();
   const accounts = useAllAccounts();
-  const [operations, setOperations] = useState<TzktCombinedOperation[]>(latestOperations);
+  const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  // when new operations are fetched, prepend them to the list
+  const [addresses, setAddresses] = useState<RawPkh[]>(initialAddresses);
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    // some of the operations may overlap, so we need to dedupe them
-    setOperations(currentOperations =>
-      uniqBy([...latestOperations, ...currentOperations], operationKey)
-    );
-  }, [latestOperations]);
+    setOperations([]); // TODO: Add a loading screen instead
+
+    fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses).then(operations => {
+      setOperations(operations);
+    });
+  }, [network, addresses, dispatch]);
 
   const loadMore = async () => {
     const lastId = operations[operations.length - 1].id;
@@ -40,5 +35,5 @@ export const useGetOperations = () => {
     setOperations(currentOperations => [...currentOperations, ...nextChunk]);
   };
 
-  return { operations, loadMore, hasMore };
+  return { operations, loadMore, hasMore, setAddresses };
 };

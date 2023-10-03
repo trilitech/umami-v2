@@ -122,7 +122,7 @@ const TokenTransferTile: React.FC<{
   if (!token) {
     // If we don't have the token yet to present it's fine to fallback to
     // the transaction tile because it is a transaction by nature
-    // TODO: add an effect to fetch it in the background
+    // should be covered by a higher level component to batch the requests
     return <TransactionTile operation={operation} />;
   }
   const isNFT = token.type === "nft";
@@ -364,7 +364,7 @@ export const OperationTile: React.FC<{
   switch (operation.type) {
     case "transaction": {
       const isContractCall = !!operation.parameter;
-      const tokenTransfer = getTokenTransfer(operation.id as number);
+      const tokenTransfer = getTokenTransfer(operation.id);
 
       if (tokenTransfer) {
         return <TokenTransferTile operation={operation} tokenTransfer={tokenTransfer} />;

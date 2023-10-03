@@ -4,9 +4,11 @@ import SmallTab from "../../components/SmallTab";
 import colors from "../../style/colors";
 import { OperationListDisplay } from "./OperationListDisplay";
 import { useGetOperations } from "../operations/useGetOperations";
+import { useAllAccounts } from "../../utils/hooks/accountHooks";
 
 export const OperationsListPanel = () => {
-  const { operations } = useGetOperations();
+  const accounts = useAllAccounts();
+  const { operations } = useGetOperations(accounts.map(acc => acc.address.pkh));
   return (
     <Tabs height="100%" mt={0} borderRadius={4}>
       <TabList justifyContent="space-between">

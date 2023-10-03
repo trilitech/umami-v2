@@ -2,7 +2,6 @@ import { compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { Network } from "../types/Network";
-import { TokenTransfer } from "../types/Transfer";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
@@ -28,7 +27,6 @@ import { AppDispatch } from "./redux/store";
 import { RawPkh } from "../types/Address";
 import { useToast } from "@chakra-ui/react";
 import { Multisig } from "./multisig/types";
-import { RawTokenInfo } from "../types/Token";
 
 const getTezTransfersPayload = async (
   pkh: string,
@@ -82,14 +80,29 @@ const updateTokenBalances = async (dispatch: AppDispatch, network: Network, pkhs
   dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
 };
 
-const updateOperations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
-  const operations = await getCombinedOperations(pkhs, network);
-  const tokenTransfers = await getTokenTransfers(operations.map(op => op.id) as number[], network);
-
-  dispatch(assetsActions.updateTokenTransfers(tokenTransfers as TokenTransfer[]));
-  dispatch(
-    tokensActions.addTokens({ network, tokens: tokenTransfers.map(t => t.token as RawTokenInfo) })
+export const fetchOperationsAndUpdateTokensInfo = async (
+  dispatch: AppDispatch,
+  network: Network,
+  addresses: RawPkh[],
+  options?: {
+    lastId?: number;
+    limit?: number;
+    sort?: "asc" | "desc";
+  }
+) => {
+  const operations = await getCombinedOperations(addresses, network, options);
+  const tokenTransfers = await getTokenTransfers(
+    operations.map(op => op.id),
+    network
   );
+
+  dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
+  dispatch(tokensActions.addTokens({ network, tokens: tokenTransfers.map(t => t.token) }));
+  return operations;
+};
+
+const updateOperations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
+  const operations = await fetchOperationsAndUpdateTokensInfo(dispatch, network, pkhs);
   dispatch(assetsActions.updateOperations(operations));
 };
 

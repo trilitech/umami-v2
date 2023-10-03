@@ -81,5 +81,6 @@ export const useAccountsFilterWithMapFilter = () => {
   return {
     filterMap,
     accountsFilter,
+    selectedAccounts,
   };
 };

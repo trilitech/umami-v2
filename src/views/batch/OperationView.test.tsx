@@ -65,7 +65,7 @@ describe("<OperationView />", () => {
       const operation: FA2Transfer = {
         ...mockFA2Operation(2),
         contract: parseContractPkh(token.token.contract.address as string),
-        tokenId: token.token.tokenId as string,
+        tokenId: token.token.tokenId,
         amount: "1234",
       };
       render(<OperationView operation={operation} />);
@@ -86,7 +86,7 @@ describe("<OperationView />", () => {
       const operation: FA2Transfer = {
         ...mockFA2Operation(2),
         contract: parseContractPkh(token.token.contract.address as string),
-        tokenId: token.token.tokenId as string,
+        tokenId: token.token.tokenId,
         amount: "12345",
       };
       render(<OperationView operation={operation} />);

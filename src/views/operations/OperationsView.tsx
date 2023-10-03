@@ -5,11 +5,18 @@ import { TopBar } from "../../components/TopBar";
 import { useGetOperations } from "./useGetOperations";
 import { OperationTile, OperationTileContext } from "../../components/OperationTile";
 import colors from "../../style/colors";
+import { useEffect } from "react";
 
 const OperationsView = () => {
-  // TODO: make this work
-  const { filterMap: filter, accountsFilter } = useAccountsFilterWithMapFilter();
-  const { operations } = useGetOperations();
+  const { accountsFilter, selectedAccounts } = useAccountsFilterWithMapFilter();
+  const { operations, setAddresses } = useGetOperations(
+    selectedAccounts.map(acc => acc.address.pkh)
+  );
+  const addressesJoined = selectedAccounts.map(acc => acc.address.pkh).join(",");
+
+  useEffect(() => {
+    setAddresses(addressesJoined.split(","));
+  }, [setAddresses, addressesJoined]);
 
   return (
     <Flex direction="column" height="100%" px="6px">

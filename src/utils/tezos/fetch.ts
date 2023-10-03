@@ -183,7 +183,7 @@ export const getCombinedOperations = async (
   // so it's safe to use it for sorting & pagination
   return sortBy(
     operations.flat(),
-    operation => (sort === "asc" ? operation.id : -(operation.id as number)) // operation#id is always defined
+    operation => (sort === "asc" ? operation.id : -operation.id) // operation#id is always defined
   ).slice(0, limit) as TzktCombinedOperation[];
 };
 

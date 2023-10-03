@@ -81,7 +81,7 @@ const assetsSlice = createSlice({
     },
     updateTokenTransfers: (state, { payload: transfers }: { payload: TokenTransfer[] }) => {
       transfers.forEach(transfer => {
-        state.transfers.tokens[transfer.transactionId as number] = transfer;
+        state.transfers.tokens[transfer.transactionId] = transfer;
       });
     },
 

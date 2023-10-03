@@ -1,5 +1,5 @@
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
@@ -12,17 +12,12 @@ import MultisigPendingAccordion from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
 import { useAllDelegations } from "../../../utils/hooks/assetsHooks";
-import {
-  TzktCombinedOperation,
-  getCombinedOperations,
-  getTokenTransfers,
-} from "../../../utils/tezos";
+
+
 import { OperationListDisplay } from "../../../views/home/OperationListDisplay";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { OperationTileContext } from "../../OperationTile";
-import { useAppDispatch } from "../../../utils/redux/hooks";
-import { assetsActions } from "../../../utils/redux/slices/assetsSlice";
-import { TokenTransfer } from "../../../types/Transfer";
+import { useGetOperations } from "../../../views/operations/useGetOperations";
 
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
@@ -33,18 +28,7 @@ export const AssetsPanel: React.FC<{
   const rawDelegations = useAllDelegations()[account.address.pkh];
   const delegation = rawDelegations ? makeDelegation(rawDelegations) : null;
   const network = useSelectedNetwork();
-  const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    getCombinedOperations([account.address.pkh], network).then(async operations => {
-      setOperations(operations);
-
-      const transactionIds = operations.map(op => op.id);
-      const tokenTransfers = await getTokenTransfers(transactionIds, network);
-      dispatch(assetsActions.updateTokenTransfers(tokenTransfers as TokenTransfer[]));
-    });
-  }, [account, network, setOperations, dispatch]);
+  const { operations } = useGetOperations([account.address.pkh]);
 
   return (
     <Tabs
