@@ -1,4 +1,13 @@
-import { Box, Button, Flex, Heading, Text, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  ModalCloseButton,
+  ModalContent,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { compact, groupBy } from "lodash";
 import { useContext } from "react";
 import { BsWindowPlus } from "react-icons/bs";
@@ -195,10 +204,13 @@ const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
     );
 
   return (
-    <DeriveAccountDisplay
-      subtitle={`Name the new account dervied from seedphrase ${props.fingerprint}`}
-      onSubmit={handleSubmit}
-      isLoading={isLoading}
-    />
+    <ModalContent>
+      <ModalCloseButton />
+      <DeriveAccountDisplay
+        subtitle={`Name the new account derived from ${props.fingerprint}`}
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
+      />
+    </ModalContent>
   );
 };
