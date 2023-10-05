@@ -147,10 +147,7 @@ export const fromRaw = (rawToken: RawTokenInfo): Token | null => {
   return null;
 };
 
-export const fullId = (token: Token): string => {
-  // TODO: remove condition when token id becomes 0 for fa1.2
-  return `${token.contract}:${"tokenId" in token ? token.tokenId : "0"}`;
-};
+export const fullId = (token: Token): string => `${token.contract}:${token.tokenId}`;
 
 const defaultTokenName = (asset: Token): string => {
   switch (asset.type) {

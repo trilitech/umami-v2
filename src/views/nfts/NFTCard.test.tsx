@@ -1,11 +1,11 @@
-import { render, screen } from "@testing-library/react";
-import { mockNFT } from "../../mocks/factories";
+import { render, screen } from "../../mocks/testUtils";
+import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
 import NFTCard from "./NFTCard";
 
 describe("NFTCard", () => {
   it("displays the nft image correctly", () => {
     const nft = mockNFT(0);
-    render(<NFTCard nft={nft} onClick={() => {}} />);
+    render(<NFTCard nft={nft} owner={mockImplicitAddress(0).pkh} onClick={() => {}} />);
 
     expect(screen.getByTestId("nft-image")).toHaveAttribute(
       "src",

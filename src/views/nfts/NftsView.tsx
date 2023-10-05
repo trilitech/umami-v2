@@ -7,10 +7,14 @@ import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
-import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
 import { useDynamicModal } from "../../components/DynamicModal";
+import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { BsArrowBarRight } from "react-icons/bs";
+import colors from "../../style/colors";
+import AddressPill from "../../components/AddressPill/AddressPill";
+import { parsePkh } from "../../types/Address";
 
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
@@ -68,10 +72,22 @@ const NFTsViewBase = () => {
             autoFocus={false}
           >
             <DrawerOverlay />
-            <DrawerContent maxW="594px" bg="umami.gray.900">
+            <DrawerContent maxW="594px" bg={colors.gray[900]}>
               <DrawerBody>
-                <DrawerTopButtons onClose={openNFTsPage} />
-                {drawerNFT && <NFTDrawerCard nft={drawerNFT} ownerPkh={ownerPkh} />}
+                {drawerNFT && (
+                  <>
+                    <Flex
+                      justifyContent="space-between"
+                      color={colors.gray[400]}
+                      cursor="pointer"
+                      p={4}
+                    >
+                      <AddressPill address={parsePkh(ownerPkh)} />
+                      <IconAndTextBtn onClick={openNFTsPage} label="Close" icon={BsArrowBarRight} />
+                    </Flex>
+                    <NFTDrawerCard nft={drawerNFT} ownerPkh={ownerPkh} />
+                  </>
+                )}
               </DrawerBody>
             </DrawerContent>
           </Drawer>
