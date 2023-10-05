@@ -13,7 +13,12 @@ export const NFTGallery: React.FC<{
     <SimpleGrid columns={4} spacing={4} overflowY="auto">
       {Object.entries(nftsByOwner).flatMap(([owner, nfts]) => {
         return (nfts || []).map(nft => (
-          <NFTCard onClick={() => onSelect(owner, nft)} key={`${owner}:${fullId(nft)}`} nft={nft} />
+          <NFTCard
+            onClick={() => onSelect(owner, nft)}
+            owner={owner}
+            key={`${owner}:${fullId(nft)}`}
+            nft={nft}
+          />
         ));
       })}
     </SimpleGrid>

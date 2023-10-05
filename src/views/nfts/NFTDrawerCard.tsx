@@ -25,6 +25,7 @@ import SendNFTForm from "../../components/SendFlow/NFT/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { artifactUri } from "../../types/Token";
 import JsValueWrap from "../../components/AccountDrawer/JsValueWrap";
+import colors from "../../style/colors";
 
 const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
   const url = getIPFSurl(artifactUri(nft));
@@ -84,11 +85,11 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
         Send
       </Button>
 
-      <Accordion allowMultiple={true} mt="3">
+      <Accordion allowMultiple mt="3">
         <AttributesAccordionItem nft={nft} style={accordionItemStyle} />
         <PropertiesAccordionItem nft={nft} style={accordionItemStyle} />
 
-        <AccordionItem bg="umami.gray.800" style={accordionItemStyle}>
+        <AccordionItem bg={colors.gray[800]} style={accordionItemStyle}>
           <h2>
             <AccordionButton>
               <Box as="span" flex="1" textAlign="left">
