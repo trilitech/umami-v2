@@ -135,6 +135,7 @@ export const useOnboardingModal = () => {
         closeOnOverlayClick={false}
         size={currentStep.type === StepType.eula ? "lg" : "md"}
         isCentered
+        autoFocus={false}
       >
         <ModalOverlay
           bgImage={hasAccounts ? undefined : ModalBackground}
