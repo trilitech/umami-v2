@@ -12,6 +12,7 @@ import {
   getTransactions,
 } from "./fetch";
 import {
+  accountsGet,
   operationsGetDelegations,
   operationsGetOriginations,
   operationsGetTransactions,
@@ -32,6 +33,7 @@ jest.mock("@tzkt/sdk-api", () => {
     operationsGetDelegations: jest.fn(),
     operationsGetOriginations: jest.fn(),
     tokensGetTokenTransfers: jest.fn(),
+    accountsGet: jest.fn(),
   };
 });
 
@@ -122,26 +124,17 @@ describe("tezos utils fetch", () => {
     });
 
     test("getAccounts", async () => {
-      mockedAxios.get.mockResolvedValue({
-        data: [
-          { address: mockImplicitAddress(0).pkh, balance: 12345 },
-          { address: mockImplicitAddress(1).pkh, balance: 123456 },
-        ],
-      });
-      const addresses = [
-        mockImplicitAddress(0).pkh,
-        mockImplicitAddress(1).pkh,
-        mockContractAddress(0).pkh,
-      ];
-      const res = await getAccounts(addresses, network);
-      expect(mockedAxios.get).toBeCalledWith(
-        `${network.tzktApiUrl}/v1/accounts?address.in=${addresses.join(",")}&select=address,balance`
-      );
+      await getAccounts([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network);
 
-      expect(res).toEqual([
-        { address: mockImplicitAddress(0).pkh, balance: 12345 },
-        { address: mockImplicitAddress(1).pkh, balance: 123456 },
-      ]);
+      expect(jest.mocked(accountsGet)).toBeCalledWith(
+        {
+          address: {
+            in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
+          },
+          select: { fields: ["address,balance,delegationLevel"] },
+        },
+        { baseUrl: network.tzktApiUrl }
+      );
     });
 
     test("getDelegations", async () => {

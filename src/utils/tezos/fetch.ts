@@ -8,6 +8,7 @@ import {
   operationsGetOriginations,
   OffsetParameter,
   SortParameter,
+  accountsGet,
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
 import axios from "axios";
@@ -23,8 +24,7 @@ import { sortBy } from "lodash";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
-// for now we need only the balance, but we can extend it later
-export type TzktAccount = { address: RawPkh; balance: number };
+export type TzktAccount = { address: RawPkh; balance: number; delegationLevel?: number };
 
 const tzktRateLimiter = new Semaphore(10);
 
@@ -65,13 +65,18 @@ export type TzktCombinedOperation =
   | TransactionOperation
   | OriginationOperation;
 
-export const getAccounts = async (pkhs: string[], network: Network): Promise<TzktAccount[]> =>
-  withRateLimit(async () => {
-    const response = await axios.get<TzktAccount[]>(
-      `${network.tzktApiUrl}/v1/accounts?address.in=${pkhs.join(",")}&select=address,balance`
-    );
-    return response.data;
-  });
+export const getAccounts = async (pkhs: string[], network: Network) =>
+  withRateLimit(() =>
+    accountsGet(
+      {
+        address: { in: [pkhs.join(",")] },
+        select: { fields: ["address,balance,delegationLevel"] },
+      },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    )
+  ) as any as Promise<TzktAccount[]>;
 
 export const getTokenBalances = async (
   pkhs: string[],

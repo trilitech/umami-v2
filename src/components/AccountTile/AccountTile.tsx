@@ -6,6 +6,7 @@ import { prettyTezAmount } from "../../utils/format";
 import useAddressKind from "../AddressTile/useAddressKind";
 import { RawPkh, parsePkh } from "../../types/Address";
 import AccountTileIcon from "./AccountTileIcon";
+import { useAppSelector } from "../../utils/redux/hooks";
 
 export const AccountTileBase: React.FC<
   {
@@ -58,6 +59,8 @@ export const AccountTile: React.FC<{
 }> = ({ selected, onClick, address, balance }) => {
   const border = onClick ? `1px solid ${selected ? colors.orangeL : colors.gray[700]}` : undefined;
   const addressKind = useAddressKind(parsePkh(address));
+  // TODO: add a test for it!
+  const isDelegating = !!useAppSelector(s => s.assets.delegationLevels)[address];
   return (
     <AccountTileBase
       data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
@@ -71,11 +74,18 @@ export const AccountTile: React.FC<{
       icon={<AccountTileIcon addressKind={addressKind} />}
       leftElement={<LabelAndAddress pkh={address} label={addressKind.label} />}
       rightElement={
-        balance && (
-          <Heading mb={4} alignSelf="flex-end" size="lg">
-            {prettyTezAmount(balance)}
-          </Heading>
-        )
+        <Flex flexDirection="column">
+          {isDelegating && (
+            <Text align="right" fontWeight={700} color={colors.gray[450]} size="sm">
+              Delegated
+            </Text>
+          )}
+          {balance && (
+            <Heading mb={4} alignSelf="flex-end" size="lg">
+              {prettyTezAmount(balance)}
+            </Heading>
+          )}
+        </Flex>
       }
     />
   );

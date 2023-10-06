@@ -1,6 +1,6 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AccountCard from "../../components/AccountDrawer";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountsList } from "./AccountsList";
@@ -12,8 +12,13 @@ const AccountListWithDrawer: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const allAccounts = useAllAccounts();
 
-  const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
+
+  const closeDrawer = useCallback(() => {
+    setSelected(null);
+    onClose();
+  }, [setSelected, onClose]);
 
   // For some reason the drawer doesn't close on esc for this particular component
   // Until we figure out why, we'll have this crutch
