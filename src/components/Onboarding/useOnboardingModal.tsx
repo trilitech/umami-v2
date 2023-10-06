@@ -5,7 +5,6 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import ModalBackground from "../../assets/onboarding/background_image.svg";
 import { useImplicitAccounts } from "../../utils/hooks/accountHooks";
 import ConnectOptions from "./connectOptions/ConnectOptions";
 import ConnectOrCreate from "./connectOrCreate/ConnectOrCreate";
@@ -85,7 +84,7 @@ export type Step =
   | MasterPasswordStep
   | FakeAccountStep;
 
-export const useOnboardingModal = () => {
+export const useOnboardingModal = (onModalClose?: () => void) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const hasAccounts = useImplicitAccounts().length !== 0;
   const history = useStepHistory<Step>({
@@ -95,6 +94,9 @@ export const useOnboardingModal = () => {
 
   const closeModal = () => {
     history.reset();
+    if (onModalClose) {
+      onModalClose();
+    }
     onClose();
   };
 
@@ -137,13 +139,7 @@ export const useOnboardingModal = () => {
         isCentered
         autoFocus={false}
       >
-        <ModalOverlay
-          bgImage={hasAccounts ? undefined : ModalBackground}
-          bgColor={hasAccounts ? undefined : "#0A0A0A"}
-          backdropFilter="blur(5px)"
-          bgPosition="center"
-          bgSize="cover"
-        />
+        <ModalOverlay />
         <ModalContent
           bg={colors.gray[900]}
           border="1px solid #282828"

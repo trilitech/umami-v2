@@ -24,7 +24,13 @@ type Props = {
   onClick?: () => void;
 };
 
-export const CircleIcon = ({ icon, size, color = colors.gray[400], onClick = () => {} }: Props) => {
+export const CircleIcon = ({
+  icon,
+  size,
+  iconSize = "18px",
+  color = colors.gray[400],
+  onClick = () => {},
+}: Props) => {
   const CompName = iconMap[icon];
   return (
     <Box
@@ -36,7 +42,7 @@ export const CircleIcon = ({ icon, size, color = colors.gray[400], onClick = () 
       onClick={onClick}
     >
       <Center h="100%">
-        <CompName {...{ color }} />
+        <CompName width={iconSize} height={iconSize} {...{ color }} />
       </Center>
     </Box>
   );

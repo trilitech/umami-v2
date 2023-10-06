@@ -1,14 +1,15 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import { CSSProperties, ReactChild } from "react";
+import { CSSProperties, ReactElement } from "react";
+import colors from "../style/colors";
 
 type Props = {
-  children: ReactChild[];
+  children: ReactElement[];
 };
 
 export default function Slider({ children }: Props) {
   const indicatorStyles: CSSProperties = {
-    background: "#C2C2C2",
+    background: colors.gray[400],
     width: "10px",
     height: "10px",
     display: "inline-block",
