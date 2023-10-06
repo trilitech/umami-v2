@@ -6,7 +6,7 @@ import { AccountListHeader } from "./AccountsList";
 export default function HomeView() {
   return (
     <Flex direction="column" height="100%">
-      <TopBar title="Overview" />
+      <TopBar title="Accounts" />
       <Flex flex={1} minHeight={1}>
         <Flex direction="column" flex={1} mr="12px" pb="12px">
           <AccountListHeader />

@@ -7,10 +7,11 @@ type Props = {
   icon: IconType | React.FC<IconProps>;
   onClick?: () => void;
   label: string;
-  iconWidth?: number;
-  iconHeight?: number;
+  iconWidth?: number | string;
+  iconHeight?: number | string;
   iconColor?: string;
   textFirst?: boolean;
+  textMargin?: string;
 } & FlexProps;
 
 // TODO: Replace with a proper button
@@ -20,14 +21,15 @@ export const IconAndTextBtn: React.FC<Props> = ({
   label,
   iconWidth = 4,
   iconHeight = 4,
+  textMargin = "4px",
   iconColor,
   textFirst,
   ...rest
 }) => {
   const iconEL = <Icon w={iconWidth} h={iconHeight} as={icon} color={iconColor} />;
-  const textMargin = textFirst ? { mr: 3 } : { ml: 3 };
+  const textMargin_ = textFirst ? { mr: textMargin } : { ml: textMargin };
   const textEl = (
-    <Text {...textMargin} fontSize="sm">
+    <Text {...textMargin_} fontSize="sm">
       {label}
     </Text>
   );
