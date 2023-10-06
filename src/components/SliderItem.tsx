@@ -1,15 +1,12 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { CircleIcon, SupportedIcons } from "./CircleIcon";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { SlideritemRecord } from "../graphql/generated";
-import colors from "../style/colors";
 
 export default function SlideItem({ item }: { item: SlideritemRecord }) {
   return (
-    <Box data-testid={`slide-${item.id}`} bg={colors.gray[900]} paddingBottom="35px">
+    <Box data-testid={`slide-${item.id}`} paddingBottom="35px">
       <Box
-        paddingLeft="50px"
-        paddingRight="50px"
         backgroundRepeat="no-repeat"
         backgroundPosition="top"
         __css={{
@@ -17,8 +14,10 @@ export default function SlideItem({ item }: { item: SlideritemRecord }) {
         }}
         height="400px"
       ></Box>
-      <CircleIcon size="58px" icon={item.icon as SupportedIcons} />
-      <Text margin="50px">{item.text}</Text>
+      <Flex flexDirection="column">
+        <CircleIcon size="58px" iconSize="24px" icon={item.icon as SupportedIcons} />
+        <Heading margin="16px 50px 50px 50px">{item.text}</Heading>
+      </Flex>
     </Box>
   );
 }
