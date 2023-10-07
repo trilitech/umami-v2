@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
 import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
@@ -13,21 +13,16 @@ import UndelegationFormPage from "../../SendFlow/Undelegation/FormPage";
 import { useGetOwnedAccount } from "../../../utils/hooks/accountHooks";
 import { Account } from "../../../types/Account";
 
-const Row: React.FC<{
-  label: string;
-  value: string | ReactNode;
-  grayBg?: boolean;
-}> = ({ label, value, grayBg }) => {
+const Row: React.FC<
+  {
+    label: string;
+    value: string | ReactNode;
+  } & FlexProps
+> = ({ label, value, ...props }) => {
   return (
-    <Flex
-      data-testid={label}
-      bg={grayBg ? "umami.gray.800" : "initial"}
-      h="50px"
-      alignItems="center"
-      borderBottom={`1px solid ${colors.gray[700]}`}
-    >
+    <Flex data-testid={label} h="50px" p="16px" alignItems="center" {...props}>
       <Box flex={1}>
-        <Heading size="sm" color="text.dark">
+        <Heading size="sm" color={colors.gray[400]}>
           {label}
         </Heading>
       </Box>
@@ -63,27 +58,46 @@ export const DelegationDisplay: React.FC<{
 
   return (
     <Box>
-      <Row label="Initial Balance:" value={initialBalance} grayBg />
-      {currentBalance && <Row label="Current Balance:" value={currentBalance} />}
-      <Row label="Duration:" value={duration} />
-      <Row label="Baker:" value={<AddressPill address={parsePkh(delegation.delegate.address)} />} />
+      <Row
+        label="Initial Balance:"
+        value={initialBalance}
+        borderTopRadius="8px"
+        borderBottom={`1px solid ${colors.gray[700]}`}
+        _odd={{ bg: colors.gray[800] }}
+      />
+      {currentBalance && (
+        <Row label="Current Balance:" _odd={{ bg: colors.gray[800] }} value={currentBalance} />
+      )}
+      <Row
+        label="Duration:"
+        _odd={{ bg: colors.gray[800] }}
+        value={duration}
+        borderBottom={`1px solid ${colors.gray[700]}`}
+      />
+      <Row
+        label="Baker:"
+        _odd={{ bg: colors.gray[800] }}
+        borderBottomRadius="8px"
+        value={<AddressPill address={parsePkh(delegation.delegate.address)} />}
+      />
 
-      <Flex>
+      <Flex mt="24px">
         <Button
           flex={1}
-          mr={2}
+          mr="16px"
+          variant="warning"
+          onClick={() => openWith(<UndelegationFormPage sender={senderAccount} />)}
+        >
+          End Delegation
+        </Button>
+        <Button
+          flex={1}
+          variant="tertiary"
           onClick={() => {
             openWith(<DelegationFormPage sender={senderAccount} form={{ sender, baker }} />);
           }}
         >
           Change Baker
-        </Button>
-        <Button
-          flex={1}
-          ml={2}
-          onClick={() => openWith(<UndelegationFormPage sender={senderAccount} />)}
-        >
-          End Delegation
         </Button>
       </Flex>
     </Box>

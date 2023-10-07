@@ -56,20 +56,25 @@ export const AssetsPanel: React.FC<{
       </TabList>
       <TabPanels height="100%">
         {isMultisig && (
-          <TabPanel data-testid="account-card-pending-tab-panel">
+          <TabPanel p="24px 0 60px 0" data-testid="account-card-pending-tab-panel">
             <MultisigPendingAccordion account={account} />
           </TabPanel>
         )}
 
-        <TabPanel data-testid="account-card-operations-tab">
+        <TabPanel p="24px 0 60px 0" data-testid="account-card-operations-tab">
           <OperationListDisplay operations={operationDisplays} />
         </TabPanel>
 
-        <TabPanel data-testid="account-card-delegation-tab">
+        <TabPanel p="24px 0 60px 0" data-testid="account-card-delegation-tab">
           <DelegationDisplay account={account} delegation={delegation} />
         </TabPanel>
 
-        <TabPanel data-testid="account-card-nfts-tab" height="100%" overflow="hidden">
+        <TabPanel
+          p="24px 0 60px 0"
+          data-testid="account-card-nfts-tab"
+          height="100%"
+          overflow="hidden"
+        >
           <NFTsGrid
             nftsByOwner={{ [account.address.pkh]: nfts }}
             showName={true}
@@ -78,7 +83,7 @@ export const AssetsPanel: React.FC<{
           />
         </TabPanel>
 
-        <TabPanel data-testid="account-card-tokens-tab">
+        <TabPanel p="24px 0 60px 0" data-testid="account-card-tokens-tab">
           <TokenList tokens={tokens} />
         </TabPanel>
       </TabPanels>
