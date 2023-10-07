@@ -29,7 +29,7 @@ describe("useAccountsFilter", () => {
   test("Clicking account filter should display a list of all the accounts in store", () => {
     render(fixture());
     fireEvent.click(screen.getByTestId("account-filter"));
-    const listItems = screen.getAllByTestId("account-small-tile");
+    const listItems = screen.getAllByTestId("address-tile");
     expect(listItems).toHaveLength(3);
     expect(listItems[0]).toHaveTextContent(accounts[0].label);
     expect(listItems[1]).toHaveTextContent(accounts[1].label);
@@ -40,11 +40,11 @@ describe("useAccountsFilter", () => {
     render(fixture());
 
     fireEvent.click(screen.getByTestId("account-filter"));
-    const listItems = screen.getAllByTestId("account-small-tile");
+    const listItems = screen.getAllByTestId("address-tile");
     fireEvent.click(listItems[0]);
     fireEvent.click(listItems[2]);
     {
-      const listItems = screen.getAllByTestId("account-small-tile");
+      const listItems = screen.getAllByTestId("address-tile");
       expect(listItems).toHaveLength(1);
       expect(listItems[0]).toHaveTextContent(accounts[1].label);
     }
@@ -59,7 +59,7 @@ describe("useAccountsFilter", () => {
     render(fixture());
 
     fireEvent.click(screen.getByTestId("account-filter"));
-    const listItems = screen.getAllByTestId("account-small-tile");
+    const listItems = screen.getAllByTestId("address-tile");
     fireEvent.click(listItems[0]);
     fireEvent.click(listItems[2]);
 
