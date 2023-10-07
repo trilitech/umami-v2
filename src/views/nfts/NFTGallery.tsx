@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import { Wrap } from "@chakra-ui/react";
 import React from "react";
 import { RawPkh } from "../../types/Address";
 import { fullId } from "../../types/Token";
@@ -10,7 +10,7 @@ export const NFTGallery: React.FC<{
   onSelect: (owner: RawPkh, nft: NFTBalance) => void;
 }> = ({ nftsByOwner, onSelect }) => {
   return (
-    <SimpleGrid columns={4} spacing={4} overflowY="auto">
+    <Wrap spacing="16px" overflowY="auto">
       {Object.entries(nftsByOwner).flatMap(([owner, nfts]) => {
         return (nfts || []).map(nft => (
           <NFTCard
@@ -21,7 +21,7 @@ export const NFTGallery: React.FC<{
           />
         ));
       })}
-    </SimpleGrid>
+    </Wrap>
   );
 };
 

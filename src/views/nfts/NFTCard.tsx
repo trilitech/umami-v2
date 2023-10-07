@@ -1,4 +1,4 @@
-import { AspectRatio, Image, Card, CardBody, Heading, Text } from "@chakra-ui/react";
+import { AspectRatio, Image, Card, CardBody, Heading, Text, Box } from "@chakra-ui/react";
 import { NFTBalance } from "../../types/TokenBalance";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { thumbnailUri } from "../../types/Token";
@@ -16,7 +16,15 @@ const NFTCard: React.FC<{ owner: RawPkh; nft: NFTBalance; onClick: () => void }>
   const name = nft.metadata.name;
 
   return (
-    <Card cursor="pointer" data-testid="nft-card" onClick={onClick}>
+    <Card
+      cursor="pointer"
+      data-testid="nft-card"
+      minWidth="275"
+      maxWidth="275"
+      height="340"
+      borderRadius="8px"
+      onClick={onClick}
+    >
       <CardBody bg={colors.gray[900]} borderRadius="8px">
         <AspectRatio width="100%" ratio={1}>
           <Image data-testid="nft-image" width="100%" src={url} fallbackSrc={fallbackUrl} />
@@ -36,9 +44,18 @@ const NFTCard: React.FC<{ owner: RawPkh; nft: NFTBalance; onClick: () => void }>
             {"x" + nft.balance}
           </Text>
         )}
-        <Heading mt="15px" mb="8px" fontSize="sm">
-          {name}
-        </Heading>
+        <Box overflow="hidden">
+          <Heading
+            mt="15px"
+            mb="8px"
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            fontSize="sm"
+          >
+            {name}
+          </Heading>
+        </Box>
 
         <AddressPill address={parsePkh(owner)} />
       </CardBody>
