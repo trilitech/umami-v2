@@ -1,8 +1,10 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { mockContact, mockImplicitAddress } from "../mocks/factories";
-import { fireEvent, render, renderHook, screen, within } from "../mocks/testUtils";
-import { Contact } from "../types/Contact";
+import { mockContact, mockImplicitAddress } from "../../mocks/factories";
+import { fireEvent, render, renderHook, screen, within } from "../../mocks/testUtils";
+import { Contact } from "../../types/Contact";
 import { AddressAutocomplete, getSuggestions } from "./AddressAutocomplete";
+import store from "../../utils/redux/store";
+import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 
 type FormFields = { destination: string };
 
@@ -95,6 +97,8 @@ describe("<AddressAutocomplete />", () => {
   });
 
   it("displays suggestions if user input has suggestions", async () => {
+    store.dispatch(contactsActions.upsert(mockContact(0)));
+    store.dispatch(contactsActions.upsert(mockContact(1)));
     fixture({});
     const rawInput = screen.getByLabelText("destination");
 
@@ -108,10 +112,12 @@ describe("<AddressAutocomplete />", () => {
     expect(suggestions).toHaveLength(3);
     expect(within(suggestionContainer).getByText(mockContact(0).name)).toBeInTheDocument();
     expect(within(suggestionContainer).getByText(mockContact(1).name)).toBeInTheDocument();
-    expect(within(suggestionContainer).getByText(mockContact(2).name)).toBeInTheDocument();
+    // this one is unknown and its full address will be shows
+    expect(within(suggestionContainer).getByText(mockContact(2).pkh)).toBeInTheDocument();
   });
 
   test("choosing a suggestions submits the pkh, inputs the contact name and hides suggestions", () => {
+    store.dispatch(contactsActions.upsert(mockContact(1)));
     fixture({});
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");

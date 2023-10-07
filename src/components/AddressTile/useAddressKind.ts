@@ -2,7 +2,7 @@ import { Address } from "../../types/Address";
 import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
 import { useGetBaker } from "../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
-import { AddressKind, BakerAddress, ContactAddress, OwnedAddreess } from "./types";
+import { AddressKind, BakerAddress, ContactAddress, OwnedAddress } from "./types";
 
 const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
@@ -18,7 +18,7 @@ const useAddressKind = (address: Address): AddressKind => {
 
 export default useAddressKind;
 
-export const useOwnedAccountAddressKind = ({ pkh }: Address): OwnedAddreess | null => {
+export const useOwnedAccountAddressKind = ({ pkh }: Address): OwnedAddress | null => {
   const getOwnedAccount = useGetOwnedAccountSafe();
   const account = getOwnedAccount(pkh);
   if (!account) {

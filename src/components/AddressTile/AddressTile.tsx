@@ -1,10 +1,10 @@
-import { Flex, Text, Heading, FlexProps } from "@chakra-ui/react";
+import { Flex, Text, Heading, FlexProps, Box } from "@chakra-ui/react";
 import { Address } from "../../types/Address";
 import useAddressKind from "./useAddressKind";
 import AddressTileIcon from "./AddressTileIcon";
 import { PrettyNumber } from "../PrettyNumber";
 import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
-import { formatPkh, prettyTezAmount, truncate } from "../../utils/format";
+import { formatPkh, prettyTezAmount } from "../../utils/format";
 import colors from "../../style/colors";
 
 const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...flexProps }) => {
@@ -30,17 +30,19 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
           </Text>
         ) : (
           <>
-            <Heading size="sm" ml="12px">
-              {truncate(addressKind.label, 15)}
-            </Heading>
-            <Text color={colors.gray[300]} size="sm" ml="10px">
+            <Box ml="12px" width="102px" whiteSpace="nowrap" overflow="hidden">
+              <Heading size="sm" overflow="hidden" textOverflow="ellipsis">
+                {addressKind.label}
+              </Heading>
+            </Box>
+            <Text color={colors.gray[300]} size="xs" ml="10px" width="88px">
               {formatPkh(addressKind.pkh)}
             </Text>
           </>
         )}
       </Flex>
 
-      {balance && <PrettyNumber number={prettyTezAmount(balance)} />}
+      <Box textAlign="right">{balance && <PrettyNumber number={prettyTezAmount(balance)} />}</Box>
     </Flex>
   );
 };

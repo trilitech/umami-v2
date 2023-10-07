@@ -23,6 +23,6 @@ export type BakerAddress = AddressKindBase & { type: "baker"; label: string };
 export type ContactAddress = AddressKindBase & { type: "contact"; label: string };
 export type UnknownAddress = AddressKindBase & { type: "unknown"; label: null };
 
-export type OwnedAddreess = MnemonicAddress | SocialAddress | LedgerAddress | OwnedMultisigAddress;
+export type OwnedAddress = MnemonicAddress | SocialAddress | LedgerAddress | OwnedMultisigAddress;
 
-export type AddressKind = OwnedAddreess | BakerAddress | ContactAddress | UnknownAddress;
+export type AddressKind = OwnedAddress | BakerAddress | ContactAddress | UnknownAddress;
