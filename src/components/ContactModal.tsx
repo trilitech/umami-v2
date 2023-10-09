@@ -104,10 +104,10 @@ export const UpsertContactModal: FC<{
             <Input
               type="text"
               {...register("name", {
-                required: true,
+                required: "Name is required",
                 validate: validateName,
               })}
-              placeholder="Enter contact’s name"
+              placeholder="Enter contact's name"
             />
             {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
           </FormControl>
@@ -116,7 +116,7 @@ export const UpsertContactModal: FC<{
             <Input
               type="text"
               {...register("pkh", {
-                required: true,
+                required: "Address is required",
                 validate: validatePkh,
               })}
               value={contact?.pkh}
@@ -128,9 +128,9 @@ export const UpsertContactModal: FC<{
           </FormControl>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter p="16px 0 0 0">
           <Box width="100%">
-            <Button width="100%" type="submit" mb={2} isDisabled={!isValid}>
+            <Button width="100%" size="lg" type="submit" mb={2} isDisabled={!isValid}>
               {buttonText}
             </Button>
           </Box>
