@@ -19,7 +19,7 @@ export const ReceiveModal: FC<{
       />
       <ModalBody>
         <Flex alignItems="center" direction="column" justifyContent="space-between">
-          <Box>
+          <Box borderRadius="8px" bg="white" p="8px">
             <QRCode value={pkh} size={232} />
           </Box>
         </Flex>
