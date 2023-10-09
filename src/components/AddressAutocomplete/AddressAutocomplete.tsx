@@ -1,19 +1,18 @@
-import { Box, FormLabel, Input, ListItem, StyleProps, UnorderedList } from "@chakra-ui/react";
+import { Box, FormLabel, Input, StyleProps } from "@chakra-ui/react";
 import { get } from "lodash";
 import { useId, useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
-import colors from "../style/colors";
-import { Account } from "../types/Account";
-import { isAddressValid } from "../types/Address";
-import { Contact } from "../types/Contact";
+import { Account } from "../../types/Account";
+import { isAddressValid } from "../../types/Address";
+import { Contact } from "../../types/Contact";
 import {
   useAllAccounts,
   useGetOwnedSignersForAccount,
   useImplicitAccounts,
-} from "../utils/hooks/accountHooks";
-import { useBakerList } from "../utils/hooks/assetsHooks";
-import { useContacts } from "../utils/hooks/contactsHooks";
-import { AccountSmallTileDisplay } from "./AccountSelector/AccountSmallTileDisplay";
+} from "../../utils/hooks/accountHooks";
+import { useBakerList } from "../../utils/hooks/assetsHooks";
+import { useContacts } from "../../utils/hooks/contactsHooks";
+import { Suggestions } from "./Suggestions";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
@@ -47,60 +46,6 @@ export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact
   }
 
   return result;
-};
-
-// TODO: Display different types of suggestions differently
-// e.g. implicit vs contract vs contact vs baker
-const Suggestions = ({
-  contacts,
-  onChange,
-}: {
-  contacts: Contact[];
-  onChange: (name: string) => void;
-}) => {
-  return contacts.length === 0 ? null : (
-    <UnorderedList
-      data-testid="suggestions-list"
-      overflowY="auto"
-      mt="8px"
-      ml={0}
-      width="100%"
-      borderRadius="8px"
-      listStyleType="none"
-      position="absolute"
-      border="1px solid"
-      borderColor={colors.gray[500]}
-      bg={colors.gray[700]}
-      zIndex={2}
-      maxHeight={300}
-    >
-      {contacts.map((contact, i) => (
-        <Box key={contact.pkh}>
-          <ListItem
-            onMouseDown={() => {
-              // onMouseDown is the only way for this to fire before the onBlur callback of the Input
-              // https://stackoverflow.com/a/28963938/6797267
-              onChange(contact.name);
-            }}
-            padding="5px 15px 0 5px"
-            mb={i === contacts.length - 1 ? "5px" : 0}
-          >
-            <AccountSmallTileDisplay
-              pkh={contact.pkh}
-              label={contact.name}
-              _hover={{
-                background: colors.gray[500],
-              }}
-              borderRadius="4px"
-              padding="5px"
-              height="40px"
-              balance={undefined} // TODO: add balance where possible
-            />
-          </ListItem>
-        </Box>
-      ))}
-    </UnorderedList>
-  );
 };
 
 // TODO: add chevron and cross buttons
