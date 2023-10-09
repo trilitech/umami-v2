@@ -151,7 +151,6 @@ describe("<AccountCard />", () => {
     expect(screen.getByTestId("account-card-nfts-tab")).toBeInTheDocument();
     screen.getByTestId("account-card-nfts-tab").click();
     expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
-    expect(screen.getByText(mockNft.token.metadata?.name as string)).toBeInTheDocument();
   });
 
   it("should display accounts operations under operations tab if any", () => {
