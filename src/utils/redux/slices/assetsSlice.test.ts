@@ -1,15 +1,9 @@
 import assetsSlice from "./assetsSlice";
 import store from "../store";
 
-import {
-  mockImplicitAddress,
-  mockTezTransaction,
-  mockTokenTransaction,
-} from "../../../mocks/factories";
+import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";
 import accountsSlice from "./accountsSlice";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
-import { GHOSTNET } from "../../../types/Network";
-import { networksActions } from "./networks";
 
 const {
   actions: { updateTezBalance, updateTokenBalance, updateTokenTransfers },

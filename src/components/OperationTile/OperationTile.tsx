@@ -50,7 +50,7 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
   const sign = isOutgoing ? "-" : "+";
 
   return (
-    <Flex direction="column" w="100%">
+    <Flex direction="column" data-testid="operation-tile" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
@@ -166,7 +166,7 @@ const TokenTransferTile: React.FC<{
   );
 
   return (
-    <Flex direction="column" w="100%">
+    <Flex direction="column" data-testid="operation-tile" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
@@ -216,7 +216,7 @@ const ContractCallTile: React.FC<{
   const showAnyAddress = !showToAddress && !showFromAddress;
 
   return (
-    <Flex direction="column" w="100%">
+    <Flex direction="column" data-testid="operation-tile" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <Contract mr="8px" />
@@ -265,7 +265,7 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
   const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
-    <Flex direction="column" w="100%">
+    <Flex direction="column" data-testid="operation-tile" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <BakerIcon stroke={colors.gray[450]} mr="8px" />
@@ -320,7 +320,7 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
   const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
-    <Flex direction="column" w="100%">
+    <Flex direction="column" data-testid="operation-tile" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <Contract mr="8px" />

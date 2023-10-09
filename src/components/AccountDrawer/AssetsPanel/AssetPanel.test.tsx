@@ -1,13 +1,19 @@
 import { mockMultisigAccount } from "../../../mocks/factories";
-import { render, screen } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
+import { getCombinedOperations, getTokenTransfers } from "../../../utils/tezos";
 import { AssetsPanel } from "./AssetsPanel";
 
 describe("<AssetPanel/>", () => {
-  it("should display pending tabs for multisig account", () => {
+  it("should display pending tabs for multisig account", async () => {
+    jest.mocked(getCombinedOperations).mockResolvedValue([]);
+    jest.mocked(getTokenTransfers).mockResolvedValue([]);
+
     const multisigAccount = mockMultisigAccount(0);
     render(<AssetsPanel account={multisigAccount} nfts={[]} tokens={[]} />);
 
-    expect(screen.getByTestId("account-card-pending-tab")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId("account-card-pending-tab")).toBeInTheDocument();
+    });
     expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();
   });
 });
