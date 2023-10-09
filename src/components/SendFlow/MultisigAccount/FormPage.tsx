@@ -93,7 +93,6 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               <InputGroup>
                 <Input
                   type="text"
-                  variant="filled"
                   {...register("name", { required: "Name is required" })}
                   placeholder="The name is only stored locally"
                 />
@@ -184,7 +183,6 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                     type="number"
                     color="white"
                     step={1}
-                    variant="filled"
                     data-testid="threshold-input"
                     {...register("threshold", {
                       required: "No. of approvals is required",

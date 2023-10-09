@@ -104,7 +104,6 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
                         type="number"
                         color="white"
                         step={1}
-                        variant="filled"
                         data-testid="quantity-input"
                         {...register("quantity", {
                           required: "Quantity is required",
