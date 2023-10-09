@@ -111,7 +111,6 @@ const FormPage: React.FC<
                   isDisabled={isLoading}
                   type="number"
                   step={smallestUnit}
-                  variant="filled"
                   {...register("prettyAmount", {
                     required: "Amount is required",
                     max: {

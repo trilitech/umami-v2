@@ -83,7 +83,6 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                   isDisabled={isLoading}
                   type="number"
                   step={getSmallestUnit(TEZ_DECIMALS)}
-                  variant="filled"
                   {...register("prettyAmount", {
                     required: "Amount is required",
                     validate: makeValidateDecimals(TEZ_DECIMALS),

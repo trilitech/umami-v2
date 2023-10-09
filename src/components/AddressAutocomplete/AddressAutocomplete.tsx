@@ -117,7 +117,6 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       <Input
         {...style}
         id={inputId}
-        variant="filled"
         isDisabled={isDisabled}
         aria-label={inputName}
         value={rawValue}

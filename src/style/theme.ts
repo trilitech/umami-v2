@@ -59,6 +59,7 @@ const theme = extendTheme({
     },
     Input: {
       sizes: { md: { field: { height: "48px" } } },
+      defaultProps: { variant: "filled" },
       variants: {
         filled: {
           field: {

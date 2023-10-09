@@ -71,7 +71,6 @@ export const DerivationPath = ({
         <FormControl isInvalid={!isValid}>
           <Input
             data-testid="custom-path"
-            variant="filled"
             isDisabled={useDefault}
             {...register("derivationPath", {
               pattern: {
