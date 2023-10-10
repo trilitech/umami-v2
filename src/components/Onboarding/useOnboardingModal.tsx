@@ -18,7 +18,6 @@ import VerifySeedphrase from "./verifySeedphrase/VerifySeedphrase";
 import DerivationPath from "./derivationPath/DerivationPath";
 import { useStepHistory } from "../useStepHistory";
 import { FakeAccount } from "./FakeAccount";
-import colors from "../../style/colors";
 import { ModalBackButton } from "../ModalBackButton";
 import RestoreMnemonic from "./restoreMnemonic/RestoreMnemonic";
 
@@ -135,16 +134,11 @@ export const useOnboardingModal = (onModalClose?: () => void) => {
         isOpen={isOpen}
         onClose={closeModal}
         closeOnOverlayClick={false}
-        size={currentStep.type === StepType.eula ? "lg" : "md"}
         isCentered
         autoFocus={false}
       >
-        <ModalOverlay />
-        <ModalContent
-          bg={colors.gray[900]}
-          border="1px solid #282828"
-          boxShadow="0px 0px 15px 1px rgba(235, 235, 235, 0.1);"
-        >
+        {hasAccounts && <ModalOverlay />}
+        <ModalContent>
           {!history.atInitialStep && <ModalBackButton onClick={history.goBack} />}
           <ModalCloseButton onClick={closeModal} />
           {getStepPage()}
