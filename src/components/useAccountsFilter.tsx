@@ -29,7 +29,7 @@ export const useAccountsFilter = () => {
             pl={0}
             fontWeight="normal"
             data-testid="account-filter"
-            my={4}
+            my="16px"
           >
             Filter by Account
           </MenuButton>
@@ -40,7 +40,7 @@ export const useAccountsFilter = () => {
             }}
           />
         </Menu>
-        <Wrap p={2} width="90%">
+        <Wrap p="8px" width="90%">
           {selectedAccounts.map(account => (
             <AddressPill
               data-testid="account-pill"
@@ -54,7 +54,7 @@ export const useAccountsFilter = () => {
                   );
                 },
               }}
-              mr={2}
+              mr="8px"
             />
           ))}
         </Wrap>

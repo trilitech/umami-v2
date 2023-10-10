@@ -13,6 +13,7 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
   const balance = getBalance(addressKind.pkh);
   return (
     <Flex
+      data-testid="address-tile"
       alignItems="center"
       w="400px"
       p="9px 10px"

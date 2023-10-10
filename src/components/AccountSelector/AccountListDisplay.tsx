@@ -2,14 +2,14 @@ import { MenuItem, MenuList } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import { AccountSmallTile } from "./AccountSmallTile";
+import AddressTile from "../AddressTile/AddressTile";
 
 export const AccountListDisplay: React.FC<{
   accounts: Account[];
   onSelect: (account: Account) => void;
 }> = ({ accounts, onSelect }) => {
   return (
-    <MenuList bg={colors.gray[900]} maxHeight={300} overflow="scroll" zIndex="docked">
+    <MenuList bg={colors.gray[900]} maxHeight={300} p={0} overflow="scroll" zIndex="docked">
       {accounts.map(account => {
         return (
           <MenuItem
@@ -21,15 +21,21 @@ export const AccountListDisplay: React.FC<{
             key={account.address.pkh}
             minH="48px"
             w="100%"
-            // TODO implement hover color that disapeared
+            // TODO implement hover color that disappeared
             // https://app.asana.com/0/1204165186238194/1204412123679802/f
-            bg={colors.gray[900]}
+            bg={colors.gray[700]}
           >
-            <AccountSmallTile
+            <AddressTile
+              cursor="pointer"
+              address={account.address}
               _hover={{
-                background: colors.gray[600],
+                background: colors.gray[500],
               }}
-              pkh={account.address.pkh}
+              background={colors.gray[700]}
+              width="370px"
+              borderRadius="4px"
+              padding="5px"
+              height="40px"
             />
           </MenuItem>
         );
