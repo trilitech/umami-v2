@@ -1,9 +1,8 @@
 import { AspectRatio, Image, Flex, Text, Heading } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import { formatPkh } from "../../utils/format";
-import { useGetBaker, useGetDelegateOf } from "../../utils/hooks/assetsHooks";
+import { useGetBaker } from "../../utils/hooks/assetsHooks";
 import { RawPkh } from "../../types/Address";
-import { Account } from "../../types/Account";
 
 export const BakerSmallTile: React.FC<{ pkh: RawPkh }> = ({ pkh }) => {
   const getBaker = useGetBaker();
@@ -35,14 +34,4 @@ export const BakerSmallTile: React.FC<{ pkh: RawPkh }> = ({ pkh }) => {
       </Flex>
     </Flex>
   );
-};
-
-// Get the baker of the account's delegation
-export const DelegateSmallTile: React.FC<{ account: Account }> = ({ account }) => {
-  const getDelegateOf = useGetDelegateOf();
-  const baker = getDelegateOf(account);
-  if (!baker) {
-    return null;
-  }
-  return <BakerSmallTile pkh={baker.address} />;
 };

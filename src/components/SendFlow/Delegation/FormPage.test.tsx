@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { mockDelegation, mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
+import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -92,17 +92,14 @@ describe("<Form />", () => {
           { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
         ])
       );
-      store.dispatch(
-        assetsSlice.actions.updateDelegations([
-          {
-            pkh: sender.address.pkh,
-            delegation: mockDelegation(0, 1, baker.address.pkh, "baker1"),
-          },
-        ])
-      );
+
       render(
         fixture({
           sender,
+          form: {
+            sender: sender.address.pkh,
+            baker: baker.address.pkh,
+          },
         })
       );
 

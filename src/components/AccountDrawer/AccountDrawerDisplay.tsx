@@ -11,13 +11,15 @@ import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
 import AddressPill from "../AddressPill/AddressPill";
 import { DynamicModalContext } from "../DynamicModal";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import DelegationFormPage from "../SendFlow/Delegation/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
-import { useGetDelegateOf } from "../../utils/hooks/assetsHooks";
 import BuyTezForm from "../BuyTez/BuyTezForm";
 import useAddressKind from "../AddressTile/useAddressKind";
 import AccountTileIcon from "../AccountTile/AccountTileIcon";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { Delegation, makeDelegation } from "../../types/Delegation";
+import { getLastDelegation } from "../../utils/tezos";
 
 type Props = {
   onSend: () => void;
@@ -59,10 +61,17 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   const isMultisig = account.type === AccountType.MULTISIG;
   const getOwnedAccount = useGetOwnedAccount();
   const { openWith } = useContext(DynamicModalContext);
-  const getDelegateOf = useGetDelegateOf();
   const sender = getOwnedAccount(pkh);
-  const baker = getDelegateOf(account);
   const addressKind = useAddressKind(account.address);
+  const network = useSelectedNetwork();
+
+  const [delegation, setDelegation] = useState<Delegation | null>(null);
+
+  useEffect(() => {
+    getLastDelegation(account.address.pkh, network).then(tzktDelegation => {
+      tzktDelegation && setDelegation(makeDelegation(tzktDelegation));
+    });
+  }, [account.address.pkh, network]);
 
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
@@ -91,14 +100,14 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
             openWith(
               <DelegationFormPage
                 sender={sender}
-                form={baker ? { baker: baker.address, sender: pkh } : undefined}
+                form={delegation ? { baker: delegation.delegate.address, sender: pkh } : undefined}
               />
             );
           }}
         />
       </Flex>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPanel tokens={tokens} nfts={nfts} account={account} />
+      <AssetsPanel tokens={tokens} nfts={nfts} account={account} delegation={delegation} />
     </Flex>
   );
 };

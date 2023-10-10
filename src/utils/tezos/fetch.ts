@@ -20,7 +20,7 @@ import { Network } from "../../types/Network";
 import Semaphore from "@chriscdn/promise-semaphore";
 import promiseRetry from "promise-retry";
 import { RawPkh, TzktAlias } from "../../types/Address";
-import { sortBy } from "lodash";
+import { first, sortBy } from "lodash";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
@@ -206,19 +206,8 @@ export const getTokenTransfers = async (transactionIds: number[], network: Netwo
   ) as Promise<TokenTransfer[]>;
 };
 
-export const getLastDelegation = async (address: RawPkh, network: Network) =>
-  withRateLimit(() =>
-    operationsGetDelegations(
-      {
-        sender: { eq: address },
-        sort: { desc: "level" },
-        limit: 1,
-      },
-      {
-        baseUrl: network.tzktApiUrl,
-      }
-    ).then(d => d[0])
-  ) as Promise<DelegationOperation | undefined>;
+export const getLastDelegation = (address: RawPkh, network: Network) =>
+  getDelegations([address], network, { limit: 1, sort: { desc: "id" } }).then(first);
 
 // Fetch the tezos price in usd from the CoinCap API.
 // The CoinCap API documentation: https://docs.coincap.io

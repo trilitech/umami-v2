@@ -3,7 +3,7 @@ import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
-import { makeDelegation } from "../../../types/Delegation";
+import { Delegation } from "../../../types/Delegation";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { IconAndTextBtnLink } from "../../IconAndTextBtn";
 import SmallTab from "../../SmallTab";
@@ -11,7 +11,6 @@ import { DelegationDisplay } from "./DelegationDisplay";
 import MultisigPendingAccordion from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
-import { useAllDelegations } from "../../../utils/hooks/assetsHooks";
 
 import { OperationListDisplay } from "../../../views/home/OperationListDisplay";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
@@ -23,10 +22,9 @@ export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;
-}> = ({ tokens, nfts, account }) => {
+  delegation: Delegation | null;
+}> = ({ tokens, nfts, account, delegation }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
-  const rawDelegations = useAllDelegations()[account.address.pkh];
-  const delegation = rawDelegations ? makeDelegation(rawDelegations) : null;
   const network = useSelectedNetwork();
   const { operations, isLoading } = useGetOperations([account.address.pkh]);
 

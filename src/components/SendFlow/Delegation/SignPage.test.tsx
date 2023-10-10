@@ -7,7 +7,7 @@ import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
 import store from "../../../utils/redux/store";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import { TEZ } from "../../../utils/tezos";
+import { DelegationOperation, TEZ, getLastDelegation } from "../../../utils/tezos";
 import assetsSlice from "../../../utils/redux/slices/assetsSlice";
 
 const fixture = (props: SignPageProps) => (
@@ -42,7 +42,6 @@ describe("<SignPage />", () => {
   });
 
   it("displays the baker tile", async () => {
-    const sender = mockImplicitAccount(0);
     const baker = mockImplicitAccount(1);
 
     store.dispatch(
@@ -50,14 +49,18 @@ describe("<SignPage />", () => {
         { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
       ])
     );
-    store.dispatch(
-      assetsSlice.actions.updateDelegations([
-        {
-          pkh: sender.address.pkh,
-          delegation: mockDelegation(0, 1, baker.address.pkh, "baker1"),
-        },
-      ])
-    );
+
+    jest
+      .mocked(getLastDelegation)
+      .mockResolvedValue(
+        mockDelegation(
+          0,
+          6000000,
+          baker.address.pkh,
+          "Some baker",
+          new Date(2020, 5, 24)
+        ) as DelegationOperation
+      );
 
     const props: SignPageProps = {
       operations,

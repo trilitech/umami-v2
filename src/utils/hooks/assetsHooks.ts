@@ -12,7 +12,6 @@ import { useAppSelector } from "../redux/hooks";
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
-import { Account } from "../../types/Account";
 import { Delegate } from "../../types/Delegate";
 
 export const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
@@ -125,10 +124,6 @@ export const useGetAccountBalance = () => {
   return (pkh: string) => mutezBalances[pkh];
 };
 
-export const useAllDelegations = () => {
-  return useAppSelector(s => s.assets.delegations);
-};
-
 export const useBakerList = (): Delegate[] => {
   return useAppSelector(state => state.assets.bakers);
 };
@@ -137,17 +132,6 @@ export const useGetBaker = () => {
   const bakers = useBakerList();
   return (rawPkh: string) => {
     return bakers.find(baker => baker.address === rawPkh);
-  };
-};
-
-// Returns the baker of the account if the account is delegating
-export const useGetDelegateOf = () => {
-  const getBaker = useGetBaker();
-  const delegations = useAllDelegations();
-  return (account: Account): Delegate | undefined => {
-    const bakerAddress = delegations[account.address.pkh]?.newDelegate?.address;
-
-    return bakerAddress ? getBaker(bakerAddress) : undefined;
   };
 };
 

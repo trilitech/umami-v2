@@ -1,5 +1,9 @@
 import { Modal } from "@chakra-ui/react";
-import { mockDelegation, mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockImplicitAddress,
+  mockMultisigAccount,
+} from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -42,15 +46,16 @@ describe("<Form />", () => {
           { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
         ])
       );
-      store.dispatch(
-        assetsSlice.actions.updateDelegations([
-          {
-            pkh: sender.address.pkh,
-            delegation: mockDelegation(0, 1, baker.address.pkh, "baker1"),
+
+      render(
+        fixture({
+          sender: sender,
+          form: {
+            sender: sender.address.pkh,
+            baker: baker.address.pkh,
           },
-        ])
+        })
       );
-      render(fixture({ sender: mockImplicitAccount(0) }));
 
       await waitFor(() => {
         expect(screen.getByTestId("baker-tile")).toHaveTextContent("baker1");
@@ -70,6 +75,7 @@ describe("<Form />", () => {
           sender: mockImplicitAccount(0),
           form: {
             sender: mockImplicitAccount(0).address.pkh,
+            baker: mockImplicitAccount(1).address.pkh,
           },
         })
       );
@@ -99,6 +105,7 @@ describe("<Form />", () => {
             sender: sender,
             form: {
               sender: sender.address.pkh,
+              baker: mockImplicitAddress(2).pkh,
             },
           })}
         </DynamicModalContext.Provider>

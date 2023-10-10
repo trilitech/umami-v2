@@ -70,7 +70,6 @@ export const useOpenSignPageFormAction = <
   };
 };
 
-// Hook to add the given form values to the batch.
 export const useAddToBatchFormAction = <FormValues extends BaseFormValues>(
   toOperation: (formValues: FormValues) => Operation,
   onSuccess?: () => void

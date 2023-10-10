@@ -12,11 +12,12 @@ import {
 } from "../onSubmitFormActionHooks";
 import { Undelegation } from "../../../types/Operation";
 import FormPageHeader from "../FormPageHeader";
-import { DelegateSmallTile } from "../BakerSmallTile";
+import { BakerSmallTile } from "../BakerSmallTile";
 import { DynamicModalContext } from "../../DynamicModal";
 
 export type FormValues = {
   sender: RawPkh;
+  baker: RawPkh;
 };
 
 const toOperation = (formValues: FormValues): Undelegation => ({
@@ -24,7 +25,11 @@ const toOperation = (formValues: FormValues): Undelegation => ({
   sender: parsePkh(formValues.sender),
 });
 
-const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => {
+const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
+  const { sender } = props;
+  // it must always be passed in from the parent component
+  const baker = props.form?.baker as string;
+
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,
@@ -58,7 +63,6 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
           />
 
           <ModalBody>
-            {/* TODO: Make AccountAutoComplete display the address and balance*/}
             <FormControl>
               <OwnedAccountsAutocomplete
                 label="From"
@@ -68,7 +72,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = ({ sender }) => 
               />
             </FormControl>
             <FormLabel mt="24px">Baker</FormLabel>
-            <DelegateSmallTile account={sender} />
+            <BakerSmallTile pkh={baker} />
           </ModalBody>
           <ModalFooter>
             <FormSubmitButtons
