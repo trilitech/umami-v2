@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.5b16202c.css",
-    "main.js": "./static/js/main.50b2c5ba.js",
+    "main.js": "./static/js/main.7e036b48.js",
     "static/js/180.acaa5337.chunk.js": "./static/js/180.acaa5337.chunk.js",
     "static/media/background_image.png": "./static/media/background_image.a833e862a22ad4910526.png",
     "static/media/maki-default.png": "./static/media/maki-default.9b24fbf6d7fd050fb08b.png",
@@ -10,11 +10,11 @@
     "index.html": "./index.html",
     "static/media/coin-front.svg": "./static/media/coin-front.fc1df90ba2fd68cda8dcf63056bfef7f.svg",
     "main.5b16202c.css.map": "./static/css/main.5b16202c.css.map",
-    "main.50b2c5ba.js.map": "./static/js/main.50b2c5ba.js.map",
+    "main.7e036b48.js.map": "./static/js/main.7e036b48.js.map",
     "180.acaa5337.chunk.js.map": "./static/js/180.acaa5337.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.5b16202c.css",
-    "static/js/main.50b2c5ba.js"
+    "static/js/main.7e036b48.js"
   ]
 }
