@@ -3,6 +3,7 @@ import colors from "./colors";
 import { tabsTheme } from "./theme/tabs";
 import { modalTheme } from "./theme/modal";
 import { buttonTheme } from "./theme/button";
+import { checkboxTheme } from "./theme/checkbox";
 
 const config = {
   initialColorMode: "dark",
@@ -57,6 +58,7 @@ const theme = extendTheme({
       },
       sizes,
     },
+    Checkbox: checkboxTheme,
     Input: {
       sizes: { md: { field: { height: "48px" } } },
       defaultProps: { variant: "filled" },

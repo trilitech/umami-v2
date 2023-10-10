@@ -17,9 +17,11 @@ export default function ModalContentWrapper({ children, icon, title, subtitle }:
         <CircleIcon size="48px" icon={icon} />
       </Box>
       <Heading size="xl">{title}</Heading>
-      <Text textAlign="center" size="sm" color={colors.gray[400]} mb="20px">
-        {subtitle}
-      </Text>
+      {subtitle && (
+        <Text textAlign="center" size="sm" color={colors.gray[400]} mb="20px">
+          {subtitle}
+        </Text>
+      )}
       {children}
     </VStack>
   );
