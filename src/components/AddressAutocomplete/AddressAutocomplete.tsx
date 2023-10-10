@@ -1,4 +1,4 @@
-import { Box, FormLabel, Input, StyleProps } from "@chakra-ui/react";
+import { Box, FormLabel, Input, InputGroup, InputRightElement, StyleProps } from "@chakra-ui/react";
 import { get } from "lodash";
 import { useId, useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
@@ -13,6 +13,9 @@ import {
 import { useBakerList } from "../../utils/hooks/assetsHooks";
 import { useContacts } from "../../utils/hooks/contactsHooks";
 import { Suggestions } from "./Suggestions";
+import XMark from "../../assets/icons/XMark";
+import ChevronDownIcon from "../../assets/icons/ChevronDown";
+import colors from "../../style/colors";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
@@ -48,7 +51,6 @@ export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact
   return result;
 };
 
-// TODO: add chevron and cross buttons
 export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   contacts,
   isDisabled,
@@ -113,32 +115,50 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   return (
     <Box data-testid={`address-autocomplete-${inputName}`}>
       <FormLabel htmlFor={inputId}>{label}</FormLabel>
-
-      <Input
-        {...style}
-        id={inputId}
-        isDisabled={isDisabled}
-        aria-label={inputName}
-        value={rawValue}
-        onFocus={() => {
-          setHideSuggestions(false);
-        }}
-        onBlur={e => {
-          e.preventDefault();
-          setHideSuggestions(true);
-          if (keepValid && getValues(inputName) !== e.target.value) {
-            // if the user types something invalid and then blurs, we want to keep the last valid value
-            handleChange(getValues(inputName));
-          } else {
+      <InputGroup>
+        <Input
+          {...style}
+          id={inputId}
+          isDisabled={isDisabled}
+          aria-label={inputName}
+          value={rawValue}
+          onFocus={() => {
+            setHideSuggestions(false);
+          }}
+          onBlur={e => {
+            e.preventDefault();
+            setHideSuggestions(true);
+            if (keepValid && getValues(inputName) !== e.target.value) {
+              // if the user types something invalid and then blurs, we want to keep the last valid value
+              handleChange(getValues(inputName));
+            } else {
+              handleChange(e.target.value);
+            }
+          }}
+          onChange={e => {
             handleChange(e.target.value);
-          }
-        }}
-        onChange={e => {
-          handleChange(e.target.value);
-        }}
-        autoComplete="off"
-        placeholder="Enter address or contact name"
-      />
+          }}
+          autoComplete="off"
+          placeholder="Enter address or contact name"
+        />
+        <InputRightElement>
+          {rawValue ? (
+            <XMark
+              cursor="pointer"
+              data-testid="clear-input-button"
+              width="12px"
+              height="12px"
+              stroke={colors.gray[450]}
+              onClick={() => {
+                handleChange("");
+                setHideSuggestions(false);
+              }}
+            />
+          ) : (
+            <ChevronDownIcon data-testid="chevron-icon" />
+          )}
+        </InputRightElement>
+      </InputGroup>
       <Input
         {...register<U>(inputName, { required: "Invalid address or contact name", validate })}
         mb={0}
