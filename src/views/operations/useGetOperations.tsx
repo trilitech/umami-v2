@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { TzktCombinedOperation } from "../../utils/tezos";
+import { TzktCombinedOperation, getCombinedOperations, getTokenTransfers } from "../../utils/tezos";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { RawPkh } from "../../types/Address";
-import { fetchOperationsAndUpdateTokensInfo } from "../../utils/useAssetsPolling";
 import { useAppDispatch } from "../../utils/redux/hooks";
+import { assetsActions } from "../../utils/redux/slices/assetsSlice";
+import { tokensActions } from "../../utils/redux/slices/tokensSlice";
+import { Network } from "../../types/Network";
+import { AppDispatch } from "../../utils/redux/store";
 
+// TODO: Add tests
 export const useGetOperations = (initialAddresses: RawPkh[]) => {
   const network = useSelectedNetwork();
   const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
@@ -72,4 +76,26 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
   };
 
   return { operations, isLoading, hasMore, loadMore, setAddresses };
+};
+
+// TODO: Add tests
+export const fetchOperationsAndUpdateTokensInfo = async (
+  dispatch: AppDispatch,
+  network: Network,
+  addresses: RawPkh[],
+  options?: {
+    lastId?: number;
+    limit?: number;
+    sort?: "asc" | "desc";
+  }
+) => {
+  const operations = await getCombinedOperations(addresses, network, options);
+  const tokenTransfers = await getTokenTransfers(
+    operations.map(op => op.id),
+    network
+  );
+
+  dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
+  dispatch(tokensActions.addTokens({ network, tokens: tokenTransfers.map(t => t.token) }));
+  return operations;
 };

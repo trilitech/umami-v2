@@ -11,11 +11,9 @@ import { tokensActions } from "./redux/slices/tokensSlice";
 import {
   getAccounts,
   getBakers,
-  getCombinedOperations,
   getLatestBlockLevel,
   getTezosPriceInUSD,
   getTokenBalances,
-  getTokenTransfers,
 } from "./tezos";
 import errorsSlice from "./redux/slices/errorsSlice";
 import getErrorContext from "./getErrorContext";
@@ -51,35 +49,6 @@ const updateTokenBalances = async (dispatch: AppDispatch, network: Network, pkhs
   dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
 };
 
-// TODO: check if needed at all because
-// we load them manually on drawer opening
-// and on operations page opening
-export const fetchOperationsAndUpdateTokensInfo = async (
-  dispatch: AppDispatch,
-  network: Network,
-  addresses: RawPkh[],
-  options?: {
-    lastId?: number;
-    limit?: number;
-    sort?: "asc" | "desc";
-  }
-) => {
-  const operations = await getCombinedOperations(addresses, network, options);
-  const tokenTransfers = await getTokenTransfers(
-    operations.map(op => op.id),
-    network
-  );
-
-  dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
-  dispatch(tokensActions.addTokens({ network, tokens: tokenTransfers.map(t => t.token) }));
-  return operations;
-};
-
-const updateOperations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
-  const operations = await fetchOperationsAndUpdateTokensInfo(dispatch, network, pkhs);
-  dispatch(assetsActions.updateOperations(operations));
-};
-
 const updateAccountAssets = async (
   dispatch: AppDispatch,
   network: Network,
@@ -104,7 +73,6 @@ const updateAccountAssets = async (
       updatePendingOperations(dispatch, network, multisigs),
       updateTezBalances(dispatch, network, allAccountAddresses),
       updateTokenBalances(dispatch, network, allAccountAddresses),
-      updateOperations(dispatch, network, allAccountAddresses),
     ]);
     dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
   } finally {
