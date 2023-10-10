@@ -133,7 +133,7 @@ export const useOnboardingModal = (onModalClose?: () => void) => {
     modalElement: (
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={closeModal}
         closeOnOverlayClick={false}
         size={currentStep.type === StepType.eula ? "lg" : "md"}
         isCentered
