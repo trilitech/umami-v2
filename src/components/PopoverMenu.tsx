@@ -21,7 +21,7 @@ const PopoverMenu: React.FC<{
       <PopoverTrigger>
         <Button
           bg={isOpen ? colors.green : colors.gray[500]}
-          _hover={{ bg: colors.gray[400] }}
+          _hover={{ bg: isOpen ? colors.green : colors.gray[450] }}
           variant="unstyled"
           borderRadius="full"
           border="none"
