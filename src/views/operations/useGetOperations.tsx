@@ -7,13 +7,16 @@ import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { Network } from "../../types/Network";
 import { AppDispatch } from "../../utils/redux/store";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+
+const REFRESH_INTERVAL = 15000;
 
 // TODO: Add tests
 export const useGetOperations = (initialAddresses: RawPkh[]) => {
   const network = useSelectedNetwork();
   const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const [addresses, setAddresses] = useState<RawPkh[]>(initialAddresses);
   const dispatch = useAppDispatch();
@@ -22,18 +25,22 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const lastId = operations[0]?.id;
-      setIsLoading(true);
-      fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, {
-        lastId,
-        sort: "asc",
-      })
-        .then(newOperations => {
-          // reverse is needed because we fetch the operations in the opposite order
-          setOperations(currentOperations => [...newOperations.reverse(), ...currentOperations]);
-        })
-        .finally(() => setIsLoading(false));
-    }, 15000);
+      handleAsyncAction(async () => {
+        const lastId = operations[0]?.id;
+        const newOperations = await fetchOperationsAndUpdateTokensInfo(
+          dispatch,
+          network,
+          addresses,
+          {
+            lastId,
+            sort: "asc",
+          }
+        );
+
+        // reverse is needed because we fetch the operations in the opposite order
+        setOperations(currentOperations => [...newOperations.reverse(), ...currentOperations]);
+      });
+    }, REFRESH_INTERVAL);
     return () => clearInterval(interval);
 
     // The only way to correctly start triggering updates is
@@ -44,35 +51,44 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatesTrigger]);
 
+  // that's needed to make sure we don't trigger the initial fetch twice
+  const addressesJoined = addresses.join(",");
+
   useEffect(() => {
     setOperations([]);
     setHasMore(true);
-    setIsLoading(true);
 
-    fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses)
-      .then(latestOperations => {
-        setOperations(latestOperations);
-        setHasMore(latestOperations.length > 0);
-        setUpdatesTrigger(prev => prev + 1);
-      })
-      .finally(() => setIsLoading(false));
-  }, [network, addresses, dispatch]);
+    handleAsyncAction(async () => {
+      const latestOperations = await fetchOperationsAndUpdateTokensInfo(
+        dispatch,
+        network,
+        addressesJoined.split(",")
+      );
+      setOperations(latestOperations);
+      setHasMore(latestOperations.length > 0);
+      setUpdatesTrigger(prev => prev + 1);
+    });
+    // handleAsyncAction gets constantly recreated, so we can't add it to the dependency array
+    // otherwise, it will trigger the initial fetch infinitely
+    // caching handleAsyncAction using useCallback doesn't work either
+    // because it depends on its own isLoading state which changes sometimes
+    // TODO: check useRef
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [network, addressesJoined, dispatch]);
 
   const loadMore = async () => {
     const lastId = operations[operations.length - 1]?.id;
     if (!lastId) {
       return;
     }
-    setIsLoading(true);
-    try {
+
+    return handleAsyncAction(async () => {
       const nextChunk = await fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, {
         lastId,
       });
       setHasMore(nextChunk.length > 0);
       setOperations(currentOperations => [...currentOperations, ...nextChunk]);
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return { operations, isLoading, hasMore, loadMore, setAddresses };
