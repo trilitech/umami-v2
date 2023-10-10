@@ -6,7 +6,6 @@ import { FiPlus } from "react-icons/fi";
 import { VscWand } from "react-icons/vsc";
 import { Account, AccountType } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
-import { Identicon } from "../Identicon";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import MultisigApprovers from "./MultisigApprovers";
@@ -17,6 +16,8 @@ import DelegationFormPage from "../SendFlow/Delegation/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import { useGetDelegateOf } from "../../utils/hooks/assetsHooks";
 import BuyTezForm from "../BuyTez/BuyTezForm";
+import useAddressKind from "../AddressTile/useAddressKind";
+import AccountTileIcon from "../AccountTile/AccountTileIcon";
 
 type Props = {
   onSend: () => void;
@@ -61,14 +62,15 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   const getDelegateOf = useGetDelegateOf();
   const sender = getOwnedAccount(pkh);
   const baker = getDelegateOf(account);
+  const addressKind = useAddressKind(account.address);
+
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
-      {/* TODO: make the icon match account card on the accounts page */}
-      <Identicon w="48px" h="48px" p="8px" identiconSize={32} address={pkh} />
+      <AccountTileIcon addressKind={addressKind} />
       <Heading mt={4} size="md">
         {label}
       </Heading>
-      <AddressPill address={account.address} mode={{ type: "no_icons" }} my={2} />
+      <AddressPill address={account.address} mode={{ type: "no_icons" }} mt="8px" mb="30px" />
       {balance && <TezRecapDisplay center balance={balance} dollarBalance={dollarBalance} />}
       <Flex mt={6}>
         <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
