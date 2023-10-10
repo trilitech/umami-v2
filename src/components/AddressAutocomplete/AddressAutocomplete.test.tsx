@@ -205,4 +205,41 @@ describe("getSuggestions", () => {
       ])
     ).toEqual([]);
   });
+
+  describe("right icon", () => {
+    it("shows a chevron when the input is empty", () => {
+      fixture({});
+      expect(screen.getByTestId("chevron-icon")).toBeInTheDocument();
+      expect(screen.queryByTestId("clear-input-button")).not.toBeInTheDocument();
+    });
+
+    it("shows a clear button when the input is not empty", () => {
+      fixture({});
+      const input = screen.getByLabelText("destination");
+      fireEvent.change(input, { target: { value: "123" } });
+      expect(screen.queryByTestId("chevron-icon")).not.toBeInTheDocument();
+      expect(screen.getByTestId("clear-input-button")).toBeInTheDocument();
+    });
+
+    it("clears input and shows suggestions when clear input button is clicked", () => {
+      fixture({});
+      const input = screen.getByLabelText("destination");
+      fireEvent.focus(input);
+      fireEvent.change(input, { target: { value: "Contact" } });
+      expect(input).toHaveProperty("value", "Contact");
+
+      expect(
+        within(screen.getByTestId("suggestions-list")).queryAllByRole("listitem")
+      ).toHaveLength(3);
+
+      fireEvent.click(screen.getByTestId("clear-input-button"));
+
+      expect(input).toHaveProperty("value", "");
+      expect(screen.queryByTestId("clear-input-button")).not.toBeInTheDocument();
+      expect(screen.getByTestId("chevron-icon")).toBeInTheDocument();
+      expect(
+        within(screen.getByTestId("suggestions-list")).queryAllByRole("listitem")
+      ).toHaveLength(3);
+    });
+  });
 });
