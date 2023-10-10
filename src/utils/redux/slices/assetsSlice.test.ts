@@ -18,6 +18,7 @@ describe("assetsSlice", () => {
       },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
+      delegationLevels: {},
       conversionRate: null,
       bakers: [],
       blockLevel: null,
@@ -40,6 +41,7 @@ describe("assetsSlice", () => {
       },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
+      delegationLevels: {},
       conversionRate: null,
       bakers: [],
       blockLevel: null,
@@ -66,6 +68,7 @@ describe("assetsSlice", () => {
       },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
+      delegationLevels: {},
       conversionRate: null,
       bakers: [],
       blockLevel: null,
@@ -100,6 +103,7 @@ describe("assetsSlice", () => {
       },
       conversionRate: null,
       delegations: {},
+      delegationLevels: {},
       bakers: [],
       transfers: { tez: {}, tokens: {} },
       blockLevel: null,
@@ -128,6 +132,7 @@ describe("assetsSlice", () => {
       },
       conversionRate: null,
       delegations: {},
+      delegationLevels: {},
       bakers: [],
       transfers: { tez: {}, tokens: {} },
       blockLevel: null,
@@ -154,6 +159,7 @@ describe("assetsSlice", () => {
       balances: { mutez: {}, tokens: {} },
       transfers: { tez: {}, tokens: {} },
       delegations: {},
+      delegationLevels: {},
       bakers: [],
       conversionRate: null,
       blockLevel: null,
@@ -178,6 +184,18 @@ describe("assetsSlice", () => {
       101: mockTokenTransaction(1),
       102: mockTokenTransaction(2),
       104: mockTokenTransaction(4),
+    });
+  });
+
+  test("delegationLevels", () => {
+    store.dispatch(
+      updateTezBalance([
+        { address: "bar", balance: 44, delegationLevel: 5 },
+        { address: "baz", balance: 55 },
+      ])
+    );
+    expect(store.getState().assets.delegationLevels).toEqual({
+      bar: 5,
     });
   });
 });

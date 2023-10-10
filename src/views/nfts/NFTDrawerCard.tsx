@@ -49,7 +49,8 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
             <Text
               data-testid="nft-owned-count"
               borderRadius="100px"
-              padding="3px 8px"
+              height="24px"
+              px="8px"
               backgroundColor="rgba(33, 33, 33, 0.75)"
               display="inline"
               position="absolute"

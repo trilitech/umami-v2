@@ -74,7 +74,7 @@ export const SideNavbar = () => {
         <Box>
           <TotalBalance />
           <Box>
-            <MenuItem label="Overview" to="/home" icon={MdViewCompact} />
+            <MenuItem label="Accounts" to="/home" icon={MdViewCompact} />
             <MenuItem label="NFTs" to="/nfts" icon={MdOutlineDiamond} />
             <MenuItem label="Operations" to="/operations" icon={MdHistory} />
             <MenuItem label="Tokens" to="/tokens" icon={MdMoney} />

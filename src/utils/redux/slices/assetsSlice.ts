@@ -16,6 +16,8 @@ type State = {
     mutez: Record<string, string | undefined>;
     tokens: Record<string, TokenBalance[] | undefined>;
   };
+  // TODO: This is a crutch, has to be merged with balances.mutez into an account state
+  delegationLevels: Record<string, number | undefined>;
   transfers: {
     tez: Record<string, TezTransfer[] | undefined>;
     tokens: Record<TransactionId, TokenTransfer | undefined>;
@@ -44,6 +46,7 @@ const initialState: State = {
   },
   transfers: { tez: {}, tokens: {} },
   delegations: {},
+  delegationLevels: {},
   latestOperations: [],
   bakers: [],
   conversionRate: null,
@@ -73,6 +76,9 @@ const assetsSlice = createSlice({
     updateTezBalance: (state, { payload }: { payload: TzktAccount[] }) => {
       state.balances.mutez = payload.reduce((acc, accountInfo) => {
         return { ...acc, [accountInfo.address]: String(accountInfo.balance) };
+      }, {});
+      state.delegationLevels = payload.reduce((acc, accountInfo) => {
+        return { ...acc, [accountInfo.address]: accountInfo.delegationLevel };
       }, {});
     },
 

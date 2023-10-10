@@ -33,13 +33,16 @@ const NFTCard: React.FC<{ owner: RawPkh; nft: NFTBalance; onClick: () => void }>
         {Number(nft.balance) > 1 && (
           <Text
             data-testid="nft-owned-count"
-            borderRadius="100px"
-            padding="3px 8px"
+            borderRadius="full"
+            height="24px"
+            px="8px"
+            paddingTop="1px"
             backgroundColor="rgba(33, 33, 33, 0.75)"
             display="inline"
             position="absolute"
             marginTop="-40px"
             marginLeft="10px"
+            fontSize="14px"
           >
             {"x" + nft.balance}
           </Text>

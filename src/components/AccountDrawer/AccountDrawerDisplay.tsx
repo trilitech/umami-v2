@@ -63,7 +63,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   const baker = getDelegateOf(account);
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
-      {/* TODO: make the icon match account card on the overview page */}
+      {/* TODO: make the icon match account card on the accounts page */}
       <Identicon w="48px" h="48px" p="8px" identiconSize={32} address={pkh} />
       <Heading mt={4} size="md">
         {label}

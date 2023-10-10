@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { compact, groupBy } from "lodash";
 import { useContext } from "react";
-import { BsWindowPlus } from "react-icons/bs";
 import KeyIcon from "../../assets/icons/Key";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
@@ -31,13 +30,22 @@ import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
 import colors from "../../style/colors";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
+import WalletPlusIcon from "../../assets/icons/WalletPlus";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
   return (
     <Flex justifyContent="space-between" mt={4} mb={4}>
-      <Heading size="lg">Accounts</Heading>
-      <IconAndTextBtn onClick={onOpen} label="Add/Create" icon={BsWindowPlus} />
+      <Heading size="lg">All Accounts</Heading>
+      <IconAndTextBtn
+        onClick={onOpen}
+        label="Add Account"
+        color={colors.gray[300]}
+        icon={WalletPlusIcon}
+        iconWidth="18px"
+        iconHeight="18px"
+        textMargin="4px"
+      />
       {modalElement}
     </Flex>
   );
@@ -99,13 +107,14 @@ const AccountGroup: React.FC<{
 
       {accounts.map(account => {
         return (
-          <AccountTile
-            selected={account.address.pkh === selected}
-            onClick={_ => onSelect(account.address.pkh)}
-            key={account.address.pkh}
-            address={account.address.pkh}
-            balance={balances[account.address.pkh]}
-          />
+          <Box mb="16px" key={account.address.pkh}>
+            <AccountTile
+              selected={account.address.pkh === selected}
+              onClick={_ => onSelect(account.address.pkh)}
+              address={account.address.pkh}
+              balance={balances[account.address.pkh]}
+            />
+          </Box>
         );
       })}
     </Box>

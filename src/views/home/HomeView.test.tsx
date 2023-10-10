@@ -32,7 +32,6 @@ describe("<HomeView />", () => {
 
   test("Clicking an account tile displays Account card drawer and marks account as selected", async () => {
     render(<HomeView />);
-    // If you use .click() directly on el you get the act warnings...
     const el = screen.getByTestId("account-tile-" + mockImplicitAccount(1).address.pkh);
     fireEvent.click(el);
 

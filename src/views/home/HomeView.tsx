@@ -1,40 +1,19 @@
-import { Box, Flex, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { TopBar } from "../../components/TopBar";
 import AccountListWithDrawer from "./AccountListWithDrawer";
 import { AccountListHeader } from "./AccountsList";
 
-import { NftList } from "./NftList";
-import { OperationsListPanel } from "./OperationsListPanel";
-
-// Reference unit for all the margin and padding adjustments
-const BASE = 3;
-
 export default function HomeView() {
-  const [isSmallerThan1300] = useMediaQuery("(max-width: 1300px)");
   return (
     <Flex direction="column" height="100%">
-      <TopBar title="Overview" />
+      <TopBar title="Accounts" />
       <Flex flex={1} minHeight={1}>
-        {/* Left Column */}
-        <Flex direction="column" flex={1} mr={BASE} pb={BASE}>
+        <Flex direction="column" flex={1} mr="12px" pb="12px">
           <AccountListHeader />
-          <Box flex={1} overflow="hidden" borderRadius={4}>
+          <Box flex={1} overflow="hidden" borderRadius="8px">
             <AccountListWithDrawer />
           </Box>
         </Flex>
-        {
-          /* Right Column */
-          !isSmallerThan1300 && (
-            <Flex direction="column" flex={1} ml={BASE} pb={BASE}>
-              <Box flex={1} overflow="hidden" borderRadius={4} mb={BASE}>
-                <OperationsListPanel />
-              </Box>
-              <Box flex={1} overflow="hidden" borderRadius={4}>
-                <NftList />
-              </Box>
-            </Flex>
-          )
-        }
       </Flex>
     </Flex>
   );
