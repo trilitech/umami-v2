@@ -23,7 +23,6 @@ type State = {
     tokens: Record<TransactionId, TokenTransfer | undefined>;
   };
   latestOperations: TzktCombinedOperation[];
-  delegations: Record<string, DelegationOperation | undefined>;
   bakers: Delegate[];
   conversionRate: number | null; // XTZ/USD conversion rate
   refetchTrigger: number;
@@ -45,7 +44,6 @@ const initialState: State = {
     tokens: {},
   },
   transfers: { tez: {}, tokens: {} },
-  delegations: {},
   delegationLevels: {},
   latestOperations: [],
   bakers: [],
@@ -93,12 +91,6 @@ const assetsSlice = createSlice({
       });
     },
 
-    updateDelegations: (state, { payload }: { type: string; payload: DelegationPayload[] }) => {
-      //TODO: store a list of delegations for the operation views
-      payload.forEach(p => {
-        state.delegations[p.pkh] = p.delegation;
-      });
-    },
     updateBakers: (state, { payload }: { payload: Delegate[] }) => {
       state.bakers = payload;
     },

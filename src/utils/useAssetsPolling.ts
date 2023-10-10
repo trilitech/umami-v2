@@ -1,11 +1,10 @@
-import { compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { Network } from "../types/Network";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
-import { assetsActions, DelegationPayload } from "./redux/slices/assetsSlice";
+import { assetsActions } from "./redux/slices/assetsSlice";
 import { useAppDispatch } from "./redux/hooks";
 import { multisigActions } from "./redux/slices/multisigsSlice";
 import { tokensActions } from "./redux/slices/tokensSlice";
@@ -13,7 +12,6 @@ import {
   getAccounts,
   getBakers,
   getCombinedOperations,
-  getLastDelegation,
   getLatestBlockLevel,
   getTezosPriceInUSD,
   getTokenBalances,
@@ -26,14 +24,6 @@ import { AppDispatch } from "./redux/store";
 import { RawPkh } from "../types/Address";
 import { useToast } from "@chakra-ui/react";
 import { Multisig } from "./multisig/types";
-
-const getDelegationsPayload = async (
-  pkh: string,
-  network: Network
-): Promise<DelegationPayload | undefined> => {
-  const delegation = await getLastDelegation(pkh, network);
-  return delegation && { pkh, delegation };
-};
 
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
@@ -53,11 +43,6 @@ const updateTezBalances = async (dispatch: AppDispatch, network: Network, addres
   dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
 };
 
-const updateDelegations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
-  const delegations = await Promise.all(pkhs.map(pkh => getDelegationsPayload(pkh, network)));
-  dispatch(assetsActions.updateDelegations(compact(delegations)));
-};
-
 const updateTokenBalances = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
   const tokenBalances = await getTokenBalances(pkhs, network);
   const tokens = tokenBalances.flat().map(b => b.token);
@@ -66,6 +51,9 @@ const updateTokenBalances = async (dispatch: AppDispatch, network: Network, pkhs
   dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
 };
 
+// TODO: check if needed at all because
+// we load them manually on drawer opening
+// and on operations page opening
 export const fetchOperationsAndUpdateTokensInfo = async (
   dispatch: AppDispatch,
   network: Network,
@@ -115,7 +103,6 @@ const updateAccountAssets = async (
     await Promise.all([
       updatePendingOperations(dispatch, network, multisigs),
       updateTezBalances(dispatch, network, allAccountAddresses),
-      updateDelegations(dispatch, network, allAccountAddresses),
       updateTokenBalances(dispatch, network, allAccountAddresses),
       updateOperations(dispatch, network, allAccountAddresses),
     ]);

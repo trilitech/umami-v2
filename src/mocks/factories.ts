@@ -34,7 +34,7 @@ export const mockTezTransaction = (id: number) => {
 
 export const mockDelegation = (
   id: number,
-  initalAmount: number,
+  initialAmount: number,
   delegateAddress: string,
   delegateAlias: string,
   date = new Date()
@@ -52,7 +52,7 @@ export const mockDelegation = (
     gasUsed: 1000,
     storageLimit: 0,
     bakerFee: 396,
-    amount: initalAmount,
+    amount: initialAmount,
     prevDelegate: {
       alias: "Pool of Stake",
       address: "tz1gjwq9ybKEmqQrTmzCoVB3HESYV1Ekc5up",

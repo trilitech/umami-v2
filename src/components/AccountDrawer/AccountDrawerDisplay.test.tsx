@@ -9,7 +9,6 @@ import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import store from "../../utils/redux/store";
 
 import AccountCard from ".";
-import { mockDelegationOperation } from "../../mocks/delegations";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
@@ -21,9 +20,16 @@ import multisigsSlice, { multisigActions } from "../../utils/redux/slices/multis
 import tokensSlice from "../../utils/redux/slices/tokensSlice";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
-import { TzktCombinedOperation, getCombinedOperations, getTokenTransfers } from "../../utils/tezos";
+import {
+  DelegationOperation,
+  TzktCombinedOperation,
+  getCombinedOperations,
+  getLastDelegation,
+  getTokenTransfers,
+} from "../../utils/tezos";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
-const { updateTezBalance, updateTokenBalance, updateDelegations } = assetsSlice.actions;
+import { mockDelegation } from "../../mocks/factories";
+const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
 const { addAccount } = accountsSlice.actions;
 
 const { setMultisigs } = multisigsSlice.actions;
@@ -81,6 +87,8 @@ beforeEach(() => {
   ]);
 
   jest.mocked(getTokenTransfers).mockResolvedValue([]);
+
+  jest.mocked(getLastDelegation).mockResolvedValue(undefined);
 });
 
 describe("<AccountCard />", () => {
@@ -232,26 +240,17 @@ describe("<AccountCard />", () => {
     });
 
     it("Given an account has an active delegation, it show display the delegation and CTA buttons to change delegate or undelegate", async () => {
-      store.dispatch(
-        updateDelegations([
-          {
-            pkh: selectedAccount.address.pkh,
-            delegation: mockDelegationOperation(
-              selectedAccount.address.pkh,
-              mockImplicitAddress(2).pkh,
-              6000000
-            ),
-          },
-          {
-            pkh: mockImplicitAccount(3).address.pkh,
-            delegation: mockDelegationOperation(
-              mockImplicitAccount(2).address.pkh,
-              mockImplicitAddress(3).pkh,
-              8000000
-            ),
-          },
-        ])
-      );
+      jest
+        .mocked(getLastDelegation)
+        .mockResolvedValue(
+          mockDelegation(
+            0,
+            6000000,
+            mockImplicitAddress(2).pkh,
+            "Some baker",
+            new Date(2020, 5, 24)
+          ) as DelegationOperation
+        );
 
       render(<AccountCard account={selectedAccount} />);
       await waitFor(() => {
@@ -264,7 +263,7 @@ describe("<AccountCard />", () => {
       expect(getByTestId(/current balance/i)).toHaveTextContent(
         prettyTezAmount(SELECTED_ACCOUNT_BALANCE.toString())
       );
-      expect(getByTestId(/duration/i)).toHaveTextContent("Since 05/24/2020");
+      expect(getByTestId(/duration/i)).toHaveTextContent("Since 06/24/2020");
       expect(getByTestId(/baker/i)).toHaveTextContent("tz1ik...Cc43D");
 
       const changeDelegateBtn = screen.getByText(/change baker/i);
@@ -274,7 +273,7 @@ describe("<AccountCard />", () => {
       fireEvent.click(changeDelegateBtn);
       await waitFor(() => {
         const modal = screen.getByRole("dialog");
-        expect(modal).toHaveTextContent(/delegate/i);
+        expect(modal).toHaveTextContent(/Change Baker/i);
       });
     });
   });

@@ -20,7 +20,6 @@ import {
 import { Delegation } from "../../../types/Operation";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { HeaderWrapper } from "../FormPageHeader";
-import { useGetDelegateOf } from "../../../utils/hooks/assetsHooks";
 import { DynamicModalContext } from "../../DynamicModal";
 
 export type FormValues = {
@@ -35,8 +34,7 @@ const toOperation = (formValues: FormValues): Delegation => ({
 });
 
 const FormPage: React.FC<FormPageProps<FormValues>> = props => {
-  const getDelegateOf = useGetDelegateOf();
-  const baker = props.sender ? getDelegateOf(props.sender) : undefined;
+  const baker = props.form?.baker;
   const { onClose } = useContext(DynamicModalContext);
 
   const openSignPage = useOpenSignPageFormAction({
@@ -76,7 +74,6 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
           </HeaderWrapper>
 
           <ModalBody>
-            {/* TODO: Make AccountAutoComplete display the address and balance*/}
             <FormControl isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"

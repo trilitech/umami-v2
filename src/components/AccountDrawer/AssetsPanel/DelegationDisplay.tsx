@@ -86,7 +86,9 @@ export const DelegationDisplay: React.FC<{
           flex={1}
           mr="16px"
           variant="warning"
-          onClick={() => openWith(<UndelegationFormPage sender={senderAccount} />)}
+          onClick={() =>
+            openWith(<UndelegationFormPage sender={senderAccount} form={{ sender, baker }} />)
+          }
         >
           End Delegation
         </Button>
