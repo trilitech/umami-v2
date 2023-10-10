@@ -1,19 +1,23 @@
 import { AspectRatio, Image, Card, CardBody, Heading, Text, Box } from "@chakra-ui/react";
 import { NFTBalance } from "../../types/TokenBalance";
 import { getIPFSurl } from "../../utils/token/nftUtils";
-import { thumbnailUri } from "../../types/Token";
+import { fullId, thumbnailUri } from "../../types/Token";
 import colors from "../../style/colors";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { RawPkh, parsePkh } from "../../types/Address";
+import { useLocation } from "react-router-dom";
 
-const NFTCard: React.FC<{ owner: RawPkh; nft: NFTBalance; onClick: () => void }> = ({
-  owner,
-  nft,
-  onClick,
-}) => {
+const NFTCard: React.FC<{
+  owner: RawPkh;
+  nft: NFTBalance;
+  onClick: () => void;
+}> = ({ owner, nft, onClick }) => {
   const url = getIPFSurl(thumbnailUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const name = nft.metadata.name;
+  const currentLocation = useLocation();
+
+  const isSelected = currentLocation.pathname.includes(`${owner}/${fullId(nft)}`);
 
   return (
     <Card
@@ -25,7 +29,14 @@ const NFTCard: React.FC<{ owner: RawPkh; nft: NFTBalance; onClick: () => void }>
       borderRadius="8px"
       onClick={onClick}
     >
-      <CardBody bg={colors.gray[900]} borderRadius="8px">
+      <CardBody
+        bg={colors.gray[900]}
+        border="1px solid"
+        borderColor={isSelected ? colors.orangeL : "transparent"}
+        _hover={{ bg: colors.gray[700], borderColor: `${colors.gray[500]}` }}
+        borderRadius="8px"
+        p="16px"
+      >
         <AspectRatio width="100%" ratio={1}>
           <Image data-testid="nft-image" width="100%" src={url} fallbackSrc={fallbackUrl} />
         </AspectRatio>
