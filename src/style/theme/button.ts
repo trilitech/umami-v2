@@ -9,11 +9,13 @@ export const buttonTheme = defineStyleConfig({
       _disabled: {
         bg: colors.gray[500],
         color: colors.gray[450],
+        opacity: 1,
       },
       _hover: {
         _disabled: {
           bg: colors.gray[500],
           color: colors.gray[450],
+          opacity: 1,
         },
         bg: colors.blueL,
       },
@@ -24,12 +26,14 @@ export const buttonTheme = defineStyleConfig({
       _disabled: {
         color: colors.gray[450],
         borderColor: colors.gray[500],
+        opacity: 1,
       },
       _hover: {
         bg: colors.green,
         _disabled: {
           color: colors.gray[450],
           borderColor: colors.gray[500],
+          opacity: 1,
         },
       },
     },
@@ -39,6 +43,7 @@ export const buttonTheme = defineStyleConfig({
       borderColor: colors.gray[500],
       _disabled: {
         color: colors.gray[450],
+        opacity: 1,
       },
       _hover: {
         border: "1px solid",
@@ -46,6 +51,8 @@ export const buttonTheme = defineStyleConfig({
         bg: colors.gray[600],
         _disabled: {
           borderColor: colors.gray[500],
+          color: colors.gray[450],
+          opacity: 1,
         },
       },
     },
@@ -54,12 +61,14 @@ export const buttonTheme = defineStyleConfig({
       _disabled: {
         bg: colors.gray[500],
         color: colors.gray[450],
+        opacity: 1,
       },
       _hover: {
         bg: colors.orangeL,
         _disabled: {
           bg: colors.gray[500],
           color: colors.gray[450],
+          opacity: 1,
         },
       },
     },
