@@ -18,8 +18,8 @@ const MultisigApprovers: React.FC<{
   signers: ImplicitAddress[];
 }> = ({ signers }) => {
   return (
-    <Box w="100%" bg={colors.gray[800]} p={3} borderRadius={6} m={5}>
-      <Accordion allowToggle={true} defaultIndex={0}>
+    <Box w="100%" bg={colors.gray[800]} p="15px" borderRadius="8px" mt="60px">
+      <Accordion allowToggle defaultIndex={0}>
         <AccordionItem bg={colors.gray[800]} border="none" borderRadius="8px">
           <h2>
             <AccordionButton as="span" flex="1" textAlign="left">

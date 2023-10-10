@@ -35,8 +35,7 @@ export const AssetsPanel: React.FC<{
       height="100%"
       display="flex"
       flexDirection="column"
-      mt={4}
-      borderRadius={4}
+      mt="60px"
       data-testid="asset-panel"
       w="100%"
     >

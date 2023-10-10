@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import type { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../utils/format";
+import colors from "../style/colors";
 
 export const TezRecapDisplay: React.FC<{
   balance: string;
@@ -12,7 +13,7 @@ export const TezRecapDisplay: React.FC<{
     <Box textAlign={props.center ? "center" : "initial"}>
       <Heading size="md">{prettyTezAmount(props.balance)}</Heading>
       {props.dollarBalance !== null && (
-        <Text size="sm" color="umami.gray.400">
+        <Text size="sm" mt="4px" color={colors.gray[400]}>
           ${props.dollarBalance.toFixed(2)}
         </Text>
       )}
