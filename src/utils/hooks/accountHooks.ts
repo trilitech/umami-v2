@@ -174,16 +174,9 @@ export const useAllAccounts = (): Account[] => {
   return [...implicit, ...multisig];
 };
 
-export const useFirstAccount = (): Account => {
-  const accounts = useImplicitAccounts();
-  return accounts[0];
-};
-
-export const useAccountIsMultisig = () => {
-  const accounts = useMultisigAccounts();
-  return (pkh: string) => {
-    return !!accounts.find(account => account.address.pkh === pkh);
-  };
+export const useIsOwnedAddress = (address: RawPkh) => {
+  const ownedAccounts = useAllAccounts();
+  return ownedAccounts.map(acc => acc.address.pkh).includes(address);
 };
 
 export const useGetMultisigSigners = () => {

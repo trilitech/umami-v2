@@ -3,7 +3,7 @@ import { Icon, IconProps } from "@chakra-ui/react";
 const EyeIcon: React.FC<IconProps> = props => {
   return (
     <Icon
-      width="16"
+      width="16px"
       height="11"
       viewBox="0 0 16 12"
       fill="none"

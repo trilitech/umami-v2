@@ -1,9 +1,8 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-const ContactIcon: React.FC<IconProps> = props => {
+const CheckmarkIcon: React.FC<IconProps> = props => {
   return (
     <Icon
-      data-testid="contact-icon"
       width="18px"
       height="18px"
       viewBox="0 0 18 18"
@@ -12,7 +11,8 @@ const ContactIcon: React.FC<IconProps> = props => {
       {...props}
     >
       <path
-        d="M3.75 15.75C3.75 12.8505 6.10051 10.5 9 10.5C11.8995 10.5 14.25 12.8505 14.25 15.75M12 5.25C12 6.90685 10.6569 8.25 9 8.25C7.34315 8.25 6 6.90685 6 5.25C6 3.59315 7.34315 2.25 9 2.25C10.6569 2.25 12 3.59315 12 5.25Z"
+        d="M6 9.25L7.84615 11.25L12 6.75M15.75 9C15.75 12.7279 12.7279 15.75 9 15.75C5.27208 15.75 2.25 12.7279 2.25 9C2.25 5.27208 5.27208 2.25 9 2.25C12.7279 2.25 15.75 5.27208 15.75 9Z"
+        stroke="#00C39A"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -21,4 +21,4 @@ const ContactIcon: React.FC<IconProps> = props => {
   );
 };
 
-export default ContactIcon;
+export default CheckmarkIcon;

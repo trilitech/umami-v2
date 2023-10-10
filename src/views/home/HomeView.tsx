@@ -6,7 +6,7 @@ import { AccountListHeader } from "./AccountsList";
 import { NftList } from "./NftList";
 import { OperationsListPanel } from "./OperationsListPanel";
 
-// Reference unit for all the margin and padding ajustements
+// Reference unit for all the margin and padding adjustments
 const BASE = 3;
 
 export default function HomeView() {

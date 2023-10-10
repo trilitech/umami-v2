@@ -1,6 +1,6 @@
 import * as tzktApi from "@tzkt/sdk-api";
 import { FA12Token, FA2Token, NFT, RawTokenInfo, fromRaw as fromRawToken } from "./Token";
-import { RawAlias } from "./Address";
+import { TzktAlias } from "./Address";
 
 type Balance = { balance: string };
 export type FA12TokenBalance = FA12Token & Balance;
@@ -10,7 +10,7 @@ export type TokenBalanceWithToken = FA12TokenBalance | FA2TokenBalance | NFTBala
 export type TokenBalance = Pick<TokenBalanceWithToken, "contract" | "tokenId" | "balance">;
 
 export type RawTokenBalance = Omit<tzktApi.TokenBalance, "account" | "token"> & {
-  account: RawAlias;
+  account: TzktAlias;
   token: RawTokenInfo;
 };
 

@@ -1,22 +1,19 @@
 import { mockMultisigAccount } from "../../../mocks/factories";
-import { render, screen } from "../../../mocks/testUtils";
-import { MAINNET } from "../../../types/Network";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
+import { getCombinedOperations, getTokenTransfers } from "../../../utils/tezos";
 import { AssetsPanel } from "./AssetsPanel";
 
 describe("<AssetPanel/>", () => {
-  it("should display pending tabs for multisig account", () => {
-    const multisigAccount = mockMultisigAccount(0);
-    render(
-      <AssetsPanel
-        account={multisigAccount}
-        nfts={[]}
-        tokens={[]}
-        operationDisplays={[]}
-        network={MAINNET}
-      />
-    );
+  it("should display pending tabs for multisig account", async () => {
+    jest.mocked(getCombinedOperations).mockResolvedValue([]);
+    jest.mocked(getTokenTransfers).mockResolvedValue([]);
 
-    expect(screen.getByTestId("account-card-pending-tab")).toBeInTheDocument();
+    const multisigAccount = mockMultisigAccount(0);
+    render(<AssetsPanel account={multisigAccount} nfts={[]} tokens={[]} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("account-card-pending-tab")).toBeInTheDocument();
+    });
     expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();
   });
 });

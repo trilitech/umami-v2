@@ -2,16 +2,10 @@ import { compact } from "lodash";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { Network } from "../types/Network";
-import { TokenTransfer } from "../types/Transfer";
 import { useImplicitAccounts } from "./hooks/accountHooks";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
-import {
-  assetsActions,
-  DelegationPayload,
-  TezTransfersPayload,
-  TokenTransfersPayload,
-} from "./redux/slices/assetsSlice";
+import { assetsActions, DelegationPayload } from "./redux/slices/assetsSlice";
 import { useAppDispatch } from "./redux/hooks";
 import { multisigActions } from "./redux/slices/multisigsSlice";
 import { tokensActions } from "./redux/slices/tokensSlice";
@@ -22,7 +16,6 @@ import {
   getLastDelegation,
   getLatestBlockLevel,
   getTezosPriceInUSD,
-  getTezTransfers,
   getTokenBalances,
   getTokenTransfers,
 } from "./tezos";
@@ -33,24 +26,6 @@ import { AppDispatch } from "./redux/store";
 import { RawPkh } from "../types/Address";
 import { useToast } from "@chakra-ui/react";
 import { Multisig } from "./multisig/types";
-
-const getTezTransfersPayload = async (
-  pkh: string,
-  network: Network
-): Promise<TezTransfersPayload> => {
-  const transfers = await getTezTransfers(pkh, network);
-  return { pkh, transfers };
-};
-
-const getTokensTransfersPayload = async (
-  pkh: string,
-  network: Network
-): Promise<TokenTransfersPayload> => {
-  const transfers = await getTokenTransfers(pkh, network);
-
-  // there are no token transfers without a token & amount assigned
-  return { pkh, transfers: transfers as TokenTransfer[] };
-};
 
 const getDelegationsPayload = async (
   pkh: string,
@@ -78,34 +53,42 @@ const updateTezBalances = async (dispatch: AppDispatch, network: Network, addres
   dispatch(assetsActions.updateTezBalance(accountInfos.flat()));
 };
 
-const updateTezTransfers = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
-  const tezTransfers = await Promise.all(pkhs.map(pkh => getTezTransfersPayload(pkh, network)));
-  dispatch(assetsActions.updateTezTransfers(tezTransfers));
-};
-
 const updateDelegations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
   const delegations = await Promise.all(pkhs.map(pkh => getDelegationsPayload(pkh, network)));
   dispatch(assetsActions.updateDelegations(compact(delegations)));
 };
 
-const updateTokenTransfers = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
-  // token transfers have to be fetched after the balances were fetched
-  // because otherwise we might not have some tokens' info to display the operations
+const updateTokenBalances = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
   const tokenBalances = await getTokenBalances(pkhs, network);
-  const tokenTransfers = await Promise.all(
-    pkhs.map(pkh => getTokensTransfersPayload(pkh, network))
-  );
-  const tokens = [...tokenBalances.flat(), ...tokenTransfers.flatMap(x => x.transfers)].map(
-    b => b.token
-  );
+  const tokens = tokenBalances.flat().map(b => b.token);
 
   dispatch(tokensActions.addTokens({ network, tokens }));
   dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
+};
+
+export const fetchOperationsAndUpdateTokensInfo = async (
+  dispatch: AppDispatch,
+  network: Network,
+  addresses: RawPkh[],
+  options?: {
+    lastId?: number;
+    limit?: number;
+    sort?: "asc" | "desc";
+  }
+) => {
+  const operations = await getCombinedOperations(addresses, network, options);
+  const tokenTransfers = await getTokenTransfers(
+    operations.map(op => op.id),
+    network
+  );
+
   dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
+  dispatch(tokensActions.addTokens({ network, tokens: tokenTransfers.map(t => t.token) }));
+  return operations;
 };
 
 const updateOperations = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
-  const operations = await getCombinedOperations(pkhs, network);
+  const operations = await fetchOperationsAndUpdateTokensInfo(dispatch, network, pkhs);
   dispatch(assetsActions.updateOperations(operations));
 };
 
@@ -132,9 +115,8 @@ const updateAccountAssets = async (
     await Promise.all([
       updatePendingOperations(dispatch, network, multisigs),
       updateTezBalances(dispatch, network, allAccountAddresses),
-      updateTezTransfers(dispatch, network, allAccountAddresses),
       updateDelegations(dispatch, network, allAccountAddresses),
-      updateTokenTransfers(dispatch, network, allAccountAddresses),
+      updateTokenBalances(dispatch, network, allAccountAddresses),
       updateOperations(dispatch, network, allAccountAddresses),
     ]);
     dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));

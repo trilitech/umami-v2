@@ -100,12 +100,10 @@ describe("tezos utils fetch", () => {
     });
 
     test("getTokenTransfers", async () => {
-      await getTokenTransfers(mockImplicitAddress(0).pkh, network);
+      await getTokenTransfers([1, 2, 3], network);
       expect(tokensGetTokenTransfers).toBeCalledWith(
         {
-          anyof: { fields: ["from", "to"], eq: mockImplicitAddress(0).pkh },
-          sort: { desc: "level" },
-          limit: 10,
+          transactionId: { in: ["1,2,3"] },
         },
         {
           baseUrl: network.tzktApiUrl,
@@ -281,17 +279,17 @@ describe("tezos utils fetch", () => {
           it("defines a default limit if none is provided", async () => {
             await getCombinedOperations([mockImplicitAddress(0).pkh], network);
             expect(jest.mocked(operationsGetTransactions)).toBeCalledWith(
-              expect.objectContaining({ limit: 10 }),
+              expect.objectContaining({ limit: 100 }),
               { baseUrl: network.tzktApiUrl }
             );
             expect(jest.mocked(operationsGetDelegations)).toBeCalledWith(
-              expect.objectContaining({ limit: 10 }),
+              expect.objectContaining({ limit: 100 }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
             expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
-              expect.objectContaining({ limit: 10 }),
+              expect.objectContaining({ limit: 100 }),
               {
                 baseUrl: network.tzktApiUrl,
               }

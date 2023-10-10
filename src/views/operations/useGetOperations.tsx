@@ -1,41 +1,75 @@
 import { useEffect, useState } from "react";
-import { TzktCombinedOperation, getCombinedOperations } from "../../utils/tezos";
-import { useGetLatestOperations } from "../../utils/hooks/assetsHooks";
-import { uniqBy } from "lodash";
+import { TzktCombinedOperation } from "../../utils/tezos";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useAllAccounts } from "../../utils/hooks/accountHooks";
+import { RawPkh } from "../../types/Address";
+import { fetchOperationsAndUpdateTokensInfo } from "../../utils/useAssetsPolling";
+import { useAppDispatch } from "../../utils/redux/hooks";
 
-export const operationKey = (operation: TzktCombinedOperation): string =>
-  `${operation.type}-${operation.id}`;
-
-// TODO: add support for filtering by account
-// just offline filtering should be fine
-// don't forget about sender/target
-export const useGetOperations = () => {
-  const latestOperations = useGetLatestOperations();
+export const useGetOperations = (initialAddresses: RawPkh[]) => {
   const network = useSelectedNetwork();
-  const accounts = useAllAccounts();
-  const [operations, setOperations] = useState<TzktCombinedOperation[]>(latestOperations);
+  const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // when new operations are fetched, prepend them to the list
+  const [addresses, setAddresses] = useState<RawPkh[]>(initialAddresses);
+  const dispatch = useAppDispatch();
+
+  const [updatesTrigger, setUpdatesTrigger] = useState(0);
+
   useEffect(() => {
-    // some of the operations may overlap, so we need to dedupe them
-    setOperations(currentOperations =>
-      uniqBy([...latestOperations, ...currentOperations], operationKey)
-    );
-  }, [latestOperations]);
+    const interval = setInterval(() => {
+      const lastId = operations[0]?.id;
+      setIsLoading(true);
+      fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, {
+        lastId,
+        sort: "asc",
+      })
+        .then(newOperations => {
+          // reverse is needed because we fetch the operations in the opposite order
+          setOperations(currentOperations => [...newOperations.reverse(), ...currentOperations]);
+        })
+        .finally(() => setIsLoading(false));
+    }, 15000);
+    return () => clearInterval(interval);
+
+    // The only way to correctly start triggering updates is
+    // to wait for the first fetch to finish and get the latest operation id
+    // to start the updates with
+    // but if we add operations to the dependency array, it will trigger the initial fetch
+    // once again which will lead to an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatesTrigger]);
+
+  useEffect(() => {
+    setOperations([]);
+    setHasMore(true);
+    setIsLoading(true);
+
+    fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses)
+      .then(latestOperations => {
+        setOperations(latestOperations);
+        setHasMore(latestOperations.length > 0);
+        setUpdatesTrigger(prev => prev + 1);
+      })
+      .finally(() => setIsLoading(false));
+  }, [network, addresses, dispatch]);
 
   const loadMore = async () => {
-    const lastId = operations[operations.length - 1].id;
-    const nextChunk = await getCombinedOperations(
-      accounts.map(acc => acc.address.pkh),
-      network,
-      { lastId }
-    );
-    setHasMore(nextChunk.length > 0);
-    setOperations(currentOperations => [...currentOperations, ...nextChunk]);
+    const lastId = operations[operations.length - 1]?.id;
+    if (!lastId) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const nextChunk = await fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, {
+        lastId,
+      });
+      setHasMore(nextChunk.length > 0);
+      setOperations(currentOperations => [...currentOperations, ...nextChunk]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  return { operations, loadMore, hasMore };
+  return { operations, isLoading, hasMore, loadMore, setAddresses };
 };

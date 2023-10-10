@@ -1,125 +1,78 @@
-import {
-  AspectRatio,
-  Box,
-  Flex,
-  Image,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
-import { MdOutlinePending } from "react-icons/md";
-import { RxCheckCircled } from "react-icons/rx";
-import { Link } from "react-router-dom";
-import { useAccountsFilterWithMapFilter } from "../../components/useAccountsFilter";
-import AddressPill from "../../components/AddressPill/AddressPill";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { useAccountsFilter } from "../../components/useAccountsFilter";
 import { NoOperations } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
-import { TzktLink } from "../../components/TzktLink";
-import { useGetOperationDisplays, useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
-import { getAmountColor, getKey, sortOperationsByTimestamp } from "./operationsUtils";
-import { OperationDisplay } from "../../types/Transfer";
-
-export const OperationsDataTable: React.FC<{
-  operations: OperationDisplay[];
-}> = ({ operations }) => {
-  const operationList = Object.values(operations).flat();
-  const sorted = sortOperationsByTimestamp(operationList);
-
-  const isBlockFinalised = useIsBlockFinalised();
-  return (
-    <TableContainer overflowX="unset" overflowY="unset">
-      <Table>
-        {
-          // Finally a way to have a sticky Header
-          // https://github.com/chakra-ui/chakra-ui/discussions/5656#discussioncomment-3320528
-        }
-        <Thead position="sticky" top={0} zIndex="1" bg="umami.gray.900" borderRadius={4}>
-          <Tr>
-            <Th>Type:</Th>
-            <Th>Amount:</Th>
-            <Th>Fee:</Th>
-            <Th>Sender:</Th>
-            <Th>Recipient:</Th>
-            <Th>Status:</Th>
-            <Th>Timestamp:</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {sorted.map((op, i) => {
-            return (
-              <Tr
-                key={
-                  // TODO: find a better way to pick a unique ID per operation.
-                  // Dupes appear when doing transfers within accounts on the same wallet...
-                  getKey(op)
-                }
-              >
-                <Td>{op.type}</Td>
-                <Td>
-                  <Flex alignItems="center">
-                    <Text color={getAmountColor(op.amount.prettyDisplay)}>
-                      {op.amount.prettyDisplay}
-                    </Text>
-                    {op.amount.url && (
-                      <Link to={`/nfts/${op.amount.id}`}>
-                        <AspectRatio ml={2} height={6} width={6} ratio={1}>
-                          <Image src={op.amount.url} />
-                        </AspectRatio>
-                      </Link>
-                    )}
-                  </Flex>
-                </Td>
-                <Td>{op.fee}</Td>
-                <Td>
-                  <AddressPill address={op.sender} />
-                </Td>
-                <Td>
-                  <AddressPill address={op.recipient} />
-                </Td>
-                <Td>
-                  {isBlockFinalised(op.level) ? (
-                    <IconAndTextBtn icon={RxCheckCircled} label="Confirmed" />
-                  ) : (
-                    <IconAndTextBtn icon={MdOutlinePending} label="Pending..." />
-                  )}
-                </Td>
-                <Td>
-                  <Flex alignItems="center" justifyContent="space-between">
-                    <Text>{op.prettyTimestamp}</Text>
-                    {op.tzktUrl && <TzktLink url={op.tzktUrl} ml={2} w={4} h={4} />}
-                  </Flex>
-                </Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-    </TableContainer>
-  );
-};
+import { useGetOperations } from "./useGetOperations";
+import { OperationTile, OperationTileContext } from "../../components/OperationTile";
+import colors from "../../style/colors";
+import { useEffect } from "react";
 
 const OperationsView = () => {
-  const { filterMap: filter, accountsFilter } = useAccountsFilterWithMapFilter();
-  const operations = useGetOperationDisplays();
-  const operationsToDisplay = sortOperationsByTimestamp(filter(operations));
+  const { accountsFilter, selectedAccounts } = useAccountsFilter();
+  const { operations, loadMore, hasMore, setAddresses, isLoading } = useGetOperations(
+    selectedAccounts.map(acc => acc.address.pkh)
+  );
+  const addressesJoined = selectedAccounts.map(acc => acc.address.pkh).join(",");
+
+  useEffect(() => {
+    setAddresses(addressesJoined.split(",")); // TODO: check if could be managed inside the getOperations hook itself
+  }, [setAddresses, addressesJoined]);
+  const onScroll = async (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    if (!hasMore || isLoading) {
+      return;
+    }
+    const element = e.target as HTMLDivElement;
+
+    // start loading earlier than we reached the end of the list
+    if (element.scrollHeight - element.scrollTop - element.clientHeight < 100) {
+      loadMore();
+    }
+  };
+
+  const loadingElement = (
+    <Text textAlign="center" color={colors.gray[500]} py="20px">
+      Loading...
+    </Text>
+  );
 
   return (
-    <Flex direction="column" height="100%">
+    <Flex direction="column" height="100%" px="6px">
       <TopBar title="Operations" />
       {accountsFilter}
-      {operationsToDisplay.length > 0 ? (
-        <Box overflow="scroll" pb={4}>
-          <OperationsDataTable operations={operationsToDisplay} />
-        </Box>
-      ) : (
-        <NoOperations />
-      )}
+      <Box
+        overflowY="scroll"
+        onScroll={onScroll}
+        borderRadius="8px"
+        px="20px"
+        mb="20px"
+        bg={colors.gray[900]}
+      >
+        {operations.length === 0 && isLoading && loadingElement}
+        {operations.length === 0 && !isLoading && <NoOperations />}
+        {operations.length > 0 && (
+          <OperationTileContext.Provider value={{ mode: "page" }}>
+            {operations.map((operation, i) => {
+              const isLast = i === operations.length - 1;
+              return (
+                <Box key={operation.id} height="90px" mb={isLast ? "10px" : 0} py="20px">
+                  <OperationTile operation={operation} />
+                  {!isLast && (
+                    <Box>
+                      <Divider mt="20px" />
+                    </Box>
+                  )}
+                </Box>
+              );
+            })}
+            {isLoading && (
+              <>
+                <Divider />
+                {loadingElement}
+              </>
+            )}
+          </OperationTileContext.Provider>
+        )}
+      </Box>
     </Flex>
   );
 };
