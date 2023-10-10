@@ -20,6 +20,7 @@ import AccountTileIcon from "../AccountTile/AccountTileIcon";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { getLastDelegation } from "../../utils/tezos";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 
 type Props = {
   onSend: () => void;
@@ -66,11 +67,19 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   const network = useSelectedNetwork();
 
   const [delegation, setDelegation] = useState<Delegation | null>(null);
+  const { handleAsyncAction } = useAsyncActionHandler();
 
   useEffect(() => {
-    getLastDelegation(account.address.pkh, network).then(tzktDelegation => {
+    handleAsyncAction(async () => {
+      const tzktDelegation = await getLastDelegation(account.address.pkh, network);
       tzktDelegation && setDelegation(makeDelegation(tzktDelegation));
     });
+    // handleAsyncAction gets constantly recreated, so we can't add it to the dependency array
+    // otherwise, it will trigger the initial fetch infinitely
+    // caching handleAsyncAction using useCallback doesn't work either
+    // because it depends on its own isLoading state which changes sometimes
+    // TODO: check useRef
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.address.pkh, network]);
 
   return (
