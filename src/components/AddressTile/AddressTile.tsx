@@ -43,7 +43,9 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
         )}
       </Flex>
 
-      <Box textAlign="right">{balance && <PrettyNumber number={prettyTezAmount(balance)} />}</Box>
+      <Box textAlign="right" overflow="hidden">
+        {balance && <PrettyNumber number={prettyTezAmount(balance)} />}
+      </Box>
     </Flex>
   );
 };

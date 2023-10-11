@@ -51,9 +51,13 @@ describe("<FormPage />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByTestId("address-tile")).toHaveTextContent(mockAccount.address.pkh);
+        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
+          mockAccount.address.pkh
+        );
       });
-      expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
+        mockImplicitAccount(1).address.pkh
+      );
       expect(screen.getByLabelText("Amount")).toHaveValue(1);
     });
   });

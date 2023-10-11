@@ -29,7 +29,7 @@ export const SignPage: React.FC<{
 
           <OperationSignerSelector
             sender={operations.sender}
-            isDisabled={isLoading}
+            isLoading={isLoading}
             operationType={operations.type}
             reEstimate={reEstimate}
           />

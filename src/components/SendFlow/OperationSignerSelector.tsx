@@ -7,12 +7,12 @@ import { RawPkh } from "../../types/Address";
 export const OperationSignerSelector = ({
   sender,
   operationType,
-  isDisabled,
+  isLoading,
   reEstimate,
 }: {
   sender: Account;
   operationType: AccountOperations["type"];
-  isDisabled: boolean;
+  isLoading: boolean;
   reEstimate: (newSigner: RawPkh) => Promise<void>;
 }) => {
   switch (operationType) {
@@ -23,7 +23,7 @@ export const OperationSignerSelector = ({
             account={sender}
             inputName="signer"
             label="Select Proposer"
-            isDisabled={isDisabled}
+            isLoading={isLoading}
             onUpdate={reEstimate}
             keepValid
           />

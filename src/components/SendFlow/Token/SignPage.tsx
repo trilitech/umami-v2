@@ -42,7 +42,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
 
             <OperationSignerSelector
               sender={operations.sender}
-              isDisabled={isLoading}
+              isLoading={isLoading}
               operationType={operations.type}
               reEstimate={reEstimate}
             />
