@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Box, Button, Menu, MenuButton, Wrap } from "@chakra-ui/react";
+import { Box, Button, Center, Menu, MenuButton, Wrap } from "@chakra-ui/react";
 import { differenceBy } from "lodash";
 import { useState } from "react";
 import { Account } from "../types/Account";
@@ -16,31 +16,33 @@ export const useAccountsFilter = () => {
   return {
     selectedAccounts: selectedAccounts.length === 0 ? allAccounts : selectedAccounts,
     accountsFilter: (
-      <Box>
-        <Menu>
-          <MenuButton
-            isDisabled={alreadySelectedAll}
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-            variant="ghost"
-            _hover={{ bg: "none" }}
-            _active={{ bg: "none" }}
-            maxH="26px"
-            pl={0}
-            fontWeight="normal"
-            data-testid="account-filter"
-            my="16px"
-          >
-            Filter by Account
-          </MenuButton>
-          <AccountListDisplay
-            accounts={selectableAccounts}
-            onSelect={account => {
-              setSelectedAccounts([...selectedAccounts, account]);
-            }}
-          />
-        </Menu>
-        <Wrap p="8px" width="90%">
+      <Center>
+        <Box alignSelf="flex-start">
+          <Menu>
+            <MenuButton
+              isDisabled={alreadySelectedAll}
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              variant="ghost"
+              _hover={{ bg: "none" }}
+              _active={{ bg: "none" }}
+              maxH="26px"
+              pl={0}
+              fontWeight="normal"
+              data-testid="account-filter"
+              my="16px"
+            >
+              Filter by Account
+            </MenuButton>
+            <AccountListDisplay
+              accounts={selectableAccounts}
+              onSelect={account => {
+                setSelectedAccounts([...selectedAccounts, account]);
+              }}
+            />
+          </Menu>
+        </Box>
+        <Wrap width="100%">
           {selectedAccounts.map(account => (
             <AddressPill
               data-testid="account-pill"
@@ -54,11 +56,10 @@ export const useAccountsFilter = () => {
                   );
                 },
               }}
-              mr="8px"
             />
           ))}
         </Wrap>
-      </Box>
+      </Center>
     ),
   };
 };
