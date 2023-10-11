@@ -61,7 +61,9 @@ describe("OperationSignerSelector", () => {
         </FormProvider>
       );
       expect(screen.getByTestId("signer-selector")).toBeInTheDocument();
-      expect(screen.getByLabelText("signer")).toBeDisabled();
+      expect(screen.getByTestId("address-tile")).toHaveTextContent(
+        mockImplicitAccount(0).address.pkh
+      );
     });
 
     it("allows only owned multisig signers to be chosen", () => {

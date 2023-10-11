@@ -35,8 +35,9 @@ describe("<Form />", () => {
     it("renders a form with a prefilled sender", () => {
       render(fixture({ sender: mockImplicitAccount(0) }));
 
-      expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
-      expect(screen.getByLabelText("From")).toBeDisabled();
+      expect(screen.getByTestId("address-tile")).toHaveTextContent(
+        mockImplicitAccount(0).address.pkh
+      );
     });
 
     it("renders a form with default form values", async () => {
@@ -53,7 +54,6 @@ describe("<Form />", () => {
       await waitFor(() => {
         expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
       });
-      expect(screen.getByLabelText("From")).toBeEnabled();
       expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
       expect(screen.getByLabelText("Amount")).toHaveValue(1);
     });
@@ -71,9 +71,10 @@ describe("<Form />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
+        expect(screen.getByTestId("address-tile")).toHaveTextContent(
+          mockImplicitAccount(0).address.pkh
+        );
       });
-      expect(screen.getByLabelText("From")).toBeDisabled();
       expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
       expect(screen.getByLabelText("Amount")).toHaveValue(1);
     });

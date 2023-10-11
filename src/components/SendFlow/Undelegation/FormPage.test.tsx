@@ -32,10 +32,10 @@ describe("<Form />", () => {
       render(fixture({ sender: mockImplicitAccount(0) }));
 
       await waitFor(() => {
-        expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
+        expect(screen.getByTestId("address-tile")).toHaveTextContent(
+          mockImplicitAccount(0).address.pkh
+        );
       });
-
-      expect(screen.getByLabelText("From")).toBeDisabled();
     });
 
     it("shows sender baker's tile", async () => {
