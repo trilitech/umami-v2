@@ -23,7 +23,7 @@ export const getRelevantMultisigContracts = async (
     return multisigs
       .filter(({ storage: { signers } }) => {
         // For now, we assume the singer is always an implicit account
-        if (!every(accountPkhs, isValidImplicitPkh)) {
+        if (!every(signers, isValidImplicitPkh)) {
           return false;
         }
         const intersection = signers.filter(s => accountPkhs.has(s));
