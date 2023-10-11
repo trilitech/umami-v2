@@ -34,7 +34,7 @@ const SignPage: React.FC<SignPageProps> = props => {
 
             <OperationSignerSelector
               sender={operations.sender}
-              isDisabled={isLoading}
+              isLoading={isLoading}
               operationType={operations.type}
               reEstimate={reEstimate}
             />

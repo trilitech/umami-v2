@@ -50,9 +50,10 @@ describe("<Form />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
+        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
+          mockImplicitAccount(0).address.pkh
+        );
       });
-      expect(screen.getByLabelText("From")).toBeEnabled();
     });
 
     it("renders a form with default form values but disabled sender if it's provided", async () => {
@@ -67,11 +68,12 @@ describe("<Form />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Baker")).toHaveValue(mockImplicitAccount(1).address.pkh);
+        expect(screen.getByTestId("real-address-input-baker")).toHaveValue(
+          mockImplicitAccount(1).address.pkh
+        );
       });
-      expect(screen.getByLabelText("Baker")).toBeEnabled();
 
-      expect(screen.getByTestId("address-tile")).toHaveTextContent(
+      expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
         mockImplicitAccount(0).address.pkh
       );
     });

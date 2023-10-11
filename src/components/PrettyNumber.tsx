@@ -10,7 +10,11 @@ export const PrettyNumber: React.FC<{ number: string }> = ({ number }) => {
   return (
     <Flex alignItems="end" data-testid="pretty-number">
       <Heading size="md">{integer}</Heading>
-      {decimal && <Heading size="sm">.{decimal}</Heading>}
+      {decimal && (
+        <Heading size="sm" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+          .{decimal}
+        </Heading>
+      )}
     </Flex>
   );
 };

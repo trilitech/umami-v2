@@ -1,4 +1,13 @@
-import { Box, FormLabel, Input, InputGroup, InputRightElement, StyleProps } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  FormLabel,
+  IconProps,
+  Input,
+  InputGroup,
+  InputRightElement,
+  StyleProps,
+} from "@chakra-ui/react";
 import { get } from "lodash";
 import { useId, useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
@@ -22,6 +31,7 @@ import AddressTile from "../AddressTile/AddressTile";
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
 export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   isDisabled?: boolean;
+  isLoading?: boolean;
   inputName: U;
   allowUnknown: boolean;
   label: string;
@@ -33,6 +43,7 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   onUpdate?: (value: string) => void;
   validate?: RegisterOptions<T, U>["validate"];
   style?: StyleProps;
+  size?: "default" | "short";
 };
 
 export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
@@ -44,17 +55,13 @@ export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact
     contact.name.toLowerCase().includes(inputValue.trim().toLowerCase())
   );
 
-  // No suggestions if it's an exact match
-  if (result.length === 1 && result[0].name === inputValue) {
-    return [];
-  }
-
   return result;
 };
 
 export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   contacts,
   isDisabled,
+  isLoading = false,
   allowUnknown,
   inputName,
   onUpdate,
@@ -62,6 +69,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   label,
   keepValid,
   style,
+  size,
 }: BaseProps<T, U> & { contacts: Contact[] }) => {
   const {
     register,
@@ -78,7 +86,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   const inputId = useId();
 
   const [rawValue, setRawValue] = useState(() => {
-    if (!defaultValues) {
+    if (keepValid || !defaultValues) {
       return "";
     }
     const defaultAddress = get(defaultValues, inputName);
@@ -90,6 +98,8 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   const [hideSuggestions, setHideSuggestions] = useState(true);
   const [suggestions, setSuggestions] = useState(getSuggestions("", contacts));
 
+  const currentRealValue = getValues(inputName);
+
   const handleChange = (newValue: string) => {
     setRawValue(newValue);
     setSuggestions(getSuggestions(newValue, contacts));
@@ -97,8 +107,8 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
     const contact = contacts.find(contact => contact.name === newValue || contact.pkh === newValue);
     let newRealValue;
     if (contact !== undefined) {
-      setRawValue(contact.name);
       newRealValue = contact.pkh;
+      setHideSuggestions(true);
     } else if (allowUnknown && isAddressValid(newValue)) {
       newRealValue = newValue;
     } else if (keepValid) {
@@ -113,56 +123,81 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
     }
   };
 
-  if (isDisabled) {
-    return <AddressTile address={parsePkh(getValues(inputName))} />;
+  let state = "raw_input";
+
+  if (isLoading) {
+    state = "selected_tile";
+  } else if (isDisabled) {
+    state = "disabled_tile";
+  } else if (currentRealValue) {
+    state = "selected_tile";
   }
+
+  const clearInput = () => {
+    handleChange("");
+    setHideSuggestions(false);
+  };
 
   return (
     <Box data-testid={`address-autocomplete-${inputName}`}>
       <FormLabel htmlFor={inputId}>{label}</FormLabel>
-      <InputGroup>
-        <Input
-          {...style}
-          id={inputId}
-          aria-label={inputName}
-          value={rawValue}
-          onFocus={() => {
-            setHideSuggestions(false);
-          }}
-          onBlur={e => {
-            e.preventDefault();
-            setHideSuggestions(true);
-            if (keepValid && getValues(inputName) !== e.target.value) {
-              // if the user types something invalid and then blurs, we want to keep the last valid value
-              handleChange(getValues(inputName));
-            } else {
-              handleChange(e.target.value);
-            }
-          }}
-          onChange={e => {
-            handleChange(e.target.value);
-          }}
-          autoComplete="off"
-          placeholder="Enter address or contact name"
-        />
-        <InputRightElement>
-          {rawValue ? (
-            <XMark
-              cursor="pointer"
-              data-testid="clear-input-button"
-              width="12px"
-              height="12px"
-              stroke={colors.gray[450]}
-              onClick={() => {
-                handleChange("");
-                setHideSuggestions(false);
-              }}
+      {state === "disabled_tile" && <AddressTile address={parsePkh(currentRealValue)} />}
+      {state === "selected_tile" && (
+        <Box
+          data-testid={`selected-address-tile-${currentRealValue}`}
+          borderRadius="4px"
+          border="1px solid"
+          borderColor={colors.gray[500]}
+          bg={colors.gray[800]}
+          height="48px"
+          onClick={clearInput}
+          py={0}
+        >
+          <Center
+            justifyContent="space-between"
+            cursor="pointer"
+            data-testid="clear-selected-button"
+          >
+            <AddressTile
+              address={parsePkh(currentRealValue)}
+              width={size === "short" ? "338px" : "365px"}
+              bg="transparent"
+              pt="8px"
             />
-          ) : (
-            <ChevronDownIcon data-testid="chevron-icon" />
-          )}
-        </InputRightElement>
-      </InputGroup>
+            {keepValid ? <ChevronDownIcon mr="12px" data-testid="chevron-icon" /> : <CrossButton />}
+          </Center>
+        </Box>
+      )}
+      {state === "raw_input" && (
+        <InputGroup>
+          <Input
+            {...style}
+            id={inputId}
+            aria-label={inputName}
+            value={rawValue}
+            onFocus={() => setHideSuggestions(false)}
+            onBlur={e => {
+              e.preventDefault();
+              setHideSuggestions(true);
+              if (keepValid && currentRealValue !== e.target.value) {
+                // if the user types something invalid and then blurs, we want to keep the last valid value
+                return handleChange(currentRealValue);
+              }
+              handleChange(e.target.value);
+            }}
+            onChange={e => handleChange(e.target.value)}
+            autoComplete="off"
+            placeholder="Enter address or contact name"
+          />
+          <InputRightElement>
+            {rawValue ? (
+              <CrossButton marginRight="0px" onClick={clearInput} />
+            ) : (
+              <ChevronDownIcon data-testid="chevron-icon" />
+            )}
+          </InputRightElement>
+        </InputGroup>
+      )}
       <Input
         {...register<U>(inputName, { required: "Invalid address or contact name", validate })}
         mb={0}
@@ -175,6 +210,18 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
     </Box>
   );
 };
+
+const CrossButton = (props: IconProps) => (
+  <XMark
+    cursor="pointer"
+    data-testid="clear-input-button"
+    width="12px"
+    height="12px"
+    marginRight="16px"
+    stroke={colors.gray[450]}
+    {...props}
+  />
+);
 
 export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>

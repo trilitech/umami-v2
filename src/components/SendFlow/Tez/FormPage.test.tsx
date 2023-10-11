@@ -28,14 +28,14 @@ describe("<Form />", () => {
 
       expect(screen.getByLabelText("From")).toHaveValue("");
       expect(screen.getByLabelText("From")).toBeEnabled();
-      expect(screen.getByLabelText("To")).toHaveValue("");
+      expect(screen.getByTestId("real-address-input-recipient")).toHaveValue("");
       expect(screen.getByLabelText("Amount")).toHaveValue(null);
     });
 
     it("renders a form with a prefilled sender", () => {
       render(fixture({ sender: mockImplicitAccount(0) }));
 
-      expect(screen.getByTestId("address-tile")).toHaveTextContent(
+      expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
         mockImplicitAccount(0).address.pkh
       );
     });
@@ -52,9 +52,13 @@ describe("<Form />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("From")).toHaveValue(mockImplicitAccount(0).address.pkh);
+        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
+          mockImplicitAccount(0).address.pkh
+        );
       });
-      expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
+        mockImplicitAccount(1).address.pkh
+      );
       expect(screen.getByLabelText("Amount")).toHaveValue(1);
     });
 
@@ -71,11 +75,13 @@ describe("<Form />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByTestId("address-tile")).toHaveTextContent(
+        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
           mockImplicitAccount(0).address.pkh
         );
       });
-      expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
+        mockImplicitAccount(1).address.pkh
+      );
       expect(screen.getByLabelText("Amount")).toHaveValue(1);
     });
 
@@ -91,9 +97,10 @@ describe("<Form />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("To")).toHaveValue(mockImplicitAccount(1).address.pkh);
+        expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
+          mockImplicitAccount(1).address.pkh
+        );
       });
-      expect(screen.getByLabelText("To")).toBeEnabled();
     });
   });
 

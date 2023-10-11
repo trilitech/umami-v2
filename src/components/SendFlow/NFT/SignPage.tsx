@@ -73,7 +73,7 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
 
             <OperationSignerSelector
               sender={operations.sender}
-              isDisabled={isLoading}
+              isLoading={isLoading}
               operationType={operations.type}
               reEstimate={reEstimate}
             />

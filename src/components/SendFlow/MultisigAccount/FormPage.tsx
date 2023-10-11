@@ -117,7 +117,8 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             {signersArray.fields.map((field, index) => {
               const error = errors.signers && errors.signers[index];
               const label = `${index === 0 ? "Select " : ""}${index + 1} signer`;
-              const inputWidth = signersCount > 1 ? "368px" : "100%";
+              const inputSize = signersCount > 1 ? "short" : "default";
+              const inputWidth = inputSize === "short" ? "368px" : "100%";
               return (
                 <FormControl
                   data-testid={`signer-input-${index}`}
@@ -131,6 +132,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                     style={{ width: inputWidth }}
                     label={label}
                     inputName={`signers.${index}.val` as const}
+                    size={inputSize}
                     validate={signer => {
                       if (!isValidImplicitPkh(signer)) {
                         return "Signer must be valid TZ address";

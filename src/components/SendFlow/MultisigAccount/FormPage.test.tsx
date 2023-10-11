@@ -129,8 +129,12 @@ describe("FormPage", () => {
           expect(screen.getAllByTestId(/^address-autocomplete-signers/)).toHaveLength(2);
         });
 
-        expect(screen.getByLabelText("Select 1 signer")).toHaveValue(mockImplicitAccount(0).label);
-        expect(screen.getByLabelText("2 signer")).toHaveValue(mockImplicitAddress(2).pkh);
+        expect(screen.getByTestId("real-address-input-signers.0.val")).toHaveValue(
+          mockImplicitAccount(0).address.pkh
+        );
+        expect(screen.getByTestId("real-address-input-signers.1.val")).toHaveValue(
+          mockImplicitAddress(2).pkh
+        );
       });
     });
 
@@ -226,9 +230,15 @@ describe("FormPage", () => {
       await waitFor(() => {
         expect(screen.getByText("Review")).toBeEnabled();
       });
-      expect(screen.getByLabelText("Select Owner")).toHaveValue(mockImplicitAccount(0).label);
-      expect(screen.getByLabelText("Select 1 signer")).toHaveValue(mockImplicitAccount(0).label);
-      expect(screen.getByLabelText("2 signer")).toHaveValue(mockImplicitAccount(1).address.pkh);
+      expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
+        mockImplicitAccount(0).address.pkh
+      );
+      expect(screen.getByTestId("real-address-input-signers.0.val")).toHaveValue(
+        mockImplicitAccount(0).address.pkh
+      );
+      expect(screen.getByTestId("real-address-input-signers.1.val")).toHaveValue(
+        mockImplicitAccount(1).address.pkh
+      );
       expect(screen.getByTestId("threshold-input")).toHaveValue(1);
     });
   });
