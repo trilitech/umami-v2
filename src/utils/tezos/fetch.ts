@@ -21,6 +21,7 @@ import Semaphore from "@chriscdn/promise-semaphore";
 import promiseRetry from "promise-retry";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { first, sortBy } from "lodash";
+import { tokensGetTokenBalances } from "@tzkt/sdk-api";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
@@ -78,16 +79,19 @@ export const getAccounts = async (pkhs: string[], network: Network) =>
     )
   ) as any as Promise<TzktAccount[]>;
 
-export const getTokenBalances = async (
-  pkhs: string[],
-  network: Network
-): Promise<RawTokenBalance[]> =>
-  withRateLimit(async () => {
-    const response = await axios.get<RawTokenBalance[]>(
-      `${network.tzktApiUrl}/v1/tokens/balances?account.in=${pkhs.join(",")}&balance.gt=0`
-    );
-    return response.data;
-  });
+export const getTokenBalances = async (pkhs: string[], network: Network) =>
+  withRateLimit(() =>
+    tokensGetTokenBalances(
+      {
+        account: { in: [pkhs.join(",")] },
+        balance: { gt: "0" },
+        limit: 10000,
+      },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    )
+  ) as Promise<RawTokenBalance[]>;
 
 // TODO: remove it when transition to combined operations is done
 export const getTezTransfers = (address: RawPkh, network: Network): Promise<TezTransfer[]> =>
