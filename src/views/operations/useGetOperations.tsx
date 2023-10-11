@@ -16,6 +16,7 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
   const network = useSelectedNetwork();
   const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const [addresses, setAddresses] = useState<RawPkh[]>(initialAddresses);
@@ -54,6 +55,7 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
   // that's needed to make sure we don't trigger the initial fetch twice
   const addressesJoined = addresses.join(",");
 
+  // initial load
   useEffect(() => {
     setOperations([]);
     setHasMore(true);
@@ -67,6 +69,8 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
       setOperations(latestOperations);
       setHasMore(latestOperations.length > 0);
       setUpdatesTrigger(prev => prev + 1);
+    }).finally(() => {
+      setIsFirstLoad(false);
     });
     // handleAsyncAction gets constantly recreated, so we can't add it to the dependency array
     // otherwise, it will trigger the initial fetch infinitely
@@ -91,7 +95,7 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
     });
   };
 
-  return { operations, isLoading, hasMore, loadMore, setAddresses };
+  return { operations, isFirstLoad, isLoading, hasMore, loadMore, setAddresses };
 };
 
 // TODO: Add tests

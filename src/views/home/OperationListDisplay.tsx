@@ -1,9 +1,11 @@
 import React from "react";
-import NestedScroll from "../../components/NestedScroll";
 import { NoOperations } from "../../components/NoItems";
 import { OperationTile } from "../../components/OperationTile";
 import { TzktCombinedOperation } from "../../utils/tezos";
-import { Box, Divider } from "@chakra-ui/react";
+import { Box, Center, Divider, Text } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import RefreshClockIcon from "../../assets/icons/RefreshClock";
+import colors from "../../style/colors";
 
 export const OperationListDisplay: React.FC<{ operations: TzktCombinedOperation[] }> = ({
   operations,
@@ -12,14 +14,24 @@ export const OperationListDisplay: React.FC<{ operations: TzktCombinedOperation[
     return <NoOperations small />;
   }
 
+  const chunk = operations.slice(0, 20);
+
   return (
-    <NestedScroll>
-      {operations.slice(0, 20).map(operation => (
+    <>
+      {chunk.map((operation, i) => (
         <Box key={operation.id} height="90px">
           <OperationTile operation={operation} />
-          <Divider my="20px" />
+          {i < chunk.length - 1 && <Divider my="20px" />}
         </Box>
       ))}
-    </NestedScroll>
+      <Center>
+        <Link to="/operations">
+          <RefreshClockIcon display="inline" />{" "}
+          <Text display="inline" size="sm" color={colors.gray[300]}>
+            View All
+          </Text>
+        </Link>
+      </Center>
+    </>
   );
 };
