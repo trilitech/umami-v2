@@ -1,8 +1,8 @@
 import { Modal } from "@chakra-ui/react";
-import { act, render, screen, waitFor } from "../../mocks/testUtils";
+import { render, screen, waitFor } from "../../mocks/testUtils";
 import store from "../../utils/redux/store";
 import BuyTezForm from "./BuyTezForm";
-import { GHOSTNET, MAINNET } from "../../types/Network";
+import { GHOSTNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { RawPkh } from "../../types/Address";
 import { mockImplicitAccount } from "../../mocks/factories";
@@ -16,17 +16,16 @@ const fixture = (recipient?: RawPkh) => (
 describe("<BuyTezForm />", () => {
   describe("mainnet", () => {
     it("renders with default recipient", async () => {
-      store.dispatch(networksActions.setCurrent(MAINNET));
       render(fixture(mockImplicitAccount(0).address.pkh));
 
-      const result = screen.getByLabelText("Recipient Account");
-      await act(async () => {
-        expect(result).toBeDisabled();
+      await waitFor(() => {
+        expect(screen.getByTestId("address-tile")).toHaveTextContent(
+          mockImplicitAccount(0).address.pkh
+        );
       });
     });
 
     it("renders Buy Tez on mainnet", async () => {
-      store.dispatch(networksActions.setCurrent(MAINNET));
       render(fixture());
 
       await waitFor(() => {

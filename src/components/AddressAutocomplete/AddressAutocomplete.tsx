@@ -3,7 +3,7 @@ import { get } from "lodash";
 import { useId, useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
 import { Account } from "../../types/Account";
-import { isAddressValid } from "../../types/Address";
+import { isAddressValid, parsePkh } from "../../types/Address";
 import { Contact } from "../../types/Contact";
 import {
   useAllAccounts,
@@ -16,6 +16,7 @@ import { Suggestions } from "./Suggestions";
 import XMark from "../../assets/icons/XMark";
 import ChevronDownIcon from "../../assets/icons/ChevronDown";
 import colors from "../../style/colors";
+import AddressTile from "../AddressTile/AddressTile";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
@@ -112,6 +113,10 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
     }
   };
 
+  if (isDisabled) {
+    return <AddressTile address={parsePkh(getValues(inputName))} />;
+  }
+
   return (
     <Box data-testid={`address-autocomplete-${inputName}`}>
       <FormLabel htmlFor={inputId}>{label}</FormLabel>
@@ -119,7 +124,6 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         <Input
           {...style}
           id={inputId}
-          isDisabled={isDisabled}
           aria-label={inputName}
           value={rawValue}
           onFocus={() => {
