@@ -80,14 +80,14 @@ export const AccountTile: React.FC<{
       borderRadius="8px"
       px="21px"
       border={`1px solid ${selected ? colors.orangeL : colors.gray[800]}`}
+      onClick={onClick}
+      cursor="pointer"
     >
       <AccountTileBase
         data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
         p={0}
         mb={0}
         align="bottom"
-        onClick={onClick}
-        cursor="pointer"
         border="none"
         icon={<AccountTileIcon addressKind={addressKind} />}
         leftElement={<LabelAndAddress pkh={address} label={addressKind.label} />}
