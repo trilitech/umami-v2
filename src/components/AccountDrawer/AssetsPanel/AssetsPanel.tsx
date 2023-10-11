@@ -26,7 +26,7 @@ export const AssetsPanel: React.FC<{
 }> = ({ tokens, nfts, account, delegation }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
   const network = useSelectedNetwork();
-  const { operations, isLoading } = useGetOperations([account.address.pkh]);
+  const { operations, isFirstLoad: areOperationsLoading } = useGetOperations([account.address.pkh]);
 
   return (
     <Tabs
@@ -65,7 +65,7 @@ export const AssetsPanel: React.FC<{
           <OperationTileContext.Provider
             value={{ mode: "drawer", selectedAddress: account.address }}
           >
-            {isLoading ? (
+            {areOperationsLoading ? (
               <Text textAlign="center" color={colors.gray[500]}>
                 Loading...
               </Text>
