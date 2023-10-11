@@ -36,7 +36,7 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
                 {addressKind.label}
               </Heading>
             </Box>
-            <Text color={colors.gray[300]} size="xs" ml="10px" width="88px">
+            <Text color={colors.gray[300]} size="xs" ml="10px" width="89px">
               {formatPkh(addressKind.pkh)}
             </Text>
           </>
