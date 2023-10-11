@@ -30,6 +30,8 @@ export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
         <Flex justifyContent="center">
           <Text color="text.dark" size="sm" textAlign="center" width="340px">
             You can follow this operation's progress in the Operations section.
+            <br />
+            It may take up to 30 seconds to appear.
           </Text>
         </Flex>
       </ModalHeader>
