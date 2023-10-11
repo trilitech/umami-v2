@@ -1,6 +1,6 @@
 import { AccountType, MultisigAccount } from "../../types/Account";
-import { compact } from "lodash";
-import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
+import { compact, every } from "lodash";
+import { isValidImplicitPkh, parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
 import { Multisig, MultisigOperation } from "./types";
@@ -10,7 +10,6 @@ import { withRateLimit } from "../tezos";
 export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
   address: parseContractPkh(raw.address),
   threshold: Number(raw.storage.threshold),
-  // For now, we assume the singer is always an implicit account
   signers: raw.storage.signers.map(parseImplicitPkh),
   pendingOperationsBigmapId: raw.storage.pending_ops,
 });
@@ -19,16 +18,19 @@ export const getRelevantMultisigContracts = async (
   accountPkhs: Set<string>,
   network: Network
 ): Promise<Multisig[]> =>
-  withRateLimit(() =>
-    getAllMultiSigContracts(network).then(multisigs =>
-      multisigs
-        .filter(({ storage: { signers } }) => {
-          const intersection = signers.filter(s => accountPkhs.has(s));
-          return intersection.length > 0;
-        })
-        .map(parseMultisig)
-    )
-  );
+  withRateLimit(async () => {
+    const multisigs = await getAllMultiSigContracts(network);
+    return multisigs
+      .filter(({ storage: { signers } }) => {
+        // For now, we assume the singer is always an implicit account
+        if (!every(accountPkhs, isValidImplicitPkh)) {
+          return false;
+        }
+        const intersection = signers.filter(s => accountPkhs.has(s));
+        return intersection.length > 0;
+      })
+      .map(parseMultisig);
+  });
 
 const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperation => {
   const { bigmap, key, value } = raw;
