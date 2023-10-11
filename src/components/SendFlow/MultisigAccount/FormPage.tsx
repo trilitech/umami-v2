@@ -170,6 +170,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             })}
             <Button
               bg="transparent"
+              variant="ghost"
               color={colors.greenL}
               onClick={() => signersArray.append({ val: "" })}
             >
