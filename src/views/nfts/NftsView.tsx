@@ -67,12 +67,11 @@ const NFTsViewBase = () => {
             blockScrollOnMount={!isDynamicModalOpen}
             placement="right"
             onClose={openNFTsPage}
-            size="md"
             isOpen={!!drawerNFT}
             autoFocus={false}
           >
             <DrawerOverlay />
-            <DrawerContent maxW="594px" bg={colors.gray[900]}>
+            <DrawerContent>
               <DrawerBody>
                 {drawerNFT && (
                   <>
@@ -80,7 +79,7 @@ const NFTsViewBase = () => {
                       justifyContent="space-between"
                       color={colors.gray[400]}
                       cursor="pointer"
-                      p={4}
+                      paddingBottom="30px"
                     >
                       <AddressPill address={parsePkh(ownerPkh)} />
                       <IconAndTextBtn onClick={openNFTsPage} label="Close" icon={BsArrowBarRight} />

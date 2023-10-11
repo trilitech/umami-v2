@@ -27,12 +27,11 @@ export const BeaconDrawerCard = () => {
         isOpen={isOpen}
         placement="right"
         onClose={closeDrawer}
-        size="md"
       >
         <DrawerOverlay />
-        <DrawerContent maxW="594px" bg="umami.gray.900">
-          <DrawerTopButtons onClose={closeDrawer} />
+        <DrawerContent>
           <DrawerBody>
+            <DrawerTopButtons onClose={closeDrawer} />
             <BeaconDrawerBody />
           </DrawerBody>
         </DrawerContent>

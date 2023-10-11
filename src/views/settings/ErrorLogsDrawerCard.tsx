@@ -36,12 +36,11 @@ const ErrorLogsDrawerCard = () => {
         isOpen={isOpen}
         placement="right"
         onClose={handleClose}
-        size="md"
       >
         <DrawerOverlay />
-        <DrawerContent maxW="594px" bg="umami.gray.900">
-          <DrawerTopButtons onClose={handleClose} />
+        <DrawerContent>
           <DrawerBody>
+            <DrawerTopButtons onClose={handleClose} />
             <ErrorLogsDrawerBody />
           </DrawerBody>
         </DrawerContent>
