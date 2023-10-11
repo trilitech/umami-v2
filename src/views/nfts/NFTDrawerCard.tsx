@@ -4,7 +4,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  AspectRatio,
   Box,
   Button,
   Card,
@@ -23,15 +22,20 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { useContext } from "react";
 import SendNFTForm from "../../components/SendFlow/NFT/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
-import { artifactUri } from "../../types/Token";
+import { artifactUri, mimeType } from "../../types/Token";
 import JsValueWrap from "../../components/AccountDrawer/JsValueWrap";
 import colors from "../../style/colors";
+import { tokenName } from "../../types/Token";
+import ReactPlayer from "react-player";
 
 const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
   const url = getIPFSurl(artifactUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const getAccount = useGetOwnedAccount();
   const { openWith } = useContext(DynamicModalContext);
+  const isVideo = mimeType(nft)?.startsWith("video/");
+
+  const name = tokenName(nft);
 
   const accordionItemStyle = {
     border: "none",
@@ -40,11 +44,23 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
   };
   return (
     <Box>
-      <Card bg="umami.gray.800">
-        <CardBody>
-          <AspectRatio width="100%" ratio={1}>
-            <Image data-testid="nft-image" width="100%" src={url} fallbackSrc={fallbackUrl} />
-          </AspectRatio>
+      <Card bg={colors.gray[800]} height="534px" width="534px">
+        <CardBody p="24px">
+          <Box height="486px" width="486px">
+            {isVideo ? (
+              <ReactPlayer url={url} playing loop height="100%" width="100%" />
+            ) : (
+              <Image
+                data-testid="nft-image"
+                objectFit="contain"
+                height="486px"
+                width="486px"
+                alt={name}
+                src={url}
+                fallbackSrc={fallbackUrl}
+              />
+            )}
+          </Box>
           {Number(nft.balance) > 1 && (
             <Text
               data-testid="nft-owned-count"
@@ -54,8 +70,8 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
               backgroundColor="rgba(33, 33, 33, 0.75)"
               display="inline"
               position="absolute"
-              marginTop="-40px"
-              marginLeft="10px"
+              marginTop="-38px"
+              marginLeft="16px"
             >
               {"x" + nft.balance}
             </Text>
@@ -65,9 +81,9 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
 
       <TagsSection nft={nft} />
 
-      {nft.metadata.name && (
+      {name && (
         <Heading data-testid="nft-name" mt={4} size="lg">
-          {nft.metadata.name}
+          {name}
         </Heading>
       )}
 

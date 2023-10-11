@@ -132,6 +132,7 @@
     "react-native-safe-area-context": "3.4.1",
     "react-native-svg": "12.5.1",
     "react-native-web": "0.17.7",
+    "react-player": "^2.13.0",
     "react-qrcode-logo": "^2.9.0",
     "react-query": "^3.39.3",
     "react-redux": "8.0.5",

@@ -1,4 +1,4 @@
-import { AspectRatio, Image, Card, CardBody, Heading, Text, Box } from "@chakra-ui/react";
+import { Image, Card, CardBody, Heading, Text, Box } from "@chakra-ui/react";
 import { NFTBalance } from "../../types/TokenBalance";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { fullId, thumbnailUri } from "../../types/Token";
@@ -23,23 +23,28 @@ const NFTCard: React.FC<{
     <Card
       cursor="pointer"
       data-testid="nft-card"
-      minWidth="275"
-      maxWidth="275"
-      height="340"
       borderRadius="8px"
       onClick={onClick}
+      width="274px"
     >
       <CardBody
+        borderRadius="8px"
         bg={colors.gray[900]}
         border="1px solid"
         borderColor={isSelected ? colors.orangeL : "transparent"}
         _hover={{ bg: colors.gray[700], borderColor: `${colors.gray[500]}` }}
-        borderRadius="8px"
         p="16px"
       >
-        <AspectRatio width="100%" ratio={1}>
-          <Image data-testid="nft-image" width="100%" src={url} fallbackSrc={fallbackUrl} />
-        </AspectRatio>
+        <Box>
+          <Image
+            data-testid="nft-image"
+            objectFit="contain"
+            width="242px"
+            height="242px"
+            src={url}
+            fallbackSrc={fallbackUrl}
+          />
+        </Box>
         {/* TODO: make a separate component to be shared between this and the drawer NFT card */}
         {Number(nft.balance) > 1 && (
           <Text
@@ -51,7 +56,7 @@ const NFTCard: React.FC<{
             backgroundColor="rgba(33, 33, 33, 0.75)"
             display="inline"
             position="absolute"
-            marginTop="-40px"
+            marginTop="-36px"
             marginLeft="10px"
             fontSize="14px"
           >

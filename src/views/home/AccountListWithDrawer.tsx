@@ -6,7 +6,6 @@ import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
 import { useDynamicModal } from "../../components/DynamicModal";
-import colors from "../../style/colors";
 
 const AccountListWithDrawer: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
@@ -41,13 +40,14 @@ const AccountListWithDrawer: React.FC = () => {
         isOpen={isOpen}
         placement="right"
         onClose={closeDrawer}
-        size="md"
         autoFocus={false}
       >
         <DrawerOverlay />
-        <DrawerContent maxW="594px" bg={colors.gray[900]}>
-          <DrawerTopButtons onClose={closeDrawer} />
-          <DrawerBody>{account && <AccountCard account={account} />}</DrawerBody>
+        <DrawerContent>
+          <DrawerBody>
+            <DrawerTopButtons onClose={closeDrawer} />
+            {account && <AccountCard account={account} />}
+          </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>

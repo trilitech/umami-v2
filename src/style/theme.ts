@@ -4,6 +4,7 @@ import { tabsTheme } from "./theme/tabs";
 import { modalTheme } from "./theme/modal";
 import { buttonTheme } from "./theme/button";
 import { checkboxTheme } from "./theme/checkbox";
+import { drawerTheme } from "./theme/drawer";
 
 const config = {
   initialColorMode: "dark",
@@ -92,6 +93,7 @@ const theme = extendTheme({
       sizes,
     },
     Modal: modalTheme,
+    Drawer: drawerTheme,
   },
   config,
   colors: {
