@@ -17,10 +17,13 @@ export const NetworkSelector = () => {
   };
 
   return (
-    <Box width={120}>
+    <Box width="105px">
       <Select
         data-testid="network-selector"
         border="1px solid transparent"
+        p={0}
+        size="xs"
+        fontSize="14px"
         fontWeight={600}
         color={colors.green}
         value={currentNetwork.name}

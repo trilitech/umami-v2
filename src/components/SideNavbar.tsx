@@ -1,49 +1,53 @@
-import { Box, Divider, Flex, FlexProps, Icon, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, FlexProps, Text } from "@chakra-ui/react";
 import React from "react";
-import { IconType } from "react-icons/lib";
-import {
-  MdCalendarViewMonth,
-  MdHistory,
-  MdMoney,
-  MdOutlineContacts,
-  MdOutlineDiamond,
-  MdOutlineSettings,
-  MdSupport,
-  MdViewCompact,
-} from "react-icons/md";
-import { Link } from "react-router-dom";
+
+import { Link, useLocation } from "react-router-dom";
 import colors from "../style/colors";
 import { useTotalBalance } from "../utils/hooks/assetsHooks";
 import { MakiLogo } from "./MakiLogo";
 import NetworkSelector from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
 import { AppVersion } from "./AppVersion";
+import CoinIcon from "../assets/icons/Coin";
+import AccountsIcon from "../assets/icons/Accounts";
+import DiamondIcon from "../assets/icons/Diamond";
+import RefreshClockIcon from "../assets/icons/RefreshClock";
+import BatchIcon from "../assets/icons/Batch";
+import AddressBookIcon from "../assets/icons/AddressBook";
+import GearIcon from "../assets/icons/Gear";
+import HelpIcon from "../assets/icons/Help";
 
 const MenuItem: React.FC<
   {
     label: string;
-    icon: IconType;
+    icon: JSX.Element;
     to: string;
   } & FlexProps
 > = ({ icon, label, to, ...flexProps }) => {
+  const currentLocation = useLocation();
+  // TODO: check if there are named routes in react-router-dom
+  const isSelected = currentLocation.pathname.includes(to);
+
   return (
     <Link to={to}>
       <Flex
+        bg={isSelected ? colors.gray[600] : "transparent"}
         _hover={{
-          background: colors.gray[800],
+          background: isSelected ? colors.gray[600] : colors.gray[800],
         }}
-        pb={2}
-        pt={2}
-        mb={2}
-        mt={2}
+        p="10px"
+        mb="8px"
         justifyContent="flex-start"
         alignItems="center"
-        border={40}
+        borderRadius="4px"
         cursor="pointer"
+        width="176px"
         {...flexProps}
       >
-        <Icon w={6} h={6} ml={2} mr={4} as={icon} />
-        <Text size="sm">{label}</Text>
+        {icon}
+        <Text size="sm" ml="10px">
+          {label}
+        </Text>
       </Flex>
     </Link>
   );
@@ -53,8 +57,10 @@ const TotalBalance = () => {
   const balance = useTotalBalance();
 
   return (
-    <Box mt={4} mb={12} height="80px">
-      <Text size="sm">Balance</Text>
+    <Box mt="24px" mb="100px">
+      <Text size="sm" mb="4px">
+        Balance
+      </Text>
       {balance !== null && <TezRecapDisplay balance={balance.mutez} dollarBalance={balance.usd} />}
     </Box>
   );
@@ -62,32 +68,36 @@ const TotalBalance = () => {
 
 export const SideNavbar = () => {
   return (
-    <Flex flexDirection="column" bg={colors.gray[900]} w="240px" pl={4} pr={4}>
+    <Flex flexDirection="column" bg={colors.gray[900]} w="236px" p="20px 30px 30px 30px">
       <Box>
-        <Flex height={24} justifyContent="space-between" alignItems="center">
-          <MakiLogo size={50} />
+        <Flex height="30px" justifyContent="space-between" alignItems="center">
+          <MakiLogo size={38} />
           <NetworkSelector />
         </Flex>
-        <Divider />
+        <Divider mt="30px" />
       </Box>
       <Flex flexDirection="column" justifyContent="space-between" flex={1}>
         <Box>
           <TotalBalance />
           <Box>
-            <MenuItem label="Accounts" to="/home" icon={MdViewCompact} />
-            <MenuItem label="NFTs" to="/nfts" icon={MdOutlineDiamond} />
-            <MenuItem label="Operations" to="/operations" icon={MdHistory} />
-            <MenuItem label="Tokens" to="/tokens" icon={MdMoney} />
-            <MenuItem label="Batch" to="/batch" icon={MdCalendarViewMonth} />
+            <MenuItem label="Accounts" to="/home" icon={<AccountsIcon />} />
+            <MenuItem label="NFTs" to="/nfts" icon={<DiamondIcon />} />
+            <MenuItem
+              label="Operations"
+              to="/operations"
+              icon={<RefreshClockIcon w="24px" h="24px" />}
+            />
+            <MenuItem label="Tokens" to="/tokens" icon={<CoinIcon />} />
+            <MenuItem label="Batch" to="/batch" icon={<BatchIcon />} />
           </Box>
         </Box>
         <Box>
           <Divider />
-          <MenuItem label="Address Book" to="/address-book" icon={MdOutlineContacts} />
+          <MenuItem mt="22px" label="Address Book" to="/address-book" icon={<AddressBookIcon />} />
 
-          <MenuItem label="Settings" to="/settings" icon={MdOutlineSettings} />
-          <MenuItem label="Help" to="/help" icon={MdSupport} mb="24px" pb={0} />
-          <AppVersion mb="24px" />
+          <MenuItem label="Settings" to="/settings" icon={<GearIcon />} />
+          <MenuItem label="Help" to="/help" icon={<HelpIcon />} />
+          <AppVersion mt="24px" />
         </Box>
       </Flex>
     </Flex>

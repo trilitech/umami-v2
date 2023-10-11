@@ -75,7 +75,7 @@ const AccountTokensTile: React.FC<{
               <Th>Token</Th>
               <Th>Contract:</Th>
               <Th>Balance:</Th>
-              <Th>Value in ꜩ:</Th>
+              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -104,7 +104,7 @@ const AccountTokensTile: React.FC<{
                     <Flex alignItems="center" justifyContent="space-between" paddingX={3}>
                       {/* TODO: fetch token values  */}
                       {/* https://app.asana.com/0/1204165186238194/1204627608626297/f */}
-                      <Text>≈ 1.0 ꜩ</Text>
+                      <Text></Text>
                       <IconAndTextBtn
                         icon={MdArrowOutward}
                         label="Send"
