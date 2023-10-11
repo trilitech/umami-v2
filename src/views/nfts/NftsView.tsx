@@ -54,7 +54,7 @@ const NFTsViewBase = () => {
         <NoNFTs />
       ) : (
         <>
-          <Box overflow="scroll">
+          <Box overflowY="scroll">
             <NFTGallery
               onSelect={(owner, nft) => {
                 navigate(`/nfts/${owner}/${fullId(nft)}`);
