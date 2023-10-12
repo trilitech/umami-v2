@@ -47,8 +47,8 @@ const UpdateButton = () => {
         </Text>
       )}
       <IconButton
-        ml={2}
-        mr={8}
+        ml="8px"
+        mr="36px"
         aria-label="refetch"
         icon={<FetchingIcon />}
         onClick={onClick}

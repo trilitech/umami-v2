@@ -35,7 +35,12 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => v
         </Text>
       </Td>
       <Td>
-        <IconButton onClick={onRemove} aria-label="Remove Peer" icon={<Trash />} />
+        <IconButton
+          onClick={onRemove}
+          aria-label="Remove Peer"
+          variant="tertiary"
+          icon={<Trash />}
+        />
       </Td>
     </Tr>
   );
