@@ -27,7 +27,7 @@ import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import BakerIcon from "../../assets/icons/Baker";
 import IncomingArrow from "../../assets/icons/IncomingArrow";
 import OutgoingArrow from "../../assets/icons/OutgoingArrow";
-import Contract from "../../assets/icons/Contract";
+import ContractIcon from "../../assets/icons/Contract";
 import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
 import { Timestamp } from "./Timestamp";
@@ -219,7 +219,7 @@ const ContractCallTile: React.FC<{
     <Flex direction="column" data-testid="operation-tile" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
-          <Contract mr="8px" />
+          <ContractIcon mr="8px" />
           <TzktLink operation={operation} mr="8px">
             <Heading size="sm">Contract Call: {operation.parameter?.entrypoint}</Heading>
           </TzktLink>
@@ -323,7 +323,7 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
     <Flex direction="column" data-testid="operation-tile" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
-          <Contract mr="8px" />
+          <ContractIcon mr="8px" />
           <TzktLink operation={operation} mr="8px">
             <Heading size="sm">{contractTitle}</Heading>
           </TzktLink>

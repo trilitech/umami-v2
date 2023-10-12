@@ -97,7 +97,7 @@ export const SideNavbar = () => {
 
           <MenuItem label="Settings" to="/settings" icon={<GearIcon />} />
           <MenuItem label="Help" to="/help" icon={<HelpIcon />} />
-          <AppVersion mt="24px" />
+          <AppVersion mt="24px" fontSize="14px" />
         </Box>
       </Flex>
     </Flex>

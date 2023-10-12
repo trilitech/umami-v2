@@ -1,37 +1,14 @@
 import { Box, Center } from "@chakra-ui/react";
 import colors from "../style/colors";
-import { diamontIcon, documentIcon, usbIcon, walletIcon } from "./Icons";
-
-const iconMap = {
-  diamont: diamontIcon,
-  document: documentIcon,
-  wallet: walletIcon,
-  usb: usbIcon,
-};
-
-export enum SupportedIcons {
-  diamont = "diamont",
-  document = "document",
-  wallet = "wallet",
-  usb = "usb",
-}
 
 type Props = {
-  icon: SupportedIcons;
+  icon: JSX.Element;
   size?: string;
-  iconSize?: number | string;
   color?: string;
   onClick?: () => void;
 };
 
-export const CircleIcon = ({
-  icon,
-  size,
-  iconSize = "18px",
-  color = colors.gray[400],
-  onClick = () => {},
-}: Props) => {
-  const CompName = iconMap[icon];
+export const CircleIcon = ({ icon, size, onClick = () => {} }: Props) => {
   return (
     <Box
       height={size}
@@ -41,9 +18,7 @@ export const CircleIcon = ({
       margin="auto"
       onClick={onClick}
     >
-      <Center h="100%">
-        <CompName width={iconSize} height={iconSize} {...{ color }} />
-      </Center>
+      <Center h="100%">{icon}</Center>
     </Box>
   );
 };

@@ -1,12 +1,12 @@
 import { Button, VStack } from "@chakra-ui/react";
-import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
+import LinkIcon from "../../../assets/icons/Link";
 
 const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   return (
-    <ModalContentWrapper icon={SupportedIcons.wallet} title="Connect Options">
-      <VStack w="100%" spacing={4}>
+    <ModalContentWrapper icon={<LinkIcon />} title="Connect or Import Account">
+      <VStack w="100%" spacing="16px">
         <Button w="100%" size="lg" onClick={_ => goToStep({ type: StepType.restoreMnemonic })}>
           Import with Seed Phrase
         </Button>

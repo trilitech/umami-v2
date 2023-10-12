@@ -1,9 +1,9 @@
 import { Button, FormControl, Heading } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { SupportedIcons } from "../../../CircleIcon";
 import ModalContentWrapper from "../../ModalContentWrapper";
 import { FormErrorMessage } from "../../../FormErrorMessage";
 import PasswordInput from "../../../PasswordInput";
+import LockIcon from "../../../../assets/icons/Lock";
 
 const EnterPassword = ({
   onSubmit: onSubmitPassword,
@@ -29,7 +29,7 @@ const EnterPassword = ({
 
   return (
     <ModalContentWrapper
-      icon={SupportedIcons.diamont}
+      icon={<LockIcon />}
       title="Umami Master Password"
       subtitle="Enter your master password for Umami."
     >

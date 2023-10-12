@@ -1,22 +1,17 @@
 import { Checkbox, Button, Link } from "@chakra-ui/react";
 import React from "react";
-import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
+import DocumentIcon from "../../../assets/icons/Document";
 
 const Eula: React.FC<{
   goToStep: (step: Step) => void;
 }> = ({ goToStep }) => {
   const [isChecked, setIsChecked] = React.useState(false);
   return (
-    <ModalContentWrapper icon={SupportedIcons.document} title="Accept to Continue">
+    <ModalContentWrapper icon={<DocumentIcon />} title="Accept to Continue">
       <>
-        <Checkbox
-          onChange={e => setIsChecked(e.target.checked)}
-          pt="20px"
-          pb="24px"
-          fontWeight="600"
-        >
+        <Checkbox onChange={e => setIsChecked(e.target.checked)} pb="24px" fontWeight="600">
           I confirm that I have read and agreed with the{" "}
           <Link
             textDecoration="underline"

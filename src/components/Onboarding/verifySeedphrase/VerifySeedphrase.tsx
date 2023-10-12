@@ -1,11 +1,11 @@
 import { Input, Box, Button, FormControl, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { useState } from "react";
-import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { useForm } from "react-hook-form";
 import { Step, StepType, VerifySeedphraseStep } from "../useOnboardingModal";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import DoubleCheckmarkIcon from "../../../assets/icons/DoubleCheckmark";
 
 const VerifySeedphrase = ({
   goToStep,
@@ -28,7 +28,7 @@ const VerifySeedphrase = ({
   };
   return (
     <ModalContentWrapper
-      icon={SupportedIcons.wallet}
+      icon={<DoubleCheckmarkIcon />}
       title="Verify Seed Phrase"
       subtitle="To verify, please type in the word that corresponds to each sequence number."
     >

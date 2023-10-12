@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const Contract: React.FC<IconProps> = props => {
+const ContractIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -22,4 +22,4 @@ const Contract: React.FC<IconProps> = props => {
   );
 };
 
-export default Contract;
+export default ContractIcon;

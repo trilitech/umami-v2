@@ -30,7 +30,7 @@ import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
 import colors from "../../style/colors";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
-import WalletPlusIcon from "../../assets/icons/WalletPlus";
+import AddAccountIcon from "../../assets/icons/AddAccount";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -41,7 +41,7 @@ export const AccountListHeader = () => {
         onClick={onOpen}
         label="Add Account"
         color={colors.gray[300]}
-        icon={WalletPlusIcon}
+        icon={AddAccountIcon}
         iconWidth="18px"
         iconHeight="18px"
         textMargin="4px"

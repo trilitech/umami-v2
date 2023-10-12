@@ -1,6 +1,5 @@
 import { VStack, Text, Input, Box, Button, GridItem, Grid, Select } from "@chakra-ui/react";
 import { useState } from "react";
-import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { FieldValues, useForm } from "react-hook-form";
 import { WarningIcon } from "@chakra-ui/icons";
@@ -9,6 +8,8 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { range } from "lodash";
 import { validateMnemonic } from "bip39";
+import KeyIcon from "../../../assets/icons/Key";
+import colors from "../../../style/colors";
 
 const mnemonicSizes = [12, 15, 18, 24];
 
@@ -74,7 +75,7 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
     );
   return (
     <ModalContentWrapper
-      icon={SupportedIcons.wallet}
+      icon={<KeyIcon stroke={colors.gray[450]} width="24px" height="24px" />}
       title="Import Seed Phrase"
       subtitle="Please fill in the Seed Phrase in sequence."
     >

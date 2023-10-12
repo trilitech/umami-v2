@@ -2,11 +2,11 @@
 import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { RpcClient } from "@taquito/rpc";
-import { SupportedIcons } from "../CircleIcon";
 import ModalContentWrapper from "./ModalContentWrapper";
 import { useRestoreLedger } from "../../utils/hooks/accountHooks";
 import { defaultDerivationPathPattern } from "../../utils/account/derivationPathUtils";
 import { MAINNET } from "../../types/Network";
+import WalletPlusIcon from "../../assets/icons/WalletPlus";
 
 export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const {
@@ -24,7 +24,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
     onClose();
   };
   return (
-    <ModalContentWrapper icon={SupportedIcons.wallet} title="Add a Fake Account">
+    <ModalContentWrapper icon={<WalletPlusIcon />} title="Add a Fake Account">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Text>It will be restored as a ledger account</Text>
         <FormControl isInvalid={!!errors.pkh}>

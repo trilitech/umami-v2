@@ -1,8 +1,8 @@
 import { Box, Button, SimpleGrid, VStack } from "@chakra-ui/react";
-import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { ShowSeedphraseStep, Step, StepType } from "../useOnboardingModal";
 import colors from "../../../style/colors";
+import KeyIcon from "../../../assets/icons/Key";
 
 export const ShowSeedphrase = ({
   goToStep,
@@ -13,7 +13,7 @@ export const ShowSeedphrase = ({
 }) => {
   return (
     <ModalContentWrapper
-      icon={SupportedIcons.diamont}
+      icon={<KeyIcon stroke={colors.gray[450]} width="24px" height="24px" />}
       title="Record Seed Phrase"
       subtitle="Please record the following 24 words in sequence in order to restore it in the future."
     >

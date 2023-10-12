@@ -1,7 +1,7 @@
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
+import EditAccountIcon from "../../../assets/icons/EditAccount";
 
 const DEFAULT_TITLE = "Name Your Account";
 
@@ -18,7 +18,7 @@ const NameAccountDisplay = ({
     accountName: string;
   }>({ mode: "onChange" });
   return (
-    <ModalContentWrapper icon={SupportedIcons.diamont} title={title} subtitle={subtitle}>
+    <ModalContentWrapper icon={<EditAccountIcon />} title={title} subtitle={subtitle}>
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
         <FormControl>
           <FormLabel>Account name</FormLabel>
