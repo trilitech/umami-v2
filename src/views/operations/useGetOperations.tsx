@@ -8,6 +8,7 @@ import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { Network } from "../../types/Network";
 import { AppDispatch } from "../../utils/redux/store";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { uniqBy } from "lodash";
 
 const REFRESH_INTERVAL = 15000;
 
@@ -39,7 +40,11 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
         );
 
         // reverse is needed because we fetch the operations in the opposite order
-        setOperations(currentOperations => [...newOperations.reverse(), ...currentOperations]);
+        // there is a chance that we get the same operation twice when
+        // latest fetching updates so, we need to deduplicate records
+        setOperations(currentOperations =>
+          uniqBy([...newOperations.reverse(), ...currentOperations], op => op.id)
+        );
       });
     }, REFRESH_INTERVAL);
     return () => clearInterval(interval);
