@@ -1,11 +1,11 @@
 import { Button, VStack, ListItem, OrderedList, useToast } from "@chakra-ui/react";
 import { RestoreLedgerStep } from "../useOnboardingModal";
-import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { getPk } from "../../../utils/ledger/pk";
 import { useRestoreLedger } from "../../../utils/hooks/accountHooks";
 import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import USBIcon from "../../../assets/icons/USB";
 
 const RestoreLedger = ({
   closeModal,
@@ -70,7 +70,7 @@ const RestoreLedger = ({
 
   return (
     <ModalContentWrapper
-      icon={SupportedIcons.usb}
+      icon={<USBIcon />}
       title="Connect Ledger"
       subtitle="Complete the steps to connect."
     >

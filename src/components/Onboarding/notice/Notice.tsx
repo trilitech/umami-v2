@@ -1,9 +1,9 @@
 import { VStack, Button, ListItem, OrderedList } from "@chakra-ui/react";
 import React from "react";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
-import { SupportedIcons } from "../../CircleIcon";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
+import NoticeIcon from "../../../assets/icons/Notice";
 
 const Notice: React.FC<{
   goToStep: (step: Step) => void;
@@ -24,11 +24,11 @@ const Notice: React.FC<{
   ];
   return (
     <ModalContentWrapper
-      icon={SupportedIcons.document}
+      icon={<NoticeIcon />}
       title="Important Notice"
       subtitle="Please read the following before you continue to see your secret Seed Phrase."
     >
-      <VStack spacing="24px" overflowX="hidden" overflowY="auto" p="4px">
+      <VStack spacing="16px" overflowX="hidden" overflowY="auto" p="4px">
         <OrderedList spacing={4}>
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;

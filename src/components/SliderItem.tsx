@@ -1,7 +1,8 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { CircleIcon, SupportedIcons } from "./CircleIcon";
+import { CircleIcon } from "./CircleIcon";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { SlideritemRecord } from "../graphql/generated";
+import DiamondIcon from "../assets/icons/Diamond";
 
 export default function SlideItem({ item }: { item: SlideritemRecord }) {
   return (
@@ -15,7 +16,7 @@ export default function SlideItem({ item }: { item: SlideritemRecord }) {
         height="400px"
       ></Box>
       <Flex flexDirection="column">
-        <CircleIcon size="58px" iconSize="24px" icon={item.icon as SupportedIcons} />
+        <CircleIcon size="58px" icon={<DiamondIcon width="32px" height="32px" />} />
         <Heading margin="16px 50px 50px 50px">{item.text}</Heading>
       </Flex>
     </Box>

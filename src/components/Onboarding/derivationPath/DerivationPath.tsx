@@ -1,7 +1,6 @@
 import { Button, Center, FormControl, Text, Switch, Input, HStack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import ModalContentWrapper from "../ModalContentWrapper";
-import { SupportedIcons } from "../../CircleIcon";
 import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 import { useState } from "react";
 import {
@@ -9,6 +8,7 @@ import {
   validDerivationPathRegex,
 } from "../../../utils/account/derivationPathUtils";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import SlashIcon from "../../../assets/icons/Slash";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
@@ -45,7 +45,7 @@ export const DerivationPath = ({
 
   return (
     <ModalContentWrapper
-      icon={SupportedIcons.diamont}
+      icon={<SlashIcon />}
       title="Derivation Path"
       subtitle="Choose a custom derivation path or select the default derivation path and use the default key."
     >
