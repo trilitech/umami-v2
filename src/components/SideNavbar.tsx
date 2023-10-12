@@ -74,7 +74,7 @@ export const SideNavbar = () => {
           <MakiLogo size={38} />
           <NetworkSelector />
         </Flex>
-        <Divider mt="30px" />
+        <Divider mt="38px" />
       </Box>
       <Flex flexDirection="column" justifyContent="space-between" flex={1}>
         <Box>
