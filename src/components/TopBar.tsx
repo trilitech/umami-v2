@@ -64,7 +64,7 @@ export const TopBar: React.FC<{ title: string }> = ({ title }) => {
   const { openWith } = useContext(DynamicModalContext);
   return (
     <Box>
-      <Flex h={24} justifyContent="space-between" alignItems="center">
+      <Flex h="88px" justifyContent="space-between" alignItems="center">
         <Heading size="xl">{title}</Heading>
         <Box>
           <UpdateButton />
