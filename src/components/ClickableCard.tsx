@@ -1,7 +1,7 @@
-import { Card, CardBody, Flex, Heading, Icon, LayoutProps } from "@chakra-ui/react";
+import { Card, CardBody, Flex, Heading, LayoutProps } from "@chakra-ui/react";
 import { useState } from "react";
-import { AiOutlineRight } from "react-icons/ai";
 import colors from "../style/colors";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 
 const ClickableCard: React.FC<{
   onClick?: () => void;
@@ -56,9 +56,12 @@ export const SettingsCardWithDrawerIcon: React.FC<{
 }> = ({ left, onClick }) => {
   return (
     <SettingsCard left={left} onClick={onClick}>
-      <Icon
-        as={AiOutlineRight}
-        color={colors.gray[600]}
+      <ChevronRightIcon
+        viewBox="0 0 18 18"
+        height="18px"
+        width="18px"
+        marginTop="-3px"
+        color={colors.gray[450]}
         _hover={{
           color: colors.gray[300],
         }}
