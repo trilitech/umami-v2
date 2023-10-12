@@ -1,9 +1,5 @@
-import { Box, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { MdArrowOutward, MdSouthWest } from "react-icons/md";
-
+import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import type { BigNumber } from "bignumber.js";
-import { FiPlus } from "react-icons/fi";
-import { VscWand } from "react-icons/vsc";
 import { Account, AccountType } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
 import { TezRecapDisplay } from "../TezRecapDisplay";
@@ -21,6 +17,10 @@ import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { getLastDelegation } from "../../utils/tezos";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import BakerIcon from "../../assets/icons/Baker";
+import OutgoingArrow from "../../assets/icons/OutgoingArrow";
+import IncomingArrow from "../../assets/icons/IncomingArrow";
+import PlusIcon from "../../assets/icons/Plus";
 
 type Props = {
   onSend: () => void;
@@ -37,12 +37,19 @@ type Props = {
 
 const RoundButton: React.FC<{
   label: string;
-  icon: any;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-}> = ({ icon, label, onClick = _ => {} }) => {
+  icon: JSX.Element;
+  onClick?: () => void;
+}> = ({ icon, label, onClick = () => {} }) => {
   return (
-    <Box textAlign="center" ml={4} mr={4}>
-      <IconButton onClick={onClick} icon={icon} mb={2} aria-label="button" variant="circle" />
+    <Box textAlign="center" mx="24px">
+      <IconButton
+        onClick={onClick}
+        size="lg"
+        icon={icon}
+        mb="8px"
+        aria-label="button"
+        variant="circle"
+      />
       <Text size="sm">{label}</Text>
     </Box>
   );
@@ -85,18 +92,26 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   return (
     <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
       <AccountTileIcon addressKind={addressKind} />
-      <Heading mt={4} size="md">
+      <Heading mt="24px" size="md">
         {label}
       </Heading>
       <AddressPill address={account.address} mode={{ type: "no_icons" }} mt="8px" mb="30px" />
       {balance && <TezRecapDisplay center balance={balance} dollarBalance={dollarBalance} />}
-      <Flex mt={6}>
-        <RoundButton onClick={onSend} label="Send" icon={<MdArrowOutward />} />
-        <RoundButton label="Receive" icon={<MdSouthWest />} onClick={onReceive} />
+      <Center mt="24px">
+        <RoundButton
+          onClick={onSend}
+          label="Send"
+          icon={<OutgoingArrow stroke="currentcolor" width="24px" height="24px" />}
+        />
+        <RoundButton
+          label="Receive"
+          icon={<IncomingArrow stroke="currentcolor" width="24px" height="24px" />}
+          onClick={onReceive}
+        />
         {!isMultisig && (
           <RoundButton
             label="Buy tez"
-            icon={<FiPlus />}
+            icon={<PlusIcon stroke="currentcolor" />}
             onClick={() => {
               openWith(<BuyTezForm recipient={sender.address.pkh} />);
             }}
@@ -104,7 +119,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
         )}
         <RoundButton
           label="Delegate"
-          icon={<VscWand />}
+          icon={<BakerIcon stroke="currentcolor" width="24px" height="24px" />}
           onClick={() => {
             openWith(
               <DelegationFormPage
@@ -114,7 +129,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
             );
           }}
         />
-      </Flex>
+      </Center>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
       <AssetsPanel tokens={tokens} nfts={nfts} account={account} delegation={delegation} />
     </Flex>
