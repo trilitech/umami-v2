@@ -138,8 +138,9 @@ describe("<AccountList />", () => {
     fireEvent.change(nameInput, { target: { value: LABEL } });
     fireEvent.click(screen.getByRole("button", { name: /continue/i }));
 
-    await screen.findByText(/Enter Password to continue/i);
-
+    await waitFor(() => {
+      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    });
     const passwordInput = screen.getByLabelText(/password/i);
 
     fireEvent.change(passwordInput, { target: { value: "myPassword" } });
@@ -158,7 +159,7 @@ describe("<AccountList />", () => {
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     await waitFor(() => {
-      expect(screen.queryByText(/Enter Password to continue/i)).not.toBeInTheDocument();
+      expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
     });
 
     {
