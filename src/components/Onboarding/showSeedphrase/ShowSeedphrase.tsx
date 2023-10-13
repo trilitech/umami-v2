@@ -1,4 +1,4 @@
-import { Box, Button, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Button, Flex, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { ShowSeedphraseStep, Step, StepType } from "../useOnboardingModal";
 import colors from "../../../style/colors";
@@ -21,19 +21,26 @@ export const ShowSeedphrase = ({
         <SimpleGrid columns={3} spacing={2}>
           {account.mnemonic.split(" ").map((item, index) => {
             return (
-              <Box
+              <Flex
                 key={index}
-                fontSize="sm"
                 width="126px"
-                border="1px dashed #D6D6D6;"
+                border="1px dashed"
+                borderColor={colors.gray[500]}
                 borderRadius="4px"
                 p="6px"
               >
-                <Box float="left" width="30px" textAlign="right" pr="10px" color={colors.gray[450]}>
+                <Heading
+                  width="18px"
+                  textAlign="right"
+                  mr="10px"
+                  pt="2px"
+                  size="sm"
+                  color={colors.gray[450]}
+                >
                   {index + 1}
-                </Box>
-                {item}
-              </Box>
+                </Heading>
+                <Text size="sm">{item}</Text>
+              </Flex>
             );
           })}
         </SimpleGrid>

@@ -1,4 +1,4 @@
-import { Button, FormControl, Heading } from "@chakra-ui/react";
+import { Button, FormControl } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalContentWrapper from "../../ModalContentWrapper";
 import { FormErrorMessage } from "../../../FormErrorMessage";
@@ -35,14 +35,13 @@ const EnterPassword = ({
     >
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-          <Heading>Enter Password to continue</Heading>
           <FormControl isInvalid={!!errors.password}>
             <PasswordInput inputName="password" data-testid="password" />
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
           </FormControl>
 
           <Button
-            mt="12px"
+            mt="32px"
             width="100%"
             isDisabled={!isValid}
             isLoading={isLoading}

@@ -50,7 +50,7 @@ export const DerivationPath = ({
       subtitle="Choose a custom derivation path or select the default derivation path and use the default key."
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-        <FormControl mb="12px">
+        <FormControl>
           <Center>
             <HStack spacing="10px">
               <Text fontWeight="bold">Default Path</Text>
@@ -68,7 +68,7 @@ export const DerivationPath = ({
             </HStack>
           </Center>
         </FormControl>
-        <FormControl isInvalid={!isValid}>
+        <FormControl isInvalid={!isValid} my="20px">
           <Input
             data-testid="custom-path"
             isDisabled={useDefault}

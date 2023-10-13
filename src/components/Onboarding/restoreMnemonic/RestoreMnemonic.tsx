@@ -1,8 +1,8 @@
-import { VStack, Text, Input, Box, Button, GridItem, Grid, Select } from "@chakra-ui/react";
+import { VStack, Input, Box, Button, GridItem, Grid, Select, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { FieldValues, useForm } from "react-hook-form";
-import { WarningIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, WarningIcon } from "@chakra-ui/icons";
 import { Step, StepType } from "../useOnboardingModal";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
@@ -84,6 +84,9 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
           <VStack w="100%" spacing={4}>
             <Select
               data-testid="select"
+              icon={<ChevronDownIcon />}
+              height="48px"
+              color={colors.gray[450]}
               onChange={event => handleMnemonicSizeChange(event.target.value)}
               value={mnemonicSize}
             >
@@ -102,14 +105,24 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
                   <GridItem
                     key={index}
                     fontSize="sm"
-                    border="1px dashed #D6D6D6;"
+                    border="1px solid"
+                    borderColor={colors.gray[500]}
                     borderRadius="4px"
+                    bg={colors.gray[800]}
                     p="4px"
+                    height="38px"
                     display="flex"
                   >
-                    <Text p="1px" mr="1px">
+                    <Heading
+                      pt="6px"
+                      width="18px"
+                      textAlign="right"
+                      color={colors.gray[400]}
+                      size="sm"
+                      mr="6px"
+                    >
                       {index + 1}
-                    </Text>
+                    </Heading>
                     <Input
                       autoComplete="off"
                       onPaste={async e => {
@@ -119,7 +132,7 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
                       }}
                       size="xsmall"
                       border="none"
-                      placeholder="Type here"
+                      placeholder="Type here..."
                       {...register(`word${index}`, {
                         required: true,
                       })}

@@ -19,7 +19,7 @@ export default function ModalContentWrapper({ children, icon, title, subtitle }:
       <Center mb="32px" flexDirection="column">
         <Heading size="xl">{title}</Heading>
         {subtitle && (
-          <Text textAlign="center" size="sm" mt="10px" color={colors.gray[400]} mb="20px">
+          <Text textAlign="center" size="sm" mt="10px" color={colors.gray[400]}>
             {subtitle}
           </Text>
         )}
