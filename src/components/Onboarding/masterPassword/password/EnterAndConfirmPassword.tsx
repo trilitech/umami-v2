@@ -61,7 +61,7 @@ export const EnterAndConfirmPassword: React.FC<{
             {errors.confirm && <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>}
           </FormControl>
           <Button
-            mt={5}
+            mt="32px"
             isDisabled={!isValid || isLoading}
             isLoading={isLoading}
             type="submit"
