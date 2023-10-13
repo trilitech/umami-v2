@@ -51,7 +51,7 @@ const VerifySeedphrase = ({
               </FormControl>
             );
           })}
-          <Button type="submit" w="100%" size="lg" isDisabled={!isValid}>
+          <Button type="submit" w="100%" size="lg" mt="20px" isDisabled={!isValid}>
             Continue
           </Button>
 
