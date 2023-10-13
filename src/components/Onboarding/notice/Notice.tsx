@@ -1,4 +1,4 @@
-import { VStack, Button, ListItem, OrderedList } from "@chakra-ui/react";
+import { Button, ListItem, OrderedList, Box } from "@chakra-ui/react";
 import React from "react";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import ModalContentWrapper from "../ModalContentWrapper";
@@ -28,8 +28,8 @@ const Notice: React.FC<{
       title="Important Notice"
       subtitle="Please read the following before you continue to see your secret Seed Phrase."
     >
-      <VStack spacing="16px" overflowX="hidden" overflowY="auto" p="4px">
-        <OrderedList spacing={4}>
+      <Box>
+        <OrderedList spacing="12px">
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;
           })}
@@ -37,6 +37,7 @@ const Notice: React.FC<{
         <Button
           w="100%"
           size="lg"
+          mt="28px"
           onClick={() =>
             goToStep({
               type: StepType.showSeedphrase,
@@ -49,12 +50,13 @@ const Notice: React.FC<{
         <Button
           w="100%"
           size="lg"
+          mt="16px"
           variant="tertiary"
           onClick={() => goToStep({ type: StepType.restoreMnemonic })}
         >
           I already have a Seed Phrase
         </Button>
-      </VStack>
+      </Box>
     </ModalContentWrapper>
   );
 };
