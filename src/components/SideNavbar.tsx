@@ -68,13 +68,13 @@ const TotalBalance = () => {
 
 export const SideNavbar = () => {
   return (
-    <Flex flexDirection="column" bg={colors.gray[900]} w="236px" p="20px 30px 30px 30px">
+    <Flex flexDirection="column" bg={colors.gray[900]} w="236px" p="30px 30px 30px 30px">
       <Box>
         <Flex height="30px" justifyContent="space-between" alignItems="center">
           <MakiLogo size={38} />
           <NetworkSelector />
         </Flex>
-        <Divider mt="38px" />
+        <Divider mt="28px" />
       </Box>
       <Flex flexDirection="column" justifyContent="space-between" flex={1}>
         <Box>
