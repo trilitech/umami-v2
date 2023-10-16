@@ -59,7 +59,8 @@ const accountsSlice = createSlice({
         return account.type === AccountType.MNEMONIC || account.type !== payload.accountType;
       });
     },
-    addAccount: (
+    // To add mnemonic accounts, use the `restoreFromMnemonic` and `deriveAccount` thunk.
+    addNonMnemonicAccount: (
       state,
       { payload }: { type: string; payload: (SocialAccount | LedgerAccount)[] }
     ) => {

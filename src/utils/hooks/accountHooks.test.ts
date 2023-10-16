@@ -17,7 +17,7 @@ describe("accountHooks", () => {
     it("returns the account itself for implicit accounts", () => {
       const account = mockSocialOrLedgerAccount(0);
 
-      store.dispatch(accountsSlice.actions.addAccount([account]));
+      store.dispatch(accountsSlice.actions.addNonMnemonicAccount([account]));
 
       const { result } = renderHook(() => useGetBestSignerForAccount(), { wrapper: ReduxStore });
       expect(result.current(account)).toEqual(account);
@@ -31,7 +31,7 @@ describe("accountHooks", () => {
       ];
       const multisig = { ...mockMultisigAccount(0), signers: signers.map(s => s.address) };
 
-      store.dispatch(accountsSlice.actions.addAccount(signers));
+      store.dispatch(accountsSlice.actions.addNonMnemonicAccount(signers));
       store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
 
       store.dispatch(
@@ -47,7 +47,7 @@ describe("accountHooks", () => {
   });
 
   test("useIsOwnedAddress", () => {
-    store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
 
     let view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh), {
       wrapper: AllTheProviders,

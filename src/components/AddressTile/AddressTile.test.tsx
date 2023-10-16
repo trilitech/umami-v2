@@ -12,7 +12,7 @@ const fixture = (address: Address) => <AddressTile address={address} />;
 describe("<AddressTileIcon />", () => {
   it("displays label", async () => {
     const account = mockSocialOrLedgerAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount([account]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([account]));
     render(fixture(account.address));
     expect(screen.getByText("google Account 0")).toBeInTheDocument();
   });
@@ -20,7 +20,7 @@ describe("<AddressTileIcon />", () => {
   describe("address", () => {
     it("formats known address", async () => {
       const account = mockSocialOrLedgerAccount(0);
-      store.dispatch(accountsSlice.actions.addAccount([account]));
+      store.dispatch(accountsSlice.actions.addNonMnemonicAccount([account]));
       render(fixture(account.address));
       expect(screen.getByText(formatPkh(account.address.pkh))).toBeInTheDocument();
     });
@@ -41,7 +41,7 @@ describe("<AddressTileIcon />", () => {
 
     it("shows balance if account holds tez", async () => {
       const account = mockSocialOrLedgerAccount(0);
-      store.dispatch(accountsSlice.actions.addAccount([account]));
+      store.dispatch(accountsSlice.actions.addNonMnemonicAccount([account]));
       store.dispatch(
         assetsActions.updateTezBalance([
           { address: mockImplicitAccount(0).address.pkh, balance: 5000000 },

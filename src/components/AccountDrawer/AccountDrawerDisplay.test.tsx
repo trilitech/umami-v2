@@ -31,7 +31,7 @@ import {
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { mockDelegation } from "../../mocks/factories";
 const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
-const { addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
 
 const { setMultisigs } = multisigsSlice.actions;
 

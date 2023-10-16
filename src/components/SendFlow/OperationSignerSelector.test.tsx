@@ -29,7 +29,7 @@ describe("OperationSignerSelector", () => {
   describe("proposal operations", () => {
     it("allows only owned multisig signers to be chosen", () => {
       store.dispatch(
-        accountsSlice.actions.addAccount([
+        accountsSlice.actions.addNonMnemonicAccount([
           mockSocialOrLedgerAccount(0),
           mockSocialOrLedgerAccount(1),
         ])

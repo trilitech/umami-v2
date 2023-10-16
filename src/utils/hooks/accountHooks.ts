@@ -18,7 +18,11 @@ import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigs } from "./multisigHooks";
 
-const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
+const {
+  addNonMnemonicAccount: addAccount,
+  removeMnemonicAndAccounts,
+  removeNonMnemonicAccounts,
+} = accountsSlice.actions;
 
 export const useImplicitAccounts = () => {
   return useAppSelector(s => s.accounts.items);

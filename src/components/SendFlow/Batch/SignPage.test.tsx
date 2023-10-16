@@ -29,7 +29,7 @@ const fixture = () => {
 };
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0) as any]));
+  store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockImplicitAccount(0) as any]));
 });
 
 describe("<SignPage />", () => {

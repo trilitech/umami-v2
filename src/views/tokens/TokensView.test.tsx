@@ -18,7 +18,7 @@ const fixture = () => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+  store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
 });
 
 describe("<TokensView />", () => {
@@ -29,7 +29,7 @@ describe("<TokensView />", () => {
 
   test.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
     store.dispatch(networksActions.setCurrent(network));
-    store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(1)]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(1)]));
     const tokenBalances = [
       hedgehoge(mockImplicitAddress(0)),
       hedgehoge(mockImplicitAddress(1)),

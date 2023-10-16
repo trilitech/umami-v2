@@ -181,7 +181,7 @@ describe("<FormPage />", () => {
 
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
-        store.dispatch(accountsSlice.actions.addAccount([mockAccount]));
+        store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockAccount]));
         store.dispatch(assetsSlice.actions.updateTokenBalance([mocktTokenRaw]));
         const sender = mockAccount;
         render(

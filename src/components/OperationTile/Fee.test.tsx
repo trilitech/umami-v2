@@ -40,7 +40,7 @@ describe("<Fee />", () => {
   });
 
   it("sums up the fees and shows the total", () => {
-    store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
     render(
       <Fee
         operation={
@@ -57,7 +57,7 @@ describe("<Fee />", () => {
   });
 
   it("doesn't render in drawer mode", () => {
-    store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
 
     render(
       <OperationTileContext.Provider value={{ mode: "drawer" } as any}>

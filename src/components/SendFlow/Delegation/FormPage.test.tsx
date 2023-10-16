@@ -122,7 +122,7 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+      store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
       store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
     });
 

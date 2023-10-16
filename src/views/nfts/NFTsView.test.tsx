@@ -18,7 +18,7 @@ import { networksActions } from "../../utils/redux/slices/networks";
 const { updateTokenBalance } = assetsSlice.actions;
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+  store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
 });
 
 const fixture = () => (
@@ -37,7 +37,10 @@ describe("NFTsView", () => {
 
   it("displays nfts of all accounts by default", () => {
     store.dispatch(
-      accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(1), mockSocialOrLedgerAccount(2)])
+      accountsSlice.actions.addNonMnemonicAccount([
+        mockSocialOrLedgerAccount(1),
+        mockSocialOrLedgerAccount(2),
+      ])
     );
     store.dispatch(networksActions.setCurrent(MAINNET));
     store.dispatch(

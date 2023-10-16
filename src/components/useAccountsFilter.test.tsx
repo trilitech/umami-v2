@@ -13,7 +13,7 @@ const accounts = [
 ];
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount(accounts));
+  store.dispatch(accountsSlice.actions.addNonMnemonicAccount(accounts));
 });
 
 const TestComponent = () => {

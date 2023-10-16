@@ -165,7 +165,7 @@ describe("<FormPage />", () => {
 
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
-        store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+        store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
         const sender = mockSocialOrLedgerAccount(0);
         render(
           <DynamicModalContext.Provider value={dynamicModalContextMock}>

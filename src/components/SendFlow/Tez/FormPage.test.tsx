@@ -121,7 +121,7 @@ describe("<Form />", () => {
       });
 
       it("allows only owned accounts", async () => {
-        store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+        store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
         render(fixture());
 
         fireEvent.change(screen.getByLabelText("From"), {
@@ -209,7 +209,7 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+      store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
       store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
     });
 

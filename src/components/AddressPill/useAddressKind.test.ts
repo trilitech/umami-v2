@@ -29,7 +29,7 @@ beforeEach(() => {
 describe("useAddressKind", () => {
   test("owned implicit account", () => {
     const implicitAccount0 = mockSocialOrLedgerAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([implicitAccount0]));
     const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
       wrapper: ReduxStore,
     });
@@ -143,7 +143,7 @@ describe("useAddressKind", () => {
     ].forEach(({ type, address }) => {
       it(`prioritizes ${type} over the contact`, () => {
         store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
-        store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+        store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockSocialOrLedgerAccount(0)]));
         store.dispatch(
           tokensSlice.actions.addTokens({
             network: MAINNET,

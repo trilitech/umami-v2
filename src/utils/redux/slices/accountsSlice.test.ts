@@ -13,7 +13,7 @@ import accountsSlice from "./accountsSlice";
 import { MAINNET } from "../../../types/Network";
 
 const {
-  actions: { addAccount, removeMnemonicAndAccounts },
+  actions: { addNonMnemonicAccount: addAccount, removeMnemonicAndAccounts },
 } = accountsSlice;
 
 beforeEach(async () => {

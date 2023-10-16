@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fireEvent, screen } from "@testing-library/react";
-import { ImplicitAccount, LedgerAccount, MnemonicAccount, SocialAccount } from "../types/Account";
+import { LedgerAccount, MnemonicAccount, SocialAccount } from "../types/Account";
 import accountsSlice from "../utils/redux/slices/accountsSlice";
 import store from "../utils/redux/store";
 import BigNumber from "bignumber.js";
@@ -17,7 +17,7 @@ export const fillPassword = (value: string) => {
 };
 
 export const dispatchMockAccounts = (accounts: (SocialAccount | LedgerAccount)[]) => {
-  store.dispatch(accountsSlice.actions.addAccount(accounts));
+  store.dispatch(accountsSlice.actions.addNonMnemonicAccount(accounts));
 };
 
 export const fakeRestoreFromMnemonic = createAsyncThunk(

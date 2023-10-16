@@ -43,7 +43,7 @@ describe("<MultisigPendingAccordion />", () => {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
 
-    store.dispatch(accountsSlice.actions.addAccount([mockAccount]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockAccount]));
 
     render(<MultisigPendingAccordion account={multisigAccount} />);
 

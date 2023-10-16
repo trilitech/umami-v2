@@ -18,7 +18,7 @@ const fixture = (props: SignPageProps<{ token: FATokenBalance }>) => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0) as any]));
+  store.dispatch(accountsSlice.actions.addNonMnemonicAccount([mockImplicitAccount(0) as any]));
 });
 
 const mockAccount = mockImplicitAccount(0);

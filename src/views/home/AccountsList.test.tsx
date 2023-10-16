@@ -18,7 +18,7 @@ import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 
-const { addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
 
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";

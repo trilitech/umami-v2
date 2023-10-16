@@ -8,7 +8,7 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 
 const onClose = jest.fn(() => {});
 
-const { addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
 const account = mockSocialOrLedgerAccount(0);
 
 const fixture = () => {

@@ -10,7 +10,7 @@ import store from "../../../../utils/redux/store";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
-const { addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
 
 const signer = mockSocialOrLedgerAccount(0);
 describe("<MultisigSignerTile/>", () => {

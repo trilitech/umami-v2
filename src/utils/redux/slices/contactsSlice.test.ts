@@ -6,7 +6,7 @@ import checkAccountsAndUpsertContact from "../thunks/checkAccountsAndUpsertConta
 import accountsSlice from "./accountsSlice";
 import { contactsActions } from "./contactsSlice";
 const { remove } = contactsActions;
-const { addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
 
 describe("Contacts reducer", () => {
   test("store should initialize with empty state", () => {

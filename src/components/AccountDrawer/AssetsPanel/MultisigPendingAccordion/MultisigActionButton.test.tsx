@@ -6,7 +6,7 @@ import MultisigActionButton from "./MultisigSignerTile";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
-const { addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
 const account = mockSocialOrLedgerAccount(0);
 
 describe("<ActionButton/>", () => {

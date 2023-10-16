@@ -21,7 +21,7 @@ describe("useAddressKind", () => {
   it("returns mnemonic account", () => {
     const implicitAccount0 = mockImplicitAccount(0);
 
-    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0 as any]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([implicitAccount0 as any]));
     const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
       wrapper: ReduxStore,
     });
@@ -34,7 +34,7 @@ describe("useAddressKind", () => {
 
   it("returns social account", () => {
     const implicitAccount0 = mockSocialOrLedgerAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([implicitAccount0]));
     const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
       wrapper: ReduxStore,
     });
@@ -47,7 +47,7 @@ describe("useAddressKind", () => {
 
   it("returns ledter account", () => {
     const implicitAccount0 = mockSocialOrLedgerAccount(0, AccountType.LEDGER);
-    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
+    store.dispatch(accountsSlice.actions.addNonMnemonicAccount([implicitAccount0]));
     const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
       wrapper: ReduxStore,
     });
