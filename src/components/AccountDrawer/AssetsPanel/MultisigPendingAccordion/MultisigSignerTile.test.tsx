@@ -1,4 +1,8 @@
-import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockMultisigAccount,
+  mockSocialOrLedgerAccount,
+} from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 import MultisigSignerTile from "./MultisigSignerTile";
 
@@ -8,7 +12,7 @@ import { pendingOps } from "../../../../mocks/multisig";
 
 const { addAccount } = accountsSlice.actions;
 
-const signer = mockImplicitAccount(0);
+const signer = mockSocialOrLedgerAccount(0);
 describe("<MultisigSignerTile/>", () => {
   beforeEach(() => {
     store.dispatch(addAccount([signer]));

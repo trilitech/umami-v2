@@ -1,5 +1,9 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockMultisigAccount,
+  mockSocialOrLedgerAccount,
+} from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -117,7 +121,7 @@ describe("<Form />", () => {
       });
 
       it("allows only owned accounts", async () => {
-        store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+        store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
         render(fixture());
 
         fireEvent.change(screen.getByLabelText("From"), {
@@ -205,7 +209,7 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+      store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
       store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
     });
 
@@ -237,7 +241,7 @@ describe("<Form />", () => {
       });
     });
 
-    test.each([mockImplicitAccount(0), mockMultisigAccount(0)])(
+    test.each([mockSocialOrLedgerAccount(0), mockMultisigAccount(0)])(
       "opens a sign page if estimation succeeds",
       async sender => {
         render(
@@ -257,7 +261,7 @@ describe("<Form />", () => {
         });
         fireEvent.click(submitButton);
         mockEstimatedFee(100);
-        const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
+        const operations = makeAccountOperations(sender, mockSocialOrLedgerAccount(0), [
           { type: "tez", amount: "1000000", recipient: mockImplicitAccount(1).address },
         ]);
         await waitFor(() => {

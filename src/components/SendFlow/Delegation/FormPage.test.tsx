@@ -1,5 +1,9 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockMultisigAccount,
+  mockSocialOrLedgerAccount,
+} from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -118,16 +122,16 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+      store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
       store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
     });
 
     it("shows a toast if estimation fails", async () => {
       render(
         fixture({
-          sender: mockImplicitAccount(0),
+          sender: mockSocialOrLedgerAccount(0),
           form: {
-            sender: mockImplicitAccount(0).address.pkh,
+            sender: mockSocialOrLedgerAccount(0).address.pkh,
             baker: mockImplicitAccount(1).address.pkh,
           },
         })
@@ -151,7 +155,7 @@ describe("<Form />", () => {
     });
 
     it("opens a sign page if estimation succeeds", async () => {
-      const sender = mockImplicitAccount(0);
+      const sender = mockSocialOrLedgerAccount(0);
       render(
         <DynamicModalContext.Provider value={dynamicModalContextMock}>
           {fixture({

@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import MasterPassword from "./MasterPassword";
 import { ReduxStore } from "../../../providers/ReduxStore";
-import { mockImplicitAccount } from "../../../mocks/factories";
+import { mockSocialOrLedgerAccount } from "../../../mocks/factories";
 import store from "../../../utils/redux/store";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
@@ -9,7 +9,7 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 const onClose = jest.fn(() => {});
 
 const { addAccount } = accountsSlice.actions;
-const account = mockImplicitAccount(0);
+const account = mockSocialOrLedgerAccount(0);
 
 const fixture = () => {
   const account = {

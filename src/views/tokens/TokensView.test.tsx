@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
+import { mockImplicitAddress, mockSocialOrLedgerAccount } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import store from "../../utils/redux/store";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
@@ -18,7 +18,7 @@ const fixture = () => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
 });
 
 describe("<TokensView />", () => {
@@ -29,7 +29,7 @@ describe("<TokensView />", () => {
 
   test.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
     store.dispatch(networksActions.setCurrent(network));
-    store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(1)]));
+    store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(1)]));
     const tokenBalances = [
       hedgehoge(mockImplicitAddress(0)),
       hedgehoge(mockImplicitAddress(1)),

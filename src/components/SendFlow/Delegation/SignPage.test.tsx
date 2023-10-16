@@ -17,7 +17,7 @@ const fixture = (props: SignPageProps) => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0) as any]));
 });
 
 describe("<SignPage />", () => {

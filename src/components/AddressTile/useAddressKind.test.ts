@@ -1,7 +1,11 @@
 import { renderHook } from "@testing-library/react";
-import { mockBaker, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
+import {
+  mockBaker,
+  mockImplicitAccount,
+  mockImplicitAddress,
+  mockSocialOrLedgerAccount,
+} from "../../mocks/factories";
 import { getWrapper } from "../../mocks/store";
-import { ReduxStore } from "../../providers/ReduxStore";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
@@ -11,11 +15,13 @@ import store from "../../utils/redux/store";
 import useAddressKind from "./useAddressKind";
 import { AccountType } from "../../types/Account";
 import { multisigs } from "../../mocks/multisig";
+import { ReduxStore } from "../../providers/ReduxStore";
 
 describe("useAddressKind", () => {
   it("returns mnemonic account", () => {
     const implicitAccount0 = mockImplicitAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
+
+    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0 as any]));
     const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
       wrapper: ReduxStore,
     });
@@ -27,7 +33,7 @@ describe("useAddressKind", () => {
   });
 
   it("returns social account", () => {
-    const implicitAccount0 = mockImplicitAccount(0, AccountType.SOCIAL);
+    const implicitAccount0 = mockSocialOrLedgerAccount(0);
     store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
     const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
       wrapper: ReduxStore,
@@ -40,7 +46,7 @@ describe("useAddressKind", () => {
   });
 
   it("returns ledter account", () => {
-    const implicitAccount0 = mockImplicitAccount(0, AccountType.LEDGER);
+    const implicitAccount0 = mockSocialOrLedgerAccount(0, AccountType.LEDGER);
     store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
     const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
       wrapper: ReduxStore,

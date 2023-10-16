@@ -15,7 +15,11 @@ jest.mock("../../utils/tezos");
 const useGetSecretKeyMock = jest.mocked(useGetSecretKey);
 
 beforeEach(() => {
-  dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
+  dispatchMockAccounts([
+    mockImplicitAccount(1),
+    mockImplicitAccount(2),
+    mockImplicitAccount(3),
+  ] as any);
   mockEstimatedFee(10);
 
   useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");

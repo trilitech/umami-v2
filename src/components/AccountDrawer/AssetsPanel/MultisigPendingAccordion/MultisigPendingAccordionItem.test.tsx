@@ -80,7 +80,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
       opHash: "mockHash",
     });
 
-    store.dispatch(accountsSlice.actions.addAccount([account]));
+    store.dispatch(accountsSlice.actions.addAccount([account as any]));
 
     const executablePendingOp: MultisigOperation = pendingOps[0];
     const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
@@ -130,7 +130,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
       opHash: "mockHash",
     });
 
-    store.dispatch(accountsSlice.actions.addAccount([signer]));
+    store.dispatch(accountsSlice.actions.addAccount([signer as any]));
     const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
     const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
     render(

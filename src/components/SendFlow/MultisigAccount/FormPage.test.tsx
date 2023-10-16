@@ -4,6 +4,7 @@ import {
   mockContractAddress,
   mockImplicitAccount,
   mockImplicitAddress,
+  mockSocialOrLedgerAccount,
 } from "../../../mocks/factories";
 import { FormPage, FormValues } from "./FormPage";
 import store from "../../../utils/redux/store";
@@ -28,7 +29,7 @@ const fixture = (formValues?: FormValues) => {
 };
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
 });
 
 describe("FormPage", () => {
@@ -266,18 +267,22 @@ describe("FormPage", () => {
     });
     fireEvent.click(submitButton);
 
-    const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
-      {
-        type: "contract_origination",
-        sender: mockImplicitAccount(0).address,
-        code: contract,
-        storage: makeStorageJSON(
-          mockImplicitAccount(0).address.pkh,
-          [mockImplicitAddress(1).pkh],
-          "1"
-        ),
-      },
-    ]);
+    const operations = makeAccountOperations(
+      mockSocialOrLedgerAccount(0),
+      mockSocialOrLedgerAccount(0),
+      [
+        {
+          type: "contract_origination",
+          sender: mockImplicitAccount(0).address,
+          code: contract,
+          storage: makeStorageJSON(
+            mockImplicitAccount(0).address.pkh,
+            [mockImplicitAddress(1).pkh],
+            "1"
+          ),
+        },
+      ]
+    );
     mockEstimatedFee(100);
     await waitFor(() => {
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(

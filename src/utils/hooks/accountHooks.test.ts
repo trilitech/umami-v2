@@ -1,5 +1,9 @@
 import { renderHook } from "@testing-library/react";
-import { mockImplicitAccount, mockMultisigAccount } from "../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockMultisigAccount,
+  mockSocialOrLedgerAccount,
+} from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import accountsSlice from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
@@ -11,7 +15,7 @@ import { AllTheProviders } from "../../mocks/testUtils";
 describe("accountHooks", () => {
   describe("useGetBestSignerForAccount", () => {
     it("returns the account itself for implicit accounts", () => {
-      const account = mockImplicitAccount(0);
+      const account = mockSocialOrLedgerAccount(0);
 
       store.dispatch(accountsSlice.actions.addAccount([account]));
 
@@ -20,7 +24,11 @@ describe("accountHooks", () => {
     });
 
     it("returns the signer with the biggest balance for multisig accounts", () => {
-      const signers = [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)];
+      const signers = [
+        mockSocialOrLedgerAccount(0),
+        mockSocialOrLedgerAccount(1),
+        mockSocialOrLedgerAccount(2),
+      ];
       const multisig = { ...mockMultisigAccount(0), signers: signers.map(s => s.address) };
 
       store.dispatch(accountsSlice.actions.addAccount(signers));
@@ -34,12 +42,12 @@ describe("accountHooks", () => {
       );
 
       const { result } = renderHook(() => useGetBestSignerForAccount(), { wrapper: ReduxStore });
-      expect(result.current(multisig)).toEqual(mockImplicitAccount(1));
+      expect(result.current(multisig)).toEqual(mockSocialOrLedgerAccount(1));
     });
   });
 
   test("useIsOwnedAddress", () => {
-    store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+    store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
 
     let view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh), {
       wrapper: AllTheProviders,

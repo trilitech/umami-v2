@@ -1,4 +1,4 @@
-import { mockImplicitAccount } from "../../mocks/factories";
+import { mockImplicitAccount, mockSocialOrLedgerAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { Address } from "../../types/Address";
 import { formatPkh } from "../../utils/formatPkh";
@@ -11,15 +11,15 @@ const fixture = (address: Address) => <AddressTile address={address} />;
 
 describe("<AddressTileIcon />", () => {
   it("displays label", async () => {
-    const account = mockImplicitAccount(0);
+    const account = mockSocialOrLedgerAccount(0);
     store.dispatch(accountsSlice.actions.addAccount([account]));
     render(fixture(account.address));
-    expect(screen.getByText("Account 0")).toBeInTheDocument();
+    expect(screen.getByText("google Account 0")).toBeInTheDocument();
   });
 
   describe("address", () => {
     it("formats known address", async () => {
-      const account = mockImplicitAccount(0);
+      const account = mockSocialOrLedgerAccount(0);
       store.dispatch(accountsSlice.actions.addAccount([account]));
       render(fixture(account.address));
       expect(screen.getByText(formatPkh(account.address.pkh))).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe("<AddressTileIcon />", () => {
     });
 
     it("shows balance if account holds tez", async () => {
-      const account = mockImplicitAccount(0);
+      const account = mockSocialOrLedgerAccount(0);
       store.dispatch(accountsSlice.actions.addAccount([account]));
       store.dispatch(
         assetsActions.updateTezBalance([

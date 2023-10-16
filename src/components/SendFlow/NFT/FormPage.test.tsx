@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockNFT } from "../../../mocks/factories";
+import { mockImplicitAccount, mockNFT, mockSocialOrLedgerAccount } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import FormPage, { FormValues } from "./FormPage";
 import { FormPagePropsWithSender } from "../utils";
@@ -165,8 +165,8 @@ describe("<FormPage />", () => {
 
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
-        store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
-        const sender = mockImplicitAccount(0);
+        store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
+        const sender = mockSocialOrLedgerAccount(0);
         render(
           <DynamicModalContext.Provider value={dynamicModalContextMock}>
             {fixture({

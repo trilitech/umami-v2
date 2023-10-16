@@ -21,7 +21,7 @@ jest.unmock("../../../utils/redux/extraArgument");
 const currentPassword = "currentPassword";
 const newPassword = "newPassword";
 
-const setupStore = async () => {
+export const setupStore = async () => {
   const mockStore = craeteMockStore<
     { accounts: State },
     { changeMnemonicPassword: ReturnType<typeof changeMnemonicPassword> }

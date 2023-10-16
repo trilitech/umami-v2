@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AccountType, ImplicitAccount } from "../../../types/Account";
+import { AccountType, ImplicitAccount, SocialAccount } from "../../../types/Account";
 import { EncryptedData } from "../../crypto/types";
 import changeMnemonicPassword from "../thunks/changeMnemonicPassword";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
 import { remove } from "lodash";
+import { LedgerAccount } from "../../../types/Account";
 
 export type State = {
   items: ImplicitAccount[];
@@ -58,7 +59,10 @@ const accountsSlice = createSlice({
         return account.type === AccountType.MNEMONIC || account.type !== payload.accountType;
       });
     },
-    addAccount: (state, { payload }: { type: string; payload: ImplicitAccount[] }) => {
+    addAccount: (
+      state,
+      { payload }: { type: string; payload: (SocialAccount | LedgerAccount)[] }
+    ) => {
       state.items = concatUnique(state.items, payload);
     },
   },

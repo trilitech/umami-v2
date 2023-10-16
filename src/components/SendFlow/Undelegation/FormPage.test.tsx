@@ -3,6 +3,7 @@ import {
   mockImplicitAccount,
   mockImplicitAddress,
   mockMultisigAccount,
+  mockSocialOrLedgerAccount,
 } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
@@ -65,7 +66,7 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+      store.dispatch(accountsSlice.actions.addAccount([mockSocialOrLedgerAccount(0)]));
       store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
     });
 
@@ -98,7 +99,7 @@ describe("<Form />", () => {
     });
 
     it("opens a sign page if estimation succeeds", async () => {
-      const sender = mockImplicitAccount(0);
+      const sender = mockSocialOrLedgerAccount(0);
       render(
         <DynamicModalContext.Provider value={dynamicModalContextMock}>
           {fixture({

@@ -1,5 +1,5 @@
 import { contact1, contact2 } from "../../../mocks/contacts";
-import { mockImplicitAccount, mockImplicitAddress } from "../../../mocks/factories";
+import { mockImplicitAddress, mockSocialOrLedgerAccount } from "../../../mocks/factories";
 
 import store from "../store";
 import checkAccountsAndUpsertContact from "../thunks/checkAccountsAndUpsertContact";
@@ -69,7 +69,7 @@ describe("Contacts reducer", () => {
   });
 
   test("should not add contact containing Account info", () => {
-    const account = mockImplicitAccount(0);
+    const account = mockSocialOrLedgerAccount(0);
     store.dispatch(addAccount([account]));
     store.dispatch(
       checkAccountsAndUpsertContact({ name: account.label, pkh: account.address.pkh })

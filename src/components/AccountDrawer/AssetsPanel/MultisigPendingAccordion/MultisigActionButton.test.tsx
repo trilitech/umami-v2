@@ -1,4 +1,4 @@
-import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
+import { mockMultisigAccount, mockSocialOrLedgerAccount } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 
 import store from "../../../../utils/redux/store";
@@ -7,7 +7,7 @@ import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
 const { addAccount } = accountsSlice.actions;
-const account = mockImplicitAccount(0);
+const account = mockSocialOrLedgerAccount(0);
 
 describe("<ActionButton/>", () => {
   it("should display execute for non-pending operation with signer included in the owned account", () => {

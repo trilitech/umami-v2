@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fireEvent, screen } from "@testing-library/react";
-import { ImplicitAccount, MnemonicAccount } from "../types/Account";
+import { ImplicitAccount, LedgerAccount, MnemonicAccount, SocialAccount } from "../types/Account";
 import accountsSlice from "../utils/redux/slices/accountsSlice";
 import store from "../utils/redux/store";
 import BigNumber from "bignumber.js";
@@ -16,7 +16,7 @@ export const fillPassword = (value: string) => {
   fireEvent.change(passwordInput, { target: { value } });
 };
 
-export const dispatchMockAccounts = (accounts: ImplicitAccount[]) => {
+export const dispatchMockAccounts = (accounts: (SocialAccount | LedgerAccount)[]) => {
   store.dispatch(accountsSlice.actions.addAccount(accounts));
 };
 

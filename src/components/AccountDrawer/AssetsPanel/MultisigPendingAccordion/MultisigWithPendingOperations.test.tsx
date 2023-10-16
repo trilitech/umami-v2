@@ -1,5 +1,5 @@
 import MultisigPendingAccordion from ".";
-import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
+import { mockMultisigAccount, mockSocialOrLedgerAccount } from "../../../../mocks/factories";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount } from "../../../../types/Account";
@@ -39,7 +39,7 @@ describe("<MultisigPendingAccordion />", () => {
     store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
 
     const mockAccount: ImplicitAccount = {
-      ...mockImplicitAccount(0),
+      ...mockSocialOrLedgerAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
 

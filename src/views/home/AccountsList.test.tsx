@@ -4,6 +4,7 @@ import {
   mockAccountLabel,
   mockMultisigWithOperations,
   mockImplicitAddress,
+  mockSocialOrLedgerAccount,
 } from "../../mocks/factories";
 import { formatPkh } from "../../utils/format";
 import store from "../../utils/redux/store";
@@ -27,7 +28,11 @@ const MOCK_FINGETPRINT2 = "mockFin2";
 describe("<AccountList />", () => {
   test("Displays accounts in store with label and formated pkh", async () => {
     store.dispatch(
-      addAccount([mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)])
+      addAccount([
+        mockSocialOrLedgerAccount(0),
+        mockSocialOrLedgerAccount(1),
+        mockSocialOrLedgerAccount(2),
+      ])
     );
 
     render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);

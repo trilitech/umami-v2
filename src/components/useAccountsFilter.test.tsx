@@ -1,12 +1,16 @@
 import { useAccountsFilter } from "./useAccountsFilter";
-import { mockImplicitAccount } from "../mocks/factories";
+import { mockSocialOrLedgerAccount } from "../mocks/factories";
 import { fireEvent, screen } from "../mocks/testUtils";
 import accountsSlice from "../utils/redux/slices/accountsSlice";
 import store from "../utils/redux/store";
 import { ReduxStore } from "../providers/ReduxStore";
 import { render } from "@testing-library/react";
 
-const accounts = [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)];
+const accounts = [
+  mockSocialOrLedgerAccount(0),
+  mockSocialOrLedgerAccount(1),
+  mockSocialOrLedgerAccount(2),
+];
 
 beforeEach(() => {
   store.dispatch(accountsSlice.actions.addAccount(accounts));
