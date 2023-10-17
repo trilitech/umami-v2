@@ -2,15 +2,13 @@ import { Flex, Text, Heading, FlexProps, Box } from "@chakra-ui/react";
 import { Address } from "../../types/Address";
 import useAddressKind from "./useAddressKind";
 import AddressTileIcon from "./AddressTileIcon";
-import { PrettyNumber } from "../PrettyNumber";
-import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
-import { formatPkh, prettyTezAmount } from "../../utils/format";
+import { formatPkh } from "../../utils/format";
 import colors from "../../style/colors";
+import { AccountBalance } from "../AccountBalance";
 
 const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...flexProps }) => {
   const addressKind = useAddressKind(address);
-  const getBalance = useGetAccountBalance();
-  const balance = getBalance(addressKind.pkh);
+
   return (
     <Flex
       data-testid="address-tile"
@@ -43,9 +41,7 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
         )}
       </Flex>
 
-      <Box textAlign="right" overflow="hidden">
-        {balance && <PrettyNumber number={prettyTezAmount(balance)} />}
-      </Box>
+      <AccountBalance textAlign="right" overflow="hidden" address={address.pkh} />
     </Flex>
   );
 };

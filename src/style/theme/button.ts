@@ -89,6 +89,9 @@ export const buttonTheme = defineStyleConfig({
         },
       },
     },
+    specialCTA: {
+      color: colors.greenL,
+    },
   },
   defaultProps: {
     variant: "primary",
