@@ -77,7 +77,7 @@ const AccountTokens: React.FC<{
               const rowBorderColor = i === tokens.length - 1 ? "transparent" : colors.gray[700];
               return (
                 <Tr key={fullId(token)} data-testid="token-tile">
-                  <Td paddingX="0" minWidth="240px" borderColor={rowBorderColor}>
+                  <Td paddingX="0" minWidth="240px" width="20%" borderColor={rowBorderColor}>
                     <Flex alignItems="center">
                       <TokenIcon display="inline-block" contract={token.contract} width="38px" />
                       <Heading display="inline-block" size="sm" marginLeft="16px">
@@ -85,10 +85,10 @@ const AccountTokens: React.FC<{
                       </Heading>
                     </Flex>
                   </Td>
-                  <Td paddingX="0" minWidth="200px" borderColor={rowBorderColor}>
+                  <Td paddingX="0" minWidth="200px" width="20%" borderColor={rowBorderColor}>
                     <AddressPill address={parseContractPkh(token.contract)} />
                   </Td>
-                  <Td paddingX="0" minWidth="160px" borderColor={rowBorderColor}>
+                  <Td paddingX="0" minWidth="160px" width="15%" borderColor={rowBorderColor}>
                     <Heading size="sm">
                       {tokenPrettyAmount(token.balance, token, { showSymbol: false })}
                     </Heading>
