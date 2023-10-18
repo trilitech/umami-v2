@@ -1,12 +1,11 @@
 import { contact1, contact2 } from "../../../mocks/contacts";
-import { mockImplicitAccount, mockImplicitAddress } from "../../../mocks/factories";
+import { mockImplicitAddress, mockMnemonicAccount } from "../../../mocks/factories";
 
 import store from "../store";
 import checkAccountsAndUpsertContact from "../thunks/checkAccountsAndUpsertContact";
 import accountsSlice from "./accountsSlice";
 import { contactsActions } from "./contactsSlice";
 const { remove } = contactsActions;
-const { addAccount } = accountsSlice.actions;
 
 describe("Contacts reducer", () => {
   test("store should initialize with empty state", () => {
@@ -69,8 +68,8 @@ describe("Contacts reducer", () => {
   });
 
   test("should not add contact containing Account info", () => {
-    const account = mockImplicitAccount(0);
-    store.dispatch(addAccount([account]));
+    const account = mockMnemonicAccount(0);
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
     store.dispatch(
       checkAccountsAndUpsertContact({ name: account.label, pkh: account.address.pkh })
     );

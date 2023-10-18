@@ -1,4 +1,4 @@
-import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
+import { mockMnemonicAccount, mockMultisigAccount } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 
 import store from "../../../../utils/redux/store";
@@ -6,12 +6,12 @@ import MultisigActionButton from "./MultisigSignerTile";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
-const { addAccount } = accountsSlice.actions;
-const account = mockImplicitAccount(0);
+const { addMockMnemonicAccounts } = accountsSlice.actions;
+const account = mockMnemonicAccount(0);
 
 describe("<ActionButton/>", () => {
   it("should display execute for non-pending operation with signer included in the owned account", () => {
-    store.dispatch(addAccount([account]));
+    store.dispatch(addMockMnemonicAccounts([account]));
     render(
       <MultisigActionButton
         signerAddress={account.address}
@@ -24,7 +24,7 @@ describe("<ActionButton/>", () => {
   });
 
   it("should display approve for pending operation with signer included in the owned account", () => {
-    store.dispatch(addAccount([account]));
+    store.dispatch(addMockMnemonicAccounts([account]));
     render(
       <MultisigActionButton
         signerAddress={account.address}
@@ -37,7 +37,7 @@ describe("<ActionButton/>", () => {
   });
 
   it("should show approved for pending operation with signers included in the account that already approved", () => {
-    store.dispatch(addAccount([account]));
+    store.dispatch(addMockMnemonicAccounts([account]));
     const operation = { ...pendingOps[0], approvals: [account.address] };
     render(
       <MultisigActionButton

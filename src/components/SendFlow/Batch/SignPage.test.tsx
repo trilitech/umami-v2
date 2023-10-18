@@ -1,4 +1,9 @@
-import { mockImplicitAccount, mockMultisigAccount, mockNFT } from "../../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+  mockNFT,
+} from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 import SignPage from "./SignPage";
 import BigNumber from "bignumber.js";
@@ -29,7 +34,7 @@ const fixture = () => {
 };
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 });
 
 describe("<SignPage />", () => {

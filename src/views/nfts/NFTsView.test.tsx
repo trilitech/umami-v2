@@ -1,5 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { mockNFTToken, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
+import {
+  mockNFTToken,
+  mockImplicitAccount,
+  mockImplicitAddress,
+  mockMnemonicAccount,
+} from "../../mocks/factories";
 import { HashRouter } from "react-router-dom";
 import { ReduxStore } from "../../providers/ReduxStore";
 import store from "../../utils/redux/store";
@@ -13,7 +18,7 @@ import { networksActions } from "../../utils/redux/slices/networks";
 const { updateTokenBalance } = assetsSlice.actions;
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 });
 
 const fixture = () => (
@@ -32,7 +37,10 @@ describe("NFTsView", () => {
 
   it("displays nfts of all accounts by default", () => {
     store.dispatch(
-      accountsSlice.actions.addAccount([mockImplicitAccount(1), mockImplicitAccount(2)])
+      accountsSlice.actions.addMockMnemonicAccounts([
+        mockMnemonicAccount(1),
+        mockMnemonicAccount(2),
+      ])
     );
     store.dispatch(networksActions.setCurrent(MAINNET));
     store.dispatch(

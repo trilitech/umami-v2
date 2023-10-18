@@ -2,7 +2,12 @@ import { renderHook } from "@testing-library/react";
 import { cloneDeep } from "lodash";
 import { hedgehoge } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { mockBaker, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
+import {
+  mockBaker,
+  mockImplicitAccount,
+  mockImplicitAddress,
+  mockMnemonicAccount,
+} from "../../mocks/factories";
 import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
@@ -23,14 +28,14 @@ beforeEach(() => {
 
 describe("useAddressKind", () => {
   test("owned implicit account", () => {
-    const implicitAccount0 = mockImplicitAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
-    const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
+    const mnemonicAccount = mockMnemonicAccount(0);
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
+    const { result: addressKindRef } = renderHook(() => useAddressKind(mnemonicAccount.address), {
       wrapper: ReduxStore,
     });
     expect(addressKindRef.current).toEqual({
       type: "implicit",
-      pkh: implicitAccount0.address.pkh,
+      pkh: mnemonicAccount.address.pkh,
       label: "Account 0",
     });
   });
@@ -138,7 +143,7 @@ describe("useAddressKind", () => {
     ].forEach(({ type, address }) => {
       it(`prioritizes ${type} over the contact`, () => {
         store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
-        store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+        store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
         store.dispatch(
           tokensSlice.actions.addTokens({
             network: MAINNET,

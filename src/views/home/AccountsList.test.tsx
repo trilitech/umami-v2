@@ -4,6 +4,7 @@ import {
   mockAccountLabel,
   mockMultisigWithOperations,
   mockImplicitAddress,
+  mockMnemonicAccount,
 } from "../../mocks/factories";
 import { formatPkh } from "../../utils/format";
 import store from "../../utils/redux/store";
@@ -17,7 +18,7 @@ import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 
-const { addAccount } = accountsSlice.actions;
+const { addAccount, addMockMnemonicAccounts } = accountsSlice.actions;
 
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
@@ -27,7 +28,11 @@ const MOCK_FINGETPRINT2 = "mockFin2";
 describe("<AccountList />", () => {
   test("Displays accounts in store with label and formated pkh", async () => {
     store.dispatch(
-      addAccount([mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)])
+      addMockMnemonicAccounts([
+        mockMnemonicAccount(0),
+        mockMnemonicAccount(1),
+        mockMnemonicAccount(2),
+      ])
     );
 
     render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
@@ -192,27 +197,23 @@ const restore = async () => {
   );
 
   store.dispatch(
-    addAccount([
-      {
-        type: AccountType.SOCIAL,
-        idp: "google",
-        address: mockImplicitAddress(6),
-        pk: mockPk(6),
-        label: GOOGLE_ACCOUNT_LABEL1,
-      },
-    ])
+    addAccount({
+      type: AccountType.SOCIAL,
+      idp: "google",
+      address: mockImplicitAddress(6),
+      pk: mockPk(6),
+      label: GOOGLE_ACCOUNT_LABEL1,
+    })
   );
 
   store.dispatch(
-    addAccount([
-      {
-        type: AccountType.SOCIAL,
-        idp: "google",
-        address: mockImplicitAddress(7),
-        pk: mockPk(7),
-        label: GOOGLE_ACCOUNT_LABEL2,
-      },
-    ])
+    addAccount({
+      type: AccountType.SOCIAL,
+      idp: "google",
+      address: mockImplicitAddress(7),
+      pk: mockPk(7),
+      label: GOOGLE_ACCOUNT_LABEL2,
+    })
   );
 
   store.dispatch(

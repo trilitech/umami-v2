@@ -1,6 +1,10 @@
-import { mockImplicitAccount, mockMultisigAccount } from "../../mocks/factories";
+import {
+  mockLedgerAccount,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+  mockSocialAccount,
+} from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { AccountType } from "../../types/Account";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import store from "../../utils/redux/store";
@@ -8,25 +12,25 @@ import { AccountTile } from "./AccountTile";
 describe("<AccountTile />", () => {
   describe("icon and label", () => {
     it("mnemonic account", () => {
-      const implicitAccount0 = mockImplicitAccount(0);
-      store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
-      render(<AccountTile address={implicitAccount0.address.pkh} balance="3" />);
+      const mnemonicAccount = mockMnemonicAccount(0);
+      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mnemonicAccount]));
+      render(<AccountTile address={mnemonicAccount.address.pkh} balance="3" />);
       expect(screen.getByTestId("identicon")).toBeInTheDocument();
       expect(screen.getByText("Account 0")).toBeTruthy();
     });
 
     it("ledger account", () => {
-      const implicitAccount0 = mockImplicitAccount(0, AccountType.LEDGER);
-      store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
-      render(<AccountTile address={implicitAccount0.address.pkh} balance="3" />);
+      const ledgerAccount = mockLedgerAccount(0);
+      store.dispatch(accountsSlice.actions.addAccount(ledgerAccount));
+      render(<AccountTile address={ledgerAccount.address.pkh} balance="3" />);
       expect(screen.getByTestId("ledger-icon")).toBeInTheDocument();
       expect(screen.getByText("Account 0 ledger")).toBeTruthy();
     });
 
     it("social account", () => {
-      const implicitAccount0 = mockImplicitAccount(0, AccountType.SOCIAL);
-      store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
-      render(<AccountTile address={implicitAccount0.address.pkh} balance="3" />);
+      const socialAccount = mockSocialAccount(0);
+      store.dispatch(accountsSlice.actions.addAccount(socialAccount));
+      render(<AccountTile address={socialAccount.address.pkh} balance="3" />);
       expect(screen.getByTestId("social-icon")).toBeInTheDocument();
       expect(screen.getByText("google Account 0")).toBeTruthy();
     });

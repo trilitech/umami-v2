@@ -1,6 +1,6 @@
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
-import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
+import { mockImplicitAddress, mockMnemonicAccount } from "../../mocks/factories";
 import store from "../../utils/redux/store";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import TokensPage from "./TokensPage";
@@ -13,7 +13,7 @@ import { render, screen } from "../../mocks/testUtils";
 const fixture = () => <TokensPage />;
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 });
 
 describe("<TokensView />", () => {
@@ -24,7 +24,7 @@ describe("<TokensView />", () => {
 
   test.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
     store.dispatch(networksActions.setCurrent(network));
-    store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(1)]));
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(1)]));
     const tokenBalances = [
       hedgehoge(mockImplicitAddress(0)),
       hedgehoge(mockImplicitAddress(1)),

@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { mockDelegation, mockImplicitAccount } from "../../../mocks/factories";
+import { mockDelegation, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { SignPageProps } from "../utils";
@@ -17,7 +17,7 @@ const fixture = (props: SignPageProps) => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 });
 
 describe("<SignPage />", () => {

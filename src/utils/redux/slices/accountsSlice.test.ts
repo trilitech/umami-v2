@@ -1,4 +1,9 @@
-import { mockImplicitAccount } from "../../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockLedgerAccount,
+  mockMnemonicAccount,
+  mockSocialAccount,
+} from "../../../mocks/factories";
 import { fakeExtraArguments } from "../../../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../../../mocks/helpers";
 import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
@@ -13,7 +18,7 @@ import accountsSlice from "./accountsSlice";
 import { MAINNET } from "../../../types/Network";
 
 const {
-  actions: { addAccount, removeMnemonicAndAccounts },
+  actions: { addMockMnemonicAccounts, addAccount, removeMnemonicAndAccounts },
 } = accountsSlice;
 
 beforeEach(async () => {
@@ -34,13 +39,13 @@ describe("Accounts reducer", () => {
   });
 
   test("should handle adding accounts and arrays of accounts", () => {
-    store.dispatch(addAccount([mockImplicitAccount(1)]));
+    store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(1)]));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1)],
       seedPhrases: {},
     });
 
-    store.dispatch(addAccount([mockImplicitAccount(2), mockImplicitAccount(3)]));
+    store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(2), mockMnemonicAccount(3)]));
     expect(store.getState().accounts).toEqual({
       items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
       seedPhrases: {},
@@ -49,10 +54,14 @@ describe("Accounts reducer", () => {
 
   test("adding account should throw and exception if it is a pkh duplicate and not modify state", () => {
     store.dispatch(
-      addAccount([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)])
+      addMockMnemonicAccounts([
+        mockMnemonicAccount(1),
+        mockMnemonicAccount(2),
+        mockMnemonicAccount(3),
+      ])
     );
 
-    expect(() => store.dispatch(addAccount([mockImplicitAccount(2)]))).toThrowError(
+    expect(() => store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(2)]))).toThrowError(
       `Can't add account ${mockImplicitAccount(2).address.pkh} in store since it already exists.`
     );
 
@@ -98,13 +107,16 @@ describe("Accounts reducer", () => {
   });
 
   describe("removeNonMnemonicAccounts", () => {
-    const mnemonic = mockImplicitAccount(0);
-    const social1 = mockImplicitAccount(1, AccountType.SOCIAL);
-    const social2 = mockImplicitAccount(2, AccountType.SOCIAL);
-    const ledger = mockImplicitAccount(2, AccountType.LEDGER);
+    const mnemonic = mockMnemonicAccount(0);
+    const social1 = mockSocialAccount(1);
+    const social2 = mockSocialAccount(2);
+    const ledger = mockLedgerAccount(3);
 
     beforeEach(() => {
-      store.dispatch(addAccount([mnemonic, social1, social2, ledger]));
+      store.dispatch(addMockMnemonicAccounts([mnemonic]));
+      store.dispatch(addAccount(social1));
+      store.dispatch(addAccount(social2));
+      store.dispatch(addAccount(ledger));
     });
 
     it("does nothing for mnemonic account", async () => {

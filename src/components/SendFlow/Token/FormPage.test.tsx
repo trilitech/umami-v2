@@ -1,5 +1,10 @@
 import { Modal } from "@chakra-ui/react";
-import { mockFA2Token, mockFA2TokenRaw, mockImplicitAccount } from "../../../mocks/factories";
+import {
+  mockFA2Token,
+  mockFA2TokenRaw,
+  mockImplicitAccount,
+  mockMnemonicAccount,
+} from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import FormPage, { FormValues } from "./FormPage";
 import { FormPagePropsWithSender } from "../utils";
@@ -16,7 +21,7 @@ import SignPage from "./SignPage";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 import assetsSlice from "../../../utils/redux/slices/assetsSlice";
 
-const mockAccount = mockImplicitAccount(0);
+const mockAccount = mockMnemonicAccount(0);
 const mocktTokenRaw = mockFA2TokenRaw(0, mockAccount.address.pkh);
 const mockToken = mockFA2Token(0, mockAccount);
 const fixture = (
@@ -176,7 +181,7 @@ describe("<FormPage />", () => {
 
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
-        store.dispatch(accountsSlice.actions.addAccount([mockAccount]));
+        store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockAccount]));
         store.dispatch(assetsSlice.actions.updateTokenBalance([mocktTokenRaw]));
         const sender = mockAccount;
         render(

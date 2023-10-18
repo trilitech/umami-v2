@@ -2,6 +2,7 @@ import {
   mockFA1TokenRaw,
   mockImplicitAccount,
   mockImplicitAddress,
+  mockMnemonicAccount,
   mockNFTToken,
 } from "../../mocks/factories";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
@@ -30,11 +31,11 @@ import {
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { mockDelegation } from "../../mocks/factories";
 const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
-const { addAccount } = accountsSlice.actions;
+const { addMockMnemonicAccounts } = accountsSlice.actions;
 
 const { setMultisigs } = multisigsSlice.actions;
 
-const selectedAccount = mockImplicitAccount(0);
+const selectedAccount = mockMnemonicAccount(0);
 
 const pkh = selectedAccount.address.pkh;
 const mockNft = mockNFTToken(0, pkh);
@@ -43,7 +44,7 @@ const SELECTED_ACCOUNT_BALANCE = 33200000000;
 beforeEach(() => {
   store.dispatch(networksActions.setCurrent(MAINNET));
   store.dispatch(setMultisigs(multisigs));
-  store.dispatch(addAccount([selectedAccount, mockImplicitAccount(1)]));
+  store.dispatch(addMockMnemonicAccounts([selectedAccount, mockMnemonicAccount(1)]));
   store.dispatch(updateTezBalance([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }]));
   store.dispatch(
     updateTokenBalance([

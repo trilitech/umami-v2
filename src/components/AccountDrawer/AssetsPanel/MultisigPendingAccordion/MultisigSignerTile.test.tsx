@@ -1,4 +1,8 @@
-import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+} from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 import MultisigSignerTile from "./MultisigSignerTile";
 
@@ -6,12 +10,12 @@ import store from "../../../../utils/redux/store";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
-const { addAccount } = accountsSlice.actions;
+const { addMockMnemonicAccounts } = accountsSlice.actions;
 
-const signer = mockImplicitAccount(0);
+const signer = mockMnemonicAccount(0);
 describe("<MultisigSignerTile/>", () => {
   beforeEach(() => {
-    store.dispatch(addAccount([signer]));
+    store.dispatch(addMockMnemonicAccounts([signer]));
   });
 
   it("should display a button for non-pending operation with signer included in the account", () => {

@@ -1,5 +1,9 @@
 import { renderHook } from "@testing-library/react";
-import { mockImplicitAccount, mockMultisigAccount } from "../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+} from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import accountsSlice from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
@@ -11,19 +15,19 @@ import { AllTheProviders } from "../../mocks/testUtils";
 describe("accountHooks", () => {
   describe("useGetBestSignerForAccount", () => {
     it("returns the account itself for implicit accounts", () => {
-      const account = mockImplicitAccount(0);
+      const account = mockMnemonicAccount(0);
 
-      store.dispatch(accountsSlice.actions.addAccount([account]));
+      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
       const { result } = renderHook(() => useGetBestSignerForAccount(), { wrapper: ReduxStore });
       expect(result.current(account)).toEqual(account);
     });
 
     it("returns the signer with the biggest balance for multisig accounts", () => {
-      const signers = [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)];
+      const signers = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
       const multisig = { ...mockMultisigAccount(0), signers: signers.map(s => s.address) };
 
-      store.dispatch(accountsSlice.actions.addAccount(signers));
+      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(signers));
       store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
 
       store.dispatch(
@@ -39,7 +43,7 @@ describe("accountHooks", () => {
   });
 
   test("useIsOwnedAddress", () => {
-    store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 
     let view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh), {
       wrapper: AllTheProviders,
