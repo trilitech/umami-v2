@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AccountType, ImplicitAccount } from "../../../types/Account";
+import {
+  AccountType,
+  ImplicitAccount,
+  LedgerAccount,
+  MnemonicAccount,
+  SocialAccount,
+} from "../../../types/Account";
 import { EncryptedData } from "../../crypto/types";
 import changeMnemonicPassword from "../thunks/changeMnemonicPassword";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
@@ -58,7 +64,12 @@ const accountsSlice = createSlice({
         return account.type === AccountType.MNEMONIC || account.type !== payload.accountType;
       });
     },
-    addAccount: (state, { payload }: { type: string; payload: ImplicitAccount[] }) => {
+    // To add mnemonic accounts, use the `restoreFromMnemonic` and `deriveAccount` thunk.
+    addAccount: (state, { payload }: { type: string; payload: SocialAccount | LedgerAccount }) => {
+      state.items = concatUnique(state.items, [payload]);
+    },
+    // Use only for testing purpose
+    addMockMnemonicAccounts: (state, { payload }: { type: string; payload: MnemonicAccount[] }) => {
       state.items = concatUnique(state.items, payload);
     },
   },

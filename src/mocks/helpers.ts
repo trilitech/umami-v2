@@ -16,8 +16,8 @@ export const fillPassword = (value: string) => {
   fireEvent.change(passwordInput, { target: { value } });
 };
 
-export const dispatchMockAccounts = (accounts: ImplicitAccount[]) => {
-  store.dispatch(accountsSlice.actions.addAccount(accounts));
+export const dispatchMockAccounts = (accounts: MnemonicAccount[]) => {
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(accounts));
 };
 
 export const fakeRestoreFromMnemonic = createAsyncThunk(

@@ -144,6 +144,15 @@ export const mockImplicitAccount = (
   throw new Error("Can't mock mulitisig accounts yet!");
 };
 
+export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint") =>
+  mockImplicitAccount(index, AccountType.MNEMONIC, fingerPrint) as MnemonicAccount;
+
+export const mockSocialAccount = (index: number, fingerPrint = "mockPrint") =>
+  mockImplicitAccount(index, AccountType.SOCIAL, fingerPrint) as SocialAccount;
+
+export const mockLedgerAccount = (index: number, fingerPrint = "mockPrint") =>
+  mockImplicitAccount(index, AccountType.LEDGER, fingerPrint) as LedgerAccount;
+
 export const mockMultisigAccount = (index: number): MultisigAccount => {
   return {
     type: AccountType.MULTISIG,
