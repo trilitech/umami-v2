@@ -1,5 +1,5 @@
 import { makeAccountOperations } from "../../types/AccountOperations";
-import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
+import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
@@ -15,7 +15,7 @@ jest.mock("../../utils/tezos");
 const useGetSecretKeyMock = jest.mocked(useGetSecretKey);
 
 beforeEach(() => {
-  dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
+  dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)]);
   mockEstimatedFee(10);
 
   useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");

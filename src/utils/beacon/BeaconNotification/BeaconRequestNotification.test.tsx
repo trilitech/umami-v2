@@ -7,7 +7,7 @@ import {
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 import { BeaconNotification } from ".";
-import { mockImplicitAccount } from "../../../mocks/factories";
+import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { walletClient } from "../beacon";
@@ -34,7 +34,7 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 beforeEach(() => {
   mockEstimatedFee(10);
   jest.mocked(executeOperations).mockResolvedValue({ opHash: BATCH_OP_HASH.opHash });
-  dispatchMockAccounts([mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)]);
+  dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)]);
 });
 
 describe("<BeaconRequestNotification />", () => {

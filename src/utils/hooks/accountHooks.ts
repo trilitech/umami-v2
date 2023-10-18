@@ -99,7 +99,7 @@ export const useRestoreLedger = () => {
       address: { type: "implicit", pkh },
       label,
     };
-    dispatch(addAccount([account]));
+    dispatch(addAccount(account));
   };
 };
 
@@ -113,7 +113,7 @@ export const useRestoreSocial = () => {
       idp: "google",
       label,
     };
-    dispatch(addAccount([account]));
+    dispatch(addAccount(account));
   };
 };
 

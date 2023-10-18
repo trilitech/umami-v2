@@ -1,8 +1,8 @@
 import MultisigPendingAccordion from ".";
-import { mockImplicitAccount, mockMultisigAccount } from "../../../../mocks/factories";
+import { mockMnemonicAccount, mockMultisigAccount } from "../../../../mocks/factories";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
-import { ImplicitAccount } from "../../../../types/Account";
+import { MnemonicAccount } from "../../../../types/Account";
 import { parseContractPkh, parseImplicitPkh } from "../../../../types/Address";
 import { useGetSecretKey } from "../../../../utils/hooks/accountUtils";
 import { multisigToAccount } from "../../../../utils/multisig/helpers";
@@ -38,12 +38,12 @@ describe("<MultisigPendingAccordion />", () => {
     store.dispatch(multisigsSlice.actions.setMultisigs([m]));
     store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
 
-    const mockAccount: ImplicitAccount = {
-      ...mockImplicitAccount(0),
+    const mockAccount: MnemonicAccount = {
+      ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
 
-    store.dispatch(accountsSlice.actions.addAccount([mockAccount]));
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockAccount]));
 
     render(<MultisigPendingAccordion account={multisigAccount} />);
 

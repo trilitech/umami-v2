@@ -1,14 +1,14 @@
 import { Accordion } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import {
-  mockImplicitAccount,
   mockImplicitAddress,
+  mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../../mocks/factories";
 import { fillPassword } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
-import { ImplicitAccount } from "../../../../types/Account";
+import { ImplicitAccount, MnemonicAccount } from "../../../../types/Account";
 import { parseImplicitPkh } from "../../../../types/Address";
 import { useGetSecretKey } from "../../../../utils/hooks/accountUtils";
 import { MultisigOperation } from "../../../../utils/multisig/types";
@@ -70,8 +70,8 @@ describe("<MultisigPendingAccordionItem/>", () => {
   });
 
   test("User can accomplish a proposal execution", async () => {
-    const account: ImplicitAccount = {
-      ...mockImplicitAccount(0),
+    const account: MnemonicAccount = {
+      ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
     jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
@@ -80,7 +80,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
       opHash: "mockHash",
     });
 
-    store.dispatch(accountsSlice.actions.addAccount([account]));
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
     const executablePendingOp: MultisigOperation = pendingOps[0];
     const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
@@ -120,7 +120,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
   test("User can accomplish a proposal approval", async () => {
     const signer: ImplicitAccount = {
-      ...mockImplicitAccount(0),
+      ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
 
@@ -130,7 +130,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
       opHash: "mockHash",
     });
 
-    store.dispatch(accountsSlice.actions.addAccount([signer]));
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([signer]));
     const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
     const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
     render(

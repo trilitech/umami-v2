@@ -2,6 +2,7 @@ import { Modal } from "@chakra-ui/react";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
+  mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
@@ -65,7 +66,7 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
       store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
     });
 

@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { mockFA2Token, mockImplicitAccount } from "../../../mocks/factories";
+import { mockFA2Token, mockMnemonicAccount, mockImplicitAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { SignPageProps } from "../utils";
@@ -18,10 +18,10 @@ const fixture = (props: SignPageProps<{ token: FATokenBalance }>) => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 });
 
-const mockAccount = mockImplicitAccount(0);
+const mockAccount = mockMnemonicAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);

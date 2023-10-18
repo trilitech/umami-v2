@@ -2,6 +2,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
+  mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../mocks/factories";
 import { render, renderHook, screen } from "../../mocks/testUtils";
@@ -28,7 +29,10 @@ describe("OperationSignerSelector", () => {
   describe("proposal operations", () => {
     it("allows only owned multisig signers to be chosen", () => {
       store.dispatch(
-        accountsSlice.actions.addAccount([mockImplicitAccount(0), mockImplicitAccount(1)])
+        accountsSlice.actions.addMockMnemonicAccounts([
+          mockMnemonicAccount(0),
+          mockMnemonicAccount(1),
+        ])
       );
       const multisigAccount: MultisigAccount = {
         ...mockMultisigAccount(0),

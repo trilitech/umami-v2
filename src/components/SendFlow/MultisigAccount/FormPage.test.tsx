@@ -4,6 +4,7 @@ import {
   mockContractAddress,
   mockImplicitAccount,
   mockImplicitAddress,
+  mockMnemonicAccount,
 } from "../../../mocks/factories";
 import { FormPage, FormValues } from "./FormPage";
 import store from "../../../utils/redux/store";
@@ -28,7 +29,7 @@ const fixture = (formValues?: FormValues) => {
 };
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 });
 
 describe("FormPage", () => {

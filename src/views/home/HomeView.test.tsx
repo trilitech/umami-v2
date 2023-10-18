@@ -1,11 +1,11 @@
-import { mockImplicitAccount } from "../../mocks/factories";
+import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { dispatchMockAccounts } from "../../mocks/helpers";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 import { getCombinedOperations, getLastDelegation, getTokenTransfers } from "../../utils/tezos";
 import HomeView from "./HomeView";
 
 beforeEach(() => {
-  dispatchMockAccounts([mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)]);
+  dispatchMockAccounts([mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)]);
   jest.mocked(getCombinedOperations).mockResolvedValue([]);
   jest.mocked(getTokenTransfers).mockResolvedValue([]);
   jest.mocked(getLastDelegation).mockResolvedValue(undefined);

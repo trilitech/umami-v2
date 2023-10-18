@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockNFT } from "../../../mocks/factories";
+import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { SignPageProps } from "../utils";
@@ -18,7 +18,7 @@ const fixture = (props: SignPageProps<{ nft: NFTBalance }>) => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 });
 
 describe("<SignPage />", () => {

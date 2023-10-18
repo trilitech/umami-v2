@@ -1,5 +1,11 @@
 import { renderHook } from "@testing-library/react";
-import { mockBaker, mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
+import {
+  mockBaker,
+  mockImplicitAddress,
+  mockLedgerAccount,
+  mockMnemonicAccount,
+  mockSocialAccount,
+} from "../../mocks/factories";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
@@ -9,45 +15,44 @@ import contactsSlice from "../../utils/redux/slices/contactsSlice";
 import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import store from "../../utils/redux/store";
 import useAddressKind from "./useAddressKind";
-import { AccountType } from "../../types/Account";
 import { multisigs } from "../../mocks/multisig";
 
 describe("useAddressKind", () => {
   it("returns mnemonic account", () => {
-    const implicitAccount0 = mockImplicitAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
-    const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
+    const account = mockMnemonicAccount(0);
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address), {
       wrapper: ReduxStore,
     });
     expect(addressKindRef.current).toEqual({
       type: "mnemonic",
-      pkh: implicitAccount0.address.pkh,
+      pkh: account.address.pkh,
       label: "Account 0",
     });
   });
 
   it("returns social account", () => {
-    const implicitAccount0 = mockImplicitAccount(0, AccountType.SOCIAL);
-    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
-    const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
+    const account = mockSocialAccount(0);
+    store.dispatch(accountsSlice.actions.addAccount(account));
+    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address), {
       wrapper: ReduxStore,
     });
     expect(addressKindRef.current).toEqual({
       type: "social",
-      pkh: implicitAccount0.address.pkh,
+      pkh: account.address.pkh,
       label: "google Account 0",
     });
   });
 
   it("returns ledter account", () => {
-    const implicitAccount0 = mockImplicitAccount(0, AccountType.LEDGER);
-    store.dispatch(accountsSlice.actions.addAccount([implicitAccount0]));
-    const { result: addressKindRef } = renderHook(() => useAddressKind(implicitAccount0.address), {
+    const account = mockLedgerAccount(0);
+    store.dispatch(accountsSlice.actions.addAccount(account));
+    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address), {
       wrapper: ReduxStore,
     });
     expect(addressKindRef.current).toEqual({
       type: "ledger",
-      pkh: implicitAccount0.address.pkh,
+      pkh: account.address.pkh,
       label: "Account 0 ledger",
     });
   });

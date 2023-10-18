@@ -1,5 +1,9 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+} from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -118,7 +122,7 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
+      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
       store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
     });
 

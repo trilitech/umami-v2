@@ -1,15 +1,14 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import MasterPassword from "./MasterPassword";
 import { ReduxStore } from "../../../providers/ReduxStore";
-import { mockImplicitAccount } from "../../../mocks/factories";
+import { mockMnemonicAccount } from "../../../mocks/factories";
 import store from "../../../utils/redux/store";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 
 const onClose = jest.fn(() => {});
 
-const { addAccount } = accountsSlice.actions;
-const account = mockImplicitAccount(0);
+const account = mockMnemonicAccount(0);
 
 const fixture = () => {
   const account = {
@@ -35,7 +34,7 @@ describe("<MasterPassword />", () => {
   });
 
   test("Display enter password", async () => {
-    store.dispatch(addAccount([account]));
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
     render(fixture());
     const confirmation = screen.getByTestId("confirmation");
     await waitFor(() => {
