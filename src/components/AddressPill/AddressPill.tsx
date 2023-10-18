@@ -83,7 +83,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
             data-testid="address-pill-left-icon"
             addressKind={addressKind}
             ml={2}
-            stroke={iconColor}
+            fill={iconColor}
           />
         )}
 
