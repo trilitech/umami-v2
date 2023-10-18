@@ -6,12 +6,12 @@ import MultisigActionButton from "./MultisigSignerTile";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
-const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount } = accountsSlice.actions;
 const account = mockSocialOrLedgerAccount(0);
 
 describe("<ActionButton/>", () => {
   it("should display execute for non-pending operation with signer included in the owned account", () => {
-    store.dispatch(addAccount([account]));
+    store.dispatch(addNonMnemonicAccount([account]));
     render(
       <MultisigActionButton
         signerAddress={account.address}
@@ -24,7 +24,7 @@ describe("<ActionButton/>", () => {
   });
 
   it("should display approve for pending operation with signer included in the owned account", () => {
-    store.dispatch(addAccount([account]));
+    store.dispatch(addNonMnemonicAccount([account]));
     render(
       <MultisigActionButton
         signerAddress={account.address}
@@ -37,7 +37,7 @@ describe("<ActionButton/>", () => {
   });
 
   it("should show approved for pending operation with signers included in the account that already approved", () => {
-    store.dispatch(addAccount([account]));
+    store.dispatch(addNonMnemonicAccount([account]));
     const operation = { ...pendingOps[0], approvals: [account.address] };
     render(
       <MultisigActionButton

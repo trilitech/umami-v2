@@ -6,7 +6,7 @@ import checkAccountsAndUpsertContact from "../thunks/checkAccountsAndUpsertConta
 import accountsSlice from "./accountsSlice";
 import { contactsActions } from "./contactsSlice";
 const { remove } = contactsActions;
-const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount } = accountsSlice.actions;
 
 describe("Contacts reducer", () => {
   test("store should initialize with empty state", () => {
@@ -70,7 +70,7 @@ describe("Contacts reducer", () => {
 
   test("should not add contact containing Account info", () => {
     const account = mockSocialOrLedgerAccount(0);
-    store.dispatch(addAccount([account]));
+    store.dispatch(addNonMnemonicAccount([account]));
     store.dispatch(
       checkAccountsAndUpsertContact({ name: account.label, pkh: account.address.pkh })
     );

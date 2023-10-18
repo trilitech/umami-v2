@@ -8,7 +8,7 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 
 const onClose = jest.fn(() => {});
 
-const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount } = accountsSlice.actions;
 const account = mockSocialOrLedgerAccount(0);
 
 const fixture = () => {
@@ -35,7 +35,7 @@ describe("<MasterPassword />", () => {
   });
 
   test("Display enter password", async () => {
-    store.dispatch(addAccount([account]));
+    store.dispatch(addNonMnemonicAccount([account]));
     render(fixture());
     const confirmation = screen.getByTestId("confirmation");
     await waitFor(() => {

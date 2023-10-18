@@ -13,7 +13,7 @@ import accountsSlice from "./accountsSlice";
 import { MAINNET } from "../../../types/Network";
 
 const {
-  actions: { addNonMnemonicAccount: addAccount, removeMnemonicAndAccounts },
+  actions: { addNonMnemonicAccount, removeMnemonicAndAccounts },
 } = accountsSlice;
 
 beforeEach(async () => {
@@ -34,13 +34,15 @@ describe("Accounts reducer", () => {
   });
 
   test("should handle adding accounts and arrays of accounts", () => {
-    store.dispatch(addAccount([mockSocialOrLedgerAccount(1)]));
+    store.dispatch(addNonMnemonicAccount([mockSocialOrLedgerAccount(1)]));
     expect(store.getState().accounts).toEqual({
       items: [mockSocialOrLedgerAccount(1)],
       seedPhrases: {},
     });
 
-    store.dispatch(addAccount([mockSocialOrLedgerAccount(2), mockSocialOrLedgerAccount(3)]));
+    store.dispatch(
+      addNonMnemonicAccount([mockSocialOrLedgerAccount(2), mockSocialOrLedgerAccount(3)])
+    );
     expect(store.getState().accounts).toEqual({
       items: [
         mockSocialOrLedgerAccount(1),
@@ -53,14 +55,16 @@ describe("Accounts reducer", () => {
 
   test("adding account should throw and exception if it is a pkh duplicate and not modify state", () => {
     store.dispatch(
-      addAccount([
+      addNonMnemonicAccount([
         mockSocialOrLedgerAccount(1),
         mockSocialOrLedgerAccount(2),
         mockSocialOrLedgerAccount(3),
       ])
     );
 
-    expect(() => store.dispatch(addAccount([mockSocialOrLedgerAccount(2)]))).toThrowError(
+    expect(() =>
+      store.dispatch(addNonMnemonicAccount([mockSocialOrLedgerAccount(2)]))
+    ).toThrowError(
       `Can't add account ${
         mockSocialOrLedgerAccount(2).address.pkh
       } in store since it already exists.`
@@ -118,7 +122,7 @@ describe("Accounts reducer", () => {
     const ledger = mockImplicitAccount(2, AccountType.LEDGER);
 
     beforeEach(() => {
-      store.dispatch(addAccount([mnemonic as any, social1, social2, ledger]));
+      store.dispatch(addNonMnemonicAccount([mnemonic as any, social1, social2, ledger]));
     });
 
     it("does nothing for mnemonic account", async () => {

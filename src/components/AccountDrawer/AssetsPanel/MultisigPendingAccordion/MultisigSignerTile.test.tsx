@@ -10,12 +10,12 @@ import store from "../../../../utils/redux/store";
 import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
-const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount } = accountsSlice.actions;
 
 const signer = mockSocialOrLedgerAccount(0);
 describe("<MultisigSignerTile/>", () => {
   beforeEach(() => {
-    store.dispatch(addAccount([signer]));
+    store.dispatch(addNonMnemonicAccount([signer]));
   });
 
   it("should display a button for non-pending operation with signer included in the account", () => {

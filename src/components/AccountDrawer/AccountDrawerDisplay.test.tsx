@@ -31,7 +31,7 @@ import {
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { mockDelegation } from "../../mocks/factories";
 const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
-const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount } = accountsSlice.actions;
 
 const { setMultisigs } = multisigsSlice.actions;
 
@@ -44,7 +44,7 @@ const SELECTED_ACCOUNT_BALANCE = 33200000000;
 beforeEach(() => {
   store.dispatch(networksActions.setCurrent(MAINNET));
   store.dispatch(setMultisigs(multisigs));
-  store.dispatch(addAccount([selectedAccount, mockSocialOrLedgerAccount(1)]));
+  store.dispatch(addNonMnemonicAccount([selectedAccount, mockSocialOrLedgerAccount(1)]));
   store.dispatch(updateTezBalance([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }]));
   store.dispatch(
     updateTokenBalance([

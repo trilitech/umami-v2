@@ -18,7 +18,7 @@ import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 
-const { addNonMnemonicAccount: addAccount } = accountsSlice.actions;
+const { addNonMnemonicAccount } = accountsSlice.actions;
 
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
@@ -28,7 +28,7 @@ const MOCK_FINGETPRINT2 = "mockFin2";
 describe("<AccountList />", () => {
   test("Displays accounts in store with label and formated pkh", async () => {
     store.dispatch(
-      addAccount([
+      addNonMnemonicAccount([
         mockSocialOrLedgerAccount(0),
         mockSocialOrLedgerAccount(1),
         mockSocialOrLedgerAccount(2),
@@ -197,7 +197,7 @@ const restore = async () => {
   );
 
   store.dispatch(
-    addAccount([
+    addNonMnemonicAccount([
       {
         type: AccountType.SOCIAL,
         idp: "google",
@@ -209,7 +209,7 @@ const restore = async () => {
   );
 
   store.dispatch(
-    addAccount([
+    addNonMnemonicAccount([
       {
         type: AccountType.SOCIAL,
         idp: "google",
