@@ -1,28 +1,23 @@
-import { render, screen } from "@testing-library/react";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
-import { ReduxStore } from "../../providers/ReduxStore";
 import store from "../../utils/redux/store";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import TokensView from "./TokensView";
+import TokensPage from "./TokensPage";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import { DefaultNetworks } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
+import { render, screen } from "../../mocks/testUtils";
 
-const fixture = () => (
-  <ReduxStore>
-    <TokensView />
-  </ReduxStore>
-);
+const fixture = () => <TokensPage />;
 
 beforeEach(() => {
   store.dispatch(accountsSlice.actions.addAccount([mockImplicitAccount(0)]));
 });
 
 describe("<TokensView />", () => {
-  it("a message 'no tokens found' is displayed", () => {
+  it("renders 'no tokens found' when there are no tokens", () => {
     render(fixture());
     expect(screen.getByText(/no tokens found/i)).toBeInTheDocument();
   });

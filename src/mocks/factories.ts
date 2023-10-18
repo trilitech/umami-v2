@@ -9,7 +9,7 @@ import {
   Account,
 } from "../types/Account";
 import { ContractAddress, ImplicitAddress } from "../types/Address";
-import { FA2TokenBalance, NFTBalance, fromRaw } from "../types/TokenBalance";
+import { FA12TokenBalance, FA2TokenBalance, NFTBalance, fromRaw } from "../types/TokenBalance";
 import { Contact } from "../types/Contact";
 import { TezTransfer as TzktTezTransfer, TokenTransfer } from "../types/Transfer";
 import { RawTokenBalance } from "../types/TokenBalance";
@@ -226,6 +226,9 @@ export const mockFA2Token = (
   fromRaw(
     mockFA2TokenRaw(index, account.address.pkh, balance, decimals, symbol, name)
   ) as FA2TokenBalance;
+
+export const mockFA12Token = (index: number, account: Account, balance = 1): FA12TokenBalance =>
+  fromRaw(mockFA1TokenRaw(index, account.address.pkh, balance)) as FA12TokenBalance;
 
 export const mockFA2TokenRaw = (
   index: number,

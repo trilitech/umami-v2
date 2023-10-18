@@ -3,9 +3,9 @@ import { useAccountsFilter } from "../../components/useAccountsFilter";
 import NoItems from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useGetAccountAllTokens } from "../../utils/hooks/assetsHooks";
-import AccountTokensTile from "./AccountTokensTile";
+import AccountTokens from "./AccountTokens";
 
-const TokensView = () => {
+const TokensPage = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
 
   const getTokens = useGetAccountAllTokens();
@@ -21,9 +21,9 @@ const TokensView = () => {
       {accountsWithTokens.length === 0 ? (
         <NoItems text="No Tokens found" />
       ) : (
-        <Box overflow="auto">
+        <Box overflowY="auto">
           {accountsWithTokens.map(([account, tokens]) => (
-            <AccountTokensTile key={account.address.pkh} tokens={tokens} account={account} />
+            <AccountTokens key={account.address.pkh} tokens={tokens} account={account} />
           ))}
         </Box>
       )}
@@ -31,4 +31,4 @@ const TokensView = () => {
   );
 };
 
-export default TokensView;
+export default TokensPage;

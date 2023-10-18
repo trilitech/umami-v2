@@ -19,7 +19,7 @@ import HelpView from "./views/help/HelpView";
 import AddressBookView from "./views/addressBook/AddressBookView";
 import BatchPage from "./views/batch/BatchPage";
 import { BeaconProvider, resetBeacon } from "./utils/beacon/beacon";
-import TokensView from "./views/tokens/TokensView";
+import TokensPage from "./views/tokens/TokensPage";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
@@ -51,7 +51,7 @@ const MemoizedRouter = React.memo(() => {
             <Route path="/nfts" element={withSideMenu(<NFTsView />)} />
             <Route path="/nfts/:ownerPkh/:nftId" element={withSideMenu(<NFTsView />)} />
             <Route path="/operations" element={withSideMenu(<OperationsView />)} />
-            <Route path="/tokens" element={withSideMenu(<TokensView />)} />
+            <Route path="/tokens" element={withSideMenu(<TokensPage />)} />
             <Route path="/address-book" element={withSideMenu(<AddressBookView />)} />
             <Route path="/settings" element={withSideMenu(<SettingsView />)} />
             <Route path="/help" element={withSideMenu(<HelpView />)} />
