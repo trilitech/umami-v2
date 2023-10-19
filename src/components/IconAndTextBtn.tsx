@@ -14,7 +14,9 @@ type Props = {
   textMargin?: string;
 } & FlexProps;
 
-// TODO: Replace with a proper button
+/**
+ * @deprecated To be replaced with a proper button
+ */
 export const IconAndTextBtn: React.FC<Props> = ({
   icon,
   onClick = () => {},

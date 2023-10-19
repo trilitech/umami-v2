@@ -11,21 +11,23 @@ import { useBatches } from "../../utils/hooks/batchesHooks";
 import ExternalLinkIcon from "../../assets/icons/ExternalLink";
 import { ExternalLink } from "../../components/ExternalLink";
 
-export const FilterController: React.FC<{ batchPending: number }> = props => {
+export const FilterController = ({ batchPending }: { batchPending: number }) => {
   return (
     <Flex alignItems="center" mb="24px" mt="24px">
       <Heading size="sm" color={colors.orangeL} flex={1}>
-        {props.batchPending} Pending
+        {batchPending} Pending
       </Heading>
       <CSVFileUploader />
       <ExternalLink
-        ml="24px"
+        ml="8px"
         href="https://github.com/trilitech/umami-v2/blob/main/doc/Batch-File-Format-Specifications.md"
       >
-        <Text mr="4px" size="sm" color={colors.gray[400]}>
-          See file specs
-        </Text>
-        <ExternalLinkIcon />
+        <Button variant="CTAWithIcon" paddingRight="0">
+          <Text mr="4px" size="sm">
+            See file specs
+          </Text>
+          <ExternalLinkIcon stroke="currentcolor" />
+        </Button>
       </ExternalLink>
     </Flex>
   );

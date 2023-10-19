@@ -1,4 +1,4 @@
-import { Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import React from "react";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
@@ -47,10 +47,12 @@ export const AssetsPanel: React.FC<{
         </Flex>
 
         <ExternalLink href={buildTzktAddressUrl(network, account.address.pkh)}>
-          <Text mr="7px" size="sm" color={colors.gray[300]}>
-            View on Tzkt
-          </Text>
-          <ExternalLinkIcon />
+          <Button variant="CTAWithIcon" paddingRight={0}>
+            <Text mr="7px" size="sm">
+              View on Tzkt
+            </Text>
+            <ExternalLinkIcon stroke="currentcolor" />
+          </Button>
         </ExternalLink>
       </TabList>
       <TabPanels height="100%">

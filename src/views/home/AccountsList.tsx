@@ -12,7 +12,6 @@ import { compact, groupBy } from "lodash";
 import { useContext } from "react";
 import KeyIcon from "../../assets/icons/Key";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import NestedScroll from "../../components/NestedScroll";
 import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
 import { AccountType, Account } from "../../types/Account";
@@ -35,17 +34,14 @@ import AddAccountIcon from "../../assets/icons/AddAccount";
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
   return (
-    <Flex justifyContent="space-between" mt={4} mb={4}>
+    <Flex justifyContent="space-between" marginY="16px">
       <Heading size="lg">All Accounts</Heading>
-      <IconAndTextBtn
-        onClick={onOpen}
-        label="Add Account"
-        color={colors.gray[300]}
-        icon={AddAccountIcon}
-        iconWidth="18px"
-        iconHeight="18px"
-        textMargin="4px"
-      />
+      <Button variant="CTAWithIcon" onClick={onOpen} paddingRight="0">
+        <AddAccountIcon stroke="currentcolor" />
+        <Text ml="4px" size="sm">
+          Add Account
+        </Text>
+      </Button>
       {modalElement}
     </Flex>
   );
