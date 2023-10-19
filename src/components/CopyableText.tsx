@@ -1,10 +1,10 @@
 import { Flex, FlexProps, Icon, Text, useToast } from "@chakra-ui/react";
 import React from "react";
 import { BsCheckCircle } from "react-icons/bs";
-import { MdCopyAll } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import colors from "../style/colors";
 import { formatPkh } from "../utils/format";
+import FileCopyIcon from "../assets/icons/FileCopy";
 
 const TOAST_ID = "TOAST_ID";
 
@@ -61,21 +61,17 @@ const CopyableText: React.FC<
 
   return (
     <Flex alignItems="center" {...rest}>
-      <Text size="sm" color={colors.gray[400]}>
+      <Text size="sm" color={colors.gray[400]} mr="6px">
         {displayText}
       </Text>
       {copyValue && (
-        <Icon
+        <FileCopyIcon
           cursor="pointer"
           onClick={() => onClickCopyIcon()}
-          color={iconColor}
           _hover={{
-            color: colors.gray[300],
+            stroke: colors.green,
           }}
-          w={4}
-          h={4}
-          ml={2}
-          as={MdCopyAll}
+          stroke={colors.gray[450]}
         />
       )}
     </Flex>

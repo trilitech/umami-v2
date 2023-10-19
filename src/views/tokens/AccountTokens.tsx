@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   Flex,
   Heading,
@@ -24,7 +23,7 @@ import TokenIcon from "../../assets/icons/Token";
 import { AccountBalance } from "../../components/AccountBalance";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { parseContractPkh } from "../../types/Address";
-import OutgoingArrow from "../../assets/icons/OutgoingArrow";
+import SendButton from "../../components/SendButton";
 
 const Header: React.FC<{
   account: Account;
@@ -94,17 +93,11 @@ const AccountTokens: React.FC<{
                     </Heading>
                   </Td>
                   <Td textAlign="right" paddingX="0" borderColor={rowBorderColor}>
-                    <Button
-                      variant="specialCTA"
-                      width="60px"
-                      color={colors.greenL}
+                    <SendButton
                       onClick={() => {
                         openWith(<SendTokenFormPage sender={account} token={token} />);
                       }}
-                    >
-                      <OutgoingArrow stroke="currentcolor" />
-                      <Text ml="4px">Send</Text>
-                    </Button>
+                    />
                   </Td>
                 </Tr>
               );

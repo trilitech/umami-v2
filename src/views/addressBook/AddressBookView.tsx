@@ -1,7 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { TbFilter } from "react-icons/tb";
-import { RiContactsLine } from "react-icons/ri";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { Flex, IconButton, Text } from "@chakra-ui/react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import ContactTable from "./ContactTable";
@@ -9,25 +6,29 @@ import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
+import AddContactIcon from "../../assets/icons/AddContact";
 
-const FilterController: React.FC = () => {
+const AddContact: React.FC = () => {
   const { openWith } = useContext(DynamicModalContext);
   return (
-    <Flex alignItems="center" justifyContent="space-between" mb={4} mt={4}>
-      <IconAndTextBtn icon={TbFilter} label="Filter" />
-
-      <IconAndTextBtn
-        icon={RiContactsLine}
-        label="Add Contact"
-        color={colors.green}
-        cursor="pointer"
-        _hover={{
-          color: colors.greenL,
-        }}
+    <Flex alignItems="center" justifyContent="end" mb="16px" mt="16px" cursor="pointer">
+      <IconButton
+        aria-label="add contact"
+        variant="specialCTA"
         onClick={() =>
           openWith(<UpsertContactModal title="Add contact" buttonText="Add to Contact" />)
         }
+        icon={<AddContactIcon stroke="currentcolor" />}
       />
+
+      <Text
+        color={colors.greenL}
+        _hover={{
+          color: colors.green,
+        }}
+      >
+        Add contact
+      </Text>
     </Flex>
   );
 };
@@ -38,10 +39,8 @@ export default function AddressBookView() {
     <Flex direction="column" height="100%">
       <TopBar title="Address Book" />
 
-      <FilterController />
-      <Box overflow="scroll" pb={4}>
-        <ContactTable contacts={contacts} />
-      </Box>
+      <AddContact />
+      <ContactTable contacts={contacts} />
     </Flex>
   );
 }

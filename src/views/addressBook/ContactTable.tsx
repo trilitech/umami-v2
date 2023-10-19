@@ -1,56 +1,57 @@
-import { Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
+import { Box, Flex, Table, Text, Tbody, Td, Tr, TableContainer } from "@chakra-ui/react";
 import { Contact } from "../../types/Contact";
 import { CopyableAddress } from "../../components/CopyableText";
-import { MdArrowOutward } from "react-icons/md";
 import ContactMenu from "./ContactMenu";
-import { truncate } from "../../utils/format";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import FormPage from "../../components/SendFlow/Tez/FormPage";
+import colors from "../../style/colors";
+import SendButton from "../../components/SendButton";
 
 const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
   const { openWith } = useContext(DynamicModalContext);
   return (
-    <>
+    <Box bg={colors.gray[900]} overflow="auto" borderRadius="8px" px="30px">
       <TableContainer overflowX="unset" overflowY="unset">
         <Table>
-          <Thead position="sticky" top={0} zIndex="docked" bg="umami.gray.900" borderRadius={4}>
-            <Tr>
-              <Th>Name:</Th>
-              <Th>Address:</Th>
-            </Tr>
-          </Thead>
           <Tbody>
-            {contacts.map(contact => {
+            {contacts.map((contact, i) => {
+              const rowBorderColor = i === contacts.length - 1 ? "transparent" : colors.gray[700];
               return (
                 <Tr key={contact.pkh} data-testid="contact-row">
-                  <Td data-testid="contact-row-name" w="40%">
-                    {truncate(contact.name, 55)}
+                  <Td data-testid="contact-row-name" borderColor={rowBorderColor} px="0">
+                    <Flex alignItems="center">
+                      <Box w="150px" mr="40px">
+                        <Text
+                          fontWeight={600}
+                          whiteSpace="nowrap"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                        >
+                          {contact.name}
+                        </Text>
+                      </Box>
+                      <CopyableAddress
+                        data-testid="contact-row-pkh"
+                        justifyContent="space-between"
+                        pkh={contact.pkh}
+                        formatAddress={false}
+                        iconColor={colors.gray[400]}
+                      />
+                    </Flex>
                   </Td>
-                  <Td>
-                    <Flex alignItems="center" justifyContent="space-between">
-                      <Flex alignItems="center">
-                        <CopyableAddress
-                          data-testid="contact-row-pkh"
-                          width="345px"
-                          mr={4}
-                          justifyContent="space-between"
-                          pkh={contact.pkh}
-                          formatAddress={false}
-                        />
-                        <IconAndTextBtn
-                          icon={MdArrowOutward}
-                          label="Send"
-                          onClick={() =>
-                            openWith(
-                              <FormPage
-                                form={{ sender: "", recipient: contact.pkh, prettyAmount: "" }}
-                              />
-                            )
-                          }
-                        />
-                      </Flex>
+                  <Td borderColor={rowBorderColor} px="0">
+                    <Flex justifyContent="end">
+                      <SendButton
+                        mr="20px"
+                        onClick={() =>
+                          openWith(
+                            <FormPage
+                              form={{ sender: "", recipient: contact.pkh, prettyAmount: "" }}
+                            />
+                          )
+                        }
+                      />
                       <ContactMenu contact={contact} />
                     </Flex>
                   </Td>
@@ -60,7 +61,7 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
           </Tbody>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 };
 
