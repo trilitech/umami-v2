@@ -97,7 +97,6 @@ const AccountTokens: React.FC<{
                     <Button
                       variant="specialCTA"
                       width="60px"
-                      color={colors.greenL}
                       onClick={() => {
                         openWith(<SendTokenFormPage sender={account} token={token} />);
                       }}
