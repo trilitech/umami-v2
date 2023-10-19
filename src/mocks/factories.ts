@@ -101,26 +101,21 @@ export const mockPk = (index: number) =>
 
 export const mockImplicitAccount = (
   index: number,
-  type = AccountType.MNEMONIC,
+  type: ImplicitAccount["type"] = AccountType.MNEMONIC,
   fingerPrint = "mockPrint"
 ): ImplicitAccount => {
-  if (type === AccountType.MNEMONIC) {
-    return mockMnemonicAccount(index, fingerPrint) as ImplicitAccount;
+  switch (type) {
+    case AccountType.MNEMONIC:
+      return mockMnemonicAccount(index, fingerPrint);
+    case AccountType.SOCIAL:
+      return mockSocialAccount(index);
+    case AccountType.LEDGER:
+      return mockLedgerAccount(index);
   }
-
-  if (type === AccountType.SOCIAL) {
-    return mockSocialAccount(index) as ImplicitAccount;
-  }
-
-  if (type === AccountType.LEDGER) {
-    return mockLedgerAccount(index) as ImplicitAccount;
-  }
-
-  throw new Error("Can't mock mulitisig accounts yet!");
 };
 
 export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): MnemonicAccount => {
-  const account = {
+  const account: MnemonicAccount = {
     curve: "ed25519",
     derivationPath: getDefaultDerivationPath(index),
     derivationPathPattern: "44'/1729'/?'/0'",
@@ -130,7 +125,7 @@ export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): M
     pk: mockPk(index),
     seedFingerPrint: `${fingerPrint}`,
   };
-  return account as MnemonicAccount;
+  return account;
 };
 
 export const mockSocialAccount = (index: number) => {
