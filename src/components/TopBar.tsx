@@ -43,7 +43,7 @@ const UpdateButton = () => {
     <>
       {relativeTimestamp && (
         <Text size="sm" color={colors.gray[400]} display="inline">
-          Last updated: {relativeTimestamp} ago
+          Updated {relativeTimestamp} ago
         </Text>
       )}
       <IconButton
