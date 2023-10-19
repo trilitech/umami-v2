@@ -91,6 +91,9 @@ export const buttonTheme = defineStyleConfig({
     },
     specialCTA: {
       color: colors.greenL,
+      _hover: {
+        color: colors.green,
+      },
     },
   },
   defaultProps: {
