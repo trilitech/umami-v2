@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Icon, Text, Link, IconProps } from "@chakra-ui/react";
+import { Flex, FlexProps, Icon, Text, IconProps } from "@chakra-ui/react";
 import React from "react";
 import { IconType } from "react-icons/lib";
 import colors from "../style/colors";
@@ -50,24 +50,5 @@ export const IconAndTextBtn: React.FC<Props> = ({
       {iconEL}
       {textFirst ? null : textEl}
     </Flex>
-  );
-};
-
-export const IconAndTextBtnLink: React.FC<Props & { href: string }> = ({ href, ...props }) => {
-  return (
-    <Link
-      role="link"
-      href={href}
-      display="flex"
-      target="_blank"
-      rel="noreferrer"
-      sx={{
-        "&:hover": {
-          textDecoration: "none",
-        },
-      }}
-    >
-      <IconAndTextBtn {...props} />
-    </Link>
   );
 };
