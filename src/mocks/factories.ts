@@ -101,7 +101,7 @@ export const mockPk = (index: number) =>
 
 export const mockImplicitAccount = (
   index: number,
-  type: Exclude<AccountType, AccountType.MULTISIG> = AccountType.MNEMONIC,
+  type: ImplicitAccount["type"] = AccountType.MNEMONIC,
   fingerPrint = "mockPrint"
 ): ImplicitAccount => {
   switch (type) {
