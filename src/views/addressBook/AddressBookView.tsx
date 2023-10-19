@@ -16,7 +16,7 @@ const AddContact: React.FC = () => {
       <IconAndTextBtn
         icon={RiContactsLine}
         label="Add Contact"
-        color={colors.green}
+        color={colors.greenL}
         cursor="pointer"
         _hover={{
           color: colors.greenL,

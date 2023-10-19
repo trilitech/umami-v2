@@ -1,28 +1,29 @@
-import { Box, Flex, Table, Text, Tbody, Td, Tr, TableContainer, Icon } from "@chakra-ui/react";
+import { Box, Flex, Table, Text, Tbody, Td, Tr, TableContainer, Button } from "@chakra-ui/react";
 import { Contact } from "../../types/Contact";
 import { CopyableAddress } from "../../components/CopyableText";
-import { MdArrowOutward } from "react-icons/md";
 import ContactMenu from "./ContactMenu";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import FormPage from "../../components/SendFlow/Tez/FormPage";
 import colors from "../../style/colors";
 import { RawPkh } from "../../types/Address";
+import OutgoingArrow from "../../assets/icons/OutgoingArrow";
 
 const SendButton: React.FC<{ to: RawPkh }> = ({ to }) => {
   const { openWith } = useContext(DynamicModalContext);
 
   return (
-    <Flex
-      cursor="pointer"
-      alignItems="center"
-      mr="20px"
-      onClick={() => openWith(<FormPage form={{ sender: "", recipient: to, prettyAmount: "" }} />)}
-    >
-      <Icon as={MdArrowOutward} color={colors.green} mr="4px" _hover={{ color: colors.greenL }} />
-      <Text size="sm" color={colors.green} _hover={{ color: colors.greenL }}>
-        Send
-      </Text>
+    <Flex alignItems="center" mr="20px">
+      <Button
+        variant="specialCTA"
+        width="60px"
+        onClick={() =>
+          openWith(<FormPage form={{ sender: "", recipient: to, prettyAmount: "" }} />)
+        }
+      >
+        <OutgoingArrow stroke="currentcolor" />
+        <Text ml="4px">Send</Text>
+      </Button>
     </Flex>
   );
 };
@@ -36,33 +37,32 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
             {contacts.map(contact => {
               return (
                 <Tr key={contact.pkh} data-testid="contact-row">
-                  <Td data-testid="contact-row-name">
-                    <Text
-                      fontWeight={600}
-                      whiteSpace="nowrap"
-                      textOverflow="ellipsis"
-                      overflow="hidden"
-                      w="150px"
-                    >
-                      {contact.name}
-                    </Text>
-                  </Td>
-                  <Td>
-                    <Flex alignItems="center" justifyContent="space-between">
+                  <Td data-testid="contact-row-name" pr="0px">
+                    <Flex alignItems="center">
+                      <Box w="150px" mr="20px">
+                        <Text
+                          fontWeight={600}
+                          whiteSpace="nowrap"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                        >
+                          {contact.name}
+                        </Text>
+                      </Box>
                       <CopyableAddress
                         data-testid="contact-row-pkh"
-                        width="345px"
-                        mr={4}
+                        w="340px"
                         justifyContent="space-between"
                         pkh={contact.pkh}
                         formatAddress={false}
                         iconColor={colors.gray[400]}
                       />
-
-                      <Flex>
-                        <SendButton to={contact.pkh} />
-                        <ContactMenu contact={contact} />
-                      </Flex>
+                    </Flex>
+                  </Td>
+                  <Td pl="0px">
+                    <Flex justifyContent="end">
+                      <SendButton to={contact.pkh} />
+                      <ContactMenu contact={contact} />
                     </Flex>
                   </Td>
                 </Tr>

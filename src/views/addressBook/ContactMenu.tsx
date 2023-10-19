@@ -1,4 +1,4 @@
-import { Divider } from "@chakra-ui/react";
+import { Divider, Flex } from "@chakra-ui/react";
 import { BiPencil } from "react-icons/bi";
 import { DeleteContactModal, UpsertContactModal } from "../../components/ContactModal";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
@@ -12,7 +12,7 @@ const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
   const { openWith } = useContext(DynamicModalContext);
 
   return (
-    <>
+    <Flex alignItems="center">
       <PopoverMenu>
         <IconAndTextBtn
           label="Rename"
@@ -34,7 +34,7 @@ const ContactMenu: React.FC<{ contact: Contact }> = ({ contact }) => {
           textFirst
         />
       </PopoverMenu>
-    </>
+    </Flex>
   );
 };
 
