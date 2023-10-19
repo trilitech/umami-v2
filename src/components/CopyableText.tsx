@@ -61,11 +61,18 @@ const CopyableText: React.FC<
 
   return (
     <Flex alignItems="center" {...rest}>
-      <Text size="sm" color={colors.gray[400]}>
+      <Text size="sm" color={colors.gray[400]} mr="6px">
         {displayText}
       </Text>
       {copyValue && (
-        <FileCopyIcon cursor="pointer" onClick={() => onClickCopyIcon()} color={iconColor} />
+        <FileCopyIcon
+          cursor="pointer"
+          onClick={() => onClickCopyIcon()}
+          _hover={{
+            stroke: colors.green,
+          }}
+          stroke={colors.gray[450]}
+        />
       )}
     </Flex>
   );
