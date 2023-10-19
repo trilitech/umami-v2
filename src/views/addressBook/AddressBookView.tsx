@@ -1,5 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { TbFilter } from "react-icons/tb";
+import { Flex } from "@chakra-ui/react";
 import { RiContactsLine } from "react-icons/ri";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
@@ -10,12 +9,10 @@ import { UpsertContactModal } from "../../components/ContactModal";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
 
-const FilterController: React.FC = () => {
+const AddContact: React.FC = () => {
   const { openWith } = useContext(DynamicModalContext);
   return (
-    <Flex alignItems="center" justifyContent="space-between" mb={4} mt={4}>
-      <IconAndTextBtn icon={TbFilter} label="Filter" />
-
+    <Flex alignItems="center" justifyContent="end" mb="16px" mt="16px">
       <IconAndTextBtn
         icon={RiContactsLine}
         label="Add Contact"
@@ -38,10 +35,8 @@ export default function AddressBookView() {
     <Flex direction="column" height="100%">
       <TopBar title="Address Book" />
 
-      <FilterController />
-      <Box overflow="scroll" pb={4}>
-        <ContactTable contacts={contacts} />
-      </Box>
+      <AddContact />
+      <ContactTable contacts={contacts} />
     </Flex>
   );
 }
