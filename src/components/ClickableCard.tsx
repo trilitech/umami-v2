@@ -1,5 +1,4 @@
 import { Card, CardBody, Flex, Heading, LayoutProps } from "@chakra-ui/react";
-import { useState } from "react";
 import colors from "../style/colors";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
@@ -8,8 +7,6 @@ const ClickableCard: React.FC<{
   h?: LayoutProps["h"];
   children: React.ReactNode;
 }> = ({ onClick, h, children }) => {
-  //TODO: Remove hooks for hover. CSS _hover doesn't work.
-  const [mouseHover, setMouseHover] = useState(false);
   return (
     <Card
       paddingX={1}
@@ -17,14 +14,6 @@ const ClickableCard: React.FC<{
       bgColor={colors.gray[900]}
       borderRadius="lg"
       justifyContent="center"
-      border="1px solid"
-      borderColor={mouseHover && onClick ? colors.gray[600] : colors.gray[700]}
-      onMouseEnter={() => {
-        setMouseHover(true);
-      }}
-      onMouseLeave={() => {
-        setMouseHover(false);
-      }}
       cursor={onClick ? "pointer" : undefined}
       h={h}
     >
