@@ -27,6 +27,7 @@ export const BeaconDrawerCard = () => {
         isOpen={isOpen}
         placement="right"
         onClose={closeDrawer}
+        autoFocus={false}
       >
         <DrawerOverlay />
         <DrawerContent>
