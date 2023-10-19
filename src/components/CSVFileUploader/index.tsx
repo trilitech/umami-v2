@@ -1,22 +1,19 @@
-import { HiOutlineDocumentDownload } from "react-icons/hi";
 import colors from "../../style/colors";
-import { IconAndTextBtn } from "../IconAndTextBtn";
 import { useContext } from "react";
 import { DynamicModalContext } from "../DynamicModal";
 import CSVFileUploadForm from "./CSVFileUploadForm";
+import { Button, Text } from "@chakra-ui/react";
+import FileArrowDownIcon from "../../assets/icons/FileArrowDown";
 
 const CSVFileUploader = () => {
   const { openWith } = useContext(DynamicModalContext);
   return (
-    <IconAndTextBtn
-      icon={HiOutlineDocumentDownload}
-      label="Load CSV file"
-      color={colors.gray[400]}
-      _hover={{
-        color: colors.gray[300],
-      }}
-      onClick={() => openWith(<CSVFileUploadForm />)}
-    />
+    <Button variant="unstyled" display="flex" onClick={() => openWith(<CSVFileUploadForm />)}>
+      <Text mr="4px" size="sm" color={colors.gray[400]}>
+        Load CSV file
+      </Text>
+      <FileArrowDownIcon />
+    </Button>
   );
 };
 

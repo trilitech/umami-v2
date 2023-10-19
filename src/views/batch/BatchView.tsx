@@ -108,7 +108,7 @@ export const BatchView: React.FC<{
   const showFooter = operations.length > 9;
 
   return (
-    <Box data-testid={`batch-table-${sender.address.pkh}`} mb={4} w="100%">
+    <Box data-testid={`batch-table-${sender.address.pkh}`} mb="16px" w="100%">
       <Flex
         borderTopRadius="8px"
         justifyContent="space-between"

@@ -1,47 +1,38 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import { TfiNewWindow } from "react-icons/tfi";
 import CSVFileUploader from "../../components/CSVFileUploader";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import { navigateToExternalLink } from "../../utils/helpers";
 import { BatchView } from "./BatchView";
-import NoItems from "../../components/NoItems";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import SendTezForm from "../../components/SendFlow/Tez/FormPage";
 import CSVFileUploadForm from "../../components/CSVFileUploader/CSVFileUploadForm";
 import { useBatches } from "../../utils/hooks/batchesHooks";
+import ExternalLinkIcon from "../../assets/icons/ExternalLink";
+import { ExternalLink } from "../../components/ExternalLink";
 
 export const FilterController: React.FC<{ batchPending: number }> = props => {
   return (
-    <Flex alignItems="center" mb={4} mt={4}>
+    <Flex alignItems="center" mb="24px" mt="24px">
       <Heading size="sm" color={colors.orangeL} flex={1}>
         {props.batchPending} Pending
       </Heading>
       <CSVFileUploader />
-      <IconAndTextBtn
-        ml={4}
-        icon={TfiNewWindow}
-        label="See file specs"
-        color={colors.gray[400]}
-        _hover={{
-          color: colors.gray[300],
-        }}
-        onClick={() => {
-          navigateToExternalLink(
-            "https://github.com/trilitech/umami-v2/blob/main/doc/Batch-File-Format-Specifications.md"
-          );
-        }}
-      />
+      <ExternalLink
+        ml="24px"
+        href="https://github.com/trilitech/umami-v2/blob/main/doc/Batch-File-Format-Specifications.md"
+      >
+        <Text mr="4px" size="sm" color={colors.gray[400]}>
+          See file specs
+        </Text>
+        <ExternalLinkIcon />
+      </ExternalLink>
     </Flex>
   );
 };
 
 const BatchPage = () => {
   const batches = useBatches();
-
-  const { openWith } = useContext(DynamicModalContext);
 
   return (
     <Flex direction="column" height="100%">
@@ -53,16 +44,33 @@ const BatchPage = () => {
             <BatchView key={operations.sender.address.pkh} operations={operations} />
           ))
         ) : (
-          <NoItems
-            text="Your batch is currently empty"
-            primaryText="Start a Batch"
-            onClickPrimary={() => openWith(<SendTezForm />)}
-            secondaryText="Load CSV file"
-            onClickSecondary={() => openWith(<CSVFileUploadForm />)}
-          />
+          <EmptyBatch />
         )}
       </Box>
     </Flex>
+  );
+};
+
+const EmptyBatch = () => {
+  const { openWith } = useContext(DynamicModalContext);
+
+  return (
+    <Center height="100%" textAlign="center">
+      <Box>
+        <Heading size="3xl">No 'batch' to show</Heading>
+        <Text color={colors.gray[400]} mt="10px" size="xl">
+          There is no batch transaction to show...
+        </Text>
+        <Flex justifyContent="space-around" mt="30px">
+          <Box>
+            <Button onClick={() => openWith(<SendTezForm />)}>Start a Batch</Button>
+            <Button ml="15px" variant="tertiary" onClick={() => openWith(<CSVFileUploadForm />)}>
+              Load CSV file
+            </Button>
+          </Box>
+        </Flex>
+      </Box>
+    </Center>
   );
 };
 
