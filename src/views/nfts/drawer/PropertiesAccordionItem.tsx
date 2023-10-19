@@ -1,7 +1,6 @@
 import {
   AccordionItem,
   AccordionButton,
-  Box,
   AccordionIcon,
   AccordionPanel,
   TableContainer,
@@ -9,6 +8,7 @@ import {
   Tr,
   Td,
   Tbody,
+  Heading,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
 import AddressPill from "../../../components/AddressPill/AddressPill";
@@ -18,6 +18,7 @@ import { parsePkh } from "../../../types/Address";
 import { metadataUri, mimeType, royalties } from "../../../types/Token";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
+import colors from "../../../style/colors";
 
 const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   if (!nft.metadata.creators || nft.metadata.creators.length === 0) {
@@ -37,23 +38,22 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
   const network = useSelectedNetwork();
 
   return (
-    <AccordionItem bg="umami.gray.800" style={style}>
-      <h2>
-        <AccordionButton>
-          <Box as="span" flex="1" textAlign="left">
-            Properties
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-      </h2>
+    <AccordionItem bg={colors.gray[800]} style={style}>
+      <AccordionButton paddingY="16px">
+        <Heading size="md" flex="1" textAlign="left">
+          Properties
+        </Heading>
+        <AccordionIcon />
+      </AccordionButton>
+
       <AccordionPanel>
         <TableContainer>
           <Table variant="stripped">
             <Tbody fontSize="14px">
               <Tr
-                bg="umami.gray.900"
+                bg={colors.gray[900]}
                 borderRadius="8px"
-                borderColor="umami.gray.700"
+                borderColor={colors.gray[700]}
                 borderBottomWidth="1px"
               >
                 <Td
@@ -61,7 +61,7 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                   padding="16px 0 16px 15px"
                   w="20%"
                   borderTopLeftRadius="8px"
-                  color="umami.gray.400"
+                  color={colors.gray[400]}
                   paddingRight="0"
                 >
                   Editions:
@@ -70,33 +70,33 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                   data-testid="nft-editions-value"
                   padding="16px 0 16px 5px"
                   w="30%"
-                  borderColor="umami.gray.700"
+                  borderColor={colors.gray[700]}
                   borderRightWidth="1px"
                 >
                   {nft.totalSupply || "?"}
                 </Td>
 
-                <Td padding="16px 0 16px 15px" w="20%" color="umami.gray.400">
+                <Td padding="16px 0 16px 15px" w="20%" color={colors.gray[400]}>
                   Token ID:
                 </Td>
                 <Td padding="16px 0 16px 5px" w="30%" borderTopRightRadius="8px">
                   {nft.tokenId}
                 </Td>
               </Tr>
-              <Tr bg="umami.gray.800" borderColor="umami.gray.700" borderBottomWidth="1px">
-                <Td data-testid="nft-royalty" padding="16px 0 16px 15px" color="umami.gray.400">
+              <Tr bg={colors.gray[800]} borderColor={colors.gray[700]} borderBottomWidth="1px">
+                <Td data-testid="nft-royalty" padding="16px 0 16px 15px" color={colors.gray[400]}>
                   Royalties
                   {royaltyShares.length > 1 ? " (" + royaltyShares.length + ")" : ""}:
                 </Td>
                 <Td
                   data-testid="nft-royalty-value"
                   padding="16px 0 16px 5px"
-                  borderColor="umami.gray.700"
+                  borderColor={colors.gray[700]}
                   borderRightWidth="1px"
                 >
                   {royaltyShares.length > 0 ? totalRoyalties + "%" : "-"}
                 </Td>
-                <Td data-testid="nft-mime" padding="16px 0 16px 15px" color="umami.gray.400">
+                <Td data-testid="nft-mime" padding="16px 0 16px 15px" color={colors.gray[400]}>
                   MIME type:
                 </Td>
                 <Td data-testid="nft-mime-value" padding="16px 0 16px 5px" w="30%">
@@ -104,14 +104,14 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                 </Td>
               </Tr>
 
-              <Tr bg="umami.gray.900" borderColor="umami.gray.700" borderBottomWidth="1px">
-                <Td padding="16px 0 16px 15px" color="umami.gray.400">
+              <Tr bg={colors.gray[900]} borderColor={colors.gray[700]} borderBottomWidth="1px">
+                <Td padding="16px 0 16px 15px" color={colors.gray[400]}>
                   Contract:
                 </Td>
-                <Td padding="16px 0 16px 5px" borderColor="umami.gray.700" borderRightWidth="1px">
+                <Td padding="16px 0 16px 5px" borderColor={colors.gray[700]} borderRightWidth="1px">
                   <AddressPill address={parsePkh(nft.contract)} mr={1} />
                 </Td>
-                <Td padding="16px 0 16px 15px" color="umami.gray.400">
+                <Td padding="16px 0 16px 15px" color={colors.gray[400]}>
                   Metadata:
                 </Td>
                 <Td padding="16px 0 16px 5px" w="30%">
@@ -119,19 +119,19 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                 </Td>
               </Tr>
 
-              <Tr bg="umami.gray.800" borderColor="umami.gray.700" borderBottomWidth="1px">
-                <Td data-testid="nft-creator" padding="16px 0 16px 15px" color="umami.gray.400">
+              <Tr bg={colors.gray[800]} borderColor={colors.gray[700]} borderBottomWidth="1px">
+                <Td data-testid="nft-creator" padding="16px 0 16px 15px" color={colors.gray[400]}>
                   Creator:
                 </Td>
                 <Td
                   data-testid="nft-creator-value"
                   padding="16px 0 16px 5px"
-                  borderColor="umami.gray.700"
+                  borderColor={colors.gray[700]}
                   borderRightWidth="1px"
                 >
                   <CreatorElement nft={nft} />
                 </Td>
-                <Td padding="16px 0 16px 15px" color="umami.gray.400">
+                <Td padding="16px 0 16px 15px" color={colors.gray[400]}>
                   License:
                 </Td>
                 <Td padding="16px 0 16px 5px" w="30%">
