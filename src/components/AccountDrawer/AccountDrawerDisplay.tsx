@@ -97,7 +97,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
       </Heading>
       <AddressPill address={account.address} mode={{ type: "no_icons" }} mt="8px" mb="30px" />
       {balance && <TezRecapDisplay center balance={balance} dollarBalance={dollarBalance} />}
-      <Center mt="24px">
+      <Center mt="34px">
         <RoundButton
           onClick={onSend}
           label="Send"
