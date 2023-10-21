@@ -55,7 +55,7 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
           <TzktLink operation={operation} mr="8px" color={titleColor}>
-            <Text fontWeight="600" size="sm" color={titleColor}>
+            <Text fontWeight="600" color={titleColor}>
               {sign} {amount}
             </Text>
           </TzktLink>
@@ -85,10 +85,10 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
               </Flex>
             )}
           </Flex>
-          <Flex alignSelf="flex-end" align="center">
+          <Center>
             <OperationTypeWrapper>Transaction</OperationTypeWrapper>
             <OperationStatus operation={operation} />
-          </Flex>
+          </Center>
         </Flex>
       </Box>
     </Flex>
@@ -147,10 +147,10 @@ const TokenTransferTile: React.FC<{
     >
       <Flex>
         <TzktLink operation={operation} mr="8px" color={underlineColor}>
-          <Text display="inline" fontWeight="600" size="sm" color={titleColor}>
+          <Text display="inline" fontWeight="600" color={titleColor}>
             {sign} {tokenAmount}
           </Text>
-          <Text display="inline" fontWeight="600" size="sm">
+          <Text display="inline" fontWeight="600">
             {" "}
             {tokenNameSafe(token)}
           </Text>
@@ -159,7 +159,7 @@ const TokenTransferTile: React.FC<{
     </Tooltip>
   ) : (
     <TzktLink operation={operation} mr="8px" color={underlineColor}>
-      <Text display="inline" fontWeight="600" size="sm" color={titleColor}>
+      <Text display="inline" fontWeight="600" color={titleColor}>
         {sign} {tokenAmount}
       </Text>
     </TzktLink>
@@ -197,7 +197,7 @@ const TokenTransferTile: React.FC<{
               </Flex>
             )}
           </Flex>
-          <Center alignSelf="flex-end">
+          <Center>
             <OperationTypeWrapper>Token Transfer</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Center>
@@ -221,7 +221,7 @@ const ContractCallTile: React.FC<{
         <Center>
           <ContractIcon mr="8px" />
           <TzktLink operation={operation} mr="8px">
-            <Heading size="sm">Contract Call: {operation.parameter?.entrypoint}</Heading>
+            <Heading size="md">Contract Call: {operation.parameter?.entrypoint}</Heading>
           </TzktLink>
           <Fee operation={operation} />
         </Center>
@@ -249,10 +249,10 @@ const ContractCallTile: React.FC<{
               </Flex>
             )}
           </Flex>
-          <Flex alignSelf="flex-end" align="center">
+          <Center>
             <OperationTypeWrapper>Contract Call</OperationTypeWrapper>
             <OperationStatus operation={operation} />
-          </Flex>
+          </Center>
         </Flex>
       </Box>
     </Flex>
@@ -270,7 +270,7 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
         <Center>
           <BakerIcon stroke={colors.gray[450]} mr="8px" />
           <TzktLink operation={operation} mr="8px">
-            <Heading size="sm">{operationType}</Heading>
+            <Heading size="md">{operationType}</Heading>
           </TzktLink>
           <Fee operation={operation} />
         </Center>
@@ -299,10 +299,10 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
             )}
             {!isDelegating && !showFromAddress && <Text color={colors.gray[450]}>N/A</Text>}
           </Flex>
-          <Flex alignSelf="flex-end" align="center">
+          <Center>
             <OperationTypeWrapper>{operationType}</OperationTypeWrapper>
             <OperationStatus operation={operation} />
-          </Flex>
+          </Center>
         </Flex>
       </Box>
     </Flex>
@@ -325,7 +325,7 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
         <Center>
           <ContractIcon mr="8px" />
           <TzktLink operation={operation} mr="8px">
-            <Heading size="sm">{contractTitle}</Heading>
+            <Heading size="md">{contractTitle}</Heading>
           </TzktLink>
           <Fee operation={operation} />
         </Center>
@@ -347,10 +347,10 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
               </Flex>
             )}
           </Flex>
-          <Flex alignSelf="flex-end" align="center">
+          <Center>
             <OperationTypeWrapper>Contract Origination</OperationTypeWrapper>
             <OperationStatus operation={operation} />
-          </Flex>
+          </Center>
         </Flex>
       </Box>
     </Flex>
