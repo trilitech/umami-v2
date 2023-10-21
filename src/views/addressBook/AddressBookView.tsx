@@ -35,7 +35,9 @@ export default function AddressBookView() {
     <Flex direction="column" height="100%">
       <TopBar title="Address Book" />
 
-      <AddContact />
+      <Flex flexDirection="row-reverse">
+        <AddContact />
+      </Flex>
       <ContactTable contacts={contacts} />
     </Flex>
   );
