@@ -1,11 +1,11 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/layout";
-import { Box, Text, Divider, Heading, Icon } from "@chakra-ui/react";
-import { FiExternalLink } from "react-icons/fi";
+import { Box, Text, Heading, Center } from "@chakra-ui/react";
 import React from "react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import ClickableCard from "../../components/ClickableCard";
+import ClickableCard, { SettingsCard } from "../../components/ClickableCard";
 import { navigateToExternalLink } from "../../utils/helpers";
+import ExternalLinkIcon from "../../assets/icons/ExternalLink";
 
 export default function HelpView() {
   return (
@@ -52,50 +52,39 @@ export default function HelpView() {
           />
         </HelpCard>
 
-        <HelpCard title="Need Help?">
-          <Box>
-            <Flex justifyContent="space-between" alignItems="center">
-              <Heading size="sm">Contact our Support Team</Heading>
-              <Flex
-                alignItems="center"
-                color={colors.gray[400]}
-                _hover={{
-                  color: colors.gray[300],
-                }}
-                cursor="pointer"
-                onClick={() => navigateToExternalLink("mailto:umami-support@trili.tech")}
-              >
-                <Text size="sm">umami-support@trili.tech</Text>
-                <Icon as={FiExternalLink} ml={2} />
-              </Flex>
-            </Flex>
-
-            <Box marginY={4}>
-              <Divider orientation="horizontal" size="lg" />
-            </Box>
-
-            <Flex justifyContent="space-between" alignItems="center">
-              <Heading size="sm">Get in touch with the Community</Heading>
-
-              <Flex
-                alignItems="center"
-                color={colors.gray[400]}
-                _hover={{
-                  color: colors.gray[300],
-                }}
-                cursor="pointer"
-                onClick={() =>
-                  navigateToExternalLink(
-                    "https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg"
-                  )
-                }
-              >
-                <Text size="sm">Slack #Umami</Text>
-                <Icon as={FiExternalLink} ml={2} />
-              </Flex>
-            </Flex>
-          </Box>
-        </HelpCard>
+        <Box w="550px" data-testid="help-card" mb="20px">
+          <Heading size="lg" mb="16px">
+            Need Help?
+          </Heading>
+          <SettingsCard
+            left="Contact our Support Team"
+            onClick={() => navigateToExternalLink("mailto:umami-support@trili.tech")}
+            isSelected={false}
+          >
+            <Center>
+              <Text size="sm" color={colors.gray[300]}>
+                umami-support@trili.tech
+              </Text>
+              <ExternalLinkIcon ml="4px" />
+            </Center>
+          </SettingsCard>
+          <SettingsCard
+            isSelected={false}
+            left="Get in touch with the Community"
+            onClick={() =>
+              navigateToExternalLink(
+                "https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg"
+              )
+            }
+          >
+            <Center>
+              <Text size="sm" color={colors.gray[300]}>
+                Slack #Umami
+              </Text>
+              <ExternalLinkIcon ml="4px" />
+            </Center>
+          </SettingsCard>
+        </Box>
 
         <HelpCard
           title="Terms of Use"
@@ -138,16 +127,7 @@ const HelpLinkRow: React.FC<{
             {linkDescription}
           </Text>
         )}
-        <Icon
-          cursor="pointer"
-          color={colors.gray[600]}
-          as={FiExternalLink}
-          _hover={{
-            color: colors.gray[300],
-          }}
-          onClick={onClickIcon}
-          ml={2}
-        />
+        <ExternalLinkIcon />
       </Flex>
     </Flex>
   );
@@ -159,11 +139,15 @@ const HelpCard: React.FC<{
   children: React.ReactNode;
 }> = ({ title, onClick, children }) => {
   return (
-    <Box marginY={2} data-testid="help-card">
+    <Box marginY="10px" data-testid="help-card">
       <Flex>
         <Box w="550px">
-          <Heading size="lg">{title}</Heading>
-          <ClickableCard onClick={onClick}>{children}</ClickableCard>
+          <Heading size="lg" mb="16px">
+            {title}
+          </Heading>
+          <ClickableCard onClick={onClick} isSelected={false}>
+            {children}
+          </ClickableCard>
         </Box>
       </Flex>
     </Box>
