@@ -4,9 +4,9 @@ import colors from "../../style/colors";
 const FA2Icon: React.FC<IconProps> = props => {
   return (
     <Icon
-      width="30px"
-      height="15px"
-      viewBox="1 1 30 15"
+      width="23px"
+      height="18px"
+      viewBox="0 0 23 18"
       fill={colors.gray[450]}
       xmlns="http://www.w3.org/2000/svg"
       {...props}

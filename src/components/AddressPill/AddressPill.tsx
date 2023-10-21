@@ -76,14 +76,14 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
         onMouseLeave={() => {
           setMouseHover(false);
         }}
-        paddingX={1}
+        paddingX="4px"
       >
         {showIcons && (
           <LeftIcon
             data-testid="address-pill-left-icon"
             addressKind={addressKind}
-            ml={2}
-            fill={iconColor}
+            marginLeft="4px"
+            stroke={iconColor}
           />
         )}
 
@@ -95,7 +95,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
                 addressKind={addressKind}
                 showPkh={!showIcons}
                 cursor="pointer"
-                marginX={2}
+                marginX="4px"
                 color={textColor}
                 size="sm"
               />
@@ -117,7 +117,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
             addressPillMode={mode}
             cursor="pointer"
             stroke={textColor}
-            mr={2}
+            marginRight="4px"
           />
         )}
       </Flex>
