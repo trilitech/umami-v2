@@ -4931,6 +4931,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ledgerhq/devices@npm:^8.0.7":
+  version: 8.0.7
+  resolution: "@ledgerhq/devices@npm:8.0.7"
+  dependencies:
+    "@ledgerhq/errors": ^6.14.0
+    "@ledgerhq/logs": ^6.10.1
+    rxjs: 6
+    semver: ^7.3.5
+  checksum: 9dff60fc6b443d38a508e3f83b0ee3989fd58061c59345dd6ded524b5fd01b9a2840eb9bde7979829ae6d50d8e0c0e552e21284a1f10d8636a11ed737ca464a2
+  languageName: node
+  linkType: hard
+
 "@ledgerhq/errors@npm:^6.13.1":
   version: 6.13.1
   resolution: "@ledgerhq/errors@npm:6.13.1"
@@ -4938,19 +4950,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport-webhid@npm:^6.27.18":
-  version: 6.27.18
-  resolution: "@ledgerhq/hw-transport-webhid@npm:6.27.18"
-  dependencies:
-    "@ledgerhq/devices": ^8.0.6
-    "@ledgerhq/errors": ^6.13.1
-    "@ledgerhq/hw-transport": ^6.28.7
-    "@ledgerhq/logs": ^6.10.1
-  checksum: 856c62cecf3fa15deade03bb4bdf11b780be5325d31a0a2bdac29ff8d970becde38482db601dc80a6e915c10b4072752262668d44415c0efebef5d9bca9d1da1
+"@ledgerhq/errors@npm:^6.14.0":
+  version: 6.14.0
+  resolution: "@ledgerhq/errors@npm:6.14.0"
+  checksum: 2c4e7bf126952a781d9226752b9401e842a5a773861128d182e9f40f1f46bf6cd8667c2ca64a1c52254d151bc6bec6d85ea62ba8b3dd35e46bbe47a90c291830
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport@npm:^6.27.3, @ledgerhq/hw-transport@npm:^6.28.7":
+"@ledgerhq/hw-transport-webusb@npm:^6.27.19":
+  version: 6.27.19
+  resolution: "@ledgerhq/hw-transport-webusb@npm:6.27.19"
+  dependencies:
+    "@ledgerhq/devices": ^8.0.7
+    "@ledgerhq/errors": ^6.14.0
+    "@ledgerhq/hw-transport": ^6.28.8
+    "@ledgerhq/logs": ^6.10.1
+  checksum: 166c3f42e9000ad38ad2a1f0636dccbf03851d065f5d2914016ead60564f63c812c59e1a9b03692322c3f73320466670cfe72c5694606b83aee0b80a856443ba
+  languageName: node
+  linkType: hard
+
+"@ledgerhq/hw-transport@npm:^6.27.3":
   version: 6.28.7
   resolution: "@ledgerhq/hw-transport@npm:6.28.7"
   dependencies:
@@ -4958,6 +4977,17 @@ __metadata:
     "@ledgerhq/errors": ^6.13.1
     events: ^3.3.0
   checksum: 34b3694ddd8ce9a1eab144d830ae9c5d71d97d2d443cd0423f445eabf2be4eb03e8afb24bcdcb6fa17004f41337c23ea6981bdb1c08a3c1d9ea71f4f1766b7f9
+  languageName: node
+  linkType: hard
+
+"@ledgerhq/hw-transport@npm:^6.28.8":
+  version: 6.28.8
+  resolution: "@ledgerhq/hw-transport@npm:6.28.8"
+  dependencies:
+    "@ledgerhq/devices": ^8.0.7
+    "@ledgerhq/errors": ^6.14.0
+    events: ^3.3.0
+  checksum: 636a1d8229e10673745a322ed4714f85ef395c8bdf39ed14bef859fbc8132ee271a2cf164042a06d7a4d24ee0bbb77c6c29e15c950b3f58af53ad161f9854c51
   languageName: node
   linkType: hard
 
@@ -23705,7 +23735,7 @@ __metadata:
     "@graphql-codegen/typescript": 3.0.4
     "@graphql-codegen/typescript-operations": 3.0.4
     "@graphql-typed-document-node/core": ^3.2.0
-    "@ledgerhq/hw-transport-webhid": ^6.27.18
+    "@ledgerhq/hw-transport-webusb": ^6.27.19
     "@reduxjs/toolkit": ^1.9.5
     "@storybook/addon-essentials": ^7.3.0
     "@storybook/addon-interactions": ^7.3.0
