@@ -35,7 +35,6 @@ const toOperation = (formValues: FormValues): Delegation => ({
 
 const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const baker = props.form?.baker;
-  const { onClose } = useContext(DynamicModalContext);
 
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
@@ -45,7 +44,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     toOperation,
   });
 
-  const addToBatch = useAddToBatchFormAction(toOperation, onClose);
+  const addToBatch = useAddToBatchFormAction(toOperation);
 
   const {
     onFormSubmitActionHandlers: [onSingleSubmit, onBatchSubmit],

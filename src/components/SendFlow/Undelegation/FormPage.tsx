@@ -37,9 +37,9 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
     defaultFormPageProps: { sender },
     toOperation,
   });
-  const { onClose } = useContext(DynamicModalContext);
 
-  const addToBatch = useAddToBatchFormAction(toOperation, onClose);
+
+  const addToBatch = useAddToBatchFormAction(toOperation);
 
   const {
     onFormSubmitActionHandlers: [onSingleSubmit, onBatchSubmit],

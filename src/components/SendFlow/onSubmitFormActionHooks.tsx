@@ -72,7 +72,6 @@ export const useOpenSignPageFormAction = <
 
 export const useAddToBatchFormAction = <FormValues extends BaseFormValues>(
   toOperation: (formValues: FormValues) => Operation,
-  onSuccess?: () => void
 ): OnSubmitFormAction<FormValues> => {
   const network = useSelectedNetwork();
   const makeFormOperations = useMakeFormOperations(toOperation);
@@ -83,7 +82,6 @@ export const useAddToBatchFormAction = <FormValues extends BaseFormValues>(
     const operations = makeFormOperations(formValues);
     await dispatch(estimateAndUpdateBatch(operations, network));
     toast({ title: "Transaction added to batch!", status: "success" });
-    onSuccess?.();
   };
 
   return onAddToBatchAction;
