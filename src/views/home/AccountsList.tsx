@@ -34,8 +34,7 @@ import AddAccountIcon from "../../assets/icons/AddAccount";
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
   return (
-    <Flex justifyContent="space-between" marginY="16px">
-      <Heading size="lg">All Accounts</Heading>
+    <Flex flexDirection="row-reverse" marginBottom="16px" marginTop="12px">
       <Button variant="CTAWithIcon" onClick={onOpen} paddingRight="0">
         <AddAccountIcon stroke="currentcolor" />
         <Text ml="4px" size="sm">
