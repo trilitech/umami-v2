@@ -10,6 +10,7 @@ import {
   Input,
   Checkbox,
   Divider,
+  Heading,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import WarningIcon from "../../assets/icons/Warning";
@@ -44,10 +45,10 @@ const OffboardingForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalCloseButton />
 
-        <ModalHeader mt={5} textAlign="center">
+        <ModalHeader textAlign="center" marginBottom="12px">
           <Box>
             <WarningIcon w={10} h={10} mb={5} />
-            <Text>Off-board Wallet</Text>
+            <Heading>Off-board Wallet</Heading>
           </Box>
         </ModalHeader>
         <Box>
@@ -60,7 +61,7 @@ const OffboardingForm = () => {
             that you keep the recovery phrase.
           </Text>
           <ModalBody>
-            <Divider marginY={5} borderColor={colors.gray[400]} />
+            <Divider marginY={5} borderColor={colors.gray[700]} />
             <FormControl isInvalid={!!errors.check}>
               <Checkbox {...register("check", { required: true })}>
                 <Text ml={2} fontWeight="bold">
@@ -69,12 +70,12 @@ const OffboardingForm = () => {
                 </Text>
               </Checkbox>
             </FormControl>
-            <Divider marginY={5} borderColor={colors.gray[400]} />
+            <Divider marginY={5} borderColor={colors.gray[700]} />
             <FormControl paddingY={5} isInvalid={!!errors.confirmationCode}>
               <Input
                 type="text"
                 {...register("confirmationCode", {
-                  required: true,
+                  required: "Confirmation is required",
                   validate: (confirmationCode: string) =>
                     confirmationCode === CONFIRMATION_CODE || "Confirmation code does not match",
                 })}
@@ -87,7 +88,7 @@ const OffboardingForm = () => {
           </ModalBody>
         </Box>
 
-        <ModalFooter>
+        <ModalFooter padding={0}>
           <Button
             width="100%"
             size="lg"
