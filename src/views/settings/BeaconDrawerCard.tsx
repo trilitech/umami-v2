@@ -57,7 +57,7 @@ const BeaconDrawerBody = () => {
       >
         Paste a peer request code
       </Button>
-      <Text mt={4} color="text.dark">
+      <Text mt="16px" mb="32px" color="text.dark">
         or open a deeplink from inside the dApp...
       </Text>
       <BeaconPeers />

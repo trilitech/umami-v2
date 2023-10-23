@@ -1,6 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import colors from "../../style/colors";
 import ExitArrowIcon from "../../assets/icons/ExitArrow";
 
 export const DrawerTopButtons: React.FC<{
