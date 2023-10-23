@@ -15,19 +15,19 @@ import { UpsertContactModal } from "../ContactModal";
 
 export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   addressKind: { type },
-  ...rest
+  ...props
 }) => {
   switch (type) {
     case "multisig":
-      return <KeyIcon data-testid={`${type}-icon`} {...rest} />;
+      return <KeyIcon data-testid={`${type}-icon`} {...props} />;
     case "fa1.2":
-      return <FA12Icon data-testid={`${type}-icon`} {...rest} />;
+      return <FA12Icon data-testid={`${type}-icon`} {...props} fill={props.stroke} stroke="none" />;
     case "fa2":
-      return <FA2Icon data-testid={`${type}-icon`} {...rest} />;
+      return <FA2Icon data-testid={`${type}-icon`} {...props} fill={props.stroke} stroke="none" />;
     case "baker":
-      return <BakerIcon data-testid={`${type}-icon`} {...rest} />;
+      return <BakerIcon data-testid={`${type}-icon`} {...props} />;
     case "contact":
-      return <ContactIcon data-testid={`${type}-icon`} {...rest} />;
+      return <ContactIcon data-testid={`${type}-icon`} {...props} />;
     case "unknown":
     case "implicit":
       return null;
