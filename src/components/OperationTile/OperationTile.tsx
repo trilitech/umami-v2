@@ -148,7 +148,8 @@ const TokenTransferTile: React.FC<{
       <Flex>
         <TzktLink operation={operation} mr="8px" color={underlineColor}>
           <Text display="inline" fontWeight="600" color={titleColor}>
-            {sign} {tokenAmount}
+            {sign}
+            {tokenAmount}
           </Text>
           <Text display="inline" fontWeight="600">
             {" "}
@@ -160,7 +161,8 @@ const TokenTransferTile: React.FC<{
   ) : (
     <TzktLink operation={operation} mr="8px" color={underlineColor}>
       <Text display="inline" fontWeight="600" color={titleColor}>
-        {sign} {tokenAmount}
+        {sign}
+        {tokenAmount}
       </Text>
     </TzktLink>
   );
