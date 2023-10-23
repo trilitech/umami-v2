@@ -116,7 +116,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
             addressKind={addressKind}
             addressPillMode={mode}
             cursor="pointer"
-            stroke={textColor}
+            stroke={colors.gray[300]}
             marginRight="4px"
           />
         )}

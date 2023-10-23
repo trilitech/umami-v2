@@ -164,7 +164,11 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
               bg="transparent"
               pt="8px"
             />
-            {keepValid ? <ChevronDownIcon mr="12px" data-testid="chevron-icon" /> : <CrossButton />}
+            {keepValid ? (
+              <ChevronDownIcon mr="12px" data-testid="chevron-icon" />
+            ) : (
+              <CrossButton marginRight="14px" />
+            )}
           </Center>
         </Box>
       )}
@@ -215,8 +219,6 @@ const CrossButton = (props: IconProps) => (
   <XMark
     cursor="pointer"
     data-testid="clear-input-button"
-    width="12px"
-    height="12px"
     marginRight="16px"
     stroke={colors.gray[450]}
     {...props}
