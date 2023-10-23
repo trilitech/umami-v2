@@ -23,11 +23,9 @@ export type AddressPillMode =
   | { type: "removable"; onRemove: () => void }
   | { type: "no_icons" };
 
-const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxProps> = ({
-  address,
-  mode = { type: "default" },
-  ...rest
-}) => {
+const AddressPill: React.FC<
+  { address: Address; mode?: AddressPillMode; fallbackLabel?: string } & BoxProps
+> = ({ address, mode = { type: "default" }, fallbackLabel, ...rest }) => {
   const addressKind = useAddressKind(address);
   const showIcons = mode.type !== "no_icons";
 
@@ -92,6 +90,7 @@ const AddressPill: React.FC<{ address: Address; mode?: AddressPillMode } & BoxPr
             <Button variant="unstyled" h="24px" _focus={{ boxShadow: "none" }}>
               <AddressPillText
                 data-testid="address-pill-text"
+                fallbackLabel={fallbackLabel}
                 addressKind={addressKind}
                 showPkh={!showIcons}
                 cursor="pointer"
