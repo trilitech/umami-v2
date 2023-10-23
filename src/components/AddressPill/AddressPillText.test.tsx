@@ -35,7 +35,14 @@ describe("<AddressPillText />", () => {
     expect(screen.getByText("Some label")).toBeInTheDocument();
   });
 
-  it("fallbacks to formatted pkh", () => {
+  it("shows fallback label", () => {
+    render(
+      <AddressPillText addressKind={mockFA2Address} showPkh={false} fallbackLabel="test fallback" />
+    );
+    expect(screen.getByText("test fallback")).toBeInTheDocument();
+  });
+
+  it("fallbacks to formatted pkh without fallback text", () => {
     render(<AddressPillText addressKind={mockFA2Address} showPkh={false} />);
     expect(screen.getByText(formatPkh(mockFA2Address.pkh))).toBeInTheDocument();
   });
