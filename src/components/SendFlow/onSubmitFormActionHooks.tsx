@@ -71,8 +71,9 @@ export const useOpenSignPageFormAction = <
 };
 
 export const useAddToBatchFormAction = <FormValues extends BaseFormValues>(
-  toOperation: (formValues: FormValues) => Operation,
+  toOperation: (formValues: FormValues) => Operation
 ): OnSubmitFormAction<FormValues> => {
+  const { onClose } = useContext(DynamicModalContext);
   const network = useSelectedNetwork();
   const makeFormOperations = useMakeFormOperations(toOperation);
   const dispatch = useAppDispatch();
@@ -82,6 +83,7 @@ export const useAddToBatchFormAction = <FormValues extends BaseFormValues>(
     const operations = makeFormOperations(formValues);
     await dispatch(estimateAndUpdateBatch(operations, network));
     toast({ title: "Transaction added to batch!", status: "success" });
+    onClose();
   };
 
   return onAddToBatchAction;
