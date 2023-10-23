@@ -6,9 +6,8 @@ import {
   getLastDelegation,
   getOriginations,
   getTezosPriceInUSD,
-  getTezTransfers,
   getTokenBalances,
-  getTokenTransfers,
+  getTokenTransfersFor,
   getTransactions,
 } from "./fetch";
 import {
@@ -79,22 +78,8 @@ describe("tezos utils fetch", () => {
       );
     });
 
-    test("getTezTransfers", async () => {
-      await getTezTransfers(mockImplicitAddress(0).pkh, network);
-      expect(operationsGetTransactions).toBeCalledWith(
-        {
-          anyof: { fields: ["sender", "target"], eq: mockImplicitAddress(0).pkh },
-          sort: { desc: "level" },
-          limit: 10,
-        },
-        {
-          baseUrl: network.tzktApiUrl,
-        }
-      );
-    });
-
     test("getTokenTransfers", async () => {
-      await getTokenTransfers([1, 2, 3], network);
+      await getTokenTransfersFor([1, 2, 3], network);
       expect(tokensGetTokenTransfers).toBeCalledWith(
         {
           transactionId: { in: ["1,2,3"] },

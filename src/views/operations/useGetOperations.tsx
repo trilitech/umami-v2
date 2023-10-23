@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { TzktCombinedOperation, getCombinedOperations, getTokenTransfers } from "../../utils/tezos";
+import {
+  TzktCombinedOperation,
+  getCombinedOperations,
+  getTokenTransfersFor,
+} from "../../utils/tezos";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { RawPkh } from "../../types/Address";
 import { useAppDispatch } from "../../utils/redux/hooks";
@@ -115,7 +119,7 @@ export const fetchOperationsAndUpdateTokensInfo = async (
   }
 ) => {
   const operations = await getCombinedOperations(addresses, network, options);
-  const tokenTransfers = await getTokenTransfers(
+  const tokenTransfers = await getTokenTransfersFor(
     operations.map(op => op.id),
     network
   );

@@ -14,7 +14,7 @@ import * as tzktApi from "@tzkt/sdk-api";
 import axios from "axios";
 import { coincapUrl } from "./consts";
 import { coinCapResponseType } from "./types";
-import { TezTransfer, TokenTransfer } from "../../types/Transfer";
+import { TokenTransfer } from "../../types/Transfer";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { Network } from "../../types/Network";
 import Semaphore from "@chriscdn/promise-semaphore";
@@ -61,10 +61,22 @@ export type OriginationOperation = tzktApi.OriginationOperation & {
   sender: TzktAlias;
 };
 
+// outgoing token transfers are represented as transactions + corresponding token transfers
+export type IncomingTokenTransferOperation = TokenTransfer & {
+  type: "incoming_token_transfer";
+  // transfers initiated by the user take the status from the corresponding operation
+  // for incoming transfers it should be safe to assume that they are applied for now
+  // but if we want to be precise, we'd need to fetch the corresponding operations
+  status: "applied";
+  sender?: TzktAlias;
+  target: TzktAlias;
+};
+
 export type TzktCombinedOperation =
   | DelegationOperation
   | TransactionOperation
-  | OriginationOperation;
+  | OriginationOperation
+  | IncomingTokenTransferOperation;
 
 export const getAccounts = async (pkhs: string[], network: Network) =>
   withRateLimit(() =>
@@ -93,29 +105,41 @@ export const getTokenBalances = async (pkhs: string[], network: Network) =>
     )
   ) as Promise<RawTokenBalance[]>;
 
-// TODO: remove it when transition to combined operations is done
-export const getTezTransfers = (address: RawPkh, network: Network): Promise<TezTransfer[]> =>
-  withRateLimit(() =>
-    operationsGetTransactions(
+type OperationFetchOptions = {
+  offset?: OffsetParameter;
+  sort: SortParameter;
+  limit: number;
+};
+
+export const getIncomingTokenTransfers = (
+  addresses: RawPkh[],
+  network: Network,
+  options: OperationFetchOptions
+): Promise<IncomingTokenTransferOperation[]> =>
+  withRateLimit(async () => {
+    const rawTransfers = await tokensGetTokenTransfers(
       {
-        anyof: { fields: ["sender", "target"], eq: address },
-        sort: { desc: "level" },
-        limit: 10,
+        to: { in: [addresses.join(",")] },
+        ...options,
       },
       {
         baseUrl: network.tzktApiUrl,
       }
-    )
-  );
+    );
+
+    return (rawTransfers as TokenTransfer[]).map(transfer => ({
+      ...transfer,
+      target: transfer.to,
+      sender: transfer.from,
+      type: "incoming_token_transfer",
+      status: "applied",
+    }));
+  });
 
 export const getDelegations = async (
   addresses: RawPkh[],
   network: Network,
-  options: {
-    offset?: OffsetParameter;
-    sort: SortParameter;
-    limit: number;
-  }
+  options: OperationFetchOptions
 ) =>
   withRateLimit(() =>
     operationsGetDelegations(
@@ -129,11 +153,7 @@ export const getDelegations = async (
 export const getTransactions = async (
   addresses: RawPkh[],
   network: Network,
-  options: {
-    offset?: OffsetParameter;
-    sort: SortParameter;
-    limit: number;
-  }
+  options: OperationFetchOptions
 ) =>
   withRateLimit(() =>
     operationsGetTransactions(
@@ -150,11 +170,7 @@ export const getTransactions = async (
 export const getOriginations = async (
   addresses: RawPkh[],
   network: Network,
-  options: {
-    offset?: OffsetParameter;
-    sort: SortParameter;
-    limit: number;
-  }
+  options: OperationFetchOptions
 ) =>
   withRateLimit(() =>
     operationsGetOriginations(
@@ -186,6 +202,7 @@ export const getCombinedOperations = async (
     getTransactions(addresses, network, tzktRequestOptions),
     getDelegations(addresses, network, tzktRequestOptions),
     getOriginations(addresses, network, tzktRequestOptions),
+    getIncomingTokenTransfers(addresses, network, tzktRequestOptions),
   ]);
 
   // ID is a shared sequence among all operations in TzKT
@@ -196,7 +213,7 @@ export const getCombinedOperations = async (
   ).slice(0, limit) as TzktCombinedOperation[];
 };
 
-export const getTokenTransfers = async (transactionIds: number[], network: Network) => {
+export const getTokenTransfersFor = async (transactionIds: number[], network: Network) => {
   if (transactionIds.length === 0) {
     return [];
   }

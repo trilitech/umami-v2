@@ -111,12 +111,12 @@ const TokenTransferTile: React.FC<{
   const rawAmount = tokenTransfer.amount;
 
   const showToAddress = useShowAddress(tokenTransfer.to.address);
-  const showFromAddress = useShowAddress(operation.sender.address);
+  const showFromAddress = useShowAddress(tokenTransfer.from?.address);
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
 
   const getToken = useGetToken();
-  const isOutgoing = useIsOwnedAddress(operation.sender.address);
+  const isOutgoing = useIsOwnedAddress(tokenTransfer.from?.address);
 
   const token = getToken(contract, tokenId);
   if (!token) {
@@ -380,5 +380,8 @@ export const OperationTile: React.FC<{
 
     case "origination":
       return <OriginationTile operation={operation} />;
+
+    case "incoming_token_transfer":
+      return <TokenTransferTile operation={operation} tokenTransfer={operation} />;
   }
 };

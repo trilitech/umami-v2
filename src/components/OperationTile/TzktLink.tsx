@@ -8,11 +8,21 @@ export const TzktLink: React.FC<
   PropsWithChildren<{ operation: TzktCombinedOperation } & LinkProps>
 > = ({ operation, children, ...props }) => {
   const network = useSelectedNetwork();
-  const url = getHashUrl({
-    hash: operation.hash,
-    counter: operation.counter,
-    network,
-  });
+
+  let url;
+  if (operation.type === "token_transfer") {
+    url = getHashUrl({
+      hash: "transactions/" + operation.id,
+      network,
+    });
+  } else {
+    url = getHashUrl({
+      hash: operation.hash,
+      counter: operation.counter,
+      network,
+    });
+  }
+
   return (
     <Link data-testid="tzkt-link" href={url} isExternal {...props}>
       {children}
