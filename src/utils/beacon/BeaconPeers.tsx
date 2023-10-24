@@ -1,48 +1,47 @@
 import {
   AspectRatio,
+  Box,
+  Center,
+  Divider,
   Flex,
+  Heading,
   IconButton,
   Image,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
 } from "@chakra-ui/react";
 import { usePeers, useRemovePeer } from "./beacon";
 import { PeerInfo } from "./types";
 import Trash from "../../assets/icons/Trash";
+import { Fragment } from "react";
+import colors from "../../style/colors";
 
 const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => void }) => {
   return (
-    <Tr>
-      <Td>
-        <Flex alignItems="center">
-          <AspectRatio width={4} ratio={1}>
-            <Image width="100%" src={peerInfo.icon} />
-          </AspectRatio>
-          <Text size="sm" ml={2}>
+    <Flex height="106px" paddingY="30px" justifyContent="space-between">
+      <Flex>
+        <AspectRatio width="48px" marginRight="16px" ratio={1}>
+          <Image width="100%" src={peerInfo.icon} />
+        </AspectRatio>
+        <Center alignItems="flex-start" flexDirection="column">
+          <Heading size="md" ml={2}>
             {peerInfo.name}
+          </Heading>
+
+          <Text size="sm" color={colors.gray[400]} ml={2}>
+            {peerInfo.relayServer}
           </Text>
-        </Flex>
-      </Td>
-      <Td>
-        <Text size="sm" ml={2}>
-          {peerInfo.relayServer}
-        </Text>
-      </Td>
-      <Td>
+        </Center>
+      </Flex>
+      <Center>
         <IconButton
           onClick={onRemove}
           aria-label="Remove Peer"
-          variant="tertiary"
+          size="xs"
+          variant="circle"
           icon={<Trash />}
         />
-      </Td>
-    </Tr>
+      </Center>
+    </Flex>
   );
 };
 
@@ -54,26 +53,14 @@ export const PeersDisplay = ({
   removePeer: (peer: PeerInfo) => void;
 }) => {
   return (
-    <TableContainer overflowX="unset" overflowY="unset">
-      <Table>
-        <Thead top={0} bg="umami.gray.900" borderRadius={4}>
-          <Tr>
-            <Th>Name:</Th>
-            <Th>Relay server:</Th>
-            <Th>Delete:</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {peerInfos.map(peerInfo => (
-            <PeerRow
-              key={peerInfo.name}
-              peerInfo={peerInfo}
-              onRemove={() => removePeer(peerInfo)}
-            />
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+    <Box>
+      {peerInfos.map(peerInfo => (
+        <Fragment key={peerInfo.name}>
+          <Divider />
+          <PeerRow peerInfo={peerInfo} onRemove={() => removePeer(peerInfo)} />
+        </Fragment>
+      ))}
+    </Box>
   );
 };
 

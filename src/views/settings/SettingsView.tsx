@@ -14,7 +14,9 @@ export default function SettingsView() {
     <Flex direction="column" height="100%">
       <TopBar title="Settings" />
       <Box overflowY="scroll">
-        <GeneralSection />
+        <Box marginTop="16px">
+          <GeneralSection />
+        </Box>
         <AppUpdatesSection />
         <BackupSection />
         <AdvancedSection />
@@ -36,10 +38,8 @@ const GeneralSection = () => {
           </Flex>
         </SettingsCard>
       */}
-      <SettingsCard left="Network">
-        <Box>
-          <NetworkSelector />
-        </Box>
+      <SettingsCard left="Network" isSelected={false}>
+        <NetworkSelector />
       </SettingsCard>
       <ErrorLogsDrawerCard />
     </SectionContainer>
@@ -129,8 +129,13 @@ const AdvancedSection = () => {
         TODO: implement this
         <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
       */}
-      <SettingsCardWithDrawerIcon left="Off-board Wallet" onClick={onOpenOffboardingModal} />
       <SettingsCardWithDrawerIcon
+        left="Off-board Wallet"
+        onClick={onOpenOffboardingModal}
+        isSelected={false}
+      />
+      <SettingsCardWithDrawerIcon
+        isSelected={false}
         left="Change Password"
         onClick={() => openWith(<ChangePasswordForm />)}
       />
@@ -144,10 +149,10 @@ const SectionContainer: React.FC<{
   children: React.ReactNode;
 }> = ({ title, children }) => {
   return (
-    <Box marginY={2}>
+    <Box marginTop="8px">
       <Flex>
         <Box w="550px">
-          <Heading size="lg" marginY={3}>
+          <Heading size="lg" marginBottom="16px">
             {title}
           </Heading>
           {children}

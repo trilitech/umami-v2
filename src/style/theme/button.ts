@@ -2,7 +2,10 @@ import { defineStyleConfig } from "@chakra-ui/react";
 import colors from "../colors";
 
 export const buttonTheme = defineStyleConfig({
-  sizes: { md: { height: "38px", minWidth: "38px" }, lg: { height: "48px", minWidth: "48px" } },
+  sizes: {
+    md: { height: "38px", fontSize: "14px", minWidth: "38px" },
+    lg: { height: "48px", fontSize: "16px", minWidth: "48px" },
+  },
   variants: {
     primary: {
       bg: colors.blue,
@@ -93,6 +96,16 @@ export const buttonTheme = defineStyleConfig({
       color: colors.greenL,
       _hover: {
         color: colors.green,
+      },
+    },
+    CTAWithIcon: {
+      padding: "8px 7px",
+      color: colors.gray[300],
+      _hover: {
+        color: colors.green,
+      },
+      _disabled: {
+        color: colors.gray[450],
       },
     },
   },

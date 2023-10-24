@@ -1,11 +1,9 @@
-import { Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import React from "react";
-import { FiExternalLink } from "react-icons/fi";
 import { Account, AccountType } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
 import { Delegation } from "../../../types/Delegation";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
-import { IconAndTextBtnLink } from "../../IconAndTextBtn";
 import SmallTab from "../../SmallTab";
 import { DelegationDisplay } from "./DelegationDisplay";
 import MultisigPendingAccordion from "./MultisigPendingAccordion";
@@ -17,6 +15,8 @@ import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { OperationTileContext } from "../../OperationTile";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
 import colors from "../../../style/colors";
+import { ExternalLink } from "../../ExternalLink";
+import ExternalLinkIcon from "../../../assets/icons/ExternalLink";
 
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
@@ -46,13 +46,14 @@ export const AssetsPanel: React.FC<{
           <SmallTab>Tokens</SmallTab>
         </Flex>
 
-        <IconAndTextBtnLink
-          data-testid="tzkt-link"
-          icon={FiExternalLink}
-          label="View on Tzkt"
-          href={buildTzktAddressUrl(network, account.address.pkh)}
-          textFirst
-        />
+        <ExternalLink href={buildTzktAddressUrl(network, account.address.pkh)}>
+          <Button variant="CTAWithIcon" paddingRight={0}>
+            <Text mr="7px" size="sm">
+              View on Tzkt
+            </Text>
+            <ExternalLinkIcon stroke="currentcolor" />
+          </Button>
+        </ExternalLink>
       </TabList>
       <TabPanels height="100%">
         {isMultisig && (

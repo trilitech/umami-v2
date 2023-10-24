@@ -1,15 +1,20 @@
-import { Flex } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import { BsArrowBarRight } from "react-icons/bs";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import colors from "../../style/colors";
+import ExitArrowIcon from "../../assets/icons/ExitArrow";
 
 export const DrawerTopButtons: React.FC<{
   onClose: () => void;
 }> = ({ onClose }) => {
   return (
-    <Flex justifyContent="flex-end" color={colors.gray[400]} pb="30px" cursor="pointer">
-      <IconAndTextBtn onClick={onClose} label="Close" icon={BsArrowBarRight} />
+    <Flex justifyContent="flex-end" pb="30px" cursor="pointer">
+      <CloseDrawerButton onClose={onClose} />
     </Flex>
   );
 };
+
+export const CloseDrawerButton = ({ onClose }: { onClose: () => void }) => (
+  <Button variant="CTAWithIcon" onClick={onClose}>
+    <ExitArrowIcon stroke="currentcolor" />
+    <Text ml="4px">Close</Text>
+  </Button>
+);

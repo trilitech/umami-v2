@@ -7,7 +7,7 @@ const useOffboardingModal = () => {
 
   return {
     modalElement: (
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent bg={colors.gray[900]}>
           <OffboardingForm />
