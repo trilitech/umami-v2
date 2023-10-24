@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 import { Flex, Text, Box } from "@chakra-ui/react";
-import { Address } from "../../types/Address";
+import { Address, TzktAlias, parsePkh } from "../../types/Address";
 import colors from "../../style/colors";
 import { useRef, useState } from "react";
 import useAddressKind from "./useAddressKind";
@@ -24,8 +24,10 @@ export type AddressPillMode =
   | { type: "no_icons" };
 
 const AddressPill: React.FC<
-  { address: Address; mode?: AddressPillMode; fallbackLabel?: string } & BoxProps
-> = ({ address, mode = { type: "default" }, fallbackLabel, ...rest }) => {
+  { address: Address | TzktAlias; mode?: AddressPillMode; } & BoxProps
+> = ({ address:rawAddress, mode = { type: "default" }, ...rest }) => {
+  const isAlias = !("pkh" in rawAddress);
+  const address = isAlias ? parsePkh(rawAddress.address) : rawAddress;
   const addressKind = useAddressKind(address);
   const showIcons = mode.type !== "no_icons";
 
@@ -90,7 +92,7 @@ const AddressPill: React.FC<
             <Button variant="unstyled" h="24px" _focus={{ boxShadow: "none" }}>
               <AddressPillText
                 data-testid="address-pill-text"
-                fallbackLabel={fallbackLabel}
+                alias={isAlias ? rawAddress: undefined}
                 addressKind={addressKind}
                 showPkh={!showIcons}
                 cursor="pointer"
