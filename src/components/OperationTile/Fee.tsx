@@ -7,6 +7,7 @@ import { get } from "lodash";
 import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
 import { OperationTileContext } from "./OperationTileContext";
 import React, { useContext } from "react";
+
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];
 
 export const Fee: React.FC<{
