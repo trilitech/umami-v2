@@ -2,9 +2,16 @@ import { Icon, IconProps } from "@chakra-ui/react";
 
 const XMark: React.FC<IconProps> = props => {
   return (
-    <Icon width="3.5" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <Icon
+      width="18px"
+      height="18px"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <path
-        d="M1.5 1.5L10.5 10.5M10.5 1.5L1.5 10.5"
+        d="M4.5 4.5L13.5 13.5M13.5 4.5L4.5 13.5"
         data-testid="xmark-icon-path"
         strokeWidth="1.2"
         strokeLinecap="round"
