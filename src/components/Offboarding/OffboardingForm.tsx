@@ -52,7 +52,7 @@ const OffboardingForm = () => {
         </ModalHeader>
         <Box>
           <Text textAlign="center" color={colors.gray[400]} fontWeight="bold" size="sm" mb={2}>
-            This will permanently delete any data from this computer.
+            This will permanently remove any data from this computer.
           </Text>
           <Text textAlign="center" color={colors.gray[400]} size="sm">
             Please enter « {CONFIRMATION_CODE} » to confirm. The accounts are still available to be
@@ -64,7 +64,7 @@ const OffboardingForm = () => {
             <FormControl isInvalid={!!errors.check}>
               <Checkbox {...register("check", { required: true })}>
                 <Text ml={2} fontWeight="bold">
-                  I have read the warning and I am certain I want to delete my private keys locally.
+                  I have read the warning and I am certain I want to remove my private keys locally.
                   I also made sure to keep my recovery phrase.
                 </Text>
               </Checkbox>
