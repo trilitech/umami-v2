@@ -51,16 +51,18 @@ export const FormSubmitButtons = ({
   isValid,
   onSingleSubmit,
   onAddToBatch,
+  showPreview = true,
 }: {
   isLoading: boolean;
   isValid: boolean;
   onSingleSubmit: () => Promise<void>;
   onAddToBatch: () => Promise<void>;
+  showPreview? :boolean,
 }) => {
   return (
     <>
       <Box width="100%">
-        <Button
+        {showPreview && <Button
           onClick={onSingleSubmit}
           width="100%"
           size="lg"
@@ -70,7 +72,7 @@ export const FormSubmitButtons = ({
           mb="16px"
         >
           Preview
-        </Button>
+        </Button>}
         <Button
           onClick={onAddToBatch}
           width="100%"

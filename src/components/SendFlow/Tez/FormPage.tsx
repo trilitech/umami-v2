@@ -43,7 +43,7 @@ const toOperation = (formValues: FormValues): TezTransfer => ({
   recipient: parsePkh(formValues.recipient),
 });
 
-const FormPage: React.FC<FormPageProps<FormValues>> = props => {
+const FormPage: React.FC<FormPageProps<FormValues> & {showPreview? :boolean}> = ({showPreview = true, ...props}) => {
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,
@@ -126,6 +126,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               isValid={isValid}
               onSingleSubmit={handleSubmit(onSingleSubmit)}
               onAddToBatch={handleSubmit(onBatchSubmit)}
+              showPreview={showPreview}
             />
           </ModalFooter>
         </form>
