@@ -40,7 +40,7 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
   const accordionItemStyle = {
     border: "none",
     borderRadius: "8px",
-    marginBottom: "10px",
+    marginBottom: "20px",
   };
   return (
     <Box>
@@ -82,19 +82,19 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
       <TagsSection nft={nft} />
 
       {name && (
-        <Heading data-testid="nft-name" mt={4} size="lg">
+        <Heading data-testid="nft-name" mt="16px" mb="14px" size="lg">
           {name}
         </Heading>
       )}
 
       {nft.metadata.description && (
-        <Box data-testid="nft-description">{nft.metadata.description}</Box>
+        <Text data-testid="nft-description" size="sm" color={colors.gray[400]}>
+          {nft.metadata.description}
+        </Text>
       )}
 
-      <Box>{nft.metadata.description}</Box>
-
       <Button
-        mt={4}
+        mt="20px"
         onClick={() => {
           openWith(<SendNFTForm sender={getAccount(ownerPkh)} nft={nft} />);
         }}
@@ -102,19 +102,17 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
         Send
       </Button>
 
-      <Accordion allowMultiple mt="3">
+      <Accordion allowMultiple mt="32px">
         <AttributesAccordionItem nft={nft} style={accordionItemStyle} />
         <PropertiesAccordionItem nft={nft} style={accordionItemStyle} />
 
         <AccordionItem bg={colors.gray[800]} style={accordionItemStyle}>
-          <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
-                JSON
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
+          <AccordionButton paddingY="16px">
+            <Heading size="md" flex="1" textAlign="left">
+              JSON
+            </Heading>
+            <AccordionIcon />
+          </AccordionButton>
           <AccordionPanel>
             <JsValueWrap value={nft} />
           </AccordionPanel>

@@ -1,6 +1,5 @@
-import { Flex, IconButton, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { TopBar } from "../../components/TopBar";
-import colors from "../../style/colors";
 import ContactTable from "./ContactTable";
 import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
 import { UpsertContactModal } from "../../components/ContactModal";
@@ -11,25 +10,22 @@ import AddContactIcon from "../../assets/icons/AddContact";
 const AddContact: React.FC = () => {
   const { openWith } = useContext(DynamicModalContext);
   return (
-    <Flex alignItems="center" justifyContent="end" mb="16px" mt="16px" cursor="pointer">
-      <IconButton
-        aria-label="add contact"
-        variant="specialCTA"
-        onClick={() =>
-          openWith(<UpsertContactModal title="Add contact" buttonText="Add to Contact" />)
-        }
-        icon={<AddContactIcon stroke="currentcolor" />}
-      />
-
-      <Text
-        color={colors.greenL}
-        _hover={{
-          color: colors.green,
-        }}
-      >
+    <Button
+      variant="CTAWithIcon"
+      onClick={() =>
+        openWith(<UpsertContactModal title="Add contact" buttonText="Add to Contact" />)
+      }
+      alignItems="center"
+      justifyContent="end"
+      mb="16px"
+      mt="16px"
+      cursor="pointer"
+    >
+      <AddContactIcon stroke="currentcolor" />
+      <Text size="sm" ml="4px">
         Add contact
       </Text>
-    </Flex>
+    </Button>
   );
 };
 
@@ -39,7 +35,9 @@ export default function AddressBookView() {
     <Flex direction="column" height="100%">
       <TopBar title="Address Book" />
 
-      <AddContact />
+      <Flex flexDirection="row-reverse">
+        <AddContact />
+      </Flex>
       <ContactTable contacts={contacts} />
     </Flex>
   );

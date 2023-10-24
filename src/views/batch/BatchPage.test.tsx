@@ -26,7 +26,7 @@ describe("<BatchPage />", () => {
   it("shows empty batch message by default", () => {
     render(<BatchPage />);
 
-    expect(screen.getByText(/your batch is currently empty/i)).toBeInTheDocument();
+    expect(screen.getByText(/no 'batch' to show/i)).toBeInTheDocument();
   });
 
   describe("pending", () => {

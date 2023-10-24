@@ -1,4 +1,13 @@
-import { Box, Button, Divider, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import { formatDistance } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import FetchingIcon from "../assets/icons/Fetching";
@@ -18,6 +27,8 @@ const formatRelativeTimestamp = (timestamp: string) => {
 };
 
 const UpdateButton = () => {
+  const [isSmallSize] = useMediaQuery("(max-width: 1200px)");
+
   const dispatch = useAppDispatch();
   const isLoading = useIsLoading();
   const lastTimeUpdated = useLastTimeUpdated();
@@ -41,9 +52,9 @@ const UpdateButton = () => {
 
   return (
     <>
-      {relativeTimestamp && (
+      {relativeTimestamp && !isSmallSize && (
         <Text size="sm" color={colors.gray[400]} display="inline">
-          Last updated: {relativeTimestamp} ago
+          Updated {relativeTimestamp} ago
         </Text>
       )}
       <IconButton
@@ -62,19 +73,23 @@ const UpdateButton = () => {
 
 export const TopBar: React.FC<{ title: string }> = ({ title }) => {
   const { openWith } = useContext(DynamicModalContext);
+  const [isSmallSize] = useMediaQuery("(max-width: 1200px)");
+
   return (
     <Box>
       <Flex h="88px" justifyContent="space-between" alignItems="center">
         <Heading size="xl">{title}</Heading>
         <Box>
           <UpdateButton />
-          <a
-            href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${emailBodyTemplate}`}
-          >
-            <Button variant="tertiary" mr={4}>
-              Share Feedback
-            </Button>
-          </a>
+          {!isSmallSize && (
+            <a
+              href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${emailBodyTemplate}`}
+            >
+              <Button variant="tertiary" mr={4}>
+                Share Feedback
+              </Button>
+            </a>
+          )}
           <Button variant="tertiary" onClick={() => openWith(<BuyTezForm />)}>
             Buy Tez
           </Button>

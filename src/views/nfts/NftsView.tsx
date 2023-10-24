@@ -10,11 +10,10 @@ import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
 import { useDynamicModal } from "../../components/DynamicModal";
-import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import { BsArrowBarRight } from "react-icons/bs";
 import colors from "../../style/colors";
 import AddressPill from "../../components/AddressPill/AddressPill";
 import { parsePkh } from "../../types/Address";
+import { CloseDrawerButton } from "../home/DrawerTopButtons";
 
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
@@ -79,10 +78,11 @@ const NFTsViewBase = () => {
                       justifyContent="space-between"
                       color={colors.gray[400]}
                       cursor="pointer"
+                      alignItems="center"
                       paddingBottom="30px"
                     >
                       <AddressPill address={parsePkh(ownerPkh)} />
-                      <IconAndTextBtn onClick={openNFTsPage} label="Close" icon={BsArrowBarRight} />
+                      <CloseDrawerButton onClose={openNFTsPage} />
                     </Flex>
                     <NFTDrawerCard nft={drawerNFT} ownerPkh={ownerPkh} />
                   </>

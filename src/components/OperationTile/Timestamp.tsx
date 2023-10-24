@@ -8,7 +8,7 @@ export const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timesta
   }
   const relativeTimestamp = formatRelative(new Date(timestamp as string), new Date());
   return (
-    <Text data-testid="timestamp" color={colors.gray[400]}>
+    <Text data-testid="timestamp" size="sm" color={colors.gray[400]}>
       {relativeTimestamp}
     </Text>
   );
