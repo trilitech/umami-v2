@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { parsePkh, RawPkh } from "../../../types/Address";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
@@ -13,7 +13,6 @@ import {
 import { Undelegation } from "../../../types/Operation";
 import FormPageHeader from "../FormPageHeader";
 import { BakerSmallTile } from "../BakerSmallTile";
-import { DynamicModalContext } from "../../DynamicModal";
 
 export type FormValues = {
   sender: RawPkh;
@@ -37,9 +36,8 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
     defaultFormPageProps: { sender },
     toOperation,
   });
-  const { onClose } = useContext(DynamicModalContext);
 
-  const addToBatch = useAddToBatchFormAction(toOperation, onClose);
+  const addToBatch = useAddToBatchFormAction(toOperation);
 
   const {
     onFormSubmitActionHandlers: [onSingleSubmit, onBatchSubmit],
