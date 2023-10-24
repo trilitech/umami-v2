@@ -24,9 +24,9 @@ export type AddressPillMode =
   | { type: "no_icons" };
 
 const AddressPill: React.FC<
-  { address: Address | TzktAlias; mode?: AddressPillMode; } & BoxProps
-> = ({ address:rawAddress, mode = { type: "default" }, ...rest }) => {
-  const isAlias = !("pkh" in rawAddress);
+  { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps
+> = ({ address: rawAddress, mode = { type: "default" }, ...rest }) => {
+  const isAlias = !("pkh" in rawAddress && "type" in rawAddress);
   const address = isAlias ? parsePkh(rawAddress.address) : rawAddress;
   const addressKind = useAddressKind(address);
   const showIcons = mode.type !== "no_icons";
@@ -92,7 +92,7 @@ const AddressPill: React.FC<
             <Button variant="unstyled" h="24px" _focus={{ boxShadow: "none" }}>
               <AddressPillText
                 data-testid="address-pill-text"
-                alias={isAlias ? rawAddress: undefined}
+                alias={isAlias && rawAddress.alias ? rawAddress.alias : undefined}
                 addressKind={addressKind}
                 showPkh={!showIcons}
                 cursor="pointer"
