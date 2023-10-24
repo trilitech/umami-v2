@@ -43,7 +43,10 @@ const toOperation = (formValues: FormValues): TezTransfer => ({
   recipient: parsePkh(formValues.recipient),
 });
 
-const FormPage: React.FC<FormPageProps<FormValues> & {showPreview? :boolean}> = ({showPreview = true, ...props}) => {
+const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> = ({
+  showPreview = true,
+  ...props
+}) => {
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,

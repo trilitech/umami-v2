@@ -54,6 +54,33 @@ describe("SendFlow utils", () => {
       fireEvent.click(screen.getByText("Insert Into Batch"));
       expect(mockSingle).toHaveBeenCalled();
     });
+
+    it("shows preview button by default", () => {
+      render(
+        <FormSubmitButtons
+          isLoading={false}
+          isValid={true}
+          onSingleSubmit={async () => {}}
+          onAddToBatch={async () => {}}
+        />
+      );
+
+      expect(screen.getByText("Preview")).toBeInTheDocument();
+    });
+
+    it("hides preview button", () => {
+      render(
+        <FormSubmitButtons
+          showPreview={false}
+          isLoading={false}
+          isValid={true}
+          onSingleSubmit={async () => {}}
+          onAddToBatch={async () => {}}
+        />
+      );
+
+      expect(screen.queryByText("Preview")).not.toBeInTheDocument();
+    });
   });
 
   describe("smallestUnit", () => {

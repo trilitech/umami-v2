@@ -65,7 +65,9 @@ const EmptyBatch = () => {
         </Text>
         <Flex justifyContent="space-around" mt="30px">
           <Box>
-            <Button onClick={() => openWith(<SendTezForm showPreview={false} />)}>Start a Batch</Button>
+            <Button onClick={() => openWith(<SendTezForm showPreview={false} />)}>
+              Start a Batch
+            </Button>
             <Button ml="15px" variant="tertiary" onClick={() => openWith(<CSVFileUploadForm />)}>
               Load CSV file
             </Button>
