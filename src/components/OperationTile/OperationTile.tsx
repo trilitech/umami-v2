@@ -1,14 +1,4 @@
-import {
-  AspectRatio,
-  Box,
-  Center,
-  Flex,
-  Heading,
-  IconProps,
-  Image,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
+import { AspectRatio, Box, Center, Flex, Heading, Image, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
@@ -19,13 +9,11 @@ import {
   DelegationOperation,
   OriginationOperation,
 } from "../../utils/tezos";
-import { prettyTezAmount } from "../../utils/format";
+import { TzktAlias } from "../../types/Address";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import BakerIcon from "../../assets/icons/Baker";
-import IncomingArrow from "../../assets/icons/IncomingArrow";
-import OutgoingArrow from "../../assets/icons/OutgoingArrow";
 import ContractIcon from "../../assets/icons/Contract";
 import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
@@ -36,71 +24,8 @@ import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { useShowAddress } from "./useShowAddress";
 import AddressPill from "../AddressPill/AddressPill";
-import { TzktAlias } from "../../types/Address";
-
-const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
-  const isOutgoing = useIsOwnedAddress(operation.sender.address);
-  const amount = prettyTezAmount(String(operation.amount));
-  const showToAddress = useShowAddress(operation.target.address);
-  const showFromAddress = useShowAddress(operation.sender.address);
-  // if you send assets between your own accounts you need to see at least one address
-  const showAnyAddress = !showToAddress && !showFromAddress;
-
-  const titleColor = isOutgoing ? colors.orange : colors.green;
-  const sign = isOutgoing ? "-" : "+";
-
-  return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
-        <Center>
-          <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
-          <TzktLink operation={operation} mr="8px" color={titleColor}>
-            <Text fontWeight="600" color={titleColor}>
-              {sign} {amount}
-            </Text>
-          </TzktLink>
-          <Fee operation={operation} />
-        </Center>
-        <Flex alignSelf="flex-end">
-          <Timestamp timestamp={operation.timestamp} />
-        </Flex>
-      </Flex>
-      <Box>
-        <Flex justifyContent="space-between">
-          <Flex>
-            {showToAddress && (
-              <Flex mr="15px">
-                <Text mr="6px" color={colors.gray[450]}>
-                  To:
-                </Text>
-                <AddressPill address={operation.target} />
-              </Flex>
-            )}
-            {(showFromAddress || showAnyAddress) && (
-              <Flex>
-                <Text mr="6px" color={colors.gray[450]}>
-                  From:
-                </Text>
-                <AddressPill address={operation.sender} />
-              </Flex>
-            )}
-          </Flex>
-          <Center>
-            <OperationTypeWrapper>Transaction</OperationTypeWrapper>
-            <OperationStatus operation={operation} />
-          </Center>
-        </Flex>
-      </Box>
-    </Flex>
-  );
-};
-
-const TransactionDirectionIcon = ({
-  isOutgoing,
-  ...props
-}: { isOutgoing: boolean } & IconProps) => {
-  return isOutgoing ? <OutgoingArrow {...props} /> : <IncomingArrow {...props} />;
-};
+import { TransactionTile } from "./TransactionTile";
+import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 
 const TokenTransferTile: React.FC<{
   operation: TransactionOperation;

@@ -5,7 +5,7 @@ import { OperationTypeWrapper } from "./OperationTypeWrapper";
 describe("<OperationTypeWrapper />", () => {
   it("renders the children", () => {
     render(<OperationTypeWrapper>Test text</OperationTypeWrapper>);
-    expect(screen.getByTestId("operation-type-wrapper")).toHaveTextContent("Test text");
+    expect(screen.getByTestId("operation-type")).toHaveTextContent("Test text");
   });
 
   it("doesn't render in drawer mode", () => {
@@ -14,6 +14,6 @@ describe("<OperationTypeWrapper />", () => {
         <OperationTypeWrapper>Test text</OperationTypeWrapper>
       </OperationTileContext.Provider>
     );
-    expect(screen.queryByTestId("operation-type-wrapper")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
   });
 });
