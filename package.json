@@ -192,7 +192,6 @@
       "buildResources": "public"
     },
     "mac": {
-      "icon": "./public/logo512.png",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "target": [
@@ -210,7 +209,6 @@
       }
     },
     "win": {
-      "icon": "build/logo512.png",
       "target": [
         {
           "target": "portable",
@@ -221,7 +219,7 @@
       ]
     },
     "linux": {
-      "icon": "build/logo512.png",
+      "icon": "icons/",
       "target": [
         "deb",
         "rpm"
