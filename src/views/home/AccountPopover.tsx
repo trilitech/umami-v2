@@ -11,7 +11,13 @@ const AccountPopover: React.FC<{
 }> = ({ onDelete, onCreate }) => {
   return (
     <PopoverMenu>
-      <IconAndTextBtn label="Remove" icon={Trash} onClick={onDelete} textFirst stroke={colors.gray[400]} />
+      <IconAndTextBtn
+        label="Remove"
+        icon={Trash}
+        onClick={onDelete}
+        textFirst
+        stroke={colors.gray[400]}
+      />
       {onCreate && (
         <>
           <Divider marginY={1} />
