@@ -54,9 +54,6 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                         }
                       />
                       <RenameRemoveMenu
-                        onRemove={() => {
-                          openWith(<DeleteContactModal contact={contact} />);
-                        }}
                         onRename={() => {
                           openWith(
                             <UpsertContactModal
@@ -65,6 +62,9 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                               contact={contact}
                             />
                           );
+                        }}
+                        onRemove={() => {
+                          openWith(<DeleteContactModal contact={contact} />);
                         }}
                       />
                     </Flex>
