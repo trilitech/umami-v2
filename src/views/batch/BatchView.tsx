@@ -50,7 +50,7 @@ const RightHeader: React.FC<{ operations: AccountOperations }> = ({
         ml="18px"
         variant="circle"
         borderRadius="4px"
-        icon={<Trash />}
+        icon={<Trash stroke={colors.gray[400]} />}
         data-testid="remove-batch"
       />
     </Box>
@@ -147,7 +147,7 @@ export const BatchView: React.FC<{
                     ml="12px"
                     aria-label="Remove"
                     color={colors.gray[300]}
-                    icon={<Trash />}
+                    icon={<Trash stroke={colors.gray[400]} />}
                     borderRadius="full"
                     size="xs"
                     width="24px"

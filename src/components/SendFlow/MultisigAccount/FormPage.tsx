@@ -147,6 +147,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                   {signersCount > 1 && (
                     <IconButton
                       size="xs"
+                      stroke={colors.gray[400]}
                       variant="tertiary"
                       aria-label="Remove"
                       position="absolute"

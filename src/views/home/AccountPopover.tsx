@@ -3,6 +3,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import PopoverMenu from "../../components/PopoverMenu";
 import Trash from "../../assets/icons/Trash";
+import colors from "../../style/colors";
 
 const AccountPopover: React.FC<{
   onDelete: () => void;
@@ -10,7 +11,7 @@ const AccountPopover: React.FC<{
 }> = ({ onDelete, onCreate }) => {
   return (
     <PopoverMenu>
-      <IconAndTextBtn label="Remove" icon={Trash} onClick={onDelete} textFirst />
+      <IconAndTextBtn label="Remove" icon={Trash} onClick={onDelete} textFirst stroke={colors.gray[400]} />
       {onCreate && (
         <>
           <Divider marginY={1} />

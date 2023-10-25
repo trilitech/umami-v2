@@ -38,7 +38,7 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => v
           aria-label="Remove Peer"
           size="xs"
           variant="circle"
-          icon={<Trash />}
+          icon={<Trash stroke={colors.gray[400]} />}
         />
       </Center>
     </Flex>
