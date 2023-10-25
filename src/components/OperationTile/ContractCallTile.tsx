@@ -1,38 +1,30 @@
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
-import colors from "../../style/colors";
-import { prettyTezAmount } from "../../utils/format";
-import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
+import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import { TransactionOperation } from "../../utils/tezos";
 import { useShowAddress } from "./useShowAddress";
-import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
+import ContractIcon from "../../assets/icons/Contract";
 import { TzktLink } from "./TzktLink";
 import { Fee } from "./Fee";
 import { Timestamp } from "./Timestamp";
 import AddressPill from "../AddressPill/AddressPill";
+import colors from "../../style/colors";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { OperationStatus } from "./OperationStatus";
-import { parsePkh } from "../../types/Address";
 
-export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
-  const isOutgoing = useIsOwnedAddress(operation.sender.address);
-  const amount = prettyTezAmount(String(operation.amount));
+export const ContractCallTile: React.FC<{
+  operation: TransactionOperation;
+}> = ({ operation }) => {
   const showToAddress = useShowAddress(operation.target.address);
   const showFromAddress = useShowAddress(operation.sender.address);
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
 
-  const titleColor = isOutgoing ? colors.orange : colors.green;
-  const sign = isOutgoing ? "-" : "+";
-
   return (
     <Flex direction="column" data-testid="operation-tile" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
-          <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
-          <TzktLink operation={operation} mr="8px" data-testid="title" color={titleColor}>
-            <Text fontWeight="600" color={titleColor}>
-              {sign} {amount}
-            </Text>
+          <ContractIcon mr="8px" />
+          <TzktLink operation={operation} data-testid="title" mr="8px">
+            <Heading size="md">Contract Call: {operation.parameter?.entrypoint}</Heading>
           </TzktLink>
           <Fee operation={operation} />
         </Center>
@@ -48,7 +40,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(operation.target.address)} />
+                <AddressPill address={operation.target} />
               </Flex>
             )}
             {(showFromAddress || showAnyAddress) && (
@@ -56,12 +48,12 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender.address)} />
+                <AddressPill address={operation.sender} />
               </Flex>
             )}
           </Flex>
           <Center>
-            <OperationTypeWrapper>Transaction</OperationTypeWrapper>
+            <OperationTypeWrapper>Contract Call</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Center>
         </Flex>

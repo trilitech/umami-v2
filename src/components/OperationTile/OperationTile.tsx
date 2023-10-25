@@ -26,6 +26,7 @@ import { useShowAddress } from "./useShowAddress";
 import AddressPill from "../AddressPill/AddressPill";
 import { TransactionTile } from "./TransactionTile";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
+import { ContractCallTile } from "./ContractCallTile";
 
 const TokenTransferTile: React.FC<{
   operation: TransactionOperation;
@@ -126,58 +127,6 @@ const TokenTransferTile: React.FC<{
           </Flex>
           <Center>
             <OperationTypeWrapper>Token Transfer</OperationTypeWrapper>
-            <OperationStatus operation={operation} />
-          </Center>
-        </Flex>
-      </Box>
-    </Flex>
-  );
-};
-
-const ContractCallTile: React.FC<{
-  operation: TransactionOperation;
-}> = ({ operation }) => {
-  const showToAddress = useShowAddress(operation.target.address);
-  const showFromAddress = useShowAddress(operation.sender.address);
-  // if you send assets between your own accounts you need to see at least one address
-  const showAnyAddress = !showToAddress && !showFromAddress;
-
-  return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
-        <Center>
-          <ContractIcon mr="8px" />
-          <TzktLink operation={operation} mr="8px">
-            <Heading size="md">Contract Call: {operation.parameter?.entrypoint}</Heading>
-          </TzktLink>
-          <Fee operation={operation} />
-        </Center>
-        <Flex alignSelf="flex-end">
-          <Timestamp timestamp={operation.timestamp} />
-        </Flex>
-      </Flex>
-      <Box>
-        <Flex justifyContent="space-between">
-          <Flex>
-            {showToAddress && (
-              <Flex mr="15px">
-                <Text mr="6px" color={colors.gray[450]}>
-                  To:
-                </Text>
-                <AddressPill address={operation.target} />
-              </Flex>
-            )}
-            {(showFromAddress || showAnyAddress) && (
-              <Flex>
-                <Text mr="6px" color={colors.gray[450]}>
-                  From:
-                </Text>
-                <AddressPill address={operation.sender} />
-              </Flex>
-            )}
-          </Flex>
-          <Center>
-            <OperationTypeWrapper>Contract Call</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Center>
         </Flex>
