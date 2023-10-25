@@ -1,4 +1,4 @@
-import TransportWebHID from "@ledgerhq/hw-transport-webhid";
+import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
@@ -64,11 +64,11 @@ export const makeSigner = async (config: SignerConfig) => {
       return new InMemorySigner(config.secretKey);
     case "ledger": {
       // Close existing connections to be able to reinitiate
-      const devices = await TransportWebHID.list();
+      const devices = await TransportWebUSB.list();
       for (let i = 0; i < devices.length; i++) {
         devices[i].close();
       }
-      const transport = await TransportWebHID.create();
+      const transport = await TransportWebUSB.create();
       const signer = new LedgerSigner(
         transport,
         config.account.derivationPath,
