@@ -21,17 +21,19 @@ const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }
               <Icon as={BiPencil} color={colors.gray[450]} />
             </Flex>
           </Button>
-          {onRemove && <>
-            <Divider my="4px" />
-            <Button variant="unstyled" h="24px" onClick={onRemove}>
-              <Flex alignItems="center">
-                <Text mr="4px" color={colors.gray[300]}>
-                  Remove
-                </Text>
-                <Icon as={Trash} stroke={colors.gray[450]} />
-              </Flex>
-            </Button>
-          </>}
+          {onRemove && (
+            <>
+              <Divider my="4px" />
+              <Button variant="unstyled" h="24px" onClick={onRemove}>
+                <Flex alignItems="center">
+                  <Text mr="4px" color={colors.gray[300]}>
+                    Remove
+                  </Text>
+                  <Icon as={Trash} stroke={colors.gray[450]} />
+                </Flex>
+              </Button>
+            </>
+          )}
         </Box>
       </PopoverMenu>
     </Flex>
