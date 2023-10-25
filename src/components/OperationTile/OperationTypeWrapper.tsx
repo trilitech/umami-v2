@@ -12,7 +12,7 @@ export const OperationTypeWrapper: React.FC<PropsWithChildren> = ({ children }) 
   }
 
   return (
-    <Text data-testid="operation-type-wrapper" color={colors.gray[300]} mr="4px">
+    <Text data-testid="operation-type-wrapper" color={colors.gray[300]} size="sm" mr="4px">
       {children}
     </Text>
   );

@@ -30,7 +30,7 @@ const ErrorLogsDrawerCard = () => {
 
   return (
     <>
-      <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen} />
+      <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen} isSelected={isOpen} />
       <Drawer
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
@@ -84,7 +84,7 @@ const ErrorLogRow: React.FC<{
             <Heading size="sm" wordBreak="break-all">
               {errorLog.description}
             </Heading>
-            <Text color={colors.gray[600]} size="sm">
+            <Text color={colors.gray[400]} size="sm">
               {errorLog.timestamp}
             </Text>
           </Flex>

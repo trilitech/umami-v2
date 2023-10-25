@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const ChevronDownIcon: React.FC<IconProps> = props => {
+const ExitArrowIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -13,7 +13,7 @@ const ChevronDownIcon: React.FC<IconProps> = props => {
       {...props}
     >
       <path
-        d="M4.5 6.75L9 11.25L13.5 6.75"
+        d="M15 3V15M3 9H12M12 9L9 6M12 9L9 12"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -22,4 +22,4 @@ const ChevronDownIcon: React.FC<IconProps> = props => {
   );
 };
 
-export default ChevronDownIcon;
+export default ExitArrowIcon;

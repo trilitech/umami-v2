@@ -38,10 +38,10 @@ export const Fee: React.FC<{
 
   return (
     <Center>
-      <Heading size="sm" color={colors.gray[450]} mr="4px">
+      <Heading size="md" color={colors.gray[450]} mr="4px">
         Fee:
       </Heading>
-      <Text size="sm" color={colors.gray[400]} data-testid="fee">
+      <Text color={colors.gray[400]} data-testid="fee">
         {prettyTezAmount(totalFee)}
       </Text>
     </Center>

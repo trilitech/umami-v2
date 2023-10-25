@@ -1,5 +1,6 @@
 import { Wrap, WrapItem, Text } from "@chakra-ui/react";
 import { NFTBalance } from "../../../types/TokenBalance";
+import colors from "../../../style/colors";
 
 const TagsSection = ({ nft }: { nft: NFTBalance }) => {
   const tags = nft.metadata.tags;
@@ -7,11 +8,11 @@ const TagsSection = ({ nft }: { nft: NFTBalance }) => {
     return null;
   }
   return (
-    <Wrap mt="3" data-testid="tags-section">
+    <Wrap marginTop="20px" data-testid="tags-section">
       {tags.map(tag => {
         return (
-          <WrapItem key={tag} borderRadius="100px" padding="3px 8px" bg="umami.gray.600">
-            <Text data-testid="nft-tag" color="umami.gray.400">
+          <WrapItem key={tag} borderRadius="100px" padding="3px 8px" bg={colors.gray[600]}>
+            <Text data-testid="nft-tag" color={colors.gray[400]}>
               {tag}
             </Text>
           </WrapItem>

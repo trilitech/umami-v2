@@ -21,12 +21,13 @@ export const BeaconDrawerCard = () => {
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
   return (
     <>
-      <SettingsCardWithDrawerIcon left="dApps" onClick={onOpen} />
+      <SettingsCardWithDrawerIcon left="dApps" onClick={onOpen} isSelected={isOpen} />
       <Drawer
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
         placement="right"
         onClose={closeDrawer}
+        autoFocus={false}
       >
         <DrawerOverlay />
         <DrawerContent>
@@ -56,7 +57,7 @@ const BeaconDrawerBody = () => {
       >
         Paste a peer request code
       </Button>
-      <Text mt={4} color="text.dark">
+      <Text mt="16px" mb="32px" color="text.dark">
         or open a deeplink from inside the dApp...
       </Text>
       <BeaconPeers />
