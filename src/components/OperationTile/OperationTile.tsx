@@ -19,7 +19,6 @@ import {
   DelegationOperation,
   OriginationOperation,
 } from "../../utils/tezos";
-import { parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
@@ -37,6 +36,7 @@ import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { useShowAddress } from "./useShowAddress";
 import AddressPill from "../AddressPill/AddressPill";
+import { TzktAlias } from "../../types/Address";
 
 const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
   const isOutgoing = useIsOwnedAddress(operation.sender.address);
@@ -73,7 +73,7 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(operation.target.address)} />
+                <AddressPill address={operation.target} />
               </Flex>
             )}
             {(showFromAddress || showAnyAddress) && (
@@ -81,7 +81,7 @@ const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operat
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender.address)} />
+                <AddressPill address={operation.sender} />
               </Flex>
             )}
           </Flex>
@@ -187,7 +187,7 @@ const TokenTransferTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(tokenTransfer.to.address)} />
+                <AddressPill address={tokenTransfer.to} />
               </Flex>
             )}
             {(showFromAddress || showAnyAddress) && (
@@ -195,7 +195,7 @@ const TokenTransferTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender.address)} />
+                <AddressPill address={operation.sender} />
               </Flex>
             )}
           </Flex>
@@ -239,7 +239,7 @@ const ContractCallTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(operation.target.address)} />
+                <AddressPill address={operation.target} />
               </Flex>
             )}
             {(showFromAddress || showAnyAddress) && (
@@ -247,7 +247,7 @@ const ContractCallTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender.address)} />
+                <AddressPill address={operation.sender} />
               </Flex>
             )}
           </Flex>
@@ -288,7 +288,7 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(operation.newDelegate?.address as string)} />
+                <AddressPill address={operation.newDelegate as TzktAlias} />
               </Flex>
             )}
             {showFromAddress && (
@@ -296,7 +296,7 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender.address)} />
+                <AddressPill address={operation.sender} />
               </Flex>
             )}
             {!isDelegating && !showFromAddress && <Text color={colors.gray[450]}>N/A</Text>}
@@ -345,7 +345,7 @@ const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operat
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={parsePkh(operation.sender.address)} />
+                <AddressPill address={operation.sender} />
               </Flex>
             )}
           </Flex>

@@ -7,11 +7,12 @@ const AddressPillText: React.FC<
   {
     addressKind: AddressKind;
     showPkh: boolean;
+    alias?: string;
   } & TextProps
-> = ({ addressKind: { pkh, label }, showPkh, ...rest }) => {
+> = ({ addressKind: { pkh, label }, showPkh, alias, ...rest }) => {
   const getContactName = useGetContactName();
   const formattedPkh = formatPkh(pkh);
-  const nameOrLabel = getContactName(pkh) || label;
+  const nameOrLabel = getContactName(pkh) || label || alias;
 
   if (showPkh) {
     return <Text {...rest}>{formattedPkh}</Text>;
