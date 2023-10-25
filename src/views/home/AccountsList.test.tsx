@@ -100,7 +100,7 @@ describe("<AccountList />", () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          `Are you sure you want to delete all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+          `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
         )
       ).toBeInTheDocument();
     });

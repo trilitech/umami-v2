@@ -156,7 +156,7 @@ export const DeleteContactModal: FC<{
       <ModalBody>
         <Flex alignItems="center" direction="column" justifyContent="space-between">
           <Text size="sm" color={colors.gray[400]}>
-            Are you sure you want to delete this contact?
+            Are you sure you want to remove this contact?
           </Text>
           <Box mt={5}>
             <Heading size="md" textAlign="center" mb={3}>

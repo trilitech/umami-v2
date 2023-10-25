@@ -60,8 +60,8 @@ const AccountGroup: React.FC<{
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
   const modalBody = isMnemonic
-    ? `Are you sure you want to delete all accounts derived from ${getLabel(first)}?`
-    : `Are you sure you want to delete all of your ${getLabel(first)}?`;
+    ? `Are you sure you want to remove all accounts derived from ${getLabel(first)}?`
+    : `Are you sure you want to remove all of your ${getLabel(first)}?`;
 
   const onDelete = () => {
     openWith(
