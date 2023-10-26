@@ -18,7 +18,7 @@ import accountsSlice from "./accountsSlice";
 import { MAINNET } from "../../../types/Network";
 
 const {
-  actions: { addMockMnemonicAccounts, addAccount, removeMnemonicAndAccounts },
+  actions: { addMockMnemonicAccounts, addAccount, removeMnemonicAndAccounts, renameAccount },
 } = accountsSlice;
 
 beforeEach(async () => {
@@ -270,6 +270,75 @@ describe("Accounts reducer", () => {
         },
       ];
       expect(store.getState().accounts.items).toEqual(expected);
+    });
+  });
+
+  describe("rename account", () => {
+    const [mnemonic1, mnemonic2, social, ledger] = [
+      mockMnemonicAccount(1),
+      mockMnemonicAccount(2),
+      mockSocialAccount(3),
+      mockLedgerAccount(4),
+    ];
+
+    beforeEach(() => {
+      store.dispatch(addMockMnemonicAccounts([mnemonic1, mnemonic2]));
+      store.dispatch(addAccount(social));
+      store.dispatch(addAccount(ledger));
+    });
+
+    it("throws when the new name is empty", () => {
+      expect(() => store.dispatch(renameAccount({ account: mnemonic1, newName: "" }))).toThrowError(
+        "Cannot rename account to an empty name."
+      );
+    });
+
+    it("throws when the new name is used by other implicit account", () => {
+      expect(() =>
+        store.dispatch(renameAccount({ account: mnemonic1, newName: social.label }))
+      ).toThrowError(
+        "Cannot rename account tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf to google Account 3 since the name already exists."
+      );
+    });
+
+    it("doesn't do anything for non existing account", () => {
+      store.dispatch(
+        renameAccount({
+          account: { ...mnemonic1, label: "non existing account" },
+          newName: "new name",
+        })
+      );
+      expect(store.getState().accounts.items).toEqual([mnemonic1, mnemonic2, social, ledger]);
+    });
+
+    it("renames mnemonic account", () => {
+      store.dispatch(renameAccount({ account: mnemonic2, newName: "new mnemonic2 label" }));
+      expect(
+        store.getState().accounts.items.find(account => account.label === mnemonic2.label)
+      ).toBeUndefined();
+      expect(
+        store.getState().accounts.items.find(account => account.label === "new mnemonic2 label")
+      ).toEqual({ ...mnemonic2, label: "new mnemonic2 label" });
+    });
+
+    it("renames social account", () => {
+      store.dispatch(renameAccount({ account: social, newName: "new social label" }));
+      expect(
+        store.getState().accounts.items.find(account => account.label === social.label)
+      ).toBeUndefined();
+      expect(
+        store.getState().accounts.items.find(account => account.label === "new social label")
+      ).toEqual({ ...social, label: "new social label" });
+    });
+
+    it("renames ledger account", () => {
+      store.dispatch(renameAccount({ account: ledger, newName: "new ledger label" }));
+      expect(
+        store.getState().accounts.items.find(account => account.label === ledger.label)
+      ).toBeUndefined();
+      expect(
+        store.getState().accounts.items.find(account => account.label === "new ledger label")
+      ).toEqual({ ...ledger, label: "new ledger label" });
     });
   });
 });
