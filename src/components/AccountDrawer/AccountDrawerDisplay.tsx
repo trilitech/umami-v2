@@ -9,7 +9,6 @@ import AddressPill from "../AddressPill/AddressPill";
 import { DynamicModalContext } from "../DynamicModal";
 import { useContext, useEffect, useState } from "react";
 import DelegationFormPage from "../SendFlow/Delegation/FormPage";
-import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
 import BuyTezForm from "../BuyTez/BuyTezForm";
 import useAddressKind from "../AddressTile/useAddressKind";
 import AccountTileIcon from "../AccountTile/AccountTileIcon";
@@ -26,8 +25,6 @@ type Props = {
   onSend: () => void;
   onReceive?: () => void;
   onBuyTez?: () => void;
-  label: string;
-  pkh: string;
   balance: string | undefined;
   dollarBalance: BigNumber | null;
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
@@ -39,7 +36,7 @@ const RoundButton: React.FC<{
   label: string;
   icon: JSX.Element;
   onClick?: () => void;
-}> = ({ icon, label, onClick = () => {} }) => {
+}> = ({ icon, label, onClick = () => { } }) => {
   return (
     <Box textAlign="center" mx="24px">
       <IconButton
@@ -56,10 +53,8 @@ const RoundButton: React.FC<{
 };
 
 export const AccountDrawerDisplay: React.FC<Props> = ({
-  pkh,
   onSend,
-  onReceive = () => {},
-  label,
+  onReceive = () => { },
   balance,
   dollarBalance,
   tokens,
@@ -67,9 +62,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   account,
 }) => {
   const isMultisig = account.type === AccountType.MULTISIG;
-  const getOwnedAccount = useGetOwnedAccount();
   const { openWith } = useContext(DynamicModalContext);
-  const sender = getOwnedAccount(pkh);
   const addressKind = useAddressKind(account.address);
   const network = useSelectedNetwork();
 
@@ -90,10 +83,10 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   }, [account.address.pkh, network]);
 
   return (
-    <Flex direction="column" alignItems="center" data-testid={`account-card-${pkh}`}>
+    <Flex direction="column" alignItems="center" data-testid={`account-card-${account.address.pkh}`}>
       <AccountTileIcon addressKind={addressKind} />
       <Heading mt="24px" size="md">
-        {label}
+        {account.label}
       </Heading>
       <AddressPill address={account.address} mode={{ type: "no_icons" }} mt="8px" mb="30px" />
       {balance && <TezRecapDisplay center balance={balance} dollarBalance={dollarBalance} />}
@@ -113,7 +106,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
             label="Buy tez"
             icon={<PlusIcon stroke="currentcolor" />}
             onClick={() => {
-              openWith(<BuyTezForm recipient={sender.address.pkh} />);
+              openWith(<BuyTezForm recipient={account.address.pkh} />);
             }}
           />
         )}
@@ -123,8 +116,8 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
           onClick={() => {
             openWith(
               <DelegationFormPage
-                sender={sender}
-                form={delegation ? { baker: delegation.delegate.address, sender: pkh } : undefined}
+                sender={account}
+                form={delegation ? { baker: delegation.delegate.address, sender: account.address.pkh } : undefined}
               />
             );
           }}

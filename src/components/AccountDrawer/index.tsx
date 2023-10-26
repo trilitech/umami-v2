@@ -30,8 +30,6 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   return (
     <AccountDrawerDisplay
       onSend={() => openWith(<SendTezForm sender={account} />)}
-      pkh={account.address.pkh}
-      label={account.label}
       balance={balance}
       dollarBalance={dollarBalance}
       onReceive={() => {
