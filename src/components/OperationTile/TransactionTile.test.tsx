@@ -1,12 +1,14 @@
-import { mockImplicitAccount, mockLedgerAccount } from "../../mocks/factories";
+import { mockLedgerAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
+import { formatPkh } from "../../utils/formatPkh";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import store from "../../utils/redux/store";
 import { TEZ, TransactionOperation } from "../../utils/tezos";
 import { OperationTileContext } from "./OperationTileContext";
 import { TransactionTile } from "./TransactionTile";
+import { transactionFixture } from "./testUtils";
 
 const fixture = (context: any, operation: TransactionOperation) => (
   <OperationTileContext.Provider value={context}>
@@ -21,13 +23,7 @@ describe("<TransactionTile />", () => {
   ])("in $mode mode", contextValue => {
     describe("sign", () => {
       it("shows '+' for incoming transactions", () => {
-        render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockImplicitAccount(0).address.pkh },
-            sender: { address: mockImplicitAccount(1).address.pkh },
-          } as TransactionOperation)
-        );
+        render(fixture(contextValue, transactionFixture({})));
 
         expect(screen.getByTestId("incoming-arrow")).toBeInTheDocument();
         expect(screen.queryByTestId("outgoing-arrow")).not.toBeInTheDocument();
@@ -38,11 +34,10 @@ describe("<TransactionTile />", () => {
         store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
 
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockImplicitAccount(0).address.pkh },
-            sender: { address: mockLedgerAccount(1).address.pkh },
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({ sender: { address: mockLedgerAccount(1).address.pkh } })
+          )
         );
 
         expect(screen.queryByTestId("incoming-arrow")).not.toBeInTheDocument();
@@ -55,11 +50,13 @@ describe("<TransactionTile />", () => {
         store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
 
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockLedgerAccount(0).address.pkh },
-            sender: { address: mockLedgerAccount(1).address.pkh },
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              target: { address: mockLedgerAccount(0).address.pkh },
+              sender: { address: mockLedgerAccount(1).address.pkh },
+            })
+          )
         );
 
         expect(screen.queryByTestId("incoming-arrow")).not.toBeInTheDocument();
@@ -73,19 +70,7 @@ describe("<TransactionTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(
-            fixture(contextValue, {
-              amount: 1,
-              target: { address: mockImplicitAccount(0).address.pkh },
-              sender: { address: mockImplicitAccount(1).address.pkh },
-              hash: "test-hash",
-              counter: 1234,
-              id: 56789,
-              level: 4321,
-              network,
-              type: "transaction",
-            } as TransactionOperation)
-          );
+          render(fixture(contextValue, transactionFixture({})));
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -97,12 +82,12 @@ describe("<TransactionTile />", () => {
 
     it("displays timestamp", () => {
       render(
-        fixture(contextValue, {
-          amount: 1,
-          target: { address: mockImplicitAccount(0).address.pkh },
-          sender: { address: mockImplicitAccount(1).address.pkh },
-          timestamp: "2021-01-02T00:00:00.000Z",
-        } as TransactionOperation)
+        fixture(
+          contextValue,
+          transactionFixture({
+            timestamp: "2021-01-02T00:00:00.000Z",
+          })
+        )
       );
 
       expect(screen.getByTestId("timestamp")).toHaveTextContent("01/02/2021");
@@ -115,14 +100,14 @@ describe("<TransactionTile />", () => {
     describe("fee", () => {
       it("renders nothing if the fee isn't paid by the user", () => {
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockImplicitAccount(0).address.pkh },
-            sender: { address: mockImplicitAccount(1).address.pkh },
-            bakerFee: 100,
-            storageFee: 20,
-            allocationFee: 3,
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              bakerFee: 100,
+              storageFee: 20,
+              allocationFee: 3,
+            })
+          )
         );
 
         expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
@@ -131,14 +116,15 @@ describe("<TransactionTile />", () => {
       it("renders if there is any fee paid by the user", () => {
         store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockLedgerAccount(1).address.pkh },
-            sender: { address: mockLedgerAccount(0).address.pkh },
-            bakerFee: 100,
-            storageFee: 20,
-            allocationFee: 3,
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              sender: { address: mockLedgerAccount(0).address.pkh },
+              bakerFee: 100,
+              storageFee: 20,
+              allocationFee: 3,
+            })
+          )
         );
 
         expect(screen.getByTestId("fee")).toHaveTextContent(`0.000123 ${TEZ}`);
@@ -146,14 +132,15 @@ describe("<TransactionTile />", () => {
 
       it("renders nothing if the fee is absent", () => {
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockImplicitAccount(0).address.pkh },
-            sender: { address: mockImplicitAccount(1).address.pkh },
-            bakerFee: 0,
-            storageFee: 0,
-            allocationFee: 0,
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              sender: { address: mockLedgerAccount(0).address.pkh },
+              bakerFee: 0,
+              storageFee: 0,
+              allocationFee: 0,
+            })
+          )
         );
 
         expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
@@ -161,13 +148,7 @@ describe("<TransactionTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(
-        fixture(contextValue, {
-          amount: 1,
-          target: { address: mockImplicitAccount(0).address.pkh },
-          sender: { address: mockImplicitAccount(1).address.pkh },
-        } as TransactionOperation)
-      );
+      render(fixture(contextValue, transactionFixture({})));
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Transaction");
     });
@@ -179,41 +160,54 @@ describe("<TransactionTile />", () => {
 
       it("shows both if sender is an owned account", () => {
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockLedgerAccount(1).address.pkh },
-            sender: { address: mockLedgerAccount(0).address.pkh },
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              amount: 1,
+              target: { address: mockLedgerAccount(1).address.pkh },
+              sender: { address: mockLedgerAccount(0).address.pkh },
+            })
+          )
         );
 
-        expect(screen.getByTestId("from")).toBeInTheDocument();
-        expect(screen.getByTestId("to")).toBeInTheDocument();
+        expect(screen.getByTestId("from")).toHaveTextContent("Account 0 ledger");
+        expect(screen.getByTestId("to")).toHaveTextContent(
+          formatPkh(mockLedgerAccount(1).address.pkh)
+        );
       });
 
       it("shows both if target is an owned account", () => {
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockLedgerAccount(0).address.pkh },
-            sender: { address: mockLedgerAccount(1).address.pkh },
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              amount: 1,
+              target: { address: mockLedgerAccount(0).address.pkh },
+              sender: { address: mockLedgerAccount(1).address.pkh },
+            })
+          )
         );
 
-        expect(screen.getByTestId("from")).toBeInTheDocument();
-        expect(screen.getByTestId("to")).toBeInTheDocument();
+        expect(screen.getByTestId("from")).toHaveTextContent(
+          formatPkh(mockLedgerAccount(1).address.pkh)
+        );
+        expect(screen.getByTestId("to")).toHaveTextContent("Account 0 ledger");
       });
 
       it("shows both if sender and target are owned accounts", () => {
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockLedgerAccount(0).address.pkh },
-            sender: { address: mockLedgerAccount(0).address.pkh },
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              amount: 1,
+              target: { address: mockLedgerAccount(0).address.pkh },
+              sender: { address: mockLedgerAccount(0).address.pkh },
+            })
+          )
         );
 
-        expect(screen.getByTestId("from")).toBeInTheDocument();
-        expect(screen.getByTestId("to")).toBeInTheDocument();
+        expect(screen.getByTestId("from")).toHaveTextContent("Account 0 ledger");
+        expect(screen.getByTestId("to")).toHaveTextContent("Account 0 ledger");
       });
     });
   });
@@ -221,75 +215,82 @@ describe("<TransactionTile />", () => {
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
 
-    it("hides the fee", () => {
+    beforeEach(() => {
       store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+    });
+
+    it("hides the fee", () => {
       render(
-        fixture(contextValue, {
-          amount: 1,
-          target: { address: mockLedgerAccount(1).address.pkh },
-          sender: { address: mockLedgerAccount(0).address.pkh },
-          bakerFee: 100,
-          storageFee: 20,
-          allocationFee: 3,
-        } as TransactionOperation)
+        fixture(
+          contextValue,
+          transactionFixture({
+            sender: { address: mockLedgerAccount(0).address.pkh },
+            bakerFee: 100,
+            storageFee: 20,
+            allocationFee: 3,
+          })
+        )
       );
 
       expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
     });
 
     it("hides the operation type", () => {
-      render(
-        fixture(contextValue, {
-          amount: 1,
-          target: { address: mockImplicitAccount(0).address.pkh },
-          sender: { address: mockImplicitAccount(1).address.pkh },
-        } as TransactionOperation)
-      );
+      render(fixture(contextValue, transactionFixture({})));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });
 
     describe("pills", () => {
-      beforeEach(() => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
-      });
-
       it("hides From if it's an owned account", () => {
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockLedgerAccount(1).address.pkh },
-            sender: { address: mockLedgerAccount(0).address.pkh },
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              amount: 1,
+              target: { address: mockLedgerAccount(1).address.pkh },
+              sender: { address: mockLedgerAccount(0).address.pkh },
+            })
+          )
         );
 
         expect(screen.queryByTestId("from")).not.toBeInTheDocument();
-        expect(screen.getByTestId("to")).toBeInTheDocument();
+        expect(screen.getByTestId("to")).toHaveTextContent(
+          formatPkh(mockLedgerAccount(1).address.pkh)
+        );
       });
 
       it("hides To if it's an owned account", () => {
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockLedgerAccount(0).address.pkh },
-            sender: { address: mockLedgerAccount(1).address.pkh },
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              amount: 1,
+              target: { address: mockLedgerAccount(0).address.pkh },
+              sender: { address: mockLedgerAccount(1).address.pkh },
+            })
+          )
         );
 
-        expect(screen.getByTestId("from")).toBeInTheDocument();
+        expect(screen.getByTestId("from")).toHaveTextContent(
+          formatPkh(mockLedgerAccount(1).address.pkh)
+        );
         expect(screen.queryByTestId("to")).not.toBeInTheDocument();
       });
 
       it("shows only From if sender and target are owned accounts", () => {
         render(
-          fixture(contextValue, {
-            amount: 1,
-            target: { address: mockLedgerAccount(0).address.pkh },
-            sender: { address: mockLedgerAccount(0).address.pkh },
-          } as TransactionOperation)
+          fixture(
+            contextValue,
+            transactionFixture({
+              amount: 1,
+              target: { address: mockLedgerAccount(0).address.pkh },
+              sender: { address: mockLedgerAccount(0).address.pkh },
+            })
+          )
         );
 
-        expect(screen.getByTestId("from")).toBeInTheDocument();
+        expect(screen.getByTestId("from")).toHaveTextContent("Account 0 ledger");
         expect(screen.queryByTestId("to")).not.toBeInTheDocument();
       });
     });
