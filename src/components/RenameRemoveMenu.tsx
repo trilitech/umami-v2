@@ -29,7 +29,7 @@ const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }
                   <Text mr="4px" color={colors.gray[300]}>
                     Remove
                   </Text>
-                  <Icon as={Trash} stroke={colors.gray[450]} />
+                  <Icon as={Trash} />
                 </Flex>
               </Button>
             </>

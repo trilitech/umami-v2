@@ -1,4 +1,5 @@
 import { Icon, IconProps } from "@chakra-ui/react";
+import colors from "../../style/colors";
 
 const Trash: React.FC<IconProps> = props => {
   return (
@@ -8,6 +9,7 @@ const Trash: React.FC<IconProps> = props => {
       viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      stroke={colors.gray[450]}
       {...props}
     >
       <path
