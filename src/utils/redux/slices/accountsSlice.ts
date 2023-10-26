@@ -64,6 +64,26 @@ const accountsSlice = createSlice({
         return account.type === AccountType.MNEMONIC || account.type !== payload.accountType;
       });
     },
+    renameAccount: (
+      state,
+      { payload }: { type: string; payload: { account: ImplicitAccount; newName: string } }
+    ) => {
+      const { account, newName } = payload;
+      if (newName.length === 0) {
+        throw new Error("Cannot rename account to an empty name.");
+      }
+      if (state.items.find(a => a.label === newName)) {
+        throw new Error(
+          `Cannot rename account ${account.address.pkh} to ${newName} since the name already exists.`
+        );
+      }
+      const accountToRename = state.items.find(
+        a => a.address.pkh === account.address.pkh && a.label === account.label
+      );
+      if (accountToRename) {
+        accountToRename.label = newName;
+      }
+    },
     // To add mnemonic accounts, use the `restoreFromMnemonic` and `deriveAccount` thunk.
     addAccount: (state, { payload }: { type: string; payload: SocialAccount | LedgerAccount }) => {
       state.items = concatUnique(state.items, [payload]);
