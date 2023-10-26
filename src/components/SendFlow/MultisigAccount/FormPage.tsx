@@ -152,7 +152,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                       position="absolute"
                       bg={colors.gray[500]}
                       data-testid={`remove-signer-${index}`}
-                      icon={<Trash h="14px" w="12px" />}
+                      icon={<Trash h="14px" w="12px" stroke={colors.gray[300]} />}
                       onClick={() => signersArray.remove(index)}
                       height="24px"
                       ml="374px"

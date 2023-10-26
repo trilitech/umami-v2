@@ -1,12 +1,13 @@
 import { Box, Flex, Table, Text, Tbody, Td, Tr, TableContainer } from "@chakra-ui/react";
 import { Contact } from "../../types/Contact";
 import { CopyableAddress } from "../../components/CopyableText";
-import ContactMenu from "./ContactMenu";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import FormPage from "../../components/SendFlow/Tez/FormPage";
 import colors from "../../style/colors";
 import SendButton from "../../components/SendButton";
+import RenameRemoveMenu from "../../components/RenameRemoveMenu";
+import { DeleteContactModal, UpsertContactModal } from "../../components/ContactModal";
 
 const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
   const { openWith } = useContext(DynamicModalContext);
@@ -52,7 +53,20 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                           )
                         }
                       />
-                      <ContactMenu contact={contact} />
+                      <RenameRemoveMenu
+                        onRename={() => {
+                          openWith(
+                            <UpsertContactModal
+                              title="Edit contact"
+                              buttonText="Update"
+                              contact={contact}
+                            />
+                          );
+                        }}
+                        onRemove={() => {
+                          openWith(<DeleteContactModal contact={contact} />);
+                        }}
+                      />
                     </Flex>
                   </Td>
                 </Tr>
