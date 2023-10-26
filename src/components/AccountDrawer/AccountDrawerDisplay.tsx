@@ -20,6 +20,7 @@ import BakerIcon from "../../assets/icons/Baker";
 import OutgoingArrow from "../../assets/icons/OutgoingArrow";
 import IncomingArrow from "../../assets/icons/IncomingArrow";
 import PlusIcon from "../../assets/icons/Plus";
+import RenameRemoveMenuSwitch from "./RenameRemoveMenuSwitch";
 
 type Props = {
   onSend: () => void;
@@ -36,7 +37,7 @@ const RoundButton: React.FC<{
   label: string;
   icon: JSX.Element;
   onClick?: () => void;
-}> = ({ icon, label, onClick = () => { } }) => {
+}> = ({ icon, label, onClick = () => {} }) => {
   return (
     <Box textAlign="center" mx="24px">
       <IconButton
@@ -54,7 +55,7 @@ const RoundButton: React.FC<{
 
 export const AccountDrawerDisplay: React.FC<Props> = ({
   onSend,
-  onReceive = () => { },
+  onReceive = () => {},
   balance,
   dollarBalance,
   tokens,
@@ -83,12 +84,19 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   }, [account.address.pkh, network]);
 
   return (
-    <Flex direction="column" alignItems="center" data-testid={`account-card-${account.address.pkh}`}>
+    <Flex
+      direction="column"
+      alignItems="center"
+      data-testid={`account-card-${account.address.pkh}`}
+    >
       <AccountTileIcon addressKind={addressKind} />
       <Heading mt="24px" size="md">
         {account.label}
       </Heading>
-      <AddressPill address={account.address} mode={{ type: "no_icons" }} mt="8px" mb="30px" />
+      <Flex alignItems="center" mt="8px" mb="30px">
+        <AddressPill address={account.address} mode={{ type: "no_icons" }} mr="4px" />
+        <RenameRemoveMenuSwitch account={account} />
+      </Flex>
       {balance && <TezRecapDisplay center balance={balance} dollarBalance={dollarBalance} />}
       <Center mt="34px">
         <RoundButton
@@ -117,7 +125,11 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
             openWith(
               <DelegationFormPage
                 sender={account}
-                form={delegation ? { baker: delegation.delegate.address, sender: account.address.pkh } : undefined}
+                form={
+                  delegation
+                    ? { baker: delegation.delegate.address, sender: account.address.pkh }
+                    : undefined
+                }
               />
             );
           }}
