@@ -7,14 +7,11 @@ import {
   TzktCombinedOperation,
   TransactionOperation,
   DelegationOperation,
-  OriginationOperation,
 } from "../../utils/tezos";
 import { TzktAlias } from "../../types/Address";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
-import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import BakerIcon from "../../assets/icons/Baker";
-import ContractIcon from "../../assets/icons/Contract";
 import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
 import { Timestamp } from "./Timestamp";
@@ -27,6 +24,7 @@ import AddressPill from "../AddressPill/AddressPill";
 import { TransactionTile } from "./TransactionTile";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { ContractCallTile } from "./ContractCallTile";
+import { OriginationTile } from "./OriginationTile";
 
 const TokenTransferTile: React.FC<{
   operation: TransactionOperation;
@@ -186,53 +184,6 @@ const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operatio
 };
 
 // TODO: Add tests to all of the tiles
-const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {
-  const isMultisig =
-    operation.originatedContract?.codeHash === CODE_HASH &&
-    operation.originatedContract.typeHash === TYPE_HASH;
-
-  const contractTitle = isMultisig ? "Multisig Account Created" : "Contract Origination";
-
-  const showFromAddress = useShowAddress(operation.sender.address);
-
-  return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
-        <Center>
-          <ContractIcon mr="8px" />
-          <TzktLink operation={operation} mr="8px">
-            <Heading size="md">{contractTitle}</Heading>
-          </TzktLink>
-          <Fee operation={operation} />
-        </Center>
-        <Flex alignSelf="flex-end">
-          <Timestamp timestamp={operation.timestamp} />
-        </Flex>
-      </Flex>
-      <Box>
-        <Flex justifyContent="space-between">
-          <Flex>
-            {!showFromAddress ? (
-              <Text color={colors.gray[450]}>N/A</Text>
-            ) : (
-              <Flex mr="15px">
-                <Text mr="6px" color={colors.gray[450]}>
-                  From:
-                </Text>
-                <AddressPill address={operation.sender} />
-              </Flex>
-            )}
-          </Flex>
-          <Center>
-            <OperationTypeWrapper>Contract Origination</OperationTypeWrapper>
-            <OperationStatus operation={operation} />
-          </Center>
-        </Flex>
-      </Box>
-    </Flex>
-  );
-};
-
 export const OperationTile: React.FC<{
   operation: TzktCombinedOperation;
 }> = ({ operation }) => {

@@ -1,5 +1,6 @@
-import { mockContractAddress, mockImplicitAccount } from "../../mocks/factories";
-import { TransactionOperation } from "../../utils/tezos";
+import { mockContractAddress, mockImplicitAccount, mockLedgerAccount } from "../../mocks/factories";
+import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
+import { OriginationOperation, TransactionOperation } from "../../utils/tezos";
 
 export const transactionFixture = (props: Partial<TransactionOperation>): TransactionOperation => ({
   amount: 1,
@@ -20,3 +21,19 @@ export const contractCallFixture = (props: Partial<TransactionOperation>) =>
     parameter: { entrypoint: "test-entrypoint" },
     ...props,
   });
+
+export const originationFixture = (props: Partial<OriginationOperation>): OriginationOperation => ({
+  hash: "test-hash",
+  counter: 1234,
+  id: 56789,
+  level: 4321,
+  type: "origination",
+  sender: { address: mockLedgerAccount(0).address.pkh },
+  timestamp: "2021-01-02T00:00:00.000Z",
+  originatedContract: {
+    address: mockContractAddress(0).pkh,
+    typeHash: TYPE_HASH,
+    codeHash: CODE_HASH,
+  },
+  ...props,
+});
