@@ -141,7 +141,7 @@
     "storybook": "^7.3.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "typescript": "5.0.4",
+    "typescript": "5.2.2",
     "web-vitals": "^2.1.4",
     "webpack": "^5.89.0",
     "webpack-remove-code-blocks": "^0.1.5",
