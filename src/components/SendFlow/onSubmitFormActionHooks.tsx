@@ -18,7 +18,7 @@ export type OnSubmitFormAction<FormValues extends BaseFormValues> = (
 type UseOpenSignPageArgs<
   ExtraData,
   FormValues extends BaseFormValues,
-  FormProps extends FormPageProps<FormValues>
+  FormProps extends FormPageProps<FormValues>,
 > = {
   // Sign page component to render.
   SignPage: React.FC<SignPageProps<ExtraData>>;
@@ -37,7 +37,7 @@ type UseOpenSignPageArgs<
 export const useOpenSignPageFormAction = <
   SignPageData,
   FormValues extends BaseFormValues,
-  FormProps extends FormPageProps<FormValues>
+  FormProps extends FormPageProps<FormValues>,
 >({
   SignPage,
   signPageExtraData,

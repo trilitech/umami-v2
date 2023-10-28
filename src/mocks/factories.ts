@@ -172,7 +172,7 @@ export const mockMultisigWithOperations = (
   return {
     address: mockContractAddress(index),
     pendingOperationsBigmapId: index,
-    signers: signers.map(pkh => ({ type: "implicit", pkh } as const)),
+    signers: signers.map(pkh => ({ type: "implicit", pkh }) as const),
     threshold,
   };
 };
