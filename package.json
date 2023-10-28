@@ -142,7 +142,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "typescript": "5.2.2",
-    "web-vitals": "^2.1.4",
+    "web-vitals": "^3.5.0",
     "webpack": "^5.89.0",
     "webpack-remove-code-blocks": "^0.1.5",
     "zod": "^3.22.4"
