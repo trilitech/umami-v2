@@ -11,7 +11,6 @@
   },
   "main": "public/electron.js",
   "scripts": {
-    "build-storybook": "storybook build",
     "build": "yarn generate-ts-types && react-app-rewired build",
     "eject": "react-scripts eject",
     "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js",
@@ -25,7 +24,6 @@
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
-    "storybook": "storybook dev -p 6006",
     "test:tezos:integration": "cross-env TZ=CET react-scripts test --verbose --watchPathIgnorePatterns=[]",
     "test": "cross-env TZ=CET react-scripts test --resetModules --coverage --verbose --testPathIgnorePatterns='src/integration/*'",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
@@ -56,15 +54,6 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@ledgerhq/hw-transport-webusb": "^6.27.19",
     "@reduxjs/toolkit": "^1.9.7",
-    "@storybook/addon-essentials": "^7.3.0",
-    "@storybook/addon-interactions": "^7.3.0",
-    "@storybook/addon-links": "^7.3.0",
-    "@storybook/addon-onboarding": "^1.0.8",
-    "@storybook/blocks": "^7.3.0",
-    "@storybook/preset-create-react-app": "^7.3.0",
-    "@storybook/react": "^7.3.0",
-    "@storybook/react-webpack5": "^7.3.0",
-    "@storybook/testing-library": "^0.2.0",
     "@taquito/ledger-signer": "^17.3.2",
     "@taquito/michel-codec": "^17.3.2",
     "@taquito/rpc": "^17.3.2",
@@ -100,7 +89,6 @@
     "electron-notarize": "^1.2.2",
     "electronmon": "^2.0.2",
     "eslint": "^8.52.0",
-    "eslint-plugin-storybook": "^0.6.13",
     "eslint-plugin-unused-imports": "^3.0.0",
     "framer-motion": "^10.16.4",
     "graphql": "^16.8.1",
@@ -138,7 +126,6 @@
     "redux-mock-store": "^1.5.4",
     "redux-persist": "^6.0.0",
     "source-map-loader": "^4.0.1",
-    "storybook": "^7.3.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "typescript": "5.2.2",
@@ -246,10 +233,5 @@
   "packageManager": "yarn@3.5.0",
   "resolutions": {
     "nwsapi": "2.2.2"
-  },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
   }
 }
