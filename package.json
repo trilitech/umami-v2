@@ -95,7 +95,7 @@
     "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
     "date-fns": "^2.30.0",
-    "electron": "^23.3.12",
+    "electron": "^27.0.2",
     "electron-builder": "^24.6.4",
     "electron-notarize": "^1.2.2",
     "electronmon": "^2.0.2",
