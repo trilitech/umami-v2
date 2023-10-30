@@ -13,7 +13,7 @@ const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }
     <Flex alignItems="center">
       <PopoverMenu>
         <Box py="0">
-          <Button variant="unstyled" h="24px" onClick={onRename}>
+          <Button variant="unstyled" h={onRemove ? "24px" : "28px"} onClick={onRename}>
             <Flex alignItems="center">
               <Text mr="4px" color={colors.gray[300]}>
                 Rename
