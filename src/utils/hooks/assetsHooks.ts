@@ -25,8 +25,9 @@ export const useIsBlockFinalised = (level: number) => {
 
 export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
   const getAccountNFTs = useGetAccountNFTs();
-  const accountAddresses = useAppSelector(s => Object.keys(s.assets.balances.tokens));
-  return fromPairs(accountAddresses.map(address => [address, getAccountNFTs(address)]));
+  const tokenBalancesByAddress = useAppSelector(s => s.assets.balances.tokens);
+  const addresses = Object.keys(tokenBalancesByAddress);
+  return fromPairs(addresses.map(address => [address, getAccountNFTs(address)]));
 };
 
 export const useGetAccountAssets = () => {

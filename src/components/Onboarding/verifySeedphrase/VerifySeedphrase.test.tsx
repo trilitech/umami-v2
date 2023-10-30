@@ -70,7 +70,7 @@ describe("<VerifySeedphrase />", () => {
       fireEvent.blur(input);
     });
     await waitFor(() => {
-      expect(screen.getAllByText(/invalid input/i).length).toBe(4);
+      expect(screen.getAllByText(/invalid input/i).length).toBe(5);
     });
   });
 

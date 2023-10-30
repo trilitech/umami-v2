@@ -5,7 +5,8 @@ import { useSelectedNetwork } from "./networkHooks";
 
 export const useBatches = () => {
   const network = useSelectedNetwork();
-  return useAppSelector(s => s.batches[network.name] || []);
+  const batches = useAppSelector(s => s.batches[network.name]);
+  return batches || [];
 };
 
 export const useClearBatch = () => {

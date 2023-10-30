@@ -14,8 +14,8 @@ import ErrorPage from "./components/ErrorPage";
 import errorsSlice from "./utils/redux/slices/errorsSlice";
 import getErrorContext from "./utils/getErrorContext";
 
-const logError = (error: Error, info: { componentStack: string }) => {
-  const errorContext = { ...getErrorContext(error), stacktrace: info.componentStack };
+const logError = (error: Error, info: { componentStack?: string | null }) => {
+  const errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };
   store.dispatch(errorsSlice.actions.add(errorContext));
 };
 
