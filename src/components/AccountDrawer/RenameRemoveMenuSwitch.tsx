@@ -1,4 +1,3 @@
-
 import { useContext } from "react";
 import { Account, AccountType } from "../../types/Account";
 import RenameRemoveMenu from "../RenameRemoveMenu";
@@ -17,7 +16,7 @@ const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => 
               // TODO: Rename multisig account
               return;
             }
-            openWith(<RenameAccountModal account={account} />)
+            openWith(<RenameAccountModal account={account} />);
           }}
         />
       );
@@ -26,7 +25,7 @@ const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => 
       return (
         <RenameRemoveMenu
           onRename={() => {
-            openWith(<RenameAccountModal account={account} />)
+            openWith(<RenameAccountModal account={account} />);
           }}
           onRemove={() => {
             // TODO: Remove ledger/social account individually
@@ -37,4 +36,3 @@ const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => 
 };
 
 export default RenameRemoveMenuSwitch;
-
