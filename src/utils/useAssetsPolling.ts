@@ -61,6 +61,7 @@ const updateAccountAssets = async (
       network
     );
     dispatch(multisigActions.setMultisigs(multisigs));
+    dispatch(multisigActions.setDefaultNames());
 
     const allAccountAddresses = [
       ...implicitAccountAddresses,

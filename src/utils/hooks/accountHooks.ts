@@ -10,13 +10,12 @@ import {
 } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
 import { decrypt } from "../crypto/AES";
-import { multisigToAccount } from "../multisig/helpers";
 import { Multisig } from "../multisig/types";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import accountsSlice from "../redux/slices/accountsSlice";
 import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
-import { useMultisigs } from "./multisigHooks";
+import { useGetMultisigName, useMultisigs } from "./multisigHooks";
 
 const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
 
@@ -156,9 +155,12 @@ export const useRemoveNonMnemonic = () => {
 
 export const useMultisigAccounts = (): MultisigAccount[] => {
   const multisigs: Multisig[] = useMultisigs();
-
-  // TODO: use names from the store and only fallback to the random index
-  return multisigs.map((m, i) => multisigToAccount(m, `Multisig Account ${i}`));
+  const getMultisigName = useGetMultisigName();
+  return multisigs.map((multisig, i) => ({
+    ...multisig,
+    type: AccountType.MULTISIG,
+    label: getMultisigName(multisig.address.pkh) || `Multisig Account ${i}`,
+  }));
 };
 
 // For cleaner code and ease of use this hook returns a MultisigAccount

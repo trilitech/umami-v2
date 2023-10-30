@@ -40,7 +40,7 @@ describe("<AccountTile />", () => {
       store.dispatch(multisigActions.setMultisigs([multisig]));
       render(<AccountTile address={multisig.address.pkh} balance="3" />);
       expect(screen.getByTestId("key-icon")).toBeInTheDocument();
-      expect(screen.getByText("label")).toBeTruthy();
+      expect(screen.getByText("Multisig Account 0")).toBeTruthy();
     });
   });
 });

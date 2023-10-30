@@ -155,7 +155,7 @@ export const mockMultisigAccount = (index: number): MultisigAccount => {
   return {
     type: AccountType.MULTISIG,
     address: mockContractAddress(index),
-    label: "label",
+    label: `Multisig Account ${index}`,
     threshold: 1,
     signers: [mockImplicitAddress(index)],
     pendingOperationsBigmapId: index,
