@@ -53,6 +53,7 @@
     "@graphql-codegen/typescript-operations": "3.0.4",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@ledgerhq/hw-transport-webusb": "^6.27.19",
+    "@playwright/test": "^1.39.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@taquito/ledger-signer": "^17.3.2",
     "@taquito/michel-codec": "^17.3.2",
