@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { groupBy } from "lodash";
+import { fromPairs, groupBy } from "lodash";
 import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
-import { RawPkh } from "../../../types/Address";
 import { AccountType, MultisigAccount } from "../../../types/Account";
 
 export type State = {
@@ -17,17 +16,13 @@ const multisigsSlice = createSlice({
   reducers: {
     reset: () => initialState,
     setMultisigs: (state, { payload }: { payload: Multisig[] }) => {
-      const multisigLabels = (state.items as MultisigAccount[]).reduce(
-        (acc: Record<RawPkh, string | undefined>, multisig) => {
-          acc[multisig.address.pkh] = multisig.label;
-          return acc;
-        },
-        {}
+      const labelsByAddress = fromPairs(
+        state.items.map(multisig => [multisig.address.pkh, multisig.label])
       );
 
       state.items = payload.map((multisig, i) => ({
         ...multisig,
-        label: multisigLabels[multisig.address.pkh] || `Multisig Account ${i}`,
+        label: labelsByAddress[multisig.address.pkh] || `Multisig Account ${i}`,
         type: AccountType.MULTISIG,
       }));
     },
@@ -43,9 +38,10 @@ const multisigsSlice = createSlice({
         newName,
       } = payload;
 
-      const position = state.items.findIndex(multisig => multisig.address.pkh === pkh);
-      if (position >= 0) {
-        state.items[position] = { ...state.items[position], label: newName };
+      const account = state.items.find(multisig => multisig.address.pkh === pkh);
+
+      if (account) {
+        account.label = newName;
       }
     },
   },
