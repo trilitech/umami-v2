@@ -14,11 +14,11 @@ export const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timesta
   );
 };
 
-// Display the time difference in minutes if it’s less than an hour, 
-// in hours if it’s less than a day, 
-// and in days if it’s less than two days. 
+// Display the time difference in minutes if it’s less than an hour,
+// in hours if it’s less than a day,
+// and in days if it’s less than two days.
 // Otherwise, it will display the date in the dd MMM yyyy format
-export const getDisplayTimestamp = (timestamp:string): string  => {
+export const getDisplayTimestamp = (timestamp: string): string => {
   const currentDate = new Date();
   const timestampDate = new Date(timestamp as string);
 
@@ -33,6 +33,6 @@ export const getDisplayTimestamp = (timestamp:string): string  => {
   } else if (dayDifference < 2) {
     return `${dayDifference} days ago`;
   } else {
-    return format(timestampDate, 'dd MMM yyyy');
+    return format(timestampDate, "dd MMM yyyy");
   }
-}
+};
