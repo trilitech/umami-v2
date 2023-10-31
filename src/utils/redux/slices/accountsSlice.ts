@@ -64,6 +64,7 @@ const accountsSlice = createSlice({
         return account.type === AccountType.MNEMONIC || account.type !== payload.accountType;
       });
     },
+    // Do not call this directly, use the RenameAccount thunk
     renameAccount: (
       state,
       { payload }: { type: string; payload: { account: ImplicitAccount; newName: string } }
