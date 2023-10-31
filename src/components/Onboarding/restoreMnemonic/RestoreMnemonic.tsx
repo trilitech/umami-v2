@@ -60,7 +60,7 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const onSubmit = (data: FieldValues) =>
     handleAsyncAction(
       async () => {
-        const mnemonic = Object.values(data).join(" ");
+        const mnemonic = Object.values(data).join(" ").trim();
         if (!validateMnemonic(mnemonic)) {
           throw new Error(`"${mnemonic}" is not a valid mnemonic`);
         }
