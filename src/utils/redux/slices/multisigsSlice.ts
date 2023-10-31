@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { groupBy } from "lodash";
+import { fromPairs, groupBy } from "lodash";
 import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
+import { AccountType, MultisigAccount } from "../../../types/Account";
 
 export type State = {
-  items: Multisig[];
+  items: MultisigAccount[];
   pendingOperations: MultisigPendingOperations;
 };
 
@@ -15,10 +16,33 @@ const multisigsSlice = createSlice({
   reducers: {
     reset: () => initialState,
     setMultisigs: (state, { payload }: { payload: Multisig[] }) => {
-      state.items = payload;
+      const labelsByAddress = fromPairs(
+        state.items.map(multisig => [multisig.address.pkh, multisig.label])
+      );
+
+      state.items = payload.map((multisig, i) => ({
+        ...multisig,
+        label: labelsByAddress[multisig.address.pkh] || `Multisig Account ${i}`,
+        type: AccountType.MULTISIG,
+      }));
     },
     setPendingOperations: (state, { payload }: { payload: MultisigOperation[] }) => {
       state.pendingOperations = groupBy(payload, operation => operation.bigmapId);
+    },
+    // Do not call this directly, use the RenameAccount thunk
+    setName: (state, { payload }: { payload: { newName: string; account: MultisigAccount } }) => {
+      const {
+        account: {
+          address: { pkh },
+        },
+        newName,
+      } = payload;
+
+      const account = state.items.find(multisig => multisig.address.pkh === pkh);
+
+      if (account) {
+        account.label = newName;
+      }
     },
   },
 });
