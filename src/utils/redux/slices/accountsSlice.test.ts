@@ -147,6 +147,36 @@ describe("Accounts reducer", () => {
     });
   });
 
+  describe.only("removeAccount", () => {
+    const mnemonic = mockMnemonicAccount(0);
+    const social1 = mockSocialAccount(1);
+    const social2 = mockSocialAccount(2);
+    const ledger = mockLedgerAccount(3);
+
+    beforeEach(() => {
+      store.dispatch(addMockMnemonicAccounts([mnemonic]));
+      store.dispatch(addAccount(social1));
+      store.dispatch(addAccount(social2));
+      store.dispatch(addAccount(ledger));
+    });
+
+    it("should remove ledger account", () => {
+      store.dispatch(
+        accountsSlice.actions.removeAccount(
+          ledger
+        )
+      );
+      expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2]);
+    });
+
+    it("should remove social accounts", () => {
+      store.dispatch(
+        accountsSlice.actions.removeAccount(social1)
+      );
+      expect(store.getState().accounts.items).toEqual([mnemonic, social2, ledger]);
+    });
+  })
+
   describe("restoreFromMnemonic thunk", () => {
     it("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
       const fingerPrint = await getFingerPrint(mnemonic1);
