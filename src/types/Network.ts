@@ -24,4 +24,7 @@ export type Network = {
   buyTezUrl?: string;
 };
 
+export const isDefault = (network: Network) =>
+  DefaultNetworks.map(n => n.name).includes(network.name);
+
 export const DefaultNetworks: Network[] = [MAINNET, GHOSTNET];

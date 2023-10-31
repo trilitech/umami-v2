@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const Trash: React.FC<IconProps> = props => {
+const TrashIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -22,4 +22,4 @@ const Trash: React.FC<IconProps> = props => {
   );
 };
 
-export default Trash;
+export default TrashIcon;

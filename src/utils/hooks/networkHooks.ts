@@ -1,4 +1,6 @@
+import { useDispatch } from "react-redux";
 import { useAppSelector } from "../redux/hooks";
+import { networksActions } from "../redux/slices/networks";
 
 export const useSelectedNetwork = () => {
   return useAppSelector(s => s.networks.current);
@@ -6,4 +8,16 @@ export const useSelectedNetwork = () => {
 
 export const useAvailableNetworks = () => {
   return useAppSelector(s => s.networks.available);
+};
+
+export const useSelectNetwork = () => {
+  const availableNetworks = useAvailableNetworks();
+  const dispatch = useDispatch();
+  return (name: string) => {
+    const network = availableNetworks.find(network => network.name === name);
+    if (!network) {
+      return;
+    }
+    dispatch(networksActions.setCurrent(network));
+  };
 };

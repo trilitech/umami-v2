@@ -6,7 +6,7 @@ import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallT
 import colors from "../../style/colors";
 import pluralize from "pluralize";
 import { headerText } from "../../components/SendFlow/SignPageHeader";
-import Trash from "../../assets/icons/Trash";
+import TrashIcon from "../../assets/icons/Trash";
 import { nanoid } from "nanoid";
 import { TEZ, estimate } from "../../utils/tezos";
 import { Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
@@ -50,7 +50,7 @@ const RightHeader: React.FC<{ operations: AccountOperations }> = ({
         ml="18px"
         variant="circle"
         borderRadius="4px"
-        icon={<Trash stroke={colors.gray[300]} />}
+        icon={<TrashIcon stroke={colors.gray[300]} />}
         data-testid="remove-batch"
       />
     </Box>
@@ -146,7 +146,7 @@ export const BatchView: React.FC<{
                   <IconButton
                     ml="12px"
                     aria-label="Remove"
-                    icon={<Trash stroke={colors.gray[300]} />}
+                    icon={<TrashIcon stroke={colors.gray[300]} />}
                     borderRadius="full"
                     size="xs"
                     width="24px"

@@ -35,7 +35,7 @@ const PopoverMenu: React.FC<{
           </Center>
         </Button>
       </PopoverTrigger>
-      <PopoverContent w="100px" bg={colors.gray[900]}>
+      <PopoverContent w="100px" bg={colors.gray[700]}>
         <PopoverBody borderRadius="lg">{props.children}</PopoverBody>
       </PopoverContent>
     </Popover>

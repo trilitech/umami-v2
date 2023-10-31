@@ -22,7 +22,7 @@ import {
 } from "../../../components/SendFlow/onSubmitFormActionHooks";
 import { formDefaultValues, FormPageProps } from "../utils";
 import { FormErrorMessage } from "../../FormErrorMessage";
-import Trash from "../../../assets/icons/Trash";
+import TrashIcon from "../../../assets/icons/Trash";
 import FormPageHeader from "../FormPageHeader";
 
 export type FormValues = {
@@ -152,7 +152,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                       position="absolute"
                       bg={colors.gray[500]}
                       data-testid={`remove-signer-${index}`}
-                      icon={<Trash h="14px" w="12px" stroke={colors.gray[300]} />}
+                      icon={<TrashIcon h="14px" w="12px" stroke={colors.gray[300]} />}
                       onClick={() => signersArray.remove(index)}
                       height="24px"
                       ml="374px"

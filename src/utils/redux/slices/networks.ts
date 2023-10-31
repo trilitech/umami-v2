@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DefaultNetworks, MAINNET, Network } from "../../../types/Network";
+import { DefaultNetworks, MAINNET, Network, isDefault } from "../../../types/Network";
 import { remove } from "lodash";
 
 type State = {
@@ -11,8 +11,6 @@ const initialState: State = {
   available: DefaultNetworks,
   current: MAINNET,
 };
-
-const isDefault = (network: Network) => DefaultNetworks.map(n => n.name).includes(network.name)
 
 export const networksSlice = createSlice({
   name: "networks",
@@ -37,8 +35,8 @@ export const networksSlice = createSlice({
       if (isDefault(network)) {
         return;
       }
-      state.available = remove(state.available, n => n.name !== network.name);
-    }
+      remove(state.available, n => n.name === network.name);
+    },
   },
 });
 export const networksActions = networksSlice.actions;
