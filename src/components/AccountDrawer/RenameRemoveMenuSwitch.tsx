@@ -12,10 +12,6 @@ const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => 
       return (
         <RenameRemoveMenu
           onRename={() => {
-            if (account.type === AccountType.MULTISIG) {
-              // TODO: Rename multisig account
-              return;
-            }
             openWith(<RenameAccountModal account={account} />);
           }}
         />
