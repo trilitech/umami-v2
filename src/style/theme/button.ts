@@ -108,6 +108,13 @@ export const buttonTheme = defineStyleConfig({
         color: colors.gray[450],
       },
     },
+    popover: {
+      color: colors.gray[300],
+      width: "100%",
+      padding: 0,
+      height: "24px",
+      justifyContent: "end",
+    },
   },
   defaultProps: {
     variant: "primary",

@@ -1,9 +1,8 @@
-import { Button, Divider, Flex, Icon } from "@chakra-ui/react";
-import { BiPencil } from "react-icons/bi";
+import { Button, Divider, Flex } from "@chakra-ui/react";
 import PopoverMenu from "./PopoverMenu";
 import { Text, Box } from "@chakra-ui/react";
-import Trash from "../assets/icons/Trash";
-import colors from "../style/colors";
+import TrashIcon from "../assets/icons/Trash";
+import PenIcon from "../assets/icons/Pen";
 
 const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }> = ({
   onRename,
@@ -13,23 +12,19 @@ const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }
     <Flex alignItems="center">
       <PopoverMenu>
         <Box py="0">
-          <Button variant="unstyled" h={onRemove ? "24px" : "28px"} onClick={onRename}>
+          <Button variant="popover" h={onRemove ? "24px" : "28px"} onClick={onRename}>
             <Flex alignItems="center">
-              <Text mr="4px" color={colors.gray[300]}>
-                Rename
-              </Text>
-              <Icon as={BiPencil} color={colors.gray[450]} />
+              <Text mr="4px">Rename</Text>
+              <PenIcon />
             </Flex>
           </Button>
           {onRemove && (
             <>
               <Divider my="4px" />
-              <Button variant="unstyled" h="24px" onClick={onRemove}>
+              <Button variant="popover" onClick={onRemove}>
                 <Flex alignItems="center">
-                  <Text mr="4px" color={colors.gray[300]}>
-                    Remove
-                  </Text>
-                  <Icon as={Trash} />
+                  <Text mr="4px">Remove</Text>
+                  <TrashIcon />
                 </Flex>
               </Button>
             </>

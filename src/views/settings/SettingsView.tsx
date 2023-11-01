@@ -1,13 +1,13 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useContext } from "react";
 import ChangePasswordForm from "../../components/ChangePassword/ChangePasswordForm";
-import { SettingsCard, SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
+import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import NetworkSelector from "../../components/NetworkSelector";
 import useOffboardingModal from "../../components/Offboarding/useOffboardingModal";
 import { TopBar } from "../../components/TopBar";
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
+import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
 
 export default function SettingsView() {
   return (
@@ -38,9 +38,7 @@ const GeneralSection = () => {
           </Flex>
         </SettingsCard>
       */}
-      <SettingsCard left="Network" isSelected={false}>
-        <NetworkSelector />
-      </SettingsCard>
+      <NetworkSettingsDrawerCard />
       <ErrorLogsDrawerCard />
     </SectionContainer>
   );

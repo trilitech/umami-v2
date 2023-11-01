@@ -24,10 +24,6 @@ const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
-  const handleClose = () => {
-    closeDrawer();
-  };
-
   return (
     <>
       <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen} isSelected={isOpen} />
@@ -35,12 +31,12 @@ const ErrorLogsDrawerCard = () => {
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
         placement="right"
-        onClose={handleClose}
+        onClose={closeDrawer}
       >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerBody>
-            <DrawerTopButtons onClose={handleClose} />
+            <DrawerTopButtons onClose={closeDrawer} />
             <ErrorLogsDrawerBody />
           </DrawerBody>
         </DrawerContent>

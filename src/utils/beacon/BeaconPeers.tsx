@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { usePeers, useRemovePeer } from "./beacon";
 import { PeerInfo } from "./types";
-import Trash from "../../assets/icons/Trash";
+import TrashIcon from "../../assets/icons/Trash";
 import { Fragment } from "react";
 import colors from "../../style/colors";
 
@@ -38,7 +38,7 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => v
           aria-label="Remove Peer"
           size="xs"
           variant="circle"
-          icon={<Trash />}
+          icon={<TrashIcon />}
         />
       </Center>
     </Flex>
