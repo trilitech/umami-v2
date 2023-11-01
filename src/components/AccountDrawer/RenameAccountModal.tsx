@@ -16,8 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { useAllAccounts } from "../../utils/hooks/accountHooks";
 import { useContactExists } from "../../utils/hooks/contactsHooks";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import FormPageHeader from "../SendFlow/FormPageHeader";
+import renameAccount from "../../utils/redux/thunks/renameAccount";
 
 export const RenameAccountModal: FC<{
   account: Account;
@@ -26,11 +26,7 @@ export const RenameAccountModal: FC<{
   const { onClose } = useContext(DynamicModalContext);
 
   const onSubmitNewName = ({ name }: { name: string }) => {
-    if (account.type === "multisig") {
-      // TODO: Rename multisig account
-      return;
-    }
-    dispatch(accountsSlice.actions.renameAccount({ account, newName: name }));
+    dispatch(renameAccount(account, name));
     onClose();
   };
 
