@@ -19,7 +19,7 @@ export const ContractCallTile: React.FC<{
   const showAnyAddress = !showToAddress && !showFromAddress;
 
   return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
+    <Flex direction="column" data-testid="operation-tile-contract-call" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <ContractIcon mr="8px" />

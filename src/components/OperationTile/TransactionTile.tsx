@@ -25,7 +25,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
   const sign = isOutgoing ? "-" : "+";
 
   return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
+    <Flex direction="column" data-testid="operation-tile-transaction" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />

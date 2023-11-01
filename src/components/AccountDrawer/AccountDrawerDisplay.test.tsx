@@ -205,10 +205,10 @@ describe("<AccountCard />", () => {
   it("should display accounts operations under operations tab if any", async () => {
     render(<AccountCard account={selectedAccount} />);
     await waitFor(() => {
-      expect(screen.getAllByTestId("operation-tile")).toHaveLength(2);
+      expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2);
     });
     expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
-    const operations = screen.getAllByTestId("operation-tile");
+    const operations = screen.getAllByTestId(/^operation-tile/);
     expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
     expect(operations[1]).toHaveTextContent("+ 2.000000 ꜩ");
   });
@@ -343,10 +343,10 @@ describe("<AccountCard />", () => {
 
       render(<AccountCard account={multisigAccount} />);
       await waitFor(() => {
-        expect(screen.getAllByTestId("operation-tile")).toHaveLength(2);
+        expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2);
       });
       expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
-      const operations = screen.getAllByTestId("operation-tile");
+      const operations = screen.getAllByTestId(/^operation-tile/);
       expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
       expect(operations[1]).toHaveTextContent("- 2.000000 ꜩ");
     });

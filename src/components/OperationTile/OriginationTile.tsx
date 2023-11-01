@@ -21,7 +21,7 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
   const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
+    <Flex direction="column" data-testid="operation-tile-origination" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <ContractIcon mr="8px" />
