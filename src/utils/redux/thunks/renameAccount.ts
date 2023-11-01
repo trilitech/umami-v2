@@ -9,17 +9,15 @@ const renameAccount = (
   newName: string
 ): ThunkAction<void, RootState, unknown, AnyAction> => {
   return (dispatch, getState) => {
-    const { accounts, multisigs } = getState();
+    const { accounts, multisigs, contacts } = getState();
 
     const isMultisig = account.type === AccountType.MULTISIG;
-    const pkhs = isMultisig
-      ? [...multisigs.items.map(multisig => multisig.address.pkh)]
-      : [...accounts.items.map(account => account.address.pkh)];
-    const names = isMultisig
-      ? [...multisigs.items.map(multisig => multisig.label)]
-      : [...accounts.items.map(account => account.label)];
 
-    if (!pkhs.includes(account.address.pkh) || names.includes(newName)) {
+    const accountNames = accounts.items.map(account => account.label);
+    const multisigNames = multisigs.items.map(multisig => multisig.label);
+    const contactNames = Object.values(contacts).map(contact => contact.name);
+
+    if ([accountNames, multisigNames, contactNames].flat().includes(newName)) {
       return;
     }
 

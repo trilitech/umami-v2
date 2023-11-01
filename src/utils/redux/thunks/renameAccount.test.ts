@@ -5,6 +5,7 @@ import { multisigActions } from "../slices/multisigsSlice";
 import renameAccount from "./renameAccount";
 import accountsSlice from "../slices/accountsSlice";
 import { AccountType, MultisigAccount } from "../../../types/Account";
+import { contactsActions } from "../slices/contactsSlice";
 
 beforeEach(() => {
   store.dispatch(multisigActions.setMultisigs(multisigs));
@@ -15,8 +16,8 @@ beforeEach(() => {
 
 describe("renameAccount", () => {
   describe("validation", () => {
-    it("does nothing for non existent account", () => {
-      store.dispatch(renameAccount(mockMnemonicAccount(2), "new name"));
+    it("does nothing for existing account name", () => {
+      store.dispatch(renameAccount(mockMnemonicAccount(0), mockMnemonicAccount(1).label));
       expect(store.getState().accounts.items).toEqual([
         mockMnemonicAccount(0),
         mockMnemonicAccount(1),
@@ -31,8 +32,9 @@ describe("renameAccount", () => {
       );
     });
 
-    it("does nothing for existing name", () => {
-      store.dispatch(renameAccount(mockMnemonicAccount(0), mockMnemonicAccount(1).label));
+    it("does nothing for existing contact name", () => {
+      store.dispatch(contactsActions.upsert({ name: "contact name", pkh: "pkh" }));
+      store.dispatch(renameAccount(mockMnemonicAccount(0), "contact name"));
       expect(store.getState().accounts.items).toEqual([
         mockMnemonicAccount(0),
         mockMnemonicAccount(1),
