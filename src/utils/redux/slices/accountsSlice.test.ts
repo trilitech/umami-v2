@@ -147,7 +147,7 @@ describe("Accounts reducer", () => {
     });
   });
 
-  describe.only("removeAccount", () => {
+  describe("removeAccount", () => {
     const mnemonic = mockMnemonicAccount(0);
     const social1 = mockSocialAccount(1);
     const social2 = mockSocialAccount(2);
@@ -161,21 +161,15 @@ describe("Accounts reducer", () => {
     });
 
     it("should remove ledger account", () => {
-      store.dispatch(
-        accountsSlice.actions.removeAccount(
-          ledger
-        )
-      );
+      store.dispatch(accountsSlice.actions.removeAccount(ledger));
       expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2]);
     });
 
     it("should remove social accounts", () => {
-      store.dispatch(
-        accountsSlice.actions.removeAccount(social1)
-      );
+      store.dispatch(accountsSlice.actions.removeAccount(social1));
       expect(store.getState().accounts.items).toEqual([mnemonic, social2, ledger]);
     });
-  })
+  });
 
   describe("restoreFromMnemonic thunk", () => {
     it("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
