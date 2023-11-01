@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { TzktCombinedOperation } from "../../utils/tezos";
 import { Link, LinkProps } from "@chakra-ui/react";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { getHashUrl } from "../../views/operations/operationsUtils";
+import { getHashUrl } from "../../views/operations/utils";
 
 export const TzktLink: React.FC<
   PropsWithChildren<{ operation: TzktCombinedOperation } & LinkProps>
