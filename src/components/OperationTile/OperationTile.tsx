@@ -1,17 +1,11 @@
-import { AspectRatio, Box, Center, Flex, Heading, Image, Text, Tooltip } from "@chakra-ui/react";
+import { AspectRatio, Box, Center, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 import { TokenTransfer } from "../../types/Transfer";
-import {
-  TzktCombinedOperation,
-  TransactionOperation,
-  DelegationOperation,
-} from "../../utils/tezos";
-import { TzktAlias } from "../../types/Address";
+import { TzktCombinedOperation, TransactionOperation } from "../../utils/tezos";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
-import BakerIcon from "../../assets/icons/Baker";
 import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
 import { Timestamp } from "./Timestamp";
@@ -25,6 +19,7 @@ import { TransactionTile } from "./TransactionTile";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { ContractCallTile } from "./ContractCallTile";
 import { OriginationTile } from "./OriginationTile";
+import { DelegationTile } from "./DelegationTile";
 
 const TokenTransferTile: React.FC<{
   operation: TransactionOperation;
@@ -125,56 +120,6 @@ const TokenTransferTile: React.FC<{
           </Flex>
           <Center>
             <OperationTypeWrapper>Token Transfer</OperationTypeWrapper>
-            <OperationStatus operation={operation} />
-          </Center>
-        </Flex>
-      </Box>
-    </Flex>
-  );
-};
-
-const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operation }) => {
-  const isDelegating = !!operation.newDelegate;
-  const operationType = isDelegating ? "Delegate" : "Delegation Ended";
-  const showFromAddress = useShowAddress(operation.sender.address);
-
-  return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
-        <Center>
-          <BakerIcon stroke={colors.gray[450]} mr="8px" />
-          <TzktLink operation={operation} mr="8px">
-            <Heading size="md">{operationType}</Heading>
-          </TzktLink>
-          <Fee operation={operation} />
-        </Center>
-        <Flex alignSelf="flex-end">
-          <Timestamp timestamp={operation.timestamp} />
-        </Flex>
-      </Flex>
-      <Box>
-        <Flex justifyContent="space-between">
-          <Flex>
-            {isDelegating && (
-              <Flex mr="15px">
-                <Text mr="6px" color={colors.gray[450]}>
-                  To:
-                </Text>
-                <AddressPill address={operation.newDelegate as TzktAlias} />
-              </Flex>
-            )}
-            {showFromAddress && (
-              <Flex>
-                <Text mr="6px" color={colors.gray[450]}>
-                  From:
-                </Text>
-                <AddressPill address={operation.sender} />
-              </Flex>
-            )}
-            {!isDelegating && !showFromAddress && <Text color={colors.gray[450]}>N/A</Text>}
-          </Flex>
-          <Center>
-            <OperationTypeWrapper>{operationType}</OperationTypeWrapper>
             <OperationStatus operation={operation} />
           </Center>
         </Flex>

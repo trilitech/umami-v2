@@ -1,6 +1,11 @@
-import { mockContractAddress, mockImplicitAccount, mockLedgerAccount } from "../../mocks/factories";
+import {
+  mockContractAddress,
+  mockImplicitAccount,
+  mockImplicitAddress,
+  mockLedgerAccount,
+} from "../../mocks/factories";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
-import { OriginationOperation, TransactionOperation } from "../../utils/tezos";
+import { DelegationOperation, OriginationOperation, TransactionOperation } from "../../utils/tezos";
 
 export const transactionFixture = (props: Partial<TransactionOperation>): TransactionOperation => ({
   amount: 1,
@@ -34,6 +39,20 @@ export const originationFixture = (props: Partial<OriginationOperation>): Origin
     address: mockContractAddress(0).pkh,
     typeHash: TYPE_HASH,
     codeHash: CODE_HASH,
+  },
+  ...props,
+});
+
+export const delegationFixture = (props: Partial<DelegationOperation>): DelegationOperation => ({
+  hash: "test-hash",
+  counter: 1234,
+  id: 56789,
+  level: 4321,
+  type: "delegation",
+  sender: { address: mockLedgerAccount(0).address.pkh },
+  timestamp: "2021-01-02T00:00:00.000Z",
+  newDelegate: {
+    address: mockImplicitAddress(1).pkh,
   },
   ...props,
 });
