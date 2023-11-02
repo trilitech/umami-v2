@@ -1,5 +1,11 @@
 import { Text } from "@chakra-ui/react";
-import { differenceInDays, differenceInHours, differenceInMinutes, format } from "date-fns";
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInSeconds,
+  format,
+} from "date-fns";
 import colors from "../../style/colors";
 
 export const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timestamp }) => {
@@ -22,11 +28,14 @@ export const getDisplayTimestamp = (timestamp: string): string => {
   const currentDate = new Date();
   const timestampDate = new Date(timestamp as string);
 
+  const secondDifference = differenceInSeconds(currentDate, timestampDate);
   const minuteDifference = differenceInMinutes(currentDate, timestampDate);
   const hourDifference = differenceInHours(currentDate, timestampDate);
   const dayDifference = differenceInDays(currentDate, timestampDate);
 
-  if (minuteDifference < 60) {
+  if (secondDifference < 60) {
+    return `${secondDifference} seconds ago`;
+  } else if (minuteDifference < 60) {
     return `${minuteDifference} minutes ago`;
   } else if (hourDifference < 24) {
     return `${hourDifference} hours ago`;

@@ -1,4 +1,4 @@
-import { addDays, addHours, addMinutes, format } from "date-fns";
+import { addDays, addHours, addMinutes, addSeconds, format } from "date-fns";
 import { render, screen } from "../../mocks/testUtils";
 import { Timestamp, getDisplayTimestamp } from "./Timestamp";
 
@@ -18,6 +18,12 @@ describe("<Timestamp />", () => {
   });
 
   describe("getDisplayTimestamp", () => {
+    it("should return seconds ago if less than a minute", () => {
+      const timestamp = new Date();
+      const testTimestamp = addSeconds(timestamp, -30).toISOString();
+      expect(getDisplayTimestamp(testTimestamp)).toBe("30 seconds ago");
+    });
+
     it("should return minutes ago if less than an hour", () => {
       const timestamp = new Date();
       const testTimestamp = addMinutes(timestamp, -30).toISOString();
