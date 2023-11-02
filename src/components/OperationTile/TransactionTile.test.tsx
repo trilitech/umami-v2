@@ -90,7 +90,7 @@ describe("<TransactionTile />", () => {
         )
       );
 
-      expect(screen.getByTestId("timestamp")).toHaveTextContent("01/02/2021");
+      expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
   });
 
