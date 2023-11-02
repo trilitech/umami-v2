@@ -43,7 +43,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            {showToAddress && (
+            {(showToAddress || showAnyAddress) && (
               <Flex mr="15px" data-testid="to">
                 <Text mr="6px" color={colors.gray[450]}>
                   To:
@@ -51,7 +51,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
                 <AddressPill address={parsePkh(operation.target.address)} />
               </Flex>
             )}
-            {(showFromAddress || showAnyAddress) && (
+            {showFromAddress && (
               <Flex data-testid="from">
                 <Text mr="6px" color={colors.gray[450]}>
                   From:

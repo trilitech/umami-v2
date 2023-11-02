@@ -1,33 +1,39 @@
 import { mockLedgerAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
+import { Token, fromRaw } from "../../types/Token";
+import { TokenTransfer } from "../../types/Transfer";
 import { formatPkh } from "../../utils/formatPkh";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import store from "../../utils/redux/store";
 import { TEZ, TransactionOperation } from "../../utils/tezos";
 import { OperationTileContext } from "./OperationTileContext";
-import { TransactionTile } from "./TransactionTile";
-import { transactionFixture } from "./testUtils";
+import { TokenTransferTile } from "./TokenTransferTile";
+import { tokenTransferFixture, transactionFixture } from "./testUtils";
 
-const fixture = (context: any, operation: TransactionOperation) => (
+const fixture = (context: any, operation: TransactionOperation, tokenTransfer: TokenTransfer) => (
   <OperationTileContext.Provider value={context}>
-    <TransactionTile operation={operation} />
+    <TokenTransferTile
+      operation={operation}
+      tokenTransfer={tokenTransfer}
+      token={fromRaw(tokenTransfer.token) as Token}
+    />
   </OperationTileContext.Provider>
 );
 
-describe("<TransactionTile />", () => {
+describe("<TokenTransferTile />", () => {
   describe.each([
     { mode: "page" } as const,
     { mode: "drawer", selectedAddress: mockLedgerAccount(0).address } as const,
   ])("in $mode mode", contextValue => {
     describe("sign", () => {
       it("shows '+' for incoming transactions", () => {
-        render(fixture(contextValue, transactionFixture({})));
+        render(fixture(contextValue, transactionFixture({}), tokenTransferFixture({})));
 
         expect(screen.getByTestId("incoming-arrow")).toBeInTheDocument();
         expect(screen.queryByTestId("outgoing-arrow")).not.toBeInTheDocument();
-        expect(screen.getByTestId("title")).toHaveTextContent(`+ 0.000001 ${TEZ}`);
+        expect(screen.getByTestId("title")).toHaveTextContent(`+0.000000000500 uUSD`);
       });
 
       it("shows '-' for outgoing transactions", () => {
@@ -36,13 +42,14 @@ describe("<TransactionTile />", () => {
         render(
           fixture(
             contextValue,
-            transactionFixture({ sender: { address: mockLedgerAccount(1).address.pkh } })
+            transactionFixture({ sender: { address: mockLedgerAccount(1).address.pkh } }),
+            tokenTransferFixture({})
           )
         );
 
         expect(screen.queryByTestId("incoming-arrow")).not.toBeInTheDocument();
         expect(screen.getByTestId("outgoing-arrow")).toBeInTheDocument();
-        expect(screen.getByTestId("title")).toHaveTextContent(`- 0.000001 ${TEZ}`);
+        expect(screen.getByTestId("title")).toHaveTextContent(`-0.000000000500 uUSD`);
       });
 
       it("shows '-' if sender and target are both owned", () => {
@@ -55,13 +62,102 @@ describe("<TransactionTile />", () => {
             transactionFixture({
               target: { address: mockLedgerAccount(0).address.pkh },
               sender: { address: mockLedgerAccount(1).address.pkh },
-            })
+            }),
+            tokenTransferFixture({})
           )
         );
 
         expect(screen.queryByTestId("incoming-arrow")).not.toBeInTheDocument();
         expect(screen.getByTestId("outgoing-arrow")).toBeInTheDocument();
-        expect(screen.getByTestId("title")).toHaveTextContent(`- 0.000001 ${TEZ}`);
+        expect(screen.getByTestId("title")).toHaveTextContent(`-0.000000000500 uUSD`);
+      });
+    });
+
+    describe("amount", () => {
+      test("without decimals", () => {
+        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
+        const tokenTransfer = tokenTransferFixture({});
+        delete tokenTransfer.token.metadata.decimals;
+
+        render(
+          fixture(
+            contextValue,
+            transactionFixture({ sender: { address: mockLedgerAccount(1).address.pkh } }),
+            tokenTransfer
+          )
+        );
+
+        expect(screen.getByTestId("title")).toHaveTextContent(`-500 uUSD`);
+      });
+
+      test("with decimals", () => {
+        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
+        const tokenTransfer = tokenTransferFixture({});
+        tokenTransfer.token.metadata.decimals = 2;
+
+        render(
+          fixture(
+            contextValue,
+            transactionFixture({ sender: { address: mockLedgerAccount(1).address.pkh } }),
+            tokenTransfer
+          )
+        );
+
+        expect(screen.getByTestId("title")).toHaveTextContent(`-5.00 uUSD`);
+      });
+    });
+
+    describe("token name", () => {
+      describe("NFT", () => {
+        it("shows the token name", () => {
+          const tokenTransfer = tokenTransferFixture({});
+          tokenTransfer.token.metadata = {
+            ...tokenTransfer.token.metadata,
+            name: "some-name",
+            decimals: undefined,
+            displayUri: "some-uri",
+          };
+          render(fixture(contextValue, transactionFixture({}), tokenTransfer));
+
+          expect(screen.getByTestId("title")).toHaveTextContent("some-name");
+        });
+
+        it("shows the default token name if the token name is empty", () => {
+          const tokenTransfer = tokenTransferFixture({});
+          tokenTransfer.token.metadata = {
+            ...tokenTransfer.token.metadata,
+            name: undefined,
+            decimals: undefined,
+            displayUri: "some-uri",
+          };
+
+          render(fixture(contextValue, transactionFixture({}), tokenTransfer));
+
+          expect(screen.getByTestId("title")).toHaveTextContent("NFT");
+        });
+      });
+
+      describe.each([
+        { standard: "fa1.2", defaultSymbol: "FA1.2" },
+        { standard: "fa2", defaultSymbol: "FA2" },
+      ])("$standard", ({ standard, defaultSymbol }) => {
+        const tokenTransfer = tokenTransferFixture({});
+        tokenTransfer.token.standard = standard;
+        tokenTransfer.token.metadata.name = "some-name";
+
+        it("shows the token symbol", () => {
+          render(fixture(contextValue, transactionFixture({}), tokenTransfer));
+
+          expect(screen.getByTestId("title")).toHaveTextContent("uUSD");
+        });
+
+        it("shows the default token symbol if the token symbol is empty and name is present", () => {
+          tokenTransfer.token.metadata.symbol = undefined;
+          tokenTransfer.token.metadata.name = undefined;
+          render(fixture(contextValue, transactionFixture({}), tokenTransfer));
+
+          expect(screen.getByTestId("title")).toHaveTextContent(defaultSymbol);
+        });
       });
     });
 
@@ -70,7 +166,7 @@ describe("<TransactionTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(fixture(contextValue, transactionFixture({})));
+          render(fixture(contextValue, transactionFixture({}), tokenTransferFixture({})));
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -86,11 +182,12 @@ describe("<TransactionTile />", () => {
           contextValue,
           transactionFixture({
             timestamp: "2021-01-02T00:00:00.000Z",
-          })
+          }),
+          tokenTransferFixture({})
         )
       );
 
-      expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
+      expect(screen.getByTestId("timestamp")).toHaveTextContent("2 Jan 2021");
     });
   });
 
@@ -106,7 +203,8 @@ describe("<TransactionTile />", () => {
               bakerFee: 100,
               storageFee: 20,
               allocationFee: 3,
-            })
+            }),
+            tokenTransferFixture({})
           )
         );
 
@@ -123,7 +221,8 @@ describe("<TransactionTile />", () => {
               bakerFee: 100,
               storageFee: 20,
               allocationFee: 3,
-            })
+            }),
+            tokenTransferFixture({})
           )
         );
 
@@ -139,7 +238,8 @@ describe("<TransactionTile />", () => {
               bakerFee: 0,
               storageFee: 0,
               allocationFee: 0,
-            })
+            }),
+            tokenTransferFixture({})
           )
         );
 
@@ -148,9 +248,9 @@ describe("<TransactionTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, transactionFixture({})));
+      render(fixture(contextValue, transactionFixture({}), tokenTransferFixture({})));
 
-      expect(screen.getByTestId("operation-type")).toHaveTextContent("Transaction");
+      expect(screen.getByTestId("operation-type")).toHaveTextContent("Token Transfer");
     });
 
     describe("pills", () => {
@@ -166,6 +266,10 @@ describe("<TransactionTile />", () => {
               amount: 1,
               target: { address: mockLedgerAccount(1).address.pkh },
               sender: { address: mockLedgerAccount(0).address.pkh },
+            }),
+            tokenTransferFixture({
+              from: { address: mockLedgerAccount(0).address.pkh },
+              to: { address: mockLedgerAccount(1).address.pkh },
             })
           )
         );
@@ -184,6 +288,10 @@ describe("<TransactionTile />", () => {
               amount: 1,
               target: { address: mockLedgerAccount(0).address.pkh },
               sender: { address: mockLedgerAccount(1).address.pkh },
+            }),
+            tokenTransferFixture({
+              to: { address: mockLedgerAccount(0).address.pkh },
+              from: { address: mockLedgerAccount(1).address.pkh },
             })
           )
         );
@@ -202,6 +310,10 @@ describe("<TransactionTile />", () => {
               amount: 1,
               target: { address: mockLedgerAccount(0).address.pkh },
               sender: { address: mockLedgerAccount(0).address.pkh },
+            }),
+            tokenTransferFixture({
+              to: { address: mockLedgerAccount(0).address.pkh },
+              from: { address: mockLedgerAccount(0).address.pkh },
             })
           )
         );
@@ -228,7 +340,8 @@ describe("<TransactionTile />", () => {
             bakerFee: 100,
             storageFee: 20,
             allocationFee: 3,
-          })
+          }),
+          tokenTransferFixture({ from: { address: mockLedgerAccount(0).address.pkh } })
         )
       );
 
@@ -236,7 +349,7 @@ describe("<TransactionTile />", () => {
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, transactionFixture({})));
+      render(fixture(contextValue, transactionFixture({}), tokenTransferFixture({})));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });
@@ -250,6 +363,10 @@ describe("<TransactionTile />", () => {
               amount: 1,
               target: { address: mockLedgerAccount(1).address.pkh },
               sender: { address: mockLedgerAccount(0).address.pkh },
+            }),
+            tokenTransferFixture({
+              from: { address: mockLedgerAccount(0).address.pkh },
+              to: { address: mockLedgerAccount(1).address.pkh },
             })
           )
         );
@@ -268,6 +385,10 @@ describe("<TransactionTile />", () => {
               amount: 1,
               target: { address: mockLedgerAccount(0).address.pkh },
               sender: { address: mockLedgerAccount(1).address.pkh },
+            }),
+            tokenTransferFixture({
+              from: { address: mockLedgerAccount(1).address.pkh },
+              to: { address: mockLedgerAccount(0).address.pkh },
             })
           )
         );
@@ -286,6 +407,10 @@ describe("<TransactionTile />", () => {
               amount: 1,
               target: { address: mockLedgerAccount(0).address.pkh },
               sender: { address: mockLedgerAccount(0).address.pkh },
+            }),
+            tokenTransferFixture({
+              from: { address: mockLedgerAccount(0).address.pkh },
+              to: { address: mockLedgerAccount(0).address.pkh },
             })
           )
         );
