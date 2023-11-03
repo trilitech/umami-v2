@@ -4,8 +4,7 @@ import colors from "../../style/colors";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 import { TokenTransfer } from "../../types/Transfer";
 import { TzktCombinedOperation, TransactionOperation } from "../../utils/tezos";
-import { useGetToken } from "../../utils/hooks/tokensHooks";
-import { thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
+import { Token, fromRaw, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { Fee } from "./Fee";
 import { OperationStatus } from "./OperationStatus";
 import { Timestamp } from "./Timestamp";
@@ -24,9 +23,8 @@ import { DelegationTile } from "./DelegationTile";
 const TokenTransferTile: React.FC<{
   operation: TransactionOperation;
   tokenTransfer: TokenTransfer;
-}> = ({ operation, tokenTransfer }) => {
-  const tokenId = tokenTransfer.token.tokenId;
-  const contract = tokenTransfer.token.contract.address;
+  token: Token;
+}> = ({ operation, tokenTransfer, token }) => {
   const rawAmount = tokenTransfer.amount;
 
   const showToAddress = useShowAddress(tokenTransfer.to.address);
@@ -34,16 +32,7 @@ const TokenTransferTile: React.FC<{
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
 
-  const getToken = useGetToken();
   const isOutgoing = useIsOwnedAddress(operation.sender.address);
-
-  const token = getToken(contract, tokenId);
-  if (!token) {
-    // If we don't have the token yet to present it's fine to fallback to
-    // the transaction tile because it is a transaction by nature
-    // should be covered by a higher level component to batch the requests
-    return <TransactionTile operation={operation} />;
-  }
   const isNFT = token.type === "nft";
 
   const tokenAmount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
@@ -87,7 +76,7 @@ const TokenTransferTile: React.FC<{
   );
 
   return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
+    <Flex direction="column" data-testid="operation-tile-token-transfer" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
@@ -140,7 +129,16 @@ export const OperationTile: React.FC<{
       const tokenTransfer = getTokenTransfer(operation.id);
 
       if (tokenTransfer) {
-        return <TokenTransferTile operation={operation} tokenTransfer={tokenTransfer} />;
+        const token = fromRaw(tokenTransfer.token);
+        if (token) {
+          return (
+            <TokenTransferTile operation={operation} tokenTransfer={tokenTransfer} token={token} />
+          );
+        } else {
+          // If we can't parse the token we fallback to
+          // the transaction tile because it is a transaction by nature
+          return <TransactionTile operation={operation} />;
+        }
       } else if (isContractCall) {
         return <ContractCallTile operation={operation} />;
       } else {

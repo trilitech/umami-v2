@@ -17,7 +17,7 @@ export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ o
   const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
-    <Flex direction="column" data-testid="operation-tile" w="100%">
+    <Flex direction="column" data-testid="operation-tile-delegation" w="100%">
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <BakerIcon stroke={colors.gray[450]} mr="8px" />

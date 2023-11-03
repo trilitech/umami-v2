@@ -1,9 +1,11 @@
+import { uUSD } from "../../mocks/fa2Tokens";
 import {
   mockContractAddress,
   mockImplicitAccount,
   mockImplicitAddress,
   mockLedgerAccount,
 } from "../../mocks/factories";
+import { TokenTransfer } from "../../types/Transfer";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import { DelegationOperation, OriginationOperation, TransactionOperation } from "../../utils/tezos";
 
@@ -54,5 +56,13 @@ export const delegationFixture = (props: Partial<DelegationOperation>): Delegati
   newDelegate: {
     address: mockImplicitAddress(1).pkh,
   },
+  ...props,
+});
+
+export const tokenTransferFixture = (props: Partial<TokenTransfer>): TokenTransfer => ({
+  amount: "5",
+  transactionId: 56789,
+  to: { address: mockImplicitAccount(1).address.pkh },
+  token: uUSD(mockLedgerAccount(0).address).token,
   ...props,
 });
