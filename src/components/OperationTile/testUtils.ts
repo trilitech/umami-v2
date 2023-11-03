@@ -60,7 +60,7 @@ export const delegationFixture = (props: Partial<DelegationOperation>): Delegati
 });
 
 export const tokenTransferFixture = (props: Partial<TokenTransfer>): TokenTransfer => ({
-  amount: "5",
+  amount: "500",
   transactionId: 56789,
   to: { address: mockImplicitAccount(1).address.pkh },
   token: uUSD(mockLedgerAccount(0).address).token,
