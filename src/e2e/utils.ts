@@ -1,5 +1,5 @@
 import { Page, expect, test } from "@playwright/test";
-import { RawPkh } from "../src/types/Address";
+import { RawPkh } from "../types/Address";
 import { exec } from "child_process";
 
 export const cleanupState = () => {

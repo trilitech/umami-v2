@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { cleanupState, refetch, resetBlockchain, topUpAccount } from "../utils";
-import { mnemonic1 } from "../../src/mocks/mockMnemonic";
+import { mnemonic1 } from "../../mocks/mockMnemonic";
 
 cleanupState();
 test.beforeEach(resetBlockchain);
