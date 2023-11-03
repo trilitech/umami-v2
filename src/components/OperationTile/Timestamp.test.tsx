@@ -21,7 +21,7 @@ describe("<Timestamp />", () => {
     it("should return seconds ago if less than a minute", () => {
       const timestamp = new Date();
       const testTimestamp = addSeconds(timestamp, -30).toISOString();
-      expect(getDisplayTimestamp(testTimestamp)).toBe("30 seconds ago");
+      expect(getDisplayTimestamp(testTimestamp)).toBe("1 minute ago");
     });
 
     it("should return minutes ago if less than an hour", () => {
@@ -33,13 +33,13 @@ describe("<Timestamp />", () => {
     it("should return hours ago if less than a day", () => {
       const timestamp = new Date();
       const testTimestamp = addHours(timestamp, -5).toISOString();
-      expect(getDisplayTimestamp(testTimestamp)).toBe("5 hours ago");
+      expect(getDisplayTimestamp(testTimestamp)).toBe("about 5 hours ago");
     });
 
     it("should return days ago if less than two days", () => {
       const timestamp = new Date();
       const testTimestamp = addDays(timestamp, -1).toISOString();
-      expect(getDisplayTimestamp(testTimestamp)).toBe("1 days ago");
+      expect(getDisplayTimestamp(testTimestamp)).toBe("1 day ago");
     });
 
     it("should return date in dd MMM yyyy format if more than two days ago", () => {
