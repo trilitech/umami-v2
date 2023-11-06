@@ -1,23 +1,66 @@
-import { Page, expect, test } from "@playwright/test";
+import { Page, test, expect } from "@playwright/test";
 import { RawPkh } from "../types/Address";
 import { exec } from "child_process";
+import { getAccounts } from "../utils/tezos";
+import { DefaultNetworks } from "../types/Network";
+
+const TEST_NETWORK = {
+  name: "Test net",
+  rpcUrl: "http://0.0.0.0:20000",
+  tzktApiUrl: "http://0.0.0.0:5000",
+  tzktExplorerUrl: "http://unavailable",
+  buyTezUrl: "",
+};
 
 export const cleanupState = () => {
-  test.beforeEach(async ({ page }) => {
-    page.addInitScript(() => {
-      window.localStorage.clear();
+  test.beforeEach(async ({ page }: { page: Page }) => {
+    const networks = {
+      available: [...DefaultNetworks, TEST_NETWORK],
+      current: TEST_NETWORK,
+    };
+    page.addInitScript(networks => {
+      localStorage.clear();
 
-      window.localStorage.setItem(
+      localStorage.setItem(
         "persist:root",
         JSON.stringify({
-          // sets the test network as selected
-          networks:
-            '{"available":[{"name":"mainnet","rpcUrl":"https://prod.tcinfra.net/rpc/mainnet/","tzktApiUrl":"https://api.mainnet.tzkt.io","tzktExplorerUrl":"https://tzkt.io","buyTezUrl":"https://widget.wert.io"},{"name":"ghostnet","rpcUrl":"https://ghostnet.ecadinfra.com","tzktApiUrl":"https://api.ghostnet.tzkt.io","tzktExplorerUrl":"https://ghostnet.tzkt.io","buyTezUrl":"https://faucet.ghostnet.teztnets.xyz/"},{"name":"Test net","rpcUrl":"http://0.0.0.0:20000","tzktApiUrl":"http://0.0.0.0:5000","tzktExplorerUrl":"http://unavailable","buyTezUrl":""}],"current":{"name":"Test net","rpcUrl":"http://0.0.0.0:20000","tzktApiUrl":"http://0.0.0.0:5000","tzktExplorerUrl":"http://unavailable","buyTezUrl":""}}',
+          networks,
           _persist: '{"version":-1,"rehydrated":true}',
         })
       );
-    });
+    }, JSON.stringify(networks));
   });
+};
+
+export const MASTER_PASSWORD = "12345678";
+
+export const loginAs = async (mnemonic: string, page: Page) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Get started" }).click();
+
+  expect(page.getByRole("heading", { name: "Accept to Continue" })).toBeVisible();
+  await page.getByText(/I confirm/).click();
+
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("button", { name: "I already have a wallet" }).click();
+  await page.getByRole("button", { name: "Import with Seed Phrase" }).click();
+  const words = mnemonic.split(" ");
+  for (let i = 0; i < words.length; i++) {
+    await page.getByRole("textbox").nth(i).fill(words[i]);
+  }
+
+  await page.getByRole("button", { name: "Continue" }).click();
+  expect(page.getByRole("heading", { name: "Derivation Path" })).toBeVisible();
+  await page.getByRole("button", { name: "Continue" }).click();
+
+  const password = "12345678";
+  await page.getByTestId("password").fill(password);
+  page.getByLabel("Confirm Password").fill(password);
+
+  await page.getByRole("button", { name: "Submit" }).click();
+
+  await page.waitForURL("/#/home");
 };
 
 export const startNode = () =>
@@ -48,7 +91,11 @@ export const killNode = () =>
 export const resetBlockchain = () => killNode().then(startNode);
 
 export const topUpAccount = async (account: RawPkh, tez: string) => {
-  return new Promise((resolve, reject) => {
+  let accountInfo = await getAccounts([account], TEST_NETWORK);
+  const prevBalance = accountInfo[0]?.balance;
+
+  await new Promise((resolve, reject) => {
+    // alice is a bootstrapped account on flextesa with lots of Tez
     exec(
       `docker-compose exec -T flextesa octez-client --wait none transfer ${tez} from alice to ${account} --burn-cap 1`,
       error => {
@@ -59,10 +106,40 @@ export const topUpAccount = async (account: RawPkh, tez: string) => {
       }
     );
   });
+
+  // wait until the balance has updated
+  let currBalance = prevBalance;
+  while (prevBalance === currBalance) {
+    accountInfo = await getAccounts([account], TEST_NETWORK);
+    currBalance = accountInfo[0]?.balance;
+  }
 };
 
 export const refetch = async (page: Page) => {
+  const getLastTimeUpdated = () => {
+    try {
+      const state = JSON.parse(localStorage.getItem("persist:root") as string);
+      return JSON.parse(state.assets).lastTimeUpdated;
+    } catch {
+      // if the assets are not yet loaded then the lastTimeUpdated is not set
+      return "";
+    }
+  };
+
+  const prevTimeUpdated = await page.evaluate(getLastTimeUpdated);
+
   await page.getByTestId("refetch-button").click();
-  // give time to fetch & refresh everything
-  await page.waitForTimeout(500);
+
+  // wait until the lastTimeUpdated has changed
+  return new Promise(resolve => {
+    const interval = setInterval(() => {
+      page.evaluate(getLastTimeUpdated).then(currTimeUpdated => {
+        console.log("currUpdateTime", currTimeUpdated, "prevUpdateTime", prevTimeUpdated);
+        if (currTimeUpdated !== prevTimeUpdated) {
+          clearInterval(interval);
+          resolve(undefined);
+        }
+      });
+    }, 500);
+  });
 };
