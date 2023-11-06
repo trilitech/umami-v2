@@ -140,9 +140,6 @@
       "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing",
       "@tzkt/oazapfts/runtime": "@tzkt/oazapfts/lib/runtime"
     },
-    "watchPathIgnorePatterns": [
-      "src/integration"
-    ],
     "coverageThreshold": {
       "global": {
         "branches": 69,
@@ -158,7 +155,8 @@
       "node_modules",
       "src/mocks/*",
       "src/utils/useAssetsPolling.ts",
-      "src/components/OperationTile/*"
+      "src/components/OperationTile/*",
+      "src/e2e/*"
     ]
   },
   "build": {
