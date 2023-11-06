@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Card, Flex, Heading, Button } from "@chakra-ui/react";
 import { useContext } from "react";
 import ChangePasswordForm from "../../components/ChangePassword/ChangePasswordForm";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
@@ -8,6 +8,7 @@ import { TopBar } from "../../components/TopBar";
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
+import colors from "../../style/colors";
 
 export default function SettingsView() {
   return (
@@ -80,40 +81,50 @@ const AppUpdatesSection = () => {
 };
 
 const BackupSection = () => {
-  return null;
-  // TODO: implement this
-  // return (
-  //   <SectionContainer title="Backup">
-  //     <CardWithDivier
-  //       upperChild={
-  //         <Flex alignItems="center">
-  //           <Flex justifyContent="space-between" alignItems="center" w="100%">
-  //             <Heading size="sm">Auto Backup</Heading>
-  //             <Switch marginX={3} />
-  //           </Flex>
-  //         </Flex>
-  //       }
-  //       lowerChild={
-  //         <>
-  //           <Flex justifyContent="space-between" alignItems="center">
-  //             <Flex alignItems="center" p={1}>
-  //               <Heading size="sm">Backup Location</Heading>
-  //             </Flex>
-  //             <IconAndTextBtn
-  //               label="Browse Folder"
-  //               icon={BsFolder2Open}
-  //               iconHeight={4}
-  //               iconWidth={4}
-  //             />
-  //           </Flex>
-  //           <Box mt={3}>
-  //             <Input placeholder="Select the location or enter path" />
-  //           </Box>
-  //         </>
-  //       }
-  //     />
-  //   </SectionContainer>
-  // );
+  const storage = {
+    "persist:accounts": localStorage.getItem("persist:accounts"),
+    "persist:root": localStorage.getItem("persist:root"),
+  };
+
+  return (
+    <SectionContainer title="Backup">
+      <Card padding="24px" marginBottom="10px" bgColor={colors.gray[900]} borderRadius="8px">
+        <Flex justifyContent="end" alignItems="center" w="100%">
+          <a
+            download="UmamiV2Backup.json"
+            href={`data:application/json;charset=utf-8,${encodeURIComponent(
+              JSON.stringify(storage)
+            )}`}
+          >
+            <Button variant="tertiary">Download backup file</Button>
+          </a>
+        </Flex>
+
+        {/* TODO: Remove the following once the design is confirmed */}
+
+        {/* <Flex alignItems="center">
+          <Flex justifyContent="space-between" alignItems="center" w="100%">
+            <Heading size="sm">Auto Backup</Heading>
+            <Switch marginX={3} />
+          </Flex>
+        </Flex>
+        <Divider color={colors.gray[600]} my="20px" /> */}
+        {/* <Flex justifyContent="space-between" alignItems="center">
+          <Flex alignItems="center" p={1}>
+            <Heading size="sm">Backup Location</Heading>
+          </Flex>
+          <Button variant="unstyled" />
+          <Flex alignItems="center" onClick={onClick}>
+            <Icon as={BsFolder2Open} color={colors.gray[300]} mr="8px" />
+            <Text color={colors.gray[300]}>Browse Folder</Text>
+          </Flex>
+        </Flex>
+        <Box mt={3}>
+          <Input disabled={true} placeholder="Select the location" />
+        </Box> */}
+      </Card>
+    </SectionContainer>
+  );
 };
 
 const AdvancedSection = () => {
