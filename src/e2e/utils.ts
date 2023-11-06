@@ -1,12 +1,12 @@
 import { Page, test, expect } from "@playwright/test";
 import { RawPkh } from "../types/Address";
-import { exec } from "child_process";
+import { execSync } from "child_process";
 import { getAccounts } from "../utils/tezos";
 import { DefaultNetworks } from "../types/Network";
 
 const TEST_NETWORK = {
   name: "Test net",
-  rpcUrl: "http://0.0.0.0:20000",
+  rpcUrl: "http://0.0.0.0:20001",
   tzktApiUrl: "http://0.0.0.0:5000",
   tzktExplorerUrl: "http://unavailable",
   buyTezUrl: "",
@@ -63,49 +63,30 @@ export const loginAs = async (mnemonic: string, page: Page) => {
   await page.waitForURL("/#/home");
 };
 
-export const startNode = () =>
-  new Promise((resolve, reject) => {
-    exec("docker-compose up --wait", error => {
-      if (error) {
-        return reject(error);
-      }
-      resolve(undefined);
-    });
-  });
+export const startNode = async () => {
+  execSync("docker compose up --wait");
+};
 
-export const killNode = () =>
-  new Promise((resolve, reject) => {
-    exec("docker-compose kill && docker-compose down", error => {
-      if (error) {
-        return reject(error);
-      }
-      resolve(undefined);
-    });
-  });
+export const killNode = async () => execSync("docker compose kill && docker compose down");
 
 // this should be called before each test that uses the blockchain/indexer
 // we need to make sure that each test has a clean state
 // such tests should be run sequentially to avoid conflicts/race conditions/etc.
 // this thing takes ~15 secs to run so it should be used only when necessary
 // if the test doesn't involve any blockchain/indexer interaction then do not call this function
-export const resetBlockchain = () => killNode().then(startNode);
+export const resetBlockchain = () => {
+  killNode();
+  startNode();
+};
 
 export const topUpAccount = async (account: RawPkh, tez: string) => {
   let accountInfo = await getAccounts([account], TEST_NETWORK);
   const prevBalance = accountInfo[0]?.balance;
 
-  await new Promise((resolve, reject) => {
-    // alice is a bootstrapped account on flextesa with lots of Tez
-    exec(
-      `docker-compose exec -T flextesa octez-client --wait none transfer ${tez} from alice to ${account} --burn-cap 1`,
-      error => {
-        if (error) {
-          return reject(error);
-        }
-        resolve(undefined);
-      }
-    );
-  });
+  // alice is a bootstrapped account on flextesa with lots of Tez
+  execSync(
+    `docker compose exec -T flextesa octez-client --wait none transfer ${tez} from alice to ${account} --burn-cap 1`
+  );
 
   // wait until the balance has updated
   let currBalance = prevBalance;
@@ -134,12 +115,11 @@ export const refetch = async (page: Page) => {
   return new Promise(resolve => {
     const interval = setInterval(() => {
       page.evaluate(getLastTimeUpdated).then(currTimeUpdated => {
-        console.log("currUpdateTime", currTimeUpdated, "prevUpdateTime", prevTimeUpdated);
         if (currTimeUpdated !== prevTimeUpdated) {
           clearInterval(interval);
           resolve(undefined);
         }
       });
-    }, 500);
+    }, 100);
   });
 };

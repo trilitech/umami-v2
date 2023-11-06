@@ -6,7 +6,6 @@ import { EncryptedData } from "../../crypto/types";
 import { getFingerPrint } from "../../tezos";
 import { ExtraArgument } from "../extraArgument";
 import { AppDispatch, RootState } from "../store";
-import { MAINNET } from "../../../types/Network";
 
 export const restoreFromMnemonic = createAsyncThunk<
   {
@@ -29,7 +28,7 @@ export const restoreFromMnemonic = createAsyncThunk<
       seedFingerprint: await getFingerPrint(seedPhrase),
       accounts: await thunkAPI.extra.restoreRevealedMnemonicAccounts(
         seedPhrase,
-        MAINNET, // TODO: consider choosing network on onboarding
+        thunkAPI.getState().networks.current,
         label,
         derivationPathPattern
       ),
