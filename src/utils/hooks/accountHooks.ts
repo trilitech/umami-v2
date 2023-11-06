@@ -40,6 +40,7 @@ export const useReset = () => {
   const navigate = useNavigate();
   return () => {
     dispatch(accountsSlice.actions.reset());
+    localStorage.clear();
 
     // When accounts are empty
     // route SHOULD reinitialize automatically to /welcome:
