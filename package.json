@@ -158,10 +158,7 @@
       "node_modules",
       "src/mocks/*",
       "src/utils/useAssetsPolling.ts",
-      "src/components/OperationTile/*",
-      "src/*integration*",
-      "src/stories/*",
-      "src/.*\\.stories\\.tsx?"
+      "src/components/OperationTile/*"
     ]
   },
   "build": {
