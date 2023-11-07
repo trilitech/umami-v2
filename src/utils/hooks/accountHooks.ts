@@ -1,5 +1,4 @@
 import { maxBy } from "lodash";
-import { useNavigate } from "react-router-dom";
 import {
   AccountType,
   Account,
@@ -35,24 +34,10 @@ export const useGetImplicitAccount = () => {
 };
 
 export const useReset = () => {
-  const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
   return () => {
-    dispatch(accountsSlice.actions.reset());
     localStorage.clear();
 
-    // When accounts are empty
-    // route SHOULD reinitialize automatically to /welcome:
-    // https://github.com/trilitech/umami-v2/blob/0d36240e245d81cc1eed89037e005d6ca3542e51/src/Router.tsx#L92
-    //
-    // But sometimes it keeps the old route:
-    // displays welcome screen with /#/settings in url (which should be impossible...)
-    //
-    // Might be a bug related to hashrouter
-    // In the meantime we just redirect
-
-    navigate("/welcome");
+    window.location.reload();
   };
 };
 

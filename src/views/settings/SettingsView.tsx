@@ -99,29 +99,6 @@ const BackupSection = () => {
             <Button variant="tertiary">Download backup file</Button>
           </a>
         </Flex>
-
-        {/* TODO: Remove the following once the design is confirmed */}
-
-        {/* <Flex alignItems="center">
-          <Flex justifyContent="space-between" alignItems="center" w="100%">
-            <Heading size="sm">Auto Backup</Heading>
-            <Switch marginX={3} />
-          </Flex>
-        </Flex>
-        <Divider color={colors.gray[600]} my="20px" /> */}
-        {/* <Flex justifyContent="space-between" alignItems="center">
-          <Flex alignItems="center" p={1}>
-            <Heading size="sm">Backup Location</Heading>
-          </Flex>
-          <Button variant="unstyled" />
-          <Flex alignItems="center" onClick={onClick}>
-            <Icon as={BsFolder2Open} color={colors.gray[300]} mr="8px" />
-            <Text color={colors.gray[300]}>Browse Folder</Text>
-          </Flex>
-        </Flex>
-        <Box mt={3}>
-          <Input disabled={true} placeholder="Select the location" />
-        </Box> */}
       </Card>
     </SectionContainer>
   );
