@@ -1,5 +1,6 @@
 import { Button, Flex, VStack, Text, Divider, useToast } from "@chakra-ui/react";
 import { GoogleAuth } from "../../../GoogleAuth";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { useRestoreSocial } from "../../../utils/hooks/accountHooks";
 import { getPkAndPkhFromSk } from "../../../utils/tezos";
 import ModalContentWrapper from "../ModalContentWrapper";
@@ -14,15 +15,18 @@ const ConnectOrCreate = ({
   goToStep: (step: Step) => void;
   closeModal: () => void;
 }) => {
+  const { handleAsyncAction } = useAsyncActionHandler();
   const restoreSocial = useRestoreSocial();
   const toast = useToast();
 
-  const onSuccessfulSocialAuth = async (sk: string, email: string) => {
-    const { pk, pkh } = await getPkAndPkhFromSk(sk);
-    restoreSocial(pk, pkh, email);
-    toast({ title: `Successfully added ${email} account`, status: "success" });
-    closeModal();
-  };
+  const onSuccessfulSocialAuth = (sk: string, email: string) =>
+    handleAsyncAction(async () => {
+      const { pk, pkh } = await getPkAndPkhFromSk(sk);
+      restoreSocial(pk, pkh, email);
+      toast({ title: `Successfully added ${email} account`, status: "success" });
+      closeModal();
+    });
+
   return (
     <ModalContentWrapper icon={<WalletPlusIcon />} title="Connect or Create Account">
       <VStack w="100%" spacing="16px">
