@@ -80,24 +80,28 @@ const AppUpdatesSection = () => {
   // );
 };
 
-const BackupSection = () => {
+const downloadBackup = () => {
   const storage = {
     "persist:accounts": localStorage.getItem("persist:accounts"),
     "persist:root": localStorage.getItem("persist:root"),
   };
 
+  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(storage))}`;
+  const link = document.createElement("a");
+  link.href = jsonString;
+  link.download = "UmamiV2Backup.json";
+
+  link.click();
+};
+
+const BackupSection = () => {
   return (
     <SectionContainer title="Backup">
       <Card padding="24px" marginBottom="10px" bgColor={colors.gray[900]} borderRadius="8px">
         <Flex justifyContent="end" alignItems="center" w="100%">
-          <a
-            download="UmamiV2Backup.json"
-            href={`data:application/json;charset=utf-8,${encodeURIComponent(
-              JSON.stringify(storage)
-            )}`}
-          >
-            <Button variant="tertiary">Download backup file</Button>
-          </a>
+          <Button variant="tertiary" onClick={downloadBackup}>
+            Download backup file
+          </Button>
         </Flex>
       </Card>
     </SectionContainer>
