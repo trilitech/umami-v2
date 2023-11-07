@@ -60,11 +60,12 @@ const RestoreLedger = ({
             title: "Request pending",
             description: "Check your ledger...",
           };
-        } else if (error.name !== undefined) {
-          return { title: "Request cancelled", description: error.name };
         }
 
-        return { title: "Ledger Error", description: error.message };
+        return {
+          title: "Ledger error",
+          description: error.message || error.name,
+        };
       }
     );
 
