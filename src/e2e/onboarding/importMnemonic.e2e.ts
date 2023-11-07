@@ -1,9 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { cleanupState, loginAs, resetBlockchain } from "../utils";
+import { cleanupState, loginAs } from "../utils";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 
 cleanupState();
-test.beforeEach(resetBlockchain);
 
 test.describe("Import Mnemonic", () => {
   test("First account restore", async ({ page }) => {

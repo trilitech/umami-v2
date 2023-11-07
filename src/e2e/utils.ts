@@ -29,6 +29,8 @@ export const cleanupState = () => {
         })
       );
     }, JSON.stringify(networks));
+
+    resetBlockchain();
   });
 };
 

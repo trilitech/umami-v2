@@ -1,9 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { cleanupState, loginAs, refetch, resetBlockchain, topUpAccount } from "./utils";
+import { cleanupState, loginAs, refetch, topUpAccount } from "./utils";
 import { mnemonic1 } from "../mocks/mockMnemonic";
 
 cleanupState();
-test.beforeEach(resetBlockchain);
 
 test("Account top-up shows up automatically", async ({ page }) => {
   await loginAs(mnemonic1, page);
