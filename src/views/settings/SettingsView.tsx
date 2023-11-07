@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Card, Flex, Heading, Button } from "@chakra-ui/react";
 import { useContext } from "react";
 import ChangePasswordForm from "../../components/ChangePassword/ChangePasswordForm";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
@@ -8,6 +8,7 @@ import { TopBar } from "../../components/TopBar";
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
+import colors from "../../style/colors";
 
 export default function SettingsView() {
   return (
@@ -79,41 +80,32 @@ const AppUpdatesSection = () => {
   // );
 };
 
+const downloadBackup = () => {
+  const storage = {
+    "persist:accounts": localStorage.getItem("persist:accounts"),
+    "persist:root": localStorage.getItem("persist:root"),
+  };
+
+  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(storage))}`;
+  const link = document.createElement("a");
+  link.href = jsonString;
+  link.download = "UmamiV2Backup.json";
+
+  link.click();
+};
+
 const BackupSection = () => {
-  return null;
-  // TODO: implement this
-  // return (
-  //   <SectionContainer title="Backup">
-  //     <CardWithDivier
-  //       upperChild={
-  //         <Flex alignItems="center">
-  //           <Flex justifyContent="space-between" alignItems="center" w="100%">
-  //             <Heading size="sm">Auto Backup</Heading>
-  //             <Switch marginX={3} />
-  //           </Flex>
-  //         </Flex>
-  //       }
-  //       lowerChild={
-  //         <>
-  //           <Flex justifyContent="space-between" alignItems="center">
-  //             <Flex alignItems="center" p={1}>
-  //               <Heading size="sm">Backup Location</Heading>
-  //             </Flex>
-  //             <IconAndTextBtn
-  //               label="Browse Folder"
-  //               icon={BsFolder2Open}
-  //               iconHeight={4}
-  //               iconWidth={4}
-  //             />
-  //           </Flex>
-  //           <Box mt={3}>
-  //             <Input placeholder="Select the location or enter path" />
-  //           </Box>
-  //         </>
-  //       }
-  //     />
-  //   </SectionContainer>
-  // );
+  return (
+    <SectionContainer title="Backup">
+      <Card padding="24px" marginBottom="10px" bgColor={colors.gray[900]} borderRadius="8px">
+        <Flex justifyContent="end" alignItems="center" w="100%">
+          <Button variant="tertiary" onClick={downloadBackup}>
+            Download backup file
+          </Button>
+        </Flex>
+      </Card>
+    </SectionContainer>
+  );
 };
 
 const AdvancedSection = () => {
