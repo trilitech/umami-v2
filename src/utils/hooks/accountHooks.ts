@@ -57,13 +57,13 @@ export const useGetOwnedAccount = () => {
   };
 };
 
-export const useRestoreSecret = () => {
+export const useRestoreFromMnemonic = () => {
   const dispatch = useAppDispatch();
 
-  return (seedPhrase: string, password: string, label?: string, derivationPathPattern?: string) => {
+  return (mnemonic: string, password: string, label?: string, derivationPathPattern?: string) => {
     return dispatch(
       restoreFromMnemonic({
-        seedPhrase,
+        mnemonic,
         password,
         label,
         derivationPathPattern,
