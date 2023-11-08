@@ -74,7 +74,7 @@ describe("<TransactionTile />", () => {
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
-            `${network.tzktExplorerUrl}/test-hash/1234`
+            `${network.tzktExplorerUrl}/transactions/56789`
           );
         });
       });

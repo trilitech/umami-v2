@@ -42,6 +42,7 @@ export type DelegationOperation = tzktApi.DelegationOperation & {
   counter: number;
   type: "delegation";
   sender: TzktAlias;
+  status: string;
 };
 export type TransactionOperation = tzktApi.TransactionOperation & {
   id: number;
@@ -51,6 +52,7 @@ export type TransactionOperation = tzktApi.TransactionOperation & {
   type: "transaction";
   sender: TzktAlias;
   target: TzktAlias;
+  status: string;
 };
 export type OriginationOperation = tzktApi.OriginationOperation & {
   id: number;
@@ -59,6 +61,7 @@ export type OriginationOperation = tzktApi.OriginationOperation & {
   counter: number;
   type: "origination";
   sender: TzktAlias;
+  status: string;
 };
 
 export type TzktCombinedOperation =

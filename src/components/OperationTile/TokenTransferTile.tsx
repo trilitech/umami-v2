@@ -13,20 +13,25 @@ import { Timestamp } from "./Timestamp";
 import AddressPill from "../AddressPill/AddressPill";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { OperationStatus } from "./OperationStatus";
+import { TzktAlias } from "../../types/Address";
 
 export const TokenTransferTile: React.FC<{
-  operation: TransactionOperation;
+  // externally originated token transfers
+  // do not have a corresponding operation in the list
+  // in fact, they might not even have a corresponding transaction
+  // they might be initiated by a contract origination instead
+  operation?: TransactionOperation;
   tokenTransfer: TokenTransfer;
   token: Token;
 }> = ({ operation, tokenTransfer, token }) => {
   const rawAmount = tokenTransfer.amount;
 
   const showToAddress = useShowAddress(tokenTransfer.to.address);
-  const showFromAddress = useShowAddress(operation.sender.address);
+  const showFromAddress = useShowAddress(tokenTransfer.from?.address || "");
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
 
-  const isOutgoing = useIsOwnedAddress(operation.sender.address);
+  const isOutgoing = useIsOwnedAddress(tokenTransfer.from?.address || "");
   const isNFT = token.type === "nft";
 
   const tokenAmount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
@@ -49,7 +54,14 @@ export const TokenTransferTile: React.FC<{
       }
     >
       <Flex>
-        <TzktLink operation={operation} mr="8px" data-testid="title" color={underlineColor}>
+        <TzktLink
+          transactionId={tokenTransfer.transactionId}
+          originationId={tokenTransfer.originationId}
+          migrationId={tokenTransfer.migrationId}
+          mr="8px"
+          data-testid="title"
+          color={underlineColor}
+        >
           <Text display="inline" fontWeight="600" color={titleColor}>
             {sign}
             {tokenAmount}
@@ -62,7 +74,14 @@ export const TokenTransferTile: React.FC<{
       </Flex>
     </Tooltip>
   ) : (
-    <TzktLink operation={operation} mr="8px" data-testid="title" color={underlineColor}>
+    <TzktLink
+      transactionId={tokenTransfer.transactionId}
+      originationId={tokenTransfer.originationId}
+      migrationId={tokenTransfer.migrationId}
+      mr="8px"
+      data-testid="title"
+      color={underlineColor}
+    >
       <Text display="inline" fontWeight="600" color={titleColor}>
         {sign}
         {tokenAmount}
@@ -76,10 +95,10 @@ export const TokenTransferTile: React.FC<{
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
           {titleElement}
-          <Fee operation={operation} />
+          {operation && <Fee operation={operation} />}
         </Center>
         <Flex alignSelf="flex-end">
-          <Timestamp timestamp={operation.timestamp} />
+          <Timestamp timestamp={tokenTransfer.timestamp} />
         </Flex>
       </Flex>
       <Box>
@@ -98,13 +117,13 @@ export const TokenTransferTile: React.FC<{
                 <Text mr="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={operation.sender} />
+                <AddressPill address={tokenTransfer.from as TzktAlias} />
               </Flex>
             )}
           </Flex>
           <Center>
             <OperationTypeWrapper>Token Transfer</OperationTypeWrapper>
-            <OperationStatus operation={operation} />
+            <OperationStatus level={tokenTransfer.level as number} />
           </Center>
         </Flex>
       </Box>

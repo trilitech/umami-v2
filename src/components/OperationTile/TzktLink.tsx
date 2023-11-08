@@ -1,18 +1,23 @@
 import { PropsWithChildren } from "react";
-import { TzktCombinedOperation } from "../../utils/tezos";
 import { Link, LinkProps } from "@chakra-ui/react";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { getHashUrl } from "../../views/operations/utils";
 
 export const TzktLink: React.FC<
-  PropsWithChildren<{ operation: TzktCombinedOperation } & LinkProps>
-> = ({ operation, children, ...props }) => {
+  PropsWithChildren<
+    { transactionId: number; originationId?: number; migrationId?: number } & LinkProps
+  >
+> = ({ transactionId, originationId, migrationId, children, ...props }) => {
   const network = useSelectedNetwork();
-  const url = getHashUrl({
-    hash: operation.hash,
-    counter: operation.counter,
-    network,
-  });
+
+  let url = "";
+  if (migrationId) {
+    url = `${network.tzktExplorerUrl}/migrations/${migrationId}`;
+  } else if (originationId) {
+    url = `${network.tzktExplorerUrl}/originations/${originationId}`;
+  } else {
+    url = `${network.tzktExplorerUrl}/transactions/${transactionId}`;
+  }
+
   return (
     <Link data-testid="tzkt-link" href={url} isExternal {...props}>
       {children}
