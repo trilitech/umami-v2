@@ -9,6 +9,7 @@ import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
 import colors from "../../style/colors";
+import packageInfo from "../../../package.json";
 
 export default function SettingsView() {
   return (
@@ -82,6 +83,7 @@ const AppUpdatesSection = () => {
 
 const downloadBackup = () => {
   const storage = {
+    version: packageInfo.version,
     "persist:accounts": localStorage.getItem("persist:accounts"),
     "persist:root": localStorage.getItem("persist:root"),
   };
