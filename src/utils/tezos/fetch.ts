@@ -64,10 +64,15 @@ export type OriginationOperation = tzktApi.OriginationOperation & {
   status: string;
 };
 
+export type TokenTransferOperation = TokenTransfer & {
+  type: "token_transfer";
+};
+
 export type TzktCombinedOperation =
   | DelegationOperation
   | TransactionOperation
-  | OriginationOperation;
+  | OriginationOperation
+  | TokenTransferOperation;
 
 export const getAccounts = async (pkhs: string[], network: Network) =>
   withRateLimit(() =>

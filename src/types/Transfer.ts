@@ -3,6 +3,7 @@ import { TzktAlias } from "./Address";
 import { RawTokenInfo } from "./Token";
 
 export type TokenTransfer = tzktApi.TokenTransfer & {
+  id: number;
   amount: string;
   token: RawTokenInfo;
   to: TzktAlias;
