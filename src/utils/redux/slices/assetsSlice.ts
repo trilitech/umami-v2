@@ -63,6 +63,8 @@ const assetsSlice = createSlice({
     updateBlockLevel: (state, { payload }: { payload: number }) => {
       state.blockLevel = payload;
     },
+    // TODO: it might be growing "infinitely" when a user is scrolling through their operations
+    // but it doesn't have to be stored in localStorage (check how it works if the app is closed and opened again)
     updateTokenTransfers: (state, { payload: transfers }: { payload: TokenTransfer[] }) => {
       transfers.forEach(transfer => {
         state.transfers.tokens[transfer.transactionId] = transfer;

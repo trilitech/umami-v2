@@ -190,17 +190,18 @@ export const getCombinedOperations = async (
     sort: { [sort]: "id" },
   };
 
+  // TODO: use `select` to cut the amount of data we receive where possible
   const operations = await Promise.all([
     getTransactions(addresses, network, tzktRequestOptions),
     getDelegations(addresses, network, tzktRequestOptions),
     getOriginations(addresses, network, tzktRequestOptions),
+    getIncomingTokenTransfers(addresses, network, tzktRequestOptions),
   ]);
 
   // ID is a shared sequence among all operations in TzKT
   // so it's safe to use it for sorting & pagination
-  return sortBy(
-    operations.flat(),
-    operation => (sort === "asc" ? operation.id : -operation.id) // operation#id is always defined
+  return sortBy(operations.flat(), operation =>
+    sort === "asc" ? operation.id : -operation.id
   ).slice(0, limit) as TzktCombinedOperation[];
 };
 
@@ -217,6 +218,33 @@ export const getTokenTransfers = async (transactionIds: number[], network: Netwo
     )
   ) as Promise<TokenTransfer[]>;
 };
+
+export const getIncomingTokenTransfers = async (
+  addresses: RawPkh[],
+  network: Network,
+  options: {
+    offset?: OffsetParameter;
+    sort: SortParameter;
+    limit: number;
+  }
+): Promise<TokenTransferOperation[]> =>
+  withRateLimit(async () => {
+    const tokenTransfers = await tokensGetTokenTransfers(
+      {
+        to: { in: [addresses.join(",")] },
+        $from: { ni: [addresses.join(",")] },
+        ...options,
+      },
+      {
+        baseUrl: network.tzktApiUrl,
+      }
+    );
+    // other operations have the type field, but token transfers don't
+    return (tokenTransfers as TokenTransfer[]).map(transfer => ({
+      ...transfer,
+      type: "token_transfer",
+    }));
+  });
 
 export const getLastDelegation = (address: RawPkh, network: Network) =>
   getDelegations([address], network, { limit: 1, sort: { desc: "id" } }).then(first);

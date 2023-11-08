@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { TzktCombinedOperation, getCombinedOperations, getTokenTransfers } from "../../utils/tezos";
+import {
+  TokenTransferOperation,
+  TzktCombinedOperation,
+  getCombinedOperations,
+  getTokenTransfers,
+} from "../../utils/tezos";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { RawPkh } from "../../types/Address";
 import { useAppDispatch } from "../../utils/redux/hooks";
@@ -115,12 +120,16 @@ export const fetchOperationsAndUpdateTokensInfo = async (
   }
 ) => {
   const operations = await getCombinedOperations(addresses, network, options);
-  const tokenTransfers = await getTokenTransfers(
-    operations.map(op => op.id),
-    network
+  const operationIds = operations
+    .filter(operation => operation.type !== "token_transfer")
+    .map(operation => operation.id);
+  const tokenTransfers = await getTokenTransfers(operationIds, network);
+  const externalTokenTransfers = operations.filter(
+    (operation): operation is TokenTransferOperation => operation.type === "token_transfer"
   );
 
-  dispatch(assetsActions.updateTokenTransfers(tokenTransfers));
-  dispatch(tokensActions.addTokens({ network, tokens: tokenTransfers.map(t => t.token) }));
+  const allTokenTransfers = [...tokenTransfers, ...externalTokenTransfers];
+  dispatch(assetsActions.updateTokenTransfers(allTokenTransfers));
+  dispatch(tokensActions.addTokens({ network, tokens: allTokenTransfers.map(t => t.token) }));
   return operations;
 };
