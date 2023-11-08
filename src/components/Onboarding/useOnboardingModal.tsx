@@ -20,6 +20,7 @@ import { useStepHistory } from "../useStepHistory";
 import { FakeAccount } from "./FakeAccount";
 import { ModalBackButton } from "../ModalBackButton";
 import RestoreMnemonic from "./restoreMnemonic/RestoreMnemonic";
+import RestoreBackupFile from "./restoreBackupFile/RestoreBackupFile";
 
 export enum StepType {
   eula = "eula",
@@ -28,6 +29,7 @@ export enum StepType {
   notice = "notice",
   restoreMnemonic = "restoreMnemonic",
   restoreLedger = "restoreLedger",
+  restoreBackup = "restoreBackup",
   showSeedphrase = "showSeedphrase",
   verifySeedphrase = "verifySeedphrase",
   nameAccount = "nameAccount",
@@ -63,6 +65,9 @@ export type RestoreLedgerStep = {
   type: StepType.restoreLedger;
   account: { type: "ledger"; label: string; derivationPath: string };
 };
+export type RestoreBackup = {
+  type: StepType.restoreBackup;
+};
 export type MasterPasswordStep = {
   type: StepType.masterPassword;
   account: { type: "mnemonic"; mnemonic: string; label: string; derivationPath: string };
@@ -80,6 +85,7 @@ export type Step =
   | NameAccountStep
   | DerivationPathStep
   | RestoreLedgerStep
+  | RestoreBackup
   | MasterPasswordStep
   | FakeAccountStep;
 
@@ -111,6 +117,8 @@ export const useOnboardingModal = (onModalClose?: () => void) => {
         return <Notice goToStep={goToStep} />;
       case StepType.restoreMnemonic:
         return <RestoreMnemonic goToStep={goToStep} />;
+      case StepType.restoreBackup:
+        return <RestoreBackupFile />;
       case StepType.showSeedphrase:
         return <ShowSeedphrase goToStep={goToStep} {...currentStep} />;
       case StepType.verifySeedphrase:
