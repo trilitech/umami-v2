@@ -61,6 +61,7 @@ const UpdateButton = () => {
         ml="8px"
         mr="36px"
         aria-label="refetch"
+        data-testid="refetch-button"
         icon={<FetchingIcon />}
         onClick={onClick}
         isLoading={isLoading}

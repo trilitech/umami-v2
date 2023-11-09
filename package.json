@@ -24,8 +24,7 @@
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
-    "test:tezos:integration": "cross-env TZ=CET react-scripts test --verbose --watchPathIgnorePatterns=[]",
-    "test": "cross-env TZ=CET react-scripts test --resetModules --coverage --verbose --testPathIgnorePatterns='src/integration/*'",
+    "test": "cross-env TZ=CET react-scripts test --resetModules --coverage --verbose",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts",
     "typecheck": "tsc"
@@ -53,6 +52,7 @@
     "@graphql-codegen/typescript-operations": "3.0.4",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@ledgerhq/hw-transport-webusb": "^6.27.19",
+    "@playwright/test": "^1.39.0",
     "@reduxjs/toolkit": "^1.9.7",
     "@taquito/ledger-signer": "^17.3.2",
     "@taquito/michel-codec": "^17.3.2",
@@ -140,9 +140,6 @@
       "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing",
       "@tzkt/oazapfts/runtime": "@tzkt/oazapfts/lib/runtime"
     },
-    "watchPathIgnorePatterns": [
-      "src/integration"
-    ],
     "coverageThreshold": {
       "global": {
         "branches": 69,
@@ -159,9 +156,7 @@
       "src/mocks/*",
       "src/utils/useAssetsPolling.ts",
       "src/components/OperationTile/*",
-      "src/*integration*",
-      "src/stories/*",
-      "src/.*\\.stories\\.tsx?"
+      "src/e2e/*"
     ]
   },
   "build": {

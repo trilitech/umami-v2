@@ -27,9 +27,9 @@
   },
   "overrides": [
     {
-      "files": ["**/*.stories.*"],
+      "files": ["src/e2e/*"],
       "rules": {
-        "import/no-anonymous-default-export": "off"
+        "testing-library/prefer-screen-queries": "off"
       }
     }
   ]

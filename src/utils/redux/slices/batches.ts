@@ -6,7 +6,7 @@ import { RawPkh } from "../../../types/Address";
 
 type State = Record<NetworkName, AccountOperations[] | undefined>;
 
-const initialState: State = fromPairs(DefaultNetworks.map(network => [network, []]));
+const initialState: State = fromPairs(DefaultNetworks.map(network => [network.name, []]));
 
 export const batchesSlice = createSlice({
   name: "batches",

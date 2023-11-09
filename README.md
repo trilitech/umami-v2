@@ -4,7 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Initial setup
 
-Just run `./bin/setup`. It'll create a git pre-push hook with all the necessary checks
+- Node.js version is 18.x, you can use [NVM](https://github.com/nvm-sh/nvm) to install it and select for this project.
+- Yarn 3.x should be used, you can find the installation guide [here](https://yarnpkg.com/getting-started/install).
+- `yarn install`
+- (optional) if you want to run all the necessary checks before pushing to github (which is much faster than waiting for CI) then just run `./bin/setup`
 
 ## Available Scripts
 
@@ -29,31 +32,22 @@ adjusted.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn test:tezos:integration`
+### `yarn playwright test`
 
-Run the tests including Tezos integration tests.
-The Tezos integration tests use real accounts on Ghotnet and Mainnet.
-Therefore these may fail if an account has insufficient balances, a node is down, etc...
+This will run the e2e tests for you. Please make sure that you have docker & docker-compose [installed](https://docs.docker.com/desktop/install/mac-install/).
+
+When you run it for the first time please make sure to install playwright's dependencies using
+
+```bash
+yarn playwright install --with-deps chromium
+```
+
+Also, you can find it helpful to use [this extension](https://playwright.dev/docs/getting-started-vscode)
 
 ### `yarn build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ### `yarn electron:start`
 
@@ -64,3 +58,7 @@ Note: you still have to have your `yarn start` running in a separate terminal
 ### `yarn electron:package:(mac|win|linux)`
 
 Build electron app for desired platform (don't forget to run `yarn build` before running this one)
+
+For the mac build you'd need signing credentials.
+
+To make yourself a debugging build run `yarn electron:package:mac:debug`. It will work only on your machine, but you'll be able to play around with it. For the same purpose you might find helpful enabling devTools in `public/electron.js` before running `yarn build` and this command.
