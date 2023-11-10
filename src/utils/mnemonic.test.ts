@@ -1,6 +1,6 @@
 import { mnemonic1 } from "../mocks/mockMnemonic";
 import { ImplicitAccount, AccountType } from "../types/Account";
-import { restoreRevealedMnemonicAccounts, restoreRevealedPublickKeyPairs } from "./mnemonic";
+import { restoreRevealedMnemonicAccounts, restoreRevealedPublicKeyPairs } from "./mnemonic";
 import { addressExists, getFingerPrint } from "./tezos";
 
 import {
@@ -17,12 +17,12 @@ beforeEach(() => {
 });
 
 describe("restoreAccounts", () => {
-  it("should restore exising accounts", async () => {
+  it("should restore existing accounts", async () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreRevealedPublickKeyPairs(
+    const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
       defaultDerivationPathPattern,
       MAINNET
@@ -46,7 +46,7 @@ describe("restoreAccounts", () => {
 
   it("should restore first account if none exists", async () => {
     addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreRevealedPublickKeyPairs(
+    const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
       defaultDerivationPathPattern,
       MAINNET
@@ -63,7 +63,7 @@ describe("restoreAccounts", () => {
 });
 
 describe("restoreEncryptedAccounts", () => {
-  it("should restore exising accounts with a default curve and label", async () => {
+  it("should restore existing accounts with a default curve and label", async () => {
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
     addressExistsMock.mockResolvedValueOnce(true);
@@ -104,7 +104,7 @@ describe("restoreEncryptedAccounts", () => {
     expect(result).toEqual(expected);
   });
 
-  it("should restore exising accounts with a provided label", async () => {
+  it("should restore existing accounts with a provided label", async () => {
     const CUSTOM_LABEL = "myLabel";
     addressExistsMock.mockResolvedValueOnce(false);
     const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, CUSTOM_LABEL);
