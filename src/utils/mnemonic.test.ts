@@ -62,6 +62,18 @@ describe("restoreAccounts", () => {
 
     expect(result).toEqual(testPublicKeys.slice(0, 1));
   });
+
+  it("should stop at first unrevealed account", async () => {
+    addressExistsMock.mockImplementation(fakeAddressExists([testPublicKeys[0], testPublicKeys[2]]));
+
+    const result = await restoreRevealedPublicKeyPairs(
+      mnemonic1,
+      defaultDerivationPathPattern,
+      MAINNET
+    );
+
+    expect(result).toEqual(testPublicKeys.slice(0, 1));
+  });
 });
 
 describe("restoreEncryptedAccounts", () => {
