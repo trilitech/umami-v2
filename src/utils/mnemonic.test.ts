@@ -2,6 +2,7 @@ import { mnemonic1 } from "../mocks/mockMnemonic";
 import { ImplicitAccount, AccountType } from "../types/Account";
 import { restoreRevealedMnemonicAccounts, restoreRevealedPublicKeyPairs } from "./mnemonic";
 import { addressExists, getFingerPrint } from "./tezos";
+import { Network } from "../types/Network";
 
 import {
   defaultDerivationPathPattern,
@@ -12,63 +13,59 @@ import { MAINNET } from "../types/Network";
 const addressExistsMock = jest.mocked(addressExists);
 const getFingerPrintMock = jest.mocked(getFingerPrint);
 
+const testPublicKeys = [
+  {
+    pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
+    pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+  },
+  {
+    pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
+    pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
+  },
+  {
+    pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
+    pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+  },
+];
+
 beforeEach(() => {
   getFingerPrintMock.mockResolvedValue("mockFingerPrint");
 });
 
+const fakeAddressExists = (revealedKeyPairs: { pkh: string }[]) => {
+  return async (pkh: string, network: Network) => {
+    return revealedKeyPairs.map(keyPair => keyPair.pkh).includes(pkh);
+  };
+};
+
 describe("restoreAccounts", () => {
   it("should restore existing accounts", async () => {
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(false);
+    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys));
+
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
       defaultDerivationPathPattern,
       MAINNET
     );
-    const expected = [
-      {
-        pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
-        pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-      },
-      {
-        pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
-        pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6",
-      },
-      {
-        pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
-        pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-      },
-    ];
-    expect(result).toEqual(expected);
+
+    expect(result).toEqual(testPublicKeys);
   });
 
   it("should restore first account if none exists", async () => {
-    addressExistsMock.mockResolvedValueOnce(false);
+    addressExistsMock.mockImplementation(fakeAddressExists([]));
+
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
       defaultDerivationPathPattern,
       MAINNET
     );
-    const expected = [
-      {
-        pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
-        pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
-      },
-    ];
 
-    expect(result).toEqual(expected);
+    expect(result).toEqual(testPublicKeys.slice(0, 1));
   });
 });
 
 describe("restoreEncryptedAccounts", () => {
   it("should restore existing accounts with a default curve and label", async () => {
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(false);
-    const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET);
     const expected: ImplicitAccount[] = [
       {
         curve: "ed25519",
@@ -101,12 +98,18 @@ describe("restoreEncryptedAccounts", () => {
         derivationPathPattern: "44'/1729'/?'/0'",
       },
     ];
+    addressExistsMock.mockImplementation(
+      fakeAddressExists(expected.map(account => account.address))
+    );
+
+    const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET);
+
     expect(result).toEqual(expected);
   });
 
   it("should restore existing accounts with a provided label", async () => {
     const CUSTOM_LABEL = "myLabel";
-    addressExistsMock.mockResolvedValueOnce(false);
+    addressExistsMock.mockImplementation(fakeAddressExists([]));
     const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, CUSTOM_LABEL);
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
@@ -115,9 +118,7 @@ describe("restoreEncryptedAccounts", () => {
     ];
     expect(result).toEqual(expected);
 
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(false);
+    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 2)));
     const result2 = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, CUSTOM_LABEL);
     const expected2: ImplicitAccount[] = [
       expect.objectContaining({
@@ -131,9 +132,7 @@ describe("restoreEncryptedAccounts", () => {
   });
 
   it("should restore existing accounts with a custom derivation path", async () => {
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(false);
+    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 2)));
     const result = await restoreRevealedMnemonicAccounts(
       mnemonic1,
       MAINNET,
@@ -155,9 +154,7 @@ describe("restoreEncryptedAccounts", () => {
   });
 
   it("should throw if provided with an invalid derivation pattern", async () => {
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(true);
-    addressExistsMock.mockResolvedValueOnce(false);
+    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 2)));
     const result = restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, undefined, "44'/foo'/?'/8'");
 
     await expect(result).rejects.toThrowError("Invalid derivation pattern: 44'/foo'/?'/8'");
