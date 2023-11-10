@@ -7,9 +7,10 @@ export type TokenTransfer = tzktApi.TokenTransfer & {
   amount: string;
   token: RawTokenInfo;
   to: TzktAlias;
+  level: number;
   migrationId?: number;
   originationId?: number;
-  transactionId: number;
+  transactionId?: number;
 };
 
 export type TezTransfer = tzktApi.TransactionOperation;

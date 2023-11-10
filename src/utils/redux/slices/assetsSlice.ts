@@ -67,7 +67,8 @@ const assetsSlice = createSlice({
     // but it doesn't have to be stored in localStorage (check how it works if the app is closed and opened again)
     updateTokenTransfers: (state, { payload: transfers }: { payload: TokenTransfer[] }) => {
       transfers.forEach(transfer => {
-        state.transfers.tokens[transfer.transactionId] = transfer;
+        // these token transfers are fetched by transaction id and it's definitely present
+        state.transfers.tokens[transfer.transactionId as number] = transfer;
       });
     },
 

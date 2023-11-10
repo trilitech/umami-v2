@@ -123,7 +123,7 @@ export const TokenTransferTile: React.FC<{
           </Flex>
           <Center>
             <OperationTypeWrapper>Token Transfer</OperationTypeWrapper>
-            <OperationStatus level={tokenTransfer.level as number} />
+            <OperationStatus level={tokenTransfer.level} />
           </Center>
         </Flex>
       </Box>

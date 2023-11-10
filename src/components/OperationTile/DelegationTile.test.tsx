@@ -42,7 +42,7 @@ describe("<DelegationTile />", () => {
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
-            `${network.tzktExplorerUrl}/transactions/56789`
+            `${network.tzktExplorerUrl}/test-hash/1234`
           );
         });
       });

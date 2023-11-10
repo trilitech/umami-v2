@@ -30,7 +30,7 @@ describe("<ContractCallTile />", () => {
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
-            `${network.tzktExplorerUrl}/transactions/56789`
+            `${network.tzktExplorerUrl}/test-hash/1234`
           );
           expect(screen.getByTestId("title")).toHaveTextContent("Contract Call: test-entrypoint");
         });

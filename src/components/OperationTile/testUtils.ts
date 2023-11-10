@@ -66,6 +66,7 @@ export const tokenTransferFixture = (props: Partial<TokenTransfer>): TokenTransf
   amount: "500",
   transactionId: 56789,
   id: 278346,
+  level: 10,
   to: { address: mockImplicitAccount(1).address.pkh },
   token: uUSD(mockLedgerAccount(0).address).token,
   ...props,

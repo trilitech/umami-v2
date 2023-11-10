@@ -21,7 +21,7 @@ export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ o
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <BakerIcon stroke={colors.gray[450]} mr="8px" />
-          <TzktLink data-testid="title" transactionId={operation.id} mr="8px">
+          <TzktLink data-testid="title" hash={operation.hash} counter={operation.counter} mr="8px">
             <Heading size="md">{operationType}</Heading>
           </TzktLink>
           <Fee operation={operation} />
