@@ -44,16 +44,16 @@ export const deriveSecretKey = (mnemonic: string, derivationPath: string, curve:
  *
  * Checks matching public key pairs starting from index = 0.
  * If a key pair was revealed, it will be added to response and the next index will be checked.
- * 
- * Once an index for unrevealed key pair is found, the process stops, 
+ *
+ * Once an index for unrevealed key pair is found, the process stops,
  * even though there might be more revealed accounts with bigger indexes.
  *
  * At least one {@link PublicKeyPair} will be added in any case.
  * If no accounts were revealed, account with the smallest derivation path (index = 0) will be added.
- * 
+ *
  * @param mnemonic -
  * @param derivationPathPattern - Path pattern for searching for the key pairs.
- * @param curve - 
+ * @param curve -
  * @returns List of <@link PublicKeyPair> that were revealed.
  */
 export const restoreRevealedPublicKeyPairs = async (
