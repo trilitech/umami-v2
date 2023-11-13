@@ -88,7 +88,22 @@ describe("<RestoreMnemonic />", () => {
       });
     });
 
-    it("enabls button when filled", async () => {
+    it("enables button when filled", async () => {
+      render(fixture(goToStepMock));
+      const confirmBtn = screen.getByRole("button", { name: /continue/i });
+      const splitted = mnemonic1.split(" ");
+
+      const inputFields = screen.getAllByRole("textbox");
+      inputFields.forEach((input, index) => {
+        fireEvent.change(input, { target: { value: splitted[index] } });
+      });
+
+      await waitFor(() => {
+        expect(confirmBtn).toBeEnabled();
+      });
+    });
+
+    it("goes to the 'Name Account' step after clicking confirmation btn", async () => {
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const splitted = mnemonic1.split(" ");
@@ -100,15 +115,15 @@ describe("<RestoreMnemonic />", () => {
       await waitFor(() => {
         expect(confirmBtn).toBeEnabled();
       });
+
       fireEvent.click(confirmBtn);
       await waitFor(() => {
         expect(goToStepMock).toBeCalledTimes(1);
       });
       expect(goToStepMock).toBeCalledWith({
-        type: StepType.derivationPath,
+        type: StepType.nameAccount,
         account: {
           type: "mnemonic",
-          label: "Restored account",
           mnemonic: mnemonic1,
         },
       });
