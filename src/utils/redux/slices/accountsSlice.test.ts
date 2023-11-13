@@ -193,7 +193,7 @@ describe("Accounts reducer", () => {
       await store
         .dispatch(
           restoreFromMnemonic({
-            seedPhrase: mnemonic1,
+            mnemonic: mnemonic1,
             password: "cool",
             label: mockLabel,
           })

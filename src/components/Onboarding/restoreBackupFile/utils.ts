@@ -32,7 +32,7 @@ export const restoreV2BackupFile = async (
 ) => {
   const accountsInString: string = backup["persist:accounts"];
   if (!accountsInString) {
-    throw new Error("Invalid backup file");
+    throw new Error("Invalid backup file.");
   }
 
   const accounts: { seedPhrases: string } = JSON.parse(accountsInString);

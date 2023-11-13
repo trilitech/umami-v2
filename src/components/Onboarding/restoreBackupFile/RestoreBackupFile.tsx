@@ -1,6 +1,5 @@
 import {
   Input,
-  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -12,7 +11,6 @@ import ModalContentWrapper from "../ModalContentWrapper";
 import { FormProvider, useForm } from "react-hook-form";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import RotateIcon from "../../../assets/icons/Rotate";
-import colors from "../../../style/colors";
 import PasswordInput from "../../PasswordInput";
 import { restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
 
@@ -52,44 +50,42 @@ const RestoreBackupFile = () => {
 
   return (
     <ModalContentWrapper
-      icon={<RotateIcon stroke={colors.gray[450]} width="24px" height="24px" />}
+      icon={<RotateIcon />}
       title="Restore from Backup"
       subtitle="Select a JSON backup file and enter the password you used to encrypt it."
     >
-      <Box overflowX="hidden" p="4px" w="100%">
-        <FormProvider {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-            <ModalBody>
-              <FormControl isInvalid={!!errors.file}>
-                <FormLabel>Upload File</FormLabel>
-                <Flex>
-                  <Input
-                    p="2px"
-                    {...register("file", { required: "File is required" })}
-                    accept=".json"
-                    type="file"
-                    variant="unstyled"
-                  />
-                </Flex>
-                {errors.file && (
-                  <FormErrorMessage data-testid="file">{errors.file.message}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl isInvalid={!!errors.password} mt="24px">
-                <PasswordInput inputName="password" label="Your password" />
-                {errors.password && (
-                  <FormErrorMessage data-testid="password">
-                    {errors.password.message}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-              <Button type="submit" w="100%" size="lg" isDisabled={!isValid} mt="32px">
-                Import Wallet
-              </Button>
-            </ModalBody>
-          </form>
-        </FormProvider>
-      </Box>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+          <ModalBody>
+            <FormControl isInvalid={!!errors.file}>
+              <FormLabel>Upload File</FormLabel>
+              <Flex>
+                <Input
+                  p="2px"
+                  {...register("file", { required: "File is required" })}
+                  accept=".json"
+                  type="file"
+                  variant="unstyled"
+                />
+              </Flex>
+              {errors.file && (
+                <FormErrorMessage data-testid="file">{errors.file.message}</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={!!errors.password} mt="24px">
+              <PasswordInput inputName="password" label="Your password" />
+              {errors.password && (
+                <FormErrorMessage data-testid="password">
+                  {errors.password.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <Button type="submit" w="100%" size="lg" isDisabled={!isValid} mt="32px">
+              Import Wallet
+            </Button>
+          </ModalBody>
+        </form>
+      </FormProvider>
     </ModalContentWrapper>
   );
 };
