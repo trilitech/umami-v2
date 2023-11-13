@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import colors from "../../../style/colors";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
-import { tokenNameSafe, tokenPrettyAmount, tokenSymbolSafe } from "../../../types/Token";
+import { tokenNameSafe, tokenPrettyAmount } from "../../../types/Token";
 import NoItems from "../../NoItems";
 import TokenIcon from "../../../assets/icons/Token";
 
