@@ -66,9 +66,11 @@ describe("<NameAccount />", () => {
   });
 
   test(`Use first available default label for ledger`, async () => {
-    // Add accounts with default names "Ledger Account 1", "Ledger Account 2" & "Ledger Account 4".
+    // Add existing "Ledger Account 1".
     store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+    // Add existing "Ledger Account 2".
     store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
+    // Add existing "Ledger Account 4".
     store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(3)));
 
     const account = { type: "ledger" as const };
