@@ -98,7 +98,7 @@ describe("<ContractCallTile />", () => {
         )
       );
 
-      expect(screen.getByTestId("from")).toHaveTextContent("Account 0 ledger");
+      expect(screen.getByTestId("from")).toHaveTextContent("Ledger Account 1");
       expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockContractAddress(0).pkh));
     });
   });

@@ -24,7 +24,7 @@ describe("<AccountTile />", () => {
       store.dispatch(accountsSlice.actions.addAccount(ledgerAccount));
       render(<AccountTile address={ledgerAccount.address.pkh} balance="3" />);
       expect(screen.getByTestId("ledger-icon")).toBeInTheDocument();
-      expect(screen.getByText("Account 0 ledger")).toBeTruthy();
+      expect(screen.getByText("Ledger Account 1")).toBeTruthy();
     });
 
     it("social account", () => {

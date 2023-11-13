@@ -94,7 +94,27 @@ export const mockImplicitAddress = (index: number): ImplicitAddress => {
   return { type: "implicit", pkh: validMockPkhs[index] };
 };
 
-export const mockAccountLabel = (index: number) => `Account ${index}`;
+/**
+ * Generates default account label for a given account type & index.
+ *
+ * Generated account name matches the pattern for default account labels.
+ * Default account labels are applied when no user label was set.
+ *
+ * @returns A string with the generated account label.
+ */
+export const mockAccountLabel = (
+  accountType: ImplicitAccount["type"],
+  accountIndex: number
+): string => {
+  switch (accountType) {
+    case AccountType.MNEMONIC:
+      return `Account ${accountIndex}`;
+    case AccountType.SOCIAL:
+      return `google Account ${accountIndex}`;
+    case AccountType.LEDGER:
+      return `Ledger Account ${accountIndex + 1}`;
+  }
+};
 
 export const mockPk = (index: number) =>
   `edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H${index}`;
@@ -120,7 +140,7 @@ export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): M
     derivationPath: getDefaultDerivationPath(index),
     derivationPathPattern: "44'/1729'/?'/0'",
     type: AccountType.MNEMONIC,
-    label: mockAccountLabel(index),
+    label: mockAccountLabel(AccountType.MNEMONIC, index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
     seedFingerPrint: `${fingerPrint}`,
@@ -131,7 +151,7 @@ export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): M
 export const mockSocialAccount = (index: number) => {
   const account: SocialAccount = {
     type: AccountType.SOCIAL,
-    label: "google " + mockAccountLabel(index),
+    label: mockAccountLabel(AccountType.SOCIAL, index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
     idp: "google",
@@ -144,7 +164,7 @@ export const mockLedgerAccount = (index: number) => {
     type: AccountType.LEDGER,
     derivationPath: getDefaultDerivationPath(index),
     curve: "ed25519",
-    label: mockAccountLabel(index) + " ledger",
+    label: mockAccountLabel(AccountType.LEDGER, index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
   };

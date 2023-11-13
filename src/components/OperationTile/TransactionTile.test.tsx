@@ -170,7 +170,7 @@ describe("<TransactionTile />", () => {
           )
         );
 
-        expect(screen.getByTestId("from")).toHaveTextContent("Account 0 ledger");
+        expect(screen.getByTestId("from")).toHaveTextContent("Ledger Account 1");
         expect(screen.getByTestId("to")).toHaveTextContent(
           formatPkh(mockLedgerAccount(1).address.pkh)
         );
@@ -191,7 +191,7 @@ describe("<TransactionTile />", () => {
         expect(screen.getByTestId("from")).toHaveTextContent(
           formatPkh(mockLedgerAccount(1).address.pkh)
         );
-        expect(screen.getByTestId("to")).toHaveTextContent("Account 0 ledger");
+        expect(screen.getByTestId("to")).toHaveTextContent("Ledger Account 1");
       });
 
       it("shows both if sender and target are owned accounts", () => {
@@ -206,8 +206,8 @@ describe("<TransactionTile />", () => {
           )
         );
 
-        expect(screen.getByTestId("from")).toHaveTextContent("Account 0 ledger");
-        expect(screen.getByTestId("to")).toHaveTextContent("Account 0 ledger");
+        expect(screen.getByTestId("from")).toHaveTextContent("Ledger Account 1");
+        expect(screen.getByTestId("to")).toHaveTextContent("Ledger Account 1");
       });
     });
   });
