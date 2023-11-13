@@ -30,7 +30,7 @@ export const estimate = async (
 };
 
 // Converts a known L1 error message to a more user-friendly one
-const handleTezError = (err: any): string | any => {
+export const handleTezError = (err: any): any => {
   let message = "";
 
   if (err.message.includes("subtraction_underflow")) {
