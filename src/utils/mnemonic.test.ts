@@ -1,5 +1,5 @@
 import { mnemonic1 } from "../mocks/mockMnemonic";
-import { ImplicitAccount, AccountType } from "../types/Account";
+import { ImplicitAccount } from "../types/Account";
 import { restoreRevealedMnemonicAccounts, restoreRevealedPublicKeyPairs } from "./mnemonic";
 import { addressExists, getFingerPrint } from "./tezos";
 
@@ -79,7 +79,7 @@ describe("restoreEncryptedAccounts", () => {
       {
         curve: "ed25519",
         derivationPath: getDefaultDerivationPath(0),
-        type: AccountType.MNEMONIC,
+        type: "mnemonic",
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
         address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         seedFingerPrint: "mockFingerPrint",
@@ -89,7 +89,7 @@ describe("restoreEncryptedAccounts", () => {
       {
         curve: "ed25519",
         derivationPath: getDefaultDerivationPath(1),
-        type: AccountType.MNEMONIC,
+        type: "mnemonic",
         pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
         address: { type: "implicit", pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6" },
         seedFingerPrint: "mockFingerPrint",
@@ -99,7 +99,7 @@ describe("restoreEncryptedAccounts", () => {
       {
         curve: "ed25519",
         derivationPath: getDefaultDerivationPath(2),
-        type: AccountType.MNEMONIC,
+        type: "mnemonic",
         pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
         address: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         seedFingerPrint: "mockFingerPrint",

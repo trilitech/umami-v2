@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Account, AccountType } from "../../types/Account";
+import { Account } from "../../types/Account";
 import RenameRemoveMenu from "../RenameRemoveMenu";
 import { DynamicModalContext } from "../DynamicModal";
 import { RenameAccountModal } from "./RenameAccountModal";
@@ -13,8 +13,8 @@ const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   switch (account.type) {
-    case AccountType.MNEMONIC:
-    case AccountType.MULTISIG:
+    case "mnemonic":
+    case "multisig":
       return (
         <RenameRemoveMenu
           onRename={() => {
@@ -22,8 +22,8 @@ const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => 
           }}
         />
       );
-    case AccountType.LEDGER:
-    case AccountType.SOCIAL:
+    case "ledger":
+    case "social":
       return (
         <RenameRemoveMenu
           onRename={() => {

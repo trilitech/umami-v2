@@ -1,4 +1,4 @@
-import { Account, AccountType, ImplicitAccount, MultisigAccount } from "./Account";
+import { Account, ImplicitAccount, MultisigAccount } from "./Account";
 import { Operation } from "./Operation";
 
 export type ProposalOperations = {
@@ -23,9 +23,9 @@ export const makeAccountOperations = (
   operations: Operation[]
 ): AccountOperations => {
   switch (sender.type) {
-    case AccountType.LEDGER:
-    case AccountType.MNEMONIC:
-    case AccountType.SOCIAL:
+    case "ledger":
+    case "mnemonic":
+    case "social":
       if (sender.address.pkh !== signer.address.pkh) {
         throw new Error("Sender and Signer must be the same");
       }
@@ -36,7 +36,7 @@ export const makeAccountOperations = (
         sender,
       };
 
-    case AccountType.MULTISIG:
+    case "multisig":
       return {
         type: "proposal",
         operations,

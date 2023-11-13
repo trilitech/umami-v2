@@ -14,7 +14,7 @@ import KeyIcon from "../../assets/icons/Key";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import NestedScroll from "../../components/NestedScroll";
 import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
-import { AccountType, Account } from "../../types/Account";
+import { Account } from "../../types/Account";
 import {
   useAllAccounts,
   useRemoveMnemonic,
@@ -54,8 +54,8 @@ const AccountGroup: React.FC<{
   selected: string | null;
 }> = ({ groupLabel, accounts, balances, onSelect, selected }) => {
   const first = accounts[0];
-  const isMultisig = first.type === AccountType.MULTISIG;
-  const isMnemonic = first.type === AccountType.MNEMONIC;
+  const isMultisig = first.type === "multisig";
+  const isMnemonic = first.type === "mnemonic";
   const { openWith, onClose } = useContext(DynamicModalContext);
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
@@ -118,13 +118,13 @@ const AccountGroup: React.FC<{
 
 const getLabel = (account: Account) => {
   switch (account.type) {
-    case AccountType.MNEMONIC:
+    case "mnemonic":
       return `Seedphrase ${account.seedFingerPrint}`;
-    case AccountType.SOCIAL:
+    case "social":
       return "Social Accounts";
-    case AccountType.LEDGER:
+    case "ledger":
       return "Ledger Accounts";
-    case AccountType.MULTISIG:
+    case "multisig":
       return "Multisig Accounts";
   }
 };

@@ -3,7 +3,7 @@ import { TezosToolkit } from "@taquito/taquito";
 import React, { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { GoogleAuthProps, useGetGoogleCredentials } from "../../GoogleAuth";
-import { ImplicitAccount, AccountType, MnemonicAccount, LedgerAccount } from "../../types/Account";
+import { ImplicitAccount, MnemonicAccount, LedgerAccount } from "../../types/Account";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { makeToolkit } from "../../utils/tezos";
@@ -82,7 +82,7 @@ const SignButton: React.FC<{
 
   return (
     <Box width="100%">
-      {signer.type === AccountType.MNEMONIC && (
+      {signer.type === "mnemonic" && (
         <FormProvider {...form}>
           <FormControl isInvalid={!!errors.password} my={4}>
             <PasswordInput inputName="password" data-testid="password" />
@@ -101,12 +101,12 @@ const SignButton: React.FC<{
           </Button>
         </FormProvider>
       )}
-      {signer.type === AccountType.SOCIAL && (
+      {signer.type === "social" && (
         <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={buttonIsDisabled}>
           {text || "Sign with Google"}
         </SignWithGoogleButton>
       )}
-      {signer.type === AccountType.LEDGER && (
+      {signer.type === "ledger" && (
         <Button
           onClick={onLedgerSign}
           width="100%"

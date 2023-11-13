@@ -13,7 +13,7 @@ import { AccountsList } from "./AccountsList";
 import { mockPk } from "../../mocks/factories";
 import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
-import { AccountType, MnemonicAccount } from "../../types/Account";
+import { MnemonicAccount } from "../../types/Account";
 import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
@@ -44,7 +44,7 @@ describe("<AccountList />", () => {
       const { getByTestId } = within(result);
       const identifiers = getByTestId("account-identifier");
 
-      expect(identifiers).toHaveTextContent(mockAccountLabel(AccountType.MNEMONIC, i));
+      expect(identifiers).toHaveTextContent(mockAccountLabel("mnemonic", i));
       expect(identifiers).toHaveTextContent(formatPkh(mockImplicitAddress(i).pkh));
     });
   });
@@ -198,7 +198,7 @@ const restore = async () => {
 
   store.dispatch(
     addAccount({
-      type: AccountType.SOCIAL,
+      type: "social",
       idp: "google",
       address: mockImplicitAddress(6),
       pk: mockPk(6),
@@ -208,7 +208,7 @@ const restore = async () => {
 
   store.dispatch(
     addAccount({
-      type: AccountType.SOCIAL,
+      type: "social",
       idp: "google",
       address: mockImplicitAddress(7),
       pk: mockPk(7),

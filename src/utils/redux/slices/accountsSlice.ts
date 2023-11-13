@@ -51,7 +51,7 @@ const accountsSlice = createSlice({
     ) => {
       const { fingerPrint } = payload;
       const newAccounts = state.items.filter(
-        a => !(a.type === AccountType.MNEMONIC && a.seedFingerPrint === fingerPrint)
+        a => !(a.type === "mnemonic" && a.seedFingerPrint === fingerPrint)
       );
       state.items = newAccounts;
       delete state.seedPhrases[fingerPrint];
@@ -61,7 +61,7 @@ const accountsSlice = createSlice({
       { payload }: { type: string; payload: { accountType: AccountType } }
     ) => {
       state.items = remove(state.items, account => {
-        return account.type === AccountType.MNEMONIC || account.type !== payload.accountType;
+        return account.type === "mnemonic" || account.type !== payload.accountType;
       });
     },
     removeAccount: (

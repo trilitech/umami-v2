@@ -1,5 +1,4 @@
 import { multisigOperation, multisigs } from "../../../mocks/multisig";
-import { AccountType } from "../../../types/Account";
 import store from "../store";
 import { multisigActions } from "./multisigsSlice";
 import { mockContractAddress, mockMultisigAccount } from "../../../mocks/factories";
@@ -19,7 +18,7 @@ describe("Multisig reducer", () => {
         items: multisigs.map((m, i) => ({
           ...m,
           label: `Multisig Account ${i}`,
-          type: AccountType.MULTISIG,
+          type: "multisig",
         })),
         pendingOperations: {},
       });
@@ -34,7 +33,7 @@ describe("Multisig reducer", () => {
         items: newMultisigs.map((m, i) => ({
           ...m,
           label: `Multisig Account ${i}`,
-          type: AccountType.MULTISIG,
+          type: "multisig",
         })),
         pendingOperations: {},
       });

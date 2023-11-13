@@ -1,4 +1,4 @@
-import { AccountType, MultisigAccount } from "../../types/Account";
+import { MultisigAccount } from "../../types/Account";
 import { compact, every } from "lodash";
 import { isValidImplicitPkh, parseContractPkh, parseImplicitPkh } from "../../types/Address";
 import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
@@ -66,7 +66,7 @@ export const getPendingOperationsForMultisigs = async (
 export const multisigToAccount = (multisig: Multisig, label: string): MultisigAccount => {
   return {
     label,
-    type: AccountType.MULTISIG,
+    type: "multisig",
     ...multisig,
   };
 };

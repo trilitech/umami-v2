@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fromPairs, groupBy } from "lodash";
 import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
-import { AccountType, MultisigAccount } from "../../../types/Account";
+import { MultisigAccount } from "../../../types/Account";
 
 export type State = {
   items: MultisigAccount[];
@@ -23,7 +23,7 @@ const multisigsSlice = createSlice({
       state.items = payload.map((multisig, i) => ({
         ...multisig,
         label: labelsByAddress[multisig.address.pkh] || `Multisig Account ${i}`,
-        type: AccountType.MULTISIG,
+        type: "multisig",
       }));
     },
     setPendingOperations: (state, { payload }: { payload: MultisigOperation[] }) => {

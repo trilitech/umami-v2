@@ -2,16 +2,9 @@ import { Curves } from "@taquito/signer";
 import { Multisig } from "../utils/multisig/types";
 import { ImplicitAddress } from "./Address";
 
-export enum AccountType {
-  SOCIAL = "social",
-  MNEMONIC = "mnemonic",
-  LEDGER = "ledger",
-  MULTISIG = "multisig",
-}
-
 export type SocialAccount = {
   label: string;
-  type: AccountType.SOCIAL;
+  type: "social";
   idp: "google";
   address: ImplicitAddress;
   pk: string;
@@ -22,7 +15,7 @@ export type MnemonicAccount = {
   curve: "ed25519";
   derivationPath: string;
   derivationPathPattern: string;
-  type: AccountType.MNEMONIC;
+  type: "mnemonic";
   seedFingerPrint: string;
   address: ImplicitAddress;
   pk: string;
@@ -32,16 +25,18 @@ export type LedgerAccount = {
   label: string;
   curve: Curves;
   derivationPath: string;
-  type: AccountType.LEDGER;
+  type: "ledger";
   address: ImplicitAddress;
   pk: string;
 };
 
 export type MultisigAccount = Multisig & {
-  type: AccountType.MULTISIG;
+  type: "multisig";
   label: string;
 };
 
 export type ImplicitAccount = MnemonicAccount | SocialAccount | LedgerAccount;
 
 export type Account = ImplicitAccount | MultisigAccount;
+
+export type AccountType = Account["type"];

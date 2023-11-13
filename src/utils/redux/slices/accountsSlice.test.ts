@@ -8,7 +8,7 @@ import { fakeExtraArguments } from "../../../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../../../mocks/helpers";
 import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { ImplicitAccount, AccountType, MnemonicAccount } from "../../../types/Account";
+import { ImplicitAccount, MnemonicAccount } from "../../../types/Account";
 
 import store from "../store";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
@@ -122,7 +122,7 @@ describe("Accounts reducer", () => {
     it("does nothing for mnemonic account", async () => {
       store.dispatch(
         accountsSlice.actions.removeNonMnemonicAccounts({
-          accountType: AccountType.MNEMONIC,
+          accountType: "mnemonic",
         })
       );
       expect(store.getState().accounts.items).toHaveLength(4);
@@ -131,7 +131,7 @@ describe("Accounts reducer", () => {
     it("should remove ledger account", async () => {
       store.dispatch(
         accountsSlice.actions.removeNonMnemonicAccounts({
-          accountType: AccountType.LEDGER,
+          accountType: "ledger",
         })
       );
       expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2]);
@@ -140,7 +140,7 @@ describe("Accounts reducer", () => {
     it("should remove multiple social accounts", async () => {
       store.dispatch(
         accountsSlice.actions.removeNonMnemonicAccounts({
-          accountType: AccountType.SOCIAL,
+          accountType: "social",
         })
       );
       expect(store.getState().accounts.items).toEqual([mnemonic, ledger]);
@@ -245,8 +245,8 @@ describe("Accounts reducer", () => {
         fakeRestoreFromMnemonic({
           seedFingerprint: "mockPrint1",
           accounts: [
-            mockImplicitAccount(0, AccountType.MNEMONIC, "mockPrint1"),
-            mockImplicitAccount(1, AccountType.MNEMONIC, "mockPrint1"),
+            mockImplicitAccount(0, "mnemonic", "mockPrint1"),
+            mockImplicitAccount(1, "mnemonic", "mockPrint1"),
           ] as MnemonicAccount[],
         })
       );

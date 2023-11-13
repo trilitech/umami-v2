@@ -78,7 +78,7 @@ export const useRestoreLedger = () => {
     const account: LedgerAccount = {
       derivationPath,
       curve: "ed25519",
-      type: AccountType.LEDGER,
+      type: "ledger",
       pk: pk,
       address: { type: "implicit", pkh },
       label,
@@ -91,7 +91,7 @@ export const useRestoreSocial = () => {
   const dispatch = useAppDispatch();
   return (pk: string, pkh: string, label: string) => {
     const account: SocialAccount = {
-      type: AccountType.SOCIAL,
+      type: "social",
       pk: pk,
       address: { type: "implicit", pkh },
       idp: "google",
@@ -177,11 +177,11 @@ export const useGetOwnedSignersForAccount = () => {
 
   return (account: Account) => {
     switch (account.type) {
-      case AccountType.LEDGER:
-      case AccountType.MNEMONIC:
-      case AccountType.SOCIAL:
+      case "ledger":
+      case "mnemonic":
+      case "social":
         return [account];
-      case AccountType.MULTISIG:
+      case "multisig":
         return getMultisigSigners(account);
     }
   };
