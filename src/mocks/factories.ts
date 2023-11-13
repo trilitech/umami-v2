@@ -140,7 +140,7 @@ export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): M
 export const mockSocialAccount = (index: number) => {
   const account: SocialAccount = {
     type: AccountType.SOCIAL,
-    label: mockAccountLabel(AccountType.MNEMONIC, index),
+    label: mockAccountLabel(AccountType.SOCIAL, index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
     idp: "google",
@@ -153,7 +153,7 @@ export const mockLedgerAccount = (index: number) => {
     type: AccountType.LEDGER,
     derivationPath: getDefaultDerivationPath(index),
     curve: "ed25519",
-    label: mockAccountLabel(AccountType.MNEMONIC, index),
+    label: mockAccountLabel(AccountType.LEDGER, index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
   };
