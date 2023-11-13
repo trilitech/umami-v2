@@ -95,12 +95,12 @@ export const mockImplicitAddress = (index: number): ImplicitAddress => {
 };
 
 /**
- * Generates default account name for a given account type & index.
+ * Generates default account label for a given account type & index.
  *
- * Generated an account name that matches the pattern for the default account names.
- * Default account names are applied when no user label was set.
+ * Generated account name matches the pattern for default account labels.
+ * Default account labels are applied when no user label was set.
  *
- * @returns A string with the generated account name.
+ * @returns A string with the generated account label.
  */
 export const mockAccountLabel = (
   accountType: ImplicitAccount["type"],
