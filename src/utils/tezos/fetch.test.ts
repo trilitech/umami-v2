@@ -3,14 +3,14 @@ import {
   getAccounts,
   getCombinedOperations,
   getDelegations,
-  getIncomingTokenTransfers,
   getLastDelegation,
   getOriginations,
   getTezosPriceInUSD,
   getTezTransfers,
   getTokenBalances,
-  getTokenTransfers,
+  getRelatedTokenTransfers,
   getTransactions,
+  getTokenTransfers,
 } from "./fetch";
 import {
   accountsGet,
@@ -94,8 +94,8 @@ describe("tezos utils fetch", () => {
       );
     });
 
-    test("getTokenTransfers", async () => {
-      await getTokenTransfers([1, 2, 3], network);
+    test("getRelatedTokenTransfers", async () => {
+      await getRelatedTokenTransfers([1, 2, 3], network);
       expect(tokensGetTokenTransfers).toBeCalledWith(
         {
           transactionId: { in: ["1,2,3"] },
@@ -182,7 +182,7 @@ describe("tezos utils fetch", () => {
           offset: { cr: 123 },
           limit: 100,
           anyof: {
-            fields: ["sender", "target"],
+            fields: ["sender", "target", "initiator"],
             in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
           },
           sort: { asc: "id" },
@@ -191,26 +191,22 @@ describe("tezos utils fetch", () => {
       );
     });
 
-    test("getIncomingTokenTransfers", async () => {
+    test("getTokenTransfers", async () => {
       jest.mocked(tokensGetTokenTransfers).mockResolvedValue([]);
-      await getIncomingTokenTransfers(
-        [mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh],
-        network,
-        {
-          sort: { asc: "id" },
-          limit: 100,
-          offset: { cr: 123 },
-        }
-      );
+      await getTokenTransfers([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network, {
+        sort: { asc: "id" },
+        limit: 100,
+        offset: { cr: 123 },
+      });
 
       expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
         {
           offset: { cr: 123 },
           limit: 100,
-          $from: {
-            ni: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
+          anyof: {
+            fields: ["from", "to"],
+            in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
           },
-          to: { in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"] },
           sort: { asc: "id" },
         },
         { baseUrl: network.tzktApiUrl }

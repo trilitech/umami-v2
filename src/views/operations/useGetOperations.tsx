@@ -3,7 +3,7 @@ import {
   TokenTransferOperation,
   TzktCombinedOperation,
   getCombinedOperations,
-  getTokenTransfers,
+  getRelatedTokenTransfers,
 } from "../../utils/tezos";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { RawPkh } from "../../types/Address";
@@ -13,7 +13,7 @@ import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { Network } from "../../types/Network";
 import { AppDispatch } from "../../utils/redux/store";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { uniqBy } from "lodash";
+import { max, min, uniqBy } from "lodash";
 
 const REFRESH_INTERVAL = 15000;
 
@@ -105,9 +105,22 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
     });
   };
 
-  return { operations, isFirstLoad, isLoading, hasMore, loadMore, setAddresses };
+  return {
+    operations: filterDuplicatedTokenTransfers(operations),
+    isFirstLoad,
+    isLoading,
+    hasMore,
+    loadMore,
+    setAddresses,
+  };
 };
 
+// there are two types of token transfers:
+//   - initiated by our accounts. we obtain those through outgoing transactions
+//   - initiated by other account. someone sent us a token or token contract owner decided to transfer someone's tokens to another account
+//
+// to get all of those we need to fetch transactions + their corresponding token transfers (by transaction id)
+// and merge it with all token transfers related to our accounts (by destination AND source)
 // TODO: Add tests
 export const fetchOperationsAndUpdateTokensInfo = async (
   dispatch: AppDispatch,
@@ -120,16 +133,66 @@ export const fetchOperationsAndUpdateTokensInfo = async (
   }
 ) => {
   const operations = await getCombinedOperations(addresses, network, options);
-  const operationIds = operations
-    .filter(operation => operation.type !== "token_transfer")
+
+  const transactionIds = operations
+    .filter(operation => operation.type === "transaction")
     .map(operation => operation.id);
-  const tokenTransfers = await getTokenTransfers(operationIds, network);
-  const externalTokenTransfers = operations.filter(
+
+  const tokenTransfersInitiatedByOwnedAccounts = await getRelatedTokenTransfers(
+    transactionIds,
+    network
+  );
+
+  const allTokenTransfersRelatedToOwnedAccounts = operations.filter(
     (operation): operation is TokenTransferOperation => operation.type === "token_transfer"
   );
 
-  const allTokenTransfers = [...tokenTransfers, ...externalTokenTransfers];
+  const allTokenTransfers = [
+    ...tokenTransfersInitiatedByOwnedAccounts,
+    ...allTokenTransfersRelatedToOwnedAccounts,
+  ];
+
   dispatch(assetsActions.updateTokenTransfers(allTokenTransfers));
   dispatch(tokensActions.addTokens({ network, tokens: allTokenTransfers.map(t => t.token) }));
   return operations;
+};
+
+// when we fetch token transfers related to our accounts we might fetch
+// the ones which are initiated by us and hence we get duplicates
+const LOOK_AHEAD = 10; // this should be enough to cover all the cases and not cause O(N^2) lookups
+export const filterDuplicatedTokenTransfers = (
+  operations: TzktCombinedOperation[]
+): TzktCombinedOperation[] => {
+  const result: TzktCombinedOperation[] = [];
+
+  for (let i = 0; i < operations.length; i++) {
+    const operation = operations[i];
+    if (operation.type !== "token_transfer") {
+      result.push(operation);
+      continue;
+    }
+
+    // if token transfer was initiated by a migration or origination then it won't have a duplicate record
+    if (operation.transactionId === undefined) {
+      result.push(operation);
+      continue;
+    }
+
+    let hasDuplicate = false;
+    for (
+      let j = max([i - LOOK_AHEAD, 0]) as number;
+      j < (min([i + LOOK_AHEAD, operations.length]) as number);
+      j++
+    ) {
+      if (operations[j].id === operation.transactionId) {
+        hasDuplicate = true;
+        break;
+      }
+    }
+    if (!hasDuplicate) {
+      result.push(operation);
+    }
+  }
+
+  return result;
 };

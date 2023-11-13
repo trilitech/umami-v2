@@ -146,7 +146,7 @@ export const getTransactions = async (
   withRateLimit(() =>
     operationsGetTransactions(
       {
-        anyof: { fields: ["sender", "target"], in: [addresses.join(",")] },
+        anyof: { fields: ["sender", "target", "initiator"], in: [addresses.join(",")] },
         ...options,
       },
       {
@@ -173,6 +173,9 @@ export const getOriginations = async (
     )
   ) as Promise<DelegationOperation[]>;
 
+// It returns all transactions, delegations, contract originations & token transfers for given addresses
+// You will get them interleaved and  sorted by ID and up to the specified limit (100 by default)
+// ID is a shared sequence among all operations in TzKT so it's safe to use it for sorting & pagination
 export const getCombinedOperations = async (
   addresses: RawPkh[],
   network: Network,
@@ -195,17 +198,17 @@ export const getCombinedOperations = async (
     getTransactions(addresses, network, tzktRequestOptions),
     getDelegations(addresses, network, tzktRequestOptions),
     getOriginations(addresses, network, tzktRequestOptions),
-    getIncomingTokenTransfers(addresses, network, tzktRequestOptions),
+    getTokenTransfers(addresses, network, tzktRequestOptions),
   ]);
 
-  // ID is a shared sequence among all operations in TzKT
-  // so it's safe to use it for sorting & pagination
   return sortBy(operations.flat(), operation =>
     sort === "asc" ? operation.id : -operation.id
   ).slice(0, limit) as TzktCombinedOperation[];
 };
 
-export const getTokenTransfers = async (transactionIds: number[], network: Network) => {
+// This function is used to make sure that if a transaction that we made
+// caused a token transfer then we definitely represent it as a token transfer
+export const getRelatedTokenTransfers = async (transactionIds: number[], network: Network) => {
   if (transactionIds.length === 0) {
     return [];
   }
@@ -219,7 +222,10 @@ export const getTokenTransfers = async (transactionIds: number[], network: Netwo
   ) as Promise<TokenTransfer[]>;
 };
 
-export const getIncomingTokenTransfers = async (
+// Some of token transfers are not associated with user's transactions directly.
+// For example, account A calls a function to transfer tokens from account B to account C.
+// account B holder won't see it in the transactions list, but token transfers will have this record
+export const getTokenTransfers = async (
   addresses: RawPkh[],
   network: Network,
   options: {
@@ -231,8 +237,10 @@ export const getIncomingTokenTransfers = async (
   withRateLimit(async () => {
     const tokenTransfers = await tokensGetTokenTransfers(
       {
-        to: { in: [addresses.join(",")] },
-        $from: { ni: [addresses.join(",")] },
+        anyof: {
+          fields: ["from", "to"],
+          in: [addresses.join(",")],
+        },
         ...options,
       },
       {
