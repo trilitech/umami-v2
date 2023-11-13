@@ -103,7 +103,7 @@ describe("<RestoreMnemonic />", () => {
       });
     });
 
-    it("goes to the 'Name Account' step after clicking confirmation btn", async () => {
+    it("goes to 'Name account' step after clicking confirmation btn", async () => {
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const splitted = mnemonic1.split(" ");
