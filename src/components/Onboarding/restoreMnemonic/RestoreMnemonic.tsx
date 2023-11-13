@@ -79,7 +79,7 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
       title="Import Seed Phrase"
       subtitle="Please fill in the Seed Phrase in sequence."
     >
-      <Box overflowX="hidden" p="4px" w="100%">
+      <Box overflowX="hidden">
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <VStack w="100%" spacing={4}>
             <Select

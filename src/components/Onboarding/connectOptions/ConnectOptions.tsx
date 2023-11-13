@@ -10,7 +10,14 @@ const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
         <Button w="100%" size="lg" onClick={_ => goToStep({ type: StepType.restoreMnemonic })}>
           Import with Seed Phrase
         </Button>
-        <Button variant="tertiary" w="100%" size="lg" isDisabled>
+        <Button
+          variant="tertiary"
+          w="100%"
+          size="lg"
+          onClick={_ => {
+            goToStep({ type: StepType.restoreBackup });
+          }}
+        >
           Restore from Backup
         </Button>
         <Button

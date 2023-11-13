@@ -14,7 +14,7 @@ export const restoreFromMnemonic = createAsyncThunk<
     accounts: MnemonicAccount[];
   },
   {
-    seedPhrase: string;
+    mnemonic: string;
     password: string;
     label?: string;
     derivationPathPattern?: string;
@@ -22,17 +22,16 @@ export const restoreFromMnemonic = createAsyncThunk<
   { dispatch: AppDispatch; state: RootState; extra: ExtraArgument }
 >(
   "accounts/restoreFromMnemonic",
-  //TODO: Rename seedPhrase to encryptedMnemonic
-  async ({ seedPhrase, password, label, derivationPathPattern }, thunkAPI) => {
+  async ({ mnemonic, password, label, derivationPathPattern }, thunkAPI) => {
     return {
-      seedFingerprint: await getFingerPrint(seedPhrase),
+      seedFingerprint: await getFingerPrint(mnemonic),
       accounts: await thunkAPI.extra.restoreRevealedMnemonicAccounts(
-        seedPhrase,
+        mnemonic,
         thunkAPI.getState().networks.current,
         label,
         derivationPathPattern
       ),
-      encryptedMnemonic: await thunkAPI.extra.encrypt(seedPhrase, password),
+      encryptedMnemonic: await thunkAPI.extra.encrypt(mnemonic, password),
     };
   }
 );
