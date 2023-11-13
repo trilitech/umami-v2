@@ -44,7 +44,7 @@ describe("<AccountList />", () => {
       const { getByTestId } = within(result);
       const identifiers = getByTestId("account-identifier");
 
-      expect(identifiers).toHaveTextContent(mockAccountLabel(i));
+      expect(identifiers).toHaveTextContent(mockAccountLabel(AccountType.MNEMONIC, i));
       expect(identifiers).toHaveTextContent(formatPkh(mockImplicitAddress(i).pkh));
     });
   });

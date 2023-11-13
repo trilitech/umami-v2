@@ -94,7 +94,16 @@ export const mockImplicitAddress = (index: number): ImplicitAddress => {
   return { type: "implicit", pkh: validMockPkhs[index] };
 };
 
-export const mockAccountLabel = (index: number) => `Account ${index}`;
+export const mockAccountLabel = (type: ImplicitAccount["type"], index: number): string => {
+  switch (type) {
+    case AccountType.MNEMONIC:
+      return `Account ${index}`;
+    case AccountType.SOCIAL:
+      return `google Account ${index}`;
+    case AccountType.LEDGER:
+      return `Ledger Account ${index + 1}`;
+  }
+};
 
 export const mockPk = (index: number) =>
   `edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H${index}`;
@@ -120,7 +129,7 @@ export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): M
     derivationPath: getDefaultDerivationPath(index),
     derivationPathPattern: "44'/1729'/?'/0'",
     type: AccountType.MNEMONIC,
-    label: mockAccountLabel(index),
+    label: mockAccountLabel(AccountType.MNEMONIC, index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
     seedFingerPrint: `${fingerPrint}`,
@@ -131,7 +140,7 @@ export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): M
 export const mockSocialAccount = (index: number) => {
   const account: SocialAccount = {
     type: AccountType.SOCIAL,
-    label: "google " + mockAccountLabel(index),
+    label: mockAccountLabel(AccountType.MNEMONIC, index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
     idp: "google",
@@ -144,7 +153,7 @@ export const mockLedgerAccount = (index: number) => {
     type: AccountType.LEDGER,
     derivationPath: getDefaultDerivationPath(index),
     curve: "ed25519",
-    label: mockAccountLabel(index) + " ledger",
+    label: mockAccountLabel(AccountType.MNEMONIC, index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
   };
