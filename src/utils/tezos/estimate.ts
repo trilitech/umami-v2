@@ -1,6 +1,6 @@
 import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
-import { makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
+import { addressExists, makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
 import BigNumber from "bignumber.js";
 
 export const estimate = async (
@@ -20,6 +20,11 @@ export const estimate = async (
       )
     );
   } catch (err: any) {
+    const isRevealed = await addressExists(operations.signer.address.pkh, network);
+
+    if (!isRevealed) {
+      throw new Error(`Signer address is not revealed on the ${network.name}.`);
+    }
     throw new Error(handleTezError(err));
   }
 };
