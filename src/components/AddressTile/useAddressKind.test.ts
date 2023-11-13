@@ -44,7 +44,7 @@ describe("useAddressKind", () => {
     });
   });
 
-  it("returns ledter account", () => {
+  it("returns ledger account", () => {
     const account = mockLedgerAccount(0);
     store.dispatch(accountsSlice.actions.addAccount(account));
     const { result: addressKindRef } = renderHook(() => useAddressKind(account.address), {
@@ -53,7 +53,7 @@ describe("useAddressKind", () => {
     expect(addressKindRef.current).toEqual({
       type: "ledger",
       pkh: account.address.pkh,
-      label: "Account 0 ledger",
+      label: "Ledger Account 1",
     });
   });
 
