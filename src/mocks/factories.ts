@@ -94,14 +94,25 @@ export const mockImplicitAddress = (index: number): ImplicitAddress => {
   return { type: "implicit", pkh: validMockPkhs[index] };
 };
 
-export const mockAccountLabel = (type: ImplicitAccount["type"], index: number): string => {
-  switch (type) {
+/**
+ * Generates default account name for a given account type & index.
+ *
+ * Generated an account name that matches the pattern for the default account names.
+ * Default account names are applied when no user label was set.
+ *
+ * @returns A string with the generated account name.
+ */
+export const mockAccountLabel = (
+  accountType: ImplicitAccount["type"],
+  accountIndex: number
+): string => {
+  switch (accountType) {
     case AccountType.MNEMONIC:
-      return `Account ${index}`;
+      return `Account ${accountIndex}`;
     case AccountType.SOCIAL:
-      return `google Account ${index}`;
+      return `google Account ${accountIndex}`;
     case AccountType.LEDGER:
-      return `Ledger Account ${index + 1}`;
+      return `Ledger Account ${accountIndex + 1}`;
   }
 };
 
