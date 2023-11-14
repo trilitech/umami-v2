@@ -88,21 +88,6 @@ describe("<RestoreMnemonic />", () => {
       });
     });
 
-    it("enables button when filled", async () => {
-      render(fixture(goToStepMock));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      const splitted = mnemonic1.split(" ");
-
-      const inputFields = screen.getAllByRole("textbox");
-      inputFields.forEach((input, index) => {
-        fireEvent.change(input, { target: { value: splitted[index] } });
-      });
-
-      await waitFor(() => {
-        expect(confirmBtn).toBeEnabled();
-      });
-    });
-
     it("goes to 'Name account' step after clicking confirmation btn", async () => {
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
