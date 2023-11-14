@@ -168,28 +168,24 @@ describe("<AccountCard />", () => {
       const { getByTestId } = within(tokenTiles[0]);
       expect(getByTestId("token-name")).toHaveTextContent("Hedgehoge");
       expect(getByTestId("token-balance")).toHaveTextContent("10,000.000000");
-      expect(getByTestId("token-symbol")).toHaveTextContent("HEH");
     }
 
     {
       const { getByTestId } = within(tokenTiles[1]);
       expect(getByTestId("token-name")).toHaveTextContent("tzBTC");
       expect(getByTestId("token-balance")).toHaveTextContent("0.00002205");
-      expect(getByTestId("token-symbol")).toHaveTextContent("tzBTC");
     }
 
     {
       const { getByTestId } = within(tokenTiles[2]);
       expect(getByTestId("token-name")).toHaveTextContent("FA1.2 token");
       expect(getByTestId("token-balance")).toHaveTextContent("123");
-      expect(getByTestId("token-symbol")).toHaveTextContent("FA1.2");
     }
 
     {
       const { getByTestId } = within(tokenTiles[3]);
       expect(getByTestId("token-name")).toHaveTextContent("youves uUSD");
       expect(getByTestId("token-balance")).toHaveTextContent("0.01921875");
-      expect(getByTestId("token-symbol")).toHaveTextContent("uUSD");
     }
   });
 
