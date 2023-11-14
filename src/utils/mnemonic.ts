@@ -51,10 +51,9 @@ export const deriveSecretKey = (mnemonic: string, derivationPath: string, curve:
  * At least one {@link PublicKeyPair} will be added in any case.
  * If no accounts were revealed, account with the smallest derivation path (index = 0) will be added.
  *
- * @param mnemonic -
+ * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param derivationPathPattern - Path pattern for searching for the key pairs.
- * @param curve -
- * @returns List of <@link PublicKeyPair> that were revealed.
+ * @returns List of revealed <@link PublicKeyPair> associated with the given parameters.
  */
 export const restoreRevealedPublicKeyPairs = async (
   mnemonic: string,
@@ -87,11 +86,11 @@ export const restoreRevealedPublicKeyPairs = async (
  *
  * Check {@link restoreRevealedPublicKeyPairs} for logic of restoring revealed accounts.
  *
- * @param mnemonic -
- * @param network -
- * @param label - Account group name provided by the user.
+ * @param mnemonic - Space separated words making a BIP39 seed phrase.
+ * @param network - Stores Tezos network & tzk indexer settings.
+ * @param label - Account group prefix provided by the user.
  * @param derivationPathPattern - Path pattern for the account group that's being added.
- * @returns A list of restored mnemonic accounts that will be added.
+ * @returns A list of revealed mnemonic accounts that will be added.
  */
 export const restoreRevealedMnemonicAccounts = async (
   mnemonic: string,

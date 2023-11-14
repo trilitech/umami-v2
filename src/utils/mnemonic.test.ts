@@ -9,6 +9,7 @@ import {
   getDefaultDerivationPath,
 } from "./account/derivationPathUtils";
 import { MAINNET } from "../types/Network";
+import { RawPkh } from "../types/Address";
 
 const addressExistsMock = jest.mocked(addressExists);
 const getFingerPrintMock = jest.mocked(getFingerPrint);
@@ -32,11 +33,8 @@ beforeEach(() => {
   getFingerPrintMock.mockResolvedValue("mockFingerPrint");
 });
 
-const fakeAddressExists = (revealedKeyPairs: { pkh: string }[]) => {
-  return async (pkh: string, network: Network) => {
-    return revealedKeyPairs.map(keyPair => keyPair.pkh).includes(pkh);
-  };
-};
+const fakeAddressExists = (revealedKeyPairs: { pkh: RawPkh }[]) => async (pkh: RawPkh) =>
+  revealedKeyPairs.map(keyPair => keyPair.pkh).includes(pkh);
 
 describe("restoreAccounts", () => {
   it("should restore existing accounts", async () => {
