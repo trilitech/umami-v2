@@ -14,6 +14,7 @@ import accountsSlice from "../redux/slices/accountsSlice";
 import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
+import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
 
 const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
 
@@ -70,6 +71,19 @@ export const useRestoreFromMnemonic = () => {
       })
     ).unwrap();
   };
+};
+
+export const useRestoreFromSecretKey = () => {
+  const dispatch = useAppDispatch();
+
+  return (secretKey: string, password: string, label: string) =>
+    dispatch(
+      restoreFromSecretKey({
+        secretKey,
+        password,
+        label,
+      })
+    );
 };
 
 export const useRestoreLedger = () => {

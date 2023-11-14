@@ -2,6 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import {
   useCheckPasswordValidity,
   useRestoreFromMnemonic,
+  useRestoreFromSecretKey,
 } from "../../../utils/hooks/accountHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { MasterPasswordStep } from "../useOnboardingModal";
@@ -15,7 +16,8 @@ export const MasterPassword = ({
   account: MasterPasswordStep["account"];
   onClose: () => void;
 }) => {
-  const restoreSecret = useRestoreFromMnemonic();
+  const restoreFromMnemonic = useRestoreFromMnemonic();
+  const restoreFromSecretKey = useRestoreFromSecretKey();
   const checkPassword = useCheckPasswordValidity();
   const passwordHasBeenSet = checkPassword !== null;
 
@@ -26,7 +28,18 @@ export const MasterPassword = ({
       if (passwordHasBeenSet) {
         await checkPassword(password);
       }
-      await restoreSecret(account.mnemonic, password, account.label, account.derivationPath);
+      switch (account.type) {
+        case "secret_key":
+          await restoreFromSecretKey(account.secretKey, password, account.label);
+          break;
+        case "mnemonic":
+          await restoreFromMnemonic(
+            account.mnemonic,
+            password,
+            account.label,
+            account.derivationPath
+          );
+      }
       toast({ title: "Successful account restore", status: "success" });
       onClose();
     });

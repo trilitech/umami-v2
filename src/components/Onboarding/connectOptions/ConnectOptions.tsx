@@ -11,6 +11,14 @@ const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
           Import with Seed Phrase
         </Button>
         <Button
+          w="100%"
+          size="lg"
+          variant="tertiary"
+          onClick={_ => goToStep({ type: StepType.restoreSecretKey })}
+        >
+          Import with a Secret Key
+        </Button>
+        <Button
           variant="tertiary"
           w="100%"
           size="lg"

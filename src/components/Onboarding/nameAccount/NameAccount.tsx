@@ -17,7 +17,14 @@ export const NameAccount = ({
     } else {
       label = `Account ${accounts.length + 1}`;
     }
-    goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
+
+    switch (account.type) {
+      case "secret_key":
+        return goToStep({ type: StepType.masterPassword, account: { ...account, label: label } });
+      case "ledger":
+      case "mnemonic":
+        return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
+    }
   };
 
   return (

@@ -21,6 +21,7 @@ import { FakeAccount } from "./FakeAccount";
 import { ModalBackButton } from "../ModalBackButton";
 import RestoreMnemonic from "./restoreMnemonic/RestoreMnemonic";
 import RestoreBackupFile from "./restoreBackupFile/RestoreBackupFile";
+import { RestoreSecretKey } from "./restoreSecretKey/RestoreSecretKey";
 
 export enum StepType {
   eula = "eula",
@@ -28,6 +29,7 @@ export enum StepType {
   connectOptions = "connectOptions",
   notice = "notice",
   restoreMnemonic = "restoreMnemonic",
+  restoreSecretKey = "restoreSecretKey",
   restoreLedger = "restoreLedger",
   restoreBackup = "restoreBackup",
   showSeedphrase = "showSeedphrase",
@@ -47,13 +49,17 @@ export type ShowSeedphraseStep = {
   account: { type: "mnemonic"; mnemonic: string };
 };
 export type RestoreSeedphraseStep = { type: StepType.restoreMnemonic };
+export type RestoreSecretKeyStep = { type: StepType.restoreSecretKey };
 export type VerifySeedphraseStep = {
   type: StepType.verifySeedphrase;
   account: { type: "mnemonic"; mnemonic: string };
 };
 export type NameAccountStep = {
   type: StepType.nameAccount;
-  account: { type: "mnemonic"; mnemonic: string } | { type: "ledger" };
+  account:
+    | { type: "mnemonic"; mnemonic: string }
+    | { type: "ledger" }
+    | { type: "secret_key"; secretKey: string };
 };
 export type DerivationPathStep = {
   type: StepType.derivationPath;
@@ -70,7 +76,9 @@ export type RestoreBackup = {
 };
 export type MasterPasswordStep = {
   type: StepType.masterPassword;
-  account: { type: "mnemonic"; mnemonic: string; label: string; derivationPath: string };
+  account:
+    | { type: "mnemonic"; mnemonic: string; label: string; derivationPath: string }
+    | { type: "secret_key"; secretKey: string; label: string };
 };
 export type FakeAccountStep = { type: StepType.fakeAccount };
 
@@ -81,6 +89,7 @@ export type Step =
   | ConnectOptionsStep
   | ShowSeedphraseStep
   | RestoreSeedphraseStep
+  | RestoreSecretKeyStep
   | VerifySeedphraseStep
   | NameAccountStep
   | DerivationPathStep
@@ -133,6 +142,8 @@ export const useOnboardingModal = (onModalClose?: () => void) => {
         return <MasterPassword onClose={onClose} {...currentStep} />;
       case StepType.fakeAccount:
         return <FakeAccount onClose={onClose} />;
+      case StepType.restoreSecretKey:
+        return <RestoreSecretKey goToStep={goToStep} />;
     }
   };
 

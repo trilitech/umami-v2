@@ -196,11 +196,17 @@ export const getRealAmount = (token: Token, prettyAmount: string): string => {
 
 export const formatTokenAmount = (amount: string, decimals = DEFAULT_TOKEN_DECIMALS): string => {
   const realAmount = BigNumber(amount).dividedBy(BigNumber(10).pow(decimals));
-  const formatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: Number(decimals),
-    maximumFractionDigits: Number(decimals),
-  });
-  return formatter.format(realAmount.toNumber());
+  try {
+    const formatter = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: Number(decimals),
+      maximumFractionDigits: Number(decimals),
+    });
+    return formatter.format(realAmount.toNumber());
+  } catch (e) {
+    console.warn(`Can't format token amount with decimals = ${decimals}`);
+    // there are tokens with decimals > 1000 which is not supported by Intl.NumberFormat
+    return formatTokenAmount(amount, "0");
+  }
 };
 
 // TODO: rebuild, unusable (especially with NFTs)

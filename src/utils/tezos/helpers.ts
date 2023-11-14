@@ -61,6 +61,7 @@ export const makeSigner = async (config: SignerConfig) => {
   switch (config.type) {
     case "social":
     case "mnemonic":
+    case "secret_key":
       return new InMemorySigner(config.secretKey);
     case "ledger": {
       // Close existing connections to be able to reinitiate
