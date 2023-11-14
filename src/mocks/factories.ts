@@ -126,8 +126,11 @@ export const mockImplicitAccount = (
   fingerPrint = "mockPrint"
 ): ImplicitAccount => {
   switch (type) {
-    case "mnemonic":
-      return mockMnemonicAccount(index, fingerPrint);
+    case "mnemonic": {
+      const account = mockMnemonicAccount(index);
+      account["seedFingerPrint"] = fingerPrint;
+      return account;
+    }
     case "social":
       return mockSocialAccount(index);
     case "ledger":
@@ -137,41 +140,52 @@ export const mockImplicitAccount = (
   }
 };
 
-export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): MnemonicAccount => ({
-  curve: "ed25519",
-  derivationPath: getDefaultDerivationPath(index),
-  derivationPathPattern: "44'/1729'/?'/0'",
-  type: "mnemonic",
-  label: mockAccountLabel("mnemonic", index),
-  address: mockImplicitAddress(index),
-  pk: mockPk(index),
-  seedFingerPrint: fingerPrint,
-});
+export const mockMnemonicAccount = (index: number, label?: string): MnemonicAccount => {
+  const fingerPrint = "mockPrint";
+  const account: MnemonicAccount = {
+    curve: "ed25519",
+    derivationPath: getDefaultDerivationPath(index),
+    derivationPathPattern: "44'/1729'/?'/0'",
+    type: "mnemonic",
+    label: label || mockAccountLabel("mnemonic", index),
+    address: mockImplicitAddress(index),
+    pk: mockPk(index),
+    seedFingerPrint: `${fingerPrint}`,
+  };
+  return account;
+};
 
-export const mockSecretKeyAccount = (index: number): SecretKeyAccount => ({
+export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAccount => ({
   type: "secret_key",
-  label: mockAccountLabel("secret_key", index),
+  label: label || mockAccountLabel("secret_key", index),
   address: mockImplicitAddress(index),
   pk: mockPk(index),
 });
 
-export const mockSocialAccount = (index: number): SocialAccount => ({
-  type: "social",
-  label: mockAccountLabel("social", index),
-  address: mockImplicitAddress(index),
-  pk: mockPk(index),
-  idp: "google",
-});
+export const mockSocialAccount = (index: number, label?: string) => {
+  const account: SocialAccount = {
+    type: "social",
+    label: label || mockAccountLabel("social", index),
+    address: mockImplicitAddress(index),
+    pk: mockPk(index),
+    idp: "google",
+  };
+  return account;
+};
 
-export const mockLedgerAccount = (index: number): LedgerAccount => ({
-  type: "ledger",
-  derivationPath: getDefaultDerivationPath(index),
-  curve: "ed25519",
-  label: mockAccountLabel("ledger", index),
-  address: mockImplicitAddress(index),
-  pk: mockPk(index),
-});
+export const mockLedgerAccount = (index: number, label?: string) => {
+  const account: LedgerAccount = {
+    type: "ledger",
+    derivationPath: getDefaultDerivationPath(index),
+    curve: "ed25519",
+    label: label || mockAccountLabel("ledger", index),
+    address: mockImplicitAddress(index),
+    pk: mockPk(index),
+  };
+  return account;
+};
 
+// Use {@link} to set a label for a multisig account.
 export const mockMultisigAccount = (index: number): MultisigAccount => ({
   type: "multisig",
   address: mockContractAddress(index),

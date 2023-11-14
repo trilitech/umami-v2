@@ -19,9 +19,7 @@ export const NameAccount = ({
         return goToStep({ type: StepType.masterPassword, account: { ...account, label: label } });
       case "ledger":
         if (label.length === 0) {
-          const usedLedgerLabels = accounts
-            .filter(account => account.type === "ledger")
-            .map(account => account.label);
+          const usedLedgerLabels = accounts.map(account => account.label);
           label = firstUnusedIndexedLabel("Ledger Account", usedLedgerLabels);
         }
         break;
