@@ -11,6 +11,14 @@ const TEST_NETWORK = {
   tzktExplorerUrl: "http://unavailable",
   buyTezUrl: "",
 };
+export const MASTER_PASSWORD = "12345678";
+
+// it's created by default on flextesa
+export const AliceAccount = {
+  pk: "edpkvGfYw3LyB1UcCahKQk4rF2tvbMUk8GFiTuMjL75uGXrpvKXhjn",
+  pkh: "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb",
+  secretKey: "edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq",
+};
 
 export const cleanupState = () => {
   test.beforeEach(async ({ page }: { page: Page }) => {
@@ -33,8 +41,6 @@ export const cleanupState = () => {
     resetBlockchain();
   });
 };
-
-export const MASTER_PASSWORD = "12345678";
 
 export const loginAs = async (mnemonic: string, page: Page) => {
   await page.goto("/");
