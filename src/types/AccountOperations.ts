@@ -26,6 +26,7 @@ export const makeAccountOperations = (
     case "ledger":
     case "mnemonic":
     case "social":
+    case "secret_key":
       if (sender.address.pkh !== signer.address.pkh) {
         throw new Error("Sender and Signer must be the same");
       }

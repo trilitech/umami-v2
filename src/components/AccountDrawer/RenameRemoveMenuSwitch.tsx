@@ -7,45 +7,50 @@ import { ConfirmationModal } from "../ConfirmationModal";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import { useNavigate } from "react-router-dom";
+import { remove as removeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
 
 const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => {
   const { openWith, onClose: closeModal } = useContext(DynamicModalContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  let removeAccountAction: any = undefined;
+
   switch (account.type) {
-    case "mnemonic":
-    case "multisig":
-      return (
-        <RenameRemoveMenu
-          onRename={() => {
-            openWith(<RenameAccountModal account={account} />);
-          }}
-        />
-      );
+    case "secret_key":
+      removeAccountAction = removeSecretKeyAccount;
+      break;
     case "ledger":
     case "social":
-      return (
-        <RenameRemoveMenu
-          onRename={() => {
-            openWith(<RenameAccountModal account={account} />);
-          }}
-          onRemove={() => {
-            openWith(
-              <ConfirmationModal
-                title="Remove Account"
-                buttonLabel="Remove Account"
-                description="Are you sure you want to remove this account?"
-                onSubmit={() => {
-                  dispatch(accountsSlice.actions.removeAccount(account));
-                  closeModal();
-                  navigate("/");
-                }}
-              />
-            );
-          }}
-        />
-      );
+      removeAccountAction = accountsSlice.actions.removeAccount(account);
+      break;
+    case "mnemonic":
+    case "multisig":
   }
+
+  const onRemove = !removeAccountAction
+    ? undefined
+    : () => {
+        openWith(
+          <ConfirmationModal
+            title="Remove Account"
+            buttonLabel="Remove Account"
+            description="Are you sure you want to remove this account?"
+            onSubmit={() => {
+              dispatch(removeAccountAction(account));
+              closeModal();
+              navigate("/");
+            }}
+          />
+        );
+      };
+
+  return (
+    <RenameRemoveMenu
+      onRename={() => openWith(<RenameAccountModal account={account} />)}
+      onRemove={onRemove}
+    />
+  );
 };
 
 export default RenameRemoveMenuSwitch;

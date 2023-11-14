@@ -180,6 +180,7 @@ export const useGetOwnedSignersForAccount = () => {
       case "ledger":
       case "mnemonic":
       case "social":
+      case "secret_key":
         return [account];
       case "multisig":
         return getMultisigSigners(account);

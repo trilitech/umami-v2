@@ -124,6 +124,8 @@ const getLabel = (account: Account) => {
       return "Social Accounts";
     case "ledger":
       return "Ledger Accounts";
+    case "secret_key":
+      return "Secret Key Accounts";
     case "multisig":
       return "Multisig Accounts";
   }

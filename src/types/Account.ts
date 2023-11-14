@@ -30,12 +30,19 @@ export type LedgerAccount = {
   pk: string;
 };
 
+export type SecretKeyAccount = {
+  label: string;
+  type: "secret_key";
+  address: ImplicitAddress;
+  pk: string;
+};
+
 export type MultisigAccount = Multisig & {
   type: "multisig";
   label: string;
 };
 
-export type ImplicitAccount = MnemonicAccount | SocialAccount | LedgerAccount;
+export type ImplicitAccount = MnemonicAccount | SocialAccount | LedgerAccount | SecretKeyAccount;
 
 export type Account = ImplicitAccount | MultisigAccount;
 

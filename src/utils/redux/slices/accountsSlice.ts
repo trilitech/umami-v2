@@ -4,22 +4,26 @@ import {
   ImplicitAccount,
   LedgerAccount,
   MnemonicAccount,
+  SecretKeyAccount,
   SocialAccount,
 } from "../../../types/Account";
 import { EncryptedData } from "../../crypto/types";
 import changeMnemonicPassword from "../thunks/changeMnemonicPassword";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
 import { remove } from "lodash";
+import { RawPkh } from "../../../types/Address";
 
 export type State = {
   items: ImplicitAccount[];
   //TODO: Rename to encryptedMnemonics
   seedPhrases: Record<string, EncryptedData | undefined>;
+  secretKeys: Record<RawPkh, EncryptedData | undefined>;
 };
 
 const initialState: State = {
   items: [],
   seedPhrases: {},
+  secretKeys: {},
 };
 
 const accountsSlice = createSlice({
@@ -33,7 +37,7 @@ const accountsSlice = createSlice({
     builder.addCase(restoreFromMnemonic.fulfilled, (state, action) => {
       const { accounts, encryptedMnemonic, seedFingerprint } = action.payload;
       state.items = concatUnique(state.items, accounts);
-      // updated seedphrase after a successfull restoration.
+      // updated seedphrase after a successful restoration.
       state.seedPhrases[seedFingerprint] = encryptedMnemonic;
     });
 
@@ -66,7 +70,7 @@ const accountsSlice = createSlice({
     },
     removeAccount: (
       state,
-      { payload }: { type: string; payload: SocialAccount | LedgerAccount }
+      { payload }: { type: string; payload: SocialAccount | LedgerAccount | SecretKeyAccount }
     ) => {
       remove(state.items, account => {
         return account.address.pkh === payload.address.pkh;
@@ -94,12 +98,26 @@ const accountsSlice = createSlice({
       }
     },
     // To add mnemonic accounts, use the `restoreFromMnemonic` and `deriveAccount` thunk.
-    addAccount: (state, { payload }: { type: string; payload: SocialAccount | LedgerAccount }) => {
+    addAccount: (
+      state,
+      { payload }: { payload: SocialAccount | LedgerAccount | SecretKeyAccount }
+    ) => {
       state.items = concatUnique(state.items, [payload]);
     },
     // Use only for testing purpose
     addMockMnemonicAccounts: (state, { payload }: { type: string; payload: MnemonicAccount[] }) => {
       state.items = concatUnique(state.items, payload);
+    },
+    addSecretKey: (
+      state,
+      {
+        payload: { pkh, encryptedSecretKey },
+      }: { payload: { encryptedSecretKey: EncryptedData; pkh: RawPkh } }
+    ) => {
+      state.secretKeys[pkh] = encryptedSecretKey;
+    },
+    removeSecretKey: (state, { payload: account }: { payload: SecretKeyAccount }) => {
+      delete state.secretKeys[account.address.pkh];
     },
   },
 });

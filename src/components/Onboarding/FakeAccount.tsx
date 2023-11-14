@@ -25,7 +25,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   };
   return (
     <ModalContentWrapper icon={<WalletPlusIcon />} title="Add a Fake Account">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
         <Text>It will be restored as a ledger account</Text>
         <FormControl isInvalid={!!errors.pkh}>
           <FormLabel>Address</FormLabel>
