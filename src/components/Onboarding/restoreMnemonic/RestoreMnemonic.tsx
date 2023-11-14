@@ -65,8 +65,8 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
           throw new Error(`"${mnemonic}" is not a valid mnemonic`);
         }
         goToStep({
-          type: StepType.derivationPath,
-          account: { type: "mnemonic", mnemonic: mnemonic, label: "Restored account" },
+          type: StepType.nameAccount,
+          account: { type: "mnemonic", mnemonic: mnemonic },
         });
       },
       {
