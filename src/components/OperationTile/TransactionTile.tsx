@@ -29,7 +29,13 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
-          <TzktLink operation={operation} mr="8px" data-testid="title" color={titleColor}>
+          <TzktLink
+            hash={operation.hash}
+            counter={operation.counter}
+            mr="8px"
+            data-testid="title"
+            color={titleColor}
+          >
             <Text fontWeight="600" color={titleColor}>
               {sign} {amount}
             </Text>
@@ -62,7 +68,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
           </Flex>
           <Center>
             <OperationTypeWrapper>Transaction</OperationTypeWrapper>
-            <OperationStatus operation={operation} />
+            <OperationStatus {...operation} />
           </Center>
         </Flex>
       </Box>

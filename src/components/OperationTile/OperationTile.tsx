@@ -14,6 +14,14 @@ export const OperationTile: React.FC<{
   const getTokenTransfer = useGetTokenTransfer();
 
   switch (operation.type) {
+    case "token_transfer": {
+      const token = fromRaw(operation.token);
+      if (token) {
+        return <TokenTransferTile tokenTransfer={operation} token={token} />;
+      }
+      console.warn(`Could not parse token transfer ${operation.id}`);
+      return null;
+    }
     case "transaction": {
       const isContractCall = !!operation.parameter;
       const tokenTransfer = getTokenTransfer(operation.id);

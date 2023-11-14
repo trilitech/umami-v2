@@ -23,7 +23,7 @@ export const ContractCallTile: React.FC<{
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <ContractIcon mr="8px" />
-          <TzktLink operation={operation} data-testid="title" mr="8px">
+          <TzktLink hash={operation.hash} counter={operation.counter} data-testid="title" mr="8px">
             <Heading size="md">Contract Call: {operation.parameter?.entrypoint}</Heading>
           </TzktLink>
           <Fee operation={operation} />
@@ -54,7 +54,7 @@ export const ContractCallTile: React.FC<{
           </Flex>
           <Center>
             <OperationTypeWrapper>Contract Call</OperationTypeWrapper>
-            <OperationStatus operation={operation} />
+            <OperationStatus {...operation} />
           </Center>
         </Flex>
       </Box>

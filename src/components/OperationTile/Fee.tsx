@@ -1,6 +1,6 @@
 import { Center, Heading, Text } from "@chakra-ui/react";
 import colors from "../../style/colors";
-import { TzktCombinedOperation } from "../../utils/tezos";
+import { OriginationOperation, TransactionOperation, DelegationOperation } from "../../utils/tezos";
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { get } from "lodash";
@@ -11,7 +11,7 @@ import React, { useContext } from "react";
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];
 
 export const Fee: React.FC<{
-  operation: TzktCombinedOperation;
+  operation: TransactionOperation | DelegationOperation | OriginationOperation;
 }> = ({ operation }) => {
   const tileContext = useContext(OperationTileContext);
   const isOutgoing = useIsOwnedAddress(operation.sender.address);

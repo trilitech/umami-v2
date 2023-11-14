@@ -26,7 +26,7 @@ import {
   TzktCombinedOperation,
   getCombinedOperations,
   getLastDelegation,
-  getTokenTransfers,
+  getRelatedTokenTransfers,
 } from "../../utils/tezos";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { mockDelegation } from "../../mocks/factories";
@@ -87,7 +87,7 @@ beforeEach(() => {
     } as TzktCombinedOperation,
   ]);
 
-  jest.mocked(getTokenTransfers).mockResolvedValue([]);
+  jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
   jest.mocked(getLastDelegation).mockResolvedValue(undefined);
 });
