@@ -33,4 +33,12 @@ const importBackupFile = async (page: Page, backupFile: string, password: string
 
   await page.getByRole("button", { name: "Import Wallet" }).click();
   await page.waitForURL("/#/home");
+
+  await expect(page.getByTestId("account-group-Seedphrase 5fd091e1")).toBeVisible();
+  const accountTile1 = page.getByTestId("account-tile-tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3");
+  await expect(accountTile1).toBeVisible();
+  const accountTile2 = page.getByTestId("account-tile-tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6");
+  await expect(accountTile2).toBeVisible();
+  const accountTile3 = page.getByTestId("account-tile-tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS");
+  await expect(accountTile3).toBeVisible();
 };
