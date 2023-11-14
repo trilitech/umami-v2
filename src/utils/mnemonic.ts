@@ -5,7 +5,6 @@ import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { addressExists, getFingerPrint } from "./tezos";
 import { generateMnemonic } from "bip39";
 import { Network } from "../types/Network";
-import { is } from "date-fns/locale";
 
 // This is put in a separate file for mocking purposes in tests
 export const generate24WordMnemonic = () => {
