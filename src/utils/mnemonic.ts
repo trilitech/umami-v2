@@ -5,6 +5,7 @@ import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { addressExists, getFingerPrint } from "./tezos";
 import { generateMnemonic } from "bip39";
 import { Network } from "../types/Network";
+import { is } from "date-fns/locale";
 
 // This is put in a separate file for mocking purposes in tests
 export const generate24WordMnemonic = () => {
@@ -60,21 +61,20 @@ export const restoreRevealedPublicKeyPairs = async (
   derivationPathPattern: string,
   network: Network
 ): Promise<PublicKeyPair[]> => {
-  let result: PublicKeyPair[] = [];
-  let accountIndex = 0;
-  let pubKeyPair = await derivePublicKeyPair(
-    mnemonic,
-    makeDerivationPath(derivationPathPattern, accountIndex)
-  );
-
-  do {
-    result = [...result, pubKeyPair];
-    accountIndex += 1;
-    pubKeyPair = await derivePublicKeyPair(
+  const result: PublicKeyPair[] = [];
+  for (let accountIndex = 0; accountIndex++; ) {
+    const pubKeyPair = await derivePublicKeyPair(
       mnemonic,
       makeDerivationPath(derivationPathPattern, accountIndex)
     );
-  } while (await addressExists(pubKeyPair.pkh, network));
+    const addressRevealed = await addressExists(pubKeyPair.pkh, network);
+
+    if (accountIndex === 0 || addressRevealed) {
+      result.push(pubKeyPair);
+    } else {
+      break;
+    }
+  }
   return result;
 };
 
