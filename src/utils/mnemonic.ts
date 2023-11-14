@@ -61,19 +61,19 @@ export const restoreRevealedPublicKeyPairs = async (
   network: Network
 ): Promise<PublicKeyPair[]> => {
   const result: PublicKeyPair[] = [];
-  for (let accountIndex = 0; accountIndex++; ) {
-    const pubKeyPair = await derivePublicKeyPair(
+  let accountIndex = 0;
+  let pubKeyPair = await derivePublicKeyPair(
+    mnemonic,
+    makeDerivationPath(derivationPathPattern, accountIndex)
+  );
+  do {
+    result.push(pubKeyPair);
+    accountIndex += 1;
+    pubKeyPair = await derivePublicKeyPair(
       mnemonic,
       makeDerivationPath(derivationPathPattern, accountIndex)
     );
-    const addressRevealed = await addressExists(pubKeyPair.pkh, network);
-
-    if (accountIndex === 0 || addressRevealed) {
-      result.push(pubKeyPair);
-    } else {
-      break;
-    }
-  }
+  } while (await addressExists(pubKeyPair.pkh, network));
   return result;
 };
 
