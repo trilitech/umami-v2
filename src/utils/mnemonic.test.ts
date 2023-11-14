@@ -2,7 +2,6 @@ import { mnemonic1 } from "../mocks/mockMnemonic";
 import { ImplicitAccount, AccountType } from "../types/Account";
 import { restoreRevealedMnemonicAccounts, restoreRevealedPublicKeyPairs } from "./mnemonic";
 import { addressExists, getFingerPrint } from "./tezos";
-import { Network } from "../types/Network";
 
 import {
   defaultDerivationPathPattern,
