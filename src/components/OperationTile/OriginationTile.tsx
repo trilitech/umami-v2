@@ -25,7 +25,7 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
       <Flex justifyContent="space-between" mb="10px">
         <Center>
           <ContractIcon mr="8px" />
-          <TzktLink data-testid="title" operation={operation} mr="8px">
+          <TzktLink data-testid="title" hash={operation.hash} counter={operation.counter} mr="8px">
             <Heading size="md">{contractTitle}</Heading>
           </TzktLink>
           <Fee operation={operation} />
@@ -50,7 +50,7 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
           </Flex>
           <Center>
             <OperationTypeWrapper>Contract Origination</OperationTypeWrapper>
-            <OperationStatus operation={operation} />
+            <OperationStatus {...operation} />
           </Center>
         </Flex>
       </Box>

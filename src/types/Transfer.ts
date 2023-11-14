@@ -3,10 +3,14 @@ import { TzktAlias } from "./Address";
 import { RawTokenInfo } from "./Token";
 
 export type TokenTransfer = tzktApi.TokenTransfer & {
+  id: number;
   amount: string;
   token: RawTokenInfo;
   to: TzktAlias;
-  transactionId: number;
+  level: number;
+  migrationId?: number;
+  originationId?: number;
+  transactionId?: number;
 };
 
 export type TezTransfer = tzktApi.TransactionOperation;

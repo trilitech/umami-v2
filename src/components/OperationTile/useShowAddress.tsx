@@ -4,6 +4,11 @@ import { OperationTileContext } from "./OperationTileContext";
 
 export const useShowAddress = (address: RawPkh) => {
   const tileContext = useContext(OperationTileContext);
+
+  if (!address) {
+    return false;
+  }
+
   if (tileContext.mode === "page") {
     return true;
   }

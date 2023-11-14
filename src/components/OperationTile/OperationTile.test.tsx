@@ -68,5 +68,17 @@ describe("<OperationTile />", () => {
       render(fixture(tokenTransferTransaction));
       expect(screen.getByTestId("operation-tile-token-transfer")).toBeInTheDocument();
     });
+
+    it("renders TokenTransfer when the operation is a token transfer", () => {
+      render(fixture({ type: "token_transfer", ...tokenTransferFixture({}) }));
+      expect(screen.getByTestId("operation-tile-token-transfer")).toBeInTheDocument();
+    });
+
+    it("renders nothing if token is invalid", () => {
+      jest.spyOn(console, "warn").mockImplementation();
+
+      render(fixture({ type: "token_transfer", ...tokenTransferFixture({ token: {} as any }) }));
+      expect(screen.queryByTestId(/operation-tile/)).not.toBeInTheDocument();
+    });
   });
 });

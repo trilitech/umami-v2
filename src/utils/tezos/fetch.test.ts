@@ -8,8 +8,9 @@ import {
   getTezosPriceInUSD,
   getTezTransfers,
   getTokenBalances,
-  getTokenTransfers,
+  getRelatedTokenTransfers,
   getTransactions,
+  getTokenTransfers,
 } from "./fetch";
 import {
   accountsGet,
@@ -93,8 +94,8 @@ describe("tezos utils fetch", () => {
       );
     });
 
-    test("getTokenTransfers", async () => {
-      await getTokenTransfers([1, 2, 3], network);
+    test("getRelatedTokenTransfers", async () => {
+      await getRelatedTokenTransfers([1, 2, 3], network);
       expect(tokensGetTokenTransfers).toBeCalledWith(
         {
           transactionId: { in: ["1,2,3"] },
@@ -181,7 +182,29 @@ describe("tezos utils fetch", () => {
           offset: { cr: 123 },
           limit: 100,
           anyof: {
-            fields: ["sender", "target"],
+            fields: ["sender", "target", "initiator"],
+            in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
+          },
+          sort: { asc: "id" },
+        },
+        { baseUrl: network.tzktApiUrl }
+      );
+    });
+
+    test("getTokenTransfers", async () => {
+      jest.mocked(tokensGetTokenTransfers).mockResolvedValue([]);
+      await getTokenTransfers([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network, {
+        sort: { asc: "id" },
+        limit: 100,
+        offset: { cr: 123 },
+      });
+
+      expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+        {
+          offset: { cr: 123 },
+          limit: 100,
+          anyof: {
+            fields: ["from", "to"],
             in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
           },
           sort: { asc: "id" },
@@ -191,13 +214,14 @@ describe("tezos utils fetch", () => {
     });
 
     describe("getCombinedOperations", () => {
-      describe("request options", () => {
-        beforeEach(() => {
-          jest.mocked(operationsGetTransactions).mockResolvedValue([]);
-          jest.mocked(operationsGetDelegations).mockResolvedValue([]);
-          jest.mocked(operationsGetOriginations).mockResolvedValue([]);
-        });
+      beforeEach(() => {
+        jest.mocked(operationsGetTransactions).mockResolvedValue([]);
+        jest.mocked(operationsGetDelegations).mockResolvedValue([]);
+        jest.mocked(operationsGetOriginations).mockResolvedValue([]);
+        jest.mocked(tokensGetTokenTransfers).mockResolvedValue([]);
+      });
 
+      describe("request options", () => {
         describe("lastId", () => {
           it("uses the provided value", async () => {
             await getCombinedOperations([mockImplicitAddress(0).pkh], network, { lastId: 1234 });
@@ -212,6 +236,12 @@ describe("tezos utils fetch", () => {
               }
             );
             expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+              expect.objectContaining({ offset: { cr: 1234 } }),
+              {
+                baseUrl: network.tzktApiUrl,
+              }
+            );
+            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
               expect.objectContaining({ offset: { cr: 1234 } }),
               {
                 baseUrl: network.tzktApiUrl,
@@ -232,6 +262,12 @@ describe("tezos utils fetch", () => {
               }
             );
             expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+              expect.objectContaining({ offset: undefined }),
+              {
+                baseUrl: network.tzktApiUrl,
+              }
+            );
+            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
               expect.objectContaining({ offset: undefined }),
               {
                 baseUrl: network.tzktApiUrl,
@@ -259,6 +295,13 @@ describe("tezos utils fetch", () => {
                 baseUrl: network.tzktApiUrl,
               }
             );
+
+            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+              expect.objectContaining({ limit: 123 }),
+              {
+                baseUrl: network.tzktApiUrl,
+              }
+            );
           });
 
           it("defines a default limit if none is provided", async () => {
@@ -274,6 +317,12 @@ describe("tezos utils fetch", () => {
               }
             );
             expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+              expect.objectContaining({ limit: 100 }),
+              {
+                baseUrl: network.tzktApiUrl,
+              }
+            );
+            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
               expect.objectContaining({ limit: 100 }),
               {
                 baseUrl: network.tzktApiUrl,
@@ -301,6 +350,12 @@ describe("tezos utils fetch", () => {
                 baseUrl: network.tzktApiUrl,
               }
             );
+            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+              expect.objectContaining({ sort: { asc: "id" } }),
+              {
+                baseUrl: network.tzktApiUrl,
+              }
+            );
           });
 
           it("defines a default sort if none is provided", async () => {
@@ -321,6 +376,12 @@ describe("tezos utils fetch", () => {
                 baseUrl: network.tzktApiUrl,
               }
             );
+            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+              expect.objectContaining({ sort: { desc: "id" } }),
+              {
+                baseUrl: network.tzktApiUrl,
+              }
+            );
           });
         });
       });
@@ -332,6 +393,7 @@ describe("tezos utils fetch", () => {
         }
         jest.mocked(operationsGetTransactions).mockResolvedValue([]);
         jest.mocked(operationsGetDelegations).mockResolvedValue([]);
+        jest.mocked(tokensGetTokenTransfers).mockResolvedValue([]);
         jest.mocked(operationsGetOriginations).mockResolvedValue(operations as any);
 
         const res = await getCombinedOperations([mockImplicitAddress(0).pkh], network, {
@@ -349,37 +411,62 @@ describe("tezos utils fetch", () => {
         test("the most recent records come from one source", async () => {
           const delegations = [{ id: 1 }, { id: 2 }, { id: 3 }];
           const originations = [{ id: 4 }, { id: 5 }, { id: 6 }];
-          const transactions = [{ id: 7 }, { id: 8 }, { id: 9 }];
+          const transactions = [{ id: 7 }, { id: 8 }, { id: 10 }];
+          const tokenTransfers = [{ id: 9 }, { id: 11 }];
 
           jest.mocked(operationsGetTransactions).mockResolvedValue(transactions as any);
           jest.mocked(operationsGetDelegations).mockResolvedValue(delegations as any);
           jest.mocked(operationsGetOriginations).mockResolvedValue(originations as any);
+          jest.mocked(tokensGetTokenTransfers).mockResolvedValue(tokenTransfers as any);
 
           const res = await getCombinedOperations([mockImplicitAddress(0).pkh], network, {
             limit: 3,
           });
-          expect(res).toEqual(transactions.reverse());
+          expect(res).toEqual([
+            { id: 11, type: "token_transfer" },
+            { id: 10 },
+            { id: 9, type: "token_transfer" },
+          ]);
         });
 
         test("results are interleaved", async () => {
           const delegations = [{ id: 1 }, { id: 21 }, { id: 51 }];
-          const originations = [{ id: 2 }, { id: 4 }, { id: 55 }];
-          const transactions = [{ id: 5 }, { id: 8 }, { id: 15 }];
+          const originations = [{ id: 2 }, { id: 55 }];
+          const transactions = [{ id: 5 }, { id: 8 }];
+          const tokenTransfers = [{ id: 15 }, { id: 4 }];
 
           jest.mocked(operationsGetTransactions).mockResolvedValue(transactions as any);
           jest.mocked(operationsGetDelegations).mockResolvedValue(delegations as any);
           jest.mocked(operationsGetOriginations).mockResolvedValue(originations as any);
+          jest.mocked(tokensGetTokenTransfers).mockResolvedValue(tokenTransfers as any);
 
           const res = await getCombinedOperations([mockImplicitAddress(0).pkh], network, {
             limit: 5,
           });
-          expect(res).toEqual([{ id: 55 }, { id: 51 }, { id: 21 }, { id: 15 }, { id: 8 }]);
+          expect(res).toEqual([
+            { id: 55 },
+            { id: 51 },
+            { id: 21 },
+            { id: 15, type: "token_transfer" },
+            { id: 8 },
+          ]);
 
           const res2 = await getCombinedOperations([mockImplicitAddress(0).pkh], network, {
             limit: 500,
           });
           expect(res2).toEqual(
-            sortBy([...originations, ...delegations, ...transactions], o => -o.id)
+            sortBy(
+              [
+                ...originations,
+                ...delegations,
+                ...transactions,
+                ...[
+                  { id: 15, type: "token_transfer" },
+                  { id: 4, type: "token_transfer" },
+                ],
+              ],
+              o => -o.id
+            )
           );
         });
 
@@ -387,23 +474,40 @@ describe("tezos utils fetch", () => {
           const delegations = [{ id: 1 }, { id: 21 }, { id: 51 }];
           const originations = [{ id: 2 }, { id: 4 }, { id: 55 }];
           const transactions = [{ id: 5 }, { id: 8 }, { id: 15 }];
+          const tokenTransfers = [{ id: 0 }, { id: 88 }];
 
           jest.mocked(operationsGetTransactions).mockResolvedValue(transactions as any);
           jest.mocked(operationsGetDelegations).mockResolvedValue(delegations as any);
           jest.mocked(operationsGetOriginations).mockResolvedValue(originations as any);
+          jest.mocked(tokensGetTokenTransfers).mockResolvedValue(tokenTransfers as any);
 
           const res = await getCombinedOperations([mockImplicitAddress(0).pkh], network, {
             limit: 5,
             sort: "asc",
           });
-          expect(res).toEqual([{ id: 1 }, { id: 2 }, { id: 4 }, { id: 5 }, { id: 8 }]);
+          expect(res).toEqual([
+            { id: 0, type: "token_transfer" },
+            { id: 1 },
+            { id: 2 },
+            { id: 4 },
+            { id: 5 },
+          ]);
 
           const res2 = await getCombinedOperations([mockImplicitAddress(0).pkh], network, {
             limit: 500,
             sort: "asc",
           });
           expect(res2).toEqual(
-            sortBy([...originations, ...delegations, ...transactions], o => o.id)
+            sortBy(
+              [
+                { id: 0, type: "token_transfer" },
+                { id: 88, type: "token_transfer" },
+                ...originations,
+                ...delegations,
+                ...transactions,
+              ],
+              o => o.id
+            )
           );
         });
       });

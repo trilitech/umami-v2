@@ -19,6 +19,7 @@ export const transactionFixture = (props: Partial<TransactionOperation>): Transa
   level: 4321,
   timestamp: "2021-01-02T00:00:00.000Z",
   type: "transaction",
+  status: "applied",
   ...props,
 });
 
@@ -42,6 +43,7 @@ export const originationFixture = (props: Partial<OriginationOperation>): Origin
     typeHash: TYPE_HASH,
     codeHash: CODE_HASH,
   },
+  status: "applied",
   ...props,
 });
 
@@ -56,12 +58,15 @@ export const delegationFixture = (props: Partial<DelegationOperation>): Delegati
   newDelegate: {
     address: mockImplicitAddress(1).pkh,
   },
+  status: "applied",
   ...props,
 });
 
 export const tokenTransferFixture = (props: Partial<TokenTransfer>): TokenTransfer => ({
   amount: "500",
   transactionId: 56789,
+  id: 278346,
+  level: 10,
   to: { address: mockImplicitAccount(1).address.pkh },
   token: uUSD(mockLedgerAccount(0).address).token,
   ...props,
