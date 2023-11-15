@@ -1,15 +1,15 @@
-import { Box, Card, Flex, Heading, Button } from "@chakra-ui/react";
+import { Box, Flex, Heading, Button } from "@chakra-ui/react";
 import { useContext } from "react";
 import ChangePasswordForm from "../../components/ChangePassword/ChangePasswordForm";
-import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
+import ClickableCard, { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import useOffboardingModal from "../../components/Offboarding/useOffboardingModal";
 import { TopBar } from "../../components/TopBar";
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
-import colors from "../../style/colors";
 import packageInfo from "../../../package.json";
+import DownloadIcon from "../../assets/icons/Download";
 
 export default function SettingsView() {
   return (
@@ -99,13 +99,18 @@ const downloadBackup = () => {
 const BackupSection = () => {
   return (
     <SectionContainer title="Backup">
-      <Card padding="24px" marginBottom="10px" bgColor={colors.gray[900]} borderRadius="8px">
-        <Flex justifyContent="end" alignItems="center" w="100%">
-          <Button variant="tertiary" onClick={downloadBackup}>
-            Download backup file
-          </Button>
-        </Flex>
-      </Card>
+      <ClickableCard
+        children={
+          <Flex justifyContent="space-between" alignItems="center">
+            <Heading size="sm">Download backup file</Heading>
+            <Button variant="unstyled" onClick={downloadBackup}>
+              <DownloadIcon cursor="pointer" />
+            </Button>
+          </Flex>
+        }
+        onClick={downloadBackup}
+        isSelected={false}
+      />
     </SectionContainer>
   );
 };
