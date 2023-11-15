@@ -1,5 +1,5 @@
 import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
-import { useImplicitAccounts } from "../../../utils/hooks/accountHooks";
+import { useAllAccounts } from "../../../utils/hooks/accountHooks";
 import NameAccountDisplay from "./NameAccountDisplay";
 
 /**
@@ -21,7 +21,8 @@ export const NameAccount = ({
   goToStep: (step: Step) => void;
   account: NameAccountStep["account"];
 }) => {
-  const accounts = useImplicitAccounts();
+  // TODO: does it check contacts as well?
+  const accounts = useAllAccounts();
 
   const onSubmit = (p: { accountName: string }) => {
     let label = p.accountName.trim();
@@ -30,14 +31,14 @@ export const NameAccount = ({
       case "secret_key":
         return goToStep({ type: StepType.masterPassword, account: { ...account, label: label } });
       case "ledger":
-        // Ledger account label should be unique among all other account labels / contact names.
+        // Ledger account label, each account should have unique label among all other accounts / contacts.
         if (label.length === 0) {
           const usedLedgerLabels = accounts.map(account => account.label);
-          label = firstUnusedIndexedLabel("Ledger Account", usedLedgerLabels);
+          label = firstUnusedLedgerLabel(usedLedgerLabels);
         }
         return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
       case "mnemonic":
-        // This label is for the mnemonic account group, separate accounts will be named in {link}.
+        // This label is fon mnemonic account group, individual accounts are named in {@link restoreRevealedMnemonicAccounts}.
         label = label.length > 0 ? label : `Restored Mnemonic Account`;
         return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
     }
@@ -55,7 +56,8 @@ export const NameAccount = ({
   );
 };
 
-const firstUnusedIndexedLabel = (baseLabel: string, usedLabels: string[]): string => {
+const firstUnusedLedgerLabel = (usedLabels: string[]): string => {
+  const baseLabel = "Ledger Account";
   let index = 1;
   while (usedLabels.includes(`${baseLabel} ${index}`)) {
     index += 1;
