@@ -39,50 +39,75 @@ export const deriveSecretKey = (mnemonic: string, derivationPath: string, curve:
     curve,
   }).secretKey();
 
-export const restoreRevealedPublickKeyPairs = async (
+/**
+ * Finds revealed public key pairs matching the given {@link derivationPathPattern}.
+ *
+ * Checks matching public key pairs starting from index = 0.
+ * If a key pair was revealed, it will be added to response and the next index will be checked.
+ *
+ * Once an index for unrevealed key pair is found, the process stops,
+ * even though there might be more revealed accounts with bigger indexes.
+ *
+ * At least one {@link PublicKeyPair} will be added in any case.
+ * If no accounts were revealed, account with the smallest derivation path (index = 0) will be added.
+ *
+ * @param mnemonic - Space separated words making a BIP39 seed phrase.
+ * @param derivationPathPattern - Path pattern for searching for the key pairs.
+ * @returns List of revealed <@link PublicKeyPair> associated with the given parameters.
+ */
+export const restoreRevealedPublicKeyPairs = async (
   mnemonic: string,
   derivationPathPattern: string,
-  network: Network,
-  result: PublicKeyPair[] = [],
-  startIndex = 0
+  network: Network
 ): Promise<PublicKeyPair[]> => {
-  const derivationPath = makeDerivationPath(derivationPathPattern, startIndex);
-  const pubKeyPair = await derivePublicKeyPair(mnemonic, derivationPath);
-
-  if (await addressExists(pubKeyPair.pkh, network)) {
-    return restoreRevealedPublickKeyPairs(
+  const result: PublicKeyPair[] = [];
+  let accountIndex = 0;
+  let pubKeyPair = await derivePublicKeyPair(
+    mnemonic,
+    makeDerivationPath(derivationPathPattern, accountIndex)
+  );
+  do {
+    result.push(pubKeyPair);
+    accountIndex += 1;
+    pubKeyPair = await derivePublicKeyPair(
       mnemonic,
-      derivationPathPattern,
-      network,
-      [...result, pubKeyPair],
-      startIndex + 1
+      makeDerivationPath(derivationPathPattern, accountIndex)
     );
-  } else {
-    return result.length === 0 ? [pubKeyPair] : result;
-  }
+  } while (await addressExists(pubKeyPair.pkh, network));
+  return result;
 };
 
+/**
+ * Restores accounts from a mnemonic group whet it's being added by an existing seedphrase.
+ *
+ * Creates some revealed mnemonic accounts matching given {@link derivationPathPattern},
+ * or, if no accounts were revealed, an account with the smallest derivation path (accountIndex = 0).
+ *
+ * Check {@link restoreRevealedPublicKeyPairs} for logic of restoring revealed accounts.
+ *
+ * @param mnemonic - Space separated words making a BIP39 seed phrase.
+ * @param network - Stores Tezos network & tzk indexer settings.
+ * @param label - Account group prefix provided by the user.
+ * @param derivationPathPattern - Path pattern for the account group that's being added.
+ * @returns A list of revealed mnemonic accounts that will be added.
+ */
 export const restoreRevealedMnemonicAccounts = async (
   mnemonic: string,
   network: Network,
   label = "Account",
   derivationPathPattern = defaultDerivationPathPattern
 ): Promise<MnemonicAccount[]> => {
-  const pubKeyPairs = await restoreRevealedPublickKeyPairs(
-    mnemonic,
-    derivationPathPattern,
-    network
-  );
+  const pubKeyPairs = await restoreRevealedPublicKeyPairs(mnemonic, derivationPathPattern, network);
   const seedFingerPrint = await getFingerPrint(mnemonic);
 
-  return pubKeyPairs.map(({ pk, pkh }, i) => {
+  return pubKeyPairs.map(({ pk, pkh }, accountIndex) => {
     return makeMnemonicAccount(
       pk,
       pkh,
-      makeDerivationPath(derivationPathPattern, i),
+      makeDerivationPath(derivationPathPattern, accountIndex),
       derivationPathPattern,
       seedFingerPrint,
-      `${label}${pubKeyPairs.length > 1 ? " " + i : ""}`
+      `${label}${pubKeyPairs.length > 1 ? " " + accountIndex : ""}`
     );
   });
 };
