@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import type { BigNumber } from "bignumber.js";
-import { Account, AccountType } from "../../types/Account";
+import { Account } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
@@ -62,7 +62,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   nfts,
   account,
 }) => {
-  const isMultisig = account.type === AccountType.MULTISIG;
+  const isMultisig = account.type === "multisig";
   const { openWith } = useContext(DynamicModalContext);
   const addressKind = useAddressKind(account.address);
   const network = useSelectedNetwork();

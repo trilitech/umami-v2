@@ -1,4 +1,4 @@
-import craeteMockStore from "redux-mock-store";
+import createMockStore from "redux-mock-store";
 import { makeDefaultDevSigner } from "../../../mocks/devSignerKeys";
 import { mnemonic1, mnemonic2 } from "../../../mocks/mockMnemonic";
 import {
@@ -22,7 +22,7 @@ const currentPassword = "currentPassword";
 const newPassword = "newPassword";
 
 const setupStore = async () => {
-  const mockStore = craeteMockStore<
+  const mockStore = createMockStore<
     { accounts: State },
     { changeMnemonicPassword: ReturnType<typeof changeMnemonicPassword> }
   >([thunk.withExtraArgument(extraArgument)]);
@@ -52,6 +52,7 @@ const setupStore = async () => {
         [mockAccounts[0].seedFingerPrint]: await encrypt(mnemonic1, currentPassword),
         [mockAccounts[1].seedFingerPrint]: await encrypt(mnemonic2, currentPassword),
       },
+      secretKeys: {},
     },
   });
 };

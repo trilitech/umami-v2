@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fromPairs } from "lodash";
-import { AccountType } from "../../../types/Account";
 import { EncryptedData } from "../../crypto/types";
 import { ExtraArgument } from "../extraArgument";
 import { AppDispatch, RootState } from "../store";
@@ -23,7 +22,7 @@ const changeMnemonicPassword = createAsyncThunk<
 
     const { items: accounts, seedPhrases } = getState().accounts;
 
-    if (accounts.filter(account => account.type === AccountType.MNEMONIC).length === 0) {
+    if (accounts.filter(account => account.type === "mnemonic").length === 0) {
       throw new Error("No mnemonic accounts found");
     }
 

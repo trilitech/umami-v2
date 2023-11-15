@@ -21,6 +21,7 @@ const AddressTileIcon: React.FC<{
 }> = ({ addressKind, size = "md" }) => {
   const sizeInPx = size === "md" ? "30px" : "38.5px";
   switch (addressKind.type) {
+    case "secret_key":
     case "mnemonic":
       return (
         <Identicon p="5px" w={sizeInPx} h={sizeInPx} identiconSize={20} address={addressKind.pkh} />

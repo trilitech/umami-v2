@@ -1,6 +1,6 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { Account, AccountType } from "../../../types/Account";
+import { Account } from "../../../types/Account";
 import multisigsSlice from "../slices/multisigsSlice";
 import accountsSlice from "../slices/accountsSlice";
 
@@ -11,7 +11,7 @@ const renameAccount = (
   return (dispatch, getState) => {
     const { accounts, multisigs, contacts } = getState();
 
-    const isMultisig = account.type === AccountType.MULTISIG;
+    const isMultisig = account.type === "multisig";
 
     const accountNames = accounts.items.map(account => account.label);
     const multisigNames = multisigs.items.map(multisig => multisig.label);

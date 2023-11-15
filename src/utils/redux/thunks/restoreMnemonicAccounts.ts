@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AccountType, MnemonicAccount } from "../../../types/Account";
+import { MnemonicAccount } from "../../../types/Account";
 import { makeDerivationPath } from "../../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
 import { EncryptedData } from "../../crypto/types";
@@ -51,7 +51,7 @@ export const deriveAccount = createAsyncThunk<
   const accounts = thunkAPI
     .getState()
     .accounts.items.filter(
-      a => a.type === AccountType.MNEMONIC && a.seedFingerPrint === fingerPrint
+      a => a.type === "mnemonic" && a.seedFingerPrint === fingerPrint
     ) as MnemonicAccount[];
 
   const nextIndex = accounts.length;

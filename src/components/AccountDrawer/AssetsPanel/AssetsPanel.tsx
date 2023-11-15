@@ -1,6 +1,6 @@
 import { Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import React from "react";
-import { Account, AccountType } from "../../../types/Account";
+import { Account } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
 import { Delegation } from "../../../types/Delegation";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
@@ -24,7 +24,7 @@ export const AssetsPanel: React.FC<{
   account: Account;
   delegation: Delegation | null;
 }> = ({ tokens, nfts, account, delegation }) => {
-  const isMultisig = account.type === AccountType.MULTISIG;
+  const isMultisig = account.type === "multisig";
   const network = useSelectedNetwork();
   const { operations, isFirstLoad: areOperationsLoading } = useGetOperations([account.address.pkh]);
 

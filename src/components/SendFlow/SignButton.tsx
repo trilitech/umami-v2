@@ -3,7 +3,12 @@ import { TezosToolkit } from "@taquito/taquito";
 import React, { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { GoogleAuthProps, useGetGoogleCredentials } from "../../GoogleAuth";
-import { ImplicitAccount, AccountType, MnemonicAccount, LedgerAccount } from "../../types/Account";
+import {
+  ImplicitAccount,
+  MnemonicAccount,
+  LedgerAccount,
+  SecretKeyAccount,
+} from "../../types/Account";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { makeToolkit } from "../../utils/tezos";
@@ -57,6 +62,12 @@ const SignButton: React.FC<{
       return onSubmit(await makeToolkit({ type: "mnemonic", secretKey, network }));
     });
 
+  const onSecretKeySign = async ({ password }: { password: string }) =>
+    handleAsyncAction(async () => {
+      const secretKey = await getSecretKey(signer as SecretKeyAccount, password);
+      return onSubmit(await makeToolkit({ type: "secret_key", secretKey, network }));
+    });
+
   const onSocialSign = async (secretKey: string) =>
     handleAsyncAction(async () =>
       onSubmit(await makeToolkit({ type: "social", secretKey, network }))
@@ -80,33 +91,38 @@ const SignButton: React.FC<{
       );
     });
 
-  return (
-    <Box width="100%">
-      {signer.type === AccountType.MNEMONIC && (
-        <FormProvider {...form}>
-          <FormControl isInvalid={!!errors.password} my={4}>
-            <PasswordInput inputName="password" data-testid="password" />
-            {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
-          </FormControl>
-          <Button
-            onClick={handleSubmit(onMnemonicSign)}
-            width="100%"
-            size="lg"
-            mt={2}
-            isLoading={isLoading}
-            isDisabled={buttonIsDisabled}
-            type="submit"
-          >
-            {text || "Submit Transaction"}
-          </Button>
-        </FormProvider>
-      )}
-      {signer.type === AccountType.SOCIAL && (
+  switch (signer.type) {
+    case "secret_key":
+    case "mnemonic":
+      return (
+        <Box width="100%">
+          <FormProvider {...form}>
+            <FormControl isInvalid={!!errors.password} my="16px">
+              <PasswordInput inputName="password" data-testid="password" />
+              {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
+            </FormControl>
+            <Button
+              onClick={handleSubmit(signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign)}
+              width="100%"
+              size="lg"
+              mt="8px"
+              isLoading={isLoading}
+              isDisabled={buttonIsDisabled}
+              type="submit"
+            >
+              {text || "Submit Transaction"}
+            </Button>
+          </FormProvider>
+        </Box>
+      );
+    case "social":
+      return (
         <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={buttonIsDisabled}>
           {text || "Sign with Google"}
         </SignWithGoogleButton>
-      )}
-      {signer.type === AccountType.LEDGER && (
+      );
+    case "ledger":
+      return (
         <Button
           onClick={onLedgerSign}
           width="100%"
@@ -116,9 +132,8 @@ const SignButton: React.FC<{
         >
           {text || "Sign with Ledger"}
         </Button>
-      )}
-    </Box>
-  );
+      );
+  }
 };
 
 export default SignButton;

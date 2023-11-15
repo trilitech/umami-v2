@@ -1,12 +1,12 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
 import {
   ImplicitAccount,
-  AccountType,
   LedgerAccount,
   SocialAccount,
   MultisigAccount,
   Account,
   MnemonicAccount,
+  SecretKeyAccount,
 } from "../types/Account";
 import { ContractAddress, ImplicitAddress } from "../types/Address";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance, fromRaw } from "../types/TokenBalance";
@@ -107,11 +107,12 @@ export const mockAccountLabel = (
   accountIndex: number
 ): string => {
   switch (accountType) {
-    case AccountType.MNEMONIC:
+    case "mnemonic":
+    case "secret_key":
       return `Account ${accountIndex}`;
-    case AccountType.SOCIAL:
+    case "social":
       return `google Account ${accountIndex}`;
-    case AccountType.LEDGER:
+    case "ledger":
       return `Ledger Account ${accountIndex + 1}`;
   }
 };
@@ -121,66 +122,64 @@ export const mockPk = (index: number) =>
 
 export const mockImplicitAccount = (
   index: number,
-  type: ImplicitAccount["type"] = AccountType.MNEMONIC,
+  type: ImplicitAccount["type"] = "mnemonic",
   fingerPrint = "mockPrint"
 ): ImplicitAccount => {
   switch (type) {
-    case AccountType.MNEMONIC:
+    case "mnemonic":
       return mockMnemonicAccount(index, fingerPrint);
-    case AccountType.SOCIAL:
+    case "social":
       return mockSocialAccount(index);
-    case AccountType.LEDGER:
+    case "ledger":
       return mockLedgerAccount(index);
+    case "secret_key":
+      return mockSecretKeyAccount(index);
   }
 };
 
-export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): MnemonicAccount => {
-  const account: MnemonicAccount = {
-    curve: "ed25519",
-    derivationPath: getDefaultDerivationPath(index),
-    derivationPathPattern: "44'/1729'/?'/0'",
-    type: AccountType.MNEMONIC,
-    label: mockAccountLabel(AccountType.MNEMONIC, index),
-    address: mockImplicitAddress(index),
-    pk: mockPk(index),
-    seedFingerPrint: `${fingerPrint}`,
-  };
-  return account;
-};
+export const mockMnemonicAccount = (index: number, fingerPrint = "mockPrint"): MnemonicAccount => ({
+  curve: "ed25519",
+  derivationPath: getDefaultDerivationPath(index),
+  derivationPathPattern: "44'/1729'/?'/0'",
+  type: "mnemonic",
+  label: mockAccountLabel("mnemonic", index),
+  address: mockImplicitAddress(index),
+  pk: mockPk(index),
+  seedFingerPrint: fingerPrint,
+});
 
-export const mockSocialAccount = (index: number) => {
-  const account: SocialAccount = {
-    type: AccountType.SOCIAL,
-    label: mockAccountLabel(AccountType.SOCIAL, index),
-    address: mockImplicitAddress(index),
-    pk: mockPk(index),
-    idp: "google",
-  };
-  return account;
-};
+export const mockSecretKeyAccount = (index: number): SecretKeyAccount => ({
+  type: "secret_key",
+  label: mockAccountLabel("secret_key", index),
+  address: mockImplicitAddress(index),
+  pk: mockPk(index),
+});
 
-export const mockLedgerAccount = (index: number) => {
-  const account: LedgerAccount = {
-    type: AccountType.LEDGER,
-    derivationPath: getDefaultDerivationPath(index),
-    curve: "ed25519",
-    label: mockAccountLabel(AccountType.LEDGER, index),
-    address: mockImplicitAddress(index),
-    pk: mockPk(index),
-  };
-  return account;
-};
+export const mockSocialAccount = (index: number): SocialAccount => ({
+  type: "social",
+  label: mockAccountLabel("social", index),
+  address: mockImplicitAddress(index),
+  pk: mockPk(index),
+  idp: "google",
+});
 
-export const mockMultisigAccount = (index: number): MultisigAccount => {
-  return {
-    type: AccountType.MULTISIG,
-    address: mockContractAddress(index),
-    label: `Multisig Account ${index}`,
-    threshold: 1,
-    signers: [mockImplicitAddress(index)],
-    pendingOperationsBigmapId: index,
-  };
-};
+export const mockLedgerAccount = (index: number): LedgerAccount => ({
+  type: "ledger",
+  derivationPath: getDefaultDerivationPath(index),
+  curve: "ed25519",
+  label: mockAccountLabel("ledger", index),
+  address: mockImplicitAddress(index),
+  pk: mockPk(index),
+});
+
+export const mockMultisigAccount = (index: number): MultisigAccount => ({
+  type: "multisig",
+  address: mockContractAddress(index),
+  label: `Multisig Account ${index}`,
+  threshold: 1,
+  signers: [mockImplicitAddress(index)],
+  pendingOperationsBigmapId: index,
+});
 
 export const mockMultisigWithOperations = (
   index: number,

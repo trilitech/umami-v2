@@ -4,7 +4,7 @@ import { mockMnemonicAccount } from "../../../mocks/factories";
 import { multisigActions } from "../slices/multisigsSlice";
 import renameAccount from "./renameAccount";
 import accountsSlice from "../slices/accountsSlice";
-import { AccountType, MultisigAccount } from "../../../types/Account";
+import { MultisigAccount } from "../../../types/Account";
 import { contactsActions } from "../slices/contactsSlice";
 
 beforeEach(() => {
@@ -27,7 +27,7 @@ describe("renameAccount", () => {
         multisigs.map((m, i) => ({
           ...m,
           label: `Multisig Account ${i}`,
-          type: AccountType.MULTISIG,
+          type: "multisig",
         }))
       );
     });
@@ -44,7 +44,7 @@ describe("renameAccount", () => {
         multisigs.map((m, i) => ({
           ...m,
           label: `Multisig Account ${i}`,
-          type: AccountType.MULTISIG,
+          type: "multisig",
         }))
       );
     });
@@ -63,7 +63,7 @@ describe("renameAccount", () => {
       const multisigAccount: MultisigAccount = {
         ...multisigs[0],
         label: `Multisig Account ${0}`,
-        type: AccountType.MULTISIG,
+        type: "multisig",
       };
       store.dispatch(renameAccount(multisigAccount, "new name"));
 
@@ -71,7 +71,7 @@ describe("renameAccount", () => {
         multisigs.map((m, i) => ({
           ...m,
           label: i === 0 ? "new name" : `Multisig Account ${i}`,
-          type: AccountType.MULTISIG,
+          type: "multisig",
         }))
       );
     });

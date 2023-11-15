@@ -1,5 +1,4 @@
 import React from "react";
-import { AccountType } from "../../../../types/Account";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import MultisigActionButton, { MultisigSignerState } from "./MultisigActionButton";
 import { AddressKind } from "../../../AddressTile/types";
@@ -9,7 +8,7 @@ export const MultisigSignerTileDisplay: React.FC<{
   onClickApproveExecute: () => void;
   signerState: MultisigSignerState;
   isLoading: boolean;
-  addressKind: Exclude<AddressKind, AccountType.MULTISIG>;
+  addressKind: Exclude<AddressKind, "multisig">;
 }> = ({ isLoading, addressKind, ...rest }) => {
   return (
     <AccountTileBase

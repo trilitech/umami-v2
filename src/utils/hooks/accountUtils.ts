@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { compact } from "lodash";
-import { MnemonicAccount } from "../../types/Account";
+import { MnemonicAccount, SecretKeyAccount } from "../../types/Account";
 import { decrypt } from "../crypto/AES";
 import { deriveSecretKey } from "../mnemonic";
 import { useAppSelector } from "../redux/hooks";
@@ -19,20 +19,24 @@ export const getTotalTezBalance = (
 
 export const useGetSecretKey = () => {
   const seedPhrases = useAppSelector(s => s.accounts.seedPhrases);
-  return async (account: MnemonicAccount, password: string) => {
-    const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
-    if (!encryptedMnemonic) {
-      throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
-    }
+  const encryptedSecretKeys = useAppSelector(s => s.accounts.secretKeys);
 
-    try {
+  return async (account: MnemonicAccount | SecretKeyAccount, password: string) => {
+    if (account.type === "secret_key") {
+      const encryptedSecretKey = encryptedSecretKeys[account.address.pkh];
+      if (!encryptedSecretKey) {
+        throw new Error(`Missing secret key for account ${account.address.pkh}`);
+      }
+
+      return decrypt(encryptedSecretKey, password);
+    } else {
+      const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
+      if (!encryptedMnemonic) {
+        throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
+      }
+
       const mnemonic = await decrypt(encryptedMnemonic, password);
       return deriveSecretKey(mnemonic, account.derivationPath, account.curve);
-    } catch (error: any) {
-      if (error.message) {
-        throw error;
-      }
-      throw new Error("Failed to decrypt with the provided password");
     }
   };
 };

@@ -14,6 +14,7 @@ import accountsSlice from "../redux/slices/accountsSlice";
 import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
+import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
 
 const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
 
@@ -72,13 +73,26 @@ export const useRestoreFromMnemonic = () => {
   };
 };
 
+export const useRestoreFromSecretKey = () => {
+  const dispatch = useAppDispatch();
+
+  return (secretKey: string, password: string, label: string) =>
+    dispatch(
+      restoreFromSecretKey({
+        secretKey,
+        password,
+        label,
+      })
+    );
+};
+
 export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
   return (derivationPath: string, pk: string, pkh: string, label: string) => {
     const account: LedgerAccount = {
       derivationPath,
       curve: "ed25519",
-      type: AccountType.LEDGER,
+      type: "ledger",
       pk: pk,
       address: { type: "implicit", pkh },
       label,
@@ -91,7 +105,7 @@ export const useRestoreSocial = () => {
   const dispatch = useAppDispatch();
   return (pk: string, pkh: string, label: string) => {
     const account: SocialAccount = {
-      type: AccountType.SOCIAL,
+      type: "social",
       pk: pk,
       address: { type: "implicit", pkh },
       idp: "google",
@@ -177,11 +191,12 @@ export const useGetOwnedSignersForAccount = () => {
 
   return (account: Account) => {
     switch (account.type) {
-      case AccountType.LEDGER:
-      case AccountType.MNEMONIC:
-      case AccountType.SOCIAL:
+      case "ledger":
+      case "mnemonic":
+      case "social":
+      case "secret_key":
         return [account];
-      case AccountType.MULTISIG:
+      case "multisig":
         return getMultisigSigners(account);
     }
   };
