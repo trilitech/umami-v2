@@ -61,6 +61,7 @@ const RestoreBackupFile = () => {
               <FormLabel>Upload File</FormLabel>
               <Flex>
                 <Input
+                  data-testid="file-input"
                   p="2px"
                   {...register("file", { required: "File is required" })}
                   accept=".json"
@@ -73,7 +74,11 @@ const RestoreBackupFile = () => {
               )}
             </FormControl>
             <FormControl isInvalid={!!errors.password} mt="24px">
-              <PasswordInput inputName="password" label="Your password" />
+              <PasswordInput
+                inputName="password"
+                label="Your password"
+                data-testid="password-input"
+              />
               {errors.password && (
                 <FormErrorMessage data-testid="password">
                   {errors.password.message}
