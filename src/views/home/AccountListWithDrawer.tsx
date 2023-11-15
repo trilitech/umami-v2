@@ -1,18 +1,16 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import AccountCard from "../../components/AccountDrawer";
 import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { AccountsList } from "./AccountsList";
-import { CloseDrawerButton, DrawerTopButtons } from "./DrawerTopButtons";
+import { DrawerTopButtons } from "./DrawerTopButtons";
 import { useDynamicModal } from "../../components/DynamicModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { fullId } from "../../types/Token";
-import colors from "../../style/colors";
-import AddressPill from "../../components/AddressPill/AddressPill";
-import NFTDrawerCard from "../nfts/NFTDrawerCard";
-import { parsePkh } from "../../types/Address";
+
+import NFTDrawerBody from "../nfts/NFTDrawerBody";
 
 const AccountListWithDrawer: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
@@ -30,10 +28,10 @@ const AccountListWithDrawer: React.FC = () => {
   const closeDrawer = useCallback(() => {
     setSelected(null);
     onClose();
-    if (!isNFT) {
+    if (isNFT) {
       navigate("/home");
     }
-  }, [setSelected, onClose]);
+  }, [setSelected, onClose, navigate, isNFT]);
 
   // For some reason the drawer doesn't close on esc for this particular component
   // Until we figure out why, we'll have this crutch
@@ -64,19 +62,7 @@ const AccountListWithDrawer: React.FC = () => {
             {isNFT ? (
               <>
                 {drawerNFT && (
-                  <>
-                    <Flex
-                      justifyContent="space-between"
-                      color={colors.gray[400]}
-                      cursor="pointer"
-                      alignItems="center"
-                      paddingBottom="30px"
-                    >
-                      <AddressPill address={parsePkh(ownerPkh)} />
-                      <CloseDrawerButton onClose={closeDrawer} />
-                    </Flex>
-                    <NFTDrawerCard nft={drawerNFT} ownerPkh={ownerPkh} />
-                  </>
+                  <NFTDrawerBody ownerPkh={ownerPkh} nft={drawerNFT} onCloseDrawer={closeDrawer} />
                 )}
               </>
             ) : (
