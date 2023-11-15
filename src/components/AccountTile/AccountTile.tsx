@@ -125,7 +125,7 @@ export const AccountTile: React.FC<{
                 );
               }
               return (
-                <Link to={`/nfts/${address}/${fullId(nft)}`} key={fullId(nft)}>
+                <Link to={`/home/${address}/${fullId(nft)}`}>
                   <AspectRatio w="32px" h="32px" ratio={1} ml={i > 0 ? "4px" : 0}>
                     <Image borderRadius="4px" src={url} />
                   </AspectRatio>

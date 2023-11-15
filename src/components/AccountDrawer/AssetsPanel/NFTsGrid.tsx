@@ -32,7 +32,7 @@ export const NFTsGrid: FC<
           const url = getIPFSurl(thumbnailUri(nft));
           const fallbackUrl = getIPFSurl(nft.displayUri);
           return (
-            <Link to={`/nfts/${owner}/${fullId(nft)}`} key={`${owner}:${fullId(nft)}`}>
+            <Link to={`/home/${owner}/${fullId(nft)}`} key={`${owner}:${fullId(nft)}`}>
               <Card bg={colors.gray[800]}>
                 <CardBody p="8px">
                   <AspectRatio width="100%" ratio={1}>
