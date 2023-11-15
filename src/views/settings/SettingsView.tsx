@@ -10,6 +10,7 @@ import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
 import colors from "../../style/colors";
 import packageInfo from "../../../package.json";
+import DownloadIcon from "../../assets/icons/Download";
 
 export default function SettingsView() {
   return (
@@ -99,13 +100,20 @@ const downloadBackup = () => {
 const BackupSection = () => {
   return (
     <SectionContainer title="Backup">
-      <Card padding="24px" marginBottom="10px" bgColor={colors.gray[900]} borderRadius="8px">
-        <Flex justifyContent="end" alignItems="center" w="100%">
-          <Button variant="tertiary" onClick={downloadBackup}>
-            Download backup file
-          </Button>
-        </Flex>
-      </Card>
+      <Flex
+        h="66px"
+        p="24px"
+        mb="10px"
+        justifyContent="space-between"
+        alignItems="center"
+        bgColor={colors.gray[900]}
+        borderRadius="8px"
+      >
+        <Heading size="sm">Download backup file</Heading>
+        <Button variant="unstyled" onClick={downloadBackup}>
+          <DownloadIcon cursor="pointer" />
+        </Button>
+      </Flex>
     </SectionContainer>
   );
 };
