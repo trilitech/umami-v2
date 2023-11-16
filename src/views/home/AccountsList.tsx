@@ -137,21 +137,18 @@ export const AccountsList: React.FC<{
   onSelect: (pkh: string) => void;
 }> = ({ onOpen, selected, onSelect }) => {
   const accounts = useAllAccounts();
-
   const mutezBalance = useAppSelector(s => s.assets.balances.mutez);
-
   const accountsByKind = groupBy(accounts, getLabel);
-
   const { openWith } = useContext(DynamicModalContext);
 
-  const accountTiles = Object.entries(accountsByKind).map(([label, accountsByType]) => {
+  const accountTiles = Object.entries(accountsByKind).map(([accountGroupLabel, accountsByType]) => {
     return (
       <AccountGroup
-        key={label}
+        key={accountGroupLabel}
         selected={selected}
         accounts={accountsByType}
         balances={mutezBalance}
-        groupLabel={label}
+        groupLabel={accountGroupLabel}
         onSelect={(pkh: string) => {
           onOpen();
           onSelect(pkh);
@@ -159,6 +156,7 @@ export const AccountsList: React.FC<{
       />
     );
   });
+
   return (
     <>
       <Box height="100%" mr={0}>
