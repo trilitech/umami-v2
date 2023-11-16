@@ -16,7 +16,7 @@ describe("<ConnectOrCreate />", () => {
   test("Create new Account", async () => {
     render(fixture(goToStepMock));
     const confirmBtn = screen.getByRole("button", {
-      name: /Create new Account/i,
+      name: /Create a new Account/i,
     });
     fireEvent.click(confirmBtn);
     expect(goToStepMock).toBeCalledTimes(1);

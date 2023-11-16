@@ -31,7 +31,7 @@ const ConnectOrCreate = ({
     <ModalContentWrapper icon={<WalletPlusIcon />} title="Connect or Create Account">
       <VStack w="100%" spacing="16px">
         <Button w="100%" size="lg" onClick={_ => goToStep({ type: StepType.notice })}>
-          Create new Account
+          Create a new Account
         </Button>
         <Button
           variant="tertiary"

@@ -86,7 +86,7 @@ export const restoreRevealedPublicKeyPairs = async (
  * Check {@link restoreRevealedPublicKeyPairs} for logic of restoring revealed accounts.
  *
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
- * @param network - Stores Tezos network & tzk indexer settings.
+ * @param network - Stores Tezos network & tzkt indexer settings.
  * @param label - Account group prefix provided by the user.
  * @param derivationPathPattern - Path pattern for the account group that's being added.
  * @returns A list of revealed mnemonic accounts that will be added.

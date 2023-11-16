@@ -62,12 +62,12 @@ describe("<AccountList />", () => {
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
 
     const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
-    const seedPhrase2 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(within(seedPhrase1).getAllByTestId(/account-tile/)).toHaveLength(2);
     expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
     expect(seedPhrase1).toHaveTextContent("Account 0");
     expect(seedPhrase1).toHaveTextContent("Account 1");
 
+    const seedPhrase2 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(within(seedPhrase2).getAllByTestId(/account-tile/)).toHaveLength(1);
     expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(seedPhrase2).toHaveTextContent("Account");
