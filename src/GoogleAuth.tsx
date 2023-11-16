@@ -4,6 +4,7 @@ import CustomAuth from "@toruslabs/customauth";
 import { FcGoogle } from "react-icons/fc";
 import colors from "./style/colors";
 import { useAsyncActionHandler } from "./utils/hooks/useAsyncActionHandler";
+import { withTimeout } from "./utils/withTimeout";
 
 // These parameters are built by
 // https://github.com/torusresearch/CustomAuth/blob/master/serviceworker/redirect.html
@@ -43,16 +44,6 @@ export type GoogleAuthProps = {
   onSuccessfulAuth: (sk: string, email: string) => void;
   isDisabled?: boolean;
 };
-
-const withTimeout = <T,>(fn: () => Promise<T>, timeout: number, errorMessage?: string) =>
-  Promise.race([
-    new Promise((_, reject) =>
-      setTimeout(() => {
-        reject(new Error(errorMessage || "The operation has timed out"));
-      }, timeout)
-    ),
-    fn(),
-  ]);
 
 const LOGIN_TIMEOUT = 60 * 1000; // 1 minute
 
