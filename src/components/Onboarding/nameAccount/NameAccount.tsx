@@ -1,5 +1,5 @@
 import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
-import { useAllAccounts } from "../../../utils/hooks/accountHooks";
+import { useIsUniqueLabel } from "../../../utils/hooks/accountHooks";
 import NameAccountDisplay from "./NameAccountDisplay";
 
 /**
@@ -21,9 +21,7 @@ export const NameAccount = ({
   goToStep: (step: Step) => void;
   account: NameAccountStep["account"];
 }) => {
-  // TODO: does it check contacts as well?
-  const accounts = useAllAccounts();
-
+  const isUniqueLabel = useIsUniqueLabel();
   const onSubmit = (p: { accountName: string }) => {
     let label = p.accountName.trim();
 
@@ -32,13 +30,10 @@ export const NameAccount = ({
         return goToStep({ type: StepType.masterPassword, account: { ...account, label: label } });
       case "ledger":
         // Ledger account label, each account should have unique label among all other accounts / contacts.
-        if (label.length === 0) {
-          const usedLedgerLabels = accounts.map(account => account.label);
-          label = firstUnusedLedgerLabel(usedLedgerLabels);
-        }
+        label = label.length > 0 ? label : firstUnusedLedgerLabel(isUniqueLabel);
         return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
       case "mnemonic":
-        // This label is fon mnemonic account group, individual accounts are named in {@link restoreRevealedMnemonicAccounts}.
+        // Mnemonic account group label, individual accounts are named in {@link restoreRevealedMnemonicAccounts}.
         label = label.length > 0 ? label : `Restored Mnemonic Account`;
         return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
     }
@@ -56,10 +51,10 @@ export const NameAccount = ({
   );
 };
 
-const firstUnusedLedgerLabel = (usedLabels: string[]): string => {
+const firstUnusedLedgerLabel = (isUniqueLabel: (label: string) => boolean): string => {
   const baseLabel = "Ledger Account";
   let index = 1;
-  while (usedLabels.includes(`${baseLabel} ${index}`)) {
+  while (!isUniqueLabel(`${baseLabel} ${index}`)) {
     index += 1;
   }
   return `${baseLabel} ${index}`;
