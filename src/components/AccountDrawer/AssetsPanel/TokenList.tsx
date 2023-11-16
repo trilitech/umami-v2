@@ -1,12 +1,12 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import colors from "../../../style/colors";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
-import { tokenNameSafe, tokenPrettyAmount } from "../../../types/Token";
+import { tokenPrettyAmount } from "../../../types/Token";
 import NoItems from "../../NoItems";
 import TokenIcon from "../../../assets/icons/Token";
+import TokenNameWithIcon from "../../../views/tokens/TokenNameWithIcon";
 
 const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {
-  const name = tokenNameSafe(token);
   const prettyAmount = tokenPrettyAmount(token.balance, token, { showSymbol: false });
   return (
     <Flex
@@ -19,9 +19,7 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
       <Flex flex={1} alignItems="center">
         <TokenIcon w="38px" contract={token.contract} bg={colors.gray[500]} borderRadius="4px" />
         <Box ml="16px">
-          <Text data-testid="token-name" fontWeight={600}>
-            {name}
-          </Text>
+          <TokenNameWithIcon token={token} fontWeight={600} data-testid="token-name" />
         </Box>
       </Flex>
       <Heading data-testid="token-balance" size="lg">
