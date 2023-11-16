@@ -6,6 +6,9 @@ import { useRestoreLedger } from "../../../utils/hooks/accountHooks";
 import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import USBIcon from "../../../assets/icons/USB";
+import { withTimeout } from "../../../utils/withTimeout";
+
+const LEDGER_TIMEOUT = 60 * 1000; // 1 minute
 
 const RestoreLedger = ({
   closeModal,
@@ -38,17 +41,18 @@ const RestoreLedger = ({
 
   const connectLedger = () =>
     handleAsyncAction(
-      async () => {
-        toast({
-          title: "Request sent to Ledger",
-          description: "Open the Tezos app on your Ledger and approve the operation",
-          status: "info",
-        });
-        const derivationPath = makeDerivationPath(account.derivationPath, 0);
-        const { pk, pkh } = await getPk(derivationPath);
-        restoreLedger(derivationPath, pk, pkh, account.label);
-        closeModal();
-      },
+      () =>
+        withTimeout(async () => {
+          toast({
+            title: "Request sent to Ledger",
+            description: "Open the Tezos app on your Ledger and approve the operation",
+            status: "info",
+          });
+          const derivationPath = makeDerivationPath(account.derivationPath, 0);
+          const { pk, pkh } = await getPk(derivationPath);
+          restoreLedger(derivationPath, pk, pkh, account.label);
+          closeModal();
+        }, LEDGER_TIMEOUT),
       error => {
         if (error.name === "PublicKeyRetrievalError") {
           return {
