@@ -7,6 +7,7 @@ import {
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
+  mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../../mocks/factories";
 import accountsSlice from "../../../utils/redux/slices/accountsSlice";
@@ -25,8 +26,8 @@ const fixture = (goToStep: (step: Step) => void, account: NameAccountStep["accou
 
 describe("<NameAccount />", () => {
   const accounts = [
-    { type: "ledger" as const, defaultLabel: "Ledger Account 1" },
-    { type: "mnemonic" as const, mnemonic: mnemonic1, defaultLabel: "Restored Mnemonic Account" },
+    { type: "ledger" as const, defaultLabel: "Account 1" },
+    { type: "mnemonic" as const, mnemonic: mnemonic1, defaultLabel: "Account" },
   ];
   describe.each(accounts)("For $type", account => {
     it("sets a provided name", async () => {
@@ -60,36 +61,56 @@ describe("<NameAccount />", () => {
     });
   });
 
-  describe("sets unique default label for ledger account", () => {
-    it("among other account types", async () => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0, "Ledger Account 1")));
-      store.dispatch(accountsSlice.actions.addAccount(mockSocialAccount(1, "Ledger Account 2")));
-      store.dispatch(
-        accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(2, "Ledger Account 3")])
-      );
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(4, "Ledger Account 5")));
-      // TODO: add secret key account?
+  describe("For ledger", () => {
+    const existingAccounts = [
+      {
+        type: "ledger" as const,
+        accounts: [mockLedgerAccount(0, "Account 1"), mockLedgerAccount(2, "Account 3")],
+      },
+      {
+        type: "social" as const,
+        accounts: [mockSocialAccount(0, "Account 1"), mockSocialAccount(2, "Account 3")],
+      },
+      {
+        type: "mnemonic" as const,
+        accounts: [mockMnemonicAccount(0, "Account 1"), mockMnemonicAccount(2, "Account 3")],
+      },
+      {
+        type: "secret_key" as const,
+        accounts: [mockSecretKeyAccount(0, "Account 1"), mockSecretKeyAccount(2, "Account 3")],
+      },
+    ];
+    describe.each(existingAccounts)("among $type accounts", existingAccounts => {
+      it("sets unique default label", async () => {
+        if (existingAccounts.type === "mnemonic") {
+          store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts));
+        } else {
+          existingAccounts.accounts.forEach(account =>
+            store.dispatch(accountsSlice.actions.addAccount(account))
+          );
+        }
 
-      const account = { type: "ledger" as const };
-      render(fixture(goToStepMock, account));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
+        const account = { type: "ledger" as const };
+        render(fixture(goToStepMock, account));
+        const confirmBtn = screen.getByRole("button", { name: /continue/i });
+        fireEvent.click(confirmBtn);
 
-      await waitFor(() => {
-        expect(goToStepMock).toBeCalledTimes(1);
-      });
-      expect(goToStepMock).toBeCalledWith({
-        type: StepType.derivationPath,
-        account: { ...account, label: "Ledger Account 4" },
+        await waitFor(() => {
+          expect(goToStepMock).toBeCalledTimes(1);
+        });
+        expect(goToStepMock).toBeCalledWith({
+          type: StepType.derivationPath,
+          account: { ...account, label: "Account 2" },
+        });
       });
     });
 
-    it("among multisig accounts", async () => {
+    it("among multisig accounts sets unique default label", async () => {
       store.dispatch(
         multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
       );
-      store.dispatch(renameAccount(mockMultisigAccount(0), "Ledger Account 1"));
-      store.dispatch(renameAccount(mockMultisigAccount(1), "Ledger Account 3"));
+      store.dispatch(renameAccount(mockMultisigAccount(0), "Account 1"));
+      store.dispatch(renameAccount(mockMultisigAccount(1), "Account 3"));
 
       const account = { type: "ledger" as const };
       render(fixture(goToStepMock, account));
@@ -101,13 +122,13 @@ describe("<NameAccount />", () => {
       });
       expect(goToStepMock).toBeCalledWith({
         type: StepType.derivationPath,
-        account: { ...account, label: "Ledger Account 2" },
+        account: { ...account, label: "Account 2" },
       });
     });
 
-    it("among contacts", async () => {
-      store.dispatch(contactsActions.upsert({ name: "Ledger Account 1", pkh: "pkh1" }));
-      store.dispatch(contactsActions.upsert({ name: "Ledger Account 3", pkh: "pkh3" }));
+    it("among contacts sets unique default label", async () => {
+      store.dispatch(contactsActions.upsert({ name: "Account 1", pkh: "pkh1" }));
+      store.dispatch(contactsActions.upsert({ name: "Account 3", pkh: "pkh3" }));
 
       const account = { type: "ledger" as const };
       render(fixture(goToStepMock, account));
@@ -119,7 +140,7 @@ describe("<NameAccount />", () => {
       });
       expect(goToStepMock).toBeCalledWith({
         type: StepType.derivationPath,
-        account: { ...account, label: "Ledger Account 2" },
+        account: { ...account, label: "Account 2" },
       });
     });
   });

@@ -166,6 +166,7 @@ export const useAllAccounts = (): Account[] => {
   return [...implicit, ...multisig];
 };
 
+// Checks if a label is unique among all accounts and contacts.
 export const useIsUniqueLabel = () => {
   const accountLabels = useAllAccounts().map(account => account.label);
   const contactNames = Object.values(useContacts()).map(contact => contact.name);

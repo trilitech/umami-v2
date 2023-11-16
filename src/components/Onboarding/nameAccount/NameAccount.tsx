@@ -2,6 +2,11 @@ import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 import { useIsUniqueLabel } from "../../../utils/hooks/accountHooks";
 import NameAccountDisplay from "./NameAccountDisplay";
 
+export const DEFAULT_ACCOUNT_LABEL = "Account";
+
+export const indexedDefaultAccountLabel = (index: number): string =>
+  `${DEFAULT_ACCOUNT_LABEL} ${index + 1}`;
+
 /**
  * This component is used to add a label to ledger account or to mnemonic account group.
  *
@@ -30,19 +35,15 @@ export const NameAccount = ({
         return goToStep({ type: StepType.masterPassword, account: { ...account, label: label } });
       case "ledger":
         // Ledger account label, each account should have unique label among all other accounts / contacts.
-        label = label.length > 0 ? label : firstUnusedLedgerLabel(isUniqueLabel);
+        label = label.length > 0 ? label : firstUnusedDefaultLabel(isUniqueLabel);
         return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
       case "mnemonic":
         // Mnemonic account group label, individual accounts are named in {@link restoreRevealedMnemonicAccounts}.
-        label = label.length > 0 ? label : `Restored Mnemonic Account`;
+        label = label.length > 0 ? label : DEFAULT_ACCOUNT_LABEL;
         return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
     }
-
-    // TODO: throw an error if the account type is not supported
   };
 
-  // TODO: Is the subtitle correct? Should we use a different one for mnemonics?
-  // TODO: maybe split name account step into name ledger & name mnemonic?
   return (
     <NameAccountDisplay
       subtitle="Please choose a name for your first account. You can edit your account name later."
@@ -51,13 +52,12 @@ export const NameAccount = ({
   );
 };
 
-const firstUnusedLedgerLabel = (isUniqueLabel: (label: string) => boolean): string => {
-  const baseLabel = "Ledger Account";
-  let index = 1;
-  while (!isUniqueLabel(`${baseLabel} ${index}`)) {
+const firstUnusedDefaultLabel = (isUniqueLabel: (label: string) => boolean): string => {
+  let index = 0;
+  while (!isUniqueLabel(indexedDefaultAccountLabel(index))) {
     index += 1;
   }
-  return `${baseLabel} ${index}`;
+  return indexedDefaultAccountLabel(index);
 };
 
 export default NameAccount;

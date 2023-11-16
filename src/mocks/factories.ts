@@ -185,7 +185,7 @@ export const mockLedgerAccount = (index: number, label?: string) => {
   return account;
 };
 
-// Use {@link} to set a label for a multisig account.
+// Use {@link renameAccount} to set a label for a multisig account.
 export const mockMultisigAccount = (index: number): MultisigAccount => ({
   type: "multisig",
   address: mockContractAddress(index),
