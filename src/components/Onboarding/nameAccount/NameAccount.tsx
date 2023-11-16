@@ -8,12 +8,12 @@ export const indexedDefaultAccountLabel = (index: number): string =>
   `${DEFAULT_ACCOUNT_LABEL} ${index + 1}`;
 
 /**
- * This component is used to add a label to a newly created account. 
- * 
- * The step is used for creating 
+ * This component is used to add a label to a newly created account.
+ *
+ * The step is used for creating
  *   - ledger accounts
- *   - secret key accounts 
- *   - mnemonic account groups 
+ *   - secret key accounts
+ *   - mnemonic account groups
  * Account that is being created could be either never used or used before.
  *
  * If the label is not provided by the user, the default name will be used.
