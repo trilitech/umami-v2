@@ -8,10 +8,13 @@ export const indexedDefaultAccountLabel = (index: number): string =>
   `${DEFAULT_ACCOUNT_LABEL} ${index + 1}`;
 
 /**
- * This component is used to add a label to ledger account or to mnemonic account group.
- *
- * NameAccount is only used when adding a mnemonic account group ar a ledger account,
- * which could be either never used or used before.
+ * This component is used to add a label to a newly created account. 
+ * 
+ * The step is used for creating 
+ *   - ledger accounts
+ *   - secret key accounts 
+ *   - mnemonic account groups 
+ * Account that is being created could be either never used or used before.
  *
  * If the label is not provided by the user, the default name will be used.
  *
@@ -34,7 +37,7 @@ export const NameAccount = ({
       case "secret_key":
         return goToStep({ type: StepType.masterPassword, account: { ...account, label: label } });
       case "ledger":
-        // Ledger account label, each account should have unique label among all other accounts / contacts.
+        // Each account should have a unique label among all other accounts / contacts.
         label = label.length > 0 ? label : firstUnusedDefaultLabel(isUniqueLabel);
         return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
       case "mnemonic":
