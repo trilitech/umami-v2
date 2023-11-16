@@ -68,6 +68,7 @@ describe("<NameAccount />", () => {
         accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(2, "Ledger Account 3")])
       );
       store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(4, "Ledger Account 5")));
+      // TODO: add secret key account?
 
       const account = { type: "ledger" as const };
       render(fixture(goToStepMock, account));
