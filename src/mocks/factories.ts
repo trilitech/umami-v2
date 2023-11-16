@@ -126,11 +126,11 @@ export const mockImplicitAccount = (
   fingerPrint = "mockPrint"
 ): ImplicitAccount => {
   switch (type) {
-    case "mnemonic": {
-      const account = mockMnemonicAccount(index);
-      account["seedFingerPrint"] = fingerPrint;
-      return account;
-    }
+    case "mnemonic":
+      return {
+        ...mockMnemonicAccount(index),
+        seedFingerPrint: fingerPrint,
+      };
     case "social":
       return mockSocialAccount(index);
     case "ledger":
@@ -140,20 +140,16 @@ export const mockImplicitAccount = (
   }
 };
 
-export const mockMnemonicAccount = (index: number, label?: string): MnemonicAccount => {
-  const fingerPrint = "mockPrint";
-  const account: MnemonicAccount = {
-    curve: "ed25519",
-    derivationPath: getDefaultDerivationPath(index),
-    derivationPathPattern: "44'/1729'/?'/0'",
-    type: "mnemonic",
-    label: label || mockAccountLabel("mnemonic", index),
-    address: mockImplicitAddress(index),
-    pk: mockPk(index),
-    seedFingerPrint: `${fingerPrint}`,
-  };
-  return account;
-};
+export const mockMnemonicAccount = (index: number, label?: string): MnemonicAccount => ({
+  curve: "ed25519",
+  derivationPath: getDefaultDerivationPath(index),
+  derivationPathPattern: "44'/1729'/?'/0'",
+  type: "mnemonic",
+  label: label || mockAccountLabel("mnemonic", index),
+  address: mockImplicitAddress(index),
+  pk: mockPk(index),
+  seedFingerPrint: "mockPrint",
+});
 
 export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAccount => ({
   type: "secret_key",
@@ -162,18 +158,15 @@ export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAc
   pk: mockPk(index),
 });
 
-export const mockSocialAccount = (index: number, label?: string) => {
-  const account: SocialAccount = {
-    type: "social",
-    label: label || mockAccountLabel("social", index),
-    address: mockImplicitAddress(index),
-    pk: mockPk(index),
-    idp: "google",
-  };
-  return account;
-};
+export const mockSocialAccount = (index: number, label?: string): SocialAccount => ({
+  type: "social",
+  label: label || mockAccountLabel("social", index),
+  address: mockImplicitAddress(index),
+  pk: mockPk(index),
+  idp: "google",
+});
 
-export const mockLedgerAccount = (index: number, label?: string) => {
+export const mockLedgerAccount = (index: number, label?: string): LedgerAccount => {
   const account: LedgerAccount = {
     type: "ledger",
     derivationPath: getDefaultDerivationPath(index),

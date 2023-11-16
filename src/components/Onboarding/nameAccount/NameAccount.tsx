@@ -14,7 +14,6 @@ export const indexedDefaultAccountLabel = (index: number): string =>
  *   - ledger accounts
  *   - secret key accounts
  *   - mnemonic account groups
- * Account that is being created could be either never used or used before.
  *
  * If the label is not provided by the user, the default name will be used.
  *
