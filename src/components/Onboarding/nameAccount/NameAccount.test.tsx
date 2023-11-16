@@ -26,7 +26,7 @@ const fixture = (goToStep: (step: Step) => void, account: NameAccountStep["accou
 describe("<NameAccount />", () => {
   const accounts = [
     { type: "ledger" as const, defaultLabel: "Ledger Account 1" },
-    { type: "mnemonic" as const, mnemonic: mnemonic1, defaultLabel: "Restored Account" },
+    { type: "mnemonic" as const, mnemonic: mnemonic1, defaultLabel: "Restored Mnemonic Account" },
   ];
   describe.each(accounts)("For $type", account => {
     it("sets a provided name", async () => {
