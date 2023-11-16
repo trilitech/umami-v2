@@ -1,16 +1,21 @@
 import { renderHook } from "@testing-library/react";
 import {
   mockImplicitAccount,
+  mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
+  mockSecretKeyAccount,
+  mockSocialAccount,
 } from "../../mocks/factories";
+import { AllTheProviders } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
 import accountsSlice from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
+import { contactsActions } from "../redux/slices/contactsSlice";
 import multisigsSlice from "../redux/slices/multisigsSlice";
 import store from "../redux/store";
-import { useGetBestSignerForAccount, useIsOwnedAddress } from "./accountHooks";
-import { AllTheProviders } from "../../mocks/testUtils";
+import renameAccount from "../redux/thunks/renameAccount";
+import { useGetBestSignerForAccount, useIsOwnedAddress, useIsUniqueLabel } from "./accountHooks";
 
 describe("accountHooks", () => {
   describe("useGetBestSignerForAccount", () => {
@@ -39,6 +44,44 @@ describe("accountHooks", () => {
 
       const { result } = renderHook(() => useGetBestSignerForAccount(), { wrapper: ReduxStore });
       expect(result.current(multisig)).toEqual(mockImplicitAccount(1));
+    });
+  });
+
+  describe("useIsUniqueLabel", () => {
+    const testCase = [
+      { testLabel: "Unique Label", expected: true },
+      { testLabel: "Ledger Account Label", expected: false },
+      { testLabel: "Social Account Label", expected: false },
+      { testLabel: "Secret Key Account Label", expected: false },
+      { testLabel: "Mnemonic Account Label", expected: false },
+      { testLabel: "Multisig Account Label", expected: false },
+      { testLabel: "Contact Label", expected: false },
+    ];
+
+    describe.each(testCase)("For $testLabel", testCase => {
+      it(`returns ${testCase.expected}`, () => {
+        store.dispatch(
+          accountsSlice.actions.addAccount(mockLedgerAccount(0, "Ledger Account Label"))
+        );
+        store.dispatch(
+          accountsSlice.actions.addAccount(mockSocialAccount(1, "Social Account Label"))
+        );
+        store.dispatch(
+          accountsSlice.actions.addAccount(mockSecretKeyAccount(2, "Secret Key Account Label"))
+        );
+        store.dispatch(
+          accountsSlice.actions.addMockMnemonicAccounts([
+            mockMnemonicAccount(3, "Mnemonic Account Label"),
+          ])
+        );
+        store.dispatch(multisigsSlice.actions.setMultisigs([mockMultisigAccount(4)]));
+        store.dispatch(renameAccount(mockMultisigAccount(5), "Multisig Account Label"));
+        store.dispatch(contactsActions.upsert({ name: "Contact Label", pkh: "pkh1" }));
+
+        const { result } = renderHook(() => useIsUniqueLabel(), { wrapper: ReduxStore });
+
+        expect(result.current(testCase.testLabel)).toEqual(testCase.expected);
+      });
     });
   });
 

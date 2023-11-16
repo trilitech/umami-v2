@@ -15,6 +15,7 @@ import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
 import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
+import { useContacts } from "./contactsHooks";
 
 const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
 
@@ -163,6 +164,13 @@ export const useAllAccounts = (): Account[] => {
   const implicit = useImplicitAccounts();
   const multisig = useMultisigAccounts();
   return [...implicit, ...multisig];
+};
+
+// Checks if a label is unique among all accounts and contacts.
+export const useIsUniqueLabel = () => {
+  const accountLabels = useAllAccounts().map(account => account.label);
+  const contactNames = Object.values(useContacts()).map(contact => contact.name);
+  return (label: string) => ![...accountLabels, ...contactNames].includes(label);
 };
 
 export const useIsOwnedAddress = (address: RawPkh) => {
