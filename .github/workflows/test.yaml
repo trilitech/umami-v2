@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 18.15.x
           cache: "yarn"
 
       - name: Register yarn 1.x cache folder
