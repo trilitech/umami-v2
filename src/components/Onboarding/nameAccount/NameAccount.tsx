@@ -34,9 +34,9 @@ export const NameAccount = ({
 
     switch (account.type) {
       case "secret_key":
+        label = label.length > 0 ? label : firstUnusedDefaultLabel(isUniqueLabel);
         return goToStep({ type: StepType.masterPassword, account: { ...account, label: label } });
       case "ledger":
-        // Each account should have a unique label among all other accounts / contacts.
         label = label.length > 0 ? label : firstUnusedDefaultLabel(isUniqueLabel);
         return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
       case "mnemonic":
