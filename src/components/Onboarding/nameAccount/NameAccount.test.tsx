@@ -26,9 +26,21 @@ const fixture = (goToStep: (step: Step) => void, account: NameAccountStep["accou
 
 describe("<NameAccount />", () => {
   const accounts = [
-    { type: "ledger" as const, defaultLabel: "Account 1" },
-    { type: "mnemonic" as const, mnemonic: mnemonic1, defaultLabel: "Account" },
+    { type: "ledger" as const, defaultLabel: "Account 1", nextStep: StepType.derivationPath },
+    {
+      type: "mnemonic" as const,
+      mnemonic: mnemonic1,
+      defaultLabel: "Account",
+      nextStep: StepType.derivationPath,
+    },
+    {
+      type: "secret_key" as const,
+      secretKey: "secret key",
+      defaultLabel: "Account 1",
+      nextStep: StepType.masterPassword,
+    },
   ];
+
   describe.each(accounts)("For $type", account => {
     it("sets a provided name", async () => {
       render(fixture(goToStepMock, account));
@@ -41,7 +53,7 @@ describe("<NameAccount />", () => {
         expect(goToStepMock).toBeCalledTimes(1);
       });
       expect(goToStepMock).toBeCalledWith({
-        type: StepType.derivationPath,
+        type: account.nextStep,
         account: { ...account, label: "name" },
       });
     });
@@ -55,13 +67,13 @@ describe("<NameAccount />", () => {
         expect(goToStepMock).toBeCalledTimes(1);
       });
       expect(goToStepMock).toBeCalledWith({
-        type: StepType.derivationPath,
+        type: account.nextStep,
         account: { ...account, label: account.defaultLabel },
       });
     });
   });
 
-  describe("For ledger", () => {
+  describe.each(accounts.filter(account => account.type !== "mnemonic"))("For $type", account => {
     const existingAccounts = [
       {
         type: "ledger" as const,
@@ -90,7 +102,6 @@ describe("<NameAccount />", () => {
           );
         }
 
-        const account = { type: "ledger" as const };
         render(fixture(goToStepMock, account));
         const confirmBtn = screen.getByRole("button", { name: /continue/i });
         fireEvent.click(confirmBtn);
@@ -99,7 +110,7 @@ describe("<NameAccount />", () => {
           expect(goToStepMock).toBeCalledTimes(1);
         });
         expect(goToStepMock).toBeCalledWith({
-          type: StepType.derivationPath,
+          type: account.nextStep,
           account: { ...account, label: "Account 2" },
         });
       });
@@ -112,7 +123,6 @@ describe("<NameAccount />", () => {
       store.dispatch(renameAccount(mockMultisigAccount(0), "Account 1"));
       store.dispatch(renameAccount(mockMultisigAccount(1), "Account 3"));
 
-      const account = { type: "ledger" as const };
       render(fixture(goToStepMock, account));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       fireEvent.click(confirmBtn);
@@ -121,7 +131,7 @@ describe("<NameAccount />", () => {
         expect(goToStepMock).toBeCalledTimes(1);
       });
       expect(goToStepMock).toBeCalledWith({
-        type: StepType.derivationPath,
+        type: account.nextStep,
         account: { ...account, label: "Account 2" },
       });
     });
@@ -130,7 +140,6 @@ describe("<NameAccount />", () => {
       store.dispatch(contactsActions.upsert({ name: "Account 1", pkh: "pkh1" }));
       store.dispatch(contactsActions.upsert({ name: "Account 3", pkh: "pkh3" }));
 
-      const account = { type: "ledger" as const };
       render(fixture(goToStepMock, account));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       fireEvent.click(confirmBtn);
@@ -139,7 +148,7 @@ describe("<NameAccount />", () => {
         expect(goToStepMock).toBeCalledTimes(1);
       });
       expect(goToStepMock).toBeCalledWith({
-        type: StepType.derivationPath,
+        type: account.nextStep,
         account: { ...account, label: "Account 2" },
       });
     });
