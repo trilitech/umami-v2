@@ -59,6 +59,12 @@ Note: you still have to have your `yarn start` running in a separate terminal
 
 Build electron app for desired platform (don't forget to run `yarn build` before running this one)
 
-For the mac build you'd need signing credentials.
+For the mac build you'd need signing credentials & the certificate. Alongside that you need to obtain an [Apple app specific password](https://support.apple.com/en-gb/102654). The app will be signed automatically during the packaging process.
+
+For Windows you need the USB dongle with the certificate. You package the app using `yarn electron:package:win` and then run
+
+```
+signtool sign /tr http://timestamp.sectigo.com /td sha256 /fd sha256 /a '.\dist\<installer>.exe'
+```
 
 To make yourself a debugging build run `yarn electron:package:mac:debug`. It will work only on your machine, but you'll be able to play around with it. For the same purpose you might find helpful enabling devTools in `public/electron.js` before running `yarn build` and this command.
