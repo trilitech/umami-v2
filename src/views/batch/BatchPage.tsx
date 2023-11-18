@@ -1,5 +1,5 @@
 import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import CSVFileUploader from "../../components/CSVFileUploader";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";

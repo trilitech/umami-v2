@@ -4,12 +4,20 @@
     "project": "./tsconfig.json",
     "parser": "@typescript-eslint/parser"
   },
-  "plugins": ["@typescript-eslint", "unused-imports"],
+  "plugins": [
+    "@typescript-eslint",
+    "unused-imports",
+    "jest",
+    "react",
+    "react-hooks",
+    "testing-library"
+  ],
   "extends": [
-    "react-app",
-    "react-app/jest",
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:testing-library/react"
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off", // TODO: change to error https://app.asana.com/0/0/1204322668303155/f
@@ -23,11 +31,16 @@
     "@typescript-eslint/await-thenable": "warn",
     "@typescript-eslint/no-unnecessary-condition": "warn",
     "unused-imports/no-unused-imports": "warn",
-    "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": "allow-with-description" }]
+    "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": "allow-with-description" }],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": ".*", "varsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/triple-slash-reference": "off"
   },
   "overrides": [
     {
-      "files": ["src/e2e/*"],
+      "files": ["src/e2e/**/*.ts"],
       "rules": {
         "testing-library/prefer-screen-queries": "off"
       }
