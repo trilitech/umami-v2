@@ -1,7 +1,7 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import colors from "../../style/colors";
 import { prettyTezAmount } from "../../utils/format";
-import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
+import { useIsOwnedAddress } from "../../utils/hooks/setAccountDataHooks";
 import { TransactionOperation } from "../../utils/tezos";
 import { useShowAddress } from "./useShowAddress";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";

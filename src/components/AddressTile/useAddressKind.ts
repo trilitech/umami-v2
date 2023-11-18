@@ -1,5 +1,5 @@
 import { Address } from "../../types/Address";
-import { useGetOwnedAccountSafe } from "../../utils/hooks/accountHooks";
+import { useGetOwnedAccountSafe } from "../../utils/hooks/setAccountDataHooks";
 import { useGetBaker } from "../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
 import { AddressKind, BakerAddress, ContactAddress, OwnedAddress } from "./types";

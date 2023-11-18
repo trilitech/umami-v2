@@ -15,7 +15,7 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import WarningIcon from "../../assets/icons/Warning";
 import colors from "../../style/colors";
-import { useReset } from "../../utils/hooks/accountHooks";
+import { useReset } from "../../utils/hooks/setAccountDataHooks";
 import { FormErrorMessage } from "../FormErrorMessage";
 
 const CONFIRMATION_CODE = "wasabi";

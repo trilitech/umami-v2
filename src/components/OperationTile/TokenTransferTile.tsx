@@ -2,7 +2,7 @@ import { AspectRatio, Box, Center, Flex, Image, Text, Tooltip } from "@chakra-ui
 import colors from "../../style/colors";
 import { Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { TokenTransfer } from "../../types/Transfer";
-import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
+import { useIsOwnedAddress } from "../../utils/hooks/setAccountDataHooks";
 import { TransactionOperation } from "../../utils/tezos";
 import { useShowAddress } from "./useShowAddress";
 import { TzktLink } from "./TzktLink";

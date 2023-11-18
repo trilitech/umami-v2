@@ -14,7 +14,7 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import { useAllAccounts } from "../../utils/hooks/accountHooks";
+import { useAllAccounts } from "../../utils/hooks/setAccountDataHooks";
 import { useContactExists } from "../../utils/hooks/contactsHooks";
 import FormPageHeader from "../SendFlow/FormPageHeader";
 import renameAccount from "../../utils/redux/thunks/renameAccount";

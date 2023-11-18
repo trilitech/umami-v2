@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import React from "react";
-import { useGetImplicitAccountSafe } from "../../../hooks/accountHooks";
+import { useGetImplicitAccountSafe } from "../../../hooks/setAccountDataHooks";
 import { walletClient } from "../../beacon";
 import SignButton from "../../../../components/SendFlow/SignButton";
 

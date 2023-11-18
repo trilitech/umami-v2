@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
-import { useAllAccounts, useGetOwnedAccountSafe } from "../utils/hooks/accountHooks";
+import { useAllAccounts, useGetOwnedAccountSafe } from "../utils/hooks/setAccountDataHooks";
 import { useContactExists } from "../utils/hooks/contactsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";

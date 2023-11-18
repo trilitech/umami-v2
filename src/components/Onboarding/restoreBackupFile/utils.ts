@@ -1,6 +1,6 @@
 import { decrypt } from "../../../utils/crypto/AES";
 import { EncryptedData } from "../../../utils/crypto/types";
-import { useRestoreFromMnemonic } from "../../../utils/hooks/accountHooks";
+import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks";
 
 export const useRestoreV1BackupFile = () => {
   const restoreFromMnemonic = useRestoreFromMnemonic();

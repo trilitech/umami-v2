@@ -19,7 +19,7 @@ import {
   useAllAccounts,
   useRemoveMnemonic,
   useRemoveNonMnemonic,
-} from "../../utils/hooks/accountHooks";
+} from "../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";

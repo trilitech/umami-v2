@@ -2,7 +2,7 @@ import { Button, VStack, ListItem, OrderedList, useToast } from "@chakra-ui/reac
 import { RestoreLedgerStep } from "../useOnboardingModal";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { getPk } from "../../../utils/ledger/pk";
-import { useRestoreLedger } from "../../../utils/hooks/accountHooks";
+import { useRestoreLedger } from "../../../utils/hooks/setAccountDataHooks";
 import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import USBIcon from "../../../assets/icons/USB";

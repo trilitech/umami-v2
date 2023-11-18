@@ -3,7 +3,7 @@ import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { RpcClient } from "@taquito/rpc";
 import ModalContentWrapper from "./ModalContentWrapper";
-import { useRestoreLedger } from "../../utils/hooks/accountHooks";
+import { useRestoreLedger } from "../../utils/hooks/setAccountDataHooks";
 import { defaultDerivationPathPattern } from "../../utils/account/derivationPathUtils";
 import { MAINNET } from "../../types/Network";
 import WalletPlusIcon from "../../assets/icons/WalletPlus";

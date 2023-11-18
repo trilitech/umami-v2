@@ -3,7 +3,7 @@ import { Box, Button, Center, Menu, MenuButton, Wrap } from "@chakra-ui/react";
 import { differenceBy } from "lodash";
 import { useState } from "react";
 import { Account } from "../types/Account";
-import { useAllAccounts } from "../utils/hooks/accountHooks";
+import { useAllAccounts } from "../utils/hooks/setAccountDataHooks";
 import AccountListDisplay from "./AccountSelector/AccountListDisplay";
 import AddressPill from "./AddressPill/AddressPill";
 

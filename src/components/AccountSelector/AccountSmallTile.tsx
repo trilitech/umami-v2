@@ -1,5 +1,5 @@
 import { FlexProps } from "@chakra-ui/react";
-import { useAllAccounts } from "../../utils/hooks/accountHooks";
+import { useAllAccounts } from "../../utils/hooks/setAccountDataHooks";
 import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
 import { AccountSmallTileDisplay } from "./AccountSmallTileDisplay";
 

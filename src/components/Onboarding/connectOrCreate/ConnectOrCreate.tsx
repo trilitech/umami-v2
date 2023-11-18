@@ -1,7 +1,7 @@
 import { Button, Flex, VStack, Text, Divider, useToast } from "@chakra-ui/react";
 import { GoogleAuth } from "../../../GoogleAuth";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { useRestoreSocial } from "../../../utils/hooks/accountHooks";
+import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
 import { getPkAndPkhFromSk } from "../../../utils/tezos";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
