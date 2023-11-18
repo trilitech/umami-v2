@@ -183,13 +183,10 @@
       }
     },
     "win": {
-      "target": [
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
+      "icon": "icons/512x512.png",
+      "target": "nsis",
+      "signingHashAlgorithms": [
+        "sha256"
       ]
     },
     "linux": {
