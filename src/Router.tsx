@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import HomeView from "./views/home/HomeView";
 import ImportSeed from "./ImportSeed";
-import { useImplicitAccounts } from "./utils/hooks/setAccountDataHooks";
+import { useImplicitAccounts } from "./utils/hooks/getAccountDataHooks";
 import { useAssetsPolling } from "./utils/useAssetsPolling";
 import NFTsView from "./views/nfts/NftsView";
 import OperationsView from "./views/operations/OperationsView";

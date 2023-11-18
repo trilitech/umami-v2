@@ -5,7 +5,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useImplicitAccounts } from "../../utils/hooks/setAccountDataHooks";
+import { useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
 import ConnectOptions from "./connectOptions/ConnectOptions";
 import ConnectOrCreate from "./connectOrCreate/ConnectOrCreate";
 import Eula from "./eula/Eula";

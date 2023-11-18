@@ -10,7 +10,7 @@ import { DynamicModalContext } from "../../DynamicModal";
 import { useContext } from "react";
 import DelegationFormPage from "../../SendFlow/Delegation/FormPage";
 import UndelegationFormPage from "../../SendFlow/Undelegation/FormPage";
-import { useGetOwnedAccount } from "../../../utils/hooks/setAccountDataHooks";
+import { useGetOwnedAccount } from "../../../utils/hooks/getAccountDataHooks";
 import { Account } from "../../../types/Account";
 
 const Row: React.FC<

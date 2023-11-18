@@ -18,7 +18,7 @@ import {
   useAllAccounts,
   useGetOwnedSignersForAccount,
   useImplicitAccounts,
-} from "../../utils/hooks/setAccountDataHooks";
+} from "../../utils/hooks/getAccountDataHooks";
 import { useBakerList } from "../../utils/hooks/assetsHooks";
 import { useContacts } from "../../utils/hooks/contactsHooks";
 import { Suggestions } from "./Suggestions";

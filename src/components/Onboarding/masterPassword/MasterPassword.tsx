@@ -1,6 +1,6 @@
 import { useToast } from "@chakra-ui/react";
+import { useCheckPasswordValidity } from "../../../utils/hooks/getAccountDataHooks";
 import {
-  useCheckPasswordValidity,
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
 } from "../../../utils/hooks/setAccountDataHooks";

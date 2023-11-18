@@ -19,9 +19,9 @@ import {
   useGetBestSignerForAccount,
   useIsOwnedAddress,
   useIsUniqueLabel,
-} from "./setAccountDataHooks";
+} from "./getAccountDataHooks";
 
-describe("setAccountDataHooks", () => {
+describe("getAccountDataHooks", () => {
   describe("useGetBestSignerForAccount", () => {
     it("returns the account itself for implicit accounts", () => {
       const account = mockMnemonicAccount(0);

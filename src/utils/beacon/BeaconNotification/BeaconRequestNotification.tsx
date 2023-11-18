@@ -11,7 +11,7 @@ import React from "react";
 import { ImplicitOperations } from "../../../types/AccountOperations";
 import { isValidContractPkh, parseContractPkh, parseImplicitPkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
-import { useGetImplicitAccountSafe } from "../../hooks/setAccountDataHooks";
+import { useGetImplicitAccountSafe } from "../../hooks/getAccountDataHooks";
 import { walletClient } from "../beacon";
 import BeaconErrorPanel from "./panels/BeaconErrorPanel";
 import PermissionRequestPanel from "./panels/PermissionRequestPanel";

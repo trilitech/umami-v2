@@ -20,7 +20,7 @@ import { RawPkh } from "../../types/Address";
 import {
   useGetBestSignerForAccount,
   useGetOwnedAccount,
-} from "../../utils/hooks/setAccountDataHooks";
+} from "../../utils/hooks/getAccountDataHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";

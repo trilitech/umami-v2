@@ -5,7 +5,7 @@ import {
   useGetBestSignerForAccount,
   useGetImplicitAccount,
   useGetOwnedAccount,
-} from "../../utils/hooks/setAccountDataHooks";
+} from "../../utils/hooks/getAccountDataHooks";
 import { useClearBatch } from "../../utils/hooks/batchesHooks";
 import { DynamicModalContext } from "../DynamicModal";
 import { AccountOperations, makeAccountOperations } from "../../types/AccountOperations";

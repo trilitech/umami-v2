@@ -3,7 +3,7 @@ import { FC } from "react";
 import { QRCode } from "react-qrcode-logo";
 import AddressPill from "./AddressPill/AddressPill";
 import { parsePkh } from "../types/Address";
-import { useGetOwnedAccountSafe } from "../utils/hooks/setAccountDataHooks";
+import { useGetOwnedAccountSafe } from "../utils/hooks/getAccountDataHooks";
 import FormPageHeader from "./SendFlow/FormPageHeader";
 
 export const ReceiveModal: FC<{
