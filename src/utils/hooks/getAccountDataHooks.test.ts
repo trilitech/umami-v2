@@ -15,9 +15,13 @@ import { contactsActions } from "../redux/slices/contactsSlice";
 import multisigsSlice from "../redux/slices/multisigsSlice";
 import store from "../redux/store";
 import renameAccount from "../redux/thunks/renameAccount";
-import { useGetBestSignerForAccount, useIsOwnedAddress, useIsUniqueLabel } from "./accountHooks";
+import {
+  useGetBestSignerForAccount,
+  useIsOwnedAddress,
+  useIsUniqueLabel,
+} from "./getAccountDataHooks";
 
-describe("accountHooks", () => {
+describe("getAccountDataHooks", () => {
   describe("useGetBestSignerForAccount", () => {
     it("returns the account itself for implicit accounts", () => {
       const account = mockMnemonicAccount(0);

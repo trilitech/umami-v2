@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
 import { ImplicitAddress } from "../../../../types/Address";
-import { useGetImplicitAccountSafe } from "../../../../utils/hooks/accountHooks";
+import { useGetImplicitAccountSafe } from "../../../../utils/hooks/getAccountDataHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import MultisigActionButton, { MultisigSignerState } from "./MultisigActionButton";

@@ -17,7 +17,10 @@ import Papa, { ParseResult } from "papaparse";
 import { FormProvider, useForm } from "react-hook-form";
 import { Operation } from "../../types/Operation";
 import { RawPkh } from "../../types/Address";
-import { useGetBestSignerForAccount, useGetOwnedAccount } from "../../utils/hooks/accountHooks";
+import {
+  useGetBestSignerForAccount,
+  useGetOwnedAccount,
+} from "../../utils/hooks/getAccountDataHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";

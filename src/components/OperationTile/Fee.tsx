@@ -4,7 +4,7 @@ import { OriginationOperation, TransactionOperation, DelegationOperation } from 
 import { BigNumber } from "bignumber.js";
 import { prettyTezAmount } from "../../utils/format";
 import { get } from "lodash";
-import { useIsOwnedAddress } from "../../utils/hooks/accountHooks";
+import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 import { OperationTileContext } from "./OperationTileContext";
 import React, { useContext } from "react";
 

@@ -1,9 +1,9 @@
 import { useToast } from "@chakra-ui/react";
+import { useCheckPasswordValidity } from "../../../utils/hooks/getAccountDataHooks";
 import {
-  useCheckPasswordValidity,
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
-} from "../../../utils/hooks/accountHooks";
+} from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { MasterPasswordStep } from "../useOnboardingModal";
 import EnterAndConfirmPassword from "./password/EnterAndConfirmPassword";

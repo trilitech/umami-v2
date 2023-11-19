@@ -18,7 +18,7 @@ import {
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { OwnedImplicitAccountsAutocomplete } from "../../../../components/AddressAutocomplete";
-import { useImplicitAccounts } from "../../../hooks/accountHooks";
+import { useImplicitAccounts } from "../../../hooks/getAccountDataHooks";
 import { walletClient } from "../../beacon";
 
 const PermissionRequestPanel: React.FC<{

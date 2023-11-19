@@ -2,7 +2,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import AccountCard from "../../components/AccountDrawer";
-import { useAllAccounts } from "../../utils/hooks/accountHooks";
+import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
 import { useDynamicModal } from "../../components/DynamicModal";

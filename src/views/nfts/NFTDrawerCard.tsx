@@ -21,7 +21,7 @@ import { RawPkh } from "../../types/Address";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { useContext } from "react";
 import SendNFTForm from "../../components/SendFlow/NFT/FormPage";
-import { useGetOwnedAccount } from "../../utils/hooks/accountHooks";
+import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
 import { artifactUri, mimeType } from "../../types/Token";
 import JsValueWrap from "../../components/AccountDrawer/JsValueWrap";
 import colors from "../../style/colors";

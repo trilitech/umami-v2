@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { Network } from "../types/Network";
-import { useImplicitAccounts } from "./hooks/accountHooks";
+import { useImplicitAccounts } from "./hooks/getAccountDataHooks";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
 import { assetsActions } from "./redux/slices/assetsSlice";
