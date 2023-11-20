@@ -72,14 +72,14 @@ const UpdateButton = () => {
   );
 };
 
-export const TopBar: React.FC<{ title: string }> = ({ title }) => {
+export const TopBar: React.FC<{ title: string | React.ReactNode }> = ({ title }) => {
   const { openWith } = useContext(DynamicModalContext);
   const [isSmallSize] = useMediaQuery("(max-width: 1200px)");
 
   return (
     <Box>
       <Flex h="88px" justifyContent="space-between" alignItems="center">
-        <Heading size="xl">{title}</Heading>
+        {typeof title === "string" ? <Heading size="xl">{title}</Heading> : title}
         <Box>
           <UpdateButton />
           {!isSmallSize && (

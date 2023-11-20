@@ -1,5 +1,14 @@
-import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
-import { every, pick } from "lodash";
+import {
+  Box,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerOverlay,
+  Flex,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
+import { every, pick, sumBy } from "lodash";
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NoNFTs } from "../../components/NoItems";
@@ -41,12 +50,25 @@ const NFTsViewBase = () => {
     nfts,
     selectedAccounts.map(account => account.address.pkh)
   );
+  const totalNFTs = sumBy(Object.values(selectedNFTs).flat(), nft => Number(nft?.balance || 0));
+
   const noNFTs = every(selectedNFTs, nfts => !nfts || nfts.length === 0);
   const drawerNFT = ownerPkh && (nfts[ownerPkh] || []).find(nft => fullId(nft) === nftId);
 
   return (
     <Flex direction="column" height="100%">
-      <TopBar title="NFTs" />
+      <TopBar
+        title={
+          <Flex alignItems="end">
+            <Heading size="xl" mr="6px">
+              NFTs
+            </Heading>
+            <Text size="xs" color={colors.gray[450]}>
+              ({totalNFTs})
+            </Text>
+          </Flex>
+        }
+      />
       {accountsFilter}
 
       {noNFTs ? (
