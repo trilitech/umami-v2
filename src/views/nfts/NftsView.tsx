@@ -63,7 +63,7 @@ const NFTsViewBase = () => {
             <Heading size="xl" mr="6px">
               NFTs
             </Heading>
-            <Text size="xs" color={colors.gray[450]}>
+            <Text data-testid="nft-total-amount" size="xs" color={colors.gray[450]}>
               ({totalNFTs})
             </Text>
           </Flex>

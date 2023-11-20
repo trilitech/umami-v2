@@ -68,4 +68,33 @@ describe("NFTsView", () => {
     expect(screen.getAllByTestId("nft-card")).toHaveLength(4);
     expect(screen.getAllByText("Tezzardz #10")).toHaveLength(4);
   });
+
+  it("displays total amount of nfts", () => {
+    store.dispatch(
+      accountsSlice.actions.addMockMnemonicAccounts([
+        mockMnemonicAccount(1),
+        mockMnemonicAccount(2),
+      ])
+    );
+    store.dispatch(networksActions.setCurrent(MAINNET));
+    store.dispatch(
+      updateTokenBalance([
+        mockNFTToken(1, mockImplicitAccount(1).address.pkh),
+        mockNFTToken(2, mockImplicitAccount(2).address.pkh, 2),
+      ])
+    );
+    store.dispatch(
+      tokensSlice.actions.addTokens({
+        network: MAINNET,
+        tokens: [
+          mockNFTToken(1, mockImplicitAddress(1).pkh).token,
+          mockNFTToken(2, mockImplicitAddress(2).pkh, 2).token,
+        ],
+      })
+    );
+
+    render(fixture());
+
+    expect(screen.getByTestId("nft-total-amount")).toHaveTextContent("3");
+  });
 });
