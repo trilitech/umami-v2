@@ -9,6 +9,12 @@ export const NFTGallery: React.FC<{
   nftsByOwner: Record<RawPkh, NFTBalance[] | undefined>;
   onSelect: (owner: RawPkh, nft: NFTBalance) => void;
 }> = ({ nftsByOwner, onSelect }) => {
+  const sortedByLastUpdate = Object.entries(nftsByOwner)
+    .flatMap(([owner, nfts]) => {
+      return (nfts || []).map(nft => ({ owner, nft }));
+    })
+    .sort((a, b) => (b.nft.lastLevel || 0) - (a.nft.lastLevel || 0));
+
   return (
     <SimpleGrid
       gridTemplateColumns="repeat(auto-fit, minmax(min(100%/2, max(274px, 100%/7)), 1fr))"
