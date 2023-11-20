@@ -4,6 +4,7 @@ import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks
 
 export const useRestoreV1BackupFile = () => {
   const restoreFromMnemonic = useRestoreFromMnemonic();
+  // TODO: add label reassignment
   return async (
     backup: { recoveryPhrases: [EncryptedData]; derivationPaths: [string] },
     password: string
@@ -18,7 +19,7 @@ export const useRestoreV1BackupFile = () => {
     try {
       for (const [i, encryptedMnemonic] of encrypted.entries()) {
         const mnemonic = await decrypt(encryptedMnemonic, password, "V1");
-        await restoreFromMnemonic(mnemonic, password, undefined, derivationPaths[i]);
+        await restoreFromMnemonic(mnemonic, password, "Account", derivationPaths[i]);
       }
     } catch (e) {
       throw new Error("Invalid password.");

@@ -87,14 +87,14 @@ export const restoreRevealedPublicKeyPairs = async (
  *
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param network - Stores Tezos network & tzkt indexer settings.
- * @param label - Account group prefix provided by the user.
+ * @param groupLabel - Account group prefix provided by the user.
  * @param derivationPathPattern - Path pattern for the account group that's being added.
  * @returns A list of revealed mnemonic accounts that will be added.
  */
 export const restoreRevealedMnemonicAccounts = async (
   mnemonic: string,
   network: Network,
-  label = "Account",
+  groupLabel: string,
   derivationPathPattern = defaultDerivationPathPattern
 ): Promise<MnemonicAccount[]> => {
   const pubKeyPairs = await restoreRevealedPublicKeyPairs(mnemonic, derivationPathPattern, network);
@@ -107,7 +107,7 @@ export const restoreRevealedMnemonicAccounts = async (
       makeDerivationPath(derivationPathPattern, accountIndex),
       derivationPathPattern,
       seedFingerPrint,
-      `${label}${pubKeyPairs.length > 1 ? " " + accountIndex : ""}`
+      groupLabel // TODO: remove? we only apply the group label here to change it later.
     );
   });
 };

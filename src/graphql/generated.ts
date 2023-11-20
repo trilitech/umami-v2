@@ -68,7 +68,7 @@ export type ConfigurationRecord = RecordInterface & {
   _modelApiKey: Scalars["String"];
   _publicationScheduledAt?: Maybe<Scalars["DateTime"]>;
   _publishedAt?: Maybe<Scalars["DateTime"]>;
-  /** SEO meta tags */
+  /** Generates SEO and Social card meta tags to be used in your frontend */
   _seoMetaTags: Array<Tag>;
   _status: ItemStatus;
   _unpublishingScheduledAt?: Maybe<Scalars["DateTime"]>;
@@ -114,7 +114,7 @@ export enum FaviconType {
 export type FileField = FileFieldInterface & {
   __typename?: "FileField";
   _createdAt: Scalars["DateTime"];
-  /** Editing URL */
+  /** The DatoCMS URL where you can edit this entity. To use this field, you need to set a X-Base-Editing-Url header in the request */
   _editingUrl?: Maybe<Scalars["String"]>;
   _updatedAt: Scalars["DateTime"];
   alt?: Maybe<Scalars["String"]>;
@@ -185,7 +185,7 @@ export type FileFieldUrlArgs = {
 
 export type FileFieldInterface = {
   _createdAt: Scalars["DateTime"];
-  /** Editing URL */
+  /** The DatoCMS URL where you can edit this entity. To use this field, you need to set a X-Base-Editing-Url header in the request */
   _editingUrl?: Maybe<Scalars["String"]>;
   _updatedAt: Scalars["DateTime"];
   alt?: Maybe<Scalars["String"]>;
@@ -1782,7 +1782,7 @@ export type NetworkRecord = RecordInterface & {
   _modelApiKey: Scalars["String"];
   _publicationScheduledAt?: Maybe<Scalars["DateTime"]>;
   _publishedAt?: Maybe<Scalars["DateTime"]>;
-  /** SEO meta tags */
+  /** Generates SEO and Social card meta tags to be used in your frontend */
   _seoMetaTags: Array<Tag>;
   _status: ItemStatus;
   _unpublishingScheduledAt?: Maybe<Scalars["DateTime"]>;
@@ -1946,7 +1946,7 @@ export type RecordInterface = {
   _modelApiKey: Scalars["String"];
   _publicationScheduledAt?: Maybe<Scalars["DateTime"]>;
   _publishedAt?: Maybe<Scalars["DateTime"]>;
-  /** SEO meta tags */
+  /** Generates SEO and Social card meta tags to be used in your frontend */
   _seoMetaTags: Array<Tag>;
   _status: ItemStatus;
   _unpublishingScheduledAt?: Maybe<Scalars["DateTime"]>;
@@ -2077,7 +2077,7 @@ export type SlideritemRecord = RecordInterface & {
   _modelApiKey: Scalars["String"];
   _publicationScheduledAt?: Maybe<Scalars["DateTime"]>;
   _publishedAt?: Maybe<Scalars["DateTime"]>;
-  /** SEO meta tags */
+  /** Generates SEO and Social card meta tags to be used in your frontend */
   _seoMetaTags: Array<Tag>;
   _status: ItemStatus;
   _unpublishingScheduledAt?: Maybe<Scalars["DateTime"]>;

@@ -214,7 +214,7 @@ describe("Accounts reducer", () => {
           restoreFromMnemonic({
             mnemonic: mnemonic1,
             password: "cool",
-            label: mockLabel,
+            groupLabel: mockLabel,
           })
         )
         .unwrap();

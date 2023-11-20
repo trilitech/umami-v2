@@ -111,7 +111,7 @@ describe("restoreEncryptedAccounts", () => {
       fakeAddressExists(expected.map(account => account.address))
     );
 
-    const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET);
+    const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, "Test accounts");
 
     expect(result).toEqual(expected);
   });
@@ -145,7 +145,7 @@ describe("restoreEncryptedAccounts", () => {
     const result = await restoreRevealedMnemonicAccounts(
       mnemonic1,
       MAINNET,
-      undefined,
+      "Test accounts",
       "44'/1729'/?'/0'"
     );
 
@@ -164,7 +164,12 @@ describe("restoreEncryptedAccounts", () => {
 
   it("should throw if provided with an invalid derivation pattern", async () => {
     addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 2)));
-    const result = restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, undefined, "44'/foo'/?'/8'");
+    const result = restoreRevealedMnemonicAccounts(
+      mnemonic1,
+      MAINNET,
+      "Test accounts",
+      "44'/foo'/?'/8'"
+    );
 
     await expect(result).rejects.toThrowError("Invalid derivation pattern: 44'/foo'/?'/8'");
   });

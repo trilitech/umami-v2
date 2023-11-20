@@ -6,6 +6,7 @@ import { EncryptedData } from "../../crypto/types";
 import { getFingerPrint } from "../../tezos";
 import { ExtraArgument } from "../extraArgument";
 import { AppDispatch, RootState } from "../store";
+import { useIsUniqueLabel } from "../../hooks/getAccountDataHooks";
 
 export const restoreFromMnemonic = createAsyncThunk<
   {
@@ -16,21 +17,24 @@ export const restoreFromMnemonic = createAsyncThunk<
   {
     mnemonic: string;
     password: string;
-    label?: string;
+    groupLabel: string;
     derivationPathPattern?: string;
   },
   { dispatch: AppDispatch; state: RootState; extra: ExtraArgument }
 >(
   "accounts/restoreFromMnemonic",
-  async ({ mnemonic, password, label, derivationPathPattern }, thunkAPI) => {
+  async ({ mnemonic, password, groupLabel, derivationPathPattern }, thunkAPI) => {
+    const isUniqueLabel = useIsUniqueLabel();
+    const accounts = await thunkAPI.extra.restoreRevealedMnemonicAccounts(
+      mnemonic,
+      thunkAPI.getState().networks.current,
+      groupLabel,
+      derivationPathPattern
+    );
+
     return {
       seedFingerprint: await getFingerPrint(mnemonic),
-      accounts: await thunkAPI.extra.restoreRevealedMnemonicAccounts(
-        mnemonic,
-        thunkAPI.getState().networks.current,
-        label,
-        derivationPathPattern
-      ),
+      accounts: assignAccountLabels(accounts, groupLabel, isUniqueLabel),
       encryptedMnemonic: await thunkAPI.extra.encrypt(mnemonic, password),
     };
   }
@@ -66,3 +70,21 @@ export const deriveAccount = createAsyncThunk<
 
   return account;
 });
+
+const assignAccountLabels = (
+  restoredAccounts: MnemonicAccount[],
+  groupLabel: string,
+  isUniqueLabel: (label: string) => boolean
+): MnemonicAccount[] => {
+  let index = 1;
+
+  for (const account of restoredAccounts) {
+    while (!isUniqueLabel(`${groupLabel} ${index}`)) {
+      index += 1;
+    }
+    account.label = `${groupLabel} ${index}`;
+    index += 1;
+  }
+
+  return restoredAccounts;
+};

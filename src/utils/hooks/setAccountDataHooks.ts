@@ -17,12 +17,17 @@ export const useReset = () => {
 export const useRestoreFromMnemonic = () => {
   const dispatch = useAppDispatch();
 
-  return (mnemonic: string, password: string, label?: string, derivationPathPattern?: string) => {
+  return (
+    mnemonic: string,
+    password: string,
+    groupLabel: string,
+    derivationPathPattern?: string
+  ) => {
     return dispatch(
       restoreFromMnemonic({
         mnemonic,
         password,
-        label,
+        groupLabel,
         derivationPathPattern,
       })
     ).unwrap();
