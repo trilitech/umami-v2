@@ -110,7 +110,7 @@ describe("<BatchPage />", () => {
       const deleteButton = screen.getByTestId("remove-batch");
       fireEvent.click(deleteButton);
       expect(screen.getByText(/Are you sure/i)).toBeInTheDocument();
-      fireEvent.click(screen.getByRole("button", { name: "Clear" }));
+      fireEvent.click(screen.getByRole("button", { name: "Delete Batch" }));
       expect(screen.queryByTestId(/batch-table/i)).not.toBeInTheDocument();
     });
 
