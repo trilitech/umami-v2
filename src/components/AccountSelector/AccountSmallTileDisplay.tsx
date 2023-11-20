@@ -15,12 +15,12 @@ export const AccountSmallTileDisplay = ({
   balance: string | undefined;
 } & FlexProps) => (
   <Flex data-testid="account-small-tile" alignItems="space-between" cursor="pointer" {...flexProps}>
-    <Identicon height="30px" identiconSize={20} p="5px" address={pkh} mr="7px" />
+    <Identicon height="30px" identiconSize={20} p="5px" address={pkh} mr="12px" />
     <Flex height="20px" alignSelf="center">
-      <Heading size="sm" mx={2}>
+      <Heading size="sm" mr="10px">
         {label}
       </Heading>
-      <Text size="xs" color={colors.gray[300]} mx={2}>
+      <Text size="xs" color={colors.gray[300]} mr="35px">
         {formatPkh(pkh)}
       </Text>
       {balance && <Heading size="sm">{prettyTezAmount(balance)}</Heading>}
