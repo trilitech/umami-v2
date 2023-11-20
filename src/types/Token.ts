@@ -50,6 +50,7 @@ export type RawTokenInfo = tzktApi.TokenInfo & {
   contract: TzktAlias;
   metadata?: Metadata;
   tokenId: string;
+  lastLevel: number | undefined;
 };
 
 export const FA12TokenSchema = z.object({
@@ -99,6 +100,7 @@ export type NFT = {
   metadata: Metadata;
   displayUri: string;
   totalSupply: string | undefined;
+  lastLevel: number | undefined;
 };
 
 export type Token = FA12Token | FA2Token | NFT;
@@ -131,6 +133,7 @@ export const fromRaw = (rawToken: RawTokenInfo): Token | null => {
       tokenId: nftResult.data.tokenId,
       displayUri: nftResult.data.metadata.displayUri,
       totalSupply: nftResult.data.totalSupply,
+      lastLevel: rawToken.lastLevel,
     };
   }
 
