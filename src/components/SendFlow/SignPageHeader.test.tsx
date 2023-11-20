@@ -31,7 +31,7 @@ describe("headerText", () => {
 
   describe("batch operation", () => {
     test("from implicit", () => {
-      expect(headerText("implicit", "batch")).toBe("Confirm Batch");
+      expect(headerText("implicit", "batch")).toBe("Submit Batch");
     });
 
     test("from multisig", () => {

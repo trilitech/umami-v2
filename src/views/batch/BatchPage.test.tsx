@@ -121,7 +121,7 @@ describe("<BatchPage />", () => {
           <BatchPage />
         </Modal>
       );
-      const submitBatchButton = screen.getByRole("button", { name: /confirm batch/i });
+      const submitBatchButton = screen.getByRole("button", { name: /submit batch/i });
       fireEvent.click(submitBatchButton);
 
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
