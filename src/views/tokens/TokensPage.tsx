@@ -19,7 +19,7 @@ const TokensPage = () => {
       <TopBar title="Tokens" />
       {accountsFilter}
       {accountsWithTokens.length === 0 ? (
-        <NoItems text="No Tokens found" />
+        <NoItems title="No Tokens found" />
       ) : (
         <Box overflowY="auto">
           {accountsWithTokens.map(([account, tokens]) => (

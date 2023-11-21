@@ -31,7 +31,7 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
 
 export const TokenList = ({ tokens }: { tokens: Array<FA12TokenBalance | FA2TokenBalance> }) => {
   if (tokens.length === 0) {
-    return <NoItems text="No Tokens found" small />;
+    return <NoItems title="No Tokens found" small />;
   }
   return (
     <Box>
