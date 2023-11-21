@@ -1,13 +1,4 @@
-import {
-  Box,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-  Flex,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
 import { every, pick, sumBy } from "lodash";
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -57,18 +48,7 @@ const NFTsViewBase = () => {
 
   return (
     <Flex direction="column" height="100%">
-      <TopBar
-        title={
-          <Flex alignItems="end">
-            <Heading size="xl" mr="6px">
-              NFTs
-            </Heading>
-            <Text data-testid="nft-total-amount" size="xs" color={colors.gray[450]}>
-              ({totalNFTs})
-            </Text>
-          </Flex>
-        }
-      />
+      <TopBar title="NFTs" subtitle={`(${totalNFTs})`} />
       {accountsFilter}
 
       {noNFTs ? (

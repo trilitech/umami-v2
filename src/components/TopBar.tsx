@@ -72,14 +72,21 @@ const UpdateButton = () => {
   );
 };
 
-export const TopBar: React.FC<{ title: string | React.ReactNode }> = ({ title }) => {
+export const TopBar: React.FC<{ title: string; subtitle?: string }> = ({ title, subtitle }) => {
   const { openWith } = useContext(DynamicModalContext);
   const [isSmallSize] = useMediaQuery("(max-width: 1200px)");
 
   return (
     <Box>
       <Flex h="88px" justifyContent="space-between" alignItems="center">
-        {typeof title === "string" ? <Heading size="xl">{title}</Heading> : title}
+        <Flex alignItems="end">
+          <Heading size="xl" mr="6px">
+            {title}
+          </Heading>
+          <Text data-testid="nft-total-amount" size="xs" color={colors.gray[450]}>
+            {subtitle}
+          </Text>
+        </Flex>
         <Box>
           <UpdateButton />
           {!isSmallSize && (
