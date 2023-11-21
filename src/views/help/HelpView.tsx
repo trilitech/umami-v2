@@ -4,8 +4,9 @@ import React from "react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import ClickableCard, { SettingsCard } from "../../components/ClickableCard";
-import { navigateToExternalLink } from "../../utils/helpers";
 import ExternalLinkIcon from "../../assets/icons/ExternalLink";
+import { navigateToExternalLink } from "../../utils/helpers";
+import { Link } from "react-router-dom";
 
 export default function HelpView() {
   return (
@@ -24,32 +25,12 @@ export default function HelpView() {
         <TopBar title="Help" />
       </GridItem>
       <GridItem area="main" mt={1}>
-        <HelpCard
-          title="Learn More"
-          onClick={() => {
-            navigateToExternalLink("https://medium.com/umamiwallet");
-          }}
-        >
-          <HelpLinkRow
-            about="Browse Articles"
-            onClickIcon={() => {
-              navigateToExternalLink("https://medium.com/umamiwallet");
-            }}
-          />
+        <HelpCard title="Learn More" externalLink="https://medium.com/umamiwallet">
+          <HelpLinkRow about="Browse Articles" />
         </HelpCard>
 
-        <HelpCard
-          title="Questions?"
-          onClick={() => {
-            navigateToExternalLink("https://github.com/trilitech/umami-v1/wiki");
-          }}
-        >
-          <HelpLinkRow
-            about="Browse FAQs"
-            onClickIcon={() => {
-              navigateToExternalLink("https://github.com/trilitech/umami-v1/wiki");
-            }}
-          />
+        <HelpCard title="Questions?" externalLink="https://github.com/trilitech/umami-v1/wiki">
+          <HelpLinkRow about="Browse FAQs" />
         </HelpCard>
 
         <Box w="550px" data-testid="help-card" mb="20px">
@@ -86,18 +67,8 @@ export default function HelpView() {
           </SettingsCard>
         </Box>
 
-        <HelpCard
-          title="Terms of Use"
-          onClick={() => {
-            navigateToExternalLink("https://umamiwallet.com/tos.html");
-          }}
-        >
-          <HelpLinkRow
-            about="Read Terms of Service"
-            onClickIcon={() => {
-              navigateToExternalLink("https://umamiwallet.com/tos.html");
-            }}
-          />
+        <HelpCard title="Terms of Use" externalLink="https://umamiwallet.com/tos.html">
+          <HelpLinkRow about="Read Terms of Service" />
         </HelpCard>
       </GridItem>
     </Grid>
@@ -106,9 +77,8 @@ export default function HelpView() {
 
 const HelpLinkRow: React.FC<{
   about: string;
-  onClickIcon: () => void;
   linkDescription?: string;
-}> = ({ about, onClickIcon, linkDescription }) => {
+}> = ({ about, linkDescription }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <Heading size="sm">{about}</Heading>
@@ -122,7 +92,6 @@ const HelpLinkRow: React.FC<{
               color: colors.gray[100],
               cursor: "pointer",
             }}
-            onClick={onClickIcon}
           >
             {linkDescription}
           </Text>
@@ -135,9 +104,9 @@ const HelpLinkRow: React.FC<{
 
 const HelpCard: React.FC<{
   title: string;
-  onClick?: () => void;
+  externalLink: string;
   children: React.ReactNode;
-}> = ({ title, onClick, children }) => {
+}> = ({ title, externalLink, children }) => {
   return (
     <Box marginY="10px" data-testid="help-card">
       <Flex>
@@ -145,9 +114,11 @@ const HelpCard: React.FC<{
           <Heading size="lg" mb="16px">
             {title}
           </Heading>
-          <ClickableCard onClick={onClick} isSelected={false}>
-            {children}
-          </ClickableCard>
+          <Link to={externalLink} target="_blank">
+            <ClickableCard isSelected={false} cursor="pointer">
+              {children}
+            </ClickableCard>
+          </Link>
         </Box>
       </Flex>
     </Box>
