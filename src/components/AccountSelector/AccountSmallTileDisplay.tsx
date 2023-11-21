@@ -4,6 +4,16 @@ import { Identicon } from "../Identicon";
 import { prettyTezAmount } from "../../utils/format";
 import colors from "../../style/colors";
 
+/**
+ * Component used to display account info for batched transactions.
+ *
+ * Tile contains icon, account name, address and balance.
+ *
+ * @param pkh - Account public key hash.
+ * @param label - Account label.
+ * @param balance - Account balance in mutez.
+ * @parma flexProps - Flex properties to define component style.
+ */
 export const AccountSmallTileDisplay = ({
   pkh,
   label,
