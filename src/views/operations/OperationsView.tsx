@@ -39,17 +39,17 @@ const OperationsView = () => {
     <Flex direction="column" height="100%" px="6px">
       <TopBar title="Operations" />
       {accountsFilter}
-      <Box
-        overflowY="scroll"
-        onScroll={onScroll}
-        borderRadius="8px"
-        px="20px"
-        mb="20px"
-        bg={colors.gray[900]}
-      >
-        {operations.length === 0 && isLoading && loadingElement}
-        {operations.length === 0 && !isLoading && <NoOperations />}
-        {operations.length > 0 && (
+      {operations.length === 0 && isLoading && loadingElement}
+      {operations.length === 0 && !isLoading && <NoOperations />}
+      {operations.length > 0 && (
+        <Box
+          overflowY="scroll"
+          onScroll={onScroll}
+          borderRadius="8px"
+          px="20px"
+          mb="20px"
+          bg={colors.gray[900]}
+        >
           <OperationTileContext.Provider value={{ mode: "page" }}>
             {operations.map((operation, i) => {
               const isLast = i === operations.length - 1;
@@ -71,8 +71,8 @@ const OperationsView = () => {
               </>
             )}
           </OperationTileContext.Provider>
-        )}
-      </Box>
+        </Box>
+      )}
     </Flex>
   );
 };
