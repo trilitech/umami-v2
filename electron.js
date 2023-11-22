@@ -14,13 +14,6 @@ if (!app.requestSingleInstanceLock()) {
   return;
 }
 
-// Temporary fix broken high-dpi scale factor on Windows (125% scaling)
-// info: https://github.com/electron/electron/issues/9691
-if (process.platform === "win32") {
-  app.commandLine.appendSwitch("high-dpi-support", "true");
-  app.commandLine.appendSwitch("force-device-scale-factor", "1");
-}
-
 // Enable experimental to activate Web USB support
 app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
 
