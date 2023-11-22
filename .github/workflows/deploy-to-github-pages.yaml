@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 18.15.x
           cache: "yarn"
 
       - name: Register yarn 1.x cache folder
@@ -27,8 +27,7 @@ jobs:
       - name: Setup yarn 3.x
         run: |
           corepack enable
-          corepack prepare yarn@stable --activate
-          yarn --version
+          yarn set version 3.5.0
 
       - name: Install packages
         env:
