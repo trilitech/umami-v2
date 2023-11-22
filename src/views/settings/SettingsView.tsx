@@ -99,18 +99,14 @@ const downloadBackup = () => {
 const BackupSection = () => {
   return (
     <SectionContainer title="Backup">
-      <ClickableCard
-        children={
-          <Flex justifyContent="space-between" alignItems="center">
-            <Heading size="sm">Download backup file</Heading>
-            <Button variant="unstyled" onClick={downloadBackup}>
-              <DownloadIcon cursor="pointer" />
-            </Button>
-          </Flex>
-        }
-        onClick={downloadBackup}
-        isSelected={false}
-      />
+      <ClickableCard onClick={downloadBackup} isSelected={false}>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading size="sm">Download backup file</Heading>
+          <Button variant="unstyled" onClick={downloadBackup}>
+            <DownloadIcon cursor="pointer" />
+          </Button>
+        </Flex>
+      </ClickableCard>
     </SectionContainer>
   );
 };
