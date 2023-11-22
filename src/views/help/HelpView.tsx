@@ -114,7 +114,7 @@ const HelpCard: React.FC<{
           <Heading size="lg" mb="16px">
             {title}
           </Heading>
-          <Link to={externalLink} target="_blank">
+          <Link to={externalLink} target="_blank" rel="noreferrer">
             <ClickableCard isSelected={false} cursor="pointer">
               {children}
             </ClickableCard>

@@ -1,7 +1,7 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { PropsWithChildren } from "react";
+import { ExternalLink } from "../ExternalLink";
 
 const NoItems: React.FC<
   PropsWithChildren<{
@@ -26,9 +26,9 @@ export default NoItems;
 
 export const NoNFTs: React.FC<{ small?: boolean }> = ({ small }) => (
   <NoItems title="No NFTs found" small={small}>
-    <Link to="https://objkt.com" target="_blank">
+    <ExternalLink href="https://objkt.com">
       <Button size={small ? "md" : "lg"}>Buy your first NFT</Button>
-    </Link>
+    </ExternalLink>
   </NoItems>
 );
 
