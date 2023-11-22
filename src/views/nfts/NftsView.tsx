@@ -1,5 +1,5 @@
 import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
-import { every, pick, sumBy } from "lodash";
+import { every, get, pick, sumBy } from "lodash";
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NoNFTs } from "../../components/NoItems";
@@ -40,7 +40,7 @@ const NFTsViewBase = () => {
   const totalNFTs = sumBy(Object.values(selectedNFTs).flat(), nft => Number(nft?.balance || 0));
 
   const noNFTs = every(selectedNFTs, nfts => !nfts || nfts.length === 0);
-  const drawerNFT = ownerPkh && (nfts[ownerPkh] || []).find(nft => fullId(nft) === nftId);
+  const drawerNFT = ownerPkh && get(nfts, [ownerPkh], []).find(nft => fullId(nft) === nftId);
 
   return (
     <Flex direction="column" height="100%">

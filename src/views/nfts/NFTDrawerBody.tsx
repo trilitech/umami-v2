@@ -18,6 +18,7 @@ const NFTDrawerBody = ({
   return (
     <>
       <Flex
+        data-testid="nft-drawer-body"
         justifyContent="space-between"
         color={colors.gray[400]}
         cursor="pointer"
