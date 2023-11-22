@@ -79,9 +79,9 @@ const ClearBatchConfirmationModal = ({ sender }: { sender: Account }) => {
   return (
     <ConfirmationModal
       title="Are you sure?"
-      description="It will remove all the transactions from the batch."
+      description="This will remove all transactions from the batch."
       onSubmit={() => clearBatch(sender)}
-      buttonLabel="Clear"
+      buttonLabel="Delete Batch"
     />
   );
 };
