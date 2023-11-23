@@ -229,6 +229,7 @@ export const mockNFTToken = (index: number, pkh: string, balance = 1): RawTokenB
       tokenId: String(index),
       standard: "fa2",
       totalSupply: "1",
+      lastLevel: undefined,
       metadata: {
         name: "Tezzardz #10",
         creators: ["George Goodwin (@omgidrawedit)"],
@@ -284,6 +285,7 @@ export const mockFA2TokenRaw = (
       tokenId: String(index),
       standard: "fa2",
       totalSupply: "13000000000",
+      lastLevel: undefined,
       metadata: {
         name,
         symbol,
@@ -313,6 +315,7 @@ export const mockFA1TokenRaw = (index: number, pkh: string, balance = 1): RawTok
       tokenId: "0",
       standard: "fa1.2",
       totalSupply: "13000000",
+      lastLevel: undefined,
     },
     balance: String(balance),
     transfersCount: 28,
@@ -333,6 +336,7 @@ export const mockNFT = (index: number, balance = "1"): NFTBalance => {
     contract: mockContractAddress(index).pkh,
     tokenId: "mockId" + index,
     totalSupply: "1",
+    lastLevel: undefined,
     metadata: {
       displayUri: displayUri,
       name: "Tezzardz #" + index,

@@ -17,6 +17,7 @@ export const fa1Token: RawTokenBalance = {
     tokenId: "0",
     standard: "fa1.2",
     totalSupply: "13000000",
+    lastLevel: undefined,
   },
   balance: "443870",
   transfersCount: 27,
@@ -39,6 +40,7 @@ export const fa2Token: RawTokenBalance = {
     tokenId: "1",
     standard: "fa2",
     totalSupply: "13000000000",
+    lastLevel: undefined,
     metadata: {
       name: "Klondike3",
       symbol: "KL3",
@@ -66,6 +68,7 @@ export const nft: RawTokenBalance = {
     tokenId: "3",
     standard: "fa2",
     totalSupply: "1",
+    lastLevel: 123123,
     metadata: {
       name: "Tezzardz #10",
       rights: "© 2021 George Goodwin. All rights reserved.",
@@ -244,6 +247,7 @@ export const rawTzktNftTransfer: TokenTransfer = {
     tokenId: "6",
     standard: "fa2",
     totalSupply: "1",
+    lastLevel: undefined,
     metadata: {
       name: "Tezzardz #24",
       rights: "© 2021 George Goodwin. All rights reserved.",
@@ -322,6 +326,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
       tokenId: "0",
       standard: "fa1.2",
       totalSupply: "13000000",
+      lastLevel: undefined,
     },
     from: {
       address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -344,6 +349,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
       tokenId: "1",
       standard: "fa2",
       totalSupply: "13000000000",
+      lastLevel: undefined,
       metadata: {
         name: "Klondike3",
         symbol: "KL3",
@@ -371,6 +377,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
       tokenId: "1",
       standard: "fa2",
       totalSupply: "13000000000",
+      lastLevel: undefined,
       metadata: {
         name: "Klondike3",
         symbol: "KL3",
@@ -398,6 +405,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
       tokenId: "6",
       standard: "fa2",
       totalSupply: "1",
+      lastLevel: undefined,
       metadata: {
         name: "Tezzardz #24",
         rights: "© 2021 George Goodwin. All rights reserved.",
@@ -475,6 +483,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
       tokenId: "0",
       standard: "fa2",
       totalSupply: "13000000000",
+      lastLevel: undefined,
       metadata: {
         name: "Klondike2",
         symbol: "KL2",
@@ -502,6 +511,7 @@ export const getTokenTransactionsResult: TokenTransfer[] = [
       tokenId: "6",
       standard: "fa2",
       totalSupply: "1",
+      lastLevel: undefined,
       metadata: {
         name: "Tezzardz #24",
         rights: "© 2021 George Goodwin. All rights reserved.",

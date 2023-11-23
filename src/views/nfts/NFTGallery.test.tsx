@@ -38,19 +38,17 @@ describe("NFTGallery", () => {
   it("sorts last the nft with undefined lastLevel", () => {
     const nft1 = mockNFTBalance(mockContractAddress(1).pkh, "nft1", 1);
     const nft2 = mockNFTBalance(mockContractAddress(2).pkh, "nft2", 2);
-    const nft3 = mockNFTBalance(mockContractAddress(3).pkh, "nft3", 3);
-    const nft4 = mockNFTBalance(mockContractAddress(4).pkh, "nft4", undefined);
+    const nft3 = mockNFTBalance(mockContractAddress(3).pkh, "nft3", undefined);
     const nftsByOwner = {
       [mockImplicitAddress(1).pkh]: [nft1, nft3],
-      [mockImplicitAddress(2).pkh]: [nft2, nft4],
+      [mockImplicitAddress(2).pkh]: [nft2],
     };
     render(fixture(nftsByOwner));
 
     const nftNames = screen.getAllByTestId("nft-card-name");
-    expect(nftNames[0]).toHaveTextContent("nft3");
-    expect(nftNames[1]).toHaveTextContent("nft2");
-    expect(nftNames[2]).toHaveTextContent("nft1");
-    expect(nftNames[3]).toHaveTextContent("nft4");
+    expect(nftNames[0]).toHaveTextContent("nft2");
+    expect(nftNames[1]).toHaveTextContent("nft1");
+    expect(nftNames[2]).toHaveTextContent("nft3");
   });
 
   it("sorts the nft by id in ascending order if last level is the same", () => {
