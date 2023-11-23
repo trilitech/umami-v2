@@ -13,5 +13,5 @@ export function validateNonNegativeNumber(num: string): string | null {
 }
 
 export const navigateToExternalLink = (link: string) => {
-  window.open(link, "_blank");
+  window.open(link, "_blank", "noopener,noreferrer");
 };

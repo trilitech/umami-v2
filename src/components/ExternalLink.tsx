@@ -11,7 +11,7 @@ export const ExternalLink: React.FC<PropsWithChildren<{ href: string } & LinkPro
     role="link"
     display="flex"
     target="_blank"
-    rel="noreferrer"
+    rel="noopener noreferrer"
     alignItems="center"
     _hover={{ textDecoration: "none" }}
     {...props}
