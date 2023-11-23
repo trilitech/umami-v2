@@ -110,7 +110,7 @@ describe("<BatchPage />", () => {
       const deleteButton = screen.getByTestId("remove-batch");
       fireEvent.click(deleteButton);
       expect(screen.getByText(/Are you sure/i)).toBeInTheDocument();
-      fireEvent.click(screen.getByRole("button", { name: "Clear" }));
+      fireEvent.click(screen.getByRole("button", { name: "Delete Batch" }));
       expect(screen.queryByTestId(/batch-table/i)).not.toBeInTheDocument();
     });
 
@@ -121,7 +121,7 @@ describe("<BatchPage />", () => {
           <BatchPage />
         </Modal>
       );
-      const submitBatchButton = screen.getByRole("button", { name: /confirm batch/i });
+      const submitBatchButton = screen.getByRole("button", { name: /submit batch/i });
       fireEvent.click(submitBatchButton);
 
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);

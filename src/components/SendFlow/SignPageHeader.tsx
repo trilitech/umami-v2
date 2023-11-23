@@ -12,7 +12,7 @@ export const headerText = (
   let action;
   switch (operationType) {
     case "implicit":
-      action = "Confirm";
+      action = mode === "batch" ? "Submit" : "Confirm";
       break;
     case "proposal":
       action = "Propose";
