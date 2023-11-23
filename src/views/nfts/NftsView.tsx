@@ -1,5 +1,5 @@
 import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
-import { every, pick, sumBy } from "lodash";
+import { every, get, pick, sumBy } from "lodash";
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { NoNFTs } from "../../components/NoItems";
@@ -7,13 +7,9 @@ import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
-import NFTDrawerCard from "./NFTDrawerCard";
 import NFTGallery from "./NFTGallery";
 import { useDynamicModal } from "../../components/DynamicModal";
-import colors from "../../style/colors";
-import AddressPill from "../../components/AddressPill/AddressPill";
-import { parsePkh } from "../../types/Address";
-import { CloseDrawerButton } from "../home/DrawerTopButtons";
+import NFTDrawerBody from "./NFTDrawerBody";
 
 const NFTsViewBase = () => {
   const nfts = useAllNfts();
@@ -44,7 +40,7 @@ const NFTsViewBase = () => {
   const totalNFTs = sumBy(Object.values(selectedNFTs).flat(), nft => Number(nft?.balance || 0));
 
   const noNFTs = every(selectedNFTs, nfts => !nfts || nfts.length === 0);
-  const drawerNFT = ownerPkh && (nfts[ownerPkh] || []).find(nft => fullId(nft) === nftId);
+  const drawerNFT = ownerPkh && get(nfts, [ownerPkh], []).find(nft => fullId(nft) === nftId);
 
   return (
     <Flex direction="column" height="100%">
@@ -75,19 +71,7 @@ const NFTsViewBase = () => {
             <DrawerContent>
               <DrawerBody>
                 {drawerNFT && (
-                  <>
-                    <Flex
-                      justifyContent="space-between"
-                      color={colors.gray[400]}
-                      cursor="pointer"
-                      alignItems="center"
-                      paddingBottom="30px"
-                    >
-                      <AddressPill address={parsePkh(ownerPkh)} />
-                      <CloseDrawerButton onClose={openNFTsPage} />
-                    </Flex>
-                    <NFTDrawerCard nft={drawerNFT} ownerPkh={ownerPkh} />
-                  </>
+                  <NFTDrawerBody ownerPkh={ownerPkh} nft={drawerNFT} onCloseDrawer={openNFTsPage} />
                 )}
               </DrawerBody>
             </DrawerContent>

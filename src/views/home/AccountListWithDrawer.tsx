@@ -6,18 +6,30 @@ import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
 import { useDynamicModal } from "../../components/DynamicModal";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAllNfts } from "../../utils/hooks/assetsHooks";
+import { fullId } from "../../types/Token";
+import NFTDrawerBody from "../nfts/NFTDrawerBody";
+import { get } from "lodash";
 
 const AccountListWithDrawer: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const allAccounts = useAllAccounts();
 
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { ownerPkh, nftId } = useParams();
+  const nfts = useAllNfts();
+  const drawerNFT = ownerPkh && get(nfts, [ownerPkh], []).find(nft => fullId(nft) === nftId);
+  const isNFT = !!drawerNFT;
+
+  const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: isNFT });
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
+  const navigate = useNavigate();
   const closeDrawer = useCallback(() => {
     setSelected(null);
     onClose();
-  }, [setSelected, onClose]);
+    navigate("/home");
+  }, [setSelected, onClose, navigate]);
 
   // For some reason the drawer doesn't close on esc for this particular component
   // Until we figure out why, we'll have this crutch
@@ -45,8 +57,14 @@ const AccountListWithDrawer: React.FC = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerBody>
-            <DrawerTopButtons onClose={closeDrawer} />
-            {account && <AccountCard account={account} />}
+            {isNFT ? (
+              <NFTDrawerBody ownerPkh={ownerPkh} nft={drawerNFT} onCloseDrawer={closeDrawer} />
+            ) : (
+              <>
+                <DrawerTopButtons onClose={closeDrawer} />
+                {account && <AccountCard account={account} />}
+              </>
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
