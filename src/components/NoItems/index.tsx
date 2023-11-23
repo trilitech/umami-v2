@@ -1,69 +1,48 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
-import { navigateToExternalLink } from "../../utils/helpers";
+import { PropsWithChildren } from "react";
+import { ExternalLink } from "../ExternalLink";
 
-export default function NoItems({
-  text,
-  primaryText,
-  onClickPrimary = () => {},
-  secondaryText,
-  onClickSecondary = () => {},
-  small = false,
-}: {
-  text: string;
-  primaryText?: string;
-  onClickPrimary?: () => void;
-  secondaryText?: string;
-  onClickSecondary?: () => void;
-  small?: boolean;
-}) {
+const NoItems: React.FC<
+  PropsWithChildren<{
+    title: string;
+    small?: boolean;
+  }>
+> = ({ title, children, small = false }) => {
   const headingSize = small ? "md" : "3xl";
-  const buttonSize = small ? "md" : "lg";
   return (
     <Flex width="100%" height="100%" justifyContent="center" alignItems="center">
       <Box>
         <Heading size={headingSize} p="42px">
-          {text}
+          {title}
         </Heading>
-        <Center>
-          {primaryText ? (
-            <Button size={buttonSize} onClick={onClickPrimary}>
-              {primaryText}
-            </Button>
-          ) : null}
-          {secondaryText ? (
-            <Button variant="tertiary" size={buttonSize} onClick={onClickSecondary} ml={5}>
-              {secondaryText}
-            </Button>
-          ) : null}
-        </Center>
+        <Center>{children}</Center>
       </Box>
     </Flex>
   );
-}
+};
 
-type ComponentWithSizeProps = React.FC<{ small?: boolean }>;
+export default NoItems;
 
-export const NoNFTs: ComponentWithSizeProps = props => (
-  <NoItems
-    {...props}
-    text="No NFTs found"
-    primaryText="Buy your first NFT"
-    onClickPrimary={() => {
-      navigateToExternalLink(`https://objkt.com`);
-    }}
-  />
+export const NoNFTs: React.FC<{ small?: boolean }> = ({ small }) => (
+  <NoItems title="No NFTs found" small={small}>
+    <ExternalLink href="https://objkt.com">
+      <Button size={small ? "md" : "lg"}>Buy your first NFT</Button>
+    </ExternalLink>
+  </NoItems>
 );
 
-export const NoOperations: ComponentWithSizeProps = props => (
-  <NoItems {...props} text="No operations found" />
+export const NoOperations: React.FC<{ small?: boolean }> = ({ small }) => (
+  <NoItems title="No operations found" small={small} />
 );
 
-export const NoDelegations: React.FC<{ small?: boolean; onDelegate: () => void }> = props => (
-  <NoItems
-    {...props}
-    text="Currently not delegating"
-    primaryText="Start delegating"
-    onClickPrimary={props.onDelegate}
-  />
+export const NoDelegations: React.FC<{ small?: boolean; onDelegate: () => void }> = ({
+  small,
+  onDelegate,
+}) => (
+  <NoItems title="Currently not delegating" small={small}>
+    <Button size={small ? "md" : "lg"} onClick={onDelegate}>
+      Start delegating
+    </Button>
+  </NoItems>
 );

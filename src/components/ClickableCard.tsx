@@ -1,13 +1,15 @@
 import { Card, CardBody, CardProps, Flex, Heading } from "@chakra-ui/react";
 import colors from "../style/colors";
 import ChevronRightIcon from "../assets/icons/ChevronRight";
+import { PropsWithChildren } from "react";
 
 const ClickableCard: React.FC<
-  {
-    onClick?: () => void;
-    children: React.ReactNode;
-    isSelected: boolean;
-  } & CardProps
+  PropsWithChildren<
+    {
+      onClick?: () => void;
+      isSelected: boolean;
+    } & CardProps
+  >
 > = ({ onClick, children, isSelected, ...props }) => {
   return (
     <Card
