@@ -10,7 +10,7 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
   const addressKind = useAddressKind(address);
 
   return (
-    <Tooltip hasArrow bg={colors.white} label={addressKind.label}>
+    <Tooltip hasArrow placement="left" bg={colors.white} label={addressKind.label}>
       <Flex
         data-testid="address-tile"
         alignItems="center"
