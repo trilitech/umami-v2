@@ -11,8 +11,7 @@
   },
   "main": "public/electron.js",
   "scripts": {
-    "build": "yarn generate-ts-types && react-app-rewired build",
-    "eject": "react-scripts eject",
+    "build": "yarn generate-ts-types && node scripts/build.js",
     "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js",
     "electron:package:mac:debug": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js",
@@ -23,8 +22,8 @@
     "generate-ts-types": "graphql-codegen --config graphql.config.yml && prettier --write src/graphql/generated.ts",
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
-    "start": "GENERATE_SOURCEMAP=false && react-app-rewired start",
-    "test": "cross-env TZ=CET react-scripts test --resetModules --coverage --verbose",
+    "start": "GENERATE_SOURCEMAP=false && node scripts/start.js",
+    "test": "cross-env TZ=CET node scripts/test.js --resetModules --coverage --verbose",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts",
     "typecheck": "tsc"
@@ -39,6 +38,7 @@
   },
   "devDependencies": {
     "@airgap/beacon-wallet": "^4.0.12",
+    "@babel/core": "^7.16.0",
     "@babel/runtime": "^7.23.2",
     "@chakra-ui/cli": "^2.4.1",
     "@chakra-ui/icons": "^2.1.1",
@@ -53,7 +53,9 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@ledgerhq/hw-transport-webusb": "^6.27.19",
     "@playwright/test": "^1.39.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@reduxjs/toolkit": "^1.9.7",
+    "@svgr/webpack": "^5.5.0",
     "@taquito/ledger-signer": "^17.3.2",
     "@taquito/michel-codec": "^17.3.2",
     "@taquito/rpc": "^17.3.2",
@@ -76,38 +78,72 @@
     "@types/redux-mock-store": "^1.0.5",
     "@types/testing-library__jest-dom": "^5.14.9",
     "@types/testing-library__user-event": "^4.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
     "@tzkt/sdk-api": "^2.2.1",
     "assert": "^2.1.0",
     "axios": "^1.6.0",
+    "babel-jest": "^27.4.2",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-named-asset-import": "^0.3.8",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "babel-preset-react-app": "^10.0.1",
+    "bfj": "^7.0.2",
     "bip39": "^3.1.0",
+    "browserslist": "^4.18.1",
     "buffer": "^6.0.3",
+    "camelcase": "^6.2.1",
+    "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "cross-env": "^7.0.3",
+    "css-loader": "^6.5.1",
+    "css-minimizer-webpack-plugin": "^3.2.0",
     "date-fns": "^2.30.0",
+    "dotenv": "^10.0.0",
+    "dotenv-expand": "^5.1.0",
     "electron": "^27.0.2",
     "electron-builder": "^24.6.4",
     "electron-notarize": "^1.2.2",
     "electronmon": "^2.0.2",
-    "eslint": "^8.52.0",
+    "eslint": "^8.54.0",
+    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-testing-library": "^6.1.2",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "file-loader": "^6.2.0",
     "framer-motion": "^10.16.4",
+    "fs-extra": "^10.0.0",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
+    "html-webpack-plugin": "^5.5.0",
     "https-browserify": "^1.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.4.3",
     "jest-fail-on-console": "^3.1.1",
+    "jest-resolve": "^27.4.2",
+    "jest-watch-typeahead": "^1.0.0",
     "lodash": "^4.17.21",
+    "mini-css-extract-plugin": "^2.4.5",
     "mockdate": "^3.0.5",
     "nano-id": "^1.1.0",
     "os-browserify": "^0.3.0",
     "papaparse": "^5.4.1",
     "pluralize": "^8.0.0",
+    "postcss": "^8.4.4",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-loader": "^6.2.1",
+    "postcss-normalize": "^10.0.1",
+    "postcss-preset-env": "^7.0.1",
     "prettier": "^3.0.3",
     "process": "^0.11.10",
     "promise-retry": "^2.0.1",
+    "prompts": "^2.4.2",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-app-rewired": "^2.2.1",
+    "react-app-polyfill": "^3.0.0",
     "react-datocms": "^4.1.3",
+    "react-dev-utils": "^12.0.1",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.11",
     "react-hook-form": "^7.47.0",
@@ -118,28 +154,91 @@
     "react-qrcode-logo": "^2.9.0",
     "react-query": "^3.39.3",
     "react-redux": "8.1.3",
+    "react-refresh": "^0.11.0",
     "react-remove-scroll": "^2.5.7",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.17.0",
-    "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "redux-mock-store": "^1.5.4",
     "redux-persist": "^6.0.0",
+    "resolve": "^1.20.0",
+    "resolve-url-loader": "^4.0.0",
+    "sass-loader": "^12.3.0",
+    "semver": "^7.3.5",
     "source-map-loader": "^4.0.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.2",
+    "terser-webpack-plugin": "^5.2.5",
     "typescript": "5.2.2",
     "web-vitals": "^3.5.0",
     "webpack": "^5.89.0",
+    "webpack-dev-server": "^4.6.0",
+    "webpack-manifest-plugin": "^4.0.2",
     "webpack-remove-code-blocks": "^0.1.5",
+    "workbox-webpack-plugin": "^6.4.1",
     "zod": "^3.22.4"
   },
   "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.ts"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
     "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
       "axios": "axios/dist/node/axios.cjs",
       "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing",
       "@tzkt/oazapfts/runtime": "@tzkt/oazapfts/lib/runtime"
     },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ],
+    "resetMocks": true,
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "src/mocks/*",
+      "src/utils/useAssetsPolling.ts",
+      "src/components/OperationTile/*",
+      "src/e2e/*"
+    ],
     "coverageThreshold": {
       "global": {
         "branches": 69,
@@ -147,17 +246,7 @@
         "lines": 76,
         "statements": 76
       }
-    },
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ],
-    "coveragePathIgnorePatterns": [
-      "node_modules",
-      "src/mocks/*",
-      "src/utils/useAssetsPolling.ts",
-      "src/components/OperationTile/*",
-      "src/e2e/*"
-    ]
+    }
   },
   "build": {
     "appId": "com.trilitech.umami",
@@ -225,5 +314,10 @@
   "resolutions": {
     "nwsapi": "2.2.2"
   },
-  "packageManager": "yarn@3.5.0"
+  "packageManager": "yarn@3.5.0",
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  }
 }
