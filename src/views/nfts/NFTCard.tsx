@@ -65,7 +65,7 @@ const NFTCard: React.FC<{
             {"x" + nft.balance}
           </Text>
         )}
-        <Box overflow="hidden">
+        <Box overflow="hidden" data-testid="nft-card-name">
           <Heading
             overflow="hidden"
             marginTop="15px"
