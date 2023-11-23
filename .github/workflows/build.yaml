@@ -26,27 +26,19 @@ jobs:
       NODE_OPTIONS: "--max_old_space_size=4096"
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18.15.x
-          cache: "yarn"
-
-      - name: Register yarn 1.x cache folder
-        id: yarn-cache-folder
-        shell: bash
-        run: |
-          echo "path=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v4
 
       - name: Setup yarn 3.x
         run: |
           corepack enable
           yarn set version 3.5.0
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.15.x
+          cache: "yarn"
+
       - name: Install packages
-        env:
-          YARN_CACHE_FOLDER: ${{ steps.yarn-cache-folder.outputs.path }}
         run: yarn install --immutable
 
       - name: Build
@@ -79,7 +71,3 @@ jobs:
           name: app_dist_${{ matrix.electron_cmd }}
           path: ${{ matrix.package_glob }}
           if-no-files-found: error
-
-      # this is needed to ensure that actions/setup-node will pick up yarn cache
-      - name: Remove yarn 3.5
-        run: corepack disable
