@@ -36,7 +36,11 @@
       "warn",
       { "argsIgnorePattern": ".*", "varsIgnorePattern": "^_" }
     ],
-    "@typescript-eslint/triple-slash-reference": "off"
+    "@typescript-eslint/triple-slash-reference": "off",
+    "react/jsx-key": [
+      "warn",
+      { "checkFragmentShorthand": true, "checkKeyMustBeforeSpread": true, "warnOnDuplicates": true }
+    ]
   },
   "overrides": [
     {
