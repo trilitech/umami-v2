@@ -103,7 +103,7 @@
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
     "electron": "^27.0.2",
-    "electron-builder": "^24.6.4",
+    "electron-builder": "^24.9.1",
     "electron-notarize": "^1.2.2",
     "electronmon": "^2.0.2",
     "eslint": "^8.54.0",
@@ -270,7 +270,6 @@
         }
       ],
       "notarize": {
-        "appBundleId": "com.trilitech.umami",
         "teamId": "JHLP96SU5D"
       }
     },
