@@ -6,6 +6,15 @@ import { formatPkh } from "../../utils/format";
 import colors from "../../style/colors";
 import { AccountBalance } from "../AccountBalance";
 
+/**
+ * Tile component for displaying account (owned / unknown) / contact / baker.
+ *
+ * Contains icon, label (optional), address and balance (optional).
+ * Displays tooltip with the full label when hovered (if label is present).
+ *
+ * @param address - Account address.
+ * @param flexProps - Defines component style.
+ */
 const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...flexProps }) => {
   const addressKind = useAddressKind(address);
 
