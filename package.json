@@ -267,6 +267,12 @@
           "arch": [
             "universal"
           ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
         }
       ],
       "notarize": {
@@ -323,5 +329,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.4"
   }
 }

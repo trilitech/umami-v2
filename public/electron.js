@@ -2,6 +2,7 @@
 const { app, BrowserWindow, shell } = require("electron");
 const path = require("path");
 const url = require("url");
+const { autoUpdater } = require("electron-updater");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -13,6 +14,8 @@ if (!app.requestSingleInstanceLock()) {
   app.quit();
   return;
 }
+
+autoUpdater.checkForUpdatesAndNotify();
 
 // Enable experimental to activate Web USB support
 app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
