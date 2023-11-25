@@ -65,9 +65,8 @@ export const loginAs = async (mnemonic: string, page: Page) => {
   expect(page.getByRole("heading", { name: "Derivation Path" })).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).click();
 
-  const password = "12345678";
-  await page.getByTestId("password").fill(password);
-  page.getByLabel("Confirm Password").fill(password);
+  await page.getByTestId("password").fill(MASTER_PASSWORD);
+  page.getByLabel("Confirm Password").fill(MASTER_PASSWORD);
 
   await page.getByRole("button", { name: "Submit" }).click();
 
