@@ -10370,6 +10370,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"electron-updater@npm:^6.1.4":
+  version: 6.1.7
+  resolution: "electron-updater@npm:6.1.7"
+  dependencies:
+    builder-util-runtime: 9.2.3
+    fs-extra: ^10.1.0
+    js-yaml: ^4.1.0
+    lazy-val: ^1.0.5
+    lodash.escaperegexp: ^4.1.2
+    lodash.isequal: ^4.5.0
+    semver: ^7.3.8
+    tiny-typed-emitter: ^2.1.0
+  checksum: 84ca265df837620a991d2d1eeb84a5bc06a5b5373f7bbfeb3bd9efe48873c1c6b6a21b783a3ccb5d175aa4d4cc6dd40542469bf7ad51a6b1311e63cd6ed922f3
+  languageName: node
+  linkType: hard
+
 "electron@npm:^27.0.2":
   version: 27.1.2
   resolution: "electron@npm:27.1.2"
@@ -14439,6 +14455,13 @@ __metadata:
   version: 4.5.0
   resolution: "lodash.difference@npm:4.5.0"
   checksum: ecee276aa578f300e79350805a14a51be8d1f12b3c1389a19996d8ab516f814211a5f65c68331571ecdad96522b863ccc484b55504ce8c9947212a29f8857d5a
+  languageName: node
+  linkType: hard
+
+"lodash.escaperegexp@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "lodash.escaperegexp@npm:4.1.2"
+  checksum: 6d99452b1cfd6073175a9b741a9b09ece159eac463f86f02ea3bee2e2092923fce812c8d2bf446309cc52d1d61bf9af51c8118b0d7421388e6cead7bd3798f0f
   languageName: node
   linkType: hard
 
@@ -19543,6 +19566,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tiny-typed-emitter@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "tiny-typed-emitter@npm:2.1.0"
+  checksum: 709bca410054e08df4dc29d5ea0916328bb2900d60245c6a743068ea223887d9fd2c945b6070eb20336275a557a36c2808e5c87d2ed4b60633458632be4a3e10
+  languageName: node
+  linkType: hard
+
 "title-case@npm:^3.0.3":
   version: 3.0.3
   resolution: "title-case@npm:3.0.3"
@@ -19967,6 +19997,7 @@ __metadata:
     dotenv-expand: ^5.1.0
     electron: ^27.0.2
     electron-builder: ^24.9.1
+    electron-updater: ^6.1.4
     electronmon: ^2.0.2
     eslint: ^8.54.0
     eslint-plugin-jest: ^27.6.0

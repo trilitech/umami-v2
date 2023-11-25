@@ -2,16 +2,27 @@
 const { app, BrowserWindow, shell } = require("electron");
 const path = require("path");
 const url = require("url");
+const { autoUpdater } = require("electron-updater");
+const process = require("process");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let deeplinkURL;
 
+// TODO: remove once the repository is public
+process.env["GH_TOKEN"] =
+  "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";
+
 // Assure single instance
 if (!app.requestSingleInstanceLock()) {
   app.quit();
   return;
+}
+try {
+  autoUpdater.checkForUpdatesAndNotify();
+} catch (e) {
+  console.log(e);
 }
 
 // Enable experimental to activate Web USB support
