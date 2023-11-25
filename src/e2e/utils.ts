@@ -57,14 +57,16 @@ export const loginAs = async (mnemonic: string, page: Page) => {
   for (let i = 0; i < words.length; i++) {
     await page.getByRole("textbox").nth(i).fill(words[i]);
   }
-
   await page.getByRole("button", { name: "Continue" }).click();
+
+  expect(page.getByRole("heading", { name: "Name Your Account" })).toBeVisible();
+  await page.getByRole("button", { name: "Continue" }).click();
+
   expect(page.getByRole("heading", { name: "Derivation Path" })).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).click();
 
-  const password = "12345678";
-  await page.getByTestId("password").fill(password);
-  page.getByLabel("Confirm Password").fill(password);
+  await page.getByTestId("password").fill(MASTER_PASSWORD);
+  page.getByLabel("Confirm Password").fill(MASTER_PASSWORD);
 
   await page.getByRole("button", { name: "Submit" }).click();
 
