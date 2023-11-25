@@ -3,6 +3,7 @@ import { RawPkh } from "../types/Address";
 import { execSync } from "child_process";
 import { getAccounts } from "../utils/tezos";
 import { DefaultNetworks } from "../types/Network";
+import crypto from "crypto";
 
 const TEST_NETWORK = {
   name: "Test net",
@@ -24,6 +25,7 @@ export const AliceAccount = {
 
 export const cleanupState = () => {
   test.beforeEach(async ({ page }: { page: Page }) => {
+    global.crypto = crypto as any;
     const networks = {
       available: [...DefaultNetworks, TEST_NETWORK],
       current: TEST_NETWORK,

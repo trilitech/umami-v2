@@ -42,7 +42,7 @@ const VerifySeedphrase = ({
                 isInvalid={!!errors[`${item.index}`] && isDirty}
               >
                 <InputGroup size="md">
-                  <InputLeftElement>{item.index + 1}</InputLeftElement>
+                  <InputLeftElement data-testid="mnemonic-index">{item.index + 1}</InputLeftElement>
                   <Input
                     placeholder="Type here"
                     {...register(`${item.index}`, {
