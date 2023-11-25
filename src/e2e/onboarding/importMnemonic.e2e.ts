@@ -12,7 +12,7 @@ test.describe("Import Mnemonic", () => {
 
     const accountTile = page.getByTestId("account-tile-tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3");
     await expect(accountTile).toBeVisible();
-    await expect(accountTile.getByRole("heading", { name: "Restored account" })).toBeVisible();
+    await expect(accountTile.getByRole("heading", { name: "Account" })).toBeVisible();
     await expect(accountTile.getByText("tz1UN...oBUB3")).toBeVisible();
   });
 });

@@ -57,8 +57,11 @@ export const loginAs = async (mnemonic: string, page: Page) => {
   for (let i = 0; i < words.length; i++) {
     await page.getByRole("textbox").nth(i).fill(words[i]);
   }
-
   await page.getByRole("button", { name: "Continue" }).click();
+
+  expect(page.getByRole("heading", { name: "Name Your Account" })).toBeVisible();
+  await page.getByRole("button", { name: "Continue" }).click();
+
   expect(page.getByRole("heading", { name: "Derivation Path" })).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).click();
 
