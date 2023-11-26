@@ -13,6 +13,8 @@ const TEST_NETWORK = {
 };
 export const MASTER_PASSWORD = "12345678";
 
+const DOCKER_COMPOSE_FILE = process.env.CI ? "docker-compose.ci.yaml" : "docker-compose.yaml";
+
 // it's created by default on flextesa
 export const AliceAccount = {
   pk: "edpkvGfYw3LyB1UcCahKQk4rF2tvbMUk8GFiTuMjL75uGXrpvKXhjn",
@@ -74,10 +76,13 @@ export const loginAs = async (mnemonic: string, page: Page) => {
 };
 
 export const startNode = async () => {
-  execSync("docker compose up --wait");
+  execSync(`docker compose -f ${DOCKER_COMPOSE_FILE} up --wait`);
 };
 
-export const killNode = async () => execSync("docker compose kill && docker compose down");
+export const killNode = async () =>
+  execSync(
+    `docker compose -f ${DOCKER_COMPOSE_FILE} kill && docker compose -f ${DOCKER_COMPOSE_FILE} down`
+  );
 
 // this should be called before each test that uses the blockchain/indexer
 // we need to make sure that each test has a clean state

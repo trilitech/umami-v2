@@ -10,6 +10,7 @@ import { defineConfig, devices } from "@playwright/test";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  timeout: 60 * 1000, // 1 minute
   testDir: "src/e2e",
   testMatch: "**/*.e2e.ts",
   /* Run tests in files in parallel */
@@ -42,6 +43,7 @@ export default defineConfig({
     command: "yarn start",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000, // 2 minutes for the server to start accepting connections
   },
   globalTeardown: "src/e2e/teardown.ts",
 });

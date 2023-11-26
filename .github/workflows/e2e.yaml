@@ -1,0 +1,39 @@
+name: E2E Tests
+
+on: push
+
+jobs:
+  test:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup yarn 3.x
+        run: |
+          corepack enable
+          yarn set version 3.5.0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.15.x
+          cache: "yarn"
+
+      - name: Pull docker images
+        run: docker compose -f docker-compose.ci.yaml pull --quiet
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright Browsers
+        run: yarn playwright install chromium --with-deps
+
+      - name: Run Playwright tests
+        run: yarn playwright test
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 10

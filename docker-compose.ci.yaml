@@ -1,5 +1,5 @@
 # IF YOU UPDATE THIS FILE
-# ALSO UPDATE docker-compose.ci.yaml
+# ALSO UPDATE docker-compose.yaml
 version: "3.8"
 
 services:
@@ -17,7 +17,7 @@ services:
   flextesa:
     container_name: tezos-node
     restart: always
-    image: serjonya/flextesa:latest
+    image: oxheadalpha/flextesa:latest
     command: nairobibox start
     healthcheck:
       test: octez-client get balance for alice
@@ -42,7 +42,7 @@ services:
   sync:
     container_name: tzkt-sync
     restart: always
-    image: serjonya/tzkt-sync:latest
+    image: serjonya/tzkt-sync:1.12.4-linux
     environment:
       ConnectionStrings__DefaultConnection: host=db;port=5432;database=${POSTGRES_DB:-tzkt_db};username=${POSTGRES_USER:-tzkt};password=${POSTGRES_PASSWORD:-qwerty};command timeout=${COMMAND_TIMEOUT:-600};
       Kestrel__Endpoints__Http__Url: http://0.0.0.0:5001
@@ -56,7 +56,7 @@ services:
   api:
     container_name: tzkt-api
     restart: always
-    image: serjonya/tzkt-api:latest
+    image: serjonya/tzkt-api:1.12.4-linux
     depends_on:
       - sync
     environment:
