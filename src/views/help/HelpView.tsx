@@ -28,13 +28,6 @@ export default function HelpView() {
           <HelpLinkRow about="Browse Articles" externalLink="https://medium.com/umamiwallet" />
         </HelpCard>
 
-        <HelpCard title="Questions?">
-          <HelpLinkRow
-            about="Browse FAQs"
-            externalLink="https://github.com/trilitech/umami-v1/wiki"
-          />
-        </HelpCard>
-
         <HelpCard title="Need Help?">
           <HelpLinkRow
             about="Contact our Support Team"
