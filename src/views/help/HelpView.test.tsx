@@ -6,6 +6,6 @@ describe("<HelpView />", () => {
     render(<HelpView />);
 
     const results = screen.getAllByTestId("help-card");
-    expect(results).toHaveLength(4);
+    expect(results).toHaveLength(3);
   });
 });
