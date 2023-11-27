@@ -19,11 +19,24 @@ if (!app.requestSingleInstanceLock()) {
   app.quit();
   return;
 }
+
+// Check for app updates, download and notify UI if update is available to be installed.
 try {
   autoUpdater.checkForUpdatesAndNotify();
 } catch (e) {
   console.log(e);
 }
+
+/**
+ * Send event to UI when app update is ready to be installed.
+ * 
+ * If the update installation won't be triggered by the user, 
+ * it will be applied the next time the app starts.
+ */
+app.on("update-downloaded", (releaseName) => {
+  console.log(`Umami update ${releaseName} downloaded and ready to be installed`, url);
+  mainWindow.webContents.send("app-update-downloaded");
+});
 
 // Enable experimental to activate Web USB support
 app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
