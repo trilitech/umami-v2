@@ -1,11 +1,10 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/layout";
-import { Box, Text, Heading, Center } from "@chakra-ui/react";
+import { Box, Text, Heading } from "@chakra-ui/react";
 import React from "react";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import ClickableCard, { SettingsCard } from "../../components/ClickableCard";
+import ClickableCard from "../../components/ClickableCard";
 import ExternalLinkIcon from "../../assets/icons/ExternalLink";
-import { navigateToExternalLink } from "../../utils/helpers";
 import { Link } from "react-router-dom";
 
 export default function HelpView() {
@@ -25,46 +24,36 @@ export default function HelpView() {
         <TopBar title="Help" />
       </GridItem>
       <GridItem area="main" mt={1}>
-        <HelpCard title="Learn More" externalLink="https://medium.com/umamiwallet">
-          <HelpLinkRow about="Browse Articles" />
+        <HelpCard title="Learn More">
+          <HelpLinkRow about="Browse Articles" externalLink="https://medium.com/umamiwallet" />
         </HelpCard>
 
-        <Box w="550px" data-testid="help-card" mb="20px">
-          <Heading size="lg" mb="16px">
-            Need Help?
-          </Heading>
-          <SettingsCard
-            left="Contact our Support Team"
-            onClick={() => navigateToExternalLink("mailto:umami-support@trili.tech")}
-            isSelected={false}
-          >
-            <Center>
-              <Text size="sm" color={colors.gray[300]}>
-                umami-support@trili.tech
-              </Text>
-              <ExternalLinkIcon ml="4px" />
-            </Center>
-          </SettingsCard>
-          <SettingsCard
-            isSelected={false}
-            left="Get in touch with the Community"
-            onClick={() =>
-              navigateToExternalLink(
-                "https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg"
-              )
-            }
-          >
-            <Center>
-              <Text size="sm" color={colors.gray[300]}>
-                Slack #Umami
-              </Text>
-              <ExternalLinkIcon ml="4px" />
-            </Center>
-          </SettingsCard>
-        </Box>
+        <HelpCard title="Questions?">
+          <HelpLinkRow
+            about="Browse FAQs"
+            externalLink="https://github.com/trilitech/umami-v1/wiki"
+          />
+        </HelpCard>
 
-        <HelpCard title="Terms of Use" externalLink="https://umamiwallet.com/tos.html">
-          <HelpLinkRow about="Read Terms of Service" />
+        <HelpCard title="Need Help?">
+          <HelpLinkRow
+            about="Contact our Support Team"
+            externalLink="mailto:umami-support@trili.tech"
+            linkDescription="umami-support@trili.tech"
+          />
+
+          <HelpLinkRow
+            about="Get in touch with the Community"
+            externalLink="https://join.slack.com/t/tezos-dev/shared_invite/zt-1ur1ymxrp-G_X_bFHrvWXwoeiy53J8lg"
+            linkDescription="Slack #Umami"
+          />
+        </HelpCard>
+
+        <HelpCard title="Terms of Use">
+          <HelpLinkRow
+            about="Read Terms of Service"
+            externalLink="https://umamiwallet.com/tos.html"
+          />
         </HelpCard>
       </GridItem>
     </Grid>
@@ -73,36 +62,33 @@ export default function HelpView() {
 
 const HelpLinkRow: React.FC<{
   about: string;
+  externalLink: string;
   linkDescription?: string;
-}> = ({ about, linkDescription }) => {
+}> = ({ about, externalLink, linkDescription }) => {
   return (
-    <Flex justifyContent="space-between" alignItems="center">
-      <Heading size="sm">{about}</Heading>
+    <Link to={externalLink} target="_blank" rel="noopener noreferrer">
+      <ClickableCard isSelected={false} cursor="pointer">
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading size="sm">{about}</Heading>
 
-      <Flex alignItems="center">
-        {linkDescription && (
-          <Text
-            size="sm"
-            color={colors.gray[400]}
-            _hover={{
-              color: colors.gray[100],
-              cursor: "pointer",
-            }}
-          >
-            {linkDescription}
-          </Text>
-        )}
-        <ExternalLinkIcon />
-      </Flex>
-    </Flex>
+          <Flex alignItems="center">
+            {linkDescription && (
+              <Text size="sm" mr="4px" color={colors.gray[400]}>
+                {linkDescription}
+              </Text>
+            )}
+            <ExternalLinkIcon />
+          </Flex>
+        </Flex>
+      </ClickableCard>
+    </Link>
   );
 };
 
 const HelpCard: React.FC<{
   title: string;
-  externalLink: string;
   children: React.ReactNode;
-}> = ({ title, externalLink, children }) => {
+}> = ({ title, children }) => {
   return (
     <Box marginY="10px" data-testid="help-card">
       <Flex>
@@ -110,11 +96,7 @@ const HelpCard: React.FC<{
           <Heading size="lg" mb="16px">
             {title}
           </Heading>
-          <Link to={externalLink} target="_blank" rel="noopener noreferrer">
-            <ClickableCard isSelected={false} cursor="pointer">
-              {children}
-            </ClickableCard>
-          </Link>
+          {children}
         </Box>
       </Flex>
     </Box>

@@ -31,33 +31,20 @@ const ClickableCard: React.FC<
   );
 };
 
-export const SettingsCard: React.FC<{
-  left: string;
-  onClick?: () => void;
-  children: React.ReactNode;
-  isSelected: boolean;
-}> = ({ left, onClick, isSelected, children }) => {
-  return (
-    <ClickableCard onClick={onClick} isSelected={isSelected}>
-      <Flex alignItems="center" h="100%">
-        <Flex justifyContent="space-between" alignItems="center" w="100%">
-          <Heading size="sm">{left}</Heading>
-          {children}
-        </Flex>
-      </Flex>
-    </ClickableCard>
-  );
-};
-
 export const SettingsCardWithDrawerIcon: React.FC<{
   left: string;
   isSelected: boolean;
   onClick?: () => void;
 }> = ({ left, isSelected, onClick }) => {
   return (
-    <SettingsCard left={left} onClick={onClick} isSelected={isSelected}>
-      <ChevronRightIcon />
-    </SettingsCard>
+    <ClickableCard onClick={onClick} isSelected={isSelected}>
+      <Flex alignItems="center" h="100%">
+        <Flex justifyContent="space-between" alignItems="center" w="100%">
+          <Heading size="sm">{left}</Heading>
+          <ChevronRightIcon />
+        </Flex>
+      </Flex>
+    </ClickableCard>
   );
 };
 
