@@ -10,7 +10,6 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { navigateToExternalLink } from "../../utils/helpers";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
@@ -18,57 +17,49 @@ import { RawPkh } from "../../types/Address";
 
 const BuyTezForm: React.FC<{
   recipient?: RawPkh;
-}> = ({ recipient = "" }) => {
+}> = ({ recipient: defaultRecipient = "" }) => {
   const network = useSelectedNetwork();
   const isMainnet = network.name === "mainnet";
   const title = isMainnet ? "Buy Tez" : "Request Tez from faucet";
 
-  const onSubmit = async ({ recipient }: { recipient: string }) => {
-    let url = network.buyTezUrl;
-    if (!url) {
-      throw new Error(`${network.name} does not have a buyTezUrl defined`);
-    }
-    if (isMainnet) {
-      url += `/default/widget/?commodity=XTZ%3ATezos&address=${recipient}`;
-    }
-    navigateToExternalLink(url);
-  };
-
-  const form = useForm<{ recipient: string }>({
+  const form = useForm<{ address: string }>({
     mode: "onBlur",
     defaultValues: {
-      recipient,
+      address: defaultRecipient,
     },
   });
   const {
-    handleSubmit,
     formState: { isValid, errors },
   } = form;
+
+  let actionURL = network.buyTezUrl;
+  if (network.buyTezUrl && isMainnet) {
+    actionURL += `/default/widget/`;
+  }
 
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form action={actionURL} rel="noreferrer noopener" target="_blank">
           <ModalCloseButton />
           <ModalHeader textAlign="center">Buy Tez</ModalHeader>
           {isMainnet && (
             <>
+              <input type="hidden" name="commodity" value="XTZ:Tezos" />
               <Text textAlign="center">Please select the recipient account.</Text>
               <ModalBody>
                 <FormControl
                   data-testid="buy-tez-selector"
                   paddingY={5}
-                  isInvalid={!!errors.recipient}
+                  isInvalid={!!errors.address}
                 >
                   <OwnedImplicitAccountsAutocomplete
                     label="Recipient Account"
-                    inputName="recipient"
+                    inputName="address"
                     allowUnknown={false}
-                    isDisabled={!!recipient}
+                    isDisabled={!!defaultRecipient}
                   />
-                  {errors.recipient && (
-                    <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
-                  )}
+                  {errors.address && <FormErrorMessage>{errors.address.message}</FormErrorMessage>}
                 </FormControl>
               </ModalBody>
             </>
