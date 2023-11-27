@@ -142,13 +142,14 @@ app.on("second-instance", (event, argv, cwd) => {
   }
 });
 
-app.on("open-url", (event, url) => {
-  console.log("open-url", url);
+app.on("open-url", (_event, url) => {
   if (mainWindow) {
     mainWindow.webContents.send("deeplinkURL", url);
   } else {
     deeplinkURL = url;
-    createWindow();
+    app.whenReady().then(() => {
+      createWindow();
+    });
   }
 });
 
