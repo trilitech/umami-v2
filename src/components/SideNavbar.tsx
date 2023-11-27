@@ -78,6 +78,7 @@ export const SideNavbar = () => {
       </Box>
       <Flex flexDirection="column" justifyContent="space-between" flex={1}>
         <Box>
+          {/* TODO: add UpdateAppButton component once it's ready */}
           <TotalBalance />
           <Box>
             <MenuItem label="Accounts" to="/home" icon={<AccountsIcon />} />
