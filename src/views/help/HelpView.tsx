@@ -29,10 +29,6 @@ export default function HelpView() {
           <HelpLinkRow about="Browse Articles" />
         </HelpCard>
 
-        <HelpCard title="Questions?" externalLink="https://github.com/trilitech/umami-v1/wiki">
-          <HelpLinkRow about="Browse FAQs" />
-        </HelpCard>
-
         <Box w="550px" data-testid="help-card" mb="20px">
           <Heading size="lg" mb="16px">
             Need Help?
