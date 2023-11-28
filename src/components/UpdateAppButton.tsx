@@ -6,8 +6,12 @@ import colors from "../style/colors";
  * Button component to allow users see and download app update when available.
  */
 export const UpdateAppButton = () => {
+  const appWindow = window as any;
+
   const startUpdate = () => {
-    // TODO: send event to call autoUpdater.quitAndInstall() in electron
+    if (appWindow && appWindow.electronAPI) {
+      appWindow.electronAPI.installAppUpdateAndQuit();
+    }
   };
 
   // TODO: listen to event from electron on having update available.

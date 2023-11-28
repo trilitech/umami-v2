@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, shell } = require("electron");
+const { app, BrowserWindow, shell, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 const { autoUpdater } = require("electron-updater");
@@ -19,6 +19,8 @@ if (!app.requestSingleInstanceLock()) {
   app.quit();
   return;
 }
+
+// Check for app updates, download and notify UI if update is available to be installed.
 try {
   autoUpdater.checkForUpdatesAndNotify();
 } catch (e) {
@@ -165,4 +167,7 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+
+  // Listen to install-app-update event from UI, start update on getting the event.
+  ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
 });
