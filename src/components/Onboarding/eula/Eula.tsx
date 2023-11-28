@@ -16,7 +16,7 @@ const Eula: React.FC<{
           <Link
             textDecoration="underline"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             href="https://umamiwallet.com/tos.html"
           >
             Terms of Service
@@ -25,7 +25,7 @@ const Eula: React.FC<{
           <Link
             textDecoration="underline"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             href="https://umamiwallet.com/privacypolicy.html"
           >
             Privacy Policy
