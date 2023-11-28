@@ -9,20 +9,20 @@ export const SendNFTRecapTile = ({ nft }: { nft: NFT }) => {
   const url = getIPFSurl(thumbnailUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   return (
-    <Box aria-label="nft" w="100%">
+    <Box width="100%" aria-label="nft">
       <Flex
         alignItems="center"
-        bg={colors.gray[800]}
-        p={3}
-        h="60px"
-        data-testid="nft-name"
+        height="60px"
+        padding={3}
+        background={colors.gray[800]}
         borderRadius="4px"
+        data-testid="nft-name"
       >
-        <AspectRatio w="30px" h="30px" ratio={1}>
-          <Image src={url} fallbackSrc={fallbackUrl} />
+        <AspectRatio width="30px" height="30px" ratio={1}>
+          <Image fallbackSrc={fallbackUrl} src={url} />
         </AspectRatio>
         {nft.metadata.name && (
-          <Heading ml={4} size="sm">
+          <Heading marginLeft={4} size="sm">
             {truncate(nft.metadata.name, 45)}
           </Heading>
         )}

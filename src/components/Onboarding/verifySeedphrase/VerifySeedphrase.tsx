@@ -32,11 +32,15 @@ const VerifySeedphrase = ({
       title="Verify Seed Phrase"
       subtitle="To verify, please type in the word that corresponds to each sequence number."
     >
-      <Box overflowX="hidden" overflowY="auto" w="100%">
+      <Box overflowX="hidden" overflowY="auto" width="100%">
         <form onSubmit={handleSubmit(onSubmit)}>
           {randomElements.map((item, index) => {
             return (
-              <FormControl key={index} mb="12px" isInvalid={!!errors[`${item.index}`] && isDirty}>
+              <FormControl
+                key={index}
+                marginBottom="12px"
+                isInvalid={!!errors[`${item.index}`] && isDirty}
+              >
                 <InputGroup size="md">
                   <InputLeftElement>{item.index + 1}</InputLeftElement>
                   <Input
@@ -51,13 +55,13 @@ const VerifySeedphrase = ({
               </FormControl>
             );
           })}
-          <Button type="submit" w="100%" size="lg" mt="20px" isDisabled={!isValid}>
+          <Button width="100%" marginTop="20px" isDisabled={!isValid} size="lg" type="submit">
             Continue
           </Button>
 
           {
             /* devblock:start */
-            <Button onClick={onSubmit} mt="12px" w="100%" size="lg">
+            <Button width="100%" marginTop="12px" onClick={onSubmit} size="lg">
               Bypass (Dev only)
             </Button>
             /* devblock:end */

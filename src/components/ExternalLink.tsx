@@ -7,13 +7,13 @@ export const ExternalLink: React.FC<PropsWithChildren<{ href: string } & LinkPro
   ...props
 }) => (
   <Link
-    href={href}
-    role="link"
-    display="flex"
-    target="_blank"
-    rel="noopener noreferrer"
     alignItems="center"
+    display="flex"
     _hover={{ textDecoration: "none" }}
+    href={href}
+    rel="noopener noreferrer"
+    role="link"
+    target="_blank"
     {...props}
   >
     {children}

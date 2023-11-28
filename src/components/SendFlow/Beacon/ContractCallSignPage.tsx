@@ -45,19 +45,19 @@ const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeac
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 
-            <Flex mt="12px" alignItems="center" justifyContent="end">
+            <Flex alignItems="center" justifyContent="end" marginTop="12px">
               <SignPageFee fee={fee} />
             </Flex>
 
-            <FormLabel mt="24px">From </FormLabel>
+            <FormLabel marginTop="24px">From </FormLabel>
             <AddressTile address={operation.sender.address} />
 
-            <FormLabel mt="24px">To </FormLabel>
+            <FormLabel marginTop="24px">To </FormLabel>
             <AddressTile address={contract} />
 
-            <FormLabel mt="24px">Parameter</FormLabel>
+            <FormLabel marginTop="24px">Parameter</FormLabel>
             <Accordion allowToggle={true}>
-              <AccordionItem bg={colors.gray[800]} border="none" borderRadius="8px">
+              <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
                     JSON

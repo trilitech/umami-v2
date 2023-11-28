@@ -31,21 +31,21 @@ const MenuItem: React.FC<
   return (
     <Link to={to}>
       <Flex
-        bg={isSelected ? colors.gray[600] : "transparent"}
+        alignItems="center"
+        justifyContent="flex-start"
+        width="176px"
+        marginBottom="8px"
+        padding="10px"
+        background={isSelected ? colors.gray[600] : "transparent"}
+        borderRadius="4px"
         _hover={{
           background: isSelected ? colors.gray[600] : colors.gray[800],
         }}
-        p="10px"
-        mb="8px"
-        justifyContent="flex-start"
-        alignItems="center"
-        borderRadius="4px"
         cursor="pointer"
-        width="176px"
         {...flexProps}
       >
         {icon}
-        <Text size="sm" ml="10px">
+        <Text marginLeft="10px" size="sm">
           {label}
         </Text>
       </Flex>
@@ -57,8 +57,8 @@ const TotalBalance = () => {
   const balance = useTotalBalance();
 
   return (
-    <Box mt="24px" mb="100px">
-      <Text size="sm" mb="4px">
+    <Box marginTop="24px" marginBottom="100px">
+      <Text marginBottom="4px" size="sm">
         Balance
       </Text>
       {balance !== null && <TezRecapDisplay balance={balance.mutez} dollarBalance={balance.usd} />}
@@ -68,15 +68,20 @@ const TotalBalance = () => {
 
 export const SideNavbar = () => {
   return (
-    <Flex flexDirection="column" bg={colors.gray[900]} w="236px" p="30px 30px 30px 30px">
+    <Flex
+      flexDirection="column"
+      width="236px"
+      padding="30px 30px 30px 30px"
+      background={colors.gray[900]}
+    >
       <Box>
-        <Flex height="30px" justifyContent="space-between" alignItems="center">
+        <Flex alignItems="center" justifyContent="space-between" height="30px">
           <MakiLogo size={38} />
           <NetworkSelector />
         </Flex>
-        <Divider mt="28px" />
+        <Divider marginTop="28px" />
       </Box>
-      <Flex flexDirection="column" justifyContent="space-between" flex={1}>
+      <Flex justifyContent="space-between" flexDirection="column" flex={1}>
         <Box>
           {/* TODO: add UpdateAppButton component once it's ready */}
           <TotalBalance />

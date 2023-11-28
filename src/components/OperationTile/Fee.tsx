@@ -39,7 +39,7 @@ export const Fee: React.FC<{
 
   return (
     <Center>
-      <Heading size="md" color={colors.gray[450]} mr="4px">
+      <Heading marginRight="4px" color={colors.gray[450]} size="md">
         Fee:
       </Heading>
       <Text color={colors.gray[400]} data-testid="fee">

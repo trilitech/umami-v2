@@ -3,11 +3,11 @@ import { Icon, IconProps } from "@chakra-ui/react";
 const UnknownContactIcon: React.FC<IconProps> = props => {
   return (
     <Icon
-      data-testid="unknown-contact-icon"
       width="18px"
       height="18px"
-      viewBox="0 0 18 18"
       fill="none"
+      data-testid="unknown-contact-icon"
+      viewBox="0 0 18 18"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

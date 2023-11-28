@@ -13,7 +13,7 @@ import DownloadIcon from "../../assets/icons/Download";
 
 export default function SettingsView() {
   return (
-    <Flex direction="column" height="100%">
+    <Flex flexDirection="column" height="100%">
       <TopBar title="Settings" />
       <Box overflowY="scroll">
         <Box marginTop="16px">
@@ -100,9 +100,9 @@ const BackupSection = () => {
   return (
     <SectionContainer title="Backup">
       <ClickableCard onClick={downloadBackup} isSelected={false}>
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex alignItems="center" justifyContent="space-between">
           <Heading size="sm">Download backup file</Heading>
-          <Button variant="unstyled" onClick={downloadBackup}>
+          <Button onClick={downloadBackup} variant="unstyled">
             <DownloadIcon cursor="pointer" />
           </Button>
         </Flex>
@@ -144,8 +144,8 @@ const SectionContainer: React.FC<{
   return (
     <Box marginTop="8px">
       <Flex>
-        <Box w="550px">
-          <Heading size="lg" marginBottom="16px">
+        <Box width="550px">
+          <Heading marginBottom="16px" size="lg">
             {title}
           </Heading>
           {children}

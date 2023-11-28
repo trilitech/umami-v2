@@ -6,8 +6,8 @@ const FA12Icon: React.FC<IconProps> = props => {
     <Icon
       width="30px"
       height="15px"
-      viewBox="1 1 30 15"
       fill={colors.gray[450]}
+      viewBox="1 1 30 15"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

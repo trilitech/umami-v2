@@ -21,8 +21,8 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
   const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
-    <Flex direction="column" data-testid="operation-tile-origination" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
+    <Flex flexDirection="column" width="100%" data-testid="operation-tile-origination">
+      <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
           <ContractIcon mr="8px" />
           <TzktLink data-testid="title" hash={operation.hash} counter={operation.counter} mr="8px">
@@ -40,8 +40,8 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
             {!showFromAddress ? (
               <Text color={colors.gray[450]}>N/A</Text>
             ) : (
-              <Flex mr="15px">
-                <Text mr="6px" color={colors.gray[450]}>
+              <Flex marginRight="15px">
+                <Text marginRight="6px" color={colors.gray[450]}>
                   From:
                 </Text>
                 <AddressPill address={operation.sender} />

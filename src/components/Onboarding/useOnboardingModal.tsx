@@ -150,11 +150,11 @@ export const useOnboardingModal = (onModalClose?: () => void) => {
   return {
     modalElement: (
       <Modal
-        isOpen={isOpen}
-        onClose={closeModal}
+        autoFocus={false}
         closeOnOverlayClick={false}
         isCentered
-        autoFocus={false}
+        isOpen={isOpen}
+        onClose={closeModal}
       >
         {hasAccounts && <ModalOverlay />}
         <ModalContent>

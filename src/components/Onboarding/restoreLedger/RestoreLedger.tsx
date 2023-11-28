@@ -79,13 +79,13 @@ const RestoreLedger = ({
       title="Connect Ledger"
       subtitle="Complete the steps to connect."
     >
-      <VStack spacing="24px" overflowY="auto">
+      <VStack overflowY="auto" spacing="24px">
         <OrderedList spacing={4}>
           {noticeItems.map((item, index) => {
             return <ListItem key={index}>{item.content}</ListItem>;
           })}
         </OrderedList>
-        <Button w="100%" size="lg" isLoading={isLoading} onClick={connectLedger}>
+        <Button width="100%" isLoading={isLoading} onClick={connectLedger} size="lg">
           Export Public Key
         </Button>
       </VStack>

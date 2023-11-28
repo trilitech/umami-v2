@@ -15,10 +15,10 @@ const FormPageHeader: React.FC<{
 }> = ({ title = "Send", subTitle = "Send one or insert into batch" }) => {
   return (
     <HeaderWrapper>
-      <Text size="2xl" fontWeight="600">
+      <Text fontWeight="600" size="2xl">
         {title}
       </Text>
-      <Text textAlign="center" size="sm" color={colors.gray[400]}>
+      <Text color={colors.gray[400]} textAlign="center" size="sm">
         {subTitle}
       </Text>
       <ModalCloseButton />

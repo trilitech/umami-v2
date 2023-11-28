@@ -10,7 +10,8 @@
     "jest",
     "react",
     "react-hooks",
-    "testing-library"
+    "testing-library",
+    "chakra-ui"
   ],
   "extends": [
     "eslint:recommended",
@@ -40,7 +41,10 @@
     "react/jsx-key": [
       "warn",
       { "checkFragmentShorthand": true, "checkKeyMustBeforeSpread": true, "warnOnDuplicates": true }
-    ]
+    ],
+    "chakra-ui/props-order": "warn",
+    "chakra-ui/props-shorthand": ["warn", { "noShorthand": true }],
+    "chakra-ui/require-specific-component": "warn"
   },
   "overrides": [
     {

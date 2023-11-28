@@ -36,20 +36,20 @@ const Header: React.FC<{
 
   return (
     <Flex
+      alignItems="center"
+      height="78px"
+      background={colors.gray[800]}
+      borderTopRadius="8px"
       data-testid="header"
       paddingX="30px"
-      bg={colors.gray[800]}
-      height="78px"
-      borderTopRadius="8px"
-      alignItems="center"
     >
       <Identicon p="8px" identiconSize={32} address={pkh} />
-      <Flex flex={1} justifyContent="space-between">
-        <Box ml="16px" data-testid="account-identifier">
-          <Heading size="md" mb="4px">
+      <Flex justifyContent="space-between" flex={1}>
+        <Box marginLeft="16px" data-testid="account-identifier">
+          <Heading marginBottom="4px" size="md">
             {label}
           </Heading>
-          <Text size="sm" color={colors.gray[300]}>
+          <Text color={colors.gray[300]} size="sm">
             {formatPkh(pkh)}
           </Text>
         </Box>
@@ -68,7 +68,12 @@ const AccountTokens: React.FC<{
   const { openWith } = useContext(DynamicModalContext);
 
   return (
-    <Card mb="16px" bgColor={colors.gray[900]} borderBottomRadius="8px" overflowX="auto">
+    <Card
+      overflowX="auto"
+      marginBottom="16px"
+      borderBottomRadius="8px"
+      backgroundColor={colors.gray[900]}
+    >
       <Header account={account} />
       <TableContainer paddingX="30px">
         <Table>
@@ -77,23 +82,23 @@ const AccountTokens: React.FC<{
               const rowBorderColor = i === tokens.length - 1 ? "transparent" : colors.gray[700];
               return (
                 <Tr key={fullId(token)} data-testid="token-tile">
-                  <Td paddingX="0" minWidth="240px" width="20%" borderColor={rowBorderColor}>
+                  <Td width="20%" minWidth="240px" borderColor={rowBorderColor} paddingX="0">
                     <Flex alignItems="center">
                       <TokenIcon display="inline-block" contract={token.contract} width="38px" />
-                      <Heading display="inline-block" size="sm" marginLeft="16px">
+                      <Heading display="inline-block" marginLeft="16px" size="sm">
                         <TokenNameWithIcon token={token} />
                       </Heading>
                     </Flex>
                   </Td>
-                  <Td paddingX="0" minWidth="200px" width="20%" borderColor={rowBorderColor}>
+                  <Td width="20%" minWidth="200px" borderColor={rowBorderColor} paddingX="0">
                     <AddressPill address={parseContractPkh(token.contract)} />
                   </Td>
-                  <Td paddingX="0" minWidth="160px" width="15%" borderColor={rowBorderColor}>
+                  <Td width="15%" minWidth="160px" borderColor={rowBorderColor} paddingX="0">
                     <Heading size="sm">
                       {tokenPrettyAmount(token.balance, token, { showSymbol: false })}
                     </Heading>
                   </Td>
-                  <Td textAlign="right" paddingX="0" borderColor={rowBorderColor}>
+                  <Td textAlign="right" borderColor={rowBorderColor} paddingX="0">
                     <SendButton
                       onClick={() => {
                         openWith(<SendTokenFormPage sender={account} token={token} />);

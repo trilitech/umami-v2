@@ -31,10 +31,10 @@ import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
   return (
-    <Flex flexDirection="row-reverse" marginBottom="16px" marginTop="12px">
-      <Button variant="CTAWithIcon" onClick={onOpen} paddingRight="0">
+    <Flex flexDirection="row-reverse" marginTop="12px" marginBottom="16px">
+      <Button paddingRight="0" onClick={onOpen} variant="CTAWithIcon">
         <AddAccountIcon stroke="currentcolor" />
-        <Text ml="4px" size="sm">
+        <Text marginLeft="4px" size="sm">
           Add Account
         </Text>
       </Button>
@@ -88,7 +88,7 @@ const AccountGroup: React.FC<{
   return (
     <Box data-testid={`account-group-${groupLabel}`}>
       <Flex justifyContent="space-between">
-        <Heading size="md" mb={4}>
+        <Heading marginBottom={4} size="md">
           {groupLabel}
         </Heading>
 
@@ -99,7 +99,7 @@ const AccountGroup: React.FC<{
 
       {accounts.map(account => {
         return (
-          <Box mb="16px" key={account.address.pkh}>
+          <Box key={account.address.pkh} marginBottom="16px">
             <AccountTile
               selected={account.address.pkh === selected}
               onClick={_ => onSelect(account.address.pkh)}
@@ -156,19 +156,25 @@ export const AccountsList: React.FC<{
 
   return (
     <>
-      <Box height="100%" mr={0}>
+      <Box height="100%" marginRight={0}>
         <NestedScroll>
           {compact(accountTiles)}
           <Button
-            onClick={() => openWith(<FormPage />)}
             width="100%"
-            bg={colors.black}
-            border="1px dashed"
             height="90px"
-            variant="outline"
+            background={colors.black}
+            border="1px dashed"
             borderColor={colors.gray[500]}
+            onClick={() => openWith(<FormPage />)}
+            variant="outline"
           >
-            <Text display="block" m={5} width="100%" textAlign="center" color={colors.gray[400]}>
+            <Text
+              display="block"
+              width="100%"
+              margin={5}
+              color={colors.gray[400]}
+              textAlign="center"
+            >
               <KeyIcon stroke={colors.gray[450]} mr={1} />
               Create New Multisig
             </Text>

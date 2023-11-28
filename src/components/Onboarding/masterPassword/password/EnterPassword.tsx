@@ -41,8 +41,8 @@ const EnterPassword = ({
           </FormControl>
 
           <Button
-            mt="32px"
             width="100%"
+            marginTop="32px"
             isDisabled={!isValid}
             isLoading={isLoading}
             size="lg"

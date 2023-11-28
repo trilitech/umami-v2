@@ -27,7 +27,7 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
           <Flex>
             {Number(operation.amount) > 1 && (
               <>
-                <Heading size="sm" color={colors.gray[450]}>
+                <Heading color={colors.gray[450]} size="sm">
                   x{operation.amount}
                 </Heading>
                 &nbsp;
@@ -35,13 +35,13 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
             )}
             <Heading size="sm">
               <Tooltip
-                bg={colors.gray[700]}
+                padding="8px"
+                background={colors.gray[700]}
                 border="1px solid"
                 borderColor={colors.gray[500]}
                 borderRadius="8px"
-                p="8px"
                 label={
-                  <AspectRatio w="170px" h="170px" ratio={1}>
+                  <AspectRatio width="170px" height="170px" ratio={1}>
                     <Image src={getIPFSurl(thumbnailUri(token))} />
                   </AspectRatio>
                 }

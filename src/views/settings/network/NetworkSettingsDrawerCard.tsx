@@ -19,8 +19,8 @@ export const NetworkSettingsDrawerCard = () => {
       <Drawer
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isDrawerOpen}
-        placement="right"
         onClose={closeDrawer}
+        placement="right"
       >
         <DrawerOverlay />
         <DrawerContent>

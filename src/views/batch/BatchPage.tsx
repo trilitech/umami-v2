@@ -13,8 +13,8 @@ import { ExternalLink } from "../../components/ExternalLink";
 
 export const FilterController = ({ batchPending }: { batchPending: number }) => {
   return (
-    <Flex alignItems="center" mb="24px" mt="24px">
-      <Heading size="sm" color={colors.orangeL} flex={1}>
+    <Flex alignItems="center" marginTop="24px" marginBottom="24px">
+      <Heading flex={1} color={colors.orangeL} size="sm">
         {batchPending} Pending
       </Heading>
       <CSVFileUploader />
@@ -22,8 +22,8 @@ export const FilterController = ({ batchPending }: { batchPending: number }) => 
         ml="8px"
         href="https://github.com/trilitech/umami-v2/blob/main/doc/Batch-File-Format-Specifications.md"
       >
-        <Button variant="CTAWithIcon" paddingRight="0">
-          <Text mr="4px" size="sm">
+        <Button paddingRight="0" variant="CTAWithIcon">
+          <Text marginRight="4px" size="sm">
             See file specs
           </Text>
           <ExternalLinkIcon stroke="currentcolor" />
@@ -37,10 +37,10 @@ const BatchPage = () => {
   const batches = useBatches();
 
   return (
-    <Flex direction="column" height="100%">
+    <Flex flexDirection="column" height="100%">
       <TopBar title="Batch" />
       <FilterController batchPending={batches.length} />
-      <Box overflowY="auto" minH="80%">
+      <Box overflowY="auto" minHeight="80%">
         {batches.length > 0 ? (
           batches.map(operations => (
             <BatchView key={operations.sender.address.pkh} operations={operations} />
@@ -60,15 +60,19 @@ const EmptyBatch = () => {
     <Center height="100%" textAlign="center">
       <Box>
         <Heading size="3xl">No 'batch' to show</Heading>
-        <Text color={colors.gray[400]} mt="10px" size="xl">
+        <Text marginTop="10px" color={colors.gray[400]} size="xl">
           There is no batch transaction to show...
         </Text>
-        <Flex justifyContent="space-around" mt="30px">
+        <Flex justifyContent="space-around" marginTop="30px">
           <Box>
             <Button onClick={() => openWith(<SendTezForm showPreview={false} />)}>
               Start a Batch
             </Button>
-            <Button ml="15px" variant="tertiary" onClick={() => openWith(<CSVFileUploadForm />)}>
+            <Button
+              marginLeft="15px"
+              onClick={() => openWith(<CSVFileUploadForm />)}
+              variant="tertiary"
+            >
               Load CSV file
             </Button>
           </Box>

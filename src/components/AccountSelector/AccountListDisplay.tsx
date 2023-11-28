@@ -9,22 +9,28 @@ export const AccountListDisplay: React.FC<{
   onSelect: (account: Account) => void;
 }> = ({ accounts, onSelect }) => {
   return (
-    <MenuList bg={colors.gray[900]} maxHeight="300px" p={0} overflowY="scroll" zIndex="docked">
+    <MenuList
+      zIndex="docked"
+      overflowY="scroll"
+      maxHeight="300px"
+      padding={0}
+      background={colors.gray[900]}
+    >
       {accounts.map(account => {
         return (
           <MenuItem
-            value={account.address.pkh}
+            key={account.address.pkh}
+            width="100%"
+            minHeight="48px"
+            padding="5px"
+            background={colors.gray[700]}
             aria-label={account.label}
             onClick={() => {
               onSelect(account);
             }}
-            key={account.address.pkh}
-            minH="48px"
-            w="100%"
-            padding="5px"
             // TODO implement hover color that disappeared
             // https://app.asana.com/0/1204165186238194/1204412123679802/f
-            bg={colors.gray[700]}
+            value={account.address.pkh}
           >
             <AddressTile
               cursor="pointer"

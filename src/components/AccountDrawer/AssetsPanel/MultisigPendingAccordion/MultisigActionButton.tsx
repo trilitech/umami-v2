@@ -45,8 +45,8 @@ export const MultisigActionButton: React.FC<{
       return (
         <Button
           data-testid="multisig-signer-button"
-          onClick={onClickApproveExecute}
           isLoading={isLoading}
+          onClick={onClickApproveExecute}
         >
           Execute
         </Button>
@@ -57,8 +57,8 @@ export const MultisigActionButton: React.FC<{
       return (
         <Button
           data-testid="multisig-signer-button"
-          onClick={onClickApproveExecute}
           isLoading={isLoading}
+          onClick={onClickApproveExecute}
         >
           Approve
         </Button>

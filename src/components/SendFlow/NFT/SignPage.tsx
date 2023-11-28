@@ -38,16 +38,16 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            <Flex mb="12px">
+            <Flex marginBottom="12px">
               <SendNFTRecapTile nft={nft} />
             </Flex>
 
-            <Flex my="12px" px="4px" alignItems="center" justifyContent="space-between">
+            <Flex alignItems="center" justifyContent="space-between" marginY="12px" paddingX="4px">
               <Flex alignItems="center">
-                <Heading size="sm" mr="4px" color={colors.gray[450]}>
+                <Heading marginRight="4px" color={colors.gray[450]} size="sm">
                   Owned:
                 </Heading>
-                <Text size="sm" data-testid="nft-owned" color={colors.gray[400]}>
+                <Text color={colors.gray[400]} data-testid="nft-owned" size="sm">
                   {nft.balance}
                 </Text>
               </Flex>
@@ -55,11 +55,11 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
               <SignPageFee fee={fee} />
             </Flex>
 
-            <Flex mt="12px" mb="24px" alignItems="center">
-              <Heading size="md" mr="12px">
+            <Flex alignItems="center" marginTop="12px" marginBottom="24px">
+              <Heading marginRight="12px" size="md">
                 Quantity:
               </Heading>
-              <Center w="100px" h="48px" bg={colors.gray[800]} borderRadius="4px">
+              <Center width="100px" height="48px" background={colors.gray[800]} borderRadius="4px">
                 <Text textAlign="center">
                   {(operations.operations[0] as FA2Transfer).amount} out of {nft.balance}
                 </Text>

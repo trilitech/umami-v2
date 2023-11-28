@@ -21,12 +21,12 @@ export const BatchModalBody: React.FC<{
       <ModalBody>
         <FormLabel>From</FormLabel>
         <AddressTile address={signerAddress} />
-        <Flex my="12px" px="4px" alignItems="center" justifyContent="space-between">
+        <Flex alignItems="center" justifyContent="space-between" marginY="12px" paddingX="4px">
           <Flex>
-            <Text size="sm" mr={1} color={colors.gray[450]}>
+            <Text marginRight={1} color={colors.gray[450]} size="sm">
               Transactions:
             </Text>
-            <Text size="sm" data-testid="transaction-length" color={colors.gray[400]}>
+            <Text color={colors.gray[400]} data-testid="transaction-length" size="sm">
               {transactionCount}
             </Text>
           </Flex>

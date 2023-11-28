@@ -31,19 +31,19 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
           <FormLabel>Address</FormLabel>
           <Input
             {...register("pkh", { required: true })}
-            placeholder="Please enter the account address"
             autoComplete="off"
+            placeholder="Please enter the account address"
           />
         </FormControl>
         <FormControl isInvalid={!!errors.name}>
           <FormLabel>Name</FormLabel>
           <Input
             {...register("name", { required: true })}
-            placeholder="Please enter the account name"
             autoComplete="off"
+            placeholder="Please enter the account name"
           />
         </FormControl>
-        <Button w="100%" size="lg" type="submit" mt={2}>
+        <Button width="100%" marginTop={2} size="lg" type="submit">
           Add account
         </Button>
       </form>

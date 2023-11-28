@@ -144,14 +144,14 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       {state === "disabled_tile" && <AddressTile address={parsePkh(currentRealValue)} />}
       {state === "selected_tile" && (
         <Box
-          data-testid={`selected-address-tile-${currentRealValue}`}
-          borderRadius="4px"
+          height="48px"
+          background={colors.gray[800]}
           border="1px solid"
           borderColor={colors.gray[500]}
-          bg={colors.gray[800]}
-          height="48px"
+          borderRadius="4px"
+          data-testid={`selected-address-tile-${currentRealValue}`}
           onClick={clearInput}
-          py={0}
+          paddingY={0}
         >
           <Center
             justifyContent="space-between"
@@ -176,10 +176,9 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         <InputGroup>
           <Input
             {...style}
-            id={inputId}
             aria-label={inputName}
-            value={rawValue}
-            onFocus={() => setHideSuggestions(false)}
+            autoComplete="off"
+            id={inputId}
             onBlur={e => {
               e.preventDefault();
               setHideSuggestions(true);
@@ -190,8 +189,9 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
               handleChange(e.target.value);
             }}
             onChange={e => handleChange(e.target.value)}
-            autoComplete="off"
+            onFocus={() => setHideSuggestions(false)}
             placeholder="Enter address or contact name"
+            value={rawValue}
           />
           <InputRightElement>
             {rawValue ? (
@@ -204,10 +204,10 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       )}
       <Input
         {...register<U>(inputName, { required: "Invalid address or contact name", validate })}
-        mb={0}
+        marginBottom={0}
+        data-testid={`real-address-input-${inputName}`}
         name={inputName}
         type="hidden"
-        data-testid={`real-address-input-${inputName}`}
       />
 
       {!hideSuggestions && <Suggestions contacts={suggestions} onChange={handleChange} />}

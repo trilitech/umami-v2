@@ -30,8 +30,8 @@ const ErrorLogsDrawerCard = () => {
       <Drawer
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
-        placement="right"
         onClose={closeDrawer}
+        placement="right"
       >
         <DrawerOverlay />
         <DrawerContent>
@@ -48,8 +48,8 @@ const ErrorLogsDrawerCard = () => {
 const ErrorLogsDrawerBody = () => {
   const errors = [...useAppSelector(s => s.errors)].reverse();
   return (
-    <Flex direction="column" height="100%">
-      <Flex h={24} justifyContent="space-between" alignItems="center">
+    <Flex flexDirection="column" height="100%">
+      <Flex alignItems="center" justifyContent="space-between" height={24}>
         <Heading size="xl">Error Logs</Heading>
         <a
           download="UmamiErrorLogs.json"
@@ -75,9 +75,9 @@ const ErrorLogRow: React.FC<{
       <Divider marginY={1} />
       <Flex justifyContent="space-between" paddingY={3}>
         <Flex>
-          <Icon as={AiOutlineExclamationCircle} mr={2} mt="1px" />
-          <Flex direction="column">
-            <Heading size="sm" wordBreak="break-all">
+          <Icon as={AiOutlineExclamationCircle} marginTop="1px" marginRight={2} />
+          <Flex flexDirection="column">
+            <Heading wordBreak="break-all" size="sm">
               {errorLog.description}
             </Heading>
             <Text color={colors.gray[400]} size="sm">

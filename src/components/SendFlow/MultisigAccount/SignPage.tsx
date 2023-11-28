@@ -41,17 +41,17 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
           <ModalBody>
             <FormLabel>Contract Name</FormLabel>
             <Text
-              bg={colors.gray[800]}
-              p="14px"
+              marginBottom="24px"
+              padding="14px"
               color={colors.gray[50]}
+              background={colors.gray[800]}
               borderRadius="6px"
-              mb="24px"
               data-testid="contract-name"
             >
               {name}
             </Text>
 
-            <Box mb="24px">
+            <Box marginBottom="24px">
               <FormLabel>Owner</FormLabel>
               <AddressTile mb="12px" address={parsePkh(sender)} />
               <Flex justifyContent="flex-end">
@@ -71,11 +71,11 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
               );
             })}
 
-            <Flex mt="24px" mb="24px" alignItems="center">
-              <Heading size="md" mr="12px">
+            <Flex alignItems="center" marginTop="24px" marginBottom="24px">
+              <Heading marginRight="12px" size="md">
                 Min No. of approvals:
               </Heading>
-              <Center w="100px" h="48px" bg={colors.gray[800]} borderRadius="4px">
+              <Center width="100px" height="48px" background={colors.gray[800]} borderRadius="4px">
                 <Text textAlign="center" data-testid="threshold">
                   {threshold} out of {signers.length}
                 </Text>

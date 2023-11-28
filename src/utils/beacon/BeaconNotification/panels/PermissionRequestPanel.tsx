@@ -65,7 +65,7 @@ const PermissionRequestPanel: React.FC<{
             />
           </FormControl>
         </FormProvider>
-        <AspectRatio mt={2} mb={2} width="100%" ratio={1}>
+        <AspectRatio width="100%" marginTop={2} marginBottom={2} ratio={1}>
           <Image width="100%" height={40} src={request.appMetadata.icon} />
         </AspectRatio>
         <Text>{request.network.type}</Text>

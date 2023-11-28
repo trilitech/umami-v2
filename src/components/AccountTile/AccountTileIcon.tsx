@@ -17,7 +17,13 @@ const AccountTileIcon: React.FC<{ addressKind: AddressKind }> = ({ addressKind }
     case "baker": {
       const bg = addressKind.type === "social" ? "white" : colors.gray[500];
       return (
-        <Flex bg={bg} borderRadius="4px" p="4px" justifyContent="center" alignItems="center">
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          padding="4px"
+          background={bg}
+          borderRadius="4px"
+        >
           <AddressTileIcon addressKind={addressKind} size="lg" />
         </Flex>
       );

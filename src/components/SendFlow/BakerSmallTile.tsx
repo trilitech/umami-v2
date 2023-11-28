@@ -16,19 +16,19 @@ export const BakerSmallTile: React.FC<{ pkh: RawPkh }> = ({ pkh }) => {
 
   return (
     <Flex
-      bg={colors.gray[800]}
-      w="100%"
       alignItems="center"
-      px="15px"
-      py="9px"
+      width="100%"
+      background={colors.gray[800]}
       data-testid="baker-tile"
+      paddingX="15px"
+      paddingY="9px"
     >
-      <AspectRatio mr="8px" height="30px" width="30px" ratio={1}>
+      <AspectRatio width="30px" height="30px" marginRight="8px" ratio={1}>
         <Image src={logoUrl} />
       </AspectRatio>
-      <Flex ml="8px" alignItems="center">
+      <Flex alignItems="center" marginLeft="8px">
         <Heading size="sm">{baker.name}</Heading>
-        <Text mx="12px" color={colors.gray[300]} size="sm">
+        <Text color={colors.gray[300]} marginX="12px" size="sm">
           {formatPkh(baker.address)}
         </Text>
       </Flex>

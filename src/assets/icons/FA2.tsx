@@ -6,8 +6,8 @@ const FA2Icon: React.FC<IconProps> = props => {
     <Icon
       width="23px"
       height="18px"
-      viewBox="0 0 23 18"
       fill={colors.gray[450]}
+      viewBox="0 0 23 18"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

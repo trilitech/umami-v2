@@ -4,7 +4,7 @@ import colors from "../../style/colors";
 // Wrapper for any JavaScript value
 const JsValueWrap: React.FC<{ value: any; space?: number }> = ({ value, space = 2 }) => {
   return (
-    <Card bg={colors.gray[700]} borderRadius="5px">
+    <Card background={colors.gray[700]} borderRadius="5px">
       <CardBody>
         <pre
           style={{

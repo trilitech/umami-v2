@@ -14,14 +14,14 @@ export const Identicon: React.FC<
 > = ({ address, identiconSize, ...props }) => {
   return (
     <Box
-      data-testid="identicon"
       sx={{
         canvas: {
           borderRadius: "4px",
         },
       }}
-      bg="white"
+      background="white"
       borderRadius="4px"
+      data-testid="identicon"
       {...props}
     >
       <ReactIdenticons

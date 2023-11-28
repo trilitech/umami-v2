@@ -5,10 +5,10 @@ import BigNumber from "bignumber.js";
 const SignPageFee: React.FC<{ fee: string | BigNumber }> = ({ fee }) => {
   return (
     <Flex alignItems="center">
-      <Heading size="sm" mr="4px" color={colors.gray[450]}>
+      <Heading marginRight="4px" color={colors.gray[450]} size="sm">
         Fee:
       </Heading>
-      <Text size="sm" data-testid="fee" color={colors.gray[400]}>
+      <Text color={colors.gray[400]} data-testid="fee" size="sm">
         {prettyTezAmount(fee)}
       </Text>
     </Flex>

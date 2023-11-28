@@ -26,11 +26,11 @@ export const SignWithGoogleButton: React.FC<
 
   return (
     <Button
-      onClick={() => getCredentials(onSuccessfulAuth)}
       width="100%"
-      size="lg"
       isDisabled={isDisabled}
       isLoading={isLoading}
+      onClick={() => getCredentials(onSuccessfulAuth)}
+      size="lg"
     >
       {children}
     </Button>
@@ -97,17 +97,17 @@ const SignButton: React.FC<{
       return (
         <Box width="100%">
           <FormProvider {...form}>
-            <FormControl isInvalid={!!errors.password} my="16px">
+            <FormControl isInvalid={!!errors.password} marginY="16px">
               <PasswordInput inputName="password" data-testid="password" />
               {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
             </FormControl>
             <Button
-              onClick={handleSubmit(signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign)}
               width="100%"
-              size="lg"
-              mt="8px"
-              isLoading={isLoading}
+              marginTop="8px"
               isDisabled={buttonIsDisabled}
+              isLoading={isLoading}
+              onClick={handleSubmit(signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign)}
+              size="lg"
               type="submit"
             >
               {text || "Submit Transaction"}
@@ -124,11 +124,11 @@ const SignButton: React.FC<{
     case "ledger":
       return (
         <Button
-          onClick={onLedgerSign}
           width="100%"
-          size="lg"
-          isLoading={isLoading}
           isDisabled={buttonIsDisabled}
+          isLoading={isLoading}
+          onClick={onLedgerSign}
+          size="lg"
         >
           {text || "Sign with Ledger"}
         </Button>

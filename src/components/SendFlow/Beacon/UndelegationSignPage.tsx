@@ -23,7 +23,7 @@ const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeac
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />
 
-            <Flex mt="12px" alignItems="center" justifyContent="end" px="4px">
+            <Flex alignItems="center" justifyContent="end" marginTop="12px" paddingX="4px">
               <SignPageFee fee={fee} />
             </Flex>
           </ModalBody>

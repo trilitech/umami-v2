@@ -64,24 +64,24 @@ export const FormSubmitButtons = ({
       <Box width="100%">
         {showPreview && (
           <Button
-            onClick={onSingleSubmit}
             width="100%"
-            size="lg"
-            isLoading={isLoading}
-            type="submit"
+            marginBottom="16px"
             isDisabled={!isValid}
-            mb="16px"
+            isLoading={isLoading}
+            onClick={onSingleSubmit}
+            size="lg"
+            type="submit"
           >
             Preview
           </Button>
         )}
         <Button
-          onClick={onAddToBatch}
           width="100%"
-          size="lg"
-          isLoading={isLoading}
-          type="submit"
           isDisabled={!isValid}
+          isLoading={isLoading}
+          onClick={onAddToBatch}
+          size="lg"
+          type="submit"
           variant="tertiary"
         >
           Insert Into Batch

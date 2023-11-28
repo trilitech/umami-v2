@@ -11,9 +11,9 @@ const NoItems: React.FC<
 > = ({ title, children, small = false }) => {
   const headingSize = small ? "md" : "3xl";
   return (
-    <Flex width="100%" height="100%" justifyContent="center" alignItems="center">
+    <Flex alignItems="center" justifyContent="center" width="100%" height="100%">
       <Box>
-        <Heading size={headingSize} p="42px">
+        <Heading padding="42px" size={headingSize}>
           {title}
         </Heading>
         <Center>{children}</Center>
@@ -41,7 +41,7 @@ export const NoDelegations: React.FC<{ small?: boolean; onDelegate: () => void }
   onDelegate,
 }) => (
   <NoItems title="Currently not delegating" small={small}>
-    <Button size={small ? "md" : "lg"} onClick={onDelegate}>
+    <Button onClick={onDelegate} size={small ? "md" : "lg"}>
       Start delegating
     </Button>
   </NoItems>

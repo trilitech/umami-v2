@@ -37,21 +37,21 @@ const RightHeader: React.FC<{ operations: AccountOperations }> = ({
     });
 
   return (
-    <Box justifyContent="space-between" alignItems="center" data-testid="right-header">
-      <Text color={colors.gray[400]} size="sm" display="inline-block">
+    <Box alignItems="center" justifyContent="space-between" data-testid="right-header">
+      <Text display="inline-block" color={colors.gray[400]} size="sm">
         {pluralize("transaction", operations.length, true)}
       </Text>
-      <Button variant="primary" ml="30px" onClick={openBatchSignPage} isLoading={isLoading}>
+      <Button marginLeft="30px" isLoading={isLoading} onClick={openBatchSignPage} variant="primary">
         {headerText(operationsType, "batch")}
       </Button>
       <IconButton
-        onClick={() => openWith(<ClearBatchConfirmationModal sender={sender} />, "sm")}
-        aria-label="remove-batch"
-        ml="18px"
-        variant="circle"
+        marginLeft="18px"
         borderRadius="4px"
-        icon={<TrashIcon stroke={colors.gray[300]} />}
+        aria-label="remove-batch"
         data-testid="remove-batch"
+        icon={<TrashIcon stroke={colors.gray[300]} />}
+        onClick={() => openWith(<ClearBatchConfirmationModal sender={sender} />, "sm")}
+        variant="circle"
       />
     </Box>
   );
@@ -108,12 +108,12 @@ export const BatchView: React.FC<{
   const showFooter = operations.length > 9;
 
   return (
-    <Box data-testid={`batch-table-${sender.address.pkh}`} mb="16px" w="100%">
+    <Box width="100%" marginBottom="16px" data-testid={`batch-table-${sender.address.pkh}`}>
       <Flex
-        borderTopRadius="8px"
         justifyContent="space-between"
-        p="20px 23px 20px 30px"
-        bg={colors.gray[800]}
+        padding="20px 23px 20px 30px"
+        background={colors.gray[800]}
+        borderTopRadius="8px"
         data-testid="header"
       >
         <Flex alignItems="center">
@@ -122,51 +122,51 @@ export const BatchView: React.FC<{
         <RightHeader operations={accountOperations} />
       </Flex>
       <Flex
-        bg={colors.gray[900]}
-        px="30px"
-        py="20px"
         flexDirection="column"
+        background={colors.gray[900]}
         borderBottomRadius={showFooter ? 0 : "8px"}
+        paddingX="30px"
+        paddingY="20px"
       >
         {operations.map((operation, index) => (
           <Box key={nanoid()} data-testid="operation">
-            <Flex height="50px" flexDirection="column">
+            <Flex flexDirection="column" height="50px">
               <Flex>
                 <OperationView operation={operation} />
               </Flex>
 
-              <Flex mt="8px" width="100%" alignItems="center" justifyContent="space-between">
+              <Flex alignItems="center" justifyContent="space-between" width="100%" marginTop="8px">
                 <Flex>
                   <OperationRecipient operation={operation} />
                 </Flex>
                 <Flex>
-                  <Text size="sm" color={colors.gray[450]} alignSelf="flex-end">
+                  <Text alignSelf="flex-end" color={colors.gray[450]} size="sm">
                     {prettyOperationType(operation)}
                   </Text>
                   <IconButton
-                    ml="12px"
+                    width="24px"
+                    marginLeft="12px"
+                    borderRadius="full"
                     aria-label="Remove"
                     icon={<TrashIcon stroke={colors.gray[300]} />}
-                    borderRadius="full"
-                    size="xs"
-                    width="24px"
-                    variant="circle"
                     onClick={() => removeItem(sender, index)}
+                    size="xs"
+                    variant="circle"
                   />
                 </Flex>
               </Flex>
             </Flex>
-            {index < operations.length - 1 && <Divider my="20px" />}
+            {index < operations.length - 1 && <Divider marginY="20px" />}
           </Box>
         ))}
       </Flex>
       {showFooter && (
         <Flex
           justifyContent="end"
-          borderRadius="0 0 8px 8px"
-          p="20px 23px 20px 30px"
-          bg={colors.gray[800]}
           verticalAlign="middle"
+          padding="20px 23px 20px 30px"
+          background={colors.gray[800]}
+          borderRadius="0 0 8px 8px"
           data-testid="footer"
         >
           <RightHeader operations={accountOperations} />

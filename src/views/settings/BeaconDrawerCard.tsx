@@ -23,11 +23,11 @@ export const BeaconDrawerCard = () => {
     <>
       <SettingsCardWithDrawerIcon left="dApps" onClick={onOpen} isSelected={isOpen} />
       <Drawer
+        autoFocus={false}
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
-        placement="right"
         onClose={closeDrawer}
-        autoFocus={false}
+        placement="right"
       >
         <DrawerOverlay />
         <DrawerContent>
@@ -45,7 +45,7 @@ const BeaconDrawerBody = () => {
   const addPeer = useAddPeer();
   return (
     <Box>
-      <Flex h={24} justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between" height={24}>
         <Heading size="xl">dApps</Heading>
       </Flex>
       <Button
@@ -57,7 +57,7 @@ const BeaconDrawerBody = () => {
       >
         Paste a peer request code
       </Button>
-      <Text mt="16px" mb="32px" color="text.dark">
+      <Text marginTop="16px" marginBottom="32px" color="text.dark">
         or open a deeplink from inside the dApp...
       </Text>
       <BeaconPeers />

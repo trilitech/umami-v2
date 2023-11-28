@@ -19,8 +19,8 @@ export const ContractCallTile: React.FC<{
   const showAnyAddress = !showToAddress && !showFromAddress;
 
   return (
-    <Flex direction="column" data-testid="operation-tile-contract-call" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
+    <Flex flexDirection="column" width="100%" data-testid="operation-tile-contract-call">
+      <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
           <ContractIcon mr="8px" />
           <TzktLink hash={operation.hash} counter={operation.counter} data-testid="title" mr="8px">
@@ -36,8 +36,8 @@ export const ContractCallTile: React.FC<{
         <Flex justifyContent="space-between">
           <Flex>
             {showToAddress && (
-              <Flex mr="15px" data-testid="to">
-                <Text mr="6px" color={colors.gray[450]}>
+              <Flex marginRight="15px" data-testid="to">
+                <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
                 <AddressPill address={operation.target} />
@@ -45,7 +45,7 @@ export const ContractCallTile: React.FC<{
             )}
             {(showFromAddress || showAnyAddress) && (
               <Flex data-testid="from">
-                <Text mr="6px" color={colors.gray[450]}>
+                <Text marginRight="6px" color={colors.gray[450]}>
                   From:
                 </Text>
                 <AddressPill address={operation.sender} />

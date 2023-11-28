@@ -95,16 +95,16 @@ const CSVFileUploadForm = () => {
           <ModalHeader textAlign="center">Load CSV file</ModalHeader>
           <Text textAlign="center">Select an account and then upload the CSV file.</Text>
           <ModalBody>
-            <FormControl paddingY={5} isInvalid={!!errors.sender}>
+            <FormControl isInvalid={!!errors.sender} paddingY={5}>
               <OwnedAccountsAutocomplete label="From" inputName="sender" allowUnknown={false} />
               {errors.sender && <FormErrorMessage>{errors.sender.message}</FormErrorMessage>}
             </FormControl>
 
-            <FormControl pt={5} isInvalid={!!errors.file}>
+            <FormControl paddingTop={5} isInvalid={!!errors.file}>
               <FormLabel>Select CSV</FormLabel>
               <Flex>
                 <Input
-                  p={2}
+                  padding={2}
                   {...form.register("file", { required: "File is required" })}
                   accept=".csv"
                   type="file"
@@ -118,12 +118,12 @@ const CSVFileUploadForm = () => {
           <ModalFooter>
             <Box width="100%">
               <Button
+                width="100%"
+                marginBottom={2}
                 isDisabled={!isValid}
                 isLoading={isLoading}
                 size="lg"
-                width="100%"
                 type="submit"
-                mb={2}
               >
                 Upload
               </Button>

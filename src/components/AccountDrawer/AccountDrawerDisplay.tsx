@@ -39,13 +39,13 @@ const RoundButton: React.FC<{
   onClick?: () => void;
 }> = ({ icon, label, onClick = () => {} }) => {
   return (
-    <Box textAlign="center" mx="24px">
+    <Box textAlign="center" marginX="24px">
       <IconButton
+        marginBottom="8px"
+        aria-label="button"
+        icon={icon}
         onClick={onClick}
         size="lg"
-        icon={icon}
-        mb="8px"
-        aria-label="button"
         variant="circle"
       />
       <Text size="sm">{label}</Text>
@@ -85,20 +85,20 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
 
   return (
     <Flex
-      direction="column"
       alignItems="center"
+      flexDirection="column"
       data-testid={`account-card-${account.address.pkh}`}
     >
       <AccountTileIcon addressKind={addressKind} />
-      <Heading mt="24px" size="md">
+      <Heading marginTop="24px" size="md">
         {account.label}
       </Heading>
-      <Flex alignItems="center" mt="8px" mb="30px">
+      <Flex alignItems="center" marginTop="8px" marginBottom="30px">
         <AddressPill address={account.address} mode={{ type: "no_icons" }} mr="4px" />
         <RenameRemoveMenuSwitch account={account} />
       </Flex>
       {balance && <TezRecapDisplay center balance={balance} dollarBalance={dollarBalance} />}
-      <Center mt="34px">
+      <Center marginTop="34px">
         <RoundButton
           onClick={onSend}
           label="Send"

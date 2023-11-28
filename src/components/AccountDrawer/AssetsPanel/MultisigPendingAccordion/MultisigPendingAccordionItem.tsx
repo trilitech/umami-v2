@@ -23,27 +23,27 @@ export const MultisigPendingAccordionItem: React.FC<{
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (
     <Box
-      bg={colors.gray[800]}
-      p={3}
+      padding={3}
+      paddingBottom={0}
+      background={colors.gray[800]}
       borderRadius={6}
-      marginY={3}
-      pb={0}
       data-testid={"multisig-pending-operation-" + operation.id}
+      marginY={3}
     >
       <AccordionItem border="none" borderRadius="8px">
         <h2>
-          <AccordionButton flex="1" textAlign="left" pb={0} mb={0}>
-            <Heading w="100%" size="sm">
+          <AccordionButton flex="1" marginBottom={0} paddingBottom={0} textAlign="left">
+            <Heading width="100%" size="sm">
               Pending #{operation.id}
             </Heading>
             <AccordionIcon />
           </AccordionButton>
         </h2>
         <AccordionPanel>
-          <Flex marginY={2} justifyContent="space-between" alignItems="end">
+          <Flex alignItems="end" justifyContent="space-between" marginY={2}>
             <MultisigDecodedOperations rawActions={operation.rawActions} sender={sender} />
-            <Flex alignItems="center" mb="6">
-              <Heading color={colors.gray[400]} size="sm" mr={1}>
+            <Flex alignItems="center" marginBottom="6">
+              <Heading marginRight={1} color={colors.gray[400]} size="sm">
                 Pending Approvals:
               </Heading>
               <Text color="w" data-testid="pending-approvals-count">

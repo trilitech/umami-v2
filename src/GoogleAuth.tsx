@@ -95,17 +95,17 @@ export const GoogleAuth: React.FC<GoogleAuthProps> = ({ onSuccessfulAuth, isDisa
   // TODO: correct the BG colours when we have the design ready
   return (
     <IconButton
-      bg="white"
-      borderRadius="full"
-      size="lg"
       width="48px"
-      aria-label="Google SSO"
-      onClick={() => getCredentials(onSuccessfulAuth)}
-      isLoading={isLoading}
-      isDisabled={isDisabled}
-      variant="outline"
+      background="white"
+      borderRadius="full"
       _disabled={{ bg: colors.gray[900] }}
+      aria-label="Google SSO"
       icon={<FcGoogle size="24px" />}
+      isDisabled={isDisabled}
+      isLoading={isLoading}
+      onClick={() => getCredentials(onSuccessfulAuth)}
+      size="lg"
+      variant="outline"
     />
   );
 };

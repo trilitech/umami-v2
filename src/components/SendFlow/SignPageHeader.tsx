@@ -33,10 +33,10 @@ export const SignPageHeader: React.FC<{
   return (
     <HeaderWrapper>
       {goBack && <ModalBackButton onClick={goBack} />}
-      <Text size="2xl" fontWeight="600">
+      <Text fontWeight="600" size="2xl">
         {headerText(operationsType, mode)}
       </Text>
-      <Text textAlign="center" size="sm" color={colors.gray[400]}>
+      <Text color={colors.gray[400]} textAlign="center" size="sm">
         Enter your password to confirm this transaction.
       </Text>
       <ModalCloseButton />

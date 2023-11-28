@@ -50,8 +50,8 @@ const BuyTezForm: React.FC<{
               <ModalBody>
                 <FormControl
                   data-testid="buy-tez-selector"
-                  paddingY={5}
                   isInvalid={!!errors.address}
+                  paddingY={5}
                 >
                   <OwnedImplicitAccountsAutocomplete
                     label="Recipient Account"
@@ -67,7 +67,7 @@ const BuyTezForm: React.FC<{
 
           <ModalFooter>
             <Box width="100%" data-testid="buy-tez-button">
-              <Button width="100%" type="submit" size="lg" isDisabled={!isValid} mb={2}>
+              <Button width="100%" marginBottom={2} isDisabled={!isValid} size="lg" type="submit">
                 {title}
               </Button>
             </Box>

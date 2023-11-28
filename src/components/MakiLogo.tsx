@@ -8,5 +8,5 @@ export const MakiLogo: React.FC<{ size?: string | number } & ImageProps> = ({
   size = 100,
   ...props
 }) => {
-  return <Image boxSize={size} objectFit="cover" src={makiLogo} alt="Maki logo" {...props} />;
+  return <Image boxSize={size} objectFit="cover" alt="Maki logo" src={makiLogo} {...props} />;
 };

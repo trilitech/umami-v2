@@ -13,7 +13,7 @@ export const TezRecapDisplay: React.FC<{
     <Box textAlign={props.center ? "center" : "initial"}>
       <Heading size="md">{prettyTezAmount(props.balance)}</Heading>
       {props.dollarBalance !== null && (
-        <Text size="sm" mt="6px" color={colors.gray[400]}>
+        <Text marginTop="6px" color={colors.gray[400]} size="sm">
           ${props.dollarBalance.toFixed(2)}
         </Text>
       )}

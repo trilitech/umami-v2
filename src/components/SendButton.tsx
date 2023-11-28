@@ -7,9 +7,9 @@ export const SendButton: React.FC<
   } & ButtonProps
 > = ({ onClick, ...buttonProps }) => {
   return (
-    <Button variant="specialCTA" width="60px" onClick={onClick} {...buttonProps}>
+    <Button width="60px" onClick={onClick} variant="specialCTA" {...buttonProps}>
       <OutgoingArrow stroke="currentcolor" />
-      <Text ml="4px">Send</Text>
+      <Text marginLeft="4px">Send</Text>
     </Button>
   );
 };

@@ -28,33 +28,33 @@ function ImportSeed() {
   }, []);
 
   return (
-    <Center bgImage={BackgroundImage} bgSize="cover" height="100vh" padding="60px">
+    <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
       {showSlider && (
-        <SimpleGrid bg={colors.gray[800]} columns={[1, 1, 2]} borderRadius="30px">
+        <SimpleGrid background={colors.gray[800]} borderRadius="30px" columns={[1, 1, 2]}>
           <Center>
-            <VStack spacing="0" maxW="400px" padding="32px">
+            <VStack maxWidth="400px" padding="32px" spacing="0">
               <MakiLogo size="48px" mb="24px" />
-              <Heading size="3xl" mb="16px">
+              <Heading marginBottom="16px" size="3xl">
                 Welcome to Umami
               </Heading>
-              <Divider maxWidth="400px" mb="16px" />
-              <Text color={colors.gray[450]} mb="32px">
+              <Divider maxWidth="400px" marginBottom="16px" />
+              <Text marginBottom="32px" color={colors.gray[450]}>
                 A powerful Tezos wallet
               </Text>
-              <Button w="100%" size="lg" mb="24px" onClick={openModal}>
+              <Button width="100%" marginBottom="24px" onClick={openModal} size="lg">
                 Get started
               </Button>
               <AppVersion fontSize="13px" />
             </VStack>
           </Center>
           <Box
+            display={["none", "none", "initial"]}
+            overflow="hidden"
             width="100%"
+            height="665px"
+            background="black"
             borderTopRightRadius="30px"
             borderBottomRightRadius="30px"
-            height="665px"
-            overflow="hidden"
-            bg="black"
-            display={["none", "none", "initial"]}
           >
             <Slider>
               {slideItems.map((item, index) => {

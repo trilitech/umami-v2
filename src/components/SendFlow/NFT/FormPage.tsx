@@ -79,32 +79,32 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
         <form>
           <FormPageHeader />
           <ModalBody>
-            <Flex mb="12px">
+            <Flex marginBottom="12px">
               <SendNFTRecapTile nft={props.nft} />
             </Flex>
             <Flex alignItems="center">
-              <Heading size="sm" mr="4px" color={colors.gray[450]}>
+              <Heading marginRight="4px" color={colors.gray[450]} size="sm">
                 Owned:
               </Heading>
-              <Text size="sm" color={colors.gray[400]} data-testid="nft-owned">
+              <Text color={colors.gray[400]} data-testid="nft-owned" size="sm">
                 {nft.balance}
               </Text>
             </Flex>
 
-            <FormControl mt="24px" isInvalid={!!errors.quantity}>
+            <FormControl marginTop="24px" isInvalid={!!errors.quantity}>
               <FormLabel>
                 <Flex alignItems="center">
-                  <Heading size="md" mr="8px">
+                  <Heading marginRight="8px" size="md">
                     Quantity:
                   </Heading>
                   <Flex alignItems="center">
-                    <InputGroup w="75px">
+                    <InputGroup width="75px">
                       <Input
-                        w="60px"
-                        type="number"
+                        width="60px"
                         color="white"
-                        step={1}
                         data-testid="quantity-input"
+                        step={1}
+                        type="number"
                         {...register("quantity", {
                           required: "Quantity is required",
                           max: {
@@ -129,7 +129,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
               )}
             </FormControl>
 
-            <FormControl mt="24px" isInvalid={!!errors.sender}>
+            <FormControl marginTop="24px" isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
                 inputName="sender"
@@ -143,7 +143,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
               )}
             </FormControl>
 
-            <FormControl mt="24px" isInvalid={!!errors.recipient}>
+            <FormControl marginTop="24px" isInvalid={!!errors.recipient}>
               <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">

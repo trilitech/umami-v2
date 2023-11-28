@@ -47,7 +47,7 @@ export const EnterAndConfirmPassword: React.FC<{
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
           </FormControl>
 
-          <FormControl mt="24px" isInvalid={!!errors.confirm}>
+          <FormControl marginTop="24px" isInvalid={!!errors.confirm}>
             <PasswordInput
               inputName="confirm"
               label="Confirm Password"
@@ -61,12 +61,12 @@ export const EnterAndConfirmPassword: React.FC<{
             {errors.confirm && <FormErrorMessage>{errors.confirm.message}</FormErrorMessage>}
           </FormControl>
           <Button
-            mt="32px"
+            width="100%"
+            marginTop="32px"
             isDisabled={!isValid || isLoading}
             isLoading={isLoading}
-            type="submit"
-            w="100%"
             size="lg"
+            type="submit"
           >
             Submit
           </Button>

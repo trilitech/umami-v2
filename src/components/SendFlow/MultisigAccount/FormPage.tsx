@@ -102,7 +102,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               )}
             </FormControl>
 
-            <FormControl my="24px" isInvalid={!!errors.sender}>
+            <FormControl isInvalid={!!errors.sender} marginY="24px">
               <OwnedImplicitAccountsAutocomplete
                 label="Select Owner"
                 inputName="sender"
@@ -121,11 +121,11 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               const inputWidth = inputSize === "short" ? "368px" : "100%";
               return (
                 <FormControl
-                  data-testid={`signer-input-${index}`}
-                  mb="8px"
                   key={field.id}
-                  width={inputWidth}
                   display="inline-block"
+                  width={inputWidth}
+                  marginBottom="8px"
+                  data-testid={`signer-input-${index}`}
                   isInvalid={!!error}
                 >
                   <OwnedImplicitAccountsAutocomplete
@@ -146,18 +146,18 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                   />
                   {signersCount > 1 && (
                     <IconButton
-                      size="xs"
-                      variant="tertiary"
-                      aria-label="Remove"
                       position="absolute"
-                      bg={colors.gray[500]}
+                      height="24px"
+                      marginTop="-36px"
+                      marginLeft="374px"
+                      background={colors.gray[500]}
+                      aria-label="Remove"
                       data-testid={`remove-signer-${index}`}
                       icon={<TrashIcon h="14px" w="12px" stroke={colors.gray[300]} />}
-                      onClick={() => signersArray.remove(index)}
-                      height="24px"
-                      ml="374px"
-                      mt="-36px"
                       isRound
+                      onClick={() => signersArray.remove(index)}
+                      size="xs"
+                      variant="tertiary"
                     />
                   )}
                   {error && (
@@ -169,23 +169,23 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               );
             })}
             <Button
-              variant="specialCTA"
               paddingLeft={0}
               onClick={() => signersArray.append({ val: "" })}
+              variant="specialCTA"
             >
               + Add Signer
             </Button>
 
-            <FormControl mt="24px" isInvalid={!!errors.threshold}>
+            <FormControl marginTop="24px" isInvalid={!!errors.threshold}>
               <FormLabel display="inline">
                 Min No. of approvals:
-                <InputGroup display="inline" ml="10px">
+                <InputGroup display="inline" marginLeft="10px">
                   <Input
-                    w="60px"
-                    type="number"
+                    width="60px"
                     color="white"
-                    step={1}
                     data-testid="threshold-input"
+                    step={1}
+                    type="number"
                     {...register("threshold", {
                       required: "No. of approvals is required",
                       max: {
@@ -199,7 +199,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                     })}
                   />
                 </InputGroup>
-                <Text display="inline" ml="10px" data-testid="max-signers">
+                <Text display="inline" marginLeft="10px" data-testid="max-signers">
                   out of {signersCount}
                 </Text>
               </FormLabel>
@@ -212,11 +212,11 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
           </ModalBody>
           <ModalFooter>
             <Button
+              width="100%"
               isDisabled={!isValid}
               isLoading={isLoading}
               size="lg"
               type="submit"
-              width="100%"
             >
               Review
             </Button>

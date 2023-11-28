@@ -5,10 +5,10 @@ import { AccountListHeader } from "./AccountsList";
 
 export default function HomeView() {
   return (
-    <Flex direction="column" height="100%">
+    <Flex flexDirection="column" height="100%">
       <TopBar title="Accounts" />
       <Flex flex={1} minHeight={1}>
-        <Flex direction="column" flex={1} mr="12px" pb="12px">
+        <Flex flexDirection="column" flex={1} marginRight="12px" paddingBottom="12px">
           <AccountListHeader />
           <Box flex={1} overflow="hidden" borderRadius="8px">
             <AccountListWithDrawer />

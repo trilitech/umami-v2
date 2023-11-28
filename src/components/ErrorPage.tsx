@@ -26,19 +26,19 @@ export const ErrorPage: React.FC = () => {
 
   return (
     <Flex alignItems="stretch">
-      <Center w="100%" mt="200px">
+      <Center width="100%" marginTop="200px">
         <Box>
-          <Heading textAlign="center" mb={3}>
+          <Heading marginBottom={3} textAlign="center">
             Ooops, something went wrong!
           </Heading>
 
-          <Button onClick={onRefresh} mr={2}>
+          <Button marginRight={2} onClick={onRefresh}>
             Refresh the page
           </Button>
-          <Button mr={2} variant="secondary" onClick={onBackup}>
+          <Button marginRight={2} onClick={onBackup} variant="secondary">
             Download Backup
           </Button>
-          <Button mr={2} variant="warning" onClick={onOffboard}>
+          <Button marginRight={2} onClick={onOffboard} variant="warning">
             Offboard
           </Button>
           <Button variant="tertiary">

@@ -39,13 +39,13 @@ export const useDynamicModal = () => {
     openWith,
     content: (
       <Modal
+        autoFocus={false}
+        blockScrollOnMount={false}
+        closeOnOverlayClick={false}
+        isCentered
         isOpen={isOpen}
         onClose={onClose}
-        closeOnOverlayClick={false}
-        blockScrollOnMount={false}
-        autoFocus={false}
         size={size}
-        isCentered
       >
         <ModalOverlay />
         <RemoveScroll enabled={isOpen}>{modalContent}</RemoveScroll>

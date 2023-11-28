@@ -109,8 +109,8 @@ const FormPage: React.FC<
               <InputGroup>
                 <Input
                   isDisabled={isLoading}
-                  type="number"
                   step={smallestUnit}
+                  type="number"
                   {...register("prettyAmount", {
                     required: "Amount is required",
                     max: {
@@ -121,7 +121,7 @@ const FormPage: React.FC<
                   })}
                   placeholder={smallestUnit}
                 />
-                <InputRightElement pr="12px" data-testid="token-symbol">
+                <InputRightElement paddingRight="12px" data-testid="token-symbol">
                   {tokenSymbolSafe(token)}
                 </InputRightElement>
               </InputGroup>
@@ -132,7 +132,7 @@ const FormPage: React.FC<
               )}
             </FormControl>
 
-            <FormControl mt="24px" isInvalid={!!errors.sender}>
+            <FormControl marginTop="24px" isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
                 isDisabled={true}
@@ -146,7 +146,7 @@ const FormPage: React.FC<
               )}
             </FormControl>
 
-            <FormControl mt="24px" isInvalid={!!errors.recipient}>
+            <FormControl marginTop="24px" isInvalid={!!errors.recipient}>
               <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">

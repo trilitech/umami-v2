@@ -15,17 +15,17 @@ export const Select: React.FC<{
   return (
     <Box>
       <Flex
-        data-testid="select-input"
-        justify="space-between"
+        justifyContent="space-between"
         height="48px"
-        bg={colors.gray[800]}
-        color={colors.gray[300]}
-        border="1px solid"
-        borderRadius="4px"
         padding="15px"
+        color={colors.gray[300]}
+        background={colors.gray[800]}
+        border="1px solid"
         borderColor={colors.gray[500]}
+        borderRadius="4px"
         _hover={{ borderColor: colors.gray[450] }}
         cursor="pointer"
+        data-testid="select-input"
         onClick={() => setShowOptions(show => !show)}
       >
         <Text size="sm">{currentOption.label}</Text>
@@ -33,29 +33,29 @@ export const Select: React.FC<{
       </Flex>
       {showOptions && (
         <UnorderedList
-          data-testid="select-options"
+          position="absolute"
+          zIndex={2}
+          width="100%"
           margin={0}
           marginTop="8px"
-          borderRadius="8px"
           padding="15px"
-          bg={colors.gray[700]}
+          background={colors.gray[700]}
           border="1px solid"
-          zIndex={2}
-          listStyleType="none"
-          width="100%"
-          position="absolute"
           borderColor={colors.gray[500]}
+          borderRadius="8px"
+          data-testid="select-options"
+          listStyleType="none"
         >
           {options.map(option => (
             <ListItem
-              padding="11px"
-              borderRadius="4px"
-              color={colors.gray[300]}
-              cursor="pointer"
               key={option.value}
-              bg="transparent"
-              _hover={{ background: colors.gray[500] }}
               marginBottom="5px"
+              padding="11px"
+              color={colors.gray[300]}
+              background="transparent"
+              borderRadius="4px"
+              _hover={{ background: colors.gray[500] }}
+              cursor="pointer"
               onClick={() => {
                 setShowOptions(false);
                 setCurrentOption(option);

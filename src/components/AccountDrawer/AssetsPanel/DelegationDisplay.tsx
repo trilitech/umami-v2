@@ -20,9 +20,9 @@ const Row: React.FC<
   } & FlexProps
 > = ({ label, value, ...props }) => {
   return (
-    <Flex data-testid={label} h="50px" p="16px" alignItems="center" {...props}>
+    <Flex alignItems="center" height="50px" padding="16px" data-testid={label} {...props}>
       <Box flex={1}>
-        <Heading size="sm" color={colors.gray[400]}>
+        <Heading color={colors.gray[400]} size="sm">
           {label}
         </Heading>
       </Box>
@@ -81,23 +81,23 @@ export const DelegationDisplay: React.FC<{
         value={<AddressPill address={parsePkh(delegation.delegate.address)} />}
       />
 
-      <Flex mt="24px">
+      <Flex marginTop="24px">
         <Button
           flex={1}
-          mr="16px"
-          variant="warning"
+          marginRight="16px"
           onClick={() =>
             openWith(<UndelegationFormPage sender={senderAccount} form={{ sender, baker }} />)
           }
+          variant="warning"
         >
           End Delegation
         </Button>
         <Button
           flex={1}
-          variant="tertiary"
           onClick={() => {
             openWith(<DelegationFormPage sender={senderAccount} form={{ sender, baker }} />);
           }}
+          variant="tertiary"
         >
           Change Baker
         </Button>

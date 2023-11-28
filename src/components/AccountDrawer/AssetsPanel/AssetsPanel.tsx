@@ -30,12 +30,12 @@ export const AssetsPanel: React.FC<{
 
   return (
     <Tabs
-      height="100%"
-      display="flex"
       flexDirection="column"
-      mt="60px"
+      display="flex"
+      width="100%"
+      height="100%"
+      marginTop="60px"
       data-testid="asset-panel"
-      w="100%"
     >
       <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
         <Flex>
@@ -47,8 +47,8 @@ export const AssetsPanel: React.FC<{
         </Flex>
 
         <ExternalLink href={buildTzktAddressUrl(network, account.address.pkh)}>
-          <Button variant="CTAWithIcon" paddingRight={0}>
-            <Text mr="7px" size="sm">
+          <Button paddingRight={0} variant="CTAWithIcon">
+            <Text marginRight="7px" size="sm">
               View on Tzkt
             </Text>
             <ExternalLinkIcon stroke="currentcolor" />
@@ -57,17 +57,17 @@ export const AssetsPanel: React.FC<{
       </TabList>
       <TabPanels height="100%">
         {isMultisig && (
-          <TabPanel p="24px 0 60px 0" data-testid="account-card-pending-tab-panel">
+          <TabPanel padding="24px 0 60px 0" data-testid="account-card-pending-tab-panel">
             <MultisigPendingAccordion account={account} />
           </TabPanel>
         )}
 
-        <TabPanel p="24px 0 60px 0" data-testid="account-card-operations-tab">
+        <TabPanel padding="24px 0 60px 0" data-testid="account-card-operations-tab">
           <OperationTileContext.Provider
             value={{ mode: "drawer", selectedAddress: account.address }}
           >
             {areOperationsLoading ? (
-              <Text textAlign="center" color={colors.gray[500]}>
+              <Text color={colors.gray[500]} textAlign="center">
                 Loading...
               </Text>
             ) : (
@@ -76,20 +76,20 @@ export const AssetsPanel: React.FC<{
           </OperationTileContext.Provider>
         </TabPanel>
 
-        <TabPanel p="24px 0 60px 0" data-testid="account-card-delegation-tab">
+        <TabPanel padding="24px 0 60px 0" data-testid="account-card-delegation-tab">
           <DelegationDisplay account={account} delegation={delegation} />
         </TabPanel>
 
         <TabPanel
-          p="24px 0 60px 0"
-          data-testid="account-card-nfts-tab"
-          height="100%"
           overflow="hidden"
+          height="100%"
+          padding="24px 0 60px 0"
+          data-testid="account-card-nfts-tab"
         >
           <NFTsGrid nftsByOwner={{ [account.address.pkh]: nfts }} columns={3} spacing={5} />
         </TabPanel>
 
-        <TabPanel p="24px 0 60px 0" data-testid="account-card-tokens-tab">
+        <TabPanel padding="24px 0 60px 0" data-testid="account-card-tokens-tab">
           <TokenList tokens={tokens} />
         </TabPanel>
       </TabPanels>

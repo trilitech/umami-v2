@@ -15,15 +15,15 @@ export const NetworkSelector = () => {
   return (
     <Box width="105px">
       <Select
-        data-testid="network-selector"
-        border="1px solid transparent"
-        p={0}
-        size="xs"
+        padding={0}
+        color={colors.green}
         fontSize="14px"
         fontWeight={600}
-        color={colors.green}
-        value={currentNetwork.name}
+        border="1px solid transparent"
+        data-testid="network-selector"
         onChange={e => selectNetwork(e.target.value)}
+        size="xs"
+        value={currentNetwork.name}
       >
         {availableNetworks.map(network => (
           <option key={network.name} value={network.name}>

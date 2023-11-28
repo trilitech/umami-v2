@@ -84,8 +84,8 @@ const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> 
               <InputGroup>
                 <Input
                   isDisabled={isLoading}
-                  type="number"
                   step={getSmallestUnit(TEZ_DECIMALS)}
+                  type="number"
                   {...register("prettyAmount", {
                     required: "Amount is required",
                     validate: makeValidateDecimals(TEZ_DECIMALS),
@@ -101,7 +101,7 @@ const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> 
               )}
             </FormControl>
 
-            <FormControl mt="24px" isInvalid={!!errors.sender}>
+            <FormControl marginTop="24px" isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 label="From"
                 isDisabled={!!props.sender}
@@ -114,7 +114,7 @@ const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> 
                 </FormErrorMessage>
               )}
             </FormControl>
-            <FormControl mt="24px" isInvalid={!!errors.recipient}>
+            <FormControl marginTop="24px" isInvalid={!!errors.recipient}>
               <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">

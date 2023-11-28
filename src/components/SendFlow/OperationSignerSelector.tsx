@@ -18,7 +18,7 @@ export const OperationSignerSelector = ({
   switch (operationType) {
     case "proposal":
       return (
-        <FormControl mt="24px" data-testid="signer-selector">
+        <FormControl marginTop="24px" data-testid="signer-selector">
           <AvailableSignersAutocomplete
             account={sender}
             inputName="signer"

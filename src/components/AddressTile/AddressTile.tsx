@@ -19,32 +19,32 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
   const addressKind = useAddressKind(address);
 
   return (
-    <Tooltip hasArrow placement="left" bg={colors.white} label={addressKind.label}>
+    <Tooltip background={colors.white} hasArrow label={addressKind.label} placement="left">
       <Flex
-        data-testid="address-tile"
         alignItems="center"
-        w="400px"
-        p="9px 10px"
-        borderRadius="4px"
-        bg={colors.gray[800]}
         justifyContent="space-between"
+        width="400px"
+        padding="9px 10px"
+        background={colors.gray[800]}
+        borderRadius="4px"
+        data-testid="address-tile"
         {...flexProps}
       >
         <Flex alignItems="center">
           <AddressTileIcon addressKind={addressKind} />
 
           {addressKind.type === "unknown" ? (
-            <Text color={colors.gray[300]} size="sm" ml="10px">
+            <Text marginLeft="10px" color={colors.gray[300]} size="sm">
               {address.pkh}
             </Text>
           ) : (
             <>
-              <Box ml="12px" width="102px" whiteSpace="nowrap" overflow="hidden">
-                <Heading size="sm" overflow="hidden" textOverflow="ellipsis">
+              <Box overflow="hidden" width="102px" marginLeft="12px" whiteSpace="nowrap">
+                <Heading overflow="hidden" textOverflow="ellipsis" size="sm">
                   {addressKind.label}
                 </Heading>
               </Box>
-              <Text color={colors.gray[300]} size="xs" ml="10px" width="89px">
+              <Text width="89px" marginLeft="10px" color={colors.gray[300]} size="xs">
                 {formatPkh(addressKind.pkh)}
               </Text>
             </>

@@ -60,7 +60,7 @@ export const RenameAccountModal: FC<{
         <FormPageHeader title="Edit Name" subTitle="Edit your account name here." />
         <ModalCloseButton />
         <ModalBody>
-          <FormControl marginY="20px" isInvalid={!!errors.name}>
+          <FormControl isInvalid={!!errors.name} marginY="20px">
             <FormLabel>Account name</FormLabel>
             <Input
               type="text"
@@ -77,7 +77,7 @@ export const RenameAccountModal: FC<{
         </ModalBody>
 
         <ModalFooter>
-          <Button width="100%" size="lg" type="submit" mb="8px" isDisabled={!isValid}>
+          <Button width="100%" marginBottom="8px" isDisabled={!isValid} size="lg" type="submit">
             Save
           </Button>
         </ModalFooter>

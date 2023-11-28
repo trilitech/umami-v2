@@ -33,24 +33,24 @@ export const NFTsGrid: FC<
           const fallbackUrl = getIPFSurl(nft.displayUri);
           return (
             <Link to={`/home/${owner}/${fullId(nft)}`} key={`${owner}:${fullId(nft)}`}>
-              <Card bg={colors.gray[800]}>
-                <CardBody p="8px">
+              <Card background={colors.gray[800]}>
+                <CardBody padding="8px">
                   <AspectRatio width="100%" ratio={1}>
-                    <Image width="100%" height={40} src={url} fallbackSrc={fallbackUrl} />
+                    <Image width="100%" height={40} fallbackSrc={fallbackUrl} src={url} />
                   </AspectRatio>
                   {/* TODO: make a separate component to be shared between this and the drawer NFT card */}
                   {Number(nft.balance) > 1 && (
                     <Text
-                      data-testid="nft-owned-count"
-                      borderRadius="100px"
-                      padding="0 8px"
-                      height="20px"
-                      size="xs"
-                      backgroundColor="rgba(33, 33, 33, 0.75)"
-                      display="inline"
                       position="absolute"
+                      display="inline"
+                      height="20px"
                       marginTop="-24px"
                       marginLeft="4px"
+                      padding="0 8px"
+                      borderRadius="100px"
+                      backgroundColor="rgba(33, 33, 33, 0.75)"
+                      data-testid="nft-owned-count"
+                      size="xs"
                     >
                       {"x" + nft.balance}
                     </Text>

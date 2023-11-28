@@ -6,9 +6,9 @@ const FetchingIcon: React.FC<IconProps> = props => {
     <Icon
       width="19px"
       height="19px"
-      viewBox="0 0 19 19"
-      stroke={colors.gray[400]}
       fill="none"
+      stroke={colors.gray[400]}
+      viewBox="0 0 19 19"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
