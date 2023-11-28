@@ -1,19 +1,27 @@
-import { Button, Center, FormControl, Text, Switch, Input, HStack } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import ModalContentWrapper from "../ModalContentWrapper";
 import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
-import { useState } from "react";
 import {
+  AVAILABLE_DERIVATION_PATHS,
+  DEFAULT_DERIVATION_PATH,
   defaultDerivationPathPattern,
-  validDerivationPathRegex,
 } from "../../../utils/account/derivationPathUtils";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import SlashIcon from "../../../assets/icons/Slash";
+import { Select } from "../../Select";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
 };
 
+/**
+ * Component represents the derivation path step in the onboarding flow
+ * It's used for ledger & mnemonic accounts
+ *
+ * @goToStep - function to go to the next step.
+ * @account - ledger/mnemonic account data collected in previous steps.
+ */
 export const DerivationPath = ({
   goToStep,
   account,
@@ -22,15 +30,13 @@ export const DerivationPath = ({
   account: DerivationPathStep["account"];
 }) => {
   const {
-    register,
     handleSubmit,
     setValue,
-    formState: { isValid, errors },
+    formState: { errors },
   } = useForm<ConfirmDerivationPathFormValues>({
     mode: "onBlur",
     defaultValues: { derivationPath: defaultDerivationPathPattern },
   });
-  const [useDefault, setUseDefault] = useState(true);
 
   const onSubmit = async ({ derivationPath }: ConfirmDerivationPathFormValues) => {
     switch (account.type) {
@@ -50,34 +56,12 @@ export const DerivationPath = ({
       subtitle="Choose a custom derivation path or select the default derivation path and use the default key."
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-        <FormControl>
-          <Center>
-            <HStack spacing="10px">
-              <Text fontWeight="bold">Default Path</Text>
-              <Switch
-                data-testid="switch"
-                onChange={() => {
-                  // set back to default
-                  if (!useDefault) {
-                    setValue("derivationPath", defaultDerivationPathPattern);
-                  }
-                  setUseDefault(!useDefault);
-                }}
-              />
-              <Text>Custom Path</Text>
-            </HStack>
-          </Center>
-        </FormControl>
-        <FormControl isInvalid={!isValid} my="20px">
-          <Input
-            data-testid="custom-path"
-            isDisabled={useDefault}
-            {...register("derivationPath", {
-              pattern: {
-                value: validDerivationPathRegex,
-                message: "Please enter a valid derivation path",
-              },
-            })}
+        <FormControl marginBottom="20px">
+          <FormLabel>Select Path</FormLabel>
+          <Select
+            selected={DEFAULT_DERIVATION_PATH}
+            options={AVAILABLE_DERIVATION_PATHS}
+            onChange={newVal => setValue("derivationPath", newVal)}
           />
           {errors.derivationPath && (
             <FormErrorMessage data-testid="error-message">
@@ -85,7 +69,7 @@ export const DerivationPath = ({
             </FormErrorMessage>
           )}
         </FormControl>
-        <Button mt="12px" isDisabled={!isValid} w="100%" size="lg" type="submit">
+        <Button mt="12px" w="100%" size="lg" type="submit">
           Continue
         </Button>
       </form>

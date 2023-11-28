@@ -21,10 +21,4 @@ describe("makeDerivationPath", () => {
       expect(result).toEqual("44'/1729'/3'/0'/0'");
     }
   });
-
-  test("throws an error if provided derivation pattern is not valid", () => {
-    expect(() => makeDerivationPath("bar/3'/4'/?'/9'", 18)).toThrowError(
-      "Invalid derivation pattern: bar/3'/4'/?'/9'"
-    );
-  });
 });

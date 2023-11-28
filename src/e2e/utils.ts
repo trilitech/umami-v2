@@ -44,7 +44,15 @@ export const cleanupState = () => {
   });
 };
 
-export const loginAs = async (mnemonic: string, page: Page) => {
+export const onboardWithExistingMnemonic = async ({
+  mnemonic,
+  page,
+  derivationPath,
+}: {
+  mnemonic: string;
+  page: Page;
+  derivationPath?: string;
+}) => {
   await page.goto("/");
 
   await page.getByRole("button", { name: "Get started" }).click();
@@ -65,6 +73,10 @@ export const loginAs = async (mnemonic: string, page: Page) => {
   await page.getByRole("button", { name: "Continue" }).click();
 
   expect(page.getByRole("heading", { name: "Derivation Path" })).toBeVisible();
+  if (derivationPath) {
+    await page.getByTestId("select-input").click();
+    await page.getByText(derivationPath).click();
+  }
   await page.getByRole("button", { name: "Continue" }).click();
 
   await page.getByTestId("password").fill(MASTER_PASSWORD);
