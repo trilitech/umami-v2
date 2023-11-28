@@ -178,4 +178,6 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+  // Listen to install-app-update event from UI.
+  ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
 });
