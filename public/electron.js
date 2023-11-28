@@ -29,11 +29,11 @@ try {
 
 /**
  * Send event to UI when app update is ready to be installed.
- * 
- * If the update installation won't be triggered by the user, 
+ *
+ * If the update installation won't be triggered by the user,
  * it will be applied the next time the app starts.
  */
-app.on("update-downloaded", (releaseName) => {
+app.on("update-downloaded", releaseName => {
   console.log(`Umami update ${releaseName} downloaded and ready to be installed`, url);
   mainWindow.webContents.send("app-update-downloaded");
 });

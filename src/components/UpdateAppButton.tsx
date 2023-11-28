@@ -6,13 +6,20 @@ import colors from "../style/colors";
  * Button component to allow users see and download app update when available.
  */
 export const UpdateAppButton = () => {
+  let isUpdateAvailable = false;
+
+  const internalWindows = window as any;
+  if (internalWindows && internalWindows.electronAPI) {
+    internalWindows.electronAPI.onAppUpdateDownloaded(() => (isUpdateAvailable = true));
+  }
+
   const startUpdate = () => {
     // TODO: send event to call autoUpdater.quitAndInstall() in electron
   };
 
   // TODO: listen to event from electron on having update available.
   // If no update available, return null.
-  return (
+  return isUpdateAvailable ? (
     <Box marginTop="24px" marginBottom="6px">
       <Button
         color={colors.black}
@@ -36,5 +43,5 @@ export const UpdateAppButton = () => {
         </Text>
       </Button>
     </Box>
-  );
+  ) : null;
 };
