@@ -10386,7 +10386,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^27.0.2":
+"electron@npm:^27.1.2":
   version: 27.1.2
   resolution: "electron@npm:27.1.2"
   dependencies:
@@ -19995,7 +19995,7 @@ __metadata:
     date-fns: ^2.30.0
     dotenv: ^10.0.0
     dotenv-expand: ^5.1.0
-    electron: ^27.0.2
+    electron: ^27.1.2
     electron-builder: ^24.9.1
     electron-updater: ^6.1.4
     electronmon: ^2.0.2
