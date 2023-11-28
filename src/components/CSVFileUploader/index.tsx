@@ -7,8 +7,8 @@ import FileArrowDownIcon from "../../assets/icons/FileArrowDown";
 const CSVFileUploader = () => {
   const { openWith } = useContext(DynamicModalContext);
   return (
-    <Button variant="CTAWithIcon" onClick={() => openWith(<CSVFileUploadForm />)}>
-      <Text mr="4px" size="sm">
+    <Button onClick={() => openWith(<CSVFileUploadForm />)} variant="CTAWithIcon">
+      <Text marginRight="4px" size="sm">
         Load CSV file
       </Text>
       <FileArrowDownIcon stroke="currentcolor" />

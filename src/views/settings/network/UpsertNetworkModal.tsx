@@ -45,7 +45,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
         </ModalHeader>
         <ModalBody>
           {mode === "create" && (
-            <FormControl mb="24px" mt="32px" isInvalid={!!errors.name}>
+            <FormControl marginTop="32px" marginBottom="24px" isInvalid={!!errors.name}>
               <FormLabel>Name</FormLabel>
               <Input
                 placeholder="mainnet"
@@ -61,7 +61,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
               {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
           )}
-          <FormControl mb="24px" isInvalid={!!errors.rpcUrl}>
+          <FormControl marginBottom="24px" isInvalid={!!errors.rpcUrl}>
             <FormLabel>RPC URL</FormLabel>
             <Input
               placeholder="https://prod.tcinfra.net/rpc/mainnet"
@@ -69,7 +69,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             />
             {errors.rpcUrl && <FormErrorMessage>{errors.rpcUrl.message}</FormErrorMessage>}
           </FormControl>
-          <FormControl mb="24px" isInvalid={!!errors.tzktApiUrl}>
+          <FormControl marginBottom="24px" isInvalid={!!errors.tzktApiUrl}>
             <FormLabel>Tzkt API URL</FormLabel>
             <Input
               placeholder="https://api.ghostnet.tzkt.io"
@@ -77,7 +77,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             />
             {errors.tzktApiUrl && <FormErrorMessage>{errors.tzktApiUrl.message}</FormErrorMessage>}
           </FormControl>
-          <FormControl mb="24px" isInvalid={!!errors.tzktExplorerUrl}>
+          <FormControl marginBottom="24px" isInvalid={!!errors.tzktExplorerUrl}>
             <FormLabel>Tzkt Explorer URL</FormLabel>
             <Input
               placeholder="https://ghostnet.tzkt.io"
@@ -93,7 +93,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             <Input placeholder="https://faucet.ghostnet.teztnets.xyz" {...register("buyTezUrl")} />
           </FormControl>
           <ModalFooter>
-            <Button isDisabled={!isValid} onClick={() => {}} w="100%" type="submit">
+            <Button width="100%" isDisabled={!isValid} onClick={() => {}} type="submit">
               {mode === "edit" ? "Save changes" : "Add network"}
             </Button>
           </ModalFooter>

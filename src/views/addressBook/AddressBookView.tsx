@@ -11,18 +11,18 @@ const AddContact: React.FC = () => {
   const { openWith } = useContext(DynamicModalContext);
   return (
     <Button
-      variant="CTAWithIcon"
+      alignItems="center"
+      justifyContent="end"
+      marginTop="16px"
+      marginBottom="16px"
+      cursor="pointer"
       onClick={() =>
         openWith(<UpsertContactModal title="Add contact" buttonText="Add to Contact" />)
       }
-      alignItems="center"
-      justifyContent="end"
-      mb="16px"
-      mt="16px"
-      cursor="pointer"
+      variant="CTAWithIcon"
     >
       <AddContactIcon stroke="currentcolor" />
-      <Text size="sm" ml="4px">
+      <Text marginLeft="4px" size="sm">
         Add contact
       </Text>
     </Button>
@@ -32,7 +32,7 @@ const AddContact: React.FC = () => {
 export default function AddressBookView() {
   const contacts = useAllSortedContacts();
   return (
-    <Flex direction="column" height="100%">
+    <Flex flexDirection="column" height="100%">
       <TopBar title="Address Book" />
 
       <Flex flexDirection="row-reverse">

@@ -41,23 +41,23 @@ export const NetworkSettingsDrawerBody = () => {
       <Center justifyContent="space-between">
         <Heading>Network Settings</Heading>
         <Button
-          variant="CTAWithIcon"
-          onClick={() => openWith(<UpsertNetworkModal />)}
           paddingRight="0"
+          onClick={() => openWith(<UpsertNetworkModal />)}
+          variant="CTAWithIcon"
         >
           <Text size="sm">Add Network</Text>
           <PlusIcon ml="4px" height="18px" width="18px" stroke="currentcolor" />
         </Button>
       </Center>
-      <RadioGroup mt="60px" onChange={selectNetwork} value={network.name}>
+      <RadioGroup marginTop="60px" onChange={selectNetwork} value={network.name}>
         <Stack>
           {availableNetworks.map(network => (
             <Fragment key={network.name}>
               <Divider borderColor={colors.gray[700]} />
               <Flex justifyContent="space-between" data-testid={`network-${network.name}`}>
-                <Radio height="100px" variant="primary" value={network.name}>
-                  <Flex ml="16px" flexDirection="column">
-                    <Heading size="sm" mb="4px">
+                <Radio height="100px" value={network.name} variant="primary">
+                  <Flex flexDirection="column" marginLeft="16px">
+                    <Heading marginBottom="4px" size="sm">
                       {network.name}
                     </Heading>
                     <Text color={colors.gray[400]}>{network.rpcUrl}</Text>
@@ -67,15 +67,15 @@ export const NetworkSettingsDrawerBody = () => {
                   <Center data-testid="popover-menu">
                     <PopoverMenu>
                       <Button
-                        variant="popover"
                         onClick={() => openWith(<UpsertNetworkModal network={network} />)}
+                        variant="popover"
                       >
-                        <Text mr="4px">Edit</Text>
+                        <Text marginRight="4px">Edit</Text>
                         <PenIcon />
                       </Button>
-                      <Divider mt="4px" />
-                      <Button variant="popover" onClick={() => removeNetwork(network)}>
-                        <Text mr="4px">Remove</Text>
+                      <Divider marginTop="4px" />
+                      <Button onClick={() => removeNetwork(network)} variant="popover">
+                        <Text marginRight="4px">Remove</Text>
                         <TrashIcon />
                       </Button>
                     </PopoverMenu>

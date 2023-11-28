@@ -41,14 +41,14 @@ export const TokenTransferTile: React.FC<{
 
   const titleElement = isNFT ? (
     <Tooltip
-      bg={colors.gray[700]}
+      padding="8px"
+      background={colors.gray[700]}
       border="1px solid"
       borderColor={colors.gray[500]}
       borderRadius="8px"
       data-testid="nft-tooltip"
-      p="8px"
       label={
-        <AspectRatio w="170px" h="170px" ratio={1}>
+        <AspectRatio width="170px" height="170px" ratio={1}>
           <Image src={getIPFSurl(thumbnailUri(token))} />
         </AspectRatio>
       }
@@ -62,7 +62,7 @@ export const TokenTransferTile: React.FC<{
           data-testid="title"
           color={underlineColor}
         >
-          <Text display="inline" fontWeight="600" color={titleColor}>
+          <Text display="inline" color={titleColor} fontWeight="600">
             {sign}
             {tokenAmount}
           </Text>
@@ -82,7 +82,7 @@ export const TokenTransferTile: React.FC<{
       data-testid="title"
       color={underlineColor}
     >
-      <Text display="inline" fontWeight="600" color={titleColor}>
+      <Text display="inline" color={titleColor} fontWeight="600">
         {sign}
         {tokenAmount}
       </Text>
@@ -90,8 +90,8 @@ export const TokenTransferTile: React.FC<{
   );
 
   return (
-    <Flex direction="column" data-testid="operation-tile-token-transfer" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
+    <Flex flexDirection="column" width="100%" data-testid="operation-tile-token-transfer">
+      <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
           {titleElement}
@@ -105,8 +105,8 @@ export const TokenTransferTile: React.FC<{
         <Flex justifyContent="space-between">
           <Flex>
             {(showToAddress || showAnyAddress) && (
-              <Flex mr="15px" data-testid="to">
-                <Text mr="6px" color={colors.gray[450]}>
+              <Flex marginRight="15px" data-testid="to">
+                <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
                 <AddressPill address={tokenTransfer.to} />
@@ -114,7 +114,7 @@ export const TokenTransferTile: React.FC<{
             )}
             {showFromAddress && (
               <Flex data-testid="from">
-                <Text mr="6px" color={colors.gray[450]}>
+                <Text marginRight="6px" color={colors.gray[450]}>
                   From:
                 </Text>
                 <AddressPill address={tokenTransfer.from as TzktAlias} />

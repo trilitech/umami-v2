@@ -25,14 +25,14 @@ export const OperationRecipient = ({ operation }: { operation: Operation }) => {
   }
   if (!address) {
     return (
-      <Text data-testid="recipient" color={colors.gray[500]}>
+      <Text color={colors.gray[500]} data-testid="recipient">
         N/A
       </Text>
     );
   }
   return (
     <>
-      <Text mr="6px" color={colors.gray[450]}>
+      <Text marginRight="6px" color={colors.gray[450]}>
         To:
       </Text>
       <AddressPill data-testid="recipient" address={address} />

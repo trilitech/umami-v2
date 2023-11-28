@@ -29,36 +29,42 @@ const ConnectOrCreate = ({
 
   return (
     <ModalContentWrapper icon={<WalletPlusIcon />} title="Connect or Create Account">
-      <VStack w="100%" spacing="16px">
-        <Button w="100%" size="lg" onClick={_ => goToStep({ type: StepType.notice })}>
+      <VStack width="100%" spacing="16px">
+        <Button width="100%" onClick={_ => goToStep({ type: StepType.notice })} size="lg">
           Create a new Account
         </Button>
         <Button
-          variant="tertiary"
-          w="100%"
-          size="lg"
+          width="100%"
           onClick={_ => goToStep({ type: StepType.connectOptions })}
+          size="lg"
+          variant="tertiary"
         >
           I already have a wallet
         </Button>
         {
           /* devblock:start */
           <Button
-            variant="tertiary"
-            w="100%"
-            size="lg"
+            width="100%"
             onClick={_ => goToStep({ type: StepType.fakeAccount })}
+            size="lg"
+            variant="tertiary"
           >
             Add a Fake Account
           </Button>
           /* devblock:end */
         }
-        <Flex w="100%" pt="14px" pb="6px">
-          <Divider mt="11px" />
-          <Text textAlign="center" minW="160px" size="sm" noOfLines={1} color={colors.gray[400]}>
+        <Flex width="100%" paddingTop="14px" paddingBottom="6px">
+          <Divider marginTop="11px" />
+          <Text
+            minWidth="160px"
+            color={colors.gray[400]}
+            textAlign="center"
+            noOfLines={1}
+            size="sm"
+          >
             Continue with Google
           </Text>
-          <Divider mt="11px" />
+          <Divider marginTop="11px" />
         </Flex>
         <GoogleAuth onSuccessfulAuth={onSuccessfulSocialAuth} />
       </VStack>

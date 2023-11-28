@@ -15,23 +15,23 @@ export const UpdateAppButton = () => {
   return (
     <Box marginTop="24px" marginBottom="6px">
       <Button
+        justifyContent="flex-start"
+        width="100%"
+        height="32px"
+        paddingTop="7px"
+        paddingRight="8px"
+        paddingBottom="7px"
+        paddingLeft="8px"
         color={colors.black}
         background={colors.green}
         _hover={{
           color: colors.black,
           background: colors.greenL,
         }}
-        width="100%"
-        height="32px"
-        paddingLeft="8px"
-        paddingRight="8px"
-        paddingTop="7px"
-        paddingBottom="7px"
-        justifyContent="flex-start"
         onClick={startUpdate}
       >
         <FlipForwardEnergy />
-        <Text size="sm" marginLeft="4px">
+        <Text marginLeft="4px" size="sm">
           Update Umami
         </Text>
       </Button>

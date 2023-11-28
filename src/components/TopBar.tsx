@@ -53,20 +53,20 @@ const UpdateButton = () => {
   return (
     <>
       {relativeTimestamp && !isSmallSize && (
-        <Text size="sm" color={colors.gray[400]} display="inline">
+        <Text display="inline" color={colors.gray[400]} size="sm">
           Updated {relativeTimestamp} ago
         </Text>
       )}
       <IconButton
-        ml="8px"
-        mr="36px"
+        marginRight="36px"
+        marginLeft="8px"
+        _active={{ color: "white", bg: colors.green }}
         aria-label="refetch"
         data-testid="refetch-button"
         icon={<FetchingIcon />}
-        onClick={onClick}
         isLoading={isLoading}
+        onClick={onClick}
         variant="circle"
-        _active={{ color: "white", bg: colors.green }}
       />
     </>
   );
@@ -78,12 +78,12 @@ export const TopBar: React.FC<{ title: string; subtitle?: string }> = ({ title, 
 
   return (
     <Box>
-      <Flex h="88px" justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between" height="88px">
         <Flex alignItems="end">
-          <Heading size="xl" mr="6px">
+          <Heading marginRight="6px" size="xl">
             {title}
           </Heading>
-          <Text data-testid="nft-total-amount" size="xs" color={colors.gray[450]}>
+          <Text color={colors.gray[450]} data-testid="nft-total-amount" size="xs">
             {subtitle}
           </Text>
         </Flex>
@@ -93,15 +93,15 @@ export const TopBar: React.FC<{ title: string; subtitle?: string }> = ({ title, 
             <a
               href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${emailBodyTemplate}`}
             >
-              <Button variant="tertiary" mr={4}>
+              <Button marginRight={4} variant="tertiary">
                 Share Feedback
               </Button>
             </a>
           )}
-          <Button variant="tertiary" onClick={() => openWith(<BuyTezForm />)}>
+          <Button onClick={() => openWith(<BuyTezForm />)} variant="tertiary">
             Buy Tez
           </Button>
-          <Button ml={4} onClick={() => openWith(<SendTezForm />)}>
+          <Button marginLeft={4} onClick={() => openWith(<SendTezForm />)}>
             Send
           </Button>
         </Box>

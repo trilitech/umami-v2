@@ -40,7 +40,7 @@ const TokenNameWithIcon = ({
   const isVerified = verifiedTokens.includes(token.contract);
   return (
     <Flex alignItems="center">
-      <Text {...textProps} mr="4px">
+      <Text {...textProps} marginRight="4px">
         {tokenNameSafe(token)}
       </Text>
       {isVerified && <VerifiedIcon />}

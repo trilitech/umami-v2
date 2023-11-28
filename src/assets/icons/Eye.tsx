@@ -6,8 +6,8 @@ const EyeIcon: React.FC<IconProps> = props => {
     <Icon
       width="16px"
       height="12px"
-      viewBox="0 0 16 12"
       fill="none"
+      viewBox="0 0 16 12"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

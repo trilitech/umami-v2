@@ -29,9 +29,9 @@ export const AnnouncementBanner: React.FC = () => {
 
   const MaintanceIcon = maintanceIcon;
   return open && message ? (
-    <Alert data-testid="announcement" color="black" bg="#FC7884">
+    <Alert color="black" background="#FC7884" data-testid="announcement">
       <MaintanceIcon />
-      <Box w="100%" pl="8px">
+      <Box width="100%" paddingLeft="8px">
         <AlertDescription>{message}</AlertDescription>
       </Box>
       <CloseButton onClick={() => setOpen(false)} />

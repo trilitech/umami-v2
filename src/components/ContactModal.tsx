@@ -99,7 +99,7 @@ export const UpsertContactModal: FC<{
         <ModalHeader textAlign="center">{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl marginY={5} isInvalid={!!errors.name}>
+          <FormControl isInvalid={!!errors.name} marginY={5}>
             <FormLabel>Name</FormLabel>
             <Input
               type="text"
@@ -111,7 +111,7 @@ export const UpsertContactModal: FC<{
             />
             {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
           </FormControl>
-          <FormControl marginY={5} isInvalid={!!errors.pkh}>
+          <FormControl isInvalid={!!errors.pkh} marginY={5}>
             <FormLabel>Address</FormLabel>
             <Input
               type="text"
@@ -119,18 +119,18 @@ export const UpsertContactModal: FC<{
                 required: "Address is required",
                 validate: validatePkh,
               })}
-              value={contact?.pkh}
-              variant={isEdit ? "filled" : undefined}
               disabled={isEdit}
               placeholder="Enter contact’s tz address"
+              value={contact?.pkh}
+              variant={isEdit ? "filled" : undefined}
             />
             {errors.pkh && <FormErrorMessage>{errors.pkh.message}</FormErrorMessage>}
           </FormControl>
         </ModalBody>
 
-        <ModalFooter p="16px 0 0 0">
+        <ModalFooter padding="16px 0 0 0">
           <Box width="100%">
-            <Button width="100%" size="lg" type="submit" mb={2} isDisabled={!isValid}>
+            <Button width="100%" marginBottom={2} isDisabled={!isValid} size="lg" type="submit">
               {buttonText}
             </Button>
           </Box>
@@ -154,12 +154,12 @@ export const DeleteContactModal: FC<{
       <ModalHeader textAlign="center">Delete Contact</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        <Flex alignItems="center" direction="column" justifyContent="space-between">
-          <Text size="sm" color={colors.gray[400]}>
+        <Flex alignItems="center" justifyContent="space-between" flexDirection="column">
+          <Text color={colors.gray[400]} size="sm">
             Are you sure you want to remove this contact?
           </Text>
-          <Box mt={5}>
-            <Heading size="md" textAlign="center" mb={3}>
+          <Box marginTop={5}>
+            <Heading marginBottom={3} textAlign="center" size="md">
               {contact.name}
             </Heading>
             <CopyableAddress pkh={contact.pkh} />
@@ -169,7 +169,7 @@ export const DeleteContactModal: FC<{
 
       <ModalFooter>
         <Box width="100%">
-          <Button width="100%" variant="warning" onClick={onDeleteContact} mb={2}>
+          <Button width="100%" marginBottom={2} onClick={onDeleteContact} variant="warning">
             Delete
           </Button>
         </Box>

@@ -38,9 +38,9 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
   const network = useSelectedNetwork();
 
   return (
-    <AccordionItem bg={colors.gray[800]} style={style}>
+    <AccordionItem background={colors.gray[800]} style={style}>
       <AccordionButton paddingY="16px">
-        <Heading size="md" flex="1" textAlign="left">
+        <Heading flex="1" textAlign="left" size="md">
           Properties
         </Heading>
         <AccordionIcon />
@@ -51,60 +51,68 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
           <Table variant="stripped">
             <Tbody fontSize="14px">
               <Tr
-                bg={colors.gray[900]}
-                borderRadius="8px"
+                background={colors.gray[900]}
                 borderColor={colors.gray[700]}
                 borderBottomWidth="1px"
+                borderRadius="8px"
               >
                 <Td
-                  data-testid="nft-editions"
+                  width="20%"
                   padding="16px 0 16px 15px"
-                  w="20%"
-                  borderTopLeftRadius="8px"
-                  color={colors.gray[400]}
                   paddingRight="0"
+                  color={colors.gray[400]}
+                  borderTopLeftRadius="8px"
+                  data-testid="nft-editions"
                 >
                   Editions:
                 </Td>
                 <Td
-                  data-testid="nft-editions-value"
+                  width="30%"
                   padding="16px 0 16px 5px"
-                  w="30%"
                   borderColor={colors.gray[700]}
                   borderRightWidth="1px"
+                  data-testid="nft-editions-value"
                 >
                   {nft.totalSupply || "?"}
                 </Td>
 
-                <Td padding="16px 0 16px 15px" w="20%" color={colors.gray[400]}>
+                <Td width="20%" padding="16px 0 16px 15px" color={colors.gray[400]}>
                   Token ID:
                 </Td>
-                <Td padding="16px 0 16px 5px" w="30%" borderTopRightRadius="8px">
+                <Td width="30%" padding="16px 0 16px 5px" borderTopRightRadius="8px">
                   {nft.tokenId}
                 </Td>
               </Tr>
-              <Tr bg={colors.gray[800]} borderColor={colors.gray[700]} borderBottomWidth="1px">
-                <Td data-testid="nft-royalty" padding="16px 0 16px 15px" color={colors.gray[400]}>
+              <Tr
+                background={colors.gray[800]}
+                borderColor={colors.gray[700]}
+                borderBottomWidth="1px"
+              >
+                <Td padding="16px 0 16px 15px" color={colors.gray[400]} data-testid="nft-royalty">
                   Royalties
                   {royaltyShares.length > 1 ? " (" + royaltyShares.length + ")" : ""}:
                 </Td>
                 <Td
-                  data-testid="nft-royalty-value"
                   padding="16px 0 16px 5px"
                   borderColor={colors.gray[700]}
                   borderRightWidth="1px"
+                  data-testid="nft-royalty-value"
                 >
                   {royaltyShares.length > 0 ? totalRoyalties + "%" : "-"}
                 </Td>
-                <Td data-testid="nft-mime" padding="16px 0 16px 15px" color={colors.gray[400]}>
+                <Td padding="16px 0 16px 15px" color={colors.gray[400]} data-testid="nft-mime">
                   MIME type:
                 </Td>
-                <Td data-testid="nft-mime-value" padding="16px 0 16px 5px" w="30%">
+                <Td width="30%" padding="16px 0 16px 5px" data-testid="nft-mime-value">
                   {mimeType(nft) || "-"}
                 </Td>
               </Tr>
 
-              <Tr bg={colors.gray[900]} borderColor={colors.gray[700]} borderBottomWidth="1px">
+              <Tr
+                background={colors.gray[900]}
+                borderColor={colors.gray[700]}
+                borderBottomWidth="1px"
+              >
                 <Td padding="16px 0 16px 15px" color={colors.gray[400]}>
                   Contract:
                 </Td>
@@ -114,27 +122,31 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                 <Td padding="16px 0 16px 15px" color={colors.gray[400]}>
                   Metadata:
                 </Td>
-                <Td padding="16px 0 16px 5px" w="30%">
+                <Td width="30%" padding="16px 0 16px 5px">
                   TzKT <TzktLink url={metadataUri(nft, network)}></TzktLink>
                 </Td>
               </Tr>
 
-              <Tr bg={colors.gray[800]} borderColor={colors.gray[700]} borderBottomWidth="1px">
-                <Td data-testid="nft-creator" padding="16px 0 16px 15px" color={colors.gray[400]}>
+              <Tr
+                background={colors.gray[800]}
+                borderColor={colors.gray[700]}
+                borderBottomWidth="1px"
+              >
+                <Td padding="16px 0 16px 15px" color={colors.gray[400]} data-testid="nft-creator">
                   Creator:
                 </Td>
                 <Td
-                  data-testid="nft-creator-value"
                   padding="16px 0 16px 5px"
                   borderColor={colors.gray[700]}
                   borderRightWidth="1px"
+                  data-testid="nft-creator-value"
                 >
                   <CreatorElement nft={nft} />
                 </Td>
                 <Td padding="16px 0 16px 15px" color={colors.gray[400]}>
                   License:
                 </Td>
-                <Td padding="16px 0 16px 5px" w="30%">
+                <Td width="30%" padding="16px 0 16px 5px">
                   <TruncatedTextWithTooltip text={nft.metadata.rights || "-"} maxLength={15} />
                 </Td>
               </Tr>

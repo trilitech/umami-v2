@@ -4,7 +4,7 @@ import icon from "../coin-front.svg";
 import { RawPkh } from "../../types/Address";
 
 const TokenIconBase: React.FC<{ url: string } & ImageProps> = ({ url, ...props }) => {
-  return <Image src={url} fallbackSrc={icon} {...props} />;
+  return <Image fallbackSrc={icon} src={url} {...props} />;
 };
 
 const TokenIcon: React.FC<{ contract: RawPkh } & ImageProps> = ({ contract, ...props }) => {

@@ -38,7 +38,13 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: Step) => void 
           {errors.secretKey && <FormErrorMessage>{errors.secretKey.message}</FormErrorMessage>}
         </FormControl>
 
-        <Button isDisabled={!!errors.secretKey} mt="32px" w="100%" size="lg" type="submit">
+        <Button
+          width="100%"
+          marginTop="32px"
+          isDisabled={!!errors.secretKey}
+          size="lg"
+          type="submit"
+        >
           Continue
         </Button>
       </form>

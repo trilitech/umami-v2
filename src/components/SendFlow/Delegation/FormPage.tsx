@@ -65,7 +65,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
       <ModalContent>
         <form>
           <HeaderWrapper>
-            <Text size="2xl" fontWeight="600">
+            <Text fontWeight="600" size="2xl">
               {baker ? "Change Baker" : "Delegate"}
             </Text>
             <ModalCloseButton />
@@ -86,7 +86,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               )}
             </FormControl>
 
-            <FormControl mt="24px" isInvalid={!!errors.baker} data-testid="baker">
+            <FormControl marginTop="24px" data-testid="baker" isInvalid={!!errors.baker}>
               <BakersAutocomplete label="Baker" inputName="baker" allowUnknown />
               {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
             </FormControl>

@@ -61,7 +61,7 @@ const CopyableText: React.FC<
 
   return (
     <Flex alignItems="center" {...rest}>
-      <Text size="sm" color={colors.gray[400]} mr="6px">
+      <Text marginRight="6px" color={colors.gray[400]} size="sm">
         {displayText}
       </Text>
       {copyValue && (
@@ -84,24 +84,24 @@ const ToastBody: React.FC<{
 }> = ({ message, onClose }) => {
   return (
     <Flex
-      p={2}
+      alignItems="center"
+      justifyContent="space-between"
+      padding={2}
       borderRadius="4px"
       backgroundColor="white"
-      justifyContent="space-between"
-      alignItems="center"
     >
       <Flex alignItems="center">
-        <Icon color={colors.green} as={BsCheckCircle} m={1} />
+        <Icon as={BsCheckCircle} margin={1} color={colors.green} />
         <Text color="black">{message}</Text>
       </Flex>
 
       <Icon
-        color="black"
         as={RxCross1}
-        cursor="pointer"
+        color="black"
         _hover={{
           color: colors.gray[600],
         }}
+        cursor="pointer"
         onClick={onClose}
       />
     </Flex>

@@ -6,10 +6,10 @@ const DownloadIcon: React.FC<IconProps> = props => {
     <Icon
       width="16px"
       height="16px"
-      viewBox="0 0 16 16"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       stroke={colors.gray[450]}
+      viewBox="0 0 16 16"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path

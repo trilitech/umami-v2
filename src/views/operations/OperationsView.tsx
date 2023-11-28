@@ -30,13 +30,13 @@ const OperationsView = () => {
   };
 
   const loadingElement = (
-    <Text textAlign="center" color={colors.gray[500]} py="20px">
+    <Text color={colors.gray[500]} textAlign="center" paddingY="20px">
       Loading...
     </Text>
   );
 
   return (
-    <Flex direction="column" height="100%" px="6px">
+    <Flex flexDirection="column" height="100%" paddingX="6px">
       <TopBar title="Operations" />
       {accountsFilter}
       {operations.length === 0 && isLoading && loadingElement}
@@ -44,21 +44,26 @@ const OperationsView = () => {
       {operations.length > 0 && (
         <Box
           overflowY="scroll"
-          onScroll={onScroll}
+          marginBottom="20px"
+          background={colors.gray[900]}
           borderRadius="8px"
-          px="20px"
-          mb="20px"
-          bg={colors.gray[900]}
+          onScroll={onScroll}
+          paddingX="20px"
         >
           <OperationTileContext.Provider value={{ mode: "page" }}>
             {operations.map((operation, i) => {
               const isLast = i === operations.length - 1;
               return (
-                <Box key={operation.id} height="90px" mb={isLast ? "10px" : 0} py="20px">
+                <Box
+                  key={operation.id}
+                  height="90px"
+                  marginBottom={isLast ? "10px" : 0}
+                  paddingY="20px"
+                >
                   <OperationTile operation={operation} />
                   {!isLast && (
                     <Box>
-                      <Divider mt="20px" />
+                      <Divider marginTop="20px" />
                     </Box>
                   )}
                 </Box>

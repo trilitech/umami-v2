@@ -20,9 +20,9 @@ const AttributesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
     return null;
   }
   return (
-    <AccordionItem data-testid="attributes-section" bg={colors.gray[800]} style={style}>
+    <AccordionItem background={colors.gray[800]} data-testid="attributes-section" style={style}>
       <AccordionButton paddingY="16px">
-        <Heading size="md" flex="1" textAlign="left">
+        <Heading flex="1" textAlign="left" size="md">
           Attributes
         </Heading>
         <AccordionIcon />
@@ -32,7 +32,7 @@ const AttributesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
           {attributes.map(attr => {
             return (
               <WrapItem key={attr.name} flex="1" data-testid="nft-attribute">
-                <Card marginBottom="2px" width="160px" height="128px" bg={colors.gray[700]}>
+                <Card width="160px" height="128px" marginBottom="2px" background={colors.gray[700]}>
                   <CardBody padding="16px">
                     {/* TODO: make it display long attributes https://app.asana.com/0/0/1204721073861946/f */}
                     <Text color={colors.gray[400]} size="sm">

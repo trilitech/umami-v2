@@ -20,17 +20,17 @@ export const useAccountsFilter = () => {
         <Box alignSelf="flex-start">
           <Menu>
             <MenuButton
-              isDisabled={alreadySelectedAll}
               as={Button}
-              rightIcon={<ChevronDownIcon />}
-              variant="ghost"
+              maxHeight="26px"
+              paddingLeft={0}
+              fontWeight="normal"
               _hover={{ bg: "none" }}
               _active={{ bg: "none" }}
-              maxH="26px"
-              pl={0}
-              fontWeight="normal"
               data-testid="account-filter"
-              my="16px"
+              isDisabled={alreadySelectedAll}
+              marginY="16px"
+              rightIcon={<ChevronDownIcon />}
+              variant="ghost"
             >
               Filter by Account
             </MenuButton>

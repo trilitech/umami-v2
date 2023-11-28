@@ -56,17 +56,17 @@ export const ChangePasswordForm: React.FC = () => {
 
   return (
     <FormProvider {...form}>
-      <ModalContent data-testid="change-password-modal" bg={colors.gray[700]}>
+      <ModalContent background={colors.gray[700]} data-testid="change-password-modal">
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalCloseButton />
 
-          <ModalHeader mt={5} textAlign="center">
+          <ModalHeader marginTop={5} textAlign="center">
             <Box>
               <Heading>Change Password</Heading>
             </Box>
           </ModalHeader>
           <ModalBody>
-            <FormControl isInvalid={!!errors.currentPassword} mt={3}>
+            <FormControl marginTop={3} isInvalid={!!errors.currentPassword}>
               <PasswordInput
                 inputName="currentPassword"
                 label="Current Password"
@@ -81,7 +81,7 @@ export const ChangePasswordForm: React.FC = () => {
               )}
             </FormControl>
 
-            <FormControl isInvalid={!!errors.newPassword} my={6}>
+            <FormControl isInvalid={!!errors.newPassword} marginY={6}>
               <PasswordInput
                 inputName="newPassword"
                 label="New Password"
@@ -99,7 +99,7 @@ export const ChangePasswordForm: React.FC = () => {
               )}
             </FormControl>
 
-            <FormControl isInvalid={!!errors.newPasswordConfirmation} mt={3}>
+            <FormControl marginTop={3} isInvalid={!!errors.newPasswordConfirmation}>
               <PasswordInput
                 inputName="newPasswordConfirmation"
                 label="Confirm New Password"
@@ -119,7 +119,13 @@ export const ChangePasswordForm: React.FC = () => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button marginY={3} isDisabled={!isValid} isLoading={isLoading} w="100%" type="submit">
+            <Button
+              width="100%"
+              isDisabled={!isValid}
+              isLoading={isLoading}
+              marginY={3}
+              type="submit"
+            >
               Update Password
             </Button>
           </ModalFooter>

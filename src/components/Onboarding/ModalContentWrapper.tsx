@@ -12,14 +12,14 @@ type Props = {
 
 export default function ModalContentWrapper({ children, icon, title, subtitle }: Props) {
   return (
-    <VStack maxH="83vh" spacing={0}>
-      <Box mb="20px">
+    <VStack maxHeight="83vh" spacing={0}>
+      <Box marginBottom="20px">
         <CircleIcon size="48px" icon={icon} />
       </Box>
-      <Center mb="32px" flexDirection="column">
+      <Center flexDirection="column" marginBottom="32px">
         <Heading size="xl">{title}</Heading>
         {subtitle && (
-          <Text textAlign="center" size="sm" mt="10px" color={colors.gray[400]}>
+          <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
             {subtitle}
           </Text>
         )}

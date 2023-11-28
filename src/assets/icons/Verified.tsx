@@ -6,10 +6,10 @@ const CheckIcon: React.FC<IconProps> = props => {
     <Icon
       width="7px"
       height="5px"
-      viewBox="0 0 7 5"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       stroke="white"
+      viewBox="0 0 7 5"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
@@ -26,9 +26,9 @@ const StarIcon: React.FC<IconProps> = props => {
     <Icon
       width="14px"
       height="14px"
+      fill={colors.gray[450]}
       viewBox="0 0 14 14"
       xmlns="http://www.w3.org/2000/svg"
-      fill={colors.gray[450]}
       {...props}
     >
       <path
@@ -42,9 +42,14 @@ const StarIcon: React.FC<IconProps> = props => {
 
 const VerifiedIcon: React.FC = () => {
   return (
-    <Flex data-testid="verified-icon" align="center" justify="center" position="relative">
+    <Flex
+      position="relative"
+      alignItems="center"
+      justifyContent="center"
+      data-testid="verified-icon"
+    >
       <StarIcon />
-      <Flex position="absolute" align="center" justify="center">
+      <Flex position="absolute" alignItems="center" justifyContent="center">
         <CheckIcon />
       </Flex>
     </Flex>

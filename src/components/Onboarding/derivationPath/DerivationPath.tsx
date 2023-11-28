@@ -69,7 +69,7 @@ export const DerivationPath = ({
             </FormErrorMessage>
           )}
         </FormControl>
-        <Button mt="12px" w="100%" size="lg" type="submit">
+        <Button width="100%" marginTop="12px" size="lg" type="submit">
           Continue
         </Button>
       </form>

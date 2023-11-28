@@ -21,13 +21,13 @@ export const OperationListDisplay: React.FC<{ operations: TzktCombinedOperation[
       {chunk.map((operation, i) => (
         <Box key={operation.id} height="90px">
           <OperationTile operation={operation} />
-          {i < chunk.length - 1 && <Divider my="20px" />}
+          {i < chunk.length - 1 && <Divider marginY="20px" />}
         </Box>
       ))}
       <Center>
         <Link to="/operations">
           <RefreshClockIcon display="inline" />{" "}
-          <Text display="inline" size="sm" color={colors.gray[300]}>
+          <Text display="inline" color={colors.gray[300]} size="sm">
             View All
           </Text>
         </Link>

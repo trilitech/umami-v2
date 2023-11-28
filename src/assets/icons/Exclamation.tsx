@@ -6,10 +6,10 @@ const ExclamationIcon: React.FC<IconProps> = props => {
     <Icon
       width="12px"
       height="12px"
-      viewBox="0 0 12 12"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       stroke={colors.orange}
+      viewBox="0 0 12 12"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path

@@ -81,12 +81,12 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
     >
       <Box overflowX="hidden">
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-          <VStack w="100%" spacing={4}>
+          <VStack width="100%" spacing={4}>
             <Select
-              data-testid="select"
-              icon={<ChevronDownIcon />}
               height="48px"
               color={colors.gray[450]}
+              data-testid="select"
+              icon={<ChevronDownIcon />}
               onChange={event => handleMnemonicSizeChange(event.target.value)}
               value={mnemonicSize}
             >
@@ -99,40 +99,40 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
               })}
             </Select>
 
-            <Grid templateColumns="repeat(3, 1fr)" gap={3} pb="20px">
+            <Grid gridGap={3} gridTemplateColumns="repeat(3, 1fr)" paddingBottom="20px">
               {range(mnemonicSize).map(index => {
                 return (
                   <GridItem
                     key={index}
+                    display="flex"
+                    height="38px"
+                    padding="4px"
                     fontSize="sm"
+                    background={colors.gray[800]}
                     border="1px solid"
                     borderColor={colors.gray[500]}
                     borderRadius="4px"
-                    bg={colors.gray[800]}
-                    p="4px"
-                    height="38px"
-                    display="flex"
                   >
                     <Heading
-                      pt="6px"
                       width="18px"
-                      textAlign="right"
+                      marginRight="6px"
+                      paddingTop="6px"
                       color={colors.gray[400]}
+                      textAlign="right"
                       size="sm"
-                      mr="6px"
                     >
                       {index + 1}
                     </Heading>
                     <Input
+                      border="none"
                       autoComplete="off"
                       onPaste={async e => {
                         e.preventDefault();
                         const mnemonic = await navigator.clipboard.readText();
                         pasteMnemonic(mnemonic);
                       }}
-                      size="xsmall"
-                      border="none"
                       placeholder="Type here..."
+                      size="xsmall"
                       {...register(`word${index}`, {
                         required: true,
                       })}
@@ -142,17 +142,17 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
                 );
               })}
             </Grid>
-            <Button type="submit" w="100%" size="lg" isDisabled={!isValid}>
+            <Button width="100%" isDisabled={!isValid} size="lg" type="submit">
               Continue
             </Button>
 
             {
               /* devblock:start */
               <Button
+                width="100%"
                 onClick={() => {
                   pasteMnemonic(mnemonic1);
                 }}
-                w="100%"
                 size="lg"
               >
                 Enter test mnemonic (Dev only)

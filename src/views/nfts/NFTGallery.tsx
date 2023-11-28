@@ -10,7 +10,7 @@ export const NFTGallery: React.FC<{
   onSelect: (owner: RawPkh, nft: NFTBalance) => void;
 }> = ({ nftsByOwner, onSelect }) => {
   return (
-    <Wrap spacing="16px" mb="16px">
+    <Wrap marginBottom="16px" spacing="16px">
       {Object.entries(nftsByOwner).flatMap(([owner, nfts]) => {
         return (nfts || []).map(nft => (
           <NFTCard

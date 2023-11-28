@@ -15,7 +15,7 @@ export const MultisigPendingAccordion: React.FC<{
     return <NoItems title="No multisig pending operations" small />;
   }
   return (
-    <Box w="100%">
+    <Box width="100%">
       <Accordion allowMultiple={true} defaultIndex={range(pendingOperations.length)}>
         {pendingOperations.map(operation => (
           <MultisigPendingAccordionItem key={operation.id} operation={operation} sender={account} />

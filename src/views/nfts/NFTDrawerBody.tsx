@@ -18,12 +18,12 @@ const NFTDrawerBody = ({
   return (
     <>
       <Flex
-        data-testid="nft-drawer-body"
+        alignItems="center"
         justifyContent="space-between"
+        paddingBottom="30px"
         color={colors.gray[400]}
         cursor="pointer"
-        alignItems="center"
-        paddingBottom="30px"
+        data-testid="nft-drawer-body"
       >
         <AddressPill address={parsePkh(ownerPkh)} />
         <CloseDrawerButton onClose={onCloseDrawer} />

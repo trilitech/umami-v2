@@ -18,7 +18,7 @@ export const PrettyNumber: React.FC<{
     <Flex alignItems="end" data-testid="pretty-number">
       <Heading size={intSize}>{integer}</Heading>
       {decimal && (
-        <Heading size={fractionSize} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+        <Heading overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" size={fractionSize}>
           .{decimal}
         </Heading>
       )}

@@ -11,14 +11,14 @@ type Props = {
 export const CircleIcon = ({ icon, size, onClick = () => {} }: Props) => {
   return (
     <Box
-      height={size}
       width={size}
-      borderRadius="full"
-      bg={colors.gray[700]}
+      height={size}
       margin="auto"
+      background={colors.gray[700]}
+      borderRadius="full"
       onClick={onClick}
     >
-      <Center h="100%">{icon}</Center>
+      <Center height="100%">{icon}</Center>
     </Box>
   );
 };

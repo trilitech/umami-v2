@@ -21,17 +21,17 @@ export const AccountTileBase: React.FC<
 > = ({ icon, leftElement, rightElement, ...flexProps }) => {
   return (
     <Flex
-      mb={4}
-      p={4}
-      bg={colors.gray[900]}
-      h={90}
-      borderRadius={4}
-      border={`1px solid ${colors.gray[800]}`}
       alignItems="center"
+      height={90}
+      marginBottom={4}
+      padding={4}
+      background={colors.gray[900]}
+      border={`1px solid ${colors.gray[800]}`}
+      borderRadius={4}
       {...flexProps}
     >
       {icon}
-      <Flex flex={1} justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between" flex={1}>
         {leftElement}
         {rightElement}
       </Flex>
@@ -44,10 +44,10 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
   pkh,
 }) => {
   return (
-    <Box m={4} data-testid="account-identifier">
+    <Box margin={4} data-testid="account-identifier">
       {label && <Heading size="md">{label}</Heading>}
       <Flex alignItems="center">
-        <Text size="sm" color="text.dark">
+        <Text color="text.dark" size="sm">
           {formatPkh(pkh)}
         </Text>
       </Flex>
@@ -73,15 +73,15 @@ export const AccountTile: React.FC<{
 
   return (
     <Box
-      bg={colors.gray[900]}
+      background={colors.gray[900]}
+      border={`1px solid ${selected ? colors.orangeL : colors.gray[800]}`}
+      borderRadius="8px"
       _hover={{
         border,
       }}
-      borderRadius="8px"
-      px="21px"
-      border={`1px solid ${selected ? colors.orangeL : colors.gray[800]}`}
-      onClick={onClick}
       cursor="pointer"
+      onClick={onClick}
+      paddingX="21px"
     >
       <AccountTileBase
         data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
@@ -93,7 +93,7 @@ export const AccountTile: React.FC<{
         leftElement={<LabelAndAddress pkh={address} label={addressKind.label} />}
         rightElement={
           <Flex flexDirection="column">
-            <Text align="right" fontWeight={700} color={colors.gray[450]} size="sm">
+            <Text align="right" color={colors.gray[450]} fontWeight={700} size="sm">
               {/* crutch to make some the same padding at the top */}
               {/* TODO: split it into separate components instead of right/left elements */}
               {isDelegating ? "Delegated" : <>&nbsp;</>}
@@ -109,15 +109,20 @@ export const AccountTile: React.FC<{
       {nfts.length > 0 && (
         <Flex flexDirection="column">
           <Divider />
-          <Flex my="21px">
+          <Flex marginY="21px">
             {nfts.slice(0, MAX_NFT_COUNT).map((nft, i) => {
               const url = getIPFSurl(thumbnailUri(nft));
 
               if (i === MAX_NFT_COUNT - 1) {
                 return (
                   <Link to="/nfts" key="last">
-                    <Box borderRadius="4px" bg={colors.gray[600]} ml="4px" height="32px">
-                      <Text color={colors.gray[450]} fontWeight={700} width="32px" align="center">
+                    <Box
+                      height="32px"
+                      marginLeft="4px"
+                      background={colors.gray[600]}
+                      borderRadius="4px"
+                    >
+                      <Text align="center" width="32px" color={colors.gray[450]} fontWeight={700}>
                         ...
                       </Text>
                     </Box>
@@ -130,7 +135,7 @@ export const AccountTile: React.FC<{
                   to={`/home/${address}/${fullId(nft)}`}
                   key={fullId(nft)}
                 >
-                  <AspectRatio w="32px" h="32px" ratio={1} ml={i > 0 ? "4px" : 0}>
+                  <AspectRatio width="32px" height="32px" marginLeft={i > 0 ? "4px" : 0} ratio={1}>
                     <Image borderRadius="4px" src={url} />
                   </AspectRatio>
                 </Link>

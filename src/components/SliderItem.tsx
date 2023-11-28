@@ -6,14 +6,14 @@ import DiamondIcon from "../assets/icons/Diamond";
 
 export default function SlideItem({ item }: { item: SlideritemRecord }) {
   return (
-    <Box data-testid={`slide-${item.id}`} paddingBottom="35px">
+    <Box paddingBottom="35px" data-testid={`slide-${item.id}`}>
       <Box
-        backgroundRepeat="no-repeat"
+        height="400px"
         backgroundPosition="top"
+        backgroundRepeat="no-repeat"
         __css={{
           backgroundImage: `linear-gradient(to bottom, rgba(245, 246, 252, 0), rgba(0, 0, 0, 1)), url(${item.image?.url})`,
         }}
-        height="400px"
       ></Box>
       <Flex flexDirection="column">
         <CircleIcon size="58px" icon={<DiamondIcon width="32px" height="32px" />} />

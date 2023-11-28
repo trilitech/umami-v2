@@ -28,7 +28,7 @@ export const IconAndTextBtn: React.FC<Props> = ({
   textFirst,
   ...rest
 }) => {
-  const iconEL = <Icon w={iconWidth} h={iconHeight} as={icon} color={iconColor} />;
+  const iconEL = <Icon as={icon} width={iconWidth} height={iconHeight} color={iconColor} />;
   const textMargin_ = textFirst ? { mr: textMargin } : { ml: textMargin };
   const textEl = (
     <Text {...textMargin_} fontSize="sm">
@@ -37,15 +37,15 @@ export const IconAndTextBtn: React.FC<Props> = ({
   );
   return (
     <Flex
-      role="button"
-      color="text.dark"
-      justifyContent="space-between"
       alignItems="center"
-      onClick={onClick}
-      cursor="pointer"
+      justifyContent="space-between"
+      color="text.dark"
       _hover={{
         color: colors.gray[300],
       }}
+      cursor="pointer"
+      onClick={onClick}
+      role="button"
       {...rest}
     >
       {textFirst ? textEl : null}

@@ -17,25 +17,25 @@ const PopoverMenu: React.FC<{
 }> = props => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   return (
-    <Popover placement="bottom-start" isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
+    <Popover isOpen={isOpen} onClose={onClose} onOpen={onOpen} placement="bottom-start">
       <PopoverTrigger>
         <Button
-          bg={isOpen ? colors.green : colors.gray[500]}
-          _hover={{ bg: isOpen ? colors.green : colors.gray[450] }}
-          variant="unstyled"
-          borderRadius="full"
-          border="none"
-          height="24px"
           minWidth="24px"
+          height="24px"
+          padding="0"
+          background={isOpen ? colors.green : colors.gray[500]}
+          border="none"
+          borderRadius="full"
+          _hover={{ bg: isOpen ? colors.green : colors.gray[450] }}
           data-testid="popover-cta"
-          p="0"
+          variant="unstyled"
         >
           <Center>
-            <Icon display="inline" as={BsThreeDots} color={colors.white} />
+            <Icon as={BsThreeDots} display="inline" color={colors.white} />
           </Center>
         </Button>
       </PopoverTrigger>
-      <PopoverContent w="100px" bg={colors.gray[700]}>
+      <PopoverContent width="100px" background={colors.gray[700]}>
         <PopoverBody borderRadius="lg">{props.children}</PopoverBody>
       </PopoverContent>
     </Popover>

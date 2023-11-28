@@ -11,19 +11,19 @@ const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }
   return (
     <Flex alignItems="center">
       <PopoverMenu>
-        <Box py="0">
-          <Button variant="popover" h={onRemove ? "24px" : "28px"} onClick={onRename}>
+        <Box paddingY="0">
+          <Button height={onRemove ? "24px" : "28px"} onClick={onRename} variant="popover">
             <Flex alignItems="center">
-              <Text mr="4px">Rename</Text>
+              <Text marginRight="4px">Rename</Text>
               <PenIcon />
             </Flex>
           </Button>
           {onRemove && (
             <>
-              <Divider my="4px" />
-              <Button variant="popover" onClick={onRemove}>
+              <Divider marginY="4px" />
+              <Button onClick={onRemove} variant="popover">
                 <Flex alignItems="center">
-                  <Text mr="4px">Remove</Text>
+                  <Text marginRight="4px">Remove</Text>
                   <TrashIcon />
                 </Flex>
               </Button>

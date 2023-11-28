@@ -43,7 +43,7 @@ export const ConfirmationModal: React.FC<{
         </ModalBody>
       )}
       <ModalFooter>
-        <Button w="100%" onClick={onClick} variant="warning">
+        <Button width="100%" onClick={onClick} variant="warning">
           {buttonLabel}
         </Button>
       </ModalFooter>

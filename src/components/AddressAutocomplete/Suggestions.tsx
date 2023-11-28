@@ -17,30 +17,30 @@ export const Suggestions = ({
 
   return (
     <UnorderedList
-      data-testid="suggestions-list"
-      overflowY="auto"
-      mt="8px"
-      ml={0}
-      width="100%"
-      borderRadius="8px"
-      listStyleType="none"
       position="absolute"
+      zIndex={2}
+      overflowY="auto"
+      width="100%"
+      maxHeight={300}
+      marginTop="8px"
+      marginLeft={0}
+      background={colors.gray[700]}
       border="1px solid"
       borderColor={colors.gray[500]}
-      bg={colors.gray[700]}
-      zIndex={2}
-      maxHeight={300}
+      borderRadius="8px"
+      data-testid="suggestions-list"
+      listStyleType="none"
     >
       {contacts.map((contact, i) => (
         <Box key={contact.pkh}>
           <ListItem
+            marginBottom={i === contacts.length - 1 ? "5px" : 0}
+            padding="5px 15px 0 5px"
             onMouseDown={() => {
               // onMouseDown is the only way for this to fire before the onBlur callback of the Input
               // https://stackoverflow.com/a/28963938/6797267
               onChange(contact.name);
             }}
-            padding="5px 15px 0 5px"
-            mb={i === contacts.length - 1 ? "5px" : 0}
           >
             <AddressTile
               cursor="pointer"

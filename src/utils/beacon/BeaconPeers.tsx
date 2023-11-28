@@ -17,28 +17,28 @@ import colors from "../../style/colors";
 
 const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => void }) => {
   return (
-    <Flex height="106px" paddingY="30px" justifyContent="space-between">
+    <Flex justifyContent="space-between" height="106px" paddingY="30px">
       <Flex>
         <AspectRatio width="48px" marginRight="16px" ratio={1}>
           <Image width="100%" src={peerInfo.icon} />
         </AspectRatio>
         <Center alignItems="flex-start" flexDirection="column">
-          <Heading size="md" ml={2}>
+          <Heading marginLeft={2} size="md">
             {peerInfo.name}
           </Heading>
 
-          <Text size="sm" color={colors.gray[400]} ml={2}>
+          <Text marginLeft={2} color={colors.gray[400]} size="sm">
             {peerInfo.relayServer}
           </Text>
         </Center>
       </Flex>
       <Center>
         <IconButton
-          onClick={onRemove}
           aria-label="Remove Peer"
+          icon={<TrashIcon />}
+          onClick={onRemove}
           size="xs"
           variant="circle"
-          icon={<TrashIcon />}
         />
       </Center>
     </Flex>

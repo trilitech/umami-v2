@@ -27,21 +27,21 @@ export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
       <ModalHeader textAlign="center">
         Operation Submitted
         <Flex justifyContent="center">
-          <Text color="text.dark" size="sm" textAlign="center" width="340px">
+          <Text width="340px" color="text.dark" textAlign="center" size="sm">
             You can follow this operation's progress in the Operations section.
             <br />
             It may take up to 30 seconds to appear.
           </Text>
         </Flex>
       </ModalHeader>
-      <ModalBody p="0"></ModalBody>
+      <ModalBody padding="0"></ModalBody>
       <ModalFooter justifyContent="center" flexDirection="column">
         <Link to="/operations">
           <Button width="100%" onClick={onClose}>
             Go to operation
           </Button>
         </Link>
-        <Flex mt={4} alignItems="center" justifyContent="space-between">
+        <Flex alignItems="center" justifyContent="space-between" marginTop={4}>
           <Text color="text.dark">View in Tzkt</Text>
           <TzktLink ml={4} url={tzktUrl} />
         </Flex>

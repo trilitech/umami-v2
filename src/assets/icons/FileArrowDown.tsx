@@ -6,9 +6,9 @@ const FileArrowDownIcon: React.FC<IconProps> = props => {
     <Icon
       width="18px"
       height="18px"
-      viewBox="0 0 18 18"
       fill="none"
       stroke={colors.gray[450]}
+      viewBox="0 0 18 18"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

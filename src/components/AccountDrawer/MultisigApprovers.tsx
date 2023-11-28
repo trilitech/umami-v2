@@ -18,22 +18,28 @@ const MultisigApprovers: React.FC<{
   signers: ImplicitAddress[];
 }> = ({ signers }) => {
   return (
-    <Box w="100%" bg={colors.gray[800]} p="15px" borderRadius="8px" mt="60px">
+    <Box
+      width="100%"
+      marginTop="60px"
+      padding="15px"
+      background={colors.gray[800]}
+      borderRadius="8px"
+    >
       <Accordion allowToggle defaultIndex={0}>
-        <AccordionItem bg={colors.gray[800]} border="none" borderRadius="8px">
+        <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
           <h2>
             <AccordionButton as="span" flex="1" textAlign="left">
-              <Heading w="100%" size="sm">
+              <Heading width="100%" size="sm">
                 Approvers
               </Heading>
               <AccordionIcon cursor="pointer" />
             </AccordionButton>
           </h2>
           <AccordionPanel>
-            <Wrap mt="3" data-testid="multisig-tag-section">
+            <Wrap marginTop="3" data-testid="multisig-tag-section">
               {signers.map(signer => {
                 return (
-                  <WrapItem key={signer.pkh} borderRadius="100px" padding="3px 8px">
+                  <WrapItem key={signer.pkh} padding="3px 8px" borderRadius="100px">
                     <AddressPill address={signer} />
                   </WrapItem>
                 );

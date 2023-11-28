@@ -44,34 +44,34 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
   };
   return (
     <Box>
-      <Card bg={colors.gray[800]} height="534px" width="534px">
-        <CardBody p="24px">
-          <Box height="486px" width="486px">
+      <Card width="534px" height="534px" background={colors.gray[800]}>
+        <CardBody padding="24px">
+          <Box width="486px" height="486px">
             {isVideo ? (
               <ReactPlayer url={url} playing loop height="100%" width="100%" />
             ) : (
               <Image
-                data-testid="nft-image"
-                objectFit="contain"
-                height="486px"
                 width="486px"
+                height="486px"
+                objectFit="contain"
                 alt={name}
-                src={url}
+                data-testid="nft-image"
                 fallbackSrc={fallbackUrl}
+                src={url}
               />
             )}
           </Box>
           {Number(nft.balance) > 1 && (
             <Text
-              data-testid="nft-owned-count"
-              borderRadius="100px"
-              height="24px"
-              px="8px"
-              backgroundColor="rgba(33, 33, 33, 0.75)"
-              display="inline"
               position="absolute"
+              display="inline"
+              height="24px"
               marginTop="-38px"
               marginLeft="16px"
+              borderRadius="100px"
+              backgroundColor="rgba(33, 33, 33, 0.75)"
+              data-testid="nft-owned-count"
+              paddingX="8px"
             >
               {"x" + nft.balance}
             </Text>
@@ -82,19 +82,19 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
       <TagsSection nft={nft} />
 
       {name && (
-        <Heading data-testid="nft-name" mt="16px" mb="14px" size="lg">
+        <Heading marginTop="16px" marginBottom="14px" data-testid="nft-name" size="lg">
           {name}
         </Heading>
       )}
 
       {nft.metadata.description && (
-        <Text data-testid="nft-description" size="sm" color={colors.gray[400]}>
+        <Text color={colors.gray[400]} data-testid="nft-description" size="sm">
           {nft.metadata.description}
         </Text>
       )}
 
       <Button
-        mt="20px"
+        marginTop="20px"
         onClick={() => {
           openWith(<SendNFTForm sender={getAccount(ownerPkh)} nft={nft} />);
         }}
@@ -102,13 +102,13 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
         Send
       </Button>
 
-      <Accordion allowMultiple mt="32px">
+      <Accordion marginTop="32px" allowMultiple>
         <AttributesAccordionItem nft={nft} style={accordionItemStyle} />
         <PropertiesAccordionItem nft={nft} style={accordionItemStyle} />
 
-        <AccordionItem bg={colors.gray[800]} style={accordionItemStyle}>
+        <AccordionItem background={colors.gray[800]} style={accordionItemStyle}>
           <AccordionButton paddingY="16px">
-            <Heading size="md" flex="1" textAlign="left">
+            <Heading flex="1" textAlign="left" size="md">
               JSON
             </Heading>
             <AccordionIcon />

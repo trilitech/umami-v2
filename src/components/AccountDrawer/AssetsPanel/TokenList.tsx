@@ -10,15 +10,15 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
   const prettyAmount = tokenPrettyAmount(token.balance, token, { showSymbol: false });
   return (
     <Flex
-      justifyContent="space-around"
       alignItems="center"
+      justifyContent="space-around"
+      height={20}
       borderBottom={`1px solid ${colors.gray[800]}`}
-      h={20}
       data-testid="token-tile"
     >
-      <Flex flex={1} alignItems="center">
+      <Flex alignItems="center" flex={1}>
         <TokenIcon w="38px" contract={token.contract} bg={colors.gray[500]} borderRadius="4px" />
-        <Box ml="16px">
+        <Box marginLeft="16px">
           <TokenNameWithIcon token={token} fontWeight={600} data-testid="token-name" />
         </Box>
       </Flex>

@@ -11,33 +11,37 @@ const Eula: React.FC<{
   return (
     <ModalContentWrapper icon={<DocumentIcon />} title="Accept to Continue">
       <>
-        <Checkbox onChange={e => setIsChecked(e.target.checked)} pb="24px" fontWeight="600">
+        <Checkbox
+          paddingBottom="24px"
+          fontWeight="600"
+          onChange={e => setIsChecked(e.target.checked)}
+        >
           I confirm that I have read and agreed with the{" "}
           <Link
             textDecoration="underline"
-            target="_blank"
-            rel="noopener noreferrer"
             href="https://umamiwallet.com/tos.html"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             Terms of Service
           </Link>{" "}
           and the{" "}
           <Link
             textDecoration="underline"
-            target="_blank"
-            rel="noopener noreferrer"
             href="https://umamiwallet.com/privacypolicy.html"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             Privacy Policy
           </Link>
         </Checkbox>
         <Button
-          w="100%"
-          size="lg"
+          width="100%"
           isDisabled={!isChecked}
           onClick={() => {
             goToStep({ type: StepType.connectOrCreate });
           }}
+          size="lg"
         >
           Continue
         </Button>

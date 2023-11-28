@@ -11,8 +11,8 @@ const TagsSection = ({ nft }: { nft: NFTBalance }) => {
     <Wrap marginTop="20px" data-testid="tags-section">
       {tags.map(tag => {
         return (
-          <WrapItem key={tag} borderRadius="100px" padding="3px 8px" bg={colors.gray[600]}>
-            <Text data-testid="nft-tag" color={colors.gray[400]}>
+          <WrapItem key={tag} padding="3px 8px" background={colors.gray[600]} borderRadius="100px">
+            <Text color={colors.gray[400]} data-testid="nft-tag">
               {tag}
             </Text>
           </WrapItem>

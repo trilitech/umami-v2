@@ -16,22 +16,22 @@ const TokenTile: React.FC<{ token: FATokenBalance; amount: string } & FlexProps>
   const symbol = tokenSymbolSafe(token);
   return (
     <Flex
-      data-testid="token-tile"
       alignItems="center"
-      w="400px"
-      p="15px"
-      borderRadius="4px"
-      bg={colors.gray[800]}
       justifyContent="start"
+      width="400px"
+      padding="15px"
+      background={colors.gray[800]}
+      borderRadius="4px"
+      data-testid="token-tile"
       {...flexProps}
     >
       <Flex alignItems="center">
-        <AspectRatio w="30px" h="30px" ratio={1} mr="12px">
+        <AspectRatio width="30px" height="30px" marginRight="12px" ratio={1}>
           <TokenIcon contract={contract} p="6.25px" bg={colors.gray[500]} borderRadius="4px" />
         </AspectRatio>
       </Flex>
       <PrettyNumber number={prettyAmount} />
-      <Text ml="4px" size="sm">
+      <Text marginLeft="4px" size="sm">
         {symbol}
       </Text>
     </Flex>

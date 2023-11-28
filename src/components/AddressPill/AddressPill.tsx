@@ -64,11 +64,11 @@ const AddressPill: React.FC<
   }
 
   return (
-    <Box data-testid="address-pill" maxW="max-content" {...rest}>
+    <Box maxWidth="max-content" data-testid="address-pill" {...rest}>
       <Flex
         ref={ref}
         alignItems="center"
-        bg={bgColor}
+        background={bgColor}
         borderRadius="full"
         onMouseEnter={() => {
           setMouseHover(true);
@@ -87,9 +87,9 @@ const AddressPill: React.FC<
           />
         )}
 
-        <Popover isOpen={isOpen} onOpen={onClickAddress} autoFocus={false}>
+        <Popover autoFocus={false} isOpen={isOpen} onOpen={onClickAddress}>
           <PopoverTrigger>
-            <Button variant="unstyled" h="24px" _focus={{ boxShadow: "none" }}>
+            <Button height="24px" _focus={{ boxShadow: "none" }} variant="unstyled">
               <AddressPillText
                 data-testid="address-pill-text"
                 alias={isAlias && rawAddress.alias ? rawAddress.alias : undefined}
@@ -102,10 +102,10 @@ const AddressPill: React.FC<
               />
             </Button>
           </PopoverTrigger>
-          <PopoverContent bg="white" maxW="max-content">
-            <PopoverArrow bg="white" />
+          <PopoverContent maxWidth="max-content" background="white">
+            <PopoverArrow background="white" />
             <PopoverBody>
-              <Text size="sm" color="black">
+              <Text color="black" size="sm">
                 Copied!
               </Text>
             </PopoverBody>

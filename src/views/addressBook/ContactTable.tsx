@@ -12,7 +12,7 @@ import { DeleteContactModal, UpsertContactModal } from "../../components/Contact
 const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
   const { openWith } = useContext(DynamicModalContext);
   return (
-    <Box bg={colors.gray[900]} overflow="auto" borderRadius="8px" px="30px">
+    <Box overflow="auto" background={colors.gray[900]} borderRadius="8px" paddingX="30px">
       <TableContainer overflowX="unset" overflowY="unset">
         <Table>
           <Tbody>
@@ -20,13 +20,13 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
               const rowBorderColor = i === contacts.length - 1 ? "transparent" : colors.gray[700];
               return (
                 <Tr key={contact.pkh} data-testid="contact-row">
-                  <Td data-testid="contact-row-name" borderColor={rowBorderColor} px="0">
+                  <Td borderColor={rowBorderColor} data-testid="contact-row-name" paddingX="0">
                     <Flex alignItems="center">
-                      <Box w="150px" mr="40px">
+                      <Box width="150px" marginRight="40px">
                         <Text
+                          overflow="hidden"
                           fontWeight={600}
                           whiteSpace="nowrap"
-                          overflow="hidden"
                           textOverflow="ellipsis"
                         >
                           {contact.name}
@@ -41,7 +41,7 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                       />
                     </Flex>
                   </Td>
-                  <Td borderColor={rowBorderColor} px="0">
+                  <Td borderColor={rowBorderColor} paddingX="0">
                     <Flex justifyContent="end">
                       <SendButton
                         mr="20px"

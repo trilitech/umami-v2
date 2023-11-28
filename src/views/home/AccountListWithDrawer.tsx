@@ -48,11 +48,11 @@ const AccountListWithDrawer: React.FC = () => {
     <>
       <AccountsList onOpen={onOpen} selected={selected} onSelect={setSelected} />
       <Drawer
+        autoFocus={false}
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
-        placement="right"
         onClose={closeDrawer}
-        autoFocus={false}
+        placement="right"
       >
         <DrawerOverlay />
         <DrawerContent>

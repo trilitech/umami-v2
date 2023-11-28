@@ -27,7 +27,13 @@ const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeacon
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />
 
-            <Flex mt="12px" mb="24px" px="4px" alignItems="center" justifyContent="end">
+            <Flex
+              alignItems="center"
+              justifyContent="end"
+              marginTop="12px"
+              marginBottom="24px"
+              paddingX="4px"
+            >
               <Flex alignItems="center">
                 <SignPageFee fee={fee} />
               </Flex>

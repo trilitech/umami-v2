@@ -24,18 +24,18 @@ export const ShowSeedphrase = ({
               <Flex
                 key={index}
                 width="126px"
+                padding="6px"
                 border="1px dashed"
                 borderColor={colors.gray[500]}
                 borderRadius="4px"
-                p="6px"
               >
                 <Heading
                   width="18px"
-                  textAlign="right"
-                  mr="10px"
-                  pt="2px"
-                  size="sm"
+                  marginRight="10px"
+                  paddingTop="2px"
                   color={colors.gray[450]}
+                  textAlign="right"
+                  size="sm"
                 >
                   {index + 1}
                 </Heading>
@@ -45,12 +45,12 @@ export const ShowSeedphrase = ({
           })}
         </SimpleGrid>
         <Button
-          w="100%"
-          size="lg"
-          mt="20px"
+          width="100%"
+          marginTop="20px"
           onClick={_ => {
             goToStep({ type: StepType.verifySeedphrase, account });
           }}
+          size="lg"
         >
           OK, I've recorded it
         </Button>

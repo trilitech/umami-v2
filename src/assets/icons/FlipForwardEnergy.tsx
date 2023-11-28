@@ -5,10 +5,10 @@ const FlipForwardEnergy: React.FC<IconProps> = props => {
     <Icon
       width="18px"
       height="18px"
-      viewBox="0 0 18 18"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       stroke="black"
+      viewBox="0 0 18 18"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path

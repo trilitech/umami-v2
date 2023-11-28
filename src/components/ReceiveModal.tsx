@@ -18,21 +18,21 @@ export const ReceiveModal: FC<{
         subTitle="You can receive tez or other digital assets by scanning or sharing this QR code"
       />
       <ModalBody>
-        <Flex alignItems="center" direction="column" justifyContent="space-between">
-          <Box borderRadius="8px" bg="white" p="8px">
+        <Flex alignItems="center" justifyContent="space-between" flexDirection="column">
+          <Box padding="8px" background="white" borderRadius="8px">
             <QRCode value={pkh} size={232} />
           </Box>
         </Flex>
       </ModalBody>
 
       <ModalFooter>
-        <Box w="100%">
+        <Box width="100%">
           {account && (
             <Heading textAlign="center" marginY={2}>
               {account.label}
             </Heading>
           )}
-          <Flex justifyContent="center" w="100%">
+          <Flex justifyContent="center" width="100%">
             <AddressPill address={parsePkh(pkh)} mode={{ type: "no_icons" }} />
           </Flex>
         </Box>

@@ -20,7 +20,7 @@ const SignPage: React.FC<SignPageProps> = props => {
             <FormLabel>From</FormLabel>
             <AddressTile address={signer.address} />
 
-            <Flex mt="12px" alignItems="center" justifyContent="end" px="4px">
+            <Flex alignItems="center" justifyContent="end" marginTop="12px" paddingX="4px">
               <SignPageFee fee={fee} />
             </Flex>
 

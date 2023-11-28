@@ -61,8 +61,8 @@ const RestoreBackupFile = () => {
               <FormLabel>Upload File</FormLabel>
               <Flex>
                 <Input
+                  padding="2px"
                   data-testid="file-input"
-                  p="2px"
                   {...register("file", { required: "File is required" })}
                   accept=".json"
                   type="file"
@@ -73,7 +73,7 @@ const RestoreBackupFile = () => {
                 <FormErrorMessage data-testid="file">{errors.file.message}</FormErrorMessage>
               )}
             </FormControl>
-            <FormControl isInvalid={!!errors.password} mt="24px">
+            <FormControl marginTop="24px" isInvalid={!!errors.password}>
               <PasswordInput
                 inputName="password"
                 label="Your password"
@@ -85,7 +85,7 @@ const RestoreBackupFile = () => {
                 </FormErrorMessage>
               )}
             </FormControl>
-            <Button type="submit" w="100%" size="lg" isDisabled={!isValid} mt="32px">
+            <Button width="100%" marginTop="32px" isDisabled={!isValid} size="lg" type="submit">
               Import Wallet
             </Button>
           </ModalBody>

@@ -6,7 +6,13 @@ import { PrettyNumber } from "../PrettyNumber";
 
 export const TezTile: React.FC<{ mutezAmount: string }> = ({ mutezAmount }) => {
   return (
-    <Flex h="60px" borderRadius="4px" bg={colors.gray[800]} alignItems="center" p="15px">
+    <Flex
+      alignItems="center"
+      height="60px"
+      padding="15px"
+      background={colors.gray[800]}
+      borderRadius="4px"
+    >
       <TezIcon mr="12px" />
       <Flex alignItems="end">
         <PrettyNumber number={prettyTezAmount(mutezAmount)} />

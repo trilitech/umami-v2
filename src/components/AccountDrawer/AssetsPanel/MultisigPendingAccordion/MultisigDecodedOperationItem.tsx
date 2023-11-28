@@ -13,13 +13,13 @@ const MultisigDecodedOperationItem: React.FC<{
   switch (operation.type) {
     case "delegation":
       return (
-        <Box marginY={6} pl={5} m={1} data-testid="decoded-item-delegate">
+        <Box margin={1} paddingLeft={5} data-testid="decoded-item-delegate" marginY={6}>
           Delegate to <AddressPill address={operation.recipient} />
         </Box>
       );
     case "undelegation":
       return (
-        <Box marginY={6} pl={5} m={1} data-testid="decoded-item-undelegate">
+        <Box margin={1} paddingLeft={5} data-testid="decoded-item-undelegate" marginY={6}>
           End Delegation
         </Box>
       );
@@ -29,8 +29,8 @@ const MultisigDecodedOperationItem: React.FC<{
       return (
         <Box marginY={6}>
           <MultisigOperationAmount operation={operation} />
-          <Flex alignItems="center" pl={5} m={1}>
-            <Heading color={colors.gray[400]} size="sm" mr={2}>
+          <Flex alignItems="center" margin={1} paddingLeft={5}>
+            <Heading marginRight={2} color={colors.gray[400]} size="sm">
               Send to :
             </Heading>
             <AddressPill address={operation.recipient} />
@@ -52,8 +52,8 @@ const MultisigOperationAmount: React.FC<{
     case "tez":
       return (
         <Flex alignItems="center" data-testid="decoded-tez-amount">
-          <Icon h={5} w={5} as={FiArrowUpRight} color={colors.gray[400]}></Icon>
-          <Text textAlign="center" ml={1}>
+          <Icon as={FiArrowUpRight} width={5} height={5} color={colors.gray[400]}></Icon>
+          <Text marginLeft={1} textAlign="center">
             -{prettyTezAmount(operation.amount)}
           </Text>
         </Flex>
@@ -71,13 +71,13 @@ const MultisigOperationAmount: React.FC<{
 
       return (
         <Flex alignItems="center" data-testid="decoded-fa-amount">
-          <Icon h={5} w={5} as={FiArrowUpRight} color={colors.gray[400]}></Icon>
+          <Icon as={FiArrowUpRight} width={5} height={5} color={colors.gray[400]}></Icon>
           {isNFT ? (
-            <Text textAlign="center" ml={1}>
+            <Text marginLeft={1} textAlign="center">
               {operation.amount} {name}
             </Text>
           ) : (
-            <Text textAlign="center" ml={1}>
+            <Text marginLeft={1} textAlign="center">
               -{tokenPrettyAmount(operation.amount, asset, { showSymbol: true })}
             </Text>
           )}

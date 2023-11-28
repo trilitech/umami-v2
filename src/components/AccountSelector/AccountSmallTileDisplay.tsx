@@ -24,13 +24,13 @@ export const AccountSmallTileDisplay = ({
   label?: string;
   balance: string | undefined;
 } & FlexProps) => (
-  <Flex data-testid="account-small-tile" alignItems="space-between" cursor="pointer" {...flexProps}>
+  <Flex alignItems="space-between" cursor="pointer" data-testid="account-small-tile" {...flexProps}>
     <Identicon height="30px" identiconSize={20} p="5px" address={pkh} mr="12px" />
-    <Flex height="20px" alignSelf="center">
-      <Heading size="sm" mr="10px">
+    <Flex alignSelf="center" height="20px">
+      <Heading marginRight="10px" size="sm">
         {label}
       </Heading>
-      <Text size="xs" color={colors.gray[300]} mr="35px">
+      <Text marginRight="35px" color={colors.gray[300]} size="xs">
         {formatPkh(pkh)}
       </Text>
       {balance && <Heading size="sm">{prettyTezAmount(balance)}</Heading>}

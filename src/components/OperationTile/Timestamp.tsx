@@ -8,7 +8,7 @@ export const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timesta
   }
 
   return (
-    <Text data-testid="timestamp" size="sm" color={colors.gray[400]}>
+    <Text color={colors.gray[400]} data-testid="timestamp" size="sm">
       {getDisplayTimestamp(timestamp)}
     </Text>
   );

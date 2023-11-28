@@ -25,8 +25,8 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
   const sign = isOutgoing ? "-" : "+";
 
   return (
-    <Flex direction="column" data-testid="operation-tile-transaction" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
+    <Flex flexDirection="column" width="100%" data-testid="operation-tile-transaction">
+      <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
           <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
           <TzktLink
@@ -36,7 +36,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
             data-testid="title"
             color={titleColor}
           >
-            <Text fontWeight="600" color={titleColor}>
+            <Text color={titleColor} fontWeight="600">
               {sign} {amount}
             </Text>
           </TzktLink>
@@ -50,8 +50,8 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
         <Flex justifyContent="space-between">
           <Flex>
             {(showToAddress || showAnyAddress) && (
-              <Flex mr="15px" data-testid="to">
-                <Text mr="6px" color={colors.gray[450]}>
+              <Flex marginRight="15px" data-testid="to">
+                <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
                 <AddressPill address={parsePkh(operation.target.address)} />
@@ -59,7 +59,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
             )}
             {showFromAddress && (
               <Flex data-testid="from">
-                <Text mr="6px" color={colors.gray[450]}>
+                <Text marginRight="6px" color={colors.gray[450]}>
                   From:
                 </Text>
                 <AddressPill address={parsePkh(operation.sender.address)} />

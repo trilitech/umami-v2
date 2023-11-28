@@ -45,33 +45,39 @@ const OffboardingForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalCloseButton />
 
-        <ModalHeader textAlign="center" marginBottom="12px">
+        <ModalHeader marginBottom="12px" textAlign="center">
           <Box>
             <WarningIcon w={10} h={10} mb={5} />
             <Heading>Off-board Wallet</Heading>
           </Box>
         </ModalHeader>
         <Box>
-          <Text textAlign="center" color={colors.gray[400]} fontWeight="bold" size="sm" mb={2}>
+          <Text
+            marginBottom={2}
+            color={colors.gray[400]}
+            fontWeight="bold"
+            textAlign="center"
+            size="sm"
+          >
             This will permanently remove any data from this computer.
           </Text>
-          <Text textAlign="center" color={colors.gray[400]} size="sm">
+          <Text color={colors.gray[400]} textAlign="center" size="sm">
             Please enter « {CONFIRMATION_CODE} » to confirm. The accounts are still available to be
             imported in the future; in order to regain access to your accounts, please make sure
             that you keep the recovery phrase.
           </Text>
           <ModalBody>
-            <Divider marginY={5} borderColor={colors.gray[700]} />
+            <Divider borderColor={colors.gray[700]} marginY={5} />
             <FormControl isInvalid={!!errors.check}>
               <Checkbox {...register("check", { required: true })}>
-                <Text ml={2} fontWeight="bold">
+                <Text marginLeft={2} fontWeight="bold">
                   I have read the warning and I am certain I want to remove my private keys locally.
                   I also made sure to keep my recovery phrase.
                 </Text>
               </Checkbox>
             </FormControl>
-            <Divider marginY={5} borderColor={colors.gray[700]} />
-            <FormControl paddingY={5} isInvalid={!!errors.confirmationCode}>
+            <Divider borderColor={colors.gray[700]} marginY={5} />
+            <FormControl isInvalid={!!errors.confirmationCode} paddingY={5}>
               <Input
                 type="text"
                 {...register("confirmationCode", {
@@ -91,11 +97,11 @@ const OffboardingForm = () => {
         <ModalFooter padding={0}>
           <Button
             width="100%"
+            marginBottom={2}
+            isDisabled={!isValid}
             size="lg"
             type="submit"
-            isDisabled={!isValid}
             variant="warning"
-            mb={2}
           >
             Confirm
           </Button>

@@ -66,7 +66,7 @@ const HelpLinkRow: React.FC<{
 
           <Flex alignItems="center">
             {linkDescription && (
-              <Text size="sm" mr="4px" color={colors.gray[400]}>
+              <Text marginRight="4px" color={colors.gray[400]} size="sm">
                 {linkDescription}
               </Text>
             )}
@@ -83,10 +83,10 @@ const HelpCard: React.FC<{
   children: React.ReactNode;
 }> = ({ title, children }) => {
   return (
-    <Box marginY="10px" data-testid="help-card">
+    <Box data-testid="help-card" marginY="10px">
       <Flex>
-        <Box w="550px">
-          <Heading size="lg" mb="16px">
+        <Box width="550px">
+          <Heading marginBottom="16px" size="lg">
             {title}
           </Heading>
           {children}

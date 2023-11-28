@@ -21,56 +21,56 @@ const NFTCard: React.FC<{
 
   return (
     <Card
+      width="274px"
+      borderRadius="8px"
       cursor="pointer"
       data-testid="nft-card"
-      borderRadius="8px"
       onClick={onClick}
-      width="274px"
     >
       <CardBody
-        borderRadius="8px"
-        bg={colors.gray[900]}
+        padding="16px"
+        background={colors.gray[900]}
         border="1px solid"
         borderColor={isSelected ? colors.orangeL : "transparent"}
+        borderRadius="8px"
         _hover={{ bg: colors.gray[700], borderColor: `${colors.gray[500]}` }}
-        p="16px"
       >
         <Box>
           <Image
-            data-testid="nft-image"
-            objectFit="contain"
             width="242px"
             height="242px"
-            src={url}
+            objectFit="contain"
+            data-testid="nft-image"
             fallbackSrc={fallbackUrl}
+            src={url}
           />
         </Box>
         {/* TODO: make a separate component to be shared between this and the drawer NFT card */}
         {Number(nft.balance) > 1 && (
           <Text
-            data-testid="nft-owned-count"
-            borderRadius="full"
-            height="24px"
-            px="8px"
-            paddingTop="1px"
-            backgroundColor="rgba(33, 33, 33, 0.75)"
-            display="inline"
             position="absolute"
+            display="inline"
+            height="24px"
             marginTop="-36px"
             marginLeft="10px"
+            paddingTop="1px"
             fontSize="14px"
+            borderRadius="full"
+            backgroundColor="rgba(33, 33, 33, 0.75)"
+            data-testid="nft-owned-count"
+            paddingX="8px"
           >
             {"x" + nft.balance}
           </Text>
         )}
         <Box overflow="hidden">
           <Heading
-            mt="15px"
-            mb="8px"
-            whiteSpace="nowrap"
             overflow="hidden"
-            textOverflow="ellipsis"
+            marginTop="15px"
+            marginBottom="8px"
             fontSize="sm"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
           >
             {name}
           </Heading>

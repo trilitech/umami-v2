@@ -6,35 +6,35 @@ import LinkIcon from "../../../assets/icons/Link";
 const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   return (
     <ModalContentWrapper icon={<LinkIcon />} title="Connect or Import Account">
-      <VStack w="100%" spacing="16px">
-        <Button w="100%" size="lg" onClick={_ => goToStep({ type: StepType.restoreMnemonic })}>
+      <VStack width="100%" spacing="16px">
+        <Button width="100%" onClick={_ => goToStep({ type: StepType.restoreMnemonic })} size="lg">
           Import with Seed Phrase
         </Button>
         <Button
-          w="100%"
+          width="100%"
+          onClick={_ => goToStep({ type: StepType.restoreSecretKey })}
           size="lg"
           variant="tertiary"
-          onClick={_ => goToStep({ type: StepType.restoreSecretKey })}
         >
           Import with a Secret Key
         </Button>
         <Button
-          variant="tertiary"
-          w="100%"
-          size="lg"
+          width="100%"
           onClick={_ => {
             goToStep({ type: StepType.restoreBackup });
           }}
+          size="lg"
+          variant="tertiary"
         >
           Restore from Backup
         </Button>
         <Button
-          w="100%"
-          size="lg"
-          variant="tertiary"
+          width="100%"
           onClick={_ => {
             goToStep({ type: StepType.nameAccount, account: { type: "ledger" } });
           }}
+          size="lg"
+          variant="tertiary"
         >
           Connect ledger
         </Button>

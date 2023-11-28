@@ -15,7 +15,7 @@ const TokensPage = () => {
     .filter(([, tokens]) => tokens.length > 0);
 
   return (
-    <Flex direction="column" height="100%">
+    <Flex flexDirection="column" height="100%">
       <TopBar title="Tokens" />
       {accountsFilter}
       {accountsWithTokens.length === 0 ? (

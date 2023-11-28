@@ -69,7 +69,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
                 isDisabled
               />
             </FormControl>
-            <FormLabel mt="24px">Baker</FormLabel>
+            <FormLabel marginTop="24px">Baker</FormLabel>
             <BakerSmallTile pkh={baker} />
           </ModalBody>
           <ModalFooter>

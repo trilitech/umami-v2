@@ -6,15 +6,15 @@ export const DrawerTopButtons: React.FC<{
   onClose: () => void;
 }> = ({ onClose }) => {
   return (
-    <Flex justifyContent="flex-end" pb="30px" cursor="pointer">
+    <Flex justifyContent="flex-end" paddingBottom="30px" cursor="pointer">
       <CloseDrawerButton onClose={onClose} />
     </Flex>
   );
 };
 
 export const CloseDrawerButton = ({ onClose }: { onClose: () => void }) => (
-  <Button variant="CTAWithIcon" onClick={onClose}>
+  <Button onClick={onClose} variant="CTAWithIcon">
     <ExitArrowIcon stroke="currentcolor" />
-    <Text ml="4px">Close</Text>
+    <Text marginLeft="4px">Close</Text>
   </Button>
 );

@@ -35,24 +35,24 @@ const Notice: React.FC<{
           })}
         </OrderedList>
         <Button
-          w="100%"
-          size="lg"
-          mt="28px"
+          width="100%"
+          marginTop="28px"
           onClick={() =>
             goToStep({
               type: StepType.showSeedphrase,
               account: { type: "mnemonic", mnemonic: generate24WordMnemonic() },
             })
           }
+          size="lg"
         >
           I understand
         </Button>
         <Button
-          w="100%"
-          size="lg"
-          mt="16px"
-          variant="tertiary"
+          width="100%"
+          marginTop="16px"
           onClick={() => goToStep({ type: StepType.restoreMnemonic })}
+          size="lg"
+          variant="tertiary"
         >
           I already have a Seed Phrase
         </Button>

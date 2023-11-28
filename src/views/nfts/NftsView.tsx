@@ -43,7 +43,7 @@ const NFTsViewBase = () => {
   const drawerNFT = ownerPkh && get(nfts, [ownerPkh], []).find(nft => fullId(nft) === nftId);
 
   return (
-    <Flex direction="column" height="100%">
+    <Flex flexDirection="column" height="100%">
       <TopBar title="NFTs" subtitle={`(${totalNFTs})`} />
       {accountsFilter}
 
@@ -61,11 +61,11 @@ const NFTsViewBase = () => {
           </Box>
 
           <Drawer
-            blockScrollOnMount={!isDynamicModalOpen}
-            placement="right"
-            onClose={openNFTsPage}
-            isOpen={!!drawerNFT}
             autoFocus={false}
+            blockScrollOnMount={!isDynamicModalOpen}
+            isOpen={!!drawerNFT}
+            onClose={openNFTsPage}
+            placement="right"
           >
             <DrawerOverlay />
             <DrawerContent>

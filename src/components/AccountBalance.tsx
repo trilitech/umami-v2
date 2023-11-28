@@ -19,7 +19,7 @@ export const AccountBalance: React.FC<{ address: RawPkh; size?: "md" | "lg" } & 
   const balanceInTez = prettyTezAmount(balance);
 
   return (
-    <Box data-testid="account-balance" textAlign="right" overflow="hidden" {...props}>
+    <Box overflow="hidden" textAlign="right" data-testid="account-balance" {...props}>
       <PrettyNumber number={balanceInTez} size={size} />
     </Box>
   );

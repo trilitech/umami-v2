@@ -39,17 +39,17 @@ const UnrecognizedOperationAccordion: React.FC<{ unrecoginizedRawActions: string
   unrecoginizedRawActions,
 }) => {
   return (
-    <Accordion allowMultiple={true} w="70%" mb={2}>
-      <AccordionItem bg="umami.gray.800" border="none" borderRadius="8px" mb="2">
+    <Accordion width="70%" marginBottom={2} allowMultiple={true}>
+      <AccordionItem marginBottom="2" background="umami.gray.800" border="none" borderRadius="8px">
         <h2>
           <AccordionButton>
-            <Box as="span" pl={1} flex="1" textAlign="left">
+            <Box as="span" flex="1" paddingLeft={1} textAlign="left">
               Unrecognized operation
             </Box>
             <AccordionIcon />
           </AccordionButton>
         </h2>
-        <AccordionPanel pb={3} h="400px" overflowY="scroll">
+        <AccordionPanel overflowY="scroll" height="400px" paddingBottom={3}>
           <JsValueWrap value={JSON.parse(unrecoginizedRawActions)} space={1} />
         </AccordionPanel>
       </AccordionItem>

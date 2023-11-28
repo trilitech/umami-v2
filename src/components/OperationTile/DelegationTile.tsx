@@ -17,8 +17,8 @@ export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ o
   const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
-    <Flex direction="column" data-testid="operation-tile-delegation" w="100%">
-      <Flex justifyContent="space-between" mb="10px">
+    <Flex flexDirection="column" width="100%" data-testid="operation-tile-delegation">
+      <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
           <BakerIcon stroke={colors.gray[450]} mr="8px" />
           <TzktLink data-testid="title" hash={operation.hash} counter={operation.counter} mr="8px">
@@ -34,8 +34,8 @@ export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ o
         <Flex justifyContent="space-between">
           <Flex>
             {isDelegating && (
-              <Flex mr="15px" data-testid="to">
-                <Text mr="6px" color={colors.gray[450]}>
+              <Flex marginRight="15px" data-testid="to">
+                <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
                 <AddressPill address={operation.newDelegate as TzktAlias} />
@@ -43,7 +43,7 @@ export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ o
             )}
             {showFromAddress && (
               <Flex data-testid="from">
-                <Text mr="6px" color={colors.gray[450]}>
+                <Text marginRight="6px" color={colors.gray[450]}>
                   From:
                 </Text>
                 <AddressPill address={operation.sender} />

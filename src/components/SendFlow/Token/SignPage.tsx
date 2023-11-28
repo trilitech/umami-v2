@@ -29,7 +29,13 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
           <ModalBody>
             <TokenTile token={token} amount={amount} />
 
-            <Flex mt="12px" mb="24px" alignItems="center" justifyContent="end" px="4px">
+            <Flex
+              alignItems="center"
+              justifyContent="end"
+              marginTop="12px"
+              marginBottom="24px"
+              paddingX="4px"
+            >
               <Flex>
                 <SignPageFee fee={fee} />
               </Flex>

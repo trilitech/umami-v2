@@ -32,7 +32,7 @@ const NameAccountDisplay = ({
           />
         </FormControl>
 
-        <Button mt="32px" w="100%" size="lg" type="submit">
+        <Button width="100%" marginTop="32px" size="lg" type="submit">
           Continue
         </Button>
       </form>
