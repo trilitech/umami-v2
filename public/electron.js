@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, shell } = require("electron");
+const { app, BrowserWindow, shell, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 const { autoUpdater } = require("electron-updater");
@@ -26,17 +26,6 @@ try {
 } catch (e) {
   console.log(e);
 }
-
-/**
- * Send event to UI when app update is ready to be installed.
- *
- * If the update installation won't be triggered by the user,
- * it will be applied the next time the app starts.
- */
-app.on("update-downloaded", releaseName => {
-  console.log(`Umami update ${releaseName} downloaded and ready to be installed`, url);
-  mainWindow.webContents.send("app-update-downloaded");
-});
 
 // Enable experimental to activate Web USB support
 app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
@@ -178,6 +167,14 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
-  // Listen to install-app-update event from UI.
+
+  // Send event to UI when app update is ready to be installed.
+  // If the update installation won't be triggered by the user, it will be applied the next time the app starts.
+  autoUpdater.on("update-downloaded", event => {
+    console.log(`Umami update ${event.version} downloaded and ready to be installed`, url);
+    return mainWindow.webContents.send("app-update-downloaded");
+  });
+
+  // Listen to install-app-update event from UI, start update on getting the event.
   ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
 });

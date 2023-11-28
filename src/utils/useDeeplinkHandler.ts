@@ -47,7 +47,7 @@ export const useDeeplinkHandler = () => {
     }
 
     return () => {
-      // TODO cleanup deeplink listner
+      // TODO cleanup deeplink listener
     };
   }, []);
 };

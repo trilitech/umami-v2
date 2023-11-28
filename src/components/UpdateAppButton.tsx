@@ -1,28 +1,32 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import FlipForwardEnergy from "../assets/icons/FlipForwardEnergy";
 import colors from "../style/colors";
+import { useState, useEffect } from "react";
 
 /**
  * Button component to allow users see and download app update when available.
  */
 export const UpdateAppButton = () => {
+  const [isAppUpdateAvailable, setIsAppUpdateAvailable] = useState(false);
   const internalWindows = window as any;
-  let isUpdateAvailable = false;
 
   // Listen to event from electron on having update available.
-  if (internalWindows && internalWindows.electronAPI) {
-    internalWindows.electronAPI.onAppUpdateDownloaded(() => (isUpdateAvailable = true));
-  }
+  useEffect(() => {
+    if (internalWindows && internalWindows.electronAPI) {
+      internalWindows.electronAPI.onAppUpdateDownloaded((_event: any) =>
+        setIsAppUpdateAvailable(true)
+      );
+    }
+  }, [internalWindows]);
 
   const startUpdate = () => {
     if (internalWindows && internalWindows.electronAPI) {
+      // TODO: Show a toast "app update is started" before sending an event.
       internalWindows.electronAPI.installAppUpdateAndQuit();
     }
   };
 
-  // TODO: listen to event from electron on having update available.
-  // If no update available, return null.
-  return isUpdateAvailable ? (
+  return isAppUpdateAvailable ? (
     <Box marginTop="24px" marginBottom="6px">
       <Button
         color={colors.black}
