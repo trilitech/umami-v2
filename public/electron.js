@@ -168,6 +168,13 @@ app.whenReady().then(() => {
     }
   });
 
+  // Send event to UI when app update is ready to be installed.
+  // If the update installation won't be triggered by the user, it will be applied the next time the app starts.
+  autoUpdater.on("update-downloaded", event => {
+    console.log(`Umami update ${event.version} downloaded and ready to be installed`, url);
+    return mainWindow.webContents.send("app-update-downloaded");
+  });
+
   // Listen to install-app-update event from UI, start update on getting the event.
   ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
 });
