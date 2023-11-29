@@ -152,3 +152,6 @@ export const refetch = async (page: Page) => {
     }, 100);
   });
 };
+
+// Generates account address string from public key (displayed on AccountTile)
+export const toDisplayedPkh = (pkh: string) => pkh.slice(0, 5) + "..." + pkh.slice(-5);
