@@ -1,23 +1,22 @@
 import { Image, Card, CardBody, Heading, Text, Box, Center } from "@chakra-ui/react";
-import { NFTBalance } from "../../types/TokenBalance";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { fullId, thumbnailUri } from "../../types/Token";
 import colors from "../../style/colors";
 import AddressPill from "../../components/AddressPill/AddressPill";
-import { RawPkh, parsePkh } from "../../types/Address";
+import { parsePkh } from "../../types/Address";
 import { useLocation } from "react-router-dom";
+import { NFTWithOwner } from "./NFTGallery";
 
 const NFTCard: React.FC<{
-  owner: RawPkh;
-  nft: NFTBalance;
+  nft: NFTWithOwner;
   onClick: () => void;
-}> = ({ owner, nft, onClick }) => {
+}> = ({ nft, onClick }) => {
   const url = getIPFSurl(thumbnailUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const name = nft.metadata.name;
   const currentLocation = useLocation();
 
-  const isSelected = currentLocation.pathname.includes(`${owner}/${fullId(nft)}`);
+  const isSelected = currentLocation.pathname.includes(`${nft.owner}/${fullId(nft)}`);
 
   return (
     <Card
@@ -78,7 +77,7 @@ const NFTCard: React.FC<{
           </Heading>
         </Box>
 
-        <AddressPill address={parsePkh(owner)} />
+        <AddressPill address={parsePkh(nft.owner)} />
       </CardBody>
     </Card>
   );

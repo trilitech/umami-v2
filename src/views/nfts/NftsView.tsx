@@ -54,8 +54,8 @@ const NFTsViewBase = () => {
           <Box overflowY="scroll">
             <NFTGallery
               nftsByOwner={selectedNFTs}
-              onSelect={(owner, nft) => {
-                navigate(`/nfts/${owner}/${fullId(nft)}`);
+              onSelect={nft => {
+                navigate(`/nfts/${nft.owner}/${fullId(nft)}`);
               }}
             />
           </Box>
