@@ -12,7 +12,7 @@ import {
 } from "../onSubmitFormActionHooks";
 import { Undelegation } from "../../../types/Operation";
 import FormPageHeader from "../FormPageHeader";
-import { BakerSmallTile } from "../BakerSmallTile";
+import AddressTile from "../../AddressTile/AddressTile";
 
 export type FormValues = {
   sender: RawPkh;
@@ -27,7 +27,7 @@ const toOperation = (formValues: FormValues): Undelegation => ({
 const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
   const { sender } = props;
   // it must always be passed in from the parent component
-  const baker = props.form?.baker as string;
+  const baker = props.form?.baker;
 
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
@@ -70,7 +70,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
               />
             </FormControl>
             <FormLabel marginTop="24px">Baker</FormLabel>
-            <BakerSmallTile pkh={baker} />
+            {baker && <AddressTile address={parsePkh(baker)} />}
           </ModalBody>
           <ModalFooter>
             <FormSubmitButtons

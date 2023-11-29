@@ -33,13 +33,13 @@ describe("<Form />", () => {
       render(fixture({ sender: mockImplicitAccount(0) }));
 
       await waitFor(() => {
-        expect(screen.getByTestId("address-tile")).toHaveTextContent(
+        expect(screen.getAllByTestId("address-tile")[0]).toHaveTextContent(
           mockImplicitAccount(0).address.pkh
         );
       });
     });
 
-    it("shows sender baker's tile", async () => {
+    it("shows address tile for baker", async () => {
       const sender = mockImplicitAccount(0);
       const baker = mockImplicitAccount(1);
       store.dispatch(
@@ -59,7 +59,7 @@ describe("<Form />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByTestId("baker-tile")).toHaveTextContent("baker1");
+        expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
       });
     });
   });

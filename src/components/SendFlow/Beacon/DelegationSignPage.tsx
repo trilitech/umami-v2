@@ -6,7 +6,6 @@ import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
 import { FormProvider } from "react-hook-form";
 import { BeaconSignPageProps } from "./BeaconSignPage";
-import { BakerSmallTile } from "../BakerSmallTile";
 import SignButton from "../SignButton";
 
 const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
@@ -40,7 +39,7 @@ const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeacon
             </Flex>
 
             <FormLabel>To</FormLabel>
-            <BakerSmallTile pkh={recipient.pkh} />
+            <AddressTile address={recipient} />
           </ModalBody>
           <ModalFooter>
             <SignButton
