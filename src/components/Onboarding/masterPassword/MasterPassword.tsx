@@ -41,7 +41,7 @@ export const MasterPassword = ({
             account.derivationPath
           );
       }
-      toast({ title: "Successful account restore", status: "success" });
+      toast({ title: "Account successfully created!", status: "success" });
       onClose();
     });
 

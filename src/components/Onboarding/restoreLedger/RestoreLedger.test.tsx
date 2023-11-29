@@ -1,12 +1,12 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { RestoreLedger } from "./RestoreLedger";
+import { mockToast } from "../../../mocks/toast";
 import { ReduxStore } from "../../../providers/ReduxStore";
 import { defaultDerivationPathPattern } from "../../../utils/account/derivationPathUtils";
 import { getPk } from "../../../utils/ledger/pk";
 
 const closeModalMock = jest.fn(() => {});
-
 jest.mock("../../../utils/ledger/pk");
 
 const getPkMock = jest.mocked(getPk);
@@ -24,7 +24,7 @@ const fixture = (closeModal: () => void) => {
   );
 };
 
-describe("<RestoreSeedphrase />", () => {
+describe("<RestoreLedger />", () => {
   test("success", async () => {
     getPkMock.mockResolvedValue({ pk: "test", pkh: "test" });
     render(fixture(closeModalMock));
@@ -33,8 +33,12 @@ describe("<RestoreSeedphrase />", () => {
     });
     fireEvent.click(confirmBtn);
     await waitFor(() => {
-      expect(closeModalMock).toBeCalledTimes(1);
+      expect(mockToast).toHaveBeenCalledWith({
+        title: "Account successfully created!",
+        status: "success",
+      });
     });
+    expect(closeModalMock).toBeCalledTimes(1);
     expect(getPkMock).toBeCalledTimes(1);
   });
 
