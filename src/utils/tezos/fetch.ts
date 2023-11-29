@@ -9,7 +9,7 @@ import {
   OffsetParameter,
   SortParameter,
   accountsGet,
-} from "@tzkt/sdk-api";
+ tokensGetTokenBalances } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
 import axios from "axios";
 import { coincapUrl } from "./consts";
@@ -21,7 +21,6 @@ import Semaphore from "@chriscdn/promise-semaphore";
 import promiseRetry from "promise-retry";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { first, sortBy } from "lodash";
-import { tokensGetTokenBalances } from "@tzkt/sdk-api";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts

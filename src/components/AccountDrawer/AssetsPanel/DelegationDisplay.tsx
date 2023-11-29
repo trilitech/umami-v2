@@ -1,5 +1,5 @@
 import { Box, Button, Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
-import React, { ReactNode } from "react";
+import React, { ReactNode , useContext } from "react";
 import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
 import { Delegation } from "../../../types/Delegation";
@@ -7,7 +7,6 @@ import { useGetDelegationPrettyDisplayValues } from "../../../utils/hooks/delega
 import AddressPill from "../../AddressPill/AddressPill";
 import { NoDelegations } from "../../NoItems";
 import { DynamicModalContext } from "../../DynamicModal";
-import { useContext } from "react";
 import DelegationFormPage from "../../SendFlow/Delegation/FormPage";
 import UndelegationFormPage from "../../SendFlow/Undelegation/FormPage";
 import { useGetOwnedAccount } from "../../../utils/hooks/getAccountDataHooks";

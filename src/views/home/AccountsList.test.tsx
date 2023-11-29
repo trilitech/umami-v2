@@ -5,12 +5,11 @@ import {
   mockMultisigWithOperations,
   mockImplicitAddress,
   mockMnemonicAccount,
-} from "../../mocks/factories";
+ mockPk } from "../../mocks/factories";
 import { formatPkh } from "../../utils/format";
 import store from "../../utils/redux/store";
 import { AccountsList } from "./AccountsList";
 
-import { mockPk } from "../../mocks/factories";
 import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";

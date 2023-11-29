@@ -1,6 +1,5 @@
-import { Button, Divider, Flex } from "@chakra-ui/react";
+import { Button, Divider, Flex , Text, Box } from "@chakra-ui/react";
 import PopoverMenu from "./PopoverMenu";
-import { Text, Box } from "@chakra-ui/react";
 import TrashIcon from "../assets/icons/Trash";
 import PenIcon from "../assets/icons/Pen";
 

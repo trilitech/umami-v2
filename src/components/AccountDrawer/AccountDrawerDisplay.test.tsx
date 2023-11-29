@@ -4,7 +4,7 @@ import {
   mockImplicitAddress,
   mockMnemonicAccount,
   mockNFTToken,
-} from "../../mocks/factories";
+ mockDelegation } from "../../mocks/factories";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import assetsSlice from "../../utils/redux/slices/assetsSlice";
 import store from "../../utils/redux/store";
@@ -29,7 +29,6 @@ import {
   getRelatedTokenTransfers,
 } from "../../utils/tezos";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
-import { mockDelegation } from "../../mocks/factories";
 const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
 const { addMockMnemonicAccounts } = accountsSlice.actions;
 

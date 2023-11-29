@@ -8,9 +8,8 @@ import {
   Button,
   useOutsideClick,
   BoxProps,
-} from "@chakra-ui/react";
+ Flex, Text, Box } from "@chakra-ui/react";
 
-import { Flex, Text, Box } from "@chakra-ui/react";
 import { Address, TzktAlias, parsePkh } from "../../types/Address";
 import colors from "../../style/colors";
 import { useRef, useState } from "react";

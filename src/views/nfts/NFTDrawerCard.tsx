@@ -22,10 +22,9 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { useContext } from "react";
 import SendNFTForm from "../../components/SendFlow/NFT/FormPage";
 import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
-import { artifactUri, mimeType } from "../../types/Token";
+import { artifactUri, mimeType , tokenName } from "../../types/Token";
 import JsValueWrap from "../../components/AccountDrawer/JsValueWrap";
 import colors from "../../style/colors";
-import { tokenName } from "../../types/Token";
 import ReactPlayer from "react-player";
 
 const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
