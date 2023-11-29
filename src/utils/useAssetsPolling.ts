@@ -43,8 +43,7 @@ const updateTezBalances = async (dispatch: AppDispatch, network: Network, addres
 
 const updateTokenBalances = async (dispatch: AppDispatch, network: Network, pkhs: RawPkh[]) => {
   const tokenBalances = await getTokenBalances(pkhs, network);
-  const tokens = tokenBalances.flat().map(b => b.token);
-
+  const tokens = tokenBalances.flat().map(({ token, lastLevel }) => ({ ...token, lastLevel }));
   dispatch(tokensActions.addTokens({ network, tokens }));
   dispatch(assetsActions.updateTokenBalance(tokenBalances.flat()));
 };

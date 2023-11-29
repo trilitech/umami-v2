@@ -63,6 +63,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
         contract: { address: mockContract.pkh },
         standard: "fa2",
         tokenId: "0",
+        lastLevel: undefined,
         metadata: {
           decimals: "2",
           symbol: "mockSymbol",
@@ -110,6 +111,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
         contract: { address: mockContract.pkh },
         standard: "fa2",
         tokenId: "3",
+        lastLevel: undefined,
         metadata: {
           name: "mockNFTName",
           displayUri: "mockDisplayUri",

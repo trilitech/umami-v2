@@ -10,11 +10,21 @@ export const ghostTezzard: NFTBalance = {
   balance: "1",
   displayUri: nftDisplayUri,
   totalSupply: "1",
+  lastLevel: undefined,
   metadata: {
     displayUri: nftDisplayUri,
     name: "Tezzardz #24",
     symbol: "FKR",
   },
+};
+
+export const mockNFTBalance = (
+  contract: string,
+  name: string,
+  lastLevel: number | undefined,
+  id: number | undefined = 1
+) => {
+  return { ...ghostTezzard, contract, metadata: { ...ghostTezzard.metadata, name }, lastLevel, id };
 };
 
 export const ghostFA12: FA12TokenBalance = {

@@ -16,6 +16,7 @@ export const tzBtsc = (owner: Address): RawTokenBalance => {
       tokenId: "0",
       standard: "fa1.2",
       totalSupply: "107615636205",
+      lastLevel: undefined,
       metadata: {
         name: "tzBTC",
         symbol: "tzBTC",
@@ -46,6 +47,7 @@ export const hedgehoge = (owner: Address): RawTokenBalance => {
       tokenId: "0",
       standard: "fa1.2",
       totalSupply: "42000000000000",
+      lastLevel: undefined,
       metadata: {
         icon: "ipfs://QmXL3FZ5kcwXC8mdwkS1iCHS2qVoyg69ugBhU2ap8z1zcs",
         name: "Hedgehoge",
@@ -75,6 +77,7 @@ export const ghostnetFA12: RawTokenBalance = {
     tokenId: "0",
     standard: "fa1.2",
     totalSupply: "13000000",
+    lastLevel: undefined,
   },
   balance: "100000",
   transfersCount: 1,
