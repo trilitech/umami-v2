@@ -8,15 +8,16 @@ import {
 } from "@airgap/beacon-wallet";
 import { Box, useToast } from "@chakra-ui/react";
 import React from "react";
+
+import { PermissionRequestPanel } from "./panels/PermissionRequestPanel";
+import { SignPayloadRequestPanel } from "./panels/SignPayloadRequestPanel";
+import { BeaconSignPage } from "../../../components/SendFlow/Beacon/BeaconSignPage";
+import { ImplicitAccount } from "../../../types/Account";
 import { ImplicitOperations } from "../../../types/AccountOperations";
 import { isValidContractPkh, parseContractPkh, parseImplicitPkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
 import { useGetImplicitAccountSafe } from "../../hooks/getAccountDataHooks";
 import { walletClient } from "../beacon";
-import { PermissionRequestPanel } from "./panels/PermissionRequestPanel";
-import { SignPayloadRequestPanel } from "./panels/SignPayloadRequestPanel";
-import { BeaconSignPage } from "../../../components/SendFlow/Beacon/BeaconSignPage";
-import { ImplicitAccount } from "../../../types/Account";
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;

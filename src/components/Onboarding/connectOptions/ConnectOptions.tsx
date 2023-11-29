@@ -1,7 +1,8 @@
 import { Button, VStack } from "@chakra-ui/react";
+
+import { LinkIcon } from "../../../assets/icons";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
-import { LinkIcon } from "../../../assets/icons";
 
 export const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   return (

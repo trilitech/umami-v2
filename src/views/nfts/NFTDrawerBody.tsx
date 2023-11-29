@@ -1,10 +1,11 @@
 import { Flex } from "@chakra-ui/react";
-import colors from "../../style/colors";
-import { AddressPill } from "../../components/AddressPill/AddressPill";
-import { RawPkh, parsePkh } from "../../types/Address";
-import { CloseDrawerButton } from "../home/DrawerTopButtons";
+
 import { NFTDrawerCard } from "./NFTDrawerCard";
+import { AddressPill } from "../../components/AddressPill/AddressPill";
+import colors from "../../style/colors";
+import { RawPkh, parsePkh } from "../../types/Address";
 import { NFTBalance } from "../../types/TokenBalance";
+import { CloseDrawerButton } from "../home/DrawerTopButtons";
 
 export const NFTDrawerBody = ({
   ownerPkh,

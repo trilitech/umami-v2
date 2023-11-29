@@ -1,13 +1,13 @@
-import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
-import { ContractAddress, ImplicitAddress, parseContractPkh } from "../types/Address";
-import { FA12Transfer, FA2Transfer } from "../types/Operation";
-import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 import {
   FA12_TRANSFER_ARG_TYPES,
   FA2_TRANSFER_ARG_TYPES,
   makeBatchLambda,
   makeLambda,
 } from "./multisigUtils";
+import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
+import { ContractAddress, ImplicitAddress, parseContractPkh } from "../types/Address";
+import { FA12Transfer, FA2Transfer } from "../types/Operation";
+import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 
 jest.unmock("../utils/tezos");
 

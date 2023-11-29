@@ -1,12 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import { ImplicitOperations } from "../../../types/AccountOperations";
-import { BigNumber } from "bignumber.js";
 import { TezosToolkit } from "@taquito/taquito";
+import { BigNumber } from "bignumber.js";
+import { useContext, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { ImplicitOperations } from "../../../types/AccountOperations";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { DynamicModalContext } from "../../DynamicModal";
-import { useForm } from "react-hook-form";
 import { estimate, executeOperations } from "../../../utils/tezos";
+import { DynamicModalContext } from "../../DynamicModal";
 import { SuccessStep } from "../SuccessStep";
 
 export const useSignWithBeacon = (

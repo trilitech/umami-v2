@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
+
 import { EyeIcon, EyeSlashIcon } from "../assets/icons";
 
 const MIN_LENGTH = 8;

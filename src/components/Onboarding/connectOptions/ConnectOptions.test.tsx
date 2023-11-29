@@ -1,6 +1,7 @@
-import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import { ConnectOptions } from "./ConnectOptions";
+import { Step, StepType } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn((step: Step) => {});
 

@@ -11,19 +11,20 @@ import {
 import { get } from "lodash";
 import { useId, useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
+
+import { Suggestions } from "./Suggestions";
+import { ChevronDownIcon, XMark } from "../../assets/icons";
+import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { isAddressValid, parsePkh } from "../../types/Address";
 import { Contact } from "../../types/Contact";
+import { useBakerList } from "../../utils/hooks/assetsHooks";
+import { useContacts } from "../../utils/hooks/contactsHooks";
 import {
   useAllAccounts,
   useGetOwnedSignersForAccount,
   useImplicitAccounts,
 } from "../../utils/hooks/getAccountDataHooks";
-import { useBakerList } from "../../utils/hooks/assetsHooks";
-import { useContacts } from "../../utils/hooks/contactsHooks";
-import { Suggestions } from "./Suggestions";
-import { XMark, ChevronDownIcon } from "../../assets/icons";
-import colors from "../../style/colors";
 import { AddressTile } from "../AddressTile/AddressTile";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)

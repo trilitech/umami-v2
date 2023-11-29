@@ -1,3 +1,5 @@
+import { accountsSlice } from "./accountsSlice";
+import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
@@ -7,16 +9,13 @@ import {
 } from "../../../mocks/factories";
 import { fakeExtraArguments } from "../../../mocks/fakeExtraArgument";
 import { fakeRestoreFromMnemonic } from "../../../mocks/helpers";
-import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { ImplicitAccount, MnemonicAccount } from "../../../types/Account";
-
+import { parseImplicitPkh } from "../../../types/Address";
+import { MAINNET } from "../../../types/Network";
+import { getFingerPrint } from "../../tezos";
 import { store } from "../store";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
-import { getFingerPrint } from "../../tezos";
-import { parseImplicitPkh } from "../../../types/Address";
-import { accountsSlice } from "./accountsSlice";
-import { MAINNET } from "../../../types/Network";
 
 const {
   actions: { addMockMnemonicAccounts, addAccount, removeMnemonicAndAccounts, renameAccount },

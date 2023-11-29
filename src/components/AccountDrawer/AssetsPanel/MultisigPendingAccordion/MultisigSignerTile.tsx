@@ -1,20 +1,21 @@
 import React, { useContext } from "react";
+
+import { MultisigActionButton, MultisigSignerState } from "./MultisigActionButton";
+import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
+import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { ImplicitAddress } from "../../../../types/Address";
+import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/getAccountDataHooks";
+import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import { MultisigActionButton, MultisigSignerState } from "./MultisigActionButton";
-import { makeAccountOperations } from "../../../../types/AccountOperations";
-import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import { estimate } from "../../../../utils/tezos";
-import { DynamicModalContext } from "../../../DynamicModal";
-import { SignPage } from "../../../SendFlow/Multisig/SignPage";
-import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
-import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
-import { useAddressKind } from "../../../AddressTile/useAddressKind";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import { AccountTileIcon } from "../../../AccountTile/AccountTileIcon";
+import { useAddressKind } from "../../../AddressTile/useAddressKind";
+import { DynamicModalContext } from "../../../DynamicModal";
+import { SignPage } from "../../../SendFlow/Multisig/SignPage";
 
 export const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;

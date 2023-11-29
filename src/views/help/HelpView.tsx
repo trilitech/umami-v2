@@ -1,11 +1,12 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/layout";
-import { Box, Text, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "react-router-dom";
+
+import { ExternalLinkIcon } from "../../assets/icons";
+import { ClickableCard } from "../../components/ClickableCard";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import { ClickableCard } from "../../components/ClickableCard";
-import { ExternalLinkIcon } from "../../assets/icons";
-import { Link } from "react-router-dom";
 
 export const HelpView = () => {
   return (

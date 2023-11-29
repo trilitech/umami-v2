@@ -1,4 +1,5 @@
 import {
+  Button,
   Divider,
   Drawer,
   DrawerBody,
@@ -7,18 +8,18 @@ import {
   Flex,
   Heading,
   Icon,
-  useDisclosure,
   Text,
-  Button,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { nanoid } from "@reduxjs/toolkit";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
+
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
+import { useDynamicModal } from "../../components/DynamicModal";
 import colors from "../../style/colors";
 import { ErrorContext } from "../../utils/getErrorContext";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
-import { nanoid } from "@reduxjs/toolkit";
-import { useDynamicModal } from "../../components/DynamicModal";
 
 export const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();

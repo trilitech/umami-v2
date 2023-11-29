@@ -1,8 +1,9 @@
-import { decode, parseRawMichelson } from "./decodeLambda";
 import type { MichelsonV1Expression } from "@taquito/rpc";
-import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
+
+import { decode, parseRawMichelson } from "./decodeLambda";
 import { UnrecognizedMichelsonError } from "./UnrecognizedMichelsonError";
 import { mockMultisigAccount } from "../../mocks/factories";
+import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
 
 const multisig = mockMultisigAccount(0);
 

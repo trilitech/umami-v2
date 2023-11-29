@@ -1,18 +1,19 @@
 import {
-  Wrap,
-  WrapItem,
-  Text,
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
   Card,
   CardBody,
   Heading,
+  Text,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import { NFTBalance } from "../../../types/TokenBalance";
+
 import colors from "../../../style/colors";
+import { NFTBalance } from "../../../types/TokenBalance";
 
 export const AttributesAccordionItem = ({
   nft,

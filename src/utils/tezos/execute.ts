@@ -1,6 +1,7 @@
 import { TezosToolkit } from "@taquito/taquito";
-import { AccountOperations } from "../../types/AccountOperations";
+
 import { operationsToWalletParams } from "./helpers";
+import { AccountOperations } from "../../types/AccountOperations";
 
 export const executeOperations = async (
   operations: AccountOperations,

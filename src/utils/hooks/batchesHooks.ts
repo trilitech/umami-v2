@@ -1,7 +1,7 @@
+import { useSelectedNetwork } from "./networkHooks";
 import { Account } from "../../types/Account";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { batchesActions } from "../redux/slices/batches";
-import { useSelectedNetwork } from "./networkHooks";
 
 export const useBatches = () => {
   const network = useSelectedNetwork();

@@ -1,8 +1,9 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
-import { TezTransfer, TokenTransfer } from "../types/Transfer";
-import { RawTokenBalance } from "../types/TokenBalance";
-import { RawTzktGetSameMultisigs } from "../utils/tzkt/types";
+
 import { mockContractAddress, mockImplicitAddress } from "./factories";
+import { RawTokenBalance } from "../types/TokenBalance";
+import { TezTransfer, TokenTransfer } from "../types/Transfer";
+import { RawTzktGetSameMultisigs } from "../utils/tzkt/types";
 
 export const fa1Token: RawTokenBalance = {
   id: 10897662672897,

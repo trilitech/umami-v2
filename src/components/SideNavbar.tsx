@@ -1,13 +1,12 @@
 import { Box, Divider, Flex, FlexProps, Text } from "@chakra-ui/react";
 import React from "react";
-
 import { Link, useLocation } from "react-router-dom";
-import colors from "../style/colors";
-import { useTotalBalance } from "../utils/hooks/assetsHooks";
+
+import { AppVersion } from "./AppVersion";
 import { MakiLogo } from "./MakiLogo";
 import { NetworkSelector } from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
-import { AppVersion } from "./AppVersion";
+import { UpdateAppButton } from "./UpdateAppButton";
 import {
   AccountsIcon,
   AddressBookIcon,
@@ -18,7 +17,8 @@ import {
   HelpIcon,
   RefreshClockIcon,
 } from "../assets/icons";
-import { UpdateAppButton } from "./UpdateAppButton";
+import colors from "../style/colors";
+import { useTotalBalance } from "../utils/hooks/assetsHooks";
 
 export const SideNavbar = () => {
   return (

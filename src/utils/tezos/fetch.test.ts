@@ -1,17 +1,3 @@
-import axios from "axios";
-import {
-  getAccounts,
-  getCombinedOperations,
-  getDelegations,
-  getLastDelegation,
-  getOriginations,
-  getTezosPriceInUSD,
-  getTezTransfers,
-  getTokenBalances,
-  getRelatedTokenTransfers,
-  getTransactions,
-  getTokenTransfers,
-} from "./fetch";
 import {
   accountsGet,
   operationsGetDelegations,
@@ -20,10 +6,26 @@ import {
   tokensGetTokenBalances,
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
+import axios from "axios";
+import { sortBy } from "lodash";
+
 import { coincapUrl } from "./consts";
+import {
+  getAccounts,
+  getCombinedOperations,
+  getDelegations,
+  getLastDelegation,
+  getOriginations,
+  getRelatedTokenTransfers,
+  getTezTransfers,
+  getTezosPriceInUSD,
+  getTokenBalances,
+  getTokenTransfers,
+  getTransactions,
+} from "./fetch";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { DefaultNetworks } from "../../types/Network";
-import { sortBy } from "lodash";
+
 jest.mock("axios");
 
 jest.mock("@tzkt/sdk-api", () => {

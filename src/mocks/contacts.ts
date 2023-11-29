@@ -1,5 +1,5 @@
-import { Contact } from "../types/Contact";
 import { mockContact } from "./factories";
+import { Contact } from "../types/Contact";
 
 export const contact1 = mockContact(1);
 

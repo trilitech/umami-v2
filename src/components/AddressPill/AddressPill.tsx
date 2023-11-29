@@ -1,24 +1,24 @@
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
-  useDisclosure,
-  Button,
-  useOutsideClick,
-  BoxProps,
-  Flex,
-  Text,
   Box,
+  BoxProps,
+  Button,
+  Flex,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Text,
+  useDisclosure,
+  useOutsideClick,
 } from "@chakra-ui/react";
-
-import { Address, TzktAlias, parsePkh } from "../../types/Address";
-import colors from "../../style/colors";
 import { useRef, useState } from "react";
-import { useAddressKind } from "./useAddressKind";
+
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
 import { AddressPillText } from "./AddressPillText";
+import { useAddressKind } from "./useAddressKind";
+import colors from "../../style/colors";
+import { Address, TzktAlias, parsePkh } from "../../types/Address";
 
 export type AddressPillMode =
   | { type: "default" }

@@ -9,10 +9,11 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { Fragment } from "react";
+
 import { usePeers, useRemovePeer } from "./beacon";
 import { PeerInfo } from "./types";
 import { TrashIcon } from "../../assets/icons";
-import { Fragment } from "react";
 import colors from "../../style/colors";
 
 export const BeaconPeers = () => {

@@ -1,7 +1,8 @@
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { ModalContentWrapper } from "../ModalContentWrapper";
+
 import { EditAccountIcon } from "../../../assets/icons";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 
 const DEFAULT_TITLE = "Name Your Account";
 

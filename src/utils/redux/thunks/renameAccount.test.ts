@@ -1,11 +1,11 @@
-import { multisigs } from "../../../mocks/multisig";
-import { store } from "../store";
-import { mockMnemonicAccount } from "../../../mocks/factories";
-import { multisigActions } from "../slices/multisigsSlice";
 import { renameAccount } from "./renameAccount";
-import { accountsSlice } from "../slices/accountsSlice";
+import { mockMnemonicAccount } from "../../../mocks/factories";
+import { multisigs } from "../../../mocks/multisig";
 import { MultisigAccount } from "../../../types/Account";
+import { accountsSlice } from "../slices/accountsSlice";
 import { contactsActions } from "../slices/contactsSlice";
+import { multisigActions } from "../slices/multisigsSlice";
+import { store } from "../store";
 
 beforeEach(() => {
   store.dispatch(multisigActions.setMultisigs(multisigs));

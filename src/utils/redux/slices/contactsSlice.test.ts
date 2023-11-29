@@ -1,10 +1,9 @@
-import { contact1, contact2 } from "../../../mocks/contacts";
-import { mockImplicitAddress, mockMnemonicAccount } from "../../../mocks/factories";
-
-import { store } from "../store";
-import { checkAccountsAndUpsertContact } from "../thunks/checkAccountsAndUpsertContact";
 import { accountsSlice } from "./accountsSlice";
 import { contactsActions } from "./contactsSlice";
+import { contact1, contact2 } from "../../../mocks/contacts";
+import { mockImplicitAddress, mockMnemonicAccount } from "../../../mocks/factories";
+import { store } from "../store";
+import { checkAccountsAndUpsertContact } from "../thunks/checkAccountsAndUpsertContact";
 const { remove } = contactsActions;
 
 describe("Contacts reducer", () => {

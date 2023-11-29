@@ -1,10 +1,11 @@
-import { AllTheProviders, renderHook, waitFor } from "../mocks/testUtils";
-import { useAssetsPolling } from "./useAssetsPolling";
 import { delegatesGet } from "@tzkt/sdk-api";
-import { store } from "./redux/store";
-import { mockBaker } from "../mocks/factories";
-import { DefaultNetworks } from "../types/Network";
+
 import { networksActions } from "./redux/slices/networks";
+import { store } from "./redux/store";
+import { useAssetsPolling } from "./useAssetsPolling";
+import { mockBaker } from "../mocks/factories";
+import { AllTheProviders, renderHook, waitFor } from "../mocks/testUtils";
+import { DefaultNetworks } from "../types/Network";
 
 jest.unmock("./tezos");
 jest.mock("@tzkt/sdk-api", () => {

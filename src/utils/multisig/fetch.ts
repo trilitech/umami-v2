@@ -1,7 +1,8 @@
 import axios from "axios";
+
 import { Network } from "../../types/Network";
-import { RawTzktGetBigMapKeys, RawTzktGetSameMultisigs } from "../tzkt/types";
 import { withRateLimit } from "../tezos";
+import { RawTzktGetBigMapKeys, RawTzktGetSameMultisigs } from "../tzkt/types";
 const MULTISIG_FETCH_LIMIT = 10000;
 export const TYPE_HASH = 1963879877;
 export const CODE_HASH = -1890025422;

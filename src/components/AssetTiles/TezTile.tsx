@@ -1,7 +1,8 @@
 import { Flex } from "@chakra-ui/react";
-import { prettyTezAmount } from "../../utils/format";
+
 import { TezIcon } from "../../assets/icons";
 import colors from "../../style/colors";
+import { prettyTezAmount } from "../../utils/format";
 import { PrettyNumber } from "../PrettyNumber";
 
 export const TezTile: React.FC<{ mutezAmount: string }> = ({ mutezAmount }) => {

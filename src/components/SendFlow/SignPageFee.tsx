@@ -1,7 +1,8 @@
-import colors from "../../style/colors";
-import { prettyTezAmount } from "../../utils/format";
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
+
+import colors from "../../style/colors";
+import { prettyTezAmount } from "../../utils/format";
 
 export const SignPageFee: React.FC<{ fee: string | BigNumber }> = ({ fee }) => {
   return (

@@ -1,19 +1,20 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import BigNumber from "bignumber.js";
+
 import { FormPage, FormValues } from "./FormPage";
-import { FormPagePropsWithSender } from "../utils";
-import { NFTBalance } from "../../../types/TokenBalance";
-import { DynamicModalContext } from "../../DynamicModal";
+import { SignPage } from "./SignPage";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
+import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
+import { mockEstimatedFee } from "../../../mocks/helpers";
+import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
-import BigNumber from "bignumber.js";
-import { mockToast } from "../../../mocks/toast";
+import { NFTBalance } from "../../../types/TokenBalance";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";
-import { SignPage } from "./SignPage";
-import { mockEstimatedFee } from "../../../mocks/helpers";
+import { DynamicModalContext } from "../../DynamicModal";
+import { FormPagePropsWithSender } from "../utils";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
   <Modal isOpen={true} onClose={() => {}}>

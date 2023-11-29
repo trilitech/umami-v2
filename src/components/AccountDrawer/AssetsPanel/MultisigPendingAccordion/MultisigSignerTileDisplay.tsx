@@ -1,8 +1,9 @@
 import React from "react";
-import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
+
 import { MultisigActionButton, MultisigSignerState } from "./MultisigActionButton";
-import { AddressKind } from "../../../AddressTile/types";
+import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import { AccountTileIcon } from "../../../AccountTile/AccountTileIcon";
+import { AddressKind } from "../../../AddressTile/types";
 
 export const MultisigSignerTileDisplay: React.FC<{
   onClickApproveExecute: () => void;

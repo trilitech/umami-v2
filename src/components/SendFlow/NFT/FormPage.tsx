@@ -12,21 +12,22 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import colors from "../../../style/colors";
-import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
-import { FA2Transfer } from "../../../types/Operation";
-import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormPagePropsWithSender, FormSubmitButtons } from "../utils";
+
 import { SignPage } from "./SignPage";
+import colors from "../../../style/colors";
+import { RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
+import { FA2Transfer } from "../../../types/Operation";
 import { NFTBalance } from "../../../types/TokenBalance";
+import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { FormErrorMessage } from "../../FormErrorMessage";
+import { FormPageHeader } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { FormErrorMessage } from "../../FormErrorMessage";
-import { FormPageHeader } from "../FormPageHeader";
 import { SendNFTRecapTile } from "../SendNFTRecapTile";
+import { FormPagePropsWithSender, FormSubmitButtons, formDefaultValues } from "../utils";
 
 export type FormValues = {
   quantity: number;

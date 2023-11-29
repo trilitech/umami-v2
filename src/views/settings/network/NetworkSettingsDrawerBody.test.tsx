@@ -1,8 +1,8 @@
+import { NetworkSettingsDrawerBody } from "./NetworkSettingsDrawerBody";
 import { render, screen, waitFor, within } from "../../../mocks/testUtils";
 import { GHOSTNET, MAINNET } from "../../../types/Network";
 import { networksActions } from "../../../utils/redux/slices/networks";
 import { store } from "../../../utils/redux/store";
-import { NetworkSettingsDrawerBody } from "./NetworkSettingsDrawerBody";
 
 describe("<NetworkSettingsDrawerBody />", () => {
   const customNetwork = { ...GHOSTNET, name: "custom" };

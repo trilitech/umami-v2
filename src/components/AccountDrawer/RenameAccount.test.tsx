@@ -1,12 +1,12 @@
 import { Modal } from "@chakra-ui/react";
 
-import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { RenameAccountModal } from "./RenameAccountModal";
-import { Account } from "../../types/Account";
 import { mockContact, mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
-import { store } from "../../utils/redux/store";
+import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
+import { Account } from "../../types/Account";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
+import { store } from "../../utils/redux/store";
 
 const fixture = (account: Account) => (
   <Modal isOpen={true} onClose={() => {}}>

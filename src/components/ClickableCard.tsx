@@ -1,7 +1,8 @@
 import { Card, CardBody, CardProps, Flex, Heading } from "@chakra-ui/react";
-import colors from "../style/colors";
 import { PropsWithChildren } from "react";
+
 import { ChevronRightIcon } from "../assets/icons";
+import colors from "../style/colors";
 
 export const ClickableCard: React.FC<
   PropsWithChildren<

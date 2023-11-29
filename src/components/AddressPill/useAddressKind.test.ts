@@ -1,5 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { cloneDeep } from "lodash";
+
+import { useAddressKind } from "./useAddressKind";
 import { hedgehoge } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import {
@@ -12,15 +14,14 @@ import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
+import { MAINNET } from "../../types/Network";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
-import { store } from "../../utils/redux/store";
-import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
-import { useAddressKind } from "./useAddressKind";
-import { MAINNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
+import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
+import { store } from "../../utils/redux/store";
 
 beforeEach(() => {
   store.dispatch(networksActions.setCurrent(MAINNET));

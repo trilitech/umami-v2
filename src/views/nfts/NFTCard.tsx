@@ -1,11 +1,12 @@
-import { Image, Card, CardBody, Heading, Text, Box, Center } from "@chakra-ui/react";
-import { getIPFSurl } from "../../utils/token/nftUtils";
-import { fullId, thumbnailUri } from "../../types/Token";
-import colors from "../../style/colors";
-import { AddressPill } from "../../components/AddressPill/AddressPill";
-import { parsePkh } from "../../types/Address";
+import { Box, Card, CardBody, Center, Heading, Image, Text } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
+
 import { NFTWithOwner } from "./NFTGallery";
+import { AddressPill } from "../../components/AddressPill/AddressPill";
+import colors from "../../style/colors";
+import { parsePkh } from "../../types/Address";
+import { fullId, thumbnailUri } from "../../types/Token";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 export const NFTCard: React.FC<{
   nft: NFTWithOwner;

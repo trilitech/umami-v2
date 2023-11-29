@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist";
+
 import { extraArgument } from "./extraArgument";
-import { rootReducers as reducer } from "./reducer";
+import { reducer } from "./reducer";
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

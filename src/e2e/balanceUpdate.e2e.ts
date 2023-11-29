@@ -1,4 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+
 import { cleanupState, onboardWithExistingMnemonic, refetch, topUpAccount } from "./utils";
 import { mnemonic1 as mnemonic } from "../mocks/mockMnemonic";
 

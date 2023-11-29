@@ -1,12 +1,13 @@
 import React from "react";
+
+import { ContractCallTile } from "./ContractCallTile";
+import { DelegationTile } from "./DelegationTile";
+import { OriginationTile } from "./OriginationTile";
+import { TokenTransferTile } from "./TokenTransferTile";
+import { TransactionTile } from "./TransactionTile";
+import { fromRaw } from "../../types/Token";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 import { TzktCombinedOperation } from "../../utils/tezos";
-import { TransactionTile } from "./TransactionTile";
-import { ContractCallTile } from "./ContractCallTile";
-import { OriginationTile } from "./OriginationTile";
-import { DelegationTile } from "./DelegationTile";
-import { TokenTransferTile } from "./TokenTransferTile";
-import { fromRaw } from "../../types/Token";
 
 export const OperationTile: React.FC<{
   operation: TzktCombinedOperation;

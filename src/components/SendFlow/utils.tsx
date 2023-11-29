@@ -1,24 +1,25 @@
 import { Box, Button } from "@chakra-ui/react";
+import { TezosToolkit } from "@taquito/taquito";
+import BigNumber from "bignumber.js";
+import { repeat } from "lodash";
 import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { SuccessStep } from "./SuccessStep";
+import { Account } from "../../types/Account";
+import { AccountOperations, makeAccountOperations } from "../../types/AccountOperations";
 import { RawPkh } from "../../types/Address";
+import { Operation } from "../../types/Operation";
+import { useClearBatch } from "../../utils/hooks/batchesHooks";
 import {
   useGetBestSignerForAccount,
   useGetImplicitAccount,
   useGetOwnedAccount,
 } from "../../utils/hooks/getAccountDataHooks";
-import { useClearBatch } from "../../utils/hooks/batchesHooks";
-import { DynamicModalContext } from "../DynamicModal";
-import { AccountOperations, makeAccountOperations } from "../../types/AccountOperations";
-import BigNumber from "bignumber.js";
-import { Operation } from "../../types/Operation";
-import { Account } from "../../types/Account";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { TezosToolkit } from "@taquito/taquito";
-import { estimate, executeOperations } from "../../utils/tezos";
-import { useForm } from "react-hook-form";
-import { repeat } from "lodash";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { SuccessStep } from "./SuccessStep";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { estimate, executeOperations } from "../../utils/tezos";
+import { DynamicModalContext } from "../DynamicModal";
 
 // Convert given optional fields to required
 // For example:

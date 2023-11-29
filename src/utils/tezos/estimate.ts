@@ -1,7 +1,8 @@
+import BigNumber from "bignumber.js";
+
+import { addressExists, makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
 import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
-import { addressExists, makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
-import BigNumber from "bignumber.js";
 
 export const estimate = async (
   operations: AccountOperations,

@@ -1,7 +1,8 @@
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
+
+import { useAsyncActionHandler } from "./useAsyncActionHandler";
 import { mockToast } from "../../mocks/toast";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { useAsyncActionHandler } from "./useAsyncActionHandler";
 
 const fixture = () => renderHook(() => useAsyncActionHandler(), { wrapper: ReduxStore });
 

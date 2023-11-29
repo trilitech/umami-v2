@@ -1,6 +1,7 @@
 import { Modal } from "@chakra-ui/react";
+
+import { SignPageHeader, headerText } from "./SignPageHeader";
 import { render, screen } from "../../mocks/testUtils";
-import { headerText, SignPageHeader } from "./SignPageHeader";
 
 const fixture = (props: Parameters<typeof SignPageHeader>[0]) => {
   return (

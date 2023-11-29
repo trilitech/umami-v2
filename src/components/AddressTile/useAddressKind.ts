@@ -1,8 +1,8 @@
+import { AddressKind, BakerAddress, ContactAddress, OwnedAddress } from "./types";
 import { Address } from "../../types/Address";
-import { useGetOwnedAccountSafe } from "../../utils/hooks/getAccountDataHooks";
 import { useGetBaker } from "../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
-import { AddressKind, BakerAddress, ContactAddress, OwnedAddress } from "./types";
+import { useGetOwnedAccountSafe } from "../../utils/hooks/getAccountDataHooks";
 
 export const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);

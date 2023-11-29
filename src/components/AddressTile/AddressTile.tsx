@@ -1,9 +1,10 @@
-import { Flex, Text, Heading, FlexProps, Box, Tooltip } from "@chakra-ui/react";
-import { Address } from "../../types/Address";
-import { useAddressKind } from "./useAddressKind";
+import { Box, Flex, FlexProps, Heading, Text, Tooltip } from "@chakra-ui/react";
+
 import { AddressTileIcon } from "./AddressTileIcon";
-import { formatPkh } from "../../utils/format";
+import { useAddressKind } from "./useAddressKind";
 import colors from "../../style/colors";
+import { Address } from "../../types/Address";
+import { formatPkh } from "../../utils/format";
 import { AccountBalance } from "../AccountBalance";
 
 /**

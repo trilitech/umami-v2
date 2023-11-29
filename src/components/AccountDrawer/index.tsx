@@ -1,4 +1,6 @@
 import { useContext } from "react";
+
+import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
 import { Account } from "../../types/Account";
 import {
   useGetAccountAllTokens,
@@ -9,7 +11,6 @@ import {
 import { DynamicModalContext } from "../DynamicModal";
 import { ReceiveModal } from "../ReceiveModal";
 import { FormPage as SendTezForm } from "../SendFlow/Tez/FormPage";
-import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
 
 // TODO: replace current component with the underlying one
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {

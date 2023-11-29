@@ -1,19 +1,20 @@
 import {
-  Box,
-  Flex,
-  Text,
-  Heading,
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
+  Box,
+  Flex,
+  Heading,
+  Text,
 } from "@chakra-ui/react";
 import React from "react";
-import { MultisigOperation } from "../../../../utils/multisig/types";
-import { MultisigSignerTile } from "./MultisigSignerTile";
+
 import { MultisigDecodedOperations } from "./MultisigDecodedOperations";
-import { MultisigAccount } from "../../../../types/Account";
+import { MultisigSignerTile } from "./MultisigSignerTile";
 import colors from "../../../../style/colors";
+import { MultisigAccount } from "../../../../types/Account";
+import { MultisigOperation } from "../../../../utils/multisig/types";
 
 export const MultisigPendingAccordionItem: React.FC<{
   operation: MultisigOperation;

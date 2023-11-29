@@ -1,5 +1,5 @@
-import { mockPk, mockImplicitAddress } from "../../mocks/factories";
 import { FakeSigner } from "./fakeSigner";
+import { mockImplicitAddress, mockPk } from "../../mocks/factories";
 
 describe("fakeSigner", () => {
   test("fakeSigner sets pk and pkh", async () => {

@@ -1,25 +1,26 @@
 import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
+import { compact } from "lodash";
+import { nanoid } from "nanoid";
+import pluralize from "pluralize";
 import React, { useContext } from "react";
+
+import { OperationRecipient } from "./OperationRecipient";
+import { OperationView } from "./OperationView";
+import { TrashIcon } from "../../assets/icons";
+import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import { SignPage } from "../../components/SendFlow/Batch/SignPage";
+import { headerText } from "../../components/SendFlow/SignPageHeader";
+import colors from "../../style/colors";
+import { Account } from "../../types/Account";
 import { AccountOperations } from "../../types/AccountOperations";
 import { Operation } from "../../types/Operation";
-import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
-import colors from "../../style/colors";
-import pluralize from "pluralize";
-import { headerText } from "../../components/SendFlow/SignPageHeader";
-import { TrashIcon } from "../../assets/icons";
-import { nanoid } from "nanoid";
-import { TEZ, estimate } from "../../utils/tezos";
 import { Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
-import { compact } from "lodash";
-import { DynamicModalContext } from "../../components/DynamicModal";
-import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { Account } from "../../types/Account";
-import { OperationView } from "./OperationView";
-import { OperationRecipient } from "./OperationRecipient";
 import { useClearBatch, useRemoveBatchItem } from "../../utils/hooks/batchesHooks";
-import { SignPage } from "../../components/SendFlow/Batch/SignPage";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { TEZ, estimate } from "../../utils/tezos";
 
 const RightHeader: React.FC<{ operations: AccountOperations }> = ({
   operations: accountOperations,

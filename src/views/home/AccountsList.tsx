@@ -10,22 +10,23 @@ import {
 } from "@chakra-ui/react";
 import { compact, groupBy } from "lodash";
 import { useContext } from "react";
-import { KeyIcon, AddAccountIcon } from "../../assets/icons";
+
+import { AccountPopover } from "./AccountPopover";
+import { DeriveAccountDisplay } from "./DeriveAccountDisplay.tsx";
+import { AddAccountIcon, KeyIcon } from "../../assets/icons";
+import { AccountTile } from "../../components/AccountTile/AccountTile";
+import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { NestedScroll } from "../../components/NestedScroll";
 import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
+import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
+import colors from "../../style/colors";
 import { Account } from "../../types/Account";
+import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { useRemoveMnemonic, useRemoveNonMnemonic } from "../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
-import { AccountPopover } from "./AccountPopover";
-import { DeriveAccountDisplay } from "./DeriveAccountDisplay.tsx";
-import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
-import { AccountTile } from "../../components/AccountTile/AccountTile";
-import colors from "../../style/colors";
-import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();

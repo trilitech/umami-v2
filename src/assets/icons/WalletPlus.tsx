@@ -1,4 +1,5 @@
 import { Icon, IconProps } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
 export const WalletPlusIcon: React.FC<IconProps> = props => {

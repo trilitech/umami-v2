@@ -6,10 +6,11 @@ import {
   AccordionPanel,
   Box,
 } from "@chakra-ui/react";
+
+import { MultisigDecodedOperationItem } from "./MultisigDecodedOperationItem";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import { UnrecognizedMichelsonError } from "../../../../multisig/decode/UnrecognizedMichelsonError";
 import { MultisigAccount } from "../../../../types/Account";
-import { MultisigDecodedOperationItem } from "./MultisigDecodedOperationItem";
 import { JsValueWrap } from "../../JsValueWrap";
 
 export const MultisigDecodedOperations: React.FC<{

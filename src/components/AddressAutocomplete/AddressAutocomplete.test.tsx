@@ -1,10 +1,11 @@
 import { FormProvider, useForm } from "react-hook-form";
+
+import { AddressAutocomplete, getSuggestions } from "./AddressAutocomplete";
 import { mockContact, mockImplicitAddress } from "../../mocks/factories";
 import { fireEvent, render, renderHook, screen, within } from "../../mocks/testUtils";
 import { Contact } from "../../types/Contact";
-import { AddressAutocomplete, getSuggestions } from "./AddressAutocomplete";
-import { store } from "../../utils/redux/store";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
+import { store } from "../../utils/redux/store";
 
 type FormFields = { destination: string };
 

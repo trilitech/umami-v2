@@ -1,24 +1,25 @@
 import {
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
-  TableContainer,
-  Table,
-  Tr,
-  Td,
-  Tbody,
   Heading,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tr,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
+
 import { AddressPill } from "../../../components/AddressPill/AddressPill";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
+import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
 import { metadataUri, mimeType, royalties } from "../../../types/Token";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
-import colors from "../../../style/colors";
 
 const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   if (!nft.metadata.creators || nft.metadata.creators.length === 0) {

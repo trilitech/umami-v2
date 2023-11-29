@@ -1,4 +1,5 @@
 import * as tzktApi from "@tzkt/sdk-api";
+
 import { TzktAlias } from "./Address";
 import { RawTokenInfo } from "./Token";
 

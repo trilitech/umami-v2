@@ -1,4 +1,5 @@
 import { createIcon } from "@chakra-ui/icons";
+
 import colors from "../style/colors";
 
 const defaultPathProps = {

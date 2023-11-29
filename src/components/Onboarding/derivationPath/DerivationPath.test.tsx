@@ -1,8 +1,9 @@
-import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 import { DerivationPath } from "./DerivationPath";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import userEvent from "@testing-library/user-event";
+import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn((step: Step) => {});
 

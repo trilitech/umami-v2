@@ -1,9 +1,10 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
+
 import { AccountOperations } from "../../../types/AccountOperations";
 import { Network } from "../../../types/Network";
 import { estimate } from "../../tezos";
-import { RootState } from "../store";
 import { batchesActions } from "../slices/batches";
+import { RootState } from "../store";
 
 export const estimateAndUpdateBatch = (
   operations: AccountOperations,

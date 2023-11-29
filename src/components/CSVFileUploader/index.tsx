@@ -1,8 +1,9 @@
-import { useContext } from "react";
-import { DynamicModalContext } from "../DynamicModal";
-import { CSVFileUploadForm } from "./CSVFileUploadForm";
 import { Button, Text } from "@chakra-ui/react";
+import { useContext } from "react";
+
+import { CSVFileUploadForm } from "./CSVFileUploadForm";
 import { FileArrowDownIcon } from "../../assets/icons";
+import { DynamicModalContext } from "../DynamicModal";
 
 export const CSVFileUploader = () => {
   const { openWith } = useContext(DynamicModalContext);

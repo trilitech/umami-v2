@@ -1,7 +1,8 @@
 import { Text } from "@chakra-ui/react";
-import { Operation } from "../../types/Operation";
-import colors from "../../style/colors";
+
 import { AddressPill } from "../../components/AddressPill/AddressPill";
+import colors from "../../style/colors";
+import { Operation } from "../../types/Operation";
 
 // TODO: add tests
 export const OperationRecipient = ({ operation }: { operation: Operation }) => {

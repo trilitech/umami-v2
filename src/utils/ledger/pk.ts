@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { LedgerSigner } from "@taquito/ledger-signer";
+
 import { PublicKeyPair } from "../mnemonic";
 
 export const getPk = async (derivationPath?: string): Promise<PublicKeyPair> => {

@@ -1,4 +1,5 @@
 import { Card, CardBody } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
 // Wrapper for any JavaScript value

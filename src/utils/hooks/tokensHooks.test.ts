@@ -1,13 +1,14 @@
 import { renderHook } from "@testing-library/react";
+
+import { useGetToken, useGetTokenType } from "./tokensHooks";
 import { hedgehoge } from "../../mocks/fa12Tokens";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { fromRaw } from "../../types/Token";
-import { store } from "../redux/store";
-import { tokensActions } from "../redux/slices/tokensSlice";
-import { useGetToken, useGetTokenType } from "./tokensHooks";
 import { DefaultNetworks } from "../../types/Network";
+import { fromRaw } from "../../types/Token";
 import { networksActions } from "../redux/slices/networks";
+import { tokensActions } from "../redux/slices/tokensSlice";
+import { store } from "../redux/store";
 
 describe("useGetToken", () => {
   describe.each(DefaultNetworks)("on $name", network => {

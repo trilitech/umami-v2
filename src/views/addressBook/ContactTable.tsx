@@ -1,13 +1,14 @@
-import { Box, Flex, Table, Text, Tbody, Td, Tr, TableContainer } from "@chakra-ui/react";
-import { Contact } from "../../types/Contact";
-import { CopyableAddress } from "../../components/CopyableText";
+import { Box, Flex, Table, TableContainer, Tbody, Td, Text, Tr } from "@chakra-ui/react";
 import { useContext } from "react";
+
+import { DeleteContactModal, UpsertContactModal } from "../../components/ContactModal";
+import { CopyableAddress } from "../../components/CopyableText";
 import { DynamicModalContext } from "../../components/DynamicModal";
+import { RenameRemoveMenu } from "../../components/RenameRemoveMenu";
+import { SendButton } from "../../components/SendButton";
 import { FormPage } from "../../components/SendFlow/Tez/FormPage";
 import colors from "../../style/colors";
-import { SendButton } from "../../components/SendButton";
-import { RenameRemoveMenu } from "../../components/RenameRemoveMenu";
-import { DeleteContactModal, UpsertContactModal } from "../../components/ContactModal";
+import { Contact } from "../../types/Contact";
 
 export const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
   const { openWith } = useContext(DynamicModalContext);

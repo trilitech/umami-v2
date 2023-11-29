@@ -1,8 +1,9 @@
 import { Flex } from "@chakra-ui/react";
-import { AddressKind } from "../AddressTile/types";
-import { Identicon } from "../Identicon";
+
 import colors from "../../style/colors";
 import { AddressTileIcon } from "../AddressTile/AddressTileIcon";
+import { AddressKind } from "../AddressTile/types";
+import { Identicon } from "../Identicon";
 
 export const AccountTileIcon: React.FC<{ addressKind: AddressKind }> = ({ addressKind }) => {
   switch (addressKind.type) {

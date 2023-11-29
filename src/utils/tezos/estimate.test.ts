@@ -1,5 +1,5 @@
-import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { estimate, handleTezError } from "./estimate";
+import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET } from "../../types/Network";
 

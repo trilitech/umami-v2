@@ -1,3 +1,6 @@
+import BigNumber from "bignumber.js";
+
+import { SignPage } from "./SignPage";
 import {
   mockImplicitAccount,
   mockMnemonicAccount,
@@ -5,14 +8,12 @@ import {
   mockNFT,
 } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { SignPage } from "./SignPage";
-import BigNumber from "bignumber.js";
-import { TEZ } from "../../../utils/tezos";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
-import { store } from "../../../utils/redux/store";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { parseContractPkh } from "../../../types/Address";
+import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../utils/redux/store";
+import { TEZ } from "../../../utils/tezos";
 
 const account = mockImplicitAccount(0);
 const multisig = mockMultisigAccount(1);

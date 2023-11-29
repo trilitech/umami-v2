@@ -1,6 +1,7 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
+
 import { ExternalLink } from "../ExternalLink";
 
 export const NoItems: React.FC<

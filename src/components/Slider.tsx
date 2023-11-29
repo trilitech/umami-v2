@@ -1,6 +1,7 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
 import { CSSProperties, ReactElement } from "react";
+import { Carousel } from "react-responsive-carousel";
+
 import colors from "../style/colors";
 
 type Props = {

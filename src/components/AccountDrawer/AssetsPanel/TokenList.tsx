@@ -1,10 +1,11 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import colors from "../../../style/colors";
-import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
-import { tokenPrettyAmount } from "../../../types/Token";
-import { NoItems } from "../../NoItems";
+
 import { TokenIcon } from "../../../assets/icons";
+import colors from "../../../style/colors";
+import { tokenPrettyAmount } from "../../../types/Token";
+import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import { TokenNameWithIcon } from "../../../views/tokens/TokenNameWithIcon";
+import { NoItems } from "../../NoItems";
 
 export const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {
   const prettyAmount = tokenPrettyAmount(token.balance, token, { showSymbol: false });

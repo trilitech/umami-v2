@@ -1,7 +1,8 @@
-import { Contact } from "../../../types/Contact";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+
+import { Contact } from "../../../types/Contact";
 import { contactsActions } from "../slices/contactsSlice";
+import { RootState } from "../store";
 
 const { upsert } = contactsActions;
 

@@ -1,6 +1,7 @@
-import { Flex, FlexProps, Icon, Text, IconProps } from "@chakra-ui/react";
+import { Flex, FlexProps, Icon, IconProps, Text } from "@chakra-ui/react";
 import React from "react";
 import { IconType } from "react-icons/lib";
+
 import colors from "../style/colors";
 
 type Props = {

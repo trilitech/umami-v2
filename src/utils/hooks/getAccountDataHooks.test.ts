@@ -1,4 +1,10 @@
 import { renderHook } from "@testing-library/react";
+
+import {
+  useGetBestSignerForAccount,
+  useIsOwnedAddress,
+  useIsUniqueLabel,
+} from "./getAccountDataHooks";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
@@ -15,11 +21,6 @@ import { contactsActions } from "../redux/slices/contactsSlice";
 import { multisigsSlice } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
 import { renameAccount } from "../redux/thunks/renameAccount";
-import {
-  useGetBestSignerForAccount,
-  useIsOwnedAddress,
-  useIsUniqueLabel,
-} from "./getAccountDataHooks";
 
 describe("getAccountDataHooks", () => {
   describe("useGetBestSignerForAccount", () => {

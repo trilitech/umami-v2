@@ -1,27 +1,28 @@
+import Semaphore from "@chriscdn/promise-semaphore";
 import {
-  blocksGetCount,
   Delegate,
-  operationsGetDelegations,
-  operationsGetTransactions,
-  tokensGetTokenTransfers,
-  delegatesGet,
-  operationsGetOriginations,
   OffsetParameter,
   SortParameter,
   accountsGet,
+  blocksGetCount,
+  delegatesGet,
+  operationsGetDelegations,
+  operationsGetOriginations,
+  operationsGetTransactions,
   tokensGetTokenBalances,
+  tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
 import axios from "axios";
+import { first, sortBy } from "lodash";
+import promiseRetry from "promise-retry";
+
 import { coincapUrl } from "./consts";
 import { coinCapResponseType } from "./types";
-import { TezTransfer, TokenTransfer } from "../../types/Transfer";
-import { RawTokenBalance } from "../../types/TokenBalance";
-import { Network } from "../../types/Network";
-import Semaphore from "@chriscdn/promise-semaphore";
-import promiseRetry from "promise-retry";
 import { RawPkh, TzktAlias } from "../../types/Address";
-import { first, sortBy } from "lodash";
+import { Network } from "../../types/Network";
+import { RawTokenBalance } from "../../types/TokenBalance";
+import { TezTransfer, TokenTransfer } from "../../types/Transfer";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts

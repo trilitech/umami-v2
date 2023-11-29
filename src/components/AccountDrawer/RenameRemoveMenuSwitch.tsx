@@ -1,13 +1,14 @@
 import { useContext } from "react";
-import { Account } from "../../types/Account";
-import { RenameRemoveMenu } from "../RenameRemoveMenu";
-import { DynamicModalContext } from "../DynamicModal";
+import { useNavigate } from "react-router-dom";
+
 import { RenameAccountModal } from "./RenameAccountModal";
-import { ConfirmationModal } from "../ConfirmationModal";
+import { Account } from "../../types/Account";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
-import { useNavigate } from "react-router-dom";
 import { remove as removeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
+import { ConfirmationModal } from "../ConfirmationModal";
+import { DynamicModalContext } from "../DynamicModal";
+import { RenameRemoveMenu } from "../RenameRemoveMenu";
 
 export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => {
   const { openWith, onClose: closeModal } = useContext(DynamicModalContext);

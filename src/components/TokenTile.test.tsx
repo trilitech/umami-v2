@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
+
+import { FATokenBalance } from "./SendFlow/Token/FormPage";
 import { TokenTile } from "./TokenTile";
 import { mockFA2Token, mockImplicitAccount } from "../mocks/factories";
-import { FATokenBalance } from "./SendFlow/Token/FormPage";
 
 const mockAccount = mockImplicitAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);

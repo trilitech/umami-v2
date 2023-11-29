@@ -1,8 +1,9 @@
 import { Divider } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
+
+import { TrashIcon } from "../../assets/icons";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
 import { PopoverMenu } from "../../components/PopoverMenu";
-import { TrashIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 
 export const AccountPopover: React.FC<{

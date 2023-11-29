@@ -1,5 +1,5 @@
 import { Modal, ModalOverlay, ModalProps, useDisclosure } from "@chakra-ui/react";
-import { createContext, ReactElement, useState } from "react";
+import { ReactElement, createContext, useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 
 // this should be used in components as useContext(DynamicModalContext);

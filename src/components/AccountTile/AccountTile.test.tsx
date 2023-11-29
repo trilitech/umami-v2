@@ -1,3 +1,4 @@
+import { AccountTile } from "./AccountTile";
 import {
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -8,7 +9,6 @@ import { render, screen } from "../../mocks/testUtils";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { store } from "../../utils/redux/store";
-import { AccountTile } from "./AccountTile";
 describe("<AccountTile />", () => {
   describe("icon and label", () => {
     it("mnemonic account", () => {

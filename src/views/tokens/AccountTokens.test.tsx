@@ -1,6 +1,6 @@
+import { AccountTokens } from "./AccountTokens";
 import { mockFA12Token, mockFA2Token, mockImplicitAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { AccountTokens } from "./AccountTokens";
 
 describe("<AccountTokens />", () => {
   it("renders the account label", () => {

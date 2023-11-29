@@ -1,12 +1,13 @@
 import { AspectRatio, Flex, Heading, Image, Link, Tooltip } from "@chakra-ui/react";
-import { Operation } from "../../types/Operation";
-import { useGetToken } from "../../utils/hooks/tokensHooks";
-import { prettyTezAmount } from "../../utils/format";
-import colors from "../../style/colors";
-import { getIPFSurl } from "../../utils/token/nftUtils";
-import { thumbnailUri, tokenNameSafe, tokenUri } from "../../types/Token";
+
 import { tokenTitle } from "./BatchView";
+import colors from "../../style/colors";
+import { Operation } from "../../types/Operation";
+import { thumbnailUri, tokenNameSafe, tokenUri } from "../../types/Token";
+import { prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { useGetToken } from "../../utils/hooks/tokensHooks";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 export const OperationView = ({ operation }: { operation: Operation }) => {
   const getToken = useGetToken();

@@ -1,5 +1,5 @@
-import { render, screen } from "../../mocks/testUtils";
 import { TezTile } from "./TezTile";
+import { render, screen } from "../../mocks/testUtils";
 import { TEZ } from "../../utils/tezos";
 
 const fixture = (tezAmount: string) => <TezTile mutezAmount={tezAmount} />;

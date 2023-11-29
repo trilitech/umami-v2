@@ -10,31 +10,32 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
-import { FA12Transfer, FA2Transfer } from "../../../types/Operation";
-import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import {
-  formDefaultValues,
-  FormPagePropsWithSender,
-  FormSubmitButtons,
-  getSmallestUnit,
-  makeValidateDecimals,
-} from "../utils";
+
 import { SignPage } from "./SignPage";
-import {
-  useAddToBatchFormAction,
-  useHandleOnSubmitFormActions,
-  useOpenSignPageFormAction,
-} from "../onSubmitFormActionHooks";
-import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
+import { RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
+import { FA12Transfer, FA2Transfer } from "../../../types/Operation";
 import {
   formatTokenAmount,
   getRealAmount,
   tokenDecimals,
   tokenSymbolSafe,
 } from "../../../types/Token";
-import { FormPageHeader } from "../FormPageHeader";
+import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
+import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import { FormPageHeader } from "../FormPageHeader";
+import {
+  useAddToBatchFormAction,
+  useHandleOnSubmitFormActions,
+  useOpenSignPageFormAction,
+} from "../onSubmitFormActionHooks";
+import {
+  FormPagePropsWithSender,
+  FormSubmitButtons,
+  formDefaultValues,
+  getSmallestUnit,
+  makeValidateDecimals,
+} from "../utils";
 
 export type FormValues = {
   sender: RawPkh;

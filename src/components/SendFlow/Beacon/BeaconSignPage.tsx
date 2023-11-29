@@ -1,8 +1,8 @@
-import { ImplicitOperations } from "../../../types/AccountOperations";
-import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
 import { ContractCallSignPage } from "./ContractCallSignPage";
 import { DelegationSignPage } from "./DelegationSignPage";
+import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
+import { ImplicitOperations } from "../../../types/AccountOperations";
 
 export type BeaconSignPageProps = {
   operation: ImplicitOperations;

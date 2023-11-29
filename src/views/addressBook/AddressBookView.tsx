@@ -1,11 +1,12 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { TopBar } from "../../components/TopBar";
-import { ContactTable } from "./ContactTable";
-import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
-import { UpsertContactModal } from "../../components/ContactModal";
 import { useContext } from "react";
-import { DynamicModalContext } from "../../components/DynamicModal";
+
+import { ContactTable } from "./ContactTable";
 import { AddContactIcon } from "../../assets/icons";
+import { UpsertContactModal } from "../../components/ContactModal";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import { TopBar } from "../../components/TopBar";
+import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
 
 const AddContact: React.FC = () => {
   const { openWith } = useContext(DynamicModalContext);

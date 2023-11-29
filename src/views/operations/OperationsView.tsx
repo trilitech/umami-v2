@@ -1,11 +1,12 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
-import { useAccountsFilter } from "../../components/useAccountsFilter";
-import { NoOperations } from "../../components/NoItems";
-import { TopBar } from "../../components/TopBar";
-import { useGetOperations } from "./useGetOperations";
-import { OperationTile, OperationTileContext } from "../../components/OperationTile";
-import colors from "../../style/colors";
 import { useEffect } from "react";
+
+import { useGetOperations } from "./useGetOperations";
+import { NoOperations } from "../../components/NoItems";
+import { OperationTile, OperationTileContext } from "../../components/OperationTile";
+import { TopBar } from "../../components/TopBar";
+import { useAccountsFilter } from "../../components/useAccountsFilter";
+import colors from "../../style/colors";
 
 export const OperationsView = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();

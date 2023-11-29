@@ -1,8 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import { RestoreLedger } from "./RestoreLedger";
 import { ReduxStore } from "../../../providers/ReduxStore";
 import { defaultDerivationPathPattern } from "../../../utils/account/derivationPathUtils";
 import { getPk } from "../../../utils/ledger/pk";
-import { RestoreLedger } from "./RestoreLedger";
 
 const closeModalMock = jest.fn(() => {});
 

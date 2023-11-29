@@ -10,6 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useContext } from "react";
+
 import { DynamicModalContext } from "./DynamicModal";
 import { WarningIcon } from "../assets/icons";
 import colors from "../style/colors";

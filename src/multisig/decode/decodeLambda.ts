@@ -1,5 +1,6 @@
+import type { MichelsonV1Expression } from "@taquito/rpc";
 import { encodePubKey } from "@taquito/utils";
-import { Operation } from "../../types/Operation";
+
 import {
   batchHeadSchema,
   contractTezSchema,
@@ -9,10 +10,10 @@ import {
   setDelegateSchema,
   tezSchema,
 } from "./schemas";
-import type { MichelsonV1Expression } from "@taquito/rpc";
-import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 import { UnrecognizedMichelsonError } from "./UnrecognizedMichelsonError";
 import { MultisigAccount } from "../../types/Account";
+import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
+import { Operation } from "../../types/Operation";
 
 const convertToPkh = (addressBytes: string): string => {
   if (addressBytes.length === 42) {

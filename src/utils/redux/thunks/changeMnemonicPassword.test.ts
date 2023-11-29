@@ -1,19 +1,20 @@
 import createMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+
+import { changeMnemonicPassword } from "./changeMnemonicPassword";
 import { makeDefaultDevSigner } from "../../../mocks/devSignerKeys";
 import { mnemonic1, mnemonic2 } from "../../../mocks/mockMnemonic";
+import { MnemonicAccount } from "../../../types/Account";
 import {
   defaultDerivationPathPattern,
   makeDerivationPath,
 } from "../../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
-import { getFingerPrint } from "../../tezos";
-import thunk from "redux-thunk";
-import { extraArgument } from "../extraArgument";
 import { decrypt, encrypt } from "../../crypto/AES";
 import { EncryptedData } from "../../crypto/types";
+import { getFingerPrint } from "../../tezos";
+import { extraArgument } from "../extraArgument";
 import { State } from "../slices/accountsSlice";
-import { changeMnemonicPassword } from "./changeMnemonicPassword";
-import { MnemonicAccount } from "../../../types/Account";
 
 jest.unmock("../../../utils/tezos");
 jest.unmock("../../../utils/redux/extraArgument");

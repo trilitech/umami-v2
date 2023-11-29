@@ -1,11 +1,12 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { useSignWithBeacon } from "./useSignWithBeacon";
-import { SignPageHeader, headerText } from "../SignPageHeader";
-import { SignPageFee } from "../SignPageFee";
-import { AddressTile } from "../../AddressTile/AddressTile";
 import { FormProvider } from "react-hook-form";
+
 import { BeaconSignPageProps } from "./BeaconSignPage";
+import { useSignWithBeacon } from "./useSignWithBeacon";
+import { AddressTile } from "../../AddressTile/AddressTile";
 import { SignButton } from "../SignButton";
+import { SignPageFee } from "../SignPageFee";
+import { SignPageHeader, headerText } from "../SignPageHeader";
 
 export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,

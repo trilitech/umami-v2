@@ -1,7 +1,8 @@
-import { useGetContactName } from "../../utils/hooks/contactsHooks";
-import { formatPkh, truncate } from "../../utils/format";
 import { Text, TextProps } from "@chakra-ui/react";
+
 import { AddressKind } from "./types";
+import { formatPkh, truncate } from "../../utils/format";
+import { useGetContactName } from "../../utils/hooks/contactsHooks";
 
 export const AddressPillText: React.FC<
   {

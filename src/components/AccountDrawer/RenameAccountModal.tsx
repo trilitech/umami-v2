@@ -1,8 +1,3 @@
-import { FC, useContext } from "react";
-import { Account } from "../../types/Account";
-import { useAppDispatch } from "../../utils/redux/hooks";
-import { DynamicModalContext } from "../DynamicModal";
-import { useForm } from "react-hook-form";
 import {
   Button,
   FormControl,
@@ -14,10 +9,16 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
+import { FC, useContext } from "react";
+import { useForm } from "react-hook-form";
+
+import { Account } from "../../types/Account";
 import { useContactExists } from "../../utils/hooks/contactsHooks";
-import { FormPageHeader } from "../SendFlow/FormPageHeader";
+import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
+import { useAppDispatch } from "../../utils/redux/hooks";
 import { renameAccount } from "../../utils/redux/thunks/renameAccount";
+import { DynamicModalContext } from "../DynamicModal";
+import { FormPageHeader } from "../SendFlow/FormPageHeader";
 
 export const RenameAccountModal: FC<{
   account: Account;

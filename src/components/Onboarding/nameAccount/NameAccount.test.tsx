@@ -1,8 +1,6 @@
-import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
 import { NameAccount } from "./NameAccount";
-import { ReduxStore } from "../../../providers/ReduxStore";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import {
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -10,11 +8,14 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../../mocks/factories";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
+import { ReduxStore } from "../../../providers/ReduxStore";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../utils/redux/store";
-import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
-import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
 import { contactsActions } from "../../../utils/redux/slices/contactsSlice";
+import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
+import { store } from "../../../utils/redux/store";
+import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
+import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn((step: Step) => {});
 

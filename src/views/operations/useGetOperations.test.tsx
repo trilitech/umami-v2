@@ -1,3 +1,4 @@
+import { filterDuplicatedTokenTransfers } from "./useGetOperations";
 import {
   delegationFixture,
   originationFixture,
@@ -5,7 +6,6 @@ import {
   transactionFixture,
 } from "../../components/OperationTile/testUtils";
 import { TzktCombinedOperation } from "../../utils/tezos";
-import { filterDuplicatedTokenTransfers } from "./useGetOperations";
 
 test("filterDuplicatedTokenTransfers", () => {
   const operations: TzktCombinedOperation[] = [

@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
+import { HashRouter } from "react-router-dom";
 
 import { NFTGallery } from "./NFTGallery";
+import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { mockNFTBalance } from "../../mocks/tokens";
-import { HashRouter } from "react-router-dom";
+import { ReduxStore } from "../../providers/ReduxStore";
 import { RawPkh } from "../../types/Address";
 import { NFTBalance } from "../../types/TokenBalance";
-import { ReduxStore } from "../../providers/ReduxStore";
 
 const fixture = (nftsByOwner: Record<RawPkh, NFTBalance[] | undefined>) => (
   <ReduxStore>

@@ -1,8 +1,9 @@
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
+
 import { Notice } from "./Notice";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
+import { Step, StepType } from "../useOnboardingModal";
 
 // TODO refactor mocks
 jest.mock("../../../utils/mnemonic");

@@ -1,19 +1,20 @@
 import {
-  FormControl,
-  ModalBody,
-  ModalHeader,
-  Text,
-  ModalFooter,
   Box,
   Button,
-  ModalContent,
+  FormControl,
+  ModalBody,
   ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Text,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
+
+import { RawPkh } from "../../types/Address";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { FormErrorMessage } from "../FormErrorMessage";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { RawPkh } from "../../types/Address";
 
 export const BuyTezForm: React.FC<{
   recipient?: RawPkh;

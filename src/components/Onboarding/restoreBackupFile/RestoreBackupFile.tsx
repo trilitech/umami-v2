@@ -1,18 +1,19 @@
 import {
-  Input,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Flex,
+  Input,
   ModalBody,
 } from "@chakra-ui/react";
-import { ModalContentWrapper } from "../ModalContentWrapper";
 import { FormProvider, useForm } from "react-hook-form";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { RotateIcon } from "../../../assets/icons";
-import { PasswordInput } from "../../PasswordInput";
+
 import { restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
+import { RotateIcon } from "../../../assets/icons";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { PasswordInput } from "../../PasswordInput";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 
 type FormFields = {
   password: string;

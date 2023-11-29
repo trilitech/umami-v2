@@ -1,8 +1,9 @@
-import { Checkbox, Button, Link } from "@chakra-ui/react";
+import { Button, Checkbox, Link } from "@chakra-ui/react";
 import React from "react";
+
+import { DocumentIcon } from "../../../assets/icons";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
-import { DocumentIcon } from "../../../assets/icons";
 
 export const Eula: React.FC<{
   goToStep: (step: Step) => void;

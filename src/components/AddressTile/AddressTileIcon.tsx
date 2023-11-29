@@ -1,14 +1,15 @@
+import { AspectRatio, Image } from "@chakra-ui/react";
+
+import { AddressKind } from "./types";
 import {
   ContactIcon,
-  UnknownContactIcon,
-  SocialIcon,
   KeyIcon,
   LedgerIcon,
+  SocialIcon,
+  UnknownContactIcon,
 } from "../../assets/icons";
 import colors from "../../style/colors";
 import { Identicon } from "../Identicon";
-import { AddressKind } from "./types";
-import { AspectRatio, Image } from "@chakra-ui/react";
 
 const baseIconProps = {
   stroke: colors.gray[400],

@@ -1,4 +1,5 @@
-import { ModalHeader, Text, ModalCloseButton, chakra } from "@chakra-ui/react";
+import { ModalCloseButton, ModalHeader, Text, chakra } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
 export const HeaderWrapper = chakra(ModalHeader, {

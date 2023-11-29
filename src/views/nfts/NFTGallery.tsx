@@ -1,10 +1,11 @@
 import { SimpleGrid } from "@chakra-ui/react";
+import { orderBy } from "lodash";
 import React from "react";
+
+import { NFTCard } from "./NFTCard";
 import { RawPkh } from "../../types/Address";
 import { fullId } from "../../types/Token";
 import type { NFTBalance } from "../../types/TokenBalance";
-import { NFTCard } from "./NFTCard";
-import { orderBy } from "lodash";
 
 export type NFTWithOwner = NFTBalance & { owner: RawPkh };
 

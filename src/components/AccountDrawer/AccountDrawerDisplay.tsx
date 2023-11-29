@@ -1,23 +1,24 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import type { BigNumber } from "bignumber.js";
-import { Account } from "../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
-import { TezRecapDisplay } from "../TezRecapDisplay";
+import { useContext, useEffect, useState } from "react";
+
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import { MultisigApprovers } from "./MultisigApprovers";
-import { AddressPill } from "../AddressPill/AddressPill";
-import { DynamicModalContext } from "../DynamicModal";
-import { useContext, useEffect, useState } from "react";
-import { FormPage as DelegationFormPage } from "../SendFlow/Delegation/FormPage";
-import { BuyTezForm } from "../BuyTez/BuyTezForm";
-import { useAddressKind } from "../AddressTile/useAddressKind";
-import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { Delegation, makeDelegation } from "../../types/Delegation";
-import { getLastDelegation } from "../../utils/tezos";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { BakerIcon, OutgoingArrow, IncomingArrow, PlusIcon } from "../../assets/icons";
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
+import { BakerIcon, IncomingArrow, OutgoingArrow, PlusIcon } from "../../assets/icons";
+import { Account } from "../../types/Account";
+import { Delegation, makeDelegation } from "../../types/Delegation";
+import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { getLastDelegation } from "../../utils/tezos";
+import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
+import { AddressPill } from "../AddressPill/AddressPill";
+import { useAddressKind } from "../AddressTile/useAddressKind";
+import { BuyTezForm } from "../BuyTez/BuyTezForm";
+import { DynamicModalContext } from "../DynamicModal";
+import { FormPage as DelegationFormPage } from "../SendFlow/Delegation/FormPage";
+import { TezRecapDisplay } from "../TezRecapDisplay";
 
 type Props = {
   onSend: () => void;

@@ -1,8 +1,9 @@
 import { AspectRatio, Box, Flex, Heading, Image } from "@chakra-ui/react";
-import { NFT, thumbnailUri } from "../../types/Token";
-import { getIPFSurl } from "../../utils/token/nftUtils";
+
 import colors from "../../style/colors";
+import { NFT, thumbnailUri } from "../../types/Token";
 import { truncate } from "../../utils/format";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 export const SendNFTRecapTile = ({ nft }: { nft: NFT }) => {
   const url = getIPFSurl(thumbnailUri(nft));

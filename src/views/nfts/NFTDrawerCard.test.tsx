@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
+
+import { NFTDrawerCard } from "./NFTDrawerCard";
 import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { NFTBalance } from "../../types/TokenBalance";
-import { NFTDrawerCard } from "./NFTDrawerCard";
 
 const fixture = (nft: NFTBalance, ownerPkh = mockImplicitAddress(0).pkh) => (
   <ReduxStore>

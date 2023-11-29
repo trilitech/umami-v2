@@ -1,4 +1,5 @@
 import { Flex, Icon, IconProps } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
 export const VerifiedIcon: React.FC = () => {

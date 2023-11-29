@@ -1,6 +1,6 @@
+import { networksActions } from "./networks";
 import { DefaultNetworks, GHOSTNET, MAINNET } from "../../../types/Network";
 import { store } from "../store";
-import { networksActions } from "./networks";
 
 describe("networksSlice", () => {
   test("initialState", () => {

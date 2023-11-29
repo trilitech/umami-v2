@@ -1,5 +1,5 @@
-import { GHOSTNET, MAINNET } from "../../types/Network";
 import { buildTzktAddressUrl } from "./helpers";
+import { GHOSTNET, MAINNET } from "../../types/Network";
 
 test("buildTzktUrl returns the right value for a given network", () => {
   expect(buildTzktAddressUrl(GHOSTNET, "mockAddress")).toEqual(

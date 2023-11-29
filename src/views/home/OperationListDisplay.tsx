@@ -1,11 +1,12 @@
+import { Box, Center, Divider, Text } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "react-router-dom";
+
+import { RefreshClockIcon } from "../../assets/icons";
 import { NoOperations } from "../../components/NoItems";
 import { OperationTile } from "../../components/OperationTile";
-import { TzktCombinedOperation } from "../../utils/tezos";
-import { Box, Center, Divider, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { RefreshClockIcon } from "../../assets/icons";
 import colors from "../../style/colors";
+import { TzktCombinedOperation } from "../../utils/tezos";
 
 export const OperationListDisplay: React.FC<{ operations: TzktCombinedOperation[] }> = ({
   operations,

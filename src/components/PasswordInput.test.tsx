@@ -1,6 +1,7 @@
-import { PasswordInput } from "./PasswordInput";
 import { fireEvent, render, renderHook, screen, waitFor } from "@testing-library/react";
 import { FormProvider, useForm } from "react-hook-form";
+
+import { PasswordInput } from "./PasswordInput";
 type FormFields = { destination: string };
 
 const fixture = () => {

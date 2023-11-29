@@ -1,7 +1,8 @@
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { FiArrowUpRight } from "react-icons/fi";
-import { Operation } from "../../../../types/Operation";
+
 import colors from "../../../../style/colors";
+import { Operation } from "../../../../types/Operation";
 import { tokenNameSafe, tokenPrettyAmount } from "../../../../types/Token";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useGetToken } from "../../../../utils/hooks/tokensHooks";

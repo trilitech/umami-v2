@@ -12,20 +12,21 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { NFTBalance } from "../../types/TokenBalance";
-import { getIPFSurl } from "../../utils/token/nftUtils";
-import { TagsSection } from "./drawer/TagsSection";
+import { useContext } from "react";
+import ReactPlayer from "react-player";
+
 import { AttributesAccordionItem } from "./drawer/AttributesAccordionItem";
 import { PropertiesAccordionItem } from "./drawer/PropertiesAccordionItem";
-import { RawPkh } from "../../types/Address";
-import { DynamicModalContext } from "../../components/DynamicModal";
-import { useContext } from "react";
-import { FormPage as SendNFTForm } from "../../components/SendFlow/NFT/FormPage";
-import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
-import { artifactUri, mimeType, tokenName } from "../../types/Token";
+import { TagsSection } from "./drawer/TagsSection";
 import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import { FormPage as SendNFTForm } from "../../components/SendFlow/NFT/FormPage";
 import colors from "../../style/colors";
-import ReactPlayer from "react-player";
+import { RawPkh } from "../../types/Address";
+import { artifactUri, mimeType, tokenName } from "../../types/Token";
+import { NFTBalance } from "../../types/TokenBalance";
+import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
+import { getIPFSurl } from "../../utils/token/nftUtils";
 
 export const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
   const url = getIPFSurl(artifactUri(nft));

@@ -1,5 +1,6 @@
 import { checkboxAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+
 import colors from "../colors";
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(

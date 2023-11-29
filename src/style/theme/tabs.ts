@@ -1,5 +1,6 @@
 import { tabsAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/styled-system";
+
 import colors from "../colors";
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(

@@ -1,14 +1,16 @@
-import { makeAccountOperations } from "../../types/AccountOperations";
+import { Modal } from "@chakra-ui/react";
+
+import { BatchPage } from "./BatchPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
+import { makeAccountOperations } from "../../types/AccountOperations";
+import { MAINNET } from "../../types/Network";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
+import { batchesActions } from "../../utils/redux/slices/batches";
 import { store } from "../../utils/redux/store";
 import { estimate, executeOperations } from "../../utils/tezos";
-import { BatchPage } from "./BatchPage";
-import { batchesActions } from "../../utils/redux/slices/batches";
-import { MAINNET } from "../../types/Network";
-import { Modal } from "@chakra-ui/react";
+
 jest.mock("../../utils/hooks/accountUtils");
 jest.mock("../../utils/tezos");
 

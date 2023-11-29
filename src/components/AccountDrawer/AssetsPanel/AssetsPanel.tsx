@@ -1,22 +1,22 @@
 import { Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import React from "react";
-import { Account } from "../../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
-import { Delegation } from "../../../types/Delegation";
-import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
-import { SmallTab } from "../../SmallTab";
+
 import { DelegationDisplay } from "./DelegationDisplay";
 import { MultisigPendingAccordion } from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
-
-import { OperationListDisplay } from "../../../views/home/OperationListDisplay";
-import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
-import { OperationTileContext } from "../../OperationTile";
-import { useGetOperations } from "../../../views/operations/useGetOperations";
-import colors from "../../../style/colors";
-import { ExternalLink } from "../../ExternalLink";
 import { ExternalLinkIcon } from "../../../assets/icons";
+import colors from "../../../style/colors";
+import { Account } from "../../../types/Account";
+import { Delegation } from "../../../types/Delegation";
+import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
+import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
+import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
+import { OperationListDisplay } from "../../../views/home/OperationListDisplay";
+import { useGetOperations } from "../../../views/operations/useGetOperations";
+import { ExternalLink } from "../../ExternalLink";
+import { OperationTileContext } from "../../OperationTile";
+import { SmallTab } from "../../SmallTab";
 
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;

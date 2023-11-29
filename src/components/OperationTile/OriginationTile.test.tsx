@@ -1,3 +1,6 @@
+import { OperationTileContext } from "./OperationTileContext";
+import { OriginationTile } from "./OriginationTile";
+import { originationFixture } from "./testUtils";
 import { mockContractAddress, mockLedgerAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
@@ -5,9 +8,6 @@ import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 import { OriginationOperation, TEZ } from "../../utils/tezos";
-import { OperationTileContext } from "./OperationTileContext";
-import { OriginationTile } from "./OriginationTile";
-import { originationFixture } from "./testUtils";
 
 const fixture = (context: any, operation: OriginationOperation) => (
   <OperationTileContext.Provider value={context}>

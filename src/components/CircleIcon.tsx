@@ -1,4 +1,5 @@
 import { Box, Center } from "@chakra-ui/react";
+
 import colors from "../style/colors";
 
 type Props = {

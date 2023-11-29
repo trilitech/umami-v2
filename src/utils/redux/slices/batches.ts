@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AccountOperations } from "../../../types/AccountOperations";
-import { DefaultNetworks, Network, NetworkName } from "../../../types/Network";
 import { findIndex, fromPairs } from "lodash";
+
+import { AccountOperations } from "../../../types/AccountOperations";
 import { RawPkh } from "../../../types/Address";
+import { DefaultNetworks, Network, NetworkName } from "../../../types/Network";
 
 type State = Record<NetworkName, AccountOperations[] | undefined>;
 

@@ -2,23 +2,24 @@ import {
   Box,
   Button,
   FormControl,
-  ModalCloseButton,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalContent,
-  useToast,
   Heading,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useToast,
 } from "@chakra-ui/react";
+import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+
+import colors from "../../style/colors";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { changeMnemonicPassword } from "../../utils/redux/thunks/changeMnemonicPassword";
 import { DynamicModalContext } from "../DynamicModal";
-import { useContext } from "react";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { PasswordInput } from "../PasswordInput";
-import colors from "../../style/colors";
 
 type ChangePasswordFormValues = {
   currentPassword: string;

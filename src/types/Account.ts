@@ -1,6 +1,7 @@
 import { Curves } from "@taquito/signer";
-import { Multisig } from "../utils/multisig/types";
+
 import { ImplicitAddress } from "./Address";
+import { Multisig } from "../utils/multisig/types";
 
 export type SocialAccount = {
   label: string;

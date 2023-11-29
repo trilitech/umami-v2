@@ -1,11 +1,12 @@
 import { maxBy } from "lodash";
-import { Account, MultisigAccount, ImplicitAccount } from "../../types/Account";
+
+import { useGetAccountBalance } from "./assetsHooks";
+import { useContacts } from "./contactsHooks";
+import { useMultisigAccounts } from "./multisigHooks";
+import { Account, ImplicitAccount, MultisigAccount } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
 import { decrypt } from "../crypto/AES";
 import { useAppSelector } from "../redux/hooks";
-import { useGetAccountBalance } from "./assetsHooks";
-import { useMultisigAccounts } from "./multisigHooks";
-import { useContacts } from "./contactsHooks";
 
 export const useImplicitAccounts = () => {
   return useAppSelector(s => s.accounts.items);

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { mockNFT } from "../../../mocks/factories";
+
 import { TagsSection } from "./TagsSection";
+import { mockNFT } from "../../../mocks/factories";
 
 describe("TagsSection", () => {
   it("shows nothing if there are no tags", () => {

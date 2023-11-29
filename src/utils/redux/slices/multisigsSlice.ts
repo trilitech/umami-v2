@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fromPairs, groupBy } from "lodash";
-import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
+
 import { MultisigAccount } from "../../../types/Account";
+import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
 
 export type State = {
   items: MultisigAccount[];

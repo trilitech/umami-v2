@@ -1,6 +1,6 @@
-import { render, screen } from "../../mocks/testUtils";
-import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
 import { NFTCard } from "./NFTCard";
+import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
+import { render, screen } from "../../mocks/testUtils";
 
 describe("NFTCard", () => {
   it("displays the nft image correctly", () => {

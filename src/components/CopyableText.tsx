@@ -2,9 +2,10 @@ import { Flex, FlexProps, Icon, Text, useToast } from "@chakra-ui/react";
 import React from "react";
 import { BsCheckCircle } from "react-icons/bs";
 import { RxCross1 } from "react-icons/rx";
+
+import { FileCopyIcon } from "../assets/icons";
 import colors from "../style/colors";
 import { formatPkh } from "../utils/format";
-import { FileCopyIcon } from "../assets/icons";
 
 const TOAST_ID = "TOAST_ID";
 

@@ -5,23 +5,24 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
+
 import { ConnectOptions } from "./connectOptions/ConnectOptions";
 import { ConnectOrCreate } from "./connectOrCreate/ConnectOrCreate";
+import { DerivationPath } from "./derivationPath/DerivationPath";
 import { Eula } from "./eula/Eula";
-import { ShowSeedphrase } from "./showSeedphrase/ShowSeedphrase";
+import { FakeAccount } from "./FakeAccount";
 import { MasterPassword } from "./masterPassword/MasterPassword";
 import { NameAccount } from "./nameAccount/NameAccount";
 import { Notice } from "./notice/Notice";
-import { RestoreLedger } from "./restoreLedger/RestoreLedger";
-import { VerifySeedphrase } from "./verifySeedphrase/VerifySeedphrase";
-import { DerivationPath } from "./derivationPath/DerivationPath";
-import { useStepHistory } from "../useStepHistory";
-import { FakeAccount } from "./FakeAccount";
-import { ModalBackButton } from "../ModalBackButton";
-import { RestoreMnemonic } from "./restoreMnemonic/RestoreMnemonic";
 import { RestoreBackupFile } from "./restoreBackupFile/RestoreBackupFile";
+import { RestoreLedger } from "./restoreLedger/RestoreLedger";
+import { RestoreMnemonic } from "./restoreMnemonic/RestoreMnemonic";
 import { RestoreSecretKey } from "./restoreSecretKey/RestoreSecretKey";
+import { ShowSeedphrase } from "./showSeedphrase/ShowSeedphrase";
+import { VerifySeedphrase } from "./verifySeedphrase/VerifySeedphrase";
+import { useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
+import { ModalBackButton } from "../ModalBackButton";
+import { useStepHistory } from "../useStepHistory";
 
 export enum StepType {
   eula = "eula",

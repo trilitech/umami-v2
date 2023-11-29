@@ -1,19 +1,20 @@
+import { max, min, uniqBy } from "lodash";
 import { useEffect, useState } from "react";
+
+import { RawPkh } from "../../types/Address";
+import { Network } from "../../types/Network";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { useAppDispatch } from "../../utils/redux/hooks";
+import { assetsActions } from "../../utils/redux/slices/assetsSlice";
+import { tokensActions } from "../../utils/redux/slices/tokensSlice";
+import { AppDispatch } from "../../utils/redux/store";
 import {
   TokenTransferOperation,
   TzktCombinedOperation,
   getCombinedOperations,
   getRelatedTokenTransfers,
 } from "../../utils/tezos";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { RawPkh } from "../../types/Address";
-import { useAppDispatch } from "../../utils/redux/hooks";
-import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import { Network } from "../../types/Network";
-import { AppDispatch } from "../../utils/redux/store";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { max, min, uniqBy } from "lodash";
 
 const REFRESH_INTERVAL = 15000;
 

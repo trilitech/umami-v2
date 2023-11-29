@@ -1,5 +1,5 @@
-import { act, render, renderHook, screen } from "../mocks/testUtils";
 import { useDynamicModal } from "./DynamicModal";
+import { act, render, renderHook, screen } from "../mocks/testUtils";
 
 describe("useDynamicModal", () => {
   it("is closed by default", () => {

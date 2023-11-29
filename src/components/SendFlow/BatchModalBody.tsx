@@ -1,13 +1,12 @@
+import { Flex, FormLabel, ModalBody, Text } from "@chakra-ui/react";
+import { BigNumber } from "bignumber.js";
 import React from "react";
 
-import { ModalBody, Text, Flex, FormLabel } from "@chakra-ui/react";
-
-import { BigNumber } from "bignumber.js";
-import colors from "../../style/colors";
 import { FormPageHeader } from "./FormPageHeader";
-import { AddressTile } from "../AddressTile/AddressTile";
 import { SignPageFee } from "./SignPageFee";
+import colors from "../../style/colors";
 import { ImplicitAddress } from "../../types/Address";
+import { AddressTile } from "../AddressTile/AddressTile";
 
 export const BatchModalBody: React.FC<{
   fee: BigNumber;

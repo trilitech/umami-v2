@@ -1,12 +1,13 @@
-import { test, expect, Page } from "@playwright/test";
-import { MASTER_PASSWORD, cleanupState } from "../utils";
-import { derivePublicKeyPair } from "../../utils/mnemonic";
-import { getFingerPrint } from "../../utils/tezos/helpers";
+import { Page, expect, test } from "@playwright/test";
+
 import {
   AVAILABLE_DERIVATION_PATHS,
   defaultDerivationPathPattern,
 } from "../../utils/account/derivationPathUtils";
 import { formatPkh } from "../../utils/format";
+import { derivePublicKeyPair } from "../../utils/mnemonic";
+import { getFingerPrint } from "../../utils/tezos/helpers";
+import { MASTER_PASSWORD, cleanupState } from "../utils";
 
 cleanupState();
 

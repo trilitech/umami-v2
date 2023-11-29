@@ -1,6 +1,6 @@
-import { render, screen } from "../../mocks/testUtils";
 import { OperationTileContext } from "./OperationTileContext";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
+import { render, screen } from "../../mocks/testUtils";
 
 describe("<OperationTypeWrapper />", () => {
   it("renders the children", () => {

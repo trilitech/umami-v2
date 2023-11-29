@@ -8,18 +8,19 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { parsePkh, RawPkh, parseImplicitPkh } from "../../../types/Address";
-import { BakersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormPageProps, FormSubmitButtons } from "../utils";
+
 import { SignPage } from "./SignPage";
+import { RawPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
+import { Delegation } from "../../../types/Operation";
+import { BakersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { FormErrorMessage } from "../../FormErrorMessage";
+import { HeaderWrapper } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { Delegation } from "../../../types/Operation";
-import { FormErrorMessage } from "../../FormErrorMessage";
-import { HeaderWrapper } from "../FormPageHeader";
+import { FormPageProps, FormSubmitButtons, formDefaultValues } from "../utils";
 
 export type FormValues = {
   sender: RawPkh;

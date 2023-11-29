@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
-
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
-import { ApproveOrExecute } from "../../../utils/tezos/types";
-import { ImplicitAccount } from "../../../types/Account";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { DynamicModalContext } from "../../DynamicModal";
 import { TezosToolkit } from "@taquito/taquito";
-import { AccountOperations } from "../../../types/AccountOperations";
-import { executeOperations } from "../../../utils/tezos";
 import { BigNumber } from "bignumber.js";
 import { capitalize } from "lodash";
+import React, { useContext } from "react";
+
+import { ImplicitAccount } from "../../../types/Account";
+import { AccountOperations } from "../../../types/AccountOperations";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { executeOperations } from "../../../utils/tezos";
+import { ApproveOrExecute } from "../../../utils/tezos/types";
+import { DynamicModalContext } from "../../DynamicModal";
 import { BatchModalBody } from "../BatchModalBody";
 import { SignButton } from "../SignButton";
 import { SuccessStep } from "../SuccessStep";

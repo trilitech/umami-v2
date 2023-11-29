@@ -3,23 +3,23 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
-import MockDate from "mockdate";
 import { webcrypto } from "crypto";
-
 import { TextDecoder, TextEncoder } from "util";
 
-import failOnConsole from "jest-fail-on-console";
-import { contactsActions } from "./utils/redux/slices/contactsSlice";
-import { store } from "./utils/redux/store";
-import { multisigsSlice } from "./utils/redux/slices/multisigsSlice";
-import { accountsSlice } from "./utils/redux/slices/accountsSlice";
 import { act } from "@testing-library/react";
-import { tokensActions } from "./utils/redux/slices/tokensSlice";
-import { errorsSlice } from "./utils/redux/slices/errorsSlice";
-import { mockUseToast } from "./mocks/toast";
+import failOnConsole from "jest-fail-on-console";
+import MockDate from "mockdate";
 import React from "react";
-import { networksActions } from "./utils/redux/slices/networks";
+
+import { mockUseToast } from "./mocks/toast";
+import { accountsSlice } from "./utils/redux/slices/accountsSlice";
 import { batchesActions } from "./utils/redux/slices/batches";
+import { contactsActions } from "./utils/redux/slices/contactsSlice";
+import { errorsSlice } from "./utils/redux/slices/errorsSlice";
+import { multisigsSlice } from "./utils/redux/slices/multisigsSlice";
+import { networksActions } from "./utils/redux/slices/networks";
+import { tokensActions } from "./utils/redux/slices/tokensSlice";
+import { store } from "./utils/redux/store";
 
 failOnConsole();
 

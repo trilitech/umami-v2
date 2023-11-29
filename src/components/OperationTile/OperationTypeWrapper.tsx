@@ -1,6 +1,7 @@
-import { PropsWithChildren, useContext } from "react";
-import { OperationTileContext } from "./OperationTileContext";
 import { Text } from "@chakra-ui/react";
+import { PropsWithChildren, useContext } from "react";
+
+import { OperationTileContext } from "./OperationTileContext";
 import colors from "../../style/colors";
 
 // It hides the operation type in the drawer to save space

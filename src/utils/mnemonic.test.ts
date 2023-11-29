@@ -1,14 +1,13 @@
-import { mnemonic1 } from "../mocks/mockMnemonic";
-import { ImplicitAccount } from "../types/Account";
-import { restoreRevealedMnemonicAccounts, restoreRevealedPublicKeyPairs } from "./mnemonic";
-import { addressExists, getFingerPrint } from "./tezos";
-
 import {
   defaultDerivationPathPattern,
   getDefaultDerivationPath,
 } from "./account/derivationPathUtils";
-import { MAINNET } from "../types/Network";
+import { restoreRevealedMnemonicAccounts, restoreRevealedPublicKeyPairs } from "./mnemonic";
+import { addressExists, getFingerPrint } from "./tezos";
+import { mnemonic1 } from "../mocks/mockMnemonic";
+import { ImplicitAccount } from "../types/Account";
 import { RawPkh } from "../types/Address";
+import { MAINNET } from "../types/Network";
 
 const addressExistsMock = jest.mocked(addressExists);
 const getFingerPrintMock = jest.mocked(getFingerPrint);

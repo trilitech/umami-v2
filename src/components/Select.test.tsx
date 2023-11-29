@@ -1,6 +1,7 @@
 import userEvent from "@testing-library/user-event";
-import { render, screen, waitFor } from "../mocks/testUtils";
+
 import { Select } from "./Select";
+import { render, screen, waitFor } from "../mocks/testUtils";
 
 describe("<Select />", () => {
   it("renders the default value", () => {

@@ -1,37 +1,38 @@
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Input,
   ModalBody,
   ModalCloseButton,
+  ModalContent,
   ModalFooter,
   ModalHeader,
-  useToast,
   Text,
-  Flex,
-  ModalContent,
+  useToast,
 } from "@chakra-ui/react";
 import Papa, { ParseResult } from "papaparse";
+import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Operation } from "../../types/Operation";
+
+import { parseOperation } from "./utils";
+import { makeAccountOperations } from "../../types/AccountOperations";
 import { RawPkh } from "../../types/Address";
+import { Operation } from "../../types/Operation";
 import {
   useGetBestSignerForAccount,
   useGetOwnedAccount,
 } from "../../utils/hooks/getAccountDataHooks";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
-import { parseOperation } from "./utils";
-import { makeAccountOperations } from "../../types/AccountOperations";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { FormErrorMessage } from "../FormErrorMessage";
-import { useContext } from "react";
 import { DynamicModalContext } from "../DynamicModal";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { FormErrorMessage } from "../FormErrorMessage";
 
 type FormFields = {
   sender: RawPkh;

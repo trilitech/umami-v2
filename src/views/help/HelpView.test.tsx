@@ -1,5 +1,5 @@
-import { render, screen } from "../../mocks/testUtils";
 import { HelpView } from "./HelpView";
+import { render, screen } from "../../mocks/testUtils";
 
 describe("<HelpView />", () => {
   test("renders cards", () => {

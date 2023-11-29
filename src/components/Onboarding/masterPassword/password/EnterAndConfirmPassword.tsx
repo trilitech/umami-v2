@@ -1,9 +1,10 @@
 import { Button, FormControl } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { ModalContentWrapper } from "../../ModalContentWrapper";
+
+import { LockIcon } from "../../../../assets/icons";
 import { FormErrorMessage } from "../../../FormErrorMessage";
 import { PasswordInput } from "../../../PasswordInput";
-import { LockIcon } from "../../../../assets/icons";
+import { ModalContentWrapper } from "../../ModalContentWrapper";
 
 export const MIN_LENGTH = 8;
 

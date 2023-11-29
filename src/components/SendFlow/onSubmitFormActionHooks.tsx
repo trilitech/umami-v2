@@ -1,13 +1,14 @@
-import { useContext } from "react";
-import { BaseFormValues, FormPageProps, SignPageProps, useMakeFormOperations } from "./utils";
-import { DynamicModalContext } from "../DynamicModal";
-import { Operation } from "../../types/Operation";
-import { useAppDispatch } from "../../utils/redux/hooks";
 import { useToast } from "@chakra-ui/toast";
-import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { estimate } from "../../utils/tezos";
+import { useContext } from "react";
+
+import { BaseFormValues, FormPageProps, SignPageProps, useMakeFormOperations } from "./utils";
+import { Operation } from "../../types/Operation";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
+import { useAppDispatch } from "../../utils/redux/hooks";
+import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
+import { estimate } from "../../utils/tezos";
+import { DynamicModalContext } from "../DynamicModal";
 
 // This file defines hooks to create actions when form is submitted.
 

@@ -1,4 +1,5 @@
 import { Icon, IconProps } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
 export const FA12Icon: React.FC<IconProps> = props => {

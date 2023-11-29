@@ -1,15 +1,16 @@
-import { Box, Flex, Heading, Button } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useContext } from "react";
-import { ChangePasswordForm } from "../../components/ChangePassword/ChangePasswordForm";
-import { ClickableCard, SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
-import { DynamicModalContext } from "../../components/DynamicModal";
-import { useOffboardingModal } from "../../components/Offboarding/useOffboardingModal";
-import { TopBar } from "../../components/TopBar";
+
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
 import { ErrorLogsDrawerCard } from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
 import packageInfo from "../../../package.json";
 import { DownloadIcon } from "../../assets/icons";
+import { ChangePasswordForm } from "../../components/ChangePassword/ChangePasswordForm";
+import { ClickableCard, SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import { useOffboardingModal } from "../../components/Offboarding/useOffboardingModal";
+import { TopBar } from "../../components/TopBar";
 
 export const SettingsView = () => {
   return (

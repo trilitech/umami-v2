@@ -1,4 +1,6 @@
 import { FormProvider, useForm } from "react-hook-form";
+
+import { OperationSignerSelector } from "./OperationSignerSelector";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
@@ -6,12 +8,11 @@ import {
   mockMultisigAccount,
 } from "../../mocks/factories";
 import { render, renderHook, screen } from "../../mocks/testUtils";
-import { OperationSignerSelector } from "./OperationSignerSelector";
+import { MultisigAccount } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
-import { store } from "../../utils/redux/store";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
-import { MultisigAccount } from "../../types/Account";
+import { store } from "../../utils/redux/store";
 
 describe("OperationSignerSelector", () => {
   it("is hidden for implicit operations", () => {

@@ -1,18 +1,19 @@
 import {
-  FormControl,
-  ModalBody,
-  ModalCloseButton,
-  ModalHeader,
-  Text,
-  ModalFooter,
   Box,
   Button,
-  Input,
   Checkbox,
   Divider,
+  FormControl,
   Heading,
+  Input,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  ModalHeader,
+  Text,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
+
 import { WarningIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { useReset } from "../../utils/hooks/setAccountDataHooks";

@@ -15,6 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { FC, useContext, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+
+import { CopyableAddress } from "./CopyableText";
+import { DynamicModalContext } from "./DynamicModal";
+import { FormErrorMessage } from "./FormErrorMessage";
 import colors from "../style/colors";
 import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
@@ -22,9 +26,6 @@ import { useContactExists } from "../utils/hooks/contactsHooks";
 import { useAllAccounts, useGetOwnedAccountSafe } from "../utils/hooks/getAccountDataHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
-import { CopyableAddress } from "./CopyableText";
-import { DynamicModalContext } from "./DynamicModal";
-import { FormErrorMessage } from "./FormErrorMessage";
 
 export const UpsertContactModal: FC<{
   title: string;

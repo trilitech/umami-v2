@@ -1,6 +1,7 @@
-import { Button, Divider, Flex, Text, Box } from "@chakra-ui/react";
-import { PenIcon, TrashIcon } from "../assets/icons";
+import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
+
 import { PopoverMenu } from "./PopoverMenu";
+import { PenIcon, TrashIcon } from "../assets/icons";
 
 export const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }> = ({
   onRename,

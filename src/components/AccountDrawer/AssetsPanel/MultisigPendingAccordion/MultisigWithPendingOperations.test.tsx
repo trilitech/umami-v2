@@ -1,4 +1,5 @@
-import { MultisigPendingAccordion } from ".";
+import { BigNumber } from "bignumber.js";
+
 import { mockMnemonicAccount, mockMultisigAccount } from "../../../../mocks/factories";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
@@ -11,7 +12,8 @@ import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
 import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../../utils/redux/store";
 import { estimate } from "../../../../utils/tezos";
-import { BigNumber } from "bignumber.js";
+
+import { MultisigPendingAccordion } from ".";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 

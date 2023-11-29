@@ -1,3 +1,6 @@
+import { OperationTileContext } from "./OperationTileContext";
+import { tokenTransferFixture, transactionFixture } from "./testUtils";
+import { TokenTransferTile } from "./TokenTransferTile";
 import { mockLedgerAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
@@ -8,9 +11,6 @@ import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 import { TEZ, TransactionOperation } from "../../utils/tezos";
-import { OperationTileContext } from "./OperationTileContext";
-import { TokenTransferTile } from "./TokenTransferTile";
-import { tokenTransferFixture, transactionFixture } from "./testUtils";
 
 const fixture = (context: any, tokenTransfer: TokenTransfer, operation?: TransactionOperation) => (
   <OperationTileContext.Provider value={context}>

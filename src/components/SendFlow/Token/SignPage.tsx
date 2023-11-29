@@ -1,13 +1,14 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
-import { SignPageProps, useSignPageHelpers } from "../utils";
-import { SignPageHeader, headerText } from "../SignPageHeader";
+
 import { FATokenBalance, FATransfer } from "./FormPage";
-import { OperationSignerSelector } from "../OperationSignerSelector";
-import { SignPageFee } from "../SignPageFee";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import { SignButton } from "../SignButton";
 import { TokenTile } from "../../TokenTile";
+import { OperationSignerSelector } from "../OperationSignerSelector";
+import { SignButton } from "../SignButton";
+import { SignPageFee } from "../SignPageFee";
+import { SignPageHeader, headerText } from "../SignPageHeader";
+import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
   const {

@@ -1,4 +1,5 @@
 import { Flex, Text, TextProps } from "@chakra-ui/react";
+
 import { VerifiedIcon } from "../../assets/icons";
 import { tokenNameSafe } from "../../types/Token";
 import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";

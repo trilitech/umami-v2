@@ -1,15 +1,16 @@
 import { Button, FormControl, FormLabel } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { ModalContentWrapper } from "../ModalContentWrapper";
-import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
+
+import { SlashIcon } from "../../../assets/icons";
 import {
   AVAILABLE_DERIVATION_PATHS,
   DEFAULT_DERIVATION_PATH,
   defaultDerivationPathPattern,
 } from "../../../utils/account/derivationPathUtils";
 import { FormErrorMessage } from "../../FormErrorMessage";
-import { SlashIcon } from "../../../assets/icons";
 import { Select } from "../../Select";
+import { ModalContentWrapper } from "../ModalContentWrapper";
+import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;

@@ -1,8 +1,9 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+
 import { Account } from "../../../types/Account";
-import { multisigsSlice } from "../slices/multisigsSlice";
 import { accountsSlice } from "../slices/accountsSlice";
+import { multisigsSlice } from "../slices/multisigsSlice";
+import { RootState } from "../store";
 
 export const renameAccount = (
   account: Account,

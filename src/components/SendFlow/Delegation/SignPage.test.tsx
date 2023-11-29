@@ -1,14 +1,15 @@
 import { Modal } from "@chakra-ui/react";
+import BigNumber from "bignumber.js";
+
+import { SignPage } from "./SignPage";
 import { mockDelegation, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { SignPageProps } from "../utils";
-import { SignPage } from "./SignPage";
-import BigNumber from "bignumber.js";
-import { store } from "../../../utils/redux/store";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { DelegationOperation, TEZ, getLastDelegation } from "../../../utils/tezos";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
+import { store } from "../../../utils/redux/store";
+import { DelegationOperation, TEZ, getLastDelegation } from "../../../utils/tezos";
+import { SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps) => (
   <Modal isOpen={true} onClose={() => {}}>

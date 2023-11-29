@@ -1,4 +1,7 @@
 import { useToast } from "@chakra-ui/react";
+
+import { EnterAndConfirmPassword } from "./password/EnterAndConfirmPassword";
+import { EnterPassword } from "./password/EnterPassword";
 import { useCheckPasswordValidity } from "../../../utils/hooks/getAccountDataHooks";
 import {
   useRestoreFromMnemonic,
@@ -6,8 +9,6 @@ import {
 } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { MasterPasswordStep } from "../useOnboardingModal";
-import { EnterAndConfirmPassword } from "./password/EnterAndConfirmPassword";
-import { EnterPassword } from "./password/EnterPassword";
 
 export const MasterPassword = ({
   account,

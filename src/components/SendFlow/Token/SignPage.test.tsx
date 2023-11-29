@@ -1,15 +1,16 @@
 import { Modal } from "@chakra-ui/react";
-import { mockFA2Token, mockMnemonicAccount, mockImplicitAccount } from "../../../mocks/factories";
+import BigNumber from "bignumber.js";
+
+import { FATokenBalance } from "./FormPage";
+import { SignPage } from "./SignPage";
+import { mockFA2Token, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { SignPageProps } from "../utils";
-import { SignPage } from "./SignPage";
-import BigNumber from "bignumber.js";
-import { store } from "../../../utils/redux/store";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { TEZ } from "../../../utils/tezos";
 import { parseContractPkh } from "../../../types/Address";
-import { FATokenBalance } from "./FormPage";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../utils/redux/store";
+import { TEZ } from "../../../utils/tezos";
+import { SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps<{ token: FATokenBalance }>) => (
   <Modal isOpen={true} onClose={() => {}}>

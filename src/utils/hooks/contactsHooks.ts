@@ -1,5 +1,5 @@
-import { useAppSelector } from "../redux/hooks";
 import { nameExistsInContacts } from "./contactsUtils";
+import { useAppSelector } from "../redux/hooks";
 export const useContacts = () => useAppSelector(s => s.contacts);
 
 export const useAllSortedContacts = () => {

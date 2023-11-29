@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import { SideNavbar } from "../components/SideNavbar";
 
 export const withSideMenu = (body: React.ReactElement) => {

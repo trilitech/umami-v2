@@ -1,7 +1,8 @@
-import { MANAGER_LAMBDA } from "@taquito/taquito";
-import { FA12Transfer, FA2Transfer, Operation } from "../types/Operation";
 import type { MichelsonV1Expression, TransactionOperationParameter } from "@taquito/rpc";
+import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { isEqual } from "lodash";
+
+import { FA12Transfer, FA2Transfer, Operation } from "../types/Operation";
 import { makeFA12TransactionParameter, makeFA2TransactionParameter } from "../utils/tezos";
 
 export const FA2_TRANSFER_ARG_TYPES: MichelsonV1Expression = {

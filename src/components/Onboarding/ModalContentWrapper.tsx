@@ -1,7 +1,8 @@
+import { Box, Center, Heading, Text, VStack } from "@chakra-ui/react";
 import { ReactElement } from "react";
-import { VStack, Heading, Box, Text, Center } from "@chakra-ui/react";
-import { CircleIcon } from "../CircleIcon";
+
 import colors from "../../style/colors";
+import { CircleIcon } from "../CircleIcon";
 
 type Props = {
   title: string;

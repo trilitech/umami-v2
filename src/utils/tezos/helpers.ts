@@ -1,9 +1,15 @@
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
+import { OpKind, TransactionOperationParameter } from "@taquito/rpc";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import axios from "axios";
+import BigNumber from "bignumber.js";
 import { shuffle } from "lodash";
+
+import { FakeSigner } from "./fakeSigner";
+import { AccountOperations } from "../../types/AccountOperations";
+import { Network } from "../../types/Network";
 import {
   FA12Transfer,
   FA2Transfer,
@@ -13,11 +19,6 @@ import {
 import { SignerConfig } from "../../types/SignerConfig";
 import { PublicKeyPair } from "../mnemonic";
 import { RawTzktGetAddressType } from "../tzkt/types";
-import { FakeSigner } from "./fakeSigner";
-import BigNumber from "bignumber.js";
-import { OpKind, TransactionOperationParameter } from "@taquito/rpc";
-import { AccountOperations } from "../../types/AccountOperations";
-import { Network } from "../../types/Network";
 
 export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
   try {

@@ -1,16 +1,17 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
+import { get } from "lodash";
 import { useCallback, useEffect, useState } from "react";
-import { AccountCard } from "../../components/AccountDrawer";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
+import { useNavigate, useParams } from "react-router-dom";
+
 import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
+import { AccountCard } from "../../components/AccountDrawer";
 import { useDynamicModal } from "../../components/DynamicModal";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { fullId } from "../../types/Token";
+import { useAllNfts } from "../../utils/hooks/assetsHooks";
+import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { NFTDrawerBody } from "../nfts/NFTDrawerBody";
-import { get } from "lodash";
 
 export const AccountListWithDrawer: React.FC = () => {
   const [selected, setSelected] = useState<string | null>(null);
