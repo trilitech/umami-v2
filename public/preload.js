@@ -11,4 +11,10 @@ process.once("loaded", () => {
 
 contextBridge.exposeInMainWorld("electronAPI", {
   onDeeplink: callback => ipcRenderer.on("deeplinkURL", callback),
+
+  // Notify UI if app update is available to be installed.
+  onAppUpdateDownloaded: callback => ipcRenderer.on("app-update-downloaded", callback),
+
+  // Notify Electron that app update should be installed.
+  installAppUpdateAndQuit: () => ipcRenderer.send("install-app-update"),
 });

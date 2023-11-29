@@ -16,6 +16,7 @@ import BatchIcon from "../assets/icons/Batch";
 import AddressBookIcon from "../assets/icons/AddressBook";
 import GearIcon from "../assets/icons/Gear";
 import HelpIcon from "../assets/icons/Help";
+import { UpdateAppButton } from "./UpdateAppButton";
 
 const MenuItem: React.FC<
   {
@@ -83,7 +84,7 @@ export const SideNavbar = () => {
       </Box>
       <Flex justifyContent="space-between" flexDirection="column" flex={1}>
         <Box>
-          {/* TODO: add UpdateAppButton component once it's ready */}
+          <UpdateAppButton />
           <TotalBalance />
           <Box>
             <MenuItem label="Accounts" to="/home" icon={<AccountsIcon />} />

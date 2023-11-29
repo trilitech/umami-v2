@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
 import FlipForwardEnergy from "../assets/icons/FlipForwardEnergy";
 import colors from "../style/colors";
@@ -6,13 +7,23 @@ import colors from "../style/colors";
  * Button component to allow users see and download app update when available.
  */
 export const UpdateAppButton = () => {
+  const [isAppUpdateAvailable, setIsAppUpdateAvailable] = useState(false);
+  const appWindow = window as any;
+
+  // Listen to event from electron on having update available.
+  useEffect(() => {
+    if (appWindow && appWindow.electronAPI) {
+      appWindow.electronAPI.onAppUpdateDownloaded((_event: any) => setIsAppUpdateAvailable(true));
+    }
+  }, [appWindow]);
+
   const startUpdate = () => {
-    // TODO: send event to call autoUpdater.quitAndInstall() in electron
+    if (appWindow && appWindow.electronAPI) {
+      appWindow.electronAPI.installAppUpdateAndQuit();
+    }
   };
 
-  // TODO: listen to event from electron on having update available.
-  // If no update available, return null.
-  return (
+  return isAppUpdateAvailable ? (
     <Box marginTop="24px" marginBottom="6px">
       <Button
         justifyContent="flex-start"
@@ -36,5 +47,5 @@ export const UpdateAppButton = () => {
         </Text>
       </Button>
     </Box>
-  );
+  ) : null;
 };

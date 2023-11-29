@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, shell } = require("electron");
+const { app, BrowserWindow, shell, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 const { autoUpdater } = require("electron-updater");
@@ -19,6 +19,8 @@ if (!app.requestSingleInstanceLock()) {
   app.quit();
   return;
 }
+
+// Check for app updates, download and notify UI if update is available to be installed.
 try {
   autoUpdater.checkForUpdatesAndNotify();
 } catch (e) {
@@ -165,4 +167,14 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+
+  // Send event to UI when app update is ready to be installed.
+  // If the update installation won't be triggered by the user, it will be applied the next time the app starts.
+  autoUpdater.on("update-downloaded", event => {
+    console.log(`Umami update ${event.version} downloaded and ready to be installed`, url);
+    return mainWindow.webContents.send("app-update-downloaded");
+  });
+
+  // Listen to install-app-update event from UI, start update on getting the event.
+  ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
 });
