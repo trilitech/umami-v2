@@ -6,29 +6,35 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "unused-imports",
+    "chakra-ui",
+    "import",
     "jest",
-    "react",
     "react-hooks",
+    "react",
     "testing-library",
-    "chakra-ui"
+    "unused-imports"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react/jsx-runtime",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
     "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:testing-library/react"
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off", // TODO: change to error https://app.asana.com/0/0/1204322668303155/f
     "@typescript-eslint/no-empty-function": ["warn", { "allow": ["arrowFunctions"] }],
     "@typescript-eslint/switch-exhaustiveness-check": "warn",
+
     "react/jsx-curly-brace-presence": ["warn", "never"],
     "curly": ["warn", "all"],
+
     "jest/no-focused-tests": "warn",
     "jest/no-identical-title": "warn",
     "jest/valid-expect": "warn",
+
     "@typescript-eslint/await-thenable": "warn",
     "@typescript-eslint/no-unnecessary-condition": "warn",
     "unused-imports/no-unused-imports": "warn",
@@ -38,13 +44,17 @@
       { "argsIgnorePattern": ".*", "varsIgnorePattern": "^_" }
     ],
     "@typescript-eslint/triple-slash-reference": "off",
+
     "react/jsx-key": [
       "warn",
       { "checkFragmentShorthand": true, "checkKeyMustBeforeSpread": true, "warnOnDuplicates": true }
     ],
+
     "chakra-ui/props-order": ["warn", { "applyToAllComponents": true }],
     "chakra-ui/props-shorthand": ["warn", { "noShorthand": true, "applyToAllComponents": true }],
-    "chakra-ui/require-specific-component": "warn"
+    "chakra-ui/require-specific-component": "warn",
+
+    "import/no-unresolved": "warn"
   },
   "overrides": [
     {
