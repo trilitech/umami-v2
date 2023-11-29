@@ -35,7 +35,7 @@ export const OperationRecipient = ({ operation }: { operation: Operation }) => {
       <Text marginRight="6px" color={colors.gray[450]}>
         To:
       </Text>
-      <AddressPill data-testid="recipient" address={address} />
+      <AddressPill address={address} data-testid="recipient" />
     </>
   );
 };

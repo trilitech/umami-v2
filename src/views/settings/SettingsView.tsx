@@ -99,7 +99,7 @@ const downloadBackup = () => {
 const BackupSection = () => {
   return (
     <SectionContainer title="Backup">
-      <ClickableCard onClick={downloadBackup} isSelected={false}>
+      <ClickableCard isSelected={false} onClick={downloadBackup}>
         <Flex alignItems="center" justifyContent="space-between">
           <Heading size="sm">Download backup file</Heading>
           <Button onClick={downloadBackup} variant="unstyled">
@@ -124,12 +124,12 @@ const AdvancedSection = () => {
       */}
       <SettingsCardWithDrawerIcon
         left="Off-board Wallet"
-        onClick={onOpenOffboardingModal}
         isSelected={false}
+        onClick={onOpenOffboardingModal}
       />
       <SettingsCardWithDrawerIcon
-        isSelected={false}
         left="Change Password"
+        isSelected={false}
         onClick={() => openWith(<ChangePasswordForm />)}
       />
       {OffboardingModal}

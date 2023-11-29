@@ -39,18 +39,18 @@ const SignPage: React.FC<SignPageProps> = props => {
             <BakerSmallTile pkh={bakerPkh} />
 
             <OperationSignerSelector
-              sender={operations.sender}
               isLoading={isLoading}
               operationType={operations.type}
               reEstimate={reEstimate}
+              sender={operations.sender}
             />
           </ModalBody>
           <ModalFooter>
             <SignButton
-              isLoading={isLoading}
               isDisabled={estimationFailed}
-              signer={signer}
+              isLoading={isLoading}
               onSubmit={onSign}
+              signer={signer}
               text={headerText(operations.type, mode)}
             />
           </ModalFooter>

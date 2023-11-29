@@ -15,16 +15,16 @@ const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSucc
 
   switch (operationType) {
     case "tez": {
-      return <BeaconTezSignPage operation={operation} onBeaconSuccess={onBeaconSuccess} />;
+      return <BeaconTezSignPage onBeaconSuccess={onBeaconSuccess} operation={operation} />;
     }
     case "contract_call": {
-      return <ContractCallSignPage operation={operation} onBeaconSuccess={onBeaconSuccess} />;
+      return <ContractCallSignPage onBeaconSuccess={onBeaconSuccess} operation={operation} />;
     }
     case "delegation": {
-      return <DelegationSignPage operation={operation} onBeaconSuccess={onBeaconSuccess} />;
+      return <DelegationSignPage onBeaconSuccess={onBeaconSuccess} operation={operation} />;
     }
     case "undelegation": {
-      return <UndelegationSignPage operation={operation} onBeaconSuccess={onBeaconSuccess} />;
+      return <UndelegationSignPage onBeaconSuccess={onBeaconSuccess} operation={operation} />;
     }
     case "fa1.2":
     case "fa2":

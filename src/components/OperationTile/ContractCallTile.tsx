@@ -22,8 +22,13 @@ export const ContractCallTile: React.FC<{
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-contract-call">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <ContractIcon mr="8px" />
-          <TzktLink hash={operation.hash} counter={operation.counter} data-testid="title" mr="8px">
+          <ContractIcon marginRight="8px" />
+          <TzktLink
+            marginRight="8px"
+            counter={operation.counter}
+            data-testid="title"
+            hash={operation.hash}
+          >
             <Heading size="md">Contract Call: {operation.parameter?.entrypoint}</Heading>
           </TzktLink>
           <Fee operation={operation} />

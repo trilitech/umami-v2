@@ -7,7 +7,7 @@ const goToStepMock = jest.fn((step: Step) => {});
 
 const fixture = (goToStep: (step: Step) => void) => {
   const account = { type: "mnemonic" as const, mnemonic: mnemonic1 };
-  return <ShowSeedphrase goToStep={goToStep} account={account} />;
+  return <ShowSeedphrase account={account} goToStep={goToStep} />;
 };
 
 describe("<ShowSeedphrase />", () => {

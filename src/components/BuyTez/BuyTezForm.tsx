@@ -45,7 +45,7 @@ const BuyTezForm: React.FC<{
           <ModalHeader textAlign="center">Buy Tez</ModalHeader>
           {isMainnet && (
             <>
-              <input type="hidden" name="commodity" value="XTZ:Tezos" />
+              <input name="commodity" type="hidden" value="XTZ:Tezos" />
               <Text textAlign="center">Please select the recipient account.</Text>
               <ModalBody>
                 <FormControl
@@ -54,10 +54,10 @@ const BuyTezForm: React.FC<{
                   paddingY={5}
                 >
                   <OwnedImplicitAccountsAutocomplete
-                    label="Recipient Account"
-                    inputName="address"
                     allowUnknown={false}
+                    inputName="address"
                     isDisabled={!!defaultRecipient}
+                    label="Recipient Account"
                   />
                   {errors.address && <FormErrorMessage>{errors.address.message}</FormErrorMessage>}
                 </FormControl>

@@ -18,7 +18,7 @@ const NameAccountDisplay = ({
     accountName: string;
   }>({ mode: "onChange" });
   return (
-    <ModalContentWrapper icon={<EditAccountIcon />} title={title} subtitle={subtitle}>
+    <ModalContentWrapper icon={<EditAccountIcon />} subtitle={subtitle} title={title}>
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
         <FormControl>
           <FormLabel>Account name</FormLabel>

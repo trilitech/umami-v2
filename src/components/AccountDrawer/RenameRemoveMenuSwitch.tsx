@@ -33,7 +33,6 @@ const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => 
     : () => {
         openWith(
           <ConfirmationModal
-            title="Remove Account"
             buttonLabel="Remove Account"
             description="Are you sure you want to remove this account?"
             onSubmit={() => {
@@ -41,14 +40,15 @@ const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => 
               closeModal();
               navigate("/");
             }}
+            title="Remove Account"
           />
         );
       };
 
   return (
     <RenameRemoveMenu
-      onRename={() => openWith(<RenameAccountModal account={account} />)}
       onRemove={onRemove}
+      onRename={() => openWith(<RenameAccountModal account={account} />)}
     />
   );
 };

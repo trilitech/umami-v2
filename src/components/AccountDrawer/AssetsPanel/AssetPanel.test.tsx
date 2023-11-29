@@ -9,7 +9,7 @@ describe("<AssetPanel/>", () => {
     jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
     const multisigAccount = mockMultisigAccount(0);
-    render(<AssetsPanel account={multisigAccount} nfts={[]} tokens={[]} delegation={null} />);
+    render(<AssetsPanel account={multisigAccount} delegation={null} nfts={[]} tokens={[]} />);
 
     await waitFor(() => {
       expect(screen.getByTestId("account-card-pending-tab")).toBeInTheDocument();

@@ -87,24 +87,29 @@ export const SideNavbar = () => {
           <UpdateAppButton />
           <TotalBalance />
           <Box>
-            <MenuItem label="Accounts" to="/home" icon={<AccountsIcon />} />
-            <MenuItem label="NFTs" to="/nfts" icon={<DiamondIcon />} />
+            <MenuItem icon={<AccountsIcon />} label="Accounts" to="/home" />
+            <MenuItem icon={<DiamondIcon />} label="NFTs" to="/nfts" />
             <MenuItem
+              icon={<RefreshClockIcon width="24px" height="24px" />}
               label="Operations"
               to="/operations"
-              icon={<RefreshClockIcon w="24px" h="24px" />}
             />
-            <MenuItem label="Tokens" to="/tokens" icon={<CoinIcon />} />
-            <MenuItem label="Batch" to="/batch" icon={<BatchIcon />} />
+            <MenuItem icon={<CoinIcon />} label="Tokens" to="/tokens" />
+            <MenuItem icon={<BatchIcon />} label="Batch" to="/batch" />
           </Box>
         </Box>
         <Box>
           <Divider />
-          <MenuItem mt="22px" label="Address Book" to="/address-book" icon={<AddressBookIcon />} />
+          <MenuItem
+            marginTop="22px"
+            icon={<AddressBookIcon />}
+            label="Address Book"
+            to="/address-book"
+          />
 
-          <MenuItem label="Settings" to="/settings" icon={<GearIcon />} />
-          <MenuItem label="Help" to="/help" icon={<HelpIcon />} />
-          <AppVersion mt="24px" fontSize="14px" />
+          <MenuItem icon={<GearIcon />} label="Settings" to="/settings" />
+          <MenuItem icon={<HelpIcon />} label="Help" to="/help" />
+          <AppVersion marginTop="24px" fontSize="14px" />
         </Box>
       </Flex>
     </Flex>

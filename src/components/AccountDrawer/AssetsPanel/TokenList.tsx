@@ -17,9 +17,14 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
       data-testid="token-tile"
     >
       <Flex alignItems="center" flex={1}>
-        <TokenIcon w="38px" contract={token.contract} bg={colors.gray[500]} borderRadius="4px" />
+        <TokenIcon
+          width="38px"
+          background={colors.gray[500]}
+          borderRadius="4px"
+          contract={token.contract}
+        />
         <Box marginLeft="16px">
-          <TokenNameWithIcon token={token} fontWeight={600} data-testid="token-name" />
+          <TokenNameWithIcon fontWeight={600} data-testid="token-name" token={token} />
         </Box>
       </Flex>
       <Heading data-testid="token-balance" size="lg">
@@ -31,12 +36,12 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
 
 export const TokenList = ({ tokens }: { tokens: Array<FA12TokenBalance | FA2TokenBalance> }) => {
   if (tokens.length === 0) {
-    return <NoItems title="No Tokens found" small />;
+    return <NoItems small title="No Tokens found" />;
   }
   return (
     <Box>
       {tokens.map(t => {
-        return <TokenTile token={t} key={t.contract + (t.type === "fa2" ? t.tokenId : "")} />;
+        return <TokenTile key={t.contract + (t.type === "fa2" ? t.tokenId : "")} token={t} />;
       })}
     </Box>
   );

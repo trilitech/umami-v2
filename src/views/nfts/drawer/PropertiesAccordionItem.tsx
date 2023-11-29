@@ -26,9 +26,9 @@ const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   }
   const firstCreator = nft.metadata.creators[0];
   if (firstCreator.startsWith("tz")) {
-    return <AddressPill address={parsePkh(firstCreator)} mr={1} />;
+    return <AddressPill marginRight={1} address={parsePkh(firstCreator)} />;
   }
-  return <TruncatedTextWithTooltip text={firstCreator} maxLength={15} />;
+  return <TruncatedTextWithTooltip maxLength={15} text={firstCreator} />;
 };
 
 const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSProperties }) => {
@@ -117,7 +117,7 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                   Contract:
                 </Td>
                 <Td padding="16px 0 16px 5px" borderColor={colors.gray[700]} borderRightWidth="1px">
-                  <AddressPill address={parsePkh(nft.contract)} mr={1} />
+                  <AddressPill marginRight={1} address={parsePkh(nft.contract)} />
                 </Td>
                 <Td padding="16px 0 16px 15px" color={colors.gray[400]}>
                   Metadata:
@@ -147,7 +147,7 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
                   License:
                 </Td>
                 <Td width="30%" padding="16px 0 16px 5px">
-                  <TruncatedTextWithTooltip text={nft.metadata.rights || "-"} maxLength={15} />
+                  <TruncatedTextWithTooltip maxLength={15} text={nft.metadata.rights || "-"} />
                 </Td>
               </Tr>
             </Tbody>

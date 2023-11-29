@@ -48,8 +48,8 @@ export const NameAccount = ({
 
   return (
     <NameAccountDisplay
-      subtitle="Please choose a name for your first account. You can edit your account name later."
       onSubmit={onSubmit}
+      subtitle="Please choose a name for your first account. You can edit your account name later."
     />
   );
 };

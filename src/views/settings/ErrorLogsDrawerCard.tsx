@@ -26,7 +26,7 @@ const ErrorLogsDrawerCard = () => {
 
   return (
     <>
-      <SettingsCardWithDrawerIcon left="ErrorLogs" onClick={onOpen} isSelected={isOpen} />
+      <SettingsCardWithDrawerIcon left="ErrorLogs" isSelected={isOpen} onClick={onOpen} />
       <Drawer
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
@@ -61,7 +61,7 @@ const ErrorLogsDrawerBody = () => {
         {/* <IconAndTextBtn label="Clear All" icon={Trash} textFirst onClick={() => {}} /> */}
       </Flex>
       {errors.map(error => (
-        <ErrorLogRow errorLog={error} key={nanoid()} />
+        <ErrorLogRow key={nanoid()} errorLog={error} />
       ))}
     </Flex>
   );

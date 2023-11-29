@@ -75,9 +75,9 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
     );
   return (
     <ModalContentWrapper
-      icon={<KeyIcon stroke={colors.gray[450]} width="24px" height="24px" />}
-      title="Import Seed Phrase"
+      icon={<KeyIcon width="24px" height="24px" stroke={colors.gray[450]} />}
       subtitle="Please fill in the Seed Phrase in sequence."
+      title="Import Seed Phrase"
     >
       <Box overflowX="hidden">
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
@@ -137,7 +137,9 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
                         required: true,
                       })}
                     />
-                    {errors[`${index}`] && <WarningIcon p="8px" w="40px" h="40px" color="red" />}
+                    {errors[`${index}`] && (
+                      <WarningIcon width="40px" height="40px" padding="8px" color="red" />
+                    )}
                   </GridItem>
                 );
               })}

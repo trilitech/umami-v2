@@ -46,7 +46,7 @@ const AccountListWithDrawer: React.FC = () => {
   const account = allAccounts.find(account => account.address.pkh === selected);
   return (
     <>
-      <AccountsList onOpen={onOpen} selected={selected} onSelect={setSelected} />
+      <AccountsList onOpen={onOpen} onSelect={setSelected} selected={selected} />
       <Drawer
         autoFocus={false}
         blockScrollOnMount={!isDynamicModalOpen}
@@ -58,7 +58,7 @@ const AccountListWithDrawer: React.FC = () => {
         <DrawerContent>
           <DrawerBody>
             {isNFT ? (
-              <NFTDrawerBody ownerPkh={ownerPkh} nft={drawerNFT} onCloseDrawer={closeDrawer} />
+              <NFTDrawerBody nft={drawerNFT} onCloseDrawer={closeDrawer} ownerPkh={ownerPkh} />
             ) : (
               <>
                 <DrawerTopButtons onClose={closeDrawer} />

@@ -3,7 +3,7 @@ import { TfiNewWindow } from "react-icons/tfi";
 
 export const TzktLink = ({ url, ...props }: { url: string } & IconProps) => {
   return (
-    <a data-testid="tzkt-link" href={url} target="_blank" rel="noopener noreferrer">
+    <a data-testid="tzkt-link" href={url} rel="noopener noreferrer" target="_blank">
       <Icon as={TfiNewWindow} {...props} />
     </a>
   );

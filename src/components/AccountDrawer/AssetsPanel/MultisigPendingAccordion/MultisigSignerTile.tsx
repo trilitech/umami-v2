@@ -49,10 +49,10 @@ const MultisigSignerTile: React.FC<{
 
       openWith(
         <SignPage
-          fee={fee}
           actionType={actionType}
-          signer={signer}
+          fee={fee}
           operation={approveOrExecute}
+          signer={signer}
           transactionCount={transactionCount}
         />
       );
@@ -72,8 +72,8 @@ const MultisigSignerTile: React.FC<{
       rightElement={
         <MultisigActionButton
           isLoading={isLoading}
-          signerState={signerState}
           onClickApproveExecute={onClickApproveExecute}
+          signerState={signerState}
         />
       }
     />

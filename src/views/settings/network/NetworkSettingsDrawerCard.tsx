@@ -13,8 +13,8 @@ export const NetworkSettingsDrawerCard = () => {
     <>
       <SettingsCardWithDrawerIcon
         left="Network Settings"
-        onClick={openDrawer}
         isSelected={isDrawerOpen}
+        onClick={openDrawer}
       />
       <Drawer
         blockScrollOnMount={!isDynamicModalOpen}

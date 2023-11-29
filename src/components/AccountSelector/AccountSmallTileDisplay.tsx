@@ -25,7 +25,7 @@ export const AccountSmallTileDisplay = ({
   balance: string | undefined;
 } & FlexProps) => (
   <Flex alignItems="space-between" cursor="pointer" data-testid="account-small-tile" {...flexProps}>
-    <Identicon height="30px" identiconSize={20} p="5px" address={pkh} mr="12px" />
+    <Identicon height="30px" marginRight="12px" padding="5px" address={pkh} identiconSize={20} />
     <Flex alignSelf="center" height="20px">
       <Heading marginRight="10px" size="sm">
         {label}

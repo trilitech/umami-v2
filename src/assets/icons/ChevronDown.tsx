@@ -14,9 +14,9 @@ const ChevronDownIcon: React.FC<IconProps> = props => {
     >
       <path
         d="M4.5 6.75L9 11.25L13.5 6.75"
-        strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="1.2"
       />
     </Icon>
   );

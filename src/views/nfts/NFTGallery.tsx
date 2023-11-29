@@ -14,10 +14,10 @@ export const NFTGallery: React.FC<{
       {Object.entries(nftsByOwner).flatMap(([owner, nfts]) => {
         return (nfts || []).map(nft => (
           <NFTCard
-            onClick={() => onSelect(owner, nft)}
-            owner={owner}
             key={`${owner}:${fullId(nft)}`}
             nft={nft}
+            onClick={() => onSelect(owner, nft)}
+            owner={owner}
           />
         ));
       })}

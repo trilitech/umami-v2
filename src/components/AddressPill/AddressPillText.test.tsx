@@ -36,7 +36,7 @@ describe("<AddressPillText />", () => {
   });
 
   it("shows alias", () => {
-    render(<AddressPillText addressKind={mockFA2Address} showPkh={false} alias="test alias" />);
+    render(<AddressPillText addressKind={mockFA2Address} alias="test alias" showPkh={false} />);
     expect(screen.getByText("test alias")).toBeInTheDocument();
   });
 

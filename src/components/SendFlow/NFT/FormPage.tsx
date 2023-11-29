@@ -131,10 +131,10 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
 
             <FormControl marginTop="24px" isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
-                label="From"
-                inputName="sender"
                 allowUnknown={false}
+                inputName="sender"
                 isDisabled
+                label="From"
               />
               {errors.sender && (
                 <FormErrorMessage data-testid="from-error">
@@ -144,7 +144,7 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
             </FormControl>
 
             <FormControl marginTop="24px" isInvalid={!!errors.recipient}>
-              <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
+              <KnownAccountsAutocomplete allowUnknown inputName="recipient" label="To" />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">
                   {errors.recipient.message}
@@ -156,8 +156,8 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
             <FormSubmitButtons
               isLoading={isLoading}
               isValid={isValid}
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
               onAddToBatch={handleSubmit(onBatchSubmit)}
+              onSingleSubmit={handleSubmit(onSingleSubmit)}
             />
           </ModalFooter>
         </form>

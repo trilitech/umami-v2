@@ -13,7 +13,7 @@ export const TezTile: React.FC<{ mutezAmount: string }> = ({ mutezAmount }) => {
       background={colors.gray[800]}
       borderRadius="4px"
     >
-      <TezIcon mr="12px" />
+      <TezIcon marginRight="12px" />
       <Flex alignItems="end">
         <PrettyNumber number={prettyTezAmount(mutezAmount)} />
       </Flex>

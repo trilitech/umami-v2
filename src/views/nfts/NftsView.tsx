@@ -44,7 +44,7 @@ const NFTsViewBase = () => {
 
   return (
     <Flex flexDirection="column" height="100%">
-      <TopBar title="NFTs" subtitle={`(${totalNFTs})`} />
+      <TopBar subtitle={`(${totalNFTs})`} title="NFTs" />
       {accountsFilter}
 
       {noNFTs ? (
@@ -53,10 +53,10 @@ const NFTsViewBase = () => {
         <>
           <Box overflowY="scroll">
             <NFTGallery
+              nftsByOwner={selectedNFTs}
               onSelect={(owner, nft) => {
                 navigate(`/nfts/${owner}/${fullId(nft)}`);
               }}
-              nftsByOwner={selectedNFTs}
             />
           </Box>
 
@@ -71,7 +71,7 @@ const NFTsViewBase = () => {
             <DrawerContent>
               <DrawerBody>
                 {drawerNFT && (
-                  <NFTDrawerBody ownerPkh={ownerPkh} nft={drawerNFT} onCloseDrawer={openNFTsPage} />
+                  <NFTDrawerBody nft={drawerNFT} onCloseDrawer={openNFTsPage} ownerPkh={ownerPkh} />
                 )}
               </DrawerBody>
             </DrawerContent>

@@ -94,49 +94,49 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
         {account.label}
       </Heading>
       <Flex alignItems="center" marginTop="8px" marginBottom="30px">
-        <AddressPill address={account.address} mode={{ type: "no_icons" }} mr="4px" />
+        <AddressPill marginRight="4px" address={account.address} mode={{ type: "no_icons" }} />
         <RenameRemoveMenuSwitch account={account} />
       </Flex>
-      {balance && <TezRecapDisplay center balance={balance} dollarBalance={dollarBalance} />}
+      {balance && <TezRecapDisplay balance={balance} center dollarBalance={dollarBalance} />}
       <Center marginTop="34px">
         <RoundButton
-          onClick={onSend}
+          icon={<OutgoingArrow width="24px" height="24px" stroke="currentcolor" />}
           label="Send"
-          icon={<OutgoingArrow stroke="currentcolor" width="24px" height="24px" />}
+          onClick={onSend}
         />
         <RoundButton
+          icon={<IncomingArrow width="24px" height="24px" stroke="currentcolor" />}
           label="Receive"
-          icon={<IncomingArrow stroke="currentcolor" width="24px" height="24px" />}
           onClick={onReceive}
         />
         {!isMultisig && (
           <RoundButton
-            label="Buy tez"
             icon={<PlusIcon stroke="currentcolor" />}
+            label="Buy tez"
             onClick={() => {
               openWith(<BuyTezForm recipient={account.address.pkh} />);
             }}
           />
         )}
         <RoundButton
+          icon={<BakerIcon width="24px" height="24px" stroke="currentcolor" />}
           label="Delegate"
-          icon={<BakerIcon stroke="currentcolor" width="24px" height="24px" />}
           onClick={() => {
             openWith(
               <DelegationFormPage
-                sender={account}
                 form={
                   delegation
                     ? { baker: delegation.delegate.address, sender: account.address.pkh }
                     : undefined
                 }
+                sender={account}
               />
             );
           }}
         />
       </Center>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPanel tokens={tokens} nfts={nfts} account={account} delegation={delegation} />
+      <AssetsPanel account={account} delegation={delegation} nfts={nfts} tokens={tokens} />
     </Flex>
   );
 };

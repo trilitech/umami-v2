@@ -43,7 +43,7 @@ const Header: React.FC<{
       data-testid="header"
       paddingX="30px"
     >
-      <Identicon p="8px" identiconSize={32} address={pkh} />
+      <Identicon padding="8px" address={pkh} identiconSize={32} />
       <Flex justifyContent="space-between" flex={1}>
         <Box marginLeft="16px" data-testid="account-identifier">
           <Heading marginBottom="4px" size="md">
@@ -84,7 +84,7 @@ const AccountTokens: React.FC<{
                 <Tr key={fullId(token)} data-testid="token-tile">
                   <Td width="20%" minWidth="240px" borderColor={rowBorderColor} paddingX="0">
                     <Flex alignItems="center">
-                      <TokenIcon display="inline-block" contract={token.contract} width="38px" />
+                      <TokenIcon display="inline-block" width="38px" contract={token.contract} />
                       <Heading display="inline-block" marginLeft="16px" size="sm">
                         <TokenNameWithIcon token={token} />
                       </Heading>

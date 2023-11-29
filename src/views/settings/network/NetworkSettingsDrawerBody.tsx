@@ -46,7 +46,7 @@ export const NetworkSettingsDrawerBody = () => {
           variant="CTAWithIcon"
         >
           <Text size="sm">Add Network</Text>
-          <PlusIcon ml="4px" height="18px" width="18px" stroke="currentcolor" />
+          <PlusIcon width="18px" height="18px" marginLeft="4px" stroke="currentcolor" />
         </Button>
       </Center>
       <RadioGroup marginTop="60px" onChange={selectNetwork} value={network.name}>

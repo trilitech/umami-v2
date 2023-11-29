@@ -25,8 +25,8 @@ const Notice: React.FC<{
   return (
     <ModalContentWrapper
       icon={<NoticeIcon />}
-      title="Important Notice"
       subtitle="Please read the following before you continue to see your secret Seed Phrase."
+      title="Important Notice"
     >
       <Box>
         <OrderedList spacing="12px">

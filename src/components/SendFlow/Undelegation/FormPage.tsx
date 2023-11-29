@@ -56,17 +56,17 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
       <ModalContent>
         <form>
           <FormPageHeader
-            title="End delegation"
             subTitle="Select preview to end delegation or insert this transaction into a Batch."
+            title="End delegation"
           />
 
           <ModalBody>
             <FormControl>
               <OwnedAccountsAutocomplete
-                label="From"
-                inputName="sender"
                 allowUnknown={false}
+                inputName="sender"
                 isDisabled
+                label="From"
               />
             </FormControl>
             <FormLabel marginTop="24px">Baker</FormLabel>
@@ -76,8 +76,8 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
             <FormSubmitButtons
               isLoading={isLoading}
               isValid
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
               onAddToBatch={handleSubmit(onBatchSubmit)}
+              onSingleSubmit={handleSubmit(onSingleSubmit)}
             />
           </ModalFooter>
         </form>

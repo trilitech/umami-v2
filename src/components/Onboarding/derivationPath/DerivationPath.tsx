@@ -52,16 +52,16 @@ export const DerivationPath = ({
   return (
     <ModalContentWrapper
       icon={<SlashIcon />}
-      title="Derivation Path"
       subtitle="Choose a custom derivation path or select the default derivation path and use the default key."
+      title="Derivation Path"
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
         <FormControl marginBottom="20px">
           <FormLabel>Select Path</FormLabel>
           <Select
-            selected={DEFAULT_DERIVATION_PATH}
-            options={AVAILABLE_DERIVATION_PATHS}
             onChange={newVal => setValue("derivationPath", newVal)}
+            options={AVAILABLE_DERIVATION_PATHS}
+            selected={DEFAULT_DERIVATION_PATH}
           />
           {errors.derivationPath && (
             <FormErrorMessage data-testid="error-message">

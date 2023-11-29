@@ -29,15 +29,15 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
 
   return (
     <AccountDrawerDisplay
-      onSend={() => openWith(<SendTezForm sender={account} />)}
+      account={account}
       balance={balance}
       dollarBalance={dollarBalance}
+      nfts={nfts}
       onReceive={() => {
         openWith(<ReceiveModal pkh={account.address.pkh} />);
       }}
+      onSend={() => openWith(<SendTezForm sender={account} />)}
       tokens={tokens}
-      nfts={nfts}
-      account={account}
     />
   );
 };

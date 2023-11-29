@@ -13,9 +13,9 @@ export const ShowSeedphrase = ({
 }) => {
   return (
     <ModalContentWrapper
-      icon={<KeyIcon stroke={colors.gray[450]} width="24px" height="24px" />}
-      title="Record Seed Phrase"
+      icon={<KeyIcon width="24px" height="24px" stroke={colors.gray[450]} />}
       subtitle="Please record the following 24 words in sequence in order to restore it in the future."
+      title="Record Seed Phrase"
     >
       <VStack>
         <SimpleGrid columns={3} spacing={2}>

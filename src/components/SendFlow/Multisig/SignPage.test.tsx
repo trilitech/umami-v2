@@ -16,8 +16,8 @@ const fixture = () => {
     <SignPage
       actionType="approve"
       fee={new BigNumber(1234567)}
-      signer={account}
       operation={operation}
+      signer={account}
       transactionCount={1}
     />
   );

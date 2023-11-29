@@ -5,7 +5,7 @@ describe("<RenameRemoveMenu />", () => {
   it("rename and remove button works", () => {
     const mockOnRename = jest.fn();
     const mockOnRemove = jest.fn();
-    render(<RenameRemoveMenu onRename={mockOnRename} onRemove={mockOnRemove} />);
+    render(<RenameRemoveMenu onRemove={mockOnRemove} onRename={mockOnRename} />);
     fireEvent.click(screen.getByTestId("popover-cta"));
 
     fireEvent.click(screen.getByText("Rename"));

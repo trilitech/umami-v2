@@ -19,7 +19,7 @@ const fixture = () => {
   };
   return (
     <ReduxStore>
-      <MasterPassword onClose={onClose} account={account} />
+      <MasterPassword account={account} onClose={onClose} />
     </ReduxStore>
   );
 };

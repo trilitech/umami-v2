@@ -53,7 +53,7 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
 
             <Box marginBottom="24px">
               <FormLabel>Owner</FormLabel>
-              <AddressTile mb="12px" address={parsePkh(sender)} />
+              <AddressTile marginBottom="12px" address={parsePkh(sender)} />
               <Flex justifyContent="flex-end">
                 <SignPageFee fee={fee} />
               </Flex>
@@ -64,7 +64,7 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
               return (
                 <AddressTile
                   key={signer.val}
-                  mb="12px"
+                  marginBottom="12px"
                   address={parsePkh(signer.val)}
                   data-testid={`approver-${signer.val}`}
                 />
@@ -84,10 +84,10 @@ const SignPage: React.FC<SignPageProps<FormValues>> = props => {
           </ModalBody>
           <ModalFooter>
             <SignButton
-              isLoading={isLoading}
               isDisabled={estimationFailed}
-              signer={signer}
+              isLoading={isLoading}
               onSubmit={onSign}
+              signer={signer}
               text={headerText(operations.type, mode)}
             />
           </ModalFooter>

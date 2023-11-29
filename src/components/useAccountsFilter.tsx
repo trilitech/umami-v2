@@ -45,9 +45,9 @@ export const useAccountsFilter = () => {
         <Wrap width="100%">
           {selectedAccounts.map(account => (
             <AddressPill
-              data-testid="account-pill"
               key={account.address.pkh}
               address={account.address}
+              data-testid="account-pill"
               mode={{
                 type: "removable",
                 onRemove: () => {

@@ -27,7 +27,7 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} />
           <ModalBody>
-            <TokenTile token={token} amount={amount} />
+            <TokenTile amount={amount} token={token} />
 
             <Flex
               alignItems="center"
@@ -42,23 +42,23 @@ const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
             </Flex>
 
             <FormLabel>From</FormLabel>
-            <AddressTile mb="24px" address={operations.sender.address} />
+            <AddressTile marginBottom="24px" address={operations.sender.address} />
             <FormLabel>To</FormLabel>
             <AddressTile address={recipient} />
 
             <OperationSignerSelector
-              sender={operations.sender}
               isLoading={isLoading}
               operationType={operations.type}
               reEstimate={reEstimate}
+              sender={operations.sender}
             />
           </ModalBody>
           <ModalFooter>
             <SignButton
-              isLoading={isLoading}
               isDisabled={estimationFailed}
-              signer={signer}
+              isLoading={isLoading}
               onSubmit={onSign}
+              signer={signer}
               text={headerText(operations.type, mode)}
             />
           </ModalFooter>

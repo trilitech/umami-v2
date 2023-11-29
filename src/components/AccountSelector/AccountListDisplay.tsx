@@ -33,16 +33,16 @@ export const AccountListDisplay: React.FC<{
             value={account.address.pkh}
           >
             <AddressTile
-              cursor="pointer"
-              address={account.address}
+              width="370px"
+              height="40px"
+              padding="5px"
+              background={colors.gray[700]}
+              borderRadius="4px"
               _hover={{
                 background: colors.gray[500],
               }}
-              background={colors.gray[700]}
-              width="370px"
-              borderRadius="4px"
-              padding="5px"
-              height="40px"
+              cursor="pointer"
+              address={account.address}
             />
           </MenuItem>
         );

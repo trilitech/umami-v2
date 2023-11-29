@@ -48,7 +48,7 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
         <CardBody padding="24px">
           <Box width="486px" height="486px">
             {isVideo ? (
-              <ReactPlayer url={url} playing loop height="100%" width="100%" />
+              <ReactPlayer width="100%" height="100%" loop playing url={url} />
             ) : (
               <Image
                 width="486px"
@@ -96,7 +96,7 @@ const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh })
       <Button
         marginTop="20px"
         onClick={() => {
-          openWith(<SendNFTForm sender={getAccount(ownerPkh)} nft={nft} />);
+          openWith(<SendNFTForm nft={nft} sender={getAccount(ownerPkh)} />);
         }}
       >
         Send

@@ -18,10 +18,10 @@ export const CopyableAddress: React.FC<
 > = ({ pkh, formatAddress = true, copyable = true, iconColor = colors.gray[600], ...rest }) => {
   return (
     <CopyableText
-      displayText={formatAddress ? formatPkh(pkh) : pkh}
       copyValue={copyable ? pkh : undefined}
-      toastMessage="Address copied to clipboard"
+      displayText={formatAddress ? formatPkh(pkh) : pkh}
       iconColor={iconColor}
+      toastMessage="Address copied to clipboard"
       {...rest}
     />
   );
@@ -66,12 +66,12 @@ const CopyableText: React.FC<
       </Text>
       {copyValue && (
         <FileCopyIcon
-          cursor="pointer"
-          onClick={() => onClickCopyIcon()}
+          stroke={colors.gray[450]}
           _hover={{
             stroke: colors.green,
           }}
-          stroke={colors.gray[450]}
+          cursor="pointer"
+          onClick={() => onClickCopyIcon()}
         />
       )}
     </Flex>

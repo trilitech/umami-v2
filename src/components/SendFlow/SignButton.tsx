@@ -98,7 +98,7 @@ const SignButton: React.FC<{
         <Box width="100%">
           <FormProvider {...form}>
             <FormControl isInvalid={!!errors.password} marginY="16px">
-              <PasswordInput inputName="password" data-testid="password" />
+              <PasswordInput data-testid="password" inputName="password" />
               {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
             </FormControl>
             <Button
@@ -117,7 +117,7 @@ const SignButton: React.FC<{
       );
     case "social":
       return (
-        <SignWithGoogleButton onSuccessfulAuth={onSocialSign} isDisabled={buttonIsDisabled}>
+        <SignWithGoogleButton isDisabled={buttonIsDisabled} onSuccessfulAuth={onSocialSign}>
           {text || "Sign with Google"}
         </SignWithGoogleButton>
       );

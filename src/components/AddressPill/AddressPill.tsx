@@ -80,10 +80,10 @@ const AddressPill: React.FC<
       >
         {showIcons && (
           <LeftIcon
-            data-testid="address-pill-left-icon"
-            addressKind={addressKind}
             marginLeft="4px"
             stroke={iconColor}
+            addressKind={addressKind}
+            data-testid="address-pill-left-icon"
           />
         )}
 
@@ -91,13 +91,13 @@ const AddressPill: React.FC<
           <PopoverTrigger>
             <Button height="24px" _focus={{ boxShadow: "none" }} variant="unstyled">
               <AddressPillText
-                data-testid="address-pill-text"
-                alias={isAlias && rawAddress.alias ? rawAddress.alias : undefined}
-                addressKind={addressKind}
-                showPkh={!showIcons}
-                cursor="pointer"
-                marginX="4px"
                 color={textColor}
+                cursor="pointer"
+                addressKind={addressKind}
+                alias={isAlias && rawAddress.alias ? rawAddress.alias : undefined}
+                data-testid="address-pill-text"
+                marginX="4px"
+                showPkh={!showIcons}
                 size="sm"
               />
             </Button>
@@ -113,12 +113,12 @@ const AddressPill: React.FC<
         </Popover>
         {showIcons && (
           <RightIcon
-            data-testid="address-pill-right-icon"
+            marginRight="4px"
+            stroke={colors.gray[300]}
+            cursor="pointer"
             addressKind={addressKind}
             addressPillMode={mode}
-            cursor="pointer"
-            stroke={colors.gray[300]}
-            marginRight="4px"
+            data-testid="address-pill-right-icon"
           />
         )}
       </Flex>

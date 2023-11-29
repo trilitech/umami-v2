@@ -25,7 +25,7 @@ const NoItems: React.FC<
 export default NoItems;
 
 export const NoNFTs: React.FC<{ small?: boolean }> = ({ small }) => (
-  <NoItems title="No NFTs found" small={small}>
+  <NoItems small={small} title="No NFTs found">
     <ExternalLink href="https://objkt.com">
       <Button size={small ? "md" : "lg"}>Buy your first NFT</Button>
     </ExternalLink>
@@ -33,14 +33,14 @@ export const NoNFTs: React.FC<{ small?: boolean }> = ({ small }) => (
 );
 
 export const NoOperations: React.FC<{ small?: boolean }> = ({ small }) => (
-  <NoItems title="No operations found" small={small} />
+  <NoItems small={small} title="No operations found" />
 );
 
 export const NoDelegations: React.FC<{ small?: boolean; onDelegate: () => void }> = ({
   small,
   onDelegate,
 }) => (
-  <NoItems title="Currently not delegating" small={small}>
+  <NoItems small={small} title="Currently not delegating">
     <Button onClick={onDelegate} size={small ? "md" : "lg"}>
       Start delegating
     </Button>

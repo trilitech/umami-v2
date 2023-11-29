@@ -39,8 +39,8 @@ const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess
           <ModalFooter>
             <SignButton
               isLoading={isSigning}
-              signer={operation.signer}
               onSubmit={onSign}
+              signer={operation.signer}
               text={headerText(operation.type, "single")}
             />
           </ModalFooter>

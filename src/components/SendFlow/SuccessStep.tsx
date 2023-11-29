@@ -43,7 +43,7 @@ export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
         </Link>
         <Flex alignItems="center" justifyContent="space-between" marginTop={4}>
           <Text color="text.dark">View in Tzkt</Text>
-          <TzktLink ml={4} url={tzktUrl} />
+          <TzktLink marginLeft={4} url={tzktUrl} />
         </Flex>
       </ModalFooter>
     </ModalContent>

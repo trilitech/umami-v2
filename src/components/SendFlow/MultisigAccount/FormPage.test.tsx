@@ -283,16 +283,16 @@ describe("FormPage", () => {
     await waitFor(() => {
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <SignPage
-          mode="single"
           data={{
             sender: mockImplicitAccount(0).address.pkh,
             threshold: 1,
             signers: [{ val: mockImplicitAddress(1).pkh }],
             name: "some name",
           }}
-          goBack={expect.any(Function)}
-          operations={operations}
           fee={new BigNumber(100)}
+          goBack={expect.any(Function)}
+          mode="single"
+          operations={operations}
         />
       );
     });

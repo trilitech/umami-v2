@@ -17,10 +17,10 @@ describe("OperationSignerSelector", () => {
   it("is hidden for implicit operations", () => {
     render(
       <OperationSignerSelector
-        sender={mockImplicitAccount(0)}
-        operationType="implicit"
         isLoading={false}
+        operationType="implicit"
         reEstimate={jest.fn()}
+        sender={mockImplicitAccount(0)}
       />
     );
     expect(screen.queryByTestId("signer-selector")).not.toBeInTheDocument();
@@ -56,10 +56,10 @@ describe("OperationSignerSelector", () => {
       render(
         <FormProvider {...result.current}>
           <OperationSignerSelector
-            sender={multisigAccount}
-            operationType="proposal"
             isLoading={false}
+            operationType="proposal"
             reEstimate={reEstimateSpy}
+            sender={multisigAccount}
           />
         </FormProvider>
       );

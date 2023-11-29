@@ -21,7 +21,7 @@ export const BeaconDrawerCard = () => {
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
   return (
     <>
-      <SettingsCardWithDrawerIcon left="dApps" onClick={onOpen} isSelected={isOpen} />
+      <SettingsCardWithDrawerIcon left="dApps" isSelected={isOpen} onClick={onOpen} />
       <Drawer
         autoFocus={false}
         blockScrollOnMount={!isDynamicModalOpen}

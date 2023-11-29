@@ -51,8 +51,8 @@ const RestoreBackupFile = () => {
   return (
     <ModalContentWrapper
       icon={<RotateIcon />}
-      title="Restore from Backup"
       subtitle="Select a JSON backup file and enter the password you used to encrypt it."
+      title="Restore from Backup"
     >
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
@@ -75,9 +75,9 @@ const RestoreBackupFile = () => {
             </FormControl>
             <FormControl marginTop="24px" isInvalid={!!errors.password}>
               <PasswordInput
+                data-testid="password-input"
                 inputName="password"
                 label="Your password"
-                data-testid="password-input"
               />
               {errors.password && (
                 <FormErrorMessage data-testid="password">

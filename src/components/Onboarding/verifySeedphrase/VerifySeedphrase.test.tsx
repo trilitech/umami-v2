@@ -17,7 +17,7 @@ beforeEach(() => {
 });
 
 const fixture = (goToStep: (step: Step) => void) => (
-  <VerifySeedphrase goToStep={goToStep} account={{ type: "mnemonic", mnemonic: mnemonic1 }} />
+  <VerifySeedphrase account={{ type: "mnemonic", mnemonic: mnemonic1 }} goToStep={goToStep} />
 );
 
 describe("<VerifySeedphrase />", () => {

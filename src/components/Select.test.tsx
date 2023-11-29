@@ -5,7 +5,7 @@ import { Select } from "./Select";
 describe("<Select />", () => {
   it("renders the default value", () => {
     render(
-      <Select selected={{ label: "test label", value: "test" }} options={[]} onChange={() => {}} />
+      <Select onChange={() => {}} options={[]} selected={{ label: "test label", value: "test" }} />
     );
 
     expect(screen.getByTestId("select-input")).toHaveTextContent("test label");
@@ -14,9 +14,9 @@ describe("<Select />", () => {
   it("hides the options by default", () => {
     render(
       <Select
-        selected={{ label: "test label", value: "test" }}
-        options={[{ label: "test label", value: "test" }]}
         onChange={() => {}}
+        options={[{ label: "test label", value: "test" }]}
+        selected={{ label: "test label", value: "test" }}
       />
     );
 
@@ -28,9 +28,9 @@ describe("<Select />", () => {
 
     render(
       <Select
-        selected={{ label: "test label", value: "test" }}
-        options={[{ label: "test label", value: "test" }]}
         onChange={() => {}}
+        options={[{ label: "test label", value: "test" }]}
+        selected={{ label: "test label", value: "test" }}
       />
     );
 
@@ -47,12 +47,12 @@ describe("<Select />", () => {
 
     render(
       <Select
-        selected={{ label: "test label", value: "test" }}
+        onChange={onChange}
         options={[
           { label: "test label", value: "test" },
           { label: "test label2", value: "test2" },
         ]}
-        onChange={onChange}
+        selected={{ label: "test label", value: "test" }}
       />
     );
 

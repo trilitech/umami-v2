@@ -127,10 +127,10 @@ describe("<Form />", () => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={undefined}
-            mode="single"
-            goBack={expect.any(Function)}
-            operations={operations}
             fee={new BigNumber(100)}
+            goBack={expect.any(Function)}
+            mode="single"
+            operations={operations}
           />
         );
       });

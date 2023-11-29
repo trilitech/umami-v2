@@ -57,7 +57,7 @@ export const PeersDisplay = ({
       {peerInfos.map(peerInfo => (
         <Fragment key={peerInfo.name}>
           <Divider />
-          <PeerRow peerInfo={peerInfo} onRemove={() => removePeer(peerInfo)} />
+          <PeerRow onRemove={() => removePeer(peerInfo)} peerInfo={peerInfo} />
         </Fragment>
       ))}
     </Box>

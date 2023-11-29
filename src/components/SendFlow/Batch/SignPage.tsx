@@ -22,23 +22,23 @@ export const SignPage: React.FC<{
         <form>
           <BatchModalBody
             fee={fee}
-            title={title}
             signerAddress={signer.address}
+            title={title}
             transactionCount={operations.operations.length}
           />
 
           <OperationSignerSelector
-            sender={operations.sender}
             isLoading={isLoading}
             operationType={operations.type}
             reEstimate={reEstimate}
+            sender={operations.sender}
           />
 
           <ModalFooter>
             <SignButton
-              onSubmit={onSign}
-              isLoading={isLoading}
               isDisabled={estimationFailed}
+              isLoading={isLoading}
+              onSubmit={onSign}
               signer={signer}
               text={title}
             />

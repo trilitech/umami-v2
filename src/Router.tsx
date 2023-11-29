@@ -48,17 +48,17 @@ const MemoizedRouter = React.memo(() => {
         <BeaconProvider>
           <AnnouncementBanner />
           <Routes>
-            <Route path="/home" element={withSideMenu(<HomeView />)} />
-            <Route path="/home/:ownerPkh/:nftId" element={withSideMenu(<HomeView />)} />
-            <Route path="/nfts" element={withSideMenu(<NFTsView />)} />
-            <Route path="/nfts/:ownerPkh/:nftId" element={withSideMenu(<NFTsView />)} />
-            <Route path="/operations" element={withSideMenu(<OperationsView />)} />
-            <Route path="/tokens" element={withSideMenu(<TokensPage />)} />
-            <Route path="/address-book" element={withSideMenu(<AddressBookView />)} />
-            <Route path="/settings" element={withSideMenu(<SettingsView />)} />
-            <Route path="/help" element={withSideMenu(<HelpView />)} />
-            <Route path="/batch" element={withSideMenu(<BatchPage />)} />
-            <Route path="/*" element={<Navigate to="/home" />} />
+            <Route element={withSideMenu(<HomeView />)} path="/home" />
+            <Route element={withSideMenu(<HomeView />)} path="/home/:ownerPkh/:nftId" />
+            <Route element={withSideMenu(<NFTsView />)} path="/nfts" />
+            <Route element={withSideMenu(<NFTsView />)} path="/nfts/:ownerPkh/:nftId" />
+            <Route element={withSideMenu(<OperationsView />)} path="/operations" />
+            <Route element={withSideMenu(<TokensPage />)} path="/tokens" />
+            <Route element={withSideMenu(<AddressBookView />)} path="/address-book" />
+            <Route element={withSideMenu(<SettingsView />)} path="/settings" />
+            <Route element={withSideMenu(<HelpView />)} path="/help" />
+            <Route element={withSideMenu(<BatchPage />)} path="/batch" />
+            <Route element={<Navigate to="/home" />} path="/*" />
           </Routes>
           {dynamicModal.content}
         </BeaconProvider>

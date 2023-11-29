@@ -14,9 +14,9 @@ const DoubleCheckmarkIcon: React.FC<IconProps> = props => {
     >
       <path
         d="M4 14L9 19L20 8M6 8.88889L9.07692 12L16 5"
-        strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="1.2"
       />
     </Icon>
   );

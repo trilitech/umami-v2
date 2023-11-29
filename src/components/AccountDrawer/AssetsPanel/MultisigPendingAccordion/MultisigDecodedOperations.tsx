@@ -50,7 +50,7 @@ const UnrecognizedOperationAccordion: React.FC<{ unrecoginizedRawActions: string
           </AccordionButton>
         </h2>
         <AccordionPanel overflowY="scroll" height="400px" paddingBottom={3}>
-          <JsValueWrap value={JSON.parse(unrecoginizedRawActions)} space={1} />
+          <JsValueWrap space={1} value={JSON.parse(unrecoginizedRawActions)} />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

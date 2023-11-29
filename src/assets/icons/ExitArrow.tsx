@@ -14,9 +14,9 @@ const ExitArrowIcon: React.FC<IconProps> = props => {
     >
       <path
         d="M15 3V15M3 9H12M12 9L9 6M12 9L9 12"
-        strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="1.2"
       />
     </Icon>
   );

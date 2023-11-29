@@ -24,8 +24,13 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-origination">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <ContractIcon mr="8px" />
-          <TzktLink data-testid="title" hash={operation.hash} counter={operation.counter} mr="8px">
+          <ContractIcon marginRight="8px" />
+          <TzktLink
+            marginRight="8px"
+            counter={operation.counter}
+            data-testid="title"
+            hash={operation.hash}
+          >
             <Heading size="md">{contractTitle}</Heading>
           </TzktLink>
           <Fee operation={operation} />

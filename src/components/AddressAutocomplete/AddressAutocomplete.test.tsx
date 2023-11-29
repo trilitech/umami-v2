@@ -27,11 +27,11 @@ const fixture = ({
   render(
     <FormProvider {...view.result.current}>
       <AddressAutocomplete
-        contacts={contacts}
-        label={label}
-        inputName="destination"
         allowUnknown={allowUnknown}
+        contacts={contacts}
+        inputName="destination"
         keepValid={keepValid}
+        label={label}
       />
     </FormProvider>
   );

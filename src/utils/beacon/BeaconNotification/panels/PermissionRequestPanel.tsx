@@ -59,9 +59,9 @@ const PermissionRequestPanel: React.FC<{
         <FormProvider {...form}>
           <FormControl isInvalid={!!errors.address}>
             <OwnedImplicitAccountsAutocomplete
-              label="Select Account"
               allowUnknown={false}
               inputName="address"
+              label="Select Account"
             />
           </FormControl>
         </FormProvider>

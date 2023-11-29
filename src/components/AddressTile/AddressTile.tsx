@@ -51,7 +51,7 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
           )}
         </Flex>
 
-        <AccountBalance textAlign="right" overflow="hidden" address={address.pkh} />
+        <AccountBalance overflow="hidden" textAlign="right" address={address.pkh} />
       </Flex>
     </Tooltip>
   );

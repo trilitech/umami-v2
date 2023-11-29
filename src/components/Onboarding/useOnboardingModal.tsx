@@ -119,7 +119,7 @@ export const useOnboardingModal = (onModalClose?: () => void) => {
       case StepType.eula:
         return <Eula goToStep={goToStep} />;
       case StepType.connectOrCreate:
-        return <ConnectOrCreate goToStep={goToStep} closeModal={closeModal} />;
+        return <ConnectOrCreate closeModal={closeModal} goToStep={goToStep} />;
       case StepType.connectOptions:
         return <ConnectOptions goToStep={goToStep} />;
       case StepType.notice:
