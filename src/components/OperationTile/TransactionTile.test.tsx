@@ -1,7 +1,7 @@
 import { mockLedgerAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
-import { formatPkh } from "../../utils/formatPkh";
+import { formatPkh } from "../../utils/format";
 import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import store from "../../utils/redux/store";

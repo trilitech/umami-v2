@@ -39,7 +39,9 @@ export const ShowSeedphrase = ({
                 >
                   {index + 1}
                 </Heading>
-                <Text size="sm">{item}</Text>
+                <Text data-testid={`mnemonic-word-${index}`} size="sm">
+                  {item}
+                </Text>
               </Flex>
             );
           })}
