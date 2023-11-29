@@ -1,13 +1,14 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/layout";
-import { Box, Text, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import React from "react";
-import { TopBar } from "../../components/TopBar";
-import colors from "../../style/colors";
-import ClickableCard from "../../components/ClickableCard";
-import ExternalLinkIcon from "../../assets/icons/ExternalLink";
 import { Link } from "react-router-dom";
 
-export default function HelpView() {
+import { ExternalLinkIcon } from "../../assets/icons";
+import { ClickableCard } from "../../components/ClickableCard";
+import { TopBar } from "../../components/TopBar";
+import colors from "../../style/colors";
+
+export const HelpView = () => {
   return (
     <Grid
       gridGap="1"
@@ -51,7 +52,7 @@ export default function HelpView() {
       </GridItem>
     </Grid>
   );
-}
+};
 
 const HelpLinkRow: React.FC<{
   about: string;

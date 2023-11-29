@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from "../mocks/testUtils";
 import { ConfirmationModal } from "./ConfirmationModal";
+import { fireEvent, render, screen } from "../mocks/testUtils";
 
 describe("<ConfirmationModal />", () => {
   it("shows title", () => {

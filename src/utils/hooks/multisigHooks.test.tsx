@@ -1,10 +1,11 @@
 import { renderHook } from "@testing-library/react";
-import { multisigOperation, multisigs } from "../../mocks/multisig";
+
 import { useGetPendingMultisigOperations } from "./multisigHooks";
-import { multisigToAccount } from "../multisig/helpers";
+import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
-import store from "../redux/store";
+import { multisigToAccount } from "../multisig/helpers";
 import { multisigActions } from "../redux/slices/multisigsSlice";
+import { store } from "../redux/store";
 
 describe("useMultisigHooks", () => {
   it("useGetSortedMultisigPendingOperations sorts operations by id", () => {

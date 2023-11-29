@@ -1,15 +1,16 @@
 import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
-import BakerIcon from "../../assets/icons/Baker";
-import colors from "../../style/colors";
-import { useShowAddress } from "./useShowAddress";
-import { DelegationOperation } from "../../utils/tezos";
-import { TzktLink } from "./TzktLink";
+
 import { Fee } from "./Fee";
-import { Timestamp } from "./Timestamp";
-import AddressPill from "../AddressPill/AddressPill";
-import { TzktAlias } from "../../types/Address";
-import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { OperationStatus } from "./OperationStatus";
+import { OperationTypeWrapper } from "./OperationTypeWrapper";
+import { Timestamp } from "./Timestamp";
+import { TzktLink } from "./TzktLink";
+import { useShowAddress } from "./useShowAddress";
+import { BakerIcon } from "../../assets/icons";
+import colors from "../../style/colors";
+import { TzktAlias } from "../../types/Address";
+import { DelegationOperation } from "../../utils/tezos";
+import { AddressPill } from "../AddressPill/AddressPill";
 
 export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operation }) => {
   const isDelegating = !!operation.newDelegate;

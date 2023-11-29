@@ -1,13 +1,19 @@
+import { useToast } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
-import { Network } from "../types/Network";
-import { useImplicitAccounts } from "./hooks/getAccountDataHooks";
+
+import { getErrorContext } from "./getErrorContext";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
+import { useImplicitAccounts } from "./hooks/getAccountDataHooks";
+import { useSelectedNetwork } from "./hooks/networkHooks";
 import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "./multisig/helpers";
-import { assetsActions } from "./redux/slices/assetsSlice";
+import { Multisig } from "./multisig/types";
 import { useAppDispatch } from "./redux/hooks";
+import { assetsActions } from "./redux/slices/assetsSlice";
+import { errorsSlice } from "./redux/slices/errorsSlice";
 import { multisigActions } from "./redux/slices/multisigsSlice";
 import { tokensActions } from "./redux/slices/tokensSlice";
+import { AppDispatch } from "./redux/store";
 import {
   getAccounts,
   getBakers,
@@ -15,13 +21,8 @@ import {
   getTezosPriceInUSD,
   getTokenBalances,
 } from "./tezos";
-import errorsSlice from "./redux/slices/errorsSlice";
-import getErrorContext from "./getErrorContext";
-import { useSelectedNetwork } from "./hooks/networkHooks";
-import { AppDispatch } from "./redux/store";
 import { RawPkh } from "../types/Address";
-import { useToast } from "@chakra-ui/react";
-import { Multisig } from "./multisig/types";
+import { Network } from "../types/Network";
 
 const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;

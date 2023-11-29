@@ -1,4 +1,5 @@
 import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
+
 import { emailBodyTemplate } from "./TopBar";
 
 // TODO: prepare for Beta release properly
@@ -53,4 +54,3 @@ export const ErrorPage: React.FC = () => {
     </Flex>
   );
 };
-export default ErrorPage;

@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
-import accountsSlice from "./accountsSlice";
+
+import { accountsSlice } from "./accountsSlice";
+import { RawPkh } from "../../../types/Address";
+import { Delegate } from "../../../types/Delegate";
+import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
-import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
-import { Delegate } from "../../../types/Delegate";
-import { RawPkh } from "../../../types/Address";
 
 type TransactionId = number;
 
@@ -51,7 +52,7 @@ const initialState: State = {
   lastTimeUpdated: null,
 };
 
-const assetsSlice = createSlice({
+export const assetsSlice = createSlice({
   name: "assets",
   initialState,
   // Reset assets state if accounts are reset
@@ -114,5 +115,3 @@ const assetsSlice = createSlice({
 });
 
 export const assetsActions = assetsSlice.actions;
-
-export default assetsSlice;

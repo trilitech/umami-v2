@@ -1,9 +1,9 @@
-import accountsSlice from "../slices/accountsSlice";
-import store from "../store";
-import { mockSecretKeyAccount } from "../../../mocks/factories";
 import { remove, restore } from "./secretKeyAccount";
-import { EncryptedData } from "../../crypto/types";
+import { mockSecretKeyAccount } from "../../../mocks/factories";
 import { decrypt } from "../../crypto/AES";
+import { EncryptedData } from "../../crypto/types";
+import { accountsSlice } from "../slices/accountsSlice";
+import { store } from "../store";
 
 describe("secretKeyAccount", () => {
   test("restore", async () => {

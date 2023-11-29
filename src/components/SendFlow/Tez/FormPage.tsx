@@ -10,26 +10,27 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { parsePkh, RawPkh } from "../../../types/Address";
+
+import { SignPage } from "./SignPage";
+import { RawPkh, parsePkh } from "../../../types/Address";
 import { TezTransfer } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import {
-  formDefaultValues,
-  FormPageProps,
-  FormSubmitButtons,
-  getSmallestUnit,
-  makeValidateDecimals,
-} from "../utils";
-import SignPage from "./SignPage";
+import { FormErrorMessage } from "../../FormErrorMessage";
+import { FormPageHeader } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { FormErrorMessage } from "../../FormErrorMessage";
-import FormPageHeader from "../FormPageHeader";
+import {
+  FormPageProps,
+  FormSubmitButtons,
+  formDefaultValues,
+  getSmallestUnit,
+  makeValidateDecimals,
+} from "../utils";
 
 export type FormValues = {
   sender: RawPkh;
@@ -37,13 +38,7 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-const toOperation = (formValues: FormValues): TezTransfer => ({
-  type: "tez",
-  amount: tezToMutez(formValues.prettyAmount).toFixed(),
-  recipient: parsePkh(formValues.recipient),
-});
-
-const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> = ({
+export const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> = ({
   showPreview = true,
   ...props
 }) => {
@@ -137,4 +132,9 @@ const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> 
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation = (formValues: FormValues): TezTransfer => ({
+  type: "tez",
+  amount: tezToMutez(formValues.prettyAmount).toFixed(),
+  recipient: parsePkh(formValues.recipient),
+});

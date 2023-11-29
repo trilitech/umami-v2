@@ -1,5 +1,8 @@
 import { Accordion } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
+import BigNumber from "bignumber.js";
+
+import { MultisigPendingAccordionItem } from "./MultisigPendingAccordionItem";
 import {
   mockImplicitAddress,
   mockMnemonicAccount,
@@ -9,18 +12,15 @@ import { fillPassword } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../../../types/Account";
+import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { parseImplicitPkh } from "../../../../types/Address";
+import { MAINNET } from "../../../../types/Network";
+import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import { useGetSecretKey } from "../../../../utils/hooks/accountUtils";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
-import store from "../../../../utils/redux/store";
-import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
+import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../../utils/redux/store";
 import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezos";
-
-import BigNumber from "bignumber.js";
-import { makeAccountOperations } from "../../../../types/AccountOperations";
-import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
-import { MAINNET } from "../../../../types/Network";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 

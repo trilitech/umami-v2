@@ -1,4 +1,4 @@
-import getErrorContext from "./getErrorContext";
+import { getErrorContext } from "./getErrorContext";
 
 describe("getErrorContext", () => {
   it("should get error context", () => {

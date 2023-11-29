@@ -1,9 +1,10 @@
-import { useGetContactName } from "../../utils/hooks/contactsHooks";
-import { formatPkh, truncate } from "../../utils/format";
 import { Text, TextProps } from "@chakra-ui/react";
-import { AddressKind } from "./types";
 
-const AddressPillText: React.FC<
+import { AddressKind } from "./types";
+import { formatPkh, truncate } from "../../utils/format";
+import { useGetContactName } from "../../utils/hooks/contactsHooks";
+
+export const AddressPillText: React.FC<
   {
     addressKind: AddressKind;
     showPkh: boolean;
@@ -20,5 +21,3 @@ const AddressPillText: React.FC<
 
   return <Text {...rest}>{nameOrLabel ? truncate(nameOrLabel, 21) : formattedPkh}</Text>;
 };
-
-export default AddressPillText;

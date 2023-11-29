@@ -1,3 +1,4 @@
+import { OperationView } from "./OperationView";
 import { hedgehoge } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import {
@@ -11,12 +12,11 @@ import {
 import { ghostnetThezard } from "../../mocks/nftTokens";
 import { render, screen } from "../../mocks/testUtils";
 import { parseContractPkh } from "../../types/Address";
-import { FA12Transfer, FA2Transfer } from "../../types/Operation";
 import { MAINNET } from "../../types/Network";
+import { FA12Transfer, FA2Transfer } from "../../types/Operation";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import store from "../../utils/redux/store";
+import { store } from "../../utils/redux/store";
 import { TEZ } from "../../utils/tezos";
-import { OperationView } from "./OperationView";
 
 describe("<OperationView />", () => {
   test("tez transfer", () => {

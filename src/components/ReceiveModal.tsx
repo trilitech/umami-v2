@@ -1,10 +1,11 @@
-import { Box, Flex, ModalBody, ModalContent, ModalFooter, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FC } from "react";
 import { QRCode } from "react-qrcode-logo";
-import AddressPill from "./AddressPill/AddressPill";
+
+import { AddressPill } from "./AddressPill/AddressPill";
+import { FormPageHeader } from "./SendFlow/FormPageHeader";
 import { parsePkh } from "../types/Address";
 import { useGetOwnedAccountSafe } from "../utils/hooks/getAccountDataHooks";
-import FormPageHeader from "./SendFlow/FormPageHeader";
 
 export const ReceiveModal: FC<{
   pkh: string;
@@ -40,5 +41,3 @@ export const ReceiveModal: FC<{
     </ModalContent>
   );
 };
-
-export default ReceiveModal;

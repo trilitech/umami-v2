@@ -1,6 +1,5 @@
-import React from "react";
-
 import { Image, ImageProps } from "@chakra-ui/react";
+import React from "react";
 
 import makiLogo from "../assets/maki-default.png";
 

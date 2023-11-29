@@ -1,6 +1,6 @@
+import { ImportSeed } from "./ImportSeed";
 import { render, screen, waitFor } from "./mocks/testUtils";
 import { request } from "./utils/datocms/request";
-import ImportSeed from "./ImportSeed";
 
 const fixture = () => <ImportSeed />;
 

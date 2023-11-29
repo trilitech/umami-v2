@@ -1,19 +1,20 @@
 import { render, screen } from "@testing-library/react";
+import { HashRouter } from "react-router-dom";
+
+import { NFTsView } from "./NftsView";
 import {
-  mockNFTToken,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
+  mockNFTToken,
 } from "../../mocks/factories";
-import { HashRouter } from "react-router-dom";
 import { ReduxStore } from "../../providers/ReduxStore";
-import store from "../../utils/redux/store";
-import tokensSlice from "../../utils/redux/slices/tokensSlice";
-import NFTsViewBase from "./NftsView";
-import assetsSlice from "../../utils/redux/slices/assetsSlice";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
 import { MAINNET } from "../../types/Network";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
+import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
+import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
+import { store } from "../../utils/redux/store";
 
 const { updateTokenBalance } = assetsSlice.actions;
 
@@ -24,7 +25,7 @@ beforeEach(() => {
 const fixture = () => (
   <ReduxStore>
     <HashRouter>
-      <NFTsViewBase />
+      <NFTsView />
     </HashRouter>
   </ReduxStore>
 );

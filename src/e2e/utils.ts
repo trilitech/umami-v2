@@ -1,9 +1,11 @@
-import { Page, test, expect } from "@playwright/test";
-import { RawPkh } from "../types/Address";
 import { execSync } from "child_process";
-import { getAccounts } from "../utils/tezos";
-import { DefaultNetworks } from "../types/Network";
 import crypto from "crypto";
+
+import { Page, expect, test } from "@playwright/test";
+
+import { RawPkh } from "../types/Address";
+import { DefaultNetworks } from "../types/Network";
+import { getAccounts } from "../utils/tezos";
 
 const TEST_NETWORK = {
   name: "Test net",

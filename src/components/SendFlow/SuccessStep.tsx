@@ -8,13 +8,12 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import React, { useContext } from "react";
-import { TzktLink } from "../TzktLink";
-import { DynamicModalContext } from "../DynamicModal";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { DynamicModalContext } from "../DynamicModal";
+import { TzktLink } from "../TzktLink";
 
 export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
   const network = useSelectedNetwork();

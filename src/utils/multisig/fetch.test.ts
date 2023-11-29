@@ -1,8 +1,9 @@
 import axios from "axios";
-import { ghostMultisigContracts } from "../../mocks/tzktResponse";
+
 import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
-import { GHOSTNET } from "../../types/Network";
 import { mockImplicitAddress } from "../../mocks/factories";
+import { ghostMultisigContracts } from "../../mocks/tzktResponse";
+import { GHOSTNET } from "../../types/Network";
 
 jest.mock("axios");
 jest.unmock("../tezos");

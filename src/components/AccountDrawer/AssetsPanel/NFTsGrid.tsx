@@ -10,12 +10,13 @@ import {
 import { every } from "lodash";
 import { FC } from "react";
 import { Link } from "react-router-dom";
+
+import colors from "../../../style/colors";
 import { RawPkh } from "../../../types/Address";
 import { fullId, thumbnailUri } from "../../../types/Token";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
 import { NoNFTs } from "../../NoItems";
-import colors from "../../../style/colors";
 
 export const NFTsGrid: FC<
   { nftsByOwner: Record<RawPkh, NFTBalance[] | undefined> } & SimpleGridProps

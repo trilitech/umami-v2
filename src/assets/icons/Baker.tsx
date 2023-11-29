@@ -1,6 +1,6 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-const BakerIcon: React.FC<IconProps> = props => {
+export const BakerIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -20,5 +20,3 @@ const BakerIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default BakerIcon;

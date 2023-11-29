@@ -1,8 +1,8 @@
+import { LeftIcon, RightIcon } from "./AddressPillIcon";
+import { AddressKindType } from "./types";
 import { mockFA2Address } from "../../mocks/addressKind";
 import { mockContractAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { LeftIcon, RightIcon } from "./AddressPillIcon";
-import { AddressKindType } from "./types";
 
 describe("AddressPill Icons", () => {
   it("Left icon renders", () => {

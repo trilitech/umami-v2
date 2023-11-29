@@ -1,7 +1,8 @@
-import { test, expect } from "@playwright/test";
-import { cleanupState, onboardWithExistingMnemonic } from "../utils";
+import { expect, test } from "@playwright/test";
+
 import { mnemonic1 as mnemonic } from "../../mocks/mockMnemonic";
 import { AVAILABLE_DERIVATION_PATHS } from "../../utils/account/derivationPathUtils";
+import { cleanupState, onboardWithExistingMnemonic } from "../utils";
 
 cleanupState();
 

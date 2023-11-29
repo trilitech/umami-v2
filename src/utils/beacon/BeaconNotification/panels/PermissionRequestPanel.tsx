@@ -17,11 +17,12 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+
 import { OwnedImplicitAccountsAutocomplete } from "../../../../components/AddressAutocomplete";
 import { useImplicitAccounts } from "../../../hooks/getAccountDataHooks";
 import { walletClient } from "../../beacon";
 
-const PermissionRequestPanel: React.FC<{
+export const PermissionRequestPanel: React.FC<{
   request: PermissionRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
@@ -81,5 +82,3 @@ const PermissionRequestPanel: React.FC<{
     </ModalContent>
   );
 };
-
-export default PermissionRequestPanel;

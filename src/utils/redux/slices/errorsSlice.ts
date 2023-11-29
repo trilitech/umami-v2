@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import { ErrorContext } from "../../getErrorContext";
 
 type State = ErrorContext[];
@@ -7,7 +8,7 @@ const MAX_ERRORS_LEN = 100;
 
 const initialState: State = [];
 
-const errorsSlice = createSlice({
+export const errorsSlice = createSlice({
   name: "errors",
   initialState,
   reducers: {
@@ -21,5 +22,3 @@ const errorsSlice = createSlice({
     },
   },
 });
-
-export default errorsSlice;

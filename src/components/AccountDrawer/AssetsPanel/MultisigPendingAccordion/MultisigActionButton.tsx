@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/react";
 import React from "react";
 import { CgSandClock } from "react-icons/cg";
 import { RxCheckCircled } from "react-icons/rx";
+
 import colors from "../../../../style/colors";
 import { IconAndTextBtn } from "../../../IconAndTextBtn";
 
@@ -11,6 +12,7 @@ export type MultisigSignerState =
   | "executable"
   | "approvable";
 
+// TODO: add test
 export const MultisigActionButton: React.FC<{
   signerState: MultisigSignerState;
   onClickApproveExecute: () => void;
@@ -66,5 +68,3 @@ export const MultisigActionButton: React.FC<{
     }
   }
 };
-
-export default MultisigActionButton;

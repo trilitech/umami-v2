@@ -1,6 +1,6 @@
 import { AccountType, LedgerAccount, SocialAccount } from "../../types/Account";
 import { useAppDispatch } from "../redux/hooks";
-import accountsSlice from "../redux/slices/accountsSlice";
+import { accountsSlice } from "../redux/slices/accountsSlice";
 import { restoreFromMnemonic } from "../redux/thunks/restoreMnemonicAccounts";
 import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
 

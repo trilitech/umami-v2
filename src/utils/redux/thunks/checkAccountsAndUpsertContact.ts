@@ -1,11 +1,12 @@
-import { Contact } from "../../../types/Contact";
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+
+import { Contact } from "../../../types/Contact";
 import { contactsActions } from "../slices/contactsSlice";
+import { RootState } from "../store";
 
 const { upsert } = contactsActions;
 
-const checkAccountsAndUpsertContact = (
+export const checkAccountsAndUpsertContact = (
   contact: Contact
 ): ThunkAction<void, RootState, unknown, AnyAction> => {
   return (dispatch, getState) => {
@@ -21,5 +22,3 @@ const checkAccountsAndUpsertContact = (
     dispatch(upsert(contact));
   };
 };
-
-export default checkAccountsAndUpsertContact;

@@ -2,16 +2,17 @@ import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@ch
 import { every, get, pick, sumBy } from "lodash";
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+import { NFTDrawerBody } from "./NFTDrawerBody";
+import { NFTGallery } from "./NFTGallery";
+import { useDynamicModal } from "../../components/DynamicModal";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
-import NFTGallery from "./NFTGallery";
-import { useDynamicModal } from "../../components/DynamicModal";
-import NFTDrawerBody from "./NFTDrawerBody";
 
-const NFTsViewBase = () => {
+export const NFTsView = () => {
   const nfts = useAllNfts();
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
   const navigate = useNavigate();
@@ -81,5 +82,3 @@ const NFTsViewBase = () => {
     </Flex>
   );
 };
-
-export default NFTsViewBase;

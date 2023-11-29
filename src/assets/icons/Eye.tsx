@@ -1,7 +1,8 @@
 import { Icon, IconProps } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
-const EyeIcon: React.FC<IconProps> = props => {
+export const EyeIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="16px"
@@ -28,5 +29,3 @@ const EyeIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default EyeIcon;

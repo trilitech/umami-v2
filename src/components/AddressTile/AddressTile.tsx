@@ -1,9 +1,10 @@
-import { Flex, Text, Heading, FlexProps, Box, Tooltip } from "@chakra-ui/react";
-import { Address } from "../../types/Address";
-import useAddressKind from "./useAddressKind";
-import AddressTileIcon from "./AddressTileIcon";
-import { formatPkh } from "../../utils/format";
+import { Box, Flex, FlexProps, Heading, Text, Tooltip } from "@chakra-ui/react";
+
+import { AddressTileIcon } from "./AddressTileIcon";
+import { useAddressKind } from "./useAddressKind";
 import colors from "../../style/colors";
+import { Address } from "../../types/Address";
+import { formatPkh } from "../../utils/format";
 import { AccountBalance } from "../AccountBalance";
 
 /**
@@ -15,7 +16,10 @@ import { AccountBalance } from "../AccountBalance";
  * @param address - Account address.
  * @param flexProps - Defines component style.
  */
-const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...flexProps }) => {
+export const AddressTile: React.FC<{ address: Address } & FlexProps> = ({
+  address,
+  ...flexProps
+}) => {
   const addressKind = useAddressKind(address);
 
   return (
@@ -56,5 +60,3 @@ const AddressTile: React.FC<{ address: Address } & FlexProps> = ({ address, ...f
     </Tooltip>
   );
 };
-
-export default AddressTile;

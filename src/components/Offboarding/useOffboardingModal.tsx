@@ -1,8 +1,9 @@
 import { Modal, ModalContent, ModalOverlay, useDisclosure } from "@chakra-ui/react";
-import colors from "../../style/colors";
-import OffboardingForm from "./OffboardingForm";
 
-const useOffboardingModal = () => {
+import { OffboardingForm } from "./OffboardingForm";
+import colors from "../../style/colors";
+
+export const useOffboardingModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return {
@@ -17,5 +18,3 @@ const useOffboardingModal = () => {
     onOpen,
   };
 };
-
-export default useOffboardingModal;

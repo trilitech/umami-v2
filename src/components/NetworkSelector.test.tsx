@@ -1,7 +1,7 @@
+import { NetworkSelector } from "./NetworkSelector";
 import { fireEvent, render, screen } from "../mocks/testUtils";
 import { GHOSTNET } from "../types/Network";
-import store from "../utils/redux/store";
-import NetworkSelector from "./NetworkSelector";
+import { store } from "../utils/redux/store";
 
 describe("<NetworkSelector />", () => {
   it("shows the current network", () => {

@@ -1,15 +1,16 @@
 import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
+
+import { Fee } from "./Fee";
+import { OperationStatus } from "./OperationStatus";
+import { OperationTypeWrapper } from "./OperationTypeWrapper";
+import { Timestamp } from "./Timestamp";
+import { TzktLink } from "./TzktLink";
+import { useShowAddress } from "./useShowAddress";
+import { ContractIcon } from "../../assets/icons";
+import colors from "../../style/colors";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import { OriginationOperation } from "../../utils/tezos";
-import { useShowAddress } from "./useShowAddress";
-import ContractIcon from "../../assets/icons/Contract";
-import { TzktLink } from "./TzktLink";
-import { Fee } from "./Fee";
-import { Timestamp } from "./Timestamp";
-import AddressPill from "../AddressPill/AddressPill";
-import colors from "../../style/colors";
-import { OperationTypeWrapper } from "./OperationTypeWrapper";
-import { OperationStatus } from "./OperationStatus";
+import { AddressPill } from "../AddressPill/AddressPill";
 
 export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {
   const isMultisig =

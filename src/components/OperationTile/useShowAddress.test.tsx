@@ -1,7 +1,7 @@
-import { mockImplicitAddress } from "../../mocks/factories";
-import { renderHook } from "../../mocks/testUtils";
 import { OperationTileContext } from "./OperationTileContext";
 import { useShowAddress } from "./useShowAddress";
+import { mockImplicitAddress } from "../../mocks/factories";
+import { renderHook } from "../../mocks/testUtils";
 
 const PageWrapper = ({ children }: { children: React.ReactElement }) => (
   <OperationTileContext.Provider value={{ mode: "page" }}>{children}</OperationTileContext.Provider>

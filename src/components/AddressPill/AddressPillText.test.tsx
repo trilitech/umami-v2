@@ -1,10 +1,10 @@
+import { AddressPillText } from "./AddressPillText";
 import { mockFA2Address } from "../../mocks/addressKind";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
-import store from "../../utils/redux/store";
-import AddressPillText from "./AddressPillText";
+import { store } from "../../utils/redux/store";
 const { upsert } = contactsActions;
 
 describe("<AddressPillText />", () => {

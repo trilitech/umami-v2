@@ -1,4 +1,5 @@
 import { defineStyleConfig } from "@chakra-ui/react";
+
 import colors from "../colors";
 
 export const buttonTheme = defineStyleConfig({

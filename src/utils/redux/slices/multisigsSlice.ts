@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fromPairs, groupBy } from "lodash";
-import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
+
 import { MultisigAccount } from "../../../types/Account";
+import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
 
 export type State = {
   items: MultisigAccount[];
@@ -10,7 +11,7 @@ export type State = {
 
 const initialState: State = { items: [], pendingOperations: {} };
 
-const multisigsSlice = createSlice({
+export const multisigsSlice = createSlice({
   name: "multisigs",
   initialState,
   reducers: {
@@ -48,5 +49,3 @@ const multisigsSlice = createSlice({
 });
 
 export const multisigActions = multisigsSlice.actions;
-
-export default multisigsSlice;

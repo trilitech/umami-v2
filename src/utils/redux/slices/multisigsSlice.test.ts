@@ -1,8 +1,8 @@
-import { multisigOperation, multisigs } from "../../../mocks/multisig";
-import store from "../store";
 import { multisigActions } from "./multisigsSlice";
 import { mockContractAddress, mockMultisigAccount } from "../../../mocks/factories";
+import { multisigOperation, multisigs } from "../../../mocks/multisig";
 import { Multisig } from "../../multisig/types";
+import { store } from "../store";
 
 describe("Multisig reducer", () => {
   describe("default values", () => {

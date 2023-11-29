@@ -1,18 +1,19 @@
 import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
-import {
-  TokenBalanceWithToken,
-  keepFA1s,
-  keepFA2s,
-  keepNFTs,
-  NFTBalance,
-} from "../../types/TokenBalance";
-import { mutezToTez } from "../format";
-import { useAppSelector } from "../redux/hooks";
+
 import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
 import { Delegate } from "../../types/Delegate";
+import {
+  NFTBalance,
+  TokenBalanceWithToken,
+  keepFA1s,
+  keepFA2s,
+  keepNFTs,
+} from "../../types/TokenBalance";
+import { mutezToTez } from "../format";
+import { useAppSelector } from "../redux/hooks";
 
 export const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
 

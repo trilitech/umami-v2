@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import { Contact } from "../../../types/Contact";
 import { nameExistsInContacts } from "../../hooks/contactsUtils";
 
@@ -6,7 +7,7 @@ type State = Record<string, Contact>;
 
 const initialState: State = {};
 
-const contactsSlice = createSlice({
+export const contactsSlice = createSlice({
   name: "contacts",
   initialState,
   reducers: {
@@ -25,5 +26,3 @@ const contactsSlice = createSlice({
 });
 
 export const contactsActions = contactsSlice.actions;
-
-export default contactsSlice;

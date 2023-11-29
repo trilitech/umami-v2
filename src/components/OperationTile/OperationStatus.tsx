@@ -1,6 +1,4 @@
-import CheckmarkIcon from "../../assets/icons/Checkmark";
-import CrossedCircleIcon from "../../assets/icons/CrossedCircle";
-import HourglassIcon from "../../assets/icons/Hourglass";
+import { CheckmarkIcon, CrossedCircleIcon, HourglassIcon } from "../../assets/icons";
 import { useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
 
 export const OperationStatus: React.FC<{ level: number; status?: string }> = ({

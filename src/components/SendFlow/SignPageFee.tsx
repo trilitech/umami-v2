@@ -1,8 +1,10 @@
-import colors from "../../style/colors";
-import { prettyTezAmount } from "../../utils/format";
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
-const SignPageFee: React.FC<{ fee: string | BigNumber }> = ({ fee }) => {
+
+import colors from "../../style/colors";
+import { prettyTezAmount } from "../../utils/format";
+
+export const SignPageFee: React.FC<{ fee: string | BigNumber }> = ({ fee }) => {
   return (
     <Flex alignItems="center">
       <Heading marginRight="4px" color={colors.gray[450]} size="sm">
@@ -14,5 +16,3 @@ const SignPageFee: React.FC<{ fee: string | BigNumber }> = ({ fee }) => {
     </Flex>
   );
 };
-
-export default SignPageFee;

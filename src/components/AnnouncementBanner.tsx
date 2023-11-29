@@ -1,8 +1,9 @@
 import { Alert, AlertDescription, Box, CloseButton } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+
+import { maintanceIcon } from "./Icons";
 import { ConfigurationDocument } from "../graphql/generated";
 import { request } from "../utils/datocms/request";
-import { maintanceIcon } from "./Icons";
 
 const ANNOUNCEMENT_REFRESH_INTERVAL = 60 * 60 * 1000; // once an hour
 

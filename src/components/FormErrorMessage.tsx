@@ -3,8 +3,9 @@ import {
   Icon,
   FormErrorMessage as OriginalFormErrorMessage,
 } from "@chakra-ui/react";
+
+import { ExclamationIcon } from "../assets/icons";
 import colors from "../style/colors";
-import ExclamationIcon from "../assets/icons/Exclamation";
 
 export const FormErrorMessage = ({ children, ...props }: FormErrorMessageProps) => {
   return (

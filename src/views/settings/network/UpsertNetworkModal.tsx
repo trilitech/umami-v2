@@ -9,14 +9,15 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import { Network } from "../../../types/Network";
-import { useForm } from "react-hook-form";
-import { DynamicModalContext } from "../../../components/DynamicModal";
-import { useDispatch } from "react-redux";
-import { networksActions } from "../../../utils/redux/slices/networks";
-import { FormErrorMessage } from "../../../components/FormErrorMessage";
 import { useContext } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+
+import { DynamicModalContext } from "../../../components/DynamicModal";
+import { FormErrorMessage } from "../../../components/FormErrorMessage";
+import { Network } from "../../../types/Network";
 import { useAvailableNetworks } from "../../../utils/hooks/networkHooks";
+import { networksActions } from "../../../utils/redux/slices/networks";
 
 export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
   const mode = network ? "edit" : "create";

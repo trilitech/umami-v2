@@ -1,10 +1,11 @@
 import { Modal } from "@chakra-ui/react";
 import { ReactElement } from "react";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
+import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { GHOSTNET, MAINNET } from "../../../types/Network";
-import store from "../../../utils/redux/store";
 import { networksActions } from "../../../utils/redux/slices/networks";
+import { store } from "../../../utils/redux/store";
 
 const fixture = (element: ReactElement) => (
   <Modal isOpen={true} onClose={() => {}}>

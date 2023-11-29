@@ -1,9 +1,10 @@
-import accountsSlice from "../slices/accountsSlice";
 import { InMemorySigner } from "@taquito/signer";
+
+import { SecretKeyAccount } from "../../../types/Account";
 import { parseImplicitPkh } from "../../../types/Address";
 import { encrypt } from "../../crypto/AES";
+import { accountsSlice } from "../slices/accountsSlice";
 import { AppDispatch } from "../store";
-import { SecretKeyAccount } from "../../../types/Account";
 
 export const restore =
   ({ secretKey, label, password }: { secretKey: string; label: string; password: string }) =>

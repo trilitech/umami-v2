@@ -1,17 +1,18 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
+
+import { Fee } from "./Fee";
+import { OperationStatus } from "./OperationStatus";
+import { OperationTypeWrapper } from "./OperationTypeWrapper";
+import { Timestamp } from "./Timestamp";
+import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
+import { TzktLink } from "./TzktLink";
+import { useShowAddress } from "./useShowAddress";
 import colors from "../../style/colors";
+import { parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
 import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 import { TransactionOperation } from "../../utils/tezos";
-import { useShowAddress } from "./useShowAddress";
-import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
-import { TzktLink } from "./TzktLink";
-import { Fee } from "./Fee";
-import { Timestamp } from "./Timestamp";
-import AddressPill from "../AddressPill/AddressPill";
-import { OperationTypeWrapper } from "./OperationTypeWrapper";
-import { OperationStatus } from "./OperationStatus";
-import { parsePkh } from "../../types/Address";
+import { AddressPill } from "../AddressPill/AddressPill";
 
 export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
   const isOutgoing = useIsOwnedAddress(operation.sender.address);

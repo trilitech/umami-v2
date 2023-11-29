@@ -1,7 +1,8 @@
 import { Icon, IconProps } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
-const ExitArrowIcon: React.FC<IconProps> = props => {
+export const ExitArrowIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -21,5 +22,3 @@ const ExitArrowIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default ExitArrowIcon;

@@ -1,14 +1,15 @@
-import { Button, Flex, VStack, Text, Divider, useToast } from "@chakra-ui/react";
-import { GoogleAuth } from "../../../GoogleAuth";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
-import { getPkAndPkhFromSk } from "../../../utils/tezos";
-import ModalContentWrapper from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
-import WalletPlusIcon from "../../../assets/icons/WalletPlus";
-import colors from "../../../style/colors";
+import { Button, Divider, Flex, Text, VStack, useToast } from "@chakra-ui/react";
 
-const ConnectOrCreate = ({
+import { WalletPlusIcon } from "../../../assets/icons";
+import { GoogleAuth } from "../../../GoogleAuth";
+import colors from "../../../style/colors";
+import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { getPkAndPkhFromSk } from "../../../utils/tezos";
+import { ModalContentWrapper } from "../ModalContentWrapper";
+import { Step, StepType } from "../useOnboardingModal";
+
+export const ConnectOrCreate = ({
   goToStep,
   closeModal,
 }: {
@@ -71,5 +72,3 @@ const ConnectOrCreate = ({
     </ModalContentWrapper>
   );
 };
-
-export default ConnectOrCreate;

@@ -1,7 +1,8 @@
 import { FlexProps } from "@chakra-ui/react";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
-import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
+
 import { AccountSmallTileDisplay } from "./AccountSmallTileDisplay";
+import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
+import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 
 /**
  * Component used to display account info for batched transactions.

@@ -1,10 +1,11 @@
 import axios from "axios";
-import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
+
 import {
   getPendingOperationsForMultisigs,
   getRelevantMultisigContracts,
   parseMultisig,
 } from "./helpers";
+import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
 import { DefaultNetworks } from "../../types/Network";
 jest.mock("axios");

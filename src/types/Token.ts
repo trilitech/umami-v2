@@ -1,7 +1,8 @@
 import * as tzktApi from "@tzkt/sdk-api";
-import { z } from "zod";
-import { Schema as AddressSchema, TzktAlias } from "./Address";
 import BigNumber from "bignumber.js";
+import { z } from "zod";
+
+import { Schema as AddressSchema, TzktAlias } from "./Address";
 import { Network } from "./Network";
 
 // TzKT defines metadata as any, but we need to have at least some clarity of what can be inside

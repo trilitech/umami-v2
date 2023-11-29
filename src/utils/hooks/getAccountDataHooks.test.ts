@@ -1,4 +1,10 @@
 import { renderHook } from "@testing-library/react";
+
+import {
+  useGetBestSignerForAccount,
+  useIsOwnedAddress,
+  useIsUniqueLabel,
+} from "./getAccountDataHooks";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
@@ -9,17 +15,12 @@ import {
 } from "../../mocks/factories";
 import { AllTheProviders } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
-import accountsSlice from "../redux/slices/accountsSlice";
+import { accountsSlice } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
-import multisigsSlice from "../redux/slices/multisigsSlice";
-import store from "../redux/store";
-import renameAccount from "../redux/thunks/renameAccount";
-import {
-  useGetBestSignerForAccount,
-  useIsOwnedAddress,
-  useIsUniqueLabel,
-} from "./getAccountDataHooks";
+import { multisigsSlice } from "../redux/slices/multisigsSlice";
+import { store } from "../redux/store";
+import { renameAccount } from "../redux/thunks/renameAccount";
 
 describe("getAccountDataHooks", () => {
   describe("useGetBestSignerForAccount", () => {

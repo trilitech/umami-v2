@@ -1,6 +1,6 @@
+import { TokenNameWithIcon } from "./TokenNameWithIcon";
 import { mockFA2Token, mockMnemonicAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import TokenNameWithIcon from "./TokenNameWithIcon";
 
 describe("<TokenNameWithIcon />", () => {
   it("renders the token name for unverified token", () => {

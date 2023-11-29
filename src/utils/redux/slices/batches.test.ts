@@ -1,4 +1,4 @@
-import { ImplicitOperations, makeAccountOperations } from "../../../types/AccountOperations";
+import { batchesActions } from "./batches";
 import {
   mockDelegationOperation,
   mockImplicitAccount,
@@ -6,10 +6,10 @@ import {
   mockTezOperation,
 } from "../../../mocks/factories";
 import { waitFor } from "../../../mocks/testUtils";
+import { ImplicitOperations, makeAccountOperations } from "../../../types/AccountOperations";
 import { DefaultNetworks, Network } from "../../../types/Network";
 import { Operation } from "../../../types/Operation";
-import store from "../store";
-import { batchesActions } from "./batches";
+import { store } from "../store";
 
 const { add, clear, removeItem } = batchesActions;
 

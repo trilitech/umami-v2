@@ -9,18 +9,19 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
-import colors from "../../../style/colors";
-import { SignPageProps, useSignPageHelpers } from "../utils";
-import { SignPageHeader, headerText } from "../SignPageHeader";
-import { NFTBalance } from "../../../types/TokenBalance";
-import { FA2Transfer } from "../../../types/Operation";
-import { OperationSignerSelector } from "../OperationSignerSelector";
-import SignPageFee from "../SignPageFee";
-import AddressTile from "../../AddressTile/AddressTile";
-import SignButton from "../SignButton";
-import { SendNFTRecapTile } from "../SendNFTRecapTile";
 
-const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
+import colors from "../../../style/colors";
+import { FA2Transfer } from "../../../types/Operation";
+import { NFTBalance } from "../../../types/TokenBalance";
+import { AddressTile } from "../../AddressTile/AddressTile";
+import { OperationSignerSelector } from "../OperationSignerSelector";
+import { SendNFTRecapTile } from "../SendNFTRecapTile";
+import { SignButton } from "../SignButton";
+import { SignPageFee } from "../SignPageFee";
+import { SignPageHeader, headerText } from "../SignPageHeader";
+import { SignPageProps, useSignPageHelpers } from "../utils";
+
+export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {
     mode,
     operations: initialOperations,
@@ -92,4 +93,3 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
     </FormProvider>
   );
 };
-export default SignPage;

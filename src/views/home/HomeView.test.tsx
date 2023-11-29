@@ -1,3 +1,4 @@
+import { HomeView } from "./HomeView";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { dispatchMockAccounts } from "../../mocks/helpers";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
@@ -6,7 +7,6 @@ import {
   getLastDelegation,
   getRelatedTokenTransfers,
 } from "../../utils/tezos";
-import HomeView from "./HomeView";
 
 beforeEach(() => {
   dispatchMockAccounts([mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)]);

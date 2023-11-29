@@ -1,14 +1,14 @@
+import { TokensPage } from "./TokensPage";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { mockImplicitAddress, mockMnemonicAccount } from "../../mocks/factories";
-import store from "../../utils/redux/store";
-import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import TokensPage from "./TokensPage";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
-import assetsSlice from "../../utils/redux/slices/assetsSlice";
-import { DefaultNetworks } from "../../types/Network";
-import { networksActions } from "../../utils/redux/slices/networks";
 import { render, screen } from "../../mocks/testUtils";
+import { DefaultNetworks } from "../../types/Network";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
+import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
+import { networksActions } from "../../utils/redux/slices/networks";
+import { tokensActions } from "../../utils/redux/slices/tokensSlice";
+import { store } from "../../utils/redux/store";
 
 const fixture = () => <TokensPage />;
 

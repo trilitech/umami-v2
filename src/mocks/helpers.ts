@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fireEvent, screen } from "@testing-library/react";
-import { MnemonicAccount } from "../types/Account";
-import accountsSlice from "../utils/redux/slices/accountsSlice";
-import store from "../utils/redux/store";
 import BigNumber from "bignumber.js";
+
+import { MnemonicAccount } from "../types/Account";
+import { accountsSlice } from "../utils/redux/slices/accountsSlice";
+import { store } from "../utils/redux/store";
 import { estimate } from "../utils/tezos";
 
 export const selectSender = (accountLabel: string) => {

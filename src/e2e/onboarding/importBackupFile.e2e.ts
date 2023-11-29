@@ -1,5 +1,6 @@
-import { test, expect, Page } from "@playwright/test";
 import path from "path";
+
+import { Page, expect, test } from "@playwright/test";
 
 const fileAndPassword = [
   ["V1Backup.json", "asdfasdf"],

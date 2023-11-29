@@ -8,31 +8,26 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { parsePkh, RawPkh, parseImplicitPkh } from "../../../types/Address";
+
+import { SignPage } from "./SignPage";
+import { RawPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
+import { Delegation } from "../../../types/Operation";
 import { BakersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormPageProps, FormSubmitButtons } from "../utils";
-import SignPage from "./SignPage";
+import { FormErrorMessage } from "../../FormErrorMessage";
+import { HeaderWrapper } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { Delegation } from "../../../types/Operation";
-import { FormErrorMessage } from "../../FormErrorMessage";
-import { HeaderWrapper } from "../FormPageHeader";
+import { FormPageProps, FormSubmitButtons, formDefaultValues } from "../utils";
 
 export type FormValues = {
   sender: RawPkh;
   baker: RawPkh;
 };
 
-const toOperation = (formValues: FormValues): Delegation => ({
-  type: "delegation",
-  sender: parsePkh(formValues.sender),
-  recipient: parseImplicitPkh(formValues.baker),
-});
-
-const FormPage: React.FC<FormPageProps<FormValues>> = props => {
+export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const baker = props.form?.baker;
 
   const openSignPage = useOpenSignPageFormAction({
@@ -104,4 +99,9 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation = (formValues: FormValues): Delegation => ({
+  type: "delegation",
+  sender: parsePkh(formValues.sender),
+  recipient: parseImplicitPkh(formValues.baker),
+});

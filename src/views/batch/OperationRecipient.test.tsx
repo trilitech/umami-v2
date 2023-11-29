@@ -1,3 +1,4 @@
+import { OperationRecipient } from "./OperationRecipient";
 import {
   mockDelegationOperation,
   mockFA12Operation,
@@ -8,7 +9,6 @@ import {
   mockUndelegationOperation,
 } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { OperationRecipient } from "./OperationRecipient";
 
 describe("<OperationRecipient />", () => {
   test("undelegation", () => {

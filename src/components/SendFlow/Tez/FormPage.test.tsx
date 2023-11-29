@@ -1,22 +1,23 @@
 import { Modal } from "@chakra-ui/react";
+import BigNumber from "bignumber.js";
+
+import { FormPage, FormValues } from "./FormPage";
+import { SignPage } from "./SignPage";
+import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import {
   mockImplicitAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../mocks/factories";
+import { mockEstimatedFee } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
-import store from "../../../utils/redux/store";
-import FormPage, { FormValues } from "./FormPage";
-import SignPage from "./SignPage";
-import BigNumber from "bignumber.js";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { DynamicModalContext } from "../../DynamicModal";
-import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
+import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
+import { store } from "../../../utils/redux/store";
 import { estimate } from "../../../utils/tezos";
-import { mockEstimatedFee } from "../../../mocks/helpers";
+import { DynamicModalContext } from "../../DynamicModal";
 import { FormPageProps } from "../utils";
 
 const fixture = (props: FormPageProps<FormValues> = {}) => (

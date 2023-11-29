@@ -1,11 +1,12 @@
-import { Button, ListItem, OrderedList, Box } from "@chakra-ui/react";
+import { Box, Button, ListItem, OrderedList } from "@chakra-ui/react";
 import React from "react";
-import { generate24WordMnemonic } from "../../../utils/mnemonic";
-import ModalContentWrapper from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
-import NoticeIcon from "../../../assets/icons/Notice";
 
-const Notice: React.FC<{
+import { NoticeIcon } from "../../../assets/icons";
+import { generate24WordMnemonic } from "../../../utils/mnemonic";
+import { ModalContentWrapper } from "../ModalContentWrapper";
+import { Step, StepType } from "../useOnboardingModal";
+
+export const Notice: React.FC<{
   goToStep: (step: Step) => void;
 }> = ({ goToStep }) => {
   const noticeItems = [
@@ -60,5 +61,3 @@ const Notice: React.FC<{
     </ModalContentWrapper>
   );
 };
-
-export default Notice;

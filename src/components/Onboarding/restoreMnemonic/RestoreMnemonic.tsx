@@ -1,19 +1,20 @@
-import { VStack, Input, Box, Button, GridItem, Grid, Select, Heading } from "@chakra-ui/react";
-import { useState } from "react";
-import ModalContentWrapper from "../ModalContentWrapper";
-import { FieldValues, useForm } from "react-hook-form";
 import { ChevronDownIcon, WarningIcon } from "@chakra-ui/icons";
-import { Step, StepType } from "../useOnboardingModal";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { range } from "lodash";
+import { Box, Button, Grid, GridItem, Heading, Input, Select, VStack } from "@chakra-ui/react";
 import { validateMnemonic } from "bip39";
-import KeyIcon from "../../../assets/icons/Key";
+import { range } from "lodash";
+import { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+
+import { KeyIcon } from "../../../assets/icons";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import colors from "../../../style/colors";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { ModalContentWrapper } from "../ModalContentWrapper";
+import { Step, StepType } from "../useOnboardingModal";
 
 const mnemonicSizes = [12, 15, 18, 24];
 
-const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {
     register,
     handleSubmit,
@@ -167,5 +168,3 @@ const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
     </ModalContentWrapper>
   );
 };
-
-export default RestoreMnemonic;

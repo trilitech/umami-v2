@@ -1,6 +1,7 @@
-import { Step } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
-import Eula from "./Eula";
+
+import { Eula } from "./Eula";
+import { Step } from "../useOnboardingModal";
 
 const setStepMock = jest.fn((step: Step) => {});
 

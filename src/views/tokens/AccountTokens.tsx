@@ -11,20 +11,21 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
+
+import { TokenNameWithIcon } from "./TokenNameWithIcon";
+import { TokenIcon } from "../../assets/icons";
+import { AccountBalance } from "../../components/AccountBalance";
+import { AddressPill } from "../../components/AddressPill/AddressPill";
+import { DynamicModalContext } from "../../components/DynamicModal";
 import { Identicon } from "../../components/Identicon";
+import { SendButton } from "../../components/SendButton";
+import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
-import { fullId, tokenPrettyAmount } from "../../types/Token";
-import { formatPkh } from "../../utils/format";
-import { DynamicModalContext } from "../../components/DynamicModal";
-import SendTokenFormPage from "../../components/SendFlow/Token/FormPage";
-import TokenIcon from "../../assets/icons/Token";
-import { AccountBalance } from "../../components/AccountBalance";
-import AddressPill from "../../components/AddressPill/AddressPill";
 import { parseContractPkh } from "../../types/Address";
-import SendButton from "../../components/SendButton";
-import TokenNameWithIcon from "./TokenNameWithIcon";
+import { fullId, tokenPrettyAmount } from "../../types/Token";
+import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
+import { formatPkh } from "../../utils/format";
 
 const Header: React.FC<{
   account: Account;
@@ -61,7 +62,7 @@ const Header: React.FC<{
   );
 };
 
-const AccountTokens: React.FC<{
+export const AccountTokens: React.FC<{
   account: Account;
   tokens: (FA12TokenBalance | FA2TokenBalance)[];
 }> = ({ account, tokens }) => {
@@ -114,5 +115,3 @@ const AccountTokens: React.FC<{
     </Card>
   );
 };
-
-export default AccountTokens;

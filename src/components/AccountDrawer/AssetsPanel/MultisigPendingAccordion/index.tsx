@@ -1,10 +1,11 @@
 import { Accordion, Box } from "@chakra-ui/react";
 import { range } from "lodash";
 import React from "react";
+
+import { MultisigPendingAccordionItem } from "./MultisigPendingAccordionItem";
 import { MultisigAccount } from "../../../../types/Account";
 import { useGetPendingMultisigOperations } from "../../../../utils/hooks/multisigHooks";
-import NoItems from "../../../NoItems";
-import MultisigPendingAccordionItem from "./MultisigPendingAccordionItem";
+import { NoItems } from "../../../NoItems";
 
 export const MultisigPendingAccordion: React.FC<{
   account: MultisigAccount;
@@ -24,5 +25,3 @@ export const MultisigPendingAccordion: React.FC<{
     </Box>
   );
 };
-
-export default MultisigPendingAccordion;

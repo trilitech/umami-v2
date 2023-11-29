@@ -1,29 +1,31 @@
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
-  useDisclosure,
-  Button,
-  useOutsideClick,
+  Box,
   BoxProps,
+  Button,
+  Flex,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Text,
+  useDisclosure,
+  useOutsideClick,
 } from "@chakra-ui/react";
-
-import { Flex, Text, Box } from "@chakra-ui/react";
-import { Address, TzktAlias, parsePkh } from "../../types/Address";
-import colors from "../../style/colors";
 import { useRef, useState } from "react";
-import useAddressKind from "./useAddressKind";
+
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
-import AddressPillText from "./AddressPillText";
+import { AddressPillText } from "./AddressPillText";
+import { useAddressKind } from "./useAddressKind";
+import colors from "../../style/colors";
+import { Address, TzktAlias, parsePkh } from "../../types/Address";
 
 export type AddressPillMode =
   | { type: "default" }
   | { type: "removable"; onRemove: () => void }
   | { type: "no_icons" };
 
-const AddressPill: React.FC<
+export const AddressPill: React.FC<
   { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps
 > = ({ address: rawAddress, mode = { type: "default" }, ...rest }) => {
   const isAlias = !("pkh" in rawAddress && "type" in rawAddress);
@@ -125,5 +127,3 @@ const AddressPill: React.FC<
     </Box>
   );
 };
-
-export default AddressPill;

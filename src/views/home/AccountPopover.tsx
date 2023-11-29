@@ -1,11 +1,12 @@
 import { Divider } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
+
+import { TrashIcon } from "../../assets/icons";
 import { IconAndTextBtn } from "../../components/IconAndTextBtn";
-import PopoverMenu from "../../components/PopoverMenu";
-import TrashIcon from "../../assets/icons/Trash";
+import { PopoverMenu } from "../../components/PopoverMenu";
 import colors from "../../style/colors";
 
-const AccountPopover: React.FC<{
+export const AccountPopover: React.FC<{
   onDelete: () => void;
   onCreate?: () => void;
 }> = ({ onDelete, onCreate }) => {
@@ -27,5 +28,3 @@ const AccountPopover: React.FC<{
     </PopoverMenu>
   );
 };
-
-export default AccountPopover;

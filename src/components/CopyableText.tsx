@@ -2,9 +2,10 @@ import { Flex, FlexProps, Icon, Text, useToast } from "@chakra-ui/react";
 import React from "react";
 import { BsCheckCircle } from "react-icons/bs";
 import { RxCross1 } from "react-icons/rx";
+
+import { FileCopyIcon } from "../assets/icons";
 import colors from "../style/colors";
 import { formatPkh } from "../utils/format";
-import FileCopyIcon from "../assets/icons/FileCopy";
 
 const TOAST_ID = "TOAST_ID";
 
@@ -27,7 +28,7 @@ export const CopyableAddress: React.FC<
   );
 };
 
-const CopyableText: React.FC<
+export const CopyableText: React.FC<
   {
     displayText: string;
     copyValue?: string;
@@ -107,5 +108,3 @@ const ToastBody: React.FC<{
     </Flex>
   );
 };
-
-export default CopyableText;

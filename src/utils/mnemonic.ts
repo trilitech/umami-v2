@@ -1,9 +1,10 @@
 import { Curves, InMemorySigner } from "@taquito/signer";
-import { MnemonicAccount } from "../types/Account";
+import { generateMnemonic } from "bip39";
+
 import { defaultDerivationPathPattern, makeDerivationPath } from "./account/derivationPathUtils";
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { addressExists, getFingerPrint } from "./tezos";
-import { generateMnemonic } from "bip39";
+import { MnemonicAccount } from "../types/Account";
 import { Network } from "../types/Network";
 
 // This is put in a separate file for mocking purposes in tests

@@ -1,5 +1,14 @@
 import { InMemorySigner } from "@taquito/signer";
 import axios from "axios";
+
+import {
+  addressExists,
+  getPkAndPkhFromSk,
+  makeFA12TransactionParameter,
+  makeFA2TransactionParameter,
+  operationToTaquitoOperation,
+  operationsToBatchParams,
+} from "./helpers";
 import {
   mockContractAddress,
   mockDelegationOperation,
@@ -11,22 +20,14 @@ import {
   mockTezOperation,
   mockUndelegationOperation,
 } from "../../mocks/factories";
+import { makeAccountOperations } from "../../types/AccountOperations";
+import { MAINNET } from "../../types/Network";
 import {
   ContractCall,
   ContractOrigination,
   FA12Transfer,
   FA2Transfer,
 } from "../../types/Operation";
-import {
-  addressExists,
-  getPkAndPkhFromSk,
-  makeFA12TransactionParameter,
-  makeFA2TransactionParameter,
-  operationToTaquitoOperation,
-  operationsToBatchParams,
-} from "./helpers";
-import { makeAccountOperations } from "../../types/AccountOperations";
-import { MAINNET } from "../../types/Network";
 jest.mock("@taquito/signer");
 jest.mock("./fakeSigner");
 jest.mock("axios");

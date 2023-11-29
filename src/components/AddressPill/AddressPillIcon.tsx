@@ -1,17 +1,20 @@
-import KeyIcon from "../../assets/icons/Key";
-import ContactIcon from "../../assets/icons/Contact";
-import FA12Icon from "../../assets/icons/FA1.2";
-import FA2Icon from "../../assets/icons/FA2";
-import BakerIcon from "../../assets/icons/Baker";
-import { AddressKind, AddressKindType } from "./types";
 import { IconProps } from "@chakra-ui/react";
-import { useContactExists } from "../../utils/hooks/contactsHooks";
-import AddContactIcon from "../../assets/icons/AddContact";
-import XMark from "../../assets/icons/XMark";
-import { AddressPillMode } from "./AddressPill";
 import { useContext } from "react";
-import { DynamicModalContext } from "../DynamicModal";
+
+import { AddressPillMode } from "./AddressPill";
+import { AddressKind, AddressKindType } from "./types";
+import {
+  AddContactIcon,
+  BakerIcon,
+  ContactIcon,
+  FA12Icon,
+  FA2Icon,
+  KeyIcon,
+  XMark,
+} from "../../assets/icons";
+import { useContactExists } from "../../utils/hooks/contactsHooks";
 import { UpsertContactModal } from "../ContactModal";
+import { DynamicModalContext } from "../DynamicModal";
 
 export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   addressKind: { type },

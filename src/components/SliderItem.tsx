@@ -1,10 +1,11 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { CircleIcon } from "./CircleIcon";
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { SlideritemRecord } from "../graphql/generated";
-import DiamondIcon from "../assets/icons/Diamond";
 
-export default function SlideItem({ item }: { item: SlideritemRecord }) {
+import { CircleIcon } from "./CircleIcon";
+import { DiamondIcon } from "../assets/icons";
+import { SlideritemRecord } from "../graphql/generated";
+
+export const SlideItem = ({ item }: { item: SlideritemRecord }) => {
   return (
     <Box paddingBottom="35px" data-testid={`slide-${item.id}`}>
       <Box
@@ -21,4 +22,4 @@ export default function SlideItem({ item }: { item: SlideritemRecord }) {
       </Flex>
     </Box>
   );
-}
+};

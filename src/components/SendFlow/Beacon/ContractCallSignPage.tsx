@@ -11,19 +11,23 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import { ContractCall } from "../../../types/Operation";
-import useSignWithBeacon from "./useSignWithBeacon";
-import { SignPageHeader, headerText } from "../SignPageHeader";
-import { TezTile } from "../../AssetTiles/TezTile";
-import SignPageFee from "../SignPageFee";
-import AddressTile from "../../AddressTile/AddressTile";
 import { FormProvider } from "react-hook-form";
-import { BeaconSignPageProps } from "./BeaconSignPage";
-import JsValueWrap from "../../AccountDrawer/JsValueWrap";
-import colors from "../../../style/colors";
-import SignButton from "../SignButton";
 
-const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
+import { BeaconSignPageProps } from "./BeaconSignPage";
+import { useSignWithBeacon } from "./useSignWithBeacon";
+import colors from "../../../style/colors";
+import { ContractCall } from "../../../types/Operation";
+import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
+import { AddressTile } from "../../AddressTile/AddressTile";
+import { TezTile } from "../../AssetTiles/TezTile";
+import { SignButton } from "../SignButton";
+import { SignPageFee } from "../SignPageFee";
+import { SignPageHeader, headerText } from "../SignPageHeader";
+
+export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
+  operation,
+  onBeaconSuccess,
+}) => {
   const {
     amount: mutezAmount,
     contract,
@@ -83,5 +87,3 @@ const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeac
     </FormProvider>
   );
 };
-
-export default ContractCallSignPage;

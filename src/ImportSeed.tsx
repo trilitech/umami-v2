@@ -1,16 +1,17 @@
-import { Box, Button, Divider, Heading, SimpleGrid, Text, VStack, Center } from "@chakra-ui/react";
-import { MakiLogo } from "./components/MakiLogo";
-import Slider from "./components/Slider";
-import SlideItem from "./components/SliderItem";
-import { useOnboardingModal } from "./components/Onboarding/useOnboardingModal";
-import { AllSlideritemsDocument, SlideritemRecord } from "./graphql/generated";
-import { request } from "./utils/datocms/request";
+import { Box, Button, Center, Divider, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import colors from "./style/colors";
-import { AppVersion } from "./components/AppVersion";
-import BackgroundImage from "./assets/onboarding/background_image.png";
 
-function ImportSeed() {
+import BackgroundImage from "./assets/onboarding/background_image.png";
+import { AppVersion } from "./components/AppVersion";
+import { MakiLogo } from "./components/MakiLogo";
+import { useOnboardingModal } from "./components/Onboarding/useOnboardingModal";
+import { Slider } from "./components/Slider";
+import { SlideItem } from "./components/SliderItem";
+import { AllSlideritemsDocument, SlideritemRecord } from "./graphql/generated";
+import colors from "./style/colors";
+import { request } from "./utils/datocms/request";
+
+export function ImportSeed() {
   const [showSlider, setShowSlider] = useState(true);
   const { onOpen, modalElement } = useOnboardingModal(() => setShowSlider(true));
   const openModal = () => {
@@ -68,5 +69,3 @@ function ImportSeed() {
     </Center>
   );
 }
-
-export default ImportSeed;

@@ -1,8 +1,9 @@
-import { Wrap, WrapItem, Text } from "@chakra-ui/react";
-import { NFTBalance } from "../../../types/TokenBalance";
-import colors from "../../../style/colors";
+import { Text, Wrap, WrapItem } from "@chakra-ui/react";
 
-const TagsSection = ({ nft }: { nft: NFTBalance }) => {
+import colors from "../../../style/colors";
+import { NFTBalance } from "../../../types/TokenBalance";
+
+export const TagsSection = ({ nft }: { nft: NFTBalance }) => {
   const tags = nft.metadata.tags;
   if (!tags || tags.length === 0) {
     return null;
@@ -21,5 +22,3 @@ const TagsSection = ({ nft }: { nft: NFTBalance }) => {
     </Wrap>
   );
 };
-
-export default TagsSection;

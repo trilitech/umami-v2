@@ -1,4 +1,5 @@
-import { ModalHeader, Text, ModalCloseButton, chakra } from "@chakra-ui/react";
+import { ModalCloseButton, ModalHeader, Text, chakra } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
 export const HeaderWrapper = chakra(ModalHeader, {
@@ -9,7 +10,7 @@ export const HeaderWrapper = chakra(ModalHeader, {
   },
 });
 
-const FormPageHeader: React.FC<{
+export const FormPageHeader: React.FC<{
   title?: string;
   subTitle?: string;
 }> = ({ title = "Send", subTitle = "Send one or insert into batch" }) => {
@@ -25,5 +26,3 @@ const FormPageHeader: React.FC<{
     </HeaderWrapper>
   );
 };
-
-export default FormPageHeader;

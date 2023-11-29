@@ -1,6 +1,6 @@
+import { decrypt, encrypt } from "./AES";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { recoveredPhrases, umamiBackup } from "../../mocks/umamiV1BackupFile";
-import { decrypt, encrypt } from "./AES";
 
 const password = "password";
 

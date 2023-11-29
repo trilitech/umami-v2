@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fromPairs } from "lodash";
+
 import { EncryptedData } from "../../crypto/types";
 import { ExtraArgument } from "../extraArgument";
 import { AppDispatch, RootState } from "../store";
 
-const changeMnemonicPassword = createAsyncThunk<
+export const changeMnemonicPassword = createAsyncThunk<
   {
     newEncryptedMnemonics: Record<string, EncryptedData | undefined>;
   },
@@ -46,5 +47,3 @@ const changeMnemonicPassword = createAsyncThunk<
     return { newEncryptedMnemonics: fromPairs(newEncryptedMnemonics) };
   }
 );
-
-export default changeMnemonicPassword;

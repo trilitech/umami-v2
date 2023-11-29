@@ -1,11 +1,12 @@
 import { Button, FormControl } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import ModalContentWrapper from "../../ModalContentWrapper";
-import { FormErrorMessage } from "../../../FormErrorMessage";
-import PasswordInput from "../../../PasswordInput";
-import LockIcon from "../../../../assets/icons/Lock";
 
-const EnterPassword = ({
+import { LockIcon } from "../../../../assets/icons";
+import { FormErrorMessage } from "../../../FormErrorMessage";
+import { PasswordInput } from "../../../PasswordInput";
+import { ModalContentWrapper } from "../../ModalContentWrapper";
+
+export const EnterPassword = ({
   onSubmit: onSubmitPassword,
   isLoading,
 }: {
@@ -55,5 +56,3 @@ const EnterPassword = ({
     </ModalContentWrapper>
   );
 };
-
-export default EnterPassword;

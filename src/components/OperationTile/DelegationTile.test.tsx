@@ -1,14 +1,14 @@
+import { DelegationTile } from "./DelegationTile";
+import { OperationTileContext } from "./OperationTileContext";
+import { delegationFixture } from "./testUtils";
 import { mockImplicitAddress, mockLedgerAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
-import store from "../../utils/redux/store";
+import { store } from "../../utils/redux/store";
 import { DelegationOperation, TEZ } from "../../utils/tezos";
-import { DelegationTile } from "./DelegationTile";
-import { OperationTileContext } from "./OperationTileContext";
-import { delegationFixture } from "./testUtils";
 
 const fixture = (context: any, operation: DelegationOperation) => (
   <OperationTileContext.Provider value={context}>

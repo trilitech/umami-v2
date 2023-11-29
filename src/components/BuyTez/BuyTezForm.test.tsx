@@ -1,11 +1,12 @@
 import { Modal } from "@chakra-ui/react";
+
+import { BuyTezForm } from "./BuyTezForm";
+import { mockImplicitAccount } from "../../mocks/factories";
 import { render, screen, waitFor } from "../../mocks/testUtils";
-import store from "../../utils/redux/store";
-import BuyTezForm from "./BuyTezForm";
+import { RawPkh } from "../../types/Address";
 import { GHOSTNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
-import { RawPkh } from "../../types/Address";
-import { mockImplicitAccount } from "../../mocks/factories";
+import { store } from "../../utils/redux/store";
 
 const fixture = (recipient?: RawPkh) => (
   <Modal isOpen={true} onClose={() => {}}>

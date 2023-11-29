@@ -1,12 +1,12 @@
-import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
-import { fireEvent, render, screen } from "../../mocks/testUtils";
-import { RawPkh } from "../../types/Address";
 import {
-  formDefaultValues,
   FormSubmitButtons,
+  formDefaultValues,
   getSmallestUnit,
   makeValidateDecimals,
 } from "./utils";
+import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
+import { fireEvent, render, screen } from "../../mocks/testUtils";
+import { RawPkh } from "../../types/Address";
 
 describe("SendFlow utils", () => {
   describe("formDefaultValues", () => {

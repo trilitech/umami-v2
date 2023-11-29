@@ -6,12 +6,14 @@ import {
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
-import { BeaconNotification } from ".";
+
 import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
-import { walletClient } from "../beacon";
 import { executeOperations } from "../../tezos";
+import { walletClient } from "../beacon";
+
+import { BeaconNotification } from ".";
 
 jest.mock("../beacon");
 jest.mock("../../tezos");

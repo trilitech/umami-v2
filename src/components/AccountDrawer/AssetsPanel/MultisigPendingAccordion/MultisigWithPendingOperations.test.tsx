@@ -1,4 +1,5 @@
-import MultisigPendingAccordion from ".";
+import { BigNumber } from "bignumber.js";
+
 import { mockMnemonicAccount, mockMultisigAccount } from "../../../../mocks/factories";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
@@ -7,11 +8,12 @@ import { parseContractPkh, parseImplicitPkh } from "../../../../types/Address";
 import { useGetSecretKey } from "../../../../utils/hooks/accountUtils";
 import { multisigToAccount } from "../../../../utils/multisig/helpers";
 import { Multisig } from "../../../../utils/multisig/types";
-import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
-import multisigsSlice from "../../../../utils/redux/slices/multisigsSlice";
-import store from "../../../../utils/redux/store";
+import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
+import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
+import { store } from "../../../../utils/redux/store";
 import { estimate } from "../../../../utils/tezos";
-import { BigNumber } from "bignumber.js";
+
+import { MultisigPendingAccordion } from ".";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 

@@ -1,14 +1,18 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { Delegation } from "../../../types/Operation";
-import useSignWithBeacon from "./useSignWithBeacon";
-import { SignPageHeader, headerText } from "../SignPageHeader";
-import SignPageFee from "../SignPageFee";
-import AddressTile from "../../AddressTile/AddressTile";
 import { FormProvider } from "react-hook-form";
-import { BeaconSignPageProps } from "./BeaconSignPage";
-import SignButton from "../SignButton";
 
-const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
+import { BeaconSignPageProps } from "./BeaconSignPage";
+import { useSignWithBeacon } from "./useSignWithBeacon";
+import { Delegation } from "../../../types/Operation";
+import { AddressTile } from "../../AddressTile/AddressTile";
+import { SignButton } from "../SignButton";
+import { SignPageFee } from "../SignPageFee";
+import { SignPageHeader, headerText } from "../SignPageHeader";
+
+export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
+  operation,
+  onBeaconSuccess,
+}) => {
   const { recipient } = operation.operations[0] as Delegation;
 
   const { isSigning, form, onSign, fee } = useSignWithBeacon(operation, onBeaconSuccess);
@@ -54,5 +58,3 @@ const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeacon
     </FormProvider>
   );
 };
-
-export default DelegationSignPage;

@@ -1,5 +1,6 @@
 import { useToast } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
+
 import { useAddPeer } from "./beacon/beacon";
 import { parseTorusRedirectParams } from "../GoogleAuth";
 

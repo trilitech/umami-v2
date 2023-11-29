@@ -1,3 +1,4 @@
+import { AccountTile } from "./AccountTile";
 import {
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -5,10 +6,9 @@ import {
   mockSocialAccount,
 } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
-import store from "../../utils/redux/store";
-import { AccountTile } from "./AccountTile";
+import { store } from "../../utils/redux/store";
 describe("<AccountTile />", () => {
   describe("icon and label", () => {
     it("mnemonic account", () => {

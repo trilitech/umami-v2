@@ -1,26 +1,26 @@
+import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
+import { uUSD } from "../../mocks/fa2Tokens";
 import {
+  mockDelegation,
   mockFA1TokenRaw,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
   mockNFTToken,
 } from "../../mocks/factories";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
-import assetsSlice from "../../utils/redux/slices/assetsSlice";
-import store from "../../utils/redux/store";
-
-import AccountCard from ".";
-import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
-import { uUSD } from "../../mocks/fa2Tokens";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
+import { mockTzktTezTransfer } from "../../mocks/transfers";
+import { GHOSTNET, MAINNET } from "../../types/Network";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { multisigToAccount } from "../../utils/multisig/helpers";
 import { Multisig } from "../../utils/multisig/types";
-import multisigsSlice, { multisigActions } from "../../utils/redux/slices/multisigsSlice";
-import tokensSlice from "../../utils/redux/slices/tokensSlice";
-import { GHOSTNET, MAINNET } from "../../types/Network";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
+import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
+import { multisigActions, multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
+import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
+import { store } from "../../utils/redux/store";
 import {
   DelegationOperation,
   TzktCombinedOperation,
@@ -28,8 +28,8 @@ import {
   getLastDelegation,
   getRelatedTokenTransfers,
 } from "../../utils/tezos";
-import { mockTzktTezTransfer } from "../../mocks/transfers";
-import { mockDelegation } from "../../mocks/factories";
+
+import { AccountCard } from ".";
 const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
 const { addMockMnemonicAccounts } = accountsSlice.actions;
 

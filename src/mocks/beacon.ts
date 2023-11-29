@@ -4,6 +4,7 @@ import {
   OperationRequestOutput,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
+
 import { mockImplicitAddress } from "./factories";
 
 export const objectOperationRequest: OperationRequestOutput = {

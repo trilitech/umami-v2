@@ -1,19 +1,17 @@
 import { DelegationOperation } from "@tzkt/sdk-api";
+
 import {
+  Account,
   ImplicitAccount,
   LedgerAccount,
-  SocialAccount,
-  MultisigAccount,
-  Account,
   MnemonicAccount,
+  MultisigAccount,
   SecretKeyAccount,
+  SocialAccount,
 } from "../types/Account";
 import { ContractAddress, ImplicitAddress } from "../types/Address";
-import { FA12TokenBalance, FA2TokenBalance, NFTBalance, fromRaw } from "../types/TokenBalance";
 import { Contact } from "../types/Contact";
-import { TezTransfer as TzktTezTransfer, TokenTransfer } from "../types/Transfer";
-import { RawTokenBalance } from "../types/TokenBalance";
-import { MultisigOperation, Multisig } from "../utils/multisig/types";
+import { Delegate } from "../types/Delegate";
 import {
   Delegation,
   FA12Transfer,
@@ -21,8 +19,16 @@ import {
   TezTransfer,
   Undelegation,
 } from "../types/Operation";
+import {
+  FA12TokenBalance,
+  FA2TokenBalance,
+  NFTBalance,
+  RawTokenBalance,
+  fromRaw,
+} from "../types/TokenBalance";
+import { TokenTransfer, TezTransfer as TzktTezTransfer } from "../types/Transfer";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
-import { Delegate } from "../types/Delegate";
+import { Multisig, MultisigOperation } from "../utils/multisig/types";
 
 // TODO: separate TZKT factories from internal ones
 export const mockTezTransaction = (id: number) => {

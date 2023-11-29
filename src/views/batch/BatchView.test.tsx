@@ -1,9 +1,9 @@
-import { makeAccountOperations } from "../../types/AccountOperations";
+import { BatchView, tokenTitle } from "./BatchView";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { render, screen, within } from "../../mocks/testUtils";
 import { ghostFA2, ghostTezzard } from "../../mocks/tokens";
+import { makeAccountOperations } from "../../types/AccountOperations";
 import { Operation } from "../../types/Operation";
-import { BatchView, tokenTitle } from "./BatchView";
 
 describe("<BatchView />", () => {
   test("header", () => {

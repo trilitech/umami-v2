@@ -1,4 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+
 import { AliceAccount, MASTER_PASSWORD, cleanupState } from "../utils";
 
 cleanupState();

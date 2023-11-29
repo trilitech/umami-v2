@@ -1,7 +1,3 @@
-import { tzBtsc, hedgehoge } from "../mocks/fa12Tokens";
-import { uUSD } from "../mocks/fa2Tokens";
-import { mockNFT, mockImplicitAddress } from "../mocks/factories";
-import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
 import { GHOSTNET, MAINNET } from "./Network";
 import {
   FA12Token,
@@ -19,6 +15,10 @@ import {
   tokenSymbolSafe,
 } from "./Token";
 import type { Metadata } from "./Token";
+import { hedgehoge, tzBtsc } from "../mocks/fa12Tokens";
+import { uUSD } from "../mocks/fa2Tokens";
+import { mockImplicitAddress, mockNFT } from "../mocks/factories";
+import { fa1Token, fa2Token, nft } from "../mocks/tzktResponse";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation();

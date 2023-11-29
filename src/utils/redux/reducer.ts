@@ -1,14 +1,15 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // Defaults to localStorage
-import tokensSlice from "./slices/tokensSlice";
-import accountsSlice from "./slices/accountsSlice";
-import assetsSlice from "./slices/assetsSlice";
-import contactsSlice from "./slices/contactsSlice";
-import multisigsSlice from "./slices/multisigsSlice";
-import errorsSlice from "./slices/errorsSlice";
-import { networksSlice } from "./slices/networks";
+
+import { accountsSlice } from "./slices/accountsSlice";
+import { assetsSlice } from "./slices/assetsSlice";
 import { batchesSlice } from "./slices/batches";
+import { contactsSlice } from "./slices/contactsSlice";
+import { errorsSlice } from "./slices/errorsSlice";
+import { multisigsSlice } from "./slices/multisigsSlice";
+import { networksSlice } from "./slices/networks";
+import { tokensSlice } from "./slices/tokensSlice";
 
 const rootPersistConfig = {
   key: "root",
@@ -33,4 +34,4 @@ const rootReducers = combineReducers({
   batches: batchesSlice.reducer,
 });
 
-export default persistReducer(rootPersistConfig, rootReducers);
+export const reducer = persistReducer(rootPersistConfig, rootReducers);

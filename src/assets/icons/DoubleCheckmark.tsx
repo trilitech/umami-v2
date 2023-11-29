@@ -1,7 +1,8 @@
 import { Icon, IconProps } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
-const DoubleCheckmarkIcon: React.FC<IconProps> = props => {
+export const DoubleCheckmarkIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="24px"
@@ -21,5 +22,3 @@ const DoubleCheckmarkIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default DoubleCheckmarkIcon;

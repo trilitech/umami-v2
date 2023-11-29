@@ -1,8 +1,8 @@
 import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
-import { formatPkh } from "../../utils/format";
-import { Identicon } from "../Identicon";
-import { prettyTezAmount } from "../../utils/format";
+
 import colors from "../../style/colors";
+import { formatPkh, prettyTezAmount } from "../../utils/format";
+import { Identicon } from "../Identicon";
 
 /**
  * Component used to display account info for batched transactions.

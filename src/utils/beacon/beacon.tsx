@@ -2,8 +2,9 @@ import { ExtendedP2PPairingResponse, Serializer, WalletClient } from "@airgap/be
 import { useToast } from "@chakra-ui/react";
 import { useContext, useEffect } from "react";
 import { useQuery, useQueryClient } from "react-query";
+
 import { BeaconNotification } from "./BeaconNotification";
-import { makePeerInfo, PeerInfo } from "./types";
+import { PeerInfo, makePeerInfo } from "./types";
 import { DynamicModalContext } from "../../components/DynamicModal";
 
 const makeClient = () =>

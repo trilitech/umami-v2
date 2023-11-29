@@ -1,30 +1,26 @@
 import { FormControl, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { parsePkh, RawPkh } from "../../../types/Address";
+
+import { SignPage } from "./SignPage";
+import { RawPkh, parsePkh } from "../../../types/Address";
+import { Undelegation } from "../../../types/Operation";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { formDefaultValues, FormPagePropsWithSender, FormSubmitButtons } from "../utils";
-import SignPage from "./SignPage";
+import { AddressTile } from "../../AddressTile/AddressTile";
+import { FormPageHeader } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { Undelegation } from "../../../types/Operation";
-import FormPageHeader from "../FormPageHeader";
-import AddressTile from "../../AddressTile/AddressTile";
+import { FormPagePropsWithSender, FormSubmitButtons, formDefaultValues } from "../utils";
 
 export type FormValues = {
   sender: RawPkh;
   baker: RawPkh;
 };
 
-const toOperation = (formValues: FormValues): Undelegation => ({
-  type: "undelegation",
-  sender: parsePkh(formValues.sender),
-});
-
-const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
+export const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
   const { sender } = props;
   // it must always be passed in from the parent component
   const baker = props.form?.baker;
@@ -85,4 +81,8 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation = (formValues: FormValues): Undelegation => ({
+  type: "undelegation",
+  sender: parsePkh(formValues.sender),
+});

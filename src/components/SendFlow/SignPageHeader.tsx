@@ -1,8 +1,9 @@
 import { ModalCloseButton, Text } from "@chakra-ui/react";
+
+import { HeaderWrapper } from "./FormPageHeader";
+import { SignPageMode } from "./utils";
 import colors from "../../style/colors";
 import { AccountOperations } from "../../types/AccountOperations";
-import { SignPageMode } from "./utils";
-import { HeaderWrapper } from "./FormPageHeader";
 import { ModalBackButton } from "../ModalBackButton";
 
 export const headerText = (

@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
-
 import { MdUsb } from "react-icons/md";
-const LedgerIcon: React.FC<IconProps> = props => {
+
+export const LedgerIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       as={MdUsb}
@@ -14,5 +14,3 @@ const LedgerIcon: React.FC<IconProps> = props => {
     />
   );
 };
-
-export default LedgerIcon;

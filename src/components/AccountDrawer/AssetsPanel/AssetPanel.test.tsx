@@ -1,7 +1,7 @@
+import { AssetsPanel } from "./AssetsPanel";
 import { mockMultisigAccount } from "../../../mocks/factories";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { getCombinedOperations, getRelatedTokenTransfers } from "../../../utils/tezos";
-import { AssetsPanel } from "./AssetsPanel";
 
 describe("<AssetPanel/>", () => {
   it("should display pending tabs for multisig account", async () => {

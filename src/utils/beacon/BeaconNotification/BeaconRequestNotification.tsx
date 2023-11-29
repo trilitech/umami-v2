@@ -6,18 +6,18 @@ import {
   PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { useToast } from "@chakra-ui/react";
+import { Box, useToast } from "@chakra-ui/react";
 import React from "react";
+
+import { PermissionRequestPanel } from "./panels/PermissionRequestPanel";
+import { SignPayloadRequestPanel } from "./panels/SignPayloadRequestPanel";
+import { BeaconSignPage } from "../../../components/SendFlow/Beacon/BeaconSignPage";
+import { ImplicitAccount } from "../../../types/Account";
 import { ImplicitOperations } from "../../../types/AccountOperations";
 import { isValidContractPkh, parseContractPkh, parseImplicitPkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
 import { useGetImplicitAccountSafe } from "../../hooks/getAccountDataHooks";
 import { walletClient } from "../beacon";
-import BeaconErrorPanel from "./panels/BeaconErrorPanel";
-import PermissionRequestPanel from "./panels/PermissionRequestPanel";
-import SignPayloadRequestPanel from "./panels/SignPayloadRequestPanel";
-import BeaconSignPage from "../../../components/SendFlow/Beacon/BeaconSignPage";
-import { ImplicitAccount } from "../../../types/Account";
 
 export const BeaconNotification: React.FC<{
   message: BeaconRequestOutputMessage;
@@ -36,7 +36,7 @@ export const BeaconNotification: React.FC<{
     case BeaconMessageType.OperationRequest: {
       const signer = getAccount(message.sourceAddress);
       if (!signer) {
-        return <BeaconErrorPanel message={`Account not in this wallet ${message.sourceAddress}`} />;
+        return <Box>Account not in this wallet {message.sourceAddress}</Box>;
       }
 
       try {
@@ -65,12 +65,12 @@ export const BeaconNotification: React.FC<{
 
         return <BeaconSignPage onBeaconSuccess={handleSuccess} operation={beaconOperation} />;
       } catch (error: any) {
-        return <BeaconErrorPanel message={`Error handling operation request: ${error.message}`} />;
+        return <Box>Error handling operation request: {error.message}</Box>;
       }
     }
 
     default:
-      return <BeaconErrorPanel message={`Unsupported request: ${message.type}`} />;
+      return <div>Unsupported request: {message.type}</div>;
   }
 };
 

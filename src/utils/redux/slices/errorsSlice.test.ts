@@ -1,6 +1,6 @@
+import { errorsSlice } from "./errorsSlice";
 import { errorContext1, errorContext2 } from "../../../mocks/errorContext";
-import store from "../store";
-import errorsSlice from "./errorsSlice";
+import { store } from "../store";
 const { add } = errorsSlice.actions;
 
 describe("Errors reducer", () => {

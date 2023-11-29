@@ -2,19 +2,20 @@ import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import React, { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+
 import { GoogleAuthProps, useGetGoogleCredentials } from "../../GoogleAuth";
 import {
   ImplicitAccount,
-  MnemonicAccount,
   LedgerAccount,
+  MnemonicAccount,
   SecretKeyAccount,
 } from "../../types/Account";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
+import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { makeToolkit } from "../../utils/tezos";
 import { FormErrorMessage } from "../FormErrorMessage";
-import PasswordInput from "../PasswordInput";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { PasswordInput } from "../PasswordInput";
 
 export const SignWithGoogleButton: React.FC<
   PropsWithChildren<{
@@ -37,7 +38,7 @@ export const SignWithGoogleButton: React.FC<
   );
 };
 
-const SignButton: React.FC<{
+export const SignButton: React.FC<{
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
   signer: ImplicitAccount;
   isLoading?: boolean;
@@ -135,5 +136,3 @@ const SignButton: React.FC<{
       );
   }
 };
-
-export default SignButton;

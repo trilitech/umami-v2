@@ -1,24 +1,25 @@
 import {
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
-  TableContainer,
-  Table,
-  Tr,
-  Td,
-  Tbody,
   Heading,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tr,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import AddressPill from "../../../components/AddressPill/AddressPill";
+
+import { AddressPill } from "../../../components/AddressPill/AddressPill";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
+import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
 import { metadataUri, mimeType, royalties } from "../../../types/Token";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
-import colors from "../../../style/colors";
 
 const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   if (!nft.metadata.creators || nft.metadata.creators.length === 0) {
@@ -31,7 +32,13 @@ const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   return <TruncatedTextWithTooltip maxLength={15} text={firstCreator} />;
 };
 
-const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSProperties }) => {
+export const PropertiesAccordionItem = ({
+  nft,
+  style,
+}: {
+  nft: NFTBalance;
+  style: CSSProperties;
+}) => {
   const royaltyShares = royalties(nft);
   const totalRoyalties = royaltyShares.reduce((acc, royalty) => acc + royalty.share, 0).toFixed(2);
 
@@ -157,4 +164,3 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
     </AccordionItem>
   );
 };
-export default PropertiesAccordionItem;

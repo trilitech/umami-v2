@@ -1,9 +1,10 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Textarea } from "@chakra-ui/react";
-import ModalContentWrapper from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
 import { useForm } from "react-hook-form";
-import KeyIcon from "../../../assets/icons/Key";
+
+import { KeyIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
+import { ModalContentWrapper } from "../ModalContentWrapper";
+import { Step, StepType } from "../useOnboardingModal";
 
 export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   const {

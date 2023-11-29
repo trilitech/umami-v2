@@ -1,7 +1,8 @@
 import { Icon, IconProps } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
-const AddressBookIcon: React.FC<IconProps> = props => {
+export const AddressBookIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="24px"
@@ -21,4 +22,3 @@ const AddressBookIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-export default AddressBookIcon;

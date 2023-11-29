@@ -1,8 +1,9 @@
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { Step, StepType } from "../useOnboardingModal";
-import VerifySeedphrase from "./VerifySeedphrase";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import { VerifySeedphrase } from "./VerifySeedphrase";
+import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
+import { Step, StepType } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn((step: Step) => {});
 const selectRandomElementsMock = jest.mocked(selectRandomElements);

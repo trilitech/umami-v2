@@ -1,12 +1,15 @@
-import ContactIcon from "../../assets/icons/Contact";
-import UnknownContactIcon from "../../assets/icons/UnknownContact";
-import SocialIcon from "../../assets/icons/Social";
-import colors from "../../style/colors";
-import KeyIcon from "../../assets/icons/Key";
-import LedgerIcon from "../../assets/icons/Ledger";
-import { Identicon } from "../Identicon";
-import { AddressKind } from "./types";
 import { AspectRatio, Image } from "@chakra-ui/react";
+
+import { AddressKind } from "./types";
+import {
+  ContactIcon,
+  KeyIcon,
+  LedgerIcon,
+  SocialIcon,
+  UnknownContactIcon,
+} from "../../assets/icons";
+import colors from "../../style/colors";
+import { Identicon } from "../Identicon";
 
 const baseIconProps = {
   stroke: colors.gray[400],
@@ -15,7 +18,7 @@ const baseIconProps = {
   bg: colors.gray[500],
 };
 
-const AddressTileIcon: React.FC<{
+export const AddressTileIcon: React.FC<{
   addressKind: AddressKind;
   size?: "md" | "lg";
 }> = ({ addressKind, size = "md" }) => {
@@ -67,5 +70,3 @@ const AddressTileIcon: React.FC<{
     }
   }
 };
-
-export default AddressTileIcon;

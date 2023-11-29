@@ -1,4 +1,5 @@
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
+
 import { useStepHistory } from "./useStepHistory";
 
 type TestStep = "step1" | "step2" | "step3";

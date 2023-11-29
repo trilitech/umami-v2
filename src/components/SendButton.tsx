@@ -1,5 +1,6 @@
 import { Button, ButtonProps, Text } from "@chakra-ui/react";
-import OutgoingArrow from "../assets/icons/OutgoingArrow";
+
+import { OutgoingArrow } from "../assets/icons";
 
 export const SendButton: React.FC<
   {
@@ -13,5 +14,3 @@ export const SendButton: React.FC<
     </Button>
   );
 };
-
-export default SendButton;

@@ -1,5 +1,6 @@
 import { format } from "@taquito/utils";
 import BigNumber from "bignumber.js";
+
 import { TEZ } from "./tezos";
 
 export const truncate = (name: string, len: number) => {

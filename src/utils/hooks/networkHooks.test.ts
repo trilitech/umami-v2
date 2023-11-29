@@ -1,9 +1,10 @@
 import { renderHook } from "@testing-library/react";
-import store from "../redux/store";
+
 import { useAvailableNetworks, useSelectNetwork, useSelectedNetwork } from "./networkHooks";
 import { AllTheProviders } from "../../mocks/testUtils";
-import { networksActions } from "../redux/slices/networks";
 import { GHOSTNET, MAINNET } from "../../types/Network";
+import { networksActions } from "../redux/slices/networks";
+import { store } from "../redux/store";
 
 describe("networkHooks", () => {
   describe("useSelectedNetwork", () => {

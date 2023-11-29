@@ -1,9 +1,8 @@
-import assetsSlice from "./assetsSlice";
-import store from "../store";
-
-import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";
-import accountsSlice from "./accountsSlice";
+import { accountsSlice } from "./accountsSlice";
+import { assetsSlice } from "./assetsSlice";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
+import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";
+import { store } from "../store";
 
 const {
   actions: { updateTezBalance, updateTokenBalance, updateTokenTransfers },

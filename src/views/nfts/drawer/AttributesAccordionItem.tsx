@@ -1,20 +1,27 @@
 import {
-  Wrap,
-  WrapItem,
-  Text,
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
   Card,
   CardBody,
   Heading,
+  Text,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import { NFTBalance } from "../../../types/TokenBalance";
-import colors from "../../../style/colors";
 
-const AttributesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSProperties }) => {
+import colors from "../../../style/colors";
+import { NFTBalance } from "../../../types/TokenBalance";
+
+export const AttributesAccordionItem = ({
+  nft,
+  style,
+}: {
+  nft: NFTBalance;
+  style: CSSProperties;
+}) => {
   const attributes = nft.metadata.attributes;
   if (!attributes || attributes.length === 0) {
     return null;
@@ -49,5 +56,3 @@ const AttributesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
     </AccordionItem>
   );
 };
-
-export default AttributesAccordionItem;

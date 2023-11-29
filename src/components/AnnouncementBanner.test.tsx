@@ -1,5 +1,5 @@
-import { render, screen, waitFor } from "../mocks/testUtils";
 import { AnnouncementBanner } from "./AnnouncementBanner";
+import { render, screen, waitFor } from "../mocks/testUtils";
 import { request } from "../utils/datocms/request";
 
 const fixture = () => <AnnouncementBanner />;

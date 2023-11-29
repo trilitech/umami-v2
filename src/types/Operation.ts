@@ -1,7 +1,8 @@
 import { MichelsonV1Expression } from "@taquito/rpc";
+
 import { Address, ContractAddress, ImplicitAddress } from "./Address";
-import { ApproveOrExecute } from "../utils/tezos/types";
 import { makeBatchLambda } from "../multisig/multisigUtils";
+import { ApproveOrExecute } from "../utils/tezos/types";
 
 export type TezTransfer = {
   type: "tez";

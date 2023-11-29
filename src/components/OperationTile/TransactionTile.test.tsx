@@ -1,14 +1,14 @@
+import { OperationTileContext } from "./OperationTileContext";
+import { transactionFixture } from "./testUtils";
+import { TransactionTile } from "./TransactionTile";
 import { mockLedgerAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
-import store from "../../utils/redux/store";
+import { store } from "../../utils/redux/store";
 import { TEZ, TransactionOperation } from "../../utils/tezos";
-import { OperationTileContext } from "./OperationTileContext";
-import { TransactionTile } from "./TransactionTile";
-import { transactionFixture } from "./testUtils";
 
 const fixture = (context: any, operation: TransactionOperation) => (
   <OperationTileContext.Provider value={context}>

@@ -1,6 +1,6 @@
 import { IconProps } from "@chakra-ui/react";
-import OutgoingArrow from "../../assets/icons/OutgoingArrow";
-import IncomingArrow from "../../assets/icons/IncomingArrow";
+
+import { IncomingArrow, OutgoingArrow } from "../../assets/icons";
 
 export const TransactionDirectionIcon = ({
   isOutgoing,

@@ -1,7 +1,8 @@
 import { IconButton } from "@chakra-ui/react";
-import { b58cencode, Prefix, prefix } from "@taquito/utils";
+import { Prefix, b58cencode, prefix } from "@taquito/utils";
 import CustomAuth from "@toruslabs/customauth";
 import { FcGoogle } from "react-icons/fc";
+
 import colors from "./style/colors";
 import { useAsyncActionHandler } from "./utils/hooks/useAsyncActionHandler";
 import { withTimeout } from "./utils/withTimeout";

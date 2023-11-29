@@ -1,6 +1,7 @@
 import { addDays, addHours, addMinutes, addSeconds, format } from "date-fns";
-import { render, screen } from "../../mocks/testUtils";
+
 import { Timestamp, getDisplayTimestamp } from "./Timestamp";
+import { render, screen } from "../../mocks/testUtils";
 
 describe("<Timestamp />", () => {
   describe("component", () => {

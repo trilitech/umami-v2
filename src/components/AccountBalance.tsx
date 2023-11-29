@@ -1,8 +1,9 @@
 import { Box, BoxProps } from "@chakra-ui/react";
-import { useGetAccountBalance } from "../utils/hooks/assetsHooks";
+
 import { PrettyNumber } from "./PrettyNumber";
-import { prettyTezAmount } from "../utils/format";
 import { RawPkh } from "../types/Address";
+import { prettyTezAmount } from "../utils/format";
+import { useGetAccountBalance } from "../utils/hooks/assetsHooks";
 
 export const AccountBalance: React.FC<{ address: RawPkh; size?: "md" | "lg" } & BoxProps> = ({
   address,

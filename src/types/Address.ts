@@ -1,4 +1,4 @@
-import { validateAddress, ValidationResult } from "@taquito/utils";
+import { ValidationResult, validateAddress } from "@taquito/utils";
 import { Alias } from "@tzkt/sdk-api";
 import { z } from "zod";
 

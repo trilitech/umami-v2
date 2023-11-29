@@ -11,19 +11,20 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+
+import { SignPage } from "./SignPage";
+import { TrashIcon } from "../../../assets/icons";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
-import SignPage from "./SignPage";
-import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
-import colors from "../../../style/colors";
-import { isValidImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
 import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../../../components/SendFlow/onSubmitFormActionHooks";
-import { formDefaultValues, FormPageProps } from "../utils";
+import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
+import colors from "../../../style/colors";
+import { RawPkh, isValidImplicitPkh, parsePkh } from "../../../types/Address";
 import { FormErrorMessage } from "../../FormErrorMessage";
-import TrashIcon from "../../../assets/icons/Trash";
-import FormPageHeader from "../FormPageHeader";
+import { FormPageHeader } from "../FormPageHeader";
+import { FormPageProps, formDefaultValues } from "../utils";
 
 export type FormValues = {
   name: string;

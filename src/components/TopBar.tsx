@@ -10,14 +10,15 @@ import {
 } from "@chakra-ui/react";
 import { formatDistance } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
-import FetchingIcon from "../assets/icons/Fetching";
+
+import { BuyTezForm } from "./BuyTez/BuyTezForm";
+import { DynamicModalContext } from "./DynamicModal";
+import { FormPage as SendTezForm } from "./SendFlow/Tez/FormPage";
+import { FetchingIcon } from "../assets/icons";
 import colors from "../style/colors";
 import { useIsLoading, useLastTimeUpdated } from "../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { assetsActions } from "../utils/redux/slices/assetsSlice";
-import { DynamicModalContext } from "./DynamicModal";
-import SendTezForm from "./SendFlow/Tez/FormPage";
-import BuyTezForm from "./BuyTez/BuyTezForm";
 
 export const emailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";

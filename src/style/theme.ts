@@ -1,11 +1,12 @@
 import { extendTheme } from "@chakra-ui/react";
+
 import colors from "./colors";
-import { tabsTheme } from "./theme/tabs";
-import { modalTheme } from "./theme/modal";
 import { buttonTheme } from "./theme/button";
 import { checkboxTheme } from "./theme/checkbox";
 import { drawerTheme } from "./theme/drawer";
+import { modalTheme } from "./theme/modal";
 import { radioTheme } from "./theme/radio";
+import { tabsTheme } from "./theme/tabs";
 
 const config = {
   initialColorMode: "dark",

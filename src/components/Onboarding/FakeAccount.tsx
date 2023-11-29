@@ -1,12 +1,13 @@
 /* istanbul ignore file */
 import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import { RpcClient } from "@taquito/rpc";
-import ModalContentWrapper from "./ModalContentWrapper";
-import { useRestoreLedger } from "../../utils/hooks/setAccountDataHooks";
-import { defaultDerivationPathPattern } from "../../utils/account/derivationPathUtils";
+import { useForm } from "react-hook-form";
+
+import { ModalContentWrapper } from "./ModalContentWrapper";
+import { WalletPlusIcon } from "../../assets/icons";
 import { MAINNET } from "../../types/Network";
-import WalletPlusIcon from "../../assets/icons/WalletPlus";
+import { defaultDerivationPathPattern } from "../../utils/account/derivationPathUtils";
+import { useRestoreLedger } from "../../utils/hooks/setAccountDataHooks";
 
 export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const {

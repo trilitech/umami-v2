@@ -1,15 +1,16 @@
 import { waitFor } from "@testing-library/react";
-import { makeAccountOperations } from "../../../types/AccountOperations";
+
+import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
 import {
   mockDelegationOperation,
   mockImplicitAccount,
   mockTezOperation,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { estimate } from "../../tezos";
-import store from "../store";
-import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
+import { makeAccountOperations } from "../../../types/AccountOperations";
 import { DefaultNetworks } from "../../../types/Network";
+import { estimate } from "../../tezos";
+import { store } from "../store";
 
 describe("estimateAndUpdateBatch", () => {
   describe.each(DefaultNetworks)("on $name", network => {

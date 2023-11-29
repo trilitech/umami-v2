@@ -1,8 +1,9 @@
 import { useState } from "react";
-import EnterPassword from "../../components/Onboarding/masterPassword/password/EnterPassword";
-import NameAccountDisplay from "../../components/Onboarding/nameAccount/NameAccountDisplay";
 
-const DeriveAccountDisplay = (props: {
+import { EnterPassword } from "../../components/Onboarding/masterPassword/password/EnterPassword";
+import { NameAccountDisplay } from "../../components/Onboarding/nameAccount/NameAccountDisplay";
+
+export const DeriveAccountDisplay = (props: {
   onSubmit: (args: { name: string; password: string }) => void;
   isLoading: boolean;
   title?: string;
@@ -27,5 +28,3 @@ const DeriveAccountDisplay = (props: {
     />
   );
 };
-
-export default DeriveAccountDisplay;

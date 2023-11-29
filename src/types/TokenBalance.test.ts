@@ -1,5 +1,5 @@
-import { fa1Token } from "../mocks/tzktResponse";
 import { fromRaw } from "./TokenBalance";
+import { fa1Token } from "../mocks/tzktResponse";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation();

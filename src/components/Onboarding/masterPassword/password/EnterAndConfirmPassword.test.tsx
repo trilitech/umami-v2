@@ -1,5 +1,6 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import EnterAndConfirmPassword from "./EnterAndConfirmPassword";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import { EnterAndConfirmPassword } from "./EnterAndConfirmPassword";
 
 const fixture = (onSubmit: (password: string) => void, isLoading: boolean) => (
   <EnterAndConfirmPassword isLoading={isLoading} onSubmit={onSubmit} />

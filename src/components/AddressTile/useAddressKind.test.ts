@@ -1,4 +1,6 @@
 import { renderHook } from "@testing-library/react";
+
+import { useAddressKind } from "./useAddressKind";
 import {
   mockBaker,
   mockImplicitAddress,
@@ -6,16 +8,15 @@ import {
   mockMnemonicAccount,
   mockSocialAccount,
 } from "../../mocks/factories";
+import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
-import assetsSlice from "../../utils/redux/slices/assetsSlice";
-import contactsSlice from "../../utils/redux/slices/contactsSlice";
-import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
-import store from "../../utils/redux/store";
-import useAddressKind from "./useAddressKind";
-import { multisigs } from "../../mocks/multisig";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
+import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
+import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
+import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
+import { store } from "../../utils/redux/store";
 
 describe("useAddressKind", () => {
   it("returns mnemonic account", () => {

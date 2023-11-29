@@ -10,31 +10,32 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
+
+import { SignPage } from "./SignPage";
+import { RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
 import { FA12Transfer, FA2Transfer } from "../../../types/Operation";
-import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import {
-  formDefaultValues,
-  FormPagePropsWithSender,
-  FormSubmitButtons,
-  getSmallestUnit,
-  makeValidateDecimals,
-} from "../utils";
-import SignPage from "./SignPage";
-import {
-  useAddToBatchFormAction,
-  useHandleOnSubmitFormActions,
-  useOpenSignPageFormAction,
-} from "../onSubmitFormActionHooks";
-import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import {
   formatTokenAmount,
   getRealAmount,
   tokenDecimals,
   tokenSymbolSafe,
 } from "../../../types/Token";
-import FormPageHeader from "../FormPageHeader";
+import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
+import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import { FormPageHeader } from "../FormPageHeader";
+import {
+  useAddToBatchFormAction,
+  useHandleOnSubmitFormActions,
+  useOpenSignPageFormAction,
+} from "../onSubmitFormActionHooks";
+import {
+  FormPagePropsWithSender,
+  FormSubmitButtons,
+  formDefaultValues,
+  getSmallestUnit,
+  makeValidateDecimals,
+} from "../utils";
 
 export type FormValues = {
   sender: RawPkh;
@@ -46,26 +47,7 @@ export type FATokenBalance = FA12TokenBalance | FA2TokenBalance;
 
 export type FATransfer = FA12Transfer | FA2Transfer;
 
-const toOperation =
-  (token: FATokenBalance) =>
-  (formValues: FormValues): FATransfer => {
-    const fa2Operation: FA2Transfer = {
-      type: "fa2",
-      sender: parsePkh(formValues.sender),
-      recipient: parsePkh(formValues.recipient),
-      contract: parseContractPkh(token.contract),
-      tokenId: token.tokenId,
-      amount: getRealAmount(token, formValues.prettyAmount),
-    };
-
-    if (token.type === "fa2") {
-      return fa2Operation;
-    }
-
-    return { ...fa2Operation, type: "fa1.2", tokenId: "0" };
-  };
-
-const FormPage: React.FC<
+export const FormPage: React.FC<
   FormPagePropsWithSender<FormValues> & { token: FATokenBalance }
 > = props => {
   const { token } = props;
@@ -168,4 +150,22 @@ const FormPage: React.FC<
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation =
+  (token: FATokenBalance) =>
+  (formValues: FormValues): FATransfer => {
+    const fa2Operation: FA2Transfer = {
+      type: "fa2",
+      sender: parsePkh(formValues.sender),
+      recipient: parsePkh(formValues.recipient),
+      contract: parseContractPkh(token.contract),
+      tokenId: token.tokenId,
+      amount: getRealAmount(token, formValues.prettyAmount),
+    };
+
+    if (token.type === "fa2") {
+      return fa2Operation;
+    }
+
+    return { ...fa2Operation, type: "fa1.2", tokenId: "0" };
+  };

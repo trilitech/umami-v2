@@ -1,8 +1,8 @@
 import { Accordion } from "@chakra-ui/react";
 import { render, screen } from "@testing-library/react";
-import { mockNFT } from "../../../mocks/factories";
-import PropertiesAccordionItem from "./PropertiesAccordionItem";
-import { mockImplicitAddress } from "../../../mocks/factories";
+
+import { PropertiesAccordionItem } from "./PropertiesAccordionItem";
+import { mockImplicitAddress, mockNFT } from "../../../mocks/factories";
 import { ReduxStore } from "../../../providers/ReduxStore";
 import { NFTBalance } from "../../../types/TokenBalance";
 

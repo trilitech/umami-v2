@@ -1,10 +1,11 @@
-import { useContext } from "react";
-import { DynamicModalContext } from "../DynamicModal";
-import CSVFileUploadForm from "./CSVFileUploadForm";
 import { Button, Text } from "@chakra-ui/react";
-import FileArrowDownIcon from "../../assets/icons/FileArrowDown";
+import { useContext } from "react";
 
-const CSVFileUploader = () => {
+import { CSVFileUploadForm } from "./CSVFileUploadForm";
+import { FileArrowDownIcon } from "../../assets/icons";
+import { DynamicModalContext } from "../DynamicModal";
+
+export const CSVFileUploader = () => {
   const { openWith } = useContext(DynamicModalContext);
   return (
     <Button onClick={() => openWith(<CSVFileUploadForm />)} variant="CTAWithIcon">
@@ -15,5 +16,3 @@ const CSVFileUploader = () => {
     </Button>
   );
 };
-
-export default CSVFileUploader;

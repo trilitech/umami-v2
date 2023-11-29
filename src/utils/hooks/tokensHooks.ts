@@ -1,9 +1,10 @@
 import { get } from "lodash";
+
+import { useSelectedNetwork } from "./networkHooks";
 import { RawPkh } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { Token } from "../../types/Token";
 import { useAppSelector } from "../redux/hooks";
-import { useSelectedNetwork } from "./networkHooks";
 
 export type TokenLookup = (contract: RawPkh, tokenId: string) => Token | undefined;
 

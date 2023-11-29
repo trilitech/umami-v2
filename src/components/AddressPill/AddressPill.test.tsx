@@ -1,13 +1,13 @@
+import { AddressPill } from "./AddressPill";
 import { contact1 } from "../../mocks/contacts";
 import { mockFA1TokenRaw, mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
-import { contactsActions } from "../../utils/redux/slices/contactsSlice";
-import store from "../../utils/redux/store";
-import tokensSlice from "../../utils/redux/slices/tokensSlice";
-import AddressPill from "./AddressPill";
 import { MAINNET } from "../../types/Network";
+import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
+import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
+import { store } from "../../utils/redux/store";
 const { upsert } = contactsActions;
 
 describe("<AddressPill />", () => {

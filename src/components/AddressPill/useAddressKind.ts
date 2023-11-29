@@ -1,15 +1,15 @@
-import { Address } from "../../types/Address";
 import { AddressKind, FA12Address, FA2Address, OwnedImplicitAddress } from "./types";
-import { useGetTokenType } from "../../utils/hooks/tokensHooks";
+import { Address } from "../../types/Address";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
+import { useGetTokenType } from "../../utils/hooks/tokensHooks";
 import { OwnedMultisigAddress } from "../AddressTile/types";
 import {
+  useOwnedAccountAddressKind as useAddressTileOwnedAccountAddressKind,
   useBakerAddressKind,
   useContactAddressKind,
-  useOwnedAccountAddressKind as useAddressTileOwnedAccountAddressKind,
 } from "../AddressTile/useAddressKind";
 
-const useAddressKind = (address: Address): AddressKind => {
+export const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
 
   const token = useTokenAddressKind(address);
@@ -22,8 +22,6 @@ const useAddressKind = (address: Address): AddressKind => {
 
   return known || { pkh: address.pkh, type: "unknown", label: null };
 };
-
-export default useAddressKind;
 
 const useOwnedAccountAddressKind = (
   address: Address

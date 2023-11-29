@@ -1,19 +1,20 @@
 import { AspectRatio, Box, Center, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+
+import { Fee } from "./Fee";
+import { OperationStatus } from "./OperationStatus";
+import { OperationTypeWrapper } from "./OperationTypeWrapper";
+import { Timestamp } from "./Timestamp";
+import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
+import { TzktLink } from "./TzktLink";
+import { useShowAddress } from "./useShowAddress";
 import colors from "../../style/colors";
+import { TzktAlias } from "../../types/Address";
 import { Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { TokenTransfer } from "../../types/Transfer";
 import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 import { TransactionOperation } from "../../utils/tezos";
-import { useShowAddress } from "./useShowAddress";
-import { TzktLink } from "./TzktLink";
 import { getIPFSurl } from "../../utils/token/nftUtils";
-import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
-import { Fee } from "./Fee";
-import { Timestamp } from "./Timestamp";
-import AddressPill from "../AddressPill/AddressPill";
-import { OperationTypeWrapper } from "./OperationTypeWrapper";
-import { OperationStatus } from "./OperationStatus";
-import { TzktAlias } from "../../types/Address";
+import { AddressPill } from "../AddressPill/AddressPill";
 
 export const TokenTransferTile: React.FC<{
   // externally originated token transfers

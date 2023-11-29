@@ -1,7 +1,8 @@
 import { formatRelative } from "date-fns";
+
+import { useGetAccountBalance } from "./assetsHooks";
 import { Delegation } from "../../types/Delegation";
 import { prettyTezAmount } from "../format";
-import { useGetAccountBalance } from "./assetsHooks";
 
 export const useGetDelegationPrettyDisplayValues = () => {
   const getAccountBalance = useGetAccountBalance();

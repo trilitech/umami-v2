@@ -1,19 +1,3 @@
-import PlusIcon from "../../../assets/icons/Plus";
-import { UpsertNetworkModal } from "./UpsertNetworkModal";
-import {
-  useAvailableNetworks,
-  useSelectNetwork,
-  useSelectedNetwork,
-} from "../../../utils/hooks/networkHooks";
-import colors from "../../../style/colors";
-import { Fragment, useContext } from "react";
-import { Network, isDefault } from "../../../types/Network";
-import PopoverMenu from "../../../components/PopoverMenu";
-import TrashIcon from "../../../assets/icons/Trash";
-import { useAppDispatch } from "../../../utils/redux/hooks";
-import { networksActions } from "../../../utils/redux/slices/networks";
-import PenIcon from "../../../assets/icons/Pen";
-import { DynamicModalContext } from "../../../components/DynamicModal";
 import {
   Button,
   Center,
@@ -25,6 +9,21 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { Fragment, useContext } from "react";
+
+import { UpsertNetworkModal } from "./UpsertNetworkModal";
+import { PenIcon, PlusIcon, TrashIcon } from "../../../assets/icons";
+import { DynamicModalContext } from "../../../components/DynamicModal";
+import { PopoverMenu } from "../../../components/PopoverMenu";
+import colors from "../../../style/colors";
+import { Network, isDefault } from "../../../types/Network";
+import {
+  useAvailableNetworks,
+  useSelectNetwork,
+  useSelectedNetwork,
+} from "../../../utils/hooks/networkHooks";
+import { useAppDispatch } from "../../../utils/redux/hooks";
+import { networksActions } from "../../../utils/redux/slices/networks";
 
 export const NetworkSettingsDrawerBody = () => {
   const { openWith } = useContext(DynamicModalContext);

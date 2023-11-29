@@ -1,7 +1,8 @@
 import { Icon, IconProps } from "@chakra-ui/react";
+
 import colors from "../../style/colors";
 
-const ExclamationIcon: React.FC<IconProps> = props => {
+export const ExclamationIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="12px"
@@ -21,5 +22,3 @@ const ExclamationIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default ExclamationIcon;

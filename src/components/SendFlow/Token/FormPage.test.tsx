@@ -1,28 +1,29 @@
 import { Modal } from "@chakra-ui/react";
+import BigNumber from "bignumber.js";
+
+import { FormPage, FormValues } from "./FormPage";
+import { SignPage } from "./SignPage";
+import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import {
   mockFA2Token,
   mockFA2TokenRaw,
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "../../../mocks/factories";
+import { mockEstimatedFee } from "../../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
-import FormPage, { FormValues } from "./FormPage";
-import { FormPagePropsWithSender } from "../utils";
-import { FA2TokenBalance } from "../../../types/TokenBalance";
-import { DynamicModalContext } from "../../DynamicModal";
-import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
+import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
-import BigNumber from "bignumber.js";
-import { mockToast } from "../../../mocks/toast";
-import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import store from "../../../utils/redux/store";
-import SignPage from "./SignPage";
-import { mockEstimatedFee } from "../../../mocks/helpers";
-import assetsSlice from "../../../utils/redux/slices/assetsSlice";
+import { FA2TokenBalance } from "../../../types/TokenBalance";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
+import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
+import { store } from "../../../utils/redux/store";
+import { DynamicModalContext } from "../../DynamicModal";
+import { FormPagePropsWithSender } from "../utils";
 
 const mockAccount = mockMnemonicAccount(0);
-const mocktTokenRaw = mockFA2TokenRaw(0, mockAccount.address.pkh);
+const mockTokenRaw = mockFA2TokenRaw(0, mockAccount.address.pkh);
 const mockToken = mockFA2Token(0, mockAccount);
 const fixture = (
   props: FormPagePropsWithSender<FormValues>,
@@ -182,7 +183,7 @@ describe("<FormPage />", () => {
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
         store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockAccount]));
-        store.dispatch(assetsSlice.actions.updateTokenBalance([mocktTokenRaw]));
+        store.dispatch(assetsSlice.actions.updateTokenBalance([mockTokenRaw]));
         const sender = mockAccount;
         render(
           <DynamicModalContext.Provider value={dynamicModalContextMock}>

@@ -1,11 +1,12 @@
 import { Box, Select } from "@chakra-ui/react";
+import { capitalize } from "lodash";
+
+import colors from "../style/colors";
 import {
   useAvailableNetworks,
   useSelectNetwork,
   useSelectedNetwork,
 } from "../utils/hooks/networkHooks";
-import { capitalize } from "lodash";
-import colors from "../style/colors";
 
 export const NetworkSelector = () => {
   const currentNetwork = useSelectedNetwork();
@@ -34,5 +35,3 @@ export const NetworkSelector = () => {
     </Box>
   );
 };
-
-export default NetworkSelector;
