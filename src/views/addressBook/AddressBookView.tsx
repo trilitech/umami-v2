@@ -17,7 +17,7 @@ const AddContact: React.FC = () => {
       marginBottom="16px"
       cursor="pointer"
       onClick={() =>
-        openWith(<UpsertContactModal title="Add contact" buttonText="Add to Contact" />)
+        openWith(<UpsertContactModal buttonText="Add to Contact" title="Add contact" />)
       }
       variant="CTAWithIcon"
     >

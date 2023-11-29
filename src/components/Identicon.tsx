@@ -25,12 +25,12 @@ export const Identicon: React.FC<
       {...props}
     >
       <ReactIdenticons
+        background="white"
+        size={identiconSize}
+        string={address}
         style={{
           borderRadius: 4,
         }}
-        bg="white"
-        size={identiconSize}
-        string={address}
       />
     </Box>
   );

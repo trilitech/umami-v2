@@ -18,7 +18,7 @@ const fixture = (closeModal: () => void) => {
   };
   return (
     <ReduxStore>
-      <RestoreLedger closeModal={closeModal} account={account} />
+      <RestoreLedger account={account} closeModal={closeModal} />
     </ReduxStore>
   );
 };

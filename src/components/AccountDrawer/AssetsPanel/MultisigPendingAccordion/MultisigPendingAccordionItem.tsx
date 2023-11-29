@@ -56,10 +56,10 @@ export const MultisigPendingAccordionItem: React.FC<{
             {signers.map(signer => (
               <MultisigSignerTile
                 key={signer.pkh}
-                signerAddress={signer}
+                operation={operation}
                 pendingApprovals={pendingApprovals}
                 sender={sender}
-                operation={operation}
+                signerAddress={signer}
               />
             ))}
           </Box>

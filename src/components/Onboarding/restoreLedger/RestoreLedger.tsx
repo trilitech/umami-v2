@@ -76,8 +76,8 @@ const RestoreLedger = ({
   return (
     <ModalContentWrapper
       icon={<USBIcon />}
-      title="Connect Ledger"
       subtitle="Complete the steps to connect."
+      title="Connect Ledger"
     >
       <VStack overflowY="auto" spacing="24px">
         <OrderedList spacing={4}>

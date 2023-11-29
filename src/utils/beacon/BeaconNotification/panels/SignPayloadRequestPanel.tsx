@@ -52,7 +52,7 @@ const SignPayloadRequestPanel: React.FC<{
       <ModalBody>{request.payload}</ModalBody>
 
       <ModalFooter justifyContent="center" display="flex">
-        <SignButton signer={signerAccount} onSubmit={sign} />
+        <SignButton onSubmit={sign} signer={signerAccount} />
       </ModalFooter>
     </ModalContent>
   );

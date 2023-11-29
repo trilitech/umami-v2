@@ -56,7 +56,7 @@ const PasswordInput = <T extends FieldValues, U extends Path<T>>({
             {showPassword ? (
               <EyeSlashIcon data-testid="eye-slash-icon" />
             ) : (
-              <EyeIcon w="16.5px" data-testid="eye-icon" />
+              <EyeIcon width="16.5px" data-testid="eye-icon" />
             )}
           </Button>
         </InputRightElement>

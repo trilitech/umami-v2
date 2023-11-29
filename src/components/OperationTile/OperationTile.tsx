@@ -17,7 +17,7 @@ export const OperationTile: React.FC<{
     case "token_transfer": {
       const token = fromRaw(operation.token);
       if (token) {
-        return <TokenTransferTile tokenTransfer={operation} token={token} />;
+        return <TokenTransferTile token={token} tokenTransfer={operation} />;
       }
       console.warn(`Could not parse token transfer ${operation.id}`);
       return null;
@@ -30,7 +30,7 @@ export const OperationTile: React.FC<{
         const token = fromRaw(tokenTransfer.token);
         if (token) {
           return (
-            <TokenTransferTile operation={operation} tokenTransfer={tokenTransfer} token={token} />
+            <TokenTransferTile operation={operation} token={token} tokenTransfer={tokenTransfer} />
           );
         } else {
           // If we can't parse the token we fallback to

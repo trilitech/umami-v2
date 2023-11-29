@@ -28,10 +28,10 @@ export const BeaconNotification: React.FC<{
 
   switch (message.type) {
     case BeaconMessageType.PermissionRequest: {
-      return <PermissionRequestPanel request={message} onSuccess={onClose} />;
+      return <PermissionRequestPanel onSuccess={onClose} request={message} />;
     }
     case BeaconMessageType.SignPayloadRequest: {
-      return <SignPayloadRequestPanel request={message} onSuccess={onClose} />;
+      return <SignPayloadRequestPanel onSuccess={onClose} request={message} />;
     }
     case BeaconMessageType.OperationRequest: {
       const signer = getAccount(message.sourceAddress);

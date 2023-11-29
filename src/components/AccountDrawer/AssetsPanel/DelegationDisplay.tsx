@@ -41,10 +41,10 @@ export const DelegationDisplay: React.FC<{
   if (!delegation) {
     return (
       <NoDelegations
-        small
         onDelegate={() => {
           openWith(<DelegationFormPage sender={account} />);
         }}
+        small
       />
     );
   }
@@ -59,25 +59,25 @@ export const DelegationDisplay: React.FC<{
   return (
     <Box>
       <Row
+        borderBottom={`1px solid ${colors.gray[700]}`}
+        borderTopRadius="8px"
+        _odd={{ bg: colors.gray[800] }}
         label="Initial Balance:"
         value={initialBalance}
-        borderTopRadius="8px"
-        borderBottom={`1px solid ${colors.gray[700]}`}
-        _odd={{ bg: colors.gray[800] }}
       />
       {currentBalance && (
-        <Row label="Current Balance:" _odd={{ bg: colors.gray[800] }} value={currentBalance} />
+        <Row _odd={{ bg: colors.gray[800] }} label="Current Balance:" value={currentBalance} />
       )}
       <Row
-        label="Duration:"
-        _odd={{ bg: colors.gray[800] }}
-        value={duration}
         borderBottom={`1px solid ${colors.gray[700]}`}
+        _odd={{ bg: colors.gray[800] }}
+        label="Duration:"
+        value={duration}
       />
       <Row
-        label="Baker:"
-        _odd={{ bg: colors.gray[800] }}
         borderBottomRadius="8px"
+        _odd={{ bg: colors.gray[800] }}
+        label="Baker:"
         value={<AddressPill address={parsePkh(delegation.delegate.address)} />}
       />
 
@@ -86,7 +86,7 @@ export const DelegationDisplay: React.FC<{
           flex={1}
           marginRight="16px"
           onClick={() =>
-            openWith(<UndelegationFormPage sender={senderAccount} form={{ sender, baker }} />)
+            openWith(<UndelegationFormPage form={{ sender, baker }} sender={senderAccount} />)
           }
           variant="warning"
         >
@@ -95,7 +95,7 @@ export const DelegationDisplay: React.FC<{
         <Button
           flex={1}
           onClick={() => {
-            openWith(<DelegationFormPage sender={senderAccount} form={{ sender, baker }} />);
+            openWith(<DelegationFormPage form={{ sender, baker }} sender={senderAccount} />);
           }}
           variant="tertiary"
         >

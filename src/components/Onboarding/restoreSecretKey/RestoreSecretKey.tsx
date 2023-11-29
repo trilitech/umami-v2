@@ -21,7 +21,7 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: Step) => void 
     });
   return (
     <ModalContentWrapper
-      icon={<KeyIcon stroke={colors.gray[450]} w="24px" h="24px" />}
+      icon={<KeyIcon width="24px" height="24px" stroke={colors.gray[450]} />}
       title="Insert Secret Key"
     >
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>

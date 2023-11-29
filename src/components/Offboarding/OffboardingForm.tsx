@@ -47,7 +47,7 @@ const OffboardingForm = () => {
 
         <ModalHeader marginBottom="12px" textAlign="center">
           <Box>
-            <WarningIcon w={10} h={10} mb={5} />
+            <WarningIcon width={10} height={10} marginBottom={5} />
             <Heading>Off-board Wallet</Heading>
           </Box>
         </ModalHeader>

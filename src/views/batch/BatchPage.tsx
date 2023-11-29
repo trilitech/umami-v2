@@ -19,7 +19,7 @@ export const FilterController = ({ batchPending }: { batchPending: number }) => 
       </Heading>
       <CSVFileUploader />
       <ExternalLink
-        ml="8px"
+        marginLeft="8px"
         href="https://github.com/trilitech/umami-v2/blob/main/doc/Batch-File-Format-Specifications.md"
       >
         <Button paddingRight="0" variant="CTAWithIcon">

@@ -42,8 +42,8 @@
       "warn",
       { "checkFragmentShorthand": true, "checkKeyMustBeforeSpread": true, "warnOnDuplicates": true }
     ],
-    "chakra-ui/props-order": "warn",
-    "chakra-ui/props-shorthand": ["warn", { "noShorthand": true }],
+    "chakra-ui/props-order": ["warn", { "applyToAllComponents": true }],
+    "chakra-ui/props-shorthand": ["warn", { "noShorthand": true, "applyToAllComponents": true }],
     "chakra-ui/require-specific-component": "warn"
   },
   "overrides": [

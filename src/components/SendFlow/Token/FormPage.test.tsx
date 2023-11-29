@@ -219,10 +219,10 @@ describe("<FormPage />", () => {
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
             <SignPage
               data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
-              mode="single"
-              goBack={expect.any(Function)}
-              operations={operations}
               fee={new BigNumber(100)}
+              goBack={expect.any(Function)}
+              mode="single"
+              operations={operations}
             />
           );
         });

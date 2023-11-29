@@ -103,10 +103,10 @@ const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> 
 
             <FormControl marginTop="24px" isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
-                label="From"
-                isDisabled={!!props.sender}
-                inputName="sender"
                 allowUnknown={false}
+                inputName="sender"
+                isDisabled={!!props.sender}
+                label="From"
               />
               {errors.sender && (
                 <FormErrorMessage data-testid="from-error">
@@ -115,7 +115,7 @@ const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> 
               )}
             </FormControl>
             <FormControl marginTop="24px" isInvalid={!!errors.recipient}>
-              <KnownAccountsAutocomplete label="To" inputName="recipient" allowUnknown />
+              <KnownAccountsAutocomplete allowUnknown inputName="recipient" label="To" />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">
                   {errors.recipient.message}
@@ -127,8 +127,8 @@ const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> 
             <FormSubmitButtons
               isLoading={isLoading}
               isValid={isValid}
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
               onAddToBatch={handleSubmit(onBatchSubmit)}
+              onSingleSubmit={handleSubmit(onSingleSubmit)}
               showPreview={showPreview}
             />
           </ModalFooter>

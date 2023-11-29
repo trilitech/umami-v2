@@ -14,13 +14,13 @@ export const ReceiveModal: FC<{
   return (
     <ModalContent>
       <FormPageHeader
-        title="Receive"
         subTitle="You can receive tez or other digital assets by scanning or sharing this QR code"
+        title="Receive"
       />
       <ModalBody>
         <Flex alignItems="center" justifyContent="space-between" flexDirection="column">
           <Box padding="8px" background="white" borderRadius="8px">
-            <QRCode value={pkh} size={232} />
+            <QRCode size={232} value={pkh} />
           </Box>
         </Flex>
       </ModalBody>

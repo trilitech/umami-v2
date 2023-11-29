@@ -83,8 +83,8 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
       <ModalContent>
         <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader
-            title="Create Multisig"
             subTitle="Name your contract, select an owner and the signers of the contract."
+            title="Create Multisig"
           />
 
           <ModalBody>
@@ -104,9 +104,9 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
 
             <FormControl isInvalid={!!errors.sender} marginY="24px">
               <OwnedImplicitAccountsAutocomplete
-                label="Select Owner"
-                inputName="sender"
                 allowUnknown={false}
+                inputName="sender"
+                label="Select Owner"
               />
               {errors.sender && (
                 <FormErrorMessage data-testid="owner-error">
@@ -129,10 +129,11 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                   isInvalid={!!error}
                 >
                   <OwnedImplicitAccountsAutocomplete
-                    style={{ width: inputWidth }}
-                    label={label}
+                    allowUnknown
                     inputName={`signers.${index}.val` as const}
+                    label={label}
                     size={inputSize}
+                    style={{ width: inputWidth }}
                     validate={signer => {
                       if (!isValidImplicitPkh(signer)) {
                         return "Signer must be valid TZ address";
@@ -142,7 +143,6 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                         return "Duplicate signer";
                       }
                     }}
-                    allowUnknown
                   />
                   {signersCount > 1 && (
                     <IconButton
@@ -153,7 +153,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                       background={colors.gray[500]}
                       aria-label="Remove"
                       data-testid={`remove-signer-${index}`}
-                      icon={<TrashIcon h="14px" w="12px" stroke={colors.gray[300]} />}
+                      icon={<TrashIcon width="12px" height="14px" stroke={colors.gray[300]} />}
                       isRound
                       onClick={() => signersArray.remove(index)}
                       size="xs"

@@ -33,15 +33,15 @@ export const EnterAndConfirmPassword: React.FC<{
   return (
     <ModalContentWrapper
       icon={<LockIcon />}
-      title="Umami Master Password"
       subtitle="Please choose a master password for Umami. You will need to use this password in order to perform any operations within Umami."
+      title="Umami Master Password"
     >
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormControl isInvalid={!!errors.password}>
             <PasswordInput
-              inputName="password"
               data-testid="password"
+              inputName="password"
               placeholder="Enter master password"
             />
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
@@ -49,9 +49,9 @@ export const EnterAndConfirmPassword: React.FC<{
 
           <FormControl marginTop="24px" isInvalid={!!errors.confirm}>
             <PasswordInput
+              data-testid="confirmation"
               inputName="confirm"
               label="Confirm Password"
-              data-testid="confirmation"
               placeholder="Confirm your password"
               required="Confirmation is required"
               validate={(val: string) =>

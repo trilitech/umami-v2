@@ -20,7 +20,7 @@ const goToStepMock = jest.fn((step: Step) => {});
 
 const fixture = (goToStep: (step: Step) => void, account: NameAccountStep["account"]) => (
   <ReduxStore>
-    <NameAccount goToStep={goToStep} account={account} />
+    <NameAccount account={account} goToStep={goToStep} />
   </ReduxStore>
 );
 

@@ -33,18 +33,18 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                         </Text>
                       </Box>
                       <CopyableAddress
-                        data-testid="contact-row-pkh"
                         justifyContent="space-between"
-                        pkh={contact.pkh}
+                        data-testid="contact-row-pkh"
                         formatAddress={false}
                         iconColor={colors.gray[400]}
+                        pkh={contact.pkh}
                       />
                     </Flex>
                   </Td>
                   <Td borderColor={rowBorderColor} paddingX="0">
                     <Flex justifyContent="end">
                       <SendButton
-                        mr="20px"
+                        marginRight="20px"
                         onClick={() =>
                           openWith(
                             <FormPage
@@ -54,17 +54,17 @@ const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
                         }
                       />
                       <RenameRemoveMenu
+                        onRemove={() => {
+                          openWith(<DeleteContactModal contact={contact} />);
+                        }}
                         onRename={() => {
                           openWith(
                             <UpsertContactModal
-                              title="Edit contact"
                               buttonText="Update"
                               contact={contact}
+                              title="Edit contact"
                             />
                           );
-                        }}
-                        onRemove={() => {
-                          openWith(<DeleteContactModal contact={contact} />);
                         }}
                       />
                     </Flex>

@@ -13,17 +13,17 @@ const DeriveAccountDisplay = (props: {
   if (name === undefined) {
     return (
       <NameAccountDisplay
-        title={props.title}
-        subtitle={props.subtitle}
         onSubmit={p => setName(p.accountName)}
+        subtitle={props.subtitle}
+        title={props.title}
       />
     );
   }
 
   return (
     <EnterPassword
-      onSubmit={p => props.onSubmit({ name, password: p })}
       isLoading={props.isLoading}
+      onSubmit={p => props.onSubmit({ name, password: p })}
     />
   );
 };

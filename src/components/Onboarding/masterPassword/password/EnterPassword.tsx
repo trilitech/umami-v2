@@ -30,13 +30,13 @@ const EnterPassword = ({
   return (
     <ModalContentWrapper
       icon={<LockIcon />}
-      title="Umami Master Password"
       subtitle="Enter your master password for Umami."
+      title="Umami Master Password"
     >
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormControl isInvalid={!!errors.password}>
-            <PasswordInput inputName="password" data-testid="password" />
+            <PasswordInput data-testid="password" inputName="password" />
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
           </FormControl>
 

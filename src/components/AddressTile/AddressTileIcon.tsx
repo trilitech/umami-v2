@@ -24,20 +24,35 @@ const AddressTileIcon: React.FC<{
     case "secret_key":
     case "mnemonic":
       return (
-        <Identicon p="5px" w={sizeInPx} h={sizeInPx} identiconSize={20} address={addressKind.pkh} />
+        <Identicon
+          width={sizeInPx}
+          height={sizeInPx}
+          padding="5px"
+          address={addressKind.pkh}
+          identiconSize={20}
+        />
       );
     case "social":
-      return <SocialIcon w={sizeInPx} h={sizeInPx} {...baseIconProps} bg="white" />;
+      return (
+        <SocialIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} background="white" />
+      );
     case "ledger":
-      return <LedgerIcon w={sizeInPx} h={sizeInPx} {...baseIconProps} color={colors.gray[400]} />;
+      return (
+        <LedgerIcon
+          width={sizeInPx}
+          height={sizeInPx}
+          {...baseIconProps}
+          color={colors.gray[400]}
+        />
+      );
     case "multisig":
-      return <KeyIcon w={sizeInPx} h={sizeInPx} {...baseIconProps} />;
+      return <KeyIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
     case "contact":
-      return <ContactIcon w={sizeInPx} h={sizeInPx} {...baseIconProps} />;
+      return <ContactIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
     case "unknown":
-      return <UnknownContactIcon w={sizeInPx} h={sizeInPx} {...baseIconProps} />;
+      return <UnknownContactIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
     case "baker":
-      return <BakerIcon w={sizeInPx} h={sizeInPx} {...baseIconProps} />;
+      return <BakerIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
   }
 };
 

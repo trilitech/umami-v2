@@ -5,7 +5,7 @@ import NFTCard from "./NFTCard";
 describe("NFTCard", () => {
   it("displays the nft image correctly", () => {
     const nft = mockNFT(0);
-    render(<NFTCard nft={nft} owner={mockImplicitAddress(0).pkh} onClick={() => {}} />);
+    render(<NFTCard nft={nft} onClick={() => {}} owner={mockImplicitAddress(0).pkh} />);
 
     expect(screen.getByTestId("nft-image")).toHaveAttribute(
       "src",

@@ -28,13 +28,13 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-transaction">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
+          <TransactionDirectionIcon marginRight="8px" isOutgoing={isOutgoing} />
           <TzktLink
-            hash={operation.hash}
-            counter={operation.counter}
-            mr="8px"
-            data-testid="title"
+            marginRight="8px"
             color={titleColor}
+            counter={operation.counter}
+            data-testid="title"
+            hash={operation.hash}
           >
             <Text color={titleColor} fontWeight="600">
               {sign} {amount}

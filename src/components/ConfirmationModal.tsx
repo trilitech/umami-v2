@@ -30,7 +30,7 @@ export const ConfirmationModal: React.FC<{
     <ModalContent>
       <ModalHeader textAlign="center">
         <Box>
-          <WarningIcon w="40px" h="40px" mb="16px" />
+          <WarningIcon width="40px" height="40px" marginBottom="16px" />
         </Box>
         <Heading>{title}</Heading>
         <ModalCloseButton />

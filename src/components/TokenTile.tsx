@@ -27,7 +27,12 @@ const TokenTile: React.FC<{ token: FATokenBalance; amount: string } & FlexProps>
     >
       <Flex alignItems="center">
         <AspectRatio width="30px" height="30px" marginRight="12px" ratio={1}>
-          <TokenIcon contract={contract} p="6.25px" bg={colors.gray[500]} borderRadius="4px" />
+          <TokenIcon
+            padding="6.25px"
+            background={colors.gray[500]}
+            borderRadius="4px"
+            contract={contract}
+          />
         </AspectRatio>
       </Flex>
       <PrettyNumber number={prettyAmount} />

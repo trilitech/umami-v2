@@ -23,7 +23,7 @@ const TokensPage = () => {
       ) : (
         <Box overflowY="auto">
           {accountsWithTokens.map(([account, tokens]) => (
-            <AccountTokens key={account.address.pkh} tokens={tokens} account={account} />
+            <AccountTokens key={account.address.pkh} account={account} tokens={tokens} />
           ))}
         </Box>
       )}

@@ -18,15 +18,11 @@ export default function Slider({ children }: Props) {
   };
   return (
     <Carousel
-      showArrows={false}
-      infiniteLoop={true}
-      autoPlay={true}
-      showStatus={false}
-      dynamicHeight={false}
-      showThumbs={false}
-      interval={5000}
-      transitionTime={1000}
       width="100%"
+      autoPlay={true}
+      dynamicHeight={false}
+      infiniteLoop={true}
+      interval={5000}
       renderIndicator={(onClickHandler, isSelected, index) => {
         if (isSelected) {
           return (
@@ -41,16 +37,20 @@ export default function Slider({ children }: Props) {
         }
         return (
           <li
-            style={indicatorStyles}
+            key={index}
             onClick={onClickHandler}
             onKeyDown={onClickHandler}
-            value={index}
-            key={index}
             role="button"
+            style={indicatorStyles}
             tabIndex={0}
+            value={index}
           />
         );
       }}
+      showArrows={false}
+      showStatus={false}
+      showThumbs={false}
+      transitionTime={1000}
     >
       {children}
     </Carousel>

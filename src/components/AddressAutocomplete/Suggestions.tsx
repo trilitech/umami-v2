@@ -43,16 +43,16 @@ export const Suggestions = ({
             }}
           >
             <AddressTile
-              cursor="pointer"
-              address={parsePkh(contact.pkh)}
+              width="370px"
+              height="40px"
+              padding="10px 8px 10px 5px"
+              background={colors.gray[700]}
+              borderRadius="4px"
               _hover={{
                 background: colors.gray[500],
               }}
-              background={colors.gray[700]}
-              width="370px"
-              borderRadius="4px"
-              padding="10px 8px 10px 5px"
-              height="40px"
+              cursor="pointer"
+              address={parsePkh(contact.pkh)}
             />
           </ListItem>
         </Box>

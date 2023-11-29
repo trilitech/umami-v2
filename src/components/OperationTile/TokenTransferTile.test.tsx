@@ -16,8 +16,8 @@ const fixture = (context: any, tokenTransfer: TokenTransfer, operation?: Transac
   <OperationTileContext.Provider value={context}>
     <TokenTransferTile
       operation={operation}
-      tokenTransfer={tokenTransfer}
       token={fromRaw(tokenTransfer.token) as Token}
+      tokenTransfer={tokenTransfer}
     />
   </OperationTileContext.Provider>
 );

@@ -44,8 +44,8 @@ describe("SendFlow utils", () => {
         <FormSubmitButtons
           isLoading={false}
           isValid={true}
-          onSingleSubmit={mockSingle}
           onAddToBatch={mockAddToBatch}
+          onSingleSubmit={mockSingle}
         />
       );
 
@@ -60,8 +60,8 @@ describe("SendFlow utils", () => {
         <FormSubmitButtons
           isLoading={false}
           isValid={true}
-          onSingleSubmit={async () => {}}
           onAddToBatch={async () => {}}
+          onSingleSubmit={async () => {}}
         />
       );
 
@@ -71,11 +71,11 @@ describe("SendFlow utils", () => {
     it("hides preview button", () => {
       render(
         <FormSubmitButtons
-          showPreview={false}
           isLoading={false}
           isValid={true}
-          onSingleSubmit={async () => {}}
           onAddToBatch={async () => {}}
+          onSingleSubmit={async () => {}}
+          showPreview={false}
         />
       );
 

@@ -68,11 +68,11 @@ export const ChangePasswordForm: React.FC = () => {
           <ModalBody>
             <FormControl marginTop={3} isInvalid={!!errors.currentPassword}>
               <PasswordInput
+                data-testid="current-password"
                 inputName="currentPassword"
                 label="Current Password"
-                required="Current password is required"
-                data-testid="current-password"
                 placeholder="Enter your current password"
+                required="Current password is required"
               />
               {errors.currentPassword && (
                 <FormErrorMessage data-testid="current-password-error">
@@ -83,11 +83,11 @@ export const ChangePasswordForm: React.FC = () => {
 
             <FormControl isInvalid={!!errors.newPassword} marginY={6}>
               <PasswordInput
+                data-testid="new-password"
                 inputName="newPassword"
                 label="New Password"
-                required="New password is required"
-                data-testid="new-password"
                 placeholder="Enter new password"
+                required="New password is required"
                 validate={(val: string) =>
                   getValues("currentPassword") !== val || "Cannot be the same as old password"
                 }
@@ -101,11 +101,11 @@ export const ChangePasswordForm: React.FC = () => {
 
             <FormControl marginTop={3} isInvalid={!!errors.newPasswordConfirmation}>
               <PasswordInput
+                data-testid="new-password-confirmation"
                 inputName="newPasswordConfirmation"
                 label="Confirm New Password"
-                required="Confirmation is required"
-                data-testid="new-password-confirmation"
                 placeholder="Confirm new password"
+                required="Confirmation is required"
                 validate={(val: string) =>
                   getValues("newPassword") === val || "Your new passwords do no match"
                 }

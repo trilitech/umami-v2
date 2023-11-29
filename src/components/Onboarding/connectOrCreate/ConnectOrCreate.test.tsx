@@ -8,7 +8,7 @@ const closeModalMock = jest.fn(() => {});
 
 const fixture = (goToStep: (step: Step) => void) => (
   <ReduxStore>
-    <ConnectOrCreate goToStep={goToStep} closeModal={closeModalMock} />
+    <ConnectOrCreate closeModal={closeModalMock} goToStep={goToStep} />
   </ReduxStore>
 );
 

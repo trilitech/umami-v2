@@ -78,10 +78,10 @@ const ClearBatchConfirmationModal = ({ sender }: { sender: Account }) => {
 
   return (
     <ConfirmationModal
-      title="Are you sure?"
+      buttonLabel="Delete Batch"
       description="This will remove all transactions from the batch."
       onSubmit={() => clearBatch(sender)}
-      buttonLabel="Delete Batch"
+      title="Are you sure?"
     />
   );
 };
@@ -117,7 +117,7 @@ export const BatchView: React.FC<{
         data-testid="header"
       >
         <Flex alignItems="center">
-          <AccountSmallTile pkh={sender.address.pkh} pl={0} />
+          <AccountSmallTile paddingLeft={0} pkh={sender.address.pkh} />
         </Flex>
         <RightHeader operations={accountOperations} />
       </Flex>

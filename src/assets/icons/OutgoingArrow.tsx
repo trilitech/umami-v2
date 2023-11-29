@@ -14,9 +14,9 @@ const OutgoingArrow: React.FC<IconProps> = props => {
     >
       <path
         d="M5.25 12.75L12.75 5.25M12.75 5.25H6M12.75 5.25V12"
-        strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="1.2"
       />
     </Icon>
   );

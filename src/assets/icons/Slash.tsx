@@ -12,7 +12,7 @@ const SlashIcon: React.FC<IconProps> = props => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path d="M16 3L8 21" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16 3L8 21" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
     </Icon>
   );
 };

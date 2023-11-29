@@ -10,20 +10,20 @@ import { Link } from "react-router-dom";
 export default function HelpView() {
   return (
     <Grid
-      h="100%"
-      templateAreas={`
+      gridGap="1"
+      gridTemplateRows="0fr 1fr 1fr"
+      gridTemplateColumns="1fr 1fr"
+      gridTemplateAreas={`
                   "header header"
                   "main main"
                   "main main"
                   `}
-      gridTemplateRows="0fr 1fr 1fr"
-      gridTemplateColumns="1fr 1fr"
-      gap="1"
+      height="100%"
     >
-      <GridItem area="header">
+      <GridItem gridArea="header">
         <TopBar title="Help" />
       </GridItem>
-      <GridItem area="main" mt={1}>
+      <GridItem gridArea="main" marginTop={1}>
         <HelpCard title="Learn More">
           <HelpLinkRow about="Browse Articles" externalLink="https://medium.com/umamiwallet" />
         </HelpCard>
@@ -59,9 +59,9 @@ const HelpLinkRow: React.FC<{
   linkDescription?: string;
 }> = ({ about, externalLink, linkDescription }) => {
   return (
-    <Link to={externalLink} target="_blank" rel="noopener noreferrer">
-      <ClickableCard isSelected={false} cursor="pointer">
-        <Flex justifyContent="space-between" alignItems="center">
+    <Link rel="noopener noreferrer" target="_blank" to={externalLink}>
+      <ClickableCard cursor="pointer" isSelected={false}>
+        <Flex alignItems="center" justifyContent="space-between">
           <Heading size="sm">{about}</Heading>
 
           <Flex alignItems="center">

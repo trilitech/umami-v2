@@ -11,7 +11,7 @@ const ChevronRightIcon: React.FC<IconProps> = props => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <path d="M7 14L11.5 9.5L7 5" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7 14L11.5 9.5L7 5" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
   </Icon>
 );
 export default ChevronRightIcon;

@@ -12,7 +12,7 @@ const PlusIcon: React.FC<IconProps> = props => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path d="M4 12H20M12 4V20" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 12H20M12 4V20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" />
     </Icon>
   );
 };

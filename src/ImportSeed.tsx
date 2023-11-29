@@ -33,7 +33,7 @@ function ImportSeed() {
         <SimpleGrid background={colors.gray[800]} borderRadius="30px" columns={[1, 1, 2]}>
           <Center>
             <VStack maxWidth="400px" padding="32px" spacing="0">
-              <MakiLogo size="48px" mb="24px" />
+              <MakiLogo marginBottom="24px" size="48px" />
               <Heading marginBottom="16px" size="3xl">
                 Welcome to Umami
               </Heading>

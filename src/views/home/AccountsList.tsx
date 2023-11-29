@@ -63,7 +63,6 @@ const AccountGroup: React.FC<{
   const onDelete = () => {
     openWith(
       <ConfirmationModal
-        title="Confirmation"
         buttonLabel="Confirm"
         description={modalBody}
         onSubmit={() => {
@@ -74,6 +73,7 @@ const AccountGroup: React.FC<{
           }
           onClose();
         }}
+        title="Confirmation"
       />
     );
   };
@@ -82,7 +82,7 @@ const AccountGroup: React.FC<{
     if (!isMnemonic) {
       throw new Error(`Can't derive a non mnemonic account!`);
     }
-    openWith(<DeriveAccount onDone={onClose} fingerprint={first.seedFingerPrint} />);
+    openWith(<DeriveAccount fingerprint={first.seedFingerPrint} onDone={onClose} />);
   };
 
   return (
@@ -101,10 +101,10 @@ const AccountGroup: React.FC<{
         return (
           <Box key={account.address.pkh} marginBottom="16px">
             <AccountTile
-              selected={account.address.pkh === selected}
-              onClick={_ => onSelect(account.address.pkh)}
               address={account.address.pkh}
               balance={balances[account.address.pkh]}
+              onClick={_ => onSelect(account.address.pkh)}
+              selected={account.address.pkh === selected}
             />
           </Box>
         );
@@ -142,7 +142,6 @@ export const AccountsList: React.FC<{
     return (
       <AccountGroup
         key={accountGroupLabel}
-        selected={selected}
         accounts={accountsByType}
         balances={mutezBalance}
         groupLabel={accountGroupLabel}
@@ -150,6 +149,7 @@ export const AccountsList: React.FC<{
           onOpen();
           onSelect(pkh);
         }}
+        selected={selected}
       />
     );
   });
@@ -175,7 +175,7 @@ export const AccountsList: React.FC<{
               color={colors.gray[400]}
               textAlign="center"
             >
-              <KeyIcon stroke={colors.gray[450]} mr={1} />
+              <KeyIcon marginRight={1} stroke={colors.gray[450]} />
               Create New Multisig
             </Text>
           </Button>
@@ -214,9 +214,9 @@ const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
     <ModalContent>
       <ModalCloseButton />
       <DeriveAccountDisplay
-        subtitle={`Name the new account derived from ${props.fingerprint}`}
-        onSubmit={handleSubmit}
         isLoading={isLoading}
+        onSubmit={handleSubmit}
+        subtitle={`Name the new account derived from ${props.fingerprint}`}
       />
     </ModalContent>
   );

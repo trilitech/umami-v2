@@ -199,10 +199,10 @@ describe("<FormPage />", () => {
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
             <SignPage
               data={{ nft: mockNFT(1) }}
-              mode="single"
-              goBack={expect.any(Function)}
-              operations={operations}
               fee={new BigNumber(100)}
+              goBack={expect.any(Function)}
+              mode="single"
+              operations={operations}
             />
           );
         });

@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 const goToStepMock = jest.fn((step: Step) => {});
 
 const fixture = (goToStep: (step: Step) => void, account: DerivationPathStep["account"]) => (
-  <DerivationPath goToStep={goToStep} account={account} />
+  <DerivationPath account={account} goToStep={goToStep} />
 );
 
 describe("<DerivationPath />", () => {

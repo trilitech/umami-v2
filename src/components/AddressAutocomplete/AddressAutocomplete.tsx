@@ -159,13 +159,13 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
             data-testid="clear-selected-button"
           >
             <AddressTile
-              address={parsePkh(currentRealValue)}
               width={size === "short" ? "338px" : "365px"}
-              bg="transparent"
-              pt="8px"
+              paddingTop="8px"
+              background="transparent"
+              address={parsePkh(currentRealValue)}
             />
             {keepValid ? (
-              <ChevronDownIcon mr="12px" data-testid="chevron-icon" />
+              <ChevronDownIcon marginRight="12px" data-testid="chevron-icon" />
             ) : (
               <CrossButton marginRight="14px" />
             )}
@@ -217,10 +217,10 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
 
 const CrossButton = (props: IconProps) => (
   <XMark
-    cursor="pointer"
-    data-testid="clear-input-button"
     marginRight="16px"
     stroke={colors.gray[450]}
+    cursor="pointer"
+    data-testid="clear-input-button"
     {...props}
   />
 );
@@ -282,9 +282,9 @@ export const AvailableSignersAutocomplete = <T extends FieldValues, U extends Pa
 
   return (
     <AddressAutocomplete
+      allowUnknown={false}
       contacts={signers}
       isDisabled={signers.length === 1}
-      allowUnknown={false}
       {...props}
     />
   );

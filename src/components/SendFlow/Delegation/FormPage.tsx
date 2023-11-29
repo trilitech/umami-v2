@@ -74,10 +74,10 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
           <ModalBody>
             <FormControl isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
-                label="From"
-                isDisabled={!!props.sender}
-                inputName="sender"
                 allowUnknown={false}
+                inputName="sender"
+                isDisabled={!!props.sender}
+                label="From"
               />
               {errors.sender && (
                 <FormErrorMessage data-testid="from-error">
@@ -87,7 +87,7 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             </FormControl>
 
             <FormControl marginTop="24px" data-testid="baker" isInvalid={!!errors.baker}>
-              <BakersAutocomplete label="Baker" inputName="baker" allowUnknown />
+              <BakersAutocomplete allowUnknown inputName="baker" label="Baker" />
               {errors.baker && <FormErrorMessage>{errors.baker.message}</FormErrorMessage>}
             </FormControl>
           </ModalBody>
@@ -95,8 +95,8 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             <FormSubmitButtons
               isLoading={isLoading}
               isValid={isValid}
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
               onAddToBatch={handleSubmit(onBatchSubmit)}
+              onSingleSubmit={handleSubmit(onSingleSubmit)}
             />
           </ModalFooter>
         </form>

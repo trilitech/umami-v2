@@ -8,7 +8,15 @@ const AccountTileIcon: React.FC<{ addressKind: AddressKind }> = ({ addressKind }
   switch (addressKind.type) {
     case "secret_key":
     case "mnemonic":
-      return <Identicon w="48px" h="48px" p="8px" identiconSize={32} address={addressKind.pkh} />;
+      return (
+        <Identicon
+          width="48px"
+          height="48px"
+          padding="8px"
+          address={addressKind.pkh}
+          identiconSize={32}
+        />
+      );
     case "social":
     case "contact":
     case "ledger":

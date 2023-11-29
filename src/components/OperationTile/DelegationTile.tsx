@@ -20,8 +20,13 @@ export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ o
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-delegation">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <BakerIcon stroke={colors.gray[450]} mr="8px" />
-          <TzktLink data-testid="title" hash={operation.hash} counter={operation.counter} mr="8px">
+          <BakerIcon marginRight="8px" stroke={colors.gray[450]} />
+          <TzktLink
+            marginRight="8px"
+            counter={operation.counter}
+            data-testid="title"
+            hash={operation.hash}
+          >
             <Heading size="md">{operationType}</Heading>
           </TzktLink>
           <Fee operation={operation} />

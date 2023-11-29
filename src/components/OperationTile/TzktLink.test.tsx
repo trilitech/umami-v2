@@ -22,7 +22,7 @@ describe("<TzktLink />", () => {
       });
 
       it("renders a link to migrations if migrationId is provided", () => {
-        render(<TzktLink transactionId={5} migrationId={1} />);
+        render(<TzktLink migrationId={1} transactionId={5} />);
         expect(screen.getByTestId("tzkt-link")).toHaveAttribute(
           "href",
           `${network.tzktExplorerUrl}/migrations/1`
@@ -30,7 +30,7 @@ describe("<TzktLink />", () => {
       });
 
       it("renders a link to originations if originationId is provided", () => {
-        render(<TzktLink transactionId={5} originationId={1} />);
+        render(<TzktLink originationId={1} transactionId={5} />);
         expect(screen.getByTestId("tzkt-link")).toHaveAttribute(
           "href",
           `${network.tzktExplorerUrl}/originations/1`

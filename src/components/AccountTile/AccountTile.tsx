@@ -83,13 +83,13 @@ export const AccountTile: React.FC<{
       paddingX="21px"
     >
       <AccountTileBase
-        data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
-        p={0}
-        mb={0}
         align="bottom"
+        marginBottom={0}
+        padding={0}
         border="none"
+        data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
         icon={<AccountTileIcon addressKind={addressKind} />}
-        leftElement={<LabelAndAddress pkh={address} label={addressKind.label} />}
+        leftElement={<LabelAndAddress label={addressKind.label} pkh={address} />}
         rightElement={
           <Flex flexDirection="column">
             <Text align="right" color={colors.gray[450]} fontWeight={700} size="sm">
@@ -114,7 +114,7 @@ export const AccountTile: React.FC<{
 
               if (i === MAX_NFT_COUNT - 1) {
                 return (
-                  <Link to="/nfts" key="last">
+                  <Link key="last" to="/nfts">
                     <Box
                       height="32px"
                       marginLeft="4px"
@@ -130,9 +130,9 @@ export const AccountTile: React.FC<{
               }
               return (
                 <Link
+                  key={fullId(nft)}
                   data-testid={`nft-link-${nft.contract}`}
                   to={`/home/${address}/${fullId(nft)}`}
-                  key={fullId(nft)}
                 >
                   <AspectRatio width="32px" height="32px" marginLeft={i > 0 ? "4px" : 0} ratio={1}>
                     <Image borderRadius="4px" src={url} />

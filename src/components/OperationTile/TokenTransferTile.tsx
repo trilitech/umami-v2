@@ -55,12 +55,12 @@ export const TokenTransferTile: React.FC<{
     >
       <Flex>
         <TzktLink
-          transactionId={tokenTransfer.transactionId}
-          originationId={tokenTransfer.originationId}
-          migrationId={tokenTransfer.migrationId}
-          mr="8px"
-          data-testid="title"
+          marginRight="8px"
           color={underlineColor}
+          data-testid="title"
+          migrationId={tokenTransfer.migrationId}
+          originationId={tokenTransfer.originationId}
+          transactionId={tokenTransfer.transactionId}
         >
           <Text display="inline" color={titleColor} fontWeight="600">
             {sign}
@@ -75,12 +75,12 @@ export const TokenTransferTile: React.FC<{
     </Tooltip>
   ) : (
     <TzktLink
-      transactionId={tokenTransfer.transactionId}
-      originationId={tokenTransfer.originationId}
-      migrationId={tokenTransfer.migrationId}
-      mr="8px"
-      data-testid="title"
+      marginRight="8px"
       color={underlineColor}
+      data-testid="title"
+      migrationId={tokenTransfer.migrationId}
+      originationId={tokenTransfer.originationId}
+      transactionId={tokenTransfer.transactionId}
     >
       <Text display="inline" color={titleColor} fontWeight="600">
         {sign}
@@ -93,7 +93,7 @@ export const TokenTransferTile: React.FC<{
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-token-transfer">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <TransactionDirectionIcon isOutgoing={isOutgoing} mr="8px" />
+          <TransactionDirectionIcon marginRight="8px" isOutgoing={isOutgoing} />
           {titleElement}
           {operation && <Fee operation={operation} />}
         </Center>

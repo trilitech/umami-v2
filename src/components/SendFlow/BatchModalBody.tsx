@@ -17,7 +17,7 @@ export const BatchModalBody: React.FC<{
 }> = ({ title, fee, transactionCount, signerAddress }) => {
   return (
     <>
-      <FormPageHeader title={title} subTitle=" Enter your password to confirm this transaction." />
+      <FormPageHeader subTitle=" Enter your password to confirm this transaction." title={title} />
       <ModalBody>
         <FormLabel>From</FormLabel>
         <AddressTile address={signerAddress} />

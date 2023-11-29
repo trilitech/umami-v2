@@ -29,8 +29,8 @@ const VerifySeedphrase = ({
   return (
     <ModalContentWrapper
       icon={<DoubleCheckmarkIcon />}
-      title="Verify Seed Phrase"
       subtitle="To verify, please type in the word that corresponds to each sequence number."
+      title="Verify Seed Phrase"
     >
       <Box overflowX="hidden" overflowY="auto" width="100%">
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -22,10 +22,10 @@ export const OperationSignerSelector = ({
           <AvailableSignersAutocomplete
             account={sender}
             inputName="signer"
-            label="Select Proposer"
             isLoading={isLoading}
-            onUpdate={reEstimate}
             keepValid
+            label="Select Proposer"
+            onUpdate={reEstimate}
           />
         </FormControl>
       );

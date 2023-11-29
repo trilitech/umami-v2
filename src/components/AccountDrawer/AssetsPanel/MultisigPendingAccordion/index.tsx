@@ -12,7 +12,7 @@ export const MultisigPendingAccordion: React.FC<{
   const getPendingOperations = useGetPendingMultisigOperations();
   const pendingOperations = getPendingOperations(account);
   if (pendingOperations.length === 0) {
-    return <NoItems title="No multisig pending operations" small />;
+    return <NoItems small title="No multisig pending operations" />;
   }
   return (
     <Box width="100%">

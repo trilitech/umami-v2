@@ -14,7 +14,7 @@ export default function ModalContentWrapper({ children, icon, title, subtitle }:
   return (
     <VStack maxHeight="83vh" spacing={0}>
       <Box marginBottom="20px">
-        <CircleIcon size="48px" icon={icon} />
+        <CircleIcon icon={icon} size="48px" />
       </Box>
       <Center flexDirection="column" marginBottom="32px">
         <Heading size="xl">{title}</Heading>

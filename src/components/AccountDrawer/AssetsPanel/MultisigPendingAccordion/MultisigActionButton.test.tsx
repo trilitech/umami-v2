@@ -14,10 +14,10 @@ describe("<ActionButton/>", () => {
     store.dispatch(addMockMnemonicAccounts([account]));
     render(
       <MultisigActionButton
-        signerAddress={account.address}
-        pendingApprovals={0}
         operation={pendingOps[0]}
+        pendingApprovals={0}
         sender={mockMultisigAccount(0)}
+        signerAddress={account.address}
       />
     );
     expect(screen.getByTestId("multisig-signer-button")).toHaveTextContent("Execute");
@@ -27,10 +27,10 @@ describe("<ActionButton/>", () => {
     store.dispatch(addMockMnemonicAccounts([account]));
     render(
       <MultisigActionButton
-        signerAddress={account.address}
-        pendingApprovals={1}
         operation={pendingOps[0]}
+        pendingApprovals={1}
         sender={mockMultisigAccount(0)}
+        signerAddress={account.address}
       />
     );
     expect(screen.getByTestId("multisig-signer-button")).toHaveTextContent("Approve");
@@ -41,10 +41,10 @@ describe("<ActionButton/>", () => {
     const operation = { ...pendingOps[0], approvals: [account.address] };
     render(
       <MultisigActionButton
-        signerAddress={account.address}
-        pendingApprovals={1}
         operation={operation}
+        pendingApprovals={1}
         sender={mockMultisigAccount(0)}
+        signerAddress={account.address}
       />
     );
     expect(screen.getByTestId("multisig-signer-approved")).toHaveTextContent("Approved");
@@ -54,10 +54,10 @@ describe("<ActionButton/>", () => {
     const operation = { ...pendingOps[0], approvals: [account.address] };
     render(
       <MultisigActionButton
-        signerAddress={account.address}
-        pendingApprovals={1}
         operation={operation}
+        pendingApprovals={1}
         sender={mockMultisigAccount(0)}
+        signerAddress={account.address}
       />
     );
     expect(screen.getByTestId("multisig-signer-approved")).toHaveTextContent("Approved");
@@ -66,10 +66,10 @@ describe("<ActionButton/>", () => {
   it("should show Awaiting approval for operation with signers not owned by the user account that hasn't approved", () => {
     render(
       <MultisigActionButton
-        signerAddress={account.address}
-        pendingApprovals={1}
         operation={pendingOps[0]}
+        pendingApprovals={1}
         sender={mockMultisigAccount(0)}
+        signerAddress={account.address}
       />
     );
     expect(screen.getByTestId("multisig-signer-awaiting-approval")).toHaveTextContent(

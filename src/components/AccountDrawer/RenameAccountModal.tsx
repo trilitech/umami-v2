@@ -57,7 +57,7 @@ export const RenameAccountModal: FC<{
   return (
     <ModalContent>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormPageHeader title="Edit Name" subTitle="Edit your account name here." />
+        <FormPageHeader subTitle="Edit your account name here." title="Edit Name" />
         <ModalCloseButton />
         <ModalBody>
           <FormControl isInvalid={!!errors.name} marginY="20px">

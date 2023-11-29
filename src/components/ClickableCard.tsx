@@ -37,7 +37,7 @@ export const SettingsCardWithDrawerIcon: React.FC<{
   onClick?: () => void;
 }> = ({ left, isSelected, onClick }) => {
   return (
-    <ClickableCard onClick={onClick} isSelected={isSelected}>
+    <ClickableCard isSelected={isSelected} onClick={onClick}>
       <Flex alignItems="center" height="100%">
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           <Heading size="sm">{left}</Heading>

@@ -16,7 +16,7 @@ export default function SlideItem({ item }: { item: SlideritemRecord }) {
         }}
       ></Box>
       <Flex flexDirection="column">
-        <CircleIcon size="58px" icon={<DiamondIcon width="32px" height="32px" />} />
+        <CircleIcon icon={<DiamondIcon width="32px" height="32px" />} size="58px" />
         <Heading margin="16px 50px 50px 50px">{item.text}</Heading>
       </Flex>
     </Box>

@@ -73,8 +73,8 @@ const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeac
           <ModalFooter>
             <SignButton
               isLoading={isSigning}
-              signer={operation.signer}
               onSubmit={onSign}
+              signer={operation.signer}
               text={headerText(operation.type, "single")}
             />
           </ModalFooter>
