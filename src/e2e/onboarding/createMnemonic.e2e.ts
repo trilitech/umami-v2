@@ -1,11 +1,12 @@
 import { test, expect, Page } from "@playwright/test";
-import { MASTER_PASSWORD, cleanupState, toDisplayedPkh } from "../utils";
+import { MASTER_PASSWORD, cleanupState } from "../utils";
 import { derivePublicKeyPair } from "../../utils/mnemonic";
 import { getFingerPrint } from "../../utils/tezos/helpers";
 import {
   AVAILABLE_DERIVATION_PATHS,
   defaultDerivationPathPattern,
 } from "../../utils/account/derivationPathUtils";
+import { formatPkh } from "../../utils/format";
 
 cleanupState();
 
@@ -65,7 +66,6 @@ test.describe("Create Mnemonic adds new group with one account", () => {
     const expectedFingerprint = await getFingerPrint(seedphrase);
     const expectedPkh = (await derivePublicKeyPair(seedphrase, `m/${defaultDerivationPathPattern}`))
       .pkh;
-    const displayedPkh = toDisplayedPkh(expectedPkh);
 
     // Created mnemonic group
     await expect(page.getByTestId(`account-group-Seedphrase ${expectedFingerprint}`)).toBeVisible();
@@ -76,7 +76,7 @@ test.describe("Create Mnemonic adds new group with one account", () => {
     const accountTile = page.getByTestId(`account-tile-${expectedPkh}`);
     await expect(accountTile).toBeVisible();
     await expect(accountTile.getByRole("heading", { name: "Account" })).toBeVisible();
-    await expect(accountTile.getByText(displayedPkh)).toBeVisible();
+    await expect(accountTile.getByText(formatPkh(expectedPkh))).toBeVisible();
   });
 
   test("With custom derivation path", async ({ page }) => {
@@ -84,7 +84,6 @@ test.describe("Create Mnemonic adds new group with one account", () => {
     const seedphrase = await onboardWithNewMnemonic({ page, derivationPath });
     const expectedFingerprint = await getFingerPrint(seedphrase);
     const expectedPkh = (await derivePublicKeyPair(seedphrase, `m/${derivationPath}`)).pkh;
-    const displayedPkh = toDisplayedPkh(expectedPkh);
 
     // Created mnemonic group
     await expect(page.getByTestId(`account-group-Seedphrase ${expectedFingerprint}`)).toBeVisible();
@@ -95,6 +94,6 @@ test.describe("Create Mnemonic adds new group with one account", () => {
     const accountTile = page.getByTestId(`account-tile-${expectedPkh}`);
     await expect(accountTile).toBeVisible();
     await expect(accountTile.getByRole("heading", { name: "Account" })).toBeVisible();
-    await expect(accountTile.getByText(displayedPkh)).toBeVisible();
+    await expect(accountTile.getByText(formatPkh(expectedPkh))).toBeVisible();
   });
 });

@@ -1,7 +1,6 @@
 import { format } from "@taquito/utils";
 import BigNumber from "bignumber.js";
 import { TEZ } from "./tezos";
-export * from "./formatPkh";
 
 export const truncate = (name: string, len: number) => {
   return name.length > len ? name.slice(0, len - 3) + "..." : name;
@@ -20,3 +19,6 @@ export const prettyTezAmount = (mutez: BigNumber | string): string => {
   });
   return `${formatter.format(tezAmount)} ${TEZ}`;
 };
+
+// Generates displayed account address string from public key hash
+export const formatPkh = (pkh: string) => `${pkh.slice(0, 5)}...${pkh.slice(-5)}`;

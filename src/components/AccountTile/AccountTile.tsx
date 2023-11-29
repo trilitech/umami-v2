@@ -1,8 +1,7 @@
 import { Box, Flex, FlexProps, Heading, Text, Divider, AspectRatio, Image } from "@chakra-ui/react";
 import React from "react";
 import colors from "../../style/colors";
-import { formatPkh } from "../../utils/formatPkh";
-import { prettyTezAmount } from "../../utils/format";
+import { formatPkh, prettyTezAmount } from "../../utils/format";
 import useAddressKind from "../AddressTile/useAddressKind";
 import { RawPkh, parsePkh } from "../../types/Address";
 import AccountTileIcon from "./AccountTileIcon";
