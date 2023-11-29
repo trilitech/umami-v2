@@ -4,9 +4,9 @@ import SocialIcon from "../../assets/icons/Social";
 import colors from "../../style/colors";
 import KeyIcon from "../../assets/icons/Key";
 import LedgerIcon from "../../assets/icons/Ledger";
-import BakerIcon from "../../assets/icons/Baker";
 import { Identicon } from "../Identicon";
 import { AddressKind } from "./types";
+import { AspectRatio, Image } from "@chakra-ui/react";
 
 const baseIconProps = {
   stroke: colors.gray[400],
@@ -51,8 +51,20 @@ const AddressTileIcon: React.FC<{
       return <ContactIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
     case "unknown":
       return <UnknownContactIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
-    case "baker":
-      return <BakerIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
+    case "baker": {
+      const bakerLogoUrl = `https://services.tzkt.io/v1/avatars/${addressKind.pkh}`;
+      return (
+        <AspectRatio
+          width="30px"
+          height="30px"
+          marginRight="8px"
+          data-testid="baker-icon"
+          ratio={1}
+        >
+          <Image src={bakerLogoUrl} />
+        </AspectRatio>
+      );
+    }
   }
 };
 

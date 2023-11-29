@@ -3,7 +3,6 @@ import { FormProvider } from "react-hook-form";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { OperationSignerSelector } from "../OperationSignerSelector";
-import { BakerSmallTile } from "../BakerSmallTile";
 import { Delegation } from "../../../types/Operation";
 import SignPageFee from "../SignPageFee";
 import AddressTile from "../../AddressTile/AddressTile";
@@ -13,7 +12,7 @@ const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, fee: initialFee } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
-  const bakerPkh = (operations.operations[0] as Delegation).recipient.pkh;
+  const baker = (operations.operations[0] as Delegation).recipient;
   return (
     <FormProvider {...form}>
       <ModalContent>
@@ -36,7 +35,7 @@ const SignPage: React.FC<SignPageProps> = props => {
             </Flex>
 
             <FormLabel>To</FormLabel>
-            <BakerSmallTile pkh={bakerPkh} />
+            <AddressTile address={baker} />
 
             <OperationSignerSelector
               isLoading={isLoading}

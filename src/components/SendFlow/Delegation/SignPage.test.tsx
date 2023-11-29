@@ -41,7 +41,7 @@ describe("<SignPage />", () => {
     expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
   });
 
-  it("displays the baker tile", async () => {
+  it("displays address tile for baker", async () => {
     const baker = mockImplicitAccount(1);
 
     store.dispatch(
@@ -71,7 +71,7 @@ describe("<SignPage />", () => {
     render(fixture(props));
 
     await waitFor(() => {
-      expect(screen.getByTestId("baker-tile")).toBeInTheDocument();
+      expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
     });
   });
 });
