@@ -18,7 +18,7 @@ export const Select: React.FC<{
       <Flex
         justifyContent="space-between"
         height="48px"
-        padding="15px"
+        padding="12px 15px 15px 15px"
         color={colors.gray[300]}
         background={colors.gray[800]}
         border="1px solid"

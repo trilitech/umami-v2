@@ -1,12 +1,14 @@
-import { Button, FormControl, FormLabel } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Text, Tooltip } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { SlashIcon } from "../../../assets/icons";
+import colors from "../../../style/colors";
 import {
   AVAILABLE_DERIVATION_PATHS,
   DEFAULT_DERIVATION_PATH,
   defaultDerivationPathPattern,
 } from "../../../utils/account/derivationPathUtils";
+import { ExternalLink } from "../../ExternalLink";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { Select } from "../../Select";
 import { ModalContentWrapper } from "../ModalContentWrapper";
@@ -73,6 +75,31 @@ export const DerivationPath = ({
         <Button width="100%" marginTop="12px" size="lg" type="submit">
           Continue
         </Button>
+
+        <ExternalLink
+          display="block"
+          width="100%"
+          marginTop="32px"
+          textAlign="center"
+          href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki"
+        >
+          <Tooltip
+            backgroundColor="white"
+            defaultIsOpen={false}
+            hasArrow
+            label="Derivation path is a set of directions that helps create different secret keys; it starts from a master key or seed."
+          >
+            <Text
+              color={colors.blue}
+              fontWeight={600}
+              textDecoration="underline"
+              _hover={{ textDecoration: "underline" }}
+              size="sm"
+            >
+              What's a Derivation Path?
+            </Text>
+          </Tooltip>
+        </ExternalLink>
       </form>
     </ModalContentWrapper>
   );

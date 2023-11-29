@@ -44,7 +44,7 @@ export const RestoreLedger = ({
     handleAsyncAction(
       () =>
         withTimeout(async () => {
-          toast({
+          const toastId = toast({
             title: "Request sent to Ledger",
             description: "Open the Tezos app on your Ledger and approve the operation",
             status: "info",
@@ -52,6 +52,8 @@ export const RestoreLedger = ({
           const derivationPath = makeDerivationPath(account.derivationPath, 0);
           const { pk, pkh } = await getPk(derivationPath);
           restoreLedger(derivationPath, pk, pkh, account.label);
+          toast.close(toastId);
+          toast({ title: "Account successfully created!", status: "success" });
           closeModal();
         }, LEDGER_TIMEOUT),
       error => {
