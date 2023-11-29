@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { contact1, contact2, contact3, contacts } from "../../mocks/contacts";
 import { ReduxStore } from "../../providers/ReduxStore";
-import store from "../../utils/redux/store";
-import checkAccountsAndUpsertContact from "../../utils/redux/thunks/checkAccountsAndUpsertContact";
-import AddressBookViewBase from "./AddressBookView";
+import { store } from "../../utils/redux/store";
+import { checkAccountsAndUpsertContact } from "../../utils/redux/thunks/checkAccountsAndUpsertContact";
+import { AddressBookView } from "./AddressBookView";
 
 const fixture = () => (
   <ReduxStore>
-    <AddressBookViewBase />
+    <AddressBookView />
   </ReduxStore>
 );
 

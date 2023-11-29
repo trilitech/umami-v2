@@ -22,14 +22,14 @@ import {
   getSmallestUnit,
   makeValidateDecimals,
 } from "../utils";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import { FormErrorMessage } from "../../FormErrorMessage";
-import FormPageHeader from "../FormPageHeader";
+import { FormPageHeader } from "../FormPageHeader";
 
 export type FormValues = {
   sender: RawPkh;
@@ -37,13 +37,7 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-const toOperation = (formValues: FormValues): TezTransfer => ({
-  type: "tez",
-  amount: tezToMutez(formValues.prettyAmount).toFixed(),
-  recipient: parsePkh(formValues.recipient),
-});
-
-const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> = ({
+export const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> = ({
   showPreview = true,
   ...props
 }) => {
@@ -137,4 +131,9 @@ const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> 
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation = (formValues: FormValues): TezTransfer => ({
+  type: "tez",
+  amount: tezToMutez(formValues.prettyAmount).toFixed(),
+  recipient: parsePkh(formValues.recipient),
+});

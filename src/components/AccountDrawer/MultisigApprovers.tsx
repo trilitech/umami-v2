@@ -12,9 +12,9 @@ import {
 import React from "react";
 import colors from "../../style/colors";
 import { ImplicitAddress } from "../../types/Address";
-import AddressPill from "../AddressPill/AddressPill";
+import { AddressPill } from "../AddressPill/AddressPill";
 
-const MultisigApprovers: React.FC<{
+export const MultisigApprovers: React.FC<{
   signers: ImplicitAddress[];
 }> = ({ signers }) => {
   return (
@@ -51,5 +51,3 @@ const MultisigApprovers: React.FC<{
     </Box>
   );
 };
-
-export default MultisigApprovers;

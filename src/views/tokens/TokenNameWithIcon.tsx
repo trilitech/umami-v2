@@ -1,5 +1,5 @@
 import { Flex, Text, TextProps } from "@chakra-ui/react";
-import VerifiedIcon from "../../assets/icons/Verified";
+import { VerifiedIcon } from "../../assets/icons";
 import { tokenNameSafe } from "../../types/Token";
 import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
 
@@ -33,7 +33,7 @@ const verifiedTokens = [
   "KT1VaEsVNiBoA56eToEK6n6BcPgh1tdx9eXi",
 ];
 
-const TokenNameWithIcon = ({
+export const TokenNameWithIcon = ({
   token,
   ...textProps
 }: { token: FA12TokenBalance | FA2TokenBalance } & TextProps) => {
@@ -47,5 +47,3 @@ const TokenNameWithIcon = ({
     </Flex>
   );
 };
-
-export default TokenNameWithIcon;

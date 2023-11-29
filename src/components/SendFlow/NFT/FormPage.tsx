@@ -17,7 +17,7 @@ import { parseContractPkh, parsePkh, RawPkh } from "../../../types/Address";
 import { FA2Transfer } from "../../../types/Operation";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { formDefaultValues, FormPagePropsWithSender, FormSubmitButtons } from "../utils";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import { NFTBalance } from "../../../types/TokenBalance";
 import {
   useAddToBatchFormAction,
@@ -25,7 +25,7 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import { FormErrorMessage } from "../../FormErrorMessage";
-import FormPageHeader from "../FormPageHeader";
+import { FormPageHeader } from "../FormPageHeader";
 import { SendNFTRecapTile } from "../SendNFTRecapTile";
 
 export type FormValues = {
@@ -34,18 +34,9 @@ export type FormValues = {
   recipient: RawPkh;
 };
 
-const toOperation =
-  (nft: NFTBalance) =>
-  (formValues: FormValues): FA2Transfer => ({
-    type: "fa2",
-    sender: parsePkh(formValues.sender),
-    recipient: parsePkh(formValues.recipient),
-    contract: parseContractPkh(nft.contract),
-    tokenId: nft.tokenId,
-    amount: formValues.quantity.toString(), // We assume NFT has 0 decimals
-  });
-
-const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance }> = props => {
+export const FormPage: React.FC<
+  FormPagePropsWithSender<FormValues> & { nft: NFTBalance }
+> = props => {
   const { nft } = props;
 
   const openSignPage = useOpenSignPageFormAction({
@@ -165,4 +156,14 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues> & { nft: NFTBalance
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation =
+  (nft: NFTBalance) =>
+  (formValues: FormValues): FA2Transfer => ({
+    type: "fa2",
+    sender: parsePkh(formValues.sender),
+    recipient: parsePkh(formValues.recipient),
+    contract: parseContractPkh(nft.contract),
+    tokenId: nft.tokenId,
+    amount: formValues.quantity.toString(), // We assume NFT has 0 decimals
+  });

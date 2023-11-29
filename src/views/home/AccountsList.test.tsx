@@ -5,17 +5,18 @@ import {
   mockMultisigWithOperations,
   mockImplicitAddress,
   mockMnemonicAccount,
- mockPk } from "../../mocks/factories";
+  mockPk,
+} from "../../mocks/factories";
 import { formatPkh } from "../../utils/format";
-import store from "../../utils/redux/store";
+import { store } from "../../utils/redux/store";
 import { AccountsList } from "./AccountsList";
 
 import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
-import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 
 const { addAccount, addMockMnemonicAccounts } = accountsSlice.actions;
 

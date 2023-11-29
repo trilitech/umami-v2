@@ -7,7 +7,7 @@ import { OperationTile, OperationTileContext } from "../../components/OperationT
 import colors from "../../style/colors";
 import { useEffect } from "react";
 
-const OperationsView = () => {
+export const OperationsView = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
   const { operations, loadMore, hasMore, setAddresses, isLoading } = useGetOperations(
     selectedAccounts.map(acc => acc.address.pkh)
@@ -81,5 +81,3 @@ const OperationsView = () => {
     </Flex>
   );
 };
-
-export default OperationsView;

@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { prettyTezAmount } from "../../utils/format";
-import TezIcon from "../../assets/icons/Tez";
+import { TezIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { PrettyNumber } from "../PrettyNumber";
 

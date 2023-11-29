@@ -3,7 +3,7 @@ import React from "react";
 import { RawPkh } from "../../types/Address";
 import { fullId } from "../../types/Token";
 import type { NFTBalance } from "../../types/TokenBalance";
-import NFTCard from "./NFTCard";
+import { NFTCard } from "./NFTCard";
 import { orderBy } from "lodash";
 
 export type NFTWithOwner = NFTBalance & { owner: RawPkh };
@@ -31,5 +31,3 @@ export const NFTGallery: React.FC<{
     </SimpleGrid>
   );
 };
-
-export default NFTGallery;

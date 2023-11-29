@@ -1,8 +1,8 @@
 import { Button, Flex, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import ModalContentWrapper from "../ModalContentWrapper";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 import { ShowSeedphraseStep, Step, StepType } from "../useOnboardingModal";
 import colors from "../../../style/colors";
-import KeyIcon from "../../../assets/icons/Key";
+import { KeyIcon } from "../../../assets/icons";
 
 export const ShowSeedphrase = ({
   goToStep,
@@ -60,4 +60,3 @@ export const ShowSeedphrase = ({
     </ModalContentWrapper>
   );
 };
-export default ShowSeedphrase;

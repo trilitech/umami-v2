@@ -4,10 +4,10 @@ import {
   mockMultisigAccount,
 } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
-import MultisigSignerTile from "./MultisigSignerTile";
+import { MultisigSignerTile } from "./MultisigSignerTile";
 
-import store from "../../../../utils/redux/store";
-import accountsSlice from "../../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../../utils/redux/store";
+import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
 import { pendingOps } from "../../../../mocks/multisig";
 
 const { addMockMnemonicAccounts } = accountsSlice.actions;

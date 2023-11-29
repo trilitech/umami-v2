@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 import { request as graphqlRequest, RequestDocument, Variables } from "graphql-request";
+// eslint-disable-next-line import/no-unresolved
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 export function request<TDocument = any>(
   document: RequestDocument | TypedDocumentNode<TDocument, Variables>,

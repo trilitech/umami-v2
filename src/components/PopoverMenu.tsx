@@ -12,7 +12,7 @@ import { ReactNode } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import colors from "../style/colors";
 
-const PopoverMenu: React.FC<{
+export const PopoverMenu: React.FC<{
   children: ReactNode;
 }> = props => {
   const { onOpen, onClose, isOpen } = useDisclosure();
@@ -41,5 +41,3 @@ const PopoverMenu: React.FC<{
     </Popover>
   );
 };
-
-export default PopoverMenu;

@@ -1,17 +1,17 @@
 import { Box, Flex, Heading, Button } from "@chakra-ui/react";
 import { useContext } from "react";
-import ChangePasswordForm from "../../components/ChangePassword/ChangePasswordForm";
-import ClickableCard, { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
+import { ChangePasswordForm } from "../../components/ChangePassword/ChangePasswordForm";
+import { ClickableCard, SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import useOffboardingModal from "../../components/Offboarding/useOffboardingModal";
+import { useOffboardingModal } from "../../components/Offboarding/useOffboardingModal";
 import { TopBar } from "../../components/TopBar";
 import { BeaconDrawerCard } from "./BeaconDrawerCard";
-import ErrorLogsDrawerCard from "./ErrorLogsDrawerCard";
+import { ErrorLogsDrawerCard } from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
 import packageInfo from "../../../package.json";
-import DownloadIcon from "../../assets/icons/Download";
+import { DownloadIcon } from "../../assets/icons";
 
-export default function SettingsView() {
+export const SettingsView = () => {
   return (
     <Flex flexDirection="column" height="100%">
       <TopBar title="Settings" />
@@ -25,7 +25,7 @@ export default function SettingsView() {
       </Box>
     </Flex>
   );
-}
+};
 
 const GeneralSection = () => {
   return (

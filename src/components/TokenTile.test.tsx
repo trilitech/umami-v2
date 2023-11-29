@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import TokenTile from "./TokenTile";
+import { TokenTile } from "./TokenTile";
 import { mockFA2Token, mockImplicitAccount } from "../mocks/factories";
 import { FATokenBalance } from "./SendFlow/Token/FormPage";
 

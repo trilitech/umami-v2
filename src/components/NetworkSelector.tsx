@@ -34,5 +34,3 @@ export const NetworkSelector = () => {
     </Box>
   );
 };
-
-export default NetworkSelector;

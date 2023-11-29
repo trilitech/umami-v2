@@ -2,10 +2,10 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
-import RestoreMnemonic from "./RestoreMnemonic";
+import { RestoreMnemonic } from "./RestoreMnemonic";
 import { mockToast } from "../../../mocks/toast";
 import { Provider } from "react-redux";
-import store from "../../../utils/redux/store";
+import { store } from "../../../utils/redux/store";
 
 const mockNavigator = jest.mocked(
   Object.assign(navigator, {

@@ -1,11 +1,11 @@
 import { Modal } from "@chakra-ui/react";
 import { render } from "../../mocks/testUtils";
-import ChangePasswordFrom from "./ChangePasswordForm";
+import { ChangePasswordForm } from "./ChangePasswordForm";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 const fixture = () => {
   return (
     <Modal isOpen={true} onClose={() => {}}>
-      <ChangePasswordFrom />
+      <ChangePasswordForm />
     </Modal>
   );
 };

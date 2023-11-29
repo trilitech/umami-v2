@@ -1,7 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
-import FormPage, { FormValues } from "./FormPage";
+import { FormPage, FormValues } from "./FormPage";
 import { FormPagePropsWithSender } from "../utils";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { DynamicModalContext } from "../../DynamicModal";
@@ -10,9 +10,9 @@ import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import BigNumber from "bignumber.js";
 import { mockToast } from "../../../mocks/toast";
-import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import store from "../../../utils/redux/store";
-import SignPage from "./SignPage";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../utils/redux/store";
+import { SignPage } from "./SignPage";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (

@@ -9,7 +9,13 @@ import {
   SecretKeyAccount,
 } from "../types/Account";
 import { ContractAddress, ImplicitAddress } from "../types/Address";
-import { FA12TokenBalance, FA2TokenBalance, NFTBalance, fromRaw , RawTokenBalance } from "../types/TokenBalance";
+import {
+  FA12TokenBalance,
+  FA2TokenBalance,
+  NFTBalance,
+  fromRaw,
+  RawTokenBalance,
+} from "../types/TokenBalance";
 import { Contact } from "../types/Contact";
 import { TezTransfer as TzktTezTransfer, TokenTransfer } from "../types/Transfer";
 import { MultisigOperation, Multisig } from "../utils/multisig/types";

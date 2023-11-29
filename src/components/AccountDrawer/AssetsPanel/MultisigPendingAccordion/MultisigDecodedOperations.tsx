@@ -9,10 +9,10 @@ import {
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import { UnrecognizedMichelsonError } from "../../../../multisig/decode/UnrecognizedMichelsonError";
 import { MultisigAccount } from "../../../../types/Account";
-import MultisigDecodedOperationItem from "./MultisigDecodedOperationItem";
-import JsValueWrap from "../../JsValueWrap";
+import { MultisigDecodedOperationItem } from "./MultisigDecodedOperationItem";
+import { JsValueWrap } from "../../JsValueWrap";
 
-const MultisigDecodedOperations: React.FC<{
+export const MultisigDecodedOperations: React.FC<{
   rawActions: string;
   sender: MultisigAccount;
 }> = ({ rawActions, sender }) => {
@@ -56,5 +56,3 @@ const UnrecognizedOperationAccordion: React.FC<{ unrecoginizedRawActions: string
     </Accordion>
   );
 };
-
-export default MultisigDecodedOperations;

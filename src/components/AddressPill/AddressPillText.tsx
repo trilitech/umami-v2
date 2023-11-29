@@ -3,7 +3,7 @@ import { formatPkh, truncate } from "../../utils/format";
 import { Text, TextProps } from "@chakra-ui/react";
 import { AddressKind } from "./types";
 
-const AddressPillText: React.FC<
+export const AddressPillText: React.FC<
   {
     addressKind: AddressKind;
     showPkh: boolean;
@@ -20,5 +20,3 @@ const AddressPillText: React.FC<
 
   return <Text {...rest}>{nameOrLabel ? truncate(nameOrLabel, 21) : formattedPkh}</Text>;
 };
-
-export default AddressPillText;

@@ -2,9 +2,9 @@ import { Flex } from "@chakra-ui/react";
 import { AddressKind } from "../AddressTile/types";
 import { Identicon } from "../Identicon";
 import colors from "../../style/colors";
-import AddressTileIcon from "../AddressTile/AddressTileIcon";
+import { AddressTileIcon } from "../AddressTile/AddressTileIcon";
 
-const AccountTileIcon: React.FC<{ addressKind: AddressKind }> = ({ addressKind }) => {
+export const AccountTileIcon: React.FC<{ addressKind: AddressKind }> = ({ addressKind }) => {
   switch (addressKind.type) {
     case "secret_key":
     case "mnemonic":
@@ -38,5 +38,3 @@ const AccountTileIcon: React.FC<{ addressKind: AddressKind }> = ({ addressKind }
     }
   }
 };
-
-export default AccountTileIcon;

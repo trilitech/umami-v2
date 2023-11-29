@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const WalletPlusIcon: React.FC<IconProps> = props => {
+export const WalletPlusIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="24px"
@@ -21,5 +21,3 @@ const WalletPlusIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default WalletPlusIcon;

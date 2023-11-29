@@ -1,7 +1,7 @@
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
-import store from "../../utils/redux/store";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
+import { store } from "../../utils/redux/store";
 import { TransactionOperation } from "../../utils/tezos";
 import { Fee } from "./Fee";
 import { OperationTileContext } from "./OperationTileContext";

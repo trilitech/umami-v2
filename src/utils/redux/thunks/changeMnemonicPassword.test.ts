@@ -12,7 +12,7 @@ import { extraArgument } from "../extraArgument";
 import { decrypt, encrypt } from "../../crypto/AES";
 import { EncryptedData } from "../../crypto/types";
 import { State } from "../slices/accountsSlice";
-import changeMnemonicPassword from "./changeMnemonicPassword";
+import { changeMnemonicPassword } from "./changeMnemonicPassword";
 import { MnemonicAccount } from "../../../types/Account";
 
 jest.unmock("../../../utils/tezos");

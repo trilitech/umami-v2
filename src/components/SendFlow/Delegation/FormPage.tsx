@@ -11,7 +11,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { parsePkh, RawPkh, parseImplicitPkh } from "../../../types/Address";
 import { BakersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { formDefaultValues, FormPageProps, FormSubmitButtons } from "../utils";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
@@ -26,13 +26,7 @@ export type FormValues = {
   baker: RawPkh;
 };
 
-const toOperation = (formValues: FormValues): Delegation => ({
-  type: "delegation",
-  sender: parsePkh(formValues.sender),
-  recipient: parseImplicitPkh(formValues.baker),
-});
-
-const FormPage: React.FC<FormPageProps<FormValues>> = props => {
+export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const baker = props.form?.baker;
 
   const openSignPage = useOpenSignPageFormAction({
@@ -104,4 +98,9 @@ const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation = (formValues: FormValues): Delegation => ({
+  type: "delegation",
+  sender: parsePkh(formValues.sender),
+  recipient: parseImplicitPkh(formValues.baker),
+});

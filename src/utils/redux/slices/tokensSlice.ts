@@ -8,7 +8,7 @@ type State = Record<NetworkName, Record<RawPkh, Record<TokenId, Token>> | undefi
 
 const initialState: State = fromPairs(DefaultNetworks.map(network => [network, {}]));
 
-const tokensSlice = createSlice({
+export const tokensSlice = createSlice({
   name: "tokens",
   initialState,
   reducers: {
@@ -25,4 +25,3 @@ const tokensSlice = createSlice({
 });
 
 export const tokensActions = tokensSlice.actions;
-export default tokensSlice;

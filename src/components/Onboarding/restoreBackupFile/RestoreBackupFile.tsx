@@ -7,11 +7,11 @@ import {
   Flex,
   ModalBody,
 } from "@chakra-ui/react";
-import ModalContentWrapper from "../ModalContentWrapper";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 import { FormProvider, useForm } from "react-hook-form";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import RotateIcon from "../../../assets/icons/Rotate";
-import PasswordInput from "../../PasswordInput";
+import { RotateIcon } from "../../../assets/icons";
+import { PasswordInput } from "../../PasswordInput";
 import { restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
 
 type FormFields = {
@@ -19,7 +19,7 @@ type FormFields = {
   file: FileList;
 };
 
-const RestoreBackupFile = () => {
+export const RestoreBackupFile = () => {
   const form = useForm<FormFields>({
     mode: "onBlur",
   });
@@ -94,5 +94,3 @@ const RestoreBackupFile = () => {
     </ModalContentWrapper>
   );
 };
-
-export default RestoreBackupFile;

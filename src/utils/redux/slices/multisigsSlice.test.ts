@@ -1,5 +1,5 @@
 import { multisigOperation, multisigs } from "../../../mocks/multisig";
-import store from "../store";
+import { store } from "../store";
 import { multisigActions } from "./multisigsSlice";
 import { mockContractAddress, mockMultisigAccount } from "../../../mocks/factories";
 import { Multisig } from "../../multisig/types";

@@ -4,19 +4,19 @@ import { ImplicitAddress } from "../../../../types/Address";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/getAccountDataHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import MultisigActionButton, { MultisigSignerState } from "./MultisigActionButton";
+import { MultisigActionButton, MultisigSignerState } from "./MultisigActionButton";
 import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import { estimate } from "../../../../utils/tezos";
 import { DynamicModalContext } from "../../../DynamicModal";
-import SignPage from "../../../SendFlow/Multisig/SignPage";
+import { SignPage } from "../../../SendFlow/Multisig/SignPage";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
-import useAddressKind from "../../../AddressTile/useAddressKind";
+import { useAddressKind } from "../../../AddressTile/useAddressKind";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
-import AccountTileIcon from "../../../AccountTile/AccountTileIcon";
+import { AccountTileIcon } from "../../../AccountTile/AccountTileIcon";
 
-const MultisigSignerTile: React.FC<{
+export const MultisigSignerTile: React.FC<{
   signerAddress: ImplicitAddress;
   pendingApprovals: number;
   operation: MultisigOperation;
@@ -103,4 +103,3 @@ const getMultisigSignerState = ({
 
   return operationIsExecutable ? "executable" : "approvable";
 };
-export default MultisigSignerTile;

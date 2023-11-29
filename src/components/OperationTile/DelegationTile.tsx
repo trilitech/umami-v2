@@ -1,12 +1,12 @@
 import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
-import BakerIcon from "../../assets/icons/Baker";
+import { BakerIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { useShowAddress } from "./useShowAddress";
 import { DelegationOperation } from "../../utils/tezos";
 import { TzktLink } from "./TzktLink";
 import { Fee } from "./Fee";
 import { Timestamp } from "./Timestamp";
-import AddressPill from "../AddressPill/AddressPill";
+import { AddressPill } from "../AddressPill/AddressPill";
 import { TzktAlias } from "../../types/Address";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { OperationStatus } from "./OperationStatus";

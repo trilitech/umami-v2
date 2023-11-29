@@ -15,7 +15,7 @@ import { FormErrorMessage } from "../FormErrorMessage";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { RawPkh } from "../../types/Address";
 
-const BuyTezForm: React.FC<{
+export const BuyTezForm: React.FC<{
   recipient?: RawPkh;
 }> = ({ recipient: defaultRecipient = "" }) => {
   const network = useSelectedNetwork();
@@ -77,5 +77,3 @@ const BuyTezForm: React.FC<{
     </FormProvider>
   );
 };
-
-export default BuyTezForm;

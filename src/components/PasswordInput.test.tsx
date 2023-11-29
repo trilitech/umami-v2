@@ -1,4 +1,4 @@
-import PasswordInput from "./PasswordInput";
+import { PasswordInput } from "./PasswordInput";
 import { fireEvent, render, renderHook, screen, waitFor } from "@testing-library/react";
 import { FormProvider, useForm } from "react-hook-form";
 type FormFields = { destination: string };

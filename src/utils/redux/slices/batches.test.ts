@@ -8,7 +8,7 @@ import {
 import { waitFor } from "../../../mocks/testUtils";
 import { DefaultNetworks, Network } from "../../../types/Network";
 import { Operation } from "../../../types/Operation";
-import store from "../store";
+import { store } from "../store";
 import { batchesActions } from "./batches";
 
 const { add, clear, removeItem } = batchesActions;

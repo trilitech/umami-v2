@@ -1,8 +1,8 @@
-import assetsSlice from "./assetsSlice";
-import store from "../store";
+import { assetsSlice } from "./assetsSlice";
+import { store } from "../store";
 
 import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";
-import accountsSlice from "./accountsSlice";
+import { accountsSlice } from "./accountsSlice";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
 
 const {

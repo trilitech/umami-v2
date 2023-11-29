@@ -1,9 +1,8 @@
-import { Button, Divider, Flex , Text, Box } from "@chakra-ui/react";
-import PopoverMenu from "./PopoverMenu";
-import TrashIcon from "../assets/icons/Trash";
-import PenIcon from "../assets/icons/Pen";
+import { Button, Divider, Flex, Text, Box } from "@chakra-ui/react";
+import { PenIcon, TrashIcon } from "../assets/icons";
+import { PopoverMenu } from "./PopoverMenu";
 
-const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }> = ({
+export const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }> = ({
   onRename,
   onRemove,
 }) => {
@@ -33,5 +32,3 @@ const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }
     </Flex>
   );
 };
-
-export default RenameRemoveMenu;

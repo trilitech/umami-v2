@@ -7,7 +7,7 @@ import {
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 import { estimate } from "../../tezos";
-import store from "../store";
+import { store } from "../store";
 import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
 import { DefaultNetworks } from "../../../types/Network";
 

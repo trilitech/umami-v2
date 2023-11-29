@@ -1,6 +1,6 @@
 import { render, screen } from "../../mocks/testUtils";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import store from "../../utils/redux/store";
+import { store } from "../../utils/redux/store";
 import { TzktCombinedOperation } from "../../utils/tezos";
 import { OperationTile } from "./OperationTile";
 import { OperationTileContext } from "./OperationTileContext";

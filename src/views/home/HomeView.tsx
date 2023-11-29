@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { TopBar } from "../../components/TopBar";
-import AccountListWithDrawer from "./AccountListWithDrawer";
+import { AccountListWithDrawer } from "./AccountListWithDrawer";
 import { AccountListHeader } from "./AccountsList";
 
-export default function HomeView() {
+export const HomeView = () => {
   return (
     <Flex flexDirection="column" height="100%">
       <TopBar title="Accounts" />
@@ -17,4 +17,4 @@ export default function HomeView() {
       </Flex>
     </Flex>
   );
-}
+};

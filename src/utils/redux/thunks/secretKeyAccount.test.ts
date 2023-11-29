@@ -1,5 +1,5 @@
-import accountsSlice from "../slices/accountsSlice";
-import store from "../store";
+import { accountsSlice } from "../slices/accountsSlice";
+import { store } from "../store";
 import { mockSecretKeyAccount } from "../../../mocks/factories";
 import { remove, restore } from "./secretKeyAccount";
 import { EncryptedData } from "../../crypto/types";

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import RenameRemoveMenu from "./RenameRemoveMenu";
+import { RenameRemoveMenu } from "./RenameRemoveMenu";
 
 describe("<RenameRemoveMenu />", () => {
   it("rename and remove button works", () => {

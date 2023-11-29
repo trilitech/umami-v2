@@ -3,7 +3,7 @@ import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 import { ExternalLink } from "../ExternalLink";
 
-const NoItems: React.FC<
+export const NoItems: React.FC<
   PropsWithChildren<{
     title: string;
     small?: boolean;
@@ -21,8 +21,6 @@ const NoItems: React.FC<
     </Flex>
   );
 };
-
-export default NoItems;
 
 export const NoNFTs: React.FC<{ small?: boolean }> = ({ small }) => (
   <NoItems small={small} title="No NFTs found">

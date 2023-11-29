@@ -8,7 +8,7 @@ import {
   SocialAccount,
 } from "../../../types/Account";
 import { EncryptedData } from "../../crypto/types";
-import changeMnemonicPassword from "../thunks/changeMnemonicPassword";
+import { changeMnemonicPassword } from "../thunks/changeMnemonicPassword";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
 import { remove } from "lodash";
 import { RawPkh } from "../../../types/Address";
@@ -26,7 +26,7 @@ const initialState: State = {
   secretKeys: {},
 };
 
-const accountsSlice = createSlice({
+export const accountsSlice = createSlice({
   name: "accounts",
   initialState,
   extraReducers: builder => {
@@ -137,5 +137,3 @@ const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: Implicit
 
   return [...existingAccounts, ...newAccounts];
 };
-
-export default accountsSlice;

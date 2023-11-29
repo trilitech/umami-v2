@@ -4,8 +4,8 @@ import { differenceBy } from "lodash";
 import { useState } from "react";
 import { Account } from "../types/Account";
 import { useAllAccounts } from "../utils/hooks/getAccountDataHooks";
-import AccountListDisplay from "./AccountSelector/AccountListDisplay";
-import AddressPill from "./AddressPill/AddressPill";
+import { AccountListDisplay } from "./AccountSelector/AccountListDisplay";
+import { AddressPill } from "./AddressPill/AddressPill";
 
 export const useAccountsFilter = () => {
   const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);

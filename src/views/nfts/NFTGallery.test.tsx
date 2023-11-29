@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 
-import NFTGallery from "./NFTGallery";
+import { NFTGallery } from "./NFTGallery";
 import { mockNFTBalance } from "../../mocks/tokens";
 import { HashRouter } from "react-router-dom";
 import { RawPkh } from "../../types/Address";

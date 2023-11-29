@@ -18,13 +18,13 @@ import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
 import { fullId, tokenPrettyAmount } from "../../types/Token";
 import { formatPkh } from "../../utils/format";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import SendTokenFormPage from "../../components/SendFlow/Token/FormPage";
-import TokenIcon from "../../assets/icons/Token";
+import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
+import { TokenIcon } from "../../assets/icons";
 import { AccountBalance } from "../../components/AccountBalance";
-import AddressPill from "../../components/AddressPill/AddressPill";
+import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { parseContractPkh } from "../../types/Address";
-import SendButton from "../../components/SendButton";
-import TokenNameWithIcon from "./TokenNameWithIcon";
+import { SendButton } from "../../components/SendButton";
+import { TokenNameWithIcon } from "./TokenNameWithIcon";
 
 const Header: React.FC<{
   account: Account;
@@ -61,7 +61,7 @@ const Header: React.FC<{
   );
 };
 
-const AccountTokens: React.FC<{
+export const AccountTokens: React.FC<{
   account: Account;
   tokens: (FA12TokenBalance | FA2TokenBalance)[];
 }> = ({ account, tokens }) => {
@@ -114,5 +114,3 @@ const AccountTokens: React.FC<{
     </Card>
   );
 };
-
-export default AccountTokens;

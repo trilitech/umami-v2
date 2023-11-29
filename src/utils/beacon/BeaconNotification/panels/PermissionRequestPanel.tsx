@@ -21,7 +21,7 @@ import { OwnedImplicitAccountsAutocomplete } from "../../../../components/Addres
 import { useImplicitAccounts } from "../../../hooks/getAccountDataHooks";
 import { walletClient } from "../../beacon";
 
-const PermissionRequestPanel: React.FC<{
+export const PermissionRequestPanel: React.FC<{
   request: PermissionRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
@@ -81,5 +81,3 @@ const PermissionRequestPanel: React.FC<{
     </ModalContent>
   );
 };
-
-export default PermissionRequestPanel;

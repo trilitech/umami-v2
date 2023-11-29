@@ -10,7 +10,7 @@ export type State = {
 
 const initialState: State = { items: [], pendingOperations: {} };
 
-const multisigsSlice = createSlice({
+export const multisigsSlice = createSlice({
   name: "multisigs",
   initialState,
   reducers: {
@@ -48,5 +48,3 @@ const multisigsSlice = createSlice({
 });
 
 export const multisigActions = multisigsSlice.actions;
-
-export default multisigsSlice;

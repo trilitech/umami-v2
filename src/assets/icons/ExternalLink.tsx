@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const ExternalLinkIcon: React.FC<IconProps> = props => {
+export const ExternalLinkIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -21,5 +21,3 @@ const ExternalLinkIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default ExternalLinkIcon;

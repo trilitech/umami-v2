@@ -16,8 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { useContactExists } from "../../utils/hooks/contactsHooks";
-import FormPageHeader from "../SendFlow/FormPageHeader";
-import renameAccount from "../../utils/redux/thunks/renameAccount";
+import { FormPageHeader } from "../SendFlow/FormPageHeader";
+import { renameAccount } from "../../utils/redux/thunks/renameAccount";
 
 export const RenameAccountModal: FC<{
   account: Account;

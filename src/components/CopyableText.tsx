@@ -4,7 +4,7 @@ import { BsCheckCircle } from "react-icons/bs";
 import { RxCross1 } from "react-icons/rx";
 import colors from "../style/colors";
 import { formatPkh } from "../utils/format";
-import FileCopyIcon from "../assets/icons/FileCopy";
+import { FileCopyIcon } from "../assets/icons";
 
 const TOAST_ID = "TOAST_ID";
 
@@ -27,7 +27,7 @@ export const CopyableAddress: React.FC<
   );
 };
 
-const CopyableText: React.FC<
+export const CopyableText: React.FC<
   {
     displayText: string;
     copyValue?: string;
@@ -107,5 +107,3 @@ const ToastBody: React.FC<{
     </Flex>
   );
 };
-
-export default CopyableText;

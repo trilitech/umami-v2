@@ -1,23 +1,19 @@
 import { Flex, Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const CheckIcon: React.FC<IconProps> = props => {
+export const VerifiedIcon: React.FC = () => {
   return (
-    <Icon
-      width="7px"
-      height="5px"
-      fill="none"
-      stroke="white"
-      viewBox="0 0 7 5"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
+    <Flex
+      position="relative"
+      alignItems="center"
+      justifyContent="center"
+      data-testid="verified-icon"
     >
-      <path
-        d="M1.66699 2.19314L3.0281 3.55425L5.75033 0.832031"
-        strokeLinecap="square"
-        strokeLinejoin="round"
-      />
-    </Icon>
+      <StarIcon />
+      <Flex position="absolute" alignItems="center" justifyContent="center">
+        <CheckIcon />
+      </Flex>
+    </Flex>
   );
 };
 
@@ -40,20 +36,22 @@ const StarIcon: React.FC<IconProps> = props => {
   );
 };
 
-const VerifiedIcon: React.FC = () => {
+const CheckIcon: React.FC<IconProps> = props => {
   return (
-    <Flex
-      position="relative"
-      alignItems="center"
-      justifyContent="center"
-      data-testid="verified-icon"
+    <Icon
+      width="7px"
+      height="5px"
+      fill="none"
+      stroke="white"
+      viewBox="0 0 7 5"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
-      <StarIcon />
-      <Flex position="absolute" alignItems="center" justifyContent="center">
-        <CheckIcon />
-      </Flex>
-    </Flex>
+      <path
+        d="M1.66699 2.19314L3.0281 3.55425L5.75033 0.832031"
+        strokeLinecap="square"
+        strokeLinejoin="round"
+      />
+    </Icon>
   );
 };
-
-export default VerifiedIcon;

@@ -7,11 +7,11 @@ import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
-import NFTGallery from "./NFTGallery";
+import { NFTGallery } from "./NFTGallery";
 import { useDynamicModal } from "../../components/DynamicModal";
-import NFTDrawerBody from "./NFTDrawerBody";
+import { NFTDrawerBody } from "./NFTDrawerBody";
 
-const NFTsViewBase = () => {
+export const NFTsView = () => {
   const nfts = useAllNfts();
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
   const navigate = useNavigate();
@@ -81,5 +81,3 @@ const NFTsViewBase = () => {
     </Flex>
   );
 };
-
-export default NFTsViewBase;

@@ -1,6 +1,6 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import ExitArrowIcon from "../../assets/icons/ExitArrow";
+import { ExitArrowIcon } from "../../assets/icons";
 
 export const DrawerTopButtons: React.FC<{
   onClose: () => void;

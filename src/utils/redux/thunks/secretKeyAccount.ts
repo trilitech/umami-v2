@@ -1,4 +1,4 @@
-import accountsSlice from "../slices/accountsSlice";
+import { accountsSlice } from "../slices/accountsSlice";
 import { InMemorySigner } from "@taquito/signer";
 import { parseImplicitPkh } from "../../../types/Address";
 import { encrypt } from "../../crypto/AES";

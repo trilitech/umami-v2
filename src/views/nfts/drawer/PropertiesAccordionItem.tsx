@@ -11,7 +11,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { CSSProperties } from "react";
-import AddressPill from "../../../components/AddressPill/AddressPill";
+import { AddressPill } from "../../../components/AddressPill/AddressPill";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
 import { parsePkh } from "../../../types/Address";
@@ -31,7 +31,13 @@ const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   return <TruncatedTextWithTooltip maxLength={15} text={firstCreator} />;
 };
 
-const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSProperties }) => {
+export const PropertiesAccordionItem = ({
+  nft,
+  style,
+}: {
+  nft: NFTBalance;
+  style: CSSProperties;
+}) => {
   const royaltyShares = royalties(nft);
   const totalRoyalties = royaltyShares.reduce((acc, royalty) => acc + royalty.share, 0).toFixed(2);
 
@@ -157,4 +163,3 @@ const PropertiesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
     </AccordionItem>
   );
 };
-export default PropertiesAccordionItem;

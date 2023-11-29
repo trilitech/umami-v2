@@ -8,8 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
-import EyeSlashIcon from "../assets/icons/EyeSlash";
-import EyeIcon from "../assets/icons/Eye";
+import { EyeIcon, EyeSlashIcon } from "../assets/icons";
+
 const MIN_LENGTH = 8;
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
@@ -22,7 +22,7 @@ export type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   validate?: RegisterOptions<T, U>["validate"];
 } & InputProps;
 
-const PasswordInput = <T extends FieldValues, U extends Path<T>>({
+export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   inputName,
   label = "Password",
   placeholder = "Enter your password",
@@ -64,5 +64,3 @@ const PasswordInput = <T extends FieldValues, U extends Path<T>>({
     </>
   );
 };
-
-export default PasswordInput;

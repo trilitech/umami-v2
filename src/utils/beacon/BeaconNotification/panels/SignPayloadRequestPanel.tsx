@@ -15,9 +15,9 @@ import { TezosToolkit } from "@taquito/taquito";
 import React from "react";
 import { useGetImplicitAccountSafe } from "../../../hooks/getAccountDataHooks";
 import { walletClient } from "../../beacon";
-import SignButton from "../../../../components/SendFlow/SignButton";
+import { SignButton } from "../../../../components/SendFlow/SignButton";
 
-const SignPayloadRequestPanel: React.FC<{
+export const SignPayloadRequestPanel: React.FC<{
   request: SignPayloadRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
@@ -57,5 +57,3 @@ const SignPayloadRequestPanel: React.FC<{
     </ModalContent>
   );
 };
-
-export default SignPayloadRequestPanel;

@@ -1,11 +1,11 @@
 import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import { TransactionOperation } from "../../utils/tezos";
 import { useShowAddress } from "./useShowAddress";
-import ContractIcon from "../../assets/icons/Contract";
+import { ContractIcon } from "../../assets/icons";
 import { TzktLink } from "./TzktLink";
 import { Fee } from "./Fee";
 import { Timestamp } from "./Timestamp";
-import AddressPill from "../AddressPill/AddressPill";
+import { AddressPill } from "../AddressPill/AddressPill";
 import colors from "../../style/colors";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { OperationStatus } from "./OperationStatus";

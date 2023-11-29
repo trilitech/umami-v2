@@ -1,6 +1,6 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-const WarningIcon: React.FC<IconProps> = props => {
+export const WarningIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="36"
@@ -20,5 +20,3 @@ const WarningIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default WarningIcon;

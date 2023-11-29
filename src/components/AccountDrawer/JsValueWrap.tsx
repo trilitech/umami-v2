@@ -2,7 +2,7 @@ import { Card, CardBody } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
 // Wrapper for any JavaScript value
-const JsValueWrap: React.FC<{ value: any; space?: number }> = ({ value, space = 2 }) => {
+export const JsValueWrap: React.FC<{ value: any; space?: number }> = ({ value, space = 2 }) => {
   return (
     <Card background={colors.gray[700]} borderRadius="5px">
       <CardBody>
@@ -19,5 +19,3 @@ const JsValueWrap: React.FC<{ value: any; space?: number }> = ({ value, space = 
     </Card>
   );
 };
-
-export default JsValueWrap;

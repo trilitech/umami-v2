@@ -1,6 +1,6 @@
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
-import VerifySeedphrase from "./VerifySeedphrase";
+import { VerifySeedphrase } from "./VerifySeedphrase";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 

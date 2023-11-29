@@ -1,9 +1,9 @@
 import { Card, CardBody, CardProps, Flex, Heading } from "@chakra-ui/react";
 import colors from "../style/colors";
-import ChevronRightIcon from "../assets/icons/ChevronRight";
 import { PropsWithChildren } from "react";
+import { ChevronRightIcon } from "../assets/icons";
 
-const ClickableCard: React.FC<
+export const ClickableCard: React.FC<
   PropsWithChildren<
     {
       onClick?: () => void;
@@ -47,5 +47,3 @@ export const SettingsCardWithDrawerIcon: React.FC<{
     </ClickableCard>
   );
 };
-
-export default ClickableCard;

@@ -8,7 +8,7 @@ import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { TzktLink } from "./TzktLink";
 import { Fee } from "./Fee";
 import { Timestamp } from "./Timestamp";
-import AddressPill from "../AddressPill/AddressPill";
+import { AddressPill } from "../AddressPill/AddressPill";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { OperationStatus } from "./OperationStatus";
 import { parsePkh } from "../../types/Address";

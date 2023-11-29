@@ -2,10 +2,10 @@ import { mockMnemonicAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { Address } from "../../types/Address";
 import { formatPkh } from "../../utils/format";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import store from "../../utils/redux/store";
-import AddressTile from "./AddressTile";
+import { store } from "../../utils/redux/store";
+import { AddressTile } from "./AddressTile";
 import userEvent from "@testing-library/user-event";
 
 const fixture = (address: Address) => <AddressTile address={address} />;

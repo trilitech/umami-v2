@@ -15,8 +15,8 @@ import {
   getTezosPriceInUSD,
   getTokenBalances,
 } from "./tezos";
-import errorsSlice from "./redux/slices/errorsSlice";
-import getErrorContext from "./getErrorContext";
+import { errorsSlice } from "./redux/slices/errorsSlice";
+import { getErrorContext } from "./getErrorContext";
 import { useSelectedNetwork } from "./hooks/networkHooks";
 import { AppDispatch } from "./redux/store";
 import { RawPkh } from "../types/Address";

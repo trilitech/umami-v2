@@ -7,11 +7,11 @@ import {
 } from "../../mocks/factories";
 import { HashRouter } from "react-router-dom";
 import { ReduxStore } from "../../providers/ReduxStore";
-import store from "../../utils/redux/store";
-import tokensSlice from "../../utils/redux/slices/tokensSlice";
-import NFTsViewBase from "./NftsView";
-import assetsSlice from "../../utils/redux/slices/assetsSlice";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
+import { store } from "../../utils/redux/store";
+import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
+import { NFTsView } from "./NftsView";
+import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { MAINNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 
@@ -24,7 +24,7 @@ beforeEach(() => {
 const fixture = () => (
   <ReduxStore>
     <HashRouter>
-      <NFTsViewBase />
+      <NFTsView />
     </HashRouter>
   </ReduxStore>
 );

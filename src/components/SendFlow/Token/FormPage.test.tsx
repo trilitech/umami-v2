@@ -6,7 +6,7 @@ import {
   mockMnemonicAccount,
 } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
-import FormPage, { FormValues } from "./FormPage";
+import { FormPage, FormValues } from "./FormPage";
 import { FormPagePropsWithSender } from "../utils";
 import { FA2TokenBalance } from "../../../types/TokenBalance";
 import { DynamicModalContext } from "../../DynamicModal";
@@ -15,11 +15,11 @@ import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import BigNumber from "bignumber.js";
 import { mockToast } from "../../../mocks/toast";
-import accountsSlice from "../../../utils/redux/slices/accountsSlice";
-import store from "../../../utils/redux/store";
-import SignPage from "./SignPage";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../utils/redux/store";
+import { SignPage } from "./SignPage";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import assetsSlice from "../../../utils/redux/slices/assetsSlice";
+import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 
 const mockAccount = mockMnemonicAccount(0);
 const mocktTokenRaw = mockFA2TokenRaw(0, mockAccount.address.pkh);

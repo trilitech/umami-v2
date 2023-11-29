@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ImplicitOperations } from "../../../types/AccountOperations";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 import { TezosToolkit } from "@taquito/taquito";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
@@ -61,5 +61,3 @@ export const useSignWithBeacon = (
     onSign,
   };
 };
-
-export default useSignWithBeacon;

@@ -1,7 +1,7 @@
 import { Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { useState } from "react";
 import colors from "../style/colors";
-import ChevronDownIcon from "../assets/icons/ChevronDown";
+import { ChevronDownIcon } from "../assets/icons";
 
 export type Option = { label: string; value: string };
 export const Select: React.FC<{

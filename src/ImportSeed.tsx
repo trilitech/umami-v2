@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Heading, SimpleGrid, Text, VStack, Center } from "@chakra-ui/react";
 import { MakiLogo } from "./components/MakiLogo";
-import Slider from "./components/Slider";
-import SlideItem from "./components/SliderItem";
+import { Slider } from "./components/Slider";
+import { SlideItem } from "./components/SliderItem";
 import { useOnboardingModal } from "./components/Onboarding/useOnboardingModal";
 import { AllSlideritemsDocument, SlideritemRecord } from "./graphql/generated";
 import { request } from "./utils/datocms/request";
@@ -10,7 +10,7 @@ import colors from "./style/colors";
 import { AppVersion } from "./components/AppVersion";
 import BackgroundImage from "./assets/onboarding/background_image.png";
 
-function ImportSeed() {
+export function ImportSeed() {
   const [showSlider, setShowSlider] = useState(true);
   const { onOpen, modalElement } = useOnboardingModal(() => setShowSlider(true));
   const openModal = () => {
@@ -68,5 +68,3 @@ function ImportSeed() {
     </Center>
   );
 }
-
-export default ImportSeed;

@@ -13,11 +13,11 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
-import changeMnemonicPassword from "../../utils/redux/thunks/changeMnemonicPassword";
+import { changeMnemonicPassword } from "../../utils/redux/thunks/changeMnemonicPassword";
 import { DynamicModalContext } from "../DynamicModal";
 import { useContext } from "react";
 import { FormErrorMessage } from "../FormErrorMessage";
-import PasswordInput from "../PasswordInput";
+import { PasswordInput } from "../PasswordInput";
 import colors from "../../style/colors";
 
 type ChangePasswordFormValues = {
@@ -134,5 +134,3 @@ export const ChangePasswordForm: React.FC = () => {
     </FormProvider>
   );
 };
-
-export default ChangePasswordForm;

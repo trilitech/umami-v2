@@ -14,7 +14,13 @@ import { CSSProperties } from "react";
 import { NFTBalance } from "../../../types/TokenBalance";
 import colors from "../../../style/colors";
 
-const AttributesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSProperties }) => {
+export const AttributesAccordionItem = ({
+  nft,
+  style,
+}: {
+  nft: NFTBalance;
+  style: CSSProperties;
+}) => {
   const attributes = nft.metadata.attributes;
   if (!attributes || attributes.length === 0) {
     return null;
@@ -49,5 +55,3 @@ const AttributesAccordionItem = ({ nft, style }: { nft: NFTBalance; style: CSSPr
     </AccordionItem>
   );
 };
-
-export default AttributesAccordionItem;

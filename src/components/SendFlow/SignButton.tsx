@@ -13,7 +13,7 @@ import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { makeToolkit } from "../../utils/tezos";
 import { FormErrorMessage } from "../FormErrorMessage";
-import PasswordInput from "../PasswordInput";
+import { PasswordInput } from "../PasswordInput";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 export const SignWithGoogleButton: React.FC<
@@ -37,7 +37,7 @@ export const SignWithGoogleButton: React.FC<
   );
 };
 
-const SignButton: React.FC<{
+export const SignButton: React.FC<{
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
   signer: ImplicitAccount;
   isLoading?: boolean;
@@ -135,5 +135,3 @@ const SignButton: React.FC<{
       );
   }
 };
-
-export default SignButton;

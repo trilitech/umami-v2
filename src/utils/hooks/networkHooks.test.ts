@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react";
-import store from "../redux/store";
+import { store } from "../redux/store";
 import { useAvailableNetworks, useSelectNetwork, useSelectedNetwork } from "./networkHooks";
 import { AllTheProviders } from "../../mocks/testUtils";
 import { networksActions } from "../redux/slices/networks";

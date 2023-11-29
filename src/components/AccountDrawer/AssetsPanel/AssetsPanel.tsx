@@ -4,9 +4,9 @@ import { Account } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
 import { Delegation } from "../../../types/Delegation";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
-import SmallTab from "../../SmallTab";
+import { SmallTab } from "../../SmallTab";
 import { DelegationDisplay } from "./DelegationDisplay";
-import MultisigPendingAccordion from "./MultisigPendingAccordion";
+import { MultisigPendingAccordion } from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
 import { TokenList } from "./TokenList";
 
@@ -16,7 +16,7 @@ import { OperationTileContext } from "../../OperationTile";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
 import colors from "../../../style/colors";
 import { ExternalLink } from "../../ExternalLink";
-import ExternalLinkIcon from "../../../assets/icons/ExternalLink";
+import { ExternalLinkIcon } from "../../../assets/icons";
 
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;

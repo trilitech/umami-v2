@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const RotateIcon: React.FC<IconProps> = props => {
+export const RotateIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="24px"
@@ -22,5 +22,3 @@ const RotateIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default RotateIcon;

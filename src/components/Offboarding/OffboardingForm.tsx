@@ -13,14 +13,14 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import WarningIcon from "../../assets/icons/Warning";
+import { WarningIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { useReset } from "../../utils/hooks/setAccountDataHooks";
 import { FormErrorMessage } from "../FormErrorMessage";
 
 const CONFIRMATION_CODE = "wasabi";
 
-const OffboardingForm = () => {
+export const OffboardingForm = () => {
   const reset = useReset();
 
   const onSubmit = () => {
@@ -110,5 +110,3 @@ const OffboardingForm = () => {
     </FormProvider>
   );
 };
-
-export default OffboardingForm;

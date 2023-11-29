@@ -4,12 +4,13 @@ import {
   mockImplicitAddress,
   mockMnemonicAccount,
   mockNFTToken,
- mockDelegation } from "../../mocks/factories";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
-import assetsSlice from "../../utils/redux/slices/assetsSlice";
-import store from "../../utils/redux/store";
+  mockDelegation,
+} from "../../mocks/factories";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
+import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
+import { store } from "../../utils/redux/store";
 
-import AccountCard from ".";
+import { AccountCard } from ".";
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
@@ -17,8 +18,8 @@ import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/tes
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { multisigToAccount } from "../../utils/multisig/helpers";
 import { Multisig } from "../../utils/multisig/types";
-import multisigsSlice, { multisigActions } from "../../utils/redux/slices/multisigsSlice";
-import tokensSlice from "../../utils/redux/slices/tokensSlice";
+import { multisigsSlice, multisigActions } from "../../utils/redux/slices/multisigsSlice";
+import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 import {

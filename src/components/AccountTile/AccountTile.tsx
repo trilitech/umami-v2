@@ -2,9 +2,9 @@ import { Box, Flex, FlexProps, Heading, Text, Divider, AspectRatio, Image } from
 import React from "react";
 import colors from "../../style/colors";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
-import useAddressKind from "../AddressTile/useAddressKind";
+import { useAddressKind } from "../AddressTile/useAddressKind";
 import { RawPkh, parsePkh } from "../../types/Address";
-import AccountTileIcon from "./AccountTileIcon";
+import { AccountTileIcon } from "./AccountTileIcon";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
 import { fullId, thumbnailUri } from "../../types/Token";

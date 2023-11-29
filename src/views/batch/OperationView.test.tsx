@@ -14,7 +14,7 @@ import { parseContractPkh } from "../../types/Address";
 import { FA12Transfer, FA2Transfer } from "../../types/Operation";
 import { MAINNET } from "../../types/Network";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import store from "../../utils/redux/store";
+import { store } from "../../utils/redux/store";
 import { TEZ } from "../../utils/tezos";
 import { OperationView } from "./OperationView";
 

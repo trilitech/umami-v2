@@ -1,16 +1,16 @@
 import { Button, VStack, ListItem, OrderedList, useToast } from "@chakra-ui/react";
 import { RestoreLedgerStep } from "../useOnboardingModal";
-import ModalContentWrapper from "../ModalContentWrapper";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 import { getPk } from "../../../utils/ledger/pk";
 import { useRestoreLedger } from "../../../utils/hooks/setAccountDataHooks";
 import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import USBIcon from "../../../assets/icons/USB";
+import { USBIcon } from "../../../assets/icons";
 import { withTimeout } from "../../../utils/withTimeout";
 
 const LEDGER_TIMEOUT = 60 * 1000; // 1 minute
 
-const RestoreLedger = ({
+export const RestoreLedger = ({
   closeModal,
   account,
 }: {
@@ -92,5 +92,3 @@ const RestoreLedger = ({
     </ModalContentWrapper>
   );
 };
-
-export default RestoreLedger;

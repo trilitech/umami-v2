@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import MasterPassword from "./MasterPassword";
+import { MasterPassword } from "./MasterPassword";
 import { ReduxStore } from "../../../providers/ReduxStore";
 import { mockMnemonicAccount } from "../../../mocks/factories";
-import store from "../../../utils/redux/store";
-import accountsSlice from "../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../utils/redux/store";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 
 const onClose = jest.fn(() => {});

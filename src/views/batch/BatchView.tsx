@@ -6,7 +6,7 @@ import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallT
 import colors from "../../style/colors";
 import pluralize from "pluralize";
 import { headerText } from "../../components/SendFlow/SignPageHeader";
-import TrashIcon from "../../assets/icons/Trash";
+import { TrashIcon } from "../../assets/icons";
 import { nanoid } from "nanoid";
 import { TEZ, estimate } from "../../utils/tezos";
 import { Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
@@ -17,7 +17,7 @@ import { Account } from "../../types/Account";
 import { OperationView } from "./OperationView";
 import { OperationRecipient } from "./OperationRecipient";
 import { useClearBatch, useRemoveBatchItem } from "../../utils/hooks/batchesHooks";
-import SignPage from "../../components/SendFlow/Batch/SignPage";
+import { SignPage } from "../../components/SendFlow/Batch/SignPage";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 

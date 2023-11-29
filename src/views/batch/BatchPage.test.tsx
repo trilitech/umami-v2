@@ -3,9 +3,9 @@ import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../.
 import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
-import store from "../../utils/redux/store";
+import { store } from "../../utils/redux/store";
 import { estimate, executeOperations } from "../../utils/tezos";
-import BatchPage from "./BatchPage";
+import { BatchPage } from "./BatchPage";
 import { batchesActions } from "../../utils/redux/slices/batches";
 import { MAINNET } from "../../types/Network";
 import { Modal } from "@chakra-ui/react";

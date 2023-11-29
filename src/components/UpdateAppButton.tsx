@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
-import FlipForwardEnergy from "../assets/icons/FlipForwardEnergy";
+import { FlipForwardEnergy } from "../assets/icons";
 import colors from "../style/colors";
 
 /**

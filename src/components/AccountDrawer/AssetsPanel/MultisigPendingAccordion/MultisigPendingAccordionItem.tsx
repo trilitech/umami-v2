@@ -10,8 +10,8 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import MultisigSignerTile from "./MultisigSignerTile";
-import MultisigDecodedOperations from "./MultisigDecodedOperations";
+import { MultisigSignerTile } from "./MultisigSignerTile";
+import { MultisigDecodedOperations } from "./MultisigDecodedOperations";
 import { MultisigAccount } from "../../../../types/Account";
 import colors from "../../../../style/colors";
 
@@ -68,5 +68,3 @@ export const MultisigPendingAccordionItem: React.FC<{
     </Box>
   );
 };
-
-export default MultisigPendingAccordionItem;

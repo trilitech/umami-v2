@@ -3,9 +3,9 @@ import colors from "../style/colors";
 import { FATokenBalance } from "./SendFlow/Token/FormPage";
 import { PrettyNumber } from "./PrettyNumber";
 import { tokenPrettyAmount, tokenSymbolSafe } from "../types/Token";
-import TokenIcon from "../assets/icons/Token";
+import { TokenIcon } from "../assets/icons";
 
-const TokenTile: React.FC<{ token: FATokenBalance; amount: string } & FlexProps> = ({
+export const TokenTile: React.FC<{ token: FATokenBalance; amount: string } & FlexProps> = ({
   token,
   amount,
   ...flexProps
@@ -42,5 +42,3 @@ const TokenTile: React.FC<{ token: FATokenBalance; amount: string } & FlexProps>
     </Flex>
   );
 };
-
-export default TokenTile;

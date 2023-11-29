@@ -1,14 +1,14 @@
 import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import { useContext } from "react";
-import CSVFileUploader from "../../components/CSVFileUploader";
+import { CSVFileUploader } from "../../components/CSVFileUploader";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { BatchView } from "./BatchView";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import SendTezForm from "../../components/SendFlow/Tez/FormPage";
-import CSVFileUploadForm from "../../components/CSVFileUploader/CSVFileUploadForm";
+import { FormPage as SendTezForm } from "../../components/SendFlow/Tez/FormPage";
+import { CSVFileUploadForm } from "../../components/CSVFileUploader/CSVFileUploadForm";
 import { useBatches } from "../../utils/hooks/batchesHooks";
-import ExternalLinkIcon from "../../assets/icons/ExternalLink";
+import { ExternalLinkIcon } from "../../assets/icons";
 import { ExternalLink } from "../../components/ExternalLink";
 
 export const FilterController = ({ batchPending }: { batchPending: number }) => {
@@ -33,7 +33,7 @@ export const FilterController = ({ batchPending }: { batchPending: number }) => 
   );
 };
 
-const BatchPage = () => {
+export const BatchPage = () => {
   const batches = useBatches();
 
   return (
@@ -81,5 +81,3 @@ const EmptyBatch = () => {
     </Center>
   );
 };
-
-export default BatchPage;

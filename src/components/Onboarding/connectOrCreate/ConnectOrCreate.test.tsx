@@ -1,6 +1,6 @@
 import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
-import ConnectOrCreate from "./ConnectOrCreate";
+import { ConnectOrCreate } from "./ConnectOrCreate";
 import { ReduxStore } from "../../../providers/ReduxStore";
 
 const goToStepMock = jest.fn((step: Step) => {});

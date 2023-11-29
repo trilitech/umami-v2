@@ -8,9 +8,9 @@ import {
 import { render, renderHook, screen } from "../../mocks/testUtils";
 import { OperationSignerSelector } from "./OperationSignerSelector";
 import { RawPkh } from "../../types/Address";
-import store from "../../utils/redux/store";
-import accountsSlice from "../../utils/redux/slices/accountsSlice";
-import multisigsSlice from "../../utils/redux/slices/multisigsSlice";
+import { store } from "../../utils/redux/store";
+import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
+import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
 import { MultisigAccount } from "../../types/Account";
 
 describe("OperationSignerSelector", () => {

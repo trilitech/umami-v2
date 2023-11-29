@@ -7,17 +7,17 @@ import {
   mockMnemonicAccount,
 } from "../../../mocks/factories";
 import { FormPage, FormValues } from "./FormPage";
-import store from "../../../utils/redux/store";
+import { store } from "../../../utils/redux/store";
 import { multisigs } from "../../../mocks/multisig";
 import { render } from "../../../mocks/testUtils";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
-import accountsSlice from "../../../utils/redux/slices/accountsSlice";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import BigNumber from "bignumber.js";
 import { DynamicModalContext } from "../../DynamicModal";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 
 const fixture = (formValues?: FormValues) => {

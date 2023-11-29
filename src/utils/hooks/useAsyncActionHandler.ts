@@ -1,8 +1,8 @@
 import { useToast, UseToastOptions } from "@chakra-ui/react";
 import { useState } from "react";
-import getErrorContext from "../getErrorContext";
+import { getErrorContext } from "../getErrorContext";
 import { useAppDispatch } from "../redux/hooks";
-import errorsSlice from "../redux/slices/errorsSlice";
+import { errorsSlice } from "../redux/slices/errorsSlice";
 
 export const useAsyncActionHandler = () => {
   const [isLoading, setIsLoading] = useState(false);

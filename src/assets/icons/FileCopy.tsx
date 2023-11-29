@@ -1,6 +1,6 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-const FileCopyIcon: React.FC<IconProps> = props => {
+export const FileCopyIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -18,5 +18,3 @@ const FileCopyIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default FileCopyIcon;

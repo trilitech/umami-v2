@@ -1,4 +1,4 @@
-import PlusIcon from "../../../assets/icons/Plus";
+import { PlusIcon, TrashIcon, PenIcon } from "../../../assets/icons";
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
 import {
   useAvailableNetworks,
@@ -8,11 +8,9 @@ import {
 import colors from "../../../style/colors";
 import { Fragment, useContext } from "react";
 import { Network, isDefault } from "../../../types/Network";
-import PopoverMenu from "../../../components/PopoverMenu";
-import TrashIcon from "../../../assets/icons/Trash";
+import { PopoverMenu } from "../../../components/PopoverMenu";
 import { useAppDispatch } from "../../../utils/redux/hooks";
 import { networksActions } from "../../../utils/redux/slices/networks";
-import PenIcon from "../../../assets/icons/Pen";
 import { DynamicModalContext } from "../../../components/DynamicModal";
 import {
   Button,

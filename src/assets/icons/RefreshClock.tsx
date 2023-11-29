@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const RefreshClockIcon: React.FC<IconProps> = props => {
+export const RefreshClockIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18"
@@ -21,5 +21,3 @@ const RefreshClockIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default RefreshClockIcon;

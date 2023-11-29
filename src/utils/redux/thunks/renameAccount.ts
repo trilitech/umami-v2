@@ -1,10 +1,10 @@
 import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { Account } from "../../../types/Account";
-import multisigsSlice from "../slices/multisigsSlice";
-import accountsSlice from "../slices/accountsSlice";
+import { multisigsSlice } from "../slices/multisigsSlice";
+import { accountsSlice } from "../slices/accountsSlice";
 
-const renameAccount = (
+export const renameAccount = (
   account: Account,
   newName: string
 ): ThunkAction<void, RootState, unknown, AnyAction> => {
@@ -28,5 +28,3 @@ const renameAccount = (
     }
   };
 };
-
-export default renameAccount;

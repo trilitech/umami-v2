@@ -1,6 +1,6 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-const UnknownContactIcon: React.FC<IconProps> = props => {
+export const UnknownContactIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -20,5 +20,3 @@ const UnknownContactIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default UnknownContactIcon;

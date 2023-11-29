@@ -3,12 +3,12 @@ import { mockDelegation, mockImplicitAccount, mockMnemonicAccount } from "../../
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { SignPageProps } from "../utils";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import BigNumber from "bignumber.js";
-import store from "../../../utils/redux/store";
-import accountsSlice from "../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../utils/redux/store";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { DelegationOperation, TEZ, getLastDelegation } from "../../../utils/tezos";
-import assetsSlice from "../../../utils/redux/slices/assetsSlice";
+import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 
 const fixture = (props: SignPageProps) => (
   <Modal isOpen={true} onClose={() => {}}>

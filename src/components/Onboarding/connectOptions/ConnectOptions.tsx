@@ -1,9 +1,9 @@
 import { Button, VStack } from "@chakra-ui/react";
-import ModalContentWrapper from "../ModalContentWrapper";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
-import LinkIcon from "../../../assets/icons/Link";
+import { LinkIcon } from "../../../assets/icons";
 
-const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+export const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
   return (
     <ModalContentWrapper icon={<LinkIcon />} title="Connect or Import Account">
       <VStack width="100%" spacing="16px">
@@ -42,5 +42,3 @@ const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
     </ModalContentWrapper>
   );
 };
-
-export default ConnectOptions;

@@ -1,7 +1,7 @@
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
-import store from "../../utils/redux/store";
+import { store } from "../../utils/redux/store";
 import { TzktLink } from "./TzktLink";
 
 describe("<TzktLink />", () => {

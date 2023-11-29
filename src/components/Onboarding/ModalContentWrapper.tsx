@@ -10,7 +10,7 @@ type Props = {
   children: ReactElement;
 };
 
-export default function ModalContentWrapper({ children, icon, title, subtitle }: Props) {
+export const ModalContentWrapper = ({ children, icon, title, subtitle }: Props) => {
   return (
     <VStack maxHeight="83vh" spacing={0}>
       <Box marginBottom="20px">
@@ -27,4 +27,4 @@ export default function ModalContentWrapper({ children, icon, title, subtitle }:
       {children}
     </VStack>
   );
-}
+};

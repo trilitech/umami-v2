@@ -5,9 +5,9 @@ import colors from "../../../../style/colors";
 import { tokenNameSafe, tokenPrettyAmount } from "../../../../types/Token";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useGetToken } from "../../../../utils/hooks/tokensHooks";
-import AddressPill from "../../../AddressPill/AddressPill";
+import { AddressPill } from "../../../AddressPill/AddressPill";
 
-const MultisigDecodedOperationItem: React.FC<{
+export const MultisigDecodedOperationItem: React.FC<{
   operation: Operation;
 }> = ({ operation }) => {
   switch (operation.type) {
@@ -91,5 +91,3 @@ const MultisigOperationAmount: React.FC<{
       return null;
   }
 };
-
-export default MultisigDecodedOperationItem;

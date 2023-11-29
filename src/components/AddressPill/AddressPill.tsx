@@ -8,21 +8,24 @@ import {
   Button,
   useOutsideClick,
   BoxProps,
- Flex, Text, Box } from "@chakra-ui/react";
+  Flex,
+  Text,
+  Box,
+} from "@chakra-ui/react";
 
 import { Address, TzktAlias, parsePkh } from "../../types/Address";
 import colors from "../../style/colors";
 import { useRef, useState } from "react";
-import useAddressKind from "./useAddressKind";
+import { useAddressKind } from "./useAddressKind";
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
-import AddressPillText from "./AddressPillText";
+import { AddressPillText } from "./AddressPillText";
 
 export type AddressPillMode =
   | { type: "default" }
   | { type: "removable"; onRemove: () => void }
   | { type: "no_icons" };
 
-const AddressPill: React.FC<
+export const AddressPill: React.FC<
   { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps
 > = ({ address: rawAddress, mode = { type: "default" }, ...rest }) => {
   const isAlias = !("pkh" in rawAddress && "type" in rawAddress);
@@ -124,5 +127,3 @@ const AddressPill: React.FC<
     </Box>
   );
 };
-
-export default AddressPill;

@@ -9,7 +9,8 @@ import {
   OffsetParameter,
   SortParameter,
   accountsGet,
- tokensGetTokenBalances } from "@tzkt/sdk-api";
+  tokensGetTokenBalances,
+} from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
 import axios from "axios";
 import { coincapUrl } from "./consts";

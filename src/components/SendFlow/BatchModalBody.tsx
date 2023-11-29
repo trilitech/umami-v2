@@ -4,9 +4,9 @@ import { ModalBody, Text, Flex, FormLabel } from "@chakra-ui/react";
 
 import { BigNumber } from "bignumber.js";
 import colors from "../../style/colors";
-import FormPageHeader from "./FormPageHeader";
-import AddressTile from "../AddressTile/AddressTile";
-import SignPageFee from "./SignPageFee";
+import { FormPageHeader } from "./FormPageHeader";
+import { AddressTile } from "../AddressTile/AddressTile";
+import { SignPageFee } from "./SignPageFee";
 import { ImplicitAddress } from "../../types/Address";
 
 export const BatchModalBody: React.FC<{
@@ -36,5 +36,3 @@ export const BatchModalBody: React.FC<{
     </>
   );
 };
-
-export default BatchModalBody;

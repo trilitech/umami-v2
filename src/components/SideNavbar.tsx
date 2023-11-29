@@ -5,67 +5,20 @@ import { Link, useLocation } from "react-router-dom";
 import colors from "../style/colors";
 import { useTotalBalance } from "../utils/hooks/assetsHooks";
 import { MakiLogo } from "./MakiLogo";
-import NetworkSelector from "./NetworkSelector";
+import { NetworkSelector } from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
 import { AppVersion } from "./AppVersion";
-import CoinIcon from "../assets/icons/Coin";
-import AccountsIcon from "../assets/icons/Accounts";
-import DiamondIcon from "../assets/icons/Diamond";
-import RefreshClockIcon from "../assets/icons/RefreshClock";
-import BatchIcon from "../assets/icons/Batch";
-import AddressBookIcon from "../assets/icons/AddressBook";
-import GearIcon from "../assets/icons/Gear";
-import HelpIcon from "../assets/icons/Help";
+import {
+  AccountsIcon,
+  AddressBookIcon,
+  BatchIcon,
+  CoinIcon,
+  DiamondIcon,
+  GearIcon,
+  HelpIcon,
+  RefreshClockIcon,
+} from "../assets/icons";
 import { UpdateAppButton } from "./UpdateAppButton";
-
-const MenuItem: React.FC<
-  {
-    label: string;
-    icon: JSX.Element;
-    to: string;
-  } & FlexProps
-> = ({ icon, label, to, ...flexProps }) => {
-  const currentLocation = useLocation();
-  // TODO: check if there are named routes in react-router-dom
-  const isSelected = currentLocation.pathname.includes(to);
-
-  return (
-    <Link to={to}>
-      <Flex
-        alignItems="center"
-        justifyContent="flex-start"
-        width="176px"
-        marginBottom="8px"
-        padding="10px"
-        background={isSelected ? colors.gray[600] : "transparent"}
-        borderRadius="4px"
-        _hover={{
-          background: isSelected ? colors.gray[600] : colors.gray[800],
-        }}
-        cursor="pointer"
-        {...flexProps}
-      >
-        {icon}
-        <Text marginLeft="10px" size="sm">
-          {label}
-        </Text>
-      </Flex>
-    </Link>
-  );
-};
-
-const TotalBalance = () => {
-  const balance = useTotalBalance();
-
-  return (
-    <Box marginTop="24px" marginBottom="100px">
-      <Text marginBottom="4px" size="sm">
-        Balance
-      </Text>
-      {balance !== null && <TezRecapDisplay balance={balance.mutez} dollarBalance={balance.usd} />}
-    </Box>
-  );
-};
 
 export const SideNavbar = () => {
   return (
@@ -116,4 +69,51 @@ export const SideNavbar = () => {
   );
 };
 
-export default SideNavbar;
+const MenuItem: React.FC<
+  {
+    label: string;
+    icon: JSX.Element;
+    to: string;
+  } & FlexProps
+> = ({ icon, label, to, ...flexProps }) => {
+  const currentLocation = useLocation();
+  // TODO: check if there are named routes in react-router-dom
+  const isSelected = currentLocation.pathname.includes(to);
+
+  return (
+    <Link to={to}>
+      <Flex
+        alignItems="center"
+        justifyContent="flex-start"
+        width="176px"
+        marginBottom="8px"
+        padding="10px"
+        background={isSelected ? colors.gray[600] : "transparent"}
+        borderRadius="4px"
+        _hover={{
+          background: isSelected ? colors.gray[600] : colors.gray[800],
+        }}
+        cursor="pointer"
+        {...flexProps}
+      >
+        {icon}
+        <Text marginLeft="10px" size="sm">
+          {label}
+        </Text>
+      </Flex>
+    </Link>
+  );
+};
+
+const TotalBalance = () => {
+  const balance = useTotalBalance();
+
+  return (
+    <Box marginTop="24px" marginBottom="100px">
+      <Text marginBottom="4px" size="sm">
+        Balance
+      </Text>
+      {balance !== null && <TezRecapDisplay balance={balance.mutez} dollarBalance={balance.usd} />}
+    </Box>
+  );
+};

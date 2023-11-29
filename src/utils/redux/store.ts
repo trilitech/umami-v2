@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import { extraArgument } from "./extraArgument";
-import reducer from "./reducer";
+import { rootReducers as reducer } from "./reducer";
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
-const store = configureStore({
+export const store = configureStore({
   reducer,
 
   middleware: getDefaultMiddleware =>
@@ -23,5 +23,3 @@ const store = configureStore({
       },
     }),
 });
-
-export default store;

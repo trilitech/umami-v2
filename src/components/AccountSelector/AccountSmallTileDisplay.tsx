@@ -1,5 +1,5 @@
 import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
-import { formatPkh , prettyTezAmount } from "../../utils/format";
+import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { Identicon } from "../Identicon";
 import colors from "../../style/colors";
 

@@ -1,10 +1,10 @@
 import { Checkbox, Button, Link } from "@chakra-ui/react";
 import React from "react";
-import ModalContentWrapper from "../ModalContentWrapper";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
-import DocumentIcon from "../../../assets/icons/Document";
+import { DocumentIcon } from "../../../assets/icons";
 
-const Eula: React.FC<{
+export const Eula: React.FC<{
   goToStep: (step: Step) => void;
 }> = ({ goToStep }) => {
   const [isChecked, setIsChecked] = React.useState(false);
@@ -49,5 +49,3 @@ const Eula: React.FC<{
     </ModalContentWrapper>
   );
 };
-
-export default Eula;

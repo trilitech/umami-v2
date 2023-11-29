@@ -1,6 +1,6 @@
 import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import BigNumber from "bignumber.js";
 import { TEZ } from "../../../utils/tezos";
 import { makeAccountOperations } from "../../../types/AccountOperations";

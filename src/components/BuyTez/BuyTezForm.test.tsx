@@ -1,7 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 import { render, screen, waitFor } from "../../mocks/testUtils";
-import store from "../../utils/redux/store";
-import BuyTezForm from "./BuyTezForm";
+import { store } from "../../utils/redux/store";
+import { BuyTezForm } from "./BuyTezForm";
 import { GHOSTNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { RawPkh } from "../../types/Address";

@@ -1,6 +1,6 @@
 import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 import { useIsUniqueLabel } from "../../../utils/hooks/getAccountDataHooks";
-import NameAccountDisplay from "./NameAccountDisplay";
+import { NameAccountDisplay } from "./NameAccountDisplay";
 
 export const DEFAULT_ACCOUNT_LABEL = "Account";
 
@@ -61,5 +61,3 @@ const firstUnusedDefaultLabel = (isUniqueLabel: (label: string) => boolean): str
   }
   return indexedDefaultAccountLabel(index);
 };
-
-export default NameAccount;

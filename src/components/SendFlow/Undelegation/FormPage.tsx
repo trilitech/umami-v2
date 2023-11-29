@@ -4,27 +4,22 @@ import { FormProvider, useForm } from "react-hook-form";
 import { parsePkh, RawPkh } from "../../../types/Address";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { formDefaultValues, FormPagePropsWithSender, FormSubmitButtons } from "../utils";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import { Undelegation } from "../../../types/Operation";
-import FormPageHeader from "../FormPageHeader";
-import AddressTile from "../../AddressTile/AddressTile";
+import { FormPageHeader } from "../FormPageHeader";
+import { AddressTile } from "../../AddressTile/AddressTile";
 
 export type FormValues = {
   sender: RawPkh;
   baker: RawPkh;
 };
 
-const toOperation = (formValues: FormValues): Undelegation => ({
-  type: "undelegation",
-  sender: parsePkh(formValues.sender),
-});
-
-const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
+export const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
   const { sender } = props;
   // it must always be passed in from the parent component
   const baker = props.form?.baker;
@@ -85,4 +80,8 @@ const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation = (formValues: FormValues): Undelegation => ({
+  type: "undelegation",
+  sender: parsePkh(formValues.sender),
+});

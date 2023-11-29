@@ -1,9 +1,9 @@
 import { multisigs } from "../../../mocks/multisig";
-import store from "../store";
+import { store } from "../store";
 import { mockMnemonicAccount } from "../../../mocks/factories";
 import { multisigActions } from "../slices/multisigsSlice";
-import renameAccount from "./renameAccount";
-import accountsSlice from "../slices/accountsSlice";
+import { renameAccount } from "./renameAccount";
+import { accountsSlice } from "../slices/accountsSlice";
 import { MultisigAccount } from "../../../types/Account";
 import { contactsActions } from "../slices/contactsSlice";
 

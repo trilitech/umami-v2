@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
-import accountsSlice from "./accountsSlice";
+import { accountsSlice } from "./accountsSlice";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 import { fromRaw, RawTokenBalance, TokenBalance } from "../../../types/TokenBalance";
@@ -51,7 +51,7 @@ const initialState: State = {
   lastTimeUpdated: null,
 };
 
-const assetsSlice = createSlice({
+export const assetsSlice = createSlice({
   name: "assets",
   initialState,
   // Reset assets state if accounts are reset
@@ -114,5 +114,3 @@ const assetsSlice = createSlice({
 });
 
 export const assetsActions = assetsSlice.actions;
-
-export default assetsSlice;

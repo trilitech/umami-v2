@@ -1,5 +1,5 @@
 import { AspectRatio, Box, Flex, Heading, Image } from "@chakra-ui/react";
-import { NFT , thumbnailUri } from "../../types/Token";
+import { NFT, thumbnailUri } from "../../types/Token";
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import colors from "../../style/colors";
 import { truncate } from "../../utils/format";

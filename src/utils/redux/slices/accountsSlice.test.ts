@@ -11,11 +11,11 @@ import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { ImplicitAccount, MnemonicAccount } from "../../../types/Account";
 
-import store from "../store";
+import { store } from "../store";
 import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
 import { getFingerPrint } from "../../tezos";
 import { parseImplicitPkh } from "../../../types/Address";
-import accountsSlice from "./accountsSlice";
+import { accountsSlice } from "./accountsSlice";
 import { MAINNET } from "../../../types/Network";
 
 const {

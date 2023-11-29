@@ -11,9 +11,40 @@ import {
 } from "@chakra-ui/react";
 import { usePeers, useRemovePeer } from "./beacon";
 import { PeerInfo } from "./types";
-import TrashIcon from "../../assets/icons/Trash";
+import { TrashIcon } from "../../assets/icons";
 import { Fragment } from "react";
 import colors from "../../style/colors";
+
+export const BeaconPeers = () => {
+  const { data } = usePeers();
+  const removePeer = useRemovePeer();
+  const peers = data || [];
+
+  if (peers.length === 0) {
+    return null;
+  }
+
+  return <PeersDisplay peerInfos={peers} removePeer={removePeer} />;
+};
+
+export const PeersDisplay = ({
+  peerInfos,
+  removePeer,
+}: {
+  peerInfos: PeerInfo[];
+  removePeer: (peer: PeerInfo) => void;
+}) => {
+  return (
+    <Box>
+      {peerInfos.map(peerInfo => (
+        <Fragment key={peerInfo.name}>
+          <Divider />
+          <PeerRow onRemove={() => removePeer(peerInfo)} peerInfo={peerInfo} />
+        </Fragment>
+      ))}
+    </Box>
+  );
+};
 
 const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => void }) => {
   return (
@@ -44,36 +75,3 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => v
     </Flex>
   );
 };
-
-export const PeersDisplay = ({
-  peerInfos,
-  removePeer,
-}: {
-  peerInfos: PeerInfo[];
-  removePeer: (peer: PeerInfo) => void;
-}) => {
-  return (
-    <Box>
-      {peerInfos.map(peerInfo => (
-        <Fragment key={peerInfo.name}>
-          <Divider />
-          <PeerRow onRemove={() => removePeer(peerInfo)} peerInfo={peerInfo} />
-        </Fragment>
-      ))}
-    </Box>
-  );
-};
-
-const BeaconPeers = () => {
-  const { data } = usePeers();
-  const removePeer = useRemovePeer();
-  const peers = data || [];
-
-  if (peers.length === 0) {
-    return null;
-  }
-
-  return <PeersDisplay peerInfos={peers} removePeer={removePeer} />;
-};
-
-export default BeaconPeers;

@@ -15,12 +15,12 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { FA2Transfer } from "../../../types/Operation";
 import { OperationSignerSelector } from "../OperationSignerSelector";
-import SignPageFee from "../SignPageFee";
-import AddressTile from "../../AddressTile/AddressTile";
-import SignButton from "../SignButton";
+import { SignPageFee } from "../SignPageFee";
+import { AddressTile } from "../../AddressTile/AddressTile";
+import { SignButton } from "../SignButton";
 import { SendNFTRecapTile } from "../SendNFTRecapTile";
 
-const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
+export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {
     mode,
     operations: initialOperations,
@@ -92,4 +92,3 @@ const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
     </FormProvider>
   );
 };
-export default SignPage;

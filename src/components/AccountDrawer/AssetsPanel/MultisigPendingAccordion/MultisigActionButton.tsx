@@ -11,6 +11,7 @@ export type MultisigSignerState =
   | "executable"
   | "approvable";
 
+// TODO: add test
 export const MultisigActionButton: React.FC<{
   signerState: MultisigSignerState;
   onClickApproveExecute: () => void;
@@ -66,5 +67,3 @@ export const MultisigActionButton: React.FC<{
     }
   }
 };
-
-export default MultisigActionButton;

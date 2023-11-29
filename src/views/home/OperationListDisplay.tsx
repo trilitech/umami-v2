@@ -4,7 +4,7 @@ import { OperationTile } from "../../components/OperationTile";
 import { TzktCombinedOperation } from "../../utils/tezos";
 import { Box, Center, Divider, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import RefreshClockIcon from "../../assets/icons/RefreshClock";
+import { RefreshClockIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 
 export const OperationListDisplay: React.FC<{ operations: TzktCombinedOperation[] }> = ({

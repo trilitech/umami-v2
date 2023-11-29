@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import store from "../../../utils/redux/store";
+import { store } from "../../../utils/redux/store";
 import { Step } from "../useOnboardingModal";
 import { RestoreSecretKey } from "./RestoreSecretKey";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";

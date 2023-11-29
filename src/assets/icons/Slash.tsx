@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const SlashIcon: React.FC<IconProps> = props => {
+export const SlashIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="24px"
@@ -16,5 +16,3 @@ const SlashIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default SlashIcon;

@@ -7,7 +7,7 @@ type Props = {
   children: ReactElement[];
 };
 
-export default function Slider({ children }: Props) {
+export const Slider = ({ children }: Props) => {
   const indicatorStyles: CSSProperties = {
     background: colors.gray[400],
     width: "10px",
@@ -55,4 +55,4 @@ export default function Slider({ children }: Props) {
       {children}
     </Carousel>
   );
-}
+};

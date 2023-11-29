@@ -3,12 +3,12 @@ import { GoogleAuth } from "../../../GoogleAuth";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
 import { getPkAndPkhFromSk } from "../../../utils/tezos";
-import ModalContentWrapper from "../ModalContentWrapper";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
-import WalletPlusIcon from "../../../assets/icons/WalletPlus";
+import { WalletPlusIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 
-const ConnectOrCreate = ({
+export const ConnectOrCreate = ({
   goToStep,
   closeModal,
 }: {
@@ -71,5 +71,3 @@ const ConnectOrCreate = ({
     </ModalContentWrapper>
   );
 };
-
-export default ConnectOrCreate;

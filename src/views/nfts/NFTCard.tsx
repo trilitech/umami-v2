@@ -2,12 +2,12 @@ import { Image, Card, CardBody, Heading, Text, Box, Center } from "@chakra-ui/re
 import { getIPFSurl } from "../../utils/token/nftUtils";
 import { fullId, thumbnailUri } from "../../types/Token";
 import colors from "../../style/colors";
-import AddressPill from "../../components/AddressPill/AddressPill";
+import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { parsePkh } from "../../types/Address";
 import { useLocation } from "react-router-dom";
 import { NFTWithOwner } from "./NFTGallery";
 
-const NFTCard: React.FC<{
+export const NFTCard: React.FC<{
   nft: NFTWithOwner;
   onClick: () => void;
 }> = ({ nft, onClick }) => {
@@ -82,5 +82,3 @@ const NFTCard: React.FC<{
     </Card>
   );
 };
-
-export default NFTCard;

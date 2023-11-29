@@ -9,7 +9,7 @@ export const HeaderWrapper = chakra(ModalHeader, {
   },
 });
 
-const FormPageHeader: React.FC<{
+export const FormPageHeader: React.FC<{
   title?: string;
   subTitle?: string;
 }> = ({ title = "Send", subTitle = "Send one or insert into batch" }) => {
@@ -25,5 +25,3 @@ const FormPageHeader: React.FC<{
     </HeaderWrapper>
   );
 };
-
-export default FormPageHeader;

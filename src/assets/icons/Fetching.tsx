@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const FetchingIcon: React.FC<IconProps> = props => {
+export const FetchingIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="19px"
@@ -21,5 +21,3 @@ const FetchingIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default FetchingIcon;

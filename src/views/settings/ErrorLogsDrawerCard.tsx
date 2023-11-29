@@ -20,7 +20,7 @@ import { DrawerTopButtons } from "../home/DrawerTopButtons";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDynamicModal } from "../../components/DynamicModal";
 
-const ErrorLogsDrawerCard = () => {
+export const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
@@ -109,5 +109,3 @@ const ErrorLogRow: React.FC<{
     </>
   );
 };
-
-export default ErrorLogsDrawerCard;

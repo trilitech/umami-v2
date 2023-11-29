@@ -6,8 +6,8 @@ import { useSignPageHelpers } from "../utils";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { headerText } from "../SignPageHeader";
 import { FormProvider } from "react-hook-form";
-import BatchModalBody from "../BatchModalBody";
-import SignButton from "../SignButton";
+import { BatchModalBody } from "../BatchModalBody";
+import { SignButton } from "../SignButton";
 
 export const SignPage: React.FC<{
   initialOperations: AccountOperations;
@@ -48,5 +48,3 @@ export const SignPage: React.FC<{
     </FormProvider>
   );
 };
-
-export default SignPage;

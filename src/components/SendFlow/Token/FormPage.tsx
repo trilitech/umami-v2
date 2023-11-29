@@ -20,7 +20,7 @@ import {
   getSmallestUnit,
   makeValidateDecimals,
 } from "../utils";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
@@ -33,7 +33,7 @@ import {
   tokenDecimals,
   tokenSymbolSafe,
 } from "../../../types/Token";
-import FormPageHeader from "../FormPageHeader";
+import { FormPageHeader } from "../FormPageHeader";
 import { FormErrorMessage } from "../../FormErrorMessage";
 
 export type FormValues = {
@@ -46,26 +46,7 @@ export type FATokenBalance = FA12TokenBalance | FA2TokenBalance;
 
 export type FATransfer = FA12Transfer | FA2Transfer;
 
-const toOperation =
-  (token: FATokenBalance) =>
-  (formValues: FormValues): FATransfer => {
-    const fa2Operation: FA2Transfer = {
-      type: "fa2",
-      sender: parsePkh(formValues.sender),
-      recipient: parsePkh(formValues.recipient),
-      contract: parseContractPkh(token.contract),
-      tokenId: token.tokenId,
-      amount: getRealAmount(token, formValues.prettyAmount),
-    };
-
-    if (token.type === "fa2") {
-      return fa2Operation;
-    }
-
-    return { ...fa2Operation, type: "fa1.2", tokenId: "0" };
-  };
-
-const FormPage: React.FC<
+export const FormPage: React.FC<
   FormPagePropsWithSender<FormValues> & { token: FATokenBalance }
 > = props => {
   const { token } = props;
@@ -168,4 +149,22 @@ const FormPage: React.FC<
     </FormProvider>
   );
 };
-export default FormPage;
+
+const toOperation =
+  (token: FATokenBalance) =>
+  (formValues: FormValues): FATransfer => {
+    const fa2Operation: FA2Transfer = {
+      type: "fa2",
+      sender: parsePkh(formValues.sender),
+      recipient: parsePkh(formValues.recipient),
+      contract: parseContractPkh(token.contract),
+      tokenId: token.tokenId,
+      amount: getRealAmount(token, formValues.prettyAmount),
+    };
+
+    if (token.type === "fa2") {
+      return fa2Operation;
+    }
+
+    return { ...fa2Operation, type: "fa1.2", tokenId: "0" };
+  };

@@ -8,7 +8,7 @@ import {
 } from "../../utils/hooks/assetsHooks";
 import { DynamicModalContext } from "../DynamicModal";
 import { ReceiveModal } from "../ReceiveModal";
-import SendTezForm from "../SendFlow/Tez/FormPage";
+import { FormPage as SendTezForm } from "../SendFlow/Tez/FormPage";
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
 
 // TODO: replace current component with the underlying one
@@ -41,5 +41,3 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
     />
   );
 };
-
-export default AccountCard;

@@ -10,8 +10,8 @@ import { AccountOperations } from "../../../types/AccountOperations";
 import { executeOperations } from "../../../utils/tezos";
 import { BigNumber } from "bignumber.js";
 import { capitalize } from "lodash";
-import BatchModalBody from "../BatchModalBody";
-import SignButton from "../SignButton";
+import { BatchModalBody } from "../BatchModalBody";
+import { SignButton } from "../SignButton";
 import { SuccessStep } from "../SuccessStep";
 
 export const SignPage: React.FC<{
@@ -54,4 +54,3 @@ export const SignPage: React.FC<{
     </ModalContent>
   );
 };
-export default SignPage;

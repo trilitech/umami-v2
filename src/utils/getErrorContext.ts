@@ -4,7 +4,7 @@ export type ErrorContext = {
   stacktrace: string;
 };
 
-const getErrorContext = (error: any): ErrorContext => {
+export const getErrorContext = (error: any): ErrorContext => {
   let description = "Something went wrong";
   if (typeof error === "object" && "message" in error) {
     description = error.message;
@@ -23,5 +23,3 @@ const getErrorContext = (error: any): ErrorContext => {
     stacktrace,
   };
 };
-
-export default getErrorContext;

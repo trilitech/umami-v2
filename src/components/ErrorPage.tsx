@@ -53,4 +53,3 @@ export const ErrorPage: React.FC = () => {
     </Flex>
   );
 };
-export default ErrorPage;

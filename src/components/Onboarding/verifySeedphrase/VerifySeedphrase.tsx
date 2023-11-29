@@ -1,13 +1,13 @@
 import { Input, Box, Button, FormControl, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { useState } from "react";
-import ModalContentWrapper from "../ModalContentWrapper";
+import { ModalContentWrapper } from "../ModalContentWrapper";
 import { useForm } from "react-hook-form";
 import { Step, StepType, VerifySeedphraseStep } from "../useOnboardingModal";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 import { FormErrorMessage } from "../../FormErrorMessage";
-import DoubleCheckmarkIcon from "../../../assets/icons/DoubleCheckmark";
+import { DoubleCheckmarkIcon } from "../../../assets/icons";
 
-const VerifySeedphrase = ({
+export const VerifySeedphrase = ({
   goToStep,
   account,
 }: {
@@ -71,5 +71,3 @@ const VerifySeedphrase = ({
     </ModalContentWrapper>
   );
 };
-
-export default VerifySeedphrase;

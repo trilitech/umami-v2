@@ -1,6 +1,6 @@
 import { waitFor, fireEvent } from "@testing-library/react";
 import { screen, render } from "../../../mocks/testUtils";
-import RestoreBackupFile from "./RestoreBackupFile";
+import { RestoreBackupFile } from "./RestoreBackupFile";
 
 describe("<RestoreBackupFile />", () => {
   describe("Form", () => {

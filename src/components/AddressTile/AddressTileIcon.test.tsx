@@ -1,5 +1,5 @@
 import { render, screen } from "../../mocks/testUtils";
-import AddressTileIcon from "./AddressTileIcon";
+import { AddressTileIcon } from "./AddressTileIcon";
 import { AddressKind } from "./types";
 
 const fixture = (addressKind: AddressKind) => <AddressTileIcon addressKind={addressKind} />;

@@ -1,6 +1,6 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-const AddContactIcon: React.FC<IconProps> = props => {
+export const AddContactIcon: React.FC<IconProps> = props => {
   return (
     <Icon fill="none" viewBox="0 0 13 17" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
@@ -12,5 +12,3 @@ const AddContactIcon: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default AddContactIcon;

@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import Router from "./Router";
+import { Router } from "./Router";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import store from "./utils/redux/store";
+import { store } from "./utils/redux/store";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorPage from "./components/ErrorPage";
-import errorsSlice from "./utils/redux/slices/errorsSlice";
-import getErrorContext from "./utils/getErrorContext";
+import { ErrorPage } from "./components/ErrorPage";
+import { errorsSlice } from "./utils/redux/slices/errorsSlice";
+import { getErrorContext } from "./utils/getErrorContext";
 
 const logError = (error: Error, info: { componentStack?: string | null }) => {
   const errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };

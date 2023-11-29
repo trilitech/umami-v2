@@ -62,6 +62,12 @@
       "rules": {
         "testing-library/prefer-screen-queries": "off"
       }
+    },
+    {
+      "files": ["src/graphql/**/*.ts"],
+      "rules": {
+        "import/no-unresolved": "off"
+      }
     }
   ]
 }

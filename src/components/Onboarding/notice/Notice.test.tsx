@@ -1,7 +1,7 @@
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { Step, StepType } from "../useOnboardingModal";
 import { fireEvent, render, screen } from "@testing-library/react";
-import Notice from "./Notice";
+import { Notice } from "./Notice";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
 
 // TODO refactor mocks

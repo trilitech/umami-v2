@@ -1,13 +1,16 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import useSignWithBeacon from "./useSignWithBeacon";
+import { useSignWithBeacon } from "./useSignWithBeacon";
 import { SignPageHeader, headerText } from "../SignPageHeader";
-import SignPageFee from "../SignPageFee";
-import AddressTile from "../../AddressTile/AddressTile";
+import { SignPageFee } from "../SignPageFee";
+import { AddressTile } from "../../AddressTile/AddressTile";
 import { FormProvider } from "react-hook-form";
 import { BeaconSignPageProps } from "./BeaconSignPage";
-import SignButton from "../SignButton";
+import { SignButton } from "../SignButton";
 
-const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
+export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
+  operation,
+  onBeaconSuccess,
+}) => {
   const { isSigning, form, onSign, fee } = useSignWithBeacon(operation, onBeaconSuccess);
 
   if (!fee) {
@@ -40,5 +43,3 @@ const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeac
     </FormProvider>
   );
 };
-
-export default UndelegationSignPage;

@@ -38,7 +38,7 @@ type FormFields = {
   file: FileList;
 };
 
-const CSVFileUploadForm = () => {
+export const CSVFileUploadForm = () => {
   const network = useSelectedNetwork();
   const toast = useToast();
   const getToken = useGetToken();
@@ -136,5 +136,3 @@ const CSVFileUploadForm = () => {
     </FormProvider>
   );
 };
-
-export default CSVFileUploadForm;

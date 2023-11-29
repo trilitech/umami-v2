@@ -1,11 +1,11 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { TopBar } from "../../components/TopBar";
-import ContactTable from "./ContactTable";
+import { ContactTable } from "./ContactTable";
 import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { useContext } from "react";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import AddContactIcon from "../../assets/icons/AddContact";
+import { AddContactIcon } from "../../assets/icons";
 
 const AddContact: React.FC = () => {
   const { openWith } = useContext(DynamicModalContext);
@@ -29,7 +29,7 @@ const AddContact: React.FC = () => {
   );
 };
 
-export default function AddressBookView() {
+export const AddressBookView = () => {
   const contacts = useAllSortedContacts();
   return (
     <Flex flexDirection="column" height="100%">
@@ -41,4 +41,4 @@ export default function AddressBookView() {
       <ContactTable contacts={contacts} />
     </Flex>
   );
-}
+};

@@ -9,7 +9,7 @@ import {
   useOwnedAccountAddressKind as useAddressTileOwnedAccountAddressKind,
 } from "../AddressTile/useAddressKind";
 
-const useAddressKind = (address: Address): AddressKind => {
+export const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
 
   const token = useTokenAddressKind(address);
@@ -22,8 +22,6 @@ const useAddressKind = (address: Address): AddressKind => {
 
   return known || { pkh: address.pkh, type: "unknown", label: null };
 };
-
-export default useAddressKind;
 
 const useOwnedAccountAddressKind = (
   address: Address

@@ -10,7 +10,7 @@ import { getIPFSurl } from "../../utils/token/nftUtils";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { Fee } from "./Fee";
 import { Timestamp } from "./Timestamp";
-import AddressPill from "../AddressPill/AddressPill";
+import { AddressPill } from "../AddressPill/AddressPill";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { OperationStatus } from "./OperationStatus";
 import { TzktAlias } from "../../types/Address";

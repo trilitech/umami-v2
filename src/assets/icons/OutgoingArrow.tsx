@@ -1,7 +1,7 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 import colors from "../../style/colors";
 
-const OutgoingArrow: React.FC<IconProps> = props => {
+export const OutgoingArrow: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -21,5 +21,3 @@ const OutgoingArrow: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default OutgoingArrow;

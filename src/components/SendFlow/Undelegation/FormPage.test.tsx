@@ -7,11 +7,11 @@ import {
 } from "../../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import accountsSlice from "../../../utils/redux/slices/accountsSlice";
+import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
-import store from "../../../utils/redux/store";
-import FormPage, { FormValues } from "./FormPage";
-import SignPage from "./SignPage";
+import { store } from "../../../utils/redux/store";
+import { FormPage, FormValues } from "./FormPage";
+import { SignPage } from "./SignPage";
 import BigNumber from "bignumber.js";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { DynamicModalContext } from "../../DynamicModal";
@@ -19,7 +19,7 @@ import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { estimate } from "../../../utils/tezos";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 import { FormPagePropsWithSender } from "../utils";
-import assetsSlice from "../../../utils/redux/slices/assetsSlice";
+import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>) => (
   <Modal isOpen={true} onClose={() => {}}>

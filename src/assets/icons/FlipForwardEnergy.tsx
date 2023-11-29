@@ -1,6 +1,6 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-const FlipForwardEnergy: React.FC<IconProps> = props => {
+export const FlipForwardEnergy: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
@@ -20,5 +20,3 @@ const FlipForwardEnergy: React.FC<IconProps> = props => {
     </Icon>
   );
 };
-
-export default FlipForwardEnergy;

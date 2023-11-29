@@ -1,7 +1,7 @@
 import { mockImplicitAccount } from "../mocks/factories";
 import { render, screen } from "../mocks/testUtils";
 import { assetsActions } from "../utils/redux/slices/assetsSlice";
-import store from "../utils/redux/store";
+import { store } from "../utils/redux/store";
 import { AccountBalance } from "./AccountBalance";
 
 describe("<AccountBalance />", () => {

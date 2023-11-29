@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
-import SignPage from "./SignPage";
+import { SignPage } from "./SignPage";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
 import { isValidImplicitPkh, parsePkh, RawPkh } from "../../../types/Address";
@@ -22,8 +22,8 @@ import {
 } from "../../../components/SendFlow/onSubmitFormActionHooks";
 import { formDefaultValues, FormPageProps } from "../utils";
 import { FormErrorMessage } from "../../FormErrorMessage";
-import TrashIcon from "../../../assets/icons/Trash";
-import FormPageHeader from "../FormPageHeader";
+import { TrashIcon } from "../../../assets/icons";
+import { FormPageHeader } from "../FormPageHeader";
 
 export type FormValues = {
   name: string;

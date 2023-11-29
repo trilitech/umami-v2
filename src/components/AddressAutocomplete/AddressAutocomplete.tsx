@@ -22,10 +22,9 @@ import {
 import { useBakerList } from "../../utils/hooks/assetsHooks";
 import { useContacts } from "../../utils/hooks/contactsHooks";
 import { Suggestions } from "./Suggestions";
-import XMark from "../../assets/icons/XMark";
-import ChevronDownIcon from "../../assets/icons/ChevronDown";
+import { XMark, ChevronDownIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import AddressTile from "../AddressTile/AddressTile";
+import { AddressTile } from "../AddressTile/AddressTile";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData

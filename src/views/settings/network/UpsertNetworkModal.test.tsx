@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
 import { GHOSTNET, MAINNET } from "../../../types/Network";
-import store from "../../../utils/redux/store";
+import { store } from "../../../utils/redux/store";
 import { networksActions } from "../../../utils/redux/slices/networks";
 
 const fixture = (element: ReactElement) => (

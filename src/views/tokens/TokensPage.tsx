@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
-import NoItems from "../../components/NoItems";
+import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useGetAccountAllTokens } from "../../utils/hooks/assetsHooks";
-import AccountTokens from "./AccountTokens";
+import { AccountTokens } from "./AccountTokens";
 
-const TokensPage = () => {
+export const TokensPage = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
 
   const getTokens = useGetAccountAllTokens();
@@ -30,5 +30,3 @@ const TokensPage = () => {
     </Flex>
   );
 };
-
-export default TokensPage;

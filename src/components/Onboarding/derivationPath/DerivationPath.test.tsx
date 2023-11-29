@@ -1,6 +1,6 @@
 import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
 import { render, screen, waitFor } from "@testing-library/react";
-import DerivationPath from "./DerivationPath";
+import { DerivationPath } from "./DerivationPath";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import userEvent from "@testing-library/user-event";
 

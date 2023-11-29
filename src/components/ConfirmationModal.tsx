@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { DynamicModalContext } from "./DynamicModal";
-import WarningIcon from "../assets/icons/Warning";
+import { WarningIcon } from "../assets/icons";
 import colors from "../style/colors";
 
 export const ConfirmationModal: React.FC<{

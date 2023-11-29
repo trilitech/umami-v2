@@ -5,7 +5,7 @@ import { contactsActions } from "../slices/contactsSlice";
 
 const { upsert } = contactsActions;
 
-const checkAccountsAndUpsertContact = (
+export const checkAccountsAndUpsertContact = (
   contact: Contact
 ): ThunkAction<void, RootState, unknown, AnyAction> => {
   return (dispatch, getState) => {
@@ -21,5 +21,3 @@ const checkAccountsAndUpsertContact = (
     dispatch(upsert(contact));
   };
 };
-
-export default checkAccountsAndUpsertContact;
