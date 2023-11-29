@@ -11,9 +11,10 @@ export const useDeeplinkHandler = () => {
   const addPeerRef = useRef(addPeer);
   const toastRef = useRef(toast);
 
-  const handleDeepLink = (_: any, url: string) => {
-    // Print for debugging
-    console.log("onDeeplink", url);
+  const handleDeepLink = (_: any, _url: string) => {
+    // on Windows we have /// instead of // like on other platforms
+    const url = _url.replace(":///", "://");
+
     if (url.startsWith("umami://auth/")) {
       // Deeplink handler for GoogleAuth
       const params = parseTorusRedirectParams(url);
