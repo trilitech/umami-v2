@@ -11,6 +11,7 @@ import {
 import { compact, groupBy } from "lodash";
 import { useContext } from "react";
 
+import AccountGroupPopover from "./AccountGroupPopover";
 import { DeriveAccountDisplay } from "./DeriveAccountDisplay.tsx";
 import { AddAccountIcon, KeyIcon } from "../../assets/icons";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
@@ -26,7 +27,6 @@ import { useRemoveMnemonic, useRemoveNonMnemonic } from "../../utils/hooks/setAc
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
-import AccountGroupPopover from "./AccountGroupPopover";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();

@@ -1,7 +1,8 @@
-import { Box, Button, Divider, Text, Flex } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { PopoverMenu } from "../../components/PopoverMenu";
+
 import { TrashIcon } from "../../assets/icons/Trash";
+import { PopoverMenu } from "../../components/PopoverMenu";
 import colors from "../../style/colors";
 
 const AccountGroupPopover: React.FC<{
