@@ -11,7 +11,7 @@ import {
 import { compact, groupBy } from "lodash";
 import { useContext } from "react";
 
-import { AccountPopover } from "./AccountPopover";
+import AccountGroupPopover from "./AccountGroupPopover";
 import { DeriveAccountDisplay } from "./DeriveAccountDisplay.tsx";
 import { AddAccountIcon, KeyIcon } from "../../assets/icons";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
@@ -60,7 +60,7 @@ const AccountGroup: React.FC<{
     ? `Are you sure you want to remove all accounts derived from ${getLabel(first)}?`
     : `Are you sure you want to remove all of your ${getLabel(first)}?`;
 
-  const onDelete = () => {
+  const onRemove = () => {
     openWith(
       <ConfirmationModal
         buttonLabel="Confirm"
@@ -93,7 +93,7 @@ const AccountGroup: React.FC<{
         </Heading>
 
         {!isMultisig && (
-          <AccountPopover onCreate={isMnemonic ? onDerive : undefined} onDelete={onDelete} />
+          <AccountGroupPopover onCreate={isMnemonic ? onDerive : undefined} onRemove={onRemove} />
         )}
       </Flex>
 
