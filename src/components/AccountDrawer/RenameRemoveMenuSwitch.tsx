@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { RenameAccountModal } from "./RenameAccountModal";
 import { Account } from "../../types/Account";
+import { useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { remove as removeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
@@ -14,6 +15,7 @@ export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account
   const { openWith, onClose: closeModal } = useContext(DynamicModalContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isLastImplicitAccount = useImplicitAccounts().length === 1;
 
   let removeAccountAction: any = undefined;
 
@@ -29,19 +31,30 @@ export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account
     case "multisig":
   }
 
+  let title = "Remove Account",
+    description = "Are you sure you want to remove this account?",
+    buttonLabel = "Remove Account";
+
+  if (isLastImplicitAccount) {
+    title = "Are you sure?";
+    description =
+      "Removing your last account will off-board your from Umami. This will remove or reset all customised settings to their defaults. Personal data -including saved contacts, password and accounts- won't be affected.";
+    buttonLabel = "Remove & Off-board";
+  }
+
   const onRemove = !removeAccountAction
     ? undefined
     : () => {
         openWith(
           <ConfirmationModal
-            buttonLabel="Remove Account"
-            description="Are you sure you want to remove this account?"
+            buttonLabel={buttonLabel}
+            description={description}
             onSubmit={() => {
               dispatch(removeAccountAction(account));
               closeModal();
               navigate("/");
             }}
-            title="Remove Account"
+            title={title}
           />
         );
       };
