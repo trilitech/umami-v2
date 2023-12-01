@@ -1,6 +1,7 @@
 import { AspectRatio, Flex, Heading, Image, Link, Tooltip } from "@chakra-ui/react";
 
 import { tokenTitle } from "./BatchView";
+import { BakerIcon, OutgoingArrow } from "../../assets/icons";
 import colors from "../../style/colors";
 import { Operation } from "../../types/Operation";
 import { thumbnailUri, tokenNameSafe, tokenUri } from "../../types/Token";
@@ -17,6 +18,7 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
     case "tez":
       return (
         <Flex>
+          <OutgoingArrow marginRight="8px" />
           <Heading size="sm">{prettyTezAmount(operation.amount)}</Heading>
         </Flex>
       );
@@ -26,6 +28,7 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
       if (token?.type === "nft") {
         return (
           <Flex>
+            <OutgoingArrow marginRight="8px" />
             {Number(operation.amount) > 1 && (
               <>
                 <Heading color={colors.gray[450]} size="sm">
@@ -58,6 +61,7 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
 
       return (
         <Flex>
+          <OutgoingArrow marginRight="8px" />
           <Heading size="sm">
             <Link data-testid="link" href={token ? tokenUri(token, network) : undefined}>
               {tokenTitle(token, operation.amount)}
@@ -69,12 +73,14 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
     case "delegation":
       return (
         <Flex>
+          <BakerIcon marginRight="8px" />
           <Heading size="sm">Delegate</Heading>
         </Flex>
       );
     case "undelegation":
       return (
         <Flex>
+          <BakerIcon marginRight="8px" />
           <Heading size="sm">End Delegation</Heading>
         </Flex>
       );
