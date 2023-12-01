@@ -1,11 +1,14 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
+import colors from "../../style/colors";
+
 export const BakerIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="18px"
       height="18px"
       fill="none"
+      stroke={colors.gray[450]}
       data-testid="baker-icon"
       viewBox="0 0 18 18"
       xmlns="http://www.w3.org/2000/svg"

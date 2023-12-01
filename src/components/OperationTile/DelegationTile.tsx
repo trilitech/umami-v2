@@ -21,7 +21,7 @@ export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ o
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-delegation">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <BakerIcon marginRight="8px" stroke={colors.gray[450]} />
+          <BakerIcon marginRight="8px" />
           <TzktLink
             marginRight="8px"
             counter={operation.counter}

@@ -9,6 +9,7 @@ export const OutgoingArrow: React.FC<IconProps> = props => {
       height="18px"
       fill="none"
       stroke={colors.gray[450]}
+      data-testid="outgoing-arrow-icon"
       viewBox="0 0 18 18"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
