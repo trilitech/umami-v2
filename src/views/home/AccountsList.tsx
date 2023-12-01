@@ -11,7 +11,7 @@ import {
 import { compact, groupBy } from "lodash";
 import { useContext } from "react";
 
-import AccountGroupPopover from "./AccountGroupPopover";
+import { AccountGroupPopover } from "./AccountGroupPopover";
 import { DeriveAccountDisplay } from "./DeriveAccountDisplay.tsx";
 import { AddAccountIcon, KeyIcon } from "../../assets/icons";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
