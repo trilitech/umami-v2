@@ -14,7 +14,7 @@ import { formatPkh } from "../../utils/format";
 
 describe("<OperationRecipient />", () => {
   it.each([mockUndelegationOperation(0), mockContractOrigination(0)])(
-    `shows N/A for $type`,
+    "shows N/A for $type",
     operation => {
       render(<OperationRecipient operation={operation} />);
 
@@ -28,7 +28,7 @@ describe("<OperationRecipient />", () => {
     mockFA12Operation(0),
     mockFA2Operation(0),
     mockNftOperation(0),
-  ])(`shows recipient address for $type`, operation => {
+  ])("shows recipient address for $type", operation => {
     const expectedAddress = formatPkh(operation.recipient.pkh);
 
     render(<OperationRecipient operation={operation} />);

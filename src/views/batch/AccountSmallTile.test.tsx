@@ -9,7 +9,7 @@ import { store } from "../../utils/redux/store";
 beforeEach(() => dispatchMockAccounts([mockMnemonicAccount(1, "Test account label")]));
 
 describe("<AccountSmallTile />", () => {
-  it(`shows account label`, () => {
+  it("shows account label", () => {
     const account = mockImplicitAccount(1);
 
     render(<AccountSmallTile pkh={account.address.pkh} />);
@@ -17,7 +17,7 @@ describe("<AccountSmallTile />", () => {
     expect(screen.getByTestId("account-small-tile-label")).toHaveTextContent("Test account label");
   });
 
-  it(`shows formatted account address`, () => {
+  it("shows formatted account address", () => {
     const account = mockImplicitAccount(1);
 
     render(<AccountSmallTile pkh={account.address.pkh} />);
@@ -27,7 +27,7 @@ describe("<AccountSmallTile />", () => {
     );
   });
 
-  it(`hides empty balance`, () => {
+  it("hides empty balance", () => {
     const account = mockImplicitAccount(1);
 
     render(<AccountSmallTile pkh={account.address.pkh} />);
@@ -35,7 +35,7 @@ describe("<AccountSmallTile />", () => {
     expect(screen.queryByTestId("account-small-tile-balance")).not.toBeInTheDocument();
   });
 
-  it(`displays non-empty balance`, () => {
+  it("displays non-empty balance", () => {
     const account = mockImplicitAccount(1);
     store.dispatch(
       assetsActions.updateTezBalance([{ address: account.address.pkh, balance: 1234567 }])
