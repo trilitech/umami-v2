@@ -19,7 +19,7 @@ describe("<RenameRemoveMenu />", () => {
     const mockOnRename = jest.fn();
     render(<RenameRemoveMenu onRename={mockOnRename} />);
     fireEvent.click(screen.getByTestId("popover-cta"));
-    expect(screen.getByText(`Rename`)).toBeInTheDocument();
-    expect(screen.queryByText(`Remove`)).not.toBeInTheDocument();
+    expect(screen.getByText("Rename")).toBeInTheDocument();
+    expect(screen.queryByText("Remove")).not.toBeInTheDocument();
   });
 });

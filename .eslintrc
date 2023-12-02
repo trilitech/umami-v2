@@ -12,7 +12,8 @@
     "react-hooks",
     "react",
     "testing-library",
-    "unused-imports"
+    "unused-imports",
+    "@stylistic/eslint-plugin"
   ],
   "extends": [
     "eslint:recommended",
@@ -82,7 +83,8 @@
           "caseInsensitive": true
         }
       }
-    ]
+    ],
+    "@stylistic/quotes": ["warn", "double", { "avoidEscape": true }]
   },
   "overrides": [
     {

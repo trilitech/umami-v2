@@ -33,7 +33,7 @@ describe("<TokenTransferTile />", () => {
 
         expect(screen.getByTestId("incoming-arrow")).toBeInTheDocument();
         expect(screen.queryByTestId("outgoing-arrow")).not.toBeInTheDocument();
-        expect(screen.getByTestId("title")).toHaveTextContent(`+0.000000000500 uUSD`);
+        expect(screen.getByTestId("title")).toHaveTextContent("+0.000000000500 uUSD");
       });
 
       it("shows '-' for outgoing transactions", () => {
@@ -48,7 +48,7 @@ describe("<TokenTransferTile />", () => {
 
         expect(screen.queryByTestId("incoming-arrow")).not.toBeInTheDocument();
         expect(screen.getByTestId("outgoing-arrow")).toBeInTheDocument();
-        expect(screen.getByTestId("title")).toHaveTextContent(`-0.000000000500 uUSD`);
+        expect(screen.getByTestId("title")).toHaveTextContent("-0.000000000500 uUSD");
       });
 
       it("shows '-' if sender and target are both owned", () => {
@@ -67,7 +67,7 @@ describe("<TokenTransferTile />", () => {
 
         expect(screen.queryByTestId("incoming-arrow")).not.toBeInTheDocument();
         expect(screen.getByTestId("outgoing-arrow")).toBeInTheDocument();
-        expect(screen.getByTestId("title")).toHaveTextContent(`-0.000000000500 uUSD`);
+        expect(screen.getByTestId("title")).toHaveTextContent("-0.000000000500 uUSD");
       });
     });
 
@@ -81,7 +81,7 @@ describe("<TokenTransferTile />", () => {
 
         render(fixture(contextValue, tokenTransfer));
 
-        expect(screen.getByTestId("title")).toHaveTextContent(`-500 uUSD`);
+        expect(screen.getByTestId("title")).toHaveTextContent("-500 uUSD");
       });
 
       test("with decimals", () => {
@@ -93,7 +93,7 @@ describe("<TokenTransferTile />", () => {
 
         render(fixture(contextValue, tokenTransfer));
 
-        expect(screen.getByTestId("title")).toHaveTextContent(`-5.00 uUSD`);
+        expect(screen.getByTestId("title")).toHaveTextContent("-5.00 uUSD");
       });
     });
 

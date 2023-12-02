@@ -195,7 +195,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                       },
                       min: {
                         value: 1,
-                        message: `Min no. of approvals is 1`,
+                        message: "Min no. of approvals is 1",
                       },
                     })}
                   />

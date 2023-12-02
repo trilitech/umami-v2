@@ -150,11 +150,11 @@ describe("restoreEncryptedAccounts", () => {
 
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
-        label: `Account 0`,
+        label: "Account 0",
         derivationPath: "44'/1729'/0'/0'",
       }),
       expect.objectContaining({
-        label: `Account 1`,
+        label: "Account 1",
         derivationPath: "44'/1729'/1'/0'",
       }),
     ];

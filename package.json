@@ -58,6 +58,7 @@
     "@playwright/test": "^1.39.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@reduxjs/toolkit": "^1.9.7",
+    "@stylistic/eslint-plugin": "^1.4.1",
     "@svgr/webpack": "^5.5.0",
     "@taquito/ledger-signer": "^17.3.2",
     "@taquito/michel-codec": "^17.3.2",

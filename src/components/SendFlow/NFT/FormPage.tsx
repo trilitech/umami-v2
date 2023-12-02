@@ -105,7 +105,7 @@ export const FormPage: React.FC<
                           },
                           min: {
                             value: 1,
-                            message: `Min quantity is 1`,
+                            message: "Min quantity is 1",
                           },
                         })}
                       />

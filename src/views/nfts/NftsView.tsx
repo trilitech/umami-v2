@@ -20,7 +20,7 @@ export const NFTsView = () => {
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
   const openNFTsPage = useCallback(() => {
-    navigate(`/nfts`);
+    navigate("/nfts");
   }, [navigate]);
 
   useEffect(() => {

@@ -139,7 +139,7 @@ describe("useAddressKind", () => {
       },
       { type: "fa2", address: uUSD(mockImplicitAddress(0)).token.contract.address as string },
       { type: "baker", address: mockBaker(1).address },
-    ])(`prioritizes $type over the contact`, ({ type, address }) => {
+    ])("prioritizes $type over the contact", ({ type, address }) => {
       store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
       store.dispatch(
