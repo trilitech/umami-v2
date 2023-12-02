@@ -1,3 +1,4 @@
+import { MichelsonV1Expression } from "@taquito/rpc";
 import { DelegationOperation } from "@tzkt/sdk-api";
 
 import {
@@ -399,11 +400,15 @@ export const mockUndelegationOperation = (index: number): Undelegation => {
   };
 };
 
-export const mockContractOrigination = (index: number): ContractOrigination => {
+export const mockContractOrigination = (
+  index: number,
+  storage = {},
+  code: MichelsonV1Expression[] = []
+): ContractOrigination => {
   return {
     type: "contract_origination",
-    storage: {},
-    code: [],
+    storage: storage,
+    code: code,
     sender: mockImplicitAddress(index),
   };
 };

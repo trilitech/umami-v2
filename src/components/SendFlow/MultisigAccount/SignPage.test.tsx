@@ -4,6 +4,7 @@ import BigNumber from "bignumber.js";
 import { FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
+  mockContractOrigination,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
@@ -27,12 +28,7 @@ beforeEach(() => {
 
 const props: SignPageProps<FormValues> = {
   operations: makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
-    {
-      type: "contract_origination",
-      sender: mockImplicitAddress(0),
-      code: [],
-      storage: {},
-    },
+    mockContractOrigination(0),
   ]),
   fee: new BigNumber(1234567),
   mode: "single",
