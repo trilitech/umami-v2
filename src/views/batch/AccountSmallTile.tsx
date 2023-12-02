@@ -30,13 +30,22 @@ export const AccountSmallTile = ({ pkh, ...flexProps }: { pkh: string } & FlexPr
     >
       <Identicon height="30px" marginRight="12px" padding="5px" address={pkh} identiconSize={20} />
       <Flex alignSelf="center" height="20px">
-        <Heading marginRight="10px" size="sm">
+        <Heading marginRight="10px" data-testid="account-small-tile-label" size="sm">
           {account.label}
         </Heading>
-        <Text marginRight="35px" color={colors.gray[300]} size="xs">
+        <Text
+          marginRight="35px"
+          color={colors.gray[300]}
+          data-testid="account-small-tile-pkh"
+          size="xs"
+        >
           {formatPkh(pkh)}
         </Text>
-        {balance && <Heading size="sm">{prettyTezAmount(balance)}</Heading>}
+        {balance && (
+          <Heading data-testid="account-small-tile-balance" size="sm">
+            {prettyTezAmount(balance)}
+          </Heading>
+        )}
       </Flex>
     </Flex>
   );
