@@ -23,7 +23,7 @@ describe("useGetToken", () => {
       expect(getTokenRef.current(mockContractAddress(0).pkh, "0")).toBeUndefined();
     });
 
-    it(`can find a token if it exists on the network`, () => {
+    it("can find a token if it exists on the network", () => {
       const tokenBalance = hedgehoge(mockImplicitAddress(0));
       store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
       const { result: getTokenRef } = renderHook(() => useGetToken(), {
@@ -52,7 +52,7 @@ describe("useGetToken", () => {
 });
 
 describe("useGetTokenType", () => {
-  describe.each(DefaultNetworks)(`on $name`, network => {
+  describe.each(DefaultNetworks)("on $name", network => {
     it("returns undefined if contract is not found", () => {
       const { result: getTokenRef } = renderHook(() => useGetTokenType(network), {
         wrapper: ReduxStore,
@@ -60,7 +60,7 @@ describe("useGetTokenType", () => {
       expect(getTokenRef.current(mockContractAddress(0).pkh)).toBeUndefined();
     });
 
-    it(`can find the type of a token if it exists on the network`, () => {
+    it("can find the type of a token if it exists on the network", () => {
       const tokenBalance = hedgehoge(mockImplicitAddress(0));
       store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
       const { result: getTokenRef } = renderHook(() => useGetTokenType(network), {
@@ -69,7 +69,7 @@ describe("useGetTokenType", () => {
       expect(getTokenRef.current(tokenBalance.token.contract.address as string)).toEqual("fa1.2");
     });
 
-    it(`can't find the token type if it exists on another network`, () => {
+    it("can't find the token type if it exists on another network", () => {
       const anotherNetwork = DefaultNetworks.find(another => another !== network) as Network;
       const tokenBalance = hedgehoge(mockImplicitAddress(0));
       store.dispatch(

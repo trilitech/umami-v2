@@ -52,7 +52,7 @@ describe("<SignPage />", () => {
 
   it("displays the threshold", () => {
     render(fixture(props));
-    expect(screen.getByTestId("threshold")).toHaveTextContent(`1 out of 2`);
+    expect(screen.getByTestId("threshold")).toHaveTextContent("1 out of 2");
   });
 
   it("displays the contract name", () => {

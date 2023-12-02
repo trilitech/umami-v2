@@ -35,7 +35,7 @@ export const BuyTezForm: React.FC<{
 
   let actionURL = network.buyTezUrl;
   if (network.buyTezUrl && isMainnet) {
-    actionURL += `/default/widget/`;
+    actionURL += "/default/widget/";
   }
 
   return (

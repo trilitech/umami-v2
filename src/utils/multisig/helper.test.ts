@@ -15,7 +15,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("multisig helpers", () => {
   describe.each(DefaultNetworks)("on $name", network => {
-    describe(`getRelevantMultisigContracts`, () => {
+    describe("getRelevantMultisigContracts", () => {
       it("fetches multisig contracts", async () => {
         const mockResponse = {
           data: tzktGetSameMultisigsResponse,
@@ -37,7 +37,7 @@ describe("multisig helpers", () => {
       });
     });
 
-    describe(`getPendingOperationsForMultisigs`, () => {
+    describe("getPendingOperationsForMultisigs", () => {
       it("handles empty multisigs", async () => {
         const result = await getPendingOperationsForMultisigs([], network);
         expect(mockedAxios.get).toBeCalledTimes(0);

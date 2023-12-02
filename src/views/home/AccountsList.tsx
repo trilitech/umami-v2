@@ -80,7 +80,7 @@ const AccountGroup: React.FC<{
 
   const onDerive = () => {
     if (!isMnemonic) {
-      throw new Error(`Can't derive a non mnemonic account!`);
+      throw new Error("Can't derive a non mnemonic account!");
     }
     openWith(<DeriveAccount fingerprint={first.seedFingerPrint} onDone={onClose} />);
   };

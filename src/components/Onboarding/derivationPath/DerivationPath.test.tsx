@@ -25,7 +25,7 @@ describe("<DerivationPath />", () => {
     },
   ];
 
-  describe.each(testData)(`For $account.type`, ({ account, nextPage, derivationPath }) => {
+  describe.each(testData)("For $account.type", ({ account, nextPage, derivationPath }) => {
     it("uses default path", async () => {
       const user = userEvent.setup();
       render(fixture(goToStepMock, account));
