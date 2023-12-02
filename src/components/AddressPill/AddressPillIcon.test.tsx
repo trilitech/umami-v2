@@ -5,22 +5,18 @@ import { mockContractAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 
 describe("AddressPill Icons", () => {
-  it("Left icon renders", () => {
-    const addressKindTypesWithLeftIcon: AddressKindType[] = [
-      "multisig",
-      "fa1.2",
-      "fa2",
-      "baker",
-      "contact",
-    ];
+  it.each(["multisig", "fa1.2", "fa2", "baker", "contact"])("renders %s left icon", type => {
+    render(
+      <LeftIcon
+        addressKind={{
+          type: type as AddressKindType,
+          pkh: mockContractAddress(0).pkh,
+          label: "label" as any,
+        }}
+      />
+    );
 
-    addressKindTypesWithLeftIcon.forEach(type => {
-      render(
-        <LeftIcon addressKind={{ type, pkh: mockContractAddress(0).pkh, label: "label" as any }} />
-      );
-
-      expect(screen.getByTestId(`${type}-icon`)).toBeInTheDocument();
-    });
+    expect(screen.getByTestId(`${type}-icon`)).toBeInTheDocument();
   });
 
   it("Left icon with unknown/implicit address returns null", () => {
