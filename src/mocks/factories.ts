@@ -13,6 +13,7 @@ import { ContractAddress, ImplicitAddress } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { Delegate } from "../types/Delegate";
 import {
+  ContractOrigination,
   Delegation,
   FA12Transfer,
   FA2Transfer,
@@ -394,6 +395,15 @@ export const mockDelegationOperation = (index: number): Delegation => {
 export const mockUndelegationOperation = (index: number): Undelegation => {
   return {
     type: "undelegation",
+    sender: mockImplicitAddress(index),
+  };
+};
+
+export const mockContractOrigination = (index: number): ContractOrigination => {
+  return {
+    type: "contract_origination",
+    storage: {},
+    code: [],
     sender: mockImplicitAddress(index),
   };
 };
