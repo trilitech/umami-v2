@@ -5,7 +5,7 @@ import { TrashIcon } from "../../assets/icons/Trash";
 import { PopoverMenu } from "../../components/PopoverMenu";
 import colors from "../../style/colors";
 
-const AccountGroupPopover: React.FC<{
+export const AccountGroupPopover: React.FC<{
   onRemove: () => void;
   onCreate?: () => void;
 }> = ({ onRemove, onCreate }) => {
@@ -33,5 +33,3 @@ const AccountGroupPopover: React.FC<{
     </PopoverMenu>
   );
 };
-
-export default AccountGroupPopover;

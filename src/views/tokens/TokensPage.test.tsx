@@ -22,7 +22,7 @@ describe("<TokensView />", () => {
     expect(screen.getByText(/no tokens found/i)).toBeInTheDocument();
   });
 
-  test.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
+  it.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
     store.dispatch(networksActions.setCurrent(network));
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(1)]));
     const tokenBalances = [

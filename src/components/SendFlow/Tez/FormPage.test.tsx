@@ -242,7 +242,7 @@ describe("<Form />", () => {
       });
     });
 
-    test.each([mockImplicitAccount(0), mockMultisigAccount(0)])(
+    it.each([mockImplicitAccount(0), mockMultisigAccount(0)])(
       "opens a sign page if estimation succeeds",
       async sender => {
         render(

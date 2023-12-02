@@ -1,57 +1,57 @@
 import { OperationRecipient } from "./OperationRecipient";
 import {
+  mockContractAddress,
+  mockContractOrigination,
   mockDelegationOperation,
   mockFA12Operation,
   mockFA2Operation,
-  mockImplicitAddress,
   mockNftOperation,
   mockTezOperation,
   mockUndelegationOperation,
 } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
+import { formatPkh } from "../../utils/format";
 
 describe("<OperationRecipient />", () => {
-  test("undelegation", () => {
-    render(<OperationRecipient operation={mockUndelegationOperation(0)} />);
-    expect(screen.getByTestId("recipient")).toHaveTextContent("N/A");
+  it.each([mockUndelegationOperation(0), mockContractOrigination(0)])(
+    "shows N/A for $type",
+    operation => {
+      render(<OperationRecipient operation={operation} />);
+
+      expect(screen.getByTestId("recipient")).toHaveTextContent("N/A");
+    }
+  );
+
+  it.each([
+    mockDelegationOperation(0),
+    mockTezOperation(0),
+    mockFA12Operation(0),
+    mockFA2Operation(0),
+    mockNftOperation(0),
+  ])("shows recipient address for $type", operation => {
+    const expectedAddress = formatPkh(operation.recipient.pkh);
+
+    render(<OperationRecipient operation={operation} />);
+
+    expect(screen.getByTestId("recipient")).toHaveTextContent(expectedAddress);
   });
 
-  test("contract_origination", () => {
+  it("shows contract address for contract_call", () => {
+    const contractAddress = mockContractAddress(0);
+    const expectedAddress = formatPkh(contractAddress.pkh);
+
     render(
       <OperationRecipient
         operation={{
-          type: "contract_origination",
-          storage: {},
-          code: [],
-          sender: mockImplicitAddress(0),
+          type: "contract_call",
+          contract: mockContractAddress(0),
+          amount: "10",
+          entrypoint: "test",
+          args: [{ prim: "unit" }],
         }}
       />
     );
-    expect(screen.getByTestId("recipient")).toHaveTextContent("N/A");
-  });
 
-  test("delegation", () => {
-    render(<OperationRecipient operation={mockDelegationOperation(0)} />);
-    expect(screen.getByTestId("recipient")).toHaveTextContent("tz1UZ...eJ3Vf");
-  });
-
-  test("tez", () => {
-    render(<OperationRecipient operation={mockTezOperation(1)} />);
-    expect(screen.getByTestId("recipient")).toHaveTextContent("tz1ik...Cc43D");
-  });
-
-  test("fa1.2", () => {
-    render(<OperationRecipient operation={mockFA12Operation(1)} />);
-    expect(screen.getByTestId("recipient")).toHaveTextContent("tz1ik...Cc43D");
-  });
-
-  test("fa2", () => {
-    render(<OperationRecipient operation={mockFA2Operation(1)} />);
-    expect(screen.getByTestId("recipient")).toHaveTextContent("tz1ik...Cc43D");
-  });
-
-  test("nft", () => {
-    render(<OperationRecipient operation={mockNftOperation(1)} />);
-    expect(screen.getByTestId("recipient")).toHaveTextContent("tz1ik...Cc43D");
+    expect(screen.getByTestId("recipient")).toHaveTextContent(expectedAddress);
   });
 });

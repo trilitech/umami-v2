@@ -4,10 +4,10 @@ import { nanoid } from "nanoid";
 import pluralize from "pluralize";
 import React, { useContext } from "react";
 
+import { AccountSmallTile } from "./AccountSmallTile";
 import { OperationRecipient } from "./OperationRecipient";
 import { OperationView } from "./OperationView";
 import { TrashIcon } from "../../assets/icons";
-import { AccountSmallTile } from "../../components/AccountSelector/AccountSmallTile";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { SignPage } from "../../components/SendFlow/Batch/SignPage";

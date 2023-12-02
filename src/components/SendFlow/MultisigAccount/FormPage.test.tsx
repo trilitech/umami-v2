@@ -7,6 +7,7 @@ import { SignPage } from "./SignPage";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import {
   mockContractAddress,
+  mockContractOrigination,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
@@ -269,16 +270,11 @@ describe("FormPage", () => {
     fireEvent.click(submitButton);
 
     const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
-      {
-        type: "contract_origination",
-        sender: mockImplicitAccount(0).address,
-        code: contract,
-        storage: makeStorageJSON(
-          mockImplicitAccount(0).address.pkh,
-          [mockImplicitAddress(1).pkh],
-          "1"
-        ),
-      },
+      mockContractOrigination(
+        0,
+        makeStorageJSON(mockImplicitAccount(0).address.pkh, [mockImplicitAddress(1).pkh], "1"),
+        contract
+      ),
     ]);
     mockEstimatedFee(100);
     await waitFor(() => {
