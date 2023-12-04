@@ -1,8 +1,15 @@
 import { estimate, handleTezError } from "./estimate";
+import { addressExists, makeToolkit } from "./helpers";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET } from "../../types/Network";
-
+jest.mock("./helpers", () => {
+  return {
+    ...jest.requireActual("./helpers"),
+    makeToolkit: jest.fn(),
+    addressExists: jest.fn(),
+  };
+});
 describe("estimate", () => {
   describe("Error handling", () => {
     it("Catches unrevelaed account", async () => {
@@ -11,6 +18,18 @@ describe("estimate", () => {
         mockImplicitAccount(1),
         [mockTezOperation(0)]
       );
+
+      jest.mocked(addressExists).mockResolvedValue(false);
+
+      jest.mocked(makeToolkit).mockImplementation(
+        () =>
+          ({
+            estimate: {
+              batch: jest.fn().mockRejectedValue(new Error("Batch estimation failed")),
+            },
+          }) as any
+      );
+
       await expect(() => estimate(accountOperations, GHOSTNET)).rejects.toThrowError(
         "Signer address is not revealed on the ghostnet."
       );
