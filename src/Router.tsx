@@ -1,13 +1,6 @@
 /* istanbul ignore file */
-import React, { useEffect, useRef } from "react";
-import {
-  HashRouter,
-  Navigate,
-  Route,
-  RouterProvider,
-  Routes,
-  createHashRouter,
-} from "react-router-dom";
+import { useEffect } from "react";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
@@ -31,23 +24,13 @@ import { withSideMenu } from "./views/withSideMenu";
 
 export const Router = () => {
   useDeeplinkHandler();
-  const isLoggedIn = useImplicitAccounts().length !== 0;
+  const isLoggedIn = useImplicitAccounts().length > 0;
 
   return isLoggedIn ? <LoggedInRouterWithPolling /> : <LoggedOutRouter />;
 };
 
-const loggedOutRouter = createHashRouter([
-  {
-    path: "/welcome",
-    element: <ImportSeed />,
-  },
-  {
-    path: "/*",
-    element: <Navigate to="/welcome" />,
-  },
-]);
-
-const MemoizedRouter = React.memo(() => {
+const LoggedInRouterWithPolling = () => {
+  useAssetsPolling();
   const dynamicModal = useDynamicModal();
 
   return (
@@ -73,28 +56,19 @@ const MemoizedRouter = React.memo(() => {
       </DynamicModalContext.Provider>
     </HashRouter>
   );
-});
-
-const LoggedInRouterWithPolling = () => {
-  // This does rerenders
-  useAssetsPolling();
-  return <MemoizedRouter />;
 };
 
-// Need this ignore BS because useEffect runs twice in development:
-// https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
 const LoggedOutRouter = () => {
-  const ignore = useRef(false);
   useEffect(() => {
-    if (!ignore.current) {
-      resetBeacon().then(_ => {
-        ignore.current = false;
-      });
-    }
-    return () => {
-      ignore.current = true;
-    };
+    resetBeacon();
   }, []);
 
-  return <RouterProvider router={loggedOutRouter} />;
+  return (
+    <HashRouter>
+      <Routes>
+        <Route element={<Navigate to="/welcome" />} path="/*" />
+        <Route element={<ImportSeed />} path="/welcome" />
+      </Routes>
+    </HashRouter>
+  );
 };
