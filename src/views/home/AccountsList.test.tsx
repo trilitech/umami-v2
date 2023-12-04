@@ -1,4 +1,6 @@
 import "@testing-library/jest-dom";
+import userEvent from "@testing-library/user-event";
+
 import { AccountsList } from "./AccountsList";
 import {
   mockAccountLabel,
@@ -27,7 +29,8 @@ const MOCK_FINGETPRINT2 = "mockFin2";
 
 describe("<AccountList />", () => {
   describe("<AccountGroup/>", () => {
-    it("shows removal message", () => {
+    it("shows removal message", async () => {
+      const user = userEvent.setup();
       const mnemonic = mockMnemonicAccount(0);
       const social = mockSocialAccount(1);
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mnemonic]));
@@ -37,31 +40,37 @@ describe("<AccountList />", () => {
       const [mnemonicPopover, socialPopover] = screen.getAllByTestId("popover-cta");
       const [removeMnemonic, removeSocial] = screen.getAllByTestId("popover-remove");
 
-      fireEvent.click(mnemonicPopover);
-      fireEvent.click(removeMnemonic);
-      expect(screen.getByTestId("description")).toHaveTextContent(
-        "Are you sure you want to remove all accounts derived from Seedphrase mockPrint?"
-      );
-
-      fireEvent.click(socialPopover);
-      fireEvent.click(removeSocial);
-      expect(screen.getByTestId("description")).toHaveTextContent(
-        "Are you sure you want to remove all of your Social Accounts?"
-      );
+      user.click(mnemonicPopover);
+      user.click(removeMnemonic);
+      await waitFor(() => {
+        expect(screen.getByTestId("description")).toHaveTextContent(
+          "Are you sure you want to remove all accounts derived from Seedphrase mockPrint?"
+        );
+      });
+      user.click(socialPopover);
+      user.click(removeSocial);
+      await waitFor(() => {
+        expect(screen.getByTestId("description")).toHaveTextContent(
+          "Are you sure you want to remove all of your Social Accounts?"
+        );
+      });
     });
 
-    it("shows offboarding message for last accounts", () => {
+    it("shows offboarding message for last accounts", async () => {
+      const user = userEvent.setup();
       const social1 = mockSocialAccount(0);
       const social2 = mockSocialAccount(1);
       store.dispatch(accountsSlice.actions.addAccount(social1));
       store.dispatch(accountsSlice.actions.addAccount(social2));
       render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
 
-      fireEvent.click(screen.getByTestId("popover-cta"));
-      fireEvent.click(screen.getByTestId("popover-remove"));
-      expect(screen.getByTestId("description")).toHaveTextContent(
-        "Removing your last account will off-board your from Umami. This will remove or reset all customised settings to their defaults. Personal data -including saved contacts, password and accounts- won't be affected."
-      );
+      user.click(screen.getByTestId("popover-cta"));
+      user.click(screen.getByTestId("popover-remove"));
+      await waitFor(() => {
+        expect(screen.getByTestId("description")).toHaveTextContent(
+          "Removing your last account will off-board your from Umami. This will remove or reset all customised settings to their defaults. Personal data -including saved contacts, password and accounts- won't be affected."
+        );
+      });
     });
   });
   test("Displays accounts in store with label and formated pkh", async () => {
