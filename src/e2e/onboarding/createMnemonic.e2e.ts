@@ -23,7 +23,7 @@ const onboardWithNewMnemonic = async ({
   await page.getByRole("button", { name: "Get started" }).click();
 
   expect(page.getByRole("heading", { name: "Accept to Continue" })).toBeVisible();
-  await page.getByText(/I confirm/).click();
+  await page.getByText("I confirm").click();
 
   await page.getByRole("button", { name: "Continue" }).click();
   await page.getByRole("button", { name: "Create a new Account" }).click();

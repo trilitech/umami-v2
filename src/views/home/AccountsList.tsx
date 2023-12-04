@@ -88,7 +88,7 @@ const AccountGroup: React.FC<{
   return (
     <Box data-testid={`account-group-${groupLabel}`}>
       <Flex justifyContent="space-between">
-        <Heading marginBottom={4} size="md">
+        <Heading marginBottom={4} data-testid="account-group-title" size="md">
           {groupLabel}
         </Heading>
 

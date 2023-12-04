@@ -10,6 +10,7 @@
   "engines": {
     "node": ">=18.15.0 <19.0.0"
   },
+  "type": "commonjs",
   "main": "public/electron.js",
   "scripts": {
     "build": "yarn generate-ts-types && node scripts/build.js",
@@ -25,6 +26,7 @@
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "start": "node scripts/start.js",
     "test": "cross-env TZ=CET node scripts/test.js --resetModules --coverage --verbose",
+    "test:e2e": "cucumber-js test",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts",
     "typecheck": "tsc"
@@ -46,6 +48,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@chakra-ui/system": "^2.6.2",
     "@chriscdn/promise-semaphore": "^2.0.7",
+    "@cucumber/cucumber": "^10.0.1",
     "@electron/notarize": "^2.2.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -72,6 +75,7 @@
     "@testing-library/user-event": "14.4.3",
     "@toruslabs/customauth": "^15.0.5",
     "@types/assert": "^1.5.8",
+    "@types/cucumber": "^7.0.0",
     "@types/jest": "27.5.2",
     "@types/node": "18.15.0",
     "@types/papaparse": "^5.3.10",
@@ -102,6 +106,8 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.2.0",
+    "cucumber-pretty": "^6.0.1",
+    "cucumber-tsflow": "^4.3.1",
     "date-fns": "^2.30.0",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
@@ -179,6 +185,7 @@
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.0.2",
     "terser-webpack-plugin": "^5.2.5",
+    "ts-node": "^10.9.1",
     "typescript": "5.2.2",
     "web-vitals": "^3.5.0",
     "webpack": "^5.89.0",
