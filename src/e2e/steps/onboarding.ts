@@ -80,3 +80,8 @@ Then("I have {string} account", async function (this: CustomWorld, accountName) 
   expect(accountsGroup.accounts[0].address).toEqual(formatPkh(pkh));
   expect(accountsGroup.accounts[0].label).toMatch(new RegExp(`^${namePrefix}`));
 });
+
+Then("I see a toast {string}", async function (this: CustomWorld, toastMessage) {
+  const toast = this.page.getByRole("status").getByText(toastMessage);
+  expect(toast).toBeVisible();
+});

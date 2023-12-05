@@ -28,5 +28,5 @@ After(async function (this: CustomWorld) {
 
 AfterAll(async function () {
   await browser.close();
-  await killNode();
+  killNode();
 });

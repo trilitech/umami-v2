@@ -35,4 +35,5 @@ Feature: User Onboarding
     And I fill "Confirm Password" with "12345678"
     And I click "Submit" button
     Then I am on an Accounts page
+    And I see a toast "Account successfully created!"
     And I have "Account A" account

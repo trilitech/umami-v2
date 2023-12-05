@@ -9448,7 +9448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-table3@npm:0.6.3, cli-table3@npm:^0.6.0":
+"cli-table3@npm:0.6.3":
   version: 0.6.3
   resolution: "cli-table3@npm:0.6.3"
   dependencies:
@@ -9622,13 +9622,6 @@ __metadata:
   version: 2.0.20
   resolution: "colorette@npm:2.0.20"
   checksum: 0c016fea2b91b733eb9f4bcdb580018f52c0bc0979443dad930e5037a968237ac53d9beb98e218d2e9235834f8eebce7f8e080422d6194e957454255bde71d3d
-  languageName: node
-  linkType: hard
-
-"colors@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "colors@npm:1.4.0"
-  checksum: 98aa2c2418ad87dedf25d781be69dc5fc5908e279d9d30c34d8b702e586a0474605b3a189511482b9d5ed0d20c867515d22749537f7bc546256c6014f3ebdcec
   languageName: node
   linkType: hard
 
@@ -10299,19 +10292,6 @@ __metadata:
   version: 3.1.2
   resolution: "csstype@npm:3.1.2"
   checksum: e1a52e6c25c1314d6beef5168da704ab29c5186b877c07d822bd0806717d9a265e8493a2e35ca7e68d0f5d472d43fac1cdce70fd79fd0853dff81f3028d857b5
-  languageName: node
-  linkType: hard
-
-"cucumber-pretty@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "cucumber-pretty@npm:6.0.1"
-  dependencies:
-    cli-table3: ^0.6.0
-    colors: ^1.4.0
-    figures: ^3.2.0
-  peerDependencies:
-    cucumber: ">=6.0.0 <7.0.0"
-  checksum: ed9a73b979f15338ea09250034aacbc831902fc6a35e46409b853caafb4022be53f093b839a82e6b0f56772039c934794b0faa0513bbbc42e53585c5b39132c0
   languageName: node
   linkType: hard
 
@@ -21228,7 +21208,6 @@ __metadata:
     cross-env: ^7.0.3
     css-loader: ^6.5.1
     css-minimizer-webpack-plugin: ^3.2.0
-    cucumber-pretty: ^6.0.1
     cucumber-tsflow: ^4.3.1
     date-fns: ^2.30.0
     dotenv: ^10.0.0

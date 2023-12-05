@@ -91,14 +91,15 @@ export const onboardWithExistingMnemonic = async ({
   await page.waitForURL("/#/home");
 };
 
-export const startNode = async () => {
-  execSync(`docker compose -f ${DOCKER_COMPOSE_FILE} up --wait`);
-};
+const runDockerCommand = (command: string) =>
+  execSync(`docker compose -f ${DOCKER_COMPOSE_FILE} ${command}`, { stdio: "ignore" });
 
-export const killNode = async () =>
-  execSync(
-    `docker compose -f ${DOCKER_COMPOSE_FILE} kill && docker compose -f ${DOCKER_COMPOSE_FILE} down`
-  );
+export const startNode = () => runDockerCommand("up --wait");
+
+export const killNode = () => {
+  runDockerCommand("kill");
+  runDockerCommand("down");
+};
 
 // this should be called before each test that uses the blockchain/indexer
 // we need to make sure that each test has a clean state
@@ -106,6 +107,7 @@ export const killNode = async () =>
 // this thing takes ~15 secs to run so it should be used only when necessary
 // if the test doesn't involve any blockchain/indexer interaction then do not call this function
 export const resetBlockchain = () => {
+  console.log("Resetting blockchain...");
   killNode();
   startNode();
 };
@@ -115,8 +117,8 @@ export const topUpAccount = async (account: RawPkh, tez: string) => {
   const prevBalance = accountInfo[0]?.balance;
 
   // alice is a bootstrapped account on flextesa with lots of Tez
-  execSync(
-    `docker compose exec -T flextesa octez-client --wait none transfer ${tez} from alice to ${account} --burn-cap 1`
+  runDockerCommand(
+    `exec -T flextesa octez-client --wait none transfer ${tez} from alice to ${account} --burn-cap 1`
   );
 
   // wait until the balance has updated
