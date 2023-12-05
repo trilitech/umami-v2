@@ -8,6 +8,6 @@
     "paths": ["src/e2e/features/"],
     "require": ["src/e2e/steps/*.ts"],
     "requireModule": ["ts-node/register"],
-    "format": ["html:test-results/cucumber-report.html"]
+    "format": ["html:test-results/cucumber-report.html", "json:test-results/cucumber-report.json"]
   }
 }
