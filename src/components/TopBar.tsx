@@ -34,28 +34,15 @@ const UpdateButton = () => {
   const isLoading = useIsLoading();
   const lastTimeUpdated = useLastTimeUpdated();
 
-  const [relativeTimestamp, setRelativeTimestamp] = useState<string | null>(
-    lastTimeUpdated && formatRelativeTimestamp(lastTimeUpdated)
-  );
-
-  useEffect(() => {
-    if (lastTimeUpdated) {
-      const interval = setInterval(() => {
-        setRelativeTimestamp(formatRelativeTimestamp(lastTimeUpdated));
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [lastTimeUpdated]);
-
   const onClick = () => {
     dispatch(assetsActions.refetch());
   };
 
   return (
     <>
-      {relativeTimestamp && !isSmallSize && (
+      {lastTimeUpdated && !isSmallSize && (
         <Text display="inline" color={colors.gray[400]} size="sm">
-          Updated {relativeTimestamp} ago
+          Updated {formatRelativeTimestamp(lastTimeUpdated)} ago
         </Text>
       )}
       <IconButton
