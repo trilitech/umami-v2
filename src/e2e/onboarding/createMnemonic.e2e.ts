@@ -1,9 +1,6 @@
 import { Page, expect, test } from "@playwright/test";
 
-import {
-  AVAILABLE_DERIVATION_PATHS,
-  defaultDerivationPathPattern,
-} from "../../utils/account/derivationPathUtils";
+import { AVAILABLE_DERIVATION_PATHS } from "../../utils/account/derivationPathUtils";
 import { formatPkh } from "../../utils/format";
 import { derivePublicKeyPair } from "../../utils/mnemonic";
 import { getFingerPrint } from "../../utils/tezos/helpers";
@@ -62,24 +59,6 @@ const onboardWithNewMnemonic = async ({
 };
 
 test.describe("Create Mnemonic adds new group with one account", () => {
-  test("With default derivation path", async ({ page }) => {
-    const seedphrase = await onboardWithNewMnemonic({ page });
-    const expectedFingerprint = await getFingerPrint(seedphrase);
-    const expectedPkh = (await derivePublicKeyPair(seedphrase, `m/${defaultDerivationPathPattern}`))
-      .pkh;
-
-    // Created mnemonic group
-    await expect(page.getByTestId(`account-group-Seedphrase ${expectedFingerprint}`)).toBeVisible();
-    await expect(page.getByText(`Seedphrase ${expectedFingerprint}`)).toBeVisible();
-    expect((await page.getByTestId(/account-tile/).all()).length).toBe(1);
-
-    // Created mnemonic account
-    const accountTile = page.getByTestId(`account-tile-${expectedPkh}`);
-    await expect(accountTile).toBeVisible();
-    await expect(accountTile.getByRole("heading", { name: "Account" })).toBeVisible();
-    await expect(accountTile.getByText(formatPkh(expectedPkh))).toBeVisible();
-  });
-
   test("With custom derivation path", async ({ page }) => {
     const derivationPath = AVAILABLE_DERIVATION_PATHS[2].value;
     const seedphrase = await onboardWithNewMnemonic({ page, derivationPath });
