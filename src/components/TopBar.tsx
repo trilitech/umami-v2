@@ -8,8 +8,8 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { formatDistance } from "date-fns";
-import React, { useContext, useEffect, useState } from "react";
+import { differenceInMinutes, formatDistance } from "date-fns";
+import React, { useContext } from "react";
 
 import { BuyTezForm } from "./BuyTez/BuyTezForm";
 import { DynamicModalContext } from "./DynamicModal";
@@ -27,6 +27,10 @@ const formatRelativeTimestamp = (timestamp: string) => {
   return formatDistance(new Date(timestamp), new Date());
 };
 
+const diffInMinutes = (timestamp: string) => {
+  return differenceInMinutes(new Date(), new Date(timestamp));
+};
+
 const UpdateButton = () => {
   const [isSmallSize] = useMediaQuery("(max-width: 1200px)");
 
@@ -37,10 +41,12 @@ const UpdateButton = () => {
   const onClick = () => {
     dispatch(assetsActions.refetch());
   };
+  const showLastTimeUpdated =
+    lastTimeUpdated !== null && diffInMinutes(lastTimeUpdated) >= 2 && !isSmallSize;
 
   return (
     <>
-      {lastTimeUpdated && !isSmallSize && (
+      {showLastTimeUpdated && (
         <Text display="inline" color={colors.gray[400]} size="sm">
           Updated {formatRelativeTimestamp(lastTimeUpdated)} ago
         </Text>
