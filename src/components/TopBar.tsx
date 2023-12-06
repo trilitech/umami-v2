@@ -8,8 +8,8 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { formatDistance } from "date-fns";
-import React, { useContext, useEffect, useState } from "react";
+import { differenceInMinutes, formatDistance } from "date-fns";
+import React, { useContext } from "react";
 
 import { BuyTezForm } from "./BuyTez/BuyTezForm";
 import { DynamicModalContext } from "./DynamicModal";
@@ -23,10 +23,6 @@ import { assetsActions } from "../utils/redux/slices/assetsSlice";
 export const emailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
 
-const formatRelativeTimestamp = (timestamp: string) => {
-  return formatDistance(new Date(timestamp), new Date());
-};
-
 const UpdateButton = () => {
   const [isSmallSize] = useMediaQuery("(max-width: 1200px)");
 
@@ -34,28 +30,19 @@ const UpdateButton = () => {
   const isLoading = useIsLoading();
   const lastTimeUpdated = useLastTimeUpdated();
 
-  const [relativeTimestamp, setRelativeTimestamp] = useState<string | null>(
-    lastTimeUpdated && formatRelativeTimestamp(lastTimeUpdated)
-  );
-
-  useEffect(() => {
-    if (lastTimeUpdated) {
-      const interval = setInterval(() => {
-        setRelativeTimestamp(formatRelativeTimestamp(lastTimeUpdated));
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [lastTimeUpdated]);
-
   const onClick = () => {
     dispatch(assetsActions.refetch());
   };
+  const showLastTimeUpdated =
+    lastTimeUpdated !== null &&
+    differenceInMinutes(new Date(), new Date(lastTimeUpdated)) >= 2 &&
+    !isSmallSize;
 
   return (
     <>
-      {relativeTimestamp && !isSmallSize && (
+      {showLastTimeUpdated && (
         <Text display="inline" color={colors.gray[400]} size="sm">
-          Updated {relativeTimestamp} ago
+          Updated {formatDistance(new Date(lastTimeUpdated), new Date())} ago
         </Text>
       )}
       <IconButton
