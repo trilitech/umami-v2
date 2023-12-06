@@ -22,7 +22,7 @@ import { useOnboardingModal } from "../../components/Onboarding/useOnboardingMod
 import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
+import { useAllAccounts, useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { useRemoveMnemonic, useRemoveNonMnemonic } from "../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
@@ -56,15 +56,29 @@ const AccountGroup: React.FC<{
   const { openWith, onClose } = useContext(DynamicModalContext);
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
-  const modalBody = isMnemonic
-    ? `Are you sure you want to remove all accounts derived from ${getLabel(first)}?`
-    : `Are you sure you want to remove all of your ${getLabel(first)}?`;
+  const isLastImplicitAccounts = useImplicitAccounts().length === accounts.length;
+
+  let title = "Confirmation",
+    description: string,
+    buttonLabel = "Confirm";
+
+  const label = getLabel(first);
+  if (isLastImplicitAccounts) {
+    title = "Are you sure?";
+    buttonLabel = "Remove & Off-board";
+    description =
+      "Removing your last account will off-board your from Umami. This will remove or reset all customised settings to their defaults. Personal data -including saved contacts, password and accounts- won't be affected.";
+  } else if (isMnemonic) {
+    description = `Are you sure you want to remove all accounts derived from ${label}?`;
+  } else {
+    description = `Are you sure you want to remove all of your ${label}?`;
+  }
 
   const onRemove = () => {
     openWith(
       <ConfirmationModal
-        buttonLabel="Confirm"
-        description={modalBody}
+        buttonLabel={buttonLabel}
+        description={description}
         onSubmit={() => {
           if (isMnemonic) {
             removeMnemonic(first.seedFingerPrint);
@@ -73,7 +87,7 @@ const AccountGroup: React.FC<{
           }
           onClose();
         }}
-        title="Confirmation"
+        title={title}
       />
     );
   };

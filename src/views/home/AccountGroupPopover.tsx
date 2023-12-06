@@ -12,7 +12,12 @@ export const AccountGroupPopover: React.FC<{
   return (
     <PopoverMenu>
       <Box paddingY="0">
-        <Button height={onCreate ? "24px" : "28px"} onClick={onRemove} variant="popover">
+        <Button
+          height={onCreate ? "24px" : "28px"}
+          data-testid="popover-remove"
+          onClick={onRemove}
+          variant="popover"
+        >
           <Flex alignItems="center" justifyContent="space-between" flex={1}>
             <Text marginRight="4px">Remove</Text>
             <TrashIcon />

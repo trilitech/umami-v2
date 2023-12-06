@@ -20,7 +20,7 @@ export const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () =>
           {onRemove && (
             <>
               <Divider marginY="4px" />
-              <Button onClick={onRemove} variant="popover">
+              <Button data-testid="popover-remove" onClick={onRemove} variant="popover">
                 <Flex alignItems="center">
                   <Text marginRight="4px">Remove</Text>
                   <TrashIcon />
