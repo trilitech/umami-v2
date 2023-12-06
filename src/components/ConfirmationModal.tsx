@@ -29,7 +29,7 @@ export const ConfirmationModal: React.FC<{
 
   return (
     <ModalContent>
-      <ModalHeader textAlign="center">
+      <ModalHeader marginBottom="10px" textAlign="center">
         <Box>
           <WarningIcon width="40px" height="40px" marginBottom="16px" />
         </Box>

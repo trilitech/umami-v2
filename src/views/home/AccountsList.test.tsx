@@ -100,7 +100,7 @@ describe("<AccountList />", () => {
     await restore();
     render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
     expect(screen.getAllByTestId(/account-tile/)).toHaveLength(7);
-    expect(screen.getAllByTestId(/account-group/)).toHaveLength(4);
+    expect(screen.getAllByTestId(/account-group-title/)).toHaveLength(4);
 
     const socialAccounts = screen.getByTestId(/account-group-social/i);
     expect(within(socialAccounts).getAllByTestId(/account-tile/)).toHaveLength(2);

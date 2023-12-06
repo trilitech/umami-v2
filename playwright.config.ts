@@ -43,7 +43,7 @@ export default defineConfig({
     command: "yarn start",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000, // 2 minutes for the server to start accepting connections
+    timeout: 3 * 60 * 1000, // 3 minutes for the server to start accepting connections
   },
   globalTeardown: "src/e2e/teardown.ts",
 });

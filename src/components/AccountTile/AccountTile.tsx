@@ -47,7 +47,7 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
     <Box margin={4} data-testid="account-identifier">
       {label && <Heading size="md">{label}</Heading>}
       <Flex alignItems="center">
-        <Text color="text.dark" size="sm">
+        <Text color="text.dark" data-testid="short-address" size="sm">
           {formatPkh(pkh)}
         </Text>
       </Flex>
