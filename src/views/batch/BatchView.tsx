@@ -80,9 +80,9 @@ const ClearBatchConfirmationModal = ({ sender }: { sender: Account }) => {
   return (
     <ConfirmationModal
       buttonLabel="Delete Batch"
-      description="This will remove all transactions from the batch."
+      description="Are you sure you want to remove all transactions from the batch?"
       onSubmit={() => clearBatch(sender)}
-      title="Are you sure?"
+      title="Delete Batch"
     />
   );
 };
