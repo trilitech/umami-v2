@@ -37,13 +37,5 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command: "yarn start",
-    url: "http://127.0.0.1:3000",
-    reuseExistingServer: !process.env.CI,
-    timeout: 3 * 60 * 1000, // 3 minutes for the server to start accepting connections
-  },
   globalTeardown: "src/e2e/teardown.ts",
 });

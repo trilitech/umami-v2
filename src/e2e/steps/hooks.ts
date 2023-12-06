@@ -1,30 +1,18 @@
-import { ChildProcess, spawn } from "child_process";
 import crypto from "crypto";
 
 import { After, AfterAll, Before, BeforeAll } from "@cucumber/cucumber";
 import { ChromiumBrowser, chromium } from "@playwright/test";
-import waitOn from "wait-on";
 
 import { CustomWorld } from "./world";
 import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
 
 let browser: ChromiumBrowser;
-let webServerProcess: ChildProcess | undefined;
 
-BeforeAll(
-  {
-    timeout: 3 * 60 * 1000, // dev server might take a while to start on CI
-  },
-  async function () {
-    if (process.env.CI) {
-      webServerProcess = spawn("yarn", ["start"], { detached: true, stdio: "ignore" });
-      await waitOn({ resources: ["http-get://127.0.0.1:3000"] });
-    }
-    browser = await chromium.launch({ headless: !!process.env.CI });
+BeforeAll(async function () {
+  browser = await chromium.launch({ headless: !!process.env.CI });
 
-    global.crypto = crypto as any;
-  }
-);
+  global.crypto = crypto as any;
+});
 
 Before(async function (this: CustomWorld) {
   this.context = await browser.newContext();
@@ -69,6 +57,5 @@ After(async function (this: CustomWorld) {
 
 AfterAll(async function () {
   await browser.close();
-  webServerProcess?.kill();
   killNode();
 });
