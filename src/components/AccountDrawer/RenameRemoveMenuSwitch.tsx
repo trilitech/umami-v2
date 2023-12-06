@@ -31,14 +31,15 @@ export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account
     case "multisig":
   }
 
-  let title = "Remove Account",
-    description = "Are you sure you want to remove this account?",
-    buttonLabel = "Remove Account";
+  const title = "Remove Account";
+  let description = "Are you sure you want to remove this account?";
+  let buttonLabel = "Remove Account";
 
   if (isLastImplicitAccount) {
-    title = "Are you sure?";
     description =
-      "Removing your last account will off-board your from Umami. This will remove or reset all customised settings to their defaults. Personal data -including saved contacts, password and accounts- won't be affected.";
+      "Removing your last account will off-board you from Umami. " +
+      "This will remove or reset all customised settings to their defaults. " +
+      "Personal data (including saved contacts, password and accounts) won't be affected.";
     buttonLabel = "Remove & Off-board";
   }
 

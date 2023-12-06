@@ -58,16 +58,17 @@ const AccountGroup: React.FC<{
   const removeNonMnemonic = useRemoveNonMnemonic();
   const isLastImplicitAccounts = useImplicitAccounts().length === accounts.length;
 
-  let title = "Confirmation",
-    description: string,
-    buttonLabel = "Confirm";
+  const title = "Remove All Accounts";
+  let description: string;
+  let buttonLabel = "Remove All";
 
   const label = getLabel(first);
   if (isLastImplicitAccounts) {
-    title = "Are you sure?";
-    buttonLabel = "Remove & Off-board";
     description =
-      "Removing your last account will off-board your from Umami. This will remove or reset all customised settings to their defaults. Personal data -including saved contacts, password and accounts- won't be affected.";
+      "Removing all your accounts will off-board you from Umami. " +
+      "This will remove or reset all customised settings to their defaults. " +
+      "Personal data (including saved contacts, password and accounts) won't be affected.";
+    buttonLabel = "Remove & Off-board";
   } else if (isMnemonic) {
     description = `Are you sure you want to remove all accounts derived from ${label}?`;
   } else {

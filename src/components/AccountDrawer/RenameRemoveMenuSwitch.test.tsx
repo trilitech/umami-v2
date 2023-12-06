@@ -34,7 +34,9 @@ describe("<RenameRemoveMenuSwitch />", () => {
     user.click(screen.getByTestId("popover-remove"));
     await waitFor(() => {
       expect(screen.getByTestId("description")).toHaveTextContent(
-        "Removing your last account will off-board your from Umami. This will remove or reset all customised settings to their defaults. Personal data -including saved contacts, password and accounts- won't be affected."
+        "Removing your last account will off-board you from Umami. " +
+          "This will remove or reset all customised settings to their defaults. " +
+          "Personal data (including saved contacts, password and accounts) won't be affected."
       );
     });
   });
