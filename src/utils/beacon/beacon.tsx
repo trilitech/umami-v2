@@ -6,6 +6,8 @@ import { useQuery, useQueryClient } from "react-query";
 import { BeaconNotification } from "./BeaconNotification";
 import { PeerInfo, makePeerInfo } from "./types";
 import { DynamicModalContext } from "../../components/DynamicModal";
+import { beaconSlice } from "../redux/slices/beaconSlice";
+import { store } from "../redux/store";
 
 const makeClient = () =>
   new WalletClient({
@@ -78,4 +80,5 @@ export const resetBeacon = async () => {
   await walletClient.removeAllAppMetadata();
   await walletClient.removeAllPeers();
   await walletClient.removeAllPermissions();
+  store.dispatch(beaconSlice.actions.reset());
 };

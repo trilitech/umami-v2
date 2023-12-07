@@ -20,6 +20,8 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { OwnedImplicitAccountsAutocomplete } from "../../../../components/AddressAutocomplete";
 import { useImplicitAccounts } from "../../../hooks/getAccountDataHooks";
+import { beaconSlice } from "../../../redux/slices/beaconSlice";
+import { store } from "../../../redux/store";
 import { walletClient } from "../../beacon";
 
 export const PermissionRequestPanel: React.FC<{
@@ -48,6 +50,14 @@ export const PermissionRequestPanel: React.FC<{
     };
 
     await walletClient.respond(response);
+
+    store.dispatch(
+      beaconSlice.actions.addConnection({
+        dAppId: request.senderId,
+        accountPkh: account.address.pkh,
+      })
+    );
+
     onSubmit();
   };
 
