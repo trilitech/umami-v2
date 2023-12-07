@@ -91,7 +91,12 @@ export const AddressPill: React.FC<
 
         <Popover autoFocus={false} isOpen={isOpen} onOpen={onClickAddress}>
           <PopoverTrigger>
-            <Button height="24px" _focus={{ boxShadow: "none" }} variant="unstyled">
+            <Button
+              height="24px"
+              _focus={{ boxShadow: "none" }}
+              onClick={e => e.stopPropagation()}
+              variant="unstyled"
+            >
               <AddressPillText
                 color={textColor}
                 cursor="pointer"
