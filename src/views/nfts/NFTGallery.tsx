@@ -19,9 +19,14 @@ export const NFTGallery: React.FC<{
 
   const sortedByLastUpdate = orderBy(allNFTs, ["lastLevel", "id", "owner"], ["desc"]);
 
+  let gridTemplateColumns = "repeat(auto-fit, minmax(min(100%/2, max(274px, 100%/7)), 1fr))";
+  if (allNFTs.length < 3) {
+    gridTemplateColumns = `repeat(auto-fit, min(100% / ${allNFTs.length} - 16px, 450px))`;
+  }
+
   return (
     <SimpleGrid
-      gridTemplateColumns="repeat(auto-fit, minmax(min(100%/2, max(274px, 100%/7)), 1fr))"
+      gridTemplateColumns={gridTemplateColumns}
       marginBottom="16px"
       minChildWidth="340px"
       spacing="16px"
