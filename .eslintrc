@@ -1,7 +1,8 @@
 {
   "root": true,
   "parserOptions": {
-    "project": "./tsconfig.json",
+    // tsconfig.e2e.json includes both src and src/e2e
+    "project": "./tsconfig.e2e.json",
     "parser": "@typescript-eslint/parser"
   },
   "plugins": [
