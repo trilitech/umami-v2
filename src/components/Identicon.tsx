@@ -1,10 +1,17 @@
 import { Box, ChakraProps } from "@chakra-ui/react";
 import React from "react";
+// @ts-expect-error TS7016
+import ReactIdenticonsMod from "react-identicons";
 
-// No type definitions available.
-// Lookup API here: https://github.com/tuhnik/react-identicons
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const ReactIdenticons = require("react-identicons").default;
+// ReactIdenticons is defined as a CommonJS module
+// the component is stored under the default property
+// but that's not how ES modules work and with them
+// we simply import the component directly
+// CommonJS module is still used on jest though
+// so, for dev & prod we need the object itself
+// for tests, we need the default property
+const ReactIdenticons =
+  "default" in ReactIdenticonsMod ? ReactIdenticonsMod.default : ReactIdenticonsMod;
 
 export const Identicon: React.FC<
   {
