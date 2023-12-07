@@ -15,7 +15,6 @@ const newAccounts: Record<string, AddAccountPage> = {};
 // TODO: make custom Given with `this` defined as `CustomWorld`
 Given("I am on the welcome page", async function (this: CustomWorld) {
   await this.page.goto(`${BASE_URL}/`);
-  await this.page.waitForURL(`${BASE_URL}/#/welcome`);
 });
 
 When("I click {string} button", async function (this: CustomWorld, buttonName) {

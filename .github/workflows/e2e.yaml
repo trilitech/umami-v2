@@ -19,14 +19,20 @@ jobs:
           node-version: 18.15.x
           cache: "yarn"
 
-      - name: Pull docker images
-        run: docker compose -f docker-compose.ci.yaml pull --quiet
-
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Start dev server
+        run: yarn start &
+
+      - name: Pull docker images
+        run: docker compose -f docker-compose.ci.yaml pull --quiet
+
       - name: Install Playwright Browsers
         run: yarn playwright install chromium --with-deps
+
+      - name: Wait until the server is ready
+        run: yarn exec wait-on http-get://127.0.0.1:3000
 
       - name: Run Playwright tests
         run: yarn playwright test
