@@ -1,35 +1,83 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import { ConnectOptions } from "./ConnectOptions";
+import { mockSocialAccount } from "../../../mocks/factories";
+import { render, screen } from "../../../mocks/testUtils";
+import { accountsActions } from "../../../utils/redux/slices/accountsSlice";
+import { store } from "../../../utils/redux/store";
 import { Step, StepType } from "../useOnboardingModal";
 
-const goToStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn();
 
 const fixture = (goToStep: (step: Step) => void) => <ConnectOptions goToStep={goToStep} />;
 
 describe("<ConnectOptions />", () => {
-  describe("Navigate to", () => {
-    test("Import seed phrase", async () => {
+  describe("restore from backup", () => {
+    it("navigates to the restore backup step", async () => {
+      const user = userEvent.setup();
       render(fixture(goToStepMock));
-      const confirmBtn = screen.getByRole("button", {
-        name: /Import with Seed Phrase/i,
-      });
-      fireEvent.click(confirmBtn);
+
+      await user.click(
+        screen.getByRole("button", {
+          name: "Restore from Backup",
+        })
+      );
+
       expect(goToStepMock).toBeCalledTimes(1);
-      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreMnemonic });
+      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreBackup });
     });
 
-    test("Connect ledger", async () => {
+    it("hides the button if a user tries to add another account", () => {
+      store.dispatch(accountsActions.addAccount(mockSocialAccount(0)));
+
       render(fixture(goToStepMock));
-      const confirmBtn = screen.getByRole("button", {
-        name: /Connect ledger/i,
-      });
-      fireEvent.click(confirmBtn);
-      expect(goToStepMock).toBeCalledTimes(1);
-      expect(goToStepMock).toBeCalledWith({
-        type: StepType.nameAccount,
-        account: { type: "ledger" },
-      });
+
+      expect(screen.queryByRole("button", { name: "Restore from Backup" })).not.toBeInTheDocument();
+    });
+  });
+
+  it("navigates to import seed phrase step", async () => {
+    const user = userEvent.setup();
+    render(fixture(goToStepMock));
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "Import with Seed Phrase",
+      })
+    );
+
+    expect(goToStepMock).toBeCalledTimes(1);
+    expect(goToStepMock).toBeCalledWith({ type: StepType.restoreMnemonic });
+  });
+
+  it("navigates to import secret key step", async () => {
+    const user = userEvent.setup();
+    render(fixture(goToStepMock));
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "Import with Secret Key",
+      })
+    );
+
+    expect(goToStepMock).toBeCalledTimes(1);
+    expect(goToStepMock).toBeCalledWith({ type: StepType.restoreSecretKey });
+  });
+
+  it("navigates to connect ledger step", async () => {
+    const user = userEvent.setup();
+    render(fixture(goToStepMock));
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "Connect ledger",
+      })
+    );
+
+    expect(goToStepMock).toBeCalledTimes(1);
+    expect(goToStepMock).toBeCalledWith({
+      type: StepType.nameAccount,
+      account: { type: "ledger" },
     });
   });
 });

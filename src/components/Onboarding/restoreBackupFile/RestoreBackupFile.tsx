@@ -12,6 +12,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
 import { RotateIcon } from "../../../assets/icons";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { PasswordInput } from "../../PasswordInput";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 
 type FormFields = {
@@ -74,8 +75,12 @@ export const RestoreBackupFile = () => {
               )}
             </FormControl>
             <FormControl marginTop="24px">
-              <FormLabel>Your password (if you have one)</FormLabel>
-              <Input data-testid="password-input" />
+              <PasswordInput
+                data-testid="password-input"
+                inputName="password"
+                label="Your password (if you have one)"
+                required={false}
+              />
               {errors.password && (
                 <FormErrorMessage data-testid="password">
                   {errors.password.message}

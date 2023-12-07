@@ -19,10 +19,11 @@ export type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   inputName: U;
   label?: string;
   placeholder?: string;
-  required?: string;
+  required?: string | boolean;
   validate?: RegisterOptions<T, U>["validate"];
 } & InputProps;
 
+// TODO: add an error message and make it nested under FormControl
 export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   inputName,
   label = "Password",
@@ -45,7 +46,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           {...register(inputName, {
             required,
             minLength: {
-              value: MIN_LENGTH,
+              value: required ? MIN_LENGTH : 0,
               message: `Your password must be at least ${MIN_LENGTH} characters long`,
             },
             validate,

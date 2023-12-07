@@ -1,10 +1,12 @@
 import { Button, VStack } from "@chakra-ui/react";
 
 import { LinkIcon } from "../../../assets/icons";
+import { useImplicitAccounts } from "../../../utils/hooks/getAccountDataHooks";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
 
 export const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+  const accountsExist = useImplicitAccounts().length > 0;
   return (
     <ModalContentWrapper icon={<LinkIcon />} title="Connect or Import Account">
       <VStack width="100%" spacing="16px">
@@ -17,18 +19,20 @@ export const ConnectOptions = ({ goToStep }: { goToStep: (step: Step) => void })
           size="lg"
           variant="tertiary"
         >
-          Import with a Secret Key
+          Import with Secret Key
         </Button>
-        <Button
-          width="100%"
-          onClick={_ => {
-            goToStep({ type: StepType.restoreBackup });
-          }}
-          size="lg"
-          variant="tertiary"
-        >
-          Restore from Backup
-        </Button>
+        {!accountsExist && (
+          <Button
+            width="100%"
+            onClick={_ => {
+              goToStep({ type: StepType.restoreBackup });
+            }}
+            size="lg"
+            variant="tertiary"
+          >
+            Restore from Backup
+          </Button>
+        )}
         <Button
           width="100%"
           onClick={_ => {
