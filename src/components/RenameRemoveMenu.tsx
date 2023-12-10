@@ -14,7 +14,7 @@ export const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () =>
           <Button height={onRemove ? "24px" : "28px"} onClick={onRename} variant="popover">
             <Flex alignItems="center">
               <Text marginRight="4px">Rename</Text>
-              <PenIcon />
+              <PenIcon stroke="inherit" />
             </Flex>
           </Button>
           {onRemove && (
@@ -23,7 +23,7 @@ export const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () =>
               <Button data-testid="popover-remove" onClick={onRemove} variant="popover">
                 <Flex alignItems="center">
                   <Text marginRight="4px">Remove</Text>
-                  <TrashIcon />
+                  <TrashIcon stroke="inherit" />
                 </Flex>
               </Button>
             </>
