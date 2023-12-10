@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Divider,
   Drawer,
@@ -13,12 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { useDispatch } from "react-redux";
 
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { useDynamicModal } from "../../components/DynamicModal";
 import colors from "../../style/colors";
 import { ErrorContext } from "../../utils/getErrorContext";
 import { useAppSelector } from "../../utils/redux/hooks";
+import { errorsSlice } from "../../utils/redux/slices/errorsSlice";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 
 export const ErrorLogsDrawerCard = () => {
@@ -48,18 +51,30 @@ export const ErrorLogsDrawerCard = () => {
 
 const ErrorLogsDrawerBody = () => {
   const errors = [...useAppSelector(s => s.errors)].reverse();
+  const dispatch = useDispatch();
+
+  const clearErrors = () => {
+    dispatch(errorsSlice.actions.reset());
+  };
+
   return (
     <Flex flexDirection="column" height="100%">
-      <Flex alignItems="center" justifyContent="space-between" height={24}>
+      <Flex alignItems="center" justifyContent="space-between" height="50px" marginBottom="20px">
         <Heading size="xl">Error Logs</Heading>
-        <a
-          download="UmamiErrorLogs.json"
-          href={`data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(errors))}`}
-        >
-          <Button variant="tertiary">Download error logs</Button>
-        </a>
-        {/* TODO:Implement delete */}
-        {/* <IconAndTextBtn label="Clear All" icon={Trash} textFirst onClick={() => {}} /> */}
+
+        <Box>
+          <a
+            download="UmamiErrorLogs.json"
+            href={`data:application/json;charset=utf-8,${encodeURIComponent(
+              JSON.stringify(errors)
+            )}`}
+          >
+            <Button variant="tertiary">Download error logs</Button>
+          </a>
+          <Button marginLeft="8px" onClick={clearErrors} variant="warning">
+            Clear All
+          </Button>
+        </Box>
       </Flex>
       {errors.map(error => (
         <ErrorLogRow key={nanoid()} errorLog={error} />
