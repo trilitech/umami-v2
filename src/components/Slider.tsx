@@ -14,12 +14,12 @@ export const Slider = ({ children }: Props) => {
     width: "10px",
     height: "10px",
     display: "inline-block",
-    margin: "0 4px",
+    margin: "0 4px 60px 4px",
     borderRadius: "5px",
   };
   return (
     <Carousel
-      width="100%"
+      width="660px"
       autoPlay={true}
       dynamicHeight={false}
       infiniteLoop={true}

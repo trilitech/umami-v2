@@ -42,6 +42,7 @@ export * from "./Plus";
 export * from "./RefreshClock";
 export * from "./Rotate";
 export * from "./Slash";
+export * from "./Sliders";
 export * from "./Social";
 export * from "./Tez";
 export * from "./Token";

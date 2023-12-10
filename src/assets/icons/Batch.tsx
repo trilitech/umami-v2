@@ -8,6 +8,7 @@ export const BatchIcon: React.FC<IconProps> = props => {
       width="24px"
       height="24px"
       fill="none"
+      strokeWidth="1.2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
@@ -17,7 +18,6 @@ export const BatchIcon: React.FC<IconProps> = props => {
         stroke={colors.gray[450]}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.2"
       />
     </Icon>
   );

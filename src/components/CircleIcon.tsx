@@ -1,9 +1,10 @@
 import { Box, Center } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 import colors from "../style/colors";
 
 type Props = {
-  icon: JSX.Element;
+  icon: ReactNode;
   size?: string;
   color?: string;
   onClick?: () => void;
