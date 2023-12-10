@@ -4,6 +4,7 @@ import colors from "./colors";
 import { buttonTheme } from "./theme/button";
 import { checkboxTheme } from "./theme/checkbox";
 import { drawerTheme } from "./theme/drawer";
+import { listTheme } from "./theme/list";
 import { modalTheme } from "./theme/modal";
 import { radioTheme } from "./theme/radio";
 import { tabsTheme } from "./theme/tabs";
@@ -97,6 +98,7 @@ const theme = extendTheme({
     Modal: modalTheme,
     Drawer: drawerTheme,
     Radio: radioTheme,
+    List: listTheme,
   },
   config,
   colors: {
