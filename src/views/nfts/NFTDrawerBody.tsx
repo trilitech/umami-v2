@@ -21,9 +21,8 @@ export const NFTDrawerBody = ({
       <Flex
         alignItems="center"
         justifyContent="space-between"
-        paddingBottom="30px"
+        paddingBottom="22px"
         color={colors.gray[400]}
-        cursor="pointer"
         data-testid="nft-drawer-body"
       >
         <AddressPill address={parsePkh(ownerPkh)} />
