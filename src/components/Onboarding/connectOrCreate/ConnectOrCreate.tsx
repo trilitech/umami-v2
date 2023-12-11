@@ -24,7 +24,7 @@ export const ConnectOrCreate = ({
     handleAsyncAction(async () => {
       const { pk, pkh } = await getPkAndPkhFromSk(sk);
       restoreSocial(pk, pkh, email);
-      toast({ title: `Successfully added ${email} account`, status: "success" });
+      toast({ description: `Successfully added ${email} account`, status: "success" });
       closeModal();
     });
 

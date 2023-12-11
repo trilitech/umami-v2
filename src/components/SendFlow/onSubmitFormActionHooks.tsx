@@ -83,7 +83,7 @@ export const useAddToBatchFormAction = <FormValues extends BaseFormValues>(
   const onAddToBatchAction = async (formValues: FormValues) => {
     const operations = makeFormOperations(formValues);
     await dispatch(estimateAndUpdateBatch(operations, network));
-    toast({ title: "Transaction added to batch!", status: "success" });
+    toast({ description: "Transaction added to batch!", status: "success" });
     onClose();
   };
 

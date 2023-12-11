@@ -45,8 +45,8 @@ export const useAddPeer = () => {
       })
       .catch(e => {
         toast({
-          title: "Beacon sync code in the clipboard is invalid",
-          description: "Please copy a beacon sync code from the dApp",
+          description:
+            "Beacon sync code in the clipboard is invalid. Please copy a beacon sync code from the dApp",
           status: "error",
         });
         console.error(e);

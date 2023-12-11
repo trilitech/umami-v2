@@ -41,7 +41,7 @@ export const SignPayloadRequestPanel: React.FC<{
 
     await walletClient.respond(response);
 
-    toast({ title: "Successfully submitted Beacon operation", status: "success" });
+    toast({ description: "Successfully submitted Beacon operation", status: "success" });
     onSubmit();
   };
 

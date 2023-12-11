@@ -84,7 +84,7 @@ export const CSVFileUploadForm = () => {
         )
       );
 
-      toast({ title: "CSV added to batch!", status: "success" });
+      toast({ description: "CSV added to batch!", status: "success" });
       onClose();
     });
 
