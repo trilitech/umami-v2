@@ -46,7 +46,7 @@ const RightHeader: React.FC<{ operations: AccountOperations }> = ({
         {headerText(operationsType, "batch")}
       </Button>
       <IconButton
-        marginLeft="18px"
+        marginLeft="16px"
         borderRadius="4px"
         aria-label="remove-batch"
         data-testid="remove-batch"
