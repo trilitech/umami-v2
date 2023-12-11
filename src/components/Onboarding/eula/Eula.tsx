@@ -2,6 +2,7 @@ import { Button, Checkbox, Link } from "@chakra-ui/react";
 import React from "react";
 
 import { DocumentIcon } from "../../../assets/icons";
+import colors from "../../../style/colors";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
 
@@ -20,6 +21,7 @@ export const Eula: React.FC<{
           I confirm that I have read and agreed with the{" "}
           <Link
             textDecoration="underline"
+            _hover={{ color: colors.green }}
             href="https://umamiwallet.com/tos.html"
             rel="noopener noreferrer"
             target="_blank"
@@ -29,6 +31,7 @@ export const Eula: React.FC<{
           and the{" "}
           <Link
             textDecoration="underline"
+            _hover={{ color: colors.green }}
             href="https://umamiwallet.com/privacypolicy.html"
             rel="noopener noreferrer"
             target="_blank"

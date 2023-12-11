@@ -1,9 +1,8 @@
 import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
-import { AiOutlinePlus } from "react-icons/ai";
 
+import { PlusIcon } from "../../assets/icons";
 import { TrashIcon } from "../../assets/icons/Trash";
 import { PopoverMenu } from "../../components/PopoverMenu";
-import colors from "../../style/colors";
 
 export const AccountGroupPopover: React.FC<{
   onRemove: () => void;
@@ -20,7 +19,7 @@ export const AccountGroupPopover: React.FC<{
         >
           <Flex alignItems="center" justifyContent="space-between" flex={1}>
             <Text marginRight="4px">Remove</Text>
-            <TrashIcon />
+            <TrashIcon stroke="inherit" />
           </Flex>
         </Button>
         {onCreate && (
@@ -29,7 +28,7 @@ export const AccountGroupPopover: React.FC<{
             <Button onClick={onCreate} variant="popover">
               <Flex alignItems="center" justifyContent="space-between" flex={1}>
                 <Text marginRight="4px">Create</Text>
-                <AiOutlinePlus color={colors.gray[450]} />
+                <PlusIcon width="18px" height="18px" stroke="inherit" />
               </Flex>
             </Button>
           </>
