@@ -26,3 +26,10 @@ code {
   font-size: 14px;
   color: black;
 }
+
+/* Makes welcome screen slider corners round,
+   otherwise, they become 90 degrees during transitions */
+.slider-wrapper {
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}

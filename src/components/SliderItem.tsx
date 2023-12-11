@@ -14,7 +14,6 @@ export type Item = {
 export const SlideItem = ({ item }: { item: Item }) => {
   return (
     <Box
-      minWidth="660px"
       height="730px"
       paddingTop="500px"
       paddingBottom="35px"
@@ -23,9 +22,9 @@ export const SlideItem = ({ item }: { item: Item }) => {
       backgroundRepeat="no-repeat"
       data-testid={`slide-${item.id}`}
     >
-      <Center flexDirection="column">
+      <Center flexDirection="column" paddingBottom="50px">
         <CircleIcon icon={item.icon} size="58px" />
-        <Text width="400px" margin="16px 50px 50px 50px">
+        <Text width="400px" margin="16px 50px 0 50px">
           {item.text}
         </Text>
       </Center>

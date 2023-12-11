@@ -1,4 +1,4 @@
-import { Button, Center, Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { BatchIcon, KeyIcon, SlidersIcon } from "./assets/icons";
@@ -78,8 +78,13 @@ export const WelcomeScreen = () => {
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
       {showSlider && (
-        <Flex width="100%" maxWidth="1320px" background={colors.gray[800]} borderRadius="30px">
-          <Center width="100%" maxWidth="660px">
+        <Flex width="100%" maxWidth="1320px">
+          <Center
+            width="100%"
+            maxWidth="660px"
+            background={colors.gray[800]}
+            borderLeftRadius="30px"
+          >
             <VStack maxWidth="400px" padding="32px" spacing="0">
               <MakiLogo marginBottom="24px" size="48px" />
               <Heading marginBottom="16px" size="3xl">
@@ -96,11 +101,13 @@ export const WelcomeScreen = () => {
             </VStack>
           </Center>
 
-          <Slider>
-            {sliderItems.map(item => (
-              <SlideItem key={item.id} item={item} />
-            ))}
-          </Slider>
+          <Box maxWidth="660px">
+            <Slider>
+              {sliderItems.map(item => (
+                <SlideItem key={item.id} item={item} />
+              ))}
+            </Slider>
+          </Box>
         </Flex>
       )}
       {modalElement}
