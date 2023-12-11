@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   FormControl,
   Heading,
@@ -61,13 +60,11 @@ export const ChangePasswordForm: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalCloseButton />
 
-          <ModalHeader marginTop={5} textAlign="center">
-            <Box>
-              <Heading>Change Password</Heading>
-            </Box>
+          <ModalHeader textAlign="center">
+            <Heading>Change Password</Heading>
           </ModalHeader>
           <ModalBody>
-            <FormControl marginTop={3} isInvalid={!!errors.currentPassword}>
+            <FormControl marginTop="32px" isInvalid={!!errors.currentPassword}>
               <PasswordInput
                 data-testid="current-password"
                 inputName="currentPassword"
@@ -124,7 +121,7 @@ export const ChangePasswordForm: React.FC = () => {
               width="100%"
               isDisabled={!isValid}
               isLoading={isLoading}
-              marginY={3}
+              size="lg"
               type="submit"
             >
               Update Password
