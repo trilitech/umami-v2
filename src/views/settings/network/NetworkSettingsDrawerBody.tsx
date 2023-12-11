@@ -70,12 +70,12 @@ export const NetworkSettingsDrawerBody = () => {
                         variant="popover"
                       >
                         <Text marginRight="4px">Edit</Text>
-                        <PenIcon />
+                        <PenIcon stroke="inherit" />
                       </Button>
                       <Divider marginTop="4px" />
                       <Button onClick={() => removeNetwork(network)} variant="popover">
                         <Text marginRight="4px">Remove</Text>
-                        <TrashIcon />
+                        <TrashIcon stroke="inherit" />
                       </Button>
                     </PopoverMenu>
                   </Center>
