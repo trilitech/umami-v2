@@ -37,16 +37,11 @@ const RoundButton: React.FC<{
   onClick?: () => void;
 }> = ({ icon, label, onClick = () => {} }) => {
   return (
-    <Box textAlign="center" marginX="24px">
-      <IconButton
-        marginBottom="8px"
-        aria-label="button"
-        icon={icon}
-        onClick={onClick}
-        size="lg"
-        variant="circle"
-      />
-      <Text size="sm">{label}</Text>
+    <Box textAlign="center" marginX="24px" onClick={onClick}>
+      <IconButton marginBottom="8px" aria-label="button" icon={icon} size="lg" variant="circle" />
+      <Text cursor="pointer" size="sm">
+        {label}
+      </Text>
     </Box>
   );
 };
