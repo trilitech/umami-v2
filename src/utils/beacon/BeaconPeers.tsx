@@ -1,3 +1,4 @@
+import { getSenderId } from "@airgap/beacon-wallet";
 import {
   AspectRatio,
   Box,
@@ -9,31 +10,42 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { usePeers, useRemovePeer } from "./beacon";
-import { PeerInfo } from "./types";
+import { PeerInfoWithId } from "./types";
 import { TrashIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 
 export const BeaconPeers = () => {
   const { data } = usePeers();
-  const removePeer = useRemovePeer();
-  const peers = data || [];
 
-  if (peers.length === 0) {
+  const removePeer = useRemovePeer();
+  const [peersWithId, setPeersWithId] = useState<PeerInfoWithId[]>([]);
+
+  // senderId will always be set here, even if we haven't saved it in beaconSlice for a dApp.
+  useEffect(() => {
+    (async () => {
+      const newPeers = await Promise.all(
+        (data || []).map(async peer => ({ ...peer, senderId: await getSenderId(peer.publicKey) }))
+      );
+      setPeersWithId(newPeers);
+    })();
+  }, [data]);
+
+  if (peersWithId.length === 0) {
     return null;
   }
 
-  return <PeersDisplay peerInfos={peers} removePeer={removePeer} />;
+  return <PeersDisplay peerInfos={peersWithId} removePeer={removePeer} />;
 };
 
 export const PeersDisplay = ({
   peerInfos,
   removePeer,
 }: {
-  peerInfos: PeerInfo[];
-  removePeer: (peer: PeerInfo) => void;
+  peerInfos: PeerInfoWithId[];
+  removePeer: (peer: PeerInfoWithId) => void;
 }) => {
   return (
     <Box>
@@ -47,19 +59,18 @@ export const PeersDisplay = ({
   );
 };
 
-const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfo; onRemove: () => void }) => {
+const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfoWithId; onRemove: () => void }) => {
   return (
-    <Flex justifyContent="space-between" height="106px" paddingY="30px">
+    <Flex justifyContent="space-between" height="106px" data-testid="peer-row" paddingY="30px">
       <Flex>
         <AspectRatio width="48px" marginRight="16px" ratio={1}>
           <Image width="100%" src={peerInfo.icon} />
         </AspectRatio>
         <Center alignItems="flex-start" flexDirection="column">
-          <Heading marginLeft={2} size="md">
+          <Heading marginLeft="8px" size="md">
             {peerInfo.name}
           </Heading>
-
-          <Text marginLeft={2} color={colors.gray[400]} size="sm">
+          <Text marginLeft="8px" color={colors.gray[400]} size="sm">
             {peerInfo.relayServer}
           </Text>
         </Center>
