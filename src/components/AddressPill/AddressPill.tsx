@@ -110,7 +110,7 @@ export const AddressPill: React.FC<
             </Button>
           </PopoverTrigger>
           <PopoverContent maxWidth="max-content" background="white">
-            <PopoverArrow background="white" />
+            <PopoverArrow background="white !important" />
             <PopoverBody>
               <Text color="black" size="sm">
                 Copied!
