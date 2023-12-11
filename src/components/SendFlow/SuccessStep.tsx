@@ -1,6 +1,7 @@
 import {
   Button,
   Flex,
+  Icon,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -9,11 +10,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
+import { TfiNewWindow } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 
+import colors from "../../style/colors";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { DynamicModalContext } from "../DynamicModal";
-import { TzktLink } from "../TzktLink";
 
 export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
   const network = useSelectedNetwork();
@@ -23,27 +25,29 @@ export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
   return (
     <ModalContent paddingY="20px">
       <ModalCloseButton />
-      <ModalHeader textAlign="center">
-        Operation Submitted
-        <Flex justifyContent="center">
+      <ModalHeader textAlign="center">Operation Submitted</ModalHeader>
+      <ModalBody>
+        <Flex justifyContent="center" marginTop="10px">
           <Text width="340px" color="text.dark" textAlign="center" size="sm">
-            You can follow this operation's progress in the Operations section.
-            <br />
-            It may take up to 30 seconds to appear.
+            You can follow this operation's progress in the Operations section. It may take up to 30
+            seconds to appear.
           </Text>
         </Flex>
-      </ModalHeader>
-      <ModalBody padding="0"></ModalBody>
+      </ModalBody>
       <ModalFooter justifyContent="center" flexDirection="column">
         <Link to="/operations">
           <Button width="100%" onClick={onClose}>
-            Go to operation
+            Go to Operation
           </Button>
         </Link>
-        <Flex alignItems="center" justifyContent="space-between" marginTop={4}>
-          <Text color="text.dark">View in Tzkt</Text>
-          <TzktLink marginLeft={4} url={tzktUrl} />
-        </Flex>
+        <Link rel="noopener noreferrer" target="_blank" to={tzktUrl}>
+          <Flex alignItems="center" marginTop="24px">
+            <Text marginRight="8px" paddingTop="2px" color={colors.gray[300]}>
+              View in Tzkt
+            </Text>
+            <Icon as={TfiNewWindow} color={colors.gray[450]} />
+          </Flex>
+        </Link>
       </ModalFooter>
     </ModalContent>
   );
