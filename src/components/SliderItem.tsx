@@ -18,7 +18,7 @@ export const SlideItem = ({ item }: { item: Item }) => {
       paddingTop="500px"
       paddingBottom="35px"
       backgroundImage={item.image}
-      backgroundSize="contain"
+      backgroundSize="cover"
       backgroundRepeat="no-repeat"
       data-testid={`slide-${item.id}`}
     >

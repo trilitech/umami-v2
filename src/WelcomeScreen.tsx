@@ -1,4 +1,4 @@
-import { Box, Button, Center, Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Divider, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { BatchIcon, KeyIcon, SlidersIcon } from "./assets/icons";
@@ -78,7 +78,7 @@ export const WelcomeScreen = () => {
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
       {showSlider && (
-        <Flex width="100%" maxWidth="1320px">
+        <SimpleGrid columns={[1, 1, 2]}>
           <Center
             width="100%"
             maxWidth="660px"
@@ -108,7 +108,7 @@ export const WelcomeScreen = () => {
               ))}
             </Slider>
           </Box>
-        </Flex>
+        </SimpleGrid>
       )}
       {modalElement}
     </Center>
