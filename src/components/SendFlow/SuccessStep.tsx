@@ -10,9 +10,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import { TfiNewWindow } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 
+import { WindowLinkIcon } from "../../assets/icons/WindowLink";
 import colors from "../../style/colors";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { DynamicModalContext } from "../DynamicModal";
@@ -28,24 +28,24 @@ export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
       <ModalHeader textAlign="center">Operation Submitted</ModalHeader>
       <ModalBody>
         <Flex justifyContent="center" marginTop="10px">
-          <Text width="340px" color="text.dark" textAlign="center" size="sm">
+          <Text color="text.dark" textAlign="center" size="sm">
             You can follow this operation's progress in the Operations section. It may take up to 30
             seconds to appear.
           </Text>
         </Flex>
       </ModalBody>
-      <ModalFooter justifyContent="center" flexDirection="column">
+      <ModalFooter justifyContent="center" flexDirection="column" width="100%">
         <Link to="/operations">
-          <Button width="100%" onClick={onClose}>
-            Go to Operation
+          <Button width="400px" onClick={onClose} size="lg">
+            See all Operations
           </Button>
         </Link>
         <Link rel="noopener noreferrer" target="_blank" to={tzktUrl}>
           <Flex alignItems="center" marginTop="24px">
-            <Text marginRight="8px" paddingTop="2px" color={colors.gray[300]}>
+            <Text marginRight="4px" color={colors.gray[300]}>
               View in Tzkt
             </Text>
-            <Icon as={TfiNewWindow} color={colors.gray[450]} />
+            <WindowLinkIcon />
           </Flex>
         </Link>
       </ModalFooter>
