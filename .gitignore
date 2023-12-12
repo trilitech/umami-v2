@@ -33,3 +33,4 @@ settings.json
 /playwright/.cache/
 
 tsconfig.tsbuildinfo
+/docs

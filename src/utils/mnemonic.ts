@@ -54,7 +54,7 @@ export const deriveSecretKey = (mnemonic: string, derivationPath: string, curve:
  *
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param derivationPathPattern - Path pattern for searching for the key pairs.
- * @returns List of revealed <@link PublicKeyPair> associated with the given parameters.
+ * @returns List of revealed <{@link PublicKeyPair}> associated with the given parameters.
  */
 export const restoreRevealedPublicKeyPairs = async (
   mnemonic: string,

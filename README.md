@@ -68,3 +68,7 @@ signtool sign /tr http://timestamp.sectigo.com /td sha256 /fd sha256 /a '.\dist\
 ```
 
 To make yourself a debugging build run `yarn electron:package:mac:debug`. It will work only on your machine, but you'll be able to play around with it. For the same purpose you might find helpful enabling devTools in `public/electron.js` before running `yarn build` and this command.
+
+### `yarn docs`
+
+It will generate documentation in HTML and put it into the `docs` folder. Open `docs/index.html`
