@@ -4,7 +4,6 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
-import { ImportSeed } from "./ImportSeed";
 import { BeaconProvider, resetBeacon } from "./utils/beacon/beacon";
 import { useImplicitAccounts } from "./utils/hooks/getAccountDataHooks";
 import { useAssetsPolling } from "./utils/useAssetsPolling";
@@ -18,6 +17,7 @@ import { OperationsView } from "./views/operations/OperationsView";
 import { SettingsView } from "./views/settings/SettingsView";
 import { TokensPage } from "./views/tokens/TokensPage";
 import { withSideMenu } from "./views/withSideMenu";
+import { WelcomeScreen } from "./WelcomeScreen";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -67,7 +67,7 @@ const LoggedOutRouter = () => {
     <HashRouter>
       <Routes>
         <Route element={<Navigate to="/welcome" />} path="/*" />
-        <Route element={<ImportSeed />} path="/welcome" />
+        <Route element={<WelcomeScreen />} path="/welcome" />
       </Routes>
     </HashRouter>
   );
