@@ -45,33 +45,29 @@ export const RestoreLedger = ({
       () =>
         withTimeout(async () => {
           const toastId = toast({
-            title: "Request sent to Ledger",
-            description: "Open the Tezos app on your Ledger and approve the operation",
+            description: "Please open the Tezos app on your Ledger and approve the operation",
             status: "info",
           });
           const derivationPath = makeDerivationPath(account.derivationPath, 0);
           const { pk, pkh } = await getPk(derivationPath);
           restoreLedger(derivationPath, pk, pkh, account.label);
           toast.close(toastId);
-          toast({ title: "Account successfully created!", status: "success" });
+          toast({ description: "Account successfully created!", status: "success" });
           closeModal();
         }, LEDGER_TIMEOUT),
       error => {
         if (error.name === "PublicKeyRetrievalError") {
           return {
-            title: "Request rejected",
-            description: "Please unlock your Ledger and open the Tezos app",
+            description: "Request rejected. Please unlock your Ledger and open the Tezos app",
           };
         } else if (error.name === "InvalidStateError") {
           return {
-            title: "Request pending",
-            description: "Check your ledger...",
+            description: "Request pending. Check your ledger...",
           };
         }
 
         return {
-          title: "Ledger error",
-          description: error.message || error.name,
+          description: `Ledger error. ${error.message || error.name}`,
         };
       }
     );

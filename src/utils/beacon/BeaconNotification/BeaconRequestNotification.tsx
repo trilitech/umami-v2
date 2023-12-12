@@ -55,8 +55,7 @@ export const BeaconNotification: React.FC<{
           } catch (error: any) {
             console.warn("Failed to parse Beacon request", error);
             toast({
-              title: "Failed to confirm Beacon operation success",
-              description: error.message,
+              description: `Failed to confirm Beacon operation: ${error.message}`,
             });
           } finally {
             onClose();

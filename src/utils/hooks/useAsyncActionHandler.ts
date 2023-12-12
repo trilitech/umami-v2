@@ -32,7 +32,6 @@ export const useAsyncActionHandler = () => {
       const errorContext = getErrorContext(error);
 
       toast({
-        title: "Error",
         description: errorContext.description,
         status: "error",
         ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),

@@ -67,9 +67,8 @@ describe("<RestoreMnemonic />", () => {
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalledWith({
           description:
-            '"test test test test test test test test test test test test test test test test test test test test test test test test" is not a valid mnemonic',
+            'Invalid Mnemonic: "test test test test test test test test test test test test test test test test test test test test test test test test"',
           status: "error",
-          title: "Invalid Mnemonic",
         });
       });
     });
@@ -84,7 +83,6 @@ describe("<RestoreMnemonic />", () => {
         expect(mockToast).toHaveBeenCalledWith({
           description: "the mnemonic must be 12, 15, 18, 24 words long",
           status: "error",
-          title: "Error",
         });
       });
     });

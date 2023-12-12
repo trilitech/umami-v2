@@ -50,7 +50,7 @@ export const ChangePasswordForm: React.FC = () => {
 
     handleAsyncAction(async () => {
       await dispatch(changeMnemonicPassword({ currentPassword, newPassword })).unwrap();
-      toast({ title: "Password updated", status: "success" });
+      toast({ description: "Password updated", status: "success" });
       onClose();
     });
   };

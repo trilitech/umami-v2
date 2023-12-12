@@ -41,7 +41,7 @@ export const MasterPassword = ({
             account.derivationPath
           );
       }
-      toast({ title: "Account successfully created!", status: "success" });
+      toast({ description: "Account successfully created!", status: "success" });
       onClose();
     });
 

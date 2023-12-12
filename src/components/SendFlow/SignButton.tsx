@@ -77,8 +77,7 @@ export const SignButton: React.FC<{
   const onLedgerSign = async () =>
     handleAsyncAction(async () => {
       toast({
-        title: "Request sent to Ledger",
-        description: "Open the Tezos app on your Ledger and approve the operation",
+        description: "Please open the Tezos app on your Ledger and approve the operation",
         status: "info",
         duration: 60000,
         isClosable: true,

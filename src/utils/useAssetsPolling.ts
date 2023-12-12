@@ -115,8 +115,7 @@ export const useAssetsPolling = () => {
     onError: (error: any) => {
       dispatch(errorsSlice.actions.add(getErrorContext(error)));
       toast({
-        title: "Data fetching error",
-        description: error.message,
+        description: `Data fetching error: ${error.message}`,
         status: "error",
         isClosable: true,
       });

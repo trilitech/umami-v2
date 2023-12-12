@@ -9,3 +9,20 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.chakra-toast .chakra-alert[data-status="error"] {
+  background: #fc7884;
+}
+
+.chakra-toast .chakra-alert[data-status="success"] {
+  background: #00e7b6;
+}
+
+.chakra-toast .chakra-alert[data-status="info"] {
+  background: white;
+}
+
+.chakra-toast .chakra-alert__desc {
+  font-size: 14px;
+  color: black;
+}

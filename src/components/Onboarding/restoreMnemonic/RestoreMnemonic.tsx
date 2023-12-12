@@ -59,21 +59,16 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
     });
 
   const onSubmit = (data: FieldValues) =>
-    handleAsyncAction(
-      async () => {
-        const mnemonic = Object.values(data).join(" ").trim();
-        if (!validateMnemonic(mnemonic)) {
-          throw new Error(`"${mnemonic}" is not a valid mnemonic`);
-        }
-        goToStep({
-          type: StepType.nameAccount,
-          account: { type: "mnemonic", mnemonic: mnemonic },
-        });
-      },
-      {
-        title: "Invalid Mnemonic",
+    handleAsyncAction(async () => {
+      const mnemonic = Object.values(data).join(" ").trim();
+      if (!validateMnemonic(mnemonic)) {
+        throw new Error(`Invalid Mnemonic: "${mnemonic}"`);
       }
-    );
+      goToStep({
+        type: StepType.nameAccount,
+        account: { type: "mnemonic", mnemonic: mnemonic },
+      });
+    });
   return (
     <ModalContentWrapper
       icon={<KeyIcon width="24px" height="24px" stroke={colors.gray[450]} />}

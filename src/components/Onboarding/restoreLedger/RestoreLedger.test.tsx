@@ -34,7 +34,7 @@ describe("<RestoreLedger />", () => {
     fireEvent.click(confirmBtn);
     await waitFor(() => {
       expect(mockToast).toHaveBeenCalledWith({
-        title: "Account successfully created!",
+        description: "Account successfully created!",
         status: "success",
       });
     });
