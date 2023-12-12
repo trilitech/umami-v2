@@ -78,7 +78,7 @@ export const WelcomeScreen = () => {
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
       {showSlider && (
-        <SimpleGrid columns={[1, 1, 2]}>
+        <SimpleGrid boxShadow="0px 0px 30px rgba(0, 0, 0, 0.30)" columns={[1, 1, 2]}>
           <Center
             width="100%"
             maxWidth="660px"
