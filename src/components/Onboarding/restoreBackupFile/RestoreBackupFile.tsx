@@ -74,11 +74,12 @@ export const RestoreBackupFile = () => {
                 <FormErrorMessage data-testid="file">{errors.file.message}</FormErrorMessage>
               )}
             </FormControl>
-            <FormControl marginTop="24px" isInvalid={!!errors.password}>
+            <FormControl marginTop="24px">
               <PasswordInput
                 data-testid="password-input"
                 inputName="password"
-                label="Your password"
+                label="Your password (if you have one)"
+                required={false}
               />
               {errors.password && (
                 <FormErrorMessage data-testid="password">

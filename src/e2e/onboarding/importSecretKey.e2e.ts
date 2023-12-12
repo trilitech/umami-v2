@@ -14,7 +14,7 @@ test("Import secret key", async ({ page }) => {
 
   await page.getByRole("button", { name: "Continue" }).click();
   await page.getByRole("button", { name: "I already have a wallet" }).click();
-  await page.getByRole("button", { name: "Import with a Secret Key" }).click();
+  await page.getByRole("button", { name: "Import with Secret Key" }).click();
 
   await page.getByRole("textbox").fill(AliceAccount.secretKey);
   await page.getByRole("button", { name: "Continue" }).click();

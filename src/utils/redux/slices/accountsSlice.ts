@@ -138,3 +138,5 @@ const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: Implicit
 
   return [...existingAccounts, ...newAccounts];
 };
+
+export const accountsActions = accountsSlice.actions;
