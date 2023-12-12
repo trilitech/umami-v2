@@ -6,6 +6,11 @@ type State = Record<string, RawPkh>;
 
 const initialState: State = {};
 
+/**
+ * Stores connections between dApps and accounts.
+ *
+ * dApps are identified by dAppId (a unique string id generated from dApp public key).
+ */
 export const beaconSlice = createSlice({
   name: "beacon",
   initialState,
