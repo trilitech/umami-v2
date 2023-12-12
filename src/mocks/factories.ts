@@ -186,7 +186,9 @@ export const mockLedgerAccount = (index: number, label?: string): LedgerAccount 
   return account;
 };
 
-// Use {@link renameAccount} to set a label for a multisig account.
+/**
+ * Use {@link utils/redux/thunks/renameAccount.renameAccount} to set a label for a multisig account.
+ */
 export const mockMultisigAccount = (index: number): MultisigAccount => ({
   type: "multisig",
   address: mockContractAddress(index),
