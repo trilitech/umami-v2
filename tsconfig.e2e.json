@@ -22,5 +22,12 @@
     "jsx": "react-jsx",
     "incremental": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "typedocOptions": {
+    "entryPoints": ["src"],
+    "entryPointStrategy": "expand",
+    "excludeNotDocumented": false,
+    "out": "docs",
+    "plugin": ["typedoc-plugin-missing-exports"]
+  }
 }
