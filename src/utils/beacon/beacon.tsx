@@ -6,8 +6,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { BeaconNotification } from "./BeaconNotification";
 import { PeerInfoWithId, ProvidedPeerInfo, makePeerInfo } from "./types";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import { beaconSlice } from "../redux/slices/beaconSlice";
-import { store } from "../redux/store";
+import { useRemoveConnectionFromSlice } from "../hooks/beaconHooks";
 
 const makeClient = () =>
   new WalletClient({
@@ -30,13 +29,12 @@ export const usePeers = () =>
 
 export const useRemovePeer = () => {
   const refresh = useRefreshPeers();
+  const removeConnection = useRemoveConnectionFromSlice();
   return (peerInfo: PeerInfoWithId) => {
-    store.dispatch(
-      beaconSlice.actions.removeConnection({
-        dAppId: peerInfo.senderId,
-      })
-    );
-    return walletClient.removePeer(peerInfo as ExtendedP2PPairingResponse).then(refresh);
+    return walletClient
+      .removePeer(peerInfo as ExtendedP2PPairingResponse)
+      .then(() => removeConnection(peerInfo.senderId))
+      .then(refresh);
   };
 };
 
@@ -86,5 +84,4 @@ export const resetBeacon = async () => {
   await walletClient.removeAllAppMetadata();
   await walletClient.removeAllPeers();
   await walletClient.removeAllPermissions();
-  store.dispatch(beaconSlice.actions.reset());
 };
