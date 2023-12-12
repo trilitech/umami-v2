@@ -173,7 +173,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.17.0",
     "react-test-renderer": ">=16.8.0",
-    "redux": "^4.2.1",
+    "redux": "^5.0.0",
     "redux-mock-store": "^1.5.4",
     "redux-persist": "^6.0.0",
     "resolve": "^1.20.0",
