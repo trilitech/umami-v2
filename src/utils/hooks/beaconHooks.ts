@@ -17,7 +17,7 @@ export const useGetConnectedAccount = (dAppId: string): RawPkh | undefined => {
 /**
  * Returns function for removing all connections from {@link beaconSlice}.
  */
-export const useResetBeaconConnections = () => {
+export const useResetConnections = () => {
   const dispatch = useDispatch();
   return () => dispatch(beaconSlice.actions.reset());
 };
@@ -25,7 +25,7 @@ export const useResetBeaconConnections = () => {
 /**
  * Returns function for adding connection to {@link beaconSlice}.
  */
-export const useAddConnectionToSlice = () => {
+export const useAddConnection = () => {
   const dispatch = useDispatch();
   return (dAppId: string, accountPkh: RawPkh) =>
     dispatch(beaconSlice.actions.addConnection({ dAppId, accountPkh }));
@@ -34,7 +34,7 @@ export const useAddConnectionToSlice = () => {
 /**
  * Returns function for removing connection from {@link beaconSlice}.
  */
-export const useRemoveConnectionFromSlice = () => {
+export const useRemoveConnection = () => {
   const dispatch = useDispatch();
   return (dAppId: string) => dispatch(beaconSlice.actions.removeConnection({ dAppId }));
 };

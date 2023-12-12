@@ -1,10 +1,10 @@
 import { renderHook } from "@testing-library/react";
 
 import {
-  useAddConnectionToSlice,
+  useAddConnection,
   useGetConnectedAccount,
-  useRemoveConnectionFromSlice,
-  useResetBeaconConnections,
+  useRemoveConnection,
+  useResetConnections,
 } from "./beaconHooks";
 import { mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
 import { ReduxStore } from "../../providers/ReduxStore";
@@ -38,12 +38,12 @@ describe("useGetConnectedAccount", () => {
   });
 });
 
-describe("useResetBeaconConnections", () => {
+describe("useResetConnections", () => {
   it("removes all connections from BeaconSlice", () => {
     store.dispatch(beaconActions.addConnection({ dAppId: dAppId1, accountPkh: pkh1 }));
     store.dispatch(beaconActions.addConnection({ dAppId: dAppId2, accountPkh: pkh2 }));
 
-    const { result: resetBeaconSlice } = renderHook(() => useResetBeaconConnections(), {
+    const { result: resetBeaconSlice } = renderHook(() => useResetConnections(), {
       wrapper: ReduxStore,
     });
     resetBeaconSlice.current();
@@ -52,11 +52,11 @@ describe("useResetBeaconConnections", () => {
   });
 });
 
-describe("useAddConnectionToSlice", () => {
+describe("useAddConnection", () => {
   it("adds connection to BeaconSlice", () => {
     store.dispatch(beaconActions.addConnection({ dAppId: dAppId1, accountPkh: pkh1 }));
 
-    const { result: addConnection } = renderHook(() => useAddConnectionToSlice(), {
+    const { result: addConnection } = renderHook(() => useAddConnection(), {
       wrapper: ReduxStore,
     });
     addConnection.current(dAppId2, pkh2);
@@ -70,7 +70,7 @@ describe("useAddConnectionToSlice", () => {
   it("overrides connection with the same dAppId", () => {
     store.dispatch(beaconActions.addConnection({ dAppId: dAppId1, accountPkh: pkh1 }));
 
-    const { result: addConnection } = renderHook(() => useAddConnectionToSlice(), {
+    const { result: addConnection } = renderHook(() => useAddConnection(), {
       wrapper: ReduxStore,
     });
     addConnection.current(dAppId1, pkh2);
@@ -81,12 +81,12 @@ describe("useAddConnectionToSlice", () => {
   });
 });
 
-describe("useRemoveConnectionToSlice", () => {
+describe("useRemoveConnection", () => {
   it("removes connection from BeaconSlice", () => {
     store.dispatch(beaconActions.addConnection({ dAppId: dAppId1, accountPkh: pkh1 }));
     store.dispatch(beaconActions.addConnection({ dAppId: dAppId2, accountPkh: pkh2 }));
 
-    const { result: removeConnection } = renderHook(() => useRemoveConnectionFromSlice(), {
+    const { result: removeConnection } = renderHook(() => useRemoveConnection(), {
       wrapper: ReduxStore,
     });
     removeConnection.current(dAppId2);
