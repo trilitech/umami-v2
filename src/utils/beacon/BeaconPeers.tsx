@@ -89,7 +89,7 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfoWithId; onRemove: (
           <Image width="100%" src={peerInfo.icon} />
         </AspectRatio>
         <Center alignItems="flex-start" flexDirection="column">
-          <Heading marginLeft="8px" size="md">
+          <Heading marginBottom="11px" marginLeft="8px" size="md">
             {peerInfo.name}
           </Heading>
           <StoredPeerInfo peerInfo={peerInfo} />
