@@ -115,7 +115,11 @@ export const AccountTile: React.FC<{
 
               if (i === MAX_NFT_COUNT - 1) {
                 return (
-                  <Link key="last" data-testid="show-more-nfts-link" to="/nfts">
+                  <Link
+                    key="last"
+                    data-testid="show-more-nfts-link"
+                    to={`/nfts?accounts=${address}`}
+                  >
                     <Box
                       height="32px"
                       marginLeft="4px"

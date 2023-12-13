@@ -98,7 +98,10 @@ describe("<AccountTile />", () => {
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
         expect(screen.getAllByTestId("nft-link")).toHaveLength(6);
-        expect(screen.getByTestId("show-more-nfts-link")).toHaveAttribute("href", "#/nfts");
+        expect(screen.getByTestId("show-more-nfts-link")).toHaveAttribute(
+          "href",
+          `#/nfts?accounts=${account.address.pkh}`
+        );
       });
 
       it("renders NFTs sorted by lastLevel desc", () => {

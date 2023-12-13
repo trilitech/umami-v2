@@ -1,23 +1,22 @@
 import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
 import { every, pick, sumBy } from "lodash";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 import { NFTDrawerBody } from "./NFTDrawerBody";
-import { NFTGallery, NFTWithOwner } from "./NFTGallery";
+import { NFTGallery } from "./NFTGallery";
 import { useDynamicModal } from "../../components/DynamicModal";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
+import { NFTWithOwner } from "../../utils/token/utils";
 
 export const NFTsView = () => {
   const nfts = useAllNfts();
 
-  const { ownerPkh } = useParams();
-  const { accountsFilter, selectedAccounts } = useAccountsFilter(ownerPkh ? [ownerPkh] : undefined);
-
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
+  const { accountsFilter, selectedAccounts } = useAccountsFilter();
+
   const [drawerNFT, setDrawerNFT] = useState<NFTWithOwner | undefined>(undefined);
 
   useEffect(() => {
