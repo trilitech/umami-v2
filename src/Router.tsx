@@ -5,6 +5,7 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
 import { BeaconProvider, resetBeacon } from "./utils/beacon/beacon";
+import { useResetConnections } from "./utils/hooks/beaconHooks";
 import { useImplicitAccounts } from "./utils/hooks/getAccountDataHooks";
 import { useAssetsPolling } from "./utils/useAssetsPolling";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
@@ -59,9 +60,10 @@ const LoggedInRouterWithPolling = () => {
 };
 
 const LoggedOutRouter = () => {
+  const resetBeaconConnections = useResetConnections();
   useEffect(() => {
-    resetBeacon();
-  }, []);
+    resetBeacon().then(resetBeaconConnections);
+  }, [resetBeaconConnections]);
 
   return (
     <HashRouter>

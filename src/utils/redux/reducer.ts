@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 import { accountsSlice } from "./slices/accountsSlice";
 import { assetsSlice } from "./slices/assetsSlice";
 import { batchesSlice } from "./slices/batches";
+import { beaconSlice } from "./slices/beaconSlice";
 import { contactsSlice } from "./slices/contactsSlice";
 import { errorsSlice } from "./slices/errorsSlice";
 import { multisigsSlice } from "./slices/multisigsSlice";
@@ -26,12 +27,13 @@ const accountsPersistConfig = {
 const rootReducers = combineReducers({
   accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
   assets: assetsSlice.reducer,
-  contacts: contactsSlice.reducer,
-  multisigs: multisigsSlice.reducer,
-  tokens: tokensSlice.reducer,
-  errors: errorsSlice.reducer,
-  networks: networksSlice.reducer,
   batches: batchesSlice.reducer,
+  beacon: beaconSlice.reducer,
+  contacts: contactsSlice.reducer,
+  errors: errorsSlice.reducer,
+  multisigs: multisigsSlice.reducer,
+  networks: networksSlice.reducer,
+  tokens: tokensSlice.reducer,
 });
 
 export const reducer = persistReducer(rootPersistConfig, rootReducers);

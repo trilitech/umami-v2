@@ -19,6 +19,7 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { OwnedImplicitAccountsAutocomplete } from "../../../../components/AddressAutocomplete";
+import { useAddConnection } from "../../../hooks/beaconHooks";
 import { useImplicitAccounts } from "../../../hooks/getAccountDataHooks";
 import { walletClient } from "../../beacon";
 
@@ -26,6 +27,7 @@ export const PermissionRequestPanel: React.FC<{
   request: PermissionRequestOutput;
   onSuccess: () => void;
 }> = ({ request, onSuccess: onSubmit }) => {
+  const addConnectionToBeaconSlice = useAddConnection();
   const accounts = useImplicitAccounts();
   const defaultAddress = accounts[0].address.pkh;
   const form = useForm<{ address: string }>({ defaultValues: { address: defaultAddress } });
@@ -48,6 +50,9 @@ export const PermissionRequestPanel: React.FC<{
     };
 
     await walletClient.respond(response);
+
+    addConnectionToBeaconSlice(request.senderId, account.address.pkh);
+
     onSubmit();
   };
 

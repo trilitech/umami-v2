@@ -6,10 +6,12 @@ import {
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
+import userEvent from "@testing-library/user-event";
 
 import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
+import { store } from "../../redux/store";
 import { executeOperations } from "../../tezos";
 import { walletClient } from "../beacon";
 
@@ -40,7 +42,7 @@ beforeEach(() => {
 });
 
 describe("<BeaconRequestNotification />", () => {
-  describe("Permission request", () => {
+  describe("permission request", () => {
     const message: PermissionRequestOutput = {
       appMetadata: { name: DAPP_NAME, senderId: SENDER_ID },
       id: MESSAGE_ID,
@@ -53,36 +55,61 @@ describe("<BeaconRequestNotification />", () => {
 
     it("should display permission request", () => {
       render(fixture(message, () => {}));
+
       expect(screen.getByText(/Permission request/i)).toBeInTheDocument();
     });
 
-    test("User can select account and grant permission", async () => {
+    it("allows user to select account and grant permission", async () => {
+      const user = userEvent.setup();
       render(fixture(message, () => {}));
-      // TODO: fix act warnings and uncomment
-      // await waitFor(() => {
-      //   selectAccount(mockImplicitAccount(2).label, "Select Account");
-      // });
-      const grantButton = screen.getByRole("button", { name: /grant/i });
-      expect(grantButton).toBeEnabled();
 
-      fireEvent.click(grantButton);
+      // select account
+      user.click(screen.getByTestId("address-tile"));
+      await waitFor(() => {
+        expect(screen.getByTestId("suggestions-list")).toBeInTheDocument();
+      });
+      user.click(screen.getByText(mockImplicitAccount(2).label));
+      // grant permission
+      const grantButton = screen.getByRole("button", { name: "Grant" });
+      await waitFor(() => {
+        expect(grantButton).toBeEnabled();
+      });
+      user.click(grantButton);
+
       await waitFor(() => {
         expect(walletClient.respond).toHaveBeenCalledWith({
           id: MESSAGE_ID,
           network: { type: "mainnet" },
-          publicKey: mockImplicitAccount(1).pk,
+          publicKey: mockImplicitAccount(2).pk,
           scopes: SCOPES,
           type: "permission_response",
         });
       });
     });
+
+    it("saves new connection to beaconSlice", async () => {
+      const user = userEvent.setup();
+      render(fixture(message, () => {}));
+      const grantButton = screen.getByRole("button", { name: "Grant" });
+
+      expect(grantButton).toBeEnabled();
+      user.click(grantButton);
+
+      await waitFor(() => {
+        expect(store.getState().beacon).toEqual({
+          [SENDER_ID]: mockMnemonicAccount(1).address.pkh,
+        });
+      });
+    });
   });
 
-  test("Unhandled Beacon request display an error", async () => {
+  it("displays an error on unhandled Beacon request", async () => {
     const message = {
       type: BeaconMessageType.BlockchainRequest,
     } as unknown as BeaconRequestOutputMessage;
+
     render(fixture(message, () => {}));
+
     expect(screen.getByText("Unsupported request: blockchain_request")).toBeInTheDocument();
   });
 });

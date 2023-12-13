@@ -4,8 +4,9 @@ import { useContext, useEffect } from "react";
 import { useQuery, useQueryClient } from "react-query";
 
 import { BeaconNotification } from "./BeaconNotification";
-import { PeerInfo, makePeerInfo } from "./types";
+import { PeerInfoWithId, ProvidedPeerInfo, makePeerInfo } from "./types";
 import { DynamicModalContext } from "../../components/DynamicModal";
+import { useRemoveConnection } from "../hooks/beaconHooks";
 
 const makeClient = () =>
   new WalletClient({
@@ -24,12 +25,17 @@ export const useRefreshPeers = () => {
 };
 
 export const usePeers = () =>
-  useQuery(PEERS_QUERY_KEY, () => walletClient.getPeers() as Promise<Array<PeerInfo>>);
+  useQuery(PEERS_QUERY_KEY, () => walletClient.getPeers() as Promise<Array<ProvidedPeerInfo>>);
 
 export const useRemovePeer = () => {
   const refresh = useRefreshPeers();
-  return (peerInfo: PeerInfo) =>
-    walletClient.removePeer(peerInfo as ExtendedP2PPairingResponse).then(refresh);
+  const removeConnectionFromBeaconSlice = useRemoveConnection();
+  return (peerInfo: PeerInfoWithId) => {
+    return walletClient
+      .removePeer(peerInfo as ExtendedP2PPairingResponse)
+      .then(() => removeConnectionFromBeaconSlice(peerInfo.senderId))
+      .then(refresh);
+  };
 };
 
 export const useAddPeer = () => {
