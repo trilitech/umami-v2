@@ -5,8 +5,8 @@ import colors from "../../style/colors";
 export const WindowLinkIcon: React.FC<IconProps> = props => {
   return (
     <Icon
-      width="14"
-      height="14"
+      width="14px"
+      height="14px"
       fill="none"
       stroke={colors.gray[450]}
       viewBox="0 0 14 14"
