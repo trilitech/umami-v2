@@ -73,12 +73,12 @@ export const PermissionRequestPanel: React.FC<{
           Permission Request
         </Flex>
         <Flex alignItems="center" justifyContent="center" marginTop="10px">
-          <Text color={colors.gray[400]} size="sm">
-            <Heading display="inline" size="sm">
-              {request.appMetadata.name}
-            </Heading>{" "}
-            is requesting permission to sign this operation.
-          </Text>
+          <Heading color={colors.gray[400]} size="sm">
+            {request.appMetadata.name}
+            <Text display="inline" marginLeft="4px" size="sm">
+              is requesting permission to sign this operation.
+            </Text>
+          </Heading>
         </Flex>
 
         <Flex alignItems="center" justifyContent="center" marginTop="10px">
@@ -91,7 +91,7 @@ export const PermissionRequestPanel: React.FC<{
         </Flex>
       </ModalHeader>
       <ModalCloseButton />
-      <ModalBody>
+      <ModalBody data-testid="beacon-request-body">
         {request.appMetadata.icon && (
           <Flex
             alignItems="center"
