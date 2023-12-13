@@ -34,12 +34,10 @@ export const MasterPassword = ({
           await restoreFromSecretKey(account.secretKey, password, account.label);
           break;
         case "mnemonic":
-          await restoreFromMnemonic(
-            account.mnemonic,
+          await restoreFromMnemonic({
+            ...account,
             password,
-            account.label,
-            account.derivationPath
-          );
+          });
       }
       toast({ description: "Account successfully created!", status: "success" });
       onClose();

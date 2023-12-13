@@ -1,8 +1,9 @@
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { generateMnemonic } from "bip39";
 
-import { defaultDerivationPathPattern, makeDerivationPath } from "./account/derivationPathUtils";
+import { makeDerivationPath } from "./account/derivationPathUtils";
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
+import { useGetNextAvailableAccountLabels } from "./hooks/getAccountDataHooks";
 import { addressExists, getFingerPrint } from "./tezos";
 import { MnemonicAccount } from "../types/Account";
 import { Network } from "../types/Network";
@@ -79,7 +80,7 @@ export const restoreRevealedPublicKeyPairs = async (
 };
 
 /**
- * Restores accounts from a mnemonic group whet it's being added by an existing seedphrase.
+ * Restores accounts from a mnemonic group when it's being added by an existing seedphrase.
  *
  * Creates some revealed mnemonic accounts matching given {@link derivationPathPattern},
  * or, if no accounts were revealed, an account with the smallest derivation path (accountIndex = 0).
@@ -88,27 +89,35 @@ export const restoreRevealedPublicKeyPairs = async (
  *
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param network - Stores Tezos network & tzkt indexer settings.
- * @param label - Account group prefix provided by the user.
  * @param derivationPathPattern - Path pattern for the account group that's being added.
+ * @param label - Account group prefix provided by the user.
  * @returns A list of revealed mnemonic accounts that will be added.
  */
-export const restoreRevealedMnemonicAccounts = async (
-  mnemonic: string,
-  network: Network,
-  label = "Account",
-  derivationPathPattern = defaultDerivationPathPattern
-): Promise<MnemonicAccount[]> => {
-  const pubKeyPairs = await restoreRevealedPublicKeyPairs(mnemonic, derivationPathPattern, network);
-  const seedFingerPrint = await getFingerPrint(mnemonic);
-
-  return pubKeyPairs.map(({ pk, pkh }, accountIndex) => {
-    return makeMnemonicAccount(
-      pk,
-      pkh,
-      makeDerivationPath(derivationPathPattern, accountIndex),
+export const useRestoreRevealedMnemonicAccounts = () => {
+  const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
+  return async (
+    mnemonic: string,
+    network: Network,
+    derivationPathPattern: string,
+    label = "Account"
+  ): Promise<MnemonicAccount[]> => {
+    const pubKeyPairs = await restoreRevealedPublicKeyPairs(
+      mnemonic,
       derivationPathPattern,
-      seedFingerPrint,
-      `${label}${pubKeyPairs.length > 1 ? " " + accountIndex : ""}`
+      network
     );
-  });
+    const seedFingerPrint = await getFingerPrint(mnemonic);
+    const accountLabels = getNextAvailableAccountLabels(label, pubKeyPairs.length);
+
+    return pubKeyPairs.map(({ pk, pkh }, accountIndex) =>
+      makeMnemonicAccount(
+        pk,
+        pkh,
+        makeDerivationPath(derivationPathPattern, accountIndex),
+        derivationPathPattern,
+        seedFingerPrint,
+        accountLabels[accountIndex]
+      )
+    );
+  };
 };

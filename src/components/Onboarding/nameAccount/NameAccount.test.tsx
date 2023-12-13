@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { NameAccount } from "./NameAccount";
 import {
+  mockContact,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
@@ -11,9 +12,9 @@ import {
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { ReduxStore } from "../../../providers/ReduxStore";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { contactsActions } from "../../../utils/redux/slices/contactsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
+import { checkAccountsAndUpsertContact } from "../../../utils/redux/thunks/checkAccountsAndUpsertContact";
 import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
 import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 
@@ -25,132 +26,209 @@ const fixture = (goToStep: (step: Step) => void, account: NameAccountStep["accou
   </ReduxStore>
 );
 
+const getNameInput = () => screen.getByTestId("name");
+const getConfirmBtn = () => screen.getByRole("button", { name: /continue/i });
+
+const accounts = [
+  { type: "ledger" as const, nextStep: StepType.derivationPath },
+  {
+    type: "mnemonic" as const,
+    mnemonic: mnemonic1,
+    nextStep: StepType.derivationPath,
+  },
+  {
+    type: "secret_key" as const,
+    secretKey: "secret key",
+    nextStep: StepType.masterPassword,
+  },
+];
+
 describe("<NameAccount />", () => {
-  const accounts = [
-    { type: "ledger" as const, defaultLabel: "Account 1", nextStep: StepType.derivationPath },
-    {
-      type: "mnemonic" as const,
-      mnemonic: mnemonic1,
-      defaultLabel: "Account",
-      nextStep: StepType.derivationPath,
-    },
-    {
-      type: "secret_key" as const,
-      secretKey: "secret key",
-      defaultLabel: "Account 1",
-      nextStep: StepType.masterPassword,
-    },
-  ];
+  describe.each([
+    { desc: "default name (not provided by user)", withNameProvided: false },
+    { desc: "provided name", withNameProvided: true },
+  ])("with $desc", label => {
+    const labelBase = label.withNameProvided ? "Test acc" : "Account";
 
-  describe.each(accounts)("For $type", account => {
-    it("sets a provided name", async () => {
-      render(fixture(goToStepMock, account));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      const name = screen.getByTestId("name");
-      fireEvent.change(name, { target: { value: "name" } });
-      fireEvent.click(confirmBtn);
-
-      await waitFor(() => {
-        expect(goToStepMock).toBeCalledTimes(1);
-      });
-      expect(goToStepMock).toBeCalledWith({
-        type: account.nextStep,
-        account: { ...account, label: "name" },
-      });
-    });
-
-    it("sets a default name if none is provided", async () => {
-      render(fixture(goToStepMock, account));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
-
-      await waitFor(() => {
-        expect(goToStepMock).toBeCalledTimes(1);
-      });
-      expect(goToStepMock).toBeCalledWith({
-        type: account.nextStep,
-        account: { ...account, label: account.defaultLabel },
-      });
-    });
-  });
-
-  describe.each(accounts.filter(account => account.type !== "mnemonic"))("For $type", account => {
-    const existingAccounts = [
-      {
-        type: "ledger" as const,
-        accounts: [mockLedgerAccount(0, "Account 1"), mockLedgerAccount(2, "Account 3")],
-      },
-      {
-        type: "social" as const,
-        accounts: [mockSocialAccount(0, "Account 1"), mockSocialAccount(2, "Account 3")],
-      },
-      {
-        type: "mnemonic" as const,
-        accounts: [mockMnemonicAccount(0, "Account 1"), mockMnemonicAccount(2, "Account 3")],
-      },
-      {
-        type: "secret_key" as const,
-        accounts: [mockSecretKeyAccount(0, "Account 1"), mockSecretKeyAccount(2, "Account 3")],
-      },
-    ];
-    describe.each(existingAccounts)("among $type accounts", existingAccounts => {
-      it("sets unique default label", async () => {
-        if (existingAccounts.type === "mnemonic") {
-          store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts));
-        } else {
-          existingAccounts.accounts.forEach(account =>
-            store.dispatch(accountsSlice.actions.addAccount(account))
-          );
-        }
-
+    describe.each(accounts)("for $type", account => {
+      it(`sets a ${label.desc}`, async () => {
         render(fixture(goToStepMock, account));
-        const confirmBtn = screen.getByRole("button", { name: /continue/i });
-        fireEvent.click(confirmBtn);
+
+        if (label.withNameProvided) {
+          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+        }
+        fireEvent.click(getConfirmBtn());
 
         await waitFor(() => {
           expect(goToStepMock).toBeCalledTimes(1);
         });
         expect(goToStepMock).toBeCalledWith({
           type: account.nextStep,
-          account: { ...account, label: "Account 2" },
+          account: { ...account, label: labelBase },
         });
       });
     });
 
-    it("among multisig accounts sets unique default label", async () => {
-      store.dispatch(
-        multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
-      );
-      store.dispatch(renameAccount(mockMultisigAccount(0), "Account 1"));
-      store.dispatch(renameAccount(mockMultisigAccount(1), "Account 3"));
+    const existingAccounts = [
+      {
+        type: "ledger" as const,
+        accounts: [mockLedgerAccount(0, labelBase), mockLedgerAccount(2, `${labelBase} 3`)],
+      },
+      {
+        type: "social" as const,
+        accounts: [mockSocialAccount(0, labelBase), mockSocialAccount(2, `${labelBase} 3`)],
+      },
+      {
+        type: "mnemonic" as const,
+        accounts: [mockMnemonicAccount(0, labelBase), mockMnemonicAccount(2, `${labelBase} 3`)],
+      },
+      {
+        type: "secret_key" as const,
+        accounts: [mockSecretKeyAccount(0, labelBase), mockSecretKeyAccount(2, `${labelBase} 3`)],
+      },
+    ];
 
-      render(fixture(goToStepMock, account));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
+    describe("for mnemonic", () => {
+      const account = accounts.find(account => account.type === "mnemonic")!;
 
-      await waitFor(() => {
-        expect(goToStepMock).toBeCalledTimes(1);
+      describe.each(existingAccounts)("among $type accounts", existingAccounts => {
+        it("sets group label", async () => {
+          if (existingAccounts.type === "mnemonic") {
+            store.dispatch(
+              accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts)
+            );
+          } else {
+            existingAccounts.accounts.forEach(account =>
+              store.dispatch(accountsSlice.actions.addAccount(account))
+            );
+          }
+          render(fixture(goToStepMock, account));
+
+          if (label.withNameProvided) {
+            fireEvent.change(getNameInput(), { target: { value: labelBase } });
+          }
+          fireEvent.click(getConfirmBtn());
+
+          await waitFor(() => {
+            expect(goToStepMock).toBeCalledTimes(1);
+          });
+          expect(goToStepMock).toBeCalledWith({
+            type: account.nextStep,
+            account: { ...account, label: labelBase },
+          });
+        });
       });
-      expect(goToStepMock).toBeCalledWith({
-        type: account.nextStep,
-        account: { ...account, label: "Account 2" },
+
+      it("among multisig accounts sets group label", async () => {
+        store.dispatch(
+          multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
+        );
+        store.dispatch(renameAccount(mockMultisigAccount(0), labelBase));
+        store.dispatch(renameAccount(mockMultisigAccount(1), `${labelBase} 3`));
+        render(fixture(goToStepMock, account));
+
+        if (label.withNameProvided) {
+          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+        }
+        fireEvent.click(getConfirmBtn());
+
+        await waitFor(() => {
+          expect(goToStepMock).toBeCalledTimes(1);
+        });
+        expect(goToStepMock).toBeCalledWith({
+          type: account.nextStep,
+          account: { ...account, label: labelBase },
+        });
+      });
+
+      it("among contacts sets group label", async () => {
+        store.dispatch(checkAccountsAndUpsertContact(mockContact(1, labelBase)));
+        store.dispatch(checkAccountsAndUpsertContact(mockContact(3, `${labelBase} 3`)));
+        render(fixture(goToStepMock, account));
+
+        if (label.withNameProvided) {
+          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+        }
+        fireEvent.click(getConfirmBtn());
+
+        await waitFor(() => {
+          expect(goToStepMock).toBeCalledTimes(1);
+        });
+        expect(goToStepMock).toBeCalledWith({
+          type: account.nextStep,
+          account: { ...account, label: labelBase },
+        });
       });
     });
 
-    it("among contacts sets unique default label", async () => {
-      store.dispatch(contactsActions.upsert({ name: "Account 1", pkh: "pkh1" }));
-      store.dispatch(contactsActions.upsert({ name: "Account 3", pkh: "pkh3" }));
+    describe.each(accounts.filter(account => account.type !== "mnemonic"))("for $type", account => {
+      describe.each(existingAccounts)("among $type accounts", existingAccounts => {
+        it("sets unique default label", async () => {
+          if (existingAccounts.type === "mnemonic") {
+            store.dispatch(
+              accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts)
+            );
+          } else {
+            existingAccounts.accounts.forEach(account =>
+              store.dispatch(accountsSlice.actions.addAccount(account))
+            );
+          }
+          render(fixture(goToStepMock, account));
 
-      render(fixture(goToStepMock, account));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      fireEvent.click(confirmBtn);
+          if (label.withNameProvided) {
+            fireEvent.change(getNameInput(), { target: { value: labelBase } });
+          }
+          fireEvent.click(getConfirmBtn());
 
-      await waitFor(() => {
-        expect(goToStepMock).toBeCalledTimes(1);
+          await waitFor(() => {
+            expect(goToStepMock).toBeCalledTimes(1);
+          });
+          expect(goToStepMock).toBeCalledWith({
+            type: account.nextStep,
+            account: { ...account, label: `${labelBase} 2` },
+          });
+        });
       });
-      expect(goToStepMock).toBeCalledWith({
-        type: account.nextStep,
-        account: { ...account, label: "Account 2" },
+
+      it("among multisig accounts sets unique default label", async () => {
+        store.dispatch(
+          multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
+        );
+        store.dispatch(renameAccount(mockMultisigAccount(0), labelBase));
+        store.dispatch(renameAccount(mockMultisigAccount(1), `${labelBase} 3`));
+        render(fixture(goToStepMock, account));
+
+        if (label.withNameProvided) {
+          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+        }
+        fireEvent.click(getConfirmBtn());
+
+        await waitFor(() => {
+          expect(goToStepMock).toBeCalledTimes(1);
+        });
+        expect(goToStepMock).toBeCalledWith({
+          type: account.nextStep,
+          account: { ...account, label: `${labelBase} 2` },
+        });
+      });
+
+      it("among contacts sets unique default label", async () => {
+        store.dispatch(checkAccountsAndUpsertContact(mockContact(1, labelBase)));
+        store.dispatch(checkAccountsAndUpsertContact(mockContact(3, `${labelBase} 3`)));
+        render(fixture(goToStepMock, account));
+
+        if (label.withNameProvided) {
+          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+        }
+        fireEvent.click(getConfirmBtn());
+
+        await waitFor(() => {
+          expect(goToStepMock).toBeCalledTimes(1);
+        });
+        expect(goToStepMock).toBeCalledWith({
+          type: account.nextStep,
+          account: { ...account, label: `${labelBase} 2` },
+        });
       });
     });
   });

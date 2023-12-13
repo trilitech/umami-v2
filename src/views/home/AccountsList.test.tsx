@@ -12,7 +12,6 @@ import {
   mockSocialAccount,
 } from "../../mocks/factories";
 import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
-import { fakeRestoreFromMnemonic } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { formatPkh } from "../../utils/format";
@@ -230,22 +229,23 @@ describe("<AccountsList />", () => {
 });
 
 const restore = async () => {
-  await store.dispatch(
-    fakeRestoreFromMnemonic({
+  store.dispatch(
+    accountsSlice.actions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGETPRINT1,
       accounts: [
         mockImplicitAccount(0, undefined, MOCK_FINGETPRINT1, "Mnemonic 1.1"),
         mockImplicitAccount(1, undefined, MOCK_FINGETPRINT1, "Mnemonic 1.2"),
       ] as MnemonicAccount[],
+      encryptedMnemonic: {} as any,
     })
   );
-
-  await store.dispatch(
-    fakeRestoreFromMnemonic({
+  store.dispatch(
+    accountsSlice.actions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGETPRINT2,
       accounts: [
         mockImplicitAccount(4, undefined, MOCK_FINGETPRINT2, "Mnemonic 2"),
       ] as MnemonicAccount[],
+      encryptedMnemonic: {} as any,
     })
   );
 

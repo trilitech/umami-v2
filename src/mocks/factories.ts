@@ -416,9 +416,9 @@ export const mockContractOrigination = (
   };
 };
 
-export const mockContact = (index: number): Contact => {
+export const mockContact = (index: number, label?: string): Contact => {
   return {
-    name: `Contact ${index}`,
+    name: label || `Contact ${index}`,
     pkh: mockImplicitAddress(index).pkh,
   };
 };
