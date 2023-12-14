@@ -23,6 +23,7 @@ export * from "./Eye";
 export * from "./EyeSlash";
 export * from "./FA1.2";
 export * from "./FA2";
+export * from "./Feedback";
 export * from "./Fetching";
 export * from "./FileArrowDown";
 export * from "./FileCopy";

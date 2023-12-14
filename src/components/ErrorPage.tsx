@@ -1,6 +1,7 @@
-import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Heading, Link } from "@chakra-ui/react";
 
-import { emailBodyTemplate } from "./TopBar";
+export const feedbackEmailBodyTemplate =
+  "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
 
 // TODO: prepare for Beta release properly
 export const ErrorPage: React.FC = () => {
@@ -43,11 +44,13 @@ export const ErrorPage: React.FC = () => {
             Offboard
           </Button>
           <Button variant="tertiary">
-            <a
-              href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${emailBodyTemplate}`}
+            <Link
+              href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Report Error
-            </a>
+            </Link>
           </Button>
         </Box>
       </Center>
