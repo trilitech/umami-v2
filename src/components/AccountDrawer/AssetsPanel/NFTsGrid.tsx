@@ -7,10 +7,10 @@ import {
   SimpleGridProps,
   Text,
 } from "@chakra-ui/react";
-import { every } from "lodash";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 
+import { ViewAllLink } from "./ViewAllLink";
 import colors from "../../../style/colors";
 import { RawPkh } from "../../../types/Address";
 import { fullId, thumbnailUri } from "../../../types/Token";
@@ -18,18 +18,28 @@ import { NFTBalance } from "../../../types/TokenBalance";
 import { getIPFSurl } from "../../../utils/token/nftUtils";
 import { NoNFTs } from "../../NoItems";
 
-export const NFTsGrid: FC<
-  { nftsByOwner: Record<RawPkh, NFTBalance[] | undefined> } & SimpleGridProps
-> = ({ nftsByOwner, ...rest }) => {
-  const noNfts = every(nftsByOwner, nfts => !nfts || nfts.length === 0);
-  if (noNfts) {
+export const MAX_NFTS_SIZE = 18;
+/**
+ * Grid with NFTs to be displayed in the account drawer
+ * Can open an NFT drawer on click
+ * Limits the number of displayed NFTs to {@link MAX_NFTS_SIZE}
+ *
+ * @param owner - Address on the NFTs owner
+ * @param nfts - List of owner's NFTs
+ */
+export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProps> = ({
+  owner,
+  nfts,
+  ...props
+}) => {
+  if (nfts.length === 0) {
     return <NoNFTs small />;
   }
 
   return (
-    <SimpleGrid {...rest}>
-      {Object.entries(nftsByOwner).flatMap(([owner, nfts]) => {
-        return (nfts || []).map(nft => {
+    <>
+      <SimpleGrid marginBottom="35px" spacing="12px" {...props}>
+        {nfts.slice(0, MAX_NFTS_SIZE).map(nft => {
           const url = getIPFSurl(thumbnailUri(nft));
           const fallbackUrl = getIPFSurl(nft.displayUri);
           return (
@@ -60,8 +70,9 @@ export const NFTsGrid: FC<
               </Card>
             </Link>
           );
-        });
-      })}
-    </SimpleGrid>
+        })}
+      </SimpleGrid>
+      <ViewAllLink to="/nfts" />
+    </>
   );
 };

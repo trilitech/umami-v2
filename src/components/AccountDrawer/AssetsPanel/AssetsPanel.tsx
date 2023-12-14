@@ -4,6 +4,7 @@ import React from "react";
 import { DelegationDisplay } from "./DelegationDisplay";
 import { MultisigPendingAccordion } from "./MultisigPendingAccordion";
 import { NFTsGrid } from "./NFTsGrid";
+import { OperationListDisplay } from "./OperationListDisplay";
 import { TokenList } from "./TokenList";
 import { ExternalLinkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
@@ -12,12 +13,19 @@ import { Delegation } from "../../../types/Delegation";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
-import { OperationListDisplay } from "../../../views/home/OperationListDisplay";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
 import { ExternalLink } from "../../ExternalLink";
 import { OperationTileContext } from "../../OperationTile";
 import { SmallTab } from "../../SmallTab";
 
+/**
+ * Component that displays account assets in the account drawer
+ *
+ * @param tokens - account tokens
+ * @param nfts - account NFTs
+ * @param account - selected account in the drawer
+ * @param delegation - delegation info if exists
+ */
 export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
@@ -57,12 +65,12 @@ export const AssetsPanel: React.FC<{
       </TabList>
       <TabPanels height="100%">
         {isMultisig && (
-          <TabPanel padding="24px 0 60px 0" data-testid="account-card-pending-tab-panel">
+          <TabPanel paddingTop="24px" data-testid="account-card-pending-tab-panel">
             <MultisigPendingAccordion account={account} />
           </TabPanel>
         )}
 
-        <TabPanel padding="24px 0 60px 0" data-testid="account-card-operations-tab">
+        <TabPanel paddingTop="24px" paddingBottom="25px" data-testid="account-card-operations-tab">
           <OperationTileContext.Provider
             value={{ mode: "drawer", selectedAddress: account.address }}
           >
@@ -76,20 +84,20 @@ export const AssetsPanel: React.FC<{
           </OperationTileContext.Provider>
         </TabPanel>
 
-        <TabPanel padding="24px 0 60px 0" data-testid="account-card-delegation-tab">
+        <TabPanel paddingTop="24px" data-testid="account-card-delegation-tab">
           <DelegationDisplay account={account} delegation={delegation} />
         </TabPanel>
 
         <TabPanel
           overflow="hidden"
           height="100%"
-          padding="24px 0 60px 0"
+          paddingTop="24px"
           data-testid="account-card-nfts-tab"
         >
-          <NFTsGrid columns={3} nftsByOwner={{ [account.address.pkh]: nfts }} spacing={5} />
+          <NFTsGrid columns={3} nfts={nfts} owner={account.address.pkh} />
         </TabPanel>
 
-        <TabPanel padding="24px 0 60px 0" data-testid="account-card-tokens-tab">
+        <TabPanel paddingTop="24px" data-testid="account-card-tokens-tab">
           <TokenList tokens={tokens} />
         </TabPanel>
       </TabPanels>
