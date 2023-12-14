@@ -21,9 +21,6 @@ import { useIsLoading, useLastTimeUpdated } from "../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { assetsActions } from "../utils/redux/slices/assetsSlice";
 
-export const emailBodyTemplate =
-  "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
-
 const UpdateButton = () => {
   const dispatch = useAppDispatch();
   const isLoading = useIsLoading();
@@ -98,7 +95,6 @@ const UpdateButton = () => {
 
 export const TopBar: React.FC<{ title: string; subtitle?: string }> = ({ title, subtitle }) => {
   const { openWith } = useContext(DynamicModalContext);
-  const [isSmallSize] = useMediaQuery("(max-width: 1200px)");
 
   return (
     <Box>
@@ -113,15 +109,6 @@ export const TopBar: React.FC<{ title: string; subtitle?: string }> = ({ title, 
         </Flex>
         <Box>
           <UpdateButton />
-          {!isSmallSize && (
-            <a
-              href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${emailBodyTemplate}`}
-            >
-              <Button marginRight={4} variant="tertiary">
-                Share Feedback
-              </Button>
-            </a>
-          )}
           <Button onClick={() => openWith(<BuyTezForm />)} variant="tertiary">
             Buy Tez
           </Button>
