@@ -6,6 +6,7 @@ import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import { MultisigApprovers } from "./MultisigApprovers";
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { BakerIcon, IncomingArrow, OutgoingArrow, PlusIcon } from "../../assets/icons";
+import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
@@ -37,16 +38,24 @@ const RoundButton: React.FC<{
   onClick?: () => void;
 }> = ({ icon, label, onClick = () => {} }) => {
   return (
-    <Box textAlign="center" marginX="24px">
+    <Box
+      color={colors.gray[300]}
+      textAlign="center"
+      _hover={{ color: colors.green }}
+      cursor="pointer"
+      marginX="24px"
+      onClick={onClick}
+    >
       <IconButton
         marginBottom="8px"
         aria-label="button"
         icon={icon}
-        onClick={onClick}
         size="lg"
-        variant="circle"
+        variant="circle_without_color"
       />
-      <Text size="sm">{label}</Text>
+      <Text cursor="pointer" size="sm">
+        {label}
+      </Text>
     </Box>
   );
 };

@@ -2,6 +2,23 @@ import { defineStyleConfig } from "@chakra-ui/react";
 
 import colors from "../colors";
 
+const baseCircle = {
+  borderRadius: "full",
+  bg: colors.gray[600],
+  _disabled: {
+    bg: colors.gray[700],
+    color: colors.gray[450],
+  },
+  _hover: {
+    color: colors.green,
+    bg: colors.gray[500],
+    _disabled: {
+      bg: colors.gray[700],
+      color: colors.gray[450],
+    },
+  },
+};
+
 export const buttonTheme = defineStyleConfig({
   sizes: {
     md: { height: "38px", fontSize: "14px", minWidth: "38px" },
@@ -76,22 +93,10 @@ export const buttonTheme = defineStyleConfig({
         },
       },
     },
+    circle_without_color: baseCircle,
     circle: {
-      borderRadius: "full",
+      ...baseCircle,
       color: colors.gray[300],
-      bg: colors.gray[600],
-      _disabled: {
-        bg: colors.gray[700],
-        color: colors.gray[450],
-      },
-      _hover: {
-        color: colors.green,
-        bg: colors.gray[500],
-        _disabled: {
-          bg: colors.gray[700],
-          color: colors.gray[450],
-        },
-      },
     },
     specialCTA: {
       color: colors.greenL,
