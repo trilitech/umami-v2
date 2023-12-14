@@ -8,9 +8,9 @@ import {
 import { Modal } from "@chakra-ui/react";
 import userEvent from "@testing-library/user-event";
 
-import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
+import { mockMnemonicAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
-import { render, screen, waitFor } from "../../../mocks/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { store } from "../../redux/store";
 import { executeOperations } from "../../tezos";
 import { walletClient } from "../beacon";
@@ -64,11 +64,11 @@ describe("<BeaconRequestNotification />", () => {
       render(fixture(message, () => {}));
 
       // select account
-      user.click(screen.getByTestId("address-tile"));
-      await waitFor(() => {
-        expect(screen.getByTestId("suggestions-list")).toBeInTheDocument();
-      });
-      user.click(screen.getByText(mockImplicitAccount(2).label));
+      const account = mockMnemonicAccount(1);
+      const input = screen.getByLabelText("address");
+      fireEvent.change(input, { target: { value: account.address.pkh } });
+      fireEvent.blur(input);
+
       // grant permission
       const grantButton = screen.getByRole("button", { name: "Grant" });
       await waitFor(() => {
@@ -80,7 +80,7 @@ describe("<BeaconRequestNotification />", () => {
         expect(walletClient.respond).toHaveBeenCalledWith({
           id: MESSAGE_ID,
           network: { type: "mainnet" },
-          publicKey: mockImplicitAccount(2).pk,
+          publicKey: account.pk,
           scopes: SCOPES,
           type: "permission_response",
         });
@@ -90,9 +90,14 @@ describe("<BeaconRequestNotification />", () => {
     it("saves new connection to beaconSlice", async () => {
       const user = userEvent.setup();
       render(fixture(message, () => {}));
+      const account = mockMnemonicAccount(1);
+      const input = screen.getByLabelText("address");
+      fireEvent.change(input, { target: { value: account.address.pkh } });
+      fireEvent.blur(input);
       const grantButton = screen.getByRole("button", { name: "Grant" });
-
-      expect(grantButton).toBeEnabled();
+      await waitFor(() => {
+        expect(grantButton).toBeEnabled();
+      });
       user.click(grantButton);
 
       await waitFor(() => {
