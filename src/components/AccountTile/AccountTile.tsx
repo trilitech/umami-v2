@@ -74,7 +74,7 @@ export const AccountTile: React.FC<{
   return (
     <Box
       background={colors.gray[900]}
-      border={`1px solid ${selected ? colors.orangeL : colors.gray[800]}`}
+      border={`1px solid ${selected ? colors.orangeL : "transparent"}`}
       borderRadius="8px"
       _hover={{
         border,
