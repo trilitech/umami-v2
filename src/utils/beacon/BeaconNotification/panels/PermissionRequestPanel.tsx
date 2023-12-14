@@ -13,6 +13,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   Heading,
   Image,
   ModalBody,
@@ -111,7 +112,7 @@ export const PermissionRequestPanel: React.FC<{
           <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
             <AccordionButton>
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
-                Request
+                Request Payload
               </Heading>
               <AccordionIcon />
             </AccordionButton>
@@ -128,6 +129,7 @@ export const PermissionRequestPanel: React.FC<{
               inputName="address"
               label="Select Account"
             />
+            {errors.address && <FormErrorMessage>{errors.address.message}</FormErrorMessage>}
           </FormControl>
         </FormProvider>
       </ModalBody>
