@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, FlexProps, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, FlexProps, Text, useMediaQuery } from "@chakra-ui/react";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -116,9 +116,10 @@ const MenuItem: React.FC<
 
 const TotalBalance = () => {
   const balance = useTotalBalance();
+  const [isShort] = useMediaQuery("(max-height: 900px)");
 
   return (
-    <Box marginTop="24px" marginBottom="100px">
+    <Box marginTop="24px" marginBottom={isShort ? "30px" : "100px"}>
       <Text marginBottom="4px" size="sm">
         Balance
       </Text>
