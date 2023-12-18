@@ -10,7 +10,7 @@ import {
   SecretKeyAccount,
   SocialAccount,
 } from "../types/Account";
-import { ContractAddress, ImplicitAddress } from "../types/Address";
+import { ContractAddress, ImplicitAddress, RawPkh } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { Delegate } from "../types/Delegate";
 import {
@@ -239,7 +239,6 @@ export const mockNFTToken = (index: number, pkh: string, balance = 1): RawTokenB
       tokenId: String(index),
       standard: "fa2",
       totalSupply: "1",
-      lastLevel: undefined,
       metadata: {
         name: "Tezzardz #10",
         creators: ["George Goodwin (@omgidrawedit)"],
@@ -276,7 +275,7 @@ export const mockFA12Token = (index: number, account: Account, balance = 1): FA1
 
 export const mockFA2TokenRaw = (
   index: number,
-  pkh: string,
+  owner: RawPkh,
   balance = 1,
   decimals = 4,
   symbol = "KL2",
@@ -285,7 +284,7 @@ export const mockFA2TokenRaw = (
   return {
     id: 10898270846977,
     account: {
-      address: pkh,
+      address: owner,
     },
     token: {
       id: 10898194300929,
@@ -295,7 +294,6 @@ export const mockFA2TokenRaw = (
       tokenId: String(index),
       standard: "fa2",
       totalSupply: "13000000000",
-      lastLevel: undefined,
       metadata: {
         name,
         symbol,
@@ -311,11 +309,11 @@ export const mockFA2TokenRaw = (
   };
 };
 
-export const mockFA1TokenRaw = (index: number, pkh: string, balance = 1): RawTokenBalance => {
+export const mockFA1TokenRaw = (index: number, owner: RawPkh, balance = 1): RawTokenBalance => {
   return {
     id: 10897662672897,
     account: {
-      address: pkh,
+      address: owner,
     },
     token: {
       id: 10897625972737,
@@ -325,7 +323,6 @@ export const mockFA1TokenRaw = (index: number, pkh: string, balance = 1): RawTok
       tokenId: "0",
       standard: "fa1.2",
       totalSupply: "13000000",
-      lastLevel: undefined,
     },
     balance: String(balance),
     transfersCount: 28,
@@ -336,8 +333,23 @@ export const mockFA1TokenRaw = (index: number, pkh: string, balance = 1): RawTok
   };
 };
 
+export const mockNFTRaw = (
+  index: number,
+  owner: RawPkh,
+  balance = 1,
+  symbol = "KL2",
+  name = "Klondike2"
+): RawTokenBalance => {
+  const tokenBalance = mockFA2TokenRaw(index, owner, balance, 0, symbol, name);
+  tokenBalance.token.metadata.displayUri = mockDisplayURI(index);
+  return tokenBalance;
+};
+
+export const mockDisplayURI = (index: number) =>
+  `ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG${index}`;
+
 export const mockNFT = (index: number, balance = "1"): NFTBalance => {
-  const displayUri = "ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG" + index;
+  const displayUri = mockDisplayURI(index);
   return {
     id: 1,
     type: "nft",
@@ -346,9 +358,8 @@ export const mockNFT = (index: number, balance = "1"): NFTBalance => {
     contract: mockContractAddress(index).pkh,
     tokenId: "mockId" + index,
     totalSupply: "1",
-    lastLevel: undefined,
     metadata: {
-      displayUri: displayUri,
+      displayUri,
       name: "Tezzardz #" + index,
       symbol: "FKR" + index,
     },

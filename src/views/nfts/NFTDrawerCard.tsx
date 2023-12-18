@@ -26,7 +26,7 @@ import { RawPkh } from "../../types/Address";
 import { artifactUri, mimeType, tokenName } from "../../types/Token";
 import { NFTBalance } from "../../types/TokenBalance";
 import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
-import { getIPFSurl } from "../../utils/token/nftUtils";
+import { getIPFSurl } from "../../utils/token/utils";
 
 export const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
   const url = getIPFSurl(artifactUri(nft));
