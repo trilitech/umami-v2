@@ -10,6 +10,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { capitalize } from "lodash";
 import { Fragment, useEffect, useState } from "react";
 
 import { usePeers, useRemovePeer } from "./beacon";
@@ -18,7 +19,7 @@ import { TrashIcon } from "../../assets/icons";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
-import { useGetConnectedAccount } from "../hooks/beaconHooks";
+import { useGetConnectionInfo } from "../hooks/beaconHooks";
 
 /**
  * Component displaying a list of connected dApps.
@@ -89,7 +90,7 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfoWithId; onRemove: (
           <Image width="100%" src={peerInfo.icon} />
         </AspectRatio>
         <Center alignItems="flex-start" flexDirection="column">
-          <Heading marginBottom="11px" marginLeft="8px" size="md">
+          <Heading marginBottom="6px" size="md">
             {peerInfo.name}
           </Heading>
           <StoredPeerInfo peerInfo={peerInfo} />
@@ -111,23 +112,27 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfoWithId; onRemove: (
 /**
  * Component for displaying additional info about connection with a dApp.
  *
- * Displays {@link AddressPill} with a connected account,
+ * Displays {@link AddressPill} with a connected account and network type,
  * if information about the connection is stored in {@link beaconSlice}.
  *
  * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
  */
 const StoredPeerInfo = ({ peerInfo }: { peerInfo: PeerInfoWithId }) => {
-  const connectedAccountPkh = useGetConnectedAccount(peerInfo.senderId);
+  const connectionInfo = useGetConnectionInfo(peerInfo.senderId);
 
-  if (!connectedAccountPkh) {
+  if (!connectionInfo) {
     return null;
   }
   return (
     <Flex>
-      <Text marginRight="6px" marginLeft="8px" color={colors.gray[400]} size="sm">
-        Connected to:
+      <AddressPill marginRight="10px" address={parsePkh(connectionInfo.accountPkh)} />
+      <Divider marginRight="10px" orientation="vertical" />
+      <Text marginTop="2px" marginRight="4px" color={colors.gray[450]} fontWeight={650} size="sm">
+        Network:
       </Text>
-      <AddressPill address={parsePkh(connectedAccountPkh)} />
+      <Text marginTop="2px" color={colors.white} data-testid="dapp-connection-network" size="sm">
+        {capitalize(connectionInfo.networkType)}
+      </Text>
     </Flex>
   );
 };

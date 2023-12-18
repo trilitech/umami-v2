@@ -62,7 +62,7 @@ export const PermissionRequestPanel: React.FC<{
 
     await walletClient.respond(response);
 
-    addConnectionToBeaconSlice(request.senderId, account.address.pkh);
+    addConnectionToBeaconSlice(request.senderId, account.address.pkh, request.network.type);
 
     onSubmit();
   };
