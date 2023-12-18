@@ -9,41 +9,49 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
+import { WindowLinkIcon } from "../../assets/icons/WindowLink";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { DynamicModalContext } from "../DynamicModal";
-import { TzktLink } from "../TzktLink";
 
 export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
   const network = useSelectedNetwork();
   const tzktUrl = `${network.tzktExplorerUrl}/${hash}`;
   const { onClose } = useContext(DynamicModalContext);
+  const navigate = useNavigate();
 
   return (
     <ModalContent paddingY="20px">
       <ModalCloseButton />
-      <ModalHeader textAlign="center">
-        Operation Submitted
-        <Flex justifyContent="center">
-          <Text width="340px" color="text.dark" textAlign="center" size="sm">
-            You can follow this operation's progress in the Operations section.
-            <br />
-            It may take up to 30 seconds to appear.
+      <ModalHeader textAlign="center">Operation Submitted</ModalHeader>
+      <ModalBody>
+        <Flex justifyContent="center" marginTop="10px">
+          <Text color="text.dark" textAlign="center" size="sm">
+            You can follow this operation's progress in the Operations section. It may take up to 30
+            seconds to appear.
           </Text>
         </Flex>
-      </ModalHeader>
-      <ModalBody padding="0"></ModalBody>
-      <ModalFooter justifyContent="center" flexDirection="column">
-        <Link to="/operations">
-          <Button width="100%" onClick={onClose}>
-            Go to operation
-          </Button>
+      </ModalBody>
+      <ModalFooter justifyContent="center" flexDirection="column" width="100%">
+        <Button
+          width="100%"
+          onClick={() => {
+            onClose();
+            navigate("/operations");
+          }}
+          size="lg"
+        >
+          See all Operations
+        </Button>
+        <Link rel="noopener noreferrer" target="_blank" to={tzktUrl}>
+          <Flex alignItems="center" marginTop="24px">
+            <Button variant="CTAWithIcon">
+              <Text marginRight="4px">View in Tzkt</Text>
+              <WindowLinkIcon stroke="currentcolor" />
+            </Button>
+          </Flex>
         </Link>
-        <Flex alignItems="center" justifyContent="space-between" marginTop={4}>
-          <Text color="text.dark">View in Tzkt</Text>
-          <TzktLink marginLeft={4} url={tzktUrl} />
-        </Flex>
       </ModalFooter>
     </ModalContent>
   );
