@@ -13,7 +13,7 @@ import { Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../typ
 import { TokenTransfer } from "../../types/Transfer";
 import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 import { TransactionOperation } from "../../utils/tezos";
-import { getIPFSurl } from "../../utils/token/nftUtils";
+import { getIPFSurl } from "../../utils/token/utils";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const TokenTransferTile: React.FC<{

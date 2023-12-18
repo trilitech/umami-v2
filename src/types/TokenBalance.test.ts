@@ -12,6 +12,7 @@ describe("TokenBalance", () => {
       contract: "KT1UCPcXExqEYRnfoXWYvBkkn5uPjn8TBTEe",
       tokenId: "0",
       balance: "443870",
+      lastLevel: 1365863,
     });
   });
 

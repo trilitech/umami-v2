@@ -3,7 +3,7 @@ import * as tzktApi from "@tzkt/sdk-api";
 import { TzktAlias } from "./Address";
 import { FA12Token, FA2Token, NFT, RawTokenInfo, fromRaw as fromRawToken } from "./Token";
 
-type Balance = { balance: string };
+type Balance = { balance: string; lastLevel?: number };
 export type FA12TokenBalance = FA12Token & Balance;
 export type FA2TokenBalance = FA2Token & Balance;
 export type NFTBalance = NFT & Balance;
@@ -20,7 +20,7 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalanceWithToken | null => {
   if (!token || !raw.balance) {
     return null;
   }
-  return { balance: raw.balance, ...token };
+  return { balance: raw.balance, lastLevel: raw.lastLevel, ...token };
 };
 
 export const keepNFTs = (assets: TokenBalanceWithToken[]) => {

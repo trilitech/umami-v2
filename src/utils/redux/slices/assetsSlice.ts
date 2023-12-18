@@ -85,11 +85,14 @@ export const assetsSlice = createSlice({
     updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);
       state.balances.tokens = mapValues(groupedByPkh, rawTokenBalances => {
-        return compact(rawTokenBalances.map(fromRaw)).map(({ balance, contract, tokenId }) => ({
-          balance,
-          contract,
-          tokenId,
-        }));
+        return compact(rawTokenBalances.map(fromRaw)).map(
+          ({ balance, contract, tokenId, lastLevel }) => ({
+            balance,
+            contract,
+            tokenId,
+            lastLevel,
+          })
+        );
       });
     },
 
