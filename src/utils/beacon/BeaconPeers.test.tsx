@@ -1,4 +1,4 @@
-import { getSenderId } from "@airgap/beacon-wallet";
+import { NetworkType, getSenderId } from "@airgap/beacon-wallet";
 import userEvent from "@testing-library/user-event";
 
 import * as beaconHelper from "./beacon";
@@ -61,6 +61,7 @@ describe("<BeaconPeers />", () => {
           beaconActions.addConnection({
             dAppId: senderIds[1],
             accountPkh: mockMnemonicAccount(1).address.pkh,
+            networkType: NetworkType.MAINNET,
           })
         );
 
@@ -75,6 +76,7 @@ describe("<BeaconPeers />", () => {
           beaconActions.addConnection({
             dAppId: senderIds[1],
             accountPkh: mockMnemonicAccount(5).address.pkh,
+            networkType: NetworkType.MAINNET,
           })
         );
 
@@ -83,6 +85,21 @@ describe("<BeaconPeers />", () => {
         const addressPill = within(peerRows[0]).getByTestId("address-pill-text");
         expect(addressPill).toHaveTextContent(formatPkh(mockMnemonicAccount(5).address.pkh));
       });
+
+      it("displays network type from beacon connection request", async () => {
+        store.dispatch(
+          beaconActions.addConnection({
+            dAppId: senderIds[1],
+            accountPkh: mockMnemonicAccount(1).address.pkh,
+            networkType: NetworkType.OXFORDNET,
+          })
+        );
+
+        const peerRows = await getPeerRows();
+
+        const network = within(peerRows[0]).getByTestId("dapp-connection-network");
+        expect(network).toHaveTextContent("Oxfordnet");
+      });
     });
 
     describe("for connections without saved info", () => {
@@ -90,6 +107,14 @@ describe("<BeaconPeers />", () => {
         const peerRows = await getPeerRows();
 
         expect(within(peerRows[0]).queryByTestId("address-pill")).not.toBeInTheDocument();
+      });
+
+      it("hides network", async () => {
+        const peerRows = await getPeerRows();
+
+        expect(
+          within(peerRows[0]).queryByTestId("dapp-connection-network")
+        ).not.toBeInTheDocument();
       });
     });
   });
@@ -117,11 +142,23 @@ describe("<BeaconPeers />", () => {
     it("removes connection from beaconSlice", async () => {
       const user = userEvent.setup();
       [
-        { dAppId: senderIds[0], accountPkh: mockMnemonicAccount(1).address.pkh },
-        { dAppId: senderIds[1], accountPkh: mockMnemonicAccount(1).address.pkh },
-        { dAppId: senderIds[2], accountPkh: mockMnemonicAccount(2).address.pkh },
-      ].forEach(({ dAppId, accountPkh }) => {
-        store.dispatch(beaconActions.addConnection({ dAppId, accountPkh }));
+        {
+          dAppId: senderIds[0],
+          accountPkh: mockMnemonicAccount(1).address.pkh,
+          networkType: NetworkType.MAINNET,
+        },
+        {
+          dAppId: senderIds[1],
+          accountPkh: mockMnemonicAccount(1).address.pkh,
+          networkType: NetworkType.GHOSTNET,
+        },
+        {
+          dAppId: senderIds[2],
+          accountPkh: mockMnemonicAccount(2).address.pkh,
+          networkType: NetworkType.CUSTOM,
+        },
+      ].forEach(connection => {
+        store.dispatch(beaconActions.addConnection(connection));
       });
       const peerRows = await getPeerRows();
 
@@ -132,8 +169,14 @@ describe("<BeaconPeers />", () => {
 
       await waitFor(() => {
         expect(store.getState().beacon).toEqual({
-          [senderIds[0]]: mockMnemonicAccount(1).address.pkh,
-          [senderIds[2]]: mockMnemonicAccount(2).address.pkh,
+          [senderIds[0]]: {
+            accountPkh: mockMnemonicAccount(1).address.pkh,
+            networkType: NetworkType.MAINNET,
+          },
+          [senderIds[2]]: {
+            accountPkh: mockMnemonicAccount(2).address.pkh,
+            networkType: NetworkType.CUSTOM,
+          },
         });
       });
     });
