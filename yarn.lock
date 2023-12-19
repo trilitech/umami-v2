@@ -6960,12 +6960,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.2.14":
-  version: 18.2.14
-  resolution: "@types/react-dom@npm:18.2.14"
+"@types/react-dom@npm:18.2.18":
+  version: 18.2.18
+  resolution: "@types/react-dom@npm:18.2.18"
   dependencies:
     "@types/react": "*"
-  checksum: 890289c70d1966c168037637c09cacefe6205bdd27a33252144a6b432595a2943775ac1a1accac0beddaeb67f8fdf721e076acb1adc990b08e51c3d9fd4e780c
+  checksum: 8e3da404c980e2b2a76da3852f812ea6d8b9d0e7f5923fbaf3bfbbbfa1d59116ff91c129de8f68e9b7668a67ae34484fe9df74d5a7518cf8591ec07a0c4dad57
   languageName: node
   linkType: hard
 
@@ -21372,7 +21372,7 @@ __metadata:
     "@types/promise-retry": ^1.1.5
     "@types/prop-types": ^15.7.9
     "@types/react": 18.2.33
-    "@types/react-dom": 18.2.14
+    "@types/react-dom": 18.2.18
     "@types/redux-mock-store": ^1.0.6
     "@types/testing-library__jest-dom": ^5.14.9
     "@types/testing-library__user-event": ^4.2.0
