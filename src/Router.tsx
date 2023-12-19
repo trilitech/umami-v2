@@ -43,7 +43,6 @@ const LoggedInRouterWithPolling = () => {
             <Route element={withSideMenu(<HomeView />)} path="/home" />
             <Route element={withSideMenu(<HomeView />)} path="/home/:ownerPkh/:nftId" />
             <Route element={withSideMenu(<NFTsView />)} path="/nfts" />
-            <Route element={withSideMenu(<NFTsView />)} path="/nfts/:ownerPkh/:nftId" />
             <Route element={withSideMenu(<OperationsView />)} path="/operations" />
             <Route element={withSideMenu(<TokensPage />)} path="/tokens" />
             <Route element={withSideMenu(<AddressBookView />)} path="/address-book" />

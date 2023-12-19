@@ -35,6 +35,9 @@ describe("<NFTsGrid />", () => {
 
     render(<NFTsGrid nfts={nfts} owner={mockImplicitAddress(0).pkh} />);
 
-    expect(screen.getByRole("link", { name: "View All" })).toHaveAttribute("href", "#/nfts");
+    expect(screen.getByRole("link", { name: "View All" })).toHaveAttribute(
+      "href",
+      `#/nfts?accounts=${mockImplicitAddress(0).pkh}`
+    );
   });
 });

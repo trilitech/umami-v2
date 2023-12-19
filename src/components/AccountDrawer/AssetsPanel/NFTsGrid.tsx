@@ -78,7 +78,7 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
           );
         })}
       </SimpleGrid>
-      <ViewAllLink to="/nfts" />
+      <ViewAllLink to={`/nfts?accounts=${owner}`} />
     </>
   );
 };

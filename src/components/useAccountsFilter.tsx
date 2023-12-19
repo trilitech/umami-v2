@@ -1,16 +1,19 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Box, Button, Center, Menu, MenuButton, Wrap } from "@chakra-ui/react";
 import { differenceBy } from "lodash";
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { AccountListDisplay } from "./AccountSelector/AccountListDisplay";
 import { AddressPill } from "./AddressPill/AddressPill";
-import { Account } from "../types/Account";
+import { RawPkh } from "../types/Address";
 import { useAllAccounts } from "../utils/hooks/getAccountDataHooks";
 
 export const useAccountsFilter = () => {
-  const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);
   const allAccounts = useAllAccounts();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedAddresses = searchParams.getAll("accounts") as RawPkh[];
+
+  const selectedAccounts = allAccounts.filter(acc => selectedAddresses.includes(acc.address.pkh));
   const selectableAccounts = differenceBy(allAccounts, selectedAccounts, acc => acc.address.pkh);
   const alreadySelectedAll = selectedAccounts.length === allAccounts.length;
 
@@ -38,7 +41,10 @@ export const useAccountsFilter = () => {
             <AccountListDisplay
               accounts={selectableAccounts}
               onSelect={account => {
-                setSelectedAccounts([...selectedAccounts, account]);
+                setSearchParams({
+                  ...searchParams,
+                  accounts: [...selectedAccounts, account].map(a => a.address.pkh),
+                });
               }}
             />
           </Menu>
@@ -52,9 +58,10 @@ export const useAccountsFilter = () => {
               mode={{
                 type: "removable",
                 onRemove: () => {
-                  setSelectedAccounts(
-                    selectedAccounts.filter(a => a.address.pkh !== account.address.pkh)
-                  );
+                  setSearchParams({
+                    ...searchParams,
+                    accounts: selectedAddresses.filter(a => a !== account.address.pkh),
+                  });
                 },
               }}
             />

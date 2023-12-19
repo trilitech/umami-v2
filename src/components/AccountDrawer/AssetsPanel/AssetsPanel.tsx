@@ -79,7 +79,7 @@ export const AssetsPanel: React.FC<{
                 Loading...
               </Text>
             ) : (
-              <OperationListDisplay operations={operations} />
+              <OperationListDisplay operations={operations} owner={account.address.pkh} />
             )}
           </OperationTileContext.Provider>
         </TabPanel>
