@@ -34,13 +34,12 @@ export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
 export const useGetAccountAssets = () => {
   const getToken = useGetToken();
   const ownerToTokenBalances = useAppSelector(s => s.assets.balances.tokens);
-
   return (pkh: string): TokenBalanceWithToken[] => {
     const balances = ownerToTokenBalances[pkh] || [];
     return compact(
-      balances.map(({ contract, tokenId, balance }) => {
+      balances.map(({ contract, tokenId, ...rest }) => {
         const token = getToken(contract, tokenId);
-        return token && { ...token, balance };
+        return token && { ...token, ...rest };
       })
     );
   };

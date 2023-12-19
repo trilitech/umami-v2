@@ -9,7 +9,7 @@ import { fullId, thumbnailUri } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
 import { useAppSelector } from "../../utils/redux/hooks";
-import { getIPFSurl } from "../../utils/token/nftUtils";
+import { getIPFSurl, sortedByLastUpdate } from "../../utils/token/utils";
 import { useAddressKind } from "../AddressTile/useAddressKind";
 
 export const AccountTileBase: React.FC<
@@ -69,7 +69,7 @@ export const AccountTile: React.FC<{
   const isDelegating = !!useAppSelector(s => s.assets.delegationLevels)[address];
 
   const getNFTs = useGetAccountNFTs();
-  const nfts = getNFTs(address);
+  const nfts = sortedByLastUpdate(getNFTs(address));
 
   return (
     <Box
@@ -107,7 +107,7 @@ export const AccountTile: React.FC<{
         }
       />
       {nfts.length > 0 && (
-        <Flex flexDirection="column">
+        <Flex flexDirection="column" data-testid="nfts-list">
           <Divider />
           <Flex marginY="21px">
             {nfts.slice(0, MAX_NFT_COUNT).map((nft, i) => {
@@ -115,7 +115,7 @@ export const AccountTile: React.FC<{
 
               if (i === MAX_NFT_COUNT - 1) {
                 return (
-                  <Link key="last" to="/nfts">
+                  <Link key="last" data-testid="show-more-nfts-link" to="/nfts">
                     <Box
                       height="32px"
                       marginLeft="4px"
@@ -132,7 +132,7 @@ export const AccountTile: React.FC<{
               return (
                 <Link
                   key={fullId(nft)}
-                  data-testid={`nft-link-${nft.contract}`}
+                  data-testid="nft-link"
                   to={`/home/${address}/${fullId(nft)}`}
                 >
                   <AspectRatio width="32px" height="32px" marginLeft={i > 0 ? "4px" : 0} ratio={1}>

@@ -1,13 +1,11 @@
 import { SimpleGrid } from "@chakra-ui/react";
-import { orderBy } from "lodash";
 import React from "react";
 
 import { NFTCard } from "./NFTCard";
 import { RawPkh } from "../../types/Address";
 import { fullId } from "../../types/Token";
 import type { NFTBalance } from "../../types/TokenBalance";
-
-export type NFTWithOwner = NFTBalance & { owner: RawPkh };
+import { NFTWithOwner, sortedByLastUpdate } from "../../utils/token/utils";
 
 export const NFTGallery: React.FC<{
   nftsByOwner: Record<RawPkh, NFTBalance[] | undefined>;
@@ -16,8 +14,6 @@ export const NFTGallery: React.FC<{
   const allNFTs = Object.entries(nftsByOwner).flatMap(([owner, nfts]) =>
     (nfts || []).map(nft => ({ owner, ...nft }))
   );
-
-  const sortedByLastUpdate = orderBy(allNFTs, ["lastLevel", "id", "owner"], ["desc"]);
 
   let gridTemplateColumns = "repeat(auto-fit, minmax(min(100%/2, max(274px, 100%/7)), 1fr))";
   if (allNFTs.length < 3) {
@@ -31,7 +27,7 @@ export const NFTGallery: React.FC<{
       minChildWidth="340px"
       spacing="16px"
     >
-      {sortedByLastUpdate.map(nft => (
+      {sortedByLastUpdate(allNFTs).map(nft => (
         <NFTCard key={`${nft.owner}:${fullId(nft)}`} nft={nft} onClick={() => onSelect(nft)} />
       ))}
     </SimpleGrid>

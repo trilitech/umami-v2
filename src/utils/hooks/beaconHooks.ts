@@ -1,15 +1,16 @@
+import { NetworkType } from "@airgap/beacon-wallet";
 import { useDispatch } from "react-redux";
 
 import { RawPkh } from "../../types/Address";
 import { useAppSelector } from "../redux/hooks";
-import { beaconSlice } from "../redux/slices/beaconSlice";
+import { DAppConnectionInfo, beaconSlice } from "../redux/slices/beaconSlice";
 
 /**
- * Returns connected account pkh by given dAppId.
+ * Returns connected account pkh & network by a given dAppId.
  *
  * @param dAppId - generated from dApp public key.
  */
-export const useGetConnectedAccount = (dAppId: string): RawPkh | undefined => {
+export const useGetConnectionInfo = (dAppId: string): DAppConnectionInfo | undefined => {
   const beaconConnections = useAppSelector(s => s.beacon);
   return beaconConnections[dAppId];
 };
@@ -23,12 +24,12 @@ export const useResetConnections = () => {
 };
 
 /**
- * Returns function for adding connection to {@link beaconSlice}.
+ * Returns function for adding connection info to {@link beaconSlice}.
  */
 export const useAddConnection = () => {
   const dispatch = useDispatch();
-  return (dAppId: string, accountPkh: RawPkh) =>
-    dispatch(beaconSlice.actions.addConnection({ dAppId, accountPkh }));
+  return (dAppId: string, accountPkh: RawPkh, networkType: NetworkType) =>
+    dispatch(beaconSlice.actions.addConnection({ dAppId, accountPkh, networkType }));
 };
 
 /**

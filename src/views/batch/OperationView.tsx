@@ -8,7 +8,7 @@ import { thumbnailUri, tokenNameSafe, tokenUri } from "../../types/Token";
 import { prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
-import { getIPFSurl } from "../../utils/token/nftUtils";
+import { getIPFSurl } from "../../utils/token/utils";
 
 export const OperationView = ({ operation }: { operation: Operation }) => {
   const getToken = useGetToken();

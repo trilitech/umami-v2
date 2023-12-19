@@ -117,6 +117,7 @@ describe("assetsSlice", () => {
               balance: "10000000000",
               contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
               tokenId: "0",
+              lastLevel: 1477579,
             },
           ],
         },

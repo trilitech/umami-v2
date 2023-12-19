@@ -1,13 +1,19 @@
+import { NetworkType } from "@airgap/beacon-wallet";
 import { createSlice } from "@reduxjs/toolkit";
 
 import { RawPkh } from "../../../types/Address";
 
-type State = Record<string, RawPkh>;
+export type DAppConnectionInfo = {
+  accountPkh: RawPkh;
+  networkType: NetworkType;
+};
+
+type State = Record<string, DAppConnectionInfo>;
 
 const initialState: State = {};
 
 /**
- * Stores connections between dApps and accounts.
+ * Stores connection info between dApps and accounts.
  *
  * dApps are identified by dAppId (a unique string id generated from dApp public key).
  */
@@ -17,8 +23,11 @@ export const beaconSlice = createSlice({
   reducers: {
     reset: () => initialState,
 
-    addConnection: (state, { payload }: { payload: { dAppId: string; accountPkh: RawPkh } }) => {
-      state[payload.dAppId] = payload.accountPkh;
+    addConnection: (
+      state,
+      { payload }: { payload: { dAppId: string; accountPkh: RawPkh; networkType: NetworkType } }
+    ) => {
+      state[payload.dAppId] = { accountPkh: payload.accountPkh, networkType: payload.networkType };
     },
 
     removeConnection: (state, { payload }: { payload: { dAppId: string } }) => {

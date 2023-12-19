@@ -13,7 +13,6 @@ export const ghostnetThezard: RawTokenBalance = {
     tokenId: "6",
     standard: "fa2",
     totalSupply: "1",
-    lastLevel: undefined,
     metadata: {
       name: "Tezzardz #24",
       rights: "© 2021 George Goodwin. All rights reserved.",
