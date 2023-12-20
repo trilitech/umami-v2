@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { parseOperation } from "./utils";
+import colors from "../../style/colors";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
@@ -94,7 +95,9 @@ export const CSVFileUploadForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalCloseButton />
           <ModalHeader textAlign="center">Load CSV file</ModalHeader>
-          <Text textAlign="center">Select an account and then upload the CSV file.</Text>
+          <Text color={colors.gray[400]} textAlign="center" size="sm">
+            Select an account and then upload the CSV file.
+          </Text>
           <ModalBody>
             <FormControl isInvalid={!!errors.sender} paddingY={5}>
               <OwnedAccountsAutocomplete allowUnknown={false} inputName="sender" label="From" />
