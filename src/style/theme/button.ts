@@ -93,6 +93,16 @@ export const buttonTheme = defineStyleConfig({
         },
       },
     },
+    circle_without_hover_color: {
+      ...baseCircle,
+      _hover: {
+        color: colors.green,
+        _disabled: {
+          bg: colors.gray[700],
+          color: colors.gray[450],
+        },
+      },
+    },
     circle_without_color: baseCircle,
     circle: {
       ...baseCircle,

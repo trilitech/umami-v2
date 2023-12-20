@@ -1,4 +1,3 @@
-import { CheckIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -16,6 +15,7 @@ import { BuyTezForm } from "./BuyTez/BuyTezForm";
 import { DynamicModalContext } from "./DynamicModal";
 import { FormPage as SendTezForm } from "./SendFlow/Tez/FormPage";
 import { FetchingIcon } from "../assets/icons";
+import { CheckIcon } from "../assets/icons/CheckIcon";
 import colors from "../style/colors";
 import { useIsLoading, useLastTimeUpdated } from "../utils/hooks/assetsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
@@ -77,17 +77,14 @@ const UpdateButton = () => {
         marginLeft="8px"
         _active={{ color: "white", bg: colors.green }}
         aria-label="refetch"
+        backgroundColor={showUpdatedJustNow ? colors.green : colors.gray[500]}
         data-testid="refetch-button"
         icon={
-          showUpdatedJustNow ? (
-            <CheckIcon color={colors.greenL} style={transition} />
-          ) : (
-            <FetchingIcon />
-          )
+          showUpdatedJustNow ? <CheckIcon style={transition} /> : <FetchingIcon color="white" />
         }
         isLoading={isLoading}
         onClick={onClick}
-        variant="circle"
+        variant="circle_without_hover_color"
       />
     </>
   );
