@@ -127,7 +127,7 @@
     "eslint-webpack-plugin": "^4.0.1",
     "file-loader": "^6.2.0",
     "framer-motion": "^10.16.4",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^11.2.0",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "html-webpack-plugin": "^5.5.0",
