@@ -57,6 +57,11 @@ When("I fill secret key with {string}", async function (this: CustomWorld, secre
   (addAccountPage as AddSecretKeyAccountPage).secretKey = secretKey;
 });
 
+When("I fill account name with {string}", async function (this: CustomWorld, accountName) {
+  await this.page.getByLabel("Account name", { exact: true }).fill(accountName);
+  addAccountPage.namePrefix = accountName || "Account";
+});
+
 When("I fill {string} with {string}", async function (this: CustomWorld, inputLabel, inputValue) {
   await this.page.getByLabel(inputLabel, { exact: true }).fill(inputValue);
 });
@@ -92,6 +97,7 @@ Then("I have {string} account", async function (this: CustomWorld, accountName) 
 
   const accountsGroup = await accountsPage.getGroup(groupTitle);
   expect(accountsGroup.label).toEqual(groupTitle);
+
   expect(accountsGroup.accounts.length).toEqual(1);
   expect(accountsGroup.accounts[0].address).toEqual(formatPkh(pkh));
   expect(accountsGroup.accounts[0].label).toMatch(new RegExp(`^${namePrefix}`));

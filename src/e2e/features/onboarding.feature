@@ -25,6 +25,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Name Your Account" onboarding page
 
+    When I fill account name with "<accountName>"
     When I click "Continue" button
     Then I am on "Derivation Path" onboarding page
 
@@ -37,6 +38,11 @@ Feature: User Onboarding
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
     And I have "Account A" account
+
+  Examples:
+    | accountName |
+    | TestAccount |
+    |             |
 
   Scenario: User imports existing secret key account
     Given I am on the welcome page
@@ -59,6 +65,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Name Your Account" onboarding page
 
+    When I fill account name with "<accountName>"
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 
@@ -68,3 +75,8 @@ Feature: User Onboarding
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
     And I have "Account A" account
+
+  Examples:
+    | accountName |
+    | TestAccount |
+    |             |
