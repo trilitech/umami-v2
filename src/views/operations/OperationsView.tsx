@@ -37,7 +37,7 @@ export const OperationsView = () => {
   );
 
   return (
-    <Flex flexDirection="column" height="100%" paddingX="6px">
+    <Flex flexDirection="column" height="100%">
       <TopBar title="Operations" />
       {accountsFilter}
       {operations.length === 0 && isLoading && loadingElement}
