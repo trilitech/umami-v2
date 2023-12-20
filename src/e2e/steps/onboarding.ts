@@ -4,7 +4,11 @@ import { expect } from "@playwright/test";
 import { CustomWorld } from "./world";
 import { formatPkh } from "../../utils/format";
 import { AccountsPage } from "../pages/accounts";
-import { AddAccountPage, AddMnemonicAccountPage } from "../pages/addAccount";
+import {
+  AddAccountPage,
+  AddMnemonicAccountPage,
+  AddSecretKeyAccountPage,
+} from "../pages/addAccount";
 
 export const BASE_URL = "http://127.0.0.1:3000";
 
@@ -48,6 +52,11 @@ When("I enter recorded seedphrase", async function (this: CustomWorld) {
   }
 });
 
+When("I fill secret key with {string}", async function (this: CustomWorld, secretKey) {
+  await this.page.getByLabel("Secret Key", { exact: true }).fill(secretKey);
+  (addAccountPage as AddSecretKeyAccountPage).secretKey = secretKey;
+});
+
 When("I fill {string} with {string}", async function (this: CustomWorld, inputLabel, inputValue) {
   await this.page.getByLabel(inputLabel, { exact: true }).fill(inputValue);
 });
@@ -60,14 +69,21 @@ Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {
   }
 
   await this.page.waitForURL(route);
-  const title = this.page.getByRole("heading", { name: pageName });
+  const title = this.page.getByRole("heading", { name: pageName, exact: true });
   expect(title).toBeVisible();
 });
 
-When("I onboard with {string} mnemonic account", async function (this: CustomWorld, accountName) {
-  addAccountPage = new AddMnemonicAccountPage(this.page);
-  newAccounts[accountName] = addAccountPage;
-});
+When(
+  "I onboard with {string} {string} account",
+  async function (this: CustomWorld, accountName, accountType) {
+    if (accountType === "mnemonic") {
+      addAccountPage = new AddMnemonicAccountPage(this.page);
+    } else if (accountType === "secret key") {
+      addAccountPage = new AddSecretKeyAccountPage(this.page);
+    }
+    newAccounts[accountName] = addAccountPage;
+  }
+);
 
 Then("I have {string} account", async function (this: CustomWorld, accountName) {
   const namePrefix = newAccounts[accountName].namePrefix;

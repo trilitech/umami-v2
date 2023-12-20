@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { InMemorySigner } from "@taquito/signer";
 
 import { RawPkh } from "../../types/Address";
 import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
@@ -37,10 +38,10 @@ export class AddSecretKeyAccountPage extends AddAccountPage {
   secretKey: string = "";
 
   override async pkh(): Promise<RawPkh> {
-    return "TODO" as any;
+    return (await InMemorySigner.fromSecretKey(this.secretKey)).publicKeyHash();
   }
 
   override async groupTitle(): Promise<string> {
-    return "Continuous title";
+    return "Secret Key Accounts";
   }
 }
