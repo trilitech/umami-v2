@@ -15,7 +15,7 @@ import colors from "../../../style/colors";
 import { RawPkh } from "../../../types/Address";
 import { fullId, thumbnailUri } from "../../../types/Token";
 import { NFTBalance } from "../../../types/TokenBalance";
-import { getIPFSurl } from "../../../utils/token/nftUtils";
+import { getIPFSurl, sortedByLastUpdate } from "../../../utils/token/utils";
 import { NoNFTs } from "../../NoItems";
 
 export const MAX_NFTS_SIZE = 18;
@@ -36,14 +36,20 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
     return <NoNFTs small />;
   }
 
+  const displayedNFTs = sortedByLastUpdate(nfts).slice(0, MAX_NFTS_SIZE);
+
   return (
     <>
       <SimpleGrid marginBottom="35px" spacing="12px" {...props}>
-        {nfts.slice(0, MAX_NFTS_SIZE).map(nft => {
+        {displayedNFTs.map(nft => {
           const url = getIPFSurl(thumbnailUri(nft));
           const fallbackUrl = getIPFSurl(nft.displayUri);
           return (
-            <Link key={`${owner}:${fullId(nft)}`} to={`/home/${owner}/${fullId(nft)}`}>
+            <Link
+              key={`${owner}:${fullId(nft)}`}
+              data-testid="nft-link"
+              to={`/home/${owner}/${fullId(nft)}`}
+            >
               <Card background={colors.gray[800]}>
                 <CardBody padding="8px">
                   <AspectRatio width="100%" ratio={1}>
@@ -72,7 +78,7 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
           );
         })}
       </SimpleGrid>
-      <ViewAllLink to="/nfts" />
+      <ViewAllLink to={`/nfts?accounts=${owner}`} />
     </>
   );
 };

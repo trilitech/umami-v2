@@ -62,7 +62,7 @@ export const PermissionRequestPanel: React.FC<{
 
     await walletClient.respond(response);
 
-    addConnectionToBeaconSlice(request.senderId, account.address.pkh);
+    addConnectionToBeaconSlice(request.senderId, account.address.pkh, request.network.type);
 
     onSubmit();
   };
@@ -73,14 +73,9 @@ export const PermissionRequestPanel: React.FC<{
         <Flex alignItems="center" justifyContent="center">
           Permission Request
         </Flex>
-        <Flex alignItems="center" justifyContent="center" marginTop="10px">
-          <Heading color={colors.gray[400]} size="sm">
-            {request.appMetadata.name}
-            <Text display="inline" marginLeft="4px" size="sm">
-              is requesting permission to sign this operation.
-            </Text>
-          </Heading>
-        </Flex>
+        <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
+          {request.appMetadata.name} is requesting permission to sign this operation.
+        </Text>
 
         <Flex alignItems="center" justifyContent="center" marginTop="10px">
           <Heading marginRight="4px" color={colors.gray[450]} size="sm">
@@ -134,7 +129,7 @@ export const PermissionRequestPanel: React.FC<{
         </FormProvider>
       </ModalBody>
       <ModalFooter>
-        <Button isDisabled={!isValid} onClick={_ => grant()}>
+        <Button width="100%" isDisabled={!isValid} onClick={_ => grant()} size="lg">
           Grant
         </Button>
       </ModalFooter>

@@ -78,7 +78,6 @@ describe("fromRaw", () => {
         id: 10899466223617,
         metadata: nft.token.metadata as Metadata,
         totalSupply: "1",
-        lastLevel: 123123,
       };
 
       const { token } = nft;

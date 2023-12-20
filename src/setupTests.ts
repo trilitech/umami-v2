@@ -70,6 +70,8 @@ beforeEach(() => {
       dispatchEvent: jest.fn(),
     })),
   });
+  // Hack for testing HashRouter: clears URL between tests.
+  window.location.hash = "";
 });
 
 const MockModal = ({ children, isOpen }: any) => {
@@ -94,7 +96,7 @@ const MockModalCloseButton = ({ children }: any) =>
 jest.mock("@chakra-ui/react", () => {
   return {
     ...jest.requireActual("@chakra-ui/react"),
-    // Mock taost since it has an erratic behavior in RTL
+    // Mock toast since it has an erratic behavior in RTL
     // https://github.com/chakra-ui/chakra-ui/issues/2969
     useToast: mockUseToast,
     Modal: MockModal,

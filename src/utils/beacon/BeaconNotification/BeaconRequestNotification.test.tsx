@@ -90,10 +90,14 @@ describe("<BeaconRequestNotification />", () => {
     it("saves new connection to beaconSlice", async () => {
       const user = userEvent.setup();
       render(fixture(message, () => {}));
+
+      // select account
       const account = mockMnemonicAccount(1);
       const input = screen.getByLabelText("address");
       fireEvent.change(input, { target: { value: account.address.pkh } });
       fireEvent.blur(input);
+
+      // grant permission
       const grantButton = screen.getByRole("button", { name: "Grant" });
       await waitFor(() => {
         expect(grantButton).toBeEnabled();
@@ -102,7 +106,10 @@ describe("<BeaconRequestNotification />", () => {
 
       await waitFor(() => {
         expect(store.getState().beacon).toEqual({
-          [SENDER_ID]: mockMnemonicAccount(1).address.pkh,
+          [SENDER_ID]: {
+            accountPkh: mockMnemonicAccount(1).address.pkh,
+            networkType: NetworkType.MAINNET,
+          },
         });
       });
     });

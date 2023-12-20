@@ -15,7 +15,6 @@ export const uUSD = (owner: Address): RawTokenBalance => {
       tokenId: "0",
       standard: "fa2",
       totalSupply: "55000413808",
-      lastLevel: undefined,
       metadata: {
         name: "youves uUSD",
         symbol: "uUSD",

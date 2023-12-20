@@ -8,6 +8,7 @@ import {
   useGetAccountNFTs,
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
+import { sortedByLastUpdate } from "../../utils/token/utils";
 import { DynamicModalContext } from "../DynamicModal";
 import { ReceiveModal } from "../ReceiveModal";
 import { FormPage as SendTezForm } from "../SendFlow/Tez/FormPage";
@@ -26,7 +27,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const dollarBalance = getDollarBalance(account.address.pkh);
 
   const tokens = getTokens(account.address.pkh);
-  const nfts = getNFTs(account.address.pkh);
+  const nfts = sortedByLastUpdate(getNFTs(account.address.pkh));
 
   return (
     <AccountDrawerDisplay

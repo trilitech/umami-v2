@@ -42,13 +42,13 @@ jobs:
         run: yarn test:e2e
 
       - name: Cucumber Report to Annotations
-        uses: deblockt/cucumber-report-annotations-action@v1.12
+        uses: deblockt/cucumber-report-annotations-action@v1.13
         if: always()
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
           path: "test-results/cucumber-report.json"
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
