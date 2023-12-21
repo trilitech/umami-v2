@@ -1,6 +1,6 @@
 Feature: User Onboarding
 
-  Scenario: User creates a new seed phrase account
+  Scenario: User creates a new seed phrase account <testCase>
     Given I am on the welcome page
 
     When I click "Get started" button
@@ -29,6 +29,7 @@ Feature: User Onboarding
     When I click "Continue" button
     Then I am on "Derivation Path" onboarding page
 
+    When I select "<derivationPath>" as derivationPath
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 
@@ -40,11 +41,13 @@ Feature: User Onboarding
     And I have "Account A" account
 
   Examples:
-    | accountName |
-    | TestAccount |
-    |             |
+    | testCase                                        | accountName | derivationPath     |
+    | with default acc name & default derivation path |             | Default            |
+    | with default acc name & custom derivation path  |             | 44'/1729'/?'/0'/0' |
+    | with custom acc name & default derivation path  | TestAccount | Default            |
+    | with custom acc name & custom derivation path   | TestAccount | 44'/1729'/?'/0'/0' |
 
-  Scenario: User imports existing secret key account
+  Scenario: User imports existing secret key account <testCase>
     Given I am on the welcome page
 
     When I click "Get started" button
@@ -77,6 +80,6 @@ Feature: User Onboarding
     And I have "Account A" account
 
   Examples:
-    | accountName |
-    | TestAccount |
-    |             |
+    | testCase                  | accountName |
+    | with default account name |             |
+    | with custom account name  | TestAccount |

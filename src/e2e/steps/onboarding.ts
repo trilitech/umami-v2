@@ -52,6 +52,14 @@ When("I enter recorded seedphrase", async function (this: CustomWorld) {
   }
 });
 
+When("I select {string} as derivationPath", async function (this: CustomWorld, derivationPath) {
+  await this.page.getByTestId("select-input").click();
+  await this.page.getByTestId("select-options").getByText(derivationPath).click();
+  if (derivationPath !== "Default") {
+    (addAccountPage as AddMnemonicAccountPage).derivationPath = derivationPath;
+  }
+});
+
 When("I fill secret key with {string}", async function (this: CustomWorld, secretKey) {
   await this.page.getByLabel("Secret Key", { exact: true }).fill(secretKey);
   (addAccountPage as AddSecretKeyAccountPage).secretKey = secretKey;
