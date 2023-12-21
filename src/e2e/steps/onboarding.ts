@@ -2,6 +2,7 @@ import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
 import { CustomWorld } from "./world";
+import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
 import { formatPkh } from "../../utils/format";
 import { AccountsPage } from "../pages/accounts";
 import {
@@ -39,30 +40,26 @@ Then("I record generated seedphrase", async function (this: CustomWorld) {
   for (let i = 0; i < 24; i++) {
     words.push(await this.page.getByTestId(`mnemonic-word-${i}`).innerText());
   }
-  (addAccountPage as AddMnemonicAccountPage).seedPhrase = words;
+  addAccountPage.seedPhrase = words;
 });
 
 When("I enter recorded seedphrase", async function (this: CustomWorld) {
   for (let i = 0; i < 5; i++) {
     const wordIndex = Number(await this.page.getByTestId("mnemonic-index").nth(i).innerText()) - 1;
-    await this.page
-      .getByRole("textbox")
-      .nth(i)
-      .fill((addAccountPage as AddMnemonicAccountPage).seedPhrase[wordIndex]);
+    await this.page.getByRole("textbox").nth(i).fill(addAccountPage.seedPhrase[wordIndex]);
   }
 });
 
 When("I select {string} as derivationPath", async function (this: CustomWorld, derivationPath) {
   await this.page.getByTestId("select-input").click();
   await this.page.getByTestId("select-options").getByText(derivationPath).click();
-  if (derivationPath !== "Default") {
-    (addAccountPage as AddMnemonicAccountPage).derivationPath = derivationPath;
-  }
+  addAccountPage.derivationPath =
+    derivationPath !== "Default" ? derivationPath : DEFAULT_DERIVATION_PATH.value;
 });
 
 When("I fill secret key with {string}", async function (this: CustomWorld, secretKey) {
   await this.page.getByLabel("Secret Key", { exact: true }).fill(secretKey);
-  (addAccountPage as AddSecretKeyAccountPage).secretKey = secretKey;
+  addAccountPage.secretKey = secretKey;
 });
 
 When("I fill account name with {string}", async function (this: CustomWorld, accountName) {
