@@ -2,9 +2,14 @@ import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
 import { CustomWorld } from "./world";
+import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
 import { formatPkh } from "../../utils/format";
 import { AccountsPage } from "../pages/accounts";
-import { AddAccountPage, AddMnemonicAccountPage } from "../pages/addAccount";
+import {
+  AddAccountPage,
+  AddMnemonicAccountPage,
+  AddSecretKeyAccountPage,
+} from "../pages/addAccount";
 
 export const BASE_URL = "http://127.0.0.1:3000";
 
@@ -35,17 +40,31 @@ Then("I record generated seedphrase", async function (this: CustomWorld) {
   for (let i = 0; i < 24; i++) {
     words.push(await this.page.getByTestId(`mnemonic-word-${i}`).innerText());
   }
-  (addAccountPage as AddMnemonicAccountPage).seedPhrase = words;
+  addAccountPage.seedPhrase = words;
 });
 
 When("I enter recorded seedphrase", async function (this: CustomWorld) {
   for (let i = 0; i < 5; i++) {
     const wordIndex = Number(await this.page.getByTestId("mnemonic-index").nth(i).innerText()) - 1;
-    await this.page
-      .getByRole("textbox")
-      .nth(i)
-      .fill((addAccountPage as AddMnemonicAccountPage).seedPhrase[wordIndex]);
+    await this.page.getByRole("textbox").nth(i).fill(addAccountPage.seedPhrase[wordIndex]);
   }
+});
+
+When("I select {string} as derivationPath", async function (this: CustomWorld, derivationPath) {
+  await this.page.getByTestId("select-input").click();
+  await this.page.getByTestId("select-options").getByText(derivationPath).click();
+  addAccountPage.derivationPath =
+    derivationPath !== "Default" ? derivationPath : DEFAULT_DERIVATION_PATH.value;
+});
+
+When("I fill secret key with {string}", async function (this: CustomWorld, secretKey) {
+  await this.page.getByLabel("Secret Key", { exact: true }).fill(secretKey);
+  addAccountPage.secretKey = secretKey;
+});
+
+When("I fill account name with {string}", async function (this: CustomWorld, accountName) {
+  await this.page.getByLabel("Account name", { exact: true }).fill(accountName);
+  addAccountPage.namePrefix = accountName || "Account";
 });
 
 When("I fill {string} with {string}", async function (this: CustomWorld, inputLabel, inputValue) {
@@ -60,14 +79,21 @@ Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {
   }
 
   await this.page.waitForURL(route);
-  const title = this.page.getByRole("heading", { name: pageName });
+  const title = this.page.getByRole("heading", { name: pageName, exact: true });
   expect(title).toBeVisible();
 });
 
-When("I onboard with {string} mnemonic account", async function (this: CustomWorld, accountName) {
-  addAccountPage = new AddMnemonicAccountPage(this.page);
-  newAccounts[accountName] = addAccountPage;
-});
+When(
+  "I onboard with {string} {string} account",
+  async function (this: CustomWorld, accountName, accountType) {
+    if (accountType === "mnemonic") {
+      addAccountPage = new AddMnemonicAccountPage(this.page);
+    } else if (accountType === "secret key") {
+      addAccountPage = new AddSecretKeyAccountPage(this.page);
+    }
+    newAccounts[accountName] = addAccountPage;
+  }
+);
 
 Then("I have {string} account", async function (this: CustomWorld, accountName) {
   const namePrefix = newAccounts[accountName].namePrefix;
@@ -76,6 +102,7 @@ Then("I have {string} account", async function (this: CustomWorld, accountName) 
 
   const accountsGroup = await accountsPage.getGroup(groupTitle);
   expect(accountsGroup.label).toEqual(groupTitle);
+
   expect(accountsGroup.accounts.length).toEqual(1);
   expect(accountsGroup.accounts[0].address).toEqual(formatPkh(pkh));
   expect(accountsGroup.accounts[0].label).toMatch(new RegExp(`^${namePrefix}`));
