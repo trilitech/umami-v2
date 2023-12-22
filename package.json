@@ -186,7 +186,7 @@
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.0.2",
     "terser-webpack-plugin": "^5.2.5",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typedoc": "^0.25.4",
     "typedoc-plugin-missing-exports": "^2.1.0",
     "typescript": "5.2.2",
