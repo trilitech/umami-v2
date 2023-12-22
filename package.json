@@ -28,6 +28,7 @@
     "start": "node scripts/start.js",
     "test": "cross-env TZ=CET node scripts/test.js --resetModules --coverage --verbose",
     "test:e2e": "TS_NODE_PROJECT=tsconfig.e2e.json cucumber-js",
+    "test:e2e:focus": "TS_NODE_PROJECT=tsconfig.e2e.json cucumber-js --tags='@focus'",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts",
     "typecheck": "tsc"

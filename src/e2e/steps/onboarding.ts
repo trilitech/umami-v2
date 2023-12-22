@@ -33,6 +33,7 @@ Then("I am on {string} onboarding page", async function (this: CustomWorld, moda
 });
 
 When("I check {string} checkbox", async function (this: CustomWorld, checkboxName) {
+  console.log(await this.page.evaluate(() => localStorage.getItem("persist:root")));
   await this.page.getByText(new RegExp(checkboxName)).click();
 });
 
