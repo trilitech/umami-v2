@@ -2,6 +2,7 @@ import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
 import { CustomWorld } from "./world";
+import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
 import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
 import { formatPkh } from "../../utils/format";
 import { AccountsPage } from "../pages/accounts";
@@ -47,6 +48,13 @@ When("I enter recorded seedphrase", async function (this: CustomWorld) {
   for (let i = 0; i < 5; i++) {
     const wordIndex = Number(await this.page.getByTestId("mnemonic-index").nth(i).innerText()) - 1;
     await this.page.getByRole("textbox").nth(i).fill(addAccountPage.seedPhrase[wordIndex]);
+  }
+});
+
+When("I enter existing seedphrase", async function (this: CustomWorld) {
+  addAccountPage.seedPhrase = existingSeedphrase.split(" ");
+  for (let i = 0; i < 24; i++) {
+    await this.page.getByRole("textbox").nth(i).fill(addAccountPage.seedPhrase[i]);
   }
 });
 
