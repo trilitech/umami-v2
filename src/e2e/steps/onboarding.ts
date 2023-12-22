@@ -59,10 +59,13 @@ When("I enter existing seedphrase", async function (this: CustomWorld) {
 });
 
 When("I select {string} as derivationPath", async function (this: CustomWorld, derivationPath) {
+  if (derivationPath === "Default") {
+    addAccountPage.derivationPath = DEFAULT_DERIVATION_PATH.value;
+    return;
+  }
   await this.page.getByTestId("select-input").click();
   await this.page.getByTestId("select-options").getByText(derivationPath).click();
-  addAccountPage.derivationPath =
-    derivationPath !== "Default" ? derivationPath : DEFAULT_DERIVATION_PATH.value;
+  addAccountPage.derivationPath = derivationPath;
 });
 
 When("I fill secret key with {string}", async function (this: CustomWorld, secretKey) {

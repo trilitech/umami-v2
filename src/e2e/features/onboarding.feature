@@ -1,6 +1,6 @@
 Feature: User Onboarding
 
-  Scenario: User creates a new seed phrase account <testCase>
+  Scenario: User creates a new seed phrase account
     Given I am on the welcome page
 
     When I click "Get started" button
@@ -41,14 +41,14 @@ Feature: User Onboarding
     And I have "Account A" account
 
   Examples:
-    | testCase                                        | accountName | derivationPath     |
-    | with default acc name & default derivation path |             | Default            |
-    | with default acc name & custom derivation path  |             | 44'/1729'/?'/0'/0' |
-    | with custom acc name & default derivation path  | TestAccount | Default            |
-    | with custom acc name & custom derivation path   | TestAccount | 44'/1729'/?'/0'/0' |
+    | accountName | derivationPath     |
+    |             | Default            |
+    |             | 44'/1729'/?'/0'/0' |
+    | TestAccount | Default            |
+    | TestAccount | 44'/1729'/?'/0'/0' |
 
 
-  Scenario: User creates an account by existing seedphrase <testCase>
+  Scenario: User creates an account with existing seedphrase
     Given I am on the welcome page
 
     When I click "Get started" button
@@ -85,14 +85,14 @@ Feature: User Onboarding
     And I have "Account A" account
 
   Examples:
-    | testCase                                        | accountName | derivationPath     |
-    | with default acc name & default derivation path |             | Default            |
-    | with default acc name & custom derivation path  |             | 44'/1729'/?'/0'/0' |
-    | with custom acc name & default derivation path  | TestAccount | Default            |
-    | with custom acc name & custom derivation path   | TestAccount | 44'/1729'/?'/0'/0' |
+    | accountName | derivationPath     |
+    |             | Default            |
+    |             | 44'/1729'/?'/0'/0' |
+    | TestAccount | Default            |
+    | TestAccount | 44'/1729'/?'/0'/0' |
 
 
-  Scenario: User creates an account by existing seedphrase <testCase> - through create new page
+  Scenario: User creates an account with existing seedphrase - through create new page
     Given I am on the welcome page
 
     When I click "Get started" button
@@ -129,14 +129,14 @@ Feature: User Onboarding
     And I have "Account A" account
 
   Examples:
-    | testCase                                        | accountName | derivationPath     |
-    | with default acc name & default derivation path |             | Default            |
-    | with default acc name & custom derivation path  |             | 44'/1729'/?'/0'/0' |
-    | with custom acc name & default derivation path  | TestAccount | Default            |
-    | with custom acc name & custom derivation path   | TestAccount | 44'/1729'/?'/0'/0' |
+    | accountName | derivationPath     |
+    |             | Default            |
+    |             | 44'/1729'/?'/0'/0' |
+    | TestAccount | Default            |
+    | TestAccount | 44'/1729'/?'/0'/0' |
 
 
-  Scenario: User imports existing secret key account <testCase>
+  Scenario: User imports existing secret key account
     Given I am on the welcome page
 
     When I click "Get started" button
@@ -169,6 +169,6 @@ Feature: User Onboarding
     And I have "Account A" account
 
   Examples:
-    | testCase                  | accountName |
-    | with default account name |             |
-    | with custom account name  | TestAccount |
+    | accountName |
+    |             |
+    | TestAccount |
