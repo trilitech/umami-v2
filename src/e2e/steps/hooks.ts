@@ -26,29 +26,41 @@ Before(async function (this: CustomWorld) {
   // (global as any).reduxState = { whatever state you expect }
   // NOTE: if we enable concurrency, then we'll have to address the race conditions
   // TODO: add a way to pass in the accounts (they are stored under persist:accounts)
-  setTimeout(
-    () => {
-      console.log((global as any).reduxState, "ci", process.env.CI);
-      this.page.addInitScript(
-        state => {
-          const stateObj: any = {
-            _persist: '{"version":-1,"rehydrated":true}',
-          };
+  this.page.addInitScript(
+    state => {
+      // if we hit a navigation from inside the app we don't want to
+      // override a valid state
+      if (localStorage.getItem("persist:root")) {
+        return;
+      }
 
-          // each value should be a valid JSON string for redux-persist
-          Object.keys(state).forEach(key => {
-            stateObj[key] = JSON.stringify(state[key]);
-          });
+      const stateObj: any = {
+        _persist: '{"version":-1,"rehydrated":true}',
+      };
 
-          localStorage.setItem("persist:root", JSON.stringify(stateObj));
-        },
-        // We need to define the testing network
-        // and select it as the current one
-        // otherwise, our tests will talk to mainnet by default
-        { networks: TEST_NETWORKS_STATE, ...(global as any).reduxState }
-      );
+      // this ensures that the app won't start before we set the state
+      localStorage.setItem("E2E_TEST", "true");
+
+      // each value should be a valid JSON string for redux-persist
+      Object.keys(state).forEach(key => {
+        stateObj[key] = JSON.stringify(state[key]);
+      });
+
+      localStorage.setItem("persist:root", JSON.stringify(stateObj));
+
+      // start the app once the startApp function is populated
+      // and it's ready to consume the predefined state
+      const interval = setInterval(() => {
+        if ((window as any).startApp) {
+          (window as any).startApp();
+          clearInterval(interval);
+        }
+      }, 10);
     },
-    process.env.CI ? 200 : 100
+    // We need to define the testing network
+    // and select it as the current one
+    // otherwise, our tests will talk to mainnet by default
+    { networks: TEST_NETWORKS_STATE, ...(global as any).reduxState }
   );
 
   resetBlockchain();

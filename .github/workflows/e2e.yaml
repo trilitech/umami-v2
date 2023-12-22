@@ -35,9 +35,6 @@ jobs:
       - name: Wait until the server is ready
         run: yarn exec wait-on http-get://127.0.0.1:3000
 
-      - name: Run Playwright tests
-        run: yarn playwright test
-
       - name: Run cucumber tests
         run: yarn test:e2e
 

@@ -38,7 +38,7 @@ When("I check {string} checkbox", async function (this: CustomWorld, checkboxNam
 });
 
 Then("I record generated seedphrase", async function (this: CustomWorld) {
-  const words = [];
+  const words: string[] = [];
   for (let i = 0; i < 24; i++) {
     words.push(await this.page.getByTestId(`mnemonic-word-${i}`).innerText());
   }

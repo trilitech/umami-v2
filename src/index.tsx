@@ -19,19 +19,30 @@ const logError = (error: Error, info: { componentStack?: string | null }) => {
   store.dispatch(errorsSlice.actions.add(errorContext));
 };
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-root.render(
-  <React.StrictMode>
-    <UmamiTheme>
-      <ReduxStore>
-        <PersistGate loading={null} persistor={persistStore(store)}>
-          <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
-            <ReactQueryProvider>
-              <Router />
-            </ReactQueryProvider>
-          </ErrorBoundary>
-        </PersistGate>
-      </ReduxStore>
-    </UmamiTheme>
-  </React.StrictMode>
-);
+const startApp = () => {
+  const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+  root.render(
+    <React.StrictMode>
+      <UmamiTheme>
+        <ReduxStore>
+          <PersistGate loading={null} persistor={persistStore(store)}>
+            <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
+              <ReactQueryProvider>
+                <Router />
+              </ReactQueryProvider>
+            </ErrorBoundary>
+          </PersistGate>
+        </ReduxStore>
+      </UmamiTheme>
+    </React.StrictMode>
+  );
+};
+
+// This is needed to make sure we inject proper initial state into local storage
+// before the app is started and react-persist took over the control of it
+// In all environments except E2E tests it'll start the app right away
+if (localStorage.getItem("E2E_TEST")) {
+  window.startApp = startApp;
+} else {
+  startApp();
+}
