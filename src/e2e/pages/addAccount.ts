@@ -1,13 +1,22 @@
 import { Page } from "@playwright/test";
+import { InMemorySigner } from "@taquito/signer";
 
 import { RawPkh } from "../../types/Address";
-import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
 import { derivePublicKeyPair } from "../../utils/mnemonic";
 import { getFingerPrint } from "../../utils/tezos";
 
 export abstract class AddAccountPage {
   // to be set on the account name page
   namePrefix: string = "";
+
+  // used for ledger & mnemonic accounts only
+  derivationPath: string = "";
+
+  // used for mnemonic accounts only
+  seedPhrase: string[] = [];
+
+  // used for secret key accounts only
+  secretKey: string = "";
 
   constructor(readonly page: Page) {}
 
@@ -16,9 +25,6 @@ export abstract class AddAccountPage {
 }
 
 export class AddMnemonicAccountPage extends AddAccountPage {
-  derivationPath: string = DEFAULT_DERIVATION_PATH.value;
-  seedPhrase: string[] = [];
-
   override async pkh(): Promise<RawPkh> {
     const keyPair = await derivePublicKeyPair(
       this.seedPhrase.join(" "),
@@ -34,13 +40,11 @@ export class AddMnemonicAccountPage extends AddAccountPage {
 }
 
 export class AddSecretKeyAccountPage extends AddAccountPage {
-  secretKey: string = "";
-
   override async pkh(): Promise<RawPkh> {
-    return "TODO" as any;
+    return (await InMemorySigner.fromSecretKey(this.secretKey)).publicKeyHash();
   }
 
   override async groupTitle(): Promise<string> {
-    return "Continuous title";
+    return "Secret Key Accounts";
   }
 }
