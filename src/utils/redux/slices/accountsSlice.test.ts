@@ -284,7 +284,7 @@ describe("Accounts reducer", () => {
           curve: "ed25519",
           derivationPath: "44'/1729'/0'/0'",
           derivationPathPattern: "44'/1729'/?'/0'",
-          label: "Account 0",
+          label: "Account",
           pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H0",
           address: parseImplicitPkh("tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h"),
           seedFingerPrint: "mockPrint1",
@@ -294,7 +294,7 @@ describe("Accounts reducer", () => {
           curve: "ed25519",
           derivationPath: "44'/1729'/1'/0'",
           derivationPathPattern: "44'/1729'/?'/0'",
-          label: "Account 1",
+          label: "Account 2",
           pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H1",
           address: parseImplicitPkh("tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"),
           seedFingerPrint: "mockPrint1",
@@ -339,7 +339,7 @@ describe("Accounts reducer", () => {
       expect(() =>
         store.dispatch(renameAccount({ account: mnemonic1, newName: social.label }))
       ).toThrowError(
-        "Cannot rename account tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf to google Account 3 since the name already exists."
+        "Cannot rename account tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf to Account 4 since the name already exists."
       );
     });
 

@@ -72,7 +72,7 @@ describe("<TokenTransferTile />", () => {
     });
 
     describe("amount", () => {
-      test("without decimals", () => {
+      it("does not display decimal if not needed", () => {
         store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
         const tokenTransfer = tokenTransferFixture({
           from: { address: mockLedgerAccount(1).address.pkh },
@@ -84,7 +84,7 @@ describe("<TokenTransferTile />", () => {
         expect(screen.getByTestId("title")).toHaveTextContent("-500 uUSD");
       });
 
-      test("with decimals", () => {
+      it("displays decimal if needed", () => {
         store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
         const tokenTransfer = tokenTransferFixture({
           from: { address: mockLedgerAccount(1).address.pkh },
@@ -253,7 +253,7 @@ describe("<TokenTransferTile />", () => {
           )
         );
 
-        expect(screen.getByTestId("from")).toHaveTextContent("Ledger Account 1");
+        expect(screen.getByTestId("from")).toHaveTextContent("Account");
         expect(screen.getByTestId("to")).toHaveTextContent(
           formatPkh(mockLedgerAccount(1).address.pkh)
         );
@@ -273,7 +273,7 @@ describe("<TokenTransferTile />", () => {
         expect(screen.getByTestId("from")).toHaveTextContent(
           formatPkh(mockLedgerAccount(1).address.pkh)
         );
-        expect(screen.getByTestId("to")).toHaveTextContent("Ledger Account 1");
+        expect(screen.getByTestId("to")).toHaveTextContent("Account");
       });
 
       it("shows both if sender and target are owned accounts", () => {
@@ -287,8 +287,8 @@ describe("<TokenTransferTile />", () => {
           )
         );
 
-        expect(screen.getByTestId("from")).toHaveTextContent("Ledger Account 1");
-        expect(screen.getByTestId("to")).toHaveTextContent("Ledger Account 1");
+        expect(screen.getByTestId("from")).toHaveTextContent("Account");
+        expect(screen.getByTestId("to")).toHaveTextContent("Account");
       });
     });
   });

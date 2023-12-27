@@ -34,6 +34,7 @@ describe("<AddressTileIcon />", () => {
     render(fixture({ type: "contact", pkh: "tz1", label: "label" }));
     expect(screen.getByTestId("contact-icon")).toBeInTheDocument();
   });
+
   it("displays the unknown icon", () => {
     render(fixture({ type: "unknown", pkh: "tz1", label: null }));
     expect(screen.getByTestId("unknown-contact-icon")).toBeInTheDocument();

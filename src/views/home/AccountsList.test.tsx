@@ -27,7 +27,7 @@ const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
 const MOCK_FINGETPRINT1 = "mockFin1";
 const MOCK_FINGETPRINT2 = "mockFin2";
 
-describe("<AccountList />", () => {
+describe("<AccountsList />", () => {
   describe("deleting account", () => {
     it("shows removal message (for mnemonic & social)", async () => {
       const user = userEvent.setup();
@@ -136,7 +136,7 @@ describe("<AccountList />", () => {
       const { getByTestId } = within(result);
       const identifiers = getByTestId("account-identifier");
 
-      expect(identifiers).toHaveTextContent(mockAccountLabel("mnemonic", i));
+      expect(identifiers).toHaveTextContent(mockAccountLabel(i));
       expect(identifiers).toHaveTextContent(formatPkh(mockImplicitAddress(i).pkh));
     });
   });
@@ -156,13 +156,13 @@ describe("<AccountList />", () => {
     const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
     expect(within(seedPhrase1).getAllByTestId(/account-tile/)).toHaveLength(2);
     expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
-    expect(seedPhrase1).toHaveTextContent("Account 0");
-    expect(seedPhrase1).toHaveTextContent("Account 1");
+    expect(seedPhrase1).toHaveTextContent("Mnemonic 1.1");
+    expect(seedPhrase1).toHaveTextContent("Mnemonic 1.2");
 
     const seedPhrase2 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(within(seedPhrase2).getAllByTestId(/account-tile/)).toHaveLength(1);
     expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT2}`);
-    expect(seedPhrase2).toHaveTextContent("Account");
+    expect(seedPhrase2).toHaveTextContent("Mnemonic 2");
 
     const multisigAccounts = screen.getByTestId(/account-group-multisig/i);
     expect(within(multisigAccounts).getAllByTestId(/account-tile/)).toHaveLength(2);
@@ -234,8 +234,8 @@ const restore = async () => {
     fakeRestoreFromMnemonic({
       seedFingerprint: MOCK_FINGETPRINT1,
       accounts: [
-        mockImplicitAccount(0, undefined, MOCK_FINGETPRINT1),
-        mockImplicitAccount(1, undefined, MOCK_FINGETPRINT1),
+        mockImplicitAccount(0, undefined, MOCK_FINGETPRINT1, "Mnemonic 1.1"),
+        mockImplicitAccount(1, undefined, MOCK_FINGETPRINT1, "Mnemonic 1.2"),
       ] as MnemonicAccount[],
     })
   );
@@ -243,7 +243,9 @@ const restore = async () => {
   await store.dispatch(
     fakeRestoreFromMnemonic({
       seedFingerprint: MOCK_FINGETPRINT2,
-      accounts: [mockImplicitAccount(4, undefined, MOCK_FINGETPRINT2)] as MnemonicAccount[],
+      accounts: [
+        mockImplicitAccount(4, undefined, MOCK_FINGETPRINT2, "Mnemonic 2"),
+      ] as MnemonicAccount[],
     })
   );
 

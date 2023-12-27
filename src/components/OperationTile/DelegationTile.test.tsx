@@ -22,12 +22,12 @@ describe("<DelegationTile />", () => {
     { mode: "drawer", selectedAddress: mockLedgerAccount(0).address } as const,
   ])("in $mode mode", contextValue => {
     describe("title", () => {
-      test("delegate", () => {
+      it("displays delegate", () => {
         render(fixture(contextValue, delegationFixture({})));
         expect(screen.getByTestId("title")).toHaveTextContent("Delegate");
       });
 
-      test("delegation ended", () => {
+      it("displays ended", () => {
         render(fixture(contextValue, delegationFixture({ newDelegate: undefined })));
         expect(screen.getByTestId("title")).toHaveTextContent("Delegation Ended");
       });
@@ -58,8 +58,9 @@ describe("<DelegationTile />", () => {
     const contextValue = { mode: "page" } as const;
 
     describe("fee", () => {
-      it("renders if there is any fee paid by the user", () => {
+      it("displays fee paid by the user if present", () => {
         store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+
         render(
           fixture(
             contextValue,
@@ -72,7 +73,7 @@ describe("<DelegationTile />", () => {
         expect(screen.getByTestId("fee")).toHaveTextContent(`0.000123 ${TEZ}`);
       });
 
-      it("renders nothing if the fee is absent", () => {
+      it("displays nothing if the fee is absent", () => {
         render(
           fixture(
             contextValue,
@@ -87,23 +88,23 @@ describe("<DelegationTile />", () => {
     });
 
     describe("operation type", () => {
-      test("delegate", () => {
+      it("displays 'delegate' if delegating", () => {
         render(fixture(contextValue, delegationFixture({})));
         expect(screen.getByTestId("operation-type")).toHaveTextContent("Delegate");
       });
 
-      test("delegation ended", () => {
+      test("displays 'delegation ended' if not delegating", () => {
         render(fixture(contextValue, delegationFixture({ newDelegate: undefined })));
         expect(screen.getByTestId("operation-type")).toHaveTextContent("Delegation Ended");
       });
     });
 
-    it("shows both the sender and baker contract pills", () => {
+    it("displays both the sender and baker contract pills", () => {
       store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
 
       render(fixture(contextValue, delegationFixture({})));
 
-      expect(screen.getByTestId("from")).toHaveTextContent("Ledger Account 1");
+      expect(screen.getByTestId("from")).toHaveTextContent("Account");
       expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockImplicitAddress(1).pkh));
     });
   });
