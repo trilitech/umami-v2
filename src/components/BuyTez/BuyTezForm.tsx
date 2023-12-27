@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import colors from "../../style/colors";
 import { RawPkh } from "../../types/Address";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
@@ -47,7 +48,9 @@ export const BuyTezForm: React.FC<{
           {isMainnet && (
             <>
               <input name="commodity" type="hidden" value="XTZ:Tezos" />
-              <Text textAlign="center">Please select the recipient account.</Text>
+              <Text color={colors.gray[400]} textAlign="center" size="sm">
+                Please select the recipient account.
+              </Text>
               <ModalBody>
                 <FormControl
                   data-testid="buy-tez-selector"
