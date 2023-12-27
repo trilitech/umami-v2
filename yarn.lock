@@ -8070,6 +8070,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ansi-regex@npm:^0.2.0, ansi-regex@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "ansi-regex@npm:0.2.1"
+  checksum: ce95ac031fc64b9bb5317396d01723e0e07e9fbf1aa481df55c645657a1dbcaf90b6a8e69da6e64ad4543f0bd75691e426b2258a34f3c12999a277c09efd9430
+  languageName: node
+  linkType: hard
+
 "ansi-regex@npm:^4.1.0":
   version: 4.1.1
   resolution: "ansi-regex@npm:4.1.1"
@@ -8095,6 +8102,13 @@ __metadata:
   version: 1.1.1
   resolution: "ansi-sequence-parser@npm:1.1.1"
   checksum: ead5b15c596e8e85ca02951a844366c6776769dcc9fd1bd3a0db11bb21364554822c6a439877fb599e7e1ffa0b5f039f1e5501423950457f3dcb2f480c30b188
+  languageName: node
+  linkType: hard
+
+"ansi-styles@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "ansi-styles@npm:1.1.0"
+  checksum: 4f01de400ef36d4328fc2421d378e5e3f80685e7b79e049fb14d5e75a37c546a7e625b4478e39b7ca6f41421d374e2b0eea52732ed3ed9bde93dc671e72eb79d
   languageName: node
   linkType: hard
 
@@ -9349,6 +9363,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chalk@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "chalk@npm:0.5.1"
+  dependencies:
+    ansi-styles: ^1.1.0
+    escape-string-regexp: ^1.0.0
+    has-ansi: ^0.1.0
+    strip-ansi: ^0.3.0
+    supports-color: ^0.2.0
+  checksum: 33eb9cf9220b13f1cae0a52e612d60f61fb1c894782b4efa847e40485a66e191d4199793b8087dc15b08e75607254a5980b45046f52350766c40d187505aacd9
+  languageName: node
+  linkType: hard
+
 "chalk@npm:^2.4.1, chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
@@ -9799,7 +9826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^2.20.0":
+"commander@npm:^2.20.0, commander@npm:^2.3.0":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
   checksum: ab8c07884e42c3a8dbc5dd9592c606176c7eb5c1ca5ff274bcf907039b2c41de3626f684ea75ccf4d361ba004bbaff1f577d5384c155f3871e456bdf27becf9e
@@ -11584,7 +11611,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-string-regexp@npm:^1.0.5":
+"escape-string-regexp@npm:^1.0.0, escape-string-regexp@npm:^1.0.5":
   version: 1.0.5
   resolution: "escape-string-regexp@npm:1.0.5"
   checksum: 6092fda75c63b110c706b6a9bfde8a612ad595b628f0bd2147eea1d3406723020810e591effc7db1da91d80a71a737a313567c5abb3813e8d9c71f4aa595b410
@@ -12273,6 +12300,13 @@ __metadata:
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
   checksum: faf43eecf233f4897b0150aaa874eeeac214e4f9de49738a9e0ef734a30b5260059e85b7edadf852b98e415f875bd5f12587768a93fd52aaf2e479ecf95fab20
+  languageName: node
+  linkType: hard
+
+"file-size@npm:0.0.5":
+  version: 0.0.5
+  resolution: "file-size@npm:0.0.5"
+  checksum: 404ab62bac816c4b903fdeee0ab677722d14f99641d7b7188938bd7d595fe4634181cb6681ad8de6dd4f9e1087f63730d5447e4e7589497095b28078cbc91700
   languageName: node
   linkType: hard
 
@@ -13060,6 +13094,17 @@ __metadata:
   version: 1.6.2
   resolution: "harmony-reflect@npm:1.6.2"
   checksum: 2e5bae414cd2bfae5476147f9935dc69ee9b9a413206994dcb94c5b3208d4555da3d4313aff6fd14bd9991c1e3ef69cdda5c8fac1eb1d7afc064925839339b8c
+  languageName: node
+  linkType: hard
+
+"has-ansi@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "has-ansi@npm:0.1.0"
+  dependencies:
+    ansi-regex: ^0.2.0
+  bin:
+    has-ansi: cli.js
+  checksum: 8eb68a066bb42460f7065432c14af40050c458eed3ac8329421990dbf5e2dd804a98b2e763013fdbb7f7049105f6c6806e7e90d7ac6caa337c3275574ce42d06
   languageName: node
   linkType: hard
 
@@ -14171,6 +14216,13 @@ __metadata:
   version: 1.0.2
   resolution: "is-windows@npm:1.0.2"
   checksum: 438b7e52656fe3b9b293b180defb4e448088e7023a523ec21a91a80b9ff8cdb3377ddb5b6e60f7c7de4fa8b63ab56e121b6705fe081b3cf1b828b0a380009ad7
+  languageName: node
+  linkType: hard
+
+"is-wsl@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "is-wsl@npm:1.1.0"
+  checksum: ea157d232351e68c92bd62fc541771096942fe72f69dff452dd26dcc31466258c570a3b04b8cda2e01cd2968255b02951b8670d08ea4ed76d6b1a646061ac4fe
   languageName: node
   linkType: hard
 
@@ -15885,7 +15937,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime@npm:1.6.0":
+"mime@npm:1.6.0, mime@npm:^1.2.11":
   version: 1.6.0
   resolution: "mime@npm:1.6.0"
   bin:
@@ -16694,6 +16746,15 @@ __metadata:
     is-docker: ^2.1.1
     is-wsl: ^2.2.0
   checksum: 6388bfff21b40cb9bd8f913f9130d107f2ed4724ea81a8fd29798ee322b361ca31fa2cdfb491a5c31e43a3996cfe9566741238c7a741ada8d7af1cb78d85cf26
+  languageName: node
+  linkType: hard
+
+"opn@npm:^5.2.0":
+  version: 5.5.0
+  resolution: "opn@npm:5.5.0"
+  dependencies:
+    is-wsl: ^1.1.0
+  checksum: 35b677b5a1fd6c8cb1996b0607671ba79f7ce9fa029217d54eafaf6bee13eb7e700691c6a415009140fd02a435fffdfd143875f3b233b60f3f9d631c6f6b81a0
   languageName: node
   linkType: hard
 
@@ -20217,6 +20278,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"static-server@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "static-server@npm:2.2.1"
+  dependencies:
+    chalk: ^0.5.1
+    commander: ^2.3.0
+    file-size: 0.0.5
+    mime: ^1.2.11
+    opn: ^5.2.0
+  bin:
+    static-server: ./bin/static-server.js
+  checksum: 7cec351d26f5037440ec664f7bfb581303d757a394b79d8d55609cb523db249a79cc775e66f47af4e7da1cb992df5ec2c8ebf7974fd849a8072e485c59c96996
+  languageName: node
+  linkType: hard
+
 "statuses@npm:2.0.1":
   version: 2.0.1
   resolution: "statuses@npm:2.0.1"
@@ -20473,6 +20549,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"strip-ansi@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "strip-ansi@npm:0.3.0"
+  dependencies:
+    ansi-regex: ^0.2.1
+  bin:
+    strip-ansi: cli.js
+  checksum: c154768b855009319a4ad9438233cbf3365b9e9008e6c39eadd3c7bd3614d4cde49f2b6f50e07632c2f148ed4b8ab3b4ddbae1f9805335df2ba25bc5653d22f4
+  languageName: node
+  linkType: hard
+
 "strip-ansi@npm:^7.0.1":
   version: 7.1.0
   resolution: "strip-ansi@npm:7.1.0"
@@ -20578,6 +20665,15 @@ __metadata:
   dependencies:
     debug: ^4.1.0
   checksum: 31ba7a62c889236b5b07f75b5c250d481158a1ca061b8f234fca0457bdbe48a20e5011c12c715343dc577e111463dc3d9e721b98015a445a2a88c35e0c9f0f91
+  languageName: node
+  linkType: hard
+
+"supports-color@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "supports-color@npm:0.2.0"
+  bin:
+    supports-color: cli.js
+  checksum: 7ec93a92418979aa8a965c85548a3f57441b48cb1e654e1a79e8bd3d62a614a8faec4afc078051da36318550cbf947f5d23da9fe53934ee577c2c300f1a9e4c4
   languageName: node
   linkType: hard
 
@@ -21540,6 +21636,7 @@ __metadata:
     sass-loader: ^12.3.0
     semver: ^7.3.5
     source-map-loader: ^4.0.1
+    static-server: ^2.2.1
     stream-browserify: ^3.0.0
     stream-http: ^3.2.0
     style-loader: ^3.3.1

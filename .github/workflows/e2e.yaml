@@ -23,17 +23,17 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Start dev server
-        run: yarn start &
+      - name: Install Playwright Browsers
+        run: yarn playwright install chromium --with-deps &
+
+      - name: Build the app
+        run: yarn build
 
       - name: Pull docker images
         run: docker compose -f docker-compose.ci.yaml pull --quiet
 
-      - name: Install Playwright Browsers
-        run: yarn playwright install chromium --with-deps
-
-      - name: Wait until the server is ready
-        run: yarn exec wait-on http-get://127.0.0.1:3000
+      - name: Start server
+        run: yarn exec static-server build -p 3000 &
 
       - name: Run cucumber tests
         run: yarn test:e2e
@@ -45,10 +45,3 @@ jobs:
           access-token: ${{ secrets.GITHUB_TOKEN }}
           path: "test-results/cucumber-report.json"
           show-global-summary-report: true
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 10

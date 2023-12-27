@@ -20,6 +20,8 @@ const newAccounts: Record<string, AddAccountPage> = {};
 
 // TODO: make custom Given with `this` defined as `CustomWorld`
 Given("I am on the welcome page", async function (this: CustomWorld) {
+  this.setEmptyReduxState();
+  await this.pageReady;
   await this.page.goto(`${BASE_URL}/`);
 });
 
@@ -33,7 +35,6 @@ Then("I am on {string} onboarding page", async function (this: CustomWorld, moda
 });
 
 When("I check {string} checkbox", async function (this: CustomWorld, checkboxName) {
-  console.log(await this.page.evaluate(() => localStorage.getItem("persist:root")));
   await this.page.getByText(new RegExp(checkboxName)).click();
 });
 
