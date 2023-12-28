@@ -20,9 +20,16 @@ const baseIconProps = {
 
 export const AddressTileIcon: React.FC<{
   addressKind: AddressKind;
-  size?: "md" | "lg";
-}> = ({ addressKind, size = "md" }) => {
-  const sizeInPx = size === "md" ? "30px" : "38.5px";
+  size?: "sm" | "md" | "lg";
+}> = ({ addressKind, size = "sm" }) => {
+  let sizeInPx;
+  if (size === "sm") {
+    sizeInPx = "30px";
+  } else if (size == "md") {
+    sizeInPx = "38.5px";
+  } else {
+    sizeInPx = "45.5px";
+  }
   switch (addressKind.type) {
     case "secret_key":
     case "mnemonic":
