@@ -26,11 +26,11 @@ jobs:
       - name: Install Playwright Browsers
         run: yarn playwright install chromium --with-deps &
 
+      - name: Pull docker images
+        run: docker compose -f docker-compose.ci.yaml pull --quiet &
+
       - name: Build the app
         run: yarn build
-
-      - name: Pull docker images
-        run: docker compose -f docker-compose.ci.yaml pull --quiet
 
       - name: Start server
         run: yarn exec static-server build -p 3000 &
