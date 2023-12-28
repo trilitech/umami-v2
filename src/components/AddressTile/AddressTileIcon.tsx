@@ -18,18 +18,25 @@ const baseIconProps = {
   bg: colors.gray[500],
 };
 
+type AddressTileIconSize = "sm" | "md" | "lg";
+
 export const AddressTileIcon: React.FC<{
   addressKind: AddressKind;
-  size?: "sm" | "md" | "lg";
+  size?: AddressTileIconSize;
 }> = ({ addressKind, size = "sm" }) => {
   let sizeInPx;
-  if (size === "sm") {
-    sizeInPx = "30px";
-  } else if (size == "md") {
-    sizeInPx = "38.5px";
-  } else {
-    sizeInPx = "45.5px";
+  switch (size) {
+    case "sm":
+      sizeInPx = "30px";
+      break;
+    case "md":
+      sizeInPx = "38.5px";
+      break;
+    case "lg":
+      sizeInPx = "45.5px";
+      break;
   }
+
   switch (addressKind.type) {
     case "secret_key":
     case "mnemonic":
