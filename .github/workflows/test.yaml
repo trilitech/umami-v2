@@ -27,37 +27,13 @@ jobs:
       - name: Install packages
         run: yarn install --immutable
 
-      - name: Run tests
-        env:
-          CI: true
-        run: yarn test
-
-  build:
-    runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: "--max_old_space_size=4096"
-
-    steps:
-      - name: Setup yarn 3.x
-        run: |
-          corepack enable
-          yarn set version 3.5.0
-
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18.15.x
-          cache: "yarn"
-
-      - name: Install packages
-        run: yarn install --immutable
-
       - name: Check format
         run: yarn format:ci
 
       - name: Run linter
         run: yarn lint:ci
 
-      - name: Build
-        run: yarn build
+      - name: Run tests
+        env:
+          CI: true
+        run: yarn test
