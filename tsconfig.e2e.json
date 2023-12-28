@@ -1,28 +1,10 @@
-// It's used only for e2e tests
-// Should mimic tsconfig.json
-// The main differences are:
-// - include = ['src'] because we need to compile src/e2e as well
-// - module = "CommonJS" because cucumber uses require() internally
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "ES6",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "incremental": true
+    // until we migrated to ESM modules, we need to use CommonJS for e2e tests
+    "module": "CommonJS"
   },
-  "include": ["src"],
+  "exclude": [], // override the exclusion of src/e2e in tsconfig.json
   "typedocOptions": {
     "entryPoints": ["src"],
     "entryPointStrategy": "expand",

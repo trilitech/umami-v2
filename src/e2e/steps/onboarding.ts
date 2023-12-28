@@ -2,6 +2,7 @@ import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
 import { CustomWorld } from "./world";
+import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
 import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
 import { formatPkh } from "../../utils/format";
 import { AccountsPage } from "../pages/accounts";
@@ -19,6 +20,8 @@ const newAccounts: Record<string, AddAccountPage> = {};
 
 // TODO: make custom Given with `this` defined as `CustomWorld`
 Given("I am on the welcome page", async function (this: CustomWorld) {
+  this.setEmptyReduxState();
+  await this.pageReady;
   await this.page.goto(`${BASE_URL}/`);
 });
 
@@ -36,7 +39,7 @@ When("I check {string} checkbox", async function (this: CustomWorld, checkboxNam
 });
 
 Then("I record generated seedphrase", async function (this: CustomWorld) {
-  const words = [];
+  const words: string[] = [];
   for (let i = 0; i < 24; i++) {
     words.push(await this.page.getByTestId(`mnemonic-word-${i}`).innerText());
   }
@@ -50,11 +53,21 @@ When("I enter recorded seedphrase", async function (this: CustomWorld) {
   }
 });
 
+When("I enter existing seedphrase", async function (this: CustomWorld) {
+  addAccountPage.seedPhrase = existingSeedphrase.split(" ");
+  for (let i = 0; i < 24; i++) {
+    await this.page.getByRole("textbox").nth(i).fill(addAccountPage.seedPhrase[i]);
+  }
+});
+
 When("I select {string} as derivationPath", async function (this: CustomWorld, derivationPath) {
+  if (derivationPath === "Default") {
+    addAccountPage.derivationPath = DEFAULT_DERIVATION_PATH.value;
+    return;
+  }
   await this.page.getByTestId("select-input").click();
   await this.page.getByTestId("select-options").getByText(derivationPath).click();
-  addAccountPage.derivationPath =
-    derivationPath !== "Default" ? derivationPath : DEFAULT_DERIVATION_PATH.value;
+  addAccountPage.derivationPath = derivationPath;
 });
 
 When("I fill secret key with {string}", async function (this: CustomWorld, secretKey) {

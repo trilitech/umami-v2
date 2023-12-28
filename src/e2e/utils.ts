@@ -107,7 +107,6 @@ export const killNode = () => {
 // this thing takes ~15 secs to run so it should be used only when necessary
 // if the test doesn't involve any blockchain/indexer interaction then do not call this function
 export const resetBlockchain = () => {
-  console.log("Resetting blockchain...");
   killNode();
   startNode();
 };

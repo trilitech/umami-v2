@@ -27,7 +27,8 @@
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "start": "node scripts/start.js",
     "test": "cross-env TZ=CET node scripts/test.js --resetModules --coverage --verbose",
-    "test:e2e": "TS_NODE_PROJECT=tsconfig.e2e.json cucumber-js",
+    "test:e2e": "cross-env TS_NODE_PROJECT=tsconfig.e2e.json cucumber-js",
+    "test:e2e:focus": "yarn test:e2e --tags='@focus'",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts",
     "typecheck": "tsc"
@@ -181,6 +182,7 @@
     "sass-loader": "^12.3.0",
     "semver": "^7.3.5",
     "source-map-loader": "^4.0.1",
+    "static-server": "^2.2.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "style-loader": "^3.3.1",
