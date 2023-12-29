@@ -1,7 +1,9 @@
 import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 
-import { Identicon } from "../../components/Identicon";
+import { AddressTileIcon } from "../../components/AddressTile/AddressTileIcon";
+import { useAddressKind } from "../../components/AddressTile/useAddressKind";
 import colors from "../../style/colors";
+import { Address } from "../../types/Address";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
 import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
@@ -11,12 +13,13 @@ import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
  *
  * Tile contains icon, account name, address and balance.
  *
- * @param pkh - Account public key hash.
+ * @param address - Account address.
  * @param flexProps - Flex properties to define component style.
  */
-export const AccountSmallTile = ({ pkh, ...flexProps }: { pkh: string } & FlexProps) => {
-  const account = useAllAccounts().find(a => a.address.pkh === pkh);
-  const balance = useGetAccountBalance()(pkh);
+export const AccountSmallTile = ({ address, ...flexProps }: { address: Address } & FlexProps) => {
+  const account = useAllAccounts().find(a => a.address.pkh === address.pkh);
+  const balance = useGetAccountBalance()(address.pkh);
+  const addressKind = useAddressKind(address);
 
   if (!account) {
     return null;
@@ -28,8 +31,8 @@ export const AccountSmallTile = ({ pkh, ...flexProps }: { pkh: string } & FlexPr
       data-testid="account-small-tile"
       {...flexProps}
     >
-      <Identicon height="30px" marginRight="12px" padding="5px" address={pkh} identiconSize={20} />
-      <Flex alignSelf="center" height="20px">
+      <AddressTileIcon addressKind={addressKind} />
+      <Flex alignSelf="center" height="20px" marginLeft="12px">
         <Heading marginRight="10px" data-testid="account-small-tile-label" size="sm">
           {account.label}
         </Heading>
@@ -39,7 +42,7 @@ export const AccountSmallTile = ({ pkh, ...flexProps }: { pkh: string } & FlexPr
           data-testid="account-small-tile-pkh"
           size="xs"
         >
-          {formatPkh(pkh)}
+          {formatPkh(address.pkh)}
         </Text>
         {balance && (
           <Heading data-testid="account-small-tile-balance" size="sm">
