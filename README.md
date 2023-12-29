@@ -32,17 +32,20 @@ adjusted.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn playwright test`
+### `yarn test:e2e`
 
 This will run the e2e tests for you. Please make sure that you have docker & docker-compose [installed](https://docs.docker.com/desktop/install/mac-install/).
 
-When you run it for the first time please make sure to install playwright's dependencies using
+When you run it for the first time you'll have to install playwright's dependencies using
 
 ```bash
 yarn playwright install --with-deps chromium
 ```
 
-Also, you can find it helpful to use [this extension](https://playwright.dev/docs/getting-started-vscode)
+Note: the test runner expects the server with the app running at localhost:3000. You can use the dev server (`yarn start`) for that.
+On CI we build the app and serve the production build on the same port (check `.github/workflows/e2e.yaml` for details).
+
+When you're working on a specific scenario, you can mark it with a `@focus` tag and use `yarn test:e2e:focus` to run it exclusively.
 
 ### `yarn build`
 
