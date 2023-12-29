@@ -23,7 +23,8 @@ type AddressTileIconSize = "sm" | "md" | "lg";
 export const AddressTileIcon: React.FC<{
   addressKind: AddressKind;
   size?: AddressTileIconSize;
-}> = ({ addressKind, size = "sm" }) => {
+  identiconSize?: number; // only used for secret_key and mnemonic
+}> = ({ addressKind, size = "sm", identiconSize = 20 }) => {
   let sizeInPx;
   switch (size) {
     case "sm":
@@ -46,7 +47,7 @@ export const AddressTileIcon: React.FC<{
           height={sizeInPx}
           padding="5px"
           address={addressKind.pkh}
-          identiconSize={20}
+          identiconSize={identiconSize}
         />
       );
     case "social":

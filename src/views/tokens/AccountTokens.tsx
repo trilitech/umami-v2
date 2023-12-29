@@ -19,7 +19,6 @@ import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { AddressTileIcon } from "../../components/AddressTile/AddressTileIcon";
 import { useAddressKind } from "../../components/AddressTile/useAddressKind";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import { Identicon } from "../../components/Identicon";
 import { SendButton } from "../../components/SendButton";
 import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
 import colors from "../../style/colors";
@@ -43,11 +42,7 @@ const Header: React.FC<{
       data-testid="header"
       paddingX="30px"
     >
-      {addressKind.type === "mnemonic" ? (
-        <Identicon padding="8px" address={address.pkh} identiconSize={32} />
-      ) : (
-        <AddressTileIcon addressKind={addressKind} size="lg" />
-      )}
+      <AddressTileIcon addressKind={addressKind} identiconSize={35} size="lg" />
 
       <Flex justifyContent="space-between" flex={1}>
         <Box marginLeft="16px" data-testid="account-identifier">
