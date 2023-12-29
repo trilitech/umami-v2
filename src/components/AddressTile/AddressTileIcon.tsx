@@ -18,11 +18,26 @@ const baseIconProps = {
   bg: colors.gray[500],
 };
 
+type AddressTileIconSize = "sm" | "md" | "lg";
+
 export const AddressTileIcon: React.FC<{
   addressKind: AddressKind;
-  size?: "md" | "lg";
-}> = ({ addressKind, size = "md" }) => {
-  const sizeInPx = size === "md" ? "30px" : "38.5px";
+  size?: AddressTileIconSize;
+  identiconSize?: number; // only used for secret_key and mnemonic
+}> = ({ addressKind, size = "sm", identiconSize = 20 }) => {
+  let sizeInPx;
+  switch (size) {
+    case "sm":
+      sizeInPx = "30px";
+      break;
+    case "md":
+      sizeInPx = "38.5px";
+      break;
+    case "lg":
+      sizeInPx = "45.5px";
+      break;
+  }
+
   switch (addressKind.type) {
     case "secret_key":
     case "mnemonic":
@@ -32,7 +47,7 @@ export const AddressTileIcon: React.FC<{
           height={sizeInPx}
           padding="5px"
           address={addressKind.pkh}
-          identiconSize={20}
+          identiconSize={identiconSize}
         />
       );
     case "social":

@@ -16,8 +16,9 @@ import { TokenNameWithIcon } from "./TokenNameWithIcon";
 import { TokenIcon } from "../../assets/icons";
 import { AccountBalance } from "../../components/AccountBalance";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
+import { AddressTileIcon } from "../../components/AddressTile/AddressTileIcon";
+import { useAddressKind } from "../../components/AddressTile/useAddressKind";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import { Identicon } from "../../components/Identicon";
 import { SendButton } from "../../components/SendButton";
 import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
 import colors from "../../style/colors";
@@ -30,11 +31,8 @@ import { formatPkh } from "../../utils/format";
 const Header: React.FC<{
   account: Account;
 }> = ({ account }) => {
-  const {
-    address: { pkh },
-    label,
-  } = account;
-
+  const { address, label } = account;
+  const addressKind = useAddressKind(address);
   return (
     <Flex
       alignItems="center"
@@ -44,14 +42,15 @@ const Header: React.FC<{
       data-testid="header"
       paddingX="30px"
     >
-      <Identicon padding="8px" address={pkh} identiconSize={32} />
+      <AddressTileIcon addressKind={addressKind} identiconSize={35} size="lg" />
+
       <Flex justifyContent="space-between" flex={1}>
         <Box marginLeft="16px" data-testid="account-identifier">
           <Heading marginBottom="4px" size="md">
             {label}
           </Heading>
           <Text color={colors.gray[300]} size="sm">
-            {formatPkh(pkh)}
+            {formatPkh(address.pkh)}
           </Text>
         </Box>
         <Flex flexDirection="column-reverse">

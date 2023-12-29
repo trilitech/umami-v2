@@ -33,7 +33,7 @@ export const AccountTileIcon: React.FC<{ addressKind: AddressKind }> = ({ addres
           background={bg}
           borderRadius="4px"
         >
-          <AddressTileIcon addressKind={addressKind} size="lg" />
+          <AddressTileIcon addressKind={addressKind} size="md" />
         </Flex>
       );
     }
