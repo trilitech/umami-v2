@@ -118,7 +118,7 @@ export const BatchView: React.FC<{
         data-testid="header"
       >
         <Flex alignItems="center">
-          <AccountSmallTile paddingLeft={0} address={sender.address} />
+          <AccountSmallTile paddingLeft={0} account={sender} />
         </Flex>
         <RightHeader operations={accountOperations} />
       </Flex>

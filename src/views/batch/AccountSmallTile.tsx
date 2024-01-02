@@ -3,7 +3,7 @@ import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 import { AddressTileIcon } from "../../components/AddressTile/AddressTileIcon";
 import { useAddressKind } from "../../components/AddressTile/useAddressKind";
 import colors from "../../style/colors";
-import { Address } from "../../types/Address";
+import { Account } from "../../types/Account";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
 import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
@@ -13,10 +13,13 @@ import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
  *
  * Tile contains icon, account name, address and balance.
  *
- * @param address - Account address.
+ * @param account - Implicit or Multisig account.
  * @param flexProps - Flex properties to define component style.
  */
-export const AccountSmallTile = ({ address, ...flexProps }: { address: Address } & FlexProps) => {
+export const AccountSmallTile = ({
+  account: { address },
+  ...flexProps
+}: { account: Account } & FlexProps) => {
   const account = useAllAccounts().find(a => a.address.pkh === address.pkh);
   const balance = useGetAccountBalance()(address.pkh);
   const addressKind = useAddressKind(address);
