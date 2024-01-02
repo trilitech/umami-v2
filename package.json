@@ -135,7 +135,7 @@
     "https-browserify": "^1.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "27.5.1",
-    "jest-fail-on-console": "^3.1.1",
+    "jest-fail-on-console": "^3.1.2",
     "jest-resolve": "27.5.1",
     "jest-watch-typeahead": "^1.0.0",
     "lodash": "^4.17.21",
