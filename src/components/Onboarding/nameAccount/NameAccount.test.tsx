@@ -69,7 +69,7 @@ describe("<NameAccount />", () => {
       });
     });
 
-    const existingAccounts = [
+    const existingAccountGroups = [
       {
         type: "ledger" as const,
         accounts: [mockLedgerAccount(0, labelBase), mockLedgerAccount(2, `${labelBase} 3`)],
@@ -91,14 +91,14 @@ describe("<NameAccount />", () => {
     describe("for mnemonic", () => {
       const account = accounts.find(account => account.type === "mnemonic")!;
 
-      describe.each(existingAccounts)("among $type accounts", existingAccounts => {
+      describe.each(existingAccountGroups)("among $type accounts", existingAccountGroup => {
         it("sets group label", async () => {
-          if (existingAccounts.type === "mnemonic") {
+          if (existingAccountGroup.type === "mnemonic") {
             store.dispatch(
-              accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts)
+              accountsSlice.actions.addMockMnemonicAccounts(existingAccountGroup.accounts)
             );
           } else {
-            existingAccounts.accounts.forEach(account =>
+            existingAccountGroup.accounts.forEach(account =>
               store.dispatch(accountsSlice.actions.addAccount(account))
             );
           }
@@ -162,7 +162,7 @@ describe("<NameAccount />", () => {
     });
 
     describe.each(accounts.filter(account => account.type !== "mnemonic"))("for $type", account => {
-      describe.each(existingAccounts)("among $type accounts", existingAccounts => {
+      describe.each(existingAccountGroups)("among $type accounts", existingAccounts => {
         it("sets unique default label", async () => {
           if (existingAccounts.type === "mnemonic") {
             store.dispatch(

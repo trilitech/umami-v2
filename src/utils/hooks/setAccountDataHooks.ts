@@ -31,7 +31,7 @@ export const useReset = () => {
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param password - User's password, used for encrypting mnemonic.
  * @param derivationPathPattern - Path pattern for the account group that's being added.
- * @param label - Account group prefix provided by the user.
+ * @param label - Account group prefix.
  */
 export const useRestoreFromMnemonic = () => {
   const network = useSelectedNetwork();
@@ -46,7 +46,7 @@ export const useRestoreFromMnemonic = () => {
     mnemonic: string;
     password: string;
     derivationPath: string;
-    label?: string;
+    label: string;
   }) => {
     const seedFingerprint = await getFingerPrint(mnemonic);
     const accounts = await restoreRevealedMnemonicAccounts(

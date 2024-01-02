@@ -21,7 +21,7 @@ export const useRestoreV1BackupFile = () => {
         await restoreFromMnemonic({
           mnemonic,
           password,
-          label: undefined,
+          label: "Account",
           derivationPath: derivationPaths[i],
         });
       }

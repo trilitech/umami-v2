@@ -90,7 +90,7 @@ export const restoreRevealedPublicKeyPairs = async (
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param network - Stores Tezos network & tzkt indexer settings.
  * @param derivationPathPattern - Path pattern for the account group that's being added.
- * @param label - Account group prefix provided by the user.
+ * @param label - Account group prefix.
  * @returns A list of revealed mnemonic accounts that will be added.
  */
 export const useRestoreRevealedMnemonicAccounts = () => {
@@ -99,7 +99,7 @@ export const useRestoreRevealedMnemonicAccounts = () => {
     mnemonic: string,
     network: Network,
     derivationPathPattern: string,
-    label = "Account"
+    label: string
   ): Promise<MnemonicAccount[]> => {
     const pubKeyPairs = await restoreRevealedPublicKeyPairs(
       mnemonic,
