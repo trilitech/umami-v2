@@ -1,10 +1,17 @@
+import { renderHook } from "@testing-library/react";
+
 import {
   defaultDerivationPathPattern,
   getDefaultDerivationPath,
 } from "./account/derivationPathUtils";
-import { restoreRevealedMnemonicAccounts, restoreRevealedPublicKeyPairs } from "./mnemonic";
+import { restoreRevealedPublicKeyPairs, useRestoreRevealedMnemonicAccounts } from "./mnemonic";
+import { accountsSlice } from "./redux/slices/accountsSlice";
+import { store } from "./redux/store";
+import { checkAccountsAndUpsertContact } from "./redux/thunks/checkAccountsAndUpsertContact";
 import { addressExists, getFingerPrint } from "./tezos";
+import { mockContact, mockSocialAccount } from "../mocks/factories";
 import { mnemonic1 } from "../mocks/mockMnemonic";
+import { ReduxStore } from "../providers/ReduxStore";
 import { ImplicitAccount } from "../types/Account";
 import { RawPkh } from "../types/Address";
 import { MAINNET } from "../types/Network";
@@ -34,8 +41,8 @@ beforeEach(() => {
 const fakeAddressExists = (revealedKeyPairs: { pkh: RawPkh }[]) => async (pkh: RawPkh) =>
   revealedKeyPairs.map(keyPair => keyPair.pkh).includes(pkh);
 
-describe("restoreAccounts", () => {
-  it("should restore existing accounts", async () => {
+describe("restoreRevealedPublicKeyPairs", () => {
+  it("restores existing accounts", async () => {
     addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys));
 
     const result = await restoreRevealedPublicKeyPairs(
@@ -47,7 +54,7 @@ describe("restoreAccounts", () => {
     expect(result).toEqual(testPublicKeys);
   });
 
-  it("should restore first account if none exists", async () => {
+  it("restores first account if none exists", async () => {
     addressExistsMock.mockImplementation(fakeAddressExists([]));
 
     const result = await restoreRevealedPublicKeyPairs(
@@ -59,7 +66,7 @@ describe("restoreAccounts", () => {
     expect(result).toEqual(testPublicKeys.slice(0, 1));
   });
 
-  it("should stop at first unrevealed account", async () => {
+  it("stops at first unrevealed account", async () => {
     addressExistsMock.mockImplementation(fakeAddressExists([testPublicKeys[0], testPublicKeys[2]]));
 
     const result = await restoreRevealedPublicKeyPairs(
@@ -72,8 +79,10 @@ describe("restoreAccounts", () => {
   });
 });
 
-describe("restoreEncryptedAccounts", () => {
-  it("should restore existing accounts with a default curve and label", async () => {
+describe("useRestoreRevealedMnemonicAccounts", () => {
+  const CUSTOM_LABEL = "myLabel";
+
+  it("restores existing accounts with a default curve", async () => {
     const expected: ImplicitAccount[] = [
       {
         curve: "ed25519",
@@ -82,7 +91,7 @@ describe("restoreEncryptedAccounts", () => {
         pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6HG",
         address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         seedFingerPrint: "mockFingerPrint",
-        label: "Account 0",
+        label: CUSTOM_LABEL,
         derivationPathPattern: "44'/1729'/?'/0'",
       },
       {
@@ -92,7 +101,7 @@ describe("restoreEncryptedAccounts", () => {
         pk: "edpkuDBhPULoNAoQbjDUo6pYdpY5o3DugXo1GAJVQGzGMGFyKUVcKN",
         address: { type: "implicit", pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6" },
         seedFingerPrint: "mockFingerPrint",
-        label: "Account 1",
+        label: `${CUSTOM_LABEL} 2`,
         derivationPathPattern: "44'/1729'/?'/0'",
       },
       {
@@ -102,7 +111,7 @@ describe("restoreEncryptedAccounts", () => {
         pk: "edpktzYEtcJypEEhzZva7QPc8QcvBuKAsXSmTpR1wFPna3xWB48QDy",
         address: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         seedFingerPrint: "mockFingerPrint",
-        label: "Account 2",
+        label: `${CUSTOM_LABEL} 3`,
         derivationPathPattern: "44'/1729'/?'/0'",
       },
     ];
@@ -110,51 +119,97 @@ describe("restoreEncryptedAccounts", () => {
       fakeAddressExists(expected.map(account => account.address))
     );
 
-    const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET);
+    const {
+      result: { current: restoreRevealedMnemonicsHook },
+    } = renderHook(() => useRestoreRevealedMnemonicAccounts(), {
+      wrapper: ReduxStore,
+    });
+    const result = await restoreRevealedMnemonicsHook(
+      mnemonic1,
+      MAINNET,
+      defaultDerivationPathPattern,
+      CUSTOM_LABEL
+    );
 
     expect(result).toEqual(expected);
   });
 
-  it("should restore existing accounts with a provided label", async () => {
-    const CUSTOM_LABEL = "myLabel";
+  it("restores one account if none were revealed", async () => {
     addressExistsMock.mockImplementation(fakeAddressExists([]));
-    const result = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, CUSTOM_LABEL);
+
+    const {
+      result: { current: restoreRevealedMnemonicsHook },
+    } = renderHook(() => useRestoreRevealedMnemonicAccounts(), {
+      wrapper: ReduxStore,
+    });
+    const result = await restoreRevealedMnemonicsHook(
+      mnemonic1,
+      MAINNET,
+      defaultDerivationPathPattern,
+      CUSTOM_LABEL
+    );
+
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
         label: CUSTOM_LABEL,
       }),
     ];
     expect(result).toEqual(expected);
-
-    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 2)));
-    const result2 = await restoreRevealedMnemonicAccounts(mnemonic1, MAINNET, CUSTOM_LABEL);
-    const expected2: ImplicitAccount[] = [
-      expect.objectContaining({
-        label: `${CUSTOM_LABEL} 0`,
-      }),
-      expect.objectContaining({
-        label: `${CUSTOM_LABEL} 1`,
-      }),
-    ];
-    expect(result2).toEqual(expected2);
   });
 
-  it("should restore existing accounts with a custom derivation path", async () => {
-    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 2)));
-    const result = await restoreRevealedMnemonicAccounts(
+  it("sets unique labels for restored accounts", async () => {
+    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 3)));
+    store.dispatch(checkAccountsAndUpsertContact(mockContact(0, CUSTOM_LABEL)));
+    store.dispatch(accountsSlice.actions.addAccount(mockSocialAccount(1, `${CUSTOM_LABEL} 3`)));
+
+    const {
+      result: { current: restoreRevealedMnemonicsHook },
+    } = renderHook(() => useRestoreRevealedMnemonicAccounts(), {
+      wrapper: ReduxStore,
+    });
+    const result = await restoreRevealedMnemonicsHook(
       mnemonic1,
       MAINNET,
-      undefined,
-      "44'/1729'/?'/0'"
+      defaultDerivationPathPattern,
+      CUSTOM_LABEL
     );
 
     const expected: ImplicitAccount[] = [
       expect.objectContaining({
-        label: "Account 0",
+        label: `${CUSTOM_LABEL} 2`,
+      }),
+      expect.objectContaining({
+        label: `${CUSTOM_LABEL} 4`,
+      }),
+      expect.objectContaining({
+        label: `${CUSTOM_LABEL} 5`,
+      }),
+    ];
+    expect(result).toEqual(expected);
+  });
+
+  it("restores existing accounts with a custom derivation path", async () => {
+    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 2)));
+
+    const {
+      result: { current: restoreRevealedMnemonicsHook },
+    } = renderHook(() => useRestoreRevealedMnemonicAccounts(), {
+      wrapper: ReduxStore,
+    });
+    const result = await restoreRevealedMnemonicsHook(
+      mnemonic1,
+      MAINNET,
+      "44'/1729'/?'/0'",
+      "Account"
+    );
+
+    const expected: ImplicitAccount[] = [
+      expect.objectContaining({
+        label: "Account",
         derivationPath: "44'/1729'/0'/0'",
       }),
       expect.objectContaining({
-        label: "Account 1",
+        label: "Account 2",
         derivationPath: "44'/1729'/1'/0'",
       }),
     ];

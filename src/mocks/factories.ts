@@ -110,19 +110,8 @@ export const mockImplicitAddress = (index: number): ImplicitAddress => {
  *
  * @returns A string with the generated account label.
  */
-export const mockAccountLabel = (
-  accountType: ImplicitAccount["type"],
-  accountIndex: number
-): string => {
-  switch (accountType) {
-    case "mnemonic":
-    case "secret_key":
-      return `Account ${accountIndex}`;
-    case "social":
-      return `google Account ${accountIndex}`;
-    case "ledger":
-      return `Ledger Account ${accountIndex + 1}`;
-  }
+export const mockAccountLabel = (accountIndex: number): string => {
+  return accountIndex === 0 ? "Account" : `Account ${accountIndex + 1}`;
 };
 
 export const mockPk = (index: number) =>
@@ -131,20 +120,21 @@ export const mockPk = (index: number) =>
 export const mockImplicitAccount = (
   index: number,
   type: ImplicitAccount["type"] = "mnemonic",
-  fingerPrint = "mockPrint"
+  fingerPrint = "mockPrint",
+  label?: string
 ): ImplicitAccount => {
   switch (type) {
     case "mnemonic":
       return {
-        ...mockMnemonicAccount(index),
+        ...mockMnemonicAccount(index, label),
         seedFingerPrint: fingerPrint,
       };
     case "social":
-      return mockSocialAccount(index);
+      return mockSocialAccount(index, label);
     case "ledger":
-      return mockLedgerAccount(index);
+      return mockLedgerAccount(index, label);
     case "secret_key":
-      return mockSecretKeyAccount(index);
+      return mockSecretKeyAccount(index, label);
   }
 };
 
@@ -153,7 +143,7 @@ export const mockMnemonicAccount = (index: number, label?: string): MnemonicAcco
   derivationPath: getDefaultDerivationPath(index),
   derivationPathPattern: "44'/1729'/?'/0'",
   type: "mnemonic",
-  label: label || mockAccountLabel("mnemonic", index),
+  label: label || mockAccountLabel(index),
   address: mockImplicitAddress(index),
   pk: mockPk(index),
   seedFingerPrint: "mockPrint",
@@ -161,14 +151,14 @@ export const mockMnemonicAccount = (index: number, label?: string): MnemonicAcco
 
 export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAccount => ({
   type: "secret_key",
-  label: label || mockAccountLabel("secret_key", index),
+  label: label || mockAccountLabel(index),
   address: mockImplicitAddress(index),
   pk: mockPk(index),
 });
 
 export const mockSocialAccount = (index: number, label?: string): SocialAccount => ({
   type: "social",
-  label: label || mockAccountLabel("social", index),
+  label: label || mockAccountLabel(index),
   address: mockImplicitAddress(index),
   pk: mockPk(index),
   idp: "google",
@@ -179,7 +169,7 @@ export const mockLedgerAccount = (index: number, label?: string): LedgerAccount 
     type: "ledger",
     derivationPath: getDefaultDerivationPath(index),
     curve: "ed25519",
-    label: label || mockAccountLabel("ledger", index),
+    label: label || mockAccountLabel(index),
     address: mockImplicitAddress(index),
     pk: mockPk(index),
   };
@@ -426,9 +416,9 @@ export const mockContractOrigination = (
   };
 };
 
-export const mockContact = (index: number): Contact => {
+export const mockContact = (index: number, label?: string): Contact => {
   return {
-    name: `Contact ${index}`,
+    name: label || `Contact ${index}`,
     pkh: mockImplicitAddress(index).pkh,
   };
 };

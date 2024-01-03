@@ -18,7 +18,7 @@ describe("<AddressTileIcon />", () => {
 
     render(fixture(account.address));
 
-    expect(screen.getByText("Account 0")).toBeInTheDocument();
+    expect(screen.getByText("Account")).toBeInTheDocument();
   });
 
   describe("Full name tooltip", () => {
@@ -41,7 +41,7 @@ describe("<AddressTileIcon />", () => {
       const tooltip = await screen.findByRole("tooltip");
 
       expect(tooltip).toBeInTheDocument();
-      expect(tooltip).toHaveTextContent("Account 0");
+      expect(tooltip).toHaveTextContent("Account");
     });
   });
 

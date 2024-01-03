@@ -3,39 +3,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { MnemonicAccount } from "../../../types/Account";
 import { makeDerivationPath } from "../../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
-import { EncryptedData } from "../../crypto/types";
-import { getFingerPrint } from "../../tezos";
 import { ExtraArgument } from "../extraArgument";
 import { AppDispatch, RootState } from "../store";
-
-export const restoreFromMnemonic = createAsyncThunk<
-  {
-    seedFingerprint: string;
-    encryptedMnemonic: EncryptedData;
-    accounts: MnemonicAccount[];
-  },
-  {
-    mnemonic: string;
-    password: string;
-    label?: string;
-    derivationPathPattern?: string;
-  },
-  { dispatch: AppDispatch; state: RootState; extra: ExtraArgument }
->(
-  "accounts/restoreFromMnemonic",
-  async ({ mnemonic, password, label, derivationPathPattern }, thunkAPI) => {
-    return {
-      seedFingerprint: await getFingerPrint(mnemonic),
-      accounts: await thunkAPI.extra.restoreRevealedMnemonicAccounts(
-        mnemonic,
-        thunkAPI.getState().networks.current,
-        label,
-        derivationPathPattern
-      ),
-      encryptedMnemonic: await thunkAPI.extra.encrypt(mnemonic, password),
-    };
-  }
-);
 
 export const deriveAccount = createAsyncThunk<
   MnemonicAccount,

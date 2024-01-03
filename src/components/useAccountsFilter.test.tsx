@@ -11,7 +11,9 @@ import { store } from "../utils/redux/store";
 
 const accounts = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
 
-beforeEach(() => store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(accounts)));
+beforeEach(() => {
+  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(accounts));
+});
 
 const TestComponent = () => {
   const { accountsFilter } = useAccountsFilter();

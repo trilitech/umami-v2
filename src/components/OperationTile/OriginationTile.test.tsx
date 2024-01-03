@@ -117,7 +117,7 @@ describe("<OriginationTile />", () => {
         )
       );
 
-      expect(screen.getByTestId("from")).toHaveTextContent("Ledger Account 1");
+      expect(screen.getByTestId("from")).toHaveTextContent("Account");
     });
   });
 

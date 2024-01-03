@@ -2,10 +2,12 @@ import { renderHook } from "@testing-library/react";
 
 import {
   useGetBestSignerForAccount,
+  useGetNextAvailableAccountLabels,
   useIsOwnedAddress,
   useIsUniqueLabel,
 } from "./getAccountDataHooks";
 import {
+  mockContact,
   mockImplicitAccount,
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -18,8 +20,9 @@ import { ReduxStore } from "../../providers/ReduxStore";
 import { accountsSlice } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
-import { multisigsSlice } from "../redux/slices/multisigsSlice";
+import { multisigActions, multisigsSlice } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
+import { checkAccountsAndUpsertContact } from "../redux/thunks/checkAccountsAndUpsertContact";
 import { renameAccount } from "../redux/thunks/renameAccount";
 
 describe("getAccountDataHooks", () => {
@@ -87,6 +90,90 @@ describe("getAccountDataHooks", () => {
 
         expect(result.current(testCase.testLabel)).toEqual(testCase.expected);
       });
+    });
+  });
+
+  describe("useGetNextAvailableAccountLabels", () => {
+    const existingAccounts = [
+      {
+        type: "ledger" as const,
+        accounts: [mockLedgerAccount(0, "Test acc 2"), mockLedgerAccount(1, "Test acc 4")],
+      },
+      {
+        type: "social" as const,
+        accounts: [mockSocialAccount(0, "Test acc 2"), mockSocialAccount(1, "Test acc 4")],
+      },
+      {
+        type: "mnemonic" as const,
+        accounts: [mockMnemonicAccount(0, "Test acc 2"), mockMnemonicAccount(1, "Test acc 4")],
+      },
+      {
+        type: "secret_key" as const,
+        accounts: [mockSecretKeyAccount(0, "Test acc 2"), mockSecretKeyAccount(1, "Test acc 4")],
+      },
+    ];
+    describe.each(existingAccounts)("among $type accounts", existingAccounts => {
+      it("returns unique labels", async () => {
+        if (existingAccounts.type === "mnemonic") {
+          store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts));
+        } else {
+          existingAccounts.accounts.forEach(account =>
+            store.dispatch(accountsSlice.actions.addAccount(account))
+          );
+        }
+
+        const {
+          result: { current: getNextAvailableLabels },
+        } = renderHook(() => useGetNextAvailableAccountLabels(), {
+          wrapper: ReduxStore,
+        });
+
+        expect(getNextAvailableLabels("Test acc", 4)).toEqual([
+          "Test acc",
+          "Test acc 3",
+          "Test acc 5",
+          "Test acc 6",
+        ]);
+      });
+    });
+
+    it("among multisig accounts returns unique labels", async () => {
+      store.dispatch(
+        multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
+      );
+      store.dispatch(renameAccount(mockMultisigAccount(0), "Test acc 2"));
+      store.dispatch(renameAccount(mockMultisigAccount(1), "Test acc 4"));
+
+      const {
+        result: { current: getNextAvailableLabels },
+      } = renderHook(() => useGetNextAvailableAccountLabels(), {
+        wrapper: ReduxStore,
+      });
+
+      expect(getNextAvailableLabels("Test acc", 4)).toEqual([
+        "Test acc",
+        "Test acc 3",
+        "Test acc 5",
+        "Test acc 6",
+      ]);
+    });
+
+    it("among contacts returns unique labels", async () => {
+      store.dispatch(checkAccountsAndUpsertContact(mockContact(0, "Test acc 2")));
+      store.dispatch(checkAccountsAndUpsertContact(mockContact(1, "Test acc 4")));
+
+      const {
+        result: { current: getNextAvailableLabels },
+      } = renderHook(() => useGetNextAvailableAccountLabels(), {
+        wrapper: ReduxStore,
+      });
+
+      expect(getNextAvailableLabels("Test acc", 4)).toEqual([
+        "Test acc",
+        "Test acc 3",
+        "Test acc 5",
+        "Test acc 6",
+      ]);
     });
   });
 

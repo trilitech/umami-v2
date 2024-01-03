@@ -8,17 +8,19 @@ import {
   mockSocialAccount,
 } from "../../../mocks/factories";
 import { fakeExtraArguments } from "../../../mocks/fakeExtraArgument";
-import { fakeRestoreFromMnemonic } from "../../../mocks/helpers";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { ImplicitAccount, MnemonicAccount } from "../../../types/Account";
+import { MnemonicAccount } from "../../../types/Account";
 import { parseImplicitPkh } from "../../../types/Address";
-import { MAINNET } from "../../../types/Network";
-import { getFingerPrint } from "../../tezos";
 import { store } from "../store";
-import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
+import { deriveAccount } from "../thunks/restoreMnemonicAccounts";
 
 const {
-  actions: { addMockMnemonicAccounts, addAccount, removeMnemonicAndAccounts, renameAccount },
+  actions: {
+    addMockMnemonicAccounts,
+    addAccount,
+    removeMnemonicAndAccounts,
+    renameAccount,
+    addMnemonicAccounts,
+  },
 } = accountsSlice;
 
 beforeEach(async () => {
@@ -76,20 +78,22 @@ describe("Accounts reducer", () => {
   });
 
   it("should handle deleting seedphrases and all derived accounts", async () => {
-    await store.dispatch(
-      fakeRestoreFromMnemonic({
+    store.dispatch(
+      addMnemonicAccounts({
         seedFingerprint: "mockPrint1",
         accounts: [
-          mockImplicitAccount(1, undefined, "mockPrint1"),
-          mockImplicitAccount(3, undefined, "mockPrint1"),
-        ] as MnemonicAccount[],
+          mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount,
+          mockImplicitAccount(3, undefined, "mockPrint1") as MnemonicAccount,
+        ],
+        encryptedMnemonic: {} as any,
       })
     );
 
-    await store.dispatch(
-      fakeRestoreFromMnemonic({
+    store.dispatch(
+      addMnemonicAccounts({
         seedFingerprint: "mockPrint2",
-        accounts: [mockImplicitAccount(2, undefined, "mockPrint2")] as MnemonicAccount[],
+        accounts: [mockImplicitAccount(2, undefined, "mockPrint2") as MnemonicAccount],
+        encryptedMnemonic: {} as any,
       })
     );
 
@@ -189,54 +193,37 @@ describe("Accounts reducer", () => {
     });
   });
 
-  describe("restoreFromMnemonic thunk", () => {
-    it("should restore accounts from seedphrase, encrypt seedphrase and store result in state", async () => {
-      const fingerPrint = await getFingerPrint(mnemonic1);
-      const mockEntrypted = { mock: "encrypted" };
-      const mockLabel = "myLabel";
-      const restoredAccounts: ImplicitAccount[] = [
-        {
-          ...mockImplicitAccount(0),
-        },
-        {
-          ...mockImplicitAccount(1),
-        },
+  describe("addMnemonicAccounts", () => {
+    it("adds mnemonic accounts & encrypted seedphrase to storage", async () => {
+      const seedFingerprint = "mockPrint1";
+      const mockEncrypted = { mock: "encrypted" };
+      const restoredAccounts: MnemonicAccount[] = [
+        mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount,
+        mockImplicitAccount(3, undefined, "mockPrint1") as MnemonicAccount,
       ];
 
-      fakeExtraArguments.restoreRevealedMnemonicAccounts.mockResolvedValueOnce(
-        restoredAccounts as MnemonicAccount[]
+      store.dispatch(
+        addMnemonicAccounts({
+          seedFingerprint,
+          accounts: restoredAccounts,
+          encryptedMnemonic: mockEncrypted as any,
+        })
       );
-      fakeExtraArguments.encrypt.mockResolvedValueOnce(mockEntrypted as any);
 
-      await store
-        .dispatch(
-          restoreFromMnemonic({
-            mnemonic: mnemonic1,
-            password: "cool",
-            label: mockLabel,
-          })
-        )
-        .unwrap();
-
-      expect(fakeExtraArguments.restoreRevealedMnemonicAccounts).toHaveBeenCalledWith(
-        mnemonic1,
-        MAINNET,
-        mockLabel,
-        undefined
-      );
       expect(store.getState().accounts.items).toEqual(restoredAccounts);
       expect(store.getState().accounts.seedPhrases).toEqual({
-        [fingerPrint]: mockEntrypted,
+        [seedFingerprint]: mockEncrypted,
       });
     });
   });
 
   describe("deriveAccount thunk", () => {
-    it("should throw if we try to derive from an unknown seedphrase", async () => {
-      await store.dispatch(
-        fakeRestoreFromMnemonic({
+    it("throws if we try to derive from an unknown seedphrase", async () => {
+      store.dispatch(
+        addMnemonicAccounts({
           seedFingerprint: "mockPrint1",
-          accounts: [mockImplicitAccount(1, undefined, "mockPrint1")] as MnemonicAccount[],
+          accounts: [mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount],
+          encryptedMnemonic: {} as any,
         })
       );
 
@@ -258,14 +245,15 @@ describe("Accounts reducer", () => {
       expect(message).toEqual("No seedphrase found with fingerprint:unknown fingerprint");
     });
 
-    it("should derive and add an account after the last index", async () => {
-      await store.dispatch(
-        fakeRestoreFromMnemonic({
+    it("derives and adds an account after the last index", async () => {
+      store.dispatch(
+        addMnemonicAccounts({
           seedFingerprint: "mockPrint1",
           accounts: [
-            mockImplicitAccount(0, "mnemonic", "mockPrint1"),
-            mockImplicitAccount(1, "mnemonic", "mockPrint1"),
-          ] as MnemonicAccount[],
+            mockImplicitAccount(0, undefined, "mockPrint1") as MnemonicAccount,
+            mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount,
+          ],
+          encryptedMnemonic: {} as any,
         })
       );
 
@@ -284,7 +272,7 @@ describe("Accounts reducer", () => {
           curve: "ed25519",
           derivationPath: "44'/1729'/0'/0'",
           derivationPathPattern: "44'/1729'/?'/0'",
-          label: "Account 0",
+          label: "Account",
           pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H0",
           address: parseImplicitPkh("tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h"),
           seedFingerPrint: "mockPrint1",
@@ -294,7 +282,7 @@ describe("Accounts reducer", () => {
           curve: "ed25519",
           derivationPath: "44'/1729'/1'/0'",
           derivationPathPattern: "44'/1729'/?'/0'",
-          label: "Account 1",
+          label: "Account 2",
           pk: "edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H1",
           address: parseImplicitPkh("tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"),
           seedFingerPrint: "mockPrint1",
@@ -339,7 +327,7 @@ describe("Accounts reducer", () => {
       expect(() =>
         store.dispatch(renameAccount({ account: mnemonic1, newName: social.label }))
       ).toThrowError(
-        "Cannot rename account tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf to google Account 3 since the name already exists."
+        "Cannot rename account tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf to Account 4 since the name already exists."
       );
     });
 

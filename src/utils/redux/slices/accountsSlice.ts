@@ -12,7 +12,7 @@ import {
 import { RawPkh } from "../../../types/Address";
 import { EncryptedData } from "../../crypto/types";
 import { changeMnemonicPassword } from "../thunks/changeMnemonicPassword";
-import { deriveAccount, restoreFromMnemonic } from "../thunks/restoreMnemonicAccounts";
+import { deriveAccount } from "../thunks/restoreMnemonicAccounts";
 
 export type State = {
   items: ImplicitAccount[];
@@ -33,13 +33,6 @@ export const accountsSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(deriveAccount.fulfilled, (state, action) => {
       state.items = concatUnique(state.items, [action.payload]);
-    });
-
-    builder.addCase(restoreFromMnemonic.fulfilled, (state, action) => {
-      const { accounts, encryptedMnemonic, seedFingerprint } = action.payload;
-      state.items = concatUnique(state.items, accounts);
-      // updated seedphrase after a successful restoration.
-      state.seedPhrases[seedFingerprint] = encryptedMnemonic;
     });
 
     builder.addCase(changeMnemonicPassword.fulfilled, (state, action) => {
@@ -98,14 +91,31 @@ export const accountsSlice = createSlice({
         accountToRename.label = newName;
       }
     },
-    // To add mnemonic accounts, use the `restoreFromMnemonic` and `deriveAccount` thunk.
+    // To add mnemonic accounts, use `useRestoreRevealedMnemonicAccounts` hook or `deriveAccount` thunk.
     addAccount: (
       state,
       { payload }: { payload: SocialAccount | LedgerAccount | SecretKeyAccount }
     ) => {
       state.items = concatUnique(state.items, [payload]);
     },
-    // Use only for testing purpose
+    // Used as a part  of `useRestoreRevealedMnemonicAccounts` hook (for setting unique account names).
+    addMnemonicAccounts: (
+      state,
+      {
+        payload: { encryptedMnemonic, accounts, seedFingerprint },
+      }: {
+        type: string;
+        payload: {
+          seedFingerprint: string;
+          encryptedMnemonic: EncryptedData;
+          accounts: MnemonicAccount[];
+        };
+      }
+    ) => {
+      state.items = concatUnique(state.items, accounts);
+      state.seedPhrases[seedFingerprint] = encryptedMnemonic;
+    },
+    // Does not add the seedphrase to the storage, only adds accounts.
     addMockMnemonicAccounts: (state, { payload }: { type: string; payload: MnemonicAccount[] }) => {
       state.items = concatUnique(state.items, payload);
     },

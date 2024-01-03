@@ -37,11 +37,27 @@ export const useAllAccounts = (): Account[] => {
   return [...implicit, ...multisig];
 };
 
-// Checks if a label is unique among all accounts and contacts.
+/** Checks if a label is unique among all accounts and contacts. */
 export const useIsUniqueLabel = () => {
   const accountLabels = useAllAccounts().map(account => account.label);
   const contactNames = Object.values(useContacts()).map(contact => contact.name);
   return (label: string) => ![...accountLabels, ...contactNames].includes(label);
+};
+
+/** Hook for generating unique account labels. */
+export const useGetNextAvailableAccountLabels = () => {
+  const isUniqueLabel = useIsUniqueLabel();
+
+  return (labelPrefix: string, count: number = 1) => {
+    const labels = [];
+    for (let index = 1; labels.length < count; index++) {
+      const nextLabel = index === 1 ? labelPrefix : `${labelPrefix} ${index}`;
+      if (isUniqueLabel(nextLabel)) {
+        labels.push(nextLabel);
+      }
+    }
+    return labels;
+  };
 };
 
 export const useGetOwnedAccountSafe = () => {

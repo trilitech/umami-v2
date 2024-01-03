@@ -1,11 +1,8 @@
 import { NameAccountDisplay } from "./NameAccountDisplay";
-import { useIsUniqueLabel } from "../../../utils/hooks/getAccountDataHooks";
+import { useGetNextAvailableAccountLabels } from "../../../utils/hooks/getAccountDataHooks";
 import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 
 export const DEFAULT_ACCOUNT_LABEL = "Account";
-
-export const indexedDefaultAccountLabel = (index: number): string =>
-  `${DEFAULT_ACCOUNT_LABEL} ${index + 1}`;
 
 /**
  * This component is used to add a label to a newly created account.
@@ -28,21 +25,29 @@ export const NameAccount = ({
   goToStep: (step: Step) => void;
   account: NameAccountStep["account"];
 }) => {
-  const isUniqueLabel = useIsUniqueLabel();
+  const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
   const onSubmit = (p: { accountName: string }) => {
-    let label = p.accountName.trim();
+    const baseLabel = p.accountName.trim() || DEFAULT_ACCOUNT_LABEL;
+    const uniqueLabel = getNextAvailableAccountLabels(baseLabel)[0];
 
     switch (account.type) {
       case "secret_key":
-        label = label.length > 0 ? label : firstUnusedDefaultLabel(isUniqueLabel);
-        return goToStep({ type: StepType.masterPassword, account: { ...account, label: label } });
+        return goToStep({
+          type: StepType.masterPassword,
+          account: { ...account, label: uniqueLabel },
+        });
       case "ledger":
-        label = label.length > 0 ? label : firstUnusedDefaultLabel(isUniqueLabel);
-        return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
+        return goToStep({
+          type: StepType.derivationPath,
+          account: { ...account, label: uniqueLabel },
+        });
       case "mnemonic":
-        // Mnemonic account group label, individual accounts are named in {@link restoreRevealedMnemonicAccounts}.
-        label = label.length > 0 ? label : DEFAULT_ACCOUNT_LABEL;
-        return goToStep({ type: StepType.derivationPath, account: { ...account, label: label } });
+        // More than one mnemonic account can be derived during onboarding.
+        // We pass base label to name individual accounts in {@link restoreRevealedMnemonicAccounts}.
+        return goToStep({
+          type: StepType.derivationPath,
+          account: { ...account, label: baseLabel },
+        });
     }
   };
 
@@ -52,12 +57,4 @@ export const NameAccount = ({
       subtitle="Please choose a name for your first account. You can edit your account name later."
     />
   );
-};
-
-const firstUnusedDefaultLabel = (isUniqueLabel: (label: string) => boolean): string => {
-  let index = 0;
-  while (!isUniqueLabel(indexedDefaultAccountLabel(index))) {
-    index += 1;
-  }
-  return indexedDefaultAccountLabel(index);
 };

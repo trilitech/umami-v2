@@ -1,4 +1,3 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fireEvent, screen } from "@testing-library/react";
 import BigNumber from "bignumber.js";
 
@@ -20,23 +19,6 @@ export const fillPassword = (value: string) => {
 export const dispatchMockAccounts = (accounts: MnemonicAccount[]) => {
   store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(accounts));
 };
-
-export const fakeRestoreFromMnemonic = createAsyncThunk(
-  "accounts/restoreFromMnemonic",
-  async ({
-    seedFingerprint,
-    accounts,
-  }: {
-    seedFingerprint: string;
-    accounts: MnemonicAccount[];
-  }) => {
-    return {
-      seedFingerprint,
-      accounts,
-      encryptedMnemonic: {} as any,
-    };
-  }
-);
 
 export const mockEstimatedFee = (fee: number | string | BigNumber) => {
   jest.mocked(estimate).mockResolvedValueOnce(BigNumber(fee));

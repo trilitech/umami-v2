@@ -18,7 +18,12 @@ export const useRestoreV1BackupFile = () => {
     try {
       for (const [i, encryptedMnemonic] of encrypted.entries()) {
         const mnemonic = await decrypt(encryptedMnemonic, password, "V1");
-        await restoreFromMnemonic(mnemonic, password, undefined, derivationPaths[i]);
+        await restoreFromMnemonic({
+          mnemonic,
+          password,
+          label: "Account",
+          derivationPath: derivationPaths[i],
+        });
       }
     } catch (e) {
       throw new Error("Invalid password.");
