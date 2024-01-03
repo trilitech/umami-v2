@@ -1,9 +1,16 @@
 import { useDispatch } from "react-redux";
 
+import {
+  useGetNextAvailableAccountLabels,
+  useImplicitAccounts,
+  useSeedPhrases,
+} from "./getAccountDataHooks";
 import { useSelectedNetwork } from "./networkHooks";
-import { AccountType, LedgerAccount, SocialAccount } from "../../types/Account";
-import { encrypt } from "../crypto/AES";
-import { useRestoreRevealedMnemonicAccounts } from "../mnemonic";
+import { AccountType, LedgerAccount, MnemonicAccount, SocialAccount } from "../../types/Account";
+import { makeDerivationPath } from "../account/derivationPathUtils";
+import { makeMnemonicAccount } from "../account/makeMnemonicAccount";
+import { decrypt, encrypt } from "../crypto/AES";
+import { derivePublicKeyPair, useRestoreRevealedMnemonicAccounts } from "../mnemonic";
 import { useAppDispatch } from "../redux/hooks";
 import { accountsSlice } from "../redux/slices/accountsSlice";
 import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
@@ -64,6 +71,66 @@ export const useRestoreFromMnemonic = () => {
         encryptedMnemonic,
       })
     );
+  };
+};
+
+/**
+ * Adds account to a mnemonic group.
+ *
+ * The account is not guaranteed to not been used before.
+ * It could have been revealed (and used) in the past, but skipped after deleting a group and restoring it after.
+ *
+ * New account is added to the {@link accountsSlice}.
+ *
+ * @param fingerPrint - hash of the mnemonic. Generated with {@link getFingerPrint}. We use it to group together accounts derived from the same mnemonic
+ * @param password - User's password, used for decrypting the mnemonic.
+ * @param label - Account name prefix, used to create a unique account name.
+ */
+export const useDeriveMnemonicAccount = () => {
+  const encryptedMnemonics = useSeedPhrases();
+  const implicitAccounts = useImplicitAccounts();
+  const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
+  const dispatch = useDispatch();
+
+  return async ({
+    fingerPrint,
+    password,
+    label,
+  }: {
+    fingerPrint: string;
+    password: string;
+    label: string;
+  }) => {
+    const encryptedSeedphrase = encryptedMnemonics[fingerPrint];
+    if (!encryptedSeedphrase) {
+      throw new Error(`No seedphrase found with fingerprint:${fingerPrint}`);
+    }
+    const seedphrase = await decrypt(encryptedSeedphrase, password);
+
+    const existingGroupAccounts = implicitAccounts.filter(
+      (acc): acc is MnemonicAccount =>
+        acc.type === "mnemonic" && acc.seedFingerPrint === fingerPrint
+    );
+    // We can only delete the whole group, so skipped indexes are not possible.
+    const nextIndex = existingGroupAccounts.length;
+
+    // Newly derived accounts use a derivation path in the same pattern as the first account
+    const pattern = existingGroupAccounts[0].derivationPathPattern;
+
+    const nextDerivationPath = makeDerivationPath(pattern, nextIndex);
+    const { pk, pkh } = await derivePublicKeyPair(seedphrase, nextDerivationPath);
+
+    const uniqueLabel = getNextAvailableAccountLabels(label, 1)[0];
+    const account = makeMnemonicAccount(
+      pk,
+      pkh,
+      nextDerivationPath,
+      pattern,
+      fingerPrint,
+      uniqueLabel
+    );
+
+    dispatch(accountsSlice.actions.addAccount(account));
   };
 };
 

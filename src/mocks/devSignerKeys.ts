@@ -5,7 +5,7 @@ import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 
 // make the default signer used in the dev mode.
 // e.g. makeDefaultDevSigner(0) is equivalent to the "restored account 0".
-export const makeDefaultDevSigner = (index: number): InMemorySigner => {
+const makeDefaultDevSigner = (index: number): InMemorySigner => {
   return InMemorySigner.fromMnemonic({
     mnemonic: mnemonic1,
     derivationPath: getDefaultDerivationPath(index),

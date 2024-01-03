@@ -8,6 +8,10 @@ import { RawPkh } from "../../types/Address";
 import { decrypt } from "../crypto/AES";
 import { useAppSelector } from "../redux/hooks";
 
+export const useSeedPhrases = () => {
+  return useAppSelector(s => s.accounts.seedPhrases);
+};
+
 export const useImplicitAccounts = () => {
   return useAppSelector(s => s.accounts.items);
 };
@@ -73,7 +77,7 @@ export const useGetOwnedAccount = () => {
  * returns null if no password has been set
  */
 export const useCheckPasswordValidity = () => {
-  const seedPhrases = useAppSelector(s => s.accounts.seedPhrases);
+  const seedPhrases = useSeedPhrases();
 
   const existingSeedPhrase = Object.values(seedPhrases)[0];
   if (!existingSeedPhrase) {
