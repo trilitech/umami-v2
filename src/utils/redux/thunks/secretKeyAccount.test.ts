@@ -5,6 +5,8 @@ import { EncryptedData } from "../../crypto/types";
 import { accountsSlice } from "../slices/accountsSlice";
 import { store } from "../store";
 
+jest.unmock("../../tezos");
+
 describe("secretKeyAccount", () => {
   test("restore", async () => {
     const secretKey = "edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq";
