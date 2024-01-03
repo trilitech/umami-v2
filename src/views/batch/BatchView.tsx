@@ -22,6 +22,21 @@ import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { TEZ, estimate } from "../../utils/tezos";
 
+// Converts from 1 => 1st, 2 => 2nd, 3 => 3rd... etc.
+export const addOrdinal = (n: number): string => {
+  let ordinal = "th";
+
+  if (n % 10 == 1 && n % 100 != 11) {
+    ordinal = "st";
+  } else if (n % 10 == 2 && n % 100 != 12) {
+    ordinal = "nd";
+  } else if (n % 10 == 3 && n % 100 != 13) {
+    ordinal = "rd";
+  }
+
+  return `${n}${ordinal}`;
+};
+
 const RightHeader: React.FC<{ operations: AccountOperations }> = ({
   operations: accountOperations,
 }) => {
@@ -33,8 +48,23 @@ const RightHeader: React.FC<{ operations: AccountOperations }> = ({
 
   const openBatchSignPage = () =>
     handleAsyncAction(async () => {
-      const initialFee = await estimate(accountOperations, network);
-      openWith(<SignPage initialFee={initialFee} initialOperations={accountOperations} />);
+      try {
+        const initialFee = await estimate(accountOperations, network);
+        openWith(<SignPage initialFee={initialFee} initialOperations={accountOperations} />);
+      } catch (_) {
+        // In case of error, we identify the specific in the batch.
+        for (let i = 0; i < operations.length; i += 1) {
+          const operation = operations[i];
+          try {
+            await estimate({ ...accountOperations, operations: [operation] }, network);
+          } catch (error: any) {
+            const operationType = prettyOperationType(operation);
+            throw new Error(
+              `The ${addOrdinal(i + 1)} operation "${operationType}" is invalid: ${error.message}`
+            );
+          }
+        }
+      }
     });
 
   return (
