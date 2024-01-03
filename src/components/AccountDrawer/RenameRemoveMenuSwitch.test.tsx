@@ -1,7 +1,8 @@
 import { userEvent } from "@testing-library/user-event";
 
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
-import { mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
+import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { render, screen, waitFor } from "../../mocks/testUtils";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { store } from "../../utils/redux/store";
@@ -9,10 +10,9 @@ import { store } from "../../utils/redux/store";
 describe("<RenameRemoveMenuSwitch />", () => {
   it("shows removal message", async () => {
     const user = userEvent.setup();
-    const mnemonic = mockMnemonicAccount(0);
     const social = mockSocialAccount(1);
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mnemonic]));
-    store.dispatch(accountsSlice.actions.addAccount(social));
+    addAccount(mockMnemonicAccount(0));
+    addAccount(social);
     render(<RenameRemoveMenuSwitch account={social} />);
 
     user.click(screen.getByTestId("popover-cta"));
@@ -35,9 +35,32 @@ describe("<RenameRemoveMenuSwitch />", () => {
     await waitFor(() => {
       expect(screen.getByTestId("description")).toHaveTextContent(
         "Removing your last account will off-board you from Umami. " +
-          "This will remove or reset all customised settings to their defaults. " +
+          "This will remove or reset all customized settings to their defaults. " +
           "Personal data (including saved contacts, password and accounts) won't be affected."
       );
     });
   });
+
+  it.each([mockSocialAccount(0), mockLedgerAccount(0)])(
+    "removes only the $type account",
+    async account => {
+      const allAccounts = [mockSocialAccount(0), mockLedgerAccount(1), mockMnemonicAccount(2)];
+      allAccounts.forEach(addAccount);
+      const user = userEvent.setup();
+
+      render(<RenameRemoveMenuSwitch account={account} />);
+
+      expect(store.getState().accounts.items).toEqual(allAccounts);
+
+      user.click(screen.getByTestId("popover-cta"));
+      user.click(screen.getByTestId("popover-remove"));
+      await waitFor(() => user.click(screen.getByRole("button", { name: "Remove Account" })));
+
+      await waitFor(() =>
+        expect(store.getState().accounts.items).toEqual(
+          allAccounts.filter(acc => acc.address.pkh !== account.address.pkh)
+        )
+      );
+    }
+  );
 });
