@@ -40,6 +40,11 @@ describe("estimate", () => {
       expect(res).toEqual("Insufficient balance, please make sure you have enough funds.");
     });
 
+    it("catches INSUFFICIENT_BALANCE", () => {
+      const res = handleTezError({ message: "INSUFFICIENT_BALANCE" });
+      expect(res).toEqual("Insufficient balance, please make sure you have enough funds.");
+    });
+
     it("catches non_existing_contract", () => {
       const res = handleTezError({ message: "contract.non_existing_contract" });
       expect(res).toEqual(

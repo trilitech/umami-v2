@@ -34,7 +34,10 @@ export const estimate = async (
 export const handleTezError = (err: any): any => {
   let message = "";
 
-  if (err.message.includes("subtraction_underflow")) {
+  if (
+    err.message.includes("subtraction_underflow") ||
+    err.message.includes("INSUFFICIENT_BALANCE")
+  ) {
     message = "Insufficient balance, please make sure you have enough funds.";
   } else if (err.message.includes("contract.non_existing_contract")) {
     message = "Contract does not exist, please check if the correct network is selected.";
