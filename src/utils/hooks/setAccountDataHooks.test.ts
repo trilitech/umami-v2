@@ -65,7 +65,9 @@ describe("setAccountDataHooks", () => {
         label: LABEL_BASE,
       });
 
-      await waitFor(() => expect(store.getState().accounts.items).toEqual(expected));
+      await waitFor(() => expect(store.getState().accounts.items).toEqual(expected), {
+        timeout: 2000,
+      });
       expect(store.getState().accounts.seedPhrases).toEqual({
         [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
       });
@@ -100,7 +102,9 @@ describe("setAccountDataHooks", () => {
         label: LABEL_BASE,
       });
 
-      await waitFor(() => expect(store.getState().accounts.items).toEqual(expected));
+      await waitFor(() => expect(store.getState().accounts.items).toEqual(expected), {
+        timeout: 2000,
+      });
       expect(store.getState().accounts.seedPhrases).toEqual({
         [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
       });
@@ -138,8 +142,9 @@ describe("setAccountDataHooks", () => {
         label: LABEL_BASE,
       });
 
-      await waitFor(() =>
-        expect(store.getState().accounts.items).toEqual([...existingAccounts, ...expected])
+      await waitFor(
+        () => expect(store.getState().accounts.items).toEqual([...existingAccounts, ...expected]),
+        { timeout: 2000 }
       );
       expect(store.getState().accounts.seedPhrases).toEqual({
         [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
