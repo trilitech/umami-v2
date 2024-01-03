@@ -140,7 +140,7 @@ export const useOnboardingModal = (onModalClose?: () => void) => {
       case StepType.restoreLedger:
         return <RestoreLedger closeModal={closeModal} {...currentStep} />;
       case StepType.masterPassword:
-        return <MasterPassword onClose={onClose} {...currentStep} />;
+        return <MasterPassword onClose={closeModal} {...currentStep} />;
       case StepType.fakeAccount:
         return <FakeAccount onClose={onClose} />;
       case StepType.restoreSecretKey:
