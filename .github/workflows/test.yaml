@@ -14,10 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup yarn 3.x
+      - name: Setup yarn
         run: |
           corepack enable
-          yarn set version 3.5.0
+          yarn set version stable
 
       - uses: actions/setup-node@v4
         with:
