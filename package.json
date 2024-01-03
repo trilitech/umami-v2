@@ -341,7 +341,7 @@
       "private": true
     }
   },
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@4.0.2",
   "babel": {
     "presets": [
       "react-app"
