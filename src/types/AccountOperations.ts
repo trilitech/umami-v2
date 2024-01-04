@@ -1,7 +1,7 @@
 import { Account, ImplicitAccount, MultisigAccount } from "./Account";
 import { Operation } from "./Operation";
 
-export type ProposalOperations = {
+type ProposalOperations = {
   type: "proposal";
   operations: Operation[];
   sender: MultisigAccount;
@@ -45,9 +45,4 @@ export const makeAccountOperations = (
         signer,
       };
   }
-};
-
-export type EstimatedOperation = {
-  operations: AccountOperations;
-  fee: string;
 };

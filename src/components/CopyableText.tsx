@@ -28,7 +28,7 @@ export const CopyableAddress: React.FC<
   );
 };
 
-export const CopyableText: React.FC<
+const CopyableText: React.FC<
   {
     displayText: string;
     copyValue?: string;

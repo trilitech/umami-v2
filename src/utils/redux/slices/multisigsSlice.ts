@@ -4,7 +4,7 @@ import { fromPairs, groupBy } from "lodash";
 import { MultisigAccount } from "../../../types/Account";
 import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
 
-export type State = {
+type State = {
   items: MultisigAccount[];
   pendingOperations: MultisigPendingOperations;
 };

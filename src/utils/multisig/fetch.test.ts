@@ -16,7 +16,7 @@ describe("multisig fetch", () => {
       mockedAxios.get.mockResolvedValue({ data: ghostMultisigContracts });
 
       const result = await getAllMultiSigContracts(GHOSTNET);
-      expect(mockedAxios.get).toBeCalledWith(
+      expect(mockedAxios.get).toHaveBeenCalledWith(
         `${GHOSTNET.tzktApiUrl}/v1/contracts?typeHash=1963879877&codeHash=-1890025422&includeStorage=true&limit=10000`
       );
       expect(
@@ -77,7 +77,7 @@ describe("multisig fetch", () => {
       });
 
       const result = await getPendingOperations([1], GHOSTNET);
-      expect(mockedAxios.get).toBeCalledWith(
+      expect(mockedAxios.get).toHaveBeenCalledWith(
         `${GHOSTNET.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=1&limit=10000`
       );
       expect(result).toEqual([
@@ -92,7 +92,7 @@ describe("multisig fetch", () => {
 
     it("handles empty bigMaps", async () => {
       const result = await getPendingOperations([], GHOSTNET);
-      expect(mockedAxios.get).toBeCalledTimes(0);
+      expect(mockedAxios.get).toHaveBeenCalledTimes(0);
       expect(result).toEqual([]);
     });
   });

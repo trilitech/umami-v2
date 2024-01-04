@@ -28,7 +28,7 @@ describe("<Eula />", () => {
       expect(checkbox).toBeChecked();
       expect(confirmBtn).toBeEnabled();
       fireEvent.click(confirmBtn);
-      expect(setStepMock).toBeCalledTimes(1);
+      expect(setStepMock).toHaveBeenCalledTimes(1);
     });
   });
 });

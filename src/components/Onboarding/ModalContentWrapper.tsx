@@ -7,7 +7,7 @@ import { CircleIcon } from "../CircleIcon";
 type Props = {
   title: string;
   subtitle?: string;
-  icon: JSX.Element;
+  icon: ReactElement;
   children: ReactElement;
 };
 

@@ -12,7 +12,7 @@ import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { useBatches } from "../../utils/hooks/batchesHooks";
 
-export const FilterController = ({ batchPending }: { batchPending: number }) => {
+const FilterController = ({ batchPending }: { batchPending: number }) => {
   return (
     <Flex alignItems="center" marginTop="24px" marginBottom="24px">
       <Heading flex={1} color={colors.orangeL} size="sm">

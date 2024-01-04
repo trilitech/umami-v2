@@ -26,21 +26,19 @@ describe("AES", () => {
   it("V1 decryption fails with V2 encryption", async () => {
     const encrypted = await encrypt(mnemonic1, password);
 
-    await expect(decrypt(encrypted, password, "V1")).rejects.toThrowError(DECRYPTION_ERROR_MESSAGE);
+    await expect(decrypt(encrypted, password, "V1")).rejects.toThrow(DECRYPTION_ERROR_MESSAGE);
   });
 
   it("decryption fails with cyclic password", async () => {
     // Used to work in V1. Now it fails.
     const encrypted = await encrypt(mnemonic1, "abc");
 
-    await expect(decrypt(encrypted, "abcabc")).rejects.toThrowError(DECRYPTION_ERROR_MESSAGE);
+    await expect(decrypt(encrypted, "abcabc")).rejects.toThrow(DECRYPTION_ERROR_MESSAGE);
   });
 
   it("decryption fails with wrong password", async () => {
     const encrypted = await encrypt(mnemonic1, password);
 
-    await expect(decrypt(encrypted, `wrong ${password}`)).rejects.toThrowError(
-      DECRYPTION_ERROR_MESSAGE
-    );
+    await expect(decrypt(encrypted, `wrong ${password}`)).rejects.toThrow(DECRYPTION_ERROR_MESSAGE);
   });
 });

@@ -66,7 +66,7 @@ describe("Accounts reducer", () => {
       ])
     );
 
-    expect(() => store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(2)]))).toThrowError(
+    expect(() => store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(2)]))).toThrow(
       `Can't add account ${mockImplicitAccount(2).address.pkh} in store since it already exists.`
     );
 
@@ -318,7 +318,7 @@ describe("Accounts reducer", () => {
     });
 
     it("throws when the new name is empty", () => {
-      expect(() => store.dispatch(renameAccount({ account: mnemonic1, newName: "" }))).toThrowError(
+      expect(() => store.dispatch(renameAccount({ account: mnemonic1, newName: "" }))).toThrow(
         "Cannot rename account to an empty name."
       );
     });
@@ -326,7 +326,7 @@ describe("Accounts reducer", () => {
     it("throws when the new name is used by other implicit account", () => {
       expect(() =>
         store.dispatch(renameAccount({ account: mnemonic1, newName: social.label }))
-      ).toThrowError(
+      ).toThrow(
         "Cannot rename account tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf to Account 4 since the name already exists."
       );
     });

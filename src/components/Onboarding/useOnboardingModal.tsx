@@ -41,16 +41,16 @@ export enum StepType {
   fakeAccount = "fakeAccount",
 }
 
-export type EulaStep = { type: StepType.eula };
-export type ConnectOrCreateStep = { type: StepType.connectOrCreate };
-export type NoticeStep = { type: StepType.notice };
-export type ConnectOptionsStep = { type: StepType.connectOptions };
+type EulaStep = { type: StepType.eula };
+type ConnectOrCreateStep = { type: StepType.connectOrCreate };
+type NoticeStep = { type: StepType.notice };
+type ConnectOptionsStep = { type: StepType.connectOptions };
 export type ShowSeedphraseStep = {
   type: StepType.showSeedphrase;
   account: { type: "mnemonic"; mnemonic: string };
 };
-export type RestoreSeedphraseStep = { type: StepType.restoreMnemonic };
-export type RestoreSecretKeyStep = { type: StepType.restoreSecretKey };
+type RestoreSeedphraseStep = { type: StepType.restoreMnemonic };
+type RestoreSecretKeyStep = { type: StepType.restoreSecretKey };
 export type VerifySeedphraseStep = {
   type: StepType.verifySeedphrase;
   account: { type: "mnemonic"; mnemonic: string };
@@ -72,7 +72,7 @@ export type RestoreLedgerStep = {
   type: StepType.restoreLedger;
   account: { type: "ledger"; label: string; derivationPath: string };
 };
-export type RestoreBackup = {
+type RestoreBackup = {
   type: StepType.restoreBackup;
 };
 export type MasterPasswordStep = {
@@ -81,7 +81,7 @@ export type MasterPasswordStep = {
     | { type: "mnemonic"; mnemonic: string; label: string; derivationPath: string }
     | { type: "secret_key"; secretKey: string; label: string };
 };
-export type FakeAccountStep = { type: StepType.fakeAccount };
+type FakeAccountStep = { type: StepType.fakeAccount };
 
 export type Step =
   | EulaStep

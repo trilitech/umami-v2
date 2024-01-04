@@ -30,7 +30,7 @@ describe("estimate", () => {
           }) as any
       );
 
-      await expect(() => estimate(accountOperations, GHOSTNET)).rejects.toThrowError(
+      await expect(() => estimate(accountOperations, GHOSTNET)).rejects.toThrow(
         "Signer address is not revealed on the ghostnet."
       );
     });

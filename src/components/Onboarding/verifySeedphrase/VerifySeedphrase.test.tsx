@@ -96,9 +96,9 @@ describe("<VerifySeedphrase />", () => {
 
     fireEvent.click(confirmBtn);
     await waitFor(() => {
-      expect(goToStepMock).toBeCalledTimes(1);
+      expect(goToStepMock).toHaveBeenCalledTimes(1);
     });
-    expect(goToStepMock).toBeCalledWith({
+    expect(goToStepMock).toHaveBeenCalledWith({
       type: StepType.nameAccount,
       account: { type: "mnemonic", mnemonic: mnemonic1 },
     });

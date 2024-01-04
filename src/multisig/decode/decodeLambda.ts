@@ -25,7 +25,7 @@ const convertToPkh = (addressBytes: string): string => {
   return encodePubKey(addressBytes);
 };
 
-export const parseTez = (michelson: MichelsonV1Expression[]): Operation => {
+const parseTez = (michelson: MichelsonV1Expression[]): Operation => {
   const parseResult = tezSchema.parse(michelson);
 
   const to = parseResult[0].args[1].bytes;
@@ -38,7 +38,7 @@ export const parseTez = (michelson: MichelsonV1Expression[]): Operation => {
   };
 };
 
-export const parseTezContract = (michelson: MichelsonV1Expression[]): Operation => {
+const parseTezContract = (michelson: MichelsonV1Expression[]): Operation => {
   const parseResult = contractTezSchema.parse(michelson);
 
   const to = parseResult[0].args[1].bytes;

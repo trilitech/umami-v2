@@ -6,8 +6,6 @@ import { FormErrorMessage } from "../../../FormErrorMessage";
 import { PasswordInput } from "../../../PasswordInput";
 import { ModalContentWrapper } from "../../ModalContentWrapper";
 
-export const MIN_LENGTH = 8;
-
 export const EnterAndConfirmPassword: React.FC<{
   onSubmit: (password: string) => void;
   isLoading: boolean;

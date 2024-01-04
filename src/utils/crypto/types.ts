@@ -1,4 +1,4 @@
-export type Hex = string;
+type Hex = string;
 
 export type EncryptedData = {
   iv: Hex;

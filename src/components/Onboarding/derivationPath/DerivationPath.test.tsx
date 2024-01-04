@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 
 import { DerivationPath } from "./DerivationPath";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
@@ -35,9 +35,9 @@ describe("<DerivationPath />", () => {
       });
       user.click(confirmBtn);
       await waitFor(() => {
-        expect(goToStepMock).toBeCalledTimes(1);
+        expect(goToStepMock).toHaveBeenCalledTimes(1);
       });
-      expect(goToStepMock).toBeCalledWith({
+      expect(goToStepMock).toHaveBeenCalledWith({
         type: nextPage,
         account: {
           ...account,
@@ -67,10 +67,10 @@ describe("<DerivationPath />", () => {
       user.click(confirmBtn);
 
       await waitFor(() => {
-        expect(goToStepMock).toBeCalledTimes(1);
+        expect(goToStepMock).toHaveBeenCalledTimes(1);
       });
 
-      expect(goToStepMock).toBeCalledWith({
+      expect(goToStepMock).toHaveBeenCalledWith({
         type: nextPage,
         account: {
           ...account,

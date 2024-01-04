@@ -78,7 +78,7 @@ export const makeMultisigProposeOperation = (
   return makeContractCallOperation(contract, "propose", lambdaActions);
 };
 
-export const makeContractCallOperation = (
+const makeContractCallOperation = (
   contract: ContractAddress,
   entrypoint: string,
   args: MichelsonV1Expression,

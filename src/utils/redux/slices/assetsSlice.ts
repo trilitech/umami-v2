@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DelegationOperation } from "@tzkt/sdk-api";
 import { compact, groupBy, mapValues } from "lodash";
 
 import { accountsSlice } from "./accountsSlice";
-import { RawPkh } from "../../../types/Address";
 import { Delegate } from "../../../types/Delegate";
 import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
@@ -30,12 +28,7 @@ type State = {
   lastTimeUpdated: string | null;
 };
 
-export type DelegationPayload = {
-  pkh: RawPkh;
-  delegation: DelegationOperation;
-};
-
-export type ConversionRatePayload = { rate: State["conversionRate"] };
+type ConversionRatePayload = { rate: State["conversionRate"] };
 
 const initialState: State = {
   blockLevel: null,

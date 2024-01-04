@@ -12,7 +12,7 @@ import { DynamicModalContext } from "../DynamicModal";
 
 // This file defines hooks to create actions when form is submitted.
 
-export type OnSubmitFormAction<FormValues extends BaseFormValues> = (
+type OnSubmitFormAction<FormValues extends BaseFormValues> = (
   formValues: FormValues
 ) => Promise<void>;
 

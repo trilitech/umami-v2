@@ -95,7 +95,7 @@ describe("changeMnemonicPassword thunk", () => {
     for (let i = 0; i < items.length; i++) {
       const account = items[i] as MnemonicAccount;
       const encryptedMnemonic = newEncryptedMnemonics[account.seedFingerPrint] as EncryptedData;
-      await expect(decrypt(encryptedMnemonic, currentPassword)).rejects.toThrowError(
+      await expect(decrypt(encryptedMnemonic, currentPassword)).rejects.toThrow(
         "Error decrypting data"
       );
     }
