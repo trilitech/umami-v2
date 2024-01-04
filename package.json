@@ -110,7 +110,7 @@
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.2.0",
     "cucumber-tsflow": "^4.3.1",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.0.6",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
     "electron": "^27.1.2",
