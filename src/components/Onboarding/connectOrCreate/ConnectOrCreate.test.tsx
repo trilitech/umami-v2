@@ -20,8 +20,8 @@ describe("<ConnectOrCreate />", () => {
       name: /Create a new Account/i,
     });
     fireEvent.click(confirmBtn);
-    expect(goToStepMock).toBeCalledTimes(1);
-    expect(goToStepMock).toBeCalledWith({ type: StepType.notice });
+    expect(goToStepMock).toHaveBeenCalledTimes(1);
+    expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.notice });
   });
 
   test("I already have a wallet", async () => {
@@ -30,8 +30,8 @@ describe("<ConnectOrCreate />", () => {
       name: /I already have a wallet/i,
     });
     fireEvent.click(confirmBtn);
-    expect(goToStepMock).toBeCalledTimes(1);
-    expect(goToStepMock).toBeCalledWith({ type: StepType.connectOptions });
+    expect(goToStepMock).toHaveBeenCalledTimes(1);
+    expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.connectOptions });
   });
 
   test("Social login", async () => {

@@ -14,7 +14,8 @@
     "react",
     "testing-library",
     "unused-imports",
-    "@stylistic/eslint-plugin"
+    "@stylistic/eslint-plugin",
+    "deprecation"
   ],
   "extends": [
     "eslint:recommended",
@@ -85,7 +86,8 @@
         }
       }
     ],
-    "@stylistic/quotes": ["warn", "double", { "avoidEscape": true }]
+    "@stylistic/quotes": ["warn", "double", { "avoidEscape": true }],
+    "deprecation/deprecation": "warn"
   },
   "overrides": [
     {
@@ -98,6 +100,12 @@
       "files": ["src/graphql/**/*.ts"],
       "rules": {
         "import/no-unresolved": "off"
+      }
+    },
+    {
+      "files": ["MultisigActionButton.tsx"],
+      "rules": {
+        "deprecation/deprecation": "off"
       }
     }
   ]

@@ -38,8 +38,8 @@ describe("<RestoreLedger />", () => {
         status: "success",
       });
     });
-    expect(closeModalMock).toBeCalledTimes(1);
-    expect(getPkMock).toBeCalledTimes(1);
+    expect(closeModalMock).toHaveBeenCalledTimes(1);
+    expect(getPkMock).toHaveBeenCalledTimes(1);
   });
 
   test("aborted by user", async () => {

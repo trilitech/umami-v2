@@ -52,7 +52,7 @@ describe("csv utils", () => {
         ghostTezzard.contract,
         ghostTezzard.tokenId,
       ];
-      expect(() => parseOperation(sender, mockCSVFA2TransferRow, emptyTokenLookup)).toThrowError(
+      expect(() => parseOperation(sender, mockCSVFA2TransferRow, emptyTokenLookup)).toThrow(
         `Unknown token ${ghostTezzard.contract} ${ghostTezzard.tokenId}`
       );
     });

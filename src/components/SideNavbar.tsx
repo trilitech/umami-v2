@@ -80,7 +80,7 @@ export const SideNavbar = () => {
 const MenuItem: React.FC<
   {
     label: string;
-    icon: JSX.Element;
+    icon: React.ReactElement;
     to: string;
     target?: string;
   } & FlexProps

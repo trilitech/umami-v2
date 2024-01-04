@@ -21,7 +21,7 @@ describe("decodeLambda", () => {
       { prim: "CONS" },
     ];
 
-    expect(() => decode(singleTezNoHead, multisig)).toThrowError(/Invalid literal value/i);
+    expect(() => decode(singleTezNoHead, multisig)).toThrow(/Invalid literal value/i);
   });
 
   test("simple tez", () => {

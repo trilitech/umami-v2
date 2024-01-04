@@ -78,7 +78,7 @@
     "@toruslabs/customauth": "^15.0.5",
     "@types/assert": "^1.5.8",
     "@types/cucumber": "^7.0.0",
-    "@types/jest": "27.5.2",
+    "@types/jest": "29.5.11",
     "@types/node": "18.15.0",
     "@types/papaparse": "^5.3.10",
     "@types/pluralize": "^0.0.32",
@@ -95,7 +95,7 @@
     "@tzkt/sdk-api": "^2.2.1",
     "assert": "^2.1.0",
     "axios": "^1.6.0",
-    "babel-jest": "^27.4.2",
+    "babel-jest": "^29.7.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-plugin-named-exports-order": "^0.0.2",
@@ -119,8 +119,9 @@
     "eslint": "^8.54.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-chakra-ui": "^0.10.1",
+    "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-jest": "^27.6.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "^6.1.2",
@@ -134,10 +135,12 @@
     "html-webpack-plugin": "^5.5.0",
     "https-browserify": "^1.0.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "27.5.1",
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "jest-fail-on-console": "^3.1.2",
-    "jest-resolve": "27.5.1",
-    "jest-watch-typeahead": "^1.0.0",
+    "jest-resolve": "29.7.0",
+    "jest-svg-transformer": "^1.0.0",
+    "jest-watch-typeahead": "^2.2.2",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.4.5",
     "mockdate": "^3.0.5",
@@ -214,13 +217,13 @@
       "<rootDir>/src/setupTests.ts"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
       "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
     "transform": {
       "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^.+\\.svg$": "<rootDir>/config/jest/svgTransform.js",
       "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
@@ -229,11 +232,8 @@
     ],
     "modulePaths": [],
     "moduleNameMapper": {
-      "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-      "axios": "axios/dist/node/axios.cjs",
-      "@ledgerhq/devices/hid-framing": "@ledgerhq/devices/lib/hid-framing",
-      "@tzkt/oazapfts/runtime": "@tzkt/oazapfts/lib/runtime"
+      "nanoid": "nanoid"
     },
     "moduleFileExtensions": [
       "web.js",
@@ -348,5 +348,9 @@
   },
   "dependencies": {
     "electron-updater": "^6.1.4"
+  },
+  "resolutions": {
+    "jsdom": "^23.0.1",
+    "@types/jsdom": "^21.1.6"
   }
 }

@@ -30,7 +30,7 @@ describe("<RestoreSecretKey />", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Continue" }));
     await waitFor(() => {
-      expect(goToStepMock).toBeCalledWith({
+      expect(goToStepMock).toHaveBeenCalledWith({
         type: "nameAccount",
         account: {
           type: "secret_key",

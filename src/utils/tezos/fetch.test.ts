@@ -64,13 +64,13 @@ describe("tezos utils fetch", () => {
       };
       mockedAxios.get.mockResolvedValue(mockResponse);
       const result = await getTezosPriceInUSD();
-      expect(mockedAxios.get).toBeCalledWith(`${coincapUrl}/tezos`);
+      expect(mockedAxios.get).toHaveBeenCalledWith(`${coincapUrl}/tezos`);
       expect(result).toEqual(mockResponse.data.data.priceUsd);
     });
 
     test("getTokenBalances", async () => {
       await getTokenBalances([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network);
-      expect(tokensGetTokenBalances).toBeCalledWith(
+      expect(tokensGetTokenBalances).toHaveBeenCalledWith(
         {
           account: { in: [`${mockImplicitAddress(0).pkh},${mockImplicitAddress(1).pkh}`] },
           balance: { gt: "0" },
@@ -84,7 +84,7 @@ describe("tezos utils fetch", () => {
 
     test("getTezTransfers", async () => {
       await getTezTransfers(mockImplicitAddress(0).pkh, network);
-      expect(operationsGetTransactions).toBeCalledWith(
+      expect(operationsGetTransactions).toHaveBeenCalledWith(
         {
           anyof: { fields: ["sender", "target"], eq: mockImplicitAddress(0).pkh },
           sort: { desc: "level" },
@@ -98,7 +98,7 @@ describe("tezos utils fetch", () => {
 
     test("getRelatedTokenTransfers", async () => {
       await getRelatedTokenTransfers([1, 2, 3], network);
-      expect(tokensGetTokenTransfers).toBeCalledWith(
+      expect(tokensGetTokenTransfers).toHaveBeenCalledWith(
         {
           transactionId: { in: ["1,2,3"] },
         },
@@ -121,7 +121,7 @@ describe("tezos utils fetch", () => {
     test("getAccounts", async () => {
       await getAccounts([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network);
 
-      expect(jest.mocked(accountsGet)).toBeCalledWith(
+      expect(jest.mocked(accountsGet)).toHaveBeenCalledWith(
         {
           address: {
             in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
@@ -139,7 +139,7 @@ describe("tezos utils fetch", () => {
         offset: { cr: 123 },
       });
 
-      expect(jest.mocked(operationsGetDelegations)).toBeCalledWith(
+      expect(jest.mocked(operationsGetDelegations)).toHaveBeenCalledWith(
         {
           offset: { cr: 123 },
           limit: 100,
@@ -159,7 +159,7 @@ describe("tezos utils fetch", () => {
         offset: { cr: 123 },
       });
 
-      expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+      expect(jest.mocked(operationsGetOriginations)).toHaveBeenCalledWith(
         {
           offset: { cr: 123 },
           limit: 100,
@@ -179,7 +179,7 @@ describe("tezos utils fetch", () => {
         offset: { cr: 123 },
       });
 
-      expect(jest.mocked(operationsGetTransactions)).toBeCalledWith(
+      expect(jest.mocked(operationsGetTransactions)).toHaveBeenCalledWith(
         {
           offset: { cr: 123 },
           limit: 100,
@@ -201,7 +201,7 @@ describe("tezos utils fetch", () => {
         offset: { cr: 123 },
       });
 
-      expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+      expect(jest.mocked(tokensGetTokenTransfers)).toHaveBeenCalledWith(
         {
           offset: { cr: 123 },
           limit: 100,
@@ -227,23 +227,23 @@ describe("tezos utils fetch", () => {
         describe("lastId", () => {
           it("uses the provided value", async () => {
             await getCombinedOperations([mockImplicitAddress(0).pkh], network, { lastId: 1234 });
-            expect(jest.mocked(operationsGetTransactions)).toBeCalledWith(
+            expect(jest.mocked(operationsGetTransactions)).toHaveBeenCalledWith(
               expect.objectContaining({ offset: { cr: 1234 } }),
               { baseUrl: network.tzktApiUrl }
             );
-            expect(jest.mocked(operationsGetDelegations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetDelegations)).toHaveBeenCalledWith(
               expect.objectContaining({ offset: { cr: 1234 } }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetOriginations)).toHaveBeenCalledWith(
               expect.objectContaining({ offset: { cr: 1234 } }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+            expect(jest.mocked(tokensGetTokenTransfers)).toHaveBeenCalledWith(
               expect.objectContaining({ offset: { cr: 1234 } }),
               {
                 baseUrl: network.tzktApiUrl,
@@ -253,23 +253,23 @@ describe("tezos utils fetch", () => {
 
           it("doesn't define the offset if none is provided", async () => {
             await getCombinedOperations([mockImplicitAddress(0).pkh], network);
-            expect(jest.mocked(operationsGetTransactions)).toBeCalledWith(
+            expect(jest.mocked(operationsGetTransactions)).toHaveBeenCalledWith(
               expect.objectContaining({ offset: undefined }),
               { baseUrl: network.tzktApiUrl }
             );
-            expect(jest.mocked(operationsGetDelegations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetDelegations)).toHaveBeenCalledWith(
               expect.objectContaining({ offset: undefined }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetOriginations)).toHaveBeenCalledWith(
               expect.objectContaining({ offset: undefined }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+            expect(jest.mocked(tokensGetTokenTransfers)).toHaveBeenCalledWith(
               expect.objectContaining({ offset: undefined }),
               {
                 baseUrl: network.tzktApiUrl,
@@ -281,24 +281,24 @@ describe("tezos utils fetch", () => {
         describe("limit", () => {
           it("uses the provided value", async () => {
             await getCombinedOperations([mockImplicitAddress(0).pkh], network, { limit: 123 });
-            expect(jest.mocked(operationsGetTransactions)).toBeCalledWith(
+            expect(jest.mocked(operationsGetTransactions)).toHaveBeenCalledWith(
               expect.objectContaining({ limit: 123 }),
               { baseUrl: network.tzktApiUrl }
             );
-            expect(jest.mocked(operationsGetDelegations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetDelegations)).toHaveBeenCalledWith(
               expect.objectContaining({ limit: 123 }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetOriginations)).toHaveBeenCalledWith(
               expect.objectContaining({ limit: 123 }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
 
-            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+            expect(jest.mocked(tokensGetTokenTransfers)).toHaveBeenCalledWith(
               expect.objectContaining({ limit: 123 }),
               {
                 baseUrl: network.tzktApiUrl,
@@ -308,23 +308,23 @@ describe("tezos utils fetch", () => {
 
           it("defines a default limit if none is provided", async () => {
             await getCombinedOperations([mockImplicitAddress(0).pkh], network);
-            expect(jest.mocked(operationsGetTransactions)).toBeCalledWith(
+            expect(jest.mocked(operationsGetTransactions)).toHaveBeenCalledWith(
               expect.objectContaining({ limit: 100 }),
               { baseUrl: network.tzktApiUrl }
             );
-            expect(jest.mocked(operationsGetDelegations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetDelegations)).toHaveBeenCalledWith(
               expect.objectContaining({ limit: 100 }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetOriginations)).toHaveBeenCalledWith(
               expect.objectContaining({ limit: 100 }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+            expect(jest.mocked(tokensGetTokenTransfers)).toHaveBeenCalledWith(
               expect.objectContaining({ limit: 100 }),
               {
                 baseUrl: network.tzktApiUrl,
@@ -336,23 +336,23 @@ describe("tezos utils fetch", () => {
         describe("sort", () => {
           it("uses the provided value", async () => {
             await getCombinedOperations([mockImplicitAddress(0).pkh], network, { sort: "asc" });
-            expect(jest.mocked(operationsGetTransactions)).toBeCalledWith(
+            expect(jest.mocked(operationsGetTransactions)).toHaveBeenCalledWith(
               expect.objectContaining({ sort: { asc: "id" } }),
               { baseUrl: network.tzktApiUrl }
             );
-            expect(jest.mocked(operationsGetDelegations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetDelegations)).toHaveBeenCalledWith(
               expect.objectContaining({ sort: { asc: "id" } }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetOriginations)).toHaveBeenCalledWith(
               expect.objectContaining({ sort: { asc: "id" } }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+            expect(jest.mocked(tokensGetTokenTransfers)).toHaveBeenCalledWith(
               expect.objectContaining({ sort: { asc: "id" } }),
               {
                 baseUrl: network.tzktApiUrl,
@@ -362,23 +362,23 @@ describe("tezos utils fetch", () => {
 
           it("defines a default sort if none is provided", async () => {
             await getCombinedOperations([mockImplicitAddress(0).pkh], network);
-            expect(jest.mocked(operationsGetTransactions)).toBeCalledWith(
+            expect(jest.mocked(operationsGetTransactions)).toHaveBeenCalledWith(
               expect.objectContaining({ sort: { desc: "id" } }),
               { baseUrl: network.tzktApiUrl }
             );
-            expect(jest.mocked(operationsGetDelegations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetDelegations)).toHaveBeenCalledWith(
               expect.objectContaining({ sort: { desc: "id" } }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(operationsGetOriginations)).toBeCalledWith(
+            expect(jest.mocked(operationsGetOriginations)).toHaveBeenCalledWith(
               expect.objectContaining({ sort: { desc: "id" } }),
               {
                 baseUrl: network.tzktApiUrl,
               }
             );
-            expect(jest.mocked(tokensGetTokenTransfers)).toBeCalledWith(
+            expect(jest.mocked(tokensGetTokenTransfers)).toHaveBeenCalledWith(
               expect.objectContaining({ sort: { desc: "id" } }),
               {
                 baseUrl: network.tzktApiUrl,

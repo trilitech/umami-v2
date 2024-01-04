@@ -1,5 +1,5 @@
 import { NetworkType, getSenderId } from "@airgap/beacon-wallet";
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 
 import * as beaconHelper from "./beacon";
 import { BeaconPeers } from "./BeaconPeers";

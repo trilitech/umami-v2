@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 
 import { AccountsList } from "./AccountsList";
 import {

@@ -21,11 +21,11 @@ describe("<Eula />", () => {
       const confirmBtn = screen.getByRole("button", { name: /I understand/i });
 
       fireEvent.click(confirmBtn);
-      expect(goToStepMock).toBeCalledWith({
+      expect(goToStepMock).toHaveBeenCalledWith({
         type: StepType.showSeedphrase,
         account: { type: "mnemonic", mnemonic: mnemonic1 },
       });
-      expect(goToStepMock).toBeCalledTimes(1);
+      expect(goToStepMock).toHaveBeenCalledTimes(1);
     });
 
     test("press 'I already have a Seed Phrase'", async () => {
@@ -34,8 +34,8 @@ describe("<Eula />", () => {
         name: /I already have a Seed Phrase/i,
       });
       fireEvent.click(skipBtn);
-      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreMnemonic });
-      expect(goToStepMock).toBeCalledTimes(1);
+      expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreMnemonic });
+      expect(goToStepMock).toHaveBeenCalledTimes(1);
     });
   });
 });
