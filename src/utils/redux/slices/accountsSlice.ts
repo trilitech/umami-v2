@@ -12,9 +12,8 @@ import {
 import { RawPkh } from "../../../types/Address";
 import { EncryptedData } from "../../crypto/types";
 import { changeMnemonicPassword } from "../thunks/changeMnemonicPassword";
-import { deriveAccount } from "../thunks/restoreMnemonicAccounts";
 
-export type State = {
+type State = {
   items: ImplicitAccount[];
   //TODO: Rename to encryptedMnemonics
   seedPhrases: Record<string, EncryptedData | undefined>;
@@ -27,14 +26,16 @@ const initialState: State = {
   secretKeys: {},
 };
 
+/**
+ * Stores accounts info.
+ *
+ * Actions related to adding or renaming accounts do not check for uniqueness of the account name.
+ * In prod code use them with {@link utils/mnemonic.useGetNextAvailableAccountLabels} hook to generate unique account names.
+ */
 export const accountsSlice = createSlice({
   name: "accounts",
   initialState,
   extraReducers: builder => {
-    builder.addCase(deriveAccount.fulfilled, (state, action) => {
-      state.items = concatUnique(state.items, [action.payload]);
-    });
-
     builder.addCase(changeMnemonicPassword.fulfilled, (state, action) => {
       const { newEncryptedMnemonics } = action.payload;
       // Only update the mnemonic in the store if the password change was successful. The account remains unchanged.
@@ -91,14 +92,12 @@ export const accountsSlice = createSlice({
         accountToRename.label = newName;
       }
     },
-    // To add mnemonic accounts, use `useRestoreRevealedMnemonicAccounts` hook or `deriveAccount` thunk.
-    addAccount: (
-      state,
-      { payload }: { payload: SocialAccount | LedgerAccount | SecretKeyAccount }
-    ) => {
+    // For mnemonics used as a part of {@link utils/hooks/setAccountDataHooks.useDeriveMnemonicAccount} hook (for setting unique account name).
+    addAccount: (state, { payload }: { payload: ImplicitAccount }) => {
       state.items = concatUnique(state.items, [payload]);
     },
-    // Used as a part  of `useRestoreRevealedMnemonicAccounts` hook (for setting unique account names).
+    // Creates a mnemonic group.
+    // Used as a part of {@link utils/hooks/setAccountDataHooks.useRestoreRevealedMnemonicAccounts} hook (for setting unique account names inside the group).
     addMnemonicAccounts: (
       state,
       {

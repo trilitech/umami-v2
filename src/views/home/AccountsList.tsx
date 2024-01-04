@@ -18,15 +18,19 @@ import { AccountTile } from "../../components/AccountTile/AccountTile";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { NestedScroll } from "../../components/NestedScroll";
+import { DEFAULT_ACCOUNT_LABEL } from "../../components/Onboarding/nameAccount/NameAccount";
 import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
 import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { useAllAccounts, useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
-import { useRemoveMnemonic, useRemoveNonMnemonic } from "../../utils/hooks/setAccountDataHooks";
+import {
+  useDeriveMnemonicAccount,
+  useRemoveMnemonic,
+  useRemoveNonMnemonic,
+} from "../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
-import { deriveAccount } from "../../utils/redux/thunks/restoreMnemonicAccounts";
+import { useAppSelector } from "../../utils/redux/hooks";
 
 export const AccountListHeader = () => {
   const { onOpen, modalElement } = useOnboardingModal();
@@ -97,7 +101,7 @@ const AccountGroup: React.FC<{
     if (!isMnemonic) {
       throw new Error("Can't derive a non mnemonic account!");
     }
-    openWith(<DeriveAccount fingerprint={first.seedFingerPrint} onDone={onClose} />);
+    openWith(<DeriveMnemonicAccount fingerprint={first.seedFingerPrint} onDone={onClose} />);
   };
 
   return (
@@ -200,21 +204,19 @@ export const AccountsList: React.FC<{
   );
 };
 
-const DeriveAccount = (props: { onDone: () => void; fingerprint: string }) => {
-  const dispatch = useAppDispatch();
+const DeriveMnemonicAccount = (props: { onDone: () => void; fingerprint: string }) => {
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const toast = useToast();
+  const deriveMnemonicAccount = useDeriveMnemonicAccount();
 
   const handleSubmit = ({ name, password }: { name: string; password: string }) =>
     handleAsyncAction(
       async () => {
-        await dispatch(
-          deriveAccount({
-            fingerPrint: props.fingerprint,
-            password,
-            label: name,
-          })
-        ).unwrap();
+        await deriveMnemonicAccount({
+          fingerPrint: props.fingerprint,
+          password,
+          label: name.trim() || DEFAULT_ACCOUNT_LABEL,
+        });
         props.onDone();
 
         toast({

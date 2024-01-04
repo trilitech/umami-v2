@@ -11,10 +11,12 @@ import {
   mockPk,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { fakeExtraArguments } from "../../mocks/fakeExtraArgument";
 import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
+import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
+import * as cryptoFunctionsToMock from "../../utils/crypto/AES";
 import { formatPkh } from "../../utils/format";
+import * as mnemonicFunctionsToMock from "../../utils/mnemonic";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
 import { store } from "../../utils/redux/store";
@@ -170,53 +172,51 @@ describe("<AccountsList />", () => {
   });
 
   it("allows to derive a new account for a mnemonic", async () => {
+    const decryptMock = jest.spyOn(cryptoFunctionsToMock, "decrypt");
+    decryptMock.mockResolvedValue("mockSeedPhrase");
+    const derivePublicKeyPairMock = jest.spyOn(mnemonicFunctionsToMock, "derivePublicKeyPair");
+    const account = mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1);
+    derivePublicKeyPairMock.mockResolvedValue({
+      pkh: account.address.pkh,
+      pk: account.pk,
+    });
     const LABEL = "my label";
     await restore();
     render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
 
-    expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
+    // Open actions dialog for Mnemonic Group 1
     const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
-
     const { getByTestId, getByRole } = within(seedPhrase1);
     const cta = getByTestId(/^popover-cta$/i);
     fireEvent.click(cta);
-
+    // Click "create" button
     expect(await screen.findByRole("dialog")).toHaveTextContent("Create");
-
     const createBtn = getByRole("button", { name: /^create$/i });
-
+    // Input account label
     fireEvent.click(createBtn);
-    screen.getByText(/name your account/i);
-
     const nameInput = screen.getByLabelText(/account name/i);
-
     fireEvent.change(nameInput, { target: { value: LABEL } });
     fireEvent.click(screen.getByRole("button", { name: /continue/i }));
-
+    // Input password
     await waitFor(() => {
       expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     });
     const passwordInput = screen.getByLabelText(/password/i);
-
     fireEvent.change(passwordInput, { target: { value: "myPassword" } });
-
+    // Submit
     await waitFor(() => {
       const submitBtn = screen.getByRole("button", { name: /submit/i });
       expect(submitBtn).toBeEnabled();
     });
-
-    const account = mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1);
-    fakeExtraArguments.derivePublicKeyPair.mockResolvedValue({
-      pkh: account.address.pkh,
-      pk: account.pk,
-    });
-
     fireEvent.click(screen.getByRole("button", { name: /submit/i }));
-
     await waitFor(() => {
       expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
     });
 
+    expect(derivePublicKeyPairMock).toHaveBeenCalledWith(
+      "mockSeedPhrase",
+      getDefaultDerivationPath(2)
+    );
     {
       const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
 
@@ -236,7 +236,7 @@ const restore = async () => {
         mockImplicitAccount(0, undefined, MOCK_FINGETPRINT1, "Mnemonic 1.1"),
         mockImplicitAccount(1, undefined, MOCK_FINGETPRINT1, "Mnemonic 1.2"),
       ] as MnemonicAccount[],
-      encryptedMnemonic: {} as any,
+      encryptedMnemonic: { mock: "encrypted 1" } as any,
     })
   );
   store.dispatch(
@@ -245,7 +245,7 @@ const restore = async () => {
       accounts: [
         mockImplicitAccount(4, undefined, MOCK_FINGETPRINT2, "Mnemonic 2"),
       ] as MnemonicAccount[],
-      encryptedMnemonic: {} as any,
+      encryptedMnemonic: { mock: "encrypted 2" } as any,
     })
   );
 

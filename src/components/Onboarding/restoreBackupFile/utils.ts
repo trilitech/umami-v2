@@ -1,6 +1,7 @@
 import { decrypt } from "../../../utils/crypto/AES";
 import { EncryptedData } from "../../../utils/crypto/types";
 import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks";
+import { DEFAULT_ACCOUNT_LABEL } from "../nameAccount/NameAccount";
 
 export const useRestoreV1BackupFile = () => {
   const restoreFromMnemonic = useRestoreFromMnemonic();
@@ -21,7 +22,7 @@ export const useRestoreV1BackupFile = () => {
         await restoreFromMnemonic({
           mnemonic,
           password,
-          label: "Account",
+          label: DEFAULT_ACCOUNT_LABEL,
           derivationPath: derivationPaths[i],
         });
       }

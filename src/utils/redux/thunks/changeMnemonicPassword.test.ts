@@ -1,103 +1,86 @@
-import createMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
-
 import { changeMnemonicPassword } from "./changeMnemonicPassword";
-import { makeDefaultDevSigner } from "../../../mocks/devSignerKeys";
+import { mockImplicitAccount } from "../../../mocks/factories";
 import { mnemonic1, mnemonic2 } from "../../../mocks/mockMnemonic";
 import { MnemonicAccount } from "../../../types/Account";
-import {
-  defaultDerivationPathPattern,
-  makeDerivationPath,
-} from "../../account/derivationPathUtils";
-import { makeMnemonicAccount } from "../../account/makeMnemonicAccount";
 import { decrypt, encrypt } from "../../crypto/AES";
 import { EncryptedData } from "../../crypto/types";
 import { getFingerPrint } from "../../tezos";
-import { extraArgument } from "../extraArgument";
-import { State } from "../slices/accountsSlice";
+import { accountsSlice } from "../slices/accountsSlice";
+import { store } from "../store";
 
 jest.unmock("../../../utils/tezos");
-jest.unmock("../../../utils/redux/extraArgument");
 
 const currentPassword = "currentPassword";
 const newPassword = "newPassword";
 
-const setupStore = async () => {
-  const mockStore = createMockStore<
-    { accounts: State },
-    { changeMnemonicPassword: ReturnType<typeof changeMnemonicPassword> }
-  >([thunk.withExtraArgument(extraArgument)]);
-
-  const mockAccounts = await Promise.all(
-    [makeDefaultDevSigner(0), makeDefaultDevSigner(1), makeDefaultDevSigner(2)].map(
-      async (signer, i) => {
-        const pk = await signer.publicKey();
-        const pkh = await signer.publicKeyHash();
-        const fingerPrint = await getFingerPrint(i % 2 === 0 ? mnemonic1 : mnemonic2);
-        return makeMnemonicAccount(
-          pk,
-          pkh,
-          makeDerivationPath(defaultDerivationPathPattern, i),
-          defaultDerivationPathPattern,
-          fingerPrint,
-          `Account ${i}`
-        );
-      }
-    )
+beforeEach(async () => {
+  const fingerPrint1 = await getFingerPrint(mnemonic1);
+  store.dispatch(
+    accountsSlice.actions.addMnemonicAccounts({
+      seedFingerprint: fingerPrint1,
+      accounts: [
+        mockImplicitAccount(0, undefined, fingerPrint1, "Mnemonic 1.1"),
+        mockImplicitAccount(1, undefined, fingerPrint1, "Mnemonic 1.2"),
+      ] as MnemonicAccount[],
+      encryptedMnemonic: await encrypt(mnemonic1, currentPassword),
+    })
   );
 
-  return mockStore({
-    accounts: {
-      items: mockAccounts,
-      seedPhrases: {
-        [mockAccounts[0].seedFingerPrint]: await encrypt(mnemonic1, currentPassword),
-        [mockAccounts[1].seedFingerPrint]: await encrypt(mnemonic2, currentPassword),
-      },
-      secretKeys: {},
-    },
-  });
-};
+  const fingerPrint2 = await getFingerPrint(mnemonic2);
+  store.dispatch(
+    accountsSlice.actions.addMnemonicAccounts({
+      seedFingerprint: fingerPrint2,
+      accounts: [
+        mockImplicitAccount(4, undefined, fingerPrint2, "Mnemonic 2"),
+      ] as MnemonicAccount[],
+      encryptedMnemonic: await encrypt(mnemonic2, currentPassword),
+    })
+  );
+});
 
 describe("changeMnemonicPassword thunk", () => {
   it("should update password", async () => {
-    const store = await setupStore();
+    const fingerPrint1 = await getFingerPrint(mnemonic1);
+    const fingerPrint2 = await getFingerPrint(mnemonic2);
 
-    const { items } = store.getState().accounts;
-
-    const action: {
-      type: string;
-      payload: { newEncryptedMnemonics: Record<string, EncryptedData | undefined> };
-    } = await store.dispatch(changeMnemonicPassword({ currentPassword, newPassword }) as any);
+    const action = await store.dispatch<any>(
+      changeMnemonicPassword({ currentPassword, newPassword })
+    );
     expect(action.type).toEqual("accounts/changeMnemonicPassword/fulfilled");
 
     const { newEncryptedMnemonics } = action.payload;
-    for (let i = 0; i < items.length; i++) {
-      const account = items[i] as MnemonicAccount;
-      const encryptedMnemonic = newEncryptedMnemonics[account.seedFingerPrint] as EncryptedData;
-      const decrypted = await decrypt(encryptedMnemonic, newPassword);
-      expect(decrypted).toEqual(i % 2 === 0 ? mnemonic1 : mnemonic2);
-    }
+
+    // For mnemonic1
+    const encryptedMnemonic1 = newEncryptedMnemonics[fingerPrint1] as EncryptedData;
+    const decryptedMnemonic1 = await decrypt(encryptedMnemonic1, newPassword);
+    expect(decryptedMnemonic1).toEqual(mnemonic1);
+    // For mnemonic2
+    const encryptedMnemonic2 = newEncryptedMnemonics[fingerPrint2] as EncryptedData;
+    const decryptedMnemonic2 = await decrypt(encryptedMnemonic2, newPassword);
+    expect(decryptedMnemonic2).toEqual(mnemonic2);
   });
 
   it("should throw with old password", async () => {
-    const store = await setupStore();
-
-    const { items } = store.getState().accounts;
+    const fingerPrint1 = await getFingerPrint(mnemonic1);
+    const fingerPrint2 = await getFingerPrint(mnemonic2);
 
     const action: {
       type: string;
       payload: { newEncryptedMnemonics: Record<string, EncryptedData | undefined> };
-    } = await store.dispatch(changeMnemonicPassword({ currentPassword, newPassword }) as any);
+    } = await store.dispatch<any>(changeMnemonicPassword({ currentPassword, newPassword }));
 
     expect(action.type).toEqual("accounts/changeMnemonicPassword/fulfilled");
     const { newEncryptedMnemonics } = action.payload;
 
-    for (let i = 0; i < items.length; i++) {
-      const account = items[i] as MnemonicAccount;
-      const encryptedMnemonic = newEncryptedMnemonics[account.seedFingerPrint] as EncryptedData;
-      await expect(decrypt(encryptedMnemonic, currentPassword)).rejects.toThrow(
-        "Error decrypting data"
-      );
-    }
+    // For mnemonic1
+    const encryptedMnemonic1 = newEncryptedMnemonics[fingerPrint1] as EncryptedData;
+    await expect(decrypt(encryptedMnemonic1, currentPassword)).rejects.toThrow(
+      "Error decrypting data"
+    );
+    // For mnemonic2
+    const encryptedMnemonic2 = newEncryptedMnemonics[fingerPrint2] as EncryptedData;
+    await expect(decrypt(encryptedMnemonic2, currentPassword)).rejects.toThrow(
+      "Error decrypting data"
+    );
   });
 });
