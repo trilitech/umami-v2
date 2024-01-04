@@ -2,7 +2,7 @@ import { NameAccountDisplay } from "./NameAccountDisplay";
 import { useGetNextAvailableAccountLabels } from "../../../utils/hooks/getAccountDataHooks";
 import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
 
-const DEFAULT_ACCOUNT_LABEL = "Account";
+export const DEFAULT_ACCOUNT_LABEL = "Account";
 
 /**
  * This component is used to add a label to a newly created account.
