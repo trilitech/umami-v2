@@ -24,13 +24,6 @@ export const useGetImplicitAccount = () => {
   return (pkh: RawPkh) => getAccount(pkh) as ImplicitAccount;
 };
 
-// For cleaner code and ease of use this hook returns a MultisigAccount
-// Please make sure not to pass in non existing Pkh
-export const useGetMultisigAccount = () => {
-  const accounts = useMultisigAccounts();
-  return (pkh: RawPkh) => accounts.find(account => account.address.pkh === pkh) as MultisigAccount;
-};
-
 export const useAllAccounts = (): Account[] => {
   const implicit = useImplicitAccounts();
   const multisig = useMultisigAccounts();
@@ -97,7 +90,7 @@ export const useIsOwnedAddress = (address: RawPkh) => {
   return ownedAccounts.map(acc => acc.address.pkh).includes(address);
 };
 
-export const useGetMultisigSigners = () => {
+const useGetMultisigSigners = () => {
   const implicitAccounts = useImplicitAccounts();
   return (multisigAccount: MultisigAccount) => {
     const signers = implicitAccounts.filter(implicitAccount =>

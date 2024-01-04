@@ -1,6 +1,6 @@
 import { RawPkh } from "../../types/Address";
 
-export type AddressKindType =
+type AddressKindType =
   | "mnemonic"
   | "secret_key"
   | "social"

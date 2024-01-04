@@ -1,6 +1,6 @@
 import { ContractAddress, ImplicitAddress } from "../../types/Address";
 
-export type BigmapId = number;
+type BigmapId = number;
 
 export type MultisigOperation = {
   id: string;

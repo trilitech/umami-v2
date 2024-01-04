@@ -7,7 +7,7 @@ import { RawPkh } from "../types/Address";
 import { DefaultNetworks } from "../types/Network";
 import { getAccounts } from "../utils/tezos";
 
-export const TEST_NETWORK = {
+const TEST_NETWORK = {
   name: "Test net",
   rpcUrl: "http://0.0.0.0:20001",
   tzktApiUrl: "http://0.0.0.0:5000",
@@ -18,16 +18,9 @@ export const TEST_NETWORKS_STATE = {
   available: [...DefaultNetworks, TEST_NETWORK],
   current: TEST_NETWORK,
 };
-export const MASTER_PASSWORD = "12345678";
+const MASTER_PASSWORD = "12345678";
 
 const DOCKER_COMPOSE_FILE = process.env.CI ? "docker-compose.ci.yaml" : "docker-compose.yaml";
-
-// it's created by default on flextesa
-export const AliceAccount = {
-  pk: "edpkvGfYw3LyB1UcCahKQk4rF2tvbMUk8GFiTuMjL75uGXrpvKXhjn",
-  pkh: "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb",
-  secretKey: "edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq",
-};
 
 export const cleanupState = () => {
   test.beforeEach(async ({ page }: { page: Page }) => {
@@ -94,7 +87,7 @@ export const onboardWithExistingMnemonic = async ({
 const runDockerCommand = (command: string) =>
   execSync(`docker compose -f ${DOCKER_COMPOSE_FILE} ${command}`, { stdio: "ignore" });
 
-export const startNode = () => runDockerCommand("up --wait");
+const startNode = () => runDockerCommand("up --wait");
 
 export const killNode = () => {
   runDockerCommand("kill");

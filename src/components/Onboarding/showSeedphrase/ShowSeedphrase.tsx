@@ -3,7 +3,8 @@ import { Button, Flex, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/reac
 import { KeyIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { ShowSeedphraseStep, Step, StepType } from "../useOnboardingModal";
+import { Step, StepType } from "../useOnboardingModal";
+import type { ShowSeedphraseStep } from "../useOnboardingModal";
 
 export const ShowSeedphrase = ({
   goToStep,

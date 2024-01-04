@@ -7,7 +7,7 @@ import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import { TokenNameWithIcon } from "../../../views/tokens/TokenNameWithIcon";
 import { NoItems } from "../../NoItems";
 
-export const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {
+const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => {
   const prettyAmount = tokenPrettyAmount(token.balance, token, { showSymbol: false });
   return (
     <Flex

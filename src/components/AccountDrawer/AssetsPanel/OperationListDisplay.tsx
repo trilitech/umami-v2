@@ -7,7 +7,7 @@ import { TzktCombinedOperation } from "../../../utils/tezos";
 import { NoOperations } from "../../NoItems";
 import { OperationTile } from "../../OperationTile";
 
-export const MAX_OPERATIONS_SIZE = 20;
+const MAX_OPERATIONS_SIZE = 20;
 
 /**
  * Operations list to be displayed in the account drawer

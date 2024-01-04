@@ -17,7 +17,7 @@ import { makeToolkit } from "../../utils/tezos";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { PasswordInput } from "../PasswordInput";
 
-export const SignWithGoogleButton: React.FC<
+const SignWithGoogleButton: React.FC<
   PropsWithChildren<{
     isDisabled?: boolean;
     onSuccessfulAuth: GoogleAuthProps["onSuccessfulAuth"];
