@@ -6,7 +6,7 @@ type Account = {
   label: string;
   address: RawPkh;
 };
-export type AccountGroup = {
+type AccountGroup = {
   label: string;
   accounts: Account[];
 };

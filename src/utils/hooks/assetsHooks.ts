@@ -15,7 +15,7 @@ import {
 import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
 
-export const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
+const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
 
 // Tenderbake guarantees block finality after 2 confirmations
 export const useIsBlockFinalised = (level: number) => {
@@ -31,7 +31,7 @@ export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
   return fromPairs(addresses.map(address => [address, getAccountNFTs(address)]));
 };
 
-export const useGetAccountAssets = () => {
+const useGetAccountAssets = () => {
   const getToken = useGetToken();
   const ownerToTokenBalances = useAppSelector(s => s.assets.balances.tokens);
   return (pkh: string): TokenBalanceWithToken[] => {
@@ -45,13 +45,13 @@ export const useGetAccountAssets = () => {
   };
 };
 
-export const useGetAccountFA2Tokens = () => {
+const useGetAccountFA2Tokens = () => {
   const getAssets = useGetAccountAssets();
 
   return (pkh: string) => keepFA2s(getAssets(pkh));
 };
 
-export const useGetAccountFA1Tokens = () => {
+const useGetAccountFA1Tokens = () => {
   const getAssets = useGetAccountAssets();
 
   return (pkh: string) => keepFA1s(getAssets(pkh));
@@ -75,9 +75,9 @@ export const useGetTokenTransfer = () => {
   return (transactionId: number) => tokenTransfers[transactionId];
 };
 
-export const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);
+const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);
 
-export const useTezToDollar = () => {
+const useTezToDollar = () => {
   const rate = useConversionRate();
 
   // tezosBalance is in tez

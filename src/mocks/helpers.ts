@@ -6,11 +6,6 @@ import { accountsSlice } from "../utils/redux/slices/accountsSlice";
 import { store } from "../utils/redux/store";
 import { estimate } from "../utils/tezos";
 
-export const selectSender = (accountLabel: string) => {
-  const input = screen.getByLabelText("From");
-  fireEvent.change(input, { target: { value: accountLabel } });
-};
-
 export const fillPassword = (value: string) => {
   const passwordInput = screen.getByTestId("password");
   fireEvent.change(passwordInput, { target: { value } });

@@ -18,7 +18,7 @@ import { NFTBalance } from "../../../types/TokenBalance";
 import { getIPFSurl, sortedByLastUpdate } from "../../../utils/token/utils";
 import { NoNFTs } from "../../NoItems";
 
-export const MAX_NFTS_SIZE = 18;
+const MAX_NFTS_SIZE = 18;
 /**
  * Grid with NFTs to be displayed in the account drawer
  * Can open an NFT drawer on click

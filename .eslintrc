@@ -87,7 +87,8 @@
       }
     ],
     "@stylistic/quotes": ["warn", "double", { "avoidEscape": true }],
-    "deprecation/deprecation": "warn"
+    "deprecation/deprecation": "warn",
+    "import/no-unused-modules": ["warn", { "unusedExports": true }]
   },
   "overrides": [
     {
@@ -99,7 +100,14 @@
     {
       "files": ["src/graphql/**/*.ts"],
       "rules": {
-        "import/no-unresolved": "off"
+        "import/no-unresolved": "off",
+        "import/no-unused-modules": "off"
+      }
+    },
+    {
+      "files": ["react-app-env.d.ts"],
+      "rules": {
+        "import/no-unused-modules": "off"
       }
     },
     {

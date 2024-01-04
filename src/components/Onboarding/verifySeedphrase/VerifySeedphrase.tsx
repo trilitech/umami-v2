@@ -6,7 +6,8 @@ import { DoubleCheckmarkIcon } from "../../../assets/icons";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { Step, StepType, VerifySeedphraseStep } from "../useOnboardingModal";
+import { Step, StepType } from "../useOnboardingModal";
+import type { VerifySeedphraseStep } from "../useOnboardingModal";
 
 export const VerifySeedphrase = ({
   goToStep,

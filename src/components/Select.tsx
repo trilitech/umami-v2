@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ChevronDownIcon } from "../assets/icons";
 import colors from "../style/colors";
 
-export type Option = { label: string; value: string };
+type Option = { label: string; value: string };
 export const Select: React.FC<{
   selected: Option;
   options: Option[];

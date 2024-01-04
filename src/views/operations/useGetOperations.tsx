@@ -123,7 +123,7 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
 // to get all of those we need to fetch transactions + their corresponding token transfers (by transaction id)
 // and merge it with all token transfers related to our accounts (by destination AND source)
 // TODO: Add tests
-export const fetchOperationsAndUpdateTokensInfo = async (
+const fetchOperationsAndUpdateTokensInfo = async (
   dispatch: AppDispatch,
   network: Network,
   addresses: RawPkh[],

@@ -28,17 +28,9 @@ import {
   RawTokenBalance,
   fromRaw,
 } from "../types/TokenBalance";
-import { TokenTransfer, TezTransfer as TzktTezTransfer } from "../types/Transfer";
+import { TokenTransfer } from "../types/Transfer";
 import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
 import { Multisig, MultisigOperation } from "../utils/multisig/types";
-
-// TODO: separate TZKT factories from internal ones
-export const mockTezTransaction = (id: number) => {
-  return {
-    sender: { address: `mockSender${id}` },
-    target: { address: `mockTarget${id}` },
-  } as TzktTezTransfer;
-};
 
 export const mockDelegation = (
   id: number,
@@ -335,7 +327,7 @@ export const mockNFTRaw = (
   return tokenBalance;
 };
 
-export const mockDisplayURI = (index: number) =>
+const mockDisplayURI = (index: number) =>
   `ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG${index}`;
 
 export const mockNFT = (index: number, balance = "1"): NFTBalance => {

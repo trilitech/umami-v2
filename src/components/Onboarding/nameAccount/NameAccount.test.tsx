@@ -16,7 +16,8 @@ import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
 import { checkAccountsAndUpsertContact } from "../../../utils/redux/thunks/checkAccountsAndUpsertContact";
 import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
-import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
+import { Step, StepType } from "../useOnboardingModal";
+import type { NameAccountStep } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn((step: Step) => {});
 

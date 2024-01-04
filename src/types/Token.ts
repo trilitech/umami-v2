@@ -53,18 +53,18 @@ export type RawTokenInfo = tzktApi.TokenInfo & {
   tokenId: string;
 };
 
-export const FA12TokenSchema = z.object({
+const FA12TokenSchema = z.object({
   standard: z.string().regex(/^fa1\.2$/i),
   contract: AddressSchema,
 });
 
-export const FA2TokenSchema = z.object({
+const FA2TokenSchema = z.object({
   standard: z.string().regex(/^fa2$/i),
   tokenId: z.string(),
   contract: AddressSchema,
 });
 
-export const NFTSchema = z.object({
+const NFTSchema = z.object({
   id: z.number(),
   standard: z.string().regex(/^fa2$/i),
   tokenId: z.string(),
@@ -168,7 +168,7 @@ export const tokenNameSafe = (token: Token): string => {
 
 export const tokenName = (token: Token): string | undefined => token.metadata?.name;
 
-export const defaultTokenSymbol = (token: Token): string => {
+const defaultTokenSymbol = (token: Token): string => {
   switch (token.type) {
     case "fa1.2":
       return DEFAULT_FA1_SYMBOL;
@@ -261,10 +261,10 @@ export const tokenUri = ({ contract, tokenId }: Token, network: Network) => {
   return `${network.tzktExplorerUrl}/${contract}/tokens/${tokenId}`;
 };
 
-export const DEFAULT_FA1_NAME = "FA1.2 token";
-export const DEFAULT_FA2_NAME = "FA2 token";
-export const DEFAULT_NFT_NAME = "NFT";
-export const DEFAULT_FA1_SYMBOL = "FA1.2";
-export const DEFAULT_FA2_SYMBOL = "FA2";
-export const DEFAULT_NFT_SYMBOL = "NFT";
-export const DEFAULT_TOKEN_DECIMALS = "0";
+const DEFAULT_FA1_NAME = "FA1.2 token";
+const DEFAULT_FA2_NAME = "FA2 token";
+const DEFAULT_NFT_NAME = "NFT";
+const DEFAULT_FA1_SYMBOL = "FA1.2";
+const DEFAULT_FA2_SYMBOL = "FA2";
+const DEFAULT_NFT_SYMBOL = "NFT";
+const DEFAULT_TOKEN_DECIMALS = "0";
