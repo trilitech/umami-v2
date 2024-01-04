@@ -27,6 +27,9 @@ jobs:
       - name: Install packages
         run: yarn install --immutable
 
+      - name: Run typecheck
+        run: yarn typecheck
+
       - name: Check format
         run: yarn format:ci
 
