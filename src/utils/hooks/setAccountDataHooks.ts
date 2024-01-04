@@ -82,7 +82,7 @@ export const useRestoreFromMnemonic = () => {
  *
  * New account is added to the {@link accountsSlice}.
  *
- * @param fingerPrint - hash of the mnemonic. Generated with {@link getFingerPrint}. We use it to group together accounts derived from the same mnemonic
+ * @param fingerPrint - Hash of the mnemonic. Generated with {@link getFingerPrint}. We use it to group together accounts derived from the same mnemonic
  * @param password - User's password, used for decrypting the mnemonic.
  * @param label - Account name prefix, used to create a unique account name.
  */
@@ -103,7 +103,7 @@ export const useDeriveMnemonicAccount = () => {
   }) => {
     const encryptedSeedphrase = encryptedMnemonics[fingerPrint];
     if (!encryptedSeedphrase) {
-      throw new Error(`No seedphrase found with fingerprint:${fingerPrint}`);
+      throw new Error(`No seedphrase found with fingerprint: ${fingerPrint}`);
     }
     const seedphrase = await decrypt(encryptedSeedphrase, password);
 
