@@ -1,12 +1,14 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
+import colors from "../../style/colors";
+
 export const WarningIcon: React.FC<IconProps> = props => {
   return (
     <Icon
       width="36"
       height="32"
       fill="none"
-      stroke="#FC7884"
+      stroke={colors.orangeL}
       viewBox="0 0 36 32"
       xmlns="http://www.w3.org/2000/svg"
       {...props}

@@ -2,16 +2,15 @@ import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
 import { compact } from "lodash";
 import { nanoid } from "nanoid";
 import pluralize from "pluralize";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import { AccountSmallTile } from "./AccountSmallTile";
-import { EstimateStatus, getEstimateStatus, getEstimateStatusColor } from "./estimateStatus";
 import { OperationRecipient } from "./OperationRecipient";
 import { OperationView } from "./OperationView";
+import useOnBatchSubmit, { EstimateStatus, getEstimateStatusColor } from "./useOnBatchSubmit";
 import { CheckmarkIcon, ExclamationIcon, TrashIcon, WarningIcon } from "../../assets/icons";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import { SignPage } from "../../components/SendFlow/Batch/SignPage";
 import { headerText } from "../../components/SendFlow/SignPageHeader";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
@@ -19,24 +18,7 @@ import { AccountOperations } from "../../types/AccountOperations";
 import { Operation } from "../../types/Operation";
 import { Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
 import { useClearBatch, useRemoveBatchItem } from "../../utils/hooks/batchesHooks";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { TEZ, estimate } from "../../utils/tezos";
-
-// Converts from 1 => 1st, 2 => 2nd, 3 => 3rd... etc.
-export const addOrdinal = (n: number): string => {
-  let ordinal = "th";
-
-  if (n % 10 == 1 && n % 100 != 11) {
-    ordinal = "st";
-  } else if (n % 10 == 2 && n % 100 != 12) {
-    ordinal = "nd";
-  } else if (n % 10 == 3 && n % 100 != 13) {
-    ordinal = "rd";
-  }
-
-  return `${n}${ordinal}`;
-};
+import { TEZ } from "../../utils/tezos";
 
 const RightHeader: React.FC<{
   operations: AccountOperations;
@@ -72,7 +54,7 @@ const RightHeader: React.FC<{
   );
 };
 
-const prettyOperationType = (operation: Operation) => {
+export const prettyOperationType = (operation: Operation) => {
   switch (operation.type) {
     case "fa1.2":
     case "fa2":
@@ -134,43 +116,14 @@ export const BatchView: React.FC<{
 
   const showFooter = operations.length > 9;
 
-  const { openWith } = useContext(DynamicModalContext);
-
-  const { handleAsyncAction, isLoading: batchSubmitIsLoading } = useAsyncActionHandler();
-  const network = useSelectedNetwork();
-
-  // lastEstimatedIndex is the index of the operation that was estimated last.
-  // if the estimatedIndex === operations.length, then the entire batch was estimated successfully.
-  const [lastEstimatedIndex, setLastEstimatedIndex] = useState<null | number>(null);
-
-  const onBatchSubmit = () =>
-    handleAsyncAction(async () => {
-      try {
-        const initialFee = await estimate(accountOperations, network);
-        setLastEstimatedIndex(accountOperations.operations.length);
-        openWith(<SignPage initialFee={initialFee} initialOperations={accountOperations} />);
-      } catch (_) {
-        // In case of error, we identify the specific operation in the batch.
-        for (let i = 0; i < operations.length; i += 1) {
-          const operation = operations[i];
-          try {
-            await estimate({ ...accountOperations, operations: [operation] }, network);
-          } catch (error: any) {
-            const operationType = prettyOperationType(operation);
-            setLastEstimatedIndex(i);
-            throw new Error(
-              `The ${addOrdinal(i + 1)} operation "${operationType}" is invalid: ${error.message}`
-            );
-          }
-        }
-      }
-    });
+  const { onBatchSubmit, batchSubmitIsLoading, getEstimateStatus } =
+    useOnBatchSubmit(accountOperations);
 
   return (
     <Box width="100%" marginBottom="16px" data-testid={`batch-table-${sender.address.pkh}`}>
       <Flex
         justifyContent="space-between"
-        padding="20px 23px 25px 30px"
+        padding="20px 23px 20px 30px"
         background={colors.gray[800]}
         borderTopRadius="8px"
         data-testid="header"
@@ -192,8 +145,7 @@ export const BatchView: React.FC<{
         paddingY="20px"
       >
         {operations.map((operation, index) => {
-          const estimateStatus =
-            lastEstimatedIndex !== null ? getEstimateStatus(index, lastEstimatedIndex) : null;
+          const estimateStatus = getEstimateStatus(index);
           return (
             <Box key={nanoid()} data-testid="operation">
               <Flex flexDirection="column" height={estimateStatus ? "70px" : "50px"}>
