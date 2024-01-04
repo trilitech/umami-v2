@@ -29,7 +29,7 @@ describe("useAssetsPolling", () => {
       ]);
       renderHook(() => useAssetsPolling(), { wrapper: AllTheProviders });
       await waitFor(() => {
-        expect(jest.mocked(delegatesGet)).toBeCalledWith(
+        expect(jest.mocked(delegatesGet)).toHaveBeenCalledWith(
           {
             sort: { desc: "stakingBalance" },
             active: { eq: true },

@@ -40,7 +40,7 @@ describe("multisig helpers", () => {
     describe("getPendingOperationsForMultisigs", () => {
       it("handles empty multisigs", async () => {
         const result = await getPendingOperationsForMultisigs([], network);
-        expect(mockedAxios.get).toBeCalledTimes(0);
+        expect(mockedAxios.get).toHaveBeenCalledTimes(0);
         expect(result).toEqual([]);
       });
       it("fetches pending operations for multisigs", async () => {
@@ -66,7 +66,7 @@ describe("multisig helpers", () => {
           network
         );
 
-        expect(mockedAxios.get).toBeCalledWith(
+        expect(mockedAxios.get).toHaveBeenCalledWith(
           `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
         );
 

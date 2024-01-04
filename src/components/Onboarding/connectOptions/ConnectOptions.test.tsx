@@ -1,8 +1,8 @@
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 
 import { ConnectOptions } from "./ConnectOptions";
 import { mockSocialAccount } from "../../../mocks/factories";
-import { render, screen } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { accountsActions } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";
 import { Step, StepType } from "../useOnboardingModal";
@@ -17,14 +17,14 @@ describe("<ConnectOptions />", () => {
       const user = userEvent.setup();
       render(fixture(goToStepMock));
 
-      await user.click(
+      user.click(
         screen.getByRole("button", {
           name: "Restore from Backup",
         })
       );
 
-      expect(goToStepMock).toBeCalledTimes(1);
-      expect(goToStepMock).toBeCalledWith({ type: StepType.restoreBackup });
+      await waitFor(() => expect(goToStepMock).toHaveBeenCalledTimes(1));
+      expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreBackup });
     });
 
     it("hides the button if a user tries to add another account", () => {
@@ -46,8 +46,8 @@ describe("<ConnectOptions />", () => {
       })
     );
 
-    expect(goToStepMock).toBeCalledTimes(1);
-    expect(goToStepMock).toBeCalledWith({ type: StepType.restoreMnemonic });
+    expect(goToStepMock).toHaveBeenCalledTimes(1);
+    expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreMnemonic });
   });
 
   it("navigates to import secret key step", async () => {
@@ -60,8 +60,8 @@ describe("<ConnectOptions />", () => {
       })
     );
 
-    expect(goToStepMock).toBeCalledTimes(1);
-    expect(goToStepMock).toBeCalledWith({ type: StepType.restoreSecretKey });
+    expect(goToStepMock).toHaveBeenCalledTimes(1);
+    expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreSecretKey });
   });
 
   it("navigates to connect ledger step", async () => {
@@ -74,8 +74,8 @@ describe("<ConnectOptions />", () => {
       })
     );
 
-    expect(goToStepMock).toBeCalledTimes(1);
-    expect(goToStepMock).toBeCalledWith({
+    expect(goToStepMock).toHaveBeenCalledTimes(1);
+    expect(goToStepMock).toHaveBeenCalledWith({
       type: StepType.nameAccount,
       account: { type: "ledger" },
     });

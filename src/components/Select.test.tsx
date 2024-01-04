@@ -1,4 +1,4 @@
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 
 import { Select } from "./Select";
 import { render, screen, waitFor } from "../mocks/testUtils";
@@ -69,7 +69,7 @@ describe("<Select />", () => {
       expect(screen.getByTestId("select-input")).toHaveTextContent("test label2");
     });
 
-    expect(onChange).toBeCalledTimes(1);
-    expect(onChange).toBeCalledWith("test2");
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith("test2");
   });
 });

@@ -15,7 +15,7 @@ describe("AnnouncementBanner", () => {
     });
     render(fixture());
     await waitFor(() => {
-      expect(requestMock).toBeCalledTimes(1);
+      expect(requestMock).toHaveBeenCalledTimes(1);
     });
     expect(await screen.findByTestId("announcement")).toHaveTextContent("hello");
   });
@@ -24,7 +24,7 @@ describe("AnnouncementBanner", () => {
     requestMock.mockResolvedValue({ configuration: { maintenanceMessage: "" } });
     render(fixture());
     await waitFor(() => {
-      expect(requestMock).toBeCalledTimes(1);
+      expect(requestMock).toHaveBeenCalledTimes(1);
     });
     expect(screen.queryByTestId("announcement")).not.toBeInTheDocument();
   });

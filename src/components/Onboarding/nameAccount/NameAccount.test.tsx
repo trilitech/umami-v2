@@ -60,9 +60,9 @@ describe("<NameAccount />", () => {
         fireEvent.click(getConfirmBtn());
 
         await waitFor(() => {
-          expect(goToStepMock).toBeCalledTimes(1);
+          expect(goToStepMock).toHaveBeenCalledTimes(1);
         });
-        expect(goToStepMock).toBeCalledWith({
+        expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: labelBase },
         });
@@ -110,9 +110,9 @@ describe("<NameAccount />", () => {
           fireEvent.click(getConfirmBtn());
 
           await waitFor(() => {
-            expect(goToStepMock).toBeCalledTimes(1);
+            expect(goToStepMock).toHaveBeenCalledTimes(1);
           });
-          expect(goToStepMock).toBeCalledWith({
+          expect(goToStepMock).toHaveBeenCalledWith({
             type: account.nextStep,
             account: { ...account, label: labelBase },
           });
@@ -133,9 +133,9 @@ describe("<NameAccount />", () => {
         fireEvent.click(getConfirmBtn());
 
         await waitFor(() => {
-          expect(goToStepMock).toBeCalledTimes(1);
+          expect(goToStepMock).toHaveBeenCalledTimes(1);
         });
-        expect(goToStepMock).toBeCalledWith({
+        expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: labelBase },
         });
@@ -152,9 +152,9 @@ describe("<NameAccount />", () => {
         fireEvent.click(getConfirmBtn());
 
         await waitFor(() => {
-          expect(goToStepMock).toBeCalledTimes(1);
+          expect(goToStepMock).toHaveBeenCalledTimes(1);
         });
-        expect(goToStepMock).toBeCalledWith({
+        expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: labelBase },
         });
@@ -181,9 +181,9 @@ describe("<NameAccount />", () => {
           fireEvent.click(getConfirmBtn());
 
           await waitFor(() => {
-            expect(goToStepMock).toBeCalledTimes(1);
+            expect(goToStepMock).toHaveBeenCalledTimes(1);
           });
-          expect(goToStepMock).toBeCalledWith({
+          expect(goToStepMock).toHaveBeenCalledWith({
             type: account.nextStep,
             account: { ...account, label: `${labelBase} 2` },
           });
@@ -204,9 +204,9 @@ describe("<NameAccount />", () => {
         fireEvent.click(getConfirmBtn());
 
         await waitFor(() => {
-          expect(goToStepMock).toBeCalledTimes(1);
+          expect(goToStepMock).toHaveBeenCalledTimes(1);
         });
-        expect(goToStepMock).toBeCalledWith({
+        expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: `${labelBase} 2` },
         });
@@ -223,9 +223,9 @@ describe("<NameAccount />", () => {
         fireEvent.click(getConfirmBtn());
 
         await waitFor(() => {
-          expect(goToStepMock).toBeCalledTimes(1);
+          expect(goToStepMock).toHaveBeenCalledTimes(1);
         });
-        expect(goToStepMock).toBeCalledWith({
+        expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: `${labelBase} 2` },
         });

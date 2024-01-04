@@ -48,16 +48,16 @@ jest.mock("react-identicons", () => {
 });
 
 // Add missing browser APIs
-Object.assign(window, {
-  TextDecoder,
-  TextEncoder,
-  crypto: webcrypto,
-  scrollTo: jest.fn(),
+Object.defineProperties(global, {
+  crypto: { value: webcrypto, writable: true },
+  TextDecoder: { value: TextDecoder, writable: true },
+  TextEncoder: { value: TextEncoder, writable: true },
+  scrollTo: { value: jest.fn(), writable: true },
 });
 
 beforeEach(() => {
   // taken from https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
-  Object.defineProperty(window, "matchMedia", {
+  Object.defineProperty(global, "matchMedia", {
     writable: true,
     value: jest.fn().mockImplementation(query => ({
       matches: false,
@@ -74,19 +74,18 @@ beforeEach(() => {
   window.location.hash = "";
 });
 
-const MockModal = ({ children, isOpen }: any) => {
-  return React.createElement("div", { "data-testid": "mock-modal" }, isOpen ? children : null);
-};
-const MockModalHeader = ({ children }: any) => {
-  return React.createElement("header", { id: "modal-header" }, children);
-};
-const MockModalContent = ({ children }: any) => {
-  return React.createElement(
+const MockModal = ({ children, isOpen }: any) =>
+  React.createElement("div", { "data-testid": "mock-modal" }, isOpen ? children : null);
+
+const MockModalHeader = ({ children }: any) =>
+  React.createElement("header", { id: "modal-header" }, children);
+
+const MockModalContent = ({ children }: any) =>
+  React.createElement(
     "section",
     { role: "dialog", "aria-labelledby": "modal-header", "aria-modal": true },
     children
   );
-};
 
 const MockModalInnerComponent = ({ children }: any) => React.createElement("div", {}, children);
 

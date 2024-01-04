@@ -37,7 +37,7 @@ const mockSk = "mockSk";
 describe("tezos utils helpers", () => {
   test("getPkAndPkhFromSk", async () => {
     await getPkAndPkhFromSk(mockSk);
-    expect(InMemorySigner).toBeCalledTimes(1);
+    expect(InMemorySigner).toHaveBeenCalledTimes(1);
   });
 
   test("addressExists for non empty response", async () => {
@@ -48,7 +48,7 @@ describe("tezos utils helpers", () => {
     };
     mockedAxios.get.mockResolvedValue(mockResponse);
     const result = await addressExists(mockImplicitAddress(0).pkh, MAINNET);
-    expect(mockedAxios.get).toBeCalledWith(
+    expect(mockedAxios.get).toHaveBeenCalledWith(
       `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
     );
     expect(result).toEqual(true);
@@ -62,7 +62,7 @@ describe("tezos utils helpers", () => {
     };
     mockedAxios.get.mockResolvedValue(mockResponse);
     const result = await addressExists(mockImplicitAddress(0).pkh, MAINNET);
-    expect(mockedAxios.get).toBeCalledWith(
+    expect(mockedAxios.get).toHaveBeenCalledWith(
       `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
     );
     expect(result).toEqual(false);

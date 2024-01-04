@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import type { BigNumber } from "bignumber.js";
-import { useContext, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import { MultisigApprovers } from "./MultisigApprovers";
@@ -34,7 +34,7 @@ type Props = {
 
 const RoundButton: React.FC<{
   label: string;
-  icon: JSX.Element;
+  icon: ReactElement;
   onClick?: () => void;
 }> = ({ icon, label, onClick = () => {} }) => {
   return (

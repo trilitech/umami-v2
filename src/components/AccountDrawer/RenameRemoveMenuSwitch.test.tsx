@@ -1,4 +1,4 @@
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";

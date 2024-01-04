@@ -22,8 +22,8 @@ describe("<ShowSeedphrase />", () => {
     });
     expect(confirmBtn).toBeEnabled();
     fireEvent.click(confirmBtn);
-    expect(goToStepMock).toBeCalledTimes(1);
-    expect(goToStepMock).toBeCalledWith({
+    expect(goToStepMock).toHaveBeenCalledTimes(1);
+    expect(goToStepMock).toHaveBeenCalledWith({
       type: StepType.verifySeedphrase,
       account: {
         type: "mnemonic",

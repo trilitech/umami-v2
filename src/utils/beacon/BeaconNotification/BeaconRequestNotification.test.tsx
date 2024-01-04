@@ -6,7 +6,7 @@ import {
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 
 import { mockMnemonicAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";

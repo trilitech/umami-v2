@@ -53,7 +53,7 @@ describe("estimateAndUpdateBatch", () => {
       const action = estimateAndUpdateBatch(failedFormOperations, network);
       jest.mocked(estimate).mockRejectedValueOnce(new Error("Estimation failed"));
 
-      await expect(() => store.dispatch(action)).rejects.toThrowError("Estimation failed");
+      await expect(() => store.dispatch(action)).rejects.toThrow("Estimation failed");
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(accountOperations, network);
       expect(store.getState().batches[network.name]).toEqual([accountOperations]);
     });

@@ -1,5 +1,5 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { userEvent } from "@testing-library/user-event";
 import type { UserEvent } from "@testing-library/user-event/dist/types/setup/setup";
 import { useSearchParams } from "react-router-dom";
 
