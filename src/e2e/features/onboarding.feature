@@ -10,7 +10,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Connect or Create Account" onboarding page
 
-    When I onboard with "Account A" "mnemonic" account
+    When I onboard with "Group A" "mnemonic" account group with size 1
     When I click "Create a new Account" button
     Then I am on "Important Notice" onboarding page
 
@@ -38,7 +38,7 @@ Feature: User Onboarding
     And I click "Submit" button
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
-    And I have "Account A" account
+    And I have "Group A" account group
 
     Examples:
       | accountName | derivationPath     |
@@ -57,7 +57,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Connect or Create Account" onboarding page
 
-    When I onboard with "Account A" "mnemonic" account
+    When I onboard with "Group A" "mnemonic" account group with size 1
     When I click "I already have a wallet" button
     Then I am on "Connect or Import Account" onboarding page
 
@@ -81,7 +81,7 @@ Feature: User Onboarding
     And I click "Submit" button
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
-    And I have "Account A" account
+    And I have "Group A" account group
 
     Examples:
       | accountName | derivationPath     |
@@ -100,7 +100,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Connect or Create Account" onboarding page
 
-    When I onboard with "Account A" "mnemonic" account
+    When I onboard with "Group A" "mnemonic" account group with size 1
     When I click "Create a new Account" button
     Then I am on "Important Notice" onboarding page
 
@@ -124,7 +124,7 @@ Feature: User Onboarding
     And I click "Submit" button
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
-    And I have "Account A" account
+    And I have "Group A" account group
 
     Examples:
       | accountName | derivationPath     |
@@ -143,7 +143,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Connect or Create Account" onboarding page
 
-    When I onboard with "Account A" "secret key" account
+    When I onboard with "Group A" "secret_key" account group with size 1
     When I click "I already have a wallet" button
     Then I am on "Connect or Import Account" onboarding page
 
@@ -163,7 +163,7 @@ Feature: User Onboarding
     And I click "Submit" button
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
-    And I have "Account A" account
+    And I have "Group A" account group
 
     Examples:
       | accountName |

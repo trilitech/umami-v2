@@ -1,3 +1,5 @@
+import path from "path";
+
 import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
@@ -5,18 +7,15 @@ import { CustomWorld } from "./world";
 import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
 import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
 import { formatPkh } from "../../utils/format";
+import { AccountGroupBuilder } from "../helpers/accountGroup";
 import { AccountsPage } from "../pages/accounts";
-import {
-  AddAccountPage,
-  AddMnemonicAccountPage,
-  AddSecretKeyAccountPage,
-} from "../pages/addAccount";
 
 export const BASE_URL = "http://127.0.0.1:3000";
 
-let addAccountPage: AddAccountPage;
+let accountGroupBuilder: AccountGroupBuilder;
+const newGroups: Record<string, AccountGroupBuilder> = {};
+
 let accountsPage: AccountsPage;
-const newAccounts: Record<string, AddAccountPage> = {};
 
 // TODO: make custom Given with `this` defined as `CustomWorld`
 Given("I am on the welcome page", async function (this: CustomWorld) {
@@ -35,41 +34,46 @@ Then("I record generated seedphrase", async function (this: CustomWorld) {
   for (let i = 0; i < 24; i++) {
     words.push(await this.page.getByTestId(`mnemonic-word-${i}`).innerText());
   }
-  addAccountPage.seedPhrase = words;
+  await accountGroupBuilder.setSeedPhrase(words);
 });
 
 When("I enter recorded seedphrase", async function (this: CustomWorld) {
   for (let i = 0; i < 5; i++) {
     const wordIndex = Number(await this.page.getByTestId("mnemonic-index").nth(i).innerText()) - 1;
-    await this.page.getByRole("textbox").nth(i).fill(addAccountPage.seedPhrase[wordIndex]);
+    await this.page
+      .getByRole("textbox")
+      .nth(i)
+      .fill(accountGroupBuilder.getSeedPhrase()[wordIndex]);
+    // TODO: maybe keep it here and not in the builder?
   }
 });
 
 When("I enter existing seedphrase", async function (this: CustomWorld) {
-  addAccountPage.seedPhrase = existingSeedphrase.split(" ");
+  await accountGroupBuilder.setSeedPhrase(existingSeedphrase.split(" "));
   for (let i = 0; i < 24; i++) {
-    await this.page.getByRole("textbox").nth(i).fill(addAccountPage.seedPhrase[i]);
+    await this.page.getByRole("textbox").nth(i).fill(accountGroupBuilder.getSeedPhrase()[i]);
   }
 });
 
 When("I select {string} as derivationPath", async function (this: CustomWorld, derivationPath) {
   if (derivationPath === "Default") {
-    addAccountPage.derivationPath = DEFAULT_DERIVATION_PATH.value;
+    accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH.value);
     return;
   }
   await this.page.getByTestId("select-input").click();
   await this.page.getByTestId("select-options").getByText(derivationPath).click();
-  addAccountPage.derivationPath = derivationPath;
+  accountGroupBuilder.setDerivationPathPattern(derivationPath);
 });
 
 When("I fill secret key with {string}", async function (this: CustomWorld, secretKey) {
   await this.page.getByLabel("Secret Key", { exact: true }).fill(secretKey);
-  addAccountPage.secretKey = secretKey;
+
+  await accountGroupBuilder.setSecretKey(secretKey);
 });
 
 When("I fill account name with {string}", async function (this: CustomWorld, accountName) {
   await this.page.getByLabel("Account name", { exact: true }).fill(accountName);
-  addAccountPage.namePrefix = accountName || "Account";
+  accountGroupBuilder.setAllAccountNames(accountName);
 });
 
 Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {
@@ -85,28 +89,23 @@ Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {
 });
 
 When(
-  "I onboard with {string} {string} account",
-  async function (this: CustomWorld, accountName, accountType) {
-    if (accountType === "mnemonic") {
-      addAccountPage = new AddMnemonicAccountPage(this.page);
-    } else if (accountType === "secret key") {
-      addAccountPage = new AddSecretKeyAccountPage(this.page);
-    }
-    newAccounts[accountName] = addAccountPage;
+  "I onboard with {string} {string} account group with size {int}",
+  async function (this: CustomWorld, groupName, groupType, accountsAmount) {
+    accountGroupBuilder = new AccountGroupBuilder(groupType, accountsAmount);
+    newGroups[groupName] = accountGroupBuilder;
   }
 );
 
-Then("I have {string} account", async function (this: CustomWorld, accountName) {
-  const namePrefix = newAccounts[accountName].namePrefix;
-  const groupTitle = await newAccounts[accountName].groupTitle();
-  const pkh = await newAccounts[accountName].pkh();
+Then("I have {string} account group", async function (this: CustomWorld, groupName) {
+  const expectedGroup = await newGroups[groupName].build();
+  const accountsGroup = await accountsPage.getGroup(expectedGroup.groupTitle);
 
-  const accountsGroup = await accountsPage.getGroup(groupTitle);
-  expect(accountsGroup.label).toEqual(groupTitle);
-
-  expect(accountsGroup.accounts.length).toEqual(1);
-  expect(accountsGroup.accounts[0].address).toEqual(formatPkh(pkh));
-  expect(accountsGroup.accounts[0].label).toMatch(new RegExp(`^${namePrefix}`));
+  expect(accountsGroup.label).toEqual(expectedGroup.groupTitle);
+  expect(accountsGroup.accounts.length).toEqual(expectedGroup.accounts.length);
+  for (let i = 0; i < accountsGroup.accounts.length; i++) {
+    expect(accountsGroup.accounts[i].label).toEqual(expectedGroup.accounts[i].name);
+    expect(accountsGroup.accounts[i].address).toEqual(formatPkh(expectedGroup.accounts[i].pkh));
+  }
 });
 
 Then("I see a toast {string}", async function (this: CustomWorld, toastMessage) {
