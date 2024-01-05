@@ -9,6 +9,7 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { ReduxStore } from "../../../providers/ReduxStore";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
@@ -94,15 +95,7 @@ describe("<NameAccount />", () => {
 
       describe.each(existingAccountGroups)("among $type accounts", existingAccountGroup => {
         it("sets group label", async () => {
-          if (existingAccountGroup.type === "mnemonic") {
-            store.dispatch(
-              accountsSlice.actions.addMockMnemonicAccounts(existingAccountGroup.accounts)
-            );
-          } else {
-            existingAccountGroup.accounts.forEach(account =>
-              store.dispatch(accountsSlice.actions.addAccount(account))
-            );
-          }
+          existingAccountGroup.accounts.forEach(addAccount);
           render(fixture(goToStepMock, account));
 
           if (label.withNameProvided) {

@@ -25,7 +25,7 @@ export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account
       break;
     case "ledger":
     case "social":
-      removeAccountAction = accountsSlice.actions.removeAccount(account);
+      removeAccountAction = () => accountsSlice.actions.removeAccount(account);
       break;
     case "mnemonic":
     case "multisig":
@@ -38,7 +38,7 @@ export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account
   if (isLastImplicitAccount) {
     description =
       "Removing your last account will off-board you from Umami. " +
-      "This will remove or reset all customised settings to their defaults. " +
+      "This will remove or reset all customized settings to their defaults. " +
       "Personal data (including saved contacts, password and accounts) won't be affected.";
     buttonLabel = "Remove & Off-board";
   }

@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react";
 import BigNumber from "bignumber.js";
 
-import { MnemonicAccount } from "../types/Account";
+import { ImplicitAccount, MnemonicAccount } from "../types/Account";
 import { accountsSlice } from "../utils/redux/slices/accountsSlice";
 import { store } from "../utils/redux/store";
 import { estimate } from "../utils/tezos";
@@ -17,4 +17,12 @@ export const dispatchMockAccounts = (accounts: MnemonicAccount[]) => {
 
 export const mockEstimatedFee = (fee: number | string | BigNumber) => {
   jest.mocked(estimate).mockResolvedValueOnce(BigNumber(fee));
+};
+
+export const addAccount = (account: ImplicitAccount) => {
+  if (account.type === "mnemonic") {
+    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+  } else {
+    store.dispatch(accountsSlice.actions.addAccount(account));
+  }
 };
