@@ -5,21 +5,40 @@ import { getPkAndPkhFromSk } from "../../tezos";
 import { accountsSlice } from "../slices/accountsSlice";
 import { AppDispatch } from "../store";
 
+export const makeSecretKeyAccount = async ({
+  secretKey,
+  label,
+  password,
+}: {
+  secretKey: string;
+  label: string;
+  password: string;
+}) => {
+  const { pk, pkh } = await getPkAndPkhFromSk(secretKey);
+  const encryptedSecretKey = await encrypt(secretKey, password);
+  const account = {
+    type: "secret_key" as const,
+    pk,
+    label,
+    address: parseImplicitPkh(pkh),
+  };
+
+  return {
+    account,
+    encryptedSecretKey,
+  };
+};
+
 export const restore =
   ({ secretKey, label, password }: { secretKey: string; label: string; password: string }) =>
   async (dispatch: AppDispatch) => {
-    const { pk, pkh } = await getPkAndPkhFromSk(secretKey);
-    const encryptedSecretKey = await encrypt(secretKey, password);
-
-    dispatch(accountsSlice.actions.addSecretKey({ pkh, encryptedSecretKey }));
-    dispatch(
-      accountsSlice.actions.addAccount({
-        type: "secret_key",
-        pk,
-        label,
-        address: parseImplicitPkh(pkh),
-      })
-    );
+    const { account, encryptedSecretKey } = await makeSecretKeyAccount({
+      secretKey,
+      label,
+      password,
+    });
+    dispatch(accountsSlice.actions.addSecretKey({ pkh: account.address.pkh, encryptedSecretKey }));
+    dispatch(accountsSlice.actions.addAccount(account));
   };
 
 export const remove = (account: SecretKeyAccount) => async (dispatch: AppDispatch) => {

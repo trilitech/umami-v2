@@ -54,23 +54,29 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
 
             <Box marginBottom="24px">
               <FormLabel>Owner</FormLabel>
-              <AddressTile marginBottom="12px" address={parsePkh(sender)} />
+              <AddressTile
+                marginBottom="12px"
+                address={parsePkh(sender)}
+                data-testid="multisig-owner"
+              />
               <Flex justifyContent="flex-end">
                 <SignPageFee fee={fee} />
               </Flex>
             </Box>
 
             <FormLabel>Approvers</FormLabel>
-            {signers.map(signer => {
-              return (
-                <AddressTile
-                  key={signer.val}
-                  marginBottom="12px"
-                  address={parsePkh(signer.val)}
-                  data-testid={`approver-${signer.val}`}
-                />
-              );
-            })}
+            <Box data-testid="approvers">
+              {signers.map(signer => {
+                return (
+                  <AddressTile
+                    key={signer.val}
+                    marginBottom="12px"
+                    address={parsePkh(signer.val)}
+                    data-testid={`approver-${signer.val}`}
+                  />
+                );
+              })}
+            </Box>
 
             <Flex alignItems="center" marginTop="24px" marginBottom="24px">
               <Heading marginRight="12px" size="md">

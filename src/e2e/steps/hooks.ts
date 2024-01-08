@@ -2,6 +2,7 @@ import crypto from "crypto";
 
 import { After, AfterAll, Before, BeforeAll } from "@cucumber/cucumber";
 import { ChromiumBrowser, chromium } from "@playwright/test";
+import { omit } from "lodash";
 
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
@@ -10,7 +11,7 @@ import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
 let browser: ChromiumBrowser;
 
 BeforeAll(async function () {
-  browser = await chromium.launch({ headless: !!process.env.CI });
+  browser = await chromium.launch({ headless: !!process.env.CI, devtools: false });
 
   global.crypto = crypto as any;
 });
@@ -28,18 +29,34 @@ BeforeAll(async function () {
  */
 Before(async function (this: CustomWorld) {
   (async () => {
+    const predefinedState = await this.getReduxState();
+    const accounts = predefinedState["accounts"] || {};
+
     const state: any = {
-      _persist: '{"version":-1,"rehydrated":true}',
       networks: TEST_NETWORKS_STATE,
-      ...(await this.getReduxState()),
+      ...omit(predefinedState, "accounts"),
     };
 
-    // each value should be a valid JSON string for redux-persist
-    Object.keys(state).forEach(key => {
-      state[key] = JSON.stringify(state[key]);
-    });
+    const prepareObjForRedux = (obj: any): void => {
+      // without this redux considers the object to be malformed
+      // and overrides it with the default state
+      obj["_persist"] = '{"version":-1,"rehydrated":true}';
+
+      // each value should be a valid JSON string
+      Object.keys(obj).forEach(key => {
+        obj[key] = JSON.stringify(obj[key]);
+      });
+    };
+
+    prepareObjForRedux(state);
+    prepareObjForRedux(accounts);
 
     this.context = await browser.newContext({
+      // default window size as per electron.js settings
+      viewport: {
+        width: 1440,
+        height: 1024,
+      },
       storageState: {
         cookies: [],
         origins: [
@@ -48,6 +65,7 @@ Before(async function (this: CustomWorld) {
             localStorage: [
               // TODO: add a way to pass in the accounts (they are stored under persist:accounts)
               { name: "persist:root", value: JSON.stringify(state) },
+              { name: "persist:accounts", value: JSON.stringify(accounts) },
             ],
           },
         ],
@@ -60,6 +78,10 @@ Before(async function (this: CustomWorld) {
 });
 
 After(async function (this: CustomWorld) {
+  // helps with debugging failing tests
+  // the screenshot is in the cucumber report
+  this.attach(await this.page.screenshot(), "image/png");
+
   await this.page.close();
   await this.context.close();
 });

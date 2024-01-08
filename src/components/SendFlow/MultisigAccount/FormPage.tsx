@@ -210,10 +210,10 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                     })}
                   />
                 </InputGroup>
-                <Text display="inline" marginLeft="10px" data-testid="max-signers">
-                  out of {signersCount}
-                </Text>
               </FormLabel>
+              <Text display="inline" data-testid="max-signers">
+                out of {signersCount}
+              </Text>
               {errors.threshold && (
                 <FormErrorMessage data-testid="threshold-error">
                   {errors.threshold.message}

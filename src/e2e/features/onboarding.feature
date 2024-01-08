@@ -40,13 +40,12 @@ Feature: User Onboarding
     And I see a toast "Account successfully created!"
     And I have "Account A" account
 
-  Examples:
-    | accountName | derivationPath     |
-    |             | Default            |
-    |             | 44'/1729'/?'/0'/0' |
-    | TestAccount | Default            |
-    | TestAccount | 44'/1729'/?'/0'/0' |
-
+    Examples:
+      | accountName | derivationPath     |
+      |             | Default            |
+      |             | 44'/1729'/?'/0'/0' |
+      | TestAccount | Default            |
+      | TestAccount | 44'/1729'/?'/0'/0' |
 
   Scenario: User creates an account with existing seedphrase
     Given I am on the welcome page
@@ -84,13 +83,12 @@ Feature: User Onboarding
     And I see a toast "Account successfully created!"
     And I have "Account A" account
 
-  Examples:
-    | accountName | derivationPath     |
-    |             | Default            |
-    |             | 44'/1729'/?'/0'/0' |
-    | TestAccount | Default            |
-    | TestAccount | 44'/1729'/?'/0'/0' |
-
+    Examples:
+      | accountName | derivationPath     |
+      |             | Default            |
+      |             | 44'/1729'/?'/0'/0' |
+      | TestAccount | Default            |
+      | TestAccount | 44'/1729'/?'/0'/0' |
 
   Scenario: User creates an account with existing seedphrase - through create new page
     Given I am on the welcome page
@@ -128,13 +126,12 @@ Feature: User Onboarding
     And I see a toast "Account successfully created!"
     And I have "Account A" account
 
-  Examples:
-    | accountName | derivationPath     |
-    |             | Default            |
-    |             | 44'/1729'/?'/0'/0' |
-    | TestAccount | Default            |
-    | TestAccount | 44'/1729'/?'/0'/0' |
-
+    Examples:
+      | accountName | derivationPath     |
+      |             | Default            |
+      |             | 44'/1729'/?'/0'/0' |
+      | TestAccount | Default            |
+      | TestAccount | 44'/1729'/?'/0'/0' |
 
   Scenario: User imports existing secret key account
     Given I am on the welcome page
@@ -168,7 +165,7 @@ Feature: User Onboarding
     And I see a toast "Account successfully created!"
     And I have "Account A" account
 
-  Examples:
-    | accountName |
-    |             |
-    | TestAccount |
+    Examples:
+      | accountName |
+      |             |
+      | TestAccount |

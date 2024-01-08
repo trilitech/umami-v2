@@ -23,7 +23,7 @@ export const getRelevantMultisigContracts = async (
     const multisigs = await getAllMultiSigContracts(network);
     return multisigs
       .filter(({ storage: { signers } }) => {
-        // For now, we assume the singer is always an implicit account
+        // For now, we assume the signer is always an implicit account
         if (!every(signers, isValidImplicitPkh)) {
           return false;
         }
