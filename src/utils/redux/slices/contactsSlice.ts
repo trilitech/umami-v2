@@ -5,7 +5,7 @@ import { nameExistsInContacts } from "../../hooks/contactsUtils";
 
 type State = Record<string, Contact>;
 
-const initialState: State = {};
+export const initialState: State = {};
 
 export const contactsSlice = createSlice({
   name: "contacts",

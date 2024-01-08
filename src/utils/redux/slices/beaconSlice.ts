@@ -10,7 +10,7 @@ export type DAppConnectionInfo = {
 
 type State = Record<string, DAppConnectionInfo>;
 
-const initialState: State = {};
+export const initialState: State = {};
 
 /**
  * Stores connection info between dApps and accounts.

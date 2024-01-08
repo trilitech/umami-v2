@@ -6,7 +6,7 @@ type State = ErrorContext[];
 
 const MAX_ERRORS_LEN = 100;
 
-const initialState: State = [];
+export const initialState: State = [];
 
 export const errorsSlice = createSlice({
   name: "errors",

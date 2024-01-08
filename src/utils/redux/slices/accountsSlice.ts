@@ -20,7 +20,7 @@ export type State = {
   secretKeys: Record<RawPkh, EncryptedData | undefined>;
 };
 
-const initialState: State = {
+export const initialState: State = {
   items: [],
   seedPhrases: {},
   secretKeys: {},

@@ -6,6 +6,14 @@ import { omit } from "lodash";
 
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
+import { initialState as accountsInitialState } from "../../utils/redux/slices/accountsSlice";
+import { initialState as assetsInitialState } from "../../utils/redux/slices/assetsSlice";
+import { initialState as batchesInitialState } from "../../utils/redux/slices/batches";
+import { initialState as beaconInitialState } from "../../utils/redux/slices/beaconSlice";
+import { initialState as contactsInitialState } from "../../utils/redux/slices/contactsSlice";
+import { initialState as errorsInitialState } from "../../utils/redux/slices/errorsSlice";
+import { initialState as multisigsInitialState } from "../../utils/redux/slices/multisigsSlice";
+import { initialState as tokensInitialState } from "../../utils/redux/slices/tokensSlice";
 import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
 
 let browser: ChromiumBrowser;
@@ -30,10 +38,16 @@ BeforeAll(async function () {
 Before(async function (this: CustomWorld) {
   (async () => {
     const predefinedState = await this.getReduxState();
-    const accounts = predefinedState["accounts"] || {};
-
+    const accounts = predefinedState["accounts"] || accountsInitialState;
     const state: any = {
+      assets: assetsInitialState,
+      batches: batchesInitialState,
+      beacon: beaconInitialState,
+      contacts: contactsInitialState,
+      errors: errorsInitialState,
+      multisigs: multisigsInitialState,
       networks: TEST_NETWORKS_STATE,
+      tokens: tokensInitialState,
       ...omit(predefinedState, "accounts"),
     };
 

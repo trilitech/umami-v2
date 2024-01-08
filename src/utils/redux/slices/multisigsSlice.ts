@@ -9,7 +9,7 @@ type State = {
   pendingOperations: MultisigPendingOperations;
 };
 
-const initialState: State = { items: [], pendingOperations: {} };
+export const initialState: State = { items: [], pendingOperations: {} };
 
 export const multisigsSlice = createSlice({
   name: "multisigs",

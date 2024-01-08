@@ -7,7 +7,7 @@ import { DefaultNetworks, Network, NetworkName } from "../../../types/Network";
 
 type State = Record<NetworkName, AccountOperations[] | undefined>;
 
-const initialState: State = fromPairs(DefaultNetworks.map(network => [network.name, []]));
+export const initialState: State = fromPairs(DefaultNetworks.map(network => [network.name, []]));
 
 export const batchesSlice = createSlice({
   name: "batches",
