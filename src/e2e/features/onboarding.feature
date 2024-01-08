@@ -10,7 +10,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Connect or Create Account" onboarding page
 
-    When I onboard with "Group A" "mnemonic" account group with size 1
+    When I onboard with "Group A" "mnemonic" account group of size 1
     When I click "Create a new Account" button
     Then I am on "Important Notice" onboarding page
 
@@ -57,7 +57,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Connect or Create Account" onboarding page
 
-    When I onboard with "Group A" "mnemonic" account group with size 1
+    When I onboard with "Group A" "mnemonic" account group of size 1
     When I click "I already have a wallet" button
     Then I am on "Connect or Import Account" onboarding page
 
@@ -100,7 +100,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Connect or Create Account" onboarding page
 
-    When I onboard with "Group A" "mnemonic" account group with size 1
+    When I onboard with "Group A" "mnemonic" account group of size 1
     When I click "Create a new Account" button
     Then I am on "Important Notice" onboarding page
 
@@ -143,7 +143,7 @@ Feature: User Onboarding
     And I click "Continue" button
     Then I am on "Connect or Create Account" onboarding page
 
-    When I onboard with "Group A" "secret_key" account group with size 1
+    When I onboard with "Group A" "secret_key" account group of size 1
     When I click "I already have a wallet" button
     Then I am on "Connect or Import Account" onboarding page
 
@@ -169,3 +169,31 @@ Feature: User Onboarding
       | accountName |
       |             |
       | TestAccount |
+
+  Scenario: User imports a backup file
+    Given I am on the welcome page
+
+    When I click "Get started" button
+    Then I am on "Accept to Continue" onboarding page
+
+    When I check "I confirm that I have read" checkbox
+    And I click "Continue" button
+    Then I am on "Connect or Create Account" onboarding page
+
+    When I click "I already have a wallet" button
+    Then I am on "Connect or Import Account" onboarding page
+
+    When I click "Restore from Backup" button
+    Then I am on "Restore from Backup" onboarding page
+
+    When I upload "<fileName>" backup file
+    And I fill "Your password (if you have one)" with "<password>"
+    And I click "Import Wallet" button
+    And I wait for TZKT to process the updates
+    Then I am on an Accounts page
+    And I have groups matching "<fileName>" backup file
+
+    Examples:
+      | fileName      | password  |
+      | V1Backup.json | asdfasdf  |
+      | V2Backup.json | 123123123 |
