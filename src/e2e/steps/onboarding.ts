@@ -7,7 +7,11 @@ import { CustomWorld } from "./world";
 import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
 import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
 import { formatPkh } from "../../utils/format";
-import { AccountGroupBuilder } from "../helpers/accountGroup";
+import {
+  v1BackedupAccountGroups,
+  v2BackedupAccountGroups,
+} from "../fixtures/backups/backedupAccountGroups";
+import { AccountGroup, AccountGroupBuilder } from "../helpers/accountGroup";
 import { AccountsPage } from "../pages/accounts";
 
 export const BASE_URL = "http://127.0.0.1:3000";
@@ -44,7 +48,6 @@ When("I enter recorded seedphrase", async function (this: CustomWorld) {
       .getByRole("textbox")
       .nth(i)
       .fill(accountGroupBuilder.getSeedPhrase()[wordIndex]);
-    // TODO: maybe keep it here and not in the builder?
   }
 });
 
@@ -76,6 +79,13 @@ When("I fill account name with {string}", async function (this: CustomWorld, acc
   accountGroupBuilder.setAllAccountNames(accountName);
 });
 
+When("I upload {string} backup file", async function (this: CustomWorld, backupFileName) {
+  const fileChooserPromise = this.page.waitForEvent("filechooser");
+  await this.page.getByTestId("file-input").click();
+  const fileChooser = await fileChooserPromise;
+  await fileChooser.setFiles(path.join(__dirname, `../fixtures/backups/${backupFileName}`));
+});
+
 Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {
   let route: string = `${BASE_URL}`;
   if (pageName === "Accounts") {
@@ -89,7 +99,7 @@ Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {
 });
 
 When(
-  "I onboard with {string} {string} account group with size {int}",
+  "I onboard with {string} {string} account group of size {int}",
   async function (this: CustomWorld, groupName, groupType, accountsAmount) {
     accountGroupBuilder = new AccountGroupBuilder(groupType, accountsAmount);
     newGroups[groupName] = accountGroupBuilder;
@@ -98,17 +108,37 @@ When(
 
 Then("I have {string} account group", async function (this: CustomWorld, groupName) {
   const expectedGroup = await newGroups[groupName].build();
-  const accountsGroup = await accountsPage.getGroup(expectedGroup.groupTitle);
+  await checkAccountGroup(expectedGroup);
+});
 
+Then(
+  "I have groups matching {string} backup file",
+  async function (this: CustomWorld, backupFileName) {
+    let expectedGroups: AccountGroup[] = [];
+    if (backupFileName === "V1Backup.json") {
+      expectedGroups = await v1BackedupAccountGroups();
+    } else if (backupFileName === "V2Backup.json") {
+      expectedGroups = await v2BackedupAccountGroups();
+    } else {
+      throw new Error(`Unknown backup file: ${backupFileName}`);
+    }
+
+    // TODO: check for groups amount once all type of groups are supported by the tests
+    Promise.all(expectedGroups.map(expectedGroup => checkAccountGroup(expectedGroup)));
+  }
+);
+
+Then("I see a toast {string}", async function (this: CustomWorld, toastMessage) {
+  const toast = this.page.getByRole("status").getByText(toastMessage);
+  expect(toast).toBeVisible();
+});
+
+const checkAccountGroup = async (expectedGroup: AccountGroup) => {
+  const accountsGroup = await accountsPage.getGroup(expectedGroup.groupTitle);
   expect(accountsGroup.label).toEqual(expectedGroup.groupTitle);
   expect(accountsGroup.accounts.length).toEqual(expectedGroup.accounts.length);
   for (let i = 0; i < accountsGroup.accounts.length; i++) {
     expect(accountsGroup.accounts[i].label).toEqual(expectedGroup.accounts[i].name);
     expect(accountsGroup.accounts[i].address).toEqual(formatPkh(expectedGroup.accounts[i].pkh));
   }
-});
-
-Then("I see a toast {string}", async function (this: CustomWorld, toastMessage) {
-  const toast = this.page.getByRole("status").getByText(toastMessage);
-  expect(toast).toBeVisible();
-});
+};

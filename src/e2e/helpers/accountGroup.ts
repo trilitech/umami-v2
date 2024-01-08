@@ -1,11 +1,12 @@
 import { InMemorySigner } from "@taquito/signer";
+import { times } from "lodash";
 
 import { RawPkh } from "../../types/Address";
 import { makeDerivationPath } from "../../utils/account/derivationPathUtils";
 import { derivePublicKeyPair } from "../../utils/mnemonic";
 import { getFingerPrint } from "../../utils/tezos";
 
-type AccountGroup = {
+export type AccountGroup = {
   type: "mnemonic" | "secret_key";
   groupTitle: string;
   accounts: Account[];
@@ -17,7 +18,7 @@ type Account = {
 };
 
 /**
- * Helper class for building account groups. It contains data displayed on accounts page.
+ * Helper class for building account groups. It contains data expected to be displayed on accounts page.
  *
  * The builder uniforms the process of creating account groups among different types.
  * Using a method unsuitable for chosen account group type will cause an exception to be thrown.
@@ -36,61 +37,36 @@ export class AccountGroupBuilder {
       groupTitle: "",
       accounts: [],
     };
-    switch (this.accountGroup.type) {
-      case "secret_key":
-        this.accountGroup.groupTitle = "Secret Key Accounts";
-        break;
-      case "mnemonic":
-        this.accountGroup.groupTitle = "";
-        break;
+    if (this.accountGroup.type === "secret_key") {
+      this.accountGroup.groupTitle = "Secret Key Accounts";
     }
-    for (let i = 0; i < accountsAmount; i++) {
-      this.accountGroup.accounts.push({ name: "", pkh: "" });
-    }
+    this.accountGroup.accounts = times(accountsAmount, () => ({ name: "", pkh: "" }));
   }
 
   setDerivationPathPattern(derivationPathPattern: string): void {
-    switch (this.accountGroup.type) {
-      case "secret_key":
-        throw new Error("Derivation path is not used for secret key accounts");
-      case "mnemonic":
-        this.derivationPathPattern = derivationPathPattern;
-        break;
+    if (this.accountGroup.type !== "mnemonic") {
+      throw new Error(`Derivation path is not used for ${this.accountGroup.type} accounts}`);
     }
+    this.derivationPathPattern = derivationPathPattern;
+  }
+
+  async setSeedPhrase(seedPhrase: string[]): Promise<void> {
+    if (this.accountGroup.type !== "mnemonic") {
+      throw new Error(`Seed phrase is not used for ${this.accountGroup.type} accounts}`);
+    }
+    this.seedPhrase = seedPhrase;
+    this.accountGroup.groupTitle = `Seedphrase ${await getFingerPrint(seedPhrase.join(" "))}`;
   }
 
   getSeedPhrase = () => this.seedPhrase;
 
-  /**
-   * TODO: REFACTOR
-   *
-   * Updates the group title and saves the seedphrase for creating group accounts.
-   *
-   * Mnemonic accounts are grouped by seed phrases.
-   *
-   * @param seedPhrase - Space separated words making a BIP39 seed phrase.
-   */
-  async setSeedPhrase(seedPhrase: string[]): Promise<void> {
-    switch (this.accountGroup.type) {
-      case "secret_key":
-        throw new Error("Seed phrase is not used for secret key accounts");
-      case "mnemonic":
-        this.seedPhrase = seedPhrase;
-        this.accountGroup.groupTitle = `Seedphrase ${await getFingerPrint(seedPhrase.join(" "))}`;
-        break;
-    }
-  }
-
   async setSecretKey(secretKey: string, accountIndex = 0): Promise<void> {
-    switch (this.accountGroup.type) {
-      case "mnemonic":
-        throw new Error("Secret key is not used for mnemonic accounts");
-      case "secret_key":
-        this.accountGroup.accounts[accountIndex].pkh = await (
-          await InMemorySigner.fromSecretKey(secretKey)
-        ).publicKeyHash();
-        break;
+    if (this.accountGroup.type !== "secret_key") {
+      throw new Error(`Secret key is not used for ${this.accountGroup.type} accounts}`);
     }
+    this.accountGroup.accounts[accountIndex].pkh = await (
+      await InMemorySigner.fromSecretKey(secretKey)
+    ).publicKeyHash();
   }
 
   setAllAccountNames(accountPrefix?: string): void {
@@ -100,25 +76,30 @@ export class AccountGroupBuilder {
     }
   }
 
+  setAccountName(accountName: string, accountIndex = 0): void {
+    this.accountGroup.accounts[accountIndex].name = accountName;
+  }
+
   async build(): Promise<AccountGroup> {
     if (this.accountGroup.type === "mnemonic") {
-      if (this.seedPhrase.length === 0) {
-        throw new Error("Seedphrase is not set");
-      }
-      if (this.derivationPathPattern === "") {
-        throw new Error("Derivation path is not set");
-      }
-      for (let i = 0; i < this.accountGroup.accounts.length; i++) {
-        const keyPair = await derivePublicKeyPair(
-          this.seedPhrase.join(" "),
-          makeDerivationPath(this.derivationPathPattern, i)
-        );
-        this.accountGroup.accounts[i].pkh = keyPair.pkh;
-      }
+      await this.setMnemonicPkhs();
     }
-
-    // TODO: add checks for empty fields and throw if something is not set.
-
     return this.accountGroup;
+  }
+
+  private async setMnemonicPkhs() {
+    if (this.seedPhrase.length === 0) {
+      throw new Error("Seed phrase is not set");
+    }
+    if (this.derivationPathPattern === "") {
+      throw new Error("Derivation path is not set");
+    }
+    for (let i = 0; i < this.accountGroup.accounts.length; i++) {
+      const keyPair = await derivePublicKeyPair(
+        this.seedPhrase.join(" "),
+        makeDerivationPath(this.derivationPathPattern, i)
+      );
+      this.accountGroup.accounts[i].pkh = keyPair.pkh;
+    }
   }
 }
