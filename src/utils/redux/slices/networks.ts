@@ -26,6 +26,13 @@ export const networksSlice = createSlice({
         return;
       }
       const index = state.available.findIndex(n => n.name === network.name);
+      // If the current network is the one we're updating, update it too
+      // otherwise, it's going to be changed only
+      // when we switch to another one and back to the current one
+      if (state.current.name === network.name) {
+        state.current = network;
+      }
+
       if (index !== -1) {
         state.available[index] = network;
         return;

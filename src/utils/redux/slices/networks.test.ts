@@ -37,6 +37,22 @@ describe("networksSlice", () => {
       store.dispatch(networksActions.upsertNetwork({ ...MAINNET, buyTezUrl: undefined }));
       expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET]);
     });
+
+    it("updates current network if it's the one we're updating", () => {
+      const newNetwork = { ...MAINNET, name: "Another Network" };
+      store.dispatch(networksActions.upsertNetwork(newNetwork));
+
+      store.dispatch(networksActions.setCurrent(newNetwork));
+      expect(store.getState().networks.current).toEqual(newNetwork);
+
+      const updatedNetwork = { ...newNetwork, rpcUrl: "something else" };
+      store.dispatch(networksActions.upsertNetwork(updatedNetwork));
+
+      expect(store.getState().networks).toEqual({
+        available: [MAINNET, GHOSTNET, updatedNetwork],
+        current: updatedNetwork,
+      });
+    });
   });
 
   describe("removeNetwork", () => {
