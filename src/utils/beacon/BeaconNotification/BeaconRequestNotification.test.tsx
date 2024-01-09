@@ -6,6 +6,7 @@ import {
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
+import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { userEvent } from "@testing-library/user-event";
 
 import { mockMnemonicAccount } from "../../../mocks/factories";
@@ -37,7 +38,9 @@ const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => 
 
 beforeEach(() => {
   mockEstimatedFee(10);
-  jest.mocked(executeOperations).mockResolvedValue({ opHash: BATCH_OP_HASH.opHash });
+  jest
+    .mocked(executeOperations)
+    .mockResolvedValue({ opHash: BATCH_OP_HASH.opHash } as BatchWalletOperation);
   dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)]);
 });
 

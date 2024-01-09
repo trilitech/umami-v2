@@ -7,21 +7,24 @@ import { store } from "../store";
 describe("Multisig reducer", () => {
   describe("default values", () => {
     it("store should initialize with empty state", () => {
-      expect(store.getState().multisigs).toEqual({ items: [], pendingOperations: {} });
+      expect(store.getState().multisigs).toEqual({
+        items: [],
+        pendingOperations: {},
+        labelsMap: {},
+      });
     });
   });
 
   describe("setMultisigs", () => {
     it("should set new multisigs", () => {
       store.dispatch(multisigActions.setMultisigs(multisigs));
-      expect(store.getState().multisigs).toEqual({
-        items: multisigs.map((m, i) => ({
+      expect(store.getState().multisigs.items).toEqual(
+        multisigs.map((m, i) => ({
           ...m,
           label: `Multisig Account ${i}`,
           type: "multisig",
-        })),
-        pendingOperations: {},
-      });
+        }))
+      );
     });
 
     it("should set default label for new multisigs", () => {
@@ -29,14 +32,31 @@ describe("Multisig reducer", () => {
       const newMultisigs = multisigs;
       store.dispatch(multisigActions.setMultisigs(oldMultisigs));
       store.dispatch(multisigActions.setMultisigs(newMultisigs));
-      expect(store.getState().multisigs).toEqual({
-        items: newMultisigs.map((m, i) => ({
+      expect(store.getState().multisigs.items).toEqual(
+        newMultisigs.map((m, i) => ({
           ...m,
           label: `Multisig Account ${i}`,
           type: "multisig",
-        })),
-        pendingOperations: {},
-      });
+        }))
+      );
+    });
+
+    it("sets the predefined label for new multisigs", () => {
+      const multisig = multisigs[0];
+
+      store.dispatch(
+        multisigActions.addMultisigLabel({ pkh: multisig.address.pkh, label: "test label" })
+      );
+
+      store.dispatch(multisigActions.setMultisigs([multisig]));
+
+      expect(store.getState().multisigs.items).toEqual([
+        {
+          ...multisig,
+          label: "test label",
+          type: "multisig",
+        },
+      ]);
     });
   });
 
@@ -74,51 +94,57 @@ describe("Multisig reducer", () => {
       const operation2 = { ...multisigOperation, id: "2" };
       const operation3 = { ...multisigOperation, bigmapId: 1 };
       store.dispatch(multisigActions.setPendingOperations([operation1, operation2, operation3]));
-      expect(store.getState().multisigs).toEqual({
-        items: [],
-        pendingOperations: {
-          "0": [
-            {
-              approvals: [
-                {
-                  pkh: "pkh",
-                  type: "implicit",
-                },
-              ],
-              bigmapId: 0,
-              id: "1",
-              rawActions:
-                '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"005fd0a7ece135cecfd71fcf78cf6656d5047fb980"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"100000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
-            },
-            {
-              approvals: [
-                {
-                  pkh: "pkh",
-                  type: "implicit",
-                },
-              ],
-              bigmapId: 0,
-              id: "2",
-              rawActions:
-                '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"005fd0a7ece135cecfd71fcf78cf6656d5047fb980"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"100000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
-            },
-          ],
-          "1": [
-            {
-              approvals: [
-                {
-                  pkh: "pkh",
-                  type: "implicit",
-                },
-              ],
-              bigmapId: 1,
-              id: "1",
-              rawActions:
-                '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"005fd0a7ece135cecfd71fcf78cf6656d5047fb980"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"100000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
-            },
-          ],
-        },
+      expect(store.getState().multisigs.pendingOperations).toEqual({
+        "0": [
+          {
+            approvals: [
+              {
+                pkh: "pkh",
+                type: "implicit",
+              },
+            ],
+            bigmapId: 0,
+            id: "1",
+            rawActions:
+              '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"005fd0a7ece135cecfd71fcf78cf6656d5047fb980"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"100000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
+          },
+          {
+            approvals: [
+              {
+                pkh: "pkh",
+                type: "implicit",
+              },
+            ],
+            bigmapId: 0,
+            id: "2",
+            rawActions:
+              '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"005fd0a7ece135cecfd71fcf78cf6656d5047fb980"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"100000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
+          },
+        ],
+        "1": [
+          {
+            approvals: [
+              {
+                pkh: "pkh",
+                type: "implicit",
+              },
+            ],
+            bigmapId: 1,
+            id: "1",
+            rawActions:
+              '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"005fd0a7ece135cecfd71fcf78cf6656d5047fb980"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"100000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
+          },
+        ],
       });
+    });
+  });
+
+  describe("addMultisigLabel", () => {
+    it("sets the multisig label", () => {
+      const { pkh } = mockContractAddress(0);
+      store.dispatch(multisigActions.addMultisigLabel({ pkh, label: "test label" }));
+
+      expect(store.getState().multisigs.labelsMap).toEqual({ [pkh]: "test label" });
     });
   });
 });

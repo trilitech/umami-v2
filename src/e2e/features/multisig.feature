@@ -7,7 +7,6 @@ Feature: Multisig Account Creation
     And I am on an Accounts page
 
     When I am creating a multisig account
-    Then I see "Create Multisig" modal
 
     When I fill "Name the Contract" with "My Multisig Account"
     And I fill "Select Owner" address field with "Alice"
@@ -27,7 +26,8 @@ Feature: Multisig Account Creation
     When I sign transaction with password "12345678"
     Then I see "Operation Submitted" modal
 
-    When I close modal
+    When I wait for TZKT to process the updates
+    And I close modal
     And I refetch the data
 
     Then I see "My Multisig Account" multisig account

@@ -44,9 +44,8 @@ When(
   }
 );
 
-Then("I see {string} modal", { timeout: 15000 }, async function (this: CustomWorld, modalTitle) {
-  const title = this.page.getByRole("heading", { name: modalTitle, exact: false });
-  expect(title).toBeVisible();
+Then("I see {string} modal", async function (this: CustomWorld, modalTitle) {
+  expect(this.page.getByRole("heading", { name: modalTitle, exact: false })).toBeVisible();
 });
 
 When("I check {string} checkbox", async function (this: CustomWorld, checkboxName) {
@@ -59,13 +58,14 @@ When("I sign transaction with password {string}", async function (this: CustomWo
 });
 
 When("I close modal", async function (this: CustomWorld) {
-  await this.page.waitForTimeout(100);
   await this.page.getByRole("button", { name: "Close", exact: true }).click();
 });
 
+When("I wait for TZKT to process the updates", async function (this: CustomWorld) {
+  await this.page.waitForTimeout(3000);
+});
+
 When("I refetch the data", async function (this: CustomWorld) {
-  // TZKT has to process the updates
-  await this.page.waitForTimeout(1000);
   await this.page.getByTestId("refetch-button").click();
   expect(this.page.getByText("Updated just now")).toBeVisible();
 });

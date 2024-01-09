@@ -145,11 +145,12 @@ export const useSignPageHelpers = (
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const { opHash } = await executeOperations(operations, tezosToolkit);
+      const operation = await executeOperations(operations, tezosToolkit);
       if (mode === "batch") {
         clearBatch(operations.sender);
       }
-      openWith(<SuccessStep hash={opHash} />);
+      openWith(<SuccessStep hash={operation.opHash} />);
+      return operation;
     });
 
   return {
@@ -161,6 +162,7 @@ export const useSignPageHelpers = (
     signer: getSigner(signer),
     reEstimate,
     onSign,
+    handleAsyncAction,
   };
 };
 

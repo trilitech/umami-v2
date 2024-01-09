@@ -44,6 +44,8 @@ export const useDynamicModal = () => {
         closeOnOverlayClick={false}
         isCentered
         isOpen={isOpen}
+        // this is used in e2e tests to decrease flakiness due to animations
+        motionPreset={(localStorage.getItem("chakra-modal-motion-preset") as any) || undefined}
         onClose={onClose}
         size={size}
       >

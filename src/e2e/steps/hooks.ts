@@ -6,6 +6,7 @@ import { omit } from "lodash";
 
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
+import { VERSION } from "../../utils/redux/reducer";
 import { initialState as accountsInitialState } from "../../utils/redux/slices/accountsSlice";
 import { initialState as assetsInitialState } from "../../utils/redux/slices/assetsSlice";
 import { initialState as batchesInitialState } from "../../utils/redux/slices/batches";
@@ -19,7 +20,7 @@ import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
 let browser: ChromiumBrowser;
 
 BeforeAll(async function () {
-  browser = await chromium.launch({ headless: !!process.env.CI, devtools: false });
+  browser = await chromium.launch({ headless: !!process.env.CI });
 
   global.crypto = crypto as any;
 });
@@ -38,7 +39,7 @@ BeforeAll(async function () {
 Before(async function (this: CustomWorld) {
   (async () => {
     const predefinedState = await this.getReduxState();
-    const accounts = predefinedState["accounts"] || accountsInitialState;
+    const accounts = { ...accountsInitialState, ...predefinedState["accounts"] };
     const state: any = {
       assets: assetsInitialState,
       batches: batchesInitialState,
@@ -54,7 +55,7 @@ Before(async function (this: CustomWorld) {
     const prepareObjForRedux = (obj: any): void => {
       // without this redux considers the object to be malformed
       // and overrides it with the default state
-      obj["_persist"] = '{"version":-1,"rehydrated":true}';
+      obj["_persist"] = { version: VERSION, rehydrated: true };
 
       // each value should be a valid JSON string
       Object.keys(obj).forEach(key => {
@@ -77,9 +78,9 @@ Before(async function (this: CustomWorld) {
           {
             origin: BASE_URL,
             localStorage: [
-              // TODO: add a way to pass in the accounts (they are stored under persist:accounts)
               { name: "persist:root", value: JSON.stringify(state) },
               { name: "persist:accounts", value: JSON.stringify(accounts) },
+              { name: "chakra-modal-motion-preset", value: "none" },
             ],
           },
         ],

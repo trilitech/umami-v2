@@ -1,4 +1,5 @@
 import { Modal } from "@chakra-ui/react";
+import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 
 import { BatchPage } from "./BatchPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
@@ -21,7 +22,7 @@ beforeEach(() => {
   mockEstimatedFee(10);
 
   useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");
-  jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" });
+  jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);
 });
 
 describe("<BatchPage />", () => {

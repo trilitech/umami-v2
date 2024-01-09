@@ -1,5 +1,6 @@
 import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
+import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import React, { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -39,7 +40,7 @@ const SignWithGoogleButton: React.FC<
 };
 
 export const SignButton: React.FC<{
-  onSubmit: (tezosToolkit: TezosToolkit) => Promise<void>;
+  onSubmit: (tezosToolkit: TezosToolkit) => Promise<BatchWalletOperation | void>;
   signer: ImplicitAccount;
   isLoading?: boolean;
   isDisabled?: boolean;
