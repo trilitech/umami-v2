@@ -22,6 +22,7 @@ import {
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
 import { RawPkh, isValidImplicitPkh, parsePkh } from "../../../types/Address";
+import { useIsUniqueLabel } from "../../../utils/hooks/getAccountDataHooks";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";
 import { FormPageProps, formDefaultValues } from "../utils";
@@ -79,6 +80,8 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     isLoading,
   } = useHandleOnSubmitFormActions([openSignPage]);
 
+  const isUnique = useIsUniqueLabel();
+
   return (
     <FormProvider {...form}>
       <ModalContent>
@@ -94,7 +97,14 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               <InputGroup>
                 <Input
                   type="text"
-                  {...register("name", { required: "Name is required" })}
+                  {...register("name", {
+                    required: "Name is required",
+                    validate: name => {
+                      if (!isUnique(name)) {
+                        return "Name must be unique across all accounts and contacts";
+                      }
+                    },
+                  })}
                   placeholder="The name is only stored locally"
                 />
               </InputGroup>

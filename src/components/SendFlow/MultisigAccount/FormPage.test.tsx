@@ -12,7 +12,7 @@ import {
   mockImplicitAddress,
   mockMnemonicAccount,
 } from "../../../mocks/factories";
-import { mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
 import { multisigs } from "../../../mocks/multisig";
 import { render } from "../../../mocks/testUtils";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
@@ -47,6 +47,21 @@ describe("FormPage", () => {
       fireEvent.blur(screen.getByLabelText("Name the Contract"));
       await waitFor(() => {
         expect(screen.getByTestId("name-error")).toHaveTextContent("Name is required");
+      });
+    });
+
+    it("has to be unique", async () => {
+      addAccount(mockMnemonicAccount(1, "Some name"));
+
+      render(fixture());
+      const input = screen.getByLabelText("Name the Contract");
+      fireEvent.change(input, { target: { value: "Some name" } });
+
+      fireEvent.blur(input);
+      await waitFor(() => {
+        expect(screen.getByTestId("name-error")).toHaveTextContent(
+          "Name must be unique across all accounts and contacts"
+        );
       });
     });
   });
