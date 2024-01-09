@@ -1,5 +1,6 @@
 import { Accordion } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
+import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import BigNumber from "bignumber.js";
 
 import { MultisigPendingAccordionItem } from "./MultisigPendingAccordionItem";
@@ -78,7 +79,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
     jest.mocked(executeOperations).mockResolvedValue({
       opHash: "mockHash",
-    });
+    } as BatchWalletOperation);
 
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
@@ -128,7 +129,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
     jest.mocked(executeOperations).mockResolvedValue({
       opHash: "mockHash",
-    });
+    } as BatchWalletOperation);
 
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([signer]));
     const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };

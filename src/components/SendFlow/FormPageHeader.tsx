@@ -1,4 +1,4 @@
-import { ModalCloseButton, ModalHeader, Text, chakra } from "@chakra-ui/react";
+import { Heading, ModalCloseButton, ModalHeader, Text, chakra } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 
@@ -16,9 +16,7 @@ export const FormPageHeader: React.FC<{
 }> = ({ title = "Send", subTitle = "Send one or insert into batch" }) => {
   return (
     <HeaderWrapper>
-      <Text fontWeight="600" size="2xl">
-        {title}
-      </Text>
+      <Heading size="2xl">{title}</Heading>
       <Text color={colors.gray[400]} textAlign="center" size="sm">
         {subTitle}
       </Text>

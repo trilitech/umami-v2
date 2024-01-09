@@ -30,7 +30,7 @@ type State = {
 
 type ConversionRatePayload = { rate: State["conversionRate"] };
 
-const initialState: State = {
+export const initialState: State = {
   blockLevel: null,
   balances: {
     mutez: {},

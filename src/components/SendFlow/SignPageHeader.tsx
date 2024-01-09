@@ -1,4 +1,4 @@
-import { ModalCloseButton, Text } from "@chakra-ui/react";
+import { Heading, ModalCloseButton, Text } from "@chakra-ui/react";
 
 import { HeaderWrapper } from "./FormPageHeader";
 import { SignPageMode } from "./utils";
@@ -34,9 +34,7 @@ export const SignPageHeader: React.FC<{
   return (
     <HeaderWrapper>
       {goBack && <ModalBackButton onClick={goBack} />}
-      <Text fontWeight="600" size="2xl">
-        {headerText(operationsType, mode)}
-      </Text>
+      <Heading size="2xl">{headerText(operationsType, mode)}</Heading>
       <Text color={colors.gray[400]} textAlign="center" size="sm">
         Enter your password to confirm this transaction.
       </Text>

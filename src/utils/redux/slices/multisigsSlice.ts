@@ -2,14 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fromPairs, groupBy } from "lodash";
 
 import { MultisigAccount } from "../../../types/Account";
+import { RawPkh } from "../../../types/Address";
 import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
 
 type State = {
   items: MultisigAccount[];
   pendingOperations: MultisigPendingOperations;
+  /**
+   * it's used for defining the label of a newly created multisig account
+   * since we fetch multisigs from TZKT we need to know the label in advance
+   * if we try to manually push the new account to the `items` array
+   * then it'll be overwritten by the fetched data
+   */
+  labelsMap: Record<RawPkh, string>;
 };
 
-const initialState: State = { items: [], pendingOperations: {} };
+export const initialState: State = { items: [], pendingOperations: {}, labelsMap: {} };
 
 export const multisigsSlice = createSlice({
   name: "multisigs",
@@ -23,9 +31,18 @@ export const multisigsSlice = createSlice({
 
       state.items = payload.map((multisig, i) => ({
         ...multisig,
-        label: labelsByAddress[multisig.address.pkh] || `Multisig Account ${i}`,
+        label:
+          labelsByAddress[multisig.address.pkh] ||
+          state.labelsMap[multisig.address.pkh] ||
+          `Multisig Account ${i}`,
         type: "multisig",
       }));
+    },
+    addMultisigLabel: (
+      state,
+      { payload: { pkh, label } }: { payload: { pkh: RawPkh; label: string } }
+    ) => {
+      state.labelsMap[pkh] = label;
     },
     setPendingOperations: (state, { payload }: { payload: MultisigOperation[] }) => {
       state.pendingOperations = groupBy(payload, operation => operation.bigmapId);

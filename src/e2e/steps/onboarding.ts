@@ -25,17 +25,9 @@ Given("I am on the welcome page", async function (this: CustomWorld) {
   await this.page.goto(`${BASE_URL}/`);
 });
 
-When("I click {string} button", async function (this: CustomWorld, buttonName) {
-  await this.page.getByRole("button", { name: buttonName }).click();
-});
-
 Then("I am on {string} onboarding page", async function (this: CustomWorld, modalTitle) {
   const title = this.page.getByRole("heading", { name: modalTitle });
   expect(title).toBeVisible();
-});
-
-When("I check {string} checkbox", async function (this: CustomWorld, checkboxName) {
-  await this.page.getByText(new RegExp(checkboxName)).click();
 });
 
 Then("I record generated seedphrase", async function (this: CustomWorld) {
@@ -78,10 +70,6 @@ When("I fill secret key with {string}", async function (this: CustomWorld, secre
 When("I fill account name with {string}", async function (this: CustomWorld, accountName) {
   await this.page.getByLabel("Account name", { exact: true }).fill(accountName);
   addAccountPage.namePrefix = accountName || "Account";
-});
-
-When("I fill {string} with {string}", async function (this: CustomWorld, inputLabel, inputValue) {
-  await this.page.getByLabel(inputLabel, { exact: true }).fill(inputValue);
 });
 
 Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {

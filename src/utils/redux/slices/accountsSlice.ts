@@ -13,14 +13,14 @@ import { RawPkh } from "../../../types/Address";
 import { EncryptedData } from "../../crypto/types";
 import { changeMnemonicPassword } from "../thunks/changeMnemonicPassword";
 
-type State = {
+export type State = {
   items: ImplicitAccount[];
   //TODO: Rename to encryptedMnemonics
   seedPhrases: Record<string, EncryptedData | undefined>;
   secretKeys: Record<RawPkh, EncryptedData | undefined>;
 };
 
-const initialState: State = {
+export const initialState: State = {
   items: [],
   seedPhrases: {},
   secretKeys: {},

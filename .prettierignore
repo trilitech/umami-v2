@@ -1,4 +1,2 @@
 # Ignore artifacts:
-build
-coverage
-dist
+.yarn/

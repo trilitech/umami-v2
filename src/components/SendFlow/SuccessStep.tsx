@@ -1,6 +1,7 @@
 import {
   Button,
   Flex,
+  Heading,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -24,7 +25,9 @@ export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
   return (
     <ModalContent paddingY="20px">
       <ModalCloseButton />
-      <ModalHeader textAlign="center">Operation Submitted</ModalHeader>
+      <ModalHeader textAlign="center">
+        <Heading>Operation Submitted</Heading>
+      </ModalHeader>
       <ModalBody>
         <Flex justifyContent="center" marginTop="10px">
           <Text color="text.dark" textAlign="center" size="sm">

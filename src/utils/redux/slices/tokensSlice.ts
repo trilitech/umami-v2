@@ -7,7 +7,7 @@ import { RawTokenInfo, Token, TokenId, fromRaw } from "../../../types/Token";
 
 type State = Record<NetworkName, Record<RawPkh, Record<TokenId, Token>> | undefined>;
 
-const initialState: State = fromPairs(DefaultNetworks.map(network => [network.name, {}]));
+export const initialState: State = fromPairs(DefaultNetworks.map(network => [network.name, {}]));
 
 export const tokensSlice = createSlice({
   name: "tokens",
