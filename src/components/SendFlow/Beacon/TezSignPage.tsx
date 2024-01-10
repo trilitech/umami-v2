@@ -23,7 +23,7 @@ export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeacon
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader mode="single" operationsType={operation.type} />
+          <SignPageHeader mode="single" operationsType={operation.type} signer={operation.signer} />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 

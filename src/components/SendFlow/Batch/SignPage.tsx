@@ -23,7 +23,7 @@ export const SignPage: React.FC<{
         <form>
           <BatchModalBody
             fee={fee}
-            signerAddress={signer.address}
+            signer={signer}
             title={title}
             transactionCount={operations.operations.length}
           />

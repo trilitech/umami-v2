@@ -22,7 +22,7 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader mode="single" operationsType={operation.type} />
+          <SignPageHeader mode="single" operationsType={operation.type} signer={operation.signer} />
           <ModalBody>
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />

@@ -76,7 +76,7 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} operationsType={operations.type} />
+          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
           <ModalBody>
             <FormLabel>Contract Name</FormLabel>
             <Text

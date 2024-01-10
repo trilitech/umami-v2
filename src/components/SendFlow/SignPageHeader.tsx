@@ -3,6 +3,7 @@ import { Heading, ModalCloseButton, Text } from "@chakra-ui/react";
 import { HeaderWrapper } from "./FormPageHeader";
 import { SignPageMode } from "./utils";
 import colors from "../../style/colors";
+import { ImplicitAccount } from "../../types/Account";
 import { AccountOperations } from "../../types/AccountOperations";
 import { ModalBackButton } from "../ModalBackButton";
 
@@ -26,17 +27,29 @@ export const headerText = (
   }
 };
 
+export const subTitle = (signer: ImplicitAccount): string | undefined => {
+  switch (signer.type) {
+    case "ledger":
+    case "social":
+      return;
+    case "mnemonic":
+    case "secret_key":
+      return "Enter your password to confirm this transaction.";
+  }
+};
+
 export const SignPageHeader: React.FC<{
   goBack?: () => void;
   mode: SignPageMode;
   operationsType: AccountOperations["type"];
-}> = ({ goBack, mode, operationsType }) => {
+  signer: ImplicitAccount;
+}> = ({ goBack, mode, operationsType, signer }) => {
   return (
     <HeaderWrapper>
       {goBack && <ModalBackButton onClick={goBack} />}
       <Heading size="2xl">{headerText(operationsType, mode)}</Heading>
       <Text color={colors.gray[400]} textAlign="center" size="sm">
-        Enter your password to confirm this transaction.
+        {subTitle(signer)}
       </Text>
       <ModalCloseButton />
     </HeaderWrapper>
