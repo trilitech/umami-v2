@@ -1,7 +1,9 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 
+import { ViewAllLink } from "./ViewAllLink";
 import { TokenIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
+import { RawPkh } from "../../../types/Address";
 import { tokenPrettyAmount } from "../../../types/Token";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import { TokenNameWithIcon } from "../../../views/tokens/TokenNameWithIcon";
@@ -35,15 +37,22 @@ const TokenTile = ({ token }: { token: FA12TokenBalance | FA2TokenBalance }) => 
   );
 };
 
-export const TokenList = ({ tokens }: { tokens: Array<FA12TokenBalance | FA2TokenBalance> }) => {
+export const TokenList = ({
+  owner,
+  tokens,
+}: {
+  owner: RawPkh;
+  tokens: Array<FA12TokenBalance | FA2TokenBalance>;
+}) => {
   if (tokens.length === 0) {
-    return <NoItems small title="No Tokens found" />;
+    return <NoItems small title="No tokens found" />;
   }
   return (
     <Box>
       {tokens.map(t => {
         return <TokenTile key={t.contract + (t.type === "fa2" ? t.tokenId : "")} token={t} />;
       })}
+      <ViewAllLink to={`/tokens?accounts=${owner}`} />
     </Box>
   );
 };
