@@ -100,8 +100,8 @@ export const SignButton: React.FC<{
       return (
         <Button
           width="100%"
-          isDisabled={isDisabled}
-          isLoading={isLoading || externalIsLoading}
+          isDisabled={buttonIsDisabled}
+          isLoading={isLoading}
           onClick={onSocialSign}
           size="lg"
         >
