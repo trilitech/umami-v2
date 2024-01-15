@@ -41,67 +41,64 @@ export const parseTorusRedirectParams = (url: string) => {
   return result;
 };
 
-export type GoogleAuthProps = {
-  onSuccessfulAuth: (sk: string, email: string) => void;
-  isDisabled?: boolean;
-};
-
 const LOGIN_TIMEOUT = 60 * 1000; // 1 minute
 
-export const getGoogleCredentials = async () => {
-  const torus = new CustomAuth({
-    web3AuthClientId:
-      "BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g",
-    baseUrl: "https://umamiwallet.com/auth/v2/",
-    redirectPathName: "redirect.html",
-    redirectToOpener: true,
-    uxMode: "popup",
-    network: "mainnet",
-  });
-  await torus.init({ skipSw: true });
+/**
+ * This function will open a popup window with the google auth page.
+ * Once the user authorizes the app it will navigate the user back to it.
+ * In the end we obtain the user's email and raw secret key.
+ *
+ * The function has a timeout to prevent infinite loading state.
+ */
+export const getGoogleCredentials = async () =>
+  withTimeout(async () => {
+    const torus = new CustomAuth({
+      web3AuthClientId:
+        "BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g",
+      baseUrl: "https://umamiwallet.com/auth/v2/",
+      redirectPathName: "redirect.html",
+      redirectToOpener: true,
+      uxMode: "popup",
+      network: "mainnet",
+    });
+    await torus.init({ skipSw: true });
 
-  const result = await torus.triggerAggregateLogin({
-    verifierIdentifier: "tezos-google",
-    aggregateVerifierType: "single_id_verifier",
-    subVerifierDetailsArray: [
-      {
-        clientId: "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
-        typeOfLogin: "google",
-        verifier: "umami",
-      },
-    ],
-  });
-  const privateKey = result.finalKeyData.privKey || result.oAuthKeyData.privKey;
-  const secretKey = b58cencode(privateKey, prefix[Prefix.SPSK]);
+    const result = await torus.triggerAggregateLogin({
+      verifierIdentifier: "tezos-google",
+      aggregateVerifierType: "single_id_verifier",
+      subVerifierDetailsArray: [
+        {
+          clientId: "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
+          typeOfLogin: "google",
+          verifier: "umami",
+        },
+      ],
+    });
+    const privateKey = result.finalKeyData.privKey || result.oAuthKeyData.privKey;
+    const secretKey = b58cencode(privateKey, prefix[Prefix.SPSK]);
 
-  return {
-    secretKey,
-    email: result.userInfo[0].email,
-  };
-};
+    return {
+      secretKey,
+      email: result.userInfo[0].email,
+    };
+  }, LOGIN_TIMEOUT);
 
-export const useGetGoogleCredentials = () => {
+export const GoogleAuth: React.FC<{ onAuth: (secretKey: string, email: string) => void }> = ({
+  onAuth,
+}) => {
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
-  return {
-    isLoading,
-    getCredentials: async (onSuccessfulAuth: GoogleAuthProps["onSuccessfulAuth"]) =>
-      handleAsyncAction(
-        () =>
-          withTimeout(async () => {
-            const { secretKey, email } = await getGoogleCredentials();
-            return onSuccessfulAuth(secretKey, email);
-          }, LOGIN_TIMEOUT),
-        {
-          title: "Social login failed",
-        }
-      ),
-  };
-};
+  const onClick = async () =>
+    handleAsyncAction(
+      async () => {
+        const { secretKey, email } = await getGoogleCredentials();
+        return onAuth(secretKey, email);
+      },
+      {
+        title: "Social login failed",
+      }
+    );
 
-export const GoogleAuth: React.FC<GoogleAuthProps> = ({ onSuccessfulAuth, isDisabled }) => {
-  const { isLoading, getCredentials } = useGetGoogleCredentials();
-  // TODO: correct the BG colours when we have the design ready
   return (
     <IconButton
       width="48px"
@@ -110,9 +107,8 @@ export const GoogleAuth: React.FC<GoogleAuthProps> = ({ onSuccessfulAuth, isDisa
       _disabled={{ bg: colors.gray[900] }}
       aria-label="Google SSO"
       icon={<FcGoogle size="24px" />}
-      isDisabled={isDisabled}
       isLoading={isLoading}
-      onClick={() => getCredentials(onSuccessfulAuth)}
+      onClick={onClick}
       size="lg"
       variant="outline"
     />
