@@ -1,10 +1,10 @@
 import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { GoogleAuthProps, useGetGoogleCredentials } from "../../GoogleAuth";
+import { getGoogleCredentials } from "../../GoogleAuth";
 import {
   ImplicitAccount,
   LedgerAccount,
@@ -17,27 +17,6 @@ import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { makeToolkit } from "../../utils/tezos";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { PasswordInput } from "../PasswordInput";
-
-const SignWithGoogleButton: React.FC<
-  PropsWithChildren<{
-    isDisabled?: boolean;
-    onSuccessfulAuth: GoogleAuthProps["onSuccessfulAuth"];
-  }>
-> = ({ isDisabled, onSuccessfulAuth, children }) => {
-  const { isLoading, getCredentials } = useGetGoogleCredentials();
-
-  return (
-    <Button
-      width="100%"
-      isDisabled={isDisabled}
-      isLoading={isLoading}
-      onClick={() => getCredentials(onSuccessfulAuth)}
-      size="lg"
-    >
-      {children}
-    </Button>
-  );
-};
 
 export const SignButton: React.FC<{
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<BatchWalletOperation | void>;
@@ -70,10 +49,11 @@ export const SignButton: React.FC<{
       return onSubmit(await makeToolkit({ type: "secret_key", secretKey, network }));
     });
 
-  const onSocialSign = async (secretKey: string) =>
-    handleAsyncAction(async () =>
-      onSubmit(await makeToolkit({ type: "social", secretKey, network }))
-    );
+  const onSocialSign = async () =>
+    handleAsyncAction(async () => {
+      const { secretKey } = await getGoogleCredentials();
+      onSubmit(await makeToolkit({ type: "social", secretKey, network }));
+    });
 
   const onLedgerSign = async () =>
     handleAsyncAction(async () => {
@@ -118,9 +98,15 @@ export const SignButton: React.FC<{
       );
     case "social":
       return (
-        <SignWithGoogleButton isDisabled={buttonIsDisabled} onSuccessfulAuth={onSocialSign}>
+        <Button
+          width="100%"
+          isDisabled={isDisabled}
+          isLoading={isLoading || externalIsLoading}
+          onClick={onSocialSign}
+          size="lg"
+        >
           {text || "Sign with Google"}
-        </SignWithGoogleButton>
+        </Button>
       );
     case "ledger":
       return (

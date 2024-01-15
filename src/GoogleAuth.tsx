@@ -48,6 +48,38 @@ export type GoogleAuthProps = {
 
 const LOGIN_TIMEOUT = 60 * 1000; // 1 minute
 
+export const getGoogleCredentials = async () => {
+  const torus = new CustomAuth({
+    web3AuthClientId:
+      "BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g",
+    baseUrl: "https://umamiwallet.com/auth/v2/",
+    redirectPathName: "redirect.html",
+    redirectToOpener: true,
+    uxMode: "popup",
+    network: "mainnet",
+  });
+  await torus.init({ skipSw: true });
+
+  const result = await torus.triggerAggregateLogin({
+    verifierIdentifier: "tezos-google",
+    aggregateVerifierType: "single_id_verifier",
+    subVerifierDetailsArray: [
+      {
+        clientId: "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
+        typeOfLogin: "google",
+        verifier: "umami",
+      },
+    ],
+  });
+  const privateKey = result.finalKeyData.privKey || result.oAuthKeyData.privKey;
+  const secretKey = b58cencode(privateKey, prefix[Prefix.SPSK]);
+
+  return {
+    secretKey,
+    email: result.userInfo[0].email,
+  };
+};
+
 export const useGetGoogleCredentials = () => {
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
@@ -57,35 +89,11 @@ export const useGetGoogleCredentials = () => {
       handleAsyncAction(
         () =>
           withTimeout(async () => {
-            const torus = new CustomAuth({
-              web3AuthClientId:
-                "BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g",
-              baseUrl: "https://umamiwallet.com/auth/v2/",
-              redirectPathName: "redirect.html",
-              redirectToOpener: true,
-              uxMode: "popup",
-              network: "mainnet",
-            });
-            await torus.init({ skipSw: true });
-
-            const result = await torus.triggerAggregateLogin({
-              verifierIdentifier: "tezos-google",
-              aggregateVerifierType: "single_id_verifier",
-              subVerifierDetailsArray: [
-                {
-                  clientId:
-                    "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com",
-                  typeOfLogin: "google",
-                  verifier: "umami",
-                },
-              ],
-            });
-            const privateKey = result.finalKeyData.privKey || result.oAuthKeyData.privKey;
-            const sk = b58cencode(privateKey, prefix[Prefix.SPSK]);
-            onSuccessfulAuth(sk, result.userInfo[0].email);
+            const { secretKey, email } = await getGoogleCredentials();
+            return onSuccessfulAuth(secretKey, email);
           }, LOGIN_TIMEOUT),
         {
-          title: "Torus SSO failed",
+          title: "Social login failed",
         }
       ),
   };
