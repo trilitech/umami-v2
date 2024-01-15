@@ -19,13 +19,16 @@ import { getIPFSurl, sortedByLastUpdate } from "../../../utils/token/utils";
 import { NoNFTs } from "../../NoItems";
 
 const MAX_NFTS_SIZE = 18;
+
 /**
- * Grid with NFTs to be displayed in the account drawer
- * Can open an NFT drawer on click
- * Limits the number of displayed NFTs to {@link MAX_NFTS_SIZE}
+ * Grid with NFTs to be displayed in the account drawer.
  *
- * @param owner - Address on the NFTs owner
- * @param nfts - List of owner's NFTs
+ * Limits the number of displayed NFTs to {@link MAX_NFTS_SIZE}.
+ *
+ * Contains clickable NFT images. NFT drawer opens on clicking the image.
+ *
+ * @param owner - Address of the account for which the drawer was opened.
+ * @param nfts - List of owner's NFTs.
  */
 export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProps> = ({
   owner,
@@ -78,7 +81,7 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
           );
         })}
       </SimpleGrid>
-      <ViewAllLink to={`/nfts?accounts=${owner}`} />
+      {nfts.length > MAX_NFTS_SIZE && <ViewAllLink to={`/nfts?accounts=${owner}`} />}
     </>
   );
 };

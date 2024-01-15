@@ -10,8 +10,13 @@ import { OperationTile } from "../../OperationTile";
 const MAX_OPERATIONS_SIZE = 20;
 
 /**
- * Operations list to be displayed in the account drawer
- * Limits the total number of displayed operations to {@link MAX_OPERATIONS_SIZE}
+ * List of {@link OperationTile} to be displayed in the account drawer.
+ *
+ * Contains operations related to the account.
+ * The total number of displayed operations is limited to {@link MAX_OPERATIONS_SIZE}.
+ *
+ * @param owner - Address of the account for which the drawer was opened.
+ * @param operations - List of owner's operations.
  */
 export const OperationListDisplay: React.FC<{
   owner: RawPkh;
@@ -31,7 +36,9 @@ export const OperationListDisplay: React.FC<{
           {i < chunk.length - 1 && <Divider marginY="20px" />}
         </Box>
       ))}
-      <ViewAllLink to={`/operations?accounts=${owner}`} />
+      {operations.length > MAX_OPERATIONS_SIZE && (
+        <ViewAllLink to={`/operations?accounts=${owner}`} />
+      )}
     </>
   );
 };
