@@ -36,12 +36,12 @@ describe("estimate", () => {
     });
 
     it("catches subtraction_underflow", () => {
-      const res = handleTezError({ message: "subtraction_underflow" });
+      const res = handleTezError(new Error("subtraction_underflow"));
       expect(res).toEqual("Insufficient balance, please make sure you have enough funds.");
     });
 
     it("catches non_existing_contract", () => {
-      const res = handleTezError({ message: "contract.non_existing_contract" });
+      const res = handleTezError(new Error("contract.non_existing_contract"));
       expect(res).toEqual(
         "Contract does not exist, please check if the correct network is selected."
       );
@@ -49,7 +49,7 @@ describe("estimate", () => {
 
     it("returns the original error if not known", () => {
       const err = new Error("unknown error");
-      expect(handleTezError(err)).toEqual(err);
+      expect(handleTezError(err)).toEqual("unknown error");
     });
   });
 });

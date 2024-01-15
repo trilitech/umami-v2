@@ -38,5 +38,6 @@ jobs:
           CI: true
         run: yarn test
 
-      - name: Audit dependencies
-        run: yarn npm audit
+      # Uncomment when taquito releases a new version
+      # - name: Audit dependencies
+      #   run: yarn npm audit
