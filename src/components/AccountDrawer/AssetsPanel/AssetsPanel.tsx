@@ -98,7 +98,7 @@ export const AssetsPanel: React.FC<{
         </TabPanel>
 
         <TabPanel paddingTop="24px" data-testid="account-card-tokens-tab">
-          <TokenList tokens={tokens} />
+          <TokenList owner={account.address.pkh} tokens={tokens} />
         </TabPanel>
       </TabPanels>
     </Tabs>
