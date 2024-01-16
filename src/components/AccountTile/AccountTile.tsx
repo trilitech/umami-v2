@@ -11,6 +11,7 @@ import { useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { getIPFSurl, sortedByLastUpdate } from "../../utils/token/utils";
 import { useAddressKind } from "../AddressTile/useAddressKind";
+import { color as identiconColor } from "../Identicon";
 
 export const AccountTileBase: React.FC<
   {
@@ -25,7 +26,6 @@ export const AccountTileBase: React.FC<
       height={90}
       marginBottom={4}
       padding={4}
-      background={colors.gray[900]}
       border={`1px solid ${colors.gray[800]}`}
       borderRadius={4}
       {...flexProps}
@@ -57,13 +57,28 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
 
 const MAX_NFT_COUNT = 7;
 
+const gradient = (address: RawPkh, size: "sm" | "md", mainBackgroundColor = colors.gray[900]) => {
+  const opacity = "55";
+  const color = identiconColor(address) + opacity;
+  let radius: string;
+
+  switch (size) {
+    case "sm":
+      radius = "100px";
+      break;
+    case "md":
+      radius = "120px";
+  }
+
+  return `radial-gradient(circle farthest-side at 0 0, ${color}, transparent ${radius}), ${mainBackgroundColor}`;
+};
+
 export const AccountTile: React.FC<{
   address: RawPkh;
   balance: string | undefined;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: () => void;
   selected?: boolean;
 }> = ({ selected, onClick, address, balance }) => {
-  const border = onClick ? `1px solid ${selected ? colors.orangeL : colors.gray[700]}` : undefined;
   const addressKind = useAddressKind(parsePkh(address));
   // TODO: add a test for it!
   const isDelegating = !!useAppSelector(s => s.assets.delegationLevels)[address];
@@ -73,11 +88,14 @@ export const AccountTile: React.FC<{
 
   return (
     <Box
-      background={colors.gray[900]}
-      border={`1px solid ${selected ? colors.orangeL : "transparent"}`}
+      zIndex={2}
+      background={gradient(address, nfts.length > 0 ? "md" : "sm")}
+      borderWidth="1px"
+      borderStyle="solid"
+      borderColor={selected ? colors.orangeL : colors.gray[900]}
       borderRadius="8px"
       _hover={{
-        border,
+        borderColor: selected ? colors.orangeL : colors.gray[700],
       }}
       cursor="pointer"
       onClick={onClick}
