@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { AccountTileIcon } from "./AccountTileIcon";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import { RawPkh } from "../../types/Address";
 import { fullId, thumbnailUri } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
@@ -59,16 +58,30 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
 const MAX_NFT_COUNT = 7;
 
 const gradient = ({
-  address,
+  account,
   radius,
   mainBackgroundColor = colors.gray[900],
 }: {
-  address: RawPkh;
+  account: Account;
   radius: string;
   mainBackgroundColor?: string;
 }) => {
   const opacity = "55";
-  const color = identiconColor(address) + opacity;
+  let color: string;
+  switch (account.type) {
+    case "mnemonic":
+    case "secret_key":
+      color = identiconColor(account.address.pkh);
+      break;
+    case "ledger":
+    case "multisig":
+      color = colors.gray[450];
+      break;
+    case "social":
+      color = "#EA4335";
+  }
+
+  color += opacity;
 
   return `radial-gradient(circle farthest-side at 0 0, ${color}, transparent ${radius}), ${mainBackgroundColor}`;
 };
@@ -92,7 +105,7 @@ export const AccountTile: React.FC<{
   return (
     <Box
       zIndex={2}
-      background={gradient({ address: pkh, radius: nfts.length > 0 ? "120px" : "100px" })}
+      background={gradient({ account, radius: nfts.length > 0 ? "120px" : "100px" })}
       borderWidth="1px"
       borderStyle="solid"
       borderColor={selected ? colors.orangeL : colors.gray[900]}
