@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 
 import { AccountTileIcon } from "./AccountTileIcon";
 import colors from "../../style/colors";
-import { RawPkh, parsePkh } from "../../types/Address";
+import { Account } from "../../types/Account";
+import { RawPkh } from "../../types/Address";
 import { fullId, thumbnailUri } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
@@ -73,22 +74,25 @@ const gradient = ({
 };
 
 export const AccountTile: React.FC<{
-  address: RawPkh;
+  account: Account;
   balance: string | undefined;
   onClick?: () => void;
   selected?: boolean;
-}> = ({ selected, onClick, address, balance }) => {
-  const addressKind = useAddressKind(parsePkh(address));
+}> = ({ selected, onClick, account, balance }) => {
+  const addressKind = useAddressKind(account.address);
+  const {
+    address: { pkh },
+  } = account;
   // TODO: add a test for it!
-  const isDelegating = !!useAppSelector(s => s.assets.delegationLevels)[address];
+  const isDelegating = !!useAppSelector(s => s.assets.delegationLevels)[pkh];
 
   const getNFTs = useGetAccountNFTs();
-  const nfts = sortedByLastUpdate(getNFTs(address));
+  const nfts = sortedByLastUpdate(getNFTs(pkh));
 
   return (
     <Box
       zIndex={2}
-      background={gradient({ address, radius: nfts.length > 0 ? "120px" : "100px" })}
+      background={gradient({ address: pkh, radius: nfts.length > 0 ? "120px" : "100px" })}
       borderWidth="1px"
       borderStyle="solid"
       borderColor={selected ? colors.orangeL : colors.gray[900]}
@@ -105,9 +109,9 @@ export const AccountTile: React.FC<{
         marginBottom={0}
         padding={0}
         border="none"
-        data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
+        data-testid={`account-tile-${pkh}` + (selected ? "-selected" : "")}
         icon={<AccountTileIcon addressKind={addressKind} />}
-        leftElement={<LabelAndAddress label={addressKind.label} pkh={address} />}
+        leftElement={<LabelAndAddress label={addressKind.label} pkh={pkh} />}
         rightElement={
           <Flex flexDirection="column">
             <Text align="right" color={colors.gray[450]} fontWeight={700} size="sm">
@@ -132,11 +136,7 @@ export const AccountTile: React.FC<{
 
               if (i === MAX_NFT_COUNT - 1) {
                 return (
-                  <Link
-                    key="last"
-                    data-testid="show-more-nfts-link"
-                    to={`/nfts?accounts=${address}`}
-                  >
+                  <Link key="last" data-testid="show-more-nfts-link" to={`/nfts?accounts=${pkh}`}>
                     <Box
                       height="32px"
                       marginLeft="4px"
@@ -151,11 +151,7 @@ export const AccountTile: React.FC<{
                 );
               }
               return (
-                <Link
-                  key={fullId(nft)}
-                  data-testid="nft-link"
-                  to={`/home/${address}/${fullId(nft)}`}
-                >
+                <Link key={fullId(nft)} data-testid="nft-link" to={`/home/${pkh}/${fullId(nft)}`}>
                   <AspectRatio width="32px" height="32px" marginLeft={i > 0 ? "4px" : 0} ratio={1}>
                     <Image borderRadius="4px" src={url} />
                   </AspectRatio>

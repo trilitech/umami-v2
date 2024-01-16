@@ -47,20 +47,20 @@ describe("<AccountTile />", () => {
     });
 
     it("renders icon", () => {
-      render(<AccountTile address={account.address.pkh} balance={balance} />);
+      render(<AccountTile account={account} balance={balance} />);
 
       expect(screen.getByTestId(iconTestId)).toBeInTheDocument();
     });
 
     it("renders label", () => {
-      render(<AccountTile address={account.address.pkh} balance={balance} />);
+      render(<AccountTile account={account} balance={balance} />);
 
       expect(screen.getByText(account.label)).toBeInTheDocument();
     });
 
     describe("NFTs", () => {
       it("doesn't render NFTs if none are owned by the account", () => {
-        render(<AccountTile address={account.address.pkh} balance={balance} />);
+        render(<AccountTile account={account} balance={balance} />);
 
         expect(screen.queryByTestId("nfts-list")).not.toBeInTheDocument();
       });
@@ -75,7 +75,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile address={account.address.pkh} balance={balance} />);
+        render(<AccountTile account={account} balance={balance} />);
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
       });
@@ -94,7 +94,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile address={account.address.pkh} balance={balance} />);
+        render(<AccountTile account={account} balance={balance} />);
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
         expect(screen.getAllByTestId("nft-link")).toHaveLength(6);
@@ -120,7 +120,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile address={account.address.pkh} balance={balance} />);
+        render(<AccountTile account={account} balance={balance} />);
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
         const urlPrefix = `#/home/${account.address.pkh}/${balances[0].token.contract.address}`;

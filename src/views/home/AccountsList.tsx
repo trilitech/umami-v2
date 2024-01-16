@@ -120,7 +120,7 @@ const AccountGroup: React.FC<{
         return (
           <Box key={account.address.pkh} marginBottom="16px">
             <AccountTile
-              address={account.address.pkh}
+              account={account}
               balance={balances[account.address.pkh]}
               onClick={() => onSelect(account.address.pkh)}
               selected={account.address.pkh === selected}
