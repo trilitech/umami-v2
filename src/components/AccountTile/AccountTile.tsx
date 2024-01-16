@@ -57,18 +57,17 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
 
 const MAX_NFT_COUNT = 7;
 
-const gradient = (address: RawPkh, size: "sm" | "md", mainBackgroundColor = colors.gray[900]) => {
+const gradient = ({
+  address,
+  radius,
+  mainBackgroundColor = colors.gray[900],
+}: {
+  address: RawPkh;
+  radius: string;
+  mainBackgroundColor?: string;
+}) => {
   const opacity = "55";
   const color = identiconColor(address) + opacity;
-  let radius: string;
-
-  switch (size) {
-    case "sm":
-      radius = "100px";
-      break;
-    case "md":
-      radius = "120px";
-  }
 
   return `radial-gradient(circle farthest-side at 0 0, ${color}, transparent ${radius}), ${mainBackgroundColor}`;
 };
@@ -89,7 +88,7 @@ export const AccountTile: React.FC<{
   return (
     <Box
       zIndex={2}
-      background={gradient(address, nfts.length > 0 ? "md" : "sm")}
+      background={gradient({ address, radius: nfts.length > 0 ? "120px" : "100px" })}
       borderWidth="1px"
       borderStyle="solid"
       borderColor={selected ? colors.orangeL : colors.gray[900]}
