@@ -32,7 +32,7 @@ export const SideNavbar = () => {
     >
       <Box>
         <Flex alignItems="center" justifyContent="space-between" height="30px">
-          <MakiLogo size={38} />
+          <MakiLogo width="38px" height="38px" />
           <NetworkSelector />
         </Flex>
         <Divider marginTop="28px" />
