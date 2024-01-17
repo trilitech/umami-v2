@@ -57,7 +57,7 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
 
 const MAX_NFT_COUNT = 7;
 
-export const gradient = ({
+export const accountIconGradient = ({
   account,
   radius,
   mainBackgroundColor = colors.gray[900],
@@ -105,7 +105,7 @@ export const AccountTile: React.FC<{
   return (
     <Box
       zIndex={2}
-      background={gradient({ account, radius: nfts.length > 0 ? "120px" : "100px" })}
+      background={accountIconGradient({ account, radius: nfts.length > 0 ? "120px" : "100px" })}
       borderWidth="1px"
       borderStyle="solid"
       borderColor={selected ? colors.orangeL : colors.gray[900]}

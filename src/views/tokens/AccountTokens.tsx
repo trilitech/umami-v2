@@ -15,6 +15,7 @@ import React, { useContext } from "react";
 import { TokenNameWithIcon } from "./TokenNameWithIcon";
 import { TokenIcon } from "../../assets/icons";
 import { AccountBalance } from "../../components/AccountBalance";
+import { accountIconGradient } from "../../components/AccountTile/AccountTile";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { AddressTileIcon } from "../../components/AddressTile/AddressTileIcon";
 import { useAddressKind } from "../../components/AddressTile/useAddressKind";
@@ -37,7 +38,11 @@ const Header: React.FC<{
     <Flex
       alignItems="center"
       height="78px"
-      background={colors.gray[800]}
+      background={accountIconGradient({
+        account,
+        radius: "100px",
+        mainBackgroundColor: colors.gray[800],
+      })}
       borderTopRadius="8px"
       data-testid="header"
       paddingX="30px"
