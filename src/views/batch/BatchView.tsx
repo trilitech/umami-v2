@@ -115,8 +115,11 @@ export const BatchView: React.FC<{
         justifyContent="space-between"
         padding="20px 23px 20px 30px"
         background={accountIconGradient({
+          top: "-10px",
+          left: "-10px",
           account: sender,
           radius: "100px",
+          opacity: "40",
           mainBackgroundColor: colors.gray[800],
         })}
         borderTopRadius="8px"

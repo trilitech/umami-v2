@@ -39,6 +39,8 @@ const Header: React.FC<{
       alignItems="center"
       height="78px"
       background={accountIconGradient({
+        left: "-10px",
+        top: "-10px",
         account,
         radius: "100px",
         mainBackgroundColor: colors.gray[800],

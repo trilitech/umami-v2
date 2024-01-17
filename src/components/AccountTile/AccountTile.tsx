@@ -61,17 +61,18 @@ const MAX_NFT_COUNT = 7;
 export const accountIconGradient = ({
   account,
   radius,
-  left = "0",
-  top = "0",
+  left = "0px",
+  top = "0px",
   mainBackgroundColor = colors.gray[900],
+  opacity = "60", // hex value string
 }: {
   account: Account;
   radius: string;
   left?: string;
   top?: string;
   mainBackgroundColor?: string;
+  opacity?: string;
 }) => {
-  const opacity = "55";
   let color: string;
   switch (account.type) {
     case "mnemonic":
@@ -88,7 +89,9 @@ export const accountIconGradient = ({
 
   color += opacity;
 
-  return `radial-gradient(circle farthest-side at ${left} ${top}, ${color}, transparent ${radius}), ${mainBackgroundColor}`;
+  return `radial-gradient(circle farthest-side at ${left} ${top}, ${color} 0%, ${color} ${
+    parseInt(radius) / 4
+  }px, transparent ${radius}), ${mainBackgroundColor}`;
 };
 
 export const AccountTile: React.FC<{
@@ -111,7 +114,12 @@ export const AccountTile: React.FC<{
   return (
     <Box
       zIndex={2}
-      background={accountIconGradient({ account, radius: nfts.length > 0 ? "120px" : "100px" })}
+      background={accountIconGradient({
+        left: "-10px",
+        top: "-10px",
+        account,
+        radius: nfts.length > 0 ? "120px" : "100px",
+      })}
       borderWidth="1px"
       borderStyle="solid"
       borderColor={isSelected ? colors.orangeL : colors.gray[900]}

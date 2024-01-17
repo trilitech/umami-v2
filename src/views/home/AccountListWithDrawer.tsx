@@ -79,6 +79,7 @@ export const AccountListWithDrawer: React.FC = () => {
               background={accountIconGradient({
                 account: selectedAccount,
                 radius: "350px",
+                opacity: "35",
                 mainBackgroundColor: "transparent",
                 left: "300px",
                 top: "-125px",
