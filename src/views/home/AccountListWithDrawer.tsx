@@ -74,7 +74,7 @@ export const AccountListWithDrawer: React.FC = () => {
               <NFTDrawerBody nft={drawerNFT} onCloseDrawer={closeDrawer} ownerPkh={ownerPkh} />
             </DrawerBody>
           )}
-          {selectedAccount && (
+          {!isNFT && selectedAccount && (
             <DrawerBody
               background={accountIconGradient({
                 account: selectedAccount,
