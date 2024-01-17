@@ -12,7 +12,7 @@ import {
   v2BackedupAccountGroups,
 } from "../fixtures/backups/backedupAccountGroups";
 import { AccountGroup, AccountGroupBuilder } from "../helpers/accountGroup";
-import { AccountsPage } from "../pages/accounts";
+import { AccountsPage } from "../pages/accountsPage";
 
 export const BASE_URL = "http://127.0.0.1:3000";
 
