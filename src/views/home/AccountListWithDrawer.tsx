@@ -8,6 +8,7 @@ import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
 import { SelectedAccountContext } from "./SelectedAccountContext";
 import { AccountCard } from "../../components/AccountDrawer";
+import { accountIconGradient } from "../../components/AccountTile/AccountTile";
 import { useDynamicModal } from "../../components/DynamicModal";
 import { Account } from "../../types/Account";
 import { fullId } from "../../types/Token";
@@ -68,16 +69,25 @@ export const AccountListWithDrawer: React.FC = () => {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerBody>
-            {isNFT ? (
+          {isNFT && (
+            <DrawerBody>
               <NFTDrawerBody nft={drawerNFT} onCloseDrawer={closeDrawer} ownerPkh={ownerPkh} />
-            ) : (
-              <>
-                <DrawerTopButtons onClose={closeDrawer} />
-                {selectedAccount && <AccountCard account={selectedAccount} />}
-              </>
-            )}
-          </DrawerBody>
+            </DrawerBody>
+          )}
+          {selectedAccount && (
+            <DrawerBody
+              background={accountIconGradient({
+                account: selectedAccount,
+                radius: "350px",
+                mainBackgroundColor: "transparent",
+                left: "300px",
+                top: "-125px",
+              })}
+            >
+              <DrawerTopButtons onClose={closeDrawer} />
+              <AccountCard account={selectedAccount} />
+            </DrawerBody>
+          )}
         </DrawerContent>
       </Drawer>
     </SelectedAccountContext.Provider>

@@ -94,6 +94,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
 
   return (
     <Flex
+      zIndex={2}
       alignItems="center"
       flexDirection="column"
       data-testid={`account-card-${account.address.pkh}`}

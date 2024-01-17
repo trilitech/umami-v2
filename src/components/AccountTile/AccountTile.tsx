@@ -61,10 +61,14 @@ const MAX_NFT_COUNT = 7;
 export const accountIconGradient = ({
   account,
   radius,
+  left = "0",
+  top = "0",
   mainBackgroundColor = colors.gray[900],
 }: {
   account: Account;
   radius: string;
+  left?: string;
+  top?: string;
   mainBackgroundColor?: string;
 }) => {
   const opacity = "55";
@@ -84,7 +88,7 @@ export const accountIconGradient = ({
 
   color += opacity;
 
-  return `radial-gradient(circle farthest-side at 0 0, ${color}, transparent ${radius}), ${mainBackgroundColor}`;
+  return `radial-gradient(circle farthest-side at ${left} ${top}, ${color}, transparent ${radius}), ${mainBackgroundColor}`;
 };
 
 export const AccountTile: React.FC<{
