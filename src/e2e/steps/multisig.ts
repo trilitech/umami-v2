@@ -3,8 +3,8 @@ import { expect } from "@playwright/test";
 
 import { CustomWorld } from "./world";
 import { formatPkh } from "../../utils/format";
-import { AccountsPage } from "../pages/accounts";
-import { CreateMultisigPage } from "../pages/CreateMultisigPage";
+import { AccountsPage } from "../pages/accountsPage";
+import { CreateMultisigPage } from "../pages/createMultisigPage";
 
 let page: CreateMultisigPage;
 
