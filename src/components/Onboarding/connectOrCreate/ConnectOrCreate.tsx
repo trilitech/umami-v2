@@ -20,7 +20,7 @@ export const ConnectOrCreate = ({
   const restoreSocial = useRestoreSocial();
   const toast = useToast();
 
-  const onSuccessfulSocialAuth = (sk: string, email: string) =>
+  const onSocialAuth = (sk: string, email: string) =>
     handleAsyncAction(async () => {
       const { pk, pkh } = await getPkAndPkhFromSk(sk);
       restoreSocial(pk, pkh, email);
@@ -67,7 +67,7 @@ export const ConnectOrCreate = ({
           </Text>
           <Divider marginTop="11px" />
         </Flex>
-        <GoogleAuth onSuccessfulAuth={onSuccessfulSocialAuth} />
+        <GoogleAuth onAuth={onSocialAuth} />
       </VStack>
     </ModalContentWrapper>
   );

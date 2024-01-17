@@ -1,0 +1,34 @@
+import { parseTorusRedirectParams } from "./parseTorusRedirectParams";
+
+const googleAuthDeeplink =
+  "umami://auth/channel=redirect_channel_u08xyxoznuq&instanceId=u08xyxoznuq&verifier=umami&typeOfLogin=google&redirectToOpener=true&state=eyJpbnN0YW5jZUlkIjoidTA4eHl4b3pudXEiLCJ2ZXJpZmllciI6InVtYW1pIiwidHlwZU9mTG9naW4iOiJnb29nbGUiLCJyZWRpcmVjdFRvT3BlbmVyIjp0cnVlfQ%25253D%25253D&access_token=ya29.a0AfB_byACE3Yyn5QTwmCqN8AXIKhl0ET2Zwc5MZBxmmFpd2-FKL1BgL37byYTsm0KrjUVbfi5WOqT3-zgqCBKOY9gxbLArwBYzflXOxAyeT990UdGbX4lHgGz-SrM5QeAqR75A0CUwKSxtDPj-QblYQulRYxLvqeITwaCgYKAXcSARISFQHGX2MiSfIgGpnWdcsX-ALohGiPMw0169&token_type=Bearer&expires_in=3599&scope=email%2520profile%2520openid%2520https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%2520https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjFmNDBmMGE4ZWYzZDg4MDk3OGRjODJmMjVjM2VjMzE3YzZhNWI3ODEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDcwNTcyMzY0ODA4LWQzMW5sa25lYW01ZWU2ZHIwdHUyOGZqamJzZGtmdGE1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTA3MDU3MjM2NDgwOC1kMzFubGtuZWFtNWVlNmRyMHR1Mjhmampic2RrZnRhNS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwODE0NTU3MDM2MDY0OTc0Mjg3MiIsImhkIjoidHJpbGkudGVjaCIsImVtYWlsIjoic2VyZ2V5LmtpbnRzZWxAdHJpbGkudGVjaCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiUWNkT25qeXR4NDFnRTRmNnNvSmF0USIsIm5vbmNlIjoidTA4eHl4b3pudXEiLCJuYmYiOjE3MDUzNDY3NDgsIm5hbWUiOiJTZXJnZXkgS2ludHNlbCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJZWZPbUtIR1NpcGZnbklGemRUMEhISTd2dEZCaEFNeTh5SzZ4clZBWWU9czk2LWMiLCJnaXZlbl9uYW1lIjoiU2VyZ2V5IiwiZmFtaWx5X25hbWUiOiJLaW50c2VsIiwibG9jYWxlIjoiZW4tR0IiLCJpYXQiOjE3MDUzNDcwNDgsImV4cCI6MTcwNTM1MDY0OCwianRpIjoiYzAxYmU1NDdmOTU1Nzc1Y2M0M2IzMjI1NThjNzA1OTdiYTIxMDc2MiJ9.Z6K-2GUHftNYDyRpOKKRExZPrl-4kvVia7kZC-pB_NOdcDZ_qIeYxXkx6mKkS0r4lWJaMKhMIuYd4ggehScglRAp7vsReLdL8STsI_76B8pdaPJ8zBmq8clKe92gQ0V-Iai3dQdFUxCqmiEGzHo0iBB62aeIEtPsjDgzBeaeN2JVT3uYmfRYljHnKBoEF9JiNdZ3yMByd1yD2CjuX08KPm_s8tKwyBu6zvUD7d-rWKP_9DQluLbunWzeeqPPdKe0xGpb4xNTEo1VLBpiDEhxOvvOA5YVRsSe5xuM9SAG9PE984ZCIWROj6HOlxSan7F7cfEctMAHIeqhuYN068WLAg&authuser=0&hd=trili.tech&prompt=consent&version_info=CmxfU1ZJX0VJR3RvT2lRNElNREdBTWlQMDFCUlVSSVpsOXhMV3QwU2sxbFlWVnRSbUYyYW01MVpYVmhWM3BOU1VaMmRsOU9OVmxaUWkxRVIwUldjVVExTlZjeGRqbGtkMnBzYkhoUVluaFpkd18";
+
+test("parseTorusRedirectParams", () => {
+  expect(parseTorusRedirectParams(googleAuthDeeplink)).toEqual({
+    channel: "redirect_channel_u08xyxoznuq",
+    data: {
+      hashParams: {
+        access_token:
+          "ya29.a0AfB_byACE3Yyn5QTwmCqN8AXIKhl0ET2Zwc5MZBxmmFpd2-FKL1BgL37byYTsm0KrjUVbfi5WOqT3-zgqCBKOY9gxbLArwBYzflXOxAyeT990UdGbX4lHgGz-SrM5QeAqR75A0CUwKSxtDPj-QblYQulRYxLvqeITwaCgYKAXcSARISFQHGX2MiSfIgGpnWdcsX-ALohGiPMw0169",
+        authuser: "0",
+        expires_in: "3599",
+        hd: "trili.tech",
+        id_token:
+          "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFmNDBmMGE4ZWYzZDg4MDk3OGRjODJmMjVjM2VjMzE3YzZhNWI3ODEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDcwNTcyMzY0ODA4LWQzMW5sa25lYW01ZWU2ZHIwdHUyOGZqamJzZGtmdGE1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTA3MDU3MjM2NDgwOC1kMzFubGtuZWFtNWVlNmRyMHR1Mjhmampic2RrZnRhNS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwODE0NTU3MDM2MDY0OTc0Mjg3MiIsImhkIjoidHJpbGkudGVjaCIsImVtYWlsIjoic2VyZ2V5LmtpbnRzZWxAdHJpbGkudGVjaCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiUWNkT25qeXR4NDFnRTRmNnNvSmF0USIsIm5vbmNlIjoidTA4eHl4b3pudXEiLCJuYmYiOjE3MDUzNDY3NDgsIm5hbWUiOiJTZXJnZXkgS2ludHNlbCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJZWZPbUtIR1NpcGZnbklGemRUMEhISTd2dEZCaEFNeTh5SzZ4clZBWWU9czk2LWMiLCJnaXZlbl9uYW1lIjoiU2VyZ2V5IiwiZmFtaWx5X25hbWUiOiJLaW50c2VsIiwibG9jYWxlIjoiZW4tR0IiLCJpYXQiOjE3MDUzNDcwNDgsImV4cCI6MTcwNTM1MDY0OCwianRpIjoiYzAxYmU1NDdmOTU1Nzc1Y2M0M2IzMjI1NThjNzA1OTdiYTIxMDc2MiJ9.Z6K-2GUHftNYDyRpOKKRExZPrl-4kvVia7kZC-pB_NOdcDZ_qIeYxXkx6mKkS0r4lWJaMKhMIuYd4ggehScglRAp7vsReLdL8STsI_76B8pdaPJ8zBmq8clKe92gQ0V-Iai3dQdFUxCqmiEGzHo0iBB62aeIEtPsjDgzBeaeN2JVT3uYmfRYljHnKBoEF9JiNdZ3yMByd1yD2CjuX08KPm_s8tKwyBu6zvUD7d-rWKP_9DQluLbunWzeeqPPdKe0xGpb4xNTEo1VLBpiDEhxOvvOA5YVRsSe5xuM9SAG9PE984ZCIWROj6HOlxSan7F7cfEctMAHIeqhuYN068WLAg",
+        prompt: "consent",
+        scope:
+          "email%20profile%20openid%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile",
+        state:
+          "eyJpbnN0YW5jZUlkIjoidTA4eHl4b3pudXEiLCJ2ZXJpZmllciI6InVtYW1pIiwidHlwZU9mTG9naW4iOiJnb29nbGUiLCJyZWRpcmVjdFRvT3BlbmVyIjp0cnVlfQ%253D%253D",
+        token_type: "Bearer",
+      },
+      instanceParams: {
+        insanceId: "u08xyxoznuq",
+        redirectToOpener: "true",
+        typeOfLogin: "google",
+        verifier: "umami",
+      },
+    },
+    error: null,
+  });
+});

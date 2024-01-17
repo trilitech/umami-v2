@@ -2,7 +2,9 @@
 export const withTimeout = <T>(fn: () => Promise<T>, timeout: number, errorMessage?: string) =>
   Promise.race([
     fn(),
-    new Promise((_, reject) =>
+    // it's safe to use the same type parameter T here
+    // because we're going to throw anyway which stops the execution
+    new Promise<T>((_, reject) =>
       setTimeout(() => {
         reject(new Error(errorMessage || "The operation has timed out"));
       }, timeout)
