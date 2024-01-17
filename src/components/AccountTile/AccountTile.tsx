@@ -1,5 +1,5 @@
 import { AspectRatio, Box, Divider, Flex, FlexProps, Heading, Image, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AccountTileIcon } from "./AccountTileIcon";
@@ -10,6 +10,7 @@ import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { getIPFSurl, sortedByLastUpdate } from "../../utils/token/utils";
+import { SelectedAccountContext } from "../../views/home/SelectedAccountContext";
 import { useAddressKind } from "../AddressTile/useAddressKind";
 import { color as identiconColor } from "../Identicon";
 
@@ -89,9 +90,10 @@ export const accountIconGradient = ({
 export const AccountTile: React.FC<{
   account: Account;
   balance: string | undefined;
-  onClick?: () => void;
-  selected?: boolean;
-}> = ({ selected, onClick, account, balance }) => {
+}> = ({ account, balance }) => {
+  const { selectedAccount, selectAccount } = useContext(SelectedAccountContext);
+  const isSelected = selectedAccount?.address.pkh === account.address.pkh;
+
   const addressKind = useAddressKind(account.address);
   const {
     address: { pkh },
@@ -108,13 +110,14 @@ export const AccountTile: React.FC<{
       background={accountIconGradient({ account, radius: nfts.length > 0 ? "120px" : "100px" })}
       borderWidth="1px"
       borderStyle="solid"
-      borderColor={selected ? colors.orangeL : colors.gray[900]}
+      borderColor={isSelected ? colors.orangeL : colors.gray[900]}
       borderRadius="8px"
       _hover={{
-        borderColor: selected ? colors.orangeL : colors.gray[700],
+        borderColor: isSelected ? colors.orangeL : colors.gray[700],
       }}
       cursor="pointer"
-      onClick={onClick}
+      data-testid="account-tile-container"
+      onClick={() => selectAccount(account)}
       paddingX="21px"
     >
       <AccountTileBase
@@ -122,7 +125,7 @@ export const AccountTile: React.FC<{
         marginBottom={0}
         padding={0}
         border="none"
-        data-testid={`account-tile-${pkh}` + (selected ? "-selected" : "")}
+        data-testid={`account-tile-${pkh}` + (isSelected ? "-selected" : "")}
         icon={<AccountTileIcon addressKind={addressKind} />}
         leftElement={<LabelAndAddress label={addressKind.label} pkh={pkh} />}
         rightElement={

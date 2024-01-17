@@ -1,12 +1,15 @@
+import { userEvent } from "@testing-library/user-event";
+
 import { AccountTile } from "./AccountTile";
 import {
+  mockImplicitAccount,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockNFTRaw,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { render, screen } from "../../mocks/testUtils";
+import { render, screen, waitFor } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { MAINNET } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
@@ -14,6 +17,7 @@ import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
+import { SelectedAccountContext } from "../../views/home/SelectedAccountContext";
 
 describe("<AccountTile />", () => {
   describe.each([
@@ -56,6 +60,66 @@ describe("<AccountTile />", () => {
       render(<AccountTile account={account} balance={balance} />);
 
       expect(screen.getByText(account.label)).toBeInTheDocument();
+    });
+
+    describe("account selection", () => {
+      const testId = `account-tile-${account.address.pkh}`;
+
+      it("is not selected if nothing has been selected", () => {
+        render(
+          <SelectedAccountContext.Provider
+            value={{ selectAccount: jest.fn(), selectedAccount: null }}
+          >
+            <AccountTile account={account} balance={balance} />
+          </SelectedAccountContext.Provider>
+        );
+
+        expect(screen.getByTestId(testId, { exact: true })).toBeInTheDocument();
+        expect(screen.queryByTestId(`${testId}-selected`)).not.toBeInTheDocument();
+      });
+
+      it("is not selected if another account is selected", () => {
+        render(
+          <SelectedAccountContext.Provider
+            value={{ selectAccount: jest.fn(), selectedAccount: mockImplicitAccount(1) }}
+          >
+            <AccountTile account={account} balance={balance} />
+          </SelectedAccountContext.Provider>
+        );
+
+        expect(screen.getByTestId(testId, { exact: true })).toBeInTheDocument();
+        expect(screen.queryByTestId(`${testId}-selected`)).not.toBeInTheDocument();
+      });
+
+      it("takes the selected account from the outer context", () => {
+        render(
+          <SelectedAccountContext.Provider
+            value={{ selectedAccount: account, selectAccount: jest.fn() }}
+          >
+            <AccountTile account={account} balance={balance} />
+          </SelectedAccountContext.Provider>
+        );
+
+        expect(screen.queryByTestId(testId, { exact: true })).not.toBeInTheDocument();
+        expect(screen.getByTestId(`${testId}-selected`)).toBeInTheDocument();
+      });
+
+      it('calls the "selectAccount" function from the outer context on a click', async () => {
+        const user = userEvent.setup();
+        const spy = jest.fn();
+
+        render(
+          <SelectedAccountContext.Provider value={{ selectedAccount: null, selectAccount: spy }}>
+            <AccountTile account={account} balance={balance} />
+          </SelectedAccountContext.Provider>
+        );
+
+        user.click(screen.getByTestId("account-tile-container"));
+
+        await waitFor(() => {
+          expect(spy).toHaveBeenCalledWith(account);
+        });
+      });
     });
 
     describe("NFTs", () => {

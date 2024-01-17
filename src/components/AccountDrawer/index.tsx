@@ -14,6 +14,7 @@ import { ReceiveModal } from "../ReceiveModal";
 import { FormPage as SendTezForm } from "../SendFlow/Tez/FormPage";
 
 // TODO: replace current component with the underlying one
+// TODO: use SelectedAccountContext instead of passing account as prop
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();

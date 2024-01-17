@@ -51,9 +51,7 @@ const AccountGroup: React.FC<{
   accounts: Account[];
   groupLabel: string;
   balances: Record<string, string | undefined>;
-  onSelect: (pkh: string) => void;
-  selected: string | null;
-}> = ({ groupLabel, accounts, balances, onSelect, selected }) => {
+}> = ({ groupLabel, accounts, balances }) => {
   const first = accounts[0];
   const isMultisig = first.type === "multisig";
   const isMnemonic = first.type === "mnemonic";
@@ -119,12 +117,7 @@ const AccountGroup: React.FC<{
       {accounts.map(account => {
         return (
           <Box key={account.address.pkh} marginBottom="16px">
-            <AccountTile
-              account={account}
-              balance={balances[account.address.pkh]}
-              onClick={() => onSelect(account.address.pkh)}
-              selected={account.address.pkh === selected}
-            />
+            <AccountTile account={account} balance={balances[account.address.pkh]} />
           </Box>
         );
       })}
@@ -147,11 +140,7 @@ const getLabel = (account: Account) => {
   }
 };
 
-export const AccountsList: React.FC<{
-  onOpen: () => void;
-  selected: string | null;
-  onSelect: (pkh: string) => void;
-}> = ({ onOpen, selected, onSelect }) => {
+export const AccountsList = () => {
   const accounts = useAllAccounts();
   const mutezBalance = useAppSelector(s => s.assets.balances.mutez);
   const accountsByKind = groupBy(accounts, getLabel);
@@ -164,11 +153,6 @@ export const AccountsList: React.FC<{
         accounts={accountsByType}
         balances={mutezBalance}
         groupLabel={accountGroupLabel}
-        onSelect={(pkh: string) => {
-          onOpen();
-          onSelect(pkh);
-        }}
-        selected={selected}
       />
     );
   });
