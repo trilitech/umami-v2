@@ -57,7 +57,7 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
 
 const MAX_NFT_COUNT = 7;
 
-const gradient = ({
+export const gradient = ({
   account,
   radius,
   mainBackgroundColor = colors.gray[900],
