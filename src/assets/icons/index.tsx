@@ -36,6 +36,7 @@ export * from "./Key";
 export * from "./Ledger";
 export * from "./Link";
 export * from "./Lock";
+export * from "./Maki";
 export * from "./Notice";
 export * from "./OutgoingArrow";
 export * from "./Pen";

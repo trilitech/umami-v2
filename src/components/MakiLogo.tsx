@@ -1,11 +1,20 @@
-import { Image, ImageProps } from "@chakra-ui/react";
+import { IconProps } from "@chakra-ui/react";
 import React from "react";
 
-import makiLogo from "../assets/maki-default.png";
+import { MakiIcon } from "../assets/icons";
+import { useSelectedNetwork } from "../utils/hooks/networkHooks";
 
-export const MakiLogo: React.FC<{ size?: string | number } & ImageProps> = ({
-  size = 100,
-  ...props
-}) => {
-  return <Image boxSize={size} objectFit="cover" alt="Maki logo" src={makiLogo} {...props} />;
+const ORANGE = "#F74F18";
+
+export const MakiLogo: React.FC<IconProps> = props => {
+  const network = useSelectedNetwork();
+
+  return (
+    <MakiIcon
+      background="white"
+      borderRadius="8px"
+      fishColor={network.name === "mainnet" ? ORANGE : "black"}
+      {...props}
+    />
+  );
 };

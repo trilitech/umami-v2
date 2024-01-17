@@ -86,7 +86,7 @@ export const WelcomeScreen = () => {
             borderLeftRadius="30px"
           >
             <VStack maxWidth="400px" padding="32px" spacing="0">
-              <MakiLogo marginBottom="24px" size="48px" />
+              <MakiLogo width="48px" height="48px" marginBottom="24px" />
               <Heading marginBottom="16px" size="3xl">
                 Welcome to Umami
               </Heading>
