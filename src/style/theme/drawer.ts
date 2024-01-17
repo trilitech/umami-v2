@@ -8,6 +8,7 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 const baseStyle = definePartsStyle(props => ({
   body: {
     padding: "18px 30px 30px 30px",
+    borderLeft: `1px solid ${colors.gray[800]}`,
   },
   dialog: {
     bg: colors.gray[900],
