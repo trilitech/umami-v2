@@ -1,7 +1,9 @@
 import {
   AspectRatio,
+  Box,
   Card,
   CardBody,
+  Center,
   Image,
   SimpleGrid,
   SimpleGridProps,
@@ -47,6 +49,14 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
         {displayedNFTs.map(nft => {
           const url = getIPFSurl(thumbnailUri(nft));
           const fallbackUrl = getIPFSurl(nft.displayUri);
+
+          const nftImageCommonProps = {
+            width: "100%",
+            height: 40,
+            fallbackSrc: fallbackUrl,
+            src: url,
+          };
+
           return (
             <Link
               key={`${owner}:${fullId(nft)}`}
@@ -54,10 +64,30 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
               to={`/home/${owner}/${fullId(nft)}`}
             >
               <Card background={colors.gray[800]}>
-                <CardBody padding="8px">
-                  <AspectRatio width="100%" ratio={1}>
-                    <Image width="100%" height={40} fallbackSrc={fallbackUrl} src={url} />
-                  </AspectRatio>
+                <CardBody overflow="hidden" padding="8px" borderRadius="6px">
+                  <Center>
+                    {/* Check {@link NFTCard} for details why */}
+                    <Box position="relative" width="100%" height="100%">
+                      <AspectRatio zIndex={2} width="100%" opacity="0" ratio={1}>
+                        <Image {...nftImageCommonProps} width="100%" height={40} />
+                      </AspectRatio>
+
+                      <AspectRatio
+                        position="absolute"
+                        zIndex={0}
+                        top="0"
+                        width="100%"
+                        filter="blur(20px)"
+                        ratio={1}
+                      >
+                        <Image {...nftImageCommonProps} width="100%" height={40} />
+                      </AspectRatio>
+
+                      <AspectRatio position="absolute" zIndex={1} top="0" width="100%" ratio={1}>
+                        <Image {...nftImageCommonProps} width="100%" height={40} />
+                      </AspectRatio>
+                    </Box>
+                  </Center>
                   {/* TODO: make a separate component to be shared between this and the drawer NFT card */}
                   {Number(nft.balance) > 1 && (
                     <Text

@@ -23,7 +23,7 @@ export const NFTCard: React.FC<{
     minWidth: "242px",
     minHeight: "242px",
     objectFit: "contain" as const,
-    aspectRatio: "1 / 1",
+    aspectRatio: "1",
     fallbackSrc: fallbackUrl,
     src: url,
   };
