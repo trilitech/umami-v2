@@ -189,7 +189,6 @@ Feature: User Onboarding
     When I upload "<fileName>" backup file
     And I fill "Your password (if you have one)" with "<password>"
     And I click "Import Wallet" button
-    And I wait for TZKT to process the updates
     Then I am on an Accounts page
     And I have groups matching "<fileName>" backup file
 
