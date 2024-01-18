@@ -39,6 +39,7 @@ const RoundButton: React.FC<{
 }> = ({ icon, label, onClick = () => {} }) => {
   return (
     <Box
+      className="account-drawer-cta-button"
       color={colors.gray[300]}
       textAlign="center"
       _hover={{ color: colors.green }}
@@ -47,6 +48,7 @@ const RoundButton: React.FC<{
       onClick={onClick}
     >
       <IconButton
+        className="account-drawer-cta-button-icon"
         marginBottom="8px"
         aria-label="button"
         icon={icon}
