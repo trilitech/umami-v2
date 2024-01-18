@@ -33,3 +33,7 @@ code {
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
 }
+
+.account-drawer-cta-button:hover .account-drawer-cta-button-icon {
+  background-color: #414141; /* gray[500] */
+}
