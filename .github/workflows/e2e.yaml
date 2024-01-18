@@ -45,3 +45,10 @@ jobs:
           access-token: ${{ secrets.GITHUB_TOKEN }}
           path: "test-results/cucumber-report.json"
           show-global-summary-report: true
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cucumber-report
+          path: test-results/cucumber-report.html
+          retention-days: 10
