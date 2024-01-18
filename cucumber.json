@@ -1,12 +1,13 @@
 {
   "default": {
+    "backtrace": true,
     "retry": 1,
     "parallel": 1,
     "formatOptions": {
       "snippetInterface": "async-await"
     },
     "dryRun": false,
-    "failFast": true,
+    "failFast": false,
     "paths": ["src/e2e/features/"],
     "require": ["src/e2e/steps/*.ts"],
     "requireModule": ["ts-node/register"],

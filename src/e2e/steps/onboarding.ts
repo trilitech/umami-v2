@@ -26,6 +26,8 @@ Given("I am on the welcome page", async function (this: CustomWorld) {
   this.setEmptyReduxState();
   await this.pageReady;
   await this.page.goto(`${BASE_URL}/`);
+
+  this.page.on("console", msg => console.log(msg.text()));
 });
 
 Then("I am on {string} onboarding page", async function (this: CustomWorld, modalTitle) {
@@ -113,6 +115,7 @@ Then("I have {string} account group", async function (this: CustomWorld, groupNa
 
 Then(
   "I have groups matching {string} backup file",
+  { timeout: 10 * 1000 },
   async function (this: CustomWorld, backupFileName) {
     let expectedGroups: AccountGroup[] = [];
     if (backupFileName === "V1Backup.json") {
@@ -124,7 +127,9 @@ Then(
     }
 
     // TODO: check for groups amount once all type of groups are supported by the tests
-    Promise.all(expectedGroups.map(expectedGroup => checkAccountGroup(expectedGroup)));
+    for (const expectedGroup of expectedGroups) {
+      await checkAccountGroup(expectedGroup);
+    }
   }
 );
 

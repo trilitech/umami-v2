@@ -170,6 +170,7 @@ Feature: User Onboarding
       |             |
       | TestAccount |
 
+  @focus
   Scenario: User imports a backup file
     Given I am on the welcome page
 

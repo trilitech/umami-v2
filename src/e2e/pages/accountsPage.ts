@@ -16,6 +16,7 @@ export class AccountsPage {
 
   async getGroup(groupTitle: string): Promise<AccountGroup> {
     const group = this.page.getByTestId(`account-group-${groupTitle}`);
+    await group.all();
 
     const label = await group.getByTestId("account-group-title").innerText();
 

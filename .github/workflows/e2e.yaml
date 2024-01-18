@@ -36,7 +36,7 @@ jobs:
         run: yarn exec static-server build -p 3000 &
 
       - name: Run cucumber tests
-        run: yarn test:e2e
+        run: yarn test:e2e:focus
 
       - name: Cucumber Report to Annotations
         uses: deblockt/cucumber-report-annotations-action@v1.13

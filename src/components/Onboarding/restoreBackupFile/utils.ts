@@ -18,13 +18,17 @@ export const useRestoreV1BackupFile = () => {
     localStorage.clear();
     try {
       for (const [i, encryptedMnemonic] of encrypted.entries()) {
+        console.log("for acc " + i);
+        console.log("encr. mnemonic: " + JSON.stringify(encryptedMnemonic));
         const mnemonic = await decrypt(encryptedMnemonic, password, "V1");
+        console.log("mnemonic decrypted: " + mnemonic);
         await restoreFromMnemonic({
           mnemonic,
           password,
           label: DEFAULT_ACCOUNT_LABEL,
           derivationPath: derivationPaths[i],
         });
+        console.log("acc restored");
       }
     } catch (e) {
       throw new Error("Invalid password.");
