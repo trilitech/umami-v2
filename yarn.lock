@@ -11443,10 +11443,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "date-fns@npm:3.0.6"
-  checksum: 4eb4c1f15257026593bd62ea366347be3940a83133fc84aa32e03bc9a19d6f8a919ef0475211200b16de7980e1d797c993713ed092a6f5c941474bce516f7d96
+"date-fns@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "date-fns@npm:3.2.0"
+  checksum: 2f36cb9165a066ae90c0b6f0c25b3c70eb75bc52e64ba6dd8680964ebda144851a244ff4ed0b2afb4a6bab796a1af6a0e6c7c2814529d04c72fa434f931d4e81
   languageName: node
   linkType: hard
 
@@ -22257,7 +22257,7 @@ __metadata:
     css-loader: "npm:^6.5.1"
     css-minimizer-webpack-plugin: "npm:^3.2.0"
     cucumber-tsflow: "npm:^4.3.1"
-    date-fns: "npm:^3.0.6"
+    date-fns: "npm:^3.2.0"
     dotenv: "npm:^10.0.0"
     dotenv-expand: "npm:^5.1.0"
     electron: "npm:^27.1.2"
