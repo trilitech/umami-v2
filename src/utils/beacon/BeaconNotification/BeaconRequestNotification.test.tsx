@@ -86,6 +86,7 @@ describe("<BeaconRequestNotification />", () => {
           publicKey: account.pk,
           scopes: SCOPES,
           type: "permission_response",
+          walletType: "implicit",
         });
       });
     });

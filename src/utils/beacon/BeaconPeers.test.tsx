@@ -12,9 +12,27 @@ import { beaconActions } from "../redux/slices/beaconSlice";
 import { store } from "../redux/store";
 
 const peersData: ProvidedPeerInfo[] = [
-  { name: "dApp-1", publicKey: "dApp-pkh1", version: "v1" },
-  { name: "dApp-2", publicKey: "dApp-pkh2", version: "v1.5" },
-  { name: "dApp-3", publicKey: "dApp-pkh3", version: "v2" },
+  {
+    name: "dApp-1",
+    publicKey: "dApp-pkh1",
+    type: "p2p-pairing-request",
+    id: "test-id-1",
+    version: "v1",
+  },
+  {
+    name: "dApp-2",
+    publicKey: "dApp-pkh2",
+    type: "p2p-pairing-request",
+    id: "test-id-2",
+    version: "v1.5",
+  },
+  {
+    name: "dApp-3",
+    publicKey: "dApp-pkh3",
+    type: "p2p-pairing-request",
+    id: "test-id-3",
+    version: "v2",
+  },
 ];
 let senderIds: string[];
 
