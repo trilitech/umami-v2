@@ -20,7 +20,7 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { NestedScroll } from "../../components/NestedScroll";
 import { DEFAULT_ACCOUNT_LABEL } from "../../components/Onboarding/nameAccount/NameAccount";
 import { useOnboardingModal } from "../../components/Onboarding/useOnboardingModal";
-import { FormPage } from "../../components/SendFlow/MultisigAccount/FormPage";
+import { NameMultisigFormPage } from "../../components/SendFlow/MultisigAccount/NameMultisigFormPage";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { useAllAccounts, useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
@@ -168,7 +168,7 @@ export const AccountsList = () => {
             background={colors.black}
             border="1px dashed"
             borderColor={colors.gray[500]}
-            onClick={() => openWith(<FormPage />)}
+            onClick={() => openWith(<NameMultisigFormPage />)}
             variant="outline"
           >
             <Text

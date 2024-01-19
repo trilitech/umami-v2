@@ -10,8 +10,10 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
+import { useContext } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
+import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { SignPage } from "./SignPage";
 import { TrashIcon } from "../../../assets/icons";
 import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
@@ -22,8 +24,9 @@ import {
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
 import { RawPkh, isValidImplicitPkh, parsePkh } from "../../../types/Address";
-import { useIsUniqueLabel } from "../../../utils/hooks/getAccountDataHooks";
+import { DynamicModalContext } from "../../DynamicModal";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import { ModalBackButton } from "../../ModalBackButton";
 import { FormPageHeader } from "../FormPageHeader";
 import { FormPageProps, formDefaultValues } from "../utils";
 
@@ -80,39 +83,21 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
     isLoading,
   } = useHandleOnSubmitFormActions([openSignPage]);
 
-  const isUnique = useIsUniqueLabel();
+  const { openWith } = useContext(DynamicModalContext);
+  const goBackToNameStep = () => openWith(<NameMultisigFormPage name={props.form!.name} />);
 
   return (
     <FormProvider {...form}>
       <ModalContent>
+        <ModalBackButton onClick={goBackToNameStep} />
+
         <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader
-            subTitle="Name your contract, select an owner and the signers of the contract."
+            subTitle="Select an owner and the signers of the contract."
             title="Create Multisig"
           />
 
           <ModalBody>
-            <FormControl isInvalid={!!errors.name}>
-              <FormLabel>Name the Contract</FormLabel>
-              <InputGroup>
-                <Input
-                  type="text"
-                  {...register("name", {
-                    required: "Name is required",
-                    validate: name => {
-                      if (!isUnique(name)) {
-                        return "Name must be unique across all accounts and contacts";
-                      }
-                    },
-                  })}
-                  placeholder="The name is only stored locally"
-                />
-              </InputGroup>
-              {errors.name && (
-                <FormErrorMessage data-testid="name-error">{errors.name.message}</FormErrorMessage>
-              )}
-            </FormControl>
-
             <FormControl isInvalid={!!errors.sender} marginY="24px">
               <OwnedImplicitAccountsAutocomplete
                 allowUnknown={false}
