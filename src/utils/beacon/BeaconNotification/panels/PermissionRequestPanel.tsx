@@ -58,6 +58,8 @@ export const PermissionRequestPanel: React.FC<{
       scopes: request.scopes,
       id: request.id,
       publicKey: account.pk,
+      // TODO: update when we start supporting abstracted accounts
+      walletType: "implicit",
     };
 
     await walletClient.respond(response);

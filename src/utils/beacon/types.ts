@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 const peerInfoSchema = z.object({
+  id: z.string(),
+  type: z.string(),
   name: z.string(),
   publicKey: z.string(),
   version: z.string(),
