@@ -10,8 +10,8 @@ const defaultPathProps = {
   strokeLinejoin: "round" as const,
 };
 
-export const maintanceIcon = createIcon({
-  displayName: "Maintance",
+export const MaintenanceIcon = createIcon({
+  displayName: "Maintenance",
   viewBox: "0 0 18 18",
   path: (
     <path
