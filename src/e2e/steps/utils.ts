@@ -5,6 +5,7 @@ import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
 import { State } from "../../utils/redux/slices/accountsSlice";
 import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
+import { refetch } from "../utils";
 
 Given(/I have accounts?/, async function (this: CustomWorld, table: DataTable) {
   const accounts: State = {
@@ -66,6 +67,5 @@ When("I wait for TZKT to process the updates", async function (this: CustomWorld
 });
 
 When("I refetch the data", async function (this: CustomWorld) {
-  await this.page.getByTestId("refetch-button").click();
-  expect(this.page.getByText("Updated just now")).toBeVisible();
+  await refetch(this.page);
 });
