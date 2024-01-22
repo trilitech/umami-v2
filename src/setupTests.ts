@@ -13,6 +13,7 @@ import React from "react";
 
 import { mockUseToast } from "./mocks/toast";
 import { accountsSlice } from "./utils/redux/slices/accountsSlice";
+import { announcementSlice } from "./utils/redux/slices/announcementSlice";
 import { batchesActions } from "./utils/redux/slices/batches";
 import { beaconActions } from "./utils/redux/slices/beaconSlice";
 import { contactsActions } from "./utils/redux/slices/contactsSlice";
@@ -110,6 +111,7 @@ jest.mock("@chakra-ui/react", () => {
 afterEach(() => {
   act(() => {
     store.dispatch(accountsSlice.actions.reset());
+    store.dispatch(announcementSlice.actions.reset());
     store.dispatch(batchesActions.reset());
     store.dispatch(beaconActions.reset());
     store.dispatch(contactsActions.reset());

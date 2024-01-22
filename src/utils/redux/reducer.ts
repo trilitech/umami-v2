@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 
 import { migrations } from "./migrations";
 import { accountsSlice } from "./slices/accountsSlice";
+import { announcementSlice } from "./slices/announcementSlice";
 import { assetsSlice } from "./slices/assetsSlice";
 import { batchesSlice } from "./slices/batches";
 import { beaconSlice } from "./slices/beaconSlice";
@@ -13,7 +14,7 @@ import { multisigsSlice } from "./slices/multisigsSlice";
 import { networksSlice } from "./slices/networks";
 import { tokensSlice } from "./slices/tokensSlice";
 
-export const VERSION = 0;
+export const VERSION = 1;
 
 const rootPersistConfig = {
   key: "root",
@@ -32,6 +33,7 @@ const accountsPersistConfig = {
 // if you add more slices then add their reset action to setupTests.ts
 const rootReducers = combineReducers({
   accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
+  announcement: announcementSlice.reducer,
   assets: assetsSlice.reducer,
   batches: batchesSlice.reducer,
   beacon: beaconSlice.reducer,
