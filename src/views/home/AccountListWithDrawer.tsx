@@ -76,6 +76,7 @@ export const AccountListWithDrawer: React.FC = () => {
           )}
           {!isNFT && selectedAccount && (
             <DrawerBody
+              overflow="hidden"
               background={accountIconGradient({
                 account: selectedAccount,
                 radius: "350px",
