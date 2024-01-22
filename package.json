@@ -61,7 +61,7 @@
     "@svgr/webpack": "^5.5.0",
     "@taquito/ledger-signer": "^17.5.0",
     "@taquito/michel-codec": "^17.5.0",
-    "@taquito/rpc": "^17.5.0",
+    "@taquito/rpc": "^17.5.2",
     "@taquito/signer": "^17.5.0",
     "@taquito/taquito": "^17.5.0",
     "@taquito/utils": "^17.5.0",
