@@ -9768,18 +9768,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bfj@npm:^7.0.2":
-  version: 7.0.2
-  resolution: "bfj@npm:7.0.2"
-  dependencies:
-    bluebird: "npm:^3.5.5"
-    check-types: "npm:^11.1.1"
-    hoopy: "npm:^0.1.4"
-    tryer: "npm:^1.0.1"
-  checksum: e1040fe6aec2afeb6f6c5231bbbc055616fa99c23c5249c7d20a2919507a69d8fd4d82d2245eca5ee08cbfcd3e70ce817328b8a20acda69af4638f1c11343bc7
-  languageName: node
-  linkType: hard
-
 "big-integer@npm:^1.6.16":
   version: 1.6.51
   resolution: "big-integer@npm:1.6.51"
@@ -10415,13 +10403,6 @@ __metadata:
   version: 0.7.0
   resolution: "chardet@npm:0.7.0"
   checksum: b0ec668fba5eeec575ed2559a0917ba41a6481f49063c8445400e476754e0957ee09e44dc032310f526182b8f1bf25e9d4ed371f74050af7be1383e06bc44952
-  languageName: node
-  linkType: hard
-
-"check-types@npm:^11.1.1":
-  version: 11.2.2
-  resolution: "check-types@npm:11.2.2"
-  checksum: a741fc4748d1923b0ff11003aab3fc18eaa8d8b6b3d5e93d21796fc6355f95557b9acc6189fe9e2411efe8724313b3123ba0bc1d728c0db30791c3b8a894a38a
   languageName: node
   linkType: hard
 
@@ -14173,13 +14154,6 @@ __metadata:
   dependencies:
     react-is: "npm:^16.7.0"
   checksum: 1acbe85f33e5a39f90c822ad4d28b24daeb60f71c545279431dc98c312cd28a54f8d64788e477fe21dc502b0e3cf58589ebe5c1ad22af27245370391c2d24ea6
-  languageName: node
-  linkType: hard
-
-"hoopy@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "hoopy@npm:0.1.4"
-  checksum: 7a73f1839a7fd6b953356770dff2c3cff813d97d899cddd75b348926c4df36059d987c06bedb57b1b7711504dba83d3b7b986f979a08b1e415da73a51fefa767
   languageName: node
   linkType: hard
 
@@ -21866,13 +21840,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tryer@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "tryer@npm:1.0.1"
-  checksum: 4d869d187bd715136903b349f39d1cc3e5c19f742689a348190aff92408ee8dd3d7d9adc26dc9265c35d722731184c979ed316109b6c1239249a8707bb92cc49
-  languageName: node
-  linkType: hard
-
 "ts-api-utils@npm:^1.0.1":
   version: 1.0.3
   resolution: "ts-api-utils@npm:1.0.3"
@@ -22247,7 +22214,6 @@ __metadata:
     babel-plugin-named-asset-import: "npm:^0.3.8"
     babel-plugin-named-exports-order: "npm:^0.0.2"
     babel-preset-react-app: "npm:^10.0.1"
-    bfj: "npm:^7.0.2"
     bip39: "npm:^3.1.0"
     browserslist: "npm:^4.18.1"
     buffer: "npm:^6.0.3"
