@@ -1,6 +1,7 @@
 import { decrypt } from "../../../utils/crypto/AES";
 import { EncryptedData } from "../../../utils/crypto/types";
 import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks";
+import { persistor } from "../../../utils/redux/persistor";
 import { DEFAULT_ACCOUNT_LABEL } from "../nameAccount/NameAccount";
 
 export const useRestoreV1BackupFile = () => {
@@ -29,6 +30,8 @@ export const useRestoreV1BackupFile = () => {
     } catch (e) {
       throw new Error("Invalid password.");
     }
+
+    await persistor.flush();
   };
 };
 
@@ -52,7 +55,11 @@ export const restoreV2BackupFile = async (
     throw new Error("Invalid password.");
   }
 
+  persistor.pause();
+
   localStorage.clear();
   localStorage.setItem("persist:accounts", accountsInString);
   localStorage.setItem("persist:root", backup["persist:root"]);
+
+  persistor.persist();
 };
