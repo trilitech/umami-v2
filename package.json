@@ -160,7 +160,7 @@
     "react-hooks-testing-library": "^0.6.0",
     "react-icons": "^4.11.0",
     "react-identicons": "^1.2.5",
-    "react-player": "^2.13.0",
+    "react-player": "^2.14.1",
     "react-qrcode-logo": "^2.9.0",
     "react-query": "^3.39.3",
     "react-redux": "8.1.3",
