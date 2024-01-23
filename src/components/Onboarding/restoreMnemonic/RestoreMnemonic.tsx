@@ -1,29 +1,31 @@
-import { ChevronDownIcon, WarningIcon } from "@chakra-ui/icons";
-import { Box, Button, Grid, GridItem, Heading, Input, Select, VStack } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { Box, Button, Grid, GridItem, Heading, Select, VStack } from "@chakra-ui/react";
 import { validateMnemonic } from "bip39";
 import { range } from "lodash";
 import { useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 
 import { KeyIcon } from "../../../assets/icons";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
 
 const mnemonicSizes = [12, 15, 18, 24];
 
 export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+  const form = useForm({
+    mode: "onBlur",
+  });
+
   const {
-    register,
     handleSubmit,
     setValue,
     trigger,
-    formState: { errors, isValid },
-  } = useForm({
-    mode: "onBlur",
-  });
+    formState: { isValid },
+  } = form;
   const { handleAsyncAction } = useAsyncActionHandler();
   const [mnemonicSize, setMnemonicSize] = useState(24);
 
@@ -69,6 +71,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
         account: { type: "mnemonic", mnemonic: mnemonic },
       });
     });
+
   return (
     <ModalContentWrapper
       icon={<KeyIcon width="24px" height="24px" stroke={colors.gray[450]} />}
@@ -76,89 +79,93 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
       title="Import Seed Phrase"
     >
       <Box overflowX="hidden">
-        <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-          <VStack width="100%" spacing={4}>
-            <Select
-              height="48px"
-              color={colors.gray[450]}
-              data-testid="select"
-              icon={<ChevronDownIcon />}
-              onChange={event => handleMnemonicSizeChange(event.target.value)}
-              value={mnemonicSize}
-            >
-              {mnemonicSizes.reverse().map(value => {
-                return (
-                  <option key={value} value={value}>
-                    {value} Words
-                  </option>
-                );
-              })}
-            </Select>
-
-            <Grid gridGap={3} gridTemplateColumns="repeat(3, 1fr)" paddingBottom="20px">
-              {range(mnemonicSize).map(index => {
-                return (
-                  <GridItem
-                    key={index}
-                    display="flex"
-                    height="38px"
-                    padding="4px"
-                    fontSize="sm"
-                    background={colors.gray[800]}
-                    border="1px solid"
-                    borderColor={colors.gray[500]}
-                    borderRadius="4px"
-                  >
-                    <Heading
-                      width="18px"
-                      marginRight="6px"
-                      paddingTop="6px"
-                      color={colors.gray[400]}
-                      textAlign="right"
-                      size="sm"
-                    >
-                      {index + 1}
-                    </Heading>
-                    <Input
-                      border="none"
-                      autoComplete="off"
-                      onPaste={async e => {
-                        e.preventDefault();
-                        const mnemonic = await navigator.clipboard.readText();
-                        pasteMnemonic(mnemonic);
-                      }}
-                      placeholder="Type here..."
-                      size="xsmall"
-                      {...register(`word${index}`, {
-                        required: true,
-                      })}
-                    />
-                    {errors[`${index}`] && (
-                      <WarningIcon width="40px" height="40px" padding="8px" color="red" />
-                    )}
-                  </GridItem>
-                );
-              })}
-            </Grid>
-            <Button width="100%" isDisabled={!isValid} size="lg" type="submit">
-              Continue
-            </Button>
-
-            {
-              /* devblock:start */
-              <Button
-                width="100%"
-                onClick={() => {
-                  pasteMnemonic(mnemonic1);
-                }}
-                size="lg"
+        <FormProvider {...form}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+            <VStack width="100%" spacing={4}>
+              <Select
+                height="48px"
+                color={colors.gray[450]}
+                data-testid="select"
+                icon={<ChevronDownIcon />}
+                onChange={event => handleMnemonicSizeChange(event.target.value)}
+                value={mnemonicSize}
               >
-                Enter test mnemonic (Dev only)
+                {mnemonicSizes.reverse().map(value => {
+                  return (
+                    <option key={value} value={value}>
+                      {value} Words
+                    </option>
+                  );
+                })}
+              </Select>
+
+              <Grid gridGap={3} gridTemplateColumns="repeat(3, 1fr)" paddingBottom="20px">
+                {range(mnemonicSize).map(index => {
+                  const inputName = `word${index}`;
+                  return (
+                    <GridItem
+                      key={index}
+                      display="flex"
+                      height="38px"
+                      padding="4px"
+                      fontSize="sm"
+                      background={colors.gray[800]}
+                      border="1px solid"
+                      borderColor={colors.gray[500]}
+                      borderRadius="4px"
+                    >
+                      <Heading
+                        width="18px"
+                        marginRight="6px"
+                        paddingTop="6px"
+                        color={colors.gray[400]}
+                        textAlign="right"
+                        size="sm"
+                      >
+                        {index + 1}
+                      </Heading>
+
+                      <MnemonicAutocomplete
+                        inputName={inputName}
+                        inputProps={{
+                          onPaste: async e => {
+                            e.preventDefault();
+                            const mnemonic = await navigator.clipboard.readText();
+                            pasteMnemonic(mnemonic);
+                          },
+                          border: "none",
+                          size: "xsmall",
+                        }}
+                        listProps={{
+                          width: "126px",
+                          marginTop: "38px",
+                          marginLeft: "-5px",
+                        }}
+                      />
+                    </GridItem>
+                  );
+                })}
+              </Grid>
+              <Button width="100%" isDisabled={!isValid} size="lg" type="submit">
+                Continue
               </Button>
-              /* devblock:end */
-            }
-          </VStack>
-        </form>
+
+              {
+                /* devblock:start */
+                <Button
+                  width="100%"
+                  onClick={() => {
+                    pasteMnemonic(mnemonic1);
+                  }}
+                  size="lg"
+                >
+                  Enter test mnemonic (Dev only)
+                </Button>
+                /* devblock:end */
+              }
+            </VStack>
+          </form>
+        </FormProvider>
       </Box>
     </ModalContentWrapper>
   );

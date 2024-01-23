@@ -50,8 +50,9 @@ describe("<VerifySeedphrase />", () => {
       fireEvent.change(input, { target: { value: "test" } });
       fireEvent.blur(input);
     });
+
     await waitFor(() => {
-      expect(screen.getAllByText(/invalid input/i).length).toBe(5);
+      expect(screen.getAllByText("Word doesn't match").length).toBe(5);
     });
   });
 
@@ -71,7 +72,7 @@ describe("<VerifySeedphrase />", () => {
       fireEvent.blur(input);
     });
     await waitFor(() => {
-      expect(screen.getAllByText(/invalid input/i).length).toBe(5);
+      expect(screen.getAllByText("Word doesn't match").length).toBe(5);
     });
   });
 
