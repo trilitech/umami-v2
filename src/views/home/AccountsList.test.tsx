@@ -36,7 +36,7 @@ describe("<AccountsList />", () => {
       const social = mockSocialAccount(1);
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mnemonic]));
       store.dispatch(accountsSlice.actions.addAccount(social));
-      render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
+      render(<AccountsList />);
 
       const [mnemonicPopover, socialPopover] = screen.getAllByTestId("popover-cta");
       const [removeMnemonic, removeSocial] = screen.getAllByTestId("popover-remove");
@@ -60,7 +60,7 @@ describe("<AccountsList />", () => {
 
     it("removes all accounts linked to a given mnemonic", async () => {
       await restore();
-      render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
+      render(<AccountsList />);
 
       expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
       const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
@@ -105,7 +105,7 @@ describe("<AccountsList />", () => {
       const social2 = mockSocialAccount(1);
       store.dispatch(accountsSlice.actions.addAccount(social1));
       store.dispatch(accountsSlice.actions.addAccount(social2));
-      render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
+      render(<AccountsList />);
 
       user.click(screen.getByTestId("popover-cta"));
       user.click(screen.getByTestId("popover-remove"));
@@ -128,9 +128,9 @@ describe("<AccountsList />", () => {
       ])
     );
 
-    render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
+    render(<AccountsList />);
 
-    const results = screen.getAllByTestId(/account-tile/);
+    const results = screen.getAllByTestId("account-tile-container");
     expect(results).toHaveLength(3);
 
     results.forEach((result, i) => {
@@ -144,29 +144,29 @@ describe("<AccountsList />", () => {
 
   it("displays accounts by group (case mnemonic social and multisig)", async () => {
     await restore();
-    render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
-    expect(screen.getAllByTestId(/account-tile/)).toHaveLength(7);
+    render(<AccountsList />);
+    expect(screen.getAllByTestId("account-tile-container")).toHaveLength(7);
     expect(screen.getAllByTestId(/account-group-title/)).toHaveLength(4);
 
     const socialAccounts = screen.getByTestId(/account-group-social/i);
-    expect(within(socialAccounts).getAllByTestId(/account-tile/)).toHaveLength(2);
+    expect(within(socialAccounts).getAllByTestId("account-tile-container")).toHaveLength(2);
     expect(socialAccounts).toHaveTextContent("Social Accounts");
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
 
     const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
-    expect(within(seedPhrase1).getAllByTestId(/account-tile/)).toHaveLength(2);
+    expect(within(seedPhrase1).getAllByTestId("account-tile-container")).toHaveLength(2);
     expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
     expect(seedPhrase1).toHaveTextContent("Mnemonic 1.1");
     expect(seedPhrase1).toHaveTextContent("Mnemonic 1.2");
 
     const seedPhrase2 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT2}`);
-    expect(within(seedPhrase2).getAllByTestId(/account-tile/)).toHaveLength(1);
+    expect(within(seedPhrase2).getAllByTestId("account-tile-container")).toHaveLength(1);
     expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT2}`);
     expect(seedPhrase2).toHaveTextContent("Mnemonic 2");
 
     const multisigAccounts = screen.getByTestId(/account-group-multisig/i);
-    expect(within(multisigAccounts).getAllByTestId(/account-tile/)).toHaveLength(2);
+    expect(within(multisigAccounts).getAllByTestId("account-tile-container")).toHaveLength(2);
     expect(multisigAccounts).toHaveTextContent(/multisig account 0/i);
     expect(multisigAccounts).toHaveTextContent(/multisig account 1/i);
   });
@@ -182,7 +182,7 @@ describe("<AccountsList />", () => {
     });
     const LABEL = "my label";
     await restore();
-    render(<AccountsList onOpen={() => {}} onSelect={() => {}} selected={null} />);
+    render(<AccountsList />);
 
     // Open actions dialog for Mnemonic Group 1
     const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
@@ -220,7 +220,7 @@ describe("<AccountsList />", () => {
     {
       const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
 
-      const tiles = within(seedPhrase1).getAllByTestId(/account-tile/);
+      const tiles = within(seedPhrase1).getAllByTestId("account-tile-container");
       expect(tiles).toHaveLength(3);
 
       expect(tiles[2]).toHaveTextContent(LABEL);

@@ -8,6 +8,7 @@ import { AccountSmallTile } from "./AccountSmallTile";
 import { OperationRecipient } from "./OperationRecipient";
 import { OperationView } from "./OperationView";
 import { TrashIcon } from "../../assets/icons";
+import { accountIconGradient } from "../../components/AccountTile/AccountTile";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { SignPage } from "../../components/SendFlow/Batch/SignPage";
@@ -113,7 +114,14 @@ export const BatchView: React.FC<{
       <Flex
         justifyContent="space-between"
         padding="20px 23px 20px 30px"
-        background={colors.gray[800]}
+        background={accountIconGradient({
+          top: "-10px",
+          left: "-10px",
+          account: sender,
+          radius: "100px",
+          opacity: "40",
+          mainBackgroundColor: colors.gray[800],
+        })}
         borderTopRadius="8px"
         data-testid="header"
       >

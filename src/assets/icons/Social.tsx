@@ -5,6 +5,7 @@ export const SocialIcon = (props: IconProps) => (
     width="28px"
     height="28px"
     fill="none"
+    stroke="transparent"
     data-testid="social-icon"
     viewBox="0 0 28 28"
     {...props}

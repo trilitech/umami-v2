@@ -94,8 +94,10 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
 
   return (
     <Flex
+      zIndex={2}
       alignItems="center"
       flexDirection="column"
+      height="100%"
       data-testid={`account-card-${account.address.pkh}`}
     >
       <AccountTileIcon addressKind={addressKind} />

@@ -88,7 +88,8 @@
     ],
     "@stylistic/quotes": ["warn", "double", { "avoidEscape": true }],
     "deprecation/deprecation": "warn",
-    "import/no-unused-modules": ["warn", { "unusedExports": true }]
+    "import/no-unused-modules": ["warn", { "unusedExports": true }],
+    "prefer-const": "warn"
   },
   "overrides": [
     {

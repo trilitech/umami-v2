@@ -40,8 +40,8 @@ export const AssetsPanel: React.FC<{
     <Tabs
       flexDirection="column"
       display="flex"
+      overflow="hidden"
       width="100%"
-      height="100%"
       marginTop="60px"
       data-testid="asset-panel"
     >
@@ -63,14 +63,26 @@ export const AssetsPanel: React.FC<{
           </Button>
         </ExternalLink>
       </TabList>
-      <TabPanels height="100%">
+      <TabPanels height="100%" paddingBottom="60px">
         {isMultisig && (
-          <TabPanel paddingTop="24px" data-testid="account-card-pending-tab-panel">
+          <TabPanel
+            overflowX="hidden"
+            height="100%"
+            paddingTop="24px"
+            paddingBottom="60px"
+            data-testid="account-card-pending-tab-panel"
+          >
             <MultisigPendingAccordion account={account} />
           </TabPanel>
         )}
 
-        <TabPanel paddingTop="24px" paddingBottom="25px" data-testid="account-card-operations-tab">
+        <TabPanel
+          overflowX="hidden"
+          height="100%"
+          paddingTop="24px"
+          paddingBottom="60px"
+          data-testid="account-card-operations-tab"
+        >
           <OperationTileContext.Provider
             value={{ mode: "drawer", selectedAddress: account.address }}
           >
@@ -84,12 +96,12 @@ export const AssetsPanel: React.FC<{
           </OperationTileContext.Provider>
         </TabPanel>
 
-        <TabPanel paddingTop="24px" data-testid="account-card-delegation-tab">
+        <TabPanel overflowX="hidden" paddingTop="24px" data-testid="account-card-delegation-tab">
           <DelegationDisplay account={account} delegation={delegation} />
         </TabPanel>
 
         <TabPanel
-          overflow="hidden"
+          overflowX="hidden"
           height="100%"
           paddingTop="24px"
           data-testid="account-card-nfts-tab"
@@ -97,7 +109,12 @@ export const AssetsPanel: React.FC<{
           <NFTsGrid columns={3} nfts={nfts} owner={account.address.pkh} />
         </TabPanel>
 
-        <TabPanel paddingTop="24px" data-testid="account-card-tokens-tab">
+        <TabPanel
+          overflowX="hidden"
+          height="100%"
+          paddingTop="24px"
+          data-testid="account-card-tokens-tab"
+        >
           <TokenList owner={account.address.pkh} tokens={tokens} />
         </TabPanel>
       </TabPanels>

@@ -1,16 +1,18 @@
 import { AspectRatio, Box, Divider, Flex, FlexProps, Heading, Image, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AccountTileIcon } from "./AccountTileIcon";
 import colors from "../../style/colors";
-import { RawPkh, parsePkh } from "../../types/Address";
+import { Account } from "../../types/Account";
 import { fullId, thumbnailUri } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { getIPFSurl, sortedByLastUpdate } from "../../utils/token/utils";
+import { SelectedAccountContext } from "../../views/home/SelectedAccountContext";
 import { useAddressKind } from "../AddressTile/useAddressKind";
+import { color as identiconColor } from "../Identicon";
 
 export const AccountTileBase: React.FC<
   {
@@ -25,7 +27,6 @@ export const AccountTileBase: React.FC<
       height={90}
       marginBottom={4}
       padding={4}
-      background={colors.gray[900]}
       border={`1px solid ${colors.gray[800]}`}
       borderRadius={4}
       {...flexProps}
@@ -57,30 +58,78 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
 
 const MAX_NFT_COUNT = 7;
 
+export const accountIconGradient = ({
+  account,
+  radius,
+  left = "0px",
+  top = "0px",
+  mainBackgroundColor = colors.gray[900],
+  opacity = "60", // hex value string
+}: {
+  account: Account;
+  radius: string;
+  left?: string;
+  top?: string;
+  mainBackgroundColor?: string;
+  opacity?: string;
+}) => {
+  let color: string;
+  switch (account.type) {
+    case "mnemonic":
+    case "secret_key":
+      color = identiconColor(account.address.pkh);
+      break;
+    case "ledger":
+    case "multisig":
+      color = colors.gray[450];
+      break;
+    case "social":
+      color = "#EA4335";
+  }
+
+  color += opacity;
+
+  return `radial-gradient(circle farthest-side at ${left} ${top}, ${color} 0%, ${color} ${
+    parseInt(radius) / 4
+  }px, transparent ${radius}), ${mainBackgroundColor}`;
+};
+
 export const AccountTile: React.FC<{
-  address: RawPkh;
+  account: Account;
   balance: string | undefined;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-  selected?: boolean;
-}> = ({ selected, onClick, address, balance }) => {
-  const border = onClick ? `1px solid ${selected ? colors.orangeL : colors.gray[700]}` : undefined;
-  const addressKind = useAddressKind(parsePkh(address));
+}> = ({ account, balance }) => {
+  const { selectedAccount, selectAccount } = useContext(SelectedAccountContext);
+  const isSelected = selectedAccount?.address.pkh === account.address.pkh;
+
+  const addressKind = useAddressKind(account.address);
+  const {
+    address: { pkh },
+  } = account;
   // TODO: add a test for it!
-  const isDelegating = !!useAppSelector(s => s.assets.delegationLevels)[address];
+  const isDelegating = !!useAppSelector(s => s.assets.delegationLevels)[pkh];
 
   const getNFTs = useGetAccountNFTs();
-  const nfts = sortedByLastUpdate(getNFTs(address));
+  const nfts = sortedByLastUpdate(getNFTs(pkh));
 
   return (
     <Box
-      background={colors.gray[900]}
-      border={`1px solid ${selected ? colors.orangeL : "transparent"}`}
+      zIndex={2}
+      background={accountIconGradient({
+        left: "-10px",
+        top: "-10px",
+        account,
+        radius: nfts.length > 0 ? "120px" : "100px",
+      })}
+      borderWidth="1px"
+      borderStyle="solid"
+      borderColor={isSelected ? colors.orangeL : colors.gray[900]}
       borderRadius="8px"
       _hover={{
-        border,
+        borderColor: isSelected ? colors.orangeL : colors.gray[700],
       }}
       cursor="pointer"
-      onClick={onClick}
+      data-testid="account-tile-container"
+      onClick={() => selectAccount(account)}
       paddingX="21px"
     >
       <AccountTileBase
@@ -88,9 +137,9 @@ export const AccountTile: React.FC<{
         marginBottom={0}
         padding={0}
         border="none"
-        data-testid={`account-tile-${address}` + (selected ? "-selected" : "")}
+        data-testid={`account-tile-${pkh}` + (isSelected ? "-selected" : "")}
         icon={<AccountTileIcon addressKind={addressKind} />}
-        leftElement={<LabelAndAddress label={addressKind.label} pkh={address} />}
+        leftElement={<LabelAndAddress label={addressKind.label} pkh={pkh} />}
         rightElement={
           <Flex flexDirection="column">
             <Text align="right" color={colors.gray[450]} fontWeight={700} size="sm">
@@ -115,11 +164,7 @@ export const AccountTile: React.FC<{
 
               if (i === MAX_NFT_COUNT - 1) {
                 return (
-                  <Link
-                    key="last"
-                    data-testid="show-more-nfts-link"
-                    to={`/nfts?accounts=${address}`}
-                  >
+                  <Link key="last" data-testid="show-more-nfts-link" to={`/nfts?accounts=${pkh}`}>
                     <Box
                       height="32px"
                       marginLeft="4px"
@@ -134,11 +179,7 @@ export const AccountTile: React.FC<{
                 );
               }
               return (
-                <Link
-                  key={fullId(nft)}
-                  data-testid="nft-link"
-                  to={`/home/${address}/${fullId(nft)}`}
-                >
+                <Link key={fullId(nft)} data-testid="nft-link" to={`/home/${pkh}/${fullId(nft)}`}>
                   <AspectRatio width="32px" height="32px" marginLeft={i > 0 ? "4px" : 0} ratio={1}>
                     <Image borderRadius="4px" src={url} />
                   </AspectRatio>

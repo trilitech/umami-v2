@@ -1,36 +1,37 @@
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 import { get } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AccountsList } from "./AccountsList";
 import { DrawerTopButtons } from "./DrawerTopButtons";
+import { SelectedAccountContext } from "./SelectedAccountContext";
 import { AccountCard } from "../../components/AccountDrawer";
+import { accountIconGradient } from "../../components/AccountTile/AccountTile";
 import { useDynamicModal } from "../../components/DynamicModal";
+import { Account } from "../../types/Account";
 import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { NFTDrawerBody } from "../nfts/NFTDrawerBody";
 
 export const AccountListWithDrawer: React.FC = () => {
-  const [selected, setSelected] = useState<string | null>(null);
-  const allAccounts = useAllAccounts();
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
 
   const { ownerPkh, nftId } = useParams();
   const nfts = useAllNfts();
   const drawerNFT = ownerPkh && get(nfts, [ownerPkh], []).find(nft => fullId(nft) === nftId);
   const isNFT = !!drawerNFT;
 
-  const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: isNFT });
+  const { isOpen, onOpen: openDrawer, onClose } = useDisclosure({ defaultIsOpen: isNFT });
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
   const navigate = useNavigate();
   const closeDrawer = useCallback(() => {
-    setSelected(null);
+    setSelectedAccount(null);
     onClose();
     navigate("/home");
-  }, [setSelected, onClose, navigate]);
+  }, [onClose, navigate]);
 
   // For some reason the drawer doesn't close on esc for this particular component
   // Until we figure out why, we'll have this crutch
@@ -41,13 +42,24 @@ export const AccountListWithDrawer: React.FC = () => {
       }
     };
     document.addEventListener("keydown", handleEsc);
+
     return () => document.removeEventListener("keydown", handleEsc);
   }, [closeDrawer]);
 
-  const account = allAccounts.find(account => account.address.pkh === selected);
+  const selectedAccountContextValue = useMemo(
+    () => ({
+      selectedAccount,
+      selectAccount: (account: Account | null) => {
+        setSelectedAccount(account);
+        openDrawer();
+      },
+    }),
+    [selectedAccount, openDrawer]
+  );
+
   return (
-    <>
-      <AccountsList onOpen={onOpen} onSelect={setSelected} selected={selected} />
+    <SelectedAccountContext.Provider value={selectedAccountContextValue}>
+      <AccountsList />
       <Drawer
         autoFocus={false}
         blockScrollOnMount={!isDynamicModalOpen}
@@ -57,18 +69,29 @@ export const AccountListWithDrawer: React.FC = () => {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerBody>
-            {isNFT ? (
+          {isNFT && (
+            <DrawerBody>
               <NFTDrawerBody nft={drawerNFT} onCloseDrawer={closeDrawer} ownerPkh={ownerPkh} />
-            ) : (
-              <>
-                <DrawerTopButtons onClose={closeDrawer} />
-                {account && <AccountCard account={account} />}
-              </>
-            )}
-          </DrawerBody>
+            </DrawerBody>
+          )}
+          {!isNFT && selectedAccount && (
+            <DrawerBody
+              overflow="hidden"
+              background={accountIconGradient({
+                account: selectedAccount,
+                radius: "350px",
+                opacity: "35",
+                mainBackgroundColor: "transparent",
+                left: "300px",
+                top: "-125px",
+              })}
+            >
+              <DrawerTopButtons onClose={closeDrawer} />
+              <AccountCard account={selectedAccount} />
+            </DrawerBody>
+          )}
         </DrawerContent>
       </Drawer>
-    </>
+    </SelectedAccountContext.Provider>
   );
 };

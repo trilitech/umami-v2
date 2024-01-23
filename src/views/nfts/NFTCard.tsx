@@ -18,6 +18,16 @@ export const NFTCard: React.FC<{
 
   const isSelected = currentLocation.pathname.includes(`${nft.owner}/${fullId(nft)}`);
 
+  const nftImageCommonProps = {
+    width: "100%",
+    minWidth: "242px",
+    minHeight: "242px",
+    objectFit: "contain" as const,
+    aspectRatio: "1",
+    fallbackSrc: fallbackUrl,
+    src: url,
+  };
+
   return (
     <Card
       minWidth="274px"
@@ -35,16 +45,34 @@ export const NFTCard: React.FC<{
         _hover={{ bg: colors.gray[700], borderColor: `${colors.gray[500]}` }}
       >
         <Center>
-          <Image
-            width="100%"
-            minWidth="242px"
-            minHeight="242px"
-            objectFit="contain"
-            aspectRatio="1 /1"
-            data-testid="nft-image"
-            fallbackSrc={fallbackUrl}
-            src={url}
-          />
+          <Box position="relative" width="100%">
+            {/* Unfortunately, if we try to get away with two images it doesn't work
+                because the blurred one always goes above the normal one.
+
+                So, there are three images which have the same URL, but serve different purposes
+
+                this image is invisible, but its position is default (static),
+                not absolute as the other ones which makes the card grow as we resize the window */}
+            <Image {...nftImageCommonProps} zIndex={2} opacity="0" />
+
+            {/* this image adds a background blur */}
+            <Image
+              {...nftImageCommonProps}
+              position="absolute"
+              zIndex={0}
+              top="0"
+              filter="blur(20px)"
+            />
+
+            {/* this is the actual NFT image that you see on the card */}
+            <Image
+              {...nftImageCommonProps}
+              position="absolute"
+              zIndex={1}
+              top="0"
+              data-testid="nft-image"
+            />
+          </Box>
         </Center>
         {/* TODO: make a separate component to be shared between this and the drawer NFT card */}
         {Number(nft.balance) > 1 && (

@@ -46,19 +46,52 @@ export const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: Ra
     <Box>
       <Card width="534px" height="534px" background={colors.gray[800]}>
         <CardBody padding="24px">
-          <Box width="486px" height="486px">
+          <Box position="relative" width="486px" height="486px">
             {isVideo ? (
-              <ReactPlayer width="100%" height="100%" loop playing url={url} />
+              <>
+                <Box position="absolute" zIndex={1} width="486px" height="486px">
+                  <ReactPlayer width="100%" height="100%" loop playing url={url} />
+                </Box>
+                <Image
+                  position="absolute"
+                  zIndex={0}
+                  top="0"
+                  width="486px"
+                  height="486px"
+                  objectFit="contain"
+                  alt={name}
+                  filter="blur(20px)"
+                  // use the displayUri as the base for blurry effect
+                  src={fallbackUrl}
+                />
+              </>
             ) : (
-              <Image
-                width="486px"
-                height="486px"
-                objectFit="contain"
-                alt={name}
-                data-testid="nft-image"
-                fallbackSrc={fallbackUrl}
-                src={url}
-              />
+              <>
+                <Image
+                  position="absolute"
+                  zIndex={1}
+                  width="486px"
+                  height="486px"
+                  objectFit="contain"
+                  alt={name}
+                  fallbackSrc={fallbackUrl}
+                  src={url}
+                />
+
+                <Image
+                  position="absolute"
+                  zIndex={0}
+                  top="0"
+                  width="486px"
+                  height="486px"
+                  objectFit="contain"
+                  alt={name}
+                  data-testid="nft-image"
+                  fallbackSrc={fallbackUrl}
+                  filter="blur(20px)"
+                  src={url}
+                />
+              </>
             )}
           </Box>
           {Number(nft.balance) > 1 && (
