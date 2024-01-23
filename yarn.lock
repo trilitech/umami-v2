@@ -20507,7 +20507,7 @@ __metadata:
     wait-on: "npm:^7.2.0"
     webpack: "npm:^5.89.0"
     webpack-dev-server: "npm:^4.15.1"
-    webpack-manifest-plugin: "npm:^4.0.2"
+    webpack-manifest-plugin: "npm:^5.0.0"
     webpack-remove-code-blocks: "npm:^0.1.5"
     workbox-webpack-plugin: "npm:^6.4.1"
     zod: "npm:^3.22.4"
@@ -21056,15 +21056,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-manifest-plugin@npm:^4.0.2":
-  version: 4.1.1
-  resolution: "webpack-manifest-plugin@npm:4.1.1"
+"webpack-manifest-plugin@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "webpack-manifest-plugin@npm:5.0.0"
   dependencies:
     tapable: "npm:^2.0.0"
     webpack-sources: "npm:^2.2.0"
   peerDependencies:
-    webpack: ^4.44.2 || ^5.47.0
-  checksum: d7b0fa36579bf7b6b093103b1484b7af1df76bc2691a08680b0d2cbbebfda6313749b63f19905e964f27c64f27c138bac0216d483df8acd41a1c5f0048fb123e
+    webpack: ^5.47.0
+  checksum: 466ade444c23d4a8ec3d1a108ec2142468cb260570533acf2cf68806065ccdef649dbac0fa6b0700f4c6d2497535ae950a20e83b26edb25ccfa9bb51538fa607
   languageName: node
   linkType: hard
 
