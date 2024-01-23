@@ -8,6 +8,7 @@ import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
 import { VERSION } from "../../utils/redux/reducer";
 import { initialState as accountsInitialState } from "../../utils/redux/slices/accountsSlice";
+import { initialState as announcementInitialState } from "../../utils/redux/slices/announcementSlice";
 import { initialState as assetsInitialState } from "../../utils/redux/slices/assetsSlice";
 import { initialState as batchesInitialState } from "../../utils/redux/slices/batches";
 import { initialState as beaconInitialState } from "../../utils/redux/slices/beaconSlice";
@@ -42,6 +43,7 @@ Before(async function (this: CustomWorld) {
     const accounts = { ...accountsInitialState, ...predefinedState["accounts"] };
     const state: any = {
       assets: assetsInitialState,
+      announcement: announcementInitialState,
       batches: batchesInitialState,
       beacon: beaconInitialState,
       contacts: contactsInitialState,

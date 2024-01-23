@@ -11,11 +11,11 @@ code {
 }
 
 .chakra-toast .chakra-alert[data-status="error"] {
-  background: #fc7884;
+  background: #fc7884; /* orangeL */
 }
 
 .chakra-toast .chakra-alert[data-status="success"] {
-  background: #00e7b6;
+  background: #00e7b6; /* greenL */
 }
 
 .chakra-toast .chakra-alert[data-status="info"] {
@@ -36,4 +36,8 @@ code {
 
 .account-drawer-cta-button:hover .account-drawer-cta-button-icon {
   background-color: #414141; /* gray[500] */
+}
+
+.announcement-banner a {
+  text-decoration: underline;
 }
