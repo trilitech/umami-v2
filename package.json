@@ -78,7 +78,7 @@
     "@types/pluralize": "^0.0.33",
     "@types/promise-retry": "^1.1.5",
     "@types/prop-types": "^15.7.11",
-    "@types/react": "18.2.33",
+    "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
     "@types/redux-mock-store": "^1.0.6",
     "@types/testing-library__user-event": "^4.2.0",
