@@ -1,10 +1,11 @@
-import { Box, Button, FormControl, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { Box, Button, FormControl, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import { DoubleCheckmarkIcon } from "../../../assets/icons";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 import { FormErrorMessage } from "../../FormErrorMessage";
+import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
 import type { VerifySeedphraseStep } from "../useOnboardingModal";
@@ -17,17 +18,17 @@ export const VerifySeedphrase = ({
   account: VerifySeedphraseStep["account"];
 }) => {
   const seedphraseArray = account.mnemonic.split(" ");
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid, isDirty },
-  } = useForm({
+  const form = useForm({
     mode: "onBlur",
   });
+  const {
+    handleSubmit,
+    formState: { errors, isValid },
+  } = form;
   const [randomElements] = useState(selectRandomElements(seedphraseArray, 5));
-  const onSubmit = () => {
-    goToStep({ type: StepType.nameAccount, account });
-  };
+
+  const onSubmit = () => goToStep({ type: StepType.nameAccount, account });
+
   return (
     <ModalContentWrapper
       icon={<DoubleCheckmarkIcon />}
@@ -35,40 +36,60 @@ export const VerifySeedphrase = ({
       title="Verify Seed Phrase"
     >
       <Box overflowX="hidden" overflowY="auto" width="100%">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {randomElements.map((item, index) => {
-            return (
-              <FormControl
-                key={index}
-                marginBottom="12px"
-                isInvalid={!!errors[`${item.index}`] && isDirty}
-              >
-                <InputGroup size="md">
-                  <InputLeftElement data-testid="mnemonic-index">{item.index + 1}</InputLeftElement>
-                  <Input
-                    placeholder="Type here"
-                    {...register(`${item.index}`, {
-                      required: true,
-                      validate: value => value === `${item.value}`,
-                    })}
-                  />
-                </InputGroup>
-                {errors[`${item.index}`] && <FormErrorMessage>Invalid input</FormErrorMessage>}
-              </FormControl>
-            );
-          })}
-          <Button width="100%" marginTop="20px" isDisabled={!isValid} size="lg" type="submit">
-            Continue
-          </Button>
+        <FormProvider {...form}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {randomElements.map((item, index) => {
+              const inputName = `${item.index}`;
+              const error = errors[inputName];
 
-          {
-            /* devblock:start */
-            <Button width="100%" marginTop="12px" onClick={onSubmit} size="lg">
-              Bypass (Dev only)
+              return (
+                <FormControl key={index} marginBottom="12px" isInvalid={!!error}>
+                  <Text
+                    position="absolute"
+                    zIndex={1}
+                    width="26px"
+                    marginTop="12px"
+                    marginLeft="4px"
+                    textAlign="right"
+                    data-testid="mnemonic-index"
+                  >
+                    {item.index + 1}
+                  </Text>
+
+                  <Box width="100%">
+                    <MnemonicAutocomplete
+                      inputName={inputName}
+                      inputProps={{
+                        paddingLeft: "36px",
+                        size: "md",
+                      }}
+                      listProps={{
+                        marginTop: "6px",
+                      }}
+                      validate={value => {
+                        if (value !== item.value) {
+                          return "Word doesn't match";
+                        }
+                      }}
+                    />
+                  </Box>
+                  {error?.message && <FormErrorMessage>{(error as any).message}</FormErrorMessage>}
+                </FormControl>
+              );
+            })}
+            <Button width="100%" marginTop="20px" isDisabled={!isValid} size="lg" type="submit">
+              Continue
             </Button>
-            /* devblock:end */
-          }
-        </form>
+
+            {
+              /* devblock:start */
+              <Button width="100%" marginTop="12px" onClick={onSubmit} size="lg">
+                Bypass (Dev only)
+              </Button>
+              /* devblock:end */
+            }
+          </form>
+        </FormProvider>
       </Box>
     </ModalContentWrapper>
   );
