@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { ErrorBoundary } from "react-error-boundary";
-import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { ErrorPage } from "./components/ErrorPage";
@@ -11,6 +10,7 @@ import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
 import { Router } from "./Router";
 import { getErrorContext } from "./utils/getErrorContext";
+import { persistor } from "./utils/redux/persistor";
 import { errorsSlice } from "./utils/redux/slices/errorsSlice";
 import { store } from "./utils/redux/store";
 
@@ -24,7 +24,7 @@ root.render(
   <React.StrictMode>
     <UmamiTheme>
       <ReduxStore>
-        <PersistGate loading={null} persistor={persistStore(store)}>
+        <PersistGate loading={null} persistor={persistor}>
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <Router />
