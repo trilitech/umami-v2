@@ -37,3 +37,6 @@ jobs:
         env:
           CI: true
         run: yarn test
+
+      - name: Audit dependencies
+        run: yarn npm audit

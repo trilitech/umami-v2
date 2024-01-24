@@ -33,7 +33,7 @@ jobs:
         run: yarn build
 
       - name: Start server
-        run: yarn exec static-server build -p 3000 &
+        run: yarn exec http-server build -p 3000 &
 
       - name: Run cucumber tests
         run: yarn test:e2e
