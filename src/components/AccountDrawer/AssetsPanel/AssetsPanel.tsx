@@ -71,6 +71,7 @@ export const AssetsPanel: React.FC<{
             paddingTop="24px"
             paddingBottom="60px"
             data-testid="account-card-pending-tab-panel"
+            paddingX="0"
           >
             <MultisigPendingAccordion account={account} />
           </TabPanel>
@@ -82,6 +83,7 @@ export const AssetsPanel: React.FC<{
           paddingTop="24px"
           paddingBottom="60px"
           data-testid="account-card-operations-tab"
+          paddingX="0"
         >
           <OperationTileContext.Provider
             value={{ mode: "drawer", selectedAddress: account.address }}
@@ -96,7 +98,12 @@ export const AssetsPanel: React.FC<{
           </OperationTileContext.Provider>
         </TabPanel>
 
-        <TabPanel overflowX="hidden" paddingTop="24px" data-testid="account-card-delegation-tab">
+        <TabPanel
+          overflowX="hidden"
+          paddingTop="24px"
+          data-testid="account-card-delegation-tab"
+          paddingX="0"
+        >
           <DelegationDisplay account={account} delegation={delegation} />
         </TabPanel>
 
@@ -105,6 +112,7 @@ export const AssetsPanel: React.FC<{
           height="100%"
           paddingTop="24px"
           data-testid="account-card-nfts-tab"
+          paddingX="0"
         >
           <NFTsGrid columns={3} nfts={nfts} owner={account.address.pkh} />
         </TabPanel>
@@ -114,6 +122,7 @@ export const AssetsPanel: React.FC<{
           height="100%"
           paddingTop="24px"
           data-testid="account-card-tokens-tab"
+          paddingX="0"
         >
           <TokenList owner={account.address.pkh} tokens={tokens} />
         </TabPanel>
