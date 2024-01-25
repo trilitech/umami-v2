@@ -1,6 +1,6 @@
 import { Box, Button, Center, Flex, Heading, Link } from "@chakra-ui/react";
 
-export const feedbackEmailBodyTemplate =
+const feedbackEmailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
 
 // TODO: prepare for Beta release properly

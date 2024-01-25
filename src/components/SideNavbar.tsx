@@ -3,7 +3,6 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { AppVersion } from "./AppVersion";
-import { feedbackEmailBodyTemplate } from "./ErrorPage";
 import { MakiLogo } from "./MakiLogo";
 import { NetworkSelector } from "./NetworkSelector";
 import { TezRecapDisplay } from "./TezRecapDisplay";
@@ -14,7 +13,6 @@ import {
   BatchIcon,
   CoinIcon,
   DiamondIcon,
-  FeedbackIcon,
   GearIcon,
   HelpIcon,
   RefreshClockIcon,
@@ -64,12 +62,6 @@ export const SideNavbar = () => {
 
           <MenuItem icon={<GearIcon />} label="Settings" to="/settings" />
           <MenuItem icon={<HelpIcon />} label="Help" to="/help" />
-          <MenuItem
-            icon={<FeedbackIcon />}
-            label="Share Feedback"
-            target="_blank"
-            to={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
-          />
           <AppVersion marginTop="24px" fontSize="14px" />
         </Box>
       </Flex>
@@ -82,15 +74,14 @@ const MenuItem: React.FC<
     label: string;
     icon: React.ReactElement;
     to: string;
-    target?: string;
   } & FlexProps
-> = ({ icon, target, label, to, ...flexProps }) => {
+> = ({ icon, label, to, ...flexProps }) => {
   const currentLocation = useLocation();
   // TODO: check if there are named routes in react-router-dom
   const isSelected = currentLocation.pathname.startsWith(to);
 
   return (
-    <Link rel="noopener noreferrer" target={target} to={to}>
+    <Link to={to}>
       <Flex
         alignItems="center"
         justifyContent="flex-start"
