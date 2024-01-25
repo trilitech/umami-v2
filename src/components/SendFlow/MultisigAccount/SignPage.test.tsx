@@ -1,7 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
 
-import { FormValues } from "./FormPage";
+import { FormValues } from "./SelectApproversFormPage";
 import { SignPage } from "./SignPage";
 import {
   mockContractOrigination,

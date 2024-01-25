@@ -11,27 +11,24 @@ import {
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { FormPage } from "./FormPage";
+import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import {
-  useGetNextAvailableAccountLabels,
+  useGetMostFundedImplicitAccount,
+  useImplicitAccounts,
   useIsUniqueLabel,
 } from "../../../utils/hooks/getAccountDataHooks";
 import { DynamicModalContext } from "../../DynamicModal";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";
 
-const DEFAULT_MULTISIG_LABEL = "Multisig Account";
-
 type FormValues = {
   name: string;
 };
 
-export const NameMultisigFormPage: React.FC<{
-  name?: string;
-}> = ({ name }) => {
+export const NameMultisigFormPage: React.FC<{ name?: string }> = ({ name }) => {
   const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: name ? { name } : { name: "" },
+    defaultValues: { name: name || "" },
   });
   const {
     formState: { errors, isValid },
@@ -39,22 +36,17 @@ export const NameMultisigFormPage: React.FC<{
     handleSubmit,
   } = form;
 
-  const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
-  const { openWith } = useContext(DynamicModalContext);
-  const openSelectApproversFormPage = (props: FormValues) => {
-    const label = props.name.trim() || getNextAvailableAccountLabels(DEFAULT_MULTISIG_LABEL)[0];
+  const implicitAccounts = useImplicitAccounts();
+  const getMostFundedImplicitAccount = useGetMostFundedImplicitAccount();
 
-    return openWith(
-      <FormPage
-        form={{
-          name: label,
-          sender: "",
-          signers: [],
-          threshold: 1,
-        }}
+  const { openWith } = useContext(DynamicModalContext);
+  const openSelectApproversFormPage = ({ name }: FormValues) =>
+    openWith(
+      <SelectApproversFormPage
+        form={{ name: name.trim() } as any}
+        sender={getMostFundedImplicitAccount(implicitAccounts)}
       />
     );
-  };
 
   const isUnique = useIsUniqueLabel();
   return (
@@ -74,14 +66,15 @@ export const NameMultisigFormPage: React.FC<{
                   data-testid="multisig-account-name"
                   type="text"
                   {...register("name", {
-                    required: false,
+                    required: true, // TODO: add an error message
                     validate: name => {
-                      if (!isUnique(name)) {
+                      // TODO: check if name.trim() is empty?
+                      if (!isUnique(name.trim())) {
                         return "Name must be unique across all accounts and contacts";
                       }
                     },
                   })}
-                  placeholder="Optional"
+                  placeholder="Account Name"
                 />
               </InputGroup>
               {errors.name && (

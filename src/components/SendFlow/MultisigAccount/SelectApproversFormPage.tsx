@@ -10,29 +10,31 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
+import ordinal from "ordinal";
 import { useContext } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { SignPage } from "./SignPage";
 import { TrashIcon } from "../../../assets/icons";
-import { OwnedImplicitAccountsAutocomplete } from "../../../components/AddressAutocomplete";
-import {
-  useHandleOnSubmitFormActions,
-  useOpenSignPageFormAction,
-} from "../../../components/SendFlow/onSubmitFormActionHooks";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
+import { ImplicitAccount } from "../../../types/Account";
 import { RawPkh, isValidImplicitPkh, parsePkh } from "../../../types/Address";
+import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { DynamicModalContext } from "../../DynamicModal";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { ModalBackButton } from "../../ModalBackButton";
 import { FormPageHeader } from "../FormPageHeader";
+import {
+  useHandleOnSubmitFormActions,
+  useOpenSignPageFormAction,
+} from "../onSubmitFormActionHooks";
 import { FormPageProps, formDefaultValues } from "../utils";
 
 export type FormValues = {
   name: string;
-  sender: RawPkh;
+  sender: RawPkh; // Fee payer
   signers: { val: RawPkh }[];
   threshold: number;
 };
@@ -48,10 +50,17 @@ const toOperation = (formValues: FormValues) => ({
   ),
 });
 
-export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
+export const SelectApproversFormPage: React.FC<
+  FormPageProps<FormValues> & { sender: ImplicitAccount }
+> = props => {
   const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: { signers: [{ val: "" }], threshold: 1, ...formDefaultValues(props) },
+    defaultValues: {
+      sender: props.sender.address.pkh,
+      signers: [{ val: "" }],
+      threshold: 1,
+      ...formDefaultValues(props),
+    },
   });
 
   const {
@@ -71,20 +80,19 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const signersCount = watch("signers").length;
 
   const openSignPage = useOpenSignPageFormAction({
-    SignPage,
+    SignPage: SignPage,
     signPageExtraData: watch() as FormValues,
-    FormPage,
-    defaultFormPageProps: {},
+    FormPage: SelectApproversFormPage,
+    defaultFormPageProps: props,
     toOperation,
   });
-
   const {
     onFormSubmitActionHandlers: [onSingleSubmit],
     isLoading,
   } = useHandleOnSubmitFormActions([openSignPage]);
 
   const { openWith } = useContext(DynamicModalContext);
-  const goBackToNameStep = () => openWith(<NameMultisigFormPage name={props.form!.name} />);
+  const goBackToNameStep = () => openWith(<NameMultisigFormPage name={props.form?.name} />);
 
   return (
     <FormProvider {...form}>
@@ -93,26 +101,15 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
 
         <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader
-            subTitle="Select an owner and the signers of the contract."
-            title="Create Multisig"
+            subTitle="Select the participants of the contract and choose the minimum number of approvals."
+            title="Select Approvers"
           />
 
           <ModalBody>
-            <FormControl isInvalid={!!errors.sender} marginY="24px">
-              <OwnedImplicitAccountsAutocomplete
-                allowUnknown={false}
-                inputName="sender"
-                label="Select Owner"
-              />
-              {errors.sender && (
-                <FormErrorMessage data-testid="owner-error">
-                  {errors.sender.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
+            <Input type="hidden" {...register("sender")} />
             {signersArray.fields.map((field, index) => {
               const error = errors.signers && errors.signers[index];
-              const label = `${index === 0 ? "Select " : ""}${index + 1} signer`;
+              const label = `${index === 0 ? "Select " : ""}${ordinal(index + 1)} approver`;
               const inputSize = signersCount > 1 ? "short" : "default";
               const inputWidth = inputSize === "short" ? "368px" : "100%";
               return (
@@ -169,7 +166,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
               onClick={() => signersArray.append({ val: "" })}
               variant="specialCTA"
             >
-              + Add Signer
+              + Add Approver
             </Button>
 
             <FormControl marginTop="24px" isInvalid={!!errors.threshold}>

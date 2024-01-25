@@ -2,6 +2,7 @@ import {
   Box,
   Center,
   Flex,
+  FormControl,
   FormLabel,
   Heading,
   ModalBody,
@@ -13,13 +14,15 @@ import { TezosToolkit } from "@taquito/taquito";
 import { useContext } from "react";
 import { FormProvider } from "react-hook-form";
 
-import { FormValues } from "./FormPage";
+import { FormValues } from "./SelectApproversFormPage";
 import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
 import { useAppDispatch } from "../../../utils/redux/hooks";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
+import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { DynamicModalContext } from "../../DynamicModal";
+import { FormErrorMessage } from "../../FormErrorMessage";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
@@ -43,10 +46,15 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
     estimationFailed,
     isLoading,
     form,
+    reEstimate,
     signer,
     onSign: originateContract,
     handleAsyncAction,
   } = useSignPageHelpers(initialFee, initialOperations, mode);
+
+  const {
+    formState: { errors },
+  } = form;
 
   /**
    * To save the multisig account name we need to know the contract address
@@ -90,18 +98,6 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
               {name}
             </Text>
 
-            <Box marginBottom="24px">
-              <FormLabel>Owner</FormLabel>
-              <AddressTile
-                marginBottom="12px"
-                address={parsePkh(sender)}
-                data-testid="multisig-owner"
-              />
-              <Flex justifyContent="flex-end">
-                <SignPageFee fee={fee} />
-              </Flex>
-            </Box>
-
             <FormLabel>Approvers</FormLabel>
             <Box data-testid="approvers">
               {signers.map(signer => {
@@ -126,7 +122,29 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
                 </Text>
               </Center>
             </Flex>
+
+            <Box marginBottom="24px">
+              <FormControl isInvalid={!!errors.sender} marginY="24px">
+                <OwnedImplicitAccountsAutocomplete
+                  allowUnknown={false}
+                  inputName="sender"
+                  isLoading={isLoading}
+                  keepValid
+                  label="Creation Fee Payer"
+                  onUpdate={reEstimate}
+                />
+                {errors.sender && (
+                  <FormErrorMessage data-testid="owner-error">
+                    {errors.sender.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+              <Flex justifyContent="flex-end">
+                <SignPageFee fee={fee} />
+              </Flex>
+            </Box>
           </ModalBody>
+
           <ModalFooter>
             <SignButton
               isDisabled={estimationFailed}
