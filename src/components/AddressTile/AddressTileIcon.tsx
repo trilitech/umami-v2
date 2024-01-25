@@ -14,8 +14,8 @@ import { Identicon } from "../Identicon";
 const baseIconProps = {
   stroke: colors.gray[400],
   borderRadius: "4px",
-  p: "5px",
-  bg: colors.gray[500],
+  padding: "5px",
+  background: colors.gray[500],
 };
 
 type AddressTileIconSize = "sm" | "md" | "lg";
@@ -52,7 +52,13 @@ export const AddressTileIcon: React.FC<{
       );
     case "social":
       return (
-        <SocialIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} background="white" />
+        <SocialIcon
+          width={sizeInPx}
+          height={sizeInPx}
+          {...baseIconProps}
+          stroke="transparent"
+          background="white"
+        />
       );
     case "ledger":
       return (
