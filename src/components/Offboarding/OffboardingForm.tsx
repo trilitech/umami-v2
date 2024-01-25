@@ -46,7 +46,7 @@ export const OffboardingForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalCloseButton />
 
-        <ModalHeader marginBottom="12px" textAlign="center">
+        <ModalHeader marginBottom="10px" textAlign="center">
           <Box>
             <WarningIcon width={10} height={10} marginBottom={5} />
             <Heading>Off-board Wallet</Heading>
