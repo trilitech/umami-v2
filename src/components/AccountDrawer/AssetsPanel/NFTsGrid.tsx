@@ -63,7 +63,11 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
               data-testid="nft-link"
               to={`/home/${owner}/${fullId(nft)}`}
             >
-              <Card background={colors.gray[800]}>
+              <Card
+                background={colors.gray[800]}
+                border="1px solid transparent"
+                _hover={{ background: colors.gray[700], borderColor: colors.gray[500] }}
+              >
                 <CardBody overflow="hidden" padding="8px" borderRadius="6px">
                   <Center>
                     {/* Check {@link NFTCard} for details why */}

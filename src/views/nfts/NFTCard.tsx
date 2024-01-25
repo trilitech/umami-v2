@@ -48,7 +48,7 @@ export const NFTCard: React.FC<{
         border="1px solid"
         borderColor={isSelected ? colors.orangeL : "transparent"}
         borderRadius="8px"
-        _hover={{ bg: colors.gray[700], borderColor: `${colors.gray[500]}` }}
+        _hover={{ background: colors.gray[700], borderColor: colors.gray[500] }}
       >
         <Center>
           <Box position="relative" width="100%">
