@@ -44,7 +44,9 @@ export const BuyTezForm: React.FC<{
       <ModalContent>
         <form action={actionURL} rel="noreferrer noopener" target="_blank">
           <ModalCloseButton />
-          <ModalHeader textAlign="center">Buy Tez</ModalHeader>
+          <ModalHeader marginBottom="10px" textAlign="center">
+            Buy Tez
+          </ModalHeader>
           {isMainnet && (
             <>
               <input name="commodity" type="hidden" value="XTZ:Tezos" />

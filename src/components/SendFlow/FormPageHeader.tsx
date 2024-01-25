@@ -17,7 +17,7 @@ export const FormPageHeader: React.FC<{
   return (
     <HeaderWrapper>
       <Heading size="2xl">{title}</Heading>
-      <Text color={colors.gray[400]} textAlign="center" size="sm">
+      <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
         {subTitle}
       </Text>
       <ModalCloseButton />

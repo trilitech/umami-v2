@@ -48,7 +48,7 @@ export const SignPageHeader: React.FC<{
     <HeaderWrapper>
       {goBack && <ModalBackButton onClick={goBack} />}
       <Heading size="2xl">{headerText(operationsType, mode)}</Heading>
-      <Text color={colors.gray[400]} textAlign="center" size="sm">
+      <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
         {subTitle(signer)}
       </Text>
       <ModalCloseButton />

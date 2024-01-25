@@ -94,7 +94,9 @@ export const CSVFileUploadForm = () => {
       <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalCloseButton />
-          <ModalHeader textAlign="center">Load CSV file</ModalHeader>
+          <ModalHeader marginBottom="10px" textAlign="center">
+            Load CSV file
+          </ModalHeader>
           <Text color={colors.gray[400]} textAlign="center" size="sm">
             Select an account and then upload the CSV file.
           </Text>

@@ -152,7 +152,9 @@ export const DeleteContactModal: FC<{
   };
   return (
     <ModalContent>
-      <ModalHeader textAlign="center">Delete Contact</ModalHeader>
+      <ModalHeader marginBottom="10px" textAlign="center">
+        Delete Contact
+      </ModalHeader>
       <ModalCloseButton />
       <ModalBody>
         <Flex alignItems="center" justifyContent="space-between" flexDirection="column">
