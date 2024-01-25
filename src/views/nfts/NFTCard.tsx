@@ -1,6 +1,7 @@
 import { Box, Card, CardBody, Center, Heading, Image, Text } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useContext } from "react";
 
+import { SelectedNFTContext } from "./SelectedNFTContext";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
@@ -9,14 +10,11 @@ import { NFTWithOwner, getIPFSurl } from "../../utils/token/utils";
 
 export const NFTCard: React.FC<{
   nft: NFTWithOwner;
-  onClick: () => void;
-}> = ({ nft, onClick }) => {
+}> = ({ nft }) => {
+  const { selectedNFT, setSelectedNFT: select } = useContext(SelectedNFTContext);
   const url = getIPFSurl(thumbnailUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const name = nft.metadata.name;
-  const currentLocation = useLocation();
-
-  const isSelected = currentLocation.pathname.includes(`${nft.owner}/${fullId(nft)}`);
 
   const nftImageCommonProps = {
     width: "100%",
@@ -28,13 +26,21 @@ export const NFTCard: React.FC<{
     src: url,
   };
 
+  /**
+   * both the owner and the id must match because two different NFTs
+   * can have the same id, but different owners
+   * but we should highlight only the selected NFT
+   */
+  const isSelected =
+    selectedNFT && fullId(selectedNFT) === fullId(nft) && selectedNFT.owner === nft.owner;
+
   return (
     <Card
       minWidth="274px"
       borderRadius="8px"
       cursor="pointer"
-      data-testid="nft-card"
-      onClick={onClick}
+      data-testid={`nft-card${isSelected ? "-selected" : ""}`}
+      onClick={() => select(nft)}
     >
       <CardBody
         padding="16px"
@@ -42,7 +48,7 @@ export const NFTCard: React.FC<{
         border="1px solid"
         borderColor={isSelected ? colors.orangeL : "transparent"}
         borderRadius="8px"
-        _hover={{ bg: colors.gray[700], borderColor: `${colors.gray[500]}` }}
+        _hover={{ background: colors.gray[700], borderColor: colors.gray[500] }}
       >
         <Center>
           <Box position="relative" width="100%">

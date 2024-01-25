@@ -11,7 +11,7 @@ import { NFTBalance } from "../../types/TokenBalance";
 const fixture = (nftsByOwner: Record<RawPkh, NFTBalance[] | undefined>) => (
   <ReduxStore>
     <HashRouter>
-      <NFTGallery nftsByOwner={nftsByOwner} onSelect={() => {}} />
+      <NFTGallery nftsByOwner={nftsByOwner} />
     </HashRouter>
   </ReduxStore>
 );

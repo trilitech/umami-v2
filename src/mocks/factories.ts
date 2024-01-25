@@ -207,11 +207,11 @@ export const mockContractAddress = (index: number): ContractAddress => ({
   pkh: validContractAddresses[index],
 });
 
-export const mockNFTToken = (index: number, pkh: string, balance = 1): RawTokenBalance => {
+export const mockNFTToken = (index: number, ownerPkh: string, balance = 1): RawTokenBalance => {
   return {
     id: index,
     account: {
-      address: pkh,
+      address: ownerPkh,
     },
     token: {
       id: index,

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { NFTDrawerBody } from "./NFTDrawerBody";
 import { NFTGallery } from "./NFTGallery";
+import { SelectedNFTContext } from "./SelectedNFTContext";
 import { useDynamicModal } from "../../components/DynamicModal";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
@@ -46,9 +47,11 @@ export const NFTsView = () => {
       {noNFTs ? (
         <NoNFTs />
       ) : (
-        <>
+        <SelectedNFTContext.Provider
+          value={{ setSelectedNFT: setDrawerNFT, selectedNFT: drawerNFT }}
+        >
           <Box overflowY="scroll">
-            <NFTGallery nftsByOwner={selectedNFTs} onSelect={nft => setDrawerNFT(nft)} />
+            <NFTGallery nftsByOwner={selectedNFTs} />
           </Box>
 
           <Drawer
@@ -71,7 +74,7 @@ export const NFTsView = () => {
               </DrawerBody>
             </DrawerContent>
           </Drawer>
-        </>
+        </SelectedNFTContext.Provider>
       )}
     </Flex>
   );
