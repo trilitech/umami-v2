@@ -91,6 +91,16 @@ describe("NFTsView", () => {
   });
 
   describe("selected NFT", () => {
+    beforeEach(() => {
+      store.dispatch(updateTokenBalance([mockNFTToken(1, mockMnemonicAccount(0).address.pkh)]));
+      store.dispatch(
+        tokensSlice.actions.addTokens({
+          network: MAINNET,
+          tokens: [mockNFTToken(1, mockMnemonicAccount(0).address.pkh).token],
+        })
+      );
+    });
+
     it("doesn't open the drawer if there is no NFT selected", () => {
       render(<NFTsView />);
 
@@ -99,17 +109,8 @@ describe("NFTsView", () => {
 
     it("opens the drawer when an NFT is clicked", async () => {
       const user = userEvent.setup();
-      store.dispatch(updateTokenBalance([mockNFTToken(1, mockMnemonicAccount(0).address.pkh)]));
-      store.dispatch(
-        tokensSlice.actions.addTokens({
-          network: MAINNET,
-          tokens: [mockNFTToken(1, mockMnemonicAccount(0).address.pkh).token],
-        })
-      );
 
       render(<NFTsView />);
-
-      expect(screen.queryByTestId("nft-drawer-body")).not.toBeInTheDocument();
 
       user.click(screen.getByTestId("nft-card"));
 
