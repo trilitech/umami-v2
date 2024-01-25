@@ -142,16 +142,16 @@ export const AccountTile: React.FC<{
         leftElement={<LabelAndAddress label={addressKind.label} pkh={pkh} />}
         rightElement={
           <Flex flexDirection="column">
-            <Text align="right" color={colors.gray[450]} fontWeight={700} size="sm">
-              {/* crutch to make some the same padding at the top */}
-              {/* TODO: split it into separate components instead of right/left elements */}
-              {isDelegating ? "Delegated" : <>&nbsp;</>}
-            </Text>
             {balance && (
               <Heading alignSelf="flex-end" size="lg">
                 {prettyTezAmount(balance)}
               </Heading>
             )}
+            <Text align="right" color={colors.gray[450]} fontWeight={700} size="sm">
+              {/* crutch to make some the same padding at the top */}
+              {/* TODO: split it into separate components instead of right/left elements */}
+              {isDelegating ? "Delegated" : <>&nbsp;</>}
+            </Text>
           </Flex>
         }
       />
