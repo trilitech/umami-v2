@@ -5,12 +5,11 @@ import { NFTCard } from "./NFTCard";
 import { RawPkh } from "../../types/Address";
 import { fullId } from "../../types/Token";
 import type { NFTBalance } from "../../types/TokenBalance";
-import { NFTWithOwner, sortedByLastUpdate } from "../../utils/token/utils";
+import { sortedByLastUpdate } from "../../utils/token/utils";
 
 export const NFTGallery: React.FC<{
   nftsByOwner: Record<RawPkh, NFTBalance[] | undefined>;
-  onSelect: (nft: NFTWithOwner) => void;
-}> = ({ nftsByOwner, onSelect }) => {
+}> = ({ nftsByOwner }) => {
   const allNFTs = Object.entries(nftsByOwner).flatMap(([owner, nfts]) =>
     (nfts || []).map(nft => ({ owner, ...nft }))
   );
@@ -28,7 +27,7 @@ export const NFTGallery: React.FC<{
       spacing="16px"
     >
       {sortedByLastUpdate(allNFTs).map(nft => (
-        <NFTCard key={`${nft.owner}:${fullId(nft)}`} nft={nft} onClick={() => onSelect(nft)} />
+        <NFTCard key={`${nft.owner}:${fullId(nft)}`} nft={nft} />
       ))}
     </SimpleGrid>
   );
