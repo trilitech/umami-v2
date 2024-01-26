@@ -6091,12 +6091,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/promise-retry@npm:^1.1.5":
-  version: 1.1.5
-  resolution: "@types/promise-retry@npm:1.1.5"
+"@types/promise-retry@npm:^1.1.6":
+  version: 1.1.6
+  resolution: "@types/promise-retry@npm:1.1.6"
   dependencies:
     "@types/retry": "npm:*"
-  checksum: 8da877e0db31630835ab95767decb0aa74828b7507c59c7c501e43f6fa2524d58c7b727024b343a592769f4c592e958cbb2843e8af44dffacf26a6e0ad424c30
+  checksum: 8834adbc77399329fafa4e07ada57fc49007802f81af42cd74b2c51e89a3cdd9aa4c09a05e3909aaea9d165bd2ff940ed309db21c21c373104e479b11e24435c
   languageName: node
   linkType: hard
 
@@ -19164,7 +19164,7 @@ __metadata:
     "@types/node": "npm:18.15.0"
     "@types/papaparse": "npm:^5.3.10"
     "@types/pluralize": "npm:^0.0.33"
-    "@types/promise-retry": "npm:^1.1.5"
+    "@types/promise-retry": "npm:^1.1.6"
     "@types/prop-types": "npm:^15.7.11"
     "@types/react": "npm:18.2.48"
     "@types/react-dom": "npm:18.2.18"
