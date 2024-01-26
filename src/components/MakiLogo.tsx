@@ -13,6 +13,7 @@ export const MakiLogo: React.FC<IconProps> = props => {
     <MakiIcon
       background="white"
       borderRadius="8px"
+      data-testid="maki-logo"
       fishColor={network.name === "mainnet" ? ORANGE : "black"}
       {...props}
     />

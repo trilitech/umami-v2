@@ -1,5 +1,7 @@
+import { userEvent } from "@testing-library/user-event";
+
 import { NetworkSelector } from "./NetworkSelector";
-import { fireEvent, render, screen } from "../mocks/testUtils";
+import { render, screen, waitFor } from "../mocks/testUtils";
 import { GHOSTNET } from "../types/Network";
 import { store } from "../utils/redux/store";
 
@@ -7,15 +9,19 @@ describe("<NetworkSelector />", () => {
   it("shows the current network", () => {
     render(<NetworkSelector />);
 
-    expect(screen.getByTestId("network-selector")).toHaveValue("mainnet");
+    expect(screen.getByTestId("network-selector")).toHaveTextContent("Mainnet");
   });
 
-  it("changes the selected network globally", () => {
+  it("changes the selected network globally", async () => {
+    const user = userEvent.setup();
     render(<NetworkSelector />);
 
-    fireEvent.change(screen.getByTestId("network-selector"), { target: { value: "ghostnet" } });
+    user.click(screen.getByTestId("network-selector"));
+    user.click(screen.getByText("Ghostnet"));
 
-    expect(screen.getByTestId("network-selector")).toHaveValue("ghostnet");
+    await waitFor(() => {
+      expect(screen.getByTestId("network-selector")).toHaveTextContent("Ghostnet");
+    });
 
     expect(store.getState().networks.current).toEqual(GHOSTNET);
   });
