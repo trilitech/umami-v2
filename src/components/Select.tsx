@@ -30,7 +30,7 @@ export const Select: React.FC<{
         onClick={() => setShowOptions(show => !show)}
       >
         <Text size="sm">{currentOption.label}</Text>
-        <ChevronDownIcon />
+        <ChevronDownIcon marginTop="2px" />
       </Flex>
       {showOptions && (
         <UnorderedList
