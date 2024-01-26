@@ -53,7 +53,7 @@
     "@electron/notarize": "^2.2.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@ledgerhq/hw-transport-webusb": "^6.28.1",
+    "@ledgerhq/hw-transport-webusb": "^6.28.2",
     "@playwright/test": "^1.41.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@reduxjs/toolkit": "^1.9.7",
