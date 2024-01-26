@@ -9243,9 +9243,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cucumber-tsflow@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "cucumber-tsflow@npm:4.3.1"
+"cucumber-tsflow@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "cucumber-tsflow@npm:4.4.1"
   dependencies:
     callsites: "npm:^3.1.0"
     log4js: "npm:^6.3.0"
@@ -9253,7 +9253,7 @@ __metadata:
     underscore: "npm:^1.8.3"
   peerDependencies:
     "@cucumber/cucumber": ^7 || ^8 || ^9 || ^10
-  checksum: f027dcc2893754a216f960dfb8d33626fabfa1d1ef98c041d870eecc9363d3977b005082124bc06cf0cbe61e963164f62eae99885c2f7972733078e3571efa96
+  checksum: 8bf07413b3a06c876efe74b170ae2a1468069d813dcad6df7fc14629e55ee311943448abcc3b6c664b037eb7766b96a9363ce67984749a357e7a826c19806b3f
   languageName: node
   linkType: hard
 
@@ -19187,7 +19187,7 @@ __metadata:
     cross-env: "npm:^7.0.3"
     css-loader: "npm:^6.5.1"
     css-minimizer-webpack-plugin: "npm:^3.2.0"
-    cucumber-tsflow: "npm:^4.3.1"
+    cucumber-tsflow: "npm:^4.4.1"
     date-fns: "npm:^3.2.0"
     dotenv: "npm:^10.0.0"
     dotenv-expand: "npm:^5.1.0"
