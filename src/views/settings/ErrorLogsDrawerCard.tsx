@@ -30,7 +30,7 @@ export const ErrorLogsDrawerCard = () => {
 
   return (
     <>
-      <SettingsCardWithDrawerIcon left="ErrorLogs" isSelected={isOpen} onClick={onOpen} />
+      <SettingsCardWithDrawerIcon left="Error Logs" isSelected={isOpen} onClick={onOpen} />
       <Drawer
         blockScrollOnMount={!isDynamicModalOpen}
         isOpen={isOpen}
