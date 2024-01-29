@@ -6059,12 +6059,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/papaparse@npm:^5.3.10":
-  version: 5.3.10
-  resolution: "@types/papaparse@npm:5.3.10"
+"@types/papaparse@npm:^5.3.14":
+  version: 5.3.14
+  resolution: "@types/papaparse@npm:5.3.14"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 1ee1805243339a4c52d98e133f2dd94bada7888123d282482a9aa7e085c5420076f39a66ae40607f410c8250f5505741e41d194c9a04292f0410503ac759e9ae
+  checksum: 9bd5cc0e6a2c02def6c8903dc4604e499907cb465186ed3532390468082a06f023adbac0216428d0d8e8fe017206780a03d20007041e9fed47c8d391cd69a536
   languageName: node
   linkType: hard
 
@@ -19198,7 +19198,7 @@ __metadata:
     "@types/jest": "npm:29.5.11"
     "@types/md5": "npm:^2"
     "@types/node": "npm:18.15.0"
-    "@types/papaparse": "npm:^5.3.10"
+    "@types/papaparse": "npm:^5.3.14"
     "@types/pluralize": "npm:^0.0.33"
     "@types/promise-retry": "npm:^1.1.6"
     "@types/prop-types": "npm:^15.7.11"
