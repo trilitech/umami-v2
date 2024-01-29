@@ -1,6 +1,5 @@
 import {
   Box,
-  Center,
   Flex,
   FormControl,
   FormLabel,
@@ -22,14 +21,13 @@ import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { DynamicModalContext } from "../../DynamicModal";
-import { FormErrorMessage } from "../../FormErrorMessage";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { SignPageHeader, headerText } from "../SignPageHeader";
+import { SignPageHeader } from "../SignPageHeader";
 import { SuccessStep } from "../SuccessStep";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
+export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = props => {
   const dispatch = useAppDispatch();
   const { openWith } = useContext(DynamicModalContext);
 
@@ -37,7 +35,7 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
     mode,
     operations: initialOperations,
     fee: initialFee,
-    data: { threshold, signers, name, sender },
+    data: { threshold, signers, name },
   } = props;
 
   const {
@@ -84,9 +82,14 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
+          <SignPageHeader
+            {...props}
+            description="Please review the details and then continue to submit contract."
+            operationsType={operations.type}
+            signer={signer}
+            title="Review & Submit"
+          />
           <ModalBody>
-            <FormLabel>Contract Name</FormLabel>
             <Text
               marginBottom="24px"
               padding="14px"
@@ -99,45 +102,31 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
             </Text>
 
             <FormLabel>Approvers</FormLabel>
-            <Box data-testid="approvers">
+            <Box marginBottom="12px" data-testid="approvers">
               {signers.map(signer => {
                 return (
                   <AddressTile
                     key={signer.val}
-                    marginBottom="12px"
                     address={parsePkh(signer.val)}
                     data-testid={`approver-${signer.val}`}
                   />
                 );
               })}
             </Box>
-
-            <Flex alignItems="center" marginTop="24px" marginBottom="24px">
-              <Heading marginRight="12px" size="md">
-                Min No. of approvals:
-              </Heading>
-              <Center width="100px" height="48px" background={colors.gray[800]} borderRadius="4px">
-                <Text textAlign="center" data-testid="threshold">
-                  {threshold} out of {signers.length}
-                </Text>
-              </Center>
+            <Flex justifyContent="flex-end">
+              <Threshold signersAmount={signers.length} threshold={threshold} />
             </Flex>
 
-            <Box marginBottom="24px">
-              <FormControl isInvalid={!!errors.sender} marginY="24px">
+            <Box>
+              <FormControl marginTop="24px" marginBottom="12px" isInvalid={!!errors.sender}>
                 <OwnedImplicitAccountsAutocomplete
                   allowUnknown={false}
-                  inputName="sender"
+                  inputName="signer"
                   isLoading={isLoading}
                   keepValid
                   label="Creation Fee Payer"
                   onUpdate={reEstimate}
                 />
-                {errors.sender && (
-                  <FormErrorMessage data-testid="owner-error">
-                    {errors.sender.message}
-                  </FormErrorMessage>
-                )}
               </FormControl>
               <Flex justifyContent="flex-end">
                 <SignPageFee fee={fee} />
@@ -151,11 +140,27 @@ export const SignPage: React.FC<SignPageProps<FormValues>> = props => {
               isLoading={isLoading}
               onSubmit={onSign}
               signer={signer}
-              text={headerText(operations.type, mode)}
+              text="Submit Contract"
             />
           </ModalFooter>
         </form>
       </ModalContent>
     </FormProvider>
+  );
+};
+
+const Threshold: React.FC<{ threshold: number; signersAmount: number }> = ({
+  threshold,
+  signersAmount,
+}) => {
+  return (
+    <Flex alignItems="center" data-testid="threshold">
+      <Heading marginRight="4px" color={colors.gray[450]} size="sm">
+        No. of approvals:
+      </Heading>
+      <Text color={colors.gray[400]} size="sm">
+        {`${threshold} out of ${signersAmount}`}
+      </Text>
+    </Flex>
   );
 };

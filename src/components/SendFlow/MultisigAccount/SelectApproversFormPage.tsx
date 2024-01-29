@@ -15,7 +15,7 @@ import { useContext } from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
-import { SignPage } from "./SignPage";
+import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import { TrashIcon } from "../../../assets/icons";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import colors from "../../../style/colors";
@@ -80,7 +80,7 @@ export const SelectApproversFormPage: React.FC<
   const signersCount = watch("signers").length;
 
   const openSignPage = useOpenSignPageFormAction({
-    SignPage: SignPage,
+    SignPage: SignTransactionFormPage,
     signPageExtraData: watch() as FormValues,
     FormPage: SelectApproversFormPage,
     defaultFormPageProps: props,

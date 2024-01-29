@@ -2,7 +2,7 @@ import { Modal } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
 
 import { FormValues } from "./SelectApproversFormPage";
-import { SignPage } from "./SignPage";
+import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import {
   mockContractOrigination,
   mockImplicitAccount,
@@ -18,7 +18,7 @@ import { SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps<FormValues>) => (
   <Modal isOpen={true} onClose={() => {}}>
-    <SignPage {...props} />
+    <SignTransactionFormPage {...props} />
   </Modal>
 );
 
@@ -41,25 +41,48 @@ const props: SignPageProps<FormValues> = {
 };
 
 describe("<SignPage />", () => {
-  it("displays the fee in tez", () => {
+  it("has a title", async () => {
     render(fixture(props));
-    expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
+
+    expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Review & Submit");
   });
 
-  it("displays the threshold", () => {
+  it("has a subtitle", async () => {
     render(fixture(props));
-    expect(screen.getByTestId("threshold")).toHaveTextContent("1 out of 2");
+
+    expect(
+      screen.getByText("Please review the details and then continue to submit contract.")
+    ).toBeInTheDocument();
   });
 
   it("displays the contract name", () => {
     render(fixture(props));
+
     expect(screen.getByTestId("contract-name")).toHaveTextContent("Contract name");
   });
 
   it("displays the approvers", () => {
     render(fixture(props));
+
     props.data.signers.forEach(signer => {
       expect(screen.getByTestId(`approver-${signer.val}`)).toBeInTheDocument();
     });
   });
+
+  it("displays the threshold", () => {
+    render(fixture(props));
+
+    expect(screen.getByTestId("threshold")).toHaveTextContent("No. of approvals:");
+    expect(screen.getByTestId("threshold")).toHaveTextContent("1 out of 2");
+  });
+
+  it("displays the fee in tez", () => {
+    render(fixture(props));
+
+    expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
+  });
+
+  // TODO: test creating multisig on sign
+
+  // TODO: test updating Creation Fee Payer
 });
