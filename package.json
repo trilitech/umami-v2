@@ -58,12 +58,12 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@reduxjs/toolkit": "^1.9.7",
     "@stylistic/eslint-plugin": "^1.5.4",
-    "@taquito/ledger-signer": "^17.5.0",
-    "@taquito/michel-codec": "^17.5.0",
-    "@taquito/rpc": "^17.5.0",
-    "@taquito/signer": "^17.5.0",
-    "@taquito/taquito": "^17.5.0",
-    "@taquito/utils": "^17.5.0",
+    "@taquito/ledger-signer": "^17.5.2-462c992--",
+    "@taquito/michel-codec": "^17.5.2-462c992--",
+    "@taquito/rpc": "^17.5.2-462c992--",
+    "@taquito/signer": "^17.5.2-462c992--",
+    "@taquito/taquito": "17.5.2-462c992--",
+    "@taquito/utils": "^17.5.2-462c992--",
     "@testing-library/dom": "^9.3.4",
     "@testing-library/jest-dom": "6.3.0",
     "@testing-library/react": "14.1.2",
@@ -131,7 +131,6 @@
     "md5": "^2.3.0",
     "mini-css-extract-plugin": "^2.4.5",
     "mockdate": "^3.0.5",
-    "nano-id": "^1.1.0",
     "os-browserify": "^0.3.0",
     "papaparse": "^5.4.1",
     "pluralize": "^8.0.0",
@@ -216,8 +215,7 @@
     ],
     "modulePaths": [],
     "moduleNameMapper": {
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-      "nanoid": "nanoid"
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
     },
     "moduleFileExtensions": [
       "web.js",

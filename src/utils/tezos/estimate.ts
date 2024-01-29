@@ -26,19 +26,19 @@ export const estimate = async (
     if (!isRevealed) {
       throw new Error(`Signer address is not revealed on the ${network.name}.`);
     }
-    throw new Error(handleTezError(err));
+    if (err instanceof Error) {
+      err.message = handleTezError(err);
+    }
+    throw err;
   }
 };
 
 // Converts a known L1 error message to a more user-friendly one
-export const handleTezError = (err: any): any => {
-  let message = "";
-
+export const handleTezError = (err: Error): string => {
   if (err.message.includes("subtraction_underflow")) {
-    message = "Insufficient balance, please make sure you have enough funds.";
+    return "Insufficient balance, please make sure you have enough funds.";
   } else if (err.message.includes("contract.non_existing_contract")) {
-    message = "Contract does not exist, please check if the correct network is selected.";
+    return "Contract does not exist, please check if the correct network is selected.";
   }
-
-  return message ? message : err;
+  return err.message;
 };

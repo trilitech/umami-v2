@@ -1,10 +1,13 @@
 import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
+import { nanoid } from "@reduxjs/toolkit";
+import type { OperationContentsAndResult } from "@taquito/rpc";
+import { TezosOperationError } from "@taquito/taquito";
 import { compact } from "lodash";
-import { nanoid } from "nanoid";
 import pluralize from "pluralize";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { AccountSmallTile } from "./AccountSmallTile";
+import { OperationEstimationStatus } from "./OperationEstimationStatus";
 import { OperationRecipient } from "./OperationRecipient";
 import { OperationView } from "./OperationView";
 import { TrashIcon } from "../../assets/icons";
@@ -23,27 +26,20 @@ import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { TEZ, estimate } from "../../utils/tezos";
 
-const RightHeader: React.FC<{ operations: AccountOperations }> = ({
-  operations: accountOperations,
-}) => {
+const RightHeader: React.FC<{
+  operations: AccountOperations;
+  onSubmit: () => Promise<void>;
+  isLoading: boolean;
+}> = ({ operations: accountOperations, onSubmit, isLoading }) => {
   const { type: operationsType, sender, operations } = accountOperations;
   const { openWith } = useContext(DynamicModalContext);
-
-  const { handleAsyncAction, isLoading } = useAsyncActionHandler();
-  const network = useSelectedNetwork();
-
-  const openBatchSignPage = () =>
-    handleAsyncAction(async () => {
-      const initialFee = await estimate(accountOperations, network);
-      openWith(<SignPage initialFee={initialFee} initialOperations={accountOperations} />);
-    });
 
   return (
     <Box alignItems="center" justifyContent="space-between" data-testid="right-header">
       <Text display="inline-block" color={colors.gray[400]} size="sm">
         {pluralize("transaction", operations.length, true)}
       </Text>
-      <Button marginLeft="30px" isLoading={isLoading} onClick={openBatchSignPage} variant="primary">
+      <Button marginLeft="30px" isLoading={isLoading} onClick={onSubmit} variant="primary">
         {headerText(operationsType, "batch")}
       </Button>
       <IconButton
@@ -101,13 +97,68 @@ export const tokenTitle = (token: Token | undefined, amount: string) => {
   return compact([prettyAmount, symbol, name]).join(" ");
 };
 
+const SUCCESSFUL_ESTIMATION_RESULT = {
+  metadata: { operation_result: { status: "applied" } },
+} as OperationContentsAndResult;
+
 export const BatchView: React.FC<{
   operations: AccountOperations;
 }> = ({ operations: accountOperations }) => {
   const { operations, sender } = accountOperations;
-  const removeItem = useRemoveBatchItem();
-
   const showFooter = operations.length > 9;
+
+  const removeItem = useRemoveBatchItem();
+  const { openWith } = useContext(DynamicModalContext);
+  const network = useSelectedNetwork();
+  const [operationsEstimationResults, setOperationsEstimationResults] = React.useState<
+    OperationContentsAndResult[]
+  >([]);
+
+  // if we change operations list anyhow the estimation statuses become irrelevant
+  useEffect(() => {
+    setOperationsEstimationResults([]);
+  }, [operations.length]);
+
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
+
+  const openBatchSignPage = () =>
+    handleAsyncAction(async () => {
+      // clean statuses until we have actual estimation results
+      setOperationsEstimationResults([]);
+
+      try {
+        const initialFee = await estimate(accountOperations, network);
+
+        // if the estimation succeeds we set all operations' statuses to successful
+        setOperationsEstimationResults(operations.map(_ => SUCCESSFUL_ESTIMATION_RESULT));
+
+        openWith(<SignPage initialFee={initialFee} initialOperations={accountOperations} />);
+      } catch (error: any) {
+        // This exception contains per-operation info on its estimation status and errors if any
+        // It's thrown if there were any errors during the estimation
+        if (error instanceof TezosOperationError) {
+          const operationStatuses = error.operationsWithResults;
+
+          // on the first account operation taquito inserts
+          // a reveal operation to the beginning of the batch
+          // to keep the mapping correct we need to
+          // remove it from the statuses array
+          if (operationStatuses.length > operations.length) {
+            operationStatuses.shift();
+          }
+          setOperationsEstimationResults(operationStatuses);
+        }
+        throw error;
+      }
+    });
+
+  const actionsBlock = (
+    <RightHeader
+      isLoading={isLoading}
+      onSubmit={openBatchSignPage}
+      operations={accountOperations}
+    />
+  );
 
   return (
     <Box width="100%" marginBottom="16px" data-testid={`batch-table-${sender.address.pkh}`}>
@@ -128,7 +179,7 @@ export const BatchView: React.FC<{
         <Flex alignItems="center">
           <AccountSmallTile paddingLeft={0} account={sender} />
         </Flex>
-        <RightHeader operations={accountOperations} />
+        {actionsBlock}
       </Flex>
       <Flex
         flexDirection="column"
@@ -137,37 +188,50 @@ export const BatchView: React.FC<{
         paddingX="30px"
         paddingY="20px"
       >
-        {operations.map((operation, index) => (
-          <Box key={nanoid()} data-testid="operation">
-            <Flex flexDirection="column" height="50px">
-              <Flex>
-                <OperationView operation={operation} />
-              </Flex>
+        {operations.map((operation, index) => {
+          const estimationResult = operationsEstimationResults.at(index);
 
-              <Flex alignItems="center" justifyContent="space-between" width="100%" marginTop="8px">
+          return (
+            <Box key={nanoid()} data-testid="operation">
+              <Flex flexDirection="column" height={estimationResult ? "80px" : "50px"}>
                 <Flex>
-                  <OperationRecipient operation={operation} />
+                  <OperationView operation={operation} />
                 </Flex>
-                <Flex>
-                  <Text alignSelf="flex-end" color={colors.gray[450]} size="sm">
-                    {prettyOperationType(operation)}
-                  </Text>
-                  <IconButton
-                    width="24px"
-                    marginLeft="12px"
-                    borderRadius="full"
-                    aria-label="Remove"
-                    icon={<TrashIcon stroke={colors.gray[300]} />}
-                    onClick={() => removeItem(sender, index)}
-                    size="xs"
-                    variant="circle"
-                  />
+
+                <Flex
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width="100%"
+                  marginTop="8px"
+                >
+                  <Flex flexDirection="column">
+                    <Flex>
+                      <OperationRecipient operation={operation} />
+                    </Flex>
+                    <OperationEstimationStatus estimationResult={estimationResult} />
+                  </Flex>
+
+                  <Flex alignSelf="flex-end">
+                    <Text alignSelf="flex-end" color={colors.gray[450]} size="sm">
+                      {prettyOperationType(operation)}
+                    </Text>
+                    <IconButton
+                      width="24px"
+                      marginLeft="12px"
+                      borderRadius="full"
+                      aria-label="Remove"
+                      icon={<TrashIcon stroke={colors.gray[300]} />}
+                      onClick={() => removeItem(sender, index)}
+                      size="xs"
+                      variant="circle"
+                    />
+                  </Flex>
                 </Flex>
               </Flex>
-            </Flex>
-            {index < operations.length - 1 && <Divider marginY="20px" />}
-          </Box>
-        ))}
+              {index < operations.length - 1 && <Divider marginY="20px" />}
+            </Box>
+          );
+        })}
       </Flex>
       {showFooter && (
         <Flex
@@ -178,7 +242,7 @@ export const BatchView: React.FC<{
           borderRadius="0 0 8px 8px"
           data-testid="footer"
         >
-          <RightHeader operations={accountOperations} />
+          {actionsBlock}
         </Flex>
       )}
     </Box>
