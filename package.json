@@ -48,7 +48,7 @@
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@chakra-ui/system": "^2.6.2",
-    "@chriscdn/promise-semaphore": "^2.0.7",
+    "@chriscdn/promise-semaphore": "^2.0.9",
     "@cucumber/cucumber": "^10.3.1",
     "@electron/notarize": "^2.2.1",
     "@emotion/react": "^11.11.1",

@@ -3243,10 +3243,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chriscdn/promise-semaphore@npm:^2.0.7":
-  version: 2.0.7
-  resolution: "@chriscdn/promise-semaphore@npm:2.0.7"
-  checksum: 238c5c245340d6ef1df130a8a1943f8c32b30f38fb6a5bf7f5492066ac2aad982969c38d0d335844e96d8717ea7fc03da362ab87883446a07d95f8190569c910
+"@chriscdn/promise-semaphore@npm:^2.0.9":
+  version: 2.0.9
+  resolution: "@chriscdn/promise-semaphore@npm:2.0.9"
+  checksum: d4513a16150494e923de9d445e710f05a87786f430a3aa3faf4d7eded91cb01ae781f530e953e4e9ee7ed2fcc6fba7033937a259dd0f02ee73eb2dbac5145622
   languageName: node
   linkType: hard
 
@@ -19218,7 +19218,7 @@ __metadata:
     "@chakra-ui/icons": "npm:^2.1.1"
     "@chakra-ui/react": "npm:^2.8.2"
     "@chakra-ui/system": "npm:^2.6.2"
-    "@chriscdn/promise-semaphore": "npm:^2.0.7"
+    "@chriscdn/promise-semaphore": "npm:^2.0.9"
     "@cucumber/cucumber": "npm:^10.3.1"
     "@electron/notarize": "npm:^2.2.1"
     "@emotion/react": "npm:^11.11.1"
