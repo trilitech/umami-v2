@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 
 import { getErrorContext } from "./getErrorContext";
@@ -110,9 +110,8 @@ export const useAssetsPolling = () => {
 
   const implicitAddresses = implicitAccounts.map(account => account.address.pkh);
 
-  const accountAssetsQuery = useQuery("allAssets", {
-    queryFn: () => updateAccountAssets(dispatch, network, implicitAddresses),
-    onError: (error: any) => {
+  const onError = useCallback(
+    (error: any) => {
       dispatch(errorsSlice.actions.add(getErrorContext(error)));
       toast({
         description: `Data fetching error: ${error.message}`,
@@ -120,6 +119,12 @@ export const useAssetsPolling = () => {
         isClosable: true,
       });
     },
+    [dispatch, toast]
+  );
+
+  const accountAssetsQuery = useQuery("allAssets", {
+    queryFn: () => updateAccountAssets(dispatch, network, implicitAddresses),
+    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
@@ -128,6 +133,7 @@ export const useAssetsPolling = () => {
 
   const conversionrateQuery = useQuery("conversionRate", {
     queryFn: () => updateConversionRate(dispatch),
+    onError,
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
@@ -135,6 +141,7 @@ export const useAssetsPolling = () => {
 
   const blockNumberQuery = useQuery("blockNumber", {
     queryFn: () => updateBlockLevel(dispatch, network),
+    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
@@ -143,6 +150,7 @@ export const useAssetsPolling = () => {
 
   const bakersQuery = useQuery("bakers", {
     queryFn: () => updateBakers(dispatch, network),
+    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BAKERS_REFRESH_RATE,
     refetchIntervalInBackground: true,
