@@ -22,6 +22,7 @@ import {
   getTokenBalances,
   getTokenTransfers,
   getTransactions,
+  withRateLimit,
 } from "./fetch";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { DefaultNetworks } from "../../types/Network";
@@ -41,8 +42,68 @@ jest.mock("@tzkt/sdk-api", () => {
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+class HTTPErrorMock extends Error {
+  status: number;
+  data: string;
+  constructor(status: number, data: string) {
+    super(`Error ${status}`);
+    this.status = status;
+    this.data = data;
+  }
+}
+
 describe("tezos utils fetch", () => {
   describe.each(DefaultNetworks)("on $name", network => {
+    describe("withTimeout", () => {
+      describe("retries", () => {
+        it("retries the request 3 times", async () => {
+          let counter = 0;
+          const fn = async () => {
+            counter++;
+            if (counter < 4) {
+              throw new Error("Some error");
+            }
+            return "success";
+          };
+
+          await expect(withRateLimit(fn)).resolves.toEqual("success");
+        });
+
+        it("throws if the request fails on the 3rd attempt", async () => {
+          let counter = 0;
+          const fn = async () => {
+            counter++;
+            if (counter < 5) {
+              throw new Error("Some error");
+            }
+            return "success";
+          };
+
+          await expect(() => withRateLimit(fn)).rejects.toThrow("Some error");
+        });
+      });
+
+      describe("errors", () => {
+        it("handles common errors", async () => {
+          const fn = async () => {
+            throw new Error("Some error");
+          };
+
+          await expect(() => withRateLimit(fn)).rejects.toThrow("Some error");
+        });
+
+        it("handles tzkt HTTP errors", async () => {
+          const fn = () => {
+            throw new HTTPErrorMock(504, "Gateway timeout");
+          };
+
+          await expect(() => withRateLimit(fn)).rejects.toThrow(
+            "Fetching data from tzkt failed with: 504, Gateway timeout"
+          );
+        });
+      });
+    });
+
     test("getTezosPriceInUSD", async () => {
       const mockResponse = {
         data: {
@@ -69,6 +130,7 @@ describe("tezos utils fetch", () => {
     });
 
     test("getTokenBalances", async () => {
+      jest.mocked(tokensGetTokenBalances).mockResolvedValue([]);
       await getTokenBalances([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network);
       expect(tokensGetTokenBalances).toHaveBeenCalledWith(
         {
@@ -83,6 +145,7 @@ describe("tezos utils fetch", () => {
     });
 
     test("getTezTransfers", async () => {
+      jest.mocked(operationsGetTransactions).mockResolvedValue([]);
       await getTezTransfers(mockImplicitAddress(0).pkh, network);
       expect(operationsGetTransactions).toHaveBeenCalledWith(
         {
@@ -97,6 +160,7 @@ describe("tezos utils fetch", () => {
     });
 
     test("getRelatedTokenTransfers", async () => {
+      jest.mocked(tokensGetTokenTransfers).mockResolvedValue([]);
       await getRelatedTokenTransfers([1, 2, 3], network);
       expect(tokensGetTokenTransfers).toHaveBeenCalledWith(
         {
@@ -119,6 +183,7 @@ describe("tezos utils fetch", () => {
     });
 
     test("getAccounts", async () => {
+      jest.mocked(accountsGet).mockResolvedValue([]);
       await getAccounts([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network);
 
       expect(jest.mocked(accountsGet)).toHaveBeenCalledWith(
@@ -133,6 +198,7 @@ describe("tezos utils fetch", () => {
     });
 
     test("getDelegations", async () => {
+      jest.mocked(operationsGetDelegations).mockResolvedValue([]);
       await getDelegations([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network, {
         sort: { desc: "id" },
         limit: 100,
@@ -153,6 +219,7 @@ describe("tezos utils fetch", () => {
     });
 
     test("getOriginations", async () => {
+      jest.mocked(operationsGetOriginations).mockResolvedValue([]);
       await getOriginations([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network, {
         sort: { asc: "id" },
         limit: 100,
@@ -173,6 +240,7 @@ describe("tezos utils fetch", () => {
     });
 
     test("getTransactions", async () => {
+      jest.mocked(operationsGetTransactions).mockResolvedValue([]);
       await getTransactions([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network, {
         sort: { asc: "id" },
         limit: 100,
