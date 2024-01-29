@@ -1888,12 +1888,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.23.2":
+"@babel/runtime@npm:^7.18.3":
   version: 7.23.2
   resolution: "@babel/runtime@npm:7.23.2"
   dependencies:
     regenerator-runtime: "npm:^0.14.0"
   checksum: abdcbdd590c7e31762e1bdab94dd466823c8bcedd3ff2fde85eeb94dac7cccaef151ac37c428bda7018ededd27c9a82b4dfeb621f978ad934232475a902f8e3a
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.23.9":
+  version: 7.23.9
+  resolution: "@babel/runtime@npm:7.23.9"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: 9a520fe1bf72249f7dd60ff726434251858de15cccfca7aa831bd19d0d3fb17702e116ead82724659b8da3844977e5e13de2bae01eb8a798f2823a669f122be6
   languageName: node
   linkType: hard
 
@@ -19168,7 +19177,7 @@ __metadata:
   dependencies:
     "@airgap/beacon-wallet": "npm:^4.1.0"
     "@babel/core": "npm:^7.16.0"
-    "@babel/runtime": "npm:^7.23.2"
+    "@babel/runtime": "npm:^7.23.9"
     "@chakra-ui/cli": "npm:^2.4.1"
     "@chakra-ui/icons": "npm:^2.1.1"
     "@chakra-ui/react": "npm:^2.8.2"
