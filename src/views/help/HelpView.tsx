@@ -43,10 +43,14 @@ export const HelpView = () => {
           />
         </HelpCard>
 
-        <HelpCard title="Terms of Use">
+        <HelpCard title="Terms">
           <HelpLinkRow
             about="Read Terms of Service"
             externalLink="https://umamiwallet.com/tos.html"
+          />
+          <HelpLinkRow
+            about="Read Privacy Policy"
+            externalLink="https://umamiwallet.com/privacypolicy.html"
           />
         </HelpCard>
       </GridItem>
