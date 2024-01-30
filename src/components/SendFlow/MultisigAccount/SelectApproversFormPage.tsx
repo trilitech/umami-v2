@@ -133,7 +133,7 @@ export const SelectApproversFormPage: React.FC<
                       }
                       const addresses = getValues("signers").map(s => s.val);
                       if (addresses.length > new Set(addresses).size) {
-                        return "Duplicate signer";
+                        return "Duplicate approver";
                       }
                     }}
                   />
@@ -180,6 +180,7 @@ export const SelectApproversFormPage: React.FC<
                     step={1}
                     type="number"
                     {...register("threshold", {
+                      valueAsNumber: true,
                       required: "No. of approvals is required",
                       max: {
                         value: signersCount,
