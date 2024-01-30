@@ -49,6 +49,7 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
                     <Image src={getIPFSurl(thumbnailUri(token))} />
                   </AspectRatio>
                 }
+                openDelay={300}
               >
                 <Link data-testid="link" href={tokenUri(token, network)}>
                   {tokenNameSafe(token)}

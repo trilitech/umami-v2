@@ -53,6 +53,7 @@ export const TokenTransferTile: React.FC<{
           <Image src={getIPFSurl(thumbnailUri(token))} />
         </AspectRatio>
       }
+      openDelay={300}
     >
       <Flex>
         <TzktLink
