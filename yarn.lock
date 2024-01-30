@@ -10010,6 +10010,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv-expand@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "dotenv-expand@npm:10.0.0"
+  checksum: 10/b41eb278bc96b92cbf3037ca5f3d21e8845bf165dc06b6f9a0a03d278c2bd5a01c0cfbb3528ae3a60301ba1a8a9cace30e748c54b460753bc00d4c014b675597
+  languageName: node
+  linkType: hard
+
 "dotenv-expand@npm:^5.1.0":
   version: 5.1.0
   resolution: "dotenv-expand@npm:5.1.0"
@@ -19521,7 +19528,7 @@ __metadata:
     css-minimizer-webpack-plugin: "npm:^6.0.0"
     date-fns: "npm:^3.2.0"
     dotenv: "npm:^10.0.0"
-    dotenv-expand: "npm:^5.1.0"
+    dotenv-expand: "npm:^10.0.0"
     electron: "npm:^28.1.4"
     electron-builder: "npm:^24.9.1"
     electron-updater: "npm:^6.1.4"
