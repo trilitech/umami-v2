@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+
       - name: Setup yarn
         run: |
           corepack enable
@@ -34,9 +37,13 @@ jobs:
         run: yarn lint:ci
 
       - name: Run tests
-        env:
-          CI: true
-        run: yarn test
+        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
+        with:
+          skip-step: install
+          test-script: yarn test
+          annotations: coverage
+          base-coverage-file: report.json
+          prnumber: ${{ steps.findPr.outputs.number }}
 
       # Uncomment when taquito releases a new version
       # - name: Audit dependencies
