@@ -7,6 +7,7 @@ export const ModalBackButton = ({ onClick }: { onClick: () => void }) => (
   <IconButton
     {...backButtonStyle}
     aria-label="Back"
+    data-testid="back-button"
     icon={<ArrowBackIcon width="24px" height="20px" />}
     onClick={onClick}
     size="sm"

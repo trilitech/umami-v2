@@ -66,9 +66,11 @@ export const NameMultisigFormPage: React.FC<{ name?: string }> = ({ name }) => {
                   data-testid="multisig-account-name"
                   type="text"
                   {...register("name", {
-                    required: true, // TODO: add an error message
+                    required: false,
                     validate: name => {
-                      // TODO: check if name.trim() is empty?
+                      if (name.trim().length == 0) {
+                        return "Name should not be empty";
+                      }
                       if (!isUnique(name.trim())) {
                         return "Name must be unique across all accounts and contacts";
                       }
