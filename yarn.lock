@@ -6303,10 +6303,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.15.0":
-  version: 18.15.0
-  resolution: "@types/node@npm:18.15.0"
-  checksum: 10/0183b505fce90af7b80d803561126d06098497b592329dfe02625321767998e551a3034a6336f69a0cfab755a7e8cb841e39d16f49181d8d7c205fb99b887063
+"@types/node@npm:20.11.10":
+  version: 20.11.10
+  resolution: "@types/node@npm:20.11.10"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10/41ca9c7e7c95bf070ad747ab266f267f41950e01f5ddda739d0665c2ed39acc45cce46f78e33ffa2bf2dacd74a8493044b967c86358017dacce12958e49db664
   languageName: node
   linkType: hard
 
@@ -19491,7 +19493,7 @@ __metadata:
     "@types/assert": "npm:^1.5.8"
     "@types/jest": "npm:29.5.11"
     "@types/md5": "npm:^2"
-    "@types/node": "npm:18.15.0"
+    "@types/node": "npm:20.11.10"
     "@types/papaparse": "npm:^5.3.14"
     "@types/pluralize": "npm:^0.0.33"
     "@types/promise-retry": "npm:^1.1.6"

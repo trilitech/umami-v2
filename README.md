@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Initial setup
 
-- Node.js version is 18.x, you can use [NVM](https://github.com/nvm-sh/nvm) to install it and select for this project.
+- Node.js version is 20.x, you can use [NVM](https://github.com/nvm-sh/nvm) to install it and select for this project.
 - Yarn 3.x should be used, you can find the installation guide [here](https://yarnpkg.com/getting-started/install).
 - `yarn install`
 - (optional) if you want to run all the necessary checks before pushing to github (which is much faster than waiting for CI) then just run `./bin/setup`

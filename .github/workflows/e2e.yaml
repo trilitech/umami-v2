@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18.15.x
+          node-version: 20.11.x
           cache: "yarn"
 
       - name: Install dependencies

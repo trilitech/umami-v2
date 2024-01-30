@@ -23,7 +23,7 @@ let browser: ChromiumBrowser;
 BeforeAll(async function () {
   browser = await chromium.launch({ headless: !!process.env.CI });
 
-  global.crypto = crypto as any;
+  Object.defineProperty(global, "crypto", crypto);
 });
 
 /**
