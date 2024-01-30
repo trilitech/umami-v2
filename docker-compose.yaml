@@ -1,23 +1,19 @@
-# IF YOU UPDATE THIS FILE
-# ALSO UPDATE docker-compose.ci.yaml
 version: "3.8"
 
 services:
   db:
-    container_name: tzkt-db
+    container_name: "tzkt-db-${CUCUMBER_WORKER_ID:-0}"
     restart: always
     image: postgres:13
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-tzkt}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qwerty}
       POSTGRES_DB: ${POSTGRES_DB:-tzkt_db}
-    ports:
-      - 5432:5432
 
   flextesa:
-    container_name: tezos-node
+    container_name: "tezos-node-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: serjonya/flextesa:latest
+    image: ${FLEXTESA_IMAGE:-serjonya/flextesa:latest}
     command: nairobibox start
     healthcheck:
       test: octez-client get balance for alice
@@ -31,22 +27,22 @@ services:
   proxy:
     depends_on:
       - flextesa
-    container_name: tezos-node-proxy
+    container_name: "tezos-node-proxy-${CUCUMBER_WORKER_ID:-0}"
     restart: always
     image: nginx:alpine
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - 20001:80
+      - 2000${CUCUMBER_WORKER_ID:-0}:80
 
   sync:
-    container_name: tzkt-sync
+    container_name: "tzkt-sync-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: serjonya/tzkt-sync:latest
+    image: ${TZKT_SYNC_IMAGE:-serjonya/tzkt-sync:latest}
     environment:
       ConnectionStrings__DefaultConnection: host=db;port=5432;database=${POSTGRES_DB:-tzkt_db};username=${POSTGRES_USER:-tzkt};password=${POSTGRES_PASSWORD:-qwerty};command timeout=${COMMAND_TIMEOUT:-600};
       Kestrel__Endpoints__Http__Url: http://0.0.0.0:5001
-      TezosNode__Endpoint: ${NODE_RPC:-http://flextesa:20000/}
+      TezosNode__Endpoint: http://flextesa:20000
       Home__Enabled: "true"
       HealthChecks__Enabled: "true"
     depends_on:
@@ -54,9 +50,9 @@ services:
       - flextesa
 
   api:
-    container_name: tzkt-api
+    container_name: "tzkt-api-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: serjonya/tzkt-api:latest
+    image: ${TZKT_API_IMAGE:-serjonya/tzkt-api:latest}
     depends_on:
       - sync
     environment:
@@ -72,8 +68,8 @@ services:
       retries: 100
       start_period: 10s
     ports:
-      - 5000:5000
+      - 500${CUCUMBER_WORKER_ID:-0}:5000
 
 networks:
   default:
-    name: tzkt
+    name: "tzkt-network-${CUCUMBER_WORKER_ID:-0}"

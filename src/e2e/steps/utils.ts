@@ -59,7 +59,8 @@ When("I sign transaction with password {string}", async function (this: CustomWo
 });
 
 When("I close modal", async function (this: CustomWorld) {
-  await this.page.getByRole("button", { name: "Close", exact: true }).click();
+  const modal = this.page.getByRole("dialog");
+  await modal.getByRole("button", { name: "Close", exact: true }).click();
 });
 
 When("I wait for TZKT to process the updates", async function (this: CustomWorld) {
