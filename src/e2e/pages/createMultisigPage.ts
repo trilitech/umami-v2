@@ -1,22 +1,22 @@
 import { Locator, Page } from "@playwright/test";
 
-const SIGNER_LABEL_REGEXP = /\d+ signer$/;
+const APPROVER_LABEL_REGEXP = /\d+\w\w approver$/;
 
 export class CreateMultisigPage {
   constructor(readonly page: Page) {}
 
-  signerInputs(): Locator {
-    return this.page.getByText(SIGNER_LABEL_REGEXP);
+  approverInputs(): Locator {
+    return this.page.getByText(APPROVER_LABEL_REGEXP);
   }
 
-  async addSigner(): Promise<void> {
-    await this.page.getByRole("button", { name: "+ Add Signer" }).click();
+  async addApprover(): Promise<void> {
+    await this.page.getByRole("button", { name: "+ Add Approver" }).click();
   }
 
-  async setSigner(index: number, signer: string): Promise<void> {
-    while (index + 1 > (await this.signerInputs().count())) {
-      await this.addSigner();
+  async setApprover(index: number, approver: string): Promise<void> {
+    while (index + 1 > (await this.approverInputs().count())) {
+      await this.addApprover();
     }
-    await this.signerInputs().nth(index).fill(signer);
+    await this.approverInputs().nth(index).fill(approver);
   }
 }

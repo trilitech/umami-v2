@@ -6,25 +6,22 @@ import { formatPkh } from "../../utils/format";
 import { AccountsPage } from "../pages/accountsPage";
 import { CreateMultisigPage } from "../pages/createMultisigPage";
 
-let page: CreateMultisigPage;
-
 When("I am creating a multisig account", async function (this: CustomWorld) {
   await this.page.getByRole("button", { name: "Create New Multisig" }).click();
-  page = new CreateMultisigPage(this.page);
 });
 
-When("I fill signers with", async function (this: CustomWorld, table: DataTable) {
+When("I fill approvers with", async function (this: CustomWorld, table: DataTable) {
+  const page = new CreateMultisigPage(this.page);
   const rows = table.raw();
   for (let i = 0; i < rows.length; i++) {
     const signer = rows[i][0];
-    await page.setSigner(i, signer);
+    await page.setApprover(i, signer);
   }
 });
 
 Then("I see multisig confirmation page", async function (this: CustomWorld, table: DataTable) {
   const data = table.rowsHash();
   expect(this.page.getByTestId("contract-name")).toContainText(data["Contract Name"]);
-  expect(this.page.getByTestId("multisig-owner")).toContainText(data["Owner"]);
 
   const signers = data["Approvers"].split(",");
   expect(this.page.getByTestId(/approver-/)).toHaveCount(signers.length);
@@ -38,7 +35,9 @@ Then("I see multisig confirmation page", async function (this: CustomWorld, tabl
     ).toBeVisible();
   }
 
-  expect(this.page.getByTestId("threshold")).toContainText(data["Min No. of approvals"]);
+  expect(this.page.getByTestId("threshold")).toContainText(
+    `${data["Min No. of approvals"]} out of ${signers.length}`
+  );
 });
 
 // TODO: Add address validation

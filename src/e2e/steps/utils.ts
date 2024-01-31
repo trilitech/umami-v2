@@ -55,7 +55,9 @@ When("I check {string} checkbox", async function (this: CustomWorld, checkboxNam
 
 When("I sign transaction with password {string}", async function (this: CustomWorld, password) {
   await this.page.getByLabel("Password", { exact: true }).fill(password);
-  await this.page.getByRole("button", { name: /^(Confirm|Propose) (Transaction|Batch)$/ }).click();
+  await this.page
+    .getByRole("button", { name: /^(Confirm|Propose|Submit) (Transaction|Batch|Contract)$/ })
+    .click();
 });
 
 When("I close modal", async function (this: CustomWorld) {
