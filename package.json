@@ -29,8 +29,7 @@
     "test:e2e": "cross-env TS_NODE_PROJECT=tsconfig.e2e.json cucumber-js",
     "test:e2e:focus": "yarn test:e2e --tags='@focus'",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
-    "theme": "chakra-cli tokens src/style/theme.ts",
-    "typecheck": "tsc"
+    "theme": "chakra-cli tokens src/style/theme.ts"
   },
   "browserslist": {
     "production": [
