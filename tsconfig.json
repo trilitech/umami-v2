@@ -15,8 +15,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "incremental": true
+    "incremental": true,
   },
   "include": ["src"],
-  "exclude": ["src/e2e"]
+  "exclude": ["src/e2e"],
 }
