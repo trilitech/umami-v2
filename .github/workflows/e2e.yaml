@@ -6,7 +6,12 @@ jobs:
   test:
     permissions: write-all
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m
+    env:
+      FLEXTESA_IMAGE: oxheadalpha/flextesa:latest
+      TZKT_SYNC_IMAGE: serjonya/tzkt-sync:1.12.4-linux
+      TZKT_API_IMAGE: serjonya/tzkt-api:1.12.4-linux
+
     steps:
       - uses: actions/checkout@v4
 
@@ -27,7 +32,7 @@ jobs:
         run: yarn playwright install chromium --with-deps &
 
       - name: Pull docker images
-        run: docker compose -f docker-compose.ci.yaml pull --quiet &
+        run: docker compose pull --quiet &
 
       - name: Build the app
         run: yarn build

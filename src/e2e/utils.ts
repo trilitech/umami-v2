@@ -9,8 +9,8 @@ import { getAccounts } from "../utils/tezos";
 
 const TEST_NETWORK = {
   name: "Test net",
-  rpcUrl: "http://0.0.0.0:20001",
-  tzktApiUrl: "http://0.0.0.0:5000",
+  rpcUrl: "http://0.0.0.0:2000" + (process.env.CUCUMBER_WORKER_ID || "0"),
+  tzktApiUrl: "http://0.0.0.0:500" + (process.env.CUCUMBER_WORKER_ID || "0"),
   tzktExplorerUrl: "http://unavailable",
   buyTezUrl: "",
 };
@@ -19,8 +19,6 @@ export const TEST_NETWORKS_STATE = {
   current: TEST_NETWORK,
 };
 const MASTER_PASSWORD = "12345678";
-
-const DOCKER_COMPOSE_FILE = process.env.CI ? "docker-compose.ci.yaml" : "docker-compose.yaml";
 
 export const cleanupState = () => {
   test.beforeEach(async ({ page }: { page: Page }) => {
@@ -85,7 +83,14 @@ export const onboardWithExistingMnemonic = async ({
 };
 
 const runDockerCommand = (command: string) =>
-  execSync(`docker compose -f ${DOCKER_COMPOSE_FILE} ${command}`, { stdio: "ignore" });
+  execSync(`docker compose ${command}`, {
+    stdio: "ignore",
+
+    env: {
+      COMPOSE_PROJECT_NAME: process.env.CUCUMBER_WORKER_ID,
+      ...process.env,
+    },
+  });
 
 const startNode = () => runDockerCommand("up --wait");
 
