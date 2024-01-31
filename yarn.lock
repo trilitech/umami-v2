@@ -5899,10 +5899,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/assert@npm:^1.5.8":
-  version: 1.5.8
-  resolution: "@types/assert@npm:1.5.8"
-  checksum: 10/40ae8afe53c6c8fe2a29913eb7b25c1b2f45a7b3494cfc8f6776eff612d7eae1de5f5ecd86970fe6291f0dd428457383bf66cbdb3f398f29343ffffd2a969fd5
+"@types/assert@npm:^1.5.10":
+  version: 1.5.10
+  resolution: "@types/assert@npm:1.5.10"
+  checksum: 10/7097597ec32c467dbfe5dbba8e948df87ed6346cf5c39d435d768e0015d5cca3e2bd7b8ba847d4bf94d9b62a5ca6ca4dffe424329bdd357de1481857b45ebde8
   languageName: node
   linkType: hard
 
@@ -19517,7 +19517,7 @@ __metadata:
     "@testing-library/react": "npm:14.1.2"
     "@testing-library/user-event": "npm:14.5.2"
     "@toruslabs/customauth": "npm:^15.0.5"
-    "@types/assert": "npm:^1.5.8"
+    "@types/assert": "npm:^1.5.10"
     "@types/jest": "npm:29.5.11"
     "@types/md5": "npm:^2"
     "@types/node": "npm:20.11.10"
