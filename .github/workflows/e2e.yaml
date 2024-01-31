@@ -6,7 +6,7 @@ jobs:
   test:
     permissions: write-all
     timeout-minutes: 20
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m
     env:
       FLEXTESA_IMAGE: oxheadalpha/flextesa:latest
       TZKT_SYNC_IMAGE: serjonya/tzkt-sync:1.12.4-linux
