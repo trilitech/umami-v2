@@ -8,7 +8,7 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { differenceInMinutes, formatDistance } from "date-fns";
+import { differenceInMinutes, differenceInSeconds, formatDistance } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 
 import { BuyTezForm } from "./BuyTez/BuyTezForm";
@@ -24,38 +24,40 @@ import { assetsActions } from "../utils/redux/slices/assetsSlice";
 const UpdateButton = () => {
   const dispatch = useAppDispatch();
   const isLoading = useIsLoading();
-
-  const onClick = () => {
-    dispatch(assetsActions.refetch());
-  };
   const lastTimeUpdated = useLastTimeUpdated();
   const [changeOpacity, setChangeOpacity] = useState(false);
   const [showUpdatedJustNow, setShowUpdatedJustNow] = useState(false);
-
   const [isSmallSize] = useMediaQuery("(max-width: 1200px)");
 
   useEffect(() => {
-    if (lastTimeUpdated) {
-      setChangeOpacity(true);
-      setShowUpdatedJustNow(true);
-
-      const checkIcon = setTimeout(() => {
-        setChangeOpacity(false);
-      }, 2000);
-      const updateJustNow = setTimeout(() => {
-        setShowUpdatedJustNow(false);
-      }, 3500);
-
-      return () => {
-        clearTimeout(checkIcon);
-        clearTimeout(updateJustNow);
-      };
+    if (!lastTimeUpdated) {
+      return;
     }
+    // show updated just now only if it's been no more than 1 second since the last update
+    // otherwise, it'll show the same message on each re-render
+    if (differenceInSeconds(new Date(), new Date(lastTimeUpdated)) > 1) {
+      return;
+    }
+
+    setChangeOpacity(true);
+    setShowUpdatedJustNow(true);
+
+    const checkIcon = setTimeout(() => setChangeOpacity(false), 2000);
+    const updateJustNow = setTimeout(() => setShowUpdatedJustNow(false), 3500);
+
+    return () => {
+      clearTimeout(checkIcon);
+      clearTimeout(updateJustNow);
+    };
   }, [lastTimeUpdated]);
 
   if (isSmallSize || lastTimeUpdated === null) {
     return null;
   }
+
+  const onClick = () => {
+    dispatch(assetsActions.refetch());
+  };
 
   const showLastTimeUpdated = differenceInMinutes(new Date(), new Date(lastTimeUpdated)) >= 2;
   const transition = { opacity: changeOpacity ? 1 : 0, transition: "opacity 2s ease-in-out" };
