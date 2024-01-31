@@ -2,6 +2,11 @@ name: Test
 
 on: push
 
+permissions:
+  pull-requests: write
+  checks: write
+  contents: write
+
 concurrency:
   group: ${{ github.ref_name }}
   cancel-in-progress: true
