@@ -252,6 +252,9 @@
   "build": {
     "appId": "com.trilitech.umami",
     "productName": "Umami",
+    "files": [
+      "build/**"
+    ],
     "directories": {
       "buildResources": "public"
     },
