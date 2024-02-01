@@ -15301,6 +15301,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ordinal@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "ordinal@npm:1.0.3"
+  checksum: 10/6761c5b7606b6c4b0c22b4097dab4fe7ffcddacc49238eedf9c0ced877f5d4e4ad3f4fd43fefa1cc3f167cc54c7149267441b2ae85b81ccf13f45cf4b7947164
+  languageName: node
+  linkType: hard
+
 "os-browserify@npm:^0.3.0":
   version: 0.3.0
   resolution: "os-browserify@npm:0.3.0"
@@ -19655,6 +19662,7 @@ __metadata:
     md5: "npm:^2.3.0"
     mini-css-extract-plugin: "npm:^2.4.5"
     mockdate: "npm:^3.0.5"
+    ordinal: "npm:^1.0.3"
     os-browserify: "npm:^0.3.0"
     papaparse: "npm:^5.4.1"
     pluralize: "npm:^8.0.0"

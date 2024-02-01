@@ -117,6 +117,7 @@ export const useSignPageHelpers = (
   const clearBatch = useClearBatch();
   const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
+
   const form = useForm<{ sender: string; signer: string }>({
     mode: "onBlur",
     defaultValues: { signer: operations.signer.address.pkh, sender: operations.sender.address.pkh },

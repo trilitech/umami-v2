@@ -28,14 +28,13 @@ export const SignButton: React.FC<{
   const form = useForm<{ password: string }>({ mode: "onBlur", defaultValues: { password: "" } });
   const {
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid: isPasswordValid },
   } = form;
   const network = useSelectedNetwork();
   const getSecretKey = useGetSecretKey();
   const toast = useToast();
   const { isLoading: internalIsLoading, handleAsyncAction } = useAsyncActionHandler();
   const isLoading = internalIsLoading || externalIsLoading;
-  const buttonIsDisabled = isDisabled || !isValid;
 
   const onMnemonicSign = async ({ password }: { password: string }) =>
     handleAsyncAction(async () => {
@@ -85,7 +84,7 @@ export const SignButton: React.FC<{
             <Button
               width="100%"
               marginTop="8px"
-              isDisabled={buttonIsDisabled}
+              isDisabled={isDisabled || !isPasswordValid}
               isLoading={isLoading}
               onClick={handleSubmit(signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign)}
               size="lg"
@@ -100,7 +99,7 @@ export const SignButton: React.FC<{
       return (
         <Button
           width="100%"
-          isDisabled={buttonIsDisabled}
+          isDisabled={isDisabled}
           isLoading={isLoading}
           onClick={onSocialSign}
           size="lg"
@@ -112,7 +111,7 @@ export const SignButton: React.FC<{
       return (
         <Button
           width="100%"
-          isDisabled={buttonIsDisabled}
+          isDisabled={isDisabled}
           isLoading={isLoading}
           onClick={onLedgerSign}
           size="lg"

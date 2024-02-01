@@ -43,13 +43,17 @@ export const SignPageHeader: React.FC<{
   mode: SignPageMode;
   operationsType: AccountOperations["type"];
   signer: ImplicitAccount;
-}> = ({ goBack, mode, operationsType, signer }) => {
+  title?: string;
+  description?: string;
+}> = ({ goBack, mode, operationsType, signer, title, description }) => {
   return (
     <HeaderWrapper>
       {goBack && <ModalBackButton onClick={goBack} />}
-      <Heading size="2xl">{headerText(operationsType, mode)}</Heading>
+      <Heading data-testid="sign-page-header" size="2xl">
+        {title || headerText(operationsType, mode)}
+      </Heading>
       <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
-        {subTitle(signer)}
+        {description || subTitle(signer)}
       </Text>
       <ModalCloseButton />
     </HeaderWrapper>

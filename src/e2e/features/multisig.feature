@@ -7,19 +7,21 @@ Feature: Multisig Account Creation
     And I am on an Accounts page
 
     When I am creating a multisig account
+    Then I see "Account Name" modal
 
-    When I fill "Name the Contract" with "My Multisig Account"
-    And I fill "Select Owner" address field with "Alice"
-    And I fill signers with
+    When I fill "Account Name" with "My Multisig Account"
+    And I click "Continue" button
+    Then I see "Select Approvers" modal
+
+    When I fill approvers with
       | Alice                                |
       | tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h |
     And I fill "Min No. of approvals:" with "1"
     And I click "Review" button
 
-    Then I see "Confirm Transaction" modal
+    Then I see "Review & Submit" modal
     And I see multisig confirmation page
       | Contract Name        | My Multisig Account                        |
-      | Owner                | Alice                                      |
       | Approvers            | Alice,tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h |
       | Min No. of approvals | 1                                          |
 

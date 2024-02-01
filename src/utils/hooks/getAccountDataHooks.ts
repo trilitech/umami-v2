@@ -131,11 +131,14 @@ export const useGetOwnedSignersForAccount = () => {
 // For multisig accounts it will be the associated implicit signer with the most tez
 export const useGetBestSignerForAccount = () => {
   const getSigners = useGetOwnedSignersForAccount();
-  const accountBalance = useGetAccountBalance();
+  const getMostFundedImplicitAccount = useGetMostFundedImplicitAccount();
 
-  return (account: Account) =>
-    maxBy(
-      getSigners(account),
-      signer => accountBalance(signer.address.pkh) || "0"
-    ) as ImplicitAccount;
+  return (account: Account) => getMostFundedImplicitAccount(getSigners(account));
+};
+
+export const useGetMostFundedImplicitAccount = () => {
+  const getAccountBalance = useGetAccountBalance();
+
+  return (accounts: ImplicitAccount[]) =>
+    maxBy(accounts, signer => Number(getAccountBalance(signer.address.pkh) || "0"))!;
 };
