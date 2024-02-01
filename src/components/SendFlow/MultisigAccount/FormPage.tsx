@@ -69,7 +69,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
 
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
-    signPageExtraData: watch(),
+    signPageExtraData: watch() as FormValues,
     FormPage,
     defaultFormPageProps: {},
     toOperation,
