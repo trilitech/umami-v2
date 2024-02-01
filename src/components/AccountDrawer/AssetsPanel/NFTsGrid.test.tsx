@@ -10,7 +10,7 @@ describe("<NFTsGrid />", () => {
     it('displays a "No NFTs" message', () => {
       render(<NFTsGrid nfts={[]} owner={OWNER} />);
 
-      expect(screen.getByText("No NFTs found")).toBeInTheDocument();
+      expect(screen.getByText("No NFTs to show")).toBeInTheDocument();
     });
 
     it("does not show NFTs", () => {

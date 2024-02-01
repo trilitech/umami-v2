@@ -29,7 +29,7 @@ describe("<BatchPage />", () => {
   it("shows empty batch message by default", () => {
     render(<BatchPage />);
 
-    expect(screen.getByText(/no 'batch' to show/i)).toBeInTheDocument();
+    expect(screen.getByText("No batches to show")).toBeInTheDocument();
   });
 
   describe("pending", () => {

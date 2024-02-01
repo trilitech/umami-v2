@@ -12,7 +12,7 @@ describe("<TokenList />", () => {
     it('displays a "No tokens found" message', () => {
       render(<TokenList owner={ACCOUNT.address.pkh} tokens={[]} />);
 
-      expect(screen.getByText("No tokens found")).toBeInTheDocument();
+      expect(screen.getByText("No tokens to show")).toBeInTheDocument();
     });
 
     it("does not show tokens", () => {

@@ -7,7 +7,7 @@ import { RawPkh } from "../../../types/Address";
 import { fullId, tokenPrettyAmount } from "../../../types/Token";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import { TokenNameWithIcon } from "../../../views/tokens/TokenNameWithIcon";
-import { NoItems } from "../../NoItems";
+import { NoTokens } from "../../NoItems";
 
 const MAX_TOKENS_SIZE = 20;
 
@@ -27,7 +27,7 @@ export const TokenList = ({
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
 }) => {
   if (tokens.length === 0) {
-    return <NoItems small title="No tokens found" />;
+    return <NoTokens small />;
   }
 
   const chunk = tokens.slice(0, MAX_TOKENS_SIZE);

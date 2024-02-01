@@ -24,7 +24,7 @@ beforeEach(() => {
 describe("NFTsView", () => {
   it("a message 'no nfts found' is displayed", () => {
     render(<NFTsView />);
-    expect(screen.getByText(/no nfts found/i)).toBeInTheDocument();
+    expect(screen.getByText("No NFTs to show")).toBeInTheDocument();
   });
 
   it("displays nfts of all accounts by default", () => {

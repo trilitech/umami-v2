@@ -11,7 +11,7 @@ describe("<OperationListDisplay />", () => {
     it('displays a "No operations found" message', () => {
       render(<OperationListDisplay operations={[]} owner={OWNER} />);
 
-      expect(screen.getByText("No operations found")).toBeInTheDocument();
+      expect(screen.getByText("No operations to show")).toBeInTheDocument();
     });
 
     it("does not show operation tiles", () => {

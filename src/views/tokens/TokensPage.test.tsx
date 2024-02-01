@@ -19,7 +19,7 @@ beforeEach(() => {
 describe("<TokensView />", () => {
   it("renders 'no tokens found' when there are no tokens", () => {
     render(fixture());
-    expect(screen.getByText(/no tokens found/i)).toBeInTheDocument();
+    expect(screen.getByText("No tokens to show")).toBeInTheDocument();
   });
 
   it.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {

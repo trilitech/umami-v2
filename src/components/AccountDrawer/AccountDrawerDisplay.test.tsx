@@ -154,7 +154,7 @@ describe("<AccountCard />", () => {
       expect(screen.getByTestId("asset-panel")).toBeInTheDocument();
     });
     const { getByText } = within(screen.getByTestId("asset-panel"));
-    expect(getByText(/no tokens found/i)).toBeInTheDocument();
+    expect(getByText("No tokens to show")).toBeInTheDocument();
   });
 
   test("tokens tab should display token infos correctly", async () => {
@@ -217,7 +217,7 @@ describe("<AccountCard />", () => {
     });
     const { getByText } = within(screen.getByTestId("asset-panel"));
     await waitFor(() => {
-      expect(getByText(/no operations/i)).toBeTruthy();
+      expect(getByText("No operations to show")).toBeTruthy();
     });
   });
 
@@ -228,12 +228,13 @@ describe("<AccountCard />", () => {
         expect(screen.getByTestId("account-card-delegation-tab")).toBeInTheDocument();
       });
       fireEvent.click(screen.getByTestId("account-card-delegation-tab"));
-      const { getByText } = within(screen.getByTestId("asset-panel"));
-      expect(getByText(/Currently not delegating/i)).toBeTruthy();
-      const btn = screen.getByText(/start delegating/i);
+
+      const { getByText, getByRole } = within(screen.getByTestId("asset-panel"));
+      expect(getByText("No delegations to show")).toBeTruthy();
+
+      const btn = getByRole("button", { name: "Delegate" });
       fireEvent.click(btn);
-      const modal = screen.getByRole("dialog");
-      expect(modal).toHaveTextContent(/delegate/i);
+      expect(getByRole("header", { name: "Delegate" })).toBeVisible();
     });
 
     it("Given an account has an active delegation, it show display the delegation and CTA buttons to change delegate or undelegate", async () => {
