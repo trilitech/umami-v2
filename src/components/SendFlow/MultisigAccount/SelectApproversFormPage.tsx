@@ -106,7 +106,6 @@ export const SelectApproversFormPage: React.FC<
           />
 
           <ModalBody>
-            <Input type="hidden" {...register("sender")} />
             {signersArray.fields.map((field, index) => {
               const error = errors.signers && errors.signers[index];
               const label = `${index === 0 ? "Select " : ""}${ordinal(index + 1)} approver`;

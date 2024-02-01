@@ -50,10 +50,6 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
     handleAsyncAction,
   } = useSignPageHelpers(initialFee, initialOperations, mode);
 
-  const {
-    formState: { errors },
-  } = form;
-
   /**
    * To save the multisig account name we need to know the contract address
    * We don't know it until after we successfully originated the contract
@@ -118,7 +114,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
             </Flex>
 
             <Box>
-              <FormControl marginTop="24px" marginBottom="12px" isInvalid={!!errors.sender}>
+              <FormControl marginTop="24px" marginBottom="12px">
                 <OwnedImplicitAccountsAutocomplete
                   allowUnknown={false}
                   inputName="signer"

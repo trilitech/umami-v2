@@ -66,7 +66,6 @@ export const NameMultisigFormPage: React.FC<{ name?: string }> = ({ name }) => {
                   data-testid="multisig-account-name"
                   type="text"
                   {...register("name", {
-                    required: false,
                     validate: name => {
                       if (name.trim().length == 0) {
                         return "Name should not be empty";

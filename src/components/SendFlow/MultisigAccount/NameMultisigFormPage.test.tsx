@@ -103,7 +103,7 @@ describe("NameMultisigFormPage", () => {
       withName: true,
       fixture: async () => fixture(MULTISIG_NAME),
     },
-  ])("$testCase", ({ withName, fixture: fixture }) => {
+  ])("$testCase", ({ withName, fixture }) => {
     beforeEach(() => {
       // The user with the most TEZ will be used as a default signer for create multisig request.
       // The user is pre-selected in this step,
