@@ -1,14 +1,10 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useContext } from "react";
 
 import { BatchView } from "./BatchView";
 import { ExternalLinkIcon } from "../../assets/icons";
 import { CSVFileUploader } from "../../components/CSVFileUploader";
-import { CSVFileUploadForm } from "../../components/CSVFileUploader/CSVFileUploadForm";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { ExternalLink } from "../../components/ExternalLink";
-import { NoBatches } from "../../components/NoItems";
-import { FormPage as SendTezForm } from "../../components/SendFlow/Tez/FormPage";
+import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { useBatches } from "../../utils/hooks/batchesHooks";
@@ -37,7 +33,6 @@ const FilterController = ({ batchPending }: { batchPending: number }) => {
 
 export const BatchPage = () => {
   const batches = useBatches();
-  const { openWith } = useContext(DynamicModalContext);
 
   return (
     <Flex flexDirection="column" height="100%">
@@ -49,9 +44,9 @@ export const BatchPage = () => {
             <BatchView key={operations.sender.address.pkh} operations={operations} />
           ))
         ) : (
-          <NoBatches
-            onLoadCSV={() => openWith(<CSVFileUploadForm />)}
-            onStartBatch={() => openWith(<SendTezForm showPreview={false} />)}
+          <NoItems
+            description="There is no batch transactions to show..."
+            title="No batches to show"
           />
         )}
       </Box>
