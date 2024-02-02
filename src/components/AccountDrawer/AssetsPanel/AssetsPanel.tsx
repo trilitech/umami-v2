@@ -1,4 +1,4 @@
-import { Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import React from "react";
 
 import { DelegationDisplay } from "./DelegationDisplay";
@@ -52,7 +52,17 @@ export const AssetsPanel: React.FC<{
       <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
         <Flex>
           {withPendingOperations && (
-            <SmallTab data-testid="account-card-pending-tab">Pending</SmallTab>
+            <SmallTab data-testid="account-card-pending-tab">
+              <Text>Pending</Text>
+              <Box
+                width="6px"
+                height="6px"
+                marginTop="-3px"
+                marginLeft="3px"
+                borderRadius="100%"
+                backgroundColor={colors.orangeL}
+              />
+            </SmallTab>
           )}
           <SmallTab>Operations</SmallTab>
           <SmallTab>Delegation</SmallTab>
