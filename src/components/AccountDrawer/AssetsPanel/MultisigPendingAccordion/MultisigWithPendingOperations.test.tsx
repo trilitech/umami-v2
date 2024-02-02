@@ -1,6 +1,6 @@
 import { BigNumber } from "bignumber.js";
 
-import { mockMnemonicAccount, mockMultisigAccount } from "../../../../mocks/factories";
+import { mockMnemonicAccount } from "../../../../mocks/factories";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
 import { MnemonicAccount } from "../../../../types/Account";
@@ -20,14 +20,8 @@ jest.mock("../../../../utils/hooks/accountUtils");
 beforeEach(() => {
   jest.mocked(useGetSecretKey).mockReturnValue(() => Promise.resolve("mockkey"));
 });
-const multisigAccount = mockMultisigAccount(0);
 
 describe("<MultisigPendingAccordion />", () => {
-  it("should display no pending operations if there are none", () => {
-    render(<MultisigPendingAccordion account={multisigAccount} />);
-    expect(screen.getByText(/No multisig pending operations/i)).toBeInTheDocument();
-  });
-
   it("should display multisig executable tez operations", async () => {
     jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
     const m: Multisig = {

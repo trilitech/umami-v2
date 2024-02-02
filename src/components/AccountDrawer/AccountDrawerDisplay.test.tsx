@@ -299,22 +299,20 @@ describe("<AccountCard />", () => {
       expect(pendingOps[0]).toHaveTextContent(/Send to :tz1UN...oBUB3/i);
     });
 
-    test("multisig accounts display no pending operations message if there are none", async () => {
+    test("multisig accounts display should not have pending operations tab if there are none", async () => {
       const multisigWithNoOps: Multisig = {
         ...multisigs[2],
         pendingOperationsBigmapId: 0,
       };
       store.dispatch(setMultisigs([multisigWithNoOps]));
+
       render(<AccountCard account={multisigAccount} />);
       await waitFor(() => {
-        expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();
+        // wait for the component to load
+        expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
       });
-      const { queryAllByTestId, getByText } = within(
-        screen.getByTestId("account-card-pending-tab-panel")
-      );
-      const pendingOps = queryAllByTestId(/multisig-pending-operations/i);
-      expect(pendingOps).toHaveLength(0);
-      expect(getByText(/No multisig pending operations/i)).toBeInTheDocument();
+
+      expect(screen.queryByTestId("account-card-pending-tab-panel")).not.toBeInTheDocument();
     });
 
     it("multisig account display operations under operations tab if any", async () => {

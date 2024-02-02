@@ -1,4 +1,4 @@
-import { Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import React from "react";
 
 import { DelegationDisplay } from "./DelegationDisplay";
@@ -11,6 +11,7 @@ import colors from "../../../style/colors";
 import { Account } from "../../../types/Account";
 import { Delegation } from "../../../types/Delegation";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
+import { useGetPendingMultisigOperations } from "../../../utils/hooks/multisigHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
@@ -32,7 +33,10 @@ export const AssetsPanel: React.FC<{
   account: Account;
   delegation: Delegation | null;
 }> = ({ tokens, nfts, account, delegation }) => {
-  const isMultisig = account.type === "multisig";
+  const getPendingOperations = useGetPendingMultisigOperations();
+  const withPendingOperations =
+    account.type === "multisig" && getPendingOperations(account).length > 0;
+
   const network = useSelectedNetwork();
   const { operations, isFirstLoad: areOperationsLoading } = useGetOperations([account.address.pkh]);
 
@@ -47,7 +51,19 @@ export const AssetsPanel: React.FC<{
     >
       <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
         <Flex>
-          {isMultisig && <SmallTab data-testid="account-card-pending-tab">Pending</SmallTab>}
+          {withPendingOperations && (
+            <SmallTab data-testid="account-card-pending-tab">
+              <Text>Pending</Text>
+              <Box
+                width="6px"
+                height="6px"
+                marginTop="-3px"
+                marginLeft="3px"
+                borderRadius="100%"
+                backgroundColor={colors.orangeL}
+              />
+            </SmallTab>
+          )}
           <SmallTab>Operations</SmallTab>
           <SmallTab>Delegation</SmallTab>
           <SmallTab>NFTs</SmallTab>
@@ -64,7 +80,7 @@ export const AssetsPanel: React.FC<{
         </ExternalLink>
       </TabList>
       <TabPanels height="100%" paddingBottom="60px">
-        {isMultisig && (
+        {withPendingOperations && (
           <TabPanel
             overflowX="hidden"
             height="100%"
