@@ -54,6 +54,17 @@ describe("<BeaconPeers />", () => {
   };
 
   describe("list of paired dApps", () => {
+    it("shows empty state message when no paired dApps", async () => {
+      jest.spyOn(beaconHelper, "usePeers").mockReturnValue({ data: [] } as any);
+      senderIds = [];
+      render(<BeaconPeers />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Your dApps will appear here")).toBeInTheDocument();
+      });
+      expect(screen.queryByTestId("peer-row")).not.toBeInTheDocument();
+    });
+
     it("contains dApp names", async () => {
       const peerRows = await getPeerRows();
 

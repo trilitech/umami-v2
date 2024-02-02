@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useContext } from "react";
 
-import { BeaconDrawerCard } from "./BeaconDrawerCard";
+import { DAppsDrawerCard } from "./DAppsDrawerCard";
 import { ErrorLogsDrawerCard } from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
 import packageInfo from "../../../package.json";
@@ -118,7 +118,7 @@ const AdvancedSection = () => {
 
   return (
     <SectionContainer title="Advanced Settings">
-      <BeaconDrawerCard />
+      <DAppsDrawerCard />
       {/*
         TODO: implement this
         <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
