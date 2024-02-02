@@ -37,8 +37,9 @@ export const NoItems: React.FC<
 
 const buttonSize = (small = false) => (small ? "md" : "lg");
 
-export const NoOperations: React.FC<{ small?: boolean }> = ({
+export const NoOperations: React.FC<{ small?: boolean; hideViewAllButton?: boolean }> = ({
   small,
+  hideViewAllButton,
 }) => (
   <NoItems
     description="Your operations history will appear here..."
@@ -46,7 +47,7 @@ export const NoOperations: React.FC<{ small?: boolean }> = ({
     title="No operations to show"
   >
     <Link to="/operations">
-      <Button size={buttonSize(small)}>View All Operations</Button>
+      {!hideViewAllButton && <Button size={buttonSize(small)}>View All Operations</Button>}
     </Link>
   </NoItems>
 );

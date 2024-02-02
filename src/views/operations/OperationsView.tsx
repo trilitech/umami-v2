@@ -7,8 +7,11 @@ import { OperationTile, OperationTileContext } from "../../components/OperationT
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import colors from "../../style/colors";
+import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 
 export const OperationsView = () => {
+  const allAccounts = useAllAccounts();
+
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
   const { operations, loadMore, hasMore, setAddresses, isLoading } = useGetOperations(
     selectedAccounts.map(acc => acc.address.pkh)
@@ -41,7 +44,9 @@ export const OperationsView = () => {
       <TopBar title="Operations" />
       {accountsFilter}
       {operations.length === 0 && isLoading && loadingElement}
-      {operations.length === 0 && !isLoading && <NoOperations />}
+      {operations.length === 0 && !isLoading && (
+        <NoOperations hideViewAllButton={selectedAccounts.length === allAccounts.length} />
+      )}
       {operations.length > 0 && (
         <Box
           overflowY="scroll"
