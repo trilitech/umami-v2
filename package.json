@@ -71,7 +71,7 @@
     "@types/assert": "^1.5.10",
     "@types/jest": "29.5.11",
     "@types/md5": "^2",
-    "@types/node": "20.11.10",
+    "@types/node": "20.11.16",
     "@types/papaparse": "^5.3.14",
     "@types/pluralize": "^0.0.33",
     "@types/promise-retry": "^1.1.6",
