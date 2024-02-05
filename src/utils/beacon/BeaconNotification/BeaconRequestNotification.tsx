@@ -6,7 +6,7 @@ import {
   PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { Box, useToast } from "@chakra-ui/react";
+import { ModalCloseButton, ModalContent, useToast } from "@chakra-ui/react";
 import React from "react";
 
 import { PermissionRequestPanel } from "./panels/PermissionRequestPanel";
@@ -36,7 +36,13 @@ export const BeaconNotification: React.FC<{
     case BeaconMessageType.OperationRequest: {
       const signer = getAccount(message.sourceAddress);
       if (!signer) {
-        return <Box>Account not in this wallet {message.sourceAddress}</Box>;
+        return (
+          <ModalContent>
+            <ModalCloseButton />A request came through Beacon
+            <br />
+            but the requested account is not in this wallet {message.sourceAddress}
+          </ModalContent>
+        );
       }
 
       try {
@@ -64,7 +70,12 @@ export const BeaconNotification: React.FC<{
 
         return <BeaconSignPage onBeaconSuccess={handleSuccess} operation={beaconOperation} />;
       } catch (error: any) {
-        return <Box>Error handling operation request: {error.message}</Box>;
+        return (
+          <ModalContent>
+            <ModalCloseButton />
+            Error handling Beacon operation request: {error.message}
+          </ModalContent>
+        );
       }
     }
 

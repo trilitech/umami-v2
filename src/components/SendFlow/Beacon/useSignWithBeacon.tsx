@@ -28,23 +28,20 @@ export const useSignWithBeacon = (
   });
 
   useEffect(() => {
-    const estimateFee = () => {
-      handleAsyncAction(
-        async () => {
-          const fee = await estimate(operation, network);
-          setFee(fee);
-        },
-        err => {
-          onClose();
-          return {
-            title: "Error",
-            description: `Error while processing beacon request: ${err.message}`,
-            status: "error",
-          };
-        }
-      );
-    };
-    estimateFee();
+    handleAsyncAction(
+      async () => {
+        const fee = await estimate(operation, network);
+        setFee(fee);
+      },
+      err => {
+        onClose();
+        return {
+          title: "Error",
+          description: `Error while processing beacon request: ${err.message}`,
+          status: "error",
+        };
+      }
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network, operation]);
 
