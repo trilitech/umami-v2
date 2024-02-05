@@ -198,46 +198,80 @@ describe("<AccountCard />", () => {
     expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
   });
 
-  it("should display accounts operations under operations tab if any", async () => {
+  it("displays accounts operations under operations tab if account has operations", async () => {
     render(<AccountCard account={selectedAccount} />);
     await waitFor(() => {
       expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2);
     });
+
     expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
     const operations = screen.getAllByTestId(/^operation-tile/);
     expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
     expect(operations[1]).toHaveTextContent("+ 2.000000 ꜩ");
   });
 
-  it("should display no operations if account has no operations", async () => {
-    jest.mocked(getCombinedOperations).mockResolvedValue([]);
+  it("hides operations empty state message if account has operations", async () => {
     render(<AccountCard account={selectedAccount} />);
     await waitFor(() => {
-      expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
+      expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2);
     });
-    const { getByText } = within(screen.getByTestId("asset-panel"));
+    fireEvent.click(screen.getByTestId("account-card-operations-tab"));
+
+    const { queryByTestId } = within(screen.getByTestId("account-card-operations-tab-panel"));
     await waitFor(() => {
-      expect(getByText("No operations to show")).toBeTruthy();
+      expect(queryByTestId("empty-state-message")).not.toBeInTheDocument();
     });
   });
 
+  it("displays operations empty state message if account has no operations", async () => {
+    jest.mocked(getCombinedOperations).mockResolvedValue([]);
+    render(<AccountCard account={selectedAccount} />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByTestId("account-card-operations-tab"));
+
+    // check empty state message
+    const { getByText, getByTestId } = within(
+      screen.getByTestId("account-card-operations-tab-panel")
+    );
+    await waitFor(() => {
+      expect(getByTestId("empty-state-message")).toBeVisible();
+    });
+    expect(getByText("No operations to show")).toBeVisible();
+    expect(getByText("Your operations history will appear here...")).toBeVisible();
+    // check View All Operations button from empty state
+    const viewAllOperationsButton = screen.getByTestId("view-all-operations-button");
+    expect(viewAllOperationsButton).toBeVisible();
+    expect(viewAllOperationsButton).toHaveTextContent("View All Operations");
+    expect(viewAllOperationsButton).toHaveAttribute("href", "#/operations");
+  });
+
   describe("delegations", () => {
-    it("Given an account has no delegations, it should display a message saying so and a CTA button to delegate", async () => {
+    it("shows empty state with delegate button when no delegations", async () => {
       render(<AccountCard account={selectedAccount} />);
       await waitFor(() => {
         expect(screen.getByTestId("account-card-delegation-tab")).toBeInTheDocument();
       });
+
       fireEvent.click(screen.getByTestId("account-card-delegation-tab"));
+      await waitFor(() => {
+        expect(screen.getByTestId("empty-state-message")).toBeVisible();
+      });
 
-      const { getByText, getByRole } = within(screen.getByTestId("asset-panel"));
-      expect(getByText("No delegations to show")).toBeTruthy();
+      expect(screen.getByText("No delegations to show")).toBeVisible();
+      expect(screen.getByText("Your delegation history will appear here...")).toBeVisible();
 
-      const btn = getByRole("button", { name: "Delegate" });
-      fireEvent.click(btn);
-      expect(getByRole("header", { name: "Delegate" })).toBeVisible();
+      fireEvent.click(screen.getByTestId("delegation-empty-state-button"));
+      await waitFor(() => {
+        expect(screen.getByTestId("delegate-form")).toBeVisible();
+      });
+      const { getByText } = within(screen.getByTestId("delegate-form"));
+      expect(getByText("Delegate")).toBeVisible();
     });
 
-    it("Given an account has an active delegation, it show display the delegation and CTA buttons to change delegate or undelegate", async () => {
+    it("displays delegation and action buttons when with active delegation", async () => {
       jest
         .mocked(getLastDelegation)
         .mockResolvedValue(

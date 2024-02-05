@@ -46,7 +46,7 @@ export const BeaconPeers = () => {
     return (
       <Box>
         <Divider />
-        <Text paddingTop="31px" color={colors.gray[400]} size="lg">
+        <Text marginTop="31px" color={colors.gray[400]} size="lg">
           Your dApps will appear here
         </Text>
       </Box>

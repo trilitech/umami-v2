@@ -29,7 +29,7 @@ export const NoItems: React.FC<
 > = ({ title, description, children, size }) => {
   return (
     <Flex alignItems="center" justifyContent="center" width="100%" height="100%">
-      <Box padding="30px">
+      <Box padding="30px" data-testid="empty-state-message">
         <Heading marginBottom="10px" textAlign="center" size={SIZES[size].heading}>
           {title}
         </Heading>
@@ -56,9 +56,11 @@ export const NoOperations: React.FC<{ size: AvailableSizes; hideViewAllButton?: 
     size={size}
     title="No operations to show"
   >
-    <Link to="/operations">
-      {!hideViewAllButton && <Button size={SIZES[size].button}>View All Operations</Button>}
-    </Link>
+    {!hideViewAllButton && (
+      <Link data-testid="view-all-operations-button" to="/operations">
+        <Button size={SIZES[size].button}>View All Operations</Button>
+      </Link>
+    )}
   </NoItems>
 );
 
@@ -68,7 +70,7 @@ export const NoNFTs: React.FC<{ size: AvailableSizes }> = ({ size }) => (
     size={size}
     title="No NFTs to show"
   >
-    <ExternalLink href="https://objkt.com">
+    <ExternalLink data-testid="buy-nft-button" href="https://objkt.com">
       <Button size={SIZES[size].button}>Buy your first NFT</Button>
     </ExternalLink>
   </NoItems>
@@ -91,7 +93,11 @@ export const NoDelegations: React.FC<{ size: AvailableSizes; onDelegate: () => v
     size={size}
     title="No delegations to show"
   >
-    <Button onClick={onDelegate} size={SIZES[size].button}>
+    <Button
+      data-testid="delegation-empty-state-button"
+      onClick={onDelegate}
+      size={SIZES[size].button}
+    >
       Delegate
     </Button>
   </NoItems>

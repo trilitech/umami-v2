@@ -58,7 +58,7 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form>
+        <form data-testid="delegate-form">
           <HeaderWrapper>
             <Text fontWeight="600" size="2xl">
               {baker ? "Change Baker" : "Delegate"}

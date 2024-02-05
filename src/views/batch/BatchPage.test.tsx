@@ -29,7 +29,25 @@ describe("<BatchPage />", () => {
   it("shows empty batch message by default", () => {
     render(<BatchPage />);
 
-    expect(screen.getByText("No batches to show")).toBeInTheDocument();
+    expect(screen.getByTestId("empty-state-message")).toBeInTheDocument();
+    expect(screen.getByText("No batches to show")).toBeVisible();
+    expect(screen.getByText("There is no batch transactions to show...")).toBeVisible();
+  });
+
+  it("hides empty batch message when batches are present", () => {
+    store.dispatch(
+      batchesActions.add({
+        network: MAINNET,
+        operations: makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+          mockTezOperation(0),
+        ]),
+      })
+    );
+
+    render(<BatchPage />);
+
+    expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
   });
 
   describe("pending", () => {

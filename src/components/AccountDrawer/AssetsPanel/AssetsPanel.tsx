@@ -64,10 +64,10 @@ export const AssetsPanel: React.FC<{
               />
             </SmallTab>
           )}
-          <SmallTab>Operations</SmallTab>
-          <SmallTab>Delegation</SmallTab>
-          <SmallTab>NFTs</SmallTab>
-          <SmallTab>Tokens</SmallTab>
+          <SmallTab data-testid="account-card-operations-tab">Operations</SmallTab>
+          <SmallTab data-testid="account-card-delegation-tab">Delegation</SmallTab>
+          <SmallTab data-testid="account-card-nfts-tab">NFTs</SmallTab>
+          <SmallTab data-testid="account-card-tokens-tab">Tokens</SmallTab>
         </Flex>
 
         <ExternalLink href={buildTzktAddressUrl(network, account.address.pkh)}>
@@ -98,7 +98,7 @@ export const AssetsPanel: React.FC<{
           height="100%"
           paddingTop="24px"
           paddingBottom="60px"
-          data-testid="account-card-operations-tab"
+          data-testid="account-card-operations-tab-panel"
           paddingX="0"
         >
           <OperationTileContext.Provider
@@ -117,7 +117,7 @@ export const AssetsPanel: React.FC<{
         <TabPanel
           overflowX="hidden"
           paddingTop="24px"
-          data-testid="account-card-delegation-tab"
+          data-testid="account-card-delegation-tab-panel"
           paddingX="0"
         >
           <DelegationDisplay account={account} delegation={delegation} />
@@ -127,7 +127,7 @@ export const AssetsPanel: React.FC<{
           overflowX="hidden"
           height="100%"
           paddingTop="24px"
-          data-testid="account-card-nfts-tab"
+          data-testid="account-card-nfts-tab-panel"
           paddingX="0"
         >
           <NFTsGrid columns={3} nfts={nfts} owner={account.address.pkh} />
@@ -137,7 +137,7 @@ export const AssetsPanel: React.FC<{
           overflowX="hidden"
           height="100%"
           paddingTop="24px"
-          data-testid="account-card-tokens-tab"
+          data-testid="account-card-tokens-tab-panel"
           paddingX="0"
         >
           <TokenList owner={account.address.pkh} tokens={tokens} />
