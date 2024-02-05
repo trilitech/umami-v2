@@ -46,6 +46,7 @@ export const BatchPage = () => {
         ) : (
           <NoItems
             description="There is no batch transactions to show..."
+            size="lg"
             title="No batches to show"
           />
         )}

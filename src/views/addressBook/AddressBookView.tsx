@@ -46,6 +46,7 @@ export const AddressBookView = () => {
       ) : (
         <NoItems
           description="Your contacts will appear here..."
+          size="lg"
           title="Your address book is empty"
         />
       )}

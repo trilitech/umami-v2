@@ -44,7 +44,7 @@ export const DelegationDisplay: React.FC<{
         onDelegate={() => {
           openWith(<DelegationFormPage sender={account} />);
         }}
-        small
+        size="md"
       />
     );
   }

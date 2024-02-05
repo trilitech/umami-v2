@@ -45,7 +45,10 @@ export const OperationsView = () => {
       {accountsFilter}
       {operations.length === 0 && isLoading && loadingElement}
       {operations.length === 0 && !isLoading && (
-        <NoOperations hideViewAllButton={selectedAccounts.length === allAccounts.length} />
+        <NoOperations
+          hideViewAllButton={selectedAccounts.length === allAccounts.length}
+          size="lg"
+        />
       )}
       {operations.length > 0 && (
         <Box

@@ -27,7 +27,7 @@ export const TokenList = ({
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
 }) => {
   if (tokens.length === 0) {
-    return <NoTokens small />;
+    return <NoTokens size="md" />;
   }
 
   const chunk = tokens.slice(0, MAX_TOKENS_SIZE);

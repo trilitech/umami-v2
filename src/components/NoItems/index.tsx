@@ -6,26 +6,38 @@ import { Link } from "react-router-dom";
 import colors from "../../style/colors";
 import { ExternalLink } from "../ExternalLink";
 
+const SIZES = {
+  md: {
+    heading: "xl",
+    description: "md",
+    button: "md",
+  },
+  lg: {
+    heading: "3xl",
+    description: "xl",
+    button: "lg",
+  },
+};
+type AvailableSizes = keyof typeof SIZES;
+
 export const NoItems: React.FC<
   PropsWithChildren<{
     title: string;
     description: string;
-    small?: boolean;
+    size: AvailableSizes;
   }>
-> = ({ title, description, children, small = false }) => {
-  const headingSize = small ? "xl" : "3xl";
-  const descriptionSize = small ? "md" : "xl";
+> = ({ title, description, children, size }) => {
   return (
     <Flex alignItems="center" justifyContent="center" width="100%" height="100%">
       <Box padding="30px">
-        <Heading marginBottom="10px" textAlign="center" size={headingSize}>
+        <Heading marginBottom="10px" textAlign="center" size={SIZES[size].heading}>
           {title}
         </Heading>
         <Text
           marginBottom="30px"
           color={colors.gray[400]}
           textAlign="center"
-          size={descriptionSize}
+          size={SIZES[size].description}
         >
           {description}
         </Text>
@@ -35,53 +47,51 @@ export const NoItems: React.FC<
   );
 };
 
-const buttonSize = (small = false) => (small ? "md" : "lg");
-
-export const NoOperations: React.FC<{ small?: boolean; hideViewAllButton?: boolean }> = ({
-  small,
+export const NoOperations: React.FC<{ size: AvailableSizes; hideViewAllButton?: boolean }> = ({
+  size,
   hideViewAllButton,
 }) => (
   <NoItems
     description="Your operations history will appear here..."
-    small={small}
+    size={size}
     title="No operations to show"
   >
     <Link to="/operations">
-      {!hideViewAllButton && <Button size={buttonSize(small)}>View All Operations</Button>}
+      {!hideViewAllButton && <Button size={SIZES[size].button}>View All Operations</Button>}
     </Link>
   </NoItems>
 );
 
-export const NoNFTs: React.FC<{ small?: boolean }> = ({ small }) => (
+export const NoNFTs: React.FC<{ size: AvailableSizes }> = ({ size }) => (
   <NoItems
     description="Your NFT collection will appear here..."
-    small={small}
+    size={size}
     title="No NFTs to show"
   >
     <ExternalLink href="https://objkt.com">
-      <Button size={buttonSize(small)}>Buy your first NFT</Button>
+      <Button size={SIZES[size].button}>Buy your first NFT</Button>
     </ExternalLink>
   </NoItems>
 );
 
-export const NoTokens: React.FC<{ small?: boolean }> = ({ small }) => (
+export const NoTokens: React.FC<{ size: AvailableSizes }> = ({ size }) => (
   <NoItems
     description="All of your tokens will appear here..."
-    small={small}
+    size={size}
     title="No tokens to show"
   />
 );
 
-export const NoDelegations: React.FC<{ small?: boolean; onDelegate: () => void }> = ({
-  small,
+export const NoDelegations: React.FC<{ size: AvailableSizes; onDelegate: () => void }> = ({
+  size = "lg",
   onDelegate,
 }) => (
   <NoItems
     description="Your delegation history will appear here..."
-    small={small}
+    size={size}
     title="No delegations to show"
   >
-    <Button onClick={onDelegate} size={buttonSize(small)}>
+    <Button onClick={onDelegate} size={SIZES[size].button}>
       Delegate
     </Button>
   </NoItems>

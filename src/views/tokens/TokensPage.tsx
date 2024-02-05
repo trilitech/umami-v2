@@ -20,7 +20,7 @@ export const TokensPage = () => {
       <TopBar title="Tokens" />
       {accountsFilter}
       {accountsWithTokens.length === 0 ? (
-        <NoTokens />
+        <NoTokens size="lg" />
       ) : (
         <Box overflowY="auto">
           {accountsWithTokens.map(([account, tokens]) => (

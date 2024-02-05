@@ -23,7 +23,7 @@ export const OperationListDisplay: React.FC<{
   operations: TzktCombinedOperation[];
 }> = ({ owner, operations }) => {
   if (operations.length === 0) {
-    return <NoOperations small />;
+    return <NoOperations size="md" />;
   }
 
   const chunk = operations.slice(0, MAX_OPERATIONS_SIZE);
