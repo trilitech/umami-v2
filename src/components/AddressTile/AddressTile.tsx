@@ -27,14 +27,14 @@ export const AddressTile: React.FC<{ address: Address } & FlexProps> = ({
       <Flex
         alignItems="center"
         justifyContent="space-between"
-        width="400px"
+        width="100%"
         padding="9px 10px"
         background={colors.gray[800]}
         borderRadius="4px"
         data-testid="address-tile"
         {...flexProps}
       >
-        <Flex alignItems="center">
+        <Flex alignItems="center" width="calc(100% - 95px)">
           <AddressTileIcon addressKind={addressKind} />
 
           {addressKind.type === "unknown" ? (
@@ -43,7 +43,7 @@ export const AddressTile: React.FC<{ address: Address } & FlexProps> = ({
             </Text>
           ) : (
             <>
-              <Box overflow="hidden" width="102px" marginLeft="12px" whiteSpace="nowrap">
+              <Box overflow="hidden" width="100%" marginLeft="10px" whiteSpace="nowrap">
                 <Heading overflow="hidden" textOverflow="ellipsis" size="sm">
                   {addressKind.label}
                 </Heading>
@@ -55,7 +55,13 @@ export const AddressTile: React.FC<{ address: Address } & FlexProps> = ({
           )}
         </Flex>
 
-        <AccountBalance overflow="hidden" textAlign="right" address={address.pkh} />
+        <AccountBalance
+          overflow="hidden"
+          marginLeft="10px"
+          textAlign="right"
+          address={address.pkh}
+          numberProps={{ maxWidth: "85px" }}
+        />
       </Flex>
     </Tooltip>
   );

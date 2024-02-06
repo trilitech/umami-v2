@@ -44,7 +44,6 @@ export const Suggestions = ({
             }}
           >
             <AddressTile
-              width="370px"
               height="40px"
               padding="10px 8px 10px 5px"
               background={colors.gray[700]}
