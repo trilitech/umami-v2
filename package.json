@@ -61,7 +61,7 @@
     "@taquito/michel-codec": "^17.5.2-462c992--",
     "@taquito/rpc": "^17.5.2-462c992--",
     "@taquito/signer": "^17.5.2-462c992--",
-    "@taquito/taquito": "17.5.2-462c992--",
+    "@taquito/taquito": "19.0.0",
     "@taquito/utils": "^17.5.2-462c992--",
     "@testing-library/dom": "^9.3.4",
     "@testing-library/jest-dom": "6.4.2",
