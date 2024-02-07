@@ -50,6 +50,5 @@ jobs:
           base-coverage-file: report.json
           prnumber: ${{ steps.findPr.outputs.number }}
 
-      # Uncomment when taquito releases a new version
-      # - name: Audit dependencies
-      #   run: yarn npm audit
+      - name: Audit dependencies
+        run: yarn npm audit
