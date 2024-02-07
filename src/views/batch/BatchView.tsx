@@ -228,7 +228,9 @@ export const BatchView: React.FC<{
                   </Flex>
                 </Flex>
               </Flex>
-              {index < operations.length - 1 && <Divider marginY="20px" />}
+              {index < operations.length - 1 && (
+                <Divider marginTop={estimationResult ? "10px" : "20px"} marginBottom="20px" />
+              )}
             </Box>
           );
         })}
