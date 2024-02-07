@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
+import { reload, restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
 import { RotateIcon } from "../../../assets/icons";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { PasswordInput } from "../../PasswordInput";
@@ -36,13 +36,12 @@ export const RestoreBackupFile = () => {
     handleAsyncAction(async () => {
       const fileContent = await file[0].text();
       const backup = JSON.parse(fileContent);
-
       const isV1 = backup["recoveryPhrases"] && backup["derivationPaths"];
       if (isV1) {
         await restoreV1BackupFile(backup, password);
       } else if (backup["persist:accounts"]) {
         await restoreV2BackupFile(backup, password);
-        window.location.reload();
+        reload();
       } else {
         throw new Error("Invalid backup file.");
       }
@@ -70,7 +69,7 @@ export const RestoreBackupFile = () => {
                 />
               </Flex>
               {errors.file && (
-                <FormErrorMessage data-testid="file">{errors.file.message}</FormErrorMessage>
+                <FormErrorMessage data-testid="file-errors">{errors.file.message}</FormErrorMessage>
               )}
             </FormControl>
             <FormControl marginTop="24px">
@@ -80,11 +79,6 @@ export const RestoreBackupFile = () => {
                 label="Your password (if you have one)"
                 required={false}
               />
-              {errors.password && (
-                <FormErrorMessage data-testid="password">
-                  {errors.password.message}
-                </FormErrorMessage>
-              )}
             </FormControl>
             <Button width="100%" marginTop="32px" isDisabled={!isValid} size="lg" type="submit">
               Import Wallet

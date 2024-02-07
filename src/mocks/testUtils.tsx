@@ -1,6 +1,6 @@
 /* eslint-disable import/export */
 import { render } from "@testing-library/react";
-import { userEvent } from "@testing-library/user-event";
+import { UserEvent, userEvent } from "@testing-library/user-event";
 import { HashRouter } from "react-router-dom";
 
 import { DynamicModalContext, useDynamicModal } from "../components/DynamicModal";
@@ -34,3 +34,4 @@ export * from "@testing-library/react";
 // override render method
 export { customRender as render };
 export { userEvent };
+export type { UserEvent };
