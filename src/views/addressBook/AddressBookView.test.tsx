@@ -13,27 +13,48 @@ const fixture = () => (
 );
 
 describe("AddressBookView", () => {
-  it("displays no contacts by default", () => {
-    render(fixture());
-    expect(screen.queryByTestId("contact-row")).toBeNull();
-  });
+  describe("without contacts", () => {
+    it("displays no contact rows", () => {
+      render(fixture());
 
-  it("displays sorted contacts", () => {
-    Object.values(contacts()).forEach(contact => {
-      store.dispatch(checkAccountsAndUpsertContact(contact));
+      expect(screen.queryByTestId("contact-row")).toBeNull();
     });
 
-    render(fixture());
+    it("displays empty state message", () => {
+      render(fixture());
 
-    expect(screen.getAllByTestId("contact-row")).toHaveLength(3);
-    const names = screen.getAllByTestId("contact-row-name");
-    const pkhs = screen.getAllByTestId("contact-row-pkh");
+      expect(screen.getByTestId("empty-state-message")).toBeInTheDocument();
+      expect(screen.getByText("Your address book is empty")).toBeVisible();
+      expect(screen.getByText("Your contacts will appear here...")).toBeVisible();
+    });
+  });
 
-    expect(names[0]).toHaveTextContent(contact1["name"]);
-    expect(pkhs[0]).toHaveTextContent(contact1["pkh"]);
-    expect(names[1]).toHaveTextContent(contact2["name"]);
-    expect(pkhs[1]).toHaveTextContent(contact2["pkh"]);
-    expect(names[2]).toHaveTextContent(contact3["name"]);
-    expect(pkhs[2]).toHaveTextContent(contact3["pkh"]);
+  describe("with contacts", () => {
+    beforeEach(() => {
+      Object.values(contacts()).forEach(contact => {
+        store.dispatch(checkAccountsAndUpsertContact(contact));
+      });
+    });
+
+    it("hides empty state message", () => {
+      render(fixture());
+
+      expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
+    });
+
+    it("displays sorted contacts", () => {
+      render(fixture());
+
+      expect(screen.getAllByTestId("contact-row")).toHaveLength(3);
+      const names = screen.getAllByTestId("contact-row-name");
+      const pkhs = screen.getAllByTestId("contact-row-pkh");
+
+      expect(names[0]).toHaveTextContent(contact1["name"]);
+      expect(pkhs[0]).toHaveTextContent(contact1["pkh"]);
+      expect(names[1]).toHaveTextContent(contact2["name"]);
+      expect(pkhs[1]).toHaveTextContent(contact2["pkh"]);
+      expect(names[2]).toHaveTextContent(contact3["name"]);
+      expect(pkhs[2]).toHaveTextContent(contact3["pkh"]);
+    });
   });
 });

@@ -41,7 +41,7 @@ export const OperationsView = () => {
       <TopBar title="Operations" />
       {accountsFilter}
       {operations.length === 0 && isLoading && loadingElement}
-      {operations.length === 0 && !isLoading && <NoOperations />}
+      {operations.length === 0 && !isLoading && <NoOperations size="lg" />}
       {operations.length > 0 && (
         <Box
           overflowY="scroll"

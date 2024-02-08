@@ -5,6 +5,7 @@ import { ContactTable } from "./ContactTable";
 import { AddContactIcon } from "../../assets/icons";
 import { UpsertContactModal } from "../../components/ContactModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
+import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
 
@@ -39,7 +40,16 @@ export const AddressBookView = () => {
       <Flex flexDirection="row-reverse">
         <AddContact />
       </Flex>
-      <ContactTable contacts={contacts} />
+
+      {contacts.length > 0 ? (
+        <ContactTable contacts={contacts} />
+      ) : (
+        <NoItems
+          description="Your contacts will appear here..."
+          size="lg"
+          title="Your address book is empty"
+        />
+      )}
     </Flex>
   );
 };

@@ -43,7 +43,14 @@ export const BeaconPeers = () => {
   }, [data]);
 
   if (peersWithId.length === 0) {
-    return null;
+    return (
+      <Box>
+        <Divider />
+        <Text marginTop="31px" color={colors.gray[400]} size="lg">
+          Your dApps will appear here
+        </Text>
+      </Box>
+    );
   }
 
   return <PeersDisplay peerInfos={peersWithId} removePeer={removePeer} />;

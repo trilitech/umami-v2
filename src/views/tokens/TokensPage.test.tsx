@@ -3,7 +3,7 @@ import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import { mockImplicitAddress, mockMnemonicAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { DefaultNetworks } from "../../types/Network";
+import { DefaultNetworks, MAINNET, Network } from "../../types/Network";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
@@ -17,26 +17,48 @@ beforeEach(() => {
 });
 
 describe("<TokensView />", () => {
-  it("renders 'no tokens found' when there are no tokens", () => {
-    render(fixture());
-    expect(screen.getByText(/no tokens found/i)).toBeInTheDocument();
+  describe("without tokens", () => {
+    it("displays empty state message", () => {
+      render(fixture());
+
+      expect(screen.getByTestId("empty-state-message")).toBeVisible();
+      expect(screen.getByText("No tokens to show")).toBeInTheDocument();
+      expect(screen.getByText("All of your tokens will appear here...")).toBeInTheDocument();
+    });
   });
 
-  it.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
-    store.dispatch(networksActions.setCurrent(network));
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(1)]));
-    const tokenBalances = [
-      hedgehoge(mockImplicitAddress(0)),
-      hedgehoge(mockImplicitAddress(1)),
-      tzBtsc(mockImplicitAddress(1)),
-      uUSD(mockImplicitAddress(0)),
-    ];
-    store.dispatch(assetsSlice.actions.updateTokenBalance(tokenBalances));
-    store.dispatch(tokensActions.addTokens({ network, tokens: tokenBalances.map(tb => tb.token) }));
-    render(fixture());
+  describe("with tokens", () => {
+    const setupTokens = (network: Network) => {
+      store.dispatch(networksActions.setCurrent(network));
+      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(1)]));
+      const tokenBalances = [
+        hedgehoge(mockImplicitAddress(0)),
+        hedgehoge(mockImplicitAddress(1)),
+        tzBtsc(mockImplicitAddress(1)),
+        uUSD(mockImplicitAddress(0)),
+      ];
+      store.dispatch(assetsSlice.actions.updateTokenBalance(tokenBalances));
+      store.dispatch(
+        tokensActions.addTokens({ network, tokens: tokenBalances.map(tb => tb.token) })
+      );
+    };
 
-    expect(screen.getAllByText("Hedgehoge")).toHaveLength(2);
-    expect(screen.getAllByText("tzBTC")).toHaveLength(1);
-    expect(screen.getAllByText("youves uUSD")).toHaveLength(1);
+    it("hides empty state message", () => {
+      setupTokens(MAINNET);
+
+      render(fixture());
+
+      expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
+    });
+
+    it.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
+      setupTokens(network);
+
+      render(fixture());
+
+      expect(screen.getAllByText("Hedgehoge")).toHaveLength(2);
+      expect(screen.getAllByText("tzBTC")).toHaveLength(1);
+      expect(screen.getAllByText("youves uUSD")).toHaveLength(1);
+    });
   });
 });

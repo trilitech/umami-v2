@@ -7,11 +7,11 @@ import { TzktCombinedOperation } from "../../../utils/tezos";
 describe("<OperationListDisplay />", () => {
   const OWNER = mockImplicitAddress(0).pkh;
 
-  describe("with no operations", () => {
+  describe("without operations", () => {
     it('displays a "No operations found" message', () => {
       render(<OperationListDisplay operations={[]} owner={OWNER} />);
 
-      expect(screen.getByText("No operations found")).toBeInTheDocument();
+      expect(screen.getByText("No operations to show")).toBeInTheDocument();
     });
 
     it("does not show operation tiles", () => {

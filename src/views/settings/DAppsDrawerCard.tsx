@@ -17,7 +17,7 @@ import { useAddPeer } from "../../utils/beacon/beacon";
 import { BeaconPeers } from "../../utils/beacon/BeaconPeers";
 import { DrawerTopButtons } from "../home/DrawerTopButtons";
 
-export const BeaconDrawerCard = () => {
+export const DAppsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
   const { isOpen: isDynamicModalOpen } = useDynamicModal();
   return (
@@ -34,7 +34,7 @@ export const BeaconDrawerCard = () => {
         <DrawerContent>
           <DrawerBody>
             <DrawerTopButtons onClose={closeDrawer} />
-            <BeaconDrawerBody />
+            <DAppsDrawerBody />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -42,12 +42,12 @@ export const BeaconDrawerCard = () => {
   );
 };
 
-const BeaconDrawerBody = () => {
+const DAppsDrawerBody = () => {
   const addPeer = useAddPeer();
   return (
     <Box>
       <Flex alignItems="center" justifyContent="space-between" height={24}>
-        <Heading size="xl">dApps</Heading>
+        <Heading>dApps</Heading>
       </Flex>
       <Button
         onClick={() =>
@@ -56,7 +56,7 @@ const BeaconDrawerBody = () => {
           })
         }
       >
-        Paste a peer request code
+        Connect with Pairing Request
       </Button>
       <Text marginTop="16px" marginBottom="32px" color="text.dark">
         or open a deeplink from inside the dApp...

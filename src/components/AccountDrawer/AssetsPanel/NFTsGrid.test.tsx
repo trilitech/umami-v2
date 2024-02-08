@@ -6,11 +6,18 @@ import { mockNFTBalance } from "../../../mocks/tokens";
 describe("<NFTsGrid />", () => {
   const OWNER = mockImplicitAddress(0).pkh;
 
-  describe("with no NFTs", () => {
-    it('displays a "No NFTs" message', () => {
+  describe("without NFTs", () => {
+    it("displays empty state message", () => {
       render(<NFTsGrid nfts={[]} owner={OWNER} />);
 
-      expect(screen.getByText("No NFTs found")).toBeInTheDocument();
+      expect(screen.getByTestId("empty-state-message")).toBeVisible();
+      expect(screen.getByText("No NFTs to show")).toBeInTheDocument();
+      expect(screen.getByText("Your NFT collection will appear here...")).toBeInTheDocument();
+      // check Buy NFT button from empty state
+      const buyNftButton = screen.getByTestId("buy-nft-button");
+      expect(buyNftButton).toBeVisible();
+      expect(buyNftButton).toHaveTextContent("Buy your first NFT");
+      expect(buyNftButton).toHaveAttribute("href", "https://objkt.com");
     });
 
     it("does not show NFTs", () => {
@@ -27,6 +34,18 @@ describe("<NFTsGrid />", () => {
   });
 
   describe("with NFTs", () => {
+    it("hides empty state message", () => {
+      const nfts = [
+        mockNFTBalance(mockContractAddress(0).pkh, "some-nft", 1),
+        mockNFTBalance(mockContractAddress(1).pkh, "some-nft2", 2),
+      ];
+
+      render(<NFTsGrid nfts={nfts} owner={OWNER} />);
+
+      expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("buy-nft-button")).not.toBeInTheDocument();
+    });
+
     it("renders a sorted list of NFTs by last level desc", () => {
       const nfts = [
         mockNFTBalance(mockContractAddress(0).pkh, "some-nft", 1),

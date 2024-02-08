@@ -8,11 +8,13 @@ describe("<TokenList />", () => {
   const ACCOUNT = mockMnemonicAccount(0);
   const HEDGEHOGE_TOKEN = fromRaw(hedgehoge(ACCOUNT.address))! as FA2TokenBalance;
 
-  describe("with no tokens", () => {
-    it('displays a "No tokens found" message', () => {
+  describe("without tokens", () => {
+    it("displays empty state", () => {
       render(<TokenList owner={ACCOUNT.address.pkh} tokens={[]} />);
 
-      expect(screen.getByText("No tokens found")).toBeInTheDocument();
+      expect(screen.getByTestId("empty-state-message")).toBeVisible();
+      expect(screen.getByText("No tokens to show")).toBeInTheDocument();
+      expect(screen.getByText("All of your tokens will appear here...")).toBeInTheDocument();
     });
 
     it("does not show tokens", () => {
@@ -29,6 +31,17 @@ describe("<TokenList />", () => {
   });
 
   describe("with tokens", () => {
+    it("hides empty state", () => {
+      render(
+        <TokenList
+          owner={ACCOUNT.address.pkh}
+          tokens={[mockFA12Token(1, ACCOUNT, 123456), HEDGEHOGE_TOKEN]}
+        />
+      );
+
+      expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
+    });
+
     it("renders a list of tokens in the same order as given", () => {
       const tokens = [
         mockFA2Token(0, ACCOUNT, 123456, 5, "T1", "Token 1"),

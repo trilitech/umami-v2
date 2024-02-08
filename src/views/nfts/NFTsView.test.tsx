@@ -22,72 +22,70 @@ beforeEach(() => {
 });
 
 describe("NFTsView", () => {
-  it("a message 'no nfts found' is displayed", () => {
-    render(<NFTsView />);
-    expect(screen.getByText(/no nfts found/i)).toBeInTheDocument();
+  describe("without NFTs", () => {
+    it("display empty state", () => {
+      render(<NFTsView />);
+
+      expect(screen.getByTestId("empty-state-message")).toBeVisible();
+      expect(screen.getByText("No NFTs to show")).toBeInTheDocument();
+      expect(screen.getByText("Your NFT collection will appear here...")).toBeInTheDocument();
+      // check Buy NFT button from empty state
+      const buyNftButton = screen.getByTestId("buy-nft-button");
+      expect(buyNftButton).toBeVisible();
+      expect(buyNftButton).toHaveTextContent("Buy your first NFT");
+      expect(buyNftButton).toHaveAttribute("href", "https://objkt.com");
+    });
   });
 
-  it("displays nfts of all accounts by default", () => {
-    store.dispatch(
-      accountsSlice.actions.addMockMnemonicAccounts([
-        mockMnemonicAccount(1),
-        mockMnemonicAccount(2),
-      ])
-    );
-    store.dispatch(networksActions.setCurrent(MAINNET));
-    store.dispatch(
-      updateTokenBalance([
-        mockNFTToken(1, mockImplicitAccount(1).address.pkh),
-        mockNFTToken(2, mockImplicitAccount(1).address.pkh),
-        mockNFTToken(1, mockImplicitAccount(2).address.pkh),
-        mockNFTToken(2, mockImplicitAccount(2).address.pkh),
-      ])
-    );
-    store.dispatch(
-      tokensSlice.actions.addTokens({
-        network: MAINNET,
-        tokens: [
-          mockNFTToken(1, mockImplicitAddress(1).pkh).token,
-          mockNFTToken(2, mockImplicitAddress(1).pkh).token,
-          mockNFTToken(1, mockImplicitAddress(2).pkh).token,
-          mockNFTToken(2, mockImplicitAddress(2).pkh).token,
-        ],
-      })
-    );
+  describe("with NFTs", () => {
+    beforeEach(() => {
+      store.dispatch(
+        accountsSlice.actions.addMockMnemonicAccounts([
+          mockMnemonicAccount(1),
+          mockMnemonicAccount(2),
+        ])
+      );
+      store.dispatch(networksActions.setCurrent(MAINNET));
+      store.dispatch(
+        updateTokenBalance([
+          mockNFTToken(1, mockImplicitAccount(1).address.pkh),
+          mockNFTToken(2, mockImplicitAccount(1).address.pkh),
+          mockNFTToken(1, mockImplicitAccount(2).address.pkh),
+          mockNFTToken(2, mockImplicitAccount(2).address.pkh, 2),
+        ])
+      );
+      store.dispatch(
+        tokensSlice.actions.addTokens({
+          network: MAINNET,
+          tokens: [
+            mockNFTToken(1, mockImplicitAddress(1).pkh).token,
+            mockNFTToken(2, mockImplicitAddress(1).pkh).token,
+            mockNFTToken(1, mockImplicitAddress(2).pkh).token,
+            mockNFTToken(2, mockImplicitAddress(2).pkh, 2).token,
+          ],
+        })
+      );
+    });
 
-    render(<NFTsView />);
+    it("hides empty state message", () => {
+      render(<NFTsView />);
 
-    expect(screen.getAllByTestId("nft-card")).toHaveLength(4);
-    expect(screen.getAllByText("Tezzardz #10")).toHaveLength(4);
-  });
+      expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("buy-nft-button")).not.toBeInTheDocument();
+    });
 
-  it("displays total amount of nfts", () => {
-    store.dispatch(
-      accountsSlice.actions.addMockMnemonicAccounts([
-        mockMnemonicAccount(1),
-        mockMnemonicAccount(2),
-      ])
-    );
-    store.dispatch(networksActions.setCurrent(MAINNET));
-    store.dispatch(
-      updateTokenBalance([
-        mockNFTToken(1, mockImplicitAccount(1).address.pkh),
-        mockNFTToken(2, mockImplicitAccount(2).address.pkh, 2),
-      ])
-    );
-    store.dispatch(
-      tokensSlice.actions.addTokens({
-        network: MAINNET,
-        tokens: [
-          mockNFTToken(1, mockImplicitAddress(1).pkh).token,
-          mockNFTToken(2, mockImplicitAddress(2).pkh, 2).token,
-        ],
-      })
-    );
+    it("displays nfts of all accounts by default", () => {
+      render(<NFTsView />);
 
-    render(<NFTsView />);
+      expect(screen.getAllByTestId("nft-card")).toHaveLength(4);
+      expect(screen.getAllByText("Tezzardz #10")).toHaveLength(4);
+    });
 
-    expect(screen.getByTestId("nft-total-amount")).toHaveTextContent("3");
+    it("displays total amount of nfts", () => {
+      render(<NFTsView />);
+
+      expect(screen.getByTestId("nft-total-amount")).toHaveTextContent("5");
+    });
   });
 
   describe("selected NFT", () => {

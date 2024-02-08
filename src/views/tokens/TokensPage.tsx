@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 
 import { AccountTokens } from "./AccountTokens";
-import { NoItems } from "../../components/NoItems";
+import { NoTokens } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import { useGetAccountAllTokens } from "../../utils/hooks/assetsHooks";
@@ -20,7 +20,7 @@ export const TokensPage = () => {
       <TopBar title="Tokens" />
       {accountsFilter}
       {accountsWithTokens.length === 0 ? (
-        <NoItems title="No Tokens found" />
+        <NoTokens size="lg" />
       ) : (
         <Box overflowY="auto">
           {accountsWithTokens.map(([account, tokens]) => (

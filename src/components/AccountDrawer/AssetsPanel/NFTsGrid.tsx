@@ -38,7 +38,7 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
   ...props
 }) => {
   if (nfts.length === 0) {
-    return <NoNFTs small />;
+    return <NoNFTs size="md" />;
   }
 
   const displayedNFTs = sortedByLastUpdate(nfts).slice(0, MAX_NFTS_SIZE);

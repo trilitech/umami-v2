@@ -45,7 +45,7 @@ export const NFTsView = () => {
       {accountsFilter}
 
       {noNFTs ? (
-        <NoNFTs />
+        <NoNFTs size="lg" />
       ) : (
         <SelectedNFTContext.Provider
           value={{ setSelectedNFT: setDrawerNFT, selectedNFT: drawerNFT }}
