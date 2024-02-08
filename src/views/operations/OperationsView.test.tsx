@@ -26,7 +26,7 @@ describe("OperationsView", () => {
   });
 
   describe("without operations", () => {
-    it("displays an empty state without View All button when no account filter applied", async () => {
+    it("displays an empty state when no account filter applied", async () => {
       render(<OperationsView />);
 
       await waitFor(() => {
@@ -37,7 +37,7 @@ describe("OperationsView", () => {
       expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
     });
 
-    it("displays an empty state with View All button when no account filter applied", async () => {
+    it("displays an empty state when account filter applied", async () => {
       const user = userEvent.setup();
       render(<OperationsView />);
 
@@ -51,11 +51,7 @@ describe("OperationsView", () => {
       });
       expect(screen.getByText("No operations to show")).toBeInTheDocument();
       expect(screen.getByText("Your operations history will appear here...")).toBeInTheDocument();
-      // check View All Operations button
-      const viewAllOperationsButton = screen.getByTestId("view-all-operations-button");
-      expect(viewAllOperationsButton).toBeVisible();
-      expect(viewAllOperationsButton).toHaveTextContent("View All Operations");
-      expect(viewAllOperationsButton).toHaveAttribute("href", "#/operations");
+      expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
     });
   });
 
