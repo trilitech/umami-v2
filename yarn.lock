@@ -4892,15 +4892,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport-webusb@npm:^6.28.2":
-  version: 6.28.2
-  resolution: "@ledgerhq/hw-transport-webusb@npm:6.28.2"
+"@ledgerhq/hw-transport-webusb@npm:^6.28.3":
+  version: 6.28.3
+  resolution: "@ledgerhq/hw-transport-webusb@npm:6.28.3"
   dependencies:
     "@ledgerhq/devices": "npm:^8.2.0"
     "@ledgerhq/errors": "npm:^6.16.1"
-    "@ledgerhq/hw-transport": "npm:^6.30.2"
+    "@ledgerhq/hw-transport": "npm:^6.30.3"
     "@ledgerhq/logs": "npm:^6.12.0"
-  checksum: 10/78f2716e20fdf97380b9532e701fd74233c89f6d0cd5a7eb8a93c76657a3630fce35ce5a08dfc55cb82dd449bb223d74b65712de705bb05b95647300412a2f94
+  checksum: 10/652535116878f25827ce3c4dc9a8999b0f321d8aabfcb87fa017593557602322b3ef6e95731c13f97d1317f5e3e78aca591b284a25480e318deb7b36ec650121
   languageName: node
   linkType: hard
 
@@ -4915,15 +4915,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport@npm:^6.30.2":
-  version: 6.30.2
-  resolution: "@ledgerhq/hw-transport@npm:6.30.2"
+"@ledgerhq/hw-transport@npm:^6.30.3":
+  version: 6.30.3
+  resolution: "@ledgerhq/hw-transport@npm:6.30.3"
   dependencies:
     "@ledgerhq/devices": "npm:^8.2.0"
     "@ledgerhq/errors": "npm:^6.16.1"
     "@ledgerhq/logs": "npm:^6.12.0"
     events: "npm:^3.3.0"
-  checksum: 10/0f0287944f43262132fd83b2a84a58c752e586efa46a9177f3d79dd40e27ac95ef223e01d6c915dc132ce8884d653cf2778f41293d9a673719c3d0f30274cc01
+  checksum: 10/39de0a1ef862dc144ab02b0a089d70ef1f9f5cd96145c99293e33a9077b783578ead2ff0135fef568f39dca00dcde1fbc54ab2a70d96e05eec67e564e4b43aee
   languageName: node
   linkType: hard
 
@@ -19619,7 +19619,7 @@ __metadata:
     "@electron/notarize": "npm:^2.2.1"
     "@emotion/react": "npm:^11.11.3"
     "@emotion/styled": "npm:^11.11.0"
-    "@ledgerhq/hw-transport-webusb": "npm:^6.28.2"
+    "@ledgerhq/hw-transport-webusb": "npm:^6.28.3"
     "@playwright/test": "npm:^1.41.0"
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.11"
     "@reduxjs/toolkit": "npm:^1.9.7"
