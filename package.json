@@ -135,7 +135,7 @@
     "os-browserify": "^0.3.0",
     "papaparse": "^5.4.1",
     "pluralize": "^8.0.0",
-    "postcss": "^8.4.33",
+    "postcss": "^8.4.35",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^8.1.0",
     "postcss-normalize": "^10.0.1",
