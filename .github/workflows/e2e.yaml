@@ -25,17 +25,14 @@ jobs:
           node-version: 20.11.x
           cache: "yarn"
 
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Install Playwright Browsers
-        run: yarn playwright install chromium --with-deps &
-
       - name: Pull docker images
         run: docker compose pull --quiet &
 
-      - name: Build the app
-        run: yarn build
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright Browsers & build the app
+        run: yarn exec concurrently "yarn playwright install chromium --with-deps" "yarn build"
 
       - name: Start server
         run: yarn exec http-server build -p 3000 &
