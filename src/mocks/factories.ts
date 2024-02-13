@@ -143,6 +143,7 @@ export const mockMnemonicAccount = (index: number, label?: string): MnemonicAcco
 
 export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAccount => ({
   type: "secret_key",
+  curve: "ed25519",
   label: label || mockAccountLabel(index),
   address: mockImplicitAddress(index),
   pk: mockPk(index),

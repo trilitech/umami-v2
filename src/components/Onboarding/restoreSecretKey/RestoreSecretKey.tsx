@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { KeyIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
+import { isEncryptedSecretKeyPrefix } from "../../../utils/redux/thunks/secretKeyAccount";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { Step, StepType } from "../useOnboardingModal";
 
@@ -37,12 +38,15 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: Step) => void 
     password: string;
   }) =>
     handleAsyncAction(async () => {
-      let secretKey = rawSecretKey.trim();
-
       try {
         // validate secret key
-        const signer = await InMemorySigner.fromSecretKey(secretKey, password);
-        secretKey = await signer.secretKey();
+        const signer = await InMemorySigner.fromSecretKey(rawSecretKey.trim(), password);
+        const unencryptedSecretKey = await signer.secretKey();
+
+        goToStep({
+          type: StepType.nameAccount,
+          account: { type: "secret_key", secretKey: unencryptedSecretKey },
+        });
       } catch (error: any) {
         const message = error.message || "";
 
@@ -57,11 +61,6 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: Step) => void 
 
         throw error;
       }
-
-      goToStep({
-        type: StepType.nameAccount,
-        account: { type: "secret_key", secretKey: secretKey },
-      });
     });
 
   return (
@@ -78,7 +77,8 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: Step) => void 
             {...register("secretKey", {
               required: "Secret key is required",
               // taken from https://github.com/ecadlabs/taquito/blob/master/packages/taquito-signer/src/taquito-signer.ts#L95
-              onChange: event => setIsEncrypted(event.target.value.trim().substring(2, 3) === "e"),
+              onChange: event =>
+                setIsEncrypted(isEncryptedSecretKeyPrefix(event.target.value.trim())),
             })}
             placeholder="Your secret key"
           />

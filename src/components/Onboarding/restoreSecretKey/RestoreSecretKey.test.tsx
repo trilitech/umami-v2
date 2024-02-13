@@ -67,7 +67,7 @@ describe("<RestoreSecretKey />", () => {
 
     fireEvent.change(screen.getByTestId("secret-key"), {
       target: {
-        value: `   ${secretKey} `,
+        value: `  \t ${secretKey} `,
       },
     });
 
