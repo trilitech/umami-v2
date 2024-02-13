@@ -1,6 +1,6 @@
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { DEFAULT_DERIVATION_PATH } from "../../../utils/account/derivationPathUtils";
-import { AccountGroup, AccountGroupBuilder } from "../../helpers/accountGroup";
+import { AccountGroup, AccountGroupBuilder } from "../../helpers/AccountGroup";
 
 export const v1BackedupAccountGroups = async () => {
   const expectedGroups: AccountGroup[] = [];

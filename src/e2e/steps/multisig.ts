@@ -3,8 +3,8 @@ import { expect } from "@playwright/test";
 
 import { CustomWorld } from "./world";
 import { formatPkh } from "../../utils/format";
-import { AccountsPage } from "../pages/accountsPage";
-import { CreateMultisigPage } from "../pages/createMultisigPage";
+import { AccountsPage } from "../pages/AccountsPage";
+import { CreateMultisigPage } from "../pages/CreateMultisigPage";
 
 When("I am creating a multisig account", async function (this: CustomWorld) {
   await this.page.getByRole("button", { name: "Create New Multisig" }).click();
@@ -43,5 +43,5 @@ Then("I see multisig confirmation page", async function (this: CustomWorld, tabl
 // TODO: Add address validation
 Then("I see {string} multisig account", async function (this: CustomWorld, name: string) {
   const multisigAccounts = await new AccountsPage(this.page).getGroup("Multisig Accounts");
-  expect(multisigAccounts.accounts.map(a => a.label)).toContain(name);
+  expect(multisigAccounts.accounts.map(a => a.name)).toContain(name);
 });
