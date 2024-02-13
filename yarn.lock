@@ -5550,87 +5550,87 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taquito/core@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/core@npm:19.0.1"
+"@taquito/core@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/core@npm:19.0.2"
   dependencies:
     json-stringify-safe: "npm:^5.0.1"
-  checksum: 10/0aed846897c12f54bc45a1ddceabee2368d5caca7dc6da1682889de7f8f13861fc9b01e35a1e80293f7b9533197e3d7321151c12754152108ec44c896681dc84
+  checksum: 10/4f56aefa2d8896b046dcf913ba69016d03443dbfd0aee22983f568a6cb1870c0999f06b5934064e004c08ac70f8f34f2bb6085f272d42700d4ff2d28397c4ac1
   languageName: node
   linkType: hard
 
-"@taquito/http-utils@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/http-utils@npm:19.0.1"
+"@taquito/http-utils@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/http-utils@npm:19.0.2"
   dependencies:
-    "@taquito/core": "npm:^19.0.1"
+    "@taquito/core": "npm:^19.0.2"
     node-fetch: "npm:^2.7.0"
-  checksum: 10/add2bbef0c9a7611555227434ff401e3f7bb1e4c5fa26ba0a812bc9cfc7c52ef5828043b8d8e478a4713a61da3441e761308b1b037dd819a4cf40d3ee5fd43ad
+  checksum: 10/672e3355293e79b3765a3523ef2eebdcf425e8521d48226fda7f183784082578a4c9d9a1c805673d547d4386c1028c754c534510f1a2779bdeecfb81a1e16062
   languageName: node
   linkType: hard
 
-"@taquito/ledger-signer@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/ledger-signer@npm:19.0.1"
+"@taquito/ledger-signer@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/ledger-signer@npm:19.0.2"
   dependencies:
     "@ledgerhq/hw-transport": "npm:^6.28.8"
     "@stablelib/blake2b": "npm:^1.0.1"
-    "@taquito/core": "npm:^19.0.1"
-    "@taquito/taquito": "npm:^19.0.1"
-    "@taquito/utils": "npm:^19.0.1"
+    "@taquito/core": "npm:^19.0.2"
+    "@taquito/taquito": "npm:^19.0.2"
+    "@taquito/utils": "npm:^19.0.2"
     buffer: "npm:^6.0.3"
-  checksum: 10/5a689802ef78b1c4bdec6466dfe5ea49f72ff91b1273368df33871b82e23ced533ccbb71f863c6ac0b1dceb2f917634faeffaf7b81b8aeec263af1326929ecb2
+  checksum: 10/5f94a4d4a654410bfca7737c06ba448ae22331ec39c4f49d21489a2393a39fa769c87e9250ad5232feb90526d71075fbfcb2f270ef9b4cd592ef04a7816eb613
   languageName: node
   linkType: hard
 
-"@taquito/local-forging@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/local-forging@npm:19.0.1"
+"@taquito/local-forging@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/local-forging@npm:19.0.2"
   dependencies:
-    "@taquito/core": "npm:^19.0.1"
-    "@taquito/utils": "npm:^19.0.1"
+    "@taquito/core": "npm:^19.0.2"
+    "@taquito/utils": "npm:^19.0.2"
     bignumber.js: "npm:^9.1.2"
-  checksum: 10/09b71e2f13206a066e0ecda031561a5ccd115eb7f9a60f4078187607bcebe9aa7e7175c3607f67e7aeceff6cc6ab12bf3d9574140148ff726200ae935cec9833
+  checksum: 10/39befb98fca5ca737e14168c3bc22456a7fd821f7803d46ba9d074d7a15767601bc05201c189a47530fe7a4451690646fc36e5cd9a52d5cb80c1b3744197a670
   languageName: node
   linkType: hard
 
-"@taquito/michel-codec@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/michel-codec@npm:19.0.1"
+"@taquito/michel-codec@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/michel-codec@npm:19.0.2"
   dependencies:
-    "@taquito/core": "npm:^19.0.1"
-  checksum: 10/e171657ceafd9a55e43c865360f0c0f652fb2a6f97f8391ef82a3721aeec33f7a286da41d682401bbcee68a7e0fe33c92c816c7930d585f2ed959b2cae4312a4
+    "@taquito/core": "npm:^19.0.2"
+  checksum: 10/bde61c7fb4bf24811f5f08cdf8331dab12515213c2b8ccaba3a3e9b23c94df7abc3296221d9102b4619b7ab7a2e55c05c2e2ddc8be5870f1d8a97dadca477268
   languageName: node
   linkType: hard
 
-"@taquito/michelson-encoder@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/michelson-encoder@npm:19.0.1"
+"@taquito/michelson-encoder@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/michelson-encoder@npm:19.0.2"
   dependencies:
-    "@taquito/core": "npm:^19.0.1"
-    "@taquito/rpc": "npm:^19.0.1"
-    "@taquito/utils": "npm:^19.0.1"
+    "@taquito/core": "npm:^19.0.2"
+    "@taquito/rpc": "npm:^19.0.2"
+    "@taquito/utils": "npm:^19.0.2"
     bignumber.js: "npm:^9.1.2"
     fast-json-stable-stringify: "npm:^2.1.0"
-  checksum: 10/4d45289152a0905e62010806571bcd9c17d3073e942265857c538ac40ef99990872b7891a7b33db726a398b3a5e2dec9e370ded4030ab02bf6cab1cfc32af462
+  checksum: 10/792d456baa0d28b686745e5a86f91a8ffd9438f597c2c3dddb0ab2f2a42a95a5dec6b20ac3e92b1e949553b7c7691f5057247662ac4cca9a8ddb69cc7883384e
   languageName: node
   linkType: hard
 
-"@taquito/rpc@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/rpc@npm:19.0.1"
+"@taquito/rpc@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/rpc@npm:19.0.2"
   dependencies:
-    "@taquito/core": "npm:^19.0.1"
-    "@taquito/http-utils": "npm:^19.0.1"
-    "@taquito/utils": "npm:^19.0.1"
+    "@taquito/core": "npm:^19.0.2"
+    "@taquito/http-utils": "npm:^19.0.2"
+    "@taquito/utils": "npm:^19.0.2"
     bignumber.js: "npm:^9.1.2"
-  checksum: 10/f25a162f040e94f84b001edc99698b76a07a7e002bdf1385783cc1d3f3ea4954f669a0a5f7422db7da0712573d2fc72fda26a59498985a386c1be78589cedb41
+  checksum: 10/f24f622db988a64754c620797f5c71c8b361742ca1293a78d1ef8a5859683547f948d0492a22ba9581839ebba9498a3ff4e4f62270c8b81092401a7a6281d1d4
   languageName: node
   linkType: hard
 
-"@taquito/signer@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/signer@npm:19.0.1"
+"@taquito/signer@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/signer@npm:19.0.2"
   dependencies:
     "@stablelib/blake2b": "npm:^1.0.1"
     "@stablelib/ed25519": "npm:^1.0.3"
@@ -5638,42 +5638,42 @@ __metadata:
     "@stablelib/nacl": "npm:^1.0.4"
     "@stablelib/pbkdf2": "npm:^1.0.1"
     "@stablelib/sha512": "npm:^1.0.1"
-    "@taquito/core": "npm:^19.0.1"
-    "@taquito/taquito": "npm:^19.0.1"
-    "@taquito/utils": "npm:^19.0.1"
+    "@taquito/core": "npm:^19.0.2"
+    "@taquito/taquito": "npm:^19.0.2"
+    "@taquito/utils": "npm:^19.0.2"
     "@types/bn.js": "npm:^5.1.2"
     bip39: "npm:3.1.0"
     elliptic: "npm:^6.5.4"
     pbkdf2: "npm:^3.1.2"
     typedarray-to-buffer: "npm:^4.0.0"
-  checksum: 10/5e6ef820c1b7e2e8e20d90250948ba973e35b6cf627926a30a023e1697e358ed725de4b94bdc41ffb6389369952cf3c1803017c57539d812b09cbf624fac72fa
+  checksum: 10/8eae247ccd2d6a79561e19dff0233179cc5c40c4f5001c6a4484fe7bc996bbac06aef1c9b12bf5ef74c0feb1e3be88cf645d7f4050a3a0b14b6b49f82490f5e2
   languageName: node
   linkType: hard
 
-"@taquito/taquito@npm:19.0.1, @taquito/taquito@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/taquito@npm:19.0.1"
+"@taquito/taquito@npm:19.0.2, @taquito/taquito@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/taquito@npm:19.0.2"
   dependencies:
-    "@taquito/core": "npm:^19.0.1"
-    "@taquito/http-utils": "npm:^19.0.1"
-    "@taquito/local-forging": "npm:^19.0.1"
-    "@taquito/michel-codec": "npm:^19.0.1"
-    "@taquito/michelson-encoder": "npm:^19.0.1"
-    "@taquito/rpc": "npm:^19.0.1"
-    "@taquito/utils": "npm:^19.0.1"
+    "@taquito/core": "npm:^19.0.2"
+    "@taquito/http-utils": "npm:^19.0.2"
+    "@taquito/local-forging": "npm:^19.0.2"
+    "@taquito/michel-codec": "npm:^19.0.2"
+    "@taquito/michelson-encoder": "npm:^19.0.2"
+    "@taquito/rpc": "npm:^19.0.2"
+    "@taquito/utils": "npm:^19.0.2"
     bignumber.js: "npm:^9.1.2"
     rxjs: "npm:^7.8.1"
-  checksum: 10/7fa4eb40423ee2ebfd7b7be9259e4ff283c80bd04038f924600fad287fbed76c254a402e2e3276475c0d10306e83b96d23f7fb1c56963e736523f5a0c349be8e
+  checksum: 10/d170474558036bdb9e41e3ef17eed5ea0eb6392ad1818c2f51583095507f0c2fb5bbcf35e533e3b45690f9405dc7792f27ce5606d1afca06eb581f73bbacbe59
   languageName: node
   linkType: hard
 
-"@taquito/utils@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@taquito/utils@npm:19.0.1"
+"@taquito/utils@npm:^19.0.2":
+  version: 19.0.2
+  resolution: "@taquito/utils@npm:19.0.2"
   dependencies:
     "@stablelib/blake2b": "npm:^1.0.1"
     "@stablelib/ed25519": "npm:^1.0.3"
-    "@taquito/core": "npm:^19.0.1"
+    "@taquito/core": "npm:^19.0.2"
     "@types/bs58check": "npm:^2.1.0"
     bignumber.js: "npm:^9.1.2"
     blakejs: "npm:^1.2.1"
@@ -5681,7 +5681,7 @@ __metadata:
     buffer: "npm:^6.0.3"
     elliptic: "npm:^6.5.4"
     typedarray-to-buffer: "npm:^4.0.0"
-  checksum: 10/915c0e9359555697eec0d2dcccb80dae4fa5904de577639c09fbceac88d9b7fe664a4d42868b583ecfca5e2cdaac4911f58e9d0bd1894cf48d716cf36b8662fb
+  checksum: 10/9963207d94a8ea8b60bad89b2a3d4fd849df63006371980d84f9295e649702edb0b4717566f9a48a4777f5e903cf0566e55b28003d268c539e1b2339d808b311
   languageName: node
   linkType: hard
 
@@ -19677,12 +19677,12 @@ __metadata:
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.11"
     "@reduxjs/toolkit": "npm:^1.9.7"
     "@stylistic/eslint-plugin": "npm:^1.5.4"
-    "@taquito/ledger-signer": "npm:^19.0.1"
-    "@taquito/michel-codec": "npm:^19.0.1"
-    "@taquito/rpc": "npm:^19.0.1"
-    "@taquito/signer": "npm:^19.0.1"
-    "@taquito/taquito": "npm:19.0.1"
-    "@taquito/utils": "npm:^19.0.1"
+    "@taquito/ledger-signer": "npm:^19.0.2"
+    "@taquito/michel-codec": "npm:^19.0.2"
+    "@taquito/rpc": "npm:^19.0.2"
+    "@taquito/signer": "npm:^19.0.2"
+    "@taquito/taquito": "npm:19.0.2"
+    "@taquito/utils": "npm:^19.0.2"
     "@testing-library/dom": "npm:^9.3.4"
     "@testing-library/jest-dom": "npm:6.4.2"
     "@testing-library/react": "npm:14.1.2"
