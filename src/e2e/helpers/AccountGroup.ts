@@ -8,11 +8,11 @@ import { getFingerPrint } from "../../utils/tezos";
 
 export type AccountGroup = {
   type: "mnemonic" | "secret_key";
-  groupTitle: string;
+  label: string;
   accounts: Account[];
 };
 
-type Account = {
+export type Account = {
   name: string;
   pkh: RawPkh;
 };
@@ -34,11 +34,11 @@ export class AccountGroupBuilder {
   constructor(groupType: "mnemonic" | "secret_key", accountsAmount: number) {
     this.accountGroup = {
       type: groupType,
-      groupTitle: "",
+      label: "",
       accounts: [],
     };
     if (this.accountGroup.type === "secret_key") {
-      this.accountGroup.groupTitle = "Secret Key Accounts";
+      this.accountGroup.label = "Secret Key Accounts";
     }
     this.accountGroup.accounts = times(accountsAmount, () => ({ name: "", pkh: "" }));
   }
@@ -55,7 +55,7 @@ export class AccountGroupBuilder {
       throw new Error(`Seed phrase is not used for ${this.accountGroup.type} accounts}`);
     }
     this.seedPhrase = seedPhrase;
-    this.accountGroup.groupTitle = `Seedphrase ${await getFingerPrint(seedPhrase.join(" "))}`;
+    this.accountGroup.label = `Seedphrase ${await getFingerPrint(seedPhrase.join(" "))}`;
   }
 
   getSeedPhrase = () => this.seedPhrase;

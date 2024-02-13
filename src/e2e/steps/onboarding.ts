@@ -6,20 +6,17 @@ import { expect } from "@playwright/test";
 import { CustomWorld } from "./world";
 import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
 import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
-import { formatPkh } from "../../utils/format";
 import {
   v1BackedupAccountGroups,
   v2BackedupAccountGroups,
 } from "../fixtures/backups/backedupAccountGroups";
-import { AccountGroup, AccountGroupBuilder } from "../helpers/accountGroup";
-import { AccountsPage } from "../pages/accountsPage";
+import { AccountGroup, AccountGroupBuilder } from "../helpers/AccountGroup";
+import { AccountsPage } from "../pages/AccountsPage";
 
 export const BASE_URL = "http://127.0.0.1:3000";
 
 let accountGroupBuilder: AccountGroupBuilder;
 const newGroups: Record<string, AccountGroupBuilder> = {};
-
-let accountsPage: AccountsPage;
 
 // TODO: make custom Given with `this` defined as `CustomWorld`
 Given("I am on the welcome page", async function (this: CustomWorld) {
@@ -91,7 +88,6 @@ When("I upload {string} backup file", async function (this: CustomWorld, backupF
 Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {
   let route: string = `${BASE_URL}`;
   if (pageName === "Accounts") {
-    accountsPage = new AccountsPage(this.page);
     route += "/#/home";
   }
 
@@ -110,7 +106,7 @@ When(
 
 Then("I have {string} account group", async function (this: CustomWorld, groupName) {
   const expectedGroup = await newGroups[groupName].build();
-  await checkAccountGroup(expectedGroup);
+  await new AccountsPage(this.page).checkAccountGroup(expectedGroup);
 });
 
 Then(
@@ -127,7 +123,7 @@ Then(
 
     // TODO: check for groups amount once all type of groups are supported by the tests
     for (const expectedGroup of expectedGroups) {
-      await checkAccountGroup(expectedGroup);
+      await new AccountsPage(this.page).checkAccountGroup(expectedGroup);
     }
   }
 );
@@ -136,13 +132,3 @@ Then("I see a toast {string}", async function (this: CustomWorld, toastMessage) 
   const toast = this.page.getByRole("status").getByText(toastMessage);
   expect(toast).toBeVisible();
 });
-
-const checkAccountGroup = async (expectedGroup: AccountGroup) => {
-  const accountsGroup = await accountsPage.getGroup(expectedGroup.groupTitle);
-  expect(accountsGroup.label).toEqual(expectedGroup.groupTitle);
-  expect(accountsGroup.accounts.length).toEqual(expectedGroup.accounts.length);
-  for (let i = 0; i < accountsGroup.accounts.length; i++) {
-    expect(accountsGroup.accounts[i].label).toEqual(expectedGroup.accounts[i].name);
-    expect(accountsGroup.accounts[i].address).toEqual(formatPkh(expectedGroup.accounts[i].pkh));
-  }
-};
