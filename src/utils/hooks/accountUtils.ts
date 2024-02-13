@@ -1,10 +1,10 @@
 import BigNumber from "bignumber.js";
 import { compact } from "lodash";
 
+import { useSecretKeys, useSeedPhrases } from "./getAccountDataHooks";
 import { MnemonicAccount, SecretKeyAccount } from "../../types/Account";
 import { decrypt } from "../crypto/AES";
 import { deriveSecretKey } from "../mnemonic";
-import { useAppSelector } from "../redux/hooks";
 
 export const getTotalTezBalance = (
   balances: Record<string, string | undefined>
@@ -19,8 +19,8 @@ export const getTotalTezBalance = (
 };
 
 export const useGetSecretKey = () => {
-  const seedPhrases = useAppSelector(s => s.accounts.seedPhrases);
-  const encryptedSecretKeys = useAppSelector(s => s.accounts.secretKeys);
+  const seedPhrases = useSeedPhrases();
+  const encryptedSecretKeys = useSecretKeys();
 
   return async (account: MnemonicAccount | SecretKeyAccount, password: string) => {
     if (account.type === "secret_key") {

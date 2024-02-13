@@ -8,13 +8,11 @@ import { RawPkh } from "../../types/Address";
 import { decrypt } from "../crypto/AES";
 import { useAppSelector } from "../redux/hooks";
 
-export const useSeedPhrases = () => {
-  return useAppSelector(s => s.accounts.seedPhrases);
-};
+export const useSeedPhrases = () => useAppSelector(s => s.accounts.seedPhrases);
 
-export const useImplicitAccounts = () => {
-  return useAppSelector(s => s.accounts.items);
-};
+export const useSecretKeys = () => useAppSelector(s => s.accounts.secretKeys);
+
+export const useImplicitAccounts = () => useAppSelector(s => s.accounts.items);
 
 export const useGetImplicitAccountSafe = () => {
   const accounts = useImplicitAccounts();
@@ -74,18 +72,26 @@ export const useGetOwnedAccount = () => {
 };
 
 /**
- * returns null if no password has been set
+ * it returns a function that takes a password
+ * and attempts to decrypt any encrypted credentials we have
+ *
+ * if no password has been set, it returns null
+ *
+ * if the provided password is incorrect, it throws an error
  */
-export const useCheckPasswordValidity = () => {
+export const useValidateMasterPassword = () => {
   const seedPhrases = useSeedPhrases();
+  const secretKeys = useSecretKeys();
 
-  const existingSeedPhrase = Object.values(seedPhrases)[0];
-  if (!existingSeedPhrase) {
+  const encrypted = Object.values({ ...secretKeys, ...seedPhrases })[0];
+
+  if (!encrypted) {
     return null;
   }
 
   return async (password: string) => {
-    await decrypt(existingSeedPhrase, password);
+    await decrypt(encrypted, password);
+    return;
   };
 };
 
