@@ -5,6 +5,7 @@ import {
   useGetNextAvailableAccountLabels,
   useIsOwnedAddress,
   useIsUniqueLabel,
+  useValidateMasterPassword,
 } from "./getAccountDataHooks";
 import {
   mockContact,
@@ -15,9 +16,10 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { AllTheProviders } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
-import { accountsSlice } from "../redux/slices/accountsSlice";
+import { accountsActions, accountsSlice } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
 import { multisigActions, multisigsSlice } from "../redux/slices/multisigsSlice";
@@ -190,5 +192,76 @@ describe("getAccountDataHooks", () => {
     });
 
     expect(view.result.current).toEqual(false);
+  });
+
+  describe("useValidateMasterPassword", () => {
+    it("returns null if no accounts exist", () => {
+      const {
+        result: { current: result },
+      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+
+      expect(result).toEqual(null);
+    });
+
+    it("returns null if only social account exists", () => {
+      addAccount(mockSocialAccount(0));
+      const {
+        result: { current: result },
+      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+
+      expect(result).toEqual(null);
+    });
+
+    it("returns null if only ledger account exists", () => {
+      addAccount(mockLedgerAccount(0));
+      const {
+        result: { current: result },
+      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+
+      expect(result).toEqual(null);
+    });
+
+    it("returns a validation function if mnemonic account exists", async () => {
+      store.dispatch(
+        accountsActions.addMnemonicAccounts({
+          seedFingerprint: "print",
+          accounts: [],
+          encryptedMnemonic: {
+            iv: "9c70b0a3f7aeefd5d73208f0",
+            salt: "4f571e4cfa08d48bd324a0905d964696b715eb23a6845aad499531d4619a89f3",
+            data: "135032f8496ab47cde9df5ea8592ef1058f82a5685fa6a5f9f0431216dedb52533cad4cf62c487eb7422273e3b28622207fd60cc61578f5d808e79113a88fee1ceba1f716bd7405cfc3436e9679fd1bdfa7fd2db7024f0ca65d7c6cc99f7a50f6fe7ecccb801382ffee890e631d6e674bafd12eec8788f332c3c2a3381bc932046ea3f980c0ed6fb85e70560baf5788b4857dd9b1c44240b9b16f8e794a6cbcc2d8de26bbfbd03cc",
+          },
+        })
+      );
+      const {
+        result: { current: result },
+      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+
+      expect(await result!("123123123")).toEqual(undefined);
+      await expect(result!("wrong password")).rejects.toThrow(
+        "Error decrypting data: Invalid password"
+      );
+    });
+
+    it("returns a validation function if secret key account exists", async () => {
+      store.dispatch(
+        accountsActions.addSecretKey({
+          pkh: "pkh",
+          encryptedSecretKey: {
+            iv: "0f8864b5a8a7d3a3cb08e48f",
+            salt: "aeadfefe2dd85277827a4e36d9b7f1ba4eb4e4a21525e7380b871dec1628c132",
+            data: "a1864d8ea65647f11ea9c6df78f0d0fa3609f7363eb6349b29775ab9187c23ba4e7c5dc4a56d8efb76b6d2653aa32196fe34c32ed55402048a75d8082c4868eadcad2a40cd10004833feb3aab9b56d5bb45fff18976f69260cafc6ccac1ea8186f7dc3bc014bdc2ccd72dc9c0e960c7abfde",
+          },
+        })
+      );
+      const {
+        result: { current: result },
+      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+
+      expect(await result!("123123123")).toEqual(undefined);
+      await expect(result!("wrong password")).rejects.toThrow(
+        "Error decrypting data: Invalid password"
+      );
+    });
   });
 });

@@ -2,7 +2,7 @@ import { useToast } from "@chakra-ui/react";
 
 import { EnterAndConfirmPassword } from "./password/EnterAndConfirmPassword";
 import { EnterPassword } from "./password/EnterPassword";
-import { useCheckPasswordValidity } from "../../../utils/hooks/getAccountDataHooks";
+import { useValidateMasterPassword } from "../../../utils/hooks/getAccountDataHooks";
 import {
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
@@ -19,7 +19,7 @@ export const MasterPassword = ({
 }) => {
   const restoreFromMnemonic = useRestoreFromMnemonic();
   const restoreFromSecretKey = useRestoreFromSecretKey();
-  const checkPassword = useCheckPasswordValidity();
+  const checkPassword = useValidateMasterPassword();
   const passwordHasBeenSet = checkPassword !== null;
 
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
