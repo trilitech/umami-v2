@@ -13,7 +13,7 @@ export type SocialAccount = {
 
 export type MnemonicAccount = {
   label: string;
-  curve: "ed25519";
+  curve: Curves;
   derivationPath: string;
   derivationPathPattern: string;
   type: "mnemonic";
@@ -33,6 +33,7 @@ export type LedgerAccount = {
 
 export type SecretKeyAccount = {
   label: string;
+  curve: Curves;
   type: "secret_key";
   address: ImplicitAddress;
   pk: string;
