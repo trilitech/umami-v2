@@ -10179,10 +10179,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-expand@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "dotenv-expand@npm:10.0.0"
-  checksum: 10/b41eb278bc96b92cbf3037ca5f3d21e8845bf165dc06b6f9a0a03d278c2bd5a01c0cfbb3528ae3a60301ba1a8a9cace30e748c54b460753bc00d4c014b675597
+"dotenv-expand@npm:^11.0.3":
+  version: 11.0.3
+  resolution: "dotenv-expand@npm:11.0.3"
+  dependencies:
+    dotenv: "npm:^16.4.1"
+  checksum: 10/a5e564f23ee333526b394f3e20bc392164e8b50614f7ecf79e5b4f0af1876a4a67191184d9e8a3ae0c25385c0aabc160b5c815ffcb5322d21e32fdaf9c1b0179
   languageName: node
   linkType: hard
 
@@ -10190,6 +10192,13 @@ __metadata:
   version: 5.1.0
   resolution: "dotenv-expand@npm:5.1.0"
   checksum: 10/d52af2a6e4642979ae4221408f1b75102508dbe4f5bac1c0613f92a3cf3880d5c31f86b2f5cff3273f7c23e10421e75028546e8b6cd0376fcd20e3803b374e15
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.4.1":
+  version: 16.4.3
+  resolution: "dotenv@npm:16.4.3"
+  checksum: 10/f07db902c62c239aef7a7b696b21dfab8e95bf5883bcf23c6b9b55f42578d18b842e6257b4f4ecfdbd024a3ee9949fbaaa4c84807de7ba037c74fe3c70785198
   languageName: node
   linkType: hard
 
@@ -19777,7 +19786,7 @@ __metadata:
     css-minimizer-webpack-plugin: "npm:^6.0.0"
     date-fns: "npm:^3.3.1"
     dotenv: "npm:^16.4.2"
-    dotenv-expand: "npm:^10.0.0"
+    dotenv-expand: "npm:^11.0.3"
     electron: "npm:^28.2.1"
     electron-builder: "npm:^24.9.1"
     electron-updater: "npm:^6.1.4"
