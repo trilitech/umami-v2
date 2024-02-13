@@ -8407,7 +8407,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.21.10, browserslist@npm:^4.22.1":
+"browserslist@npm:^4.21.10, browserslist@npm:^4.22.1, browserslist@npm:^4.22.3":
   version: 4.22.3
   resolution: "browserslist@npm:4.22.3"
   dependencies:
@@ -19768,7 +19768,7 @@ __metadata:
     babel-plugin-named-exports-order: "npm:^0.0.2"
     babel-preset-react-app: "npm:^10.0.1"
     bip39: "npm:^3.1.0"
-    browserslist: "npm:^4.18.1"
+    browserslist: "npm:^4.22.3"
     buffer: "npm:^6.0.3"
     case-sensitive-paths-webpack-plugin: "npm:^2.4.0"
     concurrently: "npm:^8.2.2"
