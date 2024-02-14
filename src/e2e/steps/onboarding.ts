@@ -23,8 +23,6 @@ Given("I am on the welcome page", async function (this: CustomWorld) {
   this.setEmptyReduxState();
   await this.pageReady;
   await this.page.goto(`${BASE_URL}/`);
-
-  this.page.on("console", msg => console.log(msg.text()));
 });
 
 Then("I am on {string} onboarding page", async function (this: CustomWorld, modalTitle) {

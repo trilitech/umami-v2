@@ -2,7 +2,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { createMigrate, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 
-import { migrations } from "./migrations";
+import { VERSION, accountsMigrations, mainStoreMigrations } from "./migrations";
 import { accountsSlice } from "./slices/accountsSlice";
 import { announcementSlice } from "./slices/announcementSlice";
 import { assetsSlice } from "./slices/assetsSlice";
@@ -14,20 +14,19 @@ import { multisigsSlice } from "./slices/multisigsSlice";
 import { networksSlice } from "./slices/networks";
 import { tokensSlice } from "./slices/tokensSlice";
 
-export const VERSION = 1;
-
 const rootPersistConfig = {
   key: "root",
   version: VERSION,
   storage,
   blacklist: ["accounts"],
-  migrate: createMigrate(migrations, { debug: false }),
+  migrate: createMigrate(mainStoreMigrations, { debug: false }),
 };
 
 const accountsPersistConfig = {
   key: "accounts",
   version: VERSION,
   storage,
+  migrate: createMigrate(accountsMigrations, { debug: false }),
 };
 
 // if you add more slices then add their reset action to setupTests.ts

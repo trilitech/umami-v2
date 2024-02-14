@@ -42,11 +42,10 @@ export const RestoreBackupFile = () => {
         await restoreV1BackupFile(backup, password);
       } else if (backup["persist:accounts"]) {
         await restoreV2BackupFile(backup, password);
+        window.location.reload();
       } else {
         throw new Error("Invalid backup file.");
       }
-
-      window.location.reload();
     });
 
   return (
