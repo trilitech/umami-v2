@@ -101,8 +101,8 @@
     "date-fns": "^3.3.1",
     "dotenv": "^16.4.2",
     "dotenv-expand": "^11.0.3",
-    "electron": "^28.2.1",
-    "electron-builder": "^24.9.1",
+    "electron": "^28.2.2",
+    "electron-builder": "^24.13.0",
     "electronmon": "^2.0.2",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -333,7 +333,7 @@
     ]
   },
   "dependencies": {
-    "electron-updater": "^6.1.4"
+    "electron-updater": "^6.1.8"
   },
   "resolutions": {
     "jsdom": "^23.0.1",
