@@ -1,11 +1,24 @@
 # Umami V2
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Umami](https://umamiwallet.com) is a cryptocurrency wallet developed by [Trilitech](https://trili.tech/) to interact with the [Tezos
+Blockchain](https://tezos.com/). It runs as a desktop electron-based app with multiple features:
+
+- HD Wallet
+- Multiple accounts management
+- Multi-signature accounts
+- Ledger support
+- Google login
+- NFT Gallery
+- FA2 and FA1.2 token support
+- DApp interaction
+- Batch capability (combining Tez, FA2, and FA1.2 token transfers)
+- Delegation to bakers
+- Address Book
 
 ## Initial setup
 
 - Node.js version is 20.x, you can use [NVM](https://github.com/nvm-sh/nvm) to install it and select for this project.
-- Yarn 3.x should be used, you can find the installation guide [here](https://yarnpkg.com/getting-started/install).
+- Yarn 4.x should be used, you can find the installation guide [here](https://yarnpkg.com/getting-started/install).
 - `yarn install`
 - (optional) if you want to run all the necessary checks before pushing to github (which is much faster than waiting for CI) then just run `./bin/setup`
 
@@ -24,7 +37,7 @@ You will also see any lint errors in the console.
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+We use [jest](https://jestjs.io/) as the test runner.
 
 ### `yarn test:e2e`
 
