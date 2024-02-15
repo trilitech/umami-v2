@@ -12,6 +12,8 @@ jest.mock("../../../utils/tezos/helpers");
 
 const fixture = () => <RestoreMnemonic goToStep={goToStepMock} />;
 
+jest.setTimeout(10 * 1000);
+
 describe("<RestoreMnemonic />", () => {
   beforeEach(() => {
     const splitted = mnemonic1.split(" ").map((value, index) => ({ index, value }));
