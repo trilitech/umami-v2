@@ -6,7 +6,7 @@ import { SignPage } from "./SignPage";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
@@ -57,7 +57,7 @@ describe("<FormPage />", () => {
   });
 
   describe("nft", () => {
-    it("displays the correct name", async () => {
+    it("displays the correct name", () => {
       render(
         fixture(
           {
@@ -67,13 +67,11 @@ describe("<FormPage />", () => {
         )
       );
 
-      await waitFor(() => {
-        expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
-      });
+      expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
       expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string);
     });
 
-    it("renders the correct balance", async () => {
+    it("renders the correct balance", () => {
       render(
         fixture(
           {
@@ -83,9 +81,7 @@ describe("<FormPage />", () => {
         )
       );
 
-      await waitFor(() => {
-        expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
-      });
+      expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
       expect(screen.getByTestId("out-of-nft")).toHaveTextContent("10");
     });
   });
@@ -166,6 +162,7 @@ describe("<FormPage />", () => {
 
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
+        const user = userEvent.setup();
         store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
         const sender = mockImplicitAccount(0);
         render(
@@ -184,7 +181,6 @@ describe("<FormPage />", () => {
         await waitFor(() => {
           expect(submitButton).toBeEnabled();
         });
-        fireEvent.click(submitButton);
         mockEstimatedFee(100);
         const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
           {
@@ -196,17 +192,18 @@ describe("<FormPage />", () => {
             tokenId: mockNFT(1).tokenId,
           },
         ]);
-        await waitFor(() => {
-          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <SignPage
-              data={{ nft: mockNFT(1) }}
-              fee={new BigNumber(100)}
-              goBack={expect.any(Function)}
-              mode="single"
-              operations={operations}
-            />
-          );
-        });
+
+        await act(() => user.click(submitButton));
+
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+          <SignPage
+            data={{ nft: mockNFT(1) }}
+            fee={new BigNumber(100)}
+            goBack={expect.any(Function)}
+            mode="single"
+            operations={operations}
+          />
+        );
         expect(mockToast).not.toHaveBeenCalled();
       });
     });

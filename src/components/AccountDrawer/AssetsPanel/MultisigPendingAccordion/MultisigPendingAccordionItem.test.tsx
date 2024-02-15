@@ -10,7 +10,7 @@ import {
   mockMultisigAccount,
 } from "../../../../mocks/factories";
 import { pendingOps } from "../../../../mocks/multisig";
-import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
+import { act, render, screen, userEvent, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../../../types/Account";
 import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { parseImplicitPkh } from "../../../../types/Address";
@@ -70,6 +70,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
   });
 
   test("User can accomplish a proposal execution", async () => {
+    const user = userEvent.setup();
     const account: MnemonicAccount = {
       ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
@@ -90,13 +91,12 @@ describe("<MultisigPendingAccordionItem/>", () => {
         <MultisigPendingAccordionItem operation={executablePendingOp} sender={multisig} />
       </Accordion>
     );
-    const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
-    const { getByText } = within(firstPendingOp);
-    const executeBtn = getByText(/execute/i);
-    fireEvent.click(executeBtn);
 
-    const dialog = await screen.findByRole("dialog");
-    expect(dialog).toBeInTheDocument();
+    const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
+
+    await act(() => user.click(within(firstPendingOp).getByText("Execute")));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     const operation = makeAccountOperations(account, account, [
       makeMultisigApproveOrExecuteOperation(multisig.address, "execute", pendingOps[0].id),
@@ -104,22 +104,20 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operation, MAINNET);
 
-    const passwordInput = screen.getByTestId("password");
-    fireEvent.change(passwordInput, { target: { value: "mockPass" } });
+    await act(() => user.type(screen.getByTestId("password"), "mockPass"));
 
-    const submitButton = screen.getByRole("button", { name: /execute transaction/i });
-    await waitFor(() => {
-      expect(submitButton).toBeEnabled();
-    });
+    const submitButton = screen.getByRole("button", { name: "Execute transaction" });
+    expect(submitButton).toBeEnabled();
 
-    fireEvent.click(submitButton);
+    await act(() => user.click(submitButton));
 
-    await screen.findByText(/operation submitted/i);
+    await screen.findByText("Operation Submitted");
 
     expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(operation, MOCK_TEZOS_TOOLKIT);
   });
 
   test("User can accomplish a proposal approval", async () => {
+    const user = userEvent.setup();
     const signer: ImplicitAccount = {
       ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
@@ -139,13 +137,11 @@ describe("<MultisigPendingAccordionItem/>", () => {
         <MultisigPendingAccordionItem operation={approvablePendingOp} sender={multisig} />
       </Accordion>
     );
-    const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
-    const { getByText } = within(firstPendingOp);
-    const approveBtn = getByText(/approve/i);
-    fireEvent.click(approveBtn);
 
-    const dialog = await screen.findByRole("dialog");
-    expect(dialog).toBeInTheDocument();
+    const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
+    await act(() => user.click(within(firstPendingOp).getByText("Approve")));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     const operations = makeAccountOperations(signer, signer, [
       makeMultisigApproveOrExecuteOperation(multisig.address, "approve", pendingOps[0].id),
@@ -153,17 +149,14 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
 
-    const passwordInput = screen.getByTestId("password");
-    fireEvent.change(passwordInput, { target: { value: "mockPass" } });
+    await act(() => user.type(screen.getByTestId("password"), "mockPass"));
 
-    const submitButton = screen.getByRole("button", { name: /approve transaction/i });
-    await waitFor(() => {
-      expect(submitButton).toBeEnabled();
-    });
+    const submitButton = screen.getByRole("button", { name: "Approve transaction" });
+    expect(submitButton).toBeEnabled();
 
-    fireEvent.click(submitButton);
+    await act(() => user.click(submitButton));
 
-    await screen.findByText(/operation submitted/i);
+    await screen.findByText("Operation Submitted");
 
     expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(operations, MOCK_TEZOS_TOOLKIT);
   });

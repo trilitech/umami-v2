@@ -10,7 +10,6 @@ import {
   renderHook,
   screen,
   userEvent,
-  waitFor,
 } from "../mocks/testUtils";
 import { accountsSlice } from "../utils/redux/slices/accountsSlice";
 import { store } from "../utils/redux/store";
@@ -134,7 +133,7 @@ describe("AccountsFilter", () => {
 
         await selectAccountListItems(user, [0, 2]);
 
-        await waitFor(() => expect(getAccountListItems()).toHaveLength(1));
+        expect(getAccountListItems()).toHaveLength(1);
         expect(getAccountListItems()[0]).toHaveTextContent(accounts[1].label);
       });
 
@@ -144,7 +143,7 @@ describe("AccountsFilter", () => {
 
         await selectAccountListItems(user, [0, 2]);
 
-        await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(2));
+        expect(screen.getAllByTestId("account-pill")).toHaveLength(2);
         const pills = screen.getAllByTestId("account-pill");
         expect(pills[0]).toHaveTextContent(accounts[0].label);
         expect(pills[1]).toHaveTextContent(accounts[2].label);
@@ -223,7 +222,7 @@ describe("AccountsFilter", () => {
         // select accounts[2], wait for the second pill to appear
         await selectAccountListItems(user, [1], 2);
 
-        await waitFor(() => expect(getAccountListItems()).toHaveLength(1));
+        expect(getAccountListItems()).toHaveLength(1);
         expect(getAccountListItems()[0]).toHaveTextContent(accounts[1].label);
       });
 
@@ -241,7 +240,7 @@ describe("AccountsFilter", () => {
         // select accounts[2], wait for the second pill to appear
         await selectAccountListItems(user, [1], 2);
 
-        await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(2));
+        expect(screen.getAllByTestId("account-pill")).toHaveLength(2);
         const pills = screen.getAllByTestId("account-pill");
         expect(pills[0]).toHaveTextContent(accounts[0].label); // preselected
         expect(pills[1]).toHaveTextContent(accounts[2].label); // added in a test

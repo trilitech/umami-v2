@@ -9,7 +9,7 @@ import {
 } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { act, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
@@ -58,9 +58,6 @@ describe("<NameAccount />", () => {
         }
         await act(() => user.click(getConfirmBtn()));
 
-        await waitFor(() => {
-          expect(goToStepMock).toHaveBeenCalledTimes(1);
-        });
         expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: labelBase },

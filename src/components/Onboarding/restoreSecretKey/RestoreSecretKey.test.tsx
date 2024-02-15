@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 
 import { RestoreSecretKey } from "./RestoreSecretKey";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { store } from "../../../utils/redux/store";
 import { Step } from "../useOnboardingModal";
@@ -44,11 +44,14 @@ describe("<RestoreSecretKey />", () => {
   });
 
   it("doesn't show the password field when the secret key is not encrypted", async () => {
+    const user = userEvent.setup();
     render(fixture());
 
     expect(screen.queryByTestId("password")).not.toBeInTheDocument();
-    fireEvent.change(screen.getByTestId("secret-key"), { target: { value: "edsk..." } });
-    await waitFor(() => expect(screen.queryByTestId("password")).not.toBeInTheDocument());
+
+    await act(() => user.type(screen.getByTestId("secret-key"), "edsk..."));
+
+    expect(screen.queryByTestId("password")).not.toBeInTheDocument();
   });
 
   it.each([
@@ -62,102 +65,77 @@ describe("<RestoreSecretKey />", () => {
       secretKey: UNENCRYPTED_SECRET_KEY,
     },
   ])("goes to the name account step with $title", async ({ password, secretKey }) => {
+    const user = userEvent.setup();
     const goToStepMock = jest.fn();
     render(fixture(goToStepMock));
 
-    fireEvent.change(screen.getByTestId("secret-key"), {
-      target: {
-        value: `  \t ${secretKey} `,
-      },
-    });
+    await act(() => user.type(screen.getByTestId("secret-key"), `  \t ${secretKey} `));
 
     if (password) {
-      await screen.findByTestId("password");
-      fireEvent.change(screen.getByTestId("password"), {
-        target: {
-          value: password,
-        },
-      });
+      await act(() => user.type(screen.getByTestId("password"), password));
     }
 
-    await waitFor(() => expect(screen.getByRole("button")).toBeEnabled());
+    expect(screen.getByRole("button")).toBeEnabled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-    await waitFor(() => {
-      expect(goToStepMock).toHaveBeenCalledWith({
-        type: "nameAccount",
-        account: {
-          type: "secret_key",
-          secretKey: UNENCRYPTED_SECRET_KEY,
-        },
-      });
+    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
+
+    expect(goToStepMock).toHaveBeenCalledWith({
+      type: "nameAccount",
+      account: {
+        type: "secret_key",
+        secretKey: UNENCRYPTED_SECRET_KEY,
+      },
     });
   });
 
   it("shows an error when the password is invalid", async () => {
+    const user = userEvent.setup();
     render(fixture());
 
-    fireEvent.change(screen.getByTestId("secret-key"), {
-      target: {
-        value: ENCRYPTED_SECRET_KEY,
-      },
-    });
+    await act(() => user.type(screen.getByTestId("secret-key"), ENCRYPTED_SECRET_KEY));
 
-    await screen.findByTestId("password");
-    fireEvent.change(screen.getByTestId("password"), {
-      target: {
-        value: "wrong password",
-      },
-    });
+    await act(() => user.type(screen.getByTestId("password"), "wrong password"));
 
-    await waitFor(() => expect(screen.getByRole("button")).toBeEnabled());
+    expect(screen.getByRole("button")).toBeEnabled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
 
-    await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Key-password pair is invalid",
-        status: "error",
-      });
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "Key-password pair is invalid",
+      status: "error",
     });
   });
 
   it("shows an error when the secret key is invalid", async () => {
+    const user = userEvent.setup();
     render(fixture());
 
-    fireEvent.change(screen.getByTestId("secret-key"), {
-      target: {
-        value: UNENCRYPTED_SECRET_KEY + "asdasd",
-      },
-    });
+    await act(() => user.type(screen.getByTestId("secret-key"), UNENCRYPTED_SECRET_KEY + "asdasd"));
 
-    await waitFor(() => expect(screen.getByRole("button")).toBeEnabled());
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-    await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Invalid secret key: checksum doesn't match",
-        status: "error",
-      });
+    expect(screen.getByRole("button")).toBeEnabled();
+
+    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
+
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "Invalid secret key: checksum doesn't match",
+      status: "error",
     });
   });
 
   it("shows an error when the secret key is completely invalid", async () => {
+    const user = userEvent.setup();
     render(fixture());
 
-    fireEvent.change(screen.getByTestId("secret-key"), {
-      target: {
-        value: "something invalid",
-      },
-    });
+    await act(() => user.type(screen.getByTestId("secret-key"), "something invalid"));
 
-    await waitFor(() => expect(screen.getByRole("button")).toBeEnabled());
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
-    await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        description:
-          "Invalid private key with unsupported prefix expecting one of the following 'edesk', 'edsk', 'spsk', 'spesk', 'p2sk' or 'p2esk'..",
-        status: "error",
-      });
+    expect(screen.getByRole("button")).toBeEnabled();
+
+    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
+
+    expect(mockToast).toHaveBeenCalledWith({
+      description:
+        "Invalid private key with unsupported prefix expecting one of the following 'edesk', 'edsk', 'spsk', 'spesk', 'p2sk' or 'p2esk'..",
+      status: "error",
     });
   });
 });

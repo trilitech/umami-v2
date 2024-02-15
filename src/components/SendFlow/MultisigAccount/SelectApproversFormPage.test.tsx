@@ -234,9 +234,7 @@ describe("SelectApproversFormPage", () => {
       const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
       await act(() => user.click(addSignerButton));
 
-      await waitFor(() => {
-        expect(screen.getByTestId("max-signers")).toHaveTextContent("out of 2");
-      });
+      expect(screen.getByTestId("max-signers")).toHaveTextContent("out of 2");
     });
   });
 

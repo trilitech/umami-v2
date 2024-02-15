@@ -3,7 +3,7 @@ import BigNumber from "bignumber.js";
 
 import { SignPage } from "./SignPage";
 import { mockDelegation, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
-import { render, screen, waitFor } from "../../../mocks/testUtils";
+import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
@@ -42,7 +42,7 @@ describe("<SignPage />", () => {
     expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
   });
 
-  it("displays address tile for baker", async () => {
+  it("displays address tile for baker", () => {
     const baker = mockImplicitAccount(1);
 
     store.dispatch(
@@ -71,8 +71,6 @@ describe("<SignPage />", () => {
     };
     render(fixture(props));
 
-    await waitFor(() => {
-      expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
-    });
+    expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
   });
 });

@@ -4,7 +4,7 @@ import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/ba
 import { BatchPage } from "./BatchPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
-import { act, fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
+import { act, fireEvent, render, screen, userEvent } from "../../mocks/testUtils";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { MAINNET } from "../../types/Network";
 import { useGetSecretKey } from "../../utils/hooks/accountUtils";
@@ -136,20 +136,18 @@ describe("<BatchPage />", () => {
     });
 
     test("submit batch", async () => {
+      const user = userEvent.setup();
       mockEstimatedFee(10);
       render(
         <Modal isOpen={true} onClose={() => {}}>
           <BatchPage />
         </Modal>
       );
-      const submitBatchButton = screen.getByRole("button", { name: /submit batch/i });
-      fireEvent.click(submitBatchButton);
+
+      await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
-      await waitFor(() => {
-        expect(screen.getByRole("dialog")).toBeInTheDocument();
-      });
-
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
       expect(screen.getByLabelText("Password")).toBeInTheDocument();
     });
   });

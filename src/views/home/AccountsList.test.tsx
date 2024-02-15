@@ -8,7 +8,7 @@ import {
   mockPk,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { act, fireEvent, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
+import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";
@@ -40,11 +40,10 @@ describe("<AccountsList />", () => {
 
       await act(() => user.click(mnemonicPopover));
       await act(() => user.click(removeMnemonic));
-      await waitFor(() => {
-        expect(screen.getByTestId("description")).toHaveTextContent(
-          "Are you sure you want to remove all accounts derived from Seedphrase mockPrint?"
-        );
-      });
+
+      expect(screen.getByTestId("description")).toHaveTextContent(
+        "Are you sure you want to remove all accounts derived from Seedphrase mockPrint?"
+      );
 
       await act(() => user.click(socialPopover));
       await act(() => user.click(removeSocial));
@@ -183,32 +182,29 @@ describe("<AccountsList />", () => {
     await act(() => user.click(cta));
     // Click "create" button
     expect(await screen.findByRole("dialog")).toHaveTextContent("Create");
-    const createBtn = getByRole("button", { name: /^create$/i });
+    const createBtn = getByRole("button", { name: "Create" });
     // Input account label
     await act(() => user.click(createBtn));
-    const nameInput = screen.getByLabelText(/account name/i);
-    fireEvent.change(nameInput, { target: { value: LABEL } });
-    await act(() => user.click(screen.getByRole("button", { name: /continue/i })));
+    const nameInput = screen.getByLabelText("Account name");
+    await act(() => user.type(nameInput, LABEL));
+    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
     // Input password
-    await waitFor(() => {
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    });
-    const passwordInput = screen.getByLabelText(/password/i);
-    fireEvent.change(passwordInput, { target: { value: "myPassword" } });
-    // Submit
-    await waitFor(() => {
-      const submitBtn = screen.getByRole("button", { name: /submit/i });
-      expect(submitBtn).toBeEnabled();
-    });
-    await act(() => user.click(screen.getByRole("button", { name: /submit/i })));
-    await waitFor(() => {
-      expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
-    });
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
 
+    const passwordInput = screen.getByLabelText(/password/i);
+    await act(() => user.type(passwordInput, "myPassword"));
+    // Submit
+    const submitBtn = screen.getByRole("button", { name: "Submit" });
+    expect(submitBtn).toBeEnabled();
+
+    await act(() => user.click(submitBtn));
+
+    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
     expect(derivePublicKeyPairMock).toHaveBeenCalledWith(
       "mockSeedPhrase",
       getDefaultDerivationPath(2)
     );
+
     {
       const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
 

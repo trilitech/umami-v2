@@ -9,7 +9,7 @@ import {
   mockNFTToken,
 } from "../../mocks/factories";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
-import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
+import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
@@ -144,15 +144,15 @@ describe("<AccountCard />", () => {
   });
 
   test("tokens tab should display no tokens message if account has no tokens", async () => {
+    const user = userEvent.setup();
     // Remove all assets in the store
     store.dispatch(assetsSlice.actions.reset());
 
     render(<AccountCard account={selectedAccount} />);
 
-    fireEvent.click(screen.getByTestId("account-card-tokens-tab"));
-    await waitFor(() => {
-      expect(screen.getByTestId("asset-panel")).toBeInTheDocument();
-    });
+    await act(() => user.click(screen.getByTestId("account-card-tokens-tab")));
+    expect(screen.getByTestId("asset-panel")).toBeInTheDocument();
+
     const { getByText } = within(screen.getByTestId("asset-panel"));
     expect(getByText("No tokens to show")).toBeInTheDocument();
   });
@@ -190,16 +190,21 @@ describe("<AccountCard />", () => {
   });
 
   it("should display nfts under nfts tab", async () => {
+    const user = userEvent.setup();
     render(<AccountCard account={selectedAccount} />);
+
     await waitFor(() => {
       expect(screen.getByTestId("account-card-nfts-tab")).toBeInTheDocument();
     });
-    fireEvent.click(screen.getByTestId("account-card-nfts-tab"));
+
+    await act(() => user.click(screen.getByTestId("account-card-nfts-tab")));
+
     expect(screen.queryAllByTestId("account-card-nfts-tab")).toHaveLength(1);
   });
 
   it("displays accounts operations under operations tab if account has operations", async () => {
     render(<AccountCard account={selectedAccount} />);
+
     await waitFor(() => {
       expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2);
     });
@@ -211,11 +216,14 @@ describe("<AccountCard />", () => {
   });
 
   it("hides operations empty state message if account has operations", async () => {
+    const user = userEvent.setup();
     render(<AccountCard account={selectedAccount} />);
+
     await waitFor(() => {
       expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2);
     });
-    fireEvent.click(screen.getByTestId("account-card-operations-tab"));
+
+    await act(() => user.click(screen.getByTestId("account-card-operations-tab")));
 
     const { queryByTestId } = within(screen.getByTestId("account-card-operations-tab-panel"));
     await waitFor(() => {
@@ -224,21 +232,21 @@ describe("<AccountCard />", () => {
   });
 
   it("displays operations empty state message if account has no operations", async () => {
+    const user = userEvent.setup();
     jest.mocked(getCombinedOperations).mockResolvedValue([]);
     render(<AccountCard account={selectedAccount} />);
 
     await waitFor(() => {
       expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
     });
-    fireEvent.click(screen.getByTestId("account-card-operations-tab"));
+
+    await act(() => user.click(screen.getByTestId("account-card-operations-tab")));
 
     // check empty state message
     const { getByText, getByTestId } = within(
       screen.getByTestId("account-card-operations-tab-panel")
     );
-    await waitFor(() => {
-      expect(getByTestId("empty-state-message")).toBeVisible();
-    });
+    expect(getByTestId("empty-state-message")).toBeVisible();
     expect(getByText("No operations to show")).toBeVisible();
     expect(getByText("Your operations history will appear here...")).toBeVisible();
     // check View All Operations button from empty state
@@ -250,28 +258,28 @@ describe("<AccountCard />", () => {
 
   describe("delegations", () => {
     it("shows empty state with delegate button when no delegations", async () => {
+      const user = userEvent.setup();
       render(<AccountCard account={selectedAccount} />);
+
       await waitFor(() => {
         expect(screen.getByTestId("account-card-delegation-tab")).toBeInTheDocument();
       });
 
-      fireEvent.click(screen.getByTestId("account-card-delegation-tab"));
-      await waitFor(() => {
-        expect(screen.getByTestId("empty-state-message")).toBeVisible();
-      });
+      await act(() => user.click(screen.getByTestId("account-card-delegation-tab")));
 
+      expect(screen.getByTestId("empty-state-message")).toBeVisible();
       expect(screen.getByText("No delegations to show")).toBeVisible();
       expect(screen.getByText("Your delegation history will appear here...")).toBeVisible();
 
-      fireEvent.click(screen.getByTestId("delegation-empty-state-button"));
-      await waitFor(() => {
-        expect(screen.getByTestId("delegate-form")).toBeVisible();
-      });
+      await act(() => user.click(screen.getByTestId("delegation-empty-state-button")));
+
+      expect(screen.getByTestId("delegate-form")).toBeVisible();
       const { getByText } = within(screen.getByTestId("delegate-form"));
       expect(getByText("Delegate")).toBeVisible();
     });
 
     it("displays delegation and action buttons when with active delegation", async () => {
+      const user = userEvent.setup();
       jest
         .mocked(getLastDelegation)
         .mockResolvedValue(
@@ -288,9 +296,10 @@ describe("<AccountCard />", () => {
       await waitFor(() => {
         expect(screen.getByTestId("account-card-delegation-tab")).toBeInTheDocument();
       });
-      fireEvent.click(screen.getByTestId("account-card-delegation-tab"));
-      const { getByTestId } = within(screen.getByTestId("asset-panel"));
 
+      await act(() => user.click(screen.getByTestId("account-card-delegation-tab")));
+
+      const { getByTestId } = within(screen.getByTestId("asset-panel"));
       expect(getByTestId(/initial balance/i)).toHaveTextContent("6.000000 ꜩ");
       expect(getByTestId(/current balance/i)).toHaveTextContent(
         prettyTezAmount(SELECTED_ACCOUNT_BALANCE.toString())
@@ -302,11 +311,10 @@ describe("<AccountCard />", () => {
       const removeDelegateBtn = screen.getByText(/end delegation/i);
       expect(removeDelegateBtn).toBeInTheDocument();
 
-      fireEvent.click(changeDelegateBtn);
-      await waitFor(() => {
-        const modal = screen.getByRole("dialog");
-        expect(modal).toHaveTextContent(/Change Baker/i);
-      });
+      await act(() => user.click(changeDelegateBtn));
+
+      const modal = screen.getByRole("dialog");
+      expect(modal).toHaveTextContent(/Change Baker/i);
     });
   });
 
@@ -314,6 +322,7 @@ describe("<AccountCard />", () => {
     const multisigAccount = multisigToAccount(multisigs[2], "my multisig");
     test("multisig accounts don't display a buy tez button", async () => {
       render(<AccountCard account={multisigAccount} />);
+
       await waitFor(() => {
         expect(screen.queryByText(/buy tez/i)).not.toBeInTheDocument();
       });
@@ -327,6 +336,7 @@ describe("<AccountCard />", () => {
       await waitFor(() => {
         expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();
       });
+
       const { getAllByTestId } = within(screen.getByTestId("account-card-pending-tab-panel"));
       const pendingOps = getAllByTestId(/multisig-pending-operation/i);
       expect(pendingOps).toHaveLength(1);
@@ -342,6 +352,7 @@ describe("<AccountCard />", () => {
       store.dispatch(setMultisigs([multisigWithNoOps]));
 
       render(<AccountCard account={multisigAccount} />);
+
       await waitFor(() => {
         // wait for the component to load
         expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
@@ -374,6 +385,7 @@ describe("<AccountCard />", () => {
       await waitFor(() => {
         expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2);
       });
+
       expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
       const operations = screen.getAllByTestId(/^operation-tile/);
       expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
@@ -385,6 +397,7 @@ describe("<AccountCard />", () => {
       await waitFor(() => {
         expect(screen.getByTestId("multisig-tag-section")).toBeInTheDocument();
       });
+
       const signers = screen.getByTestId("multisig-tag-section");
       expect(signers).toBeInTheDocument();
       const { getByText } = within(signers);

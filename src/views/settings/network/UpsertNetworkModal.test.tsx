@@ -2,7 +2,7 @@ import { Modal } from "@chakra-ui/react";
 import { ReactElement } from "react";
 
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { GHOSTNET, MAINNET } from "../../../types/Network";
 import { networksActions } from "../../../utils/redux/slices/networks";
 import { store } from "../../../utils/redux/store";
@@ -23,13 +23,14 @@ describe("<UpsertNetworkModal />", () => {
 
     it("doesn't render name field", async () => {
       render(fixture(<UpsertNetworkModal network={MAINNET} />));
-      await waitFor(() => {
-        expect(screen.queryByLabelText("Name")).not.toBeInTheDocument();
-      });
+
+      await waitFor(() => expect(screen.queryByLabelText("Name")).not.toBeInTheDocument());
     });
 
     it("saves the updates", async () => {
+      const user = userEvent.setup();
       render(fixture(<UpsertNetworkModal network={customNetwork} />));
+
       const updatedNetwork = {
         ...customNetwork,
         rpcUrl: "https://rpc",
@@ -38,27 +39,20 @@ describe("<UpsertNetworkModal />", () => {
         buyTezUrl: "",
       };
 
-      fireEvent.change(screen.getByLabelText("RPC URL"), {
-        target: { value: updatedNetwork.rpcUrl },
-      });
-      fireEvent.change(screen.getByLabelText("Tzkt API URL"), {
-        target: { value: updatedNetwork.tzktApiUrl },
-      });
-      fireEvent.change(screen.getByLabelText("Tzkt Explorer URL"), {
-        target: { value: updatedNetwork.tzktExplorerUrl },
-      });
-      fireEvent.change(screen.getByLabelText("Buy Tez URL"), {
-        target: { value: "" },
-      });
+      await act(() => user.clear(screen.getByLabelText("RPC URL")));
+      await act(() => user.clear(screen.getByLabelText("Tzkt API URL")));
+      await act(() => user.clear(screen.getByLabelText("Tzkt Explorer URL")));
+      await act(() => user.clear(screen.getByLabelText("Buy Tez URL")));
+      await act(() => user.type(screen.getByLabelText("RPC URL"), updatedNetwork.rpcUrl));
+      await act(() => user.type(screen.getByLabelText("Tzkt API URL"), updatedNetwork.tzktApiUrl));
+      await act(() =>
+        user.type(screen.getByLabelText("Tzkt Explorer URL"), updatedNetwork.tzktExplorerUrl)
+      );
 
-      await waitFor(() => {
-        expect(screen.getByText("Save changes")).toBeEnabled();
-      });
+      expect(screen.getByText("Save changes")).toBeEnabled();
 
-      fireEvent.click(screen.getByText("Save changes"));
-      await waitFor(() => {
-        expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, updatedNetwork]);
-      });
+      await act(() => user.click(screen.getByText("Save changes")));
+      expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, updatedNetwork]);
     });
   });
 
@@ -107,20 +101,21 @@ describe("<UpsertNetworkModal />", () => {
     });
 
     it("creates new network", async () => {
+      const user = userEvent.setup();
       render(fixture(<UpsertNetworkModal />));
-      fireEvent.change(screen.getByLabelText("Name"), { target: { value: customNetwork.name } });
-      fireEvent.change(screen.getByLabelText("RPC URL"), {
-        target: { value: customNetwork.rpcUrl },
-      });
-      fireEvent.change(screen.getByLabelText("Tzkt API URL"), {
-        target: { value: customNetwork.tzktApiUrl },
-      });
-      fireEvent.change(screen.getByLabelText("Tzkt Explorer URL"), {
-        target: { value: customNetwork.tzktExplorerUrl },
-      });
-      fireEvent.change(screen.getByLabelText("Buy Tez URL"), {
-        target: { value: customNetwork.buyTezUrl },
-      });
+
+      await act(() => user.clear(screen.getByLabelText("Name")));
+      await act(() => user.clear(screen.getByLabelText("RPC URL")));
+      await act(() => user.clear(screen.getByLabelText("Tzkt API URL")));
+      await act(() => user.clear(screen.getByLabelText("Tzkt Explorer URL")));
+      await act(() => user.clear(screen.getByLabelText("Buy Tez URL")));
+      await act(() => user.type(screen.getByLabelText("Name"), customNetwork.name));
+      await act(() => user.type(screen.getByLabelText("RPC URL"), customNetwork.rpcUrl));
+      await act(() => user.type(screen.getByLabelText("Tzkt API URL"), customNetwork.tzktApiUrl));
+      await act(() =>
+        user.type(screen.getByLabelText("Tzkt Explorer URL"), customNetwork.tzktExplorerUrl!)
+      );
+      await act(() => user.type(screen.getByLabelText("Buy Tez URL"), customNetwork.buyTezUrl!));
 
       await waitFor(() => {
         expect(screen.getByText("Add network")).toBeEnabled();

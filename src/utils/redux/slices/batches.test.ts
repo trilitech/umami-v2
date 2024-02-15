@@ -5,7 +5,6 @@ import {
   mockNftOperation,
   mockTezOperation,
 } from "../../../mocks/factories";
-import { waitFor } from "../../../mocks/testUtils";
 import { ImplicitOperations, makeAccountOperations } from "../../../types/AccountOperations";
 import { DefaultNetworks, Network } from "../../../types/Network";
 import { Operation } from "../../../types/Operation";
@@ -18,19 +17,18 @@ describe("batchesSlice", () => {
     const anotherNetwork = DefaultNetworks.find(n => n.name !== network.name) as Network;
 
     describe("add", () => {
-      it("can add operations to a non-existing batch", async () => {
+      it("can add operations to a non-existing batch", () => {
         const accountOperations = makeAccountOperations(
           mockImplicitAccount(1),
           mockImplicitAccount(1),
           [mockTezOperation(0)]
         );
         store.dispatch(add({ operations: accountOperations, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
       });
 
-      it("can add new operations to the same account", async () => {
+      it("can add new operations to the same account", () => {
         const transfers: Operation[] = [];
 
         for (const operation of [
@@ -46,15 +44,13 @@ describe("batchesSlice", () => {
           store.dispatch(add({ operations: accountOperations, network }));
           transfers.push(operation);
 
-          await waitFor(() => {
-            expect(store.getState().batches[network.name]).toEqual([
-              makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
-            ]);
-          });
+          expect(store.getState().batches[network.name]).toEqual([
+            makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), transfers),
+          ]);
         }
       });
 
-      it("can add operations to different sender accounts", async () => {
+      it("can add operations to different sender accounts", () => {
         const accountOperations = makeAccountOperations(
           mockImplicitAccount(1),
           mockImplicitAccount(1),
@@ -66,17 +62,16 @@ describe("batchesSlice", () => {
           sender: mockImplicitAccount(2),
         };
         store.dispatch(add({ operations: anotherAccountFormOperations, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([
-            accountOperations,
-            anotherAccountFormOperations,
-          ]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([
+          accountOperations,
+          anotherAccountFormOperations,
+        ]);
       });
     });
 
     describe("clear", () => {
-      it("removes everything under a given account", async () => {
+      it("removes everything under a given account", () => {
         const accountOperations = makeAccountOperations(
           mockImplicitAccount(1),
           mockImplicitAccount(1),
@@ -84,16 +79,15 @@ describe("batchesSlice", () => {
         );
         const pkh = mockImplicitAccount(1).address.pkh;
         store.dispatch(add({ operations: accountOperations, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
+
         store.dispatch(clear({ pkh, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([]);
       });
 
-      it("does nothing if the batch is on another network", async () => {
+      it("does nothing if the batch is on another network", () => {
         const accountOperations = makeAccountOperations(
           mockImplicitAccount(1),
           mockImplicitAccount(1),
@@ -103,20 +97,18 @@ describe("batchesSlice", () => {
         store.dispatch(add({ operations: accountOperations, network }));
         store.dispatch(add({ operations: accountOperations, network: anotherNetwork }));
 
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
         expect(store.getState().batches[anotherNetwork.name]).toEqual([accountOperations]);
+
         store.dispatch(clear({ pkh, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([]);
         expect(store.getState().batches[anotherNetwork.name]).toEqual([accountOperations]);
       });
     });
 
     describe("removeItem", () => {
-      it("removes the whole batch if there is just one operation", async () => {
+      it("removes the whole batch if there is just one operation", () => {
         const accountOperations = makeAccountOperations(
           mockImplicitAccount(1),
           mockImplicitAccount(1),
@@ -124,16 +116,15 @@ describe("batchesSlice", () => {
         );
         const pkh = mockImplicitAccount(1).address.pkh;
         store.dispatch(add({ operations: accountOperations, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
+
         store.dispatch(removeItem({ pkh, index: 0, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([]);
       });
 
-      it("removes the operation at the given index", async () => {
+      it("removes the operation at the given index", () => {
         const accountOperations = makeAccountOperations(
           mockImplicitAccount(1),
           mockImplicitAccount(1),
@@ -141,20 +132,19 @@ describe("batchesSlice", () => {
         );
         const pkh = mockImplicitAccount(1).address.pkh;
         store.dispatch(add({ operations: accountOperations, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
+
         store.dispatch(removeItem({ pkh, index: 1, network }));
         const newFormOperations = {
           ...accountOperations,
           operations: [mockTezOperation(0), mockNftOperation(0)],
         };
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([newFormOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([newFormOperations]);
       });
 
-      it("does nothing if the index is out of bounds", async () => {
+      it("does nothing if the index is out of bounds", () => {
         const accountOperations = makeAccountOperations(
           mockImplicitAccount(1),
           mockImplicitAccount(1),
@@ -162,30 +152,27 @@ describe("batchesSlice", () => {
         );
         const pkh = mockImplicitAccount(1).address.pkh;
         store.dispatch(add({ operations: accountOperations, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
+
         store.dispatch(removeItem({ pkh, index: 5, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
       });
 
-      it("does nothing if the batch does not exist", async () => {
+      it("does nothing if the batch does not exist", () => {
         const accountOperations = makeAccountOperations(
           mockImplicitAccount(1),
           mockImplicitAccount(1),
           [mockTezOperation(0)]
         );
         store.dispatch(add({ operations: accountOperations, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
 
         store.dispatch(removeItem({ pkh: mockImplicitAccount(2).address.pkh, index: 5, network }));
-        await waitFor(() => {
-          expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-        });
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
       });
     });
   });

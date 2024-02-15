@@ -10,7 +10,7 @@ import {
   mockMultisigAccount,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
@@ -215,6 +215,7 @@ describe("<Form />", () => {
     });
 
     it("shows a toast if estimation fails", async () => {
+      const user = userEvent.setup();
       render(
         fixture({
           form: {
@@ -228,13 +229,12 @@ describe("<Form />", () => {
       await waitFor(() => {
         expect(submitButton).toBeEnabled();
       });
-      fireEvent.click(submitButton);
       const estimateMock = jest.mocked(estimate);
       estimateMock.mockRejectedValue(new Error("Some error occurred"));
 
-      await waitFor(() => {
-        expect(estimateMock).toHaveBeenCalledTimes(1);
-      });
+      await act(() => user.click(submitButton));
+
+      expect(estimateMock).toHaveBeenCalledTimes(1);
       expect(mockToast).toHaveBeenCalledWith({
         description: "Some error occurred",
         status: "error",
@@ -244,6 +244,7 @@ describe("<Form />", () => {
     it.each([mockImplicitAccount(0), mockMultisigAccount(0)])(
       "opens a sign page if estimation succeeds",
       async sender => {
+        const user = userEvent.setup();
         render(
           <DynamicModalContext.Provider value={dynamicModalContextMock}>
             {fixture({
@@ -259,22 +260,22 @@ describe("<Form />", () => {
         await waitFor(() => {
           expect(submitButton).toBeEnabled();
         });
-        fireEvent.click(submitButton);
         mockEstimatedFee(100);
         const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
           { type: "tez", amount: "1000000", recipient: mockImplicitAccount(1).address },
         ]);
-        await waitFor(() => {
-          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <SignPage
-              data={undefined}
-              fee={new BigNumber(100)}
-              goBack={expect.any(Function)}
-              mode="single"
-              operations={operations}
-            />
-          );
-        });
+
+        await act(() => user.click(submitButton));
+
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+          <SignPage
+            data={undefined}
+            fee={new BigNumber(100)}
+            goBack={expect.any(Function)}
+            mode="single"
+            operations={operations}
+          />
+        );
         expect(mockToast).not.toHaveBeenCalled();
       }
     );
