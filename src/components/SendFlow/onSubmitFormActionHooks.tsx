@@ -52,18 +52,19 @@ export const useOpenSignPageFormAction = <
 
   return async (formValues: FormValues) => {
     const operations = makeFormOperations(formValues);
-    openWith(
+
+    return openWith(
       <SignPage
         data={signPageExtraData}
         fee={await estimate(operations, network)}
-        goBack={() => {
+        goBack={() =>
           openWith(
             <FormPage
               {...defaultFormPageProps}
               form={formValues} // whatever user selects on the form should override the default values
             />
-          );
-        }}
+          )
+        }
         mode="single"
         operations={operations}
       />

@@ -81,7 +81,7 @@ export const SelectApproversFormPage: React.FC<
 
   const openSignPage = useOpenSignPageFormAction({
     SignPage: SignTransactionFormPage,
-    signPageExtraData: watch() as FormValues,
+    signPageExtraData: watch(),
     FormPage: SelectApproversFormPage,
     defaultFormPageProps: props,
     toOperation,

@@ -5,13 +5,12 @@ import { useSearchParams } from "react-router-dom";
 
 import { AccountListDisplay } from "./AccountSelector/AccountListDisplay";
 import { AddressPill } from "./AddressPill/AddressPill";
-import { RawPkh } from "../types/Address";
 import { useAllAccounts } from "../utils/hooks/getAccountDataHooks";
 
 export const useAccountsFilter = () => {
   const allAccounts = useAllAccounts();
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedAddresses = searchParams.getAll("accounts") as RawPkh[];
+  const selectedAddresses = searchParams.getAll("accounts");
 
   const selectedAccounts = allAccounts.filter(acc => selectedAddresses.includes(acc.address.pkh));
   const selectableAccounts = differenceBy(allAccounts, selectedAccounts, acc => acc.address.pkh);

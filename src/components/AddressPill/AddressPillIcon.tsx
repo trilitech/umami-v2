@@ -57,15 +57,15 @@ export const RightIcon: React.FC<
     <>
       <AddContactIcon
         data-testid="add-contact-icon"
-        onClick={() => {
+        onClick={() =>
           openWith(
             <UpsertContactModal
               buttonText="Add to Contact"
               contact={{ name: "", pkh }}
               title="Add contact"
             />
-          );
-        }}
+          )
+        }
         {...rest}
       />
     </>

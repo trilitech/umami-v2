@@ -42,13 +42,11 @@ describe("OperationsView", () => {
       render(<OperationsView />);
 
       // filter by one of the accounts
-      user.click(screen.getByTestId("account-filter"));
+      await act(() => user.click(screen.getByTestId("account-filter")));
       await act(() => user.click(screen.getAllByTestId("address-tile")[0]));
-      await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(1));
+      expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
 
-      await waitFor(() => {
-        expect(screen.getByTestId("empty-state-message")).toBeVisible();
-      });
+      expect(screen.getByTestId("empty-state-message")).toBeVisible();
       expect(screen.getByText("No operations to show")).toBeInTheDocument();
       expect(screen.getByText("Your operations history will appear here...")).toBeInTheDocument();
       expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();

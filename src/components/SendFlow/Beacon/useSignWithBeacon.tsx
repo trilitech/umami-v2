@@ -1,5 +1,6 @@
 import { TezosToolkit } from "@taquito/taquito";
 import { BigNumber } from "bignumber.js";
+import { noop } from "lodash";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -41,15 +42,15 @@ export const useSignWithBeacon = (
           status: "error",
         };
       }
-    );
+    ).catch(noop);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network, operation]);
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
       const { opHash } = await executeOperations(operation, tezosToolkit);
-      openWith(<SuccessStep hash={opHash} />);
-      onBeaconSuccess(opHash);
+      await openWith(<SuccessStep hash={opHash} />);
+      return onBeaconSuccess(opHash);
     });
 
   return {

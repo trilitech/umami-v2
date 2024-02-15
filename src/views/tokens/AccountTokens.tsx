@@ -107,9 +107,7 @@ export const AccountTokens: React.FC<{
                   </Td>
                   <Td textAlign="right" borderColor={rowBorderColor} paddingX="0">
                     <SendButton
-                      onClick={() => {
-                        openWith(<SendTokenFormPage sender={account} token={token} />);
-                      }}
+                      onClick={() => openWith(<SendTokenFormPage sender={account} token={token} />)}
                     />
                   </Td>
                 </Tr>

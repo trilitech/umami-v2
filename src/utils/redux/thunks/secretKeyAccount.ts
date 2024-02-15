@@ -61,7 +61,7 @@ export const restore =
     dispatch(accountsSlice.actions.addSecretKey({ pkh: account.address.pkh, encryptedSecretKey }));
   };
 
-export const remove = (account: SecretKeyAccount) => async (dispatch: AppDispatch) => {
+export const remove = (account: SecretKeyAccount) => (dispatch: AppDispatch) => {
   dispatch(accountsSlice.actions.removeSecretKey(account));
   dispatch(accountsSlice.actions.removeAccount(account));
 };

@@ -51,7 +51,7 @@ export const SignButton: React.FC<{
   const onSocialSign = async () =>
     handleAsyncAction(async () => {
       const { secretKey } = await getGoogleCredentials();
-      onSubmit(await makeToolkit({ type: "social", secretKey, network }));
+      return onSubmit(await makeToolkit({ type: "social", secretKey, network }));
     });
 
   const onLedgerSign = async () =>

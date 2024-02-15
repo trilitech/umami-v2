@@ -11,7 +11,7 @@ import {
   mockPk,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
+import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";
@@ -41,25 +41,25 @@ describe("<AccountsList />", () => {
       const [mnemonicPopover, socialPopover] = screen.getAllByTestId("popover-cta");
       const [removeMnemonic, removeSocial] = screen.getAllByTestId("popover-remove");
 
-      user.click(mnemonicPopover);
-      user.click(removeMnemonic);
+      await act(() => user.click(mnemonicPopover));
+      await act(() => user.click(removeMnemonic));
       await waitFor(() => {
         expect(screen.getByTestId("description")).toHaveTextContent(
           "Are you sure you want to remove all accounts derived from Seedphrase mockPrint?"
         );
       });
 
-      user.click(socialPopover);
-      user.click(removeSocial);
-      await waitFor(() => {
-        expect(screen.getByTestId("description")).toHaveTextContent(
-          "Are you sure you want to remove all of your Social Accounts?"
-        );
-      });
+      await act(() => user.click(socialPopover));
+      await act(() => user.click(removeSocial));
+
+      expect(screen.getByTestId("description")).toHaveTextContent(
+        "Are you sure you want to remove all of your Social Accounts?"
+      );
     });
 
     it("removes all accounts linked to a given mnemonic", async () => {
-      await restore();
+      const user = userEvent.setup();
+      restore();
       render(<AccountsList />);
 
       expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
@@ -67,36 +67,30 @@ describe("<AccountsList />", () => {
 
       const { getByTestId, getByRole } = within(seedPhrase1);
       const cta = getByTestId(/^popover-cta$/i);
-      fireEvent.click(cta);
+      await act(() => user.click(cta));
 
-      await waitFor(() => {
-        expect(getByRole("dialog")).toHaveTextContent("Remove");
-      });
+      expect(getByRole("dialog")).toHaveTextContent("Remove");
 
       const removeBtn = getByRole("button", { name: /^remove$/i });
 
-      fireEvent.click(removeBtn);
+      await act(() => user.click(removeBtn));
 
-      await waitFor(() => {
-        expect(
-          screen.getByText(
-            `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
-          )
-        ).toBeInTheDocument();
-      });
+      expect(
+        screen.getByText(
+          `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+        )
+      ).toBeInTheDocument();
 
       const confirmBtn = screen.getByRole("button", { name: "Remove All" });
 
-      fireEvent.click(confirmBtn);
+      await act(() => user.click(confirmBtn));
 
       expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(1);
-      await waitFor(() => {
-        expect(
-          screen.queryByText(
-            `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
-          )
-        ).not.toBeInTheDocument();
-      });
+      expect(
+        screen.queryByText(
+          `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+        )
+      ).not.toBeInTheDocument();
     });
 
     it("shows offboarding message for last accounts", async () => {
@@ -105,21 +99,21 @@ describe("<AccountsList />", () => {
       const social2 = mockSocialAccount(1);
       store.dispatch(accountsSlice.actions.addAccount(social1));
       store.dispatch(accountsSlice.actions.addAccount(social2));
+
       render(<AccountsList />);
 
-      user.click(screen.getByTestId("popover-cta"));
-      user.click(screen.getByTestId("popover-remove"));
-      await waitFor(() => {
-        expect(screen.getByTestId("description")).toHaveTextContent(
-          "Removing all your accounts will off-board you from Umami. " +
-            "This will remove or reset all customised settings to their defaults. " +
-            "Personal data (including saved contacts, password and accounts) won't be affected."
-        );
-      });
+      await act(() => user.click(screen.getByTestId("popover-cta")));
+      await act(() => user.click(screen.getByTestId("popover-remove")));
+
+      expect(screen.getByTestId("description")).toHaveTextContent(
+        "Removing all your accounts will off-board you from Umami. " +
+          "This will remove or reset all customised settings to their defaults. " +
+          "Personal data (including saved contacts, password and accounts) won't be affected."
+      );
     });
   });
 
-  it("displays accounts in store with label and formated pkh", async () => {
+  it("displays accounts in store with label and formated pkh", () => {
     store.dispatch(
       addMockMnemonicAccounts([
         mockMnemonicAccount(0),
@@ -142,8 +136,8 @@ describe("<AccountsList />", () => {
     });
   });
 
-  it("displays accounts by group (case mnemonic social and multisig)", async () => {
-    await restore();
+  it("displays accounts by group (case mnemonic social and multisig)", () => {
+    restore();
     render(<AccountsList />);
     expect(screen.getAllByTestId("account-tile-container")).toHaveLength(7);
     expect(screen.getAllByTestId(/account-group-title/)).toHaveLength(4);
@@ -172,6 +166,7 @@ describe("<AccountsList />", () => {
   });
 
   it("allows to derive a new account for a mnemonic", async () => {
+    const user = userEvent.setup();
     const decryptMock = jest.spyOn(cryptoFunctionsToMock, "decrypt");
     decryptMock.mockResolvedValue("mockSeedPhrase");
     const derivePublicKeyPairMock = jest.spyOn(mnemonicFunctionsToMock, "derivePublicKeyPair");
@@ -181,22 +176,22 @@ describe("<AccountsList />", () => {
       pk: account.pk,
     });
     const LABEL = "my label";
-    await restore();
+    restore();
     render(<AccountsList />);
 
     // Open actions dialog for Mnemonic Group 1
     const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
     const { getByTestId, getByRole } = within(seedPhrase1);
     const cta = getByTestId(/^popover-cta$/i);
-    fireEvent.click(cta);
+    await act(() => user.click(cta));
     // Click "create" button
     expect(await screen.findByRole("dialog")).toHaveTextContent("Create");
     const createBtn = getByRole("button", { name: /^create$/i });
     // Input account label
-    fireEvent.click(createBtn);
+    await act(() => user.click(createBtn));
     const nameInput = screen.getByLabelText(/account name/i);
     fireEvent.change(nameInput, { target: { value: LABEL } });
-    fireEvent.click(screen.getByRole("button", { name: /continue/i }));
+    await act(() => user.click(screen.getByRole("button", { name: /continue/i })));
     // Input password
     await waitFor(() => {
       expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
@@ -208,7 +203,7 @@ describe("<AccountsList />", () => {
       const submitBtn = screen.getByRole("button", { name: /submit/i });
       expect(submitBtn).toBeEnabled();
     });
-    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+    await act(() => user.click(screen.getByRole("button", { name: /submit/i })));
     await waitFor(() => {
       expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
     });
@@ -228,7 +223,7 @@ describe("<AccountsList />", () => {
   });
 });
 
-const restore = async () => {
+const restore = () => {
   store.dispatch(
     accountsSlice.actions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGETPRINT1,

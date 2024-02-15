@@ -61,7 +61,7 @@ describe("useAddressKind", () => {
     { type: "fa1.2", tokenBalance: hedgehoge(mockImplicitAddress(0)) },
     { type: "fa2", tokenBalance: uUSD(mockImplicitAddress(0)) },
   ])("for $type token", ({ type, tokenBalance }) => {
-    const tokenContractAddress = parseContractPkh(tokenBalance.token.contract.address as string);
+    const tokenContractAddress = parseContractPkh(tokenBalance.token.contract.address);
 
     it("returns empty label if name is not present", () => {
       const withoutName = cloneDeep(tokenBalance);
@@ -143,9 +143,9 @@ describe("useAddressKind", () => {
       { type: "multisig", address: multisigs[0].address.pkh },
       {
         type: "fa1.2",
-        address: hedgehoge(mockImplicitAddress(0)).token.contract.address as string,
+        address: hedgehoge(mockImplicitAddress(0)).token.contract.address,
       },
-      { type: "fa2", address: uUSD(mockImplicitAddress(0)).token.contract.address as string },
+      { type: "fa2", address: uUSD(mockImplicitAddress(0)).token.contract.address },
       { type: "baker", address: mockBaker(1).address },
     ])("prioritizes $type over the contact", ({ type, address }) => {
       store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));

@@ -36,9 +36,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
       balance={balance}
       dollarBalance={dollarBalance}
       nfts={nfts}
-      onReceive={() => {
-        openWith(<ReceiveModal pkh={account.address.pkh} />);
-      }}
+      onReceive={() => openWith(<ReceiveModal pkh={account.address.pkh} />)}
       onSend={() => openWith(<SendTezForm sender={account} />)}
       tokens={tokens}
     />

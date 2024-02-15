@@ -3,7 +3,7 @@
   "parserOptions": {
     // tsconfig.e2e.json includes both src and src/e2e
     "project": "./tsconfig.e2e.json",
-    "parser": "@typescript-eslint/parser"
+    "parser": "@typescript-eslint/parser",
   },
   "plugins": [
     "@typescript-eslint",
@@ -15,7 +15,7 @@
     "testing-library",
     "unused-imports",
     "@stylistic/eslint-plugin",
-    "deprecation"
+    "deprecation",
   ],
   "extends": [
     "eslint:recommended",
@@ -24,7 +24,7 @@
     "plugin:import/typescript",
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:testing-library/react"
+    "plugin:testing-library/react",
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off", // TODO: change to error https://app.asana.com/0/0/1204322668303155/f
@@ -44,13 +44,17 @@
     "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": "allow-with-description" }],
     "@typescript-eslint/no-unused-vars": [
       "warn",
-      { "argsIgnorePattern": ".*", "varsIgnorePattern": "^_" }
+      { "argsIgnorePattern": ".*", "varsIgnorePattern": "^_" },
     ],
     "@typescript-eslint/triple-slash-reference": "off",
 
     "react/jsx-key": [
       "warn",
-      { "checkFragmentShorthand": true, "checkKeyMustBeforeSpread": true, "warnOnDuplicates": true }
+      {
+        "checkFragmentShorthand": true,
+        "checkKeyMustBeforeSpread": true,
+        "warnOnDuplicates": true,
+      },
     ],
 
     "chakra-ui/props-order": ["warn", { "applyToAllComponents": true }],
@@ -65,8 +69,8 @@
         "ignoreDeclarationSort": true, // don"t want to sort import lines, use eslint-plugin-import instead
         "ignoreMemberSort": false,
         "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-        "allowSeparatedGroups": true
-      }
+        "allowSeparatedGroups": true,
+      },
     ],
     "import/order": [
       "warn",
@@ -77,38 +81,44 @@
           "internal", // <- Absolute imports
           ["sibling", "parent"], // <- Relative imports, the sibling and parent types they can be mingled together
           "index", // <- index imports
-          "unknown" // <- unknown
+          "unknown", // <- unknown
         ],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
-          "caseInsensitive": true
-        }
-      }
+          "caseInsensitive": true,
+        },
+      },
     ],
     "@stylistic/quotes": ["warn", "double", { "avoidEscape": true }],
     "deprecation/deprecation": "warn",
     "import/no-unused-modules": ["warn", { "unusedExports": true }],
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "@typescript-eslint/require-await": "warn",
+    "@typescript-eslint/no-floating-promises": "warn",
+    "@typescript-eslint/no-misused-promises": [
+      "warn",
+      { "checksVoidReturn": { "attributes": false } },
+    ],
   },
   "overrides": [
     {
       "files": ["src/e2e/**/*.ts"],
       "rules": {
-        "testing-library/prefer-screen-queries": "off"
-      }
+        "testing-library/prefer-screen-queries": "off",
+      },
     },
     {
       "files": ["react-app-env.d.ts"],
       "rules": {
-        "import/no-unused-modules": "off"
-      }
+        "import/no-unused-modules": "off",
+      },
     },
     {
       "files": ["MultisigActionButton.tsx"],
       "rules": {
-        "deprecation/deprecation": "off"
-      }
-    }
-  ]
+        "deprecation/deprecation": "off",
+      },
+    },
+  ],
 }

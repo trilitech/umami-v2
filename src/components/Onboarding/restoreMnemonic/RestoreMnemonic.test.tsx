@@ -44,7 +44,7 @@ describe("<RestoreMnemonic />", () => {
       });
     });
 
-    it("selects 24 words by default", async () => {
+    it("selects 24 words by default", () => {
       render(fixture(goToStepMock));
       const selectElement = screen.getByRole("combobox");
       expect(selectElement).toHaveValue("24");

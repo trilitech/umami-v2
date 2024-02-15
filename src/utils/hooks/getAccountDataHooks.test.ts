@@ -114,8 +114,9 @@ describe("getAccountDataHooks", () => {
         accounts: [mockSecretKeyAccount(0, "Test acc 2"), mockSecretKeyAccount(1, "Test acc 4")],
       },
     ];
+
     describe.each(existingAccounts)("among $type accounts", existingAccounts => {
-      it("returns unique labels", async () => {
+      it("returns unique labels", () => {
         if (existingAccounts.type === "mnemonic") {
           store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts));
         } else {
@@ -139,7 +140,7 @@ describe("getAccountDataHooks", () => {
       });
     });
 
-    it("among multisig accounts returns unique labels", async () => {
+    it("among multisig accounts returns unique labels", () => {
       store.dispatch(
         multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
       );
@@ -160,7 +161,7 @@ describe("getAccountDataHooks", () => {
       ]);
     });
 
-    it("among contacts returns unique labels", async () => {
+    it("among contacts returns unique labels", () => {
       store.dispatch(checkAccountsAndUpsertContact(mockContact(0, "Test acc 2")));
       store.dispatch(checkAccountsAndUpsertContact(mockContact(1, "Test acc 4")));
 

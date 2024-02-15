@@ -9,7 +9,7 @@ import {
   mockNFTRaw,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { render, screen, waitFor } from "../../mocks/testUtils";
+import { act, render, screen } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { MAINNET } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
@@ -114,11 +114,9 @@ describe("<AccountTile />", () => {
           </SelectedAccountContext.Provider>
         );
 
-        user.click(screen.getByTestId("account-tile-container"));
+        await act(() => user.click(screen.getByTestId("account-tile-container")));
 
-        await waitFor(() => {
-          expect(spy).toHaveBeenCalledWith(account);
-        });
+        expect(spy).toHaveBeenCalledWith(account);
       });
     });
 

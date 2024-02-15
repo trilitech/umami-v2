@@ -1,11 +1,10 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import type { UserEvent } from "@testing-library/user-event/dist/types/setup/setup";
 import { useSearchParams } from "react-router-dom";
 
 import { useAccountsFilter } from "./useAccountsFilter";
 import { mockMnemonicAccount } from "../mocks/factories";
-import { AllTheProviders, render, screen } from "../mocks/testUtils";
+import { AllTheProviders, act, render, renderHook, screen, waitFor } from "../mocks/testUtils";
 import { accountsSlice } from "../utils/redux/slices/accountsSlice";
 import { store } from "../utils/redux/store";
 
@@ -42,11 +41,11 @@ describe("AccountsFilter", () => {
         expect(searchParams.getAll("accounts")).toEqual([]);
       });
 
-      it("displays a list of all accounts on click", () => {
+      it("displays a list of all accounts on click", async () => {
         const user = userEvent.setup();
         render(<TestComponent />);
 
-        user.click(screen.getByTestId("account-filter"));
+        await act(() => user.click(screen.getByTestId("account-filter")));
 
         const listItems = screen.getAllByTestId("address-tile");
         expect(listItems).toHaveLength(3);
@@ -85,7 +84,7 @@ describe("AccountsFilter", () => {
         expect(searchParams.getAll("accounts")).toEqual(preSelectedAccounts);
       });
 
-      it("displays a list of remaining accounts on click", () => {
+      it("displays a list of remaining accounts on click", async () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams(), {
           wrapper: AllTheProviders,
@@ -94,7 +93,7 @@ describe("AccountsFilter", () => {
         act(() => setSearchParams({ accounts: preSelectedAccounts }));
         render(<TestComponent />);
 
-        user.click(screen.getByTestId("account-filter"));
+        await act(() => user.click(screen.getByTestId("account-filter")));
 
         const listItems = screen.getAllByTestId("address-tile");
         expect(listItems).toHaveLength(1);
@@ -109,15 +108,15 @@ describe("AccountsFilter", () => {
       accountIndexes: number[],
       expectedPillsLength?: number
     ) => {
-      user.click(screen.getByTestId("account-filter"));
+      await act(() => user.click(screen.getByTestId("account-filter")));
+
       const listItems = getAccountListItems();
       for (const accountIndex of accountIndexes) {
         await act(() => user.click(listItems[accountIndex]));
       }
-      await waitFor(() =>
-        expect(screen.getAllByTestId("account-pill")).toHaveLength(
-          expectedPillsLength || accountIndexes.length
-        )
+
+      expect(screen.getAllByTestId("account-pill")).toHaveLength(
+        expectedPillsLength || accountIndexes.length
       );
     };
 
@@ -166,9 +165,9 @@ describe("AccountsFilter", () => {
         await selectAccountListItems(user, [0, 2]);
 
         // remove first added account
-        user.click(screen.getAllByTestId("address-pill-right-icon")[0]);
-        await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(1));
+        await act(() => user.click(screen.getAllByTestId("address-pill-right-icon")[0]));
 
+        expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
         expect(screen.getByTestId("account-pill")).toHaveTextContent(accounts[2].label);
       });
 
@@ -178,8 +177,8 @@ describe("AccountsFilter", () => {
         await selectAccountListItems(user, [0, 2]);
 
         // remove first added account
-        user.click(screen.getAllByTestId("address-pill-right-icon")[0]);
-        await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(1));
+        await act(() => user.click(screen.getAllByTestId("address-pill-right-icon")[0]));
+        () => expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
 
         const { result: routerHook } = renderHook(() => useSearchParams(), {
           wrapper: AllTheProviders,
@@ -194,9 +193,9 @@ describe("AccountsFilter", () => {
         await selectAccountListItems(user, [0, 2]);
 
         // remove last added account - accounts[2]
-        user.click(screen.getAllByTestId("xmark-icon-path")[0]);
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
 
-        await waitFor(() => expect(getAccountListItems()).toHaveLength(2));
+        expect(getAccountListItems()).toHaveLength(2);
         expect(getAccountListItems()[0]).toHaveTextContent(accounts[0].label);
         expect(getAccountListItems()[1]).toHaveTextContent(accounts[1].label);
       });
@@ -278,9 +277,9 @@ describe("AccountsFilter", () => {
         });
         render(<TestComponent />);
 
-        user.click(screen.getAllByTestId("xmark-icon-path")[0]);
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
 
-        await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(1));
+        expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
         expect(screen.getByTestId("account-pill")).toHaveTextContent(accounts[2].label);
       });
 
@@ -298,9 +297,9 @@ describe("AccountsFilter", () => {
         await selectAccountListItems(user, [0], 2);
 
         // remove last added account - accounts[0]
-        user.click(screen.getAllByTestId("xmark-icon-path")[0]);
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
 
-        await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(1));
+        expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
         expect(screen.getByTestId("account-pill")).toHaveTextContent(accounts[2].label);
       });
 
@@ -318,8 +317,8 @@ describe("AccountsFilter", () => {
         await selectAccountListItems(user, [0], 2);
 
         // remove first added account - accounts[2]
-        user.click(screen.getAllByTestId("xmark-icon-path")[1]);
-        await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(1));
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[1]));
+        expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
 
         const { result: routerHook2 } = renderHook(() => useSearchParams(), {
           wrapper: AllTheProviders,
@@ -342,8 +341,8 @@ describe("AccountsFilter", () => {
         await selectAccountListItems(user, [0], 2);
 
         // remove last added account - accounts[0]
-        user.click(screen.getAllByTestId("xmark-icon-path")[0]);
-        await waitFor(() => expect(screen.getAllByTestId("account-pill")).toHaveLength(1));
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
+        expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
 
         const { result: routerHook2 } = renderHook(() => useSearchParams(), {
           wrapper: AllTheProviders,
@@ -363,9 +362,9 @@ describe("AccountsFilter", () => {
         });
         render(<TestComponent />);
 
-        user.click(screen.getAllByTestId("xmark-icon-path")[0]);
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
 
-        await waitFor(() => expect(getAccountListItems()).toHaveLength(2));
+        expect(getAccountListItems()).toHaveLength(2);
         expect(getAccountListItems()[0]).toHaveTextContent(accounts[0].label);
         expect(getAccountListItems()[1]).toHaveTextContent(accounts[1].label);
       });
@@ -384,9 +383,9 @@ describe("AccountsFilter", () => {
         await selectAccountListItems(user, [0], 2);
 
         // remove last added account - accounts[0]
-        user.click(screen.getAllByTestId("xmark-icon-path")[0]);
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
 
-        await waitFor(() => expect(getAccountListItems()).toHaveLength(2));
+        expect(getAccountListItems()).toHaveLength(2);
         expect(getAccountListItems()[0]).toHaveTextContent(accounts[0].label);
         expect(getAccountListItems()[1]).toHaveTextContent(accounts[1].label);
       });

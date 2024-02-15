@@ -6,7 +6,7 @@ import { omit } from "lodash";
 
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
-import { VERSION } from "../../utils/redux/reducer";
+import { VERSION } from "../../utils/redux/migrations";
 import { initialState as accountsInitialState } from "../../utils/redux/slices/accountsSlice";
 import { initialState as announcementInitialState } from "../../utils/redux/slices/announcementSlice";
 import { initialState as assetsInitialState } from "../../utils/redux/slices/assetsSlice";
@@ -20,7 +20,7 @@ import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
 
 let browser: ChromiumBrowser;
 
-BeforeAll(async function () {
+BeforeAll({ timeout: 20 * 1000 }, async function () {
   browser = await chromium.launch({ headless: !!process.env.CI });
 
   Object.defineProperty(global, "crypto", crypto);
@@ -38,7 +38,12 @@ BeforeAll(async function () {
  * Please refer to {@link CustomWorld} for information on how to set up tests correctly.
  */
 Before(async function (this: CustomWorld) {
-  (async () => {
+  const blockchainPromise = new Promise<void>(resolve => {
+    resetBlockchain();
+    resolve();
+  });
+
+  void (async () => {
     const predefinedState = await this.getReduxState();
     const accounts = { ...accountsInitialState, ...predefinedState["accounts"] };
     const state: any = {
@@ -91,7 +96,7 @@ Before(async function (this: CustomWorld) {
     this.page = await this.context.newPage();
   })();
 
-  resetBlockchain();
+  await blockchainPromise;
 });
 
 After(async function (this: CustomWorld) {

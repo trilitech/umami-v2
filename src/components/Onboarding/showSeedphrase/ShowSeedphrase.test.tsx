@@ -12,7 +12,7 @@ const fixture = (goToStep: (step: Step) => void) => {
 };
 
 describe("<ShowSeedphrase />", () => {
-  test("mnemonic is displayed", async () => {
+  test("mnemonic is displayed", () => {
     render(fixture(goToStepMock));
     const confirmBtn = screen.getByRole("button", {
       name: /OK, I've recorded it/i,

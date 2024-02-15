@@ -1,4 +1,4 @@
-import { max, min, uniqBy } from "lodash";
+import { max, min, noop, uniqBy } from "lodash";
 import { useEffect, useState } from "react";
 
 import { RawPkh } from "../../types/Address";
@@ -51,7 +51,7 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
         setOperations(currentOperations =>
           uniqBy([...newOperations.reverse(), ...currentOperations], op => op.id)
         );
-      });
+      }).catch(noop);
     }, REFRESH_INTERVAL);
     return () => clearInterval(interval);
 
@@ -80,9 +80,11 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
       setOperations(latestOperations);
       setHasMore(latestOperations.length > 0);
       setUpdatesTrigger(prev => prev + 1);
-    }).finally(() => {
-      setIsFirstLoad(false);
-    });
+    })
+      .catch(noop)
+      .finally(() => {
+        setIsFirstLoad(false);
+      });
     // handleAsyncAction gets constantly recreated, so we can't add it to the dependency array
     // otherwise, it will trigger the initial fetch infinitely
     // caching handleAsyncAction using useCallback doesn't work either

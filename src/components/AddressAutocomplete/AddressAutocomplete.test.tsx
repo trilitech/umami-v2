@@ -68,12 +68,12 @@ describe("<AddressAutocomplete />", () => {
     );
   });
 
-  it("hides suggestions by default", async () => {
+  it("hides suggestions by default", () => {
     fixture({});
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
   });
 
-  it("shows suggestions when the input is focused", async () => {
+  it("shows suggestions when the input is focused", () => {
     fixture({});
 
     const rawInput = screen.getByLabelText("destination");
@@ -84,7 +84,7 @@ describe("<AddressAutocomplete />", () => {
     expect(suggestions).toHaveLength(3);
   });
 
-  it("hides suggestions if input is an exact suggestion", async () => {
+  it("hides suggestions if input is an exact suggestion", () => {
     fixture({});
 
     const rawInput = screen.getByLabelText("destination");
@@ -94,7 +94,7 @@ describe("<AddressAutocomplete />", () => {
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
   });
 
-  it("displays suggestions if user input has suggestions", async () => {
+  it("displays suggestions if user input has suggestions", () => {
     store.dispatch(contactsActions.upsert(mockContact(0)));
     store.dispatch(contactsActions.upsert(mockContact(1)));
     fixture({});
@@ -136,7 +136,7 @@ describe("<AddressAutocomplete />", () => {
     expect(suggestionsContainer).not.toBeInTheDocument();
   });
 
-  it("displays default address, and does not display any suggestions", async () => {
+  it("displays default address, and does not display any suggestions", () => {
     fixture({ defaultDestination: mockContact(1).pkh });
 
     const realInput = screen.getByTestId("real-address-input-destination");

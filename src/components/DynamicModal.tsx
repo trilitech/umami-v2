@@ -31,6 +31,7 @@ export const useDynamicModal = () => {
     setSize(size);
     setModalContent(content);
     onOpen();
+    return Promise.resolve();
   };
 
   return {

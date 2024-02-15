@@ -63,7 +63,7 @@ describe("tezos utils fetch", () => {
             if (counter < 4) {
               throw new Error("Some error");
             }
-            return "success";
+            return Promise.resolve("success");
           };
 
           await expect(withRateLimit(fn)).resolves.toEqual("success");
@@ -76,7 +76,7 @@ describe("tezos utils fetch", () => {
             if (counter < 5) {
               throw new Error("Some error");
             }
-            return "success";
+            return Promise.resolve("success");
           };
 
           await expect(() => withRateLimit(fn)).rejects.toThrow("Some error");
@@ -85,9 +85,7 @@ describe("tezos utils fetch", () => {
 
       describe("errors", () => {
         it("handles common errors", async () => {
-          const fn = async () => {
-            throw new Error("Some error");
-          };
+          const fn = () => Promise.reject(new Error("Some error"));
 
           await expect(() => withRateLimit(fn)).rejects.toThrow("Some error");
         });

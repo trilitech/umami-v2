@@ -18,7 +18,8 @@ export const OperationsView = () => {
   useEffect(() => {
     setAddresses(addressesJoined.split(",")); // TODO: check if could be managed inside the getOperations hook itself
   }, [setAddresses, addressesJoined]);
-  const onScroll = async (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+
+  const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     if (!hasMore || isLoading) {
       return;
     }
@@ -26,7 +27,7 @@ export const OperationsView = () => {
 
     // start loading earlier than we reached the end of the list
     if (element.scrollHeight - element.scrollTop - element.clientHeight < 100) {
-      loadMore();
+      return loadMore();
     }
   };
 

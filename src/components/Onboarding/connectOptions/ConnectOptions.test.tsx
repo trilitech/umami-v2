@@ -2,7 +2,7 @@ import { userEvent } from "@testing-library/user-event";
 
 import { ConnectOptions } from "./ConnectOptions";
 import { mockSocialAccount } from "../../../mocks/factories";
-import { render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, render, screen } from "../../../mocks/testUtils";
 import { accountsActions } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";
 import { Step, StepType } from "../useOnboardingModal";
@@ -17,13 +17,15 @@ describe("<ConnectOptions />", () => {
       const user = userEvent.setup();
       render(fixture(goToStepMock));
 
-      user.click(
-        screen.getByRole("button", {
-          name: "Restore from Backup",
-        })
+      await act(() =>
+        user.click(
+          screen.getByRole("button", {
+            name: "Restore from Backup",
+          })
+        )
       );
 
-      await waitFor(() => expect(goToStepMock).toHaveBeenCalledTimes(1));
+      expect(goToStepMock).toHaveBeenCalledTimes(1);
       expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreBackup });
     });
 

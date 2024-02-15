@@ -21,21 +21,21 @@ When("I fill approvers with", async function (this: CustomWorld, table: DataTabl
 
 Then("I see multisig confirmation page", async function (this: CustomWorld, table: DataTable) {
   const data = table.rowsHash();
-  expect(this.page.getByTestId("contract-name")).toContainText(data["Contract Name"]);
+  await expect(this.page.getByTestId("contract-name")).toContainText(data["Contract Name"]);
 
   const signers = data["Approvers"].split(",");
-  expect(this.page.getByTestId(/approver-/)).toHaveCount(signers.length);
+  await expect(this.page.getByTestId(/approver-/)).toHaveCount(signers.length);
 
   const approvers = this.page.getByTestId("approvers");
   for (const signer of signers) {
-    expect(
+    await expect(
       approvers
         .getByText(signer, { exact: true })
         .or(approvers.getByText(formatPkh(signer), { exact: true }))
     ).toBeVisible();
   }
 
-  expect(this.page.getByTestId("threshold")).toContainText(
+  await expect(this.page.getByTestId("threshold")).toContainText(
     `${data["Min No. of approvals"]} out of ${signers.length}`
   );
 });

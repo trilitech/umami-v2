@@ -16,22 +16,24 @@ export const useRestoreV1BackupFile = () => {
       path.slice(0, 2) === "m/" ? path.slice(2) : path
     );
 
-    localStorage.clear();
+    const mnemonics = [];
+
     try {
-      for (const [i, encryptedMnemonic] of encrypted.entries()) {
-        const mnemonic = await decrypt(encryptedMnemonic, password, "V1");
-        await restoreFromMnemonic({
-          mnemonic,
-          password,
-          label: DEFAULT_ACCOUNT_LABEL,
-          derivationPath: derivationPaths[i],
-        });
+      for (const encryptedMnemonic of encrypted) {
+        mnemonics.push(await decrypt(encryptedMnemonic, password, "V1"));
       }
     } catch (e) {
       throw new Error("Invalid password.");
     }
 
-    await persistor.flush();
+    for (const [i, mnemonic] of mnemonics.entries()) {
+      await restoreFromMnemonic({
+        mnemonic,
+        password,
+        label: DEFAULT_ACCOUNT_LABEL,
+        derivationPath: derivationPaths[i],
+      });
+    }
   };
 };
 
@@ -60,6 +62,4 @@ export const restoreV2BackupFile = async (
   localStorage.clear();
   localStorage.setItem("persist:accounts", accountsInString);
   localStorage.setItem("persist:root", backup["persist:root"]);
-
-  persistor.persist();
 };

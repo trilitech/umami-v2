@@ -14,7 +14,7 @@ const fixture = (goToStep: (step: Step) => void) => (
 );
 
 describe("<ConnectOrCreate />", () => {
-  test("Create new Account", async () => {
+  test("Create new Account", () => {
     render(fixture(goToStepMock));
     const confirmBtn = screen.getByRole("button", {
       name: /Create a new Account/i,
@@ -24,7 +24,7 @@ describe("<ConnectOrCreate />", () => {
     expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.notice });
   });
 
-  test("I already have a wallet", async () => {
+  test("I already have a wallet", () => {
     render(fixture(goToStepMock));
     const confirmBtn = screen.getByRole("button", {
       name: /I already have a wallet/i,

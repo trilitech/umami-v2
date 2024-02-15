@@ -3,7 +3,7 @@ import { userEvent } from "@testing-library/user-event";
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
-import { render, screen, waitFor } from "../../mocks/testUtils";
+import { act, render, screen } from "../../mocks/testUtils";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { store } from "../../utils/redux/store";
 
@@ -15,13 +15,12 @@ describe("<RenameRemoveMenuSwitch />", () => {
     addAccount(social);
     render(<RenameRemoveMenuSwitch account={social} />);
 
-    user.click(screen.getByTestId("popover-cta"));
-    user.click(screen.getByTestId("popover-remove"));
-    await waitFor(() => {
-      expect(screen.getByTestId("description")).toHaveTextContent(
-        "Are you sure you want to remove this account?"
-      );
-    });
+    await act(() => user.click(screen.getByTestId("popover-cta")));
+    await act(() => user.click(screen.getByTestId("popover-remove")));
+
+    expect(screen.getByTestId("description")).toHaveTextContent(
+      "Are you sure you want to remove this account?"
+    );
   });
 
   it("shows offboarding message for last account", async () => {
@@ -30,15 +29,14 @@ describe("<RenameRemoveMenuSwitch />", () => {
     store.dispatch(accountsSlice.actions.addAccount(social));
     render(<RenameRemoveMenuSwitch account={social} />);
 
-    user.click(screen.getByTestId("popover-cta"));
-    user.click(screen.getByTestId("popover-remove"));
-    await waitFor(() => {
-      expect(screen.getByTestId("description")).toHaveTextContent(
-        "Removing your last account will off-board you from Umami. " +
-          "This will remove or reset all customized settings to their defaults. " +
-          "Personal data (including saved contacts, password and accounts) won't be affected."
-      );
-    });
+    await act(() => user.click(screen.getByTestId("popover-cta")));
+    await act(() => user.click(screen.getByTestId("popover-remove")));
+
+    expect(screen.getByTestId("description")).toHaveTextContent(
+      "Removing your last account will off-board you from Umami. " +
+        "This will remove or reset all customized settings to their defaults. " +
+        "Personal data (including saved contacts, password and accounts) won't be affected."
+    );
   });
 
   it.each([mockSocialAccount(0), mockLedgerAccount(0)])(
@@ -52,14 +50,12 @@ describe("<RenameRemoveMenuSwitch />", () => {
 
       expect(store.getState().accounts.items).toEqual(allAccounts);
 
-      user.click(screen.getByTestId("popover-cta"));
-      user.click(screen.getByTestId("popover-remove"));
-      await waitFor(() => user.click(screen.getByRole("button", { name: "Remove Account" })));
+      await act(() => user.click(screen.getByTestId("popover-cta")));
+      await act(() => user.click(screen.getByTestId("popover-remove")));
+      await act(() => user.click(screen.getByRole("button", { name: "Remove Account" })));
 
-      await waitFor(() =>
-        expect(store.getState().accounts.items).toEqual(
-          allAccounts.filter(acc => acc.address.pkh !== account.address.pkh)
-        )
+      expect(store.getState().accounts.items).toEqual(
+        allAccounts.filter(acc => acc.address.pkh !== account.address.pkh)
       );
     }
   );

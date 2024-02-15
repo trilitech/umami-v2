@@ -54,7 +54,7 @@ describe("Batch <OperationView />", () => {
       store.dispatch(tokensActions.addTokens({ network: MAINNET, tokens: [token.token] }));
       const operation: FA12Transfer = {
         ...mockFA12Operation(2),
-        contract: parseContractPkh(token.token.contract.address as string),
+        contract: parseContractPkh(token.token.contract.address),
         amount: "1234",
       };
 
@@ -75,7 +75,7 @@ describe("Batch <OperationView />", () => {
       store.dispatch(tokensActions.addTokens({ network: MAINNET, tokens: [token.token] }));
       const operation: FA2Transfer = {
         ...mockFA2Operation(2),
-        contract: parseContractPkh(token.token.contract.address as string),
+        contract: parseContractPkh(token.token.contract.address),
         tokenId: token.token.tokenId,
         amount: "1234",
       };
@@ -99,7 +99,7 @@ describe("Batch <OperationView />", () => {
       store.dispatch(tokensActions.addTokens({ network: MAINNET, tokens: [token.token] }));
       const operation: FA2Transfer = {
         ...mockFA2Operation(2),
-        contract: parseContractPkh(token.token.contract.address as string),
+        contract: parseContractPkh(token.token.contract.address),
         tokenId: token.token.tokenId,
         amount: "12345",
       };

@@ -1,5 +1,6 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import type { BigNumber } from "bignumber.js";
+import { noop } from "lodash";
 import { ReactElement, useContext, useEffect, useState } from "react";
 
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
@@ -83,7 +84,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
     handleAsyncAction(async () => {
       const tzktDelegation = await getLastDelegation(account.address.pkh, network);
       tzktDelegation && setDelegation(makeDelegation(tzktDelegation));
-    });
+    }).catch(noop);
     // handleAsyncAction gets constantly recreated, so we can't add it to the dependency array
     // otherwise, it will trigger the initial fetch infinitely
     // caching handleAsyncAction using useCallback doesn't work either
@@ -124,15 +125,13 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
           <RoundButton
             icon={<PlusIcon stroke="currentcolor" />}
             label="Buy tez"
-            onClick={() => {
-              openWith(<BuyTezForm recipient={account.address.pkh} />);
-            }}
+            onClick={() => openWith(<BuyTezForm recipient={account.address.pkh} />)}
           />
         )}
         <RoundButton
           icon={<BakerIcon width="24px" height="24px" stroke="currentcolor" />}
           label="Delegate"
-          onClick={() => {
+          onClick={() =>
             openWith(
               <DelegationFormPage
                 form={
@@ -142,8 +141,8 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
                 }
                 sender={account}
               />
-            );
-          }}
+            )
+          }
         />
       </Center>
       {isMultisig && <MultisigApprovers signers={account.signers} />}

@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react";
 import BigNumber from "bignumber.js";
 
 import { ImplicitAccount, MnemonicAccount } from "../types/Account";
+import { RawPkh } from "../types/Address";
 import { accountsSlice } from "../utils/redux/slices/accountsSlice";
 import { store } from "../utils/redux/store";
 import { estimate } from "../utils/tezos";
@@ -26,3 +27,6 @@ export const addAccount = (account: ImplicitAccount) => {
     store.dispatch(accountsSlice.actions.addAccount(account));
   }
 };
+
+export const fakeAddressExists = (revealedKeyPairs: { pkh: RawPkh }[]) => (pkh: RawPkh) =>
+  Promise.resolve(revealedKeyPairs.map(keyPair => keyPair.pkh).includes(pkh));

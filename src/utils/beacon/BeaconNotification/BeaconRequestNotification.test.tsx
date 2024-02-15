@@ -11,7 +11,7 @@ import { userEvent } from "@testing-library/user-event";
 
 import { mockMnemonicAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, render, screen } from "../../../mocks/testUtils";
 import { store } from "../../redux/store";
 import { executeOperations } from "../../tezos";
 import { walletClient } from "../beacon";
@@ -69,25 +69,20 @@ describe("<BeaconRequestNotification />", () => {
       // select account
       const account = mockMnemonicAccount(1);
       const input = screen.getByLabelText("address");
-      fireEvent.change(input, { target: { value: account.address.pkh } });
-      fireEvent.blur(input);
+      await act(() => user.type(input, account.address.pkh));
 
       // grant permission
       const grantButton = screen.getByRole("button", { name: "Grant" });
-      await waitFor(() => {
-        expect(grantButton).toBeEnabled();
-      });
-      user.click(grantButton);
+      expect(grantButton).toBeEnabled();
+      await act(() => user.click(grantButton));
 
-      await waitFor(() => {
-        expect(walletClient.respond).toHaveBeenCalledWith({
-          id: MESSAGE_ID,
-          network: { type: "mainnet" },
-          publicKey: account.pk,
-          scopes: SCOPES,
-          type: "permission_response",
-          walletType: "implicit",
-        });
+      expect(walletClient.respond).toHaveBeenCalledWith({
+        id: MESSAGE_ID,
+        network: { type: "mainnet" },
+        publicKey: account.pk,
+        scopes: SCOPES,
+        type: "permission_response",
+        walletType: "implicit",
       });
     });
 
@@ -98,28 +93,24 @@ describe("<BeaconRequestNotification />", () => {
       // select account
       const account = mockMnemonicAccount(1);
       const input = screen.getByLabelText("address");
-      fireEvent.change(input, { target: { value: account.address.pkh } });
-      fireEvent.blur(input);
+
+      await act(() => user.type(input, account.address.pkh));
 
       // grant permission
       const grantButton = screen.getByRole("button", { name: "Grant" });
-      await waitFor(() => {
-        expect(grantButton).toBeEnabled();
-      });
-      user.click(grantButton);
+      expect(grantButton).toBeEnabled();
+      await act(() => user.click(grantButton));
 
-      await waitFor(() => {
-        expect(store.getState().beacon).toEqual({
-          [SENDER_ID]: {
-            accountPkh: mockMnemonicAccount(1).address.pkh,
-            networkType: NetworkType.MAINNET,
-          },
-        });
+      expect(store.getState().beacon).toEqual({
+        [SENDER_ID]: {
+          accountPkh: mockMnemonicAccount(1).address.pkh,
+          networkType: NetworkType.MAINNET,
+        },
       });
     });
   });
 
-  it("displays an error on unhandled Beacon request", async () => {
+  it("displays an error on unhandled Beacon request", () => {
     const message = {
       type: BeaconMessageType.BlockchainRequest,
     } as unknown as BeaconRequestOutputMessage;
