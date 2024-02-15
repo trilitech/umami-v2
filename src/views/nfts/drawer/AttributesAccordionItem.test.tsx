@@ -13,7 +13,7 @@ describe("AttributesAccordionItem", () => {
       </Accordion>
     );
 
-    expect(screen.queryByTestId("attributes-section")).toBeNull();
+    expect(screen.queryByTestId("attributes-section")).not.toBeInTheDocument();
   });
 
   it("renders all tags", () => {

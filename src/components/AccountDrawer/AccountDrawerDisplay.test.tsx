@@ -402,7 +402,7 @@ describe("<AccountCard />", () => {
       expect(signers).toBeInTheDocument();
       const { getByText } = within(signers);
 
-      expect(getByText(formatPkh(multisigAccount.signers[0].pkh))).toBeTruthy();
+      expect(getByText(formatPkh(multisigAccount.signers[0].pkh))).toBeInTheDocument();
     });
   });
 });

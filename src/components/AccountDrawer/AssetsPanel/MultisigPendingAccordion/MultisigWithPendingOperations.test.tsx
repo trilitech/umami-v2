@@ -53,10 +53,6 @@ describe("<MultisigPendingAccordion />", () => {
     fireEvent.click(executeBtn);
 
     const dialog = await screen.findByRole("dialog");
-    expect(dialog).toBeInTheDocument();
-    {
-      const { getAllByText } = within(dialog);
-      expect(getAllByText(/Execute transaction/i)).toBeTruthy();
-    }
+    expect(within(dialog).getByRole("button", { name: "Execute transaction" })).toBeInTheDocument();
   });
 });

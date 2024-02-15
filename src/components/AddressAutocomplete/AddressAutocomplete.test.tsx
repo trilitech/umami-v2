@@ -44,15 +44,15 @@ describe("<AddressAutocomplete />", () => {
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");
     fireEvent.change(rawInput, { target: { value: mockImplicitAddress(7).pkh } });
-    expect(rawInput).toHaveProperty("value", mockImplicitAddress(7).pkh);
-    expect(realInput).toHaveProperty("value", mockImplicitAddress(7).pkh);
+    expect(rawInput).toHaveValue(mockImplicitAddress(7).pkh);
+    expect(realInput).toHaveValue(mockImplicitAddress(7).pkh);
   });
 
   test("the input is never shown when keepValid is set to true, but suggestions are available", () => {
     fixture({ defaultDestination: mockContact(0).pkh, keepValid: true });
 
     const realInput = screen.getByTestId("real-address-input-destination");
-    expect(realInput).toHaveProperty("value", mockContact(0).pkh);
+    expect(realInput).toHaveValue(mockContact(0).pkh);
     expect(screen.queryByLabelText("destination")).not.toBeInTheDocument();
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
 
@@ -61,7 +61,7 @@ describe("<AddressAutocomplete />", () => {
     expect(screen.getByTestId("chevron-icon")).toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId(/selected-address-tile-/));
-    expect(realInput).toHaveProperty("value", mockContact(0).pkh);
+    expect(realInput).toHaveValue(mockContact(0).pkh);
     expect(screen.queryByLabelText("destination")).not.toBeInTheDocument();
     expect(within(screen.getByTestId("suggestions-list")).queryAllByRole("listitem")).toHaveLength(
       3
@@ -132,7 +132,7 @@ describe("<AddressAutocomplete />", () => {
     expect(rawInput).not.toBeInTheDocument();
 
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
-    expect(realInput).toHaveProperty("value", mockContact(1).pkh);
+    expect(realInput).toHaveValue(mockContact(1).pkh);
     expect(suggestionsContainer).not.toBeInTheDocument();
   });
 
@@ -144,7 +144,7 @@ describe("<AddressAutocomplete />", () => {
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("destination")).not.toBeInTheDocument();
     expect(screen.getByTestId("address-tile")).toHaveTextContent(mockContact(1).pkh);
-    expect(realInput).toHaveProperty("value", mockContact(1).pkh);
+    expect(realInput).toHaveValue(mockContact(1).pkh);
   });
 
   test("when allowUnknown is false it doesn't set the value to an unknown address even if it's valid", () => {
@@ -153,8 +153,8 @@ describe("<AddressAutocomplete />", () => {
     const realInput = screen.getByTestId("real-address-input-destination");
     fireEvent.change(rawInput, { target: { value: mockContact(2).pkh } });
 
-    expect(rawInput).toHaveProperty("value", mockContact(2).pkh);
-    expect(realInput).toHaveProperty("value", "");
+    expect(rawInput).toHaveValue(mockContact(2).pkh);
+    expect(realInput).toHaveValue("");
   });
 });
 
@@ -204,7 +204,7 @@ describe("getSuggestions", () => {
       const input = screen.getByLabelText("destination");
       fireEvent.focus(input);
       fireEvent.change(input, { target: { value: "Contact" } });
-      expect(input).toHaveProperty("value", "Contact");
+      expect(input).toHaveValue("Contact");
 
       expect(
         within(screen.getByTestId("suggestions-list")).queryAllByRole("listitem")
@@ -212,7 +212,7 @@ describe("getSuggestions", () => {
 
       fireEvent.click(screen.getByTestId("clear-input-button"));
 
-      expect(input).toHaveProperty("value", "");
+      expect(input).toHaveValue("");
       expect(screen.queryByTestId("clear-input-button")).not.toBeInTheDocument();
       expect(screen.getByTestId("chevron-icon")).toBeInTheDocument();
       expect(

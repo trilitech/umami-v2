@@ -24,7 +24,7 @@ describe("NFTDrawerCard", () => {
       delete nft.metadata.name;
       render(fixture(nft));
 
-      expect(screen.queryByTestId("nft-name")).toBeNull();
+      expect(screen.queryByTestId("nft-name")).not.toBeInTheDocument();
     });
 
     it("renders a name when it's present", () => {
@@ -41,7 +41,7 @@ describe("NFTDrawerCard", () => {
       delete nft.metadata.name;
       render(fixture(nft));
 
-      expect(screen.queryByTestId("nft-description")).toBeNull();
+      expect(screen.queryByTestId("nft-description")).not.toBeInTheDocument();
     });
 
     it("renders a name when it's present", () => {
@@ -59,7 +59,7 @@ describe("NFTDrawerCard", () => {
       nft.balance = "1";
       render(fixture(nft));
 
-      expect(screen.queryByTestId("nft-owned-count")).toBeNull();
+      expect(screen.queryByTestId("nft-owned-count")).not.toBeInTheDocument();
     });
 
     it("renders the number of owned NFT instances", () => {

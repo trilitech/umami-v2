@@ -7,7 +7,7 @@ describe("TagsSection", () => {
     const nft = mockNFT(0);
     render(<TagsSection nft={nft} />);
 
-    expect(screen.queryByTestId("tags-section")).toBeNull();
+    expect(screen.queryByTestId("tags-section")).not.toBeInTheDocument();
   });
 
   it("renders all tags", () => {

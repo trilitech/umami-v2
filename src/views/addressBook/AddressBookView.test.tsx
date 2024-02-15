@@ -11,7 +11,7 @@ describe("AddressBookView", () => {
     it("displays no contact rows", () => {
       render(fixture());
 
-      expect(screen.queryByTestId("contact-row")).toBeNull();
+      expect(screen.queryByTestId("contact-row")).not.toBeInTheDocument();
     });
 
     it("displays empty state message", () => {
