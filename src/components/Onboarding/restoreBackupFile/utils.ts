@@ -4,6 +4,9 @@ import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks
 import { persistor } from "../../../utils/redux/persistor";
 import { DEFAULT_ACCOUNT_LABEL } from "../nameAccount/NameAccount";
 
+// This method is wrapped in a function so that we can mock it in tests.
+export const reload = () => window.location.reload();
+
 export const useRestoreV1BackupFile = () => {
   const restoreFromMnemonic = useRestoreFromMnemonic();
   return async (
