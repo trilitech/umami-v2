@@ -128,9 +128,7 @@ export const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: Ra
 
       <Button
         marginTop="20px"
-        onClick={() => {
-          openWith(<SendNFTForm nft={nft} sender={getAccount(ownerPkh)} />);
-        }}
+        onClick={() => openWith(<SendNFTForm nft={nft} sender={getAccount(ownerPkh)} />)}
       >
         Send
       </Button>

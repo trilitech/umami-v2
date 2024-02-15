@@ -45,8 +45,8 @@ When(
   }
 );
 
-Then("I see {string} modal", function (this: CustomWorld, modalTitle) {
-  expect(this.page.getByRole("heading", { name: modalTitle, exact: false })).toBeVisible();
+Then("I see {string} modal", async function (this: CustomWorld, modalTitle) {
+  await expect(this.page.getByRole("heading", { name: modalTitle, exact: false })).toBeVisible();
 });
 
 When("I check {string} checkbox", async function (this: CustomWorld, checkboxName) {

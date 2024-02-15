@@ -1,4 +1,5 @@
 import { useToast } from "@chakra-ui/react";
+import { noop } from "lodash";
 import { useCallback, useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "react-query";
 
@@ -163,14 +164,20 @@ export const useAssetsPolling = () => {
   const bakersQueryRef = useRef(bakersQuery);
 
   useEffect(() => {
-    queryClient.cancelQueries({ queryKey: "allAssets" });
-    queryClient.cancelQueries({ queryKey: "conversionRate" });
-    queryClient.cancelQueries({ queryKey: "blockNumber" });
-    queryClient.cancelQueries({ queryKey: "bakers" });
-
-    conversionRateQueryRef.current.refetch();
-    blockNumberQueryRef.current.refetch();
-    accountAssetsQueryRef.current.refetch();
-    bakersQueryRef.current.refetch();
+    Promise.all([
+      queryClient.cancelQueries({ queryKey: "allAssets" }),
+      queryClient.cancelQueries({ queryKey: "conversionRate" }),
+      queryClient.cancelQueries({ queryKey: "blockNumber" }),
+      queryClient.cancelQueries({ queryKey: "bakers" }),
+    ])
+      .then(() =>
+        Promise.all([
+          conversionRateQueryRef.current.refetch(),
+          blockNumberQueryRef.current.refetch(),
+          accountAssetsQueryRef.current.refetch(),
+          bakersQueryRef.current.refetch(),
+        ])
+      )
+      .catch(noop);
   }, [network, refetchTrigger, queryClient]);
 };

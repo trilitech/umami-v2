@@ -10,7 +10,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { capitalize } from "lodash";
+import { capitalize, noop } from "lodash";
 import { Fragment, useEffect, useState } from "react";
 
 import { usePeers, useRemovePeer } from "./beacon";
@@ -34,12 +34,12 @@ export const BeaconPeers = () => {
 
   // senderId will always be set here, even if we haven't saved it in beaconSlice for a dApp.
   useEffect(() => {
-    (async () => {
-      const newPeers = await Promise.all(
-        (data || []).map(async peer => ({ ...peer, senderId: await getSenderId(peer.publicKey) }))
-      );
-      setPeersWithId(newPeers);
-    })();
+    const peerIdPromises = (data || []).map(async peer => ({
+      ...peer,
+      senderId: await getSenderId(peer.publicKey),
+    }));
+
+    Promise.all(peerIdPromises).then(setPeersWithId).catch(noop);
   }, [data]);
 
   if (peersWithId.length === 0) {

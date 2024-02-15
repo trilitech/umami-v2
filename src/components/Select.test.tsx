@@ -1,7 +1,5 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { Select } from "./Select";
-import { render, screen, waitFor } from "../mocks/testUtils";
+import { act, render, screen, userEvent } from "../mocks/testUtils";
 
 describe("<Select />", () => {
   it("renders the default value", () => {
@@ -35,11 +33,9 @@ describe("<Select />", () => {
       />
     );
 
-    user.click(screen.getByTestId("select-input"));
+    await act(() => user.click(screen.getByTestId("select-input")));
 
-    await waitFor(() => {
-      expect(screen.getByTestId("select-options")).toBeInTheDocument();
-    });
+    expect(screen.getByTestId("select-options")).toBeInTheDocument();
   });
 
   it("sets the selected option on option click and calls onChange", async () => {
@@ -57,17 +53,13 @@ describe("<Select />", () => {
       />
     );
 
-    user.click(screen.getByTestId("select-input"));
+    await act(() => user.click(screen.getByTestId("select-input")));
 
-    await waitFor(() => {
-      expect(screen.getByTestId("select-options")).toBeInTheDocument();
-    });
+    expect(screen.getByTestId("select-options")).toBeInTheDocument();
 
-    user.click(screen.getByText("test label2"));
+    await act(() => user.click(screen.getByText("test label2")));
 
-    await waitFor(() => {
-      expect(screen.getByTestId("select-input")).toHaveTextContent("test label2");
-    });
+    expect(screen.getByTestId("select-input")).toHaveTextContent("test label2");
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith("test2");

@@ -77,7 +77,7 @@ const AccountGroup: React.FC<{
     description = `Are you sure you want to remove all of your ${label}?`;
   }
 
-  const onRemove = () => {
+  const onRemove = () =>
     openWith(
       <ConfirmationModal
         buttonLabel={buttonLabel}
@@ -93,13 +93,12 @@ const AccountGroup: React.FC<{
         title={title}
       />
     );
-  };
 
   const onDerive = () => {
     if (!isMnemonic) {
       throw new Error("Can't derive a non mnemonic account!");
     }
-    openWith(<DeriveMnemonicAccount fingerprint={first.seedFingerPrint} onDone={onClose} />);
+    return openWith(<DeriveMnemonicAccount fingerprint={first.seedFingerPrint} onDone={onClose} />);
   };
 
   return (

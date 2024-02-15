@@ -30,7 +30,7 @@ export const SignPage: React.FC<{
       async () => {
         const { opHash } = await executeOperations(operation, tezosToolkit);
 
-        openWith(<SuccessStep hash={opHash} />);
+        return openWith(<SuccessStep hash={opHash} />);
       },
       { title: `Failed ${actionType}` }
     );

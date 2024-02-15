@@ -1,45 +1,37 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { noop } from "lodash";
 
 import { EnterPassword } from "./EnterPassword";
+import { act, render, screen, userEvent } from "../../../../mocks/testUtils";
 
-const fixture = (onSubmit: (password: string) => void, isLoading: boolean) => (
-  <EnterPassword isLoading={isLoading} onSubmit={onSubmit} />
-);
+const fixture = (isLoading: boolean) => <EnterPassword isLoading={isLoading} onSubmit={noop} />;
 
-const checkPasswords = async (password: string, expectedResult: boolean) => {
+const checkPasswords = async (password: string, expected: boolean) => {
+  const user = userEvent.setup();
   const submit = screen.getByRole("button", { name: /submit/i });
-  await waitFor(() => {
-    expect(submit).toBeDisabled();
-  });
+  expect(submit).toBeDisabled();
+
   const passwordField = screen.getByTestId("password");
-  fireEvent.change(passwordField, { target: { value: password } });
-  await waitFor(() => {
-    if (expectedResult) {
-      expect(submit).toBeEnabled();
-    } else {
-      expect(submit).toBeDisabled();
-    }
-  });
+  await act(() => user.type(passwordField, password));
+  expected ? expect(submit).toBeEnabled() : expect(submit).toBeDisabled();
 };
 
-describe("<EnterAndConfirmPassword />", () => {
+describe("<EnterPassword />", () => {
   describe("Form", () => {
-    test("Working verification", () => {
-      render(fixture(() => {}, false));
-      checkPasswords("test", true);
+    test("Working verification", async () => {
+      render(fixture(false));
+      await checkPasswords("password", true);
     });
 
-    test("Not meeting password policy", () => {
-      render(fixture(() => {}, false));
-      checkPasswords("tes", true);
+    test("Not meeting password policy", async () => {
+      render(fixture(false));
+      await checkPasswords("tes", false);
     });
 
-    test("Form is loading", async () => {
-      render(fixture(() => {}, true));
+    test("Form is loading", () => {
+      render(fixture(true));
+
       const submit = screen.getByRole("button", { name: /submit/i });
-      await waitFor(() => {
-        expect(submit).toBeDisabled();
-      });
+      expect(submit).toBeDisabled();
     });
   });
 });

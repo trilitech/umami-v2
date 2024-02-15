@@ -41,9 +41,7 @@ export const DelegationDisplay: React.FC<{
   if (!delegation) {
     return (
       <NoDelegations
-        onDelegate={() => {
-          openWith(<DelegationFormPage sender={account} />);
-        }}
+        onDelegate={() => openWith(<DelegationFormPage sender={account} />)}
         size="md"
       />
     );
@@ -94,9 +92,9 @@ export const DelegationDisplay: React.FC<{
         </Button>
         <Button
           flex={1}
-          onClick={() => {
-            openWith(<DelegationFormPage form={{ sender, baker }} sender={senderAccount} />);
-          }}
+          onClick={() =>
+            openWith(<DelegationFormPage form={{ sender, baker }} sender={senderAccount} />)
+          }
           variant="tertiary"
         >
           Change Baker

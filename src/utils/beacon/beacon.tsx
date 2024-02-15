@@ -46,9 +46,8 @@ export const useAddPeer = () => {
     serializer
       .deserialize(payload)
       .then(makePeerInfo)
-      .then(peer => {
-        walletClient.addPeer(peer).then(refresh);
-      })
+      .then(walletClient.addPeer)
+      .then(refresh)
       .catch(e => {
         toast({
           description:
@@ -67,15 +66,15 @@ export const BeaconProvider: React.FC<{
   useEffect(() => {
     walletClient
       .init()
-      .then(() => {
-        walletClient.connect(message => {
-          openWith(<BeaconNotification message={message} onClose={onClose} />);
-        });
-      })
+      .then(() =>
+        walletClient.connect(message =>
+          openWith(<BeaconNotification message={message} onClose={onClose} />)
+        )
+      )
       .catch(console.error);
   }, [onClose, openWith]);
 
-  return <>{children}</>;
+  return children;
 };
 
 export const resetBeacon = async () => {

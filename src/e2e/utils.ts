@@ -2,6 +2,7 @@ import { execSync } from "child_process";
 import crypto from "crypto";
 
 import { Page, expect, test } from "@playwright/test";
+import { noop } from "lodash";
 
 import { RawPkh } from "../types/Address";
 import { DefaultNetworks } from "../types/Network";
@@ -21,9 +22,9 @@ export const TEST_NETWORKS_STATE = {
 const MASTER_PASSWORD = "12345678";
 
 export const cleanupState = () => {
-  test.beforeEach(({ page }: { page: Page }) => {
+  test.beforeEach(async ({ page }: { page: Page }) => {
     global.crypto = crypto as any;
-    page.addInitScript(networks => {
+    await page.addInitScript(networks => {
       localStorage.clear();
 
       localStorage.setItem(
@@ -52,7 +53,7 @@ export const onboardWithExistingMnemonic = async ({
 
   await page.getByRole("button", { name: "Get started" }).click();
 
-  expect(page.getByRole("heading", { name: "Accept to Continue" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Accept to Continue" })).toBeVisible();
   await page.getByText(/I confirm/).click();
 
   await page.getByRole("button", { name: "Continue" }).click();
@@ -64,10 +65,10 @@ export const onboardWithExistingMnemonic = async ({
   }
   await page.getByRole("button", { name: "Continue" }).click();
 
-  expect(page.getByRole("heading", { name: "Name Your Account" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Name Your Account" })).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).click();
 
-  expect(page.getByRole("heading", { name: "Derivation Path" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Derivation Path" })).toBeVisible();
   if (derivationPath) {
     await page.getByTestId("select-input").click();
     await page.getByText(derivationPath).click();
@@ -75,7 +76,7 @@ export const onboardWithExistingMnemonic = async ({
   await page.getByRole("button", { name: "Continue" }).click();
 
   await page.getByTestId("password").fill(MASTER_PASSWORD);
-  page.getByLabel("Confirm Password").fill(MASTER_PASSWORD);
+  await page.getByLabel("Confirm Password").fill(MASTER_PASSWORD);
 
   await page.getByRole("button", { name: "Submit" }).click();
 
@@ -144,12 +145,15 @@ export const refetch = async (page: Page) => {
   // wait until the lastTimeUpdated has changed
   return new Promise(resolve => {
     const interval = setInterval(() => {
-      page.evaluate(getLastTimeUpdated).then(currTimeUpdated => {
-        if (currTimeUpdated !== prevTimeUpdated) {
-          clearInterval(interval);
-          resolve(undefined);
-        }
-      });
+      page
+        .evaluate(getLastTimeUpdated)
+        .then(currTimeUpdated => {
+          if (currTimeUpdated !== prevTimeUpdated) {
+            clearInterval(interval);
+            resolve(undefined);
+          }
+        })
+        .catch(noop);
     }, 100);
   });
 };

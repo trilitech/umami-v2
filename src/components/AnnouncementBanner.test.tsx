@@ -2,7 +2,7 @@ import { userEvent } from "@testing-library/user-event";
 import axios from "axios";
 
 import { AnnouncementBanner } from "./AnnouncementBanner";
-import { render, screen, waitFor } from "../mocks/testUtils";
+import { act, render, screen, waitFor } from "../mocks/testUtils";
 import { announcementSlice } from "../utils/redux/slices/announcementSlice";
 import { store } from "../utils/redux/store";
 
@@ -49,11 +49,9 @@ describe("<AnnouncementBanner />", () => {
       expect(screen.getByTestId("announcement")).toHaveTextContent("announcement-text");
     });
 
-    user.click(screen.getByTestId("close"));
+    await act(() => user.click(screen.getByTestId("close")));
 
-    await waitFor(() => {
-      expect(screen.queryByTestId("announcement")).not.toBeInTheDocument();
-    });
+    expect(screen.queryByTestId("announcement")).not.toBeInTheDocument();
   });
 
   it("replaces the announcement when the new one is fetched", async () => {

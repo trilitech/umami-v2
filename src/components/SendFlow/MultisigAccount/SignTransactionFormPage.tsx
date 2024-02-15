@@ -71,7 +71,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
       const pkh = (await operation.getOriginatedContractAddresses())[0];
 
       dispatch(multisigActions.addMultisigLabel({ pkh, label: name }));
-      openWith(<SuccessStep hash={operation.opHash} />);
+      return openWith(<SuccessStep hash={operation.opHash} />);
     });
 
   return (

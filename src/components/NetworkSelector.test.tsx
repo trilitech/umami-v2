@@ -1,7 +1,7 @@
 import { userEvent } from "@testing-library/user-event";
 
 import { NetworkSelector } from "./NetworkSelector";
-import { render, screen, waitFor } from "../mocks/testUtils";
+import { act, render, screen, waitFor } from "../mocks/testUtils";
 import { GHOSTNET } from "../types/Network";
 import { store } from "../utils/redux/store";
 
@@ -16,8 +16,8 @@ describe("<NetworkSelector />", () => {
     const user = userEvent.setup();
     render(<NetworkSelector />);
 
-    user.click(screen.getByTestId("network-selector"));
-    user.click(screen.getByText("Ghostnet"));
+    await act(() => user.click(screen.getByTestId("network-selector")));
+    await act(() => user.click(screen.getByText("Ghostnet")));
 
     await waitFor(() => {
       expect(screen.getByTestId("network-selector")).toHaveTextContent("Ghostnet");

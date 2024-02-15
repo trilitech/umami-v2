@@ -2,7 +2,7 @@ import { userEvent } from "@testing-library/user-event";
 
 import { getGoogleCredentials } from "./getGoogleCredentials";
 import { GoogleAuth } from "./GoogleAuth";
-import { render, screen, waitFor } from "../mocks/testUtils";
+import { act, render, screen } from "../mocks/testUtils";
 import { mockToast } from "../mocks/toast";
 
 jest.mock("./getGoogleCredentials");
@@ -17,11 +17,9 @@ describe("<GoogleAuth />", () => {
     });
     render(<GoogleAuth onAuth={authSpy} />);
 
-    user.click(screen.getByTestId("google-auth-button"));
+    await act(() => user.click(screen.getByTestId("google-auth-button")));
 
-    await waitFor(() => {
-      expect(authSpy).toHaveBeenCalledWith("test", "test@email.com");
-    });
+    expect(authSpy).toHaveBeenCalledWith("test", "test@email.com");
   });
 
   it("shows an error toast if the auth fails", async () => {
@@ -30,14 +28,12 @@ describe("<GoogleAuth />", () => {
     jest.mocked(getGoogleCredentials).mockRejectedValue(new Error("test"));
     render(<GoogleAuth onAuth={authSpy} />);
 
-    user.click(screen.getByTestId("google-auth-button"));
+    await act(() => user.click(screen.getByTestId("google-auth-button")));
 
-    await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "test",
-        status: "error",
-        title: "Social login failed",
-      });
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "test",
+      status: "error",
+      title: "Social login failed",
     });
 
     expect(authSpy).not.toHaveBeenCalled();

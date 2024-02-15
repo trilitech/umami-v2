@@ -45,7 +45,7 @@ export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account
 
   const onRemove = !removeAccountAction
     ? undefined
-    : () => {
+    : () =>
         openWith(
           <ConfirmationModal
             buttonLabel={buttonLabel}
@@ -58,7 +58,6 @@ export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account
             title={title}
           />
         );
-      };
 
   return (
     <RenameRemoveMenu

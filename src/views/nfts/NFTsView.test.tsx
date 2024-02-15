@@ -1,5 +1,3 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { NFTsView } from "./NftsView";
 import {
   mockImplicitAccount,
@@ -7,7 +5,7 @@ import {
   mockMnemonicAccount,
   mockNFTToken,
 } from "../../mocks/factories";
-import { render, screen } from "../../mocks/testUtils";
+import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { MAINNET } from "../../types/Network";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
@@ -110,7 +108,7 @@ describe("NFTsView", () => {
 
       render(<NFTsView />);
 
-      user.click(screen.getByTestId("nft-card"));
+      await act(() => user.click(screen.getByTestId("nft-card")));
 
       await screen.findByTestId("nft-drawer-body");
     });

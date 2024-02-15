@@ -1,9 +1,8 @@
-import { renderHook, waitFor } from "@testing-library/react";
-
 import { useDeriveMnemonicAccount, useRestoreFromMnemonic } from "./setAccountDataHooks";
 import { mockSecretKeyAccount, mockSocialAccount } from "../../mocks/factories";
 import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
+import { act, renderHook } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import { AVAILABLE_DERIVATION_PATHS, makeDerivationPath } from "../account/derivationPathUtils";
@@ -58,16 +57,16 @@ describe("setAccountDataHooks", () => {
         } = renderHook(() => useRestoreFromMnemonic(), {
           wrapper: ReduxStore,
         });
-        restoreFromMnemonic({
-          mnemonic: mnemonic1,
-          password: PASSWORD,
-          derivationPath: DERIVATION_PATH_PATTERN,
-          label: LABEL_BASE,
-        });
+        await act(() =>
+          restoreFromMnemonic({
+            mnemonic: mnemonic1,
+            password: PASSWORD,
+            derivationPath: DERIVATION_PATH_PATTERN,
+            label: LABEL_BASE,
+          })
+        );
 
-        await waitFor(() => expect(store.getState().accounts.items).toEqual(expected), {
-          timeout: 2000,
-        });
+        expect(store.getState().accounts.items).toEqual(expected);
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
@@ -98,16 +97,16 @@ describe("setAccountDataHooks", () => {
         } = renderHook(() => useRestoreFromMnemonic(), {
           wrapper: ReduxStore,
         });
-        restoreFromMnemonic({
-          mnemonic: mnemonic1,
-          password: PASSWORD,
-          derivationPath: DERIVATION_PATH_PATTERN,
-          label: LABEL_BASE,
-        });
+        await act(() =>
+          restoreFromMnemonic({
+            mnemonic: mnemonic1,
+            password: PASSWORD,
+            derivationPath: DERIVATION_PATH_PATTERN,
+            label: LABEL_BASE,
+          })
+        );
 
-        await waitFor(() => expect(store.getState().accounts.items).toEqual(expected), {
-          timeout: 2000,
-        });
+        expect(store.getState().accounts.items).toEqual(expected);
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
@@ -142,17 +141,16 @@ describe("setAccountDataHooks", () => {
         } = renderHook(() => useRestoreFromMnemonic(), {
           wrapper: ReduxStore,
         });
-        restoreFromMnemonic({
-          mnemonic: mnemonic1,
-          password: PASSWORD,
-          derivationPath: DERIVATION_PATH_PATTERN,
-          label: LABEL_BASE,
-        });
-
-        await waitFor(
-          () => expect(store.getState().accounts.items).toEqual([...existingAccounts, ...expected]),
-          { timeout: 2000 }
+        await act(() =>
+          restoreFromMnemonic({
+            mnemonic: mnemonic1,
+            password: PASSWORD,
+            derivationPath: DERIVATION_PATH_PATTERN,
+            label: LABEL_BASE,
+          })
         );
+
+        expect(store.getState().accounts.items).toEqual([...existingAccounts, ...expected]);
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
@@ -212,16 +210,15 @@ describe("setAccountDataHooks", () => {
         } = renderHook(() => useDeriveMnemonicAccount(), {
           wrapper: ReduxStore,
         });
-        deriveMnemonicAccount({
-          fingerPrint: MOCK_FINGERPRINT,
-          password: PASSWORD,
-          label: LABEL_BASE,
-        });
-
-        await waitFor(
-          () => expect(store.getState().accounts.items).toEqual([...existingAccounts, expected]),
-          { timeout: 2000 }
+        await act(() =>
+          deriveMnemonicAccount({
+            fingerPrint: MOCK_FINGERPRINT,
+            password: PASSWORD,
+            label: LABEL_BASE,
+          })
         );
+
+        expect(store.getState().accounts.items).toEqual([...existingAccounts, expected]);
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
@@ -246,13 +243,15 @@ describe("setAccountDataHooks", () => {
         } = renderHook(() => useDeriveMnemonicAccount(), {
           wrapper: ReduxStore,
         });
-        deriveMnemonicAccount({
-          fingerPrint: MOCK_FINGERPRINT,
-          password: PASSWORD,
-          label: LABEL_BASE,
-        });
+        await act(() =>
+          deriveMnemonicAccount({
+            fingerPrint: MOCK_FINGERPRINT,
+            password: PASSWORD,
+            label: LABEL_BASE,
+          })
+        );
 
-        await waitFor(() => expect(decryptMock).toHaveBeenCalledWith(MOCK_ENCRYPTED, PASSWORD));
+        expect(decryptMock).toHaveBeenCalledWith(MOCK_ENCRYPTED, PASSWORD);
       });
 
       it("assigns unique label to derived account", async () => {
@@ -282,21 +281,19 @@ describe("setAccountDataHooks", () => {
         } = renderHook(() => useDeriveMnemonicAccount(), {
           wrapper: ReduxStore,
         });
-        deriveMnemonicAccount({
-          fingerPrint: MOCK_FINGERPRINT,
-          password: PASSWORD,
-          label: LABEL_BASE,
-        });
-
-        await waitFor(
-          () =>
-            expect(store.getState().accounts.items).toEqual([
-              ...otherAccounts,
-              ...existingAccounts,
-              expected,
-            ]),
-          { timeout: 2000 }
+        await act(() =>
+          deriveMnemonicAccount({
+            fingerPrint: MOCK_FINGERPRINT,
+            password: PASSWORD,
+            label: LABEL_BASE,
+          })
         );
+
+        expect(store.getState().accounts.items).toEqual([
+          ...otherAccounts,
+          ...existingAccounts,
+          expected,
+        ]);
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });

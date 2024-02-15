@@ -4,7 +4,7 @@ import { PropsWithChildren, useState } from "react";
 import { NFTCard } from "./NFTCard";
 import { SelectedNFTContext } from "./SelectedNFTContext";
 import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
-import { render, screen, waitFor } from "../../mocks/testUtils";
+import { act, render, screen } from "../../mocks/testUtils";
 import { NFTWithOwner } from "../../utils/token/utils";
 
 const TestWrapper = ({ nft, children }: PropsWithChildren<{ nft?: NFTWithOwner }>) => {
@@ -75,11 +75,9 @@ describe("NFTCard", () => {
         </TestWrapper>
       );
 
-      user.click(screen.getByTestId("nft-card"));
+      await act(() => user.click(screen.getByTestId("nft-card")));
 
-      await waitFor(() => {
-        expect(screen.getByTestId("nft-card-selected")).toBeInTheDocument();
-      });
+      expect(screen.getByTestId("nft-card-selected")).toBeInTheDocument();
       expect(screen.queryByTestId("nft-card")).not.toBeInTheDocument();
     });
   });

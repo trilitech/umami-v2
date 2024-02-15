@@ -1,52 +1,46 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { noop } from "lodash";
 
 import { EnterAndConfirmPassword } from "./EnterAndConfirmPassword";
+import { act, render, screen, userEvent } from "../../../../mocks/testUtils";
 
-const fixture = (onSubmit: (password: string) => void, isLoading: boolean) => (
-  <EnterAndConfirmPassword isLoading={isLoading} onSubmit={onSubmit} />
+const fixture = (isLoading: boolean) => (
+  <EnterAndConfirmPassword isLoading={isLoading} onSubmit={noop} />
 );
 
-const checkPasswords = async (password: string, confirmation: string, expectedResult: boolean) => {
+const checkPasswords = async (password: string, confirmation: string, expected: boolean) => {
+  const user = userEvent.setup();
   const submit = screen.getByRole("button", { name: /submit/i });
-  await waitFor(() => {
-    expect(submit).toBeDisabled();
-  });
+  expect(submit).toBeDisabled();
+
   const passwordField = screen.getByTestId("password");
   const confirmationField = screen.getByTestId("confirmation");
-  fireEvent.change(passwordField, { target: { value: password } });
-  fireEvent.change(confirmationField, { target: { value: confirmation } });
-  await waitFor(() => {
-    if (expectedResult) {
-      expect(submit).toBeEnabled();
-    } else {
-      expect(submit).toBeDisabled();
-    }
-  });
+  await act(() => user.type(passwordField, password));
+  await act(() => user.type(confirmationField, confirmation));
+
+  expected ? expect(submit).toBeEnabled() : expect(submit).toBeDisabled();
 };
 
 describe("<EnterAndConfirmPassword />", () => {
   describe("Form", () => {
-    test("Working verification", () => {
-      render(fixture(() => {}, false));
-      checkPasswords("test", "test", true);
+    test("Working verification", async () => {
+      render(fixture(false));
+      await checkPasswords("password", "password", true);
     });
 
-    test("Not matching password", () => {
-      render(fixture(() => {}, false));
-      checkPasswords("test", "test1", false);
+    test("Not matching password", async () => {
+      render(fixture(false));
+      await checkPasswords("password", "password1", false);
     });
 
-    test("Not meeting password policy", () => {
-      render(fixture(() => {}, false));
-      checkPasswords("tes", "tes", false);
+    test("Not meeting password policy", async () => {
+      render(fixture(false));
+      await checkPasswords("tes", "tes", false);
     });
 
-    test("Form is loading", async () => {
-      render(fixture(() => {}, true));
+    test("Form is loading", () => {
+      render(fixture(true));
       const submit = screen.getByRole("button", { name: /submit/i });
-      await waitFor(() => {
-        expect(submit).toBeDisabled();
-      });
+      expect(submit).toBeDisabled();
     });
   });
 });

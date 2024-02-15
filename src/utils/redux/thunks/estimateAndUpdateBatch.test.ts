@@ -1,5 +1,3 @@
-import { waitFor } from "@testing-library/react";
-
 import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
 import {
   mockDelegationOperation,
@@ -7,6 +5,7 @@ import {
   mockTezOperation,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
+import { act } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { DefaultNetworks } from "../../../types/Network";
 import { estimate } from "../../tezos";
@@ -23,13 +22,10 @@ describe("estimateAndUpdateBatch", () => {
         mockImplicitAccount(1),
         [operation]
       );
-      const action = estimateAndUpdateBatch(accountOperations, network);
+      await act(() => store.dispatch(estimateAndUpdateBatch(accountOperations, network)));
 
-      store.dispatch(action);
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(accountOperations, network);
-      await waitFor(() => {
-        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-      });
+      expect(store.getState().batches[network.name]).toEqual([accountOperations]);
     });
 
     it("doesn't add an operation to batch if the estimation fails", async () => {
@@ -42,11 +38,9 @@ describe("estimateAndUpdateBatch", () => {
         mockImplicitAccount(1),
         [operation]
       );
-      store.dispatch(estimateAndUpdateBatch(accountOperations, network));
+      await act(() => store.dispatch(estimateAndUpdateBatch(accountOperations, network)));
 
-      await waitFor(() => {
-        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
-      });
+      expect(store.getState().batches[network.name]).toEqual([accountOperations]);
 
       const failedOperation = mockDelegationOperation(0);
       const failedFormOperations = { ...accountOperations, operations: [failedOperation] };

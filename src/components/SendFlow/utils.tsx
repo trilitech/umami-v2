@@ -150,7 +150,7 @@ export const useSignPageHelpers = (
       if (mode === "batch") {
         clearBatch(operations.sender);
       }
-      openWith(<SuccessStep hash={operation.opHash} />);
+      await openWith(<SuccessStep hash={operation.opHash} />);
       return operation;
     });
 

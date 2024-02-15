@@ -2,7 +2,7 @@ import { userEvent } from "@testing-library/user-event";
 
 import { AddressTile } from "./AddressTile";
 import { mockMnemonicAccount } from "../../mocks/factories";
-import { render, screen } from "../../mocks/testUtils";
+import { act, render, screen } from "../../mocks/testUtils";
 import { Address } from "../../types/Address";
 import { formatPkh } from "../../utils/format";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
@@ -37,7 +37,8 @@ describe("<AddressTileIcon />", () => {
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
       render(fixture(account.address));
-      user.hover(screen.getByTestId("address-tile"));
+
+      await act(() => user.hover(screen.getByTestId("address-tile")));
       const tooltip = await screen.findByRole("tooltip");
 
       expect(tooltip).toBeInTheDocument();

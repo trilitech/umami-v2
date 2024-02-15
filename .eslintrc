@@ -95,6 +95,7 @@
     "import/no-unused-modules": ["warn", { "unusedExports": true }],
     "prefer-const": "warn",
     "@typescript-eslint/require-await": "warn",
+    "@typescript-eslint/no-floating-promises": "warn",
   },
   "overrides": [
     {

@@ -5,7 +5,7 @@ import { userEvent } from "@testing-library/user-event";
 import { BatchView, tokenTitle } from "./BatchView";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { addAccount, mockEstimatedFee } from "../../mocks/helpers";
-import { render, screen, waitFor, within } from "../../mocks/testUtils";
+import { act, render, screen, within } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
 import { ghostFA2, ghostTezzard } from "../../mocks/tokens";
 import { makeAccountOperations } from "../../types/AccountOperations";
@@ -73,14 +73,12 @@ describe("<BatchView />", () => {
 
       render(<BatchView operations={operations} />);
 
-      user.click(screen.getByRole("button", { name: "Submit Batch" }));
+      await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 
-      await waitFor(() =>
-        expect(mockToast).toHaveBeenCalledWith({
-          description: "something went wrong",
-          status: "error",
-        })
-      );
+      expect(mockToast).toHaveBeenCalledWith({
+        description: "something went wrong",
+        status: "error",
+      });
       expect(screen.queryByTestId("estimation-status")).not.toBeInTheDocument();
     });
 
@@ -118,13 +116,10 @@ describe("<BatchView />", () => {
 
         render(<BatchView operations={operations} />);
 
-        user.click(screen.getByRole("button", { name: "Submit Batch" }));
+        await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 
-        let estimationStatuses: HTMLElement[] = [];
-        await waitFor(() => {
-          estimationStatuses = screen.getAllByTestId("estimation-status");
-          expect(estimationStatuses.length).toEqual(3);
-        });
+        const estimationStatuses = screen.getAllByTestId("estimation-status");
+        expect(estimationStatuses.length).toEqual(3);
         expect(estimationStatuses[0]).toHaveTextContent(/^Estimated$/);
         expect(estimationStatuses[1]).toHaveTextContent("Failed");
         expect(estimationStatuses[2]).toHaveTextContent("Not Estimated");
@@ -138,13 +133,10 @@ describe("<BatchView />", () => {
 
       render(<BatchView operations={operations} />);
 
-      user.click(screen.getByRole("button", { name: "Submit Batch" }));
+      await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 
-      let estimationStatuses: HTMLElement[] = [];
-      await waitFor(() => {
-        estimationStatuses = screen.getAllByTestId("estimation-status");
-        expect(estimationStatuses.length).toEqual(3);
-      });
+      const estimationStatuses = screen.getAllByTestId("estimation-status");
+      expect(estimationStatuses.length).toEqual(3);
       expect(estimationStatuses[0]).toHaveTextContent(/^Estimated$/);
       expect(estimationStatuses[1]).toHaveTextContent(/^Estimated$/);
       expect(estimationStatuses[2]).toHaveTextContent(/^Estimated$/);

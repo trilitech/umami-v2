@@ -46,7 +46,7 @@ describe("useAsyncActionHandler", () => {
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
       await act(async () => {
-        view.result.current.handleAsyncAction(async () => {
+        void view.result.current.handleAsyncAction(async () => {
           // some delay to make sure the second computation doesn't start while the first one is still running
           await new Promise(resolve => setTimeout(resolve, 10));
           sharedVariable.data += 1;

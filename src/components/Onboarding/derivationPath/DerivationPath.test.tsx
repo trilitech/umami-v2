@@ -1,14 +1,15 @@
-import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { noop } from "lodash";
 
 import { DerivationPath } from "./DerivationPath";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
+import { act, render, screen } from "../../../mocks/testUtils";
+import { DerivationPathStep, StepType } from "../useOnboardingModal";
 
-const goToStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn(noop);
 
-const fixture = (goToStep: (step: Step) => void, account: DerivationPathStep["account"]) => (
-  <DerivationPath account={account} goToStep={goToStep} />
+const fixture = (account: DerivationPathStep["account"]) => (
+  <DerivationPath account={account} goToStep={goToStepMock} />
 );
 
 describe("<DerivationPath />", () => {
@@ -28,15 +29,13 @@ describe("<DerivationPath />", () => {
   describe.each(testData)("For $account.type", ({ account, nextPage, derivationPath }) => {
     it("uses default path", async () => {
       const user = userEvent.setup();
-      render(fixture(goToStepMock, account));
+      render(fixture(account));
+
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      await waitFor(() => {
-        expect(confirmBtn).toBeEnabled();
-      });
-      user.click(confirmBtn);
-      await waitFor(() => {
-        expect(goToStepMock).toHaveBeenCalledTimes(1);
-      });
+      expect(confirmBtn).toBeEnabled();
+
+      await act(() => user.click(confirmBtn));
+
       expect(goToStepMock).toHaveBeenCalledWith({
         type: nextPage,
         account: {
@@ -50,25 +49,19 @@ describe("<DerivationPath />", () => {
       const user = userEvent.setup();
       const standard5PieceDerivationPath = "44'/1729'/?'/0'/0'";
 
-      render(fixture(goToStepMock, account));
+      render(fixture(account));
 
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
 
-      user.click(screen.getByTestId("select-input"));
-      await waitFor(() => {
-        expect(screen.getByTestId("select-options")).toBeInTheDocument();
-      });
+      await act(() => user.click(screen.getByTestId("select-input")));
 
-      user.click(screen.getByText(`m/${standard5PieceDerivationPath}`));
-      await waitFor(() => {
-        expect(screen.getByTestId("select-input")).toHaveTextContent(standard5PieceDerivationPath);
-      });
+      expect(screen.getByTestId("select-options")).toBeInTheDocument();
+
+      await act(() => user.click(screen.getByText(`m/${standard5PieceDerivationPath}`)));
+      expect(screen.getByTestId("select-input")).toHaveTextContent(standard5PieceDerivationPath);
       expect(confirmBtn).toBeEnabled();
-      user.click(confirmBtn);
 
-      await waitFor(() => {
-        expect(goToStepMock).toHaveBeenCalledTimes(1);
-      });
+      await act(() => user.click(confirmBtn));
 
       expect(goToStepMock).toHaveBeenCalledWith({
         type: nextPage,

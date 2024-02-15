@@ -48,7 +48,7 @@ export const MultisigSignerTile: React.FC<{
 
       const transactionCount = parseRawMichelson(operation.rawActions, sender).length;
 
-      openWith(
+      return openWith(
         <SignPage
           actionType={actionType}
           fee={fee}

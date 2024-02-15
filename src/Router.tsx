@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+import { noop } from "lodash";
 import { useEffect } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
@@ -60,8 +61,9 @@ const LoggedInRouterWithPolling = () => {
 
 const LoggedOutRouter = () => {
   const resetBeaconConnections = useResetConnections();
+
   useEffect(() => {
-    resetBeacon().then(resetBeaconConnections);
+    resetBeacon().then(resetBeaconConnections).catch(noop);
   }, [resetBeaconConnections]);
 
   return (

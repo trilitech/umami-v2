@@ -45,7 +45,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
 
       return size;
     });
-    trigger();
+    return trigger();
   };
 
   const pasteMnemonic = (mnemonic: string) =>
@@ -132,7 +132,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
                           onPaste: async e => {
                             e.preventDefault();
                             const mnemonic = await navigator.clipboard.readText();
-                            pasteMnemonic(mnemonic);
+                            return pasteMnemonic(mnemonic);
                           },
                           border: "none",
                           size: "xsmall",
@@ -153,13 +153,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
 
               {
                 /* devblock:start */
-                <Button
-                  width="100%"
-                  onClick={() => {
-                    pasteMnemonic(mnemonic1);
-                  }}
-                  size="lg"
-                >
+                <Button width="100%" onClick={() => pasteMnemonic(mnemonic1)} size="lg">
                   Enter test mnemonic (Dev only)
                 </Button>
                 /* devblock:end */

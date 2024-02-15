@@ -125,10 +125,10 @@ describe("<AccountCard />", () => {
     expect(link).toHaveProperty("href", expectedLink);
 
     {
-      act(() => store.dispatch(networksActions.setCurrent(GHOSTNET)));
-      await waitFor(() => {
-        expect(screen.getByTestId("asset-panel-tablist")).toBeInTheDocument();
-      });
+      await act(() => store.dispatch(networksActions.setCurrent(GHOSTNET)));
+
+      expect(screen.getByTestId("asset-panel-tablist")).toBeInTheDocument();
+
       const tzktLink = screen.getByTestId("asset-panel-tablist");
       const link = within(tzktLink).getByRole("link", {});
       const expectedLink = "https://ghostnet.tzkt.io/" + selectedAccount.address.pkh;

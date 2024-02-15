@@ -27,7 +27,7 @@ export const OperationsView = () => {
 
     // start loading earlier than we reached the end of the list
     if (element.scrollHeight - element.scrollTop - element.clientHeight < 100) {
-      loadMore();
+      return loadMore();
     }
   };
 
