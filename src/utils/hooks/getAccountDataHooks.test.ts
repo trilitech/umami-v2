@@ -15,8 +15,7 @@ import {
   mockSocialAccount,
 } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
-import { AllTheProviders, renderHook } from "../../mocks/testUtils";
-import { ReduxStore } from "../../providers/ReduxStore";
+import { renderHook, waitFor } from "../../mocks/testUtils";
 import { accountsActions, accountsSlice } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
@@ -32,7 +31,7 @@ describe("getAccountDataHooks", () => {
 
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
-      const { result } = renderHook(() => useGetBestSignerForAccount(), { wrapper: ReduxStore });
+      const { result } = renderHook(() => useGetBestSignerForAccount());
       expect(result.current(account)).toEqual(account);
     });
 
@@ -50,7 +49,7 @@ describe("getAccountDataHooks", () => {
         ])
       );
 
-      const { result } = renderHook(() => useGetBestSignerForAccount(), { wrapper: ReduxStore });
+      const { result } = renderHook(() => useGetBestSignerForAccount());
       expect(result.current(multisig)).toEqual(mockImplicitAccount(1));
     });
   });
@@ -86,7 +85,7 @@ describe("getAccountDataHooks", () => {
         store.dispatch(renameAccount(mockMultisigAccount(5), "Multisig Account Label"));
         store.dispatch(contactsActions.upsert({ name: "Contact Label", pkh: "pkh1" }));
 
-        const { result } = renderHook(() => useIsUniqueLabel(), { wrapper: ReduxStore });
+        const { result } = renderHook(() => useIsUniqueLabel());
 
         expect(result.current(testCase.testLabel)).toEqual(testCase.expected);
       });
@@ -125,9 +124,7 @@ describe("getAccountDataHooks", () => {
 
         const {
           result: { current: getNextAvailableLabels },
-        } = renderHook(() => useGetNextAvailableAccountLabels(), {
-          wrapper: ReduxStore,
-        });
+        } = renderHook(() => useGetNextAvailableAccountLabels());
 
         expect(getNextAvailableLabels("Test acc", 4)).toEqual([
           "Test acc",
@@ -147,9 +144,7 @@ describe("getAccountDataHooks", () => {
 
       const {
         result: { current: getNextAvailableLabels },
-      } = renderHook(() => useGetNextAvailableAccountLabels(), {
-        wrapper: ReduxStore,
-      });
+      } = renderHook(() => useGetNextAvailableAccountLabels());
 
       expect(getNextAvailableLabels("Test acc", 4)).toEqual([
         "Test acc",
@@ -165,9 +160,7 @@ describe("getAccountDataHooks", () => {
 
       const {
         result: { current: getNextAvailableLabels },
-      } = renderHook(() => useGetNextAvailableAccountLabels(), {
-        wrapper: ReduxStore,
-      });
+      } = renderHook(() => useGetNextAvailableAccountLabels());
 
       expect(getNextAvailableLabels("Test acc", 4)).toEqual([
         "Test acc",
@@ -181,14 +174,10 @@ describe("getAccountDataHooks", () => {
   test("useIsOwnedAddress", () => {
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
 
-    let view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh), {
-      wrapper: AllTheProviders,
-    });
+    let view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh));
     expect(view.result.current).toEqual(true);
 
-    view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(2).address.pkh), {
-      wrapper: AllTheProviders,
-    });
+    view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(2).address.pkh));
 
     expect(view.result.current).toEqual(false);
   });
@@ -197,7 +186,7 @@ describe("getAccountDataHooks", () => {
     it("returns null if no accounts exist", () => {
       const {
         result: { current: result },
-      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+      } = renderHook(() => useValidateMasterPassword());
 
       expect(result).toEqual(null);
     });
@@ -206,7 +195,7 @@ describe("getAccountDataHooks", () => {
       addAccount(mockSocialAccount(0));
       const {
         result: { current: result },
-      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+      } = renderHook(() => useValidateMasterPassword());
 
       expect(result).toEqual(null);
     });
@@ -215,7 +204,7 @@ describe("getAccountDataHooks", () => {
       addAccount(mockLedgerAccount(0));
       const {
         result: { current: result },
-      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+      } = renderHook(() => useValidateMasterPassword());
 
       expect(result).toEqual(null);
     });
@@ -234,9 +223,9 @@ describe("getAccountDataHooks", () => {
       );
       const {
         result: { current: result },
-      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+      } = renderHook(() => useValidateMasterPassword());
 
-      expect(await result!("123123123")).toEqual(undefined);
+      await waitFor(async () => expect(await result!("123123123")).toEqual(undefined));
       await expect(result!("wrong password")).rejects.toThrow(
         "Error decrypting data: Invalid password"
       );
@@ -255,7 +244,7 @@ describe("getAccountDataHooks", () => {
       );
       const {
         result: { current: result },
-      } = renderHook(() => useValidateMasterPassword(), { wrapper: ReduxStore });
+      } = renderHook(() => useValidateMasterPassword());
 
       expect(await result!("123123123")).toEqual(undefined);
       await expect(result!("wrong password")).rejects.toThrow(
