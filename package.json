@@ -55,7 +55,7 @@
     "@ledgerhq/hw-transport-webusb": "^6.28.3",
     "@playwright/test": "^1.41.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
-    "@reduxjs/toolkit": "^1.9.7",
+    "@reduxjs/toolkit": "^2.2.1",
     "@stylistic/eslint-plugin": "^1.6.1",
     "@taquito/ledger-signer": "^19.0.2",
     "@taquito/michel-codec": "^19.0.2",
