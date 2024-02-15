@@ -119,7 +119,7 @@ describe("<BeaconRequestNotification />", () => {
     });
   });
 
-  it("displays an error on unhandled Beacon request", async () => {
+  it("displays an error on unhandled Beacon request", () => {
     const message = {
       type: BeaconMessageType.BlockchainRequest,
     } as unknown as BeaconRequestOutputMessage;

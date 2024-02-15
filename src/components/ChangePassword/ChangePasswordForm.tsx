@@ -47,7 +47,7 @@ export const ChangePasswordForm: React.FC = () => {
       return;
     }
 
-    handleAsyncAction(async () => {
+    return handleAsyncAction(async () => {
       await dispatch(changeMnemonicPassword({ currentPassword, newPassword })).unwrap();
       toast({ description: "Password updated", status: "success" });
       onClose();

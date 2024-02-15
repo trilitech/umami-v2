@@ -12,7 +12,7 @@ import { store } from "../../utils/redux/store";
 const fixture = (address: Address) => <AddressTile address={address} />;
 
 describe("<AddressTileIcon />", () => {
-  it("displays label", async () => {
+  it("displays label", () => {
     const account = mockMnemonicAccount(0);
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
@@ -22,7 +22,7 @@ describe("<AddressTileIcon />", () => {
   });
 
   describe("Full name tooltip", () => {
-    it("is hidden when cursor is not on account label", async () => {
+    it("is hidden when cursor is not on account label", () => {
       const account = mockMnemonicAccount(0);
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
@@ -46,7 +46,7 @@ describe("<AddressTileIcon />", () => {
   });
 
   describe("address", () => {
-    it("is formatted when known", async () => {
+    it("is formatted when known", () => {
       const account = mockMnemonicAccount(0);
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
@@ -55,7 +55,7 @@ describe("<AddressTileIcon />", () => {
       expect(screen.getByText(formatPkh(account.address.pkh))).toBeInTheDocument();
     });
 
-    it("is not formatted when unknown", async () => {
+    it("is not formatted when unknown", () => {
       const account = mockMnemonicAccount(0);
 
       render(fixture(account.address));
@@ -65,7 +65,7 @@ describe("<AddressTileIcon />", () => {
   });
 
   describe("balance", () => {
-    it("is hidden when empty", async () => {
+    it("is hidden when empty", () => {
       const account = mockMnemonicAccount(0);
 
       render(fixture(account.address));
@@ -73,7 +73,7 @@ describe("<AddressTileIcon />", () => {
       expect(screen.queryByTestId("pretty-number")).not.toBeInTheDocument();
     });
 
-    it("is shown when it holds tez", async () => {
+    it("is shown when it holds tez", () => {
       const account = mockMnemonicAccount(0);
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
       store.dispatch(

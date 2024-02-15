@@ -24,12 +24,12 @@ const checkPasswords = async (password: string, expectedResult: boolean) => {
 
 describe("<EnterAndConfirmPassword />", () => {
   describe("Form", () => {
-    test("Working verification", async () => {
+    test("Working verification", () => {
       render(fixture(() => {}, false));
       checkPasswords("test", true);
     });
 
-    test("Not meeting password policy", async () => {
+    test("Not meeting password policy", () => {
       render(fixture(() => {}, false));
       checkPasswords("tes", true);
     });

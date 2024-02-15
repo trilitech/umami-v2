@@ -11,10 +11,10 @@ describe("<GoogleAuth />", () => {
   it("calls the onAuth callback with the secret key and email", async () => {
     const user = userEvent.setup();
     const authSpy = jest.fn();
-    jest.mocked(getGoogleCredentials).mockImplementation(async () => ({
+    jest.mocked(getGoogleCredentials).mockResolvedValue({
       secretKey: "test",
       email: "test@email.com",
-    }));
+    });
     render(<GoogleAuth onAuth={authSpy} />);
 
     user.click(screen.getByTestId("google-auth-button"));
@@ -27,9 +27,7 @@ describe("<GoogleAuth />", () => {
   it("shows an error toast if the auth fails", async () => {
     const user = userEvent.setup();
     const authSpy = jest.fn();
-    jest.mocked(getGoogleCredentials).mockImplementation(async () => {
-      throw new Error("test");
-    });
+    jest.mocked(getGoogleCredentials).mockRejectedValue(new Error("test"));
     render(<GoogleAuth onAuth={authSpy} />);
 
     user.click(screen.getByTestId("google-auth-button"));

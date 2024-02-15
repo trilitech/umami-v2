@@ -45,7 +45,7 @@ When(
   }
 );
 
-Then("I see {string} modal", async function (this: CustomWorld, modalTitle) {
+Then("I see {string} modal", function (this: CustomWorld, modalTitle) {
   expect(this.page.getByRole("heading", { name: modalTitle, exact: false })).toBeVisible();
 });
 

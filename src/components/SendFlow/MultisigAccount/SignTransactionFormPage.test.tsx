@@ -41,13 +41,13 @@ const props: SignPageProps<FormValues> = {
 };
 
 describe("<SignPage />", () => {
-  it("has a title", async () => {
+  it("has a title", () => {
     render(fixture(props));
 
     expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Review & Submit");
   });
 
-  it("has a subtitle", async () => {
+  it("has a subtitle", () => {
     render(fixture(props));
 
     expect(

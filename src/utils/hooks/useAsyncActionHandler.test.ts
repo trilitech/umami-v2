@@ -17,10 +17,12 @@ describe("useAsyncActionHandler", () => {
       const view = fixture();
 
       await act(() =>
-        view.result.current.handleAsyncAction(async () => {
+        view.result.current.handleAsyncAction(() => {
           expect(view.result.current.isLoading).toBe(true);
+          return Promise.resolve();
         })
       );
+
       expect(view.result.current.isLoading).toBe(false);
     });
 
@@ -28,11 +30,12 @@ describe("useAsyncActionHandler", () => {
       const view = fixture();
 
       await act(() =>
-        view.result.current.handleAsyncAction(async () => {
+        view.result.current.handleAsyncAction(() => {
           expect(view.result.current.isLoading).toBe(true);
-          throw new Error("test");
+          return Promise.reject(new Error("test"));
         })
       );
+
       expect(view.result.current.isLoading).toBe(false);
     });
 
@@ -53,8 +56,10 @@ describe("useAsyncActionHandler", () => {
         view.rerender();
         await view.result.current.handleAsyncAction(async () => {
           sharedVariable.data += 1;
+          return Promise.resolve();
         });
       });
+
       expect(sharedVariable.data).toBe(1);
     });
 
@@ -67,10 +72,12 @@ describe("useAsyncActionHandler", () => {
         for (let i = 0; i < 2; i++) {
           await view.result.current.handleAsyncAction(async () => {
             sharedVariable.data += 1;
+            return Promise.resolve();
           });
           view.rerender();
         }
       });
+
       expect(sharedVariable.data).toBe(2);
     });
   });
@@ -78,33 +85,34 @@ describe("useAsyncActionHandler", () => {
   describe("handleAsyncAction", () => {
     it("returns the result of the computation", async () => {
       const view = fixture();
-      let result;
-      await act(async () => {
-        result = await view.result.current.handleAsyncAction(async () => 42);
-      });
+
+      const result = await act(() =>
+        view.result.current.handleAsyncAction(() => Promise.resolve(42))
+      );
+
       expect(result).toBe(42);
     });
 
     it("returns undefined when the computation fails", async () => {
       const view = fixture();
-      const result = await act(async () =>
-        view.result.current.handleAsyncAction(async () => {
-          throw new Error("test");
-        })
+
+      const result = await act(() =>
+        view.result.current.handleAsyncAction(() => Promise.reject(new Error("test")))
       );
+
       expect(result).toBe(undefined);
     });
 
     it("passes in the right arguments in toast with an object", async () => {
       const view = fixture();
+
       await act(async () =>
-        view.result.current.handleAsyncAction(
-          async () => {
-            throw new Error("test");
-          },
-          { title: "testTitle", description: "testDescription" }
-        )
+        view.result.current.handleAsyncAction(() => Promise.reject(new Error("test")), {
+          title: "testTitle",
+          description: "testDescription",
+        })
       );
+
       expect(mockToast).toHaveBeenCalledWith({
         title: "testTitle",
         description: "testDescription",
@@ -114,14 +122,14 @@ describe("useAsyncActionHandler", () => {
 
     it("passes in the right arguments in toast with a function", async () => {
       const view = fixture();
-      await act(async () =>
+
+      await act(() =>
         view.result.current.handleAsyncAction(
-          async () => {
-            throw new Error("test");
-          },
+          () => Promise.reject(new Error("test")),
           (err: any) => ({ title: "testTitle", description: err.message })
         )
       );
+
       expect(mockToast).toHaveBeenCalledWith({
         title: "testTitle",
         description: "test",
@@ -133,9 +141,11 @@ describe("useAsyncActionHandler", () => {
   describe("handleAsyncActionUnsafe", () => {
     it("returns the result of the computation", async () => {
       const view = fixture();
-      const result = await act(async () =>
-        view.result.current.handleAsyncActionUnsafe(async () => 42)
+
+      const result = await act(() =>
+        view.result.current.handleAsyncActionUnsafe(() => Promise.resolve(42))
       );
+
       expect(result).toBe(42);
     });
 
@@ -143,10 +153,8 @@ describe("useAsyncActionHandler", () => {
       const view = fixture();
 
       await expect(
-        act(async () =>
-          view.result.current.handleAsyncActionUnsafe(async () => {
-            throw new Error("test error");
-          })
+        act(() =>
+          view.result.current.handleAsyncActionUnsafe(() => Promise.reject(new Error("test error")))
         )
       ).rejects.toThrow("test error");
     });

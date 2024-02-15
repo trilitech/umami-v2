@@ -11,13 +11,11 @@ import { DynamicModalContext } from "../../DynamicModal";
 
 const MULTISIG_NAME = "Test Multisig Name";
 
-const fixture = (name?: string) => {
-  return (
-    <Modal isOpen={true} onClose={() => {}}>
-      <NameMultisigFormPage name={name} />
-    </Modal>
-  );
-};
+const fixture = (name?: string) => (
+  <Modal isOpen={true} onClose={() => {}}>
+    <NameMultisigFormPage name={name} />
+  </Modal>
+);
 
 const renderMultisigForm = async (name?: string) => {
   render(fixture(name));
@@ -96,14 +94,14 @@ describe("NameMultisigFormPage", () => {
     {
       testCase: "without pre-set values",
       withName: false,
-      fixture: async () => fixture(),
+      component: fixture(),
     },
     {
       testCase: "with pre-set multisig name",
       withName: true,
-      fixture: async () => fixture(MULTISIG_NAME),
+      component: fixture(MULTISIG_NAME),
     },
-  ])("$testCase", ({ withName, fixture }) => {
+  ])("$testCase", ({ withName, component }) => {
     beforeEach(() => {
       // The user with the most TEZ will be used as a default signer for create multisig request.
       // The user is pre-selected in this step,
@@ -114,7 +112,7 @@ describe("NameMultisigFormPage", () => {
     it("opens Select Approvers form on submit", async () => {
       render(
         <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {await fixture()}
+          {component}
         </DynamicModalContext.Provider>
       );
 
@@ -143,7 +141,7 @@ describe("NameMultisigFormPage", () => {
     it("opens Select Approvers form on submit - with trimmed name", async () => {
       render(
         <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {await fixture()}
+          {component}
         </DynamicModalContext.Provider>
       );
 

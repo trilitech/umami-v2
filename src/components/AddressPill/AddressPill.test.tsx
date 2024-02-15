@@ -45,7 +45,7 @@ describe("<AddressPill />", () => {
     store.dispatch(tokensSlice.actions.addTokens({ network: MAINNET, tokens: [fa1.token] }));
     render(
       <AddressPill
-        address={parseContractPkh(fa1.token.contract.address as string)}
+        address={parseContractPkh(fa1.token.contract.address)}
         mode={{ type: "removable", onRemove: () => {} }}
       />
     );

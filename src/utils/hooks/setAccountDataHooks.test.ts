@@ -2,10 +2,10 @@ import { renderHook, waitFor } from "@testing-library/react";
 
 import { useDeriveMnemonicAccount, useRestoreFromMnemonic } from "./setAccountDataHooks";
 import { mockSecretKeyAccount, mockSocialAccount } from "../../mocks/factories";
+import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
-import { RawPkh } from "../../types/Address";
 import { AVAILABLE_DERIVATION_PATHS, makeDerivationPath } from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
 import { derivePublicKeyPair } from "../mnemonic";
@@ -45,9 +45,6 @@ describe("setAccountDataHooks", () => {
     };
 
     describe("useRestoreFromMnemonic", () => {
-      const fakeAddressExists = (revealedKeyPairs: { pkh: RawPkh }[]) => async (pkh: RawPkh) =>
-        revealedKeyPairs.map(keyPair => keyPair.pkh).includes(pkh);
-
       beforeEach(() => {
         getFingerPrintMock.mockResolvedValue(MOCK_FINGERPRINT);
         encryptMock.mockReturnValue(Promise.resolve(MOCK_ENCRYPTED));

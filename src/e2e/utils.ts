@@ -21,7 +21,7 @@ export const TEST_NETWORKS_STATE = {
 const MASTER_PASSWORD = "12345678";
 
 export const cleanupState = () => {
-  test.beforeEach(async ({ page }: { page: Page }) => {
+  test.beforeEach(({ page }: { page: Page }) => {
     global.crypto = crypto as any;
     page.addInitScript(networks => {
       localStorage.clear();

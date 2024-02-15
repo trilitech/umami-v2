@@ -21,7 +21,7 @@ export const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timesta
 // Otherwise, it will display the date in the dd MMM yyyy format
 export const getDisplayTimestamp = (timestamp: string): string => {
   const currentDate = new Date();
-  const timestampDate = new Date(timestamp as string);
+  const timestampDate = new Date(timestamp);
 
   const dayDifference = differenceInDays(currentDate, timestampDate);
 

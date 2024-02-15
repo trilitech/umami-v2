@@ -21,7 +21,7 @@ beforeEach(() => {
   dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)]);
   mockEstimatedFee(10);
 
-  useGetSecretKeyMock.mockReturnValue(async (_a, _b) => "mockSk");
+  useGetSecretKeyMock.mockReturnValue(() => Promise.resolve("mockSk"));
   jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);
 });
 

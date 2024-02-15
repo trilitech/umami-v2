@@ -57,7 +57,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
       words.slice(0, mnemonicSize).forEach((word, i) => {
         setValue(`word${i}`, word);
       });
-      trigger();
+      return trigger();
     });
 
   const onSubmit = (data: FieldValues) =>
@@ -70,6 +70,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
         type: StepType.nameAccount,
         account: { type: "mnemonic", mnemonic: mnemonic },
       });
+      return Promise.resolve();
     });
 
   return (

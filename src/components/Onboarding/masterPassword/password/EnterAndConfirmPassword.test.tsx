@@ -26,17 +26,17 @@ const checkPasswords = async (password: string, confirmation: string, expectedRe
 
 describe("<EnterAndConfirmPassword />", () => {
   describe("Form", () => {
-    test("Working verification", async () => {
+    test("Working verification", () => {
       render(fixture(() => {}, false));
       checkPasswords("test", "test", true);
     });
 
-    test("Not matching password", async () => {
+    test("Not matching password", () => {
       render(fixture(() => {}, false));
       checkPasswords("test", "test1", false);
     });
 
-    test("Not meeting password policy", async () => {
+    test("Not meeting password policy", () => {
       render(fixture(() => {}, false));
       checkPasswords("tes", "tes", false);
     });

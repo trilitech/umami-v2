@@ -38,7 +38,12 @@ BeforeAll(async function () {
  * Please refer to {@link CustomWorld} for information on how to set up tests correctly.
  */
 Before(async function (this: CustomWorld) {
-  (async () => {
+  const blockchainPromise = new Promise<void>(resolve => {
+    resetBlockchain();
+    resolve();
+  });
+
+  void (async () => {
     const predefinedState = await this.getReduxState();
     const accounts = { ...accountsInitialState, ...predefinedState["accounts"] };
     const state: any = {
@@ -91,7 +96,7 @@ Before(async function (this: CustomWorld) {
     this.page = await this.context.newPage();
   })();
 
-  resetBlockchain();
+  await blockchainPromise;
 });
 
 After(async function (this: CustomWorld) {

@@ -25,9 +25,7 @@ export const EnterAndConfirmPassword: React.FC<{
     getValues,
   } = form;
 
-  const onSubmit = async (data: ConfirmPasswordFormValues) => {
-    onSubmitPassword(data.confirm);
-  };
+  const onSubmit = ({ confirm }: ConfirmPasswordFormValues) => onSubmitPassword(confirm);
 
   return (
     <ModalContentWrapper

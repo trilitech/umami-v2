@@ -15,7 +15,7 @@ const fixture = (goToStep: (step: Step) => void) => <Notice goToStep={goToStep} 
 
 describe("<Eula />", () => {
   describe("When shown", () => {
-    test("press 'I understand'", async () => {
+    test("press 'I understand'", () => {
       generate24WordMnemonicMock.mockReturnValue(mnemonic1);
       render(fixture(goToStepMock));
       const confirmBtn = screen.getByRole("button", { name: /I understand/i });
@@ -28,7 +28,7 @@ describe("<Eula />", () => {
       expect(goToStepMock).toHaveBeenCalledTimes(1);
     });
 
-    test("press 'I already have a Seed Phrase'", async () => {
+    test("press 'I already have a Seed Phrase'", () => {
       render(fixture(goToStepMock));
       const skipBtn = screen.getByRole("button", {
         name: /I already have a Seed Phrase/i,

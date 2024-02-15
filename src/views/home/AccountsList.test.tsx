@@ -59,7 +59,7 @@ describe("<AccountsList />", () => {
     });
 
     it("removes all accounts linked to a given mnemonic", async () => {
-      await restore();
+      restore();
       render(<AccountsList />);
 
       expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
@@ -119,7 +119,7 @@ describe("<AccountsList />", () => {
     });
   });
 
-  it("displays accounts in store with label and formated pkh", async () => {
+  it("displays accounts in store with label and formated pkh", () => {
     store.dispatch(
       addMockMnemonicAccounts([
         mockMnemonicAccount(0),
@@ -142,8 +142,8 @@ describe("<AccountsList />", () => {
     });
   });
 
-  it("displays accounts by group (case mnemonic social and multisig)", async () => {
-    await restore();
+  it("displays accounts by group (case mnemonic social and multisig)", () => {
+    restore();
     render(<AccountsList />);
     expect(screen.getAllByTestId("account-tile-container")).toHaveLength(7);
     expect(screen.getAllByTestId(/account-group-title/)).toHaveLength(4);
@@ -181,7 +181,7 @@ describe("<AccountsList />", () => {
       pk: account.pk,
     });
     const LABEL = "my label";
-    await restore();
+    restore();
     render(<AccountsList />);
 
     // Open actions dialog for Mnemonic Group 1
@@ -228,7 +228,7 @@ describe("<AccountsList />", () => {
   });
 });
 
-const restore = async () => {
+const restore = () => {
   store.dispatch(
     accountsSlice.actions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGETPRINT1,

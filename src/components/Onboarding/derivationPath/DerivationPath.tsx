@@ -41,7 +41,7 @@ export const DerivationPath = ({
     defaultValues: { derivationPath: defaultDerivationPathPattern },
   });
 
-  const onSubmit = async ({ derivationPath }: ConfirmDerivationPathFormValues) => {
+  const onSubmit = ({ derivationPath }: ConfirmDerivationPathFormValues) => {
     switch (account.type) {
       case "ledger":
         goToStep({ type: StepType.restoreLedger, account: { ...account, derivationPath } });

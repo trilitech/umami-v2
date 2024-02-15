@@ -21,25 +21,25 @@ describe("csv utils", () => {
       });
     });
 
-    it("throws when recipient is invalid", async () => {
+    it("throws when recipient is invalid", () => {
       expect(() => fixture(["Invalid pkh", "-1.23456", "", ""])).toThrow(
         "Invalid csv value: recipient"
       );
     });
 
-    it("throws when amount is invalid", async () => {
+    it("throws when amount is invalid", () => {
       expect(() => fixture([mockImplicitAddress(1).pkh, "-1", "", ""])).toThrow(
         "Invalid csv value: amount"
       );
     });
 
-    it("throws when contract address is invalid", async () => {
+    it("throws when contract address is invalid", () => {
       expect(() => fixture([mockImplicitAddress(1).pkh, "1.23456", "Invalid kt", ""])).toThrow(
         "Invalid csv value: contract address"
       );
     });
 
-    it("throws when tokenId is less than 0", async () => {
+    it("throws when tokenId is less than 0", () => {
       expect(() =>
         fixture([mockImplicitAddress(1).pkh, "1000", mockContractAddress(0).pkh, "-1"])
       ).toThrow("Invalid csv value: tokenId");

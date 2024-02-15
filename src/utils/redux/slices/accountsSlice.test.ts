@@ -80,7 +80,7 @@ describe("Accounts reducer", () => {
   });
 
   describe("removeMnemonicAndAccounts", () => {
-    it("deletes seedphrases and all derived accounts", async () => {
+    it("deletes seedphrases and all derived accounts", () => {
       store.dispatch(
         addMnemonicAccounts({
           seedFingerprint: "mockPrint1",
@@ -135,7 +135,7 @@ describe("Accounts reducer", () => {
       store.dispatch(addAccount(secretKey));
     });
 
-    it("does nothing for mnemonic account", async () => {
+    it("does nothing for mnemonic account", () => {
       store.dispatch(
         accountsSlice.actions.removeNonMnemonicAccounts({
           accountType: "mnemonic",
@@ -144,7 +144,7 @@ describe("Accounts reducer", () => {
       expect(store.getState().accounts.items).toHaveLength(5);
     });
 
-    it("should remove ledger account", async () => {
+    it("should remove ledger account", () => {
       store.dispatch(
         accountsSlice.actions.removeNonMnemonicAccounts({
           accountType: "ledger",
@@ -153,7 +153,7 @@ describe("Accounts reducer", () => {
       expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2, secretKey]);
     });
 
-    it("removes the secret key account", async () => {
+    it("removes the secret key account", () => {
       store.dispatch(
         accountsSlice.actions.removeNonMnemonicAccounts({
           accountType: "secret_key",
@@ -162,7 +162,7 @@ describe("Accounts reducer", () => {
       expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2, ledger]);
     });
 
-    it("should remove multiple social accounts", async () => {
+    it("should remove multiple social accounts", () => {
       store.dispatch(
         accountsSlice.actions.removeNonMnemonicAccounts({
           accountType: "social",
@@ -198,7 +198,7 @@ describe("Accounts reducer", () => {
   });
 
   describe("addMnemonicAccounts", () => {
-    it("adds mnemonic accounts & encrypted seedphrase to storage", async () => {
+    it("adds mnemonic accounts & encrypted seedphrase to storage", () => {
       const seedFingerprint = "mockPrint1";
       const mockEncrypted = { mock: "encrypted" };
       const restoredAccounts: MnemonicAccount[] = [

@@ -19,7 +19,7 @@ When("I fill approvers with", async function (this: CustomWorld, table: DataTabl
   }
 });
 
-Then("I see multisig confirmation page", async function (this: CustomWorld, table: DataTable) {
+Then("I see multisig confirmation page", function (this: CustomWorld, table: DataTable) {
   const data = table.rowsHash();
   expect(this.page.getByTestId("contract-name")).toContainText(data["Contract Name"]);
 

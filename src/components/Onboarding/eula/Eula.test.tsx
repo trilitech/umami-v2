@@ -9,7 +9,7 @@ const fixture = (setStep: (step: Step) => void) => <Eula goToStep={setStep} />;
 
 describe("<Eula />", () => {
   describe("When not accepted", () => {
-    test("button is disabled", async () => {
+    test("button is disabled", () => {
       render(fixture(setStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const checkbox = screen.getByRole("checkbox");
@@ -19,7 +19,7 @@ describe("<Eula />", () => {
   });
 
   describe("When accepted", () => {
-    test("button is enabled", async () => {
+    test("button is enabled", () => {
       render(fixture(setStepMock));
       const confirmBtn = screen.getByRole("button", { name: /continue/i });
       const checkbox = screen.getByRole("checkbox");

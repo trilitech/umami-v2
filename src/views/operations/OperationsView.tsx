@@ -18,7 +18,8 @@ export const OperationsView = () => {
   useEffect(() => {
     setAddresses(addressesJoined.split(",")); // TODO: check if could be managed inside the getOperations hook itself
   }, [setAddresses, addressesJoined]);
-  const onScroll = async (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+
+  const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     if (!hasMore || isLoading) {
       return;
     }

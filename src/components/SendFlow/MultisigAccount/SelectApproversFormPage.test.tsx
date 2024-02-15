@@ -47,13 +47,13 @@ beforeEach(() => {
 });
 
 describe("SelectApproversFormPage", () => {
-  it("has a title", async () => {
+  it("has a title", () => {
     render(fixture());
 
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Select Approvers");
   });
 
-  it("has a subtitle", async () => {
+  it("has a subtitle", () => {
     render(fixture());
 
     expect(
@@ -64,7 +64,7 @@ describe("SelectApproversFormPage", () => {
   });
 
   describe("back button", () => {
-    it("is visble", async () => {
+    it("is visible", () => {
       render(fixture());
 
       expect(screen.getByTestId("back-button")).toBeInTheDocument();

@@ -83,7 +83,7 @@ describe("secretKeyAccount", () => {
   });
 
   describe("remove", () => {
-    test("deletes relevant data from accounts slice", async () => {
+    test("deletes relevant data from accounts slice", () => {
       const account = mockSecretKeyAccount(0);
       store.dispatch(accountsSlice.actions.addAccount(account));
       store.dispatch(
@@ -93,7 +93,7 @@ describe("secretKeyAccount", () => {
         })
       );
 
-      await store.dispatch(remove(account));
+      store.dispatch(remove(account));
 
       expect(store.getState().accounts.items).toEqual([]);
       expect(store.getState().accounts.secretKeys).toEqual({});

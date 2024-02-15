@@ -27,7 +27,7 @@ Given("I am on the welcome page", async function (this: CustomWorld) {
   this.page.on("console", msg => console.log(msg.text()));
 });
 
-Then("I am on {string} onboarding page", async function (this: CustomWorld, modalTitle) {
+Then("I am on {string} onboarding page", function (this: CustomWorld, modalTitle) {
   const title = this.page.getByRole("heading", { name: modalTitle });
   expect(title).toBeVisible();
 });
@@ -98,7 +98,7 @@ Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {
 
 When(
   "I onboard with {string} {string} account group of size {int}",
-  async function (this: CustomWorld, groupName, groupType, accountsAmount) {
+  function (this: CustomWorld, groupName, groupType, accountsAmount) {
     accountGroupBuilder = new AccountGroupBuilder(groupType, accountsAmount);
     newGroups[groupName] = accountGroupBuilder;
   }
@@ -128,7 +128,7 @@ Then(
   }
 );
 
-Then("I see a toast {string}", async function (this: CustomWorld, toastMessage) {
+Then("I see a toast {string}", function (this: CustomWorld, toastMessage) {
   const toast = this.page.getByRole("status").getByText(toastMessage);
   expect(toast).toBeVisible();
 });

@@ -8,10 +8,10 @@ export class FakeSigner implements Signer {
     this.pkh = pkh;
   }
   async publicKey() {
-    return this.pk;
+    return Promise.resolve(this.pk);
   }
   async publicKeyHash() {
-    return this.pkh;
+    return Promise.resolve(this.pkh);
   }
 
   async sign(): Promise<{
@@ -20,10 +20,10 @@ export class FakeSigner implements Signer {
     prefixSig: string;
     sbytes: string;
   }> {
-    throw new Error("`sign` method not available");
+    return Promise.reject(new Error("`sign` method not available"));
   }
 
   async secretKey(): Promise<string | undefined> {
-    throw new Error("empty secret key");
+    return Promise.reject(new Error("empty secret key"));
   }
 }
