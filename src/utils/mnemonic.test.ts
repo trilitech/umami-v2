@@ -1,5 +1,3 @@
-import { renderHook } from "@testing-library/react";
-
 import {
   defaultDerivationPathPattern,
   getDefaultDerivationPath,
@@ -12,6 +10,7 @@ import { addressExists, getFingerPrint } from "./tezos";
 import { mockContact, mockSocialAccount } from "../mocks/factories";
 import { fakeAddressExists } from "../mocks/helpers";
 import { mnemonic1 } from "../mocks/mockMnemonic";
+import { renderHook } from "../mocks/testUtils";
 import { ReduxStore } from "../providers/ReduxStore";
 import { ImplicitAccount } from "../types/Account";
 import { MAINNET } from "../types/Network";

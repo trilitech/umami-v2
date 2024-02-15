@@ -1,5 +1,4 @@
 import { NetworkType } from "@airgap/beacon-wallet";
-import { renderHook } from "@testing-library/react";
 
 import {
   useAddConnection,
@@ -8,6 +7,7 @@ import {
   useResetConnections,
 } from "./beaconHooks";
 import { mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
+import { renderHook } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { RawPkh } from "../../types/Address";
 import { beaconActions } from "../redux/slices/beaconSlice";

@@ -1,6 +1,5 @@
-import { act, renderHook } from "@testing-library/react";
-
 import { useAsyncActionHandler } from "./useAsyncActionHandler";
+import { act, renderHook } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
 import { ReduxStore } from "../../providers/ReduxStore";
 

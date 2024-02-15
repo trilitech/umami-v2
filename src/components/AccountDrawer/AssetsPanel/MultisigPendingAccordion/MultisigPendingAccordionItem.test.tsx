@@ -9,7 +9,6 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../../mocks/factories";
-import { fillPassword } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, waitFor, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../../../types/Account";
@@ -105,7 +104,8 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operation, MAINNET);
 
-    fillPassword("mockPass");
+    const passwordInput = screen.getByTestId("password");
+    fireEvent.change(passwordInput, { target: { value: "mockPass" } });
 
     const submitButton = screen.getByRole("button", { name: /execute transaction/i });
     await waitFor(() => {
@@ -153,7 +153,8 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
 
-    fillPassword("mockPass");
+    const passwordInput = screen.getByTestId("password");
+    fireEvent.change(passwordInput, { target: { value: "mockPass" } });
 
     const submitButton = screen.getByRole("button", { name: /approve transaction/i });
     await waitFor(() => {

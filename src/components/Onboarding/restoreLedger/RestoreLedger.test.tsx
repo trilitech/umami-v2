@@ -1,8 +1,6 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-
 import { RestoreLedger } from "./RestoreLedger";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { ReduxStore } from "../../../providers/ReduxStore";
 import { defaultDerivationPathPattern } from "../../../utils/account/derivationPathUtils";
 import { getPk } from "../../../utils/ledger/pk";
 
@@ -11,52 +9,48 @@ jest.mock("../../../utils/ledger/pk");
 
 const getPkMock = jest.mocked(getPk);
 
-const fixture = (closeModal: () => void) => {
+const fixture = () => {
   const account = {
     type: "ledger" as const,
     derivationPath: defaultDerivationPathPattern,
     label: "Any Account",
   };
-  return (
-    <ReduxStore>
-      <RestoreLedger account={account} closeModal={closeModal} />
-    </ReduxStore>
-  );
+  return <RestoreLedger account={account} closeModal={closeModalMock} />;
 };
 
 describe("<RestoreLedger />", () => {
   test("success", async () => {
+    const user = userEvent.setup();
     getPkMock.mockResolvedValue({ pk: "test", pkh: "test" });
-    render(fixture(closeModalMock));
+    render(fixture());
+
     const confirmBtn = screen.getByRole("button", {
-      name: /export public key/i,
+      name: "Export Public Key",
     });
-    fireEvent.click(confirmBtn);
-    await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Account successfully created!",
-        status: "success",
-      });
+    await act(() => user.click(confirmBtn));
+
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "Account successfully created!",
+      status: "success",
     });
     expect(closeModalMock).toHaveBeenCalledTimes(1);
     expect(getPkMock).toHaveBeenCalledTimes(1);
   });
 
   test("aborted by user", async () => {
+    const user = userEvent.setup();
     getPkMock.mockRejectedValue(new Error());
-    render(fixture(closeModalMock));
-    const confirmBtn = screen.getByRole("button", {
-      name: /export public key/i,
-    });
-    fireEvent.click(confirmBtn);
+    render(fixture());
 
-    // Control the loading cycle
-    // Otherwise you get uncontrolled setStates that lead to act warnings.
-    await waitFor(() => {
-      expect(confirmBtn).toBeDisabled();
+    const confirmBtn = screen.getByRole("button", {
+      name: "Export Public Key",
     });
-    await waitFor(() => {
-      expect(confirmBtn).toBeEnabled();
+    await act(() => user.click(confirmBtn));
+
+    expect(mockToast).toHaveBeenCalledWith({
+      description: "Ledger error. Error",
+      status: "error",
     });
+    expect(confirmBtn).toBeEnabled();
   });
 });

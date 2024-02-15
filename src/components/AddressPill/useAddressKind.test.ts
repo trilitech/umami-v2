@@ -1,4 +1,3 @@
-import { renderHook } from "@testing-library/react";
 import { cloneDeep } from "lodash";
 
 import { useAddressKind } from "./useAddressKind";
@@ -12,6 +11,7 @@ import {
 } from "../../mocks/factories";
 import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
+import { renderHook } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 import { MAINNET } from "../../types/Network";

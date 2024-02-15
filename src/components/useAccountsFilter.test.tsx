@@ -1,10 +1,17 @@
-import { userEvent } from "@testing-library/user-event";
-import type { UserEvent } from "@testing-library/user-event/dist/types/setup/setup";
 import { useSearchParams } from "react-router-dom";
 
 import { useAccountsFilter } from "./useAccountsFilter";
 import { mockMnemonicAccount } from "../mocks/factories";
-import { AllTheProviders, act, render, renderHook, screen, waitFor } from "../mocks/testUtils";
+import {
+  AllTheProviders,
+  UserEvent,
+  act,
+  render,
+  renderHook,
+  screen,
+  userEvent,
+  waitFor,
+} from "../mocks/testUtils";
 import { accountsSlice } from "../utils/redux/slices/accountsSlice";
 import { store } from "../utils/redux/store";
 

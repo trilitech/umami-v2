@@ -1,5 +1,3 @@
-import { renderHook } from "@testing-library/react";
-
 import {
   useGetBestSignerForAccount,
   useGetNextAvailableAccountLabels,
@@ -17,7 +15,7 @@ import {
   mockSocialAccount,
 } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
-import { AllTheProviders } from "../../mocks/testUtils";
+import { AllTheProviders, renderHook } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { accountsActions, accountsSlice } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";

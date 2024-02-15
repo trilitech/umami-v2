@@ -1,5 +1,3 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-
 import { NameAccount } from "./NameAccount";
 import {
   mockContact,
@@ -11,25 +9,23 @@ import {
 } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { ReduxStore } from "../../../providers/ReduxStore";
+import { act, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
 import { checkAccountsAndUpsertContact } from "../../../utils/redux/thunks/checkAccountsAndUpsertContact";
 import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
-import { Step, StepType } from "../useOnboardingModal";
+import { StepType } from "../useOnboardingModal";
 import type { NameAccountStep } from "../useOnboardingModal";
 
-const goToStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn();
 
-const fixture = (goToStep: (step: Step) => void, account: NameAccountStep["account"]) => (
-  <ReduxStore>
-    <NameAccount account={account} goToStep={goToStep} />
-  </ReduxStore>
+const fixture = (account: NameAccountStep["account"]) => (
+  <NameAccount account={account} goToStep={goToStepMock} />
 );
 
 const getNameInput = () => screen.getByTestId("name");
-const getConfirmBtn = () => screen.getByRole("button", { name: /continue/i });
+const getConfirmBtn = () => screen.getByRole("button", { name: "Continue" });
 
 const accounts = [
   { type: "ledger" as const, nextStep: StepType.derivationPath },
@@ -54,12 +50,13 @@ describe("<NameAccount />", () => {
 
     describe.each(accounts)("for $type", account => {
       it(`sets a ${label.desc}`, async () => {
-        render(fixture(goToStepMock, account));
+        const user = userEvent.setup();
+        render(fixture(account));
 
         if (label.withNameProvided) {
-          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+          await act(() => user.type(getNameInput(), labelBase));
         }
-        fireEvent.click(getConfirmBtn());
+        await act(() => user.click(getConfirmBtn()));
 
         await waitFor(() => {
           expect(goToStepMock).toHaveBeenCalledTimes(1);
@@ -95,17 +92,15 @@ describe("<NameAccount />", () => {
 
       describe.each(existingAccountGroups)("among $type accounts", existingAccountGroup => {
         it("sets group label", async () => {
+          const user = userEvent.setup();
           existingAccountGroup.accounts.forEach(addAccount);
-          render(fixture(goToStepMock, account));
+          render(fixture(account));
 
           if (label.withNameProvided) {
-            fireEvent.change(getNameInput(), { target: { value: labelBase } });
+            await act(() => user.type(getNameInput(), labelBase));
           }
-          fireEvent.click(getConfirmBtn());
+          await act(() => user.click(getConfirmBtn()));
 
-          await waitFor(() => {
-            expect(goToStepMock).toHaveBeenCalledTimes(1);
-          });
           expect(goToStepMock).toHaveBeenCalledWith({
             type: account.nextStep,
             account: { ...account, label: labelBase },
@@ -114,21 +109,19 @@ describe("<NameAccount />", () => {
       });
 
       it("among multisig accounts sets group label", async () => {
+        const user = userEvent.setup();
         store.dispatch(
           multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
         );
         store.dispatch(renameAccount(mockMultisigAccount(0), labelBase));
         store.dispatch(renameAccount(mockMultisigAccount(1), `${labelBase} 3`));
-        render(fixture(goToStepMock, account));
+        render(fixture(account));
 
         if (label.withNameProvided) {
-          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+          await act(() => user.type(getNameInput(), labelBase));
         }
-        fireEvent.click(getConfirmBtn());
+        await act(() => user.click(getConfirmBtn()));
 
-        await waitFor(() => {
-          expect(goToStepMock).toHaveBeenCalledTimes(1);
-        });
         expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: labelBase },
@@ -136,18 +129,16 @@ describe("<NameAccount />", () => {
       });
 
       it("among contacts sets group label", async () => {
+        const user = userEvent.setup();
         store.dispatch(checkAccountsAndUpsertContact(mockContact(1, labelBase)));
         store.dispatch(checkAccountsAndUpsertContact(mockContact(3, `${labelBase} 3`)));
-        render(fixture(goToStepMock, account));
+        render(fixture(account));
 
         if (label.withNameProvided) {
-          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+          await act(() => user.type(getNameInput(), labelBase));
         }
-        fireEvent.click(getConfirmBtn());
+        await act(() => user.click(getConfirmBtn()));
 
-        await waitFor(() => {
-          expect(goToStepMock).toHaveBeenCalledTimes(1);
-        });
         expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: labelBase },
@@ -158,6 +149,7 @@ describe("<NameAccount />", () => {
     describe.each(accounts.filter(account => account.type !== "mnemonic"))("for $type", account => {
       describe.each(existingAccountGroups)("among $type accounts", existingAccounts => {
         it("sets unique default label", async () => {
+          const user = userEvent.setup();
           if (existingAccounts.type === "mnemonic") {
             store.dispatch(
               accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts)
@@ -167,16 +159,13 @@ describe("<NameAccount />", () => {
               store.dispatch(accountsSlice.actions.addAccount(account))
             );
           }
-          render(fixture(goToStepMock, account));
+          render(fixture(account));
 
           if (label.withNameProvided) {
-            fireEvent.change(getNameInput(), { target: { value: labelBase } });
+            await act(() => user.type(getNameInput(), labelBase));
           }
-          fireEvent.click(getConfirmBtn());
+          await act(() => user.click(getConfirmBtn()));
 
-          await waitFor(() => {
-            expect(goToStepMock).toHaveBeenCalledTimes(1);
-          });
           expect(goToStepMock).toHaveBeenCalledWith({
             type: account.nextStep,
             account: { ...account, label: `${labelBase} 2` },
@@ -185,21 +174,19 @@ describe("<NameAccount />", () => {
       });
 
       it("among multisig accounts sets unique default label", async () => {
+        const user = userEvent.setup();
         store.dispatch(
           multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
         );
         store.dispatch(renameAccount(mockMultisigAccount(0), labelBase));
         store.dispatch(renameAccount(mockMultisigAccount(1), `${labelBase} 3`));
-        render(fixture(goToStepMock, account));
+        render(fixture(account));
 
         if (label.withNameProvided) {
-          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+          await act(() => user.type(getNameInput(), labelBase));
         }
-        fireEvent.click(getConfirmBtn());
+        await act(() => user.click(getConfirmBtn()));
 
-        await waitFor(() => {
-          expect(goToStepMock).toHaveBeenCalledTimes(1);
-        });
         expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: `${labelBase} 2` },
@@ -207,18 +194,16 @@ describe("<NameAccount />", () => {
       });
 
       it("among contacts sets unique default label", async () => {
+        const user = userEvent.setup();
         store.dispatch(checkAccountsAndUpsertContact(mockContact(1, labelBase)));
         store.dispatch(checkAccountsAndUpsertContact(mockContact(3, `${labelBase} 3`)));
-        render(fixture(goToStepMock, account));
+        render(fixture(account));
 
         if (label.withNameProvided) {
-          fireEvent.change(getNameInput(), { target: { value: labelBase } });
+          await act(() => user.type(getNameInput(), labelBase));
         }
-        fireEvent.click(getConfirmBtn());
+        await act(() => user.click(getConfirmBtn()));
 
-        await waitFor(() => {
-          expect(goToStepMock).toHaveBeenCalledTimes(1);
-        });
         expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
           account: { ...account, label: `${labelBase} 2` },

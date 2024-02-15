@@ -1,8 +1,6 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { OperationsView } from "./OperationsView";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
-import { act, render, screen, waitFor } from "../../mocks/testUtils";
+import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { MAINNET } from "../../types/Network";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";

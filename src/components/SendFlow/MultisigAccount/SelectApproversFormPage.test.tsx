@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
 import BigNumber from "bignumber.js";
 
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
@@ -14,7 +13,7 @@ import {
   mockMnemonicAccount,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { render } from "../../../mocks/testUtils";
+import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
@@ -71,82 +70,85 @@ describe("SelectApproversFormPage", () => {
     });
 
     it("opens NameMultisigFormPage on click", async () => {
+      const user = userEvent.setup();
       render(
         <DynamicModalContext.Provider value={dynamicModalContextMock}>
           {fixture()}
         </DynamicModalContext.Provider>
       );
 
-      fireEvent.click(screen.getByTestId("back-button"));
+      await act(() => user.click(screen.getByTestId("back-button")));
 
-      await waitFor(() => {
-        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-          <NameMultisigFormPage name={MULTISIG_NAME} />
-        );
-      });
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+        <NameMultisigFormPage name={MULTISIG_NAME} />
+      );
     });
   });
 
   describe("approvers", () => {
     describe("add button", () => {
       it("adds a new approver field", async () => {
+        const user = userEvent.setup();
         render(fixture());
+
         const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+        await act(() => user.click(addSignerButton));
 
-        fireEvent.click(addSignerButton);
-        await waitFor(() => {
-          expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(2);
-        });
+        expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(2);
+        expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(2);
 
-        fireEvent.click(addSignerButton);
-        await waitFor(() => {
-          expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(3);
-        });
+        await act(() => user.click(addSignerButton));
+
+        expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(3);
       });
     });
 
     describe("remove button", () => {
       it("is hidden when there is only one approver", () => {
         render(fixture());
+
         expect(screen.queryByTestId(/remove-signer-/)).not.toBeInTheDocument();
       });
 
       it("appears when you have 2+ approvers", async () => {
+        const user = userEvent.setup();
         render(fixture());
+
         const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
 
-        fireEvent.click(addSignerButton);
-        await waitFor(() => {
-          expect(screen.getAllByTestId(/remove-signer-/)).toHaveLength(2);
-        });
+        await act(() => user.click(addSignerButton));
+
+        expect(screen.getAllByTestId(/remove-signer-/)).toHaveLength(2);
       });
 
       it("removes the correct approver", async () => {
+        const user = userEvent.setup();
         render(fixture());
         const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
 
-        fireEvent.click(addSignerButton);
-        fireEvent.click(addSignerButton);
-        await waitFor(() => {
-          expect(screen.getAllByTestId(/^address-autocomplete-signers/)).toHaveLength(3);
-        });
-        fireEvent.change(screen.getByLabelText("Select 1st approver"), {
-          target: { value: mockImplicitAccount(0).address.pkh },
-        });
-        fireEvent.change(screen.getByLabelText("2nd approver"), {
-          target: { value: mockImplicitAddress(1).pkh },
-        });
-        fireEvent.change(screen.getByLabelText("3rd approver"), {
-          target: { value: mockImplicitAddress(2).pkh },
-        });
-        await waitFor(() => {
-          expect(screen.getAllByTestId(/remove-signer-/)).toHaveLength(3);
-        });
-        fireEvent.click(screen.getByTestId("remove-signer-1"));
-        await waitFor(() => {
-          expect(screen.getAllByTestId(/^address-autocomplete-signers/)).toHaveLength(2);
-        });
+        await act(() => user.click(addSignerButton));
+        await act(() => user.click(addSignerButton));
 
+        expect(screen.getAllByTestId(/^address-autocomplete-signers/)).toHaveLength(3);
+
+        await act(() =>
+          user.type(
+            screen.getByLabelText("Select 1st approver"),
+            mockImplicitAccount(0).address.pkh
+          )
+        );
+        await act(() =>
+          user.type(screen.getByLabelText("2nd approver"), mockImplicitAddress(1).pkh)
+        );
+        await act(() =>
+          user.type(screen.getByLabelText("3rd approver"), mockImplicitAddress(2).pkh)
+        );
+
+        expect(screen.getAllByTestId(/remove-signer-/)).toHaveLength(3);
+
+        await act(() => user.click(screen.getByTestId("remove-signer-1")));
+
+        expect(screen.getAllByTestId(/^address-autocomplete-signers/)).toHaveLength(2);
         expect(screen.getByTestId("real-address-input-signers.0.val")).toHaveValue(
           mockImplicitAccount(0).address.pkh
         );
@@ -157,33 +159,32 @@ describe("SelectApproversFormPage", () => {
     });
 
     it("doesn't allow non-tz addresses", async () => {
+      const user = userEvent.setup();
       render(fixture());
-      fireEvent.change(screen.getByLabelText("Select 1st approver"), {
-        target: { value: mockContractAddress(0).pkh },
-      });
-      await waitFor(() => {
-        expect(screen.getByTestId("signer-0-error")).toHaveTextContent(
-          "Signer must be valid TZ address"
-        );
-      });
+
+      await act(() =>
+        user.type(screen.getByLabelText("Select 1st approver"), mockContractAddress(0).pkh)
+      );
+
+      expect(screen.getByTestId("signer-0-error")).toHaveTextContent(
+        "Signer must be valid TZ address"
+      );
     });
 
     it("doesn't allow duplications", async () => {
+      const user = userEvent.setup();
       render(fixture());
 
       const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
-      fireEvent.click(addSignerButton);
+      await act(() => user.click(addSignerButton));
+      await act(() =>
+        user.type(screen.getByLabelText("Select 1st approver"), mockImplicitAddress(1).pkh)
+      );
+      await act(() => user.type(screen.getByLabelText("2nd approver"), mockImplicitAddress(1).pkh));
 
-      fireEvent.change(screen.getByLabelText("Select 1st approver"), {
-        target: { value: mockImplicitAddress(1).pkh },
-      });
-      fireEvent.change(screen.getByLabelText("2nd approver"), {
-        target: { value: mockImplicitAddress(1).pkh },
-      });
-
-      await waitFor(() => {
-        expect(screen.getByTestId("signer-1-error")).toHaveTextContent("Duplicate approver");
-      });
+      expect(screen.getByTestId("signer-1-error")).toHaveTextContent("Duplicate approver");
+      expect(screen.getByTestId("signer-1-error")).toHaveTextContent("Duplicate approver");
+      expect(screen.getByTestId("signer-1-error")).toHaveTextContent("Duplicate approver");
     });
   });
 
@@ -225,12 +226,13 @@ describe("SelectApproversFormPage", () => {
     });
 
     it("shows the correct max threshold", async () => {
+      const user = userEvent.setup();
       render(fixture());
 
       expect(screen.getByTestId("max-signers")).toHaveTextContent("out of 1");
 
       const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
-      fireEvent.click(addSignerButton);
+      await act(() => user.click(addSignerButton));
 
       await waitFor(() => {
         expect(screen.getByTestId("max-signers")).toHaveTextContent("out of 2");
@@ -266,6 +268,7 @@ describe("SelectApproversFormPage", () => {
     });
 
     it("builds operation that can be submitted from the next step", async () => {
+      const user = userEvent.setup();
       const sender = mockImplicitAccount(1);
       render(
         <DynamicModalContext.Provider value={dynamicModalContextMock}>
@@ -281,12 +284,6 @@ describe("SelectApproversFormPage", () => {
         </DynamicModalContext.Provider>
       );
 
-      const reviewButton = screen.getByText("Review");
-      await waitFor(() => {
-        expect(reviewButton).toBeEnabled();
-      });
-      fireEvent.click(reviewButton);
-
       const operations = makeAccountOperations(sender, sender, [
         mockContractOrigination(
           1, // sender id
@@ -299,22 +296,25 @@ describe("SelectApproversFormPage", () => {
         ),
       ]);
       mockEstimatedFee(150);
-      await waitFor(() => {
-        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-          <SignTransactionFormPage
-            data={{
-              sender: sender.address.pkh,
-              threshold: 1,
-              signers: [{ val: mockImplicitAddress(0).pkh }, { val: mockImplicitAddress(1).pkh }],
-              name: "Test account",
-            }}
-            fee={new BigNumber(150)}
-            goBack={expect.any(Function)}
-            mode="single"
-            operations={operations}
-          />
-        );
-      });
+
+      const reviewButton = screen.getByText("Review");
+      await waitFor(() => expect(reviewButton).toBeEnabled());
+      await act(() => user.click(reviewButton));
+
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+        <SignTransactionFormPage
+          data={{
+            sender: sender.address.pkh,
+            threshold: 1,
+            signers: [{ val: mockImplicitAddress(0).pkh }, { val: mockImplicitAddress(1).pkh }],
+            name: "Test account",
+          }}
+          fee={new BigNumber(150)}
+          goBack={expect.any(Function)}
+          mode="single"
+          operations={operations}
+        />
+      );
     });
   });
 

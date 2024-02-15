@@ -1,7 +1,5 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { SideNavbar } from "./SideNavbar";
-import { act, render, screen } from "../mocks/testUtils";
+import { act, render, screen, userEvent } from "../mocks/testUtils";
 
 const MENU_ITEM_LABELS = [
   "Accounts",

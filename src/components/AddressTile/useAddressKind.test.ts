@@ -1,5 +1,3 @@
-import { renderHook } from "@testing-library/react";
-
 import { useAddressKind } from "./useAddressKind";
 import {
   mockBaker,
@@ -10,6 +8,7 @@ import {
 } from "../../mocks/factories";
 import { multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
+import { renderHook } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";

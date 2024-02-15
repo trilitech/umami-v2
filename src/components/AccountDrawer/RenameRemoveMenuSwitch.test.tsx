@@ -1,9 +1,7 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
-import { act, render, screen } from "../../mocks/testUtils";
+import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { store } from "../../utils/redux/store";
 

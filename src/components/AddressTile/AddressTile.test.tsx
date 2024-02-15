@@ -1,8 +1,6 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { AddressTile } from "./AddressTile";
 import { mockMnemonicAccount } from "../../mocks/factories";
-import { act, render, screen } from "../../mocks/testUtils";
+import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { Address } from "../../types/Address";
 import { formatPkh } from "../../utils/format";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";

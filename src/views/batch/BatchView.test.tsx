@@ -1,11 +1,10 @@
 import { OpKind, OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
-import { userEvent } from "@testing-library/user-event";
 
 import { BatchView, tokenTitle } from "./BatchView";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { addAccount, mockEstimatedFee } from "../../mocks/helpers";
-import { act, render, screen, within } from "../../mocks/testUtils";
+import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
 import { ghostFA2, ghostTezzard } from "../../mocks/tokens";
 import { makeAccountOperations } from "../../types/AccountOperations";
@@ -18,6 +17,7 @@ describe("<BatchView />", () => {
       mockTezOperation(0),
     ]);
     render(<BatchView operations={operations} />);
+
     const header = screen.getByTestId("header");
     expect(header).toBeInTheDocument();
     expect(within(header).getByTestId("right-header")).toBeInTheDocument();
@@ -30,6 +30,7 @@ describe("<BatchView />", () => {
       mockTezOperation(0),
     ]);
     render(<BatchView operations={operations} />);
+
     expect(screen.getAllByTestId("operation").length).toEqual(3);
   });
 
@@ -39,6 +40,7 @@ describe("<BatchView />", () => {
         mockTezOperation(0),
       ]);
       render(<BatchView operations={operations} />);
+
       expect(screen.queryByTestId("footer")).not.toBeInTheDocument();
     });
 
@@ -49,6 +51,7 @@ describe("<BatchView />", () => {
       }
       const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), ops);
       render(<BatchView operations={operations} />);
+
       const footer = screen.getByTestId("footer");
       expect(within(footer).getByTestId("right-header")).toBeInTheDocument();
     });

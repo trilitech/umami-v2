@@ -1,7 +1,8 @@
-import { fireEvent, render, renderHook, screen, waitFor } from "@testing-library/react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { PasswordInput } from "./PasswordInput";
+import { act, render, renderHook, screen, userEvent } from "../mocks/testUtils";
+
 type FormFields = { destination: string };
 
 const fixture = () => {
@@ -14,38 +15,32 @@ const fixture = () => {
 };
 
 describe("<PasswordInput/>", () => {
-  it("hides password by default", async () => {
+  it("hides password by default", () => {
     render(fixture());
-    await waitFor(() => {
-      expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
-    });
+
+    expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
     expect(screen.getByTestId("eye-icon")).toBeInTheDocument();
   });
-  it("shows password on click icon", async () => {
-    render(fixture());
-    const iconButton = screen.getByTestId("eye-icon");
-    fireEvent.click(iconButton);
 
-    await waitFor(() => {
-      expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
-    });
+  it("shows password on click icon", async () => {
+    const user = userEvent.setup();
+    render(fixture());
+
+    await act(() => user.click(screen.getByTestId("eye-icon")));
+
+    expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
     expect(screen.getByTestId("eye-slash-icon")).toBeInTheDocument();
   });
 
   it("shows and hide password on click icon", async () => {
+    const user = userEvent.setup();
     render(fixture());
-    const eyeButton = screen.getByTestId("eye-icon");
 
-    fireEvent.click(eyeButton);
-    await waitFor(() => {
-      expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
-    });
+    await act(() => user.click(screen.getByTestId("eye-icon")));
 
-    expect(screen.getByTestId("eye-slash-icon")).toBeInTheDocument();
-    const eyeSlashButton = screen.getByTestId("eye-slash-icon");
-    fireEvent.click(eyeSlashButton);
-    await waitFor(() => {
-      expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
-    });
+    expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
+
+    await act(() => user.click(screen.getByTestId("eye-slash-icon")));
+    expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
   });
 });

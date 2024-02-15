@@ -1,8 +1,6 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { getGoogleCredentials } from "./getGoogleCredentials";
 import { GoogleAuth } from "./GoogleAuth";
-import { act, render, screen } from "../mocks/testUtils";
+import { act, render, screen, userEvent } from "../mocks/testUtils";
 import { mockToast } from "../mocks/toast";
 
 jest.mock("./getGoogleCredentials");

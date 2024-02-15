@@ -1,8 +1,7 @@
-import { renderHook } from "@testing-library/react";
-
 import { useGetToken, useGetTokenType } from "./tokensHooks";
 import { hedgehoge } from "../../mocks/fa12Tokens";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
+import { renderHook } from "../../mocks/testUtils";
 import { ReduxStore } from "../../providers/ReduxStore";
 import { DefaultNetworks, Network } from "../../types/Network";
 import { fromRaw } from "../../types/Token";

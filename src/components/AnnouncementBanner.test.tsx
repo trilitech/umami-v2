@@ -1,8 +1,7 @@
-import { userEvent } from "@testing-library/user-event";
 import axios from "axios";
 
 import { AnnouncementBanner } from "./AnnouncementBanner";
-import { act, render, screen, waitFor } from "../mocks/testUtils";
+import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
 import { announcementSlice } from "../utils/redux/slices/announcementSlice";
 import { store } from "../utils/redux/store";
 

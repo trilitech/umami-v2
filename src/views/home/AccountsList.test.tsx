@@ -1,6 +1,3 @@
-import "@testing-library/jest-dom";
-import { userEvent } from "@testing-library/user-event";
-
 import { AccountsList } from "./AccountsList";
 import {
   mockAccountLabel,
@@ -11,7 +8,7 @@ import {
   mockPk,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { act, fireEvent, render, screen, waitFor, within } from "../../mocks/testUtils";
+import { act, fireEvent, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";

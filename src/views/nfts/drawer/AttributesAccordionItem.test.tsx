@@ -1,8 +1,8 @@
 import { Accordion } from "@chakra-ui/react";
-import { render, screen } from "@testing-library/react";
 
 import { AttributesAccordionItem } from "./AttributesAccordionItem";
 import { mockNFT } from "../../../mocks/factories";
+import { render, screen } from "../../../mocks/testUtils";
 
 describe("AttributesAccordionItem", () => {
   it("shows nothing if there are no attributes", () => {

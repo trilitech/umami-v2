@@ -1,33 +1,35 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-
 import { Eula } from "./Eula";
-import { Step } from "../useOnboardingModal";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 
-const setStepMock = jest.fn((step: Step) => {});
+const setStepMock = jest.fn();
 
-const fixture = (setStep: (step: Step) => void) => <Eula goToStep={setStep} />;
+const fixture = () => <Eula goToStep={setStepMock} />;
 
 describe("<Eula />", () => {
   describe("When not accepted", () => {
     test("button is disabled", () => {
-      render(fixture(setStepMock));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
-      const checkbox = screen.getByRole("checkbox");
-      expect(checkbox).not.toBeChecked();
-      expect(confirmBtn).toBeDisabled();
+      render(fixture());
+
+      expect(screen.getByRole("checkbox")).not.toBeChecked();
+      expect(screen.getByRole("button", { name: "Continue" })).toBeDisabled();
     });
   });
 
   describe("When accepted", () => {
-    test("button is enabled", () => {
-      render(fixture(setStepMock));
-      const confirmBtn = screen.getByRole("button", { name: /continue/i });
+    test("button is enabled", async () => {
+      const user = userEvent.setup();
+      render(fixture());
+
       const checkbox = screen.getByRole("checkbox");
       expect(checkbox).not.toBeChecked();
-      fireEvent.click(checkbox);
+      await act(() => user.click(checkbox));
+
       expect(checkbox).toBeChecked();
+
+      const confirmBtn = screen.getByRole("button", { name: "Continue" });
       expect(confirmBtn).toBeEnabled();
-      fireEvent.click(confirmBtn);
+
+      await act(() => user.click(confirmBtn));
       expect(setStepMock).toHaveBeenCalledTimes(1);
     });
   });

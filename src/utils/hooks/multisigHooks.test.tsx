@@ -1,8 +1,7 @@
-import { renderHook } from "@testing-library/react";
-
 import { useGetPendingMultisigOperations } from "./multisigHooks";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { getWrapper } from "../../mocks/store";
+import { renderHook } from "../../mocks/testUtils";
 import { multisigToAccount } from "../multisig/helpers";
 import { multisigActions } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
