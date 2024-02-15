@@ -23,6 +23,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { capitalize } from "lodash";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -84,7 +85,7 @@ export const PermissionRequestPanel: React.FC<{
             Network:
           </Heading>
           <Text color={colors.gray[400]} size="sm">
-            {request.network.type}
+            {capitalize(request.network.type)}
           </Text>
         </Flex>
       </ModalHeader>
@@ -109,7 +110,7 @@ export const PermissionRequestPanel: React.FC<{
           <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
             <AccordionButton>
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
-                Request Payload
+                Request
               </Heading>
               <AccordionIcon />
             </AccordionButton>
@@ -132,7 +133,7 @@ export const PermissionRequestPanel: React.FC<{
       </ModalBody>
       <ModalFooter>
         <Button width="100%" isDisabled={!isValid} onClick={_ => grant()} size="lg">
-          Grant
+          Sign
         </Button>
       </ModalFooter>
     </ModalContent>

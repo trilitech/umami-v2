@@ -59,7 +59,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
             <FormLabel marginTop="24px">To </FormLabel>
             <AddressTile address={contract} />
 
-            <FormLabel marginTop="24px">Parameter</FormLabel>
+            <FormLabel marginTop="24px">Contract Call Parameter</FormLabel>
             <Accordion allowToggle={true}>
               <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
                 <AccordionButton>
@@ -74,7 +74,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
               </AccordionItem>
             </Accordion>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter padding="16px 0 0 0">
             <SignButton
               isLoading={isSigning}
               onSubmit={onSign}

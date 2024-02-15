@@ -72,7 +72,7 @@ describe("<BeaconRequestNotification />", () => {
       await act(() => user.type(input, account.address.pkh));
 
       // grant permission
-      const grantButton = screen.getByRole("button", { name: "Grant" });
+      const grantButton = screen.getByRole("button", { name: "Sign" });
       expect(grantButton).toBeEnabled();
       await act(() => user.click(grantButton));
 
@@ -97,7 +97,7 @@ describe("<BeaconRequestNotification />", () => {
       await act(() => user.type(input, account.address.pkh));
 
       // grant permission
-      const grantButton = screen.getByRole("button", { name: "Grant" });
+      const grantButton = screen.getByRole("button", { name: "Sign" });
       expect(grantButton).toBeEnabled();
       await act(() => user.click(grantButton));
 
