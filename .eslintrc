@@ -96,6 +96,10 @@
     "prefer-const": "warn",
     "@typescript-eslint/require-await": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
+    "@typescript-eslint/no-misused-promises": [
+      "warn",
+      { "checksVoidReturn": { "attributes": false } },
+    ],
   },
   "overrides": [
     {

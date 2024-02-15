@@ -129,6 +129,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
                       <MnemonicAutocomplete
                         inputName={inputName}
                         inputProps={{
+                          // eslint-disable-next-line @typescript-eslint/no-misused-promises
                           onPaste: async e => {
                             e.preventDefault();
                             const mnemonic = await navigator.clipboard.readText();

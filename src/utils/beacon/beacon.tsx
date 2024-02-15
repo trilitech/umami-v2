@@ -67,9 +67,9 @@ export const BeaconProvider: React.FC<{
     walletClient
       .init()
       .then(() =>
-        walletClient.connect(message =>
-          openWith(<BeaconNotification message={message} onClose={onClose} />)
-        )
+        walletClient.connect(message => {
+          void openWith(<BeaconNotification message={message} onClose={onClose} />);
+        })
       )
       .catch(console.error);
   }, [onClose, openWith]);
