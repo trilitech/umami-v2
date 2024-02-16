@@ -3,9 +3,12 @@ import { expect } from "@playwright/test";
 
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
+import { Account } from "../../types/Account";
 import { State } from "../../utils/redux/slices/accountsSlice";
 import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
-import { refetch } from "../utils";
+import { BLOCK_TIME } from "../../utils/useAssetsPolling";
+import { AccountsPage } from "../pages/AccountsPage";
+import { refetch, topUpAccount, waitUntilRefetch } from "../utils";
 
 Given(/I have accounts?/, async function (this: CustomWorld, table: DataTable) {
   const accounts: State = {
@@ -72,3 +75,34 @@ When("I wait for TZKT to process the updates", async function (this: CustomWorld
 When("I refetch the data", async function (this: CustomWorld) {
   await refetch(this.page);
 });
+
+When(
+  "{string} is topped-up with {string}",
+  async function (this: CustomWorld, accountLabel, amount) {
+    const pkh = ((await this.getReduxState()) as any).accounts.items.find(
+      (acc: Account) => acc.label === accountLabel
+    )?.address.pkh;
+    await topUpAccount(pkh, amount);
+  }
+);
+
+Then(
+  "{string} balance should be {string}",
+  async function (this: CustomWorld, accountLabel, amount) {
+    const { balance } = await new AccountsPage(this.page).getAccountInfo(accountLabel);
+    expect(balance).toEqual(amount);
+  }
+);
+
+Then("Total balance should be {string}", async function (this: CustomWorld, amount) {
+  const totalBalance = await new AccountsPage(this.page).getTotalBalance();
+  expect(totalBalance).toEqual(amount);
+});
+
+When(
+  "I wait until the next refetch",
+  { timeout: BLOCK_TIME + 1000 },
+  async function (this: CustomWorld) {
+    await waitUntilRefetch(this.page);
+  }
+);

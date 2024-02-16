@@ -143,11 +143,17 @@ export const AccountTile: React.FC<{
         rightElement={
           <Flex flexDirection="column">
             {balance && (
-              <Heading alignSelf="flex-end" size="lg">
+              <Heading alignSelf="flex-end" data-testid="balance" size="lg">
                 {prettyTezAmount(balance)}
               </Heading>
             )}
-            <Text align="right" color={colors.gray[450]} fontWeight={700} size="sm">
+            <Text
+              align="right"
+              color={colors.gray[450]}
+              fontWeight={700}
+              data-testid="is-delegated"
+              size="sm"
+            >
               {/* crutch to make some the same padding at the top */}
               {/* TODO: split it into separate components instead of right/left elements */}
               {isDelegating ? "Delegated" : <>&nbsp;</>}
