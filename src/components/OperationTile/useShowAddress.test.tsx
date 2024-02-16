@@ -3,11 +3,11 @@ import { useShowAddress } from "./useShowAddress";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
 
-const PageWrapper = ({ children }: { children: React.ReactElement }) => (
+const PageWrapper = ({ children }: { children: React.ReactNode }) => (
   <OperationTileContext.Provider value={{ mode: "page" }}>{children}</OperationTileContext.Provider>
 );
 
-const DrawerWrapper = ({ children }: { children: React.ReactElement }) => (
+const DrawerWrapper = ({ children }: { children: React.ReactNode }) => (
   <OperationTileContext.Provider
     value={{ mode: "drawer", selectedAddress: mockImplicitAddress(0) }}
   >
