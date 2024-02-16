@@ -1,4 +1,4 @@
-import { MultisigDecodedOperationItem } from "./MultisigDecodedOperationItem";
+import { MultisigDecodedOperation } from "./MultisigDecodedOperation";
 import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 import { MAINNET } from "../../../../types/Network";
@@ -14,10 +14,10 @@ beforeEach(() => {
   store.dispatch(networksActions.setCurrent(MAINNET));
 });
 
-describe("<MultisigDecodedOperationItem/>", () => {
+describe("<MultisigDecodedOperation />", () => {
   it("displays delegate", () => {
     render(
-      <MultisigDecodedOperationItem
+      <MultisigDecodedOperation
         operation={{
           type: "delegation",
           sender: mockImplicitAddress(0),
@@ -31,7 +31,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
 
   it("displays undelegate", () => {
     render(
-      <MultisigDecodedOperationItem
+      <MultisigDecodedOperation
         operation={{
           type: "undelegation",
           sender: mockImplicitAddress(0),
@@ -44,7 +44,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
 
   it("amount renders correctly for tez", () => {
     render(
-      <MultisigDecodedOperationItem
+      <MultisigDecodedOperation
         operation={{ type: "tez", recipient: mockImplicitAddress(0), amount: "1000000" }}
       />
     );
@@ -78,7 +78,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
     );
 
     render(
-      <MultisigDecodedOperationItem
+      <MultisigDecodedOperation
         operation={{
           type: "fa2",
           recipient: mockImplicitAddress(0),
@@ -126,7 +126,7 @@ describe("<MultisigDecodedOperationItem/>", () => {
     );
 
     render(
-      <MultisigDecodedOperationItem
+      <MultisigDecodedOperation
         operation={{
           type: "fa2",
           recipient: mockImplicitAddress(0),
@@ -138,6 +138,6 @@ describe("<MultisigDecodedOperationItem/>", () => {
       />
     );
 
-    expect(screen.getByTestId("decoded-fa-amount")).toHaveTextContent("300 mockNFTName");
+    expect(screen.getByTestId("decoded-fa-amount")).toHaveTextContent("300mockNFTName");
   });
 });

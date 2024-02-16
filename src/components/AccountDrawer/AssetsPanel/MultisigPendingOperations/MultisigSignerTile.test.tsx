@@ -12,9 +12,33 @@ import { store } from "../../../../utils/redux/store";
 const { addMockMnemonicAccounts } = accountsSlice.actions;
 
 const signer = mockMnemonicAccount(0);
-describe("<MultisigSignerTile/>", () => {
+describe("<MultisigSignerTile />", () => {
   beforeEach(() => {
     store.dispatch(addMockMnemonicAccounts([signer]));
+  });
+
+  it("displays the action button", () => {
+    render(
+      <MultisigSignerTile
+        operation={pendingOps[0]}
+        pendingApprovals={1}
+        sender={mockMultisigAccount(0)}
+        signerAddress={signer.address}
+      />
+    );
+    expect(screen.getByTestId("multisig-signer-button")).toBeVisible();
+  });
+
+  it("displays the account tile", () => {
+    render(
+      <MultisigSignerTile
+        operation={pendingOps[0]}
+        pendingApprovals={1}
+        sender={mockMultisigAccount(0)}
+        signerAddress={signer.address}
+      />
+    );
+    expect(screen.getByTestId("account-tile-base")).toBeVisible();
   });
 
   it("should display a button for non-pending operation with signer included in the account", () => {

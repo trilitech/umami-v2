@@ -7,7 +7,6 @@ import {
   Box,
   Heading,
   Wrap,
-  WrapItem,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -21,30 +20,25 @@ export const MultisigApprovers: React.FC<{
   return (
     <Box
       width="100%"
-      marginTop="60px"
-      padding="15px"
+      marginTop="40px"
+      marginBottom="-20px"
       background={colors.gray[800]}
       borderRadius="8px"
     >
-      <Accordion allowToggle defaultIndex={0}>
+      <Accordion padding="15px" allowToggle>
         <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
-          <h2>
-            <AccordionButton as="span" flex="1" textAlign="left">
-              <Heading width="100%" size="sm">
-                Approvers
-              </Heading>
-              <AccordionIcon cursor="pointer" />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel>
-            <Wrap marginTop="3" data-testid="multisig-tag-section">
-              {signers.map(signer => {
-                return (
-                  <WrapItem key={signer.pkh} padding="3px 8px" borderRadius="100px">
-                    <AddressPill address={signer} />
-                  </WrapItem>
-                );
-              })}
+          <AccordionButton as="span" flex="1" padding="0" textAlign="left">
+            <Heading width="100%" size="md">
+              Approvers
+            </Heading>
+
+            <AccordionIcon cursor="pointer" />
+          </AccordionButton>
+          <AccordionPanel padding="0">
+            <Wrap marginTop="20px" data-testid="multisig-tag-section" spacingX="0" spacingY="12px">
+              {signers.map(signer => (
+                <AddressPill key={signer.pkh} marginRight="12px" address={signer} />
+              ))}
             </Wrap>
           </AccordionPanel>
         </AccordionItem>

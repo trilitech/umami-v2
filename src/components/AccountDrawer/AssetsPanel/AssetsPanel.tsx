@@ -2,7 +2,7 @@ import { Box, Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@ch
 import React from "react";
 
 import { DelegationDisplay } from "./DelegationDisplay";
-import { MultisigPendingAccordion } from "./MultisigPendingAccordion";
+import { MultisigPendingOperations } from "./MultisigPendingOperations";
 import { NFTsGrid } from "./NFTsGrid";
 import { OperationListDisplay } from "./OperationListDisplay";
 import { TokenList } from "./TokenList";
@@ -57,7 +57,8 @@ export const AssetsPanel: React.FC<{
               <Box
                 width="6px"
                 height="6px"
-                marginTop="-3px"
+                marginTop="-7px"
+                marginRight="-3px"
                 marginLeft="3px"
                 borderRadius="100%"
                 backgroundColor={colors.orangeL}
@@ -89,7 +90,7 @@ export const AssetsPanel: React.FC<{
             data-testid="account-card-pending-tab-panel"
             paddingX="0"
           >
-            <MultisigPendingAccordion account={account} />
+            <MultisigPendingOperations account={account} />
           </TabPanel>
         )}
 

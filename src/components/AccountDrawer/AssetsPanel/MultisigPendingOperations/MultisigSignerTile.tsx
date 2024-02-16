@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 import { MultisigActionButton, MultisigSignerState } from "./MultisigActionButton";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
+import colors from "../../../../style/colors";
 import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
 import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { ImplicitAddress } from "../../../../types/Address";
@@ -33,7 +34,7 @@ export const MultisigSignerTile: React.FC<{
 
   const operationIsExecutable = pendingApprovals === 0;
 
-  const onClickApproveExecute = () =>
+  const approveOrExecute = () =>
     handleAsyncAction(async () => {
       if (!signer) {
         throw new Error("Can't approve or execute with an account you don't own");
@@ -46,7 +47,13 @@ export const MultisigSignerTile: React.FC<{
       ]);
       const fee = await estimate(approveOrExecute, network);
 
-      const transactionCount = parseRawMichelson(operation.rawActions, sender).length;
+      let transactionCount;
+      try {
+        transactionCount = parseRawMichelson(operation.rawActions, sender).length;
+      } catch (_) {
+        // for cases when we cannot parse the actions
+        transactionCount = 1;
+      }
 
       return openWith(
         <SignPage
@@ -68,12 +75,19 @@ export const MultisigSignerTile: React.FC<{
 
   return (
     <AccountTileBase
+      height="80px"
+      marginTop="10px"
+      marginBottom="0"
+      padding="15px"
+      borderRadius="8px"
+      backgroundColor={colors.gray[700]}
       icon={<AccountTileIcon addressKind={addressKind} />}
       leftElement={<LabelAndAddress label={addressKind.label} pkh={addressKind.pkh} />}
       rightElement={
         <MultisigActionButton
+          approveOrExecute={approveOrExecute}
+          data-testid="multisig-signer-button"
           isLoading={isLoading}
-          onClickApproveExecute={onClickApproveExecute}
           signerState={signerState}
         />
       }

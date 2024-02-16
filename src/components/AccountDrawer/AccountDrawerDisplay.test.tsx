@@ -341,7 +341,7 @@ describe("<AccountCard />", () => {
       const pendingOps = getAllByTestId(/multisig-pending-operation/i);
       expect(pendingOps).toHaveLength(1);
       expect(pendingOps[0]).toHaveTextContent(/-0.100000 ꜩ/i);
-      expect(pendingOps[0]).toHaveTextContent(/Send to :tz1UN...oBUB3/i);
+      expect(pendingOps[0]).toHaveTextContent(/Send to:tz1UN...oBUB3/i);
     });
 
     test("multisig accounts display should not have pending operations tab if there are none", async () => {
