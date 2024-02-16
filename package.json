@@ -65,7 +65,7 @@
     "@taquito/utils": "^19.0.2",
     "@testing-library/dom": "^9.3.4",
     "@testing-library/jest-dom": "6.4.2",
-    "@testing-library/react": "14.1.2",
+    "@testing-library/react": "14.2.1",
     "@testing-library/user-event": "14.5.2",
     "@toruslabs/customauth": "^15.0.5",
     "@types/assert": "^1.5.10",
