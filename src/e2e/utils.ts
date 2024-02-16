@@ -1,7 +1,6 @@
 import { execSync } from "child_process";
-import crypto from "crypto";
 
-import { Page, expect, test } from "@playwright/test";
+import { Page } from "@playwright/test";
 import { noop } from "lodash";
 
 import { RawPkh } from "../types/Address";
@@ -18,69 +17,6 @@ const TEST_NETWORK = {
 export const TEST_NETWORKS_STATE = {
   available: [...DefaultNetworks, TEST_NETWORK],
   current: TEST_NETWORK,
-};
-const MASTER_PASSWORD = "12345678";
-
-export const cleanupState = () => {
-  test.beforeEach(async ({ page }: { page: Page }) => {
-    global.crypto = crypto as any;
-    await page.addInitScript(networks => {
-      localStorage.clear();
-
-      localStorage.setItem(
-        "persist:root",
-        JSON.stringify({
-          networks,
-          _persist: '{"version":-1,"rehydrated":true}',
-        })
-      );
-    }, JSON.stringify(TEST_NETWORKS_STATE));
-
-    resetBlockchain();
-  });
-};
-
-export const onboardWithExistingMnemonic = async ({
-  mnemonic,
-  page,
-  derivationPath,
-}: {
-  mnemonic: string;
-  page: Page;
-  derivationPath?: string;
-}) => {
-  await page.goto("/");
-
-  await page.getByRole("button", { name: "Get started" }).click();
-
-  await expect(page.getByRole("heading", { name: "Accept to Continue" })).toBeVisible();
-  await page.getByText(/I confirm/).click();
-
-  await page.getByRole("button", { name: "Continue" }).click();
-  await page.getByRole("button", { name: "I already have a wallet" }).click();
-  await page.getByRole("button", { name: "Import with Seed Phrase" }).click();
-  const words = mnemonic.split(" ");
-  for (let i = 0; i < words.length; i++) {
-    await page.getByRole("textbox").nth(i).fill(words[i]);
-  }
-  await page.getByRole("button", { name: "Continue" }).click();
-
-  await expect(page.getByRole("heading", { name: "Name Your Account" })).toBeVisible();
-  await page.getByRole("button", { name: "Continue" }).click();
-
-  await expect(page.getByRole("heading", { name: "Derivation Path" })).toBeVisible();
-  if (derivationPath) {
-    await page.getByTestId("select-input").click();
-    await page.getByText(derivationPath).click();
-  }
-  await page.getByRole("button", { name: "Continue" }).click();
-
-  await page.getByTestId("password").fill(MASTER_PASSWORD);
-  await page.getByLabel("Confirm Password").fill(MASTER_PASSWORD);
-
-  await page.getByRole("button", { name: "Submit" }).click();
-
-  await page.waitForURL("/#/home");
 };
 
 const runDockerCommand = (command: string) =>
@@ -127,20 +63,18 @@ export const topUpAccount = async (account: RawPkh, tez: string) => {
   }
 };
 
-export const refetch = async (page: Page) => {
-  const getLastTimeUpdated = () => {
-    try {
-      const state = JSON.parse(localStorage.getItem("persist:root") as string);
-      return JSON.parse(state.assets).lastTimeUpdated;
-    } catch {
-      // if the assets are not yet loaded then the lastTimeUpdated is not set
-      return "";
-    }
-  };
+export const waitUntilRefetch = (page: Page) =>
+  runAndWaitUntilRefetch(page, () => Promise.resolve());
+
+export const refetch = (page: Page) =>
+  runAndWaitUntilRefetch(page, () => page.getByTestId("refetch-button").click());
+
+const runAndWaitUntilRefetch = async (page: Page, action: () => Promise<void>) => {
+  const getLastTimeUpdated = () => (window as any).reduxStore.getState().assets.lastTimeUpdated;
 
   const prevTimeUpdated = await page.evaluate(getLastTimeUpdated);
 
-  await page.getByTestId("refetch-button").click();
+  await action();
 
   // wait until the lastTimeUpdated has changed
   return new Promise(resolve => {

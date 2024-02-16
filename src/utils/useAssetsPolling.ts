@@ -25,7 +25,7 @@ import {
 import { RawPkh } from "../types/Address";
 import { Network } from "../types/Network";
 
-const BLOCK_TIME = 15000; // Block time is
+export const BLOCK_TIME = 15000; // Block time is
 const CONVERSION_RATE_REFRESH_RATE = 300000;
 const BAKERS_REFRESH_RATE = 1000 * 60 * 120;
 

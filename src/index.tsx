@@ -19,6 +19,9 @@ const logError = (error: Error, info: { componentStack?: string | null }) => {
   store.dispatch(errorsSlice.actions.add(errorContext));
 };
 
+// is used in e2e tests to simplify state reading
+Object.defineProperty(window, "reduxStore", { value: store });
+
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>

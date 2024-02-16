@@ -6,6 +6,25 @@ import { Account, AccountGroup } from "../helpers/AccountGroup";
 export class AccountsPage {
   constructor(readonly page: Page) {}
 
+  async getTotalBalance(): Promise<string> {
+    return this.page.getByTestId("total-balance").getByRole("heading", { level: 2 }).innerText();
+  }
+
+  async getAccountInfo(
+    accountLabel: string
+  ): Promise<{ balance: string; shortAddress: string; delegationStatus: boolean }> {
+    const accountBlock = this.page
+      .getByTestId("account-tile-container")
+      .filter({ has: this.page.getByText(accountLabel, { exact: true }) });
+
+    return {
+      balance: await accountBlock.getByTestId("balance").innerText(),
+      shortAddress: await accountBlock.getByTestId("short-address").innerText(),
+      delegationStatus:
+        "Delegated" === (await accountBlock.getByTestId("is-delegated").innerText()),
+    };
+  }
+
   async getGroup(groupTitle: string): Promise<AccountGroup> {
     const group = this.page.getByTestId(`account-group-${groupTitle}`);
 
