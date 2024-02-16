@@ -10848,6 +10848,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-jest-dom@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "eslint-plugin-jest-dom@npm:5.1.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.16.3"
+    requireindex: "npm:^1.2.0"
+  peerDependencies:
+    "@testing-library/dom": ^8.0.0 || ^9.0.0
+    eslint: ^6.8.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    "@testing-library/dom":
+      optional: true
+  checksum: 10/198f32ab59c9f1483773b0125ad1fbc012d2b644a9ce6f1a10a223499420b047741bce8c17e2bd0f62d3f9b31f87e27a58d40b2be5582f76ba8a2926ad669d0e
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-jest@npm:^27.8.0":
   version: 27.8.0
   resolution: "eslint-plugin-jest@npm:27.8.0"
@@ -17590,6 +17606,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"requireindex@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "requireindex@npm:1.2.0"
+  checksum: 10/266d1cb31f6cbc4b6cf2e898f5bbc45581f7919bcf61bba5c45d0adb69b722b9ff5a13727be3350cde4520d7cd37f39df45d58a29854baaa4552cd6b05ae4a1a
+  languageName: node
+  linkType: hard
+
 "requires-port@npm:^1.0.0":
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
@@ -19760,6 +19783,7 @@ __metadata:
     eslint-plugin-deprecation: "npm:^2.0.0"
     eslint-plugin-import: "npm:^2.29.1"
     eslint-plugin-jest: "npm:^27.8.0"
+    eslint-plugin-jest-dom: "npm:^5.1.0"
     eslint-plugin-react: "npm:^7.33.2"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-testing-library: "npm:^6.2.0"

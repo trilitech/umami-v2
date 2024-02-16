@@ -7,11 +7,10 @@ import {
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { userEvent } from "@testing-library/user-event";
 
 import { mockMnemonicAccount } from "../../../mocks/factories";
 import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
-import { act, render, screen } from "../../../mocks/testUtils";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { store } from "../../redux/store";
 import { executeOperations } from "../../tezos";
 import { walletClient } from "../beacon";

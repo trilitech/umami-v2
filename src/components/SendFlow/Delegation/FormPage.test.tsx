@@ -10,7 +10,7 @@ import {
   mockMultisigAccount,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
@@ -83,7 +83,7 @@ describe("<Form />", () => {
       );
     });
 
-    it("displays delegate for address who is not delegating", async () => {
+    it("displays delegate for address who is not delegating", () => {
       const sender = mockImplicitAccount(0);
       render(
         fixture({
@@ -91,9 +91,7 @@ describe("<Form />", () => {
         })
       );
 
-      await waitFor(() => {
-        expect(screen.getByText("Delegate")).toBeInTheDocument();
-      });
+      expect(screen.getByText("Delegate")).toBeInTheDocument();
     });
 
     it("displays change baker for address who is delegating", async () => {
@@ -128,6 +126,7 @@ describe("<Form />", () => {
     });
 
     it("shows a toast if estimation fails", async () => {
+      const user = userEvent.setup();
       render(
         fixture({
           sender: mockImplicitAccount(0),
@@ -141,13 +140,13 @@ describe("<Form />", () => {
       await waitFor(() => {
         expect(submitButton).toBeEnabled();
       });
-      fireEvent.click(submitButton);
+
       const estimateMock = jest.mocked(estimate);
       estimateMock.mockRejectedValue(new Error("Some error occurred"));
 
-      await waitFor(() => {
-        expect(estimateMock).toHaveBeenCalledTimes(1);
-      });
+      await act(() => user.click(submitButton));
+
+      expect(estimateMock).toHaveBeenCalledTimes(1);
       expect(mockToast).toHaveBeenCalledWith({
         description: "Some error occurred",
         status: "error",
@@ -155,6 +154,7 @@ describe("<Form />", () => {
     });
 
     it("opens a sign page if estimation succeeds", async () => {
+      const user = userEvent.setup();
       const sender = mockImplicitAccount(0);
       render(
         <DynamicModalContext.Provider value={dynamicModalContextMock}>
@@ -171,7 +171,6 @@ describe("<Form />", () => {
       await waitFor(() => {
         expect(submitButton).toBeEnabled();
       });
-      fireEvent.click(submitButton);
       mockEstimatedFee(100);
       const operations = makeAccountOperations(sender, sender, [
         {
@@ -180,17 +179,18 @@ describe("<Form />", () => {
           recipient: mockImplicitAccount(1).address,
         },
       ]);
-      await waitFor(() => {
-        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-          <SignPage
-            data={undefined}
-            fee={new BigNumber(100)}
-            goBack={expect.any(Function)}
-            mode="single"
-            operations={operations}
-          />
-        );
-      });
+
+      await act(() => user.click(submitButton));
+
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+        <SignPage
+          data={undefined}
+          fee={new BigNumber(100)}
+          goBack={expect.any(Function)}
+          mode="single"
+          operations={operations}
+        />
+      );
       expect(mockToast).not.toHaveBeenCalled();
     });
   });

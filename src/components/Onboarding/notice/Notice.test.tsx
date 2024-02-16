@@ -1,41 +1,45 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-
 import { Notice } from "./Notice";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
-import { Step, StepType } from "../useOnboardingModal";
+import { StepType } from "../useOnboardingModal";
 
 // TODO refactor mocks
 jest.mock("../../../utils/mnemonic");
 
 const generate24WordMnemonicMock = jest.mocked(generate24WordMnemonic);
-const goToStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn();
 
-const fixture = (goToStep: (step: Step) => void) => <Notice goToStep={goToStep} />;
+const fixture = () => <Notice goToStep={goToStepMock} />;
 
 describe("<Eula />", () => {
   describe("When shown", () => {
-    test("press 'I understand'", () => {
+    test("press 'I understand'", async () => {
+      const user = userEvent.setup();
       generate24WordMnemonicMock.mockReturnValue(mnemonic1);
-      render(fixture(goToStepMock));
-      const confirmBtn = screen.getByRole("button", { name: /I understand/i });
+      render(fixture());
 
-      fireEvent.click(confirmBtn);
+      await act(() => user.click(screen.getByRole("button", { name: "I understand" })));
+
       expect(goToStepMock).toHaveBeenCalledWith({
         type: StepType.showSeedphrase,
         account: { type: "mnemonic", mnemonic: mnemonic1 },
       });
-      expect(goToStepMock).toHaveBeenCalledTimes(1);
     });
 
-    test("press 'I already have a Seed Phrase'", () => {
-      render(fixture(goToStepMock));
-      const skipBtn = screen.getByRole("button", {
-        name: /I already have a Seed Phrase/i,
-      });
-      fireEvent.click(skipBtn);
+    test("press 'I already have a Seed Phrase'", async () => {
+      const user = userEvent.setup();
+      render(fixture());
+
+      await act(() =>
+        user.click(
+          screen.getByRole("button", {
+            name: "I already have a Seed Phrase",
+          })
+        )
+      );
+
       expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreMnemonic });
-      expect(goToStepMock).toHaveBeenCalledTimes(1);
     });
   });
 });

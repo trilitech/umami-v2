@@ -1,7 +1,5 @@
-import { renderHook } from "@testing-library/react";
-
 import { useAvailableNetworks, useSelectNetwork, useSelectedNetwork } from "./networkHooks";
-import { AllTheProviders } from "../../mocks/testUtils";
+import { renderHook } from "../../mocks/testUtils";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { networksActions } from "../redux/slices/networks";
 import { store } from "../redux/store";
@@ -11,7 +9,7 @@ describe("networkHooks", () => {
     it("returns mainnet by default", () => {
       const {
         result: { current },
-      } = renderHook(() => useSelectedNetwork(), { wrapper: AllTheProviders });
+      } = renderHook(() => useSelectedNetwork());
       expect(current.name).toEqual("mainnet");
     });
 
@@ -20,7 +18,7 @@ describe("networkHooks", () => {
 
       const {
         result: { current },
-      } = renderHook(() => useSelectedNetwork(), { wrapper: AllTheProviders });
+      } = renderHook(() => useSelectedNetwork());
       expect(current.name).toEqual("ghostnet");
     });
   });
@@ -29,7 +27,7 @@ describe("networkHooks", () => {
     it("returns default networks by default", () => {
       const {
         result: { current },
-      } = renderHook(() => useAvailableNetworks(), { wrapper: AllTheProviders });
+      } = renderHook(() => useAvailableNetworks());
       expect(current).toEqual([MAINNET, GHOSTNET]);
     });
 
@@ -38,7 +36,7 @@ describe("networkHooks", () => {
       store.dispatch(networksActions.upsertNetwork(customNetwork));
       const {
         result: { current },
-      } = renderHook(() => useAvailableNetworks(), { wrapper: AllTheProviders });
+      } = renderHook(() => useAvailableNetworks());
       expect(current).toEqual([MAINNET, GHOSTNET, customNetwork]);
     });
   });
@@ -46,12 +44,12 @@ describe("networkHooks", () => {
   test("useSelectNetwork", () => {
     const {
       result: { current: selectNetwork },
-    } = renderHook(() => useSelectNetwork(), { wrapper: AllTheProviders });
+    } = renderHook(() => useSelectNetwork());
     selectNetwork("ghostnet");
 
     const {
       result: { current },
-    } = renderHook(() => useSelectedNetwork(), { wrapper: AllTheProviders });
+    } = renderHook(() => useSelectedNetwork());
     expect(current.name).toEqual("ghostnet");
   });
 });

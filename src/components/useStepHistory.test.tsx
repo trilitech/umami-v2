@@ -1,6 +1,5 @@
-import { act, renderHook } from "@testing-library/react";
-
 import { useStepHistory } from "./useStepHistory";
+import { act, renderHook } from "../mocks/testUtils";
 
 type TestStep = "step1" | "step2" | "step3";
 

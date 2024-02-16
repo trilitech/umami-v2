@@ -1,17 +1,14 @@
 import { Accordion } from "@chakra-ui/react";
-import { render, screen } from "@testing-library/react";
 
 import { PropertiesAccordionItem } from "./PropertiesAccordionItem";
 import { mockImplicitAddress, mockNFT } from "../../../mocks/factories";
-import { ReduxStore } from "../../../providers/ReduxStore";
+import { render, screen } from "../../../mocks/testUtils";
 import { NFTBalance } from "../../../types/TokenBalance";
 
 const fixture = (nft: NFTBalance) => (
-  <ReduxStore>
-    <Accordion>
-      <PropertiesAccordionItem nft={nft} style={{}} />
-    </Accordion>
-  </ReduxStore>
+  <Accordion>
+    <PropertiesAccordionItem nft={nft} style={{}} />
+  </Accordion>
 );
 
 describe("PropertiesAccordionItem", () => {

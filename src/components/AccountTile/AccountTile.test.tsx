@@ -1,5 +1,3 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { AccountTile } from "./AccountTile";
 import {
   mockImplicitAccount,
@@ -9,7 +7,7 @@ import {
   mockNFTRaw,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { act, render, screen } from "../../mocks/testUtils";
+import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { MAINNET } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";

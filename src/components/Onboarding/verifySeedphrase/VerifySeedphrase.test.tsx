@@ -1,7 +1,6 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-
 import { VerifySeedphrase } from "./VerifySeedphrase";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
+import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
 import { Step, StepType } from "../useOnboardingModal";
 
@@ -11,40 +10,39 @@ const selectRandomElementsMock = jest.mocked(selectRandomElements);
 jest.mock("../../../utils/tezos/helpers");
 
 beforeEach(() => {
-  const splitted = mnemonic1.split(" ").map((value, index) => {
-    return { index, value };
-  });
+  const splitted = mnemonic1.split(" ").map((value, index) => ({
+    index,
+    value,
+  }));
   selectRandomElementsMock.mockReturnValue(splitted.slice(0, 5));
 });
 
-const fixture = (goToStep: (step: Step) => void) => (
-  <VerifySeedphrase account={{ type: "mnemonic", mnemonic: mnemonic1 }} goToStep={goToStep} />
+const fixture = () => (
+  <VerifySeedphrase account={{ type: "mnemonic", mnemonic: mnemonic1 }} goToStep={goToStepMock} />
 );
 
 describe("<VerifySeedphrase />", () => {
-  test("When no mnemonic has been entered the button is disabled", async () => {
-    render(fixture(goToStepMock));
-    const confirmBtn = screen.getByRole("button", { name: /continue/i });
-    await waitFor(() => {
-      expect(confirmBtn).toBeDisabled();
-    });
+  test("When no mnemonic has been entered the button is disabled", () => {
+    render(fixture());
+
+    expect(screen.getByRole("button", { name: "Continue" })).toBeDisabled();
   });
 
   test("When an invalid mnemonic has been entered the button is disabled", async () => {
-    render(fixture(goToStepMock));
-    const confirmBtn = screen.getByRole("button", { name: /continue/i });
+    const user = userEvent.setup();
+
+    render(fixture());
 
     const inputFields = screen.getAllByRole("textbox");
-    inputFields.forEach(input => {
-      fireEvent.change(input, { target: { value: "test" } });
-    });
-    await waitFor(() => {
-      expect(confirmBtn).toBeDisabled();
-    });
+    for (const input of inputFields) {
+      await act(() => user.type(input, "test"));
+    }
+
+    expect(screen.getByRole("button", { name: "Continue" })).toBeDisabled();
   });
 
   test("validation is working with all invalid", async () => {
-    render(fixture(goToStepMock));
+    render(fixture());
     const inputFields = screen.getAllByRole("textbox");
     inputFields.forEach(input => {
       fireEvent.change(input, { target: { value: "test" } });
@@ -57,7 +55,7 @@ describe("<VerifySeedphrase />", () => {
   });
 
   test("validation is working with some invalid", async () => {
-    render(fixture(goToStepMock));
+    render(fixture());
     const inputFields = screen.getAllByRole("textbox");
 
     // Enter correct value
@@ -77,7 +75,7 @@ describe("<VerifySeedphrase />", () => {
   });
 
   test("validation is working with all valid", async () => {
-    render(fixture(goToStepMock));
+    render(fixture());
     const inputFields = screen.getAllByRole("textbox");
 
     // Enter correct value
@@ -89,7 +87,7 @@ describe("<VerifySeedphrase />", () => {
       fireEvent.blur(input);
     });
 
-    const confirmBtn = screen.getByRole("button", { name: /continue/i });
+    const confirmBtn = screen.getByRole("button", { name: "Continue" });
 
     await waitFor(() => {
       expect(confirmBtn).toBeEnabled();
@@ -97,11 +95,10 @@ describe("<VerifySeedphrase />", () => {
 
     fireEvent.click(confirmBtn);
     await waitFor(() => {
-      expect(goToStepMock).toHaveBeenCalledTimes(1);
-    });
-    expect(goToStepMock).toHaveBeenCalledWith({
-      type: StepType.nameAccount,
-      account: { type: "mnemonic", mnemonic: mnemonic1 },
+      expect(goToStepMock).toHaveBeenCalledWith({
+        type: StepType.nameAccount,
+        account: { type: "mnemonic", mnemonic: mnemonic1 },
+      });
     });
   });
 });

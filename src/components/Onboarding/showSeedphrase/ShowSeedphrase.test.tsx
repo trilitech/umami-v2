@@ -1,28 +1,30 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-
 import { ShowSeedphrase } from "./ShowSeedphrase";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { Step, StepType } from "../useOnboardingModal";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
+import { StepType } from "../useOnboardingModal";
 
-const goToStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn();
 
-const fixture = (goToStep: (step: Step) => void) => {
+const fixture = () => {
   const account = { type: "mnemonic" as const, mnemonic: mnemonic1 };
-  return <ShowSeedphrase account={account} goToStep={goToStep} />;
+  return <ShowSeedphrase account={account} goToStep={goToStepMock} />;
 };
 
 describe("<ShowSeedphrase />", () => {
-  test("mnemonic is displayed", () => {
-    render(fixture(goToStepMock));
-    const confirmBtn = screen.getByRole("button", {
-      name: /OK, I've recorded it/i,
-    });
+  test("mnemonic is displayed", async () => {
+    const user = userEvent.setup();
+    render(fixture());
+
     mnemonic1.split(" ").forEach(word => {
       expect(screen.getByText(word)).toBeInTheDocument();
     });
+
+    const confirmBtn = screen.getByRole("button", {
+      name: "OK, I've recorded it",
+    });
     expect(confirmBtn).toBeEnabled();
-    fireEvent.click(confirmBtn);
-    expect(goToStepMock).toHaveBeenCalledTimes(1);
+    await act(() => user.click(confirmBtn));
+
     expect(goToStepMock).toHaveBeenCalledWith({
       type: StepType.verifySeedphrase,
       account: {

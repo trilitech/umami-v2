@@ -1,9 +1,8 @@
-import { userEvent } from "@testing-library/user-event";
 import { noop } from "lodash";
 
 import { DerivationPath } from "./DerivationPath";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { act, render, screen } from "../../../mocks/testUtils";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { DerivationPathStep, StepType } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn(noop);

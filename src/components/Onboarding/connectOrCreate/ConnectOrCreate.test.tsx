@@ -1,35 +1,34 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-
 import { ConnectOrCreate } from "./ConnectOrCreate";
-import { ReduxStore } from "../../../providers/ReduxStore";
-import { Step, StepType } from "../useOnboardingModal";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
+import { StepType } from "../useOnboardingModal";
 
-const goToStepMock = jest.fn((step: Step) => {});
-const closeModalMock = jest.fn(() => {});
+const goToStepMock = jest.fn();
 
-const fixture = (goToStep: (step: Step) => void) => (
-  <ReduxStore>
-    <ConnectOrCreate closeModal={closeModalMock} goToStep={goToStep} />
-  </ReduxStore>
-);
+const fixture = () => <ConnectOrCreate closeModal={jest.fn()} goToStep={goToStepMock} />;
 
 describe("<ConnectOrCreate />", () => {
-  test("Create new Account", () => {
-    render(fixture(goToStepMock));
+  test("Create new Account", async () => {
+    const user = userEvent.setup();
+    render(fixture());
+
     const confirmBtn = screen.getByRole("button", {
-      name: /Create a new Account/i,
+      name: "Create a new Account",
     });
-    fireEvent.click(confirmBtn);
+    await act(() => user.click(confirmBtn));
+
     expect(goToStepMock).toHaveBeenCalledTimes(1);
     expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.notice });
   });
 
-  test("I already have a wallet", () => {
-    render(fixture(goToStepMock));
+  test("I already have a wallet", async () => {
+    const user = userEvent.setup();
+    render(fixture());
+
     const confirmBtn = screen.getByRole("button", {
-      name: /I already have a wallet/i,
+      name: "I already have a wallet",
     });
-    fireEvent.click(confirmBtn);
+    await act(() => user.click(confirmBtn));
+
     expect(goToStepMock).toHaveBeenCalledTimes(1);
     expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.connectOptions });
   });

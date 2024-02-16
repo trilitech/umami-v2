@@ -11,7 +11,7 @@ import {
   mockMnemonicAccount,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
@@ -182,6 +182,7 @@ describe("<FormPage />", () => {
 
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
+        const user = userEvent.setup();
         store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockAccount]));
         store.dispatch(assetsSlice.actions.updateTokenBalance([mockTokenRaw]));
         const sender = mockAccount;
@@ -204,7 +205,6 @@ describe("<FormPage />", () => {
         await waitFor(() => {
           expect(submitButton).toBeEnabled();
         });
-        fireEvent.click(submitButton);
         mockEstimatedFee(100);
         const operations = makeAccountOperations(sender, mockAccount, [
           {
@@ -216,17 +216,18 @@ describe("<FormPage />", () => {
             tokenId: mockToken.tokenId,
           },
         ]);
-        await waitFor(() => {
-          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <SignPage
-              data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
-              fee={new BigNumber(100)}
-              goBack={expect.any(Function)}
-              mode="single"
-              operations={operations}
-            />
-          );
-        });
+
+        await act(() => user.click(submitButton));
+
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+          <SignPage
+            data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
+            fee={new BigNumber(100)}
+            goBack={expect.any(Function)}
+            mode="single"
+            operations={operations}
+          />
+        );
         expect(mockToast).not.toHaveBeenCalled();
       });
     });

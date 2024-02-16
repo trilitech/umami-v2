@@ -1,23 +1,17 @@
-import { render, screen } from "@testing-library/react";
-
 import { AddressBookView } from "./AddressBookView";
 import { contact1, contact2, contact3, contacts } from "../../mocks/contacts";
-import { ReduxStore } from "../../providers/ReduxStore";
+import { render, screen } from "../../mocks/testUtils";
 import { store } from "../../utils/redux/store";
 import { checkAccountsAndUpsertContact } from "../../utils/redux/thunks/checkAccountsAndUpsertContact";
 
-const fixture = () => (
-  <ReduxStore>
-    <AddressBookView />
-  </ReduxStore>
-);
+const fixture = () => <AddressBookView />;
 
 describe("AddressBookView", () => {
   describe("without contacts", () => {
     it("displays no contact rows", () => {
       render(fixture());
 
-      expect(screen.queryByTestId("contact-row")).toBeNull();
+      expect(screen.queryByTestId("contact-row")).not.toBeInTheDocument();
     });
 
     it("displays empty state message", () => {

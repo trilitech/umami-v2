@@ -1,4 +1,3 @@
-import { fireEvent, screen } from "@testing-library/react";
 import BigNumber from "bignumber.js";
 
 import { ImplicitAccount, MnemonicAccount } from "../types/Account";
@@ -6,11 +5,6 @@ import { RawPkh } from "../types/Address";
 import { accountsSlice } from "../utils/redux/slices/accountsSlice";
 import { store } from "../utils/redux/store";
 import { estimate } from "../utils/tezos";
-
-export const fillPassword = (value: string) => {
-  const passwordInput = screen.getByTestId("password");
-  fireEvent.change(passwordInput, { target: { value } });
-};
 
 export const dispatchMockAccounts = (accounts: MnemonicAccount[]) => {
   store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(accounts));

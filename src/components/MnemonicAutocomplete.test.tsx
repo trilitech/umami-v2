@@ -134,7 +134,7 @@ describe("<MnemonicAutocomplete />", () => {
       fireEvent.change(input, { target: { value: "abs" } });
       fireEvent.mouseDown(screen.getByText("absent"));
 
-      await waitFor(() => expect(input).toHaveProperty("value", "absent"));
+      await waitFor(() => expect(input).toHaveValue("absent"));
     });
   });
 });

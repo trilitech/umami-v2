@@ -1,14 +1,13 @@
-import { render, screen } from "@testing-library/react";
-
 import { TagsSection } from "./TagsSection";
 import { mockNFT } from "../../../mocks/factories";
+import { render, screen } from "../../../mocks/testUtils";
 
 describe("TagsSection", () => {
   it("shows nothing if there are no tags", () => {
     const nft = mockNFT(0);
     render(<TagsSection nft={nft} />);
 
-    expect(screen.queryByTestId("tags-section")).toBeNull();
+    expect(screen.queryByTestId("tags-section")).not.toBeInTheDocument();
   });
 
   it("renders all tags", () => {

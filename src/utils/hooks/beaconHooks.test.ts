@@ -1,5 +1,4 @@
 import { NetworkType } from "@airgap/beacon-wallet";
-import { renderHook } from "@testing-library/react";
 
 import {
   useAddConnection,
@@ -8,7 +7,7 @@ import {
   useResetConnections,
 } from "./beaconHooks";
 import { mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
-import { ReduxStore } from "../../providers/ReduxStore";
+import { renderHook } from "../../mocks/testUtils";
 import { RawPkh } from "../../types/Address";
 import { beaconActions } from "../redux/slices/beaconSlice";
 import { store } from "../redux/store";
@@ -29,9 +28,7 @@ const connectionInfo = (accountPkh: RawPkh, networkType: NetworkType) => ({
 
 describe("useGetConnectedAccount", () => {
   it("returns undefined when no connection for dAppId is stored", () => {
-    const view = renderHook(() => useGetConnectionInfo(dAppId1), {
-      wrapper: ReduxStore,
-    });
+    const view = renderHook(() => useGetConnectionInfo(dAppId1));
 
     expect(view.result.current).toBeUndefined();
   });
@@ -40,9 +37,7 @@ describe("useGetConnectedAccount", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
     addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
 
-    const view = renderHook(() => useGetConnectionInfo(dAppId2), {
-      wrapper: ReduxStore,
-    });
+    const view = renderHook(() => useGetConnectionInfo(dAppId2));
 
     expect(view.result.current).toEqual(connectionInfo(pkh2, NetworkType.GHOSTNET));
   });
@@ -55,9 +50,7 @@ describe("useResetConnections", () => {
 
     const {
       result: { current: resetBeaconSlice },
-    } = renderHook(() => useResetConnections(), {
-      wrapper: ReduxStore,
-    });
+    } = renderHook(() => useResetConnections());
     resetBeaconSlice();
 
     expect(store.getState().beacon).toEqual({});
@@ -70,9 +63,7 @@ describe("useAddConnection", () => {
 
     const {
       result: { current: addConnectionHook },
-    } = renderHook(() => useAddConnection(), {
-      wrapper: ReduxStore,
-    });
+    } = renderHook(() => useAddConnection());
     addConnectionHook(dAppId2, pkh2, NetworkType.MAINNET);
 
     expect(store.getState().beacon).toEqual({
@@ -86,9 +77,7 @@ describe("useAddConnection", () => {
 
     const {
       result: { current: addConnectionHook },
-    } = renderHook(() => useAddConnection(), {
-      wrapper: ReduxStore,
-    });
+    } = renderHook(() => useAddConnection());
     addConnectionHook(dAppId1, pkh2, NetworkType.MAINNET);
 
     expect(store.getState().beacon).toEqual({
@@ -104,9 +93,7 @@ describe("useRemoveConnection", () => {
 
     const {
       result: { current: removeConnection },
-    } = renderHook(() => useRemoveConnection(), {
-      wrapper: ReduxStore,
-    });
+    } = renderHook(() => useRemoveConnection());
     removeConnection(dAppId2);
 
     expect(store.getState().beacon).toEqual({

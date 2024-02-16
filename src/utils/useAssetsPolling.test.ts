@@ -4,7 +4,7 @@ import { networksActions } from "./redux/slices/networks";
 import { store } from "./redux/store";
 import { useAssetsPolling } from "./useAssetsPolling";
 import { mockBaker } from "../mocks/factories";
-import { AllTheProviders, renderHook, waitFor } from "../mocks/testUtils";
+import { renderHook, waitFor } from "../mocks/testUtils";
 import { DefaultNetworks } from "../types/Network";
 
 jest.unmock("./tezos");
@@ -27,7 +27,7 @@ describe("useAssetsPolling", () => {
         { ...mockBaker(0), alias: mockBaker(0).name },
         { ...mockBaker(1), alias: mockBaker(1).name },
       ]);
-      renderHook(() => useAssetsPolling(), { wrapper: AllTheProviders });
+      renderHook(() => useAssetsPolling());
       await waitFor(() => {
         expect(jest.mocked(delegatesGet)).toHaveBeenCalledWith(
           {

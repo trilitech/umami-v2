@@ -25,7 +25,7 @@ describe("<AddressPill />", () => {
   it("hides icon", () => {
     store.dispatch(upsert(contact1));
     render(<AddressPill address={parseImplicitPkh(contact1.pkh)} mode={{ type: "no_icons" }} />);
-    expect(screen.queryByTestId("address-pill-left-icon")).toBeNull();
+    expect(screen.queryByTestId("address-pill-left-icon")).not.toBeInTheDocument();
   });
 
   it("is removable", () => {

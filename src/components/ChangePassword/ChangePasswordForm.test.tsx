@@ -1,8 +1,7 @@
 import { Modal } from "@chakra-ui/react";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
 
 import { ChangePasswordForm } from "./ChangePasswordForm";
-import { render } from "../../mocks/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 const fixture = () => {
   return (
     <Modal isOpen={true} onClose={() => {}}>
@@ -22,6 +21,7 @@ describe("ChangePassword Form", () => {
       render(fixture());
 
       fireEvent.blur(screen.getByLabelText("Current Password"));
+
       await waitFor(() => {
         expect(screen.getByTestId("current-password-error")).toHaveTextContent(
           "Current password is required"
@@ -32,6 +32,7 @@ describe("ChangePassword Form", () => {
   describe("newPassword", () => {
     it("is empty by default", () => {
       render(fixture());
+
       expect(screen.getByTestId("new-password")).toHaveValue("");
     });
 
@@ -39,6 +40,7 @@ describe("ChangePassword Form", () => {
       render(fixture());
 
       fireEvent.blur(screen.getByTestId("new-password"));
+
       await waitFor(() => {
         expect(screen.getByTestId("new-password-error")).toHaveTextContent(
           "New password is required"
@@ -48,9 +50,11 @@ describe("ChangePassword Form", () => {
 
     it("requires 8 characters", async () => {
       render(fixture());
+
       const newPasswordInput = screen.getByTestId("new-password");
       fireEvent.change(newPasswordInput, { target: { value: "myPass" } });
       fireEvent.blur(newPasswordInput);
+
       await waitFor(() => {
         expect(screen.getByTestId("new-password-error")).toHaveTextContent(
           "Your password must be at least 8 characters long"
@@ -61,6 +65,7 @@ describe("ChangePassword Form", () => {
   describe("newPasswordConfirmation", () => {
     it("is empty by default", () => {
       render(fixture());
+
       expect(screen.getByTestId("new-password-confirmation")).toHaveValue("");
     });
 
@@ -68,6 +73,7 @@ describe("ChangePassword Form", () => {
       render(fixture());
 
       fireEvent.blur(screen.getByTestId("new-password-confirmation"));
+
       await waitFor(() => {
         expect(screen.getByTestId("new-password-confirmation-error")).toHaveTextContent(
           "Confirmation is required"
@@ -79,9 +85,11 @@ describe("ChangePassword Form", () => {
       render(fixture());
       const newPasswordInput = screen.getByTestId("new-password");
       const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
+
       fireEvent.change(newPasswordInput, { target: { value: "myPassword" } });
       fireEvent.change(newPasswordConfirmationInput, { target: { value: "myWrongPassword" } });
       fireEvent.blur(newPasswordConfirmationInput);
+
       await waitFor(() => {
         expect(screen.getByTestId("new-password-confirmation-error")).toHaveTextContent(
           "Your new passwords do no match"
@@ -96,12 +104,13 @@ describe("ChangePassword Form", () => {
       const currentPasswordInput = screen.getByTestId("current-password");
       const newPasswordInput = screen.getByTestId("new-password");
       const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
+
       fireEvent.change(currentPasswordInput, { target: { value: "myOldPassword" } });
       fireEvent.change(newPasswordInput, { target: { value: "myNewPassword" } });
       fireEvent.change(newPasswordConfirmationInput, { target: { value: "myNewPassword" } });
-      const submitBtn = screen.getByRole("button", { name: "Update Password" });
+
       await waitFor(() => {
-        expect(submitBtn).toBeEnabled();
+        expect(screen.getByRole("button", { name: "Update Password" })).toBeEnabled();
       });
     });
   });

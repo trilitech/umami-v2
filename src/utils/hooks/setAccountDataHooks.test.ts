@@ -3,7 +3,6 @@ import { mockSecretKeyAccount, mockSocialAccount } from "../../mocks/factories";
 import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
-import { ReduxStore } from "../../providers/ReduxStore";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import { AVAILABLE_DERIVATION_PATHS, makeDerivationPath } from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
@@ -54,9 +53,7 @@ describe("setAccountDataHooks", () => {
 
         const {
           result: { current: restoreFromMnemonic },
-        } = renderHook(() => useRestoreFromMnemonic(), {
-          wrapper: ReduxStore,
-        });
+        } = renderHook(() => useRestoreFromMnemonic());
         await act(() =>
           restoreFromMnemonic({
             mnemonic: mnemonic1,
@@ -94,9 +91,7 @@ describe("setAccountDataHooks", () => {
 
         const {
           result: { current: restoreFromMnemonic },
-        } = renderHook(() => useRestoreFromMnemonic(), {
-          wrapper: ReduxStore,
-        });
+        } = renderHook(() => useRestoreFromMnemonic());
         await act(() =>
           restoreFromMnemonic({
             mnemonic: mnemonic1,
@@ -138,9 +133,7 @@ describe("setAccountDataHooks", () => {
 
         const {
           result: { current: restoreFromMnemonic },
-        } = renderHook(() => useRestoreFromMnemonic(), {
-          wrapper: ReduxStore,
-        });
+        } = renderHook(() => useRestoreFromMnemonic());
         await act(() =>
           restoreFromMnemonic({
             mnemonic: mnemonic1,
@@ -174,9 +167,7 @@ describe("setAccountDataHooks", () => {
 
         const {
           result: { current: deriveMnemonicAccount },
-        } = renderHook(() => useDeriveMnemonicAccount(), {
-          wrapper: ReduxStore,
-        });
+        } = renderHook(() => useDeriveMnemonicAccount());
         await expect(() =>
           deriveMnemonicAccount({
             fingerPrint: UNKNOWN_FINGERPRINT,
@@ -207,9 +198,7 @@ describe("setAccountDataHooks", () => {
 
         const {
           result: { current: deriveMnemonicAccount },
-        } = renderHook(() => useDeriveMnemonicAccount(), {
-          wrapper: ReduxStore,
-        });
+        } = renderHook(() => useDeriveMnemonicAccount());
         await act(() =>
           deriveMnemonicAccount({
             fingerPrint: MOCK_FINGERPRINT,
@@ -240,9 +229,7 @@ describe("setAccountDataHooks", () => {
 
         const {
           result: { current: deriveMnemonicAccount },
-        } = renderHook(() => useDeriveMnemonicAccount(), {
-          wrapper: ReduxStore,
-        });
+        } = renderHook(() => useDeriveMnemonicAccount());
         await act(() =>
           deriveMnemonicAccount({
             fingerPrint: MOCK_FINGERPRINT,
@@ -278,9 +265,7 @@ describe("setAccountDataHooks", () => {
 
         const {
           result: { current: deriveMnemonicAccount },
-        } = renderHook(() => useDeriveMnemonicAccount(), {
-          wrapper: ReduxStore,
-        });
+        } = renderHook(() => useDeriveMnemonicAccount());
         await act(() =>
           deriveMnemonicAccount({
             fingerPrint: MOCK_FINGERPRINT,

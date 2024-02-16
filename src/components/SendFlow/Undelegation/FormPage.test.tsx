@@ -11,7 +11,7 @@ import {
   mockMultisigAccount,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
+import { act, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
@@ -30,17 +30,15 @@ const fixture = (props: FormPagePropsWithSender<FormValues>) => (
 
 describe("<Form />", () => {
   describe("default values", () => {
-    it("renders a form with a prefilled sender", async () => {
+    it("renders a form with a prefilled sender", () => {
       render(fixture({ sender: mockImplicitAccount(0) }));
 
-      await waitFor(() => {
-        expect(screen.getAllByTestId("address-tile")[0]).toHaveTextContent(
-          mockImplicitAccount(0).address.pkh
-        );
-      });
+      expect(screen.getAllByTestId("address-tile")[0]).toHaveTextContent(
+        mockImplicitAccount(0).address.pkh
+      );
     });
 
-    it("shows address tile for baker", async () => {
+    it("shows address tile for baker", () => {
       const sender = mockImplicitAccount(0);
       const baker = mockImplicitAccount(1);
       store.dispatch(
@@ -59,9 +57,7 @@ describe("<Form />", () => {
         })
       );
 
-      await waitFor(() => {
-        expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
-      });
+      expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
     });
   });
 
@@ -72,6 +68,7 @@ describe("<Form />", () => {
     });
 
     it("shows a toast if estimation fails", async () => {
+      const user = userEvent.setup();
       render(
         fixture({
           sender: mockImplicitAccount(0),
@@ -81,17 +78,17 @@ describe("<Form />", () => {
           },
         })
       );
+
+      const estimateMock = jest.mocked(estimate);
+      estimateMock.mockRejectedValue(new Error("Some error occurred"));
+
       const submitButton = screen.getByText("Preview");
       await waitFor(() => {
         expect(submitButton).toBeEnabled();
       });
-      fireEvent.click(submitButton);
-      const estimateMock = jest.mocked(estimate);
-      estimateMock.mockRejectedValue(new Error("Some error occurred"));
+      await act(() => user.click(submitButton));
 
-      await waitFor(() => {
-        expect(estimateMock).toHaveBeenCalledTimes(1);
-      });
+      expect(estimateMock).toHaveBeenCalledTimes(1);
       expect(mockToast).toHaveBeenCalledWith({
         description: "Some error occurred",
         status: "error",
@@ -99,6 +96,7 @@ describe("<Form />", () => {
     });
 
     it("opens a sign page if estimation succeeds", async () => {
+      const user = userEvent.setup();
       const sender = mockImplicitAccount(0);
       render(
         <DynamicModalContext.Provider value={dynamicModalContextMock}>
@@ -115,7 +113,6 @@ describe("<Form />", () => {
       await waitFor(() => {
         expect(submitButton).toBeEnabled();
       });
-      fireEvent.click(submitButton);
       mockEstimatedFee(100);
       const operations = makeAccountOperations(sender, sender, [
         {
@@ -123,17 +120,18 @@ describe("<Form />", () => {
           sender: sender.address,
         },
       ]);
-      await waitFor(() => {
-        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-          <SignPage
-            data={undefined}
-            fee={new BigNumber(100)}
-            goBack={expect.any(Function)}
-            mode="single"
-            operations={operations}
-          />
-        );
-      });
+
+      await act(() => user.click(submitButton));
+
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+        <SignPage
+          data={undefined}
+          fee={new BigNumber(100)}
+          goBack={expect.any(Function)}
+          mode="single"
+          operations={operations}
+        />
+      );
       expect(mockToast).not.toHaveBeenCalled();
     });
   });

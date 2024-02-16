@@ -1,8 +1,6 @@
-import { userEvent } from "@testing-library/user-event";
-
 import { ConnectOptions } from "./ConnectOptions";
 import { mockSocialAccount } from "../../../mocks/factories";
-import { act, render, screen } from "../../../mocks/testUtils";
+import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { accountsActions } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";
 import { Step, StepType } from "../useOnboardingModal";

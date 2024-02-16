@@ -1,9 +1,7 @@
-import { renderHook } from "@testing-library/react";
-
 import { useGetToken, useGetTokenType } from "./tokensHooks";
 import { hedgehoge } from "../../mocks/fa12Tokens";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
-import { ReduxStore } from "../../providers/ReduxStore";
+import { renderHook } from "../../mocks/testUtils";
 import { DefaultNetworks, Network } from "../../types/Network";
 import { fromRaw } from "../../types/Token";
 import { networksActions } from "../redux/slices/networks";
@@ -17,18 +15,14 @@ describe("useGetToken", () => {
     });
 
     it("returns undefined if token is not found", () => {
-      const { result: getTokenRef } = renderHook(() => useGetToken(), {
-        wrapper: ReduxStore,
-      });
+      const { result: getTokenRef } = renderHook(() => useGetToken());
       expect(getTokenRef.current(mockContractAddress(0).pkh, "0")).toBeUndefined();
     });
 
     it("can find a token if it exists on the network", () => {
       const tokenBalance = hedgehoge(mockImplicitAddress(0));
       store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
-      const { result: getTokenRef } = renderHook(() => useGetToken(), {
-        wrapper: ReduxStore,
-      });
+      const { result: getTokenRef } = renderHook(() => useGetToken());
       expect(getTokenRef.current(tokenBalance.token.contract.address, "0")).toEqual(
         fromRaw(tokenBalance.token)
       );
@@ -41,9 +35,7 @@ describe("useGetToken", () => {
         tokensActions.addTokens({ network: anotherNetwork, tokens: [tokenBalance.token] })
       );
 
-      const { result: getTokenRef } = renderHook(() => useGetToken(), {
-        wrapper: ReduxStore,
-      });
+      const { result: getTokenRef } = renderHook(() => useGetToken());
       expect(getTokenRef.current(tokenBalance.token.contract.address, "0")).toBeUndefined();
     });
   });
@@ -52,18 +44,14 @@ describe("useGetToken", () => {
 describe("useGetTokenType", () => {
   describe.each(DefaultNetworks)("on $name", network => {
     it("returns undefined if contract is not found", () => {
-      const { result: getTokenRef } = renderHook(() => useGetTokenType(network), {
-        wrapper: ReduxStore,
-      });
+      const { result: getTokenRef } = renderHook(() => useGetTokenType(network));
       expect(getTokenRef.current(mockContractAddress(0).pkh)).toBeUndefined();
     });
 
     it("can find the type of a token if it exists on the network", () => {
       const tokenBalance = hedgehoge(mockImplicitAddress(0));
       store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
-      const { result: getTokenRef } = renderHook(() => useGetTokenType(network), {
-        wrapper: ReduxStore,
-      });
+      const { result: getTokenRef } = renderHook(() => useGetTokenType(network));
       expect(getTokenRef.current(tokenBalance.token.contract.address)).toEqual("fa1.2");
     });
 
@@ -73,9 +61,7 @@ describe("useGetTokenType", () => {
       store.dispatch(
         tokensActions.addTokens({ network: anotherNetwork, tokens: [tokenBalance.token] })
       );
-      const { result: getTokenRef } = renderHook(() => useGetTokenType(network), {
-        wrapper: ReduxStore,
-      });
+      const { result: getTokenRef } = renderHook(() => useGetTokenType(network));
       expect(getTokenRef.current(tokenBalance.token.contract.address)).toBeUndefined();
     });
   });

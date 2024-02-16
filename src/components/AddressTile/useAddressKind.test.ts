@@ -1,5 +1,3 @@
-import { renderHook } from "@testing-library/react";
-
 import { useAddressKind } from "./useAddressKind";
 import {
   mockBaker,
@@ -9,8 +7,7 @@ import {
   mockSocialAccount,
 } from "../../mocks/factories";
 import { multisigs } from "../../mocks/multisig";
-import { getWrapper } from "../../mocks/store";
-import { ReduxStore } from "../../providers/ReduxStore";
+import { renderHook } from "../../mocks/testUtils";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
@@ -23,9 +20,7 @@ describe("useAddressKind", () => {
     const account = mockMnemonicAccount(0);
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address), {
-      wrapper: ReduxStore,
-    });
+    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 
     expect(addressKindRef.current).toEqual({
       type: "mnemonic",
@@ -38,9 +33,7 @@ describe("useAddressKind", () => {
     const account = mockSocialAccount(0);
     store.dispatch(accountsSlice.actions.addAccount(account));
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address), {
-      wrapper: ReduxStore,
-    });
+    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 
     expect(addressKindRef.current).toEqual({
       type: "social",
@@ -53,9 +46,7 @@ describe("useAddressKind", () => {
     const account = mockLedgerAccount(0);
     store.dispatch(accountsSlice.actions.addAccount(account));
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address), {
-      wrapper: ReduxStore,
-    });
+    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 
     expect(addressKindRef.current).toEqual({
       type: "ledger",
@@ -67,9 +58,7 @@ describe("useAddressKind", () => {
   it("returns owned multisig account", () => {
     store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(multisigs[0].address), {
-      wrapper: ReduxStore,
-    });
+    const { result: addressKindRef } = renderHook(() => useAddressKind(multisigs[0].address));
 
     expect(addressKindRef.current).toEqual({
       type: "multisig",
@@ -82,9 +71,7 @@ describe("useAddressKind", () => {
     const contact1 = { name: "name1", pkh: mockImplicitAddress(3).pkh };
     store.dispatch(contactsSlice.actions.upsert(contact1));
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)), {
-      wrapper: getWrapper(store),
-    });
+    const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));
 
     expect(addressKindRef.current).toEqual({
       type: "contact",
@@ -97,11 +84,8 @@ describe("useAddressKind", () => {
     const baker = mockBaker(2);
     store.dispatch(assetsSlice.actions.updateBakers([baker]));
 
-    const { result: addressKindRef } = renderHook(
-      () => useAddressKind(parseImplicitPkh(baker.address)),
-      {
-        wrapper: getWrapper(store),
-      }
+    const { result: addressKindRef } = renderHook(() =>
+      useAddressKind(parseImplicitPkh(baker.address))
     );
 
     expect(addressKindRef.current).toEqual({
@@ -114,9 +98,7 @@ describe("useAddressKind", () => {
   it("returns unknown", () => {
     const unknown = mockImplicitAddress(3);
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(unknown), {
-      wrapper: getWrapper(store),
-    });
+    const { result: addressKindRef } = renderHook(() => useAddressKind(unknown));
 
     expect(addressKindRef.current).toEqual({
       type: "unknown",

@@ -198,18 +198,16 @@ describe("<BeaconPeers />", () => {
       });
       await act(() => user.click(deleteButton));
 
-      await waitFor(() =>
-        expect(store.getState().beacon).toEqual({
-          [senderIds[0]]: {
-            accountPkh: mockMnemonicAccount(1).address.pkh,
-            networkType: NetworkType.MAINNET,
-          },
-          [senderIds[2]]: {
-            accountPkh: mockMnemonicAccount(2).address.pkh,
-            networkType: NetworkType.CUSTOM,
-          },
-        })
-      );
+      expect(store.getState().beacon).toEqual({
+        [senderIds[0]]: {
+          accountPkh: mockMnemonicAccount(1).address.pkh,
+          networkType: NetworkType.MAINNET,
+        },
+        [senderIds[2]]: {
+          accountPkh: mockMnemonicAccount(2).address.pkh,
+          networkType: NetworkType.CUSTOM,
+        },
+      });
     });
   });
 });

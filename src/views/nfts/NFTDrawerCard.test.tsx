@@ -1,14 +1,10 @@
-import { render, screen } from "@testing-library/react";
-
 import { NFTDrawerCard } from "./NFTDrawerCard";
 import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
-import { ReduxStore } from "../../providers/ReduxStore";
+import { render, screen } from "../../mocks/testUtils";
 import { NFTBalance } from "../../types/TokenBalance";
 
 const fixture = (nft: NFTBalance, ownerPkh = mockImplicitAddress(0).pkh) => (
-  <ReduxStore>
-    <NFTDrawerCard nft={nft} ownerPkh={ownerPkh} />
-  </ReduxStore>
+  <NFTDrawerCard nft={nft} ownerPkh={ownerPkh} />
 );
 
 describe("NFTDrawerCard", () => {
@@ -28,7 +24,7 @@ describe("NFTDrawerCard", () => {
       delete nft.metadata.name;
       render(fixture(nft));
 
-      expect(screen.queryByTestId("nft-name")).toBeNull();
+      expect(screen.queryByTestId("nft-name")).not.toBeInTheDocument();
     });
 
     it("renders a name when it's present", () => {
@@ -45,7 +41,7 @@ describe("NFTDrawerCard", () => {
       delete nft.metadata.name;
       render(fixture(nft));
 
-      expect(screen.queryByTestId("nft-description")).toBeNull();
+      expect(screen.queryByTestId("nft-description")).not.toBeInTheDocument();
     });
 
     it("renders a name when it's present", () => {
@@ -63,7 +59,7 @@ describe("NFTDrawerCard", () => {
       nft.balance = "1";
       render(fixture(nft));
 
-      expect(screen.queryByTestId("nft-owned-count")).toBeNull();
+      expect(screen.queryByTestId("nft-owned-count")).not.toBeInTheDocument();
     });
 
     it("renders the number of owned NFT instances", () => {

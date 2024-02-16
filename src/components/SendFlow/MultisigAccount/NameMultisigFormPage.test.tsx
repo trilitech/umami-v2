@@ -1,12 +1,11 @@
 import { Modal } from "@chakra-ui/react";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
 
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { render } from "../../../mocks/testUtils";
+import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 import { DynamicModalContext } from "../../DynamicModal";
 
 const MULTISIG_NAME = "Test Multisig Name";
@@ -30,27 +29,27 @@ describe("NameMultisigFormPage", () => {
   describe.each([
     {
       testCase: "without pre-set values",
-      renderForm: async () => renderMultisigForm(),
+      name: undefined,
     },
     {
       testCase: "with pre-set multisig name",
-      renderForm: async () => renderMultisigForm(MULTISIG_NAME),
+      name: MULTISIG_NAME,
     },
-  ])("$testCase", ({ renderForm }) => {
+  ])("$testCase", ({ name }) => {
     it("does not have a back button", async () => {
-      await renderForm();
+      await renderMultisigForm(name);
 
       expect(screen.queryByTestId("back-button")).not.toBeInTheDocument();
     });
 
     it("has a title", async () => {
-      await renderForm();
+      await renderMultisigForm(name);
 
       expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Account Name");
     });
 
     it("has a subtitle", async () => {
-      await renderForm();
+      await renderMultisigForm(name);
 
       expect(
         screen.getByText(
@@ -61,7 +60,7 @@ describe("NameMultisigFormPage", () => {
 
     it("checks that typed name is unique", async () => {
       addAccount(mockMnemonicAccount(1, "Used Name"));
-      await renderForm();
+      await renderMultisigForm(name);
 
       const input = screen.getByLabelText("Account Name");
       fireEvent.change(input, { target: { value: "Used Name" } });
@@ -76,7 +75,7 @@ describe("NameMultisigFormPage", () => {
 
     it("checks that typed name is unique - after trim()", async () => {
       addAccount(mockMnemonicAccount(1, "Used Name"));
-      await renderForm();
+      await renderMultisigForm(name);
 
       const input = screen.getByLabelText("Account Name");
       fireEvent.change(input, { target: { value: "\tUsed Name  " } });
