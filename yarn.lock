@@ -1913,7 +1913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.21.5, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.21.5, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
   version: 7.22.10
   resolution: "@babel/runtime@npm:7.22.10"
   dependencies:
@@ -6242,16 +6242,6 @@ __metadata:
   version: 1.2.10
   resolution: "@types/har-format@npm:1.2.10"
   checksum: 10/8e6fb65a70129d0999e782e4f06c419a26eacf5a9fdd9efff19d3603edbfc82cac76d9ea4d1dfa0f1827de36075dbabc86510d79a4034cc4dff232671dbed296
-  languageName: node
-  linkType: hard
-
-"@types/hoist-non-react-statics@npm:^3.3.1":
-  version: 3.3.1
-  resolution: "@types/hoist-non-react-statics@npm:3.3.1"
-  dependencies:
-    "@types/react": "npm:*"
-    hoist-non-react-statics: "npm:^3.3.0"
-  checksum: 10/071e6d75a0ed9aa0e9ca2cc529a8c15bf7ac3e4a37aac279772ea6036fd0bf969b67fb627b65cfce65adeab31fec1e9e95b4dcdefeab075b580c0c7174206f63
   languageName: node
   linkType: hard
 
@@ -12212,7 +12202,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
+"hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -17118,35 +17108,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-redux@npm:8.1.3":
-  version: 8.1.3
-  resolution: "react-redux@npm:8.1.3"
+"react-redux@npm:9.1.0":
+  version: 9.1.0
+  resolution: "react-redux@npm:9.1.0"
   dependencies:
-    "@babel/runtime": "npm:^7.12.1"
-    "@types/hoist-non-react-statics": "npm:^3.3.1"
     "@types/use-sync-external-store": "npm:^0.0.3"
-    hoist-non-react-statics: "npm:^3.3.2"
-    react-is: "npm:^18.0.0"
     use-sync-external-store: "npm:^1.0.0"
   peerDependencies:
-    "@types/react": ^16.8 || ^17.0 || ^18.0
-    "@types/react-dom": ^16.8 || ^17.0 || ^18.0
-    react: ^16.8 || ^17.0 || ^18.0
-    react-dom: ^16.8 || ^17.0 || ^18.0
-    react-native: ">=0.59"
-    redux: ^4 || ^5.0.0-beta.0
+    "@types/react": ^18.2.25
+    react: ^18.0
+    react-native: ">=0.69"
+    redux: ^5.0.0
   peerDependenciesMeta:
     "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-    react-dom:
       optional: true
     react-native:
       optional: true
     redux:
       optional: true
-  checksum: 10/c4c7586cff3abeb784e73598d330f5301116a4e9942fd36895f2bccd8990001709c6c3ea1817edb75ee477470d6c67c9113e05a7f86b2b68a3950c9c29fe20cb
+  checksum: 10/e2e5fe1c6965aedf3a80d7d5252ccbe6f231448cc1010ce19036fe8965f996cbafa2f81cacab77e54e75d6a14caa40540b8907459ef36af26b65c14f1bf89d80
   languageName: node
   linkType: hard
 
@@ -19832,7 +19812,7 @@ __metadata:
     react-player: "npm:^2.14.1"
     react-qrcode-logo: "npm:^2.9.0"
     react-query: "npm:^3.39.3"
-    react-redux: "npm:8.1.3"
+    react-redux: "npm:9.1.0"
     react-refresh: "npm:^0.14.0"
     react-remove-scroll: "npm:^2.5.7"
     react-responsive-carousel: "npm:^3.2.23"
