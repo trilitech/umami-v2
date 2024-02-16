@@ -1,15 +1,13 @@
-import { Box, BoxProps } from "@chakra-ui/react";
+import { Box, BoxProps, FlexProps } from "@chakra-ui/react";
 
 import { PrettyNumber } from "./PrettyNumber";
 import { RawPkh } from "../types/Address";
 import { prettyTezAmount } from "../utils/format";
 import { useGetAccountBalance } from "../utils/hooks/assetsHooks";
 
-export const AccountBalance: React.FC<{ address: RawPkh; size?: "md" | "lg" } & BoxProps> = ({
-  address,
-  size,
-  ...props
-}) => {
+export const AccountBalance: React.FC<
+  { address: RawPkh; size?: "md" | "lg"; numberProps?: FlexProps } & BoxProps
+> = ({ address, size, numberProps, ...props }) => {
   const getBalance = useGetAccountBalance();
   const balance = getBalance(address);
 
@@ -21,7 +19,7 @@ export const AccountBalance: React.FC<{ address: RawPkh; size?: "md" | "lg" } & 
 
   return (
     <Box overflow="hidden" textAlign="right" data-testid="account-balance" {...props}>
-      <PrettyNumber number={balanceInTez} size={size} />
+      <PrettyNumber number={balanceInTez} size={size} {...numberProps} />
     </Box>
   );
 };
