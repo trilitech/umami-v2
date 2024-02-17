@@ -1,7 +1,7 @@
 import { useToast } from "@chakra-ui/react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { noop } from "lodash";
-import { useCallback, useEffect, useRef } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useCallback, useEffect } from "react";
 
 import { getErrorContext } from "./getErrorContext";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
@@ -76,6 +76,7 @@ const updateAccountAssets = async (
       updateTokenBalances(dispatch, network, allAccountAddresses),
     ]);
     dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
+    return null;
   } finally {
     dispatch(assetsActions.setIsLoading(false));
   }
@@ -84,11 +85,13 @@ const updateAccountAssets = async (
 const updateConversionRate = async (dispatch: AppDispatch) => {
   const rate = await getTezosPriceInUSD();
   dispatch(assetsActions.updateConversionRate({ rate }));
+  return null;
 };
 
 const updateBlockLevel = async (dispatch: AppDispatch, network: Network) => {
   const blockLevel = await getLatestBlockLevel(network);
   dispatch(assetsActions.updateBlockLevel(blockLevel));
+  return null;
 };
 
 const updateBakers = async (dispatch: AppDispatch, network: Network) => {
@@ -99,6 +102,8 @@ const updateBakers = async (dispatch: AppDispatch, network: Network) => {
     name: alias ?? "Unknown baker",
   }));
   dispatch(assetsActions.updateBakers(bakers));
+
+  return null;
 };
 
 export const useAssetsPolling = () => {
@@ -123,7 +128,7 @@ export const useAssetsPolling = () => {
     [dispatch, toast]
   );
 
-  const accountAssetsQuery = useQuery("allAssets", {
+  useQuery(["allAssets"], {
     queryFn: () => updateAccountAssets(dispatch, network, implicitAddresses),
     onError,
     retry: false, // retries are handled by the underlying functions
@@ -132,7 +137,7 @@ export const useAssetsPolling = () => {
     refetchOnWindowFocus: false,
   });
 
-  const conversionrateQuery = useQuery("conversionRate", {
+  useQuery(["conversionRate"], {
     queryFn: () => updateConversionRate(dispatch),
     onError,
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
@@ -140,7 +145,7 @@ export const useAssetsPolling = () => {
     refetchOnWindowFocus: false,
   });
 
-  const blockNumberQuery = useQuery("blockNumber", {
+  useQuery(["blockNumber"], {
     queryFn: () => updateBlockLevel(dispatch, network),
     onError,
     retry: false, // retries are handled by the underlying functions
@@ -149,7 +154,7 @@ export const useAssetsPolling = () => {
     refetchOnWindowFocus: false,
   });
 
-  const bakersQuery = useQuery("bakers", {
+  useQuery(["bakers"], {
     queryFn: () => updateBakers(dispatch, network),
     onError,
     retry: false, // retries are handled by the underlying functions
@@ -158,24 +163,27 @@ export const useAssetsPolling = () => {
     refetchOnWindowFocus: false,
   });
 
-  const conversionRateQueryRef = useRef(conversionrateQuery);
-  const blockNumberQueryRef = useRef(blockNumberQuery);
-  const accountAssetsQueryRef = useRef(accountAssetsQuery);
-  const bakersQueryRef = useRef(bakersQuery);
-
   useEffect(() => {
     Promise.all([
-      queryClient.cancelQueries({ queryKey: "allAssets" }),
-      queryClient.cancelQueries({ queryKey: "conversionRate" }),
-      queryClient.cancelQueries({ queryKey: "blockNumber" }),
-      queryClient.cancelQueries({ queryKey: "bakers" }),
+      queryClient.cancelQueries({
+        queryKey: ["allAssets"],
+      }),
+      queryClient.cancelQueries({
+        queryKey: ["conversionRate"],
+      }),
+      queryClient.cancelQueries({
+        queryKey: ["blockNumber"],
+      }),
+      queryClient.cancelQueries({
+        queryKey: ["bakers"],
+      }),
     ])
       .then(() =>
         Promise.all([
-          conversionRateQueryRef.current.refetch(),
-          blockNumberQueryRef.current.refetch(),
-          accountAssetsQueryRef.current.refetch(),
-          bakersQueryRef.current.refetch(),
+          queryClient.refetchQueries(["allAssets"]),
+          queryClient.refetchQueries(["conversionRate"]),
+          queryClient.refetchQueries(["blockNumber"]),
+          queryClient.refetchQueries(["bakers"]),
         ])
       )
       .catch(noop);
