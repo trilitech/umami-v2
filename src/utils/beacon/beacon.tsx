@@ -21,11 +21,14 @@ const PEERS_QUERY_KEY = "beaconPeers";
 
 export const useRefreshPeers = () => {
   const client = useQueryClient();
-  return () => client.refetchQueries([PEERS_QUERY_KEY]);
+  return () => client.refetchQueries({ queryKey: [PEERS_QUERY_KEY] });
 };
 
 export const usePeers = () =>
-  useQuery([PEERS_QUERY_KEY], () => walletClient.getPeers() as Promise<Array<ProvidedPeerInfo>>);
+  useQuery({
+    queryKey: [PEERS_QUERY_KEY],
+    queryFn: () => walletClient.getPeers() as Promise<Array<ProvidedPeerInfo>>,
+  });
 
 export const useRemovePeer = () => {
   const refresh = useRefreshPeers();

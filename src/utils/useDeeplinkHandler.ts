@@ -27,7 +27,7 @@ export const useDeeplinkHandler = () => {
       const params: URLSearchParams = new URL(url).searchParams;
       const payload = params.get("data");
       if (payload) {
-        addPeerRef.current(payload);
+        void addPeerRef.current(payload);
       } else {
         toastRef.current({
           title: "Linkhandler",

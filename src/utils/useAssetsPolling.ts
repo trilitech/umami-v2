@@ -1,6 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { noop } from "lodash";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect } from "react";
 
 import { getErrorContext } from "./getErrorContext";
@@ -111,13 +110,15 @@ export const useAssetsPolling = () => {
   const implicitAccounts = useImplicitAccounts();
   const refetchTrigger = useRefetchTrigger();
   const network = useSelectedNetwork();
-  const queryClient = useQueryClient();
   const toast = useToast();
 
   const implicitAddresses = implicitAccounts.map(account => account.address.pkh);
 
   const onError = useCallback(
     (error: any) => {
+      if (!error) {
+        return;
+      }
       dispatch(errorsSlice.actions.add(getErrorContext(error)));
       toast({
         description: `Data fetching error: ${error.message}`,
@@ -128,64 +129,43 @@ export const useAssetsPolling = () => {
     [dispatch, toast]
   );
 
-  useQuery(["allAssets"], {
+  const { error: allAssetsError } = useQuery({
+    queryKey: ["allAssets", dispatch, network, implicitAddresses, refetchTrigger],
     queryFn: () => updateAccountAssets(dispatch, network, implicitAddresses),
-    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  useQuery(["conversionRate"], {
+  const { error: conversionRateError } = useQuery({
+    queryKey: ["conversionRate", dispatch],
     queryFn: () => updateConversionRate(dispatch),
-    onError,
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  useQuery(["blockNumber"], {
+  const { error: blockNumberError } = useQuery({
+    queryKey: ["blockNumber", dispatch, network],
     queryFn: () => updateBlockLevel(dispatch, network),
-    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  useQuery(["bakers"], {
+  const { error: bakersError } = useQuery({
+    queryKey: ["bakers", dispatch, network],
     queryFn: () => updateBakers(dispatch, network),
-    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BAKERS_REFRESH_RATE,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    Promise.all([
-      queryClient.cancelQueries({
-        queryKey: ["allAssets"],
-      }),
-      queryClient.cancelQueries({
-        queryKey: ["conversionRate"],
-      }),
-      queryClient.cancelQueries({
-        queryKey: ["blockNumber"],
-      }),
-      queryClient.cancelQueries({
-        queryKey: ["bakers"],
-      }),
-    ])
-      .then(() =>
-        Promise.all([
-          queryClient.refetchQueries(["allAssets"]),
-          queryClient.refetchQueries(["conversionRate"]),
-          queryClient.refetchQueries(["blockNumber"]),
-          queryClient.refetchQueries(["bakers"]),
-        ])
-      )
-      .catch(noop);
-  }, [network, refetchTrigger, queryClient]);
+  useEffect(() => onError(allAssetsError), [allAssetsError, onError]);
+  useEffect(() => onError(conversionRateError), [conversionRateError, onError]);
+  useEffect(() => onError(blockNumberError), [blockNumberError, onError]);
+  useEffect(() => onError(bakersError), [bakersError, onError]);
 };
