@@ -162,7 +162,7 @@ export const getTransactions = async (
         baseUrl: network.tzktApiUrl,
       }
     )
-  ) as Promise<DelegationOperation[]>;
+  ) as Promise<TransactionOperation[]>;
 
 export const getOriginations = async (
   addresses: RawPkh[],
@@ -180,7 +180,7 @@ export const getOriginations = async (
         baseUrl: network.tzktApiUrl,
       }
     )
-  ) as Promise<DelegationOperation[]>;
+  ) as Promise<OriginationOperation[]>;
 
 // It returns all transactions, delegations, contract originations & token transfers for given addresses
 // You will get them interleaved and  sorted by ID and up to the specified limit (100 by default)
