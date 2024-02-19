@@ -49,13 +49,7 @@ const DAppsDrawerBody = () => {
       <Flex alignItems="center" justifyContent="space-between" height={24}>
         <Heading>dApps</Heading>
       </Flex>
-      <Button
-        onClick={() =>
-          navigator.clipboard.readText().then(text => {
-            addPeer(text);
-          })
-        }
-      >
+      <Button onClick={() => navigator.clipboard.readText().then(text => addPeer(text))}>
         Connect with Pairing Request
       </Button>
       <Text marginTop="16px" marginBottom="32px" color="text.dark">

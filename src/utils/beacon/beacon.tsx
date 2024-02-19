@@ -1,7 +1,7 @@
 import { ExtendedP2PPairingResponse, Serializer, WalletClient } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
-import { useQuery, useQueryClient } from "react-query";
 
 import { BeaconNotification } from "./BeaconNotification";
 import { PeerInfoWithId, ProvidedPeerInfo, makePeerInfo } from "./types";
@@ -21,29 +21,32 @@ const PEERS_QUERY_KEY = "beaconPeers";
 
 export const useRefreshPeers = () => {
   const client = useQueryClient();
-  return () => client.refetchQueries(PEERS_QUERY_KEY);
+  return () => client.refetchQueries({ queryKey: [PEERS_QUERY_KEY] });
 };
 
 export const usePeers = () =>
-  useQuery(PEERS_QUERY_KEY, () => walletClient.getPeers() as Promise<Array<ProvidedPeerInfo>>);
+  useQuery({
+    queryKey: [PEERS_QUERY_KEY],
+    queryFn: () => walletClient.getPeers() as Promise<Array<ProvidedPeerInfo>>,
+  });
 
 export const useRemovePeer = () => {
   const refresh = useRefreshPeers();
   const removeConnectionFromBeaconSlice = useRemoveConnection();
-  return (peerInfo: PeerInfoWithId) => {
-    return walletClient
+
+  return (peerInfo: PeerInfoWithId) =>
+    walletClient
       .removePeer(peerInfo as ExtendedP2PPairingResponse)
       .then(() => removeConnectionFromBeaconSlice(peerInfo.senderId))
       .then(refresh);
-  };
 };
 
 export const useAddPeer = () => {
   const refresh = useRefreshPeers();
   const toast = useToast();
-  return (payload: string) => {
-    const serializer = new Serializer();
-    serializer
+
+  return (payload: string) =>
+    new Serializer()
       .deserialize(payload)
       .then(makePeerInfo)
       .then(walletClient.addPeer)
@@ -56,13 +59,13 @@ export const useAddPeer = () => {
         });
         console.error(e);
       });
-  };
 };
 
 export const BeaconProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const { openWith, onClose } = useContext(DynamicModalContext);
+
   useEffect(() => {
     walletClient
       .init()

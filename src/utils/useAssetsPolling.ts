@@ -1,7 +1,6 @@
 import { useToast } from "@chakra-ui/react";
-import { noop } from "lodash";
-import { useCallback, useEffect, useRef } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect } from "react";
 
 import { getErrorContext } from "./getErrorContext";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
@@ -76,6 +75,7 @@ const updateAccountAssets = async (
       updateTokenBalances(dispatch, network, allAccountAddresses),
     ]);
     dispatch(assetsActions.setLastTimeUpdated(new Date().toUTCString()));
+    return null;
   } finally {
     dispatch(assetsActions.setIsLoading(false));
   }
@@ -84,11 +84,13 @@ const updateAccountAssets = async (
 const updateConversionRate = async (dispatch: AppDispatch) => {
   const rate = await getTezosPriceInUSD();
   dispatch(assetsActions.updateConversionRate({ rate }));
+  return null;
 };
 
 const updateBlockLevel = async (dispatch: AppDispatch, network: Network) => {
   const blockLevel = await getLatestBlockLevel(network);
   dispatch(assetsActions.updateBlockLevel(blockLevel));
+  return null;
 };
 
 const updateBakers = async (dispatch: AppDispatch, network: Network) => {
@@ -99,6 +101,8 @@ const updateBakers = async (dispatch: AppDispatch, network: Network) => {
     name: alias ?? "Unknown baker",
   }));
   dispatch(assetsActions.updateBakers(bakers));
+
+  return null;
 };
 
 export const useAssetsPolling = () => {
@@ -106,13 +110,15 @@ export const useAssetsPolling = () => {
   const implicitAccounts = useImplicitAccounts();
   const refetchTrigger = useRefetchTrigger();
   const network = useSelectedNetwork();
-  const queryClient = useQueryClient();
   const toast = useToast();
 
   const implicitAddresses = implicitAccounts.map(account => account.address.pkh);
 
   const onError = useCallback(
     (error: any) => {
+      if (!error) {
+        return;
+      }
       dispatch(errorsSlice.actions.add(getErrorContext(error)));
       toast({
         description: `Data fetching error: ${error.message}`,
@@ -123,61 +129,43 @@ export const useAssetsPolling = () => {
     [dispatch, toast]
   );
 
-  const accountAssetsQuery = useQuery("allAssets", {
+  const { error: allAssetsError } = useQuery({
+    queryKey: ["allAssets", dispatch, network, implicitAddresses, refetchTrigger],
     queryFn: () => updateAccountAssets(dispatch, network, implicitAddresses),
-    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  const conversionrateQuery = useQuery("conversionRate", {
+  const { error: conversionRateError } = useQuery({
+    queryKey: ["conversionRate", dispatch],
     queryFn: () => updateConversionRate(dispatch),
-    onError,
     refetchInterval: CONVERSION_RATE_REFRESH_RATE,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  const blockNumberQuery = useQuery("blockNumber", {
+  const { error: blockNumberError } = useQuery({
+    queryKey: ["blockNumber", dispatch, network],
     queryFn: () => updateBlockLevel(dispatch, network),
-    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  const bakersQuery = useQuery("bakers", {
+  const { error: bakersError } = useQuery({
+    queryKey: ["bakers", dispatch, network],
     queryFn: () => updateBakers(dispatch, network),
-    onError,
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BAKERS_REFRESH_RATE,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  const conversionRateQueryRef = useRef(conversionrateQuery);
-  const blockNumberQueryRef = useRef(blockNumberQuery);
-  const accountAssetsQueryRef = useRef(accountAssetsQuery);
-  const bakersQueryRef = useRef(bakersQuery);
-
-  useEffect(() => {
-    Promise.all([
-      queryClient.cancelQueries({ queryKey: "allAssets" }),
-      queryClient.cancelQueries({ queryKey: "conversionRate" }),
-      queryClient.cancelQueries({ queryKey: "blockNumber" }),
-      queryClient.cancelQueries({ queryKey: "bakers" }),
-    ])
-      .then(() =>
-        Promise.all([
-          conversionRateQueryRef.current.refetch(),
-          blockNumberQueryRef.current.refetch(),
-          accountAssetsQueryRef.current.refetch(),
-          bakersQueryRef.current.refetch(),
-        ])
-      )
-      .catch(noop);
-  }, [network, refetchTrigger, queryClient]);
+  useEffect(() => onError(allAssetsError), [allAssetsError, onError]);
+  useEffect(() => onError(conversionRateError), [conversionRateError, onError]);
+  useEffect(() => onError(blockNumberError), [blockNumberError, onError]);
+  useEffect(() => onError(bakersError), [bakersError, onError]);
 };
