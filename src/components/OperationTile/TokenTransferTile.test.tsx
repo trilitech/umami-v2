@@ -1,13 +1,13 @@
 import { OperationTileContext } from "./OperationTileContext";
 import { tokenTransferFixture, transactionFixture } from "./testUtils";
 import { TokenTransferTile } from "./TokenTransferTile";
-import { mockLedgerAccount } from "../../mocks/factories";
+import { mockImplicitAddress, mockLedgerAccount } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
 import { Token, fromRaw } from "../../types/Token";
 import { TokenTransfer } from "../../types/Transfer";
 import { formatPkh } from "../../utils/format";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 import { TEZ, TransactionOperation } from "../../utils/tezos";
@@ -25,10 +25,12 @@ const fixture = (context: any, tokenTransfer: TokenTransfer, operation?: Transac
 describe("<TokenTransferTile />", () => {
   describe.each([
     { mode: "page" } as const,
-    { mode: "drawer", selectedAddress: mockLedgerAccount(0).address } as const,
+    { mode: "drawer", selectedAddress: mockLedgerAccount(1).address } as const,
   ])("in $mode mode", contextValue => {
     describe("sign", () => {
       it("shows '+' for incoming transactions", () => {
+        addAccount(mockLedgerAccount(1));
+
         render(fixture(contextValue, tokenTransferFixture({})));
 
         expect(screen.getByTestId("incoming-arrow")).toBeInTheDocument();
@@ -37,12 +39,15 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("shows '-' for outgoing transactions", () => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
+        addAccount(mockLedgerAccount(1));
 
         render(
           fixture(
             contextValue,
-            tokenTransferFixture({ from: { address: mockLedgerAccount(1).address.pkh } })
+            tokenTransferFixture({
+              from: { address: mockLedgerAccount(1).address.pkh },
+              to: { address: mockImplicitAddress(2).pkh },
+            })
           )
         );
 
@@ -52,8 +57,8 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("shows '-' if sender and target are both owned", () => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
+        addAccount(mockLedgerAccount(0));
+        addAccount(mockLedgerAccount(1));
 
         render(
           fixture(
@@ -73,7 +78,7 @@ describe("<TokenTransferTile />", () => {
 
     describe("amount", () => {
       it("does not display decimal if not needed", () => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
+        addAccount(mockLedgerAccount(1));
         const tokenTransfer = tokenTransferFixture({
           from: { address: mockLedgerAccount(1).address.pkh },
         });
@@ -85,7 +90,7 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("displays decimal if needed", () => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(1)));
+        addAccount(mockLedgerAccount(1));
         const tokenTransfer = tokenTransferFixture({
           from: { address: mockLedgerAccount(1).address.pkh },
         });
@@ -196,7 +201,7 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("renders if there is any fee paid by the user", () => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+        addAccount(mockLedgerAccount(0));
         render(
           fixture(
             contextValue,
@@ -239,7 +244,7 @@ describe("<TokenTransferTile />", () => {
 
     describe("pills", () => {
       beforeEach(() => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+        addAccount(mockLedgerAccount(0));
       });
 
       it("shows both if sender is an owned account", () => {
@@ -297,7 +302,7 @@ describe("<TokenTransferTile />", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
 
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+      addAccount(mockLedgerAccount(0));
     });
 
     it("hides the fee", () => {
