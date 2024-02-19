@@ -36,9 +36,7 @@ export const OperationListDisplay: React.FC<{
           {i < chunk.length - 1 && <Divider marginY="20px" />}
         </Box>
       ))}
-      {operations.length > MAX_OPERATIONS_SIZE && (
-        <ViewAllLink to={`/operations?accounts=${owner}`} />
-      )}
+      {operations.length > MAX_OPERATIONS_SIZE && <ViewAllLink owner={owner} to="/operations" />}
     </>
   );
 };

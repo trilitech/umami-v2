@@ -115,9 +115,7 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
           );
         })}
       </SimpleGrid>
-      {nfts.length > MAX_NFTS_SIZE && (
-        <ViewAllLink marginBottom="40px" to={`/nfts?accounts=${owner}`} />
-      )}
+      {nfts.length > MAX_NFTS_SIZE && <ViewAllLink marginBottom="40px" owner={owner} to="/nfts" />}
     </>
   );
 };
