@@ -22,7 +22,7 @@ import { coinCapResponseType } from "./types";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
-import { TezTransfer, TokenTransfer } from "../../types/Transfer";
+import { TokenTransfer } from "../../types/Transfer";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
@@ -109,21 +109,6 @@ export const getTokenBalances = async (pkhs: string[], network: Network) =>
       }
     )
   ) as Promise<RawTokenBalance[]>;
-
-// TODO: remove it when transition to combined operations is done
-export const getTezTransfers = (address: RawPkh, network: Network): Promise<TezTransfer[]> =>
-  withRateLimit(() =>
-    operationsGetTransactions(
-      {
-        anyof: { fields: ["sender", "target"], eq: address },
-        sort: { desc: "level" },
-        limit: 10,
-      },
-      {
-        baseUrl: network.tzktApiUrl,
-      }
-    )
-  );
 
 export const getDelegations = async (
   addresses: RawPkh[],

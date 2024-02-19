@@ -17,7 +17,6 @@ import {
   getLastDelegation,
   getOriginations,
   getRelatedTokenTransfers,
-  getTezTransfers,
   getTezosPriceInUSD,
   getTokenBalances,
   getTokenTransfers,
@@ -135,21 +134,6 @@ describe("tezos utils fetch", () => {
           account: { in: [`${mockImplicitAddress(0).pkh},${mockImplicitAddress(1).pkh}`] },
           balance: { gt: "0" },
           limit: 10000,
-        },
-        {
-          baseUrl: network.tzktApiUrl,
-        }
-      );
-    });
-
-    test("getTezTransfers", async () => {
-      jest.mocked(operationsGetTransactions).mockResolvedValue([]);
-      await getTezTransfers(mockImplicitAddress(0).pkh, network);
-      expect(operationsGetTransactions).toHaveBeenCalledWith(
-        {
-          anyof: { fields: ["sender", "target"], eq: mockImplicitAddress(0).pkh },
-          sort: { desc: "level" },
-          limit: 10,
         },
         {
           baseUrl: network.tzktApiUrl,
