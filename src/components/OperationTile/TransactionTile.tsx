@@ -6,16 +6,16 @@ import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { TzktLink } from "./TzktLink";
+import { useIsOutgoingOperation } from "./useIsOutgoingOperation";
 import { useShowAddress } from "./useShowAddress";
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
-import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 import { TransactionOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
-  const isOutgoing = useIsOwnedAddress(operation.sender.address);
+  const isOutgoing = useIsOutgoingOperation(operation.sender.address);
   const amount = prettyTezAmount(String(operation.amount));
   const showToAddress = useShowAddress(operation.target.address);
   const showFromAddress = useShowAddress(operation.sender.address);

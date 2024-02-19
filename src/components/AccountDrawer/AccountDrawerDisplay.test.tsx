@@ -388,7 +388,7 @@ describe("<AccountCard />", () => {
 
       expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
       const operations = screen.getAllByTestId(/^operation-tile/);
-      expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
+      expect(operations[0]).toHaveTextContent("+ 1.000000 ꜩ");
       expect(operations[1]).toHaveTextContent("- 2.000000 ꜩ");
     });
 
