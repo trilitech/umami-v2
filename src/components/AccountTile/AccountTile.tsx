@@ -29,6 +29,7 @@ export const AccountTileBase: React.FC<
       padding={4}
       border={`1px solid ${colors.gray[800]}`}
       borderRadius={4}
+      data-testid="account-tile-base"
       {...flexProps}
     >
       {icon}

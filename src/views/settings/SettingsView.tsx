@@ -20,7 +20,6 @@ export const SettingsView = () => {
         <Box marginTop="16px">
           <GeneralSection />
         </Box>
-        <AppUpdatesSection />
         <BackupSection />
         <AdvancedSection />
       </Box>
@@ -45,41 +44,6 @@ const GeneralSection = () => {
       <ErrorLogsDrawerCard />
     </SectionContainer>
   );
-};
-
-const AppUpdatesSection = () => {
-  // TODO: implement this
-  return null;
-  // return (
-  //   <SectionContainer title="App Updates">
-  //     <CardWithDivier
-  //       upperChild={
-  //         <Flex alignItems="center" h="100%">
-  //           <Flex justifyContent="space-between" alignItems="center" w="100%">
-  //             <Heading size="sm">Auto Update</Heading>
-  //             <Switch marginX={3} />
-  //           </Flex>
-  //         </Flex>
-  //       }
-  //       lowerChild={
-  //         <Flex alignItems="center" h="100%">
-  //           <Flex justifyContent="space-between" alignItems="center" w="100%">
-  //             <Flex alignItems="center">
-  //               <Heading size="sm">Version:</Heading>
-  //               <Text>&nbsp;{packageInfo.version}</Text>
-  //             </Flex>
-  //             <IconAndTextBtn
-  //               label="Check for updates"
-  //               icon={TfiReload}
-  //               iconHeight={4}
-  //               iconWidth={4}
-  //             />
-  //           </Flex>
-  //         </Flex>
-  //       }
-  //     />
-  //   </SectionContainer>
-  // );
 };
 
 const downloadBackup = () => {

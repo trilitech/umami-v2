@@ -13,7 +13,7 @@ import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../../utils/redux/store";
 import { estimate } from "../../../../utils/tezos";
 
-import { MultisigPendingAccordion } from ".";
+import { MultisigPendingOperations } from ".";
 
 jest.mock("../../../../utils/hooks/accountUtils");
 
@@ -21,7 +21,7 @@ beforeEach(() => {
   jest.mocked(useGetSecretKey).mockReturnValue(() => Promise.resolve("mockkey"));
 });
 
-describe("<MultisigPendingAccordion />", () => {
+describe("<MultisigPendingOperations />", () => {
   it("should display multisig executable tez operations", async () => {
     jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
     const m: Multisig = {
@@ -41,7 +41,7 @@ describe("<MultisigPendingAccordion />", () => {
 
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockAccount]));
 
-    render(<MultisigPendingAccordion account={multisigAccount} />);
+    render(<MultisigPendingOperations account={multisigAccount} />);
 
     const allPending = screen.getAllByTestId(/multisig-pending-operation/);
     expect(allPending).toHaveLength(2);

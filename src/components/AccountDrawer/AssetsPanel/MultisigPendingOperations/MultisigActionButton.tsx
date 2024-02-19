@@ -1,10 +1,8 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import { CgSandClock } from "react-icons/cg";
-import { RxCheckCircled } from "react-icons/rx";
 
+import { CheckmarkIcon, HourglassIcon } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
-import { IconAndTextBtn } from "../../../IconAndTextBtn";
 
 export type MultisigSignerState =
   | "awaitingApprovalByExternalSigner"
@@ -12,35 +10,39 @@ export type MultisigSignerState =
   | "executable"
   | "approvable";
 
-// TODO: add test
 export const MultisigActionButton: React.FC<{
   signerState: MultisigSignerState;
-  onClickApproveExecute: () => void;
-  isLoading?: boolean;
-}> = ({ onClickApproveExecute, isLoading = false, signerState }) => {
+  approveOrExecute: () => void;
+  isLoading: boolean;
+}> = ({ approveOrExecute, isLoading, signerState }) => {
   switch (signerState) {
     case "awaitingApprovalByExternalSigner": {
       return (
-        <IconAndTextBtn
+        <Flex
+          alignItems="center"
+          alignSelf="flex-end"
           data-testid="multisig-signer-awaiting-approval"
-          icon={CgSandClock}
-          iconColor={colors.orange}
-          iconHeight={5}
-          iconWidth={5}
-          label="Awaiting Approval"
-        />
+        >
+          <Text marginRight="4px" color={colors.gray[300]}>
+            Awaiting Approval
+          </Text>
+          <HourglassIcon marginTop="2px" />
+        </Flex>
       );
     }
     case "approved": {
       return (
-        <IconAndTextBtn
+        <Flex
+          alignItems="center"
+          alignSelf="flex-end"
+          marginBottom="8px"
           data-testid="multisig-signer-approved"
-          icon={RxCheckCircled}
-          iconColor={colors.greenL}
-          iconHeight={5}
-          iconWidth={5}
-          label="Approved"
-        />
+        >
+          <Text marginRight="4px" color={colors.gray[300]}>
+            Approved
+          </Text>
+          <CheckmarkIcon marginTop="2px" />
+        </Flex>
       );
     }
     case "executable": {
@@ -48,7 +50,7 @@ export const MultisigActionButton: React.FC<{
         <Button
           data-testid="multisig-signer-button"
           isLoading={isLoading}
-          onClick={onClickApproveExecute}
+          onClick={approveOrExecute}
         >
           Execute
         </Button>
@@ -60,7 +62,7 @@ export const MultisigActionButton: React.FC<{
         <Button
           data-testid="multisig-signer-button"
           isLoading={isLoading}
-          onClick={onClickApproveExecute}
+          onClick={approveOrExecute}
         >
           Approve
         </Button>

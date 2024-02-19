@@ -1,9 +1,8 @@
-import { Accordion } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import BigNumber from "bignumber.js";
 
-import { MultisigPendingAccordionItem } from "./MultisigPendingAccordionItem";
+import { MultisigPendingOperation } from "./MultisigPendingOperation";
 import {
   mockImplicitAddress,
   mockMnemonicAccount,
@@ -30,22 +29,20 @@ beforeEach(() => {
   jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
 });
 
-describe("<MultisigPendingAccordionItem/>", () => {
+describe("<MultisigPendingOperation />", () => {
   it("displays the correct number of pending approvals", () => {
     const pkh0 = mockImplicitAddress(0);
     const account = { ...mockMultisigAccount(0), threshold: 3 };
     render(
-      <Accordion>
-        <MultisigPendingAccordionItem
-          operation={{
-            id: "1",
-            bigmapId: 0,
-            rawActions: "action",
-            approvals: [pkh0],
-          }}
-          sender={account}
-        />
-      </Accordion>
+      <MultisigPendingOperation
+        operation={{
+          id: "1",
+          bigmapId: 0,
+          rawActions: "action",
+          approvals: [pkh0],
+        }}
+        sender={account}
+      />
     );
 
     expect(screen.getByTestId("pending-approvals-count")).toHaveTextContent("2");
@@ -53,17 +50,15 @@ describe("<MultisigPendingAccordionItem/>", () => {
 
   it("displays 0 for pending approvals if there are more approvers than the threshold", () => {
     render(
-      <Accordion>
-        <MultisigPendingAccordionItem
-          operation={{
-            id: "1",
-            bigmapId: 0,
-            rawActions: "action",
-            approvals: [mockImplicitAddress(0), mockImplicitAddress(1)],
-          }}
-          sender={mockMultisigAccount(0)}
-        />
-      </Accordion>
+      <MultisigPendingOperation
+        operation={{
+          id: "1",
+          bigmapId: 0,
+          rawActions: "action",
+          approvals: [mockImplicitAddress(0), mockImplicitAddress(1)],
+        }}
+        sender={mockMultisigAccount(0)}
+      />
     );
 
     expect(screen.getByTestId("pending-approvals-count")).toHaveTextContent("0");
@@ -86,11 +81,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
     const executablePendingOp: MultisigOperation = pendingOps[0];
     const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
 
-    render(
-      <Accordion>
-        <MultisigPendingAccordionItem operation={executablePendingOp} sender={multisig} />
-      </Accordion>
-    );
+    render(<MultisigPendingOperation operation={executablePendingOp} sender={multisig} />);
 
     const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
 
@@ -132,11 +123,7 @@ describe("<MultisigPendingAccordionItem/>", () => {
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([signer]));
     const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
     const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
-    render(
-      <Accordion>
-        <MultisigPendingAccordionItem operation={approvablePendingOp} sender={multisig} />
-      </Accordion>
-    );
+    render(<MultisigPendingOperation operation={approvablePendingOp} sender={multisig} />);
 
     const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
     await act(() => user.click(within(firstPendingOp).getByText("Approve")));
