@@ -49,7 +49,7 @@ export const useAddPeer = () => {
     new Serializer()
       .deserialize(payload)
       .then(makePeerInfo)
-      .then(walletClient.addPeer)
+      .then(peer => walletClient.addPeer(peer))
       .then(refresh)
       .catch(e => {
         toast({
