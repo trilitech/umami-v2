@@ -22,7 +22,7 @@ import { coinCapResponseType } from "./types";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
-import { TezTransfer, TokenTransfer } from "../../types/Transfer";
+import { TokenTransfer } from "../../types/Transfer";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
@@ -110,21 +110,6 @@ export const getTokenBalances = async (pkhs: string[], network: Network) =>
     )
   ) as Promise<RawTokenBalance[]>;
 
-// TODO: remove it when transition to combined operations is done
-export const getTezTransfers = (address: RawPkh, network: Network): Promise<TezTransfer[]> =>
-  withRateLimit(() =>
-    operationsGetTransactions(
-      {
-        anyof: { fields: ["sender", "target"], eq: address },
-        sort: { desc: "level" },
-        limit: 10,
-      },
-      {
-        baseUrl: network.tzktApiUrl,
-      }
-    )
-  );
-
 export const getDelegations = async (
   addresses: RawPkh[],
   network: Network,
@@ -162,7 +147,7 @@ export const getTransactions = async (
         baseUrl: network.tzktApiUrl,
       }
     )
-  ) as Promise<DelegationOperation[]>;
+  ) as Promise<TransactionOperation[]>;
 
 export const getOriginations = async (
   addresses: RawPkh[],
@@ -180,7 +165,7 @@ export const getOriginations = async (
         baseUrl: network.tzktApiUrl,
       }
     )
-  ) as Promise<DelegationOperation[]>;
+  ) as Promise<OriginationOperation[]>;
 
 // It returns all transactions, delegations, contract originations & token transfers for given addresses
 // You will get them interleaved and  sorted by ID and up to the specified limit (100 by default)
