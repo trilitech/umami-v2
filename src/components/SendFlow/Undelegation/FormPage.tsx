@@ -50,10 +50,10 @@ export const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => 
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form>
+        <form data-testid="undelegate-form">
           <FormPageHeader
             subTitle="Select preview to end delegation or insert this transaction into a Batch."
-            title="End delegation"
+            title="End Delegation"
           />
 
           <ModalBody>
