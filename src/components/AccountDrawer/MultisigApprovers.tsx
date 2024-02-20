@@ -27,7 +27,7 @@ export const MultisigApprovers: React.FC<{
     >
       <Accordion padding="15px" allowToggle>
         <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
-          <AccordionButton as="span" flex="1" padding="0" textAlign="left">
+          <AccordionButton as="span" flex="1" padding="0" textAlign="left" cursor="pointer">
             <Heading width="100%" size="md">
               Approvers
             </Heading>
