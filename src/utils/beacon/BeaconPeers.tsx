@@ -1,4 +1,3 @@
-import { getSenderId } from "@airgap/beacon-wallet";
 import {
   AspectRatio,
   Box,
@@ -13,7 +12,7 @@ import {
 import { capitalize, noop } from "lodash";
 import { Fragment, useEffect, useState } from "react";
 
-import { usePeers, useRemovePeer } from "./beacon";
+import { getSenderId, usePeers, useRemovePeer } from "./beacon";
 import { PeerInfoWithId } from "./types";
 import { TrashIcon } from "../../assets/icons";
 import { AddressPill } from "../../components/AddressPill/AddressPill";

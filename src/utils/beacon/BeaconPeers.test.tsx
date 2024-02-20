@@ -1,4 +1,4 @@
-import { NetworkType, getSenderId } from "@airgap/beacon-wallet";
+import { NetworkType } from "@airgap/beacon-wallet";
 
 import * as beaconHelper from "./beacon";
 import { BeaconPeers } from "./BeaconPeers";
@@ -38,7 +38,7 @@ let senderIds: string[];
 beforeEach(async () => {
   dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2)]);
   jest.spyOn(beaconHelper, "usePeers").mockReturnValue({ data: peersData } as any);
-  senderIds = await Promise.all(peersData.map(peer => getSenderId(peer.publicKey)));
+  senderIds = await Promise.all(peersData.map(peer => beaconHelper.getSenderId(peer.publicKey)));
 });
 
 describe("<BeaconPeers />", () => {
@@ -99,7 +99,7 @@ describe("<BeaconPeers />", () => {
 
         const peerRows = await getPeerRows();
 
-        const addressPill = within(peerRows[0]).getByTestId("address-pill-text");
+        const addressPill = within(peerRows[1]).getByTestId("address-pill-text");
         expect(addressPill).toHaveTextContent(mockMnemonicAccount(1).label);
       });
 
@@ -114,14 +114,14 @@ describe("<BeaconPeers />", () => {
 
         const peerRows = await getPeerRows();
 
-        const addressPill = within(peerRows[0]).getByTestId("address-pill-text");
+        const addressPill = within(peerRows[1]).getByTestId("address-pill-text");
         expect(addressPill).toHaveTextContent(formatPkh(mockMnemonicAccount(5).address.pkh));
       });
 
       it("displays network type from beacon connection request", async () => {
         store.dispatch(
           beaconActions.addConnection({
-            dAppId: senderIds[1],
+            dAppId: senderIds[2],
             accountPkh: mockMnemonicAccount(1).address.pkh,
             networkType: NetworkType.OXFORDNET,
           })
@@ -129,7 +129,7 @@ describe("<BeaconPeers />", () => {
 
         const peerRows = await getPeerRows();
 
-        const network = within(peerRows[0]).getByTestId("dapp-connection-network");
+        const network = within(peerRows[2]).getByTestId("dapp-connection-network");
         expect(network).toHaveTextContent("Oxfordnet");
       });
     });
@@ -169,8 +169,7 @@ describe("<BeaconPeers />", () => {
       });
     });
 
-    // TODO: enable again when the bug in Beacon is fixed
-    it.skip("removes connection from beaconSlice", async () => {
+    it("removes connection from beaconSlice", async () => {
       const user = userEvent.setup();
       [
         {

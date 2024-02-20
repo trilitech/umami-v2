@@ -1,4 +1,10 @@
-import { ExtendedP2PPairingResponse, Serializer, WalletClient } from "@airgap/beacon-wallet";
+import {
+  ExtendedP2PPairingResponse,
+  Serializer,
+  WalletClient,
+  getSenderId as beaconGetSenderId,
+  toHex,
+} from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
@@ -79,6 +85,10 @@ export const BeaconProvider: React.FC<{
 
   return children;
 };
+
+// it's crucial that we convert the publicKey to hex before calling getSenderId
+// otherwise it gives incorrect results with lots of collisions
+export const getSenderId = (publicKey: string) => beaconGetSenderId(toHex(publicKey));
 
 export const resetBeacon = async () => {
   // Until walletClient.destroy is fixed
