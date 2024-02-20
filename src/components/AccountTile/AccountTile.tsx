@@ -144,7 +144,7 @@ export const AccountTile: React.FC<{
         rightElement={
           <Flex flexDirection="column">
             {balance && (
-              <Heading alignSelf="flex-end" data-testid="balance" size="lg">
+              <Heading alignSelf="flex-end" data-testid="balance" size="md">
                 {prettyTezAmount(balance)}
               </Heading>
             )}
