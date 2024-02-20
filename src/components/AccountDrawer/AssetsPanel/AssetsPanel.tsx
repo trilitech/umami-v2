@@ -44,7 +44,6 @@ export const AssetsPanel: React.FC<{
     <Tabs
       flexDirection="column"
       display="flex"
-      overflow="hidden"
       width="100%"
       marginTop="60px"
       data-testid="asset-panel"
@@ -80,7 +79,7 @@ export const AssetsPanel: React.FC<{
           </Button>
         </ExternalLink>
       </TabList>
-      <TabPanels height="100%" paddingBottom="60px">
+      <TabPanels height="100%">
         {withPendingOperations && (
           <TabPanel
             overflowX="hidden"
@@ -128,6 +127,7 @@ export const AssetsPanel: React.FC<{
           overflowX="hidden"
           height="100%"
           paddingTop="24px"
+          paddingBottom={0}
           data-testid="account-card-nfts-tab-panel"
           paddingX="0"
         >
