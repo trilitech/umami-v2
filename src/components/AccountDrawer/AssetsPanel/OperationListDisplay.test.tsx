@@ -1,6 +1,6 @@
 import { OperationListDisplay } from "./OperationListDisplay";
 import { mockDelegation, mockImplicitAddress } from "../../../mocks/factories";
-import { render, screen } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../../mocks/transfers";
 import { TzktCombinedOperation } from "../../../utils/tezos";
 
@@ -11,7 +11,15 @@ describe("<OperationListDisplay />", () => {
     it('displays a "No operations found" message', () => {
       render(<OperationListDisplay operations={[]} owner={OWNER} />);
 
-      expect(screen.getByText("No operations to show")).toBeInTheDocument();
+      // check empty state message
+      expect(screen.getByTestId("empty-state-message")).toBeVisible();
+      expect(screen.getByText("No operations to show")).toBeVisible();
+      expect(screen.getByText("Your operations history will appear here...")).toBeVisible();
+      // check View All Operations button from empty state
+      const viewAllOperationsButton = screen.getByTestId("view-all-operations-button");
+      expect(viewAllOperationsButton).toBeVisible();
+      expect(viewAllOperationsButton).toHaveTextContent("View All Operations");
+      expect(viewAllOperationsButton).toHaveAttribute("href", "#/operations");
     });
 
     it("does not show operation tiles", () => {
@@ -47,6 +55,14 @@ describe("<OperationListDisplay />", () => {
       mockImplicitAddress(2).pkh,
       "Some baker"
     ) as TzktCombinedOperation;
+
+    it("hides operations empty state message", async () => {
+      render(<OperationListDisplay operations={transferOperations} owner={OWNER} />);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
+      });
+    });
 
     it("renders all operations without view all link when <= 20 operations", () => {
       render(<OperationListDisplay operations={transferOperations} owner={OWNER} />);
