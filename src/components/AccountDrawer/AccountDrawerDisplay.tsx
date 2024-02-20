@@ -14,6 +14,7 @@ import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/Token
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { getLastDelegation } from "../../utils/tezos";
+import { accountIconGradient } from "../AccountTile/AccountTile";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 import { AddressPill } from "../AddressPill/AddressPill";
 import { useAddressKind } from "../AddressTile/useAddressKind";
@@ -99,6 +100,18 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
       alignItems="center"
       flexDirection="column"
       height="100%"
+      // crutch for the sticky background gradient
+      marginTop="-86px"
+      paddingTop="86px"
+      paddingRight="30px"
+      background={accountIconGradient({
+        account,
+        radius: "350px",
+        opacity: "35",
+        mainBackgroundColor: "transparent",
+        left: "300px",
+        top: "-125px",
+      })}
       data-testid={`account-card-${account.address.pkh}`}
     >
       <AccountTileIcon addressKind={addressKind} />

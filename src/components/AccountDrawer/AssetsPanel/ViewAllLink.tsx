@@ -1,4 +1,4 @@
-import { Center, Link, Text } from "@chakra-ui/react";
+import { Center, FlexProps, Link, Text } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 import { RefreshClockIcon } from "../../../assets/icons";
@@ -9,9 +9,9 @@ import colors from "../../../style/colors";
  *
  * @param to - route to navigate to (/nfts, /tokens, etc.)
  */
-export const ViewAllLink = ({ to }: { to: string }) => {
+export const ViewAllLink = ({ to, ...props }: { to: string } & FlexProps) => {
   return (
-    <Center>
+    <Center {...props}>
       <Link
         as={ReactRouterLink}
         color={colors.gray[300]}

@@ -1,13 +1,15 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, FlexProps, Text } from "@chakra-ui/react";
 import React from "react";
 
 import { ExitArrowIcon } from "../../assets/icons";
 
-export const DrawerTopButtons: React.FC<{
-  onClose: () => void;
-}> = ({ onClose }) => {
+export const DrawerTopButtons: React.FC<
+  {
+    onClose: () => void;
+  } & FlexProps
+> = ({ onClose, ...props }) => {
   return (
-    <Flex justifyContent="flex-end" paddingBottom="30px" cursor="pointer">
+    <Flex justifyContent="flex-end" paddingBottom="30px" cursor="pointer" {...props}>
       <CloseDrawerButton onClose={onClose} />
     </Flex>
   );
