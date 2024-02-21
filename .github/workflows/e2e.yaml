@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest-m
     env:
       FLEXTESA_IMAGE: oxheadalpha/flextesa:latest
-      TZKT_SYNC_IMAGE: serjonya/tzkt-sync:1.12.4-linux
-      TZKT_API_IMAGE: serjonya/tzkt-api:1.12.4-linux
+      TZKT_SYNC_IMAGE: bakingbad/tzkt-sync:1.13.1
+      TZKT_API_IMAGE: serjonya/tzkt-api:1.13.1-linux
 
     steps:
       - uses: actions/checkout@v4
