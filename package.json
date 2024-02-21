@@ -2,7 +2,6 @@
   "name": "umami",
   "productName": "umami",
   "version": "2.0.0",
-  "private": true,
   "author": "Trilitech <umami-admin@trili.tech>",
   "description": "Tezos Wallet",
   "homepage": "./",
