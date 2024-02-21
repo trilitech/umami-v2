@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
+import { Box, Button, FormControl, UseToastOptions, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import React from "react";
@@ -55,21 +55,29 @@ export const SignButton: React.FC<{
     });
 
   const onLedgerSign = async () =>
-    handleAsyncAction(async () => {
-      toast({
-        description: "Please open the Tezos app on your Ledger and approve the operation",
-        status: "info",
-        duration: 60000,
-        isClosable: true,
-      });
-      return onSubmit(
-        await makeToolkit({
-          type: "ledger",
-          account: signer as LedgerAccount,
-          network,
-        })
-      );
-    });
+    handleAsyncAction(
+      async () => {
+        toast({
+          id: "ledger-sign-toast",
+          description: "Please approve the operation on your Ledger",
+          status: "info",
+          duration: 60000,
+          isClosable: true,
+        });
+        return onSubmit(
+          await makeToolkit({
+            type: "ledger",
+            account: signer as LedgerAccount,
+            network,
+          })
+        );
+      },
+      (error: any) =>
+        ({
+          description: `${error.message} Please connect your ledger, open Tezos app and try submitting transaction again`,
+          status: "error",
+        }) as UseToastOptions
+    ).finally(() => toast.close("ledger-sign-toast"));
 
   switch (signer.type) {
     case "secret_key":
