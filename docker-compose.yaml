@@ -38,7 +38,7 @@ services:
   sync:
     container_name: "tzkt-sync-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ${TZKT_SYNC_IMAGE:-serjonya/tzkt-sync:latest}
+    image: ${TZKT_SYNC_IMAGE:-serjonya/tzkt-sync:1.13.1}
     environment:
       ConnectionStrings__DefaultConnection: host=db;port=5432;database=${POSTGRES_DB:-tzkt_db};username=${POSTGRES_USER:-tzkt};password=${POSTGRES_PASSWORD:-qwerty};command timeout=${COMMAND_TIMEOUT:-600};
       Kestrel__Endpoints__Http__Url: http://0.0.0.0:5001
@@ -52,7 +52,7 @@ services:
   api:
     container_name: "tzkt-api-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ${TZKT_API_IMAGE:-serjonya/tzkt-api:latest}
+    image: ${TZKT_API_IMAGE:-serjonya/tzkt-api:1.13.1}
     depends_on:
       - sync
     environment:
