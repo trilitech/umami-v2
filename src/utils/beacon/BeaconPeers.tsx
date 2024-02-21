@@ -1,3 +1,4 @@
+import { ExtendedPeerInfo, getSenderId } from "@airgap/beacon-wallet";
 import {
   AspectRatio,
   Box,
@@ -12,8 +13,7 @@ import {
 import { capitalize, noop } from "lodash";
 import { Fragment, useEffect, useState } from "react";
 
-import { getSenderId, usePeers, useRemovePeer } from "./beacon";
-import { PeerInfoWithId } from "./types";
+import { usePeers, useRemovePeer } from "./beacon";
 import { TrashIcon } from "../../assets/icons";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
@@ -29,13 +29,13 @@ export const BeaconPeers = () => {
   const { data } = usePeers();
 
   const removePeer = useRemovePeer();
-  const [peersWithId, setPeersWithId] = useState<PeerInfoWithId[]>([]);
+  const [peersWithId, setPeersWithId] = useState<ExtendedPeerInfo[]>([]);
 
   // senderId will always be set here, even if we haven't saved it in beaconSlice for a dApp.
   useEffect(() => {
     const peerIdPromises = (data || []).map(async peer => ({
       ...peer,
-      senderId: await getSenderId(peer.publicKey),
+      senderId: peer.senderId || (await getSenderId(peer.publicKey)),
     }));
 
     Promise.all(peerIdPromises).then(setPeersWithId).catch(noop);
@@ -67,8 +67,8 @@ const PeersDisplay = ({
   peerInfos,
   removePeer,
 }: {
-  peerInfos: PeerInfoWithId[];
-  removePeer: (peer: PeerInfoWithId) => void;
+  peerInfos: ExtendedPeerInfo[];
+  removePeer: (peer: ExtendedPeerInfo) => void;
 }) => {
   return (
     <Box>
@@ -88,7 +88,7 @@ const PeersDisplay = ({
  * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
  * @param onRemove - action for deleting dApp connection.
  */
-const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfoWithId; onRemove: () => void }) => {
+const PeerRow = ({ peerInfo, onRemove }: { peerInfo: ExtendedPeerInfo; onRemove: () => void }) => {
   return (
     <Flex justifyContent="space-between" height="106px" data-testid="peer-row" paddingY="30px">
       <Flex>
@@ -123,7 +123,7 @@ const PeerRow = ({ peerInfo, onRemove }: { peerInfo: PeerInfoWithId; onRemove: (
  *
  * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
  */
-const StoredPeerInfo = ({ peerInfo }: { peerInfo: PeerInfoWithId }) => {
+const StoredPeerInfo = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
   const connectionInfo = useGetConnectionInfo(peerInfo.senderId);
 
   if (!connectionInfo) {

@@ -11,6 +11,3 @@ const peerInfoSchema = z.object({
 });
 
 export const makePeerInfo = peerInfoSchema.parse;
-
-export type ProvidedPeerInfo = ReturnType<typeof makePeerInfo>;
-export type PeerInfoWithId = ReturnType<typeof makePeerInfo> & { senderId: string };
