@@ -1,16 +1,15 @@
 import {
   ExtendedP2PPairingResponse,
+  ExtendedPeerInfo,
   Serializer,
   WalletClient,
-  getSenderId as beaconGetSenderId,
-  toHex,
 } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 
 import { BeaconNotification } from "./BeaconNotification";
-import { PeerInfoWithId, ProvidedPeerInfo, makePeerInfo } from "./types";
+import { makePeerInfo } from "./types";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { useRemoveConnection } from "../hooks/beaconHooks";
 
@@ -33,14 +32,15 @@ export const useRefreshPeers = () => {
 export const usePeers = () =>
   useQuery({
     queryKey: [PEERS_QUERY_KEY],
-    queryFn: () => walletClient.getPeers() as Promise<Array<ProvidedPeerInfo>>,
+    // getPeers actually returns ExtendedPeerInfo (with the senderId)
+    queryFn: () => walletClient.getPeers() as Promise<ExtendedPeerInfo[]>,
   });
 
 export const useRemovePeer = () => {
   const refresh = useRefreshPeers();
   const removeConnectionFromBeaconSlice = useRemoveConnection();
 
-  return (peerInfo: PeerInfoWithId) =>
+  return (peerInfo: ExtendedPeerInfo) =>
     walletClient
       .removePeer(peerInfo as ExtendedP2PPairingResponse)
       .then(() => removeConnectionFromBeaconSlice(peerInfo.senderId))
@@ -85,10 +85,6 @@ export const BeaconProvider: React.FC<{
 
   return children;
 };
-
-// it's crucial that we convert the publicKey to hex before calling getSenderId
-// otherwise it gives incorrect results with lots of collisions
-export const getSenderId = (publicKey: string) => beaconGetSenderId(toHex(publicKey));
 
 export const resetBeacon = async () => {
   // Until walletClient.destroy is fixed

@@ -1,8 +1,7 @@
-import { NetworkType } from "@airgap/beacon-wallet";
+import { ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
 
 import * as beaconHelper from "./beacon";
 import { BeaconPeers } from "./BeaconPeers";
-import { ProvidedPeerInfo } from "./types";
 import { mockMnemonicAccount } from "../../mocks/factories";
 import { dispatchMockAccounts } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
@@ -10,35 +9,36 @@ import { formatPkh } from "../format";
 import { beaconActions } from "../redux/slices/beaconSlice";
 import { store } from "../redux/store";
 
-const peersData: ProvidedPeerInfo[] = [
+const peersData: ExtendedPeerInfo[] = [
   {
     name: "dApp-1",
-    publicKey: "edpkv2YM4m3B3X5hDBQUHXzjwSDuwn8yQBdwXk2QLpwTW7XMbJSunM",
+    publicKey: "e15835f5b7bb7fae5a3ddbe3c71b3cdd9ee0a5ea2586f04e7669e9040f61810c",
+    senderId: "2MqUhvyAJy3UY",
     type: "p2p-pairing-request",
     id: "test-id-1",
     version: "v1",
   },
   {
     name: "dApp-2",
-    publicKey: "edpkvWu5C4wjmwKvbZu726N4h7SvqfTRaiamB6z8dTvd1qUnE6YQcP",
+    publicKey: "e15835f5b7bb7fae5a3ddbe3c71b3cdd9ee0a5ea2586f04e7669e9040f61810b",
+    senderId: "2UJwaEUy23W3g",
     type: "p2p-pairing-request",
     id: "test-id-2",
     version: "v1.5",
   },
   {
     name: "dApp-3",
-    publicKey: "edpkvJ7tLYQXFK5hz1Avs3zgHteNqfhHgowMNgSbv7gk3LePxKvTm1",
+    publicKey: "e15835f5b7bb7fae5a3ddbe3c71b3cdd9ee0a5ea2586f04e7669e9040f61810a",
+    senderId: "3obHXJP1D8QrB",
     type: "p2p-pairing-request",
     id: "test-id-3",
     version: "v2",
   },
 ];
-let senderIds: string[];
 
-beforeEach(async () => {
+beforeEach(() => {
   dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2)]);
   jest.spyOn(beaconHelper, "usePeers").mockReturnValue({ data: peersData } as any);
-  senderIds = await Promise.all(peersData.map(peer => beaconHelper.getSenderId(peer.publicKey)));
 });
 
 describe("<BeaconPeers />", () => {
@@ -91,7 +91,7 @@ describe("<BeaconPeers />", () => {
       it("displays address pill with acc label if connected acc is present", async () => {
         store.dispatch(
           beaconActions.addConnection({
-            dAppId: senderIds[1],
+            dAppId: peersData[1].senderId,
             accountPkh: mockMnemonicAccount(1).address.pkh,
             networkType: NetworkType.MAINNET,
           })
@@ -106,7 +106,7 @@ describe("<BeaconPeers />", () => {
       it("displays address pill with acc pkh if connected acc was removed", async () => {
         store.dispatch(
           beaconActions.addConnection({
-            dAppId: senderIds[1],
+            dAppId: peersData[1].senderId,
             accountPkh: mockMnemonicAccount(5).address.pkh,
             networkType: NetworkType.MAINNET,
           })
@@ -121,7 +121,7 @@ describe("<BeaconPeers />", () => {
       it("displays network type from beacon connection request", async () => {
         store.dispatch(
           beaconActions.addConnection({
-            dAppId: senderIds[2],
+            dAppId: peersData[2].senderId,
             accountPkh: mockMnemonicAccount(1).address.pkh,
             networkType: NetworkType.OXFORDNET,
           })
@@ -163,27 +163,24 @@ describe("<BeaconPeers />", () => {
       const deleteButton = within(peerRows[1]).getByRole("button", { name: "Remove Peer" });
       await act(() => user.click(deleteButton));
 
-      expect(beaconHelper.walletClient.removePeer).toHaveBeenCalledWith({
-        ...peersData[1],
-        senderId: senderIds[1],
-      });
+      expect(beaconHelper.walletClient.removePeer).toHaveBeenCalledWith(peersData[1]);
     });
 
     it("removes connection from beaconSlice", async () => {
       const user = userEvent.setup();
       [
         {
-          dAppId: senderIds[0],
+          dAppId: peersData[0].senderId,
           accountPkh: mockMnemonicAccount(1).address.pkh,
           networkType: NetworkType.MAINNET,
         },
         {
-          dAppId: senderIds[1],
+          dAppId: peersData[1].senderId,
           accountPkh: mockMnemonicAccount(1).address.pkh,
           networkType: NetworkType.GHOSTNET,
         },
         {
-          dAppId: senderIds[2],
+          dAppId: peersData[2].senderId,
           accountPkh: mockMnemonicAccount(2).address.pkh,
           networkType: NetworkType.CUSTOM,
         },
@@ -198,11 +195,11 @@ describe("<BeaconPeers />", () => {
       await act(() => user.click(deleteButton));
 
       expect(store.getState().beacon).toEqual({
-        [senderIds[0]]: {
+        [peersData[0].senderId]: {
           accountPkh: mockMnemonicAccount(1).address.pkh,
           networkType: NetworkType.MAINNET,
         },
-        [senderIds[2]]: {
+        [peersData[2].senderId]: {
           accountPkh: mockMnemonicAccount(2).address.pkh,
           networkType: NetworkType.CUSTOM,
         },

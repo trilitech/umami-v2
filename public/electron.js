@@ -10,10 +10,6 @@ const process = require("process");
 let mainWindow;
 let deeplinkURL;
 
-// TODO: remove once the repository is public
-process.env["GH_TOKEN"] =
-  "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";
-
 // Assure single instance
 if (!app.requestSingleInstanceLock()) {
   app.quit();
