@@ -70,7 +70,7 @@ export const AccountListWithDrawer: React.FC = () => {
         <DrawerContent>
           {isNFT && (
             <DrawerBody>
-              <NFTDrawerBody nft={drawerNFT} onCloseDrawer={closeDrawer} ownerPkh={ownerPkh} />
+              <NFTDrawerBody nft={{ ...drawerNFT, owner: ownerPkh }} onCloseDrawer={closeDrawer} />
             </DrawerBody>
           )}
           {!isNFT && selectedAccount && (

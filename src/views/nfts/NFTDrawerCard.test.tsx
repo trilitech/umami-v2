@@ -3,9 +3,10 @@ import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { NFTBalance } from "../../types/TokenBalance";
 
-const fixture = (nft: NFTBalance, ownerPkh = mockImplicitAddress(0).pkh) => (
-  <NFTDrawerCard nft={nft} ownerPkh={ownerPkh} />
-);
+const fixture = (nft: NFTBalance, ownerPkh = mockImplicitAddress(0).pkh) => {
+  const nftWithOwner = { ...nft, owner: ownerPkh };
+  return <NFTDrawerCard nft={nftWithOwner} />;
+};
 
 describe("NFTDrawerCard", () => {
   it("renders the image", () => {

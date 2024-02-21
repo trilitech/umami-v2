@@ -3,17 +3,15 @@ import { Flex } from "@chakra-ui/react";
 import { NFTDrawerCard } from "./NFTDrawerCard";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
-import { RawPkh, parsePkh } from "../../types/Address";
-import { NFTBalance } from "../../types/TokenBalance";
+import { parsePkh } from "../../types/Address";
+import { NFTWithOwner } from "../../utils/token/utils";
 import { CloseDrawerButton } from "../home/DrawerTopButtons";
 
 export const NFTDrawerBody = ({
-  ownerPkh,
   nft,
   onCloseDrawer,
 }: {
-  ownerPkh: RawPkh;
-  nft: NFTBalance;
+  nft: NFTWithOwner;
   onCloseDrawer: () => void;
 }) => {
   return (
@@ -25,10 +23,10 @@ export const NFTDrawerBody = ({
         color={colors.gray[400]}
         data-testid="nft-drawer-body"
       >
-        <AddressPill address={parsePkh(ownerPkh)} />
+        <AddressPill address={parsePkh(nft.owner)} />
         <CloseDrawerButton onClose={onCloseDrawer} />
       </Flex>
-      <NFTDrawerCard nft={nft} ownerPkh={ownerPkh} />
+      <NFTDrawerCard nft={nft} />
     </>
   );
 };

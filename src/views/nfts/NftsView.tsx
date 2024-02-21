@@ -65,11 +65,7 @@ export const NFTsView = () => {
             <DrawerContent>
               <DrawerBody>
                 {drawerNFT && (
-                  <NFTDrawerBody
-                    nft={drawerNFT}
-                    onCloseDrawer={() => setDrawerNFT(undefined)}
-                    ownerPkh={drawerNFT.owner}
-                  />
+                  <NFTDrawerBody nft={drawerNFT} onCloseDrawer={() => setDrawerNFT(undefined)} />
                 )}
               </DrawerBody>
             </DrawerContent>
