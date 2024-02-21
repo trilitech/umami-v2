@@ -59,9 +59,9 @@ describe("<OperationListDisplay />", () => {
     it("hides operations empty state message", async () => {
       render(<OperationListDisplay operations={transferOperations} owner={OWNER} />);
 
-      await waitFor(() => {
-        expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
-      });
+      await waitFor(() =>
+        expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument()
+      );
     });
 
     it("renders all operations without view all link when <= 20 operations", () => {

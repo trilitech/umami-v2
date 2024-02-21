@@ -1,16 +1,15 @@
 import { DelegationDisplay } from "./DelegationDisplay";
 import { mockDelegation, mockImplicitAddress, mockMnemonicAccount } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent, within } from "../../../mocks/testUtils";
 import { makeDelegation } from "../../../types/Delegation";
 import { formatPkh, prettyTezAmount } from "../../../utils/format";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
 import { DelegationOperation } from "../../../utils/tezos";
 
 describe("<DelegationDisplay />", () => {
   const { updateTezBalance } = assetsSlice.actions;
-  const { addMockMnemonicAccounts } = accountsSlice.actions;
 
   const account = mockMnemonicAccount(0);
 
@@ -64,7 +63,7 @@ describe("<DelegationDisplay />", () => {
     );
 
     beforeEach(() => {
-      store.dispatch(addMockMnemonicAccounts([account]));
+      addAccount(account);
       store.dispatch(
         updateTezBalance([{ address: account.address.pkh, balance: currentAccountBalance }])
       );
@@ -80,12 +79,12 @@ describe("<DelegationDisplay />", () => {
     it("displays delegation data", () => {
       render(<DelegationDisplay account={account} delegation={delegation} />);
 
-      expect(screen.getByTestId(/initial balance/i)).toHaveTextContent("6.000000 ꜩ");
-      expect(screen.getByTestId(/current balance/i)).toHaveTextContent(
+      expect(screen.getByTestId("Initial Balance:")).toHaveTextContent("6.000000 ꜩ");
+      expect(screen.getByTestId("Current Balance:")).toHaveTextContent(
         prettyTezAmount(currentAccountBalance.toString())
       );
-      expect(screen.getByTestId(/duration/i)).toHaveTextContent("Since 06/24/2020");
-      expect(screen.getByTestId(/baker/i)).toHaveTextContent(formatPkh(bakerAddress));
+      expect(screen.getByTestId("Duration:")).toHaveTextContent("Since 06/24/2020");
+      expect(screen.getByTestId("Baker:")).toHaveTextContent(formatPkh(bakerAddress));
     });
 
     it('shows "End Delegation" & "Change Baker" buttons', () => {
