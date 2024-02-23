@@ -45,7 +45,7 @@ beforeEach(() => {
 
 describe("<AccountCard />", () => {
   it("displays account name", async () => {
-    render(<AccountCard account={selectedAccount} />);
+    render(<AccountCard accountPkh={pkh} />);
 
     await waitFor(() =>
       expect(screen.getByRole("heading", { name: selectedAccount.label })).toBeVisible()
@@ -53,7 +53,7 @@ describe("<AccountCard />", () => {
   });
 
   it('displays "Buy Tez" button', async () => {
-    render(<AccountCard account={selectedAccount} />);
+    render(<AccountCard accountPkh={pkh} />);
 
     await waitFor(() => expect(screen.getByText("Buy Tez")).toBeVisible());
   });
@@ -61,7 +61,7 @@ describe("<AccountCard />", () => {
   it("displays account tez balance", async () => {
     store.dispatch(updateTezBalance([{ address: pkh, balance: 1234554321 }]));
 
-    render(<AccountCard account={selectedAccount} />);
+    render(<AccountCard accountPkh={pkh} />);
 
     await waitFor(() => expect(screen.getByText("1,234.554321 ꜩ")).toBeVisible());
   });
@@ -72,7 +72,7 @@ describe("<AccountCard />", () => {
     });
 
     it("is displayed", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await waitFor(() => expect(screen.getByTestId("asset-panel-tablist")).toBeVisible());
 
       const tzktLink = within(screen.getByTestId("asset-panel-tablist")).getByRole("link", {
@@ -82,18 +82,18 @@ describe("<AccountCard />", () => {
     });
 
     it("opens correct page according to selected network", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await waitFor(() => expect(screen.getByTestId("asset-panel-tablist")).toBeVisible());
 
       const tzktLink = within(screen.getByTestId("asset-panel-tablist")).getByRole("link", {
         name: "View on Tzkt",
       });
-      const expectedLink = "https://ghostnet.tzkt.io/" + selectedAccount.address.pkh;
+      const expectedLink = "https://ghostnet.tzkt.io/" + pkh;
       expect(tzktLink).toHaveProperty("href", expectedLink);
     });
 
     it("is updated on network change", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await waitFor(() => expect(screen.getByTestId("asset-panel-tablist")).toBeVisible());
 
       await act(() => store.dispatch(networksActions.setCurrent(MAINNET)));
@@ -101,8 +101,27 @@ describe("<AccountCard />", () => {
       const tzktLink = within(screen.getByTestId("asset-panel-tablist")).getByRole("link", {
         name: "View on Tzkt",
       });
-      const expectedLink = "https://tzkt.io/" + selectedAccount.address.pkh;
+      const expectedLink = "https://tzkt.io/" + pkh;
       expect(tzktLink).toHaveProperty("href", expectedLink);
+    });
+  });
+
+  describe("Rename", () => {
+    it("updates account name", async () => {
+      const user = userEvent.setup();
+      render(<AccountCard accountPkh={pkh} />);
+      await waitFor(() => expect(screen.getByTestId("asset-panel-tablist")).toBeVisible());
+
+      await act(() => user.click(screen.getByTestId("popover-cta")));
+      await act(() => user.click(screen.getByText("Rename")));
+      await act(() => user.clear(screen.getByLabelText("Account name")));
+      await act(() => user.type(screen.getByLabelText("Account name"), "New account name"));
+      await act(() => user.click(screen.getByRole("button", { name: "Save" })));
+
+      await waitFor(() =>
+        expect(screen.queryByRole("heading", { name: "Edit Name" })).not.toBeInTheDocument()
+      );
+      expect(screen.getByRole("heading", { name: "New account name" })).toBeVisible();
     });
   });
 
@@ -110,19 +129,11 @@ describe("<AccountCard />", () => {
     beforeEach(() => {
       jest.mocked(getCombinedOperations).mockResolvedValue([
         {
-          ...mockTzktTezTransfer(
-            selectedAccount.address.pkh,
-            mockImplicitAccount(1).address.pkh,
-            1000000
-          ),
+          ...mockTzktTezTransfer(pkh, mockImplicitAccount(1).address.pkh, 1000000),
           id: 1,
         },
         {
-          ...mockTzktTezTransfer(
-            mockImplicitAccount(2).address.pkh,
-            selectedAccount.address.pkh,
-            2000000
-          ),
+          ...mockTzktTezTransfer(mockImplicitAccount(2).address.pkh, pkh, 2000000),
           id: 2,
         },
       ] as TzktCombinedOperation[]);
@@ -131,7 +142,7 @@ describe("<AccountCard />", () => {
     });
 
     it("is selected by default", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
 
       await screen.findByTestId("account-card-operations-tab");
 
@@ -139,7 +150,7 @@ describe("<AccountCard />", () => {
     });
 
     it("contains correct operations data", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
 
       await waitFor(() => expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2));
 
@@ -158,7 +169,7 @@ describe("<AccountCard />", () => {
     });
 
     it("is not selected by default", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
 
       await screen.findByTestId("account-card-delegation-tab");
 
@@ -167,7 +178,7 @@ describe("<AccountCard />", () => {
 
     it('opens on "Delegation" tab click', async () => {
       const user = userEvent.setup();
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await screen.findByTestId("account-card-delegation-tab");
 
       await act(() => user.click(screen.getByTestId("account-card-delegation-tab")));
@@ -189,7 +200,7 @@ describe("<AccountCard />", () => {
           ) as DelegationOperation
         );
 
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await screen.findByTestId("account-card-delegation-tab");
       await act(() => user.click(screen.getByTestId("account-card-delegation-tab")));
 
@@ -217,7 +228,7 @@ describe("<AccountCard />", () => {
     });
 
     it("is not selected by default", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await screen.findByTestId("account-card-nfts-tab");
 
       expect(screen.getByTestId("account-card-nfts-tab-panel")).not.toBeVisible();
@@ -225,7 +236,7 @@ describe("<AccountCard />", () => {
 
     it('opens on "NFTs" tab click', async () => {
       const user = userEvent.setup();
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await screen.findByTestId("account-card-nfts-tab");
 
       await act(() => user.click(screen.getByTestId("account-card-nfts-tab")));
@@ -235,8 +246,7 @@ describe("<AccountCard />", () => {
 
     it("contains correct NFTs data", async () => {
       const user = userEvent.setup();
-      render(<AccountCard account={selectedAccount} />);
-
+      render(<AccountCard accountPkh={pkh} />);
       await screen.findByTestId("account-card-nfts-tab");
 
       await act(() => user.click(screen.getByTestId("account-card-nfts-tab")));
@@ -270,7 +280,7 @@ describe("<AccountCard />", () => {
     });
 
     it("is not selected by default", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await screen.findByTestId("account-card-tokens-tab");
 
       expect(screen.getByTestId("account-card-tokens-tab-panel")).not.toBeVisible();
@@ -278,7 +288,7 @@ describe("<AccountCard />", () => {
 
     it('opens on "Tokens" tab click', async () => {
       const user = userEvent.setup();
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
       await screen.findByTestId("account-card-tokens-tab");
 
       await act(() => user.click(screen.getByTestId("account-card-tokens-tab")));
@@ -287,7 +297,7 @@ describe("<AccountCard />", () => {
     });
 
     it("contains correct tokens data", async () => {
-      render(<AccountCard account={selectedAccount} />);
+      render(<AccountCard accountPkh={pkh} />);
 
       const tokenTiles = screen.getAllByTestId("token-tile");
       await waitFor(() => expect(tokenTiles).toHaveLength(expectedTokensAttributes.length));
@@ -307,13 +317,13 @@ describe("<AccountCard />", () => {
     const multisigAccount = multisigToAccount(multisigs[2], "my multisig");
 
     it('hides "Buy Tez" button', async () => {
-      render(<AccountCard account={multisigAccount} />);
+      render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
 
       await waitFor(() => expect(screen.queryByText("Buy Tez")).not.toBeInTheDocument());
     });
 
     it("displays signers", async () => {
-      render(<AccountCard account={multisigAccount} />);
+      render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
       await screen.findByTestId("multisig-tag-section");
 
       const signers = screen.getByTestId("multisig-tag-section");
@@ -327,7 +337,7 @@ describe("<AccountCard />", () => {
       store.dispatch(multisigActions.setMultisigs(multisigs));
       store.dispatch(multisigActions.setPendingOperations([multisigOperation]));
 
-      render(<AccountCard account={multisigAccount} />);
+      render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
       await screen.findByTestId("account-card-pending-tab-panel");
 
       const { getAllByTestId } = within(screen.getByTestId("account-card-pending-tab-panel"));
@@ -344,7 +354,7 @@ describe("<AccountCard />", () => {
       };
       store.dispatch(setMultisigs([multisigWithNoOps]));
 
-      render(<AccountCard account={multisigAccount} />);
+      render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
       await screen.findByTestId("account-card-operations-tab");
 
       expect(screen.queryByTestId("account-card-pending-tab-panel")).not.toBeInTheDocument();
@@ -371,7 +381,7 @@ describe("<AccountCard />", () => {
       ] as TzktCombinedOperation[]);
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
-      render(<AccountCard account={multisigAccount} />);
+      render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
       await waitFor(() => expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2));
 
       expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
