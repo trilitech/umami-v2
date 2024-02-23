@@ -8,6 +8,7 @@ import {
   useGetAccountNFTs,
   useGetDollarBalance,
 } from "../../utils/hooks/assetsHooks";
+import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
 import { sortedByLastUpdate } from "../../utils/token/utils";
 import { DynamicModalContext } from "../DynamicModal";
 import { ReceiveModal } from "../ReceiveModal";
@@ -16,6 +17,8 @@ import { FormPage as SendTezForm } from "../SendFlow/Tez/FormPage";
 // TODO: replace current component with the underlying one
 // TODO: use SelectedAccountContext instead of passing account as prop
 export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
+  const getOwnedAccount = useGetOwnedAccount();
+
   const accountBalance = useGetAccountBalance();
   const getDollarBalance = useGetDollarBalance();
 
@@ -23,6 +26,8 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
   const getNFTs = useGetAccountNFTs();
 
   const { openWith } = useContext(DynamicModalContext);
+
+  account = getOwnedAccount(account.address.pkh);
 
   const balance = accountBalance(account.address.pkh);
   const dollarBalance = getDollarBalance(account.address.pkh);

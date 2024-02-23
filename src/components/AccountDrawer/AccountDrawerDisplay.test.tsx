@@ -106,6 +106,25 @@ describe("<AccountCard />", () => {
     });
   });
 
+  describe("Rename", () => {
+    it("updates account name", async () => {
+      const user = userEvent.setup();
+      render(<AccountCard account={selectedAccount} />);
+      await waitFor(() => expect(screen.getByTestId("asset-panel-tablist")).toBeVisible());
+
+      await act(() => user.click(screen.getByTestId("popover-cta")));
+      await act(() => user.click(screen.getByText("Rename")));
+      await act(() => user.clear(screen.getByLabelText("Account name")));
+      await act(() => user.type(screen.getByLabelText("Account name"), "New account name"));
+      await act(() => user.click(screen.getByRole("button", { name: "Save" })));
+
+      await waitFor(() =>
+        expect(screen.queryByRole("heading", { name: "Edit Name" })).not.toBeInTheDocument()
+      );
+      expect(screen.getByRole("heading", { name: "New account name" })).toBeVisible();
+    });
+  });
+
   describe("Operations tab", () => {
     beforeEach(() => {
       jest.mocked(getCombinedOperations).mockResolvedValue([
