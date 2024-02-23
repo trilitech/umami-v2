@@ -1,7 +1,6 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
-import { Link } from "react-router-dom";
 
 import colors from "../../style/colors";
 import { ExternalLink } from "../ExternalLink";
@@ -47,21 +46,12 @@ export const NoItems: React.FC<
   );
 };
 
-export const NoOperations: React.FC<{ size: AvailableSizes; withViewAllButton?: boolean }> = ({
-  size,
-  withViewAllButton,
-}) => (
+export const NoOperations: React.FC<{ size: AvailableSizes }> = ({ size }) => (
   <NoItems
     description="Your operations history will appear here..."
     size={size}
     title="No operations to show"
-  >
-    {withViewAllButton && (
-      <Link data-testid="view-all-operations-button" to="/operations">
-        <Button size={SIZES[size].button}>View All Operations</Button>
-      </Link>
-    )}
-  </NoItems>
+  />
 );
 
 export const NoNFTs: React.FC<{ size: AvailableSizes }> = ({ size }) => (

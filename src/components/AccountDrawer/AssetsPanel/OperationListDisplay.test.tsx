@@ -15,11 +15,6 @@ describe("<OperationListDisplay />", () => {
       expect(screen.getByTestId("empty-state-message")).toBeVisible();
       expect(screen.getByText("No operations to show")).toBeVisible();
       expect(screen.getByText("Your operations history will appear here...")).toBeVisible();
-      // check View All Operations button from empty state
-      const viewAllOperationsButton = screen.getByTestId("view-all-operations-button");
-      expect(viewAllOperationsButton).toBeVisible();
-      expect(viewAllOperationsButton).toHaveTextContent("View All Operations");
-      expect(viewAllOperationsButton).toHaveAttribute("href", "#/operations");
     });
 
     it("does not show operation tiles", () => {
