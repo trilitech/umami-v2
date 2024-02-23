@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
-import { Account } from "../../types/Account";
+import { RawPkh } from "../../types/Address";
 import {
   useGetAccountAllTokens,
   useGetAccountBalance,
@@ -15,8 +15,7 @@ import { ReceiveModal } from "../ReceiveModal";
 import { FormPage as SendTezForm } from "../SendFlow/Tez/FormPage";
 
 // TODO: replace current component with the underlying one
-// TODO: use SelectedAccountContext instead of passing account as prop
-export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
+export const AccountCard: React.FC<{ accountPkh: RawPkh }> = ({ accountPkh }) => {
   const getOwnedAccount = useGetOwnedAccount();
 
   const accountBalance = useGetAccountBalance();
@@ -27,13 +26,13 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
 
   const { openWith } = useContext(DynamicModalContext);
 
-  account = getOwnedAccount(account.address.pkh);
+  const account = getOwnedAccount(accountPkh);
 
-  const balance = accountBalance(account.address.pkh);
-  const dollarBalance = getDollarBalance(account.address.pkh);
+  const balance = accountBalance(accountPkh);
+  const dollarBalance = getDollarBalance(accountPkh);
 
-  const tokens = getTokens(account.address.pkh);
-  const nfts = sortedByLastUpdate(getNFTs(account.address.pkh));
+  const tokens = getTokens(accountPkh);
+  const nfts = sortedByLastUpdate(getNFTs(accountPkh));
 
   return (
     <AccountDrawerDisplay
@@ -41,7 +40,7 @@ export const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
       balance={balance}
       dollarBalance={dollarBalance}
       nfts={nfts}
-      onReceive={() => openWith(<ReceiveModal pkh={account.address.pkh} />)}
+      onReceive={() => openWith(<ReceiveModal pkh={accountPkh} />)}
       onSend={() => openWith(<SendTezForm sender={account} />)}
       tokens={tokens}
     />

@@ -76,7 +76,7 @@ export const AccountListWithDrawer: React.FC = () => {
           {!isNFT && selectedAccount && (
             <DrawerBody overflow="hidden" overflowY="scroll" paddingRight="0">
               <DrawerTopButtons marginRight="23px" onClose={closeDrawer} />
-              <AccountCard account={selectedAccount} />
+              <AccountCard accountPkh={selectedAccount.address.pkh} />
             </DrawerBody>
           )}
         </DrawerContent>
