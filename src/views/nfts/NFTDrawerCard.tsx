@@ -22,13 +22,11 @@ import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { FormPage as SendNFTForm } from "../../components/SendFlow/NFT/FormPage";
 import colors from "../../style/colors";
-import { RawPkh } from "../../types/Address";
 import { artifactUri, mimeType, tokenName } from "../../types/Token";
-import { NFTBalance } from "../../types/TokenBalance";
 import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
-import { getIPFSurl } from "../../utils/token/utils";
+import { NFTWithOwner, getIPFSurl } from "../../utils/token/utils";
 
-export const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: RawPkh }) => {
+export const NFTDrawerCard = ({ nft }: { nft: NFTWithOwner }) => {
   const url = getIPFSurl(artifactUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const getAccount = useGetOwnedAccount();
@@ -128,7 +126,7 @@ export const NFTDrawerCard = ({ nft, ownerPkh }: { nft: NFTBalance; ownerPkh: Ra
 
       <Button
         marginTop="20px"
-        onClick={() => openWith(<SendNFTForm nft={nft} sender={getAccount(ownerPkh)} />)}
+        onClick={() => openWith(<SendNFTForm nft={nft} sender={getAccount(nft.owner)} />)}
       >
         Send
       </Button>
