@@ -68,7 +68,7 @@
     "@testing-library/jest-dom": "6.4.2",
     "@testing-library/react": "14.2.1",
     "@testing-library/user-event": "14.5.2",
-    "@toruslabs/customauth": "^15.0.5",
+    "@toruslabs/customauth": "^17.1.0",
     "@types/assert": "^1.5.10",
     "@types/jest": "29.5.12",
     "@types/md5": "^2.3.5",
