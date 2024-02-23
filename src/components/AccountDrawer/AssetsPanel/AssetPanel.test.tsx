@@ -3,7 +3,7 @@ import { BigNumber } from "bignumber.js";
 import { AssetsPanel } from "./AssetsPanel";
 import { mockMultisigAccount } from "../../../mocks/factories";
 import { pendingOps } from "../../../mocks/multisig";
-import { render, screen, waitFor } from "../../../mocks/testUtils";
+import { render, screen } from "../../../mocks/testUtils";
 import { parseContractPkh, parseImplicitPkh } from "../../../types/Address";
 import { multisigToAccount } from "../../../utils/multisig/helpers";
 import { Multisig } from "../../../utils/multisig/types";
@@ -13,21 +13,18 @@ import { estimate, getCombinedOperations, getRelatedTokenTransfers } from "../..
 
 describe("<AssetPanel/>", () => {
   describe("multisig account", () => {
-    it("should hide pending tab when no pending operations", async () => {
+    it("hides pending tab when no pending operations", async () => {
       jest.mocked(getCombinedOperations).mockResolvedValue([]);
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
       const multisigAccount = mockMultisigAccount(0);
       render(<AssetsPanel account={multisigAccount} delegation={null} nfts={[]} tokens={[]} />);
-      await waitFor(() => {
-        // wait for the component to load
-        expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
-      });
+      await screen.findByTestId("account-card-operations-tab");
 
       expect(screen.queryByTestId("account-card-pending-tab-panel")).not.toBeInTheDocument();
     });
 
-    it("should display pending tab when pending operations are present", async () => {
+    it("displays pending tab when pending operations are present", async () => {
       jest.mocked(getCombinedOperations).mockResolvedValue([]);
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
@@ -43,10 +40,7 @@ describe("<AssetPanel/>", () => {
       store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
 
       render(<AssetsPanel account={multisigAccount} delegation={null} nfts={[]} tokens={[]} />);
-      await waitFor(() => {
-        // wait for the component to load
-        expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
-      });
+      await screen.findByTestId("account-card-operations-tab");
 
       expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();
     });

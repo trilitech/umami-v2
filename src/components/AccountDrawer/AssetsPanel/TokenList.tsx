@@ -37,7 +37,7 @@ export const TokenList = ({
       {chunk.map(token => (
         <TokenTile key={fullId(token)} token={token} />
       ))}
-      {tokens.length > MAX_TOKENS_SIZE && <ViewAllLink to={`/tokens?accounts=${owner}`} />}
+      {tokens.length > MAX_TOKENS_SIZE && <ViewAllLink owner={owner} to="/tokens" />}
     </Box>
   );
 };

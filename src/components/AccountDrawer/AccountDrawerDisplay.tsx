@@ -137,7 +137,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
         {!isMultisig && (
           <RoundButton
             icon={<PlusIcon stroke="currentcolor" />}
-            label="Buy tez"
+            label="Buy Tez"
             onClick={() => openWith(<BuyTezForm recipient={account.address.pkh} />)}
           />
         )}
