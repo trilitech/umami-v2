@@ -103,7 +103,7 @@
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",
     "electron": "^29.0.1",
-    "electron-builder": "^24.13.1",
+    "electron-builder": "^24.13.2",
     "electronmon": "^2.0.2",
     "eslint": "^8.56.0",
     "eslint-import-resolver-typescript": "^3.6.1",
