@@ -13856,6 +13856,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-base64@npm:^3.7.6":
+  version: 3.7.7
+  resolution: "js-base64@npm:3.7.7"
+  checksum: 10/185e34c536a6b1c4e1ad8bd96d25b49a9ea4e6803e259eaaaca95f1b392a0d590b2933c5ca8580c776f7279507944b81ff1faf889d84baa5e31f026e96d676a5
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -15469,6 +15476,13 @@ __metadata:
   dependencies:
     repeat-string: "npm:^1.5.2"
   checksum: 10/090fe065f979e04b251e4b33706caf5817c973f1106e445ffaee3a742e1495b0892db858ee25383f97dd048262ba969559d43f31beb385d780c9a0a24f3063d0
+  languageName: node
+  linkType: hard
+
+"pako@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "pako@npm:2.1.0"
+  checksum: 10/38a04991d0ec4f4b92794a68b8c92bf7340692c5d980255c92148da96eb3e550df7a86a7128b5ac0c65ecddfe5ef3bbe9c6dab13e1bc315086e759b18f7c1401
   languageName: node
   linkType: hard
 
@@ -19819,6 +19833,7 @@ __metadata:
     webpack-manifest-plugin: "npm:^5.0.0"
     webpack-remove-code-blocks: "npm:^0.1.6"
     workbox-webpack-plugin: "npm:^7.0.0"
+    zipurl: "npm:^0.2.17"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
@@ -21037,6 +21052,19 @@ __metadata:
     toposort: "npm:^2.0.2"
     type-fest: "npm:^2.19.0"
   checksum: 10/34f61817c9a905f5effe51f492ab4d47311b0bc94ec3dd83ac57c64eaa0d8a4278e60e0e0b05acc941fbb15562bfcef07d361b6bbf2d34467906a00b0466d0cf
+  languageName: node
+  linkType: hard
+
+"zipurl@npm:^0.2.17":
+  version: 0.2.17
+  resolution: "zipurl@npm:0.2.17"
+  dependencies:
+    js-base64: "npm:^3.7.6"
+    pako: "npm:^2.1.0"
+  bin:
+    unzipurl: bin/unzipurl.js
+    zipurl: bin/zipurl.js
+  checksum: 10/626a8540ff0c113928567c4340d3912540f230269d453727b756f5361d16d209497ad384b136a54496eba2b3777aee2d470ce7c728ea881cb3c9033d584e510b
   languageName: node
   linkType: hard
 

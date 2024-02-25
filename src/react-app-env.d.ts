@@ -58,3 +58,8 @@ declare module "*.module.sass" {
   const classes: { readonly [key: string]: string };
   export default classes;
 }
+
+declare module "zipurl" {
+  export const zipurl: (url: string) => string;
+  export const unzipurl: (url: string) => string;
+}

@@ -2,39 +2,60 @@
  * This function parses the deeplink url we get on a successful social auth.
  *
  * The parameters are built by
- * https://github.com/trilitech/umami-web/blob/main/public/auth/v2/redirect.html
+ * https://github.com/trilitech/umami-web/blob/main/public/auth/v2.x/redirect.html
  *
  * which is essentially a copy of
  * https://github.com/torusresearch/CustomAuth/blob/master/serviceworker/redirect.html
  */
+
+import { invert } from "lodash";
+import { unzipurl } from "zipurl";
+
+/**
+ * these search params are used to reduce the size of the URL
+ * which has a limit in some browsers set to 2k characters
+ */
+const PARAMS_MAPPING = {
+  at: "access_token",
+  a: "authuser",
+  ei: "expires_in",
+  it: "id_token",
+  ii: "instanceId",
+  p: "prompt",
+  sc: "scope",
+  st: "state",
+  vi: "version_info",
+};
+
+const PARAMS_REVERSE_MAPPING = invert(PARAMS_MAPPING);
+
 export const parseTorusRedirectParams = (url: string) => {
-  const correctUrl = url.replace("umami://auth/", "");
-  const params = new URLSearchParams(correctUrl);
+  const params = new URLSearchParams(unzipurl(url.replace("umami://auth/", "")));
+
+  const assignValues = (acc: any, key: string) => {
+    acc[key] = params.get(PARAMS_REVERSE_MAPPING[key]) ?? params.get(key);
+    return acc;
+  };
+
   const instanceParams = {
-    insanceId: params.get("instanceId"),
-    verifier: params.get("verifier"),
-    typeOfLogin: params.get("typeOfLogin"),
-    redirectToOpener: params.get("redirectToOpener"),
+    verifier: "umami",
+    redirectToOpener: "true",
+    typeOfLogin: "google",
+    ...assignValues({}, "instanceId"),
   };
 
   const hashParams = {
-    state: params.get("state"),
-    access_token: params.get("access_token"),
-    token_type: params.get("token_type"),
-    expires_in: params.get("expires_in"),
-    scope: params.get("scope"),
-    id_token: params.get("id_token"),
-    authuser: params.get("authuser"),
-    hd: params.get("hd"),
-    prompt: params.get("prompt"),
+    hd: "trili.tech",
+    token_type: "Bearer",
+    ...["state", "access_token", "expires_in", "scope", "id_token", "authuser", "prompt"].reduce(
+      assignValues,
+      {}
+    ),
   };
 
-  const data = { instanceParams, hashParams };
-  const result = {
-    channel: params.get("channel"),
-    data: data,
-    error: params.get("error"),
+  return {
+    channel: `redirect_channel_${instanceParams.instanceId}`,
+    data: { instanceParams, hashParams },
+    ...assignValues({}, "error"),
   };
-
-  return result;
 };

@@ -20,7 +20,7 @@ export const getGoogleCredentials = async () =>
   withTimeout(async () => {
     const torus = new CustomAuth({
       web3AuthClientId: WEB3_AUTH_CLIENT_ID,
-      baseUrl: "https://umamiwallet.com/auth/v2/",
+      baseUrl: "https://umamiwallet.com/auth/v2.0.1/",
       redirectPathName: "redirect.html",
       redirectToOpener: true,
       uxMode: "popup",
