@@ -4,8 +4,9 @@
   "version": "2.0.1",
   "author": "Trilitech <umami-admin@trili.tech>",
   "description": "Tezos Wallet",
-  "homepage": "./",
+  "homepage": "https://umamiwallet.com",
   "repository": "https://github.com/trilitech/umami-v2",
+  "license": "MIT",
   "engines": {
     "node": ">=20.11.10 <21.0.0"
   },
@@ -302,19 +303,13 @@
         "x-scheme-handler/umami"
       ]
     },
-    "snap": {
-      "plugs": [
-        "default",
-        "raw-usb",
-        "hidraw"
-      ],
-      "buildPackages": [
-        "libusb-1.0-0-dev",
-        "libudev-dev"
-      ],
-      "stagePackages": [
-        "libusb-1.0-0",
-        "libnss3"
+    "deb": {
+      "depends": [
+        "libasound2",
+        "libnotify4",
+        "libxtst6",
+        "libnss3",
+        "libc6"
       ]
     },
     "protocols": {
