@@ -132,7 +132,7 @@
     "jest-watch-typeahead": "^2.2.2",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
-    "mini-css-extract-plugin": "^2.8.0",
+    "mini-css-extract-plugin": "^2.8.1",
     "mockdate": "^3.0.5",
     "ordinal": "^1.0.3",
     "os-browserify": "^0.3.0",
