@@ -56,7 +56,7 @@
     "@playwright/test": "^1.42.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@reduxjs/toolkit": "^1.9.7",
-    "@stylistic/eslint-plugin": "^1.6.2",
+    "@stylistic/eslint-plugin": "^1.6.3",
     "@tanstack/eslint-plugin-query": "^5.20.1",
     "@tanstack/react-query": "^5.24.1",
     "@taquito/ledger-signer": "^19.0.2",
