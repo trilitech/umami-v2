@@ -6184,6 +6184,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/circular-dependency-plugin@npm:^5":
+  version: 5.0.8
+  resolution: "@types/circular-dependency-plugin@npm:5.0.8"
+  dependencies:
+    "@types/node": "npm:*"
+    webpack: "npm:^5.1.0"
+  checksum: 10/1c0cdf4bf3e0e909e974ac57e8ae1d7939bfb1aa034ff6de9c3d8b7d3f0a9039401d3a46d5e3c2b18e1619dfb0cecd3e400015a37a0aa0b148e5797b09a73103
+  languageName: node
+  linkType: hard
+
 "@types/connect-history-api-fallback@npm:^1.3.5":
   version: 1.5.0
   resolution: "@types/connect-history-api-fallback@npm:1.5.0"
@@ -8907,6 +8917,15 @@ __metadata:
     inherits: "npm:^2.0.1"
     safe-buffer: "npm:^5.0.1"
   checksum: 10/3d5d6652ca499c3f7c5d7fdc2932a357ec1e5aa84f2ad766d850efd42e89753c97b795c3a104a8e7ae35b4e293f5363926913de3bf8181af37067d9d541ca0db
+  languageName: node
+  linkType: hard
+
+"circular-dependency-plugin@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "circular-dependency-plugin@npm:5.2.2"
+  peerDependencies:
+    webpack: ">=4.0.1"
+  checksum: 10/d1a51e7f86e72d9e7a08c47234511cc7a5c3050781c2d6dcc77c0b22214f94f272702488c952e59b2af589c67944160ad1c9c0b7b3e0d4f89222f2a27ebf085e
   languageName: node
   linkType: hard
 
@@ -19827,6 +19846,7 @@ __metadata:
     "@testing-library/user-event": "npm:14.5.2"
     "@toruslabs/customauth": "npm:^15.0.5"
     "@types/assert": "npm:^1.5.10"
+    "@types/circular-dependency-plugin": "npm:^5"
     "@types/jest": "npm:29.5.12"
     "@types/md5": "npm:^2.3.5"
     "@types/node": "npm:20.11.24"
@@ -19852,6 +19872,7 @@ __metadata:
     browserslist: "npm:^4.23.0"
     buffer: "npm:^6.0.3"
     case-sensitive-paths-webpack-plugin: "npm:^2.4.0"
+    circular-dependency-plugin: "npm:^5.2.2"
     concurrently: "npm:^8.2.2"
     cross-env: "npm:^7.0.3"
     css-loader: "npm:^6.10.0"
@@ -20523,7 +20544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.90.3":
+"webpack@npm:^5.1.0, webpack@npm:^5.90.3":
   version: 5.90.3
   resolution: "webpack@npm:5.90.3"
   dependencies:
