@@ -22,8 +22,8 @@ type ConfirmDerivationPathFormValues = {
  * Component represents the derivation path step in the onboarding flow
  * It's used for ledger & mnemonic accounts
  *
- * @goToStep - function to go to the next step.
- * @account - ledger/mnemonic account data collected in previous steps.
+ * @param goToStep - function to go to the next step.
+ * @param account - ledger/mnemonic account data collected in previous steps.
  */
 export const DerivationPath = ({
   goToStep,

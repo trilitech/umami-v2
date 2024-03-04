@@ -30,7 +30,7 @@ import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
  * such a case might occur if a token transfer was initiated by a contract origination.
  * such operations do not have a sender.
  *
- * @param sender Who initiated the operation
+ * @param sender - Who initiated the operation
  * @returns boolean
  */
 export const useIsOutgoingOperation = (sender: RawPkh) => {

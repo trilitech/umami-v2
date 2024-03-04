@@ -148,8 +148,8 @@ export const makeLambda = (operation: Operation): MichelsonV1Expression[] => {
 
 /**
  *
- * @param operations List of JSON operations
- * @param network Network is needed for fetching contract parameter elements in lambda
+ * @param operations - List of JSON operations
+ * @param network - Network is needed for fetching contract parameter elements in lambda
  * @returns Lambda in MichelsonJSON (=Micheline) format
  */
 export const makeBatchLambda = (operations: Operation[]) => {
