@@ -14,8 +14,8 @@ export const DEFAULT_ACCOUNT_LABEL = "Account";
  *
  * If the label is not provided by the user, the default name will be used.
  *
- * @goToStep - function to go to the next step.
- * @account - account to be named.
+ * @param goToStep - function to go to the next step.
+ * @param account - account to be named.
  * @returns NameAccount component to be rendered.
  */
 export const NameAccount = ({

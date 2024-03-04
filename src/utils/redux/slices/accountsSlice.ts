@@ -30,7 +30,7 @@ export const initialState: State = {
  * Stores accounts info.
  *
  * Actions related to adding or renaming accounts do not check for uniqueness of the account name.
- * In prod code use them with {@link utils/mnemonic.useGetNextAvailableAccountLabels} hook to generate unique account names.
+ * In prod code use them with {@link utils/mnemonic#useGetNextAvailableAccountLabels} hook to generate unique account names.
  */
 export const accountsSlice = createSlice({
   name: "accounts",

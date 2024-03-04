@@ -6,7 +6,7 @@ import { BrowserContext, Page } from "@playwright/test";
  * the playwright context and page in our step definitions.
  *
  * Make sure to call the following functions in your step definitions:
- * - {@link setEmptyReduxState} or {@link setReduxState} - to pass initial state to {@link e2e/steps/hooks.Before} hook.
+ * - {@link setEmptyReduxState} or {@link setReduxState} - to pass initial state to {@link e2e/steps/hooks#Before} hook.
  * - await {@link pageReady} - to make sure app is initialized with the redux state and ready to be tested.
  */
 export class CustomWorld extends World {
