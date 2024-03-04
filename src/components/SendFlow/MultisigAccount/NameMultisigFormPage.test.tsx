@@ -131,6 +131,7 @@ describe("NameMultisigFormPage", () => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SelectApproversFormPage
             form={{ name: MULTISIG_NAME } as any}
+            goBack={expect.any(Function)}
             sender={mockMnemonicAccount(1)}
           />
         );
@@ -158,6 +159,7 @@ describe("NameMultisigFormPage", () => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SelectApproversFormPage
             form={{ name: "Updated Multisig Name" } as any}
+            goBack={expect.any(Function)}
             sender={mockMnemonicAccount(1)}
           />
         );

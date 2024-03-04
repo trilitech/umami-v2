@@ -44,6 +44,7 @@ export const NameMultisigFormPage: React.FC<{ name?: string }> = ({ name }) => {
     openWith(
       <SelectApproversFormPage
         form={{ name: name.trim() } as any}
+        goBack={() => openWith(<NameMultisigFormPage name={name} />)}
         sender={getMostFundedImplicitAccount(implicitAccounts)}
       />
     );
