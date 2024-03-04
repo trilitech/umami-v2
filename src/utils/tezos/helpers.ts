@@ -17,8 +17,12 @@ import {
   makeMultisigProposeOperation,
 } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
-import { PublicKeyPair } from "../mnemonic";
 import { RawTzktGetAddressType } from "../tzkt/types";
+
+export type PublicKeyPair = {
+  pk: string;
+  pkh: string;
+};
 
 export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
   try {
@@ -91,10 +95,24 @@ export const makeToolkit = async (config: SignerConfig) => {
   return toolkit;
 };
 
-export const getPkAndPkhFromSk = async (sk: string): Promise<PublicKeyPair> => {
+export const getPublicKeyPairFromSk = async (sk: string): Promise<PublicKeyPair> => {
   const signer = new InMemorySigner(sk);
   return { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 };
+
+export const derivePublicKeyPair = async (
+  mnemonic: string,
+  derivationPath: string,
+  curve: Curves = "ed25519"
+): Promise<PublicKeyPair> =>
+  deriveSecretKey(mnemonic, derivationPath, curve).then(getPublicKeyPairFromSk);
+
+export const deriveSecretKey = (mnemonic: string, derivationPath: string, curve: Curves) =>
+  InMemorySigner.fromMnemonic({
+    mnemonic,
+    derivationPath,
+    curve,
+  }).secretKey();
 
 export const selectRandomElements = <T>(
   arr: T[],

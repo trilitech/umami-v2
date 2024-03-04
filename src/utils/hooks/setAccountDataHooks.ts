@@ -10,11 +10,11 @@ import { AccountType, LedgerAccount, MnemonicAccount, SocialAccount } from "../.
 import { makeDerivationPath } from "../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../account/makeMnemonicAccount";
 import { decrypt, encrypt } from "../crypto/AES";
-import { derivePublicKeyPair, useRestoreRevealedMnemonicAccounts } from "../mnemonic";
+import { useRestoreRevealedMnemonicAccounts } from "../mnemonic";
 import { useAppDispatch } from "../redux/hooks";
 import { accountsSlice } from "../redux/slices/accountsSlice";
 import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
-import { getFingerPrint } from "../tezos";
+import { derivePublicKeyPair, getFingerPrint } from "../tezos";
 
 const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
 

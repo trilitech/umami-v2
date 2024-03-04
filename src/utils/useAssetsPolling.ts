@@ -83,7 +83,7 @@ const updateAccountAssets = async (
 
 const updateConversionRate = async (dispatch: AppDispatch) => {
   const rate = await getTezosPriceInUSD();
-  dispatch(assetsActions.updateConversionRate({ rate }));
+  dispatch(assetsActions.updateConversionRate(rate));
   return null;
 };
 

@@ -17,7 +17,7 @@ import axios from "axios";
 import { first, sortBy } from "lodash";
 import promiseRetry from "promise-retry";
 
-import { coincapUrl } from "./consts";
+import { coincapUrl } from "./constants";
 import { coinCapResponseType } from "./types";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";

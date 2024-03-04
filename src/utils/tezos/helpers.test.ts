@@ -3,7 +3,7 @@ import axios from "axios";
 
 import {
   addressExists,
-  getPkAndPkhFromSk,
+  getPublicKeyPairFromSk,
   operationToTaquitoOperation,
   operationsToBatchParams,
 } from "./helpers";
@@ -29,7 +29,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const mockSk = "mockSk";
 describe("tezos utils helpers", () => {
   test("getPkAndPkhFromSk", async () => {
-    await getPkAndPkhFromSk(mockSk);
+    await getPublicKeyPairFromSk(mockSk);
     expect(InMemorySigner).toHaveBeenCalledTimes(1);
   });
 

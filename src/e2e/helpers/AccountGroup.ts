@@ -3,8 +3,7 @@ import { times } from "lodash";
 
 import { RawPkh } from "../../types/Address";
 import { makeDerivationPath } from "../../utils/account/derivationPathUtils";
-import { derivePublicKeyPair } from "../../utils/mnemonic";
-import { getFingerPrint } from "../../utils/tezos";
+import { derivePublicKeyPair, getFingerPrint } from "../../utils/tezos";
 
 export type AccountGroup = {
   type: "mnemonic" | "secret_key";

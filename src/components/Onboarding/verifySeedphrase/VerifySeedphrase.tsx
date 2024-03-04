@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { DoubleCheckmarkIcon } from "../../../assets/icons";
-import { selectRandomElements } from "../../../utils/tezos/helpers";
+import { selectRandomElements } from "../../../utils/tezos";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";

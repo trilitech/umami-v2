@@ -5,7 +5,6 @@ import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
 import { MnemonicAccount } from "../../../../types/Account";
 import { parseContractPkh, parseImplicitPkh } from "../../../../types/Address";
-import { useGetSecretKey } from "../../../../utils/hooks/accountUtils";
 import { multisigToAccount } from "../../../../utils/multisig/helpers";
 import { Multisig } from "../../../../utils/multisig/types";
 import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
@@ -15,14 +14,8 @@ import { estimate } from "../../../../utils/tezos";
 
 import { MultisigPendingOperations } from ".";
 
-jest.mock("../../../../utils/hooks/accountUtils");
-
-beforeEach(() => {
-  jest.mocked(useGetSecretKey).mockReturnValue(() => Promise.resolve("mockkey"));
-});
-
 describe("<MultisigPendingOperations />", () => {
-  it("should display multisig executable tez operations", async () => {
+  it("displays multisig executable tez operations", async () => {
     jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
     const m: Multisig = {
       address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),

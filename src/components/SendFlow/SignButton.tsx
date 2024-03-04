@@ -11,7 +11,7 @@ import {
   MnemonicAccount,
   SecretKeyAccount,
 } from "../../types/Account";
-import { useGetSecretKey } from "../../utils/hooks/accountUtils";
+import { useGetSecretKey } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { makeToolkit } from "../../utils/tezos";

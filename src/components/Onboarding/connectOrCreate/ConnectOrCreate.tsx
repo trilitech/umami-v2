@@ -5,7 +5,7 @@ import { GoogleAuth } from "../../../GoogleAuth";
 import colors from "../../../style/colors";
 import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { getPkAndPkhFromSk } from "../../../utils/tezos";
+import { getPublicKeyPairFromSk } from "../../../utils/tezos";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { OnboardingStep } from "../OnboardingStep";
 
@@ -22,7 +22,7 @@ export const ConnectOrCreate = ({
 
   const onSocialAuth = (sk: string, email: string) =>
     handleAsyncAction(async () => {
-      const { pk, pkh } = await getPkAndPkhFromSk(sk);
+      const { pk, pkh } = await getPublicKeyPairFromSk(sk);
       restoreSocial(pk, pkh, email);
       toast({ description: `Successfully added ${email} account`, status: "success" });
       closeModal();

@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { sortBy } from "lodash";
 
-import { coincapUrl } from "./consts";
+import { coincapUrl } from "./constants";
 import {
   getAccounts,
   getCombinedOperations,

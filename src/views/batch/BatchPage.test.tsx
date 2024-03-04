@@ -7,21 +7,14 @@ import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, userEvent } from "../../mocks/testUtils";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { MAINNET } from "../../types/Network";
-import { useGetSecretKey } from "../../utils/hooks/accountUtils";
 import { batchesActions } from "../../utils/redux/slices/batches";
 import { store } from "../../utils/redux/store";
 import { estimate, executeOperations } from "../../utils/tezos";
-
-jest.mock("../../utils/hooks/accountUtils");
-jest.mock("../../utils/tezos");
-
-const useGetSecretKeyMock = jest.mocked(useGetSecretKey);
 
 beforeEach(() => {
   dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)]);
   mockEstimatedFee(10);
 
-  useGetSecretKeyMock.mockReturnValue(() => Promise.resolve("mockSk"));
   jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);
 });
 

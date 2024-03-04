@@ -2,7 +2,7 @@
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { LedgerSigner } from "@taquito/ledger-signer";
 
-import { PublicKeyPair } from "../mnemonic";
+import { PublicKeyPair } from "../tezos";
 
 export const getPk = async (derivationPath?: string): Promise<PublicKeyPair> => {
   const transport = await TransportWebUSB.create();

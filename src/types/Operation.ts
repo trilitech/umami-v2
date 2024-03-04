@@ -3,7 +3,7 @@ import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { isEqual } from "lodash";
 
 import { Address, ContractAddress, ImplicitAddress } from "./Address";
-import { ApproveOrExecute } from "../utils/tezos/types";
+import { ApproveOrExecute } from "../utils/tezos";
 
 export type TezTransfer = {
   type: "tez";

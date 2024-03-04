@@ -13,10 +13,10 @@ import { MnemonicAccount } from "../../types/Account";
 import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";
 import { formatPkh } from "../../utils/format";
-import * as mnemonicFunctionsToMock from "../../utils/mnemonic";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
 import { store } from "../../utils/redux/store";
+import { derivePublicKeyPair } from "../../utils/tezos";
 
 const { addAccount, addMockMnemonicAccounts } = accountsSlice.actions;
 
@@ -103,7 +103,7 @@ describe("<AccountsList />", () => {
 
       expect(screen.getByTestId("description")).toHaveTextContent(
         "Removing all your accounts will off-board you from Umami. " +
-          "This will remove or reset all customised settings to their defaults. " +
+          "This will remove or reset all customized settings to their defaults. " +
           "Personal data (including saved contacts, password and accounts) won't be affected."
       );
     });
@@ -163,11 +163,9 @@ describe("<AccountsList />", () => {
 
   it("allows to derive a new account for a mnemonic", async () => {
     const user = userEvent.setup();
-    const decryptMock = jest.spyOn(cryptoFunctionsToMock, "decrypt");
-    decryptMock.mockResolvedValue("mockSeedPhrase");
-    const derivePublicKeyPairMock = jest.spyOn(mnemonicFunctionsToMock, "derivePublicKeyPair");
     const account = mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1);
-    derivePublicKeyPairMock.mockResolvedValue({
+    jest.spyOn(cryptoFunctionsToMock, "decrypt").mockResolvedValue("mockSeedPhrase");
+    const derivePublicKeyPairMock = jest.mocked(derivePublicKeyPair).mockResolvedValue({
       pkh: account.address.pkh,
       pk: account.pk,
     });
@@ -199,11 +197,11 @@ describe("<AccountsList />", () => {
 
     await act(() => user.click(submitBtn));
 
-    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
     expect(derivePublicKeyPairMock).toHaveBeenCalledWith(
       "mockSeedPhrase",
       getDefaultDerivationPath(2)
     );
+    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
 
     {
       const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);

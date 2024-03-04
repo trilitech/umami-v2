@@ -3,14 +3,21 @@ import { maxBy } from "lodash";
 import { useGetAccountBalance } from "./assetsHooks";
 import { useContacts } from "./contactsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
-import { Account, ImplicitAccount, MultisigAccount } from "../../types/Account";
+import {
+  Account,
+  ImplicitAccount,
+  MnemonicAccount,
+  MultisigAccount,
+  SecretKeyAccount,
+} from "../../types/Account";
 import { RawPkh } from "../../types/Address";
 import { decrypt } from "../crypto/AES";
 import { useAppSelector } from "../redux/hooks";
+import { deriveSecretKey } from "../tezos";
 
 export const useSeedPhrases = () => useAppSelector(s => s.accounts.seedPhrases);
 
-export const useSecretKeys = () => useAppSelector(s => s.accounts.secretKeys);
+const useSecretKeys = () => useAppSelector(s => s.accounts.secretKeys);
 
 export const useImplicitAccounts = () => useAppSelector(s => s.accounts.items);
 
@@ -147,4 +154,28 @@ export const useGetMostFundedImplicitAccount = () => {
 
   return (accounts: ImplicitAccount[]) =>
     maxBy(accounts, signer => Number(getAccountBalance(signer.address.pkh) || "0"))!;
+};
+
+export const useGetSecretKey = () => {
+  const seedPhrases = useSeedPhrases();
+  const encryptedSecretKeys = useSecretKeys();
+
+  return async (account: MnemonicAccount | SecretKeyAccount, password: string) => {
+    if (account.type === "secret_key") {
+      const encryptedSecretKey = encryptedSecretKeys[account.address.pkh];
+      if (!encryptedSecretKey) {
+        throw new Error(`Missing secret key for account ${account.address.pkh}`);
+      }
+
+      return decrypt(encryptedSecretKey, password);
+    } else {
+      const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
+      if (!encryptedMnemonic) {
+        throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
+      }
+
+      const mnemonic = await decrypt(encryptedMnemonic, password);
+      return deriveSecretKey(mnemonic, account.derivationPath, account.curve);
+    }
+  };
 };
