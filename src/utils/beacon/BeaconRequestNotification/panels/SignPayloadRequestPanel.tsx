@@ -20,7 +20,7 @@ import React from "react";
 import { SignButton } from "../../../../components/SendFlow/SignButton";
 import colors from "../../../../style/colors";
 import { useGetImplicitAccountSafe } from "../../../hooks/getAccountDataHooks";
-import { walletClient } from "../../beacon";
+import { WalletClient } from "../../WalletClient";
 
 export const SignPayloadRequestPanel: React.FC<{
   request: SignPayloadRequestOutput;
@@ -43,7 +43,7 @@ export const SignPayloadRequestPanel: React.FC<{
       signature: result.prefixSig, // TODO: Check if it works
     };
 
-    await walletClient.respond(response);
+    await WalletClient.respond(response);
 
     toast({ description: "Successfully submitted Beacon operation", status: "success" });
     onSubmit();

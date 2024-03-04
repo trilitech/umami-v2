@@ -2,6 +2,7 @@ import { ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
 
 import * as beaconHelper from "./beacon";
 import { BeaconPeers } from "./BeaconPeers";
+import { WalletClient } from "./WalletClient";
 import { mockMnemonicAccount } from "../../mocks/factories";
 import { dispatchMockAccounts } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
@@ -153,7 +154,7 @@ describe("<BeaconPeers />", () => {
 
   describe("deleting a peer", () => {
     beforeEach(() => {
-      jest.spyOn(beaconHelper.walletClient, "removePeer").mockResolvedValue();
+      jest.spyOn(WalletClient, "removePeer").mockResolvedValue();
     });
 
     it("sends a delete request through the beacon api", async () => {
@@ -163,7 +164,7 @@ describe("<BeaconPeers />", () => {
       const deleteButton = within(peerRows[1]).getByRole("button", { name: "Remove Peer" });
       await act(() => user.click(deleteButton));
 
-      expect(beaconHelper.walletClient.removePeer).toHaveBeenCalledWith(peersData[1]);
+      expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[1]);
     });
 
     it("removes connection from beaconSlice", async () => {

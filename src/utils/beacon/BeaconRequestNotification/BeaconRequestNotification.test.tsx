@@ -13,11 +13,11 @@ import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { store } from "../../redux/store";
 import { executeOperations } from "../../tezos";
-import { walletClient } from "../beacon";
+import { WalletClient } from "../WalletClient";
 
-import { BeaconNotification } from ".";
+import { BeaconRequestNotification } from ".";
 
-jest.mock("../beacon");
+jest.mock("../WalletClient");
 
 const SENDER_ID = "mockSenderId";
 const DAPP_NAME = "mockDappName";
@@ -27,7 +27,7 @@ const BATCH_OP_HASH = { opHash: "bar" };
 
 const fixture = (message: BeaconRequestOutputMessage) => (
   <Modal isOpen={true} onClose={() => {}}>
-    <BeaconNotification message={message} onClose={() => {}} />
+    <BeaconRequestNotification message={message} onClose={() => {}} />
   </Modal>
 );
 
@@ -71,7 +71,7 @@ describe("<BeaconRequestNotification />", () => {
       expect(grantButton).toBeEnabled();
       await act(() => user.click(grantButton));
 
-      expect(walletClient.respond).toHaveBeenCalledWith({
+      expect(WalletClient.respond).toHaveBeenCalledWith({
         id: MESSAGE_ID,
         network: { type: "mainnet" },
         publicKey: account.pk,
