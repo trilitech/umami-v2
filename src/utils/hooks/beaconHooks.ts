@@ -3,16 +3,25 @@ import { useDispatch } from "react-redux";
 
 import { RawPkh } from "../../types/Address";
 import { useAppSelector } from "../redux/hooks";
-import { DAppConnectionInfo, beaconSlice } from "../redux/slices/beaconSlice";
+import { beaconSlice } from "../redux/slices/beaconSlice";
 
 /**
- * Returns connected account pkh & network by a given dAppId.
- *
- * @param dAppId - generated from dApp public key.
+ * Returns function to get connected accounts stored in {@link beaconSlice} by dAppId.
  */
-export const useGetConnectionInfo = (dAppId: string): DAppConnectionInfo | undefined => {
+export const useGetConnectedAccounts = () => {
   const beaconConnections = useAppSelector(s => s.beacon);
-  return beaconConnections[dAppId];
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  return (dAppId: string): RawPkh[] => Object.keys(beaconConnections[dAppId] || {});
+};
+
+/**
+ * Returns function to get connection network type stored in {@link beaconSlice} by dAppId & accountPkh.
+ */
+export const useGetConnectionNetworkType = () => {
+  const beaconConnections = useAppSelector(s => s.beacon);
+
+  return (dAppId: string, accountPkh: RawPkh) => beaconConnections[dAppId][accountPkh];
 };
 
 /**
@@ -37,5 +46,6 @@ export const useAddConnection = () => {
  */
 export const useRemoveConnection = () => {
   const dispatch = useDispatch();
-  return (dAppId: string) => dispatch(beaconSlice.actions.removeConnection({ dAppId }));
+  return (dAppId: string, accountPkh: RawPkh) =>
+    dispatch(beaconSlice.actions.removeConnection({ dAppId, accountPkh }));
 };

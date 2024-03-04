@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { makePeerInfo } from "./types";
 import { WalletClient } from "./WalletClient";
+import { RawPkh } from "../../types/Address";
 import { useRemoveConnection } from "../hooks/beaconHooks";
 
 const PEERS_QUERY_KEY = "beaconPeers";
@@ -24,10 +25,16 @@ export const useRemovePeer = () => {
   const refresh = useRefreshPeers();
   const removeConnectionFromBeaconSlice = useRemoveConnection();
 
-  return (peerInfo: ExtendedPeerInfo) =>
-    WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse)
-      .then(() => removeConnectionFromBeaconSlice(peerInfo.senderId))
+  return (peerInfo: ExtendedPeerInfo, accountPkh?: RawPkh) => {
+    if (!accountPkh) {
+      // No saved data for this dApp, just remove the peer connection.
+      return WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse).then(refresh);
+    }
+    // Remove both: peer connection and saved data.
+    return WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse)
+      .then(() => removeConnectionFromBeaconSlice(peerInfo.senderId, accountPkh))
       .then(refresh);
+  };
 };
 
 export const useAddPeer = () => {

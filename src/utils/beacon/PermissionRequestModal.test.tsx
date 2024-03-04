@@ -95,8 +95,7 @@ describe("<PermissionRequestModal />", () => {
 
     expect(store.getState().beacon).toEqual({
       [SENDER_ID]: {
-        accountPkh: mockMnemonicAccount(1).address.pkh,
-        networkType: NetworkType.MAINNET,
+        [mockMnemonicAccount(1).address.pkh]: NetworkType.MAINNET,
       },
     });
   });

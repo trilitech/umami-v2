@@ -20,11 +20,6 @@ describe("Beacon slice", () => {
   const addConnection = (dAppId: string, accountPkh: RawPkh, networkType: NetworkType) =>
     store.dispatch(beaconActions.addConnection({ dAppId, accountPkh, networkType }));
 
-  const connectionInfo = (accountPkh: RawPkh, networkType: NetworkType) => ({
-    accountPkh,
-    networkType,
-  });
-
   it("is initialized with empty state by default", () => {
     expect(store.getState().beacon).toEqual({});
   });
@@ -46,23 +41,12 @@ describe("Beacon slice", () => {
     );
 
     expect(store.getState().beacon).toEqual({
-      [dAppId1]: connectionInfo(pkh1, NetworkType.MAINNET),
-      [dAppId2]: connectionInfo(pkh2, NetworkType.GHOSTNET),
+      [dAppId1]: { [pkh1]: NetworkType.MAINNET },
+      [dAppId2]: { [pkh2]: NetworkType.GHOSTNET },
     });
   });
 
-  it("removes connections", () => {
-    addConnection(dAppId1, pkh1, NetworkType.MAINNET);
-    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
-
-    store.dispatch(beaconActions.removeConnection({ dAppId: dAppId1 }));
-
-    expect(store.getState().beacon).toEqual({
-      [dAppId2]: connectionInfo(pkh2, NetworkType.GHOSTNET),
-    });
-  });
-
-  it("replaces connections with the same dAppId", () => {
+  it("can store multiple connections with the same dAppId", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
     addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
 
@@ -75,8 +59,50 @@ describe("Beacon slice", () => {
     );
 
     expect(store.getState().beacon).toEqual({
-      [dAppId1]: connectionInfo(pkh3, NetworkType.CUSTOM),
-      [dAppId2]: connectionInfo(pkh2, NetworkType.GHOSTNET),
+      [dAppId1]: { [pkh1]: NetworkType.MAINNET, [pkh3]: NetworkType.CUSTOM },
+      [dAppId2]: { [pkh2]: NetworkType.GHOSTNET },
+    });
+  });
+
+  it("removes account record on removing connection", () => {
+    addConnection(dAppId1, pkh1, NetworkType.MAINNET);
+    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId1, pkh3, NetworkType.CUSTOM);
+
+    store.dispatch(beaconActions.removeConnection({ dAppId: dAppId1, accountPkh: pkh1 }));
+
+    expect(store.getState().beacon).toEqual({
+      [dAppId1]: { [pkh3]: NetworkType.CUSTOM },
+      [dAppId2]: { [pkh2]: NetworkType.GHOSTNET },
+    });
+  });
+
+  it("removes dApp record on removing connections", () => {
+    addConnection(dAppId1, pkh1, NetworkType.MAINNET);
+    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+
+    store.dispatch(beaconActions.removeConnection({ dAppId: dAppId1, accountPkh: pkh1 }));
+
+    expect(store.getState().beacon).toEqual({
+      [dAppId2]: { [pkh2]: NetworkType.GHOSTNET },
+    });
+  });
+
+  it("replace connections with the same dAppId & accountPkh", () => {
+    addConnection(dAppId1, pkh1, NetworkType.MAINNET);
+    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+
+    store.dispatch(
+      beaconActions.addConnection({
+        dAppId: dAppId1,
+        accountPkh: pkh1,
+        networkType: NetworkType.CUSTOM,
+      })
+    );
+
+    expect(store.getState().beacon).toEqual({
+      [dAppId1]: { [pkh1]: NetworkType.CUSTOM },
+      [dAppId2]: { [pkh2]: NetworkType.GHOSTNET },
     });
   });
 

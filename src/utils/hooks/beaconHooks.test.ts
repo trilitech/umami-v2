@@ -2,11 +2,16 @@ import { NetworkType } from "@airgap/beacon-wallet";
 
 import {
   useAddConnection,
-  useGetConnectionInfo,
+  useGetConnectedAccounts,
+  useGetConnectionNetworkType,
   useRemoveConnection,
   useResetConnections,
 } from "./beaconHooks";
-import { mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
+import {
+  mockMnemonicAccount,
+  mockSecretKeyAccount,
+  mockSocialAccount,
+} from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
 import { RawPkh } from "../../types/Address";
 import { beaconActions } from "../redux/slices/beaconSlice";
@@ -17,29 +22,44 @@ const dAppId2 = "test-dAppId-1";
 
 const pkh1 = mockMnemonicAccount(0).address.pkh;
 const pkh2 = mockSocialAccount(1).address.pkh;
+const pkh3 = mockSecretKeyAccount(2).address.pkh;
 
 const addConnection = (dAppId: string, accountPkh: RawPkh, networkType: NetworkType) =>
   store.dispatch(beaconActions.addConnection({ dAppId, accountPkh, networkType }));
 
-const connectionInfo = (accountPkh: RawPkh, networkType: NetworkType) => ({
-  accountPkh,
-  networkType,
-});
+describe("useGetConnectedAccounts", () => {
+  it("returns empty list when no connection for dAppId is stored", () => {
+    const {
+      result: { current: getConnectedAccounts },
+    } = renderHook(() => useGetConnectedAccounts());
 
-describe("useGetConnectedAccount", () => {
-  it("returns undefined when no connection for dAppId is stored", () => {
-    const view = renderHook(() => useGetConnectionInfo(dAppId1));
-
-    expect(view.result.current).toBeUndefined();
+    expect(getConnectedAccounts(dAppId2)).toEqual([]);
   });
 
-  it("returns connected account pkh by given dAppId", () => {
+  it("returns connected accounts by given dAppId", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
     addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh3, NetworkType.CUSTOM);
 
-    const view = renderHook(() => useGetConnectionInfo(dAppId2));
+    const {
+      result: { current: getConnectedAccounts },
+    } = renderHook(() => useGetConnectedAccounts());
 
-    expect(view.result.current).toEqual(connectionInfo(pkh2, NetworkType.GHOSTNET));
+    expect(getConnectedAccounts(dAppId2)).toEqual([pkh2, pkh3]);
+  });
+});
+
+describe("useGetConnectionNetworkType", () => {
+  it("returns networkType by given dAppId & accountPkh", () => {
+    addConnection(dAppId1, pkh1, NetworkType.MAINNET);
+    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh3, NetworkType.CUSTOM);
+
+    const {
+      result: { current: getConnectionNetworkType },
+    } = renderHook(() => useGetConnectionNetworkType());
+
+    expect(getConnectionNetworkType(dAppId2, pkh3)).toEqual(NetworkType.CUSTOM);
   });
 });
 
@@ -59,29 +79,35 @@ describe("useResetConnections", () => {
 
 describe("useAddConnection", () => {
   it("adds connection to BeaconSlice", () => {
-    addConnection(dAppId1, pkh1, NetworkType.GHOSTNET);
+    addConnection(dAppId1, pkh1, NetworkType.MAINNET);
+    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
 
     const {
       result: { current: addConnectionHook },
     } = renderHook(() => useAddConnection());
-    addConnectionHook(dAppId2, pkh2, NetworkType.MAINNET);
+    addConnectionHook(dAppId2, pkh3, NetworkType.CUSTOM);
 
     expect(store.getState().beacon).toEqual({
-      [dAppId1]: connectionInfo(pkh1, NetworkType.GHOSTNET),
-      [dAppId2]: connectionInfo(pkh2, NetworkType.MAINNET),
+      [dAppId1]: { [pkh1]: NetworkType.MAINNET },
+      [dAppId2]: {
+        [pkh2]: NetworkType.GHOSTNET,
+        [pkh3]: NetworkType.CUSTOM,
+      },
     });
   });
 
-  it("overrides connection with the same dAppId", () => {
-    addConnection(dAppId1, pkh1, NetworkType.GHOSTNET);
+  it("overrides connection with the same dAppId & accountPkh", () => {
+    addConnection(dAppId1, pkh1, NetworkType.MAINNET);
+    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
 
     const {
       result: { current: addConnectionHook },
     } = renderHook(() => useAddConnection());
-    addConnectionHook(dAppId1, pkh2, NetworkType.MAINNET);
+    addConnectionHook(dAppId1, pkh1, NetworkType.CUSTOM);
 
     expect(store.getState().beacon).toEqual({
-      [dAppId1]: connectionInfo(pkh2, NetworkType.MAINNET),
+      [dAppId1]: { [pkh1]: NetworkType.CUSTOM },
+      [dAppId2]: { [pkh2]: NetworkType.GHOSTNET },
     });
   });
 });
@@ -90,14 +116,16 @@ describe("useRemoveConnection", () => {
   it("removes connection from BeaconSlice", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
     addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId1, pkh3, NetworkType.CUSTOM);
 
     const {
       result: { current: removeConnection },
     } = renderHook(() => useRemoveConnection());
-    removeConnection(dAppId2);
+    removeConnection(dAppId1, pkh1);
 
     expect(store.getState().beacon).toEqual({
-      [dAppId1]: connectionInfo(pkh1, NetworkType.MAINNET),
+      [dAppId1]: { [pkh3]: NetworkType.CUSTOM },
+      [dAppId2]: { [pkh2]: NetworkType.GHOSTNET },
     });
   });
 });

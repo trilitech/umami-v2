@@ -43,11 +43,11 @@ beforeEach(() => {
 });
 
 describe("<BeaconPeers />", () => {
-  const getPeerRows = async (): Promise<HTMLElement[]> => {
+  const getPeerRows = async (expectedLength: number): Promise<HTMLElement[]> => {
     render(<BeaconPeers />);
 
     const rows = await screen.findAllByTestId("peer-row");
-    expect(rows).toHaveLength(3);
+    expect(rows).toHaveLength(expectedLength);
 
     return rows;
   };
@@ -64,13 +64,13 @@ describe("<BeaconPeers />", () => {
     });
 
     it("hides empty state message when paired dApps are present", async () => {
-      await getPeerRows();
+      await getPeerRows(3);
 
       expect(screen.queryByText("Your dApps will appear here")).not.toBeInTheDocument();
     });
 
     it("contains dApp names", async () => {
-      const peerRows = await getPeerRows();
+      const peerRows = await getPeerRows(3);
 
       expect(peerRows[0]).toHaveTextContent("dApp-1");
       expect(peerRows[1]).toHaveTextContent("dApp-2");
@@ -80,7 +80,7 @@ describe("<BeaconPeers />", () => {
     // TODO: shows icons / placeholder icons
 
     it("shows enabled delete button for each dApp", async () => {
-      const peerRows = await getPeerRows();
+      const peerRows = await getPeerRows(3);
 
       for (const peerRow of peerRows) {
         const deleteButton = within(peerRow).getByRole("button", { name: "Remove Peer" });
@@ -98,7 +98,7 @@ describe("<BeaconPeers />", () => {
           })
         );
 
-        const peerRows = await getPeerRows();
+        const peerRows = await getPeerRows(3);
 
         const addressPill = within(peerRows[1]).getByTestId("address-pill-text");
         expect(addressPill).toHaveTextContent(mockMnemonicAccount(1).label);
@@ -113,7 +113,7 @@ describe("<BeaconPeers />", () => {
           })
         );
 
-        const peerRows = await getPeerRows();
+        const peerRows = await getPeerRows(3);
 
         const addressPill = within(peerRows[1]).getByTestId("address-pill-text");
         expect(addressPill).toHaveTextContent(formatPkh(mockMnemonicAccount(5).address.pkh));
@@ -128,22 +128,61 @@ describe("<BeaconPeers />", () => {
           })
         );
 
-        const peerRows = await getPeerRows();
+        const peerRows = await getPeerRows(3);
 
         const network = within(peerRows[2]).getByTestId("dapp-connection-network");
         expect(network).toHaveTextContent("Oxfordnet");
+      });
+
+      it("displays multiple connections for the same dApp if present", async () => {
+        [
+          {
+            dAppId: peersData[0].senderId,
+            accountPkh: mockMnemonicAccount(1).address.pkh,
+            networkType: NetworkType.MAINNET,
+          },
+          {
+            dAppId: peersData[1].senderId,
+            accountPkh: mockMnemonicAccount(1).address.pkh,
+            networkType: NetworkType.GHOSTNET,
+          },
+          {
+            dAppId: peersData[1].senderId,
+            accountPkh: mockMnemonicAccount(2).address.pkh,
+            networkType: NetworkType.CUSTOM,
+          },
+        ].forEach(connection => {
+          store.dispatch(beaconActions.addConnection(connection));
+        });
+
+        const peerRows = await getPeerRows(4);
+
+        // 2nd saved connection
+        expect(within(peerRows[1]).getByTestId("address-pill-text")).toHaveTextContent(
+          mockMnemonicAccount(1).label
+        );
+        expect(within(peerRows[1]).getByTestId("dapp-connection-network")).toHaveTextContent(
+          "Ghostnet"
+        );
+        // 3rd saved connection
+        expect(within(peerRows[2]).getByTestId("address-pill-text")).toHaveTextContent(
+          mockMnemonicAccount(2).label
+        );
+        expect(within(peerRows[2]).getByTestId("dapp-connection-network")).toHaveTextContent(
+          "Custom"
+        );
       });
     });
 
     describe("for connections without saved info", () => {
       it("hides address pill", async () => {
-        const peerRows = await getPeerRows();
+        const peerRows = await getPeerRows(3);
 
         expect(within(peerRows[0]).queryByTestId("address-pill")).not.toBeInTheDocument();
       });
 
       it("hides network", async () => {
-        const peerRows = await getPeerRows();
+        const peerRows = await getPeerRows(3);
 
         expect(
           within(peerRows[0]).queryByTestId("dapp-connection-network")
@@ -159,7 +198,7 @@ describe("<BeaconPeers />", () => {
 
     it("sends a delete request through the beacon api", async () => {
       const user = userEvent.setup();
-      const peerRows = await getPeerRows();
+      const peerRows = await getPeerRows(3);
 
       const deleteButton = within(peerRows[1]).getByRole("button", { name: "Remove Peer" });
       await act(() => user.click(deleteButton));
@@ -181,6 +220,11 @@ describe("<BeaconPeers />", () => {
           networkType: NetworkType.GHOSTNET,
         },
         {
+          dAppId: peersData[1].senderId,
+          accountPkh: mockMnemonicAccount(5).address.pkh,
+          networkType: NetworkType.FLORENCENET,
+        },
+        {
           dAppId: peersData[2].senderId,
           accountPkh: mockMnemonicAccount(2).address.pkh,
           networkType: NetworkType.CUSTOM,
@@ -188,7 +232,7 @@ describe("<BeaconPeers />", () => {
       ].forEach(connection => {
         store.dispatch(beaconActions.addConnection(connection));
       });
-      const peerRows = await getPeerRows();
+      const peerRows = await getPeerRows(4);
 
       const deleteButton = within(peerRows[1]).getByRole("button", {
         name: "Remove Peer",
@@ -197,12 +241,13 @@ describe("<BeaconPeers />", () => {
 
       expect(store.getState().beacon).toEqual({
         [peersData[0].senderId]: {
-          accountPkh: mockMnemonicAccount(1).address.pkh,
-          networkType: NetworkType.MAINNET,
+          [mockMnemonicAccount(1).address.pkh]: NetworkType.MAINNET,
+        },
+        [peersData[1].senderId]: {
+          [mockMnemonicAccount(5).address.pkh]: NetworkType.FLORENCENET,
         },
         [peersData[2].senderId]: {
-          accountPkh: mockMnemonicAccount(2).address.pkh,
-          networkType: NetworkType.CUSTOM,
+          [mockMnemonicAccount(2).address.pkh]: NetworkType.CUSTOM,
         },
       });
     });

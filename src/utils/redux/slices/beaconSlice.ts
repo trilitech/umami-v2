@@ -1,14 +1,10 @@
 import { NetworkType } from "@airgap/beacon-wallet";
 import { createSlice } from "@reduxjs/toolkit";
+import { setWith } from "lodash";
 
 import { RawPkh } from "../../../types/Address";
 
-export type DAppConnectionInfo = {
-  accountPkh: RawPkh;
-  networkType: NetworkType;
-};
-
-type State = Record<string, DAppConnectionInfo>;
+type State = Record<string, Record<RawPkh, NetworkType>>;
 
 export const initialState: State = {};
 
@@ -16,6 +12,9 @@ export const initialState: State = {};
  * Stores connection info between dApps and accounts.
  *
  * dApps are identified by dAppId (a unique string id generated from dApp public key).
+ * Connection is identified by a pair of (dAppId, accountPkh).
+ *
+ * NetworkType is stored for convinience as dApps for different networks will have diferent dAppIds.
  */
 export const beaconSlice = createSlice({
   name: "beacon",
@@ -27,11 +26,14 @@ export const beaconSlice = createSlice({
       state,
       { payload }: { payload: { dAppId: string; accountPkh: RawPkh; networkType: NetworkType } }
     ) => {
-      state[payload.dAppId] = { accountPkh: payload.accountPkh, networkType: payload.networkType };
+      setWith(state, [payload.dAppId, payload.accountPkh], payload.networkType);
     },
 
-    removeConnection: (state, { payload }: { payload: { dAppId: string } }) => {
-      delete state[payload.dAppId];
+    removeConnection: (state, { payload }: { payload: { dAppId: string; accountPkh: RawPkh } }) => {
+      delete state[payload.dAppId][payload.accountPkh];
+      if (Object.keys(state[payload.dAppId]).length === 0) {
+        delete state[payload.dAppId];
+      }
     },
   },
 });
