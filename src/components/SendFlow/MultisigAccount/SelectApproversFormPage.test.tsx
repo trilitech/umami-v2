@@ -14,7 +14,7 @@ import {
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
-import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
+import { contract, makeStorageJSON } from "../../../multisig/contract";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";

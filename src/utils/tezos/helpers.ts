@@ -1,6 +1,6 @@
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
-import { OpKind, TransactionOperationParameter } from "@taquito/rpc";
+import { OpKind } from "@taquito/rpc";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import axios from "axios";
@@ -11,9 +11,9 @@ import { FakeSigner } from "./fakeSigner";
 import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 import {
-  FA12Transfer,
-  FA2Transfer,
   Operation,
+  makeFA12TransactionParameter,
+  makeFA2TransactionParameter,
   makeMultisigProposeOperation,
 } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
@@ -54,7 +54,7 @@ export const curvesToDerivationPath = (curves: Curves): DerivationType => {
     case "p256":
       return DerivationType.P256;
     case "bip25519":
-      throw new Error("bip25519 is not supported in Tezos"); // TODO: Verify this statement
+      throw new Error("bip25519 is not supported in Tezos");
   }
 };
 
@@ -65,7 +65,7 @@ export const makeSigner = async (config: SignerConfig) => {
     case "secret_key":
       return new InMemorySigner(config.secretKey);
     case "ledger": {
-      // Close existing connections to be able to reinitiate
+      // Close existing connections to be able to re-initiate
       const devices = await TransportWebUSB.list();
       for (let i = 0; i < devices.length; i++) {
         devices[i].close();
@@ -96,88 +96,16 @@ export const getPkAndPkhFromSk = async (sk: string): Promise<PublicKeyPair> => {
   return { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 };
 
-export const makeFA12TransactionParameter = ({
-  sender,
-  recipient,
-  amount,
-}: FA12Transfer): TransactionOperationParameter => {
-  return {
-    entrypoint: "transfer",
-    value: {
-      prim: "Pair",
-      args: [
-        {
-          string: sender.pkh,
-        },
-        {
-          prim: "Pair",
-          args: [
-            {
-              string: recipient.pkh,
-            },
-            {
-              int: amount,
-            },
-          ],
-        },
-      ],
-    },
-  };
-};
-
-export const makeFA2TransactionParameter = ({
-  sender,
-  recipient,
-  tokenId,
-  amount,
-}: FA2Transfer): TransactionOperationParameter => {
-  return {
-    entrypoint: "transfer",
-    value: [
-      {
-        prim: "Pair",
-        args: [
-          {
-            string: sender.pkh,
-          },
-          [
-            {
-              prim: "Pair",
-              args: [
-                {
-                  string: recipient.pkh,
-                },
-                {
-                  prim: "Pair",
-                  args: [
-                    {
-                      int: tokenId,
-                    },
-                    {
-                      int: amount,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        ],
-      },
-    ],
-  };
-};
-
 export const selectRandomElements = <T>(
   arr: T[],
   n: number
 ): {
   index: number;
   value: T;
-}[] => {
-  return shuffle(arr.map((value, index) => ({ value, index })))
+}[] =>
+  shuffle(arr.map((value, index) => ({ value, index })))
     .slice(0, n)
     .sort((a, b) => a.index - b.index);
-};
 
 // for tez it will return tez, for mutez - mutez
 export const sumTez = (items: string[]): BigNumber =>

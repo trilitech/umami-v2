@@ -17,7 +17,7 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import { TrashIcon } from "../../../assets/icons";
-import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
+import { contract, makeStorageJSON } from "../../../multisig/contract";
 import colors from "../../../style/colors";
 import { ImplicitAccount } from "../../../types/Account";
 import { RawPkh, isValidImplicitPkh, parsePkh } from "../../../types/Address";
