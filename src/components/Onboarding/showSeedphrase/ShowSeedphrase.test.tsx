@@ -1,7 +1,6 @@
 import { ShowSeedphrase } from "./ShowSeedphrase";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { StepType } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn();
 
@@ -26,7 +25,7 @@ describe("<ShowSeedphrase />", () => {
     await act(() => user.click(confirmBtn));
 
     expect(goToStepMock).toHaveBeenCalledWith({
-      type: StepType.verifySeedphrase,
+      type: "verifySeedphrase",
       account: {
         type: "mnemonic",
         mnemonic: mnemonic1,

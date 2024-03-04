@@ -1,6 +1,6 @@
 import { NameAccountDisplay } from "./NameAccountDisplay";
 import { useGetNextAvailableAccountLabels } from "../../../utils/hooks/getAccountDataHooks";
-import { NameAccountStep, Step, StepType } from "../useOnboardingModal";
+import { NameAccountStep, OnboardingStep } from "../OnboardingStep";
 
 export const DEFAULT_ACCOUNT_LABEL = "Account";
 
@@ -22,7 +22,7 @@ export const NameAccount = ({
   goToStep,
   account,
 }: {
-  goToStep: (step: Step) => void;
+  goToStep: (step: OnboardingStep) => void;
   account: NameAccountStep["account"];
 }) => {
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
@@ -33,19 +33,19 @@ export const NameAccount = ({
     switch (account.type) {
       case "secret_key":
         return goToStep({
-          type: StepType.masterPassword,
+          type: "masterPassword",
           account: { ...account, label: uniqueLabel },
         });
       case "ledger":
         return goToStep({
-          type: StepType.derivationPath,
+          type: "derivationPath",
           account: { ...account, label: uniqueLabel },
         });
       case "mnemonic":
         // More than one mnemonic account can be derived during onboarding.
         // We pass base label to name individual accounts in {@link restoreRevealedMnemonicAccounts}.
         return goToStep({
-          type: StepType.derivationPath,
+          type: "derivationPath",
           account: { ...account, label: baseLabel },
         });
     }

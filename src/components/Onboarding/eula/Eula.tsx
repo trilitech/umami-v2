@@ -4,10 +4,10 @@ import React from "react";
 import { DocumentIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
 
 export const Eula: React.FC<{
-  goToStep: (step: Step) => void;
+  goToStep: (step: OnboardingStep) => void;
 }> = ({ goToStep }) => {
   const [isChecked, setIsChecked] = React.useState(false);
   return (
@@ -43,7 +43,7 @@ export const Eula: React.FC<{
           width="100%"
           isDisabled={!isChecked}
           onClick={() => {
-            goToStep({ type: StepType.connectOrCreate });
+            goToStep({ type: "connectOrCreate" });
           }}
           size="lg"
         >

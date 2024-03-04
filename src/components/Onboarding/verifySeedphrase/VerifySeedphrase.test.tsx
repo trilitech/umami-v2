@@ -2,9 +2,9 @@ import { VerifySeedphrase } from "./VerifySeedphrase";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
-import { Step, StepType } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
 
-const goToStepMock = jest.fn((step: Step) => {});
+const goToStepMock = jest.fn((step: OnboardingStep) => {});
 const selectRandomElementsMock = jest.mocked(selectRandomElements);
 
 jest.mock("../../../utils/tezos/helpers");
@@ -96,7 +96,7 @@ describe("<VerifySeedphrase />", () => {
     fireEvent.click(confirmBtn);
     await waitFor(() => {
       expect(goToStepMock).toHaveBeenCalledWith({
-        type: StepType.nameAccount,
+        type: "nameAccount",
         account: { type: "mnemonic", mnemonic: mnemonic1 },
       });
     });

@@ -3,14 +3,14 @@ import { Button, Flex, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/reac
 import { KeyIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
-import type { ShowSeedphraseStep } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
+import type { ShowSeedphraseStep } from "../OnboardingStep";
 
 export const ShowSeedphrase = ({
   goToStep,
   account,
 }: {
-  goToStep: (step: Step) => void;
+  goToStep: (step: OnboardingStep) => void;
   account: ShowSeedphraseStep["account"];
 }) => {
   return (
@@ -52,7 +52,7 @@ export const ShowSeedphrase = ({
           width="100%"
           marginTop="20px"
           onClick={_ => {
-            goToStep({ type: StepType.verifySeedphrase, account });
+            goToStep({ type: "verifySeedphrase", account });
           }}
           size="lg"
         >

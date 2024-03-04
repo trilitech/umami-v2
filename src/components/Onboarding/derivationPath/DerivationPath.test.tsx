@@ -3,7 +3,7 @@ import { noop } from "lodash";
 import { DerivationPath } from "./DerivationPath";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { DerivationPathStep, StepType } from "../useOnboardingModal";
+import { DerivationPathStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn(noop);
 
@@ -15,12 +15,12 @@ describe("<DerivationPath />", () => {
   const testData = [
     {
       account: { type: "ledger" as const, label: "ledger account" },
-      nextPage: StepType.restoreLedger,
+      nextPage: "restoreLedger",
       derivationPath: "44'/1729'/?'/0'",
     },
     {
       account: { type: "mnemonic" as const, label: "mnemonic account", mnemonic: mnemonic1 },
-      nextPage: StepType.masterPassword,
+      nextPage: "masterPassword",
       derivationPath: "44'/1729'/?'/0'",
     },
   ];

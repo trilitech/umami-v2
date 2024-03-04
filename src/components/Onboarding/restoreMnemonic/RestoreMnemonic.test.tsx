@@ -3,7 +3,6 @@ import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { selectRandomElements } from "../../../utils/tezos/helpers";
-import { StepType } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn();
 const selectRandomElementsMock = jest.mocked(selectRandomElements);
@@ -86,7 +85,7 @@ describe("<RestoreMnemonic />", () => {
       await act(() => user.click(confirmBtn));
 
       expect(goToStepMock).toHaveBeenCalledWith({
-        type: StepType.nameAccount,
+        type: "nameAccount",
         account: {
           type: "mnemonic",
           mnemonic: mnemonic1,
