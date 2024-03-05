@@ -65,26 +65,26 @@ export const assetsSlice = createSlice({
     },
 
     updateTezBalance: (state, { payload }: { payload: TzktAccount[] }) => {
-      state.balances.mutez = payload.reduce((acc, accountInfo) => {
-        return { ...acc, [accountInfo.address]: String(accountInfo.balance) };
-      }, {});
-      state.delegationLevels = payload.reduce((acc, accountInfo) => {
-        return { ...acc, [accountInfo.address]: accountInfo.delegationLevel };
-      }, {});
+      state.balances.mutez = payload.reduce(
+        (acc, accountInfo) => ({ ...acc, [accountInfo.address]: String(accountInfo.balance) }),
+        {}
+      );
+      state.delegationLevels = payload.reduce(
+        (acc, accountInfo) => ({ ...acc, [accountInfo.address]: accountInfo.delegationLevel }),
+        {}
+      );
     },
 
     updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);
-      state.balances.tokens = mapValues(groupedByPkh, rawTokenBalances => {
-        return compact(rawTokenBalances.map(fromRaw)).map(
-          ({ balance, contract, tokenId, lastLevel }) => ({
-            balance,
-            contract,
-            tokenId,
-            lastLevel,
-          })
-        );
-      });
+      state.balances.tokens = mapValues(groupedByPkh, rawTokenBalances =>
+        compact(rawTokenBalances.map(fromRaw)).map(({ balance, contract, tokenId, lastLevel }) => ({
+          balance,
+          contract,
+          tokenId,
+          lastLevel,
+        }))
+      );
     },
 
     updateBakers: (state, { payload }: { payload: Delegate[] }) => {

@@ -285,90 +285,80 @@ describe("Operation", () => {
   });
 });
 
-const fa2Lambda = (operation: FA2Transfer) => {
-  return [
-    {
-      args: [{ prim: "address" }, { string: operation.contract.pkh + "%transfer" }],
-      prim: "PUSH",
-    },
-    { args: [FA2_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
-    [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
-    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
-    {
-      args: [FA2_TRANSFER_ARG_TYPES, makeFA2TransactionParameter(operation).value],
-      prim: "PUSH",
-    },
-    { prim: "TRANSFER_TOKENS" },
-    { prim: "CONS" },
-  ];
-};
+const fa2Lambda = (operation: FA2Transfer) => [
+  {
+    args: [{ prim: "address" }, { string: operation.contract.pkh + "%transfer" }],
+    prim: "PUSH",
+  },
+  { args: [FA2_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
+  [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
+  { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+  {
+    args: [FA2_TRANSFER_ARG_TYPES, makeFA2TransactionParameter(operation).value],
+    prim: "PUSH",
+  },
+  { prim: "TRANSFER_TOKENS" },
+  { prim: "CONS" },
+];
 
-const singleTez = (amount: string, recipient: ImplicitAddress) => {
-  return [
-    {
-      args: [{ prim: "key_hash" }, { string: recipient.pkh }],
-      prim: "PUSH",
-    },
-    { prim: "IMPLICIT_ACCOUNT" },
-    { args: [{ prim: "mutez" }, { int: amount }], prim: "PUSH" },
-    { prim: "UNIT" },
-    { prim: "TRANSFER_TOKENS" },
-    { prim: "CONS" },
-  ];
-};
+const singleTez = (amount: string, recipient: ImplicitAddress) => [
+  {
+    args: [{ prim: "key_hash" }, { string: recipient.pkh }],
+    prim: "PUSH",
+  },
+  { prim: "IMPLICIT_ACCOUNT" },
+  { args: [{ prim: "mutez" }, { int: amount }], prim: "PUSH" },
+  { prim: "UNIT" },
+  { prim: "TRANSFER_TOKENS" },
+  { prim: "CONS" },
+];
 
-const singleTezContract = (amount: string, recipient: ContractAddress) => {
-  return [
-    {
-      prim: "PUSH",
-      args: [{ prim: "address" }, { string: recipient.pkh }],
-    },
-    { prim: "CONTRACT", args: [{ prim: "unit" }] },
+const singleTezContract = (amount: string, recipient: ContractAddress) => [
+  {
+    prim: "PUSH",
+    args: [{ prim: "address" }, { string: recipient.pkh }],
+  },
+  { prim: "CONTRACT", args: [{ prim: "unit" }] },
+  {
+    prim: "IF_NONE",
+    args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
+  },
+  { prim: "PUSH", args: [{ prim: "mutez" }, { int: amount }] },
+  { prim: "UNIT" },
+  { prim: "TRANSFER_TOKENS" },
+  { prim: "CONS" },
+];
+
+const fa12Lambda = (operation: FA12Transfer) => [
+  {
+    args: [{ prim: "address" }, { string: operation.contract.pkh + "%transfer" }],
+    prim: "PUSH",
+  },
+  { args: [FA12_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
+  [
     {
       prim: "IF_NONE",
       args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
     },
-    { prim: "PUSH", args: [{ prim: "mutez" }, { int: amount }] },
-    { prim: "UNIT" },
-    { prim: "TRANSFER_TOKENS" },
-    { prim: "CONS" },
-  ];
-};
+  ],
+  { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+  {
+    args: [FA12_TRANSFER_ARG_TYPES, makeFA12TransactionParameter(operation).value],
+    prim: "PUSH",
+  },
+  { prim: "TRANSFER_TOKENS" },
+  { prim: "CONS" },
+];
 
-const fa12Lambda = (operation: FA12Transfer) => {
-  return [
-    {
-      args: [{ prim: "address" }, { string: operation.contract.pkh + "%transfer" }],
-      prim: "PUSH",
-    },
-    { args: [FA12_TRANSFER_ARG_TYPES], prim: "CONTRACT" },
-    [
-      {
-        prim: "IF_NONE",
-        args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []],
-      },
-    ],
-    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
-    {
-      args: [FA12_TRANSFER_ARG_TYPES, makeFA12TransactionParameter(operation).value],
-      prim: "PUSH",
-    },
-    { prim: "TRANSFER_TOKENS" },
-    { prim: "CONS" },
-  ];
-};
-
-const setDelegationLambda = (recipient: ImplicitAddress) => {
-  return [
-    {
-      prim: "PUSH",
-      args: [{ prim: "key_hash" }, { string: recipient.pkh }],
-    },
-    { prim: "SOME" },
-    { prim: "SET_DELEGATE" },
-    { prim: "CONS" },
-  ];
-};
+const setDelegationLambda = (recipient: ImplicitAddress) => [
+  {
+    prim: "PUSH",
+    args: [{ prim: "key_hash" }, { string: recipient.pkh }],
+  },
+  { prim: "SOME" },
+  { prim: "SET_DELEGATE" },
+  { prim: "CONS" },
+];
 
 const dropDelegationLambda = [
   { prim: "NONE", args: [{ prim: "key_hash" }] },

@@ -10,8 +10,8 @@ export const mockTzktTezTransfer = (
   timestamp = MOCK_TIMESTAMP,
   hash = MOCK_HASH,
   level = MOCK_LEVEL
-): TezTransfer => {
-  return {
+): TezTransfer =>
+  ({
     id: 12345,
     type: "transaction",
     sender: { address: sender },
@@ -21,5 +21,4 @@ export const mockTzktTezTransfer = (
     hash,
     level,
     transactionId: 54321,
-  } as TezTransfer;
-};
+  }) as TezTransfer;

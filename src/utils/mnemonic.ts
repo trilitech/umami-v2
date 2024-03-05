@@ -8,9 +8,7 @@ import { MnemonicAccount } from "../types/Account";
 import { Network } from "../types/Network";
 
 // This is put in a separate file for mocking purposes in tests
-export const generate24WordMnemonic = () => {
-  return generateMnemonic(256);
-};
+export const generate24WordMnemonic = () => generateMnemonic(256);
 
 /**
  * Finds revealed public key pairs matching the given {@link derivationPathPattern}.

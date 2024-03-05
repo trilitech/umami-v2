@@ -64,10 +64,8 @@ export const getPendingOperationsForMultisigs = async (
   });
 };
 
-export const multisigToAccount = (multisig: Multisig, label: string): MultisigAccount => {
-  return {
-    label,
-    type: "multisig",
-    ...multisig,
-  };
-};
+export const multisigToAccount = (multisig: Multisig, label: string): MultisigAccount => ({
+  label,
+  type: "multisig",
+  ...multisig,
+});

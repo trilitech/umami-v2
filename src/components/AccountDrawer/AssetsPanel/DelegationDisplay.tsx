@@ -18,18 +18,16 @@ const Row: React.FC<
     label: string;
     value: string | ReactNode;
   } & FlexProps
-> = ({ label, value, ...props }) => {
-  return (
-    <Flex alignItems="center" height="50px" padding="16px" data-testid={label} {...props}>
-      <Box flex={1}>
-        <Heading color={colors.gray[400]} size="sm">
-          {label}
-        </Heading>
-      </Box>
-      <Box flex={1}>{typeof value === "string" ? <Text size="sm">{value}</Text> : value}</Box>
-    </Flex>
-  );
-};
+> = ({ label, value, ...props }) => (
+  <Flex alignItems="center" height="50px" padding="16px" data-testid={label} {...props}>
+    <Box flex={1}>
+      <Heading color={colors.gray[400]} size="sm">
+        {label}
+      </Heading>
+    </Box>
+    <Box flex={1}>{typeof value === "string" ? <Text size="sm">{value}</Text> : value}</Box>
+  </Flex>
+);
 
 export const DelegationDisplay: React.FC<{
   account: Account;

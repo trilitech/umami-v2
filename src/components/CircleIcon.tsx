@@ -10,17 +10,15 @@ type Props = {
   onClick?: () => void;
 };
 
-export const CircleIcon = ({ icon, size, onClick = () => {} }: Props) => {
-  return (
-    <Box
-      width={size}
-      height={size}
-      margin="auto"
-      background={colors.gray[700]}
-      borderRadius="full"
-      onClick={onClick}
-    >
-      <Center height="100%">{icon}</Center>
-    </Box>
-  );
-};
+export const CircleIcon = ({ icon, size, onClick = () => {} }: Props) => (
+  <Box
+    width={size}
+    height={size}
+    margin="auto"
+    background={colors.gray[700]}
+    borderRadius="full"
+    onClick={onClick}
+  >
+    <Center height="100%">{icon}</Center>
+  </Box>
+);

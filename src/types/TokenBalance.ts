@@ -23,13 +23,10 @@ export const fromRaw = (raw: RawTokenBalance): TokenBalanceWithToken | null => {
   return { balance: raw.balance, lastLevel: raw.lastLevel, ...token };
 };
 
-export const keepNFTs = (assets: TokenBalanceWithToken[]) => {
-  return assets.filter((asset): asset is NFTBalance => asset.type === "nft");
-};
-export const keepFA1s = (assets: TokenBalanceWithToken[]) => {
-  return assets.filter((asset): asset is FA12TokenBalance => asset.type === "fa1.2");
-};
+export const keepNFTs = (assets: TokenBalanceWithToken[]) =>
+  assets.filter((asset): asset is NFTBalance => asset.type === "nft");
+export const keepFA1s = (assets: TokenBalanceWithToken[]) =>
+  assets.filter((asset): asset is FA12TokenBalance => asset.type === "fa1.2");
 
-export const keepFA2s = (assets: TokenBalanceWithToken[]) => {
-  return assets.filter((asset): asset is FA2TokenBalance => asset.type === "fa2");
-};
+export const keepFA2s = (assets: TokenBalanceWithToken[]) =>
+  assets.filter((asset): asset is FA2TokenBalance => asset.type === "fa2");

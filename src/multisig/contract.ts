@@ -1567,13 +1567,11 @@ export const contract: MichelsonV1Expression[] = [
   },
 ];
 
-export const makeStorageJSON = (owner: string, signers: string[], threshold: string) => {
-  return {
-    owner,
-    signers,
-    threshold,
-    last_op_id: "0",
-    pending_ops: [],
-    metadata: [],
-  };
-};
+export const makeStorageJSON = (owner: string, signers: string[], threshold: string) => ({
+  owner,
+  signers,
+  threshold,
+  last_op_id: "0",
+  pending_ops: [],
+  metadata: [],
+});

@@ -69,18 +69,16 @@ const PeersDisplay = ({
 }: {
   peerInfos: ExtendedPeerInfo[];
   removePeer: (peer: ExtendedPeerInfo) => void;
-}) => {
-  return (
-    <Box>
-      {peerInfos.map(peerInfo => (
-        <Fragment key={peerInfo.name}>
-          <Divider />
-          <PeerRow onRemove={() => removePeer(peerInfo)} peerInfo={peerInfo} />
-        </Fragment>
-      ))}
-    </Box>
-  );
-};
+}) => (
+  <Box>
+    {peerInfos.map(peerInfo => (
+      <Fragment key={peerInfo.name}>
+        <Divider />
+        <PeerRow onRemove={() => removePeer(peerInfo)} peerInfo={peerInfo} />
+      </Fragment>
+    ))}
+  </Box>
+);
 
 /**
  * Component for displaying info about single connected dApp.
@@ -88,32 +86,30 @@ const PeersDisplay = ({
  * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
  * @param onRemove - action for deleting dApp connection.
  */
-const PeerRow = ({ peerInfo, onRemove }: { peerInfo: ExtendedPeerInfo; onRemove: () => void }) => {
-  return (
-    <Flex justifyContent="space-between" height="106px" data-testid="peer-row" paddingY="30px">
-      <Flex>
-        <AspectRatio width="48px" marginRight="16px" ratio={1}>
-          <Image width="100%" src={peerInfo.icon} />
-        </AspectRatio>
-        <Center alignItems="flex-start" flexDirection="column">
-          <Heading marginBottom="6px" size="md">
-            {peerInfo.name}
-          </Heading>
-          <StoredPeerInfo peerInfo={peerInfo} />
-        </Center>
-      </Flex>
-      <Center>
-        <IconButton
-          aria-label="Remove Peer"
-          icon={<TrashIcon />}
-          onClick={onRemove}
-          size="xs"
-          variant="circle"
-        />
+const PeerRow = ({ peerInfo, onRemove }: { peerInfo: ExtendedPeerInfo; onRemove: () => void }) => (
+  <Flex justifyContent="space-between" height="106px" data-testid="peer-row" paddingY="30px">
+    <Flex>
+      <AspectRatio width="48px" marginRight="16px" ratio={1}>
+        <Image width="100%" src={peerInfo.icon} />
+      </AspectRatio>
+      <Center alignItems="flex-start" flexDirection="column">
+        <Heading marginBottom="6px" size="md">
+          {peerInfo.name}
+        </Heading>
+        <StoredPeerInfo peerInfo={peerInfo} />
       </Center>
     </Flex>
-  );
-};
+    <Center>
+      <IconButton
+        aria-label="Remove Peer"
+        icon={<TrashIcon />}
+        onClick={onRemove}
+        size="xs"
+        variant="circle"
+      />
+    </Center>
+  </Flex>
+);
 
 /**
  * Component for displaying additional info about connection with a dApp.

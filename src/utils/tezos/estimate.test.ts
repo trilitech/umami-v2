@@ -3,13 +3,11 @@ import { addressExists, makeToolkit } from "./helpers";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET } from "../../types/Network";
-jest.mock("./helpers", () => {
-  return {
-    ...jest.requireActual("./helpers"),
-    makeToolkit: jest.fn(),
-    addressExists: jest.fn(),
-  };
-});
+jest.mock("./helpers", () => ({
+  ...jest.requireActual("./helpers"),
+  makeToolkit: jest.fn(),
+  addressExists: jest.fn(),
+}));
 describe("estimate", () => {
   describe("Error handling", () => {
     it("Catches unrevelaed account", async () => {

@@ -9,27 +9,25 @@ import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
 import { useBatches } from "../../utils/hooks/batchesHooks";
 
-const FilterController = ({ batchPending }: { batchPending: number }) => {
-  return (
-    <Flex alignItems="center" marginTop="24px" marginBottom="24px">
-      <Heading flex={1} color={colors.orangeL} size="sm">
-        {batchPending} Pending
-      </Heading>
-      <CSVFileUploader />
-      <ExternalLink
-        marginLeft="8px"
-        href="https://github.com/trilitech/umami-v2/wiki/Batch-file-specification"
-      >
-        <Button paddingRight="0" variant="CTAWithIcon">
-          <Text marginRight="4px" size="sm">
-            See file specs
-          </Text>
-          <ExternalLinkIcon stroke="currentcolor" />
-        </Button>
-      </ExternalLink>
-    </Flex>
-  );
-};
+const FilterController = ({ batchPending }: { batchPending: number }) => (
+  <Flex alignItems="center" marginTop="24px" marginBottom="24px">
+    <Heading flex={1} color={colors.orangeL} size="sm">
+      {batchPending} Pending
+    </Heading>
+    <CSVFileUploader />
+    <ExternalLink
+      marginLeft="8px"
+      href="https://github.com/trilitech/umami-v2/wiki/Batch-file-specification"
+    >
+      <Button paddingRight="0" variant="CTAWithIcon">
+        <Text marginRight="4px" size="sm">
+          See file specs
+        </Text>
+        <ExternalLinkIcon stroke="currentcolor" />
+      </Button>
+    </ExternalLink>
+  </Flex>
+);
 
 export const BatchPage = () => {
   const batches = useBatches();

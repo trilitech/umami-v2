@@ -10,15 +10,13 @@ export const TagsSection = ({ nft }: { nft: NFTBalance }) => {
   }
   return (
     <Wrap marginTop="20px" data-testid="tags-section">
-      {tags.map(tag => {
-        return (
-          <WrapItem key={tag} padding="3px 8px" background={colors.gray[600]} borderRadius="100px">
-            <Text color={colors.gray[400]} data-testid="nft-tag">
-              {tag}
-            </Text>
-          </WrapItem>
-        );
-      })}
+      {tags.map(tag => (
+        <WrapItem key={tag} padding="3px 8px" background={colors.gray[600]} borderRadius="100px">
+          <Text color={colors.gray[400]} data-testid="nft-tag">
+            {tag}
+          </Text>
+        </WrapItem>
+      ))}
     </Wrap>
   );
 };

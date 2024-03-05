@@ -59,17 +59,16 @@ export const accountsSlice = createSlice({
       state,
       { payload }: { type: string; payload: { accountType: AccountType } }
     ) => {
-      state.items = remove(state.items, account => {
-        return account.type === "mnemonic" || account.type !== payload.accountType;
-      });
+      state.items = remove(
+        state.items,
+        account => account.type === "mnemonic" || account.type !== payload.accountType
+      );
     },
     removeAccount: (
       state,
       { payload }: { type: string; payload: SocialAccount | LedgerAccount | SecretKeyAccount }
     ) => {
-      remove(state.items, account => {
-        return account.address.pkh === payload.address.pkh;
-      });
+      remove(state.items, account => account.address.pkh === payload.address.pkh);
     },
     // Do not call this directly, use the RenameAccount thunk
     renameAccount: (

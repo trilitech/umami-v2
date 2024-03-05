@@ -20,42 +20,38 @@ export const AccountTileBase: React.FC<
     leftElement: React.ReactNode;
     rightElement: React.ReactNode;
   } & FlexProps
-> = ({ icon, leftElement, rightElement, ...flexProps }) => {
-  return (
-    <Flex
-      alignItems="center"
-      height={90}
-      marginBottom={4}
-      padding={4}
-      border={`1px solid ${colors.gray[800]}`}
-      borderRadius={4}
-      data-testid="account-tile-base"
-      {...flexProps}
-    >
-      {icon}
-      <Flex alignItems="center" justifyContent="space-between" flex={1}>
-        {leftElement}
-        {rightElement}
-      </Flex>
+> = ({ icon, leftElement, rightElement, ...flexProps }) => (
+  <Flex
+    alignItems="center"
+    height={90}
+    marginBottom={4}
+    padding={4}
+    border={`1px solid ${colors.gray[800]}`}
+    borderRadius={4}
+    data-testid="account-tile-base"
+    {...flexProps}
+  >
+    {icon}
+    <Flex alignItems="center" justifyContent="space-between" flex={1}>
+      {leftElement}
+      {rightElement}
     </Flex>
-  );
-};
+  </Flex>
+);
 
 export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = ({
   label,
   pkh,
-}) => {
-  return (
-    <Box margin={4} data-testid="account-identifier">
-      {label && <Heading size="md">{label}</Heading>}
-      <Flex alignItems="center">
-        <Text color="text.dark" data-testid="short-address" size="sm">
-          {formatPkh(pkh)}
-        </Text>
-      </Flex>
-    </Box>
-  );
-};
+}) => (
+  <Box margin={4} data-testid="account-identifier">
+    {label && <Heading size="md">{label}</Heading>}
+    <Flex alignItems="center">
+      <Text color="text.dark" data-testid="short-address" size="sm">
+        {formatPkh(pkh)}
+      </Text>
+    </Flex>
+  </Box>
+);
 
 const MAX_NFT_COUNT = 7;
 

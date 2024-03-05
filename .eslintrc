@@ -105,6 +105,7 @@
       { "checksVoidReturn": { "attributes": false } },
     ],
     "tsdoc/syntax": "warn",
+    "arrow-body-style": ["warn", "as-needed"],
   },
   "overrides": [
     {

@@ -5,10 +5,9 @@ import { IncomingArrow, OutgoingArrow } from "../../assets/icons";
 export const TransactionDirectionIcon = ({
   isOutgoing,
   ...props
-}: { isOutgoing: boolean } & IconProps) => {
-  return isOutgoing ? (
+}: { isOutgoing: boolean } & IconProps) =>
+  isOutgoing ? (
     <OutgoingArrow data-testid="outgoing-arrow" {...props} />
   ) : (
     <IncomingArrow data-testid="incoming-arrow" {...props} />
   );
-};

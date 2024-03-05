@@ -29,28 +29,26 @@ export const Identicon: React.FC<
     address: RawPkh;
     identiconSize: number;
   } & ChakraProps
-> = ({ address, identiconSize, ...props }) => {
-  return (
-    <Box
-      sx={{
-        canvas: {
-          borderRadius: "4px",
-        },
-      }}
-      zIndex={10}
+> = ({ address, identiconSize, ...props }) => (
+  <Box
+    sx={{
+      canvas: {
+        borderRadius: "4px",
+      },
+    }}
+    zIndex={10}
+    background="white"
+    borderRadius="4px"
+    data-testid="identicon"
+    {...props}
+  >
+    <ReactIdenticons
       background="white"
-      borderRadius="4px"
-      data-testid="identicon"
-      {...props}
-    >
-      <ReactIdenticons
-        background="white"
-        size={identiconSize}
-        string={address}
-        style={{
-          borderRadius: 4,
-        }}
-      />
-    </Box>
-  );
-};
+      size={identiconSize}
+      string={address}
+      style={{
+        borderRadius: 4,
+      }}
+    />
+  </Box>
+);

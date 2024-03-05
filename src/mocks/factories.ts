@@ -38,8 +38,8 @@ export const mockDelegation = (
   delegateAddress: string,
   delegateAlias: string,
   date = new Date()
-) => {
-  return {
+) =>
+  ({
     type: "delegation",
     id: id,
     level: 3278793,
@@ -62,16 +62,14 @@ export const mockDelegation = (
       address: delegateAddress,
     },
     status: "applied",
-  } as DelegationOperation;
-};
+  }) as DelegationOperation;
 
-export const mockTokenTransaction = (id: number) => {
-  return {
+export const mockTokenTransaction = (id: number) =>
+  ({
     from: { address: `mockSender${id}` },
     to: { address: `mockTarget${id}` },
     transactionId: 100 + id,
-  } as TokenTransfer;
-};
+  }) as TokenTransfer;
 
 const validMockPkhs = [
   "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
@@ -102,9 +100,8 @@ export const mockImplicitAddress = (index: number): ImplicitAddress => {
  *
  * @returns A string with the generated account label.
  */
-export const mockAccountLabel = (accountIndex: number): string => {
-  return accountIndex === 0 ? "Account" : `Account ${accountIndex + 1}`;
-};
+export const mockAccountLabel = (accountIndex: number): string =>
+  accountIndex === 0 ? "Account" : `Account ${accountIndex + 1}`;
 
 export const mockPk = (index: number) =>
   `edpkuwYWCugiYG7nMnVUdopFmyc3sbMSiLqsJHTQgGtVhtSdLSw6H${index}`;
@@ -187,14 +184,12 @@ export const mockMultisigWithOperations = (
   signers: string[] = [],
   balance = "0",
   threshold = 3
-): Multisig => {
-  return {
-    address: mockContractAddress(index),
-    pendingOperationsBigmapId: index,
-    signers: signers.map(pkh => ({ type: "implicit", pkh }) as const),
-    threshold,
-  };
-};
+): Multisig => ({
+  address: mockContractAddress(index),
+  pendingOperationsBigmapId: index,
+  signers: signers.map(pkh => ({ type: "implicit", pkh }) as const),
+  threshold,
+});
 
 const validContractAddresses = [
   "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
@@ -208,38 +203,36 @@ export const mockContractAddress = (index: number): ContractAddress => ({
   pkh: validContractAddresses[index],
 });
 
-export const mockNFTToken = (index: number, ownerPkh: string, balance = 1): RawTokenBalance => {
-  return {
+export const mockNFTToken = (index: number, ownerPkh: string, balance = 1): RawTokenBalance => ({
+  id: index,
+  account: {
+    address: ownerPkh,
+  },
+  token: {
     id: index,
-    account: {
-      address: ownerPkh,
+    contract: {
+      address: mockContractAddress(index).pkh,
     },
-    token: {
-      id: index,
-      contract: {
-        address: mockContractAddress(index).pkh,
-      },
-      tokenId: String(index),
-      standard: "fa2",
-      totalSupply: "1",
-      metadata: {
-        name: "Tezzardz #10",
-        creators: ["George Goodwin (@omgidrawedit)"],
-        decimals: "0",
-        royalties: {
-          shares: {
-            tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
-          },
-          decimals: "2",
+    tokenId: String(index),
+    standard: "fa2",
+    totalSupply: "1",
+    metadata: {
+      name: "Tezzardz #10",
+      creators: ["George Goodwin (@omgidrawedit)"],
+      decimals: "0",
+      royalties: {
+        shares: {
+          tz1LLPWMyZ7gKsp3WnLfemyAYW6CoZoozku5: "5",
         },
-        description:
-          "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
-        displayUri: `ipfs://zb2rhXWQ9X95yxQwusNjftDSWVQYbGjFFFFBjJKQZ8uCrNcvV${index}`,
+        decimals: "2",
       },
+      description:
+        "Tezzardz is a collection of 4,200 programmatically, randomly generated, snazzy little fukrs on the Tezos blockchain.",
+      displayUri: `ipfs://zb2rhXWQ9X95yxQwusNjftDSWVQYbGjFFFFBjJKQZ8uCrNcvV${index}`,
     },
-    balance: String(balance),
-  };
-};
+  },
+  balance: String(balance),
+});
 
 export const mockFA2Token = (
   index: number,
@@ -263,58 +256,54 @@ export const mockFA2TokenRaw = (
   decimals = 4,
   symbol = "KL2",
   name = "Klondike2"
-): RawTokenBalance => {
-  return {
-    id: 10898270846977,
-    account: {
-      address: owner,
+): RawTokenBalance => ({
+  id: 10898270846977,
+  account: {
+    address: owner,
+  },
+  token: {
+    id: 10898194300929,
+    contract: {
+      address: mockContractAddress(index).pkh,
     },
-    token: {
-      id: 10898194300929,
-      contract: {
-        address: mockContractAddress(index).pkh,
-      },
-      tokenId: String(index),
-      standard: "fa2",
-      totalSupply: "13000000000",
-      metadata: {
-        name,
-        symbol,
-        decimals: String(decimals),
-      },
+    tokenId: String(index),
+    standard: "fa2",
+    totalSupply: "13000000000",
+    metadata: {
+      name,
+      symbol,
+      decimals: String(decimals),
     },
-    balance: String(balance),
-    transfersCount: 27,
-    firstLevel: 288245,
-    firstTime: "2022-03-24T15:36:50Z",
-    lastLevel: 2247548,
-    lastTime: "2023-03-31T11:19:01Z",
-  };
-};
+  },
+  balance: String(balance),
+  transfersCount: 27,
+  firstLevel: 288245,
+  firstTime: "2022-03-24T15:36:50Z",
+  lastLevel: 2247548,
+  lastTime: "2023-03-31T11:19:01Z",
+});
 
-export const mockFA1TokenRaw = (index: number, owner: RawPkh, balance = 1): RawTokenBalance => {
-  return {
-    id: 10897662672897,
-    account: {
-      address: owner,
+export const mockFA1TokenRaw = (index: number, owner: RawPkh, balance = 1): RawTokenBalance => ({
+  id: 10897662672897,
+  account: {
+    address: owner,
+  },
+  token: {
+    id: 10897625972737,
+    contract: {
+      address: mockContractAddress(index).pkh,
     },
-    token: {
-      id: 10897625972737,
-      contract: {
-        address: mockContractAddress(index).pkh,
-      },
-      tokenId: "0",
-      standard: "fa1.2",
-      totalSupply: "13000000",
-    },
-    balance: String(balance),
-    transfersCount: 28,
-    firstLevel: 288229,
-    firstTime: "2022-03-24T15:32:10Z",
-    lastLevel: 2215201,
-    lastTime: "2023-03-27T13:30:37Z",
-  };
-};
+    tokenId: "0",
+    standard: "fa1.2",
+    totalSupply: "13000000",
+  },
+  balance: String(balance),
+  transfersCount: 28,
+  firstLevel: 288229,
+  firstTime: "2022-03-24T15:32:10Z",
+  lastLevel: 2215201,
+  lastTime: "2023-03-27T13:30:37Z",
+});
 
 export const mockNFTRaw = (
   index: number,
@@ -381,37 +370,29 @@ export const mockNftOperation = (index: number): FA2Transfer => ({
 
 export const mockFA2Operation = mockNftOperation;
 
-export const mockDelegationOperation = (index: number): Delegation => {
-  return {
-    type: "delegation",
-    sender: mockImplicitAddress(index),
-    recipient: mockImplicitAddress(index + 1),
-  };
-};
+export const mockDelegationOperation = (index: number): Delegation => ({
+  type: "delegation",
+  sender: mockImplicitAddress(index),
+  recipient: mockImplicitAddress(index + 1),
+});
 
-export const mockUndelegationOperation = (index: number): Undelegation => {
-  return {
-    type: "undelegation",
-    sender: mockImplicitAddress(index),
-  };
-};
+export const mockUndelegationOperation = (index: number): Undelegation => ({
+  type: "undelegation",
+  sender: mockImplicitAddress(index),
+});
 
 export const mockContractOrigination = (
   index: number,
   storage = {},
   code: MichelsonV1Expression[] = []
-): ContractOrigination => {
-  return {
-    type: "contract_origination",
-    storage: storage,
-    code: code,
-    sender: mockImplicitAddress(index),
-  };
-};
+): ContractOrigination => ({
+  type: "contract_origination",
+  storage: storage,
+  code: code,
+  sender: mockImplicitAddress(index),
+});
 
-export const mockContact = (index: number, label?: string): Contact => {
-  return {
-    name: label || `Contact ${index}`,
-    pkh: mockImplicitAddress(index).pkh,
-  };
-};
+export const mockContact = (index: number, label?: string): Contact => ({
+  name: label || `Contact ${index}`,
+  pkh: mockImplicitAddress(index).pkh,
+});

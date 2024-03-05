@@ -18,12 +18,10 @@ import { derivePublicKeyPair, getFingerPrint } from "../tezos";
 
 const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
 
-export const useReset = () => {
-  return () => {
-    localStorage.clear();
+export const useReset = () => () => {
+  localStorage.clear();
 
-    window.location.reload();
-  };
+  window.location.reload();
 };
 
 /**

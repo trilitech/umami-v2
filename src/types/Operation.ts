@@ -89,15 +89,13 @@ const makeContractCallOperation = (
   entrypoint: string,
   args: MichelsonV1Expression,
   amount = "0" // Most of the time, we don't need to send any tez on contract calls
-): ContractCall => {
-  return {
-    type: "contract_call",
-    contract,
-    entrypoint,
-    args,
-    amount,
-  };
-};
+): ContractCall => ({
+  type: "contract_call",
+  contract,
+  entrypoint,
+  args,
+  amount,
+});
 
 export const headlessLambda = (lambda: MichelsonV1Expression[]): MichelsonV1Expression[] => {
   if (isEqual(lambda.slice(0, 2), LAMBDA_HEADER)) {
@@ -225,28 +223,26 @@ const contractLambda = (
   operation: FA12Transfer | FA2Transfer,
   argTypes: MichelsonV1Expression,
   transactionParameter: TransactionOperationParameter
-) => {
-  return [
-    ...LAMBDA_HEADER,
-    {
-      prim: "PUSH",
-      args: [
-        { prim: "address" },
-        { string: operation.contract.pkh + "%" + transactionParameter.entrypoint },
-      ],
-    },
-    {
-      prim: "CONTRACT",
-      args: [argTypes],
-    },
-    // If contract is not valid then fail and rollback the whole transaction
-    [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
-    { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
-    { prim: "PUSH", args: [argTypes, transactionParameter.value] },
-    { prim: "TRANSFER_TOKENS" },
-    { prim: "CONS" },
-  ];
-};
+) => [
+  ...LAMBDA_HEADER,
+  {
+    prim: "PUSH",
+    args: [
+      { prim: "address" },
+      { string: operation.contract.pkh + "%" + transactionParameter.entrypoint },
+    ],
+  },
+  {
+    prim: "CONTRACT",
+    args: [argTypes],
+  },
+  // If contract is not valid then fail and rollback the whole transaction
+  [{ prim: "IF_NONE", args: [[{ prim: "UNIT" }, { prim: "FAILWITH" }], []] }],
+  { prim: "PUSH", args: [{ prim: "mutez" }, { int: "0" }] },
+  { prim: "PUSH", args: [argTypes, transactionParameter.value] },
+  { prim: "TRANSFER_TOKENS" },
+  { prim: "CONS" },
+];
 export const makeFA12TransactionParameter = ({
   sender,
   recipient,

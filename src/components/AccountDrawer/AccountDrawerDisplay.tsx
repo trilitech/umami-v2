@@ -38,31 +38,29 @@ const RoundButton: React.FC<{
   label: string;
   icon: ReactElement;
   onClick?: () => void;
-}> = ({ icon, label, onClick = () => {} }) => {
-  return (
-    <Box
-      className="account-drawer-cta-button"
-      color={colors.gray[300]}
-      textAlign="center"
-      _hover={{ color: colors.green }}
-      cursor="pointer"
-      marginX="24px"
-      onClick={onClick}
-    >
-      <IconButton
-        className="account-drawer-cta-button-icon"
-        marginBottom="8px"
-        aria-label="button"
-        icon={icon}
-        size="lg"
-        variant="circle_without_color"
-      />
-      <Text cursor="pointer" size="sm">
-        {label}
-      </Text>
-    </Box>
-  );
-};
+}> = ({ icon, label, onClick = () => {} }) => (
+  <Box
+    className="account-drawer-cta-button"
+    color={colors.gray[300]}
+    textAlign="center"
+    _hover={{ color: colors.green }}
+    cursor="pointer"
+    marginX="24px"
+    onClick={onClick}
+  >
+    <IconButton
+      className="account-drawer-cta-button-icon"
+      marginBottom="8px"
+      aria-label="button"
+      icon={icon}
+      size="lg"
+      variant="circle_without_color"
+    />
+    <Text cursor="pointer" size="sm">
+      {label}
+    </Text>
+  </Box>
+);
 
 export const AccountDrawerDisplay: React.FC<Props> = ({
   onSend,

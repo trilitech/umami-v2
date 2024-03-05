@@ -9,13 +9,11 @@ import {
 } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 
-const fixture = (props: Parameters<typeof SignPageHeader>[0]) => {
-  return (
-    <Modal isOpen={true} onClose={() => {}}>
-      <SignPageHeader {...props} />
-    </Modal>
-  );
-};
+const fixture = (props: Parameters<typeof SignPageHeader>[0]) => (
+  <Modal isOpen={true} onClose={() => {}}>
+    <SignPageHeader {...props} />
+  </Modal>
+);
 describe("<SignPageHeader />", () => {
   describe("goBack", () => {
     it("is hidden if goBack is not provided", () => {

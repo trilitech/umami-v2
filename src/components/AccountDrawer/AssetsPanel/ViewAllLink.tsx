@@ -11,21 +11,19 @@ import { RawPkh } from "../../../types/Address";
  * @param to - route to navigate to (/nfts, /tokens, etc.).
  * @param owner - address of the account for which the drawer was opened.
  */
-export const ViewAllLink = ({ to, owner, ...props }: { to: string; owner: RawPkh } & FlexProps) => {
-  return (
-    <Center {...props}>
-      <Link
-        as={ReactRouterLink}
-        color={colors.gray[300]}
-        stroke={colors.gray[450]}
-        _hover={{ color: colors.green, stroke: colors.green }}
-        to={`${to}?accounts=${owner}`}
-      >
-        <RefreshClockIcon display="inline" stroke="inherit" />
-        <Text display="inline" size="sm">
-          &nbsp;View All
-        </Text>
-      </Link>
-    </Center>
-  );
-};
+export const ViewAllLink = ({ to, owner, ...props }: { to: string; owner: RawPkh } & FlexProps) => (
+  <Center {...props}>
+    <Link
+      as={ReactRouterLink}
+      color={colors.gray[300]}
+      stroke={colors.gray[450]}
+      _hover={{ color: colors.green, stroke: colors.green }}
+      to={`${to}?accounts=${owner}`}
+    >
+      <RefreshClockIcon display="inline" stroke="inherit" />
+      <Text display="inline" size="sm">
+        &nbsp;View All
+      </Text>
+    </Link>
+  </Center>
+);

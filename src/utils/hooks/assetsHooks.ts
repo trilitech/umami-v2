@@ -80,11 +80,10 @@ const useTezToDollar = () => {
   const rate = useConversionRate();
 
   // tezosBalance is in tez
-  return (tezosBalance: string) => {
-    return rate === null
+  return (tezosBalance: string) =>
+    rate === null
       ? null
       : new BigNumber(tezosBalance).multipliedBy(rate).decimalPlaces(2, BigNumber.ROUND_UP);
-  };
 };
 
 export const useGetDollarBalance = () => {
@@ -130,25 +129,15 @@ export const useGetAccountBalance = () => {
   return (pkh: string) => mutezBalances[pkh];
 };
 
-export const useBakerList = (): Delegate[] => {
-  return useAppSelector(state => state.assets.bakers);
-};
+export const useBakerList = (): Delegate[] => useAppSelector(state => state.assets.bakers);
 
 export const useGetBaker = () => {
   const bakers = useBakerList();
-  return (rawPkh: string) => {
-    return bakers.find(baker => baker.address === rawPkh);
-  };
+  return (rawPkh: string) => bakers.find(baker => baker.address === rawPkh);
 };
 
-export const useRefetchTrigger = () => {
-  return useAppSelector(state => state.assets.refetchTrigger);
-};
+export const useRefetchTrigger = () => useAppSelector(state => state.assets.refetchTrigger);
 
-export const useIsLoading = () => {
-  return useAppSelector(state => state.assets.isLoading);
-};
+export const useIsLoading = () => useAppSelector(state => state.assets.isLoading);
 
-export const useLastTimeUpdated = () => {
-  return useAppSelector(state => state.assets.lastTimeUpdated);
-};
+export const useLastTimeUpdated = () => useAppSelector(state => state.assets.lastTimeUpdated);

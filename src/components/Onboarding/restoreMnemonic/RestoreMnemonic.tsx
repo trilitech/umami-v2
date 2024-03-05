@@ -91,13 +91,11 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
                 onChange={event => handleMnemonicSizeChange(event.target.value)}
                 value={mnemonicSize}
               >
-                {mnemonicSizes.reverse().map(value => {
-                  return (
-                    <option key={value} value={value}>
-                      {value} Words
-                    </option>
-                  );
-                })}
+                {mnemonicSizes.reverse().map(value => (
+                  <option key={value} value={value}>
+                    {value} Words
+                  </option>
+                ))}
               </Select>
 
               <Grid gridGap={3} gridTemplateColumns="repeat(3, 1fr)" paddingBottom="20px">

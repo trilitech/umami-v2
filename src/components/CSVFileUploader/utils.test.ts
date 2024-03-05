@@ -7,9 +7,8 @@ import { TokenLookup } from "../../utils/hooks/tokensHooks";
 const emptyTokenLookup = (_contract: RawPkh, _tokenId: string) => undefined;
 const sender = mockImplicitAddress(0);
 
-const fixture = (row: string[], tokenLookup?: TokenLookup) => {
-  return parseOperation(sender, row, tokenLookup || emptyTokenLookup);
-};
+const fixture = (row: string[], tokenLookup?: TokenLookup) =>
+  parseOperation(sender, row, tokenLookup || emptyTokenLookup);
 
 describe("csv utils", () => {
   describe("validations", () => {

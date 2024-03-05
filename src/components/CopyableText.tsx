@@ -16,17 +16,15 @@ export const CopyableAddress: React.FC<
     copyable?: boolean;
     iconColor?: string;
   } & FlexProps
-> = ({ pkh, formatAddress = true, copyable = true, iconColor = colors.gray[600], ...rest }) => {
-  return (
-    <CopyableText
-      copyValue={copyable ? pkh : undefined}
-      displayText={formatAddress ? formatPkh(pkh) : pkh}
-      iconColor={iconColor}
-      toastMessage="Address copied to clipboard"
-      {...rest}
-    />
-  );
-};
+> = ({ pkh, formatAddress = true, copyable = true, iconColor = colors.gray[600], ...rest }) => (
+  <CopyableText
+    copyValue={copyable ? pkh : undefined}
+    displayText={formatAddress ? formatPkh(pkh) : pkh}
+    iconColor={iconColor}
+    toastMessage="Address copied to clipboard"
+    {...rest}
+  />
+);
 
 const CopyableText: React.FC<
   {
@@ -82,29 +80,27 @@ const CopyableText: React.FC<
 const ToastBody: React.FC<{
   message: string;
   onClose: () => void;
-}> = ({ message, onClose }) => {
-  return (
-    <Flex
-      alignItems="center"
-      justifyContent="space-between"
-      padding={2}
-      borderRadius="4px"
-      backgroundColor="white"
-    >
-      <Flex alignItems="center">
-        <Icon as={BsCheckCircle} margin={1} color={colors.green} />
-        <Text color="black">{message}</Text>
-      </Flex>
-
-      <Icon
-        as={RxCross1}
-        color="black"
-        _hover={{
-          color: colors.gray[600],
-        }}
-        cursor="pointer"
-        onClick={onClose}
-      />
+}> = ({ message, onClose }) => (
+  <Flex
+    alignItems="center"
+    justifyContent="space-between"
+    padding={2}
+    borderRadius="4px"
+    backgroundColor="white"
+  >
+    <Flex alignItems="center">
+      <Icon as={BsCheckCircle} margin={1} color={colors.green} />
+      <Text color="black">{message}</Text>
     </Flex>
-  );
-};
+
+    <Icon
+      as={RxCross1}
+      color="black"
+      _hover={{
+        color: colors.gray[600],
+      }}
+      cursor="pointer"
+      onClick={onClose}
+    />
+  </Flex>
+);

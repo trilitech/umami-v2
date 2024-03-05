@@ -162,9 +162,7 @@ const defaultTokenName = (asset: Token): string => {
   }
 };
 
-export const tokenNameSafe = (token: Token): string => {
-  return tokenName(token) || defaultTokenName(token);
-};
+export const tokenNameSafe = (token: Token): string => tokenName(token) || defaultTokenName(token);
 
 export const tokenName = (token: Token): string | undefined => token.metadata?.name;
 
@@ -227,17 +225,12 @@ export const tokenPrettyAmount = (
   return `${result}${trailingSymbol}`;
 };
 
-export const artifactUri = (nft: NFT): string => {
-  return nft.metadata.artifactUri || nft.displayUri;
-};
+export const artifactUri = (nft: NFT): string => nft.metadata.artifactUri || nft.displayUri;
 
-export const thumbnailUri = (nft: NFT): string => {
-  return nft.metadata.thumbnailUri || nft.displayUri;
-};
+export const thumbnailUri = (nft: NFT): string => nft.metadata.thumbnailUri || nft.displayUri;
 
-export const mimeType = (nft: NFT) => {
-  return nft.metadata.formats?.find(format => format.uri === artifactUri(nft))?.mimeType;
-};
+export const mimeType = (nft: NFT) =>
+  nft.metadata.formats?.find(format => format.uri === artifactUri(nft))?.mimeType;
 
 export const royalties = (nft: NFT): Array<{ address: string; share: number }> => {
   const royalties = nft.metadata.royalties;
@@ -246,20 +239,19 @@ export const royalties = (nft: NFT): Array<{ address: string; share: number }> =
   }
 
   const totalShares = Math.pow(10, Number(royalties.decimals));
-  const shares = Object.entries(royalties.shares).map(([address, share]) => {
-    return { address: address, share: (Number(share) * 100) / totalShares };
-  });
+  const shares = Object.entries(royalties.shares).map(([address, share]) => ({
+    address: address,
+    share: (Number(share) * 100) / totalShares,
+  }));
   shares.sort((a, b) => (a.share < b.share ? 1 : -1));
   return shares;
 };
 
-export const metadataUri = (token: Token, network: Network) => {
-  return `${tokenUri(token, network)}/metadata`;
-};
+export const metadataUri = (token: Token, network: Network) =>
+  `${tokenUri(token, network)}/metadata`;
 
-export const tokenUri = ({ contract, tokenId }: Token, network: Network) => {
-  return `${network.tzktExplorerUrl}/${contract}/tokens/${tokenId}`;
-};
+export const tokenUri = ({ contract, tokenId }: Token, network: Network) =>
+  `${network.tzktExplorerUrl}/${contract}/tokens/${tokenId}`;
 
 const DEFAULT_FA1_NAME = "FA1.2 token";
 const DEFAULT_FA2_NAME = "FA2 token";

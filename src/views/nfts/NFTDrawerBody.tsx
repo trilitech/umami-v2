@@ -13,20 +13,18 @@ export const NFTDrawerBody = ({
 }: {
   nft: NFTWithOwner;
   onCloseDrawer: () => void;
-}) => {
-  return (
-    <>
-      <Flex
-        alignItems="center"
-        justifyContent="space-between"
-        paddingBottom="22px"
-        color={colors.gray[400]}
-        data-testid="nft-drawer-body"
-      >
-        <AddressPill address={parsePkh(nft.owner)} />
-        <CloseDrawerButton onClose={onCloseDrawer} />
-      </Flex>
-      <NFTDrawerCard nft={nft} />
-    </>
-  );
-};
+}) => (
+  <>
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      paddingBottom="22px"
+      color={colors.gray[400]}
+      data-testid="nft-drawer-body"
+    >
+      <AddressPill address={parsePkh(nft.owner)} />
+      <CloseDrawerButton onClose={onCloseDrawer} />
+    </Flex>
+    <NFTDrawerCard nft={nft} />
+  </>
+);

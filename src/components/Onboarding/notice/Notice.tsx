@@ -31,13 +31,11 @@ export const Notice: React.FC<{
     >
       <Box>
         <OrderedList spacing="16px" variant="onboardingNotice">
-          {noticeItems.map((item, index) => {
-            return (
-              <ListItem key={index} fontSize="16px" fontWeight={600}>
-                {item.content}
-              </ListItem>
-            );
-          })}
+          {noticeItems.map((item, index) => (
+            <ListItem key={index} fontSize="16px" fontWeight={600}>
+              {item.content}
+            </ListItem>
+          ))}
         </OrderedList>
         <Button
           width="100%"

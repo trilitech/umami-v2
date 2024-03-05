@@ -5,11 +5,9 @@ import { accountsSlice } from "../slices/accountsSlice";
 import { multisigsSlice } from "../slices/multisigsSlice";
 import { RootState } from "../store";
 
-export const renameAccount = (
-  account: Account,
-  newName: string
-): ThunkAction<void, RootState, unknown, AnyAction> => {
-  return (dispatch, getState) => {
+export const renameAccount =
+  (account: Account, newName: string): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch, getState) => {
     const { accounts, multisigs, contacts } = getState();
 
     const isMultisig = account.type === "multisig";
@@ -28,4 +26,3 @@ export const renameAccount = (
       dispatch(accountsSlice.actions.renameAccount({ newName, account }));
     }
   };
-};
