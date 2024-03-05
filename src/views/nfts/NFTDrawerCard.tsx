@@ -95,6 +95,7 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTWithOwner }) => {
           {Number(nft.balance) > 1 && (
             <Text
               position="absolute"
+              zIndex={3}
               display="inline"
               height="24px"
               marginTop="-38px"
