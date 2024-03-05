@@ -42,7 +42,7 @@ jobs:
         run: yarn lint:ci
 
       - name: Run tests
-        uses: ArtiomTr/jest-coverage-report-action@v2.2.6
+        uses: ArtiomTr/jest-coverage-report-action@v2.3.0
         with:
           skip-step: install
           test-script: yarn test
