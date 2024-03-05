@@ -96,6 +96,7 @@ export const NFTsGrid: FC<{ owner: RawPkh; nfts: NFTBalance[] } & SimpleGridProp
                   {Number(nft.balance) > 1 && (
                     <Text
                       position="absolute"
+                      zIndex={3}
                       display="inline"
                       height="20px"
                       marginTop="-24px"
