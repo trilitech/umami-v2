@@ -15,17 +15,17 @@ import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { parseImplicitPkh } from "../../../../types/Address";
 import { MAINNET } from "../../../../types/Network";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
-import { useGetSecretKey } from "../../../../utils/hooks/accountUtils";
+import * as getAccountDataHooks from "../../../../utils/hooks/getAccountDataHooks";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../../utils/redux/store";
 import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezos";
 
-jest.mock("../../../../utils/hooks/accountUtils");
-
 const MOCK_TEZOS_TOOLKIT = {};
 beforeEach(() => {
-  jest.mocked(useGetSecretKey).mockReturnValue(() => Promise.resolve("mockkey"));
+  jest
+    .spyOn(getAccountDataHooks, "useGetSecretKey")
+    .mockReturnValue(() => Promise.resolve("mockkey"));
   jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
 });
 

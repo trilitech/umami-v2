@@ -4,10 +4,10 @@ import React from "react";
 import { NoticeIcon } from "../../../assets/icons";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
 
 export const Notice: React.FC<{
-  goToStep: (step: Step) => void;
+  goToStep: (step: OnboardingStep) => void;
 }> = ({ goToStep }) => {
   const noticeItems = [
     {
@@ -44,7 +44,7 @@ export const Notice: React.FC<{
           marginTop="28px"
           onClick={() =>
             goToStep({
-              type: StepType.showSeedphrase,
+              type: "showSeedphrase",
               account: { type: "mnemonic", mnemonic: generate24WordMnemonic() },
             })
           }
@@ -55,7 +55,7 @@ export const Notice: React.FC<{
         <Button
           width="100%"
           marginTop="16px"
-          onClick={() => goToStep({ type: StepType.restoreMnemonic })}
+          onClick={() => goToStep({ type: "restoreMnemonic" })}
           size="lg"
           variant="tertiary"
         >

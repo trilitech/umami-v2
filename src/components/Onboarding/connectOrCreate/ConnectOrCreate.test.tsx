@@ -1,6 +1,5 @@
 import { ConnectOrCreate } from "./ConnectOrCreate";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { StepType } from "../useOnboardingModal";
 
 const goToStepMock = jest.fn();
 
@@ -17,7 +16,7 @@ describe("<ConnectOrCreate />", () => {
     await act(() => user.click(confirmBtn));
 
     expect(goToStepMock).toHaveBeenCalledTimes(1);
-    expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.notice });
+    expect(goToStepMock).toHaveBeenCalledWith({ type: "notice" });
   });
 
   test("I already have a wallet", async () => {
@@ -30,7 +29,7 @@ describe("<ConnectOrCreate />", () => {
     await act(() => user.click(confirmBtn));
 
     expect(goToStepMock).toHaveBeenCalledTimes(1);
-    expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.connectOptions });
+    expect(goToStepMock).toHaveBeenCalledWith({ type: "connectOptions" });
   });
 
   test("Social login", async () => {

@@ -68,7 +68,7 @@ const AccountGroup: React.FC<{
   if (isLastImplicitAccounts) {
     description =
       "Removing all your accounts will off-board you from Umami. " +
-      "This will remove or reset all customised settings to their defaults. " +
+      "This will remove or reset all customized settings to their defaults. " +
       "Personal data (including saved contacts, password and accounts) won't be affected.";
     buttonLabel = "Remove & Off-board";
   } else if (isMnemonic) {

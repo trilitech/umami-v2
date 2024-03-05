@@ -4,7 +4,7 @@ import { Prefix } from "@taquito/utils";
 import { SecretKeyAccount } from "../../../types/Account";
 import { parseImplicitPkh } from "../../../types/Address";
 import { encrypt } from "../../crypto/AES";
-import { getPkAndPkhFromSk } from "../../tezos";
+import { getPublicKeyPairFromSk } from "../../tezos";
 import { accountsSlice } from "../slices/accountsSlice";
 import { AppDispatch } from "../store";
 
@@ -33,7 +33,7 @@ export const makeSecretKeyAccount = async ({
   label: string;
   password: string;
 }) => {
-  const { pk, pkh } = await getPkAndPkhFromSk(secretKey);
+  const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
   const encryptedSecretKey = await encrypt(secretKey, password);
   const account = {
     type: "secret_key" as const,

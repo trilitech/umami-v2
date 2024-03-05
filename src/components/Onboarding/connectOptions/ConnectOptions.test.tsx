@@ -3,11 +3,13 @@ import { mockSocialAccount } from "../../../mocks/factories";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { accountsActions } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";
-import { Step, StepType } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn();
 
-const fixture = (goToStep: (step: Step) => void) => <ConnectOptions goToStep={goToStep} />;
+const fixture = (goToStep: (step: OnboardingStep) => void) => (
+  <ConnectOptions goToStep={goToStep} />
+);
 
 describe("<ConnectOptions />", () => {
   describe("restore from backup", () => {
@@ -24,7 +26,7 @@ describe("<ConnectOptions />", () => {
       );
 
       expect(goToStepMock).toHaveBeenCalledTimes(1);
-      expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreBackup });
+      expect(goToStepMock).toHaveBeenCalledWith({ type: "restoreBackup" });
     });
 
     it("hides the button if a user tries to add another account", () => {
@@ -47,7 +49,7 @@ describe("<ConnectOptions />", () => {
     );
 
     expect(goToStepMock).toHaveBeenCalledTimes(1);
-    expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreMnemonic });
+    expect(goToStepMock).toHaveBeenCalledWith({ type: "restoreMnemonic" });
   });
 
   it("navigates to import secret key step", async () => {
@@ -61,7 +63,7 @@ describe("<ConnectOptions />", () => {
     );
 
     expect(goToStepMock).toHaveBeenCalledTimes(1);
-    expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreSecretKey });
+    expect(goToStepMock).toHaveBeenCalledWith({ type: "restoreSecretKey" });
   });
 
   it("navigates to connect ledger step", async () => {
@@ -76,7 +78,7 @@ describe("<ConnectOptions />", () => {
 
     expect(goToStepMock).toHaveBeenCalledTimes(1);
     expect(goToStepMock).toHaveBeenCalledWith({
-      type: StepType.nameAccount,
+      type: "nameAccount",
       account: { type: "ledger" },
     });
   });

@@ -15,9 +15,9 @@ import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { isEncryptedSecretKeyPrefix } from "../../../utils/redux/thunks/secretKeyAccount";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
 
-export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: OnboardingStep) => void }) => {
   const [isEncrypted, setIsEncrypted] = useState(false);
   const { handleAsyncAction } = useAsyncActionHandler();
 
@@ -44,7 +44,7 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: Step) => void 
         const unencryptedSecretKey = await signer.secretKey();
 
         goToStep({
-          type: StepType.nameAccount,
+          type: "nameAccount",
           account: { type: "secret_key", secretKey: unencryptedSecretKey },
         });
       } catch (error: any) {

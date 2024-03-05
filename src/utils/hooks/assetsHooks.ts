@@ -1,7 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
 
-import { getTotalTezBalance } from "./accountUtils";
 import { useGetToken } from "./tokensHooks";
 import { RawPkh } from "../../types/Address";
 import { Delegate } from "../../types/Delegate";
@@ -105,15 +104,21 @@ export const useGetDollarBalance = () => {
   };
 };
 
-// Returns the total balance in both tez and dollar
+/**
+ * @returns Total balance across all accounts in both mutez and USD
+ *          or null if there are no balances (not fetched yet, for example)
+ */
 export const useTotalBalance = () => {
-  const balances = useAppSelector(s => s.assets.balances.mutez);
+  const balancesMap = useAppSelector(s => s.assets.balances.mutez);
   const tezToDollar = useTezToDollar();
-  const totalBalance = getTotalTezBalance(balances);
 
-  if (totalBalance == null) {
+  const balances = Object.values(balancesMap);
+
+  if (balances.length === 0) {
     return null;
   }
+
+  const totalBalance = balances.reduce((acc, curr) => acc.plus(curr!), BigNumber(0));
 
   const usdBalance = tezToDollar(mutezToTez(totalBalance));
 

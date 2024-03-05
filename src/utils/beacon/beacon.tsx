@@ -1,26 +1,13 @@
-import {
-  ExtendedP2PPairingResponse,
-  ExtendedPeerInfo,
-  Serializer,
-  WalletClient,
-} from "@airgap/beacon-wallet";
+import { ExtendedP2PPairingResponse, ExtendedPeerInfo, Serializer } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 
-import { BeaconNotification } from "./BeaconNotification";
+import { BeaconRequestNotification } from "./BeaconRequestNotification";
 import { makePeerInfo } from "./types";
+import { WalletClient } from "./WalletClient";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { useRemoveConnection } from "../hooks/beaconHooks";
-
-const makeClient = () =>
-  new WalletClient({
-    name: "Umami",
-    iconUrl: "",
-    appUrl: "https://umamiwallet.com/",
-  });
-
-export const walletClient = makeClient();
 
 const PEERS_QUERY_KEY = "beaconPeers";
 
@@ -33,7 +20,7 @@ export const usePeers = () =>
   useQuery({
     queryKey: [PEERS_QUERY_KEY],
     // getPeers actually returns ExtendedPeerInfo (with the senderId)
-    queryFn: () => walletClient.getPeers() as Promise<ExtendedPeerInfo[]>,
+    queryFn: () => WalletClient.getPeers() as Promise<ExtendedPeerInfo[]>,
   });
 
 export const useRemovePeer = () => {
@@ -41,8 +28,7 @@ export const useRemovePeer = () => {
   const removeConnectionFromBeaconSlice = useRemoveConnection();
 
   return (peerInfo: ExtendedPeerInfo) =>
-    walletClient
-      .removePeer(peerInfo as ExtendedP2PPairingResponse)
+    WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse)
       .then(() => removeConnectionFromBeaconSlice(peerInfo.senderId))
       .then(refresh);
 };
@@ -55,7 +41,7 @@ export const useAddPeer = () => {
     new Serializer()
       .deserialize(payload)
       .then(makePeerInfo)
-      .then(peer => walletClient.addPeer(peer))
+      .then(peer => WalletClient.addPeer(peer))
       .then(refresh)
       .catch(e => {
         toast({
@@ -73,11 +59,10 @@ export const BeaconProvider: React.FC<{
   const { openWith, onClose } = useContext(DynamicModalContext);
 
   useEffect(() => {
-    walletClient
-      .init()
+    WalletClient.init()
       .then(() =>
-        walletClient.connect(message => {
-          void openWith(<BeaconNotification message={message} onClose={onClose} />);
+        WalletClient.connect(message => {
+          void openWith(<BeaconRequestNotification message={message} onClose={onClose} />);
         })
       )
       .catch(console.error);
@@ -87,9 +72,9 @@ export const BeaconProvider: React.FC<{
 };
 
 export const resetBeacon = async () => {
-  // Until walletClient.destroy is fixed
-  await walletClient.removeAllAccounts();
-  await walletClient.removeAllAppMetadata();
-  await walletClient.removeAllPeers();
-  await walletClient.removeAllPermissions();
+  // Until WalletClient.destroy is fixed
+  await WalletClient.removeAllAccounts();
+  await WalletClient.removeAllAppMetadata();
+  await WalletClient.removeAllPeers();
+  await WalletClient.removeAllPermissions();
 };

@@ -6,7 +6,7 @@ import { restoreRevealedPublicKeyPairs, useRestoreRevealedMnemonicAccounts } fro
 import { accountsSlice } from "./redux/slices/accountsSlice";
 import { store } from "./redux/store";
 import { checkAccountsAndUpsertContact } from "./redux/thunks/checkAccountsAndUpsertContact";
-import { addressExists, getFingerPrint } from "./tezos";
+import * as tezosHelpers from "./tezos/helpers";
 import { mockContact, mockSocialAccount } from "../mocks/factories";
 import { fakeAddressExists } from "../mocks/helpers";
 import { mnemonic1 } from "../mocks/mockMnemonic";
@@ -14,8 +14,9 @@ import { renderHook } from "../mocks/testUtils";
 import { ImplicitAccount } from "../types/Account";
 import { MAINNET } from "../types/Network";
 
-const addressExistsMock = jest.mocked(addressExists);
-const getFingerPrintMock = jest.mocked(getFingerPrint);
+jest.unmock("./tezos");
+
+const addressExistsMock = jest.spyOn(tezosHelpers, "addressExists");
 
 const testPublicKeys = [
   {
@@ -33,7 +34,7 @@ const testPublicKeys = [
 ];
 
 beforeEach(() => {
-  getFingerPrintMock.mockResolvedValue("mockFingerPrint");
+  jest.spyOn(tezosHelpers, "getFingerPrint").mockResolvedValue("mockFingerPrint");
 });
 
 describe("restoreRevealedPublicKeyPairs", () => {

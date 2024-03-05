@@ -6,15 +6,16 @@ import { act, renderHook } from "../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import { AVAILABLE_DERIVATION_PATHS, makeDerivationPath } from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
-import { derivePublicKeyPair } from "../mnemonic";
 import { accountsSlice } from "../redux/slices/accountsSlice";
 import { store } from "../redux/store";
-import { addressExists, getFingerPrint } from "../tezos";
+import * as tezosHelpers from "../tezos/helpers";
+
+jest.unmock("../tezos");
 
 describe("setAccountDataHooks", () => {
   describe("mnemonic accounts", () => {
-    const addressExistsMock = jest.mocked(addressExists);
-    const getFingerPrintMock = jest.mocked(getFingerPrint);
+    const addressExistsMock = jest.spyOn(tezosHelpers, "addressExists");
+    const getFingerPrintMock = jest.spyOn(tezosHelpers, "getFingerPrint");
     const encryptMock = jest.spyOn(functionsToMock, "encrypt");
     const decryptMock = jest.spyOn(functionsToMock, "decrypt");
 
@@ -26,7 +27,7 @@ describe("setAccountDataHooks", () => {
     const MOCK_ENCRYPTED = { mock: "encrypted" } as any;
 
     const mnemonicAccount = async (index: number, label: string): Promise<ImplicitAccount> => {
-      const pubKeyPair = await derivePublicKeyPair(
+      const pubKeyPair = await tezosHelpers.derivePublicKeyPair(
         mnemonic1,
         makeDerivationPath(DERIVATION_PATH_PATTERN, index)
       );
@@ -67,7 +68,7 @@ describe("setAccountDataHooks", () => {
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
-        expect(getFingerPrint).toHaveBeenCalledWith(mnemonic1);
+        expect(tezosHelpers.getFingerPrint).toHaveBeenCalledWith(mnemonic1);
         // Encrypts given mnemonic with the given password.
         expect(encryptMock).toHaveBeenCalledWith(mnemonic1, PASSWORD);
       });
@@ -105,7 +106,7 @@ describe("setAccountDataHooks", () => {
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
-        expect(getFingerPrint).toHaveBeenCalledWith(mnemonic1);
+        expect(tezosHelpers.getFingerPrint).toHaveBeenCalledWith(mnemonic1);
         // Encrypts given mnemonic with the given password.
         expect(encryptMock).toHaveBeenCalledWith(mnemonic1, PASSWORD);
       });

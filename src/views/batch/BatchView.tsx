@@ -2,7 +2,6 @@ import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
 import type { OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
-import { compact } from "lodash";
 import pluralize from "pluralize";
 import React, { useContext, useEffect } from "react";
 
@@ -20,7 +19,6 @@ import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { AccountOperations } from "../../types/AccountOperations";
 import { Operation } from "../../types/Operation";
-import { Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
 import { useClearBatch, useRemoveBatchItem } from "../../utils/hooks/batchesHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
@@ -82,19 +80,6 @@ const ClearBatchConfirmationModal = ({ sender }: { sender: Account }) => {
       title="Delete Batch"
     />
   );
-};
-
-export const tokenTitle = (token: Token | undefined, amount: string) => {
-  if (!token) {
-    return `${amount} Unknown Token`;
-  }
-  const name = tokenName(token);
-  const prettyAmount = tokenPrettyAmount(amount, token, { showSymbol: false });
-
-  // don't show the symbol if the token name is present
-  const symbol = name ? undefined : tokenSymbol(token);
-
-  return compact([prettyAmount, symbol, name]).join(" ");
 };
 
 const SUCCESSFUL_ESTIMATION_RESULT = {

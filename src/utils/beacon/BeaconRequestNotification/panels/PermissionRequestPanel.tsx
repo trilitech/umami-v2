@@ -32,7 +32,7 @@ import { OwnedImplicitAccountsAutocomplete } from "../../../../components/Addres
 import colors from "../../../../style/colors";
 import { useAddConnection } from "../../../hooks/beaconHooks";
 import { useImplicitAccounts } from "../../../hooks/getAccountDataHooks";
-import { walletClient } from "../../beacon";
+import { WalletClient } from "../../WalletClient";
 
 export const PermissionRequestPanel: React.FC<{
   request: PermissionRequestOutput;
@@ -63,7 +63,7 @@ export const PermissionRequestPanel: React.FC<{
       walletType: "implicit",
     };
 
-    await walletClient.respond(response);
+    await WalletClient.respond(response);
 
     addConnectionToBeaconSlice(request.senderId, account.address.pkh, request.network.type);
 

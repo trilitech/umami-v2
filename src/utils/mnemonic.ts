@@ -1,10 +1,9 @@
-import { Curves, InMemorySigner } from "@taquito/signer";
 import { generateMnemonic } from "bip39";
 
 import { makeDerivationPath } from "./account/derivationPathUtils";
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { useGetNextAvailableAccountLabels } from "./hooks/getAccountDataHooks";
-import { addressExists, getFingerPrint } from "./tezos";
+import { PublicKeyPair, addressExists, derivePublicKeyPair, getFingerPrint } from "./tezos";
 import { MnemonicAccount } from "../types/Account";
 import { Network } from "../types/Network";
 
@@ -12,34 +11,6 @@ import { Network } from "../types/Network";
 export const generate24WordMnemonic = () => {
   return generateMnemonic(256);
 };
-
-export type PublicKeyPair = {
-  pk: string;
-  pkh: string;
-};
-
-export const derivePublicKeyPair = async (
-  mnemonic: string,
-  derivationPath: string
-): Promise<PublicKeyPair> => {
-  const signer = InMemorySigner.fromMnemonic({
-    mnemonic,
-    derivationPath,
-    curve: "ed25519",
-  });
-
-  return {
-    pkh: await signer.publicKeyHash(),
-    pk: await signer.publicKey(),
-  };
-};
-
-export const deriveSecretKey = (mnemonic: string, derivationPath: string, curve: Curves) =>
-  InMemorySigner.fromMnemonic({
-    mnemonic,
-    derivationPath,
-    curve,
-  }).secretKey();
 
 /**
  * Finds revealed public key pairs matching the given {@link derivationPathPattern}.

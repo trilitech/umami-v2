@@ -28,8 +28,6 @@ type State = {
   lastTimeUpdated: string | null;
 };
 
-type ConversionRatePayload = { rate: State["conversionRate"] };
-
 export const initialState: State = {
   blockLevel: null,
   balances: {
@@ -92,10 +90,7 @@ export const assetsSlice = createSlice({
     updateBakers: (state, { payload }: { payload: Delegate[] }) => {
       state.bakers = payload;
     },
-    updateConversionRate: (
-      state,
-      { payload: { rate } }: { type: string; payload: ConversionRatePayload }
-    ) => {
+    updateConversionRate: (state, { payload: rate }: { type: string; payload: number | null }) => {
       state.conversionRate = rate;
     },
     refetch: state => {

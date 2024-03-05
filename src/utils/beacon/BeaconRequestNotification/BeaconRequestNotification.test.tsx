@@ -13,15 +13,11 @@ import { dispatchMockAccounts, mockEstimatedFee } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { store } from "../../redux/store";
 import { executeOperations } from "../../tezos";
-import { walletClient } from "../beacon";
+import { WalletClient } from "../WalletClient";
 
-import { BeaconNotification } from ".";
+import { BeaconRequestNotification } from ".";
 
-jest.mock("../beacon");
-jest.mock("../../tezos");
-jest.mock("../../hooks/accountUtils", () => ({
-  useGetSecretKey: () => () => "mockSk",
-}));
+jest.mock("../WalletClient");
 
 const SENDER_ID = "mockSenderId";
 const DAPP_NAME = "mockDappName";
@@ -29,9 +25,9 @@ const MESSAGE_ID = "mockMessageId";
 const SCOPES = [PermissionScope.SIGN];
 const BATCH_OP_HASH = { opHash: "bar" };
 
-const fixture = (message: BeaconRequestOutputMessage, onSuccess: () => void) => (
+const fixture = (message: BeaconRequestOutputMessage) => (
   <Modal isOpen={true} onClose={() => {}}>
-    <BeaconNotification message={message} onClose={() => {}} />
+    <BeaconRequestNotification message={message} onClose={() => {}} />
   </Modal>
 );
 
@@ -56,14 +52,14 @@ describe("<BeaconRequestNotification />", () => {
     };
 
     it("should display permission request", () => {
-      render(fixture(message, () => {}));
+      render(fixture(message));
 
       expect(screen.getByText(/Permission request/i)).toBeInTheDocument();
     });
 
     it("allows user to select account and grant permission", async () => {
       const user = userEvent.setup();
-      render(fixture(message, () => {}));
+      render(fixture(message));
 
       // select account
       const account = mockMnemonicAccount(1);
@@ -75,7 +71,7 @@ describe("<BeaconRequestNotification />", () => {
       expect(grantButton).toBeEnabled();
       await act(() => user.click(grantButton));
 
-      expect(walletClient.respond).toHaveBeenCalledWith({
+      expect(WalletClient.respond).toHaveBeenCalledWith({
         id: MESSAGE_ID,
         network: { type: "mainnet" },
         publicKey: account.pk,
@@ -87,7 +83,7 @@ describe("<BeaconRequestNotification />", () => {
 
     it("saves new connection to beaconSlice", async () => {
       const user = userEvent.setup();
-      render(fixture(message, () => {}));
+      render(fixture(message));
 
       // select account
       const account = mockMnemonicAccount(1);
@@ -114,7 +110,7 @@ describe("<BeaconRequestNotification />", () => {
       type: BeaconMessageType.BlockchainRequest,
     } as unknown as BeaconRequestOutputMessage;
 
-    render(fixture(message, () => {}));
+    render(fixture(message));
 
     expect(screen.getByText("Unsupported request: blockchain_request")).toBeInTheDocument();
   });

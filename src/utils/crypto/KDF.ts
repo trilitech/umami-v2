@@ -1,4 +1,4 @@
-import { AES_MODE } from "./AES";
+import { AES_MODE } from "./AES_MODE";
 
 const BYTE_TO_BIT = 8;
 // Use the full output of the hash to maximize the derived key's strength (sha256)

@@ -12,7 +12,7 @@ import { ExternalLink } from "../../ExternalLink";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { Select } from "../../Select";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { DerivationPathStep, Step, StepType } from "../useOnboardingModal";
+import { DerivationPathStep, OnboardingStep } from "../OnboardingStep";
 
 type ConfirmDerivationPathFormValues = {
   derivationPath: string;
@@ -29,7 +29,7 @@ export const DerivationPath = ({
   goToStep,
   account,
 }: {
-  goToStep: (step: Step) => void;
+  goToStep: (step: OnboardingStep) => void;
   account: DerivationPathStep["account"];
 }) => {
   const {
@@ -44,10 +44,10 @@ export const DerivationPath = ({
   const onSubmit = ({ derivationPath }: ConfirmDerivationPathFormValues) => {
     switch (account.type) {
       case "ledger":
-        goToStep({ type: StepType.restoreLedger, account: { ...account, derivationPath } });
+        goToStep({ type: "restoreLedger", account: { ...account, derivationPath } });
         break;
       case "mnemonic":
-        goToStep({ type: StepType.masterPassword, account: { ...account, derivationPath } });
+        goToStep({ type: "masterPassword", account: { ...account, derivationPath } });
         break;
     }
   };

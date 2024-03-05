@@ -17,9 +17,9 @@ import { ImplicitOperations } from "../../../types/AccountOperations";
 import { isValidContractPkh, parseContractPkh, parseImplicitPkh } from "../../../types/Address";
 import { Operation } from "../../../types/Operation";
 import { useGetImplicitAccountSafe } from "../../hooks/getAccountDataHooks";
-import { walletClient } from "../beacon";
+import { WalletClient } from "../WalletClient";
 
-export const BeaconNotification: React.FC<{
+export const BeaconRequestNotification: React.FC<{
   message: BeaconRequestOutputMessage;
   onClose: () => void;
 }> = ({ message, onClose }) => {
@@ -57,7 +57,7 @@ export const BeaconNotification: React.FC<{
             transactionHash: hash,
           };
           try {
-            await walletClient.respond(response);
+            await WalletClient.respond(response);
           } catch (error: any) {
             console.warn("Failed to parse Beacon request", error);
             toast({

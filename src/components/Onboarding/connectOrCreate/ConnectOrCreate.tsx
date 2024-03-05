@@ -5,15 +5,15 @@ import { GoogleAuth } from "../../../GoogleAuth";
 import colors from "../../../style/colors";
 import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { getPkAndPkhFromSk } from "../../../utils/tezos";
+import { getPublicKeyPairFromSk } from "../../../utils/tezos";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
 
 export const ConnectOrCreate = ({
   goToStep,
   closeModal,
 }: {
-  goToStep: (step: Step) => void;
+  goToStep: (step: OnboardingStep) => void;
   closeModal: () => void;
 }) => {
   const { handleAsyncAction } = useAsyncActionHandler();
@@ -22,7 +22,7 @@ export const ConnectOrCreate = ({
 
   const onSocialAuth = (sk: string, email: string) =>
     handleAsyncAction(async () => {
-      const { pk, pkh } = await getPkAndPkhFromSk(sk);
+      const { pk, pkh } = await getPublicKeyPairFromSk(sk);
       restoreSocial(pk, pkh, email);
       toast({ description: `Successfully added ${email} account`, status: "success" });
       closeModal();
@@ -31,12 +31,12 @@ export const ConnectOrCreate = ({
   return (
     <ModalContentWrapper icon={<WalletPlusIcon />} title="Connect or Create Account">
       <VStack width="100%" spacing="16px">
-        <Button width="100%" onClick={_ => goToStep({ type: StepType.notice })} size="lg">
+        <Button width="100%" onClick={_ => goToStep({ type: "notice" })} size="lg">
           Create a new Account
         </Button>
         <Button
           width="100%"
-          onClick={_ => goToStep({ type: StepType.connectOptions })}
+          onClick={_ => goToStep({ type: "connectOptions" })}
           size="lg"
           variant="tertiary"
         >
@@ -46,7 +46,7 @@ export const ConnectOrCreate = ({
           /* devblock:start */
           <Button
             width="100%"
-            onClick={_ => goToStep({ type: StepType.fakeAccount })}
+            onClick={_ => goToStep({ type: "fakeAccount" })}
             size="lg"
             variant="tertiary"
           >

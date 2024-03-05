@@ -1,6 +1,6 @@
 import { AspectRatio, Flex, Heading, Image, Link, Tooltip } from "@chakra-ui/react";
 
-import { tokenTitle } from "./BatchView";
+import { tokenTitle } from "./tokenTitle";
 import { BakerIcon, OutgoingArrow } from "../../assets/icons";
 import colors from "../../style/colors";
 import { Operation } from "../../types/Operation";

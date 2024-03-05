@@ -1,5 +1,6 @@
 import { buf2hex, hex2Bytes } from "@taquito/utils";
 
+import { AES_MODE } from "./AES_MODE";
 import { derivePasswordBasedKeyV1, derivePasswordBasedKeyV2 } from "./KDF";
 import { EncryptedData } from "./types";
 
@@ -10,8 +11,6 @@ const SALT_SIZE = 32;
 // 12 bytes recommended for iv https://developer.mozilla.org/en-US/docs/Web/API/AesGcmParams
 // IV should never be reused with the same key
 const IV_SIZE = 12;
-export const AES_MODE = "AES-GCM";
-
 export const encrypt = async (data: string, password: string): Promise<EncryptedData> => {
   const salt = crypto.getRandomValues(new Uint8Array(SALT_SIZE));
   const derivedKey = await derivePasswordBasedKeyV2(password, salt);

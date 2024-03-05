@@ -7,7 +7,7 @@ import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandle
 import { getPk } from "../../../utils/ledger/pk";
 import { withTimeout } from "../../../utils/withTimeout";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { RestoreLedgerStep } from "../useOnboardingModal";
+import { RestoreLedgerStep } from "../OnboardingStep";
 
 const LEDGER_TIMEOUT = 60 * 1000; // 1 minute
 

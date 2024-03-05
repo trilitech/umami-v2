@@ -1,5 +1,4 @@
 import { accountsSlice } from "./accountsSlice";
-import { makeDefaultDevSignerKeys } from "../../../mocks/devSignerKeys";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
@@ -8,8 +7,6 @@ import {
   mockSocialAccount,
 } from "../../../mocks/factories";
 import { MnemonicAccount } from "../../../types/Account";
-import * as cryptoFunctionsToMock from "../../crypto/AES";
-import * as mnemonicFunctionsToMock from "../../mnemonic";
 import { store } from "../store";
 
 const {
@@ -21,18 +18,6 @@ const {
     addMnemonicAccounts,
   },
 } = accountsSlice;
-
-const derivePublicKeyPairMock = jest.spyOn(mnemonicFunctionsToMock, "derivePublicKeyPair");
-const decryptMock = jest.spyOn(cryptoFunctionsToMock, "decrypt");
-
-beforeEach(async () => {
-  const { pk, pkh } = await makeDefaultDevSignerKeys(0);
-  derivePublicKeyPairMock.mockResolvedValue({
-    pk,
-    pkh,
-  });
-  decryptMock.mockResolvedValue("unencryptedFingerprint");
-});
 
 describe("Accounts reducer", () => {
   test("store should initialize with empty state", () => {

@@ -2,13 +2,10 @@ import { RestoreMnemonic } from "./RestoreMnemonic";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { selectRandomElements } from "../../../utils/tezos/helpers";
-import { StepType } from "../useOnboardingModal";
+import { selectRandomElements } from "../../../utils/tezos";
 
 const goToStepMock = jest.fn();
 const selectRandomElementsMock = jest.mocked(selectRandomElements);
-
-jest.mock("../../../utils/tezos/helpers");
 
 const fixture = () => <RestoreMnemonic goToStep={goToStepMock} />;
 
@@ -86,7 +83,7 @@ describe("<RestoreMnemonic />", () => {
       await act(() => user.click(confirmBtn));
 
       expect(goToStepMock).toHaveBeenCalledWith({
-        type: StepType.nameAccount,
+        type: "nameAccount",
         account: {
           type: "mnemonic",
           mnemonic: mnemonic1,

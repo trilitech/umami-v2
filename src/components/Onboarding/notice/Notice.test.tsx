@@ -2,7 +2,6 @@ import { Notice } from "./Notice";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
-import { StepType } from "../useOnboardingModal";
 
 // TODO refactor mocks
 jest.mock("../../../utils/mnemonic");
@@ -22,7 +21,7 @@ describe("<Eula />", () => {
       await act(() => user.click(screen.getByRole("button", { name: "I understand" })));
 
       expect(goToStepMock).toHaveBeenCalledWith({
-        type: StepType.showSeedphrase,
+        type: "showSeedphrase",
         account: { type: "mnemonic", mnemonic: mnemonic1 },
       });
     });
@@ -39,7 +38,7 @@ describe("<Eula />", () => {
         )
       );
 
-      expect(goToStepMock).toHaveBeenCalledWith({ type: StepType.restoreMnemonic });
+      expect(goToStepMock).toHaveBeenCalledWith({ type: "restoreMnemonic" });
     });
   });
 });

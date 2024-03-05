@@ -15,8 +15,7 @@ import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
 import { checkAccountsAndUpsertContact } from "../../../utils/redux/thunks/checkAccountsAndUpsertContact";
 import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
-import { StepType } from "../useOnboardingModal";
-import type { NameAccountStep } from "../useOnboardingModal";
+import type { NameAccountStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn();
 
@@ -28,16 +27,16 @@ const getNameInput = () => screen.getByTestId("name");
 const getConfirmBtn = () => screen.getByRole("button", { name: "Continue" });
 
 const accounts = [
-  { type: "ledger" as const, nextStep: StepType.derivationPath },
+  { type: "ledger" as const, nextStep: "derivationPath" },
   {
     type: "mnemonic" as const,
     mnemonic: mnemonic1,
-    nextStep: StepType.derivationPath,
+    nextStep: "derivationPath",
   },
   {
     type: "secret_key" as const,
     secretKey: "secret key",
-    nextStep: StepType.masterPassword,
+    nextStep: "masterPassword",
   },
 ];
 

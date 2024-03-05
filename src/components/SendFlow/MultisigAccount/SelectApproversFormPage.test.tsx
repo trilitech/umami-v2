@@ -1,7 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
 
-import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { FormValues, SelectApproversFormPage } from "./SelectApproversFormPage";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
@@ -14,7 +13,7 @@ import {
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
-import { contract, makeStorageJSON } from "../../../multisig/multisigContract";
+import { contract, makeStorageJSON } from "../../../multisig/contract";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";
@@ -22,6 +21,7 @@ import { DynamicModalContext } from "../../DynamicModal";
 
 const MULTISIG_NAME = "Multisig Account Name";
 const SENDER = mockMnemonicAccount(0);
+const goBackSpy = jest.fn();
 
 const fixture = (formValues?: FormValues) => {
   const values = {
@@ -30,7 +30,7 @@ const fixture = (formValues?: FormValues) => {
   };
   return (
     <Modal isOpen={true} onClose={() => {}}>
-      <SelectApproversFormPage form={values as any} sender={SENDER} />
+      <SelectApproversFormPage form={values as any} goBack={goBackSpy} sender={SENDER} />
     </Modal>
   );
 };
@@ -63,25 +63,12 @@ describe("SelectApproversFormPage", () => {
   });
 
   describe("back button", () => {
-    it("is visible", () => {
+    it("calls the goBack function on click", async () => {
+      const user = userEvent.setup();
       render(fixture());
 
-      expect(screen.getByTestId("back-button")).toBeInTheDocument();
-    });
-
-    it("opens NameMultisigFormPage on click", async () => {
-      const user = userEvent.setup();
-      render(
-        <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {fixture()}
-        </DynamicModalContext.Provider>
-      );
-
       await act(() => user.click(screen.getByTestId("back-button")));
-
-      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-        <NameMultisigFormPage name={MULTISIG_NAME} />
-      );
+      expect(goBackSpy).toHaveBeenCalled();
     });
   });
 

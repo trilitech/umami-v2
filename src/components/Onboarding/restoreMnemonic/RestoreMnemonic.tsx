@@ -11,11 +11,11 @@ import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
 
 const mnemonicSizes = [12, 15, 18, 24];
 
-export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }) => {
+export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep) => void }) => {
   const form = useForm({
     mode: "onBlur",
   });
@@ -67,7 +67,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: Step) => void }
         throw new Error(`Invalid Mnemonic: "${mnemonic}"`);
       }
       goToStep({
-        type: StepType.nameAccount,
+        type: "nameAccount",
         account: { type: "mnemonic", mnemonic: mnemonic },
       });
       return Promise.resolve();

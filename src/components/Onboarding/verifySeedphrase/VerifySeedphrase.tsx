@@ -3,18 +3,18 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { DoubleCheckmarkIcon } from "../../../assets/icons";
-import { selectRandomElements } from "../../../utils/tezos/helpers";
+import { selectRandomElements } from "../../../utils/tezos";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { Step, StepType } from "../useOnboardingModal";
-import type { VerifySeedphraseStep } from "../useOnboardingModal";
+import { OnboardingStep } from "../OnboardingStep";
+import type { VerifySeedphraseStep } from "../OnboardingStep";
 
 export const VerifySeedphrase = ({
   goToStep,
   account,
 }: {
-  goToStep: (step: Step) => void;
+  goToStep: (step: OnboardingStep) => void;
   account: VerifySeedphraseStep["account"];
 }) => {
   const seedphraseArray = account.mnemonic.split(" ");
@@ -27,7 +27,7 @@ export const VerifySeedphrase = ({
   } = form;
   const [randomElements] = useState(selectRandomElements(seedphraseArray, 5));
 
-  const onSubmit = () => goToStep({ type: StepType.nameAccount, account });
+  const onSubmit = () => goToStep({ type: "nameAccount", account });
 
   return (
     <ModalContentWrapper
