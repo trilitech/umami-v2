@@ -80,7 +80,7 @@
     "@types/promise-retry": "^1.1.6",
     "@types/prop-types": "^15.7.11",
     "@types/react": "18.2.62",
-    "@types/react-dom": "18.2.19",
+    "@types/react-dom": "18.2.20",
     "@types/redux-mock-store": "^1.0.6",
     "@types/wait-on": "^5.3.4",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
