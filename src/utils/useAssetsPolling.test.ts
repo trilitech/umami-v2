@@ -8,12 +8,10 @@ import { renderHook, waitFor } from "../mocks/testUtils";
 import { DefaultNetworks } from "../types/Network";
 
 jest.unmock("./tezos");
-jest.mock("@tzkt/sdk-api", () => {
-  return {
-    delegatesGet: jest.fn(),
-    blocksGetCount: jest.fn(),
-  };
-});
+jest.mock("@tzkt/sdk-api", () => ({
+  delegatesGet: jest.fn(),
+  blocksGetCount: jest.fn(),
+}));
 
 describe("useAssetsPolling", () => {
   describe.each(DefaultNetworks)("on $name", network => {

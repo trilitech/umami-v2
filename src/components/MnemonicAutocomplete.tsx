@@ -58,21 +58,19 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
       />
       {showSuggestions && (
         <UnorderedList data-testid="suggestions" variant="suggestions" {...listProps}>
-          {matching.map(word => {
-            return (
-              <ListItem
-                key={word}
-                paddingTop="2px"
-                fontSize="14px"
-                fontWeight={600}
-                data-testid="suggestion"
-                onMouseDown={() => setValue(inputName, word as any)}
-                paddingX="7px"
-              >
-                {word}
-              </ListItem>
-            );
-          })}
+          {matching.map(word => (
+            <ListItem
+              key={word}
+              paddingTop="2px"
+              fontSize="14px"
+              fontWeight={600}
+              data-testid="suggestion"
+              onMouseDown={() => setValue(inputName, word as any)}
+              paddingX="7px"
+            >
+              {word}
+            </ListItem>
+          ))}
         </UnorderedList>
       )}
     </>

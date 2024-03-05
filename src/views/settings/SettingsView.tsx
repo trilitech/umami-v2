@@ -12,25 +12,22 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { useOffboardingModal } from "../../components/Offboarding/useOffboardingModal";
 import { TopBar } from "../../components/TopBar";
 
-export const SettingsView = () => {
-  return (
-    <Flex flexDirection="column" height="100%">
-      <TopBar title="Settings" />
-      <Box overflowY="scroll">
-        <Box marginTop="16px">
-          <GeneralSection />
-        </Box>
-        <BackupSection />
-        <AdvancedSection />
+export const SettingsView = () => (
+  <Flex flexDirection="column" height="100%">
+    <TopBar title="Settings" />
+    <Box overflowY="scroll">
+      <Box marginTop="16px">
+        <GeneralSection />
       </Box>
-    </Flex>
-  );
-};
+      <BackupSection />
+      <AdvancedSection />
+    </Box>
+  </Flex>
+);
 
-const GeneralSection = () => {
-  return (
-    <SectionContainer title="General">
-      {/*
+const GeneralSection = () => (
+  <SectionContainer title="General">
+    {/*
         TODO: implement this
         <SettingsCard left="Theme">
           <Flex alignItems="center" justifyContent="space-between">
@@ -40,11 +37,10 @@ const GeneralSection = () => {
           </Flex>
         </SettingsCard>
       */}
-      <NetworkSettingsDrawerCard />
-      <ErrorLogsDrawerCard />
-    </SectionContainer>
-  );
-};
+    <NetworkSettingsDrawerCard />
+    <ErrorLogsDrawerCard />
+  </SectionContainer>
+);
 
 const downloadBackup = () => {
   const storage = {
@@ -61,20 +57,18 @@ const downloadBackup = () => {
   link.click();
 };
 
-const BackupSection = () => {
-  return (
-    <SectionContainer title="Backup">
-      <ClickableCard isSelected={false} onClick={downloadBackup}>
-        <Flex alignItems="center" justifyContent="space-between">
-          <Heading size="sm">Download backup file</Heading>
-          <Button onClick={downloadBackup} variant="unstyled">
-            <DownloadIcon cursor="pointer" />
-          </Button>
-        </Flex>
-      </ClickableCard>
-    </SectionContainer>
-  );
-};
+const BackupSection = () => (
+  <SectionContainer title="Backup">
+    <ClickableCard isSelected={false} onClick={downloadBackup}>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Heading size="sm">Download backup file</Heading>
+        <Button onClick={downloadBackup} variant="unstyled">
+          <DownloadIcon cursor="pointer" />
+        </Button>
+      </Flex>
+    </ClickableCard>
+  </SectionContainer>
+);
 
 const AdvancedSection = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
@@ -105,17 +99,15 @@ const AdvancedSection = () => {
 const SectionContainer: React.FC<{
   title: string;
   children: React.ReactNode;
-}> = ({ title, children }) => {
-  return (
-    <Box marginTop="8px">
-      <Flex>
-        <Box width="550px">
-          <Heading marginBottom="16px" size="lg">
-            {title}
-          </Heading>
-          {children}
-        </Box>
-      </Flex>
-    </Box>
-  );
-};
+}> = ({ title, children }) => (
+  <Box marginTop="8px">
+    <Flex>
+      <Box width="550px">
+        <Heading marginBottom="16px" size="lg">
+          {title}
+        </Heading>
+        {children}
+      </Box>
+    </Flex>
+  </Box>
+);

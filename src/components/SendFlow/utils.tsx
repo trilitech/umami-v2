@@ -59,38 +59,36 @@ export const FormSubmitButtons = ({
   onSingleSubmit: () => Promise<void>;
   onAddToBatch: () => Promise<void>;
   showPreview?: boolean;
-}) => {
-  return (
-    <>
-      <Box width="100%">
-        {showPreview && (
-          <Button
-            width="100%"
-            marginBottom="16px"
-            isDisabled={!isValid}
-            isLoading={isLoading}
-            onClick={onSingleSubmit}
-            size="lg"
-            type="submit"
-          >
-            Preview
-          </Button>
-        )}
+}) => (
+  <>
+    <Box width="100%">
+      {showPreview && (
         <Button
           width="100%"
+          marginBottom="16px"
           isDisabled={!isValid}
           isLoading={isLoading}
-          onClick={onAddToBatch}
+          onClick={onSingleSubmit}
           size="lg"
           type="submit"
-          variant="tertiary"
         >
-          Insert Into Batch
+          Preview
         </Button>
-      </Box>
-    </>
-  );
-};
+      )}
+      <Button
+        width="100%"
+        isDisabled={!isValid}
+        isLoading={isLoading}
+        onClick={onAddToBatch}
+        size="lg"
+        type="submit"
+        variant="tertiary"
+      >
+        Insert Into Batch
+      </Button>
+    </Box>
+  </>
+);
 
 export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
   if (form) {

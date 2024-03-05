@@ -112,9 +112,7 @@ const parseSetDelegate = (
 const parseRemoveDelegate = (
   _michelson: MichelsonV1Expression[],
   account: MultisigAccount
-): Operation => {
-  return { type: "undelegation", sender: account.address };
-};
+): Operation => ({ type: "undelegation", sender: account.address });
 
 const parsings = [
   { schema: tezSchema, parsingFn: parseTez },

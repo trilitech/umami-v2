@@ -7,11 +7,9 @@ import {
 import { ExclamationIcon } from "../assets/icons";
 import colors from "../style/colors";
 
-export const FormErrorMessage = ({ children, ...props }: FormErrorMessageProps) => {
-  return (
-    <OriginalFormErrorMessage color={colors.orange} fontSize="12px" {...props}>
-      <Icon as={ExclamationIcon} marginRight="6px" />
-      {children}
-    </OriginalFormErrorMessage>
-  );
-};
+export const FormErrorMessage = ({ children, ...props }: FormErrorMessageProps) => (
+  <OriginalFormErrorMessage color={colors.orange} fontSize="12px" {...props}>
+    <Icon as={ExclamationIcon} marginRight="6px" />
+    {children}
+  </OriginalFormErrorMessage>
+);

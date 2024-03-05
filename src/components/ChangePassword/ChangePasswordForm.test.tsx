@@ -2,13 +2,11 @@ import { Modal } from "@chakra-ui/react";
 
 import { ChangePasswordForm } from "./ChangePasswordForm";
 import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
-const fixture = () => {
-  return (
-    <Modal isOpen={true} onClose={() => {}}>
-      <ChangePasswordForm />
-    </Modal>
-  );
-};
+const fixture = () => (
+  <Modal isOpen={true} onClose={() => {}}>
+    <ChangePasswordForm />
+  </Modal>
+);
 
 describe("ChangePassword Form", () => {
   describe("currentPassword", () => {

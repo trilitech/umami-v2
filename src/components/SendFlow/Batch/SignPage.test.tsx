@@ -30,9 +30,7 @@ const operation = makeAccountOperations(account, account, [
 ]);
 
 const fee = BigNumber(1234567);
-const fixture = () => {
-  return <SignPage initialFee={fee} initialOperations={operation} />;
-};
+const fixture = () => <SignPage initialFee={fee} initialOperations={operation} />;
 
 beforeEach(() => {
   store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));

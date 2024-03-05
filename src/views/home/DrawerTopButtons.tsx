@@ -7,13 +7,11 @@ export const DrawerTopButtons: React.FC<
   {
     onClose: () => void;
   } & FlexProps
-> = ({ onClose, ...props }) => {
-  return (
-    <Flex justifyContent="flex-end" paddingBottom="30px" cursor="pointer" {...props}>
-      <CloseDrawerButton onClose={onClose} />
-    </Flex>
-  );
-};
+> = ({ onClose, ...props }) => (
+  <Flex justifyContent="flex-end" paddingBottom="30px" cursor="pointer" {...props}>
+    <CloseDrawerButton onClose={onClose} />
+  </Flex>
+);
 
 export const CloseDrawerButton = ({ onClose }: { onClose: () => void }) => (
   <Button onClick={onClose} variant="CTAWithIcon">

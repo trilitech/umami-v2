@@ -45,17 +45,15 @@ export const SignPageHeader: React.FC<{
   signer: ImplicitAccount;
   title?: string;
   description?: string;
-}> = ({ goBack, mode, operationsType, signer, title, description }) => {
-  return (
-    <HeaderWrapper>
-      {goBack && <ModalBackButton onClick={goBack} />}
-      <Heading data-testid="sign-page-header" size="2xl">
-        {title || headerText(operationsType, mode)}
-      </Heading>
-      <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
-        {description || subTitle(signer)}
-      </Text>
-      <ModalCloseButton />
-    </HeaderWrapper>
-  );
-};
+}> = ({ goBack, mode, operationsType, signer, title, description }) => (
+  <HeaderWrapper>
+    {goBack && <ModalBackButton onClick={goBack} />}
+    <Heading data-testid="sign-page-header" size="2xl">
+      {title || headerText(operationsType, mode)}
+    </Heading>
+    <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
+      {description || subTitle(signer)}
+    </Text>
+    <ModalCloseButton />
+  </HeaderWrapper>
+);

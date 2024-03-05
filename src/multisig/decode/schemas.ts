@@ -1,14 +1,11 @@
 import { z } from "zod";
 
-const caseInsensitiveLiteral = (label: string) => {
-  return z.string().regex(new RegExp(`^${label}$`, "i"));
-};
+const caseInsensitiveLiteral = (label: string) => z.string().regex(new RegExp(`^${label}$`, "i"));
 
-const prim = (label: string) => {
-  return z.object({
+const prim = (label: string) =>
+  z.object({
     prim: caseInsensitiveLiteral(label),
   });
-};
 
 const pushKeyHashSchema = z.object({
   prim: z.literal("PUSH"),
@@ -20,12 +17,11 @@ const pushAddressSchema = z.object({
   args: z.tuple([z.object({ prim: z.literal("address") }), z.object({ bytes: z.string() })]),
 });
 
-const pair = <T extends z.ZodTypeAny, U extends z.ZodTypeAny>(first: T, second: U) => {
-  return z.object({
+const pair = <T extends z.ZodTypeAny, U extends z.ZodTypeAny>(first: T, second: U) =>
+  z.object({
     prim: z.literal("Pair"),
     args: z.tuple([first, second]),
   });
-};
 
 const contractZeroTezSchema = z.object({
   prim: z.literal("PUSH"),

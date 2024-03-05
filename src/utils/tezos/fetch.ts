@@ -264,11 +264,12 @@ export const getTezosPriceInUSD = async (): Promise<number | null> => {
 };
 
 export const getLatestBlockLevel = async (network: Network): Promise<number> =>
-  withRateLimit(async () => {
-    return await blocksGetCount({
-      baseUrl: network.tzktApiUrl,
-    });
-  });
+  withRateLimit(
+    async () =>
+      await blocksGetCount({
+        baseUrl: network.tzktApiUrl,
+      })
+  );
 
 export const getBakers = async (network: Network): Promise<Delegate[]> =>
   withRateLimit(() =>

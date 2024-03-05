@@ -30,22 +30,16 @@ MockDate.set("2023-03-27T14:15:09.760Z");
 jest.mock("./utils/tezos");
 
 // https://github.com/chakra-ui/chakra-ui/issues/2684
-jest.mock("@popperjs/core", () => {
-  return {
-    createPopper: () => {
-      return {
-        state: null,
-        forceUpdate: () => {},
-        destroy: () => {},
-        setOptions: () => {},
-      };
-    },
-  };
-});
+jest.mock("@popperjs/core", () => ({
+  createPopper: () => ({
+    state: null,
+    forceUpdate: () => {},
+    destroy: () => {},
+    setOptions: () => {},
+  }),
+}));
 
-jest.mock("react-identicons", () => {
-  return { default: (props: any) => props.children };
-});
+jest.mock("react-identicons", () => ({ default: (props: any) => props.children }));
 
 // Add missing browser APIs
 Object.defineProperties(global, {
@@ -92,21 +86,19 @@ const MockModalInnerComponent = ({ children }: any) => React.createElement("div"
 const MockModalCloseButton = ({ children }: any) =>
   React.createElement("button", { "aria-label": "Close" }, children);
 
-jest.mock("@chakra-ui/react", () => {
-  return {
-    ...jest.requireActual("@chakra-ui/react"),
-    // Mock toast since it has an erratic behavior in RTL
-    // https://github.com/chakra-ui/chakra-ui/issues/2969
-    useToast: mockUseToast,
-    Modal: MockModal,
-    ModalContent: MockModalContent,
-    ModalBody: MockModalInnerComponent,
-    ModalHeader: MockModalHeader,
-    ModalFooter: MockModalInnerComponent,
-    ModalOverlay: MockModalInnerComponent,
-    ModalCloseButton: MockModalCloseButton,
-  };
-});
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  // Mock toast since it has an erratic behavior in RTL
+  // https://github.com/chakra-ui/chakra-ui/issues/2969
+  useToast: mockUseToast,
+  Modal: MockModal,
+  ModalContent: MockModalContent,
+  ModalBody: MockModalInnerComponent,
+  ModalHeader: MockModalHeader,
+  ModalFooter: MockModalInnerComponent,
+  ModalOverlay: MockModalInnerComponent,
+  ModalCloseButton: MockModalCloseButton,
+}));
 
 afterEach(() => {
   act(() => {

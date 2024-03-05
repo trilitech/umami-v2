@@ -3,9 +3,8 @@ import BigNumber from "bignumber.js";
 
 import { TEZ } from "./tezos";
 
-export const truncate = (name: string, len: number) => {
-  return name.length > len ? name.slice(0, len - 3) + "..." : name;
-};
+export const truncate = (name: string, len: number) =>
+  name.length > len ? name.slice(0, len - 3) + "..." : name;
 
 export const tezToMutez = (tez: string): BigNumber => format("tz", "mutez", tez) as BigNumber;
 

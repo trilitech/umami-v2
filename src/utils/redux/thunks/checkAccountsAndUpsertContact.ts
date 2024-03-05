@@ -6,14 +6,13 @@ import { RootState } from "../store";
 
 const { upsert } = contactsActions;
 
-export const checkAccountsAndUpsertContact = (
-  contact: Contact
-): ThunkAction<void, RootState, unknown, AnyAction> => {
-  return (dispatch, getState) => {
+export const checkAccountsAndUpsertContact =
+  (contact: Contact): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (dispatch, getState) => {
     const { accounts } = getState();
-    const existingAccount = accounts.items.find(account => {
-      return account.address.pkh === contact.pkh || account.label === contact.name;
-    });
+    const existingAccount = accounts.items.find(
+      account => account.address.pkh === contact.pkh || account.label === contact.name
+    );
 
     if (existingAccount) {
       return;
@@ -21,4 +20,3 @@ export const checkAccountsAndUpsertContact = (
 
     dispatch(upsert(contact));
   };
-};

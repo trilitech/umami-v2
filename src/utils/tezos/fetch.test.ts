@@ -28,16 +28,14 @@ import { DefaultNetworks } from "../../types/Network";
 
 jest.mock("axios");
 
-jest.mock("@tzkt/sdk-api", () => {
-  return {
-    tokensGetTokenBalances: jest.fn(),
-    operationsGetTransactions: jest.fn(),
-    operationsGetDelegations: jest.fn(),
-    operationsGetOriginations: jest.fn(),
-    tokensGetTokenTransfers: jest.fn(),
-    accountsGet: jest.fn(),
-  };
-});
+jest.mock("@tzkt/sdk-api", () => ({
+  tokensGetTokenBalances: jest.fn(),
+  operationsGetTransactions: jest.fn(),
+  operationsGetDelegations: jest.fn(),
+  operationsGetOriginations: jest.fn(),
+  tokensGetTokenTransfers: jest.fn(),
+  accountsGet: jest.fn(),
+}));
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 

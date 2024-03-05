@@ -85,24 +85,23 @@ const ErrorLogsDrawerBody = () => {
 
 const ErrorLogRow: React.FC<{
   errorLog: ErrorContext;
-}> = ({ errorLog }) => {
-  return (
-    <>
-      <Divider marginY={1} />
-      <Flex justifyContent="space-between" paddingY={3}>
-        <Flex>
-          <Icon as={AiOutlineExclamationCircle} marginTop="1px" marginRight={2} />
-          <Flex flexDirection="column">
-            <Heading wordBreak="break-all" size="sm">
-              {errorLog.description}
-            </Heading>
-            <Text color={colors.gray[400]} size="sm">
-              {errorLog.timestamp}
-            </Text>
-          </Flex>
+}> = ({ errorLog }) => (
+  <>
+    <Divider marginY={1} />
+    <Flex justifyContent="space-between" paddingY={3}>
+      <Flex>
+        <Icon as={AiOutlineExclamationCircle} marginTop="1px" marginRight={2} />
+        <Flex flexDirection="column">
+          <Heading wordBreak="break-all" size="sm">
+            {errorLog.description}
+          </Heading>
+          <Text color={colors.gray[400]} size="sm">
+            {errorLog.timestamp}
+          </Text>
         </Flex>
-        {/* TODO:Implement delete */}
-        {/* <Flex justifyContent="space-around">
+      </Flex>
+      {/* TODO:Implement delete */}
+      {/* <Flex justifyContent="space-around">
           <Icon
             as={MdCopyAll}
             mr={3}
@@ -121,7 +120,6 @@ const ErrorLogRow: React.FC<{
             }}
           />
         </Flex> */}
-      </Flex>
-    </>
-  );
-};
+    </Flex>
+  </>
+);

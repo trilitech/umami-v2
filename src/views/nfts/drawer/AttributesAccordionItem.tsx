@@ -36,21 +36,19 @@ export const AttributesAccordionItem = ({
       </AccordionButton>
       <AccordionPanel>
         <Wrap marginLeft="0" spacing="10px">
-          {attributes.map(attr => {
-            return (
-              <WrapItem key={attr.name} flex="1" data-testid="nft-attribute">
-                <Card width="160px" height="128px" marginBottom="2px" background={colors.gray[700]}>
-                  <CardBody padding="16px">
-                    {/* TODO: make it display long attributes https://app.asana.com/0/0/1204721073861946/f */}
-                    <Text color={colors.gray[400]} size="sm">
-                      {attr.name}
-                    </Text>
-                    <Heading size="md">{attr.value}</Heading>
-                  </CardBody>
-                </Card>
-              </WrapItem>
-            );
-          })}
+          {attributes.map(attr => (
+            <WrapItem key={attr.name} flex="1" data-testid="nft-attribute">
+              <Card width="160px" height="128px" marginBottom="2px" background={colors.gray[700]}>
+                <CardBody padding="16px">
+                  {/* TODO: make it display long attributes https://app.asana.com/0/0/1204721073861946/f */}
+                  <Text color={colors.gray[400]} size="sm">
+                    {attr.name}
+                  </Text>
+                  <Heading size="md">{attr.value}</Heading>
+                </CardBody>
+              </Card>
+            </WrapItem>
+          ))}
         </Wrap>
       </AccordionPanel>
     </AccordionItem>

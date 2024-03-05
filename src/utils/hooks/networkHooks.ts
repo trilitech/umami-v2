@@ -3,13 +3,9 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../redux/hooks";
 import { networksActions } from "../redux/slices/networks";
 
-export const useSelectedNetwork = () => {
-  return useAppSelector(s => s.networks.current);
-};
+export const useSelectedNetwork = () => useAppSelector(s => s.networks.current);
 
-export const useAvailableNetworks = () => {
-  return useAppSelector(s => s.networks.available);
-};
+export const useAvailableNetworks = () => useAppSelector(s => s.networks.available);
 
 export const useSelectNetwork = () => {
   const availableNetworks = useAvailableNetworks();

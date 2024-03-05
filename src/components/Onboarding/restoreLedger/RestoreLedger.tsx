@@ -80,9 +80,9 @@ export const RestoreLedger = ({
     >
       <VStack overflowY="auto" spacing="24px">
         <OrderedList spacing={4}>
-          {noticeItems.map((item, index) => {
-            return <ListItem key={index}>{item.content}</ListItem>;
-          })}
+          {noticeItems.map((item, index) => (
+            <ListItem key={index}>{item.content}</ListItem>
+          ))}
         </OrderedList>
         <Button width="100%" isLoading={isLoading} onClick={connectLedger} size="lg">
           Export Public Key

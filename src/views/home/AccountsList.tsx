@@ -113,13 +113,11 @@ const AccountGroup: React.FC<{
         )}
       </Flex>
 
-      {accounts.map(account => {
-        return (
-          <Box key={account.address.pkh} marginBottom="16px">
-            <AccountTile account={account} balance={balances[account.address.pkh]} />
-          </Box>
-        );
-      })}
+      {accounts.map(account => (
+        <Box key={account.address.pkh} marginBottom="16px">
+          <AccountTile account={account} balance={balances[account.address.pkh]} />
+        </Box>
+      ))}
     </Box>
   );
 };
@@ -145,16 +143,14 @@ export const AccountsList = () => {
   const accountsByKind = groupBy(accounts, getLabel);
   const { openWith } = useContext(DynamicModalContext);
 
-  const accountTiles = Object.entries(accountsByKind).map(([accountGroupLabel, accountsByType]) => {
-    return (
-      <AccountGroup
-        key={accountGroupLabel}
-        accounts={accountsByType}
-        balances={mutezBalance}
-        groupLabel={accountGroupLabel}
-      />
-    );
-  });
+  const accountTiles = Object.entries(accountsByKind).map(([accountGroupLabel, accountsByType]) => (
+    <AccountGroup
+      key={accountGroupLabel}
+      accounts={accountsByType}
+      balances={mutezBalance}
+      groupLabel={accountGroupLabel}
+    />
+  ));
 
   return (
     <>

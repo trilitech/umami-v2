@@ -6,11 +6,9 @@ export const SendButton: React.FC<
   {
     onClick: () => void;
   } & ButtonProps
-> = ({ onClick, ...buttonProps }) => {
-  return (
-    <Button width="60px" onClick={onClick} variant="specialCTA" {...buttonProps}>
-      <OutgoingArrow stroke="currentcolor" />
-      <Text marginLeft="4px">Send</Text>
-    </Button>
-  );
-};
+> = ({ onClick, ...buttonProps }) => (
+  <Button width="60px" onClick={onClick} variant="specialCTA" {...buttonProps}>
+    <OutgoingArrow stroke="currentcolor" />
+    <Text marginLeft="4px">Send</Text>
+  </Button>
+);

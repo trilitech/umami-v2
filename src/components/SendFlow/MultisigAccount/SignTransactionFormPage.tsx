@@ -99,15 +99,13 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
 
             <FormLabel>Approvers</FormLabel>
             <Box marginBottom="12px" data-testid="approvers">
-              {signers.map(signer => {
-                return (
-                  <AddressTile
-                    key={signer.val}
-                    address={parsePkh(signer.val)}
-                    data-testid={`approver-${signer.val}`}
-                  />
-                );
-              })}
+              {signers.map(signer => (
+                <AddressTile
+                  key={signer.val}
+                  address={parsePkh(signer.val)}
+                  data-testid={`approver-${signer.val}`}
+                />
+              ))}
             </Box>
             <Flex justifyContent="flex-end">
               <Threshold signersAmount={signers.length} threshold={threshold} />
@@ -148,15 +146,13 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
 const Threshold: React.FC<{ threshold: number; signersAmount: number }> = ({
   threshold,
   signersAmount,
-}) => {
-  return (
-    <Flex alignItems="center" data-testid="threshold">
-      <Heading marginRight="4px" color={colors.gray[450]} size="sm">
-        No. of approvals:
-      </Heading>
-      <Text color={colors.gray[400]} size="sm">
-        {`${threshold} out of ${signersAmount}`}
-      </Text>
-    </Flex>
-  );
-};
+}) => (
+  <Flex alignItems="center" data-testid="threshold">
+    <Heading marginRight="4px" color={colors.gray[450]} size="sm">
+      No. of approvals:
+    </Heading>
+    <Text color={colors.gray[400]} size="sm">
+      {`${threshold} out of ${signersAmount}`}
+    </Text>
+  </Flex>
+);

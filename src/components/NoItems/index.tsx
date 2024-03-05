@@ -25,26 +25,24 @@ export const NoItems: React.FC<
     description: string;
     size: AvailableSizes;
   }>
-> = ({ title, description, children, size }) => {
-  return (
-    <Flex alignItems="center" justifyContent="center" width="100%" height="100%">
-      <Box padding="30px" data-testid="empty-state-message">
-        <Heading marginBottom="10px" textAlign="center" size={SIZES[size].heading}>
-          {title}
-        </Heading>
-        <Text
-          marginBottom="30px"
-          color={colors.gray[400]}
-          textAlign="center"
-          size={SIZES[size].description}
-        >
-          {description}
-        </Text>
-        <Center>{children}</Center>
-      </Box>
-    </Flex>
-  );
-};
+> = ({ title, description, children, size }) => (
+  <Flex alignItems="center" justifyContent="center" width="100%" height="100%">
+    <Box padding="30px" data-testid="empty-state-message">
+      <Heading marginBottom="10px" textAlign="center" size={SIZES[size].heading}>
+        {title}
+      </Heading>
+      <Text
+        marginBottom="30px"
+        color={colors.gray[400]}
+        textAlign="center"
+        size={SIZES[size].description}
+      >
+        {description}
+      </Text>
+      <Center>{children}</Center>
+    </Box>
+  </Flex>
+);
 
 export const NoOperations: React.FC<{ size: AvailableSizes }> = ({ size }) => (
   <NoItems
