@@ -10377,9 +10377,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-updater@npm:^6.1.9":
-  version: 6.1.9
-  resolution: "electron-updater@npm:6.1.9"
+"electron-updater@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "electron-updater@npm:6.2.1"
   dependencies:
     builder-util-runtime: "npm:9.2.4"
     fs-extra: "npm:^10.1.0"
@@ -10389,7 +10389,7 @@ __metadata:
     lodash.isequal: "npm:^4.5.0"
     semver: "npm:^7.3.8"
     tiny-typed-emitter: "npm:^2.1.0"
-  checksum: 10/f0c83dc067ff72ed60ac192f18045623f87503daaf6ad7f8952a647f51fa0acb78ec1cd0caa49ec3600ce3922d9a86cf48696be9bca4a8352117a7454da14a84
+  checksum: 10/da4bf2517f5a60a904f52966c45256b5bf86bc11e2534133163565668db2746600fba6553c68d04ace1fe519dc8d3cd8a6e387dc6f7721058dd3977f94895709
   languageName: node
   linkType: hard
 
@@ -19861,7 +19861,7 @@ __metadata:
     dotenv-expand: "npm:^11.0.6"
     electron: "npm:^29.1.0"
     electron-builder: "npm:^24.13.3"
-    electron-updater: "npm:^6.1.9"
+    electron-updater: "npm:^6.2.1"
     electronmon: "npm:^2.0.2"
     eslint: "npm:^8.57.0"
     eslint-import-resolver-typescript: "npm:^3.6.1"
