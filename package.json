@@ -331,7 +331,7 @@
     ]
   },
   "dependencies": {
-    "electron-updater": "^6.1.9"
+    "electron-updater": "^6.2.1"
   },
   "resolutions": {
     "jsdom": "^23.0.1",
