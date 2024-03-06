@@ -3,7 +3,6 @@ import BigNumber from "bignumber.js";
 
 import { FormValues, SelectApproversFormPage } from "./SelectApproversFormPage";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
-import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import {
   mockContractAddress,
   mockContractOrigination,
@@ -12,12 +11,19 @@ import {
   mockMnemonicAccount,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
+import {
+  act,
+  dynamicModalContextMock,
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from "../../../mocks/testUtils";
 import { contract, makeStorageJSON } from "../../../multisig/contract";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";
-import { DynamicModalContext } from "../../DynamicModal";
 
 const MULTISIG_NAME = "Multisig Account Name";
 const SENDER = mockMnemonicAccount(0);
@@ -256,17 +262,15 @@ describe("SelectApproversFormPage", () => {
       const user = userEvent.setup();
       const sender = mockImplicitAccount(1);
       render(
-        <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {fixture({
-            name: "Test account",
-            sender: sender.address.pkh,
-            signers: [
-              { val: mockImplicitAccount(0).address.pkh },
-              { val: mockImplicitAccount(1).address.pkh },
-            ],
-            threshold: 1,
-          })}
-        </DynamicModalContext.Provider>
+        fixture({
+          name: "Test account",
+          sender: sender.address.pkh,
+          signers: [
+            { val: mockImplicitAccount(0).address.pkh },
+            { val: mockImplicitAccount(1).address.pkh },
+          ],
+          threshold: 1,
+        })
       );
 
       const operations = makeAccountOperations(sender, sender, [
@@ -305,11 +309,7 @@ describe("SelectApproversFormPage", () => {
 
   describe("empty form", () => {
     it("builds operation that can be submitted from the next step", async () => {
-      render(
-        <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {fixture()}
-        </DynamicModalContext.Provider>
-      );
+      render(fixture());
 
       // select values
       const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });

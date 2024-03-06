@@ -3,14 +3,20 @@ import BigNumber from "bignumber.js";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
-import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import {
   mockImplicitAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { act, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
+import {
+  act,
+  dynamicModalContextMock,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
@@ -18,7 +24,6 @@ import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
 import { estimate } from "../../../utils/tezos";
-import { DynamicModalContext } from "../../DynamicModal";
 import { FormPageProps } from "../utils";
 
 const fixture = (props: FormPageProps<FormValues>) => (
@@ -157,15 +162,13 @@ describe("<Form />", () => {
       const user = userEvent.setup();
       const sender = mockImplicitAccount(0);
       render(
-        <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {fixture({
-            sender: sender,
-            form: {
-              sender: sender.address.pkh,
-              baker: mockImplicitAccount(1).address.pkh,
-            },
-          })}
-        </DynamicModalContext.Provider>
+        fixture({
+          sender: sender,
+          form: {
+            sender: sender.address.pkh,
+            baker: mockImplicitAccount(1).address.pkh,
+          },
+        })
       );
       const submitButton = screen.getByText("Preview");
       await waitFor(() => {

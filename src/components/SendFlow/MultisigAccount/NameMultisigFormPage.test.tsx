@@ -2,11 +2,15 @@ import { Modal } from "@chakra-ui/react";
 
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
-import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
-import { DynamicModalContext } from "../../DynamicModal";
+import {
+  dynamicModalContextMock,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "../../../mocks/testUtils";
 
 const MULTISIG_NAME = "Test Multisig Name";
 
@@ -109,11 +113,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("opens Select Approvers form on submit", async () => {
-      render(
-        <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {component}
-        </DynamicModalContext.Provider>
-      );
+      render(component);
 
       if (!withName) {
         const input = screen.getByLabelText("Account Name");
@@ -139,11 +139,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("opens Select Approvers form on submit - with trimmed name", async () => {
-      render(
-        <DynamicModalContext.Provider value={dynamicModalContextMock}>
-          {component}
-        </DynamicModalContext.Provider>
-      );
+      render(component);
 
       const input = screen.getByLabelText("Account Name");
       fireEvent.change(input, { target: { value: "\tUpdated Multisig Name  " } });
