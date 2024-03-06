@@ -3,7 +3,6 @@ import BigNumber from "bignumber.js";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
-import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import {
   mockFA2Token,
   mockFA2TokenRaw,
@@ -11,7 +10,15 @@ import {
   mockMnemonicAccount,
 } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
+import {
+  act,
+  dynamicModalContextMock,
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
@@ -19,7 +26,6 @@ import { FA2TokenBalance } from "../../../types/TokenBalance";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
-import { DynamicModalContext } from "../../DynamicModal";
 import { FormPagePropsWithSender } from "../utils";
 
 const mockAccount = mockMnemonicAccount(0);
@@ -187,19 +193,17 @@ describe("<FormPage />", () => {
         store.dispatch(assetsSlice.actions.updateTokenBalance([mockTokenRaw]));
         const sender = mockAccount;
         render(
-          <DynamicModalContext.Provider value={dynamicModalContextMock}>
-            {fixture(
-              {
-                sender,
-                form: {
-                  sender: sender.address.pkh,
-                  recipient: mockImplicitAccount(1).address.pkh,
-                  prettyAmount: "1",
-                },
+          fixture(
+            {
+              sender,
+              form: {
+                sender: sender.address.pkh,
+                recipient: mockImplicitAccount(1).address.pkh,
+                prettyAmount: "1",
               },
-              mockFA2Token(0, mockAccount, 2, 0)
-            )}
-          </DynamicModalContext.Provider>
+            },
+            mockFA2Token(0, mockAccount, 2, 0)
+          )
         );
         const submitButton = screen.getByText("Preview");
         await waitFor(() => {

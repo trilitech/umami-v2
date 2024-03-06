@@ -3,17 +3,23 @@ import BigNumber from "bignumber.js";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
-import { dynamicModalContextMock } from "../../../mocks/dynamicModal";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
 import { mockEstimatedFee } from "../../../mocks/helpers";
-import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
+import {
+  act,
+  dynamicModalContextMock,
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import { NFTBalance } from "../../../types/TokenBalance";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { store } from "../../../utils/redux/store";
-import { DynamicModalContext } from "../../DynamicModal";
 import { FormPagePropsWithSender } from "../utils";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
@@ -166,16 +172,14 @@ describe("<FormPage />", () => {
         store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
         const sender = mockImplicitAccount(0);
         render(
-          <DynamicModalContext.Provider value={dynamicModalContextMock}>
-            {fixture({
-              sender,
-              form: {
-                sender: sender.address.pkh,
-                recipient: mockImplicitAccount(1).address.pkh,
-                quantity: 1,
-              },
-            })}
-          </DynamicModalContext.Provider>
+          fixture({
+            sender,
+            form: {
+              sender: sender.address.pkh,
+              recipient: mockImplicitAccount(1).address.pkh,
+              quantity: 1,
+            },
+          })
         );
         const submitButton = screen.getByText("Preview");
         await waitFor(() => {

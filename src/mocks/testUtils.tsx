@@ -1,4 +1,5 @@
 import * as testingLibrary from "@testing-library/react";
+import { PropsWithChildren } from "react";
 import { HashRouter } from "react-router-dom";
 
 import { DynamicModalContext, useDynamicModal } from "../components/DynamicModal";
@@ -6,15 +7,33 @@ import { ReactQueryProvider } from "../providers/ReactQueryProvider";
 import { ReduxStore } from "../providers/ReduxStore";
 import { UmamiTheme } from "../providers/UmamiTheme";
 
-const AllTheProviders = (props: any) => {
+// can be used to spyOn the openWith and onClose methods
+export const dynamicModalContextMock = {
+  onClose: jest.fn(),
+  openWith: jest.fn(),
+};
+
+const AllTheProviders = ({ children }: PropsWithChildren<object>) => {
   const dynamicModal = useDynamicModal();
+
+  const openWith = dynamicModal.openWith;
+  const onClose = dynamicModal.onClose;
+  jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
+    dynamicModalContextMock.openWith(...args);
+    return openWith(...args);
+  });
+  jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
+    dynamicModalContextMock.onClose(...args);
+    return onClose(...args);
+  });
+
   return (
     <HashRouter>
       <ReactQueryProvider>
         <UmamiTheme>
           <ReduxStore>
             <DynamicModalContext.Provider value={dynamicModal}>
-              {props.children}
+              {children}
               {dynamicModal.content}
             </DynamicModalContext.Provider>
           </ReduxStore>
@@ -40,7 +59,7 @@ const customRenderHook = <
   testingLibrary.renderHook(render, { wrapper: AllTheProviders, ...options });
 
 // re-export everything
-// override render method
+// override render methods
 export { customRender as render, customRenderHook as renderHook };
 export const { act, fireEvent, screen, waitFor, within } = testingLibrary;
 export * from "@testing-library/user-event";
