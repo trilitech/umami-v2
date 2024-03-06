@@ -27,10 +27,17 @@ export const useGetImplicitAccountSafe = () => {
 };
 
 // For cleaner code and ease of use this hook returns an ImplicitAccount
-// Please make sure not to pass in non existing Pkh
+// Please make sure not to pass in a non-existing address
 export const useGetImplicitAccount = () => {
   const getAccount = useGetImplicitAccountSafe();
-  return (pkh: RawPkh) => getAccount(pkh) as ImplicitAccount;
+
+  return (pkh: RawPkh) => {
+    const account = getAccount(pkh);
+    if (!account) {
+      throw new Error(`Unknown account: ${pkh}`);
+    }
+    return account;
+  };
 };
 
 export const useAllAccounts = (): Account[] => {
@@ -67,12 +74,15 @@ export const useGetOwnedAccountSafe = () => {
   return (pkh: string): Account | undefined => accounts.find(a => a.address.pkh === pkh);
 };
 
+// For cleaner code and ease of use this hook returns an Account
+// Please make sure not to pass in a non-existing address
 export const useGetOwnedAccount = () => {
   const getOwnedAccount = useGetOwnedAccountSafe();
+
   return (pkh: string): Account => {
     const account = getOwnedAccount(pkh);
     if (!account) {
-      throw new Error(`You do not own account:${pkh}`);
+      throw new Error(`Unknown account: ${pkh}`);
     }
     return account;
   };

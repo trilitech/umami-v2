@@ -22,7 +22,7 @@ export const BatchModalBody: React.FC<{
       <AddressTile address={signer.address} />
       <Flex alignItems="center" justifyContent="space-between" marginY="12px" paddingX="4px">
         <Flex>
-          <Text marginRight={1} color={colors.gray[450]} size="sm">
+          <Text marginRight="4px" color={colors.gray[450]} size="sm">
             Transactions:
           </Text>
           <Text color={colors.gray[400]} data-testid="transaction-length" size="sm">

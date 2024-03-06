@@ -1,61 +1,45 @@
+import {
+  BeaconMessageType,
+  OperationRequestOutput,
+  OperationResponseInput,
+} from "@airgap/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
-import { BigNumber } from "bignumber.js";
-import { noop } from "lodash";
-import { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useContext } from "react";
 
 import { ImplicitOperations } from "../../../types/AccountOperations";
-import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
+import { WalletClient } from "../../../utils/beacon/WalletClient";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { estimate, executeOperations } from "../../../utils/tezos";
+import { executeOperations } from "../../../utils/tezos";
 import { DynamicModalContext } from "../../DynamicModal";
 import { SuccessStep } from "../SuccessStep";
 
 export const useSignWithBeacon = (
   operation: ImplicitOperations,
-  onBeaconSuccess: (hash: string) => Promise<void>
+  message: OperationRequestOutput
 ) => {
-  const { onClose } = useContext(DynamicModalContext);
-  const [fee, setFee] = useState<BigNumber | null>(null);
-  const network = useSelectedNetwork();
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
-  const form = useForm<{ sender: string; signer: string }>({
-    mode: "onBlur",
-    defaultValues: {
-      signer: operation.signer.address.pkh,
-      sender: operation.sender.address.pkh,
-    },
-  });
-
-  useEffect(() => {
-    handleAsyncAction(
-      async () => {
-        const fee = await estimate(operation, network);
-        setFee(fee);
-      },
-      err => {
-        onClose();
-        return {
-          title: "Error",
-          description: `Error while processing beacon request: ${err.message}`,
-          status: "error",
-        };
-      }
-    ).catch(noop);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, operation]);
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
-    handleAsyncAction(async () => {
-      const { opHash } = await executeOperations(operation, tezosToolkit);
-      await openWith(<SuccessStep hash={opHash} />);
-      return onBeaconSuccess(opHash);
-    });
+    handleAsyncAction(
+      async () => {
+        const { opHash } = await executeOperations(operation, tezosToolkit);
+
+        const response: OperationResponseInput = {
+          type: BeaconMessageType.OperationResponse,
+          id: message.id,
+          transactionHash: opHash,
+        };
+        await WalletClient.respond(response);
+
+        return openWith(<SuccessStep hash={opHash} />);
+      },
+      error => ({
+        description: `Failed to confirm Beacon operation: ${error.message}`,
+      })
+    );
 
   return {
-    fee,
-    form,
     isSigning,
     onSign,
   };

@@ -15,24 +15,22 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
-import React from "react";
+import React, { useContext } from "react";
 
-import { SignButton } from "../../../../components/SendFlow/SignButton";
-import colors from "../../../../style/colors";
-import { useGetImplicitAccountSafe } from "../../../hooks/getAccountDataHooks";
-import { WalletClient } from "../../WalletClient";
+import { WalletClient } from "./WalletClient";
+import { DynamicModalContext } from "../../components/DynamicModal";
+import { SignButton } from "../../components/SendFlow/SignButton";
+import colors from "../../style/colors";
+import { useGetImplicitAccount } from "../hooks/getAccountDataHooks";
 
-export const SignPayloadRequestPanel: React.FC<{
+export const SignPayloadRequestModal: React.FC<{
   request: SignPayloadRequestOutput;
-  onSuccess: () => void;
-}> = ({ request, onSuccess: onSubmit }) => {
-  const getAccount = useGetImplicitAccountSafe();
+}> = ({ request }) => {
+  const { onClose } = useContext(DynamicModalContext);
+  const getAccount = useGetImplicitAccount();
   const signerAccount = getAccount(request.sourceAddress);
   const toast = useToast();
 
-  if (!signerAccount) {
-    return <div>"unknown account"</div>;
-  }
   const sign = async (tezosToolkit: TezosToolkit) => {
     const result = await tezosToolkit.signer.sign(request.payload);
 
@@ -40,13 +38,13 @@ export const SignPayloadRequestPanel: React.FC<{
       type: BeaconMessageType.SignPayloadResponse,
       id: request.id,
       signingType: request.signingType,
-      signature: result.prefixSig, // TODO: Check if it works
+      signature: result.prefixSig,
     };
 
     await WalletClient.respond(response);
 
     toast({ description: "Successfully submitted Beacon operation", status: "success" });
-    onSubmit();
+    onClose();
   };
 
   return (

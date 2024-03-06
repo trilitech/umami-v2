@@ -91,12 +91,16 @@ export const accountsSlice = createSlice({
         accountToRename.label = newName;
       }
     },
-    // For mnemonics used as a part of {@link utils/hooks/setAccountDataHooks.useDeriveMnemonicAccount} hook (for setting unique account name).
+    /**
+     * For mnemonics used as a part of {@link utils/hooks/setAccountDataHooks#useDeriveMnemonicAccount} hook (for setting unique account name).
+     * */
     addAccount: (state, { payload }: { payload: ImplicitAccount }) => {
       state.items = concatUnique(state.items, [payload]);
     },
-    // Creates a mnemonic group.
-    // Used as a part of {@link utils/hooks/setAccountDataHooks.useRestoreRevealedMnemonicAccounts} hook (for setting unique account names inside the group).
+    /**
+     * Creates a mnemonic group.
+     * Used as a part of {@link utils/hooks/setAccountDataHooks#useRestoreRevealedMnemonicAccounts} hook (for setting unique account names inside the group).
+     * */
     addMnemonicAccounts: (
       state,
       {

@@ -27,19 +27,18 @@ import { capitalize } from "lodash";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { JsValueWrap } from "../../../../components/AccountDrawer/JsValueWrap";
-import { OwnedImplicitAccountsAutocomplete } from "../../../../components/AddressAutocomplete";
-import colors from "../../../../style/colors";
-import { useAddConnection } from "../../../hooks/beaconHooks";
-import { useImplicitAccounts } from "../../../hooks/getAccountDataHooks";
-import { WalletClient } from "../../WalletClient";
+import { WalletClient } from "./WalletClient";
+import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
+import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
+import colors from "../../style/colors";
+import { useAddConnection } from "../hooks/beaconHooks";
+import { useGetImplicitAccount } from "../hooks/getAccountDataHooks";
 
-export const PermissionRequestPanel: React.FC<{
+export const PermissionRequestModal: React.FC<{
   request: PermissionRequestOutput;
-  onSuccess: () => void;
-}> = ({ request, onSuccess: onSubmit }) => {
+}> = ({ request }) => {
   const addConnectionToBeaconSlice = useAddConnection();
-  const accounts = useImplicitAccounts();
+  const getAccount = useGetImplicitAccount();
   const form = useForm<{ address: string }>({
     mode: "onBlur",
   });
@@ -49,13 +48,10 @@ export const PermissionRequestPanel: React.FC<{
   } = form;
 
   const grant = async () => {
-    const account = accounts.find(acc => acc.address.pkh === getValues().address);
-    if (!account) {
-      throw new Error("No account selected");
-    }
+    const account = getAccount(getValues().address);
     const response: BeaconResponseInputMessage = {
       type: BeaconMessageType.PermissionResponse,
-      network: { type: request.network.type }, // Use the same network that the user requested
+      network: request.network,
       scopes: request.scopes,
       id: request.id,
       publicKey: account.pk,
@@ -66,8 +62,6 @@ export const PermissionRequestPanel: React.FC<{
     await WalletClient.respond(response);
 
     addConnectionToBeaconSlice(request.senderId, account.address.pkh, request.network.type);
-
-    onSubmit();
   };
 
   return (
@@ -91,20 +85,18 @@ export const PermissionRequestPanel: React.FC<{
       </ModalHeader>
       <ModalCloseButton />
       <ModalBody data-testid="beacon-request-body">
-        {request.appMetadata.icon && (
-          <Flex
-            alignItems="center"
-            marginTop="16px"
-            padding="15px"
-            borderRadius="4px"
-            backgroundColor={colors.gray[800]}
-          >
-            <AspectRatio width="60px" marginRight="12px" ratio={1}>
-              <Image borderRadius="4px" src={request.appMetadata.icon} />
-            </AspectRatio>
-            <Heading size="sm">{request.appMetadata.name}</Heading>
-          </Flex>
-        )}
+        <Flex
+          alignItems="center"
+          marginTop="16px"
+          padding="15px"
+          borderRadius="4px"
+          backgroundColor={colors.gray[800]}
+        >
+          <AspectRatio width="60px" marginRight="12px" ratio={1}>
+            <Image borderRadius="4px" src={request.appMetadata.icon} />
+          </AspectRatio>
+          <Heading size="sm">{request.appMetadata.name}</Heading>
+        </Flex>
 
         <Accordion marginTop="16px" allowToggle={true}>
           <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">

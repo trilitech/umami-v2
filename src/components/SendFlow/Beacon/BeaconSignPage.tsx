@@ -1,3 +1,6 @@
+import { OperationRequestOutput } from "@airgap/beacon-wallet";
+import BigNumber from "bignumber.js";
+
 import { ContractCallSignPage } from "./ContractCallSignPage";
 import { DelegationSignPage } from "./DelegationSignPage";
 import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
@@ -6,25 +9,32 @@ import { ImplicitOperations } from "../../../types/AccountOperations";
 
 export type BeaconSignPageProps = {
   operation: ImplicitOperations;
-  onBeaconSuccess: (hash: string) => Promise<void>;
+  fee: BigNumber;
+  message: OperationRequestOutput;
 };
 
-export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, onBeaconSuccess }) => {
+export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, message }) => {
   const operationType = operation.operations[0].type;
 
   switch (operationType) {
     case "tez": {
-      return <BeaconTezSignPage onBeaconSuccess={onBeaconSuccess} operation={operation} />;
+      return <BeaconTezSignPage fee={fee} message={message} operation={operation} />;
     }
     case "contract_call": {
-      return <ContractCallSignPage onBeaconSuccess={onBeaconSuccess} operation={operation} />;
+      return <ContractCallSignPage fee={fee} message={message} operation={operation} />;
     }
     case "delegation": {
-      return <DelegationSignPage onBeaconSuccess={onBeaconSuccess} operation={operation} />;
+      return <DelegationSignPage fee={fee} message={message} operation={operation} />;
     }
     case "undelegation": {
-      return <UndelegationSignPage onBeaconSuccess={onBeaconSuccess} operation={operation} />;
+      return <UndelegationSignPage fee={fee} message={message} operation={operation} />;
     }
+    /**
+     * FA1/2 are impossible to get here because we don't parse them
+     * instead we get a generic contract call
+     * contract_origination is not supported yet
+     * check {@link beacon#partialOperationToOperation} for details
+     */
     case "fa1.2":
     case "fa2":
     case "contract_origination":
