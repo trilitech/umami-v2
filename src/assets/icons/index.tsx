@@ -47,6 +47,7 @@ export * from "./OutgoingArrow";
 export * from "./Pen";
 export * from "./Plus";
 export * from "./RefreshClock";
+export * from "./Reload";
 export * from "./Rotate";
 export * from "./Slash";
 export * from "./Sliders";

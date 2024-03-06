@@ -1,9 +1,13 @@
-import { Box, Button, Center, Flex, Heading, Link } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, Link, VStack } from "@chakra-ui/react";
+
+import { ModalContentWrapper } from "./Onboarding/ModalContentWrapper";
+import { NoticeIcon, ReloadIcon } from "../assets/icons";
+import BackgroundImage from "../assets/onboarding/background_image.png";
+import colors from "../style/colors";
 
 const feedbackEmailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
 
-// TODO: prepare for Beta release properly
 export const ErrorPage: React.FC = () => {
   const onRefresh = () => {
     window.location.reload();
@@ -27,33 +31,61 @@ export const ErrorPage: React.FC = () => {
   };
 
   return (
-    <Flex alignItems="stretch">
-      <Center width="100%" marginTop="200px">
-        <Box>
-          <Heading marginBottom={3} textAlign="center">
-            Ooops, something went wrong!
-          </Heading>
+    <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
+      <Box
+        width="100%"
+        maxWidth="460px"
+        height="100%"
+        maxHeight="480px"
+        padding="40px"
+        background={colors.gray[900]}
+        border="1px"
+        borderColor={colors.gray[700]}
+        borderRadius="8px"
+        boxShadow="0px 0px 30px rgba(0, 0, 0, 0.30)"
+      >
+        <ModalContentWrapper
+          icon={<NoticeIcon />}
+          subtitle="Please refresh the app or use one of the following options:"
+          title="Oops! Something went wrong!"
+        >
+          <VStack width="100%" spacing="16px">
+            <Button width="100%" onClick={onBackup} size="lg">
+              Save Backup
+            </Button>
 
-          <Button marginRight={2} onClick={onRefresh}>
-            Refresh the page
-          </Button>
-          <Button marginRight={2} onClick={onBackup} variant="secondary">
-            Download Backup
-          </Button>
-          <Button marginRight={2} onClick={onOffboard} variant="warning">
-            Offboard
-          </Button>
-          <Button variant="tertiary">
+            <Button width="100%" onClick={onOffboard} size="lg" variant="warning">
+              Off-board Wallet
+            </Button>
+
+            <Button width="100%" size="lg" variant="tertiary">
+              <Link
+                href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Report Error
+              </Link>
+            </Button>
+
             <Link
-              href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
-              rel="noopener noreferrer"
-              target="_blank"
+              display="block"
+              marginTop="14px"
+              color={colors.blue}
+              fill={colors.blue}
+              _hover={{ color: colors.blueL, fill: colors.blueL }}
+              onClick={onRefresh}
             >
-              Report Error
+              <Center>
+                <ReloadIcon marginRight="7px" />
+                <Heading display="inline" lineHeight="22px" size="md">
+                  Refresh
+                </Heading>
+              </Center>
             </Link>
-          </Button>
-        </Box>
-      </Center>
-    </Flex>
+          </VStack>
+        </ModalContentWrapper>
+      </Box>
+    </Center>
   );
 };
