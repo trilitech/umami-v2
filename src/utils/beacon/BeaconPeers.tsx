@@ -118,7 +118,7 @@ const PeerRow = ({ peerInfo, accountPkh }: { peerInfo: ExtendedPeerInfo; account
         <IconButton
           aria-label="Remove Peer"
           icon={<TrashIcon />}
-          onClick={() => removePeer(peerInfo, accountPkh)}
+          onClick={() => removePeer(peerInfo)}
           size="xs"
           variant="circle"
         />

@@ -243,9 +243,6 @@ describe("<BeaconPeers />", () => {
         [peersData[0].senderId]: {
           [mockMnemonicAccount(1).address.pkh]: NetworkType.MAINNET,
         },
-        [peersData[1].senderId]: {
-          [mockMnemonicAccount(5).address.pkh]: NetworkType.FLORENCENET,
-        },
         [peersData[2].senderId]: {
           [mockMnemonicAccount(2).address.pkh]: NetworkType.CUSTOM,
         },

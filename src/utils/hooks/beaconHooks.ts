@@ -42,10 +42,9 @@ export const useAddConnection = () => {
 };
 
 /**
- * Returns function for removing connection from {@link beaconSlice}.
+ * Returns function for removing connections from {@link beaconSlice}.
  */
 export const useRemoveConnection = () => {
   const dispatch = useDispatch();
-  return (dAppId: string, accountPkh: RawPkh) =>
-    dispatch(beaconSlice.actions.removeConnection({ dAppId, accountPkh }));
+  return (dAppId: string) => dispatch(beaconSlice.actions.removeConnection({ dAppId }));
 };

@@ -121,10 +121,9 @@ describe("useRemoveConnection", () => {
     const {
       result: { current: removeConnection },
     } = renderHook(() => useRemoveConnection());
-    removeConnection(dAppId1, pkh1);
+    removeConnection(dAppId1);
 
     expect(store.getState().beacon).toEqual({
-      [dAppId1]: { [pkh3]: NetworkType.CUSTOM },
       [dAppId2]: { [pkh2]: NetworkType.GHOSTNET },
     });
   });
