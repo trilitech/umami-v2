@@ -149,6 +149,39 @@ describe("<useHandleBeaconMessage />", () => {
     expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
   });
 
+  it("doesn't open a modal when account is owned", async () => {
+    const message: BeaconRequestOutputMessage = {
+      type: BeaconMessageType.OperationRequest,
+      operationDetails: [
+        {
+          kind: TezosOperationType.TRANSACTION,
+          amount: "1",
+          destination: mockImplicitAddress(2).pkh,
+        },
+      ],
+      senderId: "mockSenderId",
+      id: "mockMessageId",
+      network: { type: NetworkType.MAINNET },
+      appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+      sourceAddress: mockImplicitAddress(3).pkh,
+    };
+
+    const {
+      result: { current: handleMessage },
+    } = renderHook(useHandleBeaconMessage);
+
+    act(() => handleMessage(message));
+
+    await waitFor(() =>
+      expect(mockToast).toHaveBeenCalledWith({
+        description:
+          "Error while processing Beacon request: Unknown account: tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+        status: "error",
+      })
+    );
+    expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+  });
+
   it("doesn't open a modal on an error while estimating the fee", async () => {
     jest.mocked(estimate).mockRejectedValueOnce(new Error("Something went very wrong!"));
 
@@ -214,7 +247,9 @@ describe("<useHandleBeaconMessage />", () => {
           fee={BigNumber(100)}
           message={message}
           operation={
-            makeAccountOperations(account, account, [mockTezOperation(1)]) as ImplicitOperations
+            makeAccountOperations(account, account, [
+              { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+            ]) as ImplicitOperations
           }
         />
       )
@@ -259,8 +294,8 @@ describe("<useHandleBeaconMessage />", () => {
           message={message}
           operation={
             makeAccountOperations(account, account, [
-              mockTezOperation(1),
-              mockTezOperation(1),
+              { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+              { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
             ]) as ImplicitOperations
           }
         />
@@ -293,8 +328,8 @@ describe("toAccountOperations", () => {
 
     expect(operations).toEqual(
       makeAccountOperations(account, account, [
-        mockTezOperation(1),
-        { ...mockTezOperation(2), recipient: mockImplicitAddress(2) },
+        { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+        { type: "tez", amount: "2", recipient: mockImplicitAddress(2) },
       ])
     );
   });

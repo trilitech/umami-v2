@@ -4,9 +4,9 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
   Flex,
   FormLabel,
+  Heading,
   ModalBody,
   ModalContent,
   ModalFooter,
@@ -37,18 +37,18 @@ export const BatchSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, m
           <Accordion allowToggle={true}>
             <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
               <AccordionButton>
-                <Box flex="1" textAlign="left">
+                <Heading flex="1" textAlign="left" paddingY="6px" size="sm">
                   Operations
-                </Box>
+                </Heading>
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel>
-                <JsValueWrap value={message.operationDetails} />
+                <JsValueWrap overflowY="auto" maxHeight="200px" value={message.operationDetails} />
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
 
-          <FormLabel>From</FormLabel>
+          <FormLabel marginTop="16px">From</FormLabel>
           <AddressTile address={signer.address} />
           <Flex alignItems="center" justifyContent="space-between" marginY="12px" paddingX="4px">
             <Flex>

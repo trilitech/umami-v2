@@ -45,9 +45,9 @@ export const useAsyncActionHandler = () => {
   };
 
   /**
-   * same as {@link handleAsyncActionUnsafe}, but returns undefined instead of throwing an error
+   * Same as {@link handleAsyncActionUnsafe}, but returns undefined instead of throwing an error.
    *
-   * NOTE: might be helpful in tests to remove the catch part of this function so that you'd see all the exceptions
+   * NOTE: might be helpful in tests to remove the catch part of this function so that you'd see all the exceptions.
    *  */
   const handleAsyncAction = async <T>(
     fn: () => Promise<T>,
