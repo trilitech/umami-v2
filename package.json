@@ -182,7 +182,7 @@
     "style-loader": "^3.3.4",
     "terser-webpack-plugin": "^5.3.10",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.25.10",
+    "typedoc": "^0.25.11",
     "typedoc-plugin-missing-exports": "^2.2.0",
     "typescript": "5.3.3",
     "wait-on": "^7.2.0",
