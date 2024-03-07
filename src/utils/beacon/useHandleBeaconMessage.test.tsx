@@ -17,6 +17,7 @@ import {
   toAccountOperations,
   useHandleBeaconMessage,
 } from "./useHandleBeaconMessage";
+import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import {
   mockContractAddress,
@@ -182,7 +183,7 @@ describe("<useHandleBeaconMessage />", () => {
     expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
   });
 
-  it("opens a modal with the BeaconSignPage", async () => {
+  it("opens a modal with the BeaconSignPage for 1 operation", async () => {
     mockEstimatedFee(100);
 
     const message: BeaconRequestOutputMessage = {
@@ -214,6 +215,53 @@ describe("<useHandleBeaconMessage />", () => {
           message={message}
           operation={
             makeAccountOperations(account, account, [mockTezOperation(1)]) as ImplicitOperations
+          }
+        />
+      )
+    );
+    expect(mockToast).not.toHaveBeenCalled();
+  });
+
+  it("opens a modal with the BatchSignPage for multiple operations", async () => {
+    mockEstimatedFee(100);
+
+    const message: BeaconRequestOutputMessage = {
+      type: BeaconMessageType.OperationRequest,
+      operationDetails: [
+        {
+          kind: TezosOperationType.TRANSACTION,
+          amount: "1",
+          destination: mockImplicitAddress(2).pkh,
+        },
+        {
+          kind: TezosOperationType.TRANSACTION,
+          amount: "1",
+          destination: mockImplicitAddress(2).pkh,
+        },
+      ],
+      senderId: "mockSenderId",
+      id: "mockMessageId",
+      network: { type: NetworkType.MAINNET },
+      appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+      sourceAddress: account.address.pkh,
+    };
+
+    const {
+      result: { current: handleMessage },
+    } = renderHook(useHandleBeaconMessage);
+
+    act(() => handleMessage(message));
+
+    await waitFor(() =>
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+        <BatchSignPage
+          fee={BigNumber(100)}
+          message={message}
+          operation={
+            makeAccountOperations(account, account, [
+              mockTezOperation(1),
+              mockTezOperation(1),
+            ]) as ImplicitOperations
           }
         />
       )

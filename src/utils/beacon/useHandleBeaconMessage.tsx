@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
+import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { ImplicitAccount } from "../../types/Account";
 import { ImplicitOperations } from "../../types/AccountOperations";
@@ -48,7 +49,12 @@ export const useHandleBeaconMessage = () => {
             const signer = getAccount(message.sourceAddress) as ImplicitAccount;
             const operation = toAccountOperations(message.operationDetails, signer);
             const fee = await estimate(operation, network);
-            modal = <BeaconSignPage fee={fee} message={message} operation={operation} />;
+            if (operation.operations.length === 1) {
+              modal = <BeaconSignPage fee={fee} message={message} operation={operation} />;
+            } else {
+              modal = <BatchSignPage fee={fee} message={message} operation={operation} />;
+            }
+
             break;
           }
           default:
