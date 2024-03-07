@@ -73,7 +73,7 @@ export const useHandleBeaconMessage = () => {
  * @param signer - the {@link Account} that's going to sign the operation
  * @returns
  */
-const toAccountOperations = (
+export const toAccountOperations = (
   operationDetails: PartialTezosOperation[],
   signer: ImplicitAccount
 ): ImplicitOperations => {
@@ -102,7 +102,7 @@ const toAccountOperations = (
  * @param signer - the {@link Account} that's going to sign the operation
  * @returns a parsed {@link Operation}
  */
-const partialOperationToOperation = (
+export const partialOperationToOperation = (
   partialOperation: PartialTezosOperation,
   signer: ImplicitAccount
 ): Operation => {

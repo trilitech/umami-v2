@@ -44,7 +44,11 @@ export const useAsyncActionHandler = () => {
     }
   };
 
-  // same as withLoadingUnsafe, but returns undefined instead of throwing an error
+  /**
+   * same as {@link handleAsyncActionUnsafe}, but returns undefined instead of throwing an error
+   *
+   * NOTE: might be helpful in tests to remove the catch part of this function so that you'd see all the exceptions
+   *  */
   const handleAsyncAction = async <T>(
     fn: () => Promise<T>,
     toastOptions?: UseToastOptions | ((error: any) => UseToastOptions)
