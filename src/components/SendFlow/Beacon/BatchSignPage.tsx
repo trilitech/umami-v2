@@ -4,78 +4,71 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
   Flex,
   FormLabel,
+  Heading,
   ModalBody,
   ModalContent,
   ModalFooter,
+  Text,
 } from "@chakra-ui/react";
 
 import { BeaconSignPageProps } from "./BeaconSignPage";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";
-import { ContractCall } from "../../../types/Operation";
 import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
-  operation,
-  fee,
-  message,
-}) => {
-  const {
-    amount: mutezAmount,
-    contract,
-    entrypoint,
-    args,
-  } = operation.operations[0] as ContractCall;
-
+export const BatchSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, message }) => {
   const { isSigning, onSign } = useSignWithBeacon(operation, message);
+  const { signer } = operation;
+  const transactionCount = operation.operations.length;
 
   return (
     <ModalContent>
       <form>
-        <Header message={message} mode="single" operation={operation} />
+        <Header message={message} mode="batch" operation={operation} />
+
         <ModalBody>
-          <TezTile mutezAmount={mutezAmount} />
-
-          <Flex alignItems="center" justifyContent="end" marginTop="12px">
-            <SignPageFee fee={fee} />
-          </Flex>
-
-          <FormLabel marginTop="24px">From </FormLabel>
-          <AddressTile address={operation.sender.address} />
-
-          <FormLabel marginTop="24px">To </FormLabel>
-          <AddressTile address={contract} />
-
-          <FormLabel marginTop="24px">Contract Call Parameter</FormLabel>
           <Accordion allowToggle={true}>
             <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
               <AccordionButton>
-                <Box flex="1" textAlign="left">
-                  JSON
-                </Box>
+                <Heading flex="1" textAlign="left" paddingY="6px" size="sm">
+                  Operations
+                </Heading>
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel>
-                <JsValueWrap value={{ entrypoint, values: args }} />
+                <JsValueWrap overflowY="auto" maxHeight="200px" value={message.operationDetails} />
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
+
+          <FormLabel marginTop="16px">From</FormLabel>
+          <AddressTile address={signer.address} />
+          <Flex alignItems="center" justifyContent="space-between" marginY="12px" paddingX="4px">
+            <Flex>
+              <Text marginRight="4px" color={colors.gray[450]} size="sm">
+                Transactions:
+              </Text>
+              <Text color={colors.gray[400]} data-testid="transaction-length" size="sm">
+                {transactionCount}
+              </Text>
+            </Flex>
+            <SignPageFee fee={fee} />
+          </Flex>
         </ModalBody>
-        <ModalFooter padding="16px 0 0 0">
+
+        <ModalFooter>
           <SignButton
             isLoading={isSigning}
             onSubmit={onSign}
-            signer={operation.signer}
-            text={headerText(operation.type, "single")}
+            signer={signer}
+            text={headerText(operation.type, "batch")}
           />
         </ModalFooter>
       </form>

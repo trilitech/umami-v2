@@ -5,7 +5,8 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
-import { BeaconProvider, resetBeacon } from "./utils/beacon/beacon";
+import { BeaconProvider } from "./utils/beacon/BeaconProvider";
+import { WalletClient } from "./utils/beacon/WalletClient";
 import { useResetConnections } from "./utils/hooks/beaconHooks";
 import { useImplicitAccounts } from "./utils/hooks/getAccountDataHooks";
 import { useAssetsPolling } from "./utils/useAssetsPolling";
@@ -63,7 +64,7 @@ const LoggedOutRouter = () => {
   const resetBeaconConnections = useResetConnections();
 
   useEffect(() => {
-    resetBeacon().then(resetBeaconConnections).catch(noop);
+    WalletClient.destroy().then(resetBeaconConnections).catch(noop);
   }, [resetBeaconConnections]);
 
   return (

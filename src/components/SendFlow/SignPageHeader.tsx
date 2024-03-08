@@ -1,4 +1,5 @@
 import { Heading, ModalCloseButton, Text } from "@chakra-ui/react";
+import { PropsWithChildren } from "react";
 
 import { HeaderWrapper } from "./FormPageHeader";
 import { SignPageMode } from "./utils";
@@ -38,14 +39,17 @@ export const subTitle = (signer: ImplicitAccount): string | undefined => {
   }
 };
 
-export const SignPageHeader: React.FC<{
-  goBack?: () => void;
-  mode: SignPageMode;
-  operationsType: AccountOperations["type"];
-  signer: ImplicitAccount;
-  title?: string;
-  description?: string;
-}> = ({ goBack, mode, operationsType, signer, title, description }) => (
+// TODO: pass in AccountOperations instead of signer & operationsType
+export const SignPageHeader: React.FC<
+  PropsWithChildren<{
+    goBack?: () => void;
+    mode: SignPageMode;
+    operationsType: AccountOperations["type"];
+    signer: ImplicitAccount;
+    title?: string;
+    description?: string;
+  }>
+> = ({ goBack, mode, operationsType, signer, title, description, children }) => (
   <HeaderWrapper>
     {goBack && <ModalBackButton onClick={goBack} />}
     <Heading data-testid="sign-page-header" size="2xl">
@@ -55,5 +59,6 @@ export const SignPageHeader: React.FC<{
       {description || subTitle(signer)}
     </Text>
     <ModalCloseButton />
+    {children}
   </HeaderWrapper>
 );

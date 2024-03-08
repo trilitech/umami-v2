@@ -1,12 +1,9 @@
 import { ExtendedP2PPairingResponse, ExtendedPeerInfo, Serializer } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useContext, useEffect } from "react";
 
-import { BeaconRequestNotification } from "./BeaconRequestNotification";
 import { makePeerInfo } from "./types";
 import { WalletClient } from "./WalletClient";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { useRemoveConnection } from "../hooks/beaconHooks";
 
 const PEERS_QUERY_KEY = "beaconPeers";
@@ -51,30 +48,4 @@ export const useAddPeer = () => {
         });
         console.error(e);
       });
-};
-
-export const BeaconProvider: React.FC<{
-  children: React.ReactNode;
-}> = ({ children }) => {
-  const { openWith, onClose } = useContext(DynamicModalContext);
-
-  useEffect(() => {
-    WalletClient.init()
-      .then(() =>
-        WalletClient.connect(message => {
-          void openWith(<BeaconRequestNotification message={message} onClose={onClose} />);
-        })
-      )
-      .catch(console.error);
-  }, [onClose, openWith]);
-
-  return children;
-};
-
-export const resetBeacon = async () => {
-  // Until WalletClient.destroy is fixed
-  await WalletClient.removeAllAccounts();
-  await WalletClient.removeAllAppMetadata();
-  await WalletClient.removeAllPeers();
-  await WalletClient.removeAllPermissions();
 };
