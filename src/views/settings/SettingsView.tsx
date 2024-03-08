@@ -4,12 +4,12 @@ import { useContext } from "react";
 import { DAppsDrawerCard } from "./DAppsDrawerCard";
 import { ErrorLogsDrawerCard } from "./ErrorLogsDrawerCard";
 import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
-import packageInfo from "../../../package.json";
 import { DownloadIcon } from "../../assets/icons";
 import { ChangePasswordForm } from "../../components/ChangePassword/ChangePasswordForm";
 import { ClickableCard, SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { useOffboardingModal } from "../../components/Offboarding/useOffboardingModal";
+import { downloadBackupFile } from "../../components/Onboarding/restoreBackupFile/utils";
 import { TopBar } from "../../components/TopBar";
 
 export const SettingsView = () => (
@@ -42,27 +42,12 @@ const GeneralSection = () => (
   </SectionContainer>
 );
 
-const downloadBackup = () => {
-  const storage = {
-    version: packageInfo.version,
-    "persist:accounts": localStorage.getItem("persist:accounts"),
-    "persist:root": localStorage.getItem("persist:root"),
-  };
-
-  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(storage))}`;
-  const link = document.createElement("a");
-  link.href = jsonString;
-  link.download = "UmamiV2Backup.json";
-
-  link.click();
-};
-
 const BackupSection = () => (
   <SectionContainer title="Backup">
-    <ClickableCard isSelected={false} onClick={downloadBackup}>
+    <ClickableCard isSelected={false} onClick={downloadBackupFile}>
       <Flex alignItems="center" justifyContent="space-between">
         <Heading size="sm">Download backup file</Heading>
-        <Button onClick={downloadBackup} variant="unstyled">
+        <Button onClick={downloadBackupFile} variant="unstyled">
           <DownloadIcon cursor="pointer" />
         </Button>
       </Flex>

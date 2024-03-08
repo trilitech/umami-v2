@@ -1,6 +1,8 @@
 import { Box, Button, Center, Heading, Link, VStack } from "@chakra-ui/react";
 
+import { useOffboardingModal } from "./Offboarding/useOffboardingModal";
 import { ModalContentWrapper } from "./Onboarding/ModalContentWrapper";
+import { downloadBackupFile } from "./Onboarding/restoreBackupFile/utils";
 import { NoticeIcon, ReloadIcon } from "../assets/icons";
 import BackgroundImage from "../assets/onboarding/background_image.png";
 import colors from "../style/colors";
@@ -9,25 +11,10 @@ const feedbackEmailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
 
 export const ErrorPage: React.FC = () => {
+  const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
+
   const onRefresh = () => {
     window.location.reload();
-  };
-
-  const onBackup = () => {
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-      JSON.stringify(window.localStorage)
-    )}`;
-
-    const link = document.createElement("a");
-    link.href = jsonString;
-    link.download = "data.json";
-
-    link.click();
-  };
-
-  const onOffboard = () => {
-    window.localStorage.clear();
-    onRefresh();
   };
 
   return (
@@ -50,11 +37,11 @@ export const ErrorPage: React.FC = () => {
           title="Oops! Something went wrong!"
         >
           <VStack width="100%" spacing="16px">
-            <Button width="100%" onClick={onBackup} size="lg">
+            <Button width="100%" onClick={downloadBackupFile} size="lg">
               Save Backup
             </Button>
 
-            <Button width="100%" onClick={onOffboard} size="lg" variant="warning">
+            <Button width="100%" onClick={onOpenOffboardingModal} size="lg" variant="warning">
               Off-board Wallet
             </Button>
 
@@ -86,6 +73,7 @@ export const ErrorPage: React.FC = () => {
           </VStack>
         </ModalContentWrapper>
       </Box>
+      {OffboardingModal}
     </Center>
   );
 };
