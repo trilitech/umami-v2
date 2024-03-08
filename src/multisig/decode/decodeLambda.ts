@@ -1,5 +1,5 @@
 import type { MichelsonV1Expression } from "@taquito/rpc";
-import { encodePubKey } from "@taquito/utils";
+import { encodeAddress } from "@taquito/utils";
 
 import {
   batchHeadSchema,
@@ -22,7 +22,7 @@ const convertToPkh = (addressBytes: string): string => {
     // and it's done either for memory saving purposes or just because 0s at the left can be skipped
     addressBytes = "00" + addressBytes;
   }
-  return encodePubKey(addressBytes);
+  return encodeAddress(addressBytes);
 };
 
 const parseTez = (michelson: MichelsonV1Expression[]): Operation => {
