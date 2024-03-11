@@ -53,12 +53,14 @@ const theme = extendTheme({
     Text: {
       baseStyle: {
         fontWeight: "400",
+        fontFamily: "Inter",
       },
       sizes,
     },
     Heading: {
       baseStyle: {
         fontWeight: "600",
+        fontFamily: "Inter",
       },
       sizes,
     },
@@ -112,6 +114,7 @@ const theme = extendTheme({
       body: {
         bg: colors.black,
         color: colors.white,
+        fontFamily: "Inter",
       },
     },
   },
