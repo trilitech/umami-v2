@@ -61,14 +61,7 @@ export const AddressTileIcon: React.FC<{
         />
       );
     case "ledger":
-      return (
-        <LedgerIcon
-          width={sizeInPx}
-          height={sizeInPx}
-          {...baseIconProps}
-          color={colors.gray[400]}
-        />
-      );
+      return <LedgerIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
     case "multisig":
       return <KeyIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
     case "contact":

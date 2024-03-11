@@ -1,7 +1,6 @@
 import {
   Button,
   Center,
-  Icon,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -9,8 +8,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { BsThreeDots } from "react-icons/bs";
 
+import { ThreeDotsIcon } from "../assets/icons";
 import colors from "../style/colors";
 
 export const PopoverMenu: React.FC<{
@@ -32,7 +31,7 @@ export const PopoverMenu: React.FC<{
           variant="unstyled"
         >
           <Center>
-            <Icon as={BsThreeDots} display="inline" color={colors.white} />
+            <ThreeDotsIcon />
           </Center>
         </Button>
       </PopoverTrigger>
