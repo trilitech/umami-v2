@@ -88,6 +88,31 @@ describe("<BeaconPeers />", () => {
       }
     });
 
+    it("resolves duplicating name for diffferent dAppIds", async () => {
+      jest.spyOn(beaconHelper, "usePeers").mockReturnValue({
+        data: [
+          {
+            name: "dApp",
+            publicKey: "e15835f5b7bb7fae5a3ddbe3c71b3cdd9ee0a5ea2586f04e7669e9040f61810c",
+            senderId: "2MqUhvyAJy3UY",
+            type: "p2p-pairing-request",
+            id: "test-id-1",
+            version: "v1",
+          },
+          {
+            name: "dApp",
+            publicKey: "e15835f5b7bb7fae5a3ddbe3c71b3cdd9ee0a5ea2586f04e7669e9040f61810b",
+            senderId: "2UJwaEUy23W3g",
+            type: "p2p-pairing-request",
+            id: "test-id-2",
+            version: "v1.5",
+          },
+        ],
+      } as any);
+
+      await getPeerRows(2);
+    });
+
     describe("for saved connections", () => {
       it("displays address pill with acc label if connected acc is present", async () => {
         store.dispatch(

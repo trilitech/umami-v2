@@ -52,7 +52,7 @@ export const BeaconPeers = () => {
   return (
     <Box>
       {peersWithId.map(peerInfo => (
-        <PeersDisplay key={peerInfo.name} peerInfo={peerInfo} />
+        <PeersDisplay key={peerInfo.senderId} peerInfo={peerInfo} />
       ))}
     </Box>
   );
