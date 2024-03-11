@@ -1,7 +1,6 @@
 import { Curves } from "@taquito/signer";
 import { Prefix } from "@taquito/utils";
 
-import { SecretKeyAccount } from "../../../types/Account";
 import { parseImplicitPkh } from "../../../types/Address";
 import { encrypt } from "../../crypto/AES";
 import { getPublicKeyPairFromSk } from "../../tezos";
@@ -60,8 +59,3 @@ export const restore =
     dispatch(accountsSlice.actions.addAccount(account));
     dispatch(accountsSlice.actions.addSecretKey({ pkh: account.address.pkh, encryptedSecretKey }));
   };
-
-export const remove = (account: SecretKeyAccount) => (dispatch: AppDispatch) => {
-  dispatch(accountsSlice.actions.removeSecretKey(account));
-  dispatch(accountsSlice.actions.removeAccount(account));
-};

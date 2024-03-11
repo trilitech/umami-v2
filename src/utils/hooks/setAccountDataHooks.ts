@@ -6,7 +6,7 @@ import {
   useSeedPhrases,
 } from "./getAccountDataHooks";
 import { useSelectedNetwork } from "./networkHooks";
-import { AccountType, LedgerAccount, MnemonicAccount, SocialAccount } from "../../types/Account";
+import { LedgerAccount, MnemonicAccount, SocialAccount } from "../../types/Account";
 import { makeDerivationPath } from "../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../account/makeMnemonicAccount";
 import { decrypt, encrypt } from "../crypto/AES";
@@ -16,7 +16,7 @@ import { accountsSlice } from "../redux/slices/accountsSlice";
 import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
 import { derivePublicKeyPair, getFingerPrint } from "../tezos";
 
-const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
+const { addAccount } = accountsSlice.actions;
 
 export const useReset = () => () => {
   localStorage.clear();
@@ -171,27 +171,5 @@ export const useRestoreSocial = () => {
       label,
     };
     dispatch(addAccount(account));
-  };
-};
-
-export const useRemoveMnemonic = () => {
-  const dispatch = useAppDispatch();
-  return (fingerPrint: string) => {
-    dispatch(
-      removeMnemonicAndAccounts({
-        fingerPrint,
-      })
-    );
-  };
-};
-
-export const useRemoveNonMnemonic = () => {
-  const dispatch = useAppDispatch();
-  return (accountType: AccountType) => {
-    dispatch(
-      removeNonMnemonicAccounts({
-        accountType,
-      })
-    );
   };
 };

@@ -44,6 +44,7 @@ export const accountsSlice = createSlice({
   },
   reducers: {
     reset: () => initialState,
+    // Do not call this directly, use useRemoveMnemonic  from removeAccountDataHooks
     removeMnemonicAndAccounts: (
       state,
       { payload }: { type: string; payload: { fingerPrint: string } }
@@ -55,6 +56,7 @@ export const accountsSlice = createSlice({
       state.items = newAccounts;
       delete state.seedPhrases[fingerPrint];
     },
+    // Do not call this directly, use useRemoveNonMnemonic from removeAccountDataHooks
     removeNonMnemonicAccounts: (
       state,
       { payload }: { type: string; payload: { accountType: AccountType } }
@@ -64,6 +66,7 @@ export const accountsSlice = createSlice({
         account => account.type === "mnemonic" || account.type !== payload.accountType
       );
     },
+    // Do not call this directly, use useRemoveAccount from removeAccountDataHooks
     removeAccount: (
       state,
       { payload }: { type: string; payload: SocialAccount | LedgerAccount | SecretKeyAccount }

@@ -1,5 +1,5 @@
-import { getCurve, remove, restore } from "./secretKeyAccount";
-import { mockMnemonicAccount, mockSecretKeyAccount } from "../../../mocks/factories";
+import { getCurve, restore } from "./secretKeyAccount";
+import { mockMnemonicAccount } from "../../../mocks/factories";
 import { decrypt } from "../../crypto/AES";
 import { EncryptedData } from "../../crypto/types";
 import { accountsSlice } from "../slices/accountsSlice";
@@ -78,24 +78,6 @@ describe("secretKeyAccount", () => {
       ).rejects.toThrow(`Can't add account ${pkh} in store since it already exists.`);
 
       expect(store.getState().accounts.items).toEqual([existingMnemonic]);
-      expect(store.getState().accounts.secretKeys).toEqual({});
-    });
-  });
-
-  describe("remove", () => {
-    test("deletes relevant data from accounts slice", () => {
-      const account = mockSecretKeyAccount(0);
-      store.dispatch(accountsSlice.actions.addAccount(account));
-      store.dispatch(
-        accountsSlice.actions.addSecretKey({
-          pkh: account.address.pkh,
-          encryptedSecretKey: "encryptedSecretKey" as any,
-        })
-      );
-
-      store.dispatch(remove(account));
-
-      expect(store.getState().accounts.items).toEqual([]);
       expect(store.getState().accounts.secretKeys).toEqual({});
     });
   });
