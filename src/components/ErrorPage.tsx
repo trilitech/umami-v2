@@ -20,10 +20,7 @@ export const ErrorPage: React.FC = () => {
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
       <Box
-        width="100%"
-        maxWidth="460px"
-        height="100%"
-        maxHeight="480px"
+        width="480px"
         padding="40px"
         background={colors.gray[900]}
         border="1px"
@@ -37,16 +34,30 @@ export const ErrorPage: React.FC = () => {
           title="Oops! Something went wrong!"
         >
           <VStack width="100%" spacing="16px">
-            <Button width="100%" onClick={downloadBackupFile} size="lg">
+            <Button width="100%" borderRadius="4px" onClick={downloadBackupFile} size="lg">
               Save Backup
             </Button>
 
-            <Button width="100%" onClick={onOpenOffboardingModal} size="lg" variant="warning">
+            <Button
+              width="100%"
+              borderRadius="4px"
+              onClick={onOpenOffboardingModal}
+              size="lg"
+              variant="warning"
+            >
               Off-board Wallet
             </Button>
 
-            <Button width="100%" size="lg" variant="tertiary">
+            <Button
+              width="100%"
+              borderColor={colors.gray[600]}
+              borderRadius="4px"
+              size="lg"
+              variant="tertiary"
+            >
               <Link
+                width="100%"
+                _hover={{ textDecoration: "none" }}
                 href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
                 rel="noopener noreferrer"
                 target="_blank"
