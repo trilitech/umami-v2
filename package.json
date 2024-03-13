@@ -105,7 +105,7 @@
     "date-fns": "^3.4.0",
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",
-    "electron": "^29.1.1",
+    "electron": "^29.1.2",
     "electron-builder": "^24.13.3",
     "electronmon": "^2.0.2",
     "eslint": "^8.57.0",
