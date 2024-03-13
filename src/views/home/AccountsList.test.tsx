@@ -8,7 +8,7 @@ import {
   mockPk,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
+import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";
@@ -64,8 +64,7 @@ describe("<AccountsList />", () => {
       const { getByTestId, getByRole } = within(seedPhrase1);
       const cta = getByTestId(/^popover-cta$/i);
       await act(() => user.click(cta));
-
-      expect(getByRole("dialog")).toHaveTextContent("Remove");
+      await waitFor(() => expect(getByRole("dialog")).toHaveTextContent("Remove"));
 
       const removeBtn = getByRole("button", { name: /^remove$/i });
 
