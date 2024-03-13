@@ -1,3 +1,4 @@
+import packageInfo from "../../../../package.json";
 import { decrypt } from "../../../utils/crypto/AES";
 import { EncryptedData } from "../../../utils/crypto/types";
 import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks";
@@ -65,4 +66,19 @@ export const restoreV2BackupFile = async (
   localStorage.clear();
   localStorage.setItem("persist:accounts", accountsInString);
   localStorage.setItem("persist:root", backup["persist:root"]);
+};
+
+export const downloadBackupFile = () => {
+  const storage = {
+    version: packageInfo.version,
+    "persist:accounts": localStorage.getItem("persist:accounts"),
+    "persist:root": localStorage.getItem("persist:root"),
+  };
+
+  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(storage))}`;
+  const link = document.createElement("a");
+  link.href = jsonString;
+  link.download = "UmamiV2Backup.json";
+
+  link.click();
 };
