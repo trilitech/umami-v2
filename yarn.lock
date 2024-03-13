@@ -5629,14 +5629,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/eslint-plugin-query@npm:^5.20.1":
-  version: 5.20.1
-  resolution: "@tanstack/eslint-plugin-query@npm:5.20.1"
+"@tanstack/eslint-plugin-query@npm:^5.27.7":
+  version: 5.27.7
+  resolution: "@tanstack/eslint-plugin-query@npm:5.27.7"
   dependencies:
     "@typescript-eslint/utils": "npm:^6.20.0"
   peerDependencies:
     eslint: ^8.0.0
-  checksum: 10/7730ba24fb45f54186262813e48bf626cc875a74d906fc0260d7eb2d4df56b05d542766a64145b7a89f7f59a553b1e8c5dab5a2fcfd74a3ba40d0350e5e76164
+  checksum: 10/0e7967da23afee567dfba4ba4c2190d2d2b0b4c8626113ed3f74382b4d0eda53756b12335490f4ef0192301dcfe3248fd0892cb27874667239e4acc165b4e222
   languageName: node
   linkType: hard
 
@@ -20236,7 +20236,7 @@ __metadata:
     "@pmmmwh/react-refresh-webpack-plugin": "npm:^0.5.11"
     "@reduxjs/toolkit": "npm:^1.9.7"
     "@stylistic/eslint-plugin": "npm:^1.6.3"
-    "@tanstack/eslint-plugin-query": "npm:^5.20.1"
+    "@tanstack/eslint-plugin-query": "npm:^5.27.7"
     "@tanstack/react-query": "npm:^5.27.5"
     "@taquito/ledger-signer": "npm:^19.1.0"
     "@taquito/michel-codec": "npm:^19.1.0"
