@@ -8,14 +8,13 @@ import {
   DrawerOverlay,
   Flex,
   Heading,
-  Icon,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 
+import { OutlineExclamationCircleIcon } from "../../assets/icons";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { useDynamicModal } from "../../components/DynamicModal";
 import colors from "../../style/colors";
@@ -88,9 +87,9 @@ const ErrorLogRow: React.FC<{
 }> = ({ errorLog }) => (
   <>
     <Divider marginY={1} />
-    <Flex justifyContent="space-between" paddingY={3}>
+    <Flex justifyContent="space-between" paddingY="12px">
       <Flex>
-        <Icon as={AiOutlineExclamationCircle} marginTop="1px" marginRight={2} />
+        <OutlineExclamationCircleIcon marginTop="1px" marginRight="8px" />
         <Flex flexDirection="column">
           <Heading wordBreak="break-all" size="sm">
             {errorLog.description}

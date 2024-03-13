@@ -1,7 +1,5 @@
-import { Flex, FlexProps, Icon, Text, useToast } from "@chakra-ui/react";
+import { Flex, FlexProps, Text, useToast } from "@chakra-ui/react";
 import React from "react";
-import { BsCheckCircle } from "react-icons/bs";
-import { RxCross1 } from "react-icons/rx";
 
 import { FileCopyIcon } from "../assets/icons";
 import colors from "../style/colors";
@@ -46,15 +44,10 @@ const CopyableText: React.FC<
       return;
     }
     toast({
+      status: "success",
+      description: toastMessage,
       id: TOAST_ID,
-      render: () => (
-        <ToastBody
-          message={toastMessage}
-          onClose={() => {
-            toast.close(TOAST_ID);
-          }}
-        />
-      ),
+      isClosable: true,
     });
   };
 
@@ -76,31 +69,3 @@ const CopyableText: React.FC<
     </Flex>
   );
 };
-
-const ToastBody: React.FC<{
-  message: string;
-  onClose: () => void;
-}> = ({ message, onClose }) => (
-  <Flex
-    alignItems="center"
-    justifyContent="space-between"
-    padding={2}
-    borderRadius="4px"
-    backgroundColor="white"
-  >
-    <Flex alignItems="center">
-      <Icon as={BsCheckCircle} margin={1} color={colors.green} />
-      <Text color="black">{message}</Text>
-    </Flex>
-
-    <Icon
-      as={RxCross1}
-      color="black"
-      _hover={{
-        color: colors.gray[600],
-      }}
-      cursor="pointer"
-      onClick={onClose}
-    />
-  </Flex>
-);

@@ -17443,15 +17443,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-icons@npm:^4.12.0":
-  version: 4.12.0
-  resolution: "react-icons@npm:4.12.0"
-  peerDependencies:
-    react: "*"
-  checksum: 10/5cc20509ca0b182f1e7bf42c271846c48f688c8922e2439f48728805adc93ba18476a13588cbe91ee43a2d03b2787e0dc0b5cc4b9c4e4ae3426f4464b3c1b734
-  languageName: node
-  linkType: hard
-
 "react-identicons@npm:^1.2.5":
   version: 1.2.5
   resolution: "react-identicons@npm:1.2.5"
@@ -20339,7 +20330,6 @@ __metadata:
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.51.0"
     react-hooks-testing-library: "npm:^0.6.0"
-    react-icons: "npm:^4.12.0"
     react-identicons: "npm:^1.2.5"
     react-player: "npm:^2.15.1"
     react-qrcode-logo: "npm:^2.9.0"

@@ -1,7 +1,7 @@
 import { IconButton } from "@chakra-ui/react";
-import { FcGoogle } from "react-icons/fc";
 
 import { getGoogleCredentials } from "./getGoogleCredentials";
+import { GoogleIcon } from "../assets/icons";
 import colors from "../style/colors";
 import { useAsyncActionHandler } from "../utils/hooks/useAsyncActionHandler";
 
@@ -37,7 +37,7 @@ export const GoogleAuth: React.FC<{ onAuth: (secretKey: string, email: string) =
       _disabled={{ bg: colors.gray[900] }}
       aria-label="Google SSO"
       data-testid="google-auth-button"
-      icon={<FcGoogle size="24px" />}
+      icon={<GoogleIcon />}
       isLoading={isLoading}
       onClick={onClick}
       size="lg"
