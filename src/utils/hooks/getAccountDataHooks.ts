@@ -5,6 +5,7 @@ import { useContacts } from "./contactsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
 import {
   Account,
+  AccountType,
   ImplicitAccount,
   MnemonicAccount,
   MultisigAccount,
@@ -38,6 +39,21 @@ export const useGetImplicitAccount = () => {
     }
     return account;
   };
+};
+
+export const useGetAccountsByType = () => {
+  const accounts = useImplicitAccounts();
+
+  return (type: AccountType) => accounts.filter(account => account.type === type);
+};
+
+export const useGetAccountsByFingerPrint = () => {
+  const accounts = useImplicitAccounts();
+
+  return (fingerPrint: string) =>
+    accounts.filter(
+      account => account.type === "mnemonic" && account.seedFingerPrint === fingerPrint
+    );
 };
 
 export const useAllAccounts = (): Account[] => {

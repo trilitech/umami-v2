@@ -1,4 +1,6 @@
 import {
+  useGetAccountsByFingerPrint,
+  useGetAccountsByType,
   useGetBestSignerForAccount,
   useGetNextAvailableAccountLabels,
   useIsOwnedAddress,
@@ -17,6 +19,7 @@ import {
 import { addAccount } from "../../mocks/helpers";
 import { encryptedMnemonic1 } from "../../mocks/mockMnemonic";
 import { renderHook, waitFor } from "../../mocks/testUtils";
+import { AccountType, MnemonicAccount } from "../../types/Account";
 import { accountsActions, accountsSlice } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
@@ -26,6 +29,84 @@ import { checkAccountsAndUpsertContact } from "../redux/thunks/checkAccountsAndU
 import { renameAccount } from "../redux/thunks/renameAccount";
 
 describe("getAccountDataHooks", () => {
+  describe("useGetAccountsByType", () => {
+    const accounts = [
+      mockMnemonicAccount(0),
+      mockMnemonicAccount(1),
+      mockSocialAccount(2),
+      mockSocialAccount(3),
+      mockLedgerAccount(4),
+      mockLedgerAccount(5),
+      mockSecretKeyAccount(6),
+      mockSecretKeyAccount(7),
+    ];
+    const accountTypes: AccountType[] = ["mnemonic", "social", "ledger", "secret_key"];
+
+    beforeEach(() =>
+      accounts.forEach(account => store.dispatch(accountsActions.addAccount(account)))
+    );
+
+    it("returns empty list if no accounts match given type", () => {
+      const {
+        result: { current: getAccountsByType },
+      } = renderHook(() => useGetAccountsByType());
+
+      expect(getAccountsByType("multisig")).toEqual([]);
+    });
+
+    accountTypes.forEach(type => {
+      it("returns all accounts of given type", () => {
+        const {
+          result: { current: getAccountsByType },
+        } = renderHook(() => useGetAccountsByType());
+
+        expect(getAccountsByType(type)).toHaveLength(2);
+        expect(getAccountsByType(type)).toEqual(accounts.filter(account => account.type === type));
+      });
+    });
+  });
+
+  describe("useGetAccountsByFingerPrint", () => {
+    beforeEach(() => {
+      store.dispatch(
+        accountsActions.addMnemonicAccounts({
+          seedFingerprint: "mockPrint1",
+          accounts: [
+            mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount,
+            mockImplicitAccount(3, undefined, "mockPrint1") as MnemonicAccount,
+          ],
+          encryptedMnemonic: {} as any,
+        })
+      );
+      store.dispatch(
+        accountsActions.addMnemonicAccounts({
+          seedFingerprint: "mockPrint2",
+          accounts: [mockImplicitAccount(2, undefined, "mockPrint2") as MnemonicAccount],
+          encryptedMnemonic: {} as any,
+        })
+      );
+    });
+
+    it("returns empty list if no accounts match fingerprint", () => {
+      const {
+        result: { current: getAccountsByFingerPrint },
+      } = renderHook(() => useGetAccountsByFingerPrint());
+
+      expect(getAccountsByFingerPrint("mockPrint3")).toEqual([]);
+    });
+
+    it("returns accounts that match fingerprint", () => {
+      const {
+        result: { current: getAccountsByFingerPrint },
+      } = renderHook(() => useGetAccountsByFingerPrint());
+
+      expect(getAccountsByFingerPrint("mockPrint1")).toEqual([
+        mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount,
+        mockImplicitAccount(3, undefined, "mockPrint1") as MnemonicAccount,
+      ]);
+    });
+  });
+
   describe("useGetBestSignerForAccount", () => {
     it("returns the account itself for implicit accounts", () => {
       const account = mockMnemonicAccount(0);
