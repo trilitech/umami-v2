@@ -6235,16 +6235,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^8.37.0":
-  version: 8.44.8
-  resolution: "@types/eslint@npm:8.44.8"
-  dependencies:
-    "@types/estree": "npm:*"
-    "@types/json-schema": "npm:*"
-  checksum: 10/d6e0788eb7bff90e5f5435b0babe057e76a7d3eed1e36080bacd7b749098eddae499ddb3c0ce6438addce98cc6020d9653b5012dec54e47ca96faa7b8e25d068
-  languageName: node
-  linkType: hard
-
 "@types/eslint@npm:^8.56.2":
   version: 8.56.2
   resolution: "@types/eslint@npm:8.56.2"
@@ -6252,6 +6242,16 @@ __metadata:
     "@types/estree": "npm:*"
     "@types/json-schema": "npm:*"
   checksum: 10/9e4805e770ea90a561e1f69e5edce28b8f66e92e290705100e853c7c252cf87bef654168d0d47fc60c0effbe4517dd7a8d2fa6d3f04c7f831367d568009fd368
+  languageName: node
+  linkType: hard
+
+"@types/eslint@npm:^8.56.5":
+  version: 8.56.5
+  resolution: "@types/eslint@npm:8.56.5"
+  dependencies:
+    "@types/estree": "npm:*"
+    "@types/json-schema": "npm:*"
+  checksum: 10/548aab6ea34ca14452bf6e9212c76bb22cdf3b725d47e25591c20651af3f47fb62c59c4e80ed8ea3f7d1d7374d907cbba980af910e4c0f0cb29f73b9a6a9226f
   languageName: node
   linkType: hard
 
@@ -11270,19 +11270,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-webpack-plugin@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "eslint-webpack-plugin@npm:4.0.1"
+"eslint-webpack-plugin@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "eslint-webpack-plugin@npm:4.1.0"
   dependencies:
-    "@types/eslint": "npm:^8.37.0"
-    jest-worker: "npm:^29.5.0"
+    "@types/eslint": "npm:^8.56.5"
+    jest-worker: "npm:^29.7.0"
     micromatch: "npm:^4.0.5"
     normalize-path: "npm:^3.0.0"
-    schema-utils: "npm:^4.0.0"
+    schema-utils: "npm:^4.2.0"
   peerDependencies:
     eslint: ^8.0.0
     webpack: ^5.0.0
-  checksum: 10/e2e0e1516d12fbc6d705a0de1aa8f12bdd8a0398da8d680819c0386c9d69086eaea7bbbd31906a020fff08c4dc7e12057ef13e9564e2306d9248a26db4578068
+  checksum: 10/ce887c600cb98602b2a91e8ca55e3eae008a03e9d5b5f0eaf7cebf0019efd87a30ac07d764603a5c4c2c2881b791f2a2bf129025e0ce49855a7bc011b3413e68
   languageName: node
   linkType: hard
 
@@ -14173,7 +14173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-worker@npm:^29.5.0, jest-worker@npm:^29.7.0":
+"jest-worker@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest-worker@npm:29.7.0"
   dependencies:
@@ -20274,7 +20274,7 @@ __metadata:
     eslint-plugin-testing-library: "npm:^6.2.0"
     eslint-plugin-tsdoc: "npm:^0.2.17"
     eslint-plugin-unused-imports: "npm:^3.1.0"
-    eslint-webpack-plugin: "npm:^4.0.1"
+    eslint-webpack-plugin: "npm:^4.1.0"
     file-loader: "npm:^6.2.0"
     framer-motion: "npm:^11.0.12"
     fs-extra: "npm:^11.2.0"
