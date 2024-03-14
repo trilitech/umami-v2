@@ -5,7 +5,7 @@ import { accountsSlice } from "../redux/slices/accountsSlice";
 import { store } from "../redux/store";
 
 describe("useRemoveAccount", () => {
-  test("deletes relevant data from accounts slice", () => {
+  test("deletes secret key on deleting secret key account", () => {
     const account = mockSecretKeyAccount(0);
     store.dispatch(accountsSlice.actions.addAccount(account));
     store.dispatch(
