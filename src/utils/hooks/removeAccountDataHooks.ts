@@ -37,10 +37,8 @@ export const useRemoveNonMnemonic = () => {
  */
 export const useRemoveAccount = () => {
   const dispatch = useAppDispatch();
+
   return (account: SocialAccount | LedgerAccount | SecretKeyAccount) => {
-    if (account.type === "secret_key") {
-      dispatch(accountsSlice.actions.removeSecretKey(account));
-    }
     dispatch(accountsSlice.actions.removeAccount(account));
   };
 };

@@ -65,6 +65,9 @@ export const accountsSlice = createSlice({
         state.items,
         account => account.type === "mnemonic" || account.type !== payload.accountType
       );
+      if (payload.accountType === "secret_key") {
+        state.secretKeys = {};
+      }
     },
     // Do not call this directly, use useRemoveAccount from removeAccountDataHooks
     removeAccount: (
@@ -72,6 +75,9 @@ export const accountsSlice = createSlice({
       { payload }: { type: string; payload: SocialAccount | LedgerAccount | SecretKeyAccount }
     ) => {
       remove(state.items, account => account.address.pkh === payload.address.pkh);
+      if (payload.type === "secret_key") {
+        delete state.secretKeys[payload.address.pkh];
+      }
     },
     // Do not call this directly, use the RenameAccount thunk
     renameAccount: (
@@ -131,9 +137,6 @@ export const accountsSlice = createSlice({
       }: { payload: { encryptedSecretKey: EncryptedData; pkh: RawPkh } }
     ) => {
       state.secretKeys[pkh] = encryptedSecretKey;
-    },
-    removeSecretKey: (state, { payload: account }: { payload: SecretKeyAccount }) => {
-      delete state.secretKeys[account.address.pkh];
     },
   },
 });
