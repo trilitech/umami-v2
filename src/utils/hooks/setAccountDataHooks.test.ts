@@ -1,4 +1,9 @@
-import { useDeriveMnemonicAccount, useRestoreFromMnemonic } from "./setAccountDataHooks";
+import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
+import {
+  useDeriveMnemonicAccount,
+  useRemoveAccount,
+  useRestoreFromMnemonic,
+} from "./setAccountDataHooks";
 import { mockSecretKeyAccount, mockSocialAccount } from "../../mocks/factories";
 import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
@@ -10,9 +15,17 @@ import { accountsSlice } from "../redux/slices/accountsSlice";
 import { store } from "../redux/store";
 import * as tezosHelpers from "../tezos/helpers";
 
+jest.mock("./removeAccountDependenciesHooks");
 jest.unmock("../tezos");
 
+const mockedUseRemoveAccountsDependencies = jest.mocked(useRemoveAccountsDependencies);
+const mockedRemoveAccountsDependencies = jest.fn();
+
 describe("setAccountDataHooks", () => {
+  beforeEach(() => {
+    mockedUseRemoveAccountsDependencies.mockReturnValue(mockedRemoveAccountsDependencies);
+  });
+
   describe("mnemonic accounts", () => {
     const addressExistsMock = jest.spyOn(tezosHelpers, "addressExists");
     const getFingerPrintMock = jest.spyOn(tezosHelpers, "getFingerPrint");
@@ -284,6 +297,37 @@ describe("setAccountDataHooks", () => {
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
       });
+    });
+  });
+
+  describe("useRemoveAccount", () => {
+    it("deletes secret key on deleting secret key account", () => {
+      const account = mockSecretKeyAccount(0);
+      store.dispatch(accountsSlice.actions.addAccount(account));
+      store.dispatch(
+        accountsSlice.actions.addSecretKey({
+          pkh: account.address.pkh,
+          encryptedSecretKey: "encryptedSecretKey" as any,
+        })
+      );
+
+      const {
+        result: { current: removeAccount },
+      } = renderHook(() => useRemoveAccount());
+      removeAccount(account);
+
+      expect(store.getState().accounts.items).toEqual([]);
+      expect(store.getState().accounts.secretKeys).toEqual({});
+    });
+
+    it("calls removeAccountsDependencies with the account", () => {
+      const {
+        result: { current: removeAccount },
+      } = renderHook(() => useRemoveAccount());
+
+      removeAccount(mockSocialAccount(5));
+
+      expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith([mockSocialAccount(5)]);
     });
   });
 });

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { RenameAccountModal } from "./RenameAccountModal";
 import { Account } from "../../types/Account";
 import { useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
-import { useRemoveAccount } from "../../utils/hooks/removeAccountDataHooks";
+import { useRemoveAccount } from "../../utils/hooks/setAccountDataHooks";
 import { ConfirmationModal } from "../ConfirmationModal";
 import { DynamicModalContext } from "../DynamicModal";
 import { RenameRemoveMenu } from "../RenameRemoveMenu";
