@@ -2,8 +2,13 @@ import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
+import { WalletClient } from "../../utils/beacon/WalletClient";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { store } from "../../utils/redux/store";
+
+beforeEach(() => {
+  jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
+});
 
 describe("<RenameRemoveMenuSwitch />", () => {
   it("shows removal message", async () => {

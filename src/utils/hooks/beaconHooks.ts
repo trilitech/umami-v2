@@ -15,6 +15,15 @@ export const useGetConnectionInfo = (dAppId: string): DAppConnectionInfo | undef
   return beaconConnections[dAppId];
 };
 
+export const useGetPeersForAccounts = () => {
+  const beaconConnections = useAppSelector(s => s.beacon);
+
+  return (pkhs: RawPkh[]) =>
+    Object.entries(beaconConnections)
+      .filter(([_, connectionInfo]) => pkhs.includes(connectionInfo.accountPkh))
+      .map(([dAppId, _]) => dAppId);
+};
+
 /**
  * Returns function for removing all connections from {@link beaconSlice}.
  */

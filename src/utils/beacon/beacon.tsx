@@ -4,7 +4,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { makePeerInfo } from "./types";
 import { WalletClient } from "./WalletClient";
-import { useRemoveConnection } from "../hooks/beaconHooks";
+import { RawPkh } from "../../types/Address";
+import { useGetPeersForAccounts, useRemoveConnection } from "../hooks/beaconHooks";
 
 const PEERS_QUERY_KEY = "beaconPeers";
 
@@ -28,6 +29,27 @@ export const useRemovePeer = () => {
     WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse)
       .then(() => removeConnectionFromBeaconSlice(peerInfo.senderId))
       .then(refresh);
+};
+
+export const useRemovePeersByAccounts = () => {
+  const client = useQueryClient();
+  const getPeersForAccounts = useGetPeersForAccounts();
+
+  return async (pkhs: RawPkh[]) => {
+    const peersToRemove = getPeersForAccounts(pkhs);
+    const peersData = await client.fetchQuery({
+      queryKey: [PEERS_QUERY_KEY],
+      // getPeers actually returns ExtendedPeerInfo (with the senderId)
+      queryFn: () => WalletClient.getPeers() as Promise<ExtendedPeerInfo[]>,
+    });
+
+    await Promise.all(
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      (peersData || [])
+        .filter(peerInfo => peersToRemove.includes(peerInfo.senderId))
+        .map(peerInfo => WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse))
+    );
+  };
 };
 
 export const useAddPeer = () => {

@@ -33,6 +33,14 @@ export const beaconSlice = createSlice({
     removeConnection: (state, { payload }: { payload: { dAppId: string } }) => {
       delete state[payload.dAppId];
     },
+
+    removeConnections: (state, { payload }: { payload: { pkhs: RawPkh[] } }) => {
+      for (const [dAppId, connectionInfo] of Object.entries(state)) {
+        if (payload.pkhs.includes(connectionInfo.accountPkh)) {
+          delete state[dAppId];
+        }
+      }
+    },
   },
 });
 
