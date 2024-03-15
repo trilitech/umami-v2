@@ -2,13 +2,20 @@ import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks"
 import {
   useDeriveMnemonicAccount,
   useRemoveAccount,
+  useRemoveMnemonic,
+  useRemoveNonMnemonic,
   useRestoreFromMnemonic,
 } from "./setAccountDataHooks";
-import { mockSecretKeyAccount, mockSocialAccount } from "../../mocks/factories";
+import {
+  mockImplicitAccount,
+  mockLedgerAccount,
+  mockSecretKeyAccount,
+  mockSocialAccount,
+} from "../../mocks/factories";
 import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
-import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
+import { AccountType, ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import { AVAILABLE_DERIVATION_PATHS, makeDerivationPath } from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
 import { accountsSlice } from "../redux/slices/accountsSlice";
@@ -296,6 +303,95 @@ describe("setAccountDataHooks", () => {
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
+      });
+    });
+  });
+
+  describe("useRemoveMnemonic", () => {
+    beforeEach(() => {
+      store.dispatch(
+        accountsSlice.actions.addMnemonicAccounts({
+          seedFingerprint: "mockPrint1",
+          accounts: [
+            mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount,
+            mockImplicitAccount(3, undefined, "mockPrint1") as MnemonicAccount,
+          ],
+          encryptedMnemonic: {} as any,
+        })
+      );
+      store.dispatch(
+        accountsSlice.actions.addMnemonicAccounts({
+          seedFingerprint: "mockPrint2",
+          accounts: [mockImplicitAccount(2, undefined, "mockPrint2") as MnemonicAccount],
+          encryptedMnemonic: {} as any,
+        })
+      );
+    });
+
+    it("deletes all accounts with given fingerprint", () => {
+      const {
+        result: { current: removeMnemonic },
+      } = renderHook(() => useRemoveMnemonic());
+
+      act(() => removeMnemonic("mockPrint1"));
+
+      expect(store.getState().accounts.items).toEqual([
+        mockImplicitAccount(2, undefined, "mockPrint2"),
+      ]);
+    });
+
+    it("calls removeAccountsDependencies with all accounts with given fingerprint", () => {
+      const {
+        result: { current: removeMnemonic },
+      } = renderHook(() => useRemoveMnemonic());
+
+      act(() => removeMnemonic("mockPrint1"));
+
+      expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith([
+        mockImplicitAccount(1, undefined, "mockPrint1"),
+        mockImplicitAccount(3, undefined, "mockPrint1"),
+      ]);
+    });
+  });
+
+  describe("useRemoveNonMnemonic", () => {
+    const accounts = [
+      mockSocialAccount(1),
+      mockSocialAccount(2),
+      mockLedgerAccount(3),
+      mockLedgerAccount(4),
+      mockSecretKeyAccount(5),
+      mockSecretKeyAccount(6),
+    ];
+    const accountTypes: AccountType[] = ["social", "ledger", "secret_key"];
+
+    beforeEach(() =>
+      accounts.forEach(account => store.dispatch(accountsSlice.actions.addAccount(account)))
+    );
+
+    accountTypes.forEach(type => {
+      it("deletes all accounts of given type", () => {
+        const {
+          result: { current: removeNonMnemonic },
+        } = renderHook(() => useRemoveNonMnemonic());
+
+        act(() => removeNonMnemonic(type));
+
+        expect(store.getState().accounts.items).toEqual(
+          accounts.filter(account => account.type !== type)
+        );
+      });
+
+      it("calls removeAccountsDependencies with all accounts of give type", () => {
+        const {
+          result: { current: removeNonMnemonic },
+        } = renderHook(() => useRemoveNonMnemonic());
+
+        act(() => removeNonMnemonic(type));
+
+        expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith(
+          accounts.filter(account => account.type === type)
+        );
       });
     });
   });
