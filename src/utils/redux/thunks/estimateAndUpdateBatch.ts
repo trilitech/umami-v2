@@ -1,4 +1,4 @@
-import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
+import { Action, ThunkAction } from "@reduxjs/toolkit";
 
 import { AccountOperations } from "../../../types/AccountOperations";
 import { Network } from "../../../types/Network";
@@ -10,7 +10,7 @@ export const estimateAndUpdateBatch =
   (
     operations: AccountOperations,
     network: Network
-  ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> =>
+  ): ThunkAction<Promise<void>, RootState, unknown, Action> =>
   async dispatch => {
     // check that the operation can be executed at least on its own
     await estimate(operations, network);
