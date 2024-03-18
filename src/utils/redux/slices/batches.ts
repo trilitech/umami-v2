@@ -65,13 +65,15 @@ export const batchesSlice = createSlice({
         batches.splice(batchIndex, 1);
       }
     },
-    removeByAccounts: (state, { payload: { pkhs } }: { payload: { pkhs: RawPkh[] } }) => {
-      Object.keys(state).forEach(networkName => {
-        const batches = state[networkName as NetworkName] || [];
-        const newBatches = batches.filter(batch => !pkhs.includes(batch.sender.address.pkh));
-        state[networkName as NetworkName] = newBatches;
-      });
-    },
+    removeByAccounts: (state, { payload: { pkhs } }: { payload: { pkhs: RawPkh[] } }) =>
+      fromPairs(
+        Object.entries(state).map(([networkName, batches]) => {
+          const newBatches = (batches || []).filter(
+            batch => !pkhs.includes(batch.sender.address.pkh)
+          );
+          return [networkName, newBatches];
+        })
+      ),
   },
 });
 

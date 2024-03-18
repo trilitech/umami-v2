@@ -44,7 +44,7 @@ export const accountsSlice = createSlice({
   },
   reducers: {
     reset: () => initialState,
-    // Do not call this directly, use useRemoveMnemonic  from setAccountDataHooks
+    // Do not call this directly, use useRemoveMnemonic from setAccountDataHooks
     removeMnemonicAndAccounts: (
       state,
       { payload }: { type: string; payload: { fingerPrint: string } }

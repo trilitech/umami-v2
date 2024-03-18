@@ -40,7 +40,7 @@ describe("useRemoveAccountsDependencies", () => {
     const {
       result: { current: removeAccountsDependencies },
     } = renderHook(() => useRemoveAccountsDependencies());
-    removeAccountsDependencies([mockImplicitAccount(2), mockImplicitAccount(3)]);
+    act(() => removeAccountsDependencies([mockImplicitAccount(2), mockImplicitAccount(3)]));
 
     expect(store.getState().batches[MAINNET.name]).toEqual([accountOperations1]);
     expect(store.getState().batches[GHOSTNET.name]).toEqual([]);

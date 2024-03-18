@@ -32,20 +32,15 @@ export const useRemovePeer = () => {
 };
 
 export const useRemovePeersByAccounts = () => {
-  const client = useQueryClient();
   const getPeersForAccounts = useGetPeersForAccounts();
 
   return async (pkhs: RawPkh[]) => {
     const peersToRemove = getPeersForAccounts(pkhs);
-    const peersData = await client.fetchQuery({
-      queryKey: [PEERS_QUERY_KEY],
-      // getPeers actually returns ExtendedPeerInfo (with the senderId)
-      queryFn: () => WalletClient.getPeers() as Promise<ExtendedPeerInfo[]>,
-    });
+    // getPeers actually returns ExtendedPeerInfo (with the senderId)
+    const peersData = (await WalletClient.getPeers()) as ExtendedPeerInfo[];
 
     await Promise.all(
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      (peersData || [])
+      peersData
         .filter(peerInfo => peersToRemove.includes(peerInfo.senderId))
         .map(peerInfo => WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse))
     );
