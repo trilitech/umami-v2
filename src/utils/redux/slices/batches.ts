@@ -12,10 +12,10 @@ export const initialState: State = fromPairs(DefaultNetworks.map(network => [net
 export const batchesSlice = createSlice({
   name: "batches",
   initialState,
-  // @ts-ignore: TS2589 Type instantiation is excessively deep and possibly infinite
   reducers: {
     reset: () => initialState,
     // Don't use this action directly. Use thunk estimateAndUpdateBatch
+    // @ts-ignore: TS2589 Type instantiation is excessively deep and possibly infinite
     add: (
       state,
       {

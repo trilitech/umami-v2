@@ -1,4 +1,4 @@
-import { AnyAction, ThunkAction } from "@reduxjs/toolkit";
+import { Action, ThunkAction } from "@reduxjs/toolkit";
 
 import { Contact } from "../../../types/Contact";
 import { contactsActions } from "../slices/contactsSlice";
@@ -7,7 +7,7 @@ import { RootState } from "../store";
 const { upsert } = contactsActions;
 
 export const checkAccountsAndUpsertContact =
-  (contact: Contact): ThunkAction<void, RootState, unknown, AnyAction> =>
+  (contact: Contact): ThunkAction<void, RootState, unknown, Action> =>
   (dispatch, getState) => {
     const { accounts } = getState();
     const existingAccount = accounts.items.find(
