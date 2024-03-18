@@ -13,6 +13,60 @@ import { Slider } from "./components/Slider";
 import { Item, SlideItem } from "./components/SliderItem";
 import colors from "./style/colors";
 
+const SliderItems: Item[] = [
+  {
+    id: 1,
+    text: (
+      <>
+        <Text as="span" fontWeight={600} size="md">
+          Streamline asset management:&nbsp;
+        </Text>
+        <Text as="span" size="md">
+          one mnemonic, multiple accounts, full control.
+        </Text>
+      </>
+    ),
+    icon: <SlidersIcon />,
+    image: AccountsImage,
+  },
+  {
+    id: 2,
+    text: (
+      <>
+        <Text as="span" size="md">
+          Enhance security with&nbsp;
+        </Text>
+        <Text as="span" fontWeight={600} size="md">
+          Multi-sig
+        </Text>
+        <Text as="span" size="md">
+          , requiring multiple signatures for transaction executions.
+        </Text>
+      </>
+    ),
+    icon: <KeyIcon width="32px" height="32px" stroke={colors.gray[450]} strokeWidth="0.9" />,
+    image: MultisigImage,
+  },
+  {
+    id: 3,
+    text: (
+      <>
+        <Text as="span" size="md">
+          Utilize the&nbsp;
+        </Text>
+        <Text as="span" fontWeight={600} size="md">
+          Batch&nbsp;
+        </Text>
+        <Text as="span" size="md">
+          feature to bundle transactions, improving efficiency and reducing costs.
+        </Text>
+      </>
+    ),
+    icon: <BatchIcon width="32px" height="32px" strokeWidth="0.9" />,
+    image: BatchImage,
+  },
+];
+
 export const WelcomeScreen = () => {
   const [showSlider, setShowSlider] = useState(true);
   const { onOpen, modalElement } = useOnboardingModal(() => setShowSlider(true));
@@ -21,64 +75,14 @@ export const WelcomeScreen = () => {
     onOpen();
   };
 
-  const sliderItems: Item[] = [
-    {
-      id: 1,
-      text: (
-        <>
-          <Text as="span" fontWeight={600} size="md">
-            Streamline asset management:&nbsp;
-          </Text>
-          <Text as="span" size="md">
-            one mnemonic, multiple accounts, full control.
-          </Text>
-        </>
-      ),
-      icon: <SlidersIcon />,
-      image: AccountsImage,
-    },
-    {
-      id: 2,
-      text: (
-        <>
-          <Text as="span" size="md">
-            Enhance security with&nbsp;
-          </Text>
-          <Text as="span" fontWeight={600} size="md">
-            Multi-sig
-          </Text>
-          <Text as="span" size="md">
-            , requiring multiple signatures for transaction executions.
-          </Text>
-        </>
-      ),
-      icon: <KeyIcon width="32px" height="32px" stroke={colors.gray[450]} strokeWidth="0.9" />,
-      image: MultisigImage,
-    },
-    {
-      id: 3,
-      text: (
-        <>
-          <Text as="span" size="md">
-            Utilize the&nbsp;
-          </Text>
-          <Text as="span" fontWeight={600} size="md">
-            Batch&nbsp;
-          </Text>
-          <Text as="span" size="md">
-            feature to bundle transactions, improving efficiency and reducing costs.
-          </Text>
-        </>
-      ),
-      icon: <BatchIcon width="32px" height="32px" strokeWidth="0.9" />,
-      image: BatchImage,
-    },
-  ];
-
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
       {showSlider && (
-        <SimpleGrid boxShadow="0px 0px 30px rgba(0, 0, 0, 0.30)" columns={[1, 1, 2]}>
+        <SimpleGrid
+          borderRadius="30px"
+          boxShadow="0px 0px 30px rgba(0, 0, 0, 0.30)"
+          columns={[1, 1, 2]}
+        >
           <Center
             width="100%"
             maxWidth="660px"
@@ -103,7 +107,7 @@ export const WelcomeScreen = () => {
 
           <Box maxWidth="660px">
             <Slider>
-              {sliderItems.map(item => (
+              {SliderItems.map(item => (
                 <SlideItem key={item.id} item={item} />
               ))}
             </Slider>
