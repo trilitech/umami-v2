@@ -119,16 +119,16 @@ checkBrowsers(paths.appPath, isInteractive)
     });
 
     ["SIGINT", "SIGTERM"].forEach(function (sig) {
-      process.on(sig, function () {
-        devServer.close();
+      process.on(sig, () => {
+        devServer.stop();
         process.exit();
       });
     });
 
     if (process.env.CI !== "true") {
       // Gracefully exit when stdin ends
-      process.stdin.on("end", function () {
-        devServer.close();
+      process.stdin.on("end", () => {
+        devServer.stop();
         process.exit();
       });
     }
