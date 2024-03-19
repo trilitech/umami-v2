@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Center, Heading } from "@chakra-ui/react";
 import { useContext } from "react";
 
 import { AccountGroupPopover } from "./AccountGroupPopover";
@@ -69,15 +69,15 @@ export const AccountGroup: React.FC<{
 
   return (
     <Box data-testid={`account-group-${groupLabel}`}>
-      <Flex justifyContent="space-between">
-        <Heading marginBottom={4} data-testid="account-group-title" size="md">
+      <Center justifyContent="space-between" marginTop="24px" marginBottom="16px">
+        <Heading data-testid="account-group-title" size="md">
           {groupLabel}
         </Heading>
 
         {!isMultisig && (
           <AccountGroupPopover onCreate={isMnemonic ? onDerive : undefined} onRemove={onRemove} />
         )}
-      </Flex>
+      </Center>
 
       {accounts.map(account => (
         <Box key={account.address.pkh} marginBottom="16px">

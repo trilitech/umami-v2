@@ -44,11 +44,11 @@ export const AccountsList = () => {
             <Text
               display="block"
               width="100%"
-              margin={5}
+              margin="20px"
               color={colors.gray[400]}
               textAlign="center"
             >
-              <KeyIcon marginRight={1} stroke={colors.gray[450]} />
+              <KeyIcon marginRight="4px" stroke={colors.gray[450]} />
               Create New Multisig
             </Text>
           </Button>
