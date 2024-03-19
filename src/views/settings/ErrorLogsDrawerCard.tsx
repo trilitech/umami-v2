@@ -16,12 +16,12 @@ import { useDispatch } from "react-redux";
 
 import { OutlineExclamationCircleIcon } from "../../assets/icons";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
+import { DrawerTopButtons } from "../../components/DrawerTopButtons";
 import { useDynamicModal } from "../../components/DynamicModal";
 import colors from "../../style/colors";
 import { ErrorContext } from "../../utils/getErrorContext";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { errorsSlice } from "../../utils/redux/slices/errorsSlice";
-import { DrawerTopButtons } from "../home/DrawerTopButtons";
 
 export const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();

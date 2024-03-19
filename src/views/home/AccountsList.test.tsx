@@ -22,8 +22,8 @@ const { addAccount, addMockMnemonicAccounts } = accountsSlice.actions;
 
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
-const MOCK_FINGETPRINT1 = "mockFin1";
-const MOCK_FINGETPRINT2 = "mockFin2";
+const MOCK_FINGERPRINT1 = "mockFin1";
+const MOCK_FINGERPRINT2 = "mockFin2";
 
 describe("<AccountsList />", () => {
   describe("deleting account", () => {
@@ -72,7 +72,7 @@ describe("<AccountsList />", () => {
 
       expect(
         screen.getByText(
-          `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+          `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGERPRINT1}?`
         )
       ).toBeInTheDocument();
 
@@ -83,7 +83,7 @@ describe("<AccountsList />", () => {
       expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(1);
       expect(
         screen.queryByText(
-          `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGETPRINT1}?`
+          `Are you sure you want to remove all accounts derived from Seedphrase ${MOCK_FINGERPRINT1}?`
         )
       ).not.toBeInTheDocument();
     });
@@ -143,15 +143,15 @@ describe("<AccountsList />", () => {
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
 
-    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
+    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGERPRINT1}`);
     expect(within(seedPhrase1).getAllByTestId("account-tile-container")).toHaveLength(2);
-    expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT1}`);
+    expect(seedPhrase1).toHaveTextContent(`Seedphrase ${MOCK_FINGERPRINT1}`);
     expect(seedPhrase1).toHaveTextContent("Mnemonic 1.1");
     expect(seedPhrase1).toHaveTextContent("Mnemonic 1.2");
 
-    const seedPhrase2 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT2}`);
+    const seedPhrase2 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGERPRINT2}`);
     expect(within(seedPhrase2).getAllByTestId("account-tile-container")).toHaveLength(1);
-    expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGETPRINT2}`);
+    expect(seedPhrase2).toHaveTextContent(`Seedphrase ${MOCK_FINGERPRINT2}`);
     expect(seedPhrase2).toHaveTextContent("Mnemonic 2");
 
     const multisigAccounts = screen.getByTestId(/account-group-multisig/i);
@@ -162,7 +162,7 @@ describe("<AccountsList />", () => {
 
   it("allows to derive a new account for a mnemonic", async () => {
     const user = userEvent.setup();
-    const account = mockImplicitAccount(2, undefined, MOCK_FINGETPRINT1);
+    const account = mockImplicitAccount(2, undefined, MOCK_FINGERPRINT1);
     jest.spyOn(cryptoFunctionsToMock, "decrypt").mockResolvedValue("mockSeedPhrase");
     const derivePublicKeyPairMock = jest.mocked(derivePublicKeyPair).mockResolvedValue({
       pkh: account.address.pkh,
@@ -173,7 +173,7 @@ describe("<AccountsList />", () => {
     render(<AccountsList />);
 
     // Open actions dialog for Mnemonic Group 1
-    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
+    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGERPRINT1}`);
     const { getByTestId, getByRole } = within(seedPhrase1);
     const cta = getByTestId(/^popover-cta$/i);
     await act(() => user.click(cta));
@@ -203,7 +203,7 @@ describe("<AccountsList />", () => {
     expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
 
     {
-      const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGETPRINT1}`);
+      const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGERPRINT1}`);
 
       const tiles = within(seedPhrase1).getAllByTestId("account-tile-container");
       expect(tiles).toHaveLength(3);
@@ -216,19 +216,19 @@ describe("<AccountsList />", () => {
 const restore = () => {
   store.dispatch(
     accountsSlice.actions.addMnemonicAccounts({
-      seedFingerprint: MOCK_FINGETPRINT1,
+      seedFingerprint: MOCK_FINGERPRINT1,
       accounts: [
-        mockImplicitAccount(0, undefined, MOCK_FINGETPRINT1, "Mnemonic 1.1"),
-        mockImplicitAccount(1, undefined, MOCK_FINGETPRINT1, "Mnemonic 1.2"),
+        mockImplicitAccount(0, undefined, MOCK_FINGERPRINT1, "Mnemonic 1.1"),
+        mockImplicitAccount(1, undefined, MOCK_FINGERPRINT1, "Mnemonic 1.2"),
       ] as MnemonicAccount[],
       encryptedMnemonic: { mock: "encrypted 1" } as any,
     })
   );
   store.dispatch(
     accountsSlice.actions.addMnemonicAccounts({
-      seedFingerprint: MOCK_FINGETPRINT2,
+      seedFingerprint: MOCK_FINGERPRINT2,
       accounts: [
-        mockImplicitAccount(4, undefined, MOCK_FINGETPRINT2, "Mnemonic 2"),
+        mockImplicitAccount(4, undefined, MOCK_FINGERPRINT2, "Mnemonic 2"),
       ] as MnemonicAccount[],
       encryptedMnemonic: { mock: "encrypted 2" } as any,
     })

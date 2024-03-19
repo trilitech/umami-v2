@@ -12,10 +12,10 @@ import {
 } from "@chakra-ui/react";
 
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
+import { DrawerTopButtons } from "../../components/DrawerTopButtons";
 import { useDynamicModal } from "../../components/DynamicModal";
 import { useAddPeer } from "../../utils/beacon/beacon";
 import { BeaconPeers } from "../../utils/beacon/BeaconPeers";
-import { DrawerTopButtons } from "../home/DrawerTopButtons";
 
 export const DAppsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();

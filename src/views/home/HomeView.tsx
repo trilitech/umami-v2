@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 
+import { AccountListHeader } from "./AccountListHeader";
 import { AccountListWithDrawer } from "./AccountListWithDrawer";
-import { AccountListHeader } from "./AccountsList";
 import { TopBar } from "../../components/TopBar";
 
 export const HomeView = () => (

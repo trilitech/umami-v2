@@ -5,9 +5,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AccountsList } from "./AccountsList";
-import { DrawerTopButtons } from "./DrawerTopButtons";
 import { SelectedAccountContext } from "./SelectedAccountContext";
 import { AccountCard } from "../../components/AccountDrawer";
+import { DrawerTopButtons } from "../../components/DrawerTopButtons";
 import { useDynamicModal } from "../../components/DynamicModal";
 import { Account } from "../../types/Account";
 import { fullId } from "../../types/Token";
