@@ -3,8 +3,8 @@ import { useContext } from "react";
 
 import { NetworkSettingsDrawerBody } from "./NetworkSettingsDrawerBody";
 import { SettingsCardWithDrawerIcon } from "../../../components/ClickableCard";
+import { DrawerTopButtons } from "../../../components/DrawerTopButtons";
 import { DynamicModalContext } from "../../../components/DynamicModal";
-import { DrawerTopButtons } from "../../home/DrawerTopButtons";
 
 export const NetworkSettingsDrawerCard = () => {
   const { isOpen: isDrawerOpen, onClose: closeDrawer, onOpen: openDrawer } = useDisclosure();

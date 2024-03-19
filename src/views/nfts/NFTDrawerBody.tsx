@@ -2,10 +2,10 @@ import { Flex } from "@chakra-ui/react";
 
 import { NFTDrawerCard } from "./NFTDrawerCard";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
+import { CloseDrawerButton } from "../../components/CloseDrawerButton";
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
 import { NFTWithOwner } from "../../utils/token/utils";
-import { CloseDrawerButton } from "../home/DrawerTopButtons";
 
 export const NFTDrawerBody = ({
   nft,
