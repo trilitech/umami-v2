@@ -190,7 +190,7 @@
     "webpack-manifest-plugin": "^5.0.0",
     "webpack-remove-code-blocks": "^0.1.6",
     "workbox-webpack-plugin": "^7.0.0",
-    "zipurl": "^0.2.17",
+    "zipurl": "^0.2.18",
     "zod": "^3.22.4"
   },
   "jest": {
