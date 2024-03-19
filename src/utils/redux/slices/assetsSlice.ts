@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { compact, groupBy, mapValues } from "lodash";
+import { compact, fromPairs, groupBy, mapValues } from "lodash";
 
 import { accountsSlice } from "./accountsSlice";
 import { Delegate } from "../../../types/Delegate";
@@ -84,6 +84,18 @@ export const assetsSlice = createSlice({
           tokenId,
           lastLevel,
         }))
+      );
+    },
+
+    removeAccountsData: (state, { payload: { pkhs } }: { payload: { pkhs: string[] } }) => {
+      state.balances.mutez = fromPairs(
+        Object.entries(state.balances.mutez).filter(([address, _]) => !pkhs.includes(address))
+      );
+      state.balances.tokens = fromPairs(
+        Object.entries(state.balances.tokens).filter(([address, _]) => !pkhs.includes(address))
+      );
+      state.delegationLevels = fromPairs(
+        Object.entries(state.delegationLevels).filter(([address, _]) => !pkhs.includes(address))
       );
     },
 

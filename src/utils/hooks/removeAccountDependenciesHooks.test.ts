@@ -8,6 +8,7 @@ import { act, renderHook } from "../../mocks/testUtils";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { WalletClient } from "../beacon/WalletClient";
+import { assetsActions } from "../redux/slices/assetsSlice";
 import { batchesActions } from "../redux/slices/batches";
 import { beaconActions } from "../redux/slices/beaconSlice";
 import { store } from "../redux/store";
@@ -129,6 +130,34 @@ describe("useRemoveAccountsDependencies", () => {
           networkType: connections[1].networkType,
         },
       });
+    });
+  });
+
+  it("removes assets data directly related to the given accounts", () => {
+    store.dispatch(
+      assetsActions.updateTezBalance([
+        { address: mockImplicitAccount(0).address.pkh, balance: 11, delegationLevel: 1 },
+        { address: mockImplicitAccount(1).address.pkh, balance: 22, delegationLevel: 2 },
+        { address: mockImplicitAccount(2).address.pkh, balance: 33, delegationLevel: 3 },
+      ])
+    );
+
+    const {
+      result: { current: removeAccountsDependencies },
+    } = renderHook(() => useRemoveAccountsDependencies());
+    act(() =>
+      removeAccountsDependencies([
+        mockImplicitAccount(0),
+        mockImplicitAccount(2),
+        mockImplicitAccount(4),
+      ])
+    );
+
+    expect(store.getState().assets.balances.mutez).toEqual({
+      [mockImplicitAccount(1).address.pkh]: "22",
+    });
+    expect(store.getState().assets.delegationLevels).toEqual({
+      [mockImplicitAccount(1).address.pkh]: 2,
     });
   });
 });

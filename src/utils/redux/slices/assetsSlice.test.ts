@@ -1,11 +1,11 @@
 import { accountsSlice } from "./accountsSlice";
 import { assetsSlice } from "./assetsSlice";
-import { hedgehoge } from "../../../mocks/fa12Tokens";
+import { hedgehoge, tzBtsc } from "../../../mocks/fa12Tokens";
 import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";
 import { store } from "../store";
 
 const {
-  actions: { updateTezBalance, updateTokenBalance, updateTokenTransfers },
+  actions: { removeAccountsData, updateTezBalance, updateTokenBalance, updateTokenTransfers },
 } = assetsSlice;
 
 describe("assetsSlice", () => {
@@ -33,7 +33,6 @@ describe("assetsSlice", () => {
         { address: "baz", balance: 55 },
       ])
     );
-
     store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
 
     store.dispatch(accountsSlice.actions.reset());
@@ -138,6 +137,7 @@ describe("assetsSlice", () => {
           { address: "baz", balance: 55 },
         ])
       );
+
       expect(store.getState().assets.delegationLevels).toEqual({
         bar: 5,
       });
@@ -189,6 +189,61 @@ describe("assetsSlice", () => {
         101: mockTokenTransaction(1),
         102: mockTokenTransaction(2),
         104: mockTokenTransaction(4),
+      });
+    });
+  });
+
+  describe("removeAccountsData", () => {
+    it("removes tez balance for listed accounts", () => {
+      store.dispatch(
+        updateTezBalance([
+          { address: "foo", balance: 11 },
+          { address: "bar", balance: 22 },
+          { address: "baz", balance: 33 },
+        ])
+      );
+
+      store.dispatch(removeAccountsData({ pkhs: ["bar", "baz", "qwerty"] }));
+
+      expect(store.getState().assets.balances.mutez).toEqual({
+        foo: "11",
+      });
+    });
+
+    it("removes token balance for listed accounts", () => {
+      store.dispatch(
+        updateTokenBalance([tzBtsc(mockImplicitAddress(0)), hedgehoge(mockImplicitAddress(1))])
+      );
+
+      store.dispatch(
+        removeAccountsData({ pkhs: [mockImplicitAddress(0).pkh, mockImplicitAddress(2).pkh] })
+      );
+
+      expect(store.getState().assets.balances.tokens).toEqual({
+        [mockImplicitAddress(1).pkh]: [
+          {
+            balance: "10000000000",
+            contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
+            tokenId: "0",
+            lastLevel: 1477579,
+          },
+        ],
+      });
+    });
+
+    it("removes delegation level for listed accounts", () => {
+      store.dispatch(
+        updateTezBalance([
+          { address: "foo", balance: 11, delegationLevel: 1 },
+          { address: "bar", balance: 22, delegationLevel: 2 },
+          { address: "baz", balance: 33, delegationLevel: 3 },
+        ])
+      );
+
+      store.dispatch(removeAccountsData({ pkhs: ["bar", "baz", "qwerty"] }));
+
+      expect(store.getState().assets.delegationLevels).toEqual({
+        foo: 1,
       });
     });
   });
