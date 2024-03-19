@@ -25,7 +25,6 @@ import { assetsActions } from "../redux/slices/assetsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
 import { multisigActions, multisigsSlice } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
-import { checkAccountsAndUpsertContact } from "../redux/thunks/checkAccountsAndUpsertContact";
 import { renameAccount } from "../redux/thunks/renameAccount";
 
 describe("getAccountDataHooks", () => {
@@ -227,8 +226,8 @@ describe("getAccountDataHooks", () => {
     });
 
     it("among contacts returns unique labels", () => {
-      store.dispatch(checkAccountsAndUpsertContact(mockContact(0, "Test acc 2")));
-      store.dispatch(checkAccountsAndUpsertContact(mockContact(1, "Test acc 4")));
+      store.dispatch(contactsActions.upsert(mockContact(0, "Test acc 2")));
+      store.dispatch(contactsActions.upsert(mockContact(1, "Test acc 4")));
 
       const {
         result: { current: getNextAvailableLabels },

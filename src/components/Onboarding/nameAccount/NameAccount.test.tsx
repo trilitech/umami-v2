@@ -11,9 +11,9 @@ import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
+import { contactsActions } from "../../../utils/redux/slices/contactsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
-import { checkAccountsAndUpsertContact } from "../../../utils/redux/thunks/checkAccountsAndUpsertContact";
 import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
 import type { NameAccountStep } from "../OnboardingStep";
 
@@ -126,8 +126,8 @@ describe("<NameAccount />", () => {
 
       it("among contacts sets group label", async () => {
         const user = userEvent.setup();
-        store.dispatch(checkAccountsAndUpsertContact(mockContact(1, labelBase)));
-        store.dispatch(checkAccountsAndUpsertContact(mockContact(3, `${labelBase} 3`)));
+        store.dispatch(contactsActions.upsert(mockContact(1, labelBase)));
+        store.dispatch(contactsActions.upsert(mockContact(3, `${labelBase} 3`)));
         render(fixture(account));
 
         if (label.withNameProvided) {
@@ -191,8 +191,8 @@ describe("<NameAccount />", () => {
 
       it("among contacts sets unique default label", async () => {
         const user = userEvent.setup();
-        store.dispatch(checkAccountsAndUpsertContact(mockContact(1, labelBase)));
-        store.dispatch(checkAccountsAndUpsertContact(mockContact(3, `${labelBase} 3`)));
+        store.dispatch(contactsActions.upsert(mockContact(1, labelBase)));
+        store.dispatch(contactsActions.upsert(mockContact(3, `${labelBase} 3`)));
         render(fixture(account));
 
         if (label.withNameProvided) {

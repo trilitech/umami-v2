@@ -1,9 +1,6 @@
-import { accountsSlice } from "./accountsSlice";
 import { contactsActions } from "./contactsSlice";
 import { contact1, contact2 } from "../../../mocks/contacts";
-import { mockImplicitAddress, mockMnemonicAccount } from "../../../mocks/factories";
 import { store } from "../store";
-import { checkAccountsAndUpsertContact } from "../thunks/checkAccountsAndUpsertContact";
 const { remove } = contactsActions;
 
 describe("Contacts reducer", () => {
@@ -12,8 +9,8 @@ describe("Contacts reducer", () => {
   });
 
   test("should add new contacts", () => {
-    store.dispatch(checkAccountsAndUpsertContact(contact1));
-    store.dispatch(checkAccountsAndUpsertContact(contact2));
+    store.dispatch(contactsActions.upsert(contact1));
+    store.dispatch(contactsActions.upsert(contact2));
     expect(store.getState().contacts).toEqual({
       [contact1["pkh"]]: {
         name: contact1["name"],
@@ -28,15 +25,15 @@ describe("Contacts reducer", () => {
   });
 
   test("should not add the same address", () => {
-    store.dispatch(checkAccountsAndUpsertContact(contact1));
-    store.dispatch(checkAccountsAndUpsertContact(contact1));
+    store.dispatch(contactsActions.upsert(contact1));
+    store.dispatch(contactsActions.upsert(contact1));
     expect(Object.keys(store.getState().contacts).length).toEqual(1);
   });
 
   test("should not add the same name", () => {
-    store.dispatch(checkAccountsAndUpsertContact(contact1));
+    store.dispatch(contactsActions.upsert(contact1));
     store.dispatch(
-      checkAccountsAndUpsertContact({
+      contactsActions.upsert({
         name: contact1["name"],
         pkh: contact2["pkh"],
       })
@@ -45,15 +42,15 @@ describe("Contacts reducer", () => {
   });
 
   test("should delete addresses", () => {
-    store.dispatch(checkAccountsAndUpsertContact(contact1));
+    store.dispatch(contactsActions.upsert(contact1));
     store.dispatch(remove(contact1.pkh));
     expect(store.getState().contacts).toEqual({});
   });
 
   test("should edit the name of the contact", () => {
-    store.dispatch(checkAccountsAndUpsertContact(contact1));
+    store.dispatch(contactsActions.upsert(contact1));
     store.dispatch(
-      checkAccountsAndUpsertContact({
+      contactsActions.upsert({
         name: contact2["name"],
         pkh: contact1["pkh"],
       })
@@ -64,26 +61,5 @@ describe("Contacts reducer", () => {
         pkh: contact1["pkh"],
       },
     });
-  });
-
-  test("should not add contact containing Account info", () => {
-    const account = mockMnemonicAccount(0);
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
-    store.dispatch(
-      checkAccountsAndUpsertContact({ name: account.label, pkh: account.address.pkh })
-    );
-    store.dispatch(
-      checkAccountsAndUpsertContact({
-        name: account.label,
-        pkh: mockImplicitAddress(4).pkh,
-      })
-    );
-    store.dispatch(
-      checkAccountsAndUpsertContact({
-        name: "mockName",
-        pkh: account.address.pkh,
-      })
-    );
-    expect(store.getState().contacts).toEqual({});
   });
 });

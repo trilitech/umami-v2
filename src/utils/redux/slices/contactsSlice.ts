@@ -12,7 +12,7 @@ export const contactsSlice = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
-    // Don't use this action directly. Use thunk checkAccountsAndUpsertContact
+    // Make sure to check that pkh is not used in accounts & the name is unique.
     upsert: (state, { payload }: { payload: Contact }) => {
       if (nameExistsInContacts(state, payload.name)) {
         return;
