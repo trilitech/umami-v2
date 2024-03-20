@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import {
   useGetAccountsByFingerPrint,
   useGetAccountsByType,
-  useGetNextAvailableAccountLabels,
   useImplicitAccounts,
   useSeedPhrases,
 } from "./getAccountDataHooks";
+import { useGetNextAvailableAccountLabels } from "./labelsHooks";
 import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
 import {

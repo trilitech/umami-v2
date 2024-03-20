@@ -11,6 +11,7 @@ describe("Contacts reducer", () => {
   test("should add new contacts", () => {
     store.dispatch(contactsActions.upsert(contact1));
     store.dispatch(contactsActions.upsert(contact2));
+
     expect(store.getState().contacts).toEqual({
       [contact1["pkh"]]: {
         name: contact1["name"],
@@ -24,37 +25,32 @@ describe("Contacts reducer", () => {
     });
   });
 
-  test("should not add the same address", () => {
+  test("should not add the same contact twice", () => {
     store.dispatch(contactsActions.upsert(contact1));
-    store.dispatch(contactsActions.upsert(contact1));
-    expect(Object.keys(store.getState().contacts).length).toEqual(1);
-  });
 
-  test("should not add the same name", () => {
     store.dispatch(contactsActions.upsert(contact1));
-    store.dispatch(
-      contactsActions.upsert({
-        name: contact1["name"],
-        pkh: contact2["pkh"],
-      })
-    );
-    expect(store.getState().contacts).toEqual({ [contact1["pkh"]]: contact1 });
+
+    expect(Object.keys(store.getState().contacts).length).toEqual(1);
   });
 
   test("should delete addresses", () => {
     store.dispatch(contactsActions.upsert(contact1));
+
     store.dispatch(remove(contact1.pkh));
+
     expect(store.getState().contacts).toEqual({});
   });
 
   test("should edit the name of the contact", () => {
     store.dispatch(contactsActions.upsert(contact1));
+
     store.dispatch(
       contactsActions.upsert({
         name: contact2["name"],
         pkh: contact1["pkh"],
       })
     );
+
     expect(store.getState().contacts).toEqual({
       [contact1["pkh"]]: {
         name: contact2["name"],

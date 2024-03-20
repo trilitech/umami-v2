@@ -15,49 +15,66 @@ const fixture = (account: Account) => (
 );
 
 describe("<RenameAccountModal />", () => {
+  const setName = (name: string) => {
+    fireEvent.change(screen.getByLabelText("Account name"), {
+      target: { value: name },
+    });
+    fireEvent.blur(screen.getByLabelText("Account name"));
+  };
+
   describe("validations", () => {
     it("is required", async () => {
       const account = mockImplicitAccount(0);
       render(fixture(account));
 
-      fireEvent.change(screen.getByLabelText("Account name"), {
-        target: { value: "" },
-      });
+      setName("");
 
-      fireEvent.blur(screen.getByLabelText("Account name"));
       await waitFor(() => {
         expect(screen.getByTestId("name-error")).toHaveTextContent("Name is required");
       });
     });
 
-    it("does not allow existing account name", async () => {
+    it("does not allow the same name", async () => {
       const account = mockMnemonicAccount(0);
       store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
       render(fixture(account));
 
-      fireEvent.change(screen.getByLabelText("Account name"), {
-        target: { value: account.label },
-      });
+      setName(account.label);
 
-      fireEvent.blur(screen.getByLabelText("Account name"));
       await waitFor(() => {
-        expect(screen.getByTestId("name-error")).toHaveTextContent("Name already used in accounts");
+        expect(screen.getByTestId("name-error")).toHaveTextContent("Name was not changed");
+      });
+    });
+
+    it("does not allow existing account name", async () => {
+      const account = mockMnemonicAccount(0);
+      store.dispatch(
+        accountsSlice.actions.addMockMnemonicAccounts([
+          account,
+          mockMnemonicAccount(1, "Existing Account Name"),
+        ])
+      );
+      render(fixture(account));
+
+      setName("Existing Account Name");
+
+      await waitFor(() => {
+        expect(screen.getByTestId("name-error")).toHaveTextContent(
+          "Name must be unique across all accounts and contacts"
+        );
       });
     });
 
     it("does not allow existing contact name", async () => {
       const account = mockMnemonicAccount(0);
-      store.dispatch(contactsActions.upsert(mockContact(0)));
+      store.dispatch(contactsActions.upsert(mockContact(0, "Existing Contact Name")));
       render(fixture(account));
 
-      fireEvent.change(screen.getByLabelText("Account name"), {
-        target: { value: mockContact(0).name },
-      });
+      setName("Existing Contact Name");
 
-      fireEvent.blur(screen.getByLabelText("Account name"));
       await waitFor(() => {
         expect(screen.getByTestId("name-error")).toHaveTextContent(
-          "Name already registered in address book"
+          "Name must be unique across all accounts and contacts"
         );
       });
     });

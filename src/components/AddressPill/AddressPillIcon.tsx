@@ -12,7 +12,7 @@ import {
   KeyIcon,
   XMark,
 } from "../../assets/icons";
-import { useContactExists } from "../../utils/hooks/contactsHooks";
+import { useAddressExistsInContacts } from "../../utils/hooks/contactsHooks";
 import { UpsertContactModal } from "../ContactModal";
 import { DynamicModalContext } from "../DynamicModal";
 
@@ -40,7 +40,7 @@ export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
 export const RightIcon: React.FC<
   { addressKind: AddressKind; addressPillMode: AddressPillMode } & IconProps
 > = ({ addressKind: { type, pkh }, addressPillMode, ...rest }) => {
-  const { addressExistsInContacts } = useContactExists();
+  const addressExistsInContacts = useAddressExistsInContacts();
   const { openWith } = useContext(DynamicModalContext);
 
   if (addressPillMode.type === "removable") {
@@ -57,15 +57,7 @@ export const RightIcon: React.FC<
     <>
       <AddContactIcon
         data-testid="add-contact-icon"
-        onClick={() =>
-          openWith(
-            <UpsertContactModal
-              buttonText="Add to Contact"
-              contact={{ name: "", pkh }}
-              title="Add contact"
-            />
-          )
-        }
+        onClick={() => openWith(<UpsertContactModal contact={{ name: "", pkh }} />)}
         {...rest}
       />
     </>

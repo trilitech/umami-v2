@@ -13,8 +13,7 @@ import { FC, useContext } from "react";
 import { useForm } from "react-hook-form";
 
 import { Account } from "../../types/Account";
-import { useContactExists } from "../../utils/hooks/contactsHooks";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
+import { useValidateName } from "../../utils/hooks/labelsHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { renameAccount } from "../../utils/redux/thunks/renameAccount";
 import { DynamicModalContext } from "../DynamicModal";
@@ -45,15 +44,7 @@ export const RenameAccountModal: FC<{
     reset();
   };
 
-  const accounts = useAllAccounts();
-  const validateName = (name: string) => {
-    if (accounts.map(account => account.label).includes(name)) {
-      return "Name already used in accounts";
-    }
-    return !nameExistsInContacts(name.trim()) || "Name already registered in address book";
-  };
-
-  const { nameExistsInContacts } = useContactExists();
+  const validateName = useValidateName(account.label);
 
   return (
     <ModalContent>
