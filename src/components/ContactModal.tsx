@@ -42,11 +42,6 @@ export const UpsertContactModal: FC<{
   // When editing existing contact, its name & pkh are known and provided to the modal.
   const isEdit = !!(contact?.pkh && contact.name);
 
-  const onSubmitContact = ({ name, pkh }: Contact) => {
-    dispatch(contactsActions.upsert({ name, pkh }));
-    onClose();
-  };
-
   const {
     handleSubmit,
     formState: { isValid, errors },
@@ -56,8 +51,10 @@ export const UpsertContactModal: FC<{
     mode: "onBlur",
     defaultValues: contact,
   });
+
   const onSubmit = ({ name, pkh }: Contact) => {
-    onSubmitContact({ name: name.trim(), pkh });
+    dispatch(contactsActions.upsert({ name: name.trim(), pkh }));
+    onClose();
     reset();
   };
 
