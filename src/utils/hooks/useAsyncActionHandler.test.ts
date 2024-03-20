@@ -1,3 +1,5 @@
+import { waitFor } from "@testing-library/react";
+
 import { useAsyncActionHandler } from "./useAsyncActionHandler";
 import { act, renderHook } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
@@ -42,22 +44,26 @@ describe("useAsyncActionHandler", () => {
 
       const sharedVariable = { data: 0 };
 
-      // eslint-disable-next-line testing-library/no-unnecessary-act
-      await act(async () => {
+      act(() => {
         void view.result.current.handleAsyncAction(async () => {
-          // some delay to make sure the second computation doesn't start while the first one is still running
-          await new Promise(resolve => setTimeout(resolve, 10));
-          sharedVariable.data += 1;
-        });
-        // the only way to simulate that is to rerender during the computation
-        // technically, if the rerender didn't happen it's still possible to run multiple computations at the same time
-        view.rerender();
-        await view.result.current.handleAsyncAction(async () => {
-          sharedVariable.data += 1;
-          return Promise.resolve();
+          // some delay to make sure the second computation gets skipped
+          await new Promise(resolve => {
+            setTimeout(resolve, 10);
+          });
+          sharedVariable.data = 1;
         });
       });
 
+      await act(() =>
+        view.result.current.handleAsyncAction(async () => {
+          sharedVariable.data = 2;
+          return Promise.resolve();
+        })
+      );
+
+      await waitFor(() => expect(sharedVariable.data).toBe(1));
+      await new Promise(resolve => setTimeout(resolve, 20));
+      // 2nd async function not have been ever called
       expect(sharedVariable.data).toBe(1);
     });
 

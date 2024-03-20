@@ -16,6 +16,7 @@ import { FormProvider } from "react-hook-form";
 import { FormValues } from "./SelectApproversFormPage";
 import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
+import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../../utils/redux/hooks";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
@@ -30,6 +31,7 @@ import { SignPageProps, useSignPageHelpers } from "../utils";
 export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = props => {
   const dispatch = useAppDispatch();
   const { openWith } = useContext(DynamicModalContext);
+  const { isLoading: contractNameObtainingIsLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const {
     mode,
@@ -42,23 +44,24 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
     fee,
     operations,
     estimationFailed,
-    isLoading,
+    isLoading: contractCreationIsLoading,
     form,
     reEstimate,
     signer,
     onSign: originateContract,
-    handleAsyncAction,
   } = useSignPageHelpers(initialFee, initialOperations, mode);
 
+  const isLoading = contractNameObtainingIsLoading || contractCreationIsLoading;
   /**
    * To save the multisig account name we need to know the contract address
    * We don't know it until after we successfully originated the contract
    * Once we obtained it we can save the mapping between
    * the contract address and its chosen label
    */
-  const onSign = async (tezosToolkit: TezosToolkit) =>
+  const onSign = (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
       const operation = await originateContract(tezosToolkit);
+
       if (!operation) {
         /**
          * In case the operation was successfully originated, but we couldn't
