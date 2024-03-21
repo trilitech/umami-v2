@@ -19,7 +19,7 @@ import {
 import { addAccount } from "../../mocks/helpers";
 import { encryptedMnemonic1 } from "../../mocks/mockMnemonic";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { AccountType, MnemonicAccount } from "../../types/Account";
+import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import { accountsActions, accountsSlice } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
@@ -40,29 +40,19 @@ describe("getAccountDataHooks", () => {
       mockSecretKeyAccount(6),
       mockSecretKeyAccount(7),
     ];
-    const accountTypes: AccountType[] = ["mnemonic", "social", "ledger", "secret_key"];
+    const accountTypes: ImplicitAccount["type"][] = ["mnemonic", "social", "ledger", "secret_key"];
 
     beforeEach(() =>
       accounts.forEach(account => store.dispatch(accountsActions.addAccount(account)))
     );
 
-    it("returns empty list if no accounts match given type", () => {
+    it.each(accountTypes)("returns all accounts of given type %s", type => {
       const {
         result: { current: getAccountsByType },
       } = renderHook(() => useGetAccountsByType());
 
-      expect(getAccountsByType("multisig")).toEqual([]);
-    });
-
-    accountTypes.forEach(type => {
-      it("returns all accounts of given type", () => {
-        const {
-          result: { current: getAccountsByType },
-        } = renderHook(() => useGetAccountsByType());
-
-        expect(getAccountsByType(type)).toHaveLength(2);
-        expect(getAccountsByType(type)).toEqual(accounts.filter(account => account.type === type));
-      });
+      expect(getAccountsByType(type)).toHaveLength(2);
+      expect(getAccountsByType(type)).toEqual(accounts.filter(account => account.type === type));
     });
   });
 
@@ -253,15 +243,22 @@ describe("getAccountDataHooks", () => {
     });
   });
 
-  test("useIsOwnedAddress", () => {
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
+  describe("useIsOwnedAddress", () => {
+    beforeEach(() =>
+      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]))
+    );
 
-    let view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh));
-    expect(view.result.current).toEqual(true);
+    it("returns true if account is owned", () => {
+      const view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh));
 
-    view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(2).address.pkh));
+      expect(view.result.current).toEqual(true);
+    });
 
-    expect(view.result.current).toEqual(false);
+    it("returns false if account is not owned", () => {
+      const view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(2).address.pkh));
+
+      expect(view.result.current).toEqual(false);
+    });
   });
 
   describe("useValidateMasterPassword", () => {

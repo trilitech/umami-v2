@@ -185,7 +185,7 @@ describe("batchesSlice", () => {
         );
         store.dispatch(add({ operations: accountOperations, network }));
 
-        store.dispatch(removeByAccounts({ pkhs: [mockImplicitAccount(2).address.pkh] }));
+        store.dispatch(removeByAccounts([mockImplicitAccount(2).address.pkh]));
 
         expect(store.getState().batches[network.name]).toEqual([accountOperations]);
       });
@@ -211,9 +211,7 @@ describe("batchesSlice", () => {
         store.dispatch(add({ operations: accountOperations3, network }));
 
         store.dispatch(
-          removeByAccounts({
-            pkhs: [mockImplicitAccount(2).address.pkh, mockImplicitAccount(3).address.pkh],
-          })
+          removeByAccounts([mockImplicitAccount(2).address.pkh, mockImplicitAccount(3).address.pkh])
         );
 
         expect(store.getState().batches[network.name]).toEqual([accountOperations1]);
@@ -235,7 +233,7 @@ describe("batchesSlice", () => {
         store.dispatch(add({ operations: accountOperations1, network: anotherNetwork }));
         store.dispatch(add({ operations: accountOperations2, network: anotherNetwork }));
 
-        store.dispatch(removeByAccounts({ pkhs: [mockImplicitAccount(2).address.pkh] }));
+        store.dispatch(removeByAccounts([mockImplicitAccount(2).address.pkh]));
 
         expect(store.getState().batches[network.name]).toEqual([accountOperations1]);
         expect(store.getState().batches[anotherNetwork.name]).toEqual([accountOperations1]);

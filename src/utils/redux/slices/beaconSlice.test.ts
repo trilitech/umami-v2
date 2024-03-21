@@ -51,11 +51,11 @@ describe("Beacon slice", () => {
     });
   });
 
-  it("removes connections for given dAppId", () => {
+  it("removes connections for a given dAppId", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
     addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
 
-    store.dispatch(beaconActions.removeConnection({ dAppId: dAppId1 }));
+    store.dispatch(beaconActions.removeConnection(dAppId1));
 
     expect(store.getState().beacon).toEqual({
       [dAppId2]: connectionInfo(pkh2, NetworkType.GHOSTNET),
@@ -67,7 +67,7 @@ describe("Beacon slice", () => {
     addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
     addConnection(dAppId2, pkh3, NetworkType.GHOSTNET);
 
-    store.dispatch(beaconActions.removeConnections({ pkhs: [pkh1, pkh2] }));
+    store.dispatch(beaconActions.removeConnections([pkh1, pkh2]));
 
     expect(store.getState().beacon).toEqual({
       [dAppId2]: connectionInfo(pkh3, NetworkType.GHOSTNET),

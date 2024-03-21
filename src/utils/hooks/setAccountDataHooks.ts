@@ -10,7 +10,7 @@ import {
 import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
 import {
-  AccountType,
+  ImplicitAccount,
   LedgerAccount,
   MnemonicAccount,
   SecretKeyAccount,
@@ -212,7 +212,7 @@ export const useRemoveNonMnemonic = () => {
   const getAccountsByType = useGetAccountsByType();
   const removeAccountsDependencies = useRemoveAccountsDependencies();
 
-  return (accountType: AccountType) => {
+  return (accountType: ImplicitAccount["type"]) => {
     removeAccountsDependencies(getAccountsByType(accountType));
 
     dispatch(

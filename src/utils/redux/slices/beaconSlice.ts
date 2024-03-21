@@ -31,14 +31,14 @@ export const beaconSlice = createSlice({
       state[payload.dAppId] = { accountPkh: payload.accountPkh, networkType: payload.networkType };
     },
 
-    removeConnection: (state, { payload }: { payload: { dAppId: string } }) => {
-      delete state[payload.dAppId];
+    removeConnection: (state, { payload: dAppId }: { payload: string }) => {
+      delete state[dAppId];
     },
 
-    removeConnections: (state, { payload }: { payload: { pkhs: RawPkh[] } }) =>
+    removeConnections: (state, { payload: pkhs }: { payload: RawPkh[] }) =>
       fromPairs(
         Object.entries(state).filter(
-          ([_, connectionInfo]) => !payload.pkhs.includes(connectionInfo.accountPkh)
+          ([_, connectionInfo]) => !pkhs.includes(connectionInfo.accountPkh)
         )
       ),
   },

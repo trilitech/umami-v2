@@ -65,7 +65,7 @@ export const batchesSlice = createSlice({
         batches.splice(batchIndex, 1);
       }
     },
-    removeByAccounts: (state, { payload: { pkhs } }: { payload: { pkhs: RawPkh[] } }) =>
+    removeByAccounts: (state, { payload: pkhs }: { payload: RawPkh[] }) =>
       fromPairs(
         Object.entries(state).map(([networkName, batches]) => {
           const newBatches = (batches || []).filter(

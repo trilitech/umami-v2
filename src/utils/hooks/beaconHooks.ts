@@ -46,5 +46,5 @@ export const useAddConnection = () => {
  */
 export const useRemoveConnection = () => {
   const dispatch = useDispatch();
-  return (dAppId: string) => dispatch(beaconSlice.actions.removeConnection({ dAppId }));
+  return (dAppId: string) => dispatch(beaconSlice.actions.removeConnection(dAppId));
 };

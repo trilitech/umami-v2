@@ -9,7 +9,7 @@ const {
 } = assetsSlice;
 
 describe("assetsSlice", () => {
-  it("initialized with empty state", () => {
+  it("is initialized with empty state", () => {
     expect(store.getState().assets).toEqual({
       balances: {
         mutez: {},
@@ -203,7 +203,7 @@ describe("assetsSlice", () => {
         ])
       );
 
-      store.dispatch(removeAccountsData({ pkhs: ["bar", "baz", "qwerty"] }));
+      store.dispatch(removeAccountsData(["bar", "baz", "qwerty"]));
 
       expect(store.getState().assets.balances.mutez).toEqual({
         foo: "11",
@@ -215,9 +215,7 @@ describe("assetsSlice", () => {
         updateTokenBalance([tzBtsc(mockImplicitAddress(0)), hedgehoge(mockImplicitAddress(1))])
       );
 
-      store.dispatch(
-        removeAccountsData({ pkhs: [mockImplicitAddress(0).pkh, mockImplicitAddress(2).pkh] })
-      );
+      store.dispatch(removeAccountsData([mockImplicitAddress(0).pkh, mockImplicitAddress(2).pkh]));
 
       expect(store.getState().assets.balances.tokens).toEqual({
         [mockImplicitAddress(1).pkh]: [
@@ -240,7 +238,7 @@ describe("assetsSlice", () => {
         ])
       );
 
-      store.dispatch(removeAccountsData({ pkhs: ["bar", "baz", "qwerty"] }));
+      store.dispatch(removeAccountsData(["bar", "baz", "qwerty"]));
 
       expect(store.getState().assets.delegationLevels).toEqual({
         foo: 1,

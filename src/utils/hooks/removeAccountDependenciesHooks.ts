@@ -6,10 +6,12 @@ import { batchesSlice } from "../redux/slices/batches";
 import { beaconSlice } from "../redux/slices/beaconSlice";
 
 /**
- * Hook for removing all stored accounts' dependencies.
+ * Hook for removing stored accounts' data.
  *
  * That means:
  * - removing all batches related to the given accounts
+ * - removing all peers related to the given accounts
+ * - balances of the given accounts
  */
 export const useRemoveAccountsDependencies = () => {
   const dispatch = useAppDispatch();
@@ -17,9 +19,9 @@ export const useRemoveAccountsDependencies = () => {
 
   return (accounts: Account[]) => {
     const pkhs = accounts.map(account => account.address.pkh);
-    dispatch(batchesSlice.actions.removeByAccounts({ pkhs }));
+    dispatch(batchesSlice.actions.removeByAccounts(pkhs));
     void removePeersByAccounts(pkhs);
-    dispatch(beaconSlice.actions.removeConnections({ pkhs }));
-    dispatch(assetsSlice.actions.removeAccountsData({ pkhs }));
+    dispatch(beaconSlice.actions.removeConnections(pkhs));
+    dispatch(assetsSlice.actions.removeAccountsData(pkhs));
   };
 };

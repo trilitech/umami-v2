@@ -5,7 +5,6 @@ import { useContacts } from "./contactsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
 import {
   Account,
-  AccountType,
   ImplicitAccount,
   MnemonicAccount,
   MultisigAccount,
@@ -44,15 +43,16 @@ export const useGetImplicitAccount = () => {
 export const useGetAccountsByType = () => {
   const accounts = useImplicitAccounts();
 
-  return (type: AccountType) => accounts.filter(account => account.type === type);
+  return <T extends ImplicitAccount>(type: T["type"]): T[] =>
+    accounts.filter((account: Account): account is T => account.type === type);
 };
 
 export const useGetAccountsByFingerPrint = () => {
-  const accounts = useImplicitAccounts();
+  const getAccountsByType = useGetAccountsByType();
 
   return (fingerPrint: string) =>
-    accounts.filter(
-      account => account.type === "mnemonic" && account.seedFingerPrint === fingerPrint
+    getAccountsByType<MnemonicAccount>("mnemonic").filter(
+      account => account.seedFingerPrint === fingerPrint
     );
 };
 

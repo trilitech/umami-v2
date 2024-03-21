@@ -15,7 +15,7 @@ import {
 import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
-import { AccountType, ImplicitAccount, MnemonicAccount } from "../../types/Account";
+import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import { AVAILABLE_DERIVATION_PATHS, makeDerivationPath } from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
 import { accountsSlice } from "../redux/slices/accountsSlice";
@@ -363,14 +363,14 @@ describe("setAccountDataHooks", () => {
       mockSecretKeyAccount(5),
       mockSecretKeyAccount(6),
     ];
-    const accountTypes: AccountType[] = ["social", "ledger", "secret_key"];
+    const accountTypes: ImplicitAccount["type"][] = ["social", "ledger", "secret_key"];
 
     beforeEach(() =>
       accounts.forEach(account => store.dispatch(accountsSlice.actions.addAccount(account)))
     );
 
-    accountTypes.forEach(type => {
-      it("deletes all accounts of given type", () => {
+    describe.each(accountTypes)("for %s type", type => {
+      it("deletes all accounts", () => {
         const {
           result: { current: removeNonMnemonic },
         } = renderHook(() => useRemoveNonMnemonic());
@@ -382,7 +382,7 @@ describe("setAccountDataHooks", () => {
         );
       });
 
-      it("calls removeAccountsDependencies with all accounts of give type", () => {
+      it("calls removeAccountsDependencies with all accounts", () => {
         const {
           result: { current: removeNonMnemonic },
         } = renderHook(() => useRemoveNonMnemonic());
