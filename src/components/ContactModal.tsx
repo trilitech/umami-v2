@@ -42,6 +42,11 @@ export const UpsertContactModal: FC<{
   // When editing existing contact, its name & pkh are known.
   const isEdit = contact !== undefined && contact.pkh != "" && contact.name !== "";
 
+  const onSubmitContact = ({ name, pkh }: Contact) => {
+    dispatch(contactsActions.upsert({ name, pkh }));
+    onClose();
+  };
+
   const {
     handleSubmit,
     formState: { isValid, errors },
@@ -51,10 +56,8 @@ export const UpsertContactModal: FC<{
     mode: "onBlur",
     defaultValues: contact,
   });
-
   const onSubmit = ({ name, pkh }: Contact) => {
-    dispatch(contactsActions.upsert({ name: name.trim(), pkh }));
-    onClose();
+    onSubmitContact({ name: name.trim(), pkh });
     reset();
   };
 
@@ -85,7 +88,9 @@ export const UpsertContactModal: FC<{
               })}
               placeholder="Enter contact's name"
             />
-            {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
+            {errors.name && (
+              <FormErrorMessage data-testid="name-error">{errors.name.message}</FormErrorMessage>
+            )}
           </FormControl>
           <FormControl isInvalid={!!errors.pkh} marginY={5}>
             <FormLabel>Address</FormLabel>
@@ -93,20 +98,28 @@ export const UpsertContactModal: FC<{
               type="text"
               {...register("pkh", {
                 required: "Address is required",
-                validate: validatePkh,
+                validate: isEdit ? () => true : validatePkh,
               })}
               disabled={isEdit}
-              placeholder="Enter contact’s tz address"
-              value={contact?.pkh}
+              placeholder="Enter contact's tz address"
               variant={isEdit ? "filled" : undefined}
             />
-            {errors.pkh && <FormErrorMessage>{errors.pkh.message}</FormErrorMessage>}
+            {errors.pkh && (
+              <FormErrorMessage data-testid="address-error">{errors.pkh.message}</FormErrorMessage>
+            )}
           </FormControl>
         </ModalBody>
 
         <ModalFooter padding="16px 0 0 0">
           <Box width="100%">
-            <Button width="100%" marginBottom={2} isDisabled={!isValid} size="lg" type="submit">
+            <Button
+              width="100%"
+              marginBottom={2}
+              data-testid="confirmation-button"
+              isDisabled={!isValid}
+              size="lg"
+              type="submit"
+            >
               {isEdit ? "Update" : "Add to Address Book"}
             </Button>
           </Box>
