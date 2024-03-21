@@ -31,14 +31,18 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
 
   const [updatesTrigger, setUpdatesTrigger] = useState(0);
 
+  const lastId = operations[0]?.id;
+
+  // crutch to be able to use reliably in the dependency array
+  const addressesJoined = addresses.toSorted((a, b) => (a > b ? 1 : 0)).join(",");
+
   useEffect(() => {
     const interval = setInterval(() => {
       handleAsyncAction(async () => {
-        const lastId = operations[0]?.id;
         const newOperations = await fetchOperationsAndUpdateTokensInfo(
           dispatch,
           network,
-          addresses,
+          addressesJoined.split(","),
           {
             lastId,
             sort: "asc",
@@ -60,11 +64,7 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
     // to start the updates with
     // but if we add operations to the dependency array, it will trigger the initial fetch
     // once again which will lead to an infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatesTrigger]);
-
-  // that's needed to make sure we don't trigger the initial fetch twice
-  const addressesJoined = addresses.join(",");
+  }, [updatesTrigger, network, lastId, handleAsyncAction, dispatch, addressesJoined]);
 
   // initial load
   useEffect(() => {
@@ -82,16 +82,8 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
       setUpdatesTrigger(prev => prev + 1);
     })
       .catch(noop)
-      .finally(() => {
-        setIsFirstLoad(false);
-      });
-    // handleAsyncAction gets constantly recreated, so we can't add it to the dependency array
-    // otherwise, it will trigger the initial fetch infinitely
-    // caching handleAsyncAction using useCallback doesn't work either
-    // because it depends on its own isLoading state which changes sometimes
-    // TODO: check useRef
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, addressesJoined, dispatch]);
+      .finally(() => setIsFirstLoad(false));
+  }, [network, addressesJoined, dispatch, handleAsyncAction]);
 
   const loadMore = async () => {
     const lastId = operations[operations.length - 1]?.id;
