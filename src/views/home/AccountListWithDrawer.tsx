@@ -8,7 +8,6 @@ import { AccountsList } from "./AccountsList";
 import { SelectedAccountContext } from "./SelectedAccountContext";
 import { AccountCard } from "../../components/AccountDrawer";
 import { DrawerTopButtons } from "../../components/DrawerTopButtons";
-import { useDynamicModal } from "../../components/DynamicModal";
 import { Account } from "../../types/Account";
 import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
@@ -23,7 +22,6 @@ export const AccountListWithDrawer: React.FC = () => {
   const isNFT = !!drawerNFT;
 
   const { isOpen, onOpen: openDrawer, onClose } = useDisclosure({ defaultIsOpen: isNFT });
-  const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
   const navigate = useNavigate();
   const closeDrawer = useCallback(() => {
@@ -61,7 +59,7 @@ export const AccountListWithDrawer: React.FC = () => {
       <AccountsList />
       <Drawer
         autoFocus={false}
-        blockScrollOnMount={!isDynamicModalOpen}
+        blockScrollOnMount={false}
         isOpen={isOpen}
         onClose={closeDrawer}
         placement="right"

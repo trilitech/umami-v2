@@ -1,14 +1,11 @@
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from "@chakra-ui/react";
-import { useContext } from "react";
 
 import { NetworkSettingsDrawerBody } from "./NetworkSettingsDrawerBody";
 import { SettingsCardWithDrawerIcon } from "../../../components/ClickableCard";
 import { DrawerTopButtons } from "../../../components/DrawerTopButtons";
-import { DynamicModalContext } from "../../../components/DynamicModal";
 
 export const NetworkSettingsDrawerCard = () => {
   const { isOpen: isDrawerOpen, onClose: closeDrawer, onOpen: openDrawer } = useDisclosure();
-  const { isOpen: isDynamicModalOpen } = useContext(DynamicModalContext);
 
   return (
     <>
@@ -18,7 +15,7 @@ export const NetworkSettingsDrawerCard = () => {
         onClick={openDrawer}
       />
       <Drawer
-        blockScrollOnMount={!isDynamicModalOpen}
+        blockScrollOnMount={false}
         isOpen={isDrawerOpen}
         onClose={closeDrawer}
         placement="right"

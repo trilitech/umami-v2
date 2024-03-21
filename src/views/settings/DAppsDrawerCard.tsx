@@ -13,19 +13,17 @@ import {
 
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DrawerTopButtons } from "../../components/DrawerTopButtons";
-import { useDynamicModal } from "../../components/DynamicModal";
 import { useAddPeer } from "../../utils/beacon/beacon";
 import { BeaconPeers } from "../../utils/beacon/BeaconPeers";
 
 export const DAppsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
-  const { isOpen: isDynamicModalOpen } = useDynamicModal();
   return (
     <>
       <SettingsCardWithDrawerIcon left="dApps" isSelected={isOpen} onClick={onOpen} />
       <Drawer
         autoFocus={false}
-        blockScrollOnMount={!isDynamicModalOpen}
+        blockScrollOnMount={false}
         isOpen={isOpen}
         onClose={closeDrawer}
         placement="right"

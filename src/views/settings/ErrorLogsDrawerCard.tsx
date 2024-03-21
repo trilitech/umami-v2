@@ -17,7 +17,6 @@ import { useDispatch } from "react-redux";
 import { OutlineExclamationCircleIcon } from "../../assets/icons";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DrawerTopButtons } from "../../components/DrawerTopButtons";
-import { useDynamicModal } from "../../components/DynamicModal";
 import colors from "../../style/colors";
 import { ErrorContext } from "../../utils/getErrorContext";
 import { useAppSelector } from "../../utils/redux/hooks";
@@ -25,17 +24,11 @@ import { errorsSlice } from "../../utils/redux/slices/errorsSlice";
 
 export const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
-  const { isOpen: isDynamicModalOpen } = useDynamicModal();
 
   return (
     <>
       <SettingsCardWithDrawerIcon left="Error Logs" isSelected={isOpen} onClick={onOpen} />
-      <Drawer
-        blockScrollOnMount={!isDynamicModalOpen}
-        isOpen={isOpen}
-        onClose={closeDrawer}
-        placement="right"
-      >
+      <Drawer blockScrollOnMount={false} isOpen={isOpen} onClose={closeDrawer} placement="right">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerBody>
