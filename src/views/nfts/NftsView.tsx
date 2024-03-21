@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { NFTDrawerBody } from "./NFTDrawerBody";
 import { NFTGallery } from "./NFTGallery";
 import { SelectedNFTContext } from "./SelectedNFTContext";
-import { useDynamicModal } from "../../components/DynamicModal";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
@@ -15,7 +14,6 @@ import { NFTWithOwner } from "../../utils/token/utils";
 export const NFTsView = () => {
   const nfts = useAllNfts();
 
-  const { isOpen: isDynamicModalOpen } = useDynamicModal();
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
 
   const [drawerNFT, setDrawerNFT] = useState<NFTWithOwner | undefined>(undefined);
@@ -56,7 +54,7 @@ export const NFTsView = () => {
 
           <Drawer
             autoFocus={false}
-            blockScrollOnMount={!isDynamicModalOpen}
+            blockScrollOnMount={false}
             isOpen={!!drawerNFT}
             onClose={() => setDrawerNFT(undefined)}
             placement="right"
