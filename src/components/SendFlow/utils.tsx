@@ -161,7 +161,6 @@ export const useSignPageHelpers = (
     signer: getSigner(signer),
     reEstimate,
     onSign,
-    handleAsyncAction,
   };
 };
 

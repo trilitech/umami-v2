@@ -1,58 +1,68 @@
 import { UseToastOptions, useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { getErrorContext } from "../getErrorContext";
 import { useAppDispatch } from "../redux/hooks";
 import { errorsSlice } from "../redux/slices/errorsSlice";
 
+/**
+ * Hook for gracefully handling async actions.
+ *
+ * If an action fails, it'll show a toast with a corresponding message
+ * and saves the error details in the error logs.
+ *
+ * It prevents multiple clicks on a button that triggers an async function.
+ *
+ * @returns
+ *  isLoading - a boolean indicating whether the async action is in progress, is used in UI to disable buttons, showing a spinner, etc.
+ *  handleAsyncActionUnsafe - a function that wraps the async function and handles the loading state, errors, and toasts. It throws an error if the async function fails.
+ *  handleAsyncAction - same as handleAsyncActionUnsafe, but returns undefined instead of throwing an error.
+ */
 export const useAsyncActionHandler = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const isLoadingRef = useRef(isLoading);
   const toast = useToast();
   const dispatch = useAppDispatch();
 
-  // wraps an async function that might throw an error (e.g. network call, decryption, raw input parsing, etc.)
-  // handles `isLoading` state and sets it back to `false` after the function is done
-  //
-  // if an exception was thrown it'll show a toast with the error message and re-throws and dispatches the error to redux
-  // (might be needed to additionally handle the error in the caller function)
-  //
-  // helps to prevent multiple clicks on a button that triggers an async function
-  // (though it's most likely is still vulnerable to race conditions)
-  const handleAsyncActionUnsafe = async <T>(
-    fn: () => Promise<T>,
-    toastOptions?: UseToastOptions | ((error: any) => UseToastOptions)
-  ): Promise<T | void> => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    try {
-      return await fn();
-    } catch (error: any) {
-      const errorContext = getErrorContext(error);
+  const handleAsyncActionUnsafe = useCallback(
+    async <T>(
+      fn: () => Promise<T>,
+      toastOptions?: UseToastOptions | ((error: any) => UseToastOptions)
+    ): Promise<T | void> => {
+      if (isLoadingRef.current) {
+        return;
+      }
+      isLoadingRef.current = true;
+      setIsLoading(true);
+      try {
+        return await fn();
+      } catch (error: any) {
+        const errorContext = getErrorContext(error);
 
-      toast({
-        description: errorContext.description,
-        status: "error",
-        ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
-      });
+        toast({
+          description: errorContext.description,
+          status: "error",
+          ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
+        });
 
-      dispatch(errorsSlice.actions.add(errorContext));
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        dispatch(errorsSlice.actions.add(errorContext));
+        throw error;
+      } finally {
+        isLoadingRef.current = false;
+        setIsLoading(false);
+      }
+    },
+    [dispatch, toast]
+  );
 
-  /**
-   * Same as {@link handleAsyncActionUnsafe}, but returns undefined instead of throwing an error.
-   *
-   * NOTE: might be helpful in tests to remove the catch part of this function so that you'd see all the exceptions.
-   *  */
-  const handleAsyncAction = async <T>(
-    fn: () => Promise<T>,
-    toastOptions?: UseToastOptions | ((error: any) => UseToastOptions)
-  ): Promise<T | void> => handleAsyncActionUnsafe(fn, toastOptions).catch(() => {});
+  // NOTE: might be helpful for debugging to remove the catch part of this function so that you'd see all the exceptions.
+  const handleAsyncAction = useCallback(
+    async <T>(
+      fn: () => Promise<T>,
+      toastOptions?: UseToastOptions | ((error: any) => UseToastOptions)
+    ): Promise<T | void> => handleAsyncActionUnsafe(fn, toastOptions).catch(() => {}),
+    [handleAsyncActionUnsafe]
+  );
 
   return { isLoading, handleAsyncAction, handleAsyncActionUnsafe };
 };
