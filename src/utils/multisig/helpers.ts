@@ -1,9 +1,14 @@
 import { compact, every } from "lodash";
 
-import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
+import { getAllMultiSigContracts, getExistingContracts, getPendingOperations } from "./fetch";
 import { Multisig, MultisigOperation } from "./types";
 import { MultisigAccount } from "../../types/Account";
-import { isValidImplicitPkh, parseContractPkh, parseImplicitPkh } from "../../types/Address";
+import {
+  RawPkh,
+  isValidImplicitPkh,
+  parseContractPkh,
+  parseImplicitPkh,
+} from "../../types/Address";
 import { Network } from "../../types/Network";
 import { withRateLimit } from "../tezos";
 import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
@@ -31,6 +36,22 @@ export const getRelevantMultisigContracts = async (
         return intersection.length > 0;
       })
       .map(parseMultisig);
+  });
+
+/**
+ * Checks which of the given multisig addresses exist in the given network.
+ *
+ * @param network - network to check.
+ * @param accountPkhs - multisig addresses to check.
+ * @returns list of addresses that exist in the network.
+ */
+export const getExistingContractAddresses = async (
+  network: Network,
+  accountPkhs: Set<RawPkh>
+): Promise<RawPkh[]> =>
+  withRateLimit(async () => {
+    const contracts = await getExistingContracts(network, Array.from(accountPkhs));
+    return contracts.map(raw => parseContractPkh(raw.address).pkh);
   });
 
 const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperation => {
