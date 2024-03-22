@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import {
+  getExistingContractAddresses,
   getPendingOperationsForMultisigs,
   getRelevantMultisigContracts,
   parseMultisig,
@@ -21,6 +22,7 @@ describe("multisig helpers", () => {
           data: tzktGetSameMultisigsResponse,
         };
         mockedAxios.get.mockResolvedValue(mockResponse);
+
         const result = await getRelevantMultisigContracts(
           new Set([mockImplicitAddress(0).pkh]),
           network
@@ -37,12 +39,34 @@ describe("multisig helpers", () => {
       });
     });
 
+    describe("getExistingContractAddresses", () => {
+      it("fetches existing contract addresses", async () => {
+        const mockResponse = {
+          data: tzktGetSameMultisigsResponse,
+        };
+        mockedAxios.get.mockResolvedValue(mockResponse);
+
+        const result = await getExistingContractAddresses(
+          network,
+          new Set([
+            mockContractAddress(0).pkh,
+            mockContractAddress(1).pkh,
+            mockContractAddress(2).pkh,
+          ])
+        );
+
+        expect(result).toEqual([mockContractAddress(0).pkh, mockContractAddress(2).pkh]);
+      });
+    });
+
     describe("getPendingOperationsForMultisigs", () => {
       it("handles empty multisigs", async () => {
         const result = await getPendingOperationsForMultisigs([], network);
+
         expect(mockedAxios.get).toHaveBeenCalledTimes(0);
         expect(result).toEqual([]);
       });
+
       it("fetches pending operations for multisigs", async () => {
         mockedAxios.get.mockResolvedValueOnce({
           data: [
@@ -69,7 +93,6 @@ describe("multisig helpers", () => {
         expect(mockedAxios.get).toHaveBeenCalledWith(
           `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
         );
-
         expect(result).toEqual([
           {
             approvals: [
