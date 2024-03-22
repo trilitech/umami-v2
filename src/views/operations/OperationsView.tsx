@@ -1,5 +1,4 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
 
 import { useGetOperations } from "./useGetOperations";
 import { NoOperations } from "../../components/NoItems";
@@ -10,14 +9,9 @@ import colors from "../../style/colors";
 
 export const OperationsView = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
-  const { operations, loadMore, hasMore, setAddresses, isLoading } = useGetOperations(
+  const { operations, loadMore, hasMore, isLoading } = useGetOperations(
     selectedAccounts.map(acc => acc.address.pkh)
   );
-  const addressesJoined = selectedAccounts.map(acc => acc.address.pkh).join(",");
-
-  useEffect(() => {
-    setAddresses(addressesJoined.split(",")); // TODO: check if could be managed inside the getOperations hook itself
-  }, [setAddresses, addressesJoined]);
 
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     if (!hasMore || isLoading) {

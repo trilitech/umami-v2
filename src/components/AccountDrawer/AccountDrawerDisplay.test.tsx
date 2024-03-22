@@ -21,13 +21,8 @@ import { multisigActions, multisigsSlice } from "../../utils/redux/slices/multis
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
-import {
-  DelegationOperation,
-  TzktCombinedOperation,
-  getCombinedOperations,
-  getLastDelegation,
-  getRelatedTokenTransfers,
-} from "../../utils/tezos";
+import { DelegationOperation, TzktCombinedOperation, getLastDelegation } from "../../utils/tezos";
+import * as useGetOperationsModule from "../../views/operations/useGetOperations";
 
 import { AccountCard } from ".";
 
@@ -39,6 +34,22 @@ const selectedAccount = mockMnemonicAccount(0);
 const pkh = selectedAccount.address.pkh;
 
 beforeEach(() => {
+  jest.spyOn(useGetOperationsModule, "useGetOperations").mockReturnValue({
+    operations: [
+      {
+        ...mockTzktTezTransfer(pkh, mockImplicitAccount(1).address.pkh, 1000000),
+        id: 1,
+      },
+      {
+        ...mockTzktTezTransfer(mockImplicitAccount(2).address.pkh, pkh, 2000000),
+        id: 2,
+      },
+    ] as TzktCombinedOperation[],
+    hasMore: false,
+    isFirstLoad: false,
+    isLoading: false,
+    loadMore: jest.fn(),
+  });
   store.dispatch(networksActions.setCurrent(MAINNET));
   store.dispatch(addMockMnemonicAccounts([selectedAccount, mockMnemonicAccount(1)]));
 });
@@ -126,21 +137,6 @@ describe("<AccountCard />", () => {
   });
 
   describe("Operations tab", () => {
-    beforeEach(() => {
-      jest.mocked(getCombinedOperations).mockResolvedValue([
-        {
-          ...mockTzktTezTransfer(pkh, mockImplicitAccount(1).address.pkh, 1000000),
-          id: 1,
-        },
-        {
-          ...mockTzktTezTransfer(mockImplicitAccount(2).address.pkh, pkh, 2000000),
-          id: 2,
-        },
-      ] as TzktCombinedOperation[]);
-
-      jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
-    });
-
     it("is selected by default", async () => {
       render(<AccountCard accountPkh={pkh} />);
 
@@ -152,10 +148,8 @@ describe("<AccountCard />", () => {
     it("contains correct operations data", async () => {
       render(<AccountCard accountPkh={pkh} />);
 
-      await waitFor(() => expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2));
-
-      expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
-      const operations = screen.getAllByTestId(/^operation-tile/);
+      const operations = await screen.findAllByTestId(/^operation-tile/);
+      expect(operations).toHaveLength(2);
       expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
       expect(operations[1]).toHaveTextContent("+ 2.000000 ꜩ");
     });
@@ -361,33 +355,13 @@ describe("<AccountCard />", () => {
     });
 
     it("displays operations under operations tab if any", async () => {
-      jest.mocked(getCombinedOperations).mockResolvedValue([
-        {
-          ...mockTzktTezTransfer(
-            mockImplicitAccount(0).address.pkh,
-            multisigAccount.address.pkh,
-            1000000
-          ),
-          id: 1,
-        },
-        {
-          ...mockTzktTezTransfer(
-            multisigAccount.address.pkh,
-            mockImplicitAccount(5).address.pkh,
-            2000000
-          ),
-          id: 2,
-        },
-      ] as TzktCombinedOperation[]);
-      jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
-
       render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
-      await waitFor(() => expect(screen.getAllByTestId(/^operation-tile/)).toHaveLength(2));
 
-      expect(screen.getByTestId("account-card-operations-tab")).toBeInTheDocument();
-      const operations = screen.getAllByTestId(/^operation-tile/);
+      expect(screen.getByTestId("account-card-operations-tab")).toBeVisible();
+      const operations = await screen.findAllByTestId(/^operation-tile/);
+      expect(operations).toHaveLength(2);
       expect(operations[0]).toHaveTextContent("+ 1.000000 ꜩ");
-      expect(operations[1]).toHaveTextContent("- 2.000000 ꜩ");
+      expect(operations[1]).toHaveTextContent("+ 2.000000 ꜩ");
     });
   });
 });

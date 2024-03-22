@@ -1,10 +1,11 @@
-import { max, min, noop, uniqBy } from "lodash";
-import { useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { max, maxBy, min } from "lodash";
+import { useEffect } from "react";
 
 import { RawPkh } from "../../types/Address";
 import { Network } from "../../types/Network";
+import { useRefetchTrigger } from "../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
@@ -18,95 +19,103 @@ import {
 
 const REFRESH_INTERVAL = 15000;
 
-// TODO: Add tests
-export const useGetOperations = (initialAddresses: RawPkh[]) => {
+type QueryParams =
+  | {
+      lastId?: number;
+      limit?: number;
+      sort?: "asc" | "desc";
+    }
+  | undefined;
+
+/**
+ * Hook to fetch operations for given addresses.
+ *
+ * It fetches the latest operations on the first load and allows
+ * to load more (older) operations as needed.
+ *
+ * Every {@link REFRESH_INTERVAL} it fetches the latest operations
+ * and prepends it to the already fetched operations list.
+ *
+ * If the refresh button is clicked then it will trigger this behaviour immediately.
+ *
+ * @param addresses - list of addresses to fetch operations related to
+ * @returns
+ *   operations - operations ordered by id in descending order
+ *   isFirstLoad - true if the first load is in progress
+ *   isLoading - true if the next page is being fetched
+ *   hasMore - true if there are more operations to fetch
+ *   loadMore - function to load more operations (older ones)
+ */
+export const useGetOperations = (addresses: RawPkh[]) => {
   const network = useSelectedNetwork();
-  const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-
-  const [addresses, setAddresses] = useState<RawPkh[]>(initialAddresses);
   const dispatch = useAppDispatch();
+  const refetchTrigger = useRefetchTrigger();
 
-  const [updatesTrigger, setUpdatesTrigger] = useState(0);
+  const {
+    isFetching,
+    data: operations,
+    hasNextPage,
+    isLoading,
+    fetchNextPage,
+    fetchPreviousPage,
+  } = useInfiniteQuery({
+    queryKey: ["operations", addresses, dispatch, network],
+    initialPageParam: undefined as QueryParams,
+    queryFn: async ({ pageParam }) =>
+      fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, pageParam).then(
+        filterDuplicatedTokenTransfers
+      ),
+    getNextPageParam: lastPage => {
+      if (lastPage.length === 0) {
+        return undefined;
+      }
 
-  const lastId = operations[0]?.id;
+      const lastId = lastPage[lastPage.length - 1].id;
+      return { lastId };
+    },
 
-  // crutch to be able to use reliably in the dependency array
-  const addressesJoined = addresses.toSorted((a, b) => (a > b ? 1 : 0)).join(",");
+    getPreviousPageParam: (_, pages) => {
+      const lastId = maxBy(pages.flat(), "id")?.id;
+
+      // if lastId is not defined it means that there are no operations yet for the accounts
+      // but we still need to keep updating the operations list to get ones once they appear
+      return lastId ? { lastId, sort: "asc" as const } : undefined;
+    },
+
+    select: ({ pages }) => {
+      const firstPage = pages[0];
+      // no need to shuffle the array if there are no operations
+      // it happens when there are no new operations since last fetch
+      // it will add an empty page to the list of pages
+      if (firstPage.length === 0) {
+        return pages.flat();
+      }
+
+      // new operations are always sorted ascending by id
+      // but they are displayed in descending order
+      firstPage.sort((a, b) => b.id - a.id);
+      return filterDuplicatedTokenTransfers([...firstPage, ...pages.slice(1).flat()]);
+    },
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
-      handleAsyncAction(async () => {
-        const newOperations = await fetchOperationsAndUpdateTokensInfo(
-          dispatch,
-          network,
-          addressesJoined.split(","),
-          {
-            lastId,
-            sort: "asc",
-          }
-        );
-
-        // reverse is needed because we fetch the operations in the opposite order
-        // there is a chance that we get the same operation twice when
-        // latest fetching updates so, we need to deduplicate records
-        setOperations(currentOperations =>
-          uniqBy([...newOperations.reverse(), ...currentOperations], op => op.id)
-        );
-      }).catch(noop);
+      void fetchPreviousPage();
     }, REFRESH_INTERVAL);
+
     return () => clearInterval(interval);
+  }, [fetchPreviousPage]);
 
-    // The only way to correctly start triggering updates is
-    // to wait for the first fetch to finish and get the latest operation id
-    // to start the updates with
-    // but if we add operations to the dependency array, it will trigger the initial fetch
-    // once again which will lead to an infinite loop
-  }, [updatesTrigger, network, lastId, handleAsyncAction, dispatch, addressesJoined]);
-
-  // initial load
   useEffect(() => {
-    setOperations([]);
-    setHasMore(true);
-
-    handleAsyncAction(async () => {
-      const latestOperations = await fetchOperationsAndUpdateTokensInfo(
-        dispatch,
-        network,
-        addressesJoined.split(",")
-      );
-      setOperations(latestOperations);
-      setHasMore(latestOperations.length > 0);
-      setUpdatesTrigger(prev => prev + 1);
-    })
-      .catch(noop)
-      .finally(() => setIsFirstLoad(false));
-  }, [network, addressesJoined, dispatch, handleAsyncAction]);
-
-  const loadMore = async () => {
-    const lastId = operations[operations.length - 1]?.id;
-    if (!lastId) {
-      return;
-    }
-
-    return handleAsyncAction(async () => {
-      const nextChunk = await fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, {
-        lastId,
-      });
-      setHasMore(nextChunk.length > 0);
-      setOperations(currentOperations => [...currentOperations, ...nextChunk]);
-    });
-  };
+    void fetchPreviousPage();
+  }, [refetchTrigger, fetchPreviousPage]);
 
   return {
-    operations: filterDuplicatedTokenTransfers(operations),
-    isFirstLoad,
-    isLoading,
-    hasMore,
-    loadMore,
-    setAddresses,
+    operations: operations || [],
+    isFirstLoad: isLoading,
+    isLoading: isFetching,
+    hasMore: hasNextPage,
+    loadMore: fetchNextPage,
   };
 };
 
@@ -121,11 +130,7 @@ const fetchOperationsAndUpdateTokensInfo = async (
   dispatch: AppDispatch,
   network: Network,
   addresses: RawPkh[],
-  options?: {
-    lastId?: number;
-    limit?: number;
-    sort?: "asc" | "desc";
-  }
+  options?: QueryParams
 ) => {
   const operations = await getCombinedOperations(addresses, network, options);
 
