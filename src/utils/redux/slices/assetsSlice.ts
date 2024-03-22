@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { compact, groupBy, mapValues } from "lodash";
 
 import { accountsSlice } from "./accountsSlice";
+import { RawPkh } from "../../../types/Address";
 import { Delegate } from "../../../types/Delegate";
 import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";
 import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
@@ -85,6 +86,14 @@ export const assetsSlice = createSlice({
           lastLevel,
         }))
       );
+    },
+
+    removeAccountsData: (state, { payload: pkhs }: { payload: RawPkh[] }) => {
+      pkhs.forEach(pkh => {
+        delete state.balances.mutez[pkh];
+        delete state.balances.tokens[pkh];
+        delete state.delegationLevels[pkh];
+      });
     },
 
     updateBakers: (state, { payload }: { payload: Delegate[] }) => {

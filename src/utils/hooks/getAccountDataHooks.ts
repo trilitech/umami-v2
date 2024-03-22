@@ -40,6 +40,22 @@ export const useGetImplicitAccount = () => {
   };
 };
 
+export const useGetAccountsByType = () => {
+  const accounts = useImplicitAccounts();
+
+  return <T extends ImplicitAccount>(type: T["type"]): T[] =>
+    accounts.filter((account: Account): account is T => account.type === type);
+};
+
+export const useGetAccountsByFingerPrint = () => {
+  const getAccountsByType = useGetAccountsByType();
+
+  return (fingerPrint: string) =>
+    getAccountsByType<MnemonicAccount>("mnemonic").filter(
+      account => account.seedFingerPrint === fingerPrint
+    );
+};
+
 export const useAllAccounts = (): Account[] => {
   const implicit = useImplicitAccounts();
   const multisig = useMultisigAccounts();

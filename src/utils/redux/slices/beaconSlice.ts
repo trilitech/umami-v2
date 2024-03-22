@@ -1,5 +1,6 @@
 import { NetworkType } from "@airgap/beacon-wallet";
 import { createSlice } from "@reduxjs/toolkit";
+import { fromPairs } from "lodash";
 
 import { RawPkh } from "../../../types/Address";
 
@@ -30,9 +31,16 @@ export const beaconSlice = createSlice({
       state[payload.dAppId] = { accountPkh: payload.accountPkh, networkType: payload.networkType };
     },
 
-    removeConnection: (state, { payload }: { payload: { dAppId: string } }) => {
-      delete state[payload.dAppId];
+    removeConnection: (state, { payload: dAppId }: { payload: string }) => {
+      delete state[dAppId];
     },
+
+    removeConnections: (state, { payload: pkhs }: { payload: RawPkh[] }) =>
+      fromPairs(
+        Object.entries(state).filter(
+          ([_, connectionInfo]) => !pkhs.includes(connectionInfo.accountPkh)
+        )
+      ),
   },
 });
 

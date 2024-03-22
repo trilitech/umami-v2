@@ -11,6 +11,7 @@ import {
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
+import { WalletClient } from "../../utils/beacon/WalletClient";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";
 import { formatPkh } from "../../utils/format";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
@@ -24,6 +25,10 @@ const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
 const MOCK_FINGERPRINT1 = "mockFin1";
 const MOCK_FINGERPRINT2 = "mockFin2";
+
+beforeEach(() => {
+  jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
+});
 
 describe("<AccountsList />", () => {
   describe("deleting account", () => {

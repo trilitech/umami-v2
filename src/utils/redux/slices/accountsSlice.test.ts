@@ -110,14 +110,28 @@ describe("Accounts reducer", () => {
     const social1 = mockSocialAccount(1);
     const social2 = mockSocialAccount(2);
     const ledger = mockLedgerAccount(3);
-    const secretKey = mockSecretKeyAccount(4);
+    const secretKey1 = mockSecretKeyAccount(4);
+    const secretKey2 = mockSecretKeyAccount(5);
 
     beforeEach(() => {
       store.dispatch(addAccount(mnemonic));
       store.dispatch(addAccount(social1));
       store.dispatch(addAccount(social2));
       store.dispatch(addAccount(ledger));
-      store.dispatch(addAccount(secretKey));
+      store.dispatch(addAccount(secretKey1));
+      store.dispatch(addAccount(secretKey2));
+      store.dispatch(
+        accountsSlice.actions.addSecretKey({
+          pkh: secretKey1.address.pkh,
+          encryptedSecretKey: "encryptedSecretKey1" as any,
+        })
+      );
+      store.dispatch(
+        accountsSlice.actions.addSecretKey({
+          pkh: secretKey2.address.pkh,
+          encryptedSecretKey: "encryptedSecretKey2" as any,
+        })
+      );
     });
 
     it("does nothing for mnemonic account", () => {
@@ -126,7 +140,8 @@ describe("Accounts reducer", () => {
           accountType: "mnemonic",
         })
       );
-      expect(store.getState().accounts.items).toHaveLength(5);
+      expect(store.getState().accounts.items).toHaveLength(6);
+      expect(Object.keys(store.getState().accounts.secretKeys)).toHaveLength(2);
     });
 
     it("should remove ledger account", () => {
@@ -135,16 +150,24 @@ describe("Accounts reducer", () => {
           accountType: "ledger",
         })
       );
-      expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2, secretKey]);
+      expect(store.getState().accounts.items).toEqual([
+        mnemonic,
+        social1,
+        social2,
+        secretKey1,
+        secretKey2,
+      ]);
+      expect(Object.keys(store.getState().accounts.secretKeys)).toHaveLength(2);
     });
 
-    it("removes the secret key account", () => {
+    it("removes multiple secret key accounts & stored secret keys", () => {
       store.dispatch(
         accountsSlice.actions.removeNonMnemonicAccounts({
           accountType: "secret_key",
         })
       );
       expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2, ledger]);
+      expect(store.getState().accounts.secretKeys).toEqual({});
     });
 
     it("should remove multiple social accounts", () => {
@@ -153,7 +176,8 @@ describe("Accounts reducer", () => {
           accountType: "social",
         })
       );
-      expect(store.getState().accounts.items).toEqual([mnemonic, ledger, secretKey]);
+      expect(store.getState().accounts.items).toEqual([mnemonic, ledger, secretKey1, secretKey2]);
+      expect(Object.keys(store.getState().accounts.secretKeys)).toHaveLength(2);
     });
   });
 
@@ -179,6 +203,29 @@ describe("Accounts reducer", () => {
 
       const remainingAccounts = accounts.filter(acc => acc.address.pkh !== account.address.pkh);
       expect(store.getState().accounts.items).toEqual([mnemonic, ...remainingAccounts]);
+    });
+
+    it("removes secret key on removing secret key account", () => {
+      const secretKeyAccount2 = mockSecretKeyAccount(5);
+      store.dispatch(
+        accountsSlice.actions.addSecretKey({
+          pkh: secretKey.address.pkh,
+          encryptedSecretKey: "encryptedSecretKey" as any,
+        })
+      );
+      store.dispatch(
+        accountsSlice.actions.addSecretKey({
+          pkh: secretKeyAccount2.address.pkh,
+          encryptedSecretKey: "encryptedSecretKey2" as any,
+        })
+      );
+
+      store.dispatch(accountsSlice.actions.removeAccount(secretKey));
+
+      expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2, ledger]);
+      expect(store.getState().accounts.secretKeys).toEqual({
+        [secretKeyAccount2.address.pkh]: "encryptedSecretKey2",
+      });
     });
   });
 

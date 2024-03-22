@@ -1,12 +1,21 @@
 import { useDispatch } from "react-redux";
 
 import {
+  useGetAccountsByFingerPrint,
+  useGetAccountsByType,
   useGetNextAvailableAccountLabels,
   useImplicitAccounts,
   useSeedPhrases,
 } from "./getAccountDataHooks";
 import { useSelectedNetwork } from "./networkHooks";
-import { AccountType, LedgerAccount, MnemonicAccount, SocialAccount } from "../../types/Account";
+import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
+import {
+  ImplicitAccount,
+  LedgerAccount,
+  MnemonicAccount,
+  SecretKeyAccount,
+  SocialAccount,
+} from "../../types/Account";
 import { makeDerivationPath } from "../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../account/makeMnemonicAccount";
 import { decrypt, encrypt } from "../crypto/AES";
@@ -16,7 +25,9 @@ import { accountsSlice } from "../redux/slices/accountsSlice";
 import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
 import { derivePublicKeyPair, getFingerPrint } from "../tezos";
 
-const { addAccount, removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
+const { removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
+
+const { addAccount } = accountsSlice.actions;
 
 export const useReset = () => () => {
   localStorage.clear();
@@ -174,9 +185,17 @@ export const useRestoreSocial = () => {
   };
 };
 
+/**
+ * Hook for removing all accounts from mnemonic group by a given fingerprint.
+ */
 export const useRemoveMnemonic = () => {
   const dispatch = useAppDispatch();
+  const getAccountsByFingerPrint = useGetAccountsByFingerPrint();
+  const removeAccountsDependencies = useRemoveAccountsDependencies();
+
   return (fingerPrint: string) => {
+    removeAccountsDependencies(getAccountsByFingerPrint(fingerPrint));
+
     dispatch(
       removeMnemonicAndAccounts({
         fingerPrint,
@@ -185,13 +204,34 @@ export const useRemoveMnemonic = () => {
   };
 };
 
+/**
+ * Hook for removing all accounts of a given type.
+ */
 export const useRemoveNonMnemonic = () => {
   const dispatch = useAppDispatch();
-  return (accountType: AccountType) => {
+  const getAccountsByType = useGetAccountsByType();
+  const removeAccountsDependencies = useRemoveAccountsDependencies();
+
+  return (accountType: ImplicitAccount["type"]) => {
+    removeAccountsDependencies(getAccountsByType(accountType));
+
     dispatch(
       removeNonMnemonicAccounts({
         accountType,
       })
     );
+  };
+};
+
+/**
+ * Hook for removing single account.
+ */
+export const useRemoveAccount = () => {
+  const dispatch = useAppDispatch();
+  const removeAccountsDependencies = useRemoveAccountsDependencies();
+
+  return (account: SocialAccount | LedgerAccount | SecretKeyAccount) => {
+    removeAccountsDependencies([account]);
+    dispatch(accountsSlice.actions.removeAccount(account));
   };
 };

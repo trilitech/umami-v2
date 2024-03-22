@@ -10,7 +10,7 @@ import { DefaultNetworks, Network } from "../../../types/Network";
 import { Operation } from "../../../types/Operation";
 import { store } from "../store";
 
-const { add, clear, removeItem } = batchesActions;
+const { add, clear, removeItem, removeByAccounts } = batchesActions;
 
 describe("batchesSlice", () => {
   describe.each(DefaultNetworks)("on $name", network => {
@@ -173,6 +173,70 @@ describe("batchesSlice", () => {
         store.dispatch(removeItem({ pkh: mockImplicitAccount(2).address.pkh, index: 5, network }));
 
         expect(store.getState().batches[network.name]).toEqual([accountOperations]);
+      });
+    });
+
+    describe("removeByAccounts", () => {
+      it("does nothing if there is no batches for the accounts", () => {
+        const accountOperations = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0), mockTezOperation(1)]
+        );
+        store.dispatch(add({ operations: accountOperations, network }));
+
+        store.dispatch(removeByAccounts([mockImplicitAccount(2).address.pkh]));
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations]);
+      });
+
+      it("removes batches for all listed accounts", () => {
+        const accountOperations1 = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0), mockTezOperation(1)]
+        );
+        const accountOperations2 = makeAccountOperations(
+          mockImplicitAccount(2),
+          mockImplicitAccount(2),
+          [mockTezOperation(1), mockTezOperation(3)]
+        );
+        const accountOperations3 = makeAccountOperations(
+          mockImplicitAccount(3),
+          mockImplicitAccount(3),
+          [mockTezOperation(0)]
+        );
+        store.dispatch(add({ operations: accountOperations1, network }));
+        store.dispatch(add({ operations: accountOperations2, network }));
+        store.dispatch(add({ operations: accountOperations3, network }));
+
+        store.dispatch(
+          removeByAccounts([mockImplicitAccount(2).address.pkh, mockImplicitAccount(3).address.pkh])
+        );
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations1]);
+      });
+
+      it("removes batches from all networks", () => {
+        const accountOperations1 = makeAccountOperations(
+          mockImplicitAccount(1),
+          mockImplicitAccount(1),
+          [mockTezOperation(0), mockTezOperation(1)]
+        );
+        const accountOperations2 = makeAccountOperations(
+          mockImplicitAccount(2),
+          mockImplicitAccount(2),
+          [mockTezOperation(1), mockTezOperation(3)]
+        );
+        store.dispatch(add({ operations: accountOperations1, network }));
+        store.dispatch(add({ operations: accountOperations2, network }));
+        store.dispatch(add({ operations: accountOperations1, network: anotherNetwork }));
+        store.dispatch(add({ operations: accountOperations2, network: anotherNetwork }));
+
+        store.dispatch(removeByAccounts([mockImplicitAccount(2).address.pkh]));
+
+        expect(store.getState().batches[network.name]).toEqual([accountOperations1]);
+        expect(store.getState().batches[anotherNetwork.name]).toEqual([accountOperations1]);
       });
     });
   });

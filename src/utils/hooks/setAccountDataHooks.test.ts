@@ -1,5 +1,17 @@
-import { useDeriveMnemonicAccount, useRestoreFromMnemonic } from "./setAccountDataHooks";
-import { mockSecretKeyAccount, mockSocialAccount } from "../../mocks/factories";
+import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
+import {
+  useDeriveMnemonicAccount,
+  useRemoveAccount,
+  useRemoveMnemonic,
+  useRemoveNonMnemonic,
+  useRestoreFromMnemonic,
+} from "./setAccountDataHooks";
+import {
+  mockImplicitAccount,
+  mockLedgerAccount,
+  mockSecretKeyAccount,
+  mockSocialAccount,
+} from "../../mocks/factories";
 import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
@@ -10,9 +22,17 @@ import { accountsSlice } from "../redux/slices/accountsSlice";
 import { store } from "../redux/store";
 import * as tezosHelpers from "../tezos/helpers";
 
+jest.mock("./removeAccountDependenciesHooks");
 jest.unmock("../tezos");
 
+const mockedUseRemoveAccountsDependencies = jest.mocked(useRemoveAccountsDependencies);
+const mockedRemoveAccountsDependencies = jest.fn();
+
 describe("setAccountDataHooks", () => {
+  beforeEach(() => {
+    mockedUseRemoveAccountsDependencies.mockReturnValue(mockedRemoveAccountsDependencies);
+  });
+
   describe("mnemonic accounts", () => {
     const addressExistsMock = jest.spyOn(tezosHelpers, "addressExists");
     const getFingerPrintMock = jest.spyOn(tezosHelpers, "getFingerPrint");
@@ -284,6 +304,126 @@ describe("setAccountDataHooks", () => {
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
       });
+    });
+  });
+
+  describe("useRemoveMnemonic", () => {
+    beforeEach(() => {
+      store.dispatch(
+        accountsSlice.actions.addMnemonicAccounts({
+          seedFingerprint: "mockPrint1",
+          accounts: [
+            mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount,
+            mockImplicitAccount(3, undefined, "mockPrint1") as MnemonicAccount,
+          ],
+          encryptedMnemonic: {} as any,
+        })
+      );
+      store.dispatch(
+        accountsSlice.actions.addMnemonicAccounts({
+          seedFingerprint: "mockPrint2",
+          accounts: [mockImplicitAccount(2, undefined, "mockPrint2") as MnemonicAccount],
+          encryptedMnemonic: {} as any,
+        })
+      );
+    });
+
+    it("deletes all accounts with given fingerprint", () => {
+      const {
+        result: { current: removeMnemonic },
+      } = renderHook(() => useRemoveMnemonic());
+
+      act(() => removeMnemonic("mockPrint1"));
+
+      expect(store.getState().accounts.items).toEqual([
+        mockImplicitAccount(2, undefined, "mockPrint2"),
+      ]);
+    });
+
+    it("calls removeAccountsDependencies with all accounts with given fingerprint", () => {
+      const {
+        result: { current: removeMnemonic },
+      } = renderHook(() => useRemoveMnemonic());
+
+      act(() => removeMnemonic("mockPrint1"));
+
+      expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith([
+        mockImplicitAccount(1, undefined, "mockPrint1"),
+        mockImplicitAccount(3, undefined, "mockPrint1"),
+      ]);
+    });
+  });
+
+  describe("useRemoveNonMnemonic", () => {
+    const accounts = [
+      mockSocialAccount(1),
+      mockSocialAccount(2),
+      mockLedgerAccount(3),
+      mockLedgerAccount(4),
+      mockSecretKeyAccount(5),
+      mockSecretKeyAccount(6),
+    ];
+    const accountTypes: ImplicitAccount["type"][] = ["social", "ledger", "secret_key"];
+
+    beforeEach(() =>
+      accounts.forEach(account => store.dispatch(accountsSlice.actions.addAccount(account)))
+    );
+
+    describe.each(accountTypes)("for %s type", type => {
+      it("deletes all accounts", () => {
+        const {
+          result: { current: removeNonMnemonic },
+        } = renderHook(() => useRemoveNonMnemonic());
+
+        act(() => removeNonMnemonic(type));
+
+        expect(store.getState().accounts.items).toEqual(
+          accounts.filter(account => account.type !== type)
+        );
+      });
+
+      it("calls removeAccountsDependencies with all accounts", () => {
+        const {
+          result: { current: removeNonMnemonic },
+        } = renderHook(() => useRemoveNonMnemonic());
+
+        act(() => removeNonMnemonic(type));
+
+        expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith(
+          accounts.filter(account => account.type === type)
+        );
+      });
+    });
+  });
+
+  describe("useRemoveAccount", () => {
+    it("deletes secret key on deleting secret key account", () => {
+      const account = mockSecretKeyAccount(0);
+      store.dispatch(accountsSlice.actions.addAccount(account));
+      store.dispatch(
+        accountsSlice.actions.addSecretKey({
+          pkh: account.address.pkh,
+          encryptedSecretKey: "encryptedSecretKey" as any,
+        })
+      );
+
+      const {
+        result: { current: removeAccount },
+      } = renderHook(() => useRemoveAccount());
+      removeAccount(account);
+
+      expect(store.getState().accounts.items).toEqual([]);
+      expect(store.getState().accounts.secretKeys).toEqual({});
+    });
+
+    it("calls removeAccountsDependencies with the account", () => {
+      const {
+        result: { current: removeAccount },
+      } = renderHook(() => useRemoveAccount());
+
+      removeAccount(mockSocialAccount(5));
+
+      expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith([mockSocialAccount(5)]);
     });
   });
 });

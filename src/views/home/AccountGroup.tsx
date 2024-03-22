@@ -49,7 +49,7 @@ export const AccountGroup: React.FC<{
         onSubmit={() => {
           if (isMnemonic) {
             removeMnemonic(first.seedFingerPrint);
-          } else {
+          } else if (!isMultisig) {
             removeNonMnemonic(first.type);
           }
           onClose();
