@@ -5,6 +5,7 @@ import { hedgehoge } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import {
   mockBaker,
+  mockContractAddress,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
@@ -110,8 +111,22 @@ describe("useAddressKind", () => {
   });
 
   describe("for contacts", () => {
-    it("returns contact if it exists", () => {
-      const contact1 = { name: "name1", pkh: mockImplicitAddress(3).pkh };
+    it("returns implicit contact if it exists", () => {
+      const contact1 = { name: "name1", pkh: mockImplicitAddress(3).pkh, network: undefined };
+      store.dispatch(contactsSlice.actions.upsert(contact1));
+
+      const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));
+
+      expect(addressKindRef.current).toEqual({
+        type: "contact",
+        pkh: contact1.pkh,
+        label: contact1.name,
+      });
+    });
+
+    it("returns contract contact if found in any network", () => {
+      store.dispatch(networksActions.setCurrent(MAINNET));
+      const contact1 = { name: "name1", pkh: mockContractAddress(0).pkh, network: "ghostnet" };
       store.dispatch(contactsSlice.actions.upsert(contact1));
 
       const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));
@@ -142,7 +157,13 @@ describe("useAddressKind", () => {
         })
       );
       store.dispatch(assetsSlice.actions.updateBakers([mockBaker(1)]));
-      store.dispatch(contactsSlice.actions.upsert({ name: "name1", pkh: address }));
+      store.dispatch(
+        contactsSlice.actions.upsert({
+          name: "name1",
+          pkh: address,
+          network: undefined,
+        })
+      );
 
       const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(address)));
 
