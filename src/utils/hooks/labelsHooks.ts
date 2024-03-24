@@ -1,4 +1,4 @@
-import { useContacts } from "./contactsHooks";
+import { useAllContacts } from "./contactsHooks";
 import { useAllAccounts } from "./getAccountDataHooks";
 
 /** Hook for validating name for account or contact. */
@@ -38,7 +38,7 @@ export const useGetNextAvailableAccountLabels = () => {
 
 const useIsUniqueLabel = () => {
   const accountLabels = useAllAccounts().map(account => account.label);
-  const contactNames = Object.values(useContacts()).map(contact => contact.name);
+  const contactNames = Object.values(useAllContacts()).map(contact => contact.name);
 
   return (label: string) => ![...accountLabels, ...contactNames].includes(label);
 };

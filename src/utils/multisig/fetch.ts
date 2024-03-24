@@ -23,8 +23,8 @@ export const getAllMultiSigContracts = (network: Network): Promise<RawTzktGetSam
 /**
  * Returns contracts for given multisig addresses that exist in the given network.
  *
- * @param network network to fetch contracts from.
- * @param addresses list of addresses to fetch contracts for.
+ * @param network - network to fetch contracts from.
+ * @param addresses - list of addresses to fetch contracts for.
  * @returns list of contracts that exist in the network.
  */
 export const getExistingContracts = (

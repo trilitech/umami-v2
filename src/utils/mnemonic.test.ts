@@ -5,9 +5,10 @@ import {
 import { restoreRevealedPublicKeyPairs, useRestoreRevealedMnemonicAccounts } from "./mnemonic";
 import { accountsSlice } from "./redux/slices/accountsSlice";
 import { contactsActions } from "./redux/slices/contactsSlice";
+import { networksActions } from "./redux/slices/networks";
 import { store } from "./redux/store";
 import * as tezosHelpers from "./tezos/helpers";
-import { mockContact, mockSocialAccount } from "../mocks/factories";
+import { mockContractContact, mockImplicitContact, mockSocialAccount } from "../mocks/factories";
 import { fakeAddressExists } from "../mocks/helpers";
 import { mnemonic1 } from "../mocks/mockMnemonic";
 import { renderHook } from "../mocks/testUtils";
@@ -151,7 +152,10 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
 
   it("sets unique labels for restored accounts", async () => {
     addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 3)));
-    store.dispatch(contactsActions.upsert(mockContact(0, CUSTOM_LABEL)));
+    store.dispatch(networksActions.setCurrent(MAINNET));
+    store.dispatch(contactsActions.upsert(mockImplicitContact(1, CUSTOM_LABEL)));
+    store.dispatch(contactsActions.upsert(mockContractContact(0, "ghostnet", `${CUSTOM_LABEL} 4`)));
+    store.dispatch(contactsActions.upsert(mockContractContact(2, "mainnet", `${CUSTOM_LABEL} 5`)));
     store.dispatch(accountsSlice.actions.addAccount(mockSocialAccount(1, `${CUSTOM_LABEL} 3`)));
 
     const {
@@ -169,10 +173,10 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
         label: `${CUSTOM_LABEL} 2`,
       }),
       expect.objectContaining({
-        label: `${CUSTOM_LABEL} 4`,
+        label: `${CUSTOM_LABEL} 6`,
       }),
       expect.objectContaining({
-        label: `${CUSTOM_LABEL} 5`,
+        label: `${CUSTOM_LABEL} 7`,
       }),
     ];
     expect(result).toEqual(expected);

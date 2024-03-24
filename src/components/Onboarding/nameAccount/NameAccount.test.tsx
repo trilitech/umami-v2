@@ -1,6 +1,7 @@
 import { NameAccount } from "./NameAccount";
 import {
-  mockContact,
+  mockContractContact,
+  mockImplicitContact,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
@@ -10,9 +11,11 @@ import {
 import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
+import { MAINNET } from "../../../types/Network";
 import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { contactsActions } from "../../../utils/redux/slices/contactsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
+import { networksActions } from "../../../utils/redux/slices/networks";
 import { store } from "../../../utils/redux/store";
 import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
 import type { NameAccountStep } from "../OnboardingStep";
@@ -124,10 +127,14 @@ describe("<NameAccount />", () => {
         });
       });
 
-      it("among contacts sets group label", async () => {
+      it("among all contacts sets group label", async () => {
         const user = userEvent.setup();
-        store.dispatch(contactsActions.upsert(mockContact(1, labelBase)));
-        store.dispatch(contactsActions.upsert(mockContact(3, `${labelBase} 3`)));
+        store.dispatch(networksActions.setCurrent(MAINNET));
+        store.dispatch(contactsActions.upsert(mockImplicitContact(1, labelBase)));
+        store.dispatch(
+          contactsActions.upsert(mockContractContact(0, "ghostnet", `${labelBase} 3`))
+        );
+        store.dispatch(contactsActions.upsert(mockContractContact(2, "mainnet", `${labelBase} 7`)));
         render(fixture(account));
 
         if (label.withNameProvided) {
@@ -191,8 +198,12 @@ describe("<NameAccount />", () => {
 
       it("among contacts sets unique default label", async () => {
         const user = userEvent.setup();
-        store.dispatch(contactsActions.upsert(mockContact(1, labelBase)));
-        store.dispatch(contactsActions.upsert(mockContact(3, `${labelBase} 3`)));
+        store.dispatch(networksActions.setCurrent(MAINNET));
+        store.dispatch(contactsActions.upsert(mockImplicitContact(1, labelBase)));
+        store.dispatch(
+          contactsActions.upsert(mockContractContact(0, "ghostnet", `${labelBase} 2`))
+        );
+        store.dispatch(contactsActions.upsert(mockContractContact(2, "mainnet", `${labelBase} 4`)));
         render(fixture(account));
 
         if (label.withNameProvided) {
@@ -202,7 +213,7 @@ describe("<NameAccount />", () => {
 
         expect(goToStepMock).toHaveBeenCalledWith({
           type: account.nextStep,
-          account: { ...account, label: `${labelBase} 2` },
+          account: { ...account, label: `${labelBase} 3` },
         });
       });
     });
