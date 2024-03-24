@@ -20,9 +20,11 @@ import { CopyableAddress } from "./CopyableText";
 import { DynamicModalContext } from "./DynamicModal";
 import { FormErrorMessage } from "./FormErrorMessage";
 import colors from "../style/colors";
+import { isValidContractPkh } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
 import { useValidateName } from "../utils/hooks/labelsHooks";
+import { useGetNetworksForContracts } from "../utils/multisig/helpers";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 
@@ -38,9 +40,28 @@ export const UpsertContactModal: FC<{
 }> = ({ contact }) => {
   const dispatch = useAppDispatch();
   const { isOpen, onClose } = useContext(DynamicModalContext);
+  const getNetworksForContracts = useGetNetworksForContracts();
 
   // When editing existing contact, its name & pkh are known and provided to the modal.
   const isEdit = !!(contact?.pkh && contact.name);
+
+  const onSubmitContact = async (newContact: Contact) => {
+    if (isValidContractPkh(newContact.pkh)) {
+      const contractsWithNetworks = await getNetworksForContracts(new Set(newContact.pkh));
+      if (!contractsWithNetworks.has(newContact.pkh)) {
+        throw new Error(`Network not found for contract ${newContact.pkh}`);
+      }
+      dispatch(
+        contactsActions.upsert({
+          ...newContact,
+          network: contractsWithNetworks.get(newContact.pkh),
+        })
+      );
+    } else {
+      dispatch(contactsActions.upsert({ ...newContact, network: undefined }));
+    }
+    onClose();
+  };
 
   const {
     handleSubmit,
@@ -53,9 +74,7 @@ export const UpsertContactModal: FC<{
   });
 
   const onSubmit = ({ name, pkh }: Contact) => {
-    dispatch(contactsActions.upsert({ name: name.trim(), pkh }));
-    onClose();
-    reset();
+    void onSubmitContact({ name: name.trim(), pkh }).then(() => reset);
   };
 
   const resetRef = useRef(reset);
