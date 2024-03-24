@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { max, maxBy, min } from "lodash";
+import { maxBy } from "lodash";
 import { useEffect } from "react";
 
 import { RawPkh } from "../../types/Address";
@@ -62,9 +62,7 @@ export const useGetOperations = (addresses: RawPkh[]) => {
     queryKey: ["operations", addresses, dispatch, network],
     initialPageParam: undefined as QueryParams,
     queryFn: async ({ pageParam }) =>
-      fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, pageParam).then(
-        filterDuplicatedTokenTransfers
-      ),
+      fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, pageParam),
     getNextPageParam: lastPage => {
       if (lastPage.length === 0) {
         return undefined;
@@ -94,6 +92,7 @@ export const useGetOperations = (addresses: RawPkh[]) => {
       // new operations are always sorted ascending by id
       // but they are displayed in descending order
       firstPage.sort((a, b) => b.id - a.id);
+
       return filterDuplicatedTokenTransfers([...firstPage, ...pages.slice(1).flat()]);
     },
   });
@@ -159,40 +158,14 @@ const fetchOperationsAndUpdateTokensInfo = async (
 
 // when we fetch token transfers related to our accounts we might fetch
 // the ones which are initiated by us and hence we get duplicates
-const LOOK_AHEAD = 10; // this should be enough to cover all the cases and not cause O(N^2) lookups
 export const filterDuplicatedTokenTransfers = (
   operations: TzktCombinedOperation[]
 ): TzktCombinedOperation[] => {
-  const result: TzktCombinedOperation[] = [];
+  const transactionIds = new Set(
+    operations.filter(op => op.type !== "token_transfer").map(op => op.id)
+  );
 
-  for (let i = 0; i < operations.length; i++) {
-    const operation = operations[i];
-    if (operation.type !== "token_transfer") {
-      result.push(operation);
-      continue;
-    }
-
-    // if token transfer was initiated by a migration or origination then it won't have a duplicate record
-    if (operation.transactionId === undefined) {
-      result.push(operation);
-      continue;
-    }
-
-    let hasDuplicate = false;
-    for (
-      let j = max([i - LOOK_AHEAD, 0]) as number;
-      j < (min([i + LOOK_AHEAD, operations.length]) as number);
-      j++
-    ) {
-      if (operations[j].id === operation.transactionId) {
-        hasDuplicate = true;
-        break;
-      }
-    }
-    if (!hasDuplicate) {
-      result.push(operation);
-    }
-  }
-
-  return result;
+  return operations.filter(
+    op => op.type !== "token_transfer" || !transactionIds.has(op.transactionId!)
+  );
 };
