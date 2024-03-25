@@ -24,7 +24,7 @@ describe("<BatchPage />", () => {
 
     expect(screen.getByTestId("empty-state-message")).toBeInTheDocument();
     expect(screen.getByText("No batches to show")).toBeVisible();
-    expect(screen.getByText("There is no batch transactions to show...")).toBeVisible();
+    expect(screen.getByText("There are no batch transactions to show...")).toBeVisible();
   });
 
   it("hides empty batch message when batches are present", () => {

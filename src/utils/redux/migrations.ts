@@ -4,7 +4,7 @@ import { identity } from "lodash";
 
 import { initialState as announcementsInitialState } from "./slices/announcementSlice";
 
-export const VERSION = 2;
+export const VERSION = 3;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -16,6 +16,18 @@ export const mainStoreMigrations = {
       draft.announcement = announcementsInitialState;
     }),
   2: identity,
+  3: (state: any) =>
+    produce(state, (draft: any) => {
+      if (draft.networks.current.name === "ghostnet") {
+        draft.networks.current.buyTezUrl = "https://faucet.ghostnet.teztnets.com/";
+      }
+      for (const network of draft.networks.available) {
+        if (network.name === "ghostnet") {
+          network.buyTezUrl = "https://faucet.ghostnet.teztnets.com/";
+          break;
+        }
+      }
+    }),
 } as any;
 
 export const accountsMigrations = {
@@ -29,4 +41,5 @@ export const accountsMigrations = {
         }
       });
     }),
+  3: identity,
 } as any;
