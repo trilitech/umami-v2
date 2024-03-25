@@ -41,7 +41,7 @@ jobs:
         run: yarn test:e2e
 
       - name: Cucumber Report to Annotations
-        uses: deblockt/cucumber-report-annotations-action@v1.14
+        uses: deblockt/cucumber-report-annotations-action@v1.15
         if: always()
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
