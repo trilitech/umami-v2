@@ -1,9 +1,11 @@
 import { produce } from "immer";
-import { identity } from "lodash";
+import { fromPairs, identity } from "lodash";
 
 import { initialState as announcementsInitialState } from "./slices/announcementSlice";
+import { isValidContractPkh, isValidImplicitPkh } from "../../types/Address";
+import { useGetNetworksForContracts } from "../multisig/helpers";
 
-export const VERSION = 4;
+export const VERSION = 6;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -31,6 +33,23 @@ export const mainStoreMigrations = {
   5: (state: any) =>
     produce(state, (draft: any) => {
       delete draft.assets.transfers["tez"];
+    }),
+  6: (state: any) =>
+    produce(state, async (draft: any) => {
+      const getNetworksForContracts = useGetNetworksForContracts();
+
+      const implicitAccounts = Object.values(draft.contacts)
+        .filter((contact: any) => isValidImplicitPkh(contact.pkh))
+        .map((contact: any) => [contact.pkh, { ...contact, network: undefined }]);
+      const contractPkhs = Object.values(draft.contacts)
+        .filter((contact: any) => isValidContractPkh(contact.pkh))
+        .map((contact: any) => contact.pkh);
+      const contractsWithNetworks = await getNetworksForContracts(new Set(contractPkhs));
+      const contractAccounts = [...contractsWithNetworks.entries()].map(([pkh, network]) => [
+        pkh,
+        { ...draft.contacts[pkh], network },
+      ]);
+      draft.contacts = fromPairs([...implicitAccounts, ...contractAccounts]);
     }),
 } as any;
 
