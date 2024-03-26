@@ -9,12 +9,12 @@ import colors from "../../style/colors";
 
 export const OperationsView = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
-  const { operations, loadMore, hasMore, isLoading } = useGetOperations(
+  const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations(
     selectedAccounts.map(acc => acc.address.pkh)
   );
 
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-    if (!hasMore || isLoading) {
+    if (!hasMore) {
       return;
     }
     const element = e.target as HTMLDivElement;
@@ -35,7 +35,7 @@ export const OperationsView = () => {
     <Flex flexDirection="column" height="100%">
       <TopBar title="Operations" />
       {accountsFilter}
-      {operations.length === 0 && isLoading && loadingElement}
+      {isLoading && isFirstLoad && loadingElement}
       {operations.length === 0 && !isLoading && <NoOperations size="lg" />}
       {operations.length > 0 && (
         <Box
