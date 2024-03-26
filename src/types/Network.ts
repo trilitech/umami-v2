@@ -11,7 +11,7 @@ export const GHOSTNET: Network = {
   rpcUrl: "https://ghostnet.ecadinfra.com",
   tzktApiUrl: "https://api.ghostnet.tzkt.io",
   tzktExplorerUrl: "https://ghostnet.tzkt.io",
-  buyTezUrl: "https://faucet.ghostnet.teztnets.xyz/",
+  buyTezUrl: "https://faucet.ghostnet.teztnets.com/",
 };
 
 export type NetworkName = string; // must be unique

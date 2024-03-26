@@ -91,7 +91,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
 
           <FormControl>
             <FormLabel>Buy Tez URL</FormLabel>
-            <Input placeholder="https://faucet.ghostnet.teztnets.xyz" {...register("buyTezUrl")} />
+            <Input placeholder="https://faucet.ghostnet.teztnets.com" {...register("buyTezUrl")} />
           </FormControl>
           <ModalFooter>
             <Button width="100%" isDisabled={!isValid} onClick={() => {}} type="submit">
