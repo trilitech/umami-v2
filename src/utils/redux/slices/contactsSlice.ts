@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { StoredContactInfo } from "../../../types/Contact";
+import { setNetworksForContacts } from "../thunks/contactNetwork";
 
 type State = Record<string, StoredContactInfo>;
 
@@ -9,6 +10,12 @@ export const initialState: State = {};
 export const contactsSlice = createSlice({
   name: "contacts",
   initialState,
+  extraReducers: builder => {
+    builder.addCase(setNetworksForContacts.fulfilled, (state, action) => {
+      const { updatedContacts } = action.payload;
+      state = updatedContacts;
+    });
+  },
   reducers: {
     reset: () => initialState,
     // Make sure to check that

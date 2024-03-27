@@ -37,16 +37,14 @@ export const mainStoreMigrations = {
       const implicitAccounts = Object.values(draft.contacts)
         .filter((contact: any) => isValidImplicitPkh(contact.pkh))
         .map((contact: any) => [contact.pkh, { ...contact, network: undefined }]);
-
       const contractPkhs = Object.values(draft.contacts)
-        .filter((contact: any) => !isValidContractPkh(contact.pkh))
+        .filter((contact: any) => isValidContractPkh(contact.pkh))
         .map((contact: any) => contact.pkh);
       const contractsWithNetworks = await getNetworksForContracts(new Set(contractPkhs));
       const contractAccounts = [...contractsWithNetworks.entries()].map(([pkh, network]) => [
         pkh,
         { ...draft.contacts[pkh], network },
       ]);
-
       draft.contacts = fromPairs([...implicitAccounts, ...contractAccounts]);
     }),
 } as any;
