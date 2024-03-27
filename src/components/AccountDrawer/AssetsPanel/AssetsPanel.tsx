@@ -38,7 +38,7 @@ export const AssetsPanel: React.FC<{
     account.type === "multisig" && getPendingOperations(account).length > 0;
 
   const network = useSelectedNetwork();
-  const { operations, isFirstLoad: areOperationsLoading } = useGetOperations([account.address.pkh]);
+  const { operations, isLoading } = useGetOperations([account]);
 
   return (
     <Tabs
@@ -104,7 +104,7 @@ export const AssetsPanel: React.FC<{
           <OperationTileContext.Provider
             value={{ mode: "drawer", selectedAddress: account.address }}
           >
-            {areOperationsLoading ? (
+            {isLoading ? (
               <Text color={colors.gray[500]} textAlign="center">
                 Loading...
               </Text>

@@ -1,8 +1,5 @@
-import { useToast } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect } from "react";
 
-import { getErrorContext } from "./getErrorContext";
 import { useRefetchTrigger } from "./hooks/assetsHooks";
 import { useImplicitAccounts } from "./hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "./hooks/networkHooks";
@@ -10,7 +7,6 @@ import { getPendingOperationsForMultisigs, getRelevantMultisigContracts } from "
 import { Multisig } from "./multisig/types";
 import { useAppDispatch } from "./redux/hooks";
 import { assetsActions } from "./redux/slices/assetsSlice";
-import { errorsSlice } from "./redux/slices/errorsSlice";
 import { multisigActions } from "./redux/slices/multisigsSlice";
 import { tokensActions } from "./redux/slices/tokensSlice";
 import { AppDispatch } from "./redux/store";
@@ -21,6 +17,7 @@ import {
   getTezosPriceInUSD,
   getTokenBalances,
 } from "./tezos";
+import { useReactQueryErrorHandler } from "./useReactQueryOnError";
 import { RawPkh } from "../types/Address";
 import { Network } from "../types/Network";
 
@@ -110,24 +107,9 @@ export const useAssetsPolling = () => {
   const implicitAccounts = useImplicitAccounts();
   const refetchTrigger = useRefetchTrigger();
   const network = useSelectedNetwork();
-  const toast = useToast();
+  const handleError = useReactQueryErrorHandler();
 
   const implicitAddresses = implicitAccounts.map(account => account.address.pkh);
-
-  const onError = useCallback(
-    (error: any) => {
-      if (!error) {
-        return;
-      }
-      dispatch(errorsSlice.actions.add(getErrorContext(error)));
-      toast({
-        description: `Data fetching error: ${error.message}`,
-        status: "error",
-        isClosable: true,
-      });
-    },
-    [dispatch, toast]
-  );
 
   const { error: allAssetsError } = useQuery({
     queryKey: ["allAssets", dispatch, network, implicitAddresses, refetchTrigger],
@@ -164,8 +146,8 @@ export const useAssetsPolling = () => {
     refetchOnWindowFocus: false,
   });
 
-  useEffect(() => onError(allAssetsError), [allAssetsError, onError]);
-  useEffect(() => onError(conversionRateError), [conversionRateError, onError]);
-  useEffect(() => onError(blockNumberError), [blockNumberError, onError]);
-  useEffect(() => onError(bakersError), [bakersError, onError]);
+  handleError(allAssetsError);
+  handleError(conversionRateError);
+  handleError(blockNumberError);
+  handleError(bakersError);
 };

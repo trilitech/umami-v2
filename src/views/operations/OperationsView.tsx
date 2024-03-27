@@ -1,4 +1,5 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { useRef } from "react";
 
 import { useGetOperations } from "./useGetOperations";
 import { NoOperations } from "../../components/NoItems";
@@ -9,19 +10,24 @@ import colors from "../../style/colors";
 
 export const OperationsView = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
-  const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations(
-    selectedAccounts.map(acc => acc.address.pkh)
-  );
+  const { operations, loadMore, hasMore, isLoading, isFirstLoad } =
+    useGetOperations(selectedAccounts);
+  // used to run loadMore only once when the user scrolls to the bottom
+  // otherwise it might be called multiple times which would trigger multiple fetches
+  const skipLoadMore = useRef<boolean>(false);
 
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-    if (!hasMore) {
+    if (skipLoadMore.current || !hasMore || isLoading) {
       return;
     }
     const element = e.target as HTMLDivElement;
 
     // start loading earlier than we reached the end of the list
     if (element.scrollHeight - element.scrollTop - element.clientHeight < 100) {
-      return loadMore();
+      skipLoadMore.current = true;
+      return loadMore().finally(() => {
+        skipLoadMore.current = false;
+      });
     }
   };
 

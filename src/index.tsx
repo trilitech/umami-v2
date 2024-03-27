@@ -31,6 +31,8 @@ root.render(
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <Router />
+              {/* Uncomment to use react-query devtools */}
+              {/* <ReactQueryDevtools initialIsOpen={true} /> */}
             </ReactQueryProvider>
           </ErrorBoundary>
         </PersistGate>
