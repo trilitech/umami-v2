@@ -192,9 +192,7 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[0].address.pkh] });
-        });
+        act(() => setSearchParams({ accounts: [accounts[0].address.pkh] }));
         render(<TestComponent />);
 
         // select accounts[2], wait for the second pill to appear
@@ -208,9 +206,7 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[0].address.pkh] });
-        });
+        act(() => setSearchParams({ accounts: [accounts[0].address.pkh] }));
         render(<TestComponent />);
 
         // select accounts[2], wait for the second pill to appear
@@ -226,9 +222,7 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         let [searchParams, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[0].address.pkh] });
-        });
+        act(() => setSearchParams({ accounts: [accounts[0].address.pkh] }));
         render(<TestComponent />);
 
         // select accounts[2], wait for the second pill to appear
@@ -248,9 +242,9 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[0].address.pkh, accounts[2].address.pkh] });
-        });
+        act(() =>
+          setSearchParams({ accounts: [accounts[0].address.pkh, accounts[2].address.pkh] })
+        );
         render(<TestComponent />);
 
         await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
@@ -263,15 +257,13 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[2].address.pkh] });
-        });
+        act(() => setSearchParams({ accounts: [accounts[2].address.pkh] }));
         render(<TestComponent />);
         // select accounts[0], wait for the second pill to appear
         await selectAccountListItems(user, [0], 2);
 
         // remove last added account - accounts[0]
-        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[1]));
 
         expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
         expect(screen.getByTestId("account-pill")).toHaveTextContent(accounts[2].label);
@@ -281,15 +273,13 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         let [searchParams, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[2].address.pkh] });
-        });
+        act(() => setSearchParams({ accounts: [accounts[2].address.pkh] }));
         render(<TestComponent />);
         // select accounts[0], wait for the second pill to appear
         await selectAccountListItems(user, [0], 2);
 
         // remove first added account - accounts[2]
-        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[1]));
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
         expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
 
         const { result: routerHook2 } = renderHook(() => useSearchParams());
@@ -301,15 +291,13 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         let [searchParams, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[2].address.pkh] });
-        });
+        act(() => setSearchParams({ accounts: [accounts[2].address.pkh] }));
         render(<TestComponent />);
         // select accounts[0], wait for the second pill to appear
         await selectAccountListItems(user, [0], 2);
 
         // remove last added account - accounts[0]
-        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[1]));
         expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
 
         const { result: routerHook2 } = renderHook(() => useSearchParams());
@@ -321,9 +309,9 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[0].address.pkh, accounts[2].address.pkh] });
-        });
+        act(() =>
+          setSearchParams({ accounts: [accounts[0].address.pkh, accounts[2].address.pkh] })
+        );
         render(<TestComponent />);
 
         await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
@@ -337,15 +325,13 @@ describe("AccountsFilter", () => {
         const user = userEvent.setup();
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
-        act(() => {
-          setSearchParams({ accounts: [accounts[2].address.pkh] });
-        });
+        act(() => setSearchParams({ accounts: [accounts[2].address.pkh] }));
         render(<TestComponent />);
         // select accounts[0], wait for the second pill to appear
         await selectAccountListItems(user, [0], 2);
 
         // remove last added account - accounts[0]
-        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
+        await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[1]));
 
         expect(getAccountListItems()).toHaveLength(2);
         expect(getAccountListItems()[0]).toHaveTextContent(accounts[0].label);
