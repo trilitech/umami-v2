@@ -24,14 +24,19 @@ describe("OperationsView", () => {
   });
 
   describe("without operations", () => {
+    beforeEach(() => {
+      jest.mocked(getCombinedOperations).mockResolvedValue([]);
+      jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
+    });
+
     it("displays an empty state when no account filter applied", async () => {
       render(<OperationsView />);
 
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
-      expect(screen.getByText("No operations to show")).toBeInTheDocument();
-      expect(screen.getByText("Your operations history will appear here...")).toBeInTheDocument();
+      expect(screen.getByText("No operations to show")).toBeVisible();
+      expect(screen.getByText("Your operations history will appear here...")).toBeVisible();
       expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
     });
 
@@ -44,9 +49,9 @@ describe("OperationsView", () => {
       await act(() => user.click(screen.getAllByTestId("address-tile")[0]));
       expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
 
-      expect(screen.getByTestId("empty-state-message")).toBeVisible();
-      expect(screen.getByText("No operations to show")).toBeInTheDocument();
-      expect(screen.getByText("Your operations history will appear here...")).toBeInTheDocument();
+      await waitFor(() => expect(screen.getByTestId("empty-state-message")).toBeVisible());
+      expect(screen.getByText("No operations to show")).toBeVisible();
+      expect(screen.getByText("Your operations history will appear here...")).toBeVisible();
       expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
     });
   });

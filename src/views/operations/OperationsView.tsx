@@ -1,5 +1,5 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useRef } from "react";
 
 import { useGetOperations } from "./useGetOperations";
 import { NoOperations } from "../../components/NoItems";
@@ -10,24 +10,24 @@ import colors from "../../style/colors";
 
 export const OperationsView = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
-  const { operations, loadMore, hasMore, setAddresses, isLoading } = useGetOperations(
-    selectedAccounts.map(acc => acc.address.pkh)
-  );
-  const addressesJoined = selectedAccounts.map(acc => acc.address.pkh).join(",");
-
-  useEffect(() => {
-    setAddresses(addressesJoined.split(",")); // TODO: check if could be managed inside the getOperations hook itself
-  }, [setAddresses, addressesJoined]);
+  const { operations, loadMore, hasMore, isLoading, isFirstLoad } =
+    useGetOperations(selectedAccounts);
+  // used to run loadMore only once when the user scrolls to the bottom
+  // otherwise it might be called multiple times which would trigger multiple fetches
+  const skipLoadMore = useRef<boolean>(false);
 
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-    if (!hasMore || isLoading) {
+    if (skipLoadMore.current || !hasMore || isLoading) {
       return;
     }
     const element = e.target as HTMLDivElement;
 
     // start loading earlier than we reached the end of the list
     if (element.scrollHeight - element.scrollTop - element.clientHeight < 100) {
-      return loadMore();
+      skipLoadMore.current = true;
+      return loadMore().finally(() => {
+        skipLoadMore.current = false;
+      });
     }
   };
 
@@ -41,7 +41,7 @@ export const OperationsView = () => {
     <Flex flexDirection="column" height="100%">
       <TopBar title="Operations" />
       {accountsFilter}
-      {operations.length === 0 && isLoading && loadingElement}
+      {isLoading && isFirstLoad && loadingElement}
       {operations.length === 0 && !isLoading && <NoOperations size="lg" />}
       {operations.length > 0 && (
         <Box

@@ -20,6 +20,7 @@ test("filterDuplicatedTokenTransfers", () => {
     { type: "token_transfer", ...tokenTransferFixture({ id: 8, transactionId: 9 }) },
     transactionFixture({ id: 9 }),
   ];
+
   expect(filterDuplicatedTokenTransfers(operations)).toEqual([
     transactionFixture({ id: 0 }),
     delegationFixture({ id: 1 }),

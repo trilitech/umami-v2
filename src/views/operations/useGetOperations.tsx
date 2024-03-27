@@ -1,10 +1,11 @@
-import { max, min, noop, uniqBy } from "lodash";
-import { useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { maxBy } from "lodash";
+import { useEffect } from "react";
 
-import { RawPkh } from "../../types/Address";
+import { Account } from "../../types/Account";
 import { Network } from "../../types/Network";
+import { useRefetchTrigger } from "../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
@@ -15,106 +16,103 @@ import {
   getCombinedOperations,
   getRelatedTokenTransfers,
 } from "../../utils/tezos";
+import { useReactQueryErrorHandler } from "../../utils/useReactQueryOnError";
 
 const REFRESH_INTERVAL = 15000;
 
-// TODO: Add tests
-export const useGetOperations = (initialAddresses: RawPkh[]) => {
-  const network = useSelectedNetwork();
-  const [operations, setOperations] = useState<TzktCombinedOperation[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-
-  const [addresses, setAddresses] = useState<RawPkh[]>(initialAddresses);
-  const dispatch = useAppDispatch();
-
-  const [updatesTrigger, setUpdatesTrigger] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleAsyncAction(async () => {
-        const lastId = operations[0]?.id;
-        const newOperations = await fetchOperationsAndUpdateTokensInfo(
-          dispatch,
-          network,
-          addresses,
-          {
-            lastId,
-            sort: "asc",
-          }
-        );
-
-        // reverse is needed because we fetch the operations in the opposite order
-        // there is a chance that we get the same operation twice when
-        // latest fetching updates so, we need to deduplicate records
-        setOperations(currentOperations =>
-          uniqBy([...newOperations.reverse(), ...currentOperations], op => op.id)
-        );
-      }).catch(noop);
-    }, REFRESH_INTERVAL);
-    return () => clearInterval(interval);
-
-    // The only way to correctly start triggering updates is
-    // to wait for the first fetch to finish and get the latest operation id
-    // to start the updates with
-    // but if we add operations to the dependency array, it will trigger the initial fetch
-    // once again which will lead to an infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatesTrigger]);
-
-  // that's needed to make sure we don't trigger the initial fetch twice
-  const addressesJoined = addresses.join(",");
-
-  // initial load
-  useEffect(() => {
-    setOperations([]);
-    setHasMore(true);
-
-    handleAsyncAction(async () => {
-      const latestOperations = await fetchOperationsAndUpdateTokensInfo(
-        dispatch,
-        network,
-        addressesJoined.split(",")
-      );
-      setOperations(latestOperations);
-      setHasMore(latestOperations.length > 0);
-      setUpdatesTrigger(prev => prev + 1);
-    })
-      .catch(noop)
-      .finally(() => {
-        setIsFirstLoad(false);
-      });
-    // handleAsyncAction gets constantly recreated, so we can't add it to the dependency array
-    // otherwise, it will trigger the initial fetch infinitely
-    // caching handleAsyncAction using useCallback doesn't work either
-    // because it depends on its own isLoading state which changes sometimes
-    // TODO: check useRef
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network, addressesJoined, dispatch]);
-
-  const loadMore = async () => {
-    const lastId = operations[operations.length - 1]?.id;
-    if (!lastId) {
-      return;
+type QueryParams =
+  | {
+      lastId?: number;
+      limit?: number;
+      sort?: "asc" | "desc";
     }
+  | undefined;
 
-    return handleAsyncAction(async () => {
-      const nextChunk = await fetchOperationsAndUpdateTokensInfo(dispatch, network, addresses, {
-        lastId,
-      });
-      setHasMore(nextChunk.length > 0);
-      setOperations(currentOperations => [...currentOperations, ...nextChunk]);
-    });
-  };
+/**
+ * Hook to fetch operations for given addresses.
+ *
+ * It fetches the latest operations on the first load and allows
+ * to load more (older) operations as needed.
+ *
+ * Every {@link REFRESH_INTERVAL} it fetches the latest operations
+ * and prepends it to the already fetched operations list.
+ *
+ * If the refresh button is clicked then it will trigger this behaviour immediately.
+ *
+ * @param accounts - list of accounts to fetch operations related to
+ * @returns
+ *   operations - operations ordered by id in descending order
+ *   isFirstLoad - true if the first load is in progress
+ *   isLoading - true if the next page is being fetched
+ *   hasMore - true if there are more operations to fetch
+ *   loadMore - function to load more operations (older ones)
+ */
+export const useGetOperations = (accounts: Account[]) => {
+  const network = useSelectedNetwork();
+  const dispatch = useAppDispatch();
+  const refetchTrigger = useRefetchTrigger();
+  const handleError = useReactQueryErrorHandler();
+
+  const {
+    isFetching,
+    data: operations,
+    hasNextPage,
+    isLoading,
+    fetchNextPage,
+    fetchPreviousPage,
+    error,
+  } = useInfiniteQuery({
+    queryFn: ({ pageParam }: { pageParam: QueryParams }) =>
+      fetchOperationsAndUpdateTokensInfo(dispatch, network, accounts, pageParam),
+    queryKey: ["operations", accounts, dispatch, network],
+    initialPageParam: {} as QueryParams,
+    retry: 3,
+    retryDelay: retryCount => retryCount * 2000,
+    gcTime: 0,
+    // next page here means the older operations
+    // whilst previous page means the newer operations
+    // that's done that way because react-query prepends
+    // previous pages to the beginning of the pages list
+    getNextPageParam: lastPage => {
+      if (lastPage.length === 0) {
+        return null;
+      }
+
+      const lastId = lastPage[lastPage.length - 1].id;
+      return { lastId };
+    },
+
+    getPreviousPageParam: (_, pages) => {
+      const lastId = maxBy(pages.flat(), "id")?.id;
+
+      // if lastId is not defined it means that there are no operations yet for the accounts
+      // but we still need to keep updating the operations list to get ones once they appear
+      return lastId ? { lastId, sort: "asc" as const } : {};
+    },
+    select: ({ pages }) =>
+      filterDuplicatedTokenTransfers(
+        [[...pages[0]].sort((a, b) => (a.id < b.id ? 1 : -1)), ...pages.slice(1)].flat()
+      ),
+  });
+
+  handleError(error);
+
+  useEffect(() => {
+    const interval = setInterval(() => void fetchPreviousPage(), REFRESH_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [fetchPreviousPage]);
+
+  useEffect(() => {
+    void fetchPreviousPage();
+  }, [refetchTrigger, fetchPreviousPage]);
 
   return {
-    operations: filterDuplicatedTokenTransfers(operations),
-    isFirstLoad,
-    isLoading,
-    hasMore,
-    loadMore,
-    setAddresses,
+    operations: operations || [],
+    isFirstLoad: isLoading,
+    isLoading: isFetching,
+    hasMore: hasNextPage,
+    loadMore: fetchNextPage,
   };
 };
 
@@ -128,14 +126,14 @@ export const useGetOperations = (initialAddresses: RawPkh[]) => {
 const fetchOperationsAndUpdateTokensInfo = async (
   dispatch: AppDispatch,
   network: Network,
-  addresses: RawPkh[],
-  options?: {
-    lastId?: number;
-    limit?: number;
-    sort?: "asc" | "desc";
-  }
+  accounts: Account[],
+  options?: QueryParams
 ) => {
-  const operations = await getCombinedOperations(addresses, network, options);
+  const operations = await getCombinedOperations(
+    accounts.map(acc => acc.address.pkh),
+    network,
+    options
+  );
 
   const transactionIds = operations
     .filter(operation => operation.type === "transaction")
@@ -162,40 +160,14 @@ const fetchOperationsAndUpdateTokensInfo = async (
 
 // when we fetch token transfers related to our accounts we might fetch
 // the ones which are initiated by us and hence we get duplicates
-const LOOK_AHEAD = 10; // this should be enough to cover all the cases and not cause O(N^2) lookups
 export const filterDuplicatedTokenTransfers = (
   operations: TzktCombinedOperation[]
 ): TzktCombinedOperation[] => {
-  const result: TzktCombinedOperation[] = [];
+  const transactionIds = new Set(
+    operations.filter(op => op.type !== "token_transfer").map(op => op.id)
+  );
 
-  for (let i = 0; i < operations.length; i++) {
-    const operation = operations[i];
-    if (operation.type !== "token_transfer") {
-      result.push(operation);
-      continue;
-    }
-
-    // if token transfer was initiated by a migration or origination then it won't have a duplicate record
-    if (operation.transactionId === undefined) {
-      result.push(operation);
-      continue;
-    }
-
-    let hasDuplicate = false;
-    for (
-      let j = max([i - LOOK_AHEAD, 0]) as number;
-      j < (min([i + LOOK_AHEAD, operations.length]) as number);
-      j++
-    ) {
-      if (operations[j].id === operation.transactionId) {
-        hasDuplicate = true;
-        break;
-      }
-    }
-    if (!hasDuplicate) {
-      result.push(operation);
-    }
-  }
-
-  return result;
+  return operations.filter(
+    op => op.type !== "token_transfer" || !transactionIds.has(op.transactionId!)
+  );
 };
