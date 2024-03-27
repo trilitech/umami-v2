@@ -3876,9 +3876,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cucumber/cucumber@npm:^10.3.1":
-  version: 10.3.1
-  resolution: "@cucumber/cucumber@npm:10.3.1"
+"@cucumber/cucumber@npm:^10.3.2":
+  version: 10.3.2
+  resolution: "@cucumber/cucumber@npm:10.3.2"
   dependencies:
     "@cucumber/ci-environment": "npm:10.0.0"
     "@cucumber/cucumber-expressions": "npm:17.0.1"
@@ -3915,7 +3915,7 @@ __metadata:
     string-argv: "npm:0.3.1"
     strip-ansi: "npm:6.0.1"
     supports-color: "npm:^8.1.1"
-    tmp: "npm:^0.2.1"
+    tmp: "npm:0.2.3"
     type-fest: "npm:^4.8.3"
     util-arity: "npm:^1.1.0"
     xmlbuilder: "npm:^15.1.1"
@@ -3923,7 +3923,7 @@ __metadata:
     yup: "npm:1.2.0"
   bin:
     cucumber-js: bin/cucumber.js
-  checksum: 10/05e6b5271dc841bb5e5e3723b5e702ef5bfb767d3e88085dd758f061f06e371f85ccdd075adfa8fbb6cd0c20aa5fbd627abd21fd9eac1e059fbeb86eee7a9875
+  checksum: 10/6d215d9e25d7362a00955fb4c76eb44cf9b06aa884bd8ee4d8bc808835544da351b2ebb5048b1610bc389fbad06038742dcc2bd3c8007a78e18659c28e962c3a
   languageName: node
   linkType: hard
 
@@ -20122,7 +20122,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:^0.2.0, tmp@npm:^0.2.1":
+"tmp@npm:0.2.3":
+  version: 0.2.3
+  resolution: "tmp@npm:0.2.3"
+  checksum: 10/7b13696787f159c9754793a83aa79a24f1522d47b87462ddb57c18ee93ff26c74cbb2b8d9138f571d2e0e765c728fb2739863a672b280528512c6d83d511c6fa
+  languageName: node
+  linkType: hard
+
+"tmp@npm:^0.2.0":
   version: 0.2.1
   resolution: "tmp@npm:0.2.1"
   dependencies:
@@ -20593,7 +20600,7 @@ __metadata:
     "@chakra-ui/react": "npm:^2.8.2"
     "@chakra-ui/system": "npm:^2.6.2"
     "@chriscdn/promise-semaphore": "npm:^2.0.9"
-    "@cucumber/cucumber": "npm:^10.3.1"
+    "@cucumber/cucumber": "npm:^10.3.2"
     "@electron/notarize": "npm:^2.3.0"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.0"
