@@ -1,49 +1,49 @@
 import { UpsertContactModal } from "./ContactModal";
 import { contact1, contact2 } from "../mocks/contacts";
 import { mockImplicitAddress } from "../mocks/factories";
-import { fireEvent, render, screen, waitFor } from "../mocks/testUtils";
+import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 import { store } from "../utils/redux/store";
 
 describe("UpsertContactModal", () => {
   describe("on adding contact", () => {
     describe.each([
-      { testCase: "new contact", renderComponent: () => render(<UpsertContactModal />) },
+      { testCase: "new contact", modalComponent: <UpsertContactModal /> },
       {
         testCase: "pre-set contact",
-        renderComponent: () =>
-          render(
-            <UpsertContactModal
-              contact={{
-                name: "",
-                pkh: mockImplicitAddress(0).pkh,
-              }}
-            />
-          ),
+        modalComponent: (
+          <UpsertContactModal
+            contact={{
+              name: "",
+              pkh: mockImplicitAddress(0).pkh,
+            }}
+          />
+        ),
       },
-    ])("for $testCase", ({ renderComponent }) => {
+    ])("for $testCase", ({ modalComponent }) => {
       it("shows correct title & button label for new contact", () => {
-        renderComponent();
+        render(modalComponent);
 
         expect(screen.getByRole("dialog")).toHaveTextContent("Add Contact");
         expect(screen.getByTestId("confirmation-button")).toHaveTextContent("Add to Address Book");
       });
 
       it("has editable address & name fields", () => {
-        renderComponent();
+        render(modalComponent);
 
         expect(screen.getByLabelText("Address")).toBeEnabled();
         expect(screen.getByLabelText("Name")).toBeEnabled();
       });
 
       it("validates updated address", async () => {
-        renderComponent();
+        const user = userEvent;
+        render(modalComponent);
 
         const addressInput = screen.getByLabelText("Address");
-        fireEvent.change(addressInput, {
-          target: { value: "invalid pkh" },
-        });
-        fireEvent.blur(addressInput);
+        await act(() => user.clear(addressInput));
+        await act(() => user.type(addressInput, "invalid pkh"));
+        // click outside of address input to trigger blur event
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
 
         await waitFor(() =>
           expect(screen.getByTestId("address-error")).toHaveTextContent("Invalid address")
@@ -51,13 +51,15 @@ describe("UpsertContactModal", () => {
       });
 
       it("checks the name is unique", async () => {
+        const user = userEvent;
         store.dispatch(contactsActions.upsert(contact2));
-        renderComponent();
+        render(modalComponent);
 
-        fireEvent.change(screen.getByLabelText("Name"), {
-          target: { value: contact2.name },
-        });
-        fireEvent.blur(screen.getByLabelText("Name"));
+        const nameInput = screen.getByLabelText("Name");
+        await act(() => user.clear(nameInput));
+        await act(() => user.type(nameInput, contact2.name));
+        // click outside of address input to trigger blur event
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
 
         await waitFor(() =>
           expect(screen.getByTestId("name-error")).toHaveTextContent(
@@ -67,22 +69,20 @@ describe("UpsertContactModal", () => {
       });
 
       it("adds contact to address book", async () => {
+        const user = userEvent;
         store.dispatch(contactsActions.upsert(contact2));
-        renderComponent();
+        render(modalComponent);
 
         // Set name
-        fireEvent.change(screen.getByLabelText("Name"), {
-          target: { value: "Test Contact" },
-        });
-        fireEvent.blur(screen.getByLabelText("Name"));
+        const nameInput = screen.getByLabelText("Name");
+        await act(() => user.clear(nameInput));
+        await act(() => user.type(nameInput, "Test Contact"));
         // Set address
-        fireEvent.change(screen.getByLabelText("Address"), {
-          target: { value: mockImplicitAddress(5).pkh },
-        });
-        fireEvent.blur(screen.getByLabelText("Address"));
+        const addressInput = screen.getByLabelText("Address");
+        await act(() => user.clear(addressInput));
+        await act(() => user.type(addressInput, mockImplicitAddress(5).pkh));
         // Submit
-        await waitFor(() => expect(screen.getByTestId("confirmation-button")).toBeEnabled());
-        fireEvent.click(screen.getByTestId("confirmation-button"));
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
 
         await waitFor(() =>
           expect(store.getState().contacts).toEqual({
@@ -111,6 +111,7 @@ describe("UpsertContactModal", () => {
       });
 
       it("validates initial address field", async () => {
+        const user = userEvent;
         render(
           <UpsertContactModal
             contact={{
@@ -120,7 +121,9 @@ describe("UpsertContactModal", () => {
           />
         );
 
-        fireEvent.blur(screen.getByLabelText("Address"));
+        await act(() => user.click(screen.getByLabelText("Address")));
+        // click outside of address input to trigger blur event
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
 
         await waitFor(() =>
           expect(screen.getByTestId("address-error")).toHaveTextContent("Invalid address")
@@ -128,6 +131,7 @@ describe("UpsertContactModal", () => {
       });
 
       it("adds contact to address book with pre-filled address", async () => {
+        const user = userEvent;
         store.dispatch(contactsActions.upsert(contact2));
         render(
           <UpsertContactModal
@@ -139,13 +143,11 @@ describe("UpsertContactModal", () => {
         );
 
         // Set name
-        fireEvent.change(screen.getByLabelText("Name"), {
-          target: { value: "Test Contact" },
-        });
-        fireEvent.blur(screen.getByLabelText("Name"));
+        const nameInput = screen.getByLabelText("Name");
+        await act(() => user.clear(nameInput));
+        await act(() => user.type(nameInput, "Test Contact"));
         // Submit
-        await waitFor(() => expect(screen.getByTestId("confirmation-button")).toBeEnabled());
-        fireEvent.click(screen.getByTestId("confirmation-button"));
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
 
         await waitFor(() =>
           expect(store.getState().contacts).toEqual({
@@ -180,9 +182,12 @@ describe("UpsertContactModal", () => {
     });
 
     it("checks the name was updated", async () => {
+      const user = userEvent;
       render(<UpsertContactModal contact={contact1} />);
 
-      fireEvent.blur(screen.getByLabelText("Name"));
+      await act(() => user.click(screen.getByLabelText("Name")));
+      // click outside of address input to trigger blur event
+      await act(() => user.click(screen.getByTestId("confirmation-button")));
 
       await waitFor(() =>
         expect(screen.getByTestId("name-error")).toHaveTextContent("Name was not changed")
@@ -190,13 +195,15 @@ describe("UpsertContactModal", () => {
     });
 
     it("checks the name is unique", async () => {
+      const user = userEvent;
       store.dispatch(contactsActions.upsert(contact2));
       render(<UpsertContactModal contact={contact1} />);
 
-      fireEvent.change(screen.getByLabelText("Name"), {
-        target: { value: contact2.name },
-      });
-      fireEvent.blur(screen.getByLabelText("Name"));
+      const nameInput = screen.getByLabelText("Name");
+      await act(() => user.clear(nameInput));
+      await act(() => user.type(nameInput, contact2.name));
+      // click outside of address input to trigger blur event
+      await act(() => user.click(screen.getByTestId("confirmation-button")));
 
       await waitFor(() =>
         expect(screen.getByTestId("name-error")).toHaveTextContent(
@@ -206,18 +213,16 @@ describe("UpsertContactModal", () => {
     });
 
     it("updates contact in address book", async () => {
+      const user = userEvent;
       store.dispatch(contactsActions.upsert(contact2));
       render(<UpsertContactModal contact={contact1} />);
 
       // Update name
-      fireEvent.change(screen.getByLabelText("Name"), {
-        target: { value: "Updated Name" },
-      });
-      fireEvent.blur(screen.getByLabelText("Name"));
-
-      // Submit
-      await waitFor(() => expect(screen.getByTestId("confirmation-button")).toBeEnabled());
-      fireEvent.click(screen.getByTestId("confirmation-button"));
+      const nameInput = screen.getByLabelText("Name");
+      await act(() => user.clear(nameInput));
+      await act(() => user.type(nameInput, "Updated Name"));
+      // click outside of address input to trigger blur event
+      await act(() => user.click(screen.getByTestId("confirmation-button")));
 
       await waitFor(() =>
         expect(store.getState().contacts).toEqual({

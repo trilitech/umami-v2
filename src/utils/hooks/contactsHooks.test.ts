@@ -3,7 +3,7 @@ import {
   useAllSortedContacts,
   useContacts,
   useGetContactName,
-  useValidatePkh,
+  useValidateNewContactPkh,
 } from "./contactsHooks";
 import { contact1, contact2, contact3 } from "../../mocks/contacts";
 import {
@@ -14,8 +14,8 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
-import { accountsSlice } from "../redux/slices/accountsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
 import { multisigsSlice } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
@@ -87,11 +87,11 @@ describe("contactsHooks", () => {
     });
   });
 
-  describe("useValidatePkh", () => {
+  describe("useValidateNewContactPkh", () => {
     it("returns true for a valid address", () => {
       const {
         result: { current: validatePkh },
-      } = renderHook(() => useValidatePkh());
+      } = renderHook(() => useValidateNewContactPkh());
 
       expect(validatePkh(mockImplicitAddress(5).pkh)).toEqual(true);
     });
@@ -99,7 +99,7 @@ describe("contactsHooks", () => {
     it("fails for invalid address", () => {
       const {
         result: { current: validatePkh },
-      } = renderHook(() => useValidatePkh());
+      } = renderHook(() => useValidateNewContactPkh());
 
       expect(validatePkh("invalid_pkh")).toEqual("Invalid address");
     });
@@ -107,38 +107,30 @@ describe("contactsHooks", () => {
     it("fails for address already registered in contacts", () => {
       const {
         result: { current: validatePkh },
-      } = renderHook(() => useValidatePkh());
+      } = renderHook(() => useValidateNewContactPkh());
 
-      expect(validatePkh(contact2.pkh)).toEqual("Address already registered");
-    });
-
-    it("fails for address already saved as account", () => {
-      const {
-        result: { current: validatePkh },
-      } = renderHook(() => useValidatePkh());
-
-      expect(validatePkh(contact2.pkh)).toEqual("Address already registered");
+      expect(validatePkh(contact2.pkh)).toEqual("Address is already registered");
     });
 
     it.each([
-      { type: "ledger", pkh: mockLedgerAccount(0).address.pkh },
-      { type: "social", pkh: mockSocialAccount(1).address.pkh },
-      { type: "secret_key", pkh: mockSecretKeyAccount(2).address.pkh },
-      { type: "mnemonic", pkh: mockMnemonicAccount(3).address.pkh },
-      { type: "multisig", pkh: mockMultisigAccount(0).address.pkh },
-    ])("fails for address used for $type account", ({ pkh }) => {
+      mockLedgerAccount(0),
+      mockSocialAccount(1),
+      mockSecretKeyAccount(2),
+      mockMnemonicAccount(3),
+      mockMultisigAccount(0),
+    ])("fails for address used for $type account", account => {
       store.dispatch(contactsActions.reset());
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
-      store.dispatch(accountsSlice.actions.addAccount(mockSocialAccount(1)));
-      store.dispatch(accountsSlice.actions.addAccount(mockSecretKeyAccount(2)));
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(3)]));
-      store.dispatch(multisigsSlice.actions.setMultisigs([mockMultisigAccount(0)]));
+      if (account.type !== "multisig") {
+        addAccount(account);
+      } else {
+        store.dispatch(multisigsSlice.actions.setMultisigs([account]));
+      }
 
       const {
         result: { current: validatePkh },
-      } = renderHook(() => useValidatePkh());
+      } = renderHook(() => useValidateNewContactPkh());
 
-      expect(validatePkh(pkh)).toEqual("Address already used in accounts");
+      expect(validatePkh(account.address.pkh)).toEqual("Address is already used in accounts");
     });
   });
 });

@@ -19,7 +19,7 @@ export const useGetContactName = () => {
   return (pkh: string) => (pkh in contacts ? contacts[pkh].name : undefined);
 };
 
-export const useValidatePkh = () => {
+export const useValidateNewContactPkh = () => {
   const addressExistsInContacts = useAddressExistsInContacts();
   const getAccount = useGetOwnedAccountSafe();
 
@@ -28,8 +28,8 @@ export const useValidatePkh = () => {
       return "Invalid address";
     }
     if (getAccount(pkh)) {
-      return "Address already used in accounts";
+      return "Address is already used in accounts";
     }
-    return !addressExistsInContacts(pkh) || "Address already registered";
+    return !addressExistsInContacts(pkh) || "Address is already registered";
   };
 };

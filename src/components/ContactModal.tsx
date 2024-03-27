@@ -21,7 +21,7 @@ import { DynamicModalContext } from "./DynamicModal";
 import { FormErrorMessage } from "./FormErrorMessage";
 import colors from "../style/colors";
 import { Contact } from "../types/Contact";
-import { useValidatePkh } from "../utils/hooks/contactsHooks";
+import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
 import { useValidateName } from "../utils/hooks/labelsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
@@ -39,8 +39,8 @@ export const UpsertContactModal: FC<{
   const dispatch = useAppDispatch();
   const { isOpen, onClose } = useContext(DynamicModalContext);
 
-  // When editing existing contact, its name & pkh are known.
-  const isEdit = contact !== undefined && contact.pkh != "" && contact.name !== "";
+  // When editing existing contact, its name & pkh are known and provided to the modal.
+  const isEdit = !!(contact?.pkh && contact.name);
 
   const onSubmitContact = ({ name, pkh }: Contact) => {
     dispatch(contactsActions.upsert({ name, pkh }));
@@ -69,7 +69,7 @@ export const UpsertContactModal: FC<{
     }
   }, [isOpen, contact]);
 
-  const validatePkh = useValidatePkh();
+  const validatePkh = useValidateNewContactPkh();
   const validateName = useValidateName(contact?.name);
 
   return (
