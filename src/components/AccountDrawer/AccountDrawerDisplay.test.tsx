@@ -304,11 +304,27 @@ describe("<AccountCard />", () => {
   });
 
   describe("for multisig account", () => {
+    const multisigAccount = multisigToAccount(multisigs[2], "my multisig");
+
     beforeEach(() => {
+      jest.spyOn(useGetOperationsModule, "useGetOperations").mockReturnValue({
+        operations: [
+          {
+            ...mockTzktTezTransfer(pkh, multisigAccount.address.pkh, 1000000),
+            id: 1,
+          },
+          {
+            ...mockTzktTezTransfer(multisigAccount.address.pkh, pkh, 2000000),
+            id: 2,
+          },
+        ] as TzktCombinedOperation[],
+        hasMore: false,
+        isFirstLoad: false,
+        isLoading: false,
+        loadMore: jest.fn(),
+      });
       store.dispatch(setMultisigs(multisigs));
     });
-
-    const multisigAccount = multisigToAccount(multisigs[2], "my multisig");
 
     it('hides "Buy Tez" button', async () => {
       render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
@@ -361,7 +377,7 @@ describe("<AccountCard />", () => {
       const operations = await screen.findAllByTestId(/^operation-tile/);
       expect(operations).toHaveLength(2);
       expect(operations[0]).toHaveTextContent("+ 1.000000 ꜩ");
-      expect(operations[1]).toHaveTextContent("+ 2.000000 ꜩ");
+      expect(operations[1]).toHaveTextContent("- 2.000000 ꜩ");
     });
   });
 });

@@ -38,7 +38,7 @@ export const AssetsPanel: React.FC<{
     account.type === "multisig" && getPendingOperations(account).length > 0;
 
   const network = useSelectedNetwork();
-  const { operations, isLoading } = useGetOperations([account]);
+  const { operations, isFirstLoad: isLoading } = useGetOperations([account]);
 
   return (
     <Tabs

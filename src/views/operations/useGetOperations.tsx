@@ -69,6 +69,10 @@ export const useGetOperations = (accounts: Account[]) => {
     retry: 3,
     retryDelay: retryCount => retryCount * 2000,
     gcTime: 0,
+    // next page here means the older operations
+    // whilst previous page means the newer operations
+    // that's done that way because react-query prepends
+    // previous pages to the beginning of the pages list
     getNextPageParam: lastPage => {
       if (lastPage.length === 0) {
         return null;
