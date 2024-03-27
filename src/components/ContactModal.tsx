@@ -20,27 +20,30 @@ import { CopyableAddress } from "./CopyableText";
 import { DynamicModalContext } from "./DynamicModal";
 import { FormErrorMessage } from "./FormErrorMessage";
 import colors from "../style/colors";
-import { isAddressValid } from "../types/Address";
 import { Contact } from "../types/Contact";
-import { useContactExists } from "../utils/hooks/contactsHooks";
-import { useAllAccounts, useGetOwnedAccountSafe } from "../utils/hooks/getAccountDataHooks";
+import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
+import { useValidateName } from "../utils/hooks/labelsHooks";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 
+/**
+ * Modal used for both adding new contacts & editing existing contacts.
+ *
+ * Contact is checked for having unique name & pkh (among all accounts & other contacts) before being added.
+ *
+ * @param contact - optional / partial data for creating new contact, or full data for editing existing contact.
+ */
 export const UpsertContactModal: FC<{
-  title: string;
-  buttonText: string;
-  contact?: Contact; // For updating an existing contact
-}> = ({ title, buttonText, contact }) => {
+  contact?: Contact;
+}> = ({ contact }) => {
   const dispatch = useAppDispatch();
-  const getAccount = useGetOwnedAccountSafe();
   const { isOpen, onClose } = useContext(DynamicModalContext);
 
-  const onSubmitContact = (newContact: Contact) => {
-    if (getAccount(newContact.pkh)) {
-      return;
-    }
-    dispatch(contactsActions.upsert(newContact));
+  // When editing existing contact, its name & pkh are known and provided to the modal.
+  const isEdit = !!(contact?.pkh && contact.name);
+
+  const onSubmitContact = ({ name, pkh }: Contact) => {
+    dispatch(contactsActions.upsert({ name, pkh }));
     onClose();
   };
 
@@ -49,7 +52,6 @@ export const UpsertContactModal: FC<{
     formState: { isValid, errors },
     register,
     reset,
-    getValues,
   } = useForm<Contact>({
     mode: "onBlur",
     defaultValues: contact,
@@ -57,33 +59,6 @@ export const UpsertContactModal: FC<{
   const onSubmit = ({ name, pkh }: Contact) => {
     onSubmitContact({ name: name.trim(), pkh });
     reset();
-  };
-
-  const isEdit = contact !== undefined;
-
-  const accounts = useAllAccounts();
-  const validateName = (name: string) => {
-    if (accounts.map(account => account.label).includes(name)) {
-      return "Name already used in accounts";
-    }
-    return !nameExistsInContacts(name.trim()) || "Name already registered";
-  };
-
-  const { nameExistsInContacts, addressExistsInContacts } = useContactExists();
-
-  const validatePkh = (pkh: string) => {
-    if (!isAddressValid(pkh)) {
-      return "Invalid address";
-    }
-    if (isEdit) {
-      return getValues("name") !== contact.name;
-    }
-
-    if (getAccount(pkh)) {
-      return "Address already used in accounts";
-    }
-
-    return !addressExistsInContacts(pkh) || "Address already registered";
   };
 
   const resetRef = useRef(reset);
@@ -94,10 +69,13 @@ export const UpsertContactModal: FC<{
     }
   }, [isOpen, contact]);
 
+  const validatePkh = useValidateNewContactPkh();
+  const validateName = useValidateName(contact?.name);
+
   return (
     <ModalContent>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalHeader textAlign="center">{title}</ModalHeader>
+        <ModalHeader textAlign="center">{isEdit ? "Edit Contact" : "Add Contact"}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl isInvalid={!!errors.name} marginY={5}>
@@ -110,7 +88,9 @@ export const UpsertContactModal: FC<{
               })}
               placeholder="Enter contact's name"
             />
-            {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
+            {errors.name && (
+              <FormErrorMessage data-testid="name-error">{errors.name.message}</FormErrorMessage>
+            )}
           </FormControl>
           <FormControl isInvalid={!!errors.pkh} marginY={5}>
             <FormLabel>Address</FormLabel>
@@ -118,21 +98,29 @@ export const UpsertContactModal: FC<{
               type="text"
               {...register("pkh", {
                 required: "Address is required",
-                validate: validatePkh,
+                validate: isEdit ? () => true : validatePkh,
               })}
               disabled={isEdit}
-              placeholder="Enter contact’s tz address"
-              value={contact?.pkh}
+              placeholder="Enter contact's tz address"
               variant={isEdit ? "filled" : undefined}
             />
-            {errors.pkh && <FormErrorMessage>{errors.pkh.message}</FormErrorMessage>}
+            {errors.pkh && (
+              <FormErrorMessage data-testid="address-error">{errors.pkh.message}</FormErrorMessage>
+            )}
           </FormControl>
         </ModalBody>
 
         <ModalFooter padding="16px 0 0 0">
           <Box width="100%">
-            <Button width="100%" marginBottom={2} isDisabled={!isValid} size="lg" type="submit">
-              {buttonText}
+            <Button
+              width="100%"
+              marginBottom={2}
+              data-testid="confirmation-button"
+              isDisabled={!isValid}
+              size="lg"
+              type="submit"
+            >
+              {isEdit ? "Update" : "Add to Address Book"}
             </Button>
           </Box>
         </ModalFooter>
@@ -141,6 +129,11 @@ export const UpsertContactModal: FC<{
   );
 };
 
+/**
+ * Modal used for deleting existing contact.
+ *
+ * @param contact - contact that will be deleted.
+ */
 export const DeleteContactModal: FC<{
   contact: Contact;
 }> = ({ contact }) => {
@@ -159,7 +152,7 @@ export const DeleteContactModal: FC<{
       <ModalBody>
         <Flex alignItems="center" justifyContent="space-between" flexDirection="column">
           <Text color={colors.gray[400]} size="sm">
-            Are you sure you want to remove this contact?
+            Are you sure you want to delete this contact?
           </Text>
           <Box marginTop={5}>
             <Heading marginBottom={3} textAlign="center" size="md">
@@ -173,7 +166,7 @@ export const DeleteContactModal: FC<{
       <ModalFooter>
         <Box width="100%">
           <Button width="100%" marginBottom={2} onClick={onDeleteContact} variant="warning">
-            Delete
+            Delete Contact
           </Button>
         </Box>
       </ModalFooter>

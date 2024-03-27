@@ -2,13 +2,10 @@ import {
   useGetAccountsByFingerPrint,
   useGetAccountsByType,
   useGetBestSignerForAccount,
-  useGetNextAvailableAccountLabels,
   useIsOwnedAddress,
-  useIsUniqueLabel,
   useValidateMasterPassword,
 } from "./getAccountDataHooks";
 import {
-  mockContact,
   mockImplicitAccount,
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -22,11 +19,8 @@ import { renderHook, waitFor } from "../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import { accountsActions, accountsSlice } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
-import { contactsActions } from "../redux/slices/contactsSlice";
-import { multisigActions, multisigsSlice } from "../redux/slices/multisigsSlice";
+import { multisigsSlice } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
-import { checkAccountsAndUpsertContact } from "../redux/thunks/checkAccountsAndUpsertContact";
-import { renameAccount } from "../redux/thunks/renameAccount";
 
 describe("getAccountDataHooks", () => {
   describe("useGetAccountsByType", () => {
@@ -123,123 +117,6 @@ describe("getAccountDataHooks", () => {
 
       const { result } = renderHook(() => useGetBestSignerForAccount());
       expect(result.current(multisig)).toEqual(mockImplicitAccount(1));
-    });
-  });
-
-  describe("useIsUniqueLabel", () => {
-    const testCase = [
-      { testLabel: "Unique Label", expected: true },
-      { testLabel: "Ledger Account Label", expected: false },
-      { testLabel: "Social Account Label", expected: false },
-      { testLabel: "Secret Key Account Label", expected: false },
-      { testLabel: "Mnemonic Account Label", expected: false },
-      { testLabel: "Multisig Account Label", expected: false },
-      { testLabel: "Contact Label", expected: false },
-    ];
-
-    describe.each(testCase)("For $testLabel", testCase => {
-      it(`returns ${testCase.expected}`, () => {
-        store.dispatch(
-          accountsSlice.actions.addAccount(mockLedgerAccount(0, "Ledger Account Label"))
-        );
-        store.dispatch(
-          accountsSlice.actions.addAccount(mockSocialAccount(1, "Social Account Label"))
-        );
-        store.dispatch(
-          accountsSlice.actions.addAccount(mockSecretKeyAccount(2, "Secret Key Account Label"))
-        );
-        store.dispatch(
-          accountsSlice.actions.addMockMnemonicAccounts([
-            mockMnemonicAccount(3, "Mnemonic Account Label"),
-          ])
-        );
-        store.dispatch(multisigsSlice.actions.setMultisigs([mockMultisigAccount(4)]));
-        store.dispatch(renameAccount(mockMultisigAccount(5), "Multisig Account Label"));
-        store.dispatch(contactsActions.upsert({ name: "Contact Label", pkh: "pkh1" }));
-
-        const { result } = renderHook(() => useIsUniqueLabel());
-
-        expect(result.current(testCase.testLabel)).toEqual(testCase.expected);
-      });
-    });
-  });
-
-  describe("useGetNextAvailableAccountLabels", () => {
-    const existingAccounts = [
-      {
-        type: "ledger" as const,
-        accounts: [mockLedgerAccount(0, "Test acc 2"), mockLedgerAccount(1, "Test acc 4")],
-      },
-      {
-        type: "social" as const,
-        accounts: [mockSocialAccount(0, "Test acc 2"), mockSocialAccount(1, "Test acc 4")],
-      },
-      {
-        type: "mnemonic" as const,
-        accounts: [mockMnemonicAccount(0, "Test acc 2"), mockMnemonicAccount(1, "Test acc 4")],
-      },
-      {
-        type: "secret_key" as const,
-        accounts: [mockSecretKeyAccount(0, "Test acc 2"), mockSecretKeyAccount(1, "Test acc 4")],
-      },
-    ];
-
-    describe.each(existingAccounts)("among $type accounts", existingAccounts => {
-      it("returns unique labels", () => {
-        if (existingAccounts.type === "mnemonic") {
-          store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts));
-        } else {
-          existingAccounts.accounts.forEach(account =>
-            store.dispatch(accountsSlice.actions.addAccount(account))
-          );
-        }
-
-        const {
-          result: { current: getNextAvailableLabels },
-        } = renderHook(() => useGetNextAvailableAccountLabels());
-
-        expect(getNextAvailableLabels("Test acc", 4)).toEqual([
-          "Test acc",
-          "Test acc 3",
-          "Test acc 5",
-          "Test acc 6",
-        ]);
-      });
-    });
-
-    it("among multisig accounts returns unique labels", () => {
-      store.dispatch(
-        multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
-      );
-      store.dispatch(renameAccount(mockMultisigAccount(0), "Test acc 2"));
-      store.dispatch(renameAccount(mockMultisigAccount(1), "Test acc 4"));
-
-      const {
-        result: { current: getNextAvailableLabels },
-      } = renderHook(() => useGetNextAvailableAccountLabels());
-
-      expect(getNextAvailableLabels("Test acc", 4)).toEqual([
-        "Test acc",
-        "Test acc 3",
-        "Test acc 5",
-        "Test acc 6",
-      ]);
-    });
-
-    it("among contacts returns unique labels", () => {
-      store.dispatch(checkAccountsAndUpsertContact(mockContact(0, "Test acc 2")));
-      store.dispatch(checkAccountsAndUpsertContact(mockContact(1, "Test acc 4")));
-
-      const {
-        result: { current: getNextAvailableLabels },
-      } = renderHook(() => useGetNextAvailableAccountLabels());
-
-      expect(getNextAvailableLabels("Test acc", 4)).toEqual([
-        "Test acc",
-        "Test acc 3",
-        "Test acc 5",
-        "Test acc 6",
-      ]);
     });
   });
 

@@ -2,7 +2,7 @@ import { generateMnemonic } from "bip39";
 
 import { makeDerivationPath } from "./account/derivationPathUtils";
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
-import { useGetNextAvailableAccountLabels } from "./hooks/getAccountDataHooks";
+import { useGetNextAvailableAccountLabels } from "./hooks/labelsHooks";
 import { PublicKeyPair, addressExists, derivePublicKeyPair, getFingerPrint } from "./tezos";
 import { MnemonicAccount } from "../types/Account";
 import { Network } from "../types/Network";

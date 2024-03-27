@@ -15,8 +15,8 @@ import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import {
   useGetMostFundedImplicitAccount,
   useImplicitAccounts,
-  useIsUniqueLabel,
 } from "../../../utils/hooks/getAccountDataHooks";
+import { useValidateName } from "../../../utils/hooks/labelsHooks";
 import { DynamicModalContext } from "../../DynamicModal";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";
@@ -49,7 +49,8 @@ export const NameMultisigFormPage: React.FC<{ name?: string }> = ({ name }) => {
       />
     );
 
-  const isUnique = useIsUniqueLabel();
+  const validateName = useValidateName();
+
   return (
     <FormProvider {...form}>
       <ModalContent>
@@ -67,14 +68,7 @@ export const NameMultisigFormPage: React.FC<{ name?: string }> = ({ name }) => {
                   data-testid="multisig-account-name"
                   type="text"
                   {...register("name", {
-                    validate: name => {
-                      if (name.trim().length == 0) {
-                        return "Name should not be empty";
-                      }
-                      if (!isUnique(name.trim())) {
-                        return "Name must be unique across all accounts and contacts";
-                      }
-                    },
+                    validate: validateName,
                   })}
                   placeholder="Account Name"
                 />

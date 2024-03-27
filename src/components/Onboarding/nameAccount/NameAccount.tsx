@@ -1,5 +1,5 @@
 import { NameAccountDisplay } from "./NameAccountDisplay";
-import { useGetNextAvailableAccountLabels } from "../../../utils/hooks/getAccountDataHooks";
+import { useGetNextAvailableAccountLabels } from "../../../utils/hooks/labelsHooks";
 import { NameAccountStep, OnboardingStep } from "../OnboardingStep";
 
 export const DEFAULT_ACCOUNT_LABEL = "Account";

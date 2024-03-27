@@ -1,8 +1,8 @@
 import { AddressBookView } from "./AddressBookView";
 import { contact1, contact2, contact3, contacts } from "../../mocks/contacts";
 import { render, screen } from "../../mocks/testUtils";
+import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { store } from "../../utils/redux/store";
-import { checkAccountsAndUpsertContact } from "../../utils/redux/thunks/checkAccountsAndUpsertContact";
 
 const fixture = () => <AddressBookView />;
 
@@ -26,7 +26,7 @@ describe("AddressBookView", () => {
   describe("with contacts", () => {
     beforeEach(() => {
       Object.values(contacts()).forEach(contact => {
-        store.dispatch(checkAccountsAndUpsertContact(contact));
+        store.dispatch(contactsActions.upsert(contact));
       });
     });
 

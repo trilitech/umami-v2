@@ -4,8 +4,8 @@ import {
 } from "./account/derivationPathUtils";
 import { restoreRevealedPublicKeyPairs, useRestoreRevealedMnemonicAccounts } from "./mnemonic";
 import { accountsSlice } from "./redux/slices/accountsSlice";
+import { contactsActions } from "./redux/slices/contactsSlice";
 import { store } from "./redux/store";
-import { checkAccountsAndUpsertContact } from "./redux/thunks/checkAccountsAndUpsertContact";
 import * as tezosHelpers from "./tezos/helpers";
 import { mockContact, mockSocialAccount } from "../mocks/factories";
 import { fakeAddressExists } from "../mocks/helpers";
@@ -151,7 +151,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
 
   it("sets unique labels for restored accounts", async () => {
     addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 3)));
-    store.dispatch(checkAccountsAndUpsertContact(mockContact(0, CUSTOM_LABEL)));
+    store.dispatch(contactsActions.upsert(mockContact(0, CUSTOM_LABEL)));
     store.dispatch(accountsSlice.actions.addAccount(mockSocialAccount(1, `${CUSTOM_LABEL} 3`)));
 
     const {

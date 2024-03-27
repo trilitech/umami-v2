@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { Contact } from "../../../types/Contact";
-import { nameExistsInContacts } from "../../hooks/contactsUtils";
 
 type State = Record<string, Contact>;
 
@@ -12,11 +11,10 @@ export const contactsSlice = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
-    // Don't use this action directly. Use thunk checkAccountsAndUpsertContact
+    // Make sure to check that
+    // - pkh is not used in accounts and other contacts
+    // - the name is unique across all accounts and contacts
     upsert: (state, { payload }: { payload: Contact }) => {
-      if (nameExistsInContacts(state, payload.name)) {
-        return;
-      }
       state[payload.pkh] = payload;
     },
     remove: (state, { payload }: { payload: string }) => {
