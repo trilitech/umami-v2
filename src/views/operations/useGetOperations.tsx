@@ -66,6 +66,8 @@ export const useGetOperations = (accounts: Account[]) => {
       fetchOperationsAndUpdateTokensInfo(dispatch, network, accounts, pageParam),
     queryKey: ["operations", accounts, dispatch, network],
     initialPageParam: {} as QueryParams,
+    retry: 3,
+    retryDelay: retryCount => retryCount * 2000,
     gcTime: 0,
     getNextPageParam: lastPage => {
       if (lastPage.length === 0) {
