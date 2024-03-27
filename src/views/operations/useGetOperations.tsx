@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { cloneDeep, maxBy } from "lodash";
+import { maxBy } from "lodash";
 import { useEffect } from "react";
 
 import { Account } from "../../types/Account";
@@ -71,7 +71,7 @@ export const useGetOperations = (accounts: Account[]) => {
     gcTime: 0,
     getNextPageParam: lastPage => {
       if (lastPage.length === 0) {
-        return undefined;
+        return null;
       }
 
       const lastId = lastPage[lastPage.length - 1].id;
@@ -86,13 +86,18 @@ export const useGetOperations = (accounts: Account[]) => {
       return lastId ? { lastId, sort: "asc" as const } : {};
     },
     select: ({ pages }) =>
-      filterDuplicatedTokenTransfers([
-        ...cloneDeep(pages[0]).sort((a, b) => (a.id < b.id ? 1 : -1)),
-        ...pages.slice(1).flat(),
-      ]),
+      filterDuplicatedTokenTransfers(
+        [[...pages[0]].sort((a, b) => (a.id < b.id ? 1 : -1)), ...pages.slice(1)].flat()
+      ),
   });
 
   handleError(error);
+
+  useEffect(() => {
+    const interval = setInterval(() => void fetchPreviousPage(), REFRESH_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [fetchPreviousPage]);
 
   useEffect(() => {
     void fetchPreviousPage();
