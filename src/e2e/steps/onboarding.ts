@@ -5,7 +5,7 @@ import { expect } from "@playwright/test";
 
 import { CustomWorld } from "./world";
 import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
-import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
+import { DEFAULT_DERIVATION_PATH_PATTERN } from "../../utils/account/derivationPathUtils";
 import {
   v1BackedupAccountGroups,
   v2BackedupAccountGroups,
@@ -57,7 +57,7 @@ When("I enter existing seedphrase", async function (this: CustomWorld) {
 
 When("I select {string} as derivationPath", async function (this: CustomWorld, derivationPath) {
   if (derivationPath === "Default") {
-    accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH.value);
+    accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH_PATTERN.value);
     return;
   }
   await this.page.getByTestId("select-input").click();

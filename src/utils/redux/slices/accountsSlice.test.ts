@@ -54,7 +54,7 @@ describe("Accounts reducer", () => {
     );
 
     expect(() => store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(2)]))).toThrow(
-      `Can't add account ${mockImplicitAccount(2).address.pkh} in store since it already exists.`
+      `Can't add account with address ${mockImplicitAccount(2).address.pkh} because it already exists.`
     );
 
     expect(store.getState().accounts).toEqual({

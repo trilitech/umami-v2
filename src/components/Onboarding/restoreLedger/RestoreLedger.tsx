@@ -48,9 +48,12 @@ export const RestoreLedger = ({
             description: "Please open the Tezos app on your Ledger and approve the operation",
             status: "info",
           });
-          const derivationPath = makeDerivationPath(account.derivationPath, 0);
+
+          const derivationPath = account.derivationPathPattern
+            ? makeDerivationPath(account.derivationPathPattern, 0)
+            : account.derivationPath;
           const { pk, pkh } = await getPk(derivationPath);
-          restoreLedger(derivationPath, pk, pkh, account.label);
+          restoreLedger(account.derivationPathPattern, derivationPath!, pk, pkh, account.label);
           toast.close(toastId);
           toast({ description: "Account successfully created!", status: "success" });
           closeModal();

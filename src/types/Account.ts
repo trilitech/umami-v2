@@ -26,6 +26,7 @@ export type LedgerAccount = {
   label: string;
   curve: Curves;
   derivationPath: string;
+  derivationPathPattern: string | undefined;
   type: "ledger";
   address: ImplicitAddress;
   pk: string;

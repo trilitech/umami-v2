@@ -35,7 +35,7 @@ export const useRestoreV1BackupFile = () => {
         mnemonic,
         password,
         label: DEFAULT_ACCOUNT_LABEL,
-        derivationPath: derivationPaths[i],
+        derivationPathPattern: derivationPaths[i],
       });
     }
   };

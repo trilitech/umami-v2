@@ -6,7 +6,10 @@ import { useForm } from "react-hook-form";
 import { ModalContentWrapper } from "./ModalContentWrapper";
 import { WalletPlusIcon } from "../../assets/icons";
 import { MAINNET } from "../../types/Network";
-import { defaultDerivationPathPattern } from "../../utils/account/derivationPathUtils";
+import {
+  defaultDerivationPathPattern,
+  makeDerivationPath,
+} from "../../utils/account/derivationPathUtils";
 import { useRestoreLedger } from "../../utils/hooks/setAccountDataHooks";
 
 export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
@@ -21,7 +24,13 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
     const rpc = new RpcClient(MAINNET.rpcUrl);
     const managerKey = await rpc.getManagerKey(pkh);
     const pk = typeof managerKey === "string" ? managerKey : managerKey.key;
-    restoreLedger(defaultDerivationPathPattern, pk, pkh, name);
+    restoreLedger(
+      defaultDerivationPathPattern,
+      makeDerivationPath(defaultDerivationPathPattern, 0),
+      pk,
+      pkh,
+      name
+    );
     onClose();
   };
   return (

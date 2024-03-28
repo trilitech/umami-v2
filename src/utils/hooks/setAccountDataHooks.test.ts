@@ -16,7 +16,10 @@ import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
-import { AVAILABLE_DERIVATION_PATHS, makeDerivationPath } from "../account/derivationPathUtils";
+import {
+  AVAILABLE_DERIVATION_PATH_PATTERNS,
+  makeDerivationPath,
+} from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
 import { accountsSlice } from "../redux/slices/accountsSlice";
 import { store } from "../redux/store";
@@ -41,7 +44,7 @@ describe("setAccountDataHooks", () => {
 
     const LABEL_BASE = "Test acc";
     const PASSWORD = "password";
-    const DERIVATION_PATH_PATTERN = AVAILABLE_DERIVATION_PATHS[2].value;
+    const DERIVATION_PATH_PATTERN = AVAILABLE_DERIVATION_PATH_PATTERNS[2].value;
 
     const MOCK_FINGERPRINT = "mockFingerPrint";
     const MOCK_ENCRYPTED = { mock: "encrypted" } as any;
@@ -79,7 +82,7 @@ describe("setAccountDataHooks", () => {
           restoreFromMnemonic({
             mnemonic: mnemonic1,
             password: PASSWORD,
-            derivationPath: DERIVATION_PATH_PATTERN,
+            derivationPathPattern: DERIVATION_PATH_PATTERN,
             label: LABEL_BASE,
           })
         );
@@ -117,7 +120,7 @@ describe("setAccountDataHooks", () => {
           restoreFromMnemonic({
             mnemonic: mnemonic1,
             password: PASSWORD,
-            derivationPath: DERIVATION_PATH_PATTERN,
+            derivationPathPattern: DERIVATION_PATH_PATTERN,
             label: LABEL_BASE,
           })
         );
@@ -159,7 +162,7 @@ describe("setAccountDataHooks", () => {
           restoreFromMnemonic({
             mnemonic: mnemonic1,
             password: PASSWORD,
-            derivationPath: DERIVATION_PATH_PATTERN,
+            derivationPathPattern: DERIVATION_PATH_PATTERN,
             label: LABEL_BASE,
           })
         );

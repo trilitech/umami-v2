@@ -50,19 +50,19 @@ export const useRestoreFromMnemonic = () => {
   return async ({
     mnemonic,
     password,
-    derivationPath,
+    derivationPathPattern,
     label,
   }: {
     mnemonic: string;
     password: string;
-    derivationPath: string;
+    derivationPathPattern: string;
     label: string;
   }) => {
     const seedFingerprint = await getFingerPrint(mnemonic);
     const accounts = await restoreRevealedMnemonicAccounts(
       mnemonic,
       network,
-      derivationPath,
+      derivationPathPattern,
       label
     );
     const encryptedMnemonic = await encrypt(mnemonic, password);
@@ -152,8 +152,15 @@ export const useRestoreFromSecretKey = () => {
 
 export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
-  return (derivationPath: string, pk: string, pkh: string, label: string) => {
+  return (
+    derivationPathPattern: string | undefined,
+    derivationPath: string,
+    pk: string,
+    pkh: string,
+    label: string
+  ) => {
     const account: LedgerAccount = {
+      derivationPathPattern,
       derivationPath,
       curve: "ed25519",
       type: "ledger",

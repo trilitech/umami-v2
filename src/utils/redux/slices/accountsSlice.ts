@@ -149,7 +149,7 @@ const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: Implicit
       )
     ) {
       throw new Error(
-        `Can't add account ${newAccount.address.pkh} in store since it already exists.`
+        `Can't add account with address ${newAccount.address.pkh} because it already exists.`
       );
     }
   });
