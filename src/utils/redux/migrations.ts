@@ -4,7 +4,7 @@ import { fromPairs, identity } from "lodash";
 
 import { initialState as announcementsInitialState } from "./slices/announcementSlice";
 import { isValidContractPkh, isValidImplicitPkh } from "../../types/Address";
-import { useGetNetworksForContracts } from "../multisig/helpers";
+import { getNetworksForContracts } from "../multisig/helpers";
 
 export const VERSION = 3;
 
@@ -31,17 +31,20 @@ export const mainStoreMigrations = {
       }
     }),
   4: async (state: any) => {
-    // note: you cannot use hooks here, but you have the whole state so you can easily fetch the data you need from there
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const getNetworksForContracts = useGetNetworksForContracts();
-
     const implicitAccounts = Object.values(state.contacts)
       .filter((contact: any) => isValidImplicitPkh(contact.pkh))
       .map((contact: any) => [contact.pkh, { ...contact, network: undefined }]);
+    console.log(implicitAccounts);
+
     const contractPkhs = Object.values(state.contacts)
       .filter((contact: any) => isValidContractPkh(contact.pkh))
       .map((contact: any) => contact.pkh);
-    const contractsWithNetworks = await getNetworksForContracts(new Set(contractPkhs));
+    console.log(contractPkhs);
+    const contractsWithNetworks = await getNetworksForContracts(
+      state.networks.available,
+      new Set(contractPkhs)
+    );
+    console.log(contractsWithNetworks);
     const contractAccounts = [...contractsWithNetworks.entries()].map(([pkh, network]) => [
       pkh,
       { ...state.contacts[pkh], network },
@@ -65,4 +68,5 @@ export const accountsMigrations = {
       });
     }),
   3: identity,
+  //4: identity,
 } as any;
