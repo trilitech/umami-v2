@@ -1,5 +1,3 @@
-import { waitFor } from "@testing-library/react";
-
 import { accountsMigrations, mainStoreMigrations } from "./migrations";
 import {
   mockContractAddress,
@@ -8,31 +6,16 @@ import {
   mockMnemonicAccount,
   mockSecretKeyAccount,
 } from "../../mocks/factories";
-import { useGetNetworksForContracts } from "../multisig/helpers";
+import { waitFor } from "../../mocks/testUtils";
+import { GHOSTNET, MAINNET } from "../../types/Network";
+import { getNetworksForContracts } from "../multisig/helpers";
 
 jest.mock("../multisig/helpers");
 
-const mockUseGetNetworksForContracts = jest.mocked(useGetNetworksForContracts);
-
-const mockNetworksForContract = jest.fn();
+const mockedGetNetworksForContracts = jest.mocked(getNetworksForContracts);
 
 describe("migrations", () => {
   describe("main migrations", () => {
-    const implicitPkh = mockImplicitAddress(0).pkh;
-    const mainnetPkh = mockContractAddress(0).pkh;
-    const ghostnetPkh = mockContractAddress(1).pkh;
-    const absentPkh = mockContractAddress(2).pkh;
-
-    beforeEach(() => {
-      mockUseGetNetworksForContracts.mockReturnValue(mockNetworksForContract);
-      mockNetworksForContract.mockResolvedValue(
-        new Map([
-          [mainnetPkh, "mainnet"],
-          [ghostnetPkh, "ghostnet"],
-        ])
-      );
-    });
-
     it("0", () => {
       expect(mainStoreMigrations[0]({ multisigs: {} })).toEqual({ multisigs: { labelsMap: {} } });
     });
@@ -57,7 +40,23 @@ describe("migrations", () => {
     });
 
     it("6", async () => {
-      const x = mainStoreMigrations[6]({
+      const implicitPkh = mockImplicitAddress(0).pkh;
+      const mainnetPkh = mockContractAddress(0).pkh;
+      const ghostnetPkh = mockContractAddress(1).pkh;
+      const absentPkh = mockContractAddress(2).pkh;
+
+      mockedGetNetworksForContracts.mockResolvedValue(
+        new Map([
+          [mainnetPkh, "mainnet"],
+          [ghostnetPkh, "ghostnet"],
+        ])
+      );
+
+      const migratedStore = mainStoreMigrations[4]({
+        networks: {
+          current: [GHOSTNET],
+          available: [[MAINNET, GHOSTNET]],
+        },
         contacts: {
           implicitPkh: { name: "Implicit Contact", pkh: implicitPkh },
           mainnetPkh: { name: "Mainnet Contact", pkh: mainnetPkh },
@@ -66,8 +65,18 @@ describe("migrations", () => {
         },
       });
 
+      expect(mockedGetNetworksForContracts).toHaveBeenCalledTimes(1);
+      expect(mockedGetNetworksForContracts).toHaveBeenCalledWith([
+        mainnetPkh,
+        ghostnetPkh,
+        absentPkh,
+      ]);
       await waitFor(() =>
-        expect(x).toEqual({
+        expect(migratedStore).toEqual({
+          networks: {
+            current: [GHOSTNET],
+            available: [[MAINNET, GHOSTNET]],
+          },
           contacts: {
             implicitPkh: { name: "Implicit Contact", pkh: implicitPkh, network: undefined },
             mainnetPkh: { name: "Mainnet Contact", pkh: mainnetPkh, network: "mainnet" },
@@ -92,7 +101,7 @@ describe("migrations", () => {
       });
     });
 
-    test("4", () => {
+    it("4", () => {
       const ledgerAcc = { ...mockLedgerAccount(0), derivationPathTemplate: undefined };
       const ledgerAccWithLongPath = {
         ...mockLedgerAccount(1),

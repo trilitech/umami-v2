@@ -10,7 +10,6 @@ import {
   parseImplicitPkh,
 } from "../../types/Address";
 import { Network } from "../../types/Network";
-import { useAvailableNetworks } from "../hooks/networkHooks";
 import { withRateLimit } from "../tezos";
 import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
 
@@ -55,21 +54,20 @@ export const getExistingContractAddresses = async (
     return contracts.map(raw => parseContractPkh(raw.address).pkh);
   });
 
-export const useGetNetworksForContracts = () => {
-  const availableNetworks = useAvailableNetworks();
+export const getNetworksForContracts = async (
+  availableNetworks: Network[],
+  accountPkhs: Set<RawPkh>
+): Promise<Map<RawPkh, string>> => {
+  const result = new Map<RawPkh, string>();
 
-  return async (accountPkhs: Set<RawPkh>): Promise<Map<RawPkh, string>> => {
-    const result = new Map<RawPkh, string>();
+  const accountsWithNetwork = await Promise.all(
+    availableNetworks.map(async network =>
+      (await getExistingContractAddresses(network, accountPkhs)).map(pkh => [pkh, network.name])
+    )
+  );
+  accountsWithNetwork.flat().forEach(([pkh, network]) => result.set(pkh, network));
 
-    const accountsWithNetwork = await Promise.all(
-      availableNetworks.map(async network =>
-        (await getExistingContractAddresses(network, accountPkhs)).map(pkh => [pkh, network.name])
-      )
-    );
-    accountsWithNetwork.flat().forEach(([pkh, network]) => result.set(pkh, network));
-
-    return result;
-  };
+  return result;
 };
 
 const parseMultisigOperation = (raw: RawTzktGetBigMapKeysItem): MultisigOperation => {

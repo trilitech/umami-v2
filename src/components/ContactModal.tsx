@@ -24,7 +24,8 @@ import { isValidContractPkh } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
 import { useValidateName } from "../utils/hooks/labelsHooks";
-import { useGetNetworksForContracts } from "../utils/multisig/helpers";
+import { useAvailableNetworks } from "../utils/hooks/networkHooks";
+import { getNetworksForContracts } from "../utils/multisig/helpers";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 
@@ -40,14 +41,17 @@ export const UpsertContactModal: FC<{
 }> = ({ contact }) => {
   const dispatch = useAppDispatch();
   const { isOpen, onClose } = useContext(DynamicModalContext);
-  const getNetworksForContracts = useGetNetworksForContracts();
+  const availableNetworks = useAvailableNetworks();
 
   // When editing existing contact, its name & pkh are known and provided to the modal.
   const isEdit = !!(contact?.pkh && contact.name);
 
   const onSubmitContact = async (newContact: Contact) => {
     if (isValidContractPkh(newContact.pkh)) {
-      const contractsWithNetworks = await getNetworksForContracts(new Set(newContact.pkh));
+      const contractsWithNetworks = await getNetworksForContracts(
+        availableNetworks,
+        new Set(newContact.pkh)
+      );
       if (!contractsWithNetworks.has(newContact.pkh)) {
         throw new Error(`Network not found for contract ${newContact.pkh}`);
       }
