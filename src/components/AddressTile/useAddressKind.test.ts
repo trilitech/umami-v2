@@ -1,6 +1,7 @@
 import { useAddressKind } from "./useAddressKind";
 import {
   mockBaker,
+  mockContractAddress,
   mockImplicitAddress,
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -9,10 +10,12 @@ import {
 import { multisigs } from "../../mocks/multisig";
 import { renderHook } from "../../mocks/testUtils";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
+import { MAINNET } from "../../types/Network";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
+import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 
 describe("useAddressKind", () => {
@@ -67,8 +70,22 @@ describe("useAddressKind", () => {
     });
   });
 
-  it("returns contact", () => {
-    const contact1 = { name: "name1", pkh: mockImplicitAddress(3).pkh };
+  it("returns implicit contact", () => {
+    const contact1 = { name: "name1", pkh: mockImplicitAddress(3).pkh, network: undefined };
+    store.dispatch(contactsSlice.actions.upsert(contact1));
+
+    const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));
+
+    expect(addressKindRef.current).toEqual({
+      type: "contact",
+      pkh: contact1.pkh,
+      label: contact1.name,
+    });
+  });
+
+  it("returns contract contact if found in any network", () => {
+    store.dispatch(networksActions.setCurrent(MAINNET));
+    const contact1 = { name: "name1", pkh: mockContractAddress(0).pkh, network: "ghostnet" };
     store.dispatch(contactsSlice.actions.upsert(contact1));
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));

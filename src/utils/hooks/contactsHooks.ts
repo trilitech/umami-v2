@@ -1,21 +1,36 @@
 import { useGetOwnedAccountSafe } from "./getAccountDataHooks";
-import { isAddressValid } from "../../types/Address";
+import { useSelectedNetwork } from "./networkHooks";
+import { isAddressValid, isValidImplicitPkh } from "../../types/Address";
+import { Contact } from "../../types/Contact";
 import { useAppSelector } from "../redux/hooks";
 
-export const useContacts = () => useAppSelector(s => s.contacts);
+export const useAllContacts = () => useAppSelector(s => s.contacts);
 
-export const useAllSortedContacts = () => {
-  const contacts = useContacts();
-  return Object.values(contacts).sort((a, b) => a.name.localeCompare(b.name));
+export const useContactsForSelectedNetwork = () => {
+  const network = useSelectedNetwork();
+  const allContacts = useAllContacts();
+
+  return Object.values(allContacts)
+    .filter(contact => isValidImplicitPkh(contact.pkh) || contact.network === network.name)
+    .map(contact => contact as Contact);
+};
+
+export const useSortedContacts = () => {
+  const contactsForSelectedNetwork = useContactsForSelectedNetwork();
+
+  return contactsForSelectedNetwork
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(contact => contact as Contact);
 };
 
 export const useAddressExistsInContacts = () => {
-  const contacts = useContacts();
+  const contacts = useAllContacts();
   return (pkh: string) => pkh in contacts;
 };
 
 export const useGetContactName = () => {
-  const contacts = useContacts();
+  const contacts = useAllContacts();
+
   return (pkh: string) => (pkh in contacts ? contacts[pkh].name : undefined);
 };
 

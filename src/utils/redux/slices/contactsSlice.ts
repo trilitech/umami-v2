@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { Contact } from "../../../types/Contact";
+import { StoredContactInfo } from "../../../types/Contact";
 
-type State = Record<string, Contact>;
+type State = Record<string, StoredContactInfo>;
 
 export const initialState: State = {};
 
@@ -14,7 +14,7 @@ export const contactsSlice = createSlice({
     // Make sure to check that
     // - pkh is not used in accounts and other contacts
     // - the name is unique across all accounts and contacts
-    upsert: (state, { payload }: { payload: Contact }) => {
+    upsert: (state, { payload }: { payload: StoredContactInfo }) => {
       state[payload.pkh] = payload;
     },
     remove: (state, { payload }: { payload: string }) => {

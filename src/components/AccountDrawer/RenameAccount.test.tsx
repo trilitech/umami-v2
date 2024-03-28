@@ -1,11 +1,17 @@
 import { Modal } from "@chakra-ui/react";
 
 import { RenameAccountModal } from "./RenameAccountModal";
-import { mockContact, mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
+import {
+  mockContractContact,
+  mockImplicitAccount,
+  mockMnemonicAccount,
+} from "../../mocks/factories";
 import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 import { Account } from "../../types/Account";
+import { MAINNET } from "../../types/Network";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
+import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 
 const fixture = (account: Account) => (
@@ -65,9 +71,12 @@ describe("<RenameAccountModal />", () => {
       });
     });
 
-    it("does not allow existing contact name", async () => {
+    it("does not allow contact name existing in any networks", async () => {
+      store.dispatch(networksActions.setCurrent(MAINNET));
+      store.dispatch(
+        contactsActions.upsert(mockContractContact(0, "ghostnet", "Existing Contact Name"))
+      );
       const account = mockMnemonicAccount(0);
-      store.dispatch(contactsActions.upsert(mockContact(0, "Existing Contact Name")));
       render(fixture(account));
 
       setName("Existing Contact Name");
