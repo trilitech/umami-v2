@@ -7,10 +7,15 @@ import {
   mockSecretKeyAccount,
 } from "../../mocks/factories";
 import { GHOSTNET, MAINNET } from "../../types/Network";
-import { getNetworksForContracts } from "../multisig/helpers";
+import axios from "axios";
 
-jest.mock("../multisig/helpers");
-const mockedGetNetworksForContracts = jest.mocked(getNetworksForContracts);
+
+jest.mock("axios");
+
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+//jest.mock("../multisig/helpers");
+//const mockedGetNetworksForContracts = jest.mocked(getNetworksForContracts);
 
 describe("migrations", () => {
   describe("main", () => {

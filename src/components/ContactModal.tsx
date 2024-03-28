@@ -24,10 +24,10 @@ import { isValidContractPkh } from "../types/Address";
 import { Contact } from "../types/Contact";
 import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
 import { useValidateName } from "../utils/hooks/labelsHooks";
+import { useAvailableNetworks } from "../utils/hooks/networkHooks";
 import { getNetworksForContracts } from "../utils/multisig/helpers";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
-import { useAvailableNetworks } from "../utils/hooks/networkHooks";
 
 /**
  * Modal used for both adding new contacts & editing existing contacts.
@@ -48,10 +48,7 @@ export const UpsertContactModal: FC<{
 
   const onSubmitContact = async (newContact: Contact) => {
     if (isValidContractPkh(newContact.pkh)) {
-      const contractsWithNetworks = await getNetworksForContracts(
-        availableNetworks,
-        new Set(newContact.pkh)
-      );
+      const contractsWithNetworks = await getNetworksForContracts(availableNetworks, new Set(newContact.pkh));
       if (!contractsWithNetworks.has(newContact.pkh)) {
         throw new Error(`Network not found for contract ${newContact.pkh}`);
       }

@@ -6,7 +6,7 @@ import { initialState as announcementsInitialState } from "./slices/announcement
 import { isValidContractPkh, isValidImplicitPkh } from "../../types/Address";
 import { getNetworksForContracts } from "../multisig/helpers";
 
-export const VERSION = 3;
+export const VERSION = 4;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -34,17 +34,14 @@ export const mainStoreMigrations = {
     const implicitAccounts = Object.values(state.contacts)
       .filter((contact: any) => isValidImplicitPkh(contact.pkh))
       .map((contact: any) => [contact.pkh, { ...contact, network: undefined }]);
-    console.log(implicitAccounts);
 
     const contractPkhs = Object.values(state.contacts)
       .filter((contact: any) => isValidContractPkh(contact.pkh))
       .map((contact: any) => contact.pkh);
-    console.log(contractPkhs);
     const contractsWithNetworks = await getNetworksForContracts(
       state.networks.available,
       new Set(contractPkhs)
     );
-    console.log(contractsWithNetworks);
     const contractAccounts = [...contractsWithNetworks.entries()].map(([pkh, network]) => [
       pkh,
       { ...state.contacts[pkh], network },
