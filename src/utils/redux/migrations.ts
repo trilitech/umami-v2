@@ -34,23 +34,27 @@ export const mainStoreMigrations = {
     produce(state, (draft: any) => {
       delete draft.assets.transfers["tez"];
     }),
-  6: (state: any) =>
-    produce(state, async (draft: any) => {
-      const getNetworksForContracts = useGetNetworksForContracts();
+  6: async (state: any) => {
+    // note: you cannot use hooks here, but you have the whole state so you can easily fetch the data you need from there
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const getNetworksForContracts = useGetNetworksForContracts();
 
-      const implicitAccounts = Object.values(draft.contacts)
-        .filter((contact: any) => isValidImplicitPkh(contact.pkh))
-        .map((contact: any) => [contact.pkh, { ...contact, network: undefined }]);
-      const contractPkhs = Object.values(draft.contacts)
-        .filter((contact: any) => isValidContractPkh(contact.pkh))
-        .map((contact: any) => contact.pkh);
-      const contractsWithNetworks = await getNetworksForContracts(new Set(contractPkhs));
-      const contractAccounts = [...contractsWithNetworks.entries()].map(([pkh, network]) => [
-        pkh,
-        { ...draft.contacts[pkh], network },
-      ]);
+    const implicitAccounts = Object.values(state.contacts)
+      .filter((contact: any) => isValidImplicitPkh(contact.pkh))
+      .map((contact: any) => [contact.pkh, { ...contact, network: undefined }]);
+    const contractPkhs = Object.values(state.contacts)
+      .filter((contact: any) => isValidContractPkh(contact.pkh))
+      .map((contact: any) => contact.pkh);
+    const contractsWithNetworks = await getNetworksForContracts(new Set(contractPkhs));
+    const contractAccounts = [...contractsWithNetworks.entries()].map(([pkh, network]) => [
+      pkh,
+      { ...state.contacts[pkh], network },
+    ]);
+
+    return produce(state, (draft: any) => {
       draft.contacts = fromPairs([...implicitAccounts, ...contractAccounts]);
-    }),
+    });
+  },
 } as any;
 
 export const accountsMigrations = {

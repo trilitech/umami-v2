@@ -1,22 +1,27 @@
-import { DEFAULT_VERSION, MigrationManifest, PersistedState } from "redux-persist";
+import { DEFAULT_VERSION, PersistedState } from "redux-persist";
 
+type MigrationManifest = {
+  [key: string]: (state: PersistedState) => Promise<PersistedState>;
+};
 /**
  * Custom redux-persist createMigrate function that allows async migrations.
  */
-export default function createAsyncMigrate(
+export function createAsyncMigrate(
   migrations: MigrationManifest,
   config?: { debug: boolean }
 ): (state: PersistedState, currentVersion: number) => Promise<PersistedState> {
   const { debug } = config || {};
-  return function (state: PersistedState, currentVersion: number): Promise<PersistedState> {
+
+  return async (state: PersistedState, currentVersion: number): Promise<PersistedState> => {
     if (!state) {
       if (process.env.NODE_ENV !== "production" && debug) {
         console.log("redux-persist: no inbound state, skipping migration");
       }
-      return Promise.resolve(undefined);
+      return undefined;
     }
 
     const inboundVersion: number =
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       state._persist && state._persist.version !== undefined
         ? state._persist.version
         : DEFAULT_VERSION;
@@ -24,13 +29,14 @@ export default function createAsyncMigrate(
       if (process.env.NODE_ENV !== "production" && debug) {
         console.log("redux-persist: versions match, noop migration");
       }
-      return Promise.resolve(state);
+      return state;
     }
+
     if (inboundVersion > currentVersion) {
       if (process.env.NODE_ENV !== "production") {
         console.error("redux-persist: downgrading version is not supported");
       }
-      return Promise.resolve(state);
+      return state;
     }
 
     const migrationKeys = Object.keys(migrations)
@@ -41,16 +47,14 @@ export default function createAsyncMigrate(
     if (process.env.NODE_ENV !== "production" && debug) {
       console.log("redux-persist: migrationKeys", migrationKeys);
     }
-    try {
-      const migratedState: any = migrationKeys.reduce(async (state: any, versionKey) => {
-        if (process.env.NODE_ENV !== "production" && debug) {
-          console.log("redux-persist: running migration for versionKey", versionKey);
-        }
-        return await migrations[versionKey](state);
-      }, state);
-      return Promise.resolve(migratedState);
-    } catch (err) {
-      return Promise.reject(err);
+
+    let migratedState: any = state;
+    for (const versionKey of migrationKeys) {
+      if (process.env.NODE_ENV !== "production" && debug) {
+        console.log("redux-persist: running migration for versionKey", versionKey);
+      }
+      migratedState = await migrations[versionKey](migratedState);
     }
+    return migratedState;
   };
 }
