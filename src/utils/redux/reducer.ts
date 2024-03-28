@@ -2,7 +2,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 
-import createAsyncMigrate from "./createMigrate";
+import { createAsyncMigrate } from "./createAsyncMigrate";
 import { VERSION, accountsMigrations, mainStoreMigrations } from "./migrations";
 import { accountsSlice } from "./slices/accountsSlice";
 import { announcementSlice } from "./slices/announcementSlice";
