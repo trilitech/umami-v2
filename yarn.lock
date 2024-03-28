@@ -12125,9 +12125,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.0.22":
-  version: 11.0.22
-  resolution: "framer-motion@npm:11.0.22"
+"framer-motion@npm:^11.0.23":
+  version: 11.0.23
+  resolution: "framer-motion@npm:11.0.23"
   dependencies:
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -12141,7 +12141,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10/1945a3324952689585e38938929203e4e2523b869bdb29f3e0943fd6bd9023d65c20670ddbf69f4ab9690e5d54a805c8def0a777d08e1647d6254e4e674189f5
+  checksum: 10/6e6b3a46f0914f6a2fe0a71feb6b12433bc4815fc7ef0402525f0621eb6f2cfc9594c0d8cd2f32d74748ef82541b3eca53c0672d0f4c205305883061a898946a
   languageName: node
   linkType: hard
 
@@ -20676,7 +20676,7 @@ __metadata:
     eslint-plugin-unused-imports: "npm:^3.1.0"
     eslint-webpack-plugin: "npm:^4.1.0"
     file-loader: "npm:^6.2.0"
-    framer-motion: "npm:^11.0.22"
+    framer-motion: "npm:^11.0.23"
     fs-extra: "npm:^11.2.0"
     html-webpack-plugin: "npm:^5.6.0"
     http-server: "npm:^14.1.1"
