@@ -62,6 +62,21 @@ export const multisigsSlice = createSlice({
         account.label = newName;
       }
     },
+    removeMultisigs: (state, { payload }: { payload: RawPkh[] }) => {
+      const operationIdsToRemove = state.items
+        .filter(multisig => payload.includes(multisig.address.pkh))
+        .map(multisig => multisig.pendingOperationsBigmapId);
+
+      state.items = state.items.filter(multisig => !payload.includes(multisig.address.pkh));
+      state.pendingOperations = fromPairs(
+        Object.entries(state.pendingOperations).filter(
+          ([bigmapId]) => !operationIdsToRemove.includes(Number(bigmapId))
+        )
+      );
+      state.labelsMap = fromPairs(
+        Object.entries(state.labelsMap).filter(([pkh]) => !payload.includes(pkh))
+      );
+    },
   },
 });
 
