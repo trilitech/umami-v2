@@ -123,7 +123,7 @@
     "eslint-plugin-unused-imports": "^3.1.0",
     "eslint-webpack-plugin": "^4.1.0",
     "file-loader": "^6.2.0",
-    "framer-motion": "^11.0.22",
+    "framer-motion": "^11.0.24",
     "fs-extra": "^11.2.0",
     "html-webpack-plugin": "^5.6.0",
     "http-server": "^14.1.1",
