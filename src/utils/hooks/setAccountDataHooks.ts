@@ -233,6 +233,7 @@ export const useRemoveAccount = () => {
 
   return (account: SocialAccount | LedgerAccount | SecretKeyAccount) => {
     removeAccountsDependencies([account]);
+
     dispatch(accountsSlice.actions.removeAccount(account));
   };
 };
