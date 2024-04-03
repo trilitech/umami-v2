@@ -8,13 +8,14 @@ import { TzktLink } from "./TzktLink";
 import { useShowAddress } from "./useShowAddress";
 import { ContractIcon } from "../../assets/icons";
 import colors from "../../style/colors";
+import { TzktAlias } from "../../types/Address";
 import { TransactionOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const ContractCallTile: React.FC<{
   operation: TransactionOperation;
 }> = ({ operation }) => {
-  const showToAddress = useShowAddress(operation.target.address);
+  const showToAddress = useShowAddress(operation.target!.address);
   const showFromAddress = useShowAddress(operation.sender.address);
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
@@ -46,7 +47,7 @@ export const ContractCallTile: React.FC<{
                 <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={operation.target} />
+                <AddressPill address={operation.target as TzktAlias} />
               </Flex>
             )}
             {(showFromAddress || showAnyAddress) && (

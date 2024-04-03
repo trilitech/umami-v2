@@ -376,7 +376,7 @@ describe("<AccountCard />", () => {
       expect(screen.getByTestId("account-card-operations-tab")).toBeVisible();
       const operations = await screen.findAllByTestId(/^operation-tile/);
       expect(operations).toHaveLength(2);
-      expect(operations[0]).toHaveTextContent("+ 1.000000 ꜩ");
+      expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
       expect(operations[1]).toHaveTextContent("- 2.000000 ꜩ");
     });
   });

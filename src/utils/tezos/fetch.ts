@@ -60,7 +60,7 @@ export type TransactionOperation = tzktApi.TransactionOperation & {
   counter: number;
   type: "transaction";
   sender: TzktAlias;
-  target: TzktAlias;
+  target?: TzktAlias | null;
   status: string;
 };
 export type OriginationOperation = tzktApi.OriginationOperation & {

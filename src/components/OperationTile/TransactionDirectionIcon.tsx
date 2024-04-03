@@ -1,13 +1,16 @@
 import { IconProps } from "@chakra-ui/react";
 
-import { IncomingArrow, OutgoingArrow } from "../../assets/icons";
+import { OperationDestination } from "./useGetOperationDestination";
+import { ContractIcon, IncomingArrow, OutgoingArrow } from "../../assets/icons";
 
 export const TransactionDirectionIcon = ({
-  isOutgoing,
+  destination,
   ...props
-}: { isOutgoing: boolean } & IconProps) =>
-  isOutgoing ? (
+}: { destination: OperationDestination } & IconProps) =>
+  destination === "outgoing" ? (
     <OutgoingArrow data-testid="outgoing-arrow" {...props} />
-  ) : (
+  ) : destination === "incoming" ? (
     <IncomingArrow data-testid="incoming-arrow" {...props} />
+  ) : (
+    <ContractIcon data-testid="unrelated-operation-icon" {...props} />
   );

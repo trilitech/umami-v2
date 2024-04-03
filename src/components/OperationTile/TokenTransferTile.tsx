@@ -6,7 +6,11 @@ import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { TzktLink } from "./TzktLink";
-import { useIsOutgoingOperation } from "./useIsOutgoingOperation";
+import {
+  operationColor,
+  operationSign,
+  useGetOperationDestination,
+} from "./useGetOperationDestination";
 import { useShowAddress } from "./useShowAddress";
 import colors from "../../style/colors";
 import { TzktAlias } from "../../types/Address";
@@ -27,18 +31,23 @@ export const TokenTransferTile: React.FC<{
 }> = ({ operation, tokenTransfer, token }) => {
   const rawAmount = tokenTransfer.amount;
 
-  const showToAddress = useShowAddress(tokenTransfer.to.address);
-  const showFromAddress = useShowAddress(tokenTransfer.from?.address ?? "");
+  const showToAddress = useShowAddress(tokenTransfer.to?.address);
+  const showFromAddress = useShowAddress(tokenTransfer.from?.address);
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
 
-  const isOutgoing = useIsOutgoingOperation(tokenTransfer.from?.address ?? "");
+  const operationDestination = useGetOperationDestination(
+    tokenTransfer.from?.address,
+    tokenTransfer.to?.address
+  );
   const isNFT = token.type === "nft";
 
   const tokenAmount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
-  const titleColor = isOutgoing ? colors.orange : colors.green;
+
+  const titleColor = operationColor(operationDestination);
   const underlineColor = isNFT ? "white" : titleColor;
-  const sign = isOutgoing ? "-" : "+";
+
+  const sign = operationSign(operationDestination);
 
   const titleElement = isNFT ? (
     <Tooltip
@@ -95,7 +104,7 @@ export const TokenTransferTile: React.FC<{
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-token-transfer">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <TransactionDirectionIcon marginRight="8px" isOutgoing={isOutgoing} />
+          <TransactionDirectionIcon marginRight="8px" destination={operationDestination} />
           {titleElement}
           {operation && <Fee operation={operation} />}
         </Center>
@@ -111,7 +120,7 @@ export const TokenTransferTile: React.FC<{
                 <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={tokenTransfer.to} />
+                <AddressPill address={tokenTransfer.to!} />
               </Flex>
             )}
             {showFromAddress && (

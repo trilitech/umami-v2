@@ -16,6 +16,13 @@ const DrawerWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 describe("useShowAddress", () => {
+  it.each([undefined, null, ""])("returns false if the address is %s", falsyAddress => {
+    const { result } = renderHook(() => useShowAddress(falsyAddress), {
+      wrapper: PageWrapper,
+    });
+    expect(result.current).toBe(false);
+  });
+
   it("returns true if the tile is in page mode", () => {
     const { result } = renderHook(() => useShowAddress(mockImplicitAddress(0).pkh), {
       wrapper: PageWrapper,
