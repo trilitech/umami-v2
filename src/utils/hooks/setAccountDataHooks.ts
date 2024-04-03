@@ -7,6 +7,7 @@ import {
   useSeedPhrases,
 } from "./getAccountDataHooks";
 import { useGetNextAvailableAccountLabels } from "./labelsHooks";
+import { useMultisigAccounts } from "./multisigHooks";
 import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
 import {
@@ -22,6 +23,7 @@ import { decrypt, encrypt } from "../crypto/AES";
 import { useRestoreRevealedMnemonicAccounts } from "../mnemonic";
 import { useAppDispatch } from "../redux/hooks";
 import { accountsSlice } from "../redux/slices/accountsSlice";
+import { multisigsSlice } from "../redux/slices/multisigsSlice";
 import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
 import { derivePublicKeyPair, getFingerPrint } from "../tezos";
 
@@ -188,14 +190,19 @@ export const useRestoreSocial = () => {
 
 /**
  * Hook for removing all accounts from mnemonic group by a given fingerprint.
+ *
+ * Also removes accounts' dependencies and obsolete multisigs.
  */
 export const useRemoveMnemonic = () => {
   const dispatch = useAppDispatch();
   const getAccountsByFingerPrint = useGetAccountsByFingerPrint();
   const removeAccountsDependencies = useRemoveAccountsDependencies();
+  const removeObsoleteMultisigs = useRemoveObsoleteMultisigs();
 
   return (fingerPrint: string) => {
-    removeAccountsDependencies(getAccountsByFingerPrint(fingerPrint));
+    const accountsToRemove = getAccountsByFingerPrint(fingerPrint);
+    removeAccountsDependencies(accountsToRemove);
+    removeObsoleteMultisigs(accountsToRemove);
 
     dispatch(
       removeMnemonicAndAccounts({
@@ -207,14 +214,19 @@ export const useRemoveMnemonic = () => {
 
 /**
  * Hook for removing all accounts of a given type.
+ *
+ * Also removes accounts' dependencies and obsolete multisigs.
  */
 export const useRemoveNonMnemonic = () => {
   const dispatch = useAppDispatch();
   const getAccountsByType = useGetAccountsByType();
   const removeAccountsDependencies = useRemoveAccountsDependencies();
+  const removeObsoleteMultisigs = useRemoveObsoleteMultisigs();
 
   return (accountType: ImplicitAccount["type"]) => {
-    removeAccountsDependencies(getAccountsByType(accountType));
+    const accountsToRemove = getAccountsByType(accountType);
+    removeAccountsDependencies(accountsToRemove);
+    removeObsoleteMultisigs(accountsToRemove);
 
     dispatch(
       removeNonMnemonicAccounts({
@@ -226,14 +238,45 @@ export const useRemoveNonMnemonic = () => {
 
 /**
  * Hook for removing single account.
+ *
+ * Also removes account's dependencies and obsolete multisigs.
  */
 export const useRemoveAccount = () => {
   const dispatch = useAppDispatch();
   const removeAccountsDependencies = useRemoveAccountsDependencies();
+  const removeObsoleteMultisigs = useRemoveObsoleteMultisigs();
 
   return (account: SocialAccount | LedgerAccount | SecretKeyAccount) => {
     removeAccountsDependencies([account]);
+    removeObsoleteMultisigs([account]);
 
     dispatch(accountsSlice.actions.removeAccount(account));
+  };
+};
+
+/**
+ * Hook for removing obsolete multisigs & their dependencies.
+ *
+ * Removes multisigs for which all signer accounts were removed.
+ * Checks currently stored implicit accounts, but ignores deletedAccounts.
+ */
+export const useRemoveObsoleteMultisigs = () => {
+  const dispatch = useAppDispatch();
+  const implicit = useImplicitAccounts();
+  const multisig = useMultisigAccounts();
+  const removeAccountsDependencies = useRemoveAccountsDependencies();
+
+  return (deletedAccounts: ImplicitAccount[]) => {
+    const deletedPkhs = deletedAccounts.map(account => account.address.pkh);
+    const remainingPkhs = implicit
+      .map(account => account.address.pkh)
+      .filter(address => !deletedPkhs.includes(address));
+
+    const multisigsToRemove = multisig
+      .filter(multisig => !multisig.signers.some(signer => remainingPkhs.includes(signer.pkh)))
+      .map(multisig => multisig);
+
+    removeAccountsDependencies(multisigsToRemove);
+    dispatch(multisigsSlice.actions.removeMultisigs(multisigsToRemove.map(m => m.address.pkh)));
   };
 };
