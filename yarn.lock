@@ -3620,7 +3620,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/postcss-light-dark-function@npm:^1.0.2":
+"@csstools/postcss-light-dark-function@npm:^1.0.3":
   version: 1.0.3
   resolution: "@csstools/postcss-light-dark-function@npm:1.0.3"
   dependencies:
@@ -17114,9 +17114,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-preset-env@npm:^9.5.3":
-  version: 9.5.3
-  resolution: "postcss-preset-env@npm:9.5.3"
+"postcss-preset-env@npm:^9.5.4":
+  version: 9.5.4
+  resolution: "postcss-preset-env@npm:9.5.4"
   dependencies:
     "@csstools/postcss-cascade-layers": "npm:^4.0.4"
     "@csstools/postcss-color-function": "npm:^3.0.13"
@@ -17129,7 +17129,7 @@ __metadata:
     "@csstools/postcss-ic-unit": "npm:^3.0.6"
     "@csstools/postcss-initial": "npm:^1.0.1"
     "@csstools/postcss-is-pseudo-class": "npm:^4.0.6"
-    "@csstools/postcss-light-dark-function": "npm:^1.0.2"
+    "@csstools/postcss-light-dark-function": "npm:^1.0.3"
     "@csstools/postcss-logical-float-and-clear": "npm:^2.0.1"
     "@csstools/postcss-logical-overflow": "npm:^1.0.1"
     "@csstools/postcss-logical-overscroll-behavior": "npm:^1.0.1"
@@ -17180,7 +17180,7 @@ __metadata:
     postcss-selector-not: "npm:^7.0.2"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10/4e2a9adfc6e42448d42e4268d7077bfa9e9a9a1511d7ef3bf54f1e8d5c9a40fc5cf46592afd7784e937402a44a6b088085aa0fa1e6ea776f7c29633a720d6712
+  checksum: 10/209308757c12fcaf7fdbc04536ff292041857afc7cd30038d8dbfe484216aa9dfabec635263cf7e577098f759cd96fa121a93d6deeba2ffcea64c33a73bf6fbb
   languageName: node
   linkType: hard
 
@@ -20712,7 +20712,7 @@ __metadata:
     postcss-flexbugs-fixes: "npm:^5.0.2"
     postcss-loader: "npm:^8.1.1"
     postcss-normalize: "npm:^10.0.1"
-    postcss-preset-env: "npm:^9.5.3"
+    postcss-preset-env: "npm:^9.5.4"
     prettier: "npm:^3.2.5"
     prettier-plugin-gherkin: "npm:^2.2.1"
     process: "npm:^0.11.10"
