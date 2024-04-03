@@ -9,10 +9,11 @@ import {
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
 import { DefaultNetworks } from "../../types/Network";
-jest.mock("axios");
-jest.unmock("../tezos");
+jest.deepUnmock("../tezos");
+jest.unmock("../tezos/helpers");
+jest.unmock("../tezos/fetch");
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = jest.spyOn(axios, "get");
 
 describe("multisig helpers", () => {
   describe.each(DefaultNetworks)("on $name", network => {
@@ -21,7 +22,7 @@ describe("multisig helpers", () => {
         const mockResponse = {
           data: tzktGetSameMultisigsResponse,
         };
-        mockedAxios.get.mockResolvedValue(mockResponse);
+        mockedAxios.mockResolvedValue(mockResponse);
 
         const result = await getRelevantMultisigContracts(
           new Set([mockImplicitAddress(0).pkh]),
@@ -44,7 +45,7 @@ describe("multisig helpers", () => {
         const mockResponse = {
           data: tzktGetSameMultisigsResponse,
         };
-        mockedAxios.get.mockResolvedValue(mockResponse);
+        mockedAxios.mockResolvedValue(mockResponse);
 
         const result = await getExistingContractAddresses(
           network,
@@ -63,12 +64,12 @@ describe("multisig helpers", () => {
       it("handles empty multisigs", async () => {
         const result = await getPendingOperationsForMultisigs([], network);
 
-        expect(mockedAxios.get).toHaveBeenCalledTimes(0);
+        expect(mockedAxios).toHaveBeenCalledTimes(0);
         expect(result).toEqual([]);
       });
 
       it("fetches pending operations for multisigs", async () => {
-        mockedAxios.get.mockResolvedValueOnce({
+        mockedAxios.mockResolvedValueOnce({
           data: [
             {
               bigmap: 0,
@@ -90,7 +91,7 @@ describe("multisig helpers", () => {
           network
         );
 
-        expect(mockedAxios.get).toHaveBeenCalledWith(
+        expect(mockedAxios).toHaveBeenCalledWith(
           `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
         );
         expect(result).toEqual([

@@ -10,7 +10,6 @@ import {
   parseImplicitPkh,
 } from "../../types/Address";
 import { Network } from "../../types/Network";
-import { withRateLimit } from "../tezos";
 import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
 
 export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
@@ -23,20 +22,19 @@ export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
 export const getRelevantMultisigContracts = async (
   accountPkhs: Set<string>,
   network: Network
-): Promise<Multisig[]> =>
-  withRateLimit(async () => {
-    const multisigs = await getAllMultiSigContracts(network);
-    return multisigs
-      .filter(({ storage: { signers } }) => {
-        // For now, we assume the signer is always an implicit account
-        if (!every(signers, isValidImplicitPkh)) {
-          return false;
-        }
-        const intersection = signers.filter(s => accountPkhs.has(s));
-        return intersection.length > 0;
-      })
-      .map(parseMultisig);
-  });
+): Promise<Multisig[]> => {
+  const multisigs = await getAllMultiSigContracts(network);
+  return multisigs
+    .filter(({ storage: { signers } }) => {
+      // For now, we assume the signer is always an implicit account
+      if (!every(signers, isValidImplicitPkh)) {
+        return false;
+      }
+      const intersection = signers.filter(s => accountPkhs.has(s));
+      return intersection.length > 0;
+    })
+    .map(parseMultisig);
+};
 
 /**
  * Checks which of the given multisig addresses exist in the given network.
@@ -48,11 +46,10 @@ export const getRelevantMultisigContracts = async (
 export const getExistingContractAddresses = async (
   network: Network,
   accountPkhs: Set<RawPkh>
-): Promise<RawPkh[]> =>
-  withRateLimit(async () => {
-    const contracts = await getExistingContracts(network, Array.from(accountPkhs));
-    return contracts.map(raw => parseContractPkh(raw.address).pkh);
-  });
+): Promise<RawPkh[]> => {
+  const contracts = await getExistingContracts(network, Array.from(accountPkhs));
+  return contracts.map(raw => parseContractPkh(raw.address).pkh);
+};
 
 export const getNetworksForContracts = async (
   availableNetworks: Network[],
@@ -92,13 +89,12 @@ export const getPendingOperationsForMultisigs = async (
   if (multisigs.length === 0) {
     return [];
   }
-  return withRateLimit(async () => {
-    const bigmapIds = multisigs.map(m => m.pendingOperationsBigmapId);
 
-    const response = await getPendingOperations(bigmapIds, network);
+  const bigmapIds = multisigs.map(m => m.pendingOperationsBigmapId);
 
-    return compact(response.map(parseMultisigOperation));
-  });
+  const response = await getPendingOperations(bigmapIds, network);
+
+  return compact(response.map(parseMultisigOperation));
 };
 
 export const multisigToAccount = (multisig: Multisig, label: string): MultisigAccount => ({

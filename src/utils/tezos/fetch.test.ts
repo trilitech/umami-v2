@@ -37,7 +37,7 @@ jest.mock("@tzkt/sdk-api", () => ({
   accountsGet: jest.fn(),
 }));
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = jest.mocked(axios);
 
 class HTTPErrorMock extends Error {
   status: number;

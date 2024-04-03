@@ -8,11 +8,7 @@ import {
 } from "../../mocks/factories";
 import { waitFor } from "../../mocks/testUtils";
 import { GHOSTNET, MAINNET } from "../../types/Network";
-import { getNetworksForContracts } from "../multisig/helpers";
-
-jest.mock("../multisig/helpers");
-
-const mockedGetNetworksForContracts = jest.mocked(getNetworksForContracts);
+import * as helpers from "../multisig/helpers";
 
 describe("migrations", () => {
   describe("main migrations", () => {
@@ -45,6 +41,7 @@ describe("migrations", () => {
       const ghostnetPkh = mockContractAddress(1).pkh;
       const absentPkh = mockContractAddress(2).pkh;
 
+      const mockedGetNetworksForContracts = jest.spyOn(helpers, "getNetworksForContracts");
       mockedGetNetworksForContracts.mockResolvedValue(
         new Map([
           [mainnetPkh, "mainnet"],
@@ -52,7 +49,7 @@ describe("migrations", () => {
         ])
       );
 
-      const migratedStore = mainStoreMigrations[4]({
+      const migratedStore = mainStoreMigrations[5]({
         networks: {
           current: [GHOSTNET],
           available: [[MAINNET, GHOSTNET]],
