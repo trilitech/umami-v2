@@ -29,12 +29,6 @@ const { removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.a
 
 const { addAccount } = accountsSlice.actions;
 
-export const useReset = () => () => {
-  localStorage.clear();
-
-  window.location.reload();
-};
-
 /**
  * Restores accounts from a mnemonic group when it's being added by an existing seedphrase.
  *
