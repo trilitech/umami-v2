@@ -10,12 +10,12 @@ import colors from "../style/colors";
 const feedbackEmailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
 
+const refresh = () => {
+  window.location.href = "/";
+};
+
 export const ErrorPage: React.FC = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
-
-  const onRefresh = () => {
-    window.location.reload();
-  };
 
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
@@ -72,7 +72,7 @@ export const ErrorPage: React.FC = () => {
               color={colors.blue}
               fill={colors.blue}
               _hover={{ color: colors.blueL, fill: colors.blueL }}
-              onClick={onRefresh}
+              onClick={refresh}
             >
               <Center>
                 <ReloadIcon marginRight="7px" />
