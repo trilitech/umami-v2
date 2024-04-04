@@ -1,10 +1,9 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 
 import { ExitArrowIcon } from "../assets/icons";
 
 export const CloseDrawerButton = ({ onClose }: { onClose: () => void }) => (
-  <Button onClick={onClose} variant="CTAWithIcon">
+  <Button minWidth="24px" padding="0" onClick={onClose} variant="CTAWithIcon">
     <ExitArrowIcon stroke="currentcolor" />
-    <Text marginLeft="4px">Close</Text>
   </Button>
 );

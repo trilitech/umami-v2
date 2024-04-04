@@ -49,11 +49,11 @@ export const RestoreLedger = ({
             status: "info",
           });
 
-          const derivationPath = account.derivationPathPattern
-            ? makeDerivationPath(account.derivationPathPattern, 0)
+          const derivationPath = account.derivationPathTemplate
+            ? makeDerivationPath(account.derivationPathTemplate, 0)
             : account.derivationPath;
           const { pk, pkh } = await getPk(derivationPath);
-          restoreLedger(account.derivationPathPattern, derivationPath!, pk, pkh, account.label);
+          restoreLedger(account.derivationPathTemplate, derivationPath!, pk, pkh, account.label);
           toast.close(toastId);
           toast({ description: "Account successfully created!", status: "success" });
           closeModal();

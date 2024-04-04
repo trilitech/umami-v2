@@ -43,16 +43,15 @@ export const accountsMigrations = {
       });
     }),
   4: (state: any) =>
-    // TODO: add tests
     produce(state, (draft: any) => {
       draft.items.forEach((account: any) => {
-        if (account.type === "ledger" && !account.derivationPathPattern) {
-          account.derivationPathPattern = undefined;
+        if (account.type === "ledger" && !account.derivationPathTemplate) {
+          account.derivationPathTemplate = undefined;
 
           if (account.derivationPath === "44'/1729'/0'/0'") {
-            account.derivationPathPattern = "44'/1729'/?'/0'";
+            account.derivationPathTemplate = "44'/1729'/?'/0'";
           } else if (account.derivationPath === "44'/1729'/0'/0'/0'") {
-            account.derivationPathPattern = "44'/1729'/?'/0'/0'";
+            account.derivationPathTemplate = "44'/1729'/?'/0'/0'";
           }
         }
       });

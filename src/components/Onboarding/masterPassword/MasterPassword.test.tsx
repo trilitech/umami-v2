@@ -14,7 +14,7 @@ const fixture = () => {
     type: "mnemonic" as const,
     mnemonic: mnemonic1,
     label: "Some Account",
-    derivationPathPattern: "any",
+    derivationPathTemplate: "any",
   };
   return <MasterPassword account={account} onClose={onClose} />;
 };

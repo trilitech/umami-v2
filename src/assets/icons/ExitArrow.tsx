@@ -4,8 +4,8 @@ import colors from "../../style/colors";
 
 export const ExitArrowIcon: React.FC<IconProps> = props => (
   <Icon
-    width="18px"
-    height="18px"
+    width="24px"
+    height="24px"
     fill="none"
     stroke={colors.gray[450]}
     viewBox="0 0 18 18"

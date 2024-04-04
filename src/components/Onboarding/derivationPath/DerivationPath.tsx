@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { SlashIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import {
-  AVAILABLE_DERIVATION_PATH_PATTERNS,
-  DEFAULT_DERIVATION_PATH_PATTERN,
-  defaultDerivationPathPattern,
+  AVAILABLE_DERIVATION_PATH_TEMPLATES,
+  DEFAULT_DERIVATION_PATH_TEMPLATE,
+  defaultDerivationPathTemplate,
   getDefaultDerivationPath,
 } from "../../../utils/account/derivationPathUtils";
 import { deriveSecretKey } from "../../../utils/tezos";
@@ -40,16 +40,16 @@ export const DerivationPath = ({
   } = useForm({
     mode: "onBlur",
     defaultValues: {
-      derivationPathPattern: defaultDerivationPathPattern,
+      derivationPathTemplate: defaultDerivationPathTemplate,
       derivationPath: getDefaultDerivationPath(0),
     },
   });
 
   const onSubmit = async ({
-    derivationPathPattern,
+    derivationPathTemplate,
     derivationPath,
   }: {
-    derivationPathPattern: string;
+    derivationPathTemplate: string;
     derivationPath: string;
   }) => {
     switch (account.type) {
@@ -68,7 +68,7 @@ export const DerivationPath = ({
           type: "restoreLedger",
           account: {
             ...account,
-            derivationPathPattern: normalizeDerivationPath(derivationPathPattern),
+            derivationPathTemplate: normalizeDerivationPath(derivationPathTemplate),
           },
         });
       }
@@ -87,7 +87,7 @@ export const DerivationPath = ({
         }
         return goToStep({
           type: "masterPassword",
-          account: { ...account, derivationPathPattern },
+          account: { ...account, derivationPathTemplate },
         });
       }
     }
@@ -142,9 +142,9 @@ export const DerivationPath = ({
         {!isCustomPath && (
           <FormControl marginTop="32px" marginBottom="20px">
             <Select
-              onChange={newVal => setValue("derivationPathPattern", newVal)}
-              options={AVAILABLE_DERIVATION_PATH_PATTERNS}
-              selected={DEFAULT_DERIVATION_PATH_PATTERN}
+              onChange={newVal => setValue("derivationPathTemplate", newVal)}
+              options={AVAILABLE_DERIVATION_PATH_TEMPLATES}
+              selected={DEFAULT_DERIVATION_PATH_TEMPLATE}
             />
           </FormControl>
         )}

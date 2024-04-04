@@ -29,7 +29,7 @@ Feature: User Onboarding
     When I click "Continue" button
     Then I am on "Derivation Path" onboarding page
 
-    When I select "<derivationPath>" as derivationPath
+    When I select "<derivationPath>" as derivation path template
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 
@@ -72,7 +72,7 @@ Feature: User Onboarding
     When I click "Continue" button
     Then I am on "Derivation Path" onboarding page
 
-    When I select "<derivationPath>" as derivationPath
+    When I select "<derivationPath>" as derivation path template
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 
@@ -115,7 +115,7 @@ Feature: User Onboarding
     When I click "Continue" button
     Then I am on "Derivation Path" onboarding page
 
-    When I select "<derivationPath>" as derivationPath
+    When I select "<derivationPath>" as derivation path template
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 

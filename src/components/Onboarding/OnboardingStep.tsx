@@ -46,7 +46,7 @@ export type RestoreLedgerStep = {
   account: {
     type: "ledger";
     label: string;
-    derivationPathPattern?: string;
+    derivationPathTemplate?: string;
     derivationPath?: string;
   };
 };
@@ -56,7 +56,7 @@ type RestoreBackupStep = {
 export type MasterPasswordStep = {
   type: "masterPassword";
   account:
-    | { type: "mnemonic"; mnemonic: string; label: string; derivationPathPattern: string }
+    | { type: "mnemonic"; mnemonic: string; label: string; derivationPathTemplate: string }
     | { type: "secret_key"; secretKey: string; label: string };
 };
 type FakeAccountStep = { type: "fakeAccount" };

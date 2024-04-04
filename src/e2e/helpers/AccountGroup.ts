@@ -27,7 +27,7 @@ export type Account = {
 export class AccountGroupBuilder {
   private accountGroup: AccountGroup;
 
-  private derivationPathPattern = "";
+  private derivationPathTemplate = "";
   private seedPhrase: string[] = [];
 
   constructor(groupType: "mnemonic" | "secret_key", accountsAmount: number) {
@@ -42,11 +42,11 @@ export class AccountGroupBuilder {
     this.accountGroup.accounts = times(accountsAmount, () => ({ name: "", pkh: "" }));
   }
 
-  setDerivationPathPattern(derivationPathPattern: string): void {
+  setDerivationPathTemplate(derivationPathTemplate: string): void {
     if (this.accountGroup.type !== "mnemonic") {
       throw new Error(`Derivation path is not used for ${this.accountGroup.type} accounts}`);
     }
-    this.derivationPathPattern = derivationPathPattern;
+    this.derivationPathTemplate = derivationPathTemplate;
   }
 
   async setSeedPhrase(seedPhrase: string[]): Promise<void> {
@@ -90,13 +90,13 @@ export class AccountGroupBuilder {
     if (this.seedPhrase.length === 0) {
       throw new Error("Seed phrase is not set");
     }
-    if (this.derivationPathPattern === "") {
+    if (this.derivationPathTemplate === "") {
       throw new Error("Derivation path is not set");
     }
     for (let i = 0; i < this.accountGroup.accounts.length; i++) {
       const keyPair = await derivePublicKeyPair(
         this.seedPhrase.join(" "),
-        makeDerivationPath(this.derivationPathPattern, i)
+        makeDerivationPath(this.derivationPathTemplate, i)
       );
       this.accountGroup.accounts[i].pkh = keyPair.pkh;
     }

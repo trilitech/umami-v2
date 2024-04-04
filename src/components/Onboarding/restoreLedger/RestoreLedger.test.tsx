@@ -1,7 +1,7 @@
 import { RestoreLedger } from "./RestoreLedger";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { defaultDerivationPathPattern } from "../../../utils/account/derivationPathUtils";
+import { defaultDerivationPathTemplate } from "../../../utils/account/derivationPathUtils";
 import { getPk } from "../../../utils/ledger/pk";
 
 const closeModalMock = jest.fn(() => {});
@@ -12,7 +12,7 @@ const getPkMock = jest.mocked(getPk);
 const fixture = () => {
   const account = {
     type: "ledger" as const,
-    derivationPath: defaultDerivationPathPattern,
+    derivationPath: defaultDerivationPathTemplate,
     label: "Any Account",
   };
   return <RestoreLedger account={account} closeModal={closeModalMock} />;

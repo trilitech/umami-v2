@@ -9,14 +9,14 @@ describe("<DerivationPath />", () => {
     {
       account: { type: "ledger" as const, label: "ledger account" },
       nextPage: "restoreLedger",
-      derivationPathPattern: "44'/1729'/?'/0'",
+      derivationPathTemplate: "44'/1729'/?'/0'",
     },
     {
       account: { type: "mnemonic" as const, label: "mnemonic account", mnemonic: mnemonic1 },
       nextPage: "masterPassword",
-      derivationPathPattern: "44'/1729'/?'/0'",
+      derivationPathTemplate: "44'/1729'/?'/0'",
     },
-  ])("For $account.type", ({ account, nextPage, derivationPathPattern }) => {
+  ])("For $account.type", ({ account, nextPage, derivationPathTemplate }) => {
     it("uses default path pattern", async () => {
       const user = userEvent.setup();
       render(<DerivationPath account={account} goToStep={goToStepMock} />);
@@ -31,7 +31,7 @@ describe("<DerivationPath />", () => {
         account: {
           ...account,
           derivationPath: undefined,
-          derivationPathPattern: derivationPathPattern,
+          derivationPathTemplate: derivationPathTemplate,
         },
       });
     });
@@ -58,7 +58,7 @@ describe("<DerivationPath />", () => {
         type: nextPage,
         account: {
           ...account,
-          derivationPathPattern: standard5PieceDerivationPath,
+          derivationPathTemplate: standard5PieceDerivationPath,
           derivationPath: undefined,
         },
       });
