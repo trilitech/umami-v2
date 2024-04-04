@@ -41,6 +41,22 @@ describe("<ContractCallTile />", () => {
       render(fixture(contextValue, contractCallFixture({})));
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
+
+    it("shows both the sender and target contract pills", () => {
+      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+
+      render(
+        fixture(
+          contextValue,
+          contractCallFixture({
+            sender: { address: mockLedgerAccount(0).address.pkh },
+          })
+        )
+      );
+
+      expect(screen.getByTestId("from")).toHaveTextContent("Account");
+      expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockContractAddress(0).pkh));
+    });
   });
 
   describe("page mode", () => {
@@ -85,22 +101,6 @@ describe("<ContractCallTile />", () => {
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Contract Call");
     });
-
-    it("shows both the sender and target contract pills", () => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
-
-      render(
-        fixture(
-          contextValue,
-          contractCallFixture({
-            sender: { address: mockLedgerAccount(0).address.pkh },
-          })
-        )
-      );
-
-      expect(screen.getByTestId("from")).toHaveTextContent("Account");
-      expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockContractAddress(0).pkh));
-    });
   });
 
   describe("drawer mode", () => {
@@ -119,20 +119,6 @@ describe("<ContractCallTile />", () => {
       render(fixture(contextValue, contractCallFixture({})));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
-    });
-
-    it("shows only the target contract pill", () => {
-      render(
-        fixture(
-          contextValue,
-          contractCallFixture({
-            sender: { address: mockLedgerAccount(0).address.pkh },
-          })
-        )
-      );
-
-      expect(screen.queryByTestId("from")).not.toBeInTheDocument();
-      expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockContractAddress(0).pkh));
     });
   });
 });
