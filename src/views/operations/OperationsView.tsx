@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Divider, Flex, Image } from "@chakra-ui/react";
 import { useRef } from "react";
 
 import { useGetOperations } from "./useGetOperations";
@@ -31,17 +31,20 @@ export const OperationsView = () => {
     }
   };
 
-  const loadingElement = (
-    <Text color={colors.gray[500]} textAlign="center" paddingY="20px">
-      Loading...
-    </Text>
-  );
-
   return (
     <Flex flexDirection="column" height="100%">
       <TopBar title="Operations" />
       {accountsFilter}
-      {isLoading && isFirstLoad && loadingElement}
+
+      <Center display={isLoading && isFirstLoad ? "flex" : "none"} height="100%">
+        <Image
+          width="150px"
+          height="75px"
+          marginBottom="136px"
+          src="/static/animations/loading-wheel.gif"
+        />
+      </Center>
+
       {operations.length === 0 && !isLoading && <NoOperations size="lg" />}
       {operations.length > 0 && (
         <Box
@@ -71,13 +74,11 @@ export const OperationsView = () => {
                 </Box>
               );
             })}
-            {isLoading && (
-              <>
-                <Divider />
-                {loadingElement}
-              </>
-            )}
           </OperationTileContext.Provider>
+          <Center flexDirection="column" display={isLoading && !isFirstLoad ? "flex" : "none"}>
+            <Divider />
+            <Image width="100px" height="50px" src="/static/animations/loading-dots.gif" />
+          </Center>
         </Box>
       )}
     </Flex>

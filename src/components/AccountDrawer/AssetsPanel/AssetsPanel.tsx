@@ -1,4 +1,15 @@
-import { Box, Button, Flex, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Image,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
 import React from "react";
 
 import { DelegationDisplay } from "./DelegationDisplay";
@@ -18,7 +29,6 @@ import { useGetOperations } from "../../../views/operations/useGetOperations";
 import { ExternalLink } from "../../ExternalLink";
 import { OperationTileContext } from "../../OperationTile";
 import { SmallTab } from "../../SmallTab";
-
 /**
  * Component that displays account assets in the account drawer
  *
@@ -104,11 +114,11 @@ export const AssetsPanel: React.FC<{
           <OperationTileContext.Provider
             value={{ mode: "drawer", selectedAddress: account.address }}
           >
-            {isLoading ? (
-              <Text color={colors.gray[500]} textAlign="center">
-                Loading...
-              </Text>
-            ) : (
+            <Center display={isLoading ? "flex" : "none"} height="50px">
+              <Image width="150px" height="75px" src="/static/animations/loading-wheel.gif" />
+            </Center>
+
+            {!isLoading && (
               <OperationListDisplay operations={operations} owner={account.address.pkh} />
             )}
           </OperationTileContext.Provider>
