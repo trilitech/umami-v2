@@ -40,7 +40,7 @@
     ]
   },
   "devDependencies": {
-    "@airgap/beacon-wallet": "^4.1.2",
+    "@airgap/beacon-wallet": "^4.2.0",
     "@babel/core": "^7.24.3",
     "@babel/runtime": "^7.24.1",
     "@chakra-ui/cli": "^2.4.1",
