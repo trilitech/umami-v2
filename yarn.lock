@@ -6738,12 +6738,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.2.23":
-  version: 18.2.23
-  resolution: "@types/react-dom@npm:18.2.23"
+"@types/react-dom@npm:18.2.24":
+  version: 18.2.24
+  resolution: "@types/react-dom@npm:18.2.24"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 10/8311c67767b0aafb5cd94176a90f801f0f5f6930731d57caaa04bb0d87fdef6bc6f723a116d9777d2082ec022682acaad7a62d04dc27e330e818cf34f2ef2703
+  checksum: 10/bbd4005f2f65b7606505e9b8759b6e99e222d503602765594ea327893fb7061de8951279baef47a1932f04d94d1865daea05a32f9fcf6f9f1143dbabce5b33de
   languageName: node
   linkType: hard
 
@@ -20667,7 +20667,7 @@ __metadata:
     "@types/promise-retry": "npm:^1.1.6"
     "@types/prop-types": "npm:^15.7.12"
     "@types/react": "npm:18.2.74"
-    "@types/react-dom": "npm:18.2.23"
+    "@types/react-dom": "npm:18.2.24"
     "@types/redux-mock-store": "npm:^1.0.6"
     "@types/wait-on": "npm:^5.3.4"
     "@typescript-eslint/eslint-plugin": "npm:^7.5.0"
