@@ -7,7 +7,7 @@ export type TokenTransfer = tzktApi.TokenTransfer & {
   id: number;
   amount: string;
   token: RawTokenInfo;
-  to: TzktAlias;
+  to?: TzktAlias;
   level: number;
   migrationId?: number;
   originationId?: number;

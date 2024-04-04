@@ -6,7 +6,11 @@ import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { TzktLink } from "./TzktLink";
-import { useIsOutgoingOperation } from "./useIsOutgoingOperation";
+import {
+  operationColor,
+  operationSign,
+  useGetOperationDestination,
+} from "./useGetOperationDestination";
 import { useShowAddress } from "./useShowAddress";
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
@@ -15,21 +19,24 @@ import { TransactionOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
-  const isOutgoing = useIsOutgoingOperation(operation.sender.address);
+  const operationDestination = useGetOperationDestination(
+    operation.sender.address,
+    operation.target?.address
+  );
   const amount = prettyTezAmount(String(operation.amount));
-  const showToAddress = useShowAddress(operation.target.address);
+  const showToAddress = useShowAddress(operation.target?.address);
   const showFromAddress = useShowAddress(operation.sender.address);
   // if you send assets between your own accounts you need to see at least one address
   const showAnyAddress = !showToAddress && !showFromAddress;
 
-  const titleColor = isOutgoing ? colors.orange : colors.green;
-  const sign = isOutgoing ? "-" : "+";
+  const titleColor = operationColor(operationDestination);
+  const sign = operationSign(operationDestination);
 
   return (
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-transaction">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <TransactionDirectionIcon marginRight="8px" isOutgoing={isOutgoing} />
+          <TransactionDirectionIcon marginRight="8px" destination={operationDestination} />
           <TzktLink
             marginRight="8px"
             color={titleColor}
@@ -55,7 +62,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
                 <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(operation.target.address)} />
+                <AddressPill address={parsePkh(operation.target!.address!)} />
               </Flex>
             )}
             {showFromAddress && (
