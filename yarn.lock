@@ -26,73 +26,73 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@airgap/beacon-core@npm:4.1.2":
-  version: 4.1.2
-  resolution: "@airgap/beacon-core@npm:4.1.2"
+"@airgap/beacon-core@npm:4.2.1":
+  version: 4.2.1
+  resolution: "@airgap/beacon-core@npm:4.2.1"
   dependencies:
-    "@airgap/beacon-types": "npm:4.1.2"
-    "@airgap/beacon-utils": "npm:4.1.2"
+    "@airgap/beacon-types": "npm:4.2.1"
+    "@airgap/beacon-utils": "npm:4.2.1"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@stablelib/nacl": "npm:^1.0.4"
     "@stablelib/utf8": "npm:^1.0.1"
     "@stablelib/x25519-session": "npm:^1.0.4"
     bs58check: "npm:2.1.2"
-  checksum: 10/3efba240db5b55e036e2133decc9587ace079bc7681282d95dfd1c5cad28b04a83dce422a8b854392e9f33c0b68178097c5fbd21ede1de490a92ff50b26cff50
+  checksum: 10/c9f12383b125fd260b1e83e07a7fed7b9cd3ba2a34b5954312721dfc4fb875398cab34b6f413a954aff06c0163477ac76b68231f2cfac4b798f00cd5b7eb01ba
   languageName: node
   linkType: hard
 
-"@airgap/beacon-transport-matrix@npm:4.1.2":
-  version: 4.1.2
-  resolution: "@airgap/beacon-transport-matrix@npm:4.1.2"
+"@airgap/beacon-transport-matrix@npm:4.2.1":
+  version: 4.2.1
+  resolution: "@airgap/beacon-transport-matrix@npm:4.2.1"
   dependencies:
-    "@airgap/beacon-core": "npm:4.1.2"
-    "@airgap/beacon-utils": "npm:4.1.2"
+    "@airgap/beacon-core": "npm:4.2.1"
+    "@airgap/beacon-utils": "npm:4.2.1"
     axios: "npm:^1.6.2"
-  checksum: 10/bbcf2aac3d7172ec9229337c4931456928dbfdffc8dc1b0e5d9bce42da30528e3cfe01907516c9eab1bf8189968afd9e3a829cc70966fc97ce1fc4fe912351b0
+  checksum: 10/bdcec072dbd85fead6e8d0ae98db08b4d333f7ad9dcc1b3d0620ab42babfae53ab3d9d025219dab1ce874fd002ba25b7c887c57429e4ba7ece9f3d0944b1b8bc
   languageName: node
   linkType: hard
 
-"@airgap/beacon-transport-postmessage@npm:4.1.2":
-  version: 4.1.2
-  resolution: "@airgap/beacon-transport-postmessage@npm:4.1.2"
+"@airgap/beacon-transport-postmessage@npm:4.2.1":
+  version: 4.2.1
+  resolution: "@airgap/beacon-transport-postmessage@npm:4.2.1"
   dependencies:
-    "@airgap/beacon-core": "npm:4.1.2"
-    "@airgap/beacon-types": "npm:4.1.2"
-    "@airgap/beacon-utils": "npm:4.1.2"
-  checksum: 10/51460ada12a9a54780e1d4b7c947598018298e35994b052d42f62e48bed49a42ba54f7496558cac87af46e76682224e2a32c24d375abe1639346b30a309e9be7
+    "@airgap/beacon-core": "npm:4.2.1"
+    "@airgap/beacon-types": "npm:4.2.1"
+    "@airgap/beacon-utils": "npm:4.2.1"
+  checksum: 10/2f9db5906d36d501237646806d41dda1eef6dc4f609827862fa6764825220de51fa0ff49def2184edc8af560bb7fdfa03783c7c3d567bb0206e08f31868f702d
   languageName: node
   linkType: hard
 
-"@airgap/beacon-types@npm:4.1.2":
-  version: 4.1.2
-  resolution: "@airgap/beacon-types@npm:4.1.2"
+"@airgap/beacon-types@npm:4.2.1":
+  version: 4.2.1
+  resolution: "@airgap/beacon-types@npm:4.2.1"
   dependencies:
     "@types/chrome": "npm:0.0.246"
-  checksum: 10/fadbcfa8946ee4dad69c5776ad7f40aec298e397ed8b8cd9309b8d2989cd88076d5ed08f959ab5bc6fdf298897d34e6e3cf4c458d2fdc651149a8473d166f1de
+  checksum: 10/09614b5686aee613c1a01563a54d29afaceeaf8f5ec06f1aab092d84149c203ae2f8cbd79a7891154ea81339969a27c81218117a451bf4d1c77cce558de851e8
   languageName: node
   linkType: hard
 
-"@airgap/beacon-utils@npm:4.1.2":
-  version: 4.1.2
-  resolution: "@airgap/beacon-utils@npm:4.1.2"
+"@airgap/beacon-utils@npm:4.2.1":
+  version: 4.2.1
+  resolution: "@airgap/beacon-utils@npm:4.2.1"
   dependencies:
     "@stablelib/ed25519": "npm:^1.0.3"
     "@stablelib/nacl": "npm:^1.0.4"
     "@stablelib/random": "npm:^1.0.2"
     "@stablelib/utf8": "npm:^1.0.1"
     bs58check: "npm:2.1.2"
-  checksum: 10/4584af367b5405b10d02a8315f851f2a0aec55b72f89155f6a7c0edac1eda7259ecdbc64a1902ccac8c82f20d66fb27efab79430e14d9650d9571d1df5008b35
+  checksum: 10/bdbd6fdc0a5ed050614c6ebb9be4f74e6f8d8b62f26f94f38afc9f4306c0dd57801658a3ee94453048acc4363d80ff002601103f82701d35566c22db440eb624
   languageName: node
   linkType: hard
 
-"@airgap/beacon-wallet@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "@airgap/beacon-wallet@npm:4.1.2"
+"@airgap/beacon-wallet@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "@airgap/beacon-wallet@npm:4.2.1"
   dependencies:
-    "@airgap/beacon-core": "npm:4.1.2"
-    "@airgap/beacon-transport-matrix": "npm:4.1.2"
-    "@airgap/beacon-transport-postmessage": "npm:4.1.2"
-  checksum: 10/df151989c01ae9dbe009889aab6be1dbcf99c0c5e2b848ac54ccea4a9ca4cb3e6444172489e589c7f68ab06d78592ea88090e5c13fa8bc327701dfebb721fca9
+    "@airgap/beacon-core": "npm:4.2.1"
+    "@airgap/beacon-transport-matrix": "npm:4.2.1"
+    "@airgap/beacon-transport-postmessage": "npm:4.2.1"
+  checksum: 10/854b914ee91cb162d9f7b3765819950a41f4f32fd009f2caf4d9ed311901a4fc2e7d4c1bc576f7fd1836bc45c6015989f0310b07e6abfcedb528b7945d21808c
   languageName: node
   linkType: hard
 
@@ -20626,7 +20626,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "umami@workspace:."
   dependencies:
-    "@airgap/beacon-wallet": "npm:^4.1.2"
+    "@airgap/beacon-wallet": "npm:^4.2.1"
     "@babel/core": "npm:^7.24.4"
     "@babel/runtime": "npm:^7.24.4"
     "@chakra-ui/cli": "npm:^2.4.1"
