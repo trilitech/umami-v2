@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
 import { get } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,7 +7,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AccountsList } from "./AccountsList";
 import { SelectedAccountContext } from "./SelectedAccountContext";
 import { AccountCard } from "../../components/AccountDrawer";
-import { DrawerTopButtons } from "../../components/DrawerTopButtons";
+import { DerivationInfoButton } from "../../components/AccountDrawer/DerivationInfo";
+import { CloseDrawerButton } from "../../components/CloseDrawerButton";
 import { Account } from "../../types/Account";
 import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
@@ -73,7 +74,10 @@ export const AccountListWithDrawer: React.FC = () => {
           )}
           {!isNFT && selectedAccount && (
             <DrawerBody overflow="hidden" overflowY="scroll" paddingRight="0">
-              <DrawerTopButtons marginRight="23px" onClose={closeDrawer} />
+              <Flex justifyContent="flex-end" width="100%" paddingRight="24px">
+                <DerivationInfoButton marginRight="5px" account={selectedAccount} />
+                <CloseDrawerButton onClose={closeDrawer} />
+              </Flex>
               <AccountCard accountPkh={selectedAccount.address.pkh} />
             </DrawerBody>
           )}

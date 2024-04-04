@@ -15,7 +15,7 @@ export type MnemonicAccount = {
   label: string;
   curve: Curves;
   derivationPath: string;
-  derivationPathPattern: string;
+  derivationPathTemplate: string;
   type: "mnemonic";
   seedFingerPrint: string;
   address: ImplicitAddress;
@@ -26,6 +26,7 @@ export type LedgerAccount = {
   label: string;
   curve: Curves;
   derivationPath: string;
+  derivationPathTemplate: string | undefined;
   type: "ledger";
   address: ImplicitAddress;
   pk: string;

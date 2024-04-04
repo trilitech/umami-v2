@@ -7,6 +7,7 @@ import { drawerTheme } from "./theme/drawer";
 import { listTheme } from "./theme/list";
 import { modalTheme } from "./theme/modal";
 import { radioTheme } from "./theme/radio";
+import { switchTheme } from "./theme/switch";
 import { tabsTheme } from "./theme/tabs";
 
 const config = {
@@ -101,6 +102,7 @@ const theme = extendTheme({
     Drawer: drawerTheme,
     Radio: radioTheme,
     List: listTheme,
+    Switch: switchTheme,
   },
   config,
   colors: {

@@ -5,7 +5,7 @@ import { expect } from "@playwright/test";
 
 import { CustomWorld } from "./world";
 import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
-import { DEFAULT_DERIVATION_PATH } from "../../utils/account/derivationPathUtils";
+import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "../../utils/account/derivationPathUtils";
 import {
   v1BackedupAccountGroups,
   v2BackedupAccountGroups,
@@ -55,15 +55,18 @@ When("I enter existing seedphrase", async function (this: CustomWorld) {
   }
 });
 
-When("I select {string} as derivationPath", async function (this: CustomWorld, derivationPath) {
-  if (derivationPath === "Default") {
-    accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH.value);
-    return;
+When(
+  "I select {string} as derivation path template",
+  async function (this: CustomWorld, derivationPathTemplate) {
+    if (derivationPathTemplate === "Default") {
+      accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
+      return;
+    }
+    await this.page.getByTestId("select-input").click();
+    await this.page.getByTestId("select-options").getByText(derivationPathTemplate).click();
+    accountGroupBuilder.setDerivationPathTemplate(derivationPathTemplate);
   }
-  await this.page.getByTestId("select-input").click();
-  await this.page.getByTestId("select-options").getByText(derivationPath).click();
-  accountGroupBuilder.setDerivationPathPattern(derivationPath);
-});
+);
 
 When("I fill secret key with {string}", async function (this: CustomWorld, secretKey) {
   await this.page.getByLabel("Secret Key", { exact: true }).fill(secretKey);

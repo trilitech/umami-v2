@@ -5,13 +5,13 @@ export const makeMnemonicAccount = (
   pk: string,
   pkh: string,
   derivationPath: string,
-  derivationPathPattern: string,
+  derivationPathTemplate: string,
   seedFingerPrint: string,
   label: string
 ): MnemonicAccount => ({
   curve: "ed25519",
   derivationPath,
-  derivationPathPattern,
+  derivationPathTemplate,
   pk,
   address: parseImplicitPkh(pkh),
   seedFingerPrint,

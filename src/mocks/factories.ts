@@ -29,7 +29,10 @@ import {
   fromRaw,
 } from "../types/TokenBalance";
 import { TokenTransfer } from "../types/Transfer";
-import { getDefaultDerivationPath } from "../utils/account/derivationPathUtils";
+import {
+  defaultDerivationPathTemplate,
+  getDefaultDerivationPath,
+} from "../utils/account/derivationPathUtils";
 import { Multisig, MultisigOperation } from "../utils/multisig/types";
 
 export const mockDelegation = (
@@ -130,7 +133,7 @@ export const mockImplicitAccount = (
 export const mockMnemonicAccount = (index: number, label?: string): MnemonicAccount => ({
   curve: "ed25519",
   derivationPath: getDefaultDerivationPath(index),
-  derivationPathPattern: "44'/1729'/?'/0'",
+  derivationPathTemplate: "44'/1729'/?'/0'",
   type: "mnemonic",
   label: label || mockAccountLabel(index),
   address: mockImplicitAddress(index),
@@ -157,6 +160,7 @@ export const mockSocialAccount = (index: number, label?: string): SocialAccount 
 export const mockLedgerAccount = (index: number, label?: string): LedgerAccount => {
   const account: LedgerAccount = {
     type: "ledger",
+    derivationPathTemplate: defaultDerivationPathTemplate,
     derivationPath: getDefaultDerivationPath(index),
     curve: "ed25519",
     label: label || mockAccountLabel(index),

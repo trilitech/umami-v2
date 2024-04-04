@@ -84,13 +84,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
       const tzktDelegation = await getLastDelegation(account.address.pkh, network);
       tzktDelegation && setDelegation(makeDelegation(tzktDelegation));
     }).catch(noop);
-    // handleAsyncAction gets constantly recreated, so we can't add it to the dependency array
-    // otherwise, it will trigger the initial fetch infinitely
-    // caching handleAsyncAction using useCallback doesn't work either
-    // because it depends on its own isLoading state which changes sometimes
-    // TODO: check useRef
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account.address.pkh, network]);
+  }, [account.address.pkh, handleAsyncAction, network]);
 
   return (
     <Flex

@@ -16,7 +16,10 @@ import { fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
-import { AVAILABLE_DERIVATION_PATHS, makeDerivationPath } from "../account/derivationPathUtils";
+import {
+  AVAILABLE_DERIVATION_PATH_TEMPLATES,
+  makeDerivationPath,
+} from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
 import { accountsSlice } from "../redux/slices/accountsSlice";
 import { store } from "../redux/store";
@@ -41,7 +44,7 @@ describe("setAccountDataHooks", () => {
 
     const LABEL_BASE = "Test acc";
     const PASSWORD = "password";
-    const DERIVATION_PATH_PATTERN = AVAILABLE_DERIVATION_PATHS[2].value;
+    const DERIVATION_PATH_TEMPLATE = AVAILABLE_DERIVATION_PATH_TEMPLATES[2].value;
 
     const MOCK_FINGERPRINT = "mockFingerPrint";
     const MOCK_ENCRYPTED = { mock: "encrypted" } as any;
@@ -49,17 +52,17 @@ describe("setAccountDataHooks", () => {
     const mnemonicAccount = async (index: number, label: string): Promise<ImplicitAccount> => {
       const pubKeyPair = await tezosHelpers.derivePublicKeyPair(
         mnemonic1,
-        makeDerivationPath(DERIVATION_PATH_PATTERN, index)
+        makeDerivationPath(DERIVATION_PATH_TEMPLATE, index)
       );
       return {
         curve: "ed25519",
-        derivationPath: makeDerivationPath(DERIVATION_PATH_PATTERN, index),
+        derivationPath: makeDerivationPath(DERIVATION_PATH_TEMPLATE, index),
         type: "mnemonic",
         pk: pubKeyPair.pk,
         address: { type: "implicit", pkh: pubKeyPair.pkh },
         seedFingerPrint: MOCK_FINGERPRINT,
         label: label,
-        derivationPathPattern: DERIVATION_PATH_PATTERN,
+        derivationPathTemplate: DERIVATION_PATH_TEMPLATE,
       };
     };
 
@@ -79,7 +82,7 @@ describe("setAccountDataHooks", () => {
           restoreFromMnemonic({
             mnemonic: mnemonic1,
             password: PASSWORD,
-            derivationPath: DERIVATION_PATH_PATTERN,
+            derivationPathTemplate: DERIVATION_PATH_TEMPLATE,
             label: LABEL_BASE,
           })
         );
@@ -117,7 +120,7 @@ describe("setAccountDataHooks", () => {
           restoreFromMnemonic({
             mnemonic: mnemonic1,
             password: PASSWORD,
-            derivationPath: DERIVATION_PATH_PATTERN,
+            derivationPathTemplate: DERIVATION_PATH_TEMPLATE,
             label: LABEL_BASE,
           })
         );
@@ -159,7 +162,7 @@ describe("setAccountDataHooks", () => {
           restoreFromMnemonic({
             mnemonic: mnemonic1,
             password: PASSWORD,
-            derivationPath: DERIVATION_PATH_PATTERN,
+            derivationPathTemplate: DERIVATION_PATH_TEMPLATE,
             label: LABEL_BASE,
           })
         );

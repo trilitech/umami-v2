@@ -40,7 +40,7 @@ const { addAccount } = accountsSlice.actions;
  *
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param password - User's password, used for encrypting mnemonic.
- * @param derivationPathPattern - Path pattern for the account group that's being added.
+ * @param derivationPathTemplate - Path pattern for the account group that's being added.
  * @param label - Account group prefix.
  */
 export const useRestoreFromMnemonic = () => {
@@ -50,19 +50,19 @@ export const useRestoreFromMnemonic = () => {
   return async ({
     mnemonic,
     password,
-    derivationPath,
+    derivationPathTemplate,
     label,
   }: {
     mnemonic: string;
     password: string;
-    derivationPath: string;
+    derivationPathTemplate: string;
     label: string;
   }) => {
     const seedFingerprint = await getFingerPrint(mnemonic);
     const accounts = await restoreRevealedMnemonicAccounts(
       mnemonic,
       network,
-      derivationPath,
+      derivationPathTemplate,
       label
     );
     const encryptedMnemonic = await encrypt(mnemonic, password);
@@ -118,7 +118,7 @@ export const useDeriveMnemonicAccount = () => {
     const nextIndex = existingGroupAccounts.length;
 
     // Newly derived accounts use a derivation path in the same pattern as the first account
-    const pattern = existingGroupAccounts[0].derivationPathPattern;
+    const pattern = existingGroupAccounts[0].derivationPathTemplate;
 
     const nextDerivationPath = makeDerivationPath(pattern, nextIndex);
     const { pk, pkh } = await derivePublicKeyPair(seedphrase, nextDerivationPath);
@@ -152,8 +152,15 @@ export const useRestoreFromSecretKey = () => {
 
 export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
-  return (derivationPath: string, pk: string, pkh: string, label: string) => {
+  return (
+    derivationPathTemplate: string | undefined,
+    derivationPath: string,
+    pk: string,
+    pkh: string,
+    label: string
+  ) => {
     const account: LedgerAccount = {
+      derivationPathTemplate,
       derivationPath,
       curve: "ed25519",
       type: "ledger",

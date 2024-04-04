@@ -1,5 +1,5 @@
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { DEFAULT_DERIVATION_PATH } from "../../../utils/account/derivationPathUtils";
+import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "../../../utils/account/derivationPathUtils";
 import { AccountGroup, AccountGroupBuilder } from "../../helpers/AccountGroup";
 
 export const v1BackedupAccountGroups = async () => {
@@ -8,7 +8,7 @@ export const v1BackedupAccountGroups = async () => {
   let accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
   accountGroupBuilder.setAllAccountNames("Account");
   await accountGroupBuilder.setSeedPhrase(mnemonic1.split(" "));
-  accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH.value);
+  accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // Seedphrase 1b406abf
   const mnemonic =
@@ -16,7 +16,7 @@ export const v1BackedupAccountGroups = async () => {
   accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
   accountGroupBuilder.setAllAccountNames("Account");
   await accountGroupBuilder.setSeedPhrase(mnemonic.split(" "));
-  accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH.value);
+  accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // TODO: add related multisig accounts.
   return expectedGroups;
@@ -32,7 +32,7 @@ export const v2BackedupAccountGroups = async () => {
   accountGroupBuilder.setAccountName("htrthrh", 3);
   accountGroupBuilder.setAccountName("12asd", 4);
   await accountGroupBuilder.setSeedPhrase(mnemonic1.split(" "));
-  accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH.value);
+  accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // Seedphrase fa3f3982
   const mnemonic2 =
@@ -40,7 +40,7 @@ export const v2BackedupAccountGroups = async () => {
   accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
   accountGroupBuilder.setAccountName("test");
   await accountGroupBuilder.setSeedPhrase(mnemonic2.split(" "));
-  accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH.value);
+  accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // Seedphrase 2263e19b
   const mnemonic3 =
@@ -48,7 +48,7 @@ export const v2BackedupAccountGroups = async () => {
   accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
   accountGroupBuilder.setAccountName("test2");
   await accountGroupBuilder.setSeedPhrase(mnemonic3.split(" "));
-  accountGroupBuilder.setDerivationPathPattern(DEFAULT_DERIVATION_PATH.value);
+  accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // TODO: add ledger account
   // TODO: add related multisig accounts.

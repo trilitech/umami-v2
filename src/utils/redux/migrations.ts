@@ -4,7 +4,7 @@ import { identity } from "lodash";
 
 import { initialState as announcementsInitialState } from "./slices/announcementSlice";
 
-export const VERSION = 3;
+export const VERSION = 4;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -28,6 +28,7 @@ export const mainStoreMigrations = {
         }
       }
     }),
+  4: identity,
 } as any;
 
 export const accountsMigrations = {
@@ -41,5 +42,18 @@ export const accountsMigrations = {
         }
       });
     }),
-  3: identity,
+  4: (state: any) =>
+    produce(state, (draft: any) => {
+      draft.items.forEach((account: any) => {
+        if (account.type === "ledger" && !account.derivationPathTemplate) {
+          account.derivationPathTemplate = undefined;
+
+          if (account.derivationPath === "44'/1729'/0'/0'") {
+            account.derivationPathTemplate = "44'/1729'/?'/0'";
+          } else if (account.derivationPath === "44'/1729'/0'/0'/0'") {
+            account.derivationPathTemplate = "44'/1729'/?'/0'/0'";
+          }
+        }
+      });
+    }),
 } as any;

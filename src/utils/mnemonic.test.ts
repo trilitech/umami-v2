@@ -1,5 +1,5 @@
 import {
-  defaultDerivationPathPattern,
+  defaultDerivationPathTemplate,
   getDefaultDerivationPath,
 } from "./account/derivationPathUtils";
 import { restoreRevealedPublicKeyPairs, useRestoreRevealedMnemonicAccounts } from "./mnemonic";
@@ -43,7 +43,7 @@ describe("restoreRevealedPublicKeyPairs", () => {
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
-      defaultDerivationPathPattern,
+      defaultDerivationPathTemplate,
       MAINNET
     );
 
@@ -55,7 +55,7 @@ describe("restoreRevealedPublicKeyPairs", () => {
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
-      defaultDerivationPathPattern,
+      defaultDerivationPathTemplate,
       MAINNET
     );
 
@@ -67,7 +67,7 @@ describe("restoreRevealedPublicKeyPairs", () => {
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
-      defaultDerivationPathPattern,
+      defaultDerivationPathTemplate,
       MAINNET
     );
 
@@ -88,7 +88,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
         address: { type: "implicit", pkh: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3" },
         seedFingerPrint: "mockFingerPrint",
         label: CUSTOM_LABEL,
-        derivationPathPattern: "44'/1729'/?'/0'",
+        derivationPathTemplate: "44'/1729'/?'/0'",
       },
       {
         curve: "ed25519",
@@ -98,7 +98,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
         address: { type: "implicit", pkh: "tz1Te4MXuNYxyyuPqmAQdnKwkD8ZgSF9M7d6" },
         seedFingerPrint: "mockFingerPrint",
         label: `${CUSTOM_LABEL} 2`,
-        derivationPathPattern: "44'/1729'/?'/0'",
+        derivationPathTemplate: "44'/1729'/?'/0'",
       },
       {
         curve: "ed25519",
@@ -108,7 +108,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
         address: { type: "implicit", pkh: "tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS" },
         seedFingerPrint: "mockFingerPrint",
         label: `${CUSTOM_LABEL} 3`,
-        derivationPathPattern: "44'/1729'/?'/0'",
+        derivationPathTemplate: "44'/1729'/?'/0'",
       },
     ];
     addressExistsMock.mockImplementation(
@@ -121,7 +121,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
     const result = await restoreRevealedMnemonicsHook(
       mnemonic1,
       MAINNET,
-      defaultDerivationPathPattern,
+      defaultDerivationPathTemplate,
       CUSTOM_LABEL
     );
 
@@ -137,7 +137,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
     const result = await restoreRevealedMnemonicsHook(
       mnemonic1,
       MAINNET,
-      defaultDerivationPathPattern,
+      defaultDerivationPathTemplate,
       CUSTOM_LABEL
     );
 
@@ -160,7 +160,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
     const result = await restoreRevealedMnemonicsHook(
       mnemonic1,
       MAINNET,
-      defaultDerivationPathPattern,
+      defaultDerivationPathTemplate,
       CUSTOM_LABEL
     );
 

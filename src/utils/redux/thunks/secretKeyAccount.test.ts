@@ -75,7 +75,7 @@ describe("secretKeyAccount", () => {
             password,
           })
         )
-      ).rejects.toThrow(`Can't add account ${pkh} in store since it already exists.`);
+      ).rejects.toThrow(`Can't add account with address ${pkh} because it already exists.`);
 
       expect(store.getState().accounts.items).toEqual([existingMnemonic]);
       expect(store.getState().accounts.secretKeys).toEqual({});

@@ -114,7 +114,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
                       borderRadius="4px"
                     >
                       <Heading
-                        width="18px"
+                        width="19px"
                         marginRight="6px"
                         paddingTop="6px"
                         color={colors.gray[400]}
