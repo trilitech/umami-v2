@@ -1,6 +1,7 @@
 import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { Fee } from "./Fee";
+import { InternalPrefix } from "./InternalPrefix";
 import { OperationStatus } from "./OperationStatus";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
@@ -17,6 +18,7 @@ export const ContractCallTile: React.FC<{
     <Flex justifyContent="space-between" marginBottom="10px">
       <Center>
         <ContractIcon marginRight="8px" />
+        <InternalPrefix operation={operation} />
         <TzktLink
           marginRight="8px"
           counter={operation.counter}

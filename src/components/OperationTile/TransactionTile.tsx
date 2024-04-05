@@ -1,6 +1,7 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
 
 import { Fee } from "./Fee";
+import { InternalPrefix } from "./InternalPrefix";
 import { OperationStatus } from "./OperationStatus";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
@@ -32,6 +33,7 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
           <TransactionDirectionIcon marginRight="8px" destination={operationDestination} />
+          <InternalPrefix operation={operation} />
           <TzktLink
             marginRight="8px"
             color={titleColor}

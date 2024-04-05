@@ -70,14 +70,14 @@ describe("<OperationTile />", () => {
     });
 
     it("renders TokenTransfer when the operation is a token transfer", () => {
-      render(fixture({ type: "token_transfer", ...tokenTransferFixture({}) }));
+      render(fixture(tokenTransferFixture({})));
       expect(screen.getByTestId("operation-tile-token-transfer")).toBeInTheDocument();
     });
 
     it("renders nothing if token is invalid", () => {
       jest.spyOn(console, "warn").mockImplementation();
 
-      render(fixture({ type: "token_transfer", ...tokenTransferFixture({ token: {} as any }) }));
+      render(fixture(tokenTransferFixture({ token: {} as any })));
       expect(screen.queryByTestId(/operation-tile/)).not.toBeInTheDocument();
     });
   });

@@ -15,7 +15,8 @@ export const Fee: React.FC<{
   operation: TransactionOperation | DelegationOperation | OriginationOperation;
 }> = ({ operation }) => {
   const tileContext = useContext(OperationTileContext);
-  const isOutgoing = useIsOwnedAddress(operation.sender.address);
+  const isOwned = useIsOwnedAddress();
+  const isOutgoing = isOwned(operation.sender.address);
 
   if (tileContext.mode === "drawer") {
     return null;
