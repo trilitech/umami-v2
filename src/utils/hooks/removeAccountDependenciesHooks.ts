@@ -13,20 +13,21 @@ import { multisigsSlice } from "../redux/slices/multisigsSlice";
  *
  * Removes
  *   - deleted accounts dependencies
- *   - obsolete multisigs
- *   - obsolete multisigs' dependencies.
+ *   - obsolete multisigs' dependencies
+ *
+ * Multisigs themselves are not being removed here, but will be cleaned up on the next data refetch.
  */
 export const useRemoveDependenciesAndMultisigs = () => {
   const dispatch = useAppDispatch();
   const getMultisigsToRemove = useGetMultisigsToRemove();
   const removeAccountsDependencies = useRemoveAccountsDependencies();
 
-  return (deletedAccounts: ImplicitAccount[]) => {
-    const multisigsToRemove = getMultisigsToRemove(deletedAccounts);
+  return (accountsToRemove: ImplicitAccount[]) => {
+    const multisigsToRemove = getMultisigsToRemove(accountsToRemove);
 
-    removeAccountsDependencies([...deletedAccounts, ...multisigsToRemove]);
+    removeAccountsDependencies([...accountsToRemove, ...multisigsToRemove]);
 
-    dispatch(multisigsSlice.actions.removeMultisigs(multisigsToRemove.map(m => m.address.pkh)));
+    dispatch(multisigsSlice.actions.removeMultisigsData(multisigsToRemove.map(m => m.address.pkh)));
   };
 };
 
@@ -62,8 +63,8 @@ const useGetMultisigsToRemove = () => {
   const implicit = useImplicitAccounts();
   const multisig = useMultisigAccounts();
 
-  return (deletedAccounts: ImplicitAccount[]) => {
-    const deletedPkhs = deletedAccounts.map(account => account.address.pkh);
+  return (accountsToRemove: ImplicitAccount[]) => {
+    const deletedPkhs = accountsToRemove.map(account => account.address.pkh);
     const remainingPkhs = implicit
       .map(account => account.address.pkh)
       .filter(address => !deletedPkhs.includes(address));

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fromPairs, groupBy } from "lodash";
+import { fromPairs, groupBy, omit } from "lodash";
 
 import { MultisigAccount } from "../../../types/Account";
 import { RawPkh } from "../../../types/Address";
@@ -62,20 +62,14 @@ export const multisigsSlice = createSlice({
         account.label = newName;
       }
     },
-    removeMultisigs: (state, { payload }: { payload: RawPkh[] }) => {
+    // Does not remove multisigs itself, they will be overwritten on the next data refetch.
+    removeMultisigsData: (state, { payload: addresses }: { payload: RawPkh[] }) => {
       const operationIdsToRemove = state.items
-        .filter(multisig => payload.includes(multisig.address.pkh))
-        .map(multisig => multisig.pendingOperationsBigmapId);
+        .filter(multisig => addresses.includes(multisig.address.pkh))
+        .map(multisig => String(multisig.pendingOperationsBigmapId));
 
-      state.items = state.items.filter(multisig => !payload.includes(multisig.address.pkh));
-      state.pendingOperations = fromPairs(
-        Object.entries(state.pendingOperations).filter(
-          ([bigmapId]) => !operationIdsToRemove.includes(Number(bigmapId))
-        )
-      );
-      state.labelsMap = fromPairs(
-        Object.entries(state.labelsMap).filter(([pkh]) => !payload.includes(pkh))
-      );
+      state.pendingOperations = omit(state.pendingOperations, operationIdsToRemove);
+      state.labelsMap = omit(state.labelsMap, addresses);
     },
   },
 });

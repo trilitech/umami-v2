@@ -365,9 +365,7 @@ describe("setAccountDataHooks", () => {
       mockSecretKeyAccount(6),
     ];
 
-    beforeEach(() => {
-      accounts.forEach(addAccount);
-    });
+    beforeEach(() => accounts.forEach(addAccount));
 
     describe.each(["social" as const, "ledger" as const, "secret_key" as const])(
       "for %s type",

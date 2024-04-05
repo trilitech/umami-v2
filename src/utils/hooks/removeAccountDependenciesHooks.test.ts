@@ -176,14 +176,14 @@ describe("useRemoveDependenciesAndMultisigs", () => {
       store.dispatch(multisigActions.setMultisigs([multisig0, multisig1, multisig2]));
     });
 
-    it("removes multisigs from the storage", () => {
+    it("does not removes multisigs from the storage", () => {
       const {
         result: { current: removeMultisigs },
       } = renderHook(() => useRemoveDependenciesAndMultisigs());
 
       act(() => removeMultisigs([account0, account1]));
 
-      expect(store.getState().multisigs.items).toEqual([multisig1]);
+      expect(store.getState().multisigs.items).toEqual([multisig0, multisig1, multisig2]);
     });
 
     it("removes multisig labels from the storage", () => {

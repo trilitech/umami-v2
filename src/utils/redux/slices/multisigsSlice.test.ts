@@ -148,7 +148,7 @@ describe("Multisig reducer", () => {
     });
   });
 
-  describe("removeMultisigs", () => {
+  describe("removeMultisigsData", () => {
     beforeEach(() => {
       store.dispatch(
         multisigActions.setMultisigs([
@@ -159,12 +159,19 @@ describe("Multisig reducer", () => {
       );
     });
 
-    it("removes multisigs", () => {
+    it("does not removes multisigs", () => {
       store.dispatch(
-        multisigActions.removeMultisigs([mockContractAddress(0).pkh, mockContractAddress(2).pkh])
+        multisigActions.removeMultisigsData([
+          mockContractAddress(0).pkh,
+          mockContractAddress(2).pkh,
+        ])
       );
 
-      expect(store.getState().multisigs.items).toEqual([mockMultisigAccount(1)]);
+      expect(store.getState().multisigs.items).toEqual([
+        mockMultisigAccount(0),
+        mockMultisigAccount(1),
+        mockMultisigAccount(2),
+      ]);
     });
 
     it("removes labels", () => {
@@ -176,7 +183,10 @@ describe("Multisig reducer", () => {
       );
 
       store.dispatch(
-        multisigActions.removeMultisigs([mockContractAddress(0).pkh, mockContractAddress(2).pkh])
+        multisigActions.removeMultisigsData([
+          mockContractAddress(0).pkh,
+          mockContractAddress(2).pkh,
+        ])
       );
 
       expect(store.getState().multisigs.labelsMap).toEqual({
@@ -193,7 +203,10 @@ describe("Multisig reducer", () => {
       store.dispatch(multisigActions.setPendingOperations([operation1, operation2, operation3]));
 
       store.dispatch(
-        multisigActions.removeMultisigs([mockContractAddress(0).pkh, mockContractAddress(2).pkh])
+        multisigActions.removeMultisigsData([
+          mockContractAddress(0).pkh,
+          mockContractAddress(2).pkh,
+        ])
       );
 
       expect(store.getState().multisigs.pendingOperations).toEqual({
