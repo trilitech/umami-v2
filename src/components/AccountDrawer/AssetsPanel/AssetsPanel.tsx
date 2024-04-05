@@ -115,7 +115,7 @@ export const AssetsPanel: React.FC<{
             value={{ mode: "drawer", selectedAddress: account.address }}
           >
             <Center display={isLoading ? "flex" : "none"} height="50px">
-              <Image width="150px" height="75px" src="/static/animations/loading-wheel.gif" />
+              <Image width="150px" height="75px" src="./static/media/loading-wheel.gif" />
             </Center>
 
             {!isLoading && (
