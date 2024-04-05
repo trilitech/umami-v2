@@ -1,23 +1,19 @@
-import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
+import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
 import {
   useDeriveMnemonicAccount,
   useRemoveAccount,
   useRemoveMnemonic,
   useRemoveNonMnemonic,
-  useRemoveObsoleteMultisigs,
   useRestoreFromMnemonic,
 } from "./setAccountDataHooks";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
-  mockMnemonicAccount,
-  mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../mocks/factories";
 import { addAccount, fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
-import { multisigOperation } from "../../mocks/multisig";
 import { act, renderHook } from "../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import {
@@ -26,19 +22,18 @@ import {
 } from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
 import { accountsSlice } from "../redux/slices/accountsSlice";
-import { multisigActions } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
 import * as tezosHelpers from "../tezos/helpers";
 
 jest.mock("./removeAccountDependenciesHooks");
 jest.unmock("../tezos");
 
-const mockedUseRemoveAccountsDependencies = jest.mocked(useRemoveAccountsDependencies);
+const mockedUseRemoveDependenciesAndMultisigs = jest.mocked(useRemoveDependenciesAndMultisigs);
 const mockedRemoveAccountsDependencies = jest.fn();
 
 describe("setAccountDataHooks", () => {
   beforeEach(() => {
-    mockedUseRemoveAccountsDependencies.mockReturnValue(mockedRemoveAccountsDependencies);
+    mockedUseRemoveDependenciesAndMultisigs.mockReturnValue(mockedRemoveAccountsDependencies);
   });
 
   describe("mnemonic accounts", () => {
@@ -358,29 +353,6 @@ describe("setAccountDataHooks", () => {
         mockImplicitAccount(3, undefined, "mockPrint1"),
       ]);
     });
-
-    it("removes obsolete multisigs", () => {
-      const multisig0 = mockMultisigAccount(0, [
-        mockImplicitAccount(1).address,
-        mockImplicitAccount(3).address,
-      ]);
-      const multisig1 = mockMultisigAccount(1, [
-        mockImplicitAccount(2).address,
-        mockImplicitAccount(3).address,
-      ]);
-      const multisig2 = mockMultisigAccount(2, [
-        mockImplicitAccount(1).address,
-        mockImplicitAccount(4).address,
-      ]);
-      store.dispatch(multisigActions.setMultisigs([multisig0, multisig1, multisig2]));
-      const {
-        result: { current: removeMnemonic },
-      } = renderHook(() => useRemoveMnemonic());
-
-      act(() => removeMnemonic("mockPrint1"));
-
-      expect(store.getState().multisigs.items).toEqual([multisig1]);
-    });
   });
 
   describe("useRemoveNonMnemonic", () => {
@@ -393,63 +365,38 @@ describe("setAccountDataHooks", () => {
       mockSecretKeyAccount(6),
     ];
 
-    const multisig0 = mockMultisigAccount(0, [
-      mockSocialAccount(1).address,
-      mockSocialAccount(2).address,
-    ]);
-    const multisig1 = mockMultisigAccount(1, [
-      mockLedgerAccount(3).address,
-      mockLedgerAccount(4).address,
-    ]);
-    const multisig2 = mockMultisigAccount(2, [
-      mockSecretKeyAccount(5).address,
-      mockSecretKeyAccount(6).address,
-    ]);
-
     beforeEach(() => {
       accounts.forEach(addAccount);
-      store.dispatch(multisigActions.setMultisigs([multisig0, multisig1, multisig2]));
     });
 
-    describe.each([
-      { type: "social" as const, remainingMultisigs: [multisig1, multisig2] },
-      { type: "ledger" as const, remainingMultisigs: [multisig0, multisig2] },
-      { type: "secret_key" as const, remainingMultisigs: [multisig0, multisig1] },
-    ])("for $type type", ({ type, remainingMultisigs }) => {
-      it("deletes all accounts", () => {
-        const {
-          result: { current: removeNonMnemonic },
-        } = renderHook(() => useRemoveNonMnemonic());
+    describe.each(["social" as const, "ledger" as const, "secret_key" as const])(
+      "for %s type",
+      type => {
+        it("deletes all accounts", () => {
+          const {
+            result: { current: removeNonMnemonic },
+          } = renderHook(() => useRemoveNonMnemonic());
 
-        act(() => removeNonMnemonic(type));
+          act(() => removeNonMnemonic(type));
 
-        expect(store.getState().accounts.items).toEqual(
-          accounts.filter(account => account.type !== type)
-        );
-      });
+          expect(store.getState().accounts.items).toEqual(
+            accounts.filter(account => account.type !== type)
+          );
+        });
 
-      it("calls removeAccountsDependencies with all accounts", () => {
-        const {
-          result: { current: removeNonMnemonic },
-        } = renderHook(() => useRemoveNonMnemonic());
+        it("calls removeAccountsDependencies with all accounts", () => {
+          const {
+            result: { current: removeNonMnemonic },
+          } = renderHook(() => useRemoveNonMnemonic());
 
-        act(() => removeNonMnemonic(type));
+          act(() => removeNonMnemonic(type));
 
-        expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith(
-          accounts.filter(account => account.type === type)
-        );
-      });
-
-      it("removes obsolete multisigs", () => {
-        const {
-          result: { current: removeNonMnemonic },
-        } = renderHook(() => useRemoveNonMnemonic());
-
-        act(() => removeNonMnemonic(type));
-
-        expect(store.getState().multisigs.items).toEqual(remainingMultisigs);
-      });
-    });
+          expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith(
+            accounts.filter(account => account.type === type)
+          );
+        });
+      }
+    );
   });
 
   describe("useRemoveAccount", () => {
@@ -480,110 +427,6 @@ describe("setAccountDataHooks", () => {
       act(() => removeAccount(mockSocialAccount(5)));
 
       expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith([mockSocialAccount(5)]);
-    });
-
-    it("removes obsolete multisigs", () => {
-      const multisig0 = mockMultisigAccount(0, [
-        mockSecretKeyAccount(0).address,
-        mockSecretKeyAccount(5).address,
-      ]);
-      const multisig1 = mockMultisigAccount(1, [
-        mockSecretKeyAccount(0).address,
-        mockSecretKeyAccount(1).address,
-      ]);
-      const multisig2 = mockMultisigAccount(2, [mockSecretKeyAccount(0).address]);
-      addAccount(mockSecretKeyAccount(0));
-      addAccount(mockSecretKeyAccount(1));
-      store.dispatch(multisigActions.setMultisigs([multisig0, multisig1, multisig2]));
-
-      const {
-        result: { current: removeAccount },
-      } = renderHook(() => useRemoveAccount());
-
-      act(() => removeAccount(mockSocialAccount(0)));
-
-      expect(store.getState().multisigs.items).toEqual([multisig1]);
-    });
-  });
-
-  describe("useRemoveObsoleteMultisigs", () => {
-    const acc0 = mockMnemonicAccount(0);
-    const acc1 = mockSocialAccount(1);
-    const acc2 = mockLedgerAccount(2);
-    const acc3 = mockSecretKeyAccount(3);
-    const multisig0 = mockMultisigAccount(0, [acc0.address, acc1.address]);
-    const multisig1 = mockMultisigAccount(1, [acc1.address, acc2.address, acc3.address]);
-    const multisig2 = mockMultisigAccount(2, [acc3.address]);
-
-    beforeEach(() => {
-      addAccount(acc2);
-      store.dispatch(multisigActions.setMultisigs([multisig0, multisig1, multisig2]));
-    });
-
-    it("removes multisigs from the storage", () => {
-      const {
-        result: { current: removeMultisigs },
-      } = renderHook(() => useRemoveObsoleteMultisigs());
-
-      act(() => removeMultisigs([acc1, acc0]));
-
-      expect(store.getState().multisigs.items).toEqual([multisig1]);
-    });
-
-    it("removes multisig labels from the storage", () => {
-      store.dispatch(
-        multisigActions.addMultisigLabel({ pkh: multisig0.address.pkh, label: "Multisig 0" })
-      );
-      store.dispatch(
-        multisigActions.addMultisigLabel({ pkh: multisig1.address.pkh, label: "Multisig 1" })
-      );
-      store.dispatch(
-        multisigActions.addMultisigLabel({ pkh: multisig2.address.pkh, label: "Multisig 2" })
-      );
-      const {
-        result: { current: removeMultisigs },
-      } = renderHook(() => useRemoveObsoleteMultisigs());
-
-      act(() => removeMultisigs([acc1, acc0]));
-
-      expect(store.getState().multisigs.labelsMap).toEqual({
-        [multisig1.address.pkh]: "Multisig 1",
-      });
-    });
-
-    it("removes multisig pending operations from the storage", () => {
-      // pendingOperationsBigmapId is the same as multisig's index
-      store.dispatch(
-        multisigActions.setPendingOperations([
-          { ...multisigOperation, id: "0", bigmapId: 0 },
-          { ...multisigOperation, id: "1", bigmapId: 0 },
-          { ...multisigOperation, id: "2", bigmapId: 1 },
-          { ...multisigOperation, id: "3", bigmapId: 1 },
-          { ...multisigOperation, id: "4", bigmapId: 2 },
-        ])
-      );
-      const {
-        result: { current: removeMultisigs },
-      } = renderHook(() => useRemoveObsoleteMultisigs());
-
-      act(() => removeMultisigs([acc1, acc0]));
-
-      expect(store.getState().multisigs.pendingOperations).toEqual({
-        "1": [
-          { ...multisigOperation, id: "2", bigmapId: 1 },
-          { ...multisigOperation, id: "3", bigmapId: 1 },
-        ],
-      });
-    });
-
-    it("calls removeAccountsDependencies", () => {
-      const {
-        result: { current: removeMultisigs },
-      } = renderHook(() => useRemoveObsoleteMultisigs());
-
-      act(() => removeMultisigs([acc1, acc0]));
-
-      expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith([multisig0, multisig2]);
     });
   });
 });

@@ -1,8 +1,10 @@
 import { ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
 import { waitFor } from "@testing-library/react";
 
-import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
+import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
 import { mockImplicitAccount, mockMultisigAccount, mockTezOperation } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
+import { multisigOperation } from "../../mocks/multisig";
 import { act, renderHook } from "../../mocks/testUtils";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET, MAINNET } from "../../types/Network";
@@ -10,33 +12,29 @@ import { WalletClient } from "../beacon/WalletClient";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { batchesActions } from "../redux/slices/batches";
 import { beaconActions } from "../redux/slices/beaconSlice";
+import { multisigActions } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
 
 beforeEach(() => {
   jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
 });
 
-describe("useRemoveAccountsDependencies", () => {
-  describe.each([
-    {
-      testCase: "implicit accounts",
-      accounts: [mockImplicitAccount(0), mockImplicitAccount(1), mockImplicitAccount(2)],
-    },
-    {
-      testCase: "multisig accounts",
-      accounts: [mockMultisigAccount(0), mockMultisigAccount(1), mockMultisigAccount(2)],
-    },
-  ])("for $testCase", ({ accounts }) => {
+describe("useRemoveDependenciesAndMultisigs", () => {
+  describe("without dependant multisigs", () => {
+    const account0 = mockImplicitAccount(0);
+    const account1 = mockImplicitAccount(1);
+    const account2 = mockImplicitAccount(2);
+
     it("removes batches related to the given accounts", () => {
-      const accountOperations1 = makeAccountOperations(accounts[0], mockImplicitAccount(0), [
+      const accountOperations1 = makeAccountOperations(account0, mockImplicitAccount(0), [
         mockTezOperation(0),
         mockTezOperation(1),
       ]);
-      const accountOperations2 = makeAccountOperations(accounts[1], mockImplicitAccount(1), [
+      const accountOperations2 = makeAccountOperations(account1, mockImplicitAccount(1), [
         mockTezOperation(1),
         mockTezOperation(3),
       ]);
-      const accountOperations3 = makeAccountOperations(accounts[2], mockImplicitAccount(2), [
+      const accountOperations3 = makeAccountOperations(account2, mockImplicitAccount(2), [
         mockTezOperation(0),
       ]);
       store.dispatch(batchesActions.add({ operations: accountOperations1, network: MAINNET }));
@@ -45,8 +43,8 @@ describe("useRemoveAccountsDependencies", () => {
 
       const {
         result: { current: removeAccountsDependencies },
-      } = renderHook(() => useRemoveAccountsDependencies());
-      act(() => removeAccountsDependencies([accounts[1], accounts[2]]));
+      } = renderHook(() => useRemoveDependenciesAndMultisigs());
+      act(() => removeAccountsDependencies([account1, account2]));
 
       expect(store.getState().batches[MAINNET.name]).toEqual([accountOperations1]);
       expect(store.getState().batches[GHOSTNET.name]).toEqual([]);
@@ -82,17 +80,17 @@ describe("useRemoveAccountsDependencies", () => {
       const connections = [
         {
           dAppId: peersData[0].senderId,
-          accountPkh: accounts[0].address.pkh,
+          accountPkh: account0.address.pkh,
           networkType: NetworkType.MAINNET,
         },
         {
           dAppId: peersData[1].senderId,
-          accountPkh: accounts[1].address.pkh,
+          accountPkh: account1.address.pkh,
           networkType: NetworkType.GHOSTNET,
         },
         {
           dAppId: peersData[2].senderId,
-          accountPkh: accounts[2].address.pkh,
+          accountPkh: account2.address.pkh,
           networkType: NetworkType.CUSTOM,
         },
       ];
@@ -108,9 +106,9 @@ describe("useRemoveAccountsDependencies", () => {
       it("sends delete requests through the beacon api", async () => {
         const {
           result: { current: removeAccountsDependencies },
-        } = renderHook(() => useRemoveAccountsDependencies());
+        } = renderHook(() => useRemoveDependenciesAndMultisigs());
 
-        act(() => removeAccountsDependencies([accounts[0], accounts[2]]));
+        act(() => removeAccountsDependencies([account0, account2]));
 
         await waitFor(() => expect(WalletClient.removePeer).toHaveBeenCalledTimes(2));
         expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[0]);
@@ -120,9 +118,9 @@ describe("useRemoveAccountsDependencies", () => {
       it("removes related connections from the beacon slice", () => {
         const {
           result: { current: removeAccountsDependencies },
-        } = renderHook(() => useRemoveAccountsDependencies());
+        } = renderHook(() => useRemoveDependenciesAndMultisigs());
 
-        act(() => removeAccountsDependencies([accounts[0], accounts[2]]));
+        act(() => removeAccountsDependencies([account0, account2]));
 
         expect(store.getState().beacon).toEqual({
           [connections[1].dAppId]: {
@@ -136,22 +134,148 @@ describe("useRemoveAccountsDependencies", () => {
     it("removes assets data directly related to the given accounts", () => {
       store.dispatch(
         assetsActions.updateTezBalance([
-          { address: accounts[0].address.pkh, balance: 11, delegationLevel: 1 },
-          { address: accounts[1].address.pkh, balance: 22, delegationLevel: 2 },
-          { address: accounts[2].address.pkh, balance: 33, delegationLevel: 3 },
+          { address: account0.address.pkh, balance: 11, delegationLevel: 1 },
+          { address: account1.address.pkh, balance: 22, delegationLevel: 2 },
+          { address: account2.address.pkh, balance: 33, delegationLevel: 3 },
         ])
       );
 
       const {
         result: { current: removeAccountsDependencies },
-      } = renderHook(() => useRemoveAccountsDependencies());
-      act(() => removeAccountsDependencies([accounts[0], accounts[2]]));
+      } = renderHook(() => useRemoveDependenciesAndMultisigs());
+      act(() => removeAccountsDependencies([account0, account2]));
 
       expect(store.getState().assets.balances.mutez).toEqual({
-        [accounts[1].address.pkh]: "22",
+        [account1.address.pkh]: "22",
       });
       expect(store.getState().assets.delegationLevels).toEqual({
-        [accounts[1].address.pkh]: 2,
+        [account1.address.pkh]: 2,
+      });
+    });
+  });
+
+  describe("with dependant multisigs", () => {
+    // Only account2 is considered not to be removed.
+    const account0 = mockImplicitAccount(0); // account not in storage, being deleted
+    const account1 = mockImplicitAccount(1); // account in storage, being deleted
+    const account2 = mockImplicitAccount(2); // account in storage, not being deleted
+    const account3 = mockImplicitAccount(3); // account not in storage, not being deleted
+
+    // Only multisig1 is considered not to be removed.
+    const multisig0 = mockMultisigAccount(0, [account0.address, account1.address]);
+    const multisig1 = mockMultisigAccount(1, [
+      account1.address,
+      account2.address,
+      account3.address,
+    ]);
+    const multisig2 = mockMultisigAccount(2, [account3.address]);
+
+    beforeEach(() => {
+      addAccount(account1);
+      addAccount(account2);
+      store.dispatch(multisigActions.setMultisigs([multisig0, multisig1, multisig2]));
+    });
+
+    it("removes multisigs from the storage", () => {
+      const {
+        result: { current: removeMultisigs },
+      } = renderHook(() => useRemoveDependenciesAndMultisigs());
+
+      act(() => removeMultisigs([account0, account1]));
+
+      expect(store.getState().multisigs.items).toEqual([multisig1]);
+    });
+
+    it("removes multisig labels from the storage", () => {
+      store.dispatch(
+        multisigActions.addMultisigLabel({ pkh: multisig0.address.pkh, label: "Multisig 0" })
+      );
+      store.dispatch(
+        multisigActions.addMultisigLabel({ pkh: multisig1.address.pkh, label: "Multisig 1" })
+      );
+      store.dispatch(
+        multisigActions.addMultisigLabel({ pkh: multisig2.address.pkh, label: "Multisig 2" })
+      );
+      const {
+        result: { current: removeMultisigs },
+      } = renderHook(() => useRemoveDependenciesAndMultisigs());
+
+      act(() => removeMultisigs([account0, account1]));
+
+      expect(store.getState().multisigs.labelsMap).toEqual({
+        [multisig1.address.pkh]: "Multisig 1",
+      });
+    });
+
+    it("removes multisig pending operations from the storage", () => {
+      // pendingOperationsBigmapId is the same as multisig's index
+      store.dispatch(
+        multisigActions.setPendingOperations([
+          { ...multisigOperation, id: "0", bigmapId: 0 },
+          { ...multisigOperation, id: "1", bigmapId: 0 },
+          { ...multisigOperation, id: "2", bigmapId: 1 },
+          { ...multisigOperation, id: "3", bigmapId: 1 },
+          { ...multisigOperation, id: "4", bigmapId: 2 },
+        ])
+      );
+      const {
+        result: { current: removeMultisigs },
+      } = renderHook(() => useRemoveDependenciesAndMultisigs());
+
+      act(() => removeMultisigs([account0, account1]));
+
+      expect(store.getState().multisigs.pendingOperations).toEqual({
+        "1": [
+          { ...multisigOperation, id: "2", bigmapId: 1 },
+          { ...multisigOperation, id: "3", bigmapId: 1 },
+        ],
+      });
+    });
+
+    it("removes batches related to the obsolete multisig accounts", () => {
+      const accountOperations1 = makeAccountOperations(multisig0, mockImplicitAccount(0), [
+        mockTezOperation(0),
+        mockTezOperation(1),
+      ]);
+      const accountOperations2 = makeAccountOperations(multisig1, mockImplicitAccount(1), [
+        mockTezOperation(1),
+        mockTezOperation(3),
+      ]);
+      const accountOperations3 = makeAccountOperations(multisig2, mockImplicitAccount(2), [
+        mockTezOperation(0),
+      ]);
+      store.dispatch(batchesActions.add({ operations: accountOperations1, network: MAINNET }));
+      store.dispatch(batchesActions.add({ operations: accountOperations2, network: MAINNET }));
+      store.dispatch(batchesActions.add({ operations: accountOperations3, network: GHOSTNET }));
+
+      const {
+        result: { current: removeAccountsDependencies },
+      } = renderHook(() => useRemoveDependenciesAndMultisigs());
+      act(() => removeAccountsDependencies([account0, account1]));
+
+      expect(store.getState().batches[MAINNET.name]).toEqual([accountOperations2]);
+      expect(store.getState().batches[GHOSTNET.name]).toEqual([]);
+    });
+
+    it("removes assets data directly related to the obsolete multisig accounts", () => {
+      store.dispatch(
+        assetsActions.updateTezBalance([
+          { address: multisig0.address.pkh, balance: 11, delegationLevel: 1 },
+          { address: multisig1.address.pkh, balance: 22, delegationLevel: 2 },
+          { address: multisig2.address.pkh, balance: 33, delegationLevel: 3 },
+        ])
+      );
+
+      const {
+        result: { current: removeAccountsDependencies },
+      } = renderHook(() => useRemoveDependenciesAndMultisigs());
+      act(() => removeAccountsDependencies([account0, account1]));
+
+      expect(store.getState().assets.balances.mutez).toEqual({
+        [multisig1.address.pkh]: "22",
+      });
+      expect(store.getState().assets.delegationLevels).toEqual({
+        [multisig1.address.pkh]: 2,
       });
     });
   });
