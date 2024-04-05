@@ -41,7 +41,7 @@ export const OperationsView = () => {
           width="150px"
           height="75px"
           marginBottom="136px"
-          src="/static/animations/loading-wheel.gif"
+          src="./static/media/loading-wheel.gif"
         />
       </Center>
 
@@ -77,7 +77,7 @@ export const OperationsView = () => {
           </OperationTileContext.Provider>
           <Center flexDirection="column" display={isLoading && !isFirstLoad ? "flex" : "none"}>
             <Divider />
-            <Image width="100px" height="50px" src="/static/animations/loading-dots.gif" />
+            <Image width="100px" height="50px" src="./static/media/loading-dots.gif" />
           </Center>
         </Box>
       )}
