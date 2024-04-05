@@ -1,6 +1,7 @@
-import { Text } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 
 import { useGetOperationDestination } from "./useGetOperationDestination";
+import colors from "../../style/colors";
 import { TzktCombinedOperation } from "../../utils/tezos";
 
 /**
@@ -38,5 +39,9 @@ export const InternalPrefix: React.FC<{
     return null;
   }
 
-  return <Text marginRight="8px">Internal:</Text>;
+  return (
+    <Heading marginRight="4px" color={colors.gray[450]} size="md">
+      Internal:
+    </Heading>
+  );
 };
