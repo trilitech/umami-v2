@@ -11,9 +11,7 @@ import {
   operationSign,
   useGetOperationDestination,
 } from "./useGetOperationDestination";
-import { useShowAddress } from "./useShowAddress";
 import colors from "../../style/colors";
-import { TzktAlias } from "../../types/Address";
 import { Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
 import { TokenTransfer } from "../../types/Transfer";
 import { TransactionOperation } from "../../utils/tezos";
@@ -30,11 +28,6 @@ export const TokenTransferTile: React.FC<{
   token: Token;
 }> = ({ operation, tokenTransfer, token }) => {
   const rawAmount = tokenTransfer.amount;
-
-  const showToAddress = useShowAddress(tokenTransfer.to?.address);
-  const showFromAddress = useShowAddress(tokenTransfer.from?.address);
-  // if you send assets between your own accounts you need to see at least one address
-  const showAnyAddress = !showToAddress && !showFromAddress;
 
   const operationDestination = useGetOperationDestination(
     tokenTransfer.from?.address,
@@ -115,20 +108,20 @@ export const TokenTransferTile: React.FC<{
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            {(showToAddress || showAnyAddress) && (
+            {tokenTransfer.to && (
               <Flex marginRight="15px" data-testid="to">
                 <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={tokenTransfer.to!} />
+                <AddressPill address={tokenTransfer.to} />
               </Flex>
             )}
-            {showFromAddress && (
+            {tokenTransfer.from && (
               <Flex data-testid="from">
                 <Text marginRight="6px" color={colors.gray[450]}>
                   From:
                 </Text>
-                <AddressPill address={tokenTransfer.from as TzktAlias} />
+                <AddressPill address={tokenTransfer.from} />
               </Flex>
             )}
           </Flex>

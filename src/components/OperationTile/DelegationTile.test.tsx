@@ -52,6 +52,15 @@ describe("<DelegationTile />", () => {
       render(fixture(contextValue, delegationFixture({})));
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
+
+    it("displays both the sender and baker contract pills", () => {
+      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+
+      render(fixture(contextValue, delegationFixture({})));
+
+      expect(screen.getByTestId("from")).toHaveTextContent("Account");
+      expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockImplicitAddress(1).pkh));
+    });
   });
 
   describe("page mode", () => {
@@ -98,15 +107,6 @@ describe("<DelegationTile />", () => {
         expect(screen.getByTestId("operation-type")).toHaveTextContent("Delegation Ended");
       });
     });
-
-    it("displays both the sender and baker contract pills", () => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
-
-      render(fixture(contextValue, delegationFixture({})));
-
-      expect(screen.getByTestId("from")).toHaveTextContent("Account");
-      expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockImplicitAddress(1).pkh));
-    });
   });
 
   describe("drawer mode", () => {
@@ -124,13 +124,6 @@ describe("<DelegationTile />", () => {
     it("hides the operation type", () => {
       render(fixture(contextValue, delegationFixture({})));
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
-    });
-
-    it("shows only the target contract pill", () => {
-      render(fixture(contextValue, delegationFixture({})));
-
-      expect(screen.queryByTestId("from")).not.toBeInTheDocument();
-      expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockImplicitAddress(1).pkh));
     });
   });
 });

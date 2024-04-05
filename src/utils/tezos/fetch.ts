@@ -51,6 +51,7 @@ export type DelegationOperation = tzktApi.DelegationOperation & {
   counter: number;
   type: "delegation";
   sender: TzktAlias;
+  newDelegate?: TzktAlias | null;
   status: string;
 };
 export type TransactionOperation = tzktApi.TransactionOperation & {

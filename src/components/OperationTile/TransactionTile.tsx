@@ -11,7 +11,6 @@ import {
   operationSign,
   useGetOperationDestination,
 } from "./useGetOperationDestination";
-import { useShowAddress } from "./useShowAddress";
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
@@ -24,10 +23,6 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
     operation.target?.address
   );
   const amount = prettyTezAmount(String(operation.amount));
-  const showToAddress = useShowAddress(operation.target?.address);
-  const showFromAddress = useShowAddress(operation.sender.address);
-  // if you send assets between your own accounts you need to see at least one address
-  const showAnyAddress = !showToAddress && !showFromAddress;
 
   const titleColor = operationColor(operationDestination);
   const sign = operationSign(operationDestination);
@@ -57,22 +52,21 @@ export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            {(showToAddress || showAnyAddress) && (
+            {operation.target && (
               <Flex marginRight="15px" data-testid="to">
                 <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={parsePkh(operation.target!.address!)} />
+                <AddressPill address={parsePkh(operation.target.address)} />
               </Flex>
             )}
-            {showFromAddress && (
-              <Flex data-testid="from">
-                <Text marginRight="6px" color={colors.gray[450]}>
-                  From:
-                </Text>
-                <AddressPill address={parsePkh(operation.sender.address)} />
-              </Flex>
-            )}
+
+            <Flex data-testid="from">
+              <Text marginRight="6px" color={colors.gray[450]}>
+                From:
+              </Text>
+              <AddressPill address={parsePkh(operation.sender.address)} />
+            </Flex>
           </Flex>
           <Center>
             <OperationTypeWrapper>Transaction</OperationTypeWrapper>

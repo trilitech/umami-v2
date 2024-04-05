@@ -62,6 +62,21 @@ describe("<OriginationTile />", () => {
       render(fixture(contextValue, originationFixture({})));
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
+
+    it("shows the sender pill", () => {
+      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+
+      render(
+        fixture(
+          contextValue,
+          originationFixture({
+            sender: { address: mockLedgerAccount(0).address.pkh },
+          })
+        )
+      );
+
+      expect(screen.getByTestId("from")).toHaveTextContent("Account");
+    });
   });
 
   describe("page mode", () => {
@@ -104,21 +119,6 @@ describe("<OriginationTile />", () => {
       render(fixture(contextValue, originationFixture({})));
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Contract Origination");
     });
-
-    it("shows the sender pill", () => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
-
-      render(
-        fixture(
-          contextValue,
-          originationFixture({
-            sender: { address: mockLedgerAccount(0).address.pkh },
-          })
-        )
-      );
-
-      expect(screen.getByTestId("from")).toHaveTextContent("Account");
-    });
   });
 
   describe("drawer mode", () => {
@@ -137,13 +137,6 @@ describe("<OriginationTile />", () => {
       render(fixture(contextValue, originationFixture({})));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
-    });
-
-    it("shows N/A in the pills section", () => {
-      render(fixture(contextValue, originationFixture({})));
-
-      expect(screen.getByTestId("from")).toHaveTextContent("N/A");
-      expect(screen.getByTestId("from")).not.toHaveTextContent(mockLedgerAccount(0).label);
     });
   });
 });

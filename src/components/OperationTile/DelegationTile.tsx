@@ -5,17 +5,13 @@ import { OperationStatus } from "./OperationStatus";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
-import { useShowAddress } from "./useShowAddress";
 import { BakerIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { TzktAlias } from "../../types/Address";
 import { DelegationOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operation }) => {
-  const isDelegating = !!operation.newDelegate;
-  const operationType = isDelegating ? "Delegate" : "Delegation Ended";
-  const showFromAddress = useShowAddress(operation.sender.address);
+  const operationType = operation.newDelegate ? "Delegate" : "Delegation Ended";
 
   return (
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-delegation">
@@ -39,23 +35,20 @@ export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ o
       <Box>
         <Flex justifyContent="space-between">
           <Flex>
-            {isDelegating && (
+            {operation.newDelegate && (
               <Flex marginRight="15px" data-testid="to">
                 <Text marginRight="6px" color={colors.gray[450]}>
                   To:
                 </Text>
-                <AddressPill address={operation.newDelegate as TzktAlias} />
+                <AddressPill address={operation.newDelegate} />
               </Flex>
             )}
-            {showFromAddress && (
-              <Flex data-testid="from">
-                <Text marginRight="6px" color={colors.gray[450]}>
-                  From:
-                </Text>
-                <AddressPill address={operation.sender} />
-              </Flex>
-            )}
-            {!isDelegating && !showFromAddress && <Text color={colors.gray[450]}>N/A</Text>}
+            <Flex data-testid="from">
+              <Text marginRight="6px" color={colors.gray[450]}>
+                From:
+              </Text>
+              <AddressPill address={operation.sender} />
+            </Flex>
           </Flex>
           <Center>
             <OperationTypeWrapper>{operationType}</OperationTypeWrapper>

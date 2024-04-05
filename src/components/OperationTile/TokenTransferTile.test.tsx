@@ -178,6 +178,61 @@ describe("<TokenTransferTile />", () => {
 
       expect(screen.getByTestId("timestamp")).toHaveTextContent("2 Jan 2021");
     });
+
+    describe("pills", () => {
+      beforeEach(() => {
+        addAccount(mockLedgerAccount(0));
+      });
+
+      it("shows both if sender is an owned account", () => {
+        render(
+          fixture(
+            contextValue,
+            tokenTransferFixture({
+              from: { address: mockLedgerAccount(0).address.pkh },
+              to: { address: mockLedgerAccount(1).address.pkh },
+            })
+          )
+        );
+
+        expect(screen.getByTestId("from")).toHaveTextContent("Account");
+        expect(screen.getByTestId("to")).toHaveTextContent(
+          formatPkh(mockLedgerAccount(1).address.pkh)
+        );
+      });
+
+      it("shows both if target is an owned account", () => {
+        render(
+          fixture(
+            contextValue,
+            tokenTransferFixture({
+              to: { address: mockLedgerAccount(0).address.pkh },
+              from: { address: mockLedgerAccount(1).address.pkh },
+            })
+          )
+        );
+
+        expect(screen.getByTestId("from")).toHaveTextContent(
+          formatPkh(mockLedgerAccount(1).address.pkh)
+        );
+        expect(screen.getByTestId("to")).toHaveTextContent("Account");
+      });
+
+      it("shows both if sender and target are owned accounts", () => {
+        render(
+          fixture(
+            contextValue,
+            tokenTransferFixture({
+              to: { address: mockLedgerAccount(0).address.pkh },
+              from: { address: mockLedgerAccount(0).address.pkh },
+            })
+          )
+        );
+
+        expect(screen.getByTestId("from")).toHaveTextContent("Account");
+        expect(screen.getByTestId("to")).toHaveTextContent("Account");
+      });
+    });
   });
 
   describe("page mode", () => {
@@ -241,61 +296,6 @@ describe("<TokenTransferTile />", () => {
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Token Transfer");
     });
-
-    describe("pills", () => {
-      beforeEach(() => {
-        addAccount(mockLedgerAccount(0));
-      });
-
-      it("shows both if sender is an owned account", () => {
-        render(
-          fixture(
-            contextValue,
-            tokenTransferFixture({
-              from: { address: mockLedgerAccount(0).address.pkh },
-              to: { address: mockLedgerAccount(1).address.pkh },
-            })
-          )
-        );
-
-        expect(screen.getByTestId("from")).toHaveTextContent("Account");
-        expect(screen.getByTestId("to")).toHaveTextContent(
-          formatPkh(mockLedgerAccount(1).address.pkh)
-        );
-      });
-
-      it("shows both if target is an owned account", () => {
-        render(
-          fixture(
-            contextValue,
-            tokenTransferFixture({
-              to: { address: mockLedgerAccount(0).address.pkh },
-              from: { address: mockLedgerAccount(1).address.pkh },
-            })
-          )
-        );
-
-        expect(screen.getByTestId("from")).toHaveTextContent(
-          formatPkh(mockLedgerAccount(1).address.pkh)
-        );
-        expect(screen.getByTestId("to")).toHaveTextContent("Account");
-      });
-
-      it("shows both if sender and target are owned accounts", () => {
-        render(
-          fixture(
-            contextValue,
-            tokenTransferFixture({
-              to: { address: mockLedgerAccount(0).address.pkh },
-              from: { address: mockLedgerAccount(0).address.pkh },
-            })
-          )
-        );
-
-        expect(screen.getByTestId("from")).toHaveTextContent("Account");
-        expect(screen.getByTestId("to")).toHaveTextContent("Account");
-      });
-    });
   });
 
   describe("drawer mode", () => {
@@ -325,57 +325,6 @@ describe("<TokenTransferTile />", () => {
       render(fixture(contextValue, tokenTransferFixture({})));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
-    });
-
-    describe("pills", () => {
-      it("hides From if it's an owned account", () => {
-        render(
-          fixture(
-            contextValue,
-            tokenTransferFixture({
-              from: { address: mockLedgerAccount(0).address.pkh },
-              to: { address: mockLedgerAccount(1).address.pkh },
-            })
-          )
-        );
-
-        expect(screen.queryByTestId("from")).not.toBeInTheDocument();
-        expect(screen.getByTestId("to")).toHaveTextContent(
-          formatPkh(mockLedgerAccount(1).address.pkh)
-        );
-      });
-
-      it("hides To if it's an owned account", () => {
-        render(
-          fixture(
-            contextValue,
-            tokenTransferFixture({
-              from: { address: mockLedgerAccount(1).address.pkh },
-              to: { address: mockLedgerAccount(0).address.pkh },
-            })
-          )
-        );
-
-        expect(screen.getByTestId("from")).toHaveTextContent(
-          formatPkh(mockLedgerAccount(1).address.pkh)
-        );
-        expect(screen.queryByTestId("to")).not.toBeInTheDocument();
-      });
-
-      it("shows only To if sender and target are owned accounts", () => {
-        render(
-          fixture(
-            contextValue,
-            tokenTransferFixture({
-              from: { address: mockLedgerAccount(0).address.pkh },
-              to: { address: mockLedgerAccount(0).address.pkh },
-            })
-          )
-        );
-
-        expect(screen.queryByTestId("from")).not.toBeInTheDocument();
-        expect(screen.getByTestId("to")).toHaveTextContent(mockLedgerAccount(0).label);
-      });
     });
   });
 });

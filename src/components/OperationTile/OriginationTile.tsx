@@ -5,7 +5,6 @@ import { OperationStatus } from "./OperationStatus";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
-import { useShowAddress } from "./useShowAddress";
 import { ContractIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
@@ -18,8 +17,6 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
     operation.originatedContract.typeHash === TYPE_HASH;
 
   const contractTitle = isMultisig ? "Multisig Account Created" : "Contract Origination";
-
-  const showFromAddress = useShowAddress(operation.sender.address);
 
   return (
     <Flex flexDirection="column" width="100%" data-testid="operation-tile-origination">
@@ -43,16 +40,10 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
       <Box>
         <Flex justifyContent="space-between">
           <Flex data-testid="from">
-            {!showFromAddress ? (
-              <Text color={colors.gray[450]}>N/A</Text>
-            ) : (
-              <Flex marginRight="15px">
-                <Text marginRight="6px" color={colors.gray[450]}>
-                  From:
-                </Text>
-                <AddressPill address={operation.sender} />
-              </Flex>
-            )}
+            <Text marginRight="6px" color={colors.gray[450]}>
+              From:
+            </Text>
+            <AddressPill address={operation.sender} />
           </Flex>
           <Center>
             <OperationTypeWrapper>Contract Origination</OperationTypeWrapper>
