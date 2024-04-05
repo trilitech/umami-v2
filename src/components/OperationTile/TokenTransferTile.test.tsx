@@ -6,13 +6,16 @@ import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
 import { Token, fromRaw } from "../../types/Token";
-import { TokenTransfer } from "../../types/Transfer";
 import { formatPkh } from "../../utils/format";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
-import { TEZ, TransactionOperation } from "../../utils/tezos";
+import { TEZ, TokenTransferOperation, TransactionOperation } from "../../utils/tezos";
 
-const fixture = (context: any, tokenTransfer: TokenTransfer, operation?: TransactionOperation) => (
+const fixture = (
+  context: any,
+  tokenTransfer: TokenTransferOperation,
+  operation?: TransactionOperation
+) => (
   <OperationTileContext.Provider value={context}>
     <TokenTransferTile
       operation={operation}

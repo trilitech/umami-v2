@@ -17,8 +17,9 @@ export const useGetOperationDestination = (
   sender: RawPkh | null | undefined,
   receiver: RawPkh | null | undefined
 ) => {
-  const isSenderOwned = useIsOwnedAddress(sender || "");
-  const isReceiverOwned = useIsOwnedAddress(receiver || "");
+  const isOwned = useIsOwnedAddress();
+  const isSenderOwned = isOwned(sender);
+  const isReceiverOwned = isOwned(receiver);
 
   if (!isSenderOwned && !isReceiverOwned) {
     return "unrelated";

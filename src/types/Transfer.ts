@@ -13,6 +13,7 @@ export type TokenTransfer = tzktApi.TokenTransfer & {
   migrationId?: number;
   originationId?: number;
   transactionId?: number;
+  initiator?: undefined;
 };
 
 export type TezTransfer = tzktApi.TransactionOperation;

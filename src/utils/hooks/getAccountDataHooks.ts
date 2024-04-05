@@ -104,9 +104,11 @@ export const useValidateMasterPassword = () => {
   };
 };
 
-export const useIsOwnedAddress = (address: RawPkh) => {
+export const useIsOwnedAddress = () => {
   const ownedAccounts = useAllAccounts();
-  return ownedAccounts.map(acc => acc.address.pkh).includes(address);
+  const addressesSet = new Set(ownedAccounts.map(acc => acc.address.pkh));
+
+  return (address: RawPkh | null | undefined): boolean => !!address && addressesSet.has(address);
 };
 
 const useGetMultisigSigners = () => {

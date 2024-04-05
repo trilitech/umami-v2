@@ -13,6 +13,7 @@ import {
 } from "../../types/TokenBalance";
 import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
+import { TokenTransferOperation } from "../tezos";
 
 const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
 
@@ -71,7 +72,10 @@ export const useGetAccountNFTs = () => {
 
 export const useGetTokenTransfer = () => {
   const tokenTransfers = useAppSelector(s => s.assets.transfers.tokens);
-  return (transactionId: number) => tokenTransfers[transactionId];
+  return (transactionId: number): TokenTransferOperation | undefined => {
+    const transfer = tokenTransfers[transactionId];
+    return transfer && { ...transfer, type: "token_transfer" };
+  };
 };
 
 const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);

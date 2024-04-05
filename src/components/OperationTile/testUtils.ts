@@ -7,7 +7,12 @@ import {
 } from "../../mocks/factories";
 import { TokenTransfer } from "../../types/Transfer";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
-import { DelegationOperation, OriginationOperation, TransactionOperation } from "../../utils/tezos";
+import {
+  DelegationOperation,
+  OriginationOperation,
+  TokenTransferOperation,
+  TransactionOperation,
+} from "../../utils/tezos";
 
 export const transactionFixture = (props: Partial<TransactionOperation>): TransactionOperation => ({
   amount: 1,
@@ -62,11 +67,13 @@ export const delegationFixture = (props: Partial<DelegationOperation>): Delegati
   ...props,
 });
 
-export const tokenTransferFixture = (props: Partial<TokenTransfer>): TokenTransfer => ({
+export const tokenTransferFixture = (props: Partial<TokenTransfer>): TokenTransferOperation => ({
+  type: "token_transfer",
   amount: "500",
   transactionId: 56789,
   id: 278346,
   level: 10,
+  from: { address: mockImplicitAccount(0).address.pkh },
   to: { address: mockImplicitAccount(1).address.pkh },
   token: uUSD(mockLedgerAccount(0).address).token,
   ...props,

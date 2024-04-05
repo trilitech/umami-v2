@@ -1,6 +1,7 @@
 import { AspectRatio, Box, Center, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
 
 import { Fee } from "./Fee";
+import { InternalPrefix } from "./InternalPrefix";
 import { OperationStatus } from "./OperationStatus";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
@@ -13,8 +14,7 @@ import {
 } from "./useGetOperationDestination";
 import colors from "../../style/colors";
 import { Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
-import { TokenTransfer } from "../../types/Transfer";
-import { TransactionOperation } from "../../utils/tezos";
+import { TokenTransferOperation, TransactionOperation } from "../../utils/tezos";
 import { getIPFSurl } from "../../utils/token/utils";
 import { AddressPill } from "../AddressPill/AddressPill";
 
@@ -24,7 +24,7 @@ export const TokenTransferTile: React.FC<{
   // in fact, they might not even have a corresponding transaction
   // they might be initiated by a contract origination instead
   operation?: TransactionOperation;
-  tokenTransfer: TokenTransfer;
+  tokenTransfer: TokenTransferOperation;
   token: Token;
 }> = ({ operation, tokenTransfer, token }) => {
   const rawAmount = tokenTransfer.amount;
@@ -58,6 +58,7 @@ export const TokenTransferTile: React.FC<{
       openDelay={300}
     >
       <Flex>
+        <InternalPrefix operation={operation || tokenTransfer} />
         <TzktLink
           marginRight="8px"
           color={underlineColor}

@@ -19,7 +19,7 @@ type State = {
   // TODO: This is a crutch, has to be merged with balances.mutez into an account state
   delegationLevels: Record<string, number | undefined>;
   transfers: {
-    tez: Record<string, TezTransfer[] | undefined>;
+    tez: Record<string, TezTransfer[] | undefined>; // TODO: remove, it's not used
     tokens: Record<TransactionId, TokenTransfer | undefined>;
   };
   bakers: Delegate[];

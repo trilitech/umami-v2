@@ -126,15 +126,15 @@ describe("getAccountDataHooks", () => {
     );
 
     it("returns true if account is owned", () => {
-      const view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(0).address.pkh));
+      const view = renderHook(() => useIsOwnedAddress());
 
-      expect(view.result.current).toEqual(true);
+      expect(view.result.current(mockImplicitAccount(0).address.pkh)).toEqual(true);
     });
 
     it("returns false if account is not owned", () => {
-      const view = renderHook(() => useIsOwnedAddress(mockImplicitAccount(2).address.pkh));
+      const view = renderHook(() => useIsOwnedAddress());
 
-      expect(view.result.current).toEqual(false);
+      expect(view.result.current(mockImplicitAccount(2).address.pkh)).toEqual(false);
     });
   });
 
