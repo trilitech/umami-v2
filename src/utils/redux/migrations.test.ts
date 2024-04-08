@@ -1,7 +1,17 @@
-import { accountsMigrations } from "./migrations";
+import { accountsMigrations, mainStoreMigrations } from "./migrations";
 import { mockLedgerAccount, mockMnemonicAccount } from "../../mocks/factories";
 
 describe("migrations", () => {
+  describe("main store migrations", () => {
+    test("5", () => {
+      expect(
+        mainStoreMigrations[5]({
+          assets: { transfers: { tez: "something" } },
+        })
+      ).toEqual({ assets: { transfers: {} } });
+    });
+  });
+
   describe("account migrations", () => {
     test("4", () => {
       const ledgerAcc = { ...mockLedgerAccount(0), derivationPathTemplate: undefined };

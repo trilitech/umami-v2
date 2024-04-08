@@ -5,7 +5,7 @@ import { accountsSlice } from "./accountsSlice";
 import { RawPkh } from "../../../types/Address";
 import { Delegate } from "../../../types/Delegate";
 import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";
-import { TezTransfer, TokenTransfer } from "../../../types/Transfer";
+import { TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
 
 type TransactionId = number;
@@ -19,7 +19,6 @@ type State = {
   // TODO: This is a crutch, has to be merged with balances.mutez into an account state
   delegationLevels: Record<string, number | undefined>;
   transfers: {
-    tez: Record<string, TezTransfer[] | undefined>; // TODO: remove, it's not used
     tokens: Record<TransactionId, TokenTransfer | undefined>;
   };
   bakers: Delegate[];
@@ -35,7 +34,7 @@ export const initialState: State = {
     mutez: {},
     tokens: {},
   },
-  transfers: { tez: {}, tokens: {} },
+  transfers: { tokens: {} },
   delegationLevels: {},
   bakers: [],
   conversionRate: null,
