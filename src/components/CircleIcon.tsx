@@ -6,7 +6,6 @@ import colors from "../style/colors";
 type Props = {
   icon: ReactNode;
   size?: string;
-  color?: string;
   onClick?: () => void;
 };
 
