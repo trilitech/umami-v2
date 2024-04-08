@@ -75,7 +75,7 @@
     "@types/circular-dependency-plugin": "^5.0.8",
     "@types/jest": "29.5.12",
     "@types/md5": "^2.3.5",
-    "@types/node": "20.12.4",
+    "@types/node": "20.12.5",
     "@types/papaparse": "^5.3.14",
     "@types/pluralize": "^0.0.33",
     "@types/promise-retry": "^1.1.6",
