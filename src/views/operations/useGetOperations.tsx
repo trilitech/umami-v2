@@ -69,6 +69,7 @@ export const useGetOperations = (accounts: Account[]) => {
     retry: 3,
     retryDelay: retryCount => retryCount * 2000,
     gcTime: 0,
+    refetchOnWindowFocus: false,
     // next page here means the older operations
     // whilst previous page means the newer operations
     // that's done that way because react-query prepends
