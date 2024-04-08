@@ -147,4 +147,84 @@ describe("Multisig reducer", () => {
       expect(store.getState().multisigs.labelsMap).toEqual({ [pkh]: "test label" });
     });
   });
+
+  describe("removeMultisigsData", () => {
+    beforeEach(() => {
+      store.dispatch(
+        multisigActions.setMultisigs([
+          mockMultisigAccount(0),
+          mockMultisigAccount(1),
+          mockMultisigAccount(2),
+        ])
+      );
+    });
+
+    it("does not removes multisigs", () => {
+      store.dispatch(
+        multisigActions.removeMultisigsData([
+          mockContractAddress(0).pkh,
+          mockContractAddress(2).pkh,
+        ])
+      );
+
+      expect(store.getState().multisigs.items).toEqual([
+        mockMultisigAccount(0),
+        mockMultisigAccount(1),
+        mockMultisigAccount(2),
+      ]);
+    });
+
+    it("removes labels", () => {
+      store.dispatch(
+        multisigActions.addMultisigLabel({ pkh: mockContractAddress(0).pkh, label: "Multisig 0" })
+      );
+      store.dispatch(
+        multisigActions.addMultisigLabel({ pkh: mockContractAddress(1).pkh, label: "Multisig 1" })
+      );
+
+      store.dispatch(
+        multisigActions.removeMultisigsData([
+          mockContractAddress(0).pkh,
+          mockContractAddress(2).pkh,
+        ])
+      );
+
+      expect(store.getState().multisigs.labelsMap).toEqual({
+        [mockContractAddress(1).pkh]: "Multisig 1",
+      });
+    });
+
+    it("removes pending operations", () => {
+      // pending operations for multisig 0 (bigmapId: 0)
+      const operation1 = multisigOperation;
+      const operation2 = { ...multisigOperation, id: "2" };
+      // pending operation for multisig 1
+      const operation3 = { ...multisigOperation, bigmapId: 1 };
+      store.dispatch(multisigActions.setPendingOperations([operation1, operation2, operation3]));
+
+      store.dispatch(
+        multisigActions.removeMultisigsData([
+          mockContractAddress(0).pkh,
+          mockContractAddress(2).pkh,
+        ])
+      );
+
+      expect(store.getState().multisigs.pendingOperations).toEqual({
+        "1": [
+          {
+            approvals: [
+              {
+                pkh: "pkh",
+                type: "implicit",
+              },
+            ],
+            bigmapId: 1,
+            id: "1",
+            rawActions:
+              '[{"prim":"DROP"},{"prim":"NIL","args":[{"prim":"operation"}]},{"prim":"PUSH","args":[{"prim":"key_hash"},{"bytes":"005fd0a7ece135cecfd71fcf78cf6656d5047fb980"}]},{"prim":"IMPLICIT_ACCOUNT"},{"prim":"PUSH","args":[{"prim":"mutez"},{"int":"100000"}]},{"prim":"UNIT"},{"prim":"TRANSFER_TOKENS"},{"prim":"CONS"}]',
+          },
+        ],
+      });
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
+import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
 import {
   useDeriveMnemonicAccount,
   useRemoveAccount,
@@ -12,7 +12,7 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { fakeAddressExists } from "../../mocks/helpers";
+import { addAccount, fakeAddressExists } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
@@ -28,12 +28,12 @@ import * as tezosHelpers from "../tezos/helpers";
 jest.mock("./removeAccountDependenciesHooks");
 jest.unmock("../tezos");
 
-const mockedUseRemoveAccountsDependencies = jest.mocked(useRemoveAccountsDependencies);
+const mockedUseRemoveDependenciesAndMultisigs = jest.mocked(useRemoveDependenciesAndMultisigs);
 const mockedRemoveAccountsDependencies = jest.fn();
 
 describe("setAccountDataHooks", () => {
   beforeEach(() => {
-    mockedUseRemoveAccountsDependencies.mockReturnValue(mockedRemoveAccountsDependencies);
+    mockedUseRemoveDependenciesAndMultisigs.mockReturnValue(mockedRemoveAccountsDependencies);
   });
 
   describe("mnemonic accounts", () => {
@@ -140,9 +140,7 @@ describe("setAccountDataHooks", () => {
           mockSocialAccount(0, LABEL_BASE),
           mockSecretKeyAccount(2, `${LABEL_BASE} 3`),
         ];
-        existingAccounts.forEach(account =>
-          store.dispatch(accountsSlice.actions.addAccount(account))
-        );
+        existingAccounts.forEach(addAccount);
         // Labels "labelBase" & "labelBase 3" are taken by other types of accounts.
         // The next available labels are "labelBase 2" & "labelBase 4".
         const expected = [
@@ -270,7 +268,7 @@ describe("setAccountDataHooks", () => {
           mockSocialAccount(0, LABEL_BASE),
           mockSecretKeyAccount(2, `${LABEL_BASE} 5`),
         ];
-        otherAccounts.forEach(account => store.dispatch(accountsSlice.actions.addAccount(account)));
+        otherAccounts.forEach(addAccount);
         const existingAccounts = [
           await mnemonicAccount(0, `${LABEL_BASE} 2`),
           await mnemonicAccount(1, `${LABEL_BASE} 4`),
@@ -366,43 +364,43 @@ describe("setAccountDataHooks", () => {
       mockSecretKeyAccount(5),
       mockSecretKeyAccount(6),
     ];
-    const accountTypes: ImplicitAccount["type"][] = ["social", "ledger", "secret_key"];
 
-    beforeEach(() =>
-      accounts.forEach(account => store.dispatch(accountsSlice.actions.addAccount(account)))
+    beforeEach(() => accounts.forEach(addAccount));
+
+    describe.each(["social" as const, "ledger" as const, "secret_key" as const])(
+      "for %s type",
+      type => {
+        it("deletes all accounts", () => {
+          const {
+            result: { current: removeNonMnemonic },
+          } = renderHook(() => useRemoveNonMnemonic());
+
+          act(() => removeNonMnemonic(type));
+
+          expect(store.getState().accounts.items).toEqual(
+            accounts.filter(account => account.type !== type)
+          );
+        });
+
+        it("calls removeAccountsDependencies with all accounts", () => {
+          const {
+            result: { current: removeNonMnemonic },
+          } = renderHook(() => useRemoveNonMnemonic());
+
+          act(() => removeNonMnemonic(type));
+
+          expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith(
+            accounts.filter(account => account.type === type)
+          );
+        });
+      }
     );
-
-    describe.each(accountTypes)("for %s type", type => {
-      it("deletes all accounts", () => {
-        const {
-          result: { current: removeNonMnemonic },
-        } = renderHook(() => useRemoveNonMnemonic());
-
-        act(() => removeNonMnemonic(type));
-
-        expect(store.getState().accounts.items).toEqual(
-          accounts.filter(account => account.type !== type)
-        );
-      });
-
-      it("calls removeAccountsDependencies with all accounts", () => {
-        const {
-          result: { current: removeNonMnemonic },
-        } = renderHook(() => useRemoveNonMnemonic());
-
-        act(() => removeNonMnemonic(type));
-
-        expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith(
-          accounts.filter(account => account.type === type)
-        );
-      });
-    });
   });
 
   describe("useRemoveAccount", () => {
     it("deletes secret key on deleting secret key account", () => {
       const account = mockSecretKeyAccount(0);
-      store.dispatch(accountsSlice.actions.addAccount(account));
+      addAccount(account);
       store.dispatch(
         accountsSlice.actions.addSecretKey({
           pkh: account.address.pkh,
@@ -413,7 +411,7 @@ describe("setAccountDataHooks", () => {
       const {
         result: { current: removeAccount },
       } = renderHook(() => useRemoveAccount());
-      removeAccount(account);
+      act(() => removeAccount(account));
 
       expect(store.getState().accounts.items).toEqual([]);
       expect(store.getState().accounts.secretKeys).toEqual({});
@@ -424,7 +422,7 @@ describe("setAccountDataHooks", () => {
         result: { current: removeAccount },
       } = renderHook(() => useRemoveAccount());
 
-      removeAccount(mockSocialAccount(5));
+      act(() => removeAccount(mockSocialAccount(5)));
 
       expect(mockedRemoveAccountsDependencies).toHaveBeenCalledWith([mockSocialAccount(5)]);
     });

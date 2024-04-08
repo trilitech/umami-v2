@@ -33,7 +33,7 @@ import {
   defaultDerivationPathTemplate,
   getDefaultDerivationPath,
 } from "../utils/account/derivationPathUtils";
-import { Multisig, MultisigOperation } from "../utils/multisig/types";
+import { Multisig } from "../utils/multisig/types";
 
 export const mockDelegation = (
   id: number,
@@ -173,20 +173,21 @@ export const mockLedgerAccount = (index: number, label?: string): LedgerAccount 
 /**
  * Use {@link utils/redux/thunks/renameAccount#renameAccount} to set a label for a multisig account.
  */
-export const mockMultisigAccount = (index: number): MultisigAccount => ({
+export const mockMultisigAccount = (
+  index: number,
+  signers?: ImplicitAddress[]
+): MultisigAccount => ({
   type: "multisig",
   address: mockContractAddress(index),
   label: `Multisig Account ${index}`,
   threshold: 1,
-  signers: [mockImplicitAddress(index)],
+  signers: signers || [mockImplicitAddress(index)],
   pendingOperationsBigmapId: index,
 });
 
 export const mockMultisigWithOperations = (
   index: number,
-  operations: MultisigOperation[] = [],
   signers: string[] = [],
-  balance = "0",
   threshold = 3
 ): Multisig => ({
   address: mockContractAddress(index),

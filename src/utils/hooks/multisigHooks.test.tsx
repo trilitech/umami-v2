@@ -5,7 +5,7 @@ import { multisigToAccount } from "../multisig/helpers";
 import { multisigActions } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
 
-describe("useMultisigHooks", () => {
+describe("multisigHooks", () => {
   it("useGetSortedMultisigPendingOperations sorts operations by id", () => {
     const operation1 = multisigOperation;
     const operation2 = { ...multisigOperation, id: "2" };

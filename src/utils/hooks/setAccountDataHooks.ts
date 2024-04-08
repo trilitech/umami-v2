@@ -8,7 +8,7 @@ import {
 } from "./getAccountDataHooks";
 import { useGetNextAvailableAccountLabels } from "./labelsHooks";
 import { useSelectedNetwork } from "./networkHooks";
-import { useRemoveAccountsDependencies } from "./removeAccountDependenciesHooks";
+import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
 import {
   ImplicitAccount,
   LedgerAccount,
@@ -188,14 +188,16 @@ export const useRestoreSocial = () => {
 
 /**
  * Hook for removing all accounts from mnemonic group by a given fingerprint.
+ *
+ * Also removes accounts' dependencies and obsolete multisigs.
  */
 export const useRemoveMnemonic = () => {
   const dispatch = useAppDispatch();
   const getAccountsByFingerPrint = useGetAccountsByFingerPrint();
-  const removeAccountsDependencies = useRemoveAccountsDependencies();
+  const removeDependenciesAndMultisigs = useRemoveDependenciesAndMultisigs();
 
   return (fingerPrint: string) => {
-    removeAccountsDependencies(getAccountsByFingerPrint(fingerPrint));
+    removeDependenciesAndMultisigs(getAccountsByFingerPrint(fingerPrint));
 
     dispatch(
       removeMnemonicAndAccounts({
@@ -207,14 +209,16 @@ export const useRemoveMnemonic = () => {
 
 /**
  * Hook for removing all accounts of a given type.
+ *
+ * Also removes accounts' dependencies and obsolete multisigs.
  */
 export const useRemoveNonMnemonic = () => {
   const dispatch = useAppDispatch();
   const getAccountsByType = useGetAccountsByType();
-  const removeAccountsDependencies = useRemoveAccountsDependencies();
+  const removeDependenciesAndMultisigs = useRemoveDependenciesAndMultisigs();
 
   return (accountType: ImplicitAccount["type"]) => {
-    removeAccountsDependencies(getAccountsByType(accountType));
+    removeDependenciesAndMultisigs(getAccountsByType(accountType));
 
     dispatch(
       removeNonMnemonicAccounts({
@@ -226,13 +230,16 @@ export const useRemoveNonMnemonic = () => {
 
 /**
  * Hook for removing single account.
+ *
+ * Also removes account's dependencies and obsolete multisigs.
  */
 export const useRemoveAccount = () => {
   const dispatch = useAppDispatch();
-  const removeAccountsDependencies = useRemoveAccountsDependencies();
+  const removeDependenciesAndMultisigs = useRemoveDependenciesAndMultisigs();
 
   return (account: SocialAccount | LedgerAccount | SecretKeyAccount) => {
-    removeAccountsDependencies([account]);
+    removeDependenciesAndMultisigs([account]);
+
     dispatch(accountsSlice.actions.removeAccount(account));
   };
 };
