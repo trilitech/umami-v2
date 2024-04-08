@@ -10,13 +10,14 @@
     "@typescript-eslint",
     "chakra-ui",
     "deprecation",
+    "eslint-plugin-tsdoc",
     "import",
     "jest-dom",
     "jest",
     "react-hooks",
+    "react-redux",
     "react",
     "testing-library",
-    "eslint-plugin-tsdoc",
     "unused-imports",
   ],
   "extends": [
@@ -27,9 +28,15 @@
     "plugin:import/typescript",
     "plugin:jest-dom/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:react-redux/recommended",
     "plugin:react/jsx-runtime",
     "plugin:testing-library/react",
   ],
+  "settings": {
+    "react": {
+      "version": "detect",
+    },
+  },
   "rules": {
     "@typescript-eslint/no-explicit-any": "off", // TODO: change to error https://app.asana.com/0/0/1204322668303155/f
     "@typescript-eslint/no-empty-function": ["warn", { "allow": ["arrowFunctions"] }],
@@ -106,6 +113,7 @@
     ],
     "tsdoc/syntax": "warn",
     "arrow-body-style": ["warn", "as-needed"],
+    "react-redux/useSelector-prefer-selectors": "off",
   },
   "overrides": [
     {
