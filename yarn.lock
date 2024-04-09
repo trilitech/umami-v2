@@ -20821,7 +20821,7 @@ __metadata:
     "@tanstack/react-query": "npm:^5.29.0"
     "@tanstack/react-query-devtools": "npm:^5.29.0"
     "@taquito/ledger-signer": "npm:^19.2.0"
-    "@taquito/michel-codec": "npm:^19.1.0"
+    "@taquito/michel-codec": "npm:^19.2.0"
     "@taquito/rpc": "npm:^19.2.0"
     "@taquito/signer": "npm:^19.2.0"
     "@taquito/taquito": "npm:19.1.0"
