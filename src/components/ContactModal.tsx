@@ -25,6 +25,7 @@ import { Contact } from "../types/Contact";
 import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
 import { useValidateName } from "../utils/hooks/labelsHooks";
 import { useAvailableNetworks } from "../utils/hooks/networkHooks";
+import { useAsyncActionHandler } from "../utils/hooks/useAsyncActionHandler";
 import { getNetworksForContracts } from "../utils/multisig/helpers";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
@@ -39,6 +40,7 @@ import { contactsActions } from "../utils/redux/slices/contactsSlice";
 export const UpsertContactModal: FC<{
   contact?: Contact;
 }> = ({ contact }) => {
+  const { handleAsyncAction } = useAsyncActionHandler();
   const dispatch = useAppDispatch();
   const { isOpen, onClose } = useContext(DynamicModalContext);
   const availableNetworks = useAvailableNetworks();
@@ -48,23 +50,25 @@ export const UpsertContactModal: FC<{
 
   const onSubmitContact = async (newContact: Contact) => {
     if (isValidContractPkh(newContact.pkh)) {
-      const contractsWithNetworks = await getNetworksForContracts(
-        availableNetworks,
-        new Set(newContact.pkh)
-      );
-      if (!contractsWithNetworks.has(newContact.pkh)) {
-        throw new Error(`Network not found for contract ${newContact.pkh}`);
-      }
-      dispatch(
-        contactsActions.upsert({
-          ...newContact,
-          network: contractsWithNetworks.get(newContact.pkh),
-        })
-      );
+      await handleAsyncAction(async () => {
+        const contractsWithNetworks = await getNetworksForContracts(availableNetworks, [
+          newContact.pkh,
+        ]);
+        if (!contractsWithNetworks.has(newContact.pkh)) {
+          throw new Error(`Network not found for contract ${newContact.pkh}`);
+        }
+        dispatch(
+          contactsActions.upsert({
+            ...newContact,
+            network: contractsWithNetworks.get(newContact.pkh),
+          })
+        );
+      });
     } else {
       dispatch(contactsActions.upsert({ ...newContact, network: undefined }));
     }
     onClose();
+    reset();
   };
 
   const {
@@ -78,7 +82,7 @@ export const UpsertContactModal: FC<{
   });
 
   const onSubmit = ({ name, pkh }: Contact) => {
-    void onSubmitContact({ name: name.trim(), pkh }).then(() => reset);
+    void onSubmitContact({ name: name.trim(), pkh });
   };
 
   const resetRef = useRef(reset);

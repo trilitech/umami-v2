@@ -25,8 +25,6 @@ describe("migrations", () => {
       });
     });
 
-    // TODO: add test 3
-
     test("5", () => {
       expect(
         mainStoreMigrations[5]({
@@ -49,35 +47,34 @@ describe("migrations", () => {
         ])
       );
 
-      const migratedStore = mainStoreMigrations[5]({
+      const migratedStore = await mainStoreMigrations[6]({
         networks: {
           current: [GHOSTNET],
-          available: [[MAINNET, GHOSTNET]],
+          available: [MAINNET, GHOSTNET],
         },
         contacts: {
-          implicitPkh: { name: "Implicit Contact", pkh: implicitPkh },
-          mainnetPkh: { name: "Mainnet Contact", pkh: mainnetPkh },
-          ghostnetPkh: { name: "Ghostnet Contact", pkh: ghostnetPkh },
-          absentPkh: { name: "Absent Contact", pkh: absentPkh },
+          [implicitPkh]: { name: "Implicit Contact", pkh: implicitPkh },
+          [mainnetPkh]: { name: "Mainnet Contact", pkh: mainnetPkh },
+          [ghostnetPkh]: { name: "Ghostnet Contact", pkh: ghostnetPkh },
+          [absentPkh]: { name: "Absent Contact", pkh: absentPkh },
         },
       });
 
       expect(mockedGetNetworksForContracts).toHaveBeenCalledTimes(1);
-      expect(mockedGetNetworksForContracts).toHaveBeenCalledWith([
-        mainnetPkh,
-        ghostnetPkh,
-        absentPkh,
-      ]);
+      expect(mockedGetNetworksForContracts).toHaveBeenCalledWith(
+        [MAINNET, GHOSTNET],
+        [mainnetPkh, ghostnetPkh, absentPkh]
+      );
       await waitFor(() =>
         expect(migratedStore).toEqual({
           networks: {
             current: [GHOSTNET],
-            available: [[MAINNET, GHOSTNET]],
+            available: [MAINNET, GHOSTNET],
           },
           contacts: {
-            implicitPkh: { name: "Implicit Contact", pkh: implicitPkh, network: undefined },
-            mainnetPkh: { name: "Mainnet Contact", pkh: mainnetPkh, network: "mainnet" },
-            ghostnetPkh: { name: "Ghostnet Contact", pkh: ghostnetPkh, network: "ghostnet" },
+            [implicitPkh]: { name: "Implicit Contact", pkh: implicitPkh, network: undefined },
+            [mainnetPkh]: { name: "Mainnet Contact", pkh: mainnetPkh, network: "mainnet" },
+            [ghostnetPkh]: { name: "Ghostnet Contact", pkh: ghostnetPkh, network: "ghostnet" },
           },
         })
       );

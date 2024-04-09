@@ -53,13 +53,16 @@ export const getExistingContractAddresses = async (
 
 export const getNetworksForContracts = async (
   availableNetworks: Network[],
-  accountPkhs: Set<RawPkh>
+  accountPkhs: RawPkh[]
 ): Promise<Map<RawPkh, string>> => {
   const result = new Map<RawPkh, string>();
 
   const accountsWithNetwork = await Promise.all(
     availableNetworks.map(async network =>
-      (await getExistingContractAddresses(network, accountPkhs)).map(pkh => [pkh, network.name])
+      (await getExistingContractAddresses(network, new Set(accountPkhs))).map(pkh => [
+        pkh,
+        network.name,
+      ])
     )
   );
   accountsWithNetwork.flat().forEach(([pkh, network]) => result.set(pkh, network));

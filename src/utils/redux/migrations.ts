@@ -44,7 +44,7 @@ export const mainStoreMigrations = {
       .map((contact: any) => contact.pkh);
     const contractsWithNetworks = await getNetworksForContracts(
       state.networks.available,
-      new Set(contractPkhs)
+      contractPkhs
     );
     const contractAccounts = [...contractsWithNetworks.entries()].map(([pkh, network]) => [
       pkh,
