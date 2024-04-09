@@ -5883,24 +5883,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taquito/utils@npm:^19.1.0":
-  version: 19.1.0
-  resolution: "@taquito/utils@npm:19.1.0"
-  dependencies:
-    "@stablelib/blake2b": "npm:^1.0.1"
-    "@stablelib/ed25519": "npm:^1.0.3"
-    "@taquito/core": "npm:^19.1.0"
-    "@types/bs58check": "npm:^2.1.0"
-    bignumber.js: "npm:^9.1.2"
-    blakejs: "npm:^1.2.1"
-    bs58check: "npm:^3.0.1"
-    buffer: "npm:^6.0.3"
-    elliptic: "npm:^6.5.4"
-    typedarray-to-buffer: "npm:^4.0.0"
-  checksum: 10/27462a718f584df729e3edee7e285ea4b41486500bf40ab222cb4e35534e841953e3969c546365e547907f146496646f8d0361f3ae3ec00fce0b866b37a20216
-  languageName: node
-  linkType: hard
-
 "@taquito/utils@npm:^19.2.0":
   version: 19.2.0
   resolution: "@taquito/utils@npm:19.2.0"
@@ -20714,7 +20696,7 @@ __metadata:
     "@taquito/rpc": "npm:^19.2.0"
     "@taquito/signer": "npm:^19.2.0"
     "@taquito/taquito": "npm:19.2.0"
-    "@taquito/utils": "npm:^19.1.0"
+    "@taquito/utils": "npm:^19.2.0"
     "@testing-library/dom": "npm:^10.0.0"
     "@testing-library/jest-dom": "npm:6.4.2"
     "@testing-library/react": "npm:14.3.0"
