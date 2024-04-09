@@ -5795,17 +5795,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taquito/ledger-signer@npm:^19.1.0":
-  version: 19.1.0
-  resolution: "@taquito/ledger-signer@npm:19.1.0"
+"@taquito/ledger-signer@npm:^19.2.0":
+  version: 19.2.0
+  resolution: "@taquito/ledger-signer@npm:19.2.0"
   dependencies:
     "@ledgerhq/hw-transport": "npm:^6.28.8"
     "@stablelib/blake2b": "npm:^1.0.1"
     "@taquito/core": "npm:^19.1.0"
-    "@taquito/taquito": "npm:^19.1.0"
-    "@taquito/utils": "npm:^19.1.0"
+    "@taquito/taquito": "npm:^19.2.0"
+    "@taquito/utils": "npm:^19.2.0"
     buffer: "npm:^6.0.3"
-  checksum: 10/d742a70e3ed13a6c920e645574c0e1ce59da5024ed4a887fed212a50eb9e28ae5fe46412ba90a8e57e83eae5ff2568cd1410ce00e0696e199f40c420b822e968
+  checksum: 10/abe2cb95bbe941649c5c89a981e28b5cc57d80c66239ab36801983b830e2e5d272fa35b4da1b4d6d21c3ed6f37ef39da92b03cdd2ff8dc69ae28ffba8a4ea4ef
   languageName: node
   linkType: hard
 
@@ -5921,7 +5921,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taquito/taquito@npm:19.1.0, @taquito/taquito@npm:^19.1.0":
+"@taquito/taquito@npm:19.1.0":
   version: 19.1.0
   resolution: "@taquito/taquito@npm:19.1.0"
   dependencies:
@@ -20820,7 +20820,7 @@ __metadata:
     "@tanstack/eslint-plugin-query": "npm:^5.28.11"
     "@tanstack/react-query": "npm:^5.29.0"
     "@tanstack/react-query-devtools": "npm:^5.29.0"
-    "@taquito/ledger-signer": "npm:^19.1.0"
+    "@taquito/ledger-signer": "npm:^19.2.0"
     "@taquito/michel-codec": "npm:^19.1.0"
     "@taquito/rpc": "npm:^19.2.0"
     "@taquito/signer": "npm:^19.2.0"
