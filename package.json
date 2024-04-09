@@ -63,7 +63,7 @@
     "@taquito/ledger-signer": "^19.1.0",
     "@taquito/michel-codec": "^19.1.0",
     "@taquito/rpc": "^19.1.0",
-    "@taquito/signer": "^19.1.0",
+    "@taquito/signer": "^19.2.0",
     "@taquito/taquito": "19.1.0",
     "@taquito/utils": "^19.1.0",
     "@testing-library/dom": "^10.0.0",
