@@ -1,19 +1,22 @@
+import * as api from "@tzkt/sdk-api";
 import axios from "axios";
 
 import {
-  getExistingContractAddresses,
+  getNetworksForContracts,
   getPendingOperationsForMultisigs,
   getRelevantMultisigContracts,
   parseMultisig,
 } from "./helpers";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
-import { DefaultNetworks } from "../../types/Network";
+import { DefaultNetworks, GHOSTNET, MAINNET } from "../../types/Network";
 jest.deepUnmock("../tezos");
 jest.unmock("../tezos/helpers");
 jest.unmock("../tezos/fetch");
 
 const mockedAxios = jest.spyOn(axios, "get");
+
+const mockedContractsGet = jest.spyOn(api, "contractsGet");
 
 describe("multisig helpers", () => {
   describe.each(DefaultNetworks)("on $name", network => {
@@ -37,26 +40,6 @@ describe("multisig helpers", () => {
             threshold: 2,
           },
         ]);
-      });
-    });
-
-    describe("getExistingContractAddresses", () => {
-      it("fetches existing contract addresses", async () => {
-        const mockResponse = {
-          data: tzktGetSameMultisigsResponse,
-        };
-        mockedAxios.mockResolvedValue(mockResponse);
-
-        const result = await getExistingContractAddresses(
-          network,
-          new Set([
-            mockContractAddress(0).pkh,
-            mockContractAddress(1).pkh,
-            mockContractAddress(2).pkh,
-          ])
-        );
-
-        expect(result).toEqual([mockContractAddress(0).pkh, mockContractAddress(2).pkh]);
       });
     });
 
@@ -119,6 +102,54 @@ describe("multisig helpers", () => {
           },
         ]);
       });
+    });
+  });
+
+  describe("getNetworksForContracts", () => {
+    it("calls contractsGet with correct arguments", async () => {
+      mockedContractsGet.mockResolvedValue(["pkh1", "pkh3"] as any);
+
+      await getNetworksForContracts([MAINNET, GHOSTNET], ["pkh1", "pkh2", "pkh3"]);
+
+      expect(mockedContractsGet).toHaveBeenCalledTimes(2);
+      expect(mockedContractsGet).toHaveBeenCalledWith(
+        {
+          address: {
+            in: ["pkh1,pkh2,pkh3"],
+          },
+          select: { fields: ["address"] },
+        },
+        { baseUrl: MAINNET.tzktApiUrl }
+      );
+      expect(mockedContractsGet).toHaveBeenCalledWith(
+        {
+          address: {
+            in: ["pkh1,pkh2,pkh3"],
+          },
+          select: { fields: ["address"] },
+        },
+        { baseUrl: GHOSTNET.tzktApiUrl }
+      );
+    });
+
+    it("transforms api responses into map with data", async () => {
+      mockedContractsGet.mockImplementation((...args) => {
+        if (args[1].baseUrl === MAINNET.tzktApiUrl) {
+          return Promise.resolve(["pkh1", "pkh3"] as any);
+        } else {
+          return Promise.resolve(["pkh2"] as any);
+        }
+      });
+
+      const result = await getNetworksForContracts([MAINNET, GHOSTNET], ["pkh1", "pkh2", "pkh3"]);
+
+      expect(result).toEqual(
+        new Map([
+          ["pkh1", MAINNET.name],
+          ["pkh2", GHOSTNET.name],
+          ["pkh3", MAINNET.name],
+        ])
+      );
     });
   });
 });

@@ -1,13 +1,16 @@
+import * as api from "@tzkt/sdk-api";
 import axios from "axios";
 
 import { getAllMultiSigContracts, getExistingContracts, getPendingOperations } from "./fetch";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { ghostMultisigContracts } from "../../mocks/tzktResponse";
-import { GHOSTNET } from "../../types/Network";
+import { DefaultNetworks, GHOSTNET } from "../../types/Network";
 
 jest.unmock("../tezos");
 
 const mockedAxios = jest.spyOn(axios, "get");
+
+const mockedContractsGet = jest.spyOn(api, "contractsGet");
 
 describe("multisig fetch", () => {
   const expectedMockedMultisigContracts = [
@@ -60,19 +63,31 @@ describe("multisig fetch", () => {
   });
 
   describe("getExistingContracts", () => {
-    it("fetches contracts existing in the given network by address list", async () => {
-      mockedAxios.mockResolvedValue({ data: ghostMultisigContracts });
+    it.each(DefaultNetworks)(
+      "on $name calls contractsGet with correct arguments",
+      async network => {
+        mockedContractsGet.mockResolvedValue(["pkh1", "pkh3"] as any);
 
-      const result = await getExistingContracts(GHOSTNET, ["pkh1", "pkh2", "pkh3"]);
-      expect(mockedAxios).toHaveBeenCalledWith(
-        `${GHOSTNET.tzktApiUrl}/v1/contracts?typeHash=1963879877&codeHash=-1890025422&includeStorage=true&limit=10000&address.in=pkh1,pkh2,pkh3`
-      );
-      expect(
-        result.map(({ address, storage: { pending_ops, signers, threshold } }) => ({
-          address,
-          storage: { pending_ops, signers, threshold },
-        }))
-      ).toEqual(expectedMockedMultisigContracts);
+        await getExistingContracts(["pkh1", "pkh2", "pkh3"], network);
+
+        expect(mockedContractsGet).toHaveBeenCalledWith(
+          {
+            address: {
+              in: ["pkh1,pkh2,pkh3"],
+            },
+            select: { fields: ["address"] },
+          },
+          { baseUrl: network.tzktApiUrl }
+        );
+      }
+    );
+
+    it("extracts contract addresses from the api response", async () => {
+      mockedContractsGet.mockResolvedValue(["pkh1", "pkh3"] as any);
+
+      const result = await getExistingContracts(["pkh1", "pkh2", "pkh3"], GHOSTNET);
+
+      expect(result).toEqual(["pkh1", "pkh3"]);
     });
   });
 

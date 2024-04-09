@@ -37,30 +37,22 @@ export const getRelevantMultisigContracts = async (
 };
 
 /**
- * Checks which of the given multisig addresses exist in the given network.
+ * Checks which of the given contract addresses exist in the given network.
  *
- * @param network - network to check.
- * @param accountPkhs - multisig addresses to check.
- * @returns list of addresses that exist in the network.
+ * @param availableNetworks - network to check.
+ * @param contractPkhs - contract addresses to check.
+ * @returns map from existing addresses to their corresponding networks.
  */
-export const getExistingContractAddresses = async (
-  network: Network,
-  accountPkhs: Set<RawPkh>
-): Promise<RawPkh[]> => {
-  const contracts = await getExistingContracts(network, Array.from(accountPkhs));
-  return contracts.map(raw => parseContractPkh(raw.address).pkh);
-};
-
 export const getNetworksForContracts = async (
   availableNetworks: Network[],
-  accountPkhs: RawPkh[]
+  contractPkhs: RawPkh[]
 ): Promise<Map<RawPkh, string>> => {
   const result = new Map<RawPkh, string>();
 
   const accountsWithNetwork = await Promise.all(
     availableNetworks.map(async network =>
-      (await getExistingContractAddresses(network, new Set(accountPkhs))).map(pkh => [
-        pkh,
+      (await getExistingContracts(contractPkhs, network)).map(contractPkh => [
+        contractPkh,
         network.name,
       ])
     )
