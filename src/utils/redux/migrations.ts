@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import { produce } from "immer";
 import { identity } from "lodash";
 
@@ -29,6 +28,10 @@ export const mainStoreMigrations = {
       }
     }),
   4: identity,
+  5: (state: any) =>
+    produce(state, (draft: any) => {
+      delete draft.assets.transfers["tez"];
+    }),
 } as any;
 
 export const accountsMigrations = {
@@ -56,4 +59,5 @@ export const accountsMigrations = {
         }
       });
     }),
+  5: identity,
 } as any;
