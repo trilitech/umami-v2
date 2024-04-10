@@ -180,7 +180,7 @@
     "source-map-loader": "^5.0.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "style-loader": "^3.3.4",
+    "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.10",
     "ts-node": "^10.9.2",
     "typedoc": "^0.25.13",
