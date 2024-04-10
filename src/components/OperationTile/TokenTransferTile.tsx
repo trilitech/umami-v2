@@ -57,7 +57,7 @@ export const TokenTransferTile: React.FC<{
       }
       openDelay={300}
     >
-      <Flex>
+      <Center>
         <InternalPrefix operation={operation || tokenTransfer} />
         <TzktLink
           marginRight="8px"
@@ -76,7 +76,7 @@ export const TokenTransferTile: React.FC<{
             {tokenNameSafe(token)}
           </Text>
         </TzktLink>
-      </Flex>
+      </Center>
     </Tooltip>
   ) : (
     <TzktLink
