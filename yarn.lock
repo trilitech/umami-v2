@@ -9917,9 +9917,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^6.11.0":
-  version: 6.11.0
-  resolution: "css-loader@npm:6.11.0"
+"css-loader@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "css-loader@npm:7.1.0"
   dependencies:
     icss-utils: "npm:^5.1.0"
     postcss: "npm:^8.4.33"
@@ -9931,13 +9931,13 @@ __metadata:
     semver: "npm:^7.5.4"
   peerDependencies:
     "@rspack/core": 0.x || 1.x
-    webpack: ^5.0.0
+    webpack: ^5.27.0
   peerDependenciesMeta:
     "@rspack/core":
       optional: true
     webpack:
       optional: true
-  checksum: 10/9e3665509f6786d46683de5c5f5c4bdd4aa62396b4017b41dbbb41ea5ada4012c80ee1e3302b79b504bc24da7fa69e3552d99006cecc953e0d9eef4a3053b929
+  checksum: 10/7444ad8ea9927fead724412ba61aa6207eafff8d2cfa0bc2824301343353a1029e65b6583aa3e55d33e725e623edd0bcb44f407378033c39f58ce8b35f265f1e
   languageName: node
   linkType: hard
 
@@ -20732,7 +20732,7 @@ __metadata:
     circular-dependency-plugin: "npm:^5.2.2"
     concurrently: "npm:^8.2.2"
     cross-env: "npm:^7.0.3"
-    css-loader: "npm:^6.11.0"
+    css-loader: "npm:^7.1.0"
     css-minimizer-webpack-plugin: "npm:^6.0.0"
     date-fns: "npm:^3.6.0"
     dotenv: "npm:^16.4.5"
