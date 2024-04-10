@@ -19,7 +19,7 @@ import { Account } from "../../types/Account";
 import { isAddressValid, parsePkh } from "../../types/Address";
 import { Contact } from "../../types/Contact";
 import { useBakerList } from "../../utils/hooks/assetsHooks";
-import { useContacts } from "../../utils/hooks/contactsHooks";
+import { useContactsForSelectedNetwork } from "../../utils/hooks/contactsHooks";
 import {
   useAllAccounts,
   useGetOwnedSignersForAccount,
@@ -228,7 +228,7 @@ const CrossButton = (props: IconProps) => (
 export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>
 ) => {
-  const contacts = Object.values(useContacts());
+  const contacts = useContactsForSelectedNetwork();
 
   const accounts = useAllAccounts().map(account => ({
     name: account.label,

@@ -1,17 +1,22 @@
+import * as api from "@tzkt/sdk-api";
 import axios from "axios";
 
 import {
+  getNetworksForContracts,
   getPendingOperationsForMultisigs,
   getRelevantMultisigContracts,
   parseMultisig,
 } from "./helpers";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
-import { DefaultNetworks } from "../../types/Network";
-jest.mock("axios");
-jest.unmock("../tezos");
+import { DefaultNetworks, GHOSTNET, MAINNET } from "../../types/Network";
+jest.deepUnmock("../tezos");
+jest.unmock("../tezos/helpers");
+jest.unmock("../tezos/fetch");
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = jest.spyOn(axios, "get");
+
+const mockedContractsGet = jest.spyOn(api, "contractsGet");
 
 describe("multisig helpers", () => {
   describe.each(DefaultNetworks)("on $name", network => {
@@ -20,7 +25,8 @@ describe("multisig helpers", () => {
         const mockResponse = {
           data: tzktGetSameMultisigsResponse,
         };
-        mockedAxios.get.mockResolvedValue(mockResponse);
+        mockedAxios.mockResolvedValue(mockResponse);
+
         const result = await getRelevantMultisigContracts(
           new Set([mockImplicitAddress(0).pkh]),
           network
@@ -40,11 +46,13 @@ describe("multisig helpers", () => {
     describe("getPendingOperationsForMultisigs", () => {
       it("handles empty multisigs", async () => {
         const result = await getPendingOperationsForMultisigs([], network);
-        expect(mockedAxios.get).toHaveBeenCalledTimes(0);
+
+        expect(mockedAxios).toHaveBeenCalledTimes(0);
         expect(result).toEqual([]);
       });
+
       it("fetches pending operations for multisigs", async () => {
-        mockedAxios.get.mockResolvedValueOnce({
+        mockedAxios.mockResolvedValueOnce({
           data: [
             {
               bigmap: 0,
@@ -66,10 +74,9 @@ describe("multisig helpers", () => {
           network
         );
 
-        expect(mockedAxios.get).toHaveBeenCalledWith(
+        expect(mockedAxios).toHaveBeenCalledWith(
           `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
         );
-
         expect(result).toEqual([
           {
             approvals: [
@@ -95,6 +102,54 @@ describe("multisig helpers", () => {
           },
         ]);
       });
+    });
+  });
+
+  describe("getNetworksForContracts", () => {
+    it("calls contractsGet with correct arguments", async () => {
+      mockedContractsGet.mockResolvedValue(["pkh1", "pkh3"] as any);
+
+      await getNetworksForContracts([MAINNET, GHOSTNET], ["pkh1", "pkh2", "pkh3"]);
+
+      expect(mockedContractsGet).toHaveBeenCalledTimes(2);
+      expect(mockedContractsGet).toHaveBeenCalledWith(
+        {
+          address: {
+            in: ["pkh1,pkh2,pkh3"],
+          },
+          select: { fields: ["address"] },
+        },
+        { baseUrl: MAINNET.tzktApiUrl }
+      );
+      expect(mockedContractsGet).toHaveBeenCalledWith(
+        {
+          address: {
+            in: ["pkh1,pkh2,pkh3"],
+          },
+          select: { fields: ["address"] },
+        },
+        { baseUrl: GHOSTNET.tzktApiUrl }
+      );
+    });
+
+    it("transforms api responses into map with data", async () => {
+      mockedContractsGet.mockImplementation((...args) => {
+        if (args[1].baseUrl === MAINNET.tzktApiUrl) {
+          return Promise.resolve(["pkh1", "pkh3"] as any);
+        } else {
+          return Promise.resolve(["pkh2"] as any);
+        }
+      });
+
+      const result = await getNetworksForContracts([MAINNET, GHOSTNET], ["pkh1", "pkh2", "pkh3"]);
+
+      expect(result).toEqual(
+        new Map([
+          ["pkh1", MAINNET.name],
+          ["pkh2", GHOSTNET.name],
+          ["pkh3", MAINNET.name],
+        ])
+      );
     });
   });
 });

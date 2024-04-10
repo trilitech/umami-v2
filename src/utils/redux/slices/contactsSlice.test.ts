@@ -1,14 +1,15 @@
 import { contactsActions } from "./contactsSlice";
 import { contact1, contact2 } from "../../../mocks/contacts";
+import { mockContractContact } from "../../../mocks/factories";
 import { store } from "../store";
 const { remove } = contactsActions;
 
 describe("Contacts reducer", () => {
-  test("store should initialize with empty state", () => {
+  it("is initialized with empty state", () => {
     expect(store.getState().contacts).toEqual({});
   });
 
-  test("should add new contacts", () => {
+  it("adds new implicit contacts", () => {
     store.dispatch(contactsActions.upsert(contact1));
     store.dispatch(contactsActions.upsert(contact2));
 
@@ -16,11 +17,33 @@ describe("Contacts reducer", () => {
       [contact1["pkh"]]: {
         name: contact1["name"],
         pkh: contact1["pkh"],
+        network: undefined,
       },
-
       [contact2["pkh"]]: {
         name: contact2["name"],
         pkh: contact2["pkh"],
+        network: undefined,
+      },
+    });
+  });
+
+  it("adds new contract contacts", () => {
+    const contact1 = mockContractContact(1, "ghostnet");
+    const contact2 = mockContractContact(2, "mainnet");
+
+    store.dispatch(contactsActions.upsert(contact1));
+    store.dispatch(contactsActions.upsert(contact2));
+
+    expect(store.getState().contacts).toEqual({
+      [contact1["pkh"]]: {
+        name: contact1["name"],
+        pkh: contact1["pkh"],
+        network: "ghostnet",
+      },
+      [contact2["pkh"]]: {
+        name: contact2["name"],
+        pkh: contact2["pkh"],
+        network: "mainnet",
       },
     });
   });
@@ -48,6 +71,7 @@ describe("Contacts reducer", () => {
       contactsActions.upsert({
         name: contact2["name"],
         pkh: contact1["pkh"],
+        network: undefined,
       })
     );
 

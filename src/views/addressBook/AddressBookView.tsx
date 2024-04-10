@@ -7,7 +7,7 @@ import { UpsertContactModal } from "../../components/ContactModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
-import { useAllSortedContacts } from "../../utils/hooks/contactsHooks";
+import { useSortedContacts } from "../../utils/hooks/contactsHooks";
 
 const AddContact: React.FC = () => {
   const { openWith } = useContext(DynamicModalContext);
@@ -30,7 +30,7 @@ const AddContact: React.FC = () => {
 };
 
 export const AddressBookView = () => {
-  const contacts = useAllSortedContacts();
+  const contacts = useSortedContacts();
   return (
     <Flex flexDirection="column" height="100%">
       <TopBar title="Address Book" />

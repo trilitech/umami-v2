@@ -1,6 +1,7 @@
 import { useGetNextAvailableAccountLabels, useValidateName } from "./labelsHooks";
 import {
-  mockContact,
+  mockContractContact,
+  mockImplicitContact,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
@@ -8,9 +9,11 @@ import {
   mockSocialAccount,
 } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
+import { MAINNET } from "../../types/Network";
 import { accountsSlice } from "../redux/slices/accountsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
 import { multisigActions, multisigsSlice } from "../redux/slices/multisigsSlice";
+import { networksActions } from "../redux/slices/networks";
 import { store } from "../redux/store";
 import { renameAccount } from "../redux/thunks/renameAccount";
 
@@ -52,7 +55,8 @@ describe("labelsHooks", () => {
         "Secret Key Account Label",
         "Mnemonic Account Label",
         "Multisig Account Label",
-        "Contact Label",
+        "Implicit Contact Label",
+        "Contract Contact Label",
       ])("fails on reusing %s", takenName => {
         store.dispatch(
           accountsSlice.actions.addAccount(mockLedgerAccount(0, "Ledger Account Label"))
@@ -70,7 +74,21 @@ describe("labelsHooks", () => {
         );
         store.dispatch(multisigsSlice.actions.setMultisigs([mockMultisigAccount(4)]));
         store.dispatch(renameAccount(mockMultisigAccount(5), "Multisig Account Label"));
-        store.dispatch(contactsActions.upsert({ name: "Contact Label", pkh: "pkh1" }));
+        store.dispatch(
+          contactsActions.upsert({
+            name: "Implicit Contact Label",
+            pkh: "pkh1",
+            network: "undefined",
+          })
+        );
+        store.dispatch(
+          contactsActions.upsert({
+            name: "Contract Contact Label",
+            pkh: "pkh2",
+            network: "ghostnet",
+          })
+        );
+        store.dispatch(networksActions.setCurrent(MAINNET));
 
         const {
           result: { current: validateName },
@@ -145,9 +163,10 @@ describe("labelsHooks", () => {
       ]);
     });
 
-    it("among contacts returns unique labels", () => {
-      store.dispatch(contactsActions.upsert(mockContact(0, "Test acc 2")));
-      store.dispatch(contactsActions.upsert(mockContact(1, "Test acc 4")));
+    it("among all contacts returns unique labels", () => {
+      store.dispatch(contactsActions.upsert(mockContractContact(0, "mainnet", "Test acc 2")));
+      store.dispatch(contactsActions.upsert(mockContractContact(1, "ghostnet", "Test acc 4")));
+      store.dispatch(contactsActions.upsert(mockImplicitContact(2, "Test acc 5")));
 
       const {
         result: { current: getNextAvailableLabels },
@@ -156,8 +175,8 @@ describe("labelsHooks", () => {
       expect(getNextAvailableLabels("Test acc", 4)).toEqual([
         "Test acc",
         "Test acc 3",
-        "Test acc 5",
         "Test acc 6",
+        "Test acc 7",
       ]);
     });
   });

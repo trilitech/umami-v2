@@ -1,12 +1,17 @@
 import { UpsertContactModal } from "./ContactModal";
 import { contact1, contact2 } from "../mocks/contacts";
-import { mockImplicitAddress } from "../mocks/factories";
+import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
 import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
+import { mockToast } from "../mocks/toast";
+import * as helpers from "../utils/multisig/helpers";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 import { store } from "../utils/redux/store";
 
 describe("UpsertContactModal", () => {
   describe("on adding contact", () => {
+    const mockedGetNetworksForContracts = jest.spyOn(helpers, "getNetworksForContracts");
+    const contractPkh = mockContractAddress(0).pkh;
+
     describe.each([
       { testCase: "new contact", modalComponent: <UpsertContactModal /> },
       {
@@ -94,6 +99,56 @@ describe("UpsertContactModal", () => {
           })
         );
       });
+
+      it("fetches network for contract addresses", async () => {
+        mockedGetNetworksForContracts.mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
+        const user = userEvent;
+        render(modalComponent);
+
+        // Set name
+        const nameInput = screen.getByLabelText("Name");
+        await act(() => user.clear(nameInput));
+        await act(() => user.type(nameInput, "Test Contact"));
+        // Set address
+        const addressInput = screen.getByLabelText("Address");
+        await act(() => user.clear(addressInput));
+        await act(() => user.type(addressInput, contractPkh));
+        // Submit
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
+
+        await waitFor(() =>
+          expect(store.getState().contacts).toEqual({
+            [contractPkh]: {
+              name: "Test Contact",
+              pkh: contractPkh,
+              network: "ghostnet",
+            },
+          })
+        );
+      });
+
+      it("shows error toast on unknown network for contract addresses", async () => {
+        mockedGetNetworksForContracts.mockResolvedValue(new Map());
+        const user = userEvent;
+        render(modalComponent);
+
+        // Set name
+        const nameInput = screen.getByLabelText("Name");
+        await act(() => user.clear(nameInput));
+        await act(() => user.type(nameInput, "Test Contact"));
+        // Set address
+        const addressInput = screen.getByLabelText("Address");
+        await act(() => user.clear(addressInput));
+        await act(() => user.type(addressInput, contractPkh));
+        // Submit
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
+
+        expect(mockToast).toHaveBeenCalledWith({
+          description: `Network not found for contract ${contractPkh}`,
+          status: "error",
+        });
+        expect(store.getState().contacts).toEqual({});
+      });
     });
 
     describe("for pre-set contact", () => {
@@ -158,6 +213,62 @@ describe("UpsertContactModal", () => {
             },
           })
         );
+      });
+
+      it("fetches network for contract addresses", async () => {
+        mockedGetNetworksForContracts.mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
+        const user = userEvent;
+        render(
+          <UpsertContactModal
+            contact={{
+              name: "",
+              pkh: contractPkh,
+            }}
+          />
+        );
+
+        // Set name
+        const nameInput = screen.getByLabelText("Name");
+        await act(() => user.clear(nameInput));
+        await act(() => user.type(nameInput, "Test Contact"));
+        // Submit
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
+
+        await waitFor(() =>
+          expect(store.getState().contacts).toEqual({
+            [contractPkh]: {
+              name: "Test Contact",
+              pkh: contractPkh,
+              network: "ghostnet",
+            },
+          })
+        );
+      });
+
+      it("shows error toast on unknown network for contract addresses", async () => {
+        mockedGetNetworksForContracts.mockResolvedValue(new Map());
+        const user = userEvent;
+        render(
+          <UpsertContactModal
+            contact={{
+              name: "",
+              pkh: contractPkh,
+            }}
+          />
+        );
+
+        // Set name
+        const nameInput = screen.getByLabelText("Name");
+        await act(() => user.clear(nameInput));
+        await act(() => user.type(nameInput, "Test Contact"));
+        // Submit
+        await act(() => user.click(screen.getByTestId("confirmation-button")));
+
+        expect(mockToast).toHaveBeenCalledWith({
+          description: `Network not found for contract ${contractPkh}`,
+          status: "error",
+        });
+        expect(store.getState().contacts).toEqual({});
       });
     });
   });

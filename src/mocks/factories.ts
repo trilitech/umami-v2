@@ -11,7 +11,7 @@ import {
   SocialAccount,
 } from "../types/Account";
 import { ContractAddress, ImplicitAddress, RawPkh } from "../types/Address";
-import { Contact } from "../types/Contact";
+import { StoredContactInfo } from "../types/Contact";
 import { Delegate } from "../types/Delegate";
 import {
   ContractOrigination,
@@ -397,7 +397,18 @@ export const mockContractOrigination = (
   sender: mockImplicitAddress(index),
 });
 
-export const mockContact = (index: number, label?: string): Contact => ({
+export const mockImplicitContact = (index: number, label?: string): StoredContactInfo => ({
   name: label || `Contact ${index}`,
   pkh: mockImplicitAddress(index).pkh,
+  network: undefined,
+});
+
+export const mockContractContact = (
+  index: number,
+  network: string,
+  label?: string
+): StoredContactInfo => ({
+  name: label || `Contact ${index}`,
+  pkh: mockContractAddress(index).pkh,
+  network,
 });

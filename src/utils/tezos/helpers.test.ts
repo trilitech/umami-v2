@@ -25,7 +25,7 @@ jest.mock("@taquito/signer");
 jest.mock("./fakeSigner");
 jest.mock("axios");
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = jest.mocked(axios);
 const mockSk = "mockSk";
 describe("tezos utils helpers", () => {
   test("getPkAndPkhFromSk", async () => {

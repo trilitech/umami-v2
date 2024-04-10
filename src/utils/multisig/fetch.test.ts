@@ -1,22 +1,56 @@
+import * as api from "@tzkt/sdk-api";
 import axios from "axios";
 
-import { getAllMultiSigContracts, getPendingOperations } from "./fetch";
+import { getAllMultiSigContracts, getExistingContracts, getPendingOperations } from "./fetch";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { ghostMultisigContracts } from "../../mocks/tzktResponse";
-import { GHOSTNET } from "../../types/Network";
+import { DefaultNetworks, GHOSTNET } from "../../types/Network";
 
-jest.mock("axios");
 jest.unmock("../tezos");
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedAxios = jest.spyOn(axios, "get");
+
+const mockedContractsGet = jest.spyOn(api, "contractsGet");
 
 describe("multisig fetch", () => {
+  const expectedMockedMultisigContracts = [
+    {
+      address: "KT1Mqvf7bnYe4Ty2n7ZbGkdbebCd4WoTJUUp",
+      storage: {
+        pending_ops: 216411,
+        signers: ["tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3", "tz1dyX3B1CFYa2DfdFLyPtiJCfQRUgPVME6E"],
+        threshold: "1",
+      },
+    },
+    {
+      address: "KT1VwWbTMRN5uX4bfxCcpJnPP6iAhboqhGZr",
+      storage: {
+        pending_ops: 219458,
+        signers: [
+          "tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3",
+          "tz1VTfGqp34NypRQJmjNiPrCTG5TRonevsmf",
+          "tz1g2pCYFonfHXqjNCJNnGRy6MamDPdon4oS",
+        ],
+        threshold: "2",
+      },
+    },
+    {
+      address: "KT1Vdhz4izz7LASWU4tTLu3GBsvhJ8ULSi3G",
+      storage: {
+        pending_ops: 219535,
+        signers: ["tz1RVPjF88wjiZ7JhxvmLPRm6TTR9MHPAFPd", "tz1ajzeMEzKxM9H4keBxoD1JSQy3iGRoHPg5"],
+        threshold: "1",
+      },
+    },
+  ];
+
   describe("getAllMultiSigContracts", () => {
     it("fetches all multisig contracts", async () => {
-      mockedAxios.get.mockResolvedValue({ data: ghostMultisigContracts });
-
+      mockedAxios.mockResolvedValue({ data: ghostMultisigContracts });
       const result = await getAllMultiSigContracts(GHOSTNET);
-      expect(mockedAxios.get).toHaveBeenCalledWith(
+
+      expect(mockedAxios).toHaveBeenCalledTimes(1);
+      expect(mockedAxios).toHaveBeenCalledWith(
         `${GHOSTNET.tzktApiUrl}/v1/contracts?typeHash=1963879877&codeHash=-1890025422&includeStorage=true&limit=10000`
       );
       expect(
@@ -24,48 +58,42 @@ describe("multisig fetch", () => {
           address,
           storage: { pending_ops, signers, threshold },
         }))
-      ).toEqual([
-        {
-          address: "KT1Mqvf7bnYe4Ty2n7ZbGkdbebCd4WoTJUUp",
-          storage: {
-            pending_ops: 216411,
-            signers: [
-              "tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3",
-              "tz1dyX3B1CFYa2DfdFLyPtiJCfQRUgPVME6E",
-            ],
-            threshold: "1",
+      ).toEqual(expectedMockedMultisigContracts);
+    });
+  });
+
+  describe("getExistingContracts", () => {
+    it.each(DefaultNetworks)(
+      "on $name calls contractsGet with correct arguments",
+      async network => {
+        mockedContractsGet.mockResolvedValue(["pkh1", "pkh3"] as any);
+
+        await getExistingContracts(["pkh1", "pkh2", "pkh3"], network);
+
+        expect(mockedContractsGet).toHaveBeenCalledWith(
+          {
+            address: {
+              in: ["pkh1,pkh2,pkh3"],
+            },
+            select: { fields: ["address"] },
           },
-        },
-        {
-          address: "KT1VwWbTMRN5uX4bfxCcpJnPP6iAhboqhGZr",
-          storage: {
-            pending_ops: 219458,
-            signers: [
-              "tz1LbSsDSmekew3prdDGx1nS22ie6jjBN6B3",
-              "tz1VTfGqp34NypRQJmjNiPrCTG5TRonevsmf",
-              "tz1g2pCYFonfHXqjNCJNnGRy6MamDPdon4oS",
-            ],
-            threshold: "2",
-          },
-        },
-        {
-          address: "KT1Vdhz4izz7LASWU4tTLu3GBsvhJ8ULSi3G",
-          storage: {
-            pending_ops: 219535,
-            signers: [
-              "tz1RVPjF88wjiZ7JhxvmLPRm6TTR9MHPAFPd",
-              "tz1ajzeMEzKxM9H4keBxoD1JSQy3iGRoHPg5",
-            ],
-            threshold: "1",
-          },
-        },
-      ]);
+          { baseUrl: network.tzktApiUrl }
+        );
+      }
+    );
+
+    it("extracts contract addresses from the api response", async () => {
+      mockedContractsGet.mockResolvedValue(["pkh1", "pkh3"] as any);
+
+      const result = await getExistingContracts(["pkh1", "pkh2", "pkh3"], GHOSTNET);
+
+      expect(result).toEqual(["pkh1", "pkh3"]);
     });
   });
 
   describe("getPendingOperations", () => {
     it("fetches pending operation", async () => {
-      mockedAxios.get.mockResolvedValue({
+      mockedAxios.mockResolvedValue({
         data: [
           {
             bigmap: 1,
@@ -77,7 +105,7 @@ describe("multisig fetch", () => {
       });
 
       const result = await getPendingOperations([1], GHOSTNET);
-      expect(mockedAxios.get).toHaveBeenCalledWith(
+      expect(mockedAxios).toHaveBeenCalledWith(
         `${GHOSTNET.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=1&limit=10000`
       );
       expect(result).toEqual([
@@ -92,7 +120,7 @@ describe("multisig fetch", () => {
 
     it("handles empty bigMaps", async () => {
       const result = await getPendingOperations([], GHOSTNET);
-      expect(mockedAxios.get).toHaveBeenCalledTimes(0);
+      expect(mockedAxios).toHaveBeenCalledTimes(0);
       expect(result).toEqual([]);
     });
   });
