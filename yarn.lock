@@ -17861,9 +17861,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-player@npm:^2.15.1":
-  version: 2.15.1
-  resolution: "react-player@npm:2.15.1"
+"react-player@npm:^2.16.0":
+  version: 2.16.0
+  resolution: "react-player@npm:2.16.0"
   dependencies:
     deepmerge: "npm:^4.0.0"
     load-script: "npm:^1.0.0"
@@ -17872,7 +17872,7 @@ __metadata:
     react-fast-compare: "npm:^3.0.1"
   peerDependencies:
     react: ">=16.6.0"
-  checksum: 10/90f9996bd2b741340cfbde81830b8a878c912e83696dafad58f92709967b7f8d2395d11bb5f8526e54f29c84b3f67190292556fa2c3bd3f0c1eeaea2139e86a6
+  checksum: 10/d7e2824f9cb52afc71e5661e341360153087fc4fe231ee4b6c0b968fcae1efecc208416cd69bfa24a024265fdca65aee3f74a290a86ccf1e5c0452102b82cb0d
   languageName: node
   linkType: hard
 
@@ -20794,7 +20794,7 @@ __metadata:
     react-hook-form: "npm:^7.51.2"
     react-hooks-testing-library: "npm:^0.6.0"
     react-identicons: "npm:^1.2.5"
-    react-player: "npm:^2.15.1"
+    react-player: "npm:^2.16.0"
     react-qrcode-logo: "npm:^2.9.0"
     react-redux: "npm:9.1.0"
     react-refresh: "npm:^0.14.0"
