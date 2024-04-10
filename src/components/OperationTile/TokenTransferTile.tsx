@@ -79,19 +79,22 @@ export const TokenTransferTile: React.FC<{
       </Center>
     </Tooltip>
   ) : (
-    <TzktLink
-      marginRight="8px"
-      color={underlineColor}
-      data-testid="title"
-      migrationId={tokenTransfer.migrationId}
-      originationId={tokenTransfer.originationId}
-      transactionId={tokenTransfer.transactionId}
-    >
-      <Text display="inline" color={titleColor} fontWeight="600">
-        {sign}
-        {tokenAmount}
-      </Text>
-    </TzktLink>
+    <Center>
+      <InternalPrefix operation={operation || tokenTransfer} />
+      <TzktLink
+        marginRight="8px"
+        color={underlineColor}
+        data-testid="title"
+        migrationId={tokenTransfer.migrationId}
+        originationId={tokenTransfer.originationId}
+        transactionId={tokenTransfer.transactionId}
+      >
+        <Text display="inline" color={titleColor} fontWeight="600">
+          {sign}
+          {tokenAmount}
+        </Text>
+      </TzktLink>
+    </Center>
   );
 
   return (
