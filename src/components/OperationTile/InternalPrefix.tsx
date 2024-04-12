@@ -40,7 +40,7 @@ export const InternalPrefix: React.FC<{
   }
 
   return (
-    <Heading marginRight="4px" color={colors.gray[450]} size="md">
+    <Heading marginRight="4px" color={colors.gray[450]} data-testid="internal-prefix" size="md">
       Internal:
     </Heading>
   );

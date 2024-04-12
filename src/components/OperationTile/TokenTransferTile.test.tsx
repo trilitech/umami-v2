@@ -1,8 +1,10 @@
 import { OperationTileContext } from "./OperationTileContext";
 import { tokenTransferFixture, transactionFixture } from "./testUtils";
 import { TokenTransferTile } from "./TokenTransferTile";
+import * as operationDestinationModule from "./useGetOperationDestination";
 import { mockImplicitAddress, mockLedgerAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
+import { ghostnetThezard } from "../../mocks/nftTokens";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
 import { Token, fromRaw } from "../../types/Token";
@@ -234,6 +236,32 @@ describe("<TokenTransferTile />", () => {
 
         expect(screen.getByTestId("from")).toHaveTextContent("Account");
         expect(screen.getByTestId("to")).toHaveTextContent("Account");
+      });
+    });
+
+    describe.each([
+      { type: "NFT", transfer: tokenTransferFixture({ token: ghostnetThezard.token }) },
+      { type: "token", transfer: tokenTransferFixture({}) },
+    ])("for $type", ({ transfer }) => {
+      afterEach(() => jest.restoreAllMocks());
+
+      it("renders internal prefix for internal operations", () => {
+        jest
+          .spyOn(operationDestinationModule, "useGetOperationDestination")
+          .mockReturnValue("unrelated");
+
+        render(fixture(contextValue, transfer));
+
+        expect(screen.getByTestId("internal-prefix")).toBeVisible();
+      });
+
+      it("does not render internal prefix for normal operations", () => {
+        jest
+          .spyOn(operationDestinationModule, "useGetOperationDestination")
+          .mockReturnValue("incoming");
+        render(fixture(contextValue, transfer));
+
+        expect(screen.queryByTestId("internal-prefix")).not.toBeInTheDocument();
       });
     });
   });
