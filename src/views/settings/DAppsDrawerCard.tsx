@@ -13,11 +13,14 @@ import {
 
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DrawerTopButtons } from "../../components/DrawerTopButtons";
+import colors from "../../style/colors";
 import { useAddPeer } from "../../utils/beacon/beacon";
 import { BeaconPeers } from "../../utils/beacon/BeaconPeers";
 
 export const DAppsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();
+  const addPeer = useAddPeer();
+
   return (
     <>
       <SettingsCardWithDrawerIcon left="dApps" isSelected={isOpen} onClick={onOpen} />
@@ -30,30 +33,23 @@ export const DAppsDrawerCard = () => {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerBody>
+          <DrawerBody data-testid="drawer-body">
             <DrawerTopButtons onClose={closeDrawer} />
-            <DAppsDrawerBody />
+            <Box>
+              <Flex alignItems="center" justifyContent="space-between" height="96px">
+                <Heading>dApps</Heading>
+              </Flex>
+              <Button onClick={() => navigator.clipboard.readText().then(text => addPeer(text))}>
+                Connect with Pairing Request
+              </Button>
+              <Text marginTop="16px" marginBottom="32px" color={colors.gray[400]}>
+                or open a deeplink from inside the dApp...
+              </Text>
+              <BeaconPeers />
+            </Box>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
-  );
-};
-
-const DAppsDrawerBody = () => {
-  const addPeer = useAddPeer();
-  return (
-    <Box>
-      <Flex alignItems="center" justifyContent="space-between" height={24}>
-        <Heading>dApps</Heading>
-      </Flex>
-      <Button onClick={() => navigator.clipboard.readText().then(text => addPeer(text))}>
-        Connect with Pairing Request
-      </Button>
-      <Text marginTop="16px" marginBottom="32px" color="text.dark">
-        or open a deeplink from inside the dApp...
-      </Text>
-      <BeaconPeers />
-    </Box>
   );
 };
