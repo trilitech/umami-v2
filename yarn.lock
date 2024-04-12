@@ -6776,13 +6776,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.2.75":
-  version: 18.2.75
-  resolution: "@types/react@npm:18.2.75"
+"@types/react@npm:18.2.77":
+  version: 18.2.77
+  resolution: "@types/react@npm:18.2.77"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/d609cdc52d3c89871e0b1b0a77ed2d4077c1393709d0ac51a03b04c17704eb337484405aa646b193ac0c54f4fb286e311739b243ce50023ef8ba5bed422a0e8b
+  checksum: 10/80d7ad9cf13e15895a857c66f5b0c1ce758c1e7580a76936d8d1b19c71e4485fa4b35d762a1de98de4eb91506cbc8507582c9a979f357b6f5f75f86009d8ca07
   languageName: node
   linkType: hard
 
@@ -20697,7 +20697,7 @@ __metadata:
     "@types/pluralize": "npm:^0.0.33"
     "@types/promise-retry": "npm:^1.1.6"
     "@types/prop-types": "npm:^15.7.12"
-    "@types/react": "npm:18.2.75"
+    "@types/react": "npm:18.2.77"
     "@types/react-dom": "npm:18.2.25"
     "@types/redux-mock-store": "npm:^1.0.6"
     "@types/wait-on": "npm:^5.3.4"
