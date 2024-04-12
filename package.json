@@ -8,7 +8,7 @@
   "repository": "https://github.com/trilitech/umami-v2",
   "license": "MIT",
   "engines": {
-    "node": ">=20.11.10 <21.0.0"
+    "node": ">=20 <21.0.0"
   },
   "type": "commonjs",
   "main": "public/electron.js",

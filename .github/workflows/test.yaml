@@ -29,7 +29,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.11.x
+          node-version: 20.12.x
           cache: "yarn"
 
       - name: Install packages
