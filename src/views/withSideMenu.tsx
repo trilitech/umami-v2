@@ -10,7 +10,7 @@ export const withSideMenu = (body: React.ReactElement) => (
       overflowX="hidden"
       height="100%"
       background="linear-gradient(180deg, rgba(0, 231, 182, 0.35) -41.53%, rgba(0, 231, 182, 0.00) 34.71%)"
-      paddingX={6}
+      paddingX="24px"
     >
       {body}
     </Box>
