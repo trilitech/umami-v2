@@ -35,6 +35,7 @@ export const getExistingContracts = (pkhs: RawPkh[], network: Network): Promise<
     {
       address: { in: [pkhs.join(",")] },
       select: { fields: ["address"] },
+      limit: Math.min(10000, pkhs.length),
     },
     {
       baseUrl: network.tzktApiUrl,

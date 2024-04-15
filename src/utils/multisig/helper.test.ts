@@ -118,6 +118,7 @@ describe("multisig helpers", () => {
             in: ["pkh1,pkh2,pkh3"],
           },
           select: { fields: ["address"] },
+          limit: 3,
         },
         { baseUrl: MAINNET.tzktApiUrl }
       );
@@ -127,6 +128,7 @@ describe("multisig helpers", () => {
             in: ["pkh1,pkh2,pkh3"],
           },
           select: { fields: ["address"] },
+          limit: 3,
         },
         { baseUrl: GHOSTNET.tzktApiUrl }
       );
@@ -150,6 +152,20 @@ describe("multisig helpers", () => {
           ["pkh3", MAINNET.name],
         ])
       );
+    });
+
+    it("returns empty map for empty contracts list", async () => {
+      mockedContractsGet.mockImplementation((...args) => {
+        if (args[1].baseUrl === MAINNET.tzktApiUrl) {
+          return Promise.resolve(["pkh1", "pkh3", "pkh4"] as any);
+        } else {
+          return Promise.resolve(["pkh2", "pkh5"] as any);
+        }
+      });
+
+      const result = await getNetworksForContracts([MAINNET, GHOSTNET], []);
+
+      expect(result).toEqual(new Map());
     });
   });
 });

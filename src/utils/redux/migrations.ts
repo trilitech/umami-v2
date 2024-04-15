@@ -84,4 +84,5 @@ export const accountsMigrations = {
       });
     }),
   5: identity,
+  6: identity,
 } as any;

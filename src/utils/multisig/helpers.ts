@@ -49,6 +49,10 @@ export const getNetworksForContracts = async (
 ): Promise<Map<RawPkh, string>> => {
   const result = new Map<RawPkh, string>();
 
+  if (contractPkhs.length === 0) {
+    return result;
+  }
+
   const accountsWithNetwork = await Promise.all(
     availableNetworks.map(async network =>
       (await getExistingContracts(contractPkhs, network)).map(contractPkh => [
@@ -58,7 +62,6 @@ export const getNetworksForContracts = async (
     )
   );
   accountsWithNetwork.flat().forEach(([pkh, network]) => result.set(pkh, network));
-
   return result;
 };
 
