@@ -44,19 +44,14 @@ export type BaseProps<T extends FieldValues, U extends Path<T>> = {
   validate?: RegisterOptions<T, U>["validate"];
   style?: StyleProps;
   size?: "default" | "short";
+  hideBalance?: boolean; // defaults to false
 };
 
-export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] => {
-  if (inputValue === "") {
-    return contacts;
-  }
-
-  const result = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(inputValue.trim().toLowerCase())
+export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] =>
+  contacts.filter(
+    contact =>
+      !inputValue.trim() || contact.name.toLowerCase().includes(inputValue.trim().toLowerCase())
   );
-
-  return result;
-};
 
 export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   contacts,
@@ -70,6 +65,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   keepValid,
   style,
   size,
+  hideBalance = false,
 }: BaseProps<T, U> & { contacts: Contact[] }) => {
   const {
     register,
@@ -210,7 +206,9 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         type="hidden"
       />
 
-      {!hideSuggestions && <Suggestions contacts={suggestions} onChange={handleChange} />}
+      {!hideSuggestions && (
+        <Suggestions contacts={suggestions} hideBalance={hideBalance} onChange={handleChange} />
+      )}
     </Box>
   );
 };
@@ -268,7 +266,7 @@ export const BakersAutocomplete = <T extends FieldValues, U extends Path<T>>(
     pkh: baker.address,
   }));
 
-  return <AddressAutocomplete {...props} contacts={bakers} />;
+  return <AddressAutocomplete {...props} contacts={bakers} hideBalance />;
 };
 
 export const AvailableSignersAutocomplete = <T extends FieldValues, U extends Path<T>>(

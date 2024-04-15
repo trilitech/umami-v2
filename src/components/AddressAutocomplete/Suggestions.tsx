@@ -7,9 +7,11 @@ import { AddressTile } from "../AddressTile/AddressTile";
 
 export const Suggestions = ({
   contacts,
+  hideBalance,
   onChange,
 }: {
   contacts: Contact[];
+  hideBalance: boolean;
   onChange: (name: string) => void;
 }) => {
   if (contacts.length === 0) {
@@ -22,7 +24,7 @@ export const Suggestions = ({
       zIndex={2}
       overflowY="auto"
       width="100%"
-      maxHeight={300}
+      maxHeight="300px"
       marginTop="8px"
       marginLeft={0}
       background={colors.gray[700]}
@@ -53,6 +55,7 @@ export const Suggestions = ({
               }}
               cursor="pointer"
               address={parsePkh(contact.pkh)}
+              hideBalance={hideBalance}
             />
           </ListItem>
         </Box>
