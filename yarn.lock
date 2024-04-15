@@ -17889,9 +17889,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-redux@npm:9.1.0":
-  version: 9.1.0
-  resolution: "react-redux@npm:9.1.0"
+"react-redux@npm:9.1.1":
+  version: 9.1.1
+  resolution: "react-redux@npm:9.1.1"
   dependencies:
     "@types/use-sync-external-store": "npm:^0.0.3"
     use-sync-external-store: "npm:^1.0.0"
@@ -17907,7 +17907,7 @@ __metadata:
       optional: true
     redux:
       optional: true
-  checksum: 10/e2e5fe1c6965aedf3a80d7d5252ccbe6f231448cc1010ce19036fe8965f996cbafa2f81cacab77e54e75d6a14caa40540b8907459ef36af26b65c14f1bf89d80
+  checksum: 10/eecc5cf0d9f9dec30634b23c912535eb1314d135f426a6108cd1532d52f14f699834f7cb07bcccffa1369ee26f7b43020dc9b41c4486c09bd6f98d7279be07bc
   languageName: node
   linkType: hard
 
@@ -20782,7 +20782,7 @@ __metadata:
     react-identicons: "npm:^1.2.5"
     react-player: "npm:^2.16.0"
     react-qrcode-logo: "npm:^2.9.0"
-    react-redux: "npm:9.1.0"
+    react-redux: "npm:9.1.1"
     react-refresh: "npm:^0.14.0"
     react-remove-scroll: "npm:^2.5.9"
     react-responsive-carousel: "npm:^3.2.23"
