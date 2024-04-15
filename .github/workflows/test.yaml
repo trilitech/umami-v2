@@ -51,4 +51,5 @@ jobs:
           prnumber: ${{ steps.findPr.outputs.number }}
 
       - name: Audit dependencies
-        run: yarn npm audit
+        # Exclude @toruslabs/customauth from audit until it's upgraded
+        run: yarn npm audit --exclude @toruslabs/customauth
