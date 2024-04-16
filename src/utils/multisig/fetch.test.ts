@@ -76,6 +76,7 @@ describe("multisig fetch", () => {
               in: ["pkh1,pkh2,pkh3"],
             },
             select: { fields: ["address"] },
+            limit: 3,
           },
           { baseUrl: network.tzktApiUrl }
         );
