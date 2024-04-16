@@ -15,9 +15,11 @@ import { AccountBalance } from "../AccountBalance";
  *
  * @param address - Account address.
  * @param flexProps - Defines component style.
+ * @param hideBalance - If true, balance will not be displayed.
  */
-export const AddressTile: React.FC<{ address: Address } & FlexProps> = ({
+export const AddressTile: React.FC<{ address: Address; hideBalance?: boolean } & FlexProps> = ({
   address,
+  hideBalance = false,
   ...flexProps
 }) => {
   const addressKind = useAddressKind(address);
@@ -34,7 +36,7 @@ export const AddressTile: React.FC<{ address: Address } & FlexProps> = ({
         data-testid="address-tile"
         {...flexProps}
       >
-        <Flex alignItems="center" width="calc(100% - 95px)">
+        <Flex alignItems="center" width={hideBalance ? "100%" : "calc(100% - 95px)"}>
           <AddressTileIcon addressKind={addressKind} />
 
           {addressKind.type === "unknown" ? (
@@ -55,13 +57,15 @@ export const AddressTile: React.FC<{ address: Address } & FlexProps> = ({
           )}
         </Flex>
 
-        <AccountBalance
-          overflow="hidden"
-          marginLeft="10px"
-          textAlign="right"
-          address={address.pkh}
-          numberProps={{ maxWidth: "85px" }}
-        />
+        {!hideBalance && (
+          <AccountBalance
+            overflow="hidden"
+            marginLeft="10px"
+            textAlign="right"
+            address={address.pkh}
+            numberProps={{ maxWidth: "85px" }}
+          />
+        )}
       </Flex>
     </Tooltip>
   );
