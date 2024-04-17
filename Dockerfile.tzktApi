@@ -2,7 +2,7 @@
 # update the versions also in the docker-compose.yaml & e2e.yaml files
 # it's done that way to force local docker to pull correct image version
 # NOTE: must be built locally manually
-FROM --platform=$BUILDPLATFORM bakingbad/tzkt-api:1.13.1
+FROM --platform=$BUILDPLATFORM bakingbad/tzkt-api:1.13.3
 USER root
 RUN apt-get update && apt-get install -y curl
 USER tzkt
