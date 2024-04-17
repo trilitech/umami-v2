@@ -3,13 +3,12 @@ import {
   operationsGetDelegations,
   operationsGetOriginations,
   operationsGetTransactions,
+  quotesGetLast,
   tokensGetTokenBalances,
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
-import axios from "axios";
 import { sortBy } from "lodash";
 
-import { coincapUrl } from "./constants";
 import {
   getAccounts,
   getCombinedOperations,
@@ -35,9 +34,8 @@ jest.mock("@tzkt/sdk-api", () => ({
   operationsGetOriginations: jest.fn(),
   tokensGetTokenTransfers: jest.fn(),
   accountsGet: jest.fn(),
+  quotesGetLast: jest.fn(),
 }));
-
-const mockedAxios = jest.mocked(axios);
 
 class HTTPErrorMock extends Error {
   status: number;
@@ -100,28 +98,11 @@ describe("tezos utils fetch", () => {
     });
 
     test("getTezosPriceInUSD", async () => {
-      const mockResponse = {
-        data: {
-          data: {
-            id: "tezos",
-            rank: "45",
-            symbol: "XTZ",
-            name: "Tezos",
-            supply: "934953037.6018340000000000",
-            maxSupply: null,
-            marketCapUsd: "973524588.0822762611894168",
-            volumeUsd24Hr: "11804202.6168944408092813",
-            priceUsd: "1.0412550672912714",
-            changePercent24Hr: "-1.7557594377565521",
-            vwap24Hr: "1.0421183688213239",
-            explorer: "https://tzkt.io/",
-          },
-        },
-      };
-      mockedAxios.get.mockResolvedValue(mockResponse);
-      const result = await getTezosPriceInUSD();
-      expect(mockedAxios.get).toHaveBeenCalledWith(`${coincapUrl}/tezos`);
-      expect(result).toEqual(mockResponse.data.data.priceUsd);
+      jest.mocked(quotesGetLast).mockResolvedValue({ usd: 1000000 });
+
+      await expect(getTezosPriceInUSD()).resolves.toBe(1000000);
+
+      expect(quotesGetLast).toHaveBeenCalledTimes(1);
     });
 
     test("getTokenBalances", async () => {

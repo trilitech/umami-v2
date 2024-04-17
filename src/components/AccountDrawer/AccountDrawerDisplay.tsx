@@ -28,7 +28,7 @@ type Props = {
   onReceive?: () => void;
   onBuyTez?: () => void;
   balance: string | undefined;
-  dollarBalance: BigNumber | null;
+  dollarBalance: BigNumber | undefined;
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;

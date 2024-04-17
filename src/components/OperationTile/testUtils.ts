@@ -63,6 +63,7 @@ export const delegationFixture = (props: Partial<DelegationOperation>): Delegati
   newDelegate: {
     address: mockImplicitAddress(1).pkh,
   },
+  amount: 5,
   status: "applied",
   ...props,
 });

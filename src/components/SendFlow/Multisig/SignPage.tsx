@@ -6,8 +6,9 @@ import React, { useContext } from "react";
 
 import { ImplicitAccount } from "../../../types/Account";
 import { AccountOperations } from "../../../types/AccountOperations";
+import { ApproveOrExecute } from "../../../types/Operation";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { ApproveOrExecute, executeOperations } from "../../../utils/tezos";
+import { executeOperations } from "../../../utils/tezos";
 import { DynamicModalContext } from "../../DynamicModal";
 import { BatchModalBody } from "../BatchModalBody";
 import { SignButton } from "../SignButton";

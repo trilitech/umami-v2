@@ -7,12 +7,12 @@ import { prettyTezAmount } from "../utils/format";
 
 export const TezRecapDisplay: React.FC<{
   balance: string;
-  dollarBalance: BigNumber | null;
+  dollarBalance: BigNumber | undefined;
   center?: boolean;
 }> = props => (
   <Box textAlign={props.center ? "center" : "initial"}>
     <Heading size="md">{prettyTezAmount(props.balance)}</Heading>
-    {props.dollarBalance !== null && (
+    {props.dollarBalance !== undefined && (
       <Text marginTop="6px" color={colors.gray[400]} size="sm">
         ${props.dollarBalance.toFixed(2)}
       </Text>
