@@ -4,9 +4,6 @@ import { AssetsPanel } from "./AssetsPanel";
 import { mockMultisigAccount } from "../../../mocks/factories";
 import { pendingOps } from "../../../mocks/multisig";
 import { render, screen } from "../../../mocks/testUtils";
-import { parseContractPkh, parseImplicitPkh } from "../../../types/Address";
-import { multisigToAccount } from "../../../utils/multisig/helpers";
-import { Multisig } from "../../../utils/multisig/types";
 import { multisigsSlice } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
 import { estimate, getCombinedOperations, getRelatedTokenTransfers } from "../../../utils/tezos";
@@ -29,17 +26,14 @@ describe("<AssetPanel/>", () => {
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
       jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
-      const m: Multisig = {
-        address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),
-        threshold: 1,
-        signers: [parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3")],
+      const multisig = {
+        ...mockMultisigAccount(0),
         pendingOperationsBigmapId: 3,
       };
-      const multisigAccount = multisigToAccount(m, "multi");
-      store.dispatch(multisigsSlice.actions.setMultisigs([m]));
+      store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
       store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
 
-      render(<AssetsPanel account={multisigAccount} delegation={null} nfts={[]} tokens={[]} />);
+      render(<AssetsPanel account={multisig} delegation={null} nfts={[]} tokens={[]} />);
       await screen.findByTestId("account-card-operations-tab");
 
       expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();

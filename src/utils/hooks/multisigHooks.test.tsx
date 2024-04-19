@@ -1,7 +1,6 @@
 import { useGetPendingMultisigOperations } from "./multisigHooks";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { renderHook } from "../../mocks/testUtils";
-import { multisigToAccount } from "../multisig/helpers";
 import { multisigActions } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
 
@@ -11,10 +10,12 @@ describe("multisigHooks", () => {
     const operation2 = { ...multisigOperation, id: "2" };
     store.dispatch(multisigActions.setMultisigs(multisigs));
     store.dispatch(multisigActions.setPendingOperations([operation1, operation2]));
-    const { result: getMultisigOperationsRef } = renderHook(() =>
-      useGetPendingMultisigOperations()
-    );
-    expect(getMultisigOperationsRef.current(multisigToAccount(multisigs[0], "label1"))).toEqual([
+
+    const {
+      result: { current: getMultisigOperations },
+    } = renderHook(() => useGetPendingMultisigOperations());
+
+    expect(getMultisigOperations(multisigs[0])).toEqual([
       {
         id: "2",
         bigmapId: 0,
