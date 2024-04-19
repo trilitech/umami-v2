@@ -10,9 +10,8 @@ export const dispatchMockAccounts = (accounts: MnemonicAccount[]) => {
   store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(accounts));
 };
 
-export const mockEstimatedFee = (fee: number | string | BigNumber) => {
+export const mockEstimatedFee = (fee: number | string | BigNumber) =>
   jest.mocked(estimate).mockResolvedValueOnce(BigNumber(fee));
-};
 
 export const addAccount = (account: ImplicitAccount) => {
   if (account.type === "mnemonic") {

@@ -1,12 +1,11 @@
-import { BigNumber } from "bignumber.js";
-
 import { AssetsPanel } from "./AssetsPanel";
 import { mockMultisigAccount } from "../../../mocks/factories";
+import { mockEstimatedFee } from "../../../mocks/helpers";
 import { pendingOps } from "../../../mocks/multisig";
 import { render, screen } from "../../../mocks/testUtils";
 import { multisigsSlice } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
-import { estimate, getCombinedOperations, getRelatedTokenTransfers } from "../../../utils/tezos";
+import { getCombinedOperations, getRelatedTokenTransfers } from "../../../utils/tezos";
 
 describe("<AssetPanel/>", () => {
   describe("multisig account", () => {
@@ -25,7 +24,7 @@ describe("<AssetPanel/>", () => {
       jest.mocked(getCombinedOperations).mockResolvedValue([]);
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
-      jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
+      mockEstimatedFee(33);
       const multisig = {
         ...mockMultisigAccount(0),
         pendingOperationsBigmapId: 3,
