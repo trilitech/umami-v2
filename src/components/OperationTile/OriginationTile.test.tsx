@@ -2,9 +2,9 @@ import { OperationTileContext } from "./OperationTileContext";
 import { OriginationTile } from "./OriginationTile";
 import { originationFixture } from "./testUtils";
 import { mockContractAddress, mockLedgerAccount } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 import { OriginationOperation, TEZ } from "../../utils/tezos";
@@ -64,7 +64,7 @@ describe("<OriginationTile />", () => {
     });
 
     it("shows the sender pill", () => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+      addAccount(mockLedgerAccount(0));
 
       render(
         fixture(
@@ -84,7 +84,7 @@ describe("<OriginationTile />", () => {
 
     describe("fee", () => {
       it("renders if there is any fee paid by the user", () => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+        addAccount(mockLedgerAccount(0));
         render(
           fixture(
             contextValue,
@@ -123,9 +123,7 @@ describe("<OriginationTile />", () => {
 
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
-    beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
-    });
+    beforeEach(() => addAccount(mockLedgerAccount(0)));
 
     it("hides the fee", () => {
       render(fixture(contextValue, originationFixture({})));

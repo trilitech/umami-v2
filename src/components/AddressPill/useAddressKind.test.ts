@@ -10,11 +10,11 @@ import {
   mockImplicitAddress,
   mockMnemonicAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { multisigs } from "../../mocks/multisig";
 import { renderHook } from "../../mocks/testUtils";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 import { MAINNET } from "../../types/Network";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
@@ -29,7 +29,7 @@ beforeEach(() => {
 describe("useAddressKind", () => {
   it("returns owned implicit account", () => {
     const mnemonicAccount = mockMnemonicAccount(0);
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
+    addAccount(mockMnemonicAccount(0));
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(mnemonicAccount.address));
 
@@ -148,8 +148,8 @@ describe("useAddressKind", () => {
       { type: "fa2", address: uUSD(mockImplicitAddress(0)).token.contract.address },
       { type: "baker", address: mockBaker(1).address },
     ])("prioritizes $type over the contact", ({ type, address }) => {
+      addAccount(mockMnemonicAccount(0));
       store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
       store.dispatch(
         tokensSlice.actions.addTokens({
           network: MAINNET,

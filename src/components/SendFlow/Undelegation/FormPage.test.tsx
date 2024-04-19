@@ -9,7 +9,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../mocks/factories";
-import { mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -20,9 +20,7 @@ import {
 } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
-import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
 import { estimate } from "../../../utils/tezos";
 import { FormPagePropsWithSender } from "../utils";
@@ -68,8 +66,8 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
-      store.dispatch(multisigActions.setMultisigs([mockMultisigAccount(0)]));
+      addAccount(mockMnemonicAccount(0));
+      addAccount(mockMultisigAccount(0));
     });
 
     it("shows a toast if estimation fails", async () => {

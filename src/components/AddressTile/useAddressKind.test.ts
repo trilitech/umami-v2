@@ -7,11 +7,11 @@ import {
   mockMnemonicAccount,
   mockSocialAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { multisigs } from "../../mocks/multisig";
 import { renderHook } from "../../mocks/testUtils";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
 import { MAINNET } from "../../types/Network";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
@@ -21,7 +21,7 @@ import { store } from "../../utils/redux/store";
 describe("useAddressKind", () => {
   it("returns mnemonic account", () => {
     const account = mockMnemonicAccount(0);
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+    addAccount(account);
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 
@@ -34,7 +34,7 @@ describe("useAddressKind", () => {
 
   it("returns social account", () => {
     const account = mockSocialAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount(account));
+    addAccount(account);
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 
@@ -47,7 +47,7 @@ describe("useAddressKind", () => {
 
   it("returns ledger account", () => {
     const account = mockLedgerAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount(account));
+    addAccount(account);
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 

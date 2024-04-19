@@ -126,10 +126,6 @@ export const accountsSlice = createSlice({
       state.items = concatUnique(state.items, accounts);
       state.seedPhrases[seedFingerprint] = encryptedMnemonic;
     },
-    // Does not add the seedphrase to the storage, only adds accounts.
-    addMockMnemonicAccounts: (state, { payload }: { type: string; payload: MnemonicAccount[] }) => {
-      state.items = concatUnique(state.items, payload);
-    },
     addSecretKey: (
       state,
       {

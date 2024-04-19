@@ -7,7 +7,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../../mocks/factories";
-import { mockEstimatedFee } from "../../../../mocks/helpers";
+import { addAccount, mockEstimatedFee } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { act, render, screen, userEvent, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../../../types/Account";
@@ -17,8 +17,6 @@ import { MAINNET } from "../../../../types/Network";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import * as getAccountDataHooks from "../../../../utils/hooks/getAccountDataHooks";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../../utils/redux/store";
 import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezos";
 
 const MOCK_TEZOS_TOOLKIT = {};
@@ -76,7 +74,7 @@ describe("<MultisigPendingOperation />", () => {
       opHash: "mockHash",
     } as BatchWalletOperation);
 
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+    addAccount(account);
 
     const executablePendingOp: MultisigOperation = pendingOps[0];
     const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
@@ -120,7 +118,7 @@ describe("<MultisigPendingOperation />", () => {
       opHash: "mockHash",
     } as BatchWalletOperation);
 
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([signer]));
+    addAccount(signer);
     const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
     const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
     render(<MultisigPendingOperation operation={approvablePendingOp} sender={multisig} />);

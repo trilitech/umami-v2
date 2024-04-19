@@ -1,9 +1,9 @@
 import { OperationsView } from "./OperationsView";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { MAINNET } from "../../types/Network";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 import {
@@ -14,12 +14,8 @@ import {
 
 describe("OperationsView", () => {
   beforeEach(() => {
-    store.dispatch(
-      accountsSlice.actions.addMockMnemonicAccounts([
-        mockMnemonicAccount(1),
-        mockMnemonicAccount(2),
-      ])
-    );
+    addAccount(mockMnemonicAccount(1));
+    addAccount(mockMnemonicAccount(2));
     store.dispatch(networksActions.setCurrent(MAINNET));
   });
 

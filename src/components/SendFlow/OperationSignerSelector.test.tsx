@@ -7,10 +7,10 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { render, renderHook, screen } from "../../mocks/testUtils";
 import { MultisigAccount } from "../../types/Account";
 import { RawPkh } from "../../types/Address";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
 import { store } from "../../utils/redux/store";
 
@@ -29,12 +29,7 @@ describe("OperationSignerSelector", () => {
 
   describe("proposal operations", () => {
     it("allows only owned multisig signers to be chosen", () => {
-      store.dispatch(
-        accountsSlice.actions.addMockMnemonicAccounts([
-          mockMnemonicAccount(0),
-          mockMnemonicAccount(1),
-        ])
-      );
+      [mockMnemonicAccount(0), mockMnemonicAccount(1)].forEach(addAccount);
       const multisigAccount: MultisigAccount = {
         ...mockMultisigAccount(0),
         signers: [

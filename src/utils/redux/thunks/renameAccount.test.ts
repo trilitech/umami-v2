@@ -1,20 +1,16 @@
 import { renameAccount } from "./renameAccount";
 import { mockContractContact, mockMnemonicAccount } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { multisigs } from "../../../mocks/multisig";
 import { MultisigAccount } from "../../../types/Account";
 import { MAINNET } from "../../../types/Network";
-import { accountsSlice } from "../slices/accountsSlice";
 import { contactsActions } from "../slices/contactsSlice";
-import { multisigActions } from "../slices/multisigsSlice";
 import { networksActions } from "../slices/networks";
 import { store } from "../store";
 
-beforeEach(() => {
-  store.dispatch(multisigActions.setMultisigs(multisigs));
-  store.dispatch(
-    accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0), mockMnemonicAccount(1)])
-  );
-});
+beforeEach(() =>
+  [mockMnemonicAccount(0), mockMnemonicAccount(1), ...multisigs].forEach(addAccount)
+);
 
 describe("renameAccount", () => {
   describe("validation", () => {

@@ -1,8 +1,8 @@
 import { getCurve, restore } from "./secretKeyAccount";
 import { mockMnemonicAccount } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { decrypt } from "../../crypto/AES";
 import { EncryptedData } from "../../crypto/types";
-import { accountsSlice } from "../slices/accountsSlice";
 import { store } from "../store";
 
 jest.unmock("../../tezos");
@@ -62,7 +62,7 @@ describe("secretKeyAccount", () => {
         pk: publicKey,
         address: { type: "implicit" as const, pkh },
       };
-      store.dispatch(accountsSlice.actions.addAccount(existingMnemonic));
+      addAccount(existingMnemonic);
 
       const label = "Secret Key Acc";
       const password = "12345678";

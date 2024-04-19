@@ -7,11 +7,10 @@ import {
   mockNFTRaw,
   mockSocialAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { MnemonicAccount } from "../../types/Account";
 import { MAINNET } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
@@ -23,30 +22,24 @@ describe("<AccountTile />", () => {
       balance: "3",
       iconTestId: "identicon",
       account: mockMnemonicAccount(0),
-      createAction: (acc: MnemonicAccount) => accountsSlice.actions.addMockMnemonicAccounts([acc]),
     },
     {
       balance: "3",
       iconTestId: "ledger-icon",
       account: mockLedgerAccount(0),
-      createAction: accountsSlice.actions.addAccount,
     },
     {
       balance: "3",
       iconTestId: "social-icon",
       account: mockSocialAccount(0),
-      createAction: accountsSlice.actions.addAccount,
     },
     {
       balance: "3",
       iconTestId: "key-icon",
       account: mockMultisigAccount(0),
-      createAction: accountsSlice.actions.addAccount,
     },
-  ])("$account.type account", ({ balance, iconTestId, createAction, account }) => {
-    beforeEach(() => {
-      store.dispatch(createAction(account as any));
-    });
+  ])("$account.type account", ({ balance, iconTestId, account }) => {
+    beforeEach(() => addAccount(account));
 
     it("renders icon", () => {
       render(<AccountTile account={account} balance={balance} />);

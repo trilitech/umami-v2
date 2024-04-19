@@ -10,7 +10,7 @@ import {
   mockImplicitAddress,
   mockMnemonicAccount,
 } from "../../../mocks/factories";
-import { mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -22,8 +22,6 @@ import {
 } from "../../../mocks/testUtils";
 import { contract, makeStorageJSON } from "../../../multisig/contract";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../utils/redux/store";
 
 const MULTISIG_NAME = "Multisig Account Name";
 const SENDER = mockMnemonicAccount(0);
@@ -41,15 +39,9 @@ const fixture = (formValues?: FormValues) => {
   );
 };
 
-beforeEach(() => {
-  store.dispatch(
-    accountsSlice.actions.addMockMnemonicAccounts([
-      mockMnemonicAccount(0),
-      mockMnemonicAccount(1),
-      mockMnemonicAccount(2),
-    ])
-  );
-});
+beforeEach(() =>
+  [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount)
+);
 
 describe("SelectApproversFormPage", () => {
   it("has a title", () => {

@@ -9,15 +9,15 @@ import {
   mockMultisigAccount,
   mockNFTToken,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { Multisig } from "../../utils/multisig/types";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
-import { multisigActions, multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
+import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
@@ -27,8 +27,6 @@ import * as useGetOperationsModule from "../../views/operations/useGetOperations
 import { AccountCard } from ".";
 
 const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
-const { addMockMnemonicAccounts } = accountsSlice.actions;
-const { setMultisigs } = multisigsSlice.actions;
 
 const selectedAccount = mockMnemonicAccount(0);
 const pkh = selectedAccount.address.pkh;
@@ -51,7 +49,8 @@ beforeEach(() => {
     loadMore: jest.fn(),
   });
   store.dispatch(networksActions.setCurrent(MAINNET));
-  store.dispatch(addMockMnemonicAccounts([selectedAccount, mockMnemonicAccount(1)]));
+  addAccount(selectedAccount);
+  addAccount(mockMnemonicAccount(1));
 });
 
 describe("<AccountCard />", () => {
@@ -323,7 +322,7 @@ describe("<AccountCard />", () => {
         isLoading: false,
         loadMore: jest.fn(),
       });
-      store.dispatch(setMultisigs(multisigs));
+      multisigs.forEach(addAccount);
     });
 
     it('hides "Buy Tez" button', async () => {
@@ -344,7 +343,7 @@ describe("<AccountCard />", () => {
     });
 
     it("displays pending operation if any", async () => {
-      store.dispatch(multisigActions.setMultisigs(multisigs));
+      multisigs.forEach(addAccount);
       store.dispatch(multisigActions.setPendingOperations([multisigOperation]));
 
       render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
@@ -362,7 +361,7 @@ describe("<AccountCard />", () => {
         ...multisigs[2],
         pendingOperationsBigmapId: 0,
       };
-      store.dispatch(setMultisigs([multisigWithNoOps]));
+      addAccount(multisigWithNoOps);
 
       render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
       await screen.findByTestId("account-card-operations-tab");

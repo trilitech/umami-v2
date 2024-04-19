@@ -8,9 +8,9 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
 import { MAINNET } from "../../types/Network";
-import { accountsSlice } from "../redux/slices/accountsSlice";
 import { contactsActions } from "../redux/slices/contactsSlice";
 import { multisigActions, multisigsSlice } from "../redux/slices/multisigsSlice";
 import { networksActions } from "../redux/slices/networks";
@@ -58,20 +58,12 @@ describe("labelsHooks", () => {
         "Implicit Contact Label",
         "Contract Contact Label",
       ])("fails on reusing %s", takenName => {
-        store.dispatch(
-          accountsSlice.actions.addAccount(mockLedgerAccount(0, "Ledger Account Label"))
-        );
-        store.dispatch(
-          accountsSlice.actions.addAccount(mockSocialAccount(1, "Social Account Label"))
-        );
-        store.dispatch(
-          accountsSlice.actions.addAccount(mockSecretKeyAccount(2, "Secret Key Account Label"))
-        );
-        store.dispatch(
-          accountsSlice.actions.addMockMnemonicAccounts([
-            mockMnemonicAccount(3, "Mnemonic Account Label"),
-          ])
-        );
+        [
+          mockLedgerAccount(0, "Ledger Account Label"),
+          mockSocialAccount(1, "Social Account Label"),
+          mockSecretKeyAccount(2, "Secret Key Account Label"),
+          mockMnemonicAccount(3, "Mnemonic Account Label"),
+        ].forEach(addAccount);
         store.dispatch(multisigsSlice.actions.setMultisigs([mockMultisigAccount(4)]));
         store.dispatch(renameAccount(mockMultisigAccount(5), "Multisig Account Label"));
         store.dispatch(
@@ -123,13 +115,7 @@ describe("labelsHooks", () => {
 
     describe.each(existingAccounts)("among $type accounts", existingAccounts => {
       it("returns unique labels", () => {
-        if (existingAccounts.type === "mnemonic") {
-          store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts));
-        } else {
-          existingAccounts.accounts.forEach(account =>
-            store.dispatch(accountsSlice.actions.addAccount(account))
-          );
-        }
+        existingAccounts.accounts.forEach(addAccount);
 
         const {
           result: { current: getNextAvailableLabels },

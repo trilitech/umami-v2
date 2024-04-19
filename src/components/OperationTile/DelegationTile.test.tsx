@@ -2,10 +2,10 @@ import { DelegationTile } from "./DelegationTile";
 import { OperationTileContext } from "./OperationTileContext";
 import { delegationFixture } from "./testUtils";
 import { mockImplicitAddress, mockLedgerAccount } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 import { DelegationOperation, TEZ } from "../../utils/tezos";
@@ -54,7 +54,7 @@ describe("<DelegationTile />", () => {
     });
 
     it("displays both the sender and baker contract pills", () => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+      addAccount(mockLedgerAccount(0));
 
       render(fixture(contextValue, delegationFixture({})));
 
@@ -68,7 +68,7 @@ describe("<DelegationTile />", () => {
 
     describe("fee", () => {
       it("displays fee paid by the user if present", () => {
-        store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
+        addAccount(mockLedgerAccount(0));
 
         render(
           fixture(
@@ -112,9 +112,7 @@ describe("<DelegationTile />", () => {
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
 
-    beforeEach(() => {
-      store.dispatch(accountsSlice.actions.addAccount(mockLedgerAccount(0)));
-    });
+    beforeEach(() => addAccount(mockLedgerAccount(0)));
 
     it("hides the fee", () => {
       render(fixture(contextValue, delegationFixture({})));

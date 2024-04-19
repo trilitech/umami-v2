@@ -3,7 +3,6 @@ import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "../..
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { WalletClient } from "../../utils/beacon/WalletClient";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { store } from "../../utils/redux/store";
 
 beforeEach(() => {
@@ -29,7 +28,7 @@ describe("<RenameRemoveMenuSwitch />", () => {
   it("shows offboarding message for last account", async () => {
     const user = userEvent.setup();
     const social = mockSocialAccount(0);
-    store.dispatch(accountsSlice.actions.addAccount(social));
+    addAccount(social);
     render(<RenameRemoveMenuSwitch account={social} />);
 
     await act(() => user.click(screen.getByTestId("popover-cta")));

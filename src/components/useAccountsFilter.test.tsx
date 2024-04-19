@@ -2,15 +2,12 @@ import { useSearchParams } from "react-router-dom";
 
 import { useAccountsFilter } from "./useAccountsFilter";
 import { mockMnemonicAccount } from "../mocks/factories";
+import { addAccount } from "../mocks/helpers";
 import { UserEvent, act, render, renderHook, screen, userEvent } from "../mocks/testUtils";
-import { accountsSlice } from "../utils/redux/slices/accountsSlice";
-import { store } from "../utils/redux/store";
 
 const accounts = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
 
-beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(accounts));
-});
+beforeEach(() => accounts.forEach(addAccount));
 
 const TestComponent = () => {
   const { accountsFilter } = useAccountsFilter();

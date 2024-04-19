@@ -1,8 +1,7 @@
 import { ConnectOptions } from "./ConnectOptions";
 import { mockSocialAccount } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { accountsActions } from "../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../utils/redux/store";
 import { OnboardingStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn();
@@ -30,7 +29,7 @@ describe("<ConnectOptions />", () => {
     });
 
     it("hides the button if a user tries to add another account", () => {
-      store.dispatch(accountsActions.addAccount(mockSocialAccount(0)));
+      addAccount(mockSocialAccount(0));
 
       render(fixture(goToStepMock));
 

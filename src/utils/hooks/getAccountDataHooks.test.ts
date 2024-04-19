@@ -17,7 +17,7 @@ import { addAccount } from "../../mocks/helpers";
 import { encryptedMnemonic1 } from "../../mocks/mockMnemonic";
 import { renderHook, waitFor } from "../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
-import { accountsActions, accountsSlice } from "../redux/slices/accountsSlice";
+import { accountsActions } from "../redux/slices/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { multisigsSlice } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
@@ -36,9 +36,7 @@ describe("getAccountDataHooks", () => {
     ];
     const accountTypes: ImplicitAccount["type"][] = ["mnemonic", "social", "ledger", "secret_key"];
 
-    beforeEach(() =>
-      accounts.forEach(account => store.dispatch(accountsActions.addAccount(account)))
-    );
+    beforeEach(() => accounts.forEach(addAccount));
 
     it.each(accountTypes)("returns all accounts of given type %s", type => {
       const {
@@ -95,7 +93,7 @@ describe("getAccountDataHooks", () => {
     it("returns the account itself for implicit accounts", () => {
       const account = mockMnemonicAccount(0);
 
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+      addAccount(account);
 
       const { result } = renderHook(() => useGetBestSignerForAccount());
       expect(result.current(account)).toEqual(account);
@@ -105,7 +103,7 @@ describe("getAccountDataHooks", () => {
       const signers = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
       const multisig = { ...mockMultisigAccount(0), signers: signers.map(s => s.address) };
 
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(signers));
+      signers.forEach(addAccount);
       store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
 
       store.dispatch(
@@ -121,9 +119,7 @@ describe("getAccountDataHooks", () => {
   });
 
   describe("useIsOwnedAddress", () => {
-    beforeEach(() =>
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]))
-    );
+    beforeEach(() => addAccount(mockMnemonicAccount(0)));
 
     it("returns true if account is owned", () => {
       const view = renderHook(() => useIsOwnedAddress());

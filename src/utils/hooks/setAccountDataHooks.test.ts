@@ -49,7 +49,7 @@ describe("setAccountDataHooks", () => {
     const MOCK_FINGERPRINT = "mockFingerPrint";
     const MOCK_ENCRYPTED = { mock: "encrypted" } as any;
 
-    const mnemonicAccount = async (index: number, label: string): Promise<ImplicitAccount> => {
+    const mnemonicAccount = async (index: number, label: string): Promise<MnemonicAccount> => {
       const pubKeyPair = await tezosHelpers.derivePublicKeyPair(
         mnemonic1,
         makeDerivationPath(DERIVATION_PATH_TEMPLATE, index)
@@ -280,7 +280,7 @@ describe("setAccountDataHooks", () => {
         store.dispatch(
           accountsSlice.actions.addMnemonicAccounts({
             seedFingerprint: MOCK_FINGERPRINT,
-            accounts: existingAccounts as MnemonicAccount[],
+            accounts: existingAccounts,
             encryptedMnemonic: MOCK_ENCRYPTED,
           })
         );
