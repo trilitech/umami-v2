@@ -1,12 +1,13 @@
 import { BigNumber } from "bignumber.js";
 
-import { mockMnemonicAccount } from "../../../../mocks/factories";
+import {
+  mockImplicitAddress,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+} from "../../../../mocks/factories";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
 import { MnemonicAccount } from "../../../../types/Account";
-import { parseContractPkh, parseImplicitPkh } from "../../../../types/Address";
-import { multisigToAccount } from "../../../../utils/multisig/helpers";
-import { Multisig } from "../../../../utils/multisig/types";
 import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
 import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../../utils/redux/store";
@@ -17,24 +18,21 @@ import { MultisigPendingOperations } from ".";
 describe("<MultisigPendingOperations />", () => {
   it("displays multisig executable tez operations", async () => {
     jest.mocked(estimate).mockResolvedValue(new BigNumber(33));
-    const m: Multisig = {
-      address: parseContractPkh("KT1Jr2UdC6boStHUrVyFYoxArKfNr1CDiYxK"),
-      threshold: 1,
-      signers: [parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3")],
+    const multisig = {
+      ...mockMultisigAccount(0),
       pendingOperationsBigmapId: 3,
     };
-    const multisigAccount = multisigToAccount(m, "multi");
-    store.dispatch(multisigsSlice.actions.setMultisigs([m]));
+    store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
     store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
 
     const mockAccount: MnemonicAccount = {
       ...mockMnemonicAccount(0),
-      address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
+      address: mockImplicitAddress(0),
     };
 
     store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockAccount]));
 
-    render(<MultisigPendingOperations account={multisigAccount} />);
+    render(<MultisigPendingOperations account={multisig} />);
 
     const allPending = screen.getAllByTestId(/multisig-pending-operation/);
     expect(allPending).toHaveLength(2);

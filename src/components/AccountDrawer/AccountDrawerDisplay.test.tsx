@@ -6,6 +6,7 @@ import {
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
+  mockMultisigAccount,
   mockNFTToken,
 } from "../../mocks/factories";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
@@ -13,7 +14,6 @@ import { act, render, screen, userEvent, waitFor, within } from "../../mocks/tes
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
-import { multisigToAccount } from "../../utils/multisig/helpers";
 import { Multisig } from "../../utils/multisig/types";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
@@ -304,7 +304,7 @@ describe("<AccountCard />", () => {
   });
 
   describe("for multisig account", () => {
-    const multisigAccount = multisigToAccount(multisigs[2], "my multisig");
+    const multisigAccount = { ...mockMultisigAccount(0), ...multisigs[2] };
 
     beforeEach(() => {
       jest.spyOn(useGetOperationsModule, "useGetOperations").mockReturnValue({
