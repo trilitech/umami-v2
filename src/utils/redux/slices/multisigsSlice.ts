@@ -24,6 +24,14 @@ export const multisigsSlice = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
+    // to be used only for testing
+    mockAddAccount: (state, { payload }: { payload: Multisig }) => {
+      state.items.push({
+        label: `Multisig Account ${state.items.length}`,
+        type: "multisig",
+        ...payload,
+      });
+    },
     setMultisigs: (state, { payload }: { payload: Multisig[] }) => {
       const labelsByAddress = fromPairs(
         state.items.map(multisig => [multisig.address.pkh, multisig.label])

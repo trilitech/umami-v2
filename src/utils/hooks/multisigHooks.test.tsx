@@ -1,4 +1,5 @@
 import { useGetPendingMultisigOperations } from "./multisigHooks";
+import { addAccount } from "../../mocks/helpers";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { renderHook } from "../../mocks/testUtils";
 import { multisigActions } from "../redux/slices/multisigsSlice";
@@ -8,7 +9,7 @@ describe("multisigHooks", () => {
   it("useGetSortedMultisigPendingOperations sorts operations by id", () => {
     const operation1 = multisigOperation;
     const operation2 = { ...multisigOperation, id: "2" };
-    store.dispatch(multisigActions.setMultisigs(multisigs));
+    multisigs.forEach(addAccount);
     store.dispatch(multisigActions.setPendingOperations([operation1, operation2]));
 
     const {

@@ -3,11 +3,10 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../../mocks/factories";
-import { mockEstimatedFee } from "../../../../mocks/helpers";
+import { addAccount, mockEstimatedFee } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
 import { MnemonicAccount } from "../../../../types/Account";
-import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
 import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../../utils/redux/store";
 
@@ -28,7 +27,7 @@ describe("<MultisigPendingOperations />", () => {
       address: mockImplicitAddress(0),
     };
 
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockAccount]));
+    addAccount(mockAccount);
 
     render(<MultisigPendingOperations account={multisig} />);
 

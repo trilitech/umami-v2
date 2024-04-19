@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js";
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
-import { mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -18,8 +18,6 @@ import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import { NFTBalance } from "../../../types/TokenBalance";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../utils/redux/store";
 import { FormPagePropsWithSender } from "../utils";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
@@ -169,7 +167,7 @@ describe("<FormPage />", () => {
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
-        store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
+        addAccount(mockMnemonicAccount(0));
         const sender = mockImplicitAccount(0);
         render(
           fixture({

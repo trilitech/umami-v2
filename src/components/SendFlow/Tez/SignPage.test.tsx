@@ -7,10 +7,9 @@ import {
   mockImplicitAddress,
   mockMnemonicAccount,
 } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../utils/redux/store";
 import { TEZ } from "../../../utils/tezos";
 import { SignPageProps } from "../utils";
 
@@ -21,7 +20,7 @@ const fixture = (props: SignPageProps) => (
 );
 
 beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
+  addAccount(mockMnemonicAccount(0));
 });
 
 describe("<SignPage />", () => {

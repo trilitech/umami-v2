@@ -7,12 +7,11 @@ import {
   mockMultisigAccount,
   mockNFT,
 } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../utils/redux/store";
 import { TEZ } from "../../../utils/tezos";
 
 const account = mockImplicitAccount(0);
@@ -32,9 +31,7 @@ const operation = makeAccountOperations(account, account, [
 const fee = BigNumber(1234567);
 const fixture = () => <SignPage initialFee={fee} initialOperations={operation} />;
 
-beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
-});
+beforeEach(() => addAccount(mockMnemonicAccount(0)));
 
 describe("<SignPage />", () => {
   describe("fee", () => {

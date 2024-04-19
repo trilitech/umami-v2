@@ -12,7 +12,6 @@ import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { MAINNET } from "../../../types/Network";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { contactsActions } from "../../../utils/redux/slices/contactsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { networksActions } from "../../../utils/redux/slices/networks";
@@ -153,15 +152,8 @@ describe("<NameAccount />", () => {
       describe.each(existingAccountGroups)("among $type accounts", existingAccounts => {
         it("sets unique default label", async () => {
           const user = userEvent.setup();
-          if (existingAccounts.type === "mnemonic") {
-            store.dispatch(
-              accountsSlice.actions.addMockMnemonicAccounts(existingAccounts.accounts)
-            );
-          } else {
-            existingAccounts.accounts.forEach(account =>
-              store.dispatch(accountsSlice.actions.addAccount(account))
-            );
-          }
+          existingAccounts.accounts.forEach(addAccount);
+
           render(fixture(account));
 
           if (label.withNameProvided) {

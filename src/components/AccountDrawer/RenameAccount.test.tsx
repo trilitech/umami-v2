@@ -6,10 +6,10 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 import { Account } from "../../types/Account";
 import { MAINNET } from "../../types/Network";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
@@ -42,7 +42,7 @@ describe("<RenameAccountModal />", () => {
 
     it("does not allow the same name", async () => {
       const account = mockMnemonicAccount(0);
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+      addAccount(account);
       render(fixture(account));
 
       setName(account.label);
@@ -54,12 +54,7 @@ describe("<RenameAccountModal />", () => {
 
     it("does not allow existing account name", async () => {
       const account = mockMnemonicAccount(0);
-      store.dispatch(
-        accountsSlice.actions.addMockMnemonicAccounts([
-          account,
-          mockMnemonicAccount(1, "Existing Account Name"),
-        ])
-      );
+      [account, mockMnemonicAccount(1, "Existing Account Name")].forEach(addAccount);
       render(fixture(account));
 
       setName("Existing Account Name");

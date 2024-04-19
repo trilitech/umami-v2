@@ -4,7 +4,7 @@ import * as beaconHelper from "./beacon";
 import { BeaconPeers } from "./BeaconPeers";
 import { WalletClient } from "./WalletClient";
 import { mockMnemonicAccount } from "../../mocks/factories";
-import { dispatchMockAccounts } from "../../mocks/helpers";
+import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { formatPkh } from "../format";
 import { beaconActions } from "../redux/slices/beaconSlice";
@@ -38,7 +38,7 @@ const peersData: ExtendedPeerInfo[] = [
 ];
 
 beforeEach(() => {
-  dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2)]);
+  [mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount);
   jest.spyOn(beaconHelper, "usePeers").mockReturnValue({ data: peersData } as any);
 });
 

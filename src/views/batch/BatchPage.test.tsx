@@ -3,7 +3,7 @@ import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/ba
 
 import { BatchPage } from "./BatchPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
-import { dispatchMockAccounts, mockEstimatedFee } from "../../mocks/helpers";
+import { addAccount, mockEstimatedFee } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, userEvent } from "../../mocks/testUtils";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { MAINNET } from "../../types/Network";
@@ -12,7 +12,7 @@ import { store } from "../../utils/redux/store";
 import { estimate, executeOperations } from "../../utils/tezos";
 
 beforeEach(() => {
-  dispatchMockAccounts([mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)]);
+  [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addAccount);
   mockEstimatedFee(10);
 
   jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);

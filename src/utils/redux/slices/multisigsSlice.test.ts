@@ -1,7 +1,7 @@
 import { multisigActions } from "./multisigsSlice";
 import { mockContractAddress, mockMultisigAccount } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { multisigOperation, multisigs } from "../../../mocks/multisig";
-import { Multisig } from "../../multisig/types";
 import { store } from "../store";
 
 describe("Multisig reducer", () => {
@@ -63,7 +63,7 @@ describe("Multisig reducer", () => {
   describe("setName", () => {
     it("should not do anything if account does not exist", () => {
       const account = mockMultisigAccount(0);
-      store.dispatch(multisigActions.setMultisigs([account as Multisig]));
+      addAccount(account);
       store.dispatch(
         multisigActions.setName({
           newName: "new name",
@@ -76,7 +76,7 @@ describe("Multisig reducer", () => {
 
     it("should update the label", () => {
       const account = mockMultisigAccount(0);
-      store.dispatch(multisigActions.setMultisigs([account as Multisig]));
+      addAccount(account);
       store.dispatch(
         multisigActions.setName({
           newName: "new name",

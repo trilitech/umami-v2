@@ -3,14 +3,13 @@ import { mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";
 
 describe("<AddressTileIcon />", () => {
   it("displays label", () => {
     const account = mockMnemonicAccount(0);
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+    addAccount(account);
 
     render(<AddressTile address={account.address} />);
 
@@ -20,7 +19,7 @@ describe("<AddressTileIcon />", () => {
   describe("Full name tooltip", () => {
     it("is hidden when cursor is not on account label", () => {
       const account = mockMnemonicAccount(0);
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+      addAccount(account);
 
       render(<AddressTile address={account.address} />);
 
@@ -30,7 +29,7 @@ describe("<AddressTileIcon />", () => {
     it("is shown when cursor is on account tile", async () => {
       const user = userEvent.setup();
       const account = mockMnemonicAccount(0);
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+      addAccount(account);
 
       render(<AddressTile address={account.address} />);
 
@@ -46,7 +45,7 @@ describe("<AddressTileIcon />", () => {
   describe("address", () => {
     it("is formatted when known", () => {
       const account = mockMnemonicAccount(0);
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+      addAccount(account);
 
       render(<AddressTile address={account.address} />);
 

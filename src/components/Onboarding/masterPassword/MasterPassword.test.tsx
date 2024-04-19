@@ -1,9 +1,8 @@
 import { MasterPassword } from "./MasterPassword";
 import { mockMnemonicAccount } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { render, screen } from "../../../mocks/testUtils";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../utils/redux/store";
 
 const onClose = jest.fn(() => {});
 
@@ -27,7 +26,7 @@ describe("<MasterPassword />", () => {
   });
 
   test("Display enter password", () => {
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
+    addAccount(account);
     render(fixture());
 
     expect(screen.getByTestId("confirmation")).toBeInTheDocument();

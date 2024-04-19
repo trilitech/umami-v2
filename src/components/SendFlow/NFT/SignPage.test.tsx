@@ -3,12 +3,11 @@ import BigNumber from "bignumber.js";
 
 import { SignPage } from "./SignPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import { NFTBalance } from "../../../types/TokenBalance";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../utils/redux/store";
 import { TEZ } from "../../../utils/tezos";
 import { SignPageProps } from "../utils";
 
@@ -18,9 +17,7 @@ const fixture = (props: SignPageProps<{ nft: NFTBalance }>) => (
   </Modal>
 );
 
-beforeEach(() => {
-  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
-});
+beforeEach(() => addAccount(mockMnemonicAccount(0)));
 
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);

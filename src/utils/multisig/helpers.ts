@@ -97,6 +97,6 @@ export const getPendingOperationsForMultisigs = async (
 
 export const multisigToAccount = (multisig: Multisig, label: string): MultisigAccount => ({
   label,
-  type: "multisig",
   ...multisig,
+  type: "multisig",
 });

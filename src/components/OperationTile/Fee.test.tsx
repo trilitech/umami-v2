@@ -1,9 +1,8 @@
 import { Fee } from "./Fee";
 import { OperationTileContext } from "./OperationTileContext";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
-import { store } from "../../utils/redux/store";
 import { TransactionOperation } from "../../utils/tezos";
 
 describe("<Fee />", () => {
@@ -40,7 +39,7 @@ describe("<Fee />", () => {
   });
 
   it("sums up the fees and shows the total", () => {
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
+    addAccount(mockMnemonicAccount(0));
     render(
       <Fee
         operation={
@@ -57,7 +56,7 @@ describe("<Fee />", () => {
   });
 
   it("doesn't render in drawer mode", () => {
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockMnemonicAccount(0)]));
+    addAccount(mockMnemonicAccount(0));
 
     render(
       <OperationTileContext.Provider value={{ mode: "drawer" } as any}>

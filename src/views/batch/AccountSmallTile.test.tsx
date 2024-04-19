@@ -1,12 +1,12 @@
 import { AccountSmallTile } from "./AccountSmallTile";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
-import { dispatchMockAccounts } from "../../mocks/helpers";
+import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";
 
-beforeEach(() => dispatchMockAccounts([mockMnemonicAccount(1, "Test account label")]));
+beforeEach(() => addAccount(mockMnemonicAccount(1, "Test account label")));
 
 describe("<AccountSmallTile />", () => {
   it("shows account label", () => {

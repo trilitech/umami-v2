@@ -1,4 +1,4 @@
-import { accountsSlice } from "./accountsSlice";
+import { accountsActions } from "./accountsSlice";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
@@ -6,20 +6,11 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../../mocks/factories";
+import { addAccount } from "../../../mocks/helpers";
 import { MnemonicAccount } from "../../../types/Account";
 import { store } from "../store";
 
-const {
-  actions: {
-    addMockMnemonicAccounts,
-    addAccount,
-    removeMnemonicAndAccounts,
-    renameAccount,
-    addMnemonicAccounts,
-  },
-} = accountsSlice;
-
-describe("Accounts reducer", () => {
+describe("accountsSlice", () => {
   test("store should initialize with empty state", () => {
     expect(store.getState().accounts).toEqual({
       items: [],
@@ -28,46 +19,10 @@ describe("Accounts reducer", () => {
     });
   });
 
-  test("should handle adding accounts and arrays of accounts", () => {
-    store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(1)]));
-    expect(store.getState().accounts).toEqual({
-      items: [mockImplicitAccount(1)],
-      seedPhrases: {},
-      secretKeys: {},
-    });
-
-    store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(2), mockMnemonicAccount(3)]));
-    expect(store.getState().accounts).toEqual({
-      items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      seedPhrases: {},
-      secretKeys: {},
-    });
-  });
-
-  test("adding account should throw and exception if it is a pkh duplicate and not modify state", () => {
-    store.dispatch(
-      addMockMnemonicAccounts([
-        mockMnemonicAccount(1),
-        mockMnemonicAccount(2),
-        mockMnemonicAccount(3),
-      ])
-    );
-
-    expect(() => store.dispatch(addMockMnemonicAccounts([mockMnemonicAccount(2)]))).toThrow(
-      `Can't add account with address ${mockImplicitAccount(2).address.pkh} because it already exists.`
-    );
-
-    expect(store.getState().accounts).toEqual({
-      items: [mockImplicitAccount(1), mockImplicitAccount(2), mockImplicitAccount(3)],
-      seedPhrases: {},
-      secretKeys: {},
-    });
-  });
-
   describe("removeMnemonicAndAccounts", () => {
     it("deletes seedphrases and all derived accounts", () => {
       store.dispatch(
-        addMnemonicAccounts({
+        accountsActions.addMnemonicAccounts({
           seedFingerprint: "mockPrint1",
           accounts: [
             mockImplicitAccount(1, undefined, "mockPrint1") as MnemonicAccount,
@@ -78,7 +33,7 @@ describe("Accounts reducer", () => {
       );
 
       store.dispatch(
-        addMnemonicAccounts({
+        accountsActions.addMnemonicAccounts({
           seedFingerprint: "mockPrint2",
           accounts: [mockImplicitAccount(2, undefined, "mockPrint2") as MnemonicAccount],
           encryptedMnemonic: {} as any,
@@ -95,7 +50,7 @@ describe("Accounts reducer", () => {
         secretKeys: {},
       });
 
-      store.dispatch(removeMnemonicAndAccounts({ fingerPrint: "mockPrint1" }));
+      store.dispatch(accountsActions.removeMnemonicAndAccounts({ fingerPrint: "mockPrint1" }));
 
       expect(store.getState().accounts).toEqual({
         items: [mockImplicitAccount(2, undefined, "mockPrint2")],
@@ -114,20 +69,20 @@ describe("Accounts reducer", () => {
     const secretKey2 = mockSecretKeyAccount(5);
 
     beforeEach(() => {
-      store.dispatch(addAccount(mnemonic));
-      store.dispatch(addAccount(social1));
-      store.dispatch(addAccount(social2));
-      store.dispatch(addAccount(ledger));
-      store.dispatch(addAccount(secretKey1));
-      store.dispatch(addAccount(secretKey2));
+      addAccount(mnemonic);
+      addAccount(social1);
+      addAccount(social2);
+      addAccount(ledger);
+      addAccount(secretKey1);
+      addAccount(secretKey2);
       store.dispatch(
-        accountsSlice.actions.addSecretKey({
+        accountsActions.addSecretKey({
           pkh: secretKey1.address.pkh,
           encryptedSecretKey: "encryptedSecretKey1" as any,
         })
       );
       store.dispatch(
-        accountsSlice.actions.addSecretKey({
+        accountsActions.addSecretKey({
           pkh: secretKey2.address.pkh,
           encryptedSecretKey: "encryptedSecretKey2" as any,
         })
@@ -136,7 +91,7 @@ describe("Accounts reducer", () => {
 
     it("does nothing for mnemonic account", () => {
       store.dispatch(
-        accountsSlice.actions.removeNonMnemonicAccounts({
+        accountsActions.removeNonMnemonicAccounts({
           accountType: "mnemonic",
         })
       );
@@ -146,7 +101,7 @@ describe("Accounts reducer", () => {
 
     it("should remove ledger account", () => {
       store.dispatch(
-        accountsSlice.actions.removeNonMnemonicAccounts({
+        accountsActions.removeNonMnemonicAccounts({
           accountType: "ledger",
         })
       );
@@ -162,7 +117,7 @@ describe("Accounts reducer", () => {
 
     it("removes multiple secret key accounts & stored secret keys", () => {
       store.dispatch(
-        accountsSlice.actions.removeNonMnemonicAccounts({
+        accountsActions.removeNonMnemonicAccounts({
           accountType: "secret_key",
         })
       );
@@ -172,7 +127,7 @@ describe("Accounts reducer", () => {
 
     it("should remove multiple social accounts", () => {
       store.dispatch(
-        accountsSlice.actions.removeNonMnemonicAccounts({
+        accountsActions.removeNonMnemonicAccounts({
           accountType: "social",
         })
       );
@@ -189,17 +144,17 @@ describe("Accounts reducer", () => {
     const secretKey = mockSecretKeyAccount(4);
 
     beforeEach(() => {
-      store.dispatch(addMockMnemonicAccounts([mnemonic]));
-      store.dispatch(addAccount(social1));
-      store.dispatch(addAccount(social2));
-      store.dispatch(addAccount(ledger));
-      store.dispatch(addAccount(secretKey));
+      addAccount(mnemonic);
+      addAccount(social1);
+      addAccount(social2);
+      addAccount(ledger);
+      addAccount(secretKey);
     });
 
     const accounts = [social1, social2, ledger, secretKey];
 
     it.each(accounts)("removes $type account", account => {
-      store.dispatch(accountsSlice.actions.removeAccount(account));
+      store.dispatch(accountsActions.removeAccount(account));
 
       const remainingAccounts = accounts.filter(acc => acc.address.pkh !== account.address.pkh);
       expect(store.getState().accounts.items).toEqual([mnemonic, ...remainingAccounts]);
@@ -208,19 +163,19 @@ describe("Accounts reducer", () => {
     it("removes secret key on removing secret key account", () => {
       const secretKeyAccount2 = mockSecretKeyAccount(5);
       store.dispatch(
-        accountsSlice.actions.addSecretKey({
+        accountsActions.addSecretKey({
           pkh: secretKey.address.pkh,
           encryptedSecretKey: "encryptedSecretKey" as any,
         })
       );
       store.dispatch(
-        accountsSlice.actions.addSecretKey({
+        accountsActions.addSecretKey({
           pkh: secretKeyAccount2.address.pkh,
           encryptedSecretKey: "encryptedSecretKey2" as any,
         })
       );
 
-      store.dispatch(accountsSlice.actions.removeAccount(secretKey));
+      store.dispatch(accountsActions.removeAccount(secretKey));
 
       expect(store.getState().accounts.items).toEqual([mnemonic, social1, social2, ledger]);
       expect(store.getState().accounts.secretKeys).toEqual({
@@ -239,7 +194,7 @@ describe("Accounts reducer", () => {
       ];
 
       store.dispatch(
-        addMnemonicAccounts({
+        accountsActions.addMnemonicAccounts({
           seedFingerprint,
           accounts: restoredAccounts,
           encryptedMnemonic: mockEncrypted as any,
@@ -254,36 +209,36 @@ describe("Accounts reducer", () => {
   });
 
   describe("rename account", () => {
-    const [mnemonic1, mnemonic2, social, ledger] = [
-      mockMnemonicAccount(1),
-      mockMnemonicAccount(2),
-      mockSocialAccount(3),
-      mockLedgerAccount(4),
-    ];
+    const mnemonic1 = mockMnemonicAccount(1);
+    const mnemonic2 = mockMnemonicAccount(2);
+    const social = mockSocialAccount(3);
+    const ledger = mockLedgerAccount(4);
 
     beforeEach(() => {
-      store.dispatch(addMockMnemonicAccounts([mnemonic1, mnemonic2]));
-      store.dispatch(addAccount(social));
-      store.dispatch(addAccount(ledger));
+      addAccount(mnemonic1);
+      addAccount(mnemonic2);
+      addAccount(social);
+      addAccount(ledger);
     });
 
     it("throws when the new name is empty", () => {
-      expect(() => store.dispatch(renameAccount({ account: mnemonic1, newName: "" }))).toThrow(
-        "Cannot rename account to an empty name."
-      );
+      expect(() =>
+        store.dispatch(accountsActions.renameAccount({ account: mnemonic1, newName: "" }))
+      ).toThrow("Cannot rename account to an empty name.");
     });
 
     it("throws when the new name is used by other implicit account", () => {
       expect(() =>
-        store.dispatch(renameAccount({ account: mnemonic1, newName: social.label }))
+        store.dispatch(accountsActions.renameAccount({ account: mnemonic1, newName: social.label }))
       ).toThrow(
         "Cannot rename account tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf to Account 4 since the name already exists."
       );
     });
 
     it("doesn't do anything for non existing account", () => {
+      expect(store.getState().accounts.items).toEqual([mnemonic1, mnemonic2, social, ledger]);
       store.dispatch(
-        renameAccount({
+        accountsActions.renameAccount({
           account: { ...mnemonic1, label: "non existing account" },
           newName: "new name",
         })
@@ -292,7 +247,9 @@ describe("Accounts reducer", () => {
     });
 
     it("renames mnemonic account", () => {
-      store.dispatch(renameAccount({ account: mnemonic2, newName: "new mnemonic2 label" }));
+      store.dispatch(
+        accountsActions.renameAccount({ account: mnemonic2, newName: "new mnemonic2 label" })
+      );
       expect(
         store.getState().accounts.items.find(account => account.label === mnemonic2.label)
       ).toBeUndefined();
@@ -302,7 +259,9 @@ describe("Accounts reducer", () => {
     });
 
     it("renames social account", () => {
-      store.dispatch(renameAccount({ account: social, newName: "new social label" }));
+      store.dispatch(
+        accountsActions.renameAccount({ account: social, newName: "new social label" })
+      );
       expect(
         store.getState().accounts.items.find(account => account.label === social.label)
       ).toBeUndefined();
@@ -312,7 +271,9 @@ describe("Accounts reducer", () => {
     });
 
     it("renames ledger account", () => {
-      store.dispatch(renameAccount({ account: ledger, newName: "new ledger label" }));
+      store.dispatch(
+        accountsActions.renameAccount({ account: ledger, newName: "new ledger label" })
+      );
       expect(
         store.getState().accounts.items.find(account => account.label === ledger.label)
       ).toBeUndefined();

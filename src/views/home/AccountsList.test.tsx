@@ -8,6 +8,7 @@ import {
   mockPk,
   mockSocialAccount,
 } from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { MnemonicAccount } from "../../types/Account";
 import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
@@ -15,11 +16,8 @@ import { WalletClient } from "../../utils/beacon/WalletClient";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";
 import { formatPkh } from "../../utils/format";
 import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
-import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
 import { store } from "../../utils/redux/store";
 import { derivePublicKeyPair } from "../../utils/tezos";
-
-const { addAccount, addMockMnemonicAccounts } = accountsSlice.actions;
 
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
@@ -36,8 +34,8 @@ describe("<AccountsList />", () => {
       const user = userEvent.setup();
       const mnemonic = mockMnemonicAccount(0);
       const social = mockSocialAccount(1);
-      store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mnemonic]));
-      store.dispatch(accountsSlice.actions.addAccount(social));
+      addAccount(mnemonic);
+      addAccount(social);
       render(<AccountsList />);
 
       const [mnemonicPopover, socialPopover] = screen.getAllByTestId("popover-cta");
@@ -97,8 +95,8 @@ describe("<AccountsList />", () => {
       const user = userEvent.setup();
       const social1 = mockSocialAccount(0);
       const social2 = mockSocialAccount(1);
-      store.dispatch(accountsSlice.actions.addAccount(social1));
-      store.dispatch(accountsSlice.actions.addAccount(social2));
+      addAccount(social1);
+      addAccount(social2);
 
       render(<AccountsList />);
 
@@ -114,13 +112,9 @@ describe("<AccountsList />", () => {
   });
 
   it("displays accounts in store with label and formated pkh", () => {
-    store.dispatch(
-      addMockMnemonicAccounts([
-        mockMnemonicAccount(0),
-        mockMnemonicAccount(1),
-        mockMnemonicAccount(2),
-      ])
-    );
+    addAccount(mockMnemonicAccount(0));
+    addAccount(mockMnemonicAccount(1));
+    addAccount(mockMnemonicAccount(2));
 
     render(<AccountsList />);
 
@@ -239,30 +233,22 @@ const restore = () => {
     })
   );
 
-  store.dispatch(
-    addAccount({
-      type: "social",
-      idp: "google",
-      address: mockImplicitAddress(6),
-      pk: mockPk(6),
-      label: GOOGLE_ACCOUNT_LABEL1,
-    })
-  );
+  addAccount({
+    type: "social",
+    idp: "google",
+    address: mockImplicitAddress(6),
+    pk: mockPk(6),
+    label: GOOGLE_ACCOUNT_LABEL1,
+  });
 
-  store.dispatch(
-    addAccount({
-      type: "social",
-      idp: "google",
-      address: mockImplicitAddress(7),
-      pk: mockPk(7),
-      label: GOOGLE_ACCOUNT_LABEL2,
-    })
-  );
+  addAccount({
+    type: "social",
+    idp: "google",
+    address: mockImplicitAddress(7),
+    pk: mockPk(7),
+    label: GOOGLE_ACCOUNT_LABEL2,
+  });
 
-  store.dispatch(
-    multisigsSlice.actions.setMultisigs([
-      mockMultisigWithOperations(0),
-      mockMultisigWithOperations(1),
-    ])
-  );
+  addAccount(mockMultisigWithOperations(0));
+  addAccount(mockMultisigWithOperations(1));
 };

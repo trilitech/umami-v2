@@ -4,18 +4,13 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../../mocks/factories";
+import { addAccount } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { render, screen } from "../../../../mocks/testUtils";
-import { accountsSlice } from "../../../../utils/redux/slices/accountsSlice";
-import { store } from "../../../../utils/redux/store";
-
-const { addMockMnemonicAccounts } = accountsSlice.actions;
 
 const signer = mockMnemonicAccount(0);
 describe("<MultisigSignerTile />", () => {
-  beforeEach(() => {
-    store.dispatch(addMockMnemonicAccounts([signer]));
-  });
+  beforeEach(() => addAccount(signer));
 
   it("displays the action button", () => {
     render(

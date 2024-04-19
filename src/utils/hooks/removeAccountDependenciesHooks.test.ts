@@ -170,11 +170,7 @@ describe("useRemoveDependenciesAndMultisigs", () => {
     ]);
     const multisig2 = mockMultisigAccount(2, [account3.address]);
 
-    beforeEach(() => {
-      addAccount(account1);
-      addAccount(account2);
-      store.dispatch(multisigActions.setMultisigs([multisig0, multisig1, multisig2]));
-    });
+    beforeEach(() => [account1, account2, multisig0, multisig1, multisig2].forEach(addAccount));
 
     it("does not removes multisigs from the storage", () => {
       const {

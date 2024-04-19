@@ -1,24 +1,23 @@
 import BigNumber from "bignumber.js";
 
-import { ImplicitAccount, MnemonicAccount } from "../types/Account";
+import { Account } from "../types/Account";
 import { RawPkh } from "../types/Address";
-import { accountsSlice } from "../utils/redux/slices/accountsSlice";
+import { Multisig } from "../utils/multisig/types";
+import { accountsActions } from "../utils/redux/slices/accountsSlice";
+import { multisigActions } from "../utils/redux/slices/multisigsSlice";
 import { store } from "../utils/redux/store";
 import { estimate } from "../utils/tezos";
-
-export const dispatchMockAccounts = (accounts: MnemonicAccount[]) => {
-  store.dispatch(accountsSlice.actions.addMockMnemonicAccounts(accounts));
-};
 
 export const mockEstimatedFee = (fee: number | string | BigNumber) =>
   jest.mocked(estimate).mockResolvedValueOnce(BigNumber(fee));
 
-export const addAccount = (account: ImplicitAccount) => {
-  if (account.type === "mnemonic") {
-    store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([account]));
-  } else {
-    store.dispatch(accountsSlice.actions.addAccount(account));
+export const addAccount = (account: Account | Multisig) => {
+  if (!("type" in account) || account.type === "multisig") {
+    store.dispatch(multisigActions.mockAddAccount(account));
+    return;
   }
+
+  store.dispatch(accountsActions.addAccount(account));
 };
 
 export const fakeAddressExists = (revealedKeyPairs: { pkh: RawPkh }[]) => (pkh: RawPkh) =>

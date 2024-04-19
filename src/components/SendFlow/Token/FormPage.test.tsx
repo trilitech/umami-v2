@@ -9,7 +9,7 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "../../../mocks/factories";
-import { mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -23,7 +23,6 @@ import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import { FA2TokenBalance } from "../../../types/TokenBalance";
-import { accountsSlice } from "../../../utils/redux/slices/accountsSlice";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
 import { FormPagePropsWithSender } from "../utils";
@@ -189,7 +188,7 @@ describe("<FormPage />", () => {
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
-        store.dispatch(accountsSlice.actions.addMockMnemonicAccounts([mockAccount]));
+        addAccount(mockAccount);
         store.dispatch(assetsSlice.actions.updateTokenBalance([mockTokenRaw]));
         const sender = mockAccount;
         render(
