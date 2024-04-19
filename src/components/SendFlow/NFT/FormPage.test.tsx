@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js";
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
-import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -18,7 +18,10 @@ import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import { NFTBalance } from "../../../types/TokenBalance";
+import { estimate } from "../../../utils/tezos";
 import { FormPagePropsWithSender } from "../utils";
+
+jest.mock("../../../utils/tezos/estimate");
 
 const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -183,7 +186,7 @@ describe("<FormPage />", () => {
         await waitFor(() => {
           expect(submitButton).toBeEnabled();
         });
-        mockEstimatedFee(100);
+        jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
         const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
           {
             type: "fa2",

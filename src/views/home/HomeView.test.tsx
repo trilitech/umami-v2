@@ -8,6 +8,13 @@ import {
   getRelatedTokenTransfers,
 } from "../../utils/tezos";
 
+jest.mock("../../utils/tezos", () => ({
+  ...jest.requireActual("../../utils/tezos"),
+  getCombinedOperations: jest.fn(),
+  getRelatedTokenTransfers: jest.fn(),
+  getLastDelegation: jest.fn(),
+}));
+
 beforeEach(() => {
   [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount);
   jest.mocked(getCombinedOperations).mockResolvedValue([]);

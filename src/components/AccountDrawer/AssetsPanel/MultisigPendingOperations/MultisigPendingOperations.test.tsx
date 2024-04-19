@@ -1,20 +1,25 @@
+import BigNumber from "bignumber.js";
+
 import {
   mockImplicitAddress,
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../../mocks/factories";
-import { addAccount, mockEstimatedFee } from "../../../../mocks/helpers";
+import { addAccount } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
 import { MnemonicAccount } from "../../../../types/Account";
 import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../../utils/redux/store";
+import { estimate } from "../../../../utils/tezos";
 
 import { MultisigPendingOperations } from ".";
 
+jest.mock("../../../../utils/tezos/estimate");
+
 describe("<MultisigPendingOperations />", () => {
   it("displays multisig executable tez operations", async () => {
-    mockEstimatedFee(33);
+    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
     const multisig = {
       ...mockMultisigAccount(0),
       pendingOperationsBigmapId: 3,

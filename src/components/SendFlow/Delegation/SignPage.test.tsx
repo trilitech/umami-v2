@@ -11,6 +11,11 @@ import { store } from "../../../utils/redux/store";
 import { DelegationOperation, TEZ, getLastDelegation } from "../../../utils/tezos";
 import { SignPageProps } from "../utils";
 
+jest.mock("../../../utils/tezos", () => ({
+  ...jest.requireActual("../../../utils/tezos"),
+  getLastDelegation: jest.fn(),
+}));
+
 const fixture = (props: SignPageProps) => (
   <Modal isOpen={true} onClose={() => {}}>
     <SignPage {...props} />

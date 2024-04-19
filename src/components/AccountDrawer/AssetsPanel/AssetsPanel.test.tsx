@@ -1,13 +1,21 @@
+import BigNumber from "bignumber.js";
+
 import { AssetsPanel } from "./AssetsPanel";
 import { mockMultisigAccount } from "../../../mocks/factories";
-import { mockEstimatedFee } from "../../../mocks/helpers";
 import { pendingOps } from "../../../mocks/multisig";
 import { render, screen } from "../../../mocks/testUtils";
 import { multisigsSlice } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
-import { getCombinedOperations, getRelatedTokenTransfers } from "../../../utils/tezos";
+import { estimate, getCombinedOperations, getRelatedTokenTransfers } from "../../../utils/tezos";
 
-describe("<AssetPanel/>", () => {
+jest.mock("../../../utils/tezos", () => ({
+  ...jest.requireActual("../../../utils/tezos"),
+  getCombinedOperations: jest.fn(),
+  getRelatedTokenTransfers: jest.fn(),
+  estimate: jest.fn(),
+}));
+
+describe("<AssetsPanel />", () => {
   describe("multisig account", () => {
     it("hides pending tab when no pending operations", async () => {
       jest.mocked(getCombinedOperations).mockResolvedValue([]);
@@ -24,7 +32,7 @@ describe("<AssetPanel/>", () => {
       jest.mocked(getCombinedOperations).mockResolvedValue([]);
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
-      mockEstimatedFee(33);
+      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
       const multisig = {
         ...mockMultisigAccount(0),
         pendingOperationsBigmapId: 3,

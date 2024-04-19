@@ -12,6 +12,12 @@ import {
   getRelatedTokenTransfers,
 } from "../../utils/tezos";
 
+jest.mock("../../utils/tezos", () => ({
+  ...jest.requireActual("../../utils/tezos"),
+  getCombinedOperations: jest.fn(),
+  getRelatedTokenTransfers: jest.fn(),
+}));
+
 describe("OperationsView", () => {
   beforeEach(() => {
     addAccount(mockMnemonicAccount(1));

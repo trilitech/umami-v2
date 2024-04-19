@@ -26,6 +26,11 @@ import * as useGetOperationsModule from "../../views/operations/useGetOperations
 
 import { AccountCard } from ".";
 
+jest.mock("../../utils/tezos", () => ({
+  ...jest.requireActual("../../utils/tezos"),
+  getLastDelegation: jest.fn(),
+}));
+
 const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
 
 const selectedAccount = mockMnemonicAccount(0);
@@ -53,7 +58,7 @@ beforeEach(() => {
   addAccount(mockMnemonicAccount(1));
 });
 
-describe("<AccountCard />", () => {
+describe("<AccountDrawerDisplay />", () => {
   it("displays account name", async () => {
     render(<AccountCard accountPkh={pkh} />);
 

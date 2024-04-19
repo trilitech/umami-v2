@@ -8,7 +8,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../mocks/factories";
-import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -28,6 +28,8 @@ const fixture = (props: FormPageProps<FormValues> = {}) => (
     <FormPage {...props} />
   </Modal>
 );
+
+jest.mock("../../../utils/tezos/estimate");
 
 describe("<Form />", () => {
   describe("default values", () => {
@@ -261,7 +263,7 @@ describe("<Form />", () => {
         await waitFor(() => {
           expect(submitButton).toBeEnabled();
         });
-        mockEstimatedFee(100);
+        jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
         const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
           { type: "tez", amount: "1000000", recipient: mockImplicitAccount(1).address },
         ]);

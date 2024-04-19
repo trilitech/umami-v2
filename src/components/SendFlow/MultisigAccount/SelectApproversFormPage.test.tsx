@@ -10,7 +10,7 @@ import {
   mockImplicitAddress,
   mockMnemonicAccount,
 } from "../../../mocks/factories";
-import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -22,6 +22,7 @@ import {
 } from "../../../mocks/testUtils";
 import { contract, makeStorageJSON } from "../../../multisig/contract";
 import { makeAccountOperations } from "../../../types/AccountOperations";
+import { estimate } from "../../../utils/tezos";
 
 const MULTISIG_NAME = "Multisig Account Name";
 const SENDER = mockMnemonicAccount(0);
@@ -38,6 +39,8 @@ const fixture = (formValues?: FormValues) => {
     </Modal>
   );
 };
+
+jest.mock("../../../utils/tezos/estimate");
 
 beforeEach(() =>
   [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount)
@@ -276,7 +279,7 @@ describe("SelectApproversFormPage", () => {
           contract
         ),
       ]);
-      mockEstimatedFee(150);
+      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(150));
 
       const reviewButton = screen.getByText("Review");
       await waitFor(() => expect(reviewButton).toBeEnabled());
@@ -335,7 +338,7 @@ describe("SelectApproversFormPage", () => {
           contract
         ),
       ]);
-      mockEstimatedFee(100);
+      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
       await waitFor(() => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignTransactionFormPage

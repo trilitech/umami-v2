@@ -8,8 +8,6 @@ import { getFingerPrint } from "../../tezos";
 import { accountsSlice } from "../slices/accountsSlice";
 import { store } from "../store";
 
-jest.unmock("../../../utils/tezos");
-
 const currentPassword = "currentPassword";
 const newPassword = "newPassword";
 

@@ -2,8 +2,6 @@ import { DerivationPath } from "./DerivationPath";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 
-jest.unmock("../../../utils/tezos");
-
 const goToStepMock = jest.fn();
 
 const mnemonicAccount = { type: "mnemonic" as const, label: "account label", mnemonic: mnemonic1 };

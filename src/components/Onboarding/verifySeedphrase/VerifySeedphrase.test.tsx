@@ -5,6 +5,12 @@ import { selectRandomElements } from "../../../utils/tezos";
 import { OnboardingStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn((step: OnboardingStep) => {});
+
+jest.mock("../../../utils/tezos", () => ({
+  ...jest.requireActual("../../../utils/tezos"),
+  selectRandomElements: jest.fn(),
+}));
+
 const selectRandomElementsMock = jest.mocked(selectRandomElements);
 
 beforeEach(() => {
