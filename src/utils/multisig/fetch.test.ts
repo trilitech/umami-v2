@@ -6,8 +6,6 @@ import { mockImplicitAddress } from "../../mocks/factories";
 import { ghostMultisigContracts } from "../../mocks/tzktResponse";
 import { DefaultNetworks, GHOSTNET } from "../../types/Network";
 
-jest.unmock("../tezos");
-
 const mockedAxios = jest.spyOn(axios, "get");
 
 const mockedContractsGet = jest.spyOn(api, "contractsGet");

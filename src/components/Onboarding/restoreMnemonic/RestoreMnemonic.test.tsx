@@ -5,6 +5,11 @@ import { mockToast } from "../../../mocks/toast";
 import { selectRandomElements } from "../../../utils/tezos";
 
 const goToStepMock = jest.fn();
+
+jest.mock("../../../utils/tezos", () => ({
+  ...jest.requireActual("../../../utils/tezos"),
+  selectRandomElements: jest.fn(),
+}));
 const selectRandomElementsMock = jest.mocked(selectRandomElements);
 
 const fixture = () => <RestoreMnemonic goToStep={goToStepMock} />;

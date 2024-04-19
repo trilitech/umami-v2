@@ -26,7 +26,6 @@ import { store } from "../redux/store";
 import * as tezosHelpers from "../tezos/helpers";
 
 jest.mock("./removeAccountDependenciesHooks");
-jest.unmock("../tezos");
 
 const mockedUseRemoveDependenciesAndMultisigs = jest.mocked(useRemoveDependenciesAndMultisigs);
 const mockedRemoveAccountsDependencies = jest.fn();

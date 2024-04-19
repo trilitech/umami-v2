@@ -5,8 +5,6 @@ import { decrypt } from "../../crypto/AES";
 import { EncryptedData } from "../../crypto/types";
 import { store } from "../store";
 
-jest.unmock("../../tezos");
-
 describe("secretKeyAccount", () => {
   describe.each([
     {

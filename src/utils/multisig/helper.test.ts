@@ -10,9 +10,6 @@ import {
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { tzktGetSameMultisigsResponse } from "../../mocks/tzktResponse";
 import { DefaultNetworks, GHOSTNET, MAINNET } from "../../types/Network";
-jest.deepUnmock("../tezos");
-jest.unmock("../tezos/helpers");
-jest.unmock("../tezos/fetch");
 
 const mockedAxios = jest.spyOn(axios, "get");
 

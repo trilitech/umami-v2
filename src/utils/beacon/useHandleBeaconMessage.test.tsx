@@ -25,13 +25,14 @@ import {
   mockImplicitAddress,
   mockTezOperation,
 } from "../../mocks/factories";
-import { addAccount, mockEstimatedFee } from "../../mocks/helpers";
+import { addAccount } from "../../mocks/helpers";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
 import { ImplicitOperations, makeAccountOperations } from "../../types/AccountOperations";
 import { estimate } from "../tezos";
 
 jest.mock("./WalletClient");
+jest.mock("../tezos");
 
 const SENDER_ID = "mockSenderId";
 
@@ -217,7 +218,7 @@ describe("<useHandleBeaconMessage />", () => {
   });
 
   it("opens a modal with the BeaconSignPage for 1 operation", async () => {
-    mockEstimatedFee(100);
+    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
 
     const message: BeaconRequestOutputMessage = {
       type: BeaconMessageType.OperationRequest,
@@ -258,7 +259,7 @@ describe("<useHandleBeaconMessage />", () => {
   });
 
   it("opens a modal with the BatchSignPage for multiple operations", async () => {
-    mockEstimatedFee(100);
+    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
 
     const message: BeaconRequestOutputMessage = {
       type: BeaconMessageType.OperationRequest,

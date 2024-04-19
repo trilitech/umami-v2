@@ -7,10 +7,8 @@ import { mockBaker } from "../mocks/factories";
 import { renderHook, waitFor } from "../mocks/testUtils";
 import { DefaultNetworks } from "../types/Network";
 
-jest.unmock("./tezos");
 jest.mock("@tzkt/sdk-api", () => ({
   delegatesGet: jest.fn(),
-  blocksGetCount: jest.fn(),
 }));
 
 describe("useAssetsPolling", () => {
@@ -21,13 +19,16 @@ describe("useAssetsPolling", () => {
 
     test("bakers", async () => {
       const baseUrl = network.tzktApiUrl;
-      (delegatesGet as jest.Mock).mockResolvedValue([
+      const mockDelegatesGet = jest.mocked(delegatesGet);
+      mockDelegatesGet.mockResolvedValue([
         { ...mockBaker(0), alias: mockBaker(0).name },
         { ...mockBaker(1), alias: mockBaker(1).name },
-      ]);
+      ] as any);
+
       renderHook(() => useAssetsPolling());
+
       await waitFor(() => {
-        expect(jest.mocked(delegatesGet)).toHaveBeenCalledWith(
+        expect(mockDelegatesGet).toHaveBeenCalledWith(
           {
             sort: { desc: "stakingBalance" },
             active: { eq: true },

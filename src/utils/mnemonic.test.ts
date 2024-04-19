@@ -14,8 +14,6 @@ import { renderHook } from "../mocks/testUtils";
 import { ImplicitAccount } from "../types/Account";
 import { MAINNET } from "../types/Network";
 
-jest.unmock("./tezos");
-
 const addressExistsMock = jest.spyOn(tezosHelpers, "addressExists");
 
 const testPublicKeys = [

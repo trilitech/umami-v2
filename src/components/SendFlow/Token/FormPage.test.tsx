@@ -9,7 +9,7 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "../../../mocks/factories";
-import { addAccount, mockEstimatedFee } from "../../../mocks/helpers";
+import { addAccount } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -25,7 +25,10 @@ import { parseContractPkh } from "../../../types/Address";
 import { FA2TokenBalance } from "../../../types/TokenBalance";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
+import { estimate } from "../../../utils/tezos";
 import { FormPagePropsWithSender } from "../utils";
+
+jest.mock("../../../utils/tezos/estimate");
 
 const mockAccount = mockMnemonicAccount(0);
 const mockTokenRaw = mockFA2TokenRaw(0, mockAccount.address.pkh);
@@ -205,10 +208,8 @@ describe("<FormPage />", () => {
           )
         );
         const submitButton = screen.getByText("Preview");
-        await waitFor(() => {
-          expect(submitButton).toBeEnabled();
-        });
-        mockEstimatedFee(100);
+        await waitFor(() => expect(submitButton).toBeEnabled());
+        jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
         const operations = makeAccountOperations(sender, mockAccount, [
           {
             type: "fa2",

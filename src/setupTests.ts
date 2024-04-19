@@ -27,8 +27,6 @@ failOnConsole();
 
 MockDate.set("2023-03-27T14:15:09.760Z");
 
-jest.mock("./utils/tezos");
-
 // https://github.com/chakra-ui/chakra-ui/issues/2684
 jest.mock("@popperjs/core", () => ({
   createPopper: () => ({

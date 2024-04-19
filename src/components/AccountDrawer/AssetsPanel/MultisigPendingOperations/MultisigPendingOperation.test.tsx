@@ -1,5 +1,6 @@
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import BigNumber from "bignumber.js";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
 import {
@@ -7,7 +8,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "../../../../mocks/factories";
-import { addAccount, mockEstimatedFee } from "../../../../mocks/helpers";
+import { addAccount } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { act, render, screen, userEvent, within } from "../../../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../../../types/Account";
@@ -18,6 +19,13 @@ import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operati
 import * as getAccountDataHooks from "../../../../utils/hooks/getAccountDataHooks";
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezos";
+
+jest.mock("../../../../utils/tezos", () => ({
+  ...jest.requireActual("../../../../utils/tezos"),
+  estimate: jest.fn(),
+  executeOperations: jest.fn(),
+  makeToolkit: jest.fn(),
+}));
 
 const MOCK_TEZOS_TOOLKIT = {};
 beforeEach(() => {
@@ -68,7 +76,7 @@ describe("<MultisigPendingOperation />", () => {
       ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
-    mockEstimatedFee(33);
+    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
 
     jest.mocked(executeOperations).mockResolvedValue({
       opHash: "mockHash",
@@ -112,7 +120,7 @@ describe("<MultisigPendingOperation />", () => {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
 
-    mockEstimatedFee(33);
+    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
 
     jest.mocked(executeOperations).mockResolvedValue({
       opHash: "mockHash",

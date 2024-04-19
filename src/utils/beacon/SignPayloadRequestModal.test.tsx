@@ -32,8 +32,6 @@ const request: SignPayloadRequestOutput = {
 
 const account = mockMnemonicAccount(1);
 
-jest.unmock("../tezos");
-
 beforeEach(() => {
   store.dispatch(
     accountsActions.addMnemonicAccounts({

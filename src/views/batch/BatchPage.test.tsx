@@ -1,9 +1,10 @@
 import { Modal } from "@chakra-ui/react";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import BigNumber from "bignumber.js";
 
 import { BatchPage } from "./BatchPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
-import { addAccount, mockEstimatedFee } from "../../mocks/helpers";
+import { addAccount } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, userEvent } from "../../mocks/testUtils";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { MAINNET } from "../../types/Network";
@@ -11,9 +12,15 @@ import { batchesActions } from "../../utils/redux/slices/batches";
 import { store } from "../../utils/redux/store";
 import { estimate, executeOperations } from "../../utils/tezos";
 
+jest.mock("../../utils/tezos", () => ({
+  ...jest.requireActual("../../utils/tezos"),
+  estimate: jest.fn(),
+  executeOperations: jest.fn(),
+}));
+
 beforeEach(() => {
   [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addAccount);
-  mockEstimatedFee(10);
+  jest.mocked(estimate).mockResolvedValueOnce(BigNumber(10));
 
   jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);
 });
@@ -130,7 +137,8 @@ describe("<BatchPage />", () => {
 
     test("submit batch", async () => {
       const user = userEvent.setup();
-      mockEstimatedFee(10);
+      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(10));
+
       render(
         <Modal isOpen={true} onClose={() => {}}>
           <BatchPage />

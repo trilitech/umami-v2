@@ -1,15 +1,9 @@
-import BigNumber from "bignumber.js";
-
 import { Account } from "../types/Account";
 import { RawPkh } from "../types/Address";
 import { Multisig } from "../utils/multisig/types";
 import { accountsActions } from "../utils/redux/slices/accountsSlice";
 import { multisigActions } from "../utils/redux/slices/multisigsSlice";
 import { store } from "../utils/redux/store";
-import { estimate } from "../utils/tezos";
-
-export const mockEstimatedFee = (fee: number | string | BigNumber) =>
-  jest.mocked(estimate).mockResolvedValueOnce(BigNumber(fee));
 
 export const addAccount = (account: Account | Multisig) => {
   if (!("type" in account) || account.type === "multisig") {
