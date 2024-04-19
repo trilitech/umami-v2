@@ -13,12 +13,9 @@ import {
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
-import axios from "axios";
 import { first, sortBy } from "lodash";
 import promiseRetry from "promise-retry";
 
-import { coincapUrl } from "./constants";
-import { coinCapResponseType } from "./types";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
@@ -54,6 +51,8 @@ export type DelegationOperation = tzktApi.DelegationOperation & {
   newDelegate?: TzktAlias | null;
   status: string;
   initiator?: TzktAlias | null;
+  timestamp: string;
+  amount: number;
 };
 export type TransactionOperation = tzktApi.TransactionOperation & {
   id: number;
@@ -253,17 +252,8 @@ export const getTokenTransfers = async (
 export const getLastDelegation = (address: RawPkh, network: Network) =>
   getDelegations([address], network, { limit: 1, sort: { desc: "id" } }).then(first);
 
-// Fetch the tezos price in usd from the CoinCap API.
-// The CoinCap API documentation: https://docs.coincap.io
-export const getTezosPriceInUSD = async (): Promise<number | null> => {
-  const {
-    data: {
-      data: { priceUsd },
-    },
-  } = await axios.get<coinCapResponseType>(`${coincapUrl}/tezos`);
-
-  return priceUsd ?? null;
-};
+export const getTezosPriceInUSD = () =>
+  withRateLimit(() => tzktApi.quotesGetLast().then(quote => quote.usd));
 
 export const getLatestBlockLevel = async (network: Network): Promise<number> =>
   withRateLimit(

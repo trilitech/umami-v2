@@ -114,6 +114,7 @@
     "tsdoc/syntax": "warn",
     "arrow-body-style": ["warn", "as-needed"],
     "react-redux/useSelector-prefer-selectors": "off",
+    "eqeqeq": ["warn", "always"],
   },
   "overrides": [
     {

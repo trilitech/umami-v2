@@ -22,7 +22,7 @@ type State = {
     tokens: Record<TransactionId, TokenTransfer | undefined>;
   };
   bakers: Delegate[];
-  conversionRate: number | null; // XTZ/USD conversion rate
+  conversionRate: number | undefined; // XTZ/USD conversion rate
   refetchTrigger: number;
   isLoading: boolean;
   lastTimeUpdated: string | null;
@@ -37,7 +37,7 @@ export const initialState: State = {
   transfers: { tokens: {} },
   delegationLevels: {},
   bakers: [],
-  conversionRate: null,
+  conversionRate: undefined,
   refetchTrigger: 0,
   isLoading: false,
   lastTimeUpdated: null,
@@ -98,7 +98,10 @@ export const assetsSlice = createSlice({
     updateBakers: (state, { payload }: { payload: Delegate[] }) => {
       state.bakers = payload;
     },
-    updateConversionRate: (state, { payload: rate }: { type: string; payload: number | null }) => {
+    updateConversionRate: (
+      state,
+      { payload: rate }: { type: string; payload: number | undefined }
+    ) => {
       state.conversionRate = rate;
     },
     refetch: state => {

@@ -1,7 +1,7 @@
 import { format } from "@taquito/utils";
 import BigNumber from "bignumber.js";
 
-import { TEZ } from "./tezos";
+import { TEZ, TEZ_DECIMALS } from "./tezos";
 
 export const truncate = (name: string, len: number) =>
   name.length > len ? name.slice(0, len - 3) + "..." : name;
@@ -14,8 +14,8 @@ export const prettyTezAmount = (mutez: BigNumber | string): string => {
   const tezAmount = BigNumber(mutezToTez(mutez)).toNumber();
   // make sure we always show 6 digits after the decimal point
   const formatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 6,
-    maximumFractionDigits: 6,
+    minimumFractionDigits: TEZ_DECIMALS,
+    maximumFractionDigits: TEZ_DECIMALS,
   });
   return `${formatter.format(tezAmount)} ${TEZ}`;
 };

@@ -3,7 +3,6 @@ import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { isEqual } from "lodash";
 
 import { Address, ContractAddress, ImplicitAddress } from "./Address";
-import { ApproveOrExecute } from "../utils/tezos";
 
 export type TezTransfer = {
   type: "tez";
@@ -59,6 +58,8 @@ export type Operation =
   | Undelegation
   | ContractOrigination
   | ContractCall;
+
+export type ApproveOrExecute = "approve" | "execute";
 
 const LAMBDA_HEADER: MichelsonV1Expression[] = [
   { prim: "DROP" },

@@ -1,5 +1,6 @@
-import { DelegationOperation } from "@tzkt/sdk-api";
 import { BigNumber } from "bignumber.js";
+
+import { DelegationOperation } from "../utils/tezos";
 
 export type Delegation = {
   sender: string;
@@ -13,29 +14,18 @@ export type Delegation = {
 };
 
 export const makeDelegation = (op: DelegationOperation): Delegation | null => {
-  const senderAddress = op.sender?.address;
-  const delegateAddress = op.newDelegate?.address;
-  const timestamp = op.timestamp;
-  const id = op.id;
-  const amount = op.amount;
-  if (
-    senderAddress == null ||
-    delegateAddress == null ||
-    timestamp == null ||
-    id == null ||
-    amount == null
-  ) {
+  if (!op.newDelegate) {
     return null;
   }
 
   return {
-    sender: senderAddress,
-    timestamp: timestamp,
-    id,
-    amount: new BigNumber(amount),
+    sender: op.sender.address,
+    timestamp: op.timestamp,
+    id: op.id,
+    amount: new BigNumber(op.amount),
     delegate: {
-      address: delegateAddress,
-      alias: op.newDelegate?.alias || undefined,
+      address: op.newDelegate.address,
+      alias: op.newDelegate.alias ?? undefined,
     },
   };
 };
