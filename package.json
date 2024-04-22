@@ -147,7 +147,7 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^8.1.1",
     "postcss-normalize": "^10.0.1",
-    "postcss-preset-env": "^9.5.6",
+    "postcss-preset-env": "^9.5.9",
     "prettier": "^3.2.5",
     "prettier-plugin-gherkin": "^2.2.1",
     "process": "^0.11.10",
