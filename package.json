@@ -58,7 +58,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "@stylistic/eslint-plugin": "^1.7.2",
     "@tanstack/eslint-plugin-query": "^5.28.11",
-    "@tanstack/react-query": "^5.29.2",
+    "@tanstack/react-query": "^5.31.0",
     "@tanstack/react-query-devtools": "^5.29.2",
     "@taquito/ledger-signer": "^19.2.0",
     "@taquito/michel-codec": "^19.2.0",
