@@ -6811,13 +6811,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.2.79":
-  version: 18.2.79
-  resolution: "@types/react@npm:18.2.79"
+"@types/react@npm:18.3.0":
+  version: 18.3.0
+  resolution: "@types/react@npm:18.3.0"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/2ef833e7d0a5c226beddbbe090811582371f6ae5e2f092a3d9f47cc6087c8bce0b96ee33e351de6d1d470f0a0ec5892d971933f841ef31538c1821681fc6569e
+  checksum: 10/2444294740016d61721df9adeb8635658c660c13b0782df9f067260ac6b0a4b71e68245089814ab53264843eb75f81d90f770253b94a13955cc1ddccf3593301
   languageName: node
   linkType: hard
 
@@ -18103,12 +18103,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.2.0":
-  version: 18.2.0
-  resolution: "react@npm:18.2.0"
+"react@npm:^18.3.1":
+  version: 18.3.1
+  resolution: "react@npm:18.3.1"
   dependencies:
     loose-envify: "npm:^1.1.0"
-  checksum: 10/b9214a9bd79e99d08de55f8bef2b7fc8c39630be97c4e29d7be173d14a9a10670b5325e94485f74cd8bff4966ef3c78ee53c79a7b0b9b70cba20aa8973acc694
+  checksum: 10/261137d3f3993eaa2368a83110466fc0e558bc2c7f7ae7ca52d94f03aac945f45146bd85e5f481044db1758a1dbb57879e2fcdd33924e2dde1bdc550ce73f7bf
   languageName: node
   linkType: hard
 
@@ -20733,7 +20733,7 @@ __metadata:
     "@types/pluralize": "npm:^0.0.33"
     "@types/promise-retry": "npm:^1.1.6"
     "@types/prop-types": "npm:^15.7.12"
-    "@types/react": "npm:18.2.79"
+    "@types/react": "npm:18.3.0"
     "@types/react-dom": "npm:18.2.25"
     "@types/redux-mock-store": "npm:^1.0.6"
     "@types/wait-on": "npm:^5.3.4"
@@ -20808,7 +20808,7 @@ __metadata:
     promise-retry: "npm:^2.0.1"
     prompts: "npm:^2.4.2"
     prop-types: "npm:^15.8.1"
-    react: "npm:^18.2.0"
+    react: "npm:^18.3.1"
     react-app-polyfill: "npm:^3.0.0"
     react-dev-utils: "npm:^12.0.1"
     react-dom: "npm:^18.2.0"
