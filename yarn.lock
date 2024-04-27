@@ -17949,10 +17949,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-refresh@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "react-refresh@npm:0.14.0"
-  checksum: 10/75941262ce3ed4fc79b52492943fd59692f29b84f30f3822713b7e920f28e85c62a4386f85cbfbaea95ed62d3e74209f0a0bb065904b7ab2f166a74ac3812e2a
+"react-refresh@npm:^0.14.2":
+  version: 0.14.2
+  resolution: "react-refresh@npm:0.14.2"
+  checksum: 10/512abf97271ab8623486061be04b608c39d932e3709f9af1720b41573415fa4993d0009fa5138b6705b60a98f4102f744d4e26c952b14f41a0e455521c6be4cc
   languageName: node
   linkType: hard
 
@@ -20794,7 +20794,7 @@ __metadata:
     react-player: "npm:^2.16.0"
     react-qrcode-logo: "npm:^2.10.0"
     react-redux: "npm:9.1.1"
-    react-refresh: "npm:^0.14.0"
+    react-refresh: "npm:^0.14.2"
     react-remove-scroll: "npm:^2.5.9"
     react-responsive-carousel: "npm:^3.2.23"
     react-router-dom: "npm:^6.23.0"
