@@ -54,7 +54,7 @@
     "@emotion/styled": "^11.11.5",
     "@ledgerhq/hw-transport-webusb": "^6.28.6",
     "@playwright/test": "^1.43.1",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.13",
     "@reduxjs/toolkit": "^2.2.3",
     "@stylistic/eslint-plugin": "^1.7.2",
     "@tanstack/eslint-plugin-query": "^5.28.11",
