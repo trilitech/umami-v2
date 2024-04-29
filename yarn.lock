@@ -10831,9 +10831,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electronmon@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "electronmon@npm:2.0.2"
+"electronmon@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "electronmon@npm:2.0.3"
   dependencies:
     chalk: "npm:^3.0.0"
     import-from: "npm:^3.0.0"
@@ -10841,7 +10841,7 @@ __metadata:
     watchboy: "npm:^0.4.3"
   bin:
     electronmon: bin/cli.js
-  checksum: 10/54d2342d8e3b0ae15aa150b0bd14c8b501e91010ade1af5a6a7b7c221ff1414c31ee2f111a27cfd397a9226983bb4063efdec5221dcca9a478a10fe8cb3a1319
+  checksum: 10/f171eb9162d7b92d6381f396f70e85ce6e53544d8add2b6b52251905e528e57f590bfacc6dc6b35dc35fdbf18d0fcba2e3caa727fc2a595652d2f6df0778e46a
   languageName: node
   linkType: hard
 
@@ -20737,7 +20737,7 @@ __metadata:
     electron: "npm:^30.0.1"
     electron-builder: "npm:^24.13.3"
     electron-updater: "npm:^6.2.1"
-    electronmon: "npm:^2.0.2"
+    electronmon: "npm:^2.0.3"
     eslint: "npm:^8.57.0"
     eslint-import-resolver-typescript: "npm:^3.6.1"
     eslint-plugin-chakra-ui: "npm:^0.11.0"
