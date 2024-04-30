@@ -1,5 +1,5 @@
 import * as testingLibrary from "@testing-library/react";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, act } from "react";
 import { HashRouter } from "react-router-dom";
 
 import { DynamicModalContext, useDynamicModal } from "../components/DynamicModal";
@@ -60,6 +60,6 @@ const customRenderHook = <
 
 // re-export everything
 // override render methods
-export { customRender as render, customRenderHook as renderHook };
-export const { act, fireEvent, screen, waitFor, within } = testingLibrary;
+export { customRender as render, customRenderHook as renderHook, act };
+export const { fireEvent, screen, waitFor, within } = testingLibrary;
 export * from "@testing-library/user-event";
