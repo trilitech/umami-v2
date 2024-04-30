@@ -13,9 +13,7 @@ jest.mock("@tzkt/sdk-api", () => ({
 
 describe("useAssetsPolling", () => {
   describe.each(DefaultNetworks)("on $name", network => {
-    beforeAll(() => {
-      store.dispatch(networksActions.setCurrent(network));
-    });
+    beforeEach(() => store.dispatch(networksActions.setCurrent(network)));
 
     test("bakers", async () => {
       const baseUrl = network.tzktApiUrl;

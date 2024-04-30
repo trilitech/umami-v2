@@ -6,7 +6,6 @@ import "@testing-library/jest-dom";
 import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
-import { act } from "@testing-library/react";
 import failOnConsole from "jest-fail-on-console";
 import MockDate from "mockdate";
 import React from "react";
@@ -27,43 +26,43 @@ failOnConsole();
 
 MockDate.set("2023-03-27T14:15:09.760Z");
 
-// https://github.com/chakra-ui/chakra-ui/issues/2684
-jest.mock("@popperjs/core", () => ({
-  createPopper: () => ({
-    state: null,
-    forceUpdate: () => {},
-    destroy: () => {},
-    setOptions: () => {},
-  }),
-}));
-
-jest.mock("react-identicons", () => ({ default: (props: any) => props.children }));
-
-// Add missing browser APIs
-Object.defineProperties(global, {
-  crypto: { value: webcrypto, writable: true },
-  TextDecoder: { value: TextDecoder, writable: true },
-  TextEncoder: { value: TextEncoder, writable: true },
-  scrollTo: { value: jest.fn(), writable: true },
-});
-
 beforeEach(() => {
-  // taken from https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
-  Object.defineProperty(global, "matchMedia", {
-    writable: true,
-    value: jest.fn().mockImplementation(query => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: jest.fn(), // deprecated
-      removeListener: jest.fn(), // deprecated
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
+  // Add missing browser APIs
+  Object.defineProperties(global, {
+    crypto: { value: webcrypto, writable: true },
+    TextDecoder: { value: TextDecoder, writable: true },
+    TextEncoder: { value: TextEncoder, writable: true },
+    scrollTo: { value: jest.fn(), writable: true },
+
+    // taken from https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+    matchMedia: {
+      value: jest.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: jest.fn(), // deprecated
+        removeListener: jest.fn(), // deprecated
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+      writable: true,
+    },
   });
+
   // Hack for testing HashRouter: clears URL between tests.
   window.location.hash = "";
+
+  // set clean state before each test
+  store.dispatch(accountsSlice.actions.reset());
+  store.dispatch(announcementSlice.actions.reset());
+  store.dispatch(batchesActions.reset());
+  store.dispatch(beaconActions.reset());
+  store.dispatch(contactsActions.reset());
+  store.dispatch(errorsSlice.actions.reset());
+  store.dispatch(multisigsSlice.actions.reset());
+  store.dispatch(networksActions.reset());
+  store.dispatch(tokensActions.reset());
 });
 
 const MockModal = ({ children, isOpen }: any) =>
@@ -98,16 +97,14 @@ jest.mock("@chakra-ui/react", () => ({
   ModalCloseButton: MockModalCloseButton,
 }));
 
-afterEach(() => {
-  act(() => {
-    store.dispatch(accountsSlice.actions.reset());
-    store.dispatch(announcementSlice.actions.reset());
-    store.dispatch(batchesActions.reset());
-    store.dispatch(beaconActions.reset());
-    store.dispatch(contactsActions.reset());
-    store.dispatch(errorsSlice.actions.reset());
-    store.dispatch(multisigsSlice.actions.reset());
-    store.dispatch(networksActions.reset());
-    store.dispatch(tokensActions.reset());
-  });
-});
+// https://github.com/chakra-ui/chakra-ui/issues/2684
+jest.mock("@popperjs/core", () => ({
+  createPopper: () => ({
+    state: null,
+    forceUpdate: () => {},
+    destroy: () => {},
+    setOptions: () => {},
+  }),
+}));
+
+jest.mock("react-identicons", () => ({ default: (props: any) => props.children }));
