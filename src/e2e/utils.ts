@@ -29,7 +29,7 @@ const runDockerCommand = (command: string) =>
     },
   });
 
-const startNode = () => runDockerCommand("up --wait");
+const startNode = () => runDockerCommand("up --wait --wait-timeout 60");
 
 export const killNode = () => {
   runDockerCommand("kill");
@@ -50,9 +50,9 @@ export const topUpAccount = async (account: RawPkh, tez: string) => {
   let accountInfo = await getAccounts([account], TEST_NETWORK);
   const prevBalance = accountInfo[0]?.balance;
 
-  // alice is a bootstrapped account on flextesa with lots of Tez
+  // alice is a bootstrapped account on tezbox with lots of Tez
   runDockerCommand(
-    `exec -T flextesa octez-client --wait none transfer ${tez} from alice to ${account} --burn-cap 1`
+    `exec -T tezos_node octez-client --wait none transfer ${tez} from alice to ${account} --burn-cap 1`
   );
 
   // wait until the balance has updated

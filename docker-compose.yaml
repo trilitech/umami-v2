@@ -1,32 +1,33 @@
-version: "3.8"
-
 services:
   db:
     container_name: "tzkt-db-${CUCUMBER_WORKER_ID:-0}"
     restart: always
     image: postgres:13
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER:-tzkt} -d ${POSTGRES_DB:-tzkt_db}
+      interval: 1s
+      timeout: 1s
+      retries: 10
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-tzkt}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qwerty}
       POSTGRES_DB: ${POSTGRES_DB:-tzkt_db}
 
-  flextesa:
+  tezos_node:
     container_name: "tezos-node-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ${FLEXTESA_IMAGE:-serjonya/flextesa:latest}
-    command: nairobibox start
+    image: ghcr.io/tez-capital/tezbox:tezos-v20.0-rc1
     healthcheck:
-      test: octez-client get balance for alice
+      test: octez-client get balance for alice | grep -c 200000 # Alice's balance after bootstrap
       interval: 1s
       timeout: 5s
-      retries: 100
+      retries: 10
       start_period: 5s
-    environment:
-      block_time: 1
 
   proxy:
     depends_on:
-      - flextesa
+      tezos_node:
+        condition: service_healthy
     container_name: "tezos-node-proxy-${CUCUMBER_WORKER_ID:-0}"
     restart: always
     image: nginx:alpine
@@ -42,19 +43,22 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: host=db;port=5432;database=${POSTGRES_DB:-tzkt_db};username=${POSTGRES_USER:-tzkt};password=${POSTGRES_PASSWORD:-qwerty};command timeout=${COMMAND_TIMEOUT:-600};
       Kestrel__Endpoints__Http__Url: http://0.0.0.0:5001
-      TezosNode__Endpoint: http://flextesa:20000
+      TezosNode__Endpoint: http://tezos_node:20000
       Home__Enabled: "true"
       HealthChecks__Enabled: "true"
     depends_on:
-      - db
-      - flextesa
+      db:
+        condition: service_healthy
+      tezos_node:
+        condition: service_healthy
 
   api:
     container_name: "tzkt-api-${CUCUMBER_WORKER_ID:-0}"
     restart: always
     image: ${TZKT_API_IMAGE:-serjonya/tzkt-api:1.13.3}
     depends_on:
-      - sync
+      sync:
+        condition: service_started
     environment:
       ConnectionStrings__DefaultConnection: host=db;port=5432;database=${POSTGRES_DB:-tzkt_db};username=${POSTGRES_USER:-tzkt};password=${POSTGRES_PASSWORD:-qwerty};command timeout=${COMMAND_TIMEOUT:-600};
       Kestrel__Endpoints__Http__Url: http://0.0.0.0:5000

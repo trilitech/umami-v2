@@ -2,6 +2,7 @@ import crypto from "crypto";
 
 import { After, AfterAll, Before, BeforeAll } from "@cucumber/cucumber";
 import { ChromiumBrowser, chromium } from "@playwright/test";
+import { secondsToMilliseconds } from "date-fns";
 import { omit } from "lodash";
 
 import { BASE_URL } from "./onboarding";
@@ -20,7 +21,7 @@ import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
 
 let browser: ChromiumBrowser;
 
-BeforeAll({ timeout: 20 * 1000 }, async function () {
+BeforeAll({ timeout: secondsToMilliseconds(20) }, async function () {
   browser = await chromium.launch({ headless: !!process.env.CI });
 
   Object.defineProperty(global, "crypto", crypto);
