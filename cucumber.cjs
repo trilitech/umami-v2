@@ -2,7 +2,7 @@ const { env } = require("process");
 
 const config = {
   default: {
-    retry: env.CI ? 1 : 0,
+    retry: env.CI ? 2 : 0,
     // locally the optimal number of parallel tests is 3
     // whilst on CI it's 2 because of the limited resources
     parallel: env.CI ? 2 : 3,
