@@ -114,7 +114,7 @@
     "eslint-plugin-chakra-ui": "^0.11.0",
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jest": "^28.3.0",
+    "eslint-plugin-jest": "^28.4.0",
     "eslint-plugin-jest-dom": "^5.4.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
