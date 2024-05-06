@@ -27,7 +27,7 @@
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "start": "node scripts/start.js",
-    "test": "cross-env TZ=CET node scripts/test.js --resetModules --coverage --verbose --testLocationInResults",
+    "test": "cross-env TZ=CET node scripts/test.cjs --resetModules --coverage --verbose --testLocationInResults",
     "test:e2e": "cross-env TS_NODE_PROJECT=tsconfig.e2e.json cucumber-js",
     "test:e2e:focus": "yarn test:e2e --tags='@focus'",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
@@ -217,9 +217,9 @@
     ],
     "testEnvironment": "jsdom",
     "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.cjs",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.cjs",
+      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.cjs"
     },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",

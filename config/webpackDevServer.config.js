@@ -1,7 +1,7 @@
 "use strict";
 
 const ignoredFiles = require("react-dev-utils/ignoredFiles");
-const paths = require("./paths");
+const paths = require("./paths.cjs");
 
 const host = process.env.HOST || "0.0.0.0";
 const sockHost = process.env.WDS_SOCKET_HOST;
