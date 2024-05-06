@@ -4,6 +4,7 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // eslint-disable-next-line import/no-unused-modules
 export default defineConfig({
+  base: "./",
   server: {
     port: 3000,
   },
