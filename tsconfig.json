@@ -17,6 +17,6 @@
     "jsx": "react-jsx",
     "incremental": true
   },
-  "include": ["src"],
+  "include": ["src", "vite.config.ts"],
   "exclude": ["src/e2e"]
 }

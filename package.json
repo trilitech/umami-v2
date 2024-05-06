@@ -10,10 +10,12 @@
   "engines": {
     "node": ">=20 <21.0.0"
   },
-  "type": "commonjs",
+  "type": "module",
   "main": "public/electron.js",
   "scripts": {
-    "build": "node scripts/build.js",
+    "build": "vite build",
+    "dev": "vite dev",
+    "preview": "vite preview",
     "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js",
     "electron:package:mac:debug": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js",
@@ -87,6 +89,7 @@
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "@tzkt/sdk-api": "^2.2.1",
+    "@vitejs/plugin-react": "^4.2.1",
     "assert": "^2.1.0",
     "axios": "^1.6.8",
     "babel-jest": "^29.7.0",
@@ -185,6 +188,8 @@
     "typedoc": "^0.25.13",
     "typedoc-plugin-missing-exports": "^2.2.0",
     "typescript": "5.4.5",
+    "vite": "^5.2.11",
+    "vite-plugin-node-polyfills": "^0.21.0",
     "wait-on": "^7.2.0",
     "webpack": "^5.91.0",
     "webpack-dev-server": "^5.0.4",
