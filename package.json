@@ -10,7 +10,7 @@
   "engines": {
     "node": ">=20 <21.0.0"
   },
-  "type": "module",
+  "type": "commonjs",
   "main": "public/electron.js",
   "scripts": {
     "build": "vite build",
