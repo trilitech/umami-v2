@@ -6,6 +6,7 @@ import { useState } from "react";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
 
 import { KeyIcon } from "../../../assets/icons";
+import { IS_DEV } from "../../../env";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
@@ -150,13 +151,11 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
                 Continue
               </Button>
 
-              {
-                /* devblock:start */
+              {IS_DEV && (
                 <Button width="100%" onClick={() => pasteMnemonic(mnemonic1)} size="lg">
                   Enter test mnemonic (Dev only)
                 </Button>
-                /* devblock:end */
-              }
+              )}
             </VStack>
           </form>
         </FormProvider>

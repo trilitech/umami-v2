@@ -26,6 +26,8 @@ failOnConsole();
 
 MockDate.set("2023-03-27T14:15:09.760Z");
 
+jest.mock("./env", () => ({ IS_DEV: false }));
+
 beforeEach(() => {
   // Add missing browser APIs
   Object.defineProperties(global, {
