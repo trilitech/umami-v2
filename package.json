@@ -56,7 +56,7 @@
     "@playwright/test": "^1.43.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.13",
     "@reduxjs/toolkit": "^2.2.3",
-    "@stylistic/eslint-plugin": "^1.8.0",
+    "@stylistic/eslint-plugin": "^1.8.1",
     "@tanstack/eslint-plugin-query": "^5.32.1",
     "@tanstack/react-query": "^5.35.1",
     "@tanstack/react-query-devtools": "^5.32.1",
