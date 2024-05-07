@@ -1,13 +1,9 @@
 // Module to control the application lifecycle and the native browser window.
-import electron from "electron";
-import path from "path";
-import url from "url";
-import electronUpdater from "electron-updater";
-import process from "process";
-
-const { app, BrowserWindow, shell, ipcMain } = electron;
-const { autoUpdater } = electronUpdater;
-const __dirname = import.meta.dirname;
+const { app, BrowserWindow, shell, ipcMain } = require("electron");
+const path = require("path");
+const url = require("url");
+const process = require("process");
+const { autoUpdater } = require("electron-updater");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -27,14 +23,14 @@ function createWindow() {
     webPreferences: {
       // Set the path of an additional "preload" script that can be used to
       // communicate between node-land and browser-land.
-      preload: path.join(__dirname, "preload.cjs"),
+      preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       sandbox: true,
       webSecurity: true,
       experimentalFeatures: false,
-      devTools: true, // Do not change. It's important for security that devtools are disabled by default
+      devTools: false, // Do not change. It's important for security that devtools are disabled by default
     },
   });
 
@@ -52,10 +48,10 @@ function createWindow() {
   // In development, set it to localhost to allow live/hot-reloading.
   const appURL = app.isPackaged
     ? url.format({
-      pathname: path.join(__dirname, "index.html"),
-      protocol: "file:",
-      slashes: true,
-    })
+        pathname: path.join(__dirname, "index.html"),
+        protocol: "file:",
+        slashes: true,
+      })
     : "http://localhost:3000";
   mainWindow.loadURL(appURL);
   mainWindow.once("ready-to-show", () => {
