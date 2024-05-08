@@ -3,9 +3,11 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
+
 import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
+import { setupJestCanvasMock } from "jest-canvas-mock";
 import failOnConsole from "jest-fail-on-console";
 import MockDate from "mockdate";
 import React from "react";
@@ -25,6 +27,8 @@ import { store } from "./utils/redux/store";
 failOnConsole();
 
 MockDate.set("2023-03-27T14:15:09.760Z");
+
+jest.mock("./env", () => ({ IS_DEV: false }));
 
 beforeEach(() => {
   // Add missing browser APIs
@@ -63,6 +67,8 @@ beforeEach(() => {
   store.dispatch(multisigsSlice.actions.reset());
   store.dispatch(networksActions.reset());
   store.dispatch(tokensActions.reset());
+
+  setupJestCanvasMock();
 });
 
 const MockModal = ({ children, isOpen }: any) =>
@@ -106,5 +112,3 @@ jest.mock("@popperjs/core", () => ({
     setOptions: () => {},
   }),
 }));
-
-jest.mock("react-identicons", () => ({ default: (props: any) => props.children }));

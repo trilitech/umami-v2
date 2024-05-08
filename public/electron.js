@@ -2,29 +2,13 @@
 const { app, BrowserWindow, shell, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
-const { autoUpdater } = require("electron-updater");
 const process = require("process");
+const { autoUpdater } = require("electron-updater");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let deeplinkURL;
-
-// Assure single instance
-if (!app.requestSingleInstanceLock()) {
-  app.quit();
-  return;
-}
-
-// Check for app updates, download and notify UI if update is available to be installed.
-try {
-  autoUpdater.checkForUpdatesAndNotify();
-} catch (e) {
-  console.log(e);
-}
-
-// Enable experimental to activate Web USB support
-app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
 
 // Create the native browser window.
 function createWindow() {
@@ -104,58 +88,73 @@ function createWindow() {
   });
 }
 
-app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
-
-if (!app.isDefaultProtocolClient("umami")) {
-  // Define custom protocol handler. Deep linking works on packaged versions of the application!
-  app.setAsDefaultProtocolClient("umami");
-}
-
-// Quit when all windows are closed.
-app.on("window-all-closed", () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== "darwin") {
+function start() {
+  // Assure single instance
+  if (!app.requestSingleInstanceLock()) {
     app.quit();
+    return;
   }
-});
 
-app.on("second-instance", (event, argv, cwd) => {
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore();
+  // Check for app updates, download and notify UI if update is available to be installed.
+  try {
+    autoUpdater.checkForUpdatesAndNotify();
+  } catch (e) {
+    console.log(e);
+  }
+
+  // Enable experimental to activate Web USB support
+  app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
+
+  app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
+
+  if (!app.isDefaultProtocolClient("umami")) {
+    // Define custom protocol handler. Deep linking works on packaged versions of the application!
+    app.setAsDefaultProtocolClient("umami");
+  }
+
+  // Quit when all windows are closed.
+  app.on("window-all-closed", () => {
+    // On macOS it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== "darwin") {
+      app.quit();
     }
-    mainWindow.focus();
-    // Protocol handler for win32
-    // argv: An array of the second instance’s (command line / deep linked) arguments
-    if (process.platform === "win32" || process.platform === "linux") {
-      // Protocol handler for windows & linux
-      const index = argv.findIndex(arg => arg.startsWith("umami://"));
-      if (index !== -1) {
-        mainWindow.webContents.send("deeplinkURL", argv[index]);
+  });
+
+  app.on("second-instance", (_event, argv) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
       }
-    }
-  } else {
-    createWindow();
-  }
-});
-
-app.on("open-url", (_event, url) => {
-  if (mainWindow) {
-    mainWindow.webContents.send("deeplinkURL", url);
-  } else {
-    deeplinkURL = url;
-    app.whenReady().then(() => {
+      mainWindow.focus();
+      // Protocol handler for win32
+      // argv: An array of the second instance’s (command line / deep linked) arguments
+      if (process.platform === "win32" || process.platform === "linux") {
+        // Protocol handler for windows & linux
+        const index = argv.findIndex(arg => arg.startsWith("umami://"));
+        if (index !== -1) {
+          mainWindow.webContents.send("deeplinkURL", argv[index]);
+        }
+      }
+    } else {
       createWindow();
-    });
-  }
-});
+    }
+  });
 
-// This method will be called when Electron has finished its initialization and
-// is ready to create the browser windows.
-// Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
-  createWindow();
+  app.on("open-url", (_event, url) => {
+    if (mainWindow) {
+      mainWindow.webContents.send("deeplinkURL", url);
+    } else {
+      deeplinkURL = url;
+      app.whenReady().then(createWindow);
+    }
+  });
+
+  // This method will be called when Electron has finished its initialization and
+  // is ready to create the browser windows.
+  // Some APIs can only be used after this event occurs.
+  app.whenReady().then(createWindow);
+
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -173,4 +172,6 @@ app.whenReady().then(() => {
 
   // Listen to install-app-update event from UI, start update on getting the event.
   ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
-});
+}
+
+start();

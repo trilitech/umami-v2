@@ -13,7 +13,9 @@
   "type": "commonjs",
   "main": "public/electron.js",
   "scripts": {
-    "build": "node scripts/build.js",
+    "build": "vite build",
+    "dev": "vite dev",
+    "preview": "vite preview",
     "electron:package:linux": "electron-builder -l -c.extraMetadata.main=build/electron.js",
     "electron:package:mac:debug": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:mac": "electron-builder -m -c.extraMetadata.main=build/electron.js",
@@ -24,24 +26,19 @@
     "format": "prettier --write .",
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
-    "start": "node scripts/start.js",
-    "test": "cross-env TZ=CET node scripts/test.js --resetModules --coverage --verbose --testLocationInResults",
+    "test": "cross-env TZ=CET jest",
+    "test:watch": "yarn test --watch",
     "test:e2e": "cross-env TS_NODE_PROJECT=tsconfig.e2e.json cucumber-js",
     "test:e2e:focus": "yarn test:e2e --tags='@focus'",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts"
   },
-  "browserslist": {
-    "production": [
-      "last 1 electron version"
-    ],
-    "development": [
-      "last 1 electron version"
-    ]
-  },
   "devDependencies": {
     "@airgap/beacon-wallet": "^4.2.1",
     "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
+    "@babel/preset-react": "^7.24.1",
+    "@babel/preset-typescript": "^7.24.1",
     "@babel/runtime": "^7.24.5",
     "@chakra-ui/cli": "^2.4.1",
     "@chakra-ui/icons": "^2.1.1",
@@ -54,7 +51,6 @@
     "@emotion/styled": "^11.11.5",
     "@ledgerhq/hw-transport-webusb": "^6.28.6",
     "@playwright/test": "^1.44.0",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.13",
     "@reduxjs/toolkit": "^2.2.3",
     "@stylistic/eslint-plugin": "^2.0.0",
     "@tanstack/eslint-plugin-query": "^5.32.1",
@@ -71,41 +67,29 @@
     "@testing-library/react": "14.3.0",
     "@testing-library/user-event": "14.5.2",
     "@toruslabs/customauth": "^15.0.5",
-    "@types/assert": "^1.5.10",
-    "@types/circular-dependency-plugin": "^5.0.8",
-    "@types/jest": "29.5.12",
+    "@types/babel__core": "^7",
+    "@types/babel__preset-env": "^7",
+    "@types/identity-obj-proxy": "^3",
+    "@types/jest": "^29.5.12",
     "@types/md5": "^2.3.5",
     "@types/node": "20.12.10",
     "@types/papaparse": "^5.3.14",
     "@types/pluralize": "^0.0.33",
     "@types/promise-retry": "^1.1.6",
-    "@types/prop-types": "^15.7.12",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
+    "@types/react-test-renderer": "^18",
     "@types/redux-mock-store": "^1.0.6",
-    "@types/wait-on": "^5.3.4",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "@tzkt/sdk-api": "^2.2.1",
-    "assert": "^2.1.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "axios": "^1.6.8",
     "babel-jest": "^29.7.0",
-    "babel-loader": "^9.1.3",
-    "babel-plugin-named-asset-import": "^0.3.8",
-    "babel-plugin-named-exports-order": "^0.0.2",
-    "babel-preset-react-app": "^10.0.1",
     "bip39": "^3.1.0",
-    "browserslist": "^4.23.0",
-    "buffer": "^6.0.3",
-    "case-sensitive-paths-webpack-plugin": "^2.4.0",
-    "circular-dependency-plugin": "^5.2.2",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
-    "css-loader": "^7.1.1",
-    "css-minimizer-webpack-plugin": "^6.0.0",
     "date-fns": "^3.6.0",
-    "dotenv": "^16.4.5",
-    "dotenv-expand": "^11.0.6",
     "electron": "^30.0.2",
     "electron-builder": "^24.13.3",
     "electronmon": "^2.0.3",
@@ -122,38 +106,25 @@
     "eslint-plugin-testing-library": "^6.2.2",
     "eslint-plugin-tsdoc": "^0.2.17",
     "eslint-plugin-unused-imports": "^3.2.0",
-    "eslint-webpack-plugin": "^4.1.0",
-    "file-loader": "^6.2.0",
-    "framer-motion": "^11.1.9",
-    "fs-extra": "^11.2.0",
-    "html-webpack-plugin": "^5.6.0",
+    "framer-motion": "^11.1.7",
     "http-server": "^14.1.1",
-    "https-browserify": "^1.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "29.7.0",
+    "jest-canvas-mock": "^2.5.2",
     "jest-environment-jsdom": "^29.7.0",
     "jest-fail-on-console": "^3.2.0",
     "jest-resolve": "29.7.0",
     "jest-watch-typeahead": "^2.2.2",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
-    "mini-css-extract-plugin": "^2.9.0",
     "mockdate": "^3.0.5",
     "ordinal": "^1.0.3",
-    "os-browserify": "^0.3.0",
     "papaparse": "^5.4.1",
     "pluralize": "^8.0.0",
-    "postcss": "^8.4.38",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-loader": "^8.1.1",
-    "postcss-normalize": "^10.0.1",
-    "postcss-preset-env": "^9.5.9",
     "prettier": "^3.2.5",
     "prettier-plugin-gherkin": "^2.2.1",
     "process": "^0.11.10",
     "promise-retry": "^2.0.1",
-    "prompts": "^2.4.2",
-    "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-app-polyfill": "^3.0.0",
     "react-dev-utils": "^12.0.1",
@@ -161,7 +132,6 @@
     "react-error-boundary": "^4.0.13",
     "react-hook-form": "^7.51.4",
     "react-hooks-testing-library": "^0.6.0",
-    "react-identicons": "^1.2.5",
     "react-player": "^2.16.0",
     "react-qrcode-logo": "^2.10.0",
     "react-redux": "9.1.2",
@@ -169,169 +139,20 @@
     "react-remove-scroll": "^2.5.9",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.23.0",
+    "react-test-renderer": "^18.3.1",
     "redux": "^5.0.1",
     "redux-mock-store": "^1.5.4",
     "redux-persist": "^6.0.0",
-    "resolve": "^1.22.8",
-    "resolve-url-loader": "^5.0.0",
-    "sass-loader": "^14.2.1",
-    "semver": "^7.6.0",
-    "source-map-loader": "^5.0.0",
-    "stream-browserify": "^3.0.0",
-    "stream-http": "^3.2.0",
-    "style-loader": "^4.0.0",
-    "terser-webpack-plugin": "^5.3.10",
     "ts-node": "^10.9.2",
     "typedoc": "^0.25.13",
     "typedoc-plugin-missing-exports": "^2.2.0",
     "typescript": "5.4.5",
-    "wait-on": "^7.2.0",
-    "webpack": "^5.91.0",
-    "webpack-dev-server": "^5.0.4",
-    "webpack-manifest-plugin": "^5.0.0",
-    "webpack-remove-code-blocks": "^0.1.6",
-    "workbox-webpack-plugin": "^7.1.0",
+    "vite": "^5.2.11",
+    "vite-plugin-node-polyfills": "^0.21.0",
     "zipurl": "^0.2.18",
     "zod": "^3.23.6"
   },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.ts"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ],
-    "resetMocks": true,
-    "coveragePathIgnorePatterns": [
-      "node_modules",
-      "src/mocks/*",
-      "src/utils/useAssetsPolling.ts",
-      "src/components/OperationTile/*",
-      "src/e2e/*"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 70,
-        "functions": 76,
-        "lines": 78,
-        "statements": 78
-      }
-    }
-  },
-  "build": {
-    "appId": "com.trilitech.umami",
-    "productName": "Umami",
-    "files": [
-      "build/**"
-    ],
-    "directories": {
-      "buildResources": "public"
-    },
-    "mac": {
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "universal"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "universal"
-          ]
-        }
-      ],
-      "notarize": {
-        "teamId": "JHLP96SU5D"
-      }
-    },
-    "win": {
-      "icon": "icons/512x512.png",
-      "target": "nsis",
-      "signingHashAlgorithms": [
-        "sha256"
-      ],
-      "certificateSubjectName": "TRILITECH LIMITED"
-    },
-    "linux": {
-      "icon": "icons/",
-      "target": [
-        "deb",
-        "rpm"
-      ],
-      "category": "Finance",
-      "mimeTypes": [
-        "x-scheme-handler/umami"
-      ]
-    },
-    "deb": {
-      "depends": [
-        "libasound2",
-        "libnotify4",
-        "libxtst6",
-        "libnss3",
-        "libc6"
-      ]
-    },
-    "protocols": {
-      "name": "umami",
-      "schemes": [
-        "umami"
-      ]
-    },
-    "publish": {
-      "provider": "github",
-      "private": true
-    }
-  },
   "packageManager": "yarn@4.2.1",
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
   "dependencies": {
     "electron-updater": "^6.2.1"
   },

@@ -1,6 +1,7 @@
 import { Button, Divider, Flex, Text, VStack, useToast } from "@chakra-ui/react";
 
 import { WalletPlusIcon } from "../../../assets/icons";
+import { IS_DEV } from "../../../env";
 import { GoogleAuth } from "../../../GoogleAuth";
 import colors from "../../../style/colors";
 import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
@@ -42,8 +43,7 @@ export const ConnectOrCreate = ({
         >
           I already have a wallet
         </Button>
-        {
-          /* devblock:start */
+        {IS_DEV && (
           <Button
             width="100%"
             onClick={_ => goToStep({ type: "fakeAccount" })}
@@ -52,8 +52,7 @@ export const ConnectOrCreate = ({
           >
             Add a Fake Account
           </Button>
-          /* devblock:end */
-        }
+        )}
         <Flex width="100%" paddingTop="14px" paddingBottom="6px">
           <Divider marginTop="11px" />
           <Text

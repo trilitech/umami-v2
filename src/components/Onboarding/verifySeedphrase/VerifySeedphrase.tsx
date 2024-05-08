@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { DoubleCheckmarkIcon } from "../../../assets/icons";
+import { IS_DEV } from "../../../env";
 import { selectRandomElements } from "../../../utils/tezos";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
@@ -81,13 +82,11 @@ export const VerifySeedphrase = ({
               Continue
             </Button>
 
-            {
-              /* devblock:start */
+            {IS_DEV && (
               <Button width="100%" marginTop="12px" onClick={onSubmit} size="lg">
                 Bypass (Dev only)
               </Button>
-              /* devblock:end */
-            }
+            )}
           </form>
         </FormProvider>
       </Box>
