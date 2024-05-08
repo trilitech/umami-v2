@@ -124,7 +124,7 @@
       },
     },
     {
-      "files": ["react-app-env.d.ts"],
+      "files": ["react-app-env.d.ts", "jest.config.ts"],
       "rules": {
         "import/no-unused-modules": "off",
       },
