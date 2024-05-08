@@ -19154,6 +19154,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"semver@npm:^7.6.1":
+  version: 7.6.1
+  resolution: "semver@npm:7.6.1"
+  bin:
+    semver: bin/semver.js
+  checksum: 10/a05a641ebaa65f4a35970bb587c4178dc50931e15261ca60c9d531b4fc2b70a2d24b3f300a3bf6c37f37ce9d007b0071abca2f87c0f947f09a253ecfb0df4026
+  languageName: node
+  linkType: hard
+
 "send@npm:0.18.0":
   version: 0.18.0
   resolution: "send@npm:0.18.0"
@@ -20939,7 +20948,7 @@ __metadata:
     resolve: "npm:^1.22.8"
     resolve-url-loader: "npm:^5.0.0"
     sass-loader: "npm:^14.2.1"
-    semver: "npm:^7.6.0"
+    semver: "npm:^7.6.1"
     source-map-loader: "npm:^5.0.0"
     stream-browserify: "npm:^3.0.0"
     stream-http: "npm:^3.2.0"
