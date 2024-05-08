@@ -21,7 +21,7 @@ services:
       test: octez-client get balance for alice | grep -c 200000 # Alice's balance after bootstrap
       interval: 1s
       timeout: 5s
-      retries: 10
+      retries: 20
       start_period: 5s
 
   proxy:
