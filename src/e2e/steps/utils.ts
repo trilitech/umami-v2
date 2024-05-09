@@ -1,6 +1,5 @@
 import { DataTable, Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
-import { secondsToMilliseconds } from "date-fns";
 
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
@@ -9,7 +8,7 @@ import { State } from "../../utils/redux/slices/accountsSlice";
 import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
 import { BLOCK_TIME } from "../../utils/useAssetsPolling";
 import { AccountsPage } from "../pages/AccountsPage";
-import { refetch, topUpAccount, waitUntilRefetch } from "../utils";
+import { refetch, runDockerCommand, topUpAccount, waitUntilRefetch } from "../utils";
 
 Given(/I have accounts?/, async function (this: CustomWorld, table: DataTable) {
   const accounts: State = {
@@ -70,8 +69,25 @@ When("I close modal", async function (this: CustomWorld) {
 });
 
 When("I wait for TZKT to process the updates", async function (this: CustomWorld) {
-  // TODO: use docker compose logs to wait for the updates
-  await this.page.waitForTimeout(secondsToMilliseconds(5));
+  const getLastAppliedBlock = () => {
+    const logs = runDockerCommand("logs sync", "pipe").toString().split("\n").reverse();
+    for (const log of logs) {
+      const matches = log.match(/Applied (\d+) of \d+/);
+      if (matches) {
+        return matches[1];
+      }
+    }
+    throw new Error("TZKT sync last applied block not found");
+  };
+
+  const previous = getLastAppliedBlock();
+
+  for (;;) {
+    await this.page.waitForTimeout(100);
+    if (getLastAppliedBlock() !== previous) {
+      break;
+    }
+  }
 });
 
 When("I refetch the data", async function (this: CustomWorld) {
