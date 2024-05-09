@@ -41,6 +41,9 @@ jobs:
       - name: Run linter
         run: yarn lint:ci
 
+      - name: Typecheck
+        run: yarn tsc
+
       - name: Run tests
         uses: ArtiomTr/jest-coverage-report-action@v2.3.0
         with:
