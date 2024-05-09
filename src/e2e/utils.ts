@@ -28,7 +28,7 @@ export const runDockerCommand = (command: string, stdio: StdioOptions = "ignore"
     },
   });
 
-const startNode = () => runDockerCommand("up --wait --wait-timeout 60");
+const startNode = () => runDockerCommand("up --wait --wait-timeout 120");
 
 export const killNode = () => {
   runDockerCommand("kill");
