@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-import { After, AfterAll, Before, BeforeAll } from "@cucumber/cucumber";
+import { After, AfterAll, Before, BeforeAll, setDefaultTimeout } from "@cucumber/cucumber";
 import { ChromiumBrowser, chromium } from "@playwright/test";
 import { secondsToMilliseconds } from "date-fns";
 import { omit } from "lodash";
@@ -18,6 +18,8 @@ import { initialState as errorsInitialState } from "../../utils/redux/slices/err
 import { initialState as multisigsInitialState } from "../../utils/redux/slices/multisigsSlice";
 import { initialState as tokensInitialState } from "../../utils/redux/slices/tokensSlice";
 import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
+
+setDefaultTimeout(secondsToMilliseconds(15));
 
 let browser: ChromiumBrowser;
 
@@ -95,6 +97,7 @@ Before(async function (this: CustomWorld) {
       },
     });
     this.page = await this.context.newPage();
+    this.page.setDefaultTimeout(secondsToMilliseconds(10));
   })();
 
   await blockchainPromise;

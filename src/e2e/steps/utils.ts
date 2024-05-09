@@ -1,5 +1,6 @@
 import { DataTable, Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
+import { secondsToMilliseconds } from "date-fns";
 
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
@@ -69,7 +70,8 @@ When("I close modal", async function (this: CustomWorld) {
 });
 
 When("I wait for TZKT to process the updates", async function (this: CustomWorld) {
-  await this.page.waitForTimeout(3000);
+  // TODO: use docker compose logs to wait for the updates
+  await this.page.waitForTimeout(secondsToMilliseconds(5));
 });
 
 When("I refetch the data", async function (this: CustomWorld) {
