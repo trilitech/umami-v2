@@ -23,6 +23,8 @@ services:
       timeout: 5s
       retries: 20
       start_period: 5s
+    volumes:
+      - ./sandbox-override-parameters.hjson:/tezbox/overrides/protocols/Proxford/sandbox-parameters.hjson
 
   proxy:
     depends_on:
