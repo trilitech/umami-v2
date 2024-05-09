@@ -1,4 +1,4 @@
-import { execSync } from "child_process";
+import { StdioOptions, execSync } from "child_process";
 
 import { Page } from "@playwright/test";
 import { noop } from "lodash";
@@ -19,17 +19,16 @@ export const TEST_NETWORKS_STATE = {
   current: TEST_NETWORK,
 };
 
-const runDockerCommand = (command: string) =>
+export const runDockerCommand = (command: string, stdio: StdioOptions = "ignore") =>
   execSync(`docker compose ${command}`, {
-    stdio: "ignore",
-
+    stdio,
     env: {
       COMPOSE_PROJECT_NAME: process.env.CUCUMBER_WORKER_ID,
       ...process.env,
     },
   });
 
-const startNode = () => runDockerCommand("up --wait --wait-timeout 60");
+const startNode = () => runDockerCommand("up --wait --wait-timeout 120");
 
 export const killNode = () => {
   runDockerCommand("kill");

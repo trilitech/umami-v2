@@ -28,8 +28,8 @@ Feature: Multisig Account Creation
     When I sign transaction with password "12345678"
     Then I see "Operation Submitted" modal
 
-    When I wait for TZKT to process the updates
     And I close modal
+    When I wait for TZKT to process the updates
     And I refetch the data
 
     Then I see "My Multisig Account" multisig account

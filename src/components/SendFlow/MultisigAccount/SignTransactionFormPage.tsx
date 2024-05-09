@@ -10,7 +10,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
-import { useContext } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { FormValues } from "./SelectApproversFormPage";
@@ -21,16 +20,13 @@ import { useAppDispatch } from "../../../utils/redux/hooks";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import { DynamicModalContext } from "../../DynamicModal";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader } from "../SignPageHeader";
-import { SuccessStep } from "../SuccessStep";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = props => {
   const dispatch = useAppDispatch();
-  const { openWith } = useContext(DynamicModalContext);
   const { isLoading: contractNameObtainingIsLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const {
@@ -74,7 +70,6 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
       const pkh = (await operation.getOriginatedContractAddresses())[0];
 
       dispatch(multisigActions.addMultisigLabel({ pkh, label: name }));
-      return openWith(<SuccessStep hash={operation.opHash} />);
     });
 
   return (
