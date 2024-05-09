@@ -1,5 +1,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { checker } from "vite-plugin-checker";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // eslint-disable-next-line import/no-unused-modules
@@ -16,6 +17,15 @@ export default defineConfig({
       },
     }),
     react(),
+    checker({
+      overlay: false,
+      terminal: true,
+      typescript: true,
+      eslint: {
+        lintCommand: "eslint src --ext .js,.jsx,.ts,.tsx",
+        useFlatConfig: false,
+      },
+    }),
   ],
   build: {
     outDir: "build",

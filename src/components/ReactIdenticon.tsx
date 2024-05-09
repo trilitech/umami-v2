@@ -2,13 +2,14 @@
 // the library is unmaintained, but it's a simple component
 // and will stop working with the next major React release
 import md5 from "md5";
-import React, { useEffect, useRef } from "react";
+import React, { CSSProperties, useEffect, useRef } from "react";
 
 type Props = {
   count?: number;
   background: string;
   size: number;
   string: string;
+  style?: CSSProperties;
 };
 
 export const ReactIdenticon: React.FC<Props> = React.memo(
