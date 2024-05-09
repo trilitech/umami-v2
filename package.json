@@ -151,7 +151,7 @@
     "vite-plugin-checker": "^0.6.4",
     "vite-plugin-node-polyfills": "^0.21.0",
     "zipurl": "^0.2.18",
-    "zod": "^3.23.7"
+    "zod": "^3.23.8"
   },
   "packageManager": "yarn@4.2.1",
   "dependencies": {
