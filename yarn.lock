@@ -3433,9 +3433,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cucumber/cucumber@npm:^10.6.0":
-  version: 10.6.0
-  resolution: "@cucumber/cucumber@npm:10.6.0"
+"@cucumber/cucumber@npm:^10.7.0":
+  version: 10.7.0
+  resolution: "@cucumber/cucumber@npm:10.7.0"
   dependencies:
     "@cucumber/ci-environment": "npm:10.0.1"
     "@cucumber/cucumber-expressions": "npm:17.1.0"
@@ -3480,7 +3480,7 @@ __metadata:
     yup: "npm:1.2.0"
   bin:
     cucumber-js: bin/cucumber.js
-  checksum: 10/e060fd35ea4ec913a3811a87f89cc67a10382991199208f53081a130cb50fd9a136aeca3dda4a8b7fbbe2323bce5ebb57c8f7ce23bdd4e1f9a015753b01f45e2
+  checksum: 10/8df35421777ca232b98c6251eb8e6ce1a7b008c81d9a478a42ea339275f7212c2f31ea38f4b3739f3b0303a67b871b1eddb0a06b7b61fcee91b278c4fcca24fa
   languageName: node
   linkType: hard
 
@@ -17389,7 +17389,7 @@ __metadata:
     "@chakra-ui/react": "npm:^2.8.2"
     "@chakra-ui/system": "npm:^2.6.2"
     "@chriscdn/promise-semaphore": "npm:^2.0.9"
-    "@cucumber/cucumber": "npm:^10.6.0"
+    "@cucumber/cucumber": "npm:^10.7.0"
     "@electron/notarize": "npm:^2.3.0"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.5"
