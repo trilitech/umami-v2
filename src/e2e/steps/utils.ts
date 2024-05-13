@@ -4,9 +4,9 @@ import { expect } from "@playwright/test";
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
 import { Account } from "../../types/Account";
+import { BLOCK_TIME } from "../../utils/dataPolling/constants";
 import { State } from "../../utils/redux/slices/accountsSlice";
 import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
-import { BLOCK_TIME } from "../../utils/useAssetsPolling";
 import { AccountsPage } from "../pages/AccountsPage";
 import { refetch, runDockerCommand, topUpAccount, waitUntilRefetch } from "../utils";
 

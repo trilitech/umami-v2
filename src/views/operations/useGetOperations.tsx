@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { Account } from "../../types/Account";
 import { Network } from "../../types/Network";
+import { BLOCK_TIME } from "../../utils/dataPolling/constants";
 import { useRefetchTrigger } from "../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
@@ -17,8 +18,6 @@ import {
   getRelatedTokenTransfers,
 } from "../../utils/tezos";
 import { useReactQueryErrorHandler } from "../../utils/useReactQueryOnError";
-
-const REFRESH_INTERVAL = 15000;
 
 type QueryParams =
   | {
@@ -34,7 +33,7 @@ type QueryParams =
  * It fetches the latest operations on the first load and allows
  * to load more (older) operations as needed.
  *
- * Every {@link REFRESH_INTERVAL} it fetches the latest operations
+ * Every {@link BLOCK_TIME} it fetches the latest operations
  * and prepends it to the already fetched operations list.
  *
  * If the refresh button is clicked then it will trigger this behaviour immediately.
@@ -99,7 +98,7 @@ export const useGetOperations = (accounts: Account[]) => {
   handleError(error);
 
   useEffect(() => {
-    const interval = setInterval(() => void fetchPreviousPage(), REFRESH_INTERVAL);
+    const interval = setInterval(() => void fetchPreviousPage(), BLOCK_TIME);
 
     return () => clearInterval(interval);
   }, [fetchPreviousPage]);

@@ -1,4 +1,3 @@
-import Semaphore from "@chriscdn/promise-semaphore";
 import {
   Delegate,
   OffsetParameter,
@@ -14,8 +13,8 @@ import {
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
 import { first, sortBy } from "lodash";
-import promiseRetry from "promise-retry";
 
+import { withRateLimit } from "./withRateLimit";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
@@ -24,22 +23,6 @@ import { TokenTransfer } from "../../types/Transfer";
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
 export type TzktAccount = { address: RawPkh; balance: number; delegationLevel?: number };
-
-const tzktRateLimiter = new Semaphore(10);
-
-export const withRateLimit = <T>(fn: () => Promise<T>) =>
-  tzktRateLimiter
-    .acquire()
-    .then(() => promiseRetry(retry => fn().catch(retry), { retries: 3, minTimeout: 100 }))
-    .catch((error: any) => {
-      // tzkt throws HttpError, but doesn't export it
-      // default behaviour just shows Error: 504 which isn't very helpful for the user
-      if ("status" in error && "data" in error) {
-        throw new Error(`Fetching data from tzkt failed with: ${error.status}, ${error.data}`);
-      }
-      throw error;
-    })
-    .finally(() => tzktRateLimiter.release());
 
 export type DelegationOperation = tzktApi.DelegationOperation & {
   id: number;
@@ -263,7 +246,9 @@ export const getLatestBlockLevel = async (network: Network): Promise<number> =>
       })
   );
 
-export const getBakers = async (network: Network): Promise<Delegate[]> =>
+export const getBakers = async (
+  network: Network
+): Promise<{ name: string; address: RawPkh; stakingBalance: number }[]> =>
   withRateLimit(() =>
     delegatesGet(
       {
@@ -275,5 +260,11 @@ export const getBakers = async (network: Network): Promise<Delegate[]> =>
       {
         baseUrl: network.tzktApiUrl,
       }
+    ).then(delegates =>
+      delegates.map((delegate: Delegate) => ({
+        name: delegate.alias || "Unknown baker",
+        address: delegate.address!,
+        stakingBalance: delegate.stakingBalance!,
+      }))
     )
   );
