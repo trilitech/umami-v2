@@ -73,7 +73,7 @@ export const batchesSlice = createSlice({
           );
           return [networkName, newBatches];
         })
-      ),
+      ) as State,
   },
 });
 
