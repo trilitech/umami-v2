@@ -46,7 +46,7 @@ export type ContractOrigination = {
 
 export type ContractCall = {
   type: "contract_call";
-  contract: ContractAddress;
+  contract: Address;
   amount: string;
   entrypoint: string;
   args: MichelsonV1Expression;
