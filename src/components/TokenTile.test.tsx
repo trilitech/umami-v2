@@ -1,18 +1,18 @@
-import { FATokenBalance } from "./SendFlow/Token/FormPage";
 import { TokenTile } from "./TokenTile";
 import { mockFA2Token, mockImplicitAccount } from "../mocks/factories";
 import { render, screen } from "../mocks/testUtils";
+import { FA12TokenBalance, FA2TokenBalance } from "../types/TokenBalance";
 
 const mockAccount = mockImplicitAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);
-const fixture = (amount: string, token: FATokenBalance) => (
+const fixture = (amount: string, token: FA12TokenBalance | FA2TokenBalance) => (
   <TokenTile amount={amount} token={token} />
 );
 
 describe("<TokenTile />", () => {
   describe("amount", () => {
     it("displays pretty token amount with 0 decimals", () => {
-      const token: FATokenBalance = {
+      const token = {
         ...mockFAToken,
         metadata: { ...mockFAToken.metadata, decimals: undefined },
       };
@@ -22,7 +22,7 @@ describe("<TokenTile />", () => {
     });
 
     it("displays pretty default token amount with no symbol", () => {
-      const token: FATokenBalance = {
+      const token = {
         ...mockFAToken,
         metadata: { ...mockFAToken.metadata, symbol: undefined },
       };

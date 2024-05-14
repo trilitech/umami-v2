@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { compact, groupBy, mapValues } from "lodash";
 
-import { accountsSlice } from "./accountsSlice";
+import { accountsSlice } from "./accountsSlice/accountsSlice";
 import { RawPkh } from "../../../types/Address";
 import { Delegate } from "../../../types/Delegate";
 import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";

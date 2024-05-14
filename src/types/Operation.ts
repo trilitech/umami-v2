@@ -24,6 +24,8 @@ export type FA12Transfer = Omit<FA2Transfer, "type" | "tokenId"> & {
   tokenId: "0";
 };
 
+export type TokenTransfer = FA12Transfer | FA2Transfer;
+
 export type Delegation = {
   type: "delegation";
   sender: Address;

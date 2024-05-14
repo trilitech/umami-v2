@@ -44,6 +44,9 @@ jobs:
       - name: Typecheck
         run: yarn tsc
 
+      - name: Circular dependencies check
+        run: npx madge --circular src/index.tsx
+
       - name: Run tests
         uses: ArtiomTr/jest-coverage-report-action@v2.3.0
         with:

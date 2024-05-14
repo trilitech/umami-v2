@@ -15,15 +15,11 @@ import {
 import { useRef, useState } from "react";
 
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
+import { AddressPillMode } from "./AddressPillMode";
 import { AddressPillText } from "./AddressPillText";
 import { useAddressKind } from "./useAddressKind";
 import colors from "../../style/colors";
 import { Address, TzktAlias, parsePkh } from "../../types/Address";
-
-export type AddressPillMode =
-  | { type: "default" }
-  | { type: "removable"; onRemove: () => void }
-  | { type: "no_icons" };
 
 export const AddressPill: React.FC<
   { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps

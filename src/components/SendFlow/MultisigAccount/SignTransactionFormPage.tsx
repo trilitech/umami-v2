@@ -12,7 +12,7 @@ import {
 import { TezosToolkit } from "@taquito/taquito";
 import { FormProvider } from "react-hook-form";
 
-import { FormValues } from "./SelectApproversFormPage";
+import { FormValues } from "./FormValues";
 import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";

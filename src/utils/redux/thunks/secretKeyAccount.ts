@@ -4,7 +4,7 @@ import { Prefix } from "@taquito/utils";
 import { parseImplicitPkh } from "../../../types/Address";
 import { encrypt } from "../../crypto/AES";
 import { getPublicKeyPairFromSk } from "../../tezos";
-import { accountsSlice } from "../slices/accountsSlice";
+import { accountsSlice } from "../slices/accountsSlice/accountsSlice";
 import { AppDispatch } from "../store";
 
 export const getCurve = (secretKey: string): Curves => {

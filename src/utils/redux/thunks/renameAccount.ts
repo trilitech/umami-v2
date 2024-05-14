@@ -1,7 +1,7 @@
 import { Action, ThunkAction } from "@reduxjs/toolkit";
 
 import { Account } from "../../../types/Account";
-import { accountsSlice } from "../slices/accountsSlice";
+import { accountsSlice } from "../slices/accountsSlice/accountsSlice";
 import { multisigsSlice } from "../slices/multisigsSlice";
 import { RootState } from "../store";
 

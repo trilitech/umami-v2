@@ -5,7 +5,7 @@ import { MnemonicAccount } from "../../../types/Account";
 import { decrypt, encrypt } from "../../crypto/AES";
 import { EncryptedData } from "../../crypto/types";
 import { getFingerPrint } from "../../tezos";
-import { accountsSlice } from "../slices/accountsSlice";
+import { accountsSlice } from "../slices/accountsSlice/accountsSlice";
 import { store } from "../store";
 
 const currentPassword = "currentPassword";

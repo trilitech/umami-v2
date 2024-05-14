@@ -6,7 +6,7 @@ import { WalletClient } from "./WalletClient";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { encryptedMnemonic1 } from "../../mocks/mockMnemonic";
 import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
-import { accountsActions } from "../redux/slices/accountsSlice";
+import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";
 import { store } from "../redux/store";
 
 jest.mock("./WalletClient");
