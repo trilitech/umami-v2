@@ -24,21 +24,25 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { capitalize } from "lodash";
-import React from "react";
+import React, { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { WalletClient } from "./WalletClient";
 import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
 import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
+import { DynamicModalContext } from "../../components/DynamicModal";
 import colors from "../../style/colors";
 import { useAddConnection } from "../hooks/beaconHooks";
 import { useGetImplicitAccount } from "../hooks/getAccountDataHooks";
+import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";
 
 export const PermissionRequestModal: React.FC<{
   request: PermissionRequestOutput;
 }> = ({ request }) => {
   const addConnectionToBeaconSlice = useAddConnection();
   const getAccount = useGetImplicitAccount();
+  const { onClose } = useContext(DynamicModalContext);
+  const { handleAsyncAction } = useAsyncActionHandler();
   const form = useForm<{ address: string }>({
     mode: "onBlur",
   });
@@ -47,22 +51,23 @@ export const PermissionRequestModal: React.FC<{
     formState: { errors, isValid },
   } = form;
 
-  const grant = async () => {
-    const account = getAccount(getValues().address);
-    const response: BeaconResponseInputMessage = {
-      type: BeaconMessageType.PermissionResponse,
-      network: request.network,
-      scopes: request.scopes,
-      id: request.id,
-      publicKey: account.pk,
-      // TODO: update when we start supporting abstracted accounts
-      walletType: "implicit",
-    };
+  const grant = () =>
+    handleAsyncAction(async () => {
+      const account = getAccount(getValues().address);
+      const response: BeaconResponseInputMessage = {
+        type: BeaconMessageType.PermissionResponse,
+        network: request.network,
+        scopes: request.scopes,
+        id: request.id,
+        publicKey: account.pk,
+        // TODO: update when we start supporting abstracted accounts
+        walletType: "implicit",
+      };
 
-    await WalletClient.respond(response);
+      await WalletClient.respond(response);
 
-    addConnectionToBeaconSlice(request.senderId, account.address.pkh, request.network.type);
-  };
+      addConnectionToBeaconSlice(request.senderId, account.address.pkh, request.network.type);
+    }).finally(onClose);
 
   return (
     <ModalContent>
@@ -124,7 +129,7 @@ export const PermissionRequestModal: React.FC<{
         </FormProvider>
       </ModalBody>
       <ModalFooter>
-        <Button width="100%" isDisabled={!isValid} onClick={_ => grant()} size="lg">
+        <Button width="100%" isDisabled={!isValid} onClick={grant} size="lg">
           Sign
         </Button>
       </ModalFooter>
