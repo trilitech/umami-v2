@@ -13,7 +13,7 @@ import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { ImplicitAccount } from "../../types/Account";
 import { ImplicitOperations } from "../../types/AccountOperations";
-import { isValidContractPkh, parseContractPkh, parseImplicitPkh } from "../../types/Address";
+import { parseImplicitPkh, parsePkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
 import { useGetOwnedAccount } from "../hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../hooks/networkHooks";
@@ -115,12 +115,12 @@ export const partialOperationToOperation = (
   switch (partialOperation.kind) {
     case TezosOperationType.TRANSACTION: {
       const { destination, amount, parameters } = partialOperation;
-      const isContractCall = isValidContractPkh(destination) && parameters;
+      const isContractCall = !!parameters;
       if (isContractCall) {
         return {
           type: "contract_call",
           amount,
-          contract: parseContractPkh(destination),
+          contract: parsePkh(destination),
           entrypoint: parameters.entrypoint,
           args: parameters.value,
         };
