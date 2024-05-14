@@ -54,6 +54,39 @@ describe("<UpsertNetworkModal />", () => {
       await act(() => user.click(screen.getByText("Save changes")));
       expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, updatedNetwork]);
     });
+
+    it("ignores trailing slashes", async () => {
+      const user = userEvent.setup();
+      render(fixture(<UpsertNetworkModal network={customNetwork} />));
+
+      const updatedNetwork = {
+        ...customNetwork,
+        rpcUrl: "https://rpc",
+        tzktApiUrl: "https://tzkt",
+        tzktExplorerUrl: "https://explorer",
+        buyTezUrl: "",
+      };
+
+      await act(() => user.clear(screen.getByLabelText("RPC URL")));
+      await act(() => user.clear(screen.getByLabelText("Tzkt API URL")));
+      await act(() => user.clear(screen.getByLabelText("Tzkt Explorer URL")));
+      await act(() => user.clear(screen.getByLabelText("Buy Tez URL")));
+      await act(() => user.type(screen.getByLabelText("RPC URL"), updatedNetwork.rpcUrl + "///"));
+      await act(() =>
+        user.type(screen.getByLabelText("Tzkt API URL"), updatedNetwork.tzktApiUrl + "///")
+      );
+      await act(() =>
+        user.type(
+          screen.getByLabelText("Tzkt Explorer URL"),
+          updatedNetwork.tzktExplorerUrl + "/////"
+        )
+      );
+
+      expect(screen.getByText("Save changes")).toBeEnabled();
+
+      await act(() => user.click(screen.getByText("Save changes")));
+      expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, updatedNetwork]);
+    });
   });
 
   describe("create mode", () => {

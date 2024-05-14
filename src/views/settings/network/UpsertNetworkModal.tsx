@@ -19,6 +19,8 @@ import { Network } from "../../../types/Network";
 import { useAvailableNetworks } from "../../../utils/hooks/networkHooks";
 import { networksActions } from "../../../utils/redux/slices/networks";
 
+const removeTrailingSlashes = (url: string) => url.replace(/\/+$/g, "");
+
 export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
   const mode = network ? "edit" : "create";
 
@@ -66,7 +68,10 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             <FormLabel>RPC URL</FormLabel>
             <Input
               placeholder="https://prod.tcinfra.net/rpc/mainnet"
-              {...register("rpcUrl", { required: "RPC URL is required" })}
+              {...register("rpcUrl", {
+                required: "RPC URL is required",
+                setValueAs: removeTrailingSlashes,
+              })}
             />
             {errors.rpcUrl && <FormErrorMessage>{errors.rpcUrl.message}</FormErrorMessage>}
           </FormControl>
@@ -74,7 +79,10 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             <FormLabel>Tzkt API URL</FormLabel>
             <Input
               placeholder="https://api.ghostnet.tzkt.io"
-              {...register("tzktApiUrl", { required: "Tzkt API URL is required" })}
+              {...register("tzktApiUrl", {
+                required: "Tzkt API URL is required",
+                setValueAs: removeTrailingSlashes,
+              })}
             />
             {errors.tzktApiUrl && <FormErrorMessage>{errors.tzktApiUrl.message}</FormErrorMessage>}
           </FormControl>
@@ -82,7 +90,10 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             <FormLabel>Tzkt Explorer URL</FormLabel>
             <Input
               placeholder="https://ghostnet.tzkt.io"
-              {...register("tzktExplorerUrl", { required: "Tzkt Explorer URL is required" })}
+              {...register("tzktExplorerUrl", {
+                required: "Tzkt Explorer URL is required",
+                setValueAs: removeTrailingSlashes,
+              })}
             />
             {errors.tzktExplorerUrl && (
               <FormErrorMessage>{errors.tzktExplorerUrl.message}</FormErrorMessage>
