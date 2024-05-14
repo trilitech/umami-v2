@@ -5,7 +5,7 @@ import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
 import { Account } from "../../types/Account";
 import { BLOCK_TIME } from "../../utils/dataPolling/constants";
-import { State } from "../../utils/redux/slices/accountsSlice";
+import { State } from "../../utils/redux/slices/accountsSlice/State";
 import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
 import { AccountsPage } from "../pages/AccountsPage";
 import { refetch, runDockerCommand, topUpAccount, waitUntilRefetch } from "../utils";

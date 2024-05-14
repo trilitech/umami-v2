@@ -1,16 +1,14 @@
 import { AspectRatio, Flex, FlexProps, Text } from "@chakra-ui/react";
 
 import { PrettyNumber } from "./PrettyNumber";
-import { FATokenBalance } from "./SendFlow/Token/FormPage";
 import { TokenIcon } from "../assets/icons";
 import colors from "../style/colors";
 import { tokenPrettyAmount, tokenSymbolSafe } from "../types/Token";
+import { FA12TokenBalance, FA2TokenBalance } from "../types/TokenBalance";
 
-export const TokenTile: React.FC<{ token: FATokenBalance; amount: string } & FlexProps> = ({
-  token,
-  amount,
-  ...flexProps
-}) => {
+export const TokenTile: React.FC<
+  { token: FA12TokenBalance | FA2TokenBalance; amount: string } & FlexProps
+> = ({ token, amount, ...flexProps }) => {
   const { contract } = token;
 
   const prettyAmount = tokenPrettyAmount(amount, token);

@@ -3,7 +3,7 @@ import { fromPairs } from "lodash";
 
 import { decrypt, encrypt } from "../../crypto/AES";
 import { EncryptedData } from "../../crypto/types";
-import { AppDispatch, RootState } from "../store";
+import { State } from "../slices/accountsSlice/State";
 
 export const changeMnemonicPassword = createAsyncThunk<
   {
@@ -13,7 +13,7 @@ export const changeMnemonicPassword = createAsyncThunk<
     currentPassword: string;
     newPassword: string;
   },
-  { dispatch: AppDispatch; state: RootState }
+  { state: { accounts: State } }
 >("accounts/changeMnemonicPassword", async ({ currentPassword, newPassword }, { getState }) => {
   if (currentPassword === newPassword) {
     throw new Error("New password must be different from the current password");

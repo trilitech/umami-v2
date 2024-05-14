@@ -1,17 +1,17 @@
 import { Modal } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
 
-import { FATokenBalance } from "./FormPage";
 import { SignPage } from "./SignPage";
 import { mockFA2Token, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
+import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import { TEZ } from "../../../utils/tezos";
 import { SignPageProps } from "../utils";
 
-const fixture = (props: SignPageProps<{ token: FATokenBalance }>) => (
+const fixture = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => (
   <Modal isOpen={true} onClose={() => {}}>
     <SignPage {...props} />
   </Modal>
@@ -35,7 +35,7 @@ describe("<SignPage />", () => {
   ]);
   describe("fee", () => {
     it("displays the fee in tez", () => {
-      const props: SignPageProps<{ token: FATokenBalance }> = {
+      const props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }> = {
         operations,
         fee: new BigNumber(1234567),
         mode: "single",
@@ -48,7 +48,7 @@ describe("<SignPage />", () => {
 
   describe("token", () => {
     it("displays the correct symbol", () => {
-      const props: SignPageProps<{ token: FATokenBalance }> = {
+      const props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }> = {
         operations,
         fee: new BigNumber(1234567),
         mode: "single",
@@ -61,7 +61,7 @@ describe("<SignPage />", () => {
     });
 
     it("displays the correct amount", () => {
-      const props: SignPageProps<{ token: FATokenBalance }> = {
+      const props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }> = {
         operations,
         fee: new BigNumber(1234567),
         mode: "single",

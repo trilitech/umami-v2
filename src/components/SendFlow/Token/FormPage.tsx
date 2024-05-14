@@ -13,7 +13,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
 import { RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
-import { FA12Transfer, FA2Transfer } from "../../../types/Operation";
+import { FA2Transfer, TokenTransfer } from "../../../types/Operation";
 import {
   formatTokenAmount,
   getRealAmount,
@@ -43,12 +43,8 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-export type FATokenBalance = FA12TokenBalance | FA2TokenBalance;
-
-export type FATransfer = FA12Transfer | FA2Transfer;
-
 export const FormPage: React.FC<
-  FormPagePropsWithSender<FormValues> & { token: FATokenBalance }
+  FormPagePropsWithSender<FormValues> & { token: FA12TokenBalance | FA2TokenBalance }
 > = props => {
   const { token } = props;
   const openSignPage = useOpenSignPageFormAction({
@@ -152,8 +148,8 @@ export const FormPage: React.FC<
 };
 
 const toOperation =
-  (token: FATokenBalance) =>
-  (formValues: FormValues): FATransfer => {
+  (token: FA12TokenBalance | FA2TokenBalance) =>
+  (formValues: FormValues): TokenTransfer => {
     const fa2Operation: FA2Transfer = {
       type: "fa2",
       sender: parsePkh(formValues.sender),

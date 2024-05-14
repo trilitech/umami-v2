@@ -21,7 +21,7 @@ import {
   makeDerivationPath,
 } from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
-import { accountsSlice } from "../redux/slices/accountsSlice";
+import { accountsSlice } from "../redux/slices/accountsSlice/accountsSlice";
 import { store } from "../redux/store";
 import * as tezosHelpers from "../tezos/helpers";
 

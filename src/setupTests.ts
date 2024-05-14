@@ -13,7 +13,7 @@ import MockDate from "mockdate";
 import React from "react";
 
 import { mockUseToast } from "./mocks/toast";
-import { accountsSlice } from "./utils/redux/slices/accountsSlice";
+import { accountsSlice } from "./utils/redux/slices/accountsSlice/accountsSlice";
 import { announcementSlice } from "./utils/redux/slices/announcementSlice";
 import { batchesActions } from "./utils/redux/slices/batches";
 import { beaconActions } from "./utils/redux/slices/beaconSlice";

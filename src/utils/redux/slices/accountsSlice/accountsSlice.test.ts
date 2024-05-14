@@ -1,14 +1,15 @@
-import { accountsActions } from "./accountsSlice";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "../../../mocks/factories";
-import { addAccount } from "../../../mocks/helpers";
-import { MnemonicAccount } from "../../../types/Account";
-import { store } from "../store";
+} from "../../../../mocks/factories";
+import { addAccount } from "../../../../mocks/helpers";
+import { MnemonicAccount } from "../../../../types/Account";
+import { store } from "../../store";
+
+import { accountsActions } from ".";
 
 describe("accountsSlice", () => {
   test("store should initialize with empty state", () => {

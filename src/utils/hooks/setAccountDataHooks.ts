@@ -21,7 +21,7 @@ import { makeMnemonicAccount } from "../account/makeMnemonicAccount";
 import { decrypt, encrypt } from "../crypto/AES";
 import { useRestoreRevealedMnemonicAccounts } from "../mnemonic";
 import { useAppDispatch } from "../redux/hooks";
-import { accountsSlice } from "../redux/slices/accountsSlice";
+import { accountsSlice } from "../redux/slices/accountsSlice/accountsSlice";
 import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
 import { derivePublicKeyPair, getFingerPrint } from "../tezos";
 

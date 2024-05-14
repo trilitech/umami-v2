@@ -1,4 +1,4 @@
-import { accountsSlice } from "./accountsSlice";
+import { accountsSlice } from "./accountsSlice/accountsSlice";
 import { assetsSlice } from "./assetsSlice";
 import { hedgehoge, tzBtsc } from "../../../mocks/fa12Tokens";
 import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";

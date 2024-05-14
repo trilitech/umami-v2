@@ -1,17 +1,8 @@
-import { OperationRequestOutput } from "@airgap/beacon-wallet";
-import BigNumber from "bignumber.js";
-
+import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { ContractCallSignPage } from "./ContractCallSignPage";
 import { DelegationSignPage } from "./DelegationSignPage";
 import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
-import { ImplicitOperations } from "../../../types/AccountOperations";
-
-export type BeaconSignPageProps = {
-  operation: ImplicitOperations;
-  fee: BigNumber;
-  message: OperationRequestOutput;
-};
 
 export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, message }) => {
   const operationType = operation.operations[0].type;

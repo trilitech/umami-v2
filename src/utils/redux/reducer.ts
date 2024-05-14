@@ -4,7 +4,7 @@ import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
 import { VERSION, accountsMigrations, mainStoreMigrations } from "./migrations";
-import { accountsSlice } from "./slices/accountsSlice";
+import { accountsSlice } from "./slices/accountsSlice/accountsSlice";
 import { announcementSlice } from "./slices/announcementSlice";
 import { assetsSlice } from "./slices/assetsSlice";
 import { batchesSlice } from "./slices/batches";

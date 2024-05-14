@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { remove } from "lodash";
 
+import { State } from "./State";
 import {
   AccountType,
   ImplicitAccount,
@@ -8,17 +9,10 @@ import {
   MnemonicAccount,
   SecretKeyAccount,
   SocialAccount,
-} from "../../../types/Account";
-import { RawPkh } from "../../../types/Address";
-import { EncryptedData } from "../../crypto/types";
-import { changeMnemonicPassword } from "../thunks/changeMnemonicPassword";
-
-export type State = {
-  items: ImplicitAccount[];
-  //TODO: Rename to encryptedMnemonics
-  seedPhrases: Record<string, EncryptedData | undefined>;
-  secretKeys: Record<RawPkh, EncryptedData | undefined>;
-};
+} from "../../../../types/Account";
+import { RawPkh } from "../../../../types/Address";
+import { EncryptedData } from "../../../crypto/types";
+import { changeMnemonicPassword } from "../../thunks/changeMnemonicPassword";
 
 export const initialState: State = {
   items: [],

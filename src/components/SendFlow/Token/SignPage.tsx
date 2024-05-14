@@ -1,7 +1,8 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 
-import { FATokenBalance, FATransfer } from "./FormPage";
+import { TokenTransfer } from "../../../types/Operation";
+import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { TokenTile } from "../../TokenTile";
 import { OperationSignerSelector } from "../OperationSignerSelector";
@@ -10,7 +11,9 @@ import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = props => {
+export const SignPage: React.FC<
+  SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>
+> = props => {
   const {
     mode,
     operations: initialOperations,
@@ -20,7 +23,7 @@ export const SignPage: React.FC<SignPageProps<{ token: FATokenBalance }>> = prop
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialFee, initialOperations, mode);
 
-  const { amount, recipient } = operations.operations[0] as FATransfer;
+  const { amount, recipient } = operations.operations[0] as TokenTransfer;
 
   return (
     <FormProvider {...form}>

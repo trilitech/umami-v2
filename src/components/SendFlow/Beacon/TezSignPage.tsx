@@ -1,6 +1,6 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 
-import { BeaconSignPageProps } from "./BeaconSignPage";
+import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import { TezTransfer } from "../../../types/Operation";
