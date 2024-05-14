@@ -7,9 +7,9 @@ import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
 import { WalletClient } from "./utils/beacon/WalletClient";
+import { useDataPolling } from "./utils/dataPolling/useDataPolling";
 import { useResetConnections } from "./utils/hooks/beaconHooks";
 import { useImplicitAccounts } from "./utils/hooks/getAccountDataHooks";
-import { useAssetsPolling } from "./utils/useAssetsPolling";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AddressBookView } from "./views/addressBook/AddressBookView";
 import { BatchPage } from "./views/batch/BatchPage";
@@ -33,7 +33,7 @@ export const Router = () => {
 };
 
 const LoggedInRouterWithPolling = () => {
-  useAssetsPolling();
+  useDataPolling();
   const dynamicModal = useDynamicModal();
 
   return (
