@@ -1,0 +1,18 @@
+appId: com.trilitech.umami
+productName: Umami
+files:
+  - build/**
+directories:
+  buildResources: public
+protocols:
+  name: umami
+  schemes:
+    - umami
+mac:
+  identity: null
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  target:
+    - target: dmg
+      arch:
+        - arm64
