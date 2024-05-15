@@ -96,7 +96,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
             </Text>
 
             <FormLabel>Approvers</FormLabel>
-            <Box marginBottom="12px" data-testid="approvers">
+            <Flex flexDirection="column" gap="12px" marginBottom="12px" data-testid="approvers">
               {signers.map(signer => (
                 <AddressTile
                   key={signer.val}
@@ -104,7 +104,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
                   data-testid={`approver-${signer.val}`}
                 />
               ))}
-            </Box>
+            </Flex>
             <Flex justifyContent="flex-end">
               <Threshold signersAmount={signers.length} threshold={threshold} />
             </Flex>
