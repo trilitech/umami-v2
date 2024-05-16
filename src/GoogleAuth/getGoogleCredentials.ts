@@ -5,7 +5,7 @@ import { withTimeout } from "../utils/withTimeout";
 
 const LOGIN_TIMEOUT = 60 * 1000; // 1 minute
 const WEB3_AUTH_CLIENT_ID =
-  "BBHmFdLXgGDzSiizRVMWtyL_7Dsoxu5B8zep2Pns8sGELslgXDbktJewVDVDDBlknEKkMCtzISLjJtxk60SK2-g";
+  "BBQoFIabI50S1-0QsGHGTM4qID_FDjja0ZxIxKPyFqc0El--M-EG0c2giaBYVTVVE6RC9WCUzCJyW24aJrR_Lzc";
 const SUB_VERIFIER_CLIENT_ID =
   "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com";
 
