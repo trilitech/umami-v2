@@ -5595,24 +5595,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taquito/taquito@npm:19.2.0, @taquito/taquito@npm:^19.2.0":
-  version: 19.2.0
-  resolution: "@taquito/taquito@npm:19.2.0"
-  dependencies:
-    "@taquito/core": "npm:^19.1.0"
-    "@taquito/http-utils": "npm:^19.2.0"
-    "@taquito/local-forging": "npm:^19.2.0"
-    "@taquito/michel-codec": "npm:^19.2.0"
-    "@taquito/michelson-encoder": "npm:^19.2.0"
-    "@taquito/rpc": "npm:^19.2.0"
-    "@taquito/utils": "npm:^19.2.0"
-    bignumber.js: "npm:^9.1.2"
-    rxjs: "npm:^7.8.1"
-  checksum: 10/076fd175a215cb8045c94891e2997c335f175010b7eded5cb7562a20429d6f3e7b677791a6e850bc93909924244dc1784147d6c604792093b8bb40a8aca774df
-  languageName: node
-  linkType: hard
-
-"@taquito/taquito@npm:^19.2.1":
+"@taquito/taquito@npm:19.2.1, @taquito/taquito@npm:^19.2.1":
   version: 19.2.1
   resolution: "@taquito/taquito@npm:19.2.1"
   dependencies:
@@ -5626,6 +5609,23 @@ __metadata:
     bignumber.js: "npm:^9.1.2"
     rxjs: "npm:^7.8.1"
   checksum: 10/b28c110f5cea862902ee1080b6e2fcacfb08a28acd38ef3e4c1a001feff961e1730b0f1598c2feb474878885819010a2991fa548d034c29d6a446303a3b97539
+  languageName: node
+  linkType: hard
+
+"@taquito/taquito@npm:^19.2.0":
+  version: 19.2.0
+  resolution: "@taquito/taquito@npm:19.2.0"
+  dependencies:
+    "@taquito/core": "npm:^19.1.0"
+    "@taquito/http-utils": "npm:^19.2.0"
+    "@taquito/local-forging": "npm:^19.2.0"
+    "@taquito/michel-codec": "npm:^19.2.0"
+    "@taquito/michelson-encoder": "npm:^19.2.0"
+    "@taquito/rpc": "npm:^19.2.0"
+    "@taquito/utils": "npm:^19.2.0"
+    bignumber.js: "npm:^9.1.2"
+    rxjs: "npm:^7.8.1"
+  checksum: 10/076fd175a215cb8045c94891e2997c335f175010b7eded5cb7562a20429d6f3e7b677791a6e850bc93909924244dc1784147d6c604792093b8bb40a8aca774df
   languageName: node
   linkType: hard
 
@@ -17156,7 +17156,7 @@ __metadata:
     "@taquito/michel-codec": "npm:^19.2.1"
     "@taquito/rpc": "npm:^19.2.1"
     "@taquito/signer": "npm:^19.2.1"
-    "@taquito/taquito": "npm:19.2.0"
+    "@taquito/taquito": "npm:19.2.1"
     "@taquito/utils": "npm:^19.2.1"
     "@testing-library/dom": "npm:^10.1.0"
     "@testing-library/jest-dom": "npm:6.4.5"
