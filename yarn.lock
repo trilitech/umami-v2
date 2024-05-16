@@ -5459,6 +5459,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@taquito/http-utils@npm:^19.2.1":
+  version: 19.2.1
+  resolution: "@taquito/http-utils@npm:19.2.1"
+  dependencies:
+    "@taquito/core": "npm:^19.2.1"
+    node-fetch: "npm:^2.7.0"
+  checksum: 10/8e0b59fd849bbc7cc0cb00c6e175a3ce0f63ee21468afedae0a776a6e1458f70073c3babf076cb06d354150b1443bee76af54c3a185f414bf5225e219be334e8
+  languageName: node
+  linkType: hard
+
 "@taquito/ledger-signer@npm:^19.2.0":
   version: 19.2.0
   resolution: "@taquito/ledger-signer@npm:19.2.0"
@@ -5524,6 +5534,18 @@ __metadata:
     "@taquito/utils": "npm:^19.2.0"
     bignumber.js: "npm:^9.1.2"
   checksum: 10/1e6ce3a449b8872e42820591086883a91d4aff3c70885c08a24ca8708a4356c4c4f5dfa37f3e5b192882a25b8cc75321ce84c18383cf77966335abb6107fb69a
+  languageName: node
+  linkType: hard
+
+"@taquito/rpc@npm:^19.2.1":
+  version: 19.2.1
+  resolution: "@taquito/rpc@npm:19.2.1"
+  dependencies:
+    "@taquito/core": "npm:^19.2.1"
+    "@taquito/http-utils": "npm:^19.2.1"
+    "@taquito/utils": "npm:^19.2.1"
+    bignumber.js: "npm:^9.1.2"
+  checksum: 10/06c6a1226ff5a1c47159525c14d1fd9dcb5241659f5534e16f8e40e062311dd5bc670c25dfa7c97c451b4fb69164090146d613914f54b5c9430f8bdda462ec8d
   languageName: node
   linkType: hard
 
@@ -17091,7 +17113,7 @@ __metadata:
     "@tanstack/react-query-devtools": "npm:^5.36.1"
     "@taquito/ledger-signer": "npm:^19.2.0"
     "@taquito/michel-codec": "npm:^19.2.1"
-    "@taquito/rpc": "npm:^19.2.0"
+    "@taquito/rpc": "npm:^19.2.1"
     "@taquito/signer": "npm:^19.2.0"
     "@taquito/taquito": "npm:19.2.0"
     "@taquito/utils": "npm:^19.2.1"
