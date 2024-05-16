@@ -19,6 +19,7 @@ const TestComponent = ({ request }: { request: SignPayloadRequestOutput }) => (
 
 const payload =
   "05010000004254657a6f73205369676e6564204d6573736167653a206d79646170702e636f6d20323032312d30312d31345431353a31363a30345a2048656c6c6f20776f726c6421";
+const decodedPayload = "Tezos Signed Message: mydapp.com 2021-01-14T15:16:04Z Hello world!";
 const request: SignPayloadRequestOutput = {
   payload,
   senderId: "mockSenderId",
@@ -52,7 +53,7 @@ describe("<SignPayloadRequestModal />", () => {
   it("renders the payload to sign", () => {
     render(<TestComponent request={request} />);
 
-    expect(screen.getByText(payload)).toBeVisible();
+    expect(screen.getByText(decodedPayload)).toBeVisible();
   });
 
   it("sends the signed payload back to the DApp", async () => {
