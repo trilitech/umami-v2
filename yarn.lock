@@ -5493,6 +5493,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@taquito/michel-codec@npm:^19.2.1":
+  version: 19.2.1
+  resolution: "@taquito/michel-codec@npm:19.2.1"
+  dependencies:
+    "@taquito/core": "npm:^19.2.1"
+  checksum: 10/da684532389452982ea7d4d3cc15426736f10834f376da1fffd8100fd3c073811c1319770886784530003fe21b7010ad9aaa8409bcc67eebc9345d1ec09f5ed1
+  languageName: node
+  linkType: hard
+
 "@taquito/michelson-encoder@npm:^19.2.0":
   version: 19.2.0
   resolution: "@taquito/michelson-encoder@npm:19.2.0"
@@ -17081,7 +17090,7 @@ __metadata:
     "@tanstack/react-query": "npm:^5.36.1"
     "@tanstack/react-query-devtools": "npm:^5.36.1"
     "@taquito/ledger-signer": "npm:^19.2.0"
-    "@taquito/michel-codec": "npm:^19.2.0"
+    "@taquito/michel-codec": "npm:^19.2.1"
     "@taquito/rpc": "npm:^19.2.0"
     "@taquito/signer": "npm:^19.2.0"
     "@taquito/taquito": "npm:19.2.0"
