@@ -74,7 +74,7 @@
     "@types/identity-obj-proxy": "^3",
     "@types/jest": "^29.5.12",
     "@types/md5": "^2.3.5",
-    "@types/node": "20.12.11",
+    "@types/node": "20.12.12",
     "@types/papaparse": "^5.3.14",
     "@types/pluralize": "^0.0.33",
     "@types/promise-retry": "^1.1.6",
