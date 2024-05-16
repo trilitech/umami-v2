@@ -63,7 +63,7 @@
     "@taquito/rpc": "^19.2.0",
     "@taquito/signer": "^19.2.0",
     "@taquito/taquito": "19.2.0",
-    "@taquito/utils": "^19.2.0",
+    "@taquito/utils": "^19.2.1",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/jest-dom": "6.4.5",
     "@testing-library/react": "14.3.0",
