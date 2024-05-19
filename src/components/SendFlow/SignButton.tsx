@@ -4,12 +4,13 @@ import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/ba
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { getGoogleCredentials } from "../../GoogleAuth";
+import { Auth } from "../../auth";
 import {
   ImplicitAccount,
   LedgerAccount,
   MnemonicAccount,
   SecretKeyAccount,
+  SocialAccount,
 } from "../../types/Account";
 import { Network } from "../../types/Network";
 import { useGetSecretKey } from "../../utils/hooks/getAccountDataHooks";
@@ -63,7 +64,7 @@ export const SignButton: React.FC<{
 
   const onSocialSign = async () =>
     handleAsyncAction(async () => {
-      const { secretKey } = await getGoogleCredentials();
+      const { secretKey } = await Auth.for((signer as SocialAccount).idp).getCredentials();
       return onSubmit(await makeToolkit({ type: "social", secretKey, network }));
     });
 

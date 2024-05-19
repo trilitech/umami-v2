@@ -18,6 +18,7 @@ export * from "./Document";
 export * from "./DoubleCheckmark";
 export * from "./Download";
 export * from "./EditAccount";
+export * from "./Envelope";
 export * from "./Exclamation";
 export * from "./ExitArrow";
 export * from "./ExternalLink";

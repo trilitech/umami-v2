@@ -1,8 +1,8 @@
 import { Button, Divider, Flex, Text, VStack, useToast } from "@chakra-ui/react";
 
 import { WalletPlusIcon } from "../../../assets/icons";
+import { LoginButton } from "../../../auth/LoginButton";
 import { IS_DEV } from "../../../env";
-import { GoogleAuth } from "../../../GoogleAuth";
 import colors from "../../../style/colors";
 import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
@@ -21,9 +21,9 @@ export const ConnectOrCreate = ({
   const restoreSocial = useRestoreSocial();
   const toast = useToast();
 
-  const onSocialAuth = (sk: string, email: string) =>
+  const onSocialAuth = ({ secretKey, email }: { secretKey: string; email: string }) =>
     handleAsyncAction(async () => {
-      const { pk, pkh } = await getPublicKeyPairFromSk(sk);
+      const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
       restoreSocial(pk, pkh, email);
       toast({ description: `Successfully added ${email} account`, status: "success" });
       closeModal();
@@ -66,7 +66,10 @@ export const ConnectOrCreate = ({
           </Text>
           <Divider marginTop="11px" />
         </Flex>
-        <GoogleAuth onAuth={onSocialAuth} />
+        <Flex gap="12px">
+          <LoginButton idp="google" onAuth={onSocialAuth} />
+          <LoginButton idp="email" onAuth={onSocialAuth} />
+        </Flex>
       </VStack>
     </ModalContentWrapper>
   );

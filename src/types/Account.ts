@@ -6,7 +6,7 @@ import { Multisig } from "../utils/multisig/types";
 export type SocialAccount = {
   label: string;
   type: "social";
-  idp: "google";
+  idp: "google" | "email";
   address: ImplicitAddress;
   pk: string;
 };
