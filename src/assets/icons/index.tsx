@@ -26,6 +26,7 @@ export * from "./Eye";
 export * from "./EyeSlash";
 export * from "./FA1.2";
 export * from "./FA2";
+export * from "./Facebook";
 export * from "./Feedback";
 export * from "./Fetching";
 export * from "./FileArrowDown";

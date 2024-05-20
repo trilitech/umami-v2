@@ -1,6 +1,7 @@
 import { Button, Divider, Flex, Text, VStack } from "@chakra-ui/react";
 
 import { OnboardWithEmailButton } from "./OnboardWithEmailButton";
+import { OnboardWithFacebookButton } from "./OnboardWithFacebookButton";
 import { OnboardWithGoogleButton } from "./OnboardWithGoogleButton";
 import { OnboardWithRedditButton } from "./OnboardWithRedditButton";
 import { WalletPlusIcon } from "../../../assets/icons";
@@ -50,6 +51,7 @@ export const ConnectOrCreate = ({
         <OnboardWithGoogleButton onAuth={closeModal} />
         <OnboardWithEmailButton onAuth={closeModal} />
         <OnboardWithRedditButton onAuth={closeModal} />
+        <OnboardWithFacebookButton onAuth={closeModal} />
       </Flex>
     </VStack>
   </ModalContentWrapper>

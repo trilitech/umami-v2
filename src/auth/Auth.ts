@@ -14,7 +14,7 @@ export abstract class Auth {
     const torus = new CustomAuth({
       web3AuthClientId: WEB3_AUTH_CLIENT_ID,
       baseUrl: "https://umamiwallet.com/auth/v2.0.1/",
-      redirectPathName: "redirect.html?full_params=true", // TODO: fix this once we have a proper redirect page
+      redirectPathName: "redirect.html",
       redirectToOpener: true,
       uxMode: "popup",
       network: "mainnet",
