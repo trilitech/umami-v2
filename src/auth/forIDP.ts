@@ -2,6 +2,7 @@ import { EmailAuth } from "./EmailAuth";
 import { FacebookAuth } from "./FacebookAuth";
 import { GoogleAuth } from "./GoogleAuth";
 import { RedditAuth } from "./RedditAuth";
+import { TwitterAuth } from "./TwitterAuth";
 import type { IDP } from "./types";
 
 export const forIDP = (idp: IDP) => {
@@ -14,5 +15,7 @@ export const forIDP = (idp: IDP) => {
       return new RedditAuth();
     case "facebook":
       return new FacebookAuth();
+    case "twitter":
+      return new TwitterAuth();
   }
 };

@@ -4,6 +4,7 @@ import { OnboardWithEmailButton } from "./OnboardWithEmailButton";
 import { OnboardWithFacebookButton } from "./OnboardWithFacebookButton";
 import { OnboardWithGoogleButton } from "./OnboardWithGoogleButton";
 import { OnboardWithRedditButton } from "./OnboardWithRedditButton";
+import { OnboardWithTwitterButton } from "./OnboardWithTwitterButton";
 import { WalletPlusIcon } from "../../../assets/icons";
 import { IS_DEV } from "../../../env";
 import colors from "../../../style/colors";
@@ -52,6 +53,7 @@ export const ConnectOrCreate = ({
         <OnboardWithEmailButton onAuth={closeModal} />
         <OnboardWithRedditButton onAuth={closeModal} />
         <OnboardWithFacebookButton onAuth={closeModal} />
+        <OnboardWithTwitterButton onAuth={closeModal} />
       </Flex>
     </VStack>
   </ModalContentWrapper>

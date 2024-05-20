@@ -1,1 +1,1 @@
-export type IDP = "google" | "email" | "reddit" | "facebook";
+export type IDP = "google" | "email" | "reddit" | "facebook" | "twitter";

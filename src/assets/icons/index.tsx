@@ -66,3 +66,4 @@ export * from "./Verified";
 export * from "./WalletPlus";
 export * from "./Warning";
 export * from "./XMark";
+export * from "./Twitter";
