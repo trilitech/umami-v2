@@ -50,10 +50,10 @@ export const ConnectOrCreate = ({
       </Flex>
       <Flex gap="12px">
         <OnboardWithGoogleButton onAuth={closeModal} />
-        <OnboardWithEmailButton onAuth={closeModal} />
-        <OnboardWithRedditButton onAuth={closeModal} />
         <OnboardWithFacebookButton onAuth={closeModal} />
         <OnboardWithTwitterButton onAuth={closeModal} />
+        <OnboardWithEmailButton onAuth={closeModal} />
+        <OnboardWithRedditButton onAuth={closeModal} />
       </Flex>
     </VStack>
   </ModalContentWrapper>
