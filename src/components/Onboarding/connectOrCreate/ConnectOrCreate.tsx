@@ -21,11 +21,11 @@ export const ConnectOrCreate = ({
   const restoreSocial = useRestoreSocial();
   const toast = useToast();
 
-  const onSocialAuth = ({ secretKey, email }: { secretKey: string; email: string }) =>
+  const onSocialAuth = ({ secretKey, name }: { secretKey: string; name: string }) =>
     handleAsyncAction(async () => {
       const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
-      restoreSocial(pk, pkh, email);
-      toast({ description: `Successfully added ${email} account`, status: "success" });
+      restoreSocial(pk, pkh, name);
+      toast({ description: `Successfully added ${name} account`, status: "success" });
       closeModal();
     });
 
@@ -69,6 +69,7 @@ export const ConnectOrCreate = ({
         <Flex gap="12px">
           <LoginButton idp="google" onAuth={onSocialAuth} />
           <LoginButton idp="email" onAuth={onSocialAuth} />
+          <LoginButton idp="reddit" onAuth={onSocialAuth} />
         </Flex>
       </VStack>
     </ModalContentWrapper>

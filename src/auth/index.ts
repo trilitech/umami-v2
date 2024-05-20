@@ -1,23 +1,28 @@
 import { Prefix, b58cencode, prefix } from "@taquito/utils";
 import CustomAuth, { TorusAggregateLoginResponse, TorusLoginResponse } from "@toruslabs/customauth";
 
-import { IDP } from "./types";
+import { EmailAuth } from "./EmailAuth";
+import { GoogleAuth } from "./GoogleAuth";
+import { RedditAuth } from "./RedditAuth";
+import type { IDP } from "./types";
 export * from "./parseTorusRedirectParams";
 export * from "./types";
+export * from "./constants";
 
 const WEB3_AUTH_CLIENT_ID =
   "BBQoFIabI50S1-0QsGHGTM4qID_FDjja0ZxIxKPyFqc0El--M-EG0c2giaBYVTVVE6RC9WCUzCJyW24aJrR_Lzc";
-const GOOGLE_SUB_VERIFIER_CLIENT_ID =
-  "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com";
-const EMAIL_SUB_VERIFIER_CLIENT_ID = "LTg6fVsacafGmhv14TZlrWF1EavwQoDZ";
-
 export abstract class Auth {
+  abstract idpName: IDP;
+  abstract clientId: string;
+
   static for(idp: IDP) {
     switch (idp) {
       case "google":
         return new GoogleAuth();
       case "email":
         return new EmailAuth();
+      case "reddit":
+        return new RedditAuth();
     }
   }
 
@@ -40,57 +45,18 @@ export abstract class Auth {
 
   async getCredentials(): Promise<{
     secretKey: string;
-    email: string;
+    name: string;
   }> {
     const loginResult = await this.login();
     const privateKey = loginResult.finalKeyData.privKey || loginResult.oAuthKeyData.privKey;
     const secretKey = b58cencode(privateKey, prefix[Prefix.SPSK]);
 
-    const email = Array.isArray(loginResult.userInfo)
-      ? loginResult.userInfo[0].email
-      : loginResult.userInfo.email;
+    const userInfo = Array.isArray(loginResult.userInfo)
+      ? loginResult.userInfo[0]
+      : loginResult.userInfo;
 
-    return { secretKey, email };
-  }
-}
+    const accountName = userInfo.email || userInfo.name || this.idpName;
 
-export class GoogleAuth extends Auth {
-  override async login() {
-    const client = await this.getTorusClient();
-
-    return await client.triggerAggregateLogin({
-      verifierIdentifier: "tezos-google",
-      aggregateVerifierType: "single_id_verifier",
-      subVerifierDetailsArray: [
-        {
-          clientId: GOOGLE_SUB_VERIFIER_CLIENT_ID,
-          typeOfLogin: "google",
-          verifier: "umami",
-        },
-      ],
-    });
-  }
-}
-
-export class EmailAuth extends Auth {
-  override async login() {
-    const client = await this.getTorusClient();
-
-    return await client.triggerAggregateLogin({
-      verifierIdentifier: "tezos-google",
-      aggregateVerifierType: "single_id_verifier",
-      subVerifierDetailsArray: [
-        {
-          verifier: "web-kukai-email",
-          typeOfLogin: "jwt",
-          clientId: EMAIL_SUB_VERIFIER_CLIENT_ID,
-          jwtParams: {
-            connection: "",
-            verifierIdField: "name",
-            domain: "https://kukai.eu.auth0.com",
-          },
-        },
-      ],
-    });
+    return { secretKey, name: accountName };
   }
 }

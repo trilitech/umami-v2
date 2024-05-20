@@ -48,6 +48,7 @@ export * from "./OutgoingArrow";
 export * from "./OutlineExclamationCircle";
 export * from "./Pen";
 export * from "./Plus";
+export * from "./Reddit";
 export * from "./RefreshClock";
 export * from "./Reload";
 export * from "./Rotate";

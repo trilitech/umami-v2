@@ -1,7 +1,7 @@
 import { IconButton } from "@chakra-ui/react";
 import { minutesToMilliseconds } from "date-fns";
 
-import { EnvelopeIcon, GoogleIcon } from "../assets/icons";
+import { EnvelopeIcon, GoogleIcon, RedditIcon } from "../assets/icons";
 import colors from "../style/colors";
 import { useAsyncActionHandler } from "../utils/hooks/useAsyncActionHandler";
 import { withTimeout } from "../utils/withTimeout";
@@ -20,7 +20,7 @@ const LOGIN_TIMEOUT = minutesToMilliseconds(1);
  */
 export const LoginButton: React.FC<{
   idp: IDP;
-  onAuth: ({ secretKey, email }: { secretKey: string; email: string }) => void;
+  onAuth: ({ secretKey, name }: { secretKey: string; name: string }) => void;
 }> = ({ idp, onAuth }) => {
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
@@ -35,6 +35,8 @@ export const LoginButton: React.FC<{
       return <GoogleButton isLoading={isLoading} onClick={onClick} />;
     case "email":
       return <EmailButton isLoading={isLoading} onClick={onClick} />;
+    case "reddit":
+      return <RedditButton isLoading={isLoading} onClick={onClick} />;
   }
 };
 
@@ -69,6 +71,25 @@ const EmailButton: React.FC<{ isLoading: boolean; onClick: () => void }> = ({
     aria-label="Email SSO"
     data-testid="login-button-email"
     icon={<EnvelopeIcon />}
+    isLoading={isLoading}
+    onClick={onClick}
+    size="lg"
+    variant="outline"
+  />
+);
+
+const RedditButton: React.FC<{ isLoading: boolean; onClick: () => void }> = ({
+  isLoading,
+  onClick,
+}) => (
+  <IconButton
+    width="48px"
+    background="white"
+    borderRadius="full"
+    _disabled={{ bg: colors.gray[900] }}
+    aria-label="Reddit SSO"
+    data-testid="login-button-reddit"
+    icon={<RedditIcon />}
     isLoading={isLoading}
     onClick={onClick}
     size="lg"
