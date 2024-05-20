@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import {
@@ -9,6 +10,7 @@ import {
 import { useGetNextAvailableAccountLabels } from "./labelsHooks";
 import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
+import { IDP } from "../../auth";
 import {
   ImplicitAccount,
   LedgerAccount,
@@ -174,16 +176,21 @@ export const useRestoreLedger = () => {
 
 export const useRestoreSocial = () => {
   const dispatch = useAppDispatch();
-  return (pk: string, pkh: string, label: string) => {
-    const account: SocialAccount = {
-      type: "social",
-      pk: pk,
-      address: { type: "implicit", pkh },
-      idp: "google",
-      label,
-    };
-    dispatch(addAccount(account));
-  };
+  const restore = useCallback(
+    (pk: string, pkh: string, label: string, idp: IDP) => {
+      const account: SocialAccount = {
+        type: "social",
+        pk: pk,
+        address: { type: "implicit", pkh },
+        idp,
+        label,
+      };
+      dispatch(addAccount(account));
+    },
+    [dispatch]
+  );
+
+  return restore;
 };
 
 /**

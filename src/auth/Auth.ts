@@ -1,4 +1,4 @@
-import { Prefix, b58cencode, prefix } from "@taquito/utils";
+import { b58cencode, prefix } from "@taquito/utils";
 import CustomAuth, { TorusAggregateLoginResponse, TorusLoginResponse } from "@toruslabs/customauth";
 
 import { IDP } from "./types";
@@ -33,7 +33,7 @@ export abstract class Auth {
   }> {
     const loginResult = await this.login();
     const privateKey = loginResult.finalKeyData.privKey || loginResult.oAuthKeyData.privKey;
-    const secretKey = b58cencode(privateKey, prefix[Prefix.SPSK]);
+    const secretKey = b58cencode(privateKey, prefix.spsk);
 
     const userInfo = Array.isArray(loginResult.userInfo)
       ? loginResult.userInfo[0]
