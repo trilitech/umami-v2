@@ -1,3 +1,5 @@
+import process from "process";
+
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { checker } from "vite-plugin-checker";
@@ -18,6 +20,7 @@ export default defineConfig({
     }),
     react(),
     checker({
+      enableBuild: false,
       overlay: false,
       terminal: true,
       typescript: true,
@@ -30,5 +33,6 @@ export default defineConfig({
   build: {
     outDir: "build",
     chunkSizeWarningLimit: 5 * 1024, // 5MB
+    sourcemap: process.env.DEBUG === "true",
   },
 });

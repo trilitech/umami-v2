@@ -18,7 +18,7 @@
     "preview": "vite preview",
     "electron:package:linux": "electron-builder -l",
     "electron:package:mac": "electron-builder -m",
-    "electron:package:mac:debug": "yarn electron:package:mac -c electron-builder.dev.yml",
+    "electron:package:mac:debug": "DEBUG=true yarn build && sed -i='' 's@devTools: false@devTools: true@g' build/electron.js && yarn electron:package:mac -c electron-builder.dev.yml && rm -rf build",
     "electron:package:win": "electron-builder -w",
     "electron:start": "electronmon .",
     "docs": "typedoc --tsconfig tsconfig.e2e.json",
