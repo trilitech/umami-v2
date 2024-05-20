@@ -1,12 +1,12 @@
 import { IconButton } from "@chakra-ui/react";
 import { minutesToMilliseconds } from "date-fns";
 
+import * as Auth from "./forIDP";
+import type { IDP } from "./types";
 import { EnvelopeIcon, GoogleIcon, RedditIcon } from "../assets/icons";
 import colors from "../style/colors";
 import { useAsyncActionHandler } from "../utils/hooks/useAsyncActionHandler";
 import { withTimeout } from "../utils/withTimeout";
-
-import { Auth, IDP } from ".";
 
 const LOGIN_TIMEOUT = minutesToMilliseconds(1);
 
@@ -26,7 +26,7 @@ export const LoginButton: React.FC<{
 
   const onClick = () =>
     handleAsyncAction(
-      () => withTimeout(() => Auth.for(idp).getCredentials().then(onAuth), LOGIN_TIMEOUT),
+      () => withTimeout(() => Auth.forIDP(idp).getCredentials().then(onAuth), LOGIN_TIMEOUT),
       { title: "Social login failed" }
     );
 

@@ -4,7 +4,7 @@ import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/ba
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { Auth } from "../../auth";
+import * as Auth from "../../auth";
 import {
   ImplicitAccount,
   LedgerAccount,
@@ -64,7 +64,7 @@ export const SignButton: React.FC<{
 
   const onSocialSign = async () =>
     handleAsyncAction(async () => {
-      const { secretKey } = await Auth.for((signer as SocialAccount).idp).getCredentials();
+      const { secretKey } = await Auth.forIDP((signer as SocialAccount).idp).getCredentials();
       return onSubmit(await makeToolkit({ type: "social", secretKey, network }));
     });
 

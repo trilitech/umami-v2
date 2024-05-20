@@ -1,4 +1,6 @@
-import { Auth, IDP, JWT_AUTH_DOMAIN } from ".";
+import { Auth } from "./Auth";
+import { JWT_AUTH_DOMAIN } from "./constants";
+import type { IDP } from "./types";
 
 export class RedditAuth extends Auth {
   idpName: IDP = "reddit";

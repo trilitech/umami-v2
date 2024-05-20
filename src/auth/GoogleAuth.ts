@@ -1,4 +1,5 @@
-import { Auth, IDP } from ".";
+import { Auth } from "./Auth";
+import type { IDP } from "./types";
 
 export class GoogleAuth extends Auth {
   idpName: IDP = "google";
