@@ -7,7 +7,10 @@ import { AddressTileIcon } from "../AddressTile/AddressTileIcon";
 import { useAddressKind } from "../AddressTile/useAddressKind";
 import { Identicon } from "../Identicon";
 
-export const AccountTileIcon: React.FC<{ account: Account }> = ({ account }) => {
+export const AccountTileIcon: React.FC<{ account: Account; identiconSize?: number }> = ({
+  account,
+  identiconSize = 32,
+}) => {
   const addressKind = useAddressKind(account.address);
   switch (account.type) {
     case "secret_key":
@@ -18,7 +21,7 @@ export const AccountTileIcon: React.FC<{ account: Account }> = ({ account }) => 
           height="48px"
           padding="8px"
           address={account.address}
-          identiconSize={32}
+          identiconSize={identiconSize}
         />
       );
     case "social": {
