@@ -19,7 +19,7 @@ export const Identicon: React.FC<
         borderRadius: "4px",
       },
     }}
-    zIndex={10}
+    zIndex={3}
     background="white"
     borderRadius="4px"
     data-testid="identicon"
