@@ -1,5 +1,6 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
+// TODO: remove
 export const SocialIcon = (props: IconProps) => (
   <Icon
     width="28px"

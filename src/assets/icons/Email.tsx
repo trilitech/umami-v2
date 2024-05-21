@@ -1,10 +1,11 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-export const EnvelopeIcon: React.FC<IconProps> = props => (
+export const EmailIcon: React.FC<IconProps> = props => (
   <Icon
     width="28px"
     height="28px"
     fill="black"
+    data-testid="email-icon"
     viewBox="0 0 28 28"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

@@ -30,7 +30,7 @@ describe("<AccountTile />", () => {
     },
     {
       balance: "3",
-      iconTestId: "social-icon",
+      iconTestId: "google-icon",
       account: mockSocialAccount(0),
     },
     {

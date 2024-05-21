@@ -44,7 +44,7 @@ export const ConnectOrCreate = ({
       <Flex width="100%" paddingTop="14px" paddingBottom="6px">
         <Divider marginTop="11px" />
         <Text minWidth="160px" color={colors.gray[400]} textAlign="center" noOfLines={1} size="sm">
-          Continue with Google
+          Continue with social
         </Text>
         <Divider marginTop="11px" />
       </Flex>

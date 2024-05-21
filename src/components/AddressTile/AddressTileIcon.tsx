@@ -9,6 +9,7 @@ import {
   UnknownContactIcon,
 } from "../../assets/icons";
 import colors from "../../style/colors";
+import { parsePkh } from "../../types/Address";
 import { Identicon } from "../Identicon";
 
 const baseIconProps = {
@@ -46,7 +47,7 @@ export const AddressTileIcon: React.FC<{
           width={sizeInPx}
           height={sizeInPx}
           padding="5px"
-          address={addressKind.pkh}
+          address={parsePkh(addressKind.pkh)}
           identiconSize={identiconSize}
         />
       );

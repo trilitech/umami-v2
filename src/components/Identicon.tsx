@@ -3,13 +3,13 @@ import md5 from "md5";
 import React from "react";
 
 import { ReactIdenticon } from "./ReactIdenticon";
-import { RawPkh } from "../types/Address";
+import { Address, RawPkh } from "../types/Address";
 
 export const color = (address: RawPkh) => `#${md5(address).slice(0, 6)}`;
 
 export const Identicon: React.FC<
   {
-    address: RawPkh;
+    address: Address;
     identiconSize: number;
   } & ChakraProps
 > = ({ address, identiconSize, ...props }) => (
@@ -28,7 +28,7 @@ export const Identicon: React.FC<
     <ReactIdenticon
       background="white"
       size={identiconSize}
-      string={address}
+      string={address.pkh}
       style={{
         borderRadius: 4,
       }}

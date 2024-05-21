@@ -5,6 +5,7 @@ export const TwitterIcon: React.FC<IconProps> = props => (
     width="20px"
     height="18px"
     fill="black"
+    data-testid="twitter-icon"
     viewBox="0 0 20 18"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

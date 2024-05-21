@@ -5,6 +5,7 @@ export const RedditIcon: React.FC<IconProps> = props => (
     width="24px"
     height="24px"
     fill="none"
+    data-testid="reddit-icon"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

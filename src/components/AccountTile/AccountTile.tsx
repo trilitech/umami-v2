@@ -135,7 +135,7 @@ export const AccountTile: React.FC<{
         padding={0}
         border="none"
         data-testid={`account-tile-${pkh}` + (isSelected ? "-selected" : "")}
-        icon={<AccountTileIcon addressKind={addressKind} />}
+        icon={<AccountTileIcon account={account} />}
         leftElement={<LabelAndAddress label={addressKind.label} pkh={pkh} />}
         rightElement={
           <Flex flexDirection="column">

@@ -5,6 +5,7 @@ export const FacebookIcon: React.FC<IconProps> = props => (
     width="28px"
     height="28px"
     fill="none"
+    data-testid="facebook-icon"
     viewBox="0 0 28 28"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

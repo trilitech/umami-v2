@@ -1,41 +1,49 @@
 import { AccountTileIcon } from "./AccountTileIcon";
+import { IDP } from "../../auth";
+import {
+  mockLedgerAccount,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+  mockSocialAccount,
+} from "../../mocks/factories";
+import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { AddressKind } from "../AddressTile/types";
+import { Account } from "../../types/Account";
 
-const fixture = (addressKind: AddressKind) => <AccountTileIcon addressKind={addressKind} />;
+const fixture = (account: Account) => <AccountTileIcon account={account} />;
 
-describe("<AddressTileIcon />", () => {
-  it("displays the mnemonic icon", () => {
-    render(fixture({ type: "mnemonic", pkh: "tz1", label: "label" }));
-    expect(screen.getByTestId("identicon")).toBeInTheDocument();
+describe("<AccountTileIcon />", () => {
+  it.each(["mnemonic", "secret_key"])("displays the %s icon", () => {
+    render(fixture(mockMnemonicAccount(0)));
+    expect(screen.getByTestId("identicon")).toBeVisible();
   });
 
-  it("displays the social icon", () => {
-    render(fixture({ type: "social", pkh: "tz1", label: "label" }));
-    expect(screen.getByTestId("social-icon")).toBeInTheDocument();
+  it.each([
+    "google" as const,
+    "facebook" as const,
+    "twitter" as const,
+    "reddit" as const,
+    "email" as const,
+  ])("displays the %s social icon", (idp: IDP) => {
+    render(fixture(mockSocialAccount(0, "account label", idp)));
+    expect(screen.getByTestId(`${idp}-icon`)).toBeVisible();
   });
 
   it("displays the ledger icon", () => {
-    render(fixture({ type: "ledger", pkh: "tz1", label: "label" }));
-    expect(screen.getByTestId("ledger-icon")).toBeInTheDocument();
+    const account = mockLedgerAccount(0);
+    addAccount(account);
+
+    render(fixture(account));
+
+    expect(screen.getByTestId("ledger-icon")).toBeVisible();
   });
 
   it("displays the multisig icon", () => {
-    render(fixture({ type: "multisig", pkh: "tz1", label: "label" }));
-    expect(screen.getByTestId("key-icon")).toBeInTheDocument();
-  });
+    const account = mockMultisigAccount(0);
+    addAccount(account);
 
-  it("displays the baker icon", () => {
-    render(fixture({ type: "baker", pkh: "tz1", label: "label" }));
-    expect(screen.getByTestId("baker-icon")).toBeInTheDocument();
-  });
+    render(fixture(account));
 
-  it("displays the contact icon", () => {
-    render(fixture({ type: "contact", pkh: "tz1", label: "label" }));
-    expect(screen.getByTestId("contact-icon")).toBeInTheDocument();
-  });
-  it("displays the unknown icon", () => {
-    render(fixture({ type: "unknown", pkh: "tz1", label: null }));
-    expect(screen.getByTestId("unknown-contact-icon")).toBeInTheDocument();
+    expect(screen.getByTestId("key-icon")).toBeVisible();
   });
 });

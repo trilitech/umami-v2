@@ -17,7 +17,6 @@ import { getLastDelegation } from "../../utils/tezos";
 import { accountIconGradient } from "../AccountTile/AccountTile";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 import { AddressPill } from "../AddressPill/AddressPill";
-import { useAddressKind } from "../AddressTile/useAddressKind";
 import { BuyTezForm } from "../BuyTez/BuyTezForm";
 import { DynamicModalContext } from "../DynamicModal";
 import { FormPage as DelegationFormPage } from "../SendFlow/Delegation/FormPage";
@@ -73,7 +72,6 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
 }) => {
   const isMultisig = account.type === "multisig";
   const { openWith } = useContext(DynamicModalContext);
-  const addressKind = useAddressKind(account.address);
   const network = useSelectedNetwork();
 
   const [delegation, setDelegation] = useState<Delegation | null>(null);
@@ -106,7 +104,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
       })}
       data-testid={`account-card-${account.address.pkh}`}
     >
-      <AccountTileIcon addressKind={addressKind} />
+      <AccountTileIcon account={account} />
       <Heading marginTop="24px" size="md">
         {account.label}
       </Heading>
