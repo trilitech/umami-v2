@@ -23,11 +23,11 @@ export const AccountTileBase: React.FC<
 > = ({ icon, leftElement, rightElement, ...flexProps }) => (
   <Flex
     alignItems="center"
-    height={90}
-    marginBottom={4}
-    padding={4}
+    height="90px"
+    marginBottom="16px"
+    padding="16px"
     border={`1px solid ${colors.gray[800]}`}
-    borderRadius={4}
+    borderRadius="16px"
     data-testid="account-tile-base"
     {...flexProps}
   >

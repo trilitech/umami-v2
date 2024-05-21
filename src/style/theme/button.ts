@@ -136,6 +136,16 @@ export const buttonTheme = defineStyleConfig({
         stroke: colors.green,
       },
     },
+    socialLogin: {
+      width: "48px",
+      height: "48px",
+      background: "white",
+      borderWidth: "0",
+      borderRadius: "full",
+      _hover: {
+        background: colors.gray[600],
+      },
+    },
   },
   defaultProps: {
     variant: "primary",

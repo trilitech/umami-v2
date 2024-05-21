@@ -9,17 +9,14 @@ export const OnboardWithEmailButton = ({ onAuth }: { onAuth: () => void }) => {
 
   return (
     <IconButton
-      width="48px"
-      background="white"
-      borderRadius="full"
-      _disabled={{ bg: colors.gray[900] }}
+      color="black"
+      _hover={{ color: "white", background: colors.gray[600] }}
       aria-label="Email SSO"
       data-testid="login-button-email"
-      icon={<EnvelopeIcon />}
+      icon={<EnvelopeIcon fill="currentColor" />}
       isLoading={isLoading}
       onClick={onboard}
-      size="lg"
-      variant="outline"
+      variant="socialLogin"
     />
   );
 };
