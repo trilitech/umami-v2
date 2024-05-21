@@ -17,6 +17,7 @@ import {
 import { TezosToolkit } from "@taquito/taquito";
 import React, { useContext } from "react";
 
+import { decodePayload } from "./decodePayload";
 import { WalletClient } from "./WalletClient";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { SignButton } from "../../components/SendFlow/SignButton";
@@ -43,7 +44,10 @@ export const SignPayloadRequestModal: React.FC<{
 
     await WalletClient.respond(response);
 
-    toast({ description: "Successfully submitted Beacon operation", status: "success" });
+    toast({
+      description: "Successfully submitted Beacon operation",
+      status: "success",
+    });
     onClose();
   };
 
@@ -59,6 +63,8 @@ export const SignPayloadRequestModal: React.FC<{
           {`${request.appMetadata.name}/dApp Pairing Request`}
         </Heading>
         <Box
+          overflowY="auto"
+          maxHeight="300px"
           padding="15px"
           border="1px solid"
           borderColor={colors.gray[500]}
@@ -66,7 +72,7 @@ export const SignPayloadRequestModal: React.FC<{
           backgroundColor={colors.gray[800]}
         >
           <Text color={colors.gray[450]} size="md">
-            {request.payload}
+            {decodePayload(request.payload)}
           </Text>
         </Box>
       </ModalBody>

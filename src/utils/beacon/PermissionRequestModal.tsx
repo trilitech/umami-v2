@@ -130,7 +130,7 @@ export const PermissionRequestModal: React.FC<{
       </ModalBody>
       <ModalFooter>
         <Button width="100%" isDisabled={!isValid} onClick={grant} size="lg">
-          Sign
+          Allow
         </Button>
       </ModalFooter>
     </ModalContent>

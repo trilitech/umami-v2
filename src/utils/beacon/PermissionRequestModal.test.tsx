@@ -44,7 +44,7 @@ beforeEach(() =>
 describe("<PermissionRequestModal />", () => {
   it("requires the account", async () => {
     render(<TestComponent request={request} />);
-    const grantButton = screen.getByRole("button", { name: "Sign" });
+    const grantButton = screen.getByRole("button", { name: "Allow" });
 
     expect(grantButton).toBeDisabled();
 
@@ -64,7 +64,7 @@ describe("<PermissionRequestModal />", () => {
     await act(() => user.type(input, account.address.pkh));
 
     // grant permission
-    const grantButton = screen.getByRole("button", { name: "Sign" });
+    const grantButton = screen.getByRole("button", { name: "Allow" });
     expect(grantButton).toBeEnabled();
     await act(() => user.click(grantButton));
 
@@ -89,7 +89,7 @@ describe("<PermissionRequestModal />", () => {
     await act(() => user.type(input, account.address.pkh));
 
     // grant permission
-    const grantButton = screen.getByRole("button", { name: "Sign" });
+    const grantButton = screen.getByRole("button", { name: "Allow" });
     expect(grantButton).toBeEnabled();
     await act(() => user.click(grantButton));
 
