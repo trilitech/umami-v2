@@ -55,7 +55,6 @@ export * from "./Reload";
 export * from "./Rotate";
 export * from "./Slash";
 export * from "./Sliders";
-export * from "./Social";
 export * from "./Tez";
 export * from "./ThreeDots";
 export * from "./Token";

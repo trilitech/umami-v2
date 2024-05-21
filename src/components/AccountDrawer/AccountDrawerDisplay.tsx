@@ -104,7 +104,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
       })}
       data-testid={`account-card-${account.address.pkh}`}
     >
-      <AccountTileIcon account={account} />
+      <AccountTileIcon account={account} size="lg" />
       <Heading marginTop="24px" size="md">
         {account.label}
       </Heading>

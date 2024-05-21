@@ -6,12 +6,12 @@ import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";
 
-beforeEach(() => addAccount(mockMnemonicAccount(1, "Test account label")));
+const account = mockMnemonicAccount(1, "Test account label");
+
+beforeEach(() => addAccount(account));
 
 describe("<AccountSmallTile />", () => {
   it("shows account label", () => {
-    const account = mockImplicitAccount(1);
-
     render(<AccountSmallTile account={account} />);
 
     expect(screen.getByTestId("account-small-tile-label")).toHaveTextContent("Test account label");

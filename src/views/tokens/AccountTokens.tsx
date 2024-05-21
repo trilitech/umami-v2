@@ -47,7 +47,7 @@ const Header: React.FC<{
       data-testid="header"
       paddingX="30px"
     >
-      <AccountTileIcon account={account} />
+      <AccountTileIcon account={account} size="lg" />
 
       <Flex justifyContent="space-between" flex={1}>
         <Box marginLeft="16px" data-testid="account-identifier">

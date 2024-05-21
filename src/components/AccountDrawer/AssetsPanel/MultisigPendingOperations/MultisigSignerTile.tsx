@@ -81,7 +81,7 @@ export const MultisigSignerTile: React.FC<{
       padding="15px"
       borderRadius="8px"
       backgroundColor={colors.gray[700]}
-      icon={<AddressTileIcon addressKind={addressKind} />}
+      icon={<AddressTileIcon addressKind={addressKind} size="lg" />}
       leftElement={<LabelAndAddress label={addressKind.label} pkh={addressKind.pkh} />}
       rightElement={
         <MultisigActionButton

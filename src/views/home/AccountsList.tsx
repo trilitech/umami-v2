@@ -48,7 +48,7 @@ export const AccountsList = () => {
               color={colors.gray[400]}
               textAlign="center"
             >
-              <KeyIcon marginRight="4px" stroke={colors.gray[450]} />
+              <KeyIcon marginRight="4px" />
               Create New Multisig
             </Text>
           </Button>

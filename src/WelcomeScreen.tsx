@@ -44,7 +44,7 @@ const SliderItems: Item[] = [
         </Text>
       </>
     ),
-    icon: <KeyIcon width="32px" height="32px" stroke={colors.gray[450]} strokeWidth="0.9" />,
+    icon: <KeyIcon width="32px" height="32px" strokeWidth="0.9" />,
     image: MultisigImage,
   },
   {

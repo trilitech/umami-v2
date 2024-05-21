@@ -1,10 +1,13 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
+import colors from "../../style/colors";
+
 export const KeyIcon: React.FC<IconProps> = props => (
   <Icon
     width="18px"
     height="18px"
     fill="none"
+    stroke={colors.gray[450]}
     data-testid="key-icon"
     strokeWidth="1.2"
     viewBox="0 0 18 18"

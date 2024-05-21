@@ -6,33 +6,21 @@ import {
   UnknownAddress,
 } from "../AddressTile/types";
 
-export type AddressKindType =
-  | "implicit"
-  | "multisig"
-  | "fa1.2"
-  | "fa2"
-  | "baker"
-  | "contact"
-  | "unknown";
-
-type AddressKindBase = {
-  type: AddressKindType;
-  pkh: RawPkh;
-  label: string | null;
-};
-
-export type OwnedImplicitAddress = AddressKindBase & {
+export type OwnedImplicitAddress = {
   type: "implicit";
+  pkh: RawPkh;
   label: string;
 };
 
-export type FA12Address = AddressKindBase & {
+export type FA12Address = {
   type: "fa1.2";
+  pkh: RawPkh;
   label: null;
 };
 
-export type FA2Address = AddressKindBase & {
+export type FA2Address = {
   type: "fa2";
+  pkh: RawPkh;
   label: null;
 };
 

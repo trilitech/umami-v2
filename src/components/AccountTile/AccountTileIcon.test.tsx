@@ -10,7 +10,7 @@ import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { Account } from "../../types/Account";
 
-const fixture = (account: Account) => <AccountTileIcon account={account} />;
+const fixture = (account: Account) => <AccountTileIcon account={account} size="sm" />;
 
 describe("<AccountTileIcon />", () => {
   it.each(["mnemonic", "secret_key"])("displays the %s icon", () => {
