@@ -20,6 +20,7 @@ type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   label?: string;
   placeholder?: string;
   required?: string | boolean;
+  minLength?: RegisterOptions<T, U>["minLength"];
   validate?: RegisterOptions<T, U>["validate"];
 } & InputProps;
 
@@ -29,11 +30,13 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   label = "Password",
   placeholder = "Enter your password",
   required = "Password is required",
+  minLength = MIN_LENGTH,
   validate,
   ...rest
 }: PasswordInputProps<T, U>) => {
   const { register } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
   return (
     <>
       <FormLabel>{label}</FormLabel>
@@ -45,10 +48,13 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           type={showPassword ? "text" : "password"}
           {...register(inputName, {
             required,
-            minLength: {
-              value: required ? MIN_LENGTH : 0,
-              message: `Your password must be at least ${MIN_LENGTH} characters long`,
-            },
+            minLength:
+              minLength && required
+                ? {
+                    value: minLength,
+                    message: `Your password must be at least ${minLength} characters long`,
+                  }
+                : undefined,
             validate,
           })}
           {...rest}
