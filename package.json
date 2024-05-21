@@ -149,7 +149,7 @@
     "typescript": "5.4.5",
     "vite": "^5.2.11",
     "vite-plugin-checker": "^0.6.4",
-    "vite-plugin-node-polyfills": "^0.21.0",
+    "vite-plugin-node-polyfills": "^0.22.0",
     "zipurl": "^0.2.18",
     "zod": "^3.23.8"
   },
