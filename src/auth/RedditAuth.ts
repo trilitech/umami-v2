@@ -5,7 +5,8 @@ import type { IDP } from "./types";
 export class RedditAuth extends Auth {
   idpName: IDP = "reddit";
   clientId = "zyQ9tnKfdg3VNyj6MGhZq4dHbBzbmEvl";
-  protected override async login() {
+
+  override async login() {
     const client = await this.getTorusClient();
 
     return client.triggerAggregateLogin({

@@ -6,7 +6,7 @@ export class TwitterAuth extends Auth {
   idpName: IDP = "twitter";
   clientId = "3aCoxh3pw8g8JeFsdlJNUGwdgtLwdwgE";
 
-  protected override async login() {
+  override async login() {
     const client = await this.getTorusClient();
 
     return client.triggerLogin({

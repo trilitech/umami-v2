@@ -5,7 +5,7 @@ export class GoogleAuth extends Auth {
   idpName: IDP = "google";
   clientId = "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com";
 
-  protected override async login() {
+  override async login() {
     const client = await this.getTorusClient();
 
     return client.triggerAggregateLogin({

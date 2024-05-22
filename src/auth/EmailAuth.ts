@@ -6,7 +6,7 @@ export class EmailAuth extends Auth {
   clientId = "LTg6fVsacafGmhv14TZlrWF1EavwQoDZ";
   idpName: IDP = "email";
 
-  protected override async login() {
+  override async login() {
     const client = await this.getTorusClient();
 
     return client.triggerAggregateLogin({

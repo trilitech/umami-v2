@@ -5,7 +5,7 @@ export class FacebookAuth extends Auth {
   idpName: IDP = "facebook";
   clientId = "523634882377310";
 
-  protected override async login() {
+  override async login() {
     const client = await this.getTorusClient();
 
     return client.triggerLogin({

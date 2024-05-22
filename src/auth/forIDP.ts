@@ -5,6 +5,9 @@ import { RedditAuth } from "./RedditAuth";
 import { TwitterAuth } from "./TwitterAuth";
 import type { IDP } from "./types";
 
+/**
+ * Returns the Auth instance for the given IDP
+ */
 export const forIDP = (idp: IDP) => {
   switch (idp) {
     case "google":

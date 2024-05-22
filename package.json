@@ -27,7 +27,7 @@
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "test": "cross-env TZ=CET jest",
-    "test:watch": "yarn test --watch",
+    "test:watch": "cross-env DEV=true yarn test --watch",
     "test:e2e": "cross-env TS_NODE_PROJECT=tsconfig.e2e.json cucumber-js",
     "test:e2e:focus": "yarn test:e2e --tags='@focus'",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",

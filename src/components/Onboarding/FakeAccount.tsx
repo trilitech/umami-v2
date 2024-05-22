@@ -18,7 +18,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ pkh: string; name: string; idp?: string }>({ mode: "onBlur" });
+  } = useForm<{ pkh: string; name: string; idp?: IDP }>({ mode: "onBlur" });
   const restoreLedger = useRestoreLedger();
   const restoreSocial = useRestoreSocial();
 

@@ -6,6 +6,11 @@ import { IDP } from "./types";
 const WEB3_AUTH_CLIENT_ID =
   "BBQoFIabI50S1-0QsGHGTM4qID_FDjja0ZxIxKPyFqc0El--M-EG0c2giaBYVTVVE6RC9WCUzCJyW24aJrR_Lzc";
 
+/**
+ * Abstract class that's responsible for the social auth process
+ *
+ * the details are defined in the subclasses.
+ */
 export abstract class Auth {
   abstract idpName: IDP;
   abstract clientId: string;
@@ -25,7 +30,7 @@ export abstract class Auth {
     return torus;
   }
 
-  protected abstract login(): Promise<TorusAggregateLoginResponse | TorusLoginResponse>;
+  abstract login(): Promise<TorusAggregateLoginResponse | TorusLoginResponse>;
 
   async getCredentials(): Promise<{
     secretKey: string;
