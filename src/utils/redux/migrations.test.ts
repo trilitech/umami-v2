@@ -12,11 +12,11 @@ import * as helpers from "../multisig/helpers";
 
 describe("migrations", () => {
   describe("main migrations", () => {
-    it("0", () => {
+    test("0", () => {
       expect(mainStoreMigrations[0]({ multisigs: {} })).toEqual({ multisigs: { labelsMap: {} } });
     });
 
-    it("1", () => {
+    test("1", () => {
       expect(mainStoreMigrations[1]({})).toEqual({
         announcement: {
           html: "",
@@ -33,7 +33,7 @@ describe("migrations", () => {
       ).toEqual({ assets: { transfers: {} } });
     });
 
-    it("6", async () => {
+    test("6", async () => {
       const implicitPkh = mockImplicitAddress(0).pkh;
       const mainnetPkh = mockContractAddress(0).pkh;
       const ghostnetPkh = mockContractAddress(1).pkh;
@@ -79,10 +79,30 @@ describe("migrations", () => {
         })
       );
     });
+
+    test("7", () => {
+      const initialState = {
+        assets: {
+          balances: {
+            mutez: {
+              [mockImplicitAddress(0).pkh]: 0,
+              [mockImplicitAddress(1).pkh]: 1,
+            },
+            tokens: {
+              [mockImplicitAddress(0).pkh]: [],
+            },
+          },
+          delegationLevels: {
+            [mockImplicitAddress(1).pkh]: 1,
+          },
+        },
+      };
+      expect(mainStoreMigrations[7](initialState)).toEqual({ assets: { accountStates: {} } });
+    });
   });
 
   describe("account migrations", () => {
-    it("2", () => {
+    test("2", () => {
       expect(
         accountsMigrations[2]({ items: [{ ...mockSecretKeyAccount(0), curve: undefined }] })
       ).toEqual({
@@ -95,7 +115,7 @@ describe("migrations", () => {
       });
     });
 
-    it("4", () => {
+    test("4", () => {
       const ledgerAcc = { ...mockLedgerAccount(0), derivationPathTemplate: undefined };
       const ledgerAccWithLongPath = {
         ...mockLedgerAccount(1),

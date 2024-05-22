@@ -5,7 +5,7 @@ import { store } from "../../utils/redux/store";
 
 describe("<OperationStatus />", () => {
   it("renders a checkmark if the operation is applied and the block is finalised", () => {
-    store.dispatch(assetsActions.updateBlockLevel(2));
+    store.dispatch(assetsActions.updateBlock({ level: 2, cycle: 2 }));
     render(<OperationStatus level={0} status="applied" />);
 
     expect(screen.getByTestId("checkmark")).toBeInTheDocument();
@@ -24,7 +24,7 @@ describe("<OperationStatus />", () => {
   it.each(["failed", "backtracked", "skipped"])(
     "renders a crossed circle if the operation has status: %s",
     status => {
-      store.dispatch(assetsActions.updateBlockLevel(2));
+      store.dispatch(assetsActions.updateBlock({ level: 2, cycle: 0 }));
       render(<OperationStatus level={0} status={status} />);
 
       expect(screen.queryByTestId("checkmark")).not.toBeInTheDocument();

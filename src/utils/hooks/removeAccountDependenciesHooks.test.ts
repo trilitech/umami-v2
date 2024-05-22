@@ -141,10 +141,28 @@ describe("useRemoveDependenciesAndMultisigs", () => {
 
     it("removes assets data directly related to the given accounts", () => {
       store.dispatch(
-        assetsActions.updateTezBalance([
-          { address: account0.address.pkh, balance: 11, delegationLevel: 1 },
-          { address: account1.address.pkh, balance: 22, delegationLevel: 2 },
-          { address: account2.address.pkh, balance: 33, delegationLevel: 3 },
+        assetsActions.updateAccountStates([
+          {
+            address: account0.address.pkh,
+            balance: 11,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          },
+          {
+            address: account1.address.pkh,
+            balance: 22,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          },
+          {
+            address: account2.address.pkh,
+            balance: 33,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          },
         ])
       );
 
@@ -153,11 +171,13 @@ describe("useRemoveDependenciesAndMultisigs", () => {
       } = renderHook(() => useRemoveDependenciesAndMultisigs());
       act(() => removeAccountsDependencies([account0, account2]));
 
-      expect(store.getState().assets.balances.mutez).toEqual({
-        [account1.address.pkh]: "22",
-      });
-      expect(store.getState().assets.delegationLevels).toEqual({
-        [account1.address.pkh]: 2,
+      expect(store.getState().assets.accountStates).toEqual({
+        [account1.address.pkh]: {
+          balance: 22,
+          stakedBalance: 1,
+          unstakedBalance: 1,
+          delegate: null,
+        },
       });
     });
   });
@@ -263,10 +283,28 @@ describe("useRemoveDependenciesAndMultisigs", () => {
 
     it("removes assets data directly related to the obsolete multisig accounts", () => {
       store.dispatch(
-        assetsActions.updateTezBalance([
-          { address: multisig0.address.pkh, balance: 11, delegationLevel: 1 },
-          { address: multisig1.address.pkh, balance: 22, delegationLevel: 2 },
-          { address: multisig2.address.pkh, balance: 33, delegationLevel: 3 },
+        assetsActions.updateAccountStates([
+          {
+            address: multisig0.address.pkh,
+            balance: 11,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          },
+          {
+            address: multisig1.address.pkh,
+            balance: 22,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          },
+          {
+            address: multisig2.address.pkh,
+            balance: 33,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          },
         ])
       );
 
@@ -275,11 +313,13 @@ describe("useRemoveDependenciesAndMultisigs", () => {
       } = renderHook(() => useRemoveDependenciesAndMultisigs());
       act(() => removeAccountsDependencies([account0, account1]));
 
-      expect(store.getState().assets.balances.mutez).toEqual({
-        [multisig1.address.pkh]: "22",
-      });
-      expect(store.getState().assets.delegationLevels).toEqual({
-        [multisig1.address.pkh]: 2,
+      expect(store.getState().assets.accountStates).toEqual({
+        [multisig1.address.pkh]: {
+          balance: 22,
+          stakedBalance: 1,
+          unstakedBalance: 1,
+          delegate: null,
+        },
       });
     });
   });

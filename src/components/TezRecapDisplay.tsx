@@ -6,7 +6,7 @@ import colors from "../style/colors";
 import { prettyTezAmount } from "../utils/format";
 
 export const TezRecapDisplay: React.FC<{
-  balance: string;
+  balance: BigNumber | number | string;
   dollarBalance: BigNumber | undefined;
   center?: boolean;
 }> = props => (

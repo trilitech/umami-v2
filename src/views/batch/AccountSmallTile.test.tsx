@@ -5,6 +5,7 @@ import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";
+import { TzktAccount } from "../../utils/tezos";
 
 const account = mockMnemonicAccount(1, "Test account label");
 
@@ -38,7 +39,9 @@ describe("<AccountSmallTile />", () => {
   it("displays non-empty balance", () => {
     const account = mockImplicitAccount(1);
     store.dispatch(
-      assetsActions.updateTezBalance([{ address: account.address.pkh, balance: 1234567 }])
+      assetsActions.updateAccountStates([
+        { address: account.address.pkh, balance: 1234567 },
+      ] as TzktAccount[])
     );
 
     render(<AccountSmallTile account={account} />);

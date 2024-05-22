@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { compact, groupBy, mapValues } from "lodash";
+import { compact, groupBy, omit } from "lodash";
 
 import { accountsSlice } from "./accountsSlice/accountsSlice";
-import { RawPkh } from "../../../types/Address";
+import { RawPkh, TzktAlias } from "../../../types/Address";
 import { Delegate } from "../../../types/Delegate";
 import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";
 import { TokenTransfer } from "../../../types/Transfer";
@@ -10,14 +10,20 @@ import { TzktAccount } from "../../tezos";
 
 type TransactionId = number;
 
+type AccountState = {
+  delegate: TzktAlias | null;
+  balance: number;
+  stakedBalance: number;
+  unstakedBalance: number;
+  tokens: TokenBalance[];
+};
+
 type State = {
-  blockLevel: number | null;
-  balances: {
-    mutez: Record<string, string | undefined>;
-    tokens: Record<string, TokenBalance[] | undefined>;
+  block: {
+    level?: number;
+    cycle?: number;
   };
-  // TODO: This is a crutch, has to be merged with balances.mutez into an account state
-  delegationLevels: Record<string, number | undefined>;
+  accountStates: Record<string, AccountState | undefined>;
   transfers: {
     tokens: Record<TransactionId, TokenTransfer | undefined>;
   };
@@ -29,13 +35,9 @@ type State = {
 };
 
 export const initialState: State = {
-  blockLevel: null,
-  balances: {
-    mutez: {},
-    tokens: {},
-  },
+  block: {},
   transfers: { tokens: {} },
-  delegationLevels: {},
+  accountStates: {},
   bakers: [],
   conversionRate: undefined,
   refetchTrigger: 0,
@@ -47,51 +49,52 @@ export const assetsSlice = createSlice({
   name: "assets",
   initialState,
   // Reset assets state if accounts are reset
-  extraReducers: builder =>
-    // @ts-ignore: TS2589 Type instantiation is excessively deep and possibly infinite
-    builder.addCase(accountsSlice.actions.reset, () => initialState),
+  extraReducers: builder => builder.addCase(accountsSlice.actions.reset, () => initialState),
   reducers: {
     reset: () => initialState,
-    updateBlockLevel: (state, { payload }: { payload: number }) => {
-      state.blockLevel = payload;
+    updateBlock: (state, { payload }: { payload: { level: number; cycle: number } }) => {
+      state.block = payload;
     },
     // TODO: it might be growing "infinitely" when a user is scrolling through their operations
     // but it doesn't have to be stored in localStorage (check how it works if the app is closed and opened again)
     updateTokenTransfers: (state, { payload: transfers }: { payload: TokenTransfer[] }) => {
       transfers.forEach(transfer => {
         // these token transfers are fetched by transaction id and it's definitely present
-        state.transfers.tokens[transfer.transactionId as number] = transfer;
+        state.transfers.tokens[transfer.transactionId!] = transfer;
       });
     },
 
-    updateTezBalance: (state, { payload }: { payload: TzktAccount[] }) => {
-      state.balances.mutez = payload.reduce(
-        (acc, accountInfo) => ({ ...acc, [accountInfo.address]: String(accountInfo.balance) }),
-        {}
-      );
-      state.delegationLevels = payload.reduce(
-        (acc, accountInfo) => ({ ...acc, [accountInfo.address]: accountInfo.delegationLevel }),
-        {}
-      );
+    updateAccountStates: (state, { payload }: { payload: TzktAccount[] }) => {
+      payload.forEach(accountInfo => {
+        state.accountStates[accountInfo.address] = {
+          ...state.accountStates[accountInfo.address],
+          ...omit(accountInfo, "address"),
+        } as AccountState;
+      });
     },
 
     updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);
-      state.balances.tokens = mapValues(groupedByPkh, rawTokenBalances =>
-        compact(rawTokenBalances.map(fromRaw)).map(({ balance, contract, tokenId, lastLevel }) => ({
-          balance,
-          contract,
-          tokenId,
-          lastLevel,
-        }))
-      );
+
+      for (const [pkh, rawTokenBalances] of Object.entries(groupedByPkh)) {
+        const accountTokenBalances = compact(rawTokenBalances.map(fromRaw)).map(
+          ({ balance, contract, tokenId, lastLevel }) => ({
+            balance,
+            contract,
+            tokenId,
+            lastLevel,
+          })
+        );
+        state.accountStates[pkh] = {
+          ...state.accountStates[pkh],
+          tokens: accountTokenBalances,
+        } as AccountState;
+      }
     },
 
     removeAccountsData: (state, { payload: pkhs }: { payload: RawPkh[] }) => {
       pkhs.forEach(pkh => {
-        delete state.balances.mutez[pkh];
-        delete state.balances.tokens[pkh];
-        delete state.delegationLevels[pkh];
+        delete state.accountStates[pkh];
       });
     },
 

@@ -21,6 +21,7 @@ import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { multisigsSlice } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
+import { TzktAccount } from "../tezos";
 
 describe("getAccountDataHooks", () => {
   describe("useGetAccountsByType", () => {
@@ -107,10 +108,10 @@ describe("getAccountDataHooks", () => {
       store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
 
       store.dispatch(
-        assetsActions.updateTezBalance([
+        assetsActions.updateAccountStates([
           { address: mockImplicitAccount(1).address.pkh, balance: 5 },
           { address: mockImplicitAccount(2).address.pkh, balance: 1 },
-        ])
+        ] as TzktAccount[])
       );
 
       const { result } = renderHook(() => useGetBestSignerForAccount());

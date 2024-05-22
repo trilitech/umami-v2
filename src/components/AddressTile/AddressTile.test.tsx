@@ -5,6 +5,7 @@ import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";
+import { TzktAccount } from "../../utils/tezos";
 
 describe("<AddressTileIcon />", () => {
   it("displays label", () => {
@@ -74,8 +75,8 @@ describe("<AddressTileIcon />", () => {
       const account = mockMnemonicAccount(0);
       addAccount(account);
       store.dispatch(
-        assetsActions.updateTezBalance([
-          { address: mockMnemonicAccount(0).address.pkh, balance: 5000000 },
+        assetsActions.updateAccountStates([
+          { address: mockMnemonicAccount(0).address.pkh, balance: 5000000 } as TzktAccount,
         ])
       );
 
@@ -90,8 +91,8 @@ describe("<AddressTileIcon />", () => {
       const account = mockMnemonicAccount(0);
       addAccount(account);
       store.dispatch(
-        assetsActions.updateTezBalance([
-          { address: mockMnemonicAccount(0).address.pkh, balance: 5000000 },
+        assetsActions.updateAccountStates([
+          { address: mockMnemonicAccount(0).address.pkh, balance: 5000000 } as TzktAccount,
         ])
       );
 

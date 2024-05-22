@@ -7,8 +7,11 @@ import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { fullId, thumbnailUri } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
-import { useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
-import { useAppSelector } from "../../utils/redux/hooks";
+import {
+  useGetAccountBalance,
+  useGetAccountDelegate,
+  useGetAccountNFTs,
+} from "../../utils/hooks/assetsHooks";
 import { getIPFSurl, sortedByLastUpdate } from "../../utils/token/utils";
 import { SelectedAccountContext } from "../../views/home/SelectedAccountContext";
 import { useAddressKind } from "../AddressTile/useAddressKind";
@@ -103,20 +106,14 @@ export const accountIconGradient = ({
 
 export const AccountTile: React.FC<{
   account: Account;
-  balance: string | undefined;
-}> = ({ account, balance }) => {
+}> = ({ account }) => {
+  const pkh = account.address.pkh;
   const { selectedAccount, selectAccount } = useContext(SelectedAccountContext);
-  const isSelected = selectedAccount?.address.pkh === account.address.pkh;
-
+  const isSelected = selectedAccount?.address.pkh === pkh;
   const addressKind = useAddressKind(account.address);
-  const {
-    address: { pkh },
-  } = account;
-  // TODO: add a test for it!
-  const isDelegating = !!useAppSelector(s => s.assets.delegationLevels)[pkh];
-
-  const getNFTs = useGetAccountNFTs();
-  const nfts = sortedByLastUpdate(getNFTs(pkh));
+  const balance = useGetAccountBalance()(pkh);
+  const currentDelegate = useGetAccountDelegate()(pkh);
+  const nfts = sortedByLastUpdate(useGetAccountNFTs()(pkh));
 
   return (
     <Box
@@ -163,7 +160,7 @@ export const AccountTile: React.FC<{
             >
               {/* crutch to make some the same padding at the top */}
               {/* TODO: split it into separate components instead of right/left elements */}
-              {isDelegating ? "Delegated" : <>&nbsp;</>}
+              {currentDelegate ? "Delegated" : <>&nbsp;</>}
             </Text>
           </Flex>
         }

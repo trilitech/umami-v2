@@ -21,7 +21,12 @@ import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
-import { DelegationOperation, TzktCombinedOperation, getLastDelegation } from "../../utils/tezos";
+import {
+  DelegationOperation,
+  TzktAccount,
+  TzktCombinedOperation,
+  getLastDelegation,
+} from "../../utils/tezos";
 import * as useGetOperationsModule from "../../views/operations/useGetOperations";
 
 import { AccountCard } from ".";
@@ -31,7 +36,7 @@ jest.mock("../../utils/tezos", () => ({
   getLastDelegation: jest.fn(),
 }));
 
-const { updateTezBalance, updateTokenBalance } = assetsSlice.actions;
+const { updateAccountStates, updateTokenBalance } = assetsSlice.actions;
 
 const selectedAccount = mockMnemonicAccount(0);
 const pkh = selectedAccount.address.pkh;
@@ -74,7 +79,7 @@ describe("<AccountDrawerDisplay />", () => {
   });
 
   it("displays account tez balance", async () => {
-    store.dispatch(updateTezBalance([{ address: pkh, balance: 1234554321 }]));
+    store.dispatch(updateAccountStates([{ address: pkh, balance: 1234554321 } as TzktAccount]));
 
     render(<AccountCard accountPkh={pkh} />);
 
@@ -163,7 +168,9 @@ describe("<AccountDrawerDisplay />", () => {
     const SELECTED_ACCOUNT_BALANCE = 33200000000;
 
     beforeEach(() => {
-      store.dispatch(updateTezBalance([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }]));
+      store.dispatch(
+        updateAccountStates([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE } as TzktAccount])
+      );
     });
 
     it("is not selected by default", async () => {

@@ -19,36 +19,32 @@ import { SelectedAccountContext } from "../../views/home/SelectedAccountContext"
 describe("<AccountTile />", () => {
   describe.each([
     {
-      balance: "3",
       iconTestId: "identicon",
       account: mockMnemonicAccount(0),
     },
     {
-      balance: "3",
       iconTestId: "ledger-icon",
       account: mockLedgerAccount(0),
     },
     {
-      balance: "3",
       iconTestId: "google-icon",
       account: mockSocialAccount(0),
     },
     {
-      balance: "3",
       iconTestId: "key-icon",
       account: mockMultisigAccount(0),
     },
-  ])("$account.type account", ({ balance, iconTestId, account }) => {
+  ])("$account.type account", ({ iconTestId, account }) => {
     beforeEach(() => addAccount(account));
 
     it("renders icon", () => {
-      render(<AccountTile account={account} balance={balance} />);
+      render(<AccountTile account={account} />);
 
       expect(screen.getByTestId(iconTestId)).toBeInTheDocument();
     });
 
     it("renders label", () => {
-      render(<AccountTile account={account} balance={balance} />);
+      render(<AccountTile account={account} />);
 
       expect(screen.getByText(account.label)).toBeInTheDocument();
     });
@@ -61,7 +57,7 @@ describe("<AccountTile />", () => {
           <SelectedAccountContext.Provider
             value={{ selectAccount: jest.fn(), selectedAccount: null }}
           >
-            <AccountTile account={account} balance={balance} />
+            <AccountTile account={account} />
           </SelectedAccountContext.Provider>
         );
 
@@ -74,7 +70,7 @@ describe("<AccountTile />", () => {
           <SelectedAccountContext.Provider
             value={{ selectAccount: jest.fn(), selectedAccount: mockImplicitAccount(1) }}
           >
-            <AccountTile account={account} balance={balance} />
+            <AccountTile account={account} />
           </SelectedAccountContext.Provider>
         );
 
@@ -87,7 +83,7 @@ describe("<AccountTile />", () => {
           <SelectedAccountContext.Provider
             value={{ selectedAccount: account, selectAccount: jest.fn() }}
           >
-            <AccountTile account={account} balance={balance} />
+            <AccountTile account={account} />
           </SelectedAccountContext.Provider>
         );
 
@@ -101,7 +97,7 @@ describe("<AccountTile />", () => {
 
         render(
           <SelectedAccountContext.Provider value={{ selectedAccount: null, selectAccount: spy }}>
-            <AccountTile account={account} balance={balance} />
+            <AccountTile account={account} />
           </SelectedAccountContext.Provider>
         );
 
@@ -113,7 +109,7 @@ describe("<AccountTile />", () => {
 
     describe("NFTs", () => {
       it("doesn't render NFTs if none are owned by the account", () => {
-        render(<AccountTile account={account} balance={balance} />);
+        render(<AccountTile account={account} />);
 
         expect(screen.queryByTestId("nfts-list")).not.toBeInTheDocument();
       });
@@ -128,7 +124,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile account={account} balance={balance} />);
+        render(<AccountTile account={account} />);
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
       });
@@ -147,7 +143,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile account={account} balance={balance} />);
+        render(<AccountTile account={account} />);
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
         expect(screen.getAllByTestId("nft-link")).toHaveLength(6);
@@ -173,7 +169,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile account={account} balance={balance} />);
+        render(<AccountTile account={account} />);
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
         const urlPrefix = `#/home/${account.address.pkh}/${balances[0].token.contract.address}`;

@@ -1,5 +1,4 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import type { BigNumber } from "bignumber.js";
 import { noop } from "lodash";
 import { ReactElement, useContext, useEffect, useState } from "react";
 
@@ -11,6 +10,7 @@ import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { Delegation, makeDelegation } from "../../types/Delegation";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
+import { useGetAccountBalance, useGetDollarBalance } from "../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { getLastDelegation } from "../../utils/tezos";
@@ -26,8 +26,6 @@ type Props = {
   onSend: () => void;
   onReceive?: () => void;
   onBuyTez?: () => void;
-  balance: string | undefined;
-  dollarBalance: BigNumber | undefined;
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;
@@ -64,8 +62,6 @@ const RoundButton: React.FC<{
 export const AccountDrawerDisplay: React.FC<Props> = ({
   onSend,
   onReceive = () => {},
-  balance,
-  dollarBalance,
   tokens,
   nfts,
   account,
@@ -73,16 +69,18 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   const isMultisig = account.type === "multisig";
   const { openWith } = useContext(DynamicModalContext);
   const network = useSelectedNetwork();
-
+  const pkh = account.address.pkh;
   const [delegation, setDelegation] = useState<Delegation | null>(null);
   const { handleAsyncAction } = useAsyncActionHandler();
+  const balance = useGetAccountBalance()(pkh);
+  const dollarBalance = useGetDollarBalance()(pkh);
 
   useEffect(() => {
     handleAsyncAction(async () => {
-      const tzktDelegation = await getLastDelegation(account.address.pkh, network);
+      const tzktDelegation = await getLastDelegation(pkh, network);
       tzktDelegation && setDelegation(makeDelegation(tzktDelegation));
     }).catch(noop);
-  }, [account.address.pkh, handleAsyncAction, network]);
+  }, [pkh, handleAsyncAction, network]);
 
   return (
     <Flex

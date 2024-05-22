@@ -3,7 +3,7 @@ import {
   OffsetParameter,
   SortParameter,
   accountsGet,
-  blocksGetCount,
+  blocksGet,
   delegatesGet,
   operationsGetDelegations,
   operationsGetOriginations,
@@ -19,10 +19,17 @@ import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { TokenTransfer } from "../../types/Transfer";
+import { RawTzktBlock } from "../tzkt/types";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
-export type TzktAccount = { address: RawPkh; balance: number; delegationLevel?: number };
+export type TzktAccount = {
+  address: RawPkh;
+  balance: number;
+  stakedBalance: number;
+  unstakedBalance: number;
+  delegate: TzktAlias | null;
+};
 
 export type DelegationOperation = tzktApi.DelegationOperation & {
   id: number;
@@ -72,7 +79,7 @@ export const getAccounts = async (pkhs: string[], network: Network) =>
     accountsGet(
       {
         address: { in: [pkhs.join(",")] },
-        select: { fields: ["address,balance,delegationLevel"] },
+        select: { fields: ["address,balance,delegate,stakedBalance,unstakedBalance"] },
       },
       {
         baseUrl: network.tzktApiUrl,
@@ -238,13 +245,19 @@ export const getLastDelegation = (address: RawPkh, network: Network) =>
 export const getTezosPriceInUSD = () =>
   withRateLimit(() => tzktApi.quotesGetLast().then(quote => quote.usd));
 
-export const getLatestBlockLevel = async (network: Network): Promise<number> =>
-  withRateLimit(
-    async () =>
-      await blocksGetCount({
+export const getLatestBlock = async (network: Network): Promise<RawTzktBlock> =>
+  withRateLimit(async () => {
+    const [block] = await blocksGet(
+      {
+        limit: 1,
+        sort: { desc: "id" },
+      },
+      {
         baseUrl: network.tzktApiUrl,
-      })
-  );
+      }
+    );
+    return { level: block.level!, cycle: block.cycle! };
+  });
 
 export const getBakers = async (
   network: Network

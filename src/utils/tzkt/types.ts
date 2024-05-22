@@ -7,6 +7,11 @@ export type RawTzktAccountType =
   | "smart_rollup"
   | "empty";
 
+export type RawTzktBlock = {
+  level: number;
+  cycle: number;
+};
+
 export type RawTzktGetSameMultisigsItem = {
   address: string;
   storage: {

@@ -15,29 +15,58 @@ import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
 import { TokenTransferOperation } from "../tezos";
 
-const useBlockLevel = () => useAppSelector(s => s.assets.blockLevel);
+export const useGetAccountStates = () => useAppSelector(s => s.assets.accountStates);
+
+export const useGetAccountState = () => {
+  const accountStates = useGetAccountStates();
+  return (pkh: string) => accountStates[pkh];
+};
+
+export const useGetAccountDelegate = () => {
+  const getAccountState = useGetAccountState();
+  return (pkh: string) => getAccountState(pkh)?.delegate;
+};
+
+export const useGetAccountBalance = () => {
+  const getAccountState = useGetAccountState();
+  return (pkh: string) => getAccountState(pkh)?.balance;
+};
+
+export const useGetAccountStakedBalance = () => {
+  const getAccountState = useGetAccountState();
+  return (pkh: string) => getAccountState(pkh)?.stakedBalance;
+};
+
+export const useGetAccountUnstakedBalance = () => {
+  const getAccountState = useGetAccountState();
+  return (pkh: string) => getAccountState(pkh)?.unstakedBalance;
+};
 
 // Tenderbake guarantees block finality after 2 confirmations
 export const useIsBlockFinalised = (level: number) => {
-  const currentLevel = useBlockLevel();
+  const currentLevel = useAppSelector(s => s.assets.block.level);
 
-  return currentLevel !== null ? currentLevel - level >= 2 : null;
+  return currentLevel ? currentLevel - level >= 2 : null;
 };
+
+export const useGetCurrentCycle = () => useAppSelector(s => s.assets.block.cycle);
 
 export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
   const getAccountNFTs = useGetAccountNFTs();
-  const tokenBalancesByAddress = useAppSelector(s => s.assets.balances.tokens);
-  const addresses = Object.keys(tokenBalancesByAddress);
-  return fromPairs(addresses.map(address => [address, getAccountNFTs(address)]));
+  const accountStates = useGetAccountStates();
+
+  return fromPairs(Object.keys(accountStates).map(address => [address, getAccountNFTs(address)]));
 };
 
 const useGetAccountAssets = () => {
   const getToken = useGetToken();
-  const ownerToTokenBalances = useAppSelector(s => s.assets.balances.tokens);
+  const getAccountState = useGetAccountState();
+
   return (pkh: string): TokenBalanceWithToken[] => {
-    const balances = ownerToTokenBalances[pkh] || [];
+    const tokenBalances = getAccountState(pkh)?.tokens || [];
+
     return compact(
-      balances.map(({ contract, tokenId, ...rest }) => {
+      tokenBalances.map(({ contract, tokenId, ...rest }) => {
         const token = getToken(contract, tokenId);
         return token && { ...token, ...rest };
       })
@@ -109,25 +138,20 @@ export const useGetDollarBalance = () => {
  *          or null if there are no balances (not fetched yet, for example)
  */
 export const useTotalBalance = () => {
-  const balancesMap = useAppSelector(s => s.assets.balances.mutez);
+  const accountStates = useGetAccountStates();
   const tezToDollar = useTezToDollar();
 
-  const balances = Object.values(balancesMap);
+  const balances = Object.values(accountStates);
 
   if (balances.length === 0) {
     return null;
   }
 
-  const totalBalance = balances.reduce((acc, curr) => acc.plus(curr!), BigNumber(0));
+  const totalBalance = balances.reduce((acc, curr) => acc.plus(curr?.balance || 0), BigNumber(0));
 
   const usdBalance = tezToDollar(mutezToTez(totalBalance).toFixed());
 
   return { mutez: totalBalance.toFixed(), usd: usdBalance };
-};
-
-export const useGetAccountBalance = () => {
-  const mutezBalances = useAppSelector(s => s.assets.balances.mutez);
-  return (pkh: string) => mutezBalances[pkh];
 };
 
 export const useBakerList = (): Delegate[] => useAppSelector(state => state.assets.bakers);

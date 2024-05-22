@@ -5,6 +5,7 @@ import { mockBaker, mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
 import { assetsActions, assetsSlice } from "../redux/slices/assetsSlice";
 import { store } from "../redux/store";
+import { TzktAccount } from "../tezos";
 
 describe("useBakerList", () => {
   it("should return bakers in store", () => {
@@ -26,7 +27,9 @@ describe("useTotalBalance", () => {
   it("returns total balance in both mutez and USD", () => {
     store.dispatch(assetsActions.updateConversionRate(0.5));
     store.dispatch(
-      assetsActions.updateTezBalance([{ address: mockImplicitAddress(0).pkh, balance: 1000000 }])
+      assetsActions.updateAccountStates([
+        { address: mockImplicitAddress(0).pkh, balance: 1000000 } as TzktAccount,
+      ])
     );
 
     const { result } = renderHook(() => useTotalBalance());

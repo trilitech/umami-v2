@@ -10,11 +10,9 @@ import { NestedScroll } from "../../components/NestedScroll";
 import { NameMultisigFormPage } from "../../components/SendFlow/MultisigAccount/NameMultisigFormPage";
 import colors from "../../style/colors";
 import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
-import { useAppSelector } from "../../utils/redux/hooks";
 
 export const AccountsList = () => {
   const accounts = useAllAccounts();
-  const mutezBalance = useAppSelector(s => s.assets.balances.mutez);
   const accountsByKind = groupBy(accounts, getAccountGroupLabel);
   const { openWith } = useContext(DynamicModalContext);
 
@@ -22,7 +20,6 @@ export const AccountsList = () => {
     <AccountGroup
       key={accountGroupLabel}
       accounts={accountsByType}
-      balances={mutezBalance}
       groupLabel={accountGroupLabel}
     />
   ));

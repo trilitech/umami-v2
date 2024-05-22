@@ -6,10 +6,10 @@ import { makeDelegation } from "../../../types/Delegation";
 import { formatPkh, prettyTezAmount } from "../../../utils/format";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
-import { DelegationOperation } from "../../../utils/tezos";
+import { DelegationOperation, TzktAccount } from "../../../utils/tezos";
 
 describe("<DelegationDisplay />", () => {
-  const { updateTezBalance } = assetsSlice.actions;
+  const { updateAccountStates } = assetsSlice.actions;
 
   const account = mockMnemonicAccount(0);
 
@@ -65,7 +65,9 @@ describe("<DelegationDisplay />", () => {
     beforeEach(() => {
       addAccount(account);
       store.dispatch(
-        updateTezBalance([{ address: account.address.pkh, balance: currentAccountBalance }])
+        updateAccountStates([
+          { address: account.address.pkh, balance: currentAccountBalance } as TzktAccount,
+        ])
       );
     });
 

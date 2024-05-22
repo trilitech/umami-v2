@@ -1,5 +1,6 @@
 import {
   accountsGet,
+  blocksGet,
   operationsGetDelegations,
   operationsGetOriginations,
   operationsGetTransactions,
@@ -14,6 +15,7 @@ import {
   getCombinedOperations,
   getDelegations,
   getLastDelegation,
+  getLatestBlock,
   getOriginations,
   getRelatedTokenTransfers,
   getTezosPriceInUSD,
@@ -74,6 +76,14 @@ describe("tezos utils fetch", () => {
       );
     });
 
+    test("getLatestBlock", async () => {
+      jest.mocked(blocksGet).mockResolvedValue([{ level: 123, cycle: 5 }]);
+
+      const res = await getLatestBlock(network);
+
+      expect(res).toEqual({ level: 123, cycle: 5 });
+    });
+
     test("getLastDelegation", async () => {
       jest.mocked(operationsGetDelegations).mockResolvedValue([
         { id: 2, type: "delegation" },
@@ -93,7 +103,7 @@ describe("tezos utils fetch", () => {
           address: {
             in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
           },
-          select: { fields: ["address,balance,delegationLevel"] },
+          select: { fields: ["address,balance,delegate,stakedBalance,unstakedBalance"] },
         },
         { baseUrl: network.tzktApiUrl }
       );
