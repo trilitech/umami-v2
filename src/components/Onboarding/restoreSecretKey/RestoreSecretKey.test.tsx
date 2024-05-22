@@ -32,7 +32,9 @@ describe("<RestoreSecretKey />", () => {
     it("requires the password when the secret key is encrypted", async () => {
       render(fixture());
 
-      fireEvent.change(screen.getByTestId("secret-key"), { target: { value: "edesk..." } });
+      fireEvent.change(screen.getByTestId("secret-key"), {
+        target: { value: "edesk..." },
+      });
       await screen.findByTestId("password");
 
       fireEvent.blur(screen.getByTestId("password"));
@@ -75,9 +77,9 @@ describe("<RestoreSecretKey />", () => {
       await act(() => user.type(screen.getByTestId("password"), password));
     }
 
-    expect(screen.getByRole("button")).toBeEnabled();
+    expect(screen.getByTestId("restore-continue-button")).toBeEnabled();
 
-    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
+    await act(() => user.click(screen.getByTestId("restore-continue-button")));
 
     expect(goToStepMock).toHaveBeenCalledWith({
       type: "nameAccount",
@@ -96,9 +98,9 @@ describe("<RestoreSecretKey />", () => {
 
     await act(() => user.type(screen.getByTestId("password"), "wrong password"));
 
-    expect(screen.getByRole("button")).toBeEnabled();
+    expect(screen.getByTestId("restore-continue-button")).toBeEnabled();
 
-    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
+    await act(() => user.click(screen.getByTestId("restore-continue-button")));
 
     expect(mockToast).toHaveBeenCalledWith({
       description: "Key-password pair is invalid",
@@ -112,9 +114,9 @@ describe("<RestoreSecretKey />", () => {
 
     await act(() => user.type(screen.getByTestId("secret-key"), UNENCRYPTED_SECRET_KEY + "asdasd"));
 
-    expect(screen.getByRole("button")).toBeEnabled();
+    expect(screen.getByTestId("restore-continue-button")).toBeEnabled();
 
-    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
+    await act(() => user.click(screen.getByTestId("restore-continue-button")));
 
     expect(mockToast).toHaveBeenCalledWith({
       description: "Invalid secret key: checksum doesn't match",
@@ -128,9 +130,9 @@ describe("<RestoreSecretKey />", () => {
 
     await act(() => user.type(screen.getByTestId("secret-key"), "something invalid"));
 
-    expect(screen.getByRole("button")).toBeEnabled();
+    expect(screen.getByTestId("restore-continue-button")).toBeEnabled();
 
-    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
+    await act(() => user.click(screen.getByTestId("restore-continue-button")));
 
     expect(mockToast).toHaveBeenCalledWith({
       description:
