@@ -180,6 +180,30 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         storage: operation.storage,
       };
     }
+    case "stake":
+      return {
+        kind: OpKind.TRANSACTION,
+        amount: parseInt(operation.amount),
+        source: operation.sender.pkh,
+        to: operation.sender.pkh,
+        parameter: { entrypoint: "stake", value: { prim: "Unit" } },
+      };
+    case "unstake":
+      return {
+        kind: OpKind.TRANSACTION,
+        amount: parseInt(operation.amount),
+        source: operation.sender.pkh,
+        to: operation.sender.pkh,
+        parameter: { entrypoint: "unstake", value: { prim: "Unit" } },
+      };
+    case "finalize_unstake":
+      return {
+        kind: OpKind.TRANSACTION,
+        amount: 0,
+        source: operation.sender.pkh,
+        to: operation.sender.pkh,
+        parameter: { entrypoint: "finalize_unstake", value: { prim: "Unit" } },
+      };
   }
 };
 

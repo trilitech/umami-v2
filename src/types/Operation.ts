@@ -52,6 +52,23 @@ export type ContractCall = {
   args: MichelsonV1Expression;
 };
 
+export type Stake = {
+  type: "stake";
+  sender: Address;
+  amount: string;
+};
+
+export type Unstake = {
+  type: "unstake";
+  sender: Address;
+  amount: string;
+};
+
+export type FinalizeUnstake = {
+  type: "finalize_unstake";
+  sender: Address;
+};
+
 export type Operation =
   | TezTransfer
   | FA12Transfer
@@ -59,7 +76,10 @@ export type Operation =
   | Delegation
   | Undelegation
   | ContractOrigination
-  | ContractCall;
+  | ContractCall
+  | Stake
+  | Unstake
+  | FinalizeUnstake;
 
 export type ApproveOrExecute = "approve" | "execute";
 
@@ -139,6 +159,9 @@ export const toLambda = (operation: Operation): MichelsonV1Expression[] => {
       return MANAGER_LAMBDA.removeDelegate();
     case "contract_origination":
     case "contract_call":
+    case "stake":
+    case "unstake":
+    case "finalize_unstake":
       throw new Error(`${operation.type} is not supported yet`);
   }
 };
