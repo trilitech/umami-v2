@@ -39,7 +39,7 @@ const peersData: ExtendedPeerInfo[] = [
 
 beforeEach(() => {
   [mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount);
-  jest.spyOn(beaconHelper, "usePeers").mockReturnValue({ data: peersData } as any);
+  jest.spyOn(beaconHelper, "usePeers").mockReturnValue(peersData);
 });
 
 describe("<BeaconPeers />", () => {
@@ -54,7 +54,7 @@ describe("<BeaconPeers />", () => {
 
   describe("list of paired dApps", () => {
     it("shows empty state message when no paired dApps", async () => {
-      jest.spyOn(beaconHelper, "usePeers").mockReturnValue({ data: [] } as any);
+      jest.spyOn(beaconHelper, "usePeers").mockReturnValue([]);
       render(<BeaconPeers />);
 
       await waitFor(() => {
@@ -164,7 +164,7 @@ describe("<BeaconPeers />", () => {
       const deleteButton = within(peerRows[1]).getByRole("button", { name: "Remove Peer" });
       await act(() => user.click(deleteButton));
 
-      expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[1]);
+      expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[1], true);
     });
 
     it("removes connection from beaconSlice", async () => {

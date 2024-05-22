@@ -26,20 +26,19 @@ import { useGetConnectionInfo } from "../hooks/beaconHooks";
  * Loads dApps data from {@link usePeers} hook & zips it with generated dAppIds.
  */
 export const BeaconPeers = () => {
-  const { data } = usePeers();
+  const peers = usePeers();
 
-  const removePeer = useRemovePeer();
   const [peersWithId, setPeersWithId] = useState<ExtendedPeerInfo[]>([]);
 
   // senderId will always be set here, even if we haven't saved it in beaconSlice for a dApp.
   useEffect(() => {
-    const peerIdPromises = (data || []).map(async peer => ({
+    const peerIdPromises = peers.map(async peer => ({
       ...peer,
       senderId: peer.senderId || (await getSenderId(peer.publicKey)),
     }));
 
     Promise.all(peerIdPromises).then(setPeersWithId).catch(noop);
-  }, [data]);
+  }, [peers]);
 
   if (peersWithId.length === 0) {
     return (
@@ -52,9 +51,7 @@ export const BeaconPeers = () => {
     );
   }
 
-  return (
-    <PeersDisplay data-testid="beacon-peers" peerInfos={peersWithId} removePeer={removePeer} />
-  );
+  return <PeersDisplay data-testid="beacon-peers" peerInfos={peersWithId} />;
 };
 
 /**
@@ -65,18 +62,12 @@ export const BeaconPeers = () => {
  * @param peerInfos - peerInfo provided by beacon Api + computed dAppId.
  * @param removePeer - hook for deleting dApp connections.
  */
-const PeersDisplay = ({
-  peerInfos,
-  removePeer,
-}: {
-  peerInfos: ExtendedPeerInfo[];
-  removePeer: (peer: ExtendedPeerInfo) => void;
-}) => (
+const PeersDisplay = ({ peerInfos }: { peerInfos: ExtendedPeerInfo[] }) => (
   <Box>
     {peerInfos.map(peerInfo => (
       <Fragment key={peerInfo.senderId}>
         <Divider />
-        <PeerRow onRemove={() => removePeer(peerInfo)} peerInfo={peerInfo} />
+        <PeerRow peerInfo={peerInfo} />
       </Fragment>
     ))}
   </Box>
@@ -88,30 +79,34 @@ const PeersDisplay = ({
  * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
  * @param onRemove - action for deleting dApp connection.
  */
-const PeerRow = ({ peerInfo, onRemove }: { peerInfo: ExtendedPeerInfo; onRemove: () => void }) => (
-  <Flex justifyContent="space-between" height="106px" data-testid="peer-row" paddingY="30px">
-    <Flex>
-      <AspectRatio width="48px" marginRight="16px" ratio={1}>
-        <Image width="100%" src={peerInfo.icon} />
-      </AspectRatio>
-      <Center alignItems="flex-start" flexDirection="column">
-        <Heading marginBottom="6px" size="md">
-          {peerInfo.name}
-        </Heading>
-        <StoredPeerInfo peerInfo={peerInfo} />
+const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
+  const removePeer = useRemovePeer();
+
+  return (
+    <Flex justifyContent="space-between" height="106px" data-testid="peer-row" paddingY="30px">
+      <Flex>
+        <AspectRatio width="48px" marginRight="16px" ratio={1}>
+          <Image width="100%" src={peerInfo.icon} />
+        </AspectRatio>
+        <Center alignItems="flex-start" flexDirection="column">
+          <Heading marginBottom="6px" size="md">
+            {peerInfo.name}
+          </Heading>
+          <StoredPeerInfo peerInfo={peerInfo} />
+        </Center>
+      </Flex>
+      <Center>
+        <IconButton
+          aria-label="Remove Peer"
+          icon={<TrashIcon />}
+          onClick={() => removePeer(peerInfo)}
+          size="xs"
+          variant="circle"
+        />
       </Center>
     </Flex>
-    <Center>
-      <IconButton
-        aria-label="Remove Peer"
-        icon={<TrashIcon />}
-        onClick={onRemove}
-        size="xs"
-        variant="circle"
-      />
-    </Center>
-  </Flex>
-);
+  );
+};
 
 /**
  * Component for displaying additional info about connection with a dApp.

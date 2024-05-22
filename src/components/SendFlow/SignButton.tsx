@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, UseToastOptions, useToast } from "@chakra-ui/react";
+import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import React from "react";
@@ -11,6 +11,7 @@ import {
   MnemonicAccount,
   SecretKeyAccount,
 } from "../../types/Account";
+import { Network } from "../../types/Network";
 import { useGetSecretKey } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
@@ -24,13 +25,25 @@ export const SignButton: React.FC<{
   isLoading?: boolean;
   isDisabled?: boolean;
   text?: string; // TODO: after FillStep migration change to the header value from SignPage
-}> = ({ signer, onSubmit, isLoading: externalIsLoading, isDisabled, text }) => {
+  network?: Network;
+}> = ({
+  signer,
+  onSubmit,
+  isLoading: externalIsLoading,
+  isDisabled,
+  text,
+  network: preferredNetwork,
+}) => {
   const form = useForm<{ password: string }>({ mode: "onBlur", defaultValues: { password: "" } });
   const {
     handleSubmit,
     formState: { errors, isValid: isPasswordValid },
   } = form;
-  const network = useSelectedNetwork();
+  let network = useSelectedNetwork();
+  if (preferredNetwork) {
+    network = preferredNetwork;
+  }
+
   const getSecretKey = useGetSecretKey();
   const toast = useToast();
   const { isLoading: internalIsLoading, handleAsyncAction } = useAsyncActionHandler();
@@ -72,11 +85,10 @@ export const SignButton: React.FC<{
           })
         );
       },
-      (error: any) =>
-        ({
-          description: `${error.message} Please connect your ledger, open Tezos app and try submitting transaction again`,
-          status: "error",
-        }) as UseToastOptions
+      (error: any) => ({
+        description: `${error.message} Please connect your ledger, open Tezos app and try submitting transaction again`,
+        status: "error",
+      })
     ).finally(() => toast.close("ledger-sign-toast"));
 
   switch (signer.type) {

@@ -8,6 +8,7 @@ import { multisigOperation } from "../../mocks/multisig";
 import { act, renderHook } from "../../mocks/testUtils";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET, MAINNET } from "../../types/Network";
+import { usePeers } from "../beacon/beacon";
 import { WalletClient } from "../beacon/WalletClient";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { batchesActions } from "../redux/slices/batches";
@@ -15,9 +16,7 @@ import { beaconActions } from "../redux/slices/beaconSlice";
 import { multisigActions } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";
 
-beforeEach(() => {
-  jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
-});
+beforeEach(() => jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]));
 
 describe("useRemoveDependenciesAndMultisigs", () => {
   describe("without dependant multisigs", () => {
@@ -104,6 +103,15 @@ describe("useRemoveDependenciesAndMultisigs", () => {
       });
 
       it("sends delete requests through the beacon api", async () => {
+        // initially usePeers returns an empty array
+        // we need to wait until the data is fetched for the first time
+        const view = renderHook(() => usePeers());
+
+        await waitFor(() => {
+          view.rerender();
+          expect(view.result.current).toEqual(peersData);
+        });
+
         const {
           result: { current: removeAccountsDependencies },
         } = renderHook(() => useRemoveDependenciesAndMultisigs());
@@ -111,8 +119,8 @@ describe("useRemoveDependenciesAndMultisigs", () => {
         act(() => removeAccountsDependencies([account0, account2]));
 
         await waitFor(() => expect(WalletClient.removePeer).toHaveBeenCalledTimes(2));
-        expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[0]);
-        expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[2]);
+        expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[0], true);
+        expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[2], true);
       });
 
       it("removes related connections from the beacon slice", () => {

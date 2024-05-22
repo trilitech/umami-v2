@@ -9,7 +9,12 @@ import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
 import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";
 import { store } from "../redux/store";
 
-jest.mock("./WalletClient");
+jest.mock("./WalletClient", () => ({
+  WalletClient: {
+    getPeers: () => Promise.resolve([]),
+    respond: jest.fn(),
+  },
+}));
 
 const TestComponent = ({ request }: { request: SignPayloadRequestOutput }) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -63,7 +68,7 @@ describe("<SignPayloadRequestModal />", () => {
 
     await act(() => user.click(screen.getByLabelText("Password")));
     await act(() => user.type(screen.getByLabelText("Password"), "123123123"));
-    const confirmButton = screen.getByRole("button", { name: "Connect" });
+    const confirmButton = screen.getByRole("button", { name: "Sign" });
     expect(confirmButton).toBeEnabled();
 
     jest.restoreAllMocks();

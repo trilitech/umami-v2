@@ -18,33 +18,33 @@ export const usePeers = () =>
   useQuery({
     queryKey: [PEERS_QUERY_KEY],
     // getPeers actually returns ExtendedPeerInfo (with the senderId)
-    queryFn: () => WalletClient.getPeers() as Promise<ExtendedPeerInfo[]>,
-  });
+    queryFn: () => WalletClient.getPeers(),
+    initialData: [],
+  }).data as ExtendedPeerInfo[];
 
 export const useRemovePeer = () => {
   const refresh = useRefreshPeers();
   const removeConnectionFromBeaconSlice = useRemoveConnection();
 
   return (peerInfo: ExtendedPeerInfo) =>
-    WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse)
+    WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse, true)
       .then(() => removeConnectionFromBeaconSlice(peerInfo.senderId))
-      .then(refresh);
+      .finally(() => void refresh());
+};
+
+export const useRemovePeerBySenderId = () => {
+  const peers = usePeers();
+  const removePeer = useRemovePeer();
+
+  return (senderId: string) =>
+    Promise.all(peers.filter(peerInfo => senderId === peerInfo.senderId).map(removePeer));
 };
 
 export const useRemovePeersByAccounts = () => {
   const getPeersForAccounts = useGetPeersForAccounts();
+  const removePeerBySenderId = useRemovePeerBySenderId();
 
-  return async (pkhs: RawPkh[]) => {
-    const peersToRemove = getPeersForAccounts(pkhs);
-    // getPeers actually returns ExtendedPeerInfo (with the senderId)
-    const peersData = (await WalletClient.getPeers()) as ExtendedPeerInfo[];
-
-    await Promise.all(
-      peersData
-        .filter(peerInfo => peersToRemove.includes(peerInfo.senderId))
-        .map(peerInfo => WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse))
-    );
-  };
+  return (pkhs: RawPkh[]) => Promise.all(getPeersForAccounts(pkhs).map(removePeerBySenderId));
 };
 
 export const useAddPeer = () => {

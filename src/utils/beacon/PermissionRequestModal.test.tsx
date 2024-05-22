@@ -14,7 +14,12 @@ import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { store } from "../redux/store";
 
-jest.mock("./WalletClient");
+jest.mock("./WalletClient", () => ({
+  WalletClient: {
+    getPeers: () => Promise.resolve([]),
+    respond: jest.fn(),
+  },
+}));
 
 const TestComponent = ({ request }: { request: PermissionRequestOutput }) => (
   <Modal isOpen={true} onClose={() => {}}>
