@@ -8,6 +8,7 @@ import { useContext } from "react";
 
 import { ImplicitOperations } from "../../../types/AccountOperations";
 import { WalletClient } from "../../../utils/beacon/WalletClient";
+import { useFindNetwork } from "../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { executeOperations } from "../../../utils/tezos";
 import { DynamicModalContext } from "../../DynamicModal";
@@ -19,6 +20,7 @@ export const useSignWithBeacon = (
 ) => {
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
+  const findNetwork = useFindNetwork();
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
@@ -42,5 +44,6 @@ export const useSignWithBeacon = (
   return {
     isSigning,
     onSign,
+    network: findNetwork(message.network.type),
   };
 };

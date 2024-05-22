@@ -12,7 +12,7 @@ import { headerText } from "../SignPageHeader";
 export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, message }) => {
   const { recipient } = operation.operations[0] as Delegation;
 
-  const { isSigning, onSign } = useSignWithBeacon(operation, message);
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
 
   return (
     <ModalContent>
@@ -40,6 +40,7 @@ export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, f
         <ModalFooter>
           <SignButton
             isLoading={isSigning}
+            network={network}
             onSubmit={onSign}
             signer={operation.signer}
             text={headerText(operation.type, "single")}

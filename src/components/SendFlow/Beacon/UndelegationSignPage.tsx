@@ -13,7 +13,7 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
   fee,
   message,
 }) => {
-  const { isSigning, onSign } = useSignWithBeacon(operation, message);
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
 
   return (
     <ModalContent>
@@ -30,6 +30,7 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
         <ModalFooter>
           <SignButton
             isLoading={isSigning}
+            network={network}
             onSubmit={onSign}
             signer={operation.signer}
             text={headerText(operation.type, "single")}

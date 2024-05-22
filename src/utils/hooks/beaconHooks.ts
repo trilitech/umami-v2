@@ -1,4 +1,5 @@
 import { NetworkType } from "@airgap/beacon-wallet";
+import { uniq } from "lodash";
 import { useDispatch } from "react-redux";
 
 import { RawPkh } from "../../types/Address";
@@ -19,9 +20,11 @@ export const useGetPeersForAccounts = () => {
   const beaconConnections = useAppSelector(s => s.beacon);
 
   return (pkhs: RawPkh[]) =>
-    Object.entries(beaconConnections)
-      .filter(([_, connectionInfo]) => pkhs.includes(connectionInfo.accountPkh))
-      .map(([dAppId, _]) => dAppId);
+    uniq(
+      Object.entries(beaconConnections)
+        .filter(([_, connectionInfo]) => pkhs.includes(connectionInfo.accountPkh))
+        .map(([dAppId, _]) => dAppId)
+    );
 };
 
 /**

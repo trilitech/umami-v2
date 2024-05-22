@@ -1,5 +1,7 @@
 import {
+  BeaconErrorType,
   BeaconMessageType,
+  Network as BeaconNetwork,
   BeaconRequestOutputMessage,
   PartialTezosOperation,
   TezosOperationType,
@@ -8,15 +10,17 @@ import { useContext } from "react";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
+import { WalletClient } from "./WalletClient";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { ImplicitAccount } from "../../types/Account";
 import { ImplicitOperations } from "../../types/AccountOperations";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
+import { Network } from "../../types/Network";
 import { Operation } from "../../types/Operation";
-import { useGetOwnedAccount } from "../hooks/getAccountDataHooks";
-import { useSelectedNetwork } from "../hooks/networkHooks";
+import { useGetOwnedAccountSafe } from "../hooks/getAccountDataHooks";
+import { useFindNetwork } from "../hooks/networkHooks";
 import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";
 import { estimate } from "../tezos";
 
@@ -29,8 +33,32 @@ import { estimate } from "../tezos";
 export const useHandleBeaconMessage = () => {
   const { openWith } = useContext(DynamicModalContext);
   const { handleAsyncAction } = useAsyncActionHandler();
-  const getAccount = useGetOwnedAccount();
-  const network = useSelectedNetwork();
+  const getAccount = useGetOwnedAccountSafe();
+  const findNetwork = useFindNetwork();
+
+  // we should confirm that we support the network that the beacon request is coming from
+  const checkNetwork = ({
+    id: messageId,
+    network: beaconNetwork,
+  }: {
+    id: string;
+    network: BeaconNetwork;
+  }): Network => {
+    const network = findNetwork(beaconNetwork.type);
+
+    if (!network) {
+      void WalletClient.respond({
+        id: messageId,
+        type: BeaconMessageType.Error,
+        errorType: BeaconErrorType.NETWORK_NOT_SUPPORTED,
+      });
+      throw new Error(
+        `Got Beacon request from an unknown network: ${JSON.stringify(beaconNetwork)}. Please add it to the networks list and retry.`
+      );
+    }
+
+    return network;
+  };
 
   return (message: BeaconRequestOutputMessage) => {
     void handleAsyncAction(
@@ -38,6 +66,7 @@ export const useHandleBeaconMessage = () => {
         let modal;
         switch (message.type) {
           case BeaconMessageType.PermissionRequest: {
+            checkNetwork(message);
             modal = <PermissionRequestModal request={message} />;
             break;
           }
@@ -46,8 +75,20 @@ export const useHandleBeaconMessage = () => {
             break;
           }
           case BeaconMessageType.OperationRequest: {
-            const signer = getAccount(message.sourceAddress) as ImplicitAccount;
-            const operation = toAccountOperations(message.operationDetails, signer);
+            const network = checkNetwork(message);
+            const signer = getAccount(message.sourceAddress);
+            if (!signer) {
+              void WalletClient.respond({
+                id: message.id,
+                type: BeaconMessageType.Error,
+                errorType: BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR,
+              });
+              throw new Error(`Unknown account: ${message.sourceAddress}`);
+            }
+            const operation = toAccountOperations(
+              message.operationDetails,
+              signer as ImplicitAccount
+            );
             const fee = await estimate(operation, network);
             if (operation.operations.length === 1) {
               modal = <BeaconSignPage fee={fee} message={message} operation={operation} />;
@@ -57,9 +98,17 @@ export const useHandleBeaconMessage = () => {
 
             break;
           }
-          default:
+          default: {
             // TODO: Open a modal with an unknown operation instead
+
+            void WalletClient.respond({
+              id: message.id,
+              type: BeaconMessageType.Error,
+              errorType: BeaconErrorType.UNKNOWN_ERROR,
+            });
+
             throw new Error(`Unknown Beacon message type: ${message.type}`);
+          }
         }
 
         return openWith(modal);

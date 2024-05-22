@@ -1,4 +1,5 @@
 import {
+  BeaconErrorType,
   BeaconMessageType,
   BeaconResponseInputMessage,
   PermissionRequestOutput,
@@ -27,6 +28,7 @@ import { capitalize } from "lodash";
 import React, { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { useRemovePeerBySenderId } from "./beacon";
 import { WalletClient } from "./WalletClient";
 import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
 import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
@@ -50,6 +52,16 @@ export const PermissionRequestModal: React.FC<{
     getValues,
     formState: { errors, isValid },
   } = form;
+  const removePeer = useRemovePeerBySenderId();
+
+  const onModalClose = () => {
+    void removePeer(request.senderId);
+    void WalletClient.respond({
+      id: request.id,
+      type: BeaconMessageType.Error,
+      errorType: BeaconErrorType.NOT_GRANTED_ERROR,
+    });
+  };
 
   const grant = () =>
     handleAsyncAction(async () => {
@@ -88,7 +100,7 @@ export const PermissionRequestModal: React.FC<{
           </Text>
         </Flex>
       </ModalHeader>
-      <ModalCloseButton />
+      <ModalCloseButton onClick={onModalClose} />
       <ModalBody data-testid="beacon-request-body">
         <Flex
           alignItems="center"
@@ -112,7 +124,7 @@ export const PermissionRequestModal: React.FC<{
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel>
-              <JsValueWrap value={request} />
+              <JsValueWrap overflow="auto" maxHeight="250px" value={request} />
             </AccordionPanel>
           </AccordionItem>
         </Accordion>

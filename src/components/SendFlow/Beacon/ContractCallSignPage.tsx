@@ -36,7 +36,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
     args,
   } = operation.operations[0] as ContractCall;
 
-  const { isSigning, onSign } = useSignWithBeacon(operation, message);
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
 
   return (
     <ModalContent>
@@ -73,6 +73,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
         <ModalFooter padding="16px 0 0 0">
           <SignButton
             isLoading={isSigning}
+            network={network}
             onSubmit={onSign}
             signer={operation.signer}
             text={headerText(operation.type, "single")}

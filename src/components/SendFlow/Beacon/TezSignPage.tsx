@@ -13,7 +13,7 @@ import { headerText } from "../SignPageHeader";
 export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, message }) => {
   const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
 
-  const { isSigning, onSign } = useSignWithBeacon(operation, message);
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
 
   return (
     <ModalContent>
@@ -35,6 +35,7 @@ export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, mes
         <ModalFooter>
           <SignButton
             isLoading={isSigning}
+            network={network}
             onSubmit={onSign}
             signer={operation.signer}
             text={headerText(operation.type, "single")}
