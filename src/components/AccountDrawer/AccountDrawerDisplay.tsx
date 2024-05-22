@@ -1,6 +1,5 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { noop } from "lodash";
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { ReactElement, useContext } from "react";
 
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import { MultisigApprovers } from "./MultisigApprovers";
@@ -8,12 +7,12 @@ import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { BakerIcon, IncomingArrow, OutgoingArrow, PlusIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import { Delegation, makeDelegation } from "../../types/Delegation";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
-import { useGetAccountBalance, useGetDollarBalance } from "../../utils/hooks/assetsHooks";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { getLastDelegation } from "../../utils/tezos";
+import {
+  useGetAccountBalance,
+  useGetAccountDelegate,
+  useGetDollarBalance,
+} from "../../utils/hooks/assetsHooks";
 import { accountIconGradient } from "../AccountTile/AccountTile";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 import { AddressPill } from "../AddressPill/AddressPill";
@@ -68,19 +67,10 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
 }) => {
   const isMultisig = account.type === "multisig";
   const { openWith } = useContext(DynamicModalContext);
-  const network = useSelectedNetwork();
   const pkh = account.address.pkh;
-  const [delegation, setDelegation] = useState<Delegation | null>(null);
-  const { handleAsyncAction } = useAsyncActionHandler();
   const balance = useGetAccountBalance()(pkh);
   const dollarBalance = useGetDollarBalance()(pkh);
-
-  useEffect(() => {
-    handleAsyncAction(async () => {
-      const tzktDelegation = await getLastDelegation(pkh, network);
-      tzktDelegation && setDelegation(makeDelegation(tzktDelegation));
-    }).catch(noop);
-  }, [pkh, handleAsyncAction, network]);
+  const delegate = useGetAccountDelegate()(pkh);
 
   return (
     <Flex
@@ -136,9 +126,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
             openWith(
               <DelegationFormPage
                 form={
-                  delegation
-                    ? { baker: delegation.delegate.address, sender: account.address.pkh }
-                    : undefined
+                  delegate ? { baker: delegate.address, sender: account.address.pkh } : undefined
                 }
                 sender={account}
               />
@@ -147,7 +135,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
         />
       </Center>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPanel account={account} delegation={delegation} nfts={nfts} tokens={tokens} />
+      <AssetsPanel account={account} nfts={nfts} tokens={tokens} />
     </Flex>
   );
 };

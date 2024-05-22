@@ -1,10 +1,8 @@
 import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
 import { uUSD } from "../../mocks/fa2Tokens";
 import {
-  mockDelegation,
   mockFA1TokenRaw,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockNFTToken,
@@ -14,19 +12,14 @@ import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { GHOSTNET, MAINNET } from "../../types/Network";
-import { formatPkh, prettyTezAmount } from "../../utils/format";
+import { formatPkh } from "../../utils/format";
 import { Multisig } from "../../utils/multisig/types";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
-import {
-  DelegationOperation,
-  TzktAccount,
-  TzktCombinedOperation,
-  getLastDelegation,
-} from "../../utils/tezos";
+import { TzktAccount, TzktCombinedOperation } from "../../utils/tezos";
 import * as useGetOperationsModule from "../../views/operations/useGetOperations";
 
 import { AccountCard } from ".";
@@ -176,46 +169,19 @@ describe("<AccountDrawerDisplay />", () => {
     it("is not selected by default", async () => {
       render(<AccountCard accountPkh={pkh} />);
 
-      await screen.findByTestId("account-card-delegation-tab");
+      await screen.findByTestId("account-card-earn-tab");
 
-      expect(screen.getByTestId("account-card-delegation-tab-panel")).not.toBeVisible();
+      expect(screen.getByTestId("account-card-earn-tab-panel")).not.toBeVisible();
     });
 
     it('opens on "Delegation" tab click', async () => {
       const user = userEvent.setup();
       render(<AccountCard accountPkh={pkh} />);
-      await screen.findByTestId("account-card-delegation-tab");
+      await screen.findByTestId("account-card-earn-tab");
 
-      await act(() => user.click(screen.getByTestId("account-card-delegation-tab")));
+      await act(() => user.click(screen.getByTestId("account-card-earn-tab")));
 
-      expect(screen.getByTestId("account-card-delegation-tab-panel")).toBeVisible();
-    });
-
-    it("displays correct delegation data", async () => {
-      const user = userEvent.setup();
-      jest
-        .mocked(getLastDelegation)
-        .mockResolvedValue(
-          mockDelegation(
-            0,
-            6000000,
-            mockImplicitAddress(2).pkh,
-            "Some baker",
-            new Date(2020, 5, 24)
-          ) as DelegationOperation
-        );
-
-      render(<AccountCard accountPkh={pkh} />);
-      await screen.findByTestId("account-card-delegation-tab");
-      await act(() => user.click(screen.getByTestId("account-card-delegation-tab")));
-
-      const { getByTestId } = within(screen.getByTestId("asset-panel"));
-      expect(getByTestId("Initial Balance:")).toHaveTextContent("6.000000 ꜩ");
-      expect(getByTestId("Current Balance:")).toHaveTextContent(
-        prettyTezAmount(SELECTED_ACCOUNT_BALANCE.toString())
-      );
-      expect(getByTestId("Duration:")).toHaveTextContent("Since 06/24/2020");
-      expect(getByTestId("Baker:")).toHaveTextContent(formatPkh(mockImplicitAddress(2).pkh));
+      expect(screen.getByTestId("account-card-earn-tab-panel")).toBeVisible();
     });
   });
 
