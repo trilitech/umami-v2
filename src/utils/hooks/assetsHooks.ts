@@ -15,9 +15,9 @@ import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
 import { TokenTransferOperation } from "../tezos";
 
-export const useGetAccountStates = () => useAppSelector(s => s.assets.accountStates);
+const useGetAccountStates = () => useAppSelector(s => s.assets.accountStates);
 
-export const useGetAccountState = () => {
+const useGetAccountState = () => {
   const accountStates = useGetAccountStates();
   return (pkh: string) => accountStates[pkh];
 };

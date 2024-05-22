@@ -71,22 +71,3 @@ export const NoTokens: React.FC<{ size: AvailableSizes }> = ({ size }) => (
     title="No tokens to show"
   />
 );
-
-export const NoDelegations: React.FC<{ size: AvailableSizes; onDelegate: () => void }> = ({
-  size = "lg",
-  onDelegate,
-}) => (
-  <NoItems
-    description="Your delegation history will appear here..."
-    size={size}
-    title="No delegations to show"
-  >
-    <Button
-      data-testid="delegation-empty-state-button"
-      onClick={onDelegate}
-      size={SIZES[size].button}
-    >
-      Delegate
-    </Button>
-  </NoItems>
-);

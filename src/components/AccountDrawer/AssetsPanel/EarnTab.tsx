@@ -15,6 +15,7 @@ import { AddressPill } from "../../AddressPill/AddressPill";
 import { DynamicModalContext } from "../../DynamicModal";
 import { ExternalLink } from "../../ExternalLink";
 import { FormPage as DelegationFormPage } from "../../SendFlow/Delegation/FormPage";
+import { FormPage as StakeFormPage } from "../../SendFlow/Stake/FormPage";
 import { FormPage as UndelegationFormPage } from "../../SendFlow/Undelegation/FormPage";
 
 const Row: React.FC<
@@ -164,7 +165,9 @@ export const EarnTab: React.FC<{
             <Button flex={1} isDisabled={!stakedBalance} variant="secondary">
               Unstake
             </Button>
-            <Button flex={1}>Stake</Button>
+            <Button flex={1} onClick={() => openWith(<StakeFormPage sender={account} />)}>
+              Stake
+            </Button>
           </>
         ) : (
           <>

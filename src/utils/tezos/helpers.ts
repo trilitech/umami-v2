@@ -187,6 +187,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         source: operation.sender.pkh,
         to: operation.sender.pkh,
         parameter: { entrypoint: "stake", value: { prim: "Unit" } },
+        mutez: true,
       };
     case "unstake":
       return {
@@ -195,6 +196,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         source: operation.sender.pkh,
         to: operation.sender.pkh,
         parameter: { entrypoint: "unstake", value: { prim: "Unit" } },
+        mutez: true,
       };
     case "finalize_unstake":
       return {

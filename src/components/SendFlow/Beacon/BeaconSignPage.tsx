@@ -28,9 +28,14 @@ export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, messa
      * instead we get a generic contract call
      * contract_origination is not supported yet
      * check {@link beacon#partialOperationToOperation} for details
+     *
+     * Staking operations are parsed as contract calls
      */
     case "fa1.2":
     case "fa2":
+    case "stake":
+    case "unstake":
+    case "finalize_unstake":
       throw new Error("Unsupported operation type");
   }
 };

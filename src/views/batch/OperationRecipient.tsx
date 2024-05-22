@@ -10,6 +10,9 @@ export const OperationRecipient = ({ operation }: { operation: Operation }) => {
   switch (operation.type) {
     case "undelegation":
     case "contract_origination":
+    case "stake":
+    case "unstake":
+    case "finalize_unstake":
       address = undefined;
       break;
     case "tez":

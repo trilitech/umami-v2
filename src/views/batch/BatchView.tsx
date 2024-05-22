@@ -65,6 +65,9 @@ const prettyOperationType = (operation: Operation) => {
       return `${TEZ} Transfer`;
     case "contract_origination":
     case "contract_call":
+    case "stake":
+    case "unstake":
+    case "finalize_unstake":
       throw new Error(`${operation.type} is not supported yet`);
   }
 };
