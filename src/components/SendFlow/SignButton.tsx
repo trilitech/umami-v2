@@ -125,7 +125,7 @@ export const SignButton: React.FC<{
           onClick={onSocialSign}
           size="lg"
         >
-          {text || "Sign with Google"}
+          {text || "Sign with social"}
         </Button>
       );
     case "ledger":
