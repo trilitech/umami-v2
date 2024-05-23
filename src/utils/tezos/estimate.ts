@@ -67,6 +67,8 @@ export const handleTezError = (err: Error): string => {
     return "Insufficient balance, please make sure you have enough funds.";
   } else if (err.message.includes("contract.non_existing_contract")) {
     return "Contract does not exist, please check if the correct network is selected.";
+  } else if (err.message.includes("staking_to_delegate_that_refuses_external_staking")) {
+    return "The baker you are trying to stake to does not accept external staking.";
   }
   return err.message;
 };

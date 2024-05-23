@@ -5,7 +5,14 @@ import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factor
 import { store } from "../store";
 
 const {
-  actions: { removeAccountsData, updateAccountStates, updateTokenBalance, updateTokenTransfers },
+  actions: {
+    updateBlock,
+    updateUnstakeRequests,
+    removeAccountsData,
+    updateAccountStates,
+    updateTokenBalance,
+    updateTokenTransfers,
+  },
 } = assetsSlice;
 
 describe("assetsSlice", () => {
@@ -45,111 +52,131 @@ describe("assetsSlice", () => {
     });
   });
 
-  describe("updateAccountStates", () => {
-    it("replaces tez balances", () => {
-      store.dispatch(
-        updateAccountStates([
-          {
-            address: "foo",
-            balance: 43,
-            stakedBalance: 123,
-            unstakedBalance: 321,
-            delegate: { address: "foo" },
-          },
-          {
-            address: "baz",
-            balance: 55,
-            stakedBalance: 1234,
-            unstakedBalance: 4321,
-            delegate: null,
-          },
-        ])
-      );
-
-      expect(store.getState().assets.accountStates).toEqual({
-        foo: {
+  test("updateAccountStates", () => {
+    store.dispatch(
+      updateAccountStates([
+        {
+          address: "foo",
           balance: 43,
           stakedBalance: 123,
           unstakedBalance: 321,
           delegate: { address: "foo" },
         },
-        baz: {
+        {
+          address: "baz",
           balance: 55,
           stakedBalance: 1234,
           unstakedBalance: 4321,
           delegate: null,
         },
-      });
+      ])
+    );
+
+    expect(store.getState().assets.accountStates).toEqual({
+      foo: {
+        balance: 43,
+        stakedBalance: 123,
+        unstakedBalance: 321,
+        delegate: { address: "foo" },
+      },
+      baz: {
+        balance: 55,
+        stakedBalance: 1234,
+        unstakedBalance: 4321,
+        delegate: null,
+      },
     });
   });
 
-  describe("updateTokenBalance", () => {
-    it("sets up token balances", () => {
-      store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
+  test("updateBlock", () => {
+    store.dispatch(updateBlock({ level: 123, cycle: 321 }));
 
-      expect(store.getState().assets).toEqual({
-        accountStates: {
-          [mockImplicitAddress(0).pkh]: {
-            tokens: [
-              {
-                balance: "10000000000",
-                contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
-                tokenId: "0",
-                lastLevel: 1477579,
-              },
-            ],
-          },
+    expect(store.getState().assets.block).toEqual({ level: 123, cycle: 321 });
+  });
+
+  test("updateUnstakeRequests", () => {
+    store.dispatch(
+      updateUnstakeRequests([
+        { staker: "foo", requestedAmount: 123, timestamp: "2024-05-25T00:14:37Z", cycle: 5 },
+        { staker: "foo", requestedAmount: 123, timestamp: "2024-05-23T00:14:37Z", cycle: 1 },
+        { staker: "bar", requestedAmount: 321, timestamp: "2024-05-23T00:14:37Z", cycle: 1 },
+      ])
+    );
+
+    expect(store.getState().assets.accountStates).toEqual({
+      foo: {
+        unstakeRequests: [
+          { requestedAmount: 123, timestamp: "2024-05-23T00:14:37Z", cycle: 1 },
+          { requestedAmount: 123, timestamp: "2024-05-25T00:14:37Z", cycle: 5 }, // older comes last
+        ],
+      },
+      bar: {
+        unstakeRequests: [{ requestedAmount: 321, timestamp: "2024-05-23T00:14:37Z", cycle: 1 }],
+      },
+    });
+  });
+
+  test("updateTokenBalance", () => {
+    store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
+
+    expect(store.getState().assets).toEqual({
+      accountStates: {
+        [mockImplicitAddress(0).pkh]: {
+          tokens: [
+            {
+              balance: "10000000000",
+              contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
+              tokenId: "0",
+              lastLevel: 1477579,
+            },
+          ],
         },
-        conversionRate: undefined,
-        bakers: [],
-        transfers: { tokens: {} },
-        block: {},
-        refetchTrigger: 0,
-        lastTimeUpdated: null,
-        isLoading: false,
-      });
+      },
+      conversionRate: undefined,
+      bakers: [],
+      transfers: { tokens: {} },
+      block: {},
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
     });
   });
 
-  describe("updateTokenTransfers", () => {
-    it("sets up token transfers on token transfer update", () => {
-      store.dispatch(updateTokenTransfers([mockTokenTransaction(1), mockTokenTransaction(2)]));
+  test("updateTokenTransfers", () => {
+    store.dispatch(updateTokenTransfers([mockTokenTransaction(1), mockTokenTransaction(2)]));
 
-      expect(store.getState().assets.transfers.tokens).toEqual({
-        101: mockTokenTransaction(1),
-        102: mockTokenTransaction(2),
-      });
+    expect(store.getState().assets.transfers.tokens).toEqual({
+      101: mockTokenTransaction(1),
+      102: mockTokenTransaction(2),
+    });
 
-      store.dispatch(updateTokenTransfers([mockTokenTransaction(4)]));
+    store.dispatch(updateTokenTransfers([mockTokenTransaction(4)]));
 
-      expect(store.getState().assets.transfers.tokens).toEqual({
-        101: mockTokenTransaction(1),
-        102: mockTokenTransaction(2),
-        104: mockTokenTransaction(4),
-      });
+    expect(store.getState().assets.transfers.tokens).toEqual({
+      101: mockTokenTransaction(1),
+      102: mockTokenTransaction(2),
+      104: mockTokenTransaction(4),
     });
   });
 
-  describe("removeAccountsData", () => {
-    it("removes accounts info for listed accounts", () => {
-      store.dispatch(
-        updateAccountStates([
-          { address: "foo", balance: 11, stakedBalance: 123, unstakedBalance: 321, delegate: null },
-          { address: "bar", balance: 22, stakedBalance: 123, unstakedBalance: 321, delegate: null },
-          { address: "baz", balance: 33, stakedBalance: 123, unstakedBalance: 321, delegate: null },
-        ])
-      );
+  test("removeAccountsData", () => {
+    store.dispatch(
+      updateAccountStates([
+        { address: "foo", balance: 11, stakedBalance: 123, unstakedBalance: 321, delegate: null },
+        { address: "bar", balance: 22, stakedBalance: 123, unstakedBalance: 321, delegate: null },
+        { address: "baz", balance: 33, stakedBalance: 123, unstakedBalance: 321, delegate: null },
+      ])
+    );
 
-      store.dispatch(removeAccountsData(["bar", "baz", "qwerty"]));
+    store.dispatch(removeAccountsData(["bar", "baz", "qwerty"]));
 
-      expect(store.getState().assets.accountStates).toEqual({
-        foo: {
-          balance: 11,
-          delegate: null,
-          stakedBalance: 123,
-          unstakedBalance: 321,
-        },
-      });
+    expect(store.getState().assets.accountStates).toEqual({
+      foo: {
+        balance: 11,
+        delegate: null,
+        stakedBalance: 123,
+        unstakedBalance: 321,
+      },
     });
   });
 });

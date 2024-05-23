@@ -35,6 +35,7 @@ jest.mock("@tzkt/sdk-api", () => ({
   tokensGetTokenTransfers: jest.fn(),
   accountsGet: jest.fn(),
   quotesGetLast: jest.fn(),
+  blocksGet: jest.fn(),
 }));
 
 describe("tezos utils fetch", () => {

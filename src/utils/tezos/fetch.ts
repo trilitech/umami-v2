@@ -280,7 +280,7 @@ export const getBakers = async (
     )
   );
 
-export const getUnstakeRequests = async (
+export const getPendingUnstakeRequests = async (
   network: Network,
   addresses: RawPkh[]
 ): Promise<Array<RawTzktUnstakeRequest & { staker: RawPkh }>> =>

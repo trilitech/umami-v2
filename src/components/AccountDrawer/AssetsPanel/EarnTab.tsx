@@ -1,9 +1,10 @@
 import { Box, Button, Center, Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
 import React, { ReactNode, useContext } from "react";
 
+import { PendingUnstakeRequests } from "./PendingUnstakeRequests/PendingUnstakeRequests";
 import { ExternalLinkIcon, PenIcon, XMarkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { Account } from "../../../types/Account";
+import { Account, ImplicitAccount } from "../../../types/Account";
 import { prettyTezAmount } from "../../../utils/format";
 import {
   useGetAccountDelegate,
@@ -159,7 +160,6 @@ export const EarnTab: React.FC<{
           </Flex>
         }
       />
-      {/* TODO: add onClick handlers */}
       <Flex justifyContent="space-between" gap="16px" marginTop="24px">
         {delegate ? (
           <>
@@ -188,6 +188,8 @@ export const EarnTab: React.FC<{
           </>
         )}
       </Flex>
+      {/* TODO: Handle multisig */}
+      <PendingUnstakeRequests marginTop="24px" account={account as ImplicitAccount} />
     </Box>
   );
 };

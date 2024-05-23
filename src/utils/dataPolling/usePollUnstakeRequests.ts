@@ -7,7 +7,7 @@ import { useAllAccounts } from "../hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../hooks/networkHooks";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsActions } from "../redux/slices/assetsSlice";
-import { getUnstakeRequests } from "../tezos";
+import { getPendingUnstakeRequests } from "../tezos";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 export const usePollUnstakeRequests = () => {
@@ -19,7 +19,7 @@ export const usePollUnstakeRequests = () => {
 
   const query = useQuery({
     queryKey: ["unstakeRequests", dispatch, network, addresses, refetchTrigger],
-    queryFn: () => getUnstakeRequests(network, addresses),
+    queryFn: () => getPendingUnstakeRequests(network, addresses),
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,

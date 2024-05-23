@@ -6,6 +6,7 @@ import { usePollConversionRate } from "./usePollConversionRate";
 import { usePollMultisigs } from "./usePollMultisigs";
 import { usePollPendingOperations } from "./usePollPendingOperations";
 import { usePollTokenBalances } from "./usePollTokenBalances";
+import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
 import { renderHook } from "../../mocks/testUtils";
 import { store } from "../redux/store";
 
@@ -30,6 +31,9 @@ const usePollAccountStatesMock = jest.mocked(usePollAccountStates);
 jest.mock("./usePollTokenBalances");
 const usePollTokenBalancesMock = jest.mocked(usePollTokenBalances);
 
+jest.mock("./usePollUnstakeRequests");
+const usePollUnstakeRequestsMock = jest.mocked(usePollUnstakeRequests);
+
 describe("useDataPolling", () => {
   describe("isLoading", () => {
     it.each([
@@ -37,6 +41,7 @@ describe("useDataPolling", () => {
       { hookName: "usePollPendingOperations", mock: usePollPendingOperationsMock },
       { hookName: "usePollAccountStates", mock: usePollAccountStatesMock },
       { hookName: "usePollTokenBalances", mock: usePollTokenBalancesMock },
+      { hookName: "usePollUnstakeRequests", mock: usePollUnstakeRequestsMock },
     ])("is true when the data is being fetched by $hookName", ({ mock }) => {
       [
         usePollBakersMock,
@@ -46,17 +51,19 @@ describe("useDataPolling", () => {
         usePollPendingOperationsMock,
         usePollAccountStatesMock,
         usePollTokenBalancesMock,
+        usePollUnstakeRequestsMock,
       ].forEach(hookMock => {
         if (hookMock === mock) {
+          // @ts-expect-error 2590
           hookMock.mockReturnValue({
             isFetching: true,
             dataUpdatedAt: 1,
-          } as any);
+          });
         } else {
           hookMock.mockReturnValue({
             isFetching: false,
             dataUpdatedAt: 1,
-          } as any);
+          });
         }
       });
 
@@ -78,17 +85,18 @@ describe("useDataPolling", () => {
         usePollPendingOperationsMock,
         usePollAccountStatesMock,
         usePollTokenBalancesMock,
+        usePollUnstakeRequestsMock,
       ].forEach(hookMock => {
         if (hookMock === mock) {
           hookMock.mockReturnValue({
             isFetching: true,
             dataUpdatedAt: 1,
-          } as any);
+          });
         } else {
           hookMock.mockReturnValue({
             isFetching: false,
             dataUpdatedAt: 1,
-          } as any);
+          });
         }
       });
 
@@ -104,6 +112,7 @@ describe("useDataPolling", () => {
       { hookName: "usePollPendingOperations", mock: usePollPendingOperationsMock },
       { hookName: "usePollAccountStates", mock: usePollAccountStatesMock },
       { hookName: "usePollTokenBalances", mock: usePollTokenBalancesMock },
+      { hookName: "usePollUnstakeRequests", mock: usePollUnstakeRequestsMock },
     ])("is true when the data is being fetched by $hookName", ({ mock }) => {
       [
         usePollBakersMock,
@@ -113,17 +122,18 @@ describe("useDataPolling", () => {
         usePollPendingOperationsMock,
         usePollAccountStatesMock,
         usePollTokenBalancesMock,
+        usePollUnstakeRequestsMock,
       ].forEach(hookMock => {
         if (hookMock === mock) {
           hookMock.mockReturnValue({
             isFetching: false,
             dataUpdatedAt: 1000,
-          } as any);
+          });
         } else {
           hookMock.mockReturnValue({
             isFetching: false,
             dataUpdatedAt: 1,
-          } as any);
+          });
         }
       });
 
@@ -145,17 +155,18 @@ describe("useDataPolling", () => {
         usePollBakersMock,
         usePollBlockMock,
         usePollConversionRateMock,
+        usePollUnstakeRequestsMock,
       ].forEach(hookMock => {
         if (hookMock === mock) {
           hookMock.mockReturnValue({
             isFetching: false,
             dataUpdatedAt: 5,
-          } as any);
+          });
         } else {
           hookMock.mockReturnValue({
             isFetching: false,
             dataUpdatedAt: 1,
-          } as any);
+          });
         }
       });
 

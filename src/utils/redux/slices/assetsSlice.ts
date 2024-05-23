@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { compact, groupBy, omit } from "lodash";
+import { compact, groupBy, omit, sortBy } from "lodash";
 
 import { accountsSlice } from "./accountsSlice/accountsSlice";
 import { RawPkh, TzktAlias } from "../../../types/Address";
@@ -80,11 +80,19 @@ export const assetsSlice = createSlice({
       const groupedByPkh = groupBy(payload, req => req.staker);
 
       for (const [pkh, unstakeRequests] of Object.entries(groupedByPkh)) {
+        const sortedRequests = sortBy(
+          unstakeRequests.map(req => omit(req, "staker")),
+          "timestamp"
+        );
         state.accountStates[pkh] = {
           ...state.accountStates[pkh],
-          unstakeRequests: unstakeRequests,
+          unstakeRequests: sortedRequests,
         } as AccountState;
       }
+    },
+    // when we change networks current account states become obsolete
+    cleanAccountsState: state => {
+      state.accountStates = {};
     },
     updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);

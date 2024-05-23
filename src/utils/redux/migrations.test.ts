@@ -83,6 +83,7 @@ describe("migrations", () => {
     test("7", () => {
       const initialState = {
         assets: {
+          blockLevel: 5,
           balances: {
             mutez: {
               [mockImplicitAddress(0).pkh]: 0,
@@ -97,7 +98,9 @@ describe("migrations", () => {
           },
         },
       };
-      expect(mainStoreMigrations[7](initialState)).toEqual({ assets: { accountStates: {} } });
+      expect(mainStoreMigrations[7](initialState)).toEqual({
+        assets: { accountStates: {}, block: { level: 5 } },
+      });
     });
   });
 

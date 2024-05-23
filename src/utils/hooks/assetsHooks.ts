@@ -14,6 +14,7 @@ import {
 import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
 import { TokenTransferOperation } from "../tezos";
+import { RawTzktUnstakeRequest } from "../tzkt/types";
 
 const useGetAccountStates = () => useAppSelector(s => s.assets.accountStates);
 
@@ -42,6 +43,11 @@ export const useGetAccountUnstakedBalance = () => {
   return (pkh: string) => getAccountState(pkh)?.unstakedBalance;
 };
 
+export const useGetAccountUnstakeRequests = () => {
+  const getAccountState = useGetAccountState();
+  return (pkh: string) => getAccountState(pkh)?.unstakeRequests || [];
+};
+
 // Tenderbake guarantees block finality after 2 confirmations
 export const useIsBlockFinalised = (level: number) => {
   const currentLevel = useAppSelector(s => s.assets.block.level);
@@ -50,6 +56,21 @@ export const useIsBlockFinalised = (level: number) => {
 };
 
 export const useGetCurrentCycle = () => useAppSelector(s => s.assets.block.cycle);
+
+export const FINALIZE_COOLDOWN_CYCLES = 4;
+
+/** Tells in how many cycles an unstake operation can be finalized
+ *  If the current cycle hasn't been fetched yet it returns
+ *  the maximum number of cycles {@link FINALIZE_COOLDOWN_CYCLES}
+ */
+export const useGetFinalizeRemainingCycles = () => {
+  const currentCycle = useGetCurrentCycle();
+
+  return ({ cycle }: RawTzktUnstakeRequest) =>
+    currentCycle
+      ? Math.max(FINALIZE_COOLDOWN_CYCLES - currentCycle + cycle, 0)
+      : FINALIZE_COOLDOWN_CYCLES;
+};
 
 export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
   const getAccountNFTs = useGetAccountNFTs();
