@@ -17,6 +17,7 @@ import { ExternalLink } from "../../ExternalLink";
 import { FormPage as DelegationFormPage } from "../../SendFlow/Delegation/FormPage";
 import { FormPage as StakeFormPage } from "../../SendFlow/Stake/FormPage";
 import { FormPage as UndelegationFormPage } from "../../SendFlow/Undelegation/FormPage";
+import { FormPage as UnstakeFormPage } from "../../SendFlow/Unstake/FormPage";
 
 const Row: React.FC<
   {
@@ -162,7 +163,14 @@ export const EarnTab: React.FC<{
       <Flex justifyContent="space-between" gap="16px" marginTop="24px">
         {delegate ? (
           <>
-            <Button flex={1} isDisabled={!stakedBalance} variant="secondary">
+            <Button
+              flex={1}
+              isDisabled={!stakedBalance}
+              onClick={() =>
+                openWith(<UnstakeFormPage sender={account} stakedBalance={stakedBalance || 0} />)
+              }
+              variant="secondary"
+            >
               Unstake
             </Button>
             <Button flex={1} onClick={() => openWith(<StakeFormPage sender={account} />)}>

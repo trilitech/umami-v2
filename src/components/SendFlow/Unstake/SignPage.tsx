@@ -1,7 +1,7 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 
-import { Stake } from "../../../types/Operation";
+import { Unstake } from "../../../types/Operation";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
@@ -9,11 +9,15 @@ import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignPage: React.FC<SignPageProps> = props => {
-  const { mode, operations, fee } = props;
+export const SignPage: React.FC<SignPageProps<{ stakedBalance: number }>> = props => {
+  const {
+    mode,
+    operations,
+    fee,
+    data: { stakedBalance },
+  } = props;
   const { isLoading, form, signer, onSign } = useSignPageHelpers(fee, operations, mode);
-
-  const { amount: mutezAmount } = operations.operations[0] as Stake;
+  const { amount: mutezAmount } = operations.operations[0] as Unstake;
 
   return (
     <FormProvider {...form}>
@@ -29,6 +33,9 @@ export const SignPage: React.FC<SignPageProps> = props => {
             </Flex>
 
             <FormLabel marginTop="24px">Stake amount</FormLabel>
+            <TezTile mutezAmount={stakedBalance} />
+
+            <FormLabel marginTop="24px">Amount to Unstake</FormLabel>
             <TezTile mutezAmount={mutezAmount} />
           </ModalBody>
           <ModalFooter>

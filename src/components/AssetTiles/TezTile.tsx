@@ -5,7 +5,7 @@ import colors from "../../style/colors";
 import { prettyTezAmount } from "../../utils/format";
 import { PrettyNumber } from "../PrettyNumber";
 
-export const TezTile: React.FC<{ mutezAmount: string }> = ({ mutezAmount }) => (
+export const TezTile: React.FC<{ mutezAmount: string | number }> = ({ mutezAmount }) => (
   <Flex
     alignItems="center"
     height="60px"

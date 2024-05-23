@@ -12,14 +12,16 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
+import BigNumber from "bignumber.js";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
 import { RawPkh, parsePkh } from "../../../types/Address";
-import { Stake } from "../../../types/Operation";
+import { Unstake } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
+import { TezTile } from "../../AssetTiles/TezTile";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import {
   useAddToBatchFormAction,
@@ -39,10 +41,12 @@ type FormValues = {
   prettyAmount: string;
 };
 
-export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
+export const FormPage: React.FC<FormPageProps<FormValues> & { stakedBalance: number }> = props => {
+  const stakedBalance = props.stakedBalance;
+
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
-    signPageExtraData: undefined,
+    signPageExtraData: { stakedBalance },
     FormPage,
     defaultFormPageProps: props,
     toOperation,
@@ -76,9 +80,11 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             <ModalCloseButton />
           </ModalHeader>
           <ModalBody>
-            <FormControl isInvalid={!!errors.prettyAmount}>
-              <FormLabel>Enter Amount</FormLabel>
+            <FormLabel>Stake amount</FormLabel>
+            <TezTile mutezAmount={stakedBalance} />
 
+            <FormControl marginTop="24px" isInvalid={!!errors.prettyAmount}>
+              <FormLabel>Enter Amount</FormLabel>
               <InputGroup>
                 <Input
                   isDisabled={isLoading}
@@ -86,7 +92,12 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
                   type="number"
                   {...register("prettyAmount", {
                     required: "Amount is required",
-                    validate: makeValidateDecimals(TEZ_DECIMALS),
+                    validate: value => {
+                      if (tezToMutez(value).gt(BigNumber(stakedBalance))) {
+                        return "Amount must be less than or equal to the staked balance";
+                      }
+                      return makeValidateDecimals(TEZ_DECIMALS)(value);
+                    },
                   })}
                   placeholder="0.000000"
                 />
@@ -113,8 +124,8 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   );
 };
 
-const toOperation = (formValues: FormValues): Stake => ({
-  type: "stake",
+const toOperation = (formValues: FormValues): Unstake => ({
+  type: "unstake",
   amount: tezToMutez(formValues.prettyAmount).toFixed(),
   sender: parsePkh(formValues.sender),
 });
