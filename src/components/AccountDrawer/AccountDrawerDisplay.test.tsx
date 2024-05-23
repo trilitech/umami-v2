@@ -24,11 +24,6 @@ import * as useGetOperationsModule from "../../views/operations/useGetOperations
 
 import { AccountCard } from ".";
 
-jest.mock("../../utils/tezos", () => ({
-  ...jest.requireActual("../../utils/tezos"),
-  getLastDelegation: jest.fn(),
-}));
-
 const { updateAccountStates, updateTokenBalance } = assetsSlice.actions;
 
 const selectedAccount = mockMnemonicAccount(0);

@@ -14,7 +14,6 @@ import {
   getAccounts,
   getCombinedOperations,
   getDelegations,
-  getLastDelegation,
   getLatestBlock,
   getOriginations,
   getRelatedTokenTransfers,
@@ -82,16 +81,6 @@ describe("tezos utils fetch", () => {
       const res = await getLatestBlock(network);
 
       expect(res).toEqual({ level: 123, cycle: 5 });
-    });
-
-    test("getLastDelegation", async () => {
-      jest.mocked(operationsGetDelegations).mockResolvedValue([
-        { id: 2, type: "delegation" },
-        { id: 1, type: "delegation" },
-      ]);
-      const res = await getLastDelegation(mockImplicitAddress(0).pkh, network);
-
-      expect(res).toEqual({ id: 2, type: "delegation" });
     });
 
     test("getAccounts", async () => {

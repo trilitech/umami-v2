@@ -12,14 +12,15 @@ import {
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
-import { first, sortBy } from "lodash";
+import axios from "axios";
+import { sortBy } from "lodash";
 
 import { withRateLimit } from "./withRateLimit";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { TokenTransfer } from "../../types/Transfer";
-import { RawTzktBlock } from "../tzkt/types";
+import { RawTzktBlock, RawTzktUnstakeRequest } from "../tzkt/types";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
@@ -239,9 +240,6 @@ export const getTokenTransfers = async (
     }));
   });
 
-export const getLastDelegation = (address: RawPkh, network: Network) =>
-  getDelegations([address], network, { limit: 1, sort: { desc: "id" } }).then(first);
-
 export const getTezosPriceInUSD = () =>
   withRateLimit(() => tzktApi.quotesGetLast().then(quote => quote.usd));
 
@@ -281,3 +279,28 @@ export const getBakers = async (
       }))
     )
   );
+
+export const getUnstakeRequests = async (
+  network: Network,
+  addresses: RawPkh[]
+): Promise<Array<RawTzktUnstakeRequest & { staker: RawPkh }>> =>
+  withRateLimit(async () => {
+    const { data } = await axios.get<
+      Array<{ cycle: number; firstTime: string; requestedAmount: number; staker: TzktAlias }>
+    >(`${network.tzktApiUrl}/v1/staking/unstake_requests`, {
+      params: {
+        limit: 10000,
+        "staker.in": addresses.join(","),
+        type: "unstake",
+        finalizedAmount: 0,
+        "select.fields": "cycle,firstTime,requestedAmount,staker",
+      },
+    });
+
+    return data.map(req => ({
+      cycle: req.cycle,
+      requestedAmount: req.requestedAmount,
+      staker: req.staker.address,
+      timestamp: req.firstTime,
+    }));
+  });

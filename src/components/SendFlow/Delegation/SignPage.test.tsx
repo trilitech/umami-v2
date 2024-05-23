@@ -2,19 +2,14 @@ import { Modal } from "@chakra-ui/react";
 
 import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
-import { mockDelegation, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
+import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
-import { DelegationOperation, TEZ, getLastDelegation } from "../../../utils/tezos";
+import { TEZ } from "../../../utils/tezos";
 import { SignPageProps } from "../utils";
-
-jest.mock("../../../utils/tezos", () => ({
-  ...jest.requireActual("../../../utils/tezos"),
-  getLastDelegation: jest.fn(),
-}));
 
 const fixture = (props: SignPageProps) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -56,18 +51,6 @@ describe("<SignPage />", () => {
         { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
       ])
     );
-
-    jest
-      .mocked(getLastDelegation)
-      .mockResolvedValue(
-        mockDelegation(
-          0,
-          6000000,
-          baker.address.pkh,
-          "Some baker",
-          new Date(2020, 5, 24)
-        ) as DelegationOperation
-      );
 
     const props: SignPageProps = {
       operations,

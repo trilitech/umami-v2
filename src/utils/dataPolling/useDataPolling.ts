@@ -8,6 +8,7 @@ import { usePollConversionRate } from "./usePollConversionRate";
 import { usePollMultisigs } from "./usePollMultisigs";
 import { usePollPendingOperations } from "./usePollPendingOperations";
 import { usePollTokenBalances } from "./usePollTokenBalances";
+import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsActions } from "../redux/slices/assetsSlice";
 
@@ -20,6 +21,8 @@ export const useDataPolling = () => {
     usePollPendingOperations();
   const { dataUpdatedAt: isAccountStatesUpdatedAt, isFetching: isAccountStatesFetching } =
     usePollAccountStates();
+  const { dataUpdatedAt: isUnstakeRequestUpdatedAt, isFetching: isUnstakeRequestFetching } =
+    usePollUnstakeRequests();
   const { dataUpdatedAt: isTokenBalancesUpdatedAt, isFetching: isTokenBalancesFetching } =
     usePollTokenBalances();
 
@@ -31,13 +34,15 @@ export const useDataPolling = () => {
     isMultisigsFetching ||
     isPendingOperationsFetching ||
     isAccountStatesFetching ||
-    isTokenBalancesFetching;
+    isTokenBalancesFetching ||
+    isUnstakeRequestFetching;
 
   const lastUpdatedAt = Math.max(
     isMultisigsUpdatedAt,
     isPendingOperationsUpdatedAt,
     isAccountStatesUpdatedAt,
-    isTokenBalancesUpdatedAt
+    isTokenBalancesUpdatedAt,
+    isUnstakeRequestUpdatedAt
   );
 
   useEffect(() => {

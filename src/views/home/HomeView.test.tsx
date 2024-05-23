@@ -2,24 +2,18 @@ import { HomeView } from "./HomeView";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
-import {
-  getCombinedOperations,
-  getLastDelegation,
-  getRelatedTokenTransfers,
-} from "../../utils/tezos";
+import { getCombinedOperations, getRelatedTokenTransfers } from "../../utils/tezos";
 
 jest.mock("../../utils/tezos", () => ({
   ...jest.requireActual("../../utils/tezos"),
   getCombinedOperations: jest.fn(),
   getRelatedTokenTransfers: jest.fn(),
-  getLastDelegation: jest.fn(),
 }));
 
 beforeEach(() => {
   [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount);
   jest.mocked(getCombinedOperations).mockResolvedValue([]);
   jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
-  jest.mocked(getLastDelegation).mockResolvedValue(undefined);
 });
 
 describe("<HomeView />", () => {

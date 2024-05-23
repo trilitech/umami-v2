@@ -7,6 +7,7 @@ import { Delegate } from "../../../types/Delegate";
 import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";
 import { TokenTransfer } from "../../../types/Transfer";
 import { TzktAccount } from "../../tezos";
+import { RawTzktUnstakeRequest } from "../../tzkt/types";
 
 type TransactionId = number;
 
@@ -16,6 +17,7 @@ type AccountState = {
   stakedBalance: number;
   unstakedBalance: number;
   tokens: TokenBalance[];
+  unstakeRequests: RawTzktUnstakeRequest[];
 };
 
 type State = {
@@ -63,7 +65,6 @@ export const assetsSlice = createSlice({
         state.transfers.tokens[transfer.transactionId!] = transfer;
       });
     },
-
     updateAccountStates: (state, { payload }: { payload: TzktAccount[] }) => {
       payload.forEach(accountInfo => {
         state.accountStates[accountInfo.address] = {
@@ -72,7 +73,19 @@ export const assetsSlice = createSlice({
         } as AccountState;
       });
     },
+    updateUnstakeRequests: (
+      state,
+      { payload }: { payload: Array<RawTzktUnstakeRequest & { staker: RawPkh }> }
+    ) => {
+      const groupedByPkh = groupBy(payload, req => req.staker);
 
+      for (const [pkh, unstakeRequests] of Object.entries(groupedByPkh)) {
+        state.accountStates[pkh] = {
+          ...state.accountStates[pkh],
+          unstakeRequests: unstakeRequests,
+        } as AccountState;
+      }
+    },
     updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);
 
@@ -91,13 +104,11 @@ export const assetsSlice = createSlice({
         } as AccountState;
       }
     },
-
     removeAccountsData: (state, { payload: pkhs }: { payload: RawPkh[] }) => {
       pkhs.forEach(pkh => {
         delete state.accountStates[pkh];
       });
     },
-
     updateBakers: (state, { payload }: { payload: Delegate[] }) => {
       state.bakers = payload;
     },

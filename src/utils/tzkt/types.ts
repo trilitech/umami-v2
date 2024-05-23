@@ -12,6 +12,12 @@ export type RawTzktBlock = {
   cycle: number;
 };
 
+export type RawTzktUnstakeRequest = {
+  cycle: number;
+  timestamp: string;
+  requestedAmount: number;
+};
+
 export type RawTzktGetSameMultisigsItem = {
   address: string;
   storage: {
