@@ -1,6 +1,7 @@
 import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { ContractCallSignPage } from "./ContractCallSignPage";
 import { DelegationSignPage } from "./DelegationSignPage";
+import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
 
@@ -20,6 +21,8 @@ export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, 
     case "undelegation": {
       return <UndelegationSignPage fee={fee} message={message} operation={operation} />;
     }
+    case "contract_origination":
+      return <OriginationOperationSignPage fee={fee} message={message} operation={operation} />;
     /**
      * FA1/2 are impossible to get here because we don't parse them
      * instead we get a generic contract call
@@ -28,7 +31,6 @@ export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, 
      */
     case "fa1.2":
     case "fa2":
-    case "contract_origination":
       throw new Error("Unsupported operation type");
   }
 };
