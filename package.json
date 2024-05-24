@@ -38,7 +38,7 @@
     "@babel/core": "^7.24.6",
     "@babel/preset-env": "^7.24.5",
     "@babel/preset-react": "^7.24.6",
-    "@babel/preset-typescript": "^7.24.1",
+    "@babel/preset-typescript": "^7.24.6",
     "@babel/runtime": "^7.24.6",
     "@chakra-ui/anatomy": "2.2.2",
     "@chakra-ui/cli": "^2.4.1",
