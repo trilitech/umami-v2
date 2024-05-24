@@ -18,7 +18,7 @@ import { ImplicitAccount } from "../../types/Account";
 import { ImplicitOperations } from "../../types/AccountOperations";
 import { parseImplicitPkh, parsePkh } from "../../types/Address";
 import { Network } from "../../types/Network";
-import { Operation } from "../../types/Operation";
+import { ContractOrigination, Operation } from "../../types/Operation";
 import { useGetOwnedAccountSafe } from "../hooks/getAccountDataHooks";
 import { useFindNetwork } from "../hooks/networkHooks";
 import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";
@@ -193,6 +193,20 @@ export const partialOperationToOperation = (
       } else {
         return { type: "undelegation", sender: signer.address };
       }
+    }
+    case TezosOperationType.ORIGINATION: {
+      const { script } = partialOperation;
+      const { code, storage } = script as unknown as {
+        code: ContractOrigination["code"];
+        storage: ContractOrigination["storage"];
+      };
+
+      return {
+        type: "contract_origination",
+        sender: signer.address,
+        code,
+        storage,
+      };
     }
     default:
       throw new Error(`Unsupported operation kind: ${partialOperation.kind}`);

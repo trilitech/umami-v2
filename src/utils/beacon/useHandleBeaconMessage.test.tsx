@@ -387,7 +387,8 @@ describe("partialOperationToOperation", () => {
     without(
       Object.values(TezosOperationType),
       TezosOperationType.TRANSACTION,
-      TezosOperationType.DELEGATION
+      TezosOperationType.DELEGATION,
+      TezosOperationType.ORIGINATION
     )
   )("for %s", kind => {
     it("throws an error", () => {
