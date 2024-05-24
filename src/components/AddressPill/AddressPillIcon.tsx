@@ -2,7 +2,7 @@ import { IconProps } from "@chakra-ui/react";
 import { useContext } from "react";
 
 import { AddressPillMode } from "./AddressPillMode";
-import { AddressKind, AddressKindType } from "./types";
+import { AddressKind } from "./types";
 import {
   AddContactIcon,
   BakerIcon,
@@ -47,7 +47,7 @@ export const RightIcon: React.FC<
     return <XMark cursor="pointer" onClick={addressPillMode.onRemove} {...rest} />;
   }
 
-  const knownTypes: AddressKindType[] = ["implicit", "multisig", "baker"];
+  const knownTypes: AddressKind["type"][] = ["implicit", "multisig", "baker"];
 
   if (knownTypes.includes(type) || addressExistsInContacts(pkh)) {
     return null;

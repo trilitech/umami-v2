@@ -23,11 +23,11 @@ export const AccountTileBase: React.FC<
 > = ({ icon, leftElement, rightElement, ...flexProps }) => (
   <Flex
     alignItems="center"
-    height={90}
-    marginBottom={4}
-    padding={4}
+    height="90px"
+    marginBottom="16px"
+    padding="16px"
     border={`1px solid ${colors.gray[800]}`}
-    borderRadius={4}
+    borderRadius="16px"
     data-testid="account-tile-base"
     {...flexProps}
   >
@@ -55,6 +55,28 @@ export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = 
 
 const MAX_NFT_COUNT = 7;
 
+const accountIconGradientColor = (account: Account) => {
+  switch (account.type) {
+    case "mnemonic":
+    case "secret_key":
+      return identiconColor(account.address.pkh);
+    case "ledger":
+    case "multisig":
+      return colors.gray[450];
+    case "social":
+      switch (account.idp) {
+        case "facebook":
+          return "#1977F2";
+        case "google":
+        case "reddit":
+          return "#EA4335";
+        case "email":
+        case "twitter":
+          return colors.gray[450];
+      }
+  }
+};
+
 export const accountIconGradient = ({
   account,
   radius,
@@ -70,19 +92,7 @@ export const accountIconGradient = ({
   mainBackgroundColor?: string;
   opacity?: string;
 }) => {
-  let color: string;
-  switch (account.type) {
-    case "mnemonic":
-    case "secret_key":
-      color = identiconColor(account.address.pkh);
-      break;
-    case "ledger":
-    case "multisig":
-      color = colors.gray[450];
-      break;
-    case "social":
-      color = "#EA4335";
-  }
+  let color = accountIconGradientColor(account);
 
   color += opacity;
 
@@ -135,7 +145,7 @@ export const AccountTile: React.FC<{
         padding={0}
         border="none"
         data-testid={`account-tile-${pkh}` + (isSelected ? "-selected" : "")}
-        icon={<AccountTileIcon addressKind={addressKind} />}
+        icon={<AccountTileIcon account={account} size="lg" />}
         leftElement={<LabelAndAddress label={addressKind.label} pkh={pkh} />}
         rightElement={
           <Flex flexDirection="column">

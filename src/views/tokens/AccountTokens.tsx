@@ -16,9 +16,8 @@ import { TokenNameWithIcon } from "./TokenNameWithIcon";
 import { TokenIcon } from "../../assets/icons";
 import { AccountBalance } from "../../components/AccountBalance";
 import { accountIconGradient } from "../../components/AccountTile/AccountTile";
+import { AccountTileIcon } from "../../components/AccountTile/AccountTileIcon";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
-import { AddressTileIcon } from "../../components/AddressTile/AddressTileIcon";
-import { useAddressKind } from "../../components/AddressTile/useAddressKind";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { SendButton } from "../../components/SendButton";
 import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
@@ -33,7 +32,6 @@ const Header: React.FC<{
   account: Account;
 }> = ({ account }) => {
   const { address, label } = account;
-  const addressKind = useAddressKind(address);
   return (
     <Flex
       alignItems="center"
@@ -49,7 +47,7 @@ const Header: React.FC<{
       data-testid="header"
       paddingX="30px"
     >
-      <AddressTileIcon addressKind={addressKind} identiconSize={35} size="lg" />
+      <AccountTileIcon account={account} size="lg" />
 
       <Flex justifyContent="space-between" flex={1}>
         <Box marginLeft="16px" data-testid="account-identifier">

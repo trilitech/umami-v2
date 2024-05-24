@@ -1,6 +1,7 @@
 import { MichelsonV1Expression } from "@taquito/rpc";
 import { DelegationOperation } from "@tzkt/sdk-api";
 
+import { IDP } from "../auth";
 import {
   Account,
   ImplicitAccount,
@@ -149,12 +150,12 @@ export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAc
   pk: mockPk(index),
 });
 
-export const mockSocialAccount = (index: number, label?: string): SocialAccount => ({
+export const mockSocialAccount = (index: number, label?: string, idp?: IDP): SocialAccount => ({
   type: "social",
   label: label || mockAccountLabel(index),
   address: mockImplicitAddress(index),
   pk: mockPk(index),
-  idp: "google",
+  idp: idp || "google",
 });
 
 export const mockLedgerAccount = (index: number, label?: string): LedgerAccount => {

@@ -13,7 +13,7 @@ import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHan
 import { MultisigOperation } from "../../../../utils/multisig/types";
 import { estimate } from "../../../../utils/tezos";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
-import { AccountTileIcon } from "../../../AccountTile/AccountTileIcon";
+import { AddressTileIcon } from "../../../AddressTile/AddressTileIcon";
 import { useAddressKind } from "../../../AddressTile/useAddressKind";
 import { DynamicModalContext } from "../../../DynamicModal";
 import { SignPage } from "../../../SendFlow/Multisig/SignPage";
@@ -81,7 +81,7 @@ export const MultisigSignerTile: React.FC<{
       padding="15px"
       borderRadius="8px"
       backgroundColor={colors.gray[700]}
-      icon={<AccountTileIcon addressKind={addressKind} />}
+      icon={<AddressTileIcon addressKind={addressKind} size="lg" />}
       leftElement={<LabelAndAddress label={addressKind.label} pkh={addressKind.pkh} />}
       rightElement={
         <MultisigActionButton

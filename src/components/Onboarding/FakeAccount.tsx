@@ -1,42 +1,53 @@
 /* istanbul ignore file */
-import { Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { RpcClient } from "@taquito/rpc";
 import { useForm } from "react-hook-form";
 
 import { ModalContentWrapper } from "./ModalContentWrapper";
 import { WalletPlusIcon } from "../../assets/icons";
-import { MAINNET } from "../../types/Network";
+import type { IDP } from "../../auth";
+import { GHOSTNET } from "../../types/Network";
 import {
   defaultDerivationPathTemplate,
   makeDerivationPath,
 } from "../../utils/account/derivationPathUtils";
-import { useRestoreLedger } from "../../utils/hooks/setAccountDataHooks";
+import { useRestoreLedger, useRestoreSocial } from "../../utils/hooks/setAccountDataHooks";
 
 export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ pkh: string; name: string }>({ mode: "onBlur" });
+  } = useForm<{ pkh: string; name: string; idp?: IDP }>({ mode: "onBlur" });
   const restoreLedger = useRestoreLedger();
+  const restoreSocial = useRestoreSocial();
 
-  const onSubmit = async ({ pkh, name }: { pkh: string; name: string }) => {
-    const rpc = new RpcClient(MAINNET.rpcUrl);
+  const onSubmit = async ({ pkh, name, idp }: { pkh: string; name: string; idp?: IDP }) => {
+    if (idp && idp.length > 0) {
+      if (!["google", "facebook", "twitter", "reddit", "email"].includes(idp)) {
+        throw new Error("Invalid IDP");
+      }
+    }
+    const rpc = new RpcClient(GHOSTNET.rpcUrl);
     const managerKey = await rpc.getManagerKey(pkh);
     const pk = typeof managerKey === "string" ? managerKey : managerKey.key;
-    restoreLedger(
-      defaultDerivationPathTemplate,
-      makeDerivationPath(defaultDerivationPathTemplate, 0),
-      pk,
-      pkh,
-      name
-    );
+
+    if (idp) {
+      restoreSocial(pk, pkh, name, idp);
+    } else {
+      restoreLedger(
+        defaultDerivationPathTemplate,
+        makeDerivationPath(defaultDerivationPathTemplate, 0),
+        pk,
+        pkh,
+        name
+      );
+    }
     onClose();
   };
   return (
     <ModalContentWrapper icon={<WalletPlusIcon />} title="Add a Fake Account">
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-        <Text>It will be restored as a ledger account</Text>
         <FormControl isInvalid={!!errors.pkh}>
           <FormLabel>Address</FormLabel>
           <Input
@@ -45,7 +56,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
             placeholder="Please enter the account address"
           />
         </FormControl>
-        <FormControl isInvalid={!!errors.name}>
+        <FormControl marginTop="12px" isInvalid={!!errors.name}>
           <FormLabel>Name</FormLabel>
           <Input
             {...register("name", { required: true })}
@@ -53,7 +64,11 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
             placeholder="Please enter the account name"
           />
         </FormControl>
-        <Button width="100%" marginTop={2} size="lg" type="submit">
+        <FormControl marginTop="12px" isInvalid={!!errors.idp}>
+          <FormLabel>IDP (For a social account)</FormLabel>
+          <Input {...register("idp")} autoComplete="off" placeholder="Please enter the IDP" />
+        </FormControl>
+        <Button width="100%" marginTop="12px" size="lg" type="submit">
           Add account
         </Button>
       </form>

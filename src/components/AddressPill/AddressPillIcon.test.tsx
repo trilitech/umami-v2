@@ -1,15 +1,20 @@
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
-import { AddressKindType } from "./types";
 import { mockFA2Address } from "../../mocks/addressKind";
 import { mockContractAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 
 describe("AddressPill Icons", () => {
-  it.each(["multisig", "fa1.2", "fa2", "baker", "contact"])("renders %s left icon", type => {
+  it.each([
+    "multisig" as const,
+    "fa1.2" as const,
+    "fa2" as const,
+    "baker" as const,
+    "contact" as const,
+  ])("renders %s left icon", type => {
     render(
       <LeftIcon
         addressKind={{
-          type: type as AddressKindType,
+          type,
           pkh: mockContractAddress(0).pkh,
           label: "label" as any,
         }}

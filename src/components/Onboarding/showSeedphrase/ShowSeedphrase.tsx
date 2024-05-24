@@ -14,7 +14,7 @@ export const ShowSeedphrase = ({
   account: ShowSeedphraseStep["account"];
 }) => (
   <ModalContentWrapper
-    icon={<KeyIcon width="24px" height="24px" stroke={colors.gray[450]} />}
+    icon={<KeyIcon width="24px" height="24px" />}
     subtitle="Please record the following 24 words in sequence in order to restore it in the future."
     title="Record Seed Phrase"
   >

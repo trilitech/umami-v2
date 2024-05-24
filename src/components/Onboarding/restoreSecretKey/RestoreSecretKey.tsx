@@ -4,7 +4,6 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { KeyIcon } from "../../../assets/icons";
-import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { isEncryptedSecretKeyPrefix } from "../../../utils/redux/thunks/secretKeyAccount";
 import { PasswordInput } from "../../PasswordInput";
@@ -60,10 +59,7 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: OnboardingStep
     });
 
   return (
-    <ModalContentWrapper
-      icon={<KeyIcon width="24px" height="24px" stroke={colors.gray[450]} />}
-      title="Insert Secret Key"
-    >
+    <ModalContentWrapper icon={<KeyIcon width="24px" height="24px" />} title="Insert Secret Key">
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormControl isInvalid={!!errors.secretKey}>

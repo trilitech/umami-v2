@@ -1,12 +1,13 @@
 import { Curves } from "@taquito/signer";
 
 import { ImplicitAddress } from "./Address";
+import { IDP } from "../auth";
 import { Multisig } from "../utils/multisig/types";
 
 export type SocialAccount = {
   label: string;
   type: "social";
-  idp: "google";
+  idp: IDP;
   address: ImplicitAddress;
   pk: string;
 };

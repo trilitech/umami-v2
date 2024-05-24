@@ -76,7 +76,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
 
   return (
     <ModalContentWrapper
-      icon={<KeyIcon width="24px" height="24px" stroke={colors.gray[450]} />}
+      icon={<KeyIcon width="24px" height="24px" />}
       subtitle="Please fill in the Seed Phrase in sequence."
       title="Import Seed Phrase"
     >

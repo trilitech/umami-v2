@@ -1,86 +1,77 @@
-import { AspectRatio, Image } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
+import { memo } from "react";
 
+import { AddressTileIconSize } from "./AddressTileIconSize";
 import { AddressKind } from "./types";
-import {
-  ContactIcon,
-  KeyIcon,
-  LedgerIcon,
-  SocialIcon,
-  UnknownContactIcon,
-} from "../../assets/icons";
+import { ContactIcon, UnknownContactIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { Identicon } from "../Identicon";
+import { useGetOwnedAccountSafe } from "../../utils/hooks/getAccountDataHooks";
+import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 
 const baseIconProps = {
   stroke: colors.gray[400],
   borderRadius: "4px",
-  padding: "5px",
   background: colors.gray[500],
 };
 
-type AddressTileIconSize = "sm" | "md" | "lg";
-
+/**
+ * Displays an icon for an address based on its kind.
+ * Can be used with arbitrary addresses, not just accounts.
+ * Though for accounts it'll reuse {@link AccountTileIcon}.
+ *
+ * @param addressKind - The address to display the icon for.
+ * @param size - The size of the icon.
+ */
 export const AddressTileIcon: React.FC<{
   addressKind: AddressKind;
-  size?: AddressTileIconSize;
-  identiconSize?: number; // only used for secret_key and mnemonic
-}> = ({ addressKind, size = "sm", identiconSize = 20 }) => {
+  size: AddressTileIconSize;
+}> = memo(({ addressKind, size }) => {
+  const getAccount = useGetOwnedAccountSafe();
+  const account = getAccount(addressKind.pkh);
+
+  if (account) {
+    return <AccountTileIcon account={account} size={size} />;
+  }
+
   let sizeInPx;
+  let padding;
   switch (size) {
     case "sm":
       sizeInPx = "30px";
-      break;
-    case "md":
-      sizeInPx = "38.5px";
+      padding = "5px";
       break;
     case "lg":
-      sizeInPx = "45.5px";
-      break;
+      sizeInPx = "48px";
+      padding = "10px";
   }
 
   switch (addressKind.type) {
+    case "contact":
+      return (
+        <ContactIcon width={sizeInPx} height={sizeInPx} padding={padding} {...baseIconProps} />
+      );
+    case "unknown":
+      return (
+        <UnknownContactIcon
+          width={sizeInPx}
+          height={sizeInPx}
+          padding={padding}
+          {...baseIconProps}
+        />
+      );
+    case "baker":
+      return (
+        <Image
+          height={sizeInPx}
+          data-testid="baker-icon"
+          src={`https://services.tzkt.io/v1/avatars/${addressKind.pkh}`}
+        />
+      );
     case "secret_key":
     case "mnemonic":
-      return (
-        <Identicon
-          width={sizeInPx}
-          height={sizeInPx}
-          padding="5px"
-          address={addressKind.pkh}
-          identiconSize={identiconSize}
-        />
-      );
     case "social":
-      return (
-        <SocialIcon
-          width={sizeInPx}
-          height={sizeInPx}
-          {...baseIconProps}
-          stroke="transparent"
-          background="white"
-        />
-      );
     case "ledger":
-      return <LedgerIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
     case "multisig":
-      return <KeyIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
-    case "contact":
-      return <ContactIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
-    case "unknown":
-      return <UnknownContactIcon width={sizeInPx} height={sizeInPx} {...baseIconProps} />;
-    case "baker": {
-      const bakerLogoUrl = `https://services.tzkt.io/v1/avatars/${addressKind.pkh}`;
-      return (
-        <AspectRatio
-          width="30px"
-          height="30px"
-          marginRight="8px"
-          data-testid="baker-icon"
-          ratio={1}
-        >
-          <Image src={bakerLogoUrl} />
-        </AspectRatio>
-      );
-    }
+      return null; // impossible state
   }
-};
+});

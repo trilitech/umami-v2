@@ -37,7 +37,7 @@ export const AddressTile: React.FC<{ address: Address; hideBalance?: boolean } &
         {...flexProps}
       >
         <Flex alignItems="center" width={hideBalance ? "100%" : "calc(100% - 95px)"}>
-          <AddressTileIcon addressKind={addressKind} />
+          <AddressTileIcon addressKind={addressKind} size="sm" />
 
           {addressKind.type === "unknown" ? (
             <Text marginLeft="10px" color={colors.gray[300]} size="sm">
