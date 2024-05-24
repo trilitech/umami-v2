@@ -2004,12 +2004,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.22.10, @babel/runtime@npm:^7.24.5":
+"@babel/runtime@npm:^7.22.10":
   version: 7.24.5
   resolution: "@babel/runtime@npm:7.24.5"
   dependencies:
     regenerator-runtime: "npm:^0.14.0"
   checksum: 10/e0f4f4d4503f7338749d1dd92361ad132d683bde64e6b61d6c855e100dcd01592295fcfdcc960c946b85ef7908dc2f501080da58447c05812cf3cd80c599bb62
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.24.6":
+  version: 7.24.6
+  resolution: "@babel/runtime@npm:7.24.6"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: 10/6c4e12731cd9206a883c19d48fa04f6aaaf7ee83f049b22631e6521b866edc20832b4d5db30aa86d8ae799c4dcf57761fe8a4af2bf7e233245c079c1dafb5668
   languageName: node
   linkType: hard
 
@@ -17022,7 +17031,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.24.5"
     "@babel/preset-react": "npm:^7.24.1"
     "@babel/preset-typescript": "npm:^7.24.1"
-    "@babel/runtime": "npm:^7.24.5"
+    "@babel/runtime": "npm:^7.24.6"
     "@chakra-ui/anatomy": "npm:2.2.2"
     "@chakra-ui/cli": "npm:^2.4.1"
     "@chakra-ui/icons": "npm:^2.1.1"
