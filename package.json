@@ -52,7 +52,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@ledgerhq/hw-transport-webusb": "^6.28.6",
-    "@playwright/test": "^1.44.0",
+    "@playwright/test": "^1.44.1",
     "@reduxjs/toolkit": "^2.2.5",
     "@stylistic/eslint-plugin": "^2.1.0",
     "@tanstack/eslint-plugin-query": "^5.35.6",
