@@ -1,4 +1,4 @@
-import { Multisig, MultisigOperation } from "../multisig/types";
+import { Multisig } from "../multisig/types";
 import { useAppSelector } from "../redux/hooks";
 
 export const useMultisigAccounts = () => useAppSelector(s => s.multisigs.items);

@@ -16,11 +16,13 @@ import { EarnTab } from "./EarnTab";
 import { MultisigPendingOperations } from "./MultisigPendingOperations";
 import { NFTsGrid } from "./NFTsGrid";
 import { OperationListDisplay } from "./OperationListDisplay";
+import { PendingUnstakeRequests } from "./PendingUnstakeRequests";
 import { TokenList } from "./TokenList";
 import { ExternalLinkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { Account } from "../../../types/Account";
+import { Account, ImplicitAccount } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
+import { useGetAccountUnstakeRequests } from "../../../utils/hooks/assetsHooks";
 import { useGetPendingMultisigOperations } from "../../../utils/hooks/multisigHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { buildTzktUrl } from "../../../utils/tzkt/helpers";
@@ -42,8 +44,10 @@ export const AssetsPanel: React.FC<{
   account: Account;
 }> = ({ tokens, nfts, account }) => {
   const getPendingOperations = useGetPendingMultisigOperations();
-  const withPendingOperations =
+  const hasPendingMultisigOperations =
     account.type === "multisig" && getPendingOperations(account).length > 0;
+  const hasPendingUnstakeRequests = useGetAccountUnstakeRequests()(account.address.pkh).length > 0;
+  const showPendingTab = hasPendingMultisigOperations || hasPendingUnstakeRequests;
 
   const network = useSelectedNetwork();
   const { operations, isFirstLoad: isLoading } = useGetOperations([account]);
@@ -58,7 +62,7 @@ export const AssetsPanel: React.FC<{
     >
       <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
         <Flex>
-          {withPendingOperations && (
+          {showPendingTab && (
             <SmallTab data-testid="account-card-pending-tab">
               <Text>Pending</Text>
               <Box
@@ -88,7 +92,7 @@ export const AssetsPanel: React.FC<{
         </ExternalLink>
       </TabList>
       <TabPanels height="100%">
-        {withPendingOperations && (
+        {showPendingTab && (
           <TabPanel
             overflowX="hidden"
             height="100%"
@@ -97,7 +101,10 @@ export const AssetsPanel: React.FC<{
             data-testid="account-card-pending-tab-panel"
             paddingX="0"
           >
-            <MultisigPendingOperations account={account} />
+            {hasPendingMultisigOperations && <MultisigPendingOperations account={account} />}
+            {hasPendingUnstakeRequests && (
+              <PendingUnstakeRequests account={account as ImplicitAccount} />
+            )}
           </TabPanel>
         )}
 
