@@ -1,1 +1,1 @@
-export const IS_DEV = import.meta.env.DEV || import.meta.env.DEBUG;
+export const IS_DEV = import.meta.env.DEV;
