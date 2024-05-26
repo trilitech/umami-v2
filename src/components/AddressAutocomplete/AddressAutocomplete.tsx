@@ -6,12 +6,13 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  StyleProps,
 } from "@chakra-ui/react";
 import { get } from "lodash";
 import { useId, useState } from "react";
-import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
+import { FieldValues, Path, useFormContext } from "react-hook-form";
 
+import { BaseProps } from "./BaseProps";
+import { getSuggestions } from "./getSuggestions";
 import { Suggestions } from "./Suggestions";
 import { ChevronDownIcon, XMark } from "../../assets/icons";
 import colors from "../../style/colors";
@@ -19,39 +20,12 @@ import { Account } from "../../types/Account";
 import { isAddressValid, parsePkh } from "../../types/Address";
 import { Contact } from "../../types/Contact";
 import { useBakerList } from "../../utils/hooks/assetsHooks";
-import { useContactsForSelectedNetwork } from "../../utils/hooks/contactsHooks";
 import {
   useAllAccounts,
   useGetOwnedSignersForAccount,
   useImplicitAccounts,
 } from "../../utils/hooks/getAccountDataHooks";
 import { AddressTile } from "../AddressTile/AddressTile";
-
-// <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
-// <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
-export type BaseProps<T extends FieldValues, U extends Path<T>> = {
-  isDisabled?: boolean;
-  isLoading?: boolean;
-  inputName: U;
-  allowUnknown: boolean;
-  label: string;
-  // do not set the actual input value to an empty string when the user selects an unknown address or in the mid of typing
-  // this is useful when the input is used as a select box
-  // it is assumed that there is at least one valid suggestion present and one of them is selected
-  // TODO: make a separate selector component for that
-  keepValid?: boolean;
-  onUpdate?: (value: string) => void;
-  validate?: RegisterOptions<T, U>["validate"];
-  style?: StyleProps;
-  size?: "default" | "short";
-  hideBalance?: boolean; // defaults to false
-};
-
-export const getSuggestions = (inputValue: string, contacts: Contact[]): Contact[] =>
-  contacts.filter(
-    contact =>
-      !inputValue.trim() || contact.name.toLowerCase().includes(inputValue.trim().toLowerCase())
-  );
 
 export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   contacts,
@@ -222,19 +196,6 @@ const CrossButton = (props: IconProps) => (
     {...props}
   />
 );
-
-export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
-  props: BaseProps<T, U>
-) => {
-  const contacts = useContactsForSelectedNetwork();
-
-  const accounts = useAllAccounts().map(account => ({
-    name: account.label,
-    pkh: account.address.pkh,
-  }));
-
-  return <AddressAutocomplete {...props} contacts={contacts.concat(accounts)} />;
-};
 
 export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>
