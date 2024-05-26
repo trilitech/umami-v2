@@ -57,8 +57,6 @@ export const assetsSlice = createSlice({
     updateBlock: (state, { payload }: { payload: { level: number; cycle: number } }) => {
       state.block = payload;
     },
-    // TODO: it might be growing "infinitely" when a user is scrolling through their operations
-    // but it doesn't have to be stored in localStorage (check how it works if the app is closed and opened again)
     updateTokenTransfers: (state, { payload: transfers }: { payload: TokenTransfer[] }) => {
       transfers.forEach(transfer => {
         // these token transfers are fetched by transaction id and it's definitely present
@@ -79,6 +77,10 @@ export const assetsSlice = createSlice({
     ) => {
       const groupedByPkh = groupBy(payload, req => req.staker);
 
+      for (const accountState of Object.values(state.accountStates)) {
+        accountState!.unstakeRequests = [];
+      }
+
       for (const [pkh, unstakeRequests] of Object.entries(groupedByPkh)) {
         const sortedRequests = sortBy(
           unstakeRequests.map(req => omit(req, "staker")),
@@ -96,6 +98,10 @@ export const assetsSlice = createSlice({
     },
     updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);
+
+      for (const accountState of Object.values(state.accountStates)) {
+        accountState!.tokens = [];
+      }
 
       for (const [pkh, rawTokenBalances] of Object.entries(groupedByPkh)) {
         const accountTokenBalances = compact(rawTokenBalances.map(fromRaw)).map(
