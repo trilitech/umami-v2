@@ -8,8 +8,8 @@ jobs:
     timeout-minutes: 20
     runs-on: ubuntu-latest-m
     env:
-      TZKT_SYNC_IMAGE: bakingbad/tzkt-sync:1.13.3
-      TZKT_API_IMAGE: serjonya/tzkt-api:1.13.3-linux
+      TZKT_SYNC_IMAGE: bakingbad/tzkt-sync:1.13.4
+      TZKT_API_IMAGE: serjonya/tzkt-api:1.13.4-linux
 
     steps:
       - uses: actions/checkout@v4
