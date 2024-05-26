@@ -39,10 +39,11 @@ export const Suggestions = ({
           <ListItem
             marginBottom={i === contacts.length - 1 ? "5px" : 0}
             padding="5px 15px 0 5px"
+            data-testid={`suggestion-${contact.pkh}`}
             onMouseDown={() => {
               // onMouseDown is the only way for this to fire before the onBlur callback of the Input
               // https://stackoverflow.com/a/28963938/6797267
-              onChange(contact.name);
+              onChange(contact.pkh);
             }}
           >
             <AddressTile
