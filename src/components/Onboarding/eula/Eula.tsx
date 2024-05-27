@@ -1,4 +1,4 @@
-import { Button, Checkbox, Link } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Link } from "@chakra-ui/react";
 import React from "react";
 
 import { DocumentIcon } from "../../../assets/icons";
@@ -14,30 +14,33 @@ export const Eula: React.FC<{
     <ModalContentWrapper icon={<DocumentIcon />} title="Accept to Continue">
       <>
         <Checkbox
-          paddingBottom="24px"
+          marginTop="-20px"
+          marginBottom="24px"
           fontWeight="600"
           onChange={e => setIsChecked(e.target.checked)}
         >
-          I confirm that I have read and agreed with the{" "}
-          <Link
-            textDecoration="underline"
-            _hover={{ color: colors.green }}
-            href="https://umamiwallet.com/tos.html"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Terms of Service
-          </Link>{" "}
-          and the{" "}
-          <Link
-            textDecoration="underline"
-            _hover={{ color: colors.green }}
-            href="https://umamiwallet.com/privacypolicy.html"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Privacy Policy
-          </Link>
+          <Box marginTop="20px">
+            I confirm that I have read and agreed with the{" "}
+            <Link
+              textDecoration="underline"
+              _hover={{ color: colors.green }}
+              href="https://umamiwallet.com/tos.html"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Terms of Service
+            </Link>{" "}
+            and the{" "}
+            <Link
+              textDecoration="underline"
+              _hover={{ color: colors.green }}
+              href="https://umamiwallet.com/privacypolicy.html"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Privacy Policy
+            </Link>
+          </Box>
         </Checkbox>
         <Button
           width="100%"

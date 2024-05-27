@@ -8,17 +8,13 @@ import { BakerIcon, IncomingArrow, OutgoingArrow, PlusIcon } from "../../assets/
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
-import {
-  useGetAccountBalance,
-  useGetAccountDelegate,
-  useGetDollarBalance,
-} from "../../utils/hooks/assetsHooks";
+import { useGetAccountBalance, useGetDollarBalance } from "../../utils/hooks/assetsHooks";
 import { accountIconGradient } from "../AccountTile/AccountTile";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 import { AddressPill } from "../AddressPill/AddressPill";
 import { BuyTezForm } from "../BuyTez/BuyTezForm";
 import { DynamicModalContext } from "../DynamicModal";
-import { FormPage as DelegationFormPage } from "../SendFlow/Delegation/FormPage";
+import { NoticeModal as DelegateNoticeModal } from "../SendFlow/Delegation/NoticeModal";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 
 type Props = {
@@ -70,7 +66,6 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
   const pkh = account.address.pkh;
   const balance = useGetAccountBalance()(pkh);
   const dollarBalance = useGetDollarBalance()(pkh);
-  const delegate = useGetAccountDelegate()(pkh);
 
   return (
     <Flex
@@ -122,16 +117,7 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
         <RoundButton
           icon={<BakerIcon width="24px" height="24px" stroke="currentcolor" />}
           label="Delegate"
-          onClick={() =>
-            openWith(
-              <DelegationFormPage
-                form={
-                  delegate ? { baker: delegate.address, sender: account.address.pkh } : undefined
-                }
-                sender={account}
-              />
-            )
-          }
+          onClick={() => openWith(<DelegateNoticeModal account={account} />)}
         />
       </Center>
       {isMultisig && <MultisigApprovers signers={account.signers} />}

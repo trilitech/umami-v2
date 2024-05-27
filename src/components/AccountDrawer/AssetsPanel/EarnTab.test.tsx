@@ -36,6 +36,10 @@ describe("<EarnTab />", () => {
 
       await act(() => user.click(screen.getByRole("button", { name: "Delegate" })));
 
+      expect(screen.getByRole("heading", { name: "Delegation" })).toBeVisible();
+
+      await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
+
       expect(screen.getByTestId("delegate-form")).toBeVisible();
     });
   });
@@ -108,6 +112,10 @@ describe("<EarnTab />", () => {
       render(<EarnTab account={account} />);
 
       await act(() => user.click(screen.getByTestId("change-delegation-button")));
+
+      expect(screen.getByRole("heading", { name: "Important Notice" })).toBeVisible();
+
+      await act(() => user.click(screen.getByRole("button", { name: "I understand" })));
 
       expect(screen.getByTestId("delegate-form")).toBeVisible();
     });

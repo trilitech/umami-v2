@@ -12,7 +12,6 @@ const baseStyle = definePartsStyle({
     color: "white",
   },
   control: {
-    marginTop: "-20px",
     width: "20px",
     height: "20px",
     borderWidth: "2px",

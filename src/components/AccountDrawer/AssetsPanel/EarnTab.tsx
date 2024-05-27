@@ -15,10 +15,10 @@ import { buildTzktUrl } from "../../../utils/tzkt/helpers";
 import { AddressPill } from "../../AddressPill/AddressPill";
 import { DynamicModalContext } from "../../DynamicModal";
 import { ExternalLink } from "../../ExternalLink";
-import { FormPage as DelegationFormPage } from "../../SendFlow/Delegation/FormPage";
-import { FormPage as StakeFormPage } from "../../SendFlow/Stake/FormPage";
+import { NoticeModal as DelegateNoticeModal } from "../../SendFlow/Delegation/NoticeModal";
+import { NoticeModal as StakeNoticeModal } from "../../SendFlow/Stake/NoticeModal";
 import { FormPage as UndelegationFormPage } from "../../SendFlow/Undelegation/FormPage";
-import { FormPage as UnstakeFormPage } from "../../SendFlow/Unstake/FormPage";
+import { NoticeModal as UnstakeNoticeModal } from "../../SendFlow/Unstake/NoticeModal";
 
 const Row: React.FC<
   {
@@ -56,14 +56,6 @@ export const EarnTab: React.FC<{
   const delegate = useGetAccountDelegate()(pkh);
   const stakedBalance = useGetAccountStakedBalance()(pkh);
 
-  const openDelegationForm = () =>
-    openWith(
-      <DelegationFormPage
-        form={delegate ? { sender: pkh, baker: delegate.address } : undefined}
-        sender={account}
-      />
-    );
-
   return (
     <Box>
       <Row
@@ -72,7 +64,7 @@ export const EarnTab: React.FC<{
         _odd={{ background: colors.gray[800] }}
         data-testid="staked-balance"
         label="Staked:"
-        value={prettyTezAmount(stakedBalance || 0)}
+        value={prettyTezAmount(stakedBalance)}
       />
       <Row
         borderBottom={`1px solid ${colors.gray[700]}`}
@@ -132,7 +124,7 @@ export const EarnTab: React.FC<{
                   gap="4px"
                   padding="0"
                   data-testid="change-delegation-button"
-                  onClick={openDelegationForm}
+                  onClick={() => openWith(<DelegateNoticeModal account={account} />)}
                   size="sm"
                   variant="CTAWithIcon"
                 >
@@ -166,20 +158,18 @@ export const EarnTab: React.FC<{
             <Button
               flex={1}
               isDisabled={!stakedBalance}
-              onClick={() =>
-                openWith(<UnstakeFormPage sender={account} stakedBalance={stakedBalance || 0} />)
-              }
+              onClick={() => openWith(<UnstakeNoticeModal account={account} />)}
               variant="secondary"
             >
               Unstake
             </Button>
-            <Button flex={1} onClick={() => openWith(<StakeFormPage sender={account} />)}>
+            <Button flex={1} onClick={() => openWith(<StakeNoticeModal account={account} />)}>
               Stake
             </Button>
           </>
         ) : (
           <>
-            <Button flex={1} onClick={openDelegationForm}>
+            <Button flex={1} onClick={() => openWith(<DelegateNoticeModal account={account} />)}>
               Delegate
             </Button>
             <Button flex={1} isDisabled>

@@ -35,12 +35,12 @@ export const useGetAccountBalance = () => {
 
 export const useGetAccountStakedBalance = () => {
   const getAccountState = useGetAccountState();
-  return (pkh: string) => getAccountState(pkh)?.stakedBalance;
+  return (pkh: string) => getAccountState(pkh)?.stakedBalance || 0;
 };
 
 export const useGetAccountUnstakedBalance = () => {
   const getAccountState = useGetAccountState();
-  return (pkh: string) => getAccountState(pkh)?.unstakedBalance;
+  return (pkh: string) => getAccountState(pkh)?.unstakedBalance || 0;
 };
 
 export const useGetAccountUnstakeRequests = () => {
