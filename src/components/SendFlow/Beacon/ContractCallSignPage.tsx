@@ -26,7 +26,7 @@ import { headerText } from "../SignPageHeader";
 
 export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  fee,
+  estimation,
   message,
 }) => {
   const {
@@ -35,6 +35,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
     entrypoint,
     args,
   } = operation.operations[0] as ContractCall;
+  const { fee } = estimation;
 
   const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
 
@@ -57,7 +58,11 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
 
           <FormLabel marginTop="24px">Contract Call Parameter</FormLabel>
           <Accordion allowToggle={true}>
-            <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
+            <AccordionItem
+              background={colors.gray[800]}
+              border="none"
+              borderRadius="8px"
+            >
               <AccordionButton>
                 <Box flex="1" textAlign="left">
                   JSON

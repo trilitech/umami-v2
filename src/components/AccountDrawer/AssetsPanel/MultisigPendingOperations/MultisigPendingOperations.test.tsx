@@ -19,7 +19,11 @@ jest.mock("../../../../utils/tezos/estimate");
 
 describe("<MultisigPendingOperations />", () => {
   it("displays multisig executable tez operations", async () => {
-    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
+    jest.mocked(estimate).mockResolvedValueOnce({
+      fee: BigNumber(33),
+      storageLimit: BigNumber(0),
+      gasLimit: BigNumber(0),
+    });
     const multisig = {
       ...mockMultisigAccount(0),
       pendingOperationsBigmapId: 3,

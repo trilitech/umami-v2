@@ -20,7 +20,11 @@ jest.mock("../../utils/tezos", () => ({
 
 beforeEach(() => {
   [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addAccount);
-  jest.mocked(estimate).mockResolvedValueOnce(BigNumber(10));
+  jest.mocked(estimate).mockResolvedValueOnce({
+    fee: BigNumber(10),
+    storageLimit: BigNumber(0),
+    gasLimit: BigNumber(0),
+  });
 
   jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);
 });
@@ -137,7 +141,11 @@ describe("<BatchPage />", () => {
 
     test("submit batch", async () => {
       const user = userEvent.setup();
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(10));
+      jest.mocked(estimate).mockResolvedValueOnce({
+        fee: BigNumber(10),
+        storageLimit: BigNumber(0),
+        gasLimit: BigNumber(0),
+      });
 
       render(
         <Modal isOpen={true} onClose={() => {}}>

@@ -134,7 +134,11 @@ describe("<BatchView />", () => {
     it("renders successful estimation statuses on a successful batch estimation", async () => {
       const user = userEvent.setup();
       addAccount(mockImplicitAccount(0));
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
+      jest.mocked(estimate).mockResolvedValueOnce({
+        fee: BigNumber(100),
+        storageLimit: BigNumber(0),
+        gasLimit: BigNumber(0),
+      });
 
       render(<BatchView operations={operations} />);
 

@@ -280,7 +280,11 @@ describe("SelectApproversFormPage", () => {
           contract
         ),
       ]);
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(150));
+      jest.mocked(estimate).mockResolvedValueOnce({
+        fee: BigNumber(150),
+        storageLimit: BigNumber(0),
+        gasLimit: BigNumber(0),
+      });
 
       const reviewButton = screen.getByText("Review");
       await waitFor(() => expect(reviewButton).toBeEnabled());
@@ -339,7 +343,13 @@ describe("SelectApproversFormPage", () => {
           contract
         ),
       ]);
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
+      jest
+        .mocked(estimate)
+        .mockResolvedValueOnce({
+          fee: BigNumber(100),
+          storageLimit: BigNumber(0),
+          gasLimit: BigNumber(0),
+        });
       await waitFor(() => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignTransactionFormPage

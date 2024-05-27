@@ -22,17 +22,19 @@ import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";
 import { ContractOrigination } from "../../../types/Operation";
 import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
+import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
 export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  fee,
+  estimation,
   message,
 }) => {
   const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
   const { code, storage } = operation.operations[0] as ContractOrigination;
+  const { fee, gasLimit, storageLimit } = estimation;
 
   return (
     <ModalContent>
@@ -40,8 +42,14 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
         <Flex alignItems="center" justifyContent="center">
           Operation Request
         </Flex>
-        <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
-          {message.appMetadata.name} is requesting permission to sign this operation.
+        <Text
+          marginTop="10px"
+          color={colors.gray[400]}
+          textAlign="center"
+          size="sm"
+        >
+          {message.appMetadata.name} is requesting permission to sign this
+          operation.
         </Text>
 
         <Flex alignItems="center" justifyContent="center" marginTop="10px">
@@ -73,7 +81,11 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
         </Flex>
 
         <Accordion marginTop="16px" allowToggle={true}>
-          <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
+          <AccordionItem
+            background={colors.gray[800]}
+            border="none"
+            borderRadius="8px"
+          >
             <AccordionButton>
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
                 Code
@@ -86,7 +98,11 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
           </AccordionItem>
         </Accordion>
         <Accordion marginTop="16px" allowToggle={true}>
-          <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
+          <AccordionItem
+            background={colors.gray[800]}
+            border="none"
+            borderRadius="8px"
+          >
             <AccordionButton>
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
                 Storage
@@ -98,6 +114,11 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
+        <AdvancedSettingsAccordion
+          fee={fee}
+          gasLimit={gasLimit}
+          storageLimit={storageLimit}
+        />
       </ModalBody>
       <ModalFooter padding="16px 0 0 0">
         <SignButton

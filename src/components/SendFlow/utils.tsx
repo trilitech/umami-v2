@@ -132,7 +132,10 @@ export const useSignPageHelpers = (
           ...operations,
           signer: getSigner(newSigner),
         };
-        setFee(await estimate(operations, network));
+
+        const { fee } = await estimate(operations, network);
+
+        setFee(fee);
         setOperations(operationsWithNewSigner);
         setEstimationFailed(false);
       },

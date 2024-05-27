@@ -45,7 +45,7 @@ export const MultisigSignerTile: React.FC<{
       const approveOrExecute = makeAccountOperations(signer, signer, [
         makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
       ]);
-      const fee = await estimate(approveOrExecute, network);
+      const { fee } = await estimate(approveOrExecute, network);
 
       let transactionCount;
       try {

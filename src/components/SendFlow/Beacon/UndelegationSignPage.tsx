@@ -10,10 +10,11 @@ import { headerText } from "../SignPageHeader";
 
 export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  fee,
+  estimation,
   message,
 }) => {
   const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
+  const { fee } = estimation;
 
   return (
     <ModalContent>
@@ -23,7 +24,12 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
           <FormLabel>From</FormLabel>
           <AddressTile address={operation.signer.address} />
 
-          <Flex alignItems="center" justifyContent="end" marginTop="12px" paddingX="4px">
+          <Flex
+            alignItems="center"
+            justifyContent="end"
+            marginTop="12px"
+            paddingX="4px"
+          >
             <SignPageFee fee={fee} />
           </Flex>
         </ModalBody>

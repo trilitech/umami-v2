@@ -32,7 +32,6 @@ const operation = {
   signer: mockImplicitAccount(0),
   operations: [mockContractOrigination(0)],
 };
-const fee = BigNumber(123);
 
 jest.mock("../../../utils/tezos", () => ({
   ...jest.requireActual("../../../utils/tezos"),
@@ -47,21 +46,47 @@ jest.mock("../../../utils/hooks/getAccountDataHooks", () => ({
 
 describe("<OriginationOperationSignPage />", () => {
   it("renders fee", () => {
-    render(<OriginationOperationSignPage fee={fee} message={message} operation={operation} />);
+    render(
+      <OriginationOperationSignPage
+        estimation={{
+          fee: BigNumber(123),
+          gasLimit: BigNumber(0),
+          storageLimit: BigNumber(0),
+        }}
+        message={message}
+        operation={operation}
+      />
+    );
 
-    expect(screen.getByText(prettyTezAmount(fee))).toBeVisible();
+    expect(screen.getByText(prettyTezAmount(BigNumber(123)))).toBeVisible();
   });
 
   it("passes correct payload to sign handler", async () => {
     const user = userEvent.setup();
     const testToolkit = new TezosToolkit("test-tezos-toolkit");
 
-    jest.mocked(makeToolkit).mockImplementation(() => Promise.resolve(testToolkit));
-    jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
-    jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
+    jest
+      .mocked(makeToolkit)
+      .mockImplementation(() => Promise.resolve(testToolkit));
+    jest
+      .mocked(useGetSecretKey)
+      .mockImplementation(() => () => Promise.resolve("secretKey"));
+    jest
+      .mocked(executeOperations)
+      .mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(<OriginationOperationSignPage fee={fee} message={message} operation={operation} />);
+    render(
+      <OriginationOperationSignPage
+        estimation={{
+          fee: BigNumber(123),
+          gasLimit: BigNumber(0),
+          storageLimit: BigNumber(0),
+        }}
+        message={message}
+        operation={operation}
+      />
+    );
 
     await act(() => user.type(screen.getByLabelText("Password"), "Password"));
 
@@ -85,6 +110,8 @@ describe("<OriginationOperationSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+      <SuccessStep hash="ophash" />
+    );
   });
 });

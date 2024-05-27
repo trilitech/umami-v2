@@ -19,7 +19,11 @@ describe("estimateAndUpdateBatch", () => {
     it("adds an operation to batch if the estimation succeeds", async () => {
       const operation = mockTezOperation(1);
 
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(1000));
+      jest.mocked(estimate).mockResolvedValueOnce({
+        fee: BigNumber(1000),
+        storageLimit: BigNumber(0),
+        gasLimit: BigNumber(0),
+      });
       const accountOperations = makeAccountOperations(
         mockImplicitAccount(1),
         mockImplicitAccount(1),
@@ -34,7 +38,11 @@ describe("estimateAndUpdateBatch", () => {
     it("doesn't add an operation to batch if the estimation fails", async () => {
       // add one operation to avoid false negatives
       const operation = mockTezOperation(1);
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(1000));
+      jest.mocked(estimate).mockResolvedValueOnce({
+        fee: BigNumber(1000),
+        storageLimit: BigNumber(0),
+        gasLimit: BigNumber(0),
+      });
 
       const accountOperations = makeAccountOperations(
         mockImplicitAccount(1),

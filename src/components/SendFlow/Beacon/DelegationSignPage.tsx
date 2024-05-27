@@ -9,10 +9,15 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, message }) => {
+export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
+  operation,
+  estimation,
+  message,
+}) => {
   const { recipient } = operation.operations[0] as Delegation;
 
   const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
+  const { fee } = estimation;
 
   return (
     <ModalContent>

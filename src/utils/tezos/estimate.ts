@@ -4,10 +4,16 @@ import { addressExists, makeToolkit, operationsToBatchParams, sumTez } from "./h
 import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
+export type Estimation = {
+  storageLimit: BigNumber
+  gasLimit: BigNumber
+  fee: BigNumber
+}
+
 export const estimate = async (
   operations: AccountOperations,
   network: Network
-): Promise<BigNumber> => {
+): Promise<Estimation> => {
   const tezosToolkit = await makeToolkit({ type: "fake", signer: operations.signer, network });
   try {
     const estimations = await tezosToolkit.estimate.batch(operationsToBatchParams(operations));
@@ -15,11 +21,15 @@ export const estimate = async (
     // because the suggestedFeeMutez does not include the storage & execution cost
     // and in these cases the totalCost is the one to go (so, for contract calls)
     // though totalCost doesn't work well with simple tez transfers and suggestedFeeMutez is more accurate
-    return sumTez(
-      estimations.map(estimate =>
-        Math.max(estimate.suggestedFeeMutez, estimate.totalCost).toString()
-      )
-    );
+    return {
+      storageLimit: estimations.reduce((acc, curr) => acc.plus(curr.storageLimit), BigNumber(0)),
+      gasLimit: estimations.reduce((acc, curr) => acc.plus(curr.gasLimit), BigNumber(0)),
+      fee: sumTez(
+        estimations.map(estimate =>
+          Math.max(estimate.suggestedFeeMutez, estimate.totalCost).toString()
+        )
+      ),
+    };
   } catch (err: any) {
     const isRevealed = await addressExists(operations.signer.address.pkh, network);
 

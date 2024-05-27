@@ -76,7 +76,11 @@ describe("<MultisigPendingOperation />", () => {
       ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
-    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
+    jest.mocked(estimate).mockResolvedValueOnce({
+      fee: BigNumber(33),
+      storageLimit: BigNumber(0),
+      gasLimit: BigNumber(0),
+    });
 
     jest.mocked(executeOperations).mockResolvedValue({
       opHash: "mockHash",
@@ -120,7 +124,11 @@ describe("<MultisigPendingOperation />", () => {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
 
-    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
+    jest.mocked(estimate).mockResolvedValueOnce({
+      fee: BigNumber(33),
+      storageLimit: BigNumber(0),
+      gasLimit: BigNumber(0),
+    });
 
     jest.mocked(executeOperations).mockResolvedValue({
       opHash: "mockHash",

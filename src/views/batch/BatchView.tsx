@@ -112,7 +112,7 @@ export const BatchView: React.FC<{
       setOperationsEstimationResults([]);
 
       try {
-        const initialFee = await estimate(accountOperations, network);
+        const { fee: initialFee } = await estimate(accountOperations, network);
 
         // if the estimation succeeds we set all operations' statuses to successful
         setOperationsEstimationResults(operations.map(_ => SUCCESSFUL_ESTIMATION_RESULT));

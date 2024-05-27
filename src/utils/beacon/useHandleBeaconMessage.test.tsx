@@ -264,7 +264,11 @@ describe("<useHandleBeaconMessage />", () => {
   });
 
   it("opens a modal with the BeaconSignPage for 1 operation", async () => {
-    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
+    jest.mocked(estimate).mockResolvedValueOnce({
+      fee: BigNumber(100),
+      storageLimit: BigNumber(0),
+      gasLimit: BigNumber(0),
+    });
 
     const message: BeaconRequestOutputMessage = {
       type: BeaconMessageType.OperationRequest,
@@ -291,7 +295,11 @@ describe("<useHandleBeaconMessage />", () => {
     await waitFor(() =>
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <BeaconSignPage
-          fee={BigNumber(100)}
+          estimation={{
+            fee: BigNumber(100),
+            storageLimit: BigNumber(0),
+            gasLimit: BigNumber(0),
+          }}
           message={message}
           operation={
             makeAccountOperations(account, account, [
@@ -305,7 +313,11 @@ describe("<useHandleBeaconMessage />", () => {
   });
 
   it("opens a modal with the BatchSignPage for multiple operations", async () => {
-    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
+    jest.mocked(estimate).mockResolvedValueOnce({
+      fee: BigNumber(100),
+      storageLimit: BigNumber(0),
+      gasLimit: BigNumber(0),
+    });
 
     const message: BeaconRequestOutputMessage = {
       type: BeaconMessageType.OperationRequest,
@@ -337,7 +349,11 @@ describe("<useHandleBeaconMessage />", () => {
     await waitFor(() =>
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <BatchSignPage
-          fee={BigNumber(100)}
+          estimation={{
+            fee: BigNumber(100),
+            storageLimit: BigNumber(0),
+            gasLimit: BigNumber(0),
+          }}
           message={message}
           operation={
             makeAccountOperations(account, account, [

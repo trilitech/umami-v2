@@ -52,11 +52,12 @@ export const useOpenSignPageFormAction = <
 
   return async (formValues: FormValues) => {
     const operations = makeFormOperations(formValues);
+    const { fee } = await estimate(operations, network);
 
     return openWith(
       <SignPage
         data={signPageExtraData}
-        fee={await estimate(operations, network)}
+        fee={fee}
         goBack={() =>
           openWith(
             <FormPage
