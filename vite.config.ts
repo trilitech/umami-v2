@@ -13,7 +13,7 @@ export default ({ mode }: { mode: "development" | "production" }) => {
   // in order to control the checker behaviour
   const enableChecker =
     env.VITE_DISABLE_DEV_CHECKS !== "true" &&
-    (env.VITE_DISABLE_TYPESCRIPT_CHECK !== "true" || env.VITE_DISABLE_ESLINT_CHECK === "true");
+    (env.VITE_DISABLE_TYPESCRIPT_CHECK !== "true" || env.VITE_DISABLE_ESLINT_CHECK !== "true");
 
   return defineConfig({
     base: "./",
@@ -33,8 +33,8 @@ export default ({ mode }: { mode: "development" | "production" }) => {
           enableBuild: false,
           overlay: env.VITE_ENABLE_CHECKS_OVERLAY === "true",
           terminal: true,
-          typescript: env.VITE_ENABLE_TYPESCRIPT_CHECK === "true",
-          eslint: env.VITE_ENABLE_ESLINT_CHECK !== "true" && {
+          typescript: env.VITE_DISABLE_TYPESCRIPT_CHECK !== "true",
+          eslint: env.VITE_DISABLE_ESLINT_CHECK !== "true" && {
             lintCommand: "eslint src --ext .js,.jsx,.ts,.tsx",
             useFlatConfig: false,
           },
