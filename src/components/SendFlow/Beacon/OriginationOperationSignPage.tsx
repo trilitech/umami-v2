@@ -42,16 +42,6 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
         <Flex alignItems="center" justifyContent="center">
           Operation Request
         </Flex>
-        <Text
-          marginTop="10px"
-          color={colors.gray[400]}
-          textAlign="center"
-          size="sm"
-        >
-          {message.appMetadata.name} is requesting permission to sign this
-          operation.
-        </Text>
-
         <Flex alignItems="center" justifyContent="center" marginTop="10px">
           <Heading marginRight="4px" color={colors.gray[450]} size="sm">
             Network:

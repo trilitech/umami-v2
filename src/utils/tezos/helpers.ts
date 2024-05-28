@@ -130,10 +130,13 @@ export const selectRandomElements = <T>(
 export const sumTez = (items: string[]): BigNumber =>
   items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));
 
-export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
+export const operationToTaquitoOperation = (
+  operation: Operation
+): ParamsWithKind => {
   switch (operation.type) {
     case "tez":
       return {
+        ...operation,
         kind: OpKind.TRANSACTION,
         to: operation.recipient.pkh,
         amount: parseInt(operation.amount),
@@ -141,6 +144,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
       };
     case "contract_call":
       return {
+        ...operation,
         kind: OpKind.TRANSACTION,
         to: operation.contract.pkh,
         amount: parseInt(operation.amount),
@@ -150,18 +154,21 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
 
     case "delegation":
       return {
+        ...operation,
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: operation.recipient.pkh,
       };
     case "undelegation":
       return {
+        ...operation,
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: undefined,
       };
     case "fa1.2":
       return {
+        ...operation,
         kind: OpKind.TRANSACTION,
         amount: 0,
         to: operation.contract.pkh,
@@ -169,6 +176,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
       };
     case "fa2":
       return {
+        ...operation,
         kind: OpKind.TRANSACTION,
         amount: 0,
         to: operation.contract.pkh,
@@ -205,11 +213,18 @@ export const operationsToBatchParams = ({
   type: operationsType,
   operations: originalOperations,
   sender,
+  ...restParams
 }: AccountOperations): ParamsWithKind[] => {
+  let _operations = originalOperations;
+
+  if (originalOperations.length === 1) {
+    _operations = [{ ...originalOperations[0], ...restParams }];
+  }
+
   const operations =
     operationsType === "implicit"
-      ? originalOperations
-      : [makeMultisigProposeOperation(sender.address, originalOperations)];
+      ? _operations
+      : [makeMultisigProposeOperation(sender.address, _operations)];
   return operations.map(operationToTaquitoOperation);
 };
 
