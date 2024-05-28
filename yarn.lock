@@ -5595,15 +5595,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.39.0":
-  version: 5.39.0
-  resolution: "@tanstack/react-query-devtools@npm:5.39.0"
+"@tanstack/react-query-devtools@npm:^5.40.0":
+  version: 5.40.0
+  resolution: "@tanstack/react-query-devtools@npm:5.40.0"
   dependencies:
     "@tanstack/query-devtools": "npm:5.37.1"
   peerDependencies:
-    "@tanstack/react-query": ^5.39.0
+    "@tanstack/react-query": ^5.40.0
     react: ^18 || ^19
-  checksum: 10/928c15f79886309238c64f736d823b5a14ab83a834ca33570c65c85b3b1d795ca49d7b6ae3d901795930335df093cf52f1a61278d2a4eedb5e8e902d0cf3a23a
+  checksum: 10/adfc8ba7da208bb25fa1c7321460afc0926b16c22a8081e49b3a2e5dee55cc41be6f3e3205c6db21a8e82a48ec1ef8bcc1c731d382825f43c7cd8b057301eccb
   languageName: node
   linkType: hard
 
@@ -17586,7 +17586,7 @@ __metadata:
     "@stylistic/eslint-plugin": "npm:^2.1.0"
     "@tanstack/eslint-plugin-query": "npm:^5.35.6"
     "@tanstack/react-query": "npm:^5.40.0"
-    "@tanstack/react-query-devtools": "npm:^5.39.0"
+    "@tanstack/react-query-devtools": "npm:^5.40.0"
     "@taquito/ledger-signer": "npm:^19.2.1"
     "@taquito/michel-codec": "npm:^19.2.1"
     "@taquito/rpc": "npm:^19.2.1"
