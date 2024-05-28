@@ -14983,7 +14983,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qrcode-generator@npm:^1.4.1":
+"qrcode-generator@npm:^1.4.4":
   version: 1.4.4
   resolution: "qrcode-generator@npm:1.4.4"
   checksum: 10/65b2bba237d1f230eba0d08ae4267d04f326859c2265775ade99191be1b522158b623fcc0b613bbfc9d4edbbafb928fc41c66d61053b333f2eb0bcedb2ebadca
@@ -15189,16 +15189,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-qrcode-logo@npm:^2.10.0":
-  version: 2.10.0
-  resolution: "react-qrcode-logo@npm:2.10.0"
+"react-qrcode-logo@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "react-qrcode-logo@npm:3.0.0"
   dependencies:
     lodash.isequal: "npm:^4.5.0"
-    qrcode-generator: "npm:^1.4.1"
+    qrcode-generator: "npm:^1.4.4"
   peerDependencies:
-    react: ">=16.4.1"
-    react-dom: ">=16.4.1"
-  checksum: 10/b4b693013acbac77515d4131992599afd0bc08da3734cb8bc2619b4ce9ea8562bdc973b66a56b34311450392e6de92db92bb8abe20862a52e1009d5372e46c8b
+    react: ">=18.0.0"
+    react-dom: ">=18.0.0"
+  checksum: 10/d720103b6a8497c265d70ce794c6391eba98e387e817ffeb51a09f7ce2d4f38305b7f8acdb454856b515d98ab5abef904b9eaf56d7cd03e0775ea461c9ee6547
   languageName: node
   linkType: hard
 
@@ -17664,7 +17664,7 @@ __metadata:
     react-hook-form: "npm:^7.51.5"
     react-hooks-testing-library: "npm:^0.6.0"
     react-player: "npm:^2.16.0"
-    react-qrcode-logo: "npm:^2.10.0"
+    react-qrcode-logo: "npm:^3.0.0"
     react-redux: "npm:9.1.2"
     react-refresh: "npm:^0.14.2"
     react-remove-scroll: "npm:^2.5.10"
