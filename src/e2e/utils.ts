@@ -26,13 +26,26 @@ export const runDockerCommand = (command: string, stdio: StdioOptions = "ignore"
       COMPOSE_PROJECT_NAME: process.env.CUCUMBER_WORKER_ID,
       ...process.env,
     },
+    encoding: "utf-8",
   });
 
-const startNode = () => runDockerCommand("up --wait --wait-timeout 120");
+const startNode = () => {
+  try {
+    runDockerCommand("up --wait --wait-timeout 120");
+  } catch (e) {
+    console.error("Failed to start the node, docker compose logs:");
+    runDockerCommand("logs", "inherit");
+    throw e;
+  }
+};
 
 export const killNode = () => {
   runDockerCommand("kill");
-  runDockerCommand("down");
+  try {
+    runDockerCommand("down");
+  } catch (e) {
+    /* empty */
+  }
 };
 
 // this should be called before each test that uses the blockchain/indexer
