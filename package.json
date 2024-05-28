@@ -147,7 +147,7 @@
     "typedoc": "^0.25.13",
     "typedoc-plugin-missing-exports": "^2.2.0",
     "typescript": "5.4.5",
-    "vite": "^5.2.11",
+    "vite": "^5.2.12",
     "vite-plugin-checker": "^0.6.4",
     "vite-plugin-node-polyfills": "^0.22.0",
     "zipurl": "^0.2.18",
