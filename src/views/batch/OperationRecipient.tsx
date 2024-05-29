@@ -3,17 +3,23 @@ import { Text } from "@chakra-ui/react";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
 import { Operation } from "../../types/Operation";
+import { useGetAccountDelegate } from "../../utils/hooks/assetsHooks";
 
 export const OperationRecipient = ({ operation }: { operation: Operation }) => {
   let address;
+  const getDelegate = useGetAccountDelegate();
 
   switch (operation.type) {
     case "undelegation":
     case "contract_origination":
+      address = undefined;
+      break;
     case "stake":
+      address = getDelegate(operation.sender.pkh);
+      break;
     case "unstake":
     case "finalize_unstake":
-      address = undefined;
+      address = operation.sender;
       break;
     case "tez":
     case "fa1.2":
