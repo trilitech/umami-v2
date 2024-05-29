@@ -65,15 +65,9 @@ describe("<OriginationOperationSignPage />", () => {
     const user = userEvent.setup();
     const testToolkit = new TezosToolkit("test-tezos-toolkit");
 
-    jest
-      .mocked(makeToolkit)
-      .mockImplementation(() => Promise.resolve(testToolkit));
-    jest
-      .mocked(useGetSecretKey)
-      .mockImplementation(() => () => Promise.resolve("secretKey"));
-    jest
-      .mocked(executeOperations)
-      .mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
+    jest.mocked(makeToolkit).mockImplementation(() => Promise.resolve(testToolkit));
+    jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
+    jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
     render(
@@ -110,8 +104,6 @@ describe("<OriginationOperationSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-      <SuccessStep hash="ophash" />
-    );
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
   });
 });

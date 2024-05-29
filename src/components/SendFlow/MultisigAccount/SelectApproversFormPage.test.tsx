@@ -343,13 +343,11 @@ describe("SelectApproversFormPage", () => {
           contract
         ),
       ]);
-      jest
-        .mocked(estimate)
-        .mockResolvedValueOnce({
-          fee: BigNumber(100),
-          storageLimit: BigNumber(0),
-          gasLimit: BigNumber(0),
-        });
+      jest.mocked(estimate).mockResolvedValueOnce({
+        fee: BigNumber(100),
+        storageLimit: BigNumber(0),
+        gasLimit: BigNumber(0),
+      });
       await waitFor(() => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignTransactionFormPage

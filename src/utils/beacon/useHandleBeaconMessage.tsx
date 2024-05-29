@@ -6,7 +6,7 @@ import {
   PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
@@ -22,7 +22,7 @@ import { ContractOrigination, Operation } from "../../types/Operation";
 import { useGetOwnedAccountSafe } from "../hooks/getAccountDataHooks";
 import { useFindNetwork } from "../hooks/networkHooks";
 import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";
-import { estimate } from "../tezos";
+import { Estimation, estimate } from "../tezos";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
@@ -90,23 +90,14 @@ export const useHandleBeaconMessage = () => {
               signer as ImplicitAccount
             );
             const estimation = await estimate(operation, network);
-            const singleOperation = { ...operation, ...estimation };
 
             if (operation.operations.length === 1) {
               modal = (
-                <BeaconSignPage
-                  estimation={estimation}
-                  message={message}
-                  operation={singleOperation}
-                />
+                <BeaconSignPage estimation={estimation} message={message} operation={operation} />
               );
             } else {
               modal = (
-                <BatchSignPage
-                  estimation={estimation}
-                  message={message}
-                  operation={operation}
-                />
+                <BatchSignPage estimation={estimation} message={message} operation={operation} />
               );
             }
 

@@ -186,13 +186,11 @@ describe("<FormPage />", () => {
         await waitFor(() => {
           expect(submitButton).toBeEnabled();
         });
-        jest
-          .mocked(estimate)
-          .mockResolvedValueOnce({
-            fee: BigNumber(100),
-            storageLimit: BigNumber(0),
-            gasLimit: BigNumber(0),
-          });
+        jest.mocked(estimate).mockResolvedValueOnce({
+          fee: BigNumber(100),
+          storageLimit: BigNumber(0),
+          gasLimit: BigNumber(0),
+        });
         const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
           {
             type: "fa2",

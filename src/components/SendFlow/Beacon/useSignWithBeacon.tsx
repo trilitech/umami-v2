@@ -10,13 +10,14 @@ import { ImplicitOperations } from "../../../types/AccountOperations";
 import { WalletClient } from "../../../utils/beacon/WalletClient";
 import { useFindNetwork } from "../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { executeOperations } from "../../../utils/tezos";
+import { Estimation, executeOperations } from "../../../utils/tezos";
 import { DynamicModalContext } from "../../DynamicModal";
 import { SuccessStep } from "../SuccessStep";
 
 export const useSignWithBeacon = (
   operation: ImplicitOperations,
-  message: OperationRequestOutput
+  message: OperationRequestOutput,
+  executeParams?: Estimation
 ) => {
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
@@ -25,7 +26,7 @@ export const useSignWithBeacon = (
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
-        const { opHash } = await executeOperations(operation, tezosToolkit);
+        const { opHash } = await executeOperations(operation, tezosToolkit, executeParams);
 
         const response: OperationResponseInput = {
           type: BeaconMessageType.OperationResponse,

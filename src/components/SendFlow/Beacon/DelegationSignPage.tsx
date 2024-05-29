@@ -4,7 +4,9 @@ import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import { Delegation } from "../../../types/Operation";
+import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
@@ -16,8 +18,9 @@ export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
 }) => {
   const { recipient } = operation.operations[0] as Delegation;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
-  const { fee } = estimation;
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
+  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+  const { fee, gasLimit, storageLimit } = executeParams;
 
   return (
     <ModalContent>
@@ -41,6 +44,12 @@ export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
 
           <FormLabel>To</FormLabel>
           <AddressTile address={recipient} />
+          <AdvancedSettingsAccordion
+            fee={fee}
+            gasLimit={gasLimit}
+            onChange={updateExecuteParams}
+            storageLimit={storageLimit}
+          />
         </ModalBody>
         <ModalFooter>
           <SignButton

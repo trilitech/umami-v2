@@ -14,39 +14,19 @@ export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({
 
   switch (operationType) {
     case "tez": {
-      return (
-        <BeaconTezSignPage
-          estimation={estimation}
-          message={message}
-          operation={operation}
-        />
-      );
+      return <BeaconTezSignPage estimation={estimation} message={message} operation={operation} />;
     }
     case "contract_call": {
       return (
-        <ContractCallSignPage
-          estimation={estimation}
-          message={message}
-          operation={operation}
-        />
+        <ContractCallSignPage estimation={estimation} message={message} operation={operation} />
       );
     }
     case "delegation": {
-      return (
-        <DelegationSignPage
-          estimation={estimation}
-          message={message}
-          operation={operation}
-        />
-      );
+      return <DelegationSignPage estimation={estimation} message={message} operation={operation} />;
     }
     case "undelegation": {
       return (
-        <UndelegationSignPage
-          estimation={estimation}
-          message={message}
-          operation={operation}
-        />
+        <UndelegationSignPage estimation={estimation} message={message} operation={operation} />
       );
     }
     case "contract_origination":

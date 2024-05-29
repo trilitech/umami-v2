@@ -17,8 +17,10 @@ import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";
 import { ContractCall } from "../../../types/Operation";
+import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
@@ -35,9 +37,10 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
     entrypoint,
     args,
   } = operation.operations[0] as ContractCall;
-  const { fee } = estimation;
+  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+  const { fee, gasLimit, storageLimit } = executeParams;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
 
   return (
     <ModalContent>
@@ -58,11 +61,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
 
           <FormLabel marginTop="24px">Contract Call Parameter</FormLabel>
           <Accordion allowToggle={true}>
-            <AccordionItem
-              background={colors.gray[800]}
-              border="none"
-              borderRadius="8px"
-            >
+            <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
               <AccordionButton>
                 <Box flex="1" textAlign="left">
                   JSON
@@ -74,6 +73,12 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
+          <AdvancedSettingsAccordion
+            fee={fee}
+            gasLimit={gasLimit}
+            onChange={updateExecuteParams}
+            storageLimit={storageLimit}
+          />
         </ModalBody>
         <ModalFooter padding="16px 0 0 0">
           <SignButton

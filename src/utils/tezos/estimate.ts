@@ -5,16 +5,20 @@ import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
 export type Estimation = {
-  storageLimit: BigNumber
-  gasLimit: BigNumber
-  fee: BigNumber
-}
+  storageLimit: number;
+  gasLimit: number;
+  fee: BigNumber;
+};
 
 export const estimate = async (
   operations: AccountOperations,
   network: Network
 ): Promise<Estimation> => {
-  const tezosToolkit = await makeToolkit({ type: "fake", signer: operations.signer, network });
+  const tezosToolkit = await makeToolkit({
+    type: "fake",
+    signer: operations.signer,
+    network,
+  });
   try {
     const estimations = await tezosToolkit.estimate.batch(operationsToBatchParams(operations));
     // The way taquito works we need to take the max of suggestedFeeMutez and totalCost
@@ -22,8 +26,8 @@ export const estimate = async (
     // and in these cases the totalCost is the one to go (so, for contract calls)
     // though totalCost doesn't work well with simple tez transfers and suggestedFeeMutez is more accurate
     return {
-      storageLimit: estimations.reduce((acc, curr) => acc.plus(curr.storageLimit), BigNumber(0)),
-      gasLimit: estimations.reduce((acc, curr) => acc.plus(curr.gasLimit), BigNumber(0)),
+      storageLimit: estimations.reduce((acc, curr) => acc + curr.storageLimit, 0),
+      gasLimit: estimations.reduce((acc, curr) => acc + curr.gasLimit, 0),
       fee: sumTez(
         estimations.map(estimate =>
           Math.max(estimate.suggestedFeeMutez, estimate.totalCost).toString()

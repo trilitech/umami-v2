@@ -8,6 +8,7 @@ import axios from "axios";
 import BigNumber from "bignumber.js";
 import { shuffle } from "lodash";
 
+import { Estimation } from "./estimate";
 import { FakeSigner } from "./fakeSigner";
 import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
@@ -23,6 +24,10 @@ import { RawTzktGetAddressType } from "../tzkt/types";
 export type PublicKeyPair = {
   pk: string;
   pkh: string;
+};
+
+export type AdvancedAccountOperations = AccountOperations & {
+  executeParams?: Estimation;
 };
 
 export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
@@ -130,13 +135,10 @@ export const selectRandomElements = <T>(
 export const sumTez = (items: string[]): BigNumber =>
   items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));
 
-export const operationToTaquitoOperation = (
-  operation: Operation
-): ParamsWithKind => {
+export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
   switch (operation.type) {
     case "tez":
       return {
-        ...operation,
         kind: OpKind.TRANSACTION,
         to: operation.recipient.pkh,
         amount: parseInt(operation.amount),
@@ -144,7 +146,6 @@ export const operationToTaquitoOperation = (
       };
     case "contract_call":
       return {
-        ...operation,
         kind: OpKind.TRANSACTION,
         to: operation.contract.pkh,
         amount: parseInt(operation.amount),
@@ -154,21 +155,18 @@ export const operationToTaquitoOperation = (
 
     case "delegation":
       return {
-        ...operation,
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: operation.recipient.pkh,
       };
     case "undelegation":
       return {
-        ...operation,
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: undefined,
       };
     case "fa1.2":
       return {
-        ...operation,
         kind: OpKind.TRANSACTION,
         amount: 0,
         to: operation.contract.pkh,
@@ -176,7 +174,6 @@ export const operationToTaquitoOperation = (
       };
     case "fa2":
       return {
-        ...operation,
         kind: OpKind.TRANSACTION,
         amount: 0,
         to: operation.contract.pkh,
@@ -213,12 +210,12 @@ export const operationsToBatchParams = ({
   type: operationsType,
   operations: originalOperations,
   sender,
-  ...restParams
-}: AccountOperations): ParamsWithKind[] => {
+  executeParams,
+}: AdvancedAccountOperations): ParamsWithKind[] => {
   let _operations = originalOperations;
 
   if (originalOperations.length === 1) {
-    _operations = [{ ...originalOperations[0], ...restParams }];
+    _operations = [{ ...originalOperations[0], ...executeParams }];
   }
 
   const operations =
@@ -229,5 +226,5 @@ export const operationsToBatchParams = ({
 };
 
 export const operationsToWalletParams = operationsToBatchParams as (
-  operations: AccountOperations
+  operations: AdvancedAccountOperations
 ) => WalletParamsWithKind[];

@@ -4,7 +4,9 @@ import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import { TezTransfer } from "../../../types/Operation";
+import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
@@ -12,9 +14,10 @@ import { headerText } from "../SignPageHeader";
 
 export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, estimation, message }) => {
   const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
-  const { fee } = estimation;
+  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+  const { fee, gasLimit, storageLimit } = executeParams;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
 
   return (
     <ModalContent>
@@ -32,6 +35,12 @@ export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, estimati
 
           <FormLabel marginTop="24px">To </FormLabel>
           <AddressTile address={recipient} />
+          <AdvancedSettingsAccordion
+            fee={fee}
+            gasLimit={gasLimit}
+            onChange={updateExecuteParams}
+            storageLimit={storageLimit}
+          />
         </ModalBody>
         <ModalFooter>
           <SignButton
